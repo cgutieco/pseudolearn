@@ -477,3 +477,7 @@
   }
 }
 ```
+
+## Colecciones e interfaces
+
+La vista pública incluye interface_unit, interface_signature, realization, type_parameter, type_parameters, type_arguments, for_each_loop, iteration_bindings, break_statement y defer_statement. Sus hijos distinguen firmas, interfaces realizadas, restricciones, vínculos, colección, cuerpo y limpieza. interface_identity, realized_interfaces y constraint_interface referencian identidades opacas de nodo de la revisión. No exponen valores de tipo interfaz ni tablas de despacho. Las realizaciones explícitas se atribuyen a la declaración que las contiene; la satisfacción heredada pertenece a la semántica.

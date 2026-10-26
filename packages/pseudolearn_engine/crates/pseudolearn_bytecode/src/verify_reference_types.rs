@@ -100,7 +100,9 @@ fn object_field_type<'module>(
     module
         .classes
         .iter()
-        .find(|class| class.name == class_name)
+        .find(|class| {
+            class.name == class_name && crate::collection_metadata::descriptor(class).is_none()
+        })
         .and_then(|class| {
             class
                 .fields
@@ -161,7 +163,9 @@ pub(super) fn verify_object_new(
     let Some(BytecodeOperand::Identifier(class_name)) = instruction.operands.first() else {
         return Err(TYPE_ERROR);
     };
-    if !module.classes.iter().any(|class| class.name == *class_name) {
+    if !module.classes.iter().any(|class| {
+        class.name == *class_name && crate::collection_metadata::descriptor(class).is_none()
+    }) {
         return Err(TYPE_ERROR);
     }
     require_destination(

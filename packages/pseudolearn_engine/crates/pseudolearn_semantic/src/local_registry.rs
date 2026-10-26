@@ -53,7 +53,7 @@ pub(crate) fn parameters(session: &mut AnalysisSession<'_>, function: usize) {
     }
 }
 
-fn array_parameter_type(
+pub(crate) fn array_parameter_type(
     session: &mut AnalysisSession<'_>,
     parameter: usize,
     element: TypeId,
@@ -99,7 +99,7 @@ fn check_record_parameter(
     }
 }
 
-fn parameter_type(session: &mut AnalysisSession<'_>, parameter: usize) -> TypeId {
+pub(crate) fn parameter_type(session: &mut AnalysisSession<'_>, parameter: usize) -> TypeId {
     if let Some(kind) = session.child(parameter, NodeKind::Type) {
         return crate::type_resolution::resolve(session, kind);
     }

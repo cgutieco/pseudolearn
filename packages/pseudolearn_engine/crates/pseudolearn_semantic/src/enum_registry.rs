@@ -7,7 +7,8 @@ use pseudolearn_syntax::NodeKind;
 use std::collections::BTreeSet;
 
 pub(crate) fn name_taken(session: &AnalysisSession<'_>, name: &str) -> bool {
-    session.classes.contains_key(name)
+    crate::interface_registry::find(session, name).is_some()
+        || session.classes.contains_key(name)
         || session.declared.enums.contains_key(name)
         || session.declared.records.contains_key(name)
         || session.generics.records.contains_key(name)

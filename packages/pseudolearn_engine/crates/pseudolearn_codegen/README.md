@@ -282,3 +282,9 @@ Problema: tras plegar constantes y leer celdas en línea, Storage (17,10×) qued
 ### Funciones como valores y ámbitos de ejecución
 
 Las llamadas indirectas usan una tabla de funciones con dirección y etiqueta de firma exacta. Antes de `call_indirect`, el código emitido valida rango y etiqueta, con el mismo fallo situado que la VM. Solo los módulos que llaman indirectamente emiten la tabla. El análisis de raíces añade los valores léxicamente visibles cuya definición domina el punto seguro; ante varias definiciones selecciona la más reciente que domina. La lectura cruda de capturas valida receptor y campo sin rechazar referencias cero inactivas.
+
+## Colecciones, interfaces e iteración con limpieza
+
+La generación nativa baja collection.* a un paquete de disposición y argumentos para rt_aot_collection; no serializa valores de tipo interfaz ni crea tablas nuevas de despacho. La selección de puntos de raíces incluye mutaciones que reservan y text.quote. La limpieza ya está explicitada en las aristas de RI y no introduce manejadores nativos.
+
+Los tests de estas capacidades se ejecutaron en selecciones acotadas, incluida la comparación de gemelos con recolección forzada. La conformidad del corpus sigue pendiente de la revisión editorial independiente de los contratos nuevos, y la medición de tamaño excede el presupuesto de Wasm.

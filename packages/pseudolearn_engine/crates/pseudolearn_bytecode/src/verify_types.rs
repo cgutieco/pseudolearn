@@ -16,6 +16,9 @@ pub(crate) fn verify(
     function: &BytecodeFunction,
     instruction: &Instruction,
 ) -> Result<(), BytecodeError> {
+    if crate::verify_collection_types::verify(module, function, instruction)? {
+        return Ok(());
+    }
     match instruction.opcode {
         Opcode::ArrayNew => arrays::verify_array_new(function, instruction),
         Opcode::ArrayLoad => arrays::verify_array_access(module, function, instruction, false),

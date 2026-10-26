@@ -33,6 +33,18 @@ fn parameter(
         syntax: template.node,
     });
     session.generic.opaque_records.insert(identifier);
+    if let Some(Some(name)) = template.constraints.get(index) {
+        if let Some(interface) = crate::interface_registry::find(session, name) {
+            session.generic.constraints.insert(identifier, interface);
+            crate::interface_constraints::record(session, template, index, interface);
+        } else {
+            session.named_report(
+                pseudolearn_diagnostics::DiagnosticCode::UnknownInterface,
+                template.node,
+                name,
+            );
+        }
+    }
     let kind = session.module.types.intern(Type::Record(identifier));
     session.generic.opaque.insert(key, kind);
     kind

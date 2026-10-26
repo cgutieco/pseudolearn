@@ -26,7 +26,7 @@ fn accepts_no_capture_and_rejects_an_oversized_environment() -> Result<(), Strin
     assert_eq!(empty.field(0), None);
     let maximum = RecordLayout::from_banks(&vec![RecordBank::Scalar; 65_535])
         .map_err(|error| format!("{error:?}"))?;
-    assert!(ClosureLayout::from_captures(&[maximum.clone()]).is_ok());
+    assert!(ClosureLayout::from_captures(std::slice::from_ref(&maximum)).is_ok());
     assert!(ClosureLayout::from_captures(&[maximum.clone(), maximum]).is_err());
     Ok(())
 }

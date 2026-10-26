@@ -20,6 +20,7 @@ impl Machine<'_> {
 
     fn memory_object(&mut self, operation: &MemoryOp) -> Result<Flow, Fault> {
         match operation {
+            MemoryOp::Collection(operation) => return self.collection_operation(operation),
             MemoryOp::ObjectNew { destination, class } => {
                 self.allocate_object(*destination, *class)?
             }
@@ -197,5 +198,9 @@ pub(super) fn memory_fault(error: MemoryError) -> Fault {
         MemoryError::IndexOutOfRange => "arrayIndexOutOfRange",
         MemoryError::Uninitialized => "uninitializedVariableRead",
         MemoryError::StringPositionOutOfRange => "stringPositionOutOfRange",
+        MemoryError::MissingDictionaryKey => "missingDictionaryKey",
+        MemoryError::CollectionLimit => "collectionLimitExceeded",
+        MemoryError::CollectionVersion => "collectionVersionExhausted",
+        MemoryError::CollectionModified => "collectionModifiedDuringIteration",
     }
 }

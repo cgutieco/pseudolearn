@@ -62,8 +62,14 @@ pub fn live_allocation_handles(heap: &Heap) -> Vec<Handle> {
 }
 
 pub fn is_object_allocation(heap: &Heap, handle: Handle) -> bool {
-    heap.header(handle)
-        .is_ok_and(|header| header.shape_tag > 2 && header.shape_tag < u32::MAX)
+    heap.header(handle).is_ok_and(|header| {
+        header.shape_tag > 2
+            && header.shape_tag < pseudolearn_abi::dictionary_layout::DICTIONARY_SHAPE_TAG
+    })
+}
+
+pub fn is_collection_allocation(heap: &Heap, handle: Handle) -> bool {
+    crate::collection::validate(heap, handle).is_ok()
 }
 
 pub fn is_array_allocation(heap: &Heap, handle: Handle) -> bool {

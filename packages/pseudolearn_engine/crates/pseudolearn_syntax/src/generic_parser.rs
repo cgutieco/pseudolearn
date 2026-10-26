@@ -8,12 +8,22 @@ pub(crate) fn type_parameters(state: &mut ParserState<'_>) -> Result<usize, ()> 
     let start = state.token();
     let marker = state.nodes.len();
     state.advance();
-    name(state, DiagnosticCode::ExpectedIdentifierInDeclaration)?;
+    parameter(state)?;
     while state.eat(TokenKind::Comma) {
-        name(state, DiagnosticCode::ExpectedIdentifierInDeclaration)?;
+        parameter(state)?;
     }
     state.require(TokenKind::Greater, DiagnosticCode::ExpectedType)?;
     Ok(state.finish(NodeKind::TypeParameters, start, marker))
+}
+
+fn parameter(state: &mut ParserState<'_>) -> Result<usize, ()> {
+    let start = state.token();
+    let marker = state.nodes.len();
+    name(state, DiagnosticCode::ExpectedIdentifierInDeclaration)?;
+    if state.eat(TokenKind::Colon) {
+        name(state, DiagnosticCode::ExpectedClassName)?;
+    }
+    Ok(state.finish(NodeKind::TypeParameter, start, marker))
 }
 
 pub(crate) fn type_arguments(state: &mut ParserState<'_>) -> Result<usize, ()> {

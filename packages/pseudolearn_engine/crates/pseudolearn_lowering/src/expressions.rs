@@ -40,7 +40,7 @@ pub fn lower_expression(
     lower_expression_with_state(expression_id, &mut state)
 }
 
-pub fn lower_expression_with_state(
+fn lower_non_collection(
     expression_id: ExpressionId,
     state: &mut ExpressionState<'_, '_>,
 ) -> ValueId {
@@ -199,4 +199,17 @@ fn lower_projection(
         }
         _ => None,
     }
+}
+
+pub fn lower_expression_with_state(
+    expression_id: ExpressionId,
+    state: &mut ExpressionState<'_, '_>,
+) -> ValueId {
+    if let Some(values) = crate::collections::values(expression_id, state) {
+        return values
+            .first()
+            .copied()
+            .unwrap_or_else(|| state.builder.next_value());
+    }
+    lower_non_collection(expression_id, state)
 }

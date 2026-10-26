@@ -29,6 +29,10 @@ pub enum MemoryError {
     IndexOutOfRange,
     Uninitialized,
     StringPositionOutOfRange,
+    MissingDictionaryKey,
+    CollectionLimit,
+    CollectionVersion,
+    CollectionModified,
 }
 
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]

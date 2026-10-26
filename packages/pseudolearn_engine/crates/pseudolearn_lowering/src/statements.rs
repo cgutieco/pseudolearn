@@ -17,6 +17,15 @@ use pseudolearn_semantic::statement_model::HirStatement;
 use pseudolearn_source::Span;
 
 pub fn lower_statement_list(statements: &[StatementId], context: &mut StatementContext<'_, '_>) {
+    open_statement_list(statements, context);
+    crate::cleanup_edges::finish(context);
+}
+
+pub(crate) fn open_statement_list(
+    statements: &[StatementId],
+    context: &mut StatementContext<'_, '_>,
+) {
+    context.builder.cleanup.scopes.push(Vec::new());
     for &statement_id in statements {
         if is_current_block_terminated(context.builder) {
             break;
@@ -65,6 +74,9 @@ fn dispatch_simple_statement(
     span: Span,
     context: &mut StatementContext<'_, '_>,
 ) -> bool {
+    if crate::statements_cleanup::dispatch(statement, span, context) {
+        return true;
+    }
     match statement {
         HirStatement::Declare(locals) => {
             lower_declare(locals, span, context);
@@ -239,7 +251,7 @@ fn lower_statement_call(
 }
 
 fn lower_return(
-    expression_option: Option<ExpressionId>,
+    expression: Option<ExpressionId>,
     statement_span: Span,
     context: &mut StatementContext<'_, '_>,
 ) {
@@ -247,26 +259,21 @@ fn lower_return(
     context
         .builder
         .emit_void(Operation::StmtEnter, vec![], span);
-    if let Some(expression_id) = expression_option {
-        if crate::records::lower_return(expression_id, context) {
-            context.builder.emit_void(Operation::StmtExit, vec![], span);
-            context.builder.emit_void(Operation::Return, vec![], span);
-            return;
+    let operands = if let Some(expression) = expression {
+        if crate::records::lower_return(expression, context) {
+            Vec::new()
+        } else {
+            vec![Operand::Value(lower_expression(
+                expression,
+                context.expression_context,
+                context.environment,
+                context.builder,
+            ))]
         }
-        let return_value = lower_expression(
-            expression_id,
-            context.expression_context,
-            context.environment,
-            context.builder,
-        );
-        context.builder.emit_void(Operation::StmtExit, vec![], span);
-        context
-            .builder
-            .emit_void(Operation::Return, vec![Operand::Value(return_value)], span);
     } else {
-        context.builder.emit_void(Operation::StmtExit, vec![], span);
-        context.builder.emit_void(Operation::Return, vec![], span);
-    }
+        Vec::new()
+    };
+    crate::cleanup_edges::return_from(context, span, operands);
 }
 
 fn ensure_output_value(operands: &mut Vec<Operand>, builder: &mut crate::builder::FunctionBuilder) {

@@ -10,6 +10,9 @@ pub(crate) fn instantiate(
     arguments: Vec<TypeId>,
     origin: usize,
 ) -> Option<RecordId> {
+    if !crate::interface_constraints::check(session, template, &arguments, origin) {
+        return None;
+    }
     let key = (session.unit, template.node, arguments.clone());
     if let Some(existing) = session.generic.records.get(&key) {
         return Some(*existing);

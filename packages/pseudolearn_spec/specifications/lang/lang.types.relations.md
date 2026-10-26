@@ -144,7 +144,7 @@
   "id": "R4",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Propagar expresión evalúa una variante una sola vez. En Opcional produce la carga útil de Algo o retorna Nada desde una función con retorno Opcional. En Resultado produce la carga útil de Exito o retorna Error desde una función con retorno Resultado y exactamente el mismo tipo E; no convierte el error ni lo descarta. Los tipos T de origen y retorno pueden ser distintos. El uso fuera de una función de retorno compatible es incompatiblePropagationType. No se añade iteración ni limpieza de usuario: Para Cada y sus aristas de limpieza quedan para la construcción que las introduzca.",
+  "texto": "Propagar expresión evalúa una variante una sola vez. En Opcional produce la carga útil de Algo o retorna Nada desde una función con retorno Opcional. En Resultado produce la carga útil de Exito o retorna Error desde una función con retorno Resultado y exactamente el mismo tipo E; no convierte el error ni lo descarta. Los tipos T de origen y retorno pueden ser distintos. El uso fuera de una función de retorno compatible es incompatiblePropagationType. La propagación fallida ejecuta las limpiezas de los ámbitos abandonados en orden inverso, conservando antes su carga útil y sin limpiar ante una trampa fatal.",
   "verificacion": [
     "C10",
     "C11",

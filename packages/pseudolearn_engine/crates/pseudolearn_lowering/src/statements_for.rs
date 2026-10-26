@@ -62,11 +62,12 @@ pub fn lower_for(descriptor: &ForLoopDescriptor<'_>, context: &mut StatementCont
         step_value,
         control: descriptor.control,
     };
+    crate::loop_exits::enter(descriptor.body, exit_block, context);
     execute_for_body(descriptor, &header_state, span, context);
 
-    context.builder.set_current_block(exit_block);
+    let environment = crate::loop_exits::finish(header_environment, true, context);
     context.builder.emit_void(Operation::StmtExit, vec![], span);
-    *context.environment = header_environment;
+    *context.environment = environment;
 }
 
 fn setup_for_header(

@@ -50,18 +50,14 @@ fn element(session: &mut AnalysisSession<'_>, node: usize) -> ExpressionId {
         .copied()
         .map(|indices| session.children(indices))
         .unwrap_or_default();
+    if let Some(model) = crate::collection_types::get(session, &session.expression_type(array)) {
+        return crate::collection_checker::element(session, node, (array, model), &indices);
+    }
     let indices: Vec<_> = indices
         .into_iter()
         .map(|index| crate::expression_checker::check(session, index))
         .collect();
-    for index in &indices {
-        if !matches!(
-            session.expression_type(*index),
-            Type::Integer | Type::Error | Type::Unknown
-        ) {
-            session.report(DiagnosticCode::NonIntegerArrayIndex, node);
-        }
-    }
+    check_indices(session, &indices, node);
     let kind = match session.expression_type(array) {
         Type::Array { element, rank } => {
             if usize::try_from(rank).ok() != Some(indices.len()) {
@@ -90,9 +86,15 @@ fn member(
     let children = session.children(node);
     let target = children.first().copied().unwrap_or(node);
     let receiver = crate::expression_checker::check(session, target);
+    if let Some(value) = crate::collection_checker::member(session, node, receiver, purpose) {
+        return value;
+    }
     let name_node = children.get(1).copied().unwrap_or(node);
     match session.expression_type(receiver) {
         Type::Record(record) => {
+            if let Some(call) = crate::interface_constraints::call(session, node, record, purpose) {
+                return call;
+            }
             let field = crate::record_access::field(session, node, (receiver, record, name_node));
             if session.child(node, NodeKind::Arguments).is_some() {
                 crate::function_calls::call(session, node, (field, purpose))
@@ -161,4 +163,15 @@ fn resolve_field(
         crate::diagnostic_arguments::class_name(session, field.owner);
     }
     Some(field)
+}
+
+fn check_indices(session: &mut AnalysisSession<'_>, indices: &[ExpressionId], node: usize) {
+    for index in indices {
+        if !matches!(
+            session.expression_type(*index),
+            Type::Integer | Type::Error | Type::Unknown
+        ) {
+            session.report(DiagnosticCode::NonIntegerArrayIndex, node);
+        }
+    }
 }

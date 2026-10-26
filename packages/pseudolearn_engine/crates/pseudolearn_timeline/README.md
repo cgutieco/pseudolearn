@@ -56,3 +56,9 @@ Young y Daly inspiran programar por coste, rechazando reloj como unidad. La comp
 ### Funciones como valores y ámbitos de ejecución
 
 La inspección recibe el mapa de nombres que la VM filtra por intervalo léxico, incluido el punto de continuación de los marcos suspendidos. Un vínculo cerrado deja de mostrarse aunque su ranura física siga reservada; no se reutilizan ranuras entre bloques.
+
+## Colecciones, interfaces e iteración con limpieza
+
+La inspección distingue cabeceras de colección de objetos ordinarios y conserva identidad y tipo declarado a través del crecimiento. Los bancos y metadatos viven en el heap existente: snapshots y deltas capturan su estado sin un registro paralelo. Las referencias eliminadas se borran antes de registrar el estado siguiente.
+
+Los tests de estas capacidades se ejecutaron en selecciones acotadas, incluida la comparación de gemelos con recolección forzada. La conformidad del corpus sigue pendiente de la revisión editorial independiente de los contratos nuevos, y la medición de tamaño excede el presupuesto de Wasm.

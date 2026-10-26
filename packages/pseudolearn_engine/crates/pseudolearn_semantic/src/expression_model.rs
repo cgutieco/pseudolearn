@@ -40,6 +40,7 @@ pub enum UnaryOperator {
 
 #[derive(Clone, Debug, PartialEq)]
 pub enum HirExpression {
+    Collection(crate::collection_model::CollectionExpression),
     FunctionValue(FunctionId),
     Captured {
         function: FunctionId,

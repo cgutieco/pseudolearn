@@ -126,7 +126,13 @@
     "API.PROGRAM.VIEW",
     "PERF.ARTIFACT.SIZE",
     "LANG.TYPES.FUNCTION",
-    "LANG.TYPES.GENERIC"
+    "LANG.TYPES.GENERIC",
+    "LANG.TYPES.INTERFACE",
+    "LANG.TYPES.VECTOR",
+    "LANG.TYPES.DICTIONARY",
+    "LANG.CONTROL.FOR-EACH",
+    "LANG.CONTROL.EXIT",
+    "LANG.CONTROL.CLEANUP"
   ],
   "fases_cerradas": [],
   "vinculos": [
@@ -1428,6 +1434,76 @@
     },
     {
       "regla": "LANG.TYPES.GENERIC@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TYPES.INTERFACE@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TYPES.INTERFACE@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TYPES.INTERFACE@1.0.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TYPES.VECTOR@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TYPES.VECTOR@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TYPES.VECTOR@1.0.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TYPES.DICTIONARY@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TYPES.DICTIONARY@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TYPES.DICTIONARY@1.0.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.CONTROL.FOR-EACH@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.CONTROL.FOR-EACH@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.CONTROL.EXIT@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.CONTROL.CLEANUP@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.CONTROL.CLEANUP@1.0.0#R2",
       "verificacion": "ejecutor",
       "estado": "cumple"
     }

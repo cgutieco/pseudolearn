@@ -1,3 +1,5 @@
+#[path = "codegen/contextual.rs"]
+mod contextual;
 #[path = "codegen/grammar_reader.rs"]
 mod grammar_reader;
 #[path = "codegen/structural.rs"]
@@ -44,12 +46,23 @@ fn generate() -> Result<(), Box<dyn std::error::Error>> {
         .ok_or("Missing analysis nesting limit")?;
     let names = productions.keys().cloned().chain(terminals).collect();
     let mut generated = views::generate(&names, nesting);
+    generated.push_str(&contextual_resources(&corpus)?);
+    let output = std::env::var("OUT_DIR")?;
+    std::fs::write(Path::new(&output).join("generated_syntax.rs"), generated)?;
+    Ok(())
+}
+
+fn contextual_resources(corpus: &Value) -> Result<String, Box<dyn std::error::Error>> {
+    let mut generated = String::new();
+    generated.push_str(&contextual::generate(
+        corpus
+            .pointer("/resources/contextualVocabulary")
+            .ok_or("Missing contextual vocabulary")?,
+    )?);
     generated.push_str(&structural::generate(
         corpus
             .pointer("/resources/unsupportedConstructs")
             .ok_or("Missing structural catalog")?,
     )?);
-    let output = std::env::var("OUT_DIR")?;
-    std::fs::write(Path::new(&output).join("generated_syntax.rs"), generated)?;
-    Ok(())
+    Ok(generated)
 }

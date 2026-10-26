@@ -174,6 +174,9 @@ fn identifier_target(
     slot: usize,
     span: Span,
 ) -> Option<ResolutionTarget> {
+    if let Some(target) = contextual_target(context, slot, span) {
+        return Some(target);
+    }
     if context.index.at_token_span(span).is_some() {
         let outcome = hover_for_token(context, slot)?;
         return Some(ResolutionTarget {
@@ -256,4 +259,31 @@ fn symbol_category(category: crate::hover::HoverCategory) -> &'static str {
         crate::hover::HoverCategory::Builtin => "builtin",
         crate::hover::HoverCategory::Keyword => "keyword",
     }
+}
+
+fn contextual_target(
+    context: &QueryContext<'_>,
+    slot: usize,
+    span: Span,
+) -> Option<ResolutionTarget> {
+    if let Some(id) = crate::contextual_tokens::collect(
+        context.tree,
+        context.source,
+        context.analysis,
+        context.profile,
+    )
+    .get(&slot)
+    {
+        return Some(ResolutionTarget {
+            identity: Some(identity(
+                HelpIdentityKind::Construction,
+                &crate::contextual_tokens::construction(context.analysis, span, id),
+                "construction",
+            )),
+            symbol: None,
+            certainty: contextual_certainty(context),
+            enclosing: None,
+        });
+    }
+    None
 }

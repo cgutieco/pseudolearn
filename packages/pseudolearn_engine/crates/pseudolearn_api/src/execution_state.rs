@@ -55,6 +55,9 @@ fn display_value(value: &VariableValue) -> String {
 
 fn object(machine: &Machine<'_>, handle: Handle) -> Option<(String, Value)> {
     let heap = machine.heap();
+    if runtime::is_collection_allocation(heap, handle) {
+        return crate::collection_state::capture(machine, handle);
+    }
     if runtime::is_object_allocation(heap, handle) {
         return instance(machine, handle);
     }
@@ -113,7 +116,7 @@ fn instance(machine: &Machine<'_>, handle: Handle) -> Option<(String, Value)> {
     ))
 }
 
-fn raw_value(machine: &Machine<'_>, word: u64, kind: ValueKind) -> Option<Value> {
+pub(crate) fn raw_value(machine: &Machine<'_>, word: u64, kind: ValueKind) -> Option<Value> {
     let value = match kind {
         ValueKind::Integer => i64::from_ne_bytes(word.to_ne_bytes()).to_string(),
         ValueKind::Real => pseudolearn_timeline::format_real(f64::from_bits(word)),

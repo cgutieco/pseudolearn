@@ -18,6 +18,11 @@ pub(crate) const SAFE_POINTS: &[Operation] = &[
     Operation::ObjectCopy,
     Operation::TextConcat,
     Operation::TextFormat,
+    Operation::TextQuote,
+    Operation::CollectionNew,
+    Operation::CollectionStore,
+    Operation::CollectionInsert,
+    Operation::CollectionRemove,
     Operation::InRead,
     Operation::ConstStr,
 ];

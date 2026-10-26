@@ -66,3 +66,9 @@ V8 y JVM inspiran referencias comprimidas; SableVM inspira separar clases de val
 ### Funciones como valores y ámbitos de ejecución
 
 La disposición de un valor función contiene una palabra escalar de identidad de código y una referencia de entorno. `ClosureLayout` compone únicamente las capturas efectivas, ordenadas por banco; una función sin capturas usa el centinela cero. El entorno no conserva marcos ni referencias prestadas. La representación conserva los límites de 65 535 palabras del registro.
+
+## Colecciones, interfaces e iteración con limpieza
+
+Las colecciones reservan etiquetas de forma u32 máximo menos uno para Vector y menos dos para Diccionario. La cabecera estable transporta longitud, capacidad, versión, anchos de bancos y asas de almacenamiento reemplazable; la identidad y los alias nunca dependen de la dirección del banco. VectorLayout y DictionaryLayout centralizan la aritmética comprobada. CollectionCommand es la frontera compartida de ambos ejecutores; no contiene tipos dinámicos de valores.
+
+Los tests de estas capacidades se ejecutaron en selecciones acotadas, incluida la comparación de gemelos con recolección forzada. La conformidad del corpus sigue pendiente de la revisión editorial independiente de los contratos nuevos, y la medición de tamaño excede el presupuesto de Wasm.

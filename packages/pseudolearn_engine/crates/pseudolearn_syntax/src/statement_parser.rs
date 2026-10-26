@@ -6,7 +6,9 @@ use pseudolearn_diagnostics::DiagnosticCode;
 use pseudolearn_lexicon::KeywordKind;
 
 pub(crate) fn parse_statement_block(state: &mut ParserState<'_>) -> usize {
-    body_until(state, |state| boundary(state.kind()))
+    body_until(state, |state| {
+        boundary(state.kind()) || crate::contextual::matches(state, "endDefer")
+    })
 }
 
 pub(crate) fn parse_case_body(state: &mut ParserState<'_>) -> usize {
@@ -36,6 +38,9 @@ fn body_until(state: &mut ParserState<'_>, boundary: fn(&mut ParserState<'_>) ->
 }
 
 fn parse_statement(state: &mut ParserState<'_>) -> Result<usize, ()> {
+    if let Some(result) = crate::iteration_parser::statement(state) {
+        return result;
+    }
     if crate::unsupported::reject(state) {
         return Err(());
     }

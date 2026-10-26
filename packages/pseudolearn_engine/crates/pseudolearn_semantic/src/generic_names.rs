@@ -41,7 +41,11 @@ fn plain(session: &mut AnalysisSession<'_>, node: usize, name: &str) -> Option<T
     Some(Type::Error)
 }
 
-fn count_mismatch(session: &mut AnalysisSession<'_>, node: usize, counts: (&str, usize, usize)) {
+pub(crate) fn count_mismatch(
+    session: &mut AnalysisSession<'_>,
+    node: usize,
+    counts: (&str, usize, usize),
+) {
     let (name, expected, found) = counts;
     session.named_report(DiagnosticCode::TypeArgumentCountMismatch, node, name);
     if let Some(diagnostic) = session.diagnostics.last_mut() {

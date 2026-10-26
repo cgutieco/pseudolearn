@@ -38,6 +38,7 @@ pub fn lower_function(
     initialize_result_cells(function, &mut statement_context);
     crate::constructor_flow::implicit_super(function, &mut statement_context);
     lower_statement_list(&function.body, &mut statement_context);
+    origins.append(&mut builder.cleanup.origins);
 
     terminate_function_blocks(&mut builder, &return_type, function, source);
     compute_blocks_mass(&mut builder);

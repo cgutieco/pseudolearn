@@ -148,6 +148,9 @@ pub(crate) fn check_expected_for(
     expected: crate::identities::TypeId,
     purpose: ExpressionPurpose,
 ) -> ExpressionId {
+    if let Some(value) = crate::collection_checker::construct(session, node, expected) {
+        return value;
+    }
     if crate::variant_checker::is_construction(session, node) {
         crate::variant_checker::check(session, node, Some(expected))
     } else if session.kind(node) == NodeKind::Primary {

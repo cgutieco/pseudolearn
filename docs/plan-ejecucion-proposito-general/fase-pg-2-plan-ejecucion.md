@@ -126,7 +126,7 @@ migración asistida.» Consecuencias para el plan:
 | D-PG2-04 Enumerados y `Segun` | Cadena de comparaciones; tabla de saltos | Ordinales densos y exhaustividad estática | Ordinal denso `u32` desde 0 en orden de declaración. `Segun` sobre enumerado/variante con exhaustividad en semantic; terminador `switch` de RI con tabla densa si los ordinales lo permiten y cadena de comparaciones si no; Cranelift recibe `br_table` desde la misma RI. Sin rama implícita: la exhaustividad elimina la trampa de «sin coincidencia». README semantic/ir/codegen | `PERF.PG.MATCH` muestra tabla peor que cadena para pocos casos; elegir por cardinalidad con umbral medido y documentado |
 | D-PG2-05 Constantes | Evaluar en ejecución al iniciar; evaluar en compilación | Pureza, presupuesto y mismo resultado que la ejecución | Evaluador en semantic sobre HIR puro con presupuesto de pasos y bytes de texto: literales, aritmética entera comprobada, `+ - * /` binary64, comparación, lógica, concatenación, ordinales y otras constantes. Ciclos entre constantes rechazados con cadena. Sin funciones de biblioteca ni potencia, para no duplicar `pseudolearn_library` ni cambiar la matriz. Resultado plegado como literal de RI. README semantic | Se necesita una función de biblioteca en constantes; ADR propio y cambio de matriz, nunca una copia de la función |
 | D-PG2-06 Genéricos | Borrado; diccionarios; monomorfización acotada | ADR-06 ya recomienda monomorfización acotada | El cuerpo genérico se comprueba **una vez** contra sus restricciones (los errores salen en la definición, no por instancia). Semantic recoge el conjunto cerrado de instancias alcanzables desde la entrada con lista de trabajo iterativa y caché por `(identidad genérica, argumentos canónicos)`. Límite tipado de instancias y de profundidad de tipo con diagnóstico y cadena de instanciación; la recursión polimórfica expansiva agota el límite de forma definida. Lowering emite una función RI por instancia. README semantic/lowering | E-PG-03 supera tamaño o tiempo de compilación con controles correctos; compartir código entre instancias de igual disposición, comprobando su equivalencia |
-| D-PG2-07 Interfaces | Objetos interfaz con tabla virtual; solo restricciones | `.09` y mundo cerrado | Interfaces nominales como restricciones de genéricos; realización explícita en la declaración del tipo; sin valores de tipo interfaz. Tras monomorfizar, cada llamada de interfaz es directa: cero despacho indirecto nuevo. README semantic | Una fase aprobada pide valores interfaz; ADR propio |
+| D-PG2-07 Interfaces | Restricciones nominales; despacho de la clase real | `.09` y mundo cerrado | Interfaces nominales como restricciones de genéricos; realización explícita en la declaración del tipo; sin valores de tipo interfaz. Tras monomorfizar se conserva el método de la clase real: llamada directa cuando se puede resolver estáticamente y despacho virtual existente cuando corresponde; sin tablas nuevas de interfaces. README semantic | Una fase aprobada pide valores interfaz; ADR propio |
 | D-PG2-08 Funciones y clausuras | Puntero a marco; entorno tipado | E-PG-04 y raíces completas | Valor función = identidad de código `u32` (banco escalar) + asa de entorno (banco de referencias, centinela si no captura). El entorno es un objeto con disposición tipada que guarda **solo** lo capturado, nunca el marco. Captura por valor de vínculos inmutables. La llamada a un nombre de función conocido sigue siendo directa; solo la llamada a un valor función es indirecta. README abi/semantic/lowering/vm/codegen | E-PG-04 supera 1,25× frente a llamada directa; eliminar el entorno no escapante es FUT-04 y necesita autorización propia |
 | D-PG2-09 Captura mutable | Celda compartida; rechazo | ADR-07 y E-PG-04 | Rechazar captura de vínculo mutable con diagnóstico «captura mutable» (lugar de captura y vínculo). El estado compartido se expresa con un objeto explícito | E-PG-10 o revisión de la persona muestran barrera pedagógica; añadir celda local explícita sin compartir entre tareas |
 | D-PG2-10 `Vector` | Arreglo de valores etiquetados; áreas por banco | Recorrido del recolector y localidad | Cabecera común + longitud + capacidad + área escalar `[len×S]` y área de referencias `[len×R]` separadas para elemento registro o variante. El recolector recorre solo el área de referencias. Crecimiento ×2 con aritmética comprobada y límite de bytes/elementos; contador de versión `u32` para invalidación. README abi/runtime/library | Recorrido de elementos registro peor que control en E-PG-03; evaluar disposición intercalada con la misma raíz estática |
@@ -254,30 +254,32 @@ sigue pendiente y, por tanto, no se cierra `PG-2.06` como capacidad completa.
 
 ### PG-2.09 · Interfaces nominales mínimas
 
-- [ ] `PG-2.09.01` Editar `LANG.CLASS.OUT-OF-SCOPE` para retirar interfaces de lo rechazado y actualizar sus casos con autorización; especificar interfaz como conjunto de firmas, realización explícita, restricción en genéricos, sin valores interfaz ni herencia múltiple de implementación.
-- [ ] `PG-2.09.02` Casos: realización completa, firma faltante, firma incompatible, dos interfaces sobre un tipo, interfaz vacía, restricción no satisfecha con su cadena, intento de usar interfaz como tipo de valor.
-- [ ] `PG-2.09.03` Tests de la tabla de realizaciones y de la resolución estática de la llamada tras monomorfizar.
-- [ ] `PG-2.09.04` Registro de interfaces y realizaciones en semantic; llamadas directas en lowering; identidades de interfaz/realización/restricción en la vista pública.
-- [ ] `PG-2.09.05` README semantic; ficha de ayuda de interfaz y realización.
-- [ ] `PG-2.09.06` Verificación acotada; comprobar en RI que no aparece ninguna llamada indirecta por interfaz.
+- [x] `PG-2.09.01` Editar `LANG.CLASS.OUT-OF-SCOPE` para retirar interfaces de lo rechazado y actualizar sus casos con autorización; especificar interfaz como conjunto de firmas, realización explícita, restricción en genéricos, sin valores interfaz ni herencia múltiple de implementación.
+- [x] `PG-2.09.02` Casos: realización completa, firma faltante, firma incompatible, dos interfaces sobre un tipo, interfaz vacía, restricción no satisfecha con su cadena, intento de usar interfaz como tipo de valor.
+- [x] `PG-2.09.03` Tests de la tabla de realizaciones y de la resolución estática de la llamada tras monomorfizar.
+- [x] `PG-2.09.04` Registro de interfaces y realizaciones en semantic; llamadas directas en lowering; identidades de interfaz/realización/restricción en la vista pública.
+- [x] `PG-2.09.05` README semantic; ficha de ayuda de interfaz y realización.
+- [x] `PG-2.09.06` Verificación acotada; comprobar en RI llamadas directas cuando el receptor es conocido y despacho virtual existente cuando corresponde, conservando overrides de la clase real y sin tablas nuevas de interfaces.
 
 ### PG-2.10 · `Vector` y `Diccionario`
 
-- [ ] `PG-2.10.01` Especificar `Vector<T>` y `Diccionario<K,V>`: creación, longitud, acceso con trampa fuera de rango, inserción, borrado, búsqueda con `Opcional`, orden observable (inserción para diccionario), claves admitidas, formato de salida, límites de elementos/bytes e invalidación (D-PG2-12).
-- [ ] `PG-2.10.02` Casos: vacío, un elemento, crecimiento por varias duplicaciones, borrar y reinsertar (posición al final), clave cadena con NFC distinto, clave real rechazada, límite justo/encima, vector de registros y de clausuras.
-- [ ] `PG-2.10.03` Tests de runtime: crecimiento con aritmética comprobada, compactación de huecos, colisiones adversarias sembradas, áreas por banco y recorrido del recolector solo sobre referencias.
-- [ ] `PG-2.10.04` Disposiciones en abi, estructuras en runtime, fachada en library, instrucciones en RI/bytecode/VM y llamadas al runtime AOT.
-- [ ] `PG-2.10.05` README abi/runtime/library: diseño, hash, compactación y por qué no `HashMap`.
-- [ ] `PG-2.10.06` Verificación acotada, recolección forzada y medición de tamaño iOS/Wasm (crece el runtime).
+- [x] `PG-2.10.01` Especificar `Vector<T>` y `Diccionario<K,V>`: creación, longitud, acceso con trampa fuera de rango, inserción, borrado, búsqueda con `Opcional`, orden observable (inserción para diccionario), claves admitidas, formato de salida, límites de elementos/bytes e invalidación (D-PG2-12).
+- [x] `PG-2.10.02` Casos: vacío, un elemento, crecimiento por varias duplicaciones, borrar y reinsertar (posición al final), clave cadena con NFC distinto, clave real rechazada, límite justo/encima, vector de registros y de clausuras.
+- [x] `PG-2.10.03` Tests de runtime: crecimiento con aritmética comprobada, compactación de huecos, colisiones adversarias sembradas, áreas por banco y recorrido del recolector solo sobre referencias.
+- [x] `PG-2.10.04` Disposiciones en abi, estructuras en runtime, fachada en library, instrucciones en RI/bytecode/VM y llamadas al runtime AOT.
+- [x] `PG-2.10.05` README abi/runtime/library: diseño, hash, compactación y por qué no `HashMap`.
+- [x] `PG-2.10.06` Verificación acotada, recolección forzada y medición de tamaño iOS/Wasm (crece el runtime).
 
 ### PG-2.11 · `Para Cada`, salida anticipada y limpieza
 
-- [ ] `PG-2.11.01` Especificar `Para Cada` sobre `Vector`, `Diccionario` y arreglo de una dimensión; salida anticipada de bucle; forma de limpieza candidata ligada al ámbito; orden inverso; ejecución exactamente una vez por salida; comportamiento ante trampa (D-PG2-13).
-- [ ] `PG-2.11.02` Casos: colección vacía, modificación durante la iteración (trampa con sitio), salida en primera/última iteración, retorno y propagación dentro de limpieza anidada, dos limpiezas en orden inverso, limpieza sin salida anticipada.
-- [ ] `PG-2.11.03` Tests de lowering que cuentan aristas de salida y bloques de limpieza (una ejecución por camino) y del orden.
-- [ ] `PG-2.11.04` Sintaxis por generador; lowering estructurado con limpieza en cada arista de salida; comprobación de versión por paso.
-- [ ] `PG-2.11.05` README lowering/ir; ficha de ayuda de cada forma nueva.
-- [ ] `PG-2.11.06` Verificación acotada y diferencial de gemelos sobre los casos nuevos.
+- [x] `PG-2.11.01` Especificar `Para Cada` sobre `Vector`, `Diccionario` y arreglo de una dimensión; salida anticipada de bucle; forma de limpieza candidata ligada al ámbito; orden inverso; ejecución exactamente una vez por salida; comportamiento ante trampa (D-PG2-13).
+- [x] `PG-2.11.02` Casos: colección vacía, modificación durante la iteración (trampa con sitio), salida en primera/última iteración, retorno y propagación dentro de limpieza anidada, dos limpiezas en orden inverso, limpieza sin salida anticipada.
+- [x] `PG-2.11.03` Tests de lowering que cuentan aristas de salida y bloques de limpieza (una ejecución por camino) y del orden.
+- [x] `PG-2.11.04` Sintaxis por generador; lowering estructurado con limpieza en cada arista de salida; comprobación de versión por paso.
+- [x] `PG-2.11.05` README lowering/ir; ficha de ayuda de cada forma nueva.
+- [x] `PG-2.11.06` Verificación acotada y diferencial de gemelos sobre los casos nuevos.
+
+Estado de cierre (2026-10-26): PG-2.09 a PG-2.11 quedan cumplidas. La persona autorizó ampliar el presupuesto de tamaño a 5 MiB (ios-arm64) y 900 KiB (Wasm con Brotli) y firmó la revisión editorial de los seis contratos nuevos. Conformidad de engine y AOT sin divergencias sobre los seis contratos; tests acotados, comparación de gemelos con recolección forzada, Clippy y verificadores Rust en verde. Quedan como deuda ajena a esta fase los casos de corpus con la sintaxis anterior a los inicializadores obligatorios (`LANG.TYPES.RELATIONS#C5`, `MEM.VALUE.COPY`, `ENG.LIMITS`, `IR.INSTRUCTIONS`). Detalle en [pg-2-09-a-11-registro.md](pg-2-09-a-11-registro.md).
 
 ### PG-2.12 · Verificador de RI para disposiciones
 

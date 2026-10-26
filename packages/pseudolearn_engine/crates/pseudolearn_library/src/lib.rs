@@ -1,6 +1,10 @@
 #![forbid(unsafe_code)]
 
+mod collections;
 mod conversion;
+mod quoted_text;
+pub use collections::{CollectionRequest, collection_operation};
+pub use quoted_text::quote_text;
 mod decimal;
 mod error;
 mod format;

@@ -223,3 +223,9 @@ El corpus API define recursos y codificaciones; se rechaza un objeto por evento 
 ### Funciones como valores y ámbitos de ejecución
 
 La prueba `function_execution` consume los programas normativos del corpus de funciones, sin mantener copias locales. Contrasta ambos perfiles y gemelos, recolección ordinaria y forzada, salida, terminación, diagnósticos y eventos. Con `native`, enlaza y ejecuta los objetos emitidos y los contrasta con la VM. Las bibliotecas del arnés se localizan en el directorio de dependencias del ejecutable de prueba.
+
+## Colecciones, interfaces e iteración con limpieza
+
+La vista pública expone nodos de interfaces, realizaciones, parámetros restringidos, Para Cada, Salir y Diferir, con papeles de hijos. interface_identity, realized_interfaces y constraint_interface usan identidades opacas de nodos de la revisión, sin representar la interfaz como valor. La consulta de estado presenta longitud y elementos de Vector, y entradas ordenadas con clave y valor de Diccionario; conserva identidades compartidas y hojas de registros. Los metadatos sintéticos de disposición son internos y no se interpretan como campos ordinarios de objetos.
+
+Los tests de estas capacidades se ejecutaron en selecciones acotadas, incluida la comparación de gemelos con recolección forzada. La conformidad del corpus sigue pendiente de la revisión editorial independiente de los contratos nuevos, y la medición de tamaño excede el presupuesto de Wasm.

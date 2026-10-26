@@ -20,6 +20,10 @@ pub fn lower_assign(
     context
         .builder
         .emit_void(Operation::StmtEnter, vec![], span);
+    if crate::collections::store(destination, value_expression, span, context) {
+        context.builder.emit_void(Operation::StmtExit, vec![], span);
+        return;
+    }
     if crate::records::expression_width(value_expression, context.expression_context.module)
         .is_some()
     {

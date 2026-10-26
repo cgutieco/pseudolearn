@@ -41,6 +41,7 @@ impl Machine<'_> {
         let first_word = self.read_value(first.source)?;
         let word = match opcode {
             Opcode::TextFormat => self.format_text(*first)?,
+            Opcode::TextQuote => self.quote_text(first_word)?,
             Opcode::TextConcat => {
                 self.concat_parts(*first, *sources.get(1).ok_or(INVALID_BYTECODE)?)?
             }
@@ -68,6 +69,13 @@ impl Machine<'_> {
             )?,
         };
         Ok(word)
+    }
+
+    fn quote_text(&mut self, word: u64) -> Result<u64, Fault> {
+        let roots = self.memory_roots()?;
+        library::quote_text(&mut self.heap, handle(word)?, &roots)
+            .map(|handle| u64::from(handle.0))
+            .map_err(memory_fault)
     }
 
     fn text_pair(

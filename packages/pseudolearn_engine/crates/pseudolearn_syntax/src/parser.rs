@@ -19,6 +19,7 @@ impl<'tokens> Parser<'tokens> {
 
     pub(crate) fn with_profile(mut self, profile: Profile) -> Self {
         self.profile = profile;
+        self.state.profile = profile;
         self
     }
 
@@ -60,15 +61,24 @@ impl<'tokens> Parser<'tokens> {
         self.state.finish(NodeKind::Program, 0, 0);
         self.state.into_tree()
     }
-    fn parse_unit(&mut self, algorithms: &mut u32, units: u32) -> Result<usize, ()> {
+    fn parse_contextual_unit(&mut self) -> Option<Result<usize, ()>> {
+        if crate::interface_parser::starts(&mut self.state) {
+            return Some(crate::interface_parser::interface(&mut self.state));
+        }
         if crate::module_parser::is_standalone_directive(&mut self.state, self.profile) {
             let span = self.state.span();
             self.state
                 .report(DiagnosticCode::ModuleSyntaxOutsideProject, span);
-            return Err(());
+            return Some(Err(()));
         }
         if crate::unsupported::reject(&mut self.state) {
-            return Err(());
+            return Some(Err(()));
+        }
+        None
+    }
+    fn parse_unit(&mut self, algorithms: &mut u32, units: u32) -> Result<usize, ()> {
+        if let Some(result) = self.parse_contextual_unit() {
+            return result;
         }
         let kind = self.state.kind();
         if crate::module_parser::is_directive(kind) && units == 0 {

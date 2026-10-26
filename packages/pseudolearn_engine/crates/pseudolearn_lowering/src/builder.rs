@@ -15,6 +15,8 @@ pub struct FunctionBuilder {
     pub current_block: Option<BlockId>,
     pub receiver: Option<ValueId>,
     pub result_cells: Vec<ValueId>,
+    pub cleanup: crate::cleanup_edges::CleanupScopes,
+    pub loop_exits: Vec<crate::loop_exits::LoopExit>,
     next_value_index: u32,
     next_block_index: u32,
 }
@@ -30,6 +32,8 @@ impl FunctionBuilder {
             current_block: None,
             receiver: None,
             result_cells: Vec::new(),
+            cleanup: crate::cleanup_edges::CleanupScopes::default(),
+            loop_exits: Vec::new(),
             next_value_index: 0,
             next_block_index: 0,
         }

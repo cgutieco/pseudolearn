@@ -6448,6 +6448,710 @@
             ]
           }
         }
+      },
+      {
+        "id": "construction.interface",
+        "identity": {
+          "kind": "construction",
+          "id": "interfaceKeyword",
+          "role": "construction"
+        },
+        "tokens": [
+          {
+            "identity": "interfaceKeyword",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          },
+          {
+            "identity": "endInterface",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          },
+          {
+            "identity": "implementsKeyword",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LANG.TYPES.INTERFACE",
+            "version": "1.0.0",
+            "element": "R1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Interfaces nominales",
+            "summary": "Declara firmas públicas que una clase realiza explícitamente.",
+            "purpose": "Declara firmas públicas que una clase realiza explícitamente.",
+            "parts": [
+              {
+                "identity": "interfaceKeyword",
+                "text": "Declara firmas públicas que una clase realiza explícitamente."
+              },
+              {
+                "identity": "endInterface",
+                "text": "Declara firmas públicas que una clase realiza explícitamente."
+              },
+              {
+                "identity": "implementsKeyword",
+                "text": "Declara firmas públicas que una clase realiza explícitamente."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Interfaces nominales",
+                "profile": "es",
+                "specification": "LANG.TYPES.INTERFACE",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Nominal interfaces",
+            "summary": "Declares public signatures explicitly implemented by a class.",
+            "purpose": "Declares public signatures explicitly implemented by a class.",
+            "parts": [
+              {
+                "identity": "interfaceKeyword",
+                "text": "Declares public signatures explicitly implemented by a class."
+              },
+              {
+                "identity": "endInterface",
+                "text": "Declares public signatures explicitly implemented by a class."
+              },
+              {
+                "identity": "implementsKeyword",
+                "text": "Declares public signatures explicitly implemented by a class."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Nominal interfaces",
+                "profile": "en",
+                "specification": "LANG.TYPES.INTERFACE",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "construction.vector",
+        "identity": {
+          "kind": "construction",
+          "id": "vectorType",
+          "role": "construction"
+        },
+        "tokens": [
+          {
+            "identity": "vectorType",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          },
+          {
+            "identity": "collectionLength",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          },
+          {
+            "identity": "vectorAppend",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          },
+          {
+            "identity": "vectorInsert",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          },
+          {
+            "identity": "collectionRemove",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LANG.TYPES.VECTOR",
+            "version": "1.0.0",
+            "element": "R1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Vector",
+            "summary": "Colección compartida con índices desde cero y crecimiento comprobado.",
+            "purpose": "Colección compartida con índices desde cero y crecimiento comprobado.",
+            "parts": [
+              {
+                "identity": "vectorType",
+                "text": "Colección compartida con índices desde cero y crecimiento comprobado."
+              },
+              {
+                "identity": "collectionLength",
+                "text": "Colección compartida con índices desde cero y crecimiento comprobado."
+              },
+              {
+                "identity": "vectorAppend",
+                "text": "Colección compartida con índices desde cero y crecimiento comprobado."
+              },
+              {
+                "identity": "vectorInsert",
+                "text": "Colección compartida con índices desde cero y crecimiento comprobado."
+              },
+              {
+                "identity": "collectionRemove",
+                "text": "Colección compartida con índices desde cero y crecimiento comprobado."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Vector",
+                "profile": "es",
+                "specification": "LANG.TYPES.VECTOR",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Vector",
+            "summary": "Shared collection with zero-based indexing and checked growth.",
+            "purpose": "Shared collection with zero-based indexing and checked growth.",
+            "parts": [
+              {
+                "identity": "vectorType",
+                "text": "Shared collection with zero-based indexing and checked growth."
+              },
+              {
+                "identity": "collectionLength",
+                "text": "Shared collection with zero-based indexing and checked growth."
+              },
+              {
+                "identity": "vectorAppend",
+                "text": "Shared collection with zero-based indexing and checked growth."
+              },
+              {
+                "identity": "vectorInsert",
+                "text": "Shared collection with zero-based indexing and checked growth."
+              },
+              {
+                "identity": "collectionRemove",
+                "text": "Shared collection with zero-based indexing and checked growth."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Vector",
+                "profile": "en",
+                "specification": "LANG.TYPES.VECTOR",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "construction.dictionary",
+        "identity": {
+          "kind": "construction",
+          "id": "dictionaryType",
+          "role": "construction"
+        },
+        "tokens": [
+          {
+            "identity": "dictionaryType",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          },
+          {
+            "identity": "dictionaryFind",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          },
+          {
+            "identity": "collectionLength",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          },
+          {
+            "identity": "collectionRemove",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LANG.TYPES.DICTIONARY",
+            "version": "1.0.0",
+            "element": "R1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Diccionario",
+            "summary": "Asocia claves exactas a valores y conserva el orden de inserción.",
+            "purpose": "Asocia claves exactas a valores y conserva el orden de inserción.",
+            "parts": [
+              {
+                "identity": "dictionaryType",
+                "text": "Asocia claves exactas a valores y conserva el orden de inserción."
+              },
+              {
+                "identity": "dictionaryFind",
+                "text": "Asocia claves exactas a valores y conserva el orden de inserción."
+              },
+              {
+                "identity": "collectionLength",
+                "text": "Consulta la longitud o elimina una clave devolviendo su valor anterior opcional."
+              },
+              {
+                "identity": "collectionRemove",
+                "text": "Consulta la longitud o elimina una clave devolviendo su valor anterior opcional."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Diccionario",
+                "profile": "es",
+                "specification": "LANG.TYPES.DICTIONARY",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Dictionary",
+            "summary": "Maps exact keys to values and preserves insertion order.",
+            "purpose": "Maps exact keys to values and preserves insertion order.",
+            "parts": [
+              {
+                "identity": "dictionaryType",
+                "text": "Maps exact keys to values and preserves insertion order."
+              },
+              {
+                "identity": "dictionaryFind",
+                "text": "Maps exact keys to values and preserves insertion order."
+              },
+              {
+                "identity": "collectionLength",
+                "text": "Queries length or removes a key and returns its previous value as an optional."
+              },
+              {
+                "identity": "collectionRemove",
+                "text": "Queries length or removes a key and returns its previous value as an optional."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Dictionary",
+                "profile": "en",
+                "specification": "LANG.TYPES.DICTIONARY",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "construction.for_each",
+        "identity": {
+          "kind": "construction",
+          "id": "eachKeyword",
+          "role": "construction"
+        },
+        "tokens": [
+          {
+            "identity": "eachKeyword",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          },
+          {
+            "identity": "inKeyword",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LANG.CONTROL.FOR-EACH",
+            "version": "1.0.0",
+            "element": "R1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Para Cada",
+            "summary": "Recorre una colección una vez por elemento; rechaza modificaciones estructurales.",
+            "purpose": "Recorre una colección una vez por elemento; rechaza modificaciones estructurales.",
+            "parts": [
+              {
+                "identity": "eachKeyword",
+                "text": "Recorre una colección una vez por elemento; rechaza modificaciones estructurales."
+              },
+              {
+                "identity": "inKeyword",
+                "text": "Recorre una colección una vez por elemento; rechaza modificaciones estructurales."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Para Cada",
+                "profile": "es",
+                "specification": "LANG.CONTROL.FOR-EACH",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "For each",
+            "summary": "Visits each collection element and rejects structural changes.",
+            "purpose": "Visits each collection element and rejects structural changes.",
+            "parts": [
+              {
+                "identity": "eachKeyword",
+                "text": "Visits each collection element and rejects structural changes."
+              },
+              {
+                "identity": "inKeyword",
+                "text": "Visits each collection element and rejects structural changes."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "For each",
+                "profile": "en",
+                "specification": "LANG.CONTROL.FOR-EACH",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "construction.break",
+        "identity": {
+          "kind": "construction",
+          "id": "breakKeyword",
+          "role": "construction"
+        },
+        "tokens": [
+          {
+            "identity": "breakKeyword",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LANG.CONTROL.EXIT",
+            "version": "1.0.0",
+            "element": "R1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Salida del bucle",
+            "summary": "Termina el bucle interior y ejecuta las limpiezas de los ámbitos abandonados.",
+            "purpose": "Termina el bucle interior y ejecuta las limpiezas de los ámbitos abandonados.",
+            "parts": [
+              {
+                "identity": "breakKeyword",
+                "text": "Termina el bucle interior y ejecuta las limpiezas de los ámbitos abandonados."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Salida del bucle",
+                "profile": "es",
+                "specification": "LANG.CONTROL.EXIT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Loop exit",
+            "summary": "Exits the innermost loop and runs cleanup for the scopes being left.",
+            "purpose": "Exits the innermost loop and runs cleanup for the scopes being left.",
+            "parts": [
+              {
+                "identity": "breakKeyword",
+                "text": "Exits the innermost loop and runs cleanup for the scopes being left."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Loop exit",
+                "profile": "en",
+                "specification": "LANG.CONTROL.EXIT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "construction.defer",
+        "identity": {
+          "kind": "construction",
+          "id": "deferKeyword",
+          "role": "construction"
+        },
+        "tokens": [
+          {
+            "identity": "deferKeyword",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          },
+          {
+            "identity": "endDefer",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LANG.CONTROL.CLEANUP",
+            "version": "1.0.0",
+            "element": "R1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Limpieza diferida",
+            "summary": "Registra una limpieza léxica que lee los valores al salir del ámbito.",
+            "purpose": "Registra una limpieza léxica que lee los valores al salir del ámbito.",
+            "parts": [
+              {
+                "identity": "deferKeyword",
+                "text": "Registra una limpieza léxica que lee los valores al salir del ámbito."
+              },
+              {
+                "identity": "endDefer",
+                "text": "Registra una limpieza léxica que lee los valores al salir del ámbito."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Limpieza diferida",
+                "profile": "es",
+                "specification": "LANG.CONTROL.CLEANUP",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Deferred cleanup",
+            "summary": "Registers lexical cleanup that reads values when leaving its scope.",
+            "purpose": "Registers lexical cleanup that reads values when leaving its scope.",
+            "parts": [
+              {
+                "identity": "deferKeyword",
+                "text": "Registers lexical cleanup that reads values when leaving its scope."
+              },
+              {
+                "identity": "endDefer",
+                "text": "Registers lexical cleanup that reads values when leaving its scope."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Deferred cleanup",
+                "profile": "en",
+                "specification": "LANG.CONTROL.CLEANUP",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
       }
     ],
     "exclusions": [],
@@ -7146,6 +7850,95 @@
             "errorVariant",
             "propagateKeyword",
             "discardKeyword"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "construction",
+            "id": "interfaceKeyword",
+            "role": "construction"
+          },
+          "productions": [
+            "interfaceUnit"
+          ],
+          "tokens": [
+            "interfaceKeyword",
+            "endInterface",
+            "implementsKeyword"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "construction",
+            "id": "vectorType",
+            "role": "construction"
+          },
+          "productions": [
+            "type"
+          ],
+          "tokens": [
+            "vectorType",
+            "collectionLength",
+            "vectorAppend",
+            "vectorInsert",
+            "collectionRemove"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "construction",
+            "id": "dictionaryType",
+            "role": "construction"
+          },
+          "productions": [
+            "type"
+          ],
+          "tokens": [
+            "dictionaryType",
+            "dictionaryFind",
+            "collectionLength",
+            "collectionRemove"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "construction",
+            "id": "eachKeyword",
+            "role": "construction"
+          },
+          "productions": [
+            "forEachLoop"
+          ],
+          "tokens": [
+            "eachKeyword",
+            "inKeyword"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "construction",
+            "id": "breakKeyword",
+            "role": "construction"
+          },
+          "productions": [
+            "breakStatement"
+          ],
+          "tokens": [
+            "breakKeyword"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "construction",
+            "id": "deferKeyword",
+            "role": "construction"
+          },
+          "productions": [
+            "deferStatement"
+          ],
+          "tokens": [
+            "deferKeyword",
+            "endDefer"
           ]
         }
       ]

@@ -92,3 +92,9 @@ Las mediciones locales de calidad y latencia las genera `pseudolearn_bench_worke
 ## 8. Fuentes consultadas y genealogía conceptual
 
 Language Server Protocol 3.17 (ciclo de vida, sincronización, posiciones UTF-16) y principios de servicios de lenguaje basados en árboles sin pérdida. De las fuentes consultadas se tomó el protocolo y la separación entre árbol sin pérdida y consultas; se rechazó el cómputo incremental por consultas por su costo en dependencias frente a la latencia medida.
+
+## Colecciones, interfaces e iteración con limpieza
+
+La ayuda, el formateador y el traductor reconocen vocabulario contextual por posiciones del CST y llamadas de colección resueltas semánticamente. IdentifierRoles conserva estas identidades junto a los nombres del usuario; solo esos usos se traducen con contextualVocabulary. Una variable homónima conserva su nombre. Los tipos de colecciones se muestran con su grafía del perfil y argumentos, sin exponer nombres sintéticos. Las fichas bilingües se generan desde helpCatalog igual que las construcciones anteriores.
+
+Los tests de estas capacidades se ejecutaron en selecciones acotadas, incluida la comparación de gemelos con recolección forzada. La conformidad del corpus sigue pendiente de la revisión editorial independiente de los contratos nuevos, y la medición de tamaño excede el presupuesto de Wasm.

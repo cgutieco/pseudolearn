@@ -8,7 +8,9 @@ use pseudolearn_syntax::NodeKind;
 pub(crate) fn register(session: &mut AnalysisSession<'_>) {
     crate::generic_registry::collect(session);
     register_classes(session);
+    crate::interface_registry::register(session);
     crate::type_declarations::register(session);
+    crate::interface_registry::signatures(session);
     crate::generic_discard::check_records(session);
     register_functions(session);
     register_members(session);

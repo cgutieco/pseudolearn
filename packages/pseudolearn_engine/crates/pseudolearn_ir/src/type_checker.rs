@@ -13,7 +13,7 @@ use crate::type_checker_intrinsics::check_intrinsics;
 use crate::type_checker_values::check_value_operations;
 use crate::types::IrType;
 
-pub fn check_instruction_types(
+fn check_standard_instruction(
     operation: Operation,
     operands: &[Operand],
     get_type: impl Fn(ValueId) -> Option<IrType>,
@@ -179,10 +179,28 @@ fn check_texts(
             expect_one_typed(operands, &IrType::Str, get_type)?;
             Ok(Some(IrType::I64))
         }
+        Operation::TextQuote => {
+            expect_one_typed(operands, &IrType::Str, get_type)?;
+            Ok(Some(IrType::Str))
+        }
         Operation::CharCmp => {
             expect_predicate_and_two_typed(operands, &IrType::Char, get_type)?;
             Ok(Some(IrType::Bool))
         }
         _ => Ok(None),
     }
+}
+
+pub fn check_instruction_types(
+    operation: Operation,
+    operands: &[Operand],
+    get_type: impl Fn(ValueId) -> Option<IrType>,
+    module: &Module,
+) -> Result<Option<IrType>, TypeError> {
+    if let Some(result) =
+        crate::type_checker_dynamic_collections::check(operation, operands, &get_type, module)?
+    {
+        return Ok(Some(result));
+    }
+    check_standard_instruction(operation, operands, get_type, module)
 }

@@ -20,24 +20,53 @@ pub enum LineRole {
 pub struct BlockLayout {
     stack: Vec<OpenBlock>,
     case_starts: BTreeSet<u32>,
+    contextual_openers: BTreeSet<u32>,
+    contextual_closers: BTreeSet<u32>,
+    signatures: BTreeSet<u32>,
 }
 
 impl BlockLayout {
     pub fn new(tree: &SyntaxTree) -> Self {
-        let case_starts = tree
-            .nodes
-            .iter()
-            .filter(|node| matches!(node.kind, NodeKind::Labels | NodeKind::DefaultCase))
-            .map(|node| node.first_token)
-            .collect();
         Self {
             stack: Vec::new(),
-            case_starts,
+            case_starts: starts(tree, &[NodeKind::Labels, NodeKind::DefaultCase]),
+            contextual_openers: tree
+                .nodes
+                .iter()
+                .filter(|node| {
+                    matches!(
+                        node.kind,
+                        NodeKind::InterfaceUnit | NodeKind::DeferStatement
+                    )
+                })
+                .map(|node| node.first_token)
+                .collect(),
+            contextual_closers: tree
+                .nodes
+                .iter()
+                .enumerate()
+                .filter(|(_, node)| {
+                    matches!(
+                        node.kind,
+                        NodeKind::InterfaceUnit | NodeKind::DeferStatement
+                    )
+                })
+                .filter_map(|(index, _)| tree.ending_tokens.get(index).copied())
+                .collect(),
+            signatures: tree
+                .nodes
+                .iter()
+                .filter(|node| node.kind == NodeKind::InterfaceSignature)
+                .map(|node| node.first_token)
+                .collect(),
         }
     }
 
     pub fn role_of(&self, tree: &SyntaxTree, first_token: usize) -> LineRole {
         let start = u32::try_from(first_token).unwrap_or(u32::MAX);
+        if self.contextual_closers.contains(&start) {
+            return LineRole::Closer;
+        }
         if self.case_starts.contains(&start) {
             return LineRole::CaseLabel;
         }
@@ -83,7 +112,24 @@ impl BlockLayout {
         }
     }
 
-    pub fn apply_keyword(&mut self, kind: KeywordKind) {
+    pub fn apply_token(&mut self, tree: &SyntaxTree, token: usize) {
+        let slot = u32::try_from(token).unwrap_or(u32::MAX);
+        if self.signatures.contains(&slot) {
+            return;
+        }
+        if self.contextual_openers.contains(&slot) {
+            self.stack.push(OpenBlock {
+                is_switch: false,
+                in_case: false,
+            });
+        } else if self.contextual_closers.contains(&slot) {
+            self.stack.pop();
+        } else if let Some(TokenKind::Keyword(kind)) = tree.tokens.kind(token) {
+            self.apply_keyword(kind);
+        }
+    }
+
+    fn apply_keyword(&mut self, kind: KeywordKind) {
         if is_opener(kind) {
             self.stack.push(OpenBlock {
                 is_switch: kind == KeywordKind::SwitchKeyword,
@@ -127,4 +173,12 @@ pub fn is_closer(kind: KeywordKind) -> bool {
             | KeywordKind::EndSwitch
             | KeywordKind::Until
     )
+}
+
+fn starts(tree: &SyntaxTree, kinds: &[NodeKind]) -> BTreeSet<u32> {
+    tree.nodes
+        .iter()
+        .filter(|node| kinds.contains(&node.kind))
+        .map(|node| node.first_token)
+        .collect()
 }

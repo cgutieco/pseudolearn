@@ -12,10 +12,11 @@ pub(crate) fn local(
     purpose: ExpressionPurpose,
 ) -> ExpressionId {
     let name = session.name(node);
-    if session.local(&name).is_none() && purpose != ExpressionPurpose::Destination {
-        if let Some(function) = session.functions.get(&name).copied() {
-            return crate::function_values::reference(session, function, node);
-        }
+    if session.local(&name).is_none()
+        && purpose != ExpressionPurpose::Destination
+        && let Some(function) = session.functions.get(&name).copied()
+    {
+        return crate::function_values::reference(session, function, node);
     }
     if session.local(&name).is_none()
         && let Some(index) =

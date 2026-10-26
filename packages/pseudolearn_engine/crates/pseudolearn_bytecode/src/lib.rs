@@ -4,6 +4,7 @@ include!(concat!(env!("OUT_DIR"), "/generated_opcodes.rs"));
 
 mod class_verification;
 mod classes;
+pub mod collection_metadata;
 mod compile;
 mod definitions;
 mod error;
@@ -11,6 +12,7 @@ mod model;
 mod root_liveness;
 mod roots;
 mod verify;
+mod verify_collection_types;
 mod verify_padding;
 mod verify_superinstructions;
 mod verify_types;

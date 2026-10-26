@@ -6,6 +6,16 @@ pub(super) fn token_identity(
     slot: usize,
     kind: TokenKind,
 ) -> Option<String> {
+    if let Some(identity) = crate::contextual_tokens::collect(
+        context.tree,
+        context.source,
+        context.analysis,
+        context.profile,
+    )
+    .get(&slot)
+    {
+        return Some((*identity).to_owned());
+    }
     match kind {
         TokenKind::Identifier
             if context

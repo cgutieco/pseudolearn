@@ -103,6 +103,9 @@ pub(crate) fn alternative(family: VariantFamily, token: Option<TokenKind>) -> Op
 }
 
 pub(crate) fn propagation(session: &mut AnalysisSession<'_>, node: usize) -> ExpressionId {
+    if session.control.cleaning {
+        session.report(DiagnosticCode::ControlTransferInsideCleanup, node);
+    }
     let Some(child) = session.children(node).first().copied() else {
         return crate::expression_checker::invalid(session, node);
     };

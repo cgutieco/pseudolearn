@@ -71,6 +71,7 @@ fn prepare_function(session: &mut AnalysisSession<'_>, function: &crate::hir::Hi
             .insert(*parameter, function.span);
     }
     session.returned = false;
+    session.control = crate::control_context::ControlContext::default();
     session.pending_results.clear();
     crate::result_obligations::parameters(session, &function.parameters);
 }

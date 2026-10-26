@@ -8,6 +8,7 @@ use std::collections::BTreeSet;
 
 pub struct IdentifierRoles {
     user_starts: BTreeSet<u32>,
+    contextual: std::collections::BTreeMap<usize, &'static str>,
     global_names: BTreeSet<String>,
     profile: Profile,
 }
@@ -22,10 +23,15 @@ impl IdentifierRoles {
             .map(|occurrence| occurrence.span.start)
             .collect();
         Self {
+            contextual: crate::contextual_tokens::collect(tree, source, &analysis, options.profile),
             user_starts,
             global_names: global_names(&analysis, options.profile),
             profile: options.profile,
         }
+    }
+
+    pub(crate) fn contextual_identity(&self, token: usize) -> Option<&'static str> {
+        self.contextual.get(&token).copied()
     }
 
     pub fn is_user_name(&self, tree: &SyntaxTree, source: &SourceText, index: usize) -> bool {

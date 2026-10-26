@@ -71,3 +71,11 @@ SSA con parámetros de bloque permite compartir semántica con futuros consumido
 ### Funciones como valores y ámbitos de ejecución
 
 Los orígenes de valores pueden conservar un intervalo léxico adicional sin cambiar la representación textual de instrucciones. `call.indirect` referencia un prototipo verificable y recibe una identidad escalar de código; la identidad nunca es una dirección. `object.load_raw` exige receptor y campo tipados y permite leer palabras cero de un entorno, incluidas referencias inactivas de agregados. La lectura ordinaria conserva su comprobación de inicialización.
+
+## Colecciones, interfaces e iteración con limpieza
+
+Las instrucciones collection.* mantienen la identidad de tipo de la colección y su disposición canónica en las declaraciones sintéticas. El verificador exige claves, hojas y ordinales exactos; rechaza bancos intercalados, claves reales y operaciones de objetos sobre cabeceras de colección. array.length se limita a arreglos unidimensionales. text.quote produce texto delimitado y escapado para la representación de contenidos, sin reinterpretar cadenas como identificadores.
+
+Los tests de estas capacidades se ejecutaron en selecciones acotadas, incluida la comparación de gemelos con recolección forzada. La conformidad del corpus sigue pendiente de la revisión editorial independiente de los contratos nuevos, y la medición de tamaño excede el presupuesto de Wasm.
+
+La RI textual delimita con comillas las identidades internas de tipos de colección y sus hojas cuando no pertenecen al alfabeto de nombres simples. Parser, tipos y printer comparten esa representación reversible; el contenido de una cadena literal de programa permanece distinto de un nombre dentro de la declaración o del tipo.

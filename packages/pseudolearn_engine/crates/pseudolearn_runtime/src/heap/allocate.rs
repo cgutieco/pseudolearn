@@ -123,7 +123,7 @@ impl Heap {
         Ok(())
     }
 
-    fn prepare(&mut self, cells: u64, roots: &[Handle]) -> Result<(), MemoryError> {
+    pub(crate) fn prepare(&mut self, cells: u64, roots: &[Handle]) -> Result<(), MemoryError> {
         let bound = self
             .live_cells
             .checked_add(self.allocated_cells)
@@ -213,7 +213,7 @@ fn header_shape(request: &AllocationRequest) -> Result<(u32, u32), MemoryError> 
         }
         Shape::Object(layout) => {
             let tag = layout.class.checked_add(3).ok_or(MemoryError::Resource)?;
-            if tag == u32::MAX {
+            if tag >= pseudolearn_abi::dictionary_layout::DICTIONARY_SHAPE_TAG {
                 return Err(MemoryError::Resource);
             }
             let payload = u16::try_from(request.payload).map_err(|_| MemoryError::Resource)?;
@@ -221,6 +221,8 @@ fn header_shape(request: &AllocationRequest) -> Result<(u32, u32), MemoryError> 
         }
         Shape::Text => Ok((2, literal)),
         Shape::Auxiliary => Ok((u32::MAX, 0)),
+        Shape::Vector => Ok((pseudolearn_abi::vector_layout::VECTOR_SHAPE_TAG, 0)),
+        Shape::Dictionary => Ok((pseudolearn_abi::dictionary_layout::DICTIONARY_SHAPE_TAG, 0)),
     }
 }
 

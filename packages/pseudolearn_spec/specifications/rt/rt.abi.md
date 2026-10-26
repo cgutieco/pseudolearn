@@ -162,3 +162,7 @@
   "justificacion": "La ejecuta el sujeto aot en R6."
 }
 ```
+
+## Colecciones e interfaces
+
+Las colecciones usan cabecera estable con etiqueta de forma u32 máximo menos uno para Vector y menos dos para Diccionario. Tras las dos palabras comunes: longitud en 2, capacidad en 3, versión en 4, ancho escalar en 5, ancho de referencias en 6, asa del banco escalar en 7, asa del banco de referencias en 8 e identidad estática de tipo en 9. Vector ocupa diez palabras fijas. Diccionario añade posiciones usadas en 10, clase de clave en 11, asas de claves en 12, hashes en 13, índice en 14, capacidad del índice en 15 y ocupación en 16: diecisiete palabras fijas. Los bancos reemplazables llevan dos palabras de cabecera y datos desde 2. Escalares y referencias no se intercalan. Claves: entero 0, carácter 1, lógico 2, enumerado 3, cadena 4. El índice vacío es u32 máximo y el borrado u32 máximo menos uno. Crecer conserva asa, ordinal e identidad de cabecera. La codificación es común a VM y AOT.

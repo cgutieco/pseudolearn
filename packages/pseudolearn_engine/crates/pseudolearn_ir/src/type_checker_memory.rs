@@ -128,7 +128,11 @@ fn check_object_store(
 
 fn check_object_new(operands: &[Operand], module: &Module) -> Result<Option<IrType>, TypeError> {
     match operands {
-        [Operand::Identifier(class_name)] if module.find_class(class_name).is_some() => {
+        [Operand::Identifier(class_name)]
+            if module
+                .find_class(class_name)
+                .is_some_and(|class| crate::collection_types::collection_type(class).is_none()) =>
+        {
             Ok(Some(IrType::Object(class_name.clone())))
         }
         _ => Err(TypeError),
@@ -140,6 +144,13 @@ fn inherited_field_type(
     class_name: &str,
     field_name: &str,
 ) -> Result<Option<IrType>, TypeError> {
+    if module
+        .find_class(class_name)
+        .and_then(crate::collection_types::collection_type)
+        .is_some()
+    {
+        return Err(TypeError);
+    }
     let mut current = Some(class_name);
     for _ in 0..module.classes.len() {
         let declaration = current

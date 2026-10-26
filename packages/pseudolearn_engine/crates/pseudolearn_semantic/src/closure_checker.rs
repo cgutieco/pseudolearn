@@ -12,6 +12,7 @@ pub(crate) fn check(session: &mut AnalysisSession<'_>, node: usize) -> Expressio
     let returned = session.returned;
     let pending = std::mem::take(&mut session.pending_results);
     let controls = std::mem::take(&mut session.controls);
+    let control = std::mem::take(&mut session.control);
     let function = register(session, node);
     session.closure_stack.push(ClosureFrame { function });
     session.bindings.enter();
@@ -32,6 +33,7 @@ pub(crate) fn check(session: &mut AnalysisSession<'_>, node: usize) -> Expressio
     session.returned = returned;
     session.pending_results = pending;
     session.controls = controls;
+    session.control = control;
     session.emit(
         HirExpression::FunctionValue(function),
         kind,

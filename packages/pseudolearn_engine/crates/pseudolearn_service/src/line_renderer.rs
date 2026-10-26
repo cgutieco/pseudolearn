@@ -64,6 +64,11 @@ fn piece_for(context: &RenderContext<'_>, index: usize) -> Piece {
 }
 
 fn identifier_text(context: &RenderContext<'_>, index: usize, original: &str) -> String {
+    if let Some(identity) = context.roles.contextual_identity(index) {
+        return pseudolearn_syntax::contextual_spelling(identity, context.profile.as_str())
+            .unwrap_or(original)
+            .to_owned();
+    }
     if context
         .roles
         .is_user_name(context.tree, context.source, index)

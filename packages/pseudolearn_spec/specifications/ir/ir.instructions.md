@@ -2760,3 +2760,522 @@
   "observacion": []
 }
 ```
+
+```instruccion
+{
+  "id": "O80",
+  "nombre": "collection.new",
+  "firma": "collection.new obj<C> -> obj<C>",
+  "clases_de_valor": [
+    "escalar",
+    "referencia"
+  ],
+  "semantica": "Crea una colección vacía con disposición declarada y cabecera estable.",
+  "trampas": [
+    "cellLimitExceeded",
+    "collectionLimitExceeded"
+  ],
+  "efectos": [
+    "asigna",
+    "escribe_memoria"
+  ],
+  "observacion": []
+}
+```
+
+```instruccion
+{
+  "id": "O81",
+  "nombre": "collection.length",
+  "firma": "collection.length %collection -> i64",
+  "clases_de_valor": [
+    "escalar",
+    "referencia"
+  ],
+  "semantica": "Lee la cantidad de elementos o entradas activas.",
+  "trampas": [
+    "uninitializedVariableRead"
+  ],
+  "efectos": [
+    "lee_memoria"
+  ],
+  "observacion": []
+}
+```
+
+```instruccion
+{
+  "id": "O82",
+  "nombre": "collection.version",
+  "firma": "collection.version %collection -> i64",
+  "clases_de_valor": [
+    "escalar",
+    "referencia"
+  ],
+  "semantica": "Lee la versión estructural u32 sin modificarla.",
+  "trampas": [
+    "uninitializedVariableRead"
+  ],
+  "efectos": [
+    "lee_memoria"
+  ],
+  "observacion": []
+}
+```
+
+```instruccion
+{
+  "id": "O83",
+  "nombre": "collection.check",
+  "firma": "collection.check %collection, %version -> unit",
+  "clases_de_valor": [
+    "escalar",
+    "referencia"
+  ],
+  "semantica": "Comprueba la versión inicial y atrapa si cambió.",
+  "trampas": [
+    "uninitializedVariableRead",
+    "collectionModifiedDuringIteration"
+  ],
+  "efectos": [
+    "lee_memoria"
+  ],
+  "observacion": []
+}
+```
+
+```instruccion
+{
+  "id": "O84",
+  "nombre": "collection.lookup",
+  "firma": "collection.lookup %dictionary, %key -> i64",
+  "clases_de_valor": [
+    "escalar",
+    "referencia"
+  ],
+  "semantica": "Devuelve la posición física de la clave o -1 si está ausente.",
+  "trampas": [
+    "uninitializedVariableRead"
+  ],
+  "efectos": [
+    "lee_memoria"
+  ],
+  "observacion": []
+}
+```
+
+```instruccion
+{
+  "id": "O85",
+  "nombre": "collection.load",
+  "firma": "collection.load T, %collection, %position, leaf -> T",
+  "clases_de_valor": [
+    "escalar",
+    "referencia"
+  ],
+  "semantica": "Lee una hoja de elemento usando su banco declarado; no interpreta centinelas inactivos.",
+  "trampas": [
+    "uninitializedVariableRead",
+    "arrayIndexOutOfRange",
+    "missingDictionaryKey"
+  ],
+  "efectos": [
+    "lee_memoria"
+  ],
+  "observacion": []
+}
+```
+
+```instruccion
+{
+  "id": "O86",
+  "nombre": "collection.store",
+  "firma": "collection.store %collection, %key, %leaves... -> unit",
+  "clases_de_valor": [
+    "escalar",
+    "referencia"
+  ],
+  "semantica": "Reemplaza un elemento de vector o inserta/reemplaza una entrada de diccionario; consume todas las hojas de una vez.",
+  "trampas": [
+    "uninitializedVariableRead",
+    "arrayIndexOutOfRange",
+    "cellLimitExceeded",
+    "collectionLimitExceeded",
+    "collectionVersionExhausted"
+  ],
+  "efectos": [
+    "lee_memoria",
+    "escribe_memoria",
+    "asigna"
+  ],
+  "observacion": []
+}
+```
+
+```instruccion
+{
+  "id": "O87",
+  "nombre": "collection.insert",
+  "firma": "collection.insert %vector, %position, %leaves... -> unit",
+  "clases_de_valor": [
+    "escalar",
+    "referencia"
+  ],
+  "semantica": "Inserta un elemento completo en el vector con crecimiento comprobado.",
+  "trampas": [
+    "uninitializedVariableRead",
+    "arrayIndexOutOfRange",
+    "cellLimitExceeded",
+    "collectionLimitExceeded",
+    "collectionVersionExhausted"
+  ],
+  "efectos": [
+    "lee_memoria",
+    "escribe_memoria",
+    "asigna"
+  ],
+  "observacion": []
+}
+```
+
+```instruccion
+{
+  "id": "O88",
+  "nombre": "collection.remove",
+  "firma": "collection.remove %collection, %key -> unit",
+  "clases_de_valor": [
+    "escalar",
+    "referencia"
+  ],
+  "semantica": "Elimina un elemento o clave; una clave ausente no modifica el diccionario.",
+  "trampas": [
+    "uninitializedVariableRead",
+    "arrayIndexOutOfRange",
+    "collectionVersionExhausted"
+  ],
+  "efectos": [
+    "lee_memoria",
+    "escribe_memoria",
+    "asigna"
+  ],
+  "observacion": []
+}
+```
+
+```instruccion
+{
+  "id": "O89",
+  "nombre": "collection.next",
+  "firma": "collection.next %dictionary, %cursor -> i64",
+  "clases_de_valor": [
+    "escalar",
+    "referencia"
+  ],
+  "semantica": "Busca la siguiente posición física activa desde cursor, o -1 al terminar.",
+  "trampas": [
+    "uninitializedVariableRead"
+  ],
+  "efectos": [
+    "lee_memoria"
+  ],
+  "observacion": []
+}
+```
+
+```instruccion
+{
+  "id": "O90",
+  "nombre": "collection.key",
+  "firma": "collection.key %dictionary, %position -> K",
+  "clases_de_valor": [
+    "escalar",
+    "referencia"
+  ],
+  "semantica": "Lee la clave tipada de una posición física activa.",
+  "trampas": [
+    "uninitializedVariableRead",
+    "missingDictionaryKey"
+  ],
+  "efectos": [
+    "lee_memoria"
+  ],
+  "observacion": []
+}
+```
+
+```instruccion
+{
+  "id": "O91",
+  "nombre": "array.length",
+  "firma": "array.length %array -> i64",
+  "clases_de_valor": [
+    "escalar",
+    "referencia"
+  ],
+  "semantica": "Lee la longitud de un arreglo unidimensional.",
+  "trampas": [
+    "uninitializedVariableRead"
+  ],
+  "efectos": [
+    "lee_memoria"
+  ],
+  "observacion": []
+}
+```
+
+```cobertura
+{
+  "id": "V118",
+  "regla": "LANG.TYPES.INTERFACE#R1",
+  "instrucciones": [
+    "call",
+    "call.virtual"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V119",
+  "regla": "LANG.TYPES.INTERFACE#R2",
+  "instrucciones": [
+    "call",
+    "call.virtual"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V120",
+  "regla": "LANG.TYPES.INTERFACE#R3",
+  "instrucciones": [
+    "call",
+    "call.virtual"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V121",
+  "regla": "LANG.TYPES.VECTOR#R1",
+  "instrucciones": [
+    "collection.new",
+    "collection.length",
+    "collection.version",
+    "collection.check",
+    "collection.lookup",
+    "collection.load",
+    "collection.store",
+    "collection.insert",
+    "collection.remove",
+    "collection.next",
+    "collection.key",
+    "array.length"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V122",
+  "regla": "LANG.TYPES.VECTOR#R2",
+  "instrucciones": [
+    "collection.new",
+    "collection.length",
+    "collection.version",
+    "collection.check",
+    "collection.lookup",
+    "collection.load",
+    "collection.store",
+    "collection.insert",
+    "collection.remove",
+    "collection.next",
+    "collection.key",
+    "array.length"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V123",
+  "regla": "LANG.TYPES.VECTOR#R3",
+  "instrucciones": [
+    "collection.new",
+    "collection.length",
+    "collection.version",
+    "collection.check",
+    "collection.lookup",
+    "collection.load",
+    "collection.store",
+    "collection.insert",
+    "collection.remove",
+    "collection.next",
+    "collection.key",
+    "array.length"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V124",
+  "regla": "LANG.TYPES.DICTIONARY#R1",
+  "instrucciones": [
+    "collection.new",
+    "collection.length",
+    "collection.version",
+    "collection.check",
+    "collection.lookup",
+    "collection.load",
+    "collection.store",
+    "collection.insert",
+    "collection.remove",
+    "collection.next",
+    "collection.key",
+    "array.length"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V125",
+  "regla": "LANG.TYPES.DICTIONARY#R2",
+  "instrucciones": [
+    "collection.new",
+    "collection.length",
+    "collection.version",
+    "collection.check",
+    "collection.lookup",
+    "collection.load",
+    "collection.store",
+    "collection.insert",
+    "collection.remove",
+    "collection.next",
+    "collection.key",
+    "array.length"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V126",
+  "regla": "LANG.TYPES.DICTIONARY#R3",
+  "instrucciones": [
+    "collection.new",
+    "collection.length",
+    "collection.version",
+    "collection.check",
+    "collection.lookup",
+    "collection.load",
+    "collection.store",
+    "collection.insert",
+    "collection.remove",
+    "collection.next",
+    "collection.key",
+    "array.length"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V127",
+  "regla": "LANG.CONTROL.FOR-EACH#R1",
+  "instrucciones": [
+    "collection.new",
+    "collection.length",
+    "collection.version",
+    "collection.check",
+    "collection.lookup",
+    "collection.load",
+    "collection.store",
+    "collection.insert",
+    "collection.remove",
+    "collection.next",
+    "collection.key",
+    "array.length"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V128",
+  "regla": "LANG.CONTROL.FOR-EACH#R2",
+  "instrucciones": [
+    "collection.new",
+    "collection.length",
+    "collection.version",
+    "collection.check",
+    "collection.lookup",
+    "collection.load",
+    "collection.store",
+    "collection.insert",
+    "collection.remove",
+    "collection.next",
+    "collection.key",
+    "array.length"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V129",
+  "regla": "LANG.CONTROL.EXIT#R1",
+  "instrucciones": [
+    "jump",
+    "branch",
+    "return"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V130",
+  "regla": "LANG.CONTROL.CLEANUP#R1",
+  "instrucciones": [
+    "jump",
+    "branch",
+    "return"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V131",
+  "regla": "LANG.CONTROL.CLEANUP#R2",
+  "instrucciones": [
+    "jump",
+    "branch",
+    "return"
+  ]
+}
+```
+
+```instruccion
+{
+  "id": "O92",
+  "nombre": "text.quote",
+  "firma": "text.quote %text: str -> str",
+  "clases_de_valor": [
+    "referencia"
+  ],
+  "semantica": "Delimita un texto con comillas dobles y escapa comillas, barra inversa y caracteres de control sin normalizar Unicode.",
+  "trampas": [
+    "uninitializedVariableRead",
+    "cellLimitExceeded"
+  ],
+  "efectos": [
+    "asigna"
+  ],
+  "observacion": []
+}
+```

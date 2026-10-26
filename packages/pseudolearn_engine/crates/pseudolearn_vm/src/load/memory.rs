@@ -8,6 +8,8 @@ use pseudolearn_bytecode::{
 use pseudolearn_runtime::ValueKind;
 
 mod arrays;
+mod collections;
+pub(crate) use collections::CollectionOperation;
 mod model;
 mod objects;
 use arrays::{array_access, direct_array_access};
@@ -22,7 +24,25 @@ pub(super) fn decode(
     if let Some(operation) = direct_operation(context, instruction)? {
         return Ok(operation);
     }
-    let operation = match instruction.opcode {
+    let operation =
+        if pseudolearn_bytecode::collection_metadata::collection_command(instruction.opcode)
+            .is_some()
+        {
+            collections::decode(context, instruction)?
+        } else {
+            fallback(context, loaded, instruction)?
+        };
+    let site = u32::try_from(loaded.memory.len()).map_err(|_| invalid_bytecode())?;
+    loaded.memory.push(operation);
+    Ok(Op::Memory { site })
+}
+
+fn fallback(
+    context: &DecodeContext<'_>,
+    loaded: &mut LoadedFunction,
+    instruction: &Instruction,
+) -> Result<MemoryOp, VmTrap> {
+    Ok(match instruction.opcode {
         Opcode::ArrayNew => array_new(context, instruction)?,
         Opcode::ArrayLoad | Opcode::ArrayStore | Opcode::CellElement => {
             array_access(context, instruction)?
@@ -45,10 +65,7 @@ pub(super) fn decode(
         },
         Opcode::OutWrite => output(context, instruction)?,
         _ => text(context, instruction)?,
-    };
-    let site = u32::try_from(loaded.memory.len()).map_err(|_| invalid_bytecode())?;
-    loaded.memory.push(operation);
-    Ok(Op::Memory { site })
+    })
 }
 
 fn direct_operation(

@@ -86,11 +86,24 @@ final class RustWatchRows {
     _ => text,
   };
 
+  String _objectDescription(_QueryPoint point, int reference) {
+    final object = _state.objectOf(point.execution, point.event, reference);
+    final vector = object?['vector'];
+    if (vector is Map<String, Object?>) {
+      return '[${vector['longitud']}]#$reference';
+    }
+    final dictionary = object?['diccionario'];
+    if (dictionary is Map<String, Object?>) {
+      return '{${dictionary['longitud']}}#$reference';
+    }
+    return '${object?['clase']}#$reference';
+  }
+
   WatchRow _referenceRow(_QueryPoint point, _Label label, int reference) {
     final shape = _state.arrayShape(point.execution, point.event, reference);
     final description = shape != null
         ? '[${shape.join('x')}]'
-        : '${_state.objectOf(point.execution, point.event, reference)?['clase']}#$reference';
+        : _objectDescription(point, reference);
     return WatchRow(
       name: label.$1,
       formattedValue: description,

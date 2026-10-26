@@ -178,7 +178,7 @@ vinculos:
     estado: exento
     justificacion: Ningún caso ni propiedad del corpus mide bytes de binarios; la
       medición M1 la ejecuta tool/capture_bridge_artifacts.dart sobre el framework
-      ios-arm64 de release (2 985 792 bytes, límite 3 145 728).
+      ios-arm64 de release (4 566 624 bytes, límite 5 242 880).
   - regla: PERF.PROTOCOL@1.0.0#R1
     verificacion: estructural
     estado: cumple

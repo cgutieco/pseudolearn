@@ -1,10 +1,25 @@
 #![forbid(unsafe_code)]
 
-pub use pseudolearn_abi::Handle;
+pub use pseudolearn_abi::{
+    CollectionCommand, DictionaryKeyKind, DictionaryLayout, Handle, VectorLayout,
+};
 
 mod arithmetic;
 mod array;
 mod cell;
+mod collection;
+mod dictionary;
+mod vector;
+pub use collection::{
+    CollectionWords, collection_check_version, collection_layout, collection_length,
+    collection_version, new_dictionary, new_vector,
+};
+pub use collection::{collection_is_dictionary, collection_key, collection_load_word};
+pub use dictionary::{
+    dictionary_entry, dictionary_find, dictionary_get, dictionary_lookup, dictionary_next,
+    dictionary_remove, dictionary_set,
+};
+pub use vector::{vector_get, vector_insert, vector_remove, vector_set};
 mod delta;
 mod error;
 mod heap;
@@ -30,11 +45,11 @@ pub use object::{
 pub use random::RandomState;
 pub use snapshot::{
     allocation_ordinal, arena_length, array_element_kind, heap_allocated_cells, heap_live_cells,
-    heap_ordinal, heap_used_words, heap_words, is_array_allocation, is_defined_element,
-    is_defined_field, is_object_allocation, live_allocation_handles, object_class_identifier,
-    object_field_kinds, read_element_raw, read_field_raw, restore_heap_block,
-    set_heap_allocated_cells, set_heap_live_cells, set_heap_ordinal, set_heap_used_words,
-    truncate_arena,
+    heap_ordinal, heap_used_words, heap_words, is_array_allocation, is_collection_allocation,
+    is_defined_element, is_defined_field, is_object_allocation, live_allocation_handles,
+    object_class_identifier, object_field_kinds, read_element_raw, read_field_raw,
+    restore_heap_block, set_heap_allocated_cells, set_heap_live_cells, set_heap_ordinal,
+    set_heap_used_words, truncate_arena,
 };
 pub use text::{
     TextCompaction, TextPart, compare_text, concat_parts, concat_text, new_text, text_character,
@@ -52,3 +67,6 @@ pub use error::ArithmeticError;
 mod statistics;
 #[cfg(feature = "telemetry")]
 pub use statistics::HeapStatistics;
+
+#[cfg(test)]
+mod collection_tests;

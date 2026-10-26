@@ -38,10 +38,10 @@ fn print_profiles(buffer: &mut String, module: &Module) {
 
 fn print_class(buffer: &mut String, class_declaration: &ClassDeclaration) {
     buffer.push_str("class ");
-    buffer.push_str(&class_declaration.name);
+    buffer.push_str(&crate::identifier_text::canonical(&class_declaration.name));
     if let Some(superclass) = &class_declaration.superclass {
         buffer.push_str(" : ");
-        buffer.push_str(superclass);
+        buffer.push_str(&crate::identifier_text::canonical(superclass));
     }
     buffer.push_str(" {");
     if !class_declaration.fields.is_empty() {
@@ -50,7 +50,7 @@ fn print_class(buffer: &mut String, class_declaration: &ClassDeclaration) {
             if index > 0 {
                 buffer.push_str(", ");
             }
-            buffer.push_str(&field.name);
+            buffer.push_str(&crate::identifier_text::canonical(&field.name));
             buffer.push_str(": ");
             buffer.push_str(&field.field_type.to_string());
         }

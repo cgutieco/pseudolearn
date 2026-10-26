@@ -11,7 +11,8 @@ pub fn type_display(analysis: &ServiceAnalysis, type_id: TypeId, profile: Profil
         Type::Boolean => keyword_spelling(KeywordKind::BooleanType, profile),
         Type::Character => keyword_spelling(KeywordKind::CharacterType, profile),
         Type::String => keyword_spelling(KeywordKind::StringType, profile),
-        Type::Object(class_id) => class_name(analysis, class_id.0),
+        Type::Object(class_id) => collection_display(analysis, class_id, profile)
+            .unwrap_or_else(|| class_name(analysis, class_id.0)),
         Type::Enum(enumeration) => declared_name(
             analysis
                 .module
@@ -101,4 +102,24 @@ fn record_display(
         keyword_spelling(keyword, profile),
         arguments.join(", ")
     )
+}
+
+fn collection_display(
+    analysis: &ServiceAnalysis,
+    class: pseudolearn_semantic::identities::ClassId,
+    profile: Profile,
+) -> Option<String> {
+    let collection = analysis.module.collections.get(&class)?;
+    let identity = if collection.key.is_some() {
+        "dictionaryType"
+    } else {
+        "vectorType"
+    };
+    let name = pseudolearn_syntax::contextual_spelling(identity, profile.as_str())?;
+    let mut arguments = Vec::new();
+    if let Some(key) = collection.key {
+        arguments.push(type_display(analysis, key, profile));
+    }
+    arguments.push(type_display(analysis, collection.value, profile));
+    Some(format!("{name}<{}>", arguments.join(", ")))
 }

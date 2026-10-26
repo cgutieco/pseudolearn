@@ -1,6 +1,7 @@
 #![forbid(unsafe_code)]
 
 mod assignability;
+pub mod collection_types;
 pub mod columns;
 pub mod dominance;
 pub mod identities;
@@ -19,6 +20,7 @@ pub mod type_checker;
 pub mod type_checker_calls;
 mod type_checker_collections;
 pub mod type_checker_control;
+mod type_checker_dynamic_collections;
 pub mod type_checker_helpers;
 pub mod type_checker_intrinsics;
 mod type_checker_memory;
@@ -42,3 +44,5 @@ pub use printer::print_canonical;
 pub use span::{IrPosition, IrSpan};
 pub use types::{IrType, ValueClass};
 pub use verifier::verify_module;
+
+mod identifier_text;

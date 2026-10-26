@@ -59,7 +59,9 @@ fn while_loop(session: &mut AnalysisSession<'_>, node: usize) -> Option<HirState
     let condition = condition(session, *children.first()?);
     let before = session.initialized.clone();
     let pending_before = session.pending_results.clone();
+    session.control.loops = session.control.loops.saturating_add(1);
     let body = crate::statement_checker::scoped_body(session, *children.get(1)?);
+    session.control.loops = session.control.loops.saturating_sub(1);
     session.pending_results.extend(pending_before);
     session.initialized = before;
     session
@@ -72,8 +74,11 @@ fn repeat_loop(session: &mut AnalysisSession<'_>, node: usize) -> Option<HirStat
     let children = session.children(node);
     session.bindings.enter();
     let start = session.module.locals.len();
-    let body = crate::statement_checker::body(session, *children.first()?);
+    session.control.loops = session.control.loops.saturating_add(1);
+    let body = crate::statement_checker::open_body(session, *children.first()?);
+    session.control.loops = session.control.loops.saturating_sub(1);
     let condition = condition(session, *children.get(1)?);
+    crate::cleanup_checker::finish_scope(session);
     crate::scope_bindings::visibility(session, start, node);
     for index in start..session.module.locals.len() {
         let local = crate::identities::LocalId(u32::try_from(index).unwrap_or(u32::MAX));

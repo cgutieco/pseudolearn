@@ -79,6 +79,9 @@ fn repeat_loop(state: &mut ParserState<'_>) -> Result<usize, ()> {
 }
 
 fn for_loop(state: &mut ParserState<'_>) -> Result<usize, ()> {
+    if crate::iteration_parser::starts(state) {
+        return crate::iteration_parser::for_each(state);
+    }
     let start = state.token();
     let marker = state.nodes.len();
     state.advance();

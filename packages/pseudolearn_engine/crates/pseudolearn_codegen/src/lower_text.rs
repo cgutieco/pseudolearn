@@ -19,6 +19,7 @@ pub(crate) const OPERATIONS: &[Operation] = &[
     Operation::TextCharAt,
     Operation::TextCmp,
     Operation::TextFormat,
+    Operation::TextQuote,
     Operation::TextToInteger,
     Operation::TextToReal,
 ];
@@ -35,6 +36,10 @@ pub(crate) fn lower(
         Operation::TextToReal => lower_real_query(lowering, instruction),
         Operation::TextCharAt => lower_character_at(lowering, instruction),
         Operation::TextCmp => lower_comparison(lowering, instruction),
+        Operation::TextQuote => {
+            let handle = operand_value(lowering, instruction, 0)?;
+            allocating_call(lowering, instruction, (Entry::TextQuote, &[handle]))
+        }
         _ => lower_format(lowering, instruction),
     }
 }

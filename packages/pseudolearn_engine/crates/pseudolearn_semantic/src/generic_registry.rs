@@ -27,9 +27,11 @@ fn declare(session: &mut AnalysisSession<'_>, node: usize) {
         return;
     };
     let name = session.name(name_node);
+    let (parameters, constraints) = parameters(session, node);
     let template = GenericTemplate {
         node,
-        parameters: parameter_names(session, node),
+        parameters,
+        constraints,
     };
     let record = session.kind(node) == NodeKind::RecordUnit;
     let taken = session.generics.records.contains_key(&name)
@@ -45,18 +47,27 @@ fn declare(session: &mut AnalysisSession<'_>, node: usize) {
     }
 }
 
-fn parameter_names(session: &mut AnalysisSession<'_>, node: usize) -> Vec<String> {
+fn parameters(
+    session: &mut AnalysisSession<'_>,
+    node: usize,
+) -> (Vec<String>, Vec<Option<String>>) {
     let mut names: Vec<String> = Vec::new();
+    let mut constraints = Vec::new();
     let Some(parameters) = session.child(node, NodeKind::TypeParameters) else {
-        return names;
+        return (names, constraints);
     };
     for child in session.children(parameters) {
-        let name = session.name(child);
+        let parts = session.children(child);
+        let name = parts
+            .first()
+            .map(|node| session.name(*node))
+            .unwrap_or_default();
         if names.contains(&name) {
             session.named_report(DiagnosticCode::DuplicateTypeDeclaration, child, &name);
             continue;
         }
         names.push(name);
+        constraints.push(parts.get(1).map(|node| session.name(*node)));
     }
-    names
+    (names, constraints)
 }

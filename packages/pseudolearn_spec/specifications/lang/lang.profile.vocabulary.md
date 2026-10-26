@@ -1129,3 +1129,103 @@
   ]
 }
 ```
+
+```definicion
+{
+  "id": "D2",
+  "termino": "contextualVocabulary",
+  "texto": "Formas reconocidas solo por contexto sintáctico o tipo de receptor; no reservan identificadores ordinarios.",
+  "valor": {
+    "interfaceKeyword": {
+      "lexemas": {
+        "es": "Interfaz",
+        "en": "interface"
+      }
+    },
+    "endInterface": {
+      "lexemas": {
+        "es": "FinInterfaz",
+        "en": "endInterface"
+      }
+    },
+    "implementsKeyword": {
+      "lexemas": {
+        "es": "Realiza",
+        "en": "implements"
+      }
+    },
+    "eachKeyword": {
+      "lexemas": {
+        "es": "Cada",
+        "en": "each"
+      }
+    },
+    "inKeyword": {
+      "lexemas": {
+        "es": "En",
+        "en": "in"
+      }
+    },
+    "breakKeyword": {
+      "lexemas": {
+        "es": "Salir",
+        "en": "break"
+      }
+    },
+    "deferKeyword": {
+      "lexemas": {
+        "es": "Diferir",
+        "en": "defer"
+      }
+    },
+    "endDefer": {
+      "lexemas": {
+        "es": "FinDiferir",
+        "en": "endDefer"
+      }
+    },
+    "vectorType": {
+      "lexemas": {
+        "es": "Vector",
+        "en": "vector"
+      }
+    },
+    "dictionaryType": {
+      "lexemas": {
+        "es": "Diccionario",
+        "en": "dictionary"
+      }
+    },
+    "collectionLength": {
+      "lexemas": {
+        "es": "Longitud",
+        "en": "length"
+      }
+    },
+    "vectorAppend": {
+      "lexemas": {
+        "es": "Agregar",
+        "en": "append"
+      }
+    },
+    "vectorInsert": {
+      "lexemas": {
+        "es": "Insertar",
+        "en": "insert"
+      }
+    },
+    "collectionRemove": {
+      "lexemas": {
+        "es": "Eliminar",
+        "en": "remove"
+      }
+    },
+    "dictionaryFind": {
+      "lexemas": {
+        "es": "Buscar",
+        "en": "find"
+      }
+    }
+  }
+}
+```

@@ -12,6 +12,10 @@ type Lower = fn(&mut Lowering<'_, '_>, &Instruction<'_>) -> Result<(), CodegenEr
 
 const FAMILIES: &[(&[Operation], Lower)] = &[
     (
+        crate::lower_collections::OPERATIONS,
+        crate::lower_collections::lower,
+    ),
+    (
         crate::lower_variant_values::OPERATIONS,
         crate::lower_variant_values::lower,
     ),

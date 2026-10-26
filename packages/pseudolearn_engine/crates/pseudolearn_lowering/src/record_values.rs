@@ -13,6 +13,9 @@ pub(crate) fn lower_range(
     range: (usize, usize),
     state: &mut ExpressionState<'_, '_>,
 ) -> Vec<ValueId> {
+    if let Some(values) = crate::collections::values(expression, state) {
+        return slice(values, range);
+    }
     if let Some(values) = crate::indirect_calls::aggregate(expression, state) {
         return slice(values, range);
     }

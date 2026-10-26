@@ -209,6 +209,7 @@ pub(crate) fn return_values(
             None,
         );
     }
+    crate::cleanup_edges::emit(state.context, state.environment, state.builder, 0);
     state
         .builder
         .emit_void(Operation::StmtExit, Vec::new(), span);

@@ -20,6 +20,7 @@ pub(crate) enum Entry {
     TextLiteral,
     TextConcat,
     TextFormat,
+    TextQuote,
     TextQuery,
     TextCharacter,
     TextCompare,
@@ -40,6 +41,7 @@ pub(crate) enum Entry {
     CellField,
     CellLoad,
     CellStore,
+    Collection,
 }
 
 #[derive(Clone, Copy)]
@@ -54,6 +56,11 @@ const ONE_WORD32: &[Slot] = &[Slot::Word32];
 const TWO_WORD64: &[Slot] = &[Slot::Word64, Slot::Word64];
 
 const TABLE: &[(Entry, &str, &[Slot])] = &[
+    (
+        Entry::Collection,
+        "rt_aot_collection",
+        &[Slot::Word32, Slot::Address],
+    ),
     (Entry::Fault, FAULT_SYMBOL, NO_OPERANDS),
     (
         Entry::MathUnary,
@@ -68,6 +75,7 @@ const TABLE: &[(Entry, &str, &[Slot])] = &[
         &[Slot::Address, Slot::Address],
     ),
     (Entry::TextConcat, "rt_aot_text_concat", TWO_WORD64),
+    (Entry::TextQuote, "rt_aot_text_quote", ONE_WORD32),
     (
         Entry::TextFormat,
         "rt_aot_text_format",

@@ -21,11 +21,7 @@ pub fn lower_while(
     context
         .builder
         .emit_void(Operation::StmtEnter, vec![], span);
-    let mut loop_locals = collect_modified_locals(body, context.expression_context.module);
-    loop_locals.retain(|local_id| {
-        context.environment.get_cell(*local_id).is_none()
-            && context.environment.get_value(*local_id).is_some()
-    });
+    let loop_locals = crate::statements_while::carried_locals(body, context);
 
     let header_block = context.builder.create_block();
     jump_to_loop_header(header_block, &loop_locals, context);
@@ -38,6 +34,7 @@ pub fn lower_while(
         evaluate_while_condition(condition, span, &mut header_environment, context);
     let body_block = context.builder.create_block();
     let exit_block = context.builder.create_block();
+    crate::loop_exits::enter(body, exit_block, context);
     emit_loop_branch(condition_value, body_block, exit_block, context);
 
     execute_while_body(
@@ -47,9 +44,9 @@ pub fn lower_while(
         context,
     );
 
-    context.builder.set_current_block(exit_block);
+    let environment = crate::loop_exits::finish(header_environment, true, context);
     context.builder.emit_void(Operation::StmtExit, vec![], span);
-    *context.environment = header_environment;
+    *context.environment = environment;
 }
 
 fn evaluate_while_condition(
@@ -229,7 +226,9 @@ fn collect_statement_locals(
             collect_nested_statements(negative, module, modified);
         }
         pseudolearn_semantic::statement_model::HirStatement::While { body, .. }
-        | pseudolearn_semantic::statement_model::HirStatement::Repeat { body, .. } => {
+        | pseudolearn_semantic::statement_model::HirStatement::Repeat { body, .. }
+        | pseudolearn_semantic::statement_model::HirStatement::ForEach { body, .. }
+        | pseudolearn_semantic::statement_model::HirStatement::Defer(body) => {
             collect_nested_statements(body, module, modified);
         }
         pseudolearn_semantic::statement_model::HirStatement::For { control, body, .. } => {
@@ -284,4 +283,16 @@ fn collect_from_read_places(
             _ => {}
         }
     }
+}
+
+pub(crate) fn carried_locals(
+    body: &[StatementId],
+    context: &StatementContext<'_, '_>,
+) -> Vec<LocalId> {
+    let mut locals = collect_modified_locals(body, context.expression_context.module);
+    locals.retain(|local| {
+        context.environment.get_cell(*local).is_none()
+            && context.environment.get_value(*local).is_some()
+    });
+    locals
 }

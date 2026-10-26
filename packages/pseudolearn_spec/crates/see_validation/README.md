@@ -80,3 +80,5 @@ Plan aprobado del sistema SEE. Las bibliotecas externas son infraestructura, nun
 
 El esquema admite `cancelacion_prueba` como ordinal entero no negativo de un sondeo.
 El campo no se interpreta como un presupuesto de sentencias y se rechazan tipos y signos inválidos.
+
+El catálogo acepta identidades de contextualVocabulary como fuente léxica distinta del vocabulario reservado. La cobertura combina ambos inventarios para exigir ficha y parte bilingüe por identidad sin cambiar la clasificación léxica del lenguaje.

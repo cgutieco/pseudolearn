@@ -2,6 +2,7 @@
 
 mod calls;
 mod cells;
+mod collections;
 mod control;
 mod delta;
 mod fault_context;

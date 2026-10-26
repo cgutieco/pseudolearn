@@ -33,6 +33,8 @@ pub(crate) enum Shape {
     Object(std::sync::Arc<ObjectLayout>),
     Text,
     Auxiliary,
+    Vector,
+    Dictionary,
 }
 
 pub(crate) struct AllocationRequest {
@@ -231,10 +233,6 @@ impl Heap {
 
     pub(crate) fn is_text(&self, handle: Handle) -> Result<bool, MemoryError> {
         Ok(self.header(handle)?.shape_tag == 2)
-    }
-
-    pub(crate) fn is_auxiliary(&self, handle: Handle) -> Result<bool, MemoryError> {
-        Ok(self.header(handle)?.shape_tag == u32::MAX)
     }
 
     pub(crate) fn clear_text_index(&mut self, handle: Handle) -> Result<(), MemoryError> {

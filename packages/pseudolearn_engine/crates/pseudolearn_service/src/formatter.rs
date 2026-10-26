@@ -168,9 +168,7 @@ fn apply_line_keywords(
 ) {
     let skip = usize::from(role == LineRole::Closer);
     for index in line.code_tokens.iter().skip(skip) {
-        if let Some(TokenKind::Keyword(kind)) = tree.tokens.kind(*index) {
-            layout.apply_keyword(kind);
-        }
+        layout.apply_token(tree, *index);
     }
 }
 
@@ -182,7 +180,14 @@ fn is_simple_statement(tree: &SyntaxTree, line: &SourceLine, role: LineRole) -> 
         return false;
     };
     match tree.tokens.kind(first) {
-        Some(TokenKind::Identifier) => true,
+        Some(TokenKind::Identifier) => !tree.nodes.iter().any(|node| {
+            node.first_token == u32::try_from(first).unwrap_or(u32::MAX)
+                && matches!(
+                    node.kind,
+                    pseudolearn_syntax::NodeKind::InterfaceUnit
+                        | pseudolearn_syntax::NodeKind::DeferStatement
+                )
+        }),
         Some(TokenKind::Keyword(kind)) => starts_simple_statement(tree, line, kind),
         _ => false,
     }

@@ -1,6 +1,12 @@
 #![forbid(unsafe_code)]
 
 pub mod array_layout;
+mod collection_command;
+pub mod dictionary_layout;
+pub mod vector_layout;
+pub use collection_command::CollectionCommand;
+pub use dictionary_layout::{DictionaryKeyKind, DictionaryLayout};
+pub use vector_layout::VectorLayout;
 pub mod frame;
 pub mod handle;
 pub mod header;

@@ -108,6 +108,9 @@ impl Machine<'_> {
 
     fn memory_arguments(&self, fault: Fault, operation: &MemoryOp, arguments: &mut Arguments) {
         match operation {
+            MemoryOp::Collection(operation) => {
+                self.collection_arguments(fault, operation, arguments)
+            }
             MemoryOp::ArrayRead { array, indices, .. }
             | MemoryOp::ArrayWrite { array, indices, .. }
             | MemoryOp::CellElement { array, indices, .. } => {

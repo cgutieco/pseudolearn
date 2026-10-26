@@ -24,6 +24,7 @@ pub(crate) struct ParserState<'tokens> {
     pub inside_method: bool,
     pub terminator_diagnostic: Option<DiagnosticCode>,
     pub project_mode: bool,
+    pub profile: pseudolearn_lexicon::Profile,
 }
 
 impl<'tokens> ParserState<'tokens> {
@@ -47,6 +48,7 @@ impl<'tokens> ParserState<'tokens> {
             inside_method: false,
             terminator_diagnostic: None,
             project_mode: false,
+            profile: pseudolearn_lexicon::Profile::Spanish,
         }
     }
 

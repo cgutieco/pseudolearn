@@ -70,6 +70,7 @@ fn check_bodies(session: &mut AnalysisSession<'_>) {
     crate::unit_resolver::register_members(session);
     crate::constant_registry::evaluate_all(session);
     crate::hierarchy::check(session);
+    crate::interface_realizations::check(session);
     crate::flow::bodies(session);
     crate::constructor_rules::check(session);
     crate::usage::unused(session);
@@ -128,7 +129,9 @@ fn register(
     link_classes(session, bindings, &classes);
     for unit in 0..count {
         session.switch_unit(unit);
+        crate::interface_registry::register(session);
         crate::type_declarations::register(session);
+        crate::interface_registry::signatures(session);
     }
     let mut functions = FunctionTable::new();
     for unit in 0..count {

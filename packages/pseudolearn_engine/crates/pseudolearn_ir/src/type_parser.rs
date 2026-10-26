@@ -85,7 +85,7 @@ pub fn expect_exact_token(
 pub fn parse_word_token(tokens: &[Token], cursor: &mut usize) -> Result<String, String> {
     let token = tokens.get(*cursor).ok_or("Expected word")?;
     match &token.kind {
-        TokenKind::Word(word) => {
+        TokenKind::Word(word) | TokenKind::StringLiteral(word) => {
             *cursor = cursor.saturating_add(1);
             Ok(word.clone())
         }

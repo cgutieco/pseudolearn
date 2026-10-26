@@ -38,7 +38,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "D1 define las formas reconocibles y sus cierres; el reconocimiento solo actúa ante otra palabra de una cabecera o, cuando allow_line lo permite, una apertura sola en su línea. Una asignación o llamada que usa el nombre permanece ordinaria. Interfaces, clases abstractas, miembros estáticos, visibilidad protegida, genéricos de clases y manejo de excepciones no son construcciones de la edición vigente. En posición estructural inequívoca sus formas reconocibles producen diagnóstico pedagógico específico. Estas palabras no se añaden al vocabulario reservado y pueden ser nombres en posiciones ordinarias.",
+  "texto": "D1 define las formas reconocibles y sus cierres; el reconocimiento solo actúa ante otra palabra de una cabecera o, cuando allow_line lo permite, una apertura sola en su línea. Una asignación o llamada que usa el nombre permanece ordinaria. Clases abstractas, miembros estáticos, visibilidad protegida, genéricos de clases y manejo de excepciones no son construcciones de la edición vigente. En posición estructural inequívoca sus formas reconocibles producen diagnóstico pedagógico específico. Estas palabras no se añaden al vocabulario reservado y pueden ser nombres en posiciones ordinarias.",
   "verificacion": [
     "C1",
     "C2",
@@ -58,7 +58,7 @@
   ],
   "programas": {
     "es": "Algoritmo P\nInterfaz X\nFinInterfaz\nFinAlgoritmo\n",
-    "en": "algorithm P\nInterfaz X\nFinInterfaz\nendAlgorithm\n"
+    "en": "algorithm P\ninterface X\nendInterface\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -66,7 +66,7 @@
     "arbol": "presente",
     "diagnosticos": [
       {
-        "codigo": "unsupportedInterfaceConstruct",
+        "codigo": "interfaceInsideAlgorithm",
         "severidad": "error"
       }
     ]
@@ -109,18 +109,6 @@
   "termino": "unsupportedConstructs",
   "texto": "Formas reconocibles solo en posición estructural; no son palabras reservadas.",
   "valor": {
-    "interface": {
-      "code": "unsupportedInterfaceConstruct",
-      "openings": [
-        "Interfaz",
-        "interface"
-      ],
-      "closings": [
-        "FinInterfaz",
-        "endInterface"
-      ],
-      "allow_line": false
-    },
     "abstract": {
       "code": "unsupportedAbstractConstruct",
       "openings": [
@@ -204,7 +192,7 @@
     "arbol": "presente",
     "diagnosticos": [
       {
-        "codigo": "unsupportedInterfaceConstruct",
+        "codigo": "unclosedInterface",
         "severidad": "error"
       }
     ]

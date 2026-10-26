@@ -65,6 +65,13 @@ impl Heap {
         pending: &mut Vec<Handle>,
     ) -> Result<(), MemoryError> {
         let header = self.header(handle)?;
+        if matches!(
+            header.shape_tag,
+            pseudolearn_abi::vector_layout::VECTOR_SHAPE_TAG
+                | pseudolearn_abi::dictionary_layout::DICTIONARY_SHAPE_TAG
+        ) {
+            return crate::collection::references(self, handle, pending);
+        }
         if header.shape_tag == 1 {
             if self.array_element_kind(handle)? == ValueKind::Reference {
                 let count = usize::try_from(self.word(handle, ARRAY_TOTAL_ELEMENTS_WORD_OFFSET)?)

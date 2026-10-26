@@ -30,6 +30,7 @@ pub use wire::{deserialize_from_str, serialize_to_string};
 
 pub use diagnostic_conversion::render_diagnostic;
 
+mod collection_state;
 mod diagnostic_template;
 mod editor_vocabulary;
 mod execution;
@@ -68,6 +69,7 @@ mod program_view;
 mod program_view_annotations;
 mod program_view_kind;
 mod program_view_members;
+mod program_view_nominal;
 mod program_view_operations;
 mod program_view_relations;
 mod program_view_tokens;

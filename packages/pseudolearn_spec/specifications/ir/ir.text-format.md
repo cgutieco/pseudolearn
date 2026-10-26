@@ -42,9 +42,10 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "El texto de la RI sigue la gramática D1, en UTF-8, con líneas terminadas en LF. Se admiten espacios y tabulaciones extra entre símbolos y líneas en blanco; no hay comentarios.",
+  "texto": "El texto de la RI sigue la gramática D1, en UTF-8, con líneas terminadas en LF. Se admiten espacios y tabulaciones extra entre símbolos y líneas en blanco; no hay comentarios. Los nombres de clases y campos, y la identidad interna de obj, admiten una cadena entre comillas dobles con los mismos escapes de literales; la forma canónica solo la usa cuando el nombre contiene símbolos fuera de letras ASCII, dígitos, punto y subrayado.",
   "verificacion": [
-    "C1"
+    "C1",
+    "C6"
   ]
 }
 ```
@@ -177,5 +178,26 @@
     }
   },
   "programa_ri": "module P es\nprofile 7 en\nprofile 2 es\nfunc @main() -> unit {\nb0() mass 1:\n  stmt.enter @2:1-2:12\n  %0 = const.bool true\n  out.write %0, newline @2:1-2:12\n  stmt.exit @2:1-2:12\n  return\n}\n"
+}
+```
+
+```caso
+{
+  "id": "C6",
+  "regla": "R1",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "ir",
+  "programa_ri": "module P es\nclass \"$vector<integer>\" { \"$leaf:value\": i64 }\nfunc @main() -> unit {\nb0() mass 0:\n  %0 = collection.new obj<\"$vector<integer>\"> @1:1-1:2\n  %1 = collection.length %0 @1:1-1:2\n  return\n}\n",
+  "espera": {
+    "ri": {
+      "reimpresion": "module P es\nclass \"$vector<integer>\" { \"$leaf:value\": i64 }\nfunc @main() -> unit {\nb0() mass 0:\n  %0 = collection.new obj<\"$vector<integer>\"> @1:1-1:2\n  %1 = collection.length %0 @1:1-1:2\n  return\n}\n"
+    }
+  }
 }
 ```

@@ -199,3 +199,9 @@ que pertenece a R6. Se preserva Rust seguro y se mide el despacho antes de optim
 ### Funciones como valores y ámbitos de ejecución
 
 La carga prepara una tabla de destinos compatibles por firma para cada llamada indirecta. La ejecución valida identidad y compatibilidad antes de abrir el marco y produce `invalidFunctionReference` para destinos inválidos. Los entornos son objetos ordinarios del montículo y siguen las raíces precisas. La inspección filtra nombres por el intervalo léxico actual, restaura el vínculo exterior tras un sombreado y usa la continuación para marcos suspendidos. La identidad de código se mantiene fuera del banco de referencias.
+
+## Colecciones, interfaces e iteración con limpieza
+
+Las operaciones de colección se decodifican en CollectionOperation con disposición, clave, fuentes tipadas y destino. La máquina comparte la fachada de biblioteca con AOT; solo las operaciones que pueden reservar consultan raíces. Las trampas conservan el sitio y los argumentos del índice. text.quote usa la misma biblioteca que el ejecutor nativo.
+
+Los tests de estas capacidades se ejecutaron en selecciones acotadas, incluida la comparación de gemelos con recolección forzada. La conformidad del corpus sigue pendiente de la revisión editorial independiente de los contratos nuevos, y la medición de tamaño excede el presupuesto de Wasm.

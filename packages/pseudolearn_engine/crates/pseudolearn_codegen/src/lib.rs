@@ -31,6 +31,7 @@ mod lower_arithmetic;
 mod lower_arrays;
 mod lower_calls;
 mod lower_cells;
+mod lower_collections;
 mod lower_control;
 mod lower_io;
 mod lower_math;

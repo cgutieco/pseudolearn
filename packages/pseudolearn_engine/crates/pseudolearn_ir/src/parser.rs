@@ -41,6 +41,7 @@ impl Parser {
     pub(crate) fn expect_word(&mut self, expected: &str) -> Result<String, String> {
         match self.advance() {
             TokenKind::Word(word) if expected.is_empty() || word == expected => Ok(word),
+            TokenKind::StringLiteral(word) if expected.is_empty() => Ok(word),
             other => Err(format!("Expected word '{expected}', found {other:?}")),
         }
     }

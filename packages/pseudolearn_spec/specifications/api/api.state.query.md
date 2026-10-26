@@ -344,3 +344,7 @@
   "perfil_base": "es"
 }
 ```
+
+## Colecciones e interfaces
+
+Una colección se conserva como referencia con identidad compartida. Su entrada de heap describe vector con longitud y elementos, o diccionario con longitud y entradas en inserción, cada una con clave y valor. Las hojas de registros se presentan por campo y las funciones conservan su marcador. La observación no cambia capacidad ni versión. Los metadatos internos de disposición no se proyectan como campos de objetos ordinarios.

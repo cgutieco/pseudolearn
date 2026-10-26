@@ -77,7 +77,9 @@ fn check_body(
     let body_node = session.child(node, NodeKind::Body)?;
     let initialized_before = session.initialized.clone();
     let pending_before = session.pending_results.clone();
+    session.control.loops = session.control.loops.saturating_add(1);
     let body = crate::statement_checker::body(session, body_node);
+    session.control.loops = session.control.loops.saturating_sub(1);
     session.pending_results.extend(pending_before);
     session.initialized = initialized_before;
     session

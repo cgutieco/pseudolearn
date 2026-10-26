@@ -180,3 +180,7 @@
   "perfil_base": "es"
 }
 ```
+
+## Colecciones e interfaces
+
+Vector y Diccionario se asignan y pasan por valor copiando la referencia a la misma cabecera. Los alias comparten cambios, versión e identidad aun al sustituirse los bancos durante el crecimiento. Leer o reemplazar un elemento copia su valor según su tipo: las hojas escalares de un registro son independientes y sus referencias conservan alias. Eliminar borra enlaces de valores y claves descartados; no conserva raíces ocultas. Snapshots y deltas contienen cabecera, bancos e índice y restauran orden y versión sin tablas laterales.

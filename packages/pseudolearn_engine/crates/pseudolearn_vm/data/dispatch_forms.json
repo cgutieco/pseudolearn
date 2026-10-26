@@ -8,7 +8,8 @@
         "cell.",
         "text.",
         "ref.",
-        "host.random"
+        "host.random",
+        "collection."
       ]
     },
     {

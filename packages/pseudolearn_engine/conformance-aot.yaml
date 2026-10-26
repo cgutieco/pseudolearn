@@ -27,7 +27,13 @@
     "RT.HOST.INTERFACE",
     "RT.PROCESS",
     "LANG.TYPES.FUNCTION",
-    "LANG.TYPES.GENERIC"
+    "LANG.TYPES.GENERIC",
+    "LANG.TYPES.INTERFACE",
+    "LANG.TYPES.VECTOR",
+    "LANG.TYPES.DICTIONARY",
+    "LANG.CONTROL.FOR-EACH",
+    "LANG.CONTROL.EXIT",
+    "LANG.CONTROL.CLEANUP"
   ],
   "fases_cerradas": [
     "R6"
@@ -1045,6 +1051,84 @@
       "verificacion": "ejecutor",
       "estado": "exento",
       "justificacion": "La regla combina análisis estático, no anunciado por el adaptador AOT, con ejecución nativa. Los casos ejecutables se contrastan en AOT y el análisis estático en engine."
+    },
+    {
+      "regla": "LANG.TYPES.INTERFACE@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "La regla incluye casos de análisis estático, no anunciado por el adaptador AOT; el sujeto engine los contrasta y los casos de ejecución se contrastan en ambos."
+    },
+    {
+      "regla": "LANG.TYPES.INTERFACE@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "La regla incluye casos de análisis estático, no anunciado por el adaptador AOT; el sujeto engine los contrasta y los casos de ejecución se contrastan en ambos."
+    },
+    {
+      "regla": "LANG.TYPES.INTERFACE@1.0.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "La regla incluye casos de análisis estático, no anunciado por el adaptador AOT; el sujeto engine los contrasta y los casos de ejecución se contrastan en ambos."
+    },
+    {
+      "regla": "LANG.TYPES.VECTOR@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TYPES.VECTOR@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TYPES.VECTOR@1.0.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "La regla incluye casos de análisis estático, no anunciado por el adaptador AOT; el sujeto engine los contrasta y los casos de ejecución se contrastan en ambos."
+    },
+    {
+      "regla": "LANG.TYPES.DICTIONARY@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "La regla incluye casos de análisis estático, no anunciado por el adaptador AOT; el sujeto engine los contrasta y los casos de ejecución se contrastan en ambos."
+    },
+    {
+      "regla": "LANG.TYPES.DICTIONARY@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TYPES.DICTIONARY@1.0.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.CONTROL.FOR-EACH@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "La regla incluye casos de análisis estático, no anunciado por el adaptador AOT; el sujeto engine los contrasta y los casos de ejecución se contrastan en ambos."
+    },
+    {
+      "regla": "LANG.CONTROL.FOR-EACH@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.CONTROL.EXIT@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "La regla incluye casos de análisis estático, no anunciado por el adaptador AOT; el sujeto engine los contrasta y los casos de ejecución se contrastan en ambos."
+    },
+    {
+      "regla": "LANG.CONTROL.CLEANUP@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.CONTROL.CLEANUP@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "La regla incluye casos de análisis estático, no anunciado por el adaptador AOT; el sujeto engine los contrasta y los casos de ejecución se contrastan en ambos."
     }
   ]
 }

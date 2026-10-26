@@ -112,7 +112,7 @@ del núcleo; la aplicación traduce, orquesta y renderiza los resultados.
 | Petición de reseña en Microsoft Store                           | Publicación de Windows como MSIX en Microsoft Store y un adaptador de `StoreReviewPrompt` que abra la reseña de la Store; `in_app_review` solo ofrece el diálogo nativo en iOS y macOS (ver §4.46) | Abierto |
 | Andamiaje de la plataforma web                                 | Creación de `web/` y de un adaptador de `TextEntryModality` para navegador; hasta entonces la barra de teclas no se verifica ahí (ver §4.33) | Abierto                                                                                                |
 | Campaña E-NR2 | Medición con muestras independientes en dispositivo, escritorio y navegador, con procedencia y resumen recalculable | Pendiente; falta el ejecutor de medición y la prueba física, que la persona repetirá después |
-| Tamaños de artefactos R8 | Biblioteca ios-arm64 Release y módulo Wasm con Brotli Q11/lgwin22 | Medición registrada: 2.85 MiB y 518.16 KiB, dentro de sus presupuestos de 3 MiB y 600 KiB |
+| Tamaños de artefactos R8 | Biblioteca ios-arm64 Release y módulo Wasm con Brotli Q11/lgwin22 | Medición registrada tras PG-2.09 a PG-2.11: 4.36 MiB y 800.21 KiB, dentro de sus presupuestos de 5 MiB y 900 KiB |
 | Adaptador SEE del sujeto `app` | Lanzador, escenarios APP y propiedades API sobre el transporte FRB generado | Implementado; 252 observaciones y tres propiedades API por el puente real pasan sin divergencias |
 | Resaltado y unidades de foco en la ruta Rust                    | `RustProgramAnalyzer` proyecta los tokens de `analyze`; `RustFocusTracker` deriva `unitId` de la vista pública del programa                | Resuelto                                                                                              |
 | Pruebas de widgets con el puente real                           | Los widgets se prueban con fakes; solo `ExecutionCubit` se ejercita contra la biblioteca nativa en `tool/native_bridge_adapters_test.dart` | Abierto |
@@ -2195,9 +2195,10 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
   `dart run tool/capture_bridge_artifacts.dart` en `packages/pseudolearn_benchmarks` registra hashes,
   arquitectura, símbolos dSYM separados, toolchain y bytes Brotli en su directorio local `results/` o en la ruta
   indicada con `--output`.
-- **Medición observada:** el framework ios-arm64 ocupa 2,985,792 bytes (2.85 MiB) y el Wasm comprimido
-  530,599 bytes (518.16 KiB). Ambos quedan dentro de 3 MiB y 600 KiB; el margen de iOS es del 5 %, de modo que
-  una dependencia nueva puede agotarlo y la captura debe repetirse al añadirla. Esta medición certifica
+- **Medición observada:** tras añadir `Vector`, `Diccionario`, interfaces y limpieza, el framework ios-arm64
+  ocupa 4,566,624 bytes (4.36 MiB) y el Wasm comprimido 819,420 bytes (800.21 KiB). Ambos quedan dentro de los
+  presupuestos ampliados de 5 MiB y 900 KiB (antes 3 MiB y 600 KiB, con 2,985,792 y 530,599 bytes); el margen
+  de iOS es del 13 %, de modo que una dependencia nueva puede agotarlo y la captura debe repetirse al añadirla. Esta medición certifica
   `PERF.ARTIFACT.SIZE`, que no exige dispositivo físico: mide bytes del binario de release.
 - **Límite:** el build iOS Release se generó sin firma y se midió antes de empaquetar Flutter. El iPhone 17
   con iOS 27.0.1 ejecutó la prueba en Profile, donde el runner no encontró el Dart VM Service por Wi-Fi y
@@ -2563,3 +2564,7 @@ El revisor o agente de IA debe rechazar inmediatamente un cambio si detecta:
 
 El inventario oficial de [xcode-27](https://github.com/actions/runner-images/blob/main/images/macos/xcode-27-arm64-Readme.md)
 se usa para seleccionar macOS y arquitectura del entorno de prueba, no para definir el producto.
+
+### Observación de colecciones
+
+El adaptador Rust de la tabla de variables consume las entradas vector y diccionario de query_object y muestra su longitud con delimitadores distintos, conservando la insignia de identidad compartida. No interpreta bancos, versiones ni índices del runtime. Los mapas de transporte siguen siendo la frontera; no cambia el puente generado ni se añade lógica del lenguaje en Dart. Las pruebas del consumidor quedan pendientes de autorización junto a las del motor.

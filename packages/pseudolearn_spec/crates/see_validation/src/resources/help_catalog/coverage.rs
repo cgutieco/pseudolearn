@@ -31,7 +31,10 @@ struct CoverageMatrix<'catalog, 'source> {
 }
 
 pub(super) fn matrix(value: &Value, corpus: &Corpus) -> Result<Vec<CoverageRow>, String> {
-    let vocabulary = source_resource(corpus, "LANG.PROFILE.VOCABULARY", "vocabulary")?;
+    let mut vocabulary = source_resource(corpus, "LANG.PROFILE.VOCABULARY", "vocabulary")?.clone();
+    vocabulary.extend(
+        source_resource(corpus, "LANG.PROFILE.VOCABULARY", "contextualVocabulary")?.clone(),
+    );
     let functions = source_resource(corpus, "LIB.MODEL", "functions")?;
     let grammar = source_resource(corpus, "LANG.SYNTAX.GRAMMAR", "grammar")?;
     let productions = grammar
@@ -39,11 +42,11 @@ pub(super) fn matrix(value: &Value, corpus: &Corpus) -> Result<Vec<CoverageRow>,
         .and_then(Value::as_object)
         .ok_or("missing grammar productions")?;
     let operators = operator_inventory(value)?;
-    if operators != grammar_operators(productions, vocabulary) {
+    if operators != grammar_operators(productions, &vocabulary) {
         return Err("operator inventory differs from grammar".to_owned());
     }
     let sources = InventorySources {
-        vocabulary,
+        vocabulary: &vocabulary,
         functions,
         productions,
         operators,

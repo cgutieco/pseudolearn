@@ -85,6 +85,11 @@ fn collect_function_symbols(
 
 fn collect_class_symbols(module: &HirModule, occurrences: &mut Vec<ServiceReference>) {
     for (index, class) in module.classes.iter().enumerate() {
+        if module.collections.contains_key(&crate::identities::ClassId(
+            u32::try_from(index).unwrap_or(u32::MAX),
+        )) {
+            continue;
+        }
         let class_id = ClassId(u32::try_from(index).unwrap_or(u32::MAX));
         occurrences.push(ServiceReference {
             span: class.span,

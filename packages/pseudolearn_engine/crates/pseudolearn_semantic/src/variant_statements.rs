@@ -28,6 +28,12 @@ pub(crate) fn returned_value(
 
 pub(crate) fn output_error(session: &mut AnalysisSession<'_>, value: ExpressionId, node: usize) {
     let kind = session.expression_type(value);
+    if let Some(collection) = crate::collection_types::get(session, &kind) {
+        if !crate::collection_types::printable(session, collection.value) {
+            session.report(DiagnosticCode::CollectionCannotBeWritten, node);
+        }
+        return;
+    }
     if crate::function_types::get(session, &kind).is_some() {
         return;
     }

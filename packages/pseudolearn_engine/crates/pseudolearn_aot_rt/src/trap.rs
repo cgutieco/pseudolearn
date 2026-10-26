@@ -44,6 +44,10 @@ impl From<MemoryError> for Trap {
             MemoryError::IndexOutOfRange => "arrayIndexOutOfRange",
             MemoryError::Uninitialized => "uninitializedVariableRead",
             MemoryError::StringPositionOutOfRange => "stringPositionOutOfRange",
+            MemoryError::MissingDictionaryKey => "missingDictionaryKey",
+            MemoryError::CollectionLimit => "collectionLimitExceeded",
+            MemoryError::CollectionVersion => "collectionVersionExhausted",
+            MemoryError::CollectionModified => "collectionModifiedDuringIteration",
         })
     }
 }

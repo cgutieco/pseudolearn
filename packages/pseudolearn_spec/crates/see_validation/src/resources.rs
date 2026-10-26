@@ -18,7 +18,7 @@ pub fn check(specification: &Specification) -> Vec<String> {
             continue;
         }
         let result = match field(definition, "termino") {
-            "vocabulary" | "functions" => lexicon::check(value),
+            "vocabulary" | "contextualVocabulary" | "functions" => lexicon::check(value),
             "diagnostics" => diagnostics(value),
             "grammar" => grammar::check(value),
             "helpCatalog" => help_catalog::check(value),

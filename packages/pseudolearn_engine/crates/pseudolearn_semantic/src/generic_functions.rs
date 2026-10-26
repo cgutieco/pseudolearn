@@ -11,6 +11,7 @@ struct SavedState {
     returned: bool,
     pending: std::collections::BTreeSet<crate::identities::LocalId>,
     controls: Vec<crate::identities::LocalId>,
+    control: crate::control_context::ControlContext,
     closures: Vec<crate::function_model::ClosureFrame>,
     declarations: std::collections::BTreeMap<usize, Vec<crate::identities::LocalId>>,
     environment: Vec<(String, TypeId)>,
@@ -24,6 +25,7 @@ impl SavedState {
             returned: session.returned,
             pending: std::mem::take(&mut session.pending_results),
             controls: std::mem::take(&mut session.controls),
+            control: std::mem::take(&mut session.control),
             closures: std::mem::take(&mut session.closure_stack),
             declarations: std::mem::take(&mut session.declarations),
             environment: std::mem::take(&mut session.generic.environment),
@@ -36,6 +38,7 @@ impl SavedState {
         session.returned = self.returned;
         session.pending_results = self.pending;
         session.controls = self.controls;
+        session.control = self.control;
         session.closure_stack = self.closures;
         session.declarations = self.declarations;
         session.generic.environment = self.environment;
@@ -47,6 +50,9 @@ pub(crate) fn instantiate(
     template: &GenericTemplate,
     (arguments, origin): (Vec<TypeId>, usize),
 ) -> Option<FunctionId> {
+    if !crate::interface_constraints::check(session, template, &arguments, origin) {
+        return None;
+    }
     let key = (session.unit, template.node, arguments.clone());
     if let Some(existing) = session.generic.functions.get(&key) {
         return Some(*existing);

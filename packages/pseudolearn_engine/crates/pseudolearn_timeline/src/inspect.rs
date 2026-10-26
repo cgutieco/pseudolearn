@@ -151,6 +151,15 @@ fn read_reference_variable(
 fn decode_reference_value(machine: &Machine, handle_word: u32) -> VariableValue {
     let handle = Handle(handle_word);
     let heap = machine.heap();
+    if pseudolearn_runtime::is_collection_allocation(heap, handle) {
+        return VariableValue::ObjectReference {
+            handle_word,
+            identity_ordinal: pseudolearn_runtime::allocation_ordinal(heap, handle).unwrap_or(0),
+            class_identifier: pseudolearn_runtime::collection_layout(heap, handle)
+                .map(|layout| layout.type_identity)
+                .unwrap_or(0),
+        };
+    }
     if pseudolearn_runtime::is_object_allocation(heap, handle) {
         let ordinal = pseudolearn_runtime::allocation_ordinal(heap, handle).unwrap_or(0);
         let class_identifier =
@@ -215,7 +224,7 @@ fn format_value_type(value_type: &ValueType) -> String {
         ValueType::Bool => "Logico".to_string(),
         ValueType::Char => "Caracter".to_string(),
         ValueType::Str => "Texto".to_string(),
-        ValueType::Object(name) => name.clone(),
+        ValueType::Object(name) => name.replace('$', ""),
         ValueType::Array { .. } => "Arreglo".to_string(),
         ValueType::Cell(_) => "Celda".to_string(),
         ValueType::Unit => "Nulo".to_string(),

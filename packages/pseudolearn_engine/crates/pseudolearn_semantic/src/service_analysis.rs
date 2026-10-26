@@ -128,6 +128,7 @@ pub fn analyze_for_service(
     let mut session = AnalysisSession::new(tree, source, options);
     crate::unit_resolver::register(&mut session);
     crate::hierarchy::check(&mut session);
+    crate::interface_realizations::check(&mut session);
     crate::flow::bodies(&mut session);
     let mut symbols = Vec::new();
     let mut occurrences = Vec::new();

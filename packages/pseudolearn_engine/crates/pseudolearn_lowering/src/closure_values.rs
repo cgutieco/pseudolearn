@@ -161,13 +161,10 @@ fn captured_receiver(
     span: Option<IrSpan>,
     state: &mut ExpressionState<'_, '_>,
 ) -> Option<ValueId> {
-    let Some(class) = closure
+    let class = closure
         .class
         .and_then(|class| usize::try_from(class.0).ok())
-        .and_then(|index| state.context.module.classes.get(index))
-    else {
-        return None;
-    };
+        .and_then(|index| state.context.module.classes.get(index))?;
     let class_name = class.name.clone();
     let environment = state
         .environment

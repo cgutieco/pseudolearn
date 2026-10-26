@@ -1,5 +1,5 @@
 mod support;
-use pseudolearn_semantic::{HirExpression, HirStatement, Type};
+use pseudolearn_semantic::{HirStatement, Type};
 
 #[test]
 fn undeclared_reads_are_errors_in_both_modes_and_produce_no_hir() {

@@ -30,6 +30,13 @@ pub(crate) fn resolve(session: &mut AnalysisSession<'_>, node: usize) -> TypeId 
 
 fn class_type(session: &mut AnalysisSession<'_>, node: usize) -> Type {
     let name = session.name(node);
+    if let Some(kind) = crate::collection_types::resolve(session, node, &name) {
+        return kind;
+    }
+    if crate::interface_registry::find(session, &name).is_some() {
+        session.report(DiagnosticCode::InterfaceCannotBeValue, node);
+        return Type::Error;
+    }
     if let Some(kind) = crate::generic_names::resolve(session, node, &name) {
         return kind;
     }

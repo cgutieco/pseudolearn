@@ -109,7 +109,7 @@ fn fields(
         .filter_map(|(index, kind)| Some((layout.field(index)?, *kind)))
         .collect();
     fields.sort_by_key(|(offset, _)| *offset);
-    let fields = fields
+    fields
         .into_iter()
         .map(|(offset, kind)| HirField {
             id: FieldId(offset),
@@ -119,8 +119,7 @@ fn fields(
             private: false,
             span,
         })
-        .collect();
-    fields
+        .collect()
 }
 
 fn report_limit(session: &mut AnalysisSession<'_>, function: FunctionId) {

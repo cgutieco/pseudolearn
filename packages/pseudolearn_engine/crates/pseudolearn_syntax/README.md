@@ -123,3 +123,9 @@ El reconocimiento de palabras compuestas pertenece a `compound_scanner.rs`; nunc
 ### Funciones como valores y ámbitos de ejecución
 
 `function_parser` distingue el tipo estructural `SubProceso(Entero) Como Entero` del literal con parámetros nombrados y cuerpo terminado en `FinSubProceso`. Ambos reutilizan el vocabulario bilingüe existente. Los nodos de firma y literal proceden de la gramática generada; no existe un segundo catálogo de sintaxis.
+
+## Colecciones, interfaces e iteración con limpieza
+
+Las palabras de interfaces, colecciones, iteración y limpieza son contextuales y provienen del recurso contextualVocabulary generado. No se incorporan al vocabulario reservado: un nombre interface fuera de una apertura sigue siendo identificador. Los nodos InterfaceUnit, InterfaceSignature, Realization y TypeParameter conservan las identidades nominales; IterationBindings separa los vínculos de la expresión recorrida. ForEachLoop, BreakStatement y DeferStatement conservan sus límites léxicos.
+
+Los tests de estas capacidades se ejecutaron en selecciones acotadas, incluida la comparación de gemelos con recolección forzada. La conformidad del corpus sigue pendiente de la revisión editorial independiente de los contratos nuevos, y la medición de tamaño excede el presupuesto de Wasm.

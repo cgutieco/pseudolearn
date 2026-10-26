@@ -10,6 +10,13 @@ pub struct HirCase {
 
 #[derive(Clone, Debug, PartialEq)]
 pub enum HirStatement {
+    Defer(Vec<StatementId>),
+    Break,
+    ForEach {
+        collection: ExpressionId,
+        bindings: Vec<LocalId>,
+        body: Vec<StatementId>,
+    },
     Declare(Vec<LocalId>),
     VariantMatch(Box<crate::variant_model::HirVariantMatch>),
     Dimension(Vec<HirDimension>),

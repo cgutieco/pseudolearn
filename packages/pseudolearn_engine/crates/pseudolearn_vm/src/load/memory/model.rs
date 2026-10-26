@@ -17,6 +17,7 @@ pub(crate) struct TypedSource {
 
 #[derive(Clone, Debug, PartialEq)]
 pub(crate) enum MemoryOp {
+    Collection(super::collections::CollectionOperation),
     ArrayNew {
         destination: u16,
         element: ValueKind,

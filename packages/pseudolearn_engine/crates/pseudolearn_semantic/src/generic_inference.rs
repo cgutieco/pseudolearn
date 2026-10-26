@@ -107,6 +107,18 @@ fn bind_record(
     actual: TypeId,
     binder: &mut Binder<'_>,
 ) -> Result<(), usize> {
+    if let Some(model) = crate::collection_types::get(session, &session.module.types.get(actual)) {
+        let identity = crate::collection_types::identity(session, name);
+        if (model.key.is_some() && identity == Some("dictionaryType"))
+            || (model.key.is_none() && identity == Some("vectorType"))
+        {
+            let kinds = model.key.into_iter().chain(std::iter::once(model.value));
+            for (child, kind) in session.children(arguments).into_iter().zip(kinds) {
+                bind(session, child, kind, binder)?;
+            }
+        }
+        return Ok(());
+    }
     let Type::Record(record) = session.module.types.get(actual) else {
         return Ok(());
     };

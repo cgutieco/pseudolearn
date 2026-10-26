@@ -15,6 +15,7 @@ pub fn analyze(
     let mut session = AnalysisSession::new(tree, source, options);
     crate::unit_resolver::register(&mut session);
     crate::hierarchy::check(&mut session);
+    crate::interface_realizations::check(&mut session);
     crate::flow::bodies(&mut session);
     crate::constructor_rules::check(&mut session);
     crate::usage::unused(&mut session);

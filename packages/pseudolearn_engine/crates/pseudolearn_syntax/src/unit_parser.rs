@@ -63,6 +63,7 @@ pub(crate) fn class(state: &mut ParserState<'_>) -> Result<usize, ()> {
             return Err(());
         }
     }
+    crate::interface_parser::realization(state)?;
     loop {
         state.separators();
         if matches!(

@@ -87,7 +87,7 @@ fn token_source_exists(token: &Value, corpus: &Corpus) -> bool {
         return false;
     }
     match field(block, "termino") {
-        "vocabulary" | "functions" => block
+        "vocabulary" | "contextualVocabulary" | "functions" => block
             .fields
             .get("valor")
             .and_then(Value::as_object)

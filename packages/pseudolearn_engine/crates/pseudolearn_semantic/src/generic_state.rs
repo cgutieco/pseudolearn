@@ -9,6 +9,7 @@ pub(crate) type InstanceKey = (usize, usize, Vec<TypeId>);
 pub(crate) struct GenericTemplate {
     pub node: usize,
     pub parameters: Vec<String>,
+    pub constraints: Vec<Option<String>>,
 }
 
 #[derive(Clone, Default)]
@@ -25,6 +26,7 @@ pub(crate) struct GenericState {
     pub origins: BTreeMap<RecordId, InstanceKey>,
     pub opaque: BTreeMap<(usize, usize, usize), TypeId>,
     pub opaque_records: BTreeSet<RecordId>,
+    pub constraints: BTreeMap<RecordId, crate::interface_model::InterfaceId>,
     pub instantiated: bool,
     pub defining: bool,
     pub base_functions: usize,

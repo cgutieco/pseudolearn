@@ -178,6 +178,9 @@ fn child_role(tree: &SyntaxTree, parent: usize, child: usize) -> &'static str {
     let (Some(parent_node), Some(child_node)) = (tree.node(parent), tree.node(child)) else {
         return "child";
     };
+    if let Some(role) = crate::program_view_nominal::child_role(tree, parent, child) {
+        return role;
+    }
     match parent_node.kind {
         NodeKind::Declaration
         | NodeKind::Type

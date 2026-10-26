@@ -13,6 +13,14 @@ pub(crate) fn lower_value(
     environment: &mut VariableEnvironment,
     builder: &mut FunctionBuilder,
 ) -> ValueId {
+    let mut state = crate::expressions::ExpressionState {
+        context,
+        environment,
+        builder,
+    };
+    if let Some(value) = crate::collection_output::lower(expression, &mut state) {
+        return value;
+    }
     if let Some(value) = function_value(expression, context, environment, builder) {
         return value;
     }
@@ -30,7 +38,7 @@ pub(crate) fn lower_value(
     }
 }
 
-fn member_name(
+pub(crate) fn member_name(
     ordinal: ValueId,
     enumeration: EnumId,
     context: &ExpressionContext<'_>,

@@ -48,7 +48,9 @@ impl IrType {
             } => {
                 format!("array<{}, {}>", element.format_type(), dimension_rank)
             }
-            Self::Object(class_name) => format!("obj<{class_name}>"),
+            Self::Object(class_name) => {
+                format!("obj<{}>", crate::identifier_text::canonical(class_name))
+            }
             Self::Cell(inner_type) => format!("cell<{}>", inner_type.format_type()),
         }
     }
@@ -83,7 +85,9 @@ fn parse_complex_type(input: &str) -> Option<IrType> {
     if let Some(rest) = input.strip_prefix("obj<")
         && let Some(class_name) = rest.strip_suffix('>')
     {
-        return Some(IrType::Object(class_name.trim().to_owned()));
+        return Some(IrType::Object(crate::identifier_text::parse(
+            class_name.trim(),
+        )?));
     }
     if let Some(rest) = input.strip_prefix("array<")
         && let Some(inner) = rest.strip_suffix('>')

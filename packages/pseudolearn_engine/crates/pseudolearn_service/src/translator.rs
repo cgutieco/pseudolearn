@@ -103,6 +103,11 @@ impl TranslationPlan<'_> {
         original: &str,
         collected: &mut Collected,
     ) -> String {
+        if let Some(identity) = self.roles.contextual_identity(index) {
+            return pseudolearn_syntax::contextual_spelling(identity, self.target_profile.as_str())
+                .unwrap_or(original)
+                .to_owned();
+        }
         if !self.roles.is_user_name(self.tree, self.source, index)
             && let Some(builtin) = find_builtin(original, self.source_profile)
         {

@@ -31,6 +31,9 @@ pub(crate) fn classify(kind: NodeKind, parent: Option<NodeKind>) -> Option<ViewK
         | NodeKind::AssignmentStatement
         | NodeKind::CallStatement
         | NodeKind::Conditional
+        | NodeKind::ForEachLoop
+        | NodeKind::DeferStatement
+        | NodeKind::BreakStatement
         | NodeKind::ForLoop
         | NodeKind::Input
         | NodeKind::Output
@@ -43,7 +46,7 @@ pub(crate) fn classify(kind: NodeKind, parent: Option<NodeKind>) -> Option<ViewK
         } else {
             ViewKind::Expression
         }),
-        NodeKind::Type => Some(ViewKind::Type),
+        NodeKind::Type | NodeKind::TypeArguments => Some(ViewKind::Type),
         NodeKind::Arguments | NodeKind::Expressions | NodeKind::Labels => {
             Some(ViewKind::Expression)
         }
@@ -53,7 +56,9 @@ pub(crate) fn classify(kind: NodeKind, parent: Option<NodeKind>) -> Option<ViewK
 }
 
 pub(crate) fn syntax_name(kind: NodeKind) -> Option<&'static str> {
-    declaration_or_statement_name(kind).or_else(|| expression_name(kind))
+    nominal_name(kind)
+        .or_else(|| declaration_or_statement_name(kind))
+        .or_else(|| expression_name(kind))
 }
 
 fn declaration_or_statement_name(kind: NodeKind) -> Option<&'static str> {
@@ -129,7 +134,13 @@ fn expression_name(kind: NodeKind) -> Option<&'static str> {
 fn names_declaration(owner: NodeKind) -> bool {
     matches!(
         owner,
-        NodeKind::VariantPattern
+        NodeKind::InterfaceUnit
+            | NodeKind::InterfaceSignature
+            | NodeKind::TypeParameters
+            | NodeKind::TypeParameter
+            | NodeKind::Realization
+            | NodeKind::IterationBindings
+            | NodeKind::VariantPattern
             | NodeKind::ClassUnit
             | NodeKind::AlgorithmUnit
             | NodeKind::Subroutine
@@ -179,7 +190,13 @@ fn is_expression(kind: NodeKind) -> bool {
 fn is_declaration(kind: NodeKind) -> bool {
     matches!(
         kind,
-        NodeKind::VariantPattern
+        NodeKind::InterfaceUnit
+            | NodeKind::InterfaceSignature
+            | NodeKind::TypeParameters
+            | NodeKind::TypeParameter
+            | NodeKind::Realization
+            | NodeKind::IterationBindings
+            | NodeKind::VariantPattern
             | NodeKind::ClassUnit
             | NodeKind::AlgorithmUnit
             | NodeKind::Subprogram
@@ -193,4 +210,20 @@ fn is_declaration(kind: NodeKind) -> bool {
             | NodeKind::Parameters
             | NodeKind::Parameter
     )
+}
+
+fn nominal_name(kind: NodeKind) -> Option<&'static str> {
+    Some(match kind {
+        NodeKind::InterfaceUnit => "interface_unit",
+        NodeKind::InterfaceSignature => "interface_signature",
+        NodeKind::Realization => "realization",
+        NodeKind::TypeParameters => "type_parameters",
+        NodeKind::TypeParameter => "type_parameter",
+        NodeKind::TypeArguments => "type_arguments",
+        NodeKind::IterationBindings => "iteration_bindings",
+        NodeKind::ForEachLoop => "for_each_loop",
+        NodeKind::DeferStatement => "defer_statement",
+        NodeKind::BreakStatement => "break_statement",
+        _ => return None,
+    })
 }

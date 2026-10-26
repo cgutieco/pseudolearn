@@ -89,3 +89,9 @@ Lua inspira registros, JVM verificación y Self cambio de código. Ertl y Gregg 
 ### Funciones como valores y ámbitos de ejecución
 
 Cada función conserva el tipo de retorno y los intervalos léxicos de sus registros nombrados. La firma de una llamada indirecta incluye tipos de parámetros y retorno; el registro de identidad ocupa el banco escalar. La generación de raíces elimina vínculos cerrados que tampoco siguen vivos por flujo. Ambos gemelos conservan las mismas disposiciones, puntos de retorno y tamaño fijo de instrucción.
+
+## Colecciones, interfaces e iteración con limpieza
+
+Las operaciones de colecciones conservan los metadatos tipados de RI. La verificación reutiliza el contrato de tipos de las colecciones al reconstruir operandos tipados, incluidos los ordinales literales de hojas. Las operaciones que pueden reservar y text.quote son puntos de raíces; una lectura o consulta de versión no requiere recolección.
+
+Los tests de estas capacidades se ejecutaron en selecciones acotadas, incluida la comparación de gemelos con recolección forzada. La conformidad del corpus sigue pendiente de la revisión editorial independiente de los contratos nuevos, y la medición de tamaño excede el presupuesto de Wasm.

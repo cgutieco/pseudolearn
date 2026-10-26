@@ -81,7 +81,7 @@
   ],
   "programas": {
     "es": "Algoritmo P\nInterfaz X\nFinInterfaz\nFinAlgoritmo\n",
-    "en": "algorithm P\nInterfaz X\nFinInterfaz\nendAlgorithm\n"
+    "en": "algorithm P\ninterface X\nendInterface\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -89,7 +89,7 @@
     "arbol": "presente",
     "diagnosticos": [
       {
-        "codigo": "unsupportedInterfaceConstruct",
+        "codigo": "interfaceInsideAlgorithm",
         "severidad": "error"
       }
     ]

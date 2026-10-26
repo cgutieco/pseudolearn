@@ -670,3 +670,7 @@ Este contrato cuantifica los recursos que LANG.SUBPROGRAM.RECURSION y LANG.ARRAY
   "id": "C18"
 }
 ```
+
+## Colecciones e interfaces
+
+Vector y Diccionario derivan sus límites del presupuesto cells existente: como máximo min(cells, u32 máximo menos dos) elementos y min(cells, u32 máximo) palabras de almacenamiento variable. Las palabras incluyen capacidad y metadatos variables, con ocho bytes por palabra. La cabecera fija no cuenta en ese almacenamiento variable. Una mutación comprueba límites, reservas y aritmética antes de publicar cambios. Vector consume una celda lógica más longitud por máximo entre uno y ancho; Diccionario consume una más longitud por uno más máximo entre uno y ancho de valor. Las referencias alcanzables se contabilizan sin doble conteo. Se conserva cellLimitExceeded para el presupuesto global y collectionLimitExceeded para el límite estructural.

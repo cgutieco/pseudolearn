@@ -42,7 +42,7 @@ pub(crate) fn call(
     )
 }
 
-fn argument(
+pub(crate) fn argument(
     session: &mut AnalysisSession<'_>,
     node: usize,
     (kind, passing): (crate::identities::TypeId, Passing),

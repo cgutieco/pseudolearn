@@ -51,6 +51,7 @@ impl ProgramView {
             strict,
         };
         crate::program_view_annotations::annotate(&mut nodes, &context);
+        crate::program_view_nominal::annotate(&mut nodes, &context, &revision);
         let by_span = index_by_span(&nodes);
         let schema = crate::diagnostic_conversion::schema(&tree, &source);
         let (inheritance, methods) =

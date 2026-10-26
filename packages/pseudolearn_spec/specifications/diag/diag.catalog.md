@@ -3552,6 +3552,306 @@
         "lexeme": "lexema",
         "limit": "numero"
       }
+    },
+    "interfaceInsideAlgorithm": {
+      "mensajes": {
+        "es": "No se permite declarar una interfaz dentro del cuerpo de una unidad",
+        "en": "An interface cannot be declared inside a unit body"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "unclosedInterface": {
+      "mensajes": {
+        "es": "Interfaz sin cerrar",
+        "en": "Unclosed interface"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "expectedInterfaceSignature": {
+      "mensajes": {
+        "es": "Se esperaba una firma de método sin cuerpo",
+        "en": "Expected a method signature without a body"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "interfaceCannotBeValue": {
+      "mensajes": {
+        "es": "Una interfaz solo puede usarse como restricción de un parámetro de tipo",
+        "en": "An interface can only constrain a type parameter"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "unknownInterface": {
+      "mensajes": {
+        "es": "La interfaz {lexeme} no está declarada",
+        "en": "Interface {lexeme} is not declared"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "interfaceMethodMissing": {
+      "mensajes": {
+        "es": "Falta realizar el método {lexeme}",
+        "en": "Missing implementation of method {lexeme}"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "interfaceMethodSignatureMismatch": {
+      "mensajes": {
+        "es": "La firma del método {lexeme} no satisface la interfaz",
+        "en": "The signature of method {lexeme} does not satisfy the interface"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "interfaceMethodNotPublic": {
+      "mensajes": {
+        "es": "El método realizado {lexeme} debe ser público",
+        "en": "Implemented method {lexeme} must be public"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "genericConstraintNotSatisfied": {
+      "mensajes": {
+        "es": "El argumento de tipo no realiza la interfaz {lexeme}",
+        "en": "The type argument does not implement interface {lexeme}"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "invalidDictionaryKeyType": {
+      "mensajes": {
+        "es": "El tipo de clave del diccionario no está permitido",
+        "en": "The dictionary key type is not allowed"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "missingDictionaryKey": {
+      "mensajes": {
+        "es": "La clave no existe en el diccionario",
+        "en": "The key does not exist in the dictionary"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "runtime",
+      "tipos_argumentos": {}
+    },
+    "collectionLimitExceeded": {
+      "mensajes": {
+        "es": "Se superó el límite de elementos o bytes de la colección",
+        "en": "Collection element or byte limit exceeded"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "runtime",
+      "tipos_argumentos": {}
+    },
+    "collectionVersionExhausted": {
+      "mensajes": {
+        "es": "Se agotó la versión estructural de la colección",
+        "en": "Collection structural version exhausted"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "runtime",
+      "tipos_argumentos": {}
+    },
+    "collectionModifiedDuringIteration": {
+      "mensajes": {
+        "es": "La colección cambió de estructura durante la iteración",
+        "en": "The collection was structurally modified during iteration"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "runtime",
+      "tipos_argumentos": {}
+    },
+    "collectionCannotBeWritten": {
+      "mensajes": {
+        "es": "Los elementos de la colección no tienen formato de salida",
+        "en": "Collection elements have no output representation"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "invalidForEachCollection": {
+      "mensajes": {
+        "es": "Para Cada necesita Vector, Diccionario o arreglo unidimensional",
+        "en": "For each requires a vector, dictionary, or one-dimensional array"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "invalidForEachBindings": {
+      "mensajes": {
+        "es": "La cantidad de vínculos no corresponde a la colección",
+        "en": "The binding count does not match the collection"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "breakOutsideLoop": {
+      "mensajes": {
+        "es": "Salir solo es válido dentro de un bucle",
+        "en": "Break is only valid inside a loop"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "controlTransferInsideCleanup": {
+      "mensajes": {
+        "es": "No se permite salir ni registrar otra limpieza dentro de una limpieza",
+        "en": "A cleanup cannot transfer control or register another cleanup"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "unclosedDefer": {
+      "mensajes": {
+        "es": "Bloque Diferir sin cerrar",
+        "en": "Unclosed defer block"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
     }
   }
 }

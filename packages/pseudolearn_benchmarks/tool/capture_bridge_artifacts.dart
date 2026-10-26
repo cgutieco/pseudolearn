@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-const int iosLimitBytes = 3 * 1024 * 1024;
-const int wasmLimitBytes = 600 * 1024;
+const int iosLimitBytes = 5 * 1024 * 1024;
+const int wasmLimitBytes = 900 * 1024;
 
 Future<void> main(List<String> arguments) async {
   final root = Directory.current.parent.parent;

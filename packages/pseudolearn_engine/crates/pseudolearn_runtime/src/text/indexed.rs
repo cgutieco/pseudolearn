@@ -1,7 +1,7 @@
 use super::{Breadcrumbs, text_content, text_length};
 use crate::heap::{AllocationRequest, Shape};
 use crate::{Handle, Heap, MemoryError};
-use pseudolearn_abi::TEXT_ASCII_STATUS_MASK;
+use pseudolearn_abi::{STRING_BREADCRUMBS_HANDLE_WORD_OFFSET, TEXT_ASCII_STATUS_MASK};
 
 pub fn text_character(heap: &mut Heap, handle: Handle, position: i64) -> Result<char, MemoryError> {
     let length = text_length(heap, handle)?;
@@ -111,18 +111,23 @@ impl Heap {
     pub(super) fn discard_breadcrumbs(&mut self) -> Result<(), MemoryError> {
         self.arena.breadcrumbs.clear();
         let mut headers = Vec::new();
-        let mut auxiliary = Vec::new();
         for block in &self.blocks {
             if self.is_text(block.handle)? {
                 headers.push(block.handle);
-            } else if self.is_auxiliary(block.handle)? {
-                auxiliary.push(block.handle);
             }
         }
+        let mut indexes = std::collections::BTreeSet::new();
         for handle in headers {
+            let index = Handle(
+                u32::try_from(self.word(handle, STRING_BREADCRUMBS_HANDLE_WORD_OFFSET)?)
+                    .map_err(|_| MemoryError::Internal)?,
+            );
             self.clear_text_index(handle)?;
+            if !index.is_absent() {
+                indexes.insert(index);
+            }
         }
-        for handle in auxiliary {
+        for handle in indexes {
             self.release_block(handle)?;
         }
         Ok(())

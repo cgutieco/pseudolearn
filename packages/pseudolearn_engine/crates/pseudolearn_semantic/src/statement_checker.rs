@@ -9,7 +9,14 @@ use pseudolearn_lexicon::KeywordKind;
 use pseudolearn_syntax::{NodeKind, TokenKind};
 
 pub(crate) fn body(session: &mut AnalysisSession<'_>, node: usize) -> Vec<StatementId> {
+    let statements = open_body(session, node);
+    crate::cleanup_checker::finish_scope(session);
+    statements
+}
+
+pub(crate) fn open_body(session: &mut AnalysisSession<'_>, node: usize) -> Vec<StatementId> {
     let start = session.module.locals.len();
+    session.control.deferred.push(Vec::new());
     let statements = session
         .children(node)
         .into_iter()
@@ -26,15 +33,7 @@ pub(crate) fn scoped_body(session: &mut AnalysisSession<'_>, node: usize) -> Vec
     statements
 }
 
-pub(crate) fn check(session: &mut AnalysisSession<'_>, node: usize) -> Option<StatementId> {
-    if session.kind(node) == NodeKind::Statement {
-        return session
-            .tree
-            .child_indices(node)
-            .first()
-            .copied()
-            .and_then(|child| check(session, child));
-    }
+fn check_kind(session: &mut AnalysisSession<'_>, node: usize) -> Option<StatementId> {
     let kind = match session.kind(node) {
         NodeKind::Declaration => {
             crate::local_registry::declaration(session, node);
@@ -81,23 +80,15 @@ fn output(session: &mut AnalysisSession<'_>, node: usize) -> HirStatement {
 }
 
 fn returned(session: &mut AnalysisSession<'_>, node: usize) -> HirStatement {
+    if session.control.cleaning {
+        session.report(DiagnosticCode::ControlTransferInsideCleanup, node);
+    }
     let mut value = crate::variant_statements::returned_value(session, node);
     let Some(function) = crate::hierarchy::function(session, session.current).cloned() else {
         return HirStatement::Return(value);
     };
     let expected = session.module.types.get(function.result);
-    let violation = match (function.kind, value) {
-        (FunctionKind::Main, _) => Some(DiagnosticCode::ReturnOutsideSubroutine),
-        (FunctionKind::Constructor, Some(_)) => Some(DiagnosticCode::ReturnWithValueInConstructor),
-        (_, Some(_)) if expected == Type::Unit => {
-            Some(DiagnosticCode::ReturnExpressionInVoidSubroutine)
-        }
-        (_, None) if expected != Type::Unit => Some(DiagnosticCode::MissingReturnExpression),
-        _ => None,
-    };
-    if let Some(code) = violation {
-        session.report(code, node);
-    }
+    return_form(session, node, (function.kind, value), &expected);
     if let Some(expression) = value {
         if expected != Type::Unit
             && !crate::type_resolution::assignable(
@@ -112,8 +103,45 @@ fn returned(session: &mut AnalysisSession<'_>, node: usize) -> HirStatement {
             session, expression, &expected,
         ));
     }
+    crate::cleanup_checker::exit(session);
     crate::result_obligations::finish(session);
     session.pending_results.clear();
     session.returned = true;
     HirStatement::Return(value)
+}
+
+pub(crate) fn check(session: &mut AnalysisSession<'_>, node: usize) -> Option<StatementId> {
+    if session.kind(node) == NodeKind::Statement {
+        return session
+            .tree
+            .child_indices(node)
+            .first()
+            .copied()
+            .and_then(|child| check(session, child));
+    }
+    if let Some(kind) = crate::cleanup_checker::statement(session, node) {
+        return Some(session.statement(kind, session.span(node)));
+    }
+    check_kind(session, node)
+}
+
+fn return_form(
+    session: &mut AnalysisSession<'_>,
+    node: usize,
+    form: (FunctionKind, Option<crate::ExpressionId>),
+    expected: &Type,
+) {
+    let (kind, value) = form;
+    let violation = match (kind, value) {
+        (FunctionKind::Main, _) => Some(DiagnosticCode::ReturnOutsideSubroutine),
+        (FunctionKind::Constructor, Some(_)) => Some(DiagnosticCode::ReturnWithValueInConstructor),
+        (_, Some(_)) if *expected == Type::Unit => {
+            Some(DiagnosticCode::ReturnExpressionInVoidSubroutine)
+        }
+        (_, None) if *expected != Type::Unit => Some(DiagnosticCode::MissingReturnExpression),
+        _ => None,
+    };
+    if let Some(code) = violation {
+        session.report(code, node);
+    }
 }

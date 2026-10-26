@@ -1,7 +1,10 @@
 mod access;
 mod cell_frames;
 mod cells;
+mod collections;
 pub use cell_frames::{rt_aot_cell_mark, rt_aot_cell_release};
+pub use collections::{COLLECTION_PACKET_WORDS, rt_aot_collection};
+pub use pseudolearn_abi::{CollectionCommand, DictionaryKeyKind};
 mod class_layout;
 mod config;
 mod context;
@@ -20,9 +23,11 @@ mod metadata_codec;
 mod output;
 mod process;
 mod process_report;
+mod quoted_text;
 mod random;
 mod session;
 mod text;
+pub use quoted_text::rt_aot_text_quote;
 mod trap;
 
 pub use access::{rt_aot_array_load, rt_aot_array_store, rt_aot_object_load, rt_aot_object_store};
