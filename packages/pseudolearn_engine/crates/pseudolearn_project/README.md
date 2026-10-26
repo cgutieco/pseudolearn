@@ -69,6 +69,8 @@ fallos por clave portable de ubicación, posición, código y campo; la ubicaci�
 `Configuration::package_input` convierte la configuración en un paquete del proyecto. Las excepciones de perfil
 se serializan por clave portable de ruta, no por el orden crudo de las claves TOML.
 
+Permisos y confinamiento (`capability_fs`): `PermissionName` (`Console`, `Arguments`, `FilesRead`, `FilesWrite`, `Clock`, `Timer`) modela el vocabulario cerrado de permisos de ejecución (`PG-3.03`). La autoridad efectiva (`resolve_permissions`) implementa denegación por defecto: un permiso solo es activo si el paquete lo solicita explícitamente y el anfitrión lo otorga en `HostGrants.permissions`. `capability_fs` define las reglas puras de confinamiento: `FileRights` implementa derechos atenuables (lectura, escritura, creación) sin amplificación, y `ConfinedDirectory` valida que las rutas lógicas queden circunscritas al directorio concedido sin secuencias de escape `..` ni rutas absolutas.
+
 Lock: `Lock::from_packages` normaliza (dependencias ordenadas y sin repetir), valida origen lógico, digests y aristas y
 rechaza un mismo nombre con dos orígenes. `Lock::parse` reutiliza el analizador del manifiesto (`lock_parser`),
 `Lock::canonical_text` (`lock_canonical`) escribe los bytes estables y `Lock::verify` (`lock_verification`) compara el

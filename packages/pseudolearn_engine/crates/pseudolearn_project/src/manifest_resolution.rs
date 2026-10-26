@@ -1,11 +1,11 @@
-use crate::authority::{HostGrants, LimitAuthority, resolve_limits};
+use crate::authority::{HostGrants, LimitAuthority, resolve_limits, resolve_permissions};
 use crate::logical_path::segments;
 use crate::manifest_error::{Location, ManifestError, ManifestErrorCode};
-use crate::manifest_model::{LimitName, Manifest};
+use crate::manifest_model::{LimitName, Manifest, PermissionName};
 use crate::manifest_parser::parse;
 use crate::manifest_schema::validate;
 use crate::project_model::PackageInput;
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, BTreeSet};
 
 pub struct ManifestRequest<'input> {
     pub text: &'input str,
@@ -19,6 +19,7 @@ pub struct Configuration {
     pub root: String,
     pub manifest: Manifest,
     pub limits: BTreeMap<LimitName, LimitAuthority>,
+    pub permissions: BTreeSet<PermissionName>,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -53,10 +54,12 @@ impl Configuration {
             ManifestError::sort(&mut errors);
             return Err(errors);
         }
+        let permissions = resolve_permissions(&manifest.permissions, request.grants);
         Ok(Self {
             root: root.join("/"),
             manifest,
             limits,
+            permissions,
         })
     }
 

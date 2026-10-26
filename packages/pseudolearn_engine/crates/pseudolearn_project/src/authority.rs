@@ -1,10 +1,11 @@
 use crate::manifest_error::{ManifestError, ManifestErrorCode};
-use crate::manifest_model::{LimitName, LimitRequest, Provenance};
-use std::collections::BTreeMap;
+use crate::manifest_model::{Field, LimitName, LimitRequest, PermissionName, Provenance};
+use std::collections::{BTreeMap, BTreeSet};
 
 #[derive(Clone, Debug, Default, Eq, PartialEq)]
 pub struct HostGrants {
     pub limits: BTreeMap<LimitName, u64>,
+    pub permissions: BTreeSet<PermissionName>,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -13,6 +14,19 @@ pub struct LimitAuthority {
     pub granted: Option<u64>,
     pub effective: Option<u64>,
     pub provenance: Provenance,
+}
+
+pub fn resolve_permissions(
+    requests: &[Field<PermissionName>],
+    grants: &HostGrants,
+) -> BTreeSet<PermissionName> {
+    let mut effective = BTreeSet::new();
+    for request in requests {
+        if grants.permissions.contains(&request.value) {
+            effective.insert(request.value);
+        }
+    }
+    effective
 }
 
 pub(crate) fn resolve_limits(

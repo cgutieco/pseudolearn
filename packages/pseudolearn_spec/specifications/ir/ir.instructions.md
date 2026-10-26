@@ -3279,3 +3279,35 @@
   "observacion": []
 }
 ```
+
+```cobertura
+{
+  "id": "V132",
+  "regla": "LANG.CAPABILITY.MODEL#R1",
+  "sin_ri": "Los tipos de capacidad se representan como referencias opacas en el banco de referencias."
+}
+```
+
+```cobertura
+{
+  "id": "V133",
+  "regla": "LANG.CAPABILITY.MODEL#R2",
+  "sin_ri": "La denegación por defecto y la autoridad de capacidades se resuelven en el anfitrión."
+}
+```
+
+```cobertura
+{
+  "id": "V134",
+  "regla": "LANG.CAPABILITY.MODEL#R3",
+  "sin_ri": "La comprobación de no amplificación y confinamiento se aplica en la tabla de capacidades."
+}
+```
+
+```cobertura
+{
+  "id": "V135",
+  "regla": "LANG.CAPABILITY.MODEL#R4",
+  "sin_ri": "La invalidación por cierre y conteo generacional opera en el runtime de capacidades."
+}
+```

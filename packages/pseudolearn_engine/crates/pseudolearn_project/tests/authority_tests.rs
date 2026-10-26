@@ -16,6 +16,7 @@ fn manifest(limits: &[(&str, u64)]) -> String {
 fn grants(limits: &[(LimitName, u64)]) -> HostGrants {
     HostGrants {
         limits: limits.iter().copied().collect(),
+        permissions: std::collections::BTreeSet::new(),
     }
 }
 

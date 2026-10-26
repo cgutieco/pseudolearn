@@ -2,6 +2,10 @@
   "sujeto": "engine",
   "paquete": "packages/pseudolearn_engine",
   "activadas": [
+    "ENG.EXEC.EFFECT-COMMIT",
+    "ENG.EFFECT.TAPE",
+    "LANG.CAPABILITY.MODEL",
+    "RT.HOST.INTERFACE",
     "LANG.MODULE.MODEL",
     "LANG.MODULE.IMPORT",
     "API.PROJECT",
@@ -1515,6 +1519,96 @@
     {
       "regla": "LANG.CONTROL.CLEANUP@1.0.0#R2",
       "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.EXEC.EFFECT-COMMIT@1.0.0#R1",
+      "verificacion": "crates/pseudolearn_runtime/src/capability_table.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.EXEC.EFFECT-COMMIT@1.0.0#R2",
+      "verificacion": "crates/pseudolearn_runtime/src/capability_table.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.EXEC.EFFECT-COMMIT@1.0.0#R3",
+      "verificacion": "crates/pseudolearn_runtime/src/capability_table.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.EXEC.EFFECT-COMMIT@1.0.0#R4",
+      "verificacion": "crates/pseudolearn_runtime/src/capability_table.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.EXEC.EFFECT-ORDER@1.0.0#R4",
+      "verificacion": "crates/pseudolearn_vm/src/machine/calls.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.EXEC.MODEL@1.0.0#R4",
+      "verificacion": "crates/pseudolearn_vm/src/machine/control.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "RT.HOST.INTERFACE@1.0.0#R4",
+      "verificacion": "crates/pseudolearn_vm/src/machine/initialization.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.CAPABILITY.MODEL@1.0.0#R1",
+      "verificacion": "crates/pseudolearn_runtime/src/capability_table.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.CAPABILITY.MODEL@1.0.0#R2",
+      "verificacion": "crates/pseudolearn_project/src/authority.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.CAPABILITY.MODEL@1.0.0#R3",
+      "verificacion": "crates/pseudolearn_project/src/capability_fs.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.CAPABILITY.MODEL@1.0.0#R4",
+      "verificacion": "crates/pseudolearn_runtime/src/capability_table.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.EFFECT.TAPE@1.0.0#R1",
+      "verificacion": "crates/pseudolearn_timeline/src/effect_tape.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.EFFECT.TAPE@1.0.0#R2",
+      "verificacion": "crates/pseudolearn_timeline/src/effect_tape.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.EFFECT.TAPE@1.0.0#R3",
+      "verificacion": "crates/pseudolearn_timeline/src/effect_tape.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.EFFECT.TAPE@1.0.0#R4",
+      "verificacion": "crates/pseudolearn_timeline/src/tape_replay.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "API.EXECUTE@1.0.0#R5",
+      "verificacion": "crates/pseudolearn_api/src/execution_resource.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "API.STATE.QUERY@1.0.0#R5",
+      "verificacion": "crates/pseudolearn_api/src/execution_resource.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "API.ERRORS@1.0.0#R3",
+      "verificacion": "crates/pseudolearn_api/src/errors.rs",
       "estado": "cumple"
     }
   ]

@@ -83,3 +83,38 @@
   "justificacion": "La ejecuta el sujeto engine en R4 y R5."
 }
 ```
+
+```regla
+{
+  "id": "R3",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Los errores de reproducción de cinta pertenecen a la familia de uso y comprenden los códigos replay_identity_mismatch, replay_divergence, replay_truncated_tape, replay_corrupted_tape y replay_non_reproducible. Todo error de reproducción describe la causa exacta sin realizar reintentos contra el anfitrión.",
+  "verificacion": [
+    "C1"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C1",
+  "regla": "R3",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "error_reproduccion\n",
+    "terminacion": "completed"
+  },
+  "programa": "Algoritmo P\nEscribir \"error_reproduccion\";\nFinAlgoritmo\n",
+  "perfil_base": "es"
+}
+```

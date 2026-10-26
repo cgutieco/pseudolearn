@@ -34,21 +34,15 @@ pub(crate) struct ExecutionResource {
     warnings: Vec<ApiDiagnostic>,
     view: Option<crate::program_view::ProgramView>,
     source: Option<crate::ApiSourceIdentity>,
+    execution_mode: pseudolearn_timeline::ExecutionMode,
 }
 
 impl ExecutionResource {
     pub(crate) fn start(request: &ExecuteRequest) -> Result<Self, ApiError> {
-        let (module, warnings) = crate::ir_execution::compile_source_with_identity(
-            &request.program,
-            &request.profile,
-            &request.strictness,
-            request.source,
-        )
-        .map_err(|_| usage("analysis has errors"))?;
-        let bytecode = pseudolearn_bytecode::compile_module(&module)
-            .map_err(|error| ApiError::InternalFault(format!("{error:?}")))?;
-        let program =
-            load(&bytecode).map_err(|trap| ApiError::InternalFault(trap.code.to_owned()))?;
+        let execution_mode =
+            crate::tape_wire::parse_execution_mode(request.execution_mode.as_deref())?;
+        crate::tape_wire::validate_replay_tape(request, execution_mode)?;
+        let (program, warnings) = prepare_program_and_warnings(request)?;
         let cancelled = Arc::new(AtomicBool::new(false));
         let mut options = crate::execution::options(request);
         options.twin_mode = TwinMode::Probed;
@@ -73,6 +67,7 @@ impl ExecutionResource {
             warnings,
             view: None,
             source: request.source,
+            execution_mode,
         })
     }
 
@@ -118,6 +113,9 @@ impl ExecutionResource {
     }
 
     pub(crate) fn input(&mut self, text: String) -> Result<(), ApiError> {
+        if !self.execution_mode.allows_external_host() {
+            return Err(usage("external input rejected in replay or seek mode"));
+        }
         if !matches!(self.terminal, Some(RunExit::AwaitingInput)) {
             return Err(usage("execution is not awaiting input"));
         }
@@ -274,4 +272,20 @@ fn initial_checkpoint(machine: &Machine<'_>) -> Result<(Value, CheckpointStore),
 
 pub(crate) fn usage(detail: &str) -> ApiError {
     ApiError::InvalidProtocol(detail.to_owned())
+}
+
+fn prepare_program_and_warnings(
+    request: &ExecuteRequest,
+) -> Result<(LoadedProgram, Vec<ApiDiagnostic>), ApiError> {
+    let (module, warnings) = crate::ir_execution::compile_source_with_identity(
+        &request.program,
+        &request.profile,
+        &request.strictness,
+        request.source,
+    )
+    .map_err(|_| usage("analysis has errors"))?;
+    let bytecode = pseudolearn_bytecode::compile_module(&module)
+        .map_err(|fault| ApiError::InternalFault(format!("{fault:?}")))?;
+    let program = load(&bytecode).map_err(|trap| ApiError::InternalFault(trap.code.to_owned()))?;
+    Ok((program, warnings))
 }

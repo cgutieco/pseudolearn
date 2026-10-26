@@ -26,6 +26,8 @@ pub struct ExecuteRequest {
     pub include_program_view: bool,
     pub gc_stress: bool,
     pub source: Option<crate::ApiSourceIdentity>,
+    pub execution_mode: Option<String>,
+    pub effect_tape: Option<serde_json::Value>,
 }
 
 impl Default for ExecuteRequest {
@@ -45,6 +47,8 @@ impl Default for ExecuteRequest {
             include_program_view: false,
             gc_stress: false,
             source: None,
+            execution_mode: None,
+            effect_tape: None,
         }
     }
 }

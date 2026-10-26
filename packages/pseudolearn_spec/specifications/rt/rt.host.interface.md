@@ -181,6 +181,41 @@
 }
 ```
 
+```regla
+{
+  "id": "R4",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Todo recurso asignado en la frontera del anfitrión se libera de manera forzosa e inmediata ante terminación cancelled, limit_reached o failed, garantizando que ninguna capacidad del anfitrión permanezca abierta tras finalizar la sesión.",
+  "verificacion": [
+    "C5"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C5",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "liberado\n",
+    "terminacion": "completed"
+  },
+  "programa": "Algoritmo P\nEscribir \"liberado\";\nFinAlgoritmo\n",
+  "perfil_base": "es"
+}
+```
+
 ## Oráculo
 
 Los valores esperados de R3 se calculan con el oráculo independiente de see_oracles, que implementa SplitMix64 y xoshiro256** desde su definición; multiplicar por 2⁵³ y truncar recupera exactamente los 53 bits superiores de cada salida.

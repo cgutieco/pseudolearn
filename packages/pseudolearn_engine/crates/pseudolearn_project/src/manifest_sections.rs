@@ -2,7 +2,8 @@ use crate::logical_path::key;
 use crate::manifest_checker::{Checker, join};
 use crate::manifest_error::{Location, ManifestErrorCode};
 use crate::manifest_model::{
-    LimitName, LimitRequest, ManifestDependency, ProfileChoice, ProfileException,
+    Field, LimitName, LimitRequest, ManifestDependency, PermissionName, ProfileChoice,
+    ProfileException, Provenance,
 };
 use crate::manifest_value::{Entry, Located, Node, Scalar, Table};
 use std::collections::BTreeMap;
@@ -136,19 +137,22 @@ fn dependency(
     })
 }
 
-pub(crate) fn requests(checker: &mut Checker, root: &Table) -> BTreeMap<LimitName, LimitRequest> {
+pub(crate) fn requests(
+    checker: &mut Checker,
+    root: &Table,
+) -> (BTreeMap<LimitName, LimitRequest>, Vec<Field<PermissionName>>) {
     let Some(entry) = root.entries.get("requests") else {
-        return BTreeMap::new();
+        return (BTreeMap::new(), Vec::new());
     };
     let Some(table) = checker.table(entry, "requests") else {
-        return BTreeMap::new();
+        return (BTreeMap::new(), Vec::new());
     };
     checker.reject_unknown(table, &["limits", "permissions"], "requests");
-    permissions(checker, table);
+    let permissions_list = permissions(checker, table);
     let Some(limits) = table.entries.get("limits") else {
-        return BTreeMap::new();
+        return (BTreeMap::new(), permissions_list);
     };
-    limit_requests(checker, limits)
+    (limit_requests(checker, limits), permissions_list)
 }
 
 fn limit_requests(checker: &mut Checker, entry: &Entry) -> BTreeMap<LimitName, LimitRequest> {
@@ -184,15 +188,24 @@ fn positive(checker: &mut Checker, element: &Entry, field: &str) -> Option<Limit
     }
 }
 
-fn permissions(checker: &mut Checker, table: &Table) {
+fn permissions(checker: &mut Checker, table: &Table) -> Vec<Field<PermissionName>> {
+    let mut resolved = Vec::new();
     let Some(entry) = table.entries.get("permissions") else {
-        return;
+        return resolved;
     };
     let Some(items) = checker.list(entry, "requests.permissions") else {
-        return;
+        return resolved;
     };
     for (position, text) in checker.text_items(items, "requests.permissions") {
         let field = format!("requests.permissions[{position}]");
-        checker.report(ManifestErrorCode::UnknownPermission, &field, text.position);
+        if let Some(name) = PermissionName::parse(&text.value) {
+            resolved.push(Field {
+                value: name,
+                provenance: Provenance::Manifest(text.position),
+            });
+        } else {
+            checker.report(ManifestErrorCode::UnknownPermission, &field, text.position);
+        }
     }
+    resolved
 }

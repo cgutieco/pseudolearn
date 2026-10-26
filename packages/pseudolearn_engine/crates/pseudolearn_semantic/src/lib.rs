@@ -3,6 +3,7 @@
 mod argument_checker;
 mod assignment_checker;
 mod builtin_checker;
+pub mod capability_types;
 mod call_checker;
 mod checker;
 mod class_registry;

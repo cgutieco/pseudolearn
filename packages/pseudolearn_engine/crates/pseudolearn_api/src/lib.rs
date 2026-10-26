@@ -117,6 +117,7 @@ pub use native_execution::{
 
 mod recording;
 mod state_changes;
+pub mod tape_wire;
 
 #[cfg(test)]
 mod recording_digest_tests;

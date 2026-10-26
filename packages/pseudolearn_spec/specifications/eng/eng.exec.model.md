@@ -325,3 +325,39 @@ El campo cancelacion de un caso indica la entrada a sentencia, contada desde uno
   "id": "C9"
 }
 ```
+
+```regla
+{
+  "id": "R4",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Se distingue estrictamente entre fallo controlado de efecto (que produce un valor Resultado::Error que recorre normalmente las cláusulas Diferir), trampa del programa (que finaliza con failed) y corte o terminación por el anfitrión (cancelled o limit_reached). Ante un corte del anfitrión, la ejecución se detiene de inmediato, la tabla de capacidades del anfitrión se libera forzosamente y no se ejecutan nuevos efectos de usuario dentro de Diferir.",
+  "verificacion": [
+    "C10"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C10",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "",
+    "terminacion": "cancelled"
+  },
+  "programa": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n",
+  "perfil_base": "es",
+  "cancelacion": 1
+}
+```

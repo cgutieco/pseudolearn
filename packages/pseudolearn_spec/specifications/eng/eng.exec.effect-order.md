@@ -204,3 +204,40 @@
   "justificacion": "La ejecuta el sujeto engine en R5."
 }
 ```
+
+```regla
+{
+  "id": "R4",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Todo efecto confirmado recibe un identificador secuencial effect_seq asignado en el momento exacto en que se completa la evaluación de sus argumentos y antes de emitir la petición al anfitrión. Si la evaluación de los argumentos produce una trampa, ningún effect_seq es asignado y la operación no es emitida al anfitrión.",
+  "verificacion": [
+    "C5"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C5",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "",
+    "fallo": {
+      "codigo": "divisionByZero"
+    }
+  },
+  "programa": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nEscribir 10 div x;\nFinAlgoritmo\n",
+  "perfil_base": "es"
+}
+```

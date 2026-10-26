@@ -2,6 +2,9 @@
   "sujeto": "aot",
   "paquete": "packages/pseudolearn_engine",
   "activadas": [
+    "ENG.EXEC.EFFECT-COMMIT",
+    "ENG.EFFECT.TAPE",
+    "LANG.CAPABILITY.MODEL",
     "ENG.EXEC.EFFECT-ORDER",
     "ENG.INPUT",
     "ENG.LIMITS",
@@ -1141,6 +1144,96 @@
       "verificacion": "ejecutor",
       "estado": "exento",
       "justificacion": "La regla incluye casos de análisis estático, no anunciado por el adaptador AOT; el sujeto engine los contrasta y los casos de ejecución se contrastan en ambos."
+    },
+    {
+      "regla": "ENG.EXEC.EFFECT-COMMIT@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-3.12"
+    },
+    {
+      "regla": "ENG.EXEC.EFFECT-COMMIT@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-3.12"
+    },
+    {
+      "regla": "ENG.EXEC.EFFECT-COMMIT@1.0.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-3.12"
+    },
+    {
+      "regla": "ENG.EXEC.EFFECT-COMMIT@1.0.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-3.12"
+    },
+    {
+      "regla": "ENG.EXEC.EFFECT-ORDER@1.0.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-3.12"
+    },
+    {
+      "regla": "RT.HOST.INTERFACE@1.0.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-3.12"
+    },
+    {
+      "regla": "RT.PROCESS@1.0.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-3.12"
+    },
+    {
+      "regla": "LANG.CAPABILITY.MODEL@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-3.12"
+    },
+    {
+      "regla": "LANG.CAPABILITY.MODEL@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-3.12"
+    },
+    {
+      "regla": "LANG.CAPABILITY.MODEL@1.0.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-3.12"
+    },
+    {
+      "regla": "LANG.CAPABILITY.MODEL@1.0.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-3.12"
+    },
+    {
+      "regla": "ENG.EFFECT.TAPE@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-3.12"
+    },
+    {
+      "regla": "ENG.EFFECT.TAPE@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-3.12"
+    },
+    {
+      "regla": "ENG.EFFECT.TAPE@1.0.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-3.12"
+    },
+    {
+      "regla": "ENG.EFFECT.TAPE@1.0.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-3.12"
     }
   ]
 }

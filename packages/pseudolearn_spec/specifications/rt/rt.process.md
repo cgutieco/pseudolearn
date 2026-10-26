@@ -150,3 +150,38 @@
   "justificacion": "La ejecuta el sujeto aot en R6."
 }
 ```
+
+```regla
+{
+  "id": "R4",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "El proceso nativo accede a argumentos y recursos externos únicamente mediante las capacidades explícitas inyectadas al inicializar según los permisos concedidos; sin concesión explícita el entorno permanece aislado por defecto.",
+  "verificacion": [
+    "C3"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C3",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "proceso_confinado\n",
+    "terminacion": "completed"
+  },
+  "programa": "Algoritmo P\nEscribir \"proceso_confinado\";\nFinAlgoritmo\n",
+  "perfil_base": "es"
+}
+```

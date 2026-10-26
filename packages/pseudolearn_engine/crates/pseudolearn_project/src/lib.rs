@@ -1,6 +1,7 @@
 #![forbid(unsafe_code)]
 
 mod authority;
+mod capability_fs;
 mod dependency_graph;
 mod entry_selection;
 mod graph_adjacency;
@@ -33,7 +34,8 @@ mod profile_resolution;
 mod project_error;
 mod project_model;
 
-pub use authority::{HostGrants, LimitAuthority};
+pub use authority::{HostGrants, LimitAuthority, resolve_permissions};
+pub use capability_fs::{CapabilityFsError, ConfinedDirectory, FileRights};
 pub use dependency_graph::find_cycles;
 pub use entry_selection::select_entry;
 pub use lock_error::{LockError, LockErrorCode};
@@ -41,8 +43,8 @@ pub use lock_model::{DIGEST_PREFIX, Lock, LockKind, LockPackage, is_digest};
 pub use logical_path::{logical_path_key, normalize_logical_path};
 pub use manifest_error::{Location, ManifestError, ManifestErrorCode};
 pub use manifest_model::{
-    Field, LimitName, LimitRequest, Manifest, ManifestDependency, ProfileChoice, ProfileException,
-    Provenance,
+    Field, LimitName, LimitRequest, Manifest, ManifestDependency, PermissionName, ProfileChoice,
+    ProfileException, Provenance,
 };
 pub use manifest_resolution::{
     Configuration, LocatedError, LocatedManifest, ManifestRequest, is_logical_path, resolve_all,

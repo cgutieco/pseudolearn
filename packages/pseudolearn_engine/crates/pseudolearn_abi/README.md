@@ -24,6 +24,8 @@ Los arreglos guardan total de elementos en la palabra 2, cantidad de elementos e
 
 Invariantes: Una sola disposición para runtime, VM, línea temporal y futuros consumidores nativos. NaN representa real ausente, 2 lógico ausente, 0xFFFFFFFF carácter ausente y asa cero referencia ausente.
 
+Capacidades (`capability_layout`): `CapabilityKind` define las clases normativas (`Console`, `Arguments`, `Directory`, `File`, `Clock`, `Timer`) y sus etiquetas numéricas (0..=5). `CAPABILITY_HEADER_WORDS = 2` y `CAPABILITY_SHAPE_TAG = 0x0000_CA00` definen la cabecera estándar en el montón para asas de capacidad, permitiendo que runtime, semántica, VM y línea temporal compartan la misma clasificación y disposición binaria sin descriptores externos.
+
 ## 4. Decisiones de diseño y fundamentos técnicos
 
 Problema: runtime, VM, línea temporal y consumidores nativos necesitan interpretar el mismo bloque sin descriptores de asignación externos. Elección: `CommonHeader` fija forma y banderas en la primera palabra y ordinal o cantidad de puntos en la segunda; los offsets de arreglos, objetos y cadenas completan una disposición única. Se rechazan punteros, páginas persistentes y disposiciones diferentes por motor.

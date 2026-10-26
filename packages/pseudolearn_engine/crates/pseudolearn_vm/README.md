@@ -131,6 +131,13 @@ primer registro modificado desde el punto anterior para que `MachineDelta` omita
   `Completed`, `Service`, `AwaitingInput`, `Cancelled` o `LimitReached`; el llamador interpreta la salida. La salida
   del programa se acumula en el resultado de ejecución, sin escribir en el anfitrión; la entrada se alimenta por
   secuencias estructuradas o se suspende hasta recibir más valores.
+- **Tripartición formal de terminaciones y limpieza (`CF-11`, `CF-07`, `ENG.EXEC.MODEL`):**
+  Se distingue formalmente entre (a) fallo controlado de efecto (produce un valor `Resultado::Error` que
+  recorre normalmente las cláusulas `Diferir`), (b) trampa del programa (`RunExit::Trap(VmTrap)` que detiene
+  el algoritmo con `failed` por aserción/precondición) y (c) terminación por el anfitrión (`Cancelled`,
+  `LimitReached` por presupuesto de sentencias/tiempo). Ante una terminación por el anfitrión, la máquina
+  se detiene de inmediato, la tabla de capacidades del anfitrión se libera forzosamente y no se ejecutan
+  nuevos efectos de usuario dentro de `Diferir`.
 - **Formato binario columnar PLEV:** La serialización de eventos de traza organiza columnas contiguas de
   ancho fijo (`clase: u8`, `linea: u32`, `profundidad: u32`, `offset: u32`) seguidas de un depósito de texto
   UTF-8 con cadenas deduplicadas. Permite acceso aleatorio en O(1) a cualquier evento sin coste de varints.

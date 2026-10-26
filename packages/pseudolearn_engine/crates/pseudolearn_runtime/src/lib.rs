@@ -1,12 +1,13 @@
 #![forbid(unsafe_code)]
 
 pub use pseudolearn_abi::{
-    CollectionCommand, DictionaryKeyKind, DictionaryLayout, Handle, VectorLayout,
+    CapabilityKind, CollectionCommand, DictionaryKeyKind, DictionaryLayout, Handle, VectorLayout,
 };
 
 mod arithmetic;
 mod array;
 mod cell;
+mod capability_table;
 mod collection;
 mod dictionary;
 mod vector;
@@ -28,6 +29,11 @@ mod random;
 mod snapshot;
 mod text;
 mod value;
+
+pub use capability_table::{
+    CapabilityEntry, CapabilityError, CapabilityTable, CapabilityToken, CommitOutcome,
+    EffectPhase, ReproducibilityStatus, RightsMask,
+};
 
 pub use array::{
     array_dimensions, new_array, read_element, read_element_1d, write_element, write_element_1d,

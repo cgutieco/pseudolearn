@@ -24,7 +24,7 @@ pub(crate) fn validate(root: &Table, location: &[String]) -> Result<Manifest, Ve
     let package = package(&mut checker, root);
     let profiles = manifest_sections::profiles(&mut checker, root);
     let dependencies = manifest_sections::dependencies(&mut checker, root);
-    let limits = manifest_sections::requests(&mut checker, root);
+    let (limits, permissions) = manifest_sections::requests(&mut checker, root);
     let Some(package) = package.filter(|_| checker.errors.is_empty()) else {
         ManifestError::sort(&mut checker.errors);
         return Err(checker.errors);
@@ -37,6 +37,7 @@ pub(crate) fn validate(root: &Table, location: &[String]) -> Result<Manifest, Ve
         profiles,
         dependencies,
         limits,
+        permissions,
     })
 }
 

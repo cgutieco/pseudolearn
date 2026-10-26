@@ -354,6 +354,41 @@
 }
 ```
 
+```regla
+{
+  "id": "R5",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Las consultas de estado retrospectivas y el reposicionamiento seek en modo HistorySeek reconstruyen estados intermedios exclusivamente a partir de los puntos de control y la cinta de efectos grabada, sin reejecutar llamadas de entrada y salida ni consultar al anfitrión.",
+  "verificacion": [
+    "C8"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C8",
+  "regla": "R5",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "historia_aislada\n",
+    "terminacion": "completed"
+  },
+  "programa": "Algoritmo P\nEscribir \"historia_aislada\";\nFinAlgoritmo\n",
+  "perfil_base": "es"
+}
+```
+
 ## Colecciones e interfaces
 
 Una colección se conserva como referencia con identidad compartida. Su entrada de heap describe vector con longitud y elementos, o diccionario con longitud y entradas en inserción, cada una con clave y valor. Las hojas de registros se presentan por campo y las funciones conservan su marcador. La observación no cambia capacidad ni versión. Los metadatos internos de disposición no se proyectan como campos de objetos ordinarios.

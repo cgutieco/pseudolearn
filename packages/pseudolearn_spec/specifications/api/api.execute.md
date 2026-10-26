@@ -210,3 +210,38 @@
   "justificacion": "La ejecuta el sujeto engine en R5."
 }
 ```
+
+```regla
+{
+  "id": "R5",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "La API distingue tres modos de ejecución mutuamente excluyentes: LiveRecord (ejecuta contra el anfitrión y graba la cinta de efectos), ReplayFromTape (reproduce fielmente a partir de la cinta sin consultar al anfitrión) y HistorySeek (reconstruye estados pasados para inspección interactiva desconectado del anfitrión). En ReplayFromTape y HistorySeek el aislamiento externo es absoluto: ninguna llamada a disco, red ni reloj real es realizada.",
+  "verificacion": [
+    "C4"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C4",
+  "regla": "R5",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "aislamiento_garantizado\n",
+    "terminacion": "completed"
+  },
+  "programa": "Algoritmo P\nEscribir \"aislamiento_garantizado\";\nFinAlgoritmo\n",
+  "perfil_base": "es"
+}
+```

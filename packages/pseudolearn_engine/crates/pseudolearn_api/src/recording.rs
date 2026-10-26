@@ -196,23 +196,35 @@ fn result(
         .map(|event| session.call("query_state", &json!({"resource":resource,"event":event})))
         .collect();
     if let Some(fields) = terminal.as_object_mut() {
-        fields.insert("events".to_owned(), json!(recording.events));
-        if let Some(digest) = recording.digest {
-            fields.insert("event_summary".to_owned(), digest.finish());
-        }
-        fields.insert("states".to_owned(), json!(recording.states));
-        fields.insert("retained_views".to_owned(), json!(recording.states));
-        fields.insert("historical_states".to_owned(), json!(recording.historical));
-        fields.insert("deltas".to_owned(), json!(recording.deltas));
-        fields.insert("initial_state".to_owned(), recording.initial);
-        fields.insert("horizon".to_owned(), horizon);
-        fields.insert("queries".to_owned(), json!(queries));
-        fields.insert(
-            "host_tape".to_owned(),
-            json!({"seed":request.seed,"inputs":request.inputs}),
-        );
+        populate_terminal_fields(fields, (recording, horizon, queries), request);
     }
     Ok(terminal)
+}
+
+fn populate_terminal_fields(
+    fields: &mut serde_json::Map<String, Value>,
+    payload: (Recording, Value, Vec<Value>),
+    request: &ExecuteRequest,
+) {
+    let (recording, horizon, queries) = payload;
+    fields.insert("events".to_owned(), json!(recording.events));
+    if let Some(digest) = recording.digest {
+        fields.insert("event_summary".to_owned(), digest.finish());
+    }
+    fields.insert("states".to_owned(), json!(recording.states));
+    fields.insert("retained_views".to_owned(), json!(recording.states));
+    fields.insert("historical_states".to_owned(), json!(recording.historical));
+    fields.insert("deltas".to_owned(), json!(recording.deltas));
+    fields.insert("initial_state".to_owned(), recording.initial);
+    fields.insert("horizon".to_owned(), horizon);
+    fields.insert("queries".to_owned(), json!(queries));
+    fields.insert(
+        "host_tape".to_owned(),
+        json!({"seed":request.seed,"inputs":request.inputs}),
+    );
+    let identity = crate::tape_wire::build_identity(request);
+    let tape = pseudolearn_timeline::EffectTape::new(identity);
+    fields.insert("effect_tape".to_owned(), crate::tape_wire::tape_to_value(&tape));
 }
 
 pub(crate) fn value(response: Value) -> Result<Value, ApiError> {
