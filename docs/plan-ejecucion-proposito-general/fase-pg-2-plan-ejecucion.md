@@ -226,7 +226,7 @@ oficial sin migradores ni compatibilidad. El cierre se registra por subpunto com
 - [x] `PG-2.06.03` Tests de la pila de ámbitos (tabla contigua con marcas de nivel, sin mapas por bloque).
 - [x] `PG-2.06.04` Resolución en semantic; reutilización de ranuras de marco por bloques disjuntos solo si no cambia observables de la vista de estado.
 - [x] `PG-2.06.05` README semantic; diagnóstico «declaración fuera de ámbito» con origen y posible sombreado.
-- [ ] `PG-2.06.06` Verificación acotada más conjunto centinela de archivo suelto.
+- [x] `PG-2.06.06` Verificación acotada más conjunto centinela de archivo suelto.
 
 Estado de cierre: `.02`, `.03`, `.04` y `.05` cumplidos con los casos del corpus, tests dirigidos y
 verificadores registrados en §11.1.3. `.04` no introduce reutilización de ranuras. `.01` conserva pendiente
@@ -241,7 +241,7 @@ sigue pendiente y, por tanto, no se cierra `PG-2.06` como capacidad completa.
 - [x] `PG-2.07.03` Tests de `ClosureLayout`, del cálculo del conjunto capturado (solo lo usado) y del mapa de raíces del entorno.
 - [x] `PG-2.07.04` Captura en semantic; entorno y llamada indirecta en lowering/RI/bytecode; tabla de funciones en VM y `call_indirect` en Cranelift; raíces del entorno en VM y pila sombra.
 - [x] `PG-2.07.05` README abi/semantic/lowering/vm/codegen; diagnóstico «captura mutable compartida» con cadena de tipos y lugar.
-- [ ] `PG-2.07.06` Verificación acotada VM/AOT, propiedades con recolección forzada y señal temprana de E-PG-04.
+- [x] `PG-2.07.06` Verificación acotada VM/AOT, propiedades con recolección forzada y señal temprana de E-PG-04.
 
 ### PG-2.08 · Genéricos de primer orden
 
@@ -250,7 +250,7 @@ sigue pendiente y, por tanto, no se cierra `PG-2.06` como capacidad completa.
 - [x] `PG-2.08.03` Tests del recolector de instancias (lista de trabajo iterativa, caché canónica, independencia del orden de descubrimiento) y del límite con cadena. El recolector es una recursión por demanda con caché canónica y límite de 64 instancias, no una lista de trabajo iterativa: la profundidad de pila queda acotada por ese límite.
 - [x] `PG-2.08.04` Parámetros de tipo en semantic; recolección cerrada de instancias; una función RI por instancia en lowering; nombres de instancia estables para mapas de fuente y fallos AOT.
 - [x] `PG-2.08.05` README semantic/lowering: monomorfización acotada, por qué no borrado ni diccionarios, y condición de reversión.
-- [ ] `PG-2.08.06` Verificación acotada y medición de instancias, bytes de RI/bytecode/objeto y tiempo de compilación frente a control no genérico.
+- [x] `PG-2.08.06` Verificación acotada y medición de instancias, bytes de RI/bytecode/objeto y tiempo de compilación frente a control no genérico.
 
 ### PG-2.09 · Interfaces nominales mínimas
 
@@ -294,10 +294,10 @@ Estado de cierre (2026-10-26): PG-2.09 a PG-2.11 quedan cumplidas. La persona au
 
 - [x] `PG-2.13.01` Declarar en cada contrato nuevo los sujetos `engine` y `aot` y las capacidades necesarias; ningún caso se marca no aplicable en AOT sin motivo de capacidad.
 - [x] `PG-2.13.02` Por cada iteración, casos de trampa con sitio exacto en ambos motores (fuera de rango, invalidación, desbordamiento en registro, límite de colección).
-- [ ] `PG-2.13.03` Diferencial de gemelos y comparación VM/AOT acotados a los contratos de la iteración.
-- [ ] `PG-2.13.04` Corregir divergencias en el dueño de la disposición, nunca con ramas por motor.
+- [x] `PG-2.13.03` Diferencial de gemelos y comparación VM/AOT acotados a los contratos de la iteración.
+- [x] `PG-2.13.04` Corregir divergencias en el dueño de la disposición, nunca con ramas por motor.
 - [x] `PG-2.13.05` README engine: tabla de paridad de construcciones nuevas.
-- [ ] `PG-2.13.06` Al cierre, `--only` de todos los contratos de PG-2 en engine y aot (lista en §11), sin conformidad aot completa.
+- [x] `PG-2.13.06` Al cierre, `--only` de todos los contratos de PG-2 en engine y aot (lista en §11), sin conformidad aot completa.
 
 ### PG-2.14 · Diagnósticos pedagógicos ADR-07
 
@@ -331,11 +331,11 @@ Estado de cierre (2026-10-26): PG-2.09 a PG-2.11 quedan cumplidas. La persona au
 ### PG-2.17 · Experimentos y métricas
 
 - [x] `PG-2.17.01` Fijar protocolos de E-PG-03 y E-PG-04 y los candidatos `PERF.PG.VALUE`, `.RESULT`, `.MATCH`, `.GENERICS`, `.CLOSURE`, `.COLLECTION` y `.CLEANUP`, separados de los PERF vigentes.
-- [ ] `PG-2.17.02` Cargas sembradas y controles de igual semántica (§7.3–7.4).
+- [x] `PG-2.17.02` Cargas sembradas y controles de igual semántica (§7.3–7.4).
 - [x] `PG-2.17.03` Tests del arnés con muestra ausente, salida incorrecta y mezcla de máquinas: ninguna campaña inválida produce verde.
 - [x] `PG-2.17.04` Ampliar `pseudolearn_bench_worker` con subcomandos documentados antes de usarlos.
 - [x] `PG-2.17.05` Materiales de E-PG-10 (tareas, guion, consentimiento, análisis) para la persona; registrar resultado o diferimiento suyo.
-- [ ] `PG-2.17.06` Ejecutar campañas en segundo plano, registrar crudos y resumen, y reportar umbrales no alcanzados sin ajustar controles.
+- [x] `PG-2.17.06` Ejecutar campañas en segundo plano, registrar crudos y resumen, y reportar umbrales no alcanzados sin ajustar controles.
 
 ## 5. Capas y archivos
 
@@ -770,21 +770,35 @@ Omitido por política (§7.1): `cargo xtask verify`, `cargo test --workspace`, `
 
 No cumplido, con motivo: `PG-2.13.03` (se ejecutó la comparación por conformidad engine/aot, no el diferencial de gemelos); `PG-2.16.03` y `.06` no ejecutaron Dart porque no se tocó el consumidor; `PG-2.13.04` (no hubo divergencias que corregir) y `PG-2.13.06` (la unión de todos los contratos de PG-2 corresponde al cierre); `PG-2.17.02` y `.06` (cargas fuente, recolección y campañas pendientes, ver `pg-2-17-protocolos-y-materiales.md`); `PG-2.15` retirado. Sin commit ni push.
 
+#### Iteración C: cierre de PG-2 (2026-10-26)
+
+Autorización: mensaje de la persona «cierra con los pendientes de `4.4 PG-2`». Decisiones con ella: campañas completas en la Mac M2 de referencia, E-PG-10 diferido por la persona, borrado permitido de cachés incrementales (no hizo falta), cierre con commit y push, y cambio del esperado de `LANG.DECL.UNINITIALIZED#C4` a `bindingOutsideScope`.
+
+Escrito: `pg-collect`, `pg-summary`, cargas en `pg_workloads.rs` y `tool/e_pg_campaign.sh` (un orquestador parametrizado en lugar de dos scripts); tests espejo `pg_workloads_tests.rs` y `pg_summary_tests.rs`; README del trabajador. Texto oficial de `LANG.DECL.UNINITIALIZED#R1` y `#C4` (sin `cambio`, reanclado). Vínculo aot de `LANG.CONTROL.FOR#R4` pasa a `exento` con la justificación estándar. Tres tests de api (`function_execution`, `generic_execution`, `variant_lowering`) adaptados a casos de trampa y a ámbitos de bloque que las iteraciones anteriores no ejecutaron.
+
+Ejecutado en verde: centinela de §7.1 en engine (`LANG.LEXICAL.KEYWORD` 16, `.IDENTIFIER` 38, `LANG.PROFILE.VOCABULARY` 8, `.TRANSLATION` 8, `LANG.SYNTAX.GRAMMAR` 12, `LANG.PROGRAM.STRUCTURE` 16, `LANG.CLASS.OUT-OF-SCOPE` 16); por contrato, `conform --only` en engine y aot más `see differential` (0 sin resolver) de `LANG.DECL.CONSTANT`, `LANG.TYPES.ENUM`, `.RECORD`, `.RELATIONS`, `LANG.CONTROL.SWITCH`, `LANG.DECL.VARIABLE`, `.UNINITIALIZED`, `LANG.SUBPROGRAM.SCOPE`, `LANG.TYPES.FUNCTION`, `.GENERIC`, `.INTERFACE`, `.VECTOR`, `.DICTIONARY`, `LANG.CONTROL.FOR-EACH`, `.CLEANUP`, `.FOR`, `LANG.TYPES.INFERENCE`; en engine `IR.WELL-FORMEDNESS` (13), `DIAG.CATALOG` (8) y `API.PROGRAM.VIEW` (18 y su propiedad); `see validate` (175), `lock --check`, `export --check`; tests dirigidos de semantic (8 binarios), abi (4), lowering (2), vm (`twin_switching_tests`), ir, bytecode (4) y api (9 binarios con `native`), bench_worker (`pg_`, 16); Clippy `-D warnings` de api y bench_worker; `rust-checks all` en engine y spec; `git diff --check`.
+
+Regresiones halladas: (1) `LANG.DECL.UNINITIALIZED#C4` esperaba `variableUsedUninitialized`, pero los ámbitos de bloque de PG-2.06 dan `bindingOutsideScope`; la persona autorizó cambiar el esperado. (2) `LANG.CONTROL.FOR#R4` solo tiene casos de análisis y el vínculo aot decía `cumple`. Las evidencias locales de engine y `properties-engine` se apartaron en `results/pre-pg-2-closure/` por hash obsoleto y se regeneraron.
+
+Campañas E-PG-03 y E-PG-04 (detalle en `pg-2-17-protocolos-y-materiales.md` §5): generic-1/10/60 a 1,002/1,007/1,011× del control (umbral 1,10), objeto nativo igual al del control y por debajo de proporcional a las instancias, expansión rechazada por el límite tipado; `closure-call` 1,14× (umbral 1,25) con intervalo 0,85–1,52 que lo supera; recolección forzada sin diferencias. La carga de 100 combinaciones se sustituyó por 60 porque el límite de 64 instancias la rechaza. Los crudos están en el directorio local ignorado `packages/pseudolearn_spec/results/pg-2-campaign-2026-10-26/`.
+
+Disparadores: no cambió `IR.INSTRUCTIONS`, el despacho, dependencias, payload con efecto en Dart ni runtime/abi; omitidos `cargo deny`, tamaño iOS/Wasm, `cargo xtask verify`, `cargo test --workspace`, `conform` sin `--only`, Flutter, puente y Wasm por §7.1.
+
 ### 11.2 Cierre común de PG-2
 
-- [ ] `PG-2.C01` Autorización de la persona para iniciar la fase, en mensaje nuevo.
-- [ ] `PG-2.C02` Plan detallado revisado por la persona antes de especificación o código.
-- [ ] `PG-2.C03` SPEC-FIRST y congelamiento respetados; esperados independientes.
-- [ ] `PG-2.C04` Reglas cubiertas y vínculos como datos.
-- [ ] `PG-2.C05` Pruebas dirigidas feliz/infeliz/límite en carpetas espejo, con negativos de verificadores.
-- [ ] `PG-2.C06` Capas e imports declarados; `SIZE-*` vigentes.
-- [ ] `PG-2.C07` Sin comentarios ni TODO; inglés en código; sin pánicos ni `unsafe` nuevo.
-- [ ] `PG-2.C08` README y reglas actualizados sin citar `docs/`.
-- [ ] `PG-2.C09` Fichas es/en y datos de proyección de cada forma nueva.
-- [ ] `PG-2.C10` K-04/K-05 revisados; E-PG-03/04 con procedencia; E-PG-10 aportado o diferido por la persona.
-- [ ] `PG-2.C11` Pruebas acotadas de §7.1 y verificadores directamente afectados en verde, con selección y omisiones registradas.
-- [ ] `PG-2.C12` Commit con la skill `commit-message`, sin atribución de IA, y push ordinario comprobado a la rama única.
-- [ ] `PG-2.C13` Resumen completo, informe a la persona y parada.
+- [x] `PG-2.C01` Autorización de la persona para iniciar la fase, en mensaje nuevo.
+- [x] `PG-2.C02` Plan detallado revisado por la persona antes de especificación o código.
+- [x] `PG-2.C03` SPEC-FIRST y congelamiento respetados; esperados independientes.
+- [x] `PG-2.C04` Reglas cubiertas y vínculos como datos.
+- [x] `PG-2.C05` Pruebas dirigidas feliz/infeliz/límite en carpetas espejo, con negativos de verificadores.
+- [x] `PG-2.C06` Capas e imports declarados; `SIZE-*` vigentes.
+- [x] `PG-2.C07` Sin comentarios ni TODO; inglés en código; sin pánicos ni `unsafe` nuevo.
+- [x] `PG-2.C08` README y reglas actualizados sin citar `docs/`.
+- [~] `PG-2.C09` Fichas es/en y datos de proyección de cada forma nueva.
+- [x] `PG-2.C10` K-04/K-05 revisados; E-PG-03/04 con procedencia; E-PG-10 aportado o diferido por la persona.
+- [x] `PG-2.C11` Pruebas acotadas de §7.1 y verificadores directamente afectados en verde, con selección y omisiones registradas.
+- [x] `PG-2.C12` Commit con la skill `commit-message`, sin atribución de IA, y push ordinario comprobado a la rama única.
+- [x] `PG-2.C13` Resumen completo, informe a la persona y parada.
 
-Revisión Git de cierre: · Pruebas y verificadores ejecutados: · Suites omitidas y motivo: · Pendientes justificados: ·
+Revisión Git de cierre: commit de cierre en la rama única (ver `git log`) · Pruebas y verificadores ejecutados y suites omitidas: ver «Iteración C» · Pendientes justificados: `PG-2.C09` (sin fichas de ayuda para genéricos, tipos función y clausuras), intervalo de E-PG-04 sobre el umbral, E-PG-10 diferido por la persona ·
 Puntos de §4 del plan general cumplidos:

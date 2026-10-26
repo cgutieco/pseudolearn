@@ -1,8 +1,7 @@
 # PG-2.17 · Protocolos de E-PG-03 y E-PG-04, candidatos `PERF.PG.*` y materiales de E-PG-10
 
-Documento transitorio de `docs/`. Fija lo que `PG-2.17.01`, `.02` y `.05` piden antes de recolectar nada. Ninguna
-campaña se ha ejecutado; `PG-2.17.06` queda pendiente (campañas en segundo plano bajo `PERF.PROTOCOL`, con
-autorización aparte).
+Documento transitorio de `docs/`. Fija lo que `PG-2.17.01`, `.02` y `.05` piden antes de recolectar nada. Las campañas
+de E-PG-03 y E-PG-04 se ejecutaron el 2026-10-26 en la Mac de referencia (§5).
 
 ## 1. Candidatos `PERF.PG.*`
 
@@ -22,9 +21,9 @@ solo se miden en campaña.
 
 ## 2. E-PG-03 · Genéricos y registros
 
-- Cargas sembradas con `Vector`, `Resultado` y registros para 1, 10 y 100 combinaciones de tipos, más recursión de
-  tipos e instanciación expansiva (esta última debe terminar en el límite tipado de 64 instancias).
-- Control no genérico escrito a mano con la misma semántica y salida; la salida se compara por resumen criptográfico.
+- Cargas sembradas con `Vector`, `Resultado` y registros para 1, 10 y 60 combinaciones de tipos, más recursión de
+  tipos e instanciación expansiva (esta última debe terminar en el límite tipado de 64 instancias; por eso la carga mayor es de 60 combinaciones y no de 100, que el propio límite rechaza).
+- Control no genérico escrito a mano con la misma semántica y salida; la salida textual se compara exactamente.
 - Se mide: instancias, bytes de RI/bytecode/objeto, tiempo de compilación por fase y tiempo de recorrido.
 - Éxito: crecimiento como máximo proporcional al número de instancias; recorrido ≤ 1,10× control; límite tipado ante
   expansión. Un fallo se reporta antes de cambiar la estrategia.
@@ -54,11 +53,26 @@ Se rechaza: menos de diez procesos, identidad de proceso repetida, distinta de t
 nula, duración cero, salida del candidato distinta de la del control, máquinas mezcladas, protocolo o experimento
 desconocidos.
 
-## 5. Pendiente declarado de `.17`
+## 5. Ejecución de `.17` (2026-10-26)
 
-Cargas fuente (1/10/100 combinaciones y sus controles), recolección de tiempos en el trabajador, los orquestadores
-`tool/e_pg_03.sh` y `tool/e_pg_04.sh` (modelo `e_pg_11.sh`) y la ejecución de campañas. Dependen de que `.06` de
-`PG-2.07` y `PG-2.08` midan primero sus señales tempranas y de la máquina de referencia que fije la persona.
+Máquina de referencia: esta Mac (Apple M2), designada por la persona. Cargas en `pseudolearn_bench_worker`
+(`pg_workloads.rs`), recolección con `pg-collect`, resumen con `pg-summary` y orquestación con
+`tool/e_pg_campaign.sh`; los crudos y la procedencia quedan en el directorio local ignorado
+`packages/pseudolearn_spec/results/pg-2-campaign-2026-10-26/`.
+
+| Carga | Razón candidato/control | Intervalo 95 % | Umbral | Resultado |
+|---|---|---|---|---|
+| `generic-1` | 1,002 | 0,749–1,303 | ≤1,10 | cumple en la estimación puntual |
+| `generic-10` | 1,007 | 0,971–1,042 | ≤1,10 | cumple |
+| `generic-60` | 1,011 | 1,003–1,017 | ≤1,10 | cumple |
+| `closure-call` | 1,140 | 0,850–1,515 | ≤1,25 | cumple en la estimación puntual; el intervalo supera el umbral |
+| `closure-create` | 4,741 | 4,196–5,301 | sin umbral | informativo (crea una clausura por iteración) |
+
+Forma determinista: el objeto nativo de las cargas genéricas mide lo mismo que el del control no genérico (2168, 6448
+y 30208 bytes) y crece por debajo de proporcional al número de instancias (1, 10, 60); la recursión polimórfica
+expansiva es rechazada por el límite tipado; la salida con recolección forzada coincide con la normal en todas las
+cargas de clausuras. La llamada indirecta cumple por estimación puntual, pero con un intervalo ancho (cada muestra dura
+unos 0,3 ms); se informa sin ajustar controles ni umbrales.
 
 ## 6. E-PG-10 · Materiales para la persona
 

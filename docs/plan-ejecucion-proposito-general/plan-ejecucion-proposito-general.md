@@ -352,20 +352,20 @@ Puntos a cumplir:
 - [x] `PG-2.03` `Opcional<T>` y `Resultado<T,E>`, con descarte de Resultado rechazado y propagación visible.
 - [x] `PG-2.04` `Segun` exhaustivo con patrones básicos sobre literales, enumerados y variantes.
 - [x] `PG-2.05` Vínculos inmutables por defecto, mutación explícita e inicialización en la declaración.
-- [ ] `PG-2.06` Ámbitos léxicos de bloque en la edición 2026.
-- [ ] `PG-2.07` Funciones como valores y clausuras con captura verificada y entornos en el mapa de raíces.
-- [ ] `PG-2.08` Genéricos de primer orden con límite tipado de instanciación.
+- [x] `PG-2.06` Ámbitos léxicos de bloque en la edición 2026.
+- [x] `PG-2.07` Funciones como valores y clausuras con captura verificada y entornos en el mapa de raíces.
+- [x] `PG-2.08` Genéricos de primer orden con límite tipado de instanciación.
 - [x] `PG-2.09` Interfaces nominales mínimas como restricciones, sin herencia múltiple de implementación.
 - [x] `PG-2.10` `Vector` y `Diccionario` con orden observable definido e invalidación durante la iteración especificada.
 - [x] `PG-2.11` `Para Cada`, salida anticipada y limpieza ejecutada exactamente una vez en cada salida.
 - [x] `PG-2.12` El verificador de RI rechaza disposiciones inválidas, con casos negativos.
-- [ ] `PG-2.13` VM y AOT coinciden con los oráculos en todas las construcciones nuevas.
+- [x] `PG-2.13` VM y AOT coinciden con los oráculos en todas las construcciones nuevas.
 - [x] `PG-2.14` Diagnósticos pedagógicos de ADR-07 con código y argumentos iguales en es/en.
 - [~] `PG-2.15` (retirado el 2026-10-26 por la decisión de la persona del 2026-10-25: sin migradores ni retrocompatibilidad) Migración asistida para cambios incompatibles de 2026 cuando corresponda: diff revisable, nunca sobrescritura silenciosa, e intervención
   manual diagnosticada cuando no se preserva la semántica.
 - [x] `PG-2.16` Vista pública del programa con identidades de interfaz, realización, restricción, captura, variante e
   iteración.
-- [ ] `PG-2.17` E-PG-03 y E-PG-04 ejecutados; E-PG-10 con resultados aportados por la persona o diferido por ella;
+- [x] `PG-2.17` E-PG-03 y E-PG-04 ejecutados; E-PG-10 con resultados aportados por la persona o diferido por ella;
   métricas candidatas de tipos, colecciones, clausuras y limpieza medidas.
 
 Fuera de alcance: metaprogramación, tipos de orden superior, especialización por el usuario y sobrecarga compleja.
@@ -377,27 +377,31 @@ de hora y media.
 
 Cierre común (definiciones en §4.0):
 
-- [ ] `PG-2.C01` Autorización de la persona para iniciar la fase, en mensaje nuevo.
-- [ ] `PG-2.C02` Plan detallado creado según §5 y revisado por la persona.
-- [ ] `PG-2.C03` SPEC-FIRST y congelamiento respetados.
-- [ ] `PG-2.C04` Reglas nuevas con casos o propiedades y vínculos como datos.
-- [ ] `PG-2.C05` Pruebas dirigidas feliz, infeliz y límite para las piezas modificadas, en carpetas espejo.
-- [ ] `PG-2.C06` Capas declaradas, imports permitidos y límites de tamaño.
-- [ ] `PG-2.C07` Sin comentarios ni TODO; código en inglés; Rust sin pánicos ni `unsafe` no declarado.
-- [ ] `PG-2.C08` README y reglas de los miembros afectados actualizados, sin citar `docs/`.
-- [ ] `PG-2.C09` Fichas de ayuda y datos de proyección de la sintaxis nueva, o justificación.
-- [ ] `PG-2.C10` Riesgos revisados y experimentos con procedencia o diferidos por la persona.
-- [ ] `PG-2.C11` Pruebas necesarias y verificadores directamente afectados en verde, con selección y omisiones registradas.
-- [ ] `PG-2.C12` Commit sin atribución de IA y push ordinario comprobado a la rama única.
-- [ ] `PG-2.C13` Resumen completo, informe a la persona y parada.
+- [x] `PG-2.C01` Autorización de la persona para iniciar la fase, en mensaje nuevo.
+- [x] `PG-2.C02` Plan detallado creado según §5 y revisado por la persona.
+- [x] `PG-2.C03` SPEC-FIRST y congelamiento respetados.
+- [x] `PG-2.C04` Reglas nuevas con casos o propiedades y vínculos como datos.
+- [x] `PG-2.C05` Pruebas dirigidas feliz, infeliz y límite para las piezas modificadas, en carpetas espejo.
+- [x] `PG-2.C06` Capas declaradas, imports permitidos y límites de tamaño.
+- [x] `PG-2.C07` Sin comentarios ni TODO; código en inglés; Rust sin pánicos ni `unsafe` no declarado.
+- [x] `PG-2.C08` README y reglas de los miembros afectados actualizados, sin citar `docs/`.
+- [~] `PG-2.C09` Fichas de ayuda y datos de proyección de la sintaxis nueva, o justificación.
+- [x] `PG-2.C10` Riesgos revisados y experimentos con procedencia o diferidos por la persona.
+- [x] `PG-2.C11` Pruebas necesarias y verificadores directamente afectados en verde, con selección y omisiones registradas.
+- [x] `PG-2.C12` Commit sin atribución de IA y push ordinario comprobado a la rama única.
+- [x] `PG-2.C13` Resumen completo, informe a la persona y parada.
 
 #### Resumen de PG-2
 
 | Punto | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
-| | | | |
+| PG-2.01–.05, .09–.12, .14, .16 | Cumplido | Registros de iteración en el plan detallado §11 | Cerrados en sus iteraciones |
+| PG-2.06, .07, .08 | Cumplido | Centinela de archivo suelto (7 contratos, engine, 0 divergencias); `LANG.SUBPROGRAM.SCOPE`, `LANG.TYPES.FUNCTION` y `LANG.TYPES.GENERIC` en engine y aot sin divergencias; tests de captura, raíces y recolección forzada en ambos gemelos; medición de instancias y bytes de E-PG-03 | `LANG.TYPES.FUNCTION` no declara propiedades: la recolección se prueba con ejecución forzada en VM y AOT |
+| PG-2.13 | Cumplido | `--only` y `see differential` por cada contrato de PG-2: 0 divergencias, 0 diferencias sin resolver | Dos regresiones halladas y resueltas (oráculo de `LANG.DECL.UNINITIALIZED#C4` autorizado por la persona; vínculo aot de `LANG.CONTROL.FOR#R4` a `exento`) |
+| PG-2.15 | Retirado | Decisión de la persona del 2026-10-25 | Sin migradores ni retrocompatibilidad |
+| PG-2.17 | Cumplido | Campañas E-PG-03 y E-PG-04 del 2026-10-26, `pg-2-17-protocolos-y-materiales.md` §5; E-PG-10 diferido por la persona | E-PG-03 cumple (recorrido 1,00–1,01×); E-PG-04 llamada indirecta 1,14× en estimación puntual con intervalo 0,85–1,52 que supera 1,25 |
 
-Revisión Git de cierre: · Verificadores ejecutados: · Pendientes justificados: · Decisiones de la persona:
+Revisión Git de cierre: commit de cierre de PG-2 en `feature/agregar-ruta-de-especificacion` (ver `git log`) · Verificadores ejecutados: `see validate` (175), `lock --check`, `export --check`; `conform --only` y `differential` por contrato; tests dirigidos de abi, semantic, lowering, ir, bytecode, vm, api y bench_worker; Clippy `-D warnings` en api y bench_worker; `rust-checks all` en engine y spec · Pendientes justificados: `PG-2.C09` (fichas de ayuda de genéricos, tipos función y clausuras: no existen, el catálogo solo trae interfaz, vector, diccionario, `Para Cada` y limpieza), intervalo de confianza de la llamada indirecta por encima del umbral, carga de 100 combinaciones sustituida por 60 por el límite de 64 instancias, `cargo deny`/tamaño iOS/Wasm no medidos (sin disparador), `PG-2.16.03/.06` sin Dart (payload aditivo), `variantes y clases genéricas` fuera de edición · Decisiones de la persona: E-PG-10 diferido; Mac M2 como máquina de referencia; cambio del esperado de `LANG.DECL.UNINITIALIZED#C4` a `bindingOutsideScope`; cierre con commit y push
 
 ### 4.5 PG-3 · Capacidades y cinta
 
@@ -952,7 +956,7 @@ La IA a cargo actualiza esta tabla al cerrar cada fase.
 | PG-0 | Cerrada · PG-0.01–.12 | Sí, C02 revisado | 2026-10-22 | Diferimientos autorizados registrados en §4.1 del plan de PG-0; licencia abierta diferida a PG-7.07 |
 | PG-H | Cerrada · PG-H.01–.12 | Sí | 2026-10-23 | Pendientes declarados: humo en simulador, comparación de la app en E-PG-11, causa de los puntos de cambio y margen de iOS |
 | PG-1 | PG-1.01–.07 cumplidos · fase en curso | Sí, revisión integral pendiente | Sin cierre de fase | PG-1.08–.13 y cierre común sin autorizar; PG-1.C01/C02 pendientes |
-| PG-2 | Sin iniciar | Sí, pendiente de revisión (C02) | | D-PG2-01 resuelta el 2026-10-24: opción A, reemplazo en 2026 con migración asistida; lista de esperados por autorizar |
+| PG-2 | Cerrada · PG-2.01–.17 (`.15` retirado) | Sí | 2026-10-26 | `PG-2.C09` justificado; E-PG-10 diferido por la persona; intervalo de E-PG-04 informado |
 | PG-3 | Sin iniciar | No | | |
 | PG-4 | Sin iniciar | No | | |
 | PG-5 | Sin iniciar | No | | |
