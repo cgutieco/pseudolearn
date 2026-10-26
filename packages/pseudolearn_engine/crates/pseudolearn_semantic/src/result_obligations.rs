@@ -31,6 +31,12 @@ pub(crate) fn assign(
     consume(session, expression);
     if !session.pending_results.insert(local) {
         session.report(DiagnosticCode::ResultNotHandled, node);
+        let type_id = usize::try_from(expression.0)
+            .ok()
+            .and_then(|index| session.module.expressions.types.get(index).copied());
+        if let Some(type_id) = type_id {
+            crate::diagnostic_arguments::last_type(session, type_id);
+        }
     }
 }
 
@@ -42,15 +48,17 @@ pub(crate) fn finish(session: &mut AnalysisSession<'_>) {
     {
         return;
     }
-    for local in &session.pending_results {
-        if let Some(declaration) = usize::try_from(local.0)
+    let pending: Vec<LocalId> = session.pending_results.iter().copied().collect();
+    for local in pending {
+        let declaration = usize::try_from(local.0)
             .ok()
             .and_then(|index| session.module.locals.get(index))
-        {
-            session.diagnostics.push(Diagnostic::new(
-                DiagnosticCode::ResultNotHandled,
-                declaration.span,
-            ));
+            .map(|declaration| (declaration.span, declaration.type_id));
+        if let Some((span, type_id)) = declaration {
+            session
+                .diagnostics
+                .push(Diagnostic::new(DiagnosticCode::ResultNotHandled, span));
+            crate::diagnostic_arguments::last_type(session, type_id);
         }
     }
 }

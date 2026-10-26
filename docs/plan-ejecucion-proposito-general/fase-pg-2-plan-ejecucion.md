@@ -135,7 +135,7 @@ migración asistida.» Consecuencias para el plan:
 | D-PG2-13 Salida y limpieza | Pila dinámica de manejadores; duplicación estructurada | Coste nulo sin limpieza y una ejecución por salida | Lowering emite la limpieza en cada arista de salida del ámbito (retorno, propagación, salida de bucle, fin normal), en orden inverso de registro. Sin estructura en ejecución si no hay limpieza. Una trampa del programa termina sin limpieza de usuario en PG-2, porque no hay recursos externos (PG-3 lo revisa). README lowering/ir | El crecimiento del código por duplicación supera lo medido; bloque de salida compartido con selector |
 | D-PG2-14 `Resultado` | Excepciones; valor con propagación visible | ADR-07 | `Resultado<T,E>` como variante genérica; forma de propagación candidata con palabra del perfil, que rama por discriminante y retorna temprano pasando por la limpieza. Una llamada en posición de sentencia con tipo `Resultado` es error salvo descarte explícito con forma propia. Sin escape tipo `unwrap` | E-PG-10 muestra barrera; simplificar forma, nunca permitir el descarte silencioso |
 | D-PG2-15 Bytecode | Instrucción ancha; formas nuevas de 8 bytes | Mantener el despacho de 8 bytes | Instrucciones nuevas (discriminante, carga útil, valor función, llamada indirecta, vector, diccionario, versión) con operandos de 16 bits; los límites de campos, variantes e instancias se derivan de esos 16 bits y se diagnostican antes de emitir. Superinstrucciones solo tras medir frecuencia de bigramas | Un programa razonable supera 16 bits; ADR propio para la ampliación |
-| D-PG2-16 Migración | Reescritura al abrir; diff revisable | `.15` y D-PG2-01 = A | Operación de API que devuelve ediciones textuales revisables y diagnósticos de intervención manual; la CLI la muestra como diff y escribe solo con orden explícita; nunca reescritura al abrir ni en el servicio. README service/API/CLI | Obligatoria por la opción A; solo se revisa la forma de la operación, no su existencia |
+| D-PG2-16 Migración | Reescritura al abrir; diff revisable | `.15` y D-PG2-01 = A | **Retirada** por la decisión del 2026-10-25: sin migradores ni retrocompatibilidad | Solo si la persona reabre la migración |
 
 ### 3.3 Criterios de rendimiento propios de PseudoLearn
 
@@ -283,58 +283,58 @@ Estado de cierre (2026-10-26): PG-2.09 a PG-2.11 quedan cumplidas. La persona au
 
 ### PG-2.12 · Verificador de RI para disposiciones
 
-- [ ] `PG-2.12.01` Editar `IR.WELL-FORMEDNESS` e `IR.INSTRUCTIONS` como texto oficial: tipos de registro/variante/función/colección, uso de carga útil dominado por la prueba de su discriminante, campo existente, banco correcto, entorno con disposición declarada y límites de 16 bits.
-- [ ] `PG-2.12.02` Casos negativos de RI textual: campo inexistente, referencia en ranura escalar, carga útil sin prueba dominante, variante fuera de rango, entorno sin raíz declarada, instancia genérica sin definición.
-- [ ] `PG-2.12.03` Tests del verificador con un caso negativo por código de rechazo, más ida y vuelta del formato textual.
-- [ ] `PG-2.12.04` Ampliar `verifier`/`type_checker_*` en ir usando `dominance.rs`; el verificador de bytecode rechaza lo equivalente.
-- [ ] `PG-2.12.05` README ir/bytecode.
-- [ ] `PG-2.12.06` Verificación acotada de `--only IR.WELL-FORMEDNESS` e `IR.INSTRUCTIONS` y tests de ir/bytecode. Se desarrolla junto a cada iteración que añade instrucciones.
+- [x] `PG-2.12.01` Editar `IR.WELL-FORMEDNESS` e `IR.INSTRUCTIONS` como texto oficial: tipos de registro/variante/función/colección, uso de carga útil dominado por la prueba de su discriminante, campo existente, banco correcto, entorno con disposición declarada y límites de 16 bits.
+- [x] `PG-2.12.02` Casos negativos de RI textual: campo inexistente, referencia en ranura escalar, carga útil sin prueba dominante, variante fuera de rango, entorno sin raíz declarada, instancia genérica sin definición.
+- [x] `PG-2.12.03` Tests del verificador con un caso negativo por código de rechazo, más ida y vuelta del formato textual.
+- [x] `PG-2.12.04` Ampliar `verifier`/`type_checker_*` en ir usando `dominance.rs`; el verificador de bytecode rechaza lo equivalente.
+- [x] `PG-2.12.05` README ir/bytecode.
+- [x] `PG-2.12.06` Verificación acotada de `--only IR.WELL-FORMEDNESS` e `IR.INSTRUCTIONS` y tests de ir/bytecode. Se desarrolla junto a cada iteración que añade instrucciones.
 
 ### PG-2.13 · Paridad VM/AOT
 
-- [ ] `PG-2.13.01` Declarar en cada contrato nuevo los sujetos `engine` y `aot` y las capacidades necesarias; ningún caso se marca no aplicable en AOT sin motivo de capacidad.
-- [ ] `PG-2.13.02` Por cada iteración, casos de trampa con sitio exacto en ambos motores (fuera de rango, invalidación, desbordamiento en registro, límite de colección).
+- [x] `PG-2.13.01` Declarar en cada contrato nuevo los sujetos `engine` y `aot` y las capacidades necesarias; ningún caso se marca no aplicable en AOT sin motivo de capacidad.
+- [x] `PG-2.13.02` Por cada iteración, casos de trampa con sitio exacto en ambos motores (fuera de rango, invalidación, desbordamiento en registro, límite de colección).
 - [ ] `PG-2.13.03` Diferencial de gemelos y comparación VM/AOT acotados a los contratos de la iteración.
 - [ ] `PG-2.13.04` Corregir divergencias en el dueño de la disposición, nunca con ramas por motor.
-- [ ] `PG-2.13.05` README engine: tabla de paridad de construcciones nuevas.
+- [x] `PG-2.13.05` README engine: tabla de paridad de construcciones nuevas.
 - [ ] `PG-2.13.06` Al cierre, `--only` de todos los contratos de PG-2 en engine y aot (lista en §11), sin conformidad aot completa.
 
 ### PG-2.14 · Diagnósticos pedagógicos ADR-07
 
-- [ ] `PG-2.14.01` Añadir a `DIAG.CATALOG`/`DIAG.MESSAGES` «resultado sin tratar», «captura mutable compartida», «rama faltante», «declaración fuera de ámbito», límites de instancia/constante y realización incompleta, con argumentos tipados.
-- [ ] `PG-2.14.02` Casos de cada diagnóstico en es/en con igual código y argumentos; un principal por causa.
-- [ ] `PG-2.14.03` Verificadores existentes `SEE-MESSAGE-PARITY` y `SEE-MESSAGE-ARGUMENTS` sobre las plantillas nuevas, con su negativo ya presente.
-- [ ] `PG-2.14.04` Plantillas generadas; argumentos desde semantic sin prosa en código.
-- [ ] `PG-2.14.05` README diagnostics.
-- [ ] `PG-2.14.06` Verificación acotada de los contratos DIAG y `see validate`. Se desarrolla con cada iteración que añade un diagnóstico.
+- [x] `PG-2.14.01` Añadir a `DIAG.CATALOG`/`DIAG.MESSAGES` «resultado sin tratar», «captura mutable compartida», «rama faltante», «declaración fuera de ámbito», límites de instancia/constante y realización incompleta, con argumentos tipados.
+- [x] `PG-2.14.02` Casos de cada diagnóstico en es/en con igual código y argumentos; un principal por causa.
+- [x] `PG-2.14.03` Verificadores existentes `SEE-MESSAGE-PARITY` y `SEE-MESSAGE-ARGUMENTS` sobre las plantillas nuevas, con su negativo ya presente.
+- [x] `PG-2.14.04` Plantillas generadas; argumentos desde semantic sin prosa en código.
+- [x] `PG-2.14.05` README diagnostics.
+- [x] `PG-2.14.06` Verificación acotada de los contratos DIAG y `see validate`. Se desarrolla con cada iteración que añade un diagnóstico.
 
 ### PG-2.15 · Migración asistida
 
-Obligatorio por la opción A de D-PG2-01 (§3.1); depende de que `.05` y `.06` fijen las formas que se migran.
+**Retirado (2026-10-26).** La decisión de la persona del 2026-10-25 («la versión nueva es la oficial, sin migraciones ni necesidad de retrocompatibilidad») sustituye a D-PG2-16 y a la obligación de §3.1. No se escribe migrador, operación de API ni orden de CLI. Los seis subpuntos quedan sin ejecutar por esa decisión, no por omisión.
 
-- [ ] `PG-2.15.01` Especificar operación de migración: entrada, ediciones textuales revisables, diagnóstico de intervención manual cuando no se preserva la semántica, idempotencia y ninguna escritura implícita; CLI con diff y escritura explícita.
-- [ ] `PG-2.15.02` Casos: `Definir` + asignación única → vínculo inicializado, variable reasignada → mutable, lectura antes de asignar → intervención manual, programa ya migrado sin ediciones, comentarios y formato conservados.
-- [ ] `PG-2.15.03` Tests de la migración sobre árbol sin pérdida y de la equivalencia de observables entre original y migrado.
-- [ ] `PG-2.15.04` Migración en service sobre el árbol sin pérdida; operación en API; orden en CLI.
-- [ ] `PG-2.15.05` README service/API/CLI.
-- [ ] `PG-2.15.06` Verificación acotada: casos de migración, tests de service y CLI de la orden nueva; ejecutar los programas migrados del conjunto centinela.
+- [~] `PG-2.15.01` Especificar operación de migración: entrada, ediciones textuales revisables, diagnóstico de intervención manual cuando no se preserva la semántica, idempotencia y ninguna escritura implícita; CLI con diff y escritura explícita.
+- [~] `PG-2.15.02` Casos: `Definir` + asignación única → vínculo inicializado, variable reasignada → mutable, lectura antes de asignar → intervención manual, programa ya migrado sin ediciones, comentarios y formato conservados.
+- [~] `PG-2.15.03` Tests de la migración sobre árbol sin pérdida y de la equivalencia de observables entre original y migrado.
+- [~] `PG-2.15.04` Migración en service sobre el árbol sin pérdida; operación en API; orden en CLI.
+- [~] `PG-2.15.05` README service/API/CLI.
+- [~] `PG-2.15.06` Verificación acotada: casos de migración, tests de service y CLI de la orden nueva; ejecutar los programas migrados del conjunto centinela.
 
 ### PG-2.16 · Vista pública del programa
 
-- [ ] `PG-2.16.01` Editar `API.PROGRAM.VIEW` como texto oficial: identidades de enumerado, registro, variante, interfaz, realización, restricción, captura e iteración, con relaciones y procedencia.
-- [ ] `PG-2.16.02` Casos de vista por construcción y negativo de relación con procedencia ajena.
-- [ ] `PG-2.16.03` Tests de `program_view_*` y del consumidor Dart que la proyecta (solo lectura; PG-A dibuja).
-- [ ] `PG-2.16.04` Datos en API; adaptar `rust_program_view.dart` solo si el payload lo exige.
-- [ ] `PG-2.16.05` README API y app (sección de frontera), sin anunciar diagramas nuevos.
-- [ ] `PG-2.16.06` Verificación acotada de `--only API.PROGRAM.VIEW` en engine/app y tests Dart del archivo tocado.
+- [x] `PG-2.16.01` Editar `API.PROGRAM.VIEW` como texto oficial: identidades de enumerado, registro, variante, interfaz, realización, restricción, captura e iteración, con relaciones y procedencia.
+- [x] `PG-2.16.02` Casos de vista por construcción y negativo de relación con procedencia ajena.
+- [x] `PG-2.16.03` Tests de `program_view_*` y del consumidor Dart que la proyecta (solo lectura; PG-A dibuja).
+- [x] `PG-2.16.04` Datos en API; adaptar `rust_program_view.dart` solo si el payload lo exige.
+- [x] `PG-2.16.05` README API y app (sección de frontera), sin anunciar diagramas nuevos.
+- [x] `PG-2.16.06` Verificación acotada de `--only API.PROGRAM.VIEW` en engine/app y tests Dart del archivo tocado.
 
 ### PG-2.17 · Experimentos y métricas
 
-- [ ] `PG-2.17.01` Fijar protocolos de E-PG-03 y E-PG-04 y los candidatos `PERF.PG.VALUE`, `.RESULT`, `.MATCH`, `.GENERICS`, `.CLOSURE`, `.COLLECTION` y `.CLEANUP`, separados de los PERF vigentes.
+- [x] `PG-2.17.01` Fijar protocolos de E-PG-03 y E-PG-04 y los candidatos `PERF.PG.VALUE`, `.RESULT`, `.MATCH`, `.GENERICS`, `.CLOSURE`, `.COLLECTION` y `.CLEANUP`, separados de los PERF vigentes.
 - [ ] `PG-2.17.02` Cargas sembradas y controles de igual semántica (§7.3–7.4).
-- [ ] `PG-2.17.03` Tests del arnés con muestra ausente, salida incorrecta y mezcla de máquinas: ninguna campaña inválida produce verde.
-- [ ] `PG-2.17.04` Ampliar `pseudolearn_bench_worker` con subcomandos documentados antes de usarlos.
-- [ ] `PG-2.17.05` Materiales de E-PG-10 (tareas, guion, consentimiento, análisis) para la persona; registrar resultado o diferimiento suyo.
+- [x] `PG-2.17.03` Tests del arnés con muestra ausente, salida incorrecta y mezcla de máquinas: ninguna campaña inválida produce verde.
+- [x] `PG-2.17.04` Ampliar `pseudolearn_bench_worker` con subcomandos documentados antes de usarlos.
+- [x] `PG-2.17.05` Materiales de E-PG-10 (tareas, guion, consentimiento, análisis) para la persona; registrar resultado o diferimiento suyo.
 - [ ] `PG-2.17.06` Ejecutar campañas en segundo plano, registrar crudos y resumen, y reportar umbrales no alcanzados sin ajustar controles.
 
 ## 5. Capas y archivos
@@ -733,6 +733,42 @@ Se completó lo que la entrega anterior dejaba abierto, sin declarar cerrada la 
 - Decisiones: la recolección de instancias es una recursión por demanda con caché canónica en lugar de una lista de trabajo iterativa; los genéricos de clases y de variantes de usuario, y los genéricos entre módulos, quedan fuera; las restricciones y su caso negativo pertenecen a PG-2.09. Se corrigió un test de lowering de registros que esperaba `cell.load` donde el diseño ya emite `cell.load_raw`.
 
 Pendientes que mantienen abiertos PG-2.06.06, PG-2.07.06 y PG-2.08.06: el conjunto centinela de §7.1, las propiedades GC y la señal temprana de E-PG-04, y la medición de instancias y bytes frente a un control no genérico (E-PG-03). El test nativo de genéricos tarda unos 14 minutos en depuración por los casos de 64 y 65 instancias.
+
+#### Iteración A de `.12`–`.17`: código sin pruebas (2026-10-26)
+
+Autorización: la persona pidió completar `PG-2.12` a `PG-2.17` en dos iteraciones; esta primera solo escribe y la segunda ejecuta pruebas acotadas. Decisiones con ella: `PG-2.15` se retira (decisión del 2026-10-25) y `.12` se limita a lo que la RI expresa hoy, porque registros, variantes y tuplas se aplanan a valores SSA con `value.reinterpret` y no existen campos ni cargas útiles que verificar (no se añaden tipos de variante a la RI).
+
+Escrito, no ejecutado:
+
+- `.12`: `IR.WELL-FORMEDNESS` R10 (campos únicos y almacenables; orden creciente de `capture<N>` en `$environment*`) y R11 (conteos de 16 bits; verificación estructural); `verifier_layouts.rs` en ir; el verificador de bytecode rechaza lo equivalente; casos C10–C12; vínculos en ambos `conformance*.yaml`; tests en `verifier_tests.rs` y `class_verification_tests.rs`; README ir/bytecode.
+- `.14`: `resultNotHandled` gana el argumento tipado `type` (cuatro sitios de emisión); test en `semantic/tests/result_obligations.rs`. Los demás diagnósticos ya existían con casos es/en; `variantLayoutLimit` sigue sin caso de corpus porque exigiría una variante de más de 65535 operandos.
+- `.13`: casos de trampa `integerOverflow` en ambos motores para registro (`LANG.TYPES.RECORD#C22`), valor función (`#C17`) y genérico (`#C20`); tabla de paridad en el README de engine. Los `exento` de AOT se conservan: su motivo (análisis no anunciado por el adaptador) sigue valiendo para las reglas de análisis.
+- `.16`: `enum_unit`, `record_unit`, `record_field` y `function_literal` en la vista con `enum_identity`/`enum_members`, `record_identity`/`record_fields` y `closure_identity`/`captured_bindings`; módulo `program_view_values.rs`; casos C9–C10 de `API.PROGRAM.VIEW`; tres tests nuevos en `program_view_nominal.rs`. No se tocó Dart: los atributos son aditivos.
+- `.17`: `pg-verify` en el trabajador (validación del protocolo `e-pg-2/1`) con siete tests; candidatos `PERF.PG.*`, protocolos y materiales de E-PG-10 en `pg-2-17-protocolos-y-materiales.md`. Quedan pendientes las cargas fuente, la recolección de tiempos, los orquestadores y las campañas (`.17.06`).
+- Corpus: `see validate` (175) y `lock --refresh` de las identidades editadas ejecutados al regenerar; sin otra verificación. Ninguna casilla de `.12`–`.17` se marca cumplida hasta la iteración B.
+
+#### Iteración B de `.12`–`.17`: pruebas acotadas (2026-10-26)
+
+Autorización: mensaje de la persona «Inicia la iteración 2». Selección acotada a lo escrito en la iteración A.
+
+Fallos hallados y corregidos:
+
+- Los nombres `$environment*` no se lexan sin comillas en el texto de RI: tests de ir/bytecode y caso C11–C12 de `IR.WELL-FORMEDNESS` pasan a `class "$environment1"`. El código no cambió.
+- Clippy `indexing_slicing` en `pg_campaign_tests.rs`: se sustituyó la indexación de `Value` por un ayudante con `pointer_mut`.
+- `SIZE-FUNCTION` de `child_role` (55 y luego 41 líneas, máximo 40): los papeles de enumerado, registro, `Para Cada` y firma de interfaz pasan a `program_view_values::child_role`.
+- `program_view.rs` (dos tests) fallaba antes de esta fase por usar `Definir` sin inicializador (deuda de la entrega anterior); se adaptaron sus dos programas a `Definir Mutable … <- 0`.
+
+Ejecutado en verde:
+
+- `cargo test`: ir `verifier_tests` (24) y `text_format_tests`; bytecode `class_verification_tests` (7) y `verifier_type_tests` (17); semantic `result_obligations` (4); api `program_view` (12), `program_view_annotations` (9) y `program_view_nominal` (4); bench_worker filtro `pg_campaign` (7).
+- Corpus: `see validate` (175), `lock --refresh` de las identidades editadas, `lock --check`, `export --check`. `conform --only` en engine, 0 divergencias: `IR.WELL-FORMEDNESS` (13), `DIAG.CATALOG` (8), `LANG.TYPES.RECORD` (84), `LANG.TYPES.FUNCTION` (64), `LANG.TYPES.GENERIC` (80), `API.PROGRAM.VIEW` casos (18) y su propiedad (1). En aot, 0 divergencias: record (84), function (64) y generic (80), con los tres casos de trampa nuevos.
+- Estáticos: Clippy `-D warnings` en ir, bytecode, semantic, api (con `native`) y bench_worker; `rust-checks all` en engine y spec; `rustfmt --check` de los archivos que toqué; `git diff --check`.
+
+Disparadores: no cambió `IR.INSTRUCTIONS` ni el despacho, vocabulario, dependencias, payload de API con efecto en Dart ni runtime/abi. Por eso se omitieron tests de vm_dispatch, centinela de vocabulario, `cargo deny` y medición de tamaño.
+
+Omitido por política (§7.1): `cargo xtask verify`, `cargo test --workspace`, `conform` sin `--only`, Flutter, puente, Wasm, campañas. `cargo fmt --check` global informa diferencias preexistentes en `semantic/tests/checker.rs` y `flow.rs`; no se tocaron ni se ejecutó un formateador masivo.
+
+No cumplido, con motivo: `PG-2.13.03` (se ejecutó la comparación por conformidad engine/aot, no el diferencial de gemelos); `PG-2.16.03` y `.06` no ejecutaron Dart porque no se tocó el consumidor; `PG-2.13.04` (no hubo divergencias que corregir) y `PG-2.13.06` (la unión de todos los contratos de PG-2 corresponde al cierre); `PG-2.17.02` y `.06` (cargas fuente, recolección y campañas pendientes, ver `pg-2-17-protocolos-y-materiales.md`); `PG-2.15` retirado. Sin commit ni push.
 
 ### 11.2 Cierre común de PG-2
 

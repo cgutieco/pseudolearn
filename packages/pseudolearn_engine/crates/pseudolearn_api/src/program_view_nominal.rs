@@ -32,6 +32,7 @@ pub(crate) fn annotate(nodes: &mut [ViewNode], context: &AnnotationContext<'_>, 
     interface_nodes(nodes, &analysis, &identifiers);
     realizations(nodes, &analysis, &interfaces);
     constraints(nodes, &analysis, &interfaces);
+    crate::program_view_values::annotate(nodes, &analysis, &identifiers);
 }
 
 fn identifier(node: &ViewNode, revision: &str, ordinal: usize) -> String {
@@ -71,16 +72,14 @@ pub(crate) fn child_role(
         }
         NodeKind::TypeArguments => "type_argument",
         NodeKind::IterationBindings => "binding",
-        NodeKind::ForEachLoop => match child_node.kind {
-            NodeKind::IterationBindings => "bindings",
-            NodeKind::Body => "body",
-            _ => "collection",
-        },
         NodeKind::DeferStatement => "cleanup_body",
-        NodeKind::InterfaceSignature => match child_node.kind {
-            NodeKind::Parameters => "parameters",
-            _ => "signature",
-        },
+        NodeKind::EnumUnit
+        | NodeKind::EnumMembers
+        | NodeKind::RecordUnit
+        | NodeKind::ForEachLoop
+        | NodeKind::InterfaceSignature => {
+            return crate::program_view_values::child_role(parent_node.kind, child_node.kind);
+        }
         _ => return None,
     })
 }

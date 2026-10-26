@@ -246,6 +246,17 @@
       "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
     },
     {
+      "regla": "IR.WELL-FORMEDNESS@1.0.0#R10",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "IR.WELL-FORMEDNESS@1.0.0#R11",
+      "verificacion": "estructural",
+      "estado": "cumple"
+    },
+    {
       "regla": "LANG.ARRAY.ACCESS@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "exento",

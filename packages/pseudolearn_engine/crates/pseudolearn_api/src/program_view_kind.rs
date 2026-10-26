@@ -141,6 +141,10 @@ fn names_declaration(owner: NodeKind) -> bool {
             | NodeKind::Realization
             | NodeKind::IterationBindings
             | NodeKind::VariantPattern
+            | NodeKind::EnumUnit
+            | NodeKind::EnumMembers
+            | NodeKind::RecordUnit
+            | NodeKind::RecordField
             | NodeKind::ClassUnit
             | NodeKind::AlgorithmUnit
             | NodeKind::Subroutine
@@ -197,6 +201,11 @@ fn is_declaration(kind: NodeKind) -> bool {
             | NodeKind::Realization
             | NodeKind::IterationBindings
             | NodeKind::VariantPattern
+            | NodeKind::EnumUnit
+            | NodeKind::EnumMembers
+            | NodeKind::RecordUnit
+            | NodeKind::RecordField
+            | NodeKind::FunctionLiteral
             | NodeKind::ClassUnit
             | NodeKind::AlgorithmUnit
             | NodeKind::Subprogram
@@ -224,6 +233,11 @@ fn nominal_name(kind: NodeKind) -> Option<&'static str> {
         NodeKind::ForEachLoop => "for_each_loop",
         NodeKind::DeferStatement => "defer_statement",
         NodeKind::BreakStatement => "break_statement",
+        NodeKind::EnumUnit => "enum_unit",
+        NodeKind::EnumMembers => "enum_members",
+        NodeKind::RecordUnit => "record_unit",
+        NodeKind::RecordField => "record_field",
+        NodeKind::FunctionLiteral => "function_literal",
         _ => return None,
     })
 }

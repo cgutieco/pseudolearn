@@ -148,6 +148,33 @@
 }
 ```
 
+```regla
+{
+  "id": "R10",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Los campos de una clase tienen nombres únicos y tipos que admiten almacenamiento (ni unit ni cell); los campos de una clase de entorno de captura (nombre que empieza por $environment) se llaman capture seguido de su desplazamiento, en orden estrictamente creciente.",
+  "verificacion": [
+    "C10",
+    "C11",
+    "C12"
+  ]
+}
+```
+
+```regla
+{
+  "id": "R11",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Los conteos de clases, funciones, campos por clase y parámetros por función o bloque no superan 65535, el máximo de un operando de 16 bits.",
+  "verificacion": [
+    "estructural"
+  ],
+  "justificacion": "El caso mínimo exige un texto de RI de más de 65535 campos; los tests de ir y bytecode lo ejercitan en el límite y por encima."
+}
+```
+
 ```caso
 {
   "id": "C1",
@@ -342,5 +369,70 @@
     }
   },
   "programa_ri": "module P es\nfunc @main() -> unit {\nb0() mass 0:\n  call @sub.missing() @1:1-1:2\n  return\n}\n"
+}
+```
+
+```caso
+{
+  "id": "C10",
+  "regla": "R10",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "ir",
+  "espera": {
+    "ri": {
+      "aceptada": false,
+      "regla": "IR.WELL-FORMEDNESS#R10"
+    }
+  },
+  "programa_ri": "module P es\nclass C { value: i64, value: i64 }\nfunc @main() -> unit {\nb0() mass 0:\n  return\n}\n"
+}
+```
+
+```caso
+{
+  "id": "C11",
+  "regla": "R10",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "ir",
+  "espera": {
+    "ri": {
+      "aceptada": false,
+      "regla": "IR.WELL-FORMEDNESS#R10"
+    }
+  },
+  "programa_ri": "module P es\nclass \"$environment1\" { capture2: i64, capture0: i64 }\nfunc @main() -> unit {\nb0() mass 0:\n  return\n}\n"
+}
+```
+
+```caso
+{
+  "id": "C12",
+  "regla": "R10",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "ir",
+  "espera": {
+    "ri": {
+      "aceptada": true
+    }
+  },
+  "programa_ri": "module P es\nclass \"$environment1\" { capture0: i64, capture3: str }\nfunc @main() -> unit {\nb0() mass 0:\n  return\n}\n"
 }
 ```

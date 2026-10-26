@@ -17,6 +17,8 @@ use std::collections::{HashMap, HashSet};
 pub fn verify_module(module: &Module) -> Result<(), &'static str> {
     check_declarations_uniqueness(module)?;
     check_profile_uniqueness(module)?;
+    crate::verifier_layouts::check_class_layouts(module)?;
+    crate::verifier_layouts::check_operand_limits(module)?;
     for function in &module.functions {
         verify_function(function, module)?;
     }

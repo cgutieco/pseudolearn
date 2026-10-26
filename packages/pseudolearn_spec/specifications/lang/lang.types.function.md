@@ -54,7 +54,8 @@
     "C13",
     "C14",
     "C15",
-    "C16"
+    "C16",
+    "C17"
   ]
 }
 ```
@@ -473,5 +474,32 @@
     "estricto",
     "flexible"
   ]
+}
+```
+
+```caso
+{
+  "id": "C17",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "SubProceso increment(value Como Entero) Como Entero\nRetornar value + 1;\nFinSubProceso\nAlgoritmo P\nDefinir callback Como SubProceso(Entero) Como Entero <- increment;\nEscribir callback(9223372036854775807);\nFinAlgoritmo\n",
+    "en": "subroutine increment(value as integer) as integer\nreturn value + 1;\nendSubroutine\nalgorithm P\ndefine callback as subroutine(integer) as integer <- increment;\nwrite callback(9223372036854775807);\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "",
+    "fallo": {
+      "codigo": "integerOverflow"
+    }
+  }
 }
 ```

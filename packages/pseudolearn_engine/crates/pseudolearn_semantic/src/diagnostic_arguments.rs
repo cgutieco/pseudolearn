@@ -37,6 +37,13 @@ pub(crate) fn type_argument(session: &AnalysisSession<'_>, kind: &Type) -> Diagn
     DiagnosticArgument::Type(DiagnosticType { name, rank: 0 })
 }
 
+pub(crate) fn last_type(session: &mut AnalysisSession<'_>, type_id: crate::identities::TypeId) {
+    let argument = type_argument(session, &session.module.types.get(type_id));
+    if let Some(diagnostic) = session.diagnostics.last_mut() {
+        diagnostic.arguments.insert("type".to_owned(), argument);
+    }
+}
+
 pub(crate) fn assignment_types(session: &mut AnalysisSession<'_>, expected: &Type, actual: &Type) {
     let expected = type_argument(session, expected);
     let actual = type_argument(session, actual);

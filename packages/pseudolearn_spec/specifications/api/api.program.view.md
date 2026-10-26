@@ -183,12 +183,14 @@
   "id": "R2",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La vista incluye revision_id opaco y una lista nodes. Cada nodo declara node_id opaco único dentro de esa revisión, kind de categoría y syntax_kind estable de la construcción del lenguaje, span con desplazamientos UTF-8 de inicio inclusivo y fin exclusivo codificados como cadenas decimales, y posiciones start/end de línea y columna desde uno medidas en puntos de código Unicode. Cada nodo incluye child_node_ids y child_roles en el mismo orden; cada relación child_roles identifica node_id y el papel sintáctico de esa relación. Puede incluir parent_node_id. Los nodos parameter incluyen dimensions con la cantidad de dimensiones declaradas. Los miembros field incluyen type con el lexema de su tipo declarado y dimensions con la cantidad de dimensiones declaradas. Toda referencia resuelve a un nodo de la misma vista. Los nodos de expresión declaran semántica independiente del perfil: los de operaciones binarias incluyen operators con la identidad canónica de cada operador entre operandos consecutivos (add, subtract, multiply, divide, integer_divide, modulo, power, equal, not_equal, less_than, less_than_or_equal, greater_than, greater_than_or_equal, and, or); los unarios incluyen operator (negate, positive, not); los literales incluyen literal con type (integer, real, string, character, boolean) y value; una llamada a función incorporada no oculta por un subprograma homónimo incluye builtin con la identidad canónica de la función; un acceso con receptor de superclase incluye receiver con valor super y, si nombra al constructor, super_constructor verdadero; cada array de una declaración de dimensiones es un nodo dimensioned; los subprogramas declaran los roles signature y body; las salidas sin salto de línea incluyen without_newline verdadero; y los tipos primitivos incluyen primitive con su identidad canónica. Una edición produce una revisión nueva y no promete conservar identificadores. Las variantes incluyen syntax_kind variant_construction, variant_pattern, propagation y discard_statement; variant identifica some/none/success/error, type_constructor identifica optional/result y sus hijos tienen rol type_argument. Las declaraciones locales inicializadas incluyen initialized verdadero y mutable lógico; sus hijos declaran roles binding, type e initializer. Los patrones declaran el rol binding; construcciones, propagación y descarte declaran payload. No se exponen temporales de disposición.",
+  "texto": "La vista incluye revision_id opaco y una lista nodes. Cada nodo declara node_id opaco único dentro de esa revisión, kind de categoría y syntax_kind estable de la construcción del lenguaje, span con desplazamientos UTF-8 de inicio inclusivo y fin exclusivo codificados como cadenas decimales, y posiciones start/end de línea y columna desde uno medidas en puntos de código Unicode. Cada nodo incluye child_node_ids y child_roles en el mismo orden; cada relación child_roles identifica node_id y el papel sintáctico de esa relación. Puede incluir parent_node_id. Los nodos parameter incluyen dimensions con la cantidad de dimensiones declaradas. Los miembros field incluyen type con el lexema de su tipo declarado y dimensions con la cantidad de dimensiones declaradas. Toda referencia resuelve a un nodo de la misma vista. Los nodos de expresión declaran semántica independiente del perfil: los de operaciones binarias incluyen operators con la identidad canónica de cada operador entre operandos consecutivos (add, subtract, multiply, divide, integer_divide, modulo, power, equal, not_equal, less_than, less_than_or_equal, greater_than, greater_than_or_equal, and, or); los unarios incluyen operator (negate, positive, not); los literales incluyen literal con type (integer, real, string, character, boolean) y value; una llamada a función incorporada no oculta por un subprograma homónimo incluye builtin con la identidad canónica de la función; un acceso con receptor de superclase incluye receiver con valor super y, si nombra al constructor, super_constructor verdadero; cada array de una declaración de dimensiones es un nodo dimensioned; los subprogramas declaran los roles signature y body; las salidas sin salto de línea incluyen without_newline verdadero; y los tipos primitivos incluyen primitive con su identidad canónica. Una edición produce una revisión nueva y no promete conservar identificadores. Las variantes incluyen syntax_kind variant_construction, variant_pattern, propagation y discard_statement; variant identifica some/none/success/error, type_constructor identifica optional/result y sus hijos tienen rol type_argument. Las declaraciones locales inicializadas incluyen initialized verdadero y mutable lógico; sus hijos declaran roles binding, type e initializer. Los patrones declaran el rol binding; construcciones, propagación y descarte declaran payload. No se exponen temporales de disposición. Un enumerado (enum_unit) incluye enum_identity igual a su node_id y enum_members con los nombres de sus miembros en orden; un registro (record_unit) incluye record_identity igual a su node_id y record_fields con los node_id de sus campos record_field; un literal de función (function_literal) incluye closure_identity igual a su node_id y captured_bindings con los node_id de las declaraciones que captura. Toda relación nombra solo nodos de la misma vista y procedencia: una referencia a un nodo de otra revisión o fuente no se emite.",
   "verificacion": [
     "C3",
     "C5",
     "C7",
-    "C8"
+    "C8",
+    "C9",
+    "C10"
   ]
 }
 ```
@@ -481,3 +483,72 @@
 ## Colecciones e interfaces
 
 La vista pública incluye interface_unit, interface_signature, realization, type_parameter, type_parameters, type_arguments, for_each_loop, iteration_bindings, break_statement y defer_statement. Sus hijos distinguen firmas, interfaces realizadas, restricciones, vínculos, colección, cuerpo y limpieza. interface_identity, realized_interfaces y constraint_interface referencian identidades opacas de nodo de la revisión. No exponen valores de tipo interfaz ni tablas de despacho. Las realizaciones explícitas se atribuyen a la declaración que las contiene; la satisfacción heredada pertenece a la semántica.
+
+```caso
+{
+  "id": "C9",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "Enumerado Color\nRojo, Verde\nFinEnumerado\nRegistro Punto\nDefinir x, z Como Entero;\nFinRegistro\nAlgoritmo Main\nFinAlgoritmo\n",
+    "en": "enum Color\nRojo, Verde\nendEnum\nrecord Punto\ndefine x, z as integer;\nendRecord\nalgorithm Main\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "vista_programa": {
+      "syntax_kinds_include": [
+        "enum_unit",
+        "record_unit",
+        "record_field"
+      ],
+      "nodes_include": [
+        {
+          "syntax_kind": "enum_unit",
+          "enum_members": [
+            "Rojo",
+            "Verde"
+          ]
+        }
+      ]
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C10",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "SubProceso make(value Como Entero) Como SubProceso() Como Entero\nDefinir captured Como Entero <- value;\nRetornar SubProceso() Como Entero\nRetornar captured;\nFinSubProceso;\nFinSubProceso\nAlgoritmo Main\nFinAlgoritmo\n",
+    "en": "subroutine make(value as integer) as subroutine() as integer\ndefine captured as integer <- value;\nreturn subroutine() as integer\nreturn captured;\nendSubroutine;\nendSubroutine\nalgorithm Main\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "vista_programa": {
+      "syntax_kinds_include": [
+        "function_literal"
+      ]
+    }
+  }
+}
+```

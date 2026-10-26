@@ -3249,18 +3249,22 @@
       }
     },
     "resultNotHandled": {
-      "argumentos": [],
+      "argumentos": [
+        "type"
+      ],
       "clase": "semantic",
       "mensajes": {
-        "en": "Unhandled result: handle it with switch, propagate it, or discard it explicitly",
-        "es": "Resultado sin tratar: manejalo con Segun, propagalo o descartalo explícitamente"
+        "en": "Unhandled result of type {type}: handle it with switch, propagate it, or discard it explicitly",
+        "es": "Resultado de tipo {type} sin tratar: manejalo con Segun, propagalo o descartalo explícitamente"
       },
       "politica": "A",
       "severidad": {
         "estricto": "error",
         "flexible": "error"
       },
-      "tipos_argumentos": {}
+      "tipos_argumentos": {
+        "type": "tipo"
+      }
     },
     "returnExpressionInVoidSubroutine": {
       "argumentos": [],

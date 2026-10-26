@@ -8,6 +8,7 @@ mod e06;
 mod execution;
 mod frontend;
 mod paired;
+mod pg_campaign;
 mod robustness;
 mod service;
 mod workloads;
@@ -30,6 +31,7 @@ fn main() -> std::process::ExitCode {
         "paired" => paired::collect(&std::env::args().nth(2).unwrap_or_default()),
         "aot" => collect_aot(&std::env::args().skip(2).collect::<Vec<_>>()),
         "service" => service::collect(&std::env::args().skip(2).collect::<Vec<_>>()),
+        "pg-verify" => pg_campaign::verify(&std::env::args().nth(2).unwrap_or_default()),
         "frontend" => frontend::collect(),
         "frontend-profile" => frontend::profile(),
         _ => Err("Usage: pseudolearn_bench_worker frontend|frontend-profile|aot <output> <ceiling-raw.json> <vm-summary.json>".to_owned()),
@@ -61,6 +63,8 @@ fn collect_aot(arguments: &[String]) -> Result<(), String> {
 
 #[cfg(test)]
 mod frontend_tests;
+#[cfg(test)]
+mod pg_campaign_tests;
 #[cfg(test)]
 mod workloads_tests;
 

@@ -28,6 +28,7 @@ pub mod type_checker_values;
 pub mod type_parser;
 pub mod types;
 pub mod verifier;
+mod verifier_layouts;
 pub mod verifier_operands;
 
 pub use columns::{InstructionColumns, InstructionDefinition};
@@ -44,5 +45,6 @@ pub use printer::print_canonical;
 pub use span::{IrPosition, IrSpan};
 pub use types::{IrType, ValueClass};
 pub use verifier::verify_module;
+pub use verifier_layouts::{ENVIRONMENT_CLASS_PREFIX, environment_fields_are_ordered};
 
 mod identifier_text;

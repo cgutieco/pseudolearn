@@ -74,6 +74,7 @@ mod program_view_operations;
 mod program_view_relations;
 mod program_view_tokens;
 mod program_view_tree;
+mod program_view_values;
 mod resources;
 mod service_completion;
 mod service_help;

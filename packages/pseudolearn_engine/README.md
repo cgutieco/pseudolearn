@@ -288,6 +288,24 @@ y resuelve la página de estado de una ejecución observada. La referencia `sour
 el registro canónico de cada evento, tanto en JSON como en el formato binario columnar PLEV.
 Alternativas descartadas: SEE.ADAPTER.PROTOCOL define JSONL y negociación. Se rechaza importar internos del motor o declarar observe sin soportar eventos.
 
+### Paridad VM/AOT de las construcciones de PG-2
+
+Problema: ninguna construcción nueva puede comportarse distinto en el intérprete y en el código nativo. Elección: cada disposición tiene un único dueño en `pseudolearn_abi` (registros, variantes, clausuras, vectores y diccionarios) y VM, runtime y Cranelift la consumen sin recalcular desplazamientos; la paridad se comprueba con los mismos casos del corpus ejecutados por los sujetos `engine` y `aot`, y con la comparación de gemelos acotada a los contratos de cada cambio. Las reglas que solo analizan (diagnósticos, exhaustividad, límites de instancia o de constante) se declaran `exento` en `conformance-aot.yaml` porque el adaptador AOT no anuncia análisis, y se cubren en `engine`. Las trampas se comparan por código de fallo y, en la comparación de gemelos, por sitio.
+
+| Construcción | Dueño de la disposición | Casos ejecutables compartidos | Trampa cubierta en ambos motores |
+|---|---|---|---|
+| Constante y enumerado | `semantic` (plegado) y ordinal `u32` | `LANG.DECL.CONSTANT`, `LANG.TYPES.ENUM` | `constantArithmeticOverflow` y división por cero son de análisis, solo `engine` |
+| Registro por valor | `abi::RecordLayout` | `LANG.TYPES.RECORD` | `integerOverflow` al actualizar un campo (R2/C22) |
+| `Opcional` y `Resultado` | `abi::VariantLayout` | `LANG.TYPES.RELATIONS` | propagación sin trampa; ranuras inactivas bajo recolección forzada |
+| `Segun` exhaustivo | `ir` (`switch` denso) y `br_table` | `LANG.CONTROL.SWITCH` | sin rama implícita: no hay trampa de «sin coincidencia» |
+| Función y clausura | `abi::ClosureLayout` | `LANG.TYPES.FUNCTION` | `integerOverflow` a través de un valor función (C17) |
+| Genéricos | `semantic` (monomorfización) | `LANG.TYPES.GENERIC` | `integerOverflow` sobre una instancia (C20) |
+| Interfaces | `semantic`; llamada directa o despacho de clase | `LANG.TYPES.INTERFACE` | las de la clase real |
+| `Vector` y `Diccionario` | `abi::VectorLayout` y `DictionaryLayout` | `LANG.TYPES.VECTOR`, `LANG.TYPES.DICTIONARY` | `arrayIndexOutOfRange`, invalidación en `Para Cada` |
+| Limpieza de ámbito | `lowering` (aristas de salida) | `LANG.CONTROL.CLEANUP` | una ejecución por salida |
+
+Alternativas descartadas: ramas por motor para absorber una divergencia (se corrige en el dueño de la disposición) y marcar un caso ejecutable como no aplicable en AOT sin motivo de capacidad.
+
 ### service
 
 Problema: proporcionar herramientas de edición de alta respuesta (autocompletado sensible al contexto, navegación, información emergente, formateo canónico, traducción y servidor LSP) sin dependencias externas masivas ni duplicar el árbol sintáctico.

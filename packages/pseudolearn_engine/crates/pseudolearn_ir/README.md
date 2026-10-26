@@ -22,7 +22,9 @@ de métodos necesarios para especializar llamadas sin volver a resolver nombres 
 
 Nivel 3. Importa source y abi; serde_json solo para generación en build.rs. Prohibido importar capas superiores, UI, Dart o el sistema de especificaciones como código.
 
-Módulo con clases, funciones y tabla lateral de orígenes; funciones con bloques SSA parametrizados. Instrucciones en columnas de operación, operandos, rangos, resultado y tramo. El tramo añade un ID de fuente compacto; el documento suelto conserva el ID cero. Operation (con la lista `Operation::ALL` de todas las operaciones), firmas, efectos y trampas se generan desde IR.INSTRUCTIONS. Lector y escritor del texto canónico. Verificador de R1–R9 con dominadores iterativos de Cooper–Harvey–Kennedy.
+Módulo con clases, funciones y tabla lateral de orígenes; funciones con bloques SSA parametrizados. Instrucciones en columnas de operación, operandos, rangos, resultado y tramo. El tramo añade un ID de fuente compacto; el documento suelto conserva el ID cero. Operation (con la lista `Operation::ALL` de todas las operaciones), firmas, efectos y trampas se generan desde IR.INSTRUCTIONS. Lector y escritor del texto canónico. Verificador de R1–R11 con dominadores iterativos de Cooper–Harvey–Kennedy.
+
+Registros, variantes y tuplas se aplanan a valores SSA con `value.reinterpret`, de modo que no existen campos ni cargas útiles que verificar en la RI; las disposiciones de esas construcciones las declara `pseudolearn_abi` y las consumen VM y AOT. El verificador solo valida lo que la RI expresa: R10 (campos únicos y almacenables, y orden creciente de `capture<N>` en las clases `$environment`) y R11 (conteos de 16 bits, el máximo de un operando). Una variante cuya etiqueta se prueba con `switch` hereda los ordinales de 16 bits de R3.
 
 Invariantes: Toda RI traducida pasa el verificador y toda instrucción que puede atrapar u observar conserva tramo. Se informa la primera violación en orden textual.
 
@@ -60,7 +62,7 @@ literales y los efectos del programa se preservan; idioma de interfaz y vocabula
 
 ## 7. Verificación, testing y aseguramiento de calidad
 
-Un negativo por R1–R9, casos ir, ida y vuelta canónica, generación determinista y mutación de textos sin pánicos. Tests espejo, caminos felices, infelices y límites explícitos. Cada verificador tiene un negativo
+Un negativo por R1–R11, casos ir, ida y vuelta canónica, generación determinista y mutación de textos sin pánicos. Tests espejo, caminos felices, infelices y límites explícitos. Cada verificador tiene un negativo
 con violación deliberada. No se cierran pendientes hasta tener cargo xtask verify y conformidad en verde.
 
 ## 8. Fuentes consultadas y genealogía conceptual

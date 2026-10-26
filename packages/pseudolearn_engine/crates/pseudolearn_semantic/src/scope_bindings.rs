@@ -93,11 +93,13 @@ fn finish_result(session: &mut AnalysisSession<'_>, local: LocalId) {
             .ok()
             .and_then(|index| session.module.locals.get(index))
     {
+        let (span, type_id) = (declaration.span, declaration.type_id);
         session
             .diagnostics
             .push(pseudolearn_diagnostics::Diagnostic::new(
                 DiagnosticCode::ResultNotHandled,
-                declaration.span,
+                span,
             ));
+        crate::diagnostic_arguments::last_type(session, type_id);
     }
 }

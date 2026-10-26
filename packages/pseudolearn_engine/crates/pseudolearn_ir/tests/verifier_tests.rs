@@ -169,3 +169,63 @@ fn rejects_missing_function_call_as_rule8() {
         assert_eq!(verify_module(&parsed), Err("IR.WELL-FORMEDNESS#R8"));
     }
 }
+
+fn verify_source(source: &str) -> Result<(), &'static str> {
+    let module = parse_module(source).map_err(|_| "parse")?;
+    verify_module(&module)
+}
+
+#[test]
+fn rejects_duplicate_class_field_as_rule10() {
+    let source = "module P es\nclass C { value: i64, value: i64 }\nfunc @main() -> unit {\nb0() mass 0:\n  return\n}\n";
+    assert_eq!(verify_source(source), Err("IR.WELL-FORMEDNESS#R10"));
+}
+
+#[test]
+fn rejects_unit_class_field_as_rule10() {
+    let source =
+        "module P es\nclass C { value: unit }\nfunc @main() -> unit {\nb0() mass 0:\n  return\n}\n";
+    assert_eq!(verify_source(source), Err("IR.WELL-FORMEDNESS#R10"));
+}
+
+#[test]
+fn rejects_unordered_environment_fields_as_rule10() {
+    let source = "module P es\nclass \"$environment1\" { capture2: i64, capture0: i64 }\nfunc @main() -> unit {\nb0() mass 0:\n  return\n}\n";
+    assert_eq!(verify_source(source), Err("IR.WELL-FORMEDNESS#R10"));
+}
+
+#[test]
+fn rejects_misnamed_environment_field_as_rule10() {
+    let source = "module P es\nclass \"$environment1\" { value: i64 }\nfunc @main() -> unit {\nb0() mass 0:\n  return\n}\n";
+    assert_eq!(verify_source(source), Err("IR.WELL-FORMEDNESS#R10"));
+}
+
+#[test]
+fn accepts_sparse_ordered_environment_fields() {
+    let source = "module P es\nclass \"$environment1\" { capture0: i64, capture3: str }\nfunc @main() -> unit {\nb0() mass 0:\n  return\n}\n";
+    assert_eq!(verify_source(source), Ok(()));
+}
+
+#[test]
+fn accepts_class_field_count_at_operand_limit() {
+    let fields = (0..65_535)
+        .map(|index| format!("f{index}: i64"))
+        .collect::<Vec<_>>()
+        .join(", ");
+    let source = format!(
+        "module P es\nclass C {{ {fields} }}\nfunc @main() -> unit {{\nb0() mass 0:\n  return\n}}\n"
+    );
+    assert_eq!(verify_source(&source), Ok(()));
+}
+
+#[test]
+fn rejects_class_field_count_over_operand_limit_as_rule11() {
+    let fields = (0..65_536)
+        .map(|index| format!("f{index}: i64"))
+        .collect::<Vec<_>>()
+        .join(", ");
+    let source = format!(
+        "module P es\nclass C {{ {fields} }}\nfunc @main() -> unit {{\nb0() mass 0:\n  return\n}}\n"
+    );
+    assert_eq!(verify_source(&source), Err("IR.WELL-FORMEDNESS#R11"));
+}

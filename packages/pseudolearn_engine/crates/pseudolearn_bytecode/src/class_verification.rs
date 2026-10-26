@@ -40,6 +40,13 @@ fn verify_fields(
             .iter()
             .any(|(name, kind)| name.is_empty() || !valid_field_type(kind, classes))
         || class.methods.keys().any(String::is_empty)
+        || class.fields.len() > usize::from(u16::MAX)
+        || (class
+            .name
+            .starts_with(pseudolearn_ir::ENVIRONMENT_CLASS_PREFIX)
+            && !pseudolearn_ir::environment_fields_are_ordered(
+                class.fields.iter().map(|(name, _)| name.as_str()),
+            ))
     {
         return Err(BytecodeError::InvalidModule);
     }

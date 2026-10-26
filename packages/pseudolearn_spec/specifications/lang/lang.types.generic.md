@@ -62,7 +62,8 @@
     "C16",
     "C17",
     "C18",
-    "C19"
+    "C19",
+    "C20"
   ]
 }
 ```
@@ -589,5 +590,32 @@
     "estricto",
     "flexible"
   ]
+}
+```
+
+```caso
+{
+  "id": "C20",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "SubProceso identidad<T>(valor Como T) Como T\nRetornar valor;\nFinSubProceso\nAlgoritmo P\nEscribir identidad(9223372036854775807) + 1;\nFinAlgoritmo\n",
+    "en": "subroutine identity<T>(value as T) as T\nreturn value;\nendSubroutine\nalgorithm P\nwrite identity(9223372036854775807) + 1;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "",
+    "fallo": {
+      "codigo": "integerOverflow"
+    }
+  }
 }
 ```

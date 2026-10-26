@@ -153,3 +153,39 @@ fn accepts_empty_method_table() -> Result<(), BytecodeError> {
     assert_eq!(verify_bytecode(&candidate), Ok(()));
     Ok(())
 }
+
+#[test]
+fn rejects_unordered_environment_fields() -> Result<(), BytecodeError> {
+    let source = "module P es\nclass \"$environment1\" { capture0: i64, capture2: i64 }\nfunc @main() -> unit {\nb0() mass 0:\n  return\n}\n";
+    let mut candidate = module(source)?;
+    assert_eq!(verify_bytecode(&candidate), Ok(()));
+    candidate
+        .classes
+        .first_mut()
+        .ok_or(BytecodeError::InvalidModule)?
+        .fields
+        .reverse();
+    assert_eq!(
+        verify_bytecode(&candidate),
+        Err(BytecodeError::InvalidModule)
+    );
+    Ok(())
+}
+
+#[test]
+fn rejects_class_field_count_over_operand_limit() -> Result<(), BytecodeError> {
+    let source = "module P es\nclass Base {}\nfunc @main() -> unit {\nb0() mass 0:\n  return\n}\n";
+    let mut candidate = module(source)?;
+    let class = candidate
+        .classes
+        .first_mut()
+        .ok_or(BytecodeError::InvalidModule)?;
+    class.fields = (0..=usize::from(u16::MAX))
+        .map(|index| (format!("f{index}"), ValueType::I64))
+        .collect();
+    assert_eq!(
+        verify_bytecode(&candidate),
+        Err(BytecodeError::InvalidModule)
+    );
+    Ok(())
+}

@@ -67,7 +67,7 @@ fn nodes_have_unique_identifiers_and_resolvable_references() -> Result<(), Strin
     let mut session = ApiSession::default();
     let document = document(
         &mut session,
-        "Algoritmo P\nDefinir total Como Entero;\ntotal <- 2 + 3;\nFinAlgoritmo\n",
+        "Algoritmo P\nDefinir Mutable total Como Entero <- 0;\ntotal <- 2 + 3;\nFinAlgoritmo\n",
     )?;
     let result = view(&mut session, &document);
     let nodes = result
@@ -336,7 +336,7 @@ fn switch_and_class_children_expose_structural_roles() -> Result<(), String> {
     let mut session = ApiSession::default();
     let document = document(
         &mut session,
-        "Clase C\nMetodo f() Como Entero\nRetornar 1;\nFinMetodo\nFinClase\nAlgoritmo P\nDefinir opcion Como Entero;\nopcion <- 1;\nSegun opcion Hacer\n1:\nopcion <- 1;\nDe Otro Modo:\nopcion <- 2;\nFinSegun\nFinAlgoritmo\n",
+        "Clase C\nMetodo f() Como Entero\nRetornar 1;\nFinMetodo\nFinClase\nAlgoritmo P\nDefinir Mutable opcion Como Entero <- 0;\nopcion <- 1;\nSegun opcion Hacer\n1:\nopcion <- 1;\nDe Otro Modo:\nopcion <- 2;\nFinSegun\nFinAlgoritmo\n",
     )?;
     let result = view(&mut session, &document);
     let nodes = result

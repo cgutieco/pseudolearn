@@ -361,7 +361,7 @@ Puntos a cumplir:
 - [ ] `PG-2.12` El verificador de RI rechaza disposiciones inválidas, con casos negativos.
 - [ ] `PG-2.13` VM y AOT coinciden con los oráculos en todas las construcciones nuevas.
 - [ ] `PG-2.14` Diagnósticos pedagógicos de ADR-07 con código y argumentos iguales en es/en.
-- [ ] `PG-2.15` Migración asistida para cambios incompatibles de 2026 cuando corresponda: diff revisable, nunca sobrescritura silenciosa, e intervención
+- [~] `PG-2.15` (retirado el 2026-10-26 por la decisión de la persona del 2026-10-25: sin migradores ni retrocompatibilidad) Migración asistida para cambios incompatibles de 2026 cuando corresponda: diff revisable, nunca sobrescritura silenciosa, e intervención
   manual diagnosticada cuando no se preserva la semántica.
 - [ ] `PG-2.16` Vista pública del programa con identidades de interfaz, realización, restricción, captura, variante e
   iteración.

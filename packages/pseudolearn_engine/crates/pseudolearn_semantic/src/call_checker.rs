@@ -233,6 +233,9 @@ pub(crate) fn check_result(
                 DiagnosticCode::DiscardedReturnValue
             };
         session.report(code, node);
+        if code == DiagnosticCode::ResultNotHandled {
+            crate::diagnostic_arguments::last_type(session, result);
+        }
     }
 }
 

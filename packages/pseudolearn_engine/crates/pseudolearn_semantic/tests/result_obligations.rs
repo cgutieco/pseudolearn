@@ -48,3 +48,31 @@ fn an_early_return_cannot_hide_an_unhandled_result() {
         Some(DiagnosticCode::ResultNotHandled)
     );
 }
+
+#[test]
+fn every_unhandled_result_report_carries_its_type_argument() {
+    let programs = [
+        format!("{PRODUCE}algorithm Main\nProduce();\nendAlgorithm\n"),
+        format!(
+            "{PRODUCE}algorithm Main\ndefine outcome as result<integer, string> <- Produce();\nendAlgorithm\n"
+        ),
+        format!(
+            "{PRODUCE}algorithm Main\ndefine mutable outcome as result<integer, string> <- Produce();\noutcome <- Produce();\ndiscard outcome;\nendAlgorithm\n"
+        ),
+    ];
+    for source in programs {
+        let (module, diagnostics) = support::analyze(&source, true);
+        assert!(module.is_none(), "{diagnostics:?}");
+        let unhandled: Vec<_> = diagnostics
+            .iter()
+            .filter(|diagnostic| diagnostic.code == DiagnosticCode::ResultNotHandled)
+            .collect();
+        assert!(!unhandled.is_empty(), "{diagnostics:?}");
+        assert!(
+            unhandled
+                .iter()
+                .all(|diagnostic| diagnostic.arguments.contains_key("type")),
+            "{unhandled:?}"
+        );
+    }
+}

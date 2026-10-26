@@ -1025,6 +1025,16 @@
       "estado": "cumple"
     },
     {
+      "regla": "IR.WELL-FORMEDNESS@1.0.0#R10",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "IR.WELL-FORMEDNESS@1.0.0#R11",
+      "verificacion": "estructural",
+      "estado": "cumple"
+    },
+    {
       "regla": "IR.LOWERING@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"

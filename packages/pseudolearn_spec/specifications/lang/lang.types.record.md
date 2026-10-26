@@ -77,7 +77,8 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
   "verificacion": [
     "C8",
     "C9",
-    "C10"
+    "C10",
+    "C22"
   ]
 }
 ```
@@ -699,5 +700,32 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
   "rigor": [
     "flexible"
   ]
+}
+```
+
+```caso
+{
+  "id": "C22",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "Registro Punto\nDefinir x Como Entero;\nFinRegistro\nAlgoritmo P\nDefinir Mutable p Como Punto <- Punto(9223372036854775807);\np.x <- p.x + 1;\nFinAlgoritmo\n",
+    "en": "record Punto\ndefine x as integer;\nendRecord\nalgorithm P\ndefine mutable p as Punto <- Punto(9223372036854775807);\np.x <- p.x + 1;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "",
+    "fallo": {
+      "codigo": "integerOverflow"
+    }
+  }
 }
 ```
