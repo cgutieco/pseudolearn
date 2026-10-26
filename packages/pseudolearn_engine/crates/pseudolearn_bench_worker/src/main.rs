@@ -9,6 +9,9 @@ mod execution;
 mod frontend;
 mod paired;
 mod pg_campaign;
+mod pg_collect;
+mod pg_summary;
+mod pg_workloads;
 mod robustness;
 mod service;
 mod workloads;
@@ -31,6 +34,8 @@ fn main() -> std::process::ExitCode {
         "paired" => paired::collect(&std::env::args().nth(2).unwrap_or_default()),
         "aot" => collect_aot(&std::env::args().skip(2).collect::<Vec<_>>()),
         "service" => service::collect(&std::env::args().skip(2).collect::<Vec<_>>()),
+        "pg-collect" => pg_collect::collect(&std::env::args().skip(2).collect::<Vec<_>>()),
+        "pg-summary" => pg_summary::summarize(&std::env::args().skip(2).collect::<Vec<_>>()),
         "pg-verify" => pg_campaign::verify(&std::env::args().nth(2).unwrap_or_default()),
         "frontend" => frontend::collect(),
         "frontend-profile" => frontend::profile(),
@@ -65,6 +70,10 @@ fn collect_aot(arguments: &[String]) -> Result<(), String> {
 mod frontend_tests;
 #[cfg(test)]
 mod pg_campaign_tests;
+#[cfg(test)]
+mod pg_summary_tests;
+#[cfg(test)]
+mod pg_workloads_tests;
 #[cfg(test)]
 mod workloads_tests;
 
