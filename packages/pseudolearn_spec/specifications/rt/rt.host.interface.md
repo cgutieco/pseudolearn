@@ -188,8 +188,56 @@
   "clase": "semantica",
   "texto": "Todo recurso asignado en la frontera del anfitrión se libera de manera forzosa e inmediata ante terminación cancelled, limit_reached o failed, garantizando que ninguna capacidad del anfitrión permanezca abierta tras finalizar la sesión.",
   "verificacion": [
-    "C5"
+    "C5",
+    "C6"
   ]
+}
+```
+
+
+## Oráculo
+
+Los valores esperados de R3 se calculan con el oráculo independiente de see_oracles, que implementa SplitMix64 y xoshiro256** desde su definición; multiplicar por 2⁵³ y truncar recupera exactamente los 53 bits superiores de cada salida.
+
+```caso
+{
+  "id": "C6",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "",
+    "terminacion": "failed",
+    "fallo": {
+      "codigo": "divisionByZero"
+    },
+    "anfitrion_observado": {
+      "recursos_abiertos": 0
+    }
+  },
+  "programas": {
+    "es": "SubProceso Probe(directory Como DirectorioCap) Como Resultado<Entero, ErrorES>\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\nDiferir\nDescartar file.Cerrar();\nFinDiferir\nDefinir Mutable zero Como Entero <- 0;\nRetornar Exito(10 div zero);\nFinSubProceso\nAlgoritmo Main\nDefinir opened Como Resultado<DirectorioCap, ErrorES> <- SolicitarDirectorio(\"root\");\nSegun opened Hacer\nExito(root): Segun Probe(root) Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe(directory as DirCap) as result<integer, IoError>\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\ndefer\ndiscard file.close();\nendDefer\ndefine mutable zero as integer <- 0;\nreturn success(10 div zero);\nendSubroutine\nalgorithm Main\ndefine opened as result<DirCap, IoError> <- requestDirectory(\"root\");\nswitch opened do\nsuccess(root): switch Probe(root) do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": [
+      "archivos_lectura"
+    ],
+    "requested_permissions": [
+      "archivos_lectura"
+    ],
+    "files": {
+      "a": "hola"
+    }
+  }
 }
 ```
 
@@ -208,14 +256,31 @@
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
-    "salida": "liberado\n",
-    "terminacion": "completed"
+    "salida": "",
+    "terminacion": "cancelled",
+    "anfitrion_observado": {
+      "llamadas": 2,
+      "recursos_abiertos": 0
+    }
   },
-  "programa": "Algoritmo P\nEscribir \"liberado\";\nFinAlgoritmo\n",
-  "perfil_base": "es"
+  "programas": {
+    "es": "SubProceso Probe(directory Como DirectorioCap) Como Resultado<Entero, ErrorES>\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\nDiferir\nDescartar file.Cerrar();\nFinDiferir\nDefinir Mutable n Como Entero <- 0;\nMientras Verdadero Hacer\nn <- n + 1;\nFinMientras\nRetornar Exito(n);\nFinSubProceso\nAlgoritmo Main\nDefinir opened Como Resultado<DirectorioCap, ErrorES> <- SolicitarDirectorio(\"root\");\nSegun opened Hacer\nExito(root): Segun Probe(root) Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe(directory as DirCap) as result<integer, IoError>\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\ndefer\ndiscard file.close();\nendDefer\ndefine mutable n as integer <- 0;\nwhile true do\nn <- n + 1;\nendWhile\nreturn success(n);\nendSubroutine\nalgorithm Main\ndefine opened as result<DirCap, IoError> <- requestDirectory(\"root\");\nswitch opened do\nsuccess(root): switch Probe(root) do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": [
+      "archivos_lectura"
+    ],
+    "requested_permissions": [
+      "archivos_lectura"
+    ],
+    "files": {
+      "a": "hola"
+    }
+  },
+  "cancelacion": 40,
+  "sujetos": [
+    "engine"
+  ]
 }
 ```
-
-## Oráculo
-
-Los valores esperados de R3 se calculan con el oráculo independiente de see_oracles, que implementa SplitMix64 y xoshiro256** desde su definición; multiplicar por 2⁵³ y truncar recupera exactamente los 53 bits superiores de cada salida.

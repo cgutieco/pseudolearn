@@ -6,11 +6,30 @@ pub enum EffectPhase {
     Resolved,
 }
 
+impl EffectPhase {
+    pub fn resolve(self) -> Result<Self, crate::ReplayError> {
+        match self {
+            Self::Requested => Ok(Self::Resolved),
+            Self::Resolved => Err(crate::ReplayError::Divergence),
+        }
+    }
+}
+
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum CommitOutcome {
     Committed,
     Failed,
     Uncertain,
+}
+
+impl CommitOutcome {
+    pub fn as_str(self) -> &'static str {
+        match self {
+            Self::Committed => "committed",
+            Self::Failed => "failed",
+            Self::Uncertain => "uncertain",
+        }
+    }
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, serde::Serialize, serde::Deserialize)]

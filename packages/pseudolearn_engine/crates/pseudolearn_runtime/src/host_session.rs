@@ -10,6 +10,7 @@ pub(crate) struct PendingHostEffect {
     rejected: Option<IoError>,
     previous_status: crate::ReproducibilityStatus,
     recorded: bool,
+    phase: crate::EffectPhase,
 }
 
 pub fn configure_host_authority(
@@ -51,6 +52,7 @@ pub fn begin_host_effect(
         rejected,
         previous_status,
         recorded,
+        phase: crate::EffectPhase::Requested,
     });
     Ok(request)
 }
@@ -68,6 +70,7 @@ pub fn resolve_host_effect(
     if pending.request.effect_seq != sequence {
         return Err(ReplayError::Divergence);
     }
+    pending.phase.resolve()?;
     let operation = pseudolearn_abi::effect_operation(&pending.request.operation)
         .ok_or(ReplayError::Divergence)?;
     let reply = pending.rejected.map(HostReply::failure).unwrap_or(reply);

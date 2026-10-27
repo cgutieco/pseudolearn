@@ -99,6 +99,8 @@ pilas propias. La profundidad no depende de una capacidad fija elegida por plata
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
+Problema: un efecto de anfitrión puede fallar tras cruzar la frontera, y la máquina no debe confundir un rechazo previo con un estado externo desconocido. Elección: la máquina se suspende en `awaiting_effect` con `effect_seq` ya asignado (solicitud, fase `Requested`) y solo se reanuda con una única resolución de esa misma secuencia (`Committed`, `Failed` o `Uncertain`); el protocolo vive en `pseudolearn_runtime` (`EffectPhase`, `CommitOutcome`) y la máquina lo consume sin reimplementarlo. Un fallo controlado llega al programa como `Resultado::Error` y recorre `Diferir`; una trampa termina `failed`; un corte del anfitrión (`cancelled`, `limit_reached`) detiene la ejecución sin ejecutar efectos nuevos en `Diferir` y el consumidor sella la cinta como `Incomplete` y libera la tabla de capacidades. Se descarta un estado `AbortedByHost` separado: el motivo ya lo expresa la terminación y la cinta solo necesita no ser reproducible.
+
 Problema: el runtime admite mínimos de recolección configurables para consumidores distintos. Elección: la VM conserva 4096 celdas como mínimo automático. Se descarta adoptar el calendario diferido de AOT.
 
 La carga textual de PLEV usa JSON canónico: los controles se codifican con escapes y se decodifican sin alterar Unicode ni enteros de 64 bits. Se descartan caracteres de control sin escapar y secuencias incompletas; los errores se devuelven como valores. El tramo interno de un evento conserva el ID de fuente del bytecode; la API lo combina con identidad de proyecto y revisión al construir su ubicación pública.

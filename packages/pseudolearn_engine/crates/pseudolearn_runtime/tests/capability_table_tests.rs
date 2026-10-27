@@ -1,6 +1,7 @@
 use pseudolearn_abi::CapabilityKind;
 use pseudolearn_runtime::{
-    CapabilityError, CapabilityTable, CommitOutcome, EffectPhase, ReproducibilityStatus, RightsMask,
+    CapabilityError, CapabilityTable, CommitOutcome, EffectPhase, HostFailure, HostReply, HostValue,
+    ReplayError, ReproducibilityStatus, RightsMask,
 };
 
 #[test]
@@ -48,15 +49,37 @@ fn rights_mask_subset_and_amplification_checks() {
 }
 
 #[test]
-fn effect_phases_and_commit_outcomes_represented() {
-    let requested = EffectPhase::Requested;
-    let resolved = EffectPhase::Resolved;
-    assert_ne!(requested, resolved);
-    let committed = CommitOutcome::Committed;
-    let failed = CommitOutcome::Failed;
-    let uncertain = CommitOutcome::Uncertain;
-    assert_ne!(committed, failed);
-    assert_ne!(committed, uncertain);
+fn requested_phase_resolves_exactly_once() {
+    assert_eq!(EffectPhase::Requested.resolve(), Ok(EffectPhase::Resolved));
+    assert_eq!(
+        EffectPhase::Resolved.resolve(),
+        Err(ReplayError::Divergence)
+    );
+}
+
+#[test]
+fn commit_outcomes_map_one_to_one_from_host_replies() {
+    let committed = HostReply::Committed(HostValue::Integer(1));
+    let failure = HostFailure {
+        code: "no_encontrado".to_owned(),
+        uncertain: false,
+    };
+    let uncertain = HostFailure {
+        code: "interrumpido".to_owned(),
+        uncertain: true,
+    };
+    assert_eq!(committed.commit_outcome(), CommitOutcome::Committed);
+    assert_eq!(
+        HostReply::Failed(failure).commit_outcome(),
+        CommitOutcome::Failed
+    );
+    assert_eq!(
+        HostReply::Uncertain(uncertain).commit_outcome(),
+        CommitOutcome::Uncertain
+    );
+    assert_eq!(CommitOutcome::Committed.as_str(), "committed");
+    assert_eq!(CommitOutcome::Failed.as_str(), "failed");
+    assert_eq!(CommitOutcome::Uncertain.as_str(), "uncertain");
 }
 
 #[test]

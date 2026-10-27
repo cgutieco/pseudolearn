@@ -95,12 +95,16 @@ impl HostReply {
         }
     }
 
-    pub fn outcome(&self) -> &'static str {
+    pub fn commit_outcome(&self) -> crate::CommitOutcome {
         match self {
-            Self::Committed(_) => "committed",
-            Self::Failed(_) => "failed",
-            Self::Uncertain(_) => "uncertain",
+            Self::Committed(_) => crate::CommitOutcome::Committed,
+            Self::Failed(_) => crate::CommitOutcome::Failed,
+            Self::Uncertain(_) => crate::CommitOutcome::Uncertain,
         }
+    }
+
+    pub fn outcome(&self) -> &'static str {
+        self.commit_outcome().as_str()
     }
 }
 

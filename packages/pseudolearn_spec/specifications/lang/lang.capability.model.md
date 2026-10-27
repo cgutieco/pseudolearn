@@ -97,7 +97,8 @@
   "clase": "semantica",
   "texto": "Rige la denegación por defecto: un programa no posee autoridad ambiental implícita. Las capacidades deben solicitarse en el manifiesto del proyecto o proveerse explícitamente por el anfitrión mediante la intersección de autoridad solicitada y concedida. Todo acceso a un recurso sin permiso concedido es denegado deterministamente.",
   "verificacion": [
-    "C2"
+    "C2",
+    "C8"
   ]
 }
 ```
@@ -150,7 +151,9 @@
     "C3",
     "C5",
     "C6",
-    "C7"
+    "C7",
+    "C9",
+    "C10"
   ]
 }
 ```
@@ -347,6 +350,119 @@
     ],
     "files": {
       "a": "hola"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C8",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "hola\npermiso_denegado\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Cadena, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir reader Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\nDefinir text Como Cadena <- Propagar reader.LeerTexto();\nEscribir text;\nDefinir writer Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"escritura\");\nRetornar Exito(\"amplificado\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<string, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine reader as FileCap <- propagate directory.open(\"a\", \"read\");\ndefine text as string <- propagate reader.readText();\nwrite text;\ndefine writer as FileCap <- propagate directory.open(\"a\", \"write\");\nreturn success(\"amplificado\");\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": [
+      "archivos_lectura"
+    ],
+    "requested_permissions": [
+      "archivos_lectura",
+      "archivos_escritura"
+    ],
+    "files": {
+      "a": "hola"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C9",
+  "regla": "R3",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "x\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Cadena, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir child Como DirectorioCap <- Propagar directory.Subdirectorio(\"sub\", \"lectura\");\nDefinir file Como ArchivoCap <- Propagar child.Abrir(\"b\", \"lectura\");\nRetornar file.LeerTexto();\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<string, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine child as DirCap <- propagate directory.subdirectory(\"sub\", \"read\");\ndefine file as FileCap <- propagate child.open(\"b\", \"read\");\nreturn file.readText();\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": [
+      "archivos_lectura",
+      "archivos_escritura"
+    ],
+    "requested_permissions": [
+      "archivos_lectura",
+      "archivos_escritura"
+    ],
+    "files": {
+      "sub/b": "x"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C10",
+  "regla": "R3",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "permiso_denegado\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Cadena, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir child Como DirectorioCap <- Propagar directory.Subdirectorio(\"sub\", \"lectura\");\nDefinir deeper Como DirectorioCap <- Propagar child.Subdirectorio(\"deep\", \"escritura\");\nRetornar Exito(\"amplificado\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<string, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine child as DirCap <- propagate directory.subdirectory(\"sub\", \"read\");\ndefine deeper as DirCap <- propagate child.subdirectory(\"deep\", \"write\");\nreturn success(\"amplificado\");\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": [
+      "archivos_lectura",
+      "archivos_escritura"
+    ],
+    "requested_permissions": [
+      "archivos_lectura",
+      "archivos_escritura"
+    ],
+    "files": {
+      "sub/deep/c": "y"
     }
   }
 }

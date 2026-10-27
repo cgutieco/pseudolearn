@@ -178,10 +178,25 @@
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
-    "salida": "proceso_confinado\n",
-    "terminacion": "completed"
+    "salida": "permiso_denegado\n",
+    "terminacion": "completed",
+    "anfitrion_observado": {
+      "llamadas": 0
+    }
   },
-  "programa": "Algoritmo P\nEscribir \"proceso_confinado\";\nFinAlgoritmo\n",
-  "perfil_base": "es"
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir clock Como Reloj <- Propagar SolicitarReloj();\nRetornar clock.Ahora();\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<integer, IoError>\ndefine clock as Clock <- propagate requestClock();\nreturn clock.now();\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": [],
+    "requested_permissions": [
+      "reloj"
+    ],
+    "clock": [
+      100,
+      200
+    ]
+  }
 }
 ```

@@ -133,7 +133,8 @@
   "clase": "semantica",
   "texto": "La fase Resolved produce exactamente uno de tres resultados de confirmación: Committed (completado con éxito en el anfitrión), Failed (rechazado o fallido de forma determinista antes de mutar estado externo) o Uncertain (resultado incierto tras cruzar al anfitrión en operaciones con potencial de mutación).",
   "verificacion": [
-    "C3"
+    "C3",
+    "C6"
   ]
 }
 ```
@@ -283,6 +284,43 @@
       200
     ],
     "grabar_y_reproducir": true
+  }
+}
+```
+
+```caso
+{
+  "id": "C6",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "permiso_denegado\ncierto\n",
+    "terminacion": "completed",
+    "anfitrion_observado": {
+      "llamadas": 0
+    }
+  },
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Cadena, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\nRetornar file.LeerTexto();\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo; Si problem.Incierto Entonces Escribir \"incierto\"; SiNo Escribir \"cierto\"; FinSi\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<string, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\nreturn file.readText();\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code; if problem.uncertain then write \"incierto\"; else write \"cierto\"; endIf\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": [],
+    "requested_permissions": [
+      "archivos_lectura"
+    ],
+    "files": {
+      "a": "hola"
+    }
   }
 }
 ```

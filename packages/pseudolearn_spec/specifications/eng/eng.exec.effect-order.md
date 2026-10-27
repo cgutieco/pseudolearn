@@ -212,7 +212,8 @@
   "clase": "semantica",
   "texto": "Todo efecto confirmado recibe un identificador secuencial effect_seq asignado en el momento exacto en que se completa la evaluación de sus argumentos y antes de emitir la petición al anfitrión. Si la evaluación de los argumentos produce una trampa, ningún effect_seq es asignado y la operación no es emitida al anfitrión.",
   "verificacion": [
-    "C5"
+    "C5",
+    "C6"
   ]
 }
 ```
@@ -239,5 +240,43 @@
   },
   "programa": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nEscribir 10 div x;\nFinAlgoritmo\n",
   "perfil_base": "es"
+}
+```
+
+```caso
+{
+  "id": "C6",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "",
+    "fallo": {
+      "codigo": "divisionByZero"
+    },
+    "anfitrion_observado": {
+      "llamadas": 0
+    }
+  },
+  "programas": {
+    "es": "SubProceso Probe(x Como Entero) Como Resultado<Cadena, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(ATexto(10 div x));\nRetornar Exito(\"listo\");\nFinSubProceso\nAlgoritmo Main\nDefinir Mutable zero Como Entero <- 0;\nSegun Probe(zero) Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe(x as integer) as result<string, IoError>\ndefine directory as DirCap <- propagate requestDirectory(toText(10 div x));\nreturn success(\"listo\");\nendSubroutine\nalgorithm Main\ndefine mutable zero as integer <- 0;\nswitch Probe(zero) do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": [
+      "archivos_lectura"
+    ],
+    "requested_permissions": [
+      "archivos_lectura"
+    ]
+  }
 }
 ```

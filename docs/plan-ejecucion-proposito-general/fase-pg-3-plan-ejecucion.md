@@ -147,30 +147,30 @@ al corpus, sin depender de este texto.
 
 ### PG-3.01 · `CF-07` especificado: frontera de confirmación lógica y estado externo incierto, con casos
 
-- [ ] `PG-3.01.01` Especificar en `ENG.EXEC.EFFECT-COMMIT` (nuevo) y en `ENG.EXEC.EFFECT-ORDER` (edición oficial) las dos fases de cada efecto (`Requested` y `Resolved`), los tres resultados de confirmación (`Committed`, `Failed`, `Uncertain`), el momento exacto en que se asigna `effect_seq` tras evaluar argumentos de izquierda a derecha y el efecto sobre el estado de reproducibilidad de la cinta.
+- [x] `PG-3.01.01` Especificar en `ENG.EXEC.EFFECT-COMMIT` (nuevo) y en `ENG.EXEC.EFFECT-ORDER` (edición oficial) las dos fases de cada efecto (`Requested` y `Resolved`), los tres resultados de confirmación (`Committed`, `Failed`, `Uncertain`), el momento exacto en que se asigna `effect_seq` tras evaluar argumentos de izquierda a derecha y el efecto sobre el estado de reproducibilidad de la cinta.
 - [ ] `PG-3.01.02` Casos: efecto confirmado de lectura y de escritura, fallo controlado previo a mutar (`PermisoDenegado`, `NoEncontrado`), fallo con estado externo incierto durante escritura (`Uncertain` con bandera `incierto` en `ErrorES` y cinta marcada `UncertainExternalState`), orden de `effect_seq` cuando una expresión combina dos efectos en secuencia.
-- [ ] `PG-3.01.03` Tests unitarios de la máquina de estados de confirmación (`Requested` → `Committed` / `Failed` / `Uncertain`) y del rechazo de transiciones inválidas (doble resolución o resolución sin solicitud).
-- [ ] `PG-3.01.04` Implementar `EffectPhase`, `CommitOutcome` y `ReproducibilityStatus` en `pseudolearn_runtime` / `pseudolearn_vm` y `pseudolearn_timeline`.
-- [ ] `PG-3.01.05` Actualizar `README.md` de `pseudolearn_vm` y `pseudolearn_timeline` con la frontera de confirmación lógica.
-- [ ] `PG-3.01.06` Verificación acotada: `see validate` y `see conform --subject engine --only ENG.EXEC.EFFECT-COMMIT,ENG.EXEC.EFFECT-ORDER`.
+- [x] `PG-3.01.03` Tests unitarios de la máquina de estados de confirmación (`Requested` → `Committed` / `Failed` / `Uncertain`) y del rechazo de transiciones inválidas (doble resolución o resolución sin solicitud).
+- [x] `PG-3.01.04` Implementar `EffectPhase`, `CommitOutcome` y `ReproducibilityStatus` en `pseudolearn_runtime` / `pseudolearn_vm` y `pseudolearn_timeline`.
+- [x] `PG-3.01.05` Actualizar `README.md` de `pseudolearn_vm` y `pseudolearn_timeline` con la frontera de confirmación lógica.
+- [x] `PG-3.01.06` Verificación acotada: `see validate` y `see conform --subject engine --only ENG.EXEC.EFFECT-COMMIT,ENG.EXEC.EFFECT-ORDER`.
 
 ### PG-3.02 · `CF-11` resuelto: fallo controlado frente a caída o terminación del anfitrión
 
 - [ ] `PG-3.02.01` Editar `ENG.EXEC.MODEL` y `RT.HOST.INTERFACE` como texto oficial con la formulación revisada por la persona (`D-PG3-06`): distinguir fallo controlado de efecto (`Resultado<T, ErrorES>`, recuperable y con ejecución normal de `Diferir`), trampa del programa (`termination = failed`) y corte/terminación del anfitrión (`cancelled`, `limit_reached`, desconexión en `awaiting_effect` que sella `AbortedByHost` sin ejecutar nuevos efectos en `Diferir`).
 - [ ] `PG-3.02.02` Casos: fallo de archivo manejado con `Segun` sobre `Resultado`, fallo propagado con `Propagar` que ejecuta `Diferir`, cancelación del anfitrión mientras un efecto está en `awaiting_effect`, agotamiento de límite de sentencias después de abrir una capacidad (cierre inmediato en el anfitrión sin ejecutar efectos adicionales del usuario).
-- [ ] `PG-3.02.03` Tests de `pseudolearn_vm` y `pseudolearn_api` que comprueban la liberación determinista de la tabla de capacidades del anfitrión ante `Cancelled`, `LimitReached` y `Trap`.
-- [ ] `PG-3.02.04` Implementar el cierre forzoso de recursos de anfitrión y el sellado `AbortedByHost` en `pseudolearn_vm` y `pseudolearn_api`.
-- [ ] `PG-3.02.05` Documentar en `README.md` de `pseudolearn_vm` y `pseudolearn_api` la separación entre `Resultado<T, ErrorES>`, trampa y terminación de anfitrión.
-- [ ] `PG-3.02.06` Verificación acotada: `--only ENG.EXEC.MODEL,RT.HOST.INTERFACE` y tests espejo de `execution_resource`.
+- [x] `PG-3.02.03` Tests de `pseudolearn_vm` y `pseudolearn_api` que comprueban la liberación determinista de la tabla de capacidades del anfitrión ante `Cancelled`, `LimitReached` y `Trap`.
+- [x] `PG-3.02.04` Implementar el cierre forzoso de recursos de anfitrión y el sellado `AbortedByHost` en `pseudolearn_vm` y `pseudolearn_api`.
+- [x] `PG-3.02.05` Documentar en `README.md` de `pseudolearn_vm` y `pseudolearn_api` la separación entre `Resultado<T, ErrorES>`, trampa y terminación de anfitrión.
+- [x] `PG-3.02.06` Verificación acotada: `--only ENG.EXEC.MODEL,RT.HOST.INTERFACE` y tests espejo de `execution_resource`.
 
 ### PG-3.03 · Capacidades para consola, argumentos, archivos relativos a una capacidad, reloj grabado y temporizadores lógicos; denegación por defecto
 
-- [ ] `PG-3.03.01` Crear `LANG.CAPABILITY.MODEL` y editar `API.PROJECT.MANIFEST` (`R4`), `RT.HOST.INTERFACE` y `RT.PROCESS`: tipos bilingües `Consola`/`Console`, `Argumentos`/`Arguments`, `DirectorioCap`/`DirCap`, `ArchivoCap`/`FileCap`, `Reloj`/`Clock` y `Temporizador`/`Timer`; vocabulario cerrado de permisos en `pseudolearn.toml` (`consola`, `argumentos`, `archivos_lectura`, `archivos_escritura`, `reloj`, `temporizador`); denegación por defecto; atenuación de subrutas y modos (`lectura`/`escritura`) sin amplificación; invalidación por cierre (`CapacidadCerrada`).
-- [ ] `PG-3.03.02` Casos: programa sin permisos que intenta usar archivo o reloj (denegado), intersección `requested ∩ granted` en proyecto, apertura de archivo relativo a `DirectorioCap`, atenuación a subdirectorio de solo lectura e intento rechazado de abrir para escritura desde capacidad de solo lectura, intento de escape con `..` o ruta absoluta, uso de `ArchivoCap` tras `cerrar`.
-- [ ] `PG-3.03.03` Tests espejo en `pseudolearn_project` (`authority_tests.rs`, `capability_fs_tests.rs`) y en `pseudolearn_vm` (`capability_tests.rs`) para intersección de permisos, generación de `CapabilityToken` y confinamiento con `cap-std`.
-- [ ] `PG-3.03.04` Extender `authority.rs` en `pseudolearn_project`, añadir `CapabilityToken` y `CapabilityTable` en `pseudolearn_runtime`/`pseudolearn_vm`, y registrar el vocabulario bilingüe en `pseudolearn_syntax` y `pseudolearn_semantic`.
+- [x] `PG-3.03.01` Crear `LANG.CAPABILITY.MODEL` y editar `API.PROJECT.MANIFEST` (`R4`), `RT.HOST.INTERFACE` y `RT.PROCESS`: tipos bilingües `Consola`/`Console`, `Argumentos`/`Arguments`, `DirectorioCap`/`DirCap`, `ArchivoCap`/`FileCap`, `Reloj`/`Clock` y `Temporizador`/`Timer`; vocabulario cerrado de permisos en `pseudolearn.toml` (`consola`, `argumentos`, `archivos_lectura`, `archivos_escritura`, `reloj`, `temporizador`); denegación por defecto; atenuación de subrutas y modos (`lectura`/`escritura`) sin amplificación; invalidación por cierre (`CapacidadCerrada`).
+- [x] `PG-3.03.02` Casos: programa sin permisos que intenta usar archivo o reloj (denegado), intersección `requested ∩ granted` en proyecto, apertura de archivo relativo a `DirectorioCap`, atenuación a subdirectorio de solo lectura e intento rechazado de abrir para escritura desde capacidad de solo lectura, intento de escape con `..` o ruta absoluta, uso de `ArchivoCap` tras `cerrar`.
+- [x] `PG-3.03.03` Tests espejo en `pseudolearn_project` (`authority_tests.rs`, `capability_fs_tests.rs`) y en `pseudolearn_vm` (`capability_tests.rs`) para intersección de permisos, generación de `CapabilityToken` y confinamiento con `cap-std`.
+- [x] `PG-3.03.04` Extender `authority.rs` en `pseudolearn_project`, añadir `CapabilityToken` y `CapabilityTable` en `pseudolearn_runtime`/`pseudolearn_vm`, y registrar el vocabulario bilingüe en `pseudolearn_syntax` y `pseudolearn_semantic`.
 - [ ] `PG-3.03.05` Actualizar `README.md` de `pseudolearn_project`, `pseudolearn_runtime` y `pseudolearn_semantic`; añadir fichas de ayuda en `TOOL.SERVICE.CATALOG`.
-- [ ] `PG-3.03.06` Verificación acotada: `--only API.PROJECT.MANIFEST,LANG.CAPABILITY.MODEL,RT.HOST.INTERFACE,RT.PROCESS` y tests de `pseudolearn_project` y `pseudolearn_vm`.
+- [x] `PG-3.03.06` Verificación acotada: `--only API.PROJECT.MANIFEST,LANG.CAPABILITY.MODEL,RT.HOST.INTERFACE,RT.PROCESS` y tests de `pseudolearn_project` y `pseudolearn_vm`.
 
 ### PG-3.04 · Identidad de ejecución ampliada y esquema versionado de cinta con todos los datos de cada efecto y su orden de entrega
 
@@ -469,9 +469,9 @@ Cada iteración requiere autorización propia y se detiene al concluir (`PHASE-S
 |---|---|---|---|
 | Preparación y revisión del plan (`PG-3.C02`) | Cumplido | Este documento (`fase-pg-3-plan-ejecucion.md`) aprobado por la persona el `2026-10-26` sobre la revisión inicial `5f6b4b9` | Quedan fijados el diseño a medida (§3), la política de pruebas acotadas (§7.1) y la evolución sincronizada de `apps/pseudolearn_app` |
 | Resolución de diseño de `CF-11` (`PG-3.02`) y vocabulario bilingüe (`PG-3.03`) | Cumplido | Aprobación y verificación de contratos normativos el `2026-10-26` | Integrado en especificaciones, runtime, authority y semántica bilingüe |
-| `PG-3.01` · Frontera de confirmación lógica y estado incierto | Abierta · cierre previo no fiable | `see conform --only ENG.EXEC.EFFECT-COMMIT` (20 obs, 0 div), `see conform --only ENG.EXEC.EFFECT-ORDER` (20 obs, 0 div), tests `capability_table_tests.rs` y `effect_tape_tests.rs` en verde | Estados `Requested`, `Resolved`, resultados `Committed`/`Failed`/`Uncertain`, orden secuencial |
-| `PG-3.02` · Fallo controlado vs terminación de anfitrión | Abierta · cierre previo no fiable | `see conform --only ENG.EXEC.MODEL` (40 obs, 0 div), `see conform --only RT.HOST.INTERFACE` (20 obs, 0 div), tests `execution_resource_tests.rs` en verde | Separación nítida de `Resultado<T, ErrorES>`, trampa y corte forzoso de anfitrión |
-| `PG-3.03` · Capacidades y confinamiento por defecto | Abierta · cierre previo no fiable | `see conform --only API.PROJECT.MANIFEST` (27 obs, 0 div), `see conform --only LANG.CAPABILITY.MODEL` (16 obs, 0 div), `see conform --only RT.HOST.INTERFACE` (20 obs, 0 div), `see conform --only RT.PROCESS` (12 obs, 0 div), tests `authority_tests.rs` y `capability_fs_tests.rs` en verde | Confinamiento de rutas relativas, normalización lógica, prevención de escapes (`..`) y atenuación |
+| `PG-3.01` · Frontera de confirmación lógica y estado incierto | Abierta · auditada 2026-10-27 · `.02` abierta | `see conform --only ENG.EXEC.EFFECT-COMMIT` (20 obs, 0 div), `see conform --only ENG.EXEC.EFFECT-ORDER` (20 obs, 0 div), tests `capability_table_tests.rs` y `effect_tape_tests.rs` en verde | Estados `Requested`, `Resolved`, resultados `Committed`/`Failed`/`Uncertain`, orden secuencial |
+| `PG-3.02` · Fallo controlado vs terminación de anfitrión | Abierta · auditada 2026-10-27 · `.01` y `.02` abiertas | `see conform --only ENG.EXEC.MODEL` (40 obs, 0 div), `see conform --only RT.HOST.INTERFACE` (20 obs, 0 div), tests `execution_resource_tests.rs` en verde | Separación nítida de `Resultado<T, ErrorES>`, trampa y corte forzoso de anfitrión |
+| `PG-3.03` · Capacidades y confinamiento por defecto | Abierta · auditada 2026-10-27 · `.05` abierta | `see conform --only API.PROJECT.MANIFEST` (27 obs, 0 div), `see conform --only LANG.CAPABILITY.MODEL` (16 obs, 0 div), `see conform --only RT.HOST.INTERFACE` (20 obs, 0 div), `see conform --only RT.PROCESS` (12 obs, 0 div), tests `authority_tests.rs` y `capability_fs_tests.rs` en verde | Confinamiento de rutas relativas, normalización lógica, prevención de escapes (`..`) y atenuación |
 | `PG-3.04` · Identidad y esquema versionado de cinta | Abierta · cierre previo no fiable | `see conform --only ENG.EFFECT.TAPE` (20 obs, 0 div), tests de encadenamiento SHA-256 y serialización canónica en `tape_execution_tests.rs` en verde | Esquema `pseudolearn.tape/v1`, `ExecutionIdentity`, `TapeEntry` con hash encadenado |
 | `PG-3.05` · Modos LiveRecord, ReplayFromTape y HistorySeek | Abierta · cierre previo no fiable | `see conform --only API.EXECUTE` (16 obs, 0 div), `see conform --only API.STATE.QUERY` (16 obs, 0 div), tests `tape_replay_tests.rs` en verde | Aislamiento estricto de anfitrión durante reproducción y retroceso (`seek`) |
 | `PG-3.06` · Rechazo de cinta alterada/divergente | Abierta · cierre previo no fiable | `see conform --only API.ERRORS` (4 obs, 0 div), tests `tape_replay_tests.rs` y `tape_execution_tests.rs` en verde | Rechazo determinista (`replay_identity_mismatch`, `replay_divergence`, `replay_truncated_tape`, `replay_non_reproducible`) sin fallback |
@@ -682,3 +682,22 @@ con fallos reales, corregidos y repetidos en la sección «reintento» del mismo
 | App | Sin fichas bilingües ni proyección pública de capacidades; sin superficie visual |
 | Mediciones | E-PG-05 cumple el presupuesto por carga revisado (richards 1,060 se difiere a microoptimización); el tamaño de la biblioteca estática y del puente no tiene control |
 | Entorno | No hubo bloqueo de disco (≥ 10 GiB libres) ni de permisos; Flutter no necesitó escalación |
+
+### 11.5 Auditoría de PG-3.01 a PG-3.03 · 2026-10-27
+
+Evidencia ejecutada en `packages/pseudolearn_spec/results/pg-3-audit-01-03/` (ignorado por Git). Defectos hallados y corregidos:
+
+| Defecto | Corrección |
+|---|---|
+| `EffectPhase` y `CommitOutcome` no tenían transiciones ni consumidores; la prueba solo comparaba variantes | `EffectPhase::resolve` rechaza la doble resolución, `HostReply::commit_outcome` deriva el resultado y `host_session` guarda la fase del efecto pendiente; pruebas en `capability_table_tests.rs` |
+| Sin caso de `PermisoDenegado` previo a mutar ni de trampa en un argumento sin llamada al anfitrión | `ENG.EXEC.EFFECT-COMMIT` C6 y `ENG.EXEC.EFFECT-ORDER` C6 |
+| `RT.HOST.INTERFACE` C5 y `RT.PROCESS` C3 imprimían una cadena sin ejercer la regla | C5 pasa a cancelación con archivo abierto (solo `engine`); C3 pasa a permiso denegado sin llamadas al anfitrión; se añade C6 (trampa con recurso abierto) |
+| Sin caso de límite ni de cancelación con una capacidad abierta; sin pruebas Rust de liberación | `ENG.EXEC.MODEL` C12 y C13; `pseudolearn_api/tests/host_release_tests.rs` (4 pruebas) |
+| Faltaban intersección parcial, subdirectorio atenuado positivo y amplificación encadenada | `LANG.CAPABILITY.MODEL` C8, C9 y C10 |
+| El README del runtime describía variantes y errores inexistentes; `vm`, `timeline` y `api` no documentaban la frontera | Corregidos y ampliados |
+
+Decisiones: la terminación no exitosa sella la cinta `Incomplete` y no existe un estado `AbortedByHost` (`D-PG3-06` manda sobre la redacción de `PG-3.02.01`/`.04`); una falla `Uncertain` de lectura no es expresable ni válida (el validador del corpus y `host_validation` la rechazan), de modo que `R3` de `ENG.EXEC.EFFECT-COMMIT` se cumple por rechazo; la tabla de capacidades vive en `pseudolearn_runtime` y `pseudolearn_api`, por lo que las pruebas de `PG-3.02.03` y `PG-3.03.03` están allí y no en `pseudolearn_vm`.
+
+Casillas abiertas con motivo: `PG-3.01.02` (el esquema de casos no observa `effect_seq` ni el estado de la cinta; solo lo prueban pruebas de la API); `PG-3.02.01` (el texto oficial no recoge la desconexión durante `awaiting_effect`); `PG-3.02.02` (sin caso de corpus de cancelación durante `awaiting_effect`); `PG-3.03.05` (no existen fichas de ayuda de capacidades en `TOOL.SERVICE.CATALOG`).
+
+Hallazgos fuera de alcance: `ENG.EXEC.MODEL` C11 (`R5`, `awaiting_effect`) imprime una cadena y no puede sustituirse sin ampliar el esquema (`PG-3.07`); la evidencia de propiedades (`properties-<sujeto>.json`) se sobrescribe en cada ejecución con `--only`, por lo que cada contrato necesita `--operation properties` inmediatamente antes de su `conform`.
