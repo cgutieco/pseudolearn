@@ -2,7 +2,7 @@ pub(crate) use crate::execution_prepare::{
     CHECKPOINT_LIMIT, initial_checkpoint, prepare_program_and_warnings, usage,
 };
 use crate::{ApiDiagnostic, ApiError, ExecuteRequest};
-use pseudolearn_timeline::{CheckpointStore, replay_machine_to_event};
+use pseudolearn_timeline::CheckpointStore;
 use pseudolearn_vm::{
     Fuel, LoadedProgram, Machine, RunExit, RunOptions, TwinMode, create_owned_machine,
     machine_event_count, machine_events, machine_output, take_machine_events,
@@ -16,6 +16,11 @@ use std::sync::{
 #[cfg(test)]
 #[path = "execution_resource_tests.rs"]
 mod execution_resource_tests;
+
+#[path = "execution_effects.rs"]
+mod execution_effects;
+#[path = "execution_host.rs"]
+mod execution_host;
 
 const CHECKPOINT_STRIDE: usize = 256;
 
@@ -37,20 +42,36 @@ pub(crate) struct ExecutionResource {
     view: Option<crate::program_view::ProgramView>,
     source: Option<crate::ApiSourceIdentity>,
     execution_mode: pseudolearn_timeline::ExecutionMode,
+    effects: pseudolearn_runtime::EffectSession,
+    output_cursor: usize,
+    input_cursor: usize,
+    host: crate::FakeHostProvider,
+    detached_effects: bool,
+    pending_host: Option<pseudolearn_runtime::HostEffectRequest>,
+    completing_effect: bool,
 }
 
 impl ExecutionResource {
     pub(crate) fn start(request: &ExecuteRequest) -> Result<Self, ApiError> {
+        let (program, warnings) = prepare_program_and_warnings(request)?;
+        Self::from_loaded(request, program, warnings)
+    }
+
+    pub(crate) fn from_loaded(request: &ExecuteRequest, program: LoadedProgram, warnings: Vec<ApiDiagnostic>) -> Result<Self, ApiError> {
         let execution_mode =
             crate::tape_wire::parse_execution_mode(request.execution_mode.as_deref())?;
         crate::tape_wire::validate_replay_tape(request, execution_mode)?;
-        let (program, warnings) = prepare_program_and_warnings(request)?;
+        let mut effects = execution_effects::prepare_session(request, execution_mode)?;
+        pseudolearn_runtime::configure_host_authority(&mut effects, request.host.as_ref()).map_err(|error| usage(error.code()))?;
+        let host = execution_effects::prepare_host(request, execution_mode)?;
+        let detached_effects = request.host.as_ref().and_then(|host| host.get("detached")).and_then(Value::as_bool).unwrap_or(false);
         let cancelled = Arc::new(AtomicBool::new(false));
         let mut options = crate::execution::options(request);
         options.twin_mode = TwinMode::Probed;
         options.cancelled = Some(cancelled.clone());
-        let machine = create_owned_machine(program.clone(), Fuel::unlimited(), options.clone())
+        let mut machine = create_owned_machine(program.clone(), Fuel::unlimited(), options.clone())
             .map_err(|trap| usage(trap.code))?;
+        machine.set_effect_checkpoint(pseudolearn_runtime::capture_effect_checkpoint(&effects));
         let (initial_state, store) = initial_checkpoint(&machine)?;
         Ok(Self {
             program,
@@ -70,6 +91,9 @@ impl ExecutionResource {
             view: None,
             source: request.source,
             execution_mode,
+            effects,
+            output_cursor: 0, input_cursor: 0,
+            host, detached_effects, pending_host: None, completing_effect: false,
         })
     }
 
@@ -86,19 +110,10 @@ impl ExecutionResource {
             return Err(usage("batch size must be positive"));
         }
         if self.terminal.is_none() {
-            let initial_count = machine_event_count(&self.machine);
-            loop {
-                if let Some(exit) = self.machine.step_instruction() {
-                    self.terminal = Some(exit);
-                    break;
-                }
-                let emitted = machine_event_count(&self.machine).saturating_sub(initial_count);
-                if emitted >= maximum {
-                    break;
-                }
-            }
+            self.drive_batch(maximum)?;
         }
-        let response = advance_response(AdvanceResponseInput {
+
+        let mut response = advance_response(AdvanceResponseInput {
             machine: &self.machine,
             start: 0,
             terminal: self.terminal.as_ref(),
@@ -107,9 +122,17 @@ impl ExecutionResource {
             view: self.view.as_ref(),
             source: self.source,
         });
+        if let Some(fields) = response.as_object_mut() {
+            fields.insert("effect_tape".to_owned(), crate::tape_wire::tape_to_value(self.effects.tape()));
+            if let Some(pending) = &self.pending_host { fields.insert("pending_effect".to_owned(), json!(pending)); }
+            fields.insert("host_observation".to_owned(), json!({"calls":self.host.calls,"open_resources":self.host.live_resource_count()}));
+        }
         self.delivered = machine_event_count(&self.machine);
         take_machine_events(&mut self.machine);
-        self.record_checkpoint()?;
+        if self.pending_host.is_none() {
+            self.machine.set_effect_checkpoint(pseudolearn_runtime::capture_effect_checkpoint(&self.effects));
+            self.record_checkpoint()?;
+        }
         self.trim_history()?;
         Ok(response)
     }
@@ -123,33 +146,6 @@ impl ExecutionResource {
         }
         self.options.inputs.push(text.clone());
         self.machine.supply_input(text);
-        self.terminal = None;
-        Ok(())
-    }
-
-    pub(crate) fn effect_result(&mut self, result: Value) -> Result<(), ApiError> {
-        if !self.execution_mode.allows_external_host() {
-            return Err(usage("external effect result rejected in replay mode"));
-        }
-        if !matches!(self.terminal, Some(RunExit::AwaitingEffect(_))) {
-            return Err(usage("execution is not awaiting effect"));
-        }
-        let runtime_value = match result {
-            Value::Number(number) => {
-                if let Some(integer_payload) = number.as_i64() {
-                    pseudolearn_vm::RuntimeValue::Scalar(u64::from_ne_bytes(integer_payload.to_ne_bytes()))
-                } else if let Some(floating_payload) = number.as_f64() {
-                    pseudolearn_vm::RuntimeValue::Scalar(u64::from_ne_bytes(floating_payload.to_ne_bytes()))
-                } else {
-                    pseudolearn_vm::RuntimeValue::Scalar(0)
-                }
-            }
-            Value::Bool(boolean_payload) => {
-                pseudolearn_vm::RuntimeValue::Scalar(u64::from(boolean_payload))
-            }
-            _ => pseudolearn_vm::RuntimeValue::Scalar(0),
-        };
-        self.machine.supply_effect_result(runtime_value);
         self.terminal = None;
         Ok(())
     }
@@ -223,7 +219,7 @@ impl ExecutionResource {
             .map_err(|_| usage("event outside retained horizon"))?;
         let mut options = self.options.clone();
         options.cancelled = None;
-        let machine = replay_machine_to_event(&self.program, image, event, &options)
+        let machine = pseudolearn_timeline::replay_machine_with_effects(&self.program, image, event, (&options, self.effects.tape()))
             .map_err(|_| usage("unreachable event"))?;
         Ok(machine)
     }

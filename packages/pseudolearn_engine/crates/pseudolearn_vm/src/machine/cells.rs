@@ -182,7 +182,7 @@ impl Machine<'_> {
         }
     }
 
-    fn store_cell(&mut self, cell: Cell, word: u64) -> Result<(), Fault> {
+    pub(super) fn store_cell(&mut self, cell: Cell, word: u64) -> Result<(), Fault> {
         match cell {
             Cell::Managed(cell) => {
                 runtime::write_memory_cell(&mut self.heap, cell, word).map_err(memory_fault)

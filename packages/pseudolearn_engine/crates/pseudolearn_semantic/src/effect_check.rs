@@ -56,10 +56,10 @@ fn attach_call_arguments(
 ) {
     let target = usize::try_from(function.0).unwrap_or(usize::MAX);
     for argument in arguments {
-        if let Some(origin) = argument_function_origin(session, *argument) {
-            if let Some(edges) = call_edges.get_mut(&target) {
-                edges.insert(origin);
-            }
+        if let (Some(origin), Some(edges)) =
+            (argument_function_origin(session, *argument), call_edges.get_mut(&target))
+        {
+            edges.insert(origin);
         }
     }
 }
@@ -77,7 +77,7 @@ fn argument_function_origin(
     }
 }
 
-fn unwrap_function_value(
+pub(crate) fn unwrap_function_value(
     session: &AnalysisSession<'_>,
     function: crate::identities::FunctionId,
 ) -> usize {
@@ -114,7 +114,7 @@ fn block_has_effects(
     body: &[StatementId],
     calls: &mut BTreeSet<usize>,
 ) -> bool {
-    body.iter().any(|id| statement_effects(session, *id, calls))
+    body.iter().filter(|id| statement_effects(session, **id, calls)).count() > 0
 }
 
 fn statement_effects(
@@ -126,22 +126,12 @@ fn statement_effects(
     let Some(statement) = session.module.statements.kinds.get(index) else {
         return false;
     };
-    match statement {
-        HirStatement::Write { .. } | HirStatement::Read(_) => true,
-        HirStatement::Call(expression_id) => {
-            collect_calls(session, *expression_id, calls);
-            false
-        }
-        HirStatement::Return(Some(expression_id)) => {
-            collect_calls(session, *expression_id, calls);
-            false
-        }
-        HirStatement::Assign { value, .. } => {
-            collect_calls(session, *value, calls);
-            false
-        }
-        _ => compound_effects(session, statement, calls),
+    let mut effects = false;
+    for expression in crate::effect_operands::statement(statement) {
+        effects |= crate::effect_calls::collect(session, expression, calls);
     }
+    effects | matches!(statement, HirStatement::Write { .. } | HirStatement::Read(_))
+        | compound_effects(session, statement, calls)
 }
 
 fn compound_effects(
@@ -152,7 +142,7 @@ fn compound_effects(
     match statement {
         HirStatement::Conditional { affirmative, negative, .. } => {
             block_has_effects(session, affirmative, calls)
-                || block_has_effects(session, negative, calls)
+                | block_has_effects(session, negative, calls)
         }
         HirStatement::While { body, .. }
         | HirStatement::Repeat { body, .. }
@@ -162,41 +152,21 @@ fn compound_effects(
         HirStatement::Switch { cases, default, .. } => {
             let cases_effect = cases
                 .iter()
-                .any(|branch| block_has_effects(session, &branch.body, calls));
-            cases_effect || block_has_effects(session, default, calls)
+                .filter(|branch| block_has_effects(session, &branch.body, calls))
+                .count()
+                > 0;
+            cases_effect | block_has_effects(session, default, calls)
+        }
+        HirStatement::VariantMatch(branch) => {
+            let effects = branch
+                .cases
+                .iter()
+                .filter(|case| block_has_effects(session, &case.body, calls))
+                .count()
+                > 0;
+            effects | block_has_effects(session, &branch.default, calls)
         }
         _ => false,
-    }
-}
-
-fn collect_calls(
-    session: &AnalysisSession<'_>,
-    expression_id: ExpressionId,
-    calls: &mut BTreeSet<usize>,
-) {
-    let index = usize::try_from(expression_id.0).unwrap_or(usize::MAX);
-    let Some(expression) = session.module.expressions.kinds.get(index) else {
-        return;
-    };
-    match expression {
-        crate::expression_model::HirExpression::Call { function, arguments } => {
-            let function_index = usize::try_from(function.0).unwrap_or(usize::MAX);
-            calls.insert(function_index);
-            for argument in arguments {
-                collect_calls(session, *argument, calls);
-            }
-        }
-        crate::expression_model::HirExpression::Binary { left, right, .. } => {
-            collect_calls(session, *left, calls);
-            collect_calls(session, *right, calls);
-        }
-        crate::expression_model::HirExpression::Unary { operand, .. } => {
-            collect_calls(session, *operand, calls);
-        }
-        crate::expression_model::HirExpression::Widen(inner) => {
-            collect_calls(session, *inner, calls);
-        }
-        _ => {}
     }
 }
 

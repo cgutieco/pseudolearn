@@ -34,3 +34,6 @@ pub use views::{
 };
 
 pub use query_views::{capture_array_slice, capture_frame};
+
+mod effect_replay;
+pub use effect_replay::replay_machine_with_effects;

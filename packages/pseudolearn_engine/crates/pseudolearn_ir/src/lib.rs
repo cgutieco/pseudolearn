@@ -48,3 +48,5 @@ pub use verifier::verify_module;
 pub use verifier_layouts::{ENVIRONMENT_CLASS_PREFIX, environment_fields_are_ordered};
 
 mod identifier_text;
+
+mod type_checker_effects;

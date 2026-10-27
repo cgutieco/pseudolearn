@@ -1,43 +1,34 @@
-#![forbid(unsafe_code)]
-
-use crate::Fault;
-use crate::evaluate::INVALID_BYTECODE;
+use crate::{Fault, PendingEffectRequest, evaluate::INVALID_BYTECODE};
 use crate::machine::{Flow, Machine};
-use crate::{PendingEffectRequest, RuntimeValue};
+use pseudolearn_runtime::{EffectValueKind, HostValue};
 
 impl Machine<'_> {
     pub(crate) fn effect_call(&mut self, site: u32) -> Result<Flow, Fault> {
-        let site_record = self
-            .current
-            .effect_sites
-            .get(site as usize)
-            .ok_or(INVALID_BYTECODE)?
-            .clone();
-
-        if let Some(result) = self.effect_result.take() {
-            if let Some(destination) = site_record.destination {
-                match result {
-                    RuntimeValue::Scalar(word) => {
-                        self.set_scalar(destination.index, word)?;
-                    }
-                    RuntimeValue::Reference(handle) => {
-                        self.set_reference(destination.index, handle)?;
-                    }
-                }
-            }
+        let site = self.current.effect_sites.get(usize::try_from(site).map_err(|_| INVALID_BYTECODE)?).ok_or(INVALID_BYTECODE)?.clone();
+        let operation = pseudolearn_runtime::effect_operation(&site.operation).ok_or(INVALID_BYTECODE)?;
+        if let Some(reply) = self.effect_result.take() {
+            self.complete_effect(&site, operation, &reply)?;
             return Ok(Flow::Continue);
         }
-
-        self.cursor.program_counter = self.cursor.program_counter.wrapping_sub(1);
-        self.effect_seq = self.effect_seq.saturating_add(1);
-        let capability_kind = format!("cap_{}", site_record.capability);
-        let pending = PendingEffectRequest {
-            effect_seq: self.effect_seq,
-            capability_kind,
-            operation: site_record.operation,
-            arguments_summary: format!("args_{}", site_record.arguments.len()),
-            source_node_id: None,
-        };
-        Ok(Flow::AwaitingEffect(pending))
+        let arguments = site.arguments.iter().zip(operation.parameters).map(|(register, kind)| {
+            let word = if matches!(kind, EffectValueKind::Integer | EffectValueKind::Boolean) { self.scalar(*register)? }
+                else { u64::from(self.reference(*register)?) };
+            pseudolearn_runtime::decode_host_value(&self.heap, *kind, word).map_err(super::memory::memory_fault)
+        }).collect::<Result<Vec<HostValue>, Fault>>()?;
+        if !operation.effect {
+            let reply = pseudolearn_runtime::local_effect(&self.heap, pseudolearn_runtime::Handle(self.reference(site.capability)?), operation, &arguments).map_err(super::memory::memory_fault)?;
+            self.complete_effect(&site, operation, &reply)?;
+            return Ok(Flow::Continue);
+        }
+        let receiver = if operation.receiver.is_some() {
+            Some(pseudolearn_runtime::capability_token(&self.heap, pseudolearn_runtime::Handle(self.reference(site.capability)?)).map_err(super::memory::memory_fault)?.into())
+        } else { None };
+        self.cursor.program_counter = self.cursor.program_counter.checked_sub(1).ok_or(INVALID_BYTECODE)?;
+        self.effect_seq = self.effect_seq.checked_add(1).ok_or(INVALID_BYTECODE)?;
+        Ok(Flow::AwaitingEffect(PendingEffectRequest {
+            effect_seq: self.effect_seq, capability_kind: operation.receiver.map_or("host".to_owned(), |kind| format!("{kind:?}")),
+            operation: site.operation, arguments_summary: format!("{{\"count\":{}}}", arguments.len()),
+            source_node_id: Some(site.source_node_id), receiver, arguments,
+        }))
     }
 }

@@ -219,8 +219,7 @@ fn handle_execution_feed(
             Ok(Value::Null)
         }
         "effect_result" => {
-            let result = arguments.get("result").cloned().unwrap_or(Value::Null);
-            execution.effect_result(result)?;
+            execution.effect_result(arguments)?;
             Ok(Value::Null)
         }
         _ => Err(usage("unknown operation")),

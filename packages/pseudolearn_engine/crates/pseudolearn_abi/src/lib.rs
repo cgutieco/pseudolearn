@@ -63,3 +63,6 @@ pub use variant_layout::{VariantLayout, VariantLayoutError};
 
 mod closure_layout;
 pub use closure_layout::ClosureLayout;
+
+mod effect_operation;
+pub use effect_operation::{EffectValueKind, EffectOperation, EFFECT_OPERATIONS, find_effect_operation, effect_operation};

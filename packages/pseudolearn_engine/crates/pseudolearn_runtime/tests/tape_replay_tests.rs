@@ -1,9 +1,11 @@
-use pseudolearn_timeline::{
+use pseudolearn_runtime::{
     EffectTape, ExecutionIdentity, ExecutionMode, ReplayError, TapeEntry, TapeReplayProvider,
 };
 
 fn sample_identity() -> ExecutionIdentity {
     ExecutionIdentity {
+        strictness: "strict".to_owned(),
+        limits: Default::default(),
         source_digest: "digest_source".to_owned(),
         package_graph_digest: "none".to_owned(),
         profile: "es".to_owned(),
@@ -38,8 +40,7 @@ fn execution_modes_isolate_external_host() {
 #[test]
 fn replay_provider_validates_identity() -> Result<(), String> {
     let tape = EffectTape::new(sample_identity());
-    let provider =
-        TapeReplayProvider::new(tape).map_err(|failure| format!("{failure:?}"))?;
+    let provider = TapeReplayProvider::new(tape).map_err(|failure| format!("{failure:?}"))?;
     assert!(provider.validate_identity(&sample_identity()).is_ok());
     let mut mismatched = sample_identity();
     mismatched.seed = 999;
@@ -54,8 +55,7 @@ fn replay_provider_validates_identity() -> Result<(), String> {
 fn replay_provider_detects_divergence() -> Result<(), String> {
     let mut tape = EffectTape::new(sample_identity());
     tape.append(sample_entry(1, "consultar_tiempo"));
-    let mut provider =
-        TapeReplayProvider::new(tape).map_err(|failure| format!("{failure:?}"))?;
+    let mut provider = TapeReplayProvider::new(tape).map_err(|failure| format!("{failure:?}"))?;
     let outcome = provider.next_effect(1, "operacion_diferente");
     assert_eq!(outcome, Err(ReplayError::Divergence));
     Ok(())
@@ -65,8 +65,7 @@ fn replay_provider_detects_divergence() -> Result<(), String> {
 fn replay_provider_detects_truncated_tape() -> Result<(), String> {
     let mut tape = EffectTape::new(sample_identity());
     tape.append(sample_entry(1, "consultar_tiempo"));
-    let mut provider =
-        TapeReplayProvider::new(tape).map_err(|failure| format!("{failure:?}"))?;
+    let mut provider = TapeReplayProvider::new(tape).map_err(|failure| format!("{failure:?}"))?;
     assert!(provider.next_effect(1, "consultar_tiempo").is_ok());
     assert_eq!(
         provider.next_effect(2, "otra_operacion"),
@@ -96,4 +95,33 @@ fn replay_error_codes_match_specification() {
         ReplayError::NonReproducible.code(),
         "replay_non_reproducible"
     );
+}
+
+#[test]
+fn replay_rejects_modified_payload_and_request() -> Result<(), String> {
+    for modify_request in [false, true] {
+        let mut tape = EffectTape::new(sample_identity());
+        tape.append(sample_entry(1, "clock"));
+        let entry = tape.entries.first_mut().ok_or("missing recorded entry")?;
+        if modify_request {
+            entry.request_digest.push_str("tampered");
+        } else {
+            entry.payload_bytes.push(255);
+        }
+        assert_eq!(
+            TapeReplayProvider::new(tape),
+            Err(ReplayError::CorruptedTape)
+        );
+    }
+    Ok(())
+}
+
+#[test]
+fn exhausted_tape_budget_bounds_entry_storage() {
+    let mut tape = EffectTape::with_budget(sample_identity(), 512);
+    for sequence in 1..10000 {
+        tape.append(sample_entry(sequence, "clock"));
+    }
+    assert!(!tape.is_reproducible());
+    assert!(tape.entries().len() < 3);
 }

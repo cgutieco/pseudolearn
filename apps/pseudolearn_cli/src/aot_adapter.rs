@@ -4,7 +4,7 @@ use crate::native_cache::ExecutableCache;
 use crate::native_run::run_executable;
 use pseudolearn_api::{
     ENGINE_VERSION, ExecuteRequest, ExecuteResponse, NativeBuildFailure, NativeRunReport,
-    build_native_object, conformance_build_request, native_execute_response,
+    build_native_object, conformance_build_request, native_effect_input, native_execute_response, protocol_rejected_native_response,
     rejected_native_response, supported_profiles, supported_strictness,
 };
 use serde_json::{Value, json};
@@ -67,7 +67,15 @@ fn execute_natively(request: &ExecuteRequest, cache: &mut ExecutableCache) -> Ex
     let Ok(executable) = cache.executable_for(&object.bytes) else {
         return internal_fault(request);
     };
-    match run_executable(&executable, cache.directory(), &request.inputs) {
+    let effect_input = match native_effect_input(request) {
+        Ok(bytes) => bytes,
+        Err(error) => return protocol_rejected_native_response(&error),
+    };
+    match run_executable(
+        &executable,
+        cache.directory(),
+        (&request.inputs, &effect_input),
+    ) {
         Ok(report) => native_execute_response(request, object.warnings, &report),
         Err(_) => internal_fault(request),
     }

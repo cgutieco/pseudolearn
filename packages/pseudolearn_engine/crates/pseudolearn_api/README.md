@@ -235,3 +235,8 @@ La vista pública expone nodos de interfaces, realizaciones, parámetros restrin
 La vista también proyecta enumerados (`enum_unit` con `enum_identity` y `enum_members`), registros (`record_unit` con `record_identity` y `record_fields` hacia sus nodos `record_field`) y literales de función (`function_literal` con `closure_identity` y `captured_bindings` hacia las declaraciones capturadas). Los datos salen de `program_view_values.rs` a partir del análisis semántico, y las relaciones usan únicamente identificadores de nodos de la misma vista, que ya codifican proyecto, revisión y fuente: una relación hacia otra procedencia no se emite. Son atributos aditivos de solo lectura; el dibujo de diagramas con ellos pertenece a una fase posterior.
 
 Los tests de estas capacidades se ejecutaron en selecciones acotadas, incluida la comparación de gemelos con recolección forzada. La conformidad del corpus sigue pendiente de la revisión editorial independiente de los contratos nuevos, y la medición de tamaño excede el presupuesto de Wasm.
+
+
+La grabación exporta la cinta de la sesión viva. La frontera de ejecución comprueba cada operación
+de consola frente al reproductor antes de entregar el lote al consumidor; una cinta inválida nunca
+se normaliza ni se repara al leerla. El formato y sus hashes pertenecen al runtime compartido.

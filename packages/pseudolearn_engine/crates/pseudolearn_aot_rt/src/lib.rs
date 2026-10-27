@@ -8,6 +8,8 @@ pub use pseudolearn_abi::{CollectionCommand, DictionaryKeyKind};
 mod class_layout;
 mod config;
 mod context;
+mod effect_channel;
+mod effect_document;
 mod effects;
 mod engine;
 mod entry;
@@ -50,7 +52,9 @@ pub use context::{
 };
 pub use engine::AotEngine;
 pub use entry::pseudolearn_aot_main;
-pub use effects::rt_aot_effect_call;
+pub use effect_channel::EffectChannel;
+pub use effect_document::{EffectInput, EffectOutput};
+pub use effects::{effect_operation_cells, effect_operation_index, rt_aot_effect_call};
 pub use fault::{FaultRecord, FaultSite, SourceRange, render_fault};
 pub use inline_allocation::{
     INLINE_MAXIMUM_PHYSICAL, INLINE_PHYSICAL_SHIFT, INLINE_RECORD_WORDS, InlineObjectImage,
@@ -70,8 +74,8 @@ pub use metadata::{ExecutableMetadata, ExecutableSettings};
 pub use metadata_codec::{decode_metadata, encode_metadata};
 pub use output::rt_aot_write;
 pub use process::{
-    EXIT_COMPLETED, EXIT_FAILED, EXIT_INTERNAL, EXIT_LIMIT, EntryFunction, ProcessStreams,
-    run_executable,
+    EXIT_COMPLETED, EXIT_FAILED, EXIT_INTERNAL, EXIT_LIMIT, EXIT_REPLAY, EntryFunction,
+    ProcessStreams, run_executable, run_executable_with_effects,
 };
 pub use pseudolearn_diagnostics::DiagnosticCode;
 pub use random::rt_aot_random_real;

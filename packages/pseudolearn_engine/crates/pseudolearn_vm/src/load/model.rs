@@ -62,6 +62,9 @@ pub(crate) struct EffectSite {
     pub capability: u16,
     pub operation: String,
     pub arguments: Vec<u16>,
+    pub result_cells: Vec<u16>,
+    pub result_class: u32,
+    pub source_node_id: u32,
 }
 
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
@@ -167,6 +170,10 @@ pub(crate) struct LoadedProgramInner {
 }
 
 impl LoadedProgram {
+    pub fn uses_effects(&self) -> bool {
+        self.inner.functions.iter().any(|function| !function.effect_sites.is_empty())
+    }
+
     pub(crate) fn new(inner: LoadedProgramInner) -> Self {
         Self {
             inner: std::sync::Arc::new(inner),

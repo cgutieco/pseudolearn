@@ -1,0 +1,88 @@
+use crate::trap::Trap;
+use pseudolearn_runtime::{
+    EffectSession, ExecutionIdentity, MemoryHostProvider, ReplayError, console_record,
+};
+use std::collections::BTreeMap;
+
+pub struct EffectChannel {
+    pub(crate) session: EffectSession,
+    pub(crate) provider: MemoryHostProvider,
+    failure: Option<ReplayError>,
+}
+
+impl EffectChannel {
+    pub fn new(session: EffectSession, provider: MemoryHostProvider) -> Self {
+        Self {
+            session,
+            provider,
+            failure: None,
+        }
+    }
+
+    pub fn standalone() -> Self {
+        let identity = ExecutionIdentity {
+            strictness: "strict".to_owned(),
+            limits: BTreeMap::new(),
+            source_digest: String::new(),
+            package_graph_digest: String::new(),
+            profile: String::new(),
+            seed: 0,
+            statement_limit: None,
+            permissions: Vec::new(),
+        };
+        Self::new(
+            EffectSession::new(
+                identity,
+                pseudolearn_runtime::tape_privacy::DEFAULT_MAX_TAPE_BYTES,
+            ),
+            MemoryHostProvider::new(),
+        )
+    }
+
+    pub fn session(&self) -> &EffectSession {
+        &self.session
+    }
+
+    pub fn host_calls(&self) -> u64 {
+        self.provider.calls
+    }
+
+    pub fn failure(&self) -> Option<&ReplayError> {
+        self.failure.as_ref()
+    }
+
+    pub fn finish(&mut self) {
+        if let Err(error) = self.session.finish() {
+            self.failure = Some(error);
+        }
+    }
+
+    pub fn abort(&mut self) {
+        self.session.abort();
+    }
+
+    pub(crate) fn reject(&mut self, error: ReplayError) -> Trap {
+        self.failure = Some(error);
+        Trap::named("internalFault")
+    }
+
+    pub(crate) fn record_console(
+        &mut self,
+        operation: &str,
+        arguments: Vec<u8>,
+        payload: Vec<u8>,
+    ) -> Result<(), Trap> {
+        let expected = self
+            .session
+            .resolve(
+                console_record(operation, arguments),
+                payload.clone(),
+                "committed",
+            )
+            .map_err(|error| self.reject(error))?;
+        if expected == payload {
+            return Ok(());
+        }
+        Err(self.reject(ReplayError::Divergence))
+    }
+}

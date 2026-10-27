@@ -81,3 +81,10 @@ Las instrucciones collection.* mantienen la identidad de tipo de la colección y
 Los tests de estas capacidades se ejecutaron en selecciones acotadas, incluida la comparación de gemelos con recolección forzada. La conformidad del corpus sigue pendiente de la revisión editorial independiente de los contratos nuevos, y la medición de tamaño excede el presupuesto de Wasm.
 
 La RI textual delimita con comillas las identidades internas de tipos de colección y sus hojas cuando no pertenecen al alfabeto de nombres simples. Parser, tipos y printer comparten esa representación reversible; el contenido de una cadena literal de programa permanece distinto de un nombre dentro de la declaración o del tipo.
+
+
+effect_call conserva receptor, identidad normativa de operación y argumentos evaluados de izquierda
+a derecha, seguidos por celdas de resultado. Resultado usa tres hojas canónicas: discriminante,
+palabra escalar y referencia; ErrorES superpone código textual e incertidumbre. Las operaciones
+puras de Bytes usan una celda del tipo de resultado. El verificador valida aridad, bancos y celdas
+antes del bytecode; ninguna respuesta de host se convierte silenciosamente en cero.

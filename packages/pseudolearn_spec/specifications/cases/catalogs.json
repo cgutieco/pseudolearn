@@ -2,6 +2,238 @@
   "analysisLimits": {
     "nesting": 256
   },
+  "capabilityLibrary": {
+    "operations": [
+      {
+        "effect": true,
+        "en": "requestConsole",
+        "es": "SolicitarConsola",
+        "fallible": true,
+        "identity": "request_console",
+        "parameters": [],
+        "receiver": null,
+        "result": "console"
+      },
+      {
+        "effect": true,
+        "en": "requestArguments",
+        "es": "SolicitarArgumentos",
+        "fallible": true,
+        "identity": "request_arguments",
+        "parameters": [],
+        "receiver": null,
+        "result": "arguments"
+      },
+      {
+        "effect": true,
+        "en": "requestDirectory",
+        "es": "SolicitarDirectorio",
+        "fallible": true,
+        "identity": "request_directory",
+        "parameters": [
+          "text"
+        ],
+        "receiver": null,
+        "result": "directory"
+      },
+      {
+        "effect": true,
+        "en": "requestClock",
+        "es": "SolicitarReloj",
+        "fallible": true,
+        "identity": "request_clock",
+        "parameters": [],
+        "receiver": null,
+        "result": "clock"
+      },
+      {
+        "effect": true,
+        "en": "requestTimer",
+        "es": "SolicitarTemporizador",
+        "fallible": true,
+        "identity": "request_timer",
+        "parameters": [],
+        "receiver": null,
+        "result": "timer"
+      },
+      {
+        "effect": true,
+        "en": "write",
+        "es": "Escribir",
+        "fallible": true,
+        "identity": "console_write",
+        "parameters": [
+          "text"
+        ],
+        "receiver": "console",
+        "result": "integer"
+      },
+      {
+        "effect": true,
+        "en": "values",
+        "es": "Valores",
+        "fallible": true,
+        "identity": "arguments_values",
+        "parameters": [],
+        "receiver": "arguments",
+        "result": "text_list"
+      },
+      {
+        "effect": true,
+        "en": "subdirectory",
+        "es": "Subdirectorio",
+        "fallible": true,
+        "identity": "directory_derive",
+        "parameters": [
+          "text",
+          "text"
+        ],
+        "receiver": "directory",
+        "result": "directory"
+      },
+      {
+        "effect": true,
+        "en": "open",
+        "es": "Abrir",
+        "fallible": true,
+        "identity": "file_open",
+        "parameters": [
+          "text",
+          "text"
+        ],
+        "receiver": "directory",
+        "result": "file"
+      },
+      {
+        "effect": true,
+        "en": "close",
+        "es": "Cerrar",
+        "fallible": true,
+        "identity": "directory_close",
+        "parameters": [],
+        "receiver": "directory",
+        "result": "boolean"
+      },
+      {
+        "effect": true,
+        "en": "readBytes",
+        "es": "LeerBytes",
+        "fallible": true,
+        "identity": "file_read_bytes",
+        "parameters": [],
+        "receiver": "file",
+        "result": "bytes"
+      },
+      {
+        "effect": true,
+        "en": "readText",
+        "es": "LeerTexto",
+        "fallible": true,
+        "identity": "file_read_text",
+        "parameters": [],
+        "receiver": "file",
+        "result": "text"
+      },
+      {
+        "effect": true,
+        "en": "writeBytes",
+        "es": "EscribirBytes",
+        "fallible": true,
+        "identity": "file_write_bytes",
+        "parameters": [
+          "bytes"
+        ],
+        "receiver": "file",
+        "result": "integer"
+      },
+      {
+        "effect": true,
+        "en": "writeText",
+        "es": "EscribirTexto",
+        "fallible": true,
+        "identity": "file_write_text",
+        "parameters": [
+          "text"
+        ],
+        "receiver": "file",
+        "result": "integer"
+      },
+      {
+        "effect": true,
+        "en": "close",
+        "es": "Cerrar",
+        "fallible": true,
+        "identity": "file_close",
+        "parameters": [],
+        "receiver": "file",
+        "result": "boolean"
+      },
+      {
+        "effect": true,
+        "en": "now",
+        "es": "Ahora",
+        "fallible": true,
+        "identity": "clock_now",
+        "parameters": [],
+        "receiver": "clock",
+        "result": "integer"
+      },
+      {
+        "effect": true,
+        "en": "wait",
+        "es": "Esperar",
+        "fallible": true,
+        "identity": "timer_wait",
+        "parameters": [
+          "integer"
+        ],
+        "receiver": "timer",
+        "result": "integer"
+      },
+      {
+        "effect": false,
+        "en": "Bytes",
+        "es": "Bytes",
+        "fallible": false,
+        "identity": "bytes_new",
+        "parameters": [],
+        "receiver": null,
+        "result": "bytes"
+      },
+      {
+        "effect": false,
+        "en": "length",
+        "es": "Longitud",
+        "fallible": false,
+        "identity": "bytes_length",
+        "parameters": [],
+        "receiver": "bytes",
+        "result": "integer"
+      },
+      {
+        "effect": false,
+        "en": "at",
+        "es": "En",
+        "fallible": false,
+        "identity": "bytes_at",
+        "parameters": [
+          "integer"
+        ],
+        "receiver": "bytes",
+        "result": "integer"
+      },
+      {
+        "effect": false,
+        "en": "utf8Text",
+        "es": "TextoUtf8",
+        "fallible": true,
+        "identity": "bytes_utf8",
+        "parameters": [],
+        "receiver": "bytes",
+        "result": "text"
+      }
+    ]
+  },
   "cliConventions": {
     "aperturas": [
       "algorithm",

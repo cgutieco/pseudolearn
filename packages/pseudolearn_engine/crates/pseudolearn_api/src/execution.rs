@@ -54,6 +54,9 @@ pub fn prepare_program(
 pub fn execute_prepared(prepared: &PreparedProgram, request: &ExecuteRequest) -> ExecuteResponse {
     let program = &prepared.program;
     let warnings = &prepared.warnings;
+    if program.uses_effects() || request.execution_mode.is_some() || request.host.is_some() {
+        return crate::hosted_execution::execute(program, warnings, request);
+    }
     if request.state_at.is_none() && request.state_page.is_none() {
         return execute_bulk(program, warnings, request);
     }
@@ -84,6 +87,8 @@ pub(crate) fn run_request(
     let view = event_view(request);
     ExecuteResponse {
         kind: "execute".to_owned(),
+        effect_tape: None,
+        host_observation: None,
         output: machine_output(machine).to_owned(),
         termination: if page_failed {
             json!({"kind":"failed","code":"usage"})
@@ -168,6 +173,8 @@ fn with_compile_warnings(
 fn rejected(diagnostics: Vec<crate::ApiDiagnostic>) -> ExecuteResponse {
     ExecuteResponse {
         kind: "execute".to_owned(),
+        effect_tape: None,
+        host_observation: None,
         output: String::new(),
         termination: json!({"kind":"failed","code":"analysisFailed"}),
         diagnostics,
@@ -211,6 +218,8 @@ fn execute_bulk(
     let view = event_view(request);
     ExecuteResponse {
         kind: "execute".to_owned(),
+        effect_tape: None,
+        host_observation: None,
         output: result.output,
         termination: crate::execution_wire::termination(&result.exit),
         diagnostics,

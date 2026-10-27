@@ -76,7 +76,7 @@ ilegible, enlazador ausente o fallido: 3. El código del ejecutable es 0, 3, 4 o
 Los fallos del generador de código (sin diagnóstico de usuario) se informan con `linkerFailed`, porque
 `TOOL.CLI.MESSAGES` no define un mensaje propio.
 
-Adaptador `aot`: ejecuta programas compilados de verdad. Por cada petición `execute` compila con `build_native_object`
+Adaptador `aot`: ejecuta programas compilados de verdad, con efectos de capacidad: escribe en el directorio de la caché el archivo de entrada de efectos (anfitrión, identidad, cinta para reproducir), lanza el ejecutable con `--effects-in` y `--effects-out`, y lo devuelve a la API para proyectar `effect_tape` y `host_observation`. Por cada petición `execute` compila con `build_native_object`
 (plantillas de diagnóstico de campos separados por tabulador, `gc_stress` como recolección forzada), enlaza con el mismo
 enlazador que `compilar` y lanza el ejecutable con entorno vacío y desde otro directorio, con las entradas en la entrada
 estándar; `pseudolearn_api` convierte código de salida, salida y salida de error en la respuesta del protocolo. Una caché
@@ -161,6 +161,7 @@ Contratos TOOL.CLI.CONVENTIONS, MESSAGES, CHECK, RUN, BUILD e IR; límites por d
 omisión, la fuente sin extensión, el permiso de ejecución, el fallo de ejecución del binario generado (código 3, salida previa
 y posición), el programa inválido sin salida, entrada ausente e ilegible, `-o` sin valor, enlazador ausente (`PATH` vacío) sin
 salida ni temporales propios (`pseudo_link_*`; `TMPDIR` se redirige y se ignora la caché del toolchain `xcrun_db`) y una salida previa que un fallo no sustituye.
+`tests/aot_effect_parity.rs` contrasta el sujeto nativo con el motor: la misma cinta grabada por ambos, cinta del motor reproducida en nativo con cero llamadas al anfitrión, cinta nativa reproducida en el motor, cinta adulterada rechazada con `replay_corrupted_tape`, permiso denegado idéntico y `history_seek` rechazado.
 `tests/aot_adapter_tests.rs` cubre el adaptador `aot` con procesos reales: identidad y capacidades, ejecución con entradas, fallo con salida previa y tramo, entrada agotada, presupuesto de sentencias, programa rechazado, petición no admitida, reutilización de un ejecutable y ausencia de temporales propios (`pseudo_aot_*` y `pseudo_link_*`) con y sin `shutdown`. La caché temporal `xcrun_db` pertenece al toolchain del sistema.
 `tests/service_cli_tests.rs` cubre las órdenes formatear/format, traducir/translate y el loop LSP en modo stdio, incluyendo opciones de verificación, escritura in-place, reporte de colisiones, argumentos obligatorios e inicialización y apagado JSON-RPC.
 `tests/project_tests.rs` cubre con procesos reales desde otro directorio y con entorno vacío: proyecto reubicado, igualdad de salida entre VM y binario nativo, fallo en un módulo importado con la misma línea en ambos, lock escrito y verificado, lock alterado que bloquea las tres órdenes, escritura denegada que conserva el lock previo sin temporal, compilación fallida que conserva la salida previa sin temporales y códigos de salida de entrada ausente, inexistente y directorio ilegible.
@@ -171,3 +172,9 @@ Verificadores, formato, Clippy, dependencias y tests mediante cargo xtask verify
 ## 8. Fuentes consultadas y genealogía conceptual
 
 El corpus TOOL.CLI es normativo. Las convenciones de CLI y gettext inspiran precedencia de preferencias; se rechaza que una forma de orden traduzca implícitamente la salida. LSP aporta locale para el idioma del cliente.
+
+
+La cinta se obtiene de la sesión ejecutada y se publica mediante archivo provisional y renombrado;
+un error de lectura, formato o escritura es operativo y no se oculta como análisis fallido. La
+reproducción inválida no inicia una ejecución viva alternativa. Las pruebas de procesos comprueban
+que el archivo existe, contiene efectos y permite repetir la salida, además del rechazo de corrupción.

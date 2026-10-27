@@ -44,6 +44,9 @@ pub(crate) fn call(
         crate::argument_checker::check(session, function, &mut arguments, node);
         return emit_call(session, function, arguments, (node, purpose));
     }
+    if let Some(effect) = crate::effect_checker::check(session, node, None, purpose) {
+        return effect;
+    }
     let arguments = arguments_for(session, arguments);
     if let Some(function) = find_builtin(&name, session.options.profile) {
         return crate::builtin_checker::check(session, function, arguments, node);

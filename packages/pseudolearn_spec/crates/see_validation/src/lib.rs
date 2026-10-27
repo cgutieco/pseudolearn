@@ -44,3 +44,5 @@ pub fn validate(corpus: &Corpus, lock: &Lock) -> Result<Vec<String>, String> {
     errors.dedup();
     Ok(errors)
 }
+
+mod host_cases;

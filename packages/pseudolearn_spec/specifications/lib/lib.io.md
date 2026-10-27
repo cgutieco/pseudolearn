@@ -65,12 +65,28 @@
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
-    "salida": "bytes_ok\n",
+    "salida": "3\n255\n",
     "terminacion": "completed"
   },
   "programas": {
-    "es": "Algoritmo P\nEscribir \"bytes_ok\";\nFinAlgoritmo\n",
-    "en": "algorithm P\nwrite \"bytes_ok\";\nendAlgorithm\n"
+    "es": "SubProceso Probe() Como Resultado<Bytes, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\nRetornar file.LeerBytes();\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value.Longitud(); Escribir value.En(1);\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<Bytes, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\nreturn file.readBytes();\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value.length(); write value.at(1);\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": [
+      "archivos_lectura"
+    ],
+    "requested_permissions": [
+      "archivos_lectura"
+    ],
+    "files": {
+      "a": [
+        0,
+        255,
+        128
+      ]
+    },
+    "grabar_y_reproducir": true
   }
 }
 ```
@@ -102,12 +118,25 @@
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
-    "salida": "error_es_ok\n",
+    "salida": "permiso_denegado\n",
     "terminacion": "completed"
   },
   "programas": {
-    "es": "Algoritmo P\nEscribir \"error_es_ok\";\nFinAlgoritmo\n",
-    "en": "algorithm P\nwrite \"error_es_ok\";\nendAlgorithm\n"
+    "es": "SubProceso Probe() Como Resultado<Bytes, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\nRetornar file.LeerBytes();\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value.Longitud(); Escribir value.En(1);\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<Bytes, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\nreturn file.readBytes();\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value.length(); write value.at(1);\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": [],
+    "requested_permissions": [
+      "archivos_lectura"
+    ],
+    "files": {
+      "a": [
+        0,
+        255,
+        128
+      ]
+    }
   }
 }
 ```
@@ -139,12 +168,25 @@
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
-    "salida": "utf8_validado\n",
+    "salida": "utf8_invalido\n",
     "terminacion": "completed"
   },
   "programas": {
-    "es": "Algoritmo P\nEscribir \"utf8_validado\";\nFinAlgoritmo\n",
-    "en": "algorithm P\nwrite \"utf8_validado\";\nendAlgorithm\n"
+    "es": "SubProceso Probe() Como Resultado<Cadena, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\nRetornar file.LeerTexto();\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<string, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\nreturn file.readText();\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": [
+      "archivos_lectura"
+    ],
+    "requested_permissions": [
+      "archivos_lectura"
+    ],
+    "files": {
+      "a": [
+        255
+      ]
+    }
   }
 }
 ```

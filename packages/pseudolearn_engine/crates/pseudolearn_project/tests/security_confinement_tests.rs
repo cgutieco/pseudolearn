@@ -1,33 +1,30 @@
 use pseudolearn_project::{CapabilityFsError, ConfinedDirectory, FileRights};
 
 #[test]
-fn parent_traversal_deep_is_rejected() {
+fn parent_traversal_deep_is_rejected() -> Result<(), String> {
     let directory = ConfinedDirectory::new("sandbox/root".to_owned(), FileRights::READ_ONLY);
-    let Some(valid) = directory else {
-        panic!("invalid directory");
-    };
+    let valid = directory.ok_or("invalid directory")?;
     let outcome = valid.resolve_subpath("a/b/../../../etc/shadow");
     assert_eq!(outcome, Err(CapabilityFsError::EscapeAttempt));
+    Ok(())
 }
 
 #[test]
-fn current_directory_segment_is_rejected() {
+fn current_directory_segment_is_rejected() -> Result<(), String> {
     let directory = ConfinedDirectory::new("sandbox/root".to_owned(), FileRights::READ_ONLY);
-    let Some(valid) = directory else {
-        panic!("invalid directory");
-    };
+    let valid = directory.ok_or("invalid directory")?;
     let outcome = valid.resolve_subpath("sub/./file.txt");
     assert_eq!(outcome, Err(CapabilityFsError::EscapeAttempt));
+    Ok(())
 }
 
 #[test]
-fn absolute_path_escape_is_rejected() {
+fn absolute_path_escape_is_rejected() -> Result<(), String> {
     let directory = ConfinedDirectory::new("sandbox/root".to_owned(), FileRights::READ_WRITE);
-    let Some(valid) = directory else {
-        panic!("invalid directory");
-    };
+    let valid = directory.ok_or("invalid directory")?;
     let outcome = valid.resolve_subpath("/var/log/system.log");
     assert_eq!(outcome, Err(CapabilityFsError::InvalidPath));
+    Ok(())
 }
 
 #[test]

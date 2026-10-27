@@ -141,7 +141,7 @@ const TABLE: &[(Entry, &str, &[Slot])] = &[
     (
         Entry::EffectCall,
         "rt_aot_effect_call",
-        &[Slot::Word64, Slot::Word32],
+        &[Slot::Word32, Slot::Address],
     ),
 ];
 

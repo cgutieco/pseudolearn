@@ -27,6 +27,8 @@ mod control_context;
 mod diagnostic_arguments;
 mod dimension_checker;
 pub(crate) mod effect_check;
+pub(crate) mod effect_operands;
+pub(crate) mod effect_calls;
 mod enum_access;
 mod enum_registry;
 mod expression_checker;
@@ -155,3 +157,8 @@ mod function_calls;
 pub use pseudolearn_lexicon::Profile;
 
 mod function_containment;
+
+mod effect_types;
+mod effect_checker;
+mod effect_vectors;
+pub use pseudolearn_abi::{EffectValueKind, EffectOperation, EFFECT_OPERATIONS, effect_operation};

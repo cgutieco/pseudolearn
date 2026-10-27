@@ -101,7 +101,7 @@ a través de ninguna llamada.
 | `rt_aot_random_real` | — | binario64 en `[0, 1)` |
 | `rt_aot_write` | palabra, `tipo \| NEWLINE_FLAG` | 0 |
 | `rt_aot_read` | tipo | palabra leída |
-| `rt_aot_effect_call` | capacidad, operacion | resultado palabra |
+| `rt_aot_effect_call` | descriptor de operación, búfer de palabras `[capacidad, nodo fuente, clase de resultado, argumentos…, celdas de resultado…]` | 0; las respuestas se escriben en las celdas |
 | `rt_aot_fault` | — | el código del sitio decide el estado |
 
 Los accesos a arreglos y objetos son el camino lento de los accesos en línea del código generado: reproducen la
@@ -220,6 +220,23 @@ Perfil por sitio: `ExecutableSettings::site_boolean_words` lista las palabras l�
 `boolean_words`. La magia de los metadatos pasa a `PLM4` y los de `PLM3` se rechazan sin reinterpretarse, porque el
 significado del bloque de configuración cambió.
 
+### Efectos de capacidad en el sujeto nativo
+
+Problema: el proceso nativo debe realizar los mismos efectos, con la misma cinta y la misma autoridad, que la VM, sin
+depender de `pseudolearn_api` ni de `pseudolearn_timeline` y sin leer el entorno desde las instrucciones. Elección:
+`rt_aot_effect_call` reutiliza el núcleo de `pseudolearn_runtime` (`decode_host_value`, `perform_host_effect`,
+`host_reply_words`, `local_effect`) sobre el montón del motor nativo; los argumentos y las celdas de resultado viajan en un
+único búfer de palabras con tres de cabecera, porque el límite de parámetros posicionales es cuatro. Las respuestas se
+escriben en las celdas con la misma ruta que `rt_aot_cell_store`. La salida y la lectura de consola también se anotan
+en la cinta con `console_record`, como hace el recolector de consola de la API, de modo que una cinta grabada por un motor
+la reproduce el otro. Canal de configuración: el ejecutable acepta `--effects-in <archivo>` y `--effects-out <archivo>`,
+rutas explícitas que entrega quien lo lanza; el archivo de entrada lleva anfitrión, identidad de ejecución, presupuesto de
+cinta y, para reproducir, la cinta; el de salida devuelve la cinta, las llamadas al anfitrión y el código de rechazo de
+reproducción. Sin esas banderas el proceso se comporta como antes. Una entrada ilegible o con identidad distinta se rechaza
+antes de ejecutar y el proceso termina con el código 6. Se descarta una variable de entorno (el lanzador usa entorno
+vacío) y se descarta la entrada estándar (ya transporta las entradas del programa). El adaptador solo ofrece
+`execute`; `history_seek` se rechaza en la API antes de lanzar.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código inglés, sin comentarios ni atributos de supresión. Los puntos de entrada de un mismo dominio comparten
@@ -253,6 +270,7 @@ agotamiento de celdas con todo enraizado, recolección con raíces, diseños y c
 `tests/metadata_tests.rs` (ida y vuelta, con recolección forzada y las cuatro plantillas, rechazo de cada prefijo truncado, magia y nombres corruptos, `pseudolearn_aot_main` con
 metadatos nulos o basura), `tests/process_tests.rs` (códigos 0, 3, 4 y 5, salida previa al fallo, entrada agotada, clases
 inválidas, plantillas, avisos en ejecuciones completadas, límites numéricos, escape de argumentos y recolección forzada) y
+`tests/effect_document_tests.rs` (entrada viva, entrada malformada, identidad distinta, permiso desconocido y salida de rechazo) y
 `tests/fault_tests.rs` cubren camino feliz e infeliz de cada familia: literales inválidos, conversiones fallidas,
 posiciones fuera de rango, dominios matemáticos, flujo de salida cerrado, lecturas con tipo incorrecto, entrada
 agotada, sitios inexistentes, conservación del primer fallo y renderizado por idioma.

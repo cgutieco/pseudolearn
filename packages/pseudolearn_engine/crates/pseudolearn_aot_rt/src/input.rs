@@ -15,6 +15,10 @@ pub extern "C" fn rt_aot_read(context: *mut AotRuntimeContext, site: u32, kind: 
 fn read_value(entry: &mut Entry<'_>, kind: u32) -> Result<u64, Trap> {
     loop {
         let line = next_line(entry.engine)?;
+        entry
+            .engine
+            .effects
+            .record_console("read", Vec::new(), line.clone().into_bytes())?;
         if let Some(word) = convert(entry, kind, &line)? {
             return Ok(word);
         }

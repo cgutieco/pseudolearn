@@ -41,6 +41,7 @@ pub fn run_object(
             exit_code: output.status.code(),
             output: String::from_utf8(output.stdout).map_err(|error| error.to_string())?,
             errors: String::from_utf8(output.stderr).map_err(|error| error.to_string())?,
+            effects: None,
         },
     ))
 }

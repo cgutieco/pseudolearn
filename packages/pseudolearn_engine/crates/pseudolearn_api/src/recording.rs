@@ -222,9 +222,7 @@ fn populate_terminal_fields(
         "host_tape".to_owned(),
         json!({"seed":request.seed,"inputs":request.inputs}),
     );
-    let identity = crate::tape_wire::build_identity(request);
-    let tape = pseudolearn_timeline::EffectTape::new(identity);
-    fields.insert("effect_tape".to_owned(), crate::tape_wire::tape_to_value(&tape));
+
 }
 
 pub(crate) fn value(response: Value) -> Result<Value, ApiError> {

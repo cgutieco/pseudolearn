@@ -213,7 +213,7 @@ fn header_shape(request: &AllocationRequest) -> Result<(u32, u32), MemoryError> 
         }
         Shape::Object(layout) => {
             let tag = layout.class.checked_add(3).ok_or(MemoryError::Resource)?;
-            if tag >= pseudolearn_abi::dictionary_layout::DICTIONARY_SHAPE_TAG {
+            if tag >= pseudolearn_abi::bytes_layout::BYTES_SHAPE_TAG {
                 return Err(MemoryError::Resource);
             }
             let payload = u16::try_from(request.payload).map_err(|_| MemoryError::Resource)?;
@@ -223,6 +223,8 @@ fn header_shape(request: &AllocationRequest) -> Result<(u32, u32), MemoryError> 
         Shape::Auxiliary => Ok((u32::MAX, 0)),
         Shape::Vector => Ok((pseudolearn_abi::vector_layout::VECTOR_SHAPE_TAG, 0)),
         Shape::Dictionary => Ok((pseudolearn_abi::dictionary_layout::DICTIONARY_SHAPE_TAG, 0)),
+        Shape::Bytes => Ok((pseudolearn_abi::bytes_layout::BYTES_SHAPE_TAG, 0)),
+        Shape::Capability => Ok((pseudolearn_abi::capability_layout::CAPABILITY_SHAPE_TAG, 0)),
     }
 }
 

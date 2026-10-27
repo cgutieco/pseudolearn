@@ -98,7 +98,13 @@ impl Machine<'_> {
     pub fn supply_input(&mut self, text: String) {
         self.inputs.push(text);
     }
-    pub fn supply_effect_result(&mut self, result: crate::RuntimeValue) {
+    pub fn supply_effect_result(&mut self, result: pseudolearn_runtime::HostReply) {
         self.effect_result = Some(result);
+    }
+}
+
+impl Machine<'_> {
+    pub fn set_effect_checkpoint(&mut self, checkpoint: pseudolearn_runtime::EffectCheckpoint) {
+        self.effect_checkpoint = Some(Box::new(checkpoint));
     }
 }

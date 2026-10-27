@@ -206,3 +206,21 @@ fn paginated_queries_accept_object_targets_and_reject_malformed_targets() -> Res
     }
     Ok(())
 }
+
+#[test]
+fn host_schema_accepts_memory_files_and_rejects_invalid_shapes() -> Result<(), String> {
+    for (host, valid) in [
+        (serde_json::json!({"files":{"a":[0,255]},"clock":[1,2],"permissions":["reloj"]}), true),
+        (serde_json::json!({"files":{"a":[256]}}), false),
+        (serde_json::json!({"clock":[-1]}), false),
+        (serde_json::json!({"permissions":["network"]}), false),
+        (serde_json::json!({"files":{"/outside":"secret"}}), false),
+        (serde_json::json!({"unknown":true}), false),
+    ] {
+        let mut specification = support::specification()?;
+        specification.blocks.last_mut().ok_or("missing case")?
+            .fields.insert("anfitrion".to_owned(), host);
+        assert_eq!(see_validation::schema::check(&specification).is_empty(), valid);
+    }
+    Ok(())
+}

@@ -52,6 +52,7 @@ macro_rules! machine_instance {
             reference_dirty_from: std::cell::Cell::new(0),
             defined_dirty_from: std::cell::Cell::new(0),
             effect_result: None,
+            effect_checkpoint: None,
             effect_seq: 0,
         }
     };

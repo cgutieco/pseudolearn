@@ -17,8 +17,6 @@ pub struct MachineImage {
     pub(super) probed: bool,
     pub(super) input_requested: bool,
     pub(super) output_suppressed: bool,
-    pub(super) effect_seq: u64,
-    pub(super) effect_result: Option<crate::RuntimeValue>,
 }
 
 pub fn snapshot_machine(machine: &Machine<'_>) -> MachineImage {
@@ -36,8 +34,6 @@ pub fn snapshot_machine(machine: &Machine<'_>) -> MachineImage {
         probed: machine.probed,
         input_requested: machine.input_requested_emitted,
         output_suppressed: machine.output_suppressed,
-        effect_seq: machine.effect_seq,
-        effect_result: machine.effect_result,
     };
     machine.frame_dirty_from.set(machine.frames.len());
     machine.begin_bank_delta_tracking();
@@ -68,8 +64,6 @@ pub fn snapshot_machine_lean(machine: &Machine<'_>) -> MachineImage {
         probed: machine.probed,
         input_requested: machine.input_requested_emitted,
         output_suppressed: machine.output_suppressed,
-        effect_seq: machine.effect_seq,
-        effect_result: machine.effect_result,
     };
     machine.frame_dirty_from.set(machine.frames.len());
     machine.begin_bank_delta_tracking();
@@ -97,8 +91,6 @@ pub fn suspend_machine(machine: Machine<'_>) -> MachineImage {
         probed: machine.probed,
         input_requested: machine.input_requested_emitted,
         output_suppressed: machine.output_suppressed,
-        effect_seq: machine.effect_seq,
-        effect_result: machine.effect_result,
     }
 }
 
@@ -138,8 +130,6 @@ fn restore_payload(machine: &mut Machine<'_>, image: MachineImage) {
     machine.probed = image.probed;
     machine.input_requested_emitted = image.input_requested;
     machine.output_suppressed = image.output_suppressed;
-    machine.effect_seq = image.effect_seq;
-    machine.effect_result = image.effect_result;
 }
 
 pub fn restore_machine_image(machine: &mut Machine<'_>, image: &MachineImage) {

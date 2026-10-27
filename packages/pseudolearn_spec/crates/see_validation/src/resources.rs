@@ -1,6 +1,7 @@
 use see_model::{Specification, field};
 use serde_json::Value;
 
+mod capability_library;
 pub mod analysis_limits;
 pub mod grammar;
 pub mod help_catalog;
@@ -19,6 +20,7 @@ pub fn check(specification: &Specification) -> Vec<String> {
         }
         let result = match field(definition, "termino") {
             "vocabulary" | "contextualVocabulary" | "functions" => lexicon::check(value),
+            "capabilityLibrary" => capability_library::check(value),
             "diagnostics" => diagnostics(value),
             "grammar" => grammar::check(value),
             "helpCatalog" => help_catalog::check(value),

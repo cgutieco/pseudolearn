@@ -11,6 +11,7 @@ fn run(exit_code: Option<i32>, output: &str, errors: &str) -> NativeRunReport {
         exit_code,
         output: output.to_owned(),
         errors: errors.to_owned(),
+        effects: None,
     }
 }
 

@@ -50,7 +50,7 @@ pub(crate) fn resolve(session: &mut AnalysisSession<'_>, node: usize, name: &str
     Some(Type::Object(register(session, node, (key, value))))
 }
 
-fn register(
+pub(crate) fn register(
     session: &mut AnalysisSession<'_>,
     node: usize,
     types: (Option<TypeId>, TypeId),

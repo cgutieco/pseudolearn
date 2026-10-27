@@ -166,29 +166,34 @@ pub extern "C" fn rt_aot_cell_store(
         entry
             .engine
             .record(|statistics| statistics.cell_stores = statistics.cell_stores.saturating_add(1));
-        let slot = slot_of(cell)?;
-        match target(entry, cell)? {
-            CellTarget::Managed { cell, .. } => {
-                write_memory_cell(&mut entry.engine.heap, cell, word)?;
-            }
-            CellTarget::Local {
-                kind, origin_site, ..
-            } => {
-                let stored = CellTarget::Local {
-                    kind,
-                    word,
-                    defined: true,
-                    origin_site,
-                };
-                *entry
-                    .engine
-                    .cells
-                    .get_mut(slot)
-                    .ok_or_else(|| Trap::named("internalFault"))? = CellSlot::new(stored);
-            }
-        }
+        store_word(entry, cell, word)?;
         Ok(0)
     })
+}
+
+pub(crate) fn store_word(entry: &mut Entry<'_>, cell: u32, word: u64) -> Result<(), Trap> {
+    let slot = slot_of(cell)?;
+    match target(entry, cell)? {
+        CellTarget::Managed { cell, .. } => {
+            write_memory_cell(&mut entry.engine.heap, cell, word)?;
+        }
+        CellTarget::Local {
+            kind, origin_site, ..
+        } => {
+            let stored = CellTarget::Local {
+                kind,
+                word,
+                defined: true,
+                origin_site,
+            };
+            *entry
+                .engine
+                .cells
+                .get_mut(slot)
+                .ok_or_else(|| Trap::named("internalFault"))? = CellSlot::new(stored);
+        }
+    }
+    Ok(())
 }
 
 fn publish(entry: &mut Entry<'_>, target: CellTarget) -> Result<u64, Trap> {

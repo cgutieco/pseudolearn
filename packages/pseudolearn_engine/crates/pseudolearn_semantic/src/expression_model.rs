@@ -40,6 +40,7 @@ pub enum UnaryOperator {
 
 #[derive(Clone, Debug, PartialEq)]
 pub enum HirExpression {
+    Effect { operation: u32, receiver: Option<ExpressionId>, arguments: Vec<ExpressionId>, source_node_id: u32 },
     Collection(crate::collection_model::CollectionExpression),
     FunctionValue(FunctionId),
     Captured {

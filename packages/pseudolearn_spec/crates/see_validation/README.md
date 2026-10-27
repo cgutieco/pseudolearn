@@ -82,3 +82,9 @@ El esquema admite `cancelacion_prueba` como ordinal entero no negativo de un son
 El campo no se interpreta como un presupuesto de sentencias y se rechazan tipos y signos inválidos.
 
 El catálogo acepta identidades de contextualVocabulary como fuente léxica distinta del vocabulario reservado. La cobertura combina ambos inventarios para exigir ficha y parte bilingüe por identidad sin cambiar la clasificación léxica del lenguaje.
+
+
+Los casos con anfitrion se validan contra la forma cerrada host del esquema see/1 y contra restricciones
+de rutas, octetos e incertidumbre de escritura. El proveedor es exclusivamente declarativo y en memoria:
+validar estos datos no ejecuta ni importa al sujeto. Los negativos distinguen forma inválida, escape,
+octeto fuera de rango y permiso desconocido.

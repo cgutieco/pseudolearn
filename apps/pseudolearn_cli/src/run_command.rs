@@ -13,7 +13,7 @@ pub fn execute_run(options: &CliOptions) -> Result<i32, CliError> {
         .ok_or_else(|| CliError::Usage(messages::missing_input(locale).to_owned()))?;
     let source = std::fs::read_to_string(path)
         .map_err(|_| CliError::Operational(messages::unreadable_input(locale, path)))?;
-    let request = build_request(options, source);
+    let request = build_request(options, source)?;
     let mut session = ApiSession::default();
     let analysis = result(session.call("create_analysis", &json!(request)))?;
     let mut start = serde_json::to_value(&request).map_err(operational)?;
@@ -25,6 +25,7 @@ pub fn execute_run(options: &CliOptions) -> Result<i32, CliError> {
     }
     let resource = match result(session.call("start", &start)) {
         Ok(execution) => execution.get("resource").cloned().unwrap_or(Value::Null),
+        Err(error) if options.execution.replay_tape.is_some() => return Err(error),
         Err(_) => return render_rejected(options, path, &request),
     };
     stream_execution(&mut session, &resource, options, (path, &request.program))
@@ -60,7 +61,12 @@ fn stream_execution(
                     &json!({"resource":resource,"text":input.trim_end_matches(['\r','\n'])}),
                 ))?;
             }
-            _ => return finish(options, source.0, &response),
+            _ => {
+                if let Some(path) = &options.execution.record_tape {
+                    crate::tape_files::persist(path, &response)?;
+                }
+                return finish(options, source.0, &response);
+            }
         }
     }
 }
@@ -159,25 +165,23 @@ fn operational(error: impl std::fmt::Display) -> CliError {
     CliError::Operational(error.to_string())
 }
 
-fn build_request(options: &CliOptions, source: String) -> ExecuteRequest {
+fn build_request(options: &CliOptions, source: String) -> Result<ExecuteRequest, CliError> {
     let profile = options.vocabulary.clone().unwrap_or_else(|| {
         detect_vocabulary_profile(&source)
             .unwrap_or("es")
             .to_owned()
     });
     let execution_mode = if options.execution.replay_tape.is_some() {
-        Some("replay".to_owned())
+        Some("replay_from_tape".to_owned())
     } else {
         None
     };
     let effect_tape = if let Some(path) = &options.execution.replay_tape {
-        std::fs::read_to_string(path)
-            .ok()
-            .and_then(|text| serde_json::from_str(&text).ok())
+        Some(crate::tape_files::read(path)?)
     } else {
         None
     };
-    ExecuteRequest {
+    Ok(ExecuteRequest {
         program: source,
         profile,
         strictness: options.strictness.clone().unwrap_or("strict".to_owned()),
@@ -197,5 +201,5 @@ fn build_request(options: &CliOptions, source: String) -> ExecuteRequest {
         execution_mode,
         effect_tape,
         ..ExecuteRequest::default()
-    }
+    })
 }

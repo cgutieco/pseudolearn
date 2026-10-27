@@ -19,7 +19,7 @@ fn check_standard_instruction(
     get_type: impl Fn(ValueId) -> Option<IrType>,
     module: &Module,
 ) -> Result<Option<IrType>, TypeError> {
-    if let Some(result) = check_value_operations(operation, operands, &get_type)? {
+    if let Some(result) = check_effects_and_values(operation, operands, &get_type)? {
         return Ok(Some(result));
     }
     if let Some(result) = check_constants(operation, operands)? {
@@ -51,6 +51,17 @@ fn check_standard_instruction(
         return Ok(Some(result));
     }
     check_control_and_io(operation, operands, &get_type)
+}
+
+fn check_effects_and_values(
+    operation: Operation,
+    operands: &[Operand],
+    get_type: &impl Fn(ValueId) -> Option<IrType>,
+) -> Result<Option<IrType>, TypeError> {
+    if let Some(result) = crate::type_checker_effects::check(operation, operands, get_type)? {
+        return Ok(Some(result));
+    }
+    check_value_operations(operation, operands, get_type)
 }
 
 fn check_constants(

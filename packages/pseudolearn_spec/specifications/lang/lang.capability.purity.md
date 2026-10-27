@@ -118,7 +118,7 @@
   "clase": "semantica",
   "texto": "El análisis semántico comprueba la pureza transitiva hasta punto fijo sobre el grafo de llamadas del programa. Si una Funcion invoca a otra unidad que realiza efectos secundarios, la función llamadora es rechazada con pureFunctionTransitiveSideEffect.",
   "verificacion": [
-    "C3"
+    "C3", "C7", "C9"
   ]
 }
 ```
@@ -160,7 +160,7 @@
   "clase": "semantica",
   "texto": "No se permite pasar ni asignar una clausura o subprograma con efectos secundarios en un contexto donde el tipo esperado es una función pura Funcion. Las discrepancias de pureza son detectadas estáticamente.",
   "verificacion": [
-    "C4"
+    "C4", "C8"
   ]
 }
 ```
@@ -271,5 +271,89 @@
     "es": "SubProceso Saludar()\nEscribir \"subproceso_ok\";\nFinSubProceso\nAlgoritmo P\nSaludar();\nFinAlgoritmo\n",
     "en": "subroutine Saludar()\nwrite \"subproceso_ok\";\nendSubroutine\nalgorithm P\nSaludar();\nendAlgorithm\n"
   }
+}
+```
+
+```caso
+{
+  "id": "C7",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "pureFunctionTransitiveSideEffect",
+        "severidad": "error"
+      }
+    ]
+  },
+  "programa": "SubProceso Effect() Como Logico\nEscribir 1;\nRetornar Verdadero;\nFinSubProceso\nFuncion Probe() Como Entero\nSi Effect() Entonces\nRetornar 1;\nFinSi\nRetornar 0;\nFinFuncion\nAlgoritmo Main\nEscribir Probe();\nFinAlgoritmo\n",
+  "perfil_base": "es"
+}
+```
+
+```caso
+{
+  "id": "C8",
+  "regla": "R3",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "pureFunctionTransitiveSideEffect",
+        "severidad": "error"
+      }
+    ]
+  },
+  "programa": "SubProceso Effect(value Como Entero) Como Entero\nEscribir value;\nRetornar value;\nFinSubProceso\nFuncion Probe() Como Entero\nDefinir action Como Funcion(Entero) Como Entero <- Effect;\nRetornar action(3);\nFinFuncion\nAlgoritmo Main\nEscribir Probe();\nFinAlgoritmo\n",
+  "perfil_base": "es"
+}
+```
+
+```caso
+{
+  "id": "C9",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "pureFunctionTransitiveSideEffect",
+        "severidad": "error"
+      }
+    ]
+  },
+  "programa": "SubProceso Effect() Como Entero\nEscribir 1;\nRetornar 1;\nFinSubProceso\nFuncion Probe() Como Opcional<Entero>\nRetornar Algo(Effect());\nFinFuncion\nAlgoritmo Main\nEscribir Probe();\nFinAlgoritmo\n",
+  "perfil_base": "es"
 }
 ```

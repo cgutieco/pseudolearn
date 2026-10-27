@@ -1625,6 +1625,9 @@
           },
           "minItems": 1,
           "uniqueItems": true
+        },
+        "anfitrion": {
+          "$ref": "#/$defs/host"
         }
       },
       "required": [
@@ -2038,6 +2041,132 @@
         "regla"
       ],
       "additionalProperties": false
+    },
+    "host": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "files": {
+          "type": "object",
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              }
+            ]
+          }
+        },
+        "args": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "clock": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "permissions": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "consola",
+              "argumentos",
+              "archivos_lectura",
+              "archivos_escritura",
+              "reloj",
+              "temporizador"
+            ]
+          }
+        },
+        "requested_permissions": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "consola",
+              "argumentos",
+              "archivos_lectura",
+              "archivos_escritura",
+              "reloj",
+              "temporizador"
+            ]
+          }
+        },
+        "faults": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "operation",
+              "code"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "operation": {
+                "type": "string"
+              },
+              "path": {
+                "type": "string"
+              },
+              "code": {
+                "enum": [
+                  "no_encontrado",
+                  "permiso_denegado",
+                  "ya_existe",
+                  "fin_de_archivo",
+                  "utf8_invalido",
+                  "ruta_invalida",
+                  "capacidad_cerrada",
+                  "tiempo_agotado",
+                  "interrumpido"
+                ]
+              },
+              "uncertain": {
+                "type": "boolean"
+              }
+            }
+          }
+        },
+        "secrets": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "required": [
+              "key_id",
+              "value"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "key_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "value": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "grabar_y_reproducir": {
+          "type": "boolean"
+        },
+        "max_tape_bytes": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
     }
   }
 }

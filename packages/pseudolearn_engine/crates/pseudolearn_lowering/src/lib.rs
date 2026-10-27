@@ -123,3 +123,5 @@ mod switch_join;
 mod closure_values;
 mod function_prototypes;
 mod indirect_calls;
+
+mod effect_values;

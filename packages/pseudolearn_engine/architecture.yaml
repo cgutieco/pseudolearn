@@ -22,7 +22,7 @@ layers:
   - name: pseudolearn_abi
     path: crates/pseudolearn_abi
     may_import: []
-    external_dependencies: []
+    external_dependencies: [serde_json]
     unsafe_allowed: false
   - name: pseudolearn_project
     path: crates/pseudolearn_project
@@ -67,7 +67,7 @@ layers:
   - name: pseudolearn_runtime
     path: crates/pseudolearn_runtime
     may_import: [pseudolearn_abi, pseudolearn_diagnostics]
-    external_dependencies: []
+    external_dependencies: [serde, serde_json, sha2, hmac]
     unsafe_allowed: false
   - name: pseudolearn_library
     path: crates/pseudolearn_library
@@ -77,7 +77,7 @@ layers:
   - name: pseudolearn_aot_rt
     path: crates/pseudolearn_aot_rt
     may_import: [pseudolearn_source, pseudolearn_abi, pseudolearn_diagnostics, pseudolearn_runtime, pseudolearn_library]
-    external_dependencies: []
+    external_dependencies: [serde, serde_json]
     unsafe_allowed: true
   - name: pseudolearn_codegen
     path: crates/pseudolearn_codegen

@@ -39,7 +39,7 @@
 # Modelo de funciones incorporadas
 
 ```definicion
-{
+ {
   "id": "D1",
   "termino": "functions",
   "texto": "Identidad, nombres, alias y firma de cada función incorporada.",
@@ -311,6 +311,7 @@
     }
   }
 }
+
 ```
 
 ```regla
@@ -411,3 +412,263 @@
   ]
 }
 ```
+
+```definicion
+ {
+  "id": "D2",
+  "termino": "capabilityLibrary",
+  "texto": "Operaciones de capacidades y bytes con identidad estable, receptor, formas bilingües, parámetros, resultado y clasificación de efectos.",
+  "valor": {
+    "operations": [
+      {
+        "identity": "request_console",
+        "receiver": null,
+        "es": "SolicitarConsola",
+        "en": "requestConsole",
+        "parameters": [],
+        "result": "console",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "request_arguments",
+        "receiver": null,
+        "es": "SolicitarArgumentos",
+        "en": "requestArguments",
+        "parameters": [],
+        "result": "arguments",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "request_directory",
+        "receiver": null,
+        "es": "SolicitarDirectorio",
+        "en": "requestDirectory",
+        "parameters": [
+          "text"
+        ],
+        "result": "directory",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "request_clock",
+        "receiver": null,
+        "es": "SolicitarReloj",
+        "en": "requestClock",
+        "parameters": [],
+        "result": "clock",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "request_timer",
+        "receiver": null,
+        "es": "SolicitarTemporizador",
+        "en": "requestTimer",
+        "parameters": [],
+        "result": "timer",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "console_write",
+        "receiver": "console",
+        "es": "Escribir",
+        "en": "write",
+        "parameters": [
+          "text"
+        ],
+        "result": "integer",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "arguments_values",
+        "receiver": "arguments",
+        "es": "Valores",
+        "en": "values",
+        "parameters": [],
+        "result": "text_list",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "directory_derive",
+        "receiver": "directory",
+        "es": "Subdirectorio",
+        "en": "subdirectory",
+        "parameters": [
+          "text",
+          "text"
+        ],
+        "result": "directory",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "file_open",
+        "receiver": "directory",
+        "es": "Abrir",
+        "en": "open",
+        "parameters": [
+          "text",
+          "text"
+        ],
+        "result": "file",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "directory_close",
+        "receiver": "directory",
+        "es": "Cerrar",
+        "en": "close",
+        "parameters": [],
+        "result": "boolean",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "file_read_bytes",
+        "receiver": "file",
+        "es": "LeerBytes",
+        "en": "readBytes",
+        "parameters": [],
+        "result": "bytes",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "file_read_text",
+        "receiver": "file",
+        "es": "LeerTexto",
+        "en": "readText",
+        "parameters": [],
+        "result": "text",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "file_write_bytes",
+        "receiver": "file",
+        "es": "EscribirBytes",
+        "en": "writeBytes",
+        "parameters": [
+          "bytes"
+        ],
+        "result": "integer",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "file_write_text",
+        "receiver": "file",
+        "es": "EscribirTexto",
+        "en": "writeText",
+        "parameters": [
+          "text"
+        ],
+        "result": "integer",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "file_close",
+        "receiver": "file",
+        "es": "Cerrar",
+        "en": "close",
+        "parameters": [],
+        "result": "boolean",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "clock_now",
+        "receiver": "clock",
+        "es": "Ahora",
+        "en": "now",
+        "parameters": [],
+        "result": "integer",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "timer_wait",
+        "receiver": "timer",
+        "es": "Esperar",
+        "en": "wait",
+        "parameters": [
+          "integer"
+        ],
+        "result": "integer",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "bytes_new",
+        "receiver": null,
+        "es": "Bytes",
+        "en": "Bytes",
+        "parameters": [],
+        "result": "bytes",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "bytes_length",
+        "receiver": "bytes",
+        "es": "Longitud",
+        "en": "length",
+        "parameters": [],
+        "result": "integer",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "bytes_at",
+        "receiver": "bytes",
+        "es": "En",
+        "en": "at",
+        "parameters": [
+          "integer"
+        ],
+        "result": "integer",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "bytes_utf8",
+        "receiver": "bytes",
+        "es": "TextoUtf8",
+        "en": "utf8Text",
+        "parameters": [],
+        "result": "text",
+        "effect": false,
+        "fallible": true
+      }
+    ]
+  }
+}
+
+```
+
+
+Las solicitudes de consola, argumentos, directorio identificado por nombre, reloj y temporizador
+devuelven Resultado del tipo de capacidad y ErrorES; no construyen capacidades sin concesión.
+Los métodos de capacidad definidos en capabilityLibrary también devuelven Resultado. Abrir y
+Subdirectorio reciben un modo lectura, escritura o lectura_escritura (read, write o read_write en
+inglés); la apertura de escritura crea o trunca, y una derivación nunca amplía los derechos.
+LeerBytes y LeerTexto leen el contenido completo del archivo. EscribirBytes y EscribirTexto
+devuelven la cantidad de bytes escritos; Valores devuelve Vector<Cadena>. Ahora devuelve el
+instante grabado en nanosegundos y Esperar recibe una duración no negativa en nanosegundos y devuelve
+el instante lógico de resolución. Cerrar devuelve Verdadero al cerrar y CapacidadCerrada al repetir.
+Bytes() construye la secuencia vacía; Longitud y En consultan longitud y un octeto con índice
+comprobado. TextoUtf8 devuelve Resultado<Cadena,ErrorES> y rechaza UTF-8 inválido. ErrorES contiene
+Codigo y Incierto (code y uncertain): el código es la variante portable, y la bandera informa
+incertidumbre de una operación con potencial de escritura.
+
+Los parámetros text admiten Cadena o Caracter; un carácter se convierte sin pérdida a una cadena
+de un punto de código antes de emitir la solicitud. Esto conserva rutas de un solo carácter sin
+alterar las reglas generales de asignación entre ambos tipos.

@@ -13,7 +13,8 @@ pub enum CommitOutcome {
     Uncertain,
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, serde::Serialize, serde::Deserialize)]
+#[serde(rename_all = "snake_case")]
 pub enum ReproducibilityStatus {
     Reproducible,
     UncertainExternalState,
@@ -129,13 +130,14 @@ impl CapabilityTable {
         if entry.closed || entry.generation != token.generation {
             return Err(CapabilityError::Closed);
         }
-        if entry.kind != token.kind {
+        if entry.kind != token.kind || !token.rights.is_subset_of(entry.rights) {
             return Err(CapabilityError::InvalidToken);
         }
         Ok(entry)
     }
 
     pub fn close(&mut self, token: &CapabilityToken) -> Result<(), CapabilityError> {
+        self.validate(token)?;
         let index = usize::try_from(token.slot).map_err(|_| CapabilityError::InvalidToken)?;
         let entry = self.entries.get_mut(index).ok_or(CapabilityError::NotFound)?;
         if entry.closed || entry.generation != token.generation {

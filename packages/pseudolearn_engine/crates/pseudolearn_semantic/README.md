@@ -213,3 +213,16 @@ Las firmas función se internan estructuralmente mediante registros sintéticos 
 Las interfaces solo expresan restricciones nominales. El registro resuelve firmas y realizaciones explícitas; la comprobación de clases incluye métodos públicos heredados y firma exacta. Los parámetros opacos solo permiten métodos declarados por su restricción. La monomorfización conserva el método de la clase real: usa llamadas directas cuando el receptor se conoce y el despacho virtual existente cuando corresponde, sin tablas de interfaces. Las colecciones usan identidades de clase sintéticas privadas y metadatos tipados de hojas, con permutación escalar antes de referencias; no son instancias ordinarias de clase. Esto reutiliza Type::Object en las fronteras existentes sin perder la información necesaria para verificar las operaciones. El índice de `Vector` y de `Diccionario` se comprueba por asignabilidad y se ensancha igual que un argumento. Un literal de un carácter es `Carácter` y ningún tipo lo acepta como `Cadena`, por lo que las claves de texto de los casos del corpus tienen al menos dos caracteres. Los vínculos de Para Cada son inmutables por valor. ControlContext separa bucles y limpieza por función; las limpiezas se resuelven en el punto de registro y sus efectos sobre resultados pendientes se aplican a las salidas.
 
 Los tests de estas capacidades se ejecutaron en selecciones acotadas; la conformidad del corpus queda pendiente de la revisión editorial independiente de los contratos nuevos.
+
+
+El análisis de efectos recorre exhaustivamente los operandos del HIR, incluidos condiciones, índices,
+variantes, colecciones y límites de bucle. Un recorrido iterativo evita desbordar la pila de análisis;
+las aristas incluyen destinos virtuales de mundo cerrado y orígenes de valores funcionales locales y
+capturados. Todas las ramas se visitan aunque una anterior ya tenga efecto: detener el recorrido
+perdería aristas transitivas. Los casos del corpus se leen desde los tests espejo, sin duplicarlos.
+
+
+Los tipos opacos de capacidad y Bytes usan clases sintéticas con identidad propia; no se aceptan
+constructores ordinarios para falsificar una capacidad. Las solicitudes y los métodos se resuelven
+contra la tabla generada del ABI. ErrorES es un registro con código y bandera de incertidumbre,
+compatible con las variantes Resultado ya existentes. Los efectos quedan explícitos en el HIR.

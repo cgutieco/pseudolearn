@@ -47,3 +47,13 @@ justificacion: Revisión estructural manual contra el plan aprobado; la revisió
   "justificacion": "Pruebas de esquema y validación, fixtures negativos y verificación mecánica en cargo xtask verify."
 }
 ```
+
+
+Los casos pueden declarar anfitrion como datos de un proveedor en memoria. files contiene rutas
+relativas y textos UTF-8 o listas de octetos; args contiene argumentos; clock contiene instantes
+enteros no negativos en nanosegundos; permissions y requested_permissions declaran autoridad
+concedida y solicitada. faults contiene fallos por operación, ruta, código portable e incertidumbre;
+secrets contiene referencias con identidad de clave y valor solo para el proveedor de prueba.
+grabar_y_reproducir exige comparar la ejecución viva con su reproducción sin proveedor vivo.
+El esquema rechaza campos desconocidos, rutas no relativas, octetos fuera de 0 a 255 y fallos
+inciertos en operaciones de solo lectura. Estos datos no autorizan acceso a disco ni red.

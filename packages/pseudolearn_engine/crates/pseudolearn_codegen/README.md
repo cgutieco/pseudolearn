@@ -68,7 +68,7 @@ campos heredados primero; el índice de la clase es el que `rt_aot_object_new` r
 | `lowering` | Estado de una función, sitios de trampa fríos, propagación de fallo y retorno de cero |
 | `instruction_dispatch` | Tabla de familias: asigna cada `Operation` a su bajada; un test exige cobertura de las 74 y que ninguna tenga dos dueños |
 | `lower_scalars`, `lower_arithmetic`, `lower_real`, `lower_math`, `lower_control` | Bajada de escalares, aritmética, matemática y control |
-| `lower_text`, `lower_io`, `lower_effects` | Literales, texto, entrada, salida, azar y efectos por las entradas del runtime |
+| `lower_text`, `lower_io`, `lower_effects` | Literales, texto, entrada, salida, azar y efectos por las entradas del runtime; `lower_effects` entrega al runtime la operación por índice, el nodo fuente, la clase de resultado, los argumentos y las celdas de resultado en un único búfer |
 | `dominators`, `dominated_facts` | Árbol de dominadores de la RI y hechos heredados por dominancia: resultados de aritmética comprobada y posiciones de arreglo de rango uno ya verificadas |
 | `lower_arrays`, `lower_objects`, `lower_cells` | Memoria: arreglos y objetos con camino rápido en línea y camino lento por el runtime; lectura de celdas locales en línea con camino lento por el runtime |
 | `array_fast_path`, `object_fast_path`, `inline_memory` | Comprobaciones y accesos en línea sobre las palabras del montón |

@@ -83,3 +83,27 @@ Problema: reservar el vector de palabras con la capacidad exacta de cada asignac
 Vector y Diccionario mantienen cabeceras estables y bancos separados de escalares y referencias. Crecer sustituye bancos conservando asa e identidad; Vector duplica capacidad mediante aritmética comprobada. Diccionario conserva entradas en inserción, usa FNV-1a de 64 bits con bytes enteros en orden little endian o UTF-8 exacto para cadenas, índice abierto con sondeo lineal y ocupación máxima de tres cuartos. Compacta establemente cuando los huecos superan un cuarto de las posiciones usadas. No hay tabla lateral de Rust que quede fuera de snapshots. Los bloques auxiliares pertenecen al heap y las referencias activas se recorren desde la cabecera; eliminar borra los enlaces y permite recolectar objetos. Solo las mutaciones estructurales exitosas incrementan la versión u32, cuyo agotamiento falla antes de modificar. Los límites de elementos y palabras variables derivan de cells y del espacio u32; las celdas lógicas dependen de longitud, no de capacidad. Las reservas y el cambio de cabecera se separan para que un fallo no publique almacenamiento parcial.
 
 Los tests de estas capacidades se ejecutaron en selecciones acotadas, incluida la comparación de gemelos con recolección forzada. La conformidad del corpus sigue pendiente de la revisión editorial independiente de los contratos nuevos, y la medición de tamaño excede el presupuesto de Wasm.
+
+
+## Sesión compartida de efectos y cinta
+
+El núcleo de cinta, confirmación y reproducción vive en runtime para que VM y AOT compartan los mismos
+invariantes sin importar API ni timeline. Timeline reexporta los tipos y conserva únicamente
+checkpoints y reconstrucción. El formato canónico usa serde y serde_json, y SHA-256 encadena todos los
+campos de cada entrada con la identidad inicial; ningún adaptador puede omitir esta comprobación.
+El presupuesto cuenta la representación serializada completa. Agotarlo detiene el almacenamiento,
+marca la cinta como no reproducible y permite continuar la ejecución viva sin crecimiento ilimitado.
+
+
+La autenticación de secretos usa HMAC-SHA-256 de RustCrypto hmac 0.12 y sha2 0.10, según su API de
+Mac (https://docs.rs/hmac/0.12.1/hmac/). Se toma la construcción y verificación en tiempo constante;
+se rechazan hashes sin clave y claves almacenadas en la cinta. La clave y el valor resuelto pertenecen
+al proveedor externo; la cinta solo conserva identidad de clave y autenticador.
+
+
+Bytes se aloja empaquetado en bloques del montón con longitud explícita y etiqueta propia; sus
+octetos no se interpretan como referencias ni como texto. Las capacidades también tienen etiqueta
+propia y solo guardan tokens generacionales; los recursos del host permanecen en su proveedor.
+MemoryHostProvider implementa únicamente datos en memoria, reloj declarado y fallos inyectados,
+y comparte la frontera de solicitudes con los proveedores físicos. Los métodos de archivo operan
+sobre contenido completo; cada escritura sustituye el contenido y cada lectura devuelve el contenido.

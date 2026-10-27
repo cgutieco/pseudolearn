@@ -6,5 +6,5 @@ pub const BYTES_DATA_OFFSET: usize = 3;
 pub const BYTES_HEADER_WORDS: usize = 3;
 
 pub fn bytes_cell_count(byte_count: usize) -> usize {
-    1 + byte_count.div_ceil(8)
+    byte_count.div_ceil(8).saturating_add(1)
 }

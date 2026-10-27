@@ -112,10 +112,14 @@ pub use native_benchmark::{
 };
 
 #[cfg(feature = "native")]
+mod native_effects;
+#[cfg(feature = "native")]
+pub use native_effects::native_effect_input;
+#[cfg(feature = "native")]
 mod native_execution;
 #[cfg(feature = "native")]
 pub use native_execution::{
-    NativeRunReport, conformance_build_request, native_execute_response, rejected_native_response,
+    NativeRunReport, conformance_build_request, protocol_rejected_native_response, native_execute_response, rejected_native_response,
 };
 
 mod recording;
@@ -126,3 +130,5 @@ pub mod tape_wire;
 mod recording_digest_tests;
 
 mod program_view_variants;
+
+mod hosted_execution;

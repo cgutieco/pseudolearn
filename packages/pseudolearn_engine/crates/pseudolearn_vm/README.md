@@ -214,3 +214,8 @@ La carga prepara una tabla de destinos compatibles por firma para cada llamada i
 Las operaciones de colección se decodifican en CollectionOperation con disposición, clave, fuentes tipadas y destino. La máquina comparte la fachada de biblioteca con AOT; solo las operaciones que pueden reservar consultan raíces. Las trampas conservan el sitio y los argumentos del índice. text.quote usa la misma biblioteca que el ejecutor nativo.
 
 Los tests de estas capacidades se ejecutaron en selecciones acotadas, incluida la comparación de gemelos con recolección forzada. La conformidad del corpus sigue pendiente de la revisión editorial independiente de los contratos nuevos, y la medición de tamaño excede el presupuesto de Wasm.
+
+
+Las solicitudes de effect_call transportan valores tipados y el nodo de origen real. La respuesta es
+HostReply y se materializa en las celdas de resultado mediante el mismo codec que AOT; nunca se
+reinterpretan cadenas o errores como cero. Las consultas puras de Bytes se resuelven localmente.

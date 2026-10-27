@@ -1,6 +1,6 @@
 #![forbid(unsafe_code)]
 
-use pseudolearn_timeline::{DEFAULT_MAX_TAPE_BYTES, SecretHandle, TapeBudget};
+use pseudolearn_runtime::{DEFAULT_MAX_TAPE_BYTES, SecretHandle, TapeBudget};
 
 #[test]
 fn secret_handle_formatting_and_parsing() {
@@ -32,4 +32,15 @@ fn tape_budget_admission_and_saturation() {
 #[test]
 fn tape_budget_default_is_sixteen_mebibytes() {
     assert_eq!(DEFAULT_MAX_TAPE_BYTES, 16 * 1024 * 1024);
+}
+
+#[test]
+fn secret_authentication_binds_value_and_key() -> Result<(), String> {
+    let handle = SecretHandle::authenticate("primary".to_owned(), b"key", b"private-value")
+        .map_err(|error| format!("{error:?}"))?;
+    assert!(handle.verifies(b"key", b"private-value"));
+    assert!(!handle.verifies(b"other-key", b"private-value"));
+    assert!(!handle.verifies(b"key", b"modified"));
+    assert!(!handle.to_reference_string().contains("private-value"));
+    Ok(())
 }

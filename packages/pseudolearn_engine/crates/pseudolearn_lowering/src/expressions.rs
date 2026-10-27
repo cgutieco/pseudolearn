@@ -205,6 +205,9 @@ pub fn lower_expression_with_state(
     expression_id: ExpressionId,
     state: &mut ExpressionState<'_, '_>,
 ) -> ValueId {
+    if let Some(values) = crate::effect_values::values(expression_id, state) {
+        return values.first().copied().unwrap_or_else(|| state.builder.next_value());
+    }
     if let Some(values) = crate::collections::values(expression_id, state) {
         return values
             .first()

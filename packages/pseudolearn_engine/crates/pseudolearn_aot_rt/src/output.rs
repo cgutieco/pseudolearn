@@ -27,5 +27,10 @@ fn write_value(entry: &mut Entry<'_>, word: u64, descriptor: u32) -> Result<u64,
         .output
         .write_all(text.as_bytes())
         .map_err(|_| Trap::named("resourceLimit"))?;
+    let bytes = text.into_bytes();
+    entry
+        .engine
+        .effects
+        .record_console("write", bytes.clone(), bytes)?;
     Ok(0)
 }

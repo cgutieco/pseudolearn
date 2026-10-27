@@ -6,6 +6,7 @@ mod collections;
 mod control;
 mod delta;
 mod effects;
+mod effect_completion;
 mod fault_context;
 mod image;
 mod initialization;
@@ -104,8 +105,9 @@ pub struct Machine<'program> {
     pub(crate) scalar_dirty_from: DirtyIndex<usize>,
     pub(crate) reference_dirty_from: DirtyIndex<usize>,
     pub(crate) defined_dirty_from: DirtyIndex<usize>,
-    pub(crate) effect_result: Option<crate::RuntimeValue>,
+    pub(crate) effect_result: Option<pseudolearn_runtime::HostReply>,
     pub(crate) effect_seq: u64,
+    pub(crate) effect_checkpoint: Option<Box<pseudolearn_runtime::EffectCheckpoint>>,
 }
 
 pub fn run(program: &VerifiedBytecode, fuel: Fuel) -> RunResult {

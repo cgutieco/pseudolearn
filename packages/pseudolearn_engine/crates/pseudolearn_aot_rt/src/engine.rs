@@ -21,6 +21,7 @@ pub struct AotEngine {
     pub(crate) boolean_words: BooleanWords,
     pub(crate) site_boolean_words: Vec<BooleanWords>,
     pub(crate) streams: AotStreams,
+    pub(crate) effects: crate::effect_channel::EffectChannel,
     fault: Option<FaultRecord>,
     notices: Vec<FaultRecord>,
 }
@@ -49,9 +50,18 @@ impl AotEngine {
             boolean_words: config.boolean_words,
             site_boolean_words: Vec::new(),
             streams,
+            effects: crate::effect_channel::EffectChannel::standalone(),
             fault: None,
             notices: Vec::new(),
         }
+    }
+
+    pub(crate) fn use_effects(&mut self, channel: crate::effect_channel::EffectChannel) {
+        self.effects = channel;
+    }
+
+    pub(crate) fn effects_mut(&mut self) -> &mut crate::effect_channel::EffectChannel {
+        &mut self.effects
     }
 
     pub fn use_site_boolean_words(&mut self, words: Vec<BooleanWords>) {

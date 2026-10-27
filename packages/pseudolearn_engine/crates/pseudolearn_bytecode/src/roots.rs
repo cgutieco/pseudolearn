@@ -41,7 +41,8 @@ pub(crate) fn verify(
 pub(crate) fn safe_point(instruction: &Instruction) -> bool {
     matches!(
         instruction.opcode.as_name(),
-        "call"
+        "effect_call"
+            | "call"
             | "call.virtual"
             | "call.indirect"
             | "array.new"

@@ -78,3 +78,10 @@ La disposición de un valor función contiene una palabra escalar de identidad d
 Las colecciones reservan etiquetas de forma u32 máximo menos uno para Vector y menos dos para Diccionario. La cabecera estable transporta longitud, capacidad, versión, anchos de bancos y asas de almacenamiento reemplazable; la identidad y los alias nunca dependen de la dirección del banco. VectorLayout y DictionaryLayout centralizan la aritmética comprobada. CollectionCommand es la frontera compartida de ambos ejecutores; no contiene tipos dinámicos de valores.
 
 Los tests de estas capacidades se ejecutaron en selecciones acotadas, incluida la comparación de gemelos con recolección forzada. La conformidad del corpus sigue pendiente de la revisión editorial independiente de los contratos nuevos, y la medición de tamaño excede el presupuesto de Wasm.
+
+
+Las operaciones de capacidades se generan desde el recurso capabilityLibrary de la exportación
+del corpus. El build usa serde_json exclusivamente para producir la tabla en OUT_DIR; el ABI de
+producto no depende de serde. Semántica, VM y AOT comparten identidades y firmas sin copiar tablas.
+Los métodos llevan su clasificación de efecto: consultas puras de bytes no adquieren autoridad ni
+consultan al anfitrión; los demás producen un Resultado portable.

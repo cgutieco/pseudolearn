@@ -95,3 +95,8 @@ Cada función conserva el tipo de retorno y los intervalos léxicos de sus regis
 Las operaciones de colecciones conservan los metadatos tipados de RI. La verificación reutiliza el contrato de tipos de las colecciones al reconstruir operandos tipados, incluidos los ordinales literales de hojas. Las operaciones que pueden reservar y text.quote son puntos de raíces; una lectura o consulta de versión no requiere recolección.
 
 Los tests de estas capacidades se ejecutaron en selecciones acotadas, incluida la comparación de gemelos con recolección forzada. La conformidad del corpus sigue pendiente de la revisión editorial independiente de los contratos nuevos, y la medición de tamaño excede el presupuesto de Wasm.
+
+
+effect_call es un punto seguro con mapas de raíces y definición: una respuesta puede alojar Bytes,
+texto o tokens de capacidad. Los argumentos, receptor y celdas de retorno permanecen vivos durante
+suspensión y reanudación. Se rechaza bytecode que omita estos mapas antes de cargarlo en la VM.

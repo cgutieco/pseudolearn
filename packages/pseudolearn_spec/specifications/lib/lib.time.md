@@ -60,12 +60,25 @@
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
-    "salida": "reloj_ok\n",
+    "salida": "100\n",
     "terminacion": "completed"
   },
   "programas": {
-    "es": "Algoritmo P\nEscribir \"reloj_ok\";\nFinAlgoritmo\n",
-    "en": "algorithm P\nwrite \"reloj_ok\";\nendAlgorithm\n"
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir clock Como Reloj <- Propagar SolicitarReloj();\nRetornar clock.Ahora();\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<integer, IoError>\ndefine clock as Clock <- propagate requestClock();\nreturn clock.now();\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": [
+      "reloj"
+    ],
+    "requested_permissions": [
+      "reloj"
+    ],
+    "clock": [
+      100,
+      200
+    ],
+    "grabar_y_reproducir": true
   }
 }
 ```
@@ -97,12 +110,21 @@
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
-    "salida": "temporizador_ok\n",
+    "salida": "50\n",
     "terminacion": "completed"
   },
   "programas": {
-    "es": "Algoritmo P\nEscribir \"temporizador_ok\";\nFinAlgoritmo\n",
-    "en": "algorithm P\nwrite \"temporizador_ok\";\nendAlgorithm\n"
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir clock Como Temporizador <- Propagar SolicitarTemporizador();\nRetornar clock.Esperar(50);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<integer, IoError>\ndefine clock as Timer <- propagate requestTimer();\nreturn clock.wait(50);\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": [
+      "temporizador"
+    ],
+    "requested_permissions": [
+      "temporizador"
+    ],
+    "grabar_y_reproducir": true
   }
 }
 ```

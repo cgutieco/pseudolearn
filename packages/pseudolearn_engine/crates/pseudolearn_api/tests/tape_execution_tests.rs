@@ -31,11 +31,47 @@ fn record_operation_emits_versioned_effect_tape() {
     assert_eq!(unwrapped_tape.get("status").and_then(serde_json::Value::as_str), Some("reproducible"));
     let identity = unwrapped_tape.get("identity");
     assert!(identity.is_some());
+    assert!(unwrapped_tape.get("entries").and_then(serde_json::Value::as_array).is_some_and(|entries| !entries.is_empty()));
+}
+
+#[test]
+fn replay_rejects_adulterated_recording() -> Result<(), String> {
+    let program = "Algoritmo Main\nEscribir 42;\nFinAlgoritmo\n";
+    let recording = execute_record(program);
+    let mut tape = recording.pointer("/value/effect_tape").cloned().ok_or_else(|| format!("missing tape: {recording}"))?;
+    *tape.pointer_mut("/entries/0/entry_hash").ok_or("missing entry hash")? = json!("bad_hash");
+    let mut session = ApiSession::default();
+    let analysis = session.call("create_analysis", &json!({"program":program}));
+    let response = session.call("start", &json!({
+        "analysis":analysis.pointer("/value/resource"), "program":program,
+        "execution_mode":"replay_from_tape", "effect_tape":tape
+    }));
+    assert_eq!(response.pointer("/failure/detail").and_then(serde_json::Value::as_str), Some("Invalid protocol: replay_corrupted_tape"));
+    Ok(())
+}
+
+#[test]
+fn replay_consumes_recorded_output() -> Result<(), String> {
+    let program = "Algoritmo Main\nEscribir 42;\nEscribir 7;\nFinAlgoritmo\n";
+    let recording = execute_record(program);
+    let tape = recording.pointer("/value/effect_tape").cloned().ok_or_else(|| format!("missing tape: {recording}"))?;
+    let mut session = ApiSession::default();
+    let analysis = session.call("create_analysis", &json!({"program":program}));
+    let started = session.call("start", &json!({
+        "analysis":analysis.pointer("/value/resource"), "program":program,
+        "execution_mode":"replay_from_tape", "effect_tape":tape
+    }));
+    let response = session.call("advance", &json!({"resource":started.pointer("/value/resource"),"batch_size":1000}));
+    assert_eq!(response.pointer("/value/output"), Some(&json!("42\n7\n")));
+    assert_eq!(response.pointer("/value/termination/kind"), Some(&json!("completed")));
+    Ok(())
 }
 
 #[test]
 fn tape_value_round_trip_preserves_content() -> Result<(), String> {
     let identity = ExecutionIdentity {
+        strictness: "strict".to_owned(),
+        limits: Default::default(),
         source_digest: "digest_123".to_owned(),
         package_graph_digest: "none".to_owned(),
         profile: "es".to_owned(),

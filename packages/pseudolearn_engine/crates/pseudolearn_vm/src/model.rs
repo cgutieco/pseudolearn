@@ -38,6 +38,8 @@ pub enum RuntimeValue {
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct PendingEffectRequest {
+    pub receiver: Option<pseudolearn_runtime::HostCapability>,
+    pub arguments: Vec<pseudolearn_runtime::HostValue>,
     pub effect_seq: u64,
     pub capability_kind: String,
     pub operation: String,

@@ -4,6 +4,12 @@ pub use pseudolearn_abi::{
     CapabilityKind, CollectionCommand, DictionaryKeyKind, DictionaryLayout, Handle, VectorLayout,
 };
 
+pub mod effect_tape;
+pub mod tape_privacy;
+pub mod tape_replay;
+mod tape_codec;
+mod effect_session;
+pub use effect_session::{EffectRecord, EffectSession, console_record};
 mod arithmetic;
 mod array;
 mod bytes_buffer;
@@ -80,3 +86,40 @@ pub use statistics::HeapStatistics;
 
 #[cfg(test)]
 mod collection_tests;
+
+pub use effect_tape::{EffectTape, ExecutionIdentity, TapeEntry, TAPE_SCHEMA_V1};
+pub use tape_replay::{ExecutionMode, ReplayError, TapeReplayProvider};
+pub use tape_codec::{decode_effect_tape, encode_effect_tape, tape_entry_hash};
+
+pub use tape_privacy::{DEFAULT_MAX_TAPE_BYTES, SecretHandle, TapeBudget};
+
+mod managed_bytes;
+mod managed_capability;
+pub use managed_bytes::{new_bytes, bytes_length, bytes_at, bytes_content};
+pub use managed_capability::{new_capability, capability_token};
+
+mod host_effect;
+mod host_session;
+mod host_validation;
+mod effect_authority;
+pub use host_effect::{HostValue, HostCapability, HostFailure, HostReply, HostEffectRequest, HostEffectProvider};
+pub use host_session::{configure_host_authority, begin_host_effect, resolve_host_effect, perform_host_effect};
+pub use effect_authority::effective_permissions;
+
+mod memory_host;
+mod memory_host_files;
+mod memory_host_config;
+pub use memory_host::MemoryHostProvider;
+
+mod host_words;
+mod local_effect;
+pub use host_words::{decode_host_value, host_reply_words};
+pub use local_effect::local_effect;
+pub use pseudolearn_abi::{EffectOperation, EffectValueKind, EFFECT_OPERATIONS, effect_operation};
+
+mod effect_checkpoint;
+pub use effect_checkpoint::{EffectCheckpoint, capture_effect_checkpoint, replay_effect_checkpoint};
+
+mod secret_policy;
+
+mod tape_accounting;

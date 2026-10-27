@@ -65,6 +65,7 @@ fn check_block(block: &Block, errors: &mut Vec<String>) {
     }
     if block.kind == "caso" {
         check_case(block, errors);
+        crate::host_cases::check(block, errors);
         check_app_case(block, errors);
     }
 }
@@ -77,7 +78,7 @@ pub fn fields(kind: &str) -> (&'static str, &'static str) {
         ),
         "caso" => (
             "id regla perfiles rigor espera origen",
-            "programa programas programa_ri cli servicio api aplicacion paginacion limites cancelacion cancelacion_prueba esperas entradas etiquetas revisado_por exclusiones perfil_base operacion produce evita semilla sujetos",
+            "programa programas programa_ri cli servicio api aplicacion paginacion limites cancelacion cancelacion_prueba esperas entradas etiquetas revisado_por exclusiones perfil_base operacion produce evita semilla sujetos anfitrion",
         ),
         "definicion" => ("id termino texto", "valor"),
         "error" => ("id situacion clase codigo severidad", ""),

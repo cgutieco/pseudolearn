@@ -21,6 +21,7 @@ pub struct NativeRunReport {
     pub exit_code: Option<i32>,
     pub output: String,
     pub errors: String,
+    pub effects: Option<Vec<u8>>,
 }
 
 struct ReportedDiagnostic {
@@ -54,6 +55,14 @@ pub fn rejected_native_response(diagnostics: Vec<ApiDiagnostic>) -> ExecuteRespo
     )
 }
 
+pub fn protocol_rejected_native_response(error: &crate::ApiError) -> ExecuteResponse {
+    let code = match error {
+        crate::ApiError::InvalidProtocol(code) => code.as_str(),
+        _ => "internalFault",
+    };
+    response(String::new(), json!({"kind":"failed","code":code}), Vec::new())
+}
+
 pub fn native_execute_response(
     request: &ExecuteRequest,
     warnings: Vec<ApiDiagnostic>,
@@ -63,7 +72,11 @@ pub fn native_execute_response(
     let termination = termination(run, &reported);
     let mut diagnostics = warnings;
     diagnostics.extend(reported.into_iter().map(|entry| entry.diagnostic));
-    response(run.output.clone(), termination, diagnostics)
+    let mut built = response(run.output.clone(), termination, diagnostics);
+    if let Some(bytes) = run.effects.as_deref() {
+        crate::native_effects::apply_native_effect_output(&mut built, bytes);
+    }
+    built
 }
 
 fn response(
@@ -73,6 +86,8 @@ fn response(
 ) -> ExecuteResponse {
     ExecuteResponse {
         kind: "execute".to_owned(),
+        effect_tape: None,
+        host_observation: None,
         output,
         termination,
         diagnostics,

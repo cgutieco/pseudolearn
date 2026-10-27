@@ -66,3 +66,7 @@ La inspección recibe el mapa de nombres que la VM filtra por intervalo léxico,
 La inspección distingue cabeceras de colección de objetos ordinarios y conserva identidad y tipo declarado a través del crecimiento. Los bancos y metadatos viven en el heap existente: snapshots y deltas capturan su estado sin un registro paralelo. Las referencias eliminadas se borran antes de registrar el estado siguiente.
 
 Los tests de estas capacidades se ejecutaron en selecciones acotadas, incluida la comparación de gemelos con recolección forzada. La conformidad del corpus sigue pendiente de la revisión editorial independiente de los contratos nuevos, y la medición de tamaño excede el presupuesto de Wasm.
+
+
+Los tipos de cinta y su verificación se reexportan desde runtime. Esta capa no mantiene otra
+implementación de formato, presupuesto ni hashes; la misma implementación es consumible por AOT.
