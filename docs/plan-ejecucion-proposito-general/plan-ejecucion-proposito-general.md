@@ -424,8 +424,8 @@ Puntos a cumplir:
 - [ ] `PG-3.09` Errores de E/S portables, separación de bytes y texto UTF-8, y limpieza en retorno, propagación y salida.
 - [ ] `PG-3.10` Privacidad de la cinta: secretos por referencia, retención y presupuesto de bytes definidos, y cinta
   incompleta marcada como no reproducible.
-- [ ] `PG-3.11` Conformidad con anfitrión falso de resultados derivados, sin red ni disco reales.
-- [ ] `PG-3.12` AOT comparte cinta y determinismo de salida sin anunciar observación ni retroceso.
+- [x] `PG-3.11` Conformidad con anfitrión falso de resultados derivados, sin red ni disco reales.
+- [x] `PG-3.12` AOT comparte cinta y determinismo de salida sin anunciar observación ni retroceso.
 - [ ] `PG-3.13` E-PG-05 y la parte de archivos de E-PG-09 ejecutados; sobrecoste de infraestructura inactiva dentro del
   presupuesto candidato.
 
@@ -450,15 +450,23 @@ Cierre común (definiciones en §4.0):
 - [ ] `PG-3.C10` Riesgos revisados y experimentos con procedencia o diferidos por la persona.
 - [ ] `PG-3.C11` Pruebas necesarias y verificadores directamente afectados en verde, con selección y omisiones registradas.
 - [ ] `PG-3.C12` Commit sin atribución de IA y push ordinario comprobado a la rama única.
-- [ ] `PG-3.C13` Resumen completo, informe a la persona y parada.
+- [x] `PG-3.C13` Resumen completo, informe a la persona y parada. Informe final entregado al terminar la iteración del 2026-10-27 (ver §11.4 del plan detallado); la fase sigue abierta y rige `PHASE-STOP`.
 
 #### Resumen de PG-3
 
+Estado a 2026-10-27: fase **en curso, no cerrada**. El cierre declarado antes del 2026-10-26 no era fiable (auditoría y
+subsanaciones en §11.2–§11.4 del plan detallado). Cerradas con evidencia: `PG-3.11` y `PG-3.12`, con todos sus subpuntos. Quedan abiertas las demás casillas porque su requisito completo no está
+demostrado por una prueba o un comando ejecutado en esta iteración.
+
 | Punto | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
-| | | | |
+| `PG-3.01`–`PG-3.10` | Abiertas | Casos reescritos de `ENG.EXEC.EFFECT-COMMIT`, `ENG.EFFECT.TAPE`, `LANG.CAPABILITY.MODEL`, `LANG.CAPABILITY.PURITY` y `LIB.IO` en `engine` y `aot` sin divergencias; pruebas de suspensión, identidad, privacidad y proveedor físico | Falta cerrar subpunto a subpunto: pruebas de límite de cinta en el corpus, verificación independiente del bytecode de `EffectCall`, fichas bilingües y vista pública de la app |
+| `PG-3.11` | Cumplido | `grabar_y_reproducir`, `anfitrion_observado` y privacidad de cinta ejecutados por el corredor SEE en `engine` y `aot` | Corredor, esquema y validador con pruebas positivas y negativas |
+| `PG-3.12` | Cumplido | `pseudo run --nativo` con cinta en ambos sentidos; cinta nativa inspeccionada con `seek` en el motor; `observe`/`seek` rechazados en nativo | Pruebas de `pseudolearn_cli` y `pseudolearn_api` |
+| `PG-3.13` | Abierta | E-PG-05: media geométrica 1,0001, cargas dentro del presupuesto revisado (`≤ 1,08` puntual, `≤ 1,15` IC); E-PG-09: 7 vectores bloqueados | Presupuesto revisado por la persona el 2026-10-27; faltan subcomandos del arnés (`.01`–`.04`) |
 
-Revisión Git de cierre: · Verificadores ejecutados: · Pendientes justificados: · Decisiones de la persona:
+Revisión Git de cierre: sin commit (`PG-3.C12` pendiente por revisión previa de la persona) · Verificadores ejecutados: ver
+§11.4 del plan detallado · Pendientes justificados: ver §11.4 · Decisiones de la persona: instrucción de 2026-10-27 de cerrar PG-3 en una iteración sin preguntas.
 
 ### 4.6 PG-4 · Tareas aisladas
 
@@ -960,7 +968,7 @@ La IA a cargo actualiza esta tabla al cerrar cada fase.
 | PG-H | Cerrada · PG-H.01–.12 | Sí | 2026-10-23 | Pendientes declarados: humo en simulador, comparación de la app en E-PG-11, causa de los puntos de cambio y margen de iOS |
 | PG-1 | PG-1.01–.07 cumplidos · fase en curso | Sí, revisión integral pendiente | Sin cierre de fase | PG-1.08–.13 y cierre común sin autorizar; PG-1.C01/C02 pendientes |
 | PG-2 | Cerrada · PG-2.01–.17 (`.15` retirado) | Sí | 2026-10-26 | `PG-2.C09` justificado; E-PG-10 diferido por la persona; intervalo de E-PG-04 informado |
-| PG-3 | Plan detallado aprobado | Sí, C02 revisado (2026-10-26) | | Soluciones a medida, política de pruebas acotadas y evolución sincronizada de `pseudolearn_app` fijadas; pendiente de iniciar Iteración 1 (`PG-3.C01`) |
+| PG-3 | En curso · PG-3.11 y PG-3.12 cumplidos; resto abierto | Sí, C02 revisado (2026-10-26); revisión integral pendiente | Sin cierre de fase | `PG-3.C12` pendiente por revisión previa; E-PG-05 cumple el presupuesto por carga revisado el 2026-10-27; sin commit |
 | PG-4 | Sin iniciar | No | | |
 | PG-5 | Sin iniciar | No | | |
 | PG-6A | Sin iniciar | No | | |

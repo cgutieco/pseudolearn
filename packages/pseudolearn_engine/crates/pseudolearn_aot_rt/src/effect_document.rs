@@ -50,6 +50,7 @@ impl EffectInput {
 pub struct EffectOutput {
     tape: EffectTape,
     host_calls: u64,
+    open_resources: usize,
     replay_error: Option<String>,
 }
 
@@ -58,14 +59,17 @@ impl EffectOutput {
         Self {
             tape: EffectChannel::standalone().session().tape().clone(),
             host_calls: 0,
+            open_resources: 0,
             replay_error: Some(code),
         }
     }
 
     pub fn from_channel(channel: &EffectChannel) -> Self {
+        let (host_calls, open_resources) = channel.host_observation();
         Self {
             tape: channel.session().tape().clone(),
-            host_calls: channel.host_calls(),
+            host_calls,
+            open_resources,
             replay_error: channel.failure().map(|error| error.code().to_owned()),
         }
     }

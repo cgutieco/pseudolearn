@@ -6,6 +6,19 @@ use pseudolearn_timeline::{
 use serde_json::{Value, json};
 use sha2::{Digest, Sha256};
 
+fn package_graph_digest(request: &ExecuteRequest, source_digest: &str) -> String {
+    let mut hasher = Sha256::new();
+    hasher.update(b"pseudolearn.package-graph/v1\nunits=1\nsource=");
+    hasher.update(source_digest.as_bytes());
+    if let Some(identity) = request.source.filter(|identity| identity.is_valid()) {
+        hasher.update(format!(
+            "\nproject={}\nrevision={}\nsource_id={}",
+            identity.project_id, identity.revision_id, identity.source_id
+        ));
+    }
+    format!("{:x}", hasher.finalize())
+}
+
 pub fn build_identity(request: &ExecuteRequest) -> ExecutionIdentity {
     let mut hasher = Sha256::new();
     hasher.update(request.program.as_bytes());
@@ -20,8 +33,8 @@ pub fn build_identity(request: &ExecuteRequest) -> ExecutionIdentity {
     ExecutionIdentity {
         strictness: request.strictness.clone(),
         limits,
+        package_graph_digest: package_graph_digest(request, &source_digest),
         source_digest,
-        package_graph_digest: "none".to_owned(),
         profile: request.profile.clone(),
         seed: request.seed,
         statement_limit: request.limits.statements,

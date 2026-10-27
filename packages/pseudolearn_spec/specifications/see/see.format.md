@@ -53,7 +53,13 @@ Los casos pueden declarar anfitrion como datos de un proveedor en memoria. files
 relativas y textos UTF-8 o listas de octetos; args contiene argumentos; clock contiene instantes
 enteros no negativos en nanosegundos; permissions y requested_permissions declaran autoridad
 concedida y solicitada. faults contiene fallos por operación, ruta, código portable e incertidumbre;
-secrets contiene referencias con identidad de clave y valor solo para el proveedor de prueba.
-grabar_y_reproducir exige comparar la ejecución viva con su reproducción sin proveedor vivo.
-El esquema rechaza campos desconocidos, rutas no relativas, octetos fuera de 0 a 255 y fallos
-inciertos en operaciones de solo lectura. Estos datos no autorizan acceso a disco ni red.
+secrets contiene referencias con identidad de clave y valor solo para el proveedor de prueba, y
+secret_keys asocia cada identidad de clave con la clave que autentica la referencia; el corredor
+rechaza cualquier cinta viva que contenga el valor de un secreto en forma textual, escapada,
+decimal o hexadecimal. detached declara que el anfitrión resuelve cada efecto fuera del motor
+mediante effect_result. grabar_y_reproducir exige reproducir la cinta viva con la misma identidad
+de autoridad, sin archivos, argumentos ni instantes de reloj, y comparar salida y terminación; la
+reproducción no consulta al proveedor. La clave anfitrion_observado, dentro de espera, compara las
+llamadas recibidas por el proveedor (llamadas) y los recursos que siguen abiertos tras el cierre
+final del anfitrión (recursos_abiertos) con la observación del sujeto. El esquema rechaza campos desconocidos, rutas no relativas, octetos fuera de 0 a 255 y
+fallos inciertos en operaciones de solo lectura. Estos datos no autorizan acceso a disco ni red.

@@ -38,6 +38,9 @@ impl ExecutionResource {
         if let RunExit::AwaitingEffect(pending) = exit {
             return self.resolve_pending(pending);
         }
+        if matches!(exit, RunExit::AwaitingInput) && !self.execution_mode.allows_external_host() {
+            return self.replay_input();
+        }
         if matches!(exit, RunExit::Completed(_)) {
             self.effects
                 .finish()
@@ -51,6 +54,22 @@ impl ExecutionResource {
         pseudolearn_runtime::HostEffectProvider::close_all(&mut self.host);
         self.terminal = Some(exit);
         Ok(false)
+    }
+
+    fn replay_input(&mut self) -> Result<bool, ApiError> {
+        let recorded = self
+            .effects
+            .resolve(
+                pseudolearn_runtime::console_record("read", Vec::new()),
+                Vec::new(),
+                "committed",
+            )
+            .map_err(crate::tape_wire::replay_error_to_api)?;
+        let text = String::from_utf8(recorded).map_err(|_| usage("replayed input is not text"))?;
+        self.options.inputs.push(text.clone());
+        self.input_cursor = self.input_cursor.saturating_add(1);
+        self.machine.supply_input(text);
+        Ok(true)
     }
 
     pub(super) fn capture_console(&mut self) -> Result<(), ApiError> {

@@ -43,8 +43,8 @@ impl EffectChannel {
         &self.session
     }
 
-    pub fn host_calls(&self) -> u64 {
-        self.provider.calls
+    pub fn host_observation(&self) -> (u64, usize) {
+        (self.provider.calls, self.provider.live_resource_count())
     }
 
     pub fn failure(&self) -> Option<&ReplayError> {
@@ -64,6 +64,20 @@ impl EffectChannel {
     pub(crate) fn reject(&mut self, error: ReplayError) -> Trap {
         self.failure = Some(error);
         Trap::named("internalFault")
+    }
+
+    pub(crate) fn replay_console(
+        &mut self,
+        operation: &str,
+        arguments: Vec<u8>,
+    ) -> Result<Option<Vec<u8>>, Trap> {
+        if !self.session.is_replaying() {
+            return Ok(None);
+        }
+        self.session
+            .resolve(console_record(operation, arguments), Vec::new(), "committed")
+            .map(Some)
+            .map_err(|error| self.reject(error))
     }
 
     pub(crate) fn record_console(

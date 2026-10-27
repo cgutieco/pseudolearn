@@ -9,6 +9,11 @@ pub fn native_effect_input(request: &ExecuteRequest) -> Result<Vec<u8>, ApiError
             "history_seek is not supported by the native subject",
         ));
     }
+    if request.observe != "none" || request.state_at.is_some() {
+        return Err(crate::execution_resource::usage(
+            "observe and seek are not supported by the native subject",
+        ));
+    }
     crate::tape_wire::validate_replay_tape(request, mode)?;
     let tape = match mode {
         ExecutionMode::ReplayFromTape => request
@@ -40,7 +45,7 @@ pub fn apply_native_effect_output(response: &mut ExecuteResponse, bytes: &[u8]) 
     response.effect_tape = document.get("tape").cloned();
     response.host_observation = Some(json!({
         "calls": document.get("host_calls").cloned().unwrap_or(Value::Null),
-        "open_resources": 0,
+        "open_resources": document.get("open_resources").cloned().unwrap_or(Value::Null),
     }));
     if let Some(code) = document.get("replay_error").and_then(Value::as_str) {
         response.termination = json!({"kind":"failed","code":code});

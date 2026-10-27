@@ -14,6 +14,9 @@ pub fn execute_run(options: &CliOptions) -> Result<i32, CliError> {
     let source = std::fs::read_to_string(path)
         .map_err(|_| CliError::Operational(messages::unreadable_input(locale, path)))?;
     let request = build_request(options, source)?;
+    if options.execution.native {
+        return crate::native_run_command::execute_native(options, path, request);
+    }
     let mut session = ApiSession::default();
     let analysis = result(session.call("create_analysis", &json!(request)))?;
     let mut start = serde_json::to_value(&request).map_err(operational)?;
@@ -28,12 +31,20 @@ pub fn execute_run(options: &CliOptions) -> Result<i32, CliError> {
         Err(error) if options.execution.replay_tape.is_some() => return Err(error),
         Err(_) => return render_rejected(options, path, &request),
     };
-    stream_execution(&mut session, &resource, options, (path, &request.program))
+    let mut host = crate::physical_session::open_host(&options.execution)?;
+    stream_execution(
+        (&mut session, &resource, host.as_mut()),
+        options,
+        (path, &request.program),
+    )
 }
 
 fn stream_execution(
-    session: &mut ApiSession,
-    resource: &Value,
+    (session, resource, mut host): (
+        &mut ApiSession,
+        &Value,
+        Option<&mut crate::physical_host::PhysicalHost>,
+    ),
     options: &CliOptions,
     source: (&str, &str),
 ) -> Result<i32, CliError> {
@@ -47,19 +58,15 @@ fn stream_execution(
             .and_then(Value::as_str)
         {
             Some("running") => {}
+            Some("awaiting_effect") if host.is_some() => {
+                if let Some(physical) = host.as_deref_mut() {
+                    crate::physical_session::resolve_effect(session, resource, &response, physical)?;
+                }
+            }
             Some("awaiting_input") => {
-                let mut input = String::new();
-                let count = std::io::stdin()
-                    .lock()
-                    .read_line(&mut input)
-                    .map_err(operational)?;
-                if count == 0 {
+                if !feed_input(session, resource)? {
                     return finish(options, source.0, &response);
                 }
-                result(session.call(
-                    "input",
-                    &json!({"resource":resource,"text":input.trim_end_matches(['\r','\n'])}),
-                ))?;
             }
             _ => {
                 if let Some(path) = &options.execution.record_tape {
@@ -69,6 +76,22 @@ fn stream_execution(
             }
         }
     }
+}
+
+fn feed_input(session: &mut ApiSession, resource: &Value) -> Result<bool, CliError> {
+    let mut input = String::new();
+    let count = std::io::stdin()
+        .lock()
+        .read_line(&mut input)
+        .map_err(operational)?;
+    if count == 0 {
+        return Ok(false);
+    }
+    result(session.call(
+        "input",
+        &json!({"resource":resource,"text":input.trim_end_matches(['\r','\n'])}),
+    ))?;
+    Ok(true)
 }
 
 fn present_batch(
@@ -165,7 +188,7 @@ fn operational(error: impl std::fmt::Display) -> CliError {
     CliError::Operational(error.to_string())
 }
 
-fn build_request(options: &CliOptions, source: String) -> Result<ExecuteRequest, CliError> {
+pub(crate) fn build_request(options: &CliOptions, source: String) -> Result<ExecuteRequest, CliError> {
     let profile = options.vocabulary.clone().unwrap_or_else(|| {
         detect_vocabulary_profile(&source)
             .unwrap_or("es")
@@ -200,6 +223,7 @@ fn build_request(options: &CliOptions, source: String) -> Result<ExecuteRequest,
         },
         execution_mode,
         effect_tape,
+        host: crate::physical_session::host_document(&options.execution),
         ..ExecuteRequest::default()
     })
 }

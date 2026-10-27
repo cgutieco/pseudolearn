@@ -19,14 +19,21 @@ pub(crate) fn check(block: &Block, errors: &mut Vec<String>) {
     }
 }
 
+const MUTATING_OPERATIONS: [&str; 6] = [
+    "file_open",
+    "file_write_bytes",
+    "file_write_text",
+    "file_close",
+    "directory_close",
+    "console_write",
+];
+
 fn check_fault(fault: &Value, errors: &mut Vec<String>) {
     if fault.get("path").and_then(Value::as_str).is_some_and(|path| !valid_path(path)) {
         errors.push("SEE-HOST: invalid fault path".to_owned());
     }
     let operation = fault.get("operation").and_then(Value::as_str).unwrap_or("");
-    if fault.get("uncertain") == Some(&Value::Bool(true))
-        && !["write_bytes", "write_text", "close", "open_write"].contains(&operation)
-    {
+    if fault.get("uncertain") == Some(&Value::Bool(true)) && !MUTATING_OPERATIONS.contains(&operation) {
         errors.push("SEE-HOST: uncertainty requires a mutating operation".to_owned());
     }
 }

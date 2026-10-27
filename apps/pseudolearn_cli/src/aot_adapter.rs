@@ -54,7 +54,7 @@ fn execute(request_value: &Value, cache: &mut ExecutableCache) -> Value {
     serde_json::to_value(response).unwrap_or(Value::Null)
 }
 
-fn execute_natively(request: &ExecuteRequest, cache: &mut ExecutableCache) -> ExecuteResponse {
+pub(crate) fn execute_natively(request: &ExecuteRequest, cache: &mut ExecutableCache) -> ExecuteResponse {
     let object = match build_native_object(&conformance_build_request(request)) {
         Ok(object) => object,
         Err(NativeBuildFailure::Rejected(diagnostics)) => {

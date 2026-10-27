@@ -8,6 +8,7 @@ mod math_power_arguments;
 mod math_sampling;
 pub mod memory_fixtures;
 pub mod protocol;
+mod recording_replay;
 pub mod requests;
 pub mod runtime_fixtures;
 pub mod tool_comparison;

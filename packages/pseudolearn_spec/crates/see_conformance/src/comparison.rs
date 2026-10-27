@@ -107,8 +107,24 @@ fn matches(name: &str, value: &Value, actual: &Value) -> bool {
         "estado" => actual.get("states") == Some(value),
         "estado_en" => crate::tool_comparison::state_at(value, actual),
         "limite" => termination_limit(value, actual),
+        "anfitrion_observado" => host_observed(value, actual),
         _ => crate::tool_comparison::matches(name, value, actual),
     }
+}
+
+fn host_observed(expected: &Value, actual: &Value) -> bool {
+    let Some(fields) = expected.as_object() else {
+        return false;
+    };
+    let observation = actual.get("host_observation");
+    fields.iter().all(|(name, value)| {
+        let target = match name.as_str() {
+            "llamadas" => "calls",
+            "recursos_abiertos" => "open_resources",
+            _ => return false,
+        };
+        observation.and_then(|found| found.get(target)) == Some(value)
+    })
 }
 
 fn termination_limit(value: &Value, actual: &Value) -> bool {

@@ -59,6 +59,35 @@ Problema: un ejecutable compilado ejecuta el programa una sola vez y el arranque
 
 Problema: una campaña de ayuda no puede juzgarse con el mismo código que se mide. Elección: el oráculo (`oracle.rs`, `scanner.rs`) toma lexemas e identidades de la exportación del corpus y recorre cada programa con un escáner de palabras propio, sin lexer del motor; solo cubre palabras reservadas y funciones de una sola palabra (compuestas, operadores simbólicos y literales textuales quedan fuera y se declaran), y trata los programas cuyo nombre declara un nombre no reservado como sombreado de incorporadas. Las consultas se validan fuera del reloj; la serie caliente prepara sesión nueva por muestra y mide la API, el núcleo y el render por separado; la serie fría incluye apertura, consulta y liberación. El resumen usa semilla 42, bootstrap sobre procesos, candidatos de cambio con los umbrales del protocolo y resolución del reloj; `verify` invalida la campaña ante una respuesta incorrecta, una muestra o un proceso faltante, un reloj sin resolución, un resumen alterado o un crudo modificado (huella FNV-1a de 64 bits: detecta alteraciones accidentales, no manipulaciones adversarias). La campaña funcional no incluye la aplicación: esa consulta la cubre el sujeto `app`.
 
+### E-PG-05: sobrecoste de la infraestructura de capacidades y cinta inactiva (2026-10-27)
+
+Método. Control: el árbol de `5f6b4b9` extraído con `git archive` a un directorio temporal (sin tocar el árbol de
+trabajo), con la exportación del corpus actual sin la instrucción `effect_call` (la exportación de ese commit no se
+regenera aislada) y compilado con `cargo build --release --offline`. Candidato: el árbol de trabajo
+(`cf4fd3a` más cambios sin confirmar), compilado con `cargo build --release --locked`. Ambos ejecutan `execute` sobre
+`PERF.SUITE.CORE` (10 cargas), 30 iteraciones por proceso, 10 procesos por lado alternando el orden (control primero en
+los procesos pares). Estadística: razón de medias candidato/control por carga con bootstrap jerárquico (procesos y luego
+muestras, 2000 remuestras, semilla 20261027, intervalo del 95 %). Se conservan binarios, sumas SHA-256, plataforma
+(Apple M2, macOS 27.0.1, `rustc 1.99.0`), muestras y resumen en `packages/pseudolearn_spec/results/pg-3-campaign-2026-10-27/`.
+
+Resultado. Media geométrica de las razones: 1,0001 (cumple el umbral de 1,02). Por carga: bounce 1,027 [1,020; 1,034],
+list 1,025 [1,015; 1,033], richards 1,060 [1,041; 1,076], sieve 0,991 [0,874; 1,124], nbody 1,004, queens 0,997,
+towers 0,998, mandelbrot 0,986, storage 0,985, permute 0,935. El límite superior del intervalo supera 1,02 en cuatro cargas
+(bounce, list, richards y sieve; esta última con un intervalo muy ancho), de modo que el umbral inicial por carga **no se cumplió**;
+no se investigó la causa. Se publica el resultado aunque refute. Decisión (2026-10-27, autorizada por la persona): la
+estimación inicial era especulativa, así que el presupuesto por carga se sube a razón puntual `≤ 1,08` y límite superior
+del IC 95 % `≤ 1,15`; la media geométrica conserva `≤ 1,02`. Con ese presupuesto la medición cumple (máximos: richards
+1,060 y sieve 1,124). Las microoptimizaciones, empezando por richards, se hacen al final del lenguaje.
+
+Crecimiento de artefactos. `pseudolearn_bench_worker` release: 8 634 144 → 9 218 480 bytes (+6,8 %). No se midió
+el crecimiento de la biblioteca estática nativa ni del puente por falta de control compilado.
+
+Cargas de efectos (caracterización, no protocolo completo: 1 proceso, 5 repeticiones, mediana y rango). Reloj: 61–62 µs por
+efecto, 552 B de cinta por entrada (100, 1 000 y 10 000 efectos). Archivo de 64 B: 62–69 µs por efecto, 920 B por entrada.
+Archivo de 4 KiB: 24–25 KB por entrada (la carga se serializa como lista decimal de octetos, unas seis veces su tamaño), por
+lo que con 1 000 y 10 000 lecturas el presupuesto de 16 MiB se agota a las 669 entradas y la cinta se sella como truncada
+sin interrumpir la ejecución. Pendiente declarado: una codificación compacta de la carga reduciría seis veces la cinta.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código inglés sin comentarios, unsafe ni pánicos explícitos. Límites del workspace. Fallos como Result.

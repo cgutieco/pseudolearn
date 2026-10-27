@@ -237,6 +237,21 @@ antes de ejecutar y el proceso termina con el código 6. Se descarta una variabl
 vacío) y se descarta la entrada estándar (ya transporta las entradas del programa). El adaptador solo ofrece
 `execute`; `history_seek` se rechaza en la API antes de lanzar.
 
+### Reproducción autónoma de `Leer` y observación del anfitrión
+
+Decisión: cuando el canal de efectos trae una cinta para reproducir, `rt_aot_read` no lee la entrada estándar; resuelve
+la siguiente entrada de cinta de lectura de consola (`EffectChannel::replay_console`) y usa su carga como línea. Sin
+cinta de reproducción conserva el camino vivo: lee la línea, la anota con `record_console` y la convierte. Así la misma
+cinta grabada por la máquina virtual o por el ejecutable nativo se reproduce en cualquiera de los dos sin entrada
+estándar, y una cinta agotada termina con `replay_truncated_tape` en vez de esperar entrada.
+
+El documento de salida del canal añade `open_resources` junto a `host_calls`; ambos salen de una sola consulta
+(`EffectChannel::host_observation`) para no ampliar la superficie pública. La API los proyecta como
+`host_observation.calls` y `host_observation.open_resources`, que es lo que compara la clave `anfitrion_observado` de
+los casos de conformidad. Tras terminar, el proveedor en memoria ya cerró sus recursos, de modo que
+`open_resources` mide fugas posteriores al cierre final y `calls` demuestra qué operaciones llegaron al anfitrión
+(por ejemplo, que un uso tras cierre nunca lo alcanza).
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código inglés, sin comentarios ni atributos de supresión. Los puntos de entrada de un mismo dominio comparten

@@ -46,3 +46,6 @@ pub fn validate(corpus: &Corpus, lock: &Lock) -> Result<Vec<String>, String> {
 }
 
 mod host_cases;
+
+#[cfg(test)]
+mod host_cases_tests;

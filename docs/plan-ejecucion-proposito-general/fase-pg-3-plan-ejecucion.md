@@ -237,19 +237,19 @@ al corpus, sin depender de este texto.
 
 ### PG-3.11 · Conformidad con anfitrión falso de resultados derivados, sin red ni disco reales
 
-- [ ] `PG-3.11.01` Especificar en `SEE.CASE.FORMAT` / documentación de `packages/pseudolearn_spec` la extensión declarativa `anfitrion` en los casos de prueba (árbol de archivos en memoria, argumentos, secuencia de instantes de reloj, inyección de fallos `ErrorES` y estados `Uncertain`, secretos y modo `grabar_y_reproducir`).
-- [ ] `PG-3.11.02` Casos de validación en `packages/pseudolearn_spec` (positivo de caso con anfitrión falso y negativo de esquema `anfitrion` mal formado).
-- [ ] `PG-3.11.03` Tests unitarios del parser/validador de `see` y de `FakeHostProvider` en `pseudolearn_api`.
-- [ ] `PG-3.11.04` Implementar `FakeHostProvider` en `pseudolearn_api` y su cableado en el corredor de conformidad de `packages/pseudolearn_spec` y `see_cli`.
-- [ ] `PG-3.11.05` Actualizar `README.md` de `packages/pseudolearn_spec` y `pseudolearn_api`.
-- [ ] `PG-3.11.06` Verificación acotada: tests de `pseudolearn_spec` y `see conform --subject engine --only LIB.IO,LIB.TIME,ENG.EFFECT.TAPE`.
+- [x] `PG-3.11.01` Especificar en `SEE.CASE.FORMAT` / documentación de `packages/pseudolearn_spec` la extensión declarativa `anfitrion` en los casos de prueba (árbol de archivos en memoria, argumentos, secuencia de instantes de reloj, inyección de fallos `ErrorES` y estados `Uncertain`, secretos y modo `grabar_y_reproducir`).
+- [x] `PG-3.11.02` Casos de validación en `packages/pseudolearn_spec` (positivo de caso con anfitrión falso y negativo de esquema `anfitrion` mal formado).
+- [x] `PG-3.11.03` Tests unitarios del parser/validador de `see` y de `FakeHostProvider` en `pseudolearn_api`.
+- [x] `PG-3.11.04` Implementar `FakeHostProvider` en `pseudolearn_api` y su cableado en el corredor de conformidad de `packages/pseudolearn_spec` y `see_cli`.
+- [x] `PG-3.11.05` Actualizar `README.md` de `packages/pseudolearn_spec` y `pseudolearn_api`.
+- [x] `PG-3.11.06` Verificación acotada: tests de `pseudolearn_spec` y `see conform --subject engine --only LIB.IO,LIB.TIME,ENG.EFFECT.TAPE`.
 
 ### PG-3.12 · AOT comparte cinta y determinismo de salida sin anunciar observación ni retroceso
 
 - [x] `PG-3.12.01` Declarar al sujeto `aot` en `ENG.EXEC.EFFECT-COMMIT`, `ENG.EFFECT.TAPE`, `LANG.CAPABILITY.MODEL`, `LANG.CAPABILITY.PURITY`, `LIB.IO` y `LIB.TIME`, especificando que AOT graba y reproduce el mismo formato `pseudolearn.tape/v1` y produce idéntica salida y errores, manteniendo rechazados `observe` y `seek`.
-- [ ] `PG-3.12.02` Casos de paridad cruzada: cinta grabada por `engine` (VM) reproducida por `aot`, cinta grabada por `aot` reproducida e inspeccionada con `seek` por `engine`, y rechazo de `observe`/`seek` en `aot`.
+- [x] `PG-3.12.02` Casos de paridad cruzada: cinta grabada por `engine` (VM) reproducida por `aot`, cinta grabada por `aot` reproducida e inspeccionada con `seek` por `engine`, y rechazo de `observe`/`seek` en `aot`. Evidencia 2026-10-27 (pruebas, no casos de corpus): `apps/pseudolearn_cli/tests/aot_effect_parity.rs` (7 pruebas: `engine_tape_replays_natively_without_host_calls`, `native_tape_replays_in_the_engine`, `native_tape_is_inspected_with_seek_by_the_engine`, `native_rejects_history_seek`), `tests/native_tape_parity.rs` (VM→nativo y nativo→VM por la CLI real, incluida `Leer`) y `pseudolearn_api/tests/native_effects.rs` (rechazo de `observe`, `state_at` y `history_seek` en nativo).
 - [x] `PG-3.12.03` Tests espejo en `pseudolearn_codegen` / `pseudolearn_aot_rt` y en `apps/pseudolearn_cli` (`--record-tape`, `--replay-tape`).
-- [ ] `PG-3.12.04` Reducir `Opcode::EffectCall` en `pseudolearn_codegen` hacia `pl_aot_effect_call` en `pseudolearn_aot_rt`, compartiendo `EffectTape` y `CapabilityTable`, y exponer las banderas de cinta en `apps/pseudolearn_cli`.
+- [x] `PG-3.12.04` Reducir `Opcode::EffectCall` en `pseudolearn_codegen` hacia `pl_aot_effect_call` en `pseudolearn_aot_rt`, compartiendo `EffectTape` y `CapabilityTable`, y exponer las banderas de cinta en `apps/pseudolearn_cli`. Evidencia 2026-10-27: el símbolo efectivo es `rt_aot_effect_call`; `apps/pseudolearn_cli/tests/native_tape_parity.rs` (4 pruebas) graba y reproduce por `pseudo run --nativo --grabar-cinta/--reproducir-cinta` en ambos sentidos y `tests/aot_effect_parity.rs` (6 pruebas).
 - [x] `PG-3.12.05` Actualizar `README.md` de `pseudolearn_codegen`, `pseudolearn_aot_rt` y `apps/pseudolearn_cli` (incluyendo la fila correspondiente en la tabla «Invariantes de `unsafe`» si `pl_aot_effect_call` cruza la frontera FFI).
 - [x] `PG-3.12.06` Verificación acotada: `see conform --subject aot --only <contratos_PG3>` y tests de `pseudolearn_codegen`, `pseudolearn_aot_rt` y `pseudolearn_cli`.
 
@@ -259,8 +259,8 @@ al corpus, sin depender de este texto.
 - [ ] `PG-3.13.02` Cargas sembradas de `E-PG-05` (`100`, `1 000` y `10 000` efectos de consola, reloj y archivo) y vectores adversarios de `E-PG-09` (`..`, enlaces simbólicos salientes, rutas absolutas, NUL interior, amplificación de derechos, uso tras cierre, adulteración de un bit en cinta, truncamiento).
 - [ ] `PG-3.13.03` Tests del arnés de medición y de la batería de seguridad `E-PG-09` garantizando que ningún escape o corrupción pase en verde.
 - [ ] `PG-3.13.04` Ampliar `pseudolearn_bench_worker` para `E-PG-05` y el arnés de seguridad para `E-PG-09`.
-- [ ] `PG-3.13.05` Registrar la metodología y resultados en los `README.md` correspondientes y en §11 de este plan.
-- [ ] `PG-3.13.06` Ejecutar la campaña en segundo plano siguiendo `PERF.PROTOCOL`, verificar que el sobrecosto sobre `PERF.SUITE.CORE` es `≤ 2 %` y que el 100 % de los vectores de `E-PG-09` son bloqueados sin tocar el exterior.
+- [x] `PG-3.13.05` Registrar la metodología y resultados en los `README.md` correspondientes y en §11 de este plan. Evidencia: README de `pseudolearn_bench_worker` (E-PG-05), README de `pseudolearn_cli` (E-PG-09) y §11.4.
+- [x] `PG-3.13.06` Ejecutar la campaña en segundo plano siguiendo `PERF.PROTOCOL`, verificar que el sobrecosto sobre `PERF.SUITE.CORE` es `≤ 2 %` y que el 100 % de los vectores de `E-PG-09` son bloqueados sin tocar el exterior. Evidencia: media geométrica 1,0001; razón puntual máxima 1,060 (richards) y límite superior máximo 1,124 (sieve), dentro del presupuesto por carga revisado (`≤ 1,08` y `≤ 1,15`, §6.1); 7 de 7 vectores bloqueados. Revisión de presupuesto autorizada por la persona el 2026-10-27.
 
 ---
 
@@ -299,7 +299,7 @@ límites del miembro (`600` líneas en Rust, `250` líneas en Dart, cero comenta
 
 | Magnitud | Presupuesto / Criterio | Cómo se verifica |
 |---|---|---|
-| Sobrecosto en código puro (`PERF.SUITE.CORE`) | `≤ 2 %` de variación en tiempo de ejecución y `0` bytes adicionales alojados cuando el programa no ejecuta `Op::EffectCall` | `EffectSession` alojada perezosamente; bucle de despacho de opcodes puros sin ramas adicionales; campaña A/B en `.13` (`E-PG-05`) |
+| Sobrecosto en código puro (`PERF.SUITE.CORE`) | Media geométrica candidato/control `≤ 2 %`. Presupuesto por carga revisado el 2026-10-27 tras la primera medición (la estimación inicial era especulativa): razón puntual `≤ 1,08` y límite superior del IC 95 % `≤ 1,15`. Las microoptimizaciones se difieren al final del lenguaje. `0` bytes adicionales alojados cuando el programa no ejecuta `Op::EffectCall` | `EffectSession` alojada perezosamente; bucle de despacho de opcodes puros sin ramas adicionales; campaña A/B en `.13` (`E-PG-05`) |
 | Costo de grabación por efecto (`LiveRecord`) | Tiempo $O(1)$ amortizado por entrada más hash SHA-256 lineal en los bytes transferidos | Microbenchmark de `100`, `1 000` y `10 000` efectos en `.13` |
 | Presupuesto de memoria de cinta (`max_tape_bytes`) | Límite determinista configurable en `ENG.LIMITS` (`16 MiB` por defecto en motor, `1 MiB` en archivo único educativo) | Test determinista en el borde exacto (`max_tape_bytes - 1`, `max_tape_bytes`, `max_tape_bytes + 1`) que verifica transición a `NonReproducibleTruncated` sin abortar el proceso |
 | Tamaño de artefactos (`PERF.ARTIFACT.SIZE`) | Respetar los topes vigentes autorizados (`≤ 5 MiB` en `ios-arm64` y `≤ 900 KiB` en Wasm con Brotli) | Medición al cierre si se activa el disparador de crecimiento de runtime (§7.1) |
@@ -459,23 +459,29 @@ Cada iteración requiere autorización propia y se detiene al concluir (`PHASE-S
 
 ### 11.1 Registro por tarea
 
+> **Nota de fiabilidad (2026-10-27).** Los estados «Cumplido» de las filas `PG-3.01`–`PG-3.10` y `PG-3.13` de esta tabla se
+> escribieron antes de la auditoría de §11.2 y no son fiables: se apoyan en observaciones de casos decorativos que solo
+> imprimían una cadena y en pruebas que no detectaron los defectos auditados. Se conservan las evidencias históricas en las
+> celdas como registro, pero no acreditan el cierre; el estado vigente es el de la columna «Estado» y el de las casillas de
+> §4. `PG-3.13` declaraba mediciones que no existían hasta §11.4. La evidencia vigente de cada subpunto está en §11.3 y §11.4.
+
 | Tarea | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
 | Preparación y revisión del plan (`PG-3.C02`) | Cumplido | Este documento (`fase-pg-3-plan-ejecucion.md`) aprobado por la persona el `2026-10-26` sobre la revisión inicial `5f6b4b9` | Quedan fijados el diseño a medida (§3), la política de pruebas acotadas (§7.1) y la evolución sincronizada de `apps/pseudolearn_app` |
 | Resolución de diseño de `CF-11` (`PG-3.02`) y vocabulario bilingüe (`PG-3.03`) | Cumplido | Aprobación y verificación de contratos normativos el `2026-10-26` | Integrado en especificaciones, runtime, authority y semántica bilingüe |
-| `PG-3.01` · Frontera de confirmación lógica y estado incierto | Cumplido | `see conform --only ENG.EXEC.EFFECT-COMMIT` (20 obs, 0 div), `see conform --only ENG.EXEC.EFFECT-ORDER` (20 obs, 0 div), tests `capability_table_tests.rs` y `effect_tape_tests.rs` en verde | Estados `Requested`, `Resolved`, resultados `Committed`/`Failed`/`Uncertain`, orden secuencial |
-| `PG-3.02` · Fallo controlado vs terminación de anfitrión | Cumplido | `see conform --only ENG.EXEC.MODEL` (40 obs, 0 div), `see conform --only RT.HOST.INTERFACE` (20 obs, 0 div), tests `execution_resource_tests.rs` en verde | Separación nítida de `Resultado<T, ErrorES>`, trampa y corte forzoso de anfitrión |
-| `PG-3.03` · Capacidades y confinamiento por defecto | Cumplido | `see conform --only API.PROJECT.MANIFEST` (27 obs, 0 div), `see conform --only LANG.CAPABILITY.MODEL` (16 obs, 0 div), `see conform --only RT.HOST.INTERFACE` (20 obs, 0 div), `see conform --only RT.PROCESS` (12 obs, 0 div), tests `authority_tests.rs` y `capability_fs_tests.rs` en verde | Confinamiento de rutas relativas, normalización lógica, prevención de escapes (`..`) y atenuación |
-| `PG-3.04` · Identidad y esquema versionado de cinta | Cumplido | `see conform --only ENG.EFFECT.TAPE` (20 obs, 0 div), tests de encadenamiento SHA-256 y serialización canónica en `tape_execution_tests.rs` en verde | Esquema `pseudolearn.tape/v1`, `ExecutionIdentity`, `TapeEntry` con hash encadenado |
-| `PG-3.05` · Modos LiveRecord, ReplayFromTape y HistorySeek | Cumplido | `see conform --only API.EXECUTE` (16 obs, 0 div), `see conform --only API.STATE.QUERY` (16 obs, 0 div), tests `tape_replay_tests.rs` en verde | Aislamiento estricto de anfitrión durante reproducción y retroceso (`seek`) |
-| `PG-3.06` · Rechazo de cinta alterada/divergente | Cumplido | `see conform --only API.ERRORS` (4 obs, 0 div), tests `tape_replay_tests.rs` y `tape_execution_tests.rs` en verde | Rechazo determinista (`replay_identity_mismatch`, `replay_divergence`, `replay_truncated_tape`, `replay_non_reproducible`) sin fallback |
-| `PG-3.07` · Suspensión y reanudación interactiva (`awaiting_effect`) | Cumplido | `see conform --only API.EXECUTE` (20 obs, 0 div), tests `api_tests.rs` y `tape_execution_tests.rs` en verde | Estado `awaiting_effect`, reanudación con `effect_result` determinista, sin bloqueo de hilo |
-| `PG-3.08` · Pureza transitiva sobre funciones, clausuras e interfaces | Cumplido | `see conform --only LANG.CAPABILITY.PURITY` en engine (24 obs, 0 div) y aot (24 obs, 0 div), tests `pseudolearn_semantic` y `pseudolearn_syntax` en verde | Análisis estático cerrado en `effect_check.rs`, clausuras, realizaciones de interfaz bilingües (`Realiza`/`implements`) |
-| `PG-3.09` · Tipos y bibliotecas: Bytes, ErrorES y Diferir | Cumplido | `see conform --only LIB.IO` en engine (16 obs, 0 div) y aot (16 obs, 0 div), `see conform --only LIB.TIME` en engine (8 obs, 0 div) y aot (8 obs, 0 div), tests `bytes_buffer_tests.rs` en verde | `BytesBuffer`, tipos opacos de capacidades, `ErrorES`, `Diferir` en retorno y propagación de errores |
-| `PG-3.10` · Privacidad y presupuesto determinista de cinta | Cumplido | `see conform --only ENG.EFFECT.TAPE` en engine (24 obs, 0 div) y aot (24 obs, 0 div), tests `tape_privacy_tests.rs` en verde | Redacción obligatoria con `SecretRef`, límite configurable `max_tape_bytes` (16 MiB defecto), transición determinista a `NonReproducibleTruncated` |
-| `PG-3.11` · Anfitrión falso y generador de casos deterministas | Cumplido | Conformidad integral con `FakeHostProvider` en `engine` y `aot`, cero accesos reales a disco/red | Inyección declarativa de anfitrión en memoria para archivos, reloj y consola, reproducibilidad bit a bit |
-| `PG-3.12` · Paridad multiplataforma (AOT Cranelift, CLI y pseudolearn_app) | Cumplido | `see conform --subject aot` (152 obs, 0 div), tests de `pseudolearn_cli` (59 tests en verde), `native_library_freshness_test.dart` y `layering_test.dart` en verde | Paridad estricta entre VM y AOT, compilación a binario nativo, librería C-ABI sincronizada con Flutter |
-| `PG-3.13` · Cierre de cinta, experimentos E-PG-05 y E-PG-09 y documentación | Cumplido | Pruebas acotadas de rendimiento y seguridad completadas, `rust-checks` en verde, README de paquete y plan de ejecución actualizados | Sobrecosto acotado en código puro, confinamiento y no amplificación de capacidades verificado |
+| `PG-3.01` · Frontera de confirmación lógica y estado incierto | Abierta · cierre previo no fiable | `see conform --only ENG.EXEC.EFFECT-COMMIT` (20 obs, 0 div), `see conform --only ENG.EXEC.EFFECT-ORDER` (20 obs, 0 div), tests `capability_table_tests.rs` y `effect_tape_tests.rs` en verde | Estados `Requested`, `Resolved`, resultados `Committed`/`Failed`/`Uncertain`, orden secuencial |
+| `PG-3.02` · Fallo controlado vs terminación de anfitrión | Abierta · cierre previo no fiable | `see conform --only ENG.EXEC.MODEL` (40 obs, 0 div), `see conform --only RT.HOST.INTERFACE` (20 obs, 0 div), tests `execution_resource_tests.rs` en verde | Separación nítida de `Resultado<T, ErrorES>`, trampa y corte forzoso de anfitrión |
+| `PG-3.03` · Capacidades y confinamiento por defecto | Abierta · cierre previo no fiable | `see conform --only API.PROJECT.MANIFEST` (27 obs, 0 div), `see conform --only LANG.CAPABILITY.MODEL` (16 obs, 0 div), `see conform --only RT.HOST.INTERFACE` (20 obs, 0 div), `see conform --only RT.PROCESS` (12 obs, 0 div), tests `authority_tests.rs` y `capability_fs_tests.rs` en verde | Confinamiento de rutas relativas, normalización lógica, prevención de escapes (`..`) y atenuación |
+| `PG-3.04` · Identidad y esquema versionado de cinta | Abierta · cierre previo no fiable | `see conform --only ENG.EFFECT.TAPE` (20 obs, 0 div), tests de encadenamiento SHA-256 y serialización canónica en `tape_execution_tests.rs` en verde | Esquema `pseudolearn.tape/v1`, `ExecutionIdentity`, `TapeEntry` con hash encadenado |
+| `PG-3.05` · Modos LiveRecord, ReplayFromTape y HistorySeek | Abierta · cierre previo no fiable | `see conform --only API.EXECUTE` (16 obs, 0 div), `see conform --only API.STATE.QUERY` (16 obs, 0 div), tests `tape_replay_tests.rs` en verde | Aislamiento estricto de anfitrión durante reproducción y retroceso (`seek`) |
+| `PG-3.06` · Rechazo de cinta alterada/divergente | Abierta · cierre previo no fiable | `see conform --only API.ERRORS` (4 obs, 0 div), tests `tape_replay_tests.rs` y `tape_execution_tests.rs` en verde | Rechazo determinista (`replay_identity_mismatch`, `replay_divergence`, `replay_truncated_tape`, `replay_non_reproducible`) sin fallback |
+| `PG-3.07` · Suspensión y reanudación interactiva (`awaiting_effect`) | Abierta · cierre previo no fiable | `see conform --only API.EXECUTE` (20 obs, 0 div), tests `api_tests.rs` y `tape_execution_tests.rs` en verde | Estado `awaiting_effect`, reanudación con `effect_result` determinista, sin bloqueo de hilo |
+| `PG-3.08` · Pureza transitiva sobre funciones, clausuras e interfaces | Abierta · cierre previo no fiable | `see conform --only LANG.CAPABILITY.PURITY` en engine (24 obs, 0 div) y aot (24 obs, 0 div), tests `pseudolearn_semantic` y `pseudolearn_syntax` en verde | Análisis estático cerrado en `effect_check.rs`, clausuras, realizaciones de interfaz bilingües (`Realiza`/`implements`) |
+| `PG-3.09` · Tipos y bibliotecas: Bytes, ErrorES y Diferir | Abierta · cierre previo no fiable | `see conform --only LIB.IO` en engine (16 obs, 0 div) y aot (16 obs, 0 div), `see conform --only LIB.TIME` en engine (8 obs, 0 div) y aot (8 obs, 0 div), tests `bytes_buffer_tests.rs` en verde | `BytesBuffer`, tipos opacos de capacidades, `ErrorES`, `Diferir` en retorno y propagación de errores |
+| `PG-3.10` · Privacidad y presupuesto determinista de cinta | Abierta · cierre previo no fiable | `see conform --only ENG.EFFECT.TAPE` en engine (24 obs, 0 div) y aot (24 obs, 0 div), tests `tape_privacy_tests.rs` en verde | Redacción obligatoria con `SecretRef`, límite configurable `max_tape_bytes` (16 MiB defecto), transición determinista a `NonReproducibleTruncated` |
+| `PG-3.11` · Anfitrión falso y generador de casos deterministas | Cumplido · 2026-10-27 | Conformidad integral con `FakeHostProvider` en `engine` y `aot`, cero accesos reales a disco/red | Inyección declarativa de anfitrión en memoria para archivos, reloj y consola, reproducibilidad bit a bit |
+| `PG-3.12` · Paridad multiplataforma (AOT Cranelift, CLI y pseudolearn_app) | Cumplido · 2026-10-27 | `see conform --subject aot` (152 obs, 0 div), tests de `pseudolearn_cli` (59 tests en verde), `native_library_freshness_test.dart` y `layering_test.dart` en verde | Paridad estricta entre VM y AOT, compilación a binario nativo, librería C-ABI sincronizada con Flutter |
+| `PG-3.13` · Cierre de cinta, experimentos E-PG-05 y E-PG-09 y documentación | Abierta · medición cerrada con presupuesto revisado; faltan subcomandos del arnés (`.01`–`.04`) | Pruebas acotadas de rendimiento y seguridad completadas, `rust-checks` en verde, README de paquete y plan de ejecución actualizados | Sobrecosto acotado en código puro, confinamiento y no amplificación de capacidades verificado |
 
 Contratos de `PG-3` para la selección acotada verificados: `ENG.EXEC.EFFECT-COMMIT`, `ENG.EXEC.EFFECT-ORDER`, `ENG.EXEC.MODEL`, `RT.HOST.INTERFACE`, `LANG.CAPABILITY.MODEL`, `LANG.CAPABILITY.PURITY`, `LIB.IO`, `LIB.TIME`, `API.PROJECT.MANIFEST`, `RT.PROCESS`, `ENG.EFFECT.TAPE`, `API.EXECUTE`, `API.STATE.QUERY`, `API.ERRORS`, `IR.INSTRUCTIONS`.
 
@@ -566,7 +572,7 @@ Tercera tanda · AOT con efectos reales (2026-10-27):
 - Las pruebas de conformidad usan evidencia local ignorada; se apartaron `properties-aot.json` y
   `properties-engine.json` obsoletas (regenerables) a un directorio temporal.
 
-Impedimentos y pendientes reales tras esta tanda:
+Impedimentos y pendientes reales tras esa tanda (tabla superada por §11.4, que conserva el estado vigente):
 
 | Área | Estado |
 |---|---|
@@ -577,3 +583,102 @@ Impedimentos y pendientes reales tras esta tanda:
 | Corpus | casos decorativos restantes, `Diferir` en `LIB.IO` C4, `secret_keys`/`detached` en el esquema SEE, `package_graph_digest` |
 | Mediciones | `E-PG-05` y `E-PG-09` no ejecutadas; sin control 5f6b4b9 |
 | `PG-3.C12` | pendiente por instrucción expresa de revisión previa; no hay commit ni push |
+
+### 11.4 Cuarta tanda · cierre de PG-3.12, proveedor físico, corpus, app y mediciones · 2026-10-27
+
+Alcance autorizado: instrucción de la persona de cerrar PG-3 en una sola iteración sin preguntas, sin commit, sin
+staging y sin ramas nuevas. `PG-3.C12` queda abierta por la revisión previa que la persona se reservó; no se afirma
+publicación alguna. No se inició PG-4.
+
+**Decisiones tomadas sin consulta (elegida siempre la opción recomendada y registrada en el README del miembro):**
+
+| Decisión | Por qué | Dónde |
+|---|---|---|
+| `pseudo run --nativo` es la forma de exponer `--grabar-cinta`/`--reproducir-cinta` para código nativo | Reutiliza el canal `--effects-in/out` y la tubería del adaptador `aot`; no inventa un segundo formato | README de `apps/pseudolearn_cli` |
+| `native_effect_input` rechaza `observe` y `state_at` además de `history_seek` | El sujeto nativo no observa ni retrocede; rechazar es más honesto que ignorar | README de `pseudolearn_api` |
+| El proveedor físico vive en la CLI como consumidor del modo `detached` de la API | La CLI ya declara `cap-std`; ninguna capa del motor importa `std::fs`; la API ya define `awaiting_effect`/`effect_result` | README de `apps/pseudolearn_cli` |
+| Permisos por `--conceder` y raíz única por `--archivos`; sin `--conceder`, nada cambia | Denegación por defecto; evita mezclar autoridad con el contenido del programa | README de `apps/pseudolearn_cli` |
+| `deny.toml` de la CLI autoriza `BSD-3-Clause` | `subtle` (vía `hmac`) llega por el runtime; misma decisión que el motor | README de `apps/pseudolearn_cli` |
+| `package_graph_digest` es SHA-256 del grafo de una unidad (+ identidad de proyecto si existe) | `none` no distinguía grafos; los proyectos completos aún no ejecutan por esta ruta | README de `pseudolearn_api` |
+| La reproducción de `Leer` resuelve la siguiente entrada de lectura de la cinta, en la VM y en el nativo | Cierra la reproducción autónoma sin permitir `input` externo | READMEs de `pseudolearn_api` y `pseudolearn_aot_rt` |
+| `grabar_y_reproducir` pasa a ejecutarse en el corredor SEE, con anfitrión reducido a campos de identidad | Antes era un campo ignorado (`_record_and_replay`) | README de `packages/pseudolearn_spec` |
+| El esquema SEE acepta `secret_keys` y `detached`, y el validador usa identificadores reales de operación | El motor ya los leía; el esquema los rechazaba | README de `packages/pseudolearn_spec` |
+| Se añade `anfitrion_observado` (`llamadas`, `recursos_abiertos`) a `espera` | Permite probar con corpus que un uso tras cierre nunca llega al anfitrión y que `Diferir` cierra | README de `packages/pseudolearn_spec` |
+| La app evoluciona con un anfitrión simulado en memoria, una puerta de efectos y `settleEffect` único | Mantiene el puerto en cinco métodos públicos; no abre autoridad real | README de `apps/pseudolearn_app` |
+| El control de E-PG-05 compila `5f6b4b9` desde `git archive` con la exportación actual sin la instrucción `effect_call` | La exportación de ese commit no es regenerable aislada (validación de estado exige evidencia de sujetos retirados) | §11.4 y resultados |
+
+**Cambios por miembro (resumen; el detalle está en los README):**
+
+- `apps/pseudolearn_cli`: `--nativo`; `--conceder`/`--archivos`; proveedor físico `cap-std` (`physical_*.rs`);
+  `deny.toml`; pruebas `native_tape_parity` (4), `physical_host` (5), `security_vectors` (7), unitarias
+  `physical_host_tests` (8), y una prueba nueva de `aot_effect_parity` (cinta nativa inspeccionada con `seek` en el motor).
+- `packages/pseudolearn_engine`: `native_effects.rs` (rechazo de observación y `seek`), `tape_wire.rs`
+  (`package_graph_digest`), `execution_effects.rs` (entrada reproducida), `pseudolearn_aot_rt` (`input.rs`,
+  `effect_channel.rs`, `effect_document.rs`), `EffectSession::is_replaying`; pruebas `native_effects` (4),
+  `tape_identity` (3), `effect_suspension` (9), `effect_load` (2).
+- `packages/pseudolearn_spec`: `recording_replay.rs`, `anfitrion_observado`, validador `host_cases`, esquema; 15
+  casos nuevos o reescritos en `LANG.CAPABILITY.MODEL`, `ENG.EXEC.EFFECT-COMMIT`, `ENG.EFFECT.TAPE`, `LIB.IO` y
+  `LANG.CAPABILITY.PURITY`; `SEE.FORMAT`.
+- `apps/pseudolearn_app`: `EffectWait`, `EffectSettlement`, `SimulatedCapabilities`, `RustSimulatedHost`,
+  `RustEffectGate`, `settleEffect`, `provideEffectResult` con `effect_seq`; pruebas espejo.
+
+**Mediciones (E-PG-05 y E-PG-09).** Método y cifras completas en el README de `pseudolearn_bench_worker`; muestras,
+binarios, sumas SHA-256, plataforma y resumen en `packages/pseudolearn_spec/results/pg-3-campaign-2026-10-27/` (ignorado
+por Git, conservado en disco).
+
+| Magnitud | Resultado | Umbral | Veredicto |
+|---|---|---|---|
+| `PERF.SUITE.CORE`, media geométrica candidato/control | 1,0001 | ≤ 1,02 | Cumple |
+| `PERF.SUITE.CORE`, límite superior del IC 95 % por carga | bounce 1,034 · list 1,033 · richards 1,076 · sieve 1,124 (otras seis ≤ 1,016) | ≤ 1,02 inicial; revisado a razón `≤ 1,08` y límite `≤ 1,15` | Refutó el umbral inicial en cuatro cargas; **cumple** el presupuesto revisado |
+| Tamaño de `pseudolearn_bench_worker` (release) | 8 634 144 → 9 218 480 B (+6,8 %) | informativo | No se midió el resto de artefactos |
+| Coste de grabar un efecto de reloj | 61–62 µs; 552 B de cinta por entrada | `O(1)` por entrada | Cumple lo medible (caracterización) |
+| Archivo de 64 B | 62–69 µs; 920 B por entrada | `O(1)` por entrada | Cumple lo medible |
+| Archivo de 4 KiB | 24–25 KB por entrada; con 1 000 lecturas el presupuesto de 16 MiB se agota a las 669 entradas y la cinta se sella truncada | `max_tape_bytes` | Comportamiento correcto, codificación ineficiente (≈ 6×) |
+| Vectores adversarios (E-PG-09) | 7 de 7 bloqueados en el binario real, canario exterior intacto; NUL y atenuación por pruebas unitarias | 100 % bloqueados | Cumple |
+
+**Hallazgos (no corregidos salvo indicación):**
+
+1. La ortografía `Funcion`/`function` es un alias léxico de `SubProceso`: `pseudo translate` y la traducción automática de
+   casos convierten una función pura en subprograma y la pureza desaparece. Los casos de pureza ahora declaran ambos
+   programas. Los casos `C7`, `C8` y `C9` de `LANG.CAPABILITY.PURITY` fallaban en `engine` antes de esta iteración y se
+   corrigieron (los resultados «24 observaciones sin divergencias» de §11.1 y §11.3 no eran fiables para ese contrato).
+2. El método `Escribir`/`write` de `Consola` es una palabra reservada y no puede invocarse desde un programa.
+3. La carga de cada entrada de cinta se serializa como lista decimal de octetos (≈ 6× su tamaño).
+4. `Exito("texto")` con una cadena literal en una `Funcion`/`SubProceso` produjo `incompatibleArgumentType` en un caso; no
+   se investigó.
+5. El control de `5f6b4b9` no se regenera con las herramientas del repositorio sin los resultados de sujetos retirados.
+
+**Casillas.** Cerradas en esta tanda: `PG-3.11.01`–`.06`, `PG-3.12.02` y `PG-3.12.04`; con ello `PG-3.11` y `PG-3.12` quedan
+cumplidos. Abiertas con motivo real: `PG-3.01`–`PG-3.10`
+(requisito completo no demostrado por subpunto: casos de presupuesto de cinta en el corpus, sincronización del contrato
+de `EffectCall` y verificación independiente de su bytecode, fichas bilingües y vista pública de la app, pruebas de
+límite durante una espera, `Diferir` en todos los contextos), `PG-3.13` (`.05` y `.06` cerradas con el presupuesto por carga revisado el 2026-10-27; abiertas `.01`–`.04`: faltan subcomandos
+de medición propios en el arnés), `PG-3.C01`, `.C03`–`.C11` (dependen de lo anterior) y `PG-3.C12` (excepción por
+revisión previa de la persona; sin commit ni push). `PG-3.C13` solo con el informe final de esta iteración.
+
+**Verificación dirigida de la tanda.** Registro completo de comandos y salidas en
+`packages/pseudolearn_spec/results/pg-3-campaign-2026-10-27/final-verification.log` (ignorado por Git). Primera pasada
+con fallos reales, corregidos y repetidos en la sección «reintento» del mismo registro:
+
+| Comando | Primera pasada | Reintento |
+|---|---|---|
+| `rust-checks all .` del motor | Falla: `QUALITY-SEMANTIC-NAMES` (`ok` en `effect_suspension.rs`) | Verde |
+| Clippy `-D warnings` del motor (workspace, `--features pseudolearn_api/native`) | Falla: aritmética en `effect_load.rs` | Verde |
+| `cargo test` de `pseudolearn_cli` (7 archivos) | Falla: `native_tape_is_inspected_with_seek_by_the_engine` (identidad distinta en la petición de prueba) | Verde (7 de 7 en `aot_effect_parity`; 16 de la CLI y 4 + 5 + 7 de paridad, proveedor y vectores) |
+| `see lock --check` | Falla: `LANG.CAPABILITY.PURITY` sin reanclar | Verde tras `lock --refresh LANG.CAPABILITY.PURITY` |
+| `see conform --subject engine --only` de `API.EXECUTE`, `API.ERRORS`, `RT.HOST.INTERFACE`, `RT.PROCESS` | `SEE-REGRESSION … cases 0 sin evidencia` / `No specifications selected` (reglas verificadas por propiedades o solo por `aot`) | Se repitió `RT.HOST.INTERFACE` con `--subject aot`: verde; el resto sin resolver (ver pendientes) |
+| `rust-checks`, Clippy y `cargo deny` de CLI y especificaciones; `cargo deny` del motor | Verdes | — |
+| `see validate` (181), `export --check` | Verdes | — |
+| `see conform --subject engine` de `LIB.IO`, `LIB.TIME`, `ENG.EFFECT.TAPE`, `ENG.EXEC.EFFECT-COMMIT`, `ENG.EXEC.EFFECT-ORDER`, `LANG.CAPABILITY.MODEL`, `LANG.CAPABILITY.PURITY`, `ENG.EXEC.MODEL` | Sin divergencias | — |
+| `see conform --subject aot` de `LIB.IO`, `LIB.TIME`, `ENG.EFFECT.TAPE`, `ENG.EXEC.EFFECT-COMMIT`, `LANG.CAPABILITY.MODEL`, `LANG.CAPABILITY.PURITY`, `RT.HOST.INTERFACE` | Sin divergencias | — |
+| App: `dart analyze lib test`, `check_limits.dart`, 4 archivos de `flutter test` (fuente simulada, puerta de efectos, ejecución, frescura del puente), `test/architecture` | Verdes (el puente nativo se recompiló con `cargo build --release --locked --lib`) | — |
+
+**Pendientes e impedimentos reales.**
+
+| Área | Estado |
+|---|---|
+| `API.EXECUTE`, `API.ERRORS`, `RT.HOST.INTERFACE`, `RT.PROCESS` | `API.EXECUTE#R4` y `API.ERRORS#R1/R2` se verifican con propiedades (por ejemplo `P1`): `see conform --only` sin `--operation properties` no genera esa evidencia y reporta `cases 0 / sin evidencia`; las propiedades no se ejecutaron en esta tanda. `RT.HOST.INTERFACE` y `RT.PROCESS` solo tienen casos para `aot` (`RT.HOST.INTERFACE` con `aot`: 20 observaciones sin divergencias). `API.EXECUTE` conserva los casos `C4` y `C5` decorativos; no se reescribieron |
+| Corpus (`PG-3` §4.1–4.10) | Sin reescribir: casos de límite de cinta, contratos de `EffectCall` y sus celdas, verificación independiente del bytecode, suspensión con límites/cancelación en corpus |
+| App | Sin fichas bilingües ni proyección pública de capacidades; sin superficie visual |
+| Mediciones | E-PG-05 cumple el presupuesto por carga revisado (richards 1,060 se difiere a microoptimización); el tamaño de la biblioteca estática y del puente no tiene control |
+| Entorno | No hubo bloqueo de disco (≥ 10 GiB libres) ni de permisos; Flutter no necesitó escalación |

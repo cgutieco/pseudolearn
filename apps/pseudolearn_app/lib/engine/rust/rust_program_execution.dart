@@ -1,12 +1,17 @@
 import 'dart:collection';
 
+import '../../domain/model/execution/effect_settlement.dart';
+import '../../domain/model/execution/effect_wait.dart';
 import '../../domain/model/execution/execution_step.dart';
 import '../../domain/model/execution/output_line.dart';
+import '../../domain/model/execution/simulated_capabilities.dart';
 import '../../domain/model/profiles/syntax_profile_id.dart';
 import '../../domain/model/settings/ui_language_id.dart';
 import '../../domain/ports/program_execution.dart';
 import 'rust_analysis_api.dart';
+import 'rust_effect_gate.dart';
 import 'rust_execution_api.dart';
+import 'rust_execution_readers.dart';
 import 'rust_focus_tracker.dart';
 import 'rust_output_assembler.dart';
 import 'rust_profile_name.dart';
@@ -30,6 +35,7 @@ final class RustProgramExecution implements ProgramExecution {
   final RustAnalysisApi _analysis;
   final RustExecutionApi _execution;
   final RustWatchRows _watch;
+  final RustEffectGate _gate;
   final Queue<RustEvent> _queue = Queue<RustEvent>();
 
   RustAnalysisHandle? _handle;
@@ -49,10 +55,14 @@ final class RustProgramExecution implements ProgramExecution {
   int _eventIndex = -1;
   int _stepCounter = 0;
 
-  RustProgramExecution(RustTransport transport)
-    : _analysis = RustAnalysisApi(transport),
-      _execution = RustExecutionApi(transport),
-      _watch = RustWatchRows(RustStateApi(transport));
+  RustProgramExecution(
+    RustTransport transport, {
+    SimulatedCapabilities capabilities = SimulatedCapabilities.none,
+    bool autoResolveEffects = true,
+  }) : _analysis = RustAnalysisApi(transport),
+       _execution = RustExecutionApi(transport),
+       _watch = RustWatchRows(RustStateApi(transport)),
+       _gate = RustEffectGate(transport, capabilities, autoResolveEffects);
 
   @override
   List<OutputLine> get outputLines => List.unmodifiable(_output.lines);
@@ -70,7 +80,7 @@ final class RustProgramExecution implements ProgramExecution {
       locale: rustLocaleName(languageId),
     );
     final report = _analysis.report(handle);
-    if (!_isExecutable(report)) {
+    if (!isExecutableReport(report)) {
       _analysis.release(handle);
       return const ExecutionStep.unstarted();
     }
@@ -83,7 +93,7 @@ final class RustProgramExecution implements ProgramExecution {
     _offsets = offsets;
     _view = view;
     _tracker = RustFocusTracker(view);
-    _executionId = _execution.start(handle);
+    _executionId = _execution.start(handle, host: _gate.hostDocument);
     return _snapshot();
   }
 
@@ -128,18 +138,36 @@ final class RustProgramExecution implements ProgramExecution {
     if (handle != null) _analysis.release(handle);
   }
 
-  bool _isExecutable(Map<String, Object?> report) {
-    final diagnostics = (report['diagnostics'] as List<Object?>)
-        .cast<Map<String, Object?>>();
-    return report['tree'] as bool &&
-        !diagnostics.any((item) => item['severity'] == 'error');
+  @override
+  ExecutionStep settleEffect(EffectSettlement settlement) {
+    if (settlement == EffectSettlement.cancel) return _cancelled();
+    final batch = _last;
+    final execution = _executionId;
+    if (execution == null || batch?.pendingEffect == null || !_gate.canResolve) {
+      return step();
+    }
+    _gate.answer(execution, batch!);
+    _termination = RustTerminationKind.running;
+    return step();
+  }
+
+  ExecutionStep _cancelled() {
+    final number = _stepCounter;
+    stop();
+    return ExecutionStep(
+      stepNumber: number,
+      scopeName: 'global',
+      scopeDepth: 1,
+      isHalted: true,
+      haltReason: 'cancelled',
+    );
   }
 
   void _fetchBatch() {
-    final execution = _executionId!;
-    final batch = _execution.advance(execution, batchSize);
+    final collected = <RustEvent>[];
+    final batch = _gate.drain(_executionId!, batchSize, collected);
+    _queue.addAll(collected);
     _last = batch;
-    _queue.addAll(batch.events);
     _termination = batch.termination;
   }
 
@@ -164,16 +192,8 @@ final class RustProgramExecution implements ProgramExecution {
       case 'input_received':
         _output.echoInput('${event.data['texto']}');
       case 'input_requested':
-        _inputPrompt = _promptOf(event);
+        _inputPrompt = inputPromptOf(_view!, _offsets!, event);
     }
-  }
-
-  String? _promptOf(RustEvent event) {
-    final node = _view!.node(event.nodeId);
-    if (node == null) return null;
-    final text = _offsets!.textBetween(node.range).replaceAll(';', '').trim();
-    final separator = text.indexOf(' ');
-    return separator < 0 ? text : text.substring(separator + 1).trim();
   }
 
   ExecutionStep _terminalStep() {
@@ -185,8 +205,7 @@ final class RustProgramExecution implements ProgramExecution {
         prompt: _inputPrompt,
       ),
       RustTerminationKind.awaitingEffect => _snapshot(
-        awaitingInput: false,
-        prompt: batch?.pendingEffect?.operation,
+        pending: RustEffectGate.waitOf(batch?.pendingEffect),
       ),
       RustTerminationKind.limitReached => _snapshot().asStepLimitReached(),
       _ => _snapshot(
@@ -197,6 +216,7 @@ final class RustProgramExecution implements ProgramExecution {
   }
 
   ExecutionStep _snapshot({
+    EffectWait? pending,
     bool finished = false,
     bool halted = false,
     bool awaitingInput = false,
@@ -217,6 +237,7 @@ final class RustProgramExecution implements ProgramExecution {
       haltReason: reason,
       isAwaitingInput: awaitingInput,
       inputPrompt: prompt,
+      pendingEffect: pending,
     );
   }
 }

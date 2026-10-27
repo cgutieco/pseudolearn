@@ -196,6 +196,23 @@ tabla de perfiles, por lo que el archivo suelto no cambia. El adaptador AOT de c
 
 La vista pública conserva nodos explícitos de construcción y patrón de variante, propagación y descarte. Expone identidades canónicas de alternativa y constructor de tipo, mutabilidad e inicialización del vínculo, y roles de carga útil, vínculo, tipo e inicializador. No expone los registros sintéticos ni sus ranuras de almacenamiento.
 
+### Identidad del grafo de paquetes, rechazo nativo y reproducción de entrada
+
+- `package_graph_digest` de la identidad de ejecución es un SHA-256 real: se calcula sobre el encabezado
+  `pseudolearn.package-graph/v1`, el número de unidades (una, en archivo suelto), el resumen de la fuente y, si la
+  petición trae identidad de fuente válida, proyecto, revisión e identificador de fuente. Antes era la cadena `none`,
+  que no distinguía grafos. Un cambio de programa o de revisión cambia el resumen y la reproducción lo rechaza con
+  `replay_identity_mismatch`.
+- `native_effect_input` rechaza con error de uso toda petición nativa con `observe` distinto de `none`, con `state_at` o
+  con modo `history_seek`: el sujeto nativo no ofrece observación ni retroceso y no los simula.
+- En `ReplayFromTape` y `HistorySeek`, cuando la máquina espera entrada (`awaiting_input`), el recurso de ejecución
+  resuelve la siguiente entrada de lectura de consola de la cinta y entrega su carga como línea; la reproducción es
+  autónoma y la API sigue rechazando `input` externo. Una cinta sin más lecturas produce `replay_truncated_tape`.
+- Verificación del modo desacoplado: `tests/effect_suspension.rs` cubre suspensión con `awaiting_effect`, resolución
+  manual, rechazo de `input` durante la espera, secuencia y tipo de resultado incorrectos, resultado sin espera,
+  cancelación durante la espera, incertidumbre rechazada en efectos de solo lectura y escritura incierta que el programa
+  observa y que marca la cinta `uncertain_external_state`.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código en inglés, cero comentarios, sin atributos doc/allow/expect ni unsafe.

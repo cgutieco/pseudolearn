@@ -99,6 +99,47 @@ contextual de unidad superior y sus grafías se pueden usar como nombres dentro 
 Perfil por archivo: `--vocabulario` equivale al argumento `profile` de la petición de proyecto; las excepciones por archivo
 las aporta el manifiesto y el idioma de interfaz no cambia el programa ni el lock.
 
+### Efectos, cinta y proveedor físico
+
+`ejecutar/run` admite `--nativo` (`--native`): compila el programa con el mismo camino que `compilar`, lo enlaza en un
+directorio temporal y lo lanza con el canal de efectos `--effects-in` / `--effects-out` del runtime nativo. Con
+`--grabar-cinta` el ejecutable nativo produce la cinta `pseudolearn.tape/v1` y con `--reproducir-cinta` la reproduce sin
+consultar a ningún anfitrión; el mismo archivo de cinta sirve en ambos sentidos (máquina virtual → nativo y nativo →
+máquina virtual). `--nativo` rechaza `--traza` con error de uso (código 2): el sujeto nativo no ofrece observación ni
+retroceso (`observe`/`seek`), y la API rechaza esas peticiones con `native_effect_input`.
+
+La reproducción de `Leer` es autónoma: la cinta guarda cada línea leída y la reproducción la entrega sin leer la entrada
+estándar. Decisión: la entrada leída se resuelve contra la entrada de cinta siguiente en ambos motores; si la cinta se
+agota, la reproducción termina con `replay_truncated_tape`.
+
+Proveedor físico: `--conceder <lista>` (`--grant`) declara los permisos concedidos (`consola`, `argumentos`,
+`archivos_lectura`, `archivos_escritura`, `reloj`, `temporizador`; cualquier otro nombre es error de uso) y
+`--archivos <DIR>` (`--files`) la única raíz de archivos. Sin `--conceder` el comportamiento no cambia y toda
+capacidad se deniega. Con `--conceder` la CLI arranca la ejecución en modo `detached` y atiende cada
+`awaiting_effect` como consumidor de la API pública: `physical_host.rs` despacha las operaciones, `physical_files.rs`
+las operaciones de archivo y `physical_session.rs` el ciclo `effect_result`. La raíz se abre una sola vez con
+`cap_std::fs::Dir::open_ambient_dir` en la frontera de la CLI y toda ruta posterior se resuelve relativa a un `Dir`;
+nunca se concatenan rutas. Defensas: la ruta debe ser relativa, sin `.`/`..`, sin vacío, `\`, `:` ni NUL
+(`ruta_invalida`); `cap-std` rechaza además enlaces simbólicos salientes (`permiso_denegado`); los derechos de una
+capacidad derivada deben ser subconjunto de los del padre; cerrar una capacidad la retira de la tabla y su uso posterior
+devuelve `capacidad_cerrada`; escribir reemplaza el contenido y un fallo tras mutar se informa como `Uncertain`.
+La reproducción (`--reproducir-cinta`) no abre la raíz ni toca disco. El reloj es el del sistema en la primera lectura
+y el temporizador es lógico (suma la duración sin dormir). No se declaran pendientes de esta decisión salvo que el
+proveedor físico solo ofrece una raíz y no modela argumentos de la línea de órdenes del programa.
+
+`deny.toml` autoriza `BSD-3-Clause`, licencia de `subtle`, dependencia transitiva de `hmac` que el runtime usa para las
+referencias de secretos de la cinta; es la misma decisión que ya rige en el motor.
+
+#### Vectores adversarios de archivos y cinta (E-PG-09, parte de PG-3)
+
+La batería `tests/security_vectors.rs` ejecuta el binario real con una raíz concedida y un archivo canario fuera de ella.
+Cada vector debe terminar con el código de error portable esperado, sin que la salida contenga el canario y sin que el
+archivo exterior cambie. Vectores cubiertos (7 de 7 bloqueados, 2026-10-27): `..` (`ruta_invalida`), ruta absoluta
+(`ruta_invalida`), enlace simbólico saliente (`permiso_denegado`), escritura desde una concesión de solo lectura
+(`permiso_denegado`), uso tras cierre (`capacidad_cerrada`), un bit alterado en la carga de una entrada de cinta y cinta
+truncada (ambas rechazadas en la reproducción sin escribir salida). El vector de NUL interior y la atenuación a solo
+lectura se cubren con las pruebas unitarias de `physical_host_tests.rs`, no con un programa de la batería. Esta batería es de caracterización de seguridad: acredita que cada vector se bloquea, no que no existan otros.
+
 ### Proyectos
 
 Invocaciones reproducibles (el directorio actual no interviene; el proyecto puede estar en cualquier ruta):

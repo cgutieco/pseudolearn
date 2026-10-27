@@ -116,6 +116,10 @@ impl EffectSession {
         });
     }
 
+    pub fn is_replaying(&self) -> bool {
+        self.replay.is_some()
+    }
+
     pub fn tape(&self) -> &EffectTape {
         &self.tape
     }

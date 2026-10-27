@@ -289,6 +289,27 @@ Un caso de frontera que solicita transporte Wasm exige la capacidad `wasm`; el a
 
 Los casos pueden restringir `sujetos` a un subconjunto explícito de los declarados; la ausencia conserva la aplicación a todos. Así se separan fronteras de app y CLI sin convertir capacidades ausentes en aprobaciones. La propiedad de revisión de `program_view` usa pares de documentos mínimos idénticos para detectar reutilización incorrecta de identidades entre revisiones y después del cierre.
 
+### Corredor de conformidad: grabar y reproducir, observación del anfitrión y privacidad
+
+- `grabar_y_reproducir` se ejecuta en el corredor (`recording_replay.rs` de `see_conformance`), no solo en pruebas de
+  Rust: tras una ejecución viva, el corredor reenvía la misma petición en modo `replay_from_tape` con la cinta recibida
+  y un anfitrión reducido a los campos de identidad (`permissions`, `requested_permissions`, `max_tape_bytes`), de modo
+  que la reproducción no dispone de archivos, argumentos ni reloj. Compara salida y terminación y exige cero llamadas al
+  proveedor. Aplica a los sujetos que anuncian `execute` con cinta (`engine` y `aot`).
+- La clave `anfitrion_observado` de `espera` (`llamadas`, `recursos_abiertos`) compara la observación del anfitrión que
+  devuelve el sujeto.
+- Si el anfitrión declara `secrets`, el corredor busca el valor de cada secreto en la cinta viva en forma textual,
+  escapada, decimal (octetos) y hexadecimal, y en la carga de cada entrada; cualquier aparición es una diferencia
+  `SEE-PRIVACY`.
+- El esquema `see-1` acepta `secret_keys` (identidad de clave → clave del proveedor de prueba) y `detached`, que el
+  motor ya leía; antes el esquema los rechazaba. El validador de casos (`host_cases.rs`) usa ahora los identificadores
+  reales de operación (`file_write_text`, `file_close`, …) para decidir qué fallos pueden ser inciertos; antes comparaba
+  contra nombres que ningún proveedor emite.
+- Hallazgos registrados al reescribir los casos: la ortografía `Funcion`/`function` es un alias de `SubProceso`, de
+  modo que la traducción automática de `perfil_base` a inglés convierte una función pura en subprograma; los casos de
+  pureza declaran por eso ambos programas. El método `Escribir`/`write` de `Consola` coincide con una palabra reservada y
+  no puede invocarse desde un programa; el caso de consola de la cinta usa argumentos en su lugar.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código en inglés sin comentarios, doc/allow/expect, unsafe ni pánicos explícitos. Fallos esperables

@@ -1,3 +1,4 @@
+import 'package:pseudolearn_app/domain/model/execution/effect_settlement.dart';
 import 'package:pseudolearn_app/domain/model/execution/execution_step.dart';
 import 'package:pseudolearn_app/domain/model/execution/output_line.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
@@ -52,6 +53,15 @@ base class FakeProgramExecution implements ProgramExecution {
 
   @override
   ExecutionStep provideInput(String rawInput) {
+    return step();
+  }
+
+  @override
+  ExecutionStep settleEffect(EffectSettlement settlement) {
+    if (settlement == EffectSettlement.cancel) {
+      isStopped = true;
+      return const ExecutionStep.unstarted();
+    }
     return step();
   }
 

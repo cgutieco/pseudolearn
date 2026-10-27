@@ -1,4 +1,5 @@
 import 'block_position.dart';
+import 'effect_wait.dart';
 import 'execution_focus.dart';
 import 'watch_row.dart';
 
@@ -17,6 +18,7 @@ final class ExecutionStep {
   final bool isAwaitingInput;
   final String? inputPrompt;
   final String? expectedInputType;
+  final EffectWait? pendingEffect;
 
   const ExecutionStep({
     required this.stepNumber,
@@ -33,6 +35,7 @@ final class ExecutionStep {
     this.isAwaitingInput = false,
     this.inputPrompt,
     this.expectedInputType,
+    this.pendingEffect,
   });
 
   const ExecutionStep.unstarted()
@@ -49,7 +52,8 @@ final class ExecutionStep {
         isStepLimitReached = false,
         isAwaitingInput = false,
         inputPrompt = null,
-        expectedInputType = null;
+        expectedInputType = null,
+        pendingEffect = null;
 
   const ExecutionStep.exhausted()
       : stepNumber = 0,
@@ -65,7 +69,8 @@ final class ExecutionStep {
         isStepLimitReached = false,
         isAwaitingInput = false,
         inputPrompt = null,
-        expectedInputType = null;
+        expectedInputType = null,
+        pendingEffect = null;
 
   bool get isTerminal => isFinished || isHalted || isStepLimitReached;
 
@@ -81,4 +86,6 @@ final class ExecutionStep {
         variables: variables,
         isStepLimitReached: true,
       );
+
+  bool get isAwaitingEffect => pendingEffect != null;
 }

@@ -52,6 +52,12 @@ El montón no mueve objetos: así, una recolección no altera identidades ni asa
 
 Las dimensiones se convierten y multiplican con comprobación de rango; una dimensión cero produce un arreglo de cero elementos, mientras el rango vacío no representa un arreglo válido. El límite de celdas cuenta el costo lógico exacto y se comprueba con las celdas vivas antes de aceptar la asignación.
 
+### Consulta del modo de reproducción
+
+`EffectSession::is_replaying` informa si la sesión resuelve contra una cinta. El tiempo de ejecución nativo lo usa para
+decidir si una lectura de consola viene de la cinta o de la entrada estándar; no añade ramas al camino de los opcodes
+puros.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 El código y sus identificadores están en inglés. No se permiten comentarios, documentación Rust ni atributos de supresión. Los errores esperables se devuelven como valores tipados; el crate declara `#![forbid(unsafe_code)]`.

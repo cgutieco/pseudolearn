@@ -18,7 +18,7 @@ fn live_input_builds_a_channel_with_configured_host() -> Result<(), String> {
     let channel = EffectInput::parse(&live_input())
         .ok_or("input rejected")?
         .into_channel()?;
-    assert_eq!(channel.host_calls(), 0);
+    assert_eq!(channel.host_observation().0, 0);
     assert!(channel.failure().is_none());
     Ok(())
 }

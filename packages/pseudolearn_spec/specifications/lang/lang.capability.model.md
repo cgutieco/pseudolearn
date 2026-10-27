@@ -65,11 +65,28 @@
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
-    "salida": "capacidad_valida\n",
-    "terminacion": "completed"
+    "salida": "100\n",
+    "terminacion": "completed",
+    "anfitrion_observado": {
+      "llamadas": 2
+    }
   },
-  "programa": "Algoritmo P\nEscribir \"capacidad_valida\";\nFinAlgoritmo\n",
-  "perfil_base": "es"
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir clock Como Reloj <- Propagar SolicitarReloj();\nRetornar clock.Ahora();\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<integer, IoError>\ndefine clock as Clock <- propagate requestClock();\nreturn clock.now();\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": [
+      "reloj"
+    ],
+    "requested_permissions": [
+      "reloj"
+    ],
+    "clock": [
+      100,
+      200
+    ]
+  }
 }
 ```
 
@@ -100,11 +117,26 @@
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
-    "salida": "denegado\n",
-    "terminacion": "completed"
+    "salida": "permiso_denegado\n",
+    "terminacion": "completed",
+    "anfitrion_observado": {
+      "llamadas": 0
+    }
   },
-  "programa": "Algoritmo P\nEscribir \"denegado\";\nFinAlgoritmo\n",
-  "perfil_base": "es"
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir clock Como Reloj <- Propagar SolicitarReloj();\nRetornar clock.Ahora();\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<integer, IoError>\ndefine clock as Clock <- propagate requestClock();\nreturn clock.now();\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": [],
+    "requested_permissions": [
+      "reloj"
+    ],
+    "clock": [
+      100,
+      200
+    ]
+  }
 }
 ```
 
@@ -115,7 +147,10 @@
   "clase": "semantica",
   "texto": "Las capacidades de directorio permiten atenuar derechos y derivar subcapacidades para rutas lógicas hijas sin amplificación (los derechos de la hija son subconjunto estricto o igual a los del padre). Cualquier intento de solicitar derechos adicionales o escapar de la raíz mediante componentes de ruta especiales como .. o rutas absolutas es rechazado deterministamente.",
   "verificacion": [
-    "C3"
+    "C3",
+    "C5",
+    "C6",
+    "C7"
   ]
 }
 ```
@@ -135,11 +170,26 @@
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
-    "salida": "atenuacion_segura\n",
+    "salida": "permiso_denegado\n",
     "terminacion": "completed"
   },
-  "programa": "Algoritmo P\nEscribir \"atenuacion_segura\";\nFinAlgoritmo\n",
-  "perfil_base": "es"
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Cadena, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir child Como DirectorioCap <- Propagar directory.Subdirectorio(\"sub\", \"lectura\");\nDefinir file Como ArchivoCap <- Propagar child.Abrir(\"b\", \"escritura\");\nRetornar file.LeerTexto();\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<string, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine child as DirCap <- propagate directory.subdirectory(\"sub\", \"read\");\ndefine file as FileCap <- propagate child.open(\"b\", \"write\");\nreturn file.readText();\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": [
+      "archivos_lectura",
+      "archivos_escritura"
+    ],
+    "requested_permissions": [
+      "archivos_lectura",
+      "archivos_escritura"
+    ],
+    "files": {
+      "sub/b": "x"
+    }
+  }
 }
 ```
 
@@ -170,10 +220,134 @@
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
-    "salida": "cerrado\n",
+    "salida": "capacidad_cerrada\n",
+    "terminacion": "completed",
+    "anfitrion_observado": {
+      "llamadas": 3
+    }
+  },
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Cadena, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\nDescartar file.Cerrar();\nRetornar file.LeerTexto();\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<string, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\ndiscard file.close();\nreturn file.readText();\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": [
+      "archivos_lectura"
+    ],
+    "requested_permissions": [
+      "archivos_lectura"
+    ],
+    "files": {
+      "a": "hola"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C5",
+  "regla": "R3",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "permiso_denegado\n",
     "terminacion": "completed"
   },
-  "programa": "Algoritmo P\nEscribir \"cerrado\";\nFinAlgoritmo\n",
-  "perfil_base": "es"
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Cadena, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"escritura\");\nRetornar file.LeerTexto();\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<string, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine file as FileCap <- propagate directory.open(\"a\", \"write\");\nreturn file.readText();\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": [
+      "archivos_lectura"
+    ],
+    "requested_permissions": [
+      "archivos_lectura"
+    ],
+    "files": {
+      "a": "hola"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C6",
+  "regla": "R3",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "ruta_invalida\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Cadena, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"../a\", \"lectura\");\nRetornar file.LeerTexto();\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<string, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine file as FileCap <- propagate directory.open(\"../a\", \"read\");\nreturn file.readText();\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": [
+      "archivos_lectura"
+    ],
+    "requested_permissions": [
+      "archivos_lectura"
+    ],
+    "files": {
+      "a": "hola"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C7",
+  "regla": "R3",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "ruta_invalida\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Cadena, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"/a\", \"lectura\");\nRetornar file.LeerTexto();\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<string, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine file as FileCap <- propagate directory.open(\"/a\", \"read\");\nreturn file.readText();\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": [
+      "archivos_lectura"
+    ],
+    "requested_permissions": [
+      "archivos_lectura"
+    ],
+    "files": {
+      "a": "hola"
+    }
+  }
 }
 ```

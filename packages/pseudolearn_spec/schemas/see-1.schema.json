@@ -858,6 +858,20 @@
                 "additionalProperties": false
               }
             },
+            "anfitrion_observado": {
+              "type": "object",
+              "properties": {
+                "llamadas": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "recursos_abiertos": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "additionalProperties": false
+            },
             "limite": {
               "type": "string",
               "enum": [
@@ -1303,6 +1317,20 @@
                   ],
                   "additionalProperties": false
                 }
+              },
+              "anfitrion_observado": {
+                "type": "object",
+                "properties": {
+                  "llamadas": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "recursos_abiertos": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "additionalProperties": false
               },
               "limite": {
                 "type": "string",
@@ -2165,6 +2193,16 @@
         "max_tape_bytes": {
           "type": "integer",
           "minimum": 0
+        },
+        "secret_keys": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "detached": {
+          "type": "boolean"
         }
       }
     }

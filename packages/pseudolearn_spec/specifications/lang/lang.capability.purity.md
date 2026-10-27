@@ -118,7 +118,14 @@
   "clase": "semantica",
   "texto": "El análisis semántico comprueba la pureza transitiva hasta punto fijo sobre el grafo de llamadas del programa. Si una Funcion invoca a otra unidad que realiza efectos secundarios, la función llamadora es rechazada con pureFunctionTransitiveSideEffect.",
   "verificacion": [
-    "C3", "C7", "C9"
+    "C3",
+    "C7",
+    "C9",
+    "C10",
+    "C11",
+    "C12",
+    "C13",
+    "C14"
   ]
 }
 ```
@@ -297,8 +304,10 @@
       }
     ]
   },
-  "programa": "SubProceso Effect() Como Logico\nEscribir 1;\nRetornar Verdadero;\nFinSubProceso\nFuncion Probe() Como Entero\nSi Effect() Entonces\nRetornar 1;\nFinSi\nRetornar 0;\nFinFuncion\nAlgoritmo Main\nEscribir Probe();\nFinAlgoritmo\n",
-  "perfil_base": "es"
+  "programas": {
+    "es": "SubProceso Effect() Como Logico\nEscribir 1;\nRetornar Verdadero;\nFinSubProceso\nFuncion Probe() Como Entero\nSi Effect() Entonces\nRetornar 1;\nFinSi\nRetornar 0;\nFinFuncion\nAlgoritmo Main\nEscribir Probe();\nFinAlgoritmo\n",
+    "en": "subroutine Effect() as boolean\nwrite 1;\nreturn true;\nendSubroutine\nfunction Probe() as integer\nif Effect() then\nreturn 1;\nendIf\nreturn 0;\nend function\nalgorithm Main\nwrite Probe();\nendAlgorithm\n"
+  }
 }
 ```
 
@@ -325,8 +334,10 @@
       }
     ]
   },
-  "programa": "SubProceso Effect(value Como Entero) Como Entero\nEscribir value;\nRetornar value;\nFinSubProceso\nFuncion Probe() Como Entero\nDefinir action Como Funcion(Entero) Como Entero <- Effect;\nRetornar action(3);\nFinFuncion\nAlgoritmo Main\nEscribir Probe();\nFinAlgoritmo\n",
-  "perfil_base": "es"
+  "programas": {
+    "es": "SubProceso Effect(value Como Entero) Como Entero\nEscribir value;\nRetornar value;\nFinSubProceso\nFuncion Probe() Como Entero\nDefinir action Como Funcion(Entero) Como Entero <- Effect;\nRetornar action(3);\nFinFuncion\nAlgoritmo Main\nEscribir Probe();\nFinAlgoritmo\n",
+    "en": "subroutine Effect(value as integer) as integer\nwrite value;\nreturn value;\nendSubroutine\nfunction Probe() as integer\ndefine action as function(integer) as integer <- Effect;\nreturn action(3);\nend function\nalgorithm Main\nwrite Probe();\nendAlgorithm\n"
+  }
 }
 ```
 
@@ -353,7 +364,159 @@
       }
     ]
   },
-  "programa": "SubProceso Effect() Como Entero\nEscribir 1;\nRetornar 1;\nFinSubProceso\nFuncion Probe() Como Opcional<Entero>\nRetornar Algo(Effect());\nFinFuncion\nAlgoritmo Main\nEscribir Probe();\nFinAlgoritmo\n",
-  "perfil_base": "es"
+  "programas": {
+    "es": "SubProceso Effect() Como Entero\nEscribir 1;\nRetornar 1;\nFinSubProceso\nFuncion Probe() Como Opcional<Entero>\nRetornar Algo(Effect());\nFinFuncion\nAlgoritmo Main\nDefinir outcome Como Opcional<Entero> <- Probe();\nSegun outcome Hacer\nAlgo(value): Escribir value;\nNada: Escribir 0;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Effect() as integer\nwrite 1;\nreturn 1;\nendSubroutine\nfunction Probe() as optional<integer>\nreturn some(Effect());\nend function\nalgorithm Main\ndefine outcome as optional<integer> <- Probe();\nswitch outcome do\nsome(value): write value;\nnone: write 0;\nendSwitch\nendAlgorithm\n"
+  }
+}
+```
+
+```caso
+{
+  "id": "C10",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "pureFunctionTransitiveSideEffect",
+        "severidad": "error"
+      }
+    ]
+  },
+  "programas": {
+    "es": "SubProceso Effect() Como Entero\nEscribir 1;\nRetornar 1;\nFinSubProceso\nFuncion F() Como Entero\nDefinir Mutable x Como Entero <- 0;\nx <- Effect();\nRetornar x;\nFinFuncion\nAlgoritmo Main\nEscribir F();\nFinAlgoritmo\n",
+    "en": "subroutine Effect() as integer\nwrite 1;\nreturn 1;\nendSubroutine\nfunction F() as integer\ndefine mutable x as integer <- 0;\nx <- Effect();\nreturn x;\nend function\nalgorithm Main\nwrite F();\nendAlgorithm\n"
+  }
+}
+```
+
+```caso
+{
+  "id": "C11",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "pureFunctionTransitiveSideEffect",
+        "severidad": "error"
+      }
+    ]
+  },
+  "programas": {
+    "es": "SubProceso Effect() Como Entero\nEscribir 1;\nRetornar 1;\nFinSubProceso\nFuncion F() Como Entero\nDefinir Mutable i Como Entero <- 0;\nMientras i < Effect() Hacer\ni <- i + 1;\nFinMientras\nRetornar i;\nFinFuncion\nAlgoritmo Main\nEscribir F();\nFinAlgoritmo\n",
+    "en": "subroutine Effect() as integer\nwrite 1;\nreturn 1;\nendSubroutine\nfunction F() as integer\ndefine mutable i as integer <- 0;\nwhile i < Effect() do\ni <- i + 1;\nendWhile\nreturn i;\nend function\nalgorithm Main\nwrite F();\nendAlgorithm\n"
+  }
+}
+```
+
+```caso
+{
+  "id": "C12",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "pureFunctionTransitiveSideEffect",
+        "severidad": "error"
+      }
+    ]
+  },
+  "programas": {
+    "es": "SubProceso Effect() Como Entero\nEscribir 1;\nRetornar 1;\nFinSubProceso\nFuncion F() Como Entero\nDefinir Mutable total Como Entero <- 0;\nPara i <- 1 Hasta Effect() Con Paso 1 Hacer\ntotal <- total + i;\nFinPara\nRetornar total;\nFinFuncion\nAlgoritmo Main\nEscribir F();\nFinAlgoritmo\n",
+    "en": "subroutine Effect() as integer\nwrite 1;\nreturn 1;\nendSubroutine\nfunction F() as integer\ndefine mutable total as integer <- 0;\nfor i <- 1 to Effect() with step 1 do\ntotal <- total + i;\nendFor\nreturn total;\nend function\nalgorithm Main\nwrite F();\nendAlgorithm\n"
+  }
+}
+```
+
+```caso
+{
+  "id": "C13",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "pureFunctionTransitiveSideEffect",
+        "severidad": "error"
+      }
+    ]
+  },
+  "programas": {
+    "es": "SubProceso Effect() Como Entero\nEscribir 1;\nRetornar 1;\nFinSubProceso\nFuncion F() Como Entero\nRetornar 1 + Effect();\nFinFuncion\nAlgoritmo Main\nEscribir F();\nFinAlgoritmo\n",
+    "en": "subroutine Effect() as integer\nwrite 1;\nreturn 1;\nendSubroutine\nfunction F() as integer\nreturn 1 + Effect();\nend function\nalgorithm Main\nwrite F();\nendAlgorithm\n"
+  }
+}
+```
+
+```caso
+{
+  "id": "C14",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "pureFunctionTransitiveSideEffect",
+        "severidad": "error"
+      }
+    ]
+  },
+  "programas": {
+    "es": "SubProceso Effect() Como Entero\nEscribir 1;\nRetornar 1;\nFinSubProceso\nFuncion F() Como Entero\nDefinir kept Como Entero <- Effect();\nRetornar kept;\nFinFuncion\nAlgoritmo Main\nEscribir F();\nFinAlgoritmo\n",
+    "en": "subroutine Effect() as integer\nwrite 1;\nreturn 1;\nendSubroutine\nfunction F() as integer\ndefine kept as integer <- Effect();\nreturn kept;\nend function\nalgorithm Main\nwrite F();\nendAlgorithm\n"
+  }
 }
 ```

@@ -7,7 +7,11 @@ final class RustExecutionApi {
 
   const RustExecutionApi(this._transport);
 
-  int start(RustAnalysisHandle handle, {int statementLimit = 0}) {
+  int start(
+    RustAnalysisHandle handle, {
+    int statementLimit = 0,
+    Map<String, Object?>? host,
+  }) {
     final started =
         _transport.call('start', {
               'analysis': handle.analysis,
@@ -15,6 +19,7 @@ final class RustExecutionApi {
               'limits': statementLimit > 0
                   ? {'statements': statementLimit}
                   : {},
+              'host': ?host,
             })
             as Map<String, Object?>;
     return started['resource'] as int;
@@ -34,9 +39,10 @@ final class RustExecutionApi {
     _transport.call('input', {'resource': execution, 'text': text});
   }
 
-  void provideEffectResult(int execution, Object? result) {
+  void provideEffectResult(int execution, int sequence, Object? result) {
     _transport.call('effect_result', {
       'resource': execution,
+      'effect_seq': sequence,
       'result': result,
     });
   }

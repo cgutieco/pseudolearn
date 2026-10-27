@@ -79,34 +79,24 @@ fn handle_argument_step(
     parsed: &mut ParsedArguments,
 ) -> Result<(), CliError> {
     let current = raw_arguments.get(*current_index).map_or("", String::as_str);
-    match current {
-        "--ayuda" | "--help" => {
-            parsed.help_requested = true;
-            *current_index = current_index.saturating_add(1);
-            Ok(())
-        }
-        "--json" => {
-            parsed.json_output = true;
-            *current_index = current_index.saturating_add(1);
-            Ok(())
-        }
-        "--traza" | "--trace" => {
-            parsed.execution.trace = true;
-            *current_index = current_index.saturating_add(1);
-            Ok(())
-        }
-        "--verificar" | "--check" => {
-            parsed.format_action = FormatAction::CheckOnly;
-            *current_index = current_index.saturating_add(1);
-            Ok(())
-        }
-        "--escribir" | "--write" | "-w" => {
-            parsed.format_action = FormatAction::WriteInPlace;
-            *current_index = current_index.saturating_add(1);
-            Ok(())
-        }
-        _ => handle_valued_option(raw_arguments, current_index, locale, parsed),
+    if apply_switch(current, parsed) {
+        *current_index = current_index.saturating_add(1);
+        return Ok(());
     }
+    handle_valued_option(raw_arguments, current_index, locale, parsed)
+}
+
+fn apply_switch(flag: &str, parsed: &mut ParsedArguments) -> bool {
+    match flag {
+        "--ayuda" | "--help" => parsed.help_requested = true,
+        "--json" => parsed.json_output = true,
+        "--traza" | "--trace" => parsed.execution.trace = true,
+        "--nativo" | "--native" => parsed.execution.native = true,
+        "--verificar" | "--check" => parsed.format_action = FormatAction::CheckOnly,
+        "--escribir" | "--write" | "-w" => parsed.format_action = FormatAction::WriteInPlace,
+        _ => return false,
+    }
+    true
 }
 
 fn handle_valued_option(
@@ -135,7 +125,7 @@ fn handle_valued_option(
         }
         "--semilla" | "--seed" | "--profundidad" | "--depth" | "--sentencias" | "--statements"
         | "--celdas" | "--cells" | "--grabar-cinta" | "--record-tape" | "--reproducir-cinta"
-        | "--replay-tape" => handle_execution_option(raw_arguments, current_index, locale, parsed),
+        | "--replay-tape" | "--conceder" | "--grant" | "--archivos" | "--files" => handle_execution_option(raw_arguments, current_index, locale, parsed),
         "--proyecto" | "--project" | "--entrada" | "--entry" => {
             handle_project_option(raw_arguments, current_index, locale, parsed)
         }
@@ -153,6 +143,14 @@ fn handle_execution_option(
     match current {
         "--grabar-cinta" | "--record-tape" | "--reproducir-cinta" | "--replay-tape" => {
             crate::execution_options::parse_tape_option(
+                raw_arguments,
+                current_index,
+                locale,
+                &mut parsed.execution,
+            )
+        }
+        "--conceder" | "--grant" | "--archivos" | "--files" => {
+            crate::execution_options::parse_grant_option(
                 raw_arguments,
                 current_index,
                 locale,

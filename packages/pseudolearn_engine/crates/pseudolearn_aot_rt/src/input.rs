@@ -14,16 +14,23 @@ pub extern "C" fn rt_aot_read(context: *mut AotRuntimeContext, site: u32, kind: 
 
 fn read_value(entry: &mut Entry<'_>, kind: u32) -> Result<u64, Trap> {
     loop {
-        let line = next_line(entry.engine)?;
-        entry
-            .engine
-            .effects
-            .record_console("read", Vec::new(), line.clone().into_bytes())?;
+        let line = obtain_line(entry.engine)?;
         if let Some(word) = convert(entry, kind, &line)? {
             return Ok(word);
         }
         record_mismatch(entry, kind, &line);
     }
+}
+
+fn obtain_line(engine: &mut AotEngine) -> Result<String, Trap> {
+    if let Some(recorded) = engine.effects.replay_console("read", Vec::new())? {
+        return String::from_utf8(recorded).map_err(|_| Trap::named("internalFault"));
+    }
+    let line = next_line(engine)?;
+    engine
+        .effects
+        .record_console("read", Vec::new(), line.clone().into_bytes())?;
+    Ok(line)
 }
 
 fn next_line(engine: &mut AotEngine) -> Result<String, Trap> {

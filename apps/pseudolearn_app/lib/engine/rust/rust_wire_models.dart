@@ -69,6 +69,7 @@ final class RustBatch {
   final String? failureCode;
   final String? failureMessage;
   final PendingEffectRequest? pendingEffect;
+  final Map<String, Object?>? pendingRequest;
 
   const RustBatch({
     required this.events,
@@ -76,6 +77,7 @@ final class RustBatch {
     this.failureCode,
     this.failureMessage,
     this.pendingEffect,
+    this.pendingRequest,
   });
 
   factory RustBatch.fromJson(Map<String, Object?> json) {
@@ -96,6 +98,7 @@ final class RustBatch {
       pendingEffect: kind == RustTerminationKind.awaitingEffect
           ? PendingEffectRequest.fromJson(termination)
           : null,
+      pendingRequest: json['pending_effect'] as Map<String, Object?>?,
     );
   }
 

@@ -17,7 +17,13 @@ mod messages;
 mod native_cache;
 mod native_linker;
 mod native_run;
+mod native_run_command;
 mod options;
+mod physical_error;
+mod physical_files;
+mod physical_host;
+mod physical_request;
+mod physical_session;
 mod preferences_command;
 mod project_build;
 mod project_command;
@@ -33,6 +39,8 @@ mod translate_command;
 
 #[cfg(test)]
 mod confined_sources_tests;
+#[cfg(test)]
+mod physical_host_tests;
 
 use check_command::execute_check;
 use error::CliError;

@@ -172,3 +172,35 @@ fn native_rejects_history_seek() -> Result<(), String> {
     );
     Ok(())
 }
+
+#[test]
+fn native_tape_is_inspected_with_seek_by_the_engine() -> Result<(), String> {
+    let native = converse(&["aot"], &request(&json!({}))?)?;
+    let mut session = ApiSession::default();
+    let analysis = session.call("create_analysis", &json!({"program":CLOCK_PROGRAM}));
+    let started = session.call(
+        "start",
+        &json!({"analysis":analysis.pointer("/value/resource"),"program":CLOCK_PROGRAM,
+            "profile":"es","strictness":"strict","inputs":[],"seed":42,
+            "limits":{"micro_steps":100_000},"observe":"events",
+            "execution_mode":"history_seek","effect_tape":tape_of(&native)?,"host":host()}),
+    );
+    let resource = started
+        .pointer("/value/resource")
+        .cloned()
+        .ok_or_else(|| format!("start failed: {started}"))?;
+    let advanced = session.call("advance", &json!({"resource":resource,"batch_size":1000}));
+    assert_eq!(
+        advanced.pointer("/value/termination/kind"),
+        Some(&json!("completed")),
+        "{advanced}"
+    );
+    assert_eq!(
+        advanced.pointer("/value/host_observation/calls"),
+        Some(&json!(0)),
+        "{advanced}"
+    );
+    let sought = session.call("seek", &json!({"resource":resource,"event":0}));
+    assert!(sought.get("value").is_some(), "{sought}");
+    Ok(())
+}

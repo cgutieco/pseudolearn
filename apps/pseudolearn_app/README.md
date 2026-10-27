@@ -2252,6 +2252,33 @@ Render: el panel dibuja siempre texto, sin Markdown, enlaces, imágenes ni recon
 
 Frontera entre currículo, interfaz y catálogo: la base de conocimiento conserva su narrativa pedagógica; la interfaz, sus etiquetas y mensajes localizados; la semántica normativa del lenguaje (qué hace una palabra, sus partes, restricciones y ejemplos) solo llega de la ficha que devuelve la consulta. Ningún archivo de `lib/` ni recurso localizado puede repetir prosa de una ficha: lo comprueba una prueba del motor que recorre esta aplicación, con una violación deliberada que demuestra que falla. Una modificación de una ficha llega a la API, al servidor LSP y a esta consulta por generación, sin cambios de código.
 
+### 4.54 Esperas de efecto y capacidades simuladas en modo de archivo único
+
+Problema: el núcleo suspende la ejecución con `awaiting_effect` cuando un programa usa una capacidad (archivo, reloj,
+temporizador, argumentos) y el modo educativo de archivo único no tiene manifiesto ni anfitrión real. Decisión: la app no
+abre autoridad real; ofrece capacidades simuladas en memoria y deja que el núcleo siga siendo quien valida derechos.
+
+- `EffectWait` (modelo) describe la espera: secuencia, clase de capacidad, operación y resumen de argumentos.
+  `ExecutionStep.pendingEffect` la expone y `isAwaitingEffect` la resume; no mezcla la espera de efecto con
+  `isAwaitingInput`, que sigue siendo solo `Leer`.
+- `SimulatedCapabilities` (modelo) declara permisos, archivos en memoria, argumentos e instante inicial del reloj. Con
+  permisos vacíos no se declara anfitrión y toda capacidad se deniega, como en el motor.
+- `ProgramExecution.settleEffect(EffectSettlement)` es el único método de continuación: `resolve` entrega al motor la
+  respuesta del anfitrión simulado para la espera pendiente y `cancel` detiene la ejecución con `haltReason =
+  'cancelled'` sin responder (el puerto se mantiene en cinco métodos públicos por el límite de la capa).
+- `RustSimulatedHost` responde a las operaciones del motor sobre memoria: consola, argumentos, reloj, temporizador
+  lógico, apertura y derivación de directorios y archivos, lectura de texto y bytes, escritura y cierre. Los derechos de
+  la raíz salen de la capacidad que asignó el motor (nunca se amplían), las rutas deben ser relativas y sin `.`/`..`, un
+  cierre invalida el uso posterior (`capacidad_cerrada`) y una lectura de texto no UTF-8 devuelve `utf8_invalido`.
+- `RustEffectGate` encapsula el ciclo `advance` → `effect_result`: en modo automático (por defecto, el que usa la
+  ejecución paso a paso) responde las esperas con el anfitrión simulado y entrega `effect_seq` en cada respuesta, que el
+  motor exige; en modo manual se detiene en la primera espera para que la capa de aplicación la liquide. La clave
+  `host` de `start` lleva `{permissions, detached: true}`.
+
+Pendiente declarado: las fichas bilingües de ayuda y la proyección de vista pública de las capacidades se alimentan del
+catálogo del motor (`TOOL.SERVICE.CATALOG`, `API.PROGRAM.VIEW`) y no se ampliaron en esta iteración; tampoco hay aún
+una superficie visual para configurar capacidades simuladas ni para mostrar la espera (`PG-A`/`PG-B`).
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 ### 5.1 Filosofía de código auto-explicativo
