@@ -402,7 +402,7 @@ El campo cancelacion de un caso indica la entrada a sentencia, contada desde uno
     "anfitrion_observado": {
       "llamadas": 0,
       "recursos_abiertos": 0,
-      "estado_cinta": "reproducible",
+      "estado_cinta": "incomplete",
       "efectos": [
         {
           "effect_seq": 1,
@@ -461,7 +461,7 @@ El campo cancelacion de un caso indica la entrada a sentencia, contada desde uno
         {
           "effect_seq": 2,
           "capability_kind": "filesystem",
-          "operation": "directory_open",
+          "operation": "file_open",
           "outcome": "committed"
         }
       ]
@@ -519,7 +519,7 @@ El campo cancelacion de un caso indica la entrada a sentencia, contada desde uno
         {
           "effect_seq": 2,
           "capability_kind": "filesystem",
-          "operation": "directory_open",
+          "operation": "file_open",
           "outcome": "committed"
         }
       ]
@@ -595,8 +595,15 @@ El campo cancelacion de un caso indica la entrada a sentencia, contada desde uno
         "arguments": {
           "effect_seq": 1,
           "result": {
-            "Committed": {
-              "Handle": 1
+            "outcome": "committed",
+            "value": {
+              "kind": "capability",
+              "value": {
+                "slot": 0,
+                "generation": 1,
+                "rights": 1,
+                "kind": 2
+              }
             }
           }
         }
@@ -625,8 +632,15 @@ El campo cancelacion de un caso indica la entrada a sentencia, contada desde uno
         "arguments": {
           "effect_seq": 2,
           "result": {
-            "Committed": {
-              "Handle": 2
+            "outcome": "committed",
+            "value": {
+              "kind": "capability",
+              "value": {
+                "slot": 1,
+                "generation": 1,
+                "rights": 1,
+                "kind": 3
+              }
             }
           }
         }
@@ -637,24 +651,18 @@ El campo cancelacion de un caso indica la entrada a sentencia, contada desde uno
     "api": {
       "results": [
         {
-          "value": {
-            "resource": 2
-          }
+          "value": {}
         },
         {
-          "value": {
-            "resource": 3
-          }
+          "value": {}
         },
         {
           "value": {
             "termination": {
               "kind": "awaiting_effect",
-              "effect": {
-                "effect_seq": 1,
-                "capability_kind": "filesystem",
-                "operation": "request_directory"
-              }
+              "effect_seq": 1,
+              "capability_kind": "filesystem",
+              "operation": "request_directory"
             }
           }
         },
@@ -665,11 +673,9 @@ El campo cancelacion de un caso indica la entrada a sentencia, contada desde uno
           "value": {
             "termination": {
               "kind": "awaiting_effect",
-              "effect": {
-                "effect_seq": 2,
-                "capability_kind": "filesystem",
-                "operation": "directory_open"
-              }
+              "effect_seq": 2,
+              "capability_kind": "filesystem",
+              "operation": "file_open"
             }
           }
         },
@@ -691,7 +697,7 @@ El campo cancelacion de un caso indica la entrada a sentencia, contada desde uno
                 },
                 {
                   "effect_seq": 2,
-                  "operation": "directory_open",
+                  "operation": "file_open",
                   "outcome": "requested"
                 }
               ]

@@ -26,7 +26,7 @@ impl Machine<'_> {
         self.cursor.program_counter = self.cursor.program_counter.checked_sub(1).ok_or(INVALID_BYTECODE)?;
         self.effect_seq = self.effect_seq.checked_add(1).ok_or(INVALID_BYTECODE)?;
         Ok(Flow::AwaitingEffect(PendingEffectRequest {
-            effect_seq: self.effect_seq, capability_kind: operation.receiver.map_or("host".to_owned(), |kind| format!("{kind:?}")),
+            effect_seq: self.effect_seq, capability_kind: operation.capability_family().to_owned(),
             operation: site.operation, arguments_summary: format!("{{\"count\":{}}}", arguments.len()),
             source_node_id: Some(site.source_node_id), receiver, arguments,
         }))

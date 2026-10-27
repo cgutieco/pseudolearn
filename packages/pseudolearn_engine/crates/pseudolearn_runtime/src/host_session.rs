@@ -83,7 +83,7 @@ pub fn resolve_host_effect(
     }
     let bytes = session.resolve(
         EffectRecord {
-            capability_kind: capability_kind(operation),
+            capability_kind: operation.capability_family().to_owned(),
             operation: operation.identity.to_owned(),
             arguments,
             source_node_id: pending.request.source_node_id,
@@ -143,12 +143,6 @@ fn request_arguments(request: &HostEffectRequest) -> Result<Vec<u8>, ReplayError
     .map_err(|_| ReplayError::CorruptedTape)
 }
 
-fn capability_kind(operation: &EffectOperation) -> String {
-    operation
-        .receiver
-        .map_or("host".to_owned(), |kind| format!("{kind:?}"))
-}
-
 fn record_requested(
     session: &mut EffectSession,
     request: &HostEffectRequest,
@@ -169,7 +163,7 @@ fn record_requested(
         effect_seq: request.effect_seq,
         task_id: 0,
         source_node_id: request.source_node_id,
-        capability_kind: capability_kind(operation),
+        capability_kind: operation.capability_family().to_owned(),
         operation: request.operation.clone(),
         request_digest: digest,
         secret_reference: secret.map(|secret| secret.to_reference_string()),

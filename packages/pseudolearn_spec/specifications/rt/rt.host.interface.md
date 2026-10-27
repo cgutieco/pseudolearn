@@ -234,7 +234,7 @@ Los valores esperados de R3 se calculan con el oráculo independiente de see_ora
         {
           "effect_seq": 2,
           "capability_kind": "filesystem",
-          "operation": "directory_open",
+          "operation": "file_open",
           "outcome": "committed"
         }
       ]
@@ -289,7 +289,7 @@ Los valores esperados de R3 se calculan con el oráculo independiente de see_ora
         {
           "effect_seq": 2,
           "capability_kind": "filesystem",
-          "operation": "directory_open",
+          "operation": "file_open",
           "outcome": "committed"
         }
       ]
@@ -348,7 +348,7 @@ Los valores esperados de R3 se calculan con el oráculo independiente de see_ora
         {
           "effect_seq": 2,
           "capability_kind": "filesystem",
-          "operation": "directory_open",
+          "operation": "file_open",
           "outcome": "committed"
         },
         {

@@ -20,7 +20,7 @@ fn capability_operation_exits_with_the_pending_effect() -> Result<(), String> {
         RunExit::AwaitingEffect(pending) => {
             assert_eq!(pending.effect_seq, 1);
             assert_eq!(pending.operation, "request_clock");
-            assert_eq!(pending.capability_kind, "host");
+            assert_eq!(pending.capability_kind, "clock");
             assert_eq!(pending.arguments_summary, "{\"count\":0}");
             assert!(pending.source_node_id.is_some());
             Ok(())

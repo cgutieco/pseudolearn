@@ -314,7 +314,7 @@
         {
           "effect_seq": 2,
           "capability_kind": "filesystem",
-          "operation": "directory_open",
+          "operation": "file_open",
           "outcome": "committed"
         },
         {
@@ -326,7 +326,7 @@
         {
           "effect_seq": 4,
           "capability_kind": "filesystem",
-          "operation": "directory_open",
+          "operation": "file_open",
           "outcome": "committed"
         },
         {

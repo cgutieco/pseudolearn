@@ -79,7 +79,7 @@ fn payload_carries_every_declared_field() -> Result<(), String> {
     let termination = first.pointer("/value/termination").cloned().unwrap_or(Value::Null);
     assert_eq!(termination.get("kind"), Some(&json!("awaiting_effect")), "{first}");
     assert_eq!(termination.get("effect_seq"), Some(&json!(1)));
-    assert_eq!(termination.get("capability_kind"), Some(&json!("host")));
+    assert_eq!(termination.get("capability_kind"), Some(&json!("clock")));
     assert_eq!(termination.get("operation"), Some(&json!("request_clock")));
     assert_eq!(termination.get("arguments_summary"), Some(&json!("{\"count\":0}")));
     assert!(termination.get("source_node_id").is_some_and(Value::is_u64), "{termination}");

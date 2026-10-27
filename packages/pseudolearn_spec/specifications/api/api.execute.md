@@ -340,8 +340,15 @@
         "arguments": {
           "effect_seq": 2,
           "result": {
-            "Committed": {
-              "Handle": 1
+            "outcome": "committed",
+            "value": {
+              "kind": "capability",
+              "value": {
+                "slot": 0,
+                "generation": 1,
+                "rights": 4,
+                "kind": 4
+              }
             }
           }
         }
@@ -359,8 +366,10 @@
         "arguments": {
           "effect_seq": 3,
           "result": {
-            "Committed": {
-              "Integer": 100
+            "outcome": "committed",
+            "value": {
+              "kind": "integer",
+              "value": 100
             }
           }
         }
@@ -378,14 +387,10 @@
     "api": {
       "results": [
         {
-          "value": {
-            "resource": 2
-          }
+          "value": {}
         },
         {
-          "value": {
-            "resource": 3
-          }
+          "value": {}
         },
         {
           "value": {
@@ -401,15 +406,12 @@
           "value": {
             "termination": {
               "kind": "awaiting_effect",
-              "effect": {
-                "effect_seq": 2,
-                "capability_kind": "clock",
-                "operation": "request_clock"
-              }
+              "effect_seq": 2,
+              "capability_kind": "clock",
+              "operation": "request_clock"
             },
             "pending_effect": {
               "effect_seq": 2,
-              "capability_kind": "clock",
               "operation": "request_clock"
             }
           }
@@ -421,15 +423,12 @@
           "value": {
             "termination": {
               "kind": "awaiting_effect",
-              "effect": {
-                "effect_seq": 3,
-                "capability_kind": "clock",
-                "operation": "clock_now"
-              }
+              "effect_seq": 3,
+              "capability_kind": "clock",
+              "operation": "clock_now"
             },
             "pending_effect": {
               "effect_seq": 3,
-              "capability_kind": "clock",
               "operation": "clock_now"
             }
           }
@@ -505,8 +504,15 @@
         "arguments": {
           "effect_seq": 1,
           "result": {
-            "Committed": {
-              "Handle": 1
+            "outcome": "committed",
+            "value": {
+              "kind": "capability",
+              "value": {
+                "slot": 0,
+                "generation": 1,
+                "rights": 4,
+                "kind": 4
+              }
             }
           }
         }
@@ -524,9 +530,9 @@
         "arguments": {
           "effect_seq": 2,
           "result": {
-            "Failed": {
+            "outcome": "failed",
+            "value": {
               "code": "tiempo_agotado",
-              "message": "timeout",
               "uncertain": false
             }
           }
@@ -545,24 +551,18 @@
     "api": {
       "results": [
         {
-          "value": {
-            "resource": 2
-          }
+          "value": {}
         },
         {
-          "value": {
-            "resource": 3
-          }
+          "value": {}
         },
         {
           "value": {
             "termination": {
               "kind": "awaiting_effect",
-              "effect": {
-                "effect_seq": 1,
-                "capability_kind": "clock",
-                "operation": "request_clock"
-              }
+              "effect_seq": 1,
+              "capability_kind": "clock",
+              "operation": "request_clock"
             }
           }
         },
@@ -573,11 +573,9 @@
           "value": {
             "termination": {
               "kind": "awaiting_effect",
-              "effect": {
-                "effect_seq": 2,
-                "capability_kind": "clock",
-                "operation": "clock_now"
-              }
+              "effect_seq": 2,
+              "capability_kind": "clock",
+              "operation": "clock_now"
             }
           }
         },
@@ -602,6 +600,16 @@
                   "effect_seq": 2,
                   "operation": "clock_now",
                   "outcome": "failed"
+                },
+                {
+                  "effect_seq": 3,
+                  "operation": "write",
+                  "outcome": "committed"
+                },
+                {
+                  "effect_seq": 4,
+                  "operation": "write",
+                  "outcome": "committed"
                 }
               ]
             }
@@ -664,8 +672,15 @@
         "arguments": {
           "effect_seq": 1,
           "result": {
-            "Committed": {
-              "Handle": 1
+            "outcome": "committed",
+            "value": {
+              "kind": "capability",
+              "value": {
+                "slot": 0,
+                "generation": 1,
+                "rights": 4,
+                "kind": 4
+              }
             }
           }
         }
@@ -697,14 +712,10 @@
     "api": {
       "results": [
         {
-          "value": {
-            "resource": 2
-          }
+          "value": {}
         },
         {
-          "value": {
-            "resource": 3
-          }
+          "value": {}
         },
         {
           "value": {
@@ -725,11 +736,9 @@
           "value": {
             "termination": {
               "kind": "awaiting_effect",
-              "effect": {
-                "effect_seq": 2,
-                "capability_kind": "clock",
-                "operation": "request_clock"
-              }
+              "effect_seq": 2,
+              "capability_kind": "clock",
+              "operation": "request_clock"
             }
           }
         },

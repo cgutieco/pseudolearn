@@ -43,6 +43,23 @@ pub fn find_effect_operation(
     })
 }
 
+impl EffectOperation {
+    pub fn capability_family(&self) -> &'static str {
+        match self.receiver {
+            Some(EffectValueKind::Directory | EffectValueKind::File) => "filesystem",
+            Some(EffectValueKind::Clock) => "clock",
+            Some(EffectValueKind::Console) => "console",
+            Some(EffectValueKind::Arguments) => "arguments",
+            Some(EffectValueKind::Timer) => "timer",
+            _ => match self.identity.strip_prefix("request_") {
+                Some("directory") => "filesystem",
+                Some(requested) => requested,
+                None => "host",
+            },
+        }
+    }
+}
+
 pub fn effect_operation(identity: &str) -> Option<&'static EffectOperation> {
     EFFECT_OPERATIONS
         .iter()

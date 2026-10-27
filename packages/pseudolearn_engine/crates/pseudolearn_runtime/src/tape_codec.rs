@@ -46,8 +46,13 @@ pub fn tape_entry_hash(previous: &str, entry: &TapeEntry) -> String {
     format!("{:x}", digest.finalize())
 }
 
+fn exceeds_budget(tape: &EffectTape) -> bool {
+    tape.status != crate::ReproducibilityStatus::NonReproducibleTruncated
+        && encoded_size(tape) > tape.budget.max_bytes
+}
+
 pub(crate) fn validate(tape: &EffectTape) -> Result<(), ReplayError> {
-    if tape.version != TAPE_SCHEMA_V1 || encoded_size(tape) > tape.budget.max_bytes {
+    if tape.version != TAPE_SCHEMA_V1 || exceeds_budget(tape) {
         return Err(ReplayError::CorruptedTape);
     }
     let mut previous = identity_hash(&tape.identity);

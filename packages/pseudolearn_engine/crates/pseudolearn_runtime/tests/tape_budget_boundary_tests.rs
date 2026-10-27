@@ -1,5 +1,6 @@
 use pseudolearn_runtime::{
-    EffectTape, ExecutionIdentity, ReproducibilityStatus, TapeEntry, encode_effect_tape,
+    EffectTape, ExecutionIdentity, ReplayError, ReproducibilityStatus, TapeEntry,
+    TapeReplayProvider, decode_effect_tape, encode_effect_tape,
 };
 
 fn identity() -> ExecutionIdentity {
@@ -102,4 +103,30 @@ fn zero_budget_truncates_the_first_entry() {
     let tape = recorded(0, 1);
     assert_eq!(tape.status, ReproducibilityStatus::NonReproducibleTruncated);
     assert!(tape.entries().is_empty());
+}
+
+#[test]
+fn a_truncated_tape_smaller_than_its_identity_decodes_and_is_rejected_as_non_reproducible()
+-> Result<(), String> {
+    let tape = recorded(1, 1);
+    assert_eq!(tape.status, ReproducibilityStatus::NonReproducibleTruncated);
+    let bytes = encode_effect_tape(&tape).map_err(|error| error.code().to_owned())?;
+    let decoded = decode_effect_tape(&bytes).map_err(|error| error.code().to_owned())?;
+    assert!(matches!(
+        TapeReplayProvider::new(decoded),
+        Err(ReplayError::NonReproducible)
+    ));
+    Ok(())
+}
+
+#[test]
+fn a_reproducible_tape_over_its_budget_is_corrupted() -> Result<(), String> {
+    let mut tape = recorded(4096, 1);
+    tape.budget.max_bytes = 1;
+    let bytes = encode_effect_tape(&tape).map_err(|error| error.code().to_owned())?;
+    assert_eq!(
+        decode_effect_tape(&bytes).err(),
+        Some(ReplayError::CorruptedTape)
+    );
+    Ok(())
 }

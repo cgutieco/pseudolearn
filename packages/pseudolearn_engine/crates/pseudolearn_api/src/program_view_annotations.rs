@@ -16,17 +16,22 @@ pub(crate) struct AnnotationContext<'tree> {
     pub(crate) strict: bool,
 }
 
+pub(crate) struct CallNames {
+    builtins: BTreeMap<(u32, u32), &'static str>,
+    effects: BTreeMap<(u32, u32), &'static str>,
+}
+
 pub(crate) fn annotate(nodes: &mut [ViewNode], context: &AnnotationContext<'_>) {
-    let builtins = builtin_calls(context);
+    let calls = call_names(context);
     for node in nodes.iter_mut() {
-        node.attributes = attributes_for(node, context, &builtins);
+        node.attributes = attributes_for(node, context, &calls);
     }
 }
 
 fn attributes_for(
     node: &ViewNode,
     context: &AnnotationContext<'_>,
-    builtins: &BTreeMap<(u32, u32), &'static str>,
+    calls: &CallNames,
 ) -> Attributes {
     let Some(kind) = context
         .tree
@@ -43,9 +48,10 @@ fn attributes_for(
         | NodeKind::DiscardStatement => {
             crate::program_view_variants::attributes(node, context.tree)
         }
-        NodeKind::Postfix => postfix_attributes(node, context.tree, builtins),
+        NodeKind::Postfix => postfix_attributes(node, context.tree, calls),
         NodeKind::Literal => literal_attribute(node, context).unwrap_or_default(),
         NodeKind::Type => primitive_attribute(node, context.tree)
+            .or_else(|| crate::program_view_effects::type_attributes(node, context))
             .unwrap_or_else(|| crate::program_view_variants::attributes(node, context.tree)),
         NodeKind::Output => without_newline_attribute(node, context.tree),
         NodeKind::Unary | NodeKind::Minus | NodeKind::Not => {
@@ -59,11 +65,15 @@ fn attributes_for(
 fn postfix_attributes(
     node: &ViewNode,
     tree: &SyntaxTree,
-    builtins: &BTreeMap<(u32, u32), &'static str>,
+    calls: &CallNames,
 ) -> Attributes {
     let mut attributes = Attributes::new();
-    if let Some(builtin) = builtins.get(&(node.start_byte, node.end_byte)) {
+    let span = (node.start_byte, node.end_byte);
+    if let Some(builtin) = calls.builtins.get(&span) {
         attributes.push(("builtin", json!(builtin)));
+    }
+    if let Some(operation) = calls.effects.get(&span) {
+        attributes.push(("effect_operation", json!(operation)));
     }
     let first = first_token(tree, node.syntax_index).and_then(|token| tree.tokens.kind(token));
     if first == Some(TokenKind::Keyword(KeywordKind::SuperClass)) {
@@ -160,22 +170,30 @@ fn without_newline_attribute(node: &ViewNode, tree: &SyntaxTree) -> Attributes {
     }
 }
 
-fn builtin_calls(context: &AnnotationContext<'_>) -> BTreeMap<(u32, u32), &'static str> {
+fn call_names(context: &AnnotationContext<'_>) -> CallNames {
     let options = SemanticOptions {
         profile: context.profile,
         strict: context.strict,
     };
     let analysis = analyze_for_service(context.tree, context.source, options);
     let expressions = &analysis.module.expressions;
-    expressions
-        .kinds
-        .iter()
-        .zip(&expressions.spans)
-        .filter_map(|(kind, span)| match kind {
+    let mut calls = CallNames {
+        builtins: BTreeMap::new(),
+        effects: BTreeMap::new(),
+    };
+    for (kind, span) in expressions.kinds.iter().zip(&expressions.spans) {
+        let key = (span.start, span.ending);
+        match kind {
             HirExpression::Builtin { function, .. } => {
-                Some(((span.start, span.ending), function.as_str()))
+                calls.builtins.insert(key, function.as_str());
             }
-            _ => None,
-        })
-        .collect()
+            HirExpression::Effect { operation, .. } => {
+                if let Some(identity) = crate::program_view_effects::operation_identity(*operation) {
+                    calls.effects.insert(key, identity);
+                }
+            }
+            _ => {}
+        }
+    }
+    calls
 }

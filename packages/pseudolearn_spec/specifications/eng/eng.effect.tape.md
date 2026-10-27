@@ -140,7 +140,7 @@
   "id": "R3",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Cada TapeEntry registra effect_seq, task_id, source_node_id, capability_kind, operation, request_digest, secret_reference, outcome, payload_bytes y entry_hash. El campo entry_hash es un resumen SHA-256 encadenado criptográficamente con el entry_hash de la entrada previa, garantizando detección de adulteración.",
+  "texto": "Cada TapeEntry registra effect_seq, task_id, source_node_id, capability_kind, operation, request_digest, secret_reference, outcome, payload_bytes y entry_hash. El campo entry_hash es un resumen SHA-256 encadenado criptográficamente con el entry_hash de la entrada previa, garantizando detección de adulteración. El campo capability_kind toma un valor del vocabulario cerrado console, arguments, filesystem, clock y timer, determinado por la operación y no por el tipo interno del anfitrión; una solicitud de capacidad se registra bajo la familia de la capacidad solicitada.",
   "verificacion": [
     "C3"
   ]
@@ -333,15 +333,13 @@
           "effect_seq": 1,
           "capability_kind": "filesystem",
           "operation": "request_directory",
-          "outcome": "committed",
-          "secret_key_id": null
+          "outcome": "committed"
         },
         {
           "effect_seq": 2,
           "capability_kind": "filesystem",
-          "operation": "directory_open",
-          "outcome": "committed",
-          "secret_key_id": null
+          "operation": "file_open",
+          "outcome": "committed"
         },
         {
           "effect_seq": 3,

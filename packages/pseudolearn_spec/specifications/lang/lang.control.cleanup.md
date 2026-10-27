@@ -366,23 +366,24 @@
     "flexible"
   ],
   "programas": {
-    "es": "SubProceso LeerConCierre() Como Resultado<Cadena, ErrorES>\nDefinir dir Como DirectorioCap <- Propagar SolicitarDirectorio(\"datos\");\nDefinir f Como ArchivoCap <- Propagar dir.Abrir(\"malo.txt\", \"lectura\");\nDiferir\nDescartar f.Cerrar();\nDescartar dir.Cerrar();\nFinDiferir\nDefinir texto Como Cadena <- Propagar f.LeerTexto();\nRetornar Exito(texto);\nFinSubProceso\nAlgoritmo Main\nDefinir res Como Resultado<Cadena, ErrorES> <- LeerConCierre();\nSegun res Hacer\nExito(t): Escribir t;\nError(err): Escribir err.Codigo, \":\", err.Incierto;\nFinSegun\nFinAlgoritmo\n",
-    "en": "subroutine LeerConCierre() as result<string, IoError>\ndefine dir as DirectoryCap <- propagate requestDirectory(\"datos\");\ndefine f as FileCap <- propagate dir.open(\"malo.txt\", \"read\");\ndefer\ndiscard f.close();\ndiscard dir.close();\nendDefer\ndefine texto as string <- propagate f.readText();\nreturn success(texto);\nendSubroutine\nalgorithm Main\ndefine res as result<string, IoError> <- LeerConCierre();\nswitch res do\nsuccess(t): write t;\nfailure(err): write err.code, \":\", err.uncertain;\nendSwitch\nendAlgorithm\n"
+    "es": "SubProceso LeerConCierre() Como Resultado<Cadena, ErrorES>\nDefinir dir Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir f Como ArchivoCap <- Propagar dir.Abrir(\"malo.txt\", \"lectura\");\nDiferir\nDescartar f.Cerrar();\nDescartar dir.Cerrar();\nFinDiferir\nDefinir texto Como Cadena <- Propagar f.LeerTexto();\nRetornar Exito(texto);\nFinSubProceso\nAlgoritmo Main\nDefinir res Como Resultado<Cadena, ErrorES> <- LeerConCierre();\nSegun res Hacer\nExito(t): Escribir t;\nError(err): Escribir err.Codigo, \":\", err.Incierto;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine LeerConCierre() as result<string, IoError>\ndefine dir as DirCap <- propagate requestDirectory(\"root\");\ndefine f as FileCap <- propagate dir.open(\"malo.txt\", \"read\");\ndefer\ndiscard f.close();\ndiscard dir.close();\nendDefer\ndefine texto as string <- propagate f.readText();\nreturn success(texto);\nendSubroutine\nalgorithm Main\ndefine res as result<string, IoError> <- LeerConCierre();\nswitch res do\nsuccess(t): write t;\nfailure(err): write err.code, \":\", err.uncertain;\nendSwitch\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
   "anfitrion": {
-    "permisos": [
+    "permissions": [
       "archivos_lectura"
     ],
-    "archivos": {
-      "datos": {
-        "malo.txt": [255, 254]
-      }
+    "requested_permissions": [
+      "archivos_lectura"
+    ],
+    "files": {
+      "malo.txt": [255, 254]
     }
   },
   "espera": {
-    "salida": "4:Falso\n",
+    "salida": "utf8_invalido:Falso\n",
     "terminacion": "completed",
     "anfitrion_observado": {
       "llamadas": 5,
@@ -392,7 +393,7 @@
   },
   "esperas": {
     "es": {
-      "salida": "4:Falso\n",
+      "salida": "utf8_invalido:Falso\n",
       "terminacion": "completed",
       "anfitrion_observado": {
         "llamadas": 5,
@@ -401,7 +402,7 @@
       }
     },
     "en": {
-      "salida": "4:false\n",
+      "salida": "utf8_invalido:false\n",
       "terminacion": "completed",
       "anfitrion_observado": {
         "llamadas": 5,

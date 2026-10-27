@@ -24,6 +24,8 @@ struct Configuration {
     _max_tape_bytes: Option<usize>,
     #[serde(rename = "detached")]
     _detached: bool,
+    #[serde(rename = "cancel_on_awaiting_effect")]
+    _cancel_on_awaiting_effect: Option<u64>,
 }
 
 #[derive(Deserialize)]
