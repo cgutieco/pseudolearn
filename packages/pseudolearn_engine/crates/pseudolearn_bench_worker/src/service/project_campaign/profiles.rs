@@ -21,7 +21,7 @@ fn english_function(name: &str, constant: u64) -> String {
 
 fn entry_file(imports: &str, calls: &[String], constant: u64) -> SourceFile {
     let mut text = imports.to_owned();
-    text.push_str("Algoritmo Principal\nDefinir total Como Entero;\ntotal <- 0;\n");
+    text.push_str("Algoritmo Principal\nDefinir Mutable total Como Entero <- 0;\n");
     for call in calls {
         text.push_str(&format!("total <- total + {call}(0);\n"));
     }

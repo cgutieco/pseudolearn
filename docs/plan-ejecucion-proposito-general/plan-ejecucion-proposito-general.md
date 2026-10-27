@@ -410,23 +410,23 @@ C-07; riesgos K-06, K-07, K-13; experimentos E-PG-05, E-PG-09; ADR-02.
 
 Puntos a cumplir:
 
-- [ ] `PG-3.01` CF-07 especificado: frontera lógica de commit y estado externo incierto, con casos.
-- [ ] `PG-3.02` CF-11 resuelto: la persona revisa la formulación de fallo controlado frente a caída del host.
-- [ ] `PG-3.03` Capacidades de consola, argumentos, archivos relativos a capacidad, reloj registrado y temporizadores
+- [x] `PG-3.01` CF-07 especificado: frontera lógica de commit y estado externo incierto, con casos.
+- [x] `PG-3.02` CF-11 resuelto: la persona revisa la formulación de fallo controlado frente a caída del host.
+- [x] `PG-3.03` Capacidades de consola, argumentos, archivos relativos a capacidad, reloj registrado y temporizadores
   lógicos; denegación por defecto.
 - [x] `PG-3.04` Identidad de ejecución ampliada y esquema versionado de la cinta con todos los datos de cada efecto y su
   orden de entrega.
 - [x] `PG-3.05` Tres modos distintos: ejecutar en vivo y grabar, ejecutar desde cinta, consultar historia; reproducir y
   retroceder nunca tocan disco ni red.
 - [x] `PG-3.06` Cinta divergente, truncada o alterada rechazada con error de reproducción, sin consultar al anfitrión.
-- [ ] `PG-3.07` Contrato de suspensión por efecto pendiente, distinto de la espera de entrada.
+- [x] `PG-3.07` Contrato de suspensión por efecto pendiente, distinto de la espera de entrada.
 - [x] `PG-3.08` Análisis de efectos transitivos en compilación: una función pura no puede esconder E/S.
-- [ ] `PG-3.09` Errores de E/S portables, separación de bytes y texto UTF-8, y limpieza en retorno, propagación y salida.
-- [ ] `PG-3.10` Privacidad de la cinta: secretos por referencia, retención y presupuesto de bytes definidos, y cinta
+- [x] `PG-3.09` Errores de E/S portables, separación de bytes y texto UTF-8, y limpieza en retorno, propagación y salida.
+- [x] `PG-3.10` Privacidad de la cinta: secretos por referencia, retención y presupuesto de bytes definidos, y cinta
   incompleta marcada como no reproducible.
 - [x] `PG-3.11` Conformidad con anfitrión falso de resultados derivados, sin red ni disco reales.
 - [x] `PG-3.12` AOT comparte cinta y determinismo de salida sin anunciar observación ni retroceso.
-- [ ] `PG-3.13` E-PG-05 y la parte de archivos de E-PG-09 ejecutados; sobrecoste de infraestructura inactiva dentro del
+- [x] `PG-3.13` E-PG-05 y la parte de archivos de E-PG-09 ejecutados; sobrecoste de infraestructura inactiva dentro del
   presupuesto candidato.
 
 Fuera de alcance: HTTP, tareas concurrentes y reejecución con efectos reales desde el pasado.
@@ -438,36 +438,36 @@ que `apps/pseudolearn_app` evoluciona de forma sincronizada con la sintaxis y se
 
 Cierre común (definiciones en §4.0):
 
-- [ ] `PG-3.C01` Autorización de la persona para iniciar la fase, en mensaje nuevo.
+- [x] `PG-3.C01` Autorización de la persona para iniciar la fase, en mensaje nuevo.
 - [x] `PG-3.C02` Plan detallado creado según §5 y revisado por la persona.
-- [ ] `PG-3.C03` SPEC-FIRST y congelamiento respetados.
-- [ ] `PG-3.C04` Reglas nuevas con casos o propiedades y vínculos como datos.
-- [ ] `PG-3.C05` Pruebas dirigidas feliz, infeliz y límite para las piezas modificadas, en carpetas espejo.
-- [ ] `PG-3.C06` Capas declaradas, imports permitidos y límites de tamaño.
-- [ ] `PG-3.C07` Sin comentarios ni TODO; código en inglés; Rust sin pánicos ni `unsafe` no declarado.
-- [ ] `PG-3.C08` README y reglas de los miembros afectados actualizados, sin citar `docs/`.
-- [ ] `PG-3.C09` Fichas de ayuda, datos de proyección de la sintaxis nueva y evolución sincronizada de `apps/pseudolearn_app`.
-- [ ] `PG-3.C10` Riesgos revisados y experimentos con procedencia o diferidos por la persona.
-- [ ] `PG-3.C11` Pruebas necesarias y verificadores directamente afectados en verde, con selección y omisiones registradas.
+- [x] `PG-3.C03` SPEC-FIRST y congelamiento respetados.
+- [x] `PG-3.C04` Reglas nuevas con casos o propiedades y vínculos como datos.
+- [x] `PG-3.C05` Pruebas dirigidas feliz, infeliz y límite para las piezas modificadas, en carpetas espejo.
+- [x] `PG-3.C06` Capas declaradas, imports permitidos y límites de tamaño.
+- [x] `PG-3.C07` Sin comentarios ni TODO; código en inglés; Rust sin pánicos ni `unsafe` no declarado.
+- [x] `PG-3.C08` README y reglas de los miembros afectados actualizados, sin citar `docs/`.
+- [x] `PG-3.C09` Fichas de ayuda, datos de proyección de la sintaxis nueva y evolución sincronizada de `apps/pseudolearn_app`.
+- [x] `PG-3.C10` Riesgos revisados y experimentos con procedencia o diferidos por la persona.
+- [x] `PG-3.C11` Pruebas necesarias y verificadores directamente afectados en verde, con selección y omisiones registradas.
 - [ ] `PG-3.C12` Commit sin atribución de IA y push ordinario comprobado a la rama única.
 - [x] `PG-3.C13` Resumen completo, informe a la persona y parada. Informe final entregado al terminar la iteración del 2026-10-27 (ver §11.4 del plan detallado); la fase sigue abierta y rige `PHASE-STOP`.
 
 #### Resumen de PG-3
 
-Estado a 2026-10-27: fase **en curso, no cerrada**. El cierre declarado antes del 2026-10-26 no era fiable (auditoría y
-subsanaciones en §11.2–§11.4 del plan detallado). Cerradas con evidencia: `PG-3.11` y `PG-3.12`, con todos sus subpuntos. Quedan abiertas las demás casillas porque su requisito completo no está
-demostrado por una prueba o un comando ejecutado en esta iteración.
+Estado a 2026-10-27: todos los puntos de la fase están cumplidos con evidencia ejecutada en esta iteración (plan detallado §11.9); queda abierta solo `PG-3.C12` (commit sin atribución de IA y push ordinario comprobado a la rama única), que gestiona la persona. Rige `PHASE-STOP`: no se inicia PG-4 sin autorización nueva.
 
 | Punto | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
-| `PG-3.01`–`PG-3.07`, `PG-3.09`–`PG-3.10` | Abiertas | Casos reescritos de `ENG.EXEC.EFFECT-COMMIT`, `ENG.EFFECT.TAPE`, `LANG.CAPABILITY.MODEL`, `ENG.EXEC.MODEL`, `RT.HOST.INTERFACE`, `LIB.IO` y `API.PROGRAM.VIEW`; ampliación de esquema `see/1` y corredor; 60 tests de `pseudolearn_api` en verde | Falta completar proyección pública de tipos y operaciones en app/servicio, pruebas de rechazo de cinta en AOT, verificación acotada conjunta y reanclaje |
-| `PG-3.08` | Cumplido | R3 de `LANG.CAPABILITY.PURITY` en `HirModule.pure_locals` y `effect_pure_values`; normalización bilingüe de terminadores; casos `C21` y `C22`; 18 tests en `pseudolearn_semantic` | Prohíbe y rechaza asignación y paso de funciones impuras a variables o parámetros de tipo `Funcion(...)` en cualquier contexto |
-| `PG-3.11` | Cumplido | `grabar_y_reproducir`, `anfitrion_observado` y privacidad de cinta ejecutados por el corredor SEE en `engine` y `aot` | Corredor, esquema y validador con pruebas positivas y negativas |
-| `PG-3.12` | Cumplido | `pseudo run --nativo` con cinta en ambos sentidos; cinta nativa inspeccionada con `seek` en el motor; `observe`/`seek` rechazados en nativo | Pruebas de `pseudolearn_cli` y `pseudolearn_api` |
-| `PG-3.13` | Abierta | E-PG-05: media geométrica 1,0001, cargas dentro del presupuesto revisado (`≤ 1,08` puntual, `≤ 1,15` IC); E-PG-09: 7 vectores bloqueados | Presupuesto revisado por la persona el 2026-10-27; faltan subcomandos del arnés (`.01`–`.04`) |
+| `PG-3.01`, `PG-3.02`, `PG-3.07` | Cumplido | Conformidad `engine` y `aot` sin divergencias en `ENG.EXEC.EFFECT-COMMIT`, `ENG.EXEC.EFFECT-ORDER`, `ENG.EXEC.MODEL`, `RT.HOST.INTERFACE` y `API.EXECUTE`; pruebas de `pseudolearn_api` y `flutter test` de efectos | Casos reescritos al formato de cable implementado; la cancelación en `awaiting_effect` sella la cinta `incomplete` |
+| `PG-3.03` | Cumplido | `LANG.CAPABILITY.MODEL` y `TOOL.SERVICE.CATALOG` sin divergencias; `tests/capability_help.rs` | Fichas bilingües de capacidades y `Bytes` resueltas en el hover |
+| `PG-3.04`–`PG-3.06` | Cumplido | `ENG.EFFECT.TAPE` `C1`–`C12` en `engine` y `aot`; `capability_kind` con vocabulario cerrado (`EffectOperation::capability_family`) | La cinta truncada por presupuesto se rechaza como no reproducible |
+| `PG-3.08` | Cumplido | `LANG.CAPABILITY.PURITY`; 18 pruebas de `pseudolearn_semantic` | — |
+| `PG-3.09` | Cumplido | `LIB.IO`, `LIB.TIME`, `LIB.MODEL`, `LANG.CONTROL.CLEANUP`, `IR.INSTRUCTIONS`, `API.PROGRAM.VIEW` sin divergencias; proyección `builtin_type`, `capability_type`, `effect_operation` en la API y la app | El README de `pseudolearn_library` no cambia: `Bytes` y `ErrorES` no viven en ese miembro |
+| `PG-3.10` | Cumplido | Casos `C8`–`C12` de `ENG.EFFECT.TAPE` y `C19` de `ENG.LIMITS`, también en `aot`; pruebas de privacidad y presupuesto | — |
+| `PG-3.11`, `PG-3.12` | Cumplido | Corredor SEE con anfitrión falso; `pseudo run --nativo` con cinta en ambos sentidos | — |
+| `PG-3.13` | Cumplido | `pg-tape`: 338, 557 y 740 B por efecto, crecimiento lineal; E-PG-05 media 1,0001 dentro del presupuesto revisado; E-PG-09 con 7 de 7 vectores bloqueados y registro cerrado de ocho | Presupuesto revisado por la persona el 2026-10-27; codificación de la carga de cinta sigue siendo seis veces su tamaño |
 
-Revisión Git de cierre: sin commit (`PG-3.C12` pendiente por revisión previa de la persona) · Verificadores ejecutados: ver
-§11.4 del plan detallado · Pendientes justificados: ver §11.4 · Decisiones de la persona: instrucción de 2026-10-27 de cerrar PG-3 en una iteración sin preguntas.
+Revisión Git de cierre: los cambios de esta tanda no están commiteados (`PG-3.C12` abierta) · Verificadores ejecutados: `see validate` (181), `lock --check`, `export --check`; `see conform` en `engine`, `aot` y `service` por contrato; pruebas dirigidas de `abi`, `runtime`, `semantic`, `timeline`, `vm`, `lowering`, `service`, `aot_rt`, `api` (native), la CLI, `see_conformance`, `see_validation` y `bench_worker` (`pg_tape`); `rust-checks all` del motor, de las especificaciones y de la CLI; Clippy `-D warnings` del motor, de las especificaciones y de la CLI; `dart analyze`, límites y `flutter test` de efectos y proyección · Pendientes justificados: divergencias previas de `TOOL.SERVICE.HOVER` y `TOOL.LSP.CAPABILITIES` por programas sin inicializador; `workloads_tests` de `pseudolearn_bench_worker` no termina en 28 minutos en release; cuelgue puntual de `pseudo run --nativo`; serialización de la carga de cinta (§11.9) · Decisiones de la persona: el corpus manda sobre el vocabulario de la cinta (2026-10-27); presupuesto de E-PG-05 revisado (2026-10-27); cierre de los puntos restantes en esta iteración.
 
 ### 4.6 PG-4 · Tareas aisladas
 

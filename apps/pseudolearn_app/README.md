@@ -2595,3 +2595,7 @@ se usa para seleccionar macOS y arquitectura del entorno de prueba, no para defi
 ### Observación de colecciones
 
 El adaptador Rust de la tabla de variables consume las entradas vector y diccionario de query_object y muestra su longitud con delimitadores distintos, conservando la insignia de identidad compartida. No interpreta bancos, versiones ni índices del runtime. Los mapas de transporte siguen siendo la frontera; no cambia el puente generado ni se añade lógica del lenguaje en Dart. Las pruebas del consumidor quedan pendientes de autorización junto a las del motor.
+
+### Proyección de capacidades en la vista del programa (`PG-3.09`)
+
+`RustViewSemantics` lee de cada nodo de la vista pública los atributos `builtin_type` (`bytes`, `io_error`), `capability_type` (`console`, `arguments`, `directory`, `file`, `clock`, `timer`) y `effect_operation` (identidad de `LIB.MODEL`) que proyecta `pseudolearn_api`; un nodo sin ellos no expone ninguno. La app solo los transporta: no interpreta la autoridad de una capacidad, que sigue siendo del anfitrión simulado (`RustSimulatedHost`). Cubre `test/engine/rust/rust_view_semantics_test.dart`.

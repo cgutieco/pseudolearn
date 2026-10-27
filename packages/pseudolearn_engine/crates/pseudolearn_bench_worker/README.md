@@ -104,3 +104,7 @@ La conformidad del motor se ejecuta aparte; el trabajador no convierte sus resul
 ## 8. Fuentes consultadas y genealogía conceptual
 
 Corpus de rendimiento del monorepo. Se conserva la separación entre procesos independientes y rondas internas.
+
+### E-PG-05: crecimiento de la cinta (`pg-tape`, `PG-3.13.01`–`.04`)
+
+`pseudolearn_bench_worker pg-tape <directorio> <proceso> <máquina>` ejecuta las nueve cargas de `pg_tape_loads.rs` (100, 1 000 y 10 000 efectos de consola, reloj y archivo de 64 B, con `max_tape_bytes` elevado para que el tope no interfiera), registra por carga las entradas, los bytes de la cinta serializada, su reproducibilidad y el tiempo, y escribe `tape-growth-<proceso>.json`; se niega a sobrescribir. Termina con error si el crecimiento no es lineal: `grows_linearly` compara las pendientes de bytes por entrada entre 100–1 000 y 1 000–10 000 con tolerancia del 5 %, y rechaza series vacías, planas o decrecientes. Medición de validación del 2026-10-27 (1 proceso, depuración): 338, 557 y 740 B por efecto de consola, reloj y archivo, crecimiento lineal en las tres. Las pruebas de `pg_tape_tests.rs` cubren las cargas, el camino feliz y la serie cuadrática o degenerada. Los vectores adversarios de `E-PG-09` se enumeran en `apps/pseudolearn_cli` y no en este miembro.

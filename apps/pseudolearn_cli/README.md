@@ -219,3 +219,7 @@ La cinta se obtiene de la sesión ejecutada y se publica mediante archivo provis
 un error de lectura, formato o escritura es operativo y no se oculta como análisis fallido. La
 reproducción inválida no inicia una ejecución viva alternativa. Las pruebas de procesos comprueban
 que el archivo existe, contiene efectos y permite repetir la salida, además del rechazo de corrupción.
+
+### Registro de vectores de ataque de `E-PG-09`
+
+`tests/security_vector_registry.rs` declara la lista cerrada de ocho vectores (`..`, ruta absoluta, enlace simbólico saliente, NUL interior, amplificación de derechos, uso tras cierre, adulteración de un bit de la cinta y truncamiento) y la prueba que bloquea cada uno, en `tests/security_vectors.rs` y `src/physical_host_tests.rs`. La batería falla si un vector requerido no está registrado o si su prueba no existe, de modo que un vector nuevo sin prueba o una prueba borrada no pasan en verde. Tiene casos negativos para cada una de esas dos condiciones y para un archivo ilegible.

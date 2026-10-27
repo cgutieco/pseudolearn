@@ -401,3 +401,7 @@ durante una espera de efecto mediante `cancel_on_awaiting_effect`, la observaci�
 `efectos` (`effect_seq`, `capability_kind`, `operation`, `outcome` y `secret_key_id`) y `reproduccion_fallo`
 en `anfitrion_observado`, la mutación controlada de la cinta grabada con `alterar_cinta` antes de intentar
 reproducirla y las operaciones `start`, `advance`, `input`, `effect_result` y `cancel` en secuencias `api`.
+
+### Propiedad de trampas y sujetos sin observación (`PG-3`)
+
+`property_traps.rs` genera programas con todos los enlaces inicializados (`Definir r Como Entero <- …`), porque el lenguaje rechaza el enlace sin inicializador y la propiedad fallaba en todos los sujetos antes de ejercer la regla, y solo pide el modo `observe: events` a los sujetos que anuncian la capacidad `observe`; el sujeto nativo lo rechaza por diseño. Cubre `property_traps_tests.rs`. Los casos con anfitrión admiten además `cancel_on_awaiting_effect` y `alterar_cinta` como directivas del corredor.

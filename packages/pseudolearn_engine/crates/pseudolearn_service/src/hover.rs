@@ -48,7 +48,9 @@ pub fn hover_at_position(context: &QueryContext<'_>, position: Position) -> Opti
 
 pub(crate) fn hover_for_token(context: &QueryContext<'_>, slot: usize) -> Option<HoverOutcome> {
     match context.tree.tokens.kind(slot)? {
-        TokenKind::Identifier => identifier_hover(context, slot),
+        TokenKind::Identifier => {
+            contextual_hover(context, slot).or_else(|| identifier_hover(context, slot))
+        }
         TokenKind::Keyword(kind) => Some(keyword_hover(context, kind)),
         _ => None,
     }
@@ -64,6 +66,27 @@ fn keyword_hover(context: &QueryContext<'_>, kind: KeywordKind) -> HoverOutcome 
         signature: None,
         description: token_description(kind.as_str(), context.locale).map(str::to_owned),
     }
+}
+
+fn contextual_hover(context: &QueryContext<'_>, slot: usize) -> Option<HoverOutcome> {
+    let identity = crate::contextual_tokens::collect(
+        context.tree,
+        context.source,
+        context.analysis,
+        context.profile,
+    )
+    .get(&slot)
+    .copied()?;
+    let description = token_description(identity, context.locale)?;
+    Some(HoverOutcome {
+        category: HoverCategory::Builtin,
+        type_name: String::new(),
+        is_inferred: false,
+        is_intrinsic: true,
+        identifier: context.token_text(slot).to_owned(),
+        signature: None,
+        description: Some(description.to_owned()),
+    })
 }
 
 fn identifier_hover(context: &QueryContext<'_>, slot: usize) -> Option<HoverOutcome> {

@@ -11,6 +11,8 @@ mod paired;
 mod pg_campaign;
 mod pg_collect;
 mod pg_summary;
+mod pg_tape_collect;
+mod pg_tape_loads;
 mod pg_workloads;
 mod robustness;
 mod service;
@@ -35,6 +37,7 @@ fn main() -> std::process::ExitCode {
         "aot" => collect_aot(&std::env::args().skip(2).collect::<Vec<_>>()),
         "service" => service::collect(&std::env::args().skip(2).collect::<Vec<_>>()),
         "pg-collect" => pg_collect::collect(&std::env::args().skip(2).collect::<Vec<_>>()),
+        "pg-tape" => pg_tape_collect::collect(&std::env::args().skip(2).collect::<Vec<_>>()),
         "pg-summary" => pg_summary::summarize(&std::env::args().skip(2).collect::<Vec<_>>()),
         "pg-verify" => pg_campaign::verify(&std::env::args().nth(2).unwrap_or_default()),
         "frontend" => frontend::collect(),
@@ -72,6 +75,8 @@ mod frontend_tests;
 mod pg_campaign_tests;
 #[cfg(test)]
 mod pg_summary_tests;
+#[cfg(test)]
+mod pg_tape_tests;
 #[cfg(test)]
 mod pg_workloads_tests;
 #[cfg(test)]

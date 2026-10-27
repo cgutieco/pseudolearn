@@ -218,6 +218,7 @@ fn execute_bulk(
     }
     let diagnostics = with_compile_warnings(warnings, diagnostics);
     let view = event_view(request);
+    let events = bulk_events(&result, request, view.as_ref());
     ExecuteResponse {
         kind: "execute".to_owned(),
         effect_tape: None,
@@ -226,18 +227,25 @@ fn execute_bulk(
         output: result.output,
         termination: crate::execution_wire::termination(&result.exit),
         diagnostics,
-        events: if request.observe == "events" {
-            result
-                .events
-                .iter()
-                .map(|event| crate::execution_wire::event_with_source(event, view.as_ref()))
-                .collect()
-        } else {
-            Vec::new()
-        },
+        events,
         inputs_consumed: result.inputs_consumed,
         state_at: None,
     }
+}
+
+fn bulk_events(
+    result: &pseudolearn_vm::RunResult,
+    request: &ExecuteRequest,
+    view: Option<&crate::program_view::ProgramView>,
+) -> Vec<serde_json::Value> {
+    if request.observe != "events" {
+        return Vec::new();
+    }
+    result
+        .events
+        .iter()
+        .map(|event| crate::execution_wire::event_with_source(event, view))
+        .collect()
 }
 
 fn event_view(request: &ExecuteRequest) -> Option<crate::program_view::ProgramView> {

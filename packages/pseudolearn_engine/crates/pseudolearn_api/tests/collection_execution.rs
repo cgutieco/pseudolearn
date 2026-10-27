@@ -37,11 +37,19 @@ fn requests(case: &Value) -> Result<Vec<ExecuteRequest>, String> {
                 program: program.as_str().ok_or("invalid program")?.to_owned(),
                 profile: profile.clone(),
                 strictness: strictness.to_owned(),
+                host: case.get("anfitrion").cloned(),
                 ..Default::default()
             });
         }
     }
     Ok(requests)
+}
+
+fn expected_output<'case>(case: &'case Value, profile: &str) -> &'case str {
+    case.pointer(&format!("/esperas/{profile}/salida"))
+        .or_else(|| case.pointer("/espera/salida"))
+        .and_then(Value::as_str)
+        .unwrap_or("")
 }
 
 #[test]
@@ -58,9 +66,7 @@ fn collections_and_cleanup_match_the_corpus_with_both_twins_and_forced_collectio
                 let normal = execute_program(&request);
                 assert_eq!(
                     normal.output,
-                    case.pointer("/espera/salida")
-                        .and_then(Value::as_str)
-                        .unwrap_or(""),
+                    expected_output(case, &request.profile),
                     "{}: {:?}",
                     case["id"],
                     normal.diagnostics

@@ -23,6 +23,13 @@ impl EffectChannel {
         }
     }
 
+    pub(crate) fn cancels_next_effect(&self) -> bool {
+        let next_sequence = u64::try_from(self.session.tape().entries().len())
+            .unwrap_or(u64::MAX)
+            .saturating_add(1);
+        self.cancel_on_effect == Some(next_sequence) && !self.session.is_replaying()
+    }
+
     pub fn standalone() -> Self {
         let identity = ExecutionIdentity {
             strictness: "strict".to_owned(),

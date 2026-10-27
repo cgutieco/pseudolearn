@@ -221,3 +221,7 @@ Los tests de estas capacidades se ejecutaron en selecciones acotadas, incluida l
 Las solicitudes de effect_call transportan valores tipados y el nodo de origen real. La respuesta es
 HostReply y se materializa en las celdas de resultado mediante el mismo codec que AOT; nunca se
 reinterpretan cadenas o errores como cero. Las consultas puras de Bytes se resuelven localmente.
+
+### Familia de capacidad en el efecto pendiente (`PG-3`)
+
+El `capability_kind` de `PendingEffectRequest` es `EffectOperation::capability_family` y coincide con el de la entrada de cinta correspondiente. Antes usaba el nombre de depuración del tipo de receptor, de modo que una solicitud de reloj se anunciaba como `host`.

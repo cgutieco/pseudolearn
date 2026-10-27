@@ -43,4 +43,7 @@ mod property_cli;
 mod property_cli_tests;
 
 #[cfg(test)]
+mod property_traps_tests;
+
+#[cfg(test)]
 mod property_recording_tests;

@@ -15,7 +15,7 @@ const EDGES: [i64; 8] = [
     7,
 ];
 const OPERATORS: [&str; 3] = ["+", "-", "*"];
-const EXPRESSION_COLUMN: usize = 6;
+const EXPRESSION_COLUMN: usize = 26;
 
 struct Chain {
     operator: &'static str,
@@ -37,7 +37,13 @@ pub(crate) fn check(
     let through_variables = executor == PropertyExecutor::FusedFirstTrap;
     let program = render(&chain, through_variables);
     let expected = expectation(&chain, through_variables);
-    for observe in ["none", "events"] {
+    let observing = subject
+        .declaration()
+        .get("capabilities")
+        .and_then(Value::as_array)
+        .is_some_and(|values| values.contains(&json!("observe")));
+    let modes: &[&str] = if observing { &["none", "events"] } else { &["none"] };
+    for observe in modes {
         let response = subject.exchange(&json!({"kind":"execute","program":program,
             "profile":"es","strictness":"strict","inputs":[],"seed":0,"observe":observe,
             "limits":{"micro_steps":100_000}}))?;
@@ -100,16 +106,14 @@ fn render(chain: &Chain, through_variables: bool) -> String {
     let mut terms = Vec::new();
     for (index, operand) in chain.operands.iter().enumerate() {
         if through_variables {
-            lines.push(format!("Definir v{index} Como Entero;"));
-            lines.push(format!("v{index} <- {operand};"));
+            lines.push(format!("Definir v{index} Como Entero <- {operand};"));
             terms.push(format!("v{index}"));
         } else {
             terms.push(operand.to_string());
         }
     }
-    lines.push("Definir r Como Entero;".to_owned());
     lines.push(format!(
-        "r <- {};",
+        "Definir r Como Entero <- {};",
         terms.join(&format!(" {} ", chain.operator))
     ));
     lines.push("Escribir r;".to_owned());
@@ -130,9 +134,9 @@ fn expectation(chain: &Chain, through_variables: bool) -> Value {
         return json!({});
     };
     let line = if through_variables {
-        chain.operands.len().saturating_mul(2).saturating_add(3)
+        chain.operands.len().saturating_add(2)
     } else {
-        3
+        2
     };
     let mut column = EXPRESSION_COLUMN.saturating_add(width(chain, 0, through_variables));
     for (index, operand) in chain.operands.iter().enumerate().skip(1) {

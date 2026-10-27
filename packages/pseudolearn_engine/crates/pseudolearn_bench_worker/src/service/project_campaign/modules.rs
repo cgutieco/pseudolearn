@@ -29,7 +29,7 @@ pub fn entry_text(spec: &ModuleSpec) -> String {
         .iter()
         .map(|callee| import_line(spec.shape, *callee))
         .collect();
-    text.push_str("Algoritmo Principal\nDefinir total Como Entero;\ntotal <- 0;\n");
+    text.push_str("Algoritmo Principal\nDefinir Mutable total Como Entero <- 0;\n");
     for callee in &callees {
         text.push_str(&format!("total <- total + F{callee}(0);\n"));
     }

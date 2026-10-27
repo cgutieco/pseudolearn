@@ -5,7 +5,7 @@ use super::runtime_archive;
 use crate::corpus::CorpusCase;
 
 const PROGRAM: &str =
-    "Algoritmo P\nDefinir x Como Entero;\nx <- 6;\nEscribir x * 7;\nFinAlgoritmo\n";
+    "Algoritmo P\nDefinir x Como Entero <- 6;\nEscribir x * 7;\nFinAlgoritmo\n";
 
 fn case(expected: &str) -> CorpusCase {
     CorpusCase {

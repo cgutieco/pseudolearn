@@ -104,7 +104,27 @@ fn owns(kind: NodeKind, identity: &str) -> bool {
             | (NodeKind::ForEachLoop, "eachKeyword" | "inKeyword")
             | (NodeKind::DeferStatement, "deferKeyword" | "endDefer")
             | (NodeKind::BreakStatement, "breakKeyword")
-            | (NodeKind::Type, "vectorType" | "dictionaryType")
+            | (
+                NodeKind::Type,
+                "vectorType"
+                    | "dictionaryType"
+                    | "bytesType"
+                    | "ioErrorType"
+                    | "consoleCapabilityType"
+                    | "argumentsCapabilityType"
+                    | "directoryCapabilityType"
+                    | "fileCapabilityType"
+                    | "clockCapabilityType"
+                    | "timerCapabilityType"
+            )
+            | (
+                NodeKind::Postfix,
+                "requestConsole"
+                    | "requestArguments"
+                    | "requestDirectory"
+                    | "requestClock"
+                    | "requestTimer"
+            )
     )
 }
 

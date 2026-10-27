@@ -14,6 +14,9 @@ final class RustViewSemantics {
   final bool withoutNewline;
   final bool superConstructor;
   final String? primitive;
+  final String? builtinType;
+  final String? capabilityType;
+  final String? effectOperation;
 
   const RustViewSemantics({
     this.operators = const [],
@@ -24,6 +27,9 @@ final class RustViewSemantics {
     this.withoutNewline = false,
     this.superConstructor = false,
     this.primitive,
+    this.builtinType,
+    this.capabilityType,
+    this.effectOperation,
   });
 
   static const RustViewSemantics none = RustViewSemantics();
@@ -47,6 +53,9 @@ final class RustViewSemantics {
       withoutNewline: node['without_newline'] == true,
       superConstructor: node['super_constructor'] == true,
       primitive: node['primitive'] as String?,
+      builtinType: node['builtin_type'] as String?,
+      capabilityType: node['capability_type'] as String?,
+      effectOperation: node['effect_operation'] as String?,
     );
   }
 }

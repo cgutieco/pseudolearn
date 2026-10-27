@@ -148,7 +148,7 @@ al corpus, sin depender de este texto.
 ### PG-3.01 · `CF-07` especificado: frontera de confirmación lógica y estado externo incierto, con casos
 
 - [x] `PG-3.01.01` Especificar en `ENG.EXEC.EFFECT-COMMIT` (nuevo) y en `ENG.EXEC.EFFECT-ORDER` (edición oficial) las dos fases de cada efecto (`Requested` y `Resolved`), los tres resultados de confirmación (`Committed`, `Failed`, `Uncertain`), el momento exacto en que se asigna `effect_seq` tras evaluar argumentos de izquierda a derecha y el efecto sobre el estado de reproducibilidad de la cinta.
-- [ ] `PG-3.01.02` Casos: efecto confirmado de lectura y de escritura, fallo controlado previo a mutar (`PermisoDenegado`, `NoEncontrado`), fallo con estado externo incierto durante escritura (`Uncertain` con bandera `incierto` en `ErrorES` y cinta marcada `UncertainExternalState`), orden de `effect_seq` cuando una expresión combina dos efectos en secuencia.
+- [x] `PG-3.01.02` Casos: efecto confirmado de lectura y de escritura, fallo controlado previo a mutar (`PermisoDenegado`, `NoEncontrado`), fallo con estado externo incierto durante escritura (`Uncertain` con bandera `incierto` en `ErrorES` y cinta marcada `UncertainExternalState`), orden de `effect_seq` cuando una expresión combina dos efectos en secuencia.
 - [x] `PG-3.01.03` Tests unitarios de la máquina de estados de confirmación (`Requested` → `Committed` / `Failed` / `Uncertain`) y del rechazo de transiciones inválidas (doble resolución o resolución sin solicitud).
 - [x] `PG-3.01.04` Implementar `EffectPhase`, `CommitOutcome` y `ReproducibilityStatus` en `pseudolearn_runtime` / `pseudolearn_vm` y `pseudolearn_timeline`.
 - [x] `PG-3.01.05` Actualizar `README.md` de `pseudolearn_vm` y `pseudolearn_timeline` con la frontera de confirmación lógica.
@@ -156,8 +156,8 @@ al corpus, sin depender de este texto.
 
 ### PG-3.02 · `CF-11` resuelto: fallo controlado frente a caída o terminación del anfitrión
 
-- [ ] `PG-3.02.01` Editar `ENG.EXEC.MODEL` y `RT.HOST.INTERFACE` como texto oficial con la formulación revisada por la persona (`D-PG3-06`): distinguir fallo controlado de efecto (`Resultado<T, ErrorES>`, recuperable y con ejecución normal de `Diferir`), trampa del programa (`termination = failed`) y corte/terminación del anfitrión (`cancelled`, `limit_reached`, desconexión en `awaiting_effect` que sella `AbortedByHost` sin ejecutar nuevos efectos en `Diferir`).
-- [ ] `PG-3.02.02` Casos: fallo de archivo manejado con `Segun` sobre `Resultado`, fallo propagado con `Propagar` que ejecuta `Diferir`, cancelación del anfitrión mientras un efecto está en `awaiting_effect`, agotamiento de límite de sentencias después de abrir una capacidad (cierre inmediato en el anfitrión sin ejecutar efectos adicionales del usuario).
+- [x] `PG-3.02.01` Editar `ENG.EXEC.MODEL` y `RT.HOST.INTERFACE` como texto oficial con la formulación revisada por la persona (`D-PG3-06`): distinguir fallo controlado de efecto (`Resultado<T, ErrorES>`, recuperable y con ejecución normal de `Diferir`), trampa del programa (`termination = failed`) y corte/terminación del anfitrión (`cancelled`, `limit_reached`, desconexión en `awaiting_effect` que sella `AbortedByHost` sin ejecutar nuevos efectos en `Diferir`).
+- [x] `PG-3.02.02` Casos: fallo de archivo manejado con `Segun` sobre `Resultado`, fallo propagado con `Propagar` que ejecuta `Diferir`, cancelación del anfitrión mientras un efecto está en `awaiting_effect`, agotamiento de límite de sentencias después de abrir una capacidad (cierre inmediato en el anfitrión sin ejecutar efectos adicionales del usuario).
 - [x] `PG-3.02.03` Tests de `pseudolearn_vm` y `pseudolearn_api` que comprueban la liberación determinista de la tabla de capacidades del anfitrión ante `Cancelled`, `LimitReached` y `Trap`.
 - [x] `PG-3.02.04` Implementar el cierre forzoso de recursos de anfitrión y el sellado `AbortedByHost` en `pseudolearn_vm` y `pseudolearn_api`.
 - [x] `PG-3.02.05` Documentar en `README.md` de `pseudolearn_vm` y `pseudolearn_api` la separación entre `Resultado<T, ErrorES>`, trampa y terminación de anfitrión.
@@ -169,7 +169,7 @@ al corpus, sin depender de este texto.
 - [x] `PG-3.03.02` Casos: programa sin permisos que intenta usar archivo o reloj (denegado), intersección `requested ∩ granted` en proyecto, apertura de archivo relativo a `DirectorioCap`, atenuación a subdirectorio de solo lectura e intento rechazado de abrir para escritura desde capacidad de solo lectura, intento de escape con `..` o ruta absoluta, uso de `ArchivoCap` tras `cerrar`.
 - [x] `PG-3.03.03` Tests espejo en `pseudolearn_project` (`authority_tests.rs`, `capability_fs_tests.rs`) y en `pseudolearn_vm` (`capability_tests.rs`) para intersección de permisos, generación de `CapabilityToken` y confinamiento con `cap-std`.
 - [x] `PG-3.03.04` Extender `authority.rs` en `pseudolearn_project`, añadir `CapabilityToken` y `CapabilityTable` en `pseudolearn_runtime`/`pseudolearn_vm`, y registrar el vocabulario bilingüe en `pseudolearn_syntax` y `pseudolearn_semantic`.
-- [ ] `PG-3.03.05` Actualizar `README.md` de `pseudolearn_project`, `pseudolearn_runtime` y `pseudolearn_semantic`; añadir fichas de ayuda en `TOOL.SERVICE.CATALOG`.
+- [x] `PG-3.03.05` Actualizar `README.md` de `pseudolearn_project`, `pseudolearn_runtime` y `pseudolearn_semantic`; añadir fichas de ayuda en `TOOL.SERVICE.CATALOG`.
 - [x] `PG-3.03.06` Verificación acotada: `--only API.PROJECT.MANIFEST,LANG.CAPABILITY.MODEL,RT.HOST.INTERFACE,RT.PROCESS` y tests de `pseudolearn_project` y `pseudolearn_vm`.
 
 ### PG-3.04 · Identidad de ejecución ampliada y esquema versionado de cinta con todos los datos de cada efecto y su orden de entrega
@@ -202,11 +202,11 @@ al corpus, sin depender de este texto.
 ### PG-3.07 · Contrato de suspensión por efecto pendiente (`awaiting_effect`), distinto de la espera de entrada (`awaiting_input`)
 
 - [x] `PG-3.07.01` Editar `ENG.EXEC.MODEL` y `API.EXECUTE` para definir la terminación de lote `awaiting_effect`, su carga útil (`effect_seq`, `capability_kind`, `operation`, `arguments_summary`, `source_node_id`), la operación `effect_result` para reanudar y su distinción estricta frente a `awaiting_input` (`Leer`).
-- [ ] `PG-3.07.02` Casos: sesión que alterna `awaiting_input` (por `Leer`) y `awaiting_effect` (por operación de capacidad en modo desacoplado), entrega de `effect_result` exitoso y con `ErrorES`, rechazo de `input` cuando el motor espera `effect_result` y viceversa.
+- [x] `PG-3.07.02` Casos: sesión que alterna `awaiting_input` (por `Leer`) y `awaiting_effect` (por operación de capacidad en modo desacoplado), entrega de `effect_result` exitoso y con `ErrorES`, rechazo de `input` cuando el motor espera `effect_result` y viceversa.
 - [x] `PG-3.07.03` Tests en `pseudolearn_vm`, `pseudolearn_api` y test espejo Dart en `apps/pseudolearn_app/test/engine/rust/` para la deserialización y manejo de `awaiting_effect`.
 - [x] `PG-3.07.04` Añadir `RunExit::AwaitingEffect(PendingEffectRequest)` en `pseudolearn_vm`, la operación `effect_result` en `pseudolearn_api` y actualizar `rust_wire_models.dart`, `rust_execution_api.dart` y `rust_program_execution.dart` en `apps/pseudolearn_app`.
 - [x] `PG-3.07.05` Actualizar `README.md` de `pseudolearn_vm`, `pseudolearn_api` y `apps/pseudolearn_app`.
-- [ ] `PG-3.07.06` Verificación acotada: `--only ENG.EXEC.MODEL,API.EXECUTE`, tests de `pseudolearn_api` y `flutter test` del archivo de ejecución tocado en `apps/pseudolearn_app`.
+- [x] `PG-3.07.06` Verificación acotada: `--only ENG.EXEC.MODEL,API.EXECUTE`, tests de `pseudolearn_api` y `flutter test` del archivo de ejecución tocado en `apps/pseudolearn_app`.
 
 ### PG-3.08 · Análisis de efectos transitivos en compilación: una función pura no puede esconder E/S
 
@@ -219,21 +219,21 @@ al corpus, sin depender de este texto.
 
 ### PG-3.09 · Errores de E/S portables, separación de bytes y texto UTF-8, y limpieza en retorno, propagación y salida
 
-- [ ] `PG-3.09.01` Crear `LIB.IO` y `LIB.TIME`, y editar `LIB.MODEL`, `LANG.CONTROL.CLEANUP`, `IR.INSTRUCTIONS`, `API.PROGRAM.VIEW` y `TOOL.SERVICE.CATALOG`: tipo `Bytes`, variante estructurada `ErrorES` / `IoError` (`NoEncontrado`, `PermisoDenegado`, `YaExiste`, `FinDeArchivo`, `Utf8Invalido`, `RutaInvalida`, `CapacidadCerrada`, `TiempoAgotado`, `Interrumpido`, con bandera `incierto`), operaciones separadas de `Bytes` y `Cadena` UTF-8, reloj y temporizador lógico, y ejecución de `Diferir` para cerrar capacidades al salir del alcance, retornar o propagar `Resultado::Err(ErrorES)` sin ocultar el error primario.
+- [x] `PG-3.09.01` Crear `LIB.IO` y `LIB.TIME`, y editar `LIB.MODEL`, `LANG.CONTROL.CLEANUP`, `IR.INSTRUCTIONS`, `API.PROGRAM.VIEW` y `TOOL.SERVICE.CATALOG`: tipo `Bytes`, variante estructurada `ErrorES` / `IoError` (`NoEncontrado`, `PermisoDenegado`, `YaExiste`, `FinDeArchivo`, `Utf8Invalido`, `RutaInvalida`, `CapacidadCerrada`, `TiempoAgotado`, `Interrumpido`, con bandera `incierto`), operaciones separadas de `Bytes` y `Cadena` UTF-8, reloj y temporizador lógico, y ejecución de `Diferir` para cerrar capacidades al salir del alcance, retornar o propagar `Resultado::Err(ErrorES)` sin ocultar el error primario.
 - [x] `PG-3.09.02` Casos: lectura/escritura de `Bytes` binarios arbitrarios; lectura de texto UTF-8 válido e inválido (`Utf8Invalido`); apertura de archivo seguida de `Diferir cerrar(f)` que sale por retorno normal, por `Propagar` de un `ErrorES` de lectura y por salida anticipada de bucle, comprobando que el archivo queda cerrado y el `ErrorES` primario se preserva intacto; consulta de reloj grabado y espera en temporizador lógico.
-- [ ] `PG-3.09.03` Tests de `Bytes` en el montón y recolector (`GcHeap`), tests de aristas de limpieza con `EffectCall` en `pseudolearn_lowering` y tests Dart de vista pública y vocabulario en `apps/pseudolearn_app`.
-- [ ] `PG-3.09.04` Implementar `Bytes` y `ErrorES` en `pseudolearn_abi`/`pseudolearn_runtime`/`pseudolearn_library`, `Opcode::EffectCall` en `pseudolearn_ir`/`pseudolearn_lowering`/`pseudolearn_bytecode`, fichas en `pseudolearn_service` y proyecciones en `pseudolearn_api` y `apps/pseudolearn_app` (`rust_program_view_builder.dart`, `rust_construct_projection.dart`).
-- [ ] `PG-3.09.05` Actualizar `README.md` de `pseudolearn_abi`, `pseudolearn_runtime`, `pseudolearn_library`, `pseudolearn_lowering`, `pseudolearn_service` y `apps/pseudolearn_app`.
-- [ ] `PG-3.09.06` Verificación acotada: `--only LIB.IO,LIB.TIME,LANG.CONTROL.CLEANUP,API.PROGRAM.VIEW,TOOL.SERVICE.CATALOG` y tests espejo en Rust y Flutter.
+- [x] `PG-3.09.03` Tests de `Bytes` en el montón y recolector (`GcHeap`), tests de aristas de limpieza con `EffectCall` en `pseudolearn_lowering` y tests Dart de vista pública y vocabulario en `apps/pseudolearn_app`.
+- [x] `PG-3.09.04` Implementar `Bytes` y `ErrorES` en `pseudolearn_abi`/`pseudolearn_runtime`/`pseudolearn_library`, `Opcode::EffectCall` en `pseudolearn_ir`/`pseudolearn_lowering`/`pseudolearn_bytecode`, fichas en `pseudolearn_service` y proyecciones en `pseudolearn_api` y `apps/pseudolearn_app` (`rust_program_view_builder.dart`, `rust_construct_projection.dart`).
+- [x] `PG-3.09.05` Actualizar `README.md` de `pseudolearn_abi`, `pseudolearn_runtime`, `pseudolearn_library`, `pseudolearn_lowering`, `pseudolearn_service` y `apps/pseudolearn_app`.
+- [x] `PG-3.09.06` Verificación acotada: `--only LIB.IO,LIB.TIME,LANG.CONTROL.CLEANUP,API.PROGRAM.VIEW,TOOL.SERVICE.CATALOG` y tests espejo en Rust y Flutter.
 
 ### PG-3.10 · Privacidad de la cinta: secretos por referencia, retención y presupuesto de bytes definidos, y cinta incompleta marcada como no reproducible
 
 - [x] `PG-3.10.01` Especificar en `ENG.EFFECT.TAPE` y `ENG.LIMITS` la política de privacidad y retención: referencias opacas `SecretRef { key_id, value_hmac }` sin valor en claro en la cinta, límite configurable `max_tape_bytes` y marcado obligatorio `NonReproducibleRedacted`, `NonReproducibleTruncated` o `Incomplete` cuando la cinta no contiene todos los bytes necesarios para reproducción autónoma.
-- [ ] `PG-3.10.02` Casos: efecto con argumento sensible grabado como `SecretRef` (comprobando ausencia de la cadena secreta en la cinta serializada), ejecución que supera `max_tape_bytes` (continúa la ejecución en vivo si el límite es solo de cinta, pero sella la cinta como `NonReproducibleTruncated`), e intento rechazado de reproducir una cinta truncada o sin resolución del secreto.
+- [x] `PG-3.10.02` Casos: efecto con argumento sensible grabado como `SecretRef` (comprobando ausencia de la cadena secreta en la cinta serializada), ejecución que supera `max_tape_bytes` (continúa la ejecución en vivo si el límite es solo de cinta, pero sella la cinta como `NonReproducibleTruncated`), e intento rechazado de reproducir una cinta truncada o sin resolución del secreto.
 - [x] `PG-3.10.03` Tests unitarios de redacción de secretos y de corte exacto en `max_tape_bytes - 1`, `max_tape_bytes` y `max_tape_bytes + 1` en `pseudolearn_timeline`.
 - [x] `PG-3.10.04` Implementar `SecretRef`, el filtro de redacción y el contador de presupuesto `max_tape_bytes` en `EffectTapeRecorder`.
 - [x] `PG-3.10.05` Actualizar `README.md` de `pseudolearn_timeline`.
-- [ ] `PG-3.10.06` Verificación acotada: `--only ENG.EFFECT.TAPE,ENG.LIMITS` y tests de privacidad/presupuesto en `pseudolearn_timeline`.
+- [x] `PG-3.10.06` Verificación acotada: `--only ENG.EFFECT.TAPE,ENG.LIMITS` y tests de privacidad/presupuesto en `pseudolearn_timeline`.
 
 ### PG-3.11 · Conformidad con anfitrión falso de resultados derivados, sin red ni disco reales
 
@@ -255,10 +255,10 @@ al corpus, sin depender de este texto.
 
 ### PG-3.13 · `E-PG-05` y la parte de archivos de `E-PG-09` ejecutados; sobrecosto de infraestructura inactiva dentro del presupuesto candidato
 
-- [ ] `PG-3.13.01` Definir los subcomandos de medición de `E-PG-05` (sobrecosto en `PERF.SUITE.CORE` con infraestructura de capacidades/cinta inactiva y razón de crecimiento de cinta en cargas con efectos) y la suite de vectores de ataque de archivos y cinta de `E-PG-09`.
-- [ ] `PG-3.13.02` Cargas sembradas de `E-PG-05` (`100`, `1 000` y `10 000` efectos de consola, reloj y archivo) y vectores adversarios de `E-PG-09` (`..`, enlaces simbólicos salientes, rutas absolutas, NUL interior, amplificación de derechos, uso tras cierre, adulteración de un bit en cinta, truncamiento).
-- [ ] `PG-3.13.03` Tests del arnés de medición y de la batería de seguridad `E-PG-09` garantizando que ningún escape o corrupción pase en verde.
-- [ ] `PG-3.13.04` Ampliar `pseudolearn_bench_worker` para `E-PG-05` y el arnés de seguridad para `E-PG-09`.
+- [x] `PG-3.13.01` Definir los subcomandos de medición de `E-PG-05` (sobrecosto en `PERF.SUITE.CORE` con infraestructura de capacidades/cinta inactiva y razón de crecimiento de cinta en cargas con efectos) y la suite de vectores de ataque de archivos y cinta de `E-PG-09`.
+- [x] `PG-3.13.02` Cargas sembradas de `E-PG-05` (`100`, `1 000` y `10 000` efectos de consola, reloj y archivo) y vectores adversarios de `E-PG-09` (`..`, enlaces simbólicos salientes, rutas absolutas, NUL interior, amplificación de derechos, uso tras cierre, adulteración de un bit en cinta, truncamiento).
+- [x] `PG-3.13.03` Tests del arnés de medición y de la batería de seguridad `E-PG-09` garantizando que ningún escape o corrupción pase en verde.
+- [x] `PG-3.13.04` Ampliar `pseudolearn_bench_worker` para `E-PG-05` y el arnés de seguridad para `E-PG-09`.
 - [x] `PG-3.13.05` Registrar la metodología y resultados en los `README.md` correspondientes y en §11 de este plan. Evidencia: README de `pseudolearn_bench_worker` (E-PG-05), README de `pseudolearn_cli` (E-PG-09) y §11.4.
 - [x] `PG-3.13.06` Ejecutar la campaña en segundo plano siguiendo `PERF.PROTOCOL`, verificar que el sobrecosto sobre `PERF.SUITE.CORE` es `≤ 2 %` y que el 100 % de los vectores de `E-PG-09` son bloqueados sin tocar el exterior. Evidencia: media geométrica 1,0001; razón puntual máxima 1,060 (richards) y límite superior máximo 1,124 (sieve), dentro del presupuesto por carga revisado (`≤ 1,08` y `≤ 1,15`, §6.1); 7 de 7 vectores bloqueados. Revisión de presupuesto autorizada por la persona el 2026-10-27.
 
@@ -790,3 +790,40 @@ Evidencia ejecutada y registrada en `packages/pseudolearn_spec/results/pg-3-clos
   - `PG-3.10.02`, `.06`: Pruebas de rechazo de cinta en `pseudolearn_aot_rt` y verificación acotada de cinta/límites.
   - `PG-3.13.01` a `.04`: Subcomandos en `pseudolearn_bench_worker` para `E-PG-05` (sobrecosto inactivo y crecimiento de cinta con 100, 1 000 y 10 000 efectos) y suite de seguridad `E-PG-09`.
   - Checklist común `PG-3.C*`: `PG-3.C12` permanece abierta para el commit de la persona.
+
+### 11.9 Cierre de los puntos restantes · 2026-10-27
+
+Alcance: instrucción de la persona de cerrar los puntos pendientes de `PG-3` y marcar las casillas con evidencia. El commit de las iteraciones anteriores lo hizo la persona (`ba6b3f1`); esta tanda no añade commits ni ramas. Evidencia en `packages/pseudolearn_spec/results/pg-3-closure-2/` (ignorado por Git): `baseline.log`, `conform.log`, `rust-tests.log`, `final-verify.log` y `final-verify-2.log`.
+
+**Defectos hallados y corregidos.** La línea base no era verde: `see validate` fallaba en HEAD y con él `lock --check` y `export --check`, de modo que el cierre anterior no era fiable.
+
+| Defecto | Corrección |
+|---|---|
+| `ENG.EFFECT.TAPE` con `secret_key_id: null` y `LANG.CONTROL.CLEANUP#C12` con claves en español, archivos anidados y `DirectoryCap` inexistente; el esquema los rechazaba | Casos reescritos al esquema; `C12` usa `DirCap`, la raíz `root` y el código `utf8_invalido` |
+| El corpus decía `directory_open`, `capability_kind: filesystem/clock/console`; el motor emitía `file_open`, `Directory`, `File`, `host` | Decisión de la persona (el corpus manda): `EffectOperation::capability_family` en `pseudolearn_abi`, usada por la VM y el runtime; vocabulario cerrado en `ENG.EFFECT.TAPE#R3`; `directory_open` pasa a `file_open` (identidad de `LIB.MODEL`) |
+| Una cinta sellada truncada por presupuesto se decodificaba como adulterada | `tape_codec::validate` no aplica el tope a `NonReproducibleTruncated`; la reproducción se rechaza con `replay_non_reproducible` (`ENG.LIMITS` `C19`) |
+| El anfitrión en memoria rechazaba `cancel_on_awaiting_effect` y `alterar_cinta` con `ruta_invalida` | Se aceptan como directivas del corredor; se mantiene `deny_unknown_fields` para el resto |
+| `API.EXECUTE` `C5`–`C7` y `ENG.EXEC.MODEL` `C11`/`C14` usaban un formato de cable inexistente (`Committed`/`Handle`, `effect` anidado, ids de recurso literales, estado de cinta `reproducible` durante la suspensión) | Reescritos al formato implementado (`outcome`/`value`, terminación plana, `estado_cinta: incomplete`, sin ids absolutos); `C6` lista las dos escrituras de consola |
+| La vista pública no proyectaba tipos ni operaciones de capacidad (`API.PROGRAM.VIEW` `C11`) | `program_view_effects.rs`: `builtin_type`, `capability_type`, `effect_operation` |
+| El hover de `Reloj`, `Bytes`, `ErrorES` y las solicitudes no devolvía la ficha (`TOOL.SERVICE.CATALOG` `C7`) | `contextual_tokens::owns` los reconoce y `hover_for_token` devuelve la descripción |
+| La propiedad de trampas generaba `Definir r Como Entero;` (inválido) y pedía `observe: events` al sujeto nativo | Enlaces inicializados y modo `events` solo si el sujeto anuncia `observe`; falla ahora de verdad si el sujeto diverge |
+| Pruebas con expectativas obsoletas: `collection_execution` ignoraba `anfitrion` y comparaba contra el perfil español; la matriz de ayuda esperaba 192 filas; fixtures de `pseudolearn_bench_worker` sin inicializador | Corregidos (207 filas: 91 identidades y 53 roles) |
+| `rust-checks` del motor: cuatro funciones sobre 40 líneas heredadas (`request_reply`, `execute_bulk`, `resolve_pending`, `local_registry::parameters`) | Extraídas `cancels_next_effect`, `bulk_events`, `next_effect_sequence`/`begin_pending` y `register_parameter`, sin cambio de comportamiento |
+
+**Casillas cerradas.** `PG-3.01.02`, `PG-3.02.01`, `.02`, `PG-3.03.05`, `PG-3.07.02`, `.06`, `PG-3.09.01`, `.03`–`.06`, `PG-3.10.02`, `.06` y `PG-3.13.01`–`.04`; con ello los puntos `PG-3.01`, `.02`, `.03`, `.07`, `.09`, `.10` y `.13` del plan general. Cierre común: `C01` (autorización de la persona), `C03`–`C05`, `C08`–`C10`.
+
+**Evidencia por punto.**
+- `PG-3.01`–`.02`, `.07`: conformidad `engine` y `aot` sin divergencias en `ENG.EXEC.EFFECT-COMMIT`, `ENG.EXEC.EFFECT-ORDER`, `ENG.EXEC.MODEL`, `RT.HOST.INTERFACE` y `API.EXECUTE`; pruebas de `pseudolearn_api`; `flutter test` de `rust_effect_gate_test`, `rust_program_execution_test` y `rust_simulated_host_test`.
+- `PG-3.03.05`: `TOOL.SERVICE.CATALOG` sin divergencias en el sujeto `service`; `tests/capability_help.rs`.
+- `PG-3.09`: `LIB.IO`, `LIB.TIME`, `LIB.MODEL`, `LANG.CONTROL.CLEANUP`, `IR.INSTRUCTIONS`, `API.PROGRAM.VIEW` sin divergencias; `tests/program_view_effects.rs`; `cleanup_effect_edges_tests.rs`; `rust_view_semantics_test.dart`. El README de `pseudolearn_library` no se modificó: `Bytes`, `ErrorES` y `EffectCall` no viven en ese miembro sino en `abi`, `runtime`, `semantic` y `lowering`, cuyos README ya los documentan.
+- `PG-3.10`: `ENG.EFFECT.TAPE` `C10`–`C12` (`truncar_entrada`, `corromper_hash`, `cambiar_semilla`) sin divergencias en `engine` y `aot`; en nativo, `security_vectors.rs` rechaza bit alterado y truncamiento.
+- `PG-3.13`: `pseudolearn_bench_worker pg-tape` (validación 1 proceso, depuración): 338, 557 y 740 B por efecto de consola, reloj y archivo, crecimiento lineal; `security_vector_registry.rs` enumera los ocho vectores y falla si falta uno o su prueba; los resultados de `E-PG-05` (media 1,0001) y `E-PG-09` (7 de 7) de §11.4 se conservan.
+
+**Revisión de riesgos (`PG-3.C10`).** K-06 (el replay no repite llamadas): `tape_replay_host_isolation_tests`, `history_seek_isolation_tests` y los casos con `anfitrion_observado.llamadas` en `0`. K-07 (permiso ampliado): vectores de `E-PG-09` bloqueados sin tocar el exterior y registro cerrado de ocho. K-13 (la cinta revela secretos): `SecretRef`, `ENG.EFFECT.TAPE` `C6`/`C9` con comprobación de fuga, `tape_privacy_tests`.
+
+**Pendientes declarados (fuera de `PG-3`, no corregidos).**
+1. `TOOL.SERVICE.HOVER` `C1`/`C2` y `TOOL.LSP.CAPABILITIES` `C2` divergen: sus programas declaran `Definir x Como Entero;` sin inicializador o asignan a un nombre no declarado, que el lenguaje rechaza desde una fase anterior.
+2. `workloads_tests::generates_all_configurations…` de `pseudolearn_bench_worker` falla por el mismo motivo en el generador de carga; con el enlace corregido el test no termina en 28 minutos en `--release`, de modo que se dejó el generador sin tocar. Quedan además por corregir las declaraciones sin inicializador de `e06/programs.rs` y `help_campaign/documents.rs`.
+3. Una ejecución de `pseudo run --nativo` sobre un programa aritmético mínimo quedó colgada una hora; no se reprodujo con la entrada cerrada.
+4. La carga de cada entrada de cinta se serializa como lista decimal de octetos (≈ 6× su tamaño).
+5. `ENG.EXEC.EFFECT-ORDER` en `aot` pasó al ejecutarlo solo y falló dentro de una secuencia completa antes de corregir la evidencia de propiedades; con `--operation properties` sobre un contrato que sí tiene propiedades inmediatamente antes, es estable.

@@ -22,40 +22,43 @@ pub(crate) fn parameters(session: &mut AnalysisSession<'_>, function: usize) {
         let Some(name) = session.child(parameter, NodeKind::Identifier) else {
             continue;
         };
-        let mut type_id = parameter_type(session, parameter);
-        let by_reference =
-            session.has_token(parameter, TokenKind::Keyword(KeywordKind::ByReference));
-        check_record_parameter(session, (name, parameter), type_id, by_reference);
-        if session.has_token(parameter, TokenKind::LeftBracket) {
-            type_id = array_parameter_type(session, parameter, type_id);
-        }
-        let passing = passing(
-            session,
+        register_parameter(session, parameter, name);
+    }
+}
+
+fn register_parameter(session: &mut AnalysisSession<'_>, parameter: usize, name: usize) {
+    let mut type_id = parameter_type(session, parameter);
+    let by_reference = session.has_token(parameter, TokenKind::Keyword(KeywordKind::ByReference));
+    check_record_parameter(session, (name, parameter), type_id, by_reference);
+    if session.has_token(parameter, TokenKind::LeftBracket) {
+        type_id = array_parameter_type(session, parameter, type_id);
+    }
+    let passing = passing(
+        session,
+        type_id,
+        by_reference && !is_record(session, type_id),
+    );
+    let local = register(
+        session,
+        LocalDeclaration {
+            name_node: name,
             type_id,
-            by_reference && !is_record(session, type_id),
-        );
-        let local = register(
-            session,
-            LocalDeclaration {
-                name_node: name,
-                type_id,
-                passing,
-                parameter: true,
-                mutable: true,
-            },
-        );
-        if session
-            .child(parameter, NodeKind::Type)
-            .is_some_and(|kind| crate::function_types::is_pure_syntax(session, kind))
-        {
-            session.module.pure_locals.insert(local);
-        }
-        if let Some(function) = usize::try_from(session.current.0)
-            .ok()
-            .and_then(|index| session.module.functions.get_mut(index))
-        {
-            function.parameters.push(local);
-        }
+            passing,
+            parameter: true,
+            mutable: true,
+        },
+    );
+    if session
+        .child(parameter, NodeKind::Type)
+        .is_some_and(|kind| crate::function_types::is_pure_syntax(session, kind))
+    {
+        session.module.pure_locals.insert(local);
+    }
+    if let Some(function) = usize::try_from(session.current.0)
+        .ok()
+        .and_then(|index| session.module.functions.get_mut(index))
+    {
+        function.parameters.push(local);
     }
 }
 

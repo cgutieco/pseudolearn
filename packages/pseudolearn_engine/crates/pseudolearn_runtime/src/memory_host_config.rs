@@ -26,6 +26,8 @@ struct Configuration {
     _detached: bool,
     #[serde(rename = "cancel_on_awaiting_effect")]
     _cancel_on_awaiting_effect: Option<u64>,
+    #[serde(rename = "alterar_cinta")]
+    _tape_alteration: Option<String>,
 }
 
 #[derive(Deserialize)]

@@ -85,3 +85,7 @@ del corpus. El build usa serde_json exclusivamente para producir la tabla en OUT
 producto no depende de serde. Semántica, VM y AOT comparten identidades y firmas sin copiar tablas.
 Los métodos llevan su clasificación de efecto: consultas puras de bytes no adquieren autoridad ni
 consultan al anfitrión; los demás producen un Resultado portable.
+
+### Familia de capacidad de cada operación (`PG-3`)
+
+`EffectOperation::capability_family` es la única fuente del vocabulario cerrado `console`, `arguments`, `filesystem`, `clock` y `timer` con el que la cinta y la carga de `awaiting_effect` rotulan una operación. Se deriva del receptor (`Directory` y `File` son `filesystem`) y, para una solicitud de capacidad (`request_*`), de la capacidad solicitada; una operación sin receptor ni prefijo de solicitud cae en `host`. La función vive en la ABI porque la VM y el runtime la comparten y ninguno puede depender del otro; antes cada uno formateaba el nombre interno de Rust (`Directory`, `File`), que no era un contrato. `tests/effect_operation_family_tests.rs` cubre las operaciones con receptor, las solicitudes y una identidad inexistente.

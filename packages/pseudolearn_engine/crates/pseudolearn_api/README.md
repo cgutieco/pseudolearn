@@ -269,3 +269,9 @@ se normaliza ni se repara al leerla. El formato y sus hashes pertenecen al runti
 - Se eliminó `compute_entry_hash`: era una función pública con una fórmula distinta de la cadena real (`tape_entry_hash`) que solo usaba una prueba, de modo que la prueba no comprobaba la cinta que se serializa. La prueba `recorded_entry_hashes_chain_the_previous_hash` verifica ahora la cadena de la cinta grabada.
 - Los programas de `recording_options.rs` y `resources.rs` declaraban `Definir x Como Entero;` y asignaban; desde la mutabilidad explícita el análisis los rechaza, de modo que cinco pruebas de grabación y de recurso de ejecución fallaban sin que nadie lo viera. Declaran ahora `Definir Mutable … <- 0`.
 - `recording.rs` exporta la cinta de la sesión; `recording_digest.rs` resume eventos y no participa en la cadena de la cinta, que tiene su propio `entry_hash`. La implementación del formato vive en `pseudolearn_runtime`.
+
+### Proyección de tipos y operaciones de capacidad en la vista del programa (`PG-3.09`)
+
+`program_view_effects.rs` añade a los nodos de la vista pública tres atributos: `builtin_type` (`bytes`, `io_error`) y `capability_type` (`console`, `arguments`, `directory`, `file`, `clock`, `timer`) en los nodos de tipo, reconocidos por su lexema en ambos perfiles con `pseudolearn_semantic::capability_types::find_capability_kind`, y `effect_operation` (identidad de `LIB.MODEL`, por ejemplo `file_open`) en los nodos postfijos, tomado de las expresiones `HirExpression::Effect` del análisis. La anotación reutiliza el análisis único de `program_view_annotations::call_names`, que ya resolvía `builtin`. Un programa sin capacidades no proyecta ninguno de los tres. Cubre `tests/program_view_effects.rs` y el caso `API.PROGRAM.VIEW` C11.
+
+El anfitrión en memoria acepta `cancel_on_awaiting_effect` y `alterar_cinta` (ver `pseudolearn_runtime`), de modo que el corredor de conformidad de `aot` ya no rechaza esos casos con `ruta_invalida`.
