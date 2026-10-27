@@ -51,7 +51,8 @@
   "texto": "Una Funcion o Function es estrictamente pura. Tiene prohibido realizar directamente operaciones de entrada o salida, modificar estado externo u operar sobre capacidades con efectos secundarios.",
   "verificacion": [
     "C1",
-    "C2"
+    "C2",
+    "C16"
   ]
 }
 ```
@@ -116,7 +117,7 @@
   "id": "R2",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "El análisis semántico comprueba la pureza transitiva hasta punto fijo sobre el grafo de llamadas del programa. Si una Funcion invoca a otra unidad que realiza efectos secundarios, la función llamadora es rechazada con pureFunctionTransitiveSideEffect.",
+  "texto": "El análisis semántico comprueba la pureza transitiva hasta punto fijo sobre el grafo de llamadas del programa. Si una Funcion invoca a otra unidad que realiza efectos secundarios, la función llamadora es rechazada con pureFunctionTransitiveSideEffect. El diagnóstico lleva como ubicaciones relacionadas, en orden, cada unidad de la cadena de llamadas desde el primer llamado con efecto hasta la unidad que realiza el efecto directo; si hay varios llamados con efecto se sigue el de menor orden de declaración.",
   "verificacion": [
     "C3",
     "C7",
@@ -125,7 +126,10 @@
     "C11",
     "C12",
     "C13",
-    "C14"
+    "C14",
+    "C15",
+    "C17",
+    "C18"
   ]
 }
 ```
@@ -207,9 +211,10 @@
   "id": "R4",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Cuando una Interfaz declara un método de tipo Funcion, cualquier implementación concreta en una clase debe ser estrictamente pura. Toda implementación que realice efectos secundarios es rechazada con pureFunctionInterfaceImpurity.",
+  "texto": "Cuando una Interfaz declara un método de tipo Funcion, cualquier implementación concreta en una clase debe ser estrictamente pura. Toda implementación que realice efectos secundarios es rechazada con pureFunctionInterfaceImpurity. El diagnóstico lleva como ubicaciones relacionadas la cadena de llamadas con efecto de la implementación, con el mismo criterio que R2.",
   "verificacion": [
-    "C5"
+    "C5",
+    "C20"
   ]
 }
 ```
@@ -251,7 +256,8 @@
   "clase": "semantica",
   "texto": "SubProceso y Algoritmo son las unidades del lenguaje autorizadas para poseer efectos secundarios y ejecutar operaciones sobre el entorno y capacidades.",
   "verificacion": [
-    "C6"
+    "C6",
+    "C19"
   ]
 }
 ```
@@ -517,6 +523,517 @@
   "programas": {
     "es": "SubProceso Effect() Como Entero\nEscribir 1;\nRetornar 1;\nFinSubProceso\nFuncion F() Como Entero\nDefinir kept Como Entero <- Effect();\nRetornar kept;\nFinFuncion\nAlgoritmo Main\nEscribir F();\nFinAlgoritmo\n",
     "en": "subroutine Effect() as integer\nwrite 1;\nreturn 1;\nendSubroutine\nfunction F() as integer\ndefine kept as integer <- Effect();\nreturn kept;\nend function\nalgorithm Main\nwrite F();\nendAlgorithm\n"
+  }
+}
+```
+
+```caso
+{
+  "id": "C15",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "pureFunctionTransitiveSideEffect",
+        "severidad": "error"
+      }
+    ]
+  },
+  "programas": {
+    "es": "SubProceso C() Como Entero\nEscribir 1;\nRetornar 1;\nFinSubProceso\nSubProceso B() Como Entero\nRetornar C();\nFinSubProceso\nFuncion A() Como Entero\nRetornar B();\nFinFuncion\nAlgoritmo P\nEscribir A();\nFinAlgoritmo\n",
+    "en": "subroutine C() as integer\nwrite 1;\nreturn 1;\nendSubroutine\nsubroutine B() as integer\nreturn C();\nendSubroutine\nfunction A() as integer\nreturn B();\nend function\nalgorithm P\nwrite A();\nendAlgorithm\n"
+  },
+  "esperas": {
+    "es": {
+      "arbol": "presente",
+      "diagnosticos": [
+        {
+          "codigo": "pureFunctionTransitiveSideEffect",
+          "severidad": "error",
+          "clase": "semantic",
+          "tramo": {
+            "start": {
+              "line": 8,
+              "column": 1
+            },
+            "end": {
+              "line": 10,
+              "column": 11
+            }
+          },
+          "relacionados": [
+            {
+              "start": {
+                "line": 5,
+                "column": 1
+              },
+              "end": {
+                "line": 7,
+                "column": 14
+              }
+            },
+            {
+              "start": {
+                "line": 1,
+                "column": 1
+              },
+              "end": {
+                "line": 4,
+                "column": 14
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "en": {
+      "arbol": "presente",
+      "diagnosticos": [
+        {
+          "codigo": "pureFunctionTransitiveSideEffect",
+          "severidad": "error",
+          "clase": "semantic",
+          "tramo": {
+            "start": {
+              "line": 8,
+              "column": 1
+            },
+            "end": {
+              "line": 10,
+              "column": 13
+            }
+          },
+          "relacionados": [
+            {
+              "start": {
+                "line": 5,
+                "column": 1
+              },
+              "end": {
+                "line": 7,
+                "column": 14
+              }
+            },
+            {
+              "start": {
+                "line": 1,
+                "column": 1
+              },
+              "end": {
+                "line": 4,
+                "column": 14
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C16",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "pureFunctionSideEffect",
+        "severidad": "error"
+      }
+    ]
+  },
+  "programas": {
+    "es": "Funcion F() Como Entero\nDefinir Mutable x Como Entero <- 0;\nLeer x;\nRetornar x;\nFinFuncion\nAlgoritmo P\nEscribir F();\nFinAlgoritmo\n",
+    "en": "function F() as integer\ndefine mutable x as integer <- 0;\nread x;\nreturn x;\nend function\nalgorithm P\nwrite F();\nendAlgorithm\n"
+  },
+  "esperas": {
+    "es": {
+      "arbol": "presente",
+      "diagnosticos": [
+        {
+          "codigo": "pureFunctionSideEffect",
+          "severidad": "error",
+          "clase": "semantic",
+          "tramo": {
+            "start": {
+              "line": 1,
+              "column": 1
+            },
+            "end": {
+              "line": 5,
+              "column": 11
+            }
+          }
+        }
+      ]
+    },
+    "en": {
+      "arbol": "presente",
+      "diagnosticos": [
+        {
+          "codigo": "pureFunctionSideEffect",
+          "severidad": "error",
+          "clase": "semantic",
+          "tramo": {
+            "start": {
+              "line": 1,
+              "column": 1
+            },
+            "end": {
+              "line": 5,
+              "column": 13
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C17",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "pureFunctionTransitiveSideEffect",
+        "severidad": "error"
+      },
+      {
+        "codigo": "pureFunctionTransitiveSideEffect",
+        "severidad": "error"
+      }
+    ]
+  },
+  "programas": {
+    "es": "SubProceso Effect() Como Entero\nEscribir 1;\nRetornar 1;\nFinSubProceso\nFuncion Even(n Como Entero) Como Entero\nSi n = 0 Entonces\nRetornar Effect();\nFinSi\nRetornar Odd(n - 1);\nFinFuncion\nFuncion Odd(n Como Entero) Como Entero\nSi n = 0 Entonces\nRetornar 0;\nFinSi\nRetornar Even(n - 1);\nFinFuncion\nAlgoritmo P\nEscribir Odd(3);\nFinAlgoritmo\n",
+    "en": "subroutine Effect() as integer\nwrite 1;\nreturn 1;\nendSubroutine\nfunction Even(n as integer) as integer\nif n = 0 then\nreturn Effect();\nendIf\nreturn Odd(n - 1);\nend function\nfunction Odd(n as integer) as integer\nif n = 0 then\nreturn 0;\nendIf\nreturn Even(n - 1);\nend function\nalgorithm P\nwrite Odd(3);\nendAlgorithm\n"
+  },
+  "esperas": {
+    "es": {
+      "arbol": "presente",
+      "diagnosticos": [
+        {
+          "codigo": "pureFunctionTransitiveSideEffect",
+          "severidad": "error",
+          "clase": "semantic",
+          "tramo": {
+            "start": {
+              "line": 5,
+              "column": 1
+            },
+            "end": {
+              "line": 10,
+              "column": 11
+            }
+          },
+          "relacionados": [
+            {
+              "start": {
+                "line": 1,
+                "column": 1
+              },
+              "end": {
+                "line": 4,
+                "column": 14
+              }
+            }
+          ]
+        },
+        {
+          "codigo": "pureFunctionTransitiveSideEffect",
+          "severidad": "error",
+          "clase": "semantic",
+          "tramo": {
+            "start": {
+              "line": 11,
+              "column": 1
+            },
+            "end": {
+              "line": 16,
+              "column": 11
+            }
+          },
+          "relacionados": [
+            {
+              "start": {
+                "line": 5,
+                "column": 1
+              },
+              "end": {
+                "line": 10,
+                "column": 11
+              }
+            },
+            {
+              "start": {
+                "line": 1,
+                "column": 1
+              },
+              "end": {
+                "line": 4,
+                "column": 14
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "en": {
+      "arbol": "presente",
+      "diagnosticos": [
+        {
+          "codigo": "pureFunctionTransitiveSideEffect",
+          "severidad": "error",
+          "clase": "semantic",
+          "tramo": {
+            "start": {
+              "line": 5,
+              "column": 1
+            },
+            "end": {
+              "line": 10,
+              "column": 13
+            }
+          },
+          "relacionados": [
+            {
+              "start": {
+                "line": 1,
+                "column": 1
+              },
+              "end": {
+                "line": 4,
+                "column": 14
+              }
+            }
+          ]
+        },
+        {
+          "codigo": "pureFunctionTransitiveSideEffect",
+          "severidad": "error",
+          "clase": "semantic",
+          "tramo": {
+            "start": {
+              "line": 11,
+              "column": 1
+            },
+            "end": {
+              "line": 16,
+              "column": 13
+            }
+          },
+          "relacionados": [
+            {
+              "start": {
+                "line": 5,
+                "column": 1
+              },
+              "end": {
+                "line": 10,
+                "column": 13
+              }
+            },
+            {
+              "start": {
+                "line": 1,
+                "column": 1
+              },
+              "end": {
+                "line": 4,
+                "column": 14
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C18",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": []
+  },
+  "programas": {
+    "es": "Funcion Even(n Como Entero) Como Entero\nSi n = 0 Entonces\nRetornar 1;\nFinSi\nRetornar Odd(n - 1);\nFinFuncion\nFuncion Odd(n Como Entero) Como Entero\nSi n = 0 Entonces\nRetornar 0;\nFinSi\nRetornar Even(n - 1);\nFinFuncion\nAlgoritmo P\nEscribir Odd(3);\nFinAlgoritmo\n",
+    "en": "function Even(n as integer) as integer\nif n = 0 then\nreturn 1;\nendIf\nreturn Odd(n - 1);\nend function\nfunction Odd(n as integer) as integer\nif n = 0 then\nreturn 0;\nendIf\nreturn Even(n - 1);\nend function\nalgorithm P\nwrite Odd(3);\nendAlgorithm\n"
+  }
+}
+```
+
+```caso
+{
+  "id": "C19",
+  "regla": "R5",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": []
+  },
+  "programas": {
+    "es": "SubProceso F() Como Entero\nDefinir Mutable x Como Entero <- 0;\nLeer x;\nEscribir x;\nRetornar x;\nFinSubProceso\nAlgoritmo P\nEscribir F();\nFinAlgoritmo\n",
+    "en": "subroutine F() as integer\ndefine mutable x as integer <- 0;\nread x;\nwrite x;\nreturn x;\nendSubroutine\nalgorithm P\nwrite F();\nendAlgorithm\n"
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C20",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "pureFunctionInterfaceImpurity",
+        "severidad": "error"
+      }
+    ]
+  },
+  "programas": {
+    "es": "SubProceso Effect() Como Entero\nEscribir 1;\nRetornar 1;\nFinSubProceso\nInterfaz Calculable\nFuncion Calcular() Como Entero;\nFinInterfaz\nClase Demo Realiza Calculable\nMetodo Calcular() Como Entero\nRetornar Effect();\nFinMetodo\nFinClase\nAlgoritmo P\nFinAlgoritmo\n",
+    "en": "subroutine Effect() as integer\nwrite 1;\nreturn 1;\nendSubroutine\ninterface Calculable\nfunction Calcular() as integer;\nendInterface\nclass Demo implements Calculable\nmethod Calcular() as integer\nreturn Effect();\nendMethod\nendClass\nalgorithm P\nendAlgorithm\n"
+  },
+  "esperas": {
+    "es": {
+      "arbol": "presente",
+      "diagnosticos": [
+        {
+          "codigo": "pureFunctionInterfaceImpurity",
+          "severidad": "error",
+          "clase": "semantic",
+          "tramo": {
+            "start": {
+              "line": 9,
+              "column": 1
+            },
+            "end": {
+              "line": 11,
+              "column": 10
+            }
+          },
+          "relacionados": [
+            {
+              "start": {
+                "line": 1,
+                "column": 1
+              },
+              "end": {
+                "line": 4,
+                "column": 14
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "en": {
+      "arbol": "presente",
+      "diagnosticos": [
+        {
+          "codigo": "pureFunctionInterfaceImpurity",
+          "severidad": "error",
+          "clase": "semantic",
+          "tramo": {
+            "start": {
+              "line": 9,
+              "column": 1
+            },
+            "end": {
+              "line": 11,
+              "column": 10
+            }
+          },
+          "relacionados": [
+            {
+              "start": {
+                "line": 1,
+                "column": 1
+              },
+              "end": {
+                "line": 4,
+                "column": 14
+              }
+            }
+          ]
+        }
+      ]
+    }
   }
 }
 ```

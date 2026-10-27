@@ -700,6 +700,11 @@
       "estado": "cumple"
     },
     {
+      "regla": "ENG.LIMITS@1.0.0#R9",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
       "regla": "ENG.LIMITS@1.0.0#R8",
       "verificacion": "ejecutor",
       "estado": "exento",

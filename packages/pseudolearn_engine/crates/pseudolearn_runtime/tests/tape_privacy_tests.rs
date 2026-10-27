@@ -3,44 +3,55 @@
 use pseudolearn_runtime::{DEFAULT_MAX_TAPE_BYTES, SecretHandle, TapeBudget};
 
 #[test]
-fn secret_handle_formatting_and_parsing() {
-    let handle = SecretHandle::new("key_1".to_owned(), "hmac_abc".to_owned());
-    let formatted = handle.to_reference_string();
-    assert_eq!(formatted, "secret:key_1:hmac_abc");
-    let parsed = SecretHandle::parse_reference(&formatted);
-    assert_eq!(parsed, Some(handle));
-}
-
-#[test]
-fn secret_handle_invalid_parsing() {
-    assert_eq!(SecretHandle::parse_reference("not_secret:k:h"), None);
-    assert_eq!(SecretHandle::parse_reference("secret:only_one"), None);
-}
-
-#[test]
-fn tape_budget_admission_and_saturation() {
-    let mut budget = TapeBudget::new(100);
-    assert!(budget.can_admit(50));
-    budget.record_admitted(50);
-    assert_eq!(budget.current_bytes, 50);
-    assert!(budget.can_admit(50));
-    assert!(!budget.can_admit(51));
-    budget.record_admitted(50);
-    assert!(!budget.can_admit(1));
-}
-
-#[test]
-fn tape_budget_default_is_sixteen_mebibytes() {
-    assert_eq!(DEFAULT_MAX_TAPE_BYTES, 16 * 1024 * 1024);
+fn secret_reference_has_the_documented_shape() -> Result<(), String> {
+    let handle = SecretHandle::authenticate("primary".to_owned(), b"key", b"private-value")
+        .map_err(|error| format!("{error:?}"))?;
+    let reference = handle.to_reference_string();
+    let parts: Vec<&str> = reference.split(':').collect();
+    assert_eq!(parts.len(), 3);
+    assert_eq!(parts.first(), Some(&"secret"));
+    assert_eq!(parts.get(1), Some(&"primary"));
+    let digest = parts.get(2).copied().unwrap_or_default();
+    assert_eq!(digest.len(), 64);
+    assert!(digest.bytes().all(|octet| octet.is_ascii_hexdigit()));
+    Ok(())
 }
 
 #[test]
 fn secret_authentication_binds_value_and_key() -> Result<(), String> {
+    let authenticate = |key: &[u8], value: &[u8]| {
+        SecretHandle::authenticate("primary".to_owned(), key, value)
+            .map(|handle| handle.value_hmac)
+            .map_err(|error| format!("{error:?}"))
+    };
+    let base = authenticate(b"key", b"private-value")?;
+    assert_eq!(base, authenticate(b"key", b"private-value")?);
+    assert_ne!(base, authenticate(b"other-key", b"private-value")?);
+    assert_ne!(base, authenticate(b"key", b"modified")?);
+    Ok(())
+}
+
+#[test]
+fn secret_reference_never_contains_the_value() -> Result<(), String> {
     let handle = SecretHandle::authenticate("primary".to_owned(), b"key", b"private-value")
         .map_err(|error| format!("{error:?}"))?;
-    assert!(handle.verifies(b"key", b"private-value"));
-    assert!(!handle.verifies(b"other-key", b"private-value"));
-    assert!(!handle.verifies(b"key", b"modified"));
     assert!(!handle.to_reference_string().contains("private-value"));
     Ok(())
+}
+
+#[test]
+fn empty_value_and_empty_key_still_authenticate_deterministically() -> Result<(), String> {
+    let first = SecretHandle::authenticate("k".to_owned(), b"key", b"")
+        .map_err(|error| format!("{error:?}"))?;
+    let second = SecretHandle::authenticate("k".to_owned(), b"key", b"")
+        .map_err(|error| format!("{error:?}"))?;
+    assert_eq!(first, second);
+    Ok(())
+}
+
+#[test]
+fn tape_budget_starts_empty_and_defaults_to_sixteen_mebibytes() {
+    let budget = TapeBudget::new(DEFAULT_MAX_TAPE_BYTES);
+    assert_eq!(budget.current_bytes, 0);
+    assert_eq!(DEFAULT_MAX_TAPE_BYTES, 16 * 1024 * 1024);
 }

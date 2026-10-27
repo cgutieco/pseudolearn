@@ -4,6 +4,8 @@
 
 Representa diagnósticos mediante códigos con argumentos tipados. Implementación disponible en el workspace.
 
+Los códigos de pureza (`pureFunctionSideEffect`, `pureFunctionTransitiveSideEffect`, `pureFunctionInterfaceImpurity`) no declaran argumentos: la ruta de propagación de la impureza viaja en `Diagnostic::related`, uno por unidad de la cadena de llamadas, y la emite `pseudolearn_semantic::effect_check`.
+
 Fuera de alcance: otras responsabilidades del motor, UI, I/O libre y construcciones nuevas.
 
 | Pendiente | Dependencia | Hito técnico |

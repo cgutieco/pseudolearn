@@ -369,7 +369,7 @@ El campo cancelacion de un caso indica la entrada a sentencia, contada desde uno
   "id": "R5",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La terminación awaiting_effect representa una suspensión en la que el programa espera la resolución asíncrona o desacoplada de un efecto externo por parte del anfitrión. Expone effect_seq, capability_kind, operation, arguments_summary y source_node_id. Es estrictamente distinta de awaiting_input y solo puede ser reanudada mediante la operación effect_result.",
+  "texto": "La terminación awaiting_effect representa una suspensión en la que el programa espera la resolución asíncrona o desacoplada de un efecto externo por parte del anfitrión. Expone effect_seq, capability_kind, operation, arguments_summary y source_node_id. Es estrictamente distinta de awaiting_input y solo puede ser reanudada mediante la operación effect_result. Cancelar la ejecución mientras espera un efecto la termina con cancelled sin esperar effect_result: el efecto pendiente queda sin resolver y un effect_result posterior es un error de uso. La reproducción desde cinta y la búsqueda histórica resuelven todo efecto desde la cinta y nunca producen awaiting_effect.",
   "verificacion": [
     "C11"
   ]
@@ -391,11 +391,28 @@ El campo cancelacion de un caso indica la entrada a sentencia, contada desde uno
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
-    "salida": "awaiting_effect_distinto\n",
-    "terminacion": "completed"
+    "salida": "100\n",
+    "terminacion": "awaiting_input",
+    "anfitrion_observado": {
+      "llamadas": 2,
+      "recursos_abiertos": 0
+    }
   },
-  "programa": "Algoritmo P\nEscribir \"awaiting_effect_distinto\";\nFinAlgoritmo\n",
-  "perfil_base": "es"
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir clock Como Reloj <- Propagar SolicitarReloj();\nRetornar clock.Ahora();\nFinSubProceso\nAlgoritmo Main\nDefinir Mutable pending Como Entero <- 0;\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nLeer pending;\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<integer, IoError>\ndefine clock as Clock <- propagate requestClock();\nreturn clock.now();\nendSubroutine\nalgorithm Main\ndefine mutable pending as integer <- 0;\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nread pending;\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": [
+      "reloj"
+    ],
+    "requested_permissions": [
+      "reloj"
+    ],
+    "clock": [
+      100
+    ]
+  }
 }
 ```
 

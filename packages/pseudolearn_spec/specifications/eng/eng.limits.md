@@ -671,6 +671,63 @@ Este contrato cuantifica los recursos que LANG.SUBPROGRAM.RECURSION y LANG.ARRAY
 }
 ```
 
+```regla
+{
+  "id": "R9",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "El presupuesto de la cinta de efectos (max_tape_bytes) no es una terminación del programa: agotarlo no cambia la salida ni la terminación, la ejecución en vivo continúa y solo la cinta se sella como no reproducible. Se mide en bytes serializados con corte exacto en max_tape_bytes.",
+  "verificacion": [
+    "C19"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C19",
+  "regla": "R9",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "2\n",
+    "terminacion": "completed",
+    "anfitrion_observado": {
+      "llamadas": 4,
+      "recursos_abiertos": 0
+    }
+  },
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\nDefinir first Como Cadena <- Propagar file.LeerTexto();\nDefinir second Como Cadena <- Propagar file.LeerTexto();\nRetornar Exito(2);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<integer, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\ndefine first as string <- propagate file.readText();\ndefine second as string <- propagate file.readText();\nreturn success(2);\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": [
+      "archivos_lectura"
+    ],
+    "requested_permissions": [
+      "archivos_lectura"
+    ],
+    "files": {
+      "a": "hola"
+    },
+    "max_tape_bytes": 1
+  },
+  "sujetos": [
+    "engine",
+    "aot"
+  ]
+}
+```
+
 ## Colecciones e interfaces
 
 Vector y Diccionario derivan sus límites del presupuesto cells existente: como máximo min(cells, u32 máximo menos dos) elementos y min(cells, u32 máximo) palabras de almacenamiento variable. Las palabras incluyen capacidad y metadatos variables, con ocho bytes por palabra. La cabecera fija no cuenta en ese almacenamiento variable. Una mutación comprueba límites, reservas y aritmética antes de publicar cambios. Vector consume una celda lógica más longitud por máximo entre uno y ancho; Diccionario consume una más longitud por uno más máximo entre uno y ancho de valor. Las referencias alcanzables se contabilizan sin doble conteo. Se conserva cellLimitExceeded para el presupuesto global y collectionLimitExceeded para el límite estructural.

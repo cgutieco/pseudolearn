@@ -26,7 +26,7 @@ Traducción procedural de expresiones, asignación, controles, entrada y salida;
 
 Invariantes: Cada bloque tiene una masa igual a su cantidad de stmt.enter. Las conversiones están explícitas en Widen; no se vuelven a resolver nombres ni a interpretar fuente.
 
-Llamadas a efectos (`effect_calls`): `emit_effect_call` traduce invocaciones a operaciones de capacidad emitiendo `Operation::EffectCall` (`O93`) con el asa de capacidad, el nombre de la operación y los argumentos tipados, asignando el valor resultante en la forma SSA de RI.
+Llamadas a efectos (`effect_calls`): `emit_effect_call` traduce invocaciones a operaciones de capacidad emitiendo `Operation::EffectCall` (`O93`) con el asa de capacidad, el nombre de la operación y los argumentos tipados, asignando el valor resultante en la forma SSA de RI. Aristas de limpieza con efectos: `Diferir` cuyo cuerpo invoca una capacidad (por ejemplo `Cerrar`) emite el `effect_call` en cada salida alcanzada después del registro (retorno normal y propagación fallida), tras guardar el resultado, y en ninguna anterior al registro. La comprobación compila programas completos y por eso vive en `pseudolearn_api/tests/cleanup_effect_edges_tests.rs`; este crate no depende del sintáctico para sus propias pruebas.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 

@@ -109,6 +109,7 @@ impl ExecutionResource {
         if maximum == 0 {
             return Err(usage("batch size must be positive"));
         }
+        self.settle_cancelled_suspension();
         if self.terminal.is_none() {
             self.drive_batch(maximum)?;
         }

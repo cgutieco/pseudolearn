@@ -140,10 +140,8 @@ fn cancellation_while_pending_rejects_later_results() -> Result<(), String> {
     run.feed("cancel", json!({}));
     let after = run.reply(&sequence, committed("capability", capability));
     let advanced = run.advance();
-    assert!(
-        after.get("failure").is_some() || kind(&advanced) == Some("cancelled"),
-        "{after} {advanced}"
-    );
+    assert!(after.get("failure").is_some(), "{after}");
+    assert_eq!(kind(&advanced), Some("cancelled"), "{advanced}");
     Ok(())
 }
 

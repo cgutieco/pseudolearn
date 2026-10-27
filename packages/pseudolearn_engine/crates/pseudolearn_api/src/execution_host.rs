@@ -3,6 +3,7 @@ use crate::ApiError;
 use pseudolearn_runtime::{HostReply, begin_host_effect, perform_host_effect, resolve_host_effect};
 use pseudolearn_vm::{PendingEffectRequest, RunExit};
 use serde_json::Value;
+use std::sync::atomic::Ordering;
 
 impl ExecutionResource {
     pub(super) fn resolve_pending(
@@ -39,10 +40,21 @@ impl ExecutionResource {
         Ok(true)
     }
 
+    pub(super) fn settle_cancelled_suspension(&mut self) {
+        if self.pending_host.is_none() || !self.cancelled.load(Ordering::Relaxed) {
+            return;
+        }
+        self.pending_host = None;
+        self.effects.abort();
+        pseudolearn_runtime::HostEffectProvider::close_all(&mut self.host);
+        self.terminal = Some(RunExit::Cancelled);
+    }
+
     pub(crate) fn effect_result(&mut self, arguments: &Value) -> Result<(), ApiError> {
         if !self.execution_mode.allows_external_host() {
             return Err(usage("external effect result rejected in replay mode"));
         }
+        self.settle_cancelled_suspension();
         let pending = self
             .pending_host
             .as_ref()

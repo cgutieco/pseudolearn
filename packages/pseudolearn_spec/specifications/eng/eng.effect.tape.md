@@ -284,9 +284,11 @@
   "id": "R5",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La cinta protege la privacidad y los límites de memoria: los argumentos clasificados como secretos se redactan y sustituyen por SecretHandle { key_id, value_hmac } antes de la serialización, y el crecimiento de la cinta respeta el límite configurable max_tape_bytes. Si la cinta excede el presupuesto de bytes o contiene secretos sin almacén de resolución externo, se sella deterministamente como NonReproducibleTruncated o NonReproducibleRedacted.",
+  "texto": "La cinta protege la privacidad y los límites de memoria: los argumentos clasificados como secretos se redactan y sustituyen por SecretHandle { key_id, value_hmac } antes de la serialización, y el crecimiento de la cinta respeta el límite configurable max_tape_bytes. Si la cinta excede el presupuesto de bytes o contiene secretos sin almacén de resolución externo, se sella deterministamente como NonReproducibleTruncated o NonReproducibleRedacted. El límite es exacto: una entrada se admite si la cinta serializada resultante no supera max_tape_bytes, y se rechaza con un byte más. Agotar solo el presupuesto de la cinta no detiene la ejecución en vivo: el programa continúa y termina con normalidad, pero la cinta sellada no es reproducible y reproducirla se rechaza con replay_non_reproducible. La referencia a un secreto depende del valor y de la clave: cambiar cualquiera de los dos cambia value_hmac, y ni el valor ni la clave aparecen en la cinta bajo forma textual, escapada, decimal o hexadecimal.",
   "verificacion": [
-    "C6"
+    "C6",
+    "C8",
+    "C9"
   ]
 }
 ```
@@ -385,6 +387,83 @@
       "a": "hola"
     },
     "grabar_y_reproducir": true
+  }
+}
+```
+
+```caso
+{
+  "id": "C8",
+  "regla": "R5",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "3\n",
+    "terminacion": "completed",
+    "anfitrion_observado": {
+      "llamadas": 5,
+      "recursos_abiertos": 0
+    }
+  },
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\nDefinir first Como Cadena <- Propagar file.LeerTexto();\nDefinir second Como Cadena <- Propagar file.LeerTexto();\nDefinir third Como Cadena <- Propagar file.LeerTexto();\nRetornar Exito(3);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<integer, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\ndefine first as string <- propagate file.readText();\ndefine second as string <- propagate file.readText();\ndefine third as string <- propagate file.readText();\nreturn success(3);\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": [
+      "archivos_lectura"
+    ],
+    "requested_permissions": [
+      "archivos_lectura"
+    ],
+    "files": {
+      "a": "hola"
+    },
+    "max_tape_bytes": 1
+  }
+}
+```
+
+```caso
+{
+  "id": "C9",
+  "regla": "R5",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "s3cr3t\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "Algoritmo Main\nEscribir \"s3cr3t\";\nFinAlgoritmo\n",
+    "en": "algorithm Main\nwrite \"s3cr3t\";\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "secrets": {
+      "token": {
+        "key_id": "k1",
+        "value": "s3cr3t"
+      }
+    },
+    "secret_keys": {
+      "k1": "clave-privada"
+    }
   }
 }
 ```

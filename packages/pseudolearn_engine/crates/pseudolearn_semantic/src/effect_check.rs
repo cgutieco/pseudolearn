@@ -19,23 +19,53 @@ pub(crate) fn check(session: &mut AnalysisSession<'_>) {
         call_edges.insert(index, calls);
     }
     attach_function_arguments(session, &mut call_edges);
-    let all_effects = propagate_effects(&direct_effects, &call_edges);
+    let reasons = propagate_effects(&direct_effects, &call_edges);
     let mut reports = Vec::new();
     for (index, function) in session.module.functions.iter().enumerate() {
         if !is_pure_function(session, function) {
             continue;
         }
         if direct_effects.contains(&index) {
-            reports.push((DiagnosticCode::PureFunctionSideEffect, function.syntax));
-        } else if all_effects.contains(&index) {
-            reports.push((DiagnosticCode::PureFunctionTransitiveSideEffect, function.syntax));
+            reports.push((DiagnosticCode::PureFunctionSideEffect, function.syntax, index));
+        } else if reasons.contains_key(&index) {
+            reports.push((DiagnosticCode::PureFunctionTransitiveSideEffect, function.syntax, index));
         }
     }
-    for (code, syntax) in reports {
-        session.report(code, syntax);
+    for (code, syntax, index) in reports {
+        report_with_chain(session, (code, syntax), &causal_chain(&reasons, index));
     }
-    check_interface_realizations(session, &all_effects);
+    check_interface_realizations(session, &reasons);
 }
+
+fn report_with_chain(
+    session: &mut AnalysisSession<'_>,
+    (code, syntax): (DiagnosticCode, usize),
+    chain: &[usize],
+) {
+    session.report(code, syntax);
+    let spans: Vec<_> = chain
+        .iter()
+        .filter_map(|index| session.module.functions.get(*index))
+        .map(|function| session.span(function.syntax))
+        .collect();
+    if let Some(diagnostic) = session.diagnostics.last_mut() {
+        diagnostic.related.extend(spans);
+    }
+}
+
+fn causal_chain(reasons: &BTreeMap<usize, Option<usize>>, start: usize) -> Vec<usize> {
+    let mut chain = Vec::new();
+    let mut current = start;
+    while let Some(Some(next)) = reasons.get(&current) {
+        if chain.contains(next) || *next == start {
+            break;
+        }
+        chain.push(*next);
+        current = *next;
+    }
+    chain
+}
+
 
 fn attach_function_arguments(
     session: &AnalysisSession<'_>,
@@ -173,24 +203,28 @@ fn compound_effects(
 fn propagate_effects(
     direct: &BTreeSet<usize>,
     edges: &BTreeMap<usize, BTreeSet<usize>>,
-) -> BTreeSet<usize> {
-    let mut effects = direct.clone();
+) -> BTreeMap<usize, Option<usize>> {
+    let mut reasons: BTreeMap<usize, Option<usize>> =
+        direct.iter().map(|index| (*index, None)).collect();
     let mut changed = true;
     while changed {
         changed = false;
         for (caller, callees) in edges {
-            if !effects.contains(caller) && callees.iter().any(|callee| effects.contains(callee)) {
-                effects.insert(*caller);
+            if reasons.contains_key(caller) {
+                continue;
+            }
+            if let Some(callee) = callees.iter().find(|callee| reasons.contains_key(callee)) {
+                reasons.insert(*caller, Some(*callee));
                 changed = true;
             }
         }
     }
-    effects
+    reasons
 }
 
 fn check_interface_realizations(
     session: &mut AnalysisSession<'_>,
-    all_effects: &BTreeSet<usize>,
+    reasons: &BTreeMap<usize, Option<usize>>,
 ) {
     let mut reports = Vec::new();
     for class_index in 0..session.module.classes.len() {
@@ -199,20 +233,21 @@ fn check_interface_realizations(
         for interface_index in 0..session.module.interfaces.len() {
             let interface = InterfaceId(u32::try_from(interface_index).unwrap_or(u32::MAX));
             if crate::interface_realizations::satisfies(session, class, interface) {
-                check_class_methods(session, (class, interface), all_effects, &mut reports);
+                check_class_methods(session, (class, interface), reasons, &mut reports);
             }
         }
     }
-    for syntax in reports {
-        session.report(DiagnosticCode::PureFunctionInterfaceImpurity, syntax);
+    for (syntax, index) in reports {
+        let chain = causal_chain(reasons, index);
+        report_with_chain(session, (DiagnosticCode::PureFunctionInterfaceImpurity, syntax), &chain);
     }
 }
 
 fn check_class_methods(
     session: &AnalysisSession<'_>,
     (class, interface): (ClassId, InterfaceId),
-    all_effects: &BTreeSet<usize>,
-    reports: &mut Vec<usize>,
+    reasons: &BTreeMap<usize, Option<usize>>,
+    reports: &mut Vec<(usize, usize)>,
 ) {
     let Some(model) = session
         .module
@@ -230,10 +265,10 @@ fn check_class_methods(
             continue;
         };
         let index = usize::try_from(found.0).unwrap_or(usize::MAX);
-        if all_effects.contains(&index) {
+        if reasons.contains_key(&index) {
             let syntax =
                 crate::hierarchy::function(session, found).map_or(0, |declaration| declaration.syntax);
-            reports.push(syntax);
+            reports.push((syntax, index));
         }
     }
 }

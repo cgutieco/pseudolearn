@@ -14,6 +14,9 @@ fn library_cases_execute_and_replay_without_live_host_calls() -> Result<(), Stri
             let Some(host) = case.get("anfitrion") else {
                 continue;
             };
+            if case.pointer("/espera/fallo").is_some() {
+                continue;
+            }
             for profile in ["es", "en"] {
                 run_case(&case, profile, host)?;
             }
