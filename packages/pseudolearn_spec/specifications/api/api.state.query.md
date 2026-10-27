@@ -371,21 +371,49 @@
   "id": "C8",
   "regla": "R5",
   "perfiles": [
-    "es",
-    "en"
+    "es"
   ],
   "rigor": [
-    "estricto",
-    "flexible"
+    "estricto"
   ],
   "origen": "derivado",
-  "operacion": "execute",
+  "operacion": "trace",
   "espera": {
-    "salida": "historia_aislada\n",
-    "terminacion": "completed"
+    "salida": "",
+    "terminacion": "completed",
+    "anfitrion_observado": {
+      "llamadas": 2
+    },
+    "estado_en": {
+      "evento": 11,
+      "estado": {
+        "marcos": [
+          {
+            "unidad": "Main",
+            "variables": {
+              "total": {
+                "valor": "100"
+              }
+            }
+          }
+        ],
+        "objetos": {}
+      }
+    }
   },
-  "programa": "Algoritmo P\nEscribir \"historia_aislada\";\nFinAlgoritmo\n",
-  "perfil_base": "es"
+  "programa": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir clock Como Reloj <- Propagar SolicitarReloj();\nRetornar clock.Ahora();\nFinSubProceso\nAlgoritmo Main\nDefinir Mutable total Como Entero <- 0;\nSegun Probe() Hacer\nExito(value): total <- value;\nError(problem): total <- 0 - 1;\nFinSegun\nFinAlgoritmo\n",
+  "perfil_base": "es",
+  "anfitrion": {
+    "permissions": [
+      "reloj"
+    ],
+    "requested_permissions": [
+      "reloj"
+    ],
+    "clock": [
+      100
+    ]
+  }
 }
 ```
 

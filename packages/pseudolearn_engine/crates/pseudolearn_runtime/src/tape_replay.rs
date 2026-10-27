@@ -12,14 +12,6 @@ impl ExecutionMode {
     pub fn allows_external_host(self) -> bool {
         matches!(self, Self::LiveRecord)
     }
-
-    pub fn as_str(self) -> &'static str {
-        match self {
-            Self::LiveRecord => "live_record",
-            Self::ReplayFromTape => "replay_from_tape",
-            Self::HistorySeek => "history_seek",
-        }
-    }
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -95,10 +87,6 @@ impl TapeReplayProvider {
 
     pub fn peek(&self) -> Option<&TapeEntry> {
         self.tape.entries.get(self.cursor)
-    }
-
-    pub fn cursor(&self) -> usize {
-        self.cursor
     }
 
     pub fn remaining(&self) -> usize {

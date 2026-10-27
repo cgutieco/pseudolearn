@@ -111,10 +111,25 @@
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
-    "salida": "error_reproduccion\n",
+    "salida": "holamundo\n",
     "terminacion": "completed"
   },
-  "programa": "Algoritmo P\nEscribir \"error_reproduccion\";\nFinAlgoritmo\n",
-  "perfil_base": "es"
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Cadena, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\nDefinir second Como ArchivoCap <- Propagar directory.Abrir(\"b\", \"lectura\");\nDefinir left Como Cadena <- Propagar file.LeerTexto();\nDefinir right Como Cadena <- Propagar second.LeerTexto();\nRetornar Exito(left + right);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<string, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\ndefine second as FileCap <- propagate directory.open(\"b\", \"read\");\ndefine left as string <- propagate file.readText();\ndefine right as string <- propagate second.readText();\nreturn success(left + right);\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": [
+      "archivos_lectura"
+    ],
+    "requested_permissions": [
+      "archivos_lectura"
+    ],
+    "files": {
+      "a": "hola",
+      "b": "mundo"
+    },
+    "grabar_y_reproducir": true
+  }
 }
 ```

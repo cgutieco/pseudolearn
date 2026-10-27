@@ -113,3 +113,8 @@ propia y solo guardan tokens generacionales; los recursos del host permanecen en
 MemoryHostProvider implementa únicamente datos en memoria, reloj declarado y fallos inyectados,
 y comparte la frontera de solicitudes con los proveedores físicos. Los métodos de archivo operan
 sobre contenido completo; cada escritura sustituye el contenido y cada lectura devuelve el contenido.
+
+### Pruebas de cinta y aislamiento del anfitrión
+
+`tests/effect_tape_tests.rs` cubre formato, estado de reproducibilidad y presupuesto; `tests/tape_replay_tests.rs` cubre cada código de `ReplayError` sobre `TapeReplayProvider`; `tests/tape_replay_host_isolation_tests.rs` ejerce `perform_host_effect` con un proveedor espía y comprueba que identidad, divergencia, fin prematuro, adulteración y cinta no reproducible se rechazan con el contador de llamadas en `0`. `ExecutionMode::as_str` y `TapeReplayProvider::cursor` se eliminaron por no tener consumidores.
+

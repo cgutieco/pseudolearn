@@ -2,7 +2,7 @@ use pseudolearn_api::ApiSession;
 use serde_json::{Value, json};
 
 const PROGRAM: &str =
-    "Algoritmo P\nDefinir x Como Entero;\nLeer x;\nEscribir x * 2;\nFinAlgoritmo\n";
+    "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nLeer x;\nEscribir x * 2;\nFinAlgoritmo\n";
 
 fn record(options: Value) -> Value {
     let mut session = ApiSession::default();

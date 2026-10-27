@@ -42,7 +42,8 @@
   "clase": "semantica",
   "texto": "La cinta de efectos utiliza el esquema versionado pseudolearn.tape/v1. Contiene la cabecera del esquema, la identidad inmutable de la ejecución y una secuencia monotónica de entradas de efecto TapeEntry serializadas de forma determinista.",
   "verificacion": [
-    "C1"
+    "C1",
+    "C7"
   ]
 }
 ```
@@ -139,7 +140,7 @@
   "id": "R3",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Cada TapeEntry registra effect_seq, task_id, source_node_id, capability_kind, operation, request_digest, secret_ref, outcome, payload_bytes y entry_hash. El campo entry_hash es un resumen SHA-256 encadenado criptográficamente con el entry_hash de la entrada previa, garantizando detección de adulteración.",
+  "texto": "Cada TapeEntry registra effect_seq, task_id, source_node_id, capability_kind, operation, request_digest, secret_reference, outcome, payload_bytes y entry_hash. El campo entry_hash es un resumen SHA-256 encadenado criptográficamente con el entry_hash de la entrada previa, garantizando detección de adulteración.",
   "verificacion": [
     "C3"
   ]
@@ -330,6 +331,60 @@
     "secret_keys": {
       "k1": "clave-privada"
     }
+  }
+}
+```
+
+```caso
+{
+  "id": "C7",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "hola\n",
+    "terminacion": "completed",
+    "anfitrion_observado": {
+      "llamadas": 9,
+      "recursos_abiertos": 0
+    }
+  },
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Cadena, ErrorES>\nDefinir values Como Argumentos <- Propagar SolicitarArgumentos();\nDefinir list Como Vector<Cadena> <- Propagar values.Valores();\nDefinir clock Como Reloj <- Propagar SolicitarReloj();\nDefinir instant Como Entero <- Propagar clock.Ahora();\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\nDefinir content Como Cadena <- Propagar file.LeerTexto();\nDefinir timer Como Temporizador <- Propagar SolicitarTemporizador();\nDefinir waited Como Entero <- Propagar timer.Esperar(5);\nRetornar Exito(content);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<string, IoError>\ndefine values as Arguments <- propagate requestArguments();\ndefine list as vector<string> <- propagate values.values();\ndefine clock as Clock <- propagate requestClock();\ndefine instant as integer <- propagate clock.now();\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\ndefine content as string <- propagate file.readText();\ndefine timer as Timer <- propagate requestTimer();\ndefine waited as integer <- propagate timer.wait(5);\nreturn success(content);\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": [
+      "argumentos",
+      "reloj",
+      "temporizador",
+      "archivos_lectura"
+    ],
+    "requested_permissions": [
+      "argumentos",
+      "reloj",
+      "temporizador",
+      "archivos_lectura"
+    ],
+    "args": [
+      "uno",
+      "dos"
+    ],
+    "clock": [
+      100
+    ],
+    "files": {
+      "a": "hola"
+    },
+    "grabar_y_reproducir": true
   }
 }
 ```

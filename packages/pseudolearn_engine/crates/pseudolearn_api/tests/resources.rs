@@ -45,7 +45,7 @@ fn suspended_input_resumes_without_repeating_output() -> Result<(), String> {
     let mut session = ApiSession::default();
     let analysis = created(
         &mut session,
-        "Algoritmo Resource\nDefinir value Como Entero;\nEscribir 8;\nLeer value;\nEscribir value + 4;\nFinAlgoritmo\n",
+        "Algoritmo Resource\nDefinir Mutable value Como Entero <- 0;\nEscribir 8;\nLeer value;\nEscribir value + 4;\nFinAlgoritmo\n",
     )?;
     let execution = session.call("start", &json!({"analysis":analysis}));
     let resource = execution
@@ -99,7 +99,7 @@ fn seeking_does_not_change_the_live_continuation() -> Result<(), String> {
     let mut session = ApiSession::default();
     let analysis = created(
         &mut session,
-        "Algoritmo Resource\nDefinir value Como Entero;\nvalue <- 9;\nEscribir value;\nFinAlgoritmo\n",
+        "Algoritmo Resource\nDefinir Mutable value Como Entero <- 0;\nvalue <- 9;\nEscribir value;\nFinAlgoritmo\n",
     )?;
     let execution = session.call("start", &json!({"analysis":analysis}));
     let resource = execution

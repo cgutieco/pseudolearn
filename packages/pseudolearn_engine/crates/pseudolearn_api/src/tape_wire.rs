@@ -75,23 +75,6 @@ pub fn replay_error_to_api(error: ReplayError) -> ApiError {
     ApiError::InvalidProtocol(error.code().to_owned())
 }
 
-pub fn compute_entry_hash(
-    previous_hash: &str,
-    sequence: u64,
-    operation: &str,
-    payload: &[u8],
-) -> String {
-    let mut hasher = Sha256::new();
-    hasher.update(previous_hash.as_bytes());
-    hasher.update(b":");
-    hasher.update(sequence.to_string().as_bytes());
-    hasher.update(b":");
-    hasher.update(operation.as_bytes());
-    hasher.update(b":");
-    hasher.update(payload);
-    format!("{:x}", hasher.finalize())
-}
-
 pub fn tape_to_value(tape: &EffectTape) -> Value {
     json!(tape)
 }

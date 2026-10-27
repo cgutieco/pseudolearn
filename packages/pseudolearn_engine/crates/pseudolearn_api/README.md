@@ -259,3 +259,12 @@ Los tests de estas capacidades se ejecutaron en selecciones acotadas, incluida l
 La grabación exporta la cinta de la sesión viva. La frontera de ejecución comprueba cada operación
 de consola frente al reproductor antes de entregar el lote al consumidor; una cinta inválida nunca
 se normaliza ni se repara al leerla. El formato y sus hashes pertenecen al runtime compartido.
+
+### Rechazo de reproducción y aislamiento verificados (`PG-3.04`–`PG-3.06`)
+
+- Los cinco códigos `replay_*` se disparan en `tests/tape_rejection_tests.rs` sobre `replay_from_tape` y `history_seek`: identidad (fuente, semilla), fin prematuro (última entrada recortada y cinta vacía, con la cadena de hashes re-sellada para que solo la secuencia delate el corte), divergencia (resumen de petición, orden permutado y entrada sobrante), adulteración (hash, carga, secuencia contigua y campo desconocido) y cinta incompleta o truncada por presupuesto. Una versión de esquema desconocida es `UnsupportedVersion`, no un error de reproducción. Ningún rechazo devuelve salida parcial.
+- `pseudolearn_runtime/tests/tape_replay_host_isolation_tests.rs` demuestra con un proveedor espía que, en cada rechazo de secuencia, el contador de llamadas al anfitrión vale `0`; la reproducción íntegra de control también lo deja en `0` mientras la grabación viva lo deja en `1`.
+- El esquema de casos del corpus no puede alterar una cinta ni observar `effect_seq`, de modo que los casos de `ENG.EFFECT.TAPE`, `API.EXECUTE` y `API.STATE.QUERY` ejercen la grabación y la reproducción aislada con `grabar_y_reproducir` (salida y terminación iguales, cero llamadas al anfitrión) y la rama de rechazo la cubren estas pruebas de Rust.
+- Se eliminó `compute_entry_hash`: era una función pública con una fórmula distinta de la cadena real (`tape_entry_hash`) que solo usaba una prueba, de modo que la prueba no comprobaba la cinta que se serializa. La prueba `recorded_entry_hashes_chain_the_previous_hash` verifica ahora la cadena de la cinta grabada.
+- Los programas de `recording_options.rs` y `resources.rs` declaraban `Definir x Como Entero;` y asignaban; desde la mutabilidad explícita el análisis los rechaza, de modo que cinco pruebas de grabación y de recurso de ejecución fallaban sin que nadie lo viera. Declaran ahora `Definir Mutable … <- 0`.
+- `recording.rs` exporta la cinta de la sesión; `recording_digest.rs` resume eventos y no participa en la cadena de la cinta, que tiene su propio `entry_hash`. La implementación del formato vive en `pseudolearn_runtime`.

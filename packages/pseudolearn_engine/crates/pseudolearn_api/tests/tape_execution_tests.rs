@@ -1,6 +1,4 @@
-use pseudolearn_api::tape_wire::{
-    build_identity, compute_entry_hash, tape_from_value, tape_to_value,
-};
+use pseudolearn_api::tape_wire::{build_identity, tape_from_value, tape_to_value};
 use pseudolearn_api::{ApiSession, ExecuteRequest};
 use pseudolearn_timeline::{EffectTape, ExecutionIdentity, TapeEntry};
 use serde_json::json;
@@ -101,13 +99,31 @@ fn tape_value_round_trip_preserves_content() -> Result<(), String> {
 }
 
 #[test]
-fn entry_hash_chains_previous_hash() {
-    let previous = "initial_seed_hash";
-    let first = compute_entry_hash(previous, 1, "escribir", &[1, 2]);
-    let second = compute_entry_hash(&first, 2, "escribir", &[3, 4]);
-    assert_ne!(first, second);
-    let tampered = compute_entry_hash(previous, 1, "leer", &[1, 2]);
-    assert_ne!(first, tampered);
+fn recorded_entry_hashes_chain_the_previous_hash() -> Result<(), String> {
+    let recording = execute_record("Algoritmo Main\nEscribir 1;\nEscribir 2;\nFinAlgoritmo\n");
+    let value = recording.pointer("/value/effect_tape").ok_or("missing tape")?;
+    let tape = tape_from_value(value).map_err(|failure| format!("{failure:?}"))?;
+    let entries = tape.entries();
+    assert!(entries.len() >= 2);
+    for pair in entries.windows(2) {
+        let (previous, entry) = match pair {
+            [previous, entry] => (previous, entry),
+            _ => return Err("window of two expected".to_owned()),
+        };
+        let expected = pseudolearn_runtime::tape_entry_hash(&previous.entry_hash, entry);
+        assert_eq!(entry.entry_hash, expected);
+        let mut altered = entry.clone();
+        altered.operation.push('x');
+        assert_ne!(
+            pseudolearn_runtime::tape_entry_hash(&previous.entry_hash, &altered),
+            expected
+        );
+        assert_ne!(
+            pseudolearn_runtime::tape_entry_hash("other_previous", entry),
+            expected
+        );
+    }
+    Ok(())
 }
 
 #[test]
@@ -176,4 +192,46 @@ fn replay_mode_rejects_non_reproducible_tape() {
         outcome.pointer("/failure/detail").and_then(serde_json::Value::as_str),
         Some("Invalid protocol: replay_non_reproducible")
     );
+}
+
+#[test]
+fn two_identical_recordings_serialize_to_identical_tapes() -> Result<(), String> {
+    let program = "Algoritmo Main\nEscribir 42;\nEscribir 7;\nFinAlgoritmo\n";
+    let first = execute_record(program);
+    let second = execute_record(program);
+    let first_tape = first.pointer("/value/effect_tape").ok_or("missing first tape")?;
+    let second_tape = second.pointer("/value/effect_tape").ok_or("missing second tape")?;
+    assert_eq!(first_tape, second_tape);
+    assert_eq!(first_tape.to_string(), second_tape.to_string());
+    Ok(())
+}
+
+#[test]
+fn recorded_input_reads_replay_from_the_tape_without_external_input() -> Result<(), String> {
+    let program = "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nLeer x;\nEscribir x * 2;\nFinAlgoritmo\n";
+    let recording = ApiSession::default().call(
+        "record",
+        &json!({"request":{"program":program,"profile":"es","strictness":"strict","seed":42,"inputs":["21"],"observe":"events"}}),
+    );
+    let tape = recording
+        .pointer("/value/effect_tape")
+        .cloned()
+        .ok_or_else(|| format!("missing tape: {recording}"))?;
+    let reads = tape
+        .pointer("/entries")
+        .and_then(serde_json::Value::as_array)
+        .map_or(0, |entries| {
+            entries.iter().filter(|entry| entry.get("operation") == Some(&json!("read"))).count()
+        });
+    assert_eq!(reads, 1, "{tape}");
+    let mut session = ApiSession::default();
+    let analysis = session.call("create_analysis", &json!({"program":program}));
+    let started = session.call("start", &json!({
+        "analysis":analysis.pointer("/value/resource"),"program":program,"profile":"es",
+        "strictness":"strict","seed":42,"execution_mode":"replay_from_tape","effect_tape":tape
+    }));
+    let response = session.call("advance", &json!({"resource":started.pointer("/value/resource"),"batch_size":1000}));
+    assert_eq!(response.pointer("/value/output"), Some(&json!("42\n")), "{response}");
+    assert_eq!(response.pointer("/value/termination/kind"), Some(&json!("completed")));
+    Ok(())
 }

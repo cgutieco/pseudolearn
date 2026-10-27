@@ -414,11 +414,11 @@ Puntos a cumplir:
 - [ ] `PG-3.02` CF-11 resuelto: la persona revisa la formulación de fallo controlado frente a caída del host.
 - [ ] `PG-3.03` Capacidades de consola, argumentos, archivos relativos a capacidad, reloj registrado y temporizadores
   lógicos; denegación por defecto.
-- [ ] `PG-3.04` Identidad de ejecución ampliada y esquema versionado de la cinta con todos los datos de cada efecto y su
+- [x] `PG-3.04` Identidad de ejecución ampliada y esquema versionado de la cinta con todos los datos de cada efecto y su
   orden de entrega.
-- [ ] `PG-3.05` Tres modos distintos: ejecutar en vivo y grabar, ejecutar desde cinta, consultar historia; reproducir y
+- [x] `PG-3.05` Tres modos distintos: ejecutar en vivo y grabar, ejecutar desde cinta, consultar historia; reproducir y
   retroceder nunca tocan disco ni red.
-- [ ] `PG-3.06` Cinta divergente, truncada o alterada rechazada con error de reproducción, sin consultar al anfitrión.
+- [x] `PG-3.06` Cinta divergente, truncada o alterada rechazada con error de reproducción, sin consultar al anfitrión.
 - [ ] `PG-3.07` Contrato de suspensión por efecto pendiente, distinto de la espera de entrada.
 - [ ] `PG-3.08` Análisis de efectos transitivos en compilación: una función pura no puede esconder E/S.
 - [ ] `PG-3.09` Errores de E/S portables, separación de bytes y texto UTF-8, y limpieza en retorno, propagación y salida.

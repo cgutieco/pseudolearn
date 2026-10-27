@@ -238,11 +238,26 @@
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
-    "salida": "aislamiento_garantizado\n",
+    "salida": "holamundo\n",
     "terminacion": "completed"
   },
-  "programa": "Algoritmo P\nEscribir \"aislamiento_garantizado\";\nFinAlgoritmo\n",
-  "perfil_base": "es"
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Cadena, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\nDefinir second Como ArchivoCap <- Propagar directory.Abrir(\"b\", \"lectura\");\nDefinir left Como Cadena <- Propagar file.LeerTexto();\nDefinir right Como Cadena <- Propagar second.LeerTexto();\nRetornar Exito(left + right);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<string, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\ndefine second as FileCap <- propagate directory.open(\"b\", \"read\");\ndefine left as string <- propagate file.readText();\ndefine right as string <- propagate second.readText();\nreturn success(left + right);\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": [
+      "archivos_lectura"
+    ],
+    "requested_permissions": [
+      "archivos_lectura"
+    ],
+    "files": {
+      "a": "hola",
+      "b": "mundo"
+    },
+    "grabar_y_reproducir": true
+  }
 }
 ```
 
@@ -273,10 +288,29 @@
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
-    "salida": "efecto_resultado_ok\n",
-    "terminacion": "completed"
+    "salida": "150\n",
+    "terminacion": "completed",
+    "anfitrion_observado": {
+      "llamadas": 4,
+      "recursos_abiertos": 0
+    }
   },
-  "programa": "Algoritmo P\nEscribir \"efecto_resultado_ok\";\nFinAlgoritmo\n",
-  "perfil_base": "es"
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir clock Como Reloj <- Propagar SolicitarReloj();\nDefinir timer Como Temporizador <- Propagar SolicitarTemporizador();\nDefinir instant Como Entero <- Propagar clock.Ahora();\nRetornar timer.Esperar(50);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<integer, IoError>\ndefine clock as Clock <- propagate requestClock();\ndefine timer as Timer <- propagate requestTimer();\ndefine instant as integer <- propagate clock.now();\nreturn timer.wait(50);\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": [
+      "reloj",
+      "temporizador"
+    ],
+    "requested_permissions": [
+      "reloj",
+      "temporizador"
+    ],
+    "clock": [
+      100
+    ]
+  }
 }
 ```

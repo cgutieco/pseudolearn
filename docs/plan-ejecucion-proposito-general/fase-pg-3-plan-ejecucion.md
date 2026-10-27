@@ -174,30 +174,30 @@ al corpus, sin depender de este texto.
 
 ### PG-3.04 · Identidad de ejecución ampliada y esquema versionado de cinta con todos los datos de cada efecto y su orden de entrega
 
-- [ ] `PG-3.04.01` Crear `ENG.EFFECT.TAPE`: esquema `pseudolearn.tape/v1`, `ExecutionIdentity` (resúmenes de fuentes, grafo de paquetes, perfil, semilla, límites y permisos efectivos), `TapeEntry` (`effect_seq`, `task_id = 0`, `source_node_id`, `capability_kind`, `operation`, `request_digest`, `secret_ref`, `outcome`, `payload_bytes`, `entry_hash`) y cálculo de resumen encadenado SHA-256.
-- [ ] `PG-3.04.02` Casos: grabación de secuencia mixta (argumentos, reloj, lectura/escritura de archivo, temporizador y consola), determinismo de serialización entre dos ejecuciones idénticas, preservación del orden de entrega por `effect_seq` y cambio del digest ante modificación de semilla, límite o fuente.
-- [ ] `PG-3.04.03` Tests espejo de serialización canónica, encadenamiento de hashes y compatibilidad con las grabaciones de `Leer` existentes en `pseudolearn_timeline` y `pseudolearn_api`.
-- [ ] `PG-3.04.04` Implementar `EffectTape`, `ExecutionIdentity` y `TapeEntry` en `pseudolearn_timeline` y conectarlos con `recording.rs` y `recording_digest.rs` en `pseudolearn_api`.
-- [ ] `PG-3.04.05` Actualizar `README.md` de `pseudolearn_timeline` y `pseudolearn_api`.
-- [ ] `PG-3.04.06` Verificación acotada: `--only ENG.EFFECT.TAPE` y tests de `recording` en `pseudolearn_api` y `pseudolearn_timeline`.
+- [x] `PG-3.04.01` Crear `ENG.EFFECT.TAPE`: esquema `pseudolearn.tape/v1`, `ExecutionIdentity` (resúmenes de fuentes, grafo de paquetes, perfil, semilla, límites y permisos efectivos), `TapeEntry` (`effect_seq`, `task_id = 0`, `source_node_id`, `capability_kind`, `operation`, `request_digest`, `secret_ref`, `outcome`, `payload_bytes`, `entry_hash`) y cálculo de resumen encadenado SHA-256.
+- [x] `PG-3.04.02` Casos: grabación de secuencia mixta (argumentos, reloj, lectura/escritura de archivo, temporizador y consola), determinismo de serialización entre dos ejecuciones idénticas, preservación del orden de entrega por `effect_seq` y cambio del digest ante modificación de semilla, límite o fuente.
+- [x] `PG-3.04.03` Tests espejo de serialización canónica, encadenamiento de hashes y compatibilidad con las grabaciones de `Leer` existentes en `pseudolearn_timeline` y `pseudolearn_api`.
+- [x] `PG-3.04.04` Implementar `EffectTape`, `ExecutionIdentity` y `TapeEntry` en `pseudolearn_timeline` y conectarlos con `recording.rs` y `recording_digest.rs` en `pseudolearn_api`.
+- [x] `PG-3.04.05` Actualizar `README.md` de `pseudolearn_timeline` y `pseudolearn_api`.
+- [x] `PG-3.04.06` Verificación acotada: `--only ENG.EFFECT.TAPE` y tests de `recording` en `pseudolearn_api` y `pseudolearn_timeline`.
 
 ### PG-3.05 · Tres modos separados: ejecutar y grabar, ejecutar desde cinta, consultar historia (`seek`); reproducir y retroceder nunca tocan disco ni red
 
-- [ ] `PG-3.05.01` Editar `API.EXECUTE` y `API.STATE.QUERY` para especificar los tres modos (`LiveRecord`, `ReplayFromTape`, `HistorySeek`) y la garantía de aislamiento total del anfitrión durante `ReplayFromTape` y `HistorySeek`.
-- [ ] `PG-3.05.02` Casos: ejecutar en `LiveRecord` con efectos de archivo y reloj, reproducir la cinta resultante en `ReplayFromTape` con el sistema de archivos virtual vacío/desconectado obteniendo idéntica salida y traza, y realizar consultas `seek` hacia adelante y hacia atrás sobre una sesión con efectos sin reejecutar llamadas al anfitrión.
-- [ ] `PG-3.05.03` Tests con espía de anfitrión (`PanickingHostSpy` / contador de llamadas = `0`) que demuestran que `ReplayFromTape` y `HistorySeek` jamás invocan al proveedor físico del anfitrión.
-- [ ] `PG-3.05.04` Implementar `ExecutionMode`, `TapeReplayProvider` y la integración con `CheckpointStore` en `pseudolearn_timeline` (`replay.rs`) y `pseudolearn_api` (`execution_resource.rs`).
-- [ ] `PG-3.05.05` Actualizar `README.md` de `pseudolearn_timeline` y `pseudolearn_api`.
-- [ ] `PG-3.05.06` Verificación acotada: `--only API.EXECUTE,API.STATE.QUERY,ENG.STATE.SNAPSHOT,ENG.STATE.INCREMENTAL` y tests de `replay` en `pseudolearn_timeline`.
+- [x] `PG-3.05.01` Editar `API.EXECUTE` y `API.STATE.QUERY` para especificar los tres modos (`LiveRecord`, `ReplayFromTape`, `HistorySeek`) y la garantía de aislamiento total del anfitrión durante `ReplayFromTape` y `HistorySeek`.
+- [x] `PG-3.05.02` Casos: ejecutar en `LiveRecord` con efectos de archivo y reloj, reproducir la cinta resultante en `ReplayFromTape` con el sistema de archivos virtual vacío/desconectado obteniendo idéntica salida y traza, y realizar consultas `seek` hacia adelante y hacia atrás sobre una sesión con efectos sin reejecutar llamadas al anfitrión.
+- [x] `PG-3.05.03` Tests con espía de anfitrión (`PanickingHostSpy` / contador de llamadas = `0`) que demuestran que `ReplayFromTape` y `HistorySeek` jamás invocan al proveedor físico del anfitrión.
+- [x] `PG-3.05.04` Implementar `ExecutionMode`, `TapeReplayProvider` y la integración con `CheckpointStore` en `pseudolearn_timeline` (`replay.rs`) y `pseudolearn_api` (`execution_resource.rs`).
+- [x] `PG-3.05.05` Actualizar `README.md` de `pseudolearn_timeline` y `pseudolearn_api`.
+- [x] `PG-3.05.06` Verificación acotada: `--only API.EXECUTE,API.STATE.QUERY,ENG.STATE.SNAPSHOT,ENG.STATE.INCREMENTAL` y tests de `replay` en `pseudolearn_timeline`.
 
 ### PG-3.06 · Cinta divergente, truncada o alterada rechazada con error de reproducción, sin consultar al anfitrión
 
-- [ ] `PG-3.06.01` Especificar en `ENG.EFFECT.TAPE` y `API.ERRORS` los códigos de rechazo de reproducción (`replay_identity_mismatch`, `replay_divergence`, `replay_truncated_tape`, `replay_corrupted_tape`, `replay_non_reproducible`) y la prohibición de caer de vuelta (*fallback*) al anfitrión vivo cuando falla la cinta.
-- [ ] `PG-3.06.02` Casos negativos: reproducción con código fuente modificado (`replay_identity_mismatch`), con argumento de efecto distinto (`replay_divergence`), con última entrada recortada (`replay_truncated_tape`), con `entry_hash` o `payload_bytes` alterado (`replay_corrupted_tape`) y con cinta marcada como no reproducible (`replay_non_reproducible`).
-- [ ] `PG-3.06.03` Tests unitarios de cada código de rechazo en `TapeReplayProvider` verificando que el contador de llamadas al anfitrión permanece en `0`.
-- [ ] `PG-3.06.04` Implementar la validación de identidad, secuencia y hash en `TapeReplayProvider` y proyectar los errores en `pseudolearn_api`.
-- [ ] `PG-3.06.05` Actualizar `README.md` de `pseudolearn_timeline` y catálogo de errores en `pseudolearn_api`.
-- [ ] `PG-3.06.06` Verificación acotada: `--only ENG.EFFECT.TAPE,API.ERRORS` y tests negativos de `tape_replay`.
+- [x] `PG-3.06.01` Especificar en `ENG.EFFECT.TAPE` y `API.ERRORS` los códigos de rechazo de reproducción (`replay_identity_mismatch`, `replay_divergence`, `replay_truncated_tape`, `replay_corrupted_tape`, `replay_non_reproducible`) y la prohibición de caer de vuelta (*fallback*) al anfitrión vivo cuando falla la cinta.
+- [x] `PG-3.06.02` Casos negativos: reproducción con código fuente modificado (`replay_identity_mismatch`), con argumento de efecto distinto (`replay_divergence`), con última entrada recortada (`replay_truncated_tape`), con `entry_hash` o `payload_bytes` alterado (`replay_corrupted_tape`) y con cinta marcada como no reproducible (`replay_non_reproducible`).
+- [x] `PG-3.06.03` Tests unitarios de cada código de rechazo en `TapeReplayProvider` verificando que el contador de llamadas al anfitrión permanece en `0`.
+- [x] `PG-3.06.04` Implementar la validación de identidad, secuencia y hash en `TapeReplayProvider` y proyectar los errores en `pseudolearn_api`.
+- [x] `PG-3.06.05` Actualizar `README.md` de `pseudolearn_timeline` y catálogo de errores en `pseudolearn_api`.
+- [x] `PG-3.06.06` Verificación acotada: `--only ENG.EFFECT.TAPE,API.ERRORS` y tests negativos de `tape_replay`.
 
 ### PG-3.07 · Contrato de suspensión por efecto pendiente (`awaiting_effect`), distinto de la espera de entrada (`awaiting_input`)
 
@@ -472,9 +472,9 @@ Cada iteración requiere autorización propia y se detiene al concluir (`PHASE-S
 | `PG-3.01` · Frontera de confirmación lógica y estado incierto | Abierta · auditada 2026-10-27 · `.02` abierta | `see conform --only ENG.EXEC.EFFECT-COMMIT` (20 obs, 0 div), `see conform --only ENG.EXEC.EFFECT-ORDER` (20 obs, 0 div), tests `capability_table_tests.rs` y `effect_tape_tests.rs` en verde | Estados `Requested`, `Resolved`, resultados `Committed`/`Failed`/`Uncertain`, orden secuencial |
 | `PG-3.02` · Fallo controlado vs terminación de anfitrión | Abierta · auditada 2026-10-27 · `.01` y `.02` abiertas | `see conform --only ENG.EXEC.MODEL` (40 obs, 0 div), `see conform --only RT.HOST.INTERFACE` (20 obs, 0 div), tests `execution_resource_tests.rs` en verde | Separación nítida de `Resultado<T, ErrorES>`, trampa y corte forzoso de anfitrión |
 | `PG-3.03` · Capacidades y confinamiento por defecto | Abierta · auditada 2026-10-27 · `.05` abierta | `see conform --only API.PROJECT.MANIFEST` (27 obs, 0 div), `see conform --only LANG.CAPABILITY.MODEL` (16 obs, 0 div), `see conform --only RT.HOST.INTERFACE` (20 obs, 0 div), `see conform --only RT.PROCESS` (12 obs, 0 div), tests `authority_tests.rs` y `capability_fs_tests.rs` en verde | Confinamiento de rutas relativas, normalización lógica, prevención de escapes (`..`) y atenuación |
-| `PG-3.04` · Identidad y esquema versionado de cinta | Abierta · cierre previo no fiable | `see conform --only ENG.EFFECT.TAPE` (20 obs, 0 div), tests de encadenamiento SHA-256 y serialización canónica en `tape_execution_tests.rs` en verde | Esquema `pseudolearn.tape/v1`, `ExecutionIdentity`, `TapeEntry` con hash encadenado |
-| `PG-3.05` · Modos LiveRecord, ReplayFromTape y HistorySeek | Abierta · cierre previo no fiable | `see conform --only API.EXECUTE` (16 obs, 0 div), `see conform --only API.STATE.QUERY` (16 obs, 0 div), tests `tape_replay_tests.rs` en verde | Aislamiento estricto de anfitrión durante reproducción y retroceso (`seek`) |
-| `PG-3.06` · Rechazo de cinta alterada/divergente | Abierta · cierre previo no fiable | `see conform --only API.ERRORS` (4 obs, 0 div), tests `tape_replay_tests.rs` y `tape_execution_tests.rs` en verde | Rechazo determinista (`replay_identity_mismatch`, `replay_divergence`, `replay_truncated_tape`, `replay_non_reproducible`) sin fallback |
+| `PG-3.04` · Identidad y esquema versionado de cinta | Cumplido · auditado 2026-10-27 (§11.6) | `see conform --only ENG.EFFECT.TAPE` en engine y aot (28 obs, 0 div c/u); `cargo test` de `effect_tape_tests`, `tape_privacy_tests`, `tape_identity`, `tape_execution_tests` y `recording_options` en verde | Esquema `pseudolearn.tape/v1`, `ExecutionIdentity`, `TapeEntry` con hash encadenado; la implementación vive en `pseudolearn_runtime` y `pseudolearn_timeline` la reexporta |
+| `PG-3.05` · Modos LiveRecord, ReplayFromTape y HistorySeek | Cumplido · auditado 2026-10-27 (§11.6) | `see conform --only API.EXECUTE` (20 obs), `API.STATE.QUERY` (13 obs), `ENG.STATE.SNAPSHOT` (24 obs) y `ENG.STATE.INCREMENTAL` (4 obs), 0 div; `tape_replay_host_isolation_tests`, `history_seek_isolation_tests`, `fake_host`, `resources` y `replay_tests` en verde | Aislamiento del anfitrión durante reproducción y retroceso con contador de llamadas en `0` |
+| `PG-3.06` · Rechazo de cinta alterada/divergente | Cumplido · auditado 2026-10-27 (§11.6) | `see conform --only ENG.EFFECT.TAPE` y `API.ERRORS` (4 obs), 0 div; `tape_rejection_tests` (8), `tape_replay_tests` y `tape_replay_host_isolation_tests` en verde | Los cinco códigos `replay_*` se disparan por prueba de Rust; el corpus no puede alterar una cinta |
 | `PG-3.07` · Suspensión y reanudación interactiva (`awaiting_effect`) | Abierta · cierre previo no fiable | `see conform --only API.EXECUTE` (20 obs, 0 div), tests `api_tests.rs` y `tape_execution_tests.rs` en verde | Estado `awaiting_effect`, reanudación con `effect_result` determinista, sin bloqueo de hilo |
 | `PG-3.08` · Pureza transitiva sobre funciones, clausuras e interfaces | Abierta · cierre previo no fiable | `see conform --only LANG.CAPABILITY.PURITY` en engine (24 obs, 0 div) y aot (24 obs, 0 div), tests `pseudolearn_semantic` y `pseudolearn_syntax` en verde | Análisis estático cerrado en `effect_check.rs`, clausuras, realizaciones de interfaz bilingües (`Realiza`/`implements`) |
 | `PG-3.09` · Tipos y bibliotecas: Bytes, ErrorES y Diferir | Abierta · cierre previo no fiable | `see conform --only LIB.IO` en engine (16 obs, 0 div) y aot (16 obs, 0 div), `see conform --only LIB.TIME` en engine (8 obs, 0 div) y aot (8 obs, 0 div), tests `bytes_buffer_tests.rs` en verde | `BytesBuffer`, tipos opacos de capacidades, `ErrorES`, `Diferir` en retorno y propagación de errores |
@@ -701,3 +701,25 @@ Decisiones: la terminación no exitosa sella la cinta `Incomplete` y no existe u
 Casillas abiertas con motivo: `PG-3.01.02` (el esquema de casos no observa `effect_seq` ni el estado de la cinta; solo lo prueban pruebas de la API); `PG-3.02.01` (el texto oficial no recoge la desconexión durante `awaiting_effect`); `PG-3.02.02` (sin caso de corpus de cancelación durante `awaiting_effect`); `PG-3.03.05` (no existen fichas de ayuda de capacidades en `TOOL.SERVICE.CATALOG`).
 
 Hallazgos fuera de alcance: `ENG.EXEC.MODEL` C11 (`R5`, `awaiting_effect`) imprime una cadena y no puede sustituirse sin ampliar el esquema (`PG-3.07`); la evidencia de propiedades (`properties-<sujeto>.json`) se sobrescribe en cada ejecución con `--only`, por lo que cada contrato necesita `--operation properties` inmediatamente antes de su `conform`.
+
+### 11.6 Auditoría de PG-3.04 a PG-3.06 · 2026-10-27
+
+Evidencia ejecutada en `packages/pseudolearn_spec/results/pg-3-audit-04-06/` (ignorado por Git). Defectos hallados y corregidos:
+
+| Defecto | Corrección |
+|---|---|
+| `API.ERRORS` C1, `API.EXECUTE` C4 y C5 y `API.STATE.QUERY` C8 imprimían una cadena sin ejercer la regla | C4 y `API.ERRORS` C1 pasan a grabar y reproducir con archivos (`grabar_y_reproducir`: salida igual y cero llamadas al anfitrión); C5 observa cuatro llamadas con reloj y temporizador (una observación errónea hace fallar `R6`); C8 pasa a `trace` con `estado_en` en el evento 11 y `llamadas = 2` |
+| `ENG.EFFECT.TAPE` sin caso de secuencia mixta; `R3` nombraba `secret_ref` y el formato serializa `secret_reference` | `C7` (argumentos, reloj, archivo y temporizador, 9 llamadas); texto de `R3` corregido |
+| `compute_entry_hash` era una función pública con una fórmula distinta de la cadena real y solo la usaba una prueba | Eliminada; la prueba verifica `tape_entry_hash` sobre la cinta grabada |
+| `ExecutionMode::as_str` y `TapeReplayProvider::cursor` sin consumidores | Eliminados |
+| Las pruebas citadas `tape_replay_tests.rs` de `pseudolearn_timeline` no existían y no había pruebas de `replay_divergence` ni `replay_truncated_tape` en la API, ni contador de llamadas en el rechazo | `tape_replay_host_isolation_tests.rs` (runtime, proveedor espía) y `tape_rejection_tests.rs` (API, ambos modos aislados); `history_seek_isolation_tests.rs` recorre estados hacia adelante y atrás con efectos |
+| Sin pruebas de determinismo de serialización, de cambio de identidad por componente ni de reproducción de lecturas `Leer` | `two_identical_recordings_serialize_to_identical_tapes`, `every_identity_component_changes_the_identity`, `recorded_input_reads_replay_from_the_tape_without_external_input` |
+| Cinco pruebas de `recording_options.rs` y `resources.rs` fallaban en silencio: sus programas asignaban sin `Mutable` | Programas con `Definir Mutable … <- 0` |
+| El README de `pseudolearn_timeline` atribuía a este crate la implementación de la cinta | Corregido: reexporta desde runtime; documentada `effect_replay` |
+
+Decisiones: la implementación de cinta, identidad y reproductor vive en `pseudolearn_runtime` (`D-PG3-09` pedía `replay.rs` y `execution_resource.rs`) porque VM y AOT la comparten; `recording_digest.rs` resume eventos y no se conecta con la cinta, que lleva su propia cadena de hashes; los casos negativos de `PG-3.06.02` y los de seek con `effect_seq` se prueban con Rust porque el esquema de casos no puede alterar una cinta ni observar `effect_seq`.
+
+Verificación: `rust-checks all` y `cargo clippy --workspace --all-targets --features pseudolearn_api/native -- -D warnings` en verde; `see validate`, `see lock --check` y `see export --check` en verde; `conform --only` en engine para los seis contratos y en aot para `ENG.EFFECT.TAPE`, sin divergencias.
+
+Hallazgos fuera de alcance: el corpus no cubre `awaiting_effect` ni `effect_result` (`PG-3.07`); `ENG.EXEC.MODEL` C11 sigue decorativo; `crates/pseudolearn_aot_rt` no tiene pruebas propias de rechazo de cinta (`PG-3.12`).
+
