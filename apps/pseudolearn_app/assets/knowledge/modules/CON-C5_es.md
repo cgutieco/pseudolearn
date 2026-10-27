@@ -44,20 +44,21 @@ tiene guardado.
 
 :::parte errores-frecuentes
 
-## Una interfaz
+## Una clase abstracta
 
-Las interfaces están fuera del alcance de este lenguaje. Es una construcción real de la orientación a
-objetos, y el analizador la reconoce para decir exactamente eso en vez de tratarla como un nombre mal
-escrito.
+Las clases abstractas están fuera del alcance de este lenguaje. Es una construcción real de la
+orientación a objetos, y el analizador la reconoce para decir exactamente eso en vez de tratarla como
+un nombre mal escrito.
 
 ```pseudo
 Algoritmo Probar
 FinAlgoritmo
 
-Interfaz Figura
+Abstracta Clase Figura
+FinClase
 ```
 
-{{diagnostico:unsupportedInterfaceConstruct}}
+{{diagnostico:unsupportedAbstractConstruct}}
 
 ## Un miembro estático
 

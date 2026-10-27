@@ -11,7 +11,9 @@ fn bytes_buffer_empty_and_size() {
 #[test]
 fn bytes_buffer_cell_count_calculation() {
     let buffer = BytesBuffer::from_vec(vec![0; 64]);
-    assert_eq!(buffer.cells(), 4);
+    assert_eq!(buffer.cells(), 9);
+    let small_buffer = BytesBuffer::from_vec(vec![0; 24]);
+    assert_eq!(small_buffer.cells(), 4);
 }
 
 #[test]

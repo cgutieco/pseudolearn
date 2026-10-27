@@ -25,32 +25,8 @@ impl IoError {
         Self::new(IoErrorKind::PermissionDenied, false)
     }
 
-    pub(crate) const fn already_exists() -> Self {
-        Self::new(IoErrorKind::AlreadyExists, false)
-    }
-
     pub const fn end_of_file() -> Self {
         Self::new(IoErrorKind::EndOfFile, false)
-    }
-
-    pub(crate) const fn invalid_utf8() -> Self {
-        Self::new(IoErrorKind::InvalidUtf8, false)
-    }
-
-    pub(crate) const fn invalid_path() -> Self {
-        Self::new(IoErrorKind::InvalidPath, false)
-    }
-
-    pub(crate) const fn closed_capability() -> Self {
-        Self::new(IoErrorKind::ClosedCapability, false)
-    }
-
-    pub(crate) const fn timed_out() -> Self {
-        Self::new(IoErrorKind::TimedOut, false)
-    }
-
-    pub(crate) const fn interrupted() -> Self {
-        Self::new(IoErrorKind::Interrupted, false)
     }
 
     pub fn code(self) -> &'static str {

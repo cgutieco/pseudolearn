@@ -63,7 +63,7 @@ impl FakeHostProvider {
         Ok(())
     }
 
-    pub(crate) fn delete(&mut self, path: &str) -> Result<(), IoErrorKind> {
+    pub fn delete(&mut self, path: &str) -> Result<(), IoErrorKind> {
         if let Some(&fault) = self.faults.get(path) {
             return Err(fault);
         }
@@ -71,21 +71,5 @@ impl FakeHostProvider {
             .remove(path)
             .map(|_| ())
             .ok_or(IoErrorKind::NotFound)
-    }
-
-    pub(crate) fn current_time(&self) -> u64 {
-        self.time_nanos
-    }
-
-    pub(crate) fn advance_time(&mut self, nanos: u64) {
-        self.time_nanos = self.time_nanos.saturating_add(nanos);
-    }
-
-    pub(crate) fn program_arguments(&self) -> &[String] {
-        &self.arguments
-    }
-
-    pub(crate) fn inject_fault(&mut self, path: String, kind: IoErrorKind) {
-        self.faults.insert(path, kind);
     }
 }

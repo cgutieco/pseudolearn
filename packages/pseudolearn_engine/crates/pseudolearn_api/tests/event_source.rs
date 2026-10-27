@@ -31,7 +31,8 @@ fn entered_nodes(events: &[Value]) -> Vec<Value> {
 
 #[test]
 fn statements_sharing_a_line_have_distinct_node_identities() -> Result<(), String> {
-    let events = run("Algoritmo P\nDefinir x Como Entero;\nx <- 1; x <- 2;\nFinAlgoritmo\n")?;
+    let events =
+        run("Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nx <- 1; x <- 2;\nFinAlgoritmo\n")?;
     let nodes = entered_nodes(&events);
     assert_eq!(nodes.len(), 3);
     assert_ne!(nodes.get(1), nodes.get(2));
@@ -60,7 +61,7 @@ fn entered_and_exited_events_of_one_statement_share_identity() -> Result<(), Str
 #[test]
 fn every_event_of_a_loop_resolves_to_a_node() -> Result<(), String> {
     let events = run(
-        "Algoritmo P\nDefinir i Como Entero;\nPara i <- 1 Hasta 3 Con Paso 1 Hacer\nEscribir i;\nFinPara\nFinAlgoritmo\n",
+        "Algoritmo P\nDefinir Mutable i Como Entero <- 0;\nPara i <- 1 Hasta 3 Con Paso 1 Hacer\nEscribir i;\nFinPara\nFinAlgoritmo\n",
     )?;
     assert!(!events.is_empty());
     for event in &events {

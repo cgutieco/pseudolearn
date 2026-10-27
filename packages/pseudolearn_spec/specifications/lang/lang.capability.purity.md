@@ -80,8 +80,8 @@
     ]
   },
   "programas": {
-    "es": "Funcion F() : Entero\nEscribir 1;\nRetornar 1;\nFinFuncion\nAlgoritmo P\nFinAlgoritmo\n",
-    "en": "function F() : integer\nwrite 1;\nreturn 1;\nendFunction\nalgorithm P\nendAlgorithm\n"
+    "es": "Funcion F() Como Entero\nEscribir 1;\nRetornar 1;\nFinFuncion\nAlgoritmo P\nEscribir F();\nFinAlgoritmo\n",
+    "en": "function F() as integer\nwrite 1;\nreturn 1;\nendSubroutine\nalgorithm P\nwrite F();\nendAlgorithm\n"
   }
 }
 ```
@@ -105,8 +105,8 @@
     "diagnosticos": []
   },
   "programas": {
-    "es": "Funcion Cuadrado(x: Entero) : Entero\nRetornar x * x;\nFinFuncion\nAlgoritmo P\nFinAlgoritmo\n",
-    "en": "function Cuadrado(x: integer) : integer\nreturn x * x;\nendFunction\nalgorithm P\nendAlgorithm\n"
+    "es": "Funcion Cuadrado(x Como Entero) Como Entero\nRetornar x * x;\nFinFuncion\nAlgoritmo P\nEscribir Cuadrado(2);\nFinAlgoritmo\n",
+    "en": "function Cuadrado(x as integer) as integer\nreturn x * x;\nendSubroutine\nalgorithm P\nwrite Cuadrado(2);\nendAlgorithm\n"
   }
 }
 ```
@@ -147,8 +147,8 @@
     ]
   },
   "programas": {
-    "es": "SubProceso Efecto()\nEscribir 2;\nFinSubProceso\nFuncion F() : Entero\nEfecto();\nRetornar 0;\nFinFuncion\nAlgoritmo P\nFinAlgoritmo\n",
-    "en": "subProcess Efecto()\nwrite 2;\nendSubProcess\nfunction F() : integer\nEfecto();\nreturn 0;\nendFunction\nalgorithm P\nendAlgorithm\n"
+    "es": "SubProceso Efecto()\nEscribir 2;\nFinSubProceso\nFuncion F() Como Entero\nEfecto();\nRetornar 0;\nFinFuncion\nAlgoritmo P\nEscribir F();\nFinAlgoritmo\n",
+    "en": "subroutine Efecto()\nwrite 2;\nendSubroutine\nfunction F() as integer\nEfecto();\nreturn 0;\nendSubroutine\nalgorithm P\nwrite F();\nendAlgorithm\n"
   }
 }
 ```
@@ -189,8 +189,8 @@
     ]
   },
   "programas": {
-    "es": "SubProceso ConEfecto(x: Entero) : Entero\nEscribir x;\nRetornar x;\nFinSubProceso\nFuncion Aplicar(fn: Funcion(Entero) : Entero, v: Entero) : Entero\nRetornar fn(v);\nFinFuncion\nAlgoritmo P\nAplicar(ConEfecto, 5);\nFinAlgoritmo\n",
-    "en": "subProcess ConEfecto(x: integer) : integer\nwrite x;\nreturn x;\nendSubProcess\nfunction Aplicar(fn: function(integer) : integer, v: integer) : integer\nreturn fn(v);\nendFunction\nalgorithm P\nAplicar(ConEfecto, 5);\nendAlgorithm\n"
+    "es": "SubProceso ConEfecto(x Como Entero) Como Entero\nEscribir x;\nRetornar x;\nFinSubProceso\nFuncion Aplicar(fn Como Funcion(Entero) Como Entero, v Como Entero) Como Entero\nRetornar fn(v);\nFinFuncion\nAlgoritmo P\nEscribir Aplicar(ConEfecto, 5);\nFinAlgoritmo\n",
+    "en": "subroutine ConEfecto(x as integer) as integer\nwrite x;\nreturn x;\nendSubroutine\nfunction Aplicar(fn as function(integer) as integer, v as integer) as integer\nreturn fn(v);\nendSubroutine\nalgorithm P\nwrite Aplicar(ConEfecto, 5);\nendAlgorithm\n"
   }
 }
 ```
@@ -231,8 +231,8 @@
     ]
   },
   "programas": {
-    "es": "Interfaz Calculable\nFuncion Calcular() : Entero;\nFinInterfaz\nClase Demo Implementa Calculable\nFuncion Calcular() : Entero\nEscribir 1;\nRetornar 1;\nFinFuncion\nFinClase\nAlgoritmo P\nFinAlgoritmo\n",
-    "en": "interface Calculable\nfunction Calcular() : integer;\nendInterface\nclass Demo implements Calculable\nfunction Calcular() : integer\nwrite 1;\nreturn 1;\nendFunction\nendClass\nalgorithm P\nendAlgorithm\n"
+    "es": "Interfaz Calculable\nFuncion Calcular() Como Entero;\nFinInterfaz\nClase Demo Realiza Calculable\nMetodo Calcular() Como Entero\nEscribir 1;\nRetornar 1;\nFinMetodo\nFinClase\nAlgoritmo P\nFinAlgoritmo\n",
+    "en": "interface Calculable\nfunction Calcular() as integer;\nendInterface\nclass Demo implements Calculable\nmethod Calcular() as integer\nwrite 1;\nreturn 1;\nendMethod\nendClass\nalgorithm P\nendAlgorithm\n"
   }
 }
 ```
@@ -269,7 +269,7 @@
   },
   "programas": {
     "es": "SubProceso Saludar()\nEscribir \"subproceso_ok\";\nFinSubProceso\nAlgoritmo P\nSaludar();\nFinAlgoritmo\n",
-    "en": "subProcess Saludar()\nwrite \"subproceso_ok\";\nendSubProcess\nalgorithm P\nSaludar();\nendAlgorithm\n"
+    "en": "subroutine Saludar()\nwrite \"subproceso_ok\";\nendSubroutine\nalgorithm P\nSaludar();\nendAlgorithm\n"
   }
 }
 ```

@@ -4,7 +4,7 @@ use pseudolearn_api::{AnalyzeRequest, ExecuteRequest, execute_analyze, execute_p
 fn analyzes_valid_program() {
     let request = AnalyzeRequest {
         program:
-            "Algoritmo Test\n  Definir a Como Entero;\n  a <- 1;\n  Escribir a;\nFinAlgoritmo\n"
+            "Algoritmo Test\n  Definir a Como Entero <- 1;\n  Escribir a;\nFinAlgoritmo\n"
                 .to_owned(),
         profile: "es".to_owned(),
         strictness: "strict".to_owned(),
@@ -21,13 +21,13 @@ fn analyzes_original_unicode_identifiers_in_every_profile_and_strictness() -> Re
     for (profile, program, declaration_column) in [
         (
             "es",
-            "Algoritmo P\nDefinir año Como Entero;\nan\u{0303}o <- 5;\nEscribir año;\nFinAlgoritmo\n",
-            9,
+            "Algoritmo P\nDefinir Mutable año Como Entero <- 0;\nan\u{0303}o <- 5;\nEscribir año;\nFinAlgoritmo\n",
+            17,
         ),
         (
             "en",
-            "algorithm P\ndefine año as integer;\nan\u{0303}o <- 5;\nwrite año;\nendAlgorithm\n",
-            8,
+            "algorithm P\ndefine mutable año as integer <- 0;\nan\u{0303}o <- 5;\nwrite año;\nendAlgorithm\n",
+            16,
         ),
     ] {
         for strictness in ["strict", "flexible"] {
@@ -85,11 +85,11 @@ fn loose_module_directive_names_execute_as_identifiers() {
     for (profile, program) in [
         (
             "es",
-            "Algoritmo P\nDefinir Importar, Exportar, import, export Como Entero;\nImportar <- 1;\nExportar <- 2;\nimport <- 3;\nexport <- 4;\nEscribir Importar, Exportar, import, export;\nFinAlgoritmo\n",
+            "Algoritmo P\nDefinir Importar Como Entero <- 1;\nDefinir Exportar Como Entero <- 2;\nDefinir import Como Entero <- 3;\nDefinir export Como Entero <- 4;\nEscribir Importar, Exportar, import, export;\nFinAlgoritmo\n",
         ),
         (
             "en",
-            "algorithm P\ndefine Importar, Exportar, import, export as integer;\nImportar <- 1;\nExportar <- 2;\nimport <- 3;\nexport <- 4;\nwrite Importar, Exportar, import, export;\nendAlgorithm\n",
+            "algorithm P\ndefine Importar as integer <- 1;\ndefine Exportar as integer <- 2;\ndefine import as integer <- 3;\ndefine export as integer <- 4;\nwrite Importar, Exportar, import, export;\nendAlgorithm\n",
         ),
     ] {
         for strictness in ["strict", "flexible"] {

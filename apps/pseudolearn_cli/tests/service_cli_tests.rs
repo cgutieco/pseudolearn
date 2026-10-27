@@ -10,7 +10,7 @@ fn format_prints_canonical_source_to_stdout() -> Result<(), Box<dyn std::error::
     let target_file = working_directory.join("unformatted.pseudo");
     std::fs::write(
         &target_file,
-        "algoritmo Principal\ndefinir x como entero\nfinalgoritmo\n",
+        "algoritmo Principal\ndefinir x como entero <- 0\nfinalgoritmo\n",
     )?;
 
     let process_output = Command::new(env!("CARGO_BIN_EXE_pseudo"))
@@ -21,7 +21,7 @@ fn format_prints_canonical_source_to_stdout() -> Result<(), Box<dyn std::error::
     let stdout_content = String::from_utf8_lossy(&process_output.stdout);
     assert_eq!(
         stdout_content,
-        "Algoritmo Principal\n  Definir x Como Entero;\nFinAlgoritmo\n"
+        "Algoritmo Principal\n  Definir x Como Entero <- 0;\nFinAlgoritmo\n"
     );
     Ok(())
 }
@@ -33,7 +33,7 @@ fn format_check_returns_one_when_not_canonical() -> Result<(), Box<dyn std::erro
     let target_file = working_directory.join("check_needed.pseudo");
     std::fs::write(
         &target_file,
-        "algoritmo Principal\ndefinir x como entero\nfinalgoritmo\n",
+        "algoritmo Principal\ndefinir x como entero <- 0\nfinalgoritmo\n",
     )?;
 
     let process_output = Command::new(env!("CARGO_BIN_EXE_pseudo"))
@@ -58,7 +58,7 @@ fn format_check_returns_zero_when_canonical() -> Result<(), Box<dyn std::error::
     let target_file = working_directory.join("clean.pseudo");
     std::fs::write(
         &target_file,
-        "Algoritmo Principal\n  Definir x Como Entero;\nFinAlgoritmo\n",
+        "Algoritmo Principal\n  Definir x Como Entero <- 0;\nFinAlgoritmo\n",
     )?;
 
     let process_output = Command::new(env!("CARGO_BIN_EXE_pseudo"))
@@ -82,7 +82,7 @@ fn format_write_updates_file_in_place() -> Result<(), Box<dyn std::error::Error>
     let target_file = working_directory.join("in_place.pseudo");
     std::fs::write(
         &target_file,
-        "algoritmo Principal\ndefinir x como entero\nfinalgoritmo\n",
+        "algoritmo Principal\ndefinir x como entero <- 0\nfinalgoritmo\n",
     )?;
 
     let process_output = Command::new(env!("CARGO_BIN_EXE_pseudo"))
@@ -93,7 +93,7 @@ fn format_write_updates_file_in_place() -> Result<(), Box<dyn std::error::Error>
     let file_content = std::fs::read_to_string(&target_file)?;
     assert_eq!(
         file_content,
-        "Algoritmo Principal\n  Definir x Como Entero;\nFinAlgoritmo\n"
+        "Algoritmo Principal\n  Definir x Como Entero <- 0;\nFinAlgoritmo\n"
     );
     Ok(())
 }
@@ -151,7 +151,7 @@ fn translate_fails_on_identifier_collision() -> Result<(), Box<dyn std::error::E
     let target_file = working_directory.join("collision.pseudo");
     std::fs::write(
         &target_file,
-        "Algorithm Colision\n  Define fin As Integer;\nEndAlgorithm\n",
+        "Algorithm Colision\n  Define fin As Integer <- 0;\nEndAlgorithm\n",
     )?;
 
     let process_output = Command::new(env!("CARGO_BIN_EXE_pseudo"))
@@ -263,7 +263,7 @@ fn translate_reports_the_collision_position_and_writes_nothing()
     let source = directory.join("collision.pseudo");
     std::fs::write(
         &source,
-        "Algorithm Colision\n  Define fin As Integer;\nEndAlgorithm\n",
+        "Algorithm Colision\n  Define fin As Integer <- 0;\nEndAlgorithm\n",
     )?;
     let destination = directory.join("never.pseudo");
     let _ = std::fs::remove_file(&destination);
@@ -333,7 +333,7 @@ fn format_check_on_a_broken_file_fails_without_touching_it()
 
 #[test]
 fn lsp_serves_diagnostics_and_completion_over_the_wire() -> Result<(), Box<dyn std::error::Error>> {
-    let open = r#"{"jsonrpc":"2.0","method":"textDocument/didOpen","params":{"textDocument":{"uri":"file:///a.pseudo","languageId":"pseudolearn","version":1,"text":"Algoritmo Año\n  Definir ñandú Como Entero;\n  ñan\nFinAlgoritmo\n"}}}"#;
+    let open = r#"{"jsonrpc":"2.0","method":"textDocument/didOpen","params":{"textDocument":{"uri":"file:///a.pseudo","languageId":"pseudolearn","version":1,"text":"Algoritmo Año\n  Definir ñandú Como Entero <- 0;\n  ñan\nFinAlgoritmo\n"}}}"#;
     let complete = r#"{"jsonrpc":"2.0","id":2,"method":"textDocument/completion","params":{"textDocument":{"uri":"file:///a.pseudo"},"position":{"line":2,"character":5}}}"#;
     let (code, stdout) = run_lsp(&[
         r#"{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"locale":"es"}}"#,

@@ -535,6 +535,7 @@ version = "0.1.0"
 name = "pseudolearn_api"
 version = "0.1.0"
 dependencies = [
+ "pseudolearn_abi",
  "pseudolearn_bytecode",
  "pseudolearn_diagnostics",
  "pseudolearn_ir",

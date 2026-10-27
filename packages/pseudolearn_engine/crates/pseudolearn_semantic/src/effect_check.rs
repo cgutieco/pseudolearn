@@ -1,6 +1,6 @@
 #![forbid(unsafe_code)]
 
-use crate::hir::{FunctionKind, HirFunction};
+use crate::hir::HirFunction;
 use crate::identities::{ClassId, ExpressionId, StatementId};
 use crate::interface_model::InterfaceId;
 use crate::session::AnalysisSession;
@@ -18,10 +18,11 @@ pub(crate) fn check(session: &mut AnalysisSession<'_>) {
         }
         call_edges.insert(index, calls);
     }
+    attach_function_arguments(session, &mut call_edges);
     let all_effects = propagate_effects(&direct_effects, &call_edges);
     let mut reports = Vec::new();
     for (index, function) in session.module.functions.iter().enumerate() {
-        if function.kind != FunctionKind::Function {
+        if !is_pure_function(session, function) {
             continue;
         }
         if direct_effects.contains(&index) {
@@ -34,6 +35,64 @@ pub(crate) fn check(session: &mut AnalysisSession<'_>) {
         session.report(code, syntax);
     }
     check_interface_realizations(session, &all_effects);
+}
+
+fn attach_function_arguments(
+    session: &AnalysisSession<'_>,
+    call_edges: &mut BTreeMap<usize, BTreeSet<usize>>,
+) {
+    for expression in &session.module.expressions.kinds {
+        if let crate::expression_model::HirExpression::Call { function, arguments } = expression {
+            attach_call_arguments(session, call_edges, *function, arguments);
+        }
+    }
+}
+
+fn attach_call_arguments(
+    session: &AnalysisSession<'_>,
+    call_edges: &mut BTreeMap<usize, BTreeSet<usize>>,
+    function: crate::identities::FunctionId,
+    arguments: &[ExpressionId],
+) {
+    let target = usize::try_from(function.0).unwrap_or(usize::MAX);
+    for argument in arguments {
+        if let Some(origin) = argument_function_origin(session, *argument) {
+            if let Some(edges) = call_edges.get_mut(&target) {
+                edges.insert(origin);
+            }
+        }
+    }
+}
+
+fn argument_function_origin(
+    session: &AnalysisSession<'_>,
+    argument: ExpressionId,
+) -> Option<usize> {
+    let index = usize::try_from(argument.0).unwrap_or(usize::MAX);
+    match session.module.expressions.kinds.get(index) {
+        Some(crate::expression_model::HirExpression::FunctionValue(callee)) => {
+            Some(unwrap_function_value(session, *callee))
+        }
+        _ => None,
+    }
+}
+
+fn unwrap_function_value(
+    session: &AnalysisSession<'_>,
+    function: crate::identities::FunctionId,
+) -> usize {
+    for (original, wrapper) in &session.module.function_values {
+        if *wrapper == function {
+            return usize::try_from(original.0).unwrap_or(usize::MAX);
+        }
+    }
+    usize::try_from(function.0).unwrap_or(usize::MAX)
+}
+
+fn is_pure_function(session: &AnalysisSession<'_>, function: &HirFunction) -> bool {
+    let lexeme = session.lexeme(function.syntax);
+    let folded = session.options.profile.fold_word(lexeme);
+    folded == "funcion" || folded == "function"
 }
 
 fn function_has_direct_effects(
@@ -73,6 +132,24 @@ fn statement_effects(
             collect_calls(session, *expression_id, calls);
             false
         }
+        HirStatement::Return(Some(expression_id)) => {
+            collect_calls(session, *expression_id, calls);
+            false
+        }
+        HirStatement::Assign { value, .. } => {
+            collect_calls(session, *value, calls);
+            false
+        }
+        _ => compound_effects(session, statement, calls),
+    }
+}
+
+fn compound_effects(
+    session: &AnalysisSession<'_>,
+    statement: &HirStatement,
+    calls: &mut BTreeSet<usize>,
+) -> bool {
+    match statement {
         HirStatement::Conditional { affirmative, negative, .. } => {
             block_has_effects(session, affirmative, calls)
                 || block_has_effects(session, negative, calls)
@@ -101,9 +178,25 @@ fn collect_calls(
     let Some(expression) = session.module.expressions.kinds.get(index) else {
         return;
     };
-    if let crate::expression_model::HirExpression::Call { function, .. } = expression {
-        let function_index = usize::try_from(function.0).unwrap_or(usize::MAX);
-        calls.insert(function_index);
+    match expression {
+        crate::expression_model::HirExpression::Call { function, arguments } => {
+            let function_index = usize::try_from(function.0).unwrap_or(usize::MAX);
+            calls.insert(function_index);
+            for argument in arguments {
+                collect_calls(session, *argument, calls);
+            }
+        }
+        crate::expression_model::HirExpression::Binary { left, right, .. } => {
+            collect_calls(session, *left, calls);
+            collect_calls(session, *right, calls);
+        }
+        crate::expression_model::HirExpression::Unary { operand, .. } => {
+            collect_calls(session, *operand, calls);
+        }
+        crate::expression_model::HirExpression::Widen(inner) => {
+            collect_calls(session, *inner, calls);
+        }
+        _ => {}
     }
 }
 
@@ -160,7 +253,7 @@ fn check_class_methods(
         return;
     };
     for expected in model.methods {
-        if session.module.types.get(expected.signature.result) == crate::types::Type::Unit {
+        if !expected.pure {
             continue;
         }
         let Some(found) = crate::hierarchy::find_method(session, class, &expected.name) else {

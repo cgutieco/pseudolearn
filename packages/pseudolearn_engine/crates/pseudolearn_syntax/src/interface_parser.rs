@@ -34,10 +34,15 @@ pub(crate) fn interface(state: &mut ParserState<'_>) -> Result<usize, ()> {
 fn signature(state: &mut ParserState<'_>) -> Result<usize, ()> {
     let start = state.token();
     let marker = state.nodes.len();
-    state.require(
-        TokenKind::Keyword(KeywordKind::Method),
-        DiagnosticCode::ExpectedInterfaceSignature,
-    )?;
+    if !state.eat(TokenKind::Keyword(KeywordKind::Method))
+        && !state.eat(TokenKind::Keyword(KeywordKind::Subroutine))
+    {
+        let span = state.span();
+        if !state.lexical_gap {
+            state.report(DiagnosticCode::ExpectedInterfaceSignature, span);
+        }
+        return Err(());
+    }
     name(state, DiagnosticCode::ExpectedSubroutineName)?;
     crate::parameter_parser::parameters(state)?;
     if state.keyword(KeywordKind::TypeConnector) {
@@ -65,9 +70,7 @@ fn unit_boundary(kind: TokenKind) -> bool {
     matches!(
         kind,
         TokenKind::EndOfFile
-            | TokenKind::Keyword(
-                KeywordKind::Algorithm | KeywordKind::ClassKeyword | KeywordKind::Subroutine
-            )
+            | TokenKind::Keyword(KeywordKind::Algorithm | KeywordKind::ClassKeyword)
     )
 }
 

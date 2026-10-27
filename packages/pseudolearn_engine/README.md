@@ -149,8 +149,8 @@ reconocimiento de directivas. No se reserva contexto para otras palabras.
 
 ### semantic
 
-Problema: produce un hir tipado desde la resolución estática. Elección: Columnas con índices tipados (`LocalId`, `FunctionId`, `ExpressionId`, `TypeId`); registro de firmas, jerarquía, ámbitos por unidad, tipos y flujo; HIR tipado con la clase de valor de cada expresión; desvirtualización por jerarquía de clases en mundo cerrado.
-Alternativas descartadas: Arenas con índices tipados evitan referencias enlazadas y sus tiempos de vida. Se rechaza Rc<RefCell<…>> por coste y errores dinámicos de préstamo.
+Problema: produce un hir tipado desde la resolución estática y verifica contratos de pureza transitiva. Elección: Columnas con índices tipados (`LocalId`, `FunctionId`, `ExpressionId`, `TypeId`); registro de firmas, jerarquía, ámbitos por unidad, tipos y flujo; HIR tipado con la clase de valor de cada expresión; desvirtualización por jerarquía de clases en mundo cerrado; análisis transitivo de efectos (`effect_check`) sobre el grafo cerrado de llamadas, clausuras capturadas, propagación de valores funcionales en argumentos e implementaciones de interfaz.
+Alternativas descartadas: Arenas con índices tipados evitan referencias enlazadas y sus tiempos de vida. Se rechaza Rc<RefCell<…>> por coste y errores dinámicos de préstamo. Se descarta marcar efectos en tiempo de ejecución o confiar en anotaciones manuales sin verificación del grafo de llamadas.
 
 ### project
 
@@ -183,13 +183,19 @@ Alternativas descartadas: Lua 5 y SPARC inspiran ventanas solapadas; el verifica
 ### runtime (B4 aceptada)
 
 El runtime cubre aritmética comprobada, montón plano, objetos, arreglos, mapas de definición de enteros,
-raíces exactas por punto seguro, texto, recolección no móvil y azar con estado explícito. Cada asignación
-guarda forma y metadatos en una cabecera común en banda; no consulta `BTreeMap<Handle, Allocation>` en
-el camino de lectura y escritura. `BlockRecord` conserva dirección, tamaño físico y celdas lógicas para
-recolección y diferenciales. Las lecturas y escrituras obtienen sus metadatos de la cabecera y del diseño
-de clase indexado. Los diferenciales del montón cubren solo palabras usadas. Las asas pueden reutilizar
-una dirección física sin reutilizar su identidad ordinal. `#![forbid(unsafe_code)]` rige en este crate.
-Alternativas descartadas: V8 y JVM inspiran asas comprimidas; Swift inspira migas para texto UTF-8. Se rechaza conteo de referencias por ciclos, movimiento por identidad e unsafe en el runtime. Immix, LXR y Perceus son alternativas medibles sin adopción técnica.
+raíces exactas por punto seguro, texto, recolección no móvil, azar con estado explícito y la tabla de
+capacidades confinadas (`CapabilityTable`). Cada asignación guarda forma y metadatos en una cabecera común
+en banda; no consulta `BTreeMap<Handle, Allocation>` en el camino de lectura y escritura. `BlockRecord`
+conserva dirección, tamaño físico y celdas lógicas para recolección y diferenciales. Las lecturas y
+escrituras obtienen sus metadatos de la cabecera y del diseño de clase indexado. Los diferenciales del
+montón cubren solo palabras usadas. Las asas pueden reutilizar una dirección física sin reutilizar su
+identidad ordinal. La tabla de capacidades aplica invalidación generacional por ranura, garantiza el
+invariante de no amplificación (`child_rights ⊆ parent_rights`) y aísla la E/S binaria mediante
+`BytesBuffer` y `IoError`. `#![forbid(unsafe_code)]` rige en este crate.
+Alternativas descartadas: V8 y JVM inspiran asas comprimidas; Swift inspira migas para texto UTF-8;
+Wasi y Capsicum inspiran descriptores por capacidad y generaciones. Se rechaza conteo de referencias
+por ciclos, movimiento por identidad, acceso directo a `std::fs` o `std::time` sin capacidad, e unsafe
+en el runtime. Immix, LXR y Perceus son alternativas medibles sin adopción técnica.
 
 ### library (B4 aceptada)
 
@@ -230,8 +236,8 @@ directorios locales ignorados suministrados al trabajador de medición.
 
 ### timeline
 
-Problema: reconstruye el estado observable de cualquier instante mediante puntos de control. Elección: Cinta de entradas; puntos de control diferenciales (sombra del montón, segmentos de deshacer por bloques de 64 palabras, bancos de ventanas activas, registros, azar, cursor de salida) por masa de sentencia ejecutada, con **raleo exponencial** y presupuesto; consulta por instante = restaurar + reproducir con el gemelo sondeado; caché de vistas de marcos, variables y cortes de arreglos.
-Alternativas descartadas: rr inspira grabar solo el no determinismo y reproducir; Python Tutor y Sorva inspiran la máquina nocional observable. Se rechazan grabación del sistema operativo, copia completa por evento, deltas de vista duplicados y tope fijo de pasos.
+Problema: reconstruye el estado observable de cualquier instante mediante puntos de control y gestiona la cinta canónica de efectos. Elección: Cinta de entradas con esquema canónico `pseudolearn.tape/v1`, encadenamiento criptográfico SHA-256 por entrada (`entry_hash`), redacción obligatoria de secretos en cinta (`SecretRef`), soporte determinista de presupuesto de cinta (`max_tape_bytes`) y tres modos cerrados de ejecución (`LiveRecord`, `ReplayFromTape`, `HistorySeek`); puntos de control diferenciales (sombra del montón, segmentos de deshacer por bloques de 64 palabras, bancos de ventanas activas, registros, azar, cursor de salida) por masa de sentencia ejecutada, con **raleo exponencial** y presupuesto; consulta por instante = restaurar + reproducir con el gemelo sondeado; caché de vistas de marcos, variables y cortes de arreglos.
+Alternativas descartadas: rr inspira grabar solo el no determinismo y reproducir; Python Tutor y Sorva inspiran la máquina nocional observable. Se rechazan grabación del sistema operativo, almacenamiento de secretos en texto plano en la cinta, cinta de longitud ilimitada sin corte determinista, copia completa por evento, deltas de vista duplicados y tope fijo de pasos.
 
 ### matemática y memoria observables
 
@@ -246,7 +252,7 @@ Hölzle aporta tarjetas como alternativa medida y no como barrera por defecto.
 
 ### api
 
-Problema: ofrece operaciones públicas totales sobre recursos del núcleo. Elección: Recursos con identificador; operaciones totales que devuelven `Result`; captura de defectos internos como `DIAG.ENGINE.INTERNAL-FAULT`; codificaciones JSON canónica y binaria columnar; negociación de capacidades; renderizado en el idioma de interfaz pedido. `analyze` devuelve también cada token léxico, su identidad estable y su tramo, incluidos comentarios y tokens de programas con errores recuperables, para que los editores proyecten resaltado sin repetir el análisis. `help_query` consulta una sesión de edición con revisión exacta y posiciones explícitas en escalares Unicode o unidades UTF-16; rechaza coordenadas que no coinciden con un límite de fuente y solo anuncia `service_help` cuando la operación está disponible. La consulta es de solo lectura y no expone índices del árbol. `ExecutionResource` conserva la máquina viva y delega los checkpoints a `pseudolearn_timeline::CheckpointStore`; las consultas reproducen en una máquina temporal desde el checkpoint más cercano.
+Problema: ofrece operaciones públicas totales sobre recursos del núcleo. Elección: Recursos con identificador; operaciones totales que devuelven `Result`; captura de defectos internos como `DIAG.ENGINE.INTERNAL-FAULT`; codificaciones JSON canónica y binaria columnar; negociación de capacidades; renderizado en el idioma de interfaz pedido. `analyze` devuelve también cada token léxico, su identidad estable y su tramo, incluidos comentarios y tokens de programas con errores recuperables, para que los editores proyecten resaltado sin repetir el análisis. `help_query` consulta una sesión de edición con revisión exacta y posiciones explícitas en escalares Unicode o unidades UTF-16; rechaza coordenadas que no coinciden con un límite de fuente y solo anuncia `service_help` cuando la operación está disponible. La consulta es de solo lectura y no expone índices del árbol. `ExecutionResource` conserva la máquina viva y delega los checkpoints a `pseudolearn_timeline::CheckpointStore`; las consultas reproducen en una máquina temporal desde el checkpoint más cercano. El recurso y la ejecución soportan el estado de suspensión `awaiting_effect` con reanudación por `effect_result`, y permiten inyectar `FakeHostProvider` en memoria para pruebas deterministas y conformidad sin efectos ambientales reales.
 
 La compilación para `execute` conserva los diagnósticos `Warning` del análisis cuando no hay errores; si
 la compilación falla, la respuesta mantiene los diagnósticos de error ordenados.

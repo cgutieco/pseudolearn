@@ -2,7 +2,7 @@ use pseudolearn_api::{AnalyzeRequest, execute_analyze, render_diagnostic};
 
 #[test]
 fn keeps_named_types_distinct_from_generated_keyword_identities() -> Result<(), String> {
-    let response = execute_analyze(&AnalyzeRequest {program: "class integerType\nendClass\nalgorithm Main\ndefine instance as integerType;\ninstance <- 1;\nendAlgorithm\n".to_owned(), profile: "en".to_owned(), strictness: "strict".to_owned(), source: None});
+    let response = execute_analyze(&AnalyzeRequest {program: "class integerType\nendClass\nalgorithm Main\ndefine instance as integerType <- 1;\nendAlgorithm\n".to_owned(), profile: "en".to_owned(), strictness: "strict".to_owned(), source: None});
     let diagnostic = response
         .diagnostics
         .iter()

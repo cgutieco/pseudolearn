@@ -9,7 +9,7 @@ use std::sync::atomic::{AtomicU32, Ordering};
 static COUNTER: AtomicU32 = AtomicU32::new(0);
 
 const DOUBLE: &str =
-    "Algoritmo P\nDefinir x Como Entero;\nLeer x;\nEscribir x * 2;\nFinAlgoritmo\n";
+    "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nLeer x;\nEscribir x * 2;\nFinAlgoritmo\n";
 const DIVIDE: &str = "Algoritmo P\nEscribir 1;\nEscribir 1 div 0;\nFinAlgoritmo\n";
 const THREE: &str = "Algoritmo P\nEscribir 1;\nEscribir 2;\nEscribir 3;\nFinAlgoritmo\n";
 const INVALID: &str = "Algoritmo P\nEscribir total;\nFinAlgoritmo\n";

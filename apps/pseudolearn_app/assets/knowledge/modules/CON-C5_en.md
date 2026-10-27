@@ -45,19 +45,20 @@ holds.
 
 :::parte errores-frecuentes
 
-## An interface
+## An abstract class
 
-Interfaces are out of scope for this language. It is a real object-oriented construction, and the
-analyser recognises it in order to say exactly that instead of treating it as a misspelled name.
+Abstract classes are out of scope for this language. It is a real object-oriented construction, and
+the analyser recognises it in order to say exactly that instead of treating it as a misspelled name.
 
 ```pseudo
 algorithm Try
 endAlgorithm
 
-interface Shape
+abstract class Shape
+endClass
 ```
 
-{{diagnostico:unsupportedInterfaceConstruct}}
+{{diagnostico:unsupportedAbstractConstruct}}
 
 ## A static member
 

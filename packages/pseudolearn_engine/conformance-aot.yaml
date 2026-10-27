@@ -1241,27 +1241,31 @@
     },
     {
       "regla": "LANG.CAPABILITY.PURITY@1.0.0#R1",
-      "verificacion": "crates/pseudolearn_semantic/src/effect_check.rs",
-      "estado": "cumple"
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "La regla incluye casos de análisis estático, no anunciado por el adaptador AOT; el sujeto engine los contrasta y los casos de ejecución se contrastan en ambos."
     },
     {
       "regla": "LANG.CAPABILITY.PURITY@1.0.0#R2",
-      "verificacion": "crates/pseudolearn_semantic/src/effect_check.rs",
-      "estado": "cumple"
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "La regla incluye casos de análisis estático, no anunciado por el adaptador AOT; el sujeto engine los contrasta y los casos de ejecución se contrastan en ambos."
     },
     {
       "regla": "LANG.CAPABILITY.PURITY@1.0.0#R3",
-      "verificacion": "crates/pseudolearn_semantic/src/effect_check.rs",
-      "estado": "cumple"
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "La regla incluye casos de análisis estático, no anunciado por el adaptador AOT; el sujeto engine los contrasta y los casos de ejecución se contrastan en ambos."
     },
     {
       "regla": "LANG.CAPABILITY.PURITY@1.0.0#R4",
-      "verificacion": "crates/pseudolearn_semantic/src/effect_check.rs",
-      "estado": "cumple"
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "La regla incluye casos de análisis estático, no anunciado por el adaptador AOT; el sujeto engine los contrasta y los casos de ejecución se contrastan en ambos."
     },
     {
       "regla": "LANG.CAPABILITY.PURITY@1.0.0#R5",
-      "verificacion": "crates/pseudolearn_semantic/src/effect_check.rs",
+      "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {

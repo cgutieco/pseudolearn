@@ -8,7 +8,7 @@ static COUNTER: AtomicU32 = AtomicU32::new(0);
 
 const PRINT: &str = "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n";
 const DOUBLE: &str =
-    "Algoritmo P\nDefinir x Como Entero;\nLeer x;\nEscribir x * 2;\nFinAlgoritmo\n";
+    "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nLeer x;\nEscribir x * 2;\nFinAlgoritmo\n";
 const DIVIDE: &str = "Algoritmo P\nEscribir 1;\nEscribir 1 div 0;\nFinAlgoritmo\n";
 const INVALID: &str = "Algoritmo P\nEscribir total;\nFinAlgoritmo\n";
 

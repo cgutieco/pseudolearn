@@ -32,23 +32,6 @@ impl BytesBuffer {
         &mut self.octets
     }
 
-    pub(crate) fn get_byte(&self, index: usize) -> Option<u8> {
-        self.octets.get(index).copied()
-    }
-
-    pub(crate) fn set_byte(&mut self, index: usize, value: u8) -> bool {
-        if let Some(slot) = self.octets.get_mut(index) {
-            *slot = value;
-            true
-        } else {
-            false
-        }
-    }
-
-    pub(crate) fn push_byte(&mut self, value: u8) {
-        self.octets.push(value);
-    }
-
     pub fn cells(&self) -> usize {
         bytes_cell_count(self.octets.len())
     }

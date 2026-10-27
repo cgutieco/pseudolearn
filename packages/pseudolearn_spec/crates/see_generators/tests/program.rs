@@ -37,6 +37,7 @@ fn vocabulary() -> Vocabulary {
         "classKeyword",
         "publicVisibility",
         "declare",
+        "mutableKeyword",
         "typeConnector",
         "integerType",
         "endClass",

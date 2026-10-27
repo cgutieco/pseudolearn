@@ -23,10 +23,13 @@ pub(crate) fn resolve(session: &mut AnalysisSession<'_>, node: usize) -> Interfa
         .into_iter()
         .map(|node| parameter(session, node))
         .collect();
+    let opener = session.options.profile.fold_word(session.lexeme(node));
+    let pure = opener == "funcion" || opener == "function";
     InterfaceMethod {
         name,
         signature: FunctionSignature { parameters, result },
         span: session.span(node),
+        pure,
     }
 }
 

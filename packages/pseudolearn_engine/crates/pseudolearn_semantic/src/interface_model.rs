@@ -9,6 +9,7 @@ pub struct InterfaceMethod {
     pub name: String,
     pub signature: FunctionSignature,
     pub span: Span,
+    pub pure: bool,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
