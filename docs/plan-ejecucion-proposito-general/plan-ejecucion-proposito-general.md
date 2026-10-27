@@ -449,12 +449,12 @@ Cierre común (definiciones en §4.0):
 - [x] `PG-3.C09` Fichas de ayuda, datos de proyección de la sintaxis nueva y evolución sincronizada de `apps/pseudolearn_app`.
 - [x] `PG-3.C10` Riesgos revisados y experimentos con procedencia o diferidos por la persona.
 - [x] `PG-3.C11` Pruebas necesarias y verificadores directamente afectados en verde, con selección y omisiones registradas.
-- [ ] `PG-3.C12` Commit sin atribución de IA y push ordinario comprobado a la rama única.
+- [x] `PG-3.C12` Commit sin atribución de IA y push ordinario comprobado a la rama única. Commit `4bdbd52`, publicado con push ordinario a `feature/agregar-ruta-de-especificacion` y comprobado contra `origin`.
 - [x] `PG-3.C13` Resumen completo, informe a la persona y parada. Informe final entregado al terminar la iteración del 2026-10-27 (ver §11.4 del plan detallado); la fase sigue abierta y rige `PHASE-STOP`.
 
 #### Resumen de PG-3
 
-Estado a 2026-10-27: todos los puntos de la fase están cumplidos con evidencia ejecutada en esta iteración (plan detallado §11.9); queda abierta solo `PG-3.C12` (commit sin atribución de IA y push ordinario comprobado a la rama única), que gestiona la persona. Rige `PHASE-STOP`: no se inicia PG-4 sin autorización nueva.
+Estado a 2026-10-27: todos los puntos de la fase están cumplidos con evidencia ejecutada en esta iteración (plan detallado §11.9); todas las casillas de cierre están marcadas, incluida `PG-3.C12` (commit `4bdbd52`). Rige `PHASE-STOP`: no se inicia PG-4 sin autorización nueva.
 
 | Punto | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
@@ -467,7 +467,7 @@ Estado a 2026-10-27: todos los puntos de la fase están cumplidos con evidencia 
 | `PG-3.11`, `PG-3.12` | Cumplido | Corredor SEE con anfitrión falso; `pseudo run --nativo` con cinta en ambos sentidos | — |
 | `PG-3.13` | Cumplido | `pg-tape`: 338, 557 y 740 B por efecto, crecimiento lineal; E-PG-05 media 1,0001 dentro del presupuesto revisado; E-PG-09 con 7 de 7 vectores bloqueados y registro cerrado de ocho | Presupuesto revisado por la persona el 2026-10-27; codificación de la carga de cinta sigue siendo seis veces su tamaño |
 
-Revisión Git de cierre: los cambios de esta tanda no están commiteados (`PG-3.C12` abierta) · Verificadores ejecutados: `see validate` (181), `lock --check`, `export --check`; `see conform` en `engine`, `aot` y `service` por contrato; pruebas dirigidas de `abi`, `runtime`, `semantic`, `timeline`, `vm`, `lowering`, `service`, `aot_rt`, `api` (native), la CLI, `see_conformance`, `see_validation` y `bench_worker` (`pg_tape`); `rust-checks all` del motor, de las especificaciones y de la CLI; Clippy `-D warnings` del motor, de las especificaciones y de la CLI; `dart analyze`, límites y `flutter test` de efectos y proyección · Pendientes justificados: divergencias previas de `TOOL.SERVICE.HOVER` y `TOOL.LSP.CAPABILITIES` por programas sin inicializador; `workloads_tests` de `pseudolearn_bench_worker` no termina en 28 minutos en release; cuelgue puntual de `pseudo run --nativo`; serialización de la carga de cinta (§11.9) · Decisiones de la persona: el corpus manda sobre el vocabulario de la cinta (2026-10-27); presupuesto de E-PG-05 revisado (2026-10-27); cierre de los puntos restantes en esta iteración.
+Revisión Git de cierre: commit `4bdbd52` publicado en la rama única · Verificadores ejecutados: `see validate` (181), `lock --check`, `export --check`; `see conform` en `engine`, `aot` y `service` por contrato; pruebas dirigidas de `abi`, `runtime`, `semantic`, `timeline`, `vm`, `lowering`, `service`, `aot_rt`, `api` (native), la CLI, `see_conformance`, `see_validation` y `bench_worker` (`pg_tape`); `rust-checks all` del motor, de las especificaciones y de la CLI; Clippy `-D warnings` del motor, de las especificaciones y de la CLI; `dart analyze`, límites y `flutter test` de efectos y proyección · Pendientes justificados: divergencias previas de `TOOL.SERVICE.HOVER` y `TOOL.LSP.CAPABILITIES` por programas sin inicializador; `workloads_tests` de `pseudolearn_bench_worker` no termina en 28 minutos en release; cuelgue puntual de `pseudo run --nativo`; serialización de la carga de cinta (§11.9) · Decisiones de la persona: el corpus manda sobre el vocabulario de la cinta (2026-10-27); presupuesto de E-PG-05 revisado (2026-10-27); cierre de los puntos restantes en esta iteración.
 
 ### 4.6 PG-4 · Tareas aisladas
 
