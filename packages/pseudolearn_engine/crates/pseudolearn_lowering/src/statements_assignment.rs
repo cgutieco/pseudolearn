@@ -79,10 +79,45 @@ pub(crate) fn lower_assign_local(
             span,
         );
     } else {
-        context.environment.bind_value(local_id, value);
+        let stored = distinct_variable_value(local_id, value, (span, context));
+        context.environment.bind_value(local_id, stored);
         context.environment.mark_assigned(local_id);
-        record_origin_entry(local_id, value, context);
+        record_origin_entry(local_id, stored, context);
     }
+}
+
+fn distinct_variable_value(
+    local_id: LocalId,
+    value: ValueId,
+    (span, context): (Option<IrSpan>, &mut StatementContext<'_, '_>),
+) -> ValueId {
+    let shared = context.origins.iter().any(|origin| {
+        origin.function == context.builder.name
+            && origin.value == value
+            && origin.variable != VariableId(local_id.0)
+    });
+    if !shared {
+        return value;
+    }
+    let copied = context.builder.next_value();
+    let local_type = get_local_ir_type(local_id, context.expression_context.module);
+    if matches!(
+        local_type,
+        pseudolearn_ir::IrType::I64 | pseudolearn_ir::IrType::Str
+    ) {
+        context.builder.emit_with_target(
+            Operation::ValueReinterpret,
+            vec![Operand::Type(local_type), Operand::Value(value)],
+            (Some(copied), span),
+        );
+    } else {
+        context.builder.emit_with_target(
+            Operation::ValueRequire,
+            vec![Operand::Value(value)],
+            (Some(copied), span),
+        );
+    }
+    copied
 }
 
 fn lower_assign_field(

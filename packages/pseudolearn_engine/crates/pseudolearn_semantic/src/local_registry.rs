@@ -44,6 +44,12 @@ pub(crate) fn parameters(session: &mut AnalysisSession<'_>, function: usize) {
                 mutable: true,
             },
         );
+        if session
+            .child(parameter, NodeKind::Type)
+            .is_some_and(|kind| crate::function_types::is_pure_syntax(session, kind))
+        {
+            session.module.pure_locals.insert(local);
+        }
         if let Some(function) = usize::try_from(session.current.0)
             .ok()
             .and_then(|index| session.module.functions.get_mut(index))
@@ -111,6 +117,8 @@ pub(crate) fn parameter_type(session: &mut AnalysisSession<'_>, parameter: usize
 
 pub(crate) fn declaration(session: &mut AnalysisSession<'_>, node: usize) {
     let kind_node = session.child(node, NodeKind::Type);
+    let pure_type =
+        kind_node.is_some_and(|kind| crate::function_types::is_pure_syntax(session, kind));
     let base = kind_node
         .map(|kind| crate::type_resolution::resolve(session, kind))
         .unwrap_or_else(|| session.module.types.intern(Type::Error));
@@ -123,7 +131,7 @@ pub(crate) fn declaration(session: &mut AnalysisSession<'_>, node: usize) {
         let Some((name_node, type_id)) = declared_name(session, child, base) else {
             continue;
         };
-        locals.push(register(
+        let local = register(
             session,
             LocalDeclaration {
                 name_node,
@@ -132,7 +140,11 @@ pub(crate) fn declaration(session: &mut AnalysisSession<'_>, node: usize) {
                 parameter: false,
                 mutable: mutable_declaration(session, node),
             },
-        ));
+        );
+        if pure_type && type_id == base {
+            session.module.pure_locals.insert(local);
+        }
+        locals.push(local);
     }
     session.declarations.insert(node, locals);
 }

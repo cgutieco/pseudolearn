@@ -395,3 +395,9 @@ Los esperados matemáticos añadidos se justifican por intervalos racionales en
 intervalos racionales; ninguna captura del sujeto define esos resultados.
 
 Los adaptadores engine y service se compilan en Release para ejecutar las propiedades completas sobre cargas grandes; el plazo máximo por solicitud de propiedades es de 300 segundos. Esto es una puerta funcional y no una medición de rendimiento. El corpus conserva los límites semánticos de cada solicitud.
+
+El esquema `see/1` admite la terminación `awaiting_effect` con `efecto_pendiente`, el corte del anfitrión
+durante una espera de efecto mediante `cancel_on_awaiting_effect`, la observación de `estado_cinta`,
+`efectos` (`effect_seq`, `capability_kind`, `operation`, `outcome` y `secret_key_id`) y `reproduccion_fallo`
+en `anfitrion_observado`, la mutación controlada de la cinta grabada con `alterar_cinta` antes de intentar
+reproducirla y las operaciones `start`, `advance`, `input`, `effect_result` y `cancel` en secuencias `api`.

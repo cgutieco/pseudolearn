@@ -82,7 +82,7 @@
   },
   "programas": {
     "es": "Funcion F() Como Entero\nEscribir 1;\nRetornar 1;\nFinFuncion\nAlgoritmo P\nEscribir F();\nFinAlgoritmo\n",
-    "en": "function F() as integer\nwrite 1;\nreturn 1;\nendSubroutine\nalgorithm P\nwrite F();\nendAlgorithm\n"
+    "en": "function F() as integer\nwrite 1;\nreturn 1;\nend function\nalgorithm P\nwrite F();\nendAlgorithm\n"
   }
 }
 ```
@@ -107,7 +107,7 @@
   },
   "programas": {
     "es": "Funcion Cuadrado(x Como Entero) Como Entero\nRetornar x * x;\nFinFuncion\nAlgoritmo P\nEscribir Cuadrado(2);\nFinAlgoritmo\n",
-    "en": "function Cuadrado(x as integer) as integer\nreturn x * x;\nendSubroutine\nalgorithm P\nwrite Cuadrado(2);\nendAlgorithm\n"
+    "en": "function Cuadrado(x as integer) as integer\nreturn x * x;\nend function\nalgorithm P\nwrite Cuadrado(2);\nendAlgorithm\n"
   }
 }
 ```
@@ -159,7 +159,7 @@
   },
   "programas": {
     "es": "SubProceso Efecto()\nEscribir 2;\nFinSubProceso\nFuncion F() Como Entero\nEfecto();\nRetornar 0;\nFinFuncion\nAlgoritmo P\nEscribir F();\nFinAlgoritmo\n",
-    "en": "subroutine Efecto()\nwrite 2;\nendSubroutine\nfunction F() as integer\nEfecto();\nreturn 0;\nendSubroutine\nalgorithm P\nwrite F();\nendAlgorithm\n"
+    "en": "subroutine Efecto()\nwrite 2;\nendSubroutine\nfunction F() as integer\nEfecto();\nreturn 0;\nend function\nalgorithm P\nwrite F();\nendAlgorithm\n"
   }
 }
 ```
@@ -171,7 +171,10 @@
   "clase": "semantica",
   "texto": "No se permite pasar ni asignar una clausura o subprograma con efectos secundarios en un contexto donde el tipo esperado es una función pura Funcion. Las discrepancias de pureza son detectadas estáticamente.",
   "verificacion": [
-    "C4", "C8"
+    "C4",
+    "C8",
+    "C21",
+    "C22"
   ]
 }
 ```
@@ -201,7 +204,7 @@
   },
   "programas": {
     "es": "SubProceso ConEfecto(x Como Entero) Como Entero\nEscribir x;\nRetornar x;\nFinSubProceso\nFuncion Aplicar(fn Como Funcion(Entero) Como Entero, v Como Entero) Como Entero\nRetornar fn(v);\nFinFuncion\nAlgoritmo P\nEscribir Aplicar(ConEfecto, 5);\nFinAlgoritmo\n",
-    "en": "subroutine ConEfecto(x as integer) as integer\nwrite x;\nreturn x;\nendSubroutine\nfunction Aplicar(fn as function(integer) as integer, v as integer) as integer\nreturn fn(v);\nendSubroutine\nalgorithm P\nwrite Aplicar(ConEfecto, 5);\nendAlgorithm\n"
+    "en": "subroutine ConEfecto(x as integer) as integer\nwrite x;\nreturn x;\nendSubroutine\nfunction Aplicar(fn as function(integer) as integer, v as integer) as integer\nreturn fn(v);\nend function\nalgorithm P\nwrite Aplicar(ConEfecto, 5);\nendAlgorithm\n"
   }
 }
 ```
@@ -1034,6 +1037,66 @@
         }
       ]
     }
+  }
+}
+```
+
+```caso
+{
+  "id": "C21",
+  "regla": "R3",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "pureFunctionTransitiveSideEffect",
+        "severidad": "error"
+      }
+    ]
+  },
+  "programas": {
+    "es": "SubProceso Effect(value Como Entero) Como Entero\nEscribir value;\nRetornar value;\nFinSubProceso\nAlgoritmo Main\nDefinir action Como Funcion(Entero) Como Entero <- Effect;\nEscribir action(3);\nFinAlgoritmo\n",
+    "en": "subroutine Effect(value as integer) as integer\nwrite value;\nreturn value;\nendSubroutine\nalgorithm Main\ndefine action as function(integer) as integer <- Effect;\nwrite action(3);\nendAlgorithm\n"
+  }
+}
+```
+
+```caso
+{
+  "id": "C22",
+  "regla": "R3",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "pureFunctionTransitiveSideEffect",
+        "severidad": "error"
+      }
+    ]
+  },
+  "programas": {
+    "es": "SubProceso ConEfecto(x Como Entero) Como Entero\nEscribir x;\nRetornar x;\nFinSubProceso\nSubProceso Aplicar(fn Como Funcion(Entero) Como Entero, v Como Entero) Como Entero\nRetornar fn(v);\nFinSubProceso\nAlgoritmo P\nEscribir Aplicar(ConEfecto, 5);\nFinAlgoritmo\n",
+    "en": "subroutine ConEfecto(x as integer) as integer\nwrite x;\nreturn x;\nendSubroutine\nsubroutine Aplicar(fn as function(integer) as integer, v as integer) as integer\nreturn fn(v);\nendSubroutine\nalgorithm P\nwrite Aplicar(ConEfecto, 5);\nendAlgorithm\n"
   }
 }
 ```

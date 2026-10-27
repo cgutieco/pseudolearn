@@ -1,7 +1,7 @@
 use pseudolearn_api::ApiSession;
 use serde_json::{Value, json};
 
-const PROGRAM: &str = "Algoritmo P\nDefinir i Como Entero;\ni <- 0;\nMientras i < 2 Hacer\ni <- i + 1;\nFinMientras\nFinAlgoritmo\n";
+const PROGRAM: &str = "Algoritmo P\nDefinir Mutable i Como Entero <- 0;\ni <- 0;\nMientras i < 2 Hacer\ni <- i + 1;\nFinMientras\nFinAlgoritmo\n";
 
 fn step(condition: &str, from_event: u64, target_line: u64) -> Value {
     let mut session = ApiSession::default();

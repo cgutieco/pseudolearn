@@ -5,6 +5,7 @@ use std::collections::BTreeSet;
 
 pub(crate) struct FlowBindings {
     locals: Vec<HirLocal>,
+    pure_locals: BTreeSet<LocalId>,
     functions: usize,
     classes: usize,
     constants: Vec<crate::constant_registry::ConstantEntry>,
@@ -15,6 +16,7 @@ impl FlowBindings {
     pub(crate) fn capture(session: &AnalysisSession<'_>) -> Self {
         Self {
             locals: session.module.locals.clone(),
+            pure_locals: session.module.pure_locals.clone(),
             functions: session.module.functions.len(),
             classes: session.module.classes.len(),
             constants: session.constants.clone(),
@@ -45,6 +47,7 @@ impl FlowBindings {
             .retain(|local, _| usize::try_from(local.0).is_ok_and(|index| index < locals.len()));
         session.module.local_visibility.clear();
         session.module.locals = locals;
+        session.module.pure_locals.clone_from(&self.pure_locals);
         session.constants.clone_from(&self.constants);
         session.declarations.clear();
         session.invalid.clone_from(&self.invalid);

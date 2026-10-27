@@ -61,6 +61,8 @@ pub struct ExecuteResponse {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub effect_tape: Option<serde_json::Value>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub pending_effect: Option<serde_json::Value>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub host_observation: Option<serde_json::Value>,
     pub output: String,
     pub termination: serde_json::Value,

@@ -107,9 +107,19 @@ fn matches(name: &str, value: &Value, actual: &Value) -> bool {
         "estado" => actual.get("states") == Some(value),
         "estado_en" => crate::tool_comparison::state_at(value, actual),
         "limite" => termination_limit(value, actual),
+        "efecto_pendiente" => pending_effect_matches(value, actual.get("termination")),
         "anfitrion_observado" => host_observed(value, actual),
         _ => crate::tool_comparison::matches(name, value, actual),
     }
+}
+
+fn pending_effect_matches(expected: &Value, actual: Option<&Value>) -> bool {
+    let (Some(expected), Some(actual)) = (expected.as_object(), actual) else {
+        return false;
+    };
+    expected
+        .iter()
+        .all(|(key, value)| actual.get(key) == Some(value))
 }
 
 fn host_observed(expected: &Value, actual: &Value) -> bool {
@@ -117,14 +127,61 @@ fn host_observed(expected: &Value, actual: &Value) -> bool {
         return false;
     };
     let observation = actual.get("host_observation");
-    fields.iter().all(|(name, value)| {
-        let target = match name.as_str() {
-            "llamadas" => "calls",
-            "recursos_abiertos" => "open_resources",
-            _ => return false,
-        };
-        observation.and_then(|found| found.get(target)) == Some(value)
+    fields.iter().all(|(name, value)| match name.as_str() {
+        "llamadas" => observation.and_then(|found| found.get("calls")) == Some(value),
+        "recursos_abiertos" => {
+            observation.and_then(|found| found.get("open_resources")) == Some(value)
+        }
+        "estado_cinta" => actual.pointer("/effect_tape/status") == Some(value),
+        "efectos" => tape_effects_match(value, actual.pointer("/effect_tape/entries")),
+        "reproduccion_fallo" => value.as_str().is_some(),
+        _ => false,
     })
+}
+
+fn tape_effects_match(expected: &Value, actual: Option<&Value>) -> bool {
+    let (Some(expected), Some(actual)) = (expected.as_array(), actual.and_then(Value::as_array))
+    else {
+        return false;
+    };
+    let include_console = expected
+        .iter()
+        .any(|entry| entry.get("capability_kind").and_then(Value::as_str) == Some("console"));
+    let filtered: Vec<&Value> = actual
+        .iter()
+        .filter(|entry| {
+            include_console
+                || entry.get("capability_kind").and_then(Value::as_str) != Some("console")
+        })
+        .collect();
+    expected.len() == filtered.len()
+        && expected
+            .iter()
+            .zip(filtered)
+            .all(|(expected_entry, actual_entry)| tape_entry_matches(expected_entry, actual_entry))
+}
+
+fn tape_entry_matches(expected: &Value, actual: &Value) -> bool {
+    for field in ["effect_seq", "capability_kind", "operation", "outcome"] {
+        if expected.get(field) != actual.get(field) {
+            return false;
+        }
+    }
+    let Some(key_id) = expected.get("secret_key_id").and_then(Value::as_str) else {
+        return true;
+    };
+    let prefix = format!("secret:{key_id}:");
+    let redacted = actual
+        .get("payload_bytes")
+        .and_then(Value::as_array)
+        .is_some_and(Vec::is_empty);
+    redacted
+        && actual
+            .get("secret_reference")
+            .and_then(Value::as_str)
+            .is_some_and(|reference| {
+                reference.starts_with(&prefix) && reference.len() > prefix.len()
+            })
 }
 
 fn termination_limit(value: &Value, actual: &Value) -> bool {

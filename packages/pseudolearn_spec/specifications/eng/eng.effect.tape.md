@@ -193,7 +193,10 @@
   "texto": "Toda reproducción desde cinta valida identidad, secuencia y hashes encadenados. Ante discrepancia de identidad emite replay_identity_mismatch; ante efecto imprevisto emite replay_divergence; ante fin prematuro emite replay_truncated_tape; ante hash o payload adulterado emite replay_corrupted_tape; y ante cinta incompleta o incierta emite replay_non_reproducible. El motor jamás recurre al anfitrión vivo tras un fallo de reproducción.",
   "verificacion": [
     "C4",
-    "C5"
+    "C5",
+    "C10",
+    "C11",
+    "C12"
   ]
 }
 ```
@@ -214,7 +217,12 @@
   "operacion": "execute",
   "espera": {
     "salida": "no_encontrado\ncierto\n",
-    "terminacion": "completed"
+    "terminacion": "completed",
+    "anfitrion_observado": {
+      "llamadas": 3,
+      "recursos_abiertos": 0,
+      "estado_cinta": "reproducible"
+    }
   },
   "programas": {
     "es": "SubProceso Probe() Como Resultado<Cadena, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\nRetornar file.LeerTexto();\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo; Si problem.Incierto Entonces Escribir \"incierto\"; SiNo Escribir \"cierto\"; FinSi\nFinSegun\nFinAlgoritmo\n",
@@ -257,7 +265,12 @@
   "operacion": "execute",
   "espera": {
     "salida": "2\n",
-    "terminacion": "completed"
+    "terminacion": "completed",
+    "anfitrion_observado": {
+      "llamadas": 2,
+      "recursos_abiertos": 0,
+      "estado_cinta": "reproducible"
+    }
   },
   "programas": {
     "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir values Como Argumentos <- Propagar SolicitarArgumentos();\nDefinir list Como Vector<Cadena> <- Propagar values.Valores();\nRetornar Exito(list.Longitud());\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
@@ -309,7 +322,36 @@
   "operacion": "execute",
   "espera": {
     "salida": "6\n",
-    "terminacion": "completed"
+    "terminacion": "completed",
+    "anfitrion_observado": {
+      "llamadas": 3,
+      "recursos_abiertos": 0,
+      "estado_cinta": "non_reproducible_redacted",
+      "reproduccion_fallo": "replay_non_reproducible",
+      "efectos": [
+        {
+          "effect_seq": 1,
+          "capability_kind": "filesystem",
+          "operation": "request_directory",
+          "outcome": "committed",
+          "secret_key_id": null
+        },
+        {
+          "effect_seq": 2,
+          "capability_kind": "filesystem",
+          "operation": "directory_open",
+          "outcome": "committed",
+          "secret_key_id": null
+        },
+        {
+          "effect_seq": 3,
+          "capability_kind": "filesystem",
+          "operation": "file_write_text",
+          "outcome": "committed",
+          "secret_key_id": "k1"
+        }
+      ]
+    }
   },
   "programas": {
     "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"n\", \"escritura\");\nRetornar file.EscribirTexto(\"s3cr3t\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
@@ -410,7 +452,10 @@
     "terminacion": "completed",
     "anfitrion_observado": {
       "llamadas": 5,
-      "recursos_abiertos": 0
+      "recursos_abiertos": 0,
+      "estado_cinta": "non_reproducible_truncated",
+      "reproduccion_fallo": "replay_non_reproducible",
+      "efectos": []
     }
   },
   "programas": {
@@ -448,7 +493,20 @@
   "operacion": "execute",
   "espera": {
     "salida": "s3cr3t\n",
-    "terminacion": "completed"
+    "terminacion": "completed",
+    "anfitrion_observado": {
+      "estado_cinta": "non_reproducible_redacted",
+      "reproduccion_fallo": "replay_non_reproducible",
+      "efectos": [
+        {
+          "effect_seq": 1,
+          "capability_kind": "console",
+          "operation": "write",
+          "outcome": "committed",
+          "secret_key_id": "k1"
+        }
+      ]
+    }
   },
   "programas": {
     "es": "Algoritmo Main\nEscribir \"s3cr3t\";\nFinAlgoritmo\n",
@@ -464,6 +522,135 @@
     "secret_keys": {
       "k1": "clave-privada"
     }
+  }
+}
+```
+
+```caso
+{
+  "id": "C10",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "hola\n",
+    "terminacion": "completed",
+    "anfitrion_observado": {
+      "llamadas": 3,
+      "recursos_abiertos": 0,
+      "estado_cinta": "reproducible",
+      "reproduccion_fallo": "replay_truncated_tape"
+    }
+  },
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Cadena, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\nRetornar file.LeerTexto();\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<string, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\nreturn file.readText();\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": [
+      "archivos_lectura"
+    ],
+    "requested_permissions": [
+      "archivos_lectura"
+    ],
+    "files": {
+      "a": "hola"
+    },
+    "alterar_cinta": "truncar_entrada"
+  }
+}
+```
+
+```caso
+{
+  "id": "C11",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "hola\n",
+    "terminacion": "completed",
+    "anfitrion_observado": {
+      "llamadas": 3,
+      "recursos_abiertos": 0,
+      "estado_cinta": "reproducible",
+      "reproduccion_fallo": "replay_corrupted_tape"
+    }
+  },
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Cadena, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\nRetornar file.LeerTexto();\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<string, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\nreturn file.readText();\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": [
+      "archivos_lectura"
+    ],
+    "requested_permissions": [
+      "archivos_lectura"
+    ],
+    "files": {
+      "a": "hola"
+    },
+    "alterar_cinta": "corromper_hash"
+  }
+}
+```
+
+```caso
+{
+  "id": "C12",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "hola\n",
+    "terminacion": "completed",
+    "anfitrion_observado": {
+      "llamadas": 3,
+      "recursos_abiertos": 0,
+      "estado_cinta": "reproducible",
+      "reproduccion_fallo": "replay_identity_mismatch"
+    }
+  },
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Cadena, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\nRetornar file.LeerTexto();\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<string, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\nreturn file.readText();\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": [
+      "archivos_lectura"
+    ],
+    "requested_permissions": [
+      "archivos_lectura"
+    ],
+    "files": {
+      "a": "hola"
+    },
+    "alterar_cinta": "cambiar_semilla"
   }
 }
 ```

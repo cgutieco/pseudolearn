@@ -47,6 +47,7 @@ pub(crate) struct ExecutionResource {
     input_cursor: usize,
     host: crate::FakeHostProvider,
     detached_effects: bool,
+    cancel_on_effect: Option<u64>,
     pending_host: Option<pseudolearn_runtime::HostEffectRequest>,
     completing_effect: bool,
 }
@@ -65,6 +66,7 @@ impl ExecutionResource {
         pseudolearn_runtime::configure_host_authority(&mut effects, request.host.as_ref()).map_err(|error| usage(error.code()))?;
         let host = execution_effects::prepare_host(request, execution_mode)?;
         let detached_effects = request.host.as_ref().and_then(|host| host.get("detached")).and_then(Value::as_bool).unwrap_or(false);
+        let cancel_on_effect = request.host.as_ref().and_then(|host| host.get("cancel_on_awaiting_effect")).and_then(Value::as_u64);
         let cancelled = Arc::new(AtomicBool::new(false));
         let mut options = crate::execution::options(request);
         options.twin_mode = TwinMode::Probed;
@@ -93,7 +95,7 @@ impl ExecutionResource {
             execution_mode,
             effects,
             output_cursor: 0, input_cursor: 0,
-            host, detached_effects, pending_host: None, completing_effect: false,
+            host, detached_effects, cancel_on_effect, pending_host: None, completing_effect: false,
         })
     }
 

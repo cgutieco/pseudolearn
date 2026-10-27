@@ -331,7 +331,7 @@ El campo cancelacion de un caso indica la entrada a sentencia, contada desde uno
   "id": "R4",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Se distingue estrictamente entre fallo controlado de efecto (que produce un valor Resultado::Error que recorre normalmente las cláusulas Diferir), trampa del programa (que finaliza con failed) y corte o terminación por el anfitrión (cancelled o limit_reached). Ante un corte del anfitrión, la ejecución se detiene de inmediato, la tabla de capacidades del anfitrión se libera forzosamente y no se ejecutan nuevos efectos de usuario dentro de Diferir.",
+  "texto": "Se distingue estrictamente entre fallo controlado de efecto (que produce un valor Resultado::Error que recorre normalmente las cláusulas Diferir), trampa del programa (que finaliza con failed) y corte o terminación por el anfitrión (cancelled o limit_reached). Ante un corte del anfitrión, incluido el que ocurre mientras una operación espera en awaiting_effect, la ejecución se detiene de inmediato, la tabla de capacidades del anfitrión se libera forzosamente, la cinta de efectos se sella como Incomplete y no se ejecutan nuevos efectos de usuario dentro de Diferir.",
   "verificacion": [
     "C10",
     "C12",
@@ -369,9 +369,10 @@ El campo cancelacion de un caso indica la entrada a sentencia, contada desde uno
   "id": "R5",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La terminación awaiting_effect representa una suspensión en la que el programa espera la resolución asíncrona o desacoplada de un efecto externo por parte del anfitrión. Expone effect_seq, capability_kind, operation, arguments_summary y source_node_id. Es estrictamente distinta de awaiting_input y solo puede ser reanudada mediante la operación effect_result. Cancelar la ejecución mientras espera un efecto la termina con cancelled sin esperar effect_result: el efecto pendiente queda sin resolver y un effect_result posterior es un error de uso. La reproducción desde cinta y la búsqueda histórica resuelven todo efecto desde la cinta y nunca producen awaiting_effect.",
+  "texto": "La terminación awaiting_effect representa una suspensión en la que el programa espera la resolución asíncrona o desacoplada de un efecto externo por parte del anfitrión. Expone effect_seq, capability_kind, operation, arguments_summary y source_node_id. Es estrictamente distinta de awaiting_input y solo puede ser reanudada mediante la operación effect_result. Si el anfitrión se desconecta o cancela la ejecución mientras espera en awaiting_effect, la sesión termina con cancelled sin esperar effect_result ni ejecutar nuevos efectos en Diferir, sella la cinta como Incomplete, deja el efecto pendiente en estado requested y rechaza cualquier effect_result posterior como error de uso. La reproducción desde cinta y la búsqueda histórica resuelven todo efecto desde la cinta y nunca producen awaiting_effect.",
   "verificacion": [
-    "C11"
+    "C11",
+    "C14"
   ]
 }
 ```
@@ -391,16 +392,30 @@ El campo cancelacion de un caso indica la entrada a sentencia, contada desde uno
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
-    "salida": "100\n",
-    "terminacion": "awaiting_input",
+    "salida": "",
+    "terminacion": "awaiting_effect",
+    "efecto_pendiente": {
+      "effect_seq": 1,
+      "capability_kind": "clock",
+      "operation": "request_clock"
+    },
     "anfitrion_observado": {
-      "llamadas": 2,
-      "recursos_abiertos": 0
+      "llamadas": 0,
+      "recursos_abiertos": 0,
+      "estado_cinta": "reproducible",
+      "efectos": [
+        {
+          "effect_seq": 1,
+          "capability_kind": "clock",
+          "operation": "request_clock",
+          "outcome": "requested"
+        }
+      ]
     }
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir clock Como Reloj <- Propagar SolicitarReloj();\nRetornar clock.Ahora();\nFinSubProceso\nAlgoritmo Main\nDefinir Mutable pending Como Entero <- 0;\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nLeer pending;\nFinAlgoritmo\n",
-    "en": "subroutine Probe() as result<integer, IoError>\ndefine clock as Clock <- propagate requestClock();\nreturn clock.now();\nendSubroutine\nalgorithm Main\ndefine mutable pending as integer <- 0;\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nread pending;\nendAlgorithm\n"
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir clock Como Reloj <- Propagar SolicitarReloj();\nRetornar clock.Ahora();\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<integer, IoError>\ndefine clock as Clock <- propagate requestClock();\nreturn clock.now();\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
     "permissions": [
@@ -409,9 +424,7 @@ El campo cancelacion de un caso indica la entrada a sentencia, contada desde uno
     "requested_permissions": [
       "reloj"
     ],
-    "clock": [
-      100
-    ]
+    "detached": true
   }
 }
 ```
@@ -436,7 +449,22 @@ El campo cancelacion de un caso indica la entrada a sentencia, contada desde uno
     "limite": "sentencias",
     "anfitrion_observado": {
       "llamadas": 2,
-      "recursos_abiertos": 0
+      "recursos_abiertos": 0,
+      "estado_cinta": "incomplete",
+      "efectos": [
+        {
+          "effect_seq": 1,
+          "capability_kind": "filesystem",
+          "operation": "request_directory",
+          "outcome": "committed"
+        },
+        {
+          "effect_seq": 2,
+          "capability_kind": "filesystem",
+          "operation": "directory_open",
+          "outcome": "committed"
+        }
+      ]
     }
   },
   "programas": {
@@ -479,7 +507,22 @@ El campo cancelacion de un caso indica la entrada a sentencia, contada desde uno
     "terminacion": "cancelled",
     "anfitrion_observado": {
       "llamadas": 2,
-      "recursos_abiertos": 0
+      "recursos_abiertos": 0,
+      "estado_cinta": "incomplete",
+      "efectos": [
+        {
+          "effect_seq": 1,
+          "capability_kind": "filesystem",
+          "operation": "request_directory",
+          "outcome": "committed"
+        },
+        {
+          "effect_seq": 2,
+          "capability_kind": "filesystem",
+          "operation": "directory_open",
+          "outcome": "committed"
+        }
+      ]
     }
   },
   "programas": {
@@ -498,5 +541,173 @@ El campo cancelacion de un caso indica la entrada a sentencia, contada desde uno
     }
   },
   "cancelacion": 40
+}
+```
+
+```caso
+{
+  "id": "C14",
+  "regla": "R5",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDiferir\nDescartar directory.Abrir(\"cleanup\", \"lectura\");\nFinDiferir\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\nRetornar Exito(1);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<integer, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefer\ndiscard directory.open(\"cleanup\", \"read\");\nendDefer\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\nreturn success(1);\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "api": {
+    "calls": [
+      {
+        "operation": "create_analysis"
+      },
+      {
+        "operation": "start",
+        "resource_from": 0,
+        "arguments": {
+          "host": {
+            "permissions": [
+              "archivos_lectura"
+            ],
+            "requested_permissions": [
+              "archivos_lectura"
+            ],
+            "detached": true
+          }
+        }
+      },
+      {
+        "operation": "advance",
+        "resource_from": 1,
+        "arguments": {
+          "batch_size": 64
+        }
+      },
+      {
+        "operation": "effect_result",
+        "resource_from": 1,
+        "arguments": {
+          "effect_seq": 1,
+          "result": {
+            "Committed": {
+              "Handle": 1
+            }
+          }
+        }
+      },
+      {
+        "operation": "advance",
+        "resource_from": 1,
+        "arguments": {
+          "batch_size": 64
+        }
+      },
+      {
+        "operation": "cancel",
+        "resource_from": 1
+      },
+      {
+        "operation": "advance",
+        "resource_from": 1,
+        "arguments": {
+          "batch_size": 64
+        }
+      },
+      {
+        "operation": "effect_result",
+        "resource_from": 1,
+        "arguments": {
+          "effect_seq": 2,
+          "result": {
+            "Committed": {
+              "Handle": 2
+            }
+          }
+        }
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "resource": 2
+          }
+        },
+        {
+          "value": {
+            "resource": 3
+          }
+        },
+        {
+          "value": {
+            "termination": {
+              "kind": "awaiting_effect",
+              "effect": {
+                "effect_seq": 1,
+                "capability_kind": "filesystem",
+                "operation": "request_directory"
+              }
+            }
+          }
+        },
+        {
+          "value": null
+        },
+        {
+          "value": {
+            "termination": {
+              "kind": "awaiting_effect",
+              "effect": {
+                "effect_seq": 2,
+                "capability_kind": "filesystem",
+                "operation": "directory_open"
+              }
+            }
+          }
+        },
+        {
+          "value": null
+        },
+        {
+          "value": {
+            "termination": {
+              "kind": "cancelled"
+            },
+            "effect_tape": {
+              "status": "incomplete",
+              "entries": [
+                {
+                  "effect_seq": 1,
+                  "operation": "request_directory",
+                  "outcome": "committed"
+                },
+                {
+                  "effect_seq": 2,
+                  "operation": "directory_open",
+                  "outcome": "requested"
+                }
+              ]
+            },
+            "host_observation": {
+              "open_resources": 0
+            }
+          }
+        },
+        {
+          "failure": {
+            "family": "usage"
+          }
+        }
+      ]
+    }
+  }
 }
 ```

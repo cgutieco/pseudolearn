@@ -153,7 +153,9 @@ fn measured(session: &mut Session, request: &Value, expected: &Value) -> Result<
         return Err("SEE-PROTOCOL: events without observe capability".to_owned());
     }
     let mut differences = crate::comparison::compare(expected, &actual);
-    differences.extend(crate::recording_replay::verify(session, request, &actual)?);
+    differences.extend(crate::recording_replay::verify(
+        session, request, expected, &actual,
+    )?);
     let verdict = if differences.is_empty() {
         "cumple"
     } else {

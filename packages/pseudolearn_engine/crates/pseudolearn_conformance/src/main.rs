@@ -222,7 +222,7 @@ fn respond_execute(request_value: &Value) {
 
 fn respond_api(session: &mut pseudolearn_api::ApiSession, request: &Value) {
     if let Some(calls) = request.get("calls").and_then(Value::as_array) {
-        let results = respond_api_calls(session, calls);
+        let results = respond_api_calls(session, request, calls);
         send_response(&json!({"kind":"api","results":results}));
         return;
     }
@@ -236,7 +236,11 @@ fn respond_api(session: &mut pseudolearn_api::ApiSession, request: &Value) {
     send_response(&json!({"kind":"api","result":result}));
 }
 
-fn respond_api_calls(session: &mut pseudolearn_api::ApiSession, calls: &[Value]) -> Vec<Value> {
+fn respond_api_calls(
+    session: &mut pseudolearn_api::ApiSession,
+    request: &Value,
+    calls: &[Value],
+) -> Vec<Value> {
     let mut results = Vec::with_capacity(calls.len());
     for call in calls {
         let operation = call.get("operation").and_then(Value::as_str).unwrap_or("");
@@ -245,6 +249,9 @@ fn respond_api_calls(session: &mut pseudolearn_api::ApiSession, calls: &[Value])
             .and_then(Value::as_object)
             .cloned()
             .unwrap_or_else(Map::new);
+        if operation == "create_analysis" && !arguments.contains_key("program") {
+            inject_case_analysis_defaults(request, &mut arguments);
+        }
         if let Some(index) = call.get("resource_from").and_then(Value::as_u64) {
             let resource = usize::try_from(index)
                 .ok()
@@ -257,4 +264,12 @@ fn respond_api_calls(session: &mut pseudolearn_api::ApiSession, calls: &[Value])
         results.push(session.call(operation, &Value::Object(arguments)));
     }
     results
+}
+
+fn inject_case_analysis_defaults(request: &Value, arguments: &mut Map<String, Value>) {
+    for field in ["program", "profile", "strictness"] {
+        if let Some(value) = request.get(field) {
+            arguments.insert(field.to_owned(), value.clone());
+        }
+    }
 }

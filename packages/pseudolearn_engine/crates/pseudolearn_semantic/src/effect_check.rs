@@ -8,6 +8,9 @@ use crate::statement_model::HirStatement;
 use pseudolearn_diagnostics::DiagnosticCode;
 use std::collections::{BTreeMap, BTreeSet};
 
+#[path = "effect_pure_values.rs"]
+mod effect_pure_values;
+
 pub(crate) fn check(session: &mut AnalysisSession<'_>) {
     let mut direct_effects = BTreeSet::new();
     let mut call_edges: BTreeMap<usize, BTreeSet<usize>> = BTreeMap::new();
@@ -34,10 +37,11 @@ pub(crate) fn check(session: &mut AnalysisSession<'_>) {
     for (code, syntax, index) in reports {
         report_with_chain(session, (code, syntax), &causal_chain(&reasons, index));
     }
+    effect_pure_values::check_pure_function_values(session, &reasons);
     check_interface_realizations(session, &reasons);
 }
 
-fn report_with_chain(
+pub(crate) fn report_with_chain(
     session: &mut AnalysisSession<'_>,
     (code, syntax): (DiagnosticCode, usize),
     chain: &[usize],
@@ -53,7 +57,7 @@ fn report_with_chain(
     }
 }
 
-fn causal_chain(reasons: &BTreeMap<usize, Option<usize>>, start: usize) -> Vec<usize> {
+pub(crate) fn causal_chain(reasons: &BTreeMap<usize, Option<usize>>, start: usize) -> Vec<usize> {
     let mut chain = Vec::new();
     let mut current = start;
     while let Some(Some(next)) = reasons.get(&current) {
@@ -119,7 +123,7 @@ pub(crate) fn unwrap_function_value(
     usize::try_from(function.0).unwrap_or(usize::MAX)
 }
 
-fn is_pure_function(session: &AnalysisSession<'_>, function: &HirFunction) -> bool {
+pub(crate) fn is_pure_function(session: &AnalysisSession<'_>, function: &HirFunction) -> bool {
     let lexeme = session.lexeme(function.syntax);
     let folded = session.options.profile.fold_word(lexeme);
     folded == "funcion" || folded == "function"

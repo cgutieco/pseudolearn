@@ -23,7 +23,7 @@ pub fn build(
         "ir" => ir(case, fields),
         "cli" => cli(case, fields),
         "service" => service(case, fields),
-        "api" => api_request(case, fields)?,
+        "api" => api_request(case, selection.profile, vocabulary, fields)?,
         "app" => app(case, fields)?,
         "analyze" => {
             fields.insert("kind".to_owned(), json!("analyze"));
@@ -238,7 +238,12 @@ fn service(case: &Block, fields: &mut Map<String, Value>) {
     }
 }
 
-fn api_request(case: &Block, fields: &mut Map<String, Value>) -> Result<(), String> {
+fn api_request(
+    case: &Block,
+    profile: &str,
+    vocabulary: &Vocabulary,
+    fields: &mut Map<String, Value>,
+) -> Result<(), String> {
     let invocation = case
         .fields
         .get("api")
@@ -250,6 +255,12 @@ fn api_request(case: &Block, fields: &mut Map<String, Value>) -> Result<(), Stri
         .filter(|calls| !calls.is_empty())
         .ok_or("Missing API calls")?;
     fields.insert("kind".to_owned(), json!("api"));
+    if case.fields.contains_key("programa") || case.fields.contains_key("programas") {
+        fields.insert(
+            "program".to_owned(),
+            json!(program(case, profile, vocabulary)?),
+        );
+    }
     fields.insert("calls".to_owned(), json!(calls));
     Ok(())
 }

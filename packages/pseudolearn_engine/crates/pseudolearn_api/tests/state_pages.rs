@@ -126,11 +126,11 @@ fn frame_variables_and_object_fields_are_paged() -> Result<(), String> {
     let mut session = ApiSession::default();
     let started = execution(
         &mut session,
-        "Algoritmo P\nDefinir a Como Entero;\nDefinir b Como Entero;\nFinAlgoritmo\n",
+        "Algoritmo P\nDefinir a Como Entero <- 1;\nDefinir b Como Entero <- 2;\nEscribir a + b;\nFinAlgoritmo\n",
     )?;
     let variables = session.call(
         "query_page",
-        &json!({"resource":started,"query":"frame_variables","target":0,"event":2,"page_size":1}),
+        &json!({"resource":started,"query":"frame_variables","target":0,"event":5,"page_size":1}),
     );
     assert_eq!(variables.pointer("/value/total"), Some(&json!(2)));
     assert_eq!(variables.pointer("/value/truncated"), Some(&json!(true)));
@@ -169,7 +169,7 @@ fn frame_queries_tag_scalar_values_with_their_type() -> Result<(), String> {
     let mut session = ApiSession::default();
     let started = execution(
         &mut session,
-        "Algoritmo P\nDefinir n Como Entero;\nDefinir t Como Cadena;\nn <- 4;\nt <- \"hola\";\nFinAlgoritmo\n",
+        "Algoritmo P\nDefinir Mutable n Como Entero <- 0;\nDefinir Mutable t Como Cadena <- \"\";\nn <- 4;\nt <- \"hola\";\nFinAlgoritmo\n",
     )?;
     let frame = session.call(
         "query_frame",

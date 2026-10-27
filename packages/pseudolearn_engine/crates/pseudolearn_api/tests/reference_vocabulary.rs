@@ -111,17 +111,17 @@ fn diagnostic_templates_are_localised_and_carry_their_severity() {
 fn severity_follows_the_requested_strictness() {
     let strict = call(
         "diagnostic_template",
-        &json!({"code":"undeclaredVariable","locale":"es","strictness":"strict"}),
+        &json!({"code":"incompatibleSwitchCaseType","locale":"es","strictness":"strict"}),
     );
     let flexible = call(
         "diagnostic_template",
-        &json!({"code":"undeclaredVariable","locale":"es","strictness":"flexible"}),
+        &json!({"code":"incompatibleSwitchCaseType","locale":"es","strictness":"flexible"}),
     );
     assert_eq!(strict.pointer("/value/severity"), Some(&json!("error")));
     assert_eq!(flexible.pointer("/value/severity"), Some(&json!("warning")));
     let invalid = call(
         "diagnostic_template",
-        &json!({"code":"undeclaredVariable","locale":"es","strictness":"lax"}),
+        &json!({"code":"incompatibleSwitchCaseType","locale":"es","strictness":"lax"}),
     );
     assert_eq!(invalid.pointer("/failure/family"), Some(&json!("usage")));
 }

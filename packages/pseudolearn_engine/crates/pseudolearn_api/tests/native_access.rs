@@ -28,15 +28,15 @@ fn each_terminal_array_failure_matches_vm_diagnostics() -> Result<(), String> {
 fn each_terminal_field_failure_matches_vm_diagnostics() -> Result<(), String> {
     for kind in ["Entero", "Real", "Logico", "Caracter", "Cadena", "Node"] {
         let prefix = format!(
-            "Clase Node\nPublico Definir value Como {kind};\nFinClase\nAlgoritmo P\nDefinir node Como Node;\n"
+            "Clase Node\nPublico Definir value Como {kind};\nFinClase\nAlgoritmo P\nDefinir node Como Node <- Nuevo Node();\n"
         );
         let read = if kind == "Node" {
-            "Definir target Como Node;\ntarget <- node.value;"
+            "Definir target Como Node <- node.value;"
         } else {
             "Escribir node.value;"
         };
         support::compare(&format!(
-            "{prefix}node <- Nuevo Node();\n{read}\nFinAlgoritmo\n"
+            "{prefix}{read}\nFinAlgoritmo\n"
         ))?;
     }
     Ok(())
@@ -49,7 +49,7 @@ fn partial_definition_and_managed_cells_remain_successful_under_forced_collectio
         "SubProceso Change(value Como Entero Por Referencia)\nvalue <- value + 1;\nFinSubProceso\nAlgoritmo P\nDimension values[130] Como Entero;\nvalues[65] <- 41;\nChange(values[65]);\nEscribir values[65];\nFinAlgoritmo\n",
     )?;
     support::compare(
-        "Clase Node\nPublico Definir value Como Entero;\nFinClase\nSubProceso Change(value Como Entero Por Referencia)\nvalue <- value + 1;\nFinSubProceso\nAlgoritmo P\nDefinir node Como Node;\nnode <- Nuevo Node();\nnode.value <- 41;\nChange(node.value);\nEscribir node.value;\nFinAlgoritmo\n",
+        "Clase Node\nPublico Definir value Como Entero;\nFinClase\nSubProceso Change(value Como Entero Por Referencia)\nvalue <- value + 1;\nFinSubProceso\nAlgoritmo P\nDefinir node Como Node <- Nuevo Node();\nnode.value <- 41;\nChange(node.value);\nEscribir node.value;\nFinAlgoritmo\n",
     )
 }
 

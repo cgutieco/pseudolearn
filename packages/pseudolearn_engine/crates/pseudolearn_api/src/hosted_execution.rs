@@ -19,7 +19,8 @@ pub(crate) fn execute(
             inputs_consumed: 0,
             state_at: None,
             effect_tape: None,
-            host_observation: None,
+            pending_effect: None,
+            host_observation: Some(json!({"calls":0,"open_resources":0})),
         },
     }
 }

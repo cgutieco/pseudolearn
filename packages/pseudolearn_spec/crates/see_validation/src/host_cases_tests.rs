@@ -49,3 +49,63 @@ fn invalid_memory_paths_are_rejected() {
     assert_eq!(errors(json!({"files":{"a":[256]}})).len(), 1);
     assert!(errors(json!({"files":{"a/b":[0,255]}})).is_empty());
 }
+
+fn case_errors(fields: BTreeMap<String, Value>) -> Vec<String> {
+    let block = Block {
+        kind: "caso".to_owned(),
+        fields,
+    };
+    let mut found = Vec::new();
+    check(&block, &mut found);
+    found
+}
+
+#[test]
+fn pending_effect_expectation_requires_awaiting_effect_termination() {
+    let invalid = BTreeMap::from([(
+        "espera".to_owned(),
+        json!({"terminacion":"completed","efecto_pendiente":{"effect_seq":1}}),
+    )]);
+    assert_eq!(case_errors(invalid).len(), 1);
+    let valid = BTreeMap::from([(
+        "espera".to_owned(),
+        json!({"terminacion":"awaiting_effect","efecto_pendiente":{"effect_seq":1}}),
+    )]);
+    assert!(case_errors(valid).is_empty());
+}
+
+#[test]
+fn non_increasing_expected_effect_sequence_is_rejected() {
+    let invalid = BTreeMap::from([(
+        "espera".to_owned(),
+        json!({
+            "anfitrion_observado": {
+                "efectos": [
+                    {"effect_seq": 2, "capability_kind": "clock", "operation": "clock_now", "outcome": "committed"},
+                    {"effect_seq": 2, "capability_kind": "clock", "operation": "clock_now", "outcome": "committed"}
+                ]
+            }
+        }),
+    )]);
+    assert_eq!(case_errors(invalid).len(), 1);
+}
+
+#[test]
+fn incompatible_replay_and_alteration_options_are_rejected() {
+    let missing_failure = BTreeMap::from([(
+        "anfitrion".to_owned(),
+        json!({"alterar_cinta":"truncar_entrada"}),
+    )]);
+    assert_eq!(case_errors(missing_failure).len(), 1);
+    let conflicting = BTreeMap::from([
+        (
+            "anfitrion".to_owned(),
+            json!({"grabar_y_reproducir":true,"alterar_cinta":"truncar_entrada"}),
+        ),
+        (
+            "espera".to_owned(),
+            json!({"anfitrion_observado":{"reproduccion_fallo":"replay_truncated_tape"}}),
+        ),
+    ]);
+    assert_eq!(case_errors(conflicting).len(), 1);
+}

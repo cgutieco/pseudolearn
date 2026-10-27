@@ -6,6 +6,7 @@ use pseudolearn_abi::ClosureLayout;
 pub struct FunctionSignature {
     pub parameters: Vec<(TypeId, Passing)>,
     pub result: TypeId,
+    pub pure: bool,
 }
 
 #[derive(Clone, Debug, PartialEq)]

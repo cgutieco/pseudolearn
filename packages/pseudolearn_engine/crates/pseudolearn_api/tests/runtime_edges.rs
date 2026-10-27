@@ -39,13 +39,13 @@ fn policies(source: &str, output: &str) -> Result<(), String> {
 
 #[test]
 fn reference_arguments_evaluate_indices_once_and_alias_immediately() -> Result<(), String> {
-    let source = "SubProceso Index(count Como Entero Por Referencia) Como Entero\ncount <- count + 1;\nRetornar 0;\nFinSubProceso\nSubProceso Change(left Como Entero Por Referencia,right Como Entero Por Referencia)\nleft <- 12;\nright <- right + 5;\nFinSubProceso\nAlgoritmo P\nDimension values[1] Como Entero;\nDefinir count Como Entero;\ncount <- 0;\nvalues[0] <- 0;\nChange(values[Index(count)],values[Index(count)]);\nEscribir values[0],count;\nFinAlgoritmo\n";
+    let source = "SubProceso Index(count Como Entero Por Referencia) Como Entero\ncount <- count + 1;\nRetornar 0;\nFinSubProceso\nSubProceso Change(left Como Entero Por Referencia,right Como Entero Por Referencia)\nleft <- 12;\nright <- right + 5;\nFinSubProceso\nAlgoritmo P\nDimension values[1] Como Entero;\nDefinir Mutable count Como Entero <- 0;\nvalues[0] <- 0;\nChange(values[Index(count)],values[Index(count)]);\nEscribir values[0],count;\nFinAlgoritmo\n";
     policies(source, "172\n")
 }
 
 #[test]
 fn suspended_frames_retain_roots_across_recursive_bank_growth() -> Result<(), String> {
-    let source = "Clase Node\nPublico Definir value Como Entero;\nFinClase\nSubProceso Build(depth Como Entero) Como Node\nDefinir local,child Como Node;\nlocal <- Nuevo Node();\nlocal.value <- depth;\nSi depth > 0 Entonces\nchild <- Build(depth - 1);\nlocal.value <- local.value + child.value;\nFinSi\nRetornar local;\nFinSubProceso\nAlgoritmo P\nDefinir result Como Node;\nresult <- Build(150);\nEscribir result.value;\nFinAlgoritmo\n";
+    let source = "Clase Node\nPublico Definir value Como Entero;\nFinClase\nSubProceso Build(depth Como Entero) Como Node\nDefinir local Como Node <- Nuevo Node();\nlocal.value <- depth;\nSi depth > 0 Entonces\nDefinir child Como Node <- Build(depth - 1);\nlocal.value <- local.value + child.value;\nFinSi\nRetornar local;\nFinSubProceso\nAlgoritmo P\nDefinir result Como Node <- Build(150);\nEscribir result.value;\nFinAlgoritmo\n";
     policies(source, "11325\n")
 }
 
@@ -73,13 +73,13 @@ fn depth_includes_main_and_accepts_exact_boundary() -> Result<(), String> {
 
 #[test]
 fn constructor_reference_parameters_and_super_calls_share_one_receiver() -> Result<(), String> {
-    let source = "Clase Base\nPublico Definir value Como Entero;\nMetodo Constructor(count Como Entero Por Referencia)\ncount <- count + 1;\nEste.value <- count;\nFinMetodo\nMetodo get() Como Entero\nRetornar Este.value;\nFinMetodo\nFinClase\nClase Derived Hereda De Base\nMetodo Constructor(count Como Entero Por Referencia)\nSuper.Constructor(count);\ncount <- count + 2;\nFinMetodo\nMetodo get() Como Entero\nRetornar Super.get() + 100;\nFinMetodo\nFinClase\nAlgoritmo P\nDefinir result Como Base;\nDefinir count Como Entero;\ncount <- 3;\nresult <- Nuevo Derived(count);\nEscribir result.get(),count;\nFinAlgoritmo\n";
+    let source = "Clase Base\nPublico Definir value Como Entero;\nMetodo Constructor(count Como Entero Por Referencia)\ncount <- count + 1;\nEste.value <- count;\nFinMetodo\nMetodo get() Como Entero\nRetornar Este.value;\nFinMetodo\nFinClase\nClase Derived Hereda De Base\nMetodo Constructor(count Como Entero Por Referencia)\nSuper.Constructor(count);\ncount <- count + 2;\nFinMetodo\nMetodo get() Como Entero\nRetornar Super.get() + 100;\nFinMetodo\nFinClase\nAlgoritmo P\nDefinir Mutable count Como Entero <- 3;\nDefinir result Como Base <- Nuevo Derived(count);\nEscribir result.get(),count;\nFinAlgoritmo\n";
     policies(source, "1046\n")
 }
 
 #[test]
 fn mutually_recursive_subprograms_return_through_reused_windows() -> Result<(), String> {
-    let source = "SubProceso First(depth Como Entero) Como Entero\nSi depth = 0 Entonces\nRetornar 0;\nFinSi\nRetornar Second(depth - 1) + 1;\nFinSubProceso\nSubProceso Second(depth Como Entero) Como Entero\nSi depth = 0 Entonces\nRetornar 0;\nFinSi\nRetornar First(depth - 1) + 1;\nFinSubProceso\nSubProceso Increment(value Como Entero Por Referencia)\nvalue <- value + 1;\nFinSubProceso\nSubProceso Pair(value Como Entero Por Referencia)\nIncrement(value);\nIncrement(value);\nFinSubProceso\nAlgoritmo P\nDefinir total Como Entero;\ntotal <- First(12);\nPair(total);\nIncrement(total);\nPair(total);\nEscribir total;\nFinAlgoritmo\n";
+    let source = "SubProceso First(depth Como Entero) Como Entero\nSi depth = 0 Entonces\nRetornar 0;\nFinSi\nRetornar Second(depth - 1) + 1;\nFinSubProceso\nSubProceso Second(depth Como Entero) Como Entero\nSi depth = 0 Entonces\nRetornar 0;\nFinSi\nRetornar First(depth - 1) + 1;\nFinSubProceso\nSubProceso Increment(value Como Entero Por Referencia)\nvalue <- value + 1;\nFinSubProceso\nSubProceso Pair(value Como Entero Por Referencia)\nIncrement(value);\nIncrement(value);\nFinSubProceso\nAlgoritmo P\nDefinir Mutable total Como Entero <- First(12);\nPair(total);\nIncrement(total);\nPair(total);\nEscribir total;\nFinAlgoritmo\n";
     policies(source, "17\n")
 }
 
@@ -105,7 +105,7 @@ fn invalid_reference_index_traps_before_entering_the_callee() -> Result<(), Stri
 
 #[test]
 fn receiver_escape_dispatches_before_derived_integer_initialization() -> Result<(), String> {
-    let source = "Clase Base\nMetodo publish(output Como Base Por Referencia)\noutput <- Este;\nEscribir \"base\";\nEscribir output.read();\nFinMetodo\nMetodo read() Como Entero\nRetornar 0;\nFinMetodo\nFinClase\nClase Derived Hereda De Base\nPublico Definir value Como Entero;\nMetodo Constructor(output Como Base Por Referencia)\nEste.publish(output);\nEste.value <- 7;\nFinMetodo\nMetodo read() Como Entero\nRetornar Este.value;\nFinMetodo\nFinClase\nAlgoritmo P\nDefinir result Como Base;\nresult <- Nuevo Base();\nresult <- Nuevo Derived(result);\nFinAlgoritmo\n";
+    let source = "Clase Base\nMetodo publish(output Como Base Por Referencia)\noutput <- Este;\nEscribir \"base\";\nEscribir output.read();\nFinMetodo\nMetodo read() Como Entero\nRetornar 0;\nFinMetodo\nFinClase\nClase Derived Hereda De Base\nPublico Definir value Como Entero;\nMetodo Constructor(output Como Base Por Referencia)\nEste.publish(output);\nEste.value <- 7;\nFinMetodo\nMetodo read() Como Entero\nRetornar Este.value;\nFinMetodo\nFinClase\nAlgoritmo P\nDefinir Mutable result Como Base <- Nuevo Base();\nresult <- Nuevo Derived(result);\nFinAlgoritmo\n";
     for collection in [
         CollectionPolicy::Automatic,
         CollectionPolicy::Forced,
@@ -125,7 +125,7 @@ fn receiver_escape_dispatches_before_derived_integer_initialization() -> Result<
 
 #[test]
 fn shallow_copy_keeps_cycles_and_uninitialized_fields() -> Result<(), String> {
-    let source = "Clase Node\nPublico Definir next Como Node;\nPublico Definir value Como Entero;\nFinClase\nAlgoritmo P\nDefinir original, copia Como Node;\noriginal <- Nuevo Node();\noriginal.next <- original;\ncopia <- Copiar(original);\nEscribir copia = original, copia.next = original;\nEscribir copia.value;\nFinAlgoritmo\n";
+    let source = "Clase Node\nPublico Definir next Como Node;\nPublico Definir value Como Entero;\nFinClase\nAlgoritmo P\nDefinir original Como Node <- Nuevo Node();\noriginal.next <- original;\nDefinir copia Como Node <- Copiar(original);\nEscribir copia = original, copia.next = original;\nEscribir copia.value;\nFinAlgoritmo\n";
     for collection in [
         CollectionPolicy::Automatic,
         CollectionPolicy::Forced,

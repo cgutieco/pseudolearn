@@ -338,7 +338,8 @@
   "verificacion": [
     "C2",
     "C3",
-    "C6"
+    "C6",
+    "C7"
   ]
 }
 ```
@@ -524,6 +525,36 @@
     "posicion": {
       "line": 3,
       "column": 5
+    },
+    "proyeccion": "descripcion",
+    "idioma": "en"
+  }
+}
+```
+
+```caso
+{
+  "id": "C7",
+  "regla": "R8",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "descripcion": "Opaque capability handle for reading monotonic or logical time."
+    }
+  },
+  "servicio": {
+    "suboperacion": "hover",
+    "documento": "Algoritmo Principal\n  Definir c Como Reloj;\nFinAlgoritmo\n",
+    "posicion": {
+      "line": 2,
+      "column": 20
     },
     "proyeccion": "descripcion",
     "idioma": "en"
@@ -7152,6 +7183,358 @@
             ]
           }
         }
+      },
+      {
+        "id": "construction.capabilities",
+        "identity": {
+          "kind": "construction",
+          "id": "consoleCapabilityType",
+          "role": "construction"
+        },
+        "tokens": [
+          {
+            "identity": "consoleCapabilityType",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          },
+          {
+            "identity": "argumentsCapabilityType",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          },
+          {
+            "identity": "directoryCapabilityType",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          },
+          {
+            "identity": "fileCapabilityType",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          },
+          {
+            "identity": "clockCapabilityType",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          },
+          {
+            "identity": "timerCapabilityType",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          },
+          {
+            "identity": "requestConsole",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          },
+          {
+            "identity": "requestArguments",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          },
+          {
+            "identity": "requestDirectory",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          },
+          {
+            "identity": "requestClock",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          },
+          {
+            "identity": "requestTimer",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LANG.CAPABILITY.MODEL",
+            "version": "1.0.0",
+            "element": "R1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Capacidades explícitas",
+            "summary": "Tipos opacos y solicitudes con permiso explícito para efectos externos.",
+            "purpose": "Representa autoridad explícita concedida por el anfitrión para consola, argumentos, archivos y tiempo.",
+            "parts": [
+              {
+                "identity": "consoleCapabilityType",
+                "text": "Capacidad opaca que autoriza escritura controlada en la consola."
+              },
+              {
+                "identity": "argumentsCapabilityType",
+                "text": "Capacidad opaca que autoriza consultar los argumentos de invocación."
+              },
+              {
+                "identity": "directoryCapabilityType",
+                "text": "Capacidad opaca que autoriza operar dentro de un directorio concedido."
+              },
+              {
+                "identity": "fileCapabilityType",
+                "text": "Capacidad opaca que autoriza leer o escribir en un archivo abierto."
+              },
+              {
+                "identity": "clockCapabilityType",
+                "text": "Capacidad opaca para leer tiempo monótono o lógico."
+              },
+              {
+                "identity": "timerCapabilityType",
+                "text": "Capacidad opaca para esperar una duración controlada."
+              },
+              {
+                "identity": "requestConsole",
+                "text": "Solicita al anfitrión una capacidad de consola si el permiso está activo."
+              },
+              {
+                "identity": "requestArguments",
+                "text": "Solicita al anfitrión la capacidad de lectura de argumentos."
+              },
+              {
+                "identity": "requestDirectory",
+                "text": "Solicita al anfitrión una capacidad sobre una raíz de directorio nombrada."
+              },
+              {
+                "identity": "requestClock",
+                "text": "Solicita al anfitrión una capacidad de reloj."
+              },
+              {
+                "identity": "requestTimer",
+                "text": "Solicita al anfitrión una capacidad de temporizador."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Capacidades explícitas",
+                "profile": "es",
+                "specification": "LANG.CAPABILITY.MODEL",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Explicit capabilities",
+            "summary": "Opaque types and permission-checked requests for external effects.",
+            "purpose": "Represents explicit host-granted authority for console, arguments, files, and time.",
+            "parts": [
+              {
+                "identity": "consoleCapabilityType",
+                "text": "Opaque capability handle that authorizes controlled console output."
+              },
+              {
+                "identity": "argumentsCapabilityType",
+                "text": "Opaque capability handle that authorizes reading invocation arguments."
+              },
+              {
+                "identity": "directoryCapabilityType",
+                "text": "Opaque capability handle that authorizes operating inside a granted directory."
+              },
+              {
+                "identity": "fileCapabilityType",
+                "text": "Opaque capability handle that authorizes reading or writing an opened file."
+              },
+              {
+                "identity": "clockCapabilityType",
+                "text": "Opaque capability handle for reading monotonic or logical time."
+              },
+              {
+                "identity": "timerCapabilityType",
+                "text": "Opaque capability handle for waiting a controlled duration."
+              },
+              {
+                "identity": "requestConsole",
+                "text": "Requests a console capability from the host when permitted."
+              },
+              {
+                "identity": "requestArguments",
+                "text": "Requests an arguments capability from the host."
+              },
+              {
+                "identity": "requestDirectory",
+                "text": "Requests a directory capability for a named root from the host."
+              },
+              {
+                "identity": "requestClock",
+                "text": "Requests a clock capability from the host."
+              },
+              {
+                "identity": "requestTimer",
+                "text": "Requests a timer capability from the host."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Explicit capabilities",
+                "profile": "en",
+                "specification": "LANG.CAPABILITY.MODEL",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "construction.bytes_io",
+        "identity": {
+          "kind": "construction",
+          "id": "bytesType",
+          "role": "construction"
+        },
+        "tokens": [
+          {
+            "identity": "bytesType",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          },
+          {
+            "identity": "ioErrorType",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.IO",
+            "version": "1.0.0",
+            "element": "R1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Bytes y errores de entrada y salida",
+            "summary": "Secuencia gestionada de octetos y registro portable de fallos de efecto.",
+            "purpose": "Separa secuencias binarias de texto UTF-8 y reporta fallos con código e incertidumbre.",
+            "parts": [
+              {
+                "identity": "bytesType",
+                "text": "Secuencia gestionada de octetos con acceso posicional comprobado y validación UTF-8."
+              },
+              {
+                "identity": "ioErrorType",
+                "text": "Registro de fallo de entrada y salida con código portable e indicador de incertidumbre."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Bytes y errores de entrada y salida",
+                "profile": "es",
+                "specification": "LIB.IO",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Bytes and input-output errors",
+            "summary": "Managed byte sequence and portable record for effect failures.",
+            "purpose": "Separates binary byte sequences from UTF-8 text and reports failures with code and uncertainty.",
+            "parts": [
+              {
+                "identity": "bytesType",
+                "text": "Managed sequence of bytes with checked positional access and UTF-8 validation."
+              },
+              {
+                "identity": "ioErrorType",
+                "text": "Input-output failure record carrying a portable code and an uncertainty flag."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Bytes and input-output errors",
+                "profile": "en",
+                "specification": "LIB.IO",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
       }
     ],
     "exclusions": [],
@@ -7939,6 +8322,45 @@
           "tokens": [
             "deferKeyword",
             "endDefer"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "construction",
+            "id": "consoleCapabilityType",
+            "role": "construction"
+          },
+          "productions": [
+            "type",
+            "postfix"
+          ],
+          "tokens": [
+            "consoleCapabilityType",
+            "argumentsCapabilityType",
+            "directoryCapabilityType",
+            "fileCapabilityType",
+            "clockCapabilityType",
+            "timerCapabilityType",
+            "requestConsole",
+            "requestArguments",
+            "requestDirectory",
+            "requestClock",
+            "requestTimer"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "construction",
+            "id": "bytesType",
+            "role": "construction"
+          },
+          "productions": [
+            "type",
+            "postfix"
+          ],
+          "tokens": [
+            "bytesType",
+            "ioErrorType"
           ]
         }
       ]

@@ -111,3 +111,52 @@ fn addressed_mutable_initializer_creates_its_cell_before_any_call() {
     assert_eq!(count(&builder, Operation::CellLocal), 1);
     assert_eq!(count(&builder, Operation::CellStore), 1);
 }
+
+#[test]
+fn assigning_one_local_to_another_produces_distinct_origin_values() {
+    let mut hir = module(false);
+    let integer = hir.locals.first().map(|local| local.type_id).unwrap_or(pseudolearn_semantic::identities::TypeId(0));
+    hir.locals.push(HirLocal {
+        name: "copy".to_owned(),
+        type_id: integer,
+        passing: Passing::Value,
+        span: Span::new(0, 1),
+        scope: FunctionId(0),
+        parameter: false,
+        mutable: false,
+    });
+    hir.expressions.kinds.push(HirExpression::Local(LocalId(0)));
+    hir.expressions.types.push(integer);
+    hir.expressions.spans.push(Span::new(0, 1));
+    let source = SourceText::new("7".to_owned());
+    let expression_context = ExpressionContext {
+        module: &hir,
+        source: &source,
+    };
+    let mut environment = VariableEnvironment::new();
+    let mut builder = FunctionBuilder::new("@main".to_owned(), IrType::Unit);
+    let block = builder.create_block();
+    builder.set_current_block(block);
+    let mut origins = Vec::new();
+    let mut context = StatementContext {
+        expression_context: &expression_context,
+        environment: &mut environment,
+        builder: &mut builder,
+        origins: &mut origins,
+    };
+    lower_assign(
+        &HirPlace::Local(LocalId(0)),
+        ExpressionId(0),
+        Span::new(0, 1),
+        &mut context,
+    );
+    lower_assign(
+        &HirPlace::Local(LocalId(1)),
+        ExpressionId(1),
+        Span::new(0, 1),
+        &mut context,
+    );
+    assert_eq!(count(&builder, Operation::ValueReinterpret), 1);
+    assert_eq!(origins.len(), 2);
+    assert_ne!(origins.first().map(|o| o.value), origins.get(1).map(|o| o.value));
+}

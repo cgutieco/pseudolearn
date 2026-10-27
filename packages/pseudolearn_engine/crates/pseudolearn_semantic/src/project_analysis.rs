@@ -74,6 +74,7 @@ fn check_bodies(session: &mut AnalysisSession<'_>) {
     crate::flow::bodies(session);
     crate::constructor_rules::check(session);
     crate::usage::unused(session);
+    crate::effect_check::check(session);
     crate::hir_finalization::finalize(&mut session.module);
 }
 

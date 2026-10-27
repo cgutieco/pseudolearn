@@ -87,4 +87,6 @@ El catálogo acepta identidades de contextualVocabulary como fuente léxica dist
 Los casos con anfitrion se validan contra la forma cerrada host del esquema see/1 y contra restricciones
 de rutas, octetos e incertidumbre de escritura. El proveedor es exclusivamente declarativo y en memoria:
 validar estos datos no ejecuta ni importa al sujeto. Los negativos distinguen forma inválida, escape,
-octeto fuera de rango y permiso desconocido.
+octeto fuera de rango, permiso desconocido, secuencias `effect_seq` no crecientes en `anfitrion_observado.efectos`,
+`efecto_pendiente` sin terminación `awaiting_effect` y combinaciones incoherentes entre `grabar_y_reproducir`,
+`alterar_cinta` y `reproduccion_fallo`.

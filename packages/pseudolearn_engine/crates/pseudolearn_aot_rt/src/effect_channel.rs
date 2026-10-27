@@ -7,6 +7,8 @@ use std::collections::BTreeMap;
 pub struct EffectChannel {
     pub(crate) session: EffectSession,
     pub(crate) provider: MemoryHostProvider,
+    pub(crate) cancel_on_effect: Option<u64>,
+    pub(crate) cancelled: bool,
     failure: Option<ReplayError>,
 }
 
@@ -15,6 +17,8 @@ impl EffectChannel {
         Self {
             session,
             provider,
+            cancel_on_effect: None,
+            cancelled: false,
             failure: None,
         }
     }

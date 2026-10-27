@@ -47,7 +47,9 @@ pub fn apply_native_effect_output(response: &mut ExecuteResponse, bytes: &[u8]) 
         "calls": document.get("host_calls").cloned().unwrap_or(Value::Null),
         "open_resources": document.get("open_resources").cloned().unwrap_or(Value::Null),
     }));
-    if let Some(code) = document.get("replay_error").and_then(Value::as_str) {
+    if document.get("cancelled").and_then(Value::as_bool) == Some(true) {
+        response.termination = json!({"kind":"cancelled"});
+    } else if let Some(code) = document.get("replay_error").and_then(Value::as_str) {
         response.termination = json!({"kind":"failed","code":code});
     }
 }

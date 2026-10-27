@@ -420,7 +420,7 @@ Puntos a cumplir:
   retroceder nunca tocan disco ni red.
 - [x] `PG-3.06` Cinta divergente, truncada o alterada rechazada con error de reproducción, sin consultar al anfitrión.
 - [ ] `PG-3.07` Contrato de suspensión por efecto pendiente, distinto de la espera de entrada.
-- [ ] `PG-3.08` Análisis de efectos transitivos en compilación: una función pura no puede esconder E/S.
+- [x] `PG-3.08` Análisis de efectos transitivos en compilación: una función pura no puede esconder E/S.
 - [ ] `PG-3.09` Errores de E/S portables, separación de bytes y texto UTF-8, y limpieza en retorno, propagación y salida.
 - [ ] `PG-3.10` Privacidad de la cinta: secretos por referencia, retención y presupuesto de bytes definidos, y cinta
   incompleta marcada como no reproducible.
@@ -460,7 +460,8 @@ demostrado por una prueba o un comando ejecutado en esta iteración.
 
 | Punto | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
-| `PG-3.01`–`PG-3.10` | Abiertas | Casos reescritos de `ENG.EXEC.EFFECT-COMMIT`, `ENG.EFFECT.TAPE`, `LANG.CAPABILITY.MODEL`, `LANG.CAPABILITY.PURITY` y `LIB.IO` en `engine` y `aot` sin divergencias; pruebas de suspensión, identidad, privacidad y proveedor físico | Falta cerrar subpunto a subpunto: pruebas de límite de cinta en el corpus, verificación independiente del bytecode de `EffectCall`, fichas bilingües y vista pública de la app |
+| `PG-3.01`–`PG-3.07`, `PG-3.09`–`PG-3.10` | Abiertas | Casos reescritos de `ENG.EXEC.EFFECT-COMMIT`, `ENG.EFFECT.TAPE`, `LANG.CAPABILITY.MODEL`, `ENG.EXEC.MODEL`, `RT.HOST.INTERFACE`, `LIB.IO` y `API.PROGRAM.VIEW`; ampliación de esquema `see/1` y corredor; 60 tests de `pseudolearn_api` en verde | Falta completar proyección pública de tipos y operaciones en app/servicio, pruebas de rechazo de cinta en AOT, verificación acotada conjunta y reanclaje |
+| `PG-3.08` | Cumplido | R3 de `LANG.CAPABILITY.PURITY` en `HirModule.pure_locals` y `effect_pure_values`; normalización bilingüe de terminadores; casos `C21` y `C22`; 18 tests en `pseudolearn_semantic` | Prohíbe y rechaza asignación y paso de funciones impuras a variables o parámetros de tipo `Funcion(...)` en cualquier contexto |
 | `PG-3.11` | Cumplido | `grabar_y_reproducir`, `anfitrion_observado` y privacidad de cinta ejecutados por el corredor SEE en `engine` y `aot` | Corredor, esquema y validador con pruebas positivas y negativas |
 | `PG-3.12` | Cumplido | `pseudo run --nativo` con cinta en ambos sentidos; cinta nativa inspeccionada con `seek` en el motor; `observe`/`seek` rechazados en nativo | Pruebas de `pseudolearn_cli` y `pseudolearn_api` |
 | `PG-3.13` | Abierta | E-PG-05: media geométrica 1,0001, cargas dentro del presupuesto revisado (`≤ 1,08` puntual, `≤ 1,15` IC); E-PG-09: 7 vectores bloqueados | Presupuesto revisado por la persona el 2026-10-27; faltan subcomandos del arnés (`.01`–`.04`) |
@@ -968,7 +969,7 @@ La IA a cargo actualiza esta tabla al cerrar cada fase.
 | PG-H | Cerrada · PG-H.01–.12 | Sí | 2026-10-23 | Pendientes declarados: humo en simulador, comparación de la app en E-PG-11, causa de los puntos de cambio y margen de iOS |
 | PG-1 | PG-1.01–.07 cumplidos · fase en curso | Sí, revisión integral pendiente | Sin cierre de fase | PG-1.08–.13 y cierre común sin autorizar; PG-1.C01/C02 pendientes |
 | PG-2 | Cerrada · PG-2.01–.17 (`.15` retirado) | Sí | 2026-10-26 | `PG-2.C09` justificado; E-PG-10 diferido por la persona; intervalo de E-PG-04 informado |
-| PG-3 | En curso · PG-3.11 y PG-3.12 cumplidos; resto abierto | Sí, C02 revisado (2026-10-26); revisión integral pendiente | Sin cierre de fase | `PG-3.C12` pendiente por revisión previa; E-PG-05 cumple el presupuesto por carga revisado el 2026-10-27; sin commit |
+| PG-3 | En curso · PG-3.08, PG-3.11 y PG-3.12 cumplidos; resto abierto | Sí, C02 revisado (2026-10-26); revisión integral pendiente | Sin cierre de fase | `PG-3.C12` pendiente por revisión previa; E-PG-05 cumple el presupuesto por carga revisado el 2026-10-27; sin commit |
 | PG-4 | Sin iniciar | No | | |
 | PG-5 | Sin iniciar | No | | |
 | PG-6A | Sin iniciar | No | | |

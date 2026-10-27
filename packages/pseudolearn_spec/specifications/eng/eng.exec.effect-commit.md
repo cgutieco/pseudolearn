@@ -66,7 +66,28 @@
     "salida": "hola\n",
     "terminacion": "completed",
     "anfitrion_observado": {
-      "llamadas": 3
+      "llamadas": 3,
+      "estado_cinta": "reproducible",
+      "efectos": [
+        {
+          "effect_seq": 1,
+          "capability_kind": "filesystem",
+          "operation": "request_directory",
+          "outcome": "committed"
+        },
+        {
+          "effect_seq": 2,
+          "capability_kind": "filesystem",
+          "operation": "directory_open",
+          "outcome": "committed"
+        },
+        {
+          "effect_seq": 3,
+          "capability_kind": "filesystem",
+          "operation": "file_read_text",
+          "outcome": "committed"
+        }
+      ]
     }
   },
   "programas": {
@@ -104,7 +125,31 @@
   "operacion": "execute",
   "espera": {
     "salida": "100200\n",
-    "terminacion": "completed"
+    "terminacion": "completed",
+    "anfitrion_observado": {
+      "llamadas": 3,
+      "estado_cinta": "reproducible",
+      "efectos": [
+        {
+          "effect_seq": 1,
+          "capability_kind": "clock",
+          "operation": "request_clock",
+          "outcome": "committed"
+        },
+        {
+          "effect_seq": 2,
+          "capability_kind": "clock",
+          "operation": "clock_now",
+          "outcome": "committed"
+        },
+        {
+          "effect_seq": 3,
+          "capability_kind": "clock",
+          "operation": "clock_now",
+          "outcome": "committed"
+        }
+      ]
+    }
   },
   "programas": {
     "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir clock Como Reloj <- Propagar SolicitarReloj();\nDefinir first Como Entero <- Propagar clock.Ahora();\nDefinir second Como Entero <- Propagar clock.Ahora();\nRetornar Exito(first * 1000 + second);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
@@ -134,7 +179,8 @@
   "texto": "La fase Resolved produce exactamente uno de tres resultados de confirmación: Committed (completado con éxito en el anfitrión), Failed (rechazado o fallido de forma determinista antes de mutar estado externo) o Uncertain (resultado incierto tras cruzar al anfitrión en operaciones con potencial de mutación).",
   "verificacion": [
     "C3",
-    "C6"
+    "C6",
+    "C7"
   ]
 }
 ```
@@ -155,7 +201,31 @@
   "operacion": "execute",
   "espera": {
     "salida": "no_encontrado\ncierto\n",
-    "terminacion": "completed"
+    "terminacion": "completed",
+    "anfitrion_observado": {
+      "llamadas": 3,
+      "estado_cinta": "reproducible",
+      "efectos": [
+        {
+          "effect_seq": 1,
+          "capability_kind": "filesystem",
+          "operation": "request_directory",
+          "outcome": "committed"
+        },
+        {
+          "effect_seq": 2,
+          "capability_kind": "filesystem",
+          "operation": "directory_open",
+          "outcome": "committed"
+        },
+        {
+          "effect_seq": 3,
+          "capability_kind": "filesystem",
+          "operation": "file_read_text",
+          "outcome": "failed"
+        }
+      ]
+    }
   },
   "programas": {
     "es": "SubProceso Probe() Como Resultado<Cadena, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\nRetornar file.LeerTexto();\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo; Si problem.Incierto Entonces Escribir \"incierto\"; SiNo Escribir \"cierto\"; FinSi\nFinSegun\nFinAlgoritmo\n",
@@ -198,7 +268,32 @@
   "operacion": "execute",
   "espera": {
     "salida": "interrumpido\nincierto\n",
-    "terminacion": "completed"
+    "terminacion": "completed",
+    "anfitrion_observado": {
+      "llamadas": 3,
+      "estado_cinta": "uncertain_external_state",
+      "reproduccion_fallo": "replay_non_reproducible",
+      "efectos": [
+        {
+          "effect_seq": 1,
+          "capability_kind": "filesystem",
+          "operation": "request_directory",
+          "outcome": "committed"
+        },
+        {
+          "effect_seq": 2,
+          "capability_kind": "filesystem",
+          "operation": "directory_open",
+          "outcome": "committed"
+        },
+        {
+          "effect_seq": 3,
+          "capability_kind": "filesystem",
+          "operation": "file_write_text",
+          "outcome": "uncertain"
+        }
+      ]
+    }
   },
   "programas": {
     "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"escritura\");\nRetornar file.EscribirTexto(\"x\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo; Si problem.Incierto Entonces Escribir \"incierto\"; SiNo Escribir \"cierto\"; FinSi\nFinSegun\nFinAlgoritmo\n",
@@ -266,7 +361,31 @@
   "operacion": "execute",
   "espera": {
     "salida": "100200\n",
-    "terminacion": "completed"
+    "terminacion": "completed",
+    "anfitrion_observado": {
+      "llamadas": 3,
+      "estado_cinta": "reproducible",
+      "efectos": [
+        {
+          "effect_seq": 1,
+          "capability_kind": "clock",
+          "operation": "request_clock",
+          "outcome": "committed"
+        },
+        {
+          "effect_seq": 2,
+          "capability_kind": "clock",
+          "operation": "clock_now",
+          "outcome": "committed"
+        },
+        {
+          "effect_seq": 3,
+          "capability_kind": "clock",
+          "operation": "clock_now",
+          "outcome": "committed"
+        }
+      ]
+    }
   },
   "programas": {
     "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir clock Como Reloj <- Propagar SolicitarReloj();\nRetornar Exito((Propagar clock.Ahora()) * 1000 + (Propagar clock.Ahora()));\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
@@ -306,7 +425,16 @@
     "salida": "permiso_denegado\ncierto\n",
     "terminacion": "completed",
     "anfitrion_observado": {
-      "llamadas": 0
+      "llamadas": 0,
+      "estado_cinta": "reproducible",
+      "efectos": [
+        {
+          "effect_seq": 1,
+          "capability_kind": "filesystem",
+          "operation": "request_directory",
+          "outcome": "failed"
+        }
+      ]
     }
   },
   "programas": {
@@ -321,6 +449,74 @@
     "files": {
       "a": "hola"
     }
+  }
+}
+```
+
+```caso
+{
+  "id": "C7",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "interrumpido\ncierto\n",
+    "terminacion": "completed",
+    "anfitrion_observado": {
+      "llamadas": 3,
+      "estado_cinta": "reproducible",
+      "efectos": [
+        {
+          "effect_seq": 1,
+          "capability_kind": "filesystem",
+          "operation": "request_directory",
+          "outcome": "committed"
+        },
+        {
+          "effect_seq": 2,
+          "capability_kind": "filesystem",
+          "operation": "directory_open",
+          "outcome": "committed"
+        },
+        {
+          "effect_seq": 3,
+          "capability_kind": "filesystem",
+          "operation": "file_write_text",
+          "outcome": "failed"
+        }
+      ]
+    }
+  },
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"escritura\");\nRetornar file.EscribirTexto(\"x\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo; Si problem.Incierto Entonces Escribir \"incierto\"; SiNo Escribir \"cierto\"; FinSi\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<integer, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine file as FileCap <- propagate directory.open(\"a\", \"write\");\nreturn file.writeText(\"x\");\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code; if problem.uncertain then write \"incierto\"; else write \"cierto\"; endIf\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": [
+      "archivos_lectura",
+      "archivos_escritura"
+    ],
+    "requested_permissions": [
+      "archivos_lectura",
+      "archivos_escritura"
+    ],
+    "files": {},
+    "faults": [
+      {
+        "operation": "file_write_text",
+        "code": "interrumpido",
+        "uncertain": false
+      }
+    ],
+    "grabar_y_reproducir": true
   }
 }
 ```

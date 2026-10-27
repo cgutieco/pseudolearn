@@ -27,7 +27,11 @@ pub(crate) fn resolve(session: &mut AnalysisSession<'_>, node: usize) -> Interfa
     let pure = opener == "funcion" || opener == "function";
     InterfaceMethod {
         name,
-        signature: FunctionSignature { parameters, result },
+        signature: FunctionSignature {
+            parameters,
+            result,
+            pure,
+        },
         span: session.span(node),
         pure,
     }

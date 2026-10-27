@@ -154,13 +154,14 @@
   "id": "R2",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Retornar y Propagar evalúan y conservan su resultado antes de ejecutar limpiezas, incluidas cargas de referencia. Se rechazan Retornar, Salir, Propagar y otro Diferir dentro de una limpieza; una función literal interior posee contexto independiente. Una trampa del programa o de una limpieza termina inmediatamente sin ejecutar limpiezas pendientes. No se añade limpieza ante cancelación o efectos externos.",
+  "texto": "Retornar y Propagar evalúan y conservan su resultado antes de ejecutar limpiezas, incluidas cargas de referencia y variantes Resultado<T, ErrorES>, de modo que cerrar una capacidad con Diferir al retornar o propagar un ErrorES nunca oculta el error primario. Se rechazan Retornar, Salir, Propagar y otro Diferir dentro de una limpieza; una función literal interior posee contexto independiente. Una trampa del programa o de una limpieza termina inmediatamente sin ejecutar limpiezas pendientes. No se añade limpieza ante cancelación o efectos externos.",
   "verificacion": [
     "C5",
     "C6",
     "C7",
     "C10",
-    "C11"
+    "C11",
+    "C12"
   ]
 }
 ```
@@ -348,6 +349,66 @@
   "espera": {
     "salida": "2\n1\nempty\n",
     "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C12",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "SubProceso LeerConCierre() Como Resultado<Cadena, ErrorES>\nDefinir dir Como DirectorioCap <- Propagar SolicitarDirectorio(\"datos\");\nDefinir f Como ArchivoCap <- Propagar dir.Abrir(\"malo.txt\", \"lectura\");\nDiferir\nDescartar f.Cerrar();\nDescartar dir.Cerrar();\nFinDiferir\nDefinir texto Como Cadena <- Propagar f.LeerTexto();\nRetornar Exito(texto);\nFinSubProceso\nAlgoritmo Main\nDefinir res Como Resultado<Cadena, ErrorES> <- LeerConCierre();\nSegun res Hacer\nExito(t): Escribir t;\nError(err): Escribir err.Codigo, \":\", err.Incierto;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine LeerConCierre() as result<string, IoError>\ndefine dir as DirectoryCap <- propagate requestDirectory(\"datos\");\ndefine f as FileCap <- propagate dir.open(\"malo.txt\", \"read\");\ndefer\ndiscard f.close();\ndiscard dir.close();\nendDefer\ndefine texto as string <- propagate f.readText();\nreturn success(texto);\nendSubroutine\nalgorithm Main\ndefine res as result<string, IoError> <- LeerConCierre();\nswitch res do\nsuccess(t): write t;\nfailure(err): write err.code, \":\", err.uncertain;\nendSwitch\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "anfitrion": {
+    "permisos": [
+      "archivos_lectura"
+    ],
+    "archivos": {
+      "datos": {
+        "malo.txt": [255, 254]
+      }
+    }
+  },
+  "espera": {
+    "salida": "4:Falso\n",
+    "terminacion": "completed",
+    "anfitrion_observado": {
+      "llamadas": 5,
+      "recursos_abiertos": 0,
+      "estado_cinta": "reproducible"
+    }
+  },
+  "esperas": {
+    "es": {
+      "salida": "4:Falso\n",
+      "terminacion": "completed",
+      "anfitrion_observado": {
+        "llamadas": 5,
+        "recursos_abiertos": 0,
+        "estado_cinta": "reproducible"
+      }
+    },
+    "en": {
+      "salida": "4:false\n",
+      "terminacion": "completed",
+      "anfitrion_observado": {
+        "llamadas": 5,
+        "recursos_abiertos": 0,
+        "estado_cinta": "reproducible"
+      }
+    }
   }
 }
 ```

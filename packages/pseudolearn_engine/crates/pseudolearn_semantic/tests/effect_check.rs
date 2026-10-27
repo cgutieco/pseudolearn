@@ -174,3 +174,39 @@ fn pure_function_calling_a_method_with_effect_is_rejected() {
     let program = with_effect("Clase K\nMetodo Run() Como Entero\nRetornar Effect();\nFinMetodo\nFinClase\nFuncion F(k Como K) Como Entero\nRetornar k.Run();\nFinFuncion\nAlgoritmo P\nDefinir k Como K <- Nuevo K();\nEscribir F(k);\nFinAlgoritmo\n");
     assert_eq!(codes(&program), vec![DiagnosticCode::PureFunctionTransitiveSideEffect]);
 }
+
+#[test]
+fn algorithm_assigning_impure_subprogram_to_pure_function_type_is_rejected() {
+    let program = "SubProceso Effect(value Como Entero) Como Entero\nEscribir value;\nRetornar value;\nFinSubProceso\nAlgoritmo Main\nDefinir action Como Funcion(Entero) Como Entero <- Effect;\nEscribir action(3);\nFinAlgoritmo\n";
+    let diagnostics = semantic(program);
+    assert_eq!(diagnostics.len(), 1, "{diagnostics:?}");
+    assert_eq!(
+        diagnostics.first().map(|diagnostic| diagnostic.code),
+        Some(DiagnosticCode::PureFunctionTransitiveSideEffect)
+    );
+    assert_eq!(related_count(&diagnostics, 0), Some(1));
+}
+
+#[test]
+fn algorithm_assigning_impure_subprogram_to_subroutine_type_is_accepted() {
+    let program = "SubProceso Effect(value Como Entero) Como Entero\nEscribir value;\nRetornar value;\nFinSubProceso\nAlgoritmo Main\nDefinir action Como SubProceso(Entero) Como Entero <- Effect;\nEscribir action(3);\nFinAlgoritmo\n";
+    assert_eq!(codes(program), Vec::<DiagnosticCode>::new());
+}
+
+#[test]
+fn algorithm_passing_impure_subprogram_to_subroutine_with_pure_function_parameter_is_rejected() {
+    let program = "SubProceso ConEfecto(x Como Entero) Como Entero\nEscribir x;\nRetornar x;\nFinSubProceso\nSubProceso Aplicar(fn Como Funcion(Entero) Como Entero, v Como Entero) Como Entero\nRetornar fn(v);\nFinSubProceso\nAlgoritmo P\nEscribir Aplicar(ConEfecto, 5);\nFinAlgoritmo\n";
+    let diagnostics = semantic(program);
+    assert_eq!(diagnostics.len(), 1, "{diagnostics:?}");
+    assert_eq!(
+        diagnostics.first().map(|diagnostic| diagnostic.code),
+        Some(DiagnosticCode::PureFunctionTransitiveSideEffect)
+    );
+    assert_eq!(related_count(&diagnostics, 0), Some(1));
+}
+
+#[test]
+fn algorithm_passing_impure_subprogram_to_subroutine_parameter_is_accepted() {
+    let program = "SubProceso ConEfecto(x Como Entero) Como Entero\nEscribir x;\nRetornar x;\nFinSubProceso\nSubProceso Aplicar(fn Como SubProceso(Entero) Como Entero, v Como Entero) Como Entero\nRetornar fn(v);\nFinSubProceso\nAlgoritmo P\nEscribir Aplicar(ConEfecto, 5);\nFinAlgoritmo\n";
+    assert_eq!(codes(program), Vec::<DiagnosticCode>::new());
+}

@@ -57,9 +57,20 @@ secrets contiene referencias con identidad de clave y valor solo para el proveed
 secret_keys asocia cada identidad de clave con la clave que autentica la referencia; el corredor
 rechaza cualquier cinta viva que contenga el valor de un secreto en forma textual, escapada,
 decimal o hexadecimal. detached declara que el anfitrión resuelve cada efecto fuera del motor
-mediante effect_result. grabar_y_reproducir exige reproducir la cinta viva con la misma identidad
-de autoridad, sin archivos, argumentos ni instantes de reloj, y comparar salida y terminación; la
-reproducción no consulta al proveedor. La clave anfitrion_observado, dentro de espera, compara las
-llamadas recibidas por el proveedor (llamadas) y los recursos que siguen abiertos tras el cierre
-final del anfitrión (recursos_abiertos) con la observación del sujeto. El esquema rechaza campos desconocidos, rutas no relativas, octetos fuera de 0 a 255 y
-fallos inciertos en operaciones de solo lectura. Estos datos no autorizan acceso a disco ni red.
+mediante effect_result, y cancel_on_awaiting_effect indica el número de secuencia de efecto en el
+que el anfitrión cancela la ejecución mientras el efecto permanece en awaiting_effect.
+grabar_y_reproducir exige reproducir la cinta viva con la misma identidad de autoridad, sin archivos,
+argumentos ni instantes de reloj, y comparar salida y terminación; la reproducción no consulta al
+proveedor. alterar_cinta permite truncar la última entrada, corromper el resumen criptográfico o la
+carga útil o cambiar la semilla antes de reproducir la cinta grabada para comprobar su rechazo. La
+clave anfitrion_observado, dentro de espera, compara las llamadas recibidas por el proveedor
+(llamadas), los recursos que siguen abiertos tras el cierre final del anfitrión (recursos_abiertos),
+el estado de reproducibilidad de la cinta (estado_cinta), la secuencia ordenada de entradas de
+efecto del anfitrión con su effect_seq, capacidad, operación, desenlace e identidad de clave de
+secreto (efectos), y el código de rechazo al reproducir la cinta (reproduccion_fallo). Cuando la
+terminación esperada es awaiting_effect, efecto_pendiente compara effect_seq, capability_kind,
+operation, arguments_summary y source_node_id del efecto suspendido. Las llamadas de casos api
+admiten también start, advance, input, effect_result y cancel sobre recursos de ejecución. El
+esquema rechaza campos desconocidos, rutas no relativas, octetos fuera de 0 a 255, fallos inciertos
+en operaciones de solo lectura, secuencias de efectos no crecientes y combinaciones incoherentes de
+alteración de cinta o efecto pendiente. Estos datos no autorizan acceso a disco ni red.

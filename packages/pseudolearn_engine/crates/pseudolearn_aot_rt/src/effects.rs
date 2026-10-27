@@ -149,6 +149,20 @@ fn request_reply(
         None => None,
     };
     let channel = &mut entry.engine.effects;
+    let next_sequence = u64::try_from(channel.session.tape().entries().len())
+        .unwrap_or(u64::MAX)
+        .saturating_add(1);
+    if channel.cancel_on_effect == Some(next_sequence) && !channel.session.is_replaying() {
+        let _ = pseudolearn_runtime::begin_host_effect(
+            &mut channel.session,
+            operation,
+            (receiver, arguments),
+            frame.source_node,
+        );
+        channel.cancelled = true;
+        channel.abort();
+        return Err(Trap::exhausted_input());
+    }
     pseudolearn_runtime::perform_host_effect(
         &mut channel.session,
         &mut channel.provider,

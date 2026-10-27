@@ -186,10 +186,11 @@
   "id": "R4",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Todo recurso asignado en la frontera del anfitrión se libera de manera forzosa e inmediata ante terminación cancelled, limit_reached o failed, garantizando que ninguna capacidad del anfitrión permanezca abierta tras finalizar la sesión.",
+  "texto": "Todo recurso asignado en la frontera del anfitrión se libera de manera forzosa e inmediata ante terminación cancelled, limit_reached o failed, incluida la desconexión o cancelación del anfitrión mientras una operación espera en awaiting_effect. En tales cortes, ninguna capacidad del anfitrión permanece abierta tras finalizar la sesión, la cinta se sella como Incomplete y no se ejecutan nuevos efectos de usuario dentro de Diferir.",
   "verificacion": [
     "C5",
-    "C6"
+    "C6",
+    "C7"
   ]
 }
 ```
@@ -220,7 +221,23 @@ Los valores esperados de R3 se calculan con el oráculo independiente de see_ora
       "codigo": "divisionByZero"
     },
     "anfitrion_observado": {
-      "recursos_abiertos": 0
+      "llamadas": 2,
+      "recursos_abiertos": 0,
+      "estado_cinta": "incomplete",
+      "efectos": [
+        {
+          "effect_seq": 1,
+          "capability_kind": "filesystem",
+          "operation": "request_directory",
+          "outcome": "committed"
+        },
+        {
+          "effect_seq": 2,
+          "capability_kind": "filesystem",
+          "operation": "directory_open",
+          "outcome": "committed"
+        }
+      ]
     }
   },
   "programas": {
@@ -260,7 +277,22 @@ Los valores esperados de R3 se calculan con el oráculo independiente de see_ora
     "terminacion": "cancelled",
     "anfitrion_observado": {
       "llamadas": 2,
-      "recursos_abiertos": 0
+      "recursos_abiertos": 0,
+      "estado_cinta": "incomplete",
+      "efectos": [
+        {
+          "effect_seq": 1,
+          "capability_kind": "filesystem",
+          "operation": "request_directory",
+          "outcome": "committed"
+        },
+        {
+          "effect_seq": 2,
+          "capability_kind": "filesystem",
+          "operation": "directory_open",
+          "outcome": "committed"
+        }
+      ]
     }
   },
   "programas": {
@@ -282,5 +314,67 @@ Los valores esperados de R3 se calculan con el oráculo independiente de see_ora
   "sujetos": [
     "engine"
   ]
+}
+```
+
+```caso
+{
+  "id": "C7",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "",
+    "terminacion": "cancelled",
+    "anfitrion_observado": {
+      "llamadas": 2,
+      "recursos_abiertos": 0,
+      "estado_cinta": "incomplete",
+      "efectos": [
+        {
+          "effect_seq": 1,
+          "capability_kind": "filesystem",
+          "operation": "request_directory",
+          "outcome": "committed"
+        },
+        {
+          "effect_seq": 2,
+          "capability_kind": "filesystem",
+          "operation": "directory_open",
+          "outcome": "committed"
+        },
+        {
+          "effect_seq": 3,
+          "capability_kind": "filesystem",
+          "operation": "file_read_text",
+          "outcome": "requested"
+        }
+      ]
+    }
+  },
+  "programas": {
+    "es": "SubProceso Probe(directory Como DirectorioCap) Como Resultado<Cadena, ErrorES>\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\nDiferir\nDescartar file.Cerrar();\nFinDiferir\nRetornar file.LeerTexto();\nFinSubProceso\nAlgoritmo Main\nDefinir opened Como Resultado<DirectorioCap, ErrorES> <- SolicitarDirectorio(\"root\");\nSegun opened Hacer\nExito(root): Segun Probe(root) Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe(directory as DirCap) as result<string, IoError>\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\ndefer\ndiscard file.close();\nendDefer\nreturn file.readText();\nendSubroutine\nalgorithm Main\ndefine opened as result<DirCap, IoError> <- requestDirectory(\"root\");\nswitch opened do\nsuccess(root): switch Probe(root) do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": [
+      "archivos_lectura"
+    ],
+    "requested_permissions": [
+      "archivos_lectura"
+    ],
+    "files": {
+      "a": "hola"
+    },
+    "cancel_on_awaiting_effect": 3
+  }
 }
 ```

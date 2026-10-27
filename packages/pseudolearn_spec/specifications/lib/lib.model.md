@@ -319,11 +319,12 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "D1 declara las dieciocho funciones incorporadas, lexemas canónicos y alias bilingües y firmas. Sus nombres no son palabras reservadas; subprograma homónimo oculta la función. Cantidad y tipos de argumentos se comprueban antes de ejecución. Son datos del perfil con semántica única y determinista.",
+  "texto": "D1 declara las dieciocho funciones incorporadas, lexemas canónicos, alias bilingües y firmas, y D2 (capabilityLibrary) declara el constructor Bytes(), sus consultas posicionales y UTF-8, las solicitudes de capacidades explícitas y los métodos de capacidad con sus receptores, parámetros, retorno en Resultado<T, ErrorES> y clasificación de efecto. Sus nombres no son palabras reservadas; un subprograma homónimo oculta la función libre. La cantidad y los tipos de argumentos se comprueban estáticamente antes de la ejecución.",
   "verificacion": [
     "C1",
     "C2",
-    "C3"
+    "C3",
+    "C4"
   ]
 }
 ```
@@ -405,6 +406,31 @@
         "severidad": "error"
       }
     ]
+  },
+  "rigor": [
+    "estricto",
+    "flexible"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C4",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir b Como Bytes <- Bytes();\nEscribir b.Longitud();\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine b as Bytes <- Bytes();\nwrite b.length();\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "0\n",
+    "terminacion": "completed"
   },
   "rigor": [
     "estricto",

@@ -88,6 +88,7 @@ pub(crate) fn run_request(
     ExecuteResponse {
         kind: "execute".to_owned(),
         effect_tape: None,
+        pending_effect: None,
         host_observation: None,
         output: machine_output(machine).to_owned(),
         termination: if page_failed {
@@ -174,6 +175,7 @@ fn rejected(diagnostics: Vec<crate::ApiDiagnostic>) -> ExecuteResponse {
     ExecuteResponse {
         kind: "execute".to_owned(),
         effect_tape: None,
+        pending_effect: None,
         host_observation: None,
         output: String::new(),
         termination: json!({"kind":"failed","code":"analysisFailed"}),
@@ -219,6 +221,7 @@ fn execute_bulk(
     ExecuteResponse {
         kind: "execute".to_owned(),
         effect_tape: None,
+        pending_effect: None,
         host_observation: None,
         output: result.output,
         termination: crate::execution_wire::termination(&result.exit),

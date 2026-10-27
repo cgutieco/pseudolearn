@@ -13,6 +13,14 @@ pub(crate) fn get(session: &AnalysisSession<'_>, kind: &Type) -> Option<Function
     session.module.function_types.get(record).cloned()
 }
 
+pub(crate) fn is_pure_syntax(session: &AnalysisSession<'_>, node: usize) -> bool {
+    if session.token_kind(node) != Some(TokenKind::Keyword(KeywordKind::Subroutine)) {
+        return false;
+    }
+    let opener = session.options.profile.fold_word(session.lexeme(node));
+    opener == "funcion" || opener == "function"
+}
+
 pub(crate) fn resolve(session: &mut AnalysisSession<'_>, node: usize) -> TypeId {
     let mut parameters = Vec::new();
     let mut result = session.module.types.intern(Type::Unit);
@@ -25,7 +33,16 @@ pub(crate) fn resolve(session: &mut AnalysisSession<'_>, node: usize) -> TypeId 
             result = crate::type_resolution::resolve(session, child);
         }
     }
-    intern(session, FunctionSignature { parameters, result }, node)
+    let pure = is_pure_syntax(session, node);
+    intern(
+        session,
+        FunctionSignature {
+            parameters,
+            result,
+            pure,
+        },
+        node,
+    )
 }
 
 pub(crate) fn signature(session: &AnalysisSession<'_>, function: FunctionId) -> FunctionSignature {
@@ -47,6 +64,7 @@ pub(crate) fn signature(session: &AnalysisSession<'_>, function: FunctionId) -> 
         result: function
             .map(|function| function.result)
             .unwrap_or(TypeId(u32::MAX)),
+        pure: false,
     }
 }
 
@@ -59,7 +77,10 @@ pub(crate) fn intern(
         .module
         .function_types
         .iter()
-        .find_map(|(record, existing)| (*existing == signature).then_some(*record))
+        .find_map(|(record, existing)| {
+            (existing.parameters == signature.parameters && existing.result == signature.result)
+                .then_some(*record)
+        })
     {
         return session.module.types.intern(Type::Record(record));
     }

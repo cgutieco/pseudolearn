@@ -268,7 +268,9 @@
   "clase": "semantica",
   "texto": "La API proyecta la terminación awaiting_effect con su efecto pendiente y proporciona la operación effect_result para reanudar la ejecución con el resultado entregado por el anfitrión. Enviar input cuando se espera effect_result o effect_result cuando se espera input produce un error de uso.",
   "verificacion": [
-    "C5"
+    "C5",
+    "C6",
+    "C7"
   ]
 }
 ```
@@ -286,31 +288,458 @@
     "flexible"
   ],
   "origen": "derivado",
-  "operacion": "execute",
-  "espera": {
-    "salida": "150\n",
-    "terminacion": "completed",
-    "anfitrion_observado": {
-      "llamadas": 4,
-      "recursos_abiertos": 0
-    }
-  },
+  "operacion": "api",
   "programas": {
-    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir clock Como Reloj <- Propagar SolicitarReloj();\nDefinir timer Como Temporizador <- Propagar SolicitarTemporizador();\nDefinir instant Como Entero <- Propagar clock.Ahora();\nRetornar timer.Esperar(50);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
-    "en": "subroutine Probe() as result<integer, IoError>\ndefine clock as Clock <- propagate requestClock();\ndefine timer as Timer <- propagate requestTimer();\ndefine instant as integer <- propagate clock.now();\nreturn timer.wait(50);\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir clock Como Reloj <- Propagar SolicitarReloj();\nRetornar clock.Ahora();\nFinSubProceso\nAlgoritmo Main\nDefinir Mutable offset Como Entero <- 0;\nLeer offset;\nSegun Probe() Hacer\nExito(value): Escribir value + offset;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<integer, IoError>\ndefine clock as Clock <- propagate requestClock();\nreturn clock.now();\nendSubroutine\nalgorithm Main\ndefine mutable offset as integer <- 0;\nread offset;\nswitch Probe() do\nsuccess(value): write value + offset;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
-  "anfitrion": {
-    "permissions": [
-      "reloj",
-      "temporizador"
-    ],
-    "requested_permissions": [
-      "reloj",
-      "temporizador"
-    ],
-    "clock": [
-      100
+  "api": {
+    "calls": [
+      {
+        "operation": "create_analysis"
+      },
+      {
+        "operation": "start",
+        "resource_from": 0,
+        "arguments": {
+          "host": {
+            "permissions": [
+              "reloj"
+            ],
+            "requested_permissions": [
+              "reloj"
+            ],
+            "detached": true
+          }
+        }
+      },
+      {
+        "operation": "advance",
+        "resource_from": 1,
+        "arguments": {
+          "batch_size": 64
+        }
+      },
+      {
+        "operation": "input",
+        "resource_from": 1,
+        "arguments": {
+          "text": "25"
+        }
+      },
+      {
+        "operation": "advance",
+        "resource_from": 1,
+        "arguments": {
+          "batch_size": 64
+        }
+      },
+      {
+        "operation": "effect_result",
+        "resource_from": 1,
+        "arguments": {
+          "effect_seq": 2,
+          "result": {
+            "Committed": {
+              "Handle": 1
+            }
+          }
+        }
+      },
+      {
+        "operation": "advance",
+        "resource_from": 1,
+        "arguments": {
+          "batch_size": 64
+        }
+      },
+      {
+        "operation": "effect_result",
+        "resource_from": 1,
+        "arguments": {
+          "effect_seq": 3,
+          "result": {
+            "Committed": {
+              "Integer": 100
+            }
+          }
+        }
+      },
+      {
+        "operation": "advance",
+        "resource_from": 1,
+        "arguments": {
+          "batch_size": 64
+        }
+      }
     ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "resource": 2
+          }
+        },
+        {
+          "value": {
+            "resource": 3
+          }
+        },
+        {
+          "value": {
+            "termination": {
+              "kind": "awaiting_input"
+            }
+          }
+        },
+        {
+          "value": null
+        },
+        {
+          "value": {
+            "termination": {
+              "kind": "awaiting_effect",
+              "effect": {
+                "effect_seq": 2,
+                "capability_kind": "clock",
+                "operation": "request_clock"
+              }
+            },
+            "pending_effect": {
+              "effect_seq": 2,
+              "capability_kind": "clock",
+              "operation": "request_clock"
+            }
+          }
+        },
+        {
+          "value": null
+        },
+        {
+          "value": {
+            "termination": {
+              "kind": "awaiting_effect",
+              "effect": {
+                "effect_seq": 3,
+                "capability_kind": "clock",
+                "operation": "clock_now"
+              }
+            },
+            "pending_effect": {
+              "effect_seq": 3,
+              "capability_kind": "clock",
+              "operation": "clock_now"
+            }
+          }
+        },
+        {
+          "value": null
+        },
+        {
+          "value": {
+            "output": "125\n",
+            "termination": {
+              "kind": "completed"
+            },
+            "effect_tape": {
+              "status": "reproducible"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C6",
+  "regla": "R6",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir clock Como Reloj <- Propagar SolicitarReloj();\nRetornar clock.Ahora();\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo; Si problem.Incierto Entonces Escribir \"incierto\"; SiNo Escribir \"cierto\"; FinSi\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<integer, IoError>\ndefine clock as Clock <- propagate requestClock();\nreturn clock.now();\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code; if problem.uncertain then write \"incierto\"; else write \"cierto\"; endIf\nendSwitch\nendAlgorithm\n"
+  },
+  "api": {
+    "calls": [
+      {
+        "operation": "create_analysis"
+      },
+      {
+        "operation": "start",
+        "resource_from": 0,
+        "arguments": {
+          "host": {
+            "permissions": [
+              "reloj"
+            ],
+            "requested_permissions": [
+              "reloj"
+            ],
+            "detached": true
+          }
+        }
+      },
+      {
+        "operation": "advance",
+        "resource_from": 1,
+        "arguments": {
+          "batch_size": 64
+        }
+      },
+      {
+        "operation": "effect_result",
+        "resource_from": 1,
+        "arguments": {
+          "effect_seq": 1,
+          "result": {
+            "Committed": {
+              "Handle": 1
+            }
+          }
+        }
+      },
+      {
+        "operation": "advance",
+        "resource_from": 1,
+        "arguments": {
+          "batch_size": 64
+        }
+      },
+      {
+        "operation": "effect_result",
+        "resource_from": 1,
+        "arguments": {
+          "effect_seq": 2,
+          "result": {
+            "Failed": {
+              "code": "tiempo_agotado",
+              "message": "timeout",
+              "uncertain": false
+            }
+          }
+        }
+      },
+      {
+        "operation": "advance",
+        "resource_from": 1,
+        "arguments": {
+          "batch_size": 64
+        }
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "resource": 2
+          }
+        },
+        {
+          "value": {
+            "resource": 3
+          }
+        },
+        {
+          "value": {
+            "termination": {
+              "kind": "awaiting_effect",
+              "effect": {
+                "effect_seq": 1,
+                "capability_kind": "clock",
+                "operation": "request_clock"
+              }
+            }
+          }
+        },
+        {
+          "value": null
+        },
+        {
+          "value": {
+            "termination": {
+              "kind": "awaiting_effect",
+              "effect": {
+                "effect_seq": 2,
+                "capability_kind": "clock",
+                "operation": "clock_now"
+              }
+            }
+          }
+        },
+        {
+          "value": null
+        },
+        {
+          "value": {
+            "output": "tiempo_agotado\ncierto\n",
+            "termination": {
+              "kind": "completed"
+            },
+            "effect_tape": {
+              "status": "reproducible",
+              "entries": [
+                {
+                  "effect_seq": 1,
+                  "operation": "request_clock",
+                  "outcome": "committed"
+                },
+                {
+                  "effect_seq": 2,
+                  "operation": "clock_now",
+                  "outcome": "failed"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C7",
+  "regla": "R6",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir clock Como Reloj <- Propagar SolicitarReloj();\nRetornar clock.Ahora();\nFinSubProceso\nAlgoritmo Main\nDefinir Mutable pending Como Entero <- 0;\nLeer pending;\nSegun Probe() Hacer\nExito(value): Escribir value + pending;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<integer, IoError>\ndefine clock as Clock <- propagate requestClock();\nreturn clock.now();\nendSubroutine\nalgorithm Main\ndefine mutable pending as integer <- 0;\nread pending;\nswitch Probe() do\nsuccess(value): write value + pending;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "api": {
+    "calls": [
+      {
+        "operation": "create_analysis"
+      },
+      {
+        "operation": "start",
+        "resource_from": 0,
+        "arguments": {
+          "host": {
+            "permissions": [
+              "reloj"
+            ],
+            "requested_permissions": [
+              "reloj"
+            ],
+            "detached": true
+          }
+        }
+      },
+      {
+        "operation": "advance",
+        "resource_from": 1,
+        "arguments": {
+          "batch_size": 64
+        }
+      },
+      {
+        "operation": "effect_result",
+        "resource_from": 1,
+        "arguments": {
+          "effect_seq": 1,
+          "result": {
+            "Committed": {
+              "Handle": 1
+            }
+          }
+        }
+      },
+      {
+        "operation": "input",
+        "resource_from": 1,
+        "arguments": {
+          "text": "10"
+        }
+      },
+      {
+        "operation": "advance",
+        "resource_from": 1,
+        "arguments": {
+          "batch_size": 64
+        }
+      },
+      {
+        "operation": "input",
+        "resource_from": 1,
+        "arguments": {
+          "text": "20"
+        }
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "resource": 2
+          }
+        },
+        {
+          "value": {
+            "resource": 3
+          }
+        },
+        {
+          "value": {
+            "termination": {
+              "kind": "awaiting_input"
+            }
+          }
+        },
+        {
+          "failure": {
+            "family": "usage"
+          }
+        },
+        {
+          "value": null
+        },
+        {
+          "value": {
+            "termination": {
+              "kind": "awaiting_effect",
+              "effect": {
+                "effect_seq": 2,
+                "capability_kind": "clock",
+                "operation": "request_clock"
+              }
+            }
+          }
+        },
+        {
+          "failure": {
+            "family": "usage"
+          }
+        }
+      ]
+    }
   }
 }
 ```

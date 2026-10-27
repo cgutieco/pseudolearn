@@ -36,13 +36,19 @@ impl EffectInput {
         };
         configure_host_authority(&mut session, host.as_ref())
             .map_err(|error| error.code().to_owned())?;
+        let cancel_on_effect = host
+            .as_ref()
+            .and_then(|host| host.get("cancel_on_awaiting_effect"))
+            .and_then(Value::as_u64);
         let provider = match host.as_ref().filter(|_| !replaying) {
             Some(host) => {
                 MemoryHostProvider::from_value(host).map_err(|error| error.code().to_owned())?
             }
             None => MemoryHostProvider::new(),
         };
-        Ok(EffectChannel::new(session, provider))
+        let mut channel = EffectChannel::new(session, provider);
+        channel.cancel_on_effect = cancel_on_effect;
+        Ok(channel)
     }
 }
 
@@ -52,6 +58,8 @@ pub struct EffectOutput {
     host_calls: u64,
     open_resources: usize,
     replay_error: Option<String>,
+    #[serde(skip_serializing_if = "std::ops::Not::not")]
+    cancelled: bool,
 }
 
 impl EffectOutput {
@@ -61,6 +69,7 @@ impl EffectOutput {
             host_calls: 0,
             open_resources: 0,
             replay_error: Some(code),
+            cancelled: false,
         }
     }
 
@@ -71,6 +80,7 @@ impl EffectOutput {
             host_calls,
             open_resources,
             replay_error: channel.failure().map(|error| error.code().to_owned()),
+            cancelled: channel.cancelled,
         }
     }
 

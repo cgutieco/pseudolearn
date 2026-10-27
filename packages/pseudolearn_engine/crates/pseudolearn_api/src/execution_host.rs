@@ -15,6 +15,22 @@ impl ExecutionResource {
         let source = pending
             .source_node_id
             .ok_or_else(|| usage("missing effect source"))?;
+        let next_sequence = u64::try_from(self.effects.tape().entries().len())
+            .unwrap_or(u64::MAX)
+            .saturating_add(1);
+        if self.cancel_on_effect == Some(next_sequence) && self.execution_mode.allows_external_host() {
+            let request = begin_host_effect(
+                &mut self.effects,
+                operation,
+                (pending.receiver.clone(), pending.arguments.clone()),
+                source,
+            )
+            .map_err(crate::tape_wire::replay_error_to_api)?;
+            self.pending_host = Some(request);
+            self.cancelled.store(true, Ordering::Relaxed);
+            self.settle_cancelled_suspension();
+            return Ok(false);
+        }
         if self.detached_effects && self.execution_mode.allows_external_host() {
             let request = begin_host_effect(
                 &mut self.effects,

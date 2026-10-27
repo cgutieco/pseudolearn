@@ -1,7 +1,7 @@
 use pseudolearn_api::probe;
 use serde_json::{Value, json};
 
-const LOOP: &str = "Algoritmo P\nDefinir i Como Entero;\ni <- 0;\nMientras i < 1 Hacer\ni <- i + 1;\nFinMientras\nFinAlgoritmo\n";
+const LOOP: &str = "Algoritmo P\nDefinir Mutable i Como Entero <- 0;\ni <- 0;\nMientras i < 1 Hacer\ni <- i + 1;\nFinMientras\nFinAlgoritmo\n";
 
 fn json_at(value: &Value, path: &str) -> Value {
     value.pointer(path).cloned().unwrap_or(Value::Null)

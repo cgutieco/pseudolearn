@@ -213,7 +213,8 @@
   "texto": "Todo efecto confirmado recibe un identificador secuencial effect_seq asignado en el momento exacto en que se completa la evaluación de sus argumentos y antes de emitir la petición al anfitrión. Si la evaluación de los argumentos produce una trampa, ningún effect_seq es asignado y la operación no es emitida al anfitrión.",
   "verificacion": [
     "C5",
-    "C6"
+    "C6",
+    "C7"
   ]
 }
 ```
@@ -263,7 +264,9 @@
       "codigo": "divisionByZero"
     },
     "anfitrion_observado": {
-      "llamadas": 0
+      "llamadas": 0,
+      "estado_cinta": "incomplete",
+      "efectos": []
     }
   },
   "programas": {
@@ -277,6 +280,80 @@
     "requested_permissions": [
       "archivos_lectura"
     ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C7",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "contenido\n",
+    "terminacion": "completed",
+    "anfitrion_observado": {
+      "llamadas": 5,
+      "estado_cinta": "reproducible",
+      "efectos": [
+        {
+          "effect_seq": 1,
+          "capability_kind": "filesystem",
+          "operation": "request_directory",
+          "outcome": "committed"
+        },
+        {
+          "effect_seq": 2,
+          "capability_kind": "filesystem",
+          "operation": "directory_open",
+          "outcome": "committed"
+        },
+        {
+          "effect_seq": 3,
+          "capability_kind": "filesystem",
+          "operation": "file_read_text",
+          "outcome": "committed"
+        },
+        {
+          "effect_seq": 4,
+          "capability_kind": "filesystem",
+          "operation": "directory_open",
+          "outcome": "committed"
+        },
+        {
+          "effect_seq": 5,
+          "capability_kind": "filesystem",
+          "operation": "file_read_text",
+          "outcome": "committed"
+        }
+      ]
+    }
+  },
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Cadena, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir pointer Como ArchivoCap <- Propagar directory.Abrir(\"nombre\", \"lectura\");\nDefinir target Como ArchivoCap <- Propagar directory.Abrir(Propagar pointer.LeerTexto(), \"lectura\");\nRetornar target.LeerTexto();\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<string, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine pointer as FileCap <- propagate directory.open(\"nombre\", \"read\");\ndefine target as FileCap <- propagate directory.open(propagate pointer.readText(), \"read\");\nreturn target.readText();\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": [
+      "archivos_lectura"
+    ],
+    "requested_permissions": [
+      "archivos_lectura"
+    ],
+    "files": {
+      "nombre": "destino",
+      "destino": "contenido"
+    },
+    "grabar_y_reproducir": true
   }
 }
 ```

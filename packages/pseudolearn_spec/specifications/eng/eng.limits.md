@@ -702,7 +702,10 @@ Este contrato cuantifica los recursos que LANG.SUBPROGRAM.RECURSION y LANG.ARRAY
     "terminacion": "completed",
     "anfitrion_observado": {
       "llamadas": 4,
-      "recursos_abiertos": 0
+      "recursos_abiertos": 0,
+      "estado_cinta": "non_reproducible_truncated",
+      "reproduccion_fallo": "replay_non_reproducible",
+      "efectos": []
     }
   },
   "programas": {

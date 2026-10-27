@@ -21,6 +21,7 @@ pub(super) fn verify(fixtures: &Value) -> Result<(), String> {
                 .and_then(Value::as_array)
                 .is_some_and(|inputs| !inputs.is_empty())
             || request.pointer("/limits/statements").is_some()
+            || request.get("host").is_some()
         {
             continue;
         }

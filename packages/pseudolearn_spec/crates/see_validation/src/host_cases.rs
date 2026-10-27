@@ -2,12 +2,19 @@ use see_model::Block;
 use serde_json::Value;
 
 pub(crate) fn check(block: &Block, errors: &mut Vec<String>) {
+    check_expectations(block, errors);
     let Some(host) = block.fields.get("anfitrion") else {
         return;
     };
     if let Some(files) = host.get("files").and_then(Value::as_object) {
         for (path, content) in files {
-            if !valid_path(path) || content.as_array().is_some_and(|bytes| bytes.iter().any(|byte| byte.as_u64().is_none_or(|byte| byte > 255))) {
+            if !valid_path(path)
+                || content.as_array().is_some_and(|bytes| {
+                    bytes
+                        .iter()
+                        .any(|byte| byte.as_u64().is_none_or(|byte| byte > 255))
+                })
+            {
                 errors.push("SEE-HOST: invalid memory file".to_owned());
             }
         }
@@ -17,6 +24,66 @@ pub(crate) fn check(block: &Block, errors: &mut Vec<String>) {
             check_fault(fault, errors);
         }
     }
+    check_replay_options(block, host, errors);
+}
+
+fn check_expectations(block: &Block, errors: &mut Vec<String>) {
+    for expected in expected_blocks(block) {
+        if expected.get("efecto_pendiente").is_some()
+            && expected.get("terminacion").and_then(Value::as_str) != Some("awaiting_effect")
+        {
+            errors.push("SEE-HOST: efecto_pendiente requires awaiting_effect termination".to_owned());
+        }
+        if let Some(effects) = expected
+            .pointer("/anfitrion_observado/efectos")
+            .and_then(Value::as_array)
+        {
+            check_effect_sequence(effects, errors);
+        }
+    }
+}
+
+fn check_effect_sequence(effects: &[Value], errors: &mut Vec<String>) {
+    let mut previous = 0_u64;
+    for entry in effects {
+        let sequence = entry.get("effect_seq").and_then(Value::as_u64).unwrap_or(0);
+        if sequence <= previous {
+            errors.push("SEE-HOST: expected effect_seq must be strictly increasing".to_owned());
+            return;
+        }
+        previous = sequence;
+    }
+}
+
+fn check_replay_options(block: &Block, host: &Value, errors: &mut Vec<String>) {
+    let expects_replay_failure = expected_blocks(block).into_iter().any(|expected| {
+        expected
+            .pointer("/anfitrion_observado/reproduccion_fallo")
+            .is_some()
+    });
+    let mutates_tape = host.get("alterar_cinta").is_some();
+    if host.get("grabar_y_reproducir") == Some(&Value::Bool(true))
+        && (mutates_tape || expects_replay_failure)
+    {
+        errors.push(
+            "SEE-HOST: grabar_y_reproducir cannot combine with tape alteration or expected replay failure"
+                .to_owned(),
+        );
+    }
+    if mutates_tape && !expects_replay_failure {
+        errors.push("SEE-HOST: alterar_cinta requires reproduccion_fallo".to_owned());
+    }
+}
+
+fn expected_blocks(block: &Block) -> Vec<&Value> {
+    let mut result = Vec::new();
+    if let Some(expected) = block.fields.get("espera") {
+        result.push(expected);
+    }
+    if let Some(profiles) = block.fields.get("esperas").and_then(Value::as_object) {
+        result.extend(profiles.values());
+    }
+    result
 }
 
 const MUTATING_OPERATIONS: [&str; 6] = [

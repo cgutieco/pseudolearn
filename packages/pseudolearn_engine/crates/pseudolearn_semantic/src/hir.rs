@@ -3,7 +3,7 @@ use crate::identities::{ClassId, FieldId, FunctionId, LocalId, StatementId, Type
 use crate::statement_model::StatementColumns;
 use crate::types::TypeInterner;
 use pseudolearn_source::Span;
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, BTreeSet};
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum FunctionKind {
@@ -142,6 +142,7 @@ pub struct HirModule {
     pub records: Vec<HirRecord>,
     pub variants: BTreeMap<crate::identities::RecordId, crate::variant_model::HirVariant>,
     pub record_locals: BTreeMap<LocalId, Vec<LocalId>>,
+    pub pure_locals: BTreeSet<LocalId>,
     pub local_visibility: BTreeMap<LocalId, Span>,
     pub locals: Vec<HirLocal>,
     pub expressions: ExpressionColumns,

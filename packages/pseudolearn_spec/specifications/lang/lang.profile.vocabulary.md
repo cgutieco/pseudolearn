@@ -1225,6 +1225,84 @@
         "es": "Buscar",
         "en": "find"
       }
+    },
+    "consoleCapabilityType": {
+      "lexemas": {
+        "es": "Consola",
+        "en": "Console"
+      }
+    },
+    "argumentsCapabilityType": {
+      "lexemas": {
+        "es": "Argumentos",
+        "en": "Arguments"
+      }
+    },
+    "directoryCapabilityType": {
+      "lexemas": {
+        "es": "DirectorioCap",
+        "en": "DirCap"
+      }
+    },
+    "fileCapabilityType": {
+      "lexemas": {
+        "es": "ArchivoCap",
+        "en": "FileCap"
+      }
+    },
+    "clockCapabilityType": {
+      "lexemas": {
+        "es": "Reloj",
+        "en": "Clock"
+      }
+    },
+    "timerCapabilityType": {
+      "lexemas": {
+        "es": "Temporizador",
+        "en": "Timer"
+      }
+    },
+    "bytesType": {
+      "lexemas": {
+        "es": "Bytes",
+        "en": "Bytes"
+      }
+    },
+    "ioErrorType": {
+      "lexemas": {
+        "es": "ErrorES",
+        "en": "IoError"
+      }
+    },
+    "requestConsole": {
+      "lexemas": {
+        "es": "SolicitarConsola",
+        "en": "requestConsole"
+      }
+    },
+    "requestArguments": {
+      "lexemas": {
+        "es": "SolicitarArgumentos",
+        "en": "requestArguments"
+      }
+    },
+    "requestDirectory": {
+      "lexemas": {
+        "es": "SolicitarDirectorio",
+        "en": "requestDirectory"
+      }
+    },
+    "requestClock": {
+      "lexemas": {
+        "es": "SolicitarReloj",
+        "en": "requestClock"
+      }
+    },
+    "requestTimer": {
+      "lexemas": {
+        "es": "SolicitarTemporizador",
+        "en": "requestTimer"
+      }
     }
   }
 }

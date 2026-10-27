@@ -65,13 +65,8 @@ struct NodeBuildContext<'context> {
 
 fn build_nodes(context: &mut NodeBuildContext<'_>) -> Result<Vec<String>, String> {
     let declarations = (1..=context.count)
-        .map(|index| format!("node{index}"))
+        .map(|index| format!("Definir node{index} Como Node <- Nuevo Node();\n"))
         .collect();
-    for index in 1..=context.count {
-        context
-            .source
-            .push_str(&format!("node{index} <- Nuevo Node();\n"));
-    }
     for index in 1..=context.count {
         append_node(context, index)?;
         let array_index = index.checked_sub(1).ok_or("Array index underflow")?;
@@ -102,8 +97,8 @@ fn add_array_allocation(
 
 fn render_program(count: u64, declarations: &[String], assignments: &str) -> String {
     format!(
-        "Clase Node\nPublico Definir left,right Como Node;\nPublico Definir text Como Cadena;\nFinClase\nSubProceso Build(links[] Como Node) Como Node\nDefinir {} Como Node;\n{assignments}Retornar node1;\nFinSubProceso\nAlgoritmo P\nDimension links[{count}] Como Node;\nDefinir root, extra Como Node;\nroot <- Build(links);\nextra <- Nuevo Node();\nlinks[0] <- root;\nEscribir \"ok\";\nFinAlgoritmo\n",
-        declarations.join(",")
+        "Clase Node\nPublico Definir left,right Como Node;\nPublico Definir text Como Cadena;\nFinClase\nSubProceso Build(links[] Como Node) Como Node\n{}{assignments}Retornar node1;\nFinSubProceso\nAlgoritmo P\nDimension links[{count}] Como Node;\nDefinir root Como Node <- Build(links);\nDefinir extra Como Node <- Nuevo Node();\nlinks[0] <- root;\nEscribir \"ok\";\nFinAlgoritmo\n",
+        declarations.concat()
     )
 }
 

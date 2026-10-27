@@ -545,9 +545,35 @@
                 "completed",
                 "failed",
                 "awaiting_input",
+                "awaiting_effect",
                 "cancelled",
                 "limit_reached"
               ]
+            },
+            "efecto_pendiente": {
+              "type": "object",
+              "properties": {
+                "effect_seq": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "capability_kind": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "operation": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "arguments_summary": {
+                  "type": "string"
+                },
+                "source_node_id": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "additionalProperties": false
             },
             "fallo": {
               "type": "object",
@@ -868,6 +894,66 @@
                 "recursos_abiertos": {
                   "type": "integer",
                   "minimum": 0
+                },
+                "estado_cinta": {
+                  "type": "string",
+                  "enum": [
+                    "reproducible",
+                    "incomplete",
+                    "uncertain_external_state",
+                    "non_reproducible_truncated",
+                    "non_reproducible_redacted"
+                  ]
+                },
+                "efectos": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "effect_seq": {
+                        "type": "integer",
+                        "minimum": 1
+                      },
+                      "capability_kind": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "operation": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "outcome": {
+                        "type": "string",
+                        "enum": [
+                          "committed",
+                          "failed",
+                          "uncertain",
+                          "requested"
+                        ]
+                      },
+                      "secret_key_id": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    },
+                    "required": [
+                      "effect_seq",
+                      "capability_kind",
+                      "operation",
+                      "outcome"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "reproduccion_fallo": {
+                  "type": "string",
+                  "enum": [
+                    "replay_identity_mismatch",
+                    "replay_divergence",
+                    "replay_truncated_tape",
+                    "replay_corrupted_tape",
+                    "replay_non_reproducible"
+                  ]
                 }
               },
               "additionalProperties": false
@@ -1005,9 +1091,35 @@
                   "completed",
                   "failed",
                   "awaiting_input",
+                  "awaiting_effect",
                   "cancelled",
                   "limit_reached"
                 ]
+              },
+              "efecto_pendiente": {
+                "type": "object",
+                "properties": {
+                  "effect_seq": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "capability_kind": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "operation": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "arguments_summary": {
+                    "type": "string"
+                  },
+                  "source_node_id": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "additionalProperties": false
               },
               "fallo": {
                 "type": "object",
@@ -1328,6 +1440,66 @@
                   "recursos_abiertos": {
                     "type": "integer",
                     "minimum": 0
+                  },
+                  "estado_cinta": {
+                    "type": "string",
+                    "enum": [
+                      "reproducible",
+                      "incomplete",
+                      "uncertain_external_state",
+                      "non_reproducible_truncated",
+                      "non_reproducible_redacted"
+                    ]
+                  },
+                  "efectos": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "effect_seq": {
+                          "type": "integer",
+                          "minimum": 1
+                        },
+                        "capability_kind": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "operation": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "outcome": {
+                          "type": "string",
+                          "enum": [
+                            "committed",
+                            "failed",
+                            "uncertain",
+                            "requested"
+                          ]
+                        },
+                        "secret_key_id": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "required": [
+                        "effect_seq",
+                        "capability_kind",
+                        "operation",
+                        "outcome"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "reproduccion_fallo": {
+                    "type": "string",
+                    "enum": [
+                      "replay_identity_mismatch",
+                      "replay_divergence",
+                      "replay_truncated_tape",
+                      "replay_corrupted_tape",
+                      "replay_non_reproducible"
+                    ]
                   }
                 },
                 "additionalProperties": false
@@ -1529,6 +1701,11 @@
                       "encode_events",
                       "decode_events",
                       "release",
+                      "start",
+                      "advance",
+                      "input",
+                      "effect_result",
+                      "cancel",
                       "version",
                       "negotiate",
                       "operations"
@@ -2203,6 +2380,19 @@
         },
         "detached": {
           "type": "boolean"
+        },
+        "cancel_on_awaiting_effect": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "alterar_cinta": {
+          "type": "string",
+          "enum": [
+            "truncar_entrada",
+            "corromper_hash",
+            "corromper_payload",
+            "cambiar_semilla"
+          ]
         }
       }
     }

@@ -3255,7 +3255,8 @@
   "instrucciones": [
     "jump",
     "branch",
-    "return"
+    "return",
+    "effect_call"
   ]
 }
 ```
@@ -3316,12 +3317,12 @@
 {
   "id": "O93",
   "nombre": "effect_call",
-  "firma": "effect_call %cap: ref, <operacion>(%a...) -> T",
+  "firma": "effect_call %cap: ref, <operacion>, <tipo>, n<nodo>, %arg..., %celda... -> i64",
   "clases_de_valor": [
     "escalar",
     "referencia"
   ],
-  "semantica": "Despacha una operación con efectos secundarios sobre la capacidad especificada registrando la llamada en la cinta y suspendiendo si se requiere resolución desacoplada.",
+  "semantica": "Despacha una operación sobre una capacidad o sobre Bytes identificando la operación, el tipo de carga útil y el nodo fuente, escribe el resultado o la variante Resultado<T, ErrorES> en las celdas de salida (una celda tipada si es infalible o tres celdas canónicas i64, i64, str si es falible), registra el efecto en la cinta cuando corresponde y suspende en awaiting_effect si el anfitrión opera en modo desacoplado.",
   "trampas": [
     "uninitializedVariableRead"
   ],

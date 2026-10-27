@@ -241,3 +241,32 @@ fn page_cursor_marker_preserves_element_and_exact_snapshot_checks() {
         .is_empty()
     );
 }
+
+#[test]
+fn compares_pending_effect_tape_status_and_effect_entries_in_both_paths() {
+    let expected = json!({
+        "terminacion": "awaiting_effect",
+        "efecto_pendiente": {"effect_seq": 1, "capability_kind": "clock", "operation": "request_clock"},
+        "anfitrion_observado": {
+            "llamadas": 0, "recursos_abiertos": 0, "estado_cinta": "non_reproducible_redacted",
+            "efectos": [{"effect_seq": 1, "capability_kind": "filesystem", "operation": "file_read_text", "outcome": "committed", "secret_key_id": "k1"}]
+        }
+    });
+    let actual = json!({
+        "termination": {"kind": "awaiting_effect", "effect_seq": 1, "capability_kind": "clock", "operation": "request_clock", "arguments_summary": "()"},
+        "host_observation": {"calls": 0, "open_resources": 0},
+        "effect_tape": {
+            "status": "non_reproducible_redacted",
+            "entries": [
+                {"effect_seq": 1, "capability_kind": "filesystem", "operation": "file_read_text", "outcome": "committed", "secret_reference": "secret:k1:abcdef", "payload_bytes": []},
+                {"effect_seq": 2, "capability_kind": "console", "operation": "write", "outcome": "committed", "payload_bytes": [49]}
+            ]
+        }
+    });
+    assert!(see_conformance::comparison::compare(&expected, &actual).is_empty());
+    let mut leaked_payload = actual;
+    if let Some(payload) = leaked_payload.pointer_mut("/effect_tape/entries/0/payload_bytes") {
+        *payload = json!([1]);
+    }
+    assert!(!see_conformance::comparison::compare(&expected, &leaked_payload).is_empty());
+}

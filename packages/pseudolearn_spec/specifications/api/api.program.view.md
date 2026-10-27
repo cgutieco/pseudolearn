@@ -183,14 +183,15 @@
   "id": "R2",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La vista incluye revision_id opaco y una lista nodes. Cada nodo declara node_id opaco único dentro de esa revisión, kind de categoría y syntax_kind estable de la construcción del lenguaje, span con desplazamientos UTF-8 de inicio inclusivo y fin exclusivo codificados como cadenas decimales, y posiciones start/end de línea y columna desde uno medidas en puntos de código Unicode. Cada nodo incluye child_node_ids y child_roles en el mismo orden; cada relación child_roles identifica node_id y el papel sintáctico de esa relación. Puede incluir parent_node_id. Los nodos parameter incluyen dimensions con la cantidad de dimensiones declaradas. Los miembros field incluyen type con el lexema de su tipo declarado y dimensions con la cantidad de dimensiones declaradas. Toda referencia resuelve a un nodo de la misma vista. Los nodos de expresión declaran semántica independiente del perfil: los de operaciones binarias incluyen operators con la identidad canónica de cada operador entre operandos consecutivos (add, subtract, multiply, divide, integer_divide, modulo, power, equal, not_equal, less_than, less_than_or_equal, greater_than, greater_than_or_equal, and, or); los unarios incluyen operator (negate, positive, not); los literales incluyen literal con type (integer, real, string, character, boolean) y value; una llamada a función incorporada no oculta por un subprograma homónimo incluye builtin con la identidad canónica de la función; un acceso con receptor de superclase incluye receiver con valor super y, si nombra al constructor, super_constructor verdadero; cada array de una declaración de dimensiones es un nodo dimensioned; los subprogramas declaran los roles signature y body; las salidas sin salto de línea incluyen without_newline verdadero; y los tipos primitivos incluyen primitive con su identidad canónica. Una edición produce una revisión nueva y no promete conservar identificadores. Las variantes incluyen syntax_kind variant_construction, variant_pattern, propagation y discard_statement; variant identifica some/none/success/error, type_constructor identifica optional/result y sus hijos tienen rol type_argument. Las declaraciones locales inicializadas incluyen initialized verdadero y mutable lógico; sus hijos declaran roles binding, type e initializer. Los patrones declaran el rol binding; construcciones, propagación y descarte declaran payload. No se exponen temporales de disposición. Un enumerado (enum_unit) incluye enum_identity igual a su node_id y enum_members con los nombres de sus miembros en orden; un registro (record_unit) incluye record_identity igual a su node_id y record_fields con los node_id de sus campos record_field; un literal de función (function_literal) incluye closure_identity igual a su node_id y captured_bindings con los node_id de las declaraciones que captura. Toda relación nombra solo nodos de la misma vista y procedencia: una referencia a un nodo de otra revisión o fuente no se emite.",
+  "texto": "La vista incluye revision_id opaco y una lista nodes. Cada nodo declara node_id opaco único dentro de esa revisión, kind de categoría y syntax_kind estable de la construcción del lenguaje, span con desplazamientos UTF-8 de inicio inclusivo y fin exclusivo codificados como cadenas decimales, y posiciones start/end de línea y columna desde uno medidas en puntos de código Unicode. Cada nodo incluye child_node_ids y child_roles en el mismo orden; cada relación child_roles identifica node_id y el papel sintáctico de esa relación. Puede incluir parent_node_id. Los nodos parameter incluyen dimensions con la cantidad de dimensiones declaradas. Los miembros field incluyen type con el lexema de su tipo declarado y dimensions con la cantidad de dimensiones declaradas. Toda referencia resuelve a un nodo de la misma vista. Los nodos de expresión declaran semántica independiente del perfil: los de operaciones binarias incluyen operators con la identidad canónica de cada operador entre operandos consecutivos (add, subtract, multiply, divide, integer_divide, modulo, power, equal, not_equal, less_than, less_than_or_equal, greater_than, greater_than_or_equal, and, or); los unarios incluyen operator (negate, positive, not); los literales incluyen literal con type (integer, real, string, character, boolean) y value; una llamada a función incorporada no oculta por un subprograma homónimo incluye builtin con la identidad canónica de la función; una llamada de capacidad o de bytes resuelta a capabilityLibrary incluye effect_operation con su identidad canónica (request_console, request_arguments, request_directory, request_clock, request_timer, console_write, arguments_values, directory_derive, file_open, directory_close, file_read_bytes, file_read_text, file_write_bytes, file_write_text, file_close, clock_now, timer_wait, bytes_new, bytes_length, bytes_at, bytes_utf8); un acceso con receptor de superclase incluye receiver con valor super y, si nombra al constructor, super_constructor verdadero; cada array de una declaración de dimensiones es un nodo dimensioned; los subprogramas declaran los roles signature y body; las salidas sin salto de línea incluyen without_newline verdadero; los tipos primitivos incluyen primitive con su identidad canónica; los tipos incorporados de entrada y salida incluyen builtin_type (bytes o io_error); y los tipos de capacidades explícitas incluyen capability_type (console, arguments, directory, file, clock, timer), sin adjuntar identidades sintéticas de clase o registro al nodo type. Una edición produce una revisión nueva y no promete conservar identificadores. Las variantes incluyen syntax_kind variant_construction, variant_pattern, propagation y discard_statement; variant identifica some/none/success/error, type_constructor identifica optional/result y sus hijos tienen rol type_argument. Las declaraciones locales inicializadas incluyen initialized verdadero y mutable lógico; sus hijos declaran roles binding, type e initializer. Los patrones declaran el rol binding; construcciones, propagación y descarte declaran payload. No se exponen temporales de disposición. Un enumerado (enum_unit) incluye enum_identity igual a su node_id y enum_members con los nombres de sus miembros en orden; un registro (record_unit) incluye record_identity igual a su node_id y record_fields con los node_id de sus campos record_field; un literal de función (function_literal) incluye closure_identity igual a su node_id y captured_bindings con los node_id de las declaraciones que captura. Toda relación nombra solo nodos de la misma vista y procedencia: una referencia a un nodo de otra revisión o fuente no se emite.",
   "verificacion": [
     "C3",
     "C5",
     "C7",
     "C8",
     "C9",
-    "C10"
+    "C10",
+    "C11"
   ]
 }
 ```
@@ -547,6 +548,69 @@ La vista pública incluye interface_unit, interface_signature, realization, type
     "vista_programa": {
       "syntax_kinds_include": [
         "function_literal"
+      ]
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C11",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Bytes, ErrorES>\nDefinir dir Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir file Como ArchivoCap <- Propagar dir.Abrir(\"a\", \"lectura\");\nDiferir\nDescartar file.Cerrar();\nFinDiferir\nDefinir empty Como Bytes <- Bytes();\nRetornar Exito(empty);\nFinSubProceso\nAlgoritmo Main\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<Bytes, IoError>\ndefine dir as DirCap <- propagate requestDirectory(\"root\");\ndefine file as FileCap <- propagate dir.open(\"a\", \"read\");\ndefer\ndiscard file.close();\nendDefer\ndefine empty as Bytes <- Bytes();\nreturn success(empty);\nendSubroutine\nalgorithm Main\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "vista_programa": {
+      "syntax_kinds_include": [
+        "defer_statement"
+      ],
+      "nodes_include": [
+        {
+          "syntax_kind": "type",
+          "builtin_type": "bytes"
+        },
+        {
+          "syntax_kind": "type",
+          "builtin_type": "io_error"
+        },
+        {
+          "syntax_kind": "type",
+          "capability_type": "directory"
+        },
+        {
+          "syntax_kind": "type",
+          "capability_type": "file"
+        },
+        {
+          "syntax_kind": "postfix",
+          "effect_operation": "request_directory"
+        },
+        {
+          "syntax_kind": "postfix",
+          "effect_operation": "file_open"
+        },
+        {
+          "syntax_kind": "postfix",
+          "effect_operation": "file_close"
+        },
+        {
+          "syntax_kind": "postfix",
+          "effect_operation": "bytes_new"
+        }
       ]
     }
   }

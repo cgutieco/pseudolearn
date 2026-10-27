@@ -210,8 +210,8 @@ al corpus, sin depender de este texto.
 
 ### PG-3.08 · Análisis de efectos transitivos en compilación: una función pura no puede esconder E/S
 
-- [ ] `PG-3.08.01` Crear `LANG.CAPABILITY.PURITY` y editar `DIAG.CATALOG`/`DIAG.MESSAGES`: prohibición de realizar efectos directos o transitivos dentro de `Funcion` / `Function`; propagación sobre el grafo de llamadas; prohibición de asignar o pasar una unidad o clausura con efecto donde se espera un tipo `Funcion(...)`; coherencia de pureza en realizaciones de `Interfaz` / `Interface`.
-- [ ] `PG-3.08.02` Casos: `Funcion` que invoca `Leer`, `Escribir` o una operación de capacidad (rechazada); `Funcion` `A` que llama a `B` que llama a `C` con efecto (rechazada con cadena causal); clausura con efecto pasada a orden superior que espera `Funcion` pura (rechazada); clase que implementa un método `Funcion` de una `Interfaz` realizando E/S (rechazada); `SubProceso` que realiza los mismos efectos (aceptado).
+- [x] `PG-3.08.01` Crear `LANG.CAPABILITY.PURITY` y editar `DIAG.CATALOG`/`DIAG.MESSAGES`: prohibición de realizar efectos directos o transitivos dentro de `Funcion` / `Function`; propagación sobre el grafo de llamadas; prohibición de asignar o pasar una unidad o clausura con efecto donde se espera un tipo `Funcion(...)`; coherencia de pureza en realizaciones de `Interfaz` / `Interface`.
+- [x] `PG-3.08.02` Casos: `Funcion` que invoca `Leer`, `Escribir` o una operación de capacidad (rechazada); `Funcion` `A` que llama a `B` que llama a `C` con efecto (rechazada con cadena causal); clausura con efecto pasada a orden superior que espera `Funcion` pura (rechazada); clase que implementa un método `Funcion` de una `Interfaz` realizando E/S (rechazada); `SubProceso` que realiza los mismos efectos (aceptado).
 - [x] `PG-3.08.03` Tests unitarios de `effect_check` en `pseudolearn_semantic` cubriendo ciclos de recursión mutua, clausuras anidadas e interfaces.
 - [x] `PG-3.08.04` Implementar `effect_check.rs` en `pseudolearn_semantic` y emitir los diagnósticos tipados con ruta de propagación de impureza.
 - [x] `PG-3.08.05` Actualizar `README.md` de `pseudolearn_semantic` y `pseudolearn_diagnostics`.
@@ -750,3 +750,43 @@ Verificación: `rust-checks all` del motor, `cargo clippy --workspace --all-targ
 Casillas abiertas con motivo: `PG-3.07.02` (el esquema de casos no expresa `awaiting_effect`, no acciona `effect_result` y no altera la cinta); `PG-3.07.06` y `PG-3.10.06` (ocho binarios de `pseudolearn_api` fallan en la línea base y `ENG.LIMITS` `C17` diverge); `PG-3.08.01` y `.02` (`R3` solo se cumple dentro de una `Funcion`, porque `Funcion` es un alias léxico de `SubProceso` y el tipo función estructural no lo recuerda); `PG-3.09.01` (faltan las ediciones de `API.PROGRAM.VIEW`, `TOOL.SERVICE.CATALOG` y `LANG.CONTROL.CLEANUP` sobre `Bytes`, `ErrorES` y `EffectCall`), `.03` y `.04` (no hay proyección pública ni fichas de servicio de `Bytes`/`ErrorES` ni pruebas Dart), `.05` y `.06`; `PG-3.10.02` (el rechazo de la reproducción de una cinta truncada o redactada solo se prueba con Rust). Las casillas generales de `PG-3.07`–`PG-3.10` del plan general siguen desmarcadas.
 
 Hallazgos fuera de alcance: `ENG.LIMITS` `C17` diverge en `engine` (`second <- first; first <- first + "c"` hace que `second` valga `abc`; `aot` devuelve `abc:ab`): defecto de alias de cadenas de la VM; fallan en la línea base 22 pruebas de `pseudolearn_api` (`execution`, `native_access`, `probes`, `reference_vocabulary`, `runtime_corpus`, `runtime_edges`, `state_pages`, `stepping`), con fixtures que asignan sin `Mutable` o que ya no analizan; los programas en inglés de `LANG.CAPABILITY.PURITY` cierran `function` con `endSubroutine` o `end function` y se aceptan por tolerancia léxica; `IR.INSTRUCTIONS` `C3` imprime un literal y no se examinó.
+
+### 11.8 Auditoría de cierre y subsanaciones de PG-3 · 2026-10-27
+
+Evidencia ejecutada y registrada en `packages/pseudolearn_spec/results/pg-3-closure/` (ignorado por Git).
+
+**1. Correcciones de defectos de línea base:**
+- **Defecto 1 (`ENG.LIMITS` `C17` divergencia en `engine`):** Subsanado en `packages/pseudolearn_engine/crates/pseudolearn_lowering/src/statements_assignment.rs`. Al asignar una referencia de cadena a otra variable, se emite `Opcode::Clone` para garantizar el desacoplamiento de mutaciones y concatenaciones posteriores (`second <- first; first <- first + "c"` conserva `second == "ab"` y `first == "abc"` en paridad con AOT). Test espejo implementado en `tests/statements_assignment_tests.rs` y documentado en el `README.md` de `pseudolearn_lowering`.
+- **Defecto 2 (22 pruebas fallidas en `pseudolearn_api`):** Subsanados los fixtures de prueba en los 8 binarios afectados (`execution.rs`, `native_access.rs`, `probes.rs`, `reference_vocabulary.rs`, `runtime_corpus.rs`, `runtime_edges.rs`, `state_pages.rs`, `stepping.rs` y `memory_fixtures.rs` en `see_conformance`). La suite completa de `pseudolearn_api` con `--features native` pasó al 100 % en verde (60 de 60 binarios de prueba en verde, cero fallos, registrado en `results/pg-3-closure/pseudolearn_api_green.log`).
+
+**2. Cumplimiento de regla R3 y cierre de PG-3.08 (`PG-3.08.01` y `PG-3.08.02`):**
+- En `pseudolearn_semantic/src/hir.rs`, `local_registry.rs` y `flow_bindings.rs`, `HirModule` ahora preserva `pure_locals: BTreeSet<LocalId>` para todo enlace local declarado como `Funcion` / `function`.
+- `pseudolearn_semantic/src/effect_pure_values.rs` verifica estáticamente tanto asignaciones a enlaces en `pure_locals` como paso de argumentos a parámetros con tipo `Funcion(...)`, reportando `PureFunctionTransitiveSideEffect` con su cadena causal completa incluso fuera del cuerpo de una función (p. ej. en `Algoritmo`).
+- Normalizados los programas en inglés `C1`–`C4` de `LANG.CAPABILITY.PURITY` al terminador canónico `end function`.
+- Añadidos los casos `C21` y `C22` de `LANG.CAPABILITY.PURITY` para asignación y paso de funciones impuras a variables y parámetros de tipo función pura.
+- Añadidas 4 pruebas espejo en `pseudolearn_semantic/tests/effect_check.rs`: los 18 tests unitarios de `effect_check` pasan en verde. Actualizado el `README.md` de `pseudolearn_semantic`.
+
+**3. Ampliación del esquema `see/1`, validador y corredor de conformidad:**
+- `schemas/see-1.schema.json` y `specifications/see/see.format.md` ampliados con soporte declarativo para observar `efectos` (orden e identidades de efectos ejecutados), `estado_cinta` (`reproducible`, `non_reproducible_unresolved_secret`, `non_reproducible_truncated`, `uncertain_external_state`, `incomplete`), `reproduccion_fallo` (`replay_non_reproducible`, `replay_truncated_tape`, `replay_corrupted_tape`, etc.), `terminacion: "awaiting_effect"`, `efecto_esperado`, y simulación de anfitrión con `cancel_on_awaiting_effect` y lista de respuestas `effect_results`.
+- Actualizados `see_validation` (`host_cases.rs`, `host_cases_tests.rs`) y `see_conformance` (`comparison.rs`, `recording_replay.rs`, `execution.rs`, `requests.rs`) con validación semántica, pruebas positivas y pruebas negativas.
+- Adaptados `pseudolearn_api`, `pseudolearn_aot_rt` y `pseudolearn_conformance` para procesar estas observaciones y respuestas en anfitrión.
+
+**4. Casos del corpus y contratos actualizados:**
+- `ENG.EXEC.EFFECT-COMMIT` (`C5`, `C7` con `estado_cinta: "uncertain_external_state"` y `reproduccion_fallo: "replay_non_reproducible"`).
+- `ENG.EXEC.EFFECT-ORDER` (`C4`, `C5` con secuencia de `efectos`).
+- `ENG.EXEC.MODEL` (`R5`, `R6`, `C11` para `awaiting_effect` y `C14` para cancelación del anfitrión durante la espera), `RT.HOST.INTERFACE` (`R2`).
+- `API.EXECUTE` (`C6`, `C7` alternando `awaiting_input` y `awaiting_effect`, rechazo de cruce de entradas y fallos `ErrorES`).
+- `ENG.EFFECT.TAPE` (`C8`, `C9` para redacción de secretos, marcado de cinta y rechazo de reproducción).
+- `ENG.LIMITS` (`C19` para desborde de `max_tape_bytes` a `non_reproducible_truncated` y rechazo `replay_truncated_tape`).
+- `IR.INSTRUCTIONS` (`V131`, `O93` para `effect_call`), `LANG.CONTROL.CLEANUP` (`R2`, `C12` para `Diferir` con `ErrorES`), `LIB.MODEL` (`R1`, `C4` para `Bytes()` y firmas de capacidades).
+- `LANG.PROFILE.VOCABULARY` (`D2` tokens contextuales de capacidades y bytes) y `TOOL.SERVICE.CATALOG` (`D1` fichas `construction.capabilities`, `construction.bytes_io` y caso de hover `C7`).
+- `API.PROGRAM.VIEW` (`R2`, `C11` con proyección de `builtin_type`, `capability_type` y `effect_operation`).
+
+**5. Estado de casillas y pendientes para cierre definitivo:**
+- **Casillas cerradas en esta tanda:** `PG-3.08.01` y `PG-3.08.02` (con lo cual `PG-3.08` queda 100 % cumplido).
+- **Casillas pendientes para cierre:**
+  - `PG-3.01.02`, `PG-3.02.01`, `PG-3.02.02`, `PG-3.03.05`, `PG-3.07.02`, `PG-3.07.06`: Reanclaje conjunto de contratos (`see lock --root . --refresh ...`), verificación acotada de conformidad de ejecución y pruebas Dart.
+  - `PG-3.09.01`, `.03`, `.04`, `.05`, `.06`: Proyección de `builtin_type`, `capability_type` y `effect_operation` en `pseudolearn_service`, `pseudolearn_api` y `apps/pseudolearn_app` (`rust_view_semantics.dart`, `rust_program_view_builder.dart`, `rust_construct_projection.dart`), tests de `Bytes` en `GcHeap` y lowering de `EffectCall`, y actualización de READMEs de `pseudolearn_abi`, `pseudolearn_runtime`, `pseudolearn_library`, `pseudolearn_lowering`, `pseudolearn_service`, `apps/pseudolearn_app`.
+  - `PG-3.10.02`, `.06`: Pruebas de rechazo de cinta en `pseudolearn_aot_rt` y verificación acotada de cinta/límites.
+  - `PG-3.13.01` a `.04`: Subcomandos en `pseudolearn_bench_worker` para `E-PG-05` (sobrecosto inactivo y crecimiento de cinta con 100, 1 000 y 10 000 efectos) y suite de seguridad `E-PG-09`.
+  - Checklist común `PG-3.C*`: `PG-3.C12` permanece abierta para el commit de la persona.
