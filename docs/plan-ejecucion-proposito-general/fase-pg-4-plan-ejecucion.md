@@ -439,8 +439,9 @@ marca `[x]` sin evidencia en §11.
 - [x] `PG-4.01.06` Ligera: `see validate`, `lock --check`, `cargo test -p pseudolearn_syntax <filtro>`,
   `cargo test -p pseudolearn_semantic --lib suspension_checker`, `cargo test -p pseudolearn_semantic --lib
   await_checker`, `rust-checks all .` y Clippy de los dos crates.
-- [ ] `PG-4.01.07` Pesada: `see conform --subject engine --only LANG.TASK.SUSPENSION,LANG.CAPABILITY.PURITY` y
-  conjunto centinela léxico (§7.1.4).
+- [x] `PG-4.01.07` Pesada: `see conform --subject engine --only <ID>` por `LANG.TASK.SUSPENSION`,
+  `LANG.CAPABILITY.PURITY` y los cinco IDs del centinela léxico (§7.1.4); 246 observaciones, 0 divergencias.
+  `cargo test -p pseudolearn_syntax`: 59 tests, 0 fallos.
 
 ### PG-4.02 · Ámbitos obligatorios: unión al salir, ningún hijo abandonado y cancelación cooperativa
 
@@ -898,7 +899,7 @@ lo que documente su README tras la iteración 4. Desde `apps/pseudolearn_app`: `
 
 | Tarea | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
-| `PG-4.01` | Completa | `.01`–`.06`; 15 casos bilingües, 4 felices, 6 de diagnóstico y 5 de límite; tests filtrados de ambos crates, `rust-checks all .`, Clippy de ambos crates, `rustfmt --check` dirigido y `git diff --check` pasan. `see validate` validó 182 especificaciones; `lock --check` y `see export --check` verificaron sus artefactos. Reanclados los nueve IDs autorizados, sin cambiar estados ni versiones | `.07` pesado se difiere a la iteración 5 |
+| `PG-4.01` | Completa | `.01`–`.07`; 15 casos bilingües, 4 felices, 6 de diagnóstico y 5 de límite; verificaciones ligeras previas en verde. Tras las correcciones, `see validate` validó 187 especificaciones; `lock --check` y `see export --check` pasan. La conformidad pesada ejecutó 7 contratos de `engine`: 246 observaciones, 0 divergencias (`LANG.TASK.SUSPENSION` 60, `LANG.CAPABILITY.PURITY` 92, `LANG.LEXICAL.KEYWORD` 20, `LANG.LEXICAL.IDENTIFIER` 38, `LANG.PROFILE.VOCABULARY` y `LANG.PROFILE.TRANSLATION` 8 cada uno, `LANG.SYNTAX.GRAMMAR` 20). `cargo test -p pseudolearn_syntax`: 59 tests, 0 fallos. Se corrigieron los programas de `C3`, `C4`, `C14`, `C15` y `C23`; se preservaron esperados, estados y versiones. La evidencia previa con hashes obsoletos se conservó bajo nombres `*.before-pg-4-01-07-2026-10-28.json` en `results/` | PG-4 continúa abierta; esta casilla no declara cerrada la fase |
 | `PG-4.02` | Parcial; no cerrada | `.01`, `.03` y `.05`; avances de `.02` (`C22`, `C15`, `C16`, `C19`) y `.04` (RI `O94`–`O100`, lowering, agenda FIFO, ejecución VM y raíces suspendidas); 25 tests filtrados, `rust-checks all .`, Clippy de siete crates, formato dirigido, `see validate` (183 especificaciones), `lock --check`, `see export --check` y `git diff --check` pasan | `.02` aún requiere el caso y la ejecución de cancelación mientras una hija espera un canal; `.04` aún no conecta fallo de hija, cancelación cooperativa y limpiezas, ni esperas por canal/efecto o AOT. `.06` queda respaldada por estas verificaciones ligeras; `.07` sigue reservada para la iteración 5. `PHASE-GREEN` no se cumple para cerrar PG-4.02 |
 | `PG-4.03` | Implementación y ligera completas | `.01`–`.06`; reglas `R11`–`R16`, casos bilingües `C23`–`C31`, agregación de errores, tipos exactos, obligaciones del vínculo, cancelación y limpiezas de ámbitos anidados; tests filtrados y verificadores de esta iteración en verde | `.07` pesada pendiente; asociados probados como datos terminales, cancelación real probada en VM; no se declara cerrada la fase PG-4 |
 | `PG-4.04` | Implementación y ligera completas | `.01`–`.06`; `LANG.TASK.CHANNEL`, 21 casos bilingües, ABI, almacenamiento contabilizado, colas FIFO, contrapresión, cierre, selección textual y raíces VM; tests filtrados y verificadores de esta iteración en verde | `.07` pesada pendiente; ejecución AOT y serialización histórica completa pertenecen a tareas posteriores |

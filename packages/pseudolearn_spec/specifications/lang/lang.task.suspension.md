@@ -237,8 +237,8 @@ La marca de suspensión es explícita en las unidades declaradas y contextual en
     "en"
   ],
   "programas": {
-    "en": "algorithm P\ndefine clock as Clock <- propagate requestClock();\nwrite (propagate await clock.now()) + (propagate await clock.now());\nendAlgorithm\n",
-    "es": "Algoritmo P\nDefinir clock Como Reloj <- Propagar SolicitarReloj();\nEscribir (Propagar Aguardar clock.Ahora()) + (Propagar Aguardar clock.Ahora());\nFinAlgoritmo\n"
+    "en": "subroutine suspendable SumClock() as result<integer, IoError>\ndefine clock as Clock <- propagate requestClock();\nreturn success((propagate await clock.now()) + (propagate await clock.now()));\nendSubroutine\nalgorithm P\nswitch await SumClock() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n",
+    "es": "SubProceso Suspendible SumClock() Como Resultado<Entero, ErrorES>\nDefinir clock Como Reloj <- Propagar SolicitarReloj();\nRetornar Exito((Propagar Aguardar clock.Ahora()) + (Propagar Aguardar clock.Ahora()));\nFinSubProceso\nAlgoritmo P\nSegun Aguardar SumClock() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n"
   },
   "regla": "R6",
   "rigor": [
@@ -262,8 +262,8 @@ La marca de suspensión es explícita en las unidades declaradas y contextual en
     "en"
   ],
   "programas": {
-    "en": "function UseValue(value as integer) as integer\nreturn value;\nend function\nalgorithm P\ndefine clock as Clock <- propagate requestClock();\nwrite UseValue(propagate await clock.now());\nendAlgorithm\n",
-    "es": "Funcion UseValue(value Como Entero) Como Entero\nRetornar value;\nFinFuncion\nAlgoritmo P\nDefinir clock Como Reloj <- Propagar SolicitarReloj();\nEscribir UseValue(Propagar Aguardar clock.Ahora());\nFinAlgoritmo\n"
+    "en": "function UseValue(value as integer) as integer\nreturn value;\nend function\nsubroutine suspendable ReadClockValue() as result<integer, IoError>\ndefine clock as Clock <- propagate requestClock();\nreturn success(UseValue(propagate await clock.now()));\nendSubroutine\nalgorithm P\nswitch await ReadClockValue() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n",
+    "es": "Funcion UseValue(value Como Entero) Como Entero\nRetornar value;\nFinFuncion\nSubProceso Suspendible ReadClockValue() Como Resultado<Entero, ErrorES>\nDefinir clock Como Reloj <- Propagar SolicitarReloj();\nRetornar Exito(UseValue(Propagar Aguardar clock.Ahora()));\nFinSubProceso\nAlgoritmo P\nSegun Aguardar ReadClockValue() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n"
   },
   "regla": "R6",
   "rigor": [
@@ -555,8 +555,8 @@ La marca de suspensión es explícita en las unidades declaradas y contextual en
     "en"
   ],
   "programas": {
-    "en": "algorithm Main\ndefine clock as Clock <- propagate requestClock();\nswitch await clock.now() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n",
-    "es": "Algoritmo Main\nDefinir clock Como Reloj <- Propagar SolicitarReloj();\nSegun Aguardar clock.Ahora() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n"
+    "en": "algorithm Main\nswitch requestClock() do\nsuccess(clock):\nswitch await clock.now() do\nsuccess(value): write value;\nfailure(timeProblem): write timeProblem.code;\nendSwitch\nfailure(clockProblem): write clockProblem.code;\nendSwitch\nendAlgorithm\n",
+    "es": "Algoritmo Main\nSegun SolicitarReloj() Hacer\nExito(clock):\nSegun Aguardar clock.Ahora() Hacer\nExito(value): Escribir value;\nError(timeProblem): Escribir timeProblem.Codigo;\nFinSegun\nError(clockProblem): Escribir clockProblem.Codigo;\nFinSegun\nFinAlgoritmo\n"
   },
   "regla": "R8",
   "rigor": [
@@ -580,8 +580,8 @@ La marca de suspensión es explícita en las unidades declaradas y contextual en
     "en"
   ],
   "programas": {
-    "en": "subroutine suspendable Worker()\nendSubroutine\nalgorithm P\ndefine suspendable as integer <- 1;\nwrite suspendable;\nendAlgorithm\n",
-    "es": "SubProceso Suspendible Worker()\nFinSubProceso\nAlgoritmo P\nDefinir Suspendible Como Entero <- 1;\nEscribir Suspendible;\nFinAlgoritmo\n"
+    "en": "subroutine suspendable Worker()\nendSubroutine\nalgorithm P\ndefine suspendable as integer <- 1;\nwrite suspendable;\nawait Worker();\nendAlgorithm\n",
+    "es": "SubProceso Suspendible Worker()\nFinSubProceso\nAlgoritmo P\nDefinir Suspendible Como Entero <- 1;\nEscribir Suspendible;\nAguardar Worker();\nFinAlgoritmo\n"
   },
   "regla": "R1",
   "rigor": [

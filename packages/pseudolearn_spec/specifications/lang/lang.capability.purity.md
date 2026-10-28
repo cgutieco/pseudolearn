@@ -1141,8 +1141,8 @@
     ]
   },
   "programas": {
-    "es": "SubProceso Suspendible Worker()\nFinSubProceso\nFuncion Calculate() Como Entero\nRetornar Aguardar Worker();\nFinFuncion\nAlgoritmo P\nEscribir Calculate();\nFinAlgoritmo\n",
-    "en": "subroutine suspendable Worker()\nendSubroutine\nfunction Calculate() as integer\nreturn await Worker();\nend function\nalgorithm P\nwrite Calculate();\nendAlgorithm\n"
+    "es": "SubProceso Suspendible Worker() Como Entero\nRetornar 1;\nFinSubProceso\nFuncion Calculate() Como Entero\nRetornar Aguardar Worker();\nFinFuncion\nAlgoritmo P\nEscribir Calculate();\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Worker() as integer\nreturn 1;\nendSubroutine\nfunction Calculate() as integer\nreturn await Worker();\nend function\nalgorithm P\nwrite Calculate();\nendAlgorithm\n"
   }
 }
 ```
