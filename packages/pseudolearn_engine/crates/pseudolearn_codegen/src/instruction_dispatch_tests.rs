@@ -1,18 +1,18 @@
 #![forbid(unsafe_code)]
 
-use super::is_supported;
+use super::is_accounted_for;
 use pseudolearn_ir::Operation;
 
 #[test]
-fn every_operation_of_the_instruction_catalog_has_a_lowering() {
+fn every_operation_is_lowered_or_declared_unsupported() {
     let missing: Vec<&str> = Operation::ALL
         .iter()
-        .filter(|operation| !is_supported(**operation))
+        .filter(|operation| !is_accounted_for(**operation))
         .map(Operation::as_str)
         .collect();
     assert!(
         missing.is_empty(),
-        "operations without lowering: {missing:?}"
+        "operations neither lowered nor declared unsupported: {missing:?}"
     );
 }
 

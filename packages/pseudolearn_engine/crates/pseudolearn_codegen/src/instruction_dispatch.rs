@@ -30,17 +30,40 @@ const FAMILIES: &[(&[Operation], Lower)] = &[
     (lower_objects::OPERATIONS, lower_objects::lower),
     (lower_cells::OPERATIONS, lower_cells::lower),
     (lower_io::OPERATIONS, lower_io::lower),
-    (crate::lower_effects::OPERATIONS, crate::lower_effects::lower),
+    (
+        crate::lower_effects::OPERATIONS,
+        crate::lower_effects::lower,
+    ),
+    (
+        crate::lower_snapshot::OPERATIONS,
+        crate::lower_snapshot::lower,
+    ),
+];
+
+pub(crate) const UNSUPPORTED_OPERATIONS: &[Operation] = &[
+    Operation::TaskScopeOpen,
+    Operation::TaskSpawn,
+    Operation::TaskAwait,
+    Operation::TaskScopeJoin,
+    Operation::CallSuspendible,
+    Operation::EffectAwait,
+    Operation::TaskChannel,
+    Operation::TaskValueLoad,
+    Operation::TaskOutcome,
+    Operation::TaskScopeResult,
+    Operation::TaskCancelPoint,
+    Operation::TaskScopeBoundary,
 ];
 
 #[cfg(test)]
-pub(crate) fn is_supported(operation: Operation) -> bool {
+pub(crate) fn is_accounted_for(operation: Operation) -> bool {
     matches!(
         operation,
         Operation::Call | Operation::CallVirtual | Operation::CallIndirect
     ) || FAMILIES
         .iter()
         .any(|(operations, _)| operations.contains(&operation))
+        || UNSUPPORTED_OPERATIONS.contains(&operation)
 }
 
 pub(crate) fn lower_instruction(
@@ -57,7 +80,10 @@ pub(crate) fn lower_instruction(
             .find(|(operations, _)| operations.contains(&operation))
         {
             Some((_, lower)) => lower(lowering, instruction),
-            None => Err(CodegenError::Unsupported(operation.as_str())),
+            None if UNSUPPORTED_OPERATIONS.contains(&operation) => {
+                Err(CodegenError::Unsupported(operation.as_str()))
+            }
+            None => Err(CodegenError::InvalidModule("operation without lowering")),
         },
     }
 }

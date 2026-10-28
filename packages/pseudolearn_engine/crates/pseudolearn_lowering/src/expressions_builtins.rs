@@ -1,8 +1,10 @@
 #![forbid(unsafe_code)]
 
 use crate::builder::FunctionBuilder;
+use crate::expressions::{ExpressionState, lower_expression_with_state};
 use pseudolearn_ir::{IrSpan, Operand, Operation, PredicateKind, ValueId};
 use pseudolearn_semantic::BuiltinKind;
+use pseudolearn_semantic::ExpressionId;
 use pseudolearn_semantic::expression_model::BinaryOperator;
 
 pub fn lower_builtin_call(
@@ -28,6 +30,7 @@ pub fn lower_builtin_call(
         BuiltinKind::TextToInteger => Operation::TextToInteger,
         BuiltinKind::TextToReal => Operation::TextToReal,
         BuiltinKind::ToText => Operation::TextFormat,
+        BuiltinKind::Snapshot => Operation::SnapshotCopy,
         BuiltinKind::ShallowCopy => Operation::ObjectCopy,
         BuiltinKind::Random => Operation::HostRandom,
     };
@@ -70,4 +73,24 @@ pub fn select_comparison_predicate(operator: BinaryOperator) -> Option<Predicate
         BinaryOperator::GreaterEqual => Some(PredicateKind::GreaterEqual),
         _ => None,
     }
+}
+
+pub fn lower_builtin(
+    arguments: &[ExpressionId],
+    function: BuiltinKind,
+    span: Option<IrSpan>,
+    state: &mut ExpressionState<'_, '_>,
+) -> ValueId {
+    if function == BuiltinKind::Snapshot {
+        return arguments
+            .first()
+            .map(|argument| crate::snapshot_values::copy(*argument, span, state))
+            .and_then(|values| values.first().copied())
+            .unwrap_or_else(|| state.builder.next_value());
+    }
+    let mut lowered = Vec::new();
+    for &argument_id in arguments {
+        lowered.push(lower_expression_with_state(argument_id, state));
+    }
+    lower_builtin_call(function, &lowered, span, state.builder)
 }

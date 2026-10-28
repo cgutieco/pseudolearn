@@ -116,6 +116,6 @@ pub(crate) fn field_kind(session: &AnalysisSession<'_>, record: RecordId, field:
         .records
         .get(slot(record))
         .and_then(|model| model.fields.get(field))
-        .map(|field| session.module.types.get(field.type_id))
+        .map(|field| session.module.types.representation(field.type_id))
         .unwrap_or(Type::Error)
 }

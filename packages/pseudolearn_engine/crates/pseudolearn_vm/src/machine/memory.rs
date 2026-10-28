@@ -20,6 +20,10 @@ impl Machine<'_> {
 
     fn memory_object(&mut self, operation: &MemoryOp) -> Result<Flow, Fault> {
         match operation {
+            MemoryOp::Snapshot {
+                sources,
+                destinations,
+            } => self.copy_snapshot(sources, destinations)?,
             MemoryOp::Collection(operation) => return self.collection_operation(operation),
             MemoryOp::ObjectNew { destination, class } => {
                 self.allocate_object(*destination, *class)?

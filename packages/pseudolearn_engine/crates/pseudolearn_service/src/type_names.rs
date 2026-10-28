@@ -11,6 +11,12 @@ pub fn type_display(analysis: &ServiceAnalysis, type_id: TypeId, profile: Profil
         Type::Boolean => keyword_spelling(KeywordKind::BooleanType, profile),
         Type::Character => keyword_spelling(KeywordKind::CharacterType, profile),
         Type::String => keyword_spelling(KeywordKind::StringType, profile),
+        Type::Immutable(payload) => format!(
+            "{}<{}>",
+            pseudolearn_syntax::contextual_spelling("immutableType", profile.as_str())
+                .unwrap_or(""),
+            type_display(analysis, payload, profile)
+        ),
         Type::Task(payload) => format!(
             "{}<{}>",
             keyword_spelling(KeywordKind::TaskType, profile),
@@ -50,6 +56,14 @@ pub fn builtin_type_display(word: &str, profile: Profile) -> String {
         "character" => KeywordKind::CharacterType,
         "boolean" => KeywordKind::BooleanType,
         "numeric" => return numeric_label(profile).to_owned(),
+        "anySnapshot" => return "T".to_owned(),
+        "immutableOfFirstArgument" => {
+            return format!(
+                "{}<T>",
+                pseudolearn_syntax::contextual_spelling("immutableType", profile.as_str())
+                    .unwrap_or("")
+            );
+        }
         _ => return word.to_owned(),
     };
     keyword_spelling(kind, profile)

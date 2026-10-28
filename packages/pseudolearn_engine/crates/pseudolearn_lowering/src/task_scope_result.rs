@@ -41,7 +41,7 @@ fn descriptor(
     IrType,
 )> {
     let local = module.locals.get(usize::try_from(failure.0).ok()?)?;
-    let Type::Record(record) = module.types.get(local.type_id) else {
+    let Type::Record(record) = module.types.representation(local.type_id) else {
         return None;
     };
     let variant = module.variants.get(&record)?.clone();

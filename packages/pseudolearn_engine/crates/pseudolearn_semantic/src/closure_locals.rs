@@ -29,7 +29,7 @@ pub(crate) fn create(
         .resize(session.module.locals.len(), false);
     crate::binding_checker::mark_initialized(session, local);
     session.module.local_visibility.insert(local, span);
-    if let Type::Record(record) = session.module.types.get(kind) {
+    if let Type::Record(record) = session.module.types.representation(kind) {
         crate::record_locals::components(session, local, record);
         crate::binding_checker::mark_initialized(session, local);
     }

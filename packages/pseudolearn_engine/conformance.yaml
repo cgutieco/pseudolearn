@@ -2,6 +2,8 @@
   "sujeto": "engine",
   "paquete": "packages/pseudolearn_engine",
   "activadas": [
+    "ENG.TASK.MEMORY",
+    "LANG.TASK.ISOLATION",
     "ENG.EXEC.EFFECT-COMMIT",
     "ENG.EFFECT.TAPE",
     "LANG.CAPABILITY.MODEL",
@@ -148,6 +150,92 @@
   "fases_cerradas": [],
   "vinculos": [
     {
+      "regla": "LANG.TASK.ISOLATION@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TASK.ISOLATION@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TASK.ISOLATION@1.0.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TASK.ISOLATION@1.0.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TASK.ISOLATION@1.0.0#R5",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TASK.ISOLATION@1.0.0#R6",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TASK.ISOLATION@1.0.0#R7",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.TASK.MEMORY@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.TASK.MEMORY@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.TASK.MEMORY@1.0.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.TASK.AGENDA@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.TASK.AGENDA@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.TASK.AGENDA@1.0.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.TASK.AGENDA@1.0.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.TASK.AGENDA@1.0.0#R5",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.TASK.AGENDA@1.0.0#R6",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "IR.WELL-FORMEDNESS@1.0.0#R12",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+
+    {
       "regla": "LANG.TASK.SCOPE@1.0.0#R11",
       "verificacion": "ejecutor",
       "estado": "pendiente",
@@ -234,8 +322,7 @@
     {
       "regla": "ENG.TASK.AGENDA@1.0.0#R7",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-4"
+      "estado": "cumple"
     },
     {
       "regla": "API.ANALYZE@1.0.0#R1",
@@ -795,6 +882,11 @@
     },
     {
       "regla": "ENG.LIMITS@1.0.0#R9",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.LIMITS@1.0.0#R10",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },

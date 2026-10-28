@@ -255,3 +255,20 @@ Pruebas de integración dirigidas en API: `task_failure_tests`, `task_channel_te
 `task_deadlock_tests` y `task_lowering_tests`. Sigue pendiente serializar íntegramente este estado
 en imágenes históricas, integrar los desenlaces abandonados con la cinta concurrente y ejecutar
 estas operaciones en el backend nativo; esas comprobaciones no quedan certificadas por tests VM.
+
+## Instantáneas y persistencia de la agenda
+
+`snapshot_copy` ejecuta la copia conjunta de referencias con las raíces precisas de la VM y escribe
+sus resultados en las celdas locales verificadas. Las aristas cargan la masa del acumulador común y
+`task.yield_check` consulta el cuanto antes de volver al bucle.
+
+El estado de control incluye la agenda, los contextos por tarea, canales, pendientes, resultados y
+continuaciones de limpieza. Las imágenes normales, compactas y de suspensión conservan ese estado;
+las diferencias inversas y su composición restauran también la agenda. La comparación de imágenes
+compactas excluye la capacidad reservada de bancos, que no forma parte del estado observable.
+
+Al suspender una tarea, `task_spill` vuelca en registros de continuación del montón únicamente los
+valores vivos del punto de suspensión (mapas de vivos de la RI, ampliados con las celdas y las
+limpiezas pendientes), libera los bancos y los restaura en `unspill`; el volcado reutiliza el registro
+del mismo marco. `task_roots` aporta continuaciones, almacenamiento de tarea, resultados, mensajes de
+canal y fallos a las raíces. La ejecución AOT no ofrece todavía tareas.

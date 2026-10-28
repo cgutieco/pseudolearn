@@ -166,13 +166,18 @@ fn element_type(array: ExpressionId, context: &StatementContext<'_, '_>) -> IrTy
         .expressions
         .types
         .get(index)
-        .and_then(
-            |type_id| match context.expression_context.module.types.get(*type_id) {
+        .and_then(|type_id| {
+            match context
+                .expression_context
+                .module
+                .types
+                .representation(*type_id)
+            {
                 Type::Array { element, .. } => {
                     Some(lower_type(element, context.expression_context.module))
                 }
                 _ => None,
-            },
-        )
+            }
+        })
         .unwrap_or(IrType::Unit)
 }

@@ -417,3 +417,13 @@ nuevas permanecen pendientes de conformidad hasta ejecutar a ambos sujetos. Un t
 sobre errores asociados comprueba sucesos terminales ya registrados; dos hijas con retornos
 inmediatos no implican por sí solas dos errores porque la segunda recibe la cancelación antes
 de ejecutar. Los esperados del corpus no se obtienen de capturas de ejecución.
+
+## Contratos de aislamiento y memoria de tareas
+
+El aislamiento y la memoria se incorporan como identidades estables `1.0.0`, conservando el
+congelamiento. Los casos de aislamiento derivan los rechazos de tipos, lectura inmutable y
+presupuestos exactos sin capturar resultados del motor. Los vínculos de ambos sujetos permanecen
+pendientes de conformidad. El recurso de firmas admite la entrada de instantánea y su retorno
+inmutable, y el catálogo presenta ambas identidades con ejemplos bilingües del corpus. La cesión
+conserva masa entre vueltas inferiores al cuanto: reiniciarla en cada vuelta impediría ceder a los
+bucles pequeños. El texto normativo explicita esta acumulación.

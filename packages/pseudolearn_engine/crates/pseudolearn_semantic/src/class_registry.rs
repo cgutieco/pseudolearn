@@ -44,7 +44,7 @@ fn fields(session: &mut AnalysisSession<'_>, class: ClassId, node: usize) {
     };
     let type_id = crate::type_resolution::resolve(session, kind);
     let record_field = matches!(
-        session.module.types.get(type_id),
+        session.module.types.representation(type_id),
         crate::types::Type::Record(_)
     );
     let private =

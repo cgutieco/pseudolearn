@@ -18,8 +18,8 @@ pub fn parse_module(source: &str) -> Result<Module, String> {
 }
 
 pub(crate) struct Parser {
-    tokens: Vec<Token>,
-    cursor: usize,
+    pub(crate) tokens: Vec<Token>,
+    pub(crate) cursor: usize,
 }
 
 impl Parser {
@@ -122,6 +122,10 @@ impl Parser {
 
     fn parse_function(&mut self) -> Result<Function, String> {
         let _ = self.expect_word("func")?;
+        let suspendible = self.peek() == &TokenKind::Word("suspendible".to_owned());
+        if suspendible {
+            let _ = self.advance();
+        }
         let name = match self.advance() {
             TokenKind::FunctionAt(identifier) => identifier,
             other => return Err(format!("Expected @name, found {other:?}")),
@@ -143,6 +147,7 @@ impl Parser {
         self.expect_exact(TokenKind::CloseBrace)?;
 
         Ok(Function {
+            suspendible,
             declaration_span: None,
             name,
             parameters,
@@ -232,7 +237,14 @@ impl Parser {
         let operation_name = self.expect_word("")?;
         let operation = Operation::from_name(&operation_name)
             .ok_or_else(|| format!("Unknown operation: {operation_name}"))?;
-        let operands = self.parse_instruction_operands()?;
+        let operands = if matches!(
+            operation,
+            Operation::TaskScopeOpen | Operation::TaskYieldCheck
+        ) {
+            Vec::new()
+        } else {
+            self.parse_instruction_operands()?
+        };
         let span = if let TokenKind::Span(span) = self.peek() {
             let captured = *span;
             let _ = self.advance();
@@ -246,23 +258,6 @@ impl Parser {
             span,
         };
         Ok(columns.push_instruction(definition, &operands))
-    }
-
-    fn parse_optional_result(&mut self) -> Option<ValueId> {
-        if let TokenKind::Value(number) = self.peek() {
-            let value_number = *number;
-            if self
-                .tokens
-                .get(self.cursor.saturating_add(1))
-                .map(|token| &token.kind)
-                == Some(&TokenKind::Equal)
-            {
-                let _ = self.advance();
-                let _ = self.advance();
-                return Some(ValueId(value_number));
-            }
-        }
-        None
     }
 
     fn parse_instruction_operands(&mut self) -> Result<Vec<Operand>, String> {

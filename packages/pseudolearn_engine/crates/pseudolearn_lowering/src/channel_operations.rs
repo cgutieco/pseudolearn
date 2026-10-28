@@ -54,7 +54,9 @@ fn command_values(
         ChannelAction::Send => "send",
         _ => "close",
     };
-    let kind = if call.action == ChannelAction::Send {
+    let kind = if call.action == ChannelAction::New {
+        IrType::Str
+    } else if call.action == ChannelAction::Send {
         IrType::Bool
     } else {
         IrType::I64
@@ -124,7 +126,7 @@ fn receive_payload(
     span: Option<IrSpan>,
     state: &mut ExpressionState<'_, '_>,
 ) -> Vec<ValueId> {
-    let leaves = match state.context.module.types.get(element) {
+    let leaves = match state.context.module.types.representation(element) {
         pseudolearn_semantic::Type::Record(record) => state
             .context
             .module

@@ -2,6 +2,13 @@ use crate::{BytecodeError, BytecodeOperand, CodeVariant, Instruction, RegisterCl
 use std::collections::BTreeSet;
 
 pub(crate) fn analyze(variant: &CodeVariant) -> Result<Vec<BTreeSet<u16>>, BytecodeError> {
+    analyze_slots(variant, RegisterClass::Reference)
+}
+
+pub fn analyze_slots(
+    variant: &CodeVariant,
+    class: RegisterClass,
+) -> Result<Vec<BTreeSet<u16>>, BytecodeError> {
     let count = usize::try_from(variant.used_length).map_err(|_| BytecodeError::InvalidModule)?;
     let mut live = vec![BTreeSet::new(); count];
     loop {
@@ -11,14 +18,14 @@ pub(crate) fn analyze(variant: &CodeVariant) -> Result<Vec<BTreeSet<u16>>, Bytec
                 .instructions
                 .get(position)
                 .ok_or(BytecodeError::InvalidModule)?;
-            let mut incoming = outgoing(variant, position, &live, instruction)?;
+            let mut incoming = outgoing(variant, position, &live, (instruction, class))?;
             if let Some(register) = instruction
                 .destination
-                .filter(|register| register.class == RegisterClass::Reference)
+                .filter(|register| register.class == class)
             {
                 incoming.remove(&register.index);
             }
-            incoming.extend(uses(instruction));
+            incoming.extend(uses(instruction, class));
             let previous = live.get_mut(position).ok_or(BytecodeError::InvalidModule)?;
             changed |= *previous != incoming;
             *previous = incoming;
@@ -33,14 +40,17 @@ fn outgoing(
     variant: &CodeVariant,
     position: usize,
     live: &[BTreeSet<u16>],
-    instruction: &Instruction,
+    (instruction, class): (&Instruction, RegisterClass),
 ) -> Result<BTreeSet<u16>, BytecodeError> {
     let mut outgoing = BTreeSet::new();
     let mut branching = false;
     for operand in &instruction.operands {
         if let BytecodeOperand::BlockTarget { target, arguments } = operand {
-            branching = true;
-            let edge = branch_roots(variant, (*target, arguments), live)?;
+            branching = !matches!(
+                instruction.opcode.as_name(),
+                "task.cancel_point" | "task.scope_boundary"
+            );
+            let edge = branch_roots(variant, (*target, arguments), live, class)?;
             outgoing.extend(edge);
         }
     }
@@ -60,18 +70,18 @@ fn outgoing(
     Ok(outgoing)
 }
 
-fn uses(instruction: &Instruction) -> BTreeSet<u16> {
+fn uses(instruction: &Instruction, class: RegisterClass) -> BTreeSet<u16> {
     let mut used = BTreeSet::new();
     for operand in &instruction.operands {
         match operand {
-            BytecodeOperand::Register(register) if register.class == RegisterClass::Reference => {
+            BytecodeOperand::Register(register) if register.class == class => {
                 used.insert(register.index);
             }
             BytecodeOperand::FunctionTarget { arguments, .. } => {
                 used.extend(
                     arguments
                         .iter()
-                        .filter(|register| register.class == RegisterClass::Reference)
+                        .filter(|register| register.class == class)
                         .map(|register| register.index),
                 );
             }
@@ -85,6 +95,7 @@ fn branch_roots(
     variant: &CodeVariant,
     (target, arguments): (pseudolearn_ir::BlockId, &[crate::Register]),
     live: &[BTreeSet<u16>],
+    class: RegisterClass,
 ) -> Result<BTreeSet<u16>, BytecodeError> {
     let block = variant
         .blocks
@@ -100,13 +111,11 @@ fn branch_roots(
         .parameters
         .iter()
         .zip(arguments)
-        .filter(|(parameter, _)| {
-            parameter.class == RegisterClass::Reference && edge.contains(&parameter.index)
-        })
+        .filter(|(parameter, _)| parameter.class == class && edge.contains(&parameter.index))
         .map(|(_, source)| source.index)
         .collect::<Vec<_>>();
     for parameter in &block.parameters {
-        if parameter.class == RegisterClass::Reference {
+        if parameter.class == class {
             edge.remove(&parameter.index);
         }
     }

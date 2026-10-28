@@ -43,6 +43,7 @@ fn fallback(
     instruction: &Instruction,
 ) -> Result<MemoryOp, VmTrap> {
     Ok(match instruction.opcode {
+        Opcode::SnapshotCopy => snapshots::decode(context, instruction)?,
         Opcode::ArrayNew => array_new(context, instruction)?,
         Opcode::ArrayLoad | Opcode::ArrayStore | Opcode::CellElement => {
             array_access(context, instruction)?
@@ -260,3 +261,5 @@ fn load_cell(instruction: &Instruction) -> Result<MemoryOp, VmTrap> {
         MemoryOp::CellLoad { destination, cell }
     })
 }
+
+mod snapshots;

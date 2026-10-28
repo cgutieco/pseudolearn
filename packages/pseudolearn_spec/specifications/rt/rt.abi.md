@@ -73,6 +73,19 @@
 }
 ```
 
+```regla
+{
+  "id": "R4",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Las disposiciones de continuación, tarea y canal son únicas: etiqueta de forma, cabecera y desplazamientos viven en pseudolearn_abi y los consumen la máquina virtual y el código nativo. Sus etiquetas de forma son distintas entre sí y de las demás formas reservadas, y una clase de usuario no puede ocupar ninguna.",
+  "verificacion": [
+    "estructural"
+  ],
+  "justificacion": "Las pruebas unitarias dirigidas de la disposición comprueban el contrato estructural; el código nativo aún no ofrece tareas."
+}
+```
+
 ```propiedad
 {
   "id": "P1",

@@ -8,12 +8,14 @@ fn function() -> Result<BytecodeFunction, String> {
     )
     .map_err(|error| format!("{error:?}"))?;
     let compiled = crate::compile_module(&module).map_err(|error| format!("{error:?}"))?;
-    compiled
+    let mut function = compiled
         .module()
         .functions
         .first()
         .cloned()
-        .ok_or_else(|| "missing function".to_owned())
+        .ok_or_else(|| "missing function".to_owned())?;
+    function.reference_types.push(ValueType::Str);
+    Ok(function)
 }
 
 fn instruction(command: &str) -> Instruction {
@@ -23,10 +25,13 @@ fn instruction(command: &str) -> Instruction {
     };
     Instruction {
         opcode: Opcode::TaskChannel,
-        destination: Some(register),
+        destination: Some(Register {
+            class: RegisterClass::Reference,
+            index: 0,
+        }),
         operands: vec![
             BytecodeOperand::Identifier(command.to_owned()),
-            BytecodeOperand::Type(ValueType::I64),
+            BytecodeOperand::Type(ValueType::Str),
             BytecodeOperand::Register(register),
             BytecodeOperand::Register(register),
         ],
@@ -50,7 +55,7 @@ fn rejects_task_result_class_mismatches_and_missing_operands() -> Result<(), Str
     let function = function()?;
     let mut invalid = instruction("new");
     invalid.destination = Some(Register {
-        class: RegisterClass::Reference,
+        class: RegisterClass::Scalar,
         index: 0,
     });
     assert!(super::verify_task_types::verify(&function, &invalid).is_err());

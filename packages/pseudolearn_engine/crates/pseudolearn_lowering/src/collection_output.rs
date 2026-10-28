@@ -92,7 +92,7 @@ fn value(
         .first()
         .copied()
         .unwrap_or_else(|| state.builder.next_value());
-    match state.context.module.types.get(kind) {
+    match state.context.module.types.representation(kind) {
         Type::Object(class) => {
             let model = state.context.module.collections.get(&class).cloned();
             model

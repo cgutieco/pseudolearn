@@ -4,6 +4,7 @@ use std::collections::{BTreeMap, VecDeque};
 
 #[path = "channel_selection.rs"]
 mod channel_selection;
+pub use channel_selection::{buffered_slot, pending_values, take_buffer_change};
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum ChannelError {
@@ -29,6 +30,7 @@ pub enum ChannelReply<Value> {
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 struct TaskChannel<Value> {
+    head: usize,
     capacity: usize,
     closed: bool,
     values: VecDeque<Value>,
@@ -38,6 +40,7 @@ struct TaskChannel<Value> {
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct TaskChannels<Value> {
+    changed: VecDeque<(TaskChannelId, usize)>,
     next_channel: u64,
     channels: BTreeMap<TaskChannelId, TaskChannel<Value>>,
     ready: VecDeque<(TaskId, ChannelReply<Value>)>,
@@ -46,6 +49,7 @@ pub struct TaskChannels<Value> {
 impl<Value> Default for TaskChannels<Value> {
     fn default() -> Self {
         Self {
+            changed: VecDeque::new(),
             next_channel: 1,
             channels: BTreeMap::new(),
             ready: VecDeque::new(),
@@ -73,6 +77,7 @@ impl<Value> TaskChannels<Value> {
         self.channels.insert(
             identifier,
             TaskChannel {
+                head: 0,
                 capacity,
                 closed: false,
                 values: VecDeque::new(),
@@ -101,7 +106,13 @@ impl<Value> TaskChannels<Value> {
             return Ok(ChannelStep::Ready(true));
         }
         if stream.values.len() < stream.capacity {
+            let slot = stream
+                .head
+                .saturating_add(stream.values.len())
+                .checked_rem(stream.capacity)
+                .ok_or(ChannelError::InvalidCapacity)?;
             stream.values.push_back(value);
+            self.changed.push_back((channel, slot));
             Ok(ChannelStep::Ready(true))
         } else {
             stream.senders.push(task, value);
@@ -119,8 +130,20 @@ impl<Value> TaskChannels<Value> {
             .get_mut(&channel)
             .ok_or(ChannelError::UnknownChannel)?;
         if let Some(value) = stream.values.pop_front() {
+            self.changed.push_back((channel, stream.head));
+            stream.head = stream
+                .head
+                .saturating_add(1)
+                .checked_rem(stream.capacity)
+                .ok_or(ChannelError::InvalidCapacity)?;
             if let Some((sender, pending)) = stream.senders.pop() {
+                let slot = stream
+                    .head
+                    .saturating_add(stream.values.len())
+                    .checked_rem(stream.capacity)
+                    .ok_or(ChannelError::InvalidCapacity)?;
                 stream.values.push_back(pending);
+                self.changed.push_back((channel, slot));
                 self.ready.push_back((sender, ChannelReply::Sent(true)));
             }
             return Ok(ChannelStep::Ready(Some(value)));

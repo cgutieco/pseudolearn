@@ -3,7 +3,11 @@ use std::sync::Arc;
 use super::cells::Cell;
 use super::{ControlFrame, Cursor, LoadedFunction, Machine};
 
+#[derive(Clone, Debug, PartialEq)]
 pub(crate) struct TaskContext {
+    pub(super) reusable: Vec<super::task_spill::SpilledFrame>,
+    pub(super) spills: Vec<super::task_spill::SpilledFrame>,
+    pub(super) bank_lengths: (usize, usize),
     pub(super) current: Arc<LoadedFunction>,
     pub(super) current_function_index: usize,
     pub(super) cursor: Cursor,
@@ -20,13 +24,25 @@ pub(crate) struct TaskContext {
 }
 
 impl TaskContext {
-    pub(super) fn capture(machine: &mut Machine<'_>, reexecute_current: bool) -> Self {
+    pub(super) fn capture(
+        machine: &mut Machine<'_>,
+        reexecute_current: bool,
+    ) -> Result<Self, crate::Fault> {
+        let roots = capture_roots(machine, reexecute_current)?;
         let root_position = if reexecute_current {
             machine.cursor.program_counter
         } else {
             machine.cursor.program_counter.saturating_sub(1)
         };
-        Self {
+        let additional = machine.cleanup_spill_plans()?;
+        let mut context = Self {
+            reusable: machine
+                .tasks
+                .continuations
+                .remove(&machine.tasks.current)
+                .unwrap_or_default(),
+            spills: Vec::new(),
+            bank_lengths: (machine.scalars.len(), machine.references.len()),
             current: Arc::clone(&machine.current),
             current_function_index: machine.current_function_index,
             cursor: machine.cursor,
@@ -40,10 +56,17 @@ impl TaskContext {
             cells: std::mem::take(&mut machine.cells),
             scalar_watermark: machine.scalar_watermark,
             reference_watermark: machine.reference_watermark,
-        }
+        };
+        context.spill(&mut machine.heap, machine.probed, (&roots, additional))?;
+        Ok(context)
     }
 
-    pub(super) fn restore(self, machine: &mut Machine<'_>) {
+    pub(super) fn restore(mut self, machine: &mut Machine<'_>) -> Result<(), crate::Fault> {
+        self.unspill(&mut machine.heap)?;
+        machine
+            .tasks
+            .continuations
+            .insert(machine.tasks.current, self.reusable);
         machine.current = self.current;
         machine.current_function_index = self.current_function_index;
         machine.cursor = self.cursor;
@@ -56,5 +79,19 @@ impl TaskContext {
         machine.cells = self.cells;
         machine.scalar_watermark = self.scalar_watermark;
         machine.reference_watermark = self.reference_watermark;
+        Ok(())
     }
+}
+
+fn capture_roots(
+    machine: &mut Machine<'_>,
+    reexecute_current: bool,
+) -> Result<Vec<pseudolearn_runtime::Handle>, crate::Fault> {
+    let saved = machine.cursor.program_counter;
+    if reexecute_current {
+        machine.cursor.program_counter = saved.saturating_add(1);
+    }
+    let roots = machine.memory_roots();
+    machine.cursor.program_counter = saved;
+    roots
 }

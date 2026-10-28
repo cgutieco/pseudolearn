@@ -7,14 +7,15 @@ use pseudolearn_abi::{RecordBank, RecordLayout, VariantLayout};
 use pseudolearn_diagnostics::DiagnosticCode;
 
 pub(crate) fn get(session: &AnalysisSession<'_>, kind: &Type) -> Option<HirVariant> {
+    let kind = crate::snapshot_types::underlying(session, kind);
     let Type::Record(record) = kind else {
         return None;
     };
-    session.module.variants.get(record).cloned()
+    session.module.variants.get(&record).cloned()
 }
 
 pub(crate) fn leaves(session: &AnalysisSession<'_>, kind: TypeId) -> Vec<TypeId> {
-    match session.module.types.get(kind) {
+    match session.module.types.representation(kind) {
         Type::Record(record) => usize::try_from(record.0)
             .ok()
             .and_then(|index| session.module.records.get(index))

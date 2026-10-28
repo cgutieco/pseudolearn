@@ -69,9 +69,14 @@ pub(crate) fn member(
             return Some(crate::expression_checker::invalid(session, node));
         }
     };
+    if matches!(session.expression_type(receiver), Type::Immutable(_))
+        && !matches!(action, CollectionAction::Length | CollectionAction::Find)
+    {
+        session.report(DiagnosticCode::ImmutableValueWrite, node);
+    }
     let parameters = parameters(session, &model, action);
     let arguments = arguments(session, node, &parameters);
-    let result = result(session, node, &model, action);
+    let result = result(session, node, &model, (action, receiver));
     crate::call_checker::check_result(session, result, (node, purpose));
     Some(emit(
         session,
@@ -126,13 +131,15 @@ fn result(
     session: &mut AnalysisSession<'_>,
     node: usize,
     model: &HirCollection,
-    action: CollectionAction,
+    operation: (CollectionAction, ExpressionId),
 ) -> TypeId {
+    let (action, receiver) = operation;
     if model.key.is_some() && matches!(action, CollectionAction::Remove | CollectionAction::Find) {
+        let value = crate::snapshot_types::read_type(session, receiver, model.value);
         return crate::variant_types::register(
             session,
             crate::variant_model::VariantFamily::Optional,
-            vec![None, Some(model.value)],
+            vec![None, Some(value)],
             node,
         );
     }
@@ -172,9 +179,10 @@ pub(crate) fn element(
             crate::expression_checker::widen(session, value, &kind)
         })
         .collect();
+    let result = crate::snapshot_types::read_type(session, array, model.value);
     session.emit(
         crate::HirExpression::Element { array, indices },
-        model.value,
+        result,
         session.span(node),
     )
 }

@@ -456,7 +456,7 @@
       "aceptada": true
     }
   },
-  "programa_ri": "module P es\nfunc @main() -> unit {\nb0() mass 0:\n  %0 = task.scope_open\n  %1 = task.spawn %0, @worker() -> i64\n  %2 = task.await %1, i64\n  task.scope_join %0\n  return\n}\nfunc @worker() -> i64 {\nb0() mass 0:\n  %0 = const.i64 7\n  return %0\n}\n"
+  "programa_ri": "module P es\nfunc suspendible @main() -> unit {\nb0() mass 0:\n  %0 = task.scope_open @1:1-1:2\n  %1 = task.spawn %0, @worker() @1:1-1:2\n  %2 = task.await %1, i64 @1:1-1:2\n  task.scope_join %0 @1:1-1:2\n  return\n}\nfunc suspendible @worker() -> i64 {\nb0() mass 0:\n  %0 = const.i64 7\n  return %0\n}\n"
 }
 ```
 
@@ -478,6 +478,60 @@
       "regla": "IR.WELL-FORMEDNESS#R3"
     }
   },
-  "programa_ri": "module P es\nfunc @main() -> unit {\nb0() mass 0:\n  %0 = const.str \"scope\"\n  %1 = task.spawn %0, @worker() -> i64\n  return\n}\nfunc @worker() -> i64 {\nb0() mass 0:\n  %0 = const.i64 7\n  return %0\n}\n"
+  "programa_ri": "module P es\nfunc suspendible @main() -> unit {\nb0() mass 0:\n  %0 = const.str \"scope\"\n  %1 = task.spawn %0, @worker() @1:1-1:2\n  return\n}\nfunc suspendible @worker() -> i64 {\nb0() mass 0:\n  %0 = const.i64 7\n  return %0\n}\n"
+}
+```
+```regla
+{
+  "id": "R12",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Las operaciones que suspenden tareas y task.yield_check solo aparecen en funciones marcadas suspendible, incluida la raíz. task.yield_check debe preceder inmediatamente a un salto de retorno de bucle cuyo destino domina el bloque origen. El atributo se conserva en el formato textual mediante func suspendible.",
+  "verificacion": [
+    "C15",
+    "C16"
+  ]
+}
+```
+```caso
+{
+  "id": "C15",
+  "regla": "R12",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "ir",
+  "programa_ri": "module P es\nfunc @worker() -> unit {\nb0() mass 0:\n  task.yield_check\n  return\n}\n",
+  "espera": {
+    "ri": {
+      "aceptada": false,
+      "regla": "IR.WELL-FORMEDNESS#R12"
+    }
+  }
+}
+```
+```caso
+{
+  "id": "C16",
+  "regla": "R12",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "ir",
+  "programa_ri": "module P es\nfunc suspendible @main() -> unit {\nb0() mass 0:\n  task.yield_check\n  return\n}\n",
+  "espera": {
+    "ri": {
+      "aceptada": false,
+      "regla": "IR.WELL-FORMEDNESS#R12"
+    }
+  }
 }
 ```

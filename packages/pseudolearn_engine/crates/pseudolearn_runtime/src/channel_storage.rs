@@ -17,7 +17,10 @@ pub fn new_channel_storage(
         shape: Shape::Channel,
         payload: CHANNEL_HEADER_WORDS,
         elements,
-        auxiliary: 0,
+        auxiliary: elements
+            .saturating_add(63)
+            .checked_div(64)
+            .ok_or(MemoryError::Resource)?,
         cells: layout.cells().ok_or(MemoryError::Resource)?,
         literal: false,
     };

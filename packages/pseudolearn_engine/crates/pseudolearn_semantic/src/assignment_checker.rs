@@ -10,6 +10,9 @@ pub(crate) fn assignment(session: &mut AnalysisSession<'_>, node: usize) -> Opti
     let children = session.children(node);
     let target = children.first().copied()?;
     let destination = check_for(session, target, ExpressionPurpose::Destination);
+    if crate::snapshot_types::reject_write(session, destination, target) {
+        return None;
+    }
     let value_node = children.get(1).copied()?;
     let mut value = assignment_value(session, destination, value_node)?;
     let Some(location) = place(session, destination) else {
@@ -66,6 +69,9 @@ pub(crate) fn input(session: &mut AnalysisSession<'_>, node: usize) -> HirStatem
     let mut destinations = Vec::new();
     for target in session.children(node) {
         let value = check_for(session, target, ExpressionPurpose::Destination);
+        if crate::snapshot_types::reject_write(session, value, target) {
+            continue;
+        }
         let Some(location) = place(session, value) else {
             session.report(DiagnosticCode::InvalidReadTarget, target);
             continue;

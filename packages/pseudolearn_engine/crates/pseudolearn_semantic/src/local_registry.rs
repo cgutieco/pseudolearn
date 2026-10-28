@@ -74,7 +74,10 @@ pub(crate) fn array_parameter_type(
 }
 
 fn is_record(session: &AnalysisSession<'_>, type_id: TypeId) -> bool {
-    matches!(session.module.types.get(type_id), Type::Record(_))
+    matches!(
+        session.module.types.representation(type_id),
+        Type::Record(_)
+    )
 }
 
 fn check_record_parameter(
@@ -181,10 +184,10 @@ fn register(session: &mut AnalysisSession<'_>, declaration: LocalDeclaration) ->
         mutable: declaration.mutable,
     });
     session.initialized.push(declaration.parameter);
-    if session.module.types.get(declaration.type_id) == Type::Error {
+    if session.module.types.representation(declaration.type_id) == Type::Error {
         session.invalid.insert(identifier);
     }
-    if let Type::Record(record) = session.module.types.get(declaration.type_id) {
+    if let Type::Record(record) = session.module.types.representation(declaration.type_id) {
         crate::record_locals::components(session, identifier, record);
     }
     identifier

@@ -776,8 +776,8 @@
     "flexible"
   ],
   "programas": {
-    "es": "SubProceso Suspendible Wait() Como Entero\nDefinir timer Como Temporizador <- Propagar SolicitarTemporizador();\nRetornar Propagar Aguardar timer.Esperar(100);\nFinSubProceso\nSubProceso Suspendible Fail() Como Resultado<Entero, Cadena>\nRetornar Error(\"failed\");\nFinSubProceso\nAlgoritmo P\nTareas\nLanzar Wait();\nLanzar Fail();\nFinTareas\nFinAlgoritmo\n",
-    "en": "subroutine suspendable Wait() as integer\ndefine timer as Timer <- propagate requestTimer();\nreturn propagate await timer.wait(100);\nendSubroutine\nsubroutine suspendable Fail() as result<integer, string>\nreturn failure(\"failed\");\nendSubroutine\nalgorithm P\ntasks\nspawn Wait();\nspawn Fail();\nendTasks\nendAlgorithm\n"
+    "es": "SubProceso Suspendible Wait() Como Resultado<Entero, Cadena>\nSegun SolicitarTemporizador() Hacer\nExito(timer):\nDefinir limit Como Entero <- 100;\nSegun Aguardar timer.Esperar(limit) Hacer\nExito(value): Retornar Exito(value);\nError(problem): Retornar Error(\"timer\");\nFinSegun\nError(problem): Retornar Error(\"request\");\nFinSegun\nRetornar Error(\"unreachable\");\nFinSubProceso\nSubProceso Suspendible Fail() Como Resultado<Entero, Cadena>\nRetornar Error(\"failed\");\nFinSubProceso\nAlgoritmo P\nTareas failureReport\nLanzar Wait();\nLanzar Fail();\nFinTareas\nDescartar failureReport;\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Wait() as result<integer, string>\nswitch requestTimer() do\nsuccess(timer):\ndefine limit as integer <- 100;\nswitch await timer.wait(limit) do\nsuccess(value): return success(value);\nfailure(problem): return failure(\"timer\");\nendSwitch\nfailure(problem): return failure(\"request\");\nendSwitch\nreturn failure(\"unreachable\");\nendSubroutine\nsubroutine suspendable Fail() as result<integer, string>\nreturn failure(\"failed\");\nendSubroutine\nalgorithm P\ntasks failureReport\nspawn Wait();\nspawn Fail();\nendTasks\ndiscard failureReport;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -792,7 +792,7 @@
   },
   "espera": {
     "salida": "",
-    "terminacion": "failed",
+    "terminacion": "completed",
     "anfitrion_observado": {
       "efectos": [
         {
@@ -897,13 +897,14 @@
   "id": "R15",
   "fuerza": "DEBE",
   "clase": "ejecucion",
-  "texto": "El vínculo inmutable del ámbito, visible tras FinTareas, tiene tipo Opcional<FalloTareas<E>>. Vale Nada sin fallos y Algo con Primero: E, Asociados: Vector<E> y Canceladas: Entero si falló. Un ámbito falible sin vínculo produce taskScopeFailureUnbound; un vínculo sin hijas falibles produce taskScopeFailureUnused. El vínculo se debe consumir como una obligación de resultado.",
+  "texto": "El vínculo inmutable del ámbito, visible tras FinTareas, tiene tipo Opcional<FalloTareas<E>>. Vale Nada sin fallos y Algo con Primero: E, Asociados: Inmutable<Vector<E>> y Canceladas: Entero si falló. Un ámbito falible sin vínculo produce taskScopeFailureUnbound; un vínculo sin hijas falibles produce taskScopeFailureUnused. El vínculo se debe consumir como una obligación de resultado.",
   "verificacion": [
     "C23",
     "C24",
     "C29",
     "C30",
-    "C31"
+    "C31",
+    "C32"
   ]
 }
 ```
@@ -934,7 +935,7 @@
   ],
   "programas": {
     "es": "SubProceso Suspendible Work() Como Resultado<Entero, Cadena>\nRetornar Exito(1);\nFinSubProceso\nAlgoritmo P\nTareas failureReport\nLanzar Work();\nFinTareas\nSegun failureReport Hacer\nNada: Escribir \"ok\";\nAlgo(problem): Escribir problem.Primero;\nFinSegun\nFinAlgoritmo\n",
-    "en": "subroutine suspendable Work() as result<integer, string>\nreturn success(1);\nendSubroutine\nAlgoritmo P\ntasks failureReport\nspawn Work();\nendTasks\nswitch failureReport do\nnone: write \"ok\";\nsome(problem): write problem.first;\nendSwitch\nFinAlgoritmo\n"
+    "en": "subroutine suspendable Work() as result<integer, string>\nreturn success(1);\nendSubroutine\nalgorithm P\ntasks failureReport\nspawn Work();\nendTasks\nswitch failureReport do\nnone: write \"ok\";\nsome(problem): write problem.first;\nendSwitch\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -959,7 +960,7 @@
   ],
   "programas": {
     "es": "SubProceso Suspendible Work() Como Resultado<Entero, Cadena>\nRetornar Error(\"failed\");\nFinSubProceso\nAlgoritmo P\nTareas failureReport\nLanzar Work();\nFinTareas\nSegun failureReport Hacer\nNada: Escribir \"ok\";\nAlgo(problem): Escribir problem.Primero, problem.Asociados.Longitud, problem.Canceladas;\nFinSegun\nFinAlgoritmo\n",
-    "en": "subroutine suspendable Work() as result<integer, string>\nreturn failure(\"failed\");\nendSubroutine\nAlgoritmo P\ntasks failureReport\nspawn Work();\nendTasks\nswitch failureReport do\nnone: write \"ok\";\nsome(problem): write problem.first, problem.associated.length, problem.cancelled;\nendSwitch\nFinAlgoritmo\n"
+    "en": "subroutine suspendable Work() as result<integer, string>\nreturn failure(\"failed\");\nendSubroutine\nalgorithm P\ntasks failureReport\nspawn Work();\nendTasks\nswitch failureReport do\nnone: write \"ok\";\nsome(problem): write problem.first, problem.associated.length, problem.cancelled;\nendSwitch\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -984,7 +985,7 @@
   ],
   "programas": {
     "es": "SubProceso Suspendible Receive(stream Como Canal<Entero>)\nSegun Aguardar stream.Recibir() Hacer\nAlgo(receivedValue): Escribir receivedValue;\nNada: Escribir 0;\nFinSegun\nFinSubProceso\nSubProceso Suspendible Fail() Como Resultado<Entero, Cadena>\nRetornar Error(\"failed\");\nFinSubProceso\nAlgoritmo P\nDefinir stream Como Canal<Entero> <- Canal(1);\nTareas failureReport\nLanzar Receive(stream);\nLanzar Fail();\nFinTareas\nSegun failureReport Hacer\nNada: Escribir 0;\nAlgo(problem): Escribir problem.Primero, problem.Canceladas;\nFinSegun\nFinAlgoritmo\n",
-    "en": "subroutine suspendable Receive(stream as channel<integer>)\nswitch await stream.receive() do\nsome(receivedValue): write receivedValue;\nnone: write 0;\nendSwitch\nendSubroutine\nsubroutine suspendable Fail() as result<integer, string>\nreturn failure(\"failed\");\nendSubroutine\nAlgoritmo P\ndefine stream as channel<integer> <- channel(1);\ntasks failureReport\nspawn Receive(stream);\nspawn Fail();\nendTasks\nswitch failureReport do\nnone: write 0;\nsome(problem): write problem.first, problem.cancelled;\nendSwitch\nFinAlgoritmo\n"
+    "en": "subroutine suspendable Receive(stream as channel<integer>)\nswitch await stream.receive() do\nsome(receivedValue): write receivedValue;\nnone: write 0;\nendSwitch\nendSubroutine\nsubroutine suspendable Fail() as result<integer, string>\nreturn failure(\"failed\");\nendSubroutine\nalgorithm P\ndefine stream as channel<integer> <- channel(1);\ntasks failureReport\nspawn Receive(stream);\nspawn Fail();\nendTasks\nswitch failureReport do\nnone: write 0;\nsome(problem): write problem.first, problem.cancelled;\nendSwitch\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -1009,7 +1010,7 @@
   ],
   "programas": {
     "es": "SubProceso Suspendible Work() Como Resultado<Entero, Cadena>\nRetornar Error(\"failed\");\nFinSubProceso\nAlgoritmo P\nTareas failureReport\nDefinir child Como Tarea<Entero> <- Lanzar Work();\nEscribir Aguardar child;\nFinTareas\nSegun failureReport Hacer\nNada: Escribir \"ok\";\nAlgo(problem): Escribir problem.Primero;\nFinSegun\nFinAlgoritmo\n",
-    "en": "subroutine suspendable Work() as result<integer, string>\nreturn failure(\"failed\");\nendSubroutine\nAlgoritmo P\ntasks failureReport\ndefine child as task<integer> <- spawn Work();\nwrite await child;\nendTasks\nswitch failureReport do\nnone: write \"ok\";\nsome(problem): write problem.first;\nendSwitch\nFinAlgoritmo\n"
+    "en": "subroutine suspendable Work() as result<integer, string>\nreturn failure(\"failed\");\nendSubroutine\nalgorithm P\ntasks failureReport\ndefine child as task<integer> <- spawn Work();\nwrite await child;\nendTasks\nswitch failureReport do\nnone: write \"ok\";\nsome(problem): write problem.first;\nendSwitch\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -1034,7 +1035,7 @@
   ],
   "programas": {
     "es": "SubProceso Suspendible First() Como Resultado<Entero, Cadena>\nRetornar Error(\"failure\");\nFinSubProceso\nSubProceso Suspendible Second() Como Resultado<Entero, Entero>\nRetornar Error(1);\nFinSubProceso\nAlgoritmo P\nTareas failureReport\nLanzar First();\nLanzar Second();\nFinTareas\nDescartar failureReport;\nFinAlgoritmo\n",
-    "en": "subroutine suspendable First() as result<integer, string>\nreturn failure(\"failure\");\nendSubroutine\nsubroutine suspendable Second() as result<integer, integer>\nreturn failure(1);\nendSubroutine\nAlgoritmo P\ntasks failureReport\nspawn First();\nspawn Second();\nendTasks\ndiscard failureReport;\nFinAlgoritmo\n"
+    "en": "subroutine suspendable First() as result<integer, string>\nreturn failure(\"failure\");\nendSubroutine\nsubroutine suspendable Second() as result<integer, integer>\nreturn failure(1);\nendSubroutine\nalgorithm P\ntasks failureReport\nspawn First();\nspawn Second();\nendTasks\ndiscard failureReport;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -1064,7 +1065,7 @@
   ],
   "programas": {
     "es": "SubProceso Suspendible Work() Como Resultado<Entero, Vector<Entero>>\nRetornar Error(Vector());\nFinSubProceso\nAlgoritmo P\nTareas failureReport\nLanzar Work();\nFinTareas\nDescartar failureReport;\nFinAlgoritmo\n",
-    "en": "subroutine suspendable Work() as result<integer, vector<integer>>\nreturn failure(vector());\nendSubroutine\nAlgoritmo P\ntasks failureReport\nspawn Work();\nendTasks\ndiscard failureReport;\nFinAlgoritmo\n"
+    "en": "subroutine suspendable Work() as result<integer, vector<integer>>\nreturn failure(vector());\nendSubroutine\nalgorithm P\ntasks failureReport\nspawn Work();\nendTasks\ndiscard failureReport;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -1094,7 +1095,7 @@
   ],
   "programas": {
     "es": "SubProceso Suspendible Work() Como Resultado<Entero, Cadena>\nRetornar Exito(1);\nFinSubProceso\nAlgoritmo P\nTareas\nLanzar Work();\nFinTareas\nFinAlgoritmo\n",
-    "en": "subroutine suspendable Work() as result<integer, string>\nreturn success(1);\nendSubroutine\nAlgoritmo P\ntasks\nspawn Work();\nendTasks\nFinAlgoritmo\n"
+    "en": "subroutine suspendable Work() as result<integer, string>\nreturn success(1);\nendSubroutine\nalgorithm P\ntasks\nspawn Work();\nendTasks\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -1124,7 +1125,7 @@
   ],
   "programas": {
     "es": "Algoritmo P\nTareas failureReport\nFinTareas\nFinAlgoritmo\n",
-    "en": "Algoritmo P\ntasks failureReport\nendTasks\nFinAlgoritmo\n"
+    "en": "algorithm P\ntasks failureReport\nendTasks\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -1154,7 +1155,7 @@
   ],
   "programas": {
     "es": "SubProceso Suspendible Fail() Como Resultado<Entero, Cadena>\nRetornar Error(\"failed\");\nFinSubProceso\nAlgoritmo P\nTareas failureReport\nLanzar Fail();\nFinTareas\nFinAlgoritmo\n",
-    "en": "subroutine suspendable Fail() as result<integer, string>\nreturn failure(\"failed\");\nendSubroutine\nAlgoritmo P\ntasks failureReport\nspawn Fail();\nendTasks\nFinAlgoritmo\n"
+    "en": "subroutine suspendable Fail() as result<integer, string>\nreturn failure(\"failed\");\nendSubroutine\nalgorithm P\ntasks failureReport\nspawn Fail();\nendTasks\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -1163,6 +1164,36 @@
     "diagnosticos": [
       {
         "codigo": "taskScopeFailureUnused",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C32",
+  "regla": "R15",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "analyze",
+  "programas": {
+    "es": "SubProceso Suspendible Fail() Como Resultado<Entero, Cadena>\nRetornar Error(\"failed\");\nFinSubProceso\nAlgoritmo Main\nTareas failureReport\nLanzar Fail();\nFinTareas\nSegun failureReport Hacer\nNada: Escribir 0;\nAlgo(problem): problem.Asociados.Agregar(\"extra\");\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Fail() as result<integer, string>\nreturn failure(\"failed\");\nendSubroutine\nalgorithm Main\ntasks failureReport\nspawn Fail();\nendTasks\nswitch failureReport do\nnone: write 0;\nsome(problem): problem.associated.append(\"extra\");\nendSwitch\nendAlgorithm\n"
+  },
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "immutableValueWrite",
         "severidad": "error"
       }
     ]

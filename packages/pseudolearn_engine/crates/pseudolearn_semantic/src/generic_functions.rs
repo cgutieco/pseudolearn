@@ -113,7 +113,7 @@ fn register(
         closing_span: session.closing_span(template.node),
         syntax: template.node,
         private: false,
-        suspendible: false,
+        suspendible: crate::suspension_checker::declared(session, template.node),
     });
     session.current = identifier;
     session.bindings = crate::block_scopes::BlockScopes::default();

@@ -137,3 +137,9 @@ mod suspension_points;
 mod task_scope_result;
 
 mod task_values;
+
+mod yield_points;
+
+mod snapshot_values;
+
+mod continuation_blocks;

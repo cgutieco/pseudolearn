@@ -66,7 +66,9 @@ impl Heap {
         if header.shape_tag == 1 {
             return self.array_mask_location(handle, index);
         }
-        if header.shape_tag > 2 && header.shape_tag < pseudolearn_abi::bytes_layout::BYTES_SHAPE_TAG {
+        if header.shape_tag > 2
+            && header.shape_tag < pseudolearn_abi::continuation_layout::CONTINUATION_SHAPE_TAG
+        {
             return self.object_mask_location(handle, index);
         }
         Ok(None)

@@ -47,3 +47,34 @@ impl<Value> TaskChannels<Value> {
         self.ready.pop_front()
     }
 }
+
+pub fn take_buffer_change<Value>(
+    channels: &mut TaskChannels<Value>,
+) -> Option<(TaskChannelId, usize)> {
+    channels.changed.pop_front()
+}
+
+pub fn buffered_slot<Value>(
+    channels: &TaskChannels<Value>,
+    channel: TaskChannelId,
+    slot: usize,
+) -> Option<&Value> {
+    let stream = channels.channels.get(&channel)?;
+    let offset = slot
+        .checked_add(stream.capacity)?
+        .checked_sub(stream.head)?
+        .checked_rem(stream.capacity)?;
+    stream.values.get(offset)
+}
+
+pub fn pending_values<Value>(channels: &TaskChannels<Value>) -> impl Iterator<Item = &Value> {
+    let senders = channels
+        .channels
+        .values()
+        .flat_map(|channel| channel.senders.values());
+    let delivered = channels.ready.iter().filter_map(|(_, reply)| match reply {
+        ChannelReply::Received(value) | ChannelReply::Selected(_, value) => value.as_ref(),
+        ChannelReply::Sent(_) => None,
+    });
+    senders.chain(delivered)
+}

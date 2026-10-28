@@ -94,3 +94,12 @@ antes del bytecode; ninguna respuesta de host se convierte silenciosamente en ce
 La familia de tareas ocupa `O94`–`O100`. El chequeador verifica clases, tipos de asa y destinos de
 `task.scope_open`, `task.spawn`, `task.await`, `task.scope_join`, `call.suspendible`, `effect.await` y
 `task.yield_check`; los consumidores de VM y bytecode conservan sus identidades de operación.
+
+## Unidades suspendibles y puntos de cesión
+
+La función conserva `suspendible`; el formato canónico lo expresa mediante `func suspendible` y
+permite comprobar la restricción antes de bytecode. El verificador de suspensión rechaza cesiones
+fuera de estas unidades y cesiones que no preceden inmediatamente a un salto hacia un dominador.
+El parser separa las instrucciones de tarea sin operandos para no consumir la operación siguiente.
+`snapshot.copy` recibe cantidad, fuentes referenciales y celdas destino con tipos exactos; copia el
+grafo conjunto sin añadir sentencias ni convertir errores de tipos en comprobaciones dinámicas.

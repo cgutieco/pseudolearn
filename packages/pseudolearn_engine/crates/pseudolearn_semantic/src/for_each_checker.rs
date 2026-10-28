@@ -22,7 +22,10 @@ pub(crate) fn check(session: &mut AnalysisSession<'_>, node: usize) -> Option<Hi
     let locals: Vec<_> = names
         .into_iter()
         .zip(bindings)
-        .map(|(node, kind)| binding(session, node, kind, body_node))
+        .map(|(node, kind)| {
+            let kind = crate::snapshot_types::read_type(session, collection, kind);
+            binding(session, node, kind, body_node)
+        })
         .collect();
     let before = session.initialized.clone();
     let pending = session.pending_results.clone();

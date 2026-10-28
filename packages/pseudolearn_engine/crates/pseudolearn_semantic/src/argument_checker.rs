@@ -77,6 +77,9 @@ fn check_reference(
     argument: ExpressionId,
     node: usize,
 ) {
+    if crate::snapshot_types::reject_write(session, argument, node) {
+        return;
+    }
     if crate::expression_checker::place(session, argument).is_none() {
         session.report(DiagnosticCode::ByReferenceArgumentRequiresDesignator, node);
         return;

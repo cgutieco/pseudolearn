@@ -1,9 +1,7 @@
 #![forbid(unsafe_code)]
 
 use crate::expressions::{ExpressionState, lower_expression_with_state};
-use crate::expressions_builtins::lower_builtin_call;
 use pseudolearn_ir::{IrSpan, Operand, Operation, ValueId};
-use pseudolearn_semantic::BuiltinKind;
 use pseudolearn_semantic::expression_model::HirExpression;
 use pseudolearn_semantic::hir::{FunctionKind, HirFunction};
 use pseudolearn_semantic::identities::ExpressionId;
@@ -142,7 +140,7 @@ pub(crate) fn allocate_result_cells(
     state: &mut ExpressionState<'_, '_>,
 ) -> Vec<ValueId> {
     let module = state.context.module;
-    let leaves = match module.types.get(kind) {
+    let leaves = match module.types.representation(kind) {
         pseudolearn_semantic::Type::Record(record) => usize::try_from(record.0)
             .ok()
             .and_then(|index| module.records.get(index))
@@ -208,18 +206,7 @@ pub(crate) fn lower_cell_argument(
     }
 }
 
-pub fn lower_builtin(
-    arguments: &[ExpressionId],
-    function: BuiltinKind,
-    span: Option<IrSpan>,
-    state: &mut ExpressionState<'_, '_>,
-) -> ValueId {
-    let mut lowered = Vec::new();
-    for &argument_id in arguments {
-        lowered.push(lower_expression_with_state(argument_id, state));
-    }
-    lower_builtin_call(function, &lowered, span, state.builder)
-}
+pub use crate::expressions_builtins::lower_builtin;
 
 pub fn lower_new(
     class_index: u32,

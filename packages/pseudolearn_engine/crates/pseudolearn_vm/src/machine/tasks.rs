@@ -7,7 +7,10 @@ use std::collections::BTreeMap;
 use super::{Flow, Machine, TaskContext};
 use crate::{Fault, RuntimeValue, evaluate::INVALID_BYTECODE};
 
-pub(crate) struct VmTasks {
+#[derive(Clone, Debug, PartialEq)]
+pub struct VmTasks {
+    pub(super) continuations: BTreeMap<TaskId, Vec<super::task_spill::SpilledFrame>>,
+    pub(super) task_storage: BTreeMap<TaskId, pseudolearn_runtime::Handle>,
     pub(super) cleanup_depths: BTreeMap<TaskId, usize>,
     pub(super) scope_parents: BTreeMap<TaskScopeId, Option<TaskScopeId>>,
     pub(super) scope_stacks: BTreeMap<TaskId, Vec<TaskScopeId>>,
@@ -26,6 +29,7 @@ pub(crate) struct VmTasks {
     pub(super) channel_replies:
         BTreeMap<TaskId, pseudolearn_runtime::ChannelReply<Vec<RuntimeValue>>>,
     pub(super) transport_values: BTreeMap<TaskId, Option<Vec<RuntimeValue>>>,
+    pub(super) quantum: pseudolearn_runtime::TaskQuantum,
     pub(super) agenda: TaskAgenda,
     pub(super) current: TaskId,
     pub(super) contexts: BTreeMap<TaskId, TaskContext>,
@@ -36,6 +40,8 @@ impl Default for VmTasks {
     fn default() -> Self {
         let (agenda, current) = TaskAgenda::with_running_root();
         Self {
+            continuations: BTreeMap::new(),
+            task_storage: BTreeMap::new(),
             cleanup_depths: BTreeMap::new(),
             scope_parents: BTreeMap::new(),
             scope_stacks: BTreeMap::new(),
@@ -51,6 +57,7 @@ impl Default for VmTasks {
             channels: pseudolearn_runtime::TaskChannels::default(),
             channel_replies: BTreeMap::new(),
             transport_values: BTreeMap::new(),
+            quantum: pseudolearn_runtime::TaskQuantum::default(),
             agenda,
             current,
             contexts: BTreeMap::new(),
@@ -108,8 +115,11 @@ impl Machine<'_> {
         site_index: u32,
     ) -> Result<Flow, Fault> {
         let scope = TaskScopeId(self.scalar(scope_register)?);
-        let (context, destination) = self.create_task_context(site_index)?;
+        let (mut context, destination) = self.create_task_context(site_index)?;
+        let roots = self.memory_roots()?;
+        context.spill(&mut self.heap, self.probed, (&roots, Vec::new()))?;
         let task = self.tasks.agenda.spawn(scope).map_err(task_fault)?;
+        self.allocate_task_storage((task, scope.0), &context, &roots)?;
         self.tasks.contexts.insert(task, context);
         self.set_scalar(destination.index, task.0)?;
         Ok(Flow::Continue)
@@ -175,7 +185,11 @@ impl Machine<'_> {
     }
 
     pub(crate) fn yield_task(&mut self) -> Result<Flow, Fault> {
-        if !self.tasks.agenda.has_ready() {
+        if !self
+            .tasks
+            .quantum
+            .at_backedge(self.tasks.current, self.tasks.agenda.has_ready())
+        {
             return Ok(Flow::Continue);
         }
         self.tasks

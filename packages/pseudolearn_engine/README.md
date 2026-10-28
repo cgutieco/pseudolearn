@@ -514,3 +514,27 @@ La comprobación ligera comprende los filtros de runtime y semantic documentados
 los archivos `task_failure_tests`, `task_channel_tests`, `task_deadlock_tests` y `task_lowering_tests`
 de API, además de Clippy, formato, reglas mecánicas e integridad y exportación del corpus. La
 conformidad de engine y aot, ejecución nativa, campañas y recolección forzada se verifican por separado.
+
+## Aislamiento, cesión y memoria de tareas
+
+El análisis comparte un predicado transitivo de transferibilidad y conserva `Inmutable<T>` como tipo
+distinto. `Instantanea` crea una copia profunda explícita con alias internos y ciclos preservados;
+las lecturas de sus componentes mutables conservan inmutabilidad. Se comprueban en compilación las
+escrituras y los métodos mutadores. Se adopta la comprobación estructural de Swift Sendable y la
+idea de aislamiento transitivo de Pony; se rechazan actores, anotaciones de confianza y capacidades
+de referencia visibles. Bytes no ofrece operaciones mutadoras y puede transferirse.
+
+Las unidades suspendibles contienen comprobaciones de cesión únicamente en aristas de retorno de
+bucle. Cada reanudación reinicia la masa; los bloques y las llamadas síncronas la acumulan hasta el
+cuanto 1024. Las imágenes y diferencias de control incluyen la agenda y los contextos de tareas.
+Al suspenderse, cada marco vuelca solo sus valores vivos en un registro de continuación del montón
+con la disposición de `pseudolearn_abi` (cabecera, función, estado, enlace padre, resultado y
+segmentos escalar y de referencias, con la capacidad máxima de vivos de sus puntos de suspensión);
+los bancos se liberan y se restauran al reanudar con el mapa de vivos de la RI. Cada tarea, canal y
+continuación es una forma reservada del montón que el recolector recorre en orden de identidad de
+tarea; sus etiquetas de forma son distintas de las de bytes, capacidades y clases de usuario, por lo
+que las clases ocupan solo las etiquetas inferiores a la de continuación. Los límites de celdas
+cuentan tareas y canales (`ENG.LIMITS#R10`). El sujeto `engine` mide estos contratos
+(`ENG.TASK.MEMORY`, `ENG.TASK.AGENDA`, `LANG.TASK.ISOLATION`). El sujeto `aot` solo ofrece
+`Instantanea` (`rt_aot_snapshot_copy`) y trata `task.yield_check` como operación vacía; las tareas,
+los canales y la espera de efectos nativos quedan `pendiente` hasta que el sujeto nativo ofrezca tareas.

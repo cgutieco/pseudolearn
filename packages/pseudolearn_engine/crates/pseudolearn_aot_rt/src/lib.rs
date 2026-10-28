@@ -29,6 +29,7 @@ mod process_report;
 mod quoted_text;
 mod random;
 mod session;
+mod snapshot;
 mod text;
 pub use quoted_text::rt_aot_text_quote;
 mod trap;
@@ -50,11 +51,11 @@ pub use context::{
     CONTEXT_ROOM_CELLS_OFFSET, CONTEXT_ROOM_THRESHOLD_OFFSET, CONTEXT_ROOT_CAPACITY_OFFSET,
     CONTEXT_ROOT_TOP_OFFSET, CONTEXT_ROOTS_OFFSET, STATUS_CONTINUE, STATUS_FAILED, STATUS_LIMIT,
 };
-pub use engine::AotEngine;
-pub use entry::pseudolearn_aot_main;
 pub use effect_channel::EffectChannel;
 pub use effect_document::{EffectInput, EffectOutput};
 pub use effects::{effect_operation_cells, effect_operation_index, rt_aot_effect_call};
+pub use engine::AotEngine;
+pub use entry::pseudolearn_aot_main;
 pub use fault::{FaultRecord, FaultSite, SourceRange, render_fault};
 pub use inline_allocation::{
     INLINE_MAXIMUM_PHYSICAL, INLINE_PHYSICAL_SHIFT, INLINE_RECORD_WORDS, InlineObjectImage,
@@ -80,6 +81,7 @@ pub use process::{
 pub use pseudolearn_diagnostics::DiagnosticCode;
 pub use random::rt_aot_random_real;
 pub use session::{AotSession, settle_session};
+pub use snapshot::rt_aot_snapshot_copy;
 pub use text::{
     TEXT_LENGTH, TEXT_TO_INTEGER, TEXT_TO_REAL, rt_aot_text_character, rt_aot_text_compare,
     rt_aot_text_concat, rt_aot_text_format, rt_aot_text_literal, rt_aot_text_query,

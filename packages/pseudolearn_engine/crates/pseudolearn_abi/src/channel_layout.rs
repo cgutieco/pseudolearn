@@ -1,7 +1,8 @@
 pub const CHANNEL_SHAPE_TAG: u32 = u32::MAX - 6;
 pub const CHANNEL_CAPACITY_OFFSET: usize = 2;
 pub const CHANNEL_WIDTH_OFFSET: usize = 3;
-pub const CHANNEL_HEADER_WORDS: usize = 4;
+pub const CHANNEL_IDENTITY_OFFSET: usize = 4;
+pub const CHANNEL_HEADER_WORDS: usize = 5;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct ChannelLayout {

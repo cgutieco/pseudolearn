@@ -102,6 +102,7 @@ a través de ninguna llamada.
 | `rt_aot_write` | palabra, `tipo \| NEWLINE_FLAG` | 0 |
 | `rt_aot_read` | tipo | palabra leída |
 | `rt_aot_effect_call` | descriptor de operación, búfer de palabras `[capacidad, nodo fuente, clase de resultado, argumentos…, celdas de resultado…]` | 0; las respuestas se escriben en las celdas |
+| `rt_aot_snapshot_copy` | cantidad `n`, búfer de `2n` palabras `[fuentes…, celdas destino…]` | 0; `snapshot_copy_many` del runtime compartido copia el grafo conjunto y escribe cada copia en su celda |
 | `rt_aot_fault` | — | el código del sitio decide el estado |
 
 Los accesos a arreglos y objetos son el camino lento de los accesos en línea del código generado: reproducen la
@@ -309,3 +310,7 @@ Problema: la asignación de objetos y la escritura en celdas locales llamaban al
 rt_aot_collection transporta un paquete estático de seis palabras de cabecera seguido de los argumentos canónicos. El envoltorio usa la frontera de préstamo existente y traduce errores de memoria a diagnósticos con sitio; no añade bloques unsafe. Las raíces proceden de la pila explícita antes de una reserva. rt_aot_text_quote comparte el escape de biblioteca con VM.
 
 Los tests de estas capacidades se ejecutaron en selecciones acotadas, incluida la comparación de gemelos con recolección forzada. La conformidad del corpus sigue pendiente de la revisión editorial independiente de los contratos nuevos, y la medición de tamaño excede el presupuesto de Wasm.
+
+`rt_aot_snapshot_copy` reutiliza `snapshot_copy_many`: la copia conjunta conserva alias y ciclos entre las fuentes, las raíces
+son las del marco y el presupuesto de celdas se aplica en cada bloque copiado, igual que en la VM. La entrada no añade `unsafe`
+más allá de leer el búfer de palabras con `borrow_slice`.

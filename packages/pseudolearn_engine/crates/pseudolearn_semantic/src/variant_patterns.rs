@@ -85,6 +85,7 @@ fn payload_binding(
     let Some(name) = session.child(syntax.0, NodeKind::Identifier) else {
         return Vec::new();
     };
+    let kind = crate::snapshot_types::read_type(session, syntax.1, kind);
     let local = crate::variant_bindings::pattern(session, kind, name);
     let value = session.emit(
         HirExpression::VariantPayload {

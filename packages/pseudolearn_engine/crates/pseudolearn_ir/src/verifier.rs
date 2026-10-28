@@ -21,6 +21,7 @@ pub fn verify_module(module: &Module) -> Result<(), &'static str> {
     crate::verifier_layouts::check_operand_limits(module)?;
     for function in &module.functions {
         verify_function(function, module)?;
+        crate::verifier_suspension::verify_function(function)?;
     }
     Ok(())
 }

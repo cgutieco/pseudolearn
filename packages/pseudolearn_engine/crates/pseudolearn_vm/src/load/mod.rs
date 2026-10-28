@@ -71,6 +71,7 @@ fn load_function(
     };
     instructions::decode_all(&context, &mut loaded)?;
     reserve_outgoing(&mut loaded, function)?;
+    loaded.continuation_capacity = metadata::continuation_capacity(&loaded);
     if !loaded.code.len().is_power_of_two() || !loaded.probed_code.len().is_power_of_two() {
         return Err(invalid_bytecode());
     }

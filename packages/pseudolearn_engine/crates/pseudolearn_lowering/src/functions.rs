@@ -43,14 +43,26 @@ pub fn lower_function(
     terminate_function_blocks(&mut builder, &return_type, function, source);
     compute_blocks_mass(&mut builder);
 
-    Function {
+    finish_function(builder, function, source)
+}
+
+fn finish_function(
+    builder: FunctionBuilder,
+    function: &HirFunction,
+    source: &SourceText,
+) -> Function {
+    let mut lowered = Function {
+        suspendible: function.suspendible || function.kind == FunctionKind::Main,
         declaration_span: crate::spans::header_span(function.span, source),
         name: builder.name,
         parameters: builder.parameters,
         return_type: builder.return_type,
         columns: builder.columns,
         blocks: builder.blocks,
-    }
+    };
+    crate::yield_points::insert(&mut lowered);
+    crate::continuation_blocks::partition(&mut lowered);
+    lowered
 }
 
 pub(crate) fn function_name(function: &HirFunction, module: &HirModule) -> String {
@@ -117,7 +129,7 @@ fn initialize_parameters(parameters: &[LocalId], context: &mut StatementContext<
 
 fn initialize_result_cells(function: &HirFunction, context: &mut StatementContext<'_, '_>) {
     let module = context.expression_context.module;
-    let leaves = match module.types.get(function.result) {
+    let leaves = match module.types.representation(function.result) {
         pseudolearn_semantic::types::Type::Record(record) => usize::try_from(record.0)
             .ok()
             .and_then(|slot| module.records.get(slot))

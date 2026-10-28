@@ -9,7 +9,8 @@ impl Machine<'_> {
     ) -> Result<(), Fault> {
         if preserve_current {
             let current = self.tasks.current;
-            let context = TaskContext::capture(self, reexecute_current);
+            let context = TaskContext::capture(self, reexecute_current)?;
+            self.link_task_continuation(current, &context)?;
             self.tasks.contexts.insert(current, context);
         }
         if self.schedule_cleanup()? {
@@ -26,8 +27,10 @@ impl Machine<'_> {
             None => self.schedule_pending_effect()?.ok_or("taskDeadlock")?,
         };
         let context = self.tasks.contexts.remove(&next).ok_or(INVALID_BYTECODE)?;
+        self.tasks.quantum.resumed(next);
         self.tasks.current = next;
-        context.restore(self);
+        self.clear_task_continuation(next)?;
+        context.restore(self)?;
         if let Some(scope) = self.tasks.aborted_scopes.remove(&next) {
             let resume = self
                 .tasks
@@ -49,8 +52,10 @@ impl Machine<'_> {
                 .map_err(super::tasks::task_fault)?;
             let Some(next) = next else { return Ok(false) };
             if let Some(context) = self.tasks.contexts.remove(&next) {
+                self.tasks.quantum.resumed(next);
                 self.tasks.current = next;
-                context.restore(self);
+                self.clear_task_continuation(next)?;
+                context.restore(self)?;
                 if self.resume_cancellation() {
                     return Ok(true);
                 }

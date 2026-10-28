@@ -39,6 +39,7 @@ mod lower_math;
 mod lower_objects;
 mod lower_real;
 mod lower_scalars;
+mod lower_snapshot;
 mod lower_text;
 mod lower_virtual;
 mod lowering;

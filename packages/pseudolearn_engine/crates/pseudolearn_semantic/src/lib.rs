@@ -192,3 +192,18 @@ mod channel_types_tests;
 mod select_checker_tests;
 
 mod task_bindings;
+
+mod transferability;
+#[cfg(test)]
+mod transferability_tests;
+
+mod snapshot_types;
+#[cfg(test)]
+mod snapshot_types_tests;
+
+mod snapshot_support;
+
+#[cfg(test)]
+mod snapshot_support_tests;
+
+mod collection_layouts;

@@ -93,6 +93,7 @@ impl Machine<'_> {
                 self.cursor.program_counter = probed_pc;
             }
         }
+        self.tasks.quantum.charge(self.tasks.current, mass);
         match self.remaining.statements.checked_sub(mass) {
             Some(remaining) => {
                 self.remaining.statements = remaining;

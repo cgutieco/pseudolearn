@@ -116,7 +116,7 @@ pub(crate) fn lower_negative_unary(
     let operand_type = usize::try_from(operand.0)
         .ok()
         .and_then(|index| state.context.module.expressions.types.get(index))
-        .map(|type_id| state.context.module.types.get(*type_id))
+        .map(|type_id| state.context.module.types.representation(*type_id))
         .unwrap_or(pseudolearn_semantic::types::Type::Integer);
     let operation = if operand_type == pseudolearn_semantic::types::Type::Real {
         Operation::RealNeg

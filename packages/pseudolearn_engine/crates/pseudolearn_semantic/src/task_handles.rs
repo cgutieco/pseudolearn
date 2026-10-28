@@ -24,7 +24,7 @@ pub(crate) fn spawn(
     if !valid_spawn_context(session, node) {
         return crate::expression_checker::invalid(session, node);
     }
-    if suspendible_target(session, node).is_none() {
+    if !suspendible_target(session, node) {
         return crate::expression_checker::invalid(session, node);
     }
     let call_purpose = spawn_call_purpose(session, node, purpose);
@@ -63,21 +63,36 @@ fn valid_spawn_context(session: &mut AnalysisSession<'_>, node: usize) -> bool {
     true
 }
 
-fn suspendible_target(session: &mut AnalysisSession<'_>, node: usize) -> Option<FunctionId> {
-    let Some(function) = target(session, node) else {
-        session.report(DiagnosticCode::SpawnTargetNotSuspendible, node);
-        return None;
+fn suspendible_target(session: &mut AnalysisSession<'_>, node: usize) -> bool {
+    let is_suspendible = if let Some(function) = target(session, node) {
+        session
+            .module
+            .functions
+            .get(usize::try_from(function.0).unwrap_or(usize::MAX))
+            .is_some_and(|model| model.suspendible)
+    } else {
+        generic_target(session, node)
+            .is_some_and(|template| crate::suspension_checker::declared(session, template.node))
     };
-    let is_suspendible = session
-        .module
-        .functions
-        .get(usize::try_from(function.0).unwrap_or(usize::MAX))
-        .is_some_and(|model| model.suspendible);
     if !is_suspendible {
         session.report(DiagnosticCode::SpawnTargetNotSuspendible, node);
+    }
+    is_suspendible
+}
+
+fn generic_target<'session>(
+    session: &'session AnalysisSession<'_>,
+    node: usize,
+) -> Option<&'session crate::generic_state::GenericTemplate> {
+    let identifier = session
+        .children(node)
+        .into_iter()
+        .find(|child| session.kind(*child) == NodeKind::Identifier)?;
+    let name = session.name(identifier);
+    if session.local(&name).is_some() {
         return None;
     }
-    Some(function)
+    session.generics.functions.get(&name)
 }
 
 fn target(session: &AnalysisSession<'_>, node: usize) -> Option<FunctionId> {
@@ -136,19 +151,17 @@ fn check_arguments(
         {
             session.report(DiagnosticCode::TaskByReferenceArgument, node);
         }
-        if !transferable(session, *argument) {
-            session.report(DiagnosticCode::TaskArgumentNotTransferable, node);
-        }
+        let kind = session
+            .module
+            .types
+            .intern(session.expression_type(*argument));
+        crate::transferability::report(
+            session,
+            kind,
+            node,
+            DiagnosticCode::TaskArgumentNotTransferable,
+        );
     }
-}
-
-fn transferable(session: &AnalysisSession<'_>, expression: ExpressionId) -> bool {
-    let kind = session
-        .module
-        .expressions
-        .types
-        .get(usize::try_from(expression.0).unwrap_or(usize::MAX));
-    kind.is_some_and(|kind| crate::task_failure_types::transferable(session, *kind))
 }
 
 fn task_payload(session: &mut AnalysisSession<'_>, result: Type) -> crate::identities::TypeId {
@@ -181,5 +194,13 @@ fn spawn_call_purpose(
                 ExpressionPurpose::Value
             }
         })
-        .unwrap_or(purpose)
+        .unwrap_or_else(|| {
+            if generic_target(session, node)
+                .is_some_and(|template| session.child(template.node, NodeKind::Type).is_some())
+            {
+                ExpressionPurpose::Value
+            } else {
+                purpose
+            }
+        })
 }

@@ -180,14 +180,22 @@
     "flexible"
   ],
   "programas": {
-    "es": "SubProceso Suspendible Wait() Como Resultado<Entero, Cadena>\nDefinir timer Como Temporizador <- Propagar SolicitarTemporizador();\nDiferir\nEscribir \"cleanup\";\nFinDiferir\nRetornar Exito(Propagar Aguardar timer.Esperar(100));\nFinSubProceso\nSubProceso Suspendible Fail() Como Resultado<Entero, Cadena>\nRetornar Error(\"failed\");\nFinSubProceso\nAlgoritmo P\nTareas failure\nDefinir waiting Como Tarea<Entero> <- Lanzar Wait();\nDefinir failed Como Tarea<Entero> <- Lanzar Fail();\nFinTareas\nSegun failure Hacer\nNada: Escribir \"ok\";\nAlgo(problem): Escribir problem.Primero;\nFinSegun\nFinAlgoritmo\n",
-    "en": "subroutine suspendable Wait() as result<integer, string>\ndefine timer as Timer <- propagate requestTimer();\ndefer\nwrite \"cleanup\";\nendDefer\nreturn success(propagate await timer.wait(100));\nendSubroutine\nsubroutine suspendable Fail() as result<integer, string>\nreturn failure(\"failed\");\nendSubroutine\nalgorithm P\ntasks failure\ndefine waiting as task<integer> <- spawn Wait();\ndefine failed as task<integer> <- spawn Fail();\nendTasks\nswitch failure do\nnone: write \"ok\";\nsome(problem): write problem.first;\nendSwitch\nendAlgorithm\n"
+    "es": "SubProceso Suspendible Wait() Como Resultado<Entero, Cadena>\nSegun SolicitarTemporizador() Hacer\nExito(timer):\nDefinir limit Como Entero <- 100;\nDiferir\nEscribir \"cleanup\";\nFinDiferir\nSegun Aguardar timer.Esperar(limit) Hacer\nExito(value): Retornar Exito(value);\nError(problem): Retornar Error(\"timer\");\nFinSegun\nError(problem): Retornar Error(\"request\");\nFinSegun\nRetornar Error(\"unreachable\");\nFinSubProceso\nSubProceso Suspendible Fail() Como Resultado<Entero, Cadena>\nRetornar Error(\"failed\");\nFinSubProceso\nAlgoritmo P\nTareas failureReport\nDefinir waiting Como Tarea<Entero> <- Lanzar Wait();\nDefinir failed Como Tarea<Entero> <- Lanzar Fail();\nFinTareas\nSegun failureReport Hacer\nNada: Escribir \"ok\";\nAlgo(problem): Escribir problem.Primero;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Wait() as result<integer, string>\nswitch requestTimer() do\nsuccess(timer):\ndefine limit as integer <- 100;\ndefer\nwrite \"cleanup\";\nendDefer\nswitch await timer.wait(limit) do\nsuccess(value): return success(value);\nfailure(problem): return failure(\"timer\");\nendSwitch\nfailure(problem): return failure(\"request\");\nendSwitch\nreturn failure(\"unreachable\");\nendSubroutine\nsubroutine suspendable Fail() as result<integer, string>\nreturn failure(\"failed\");\nendSubroutine\nalgorithm P\ntasks failureReport\ndefine waiting as task<integer> <- spawn Wait();\ndefine failed as task<integer> <- spawn Fail();\nendTasks\nswitch failureReport do\nnone: write \"ok\";\nsome(problem): write problem.first;\nendSwitch\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
     "salida": "cleanup\nfailed\n",
     "terminacion": "completed"
+  },
+  "anfitrion": {
+    "permissions": [
+      "temporizador"
+    ],
+    "requested_permissions": [
+      "temporizador"
+    ]
   }
 }
 ```

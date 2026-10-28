@@ -144,7 +144,10 @@ mod tape_accounting;
 mod task_channel;
 mod task_failure;
 mod wait_queue;
-pub use task_channel::{ChannelError, ChannelReply, ChannelStep, TaskChannels, channel_values};
+pub use task_channel::{
+    ChannelError, ChannelReply, ChannelStep, TaskChannels, buffered_slot, channel_values,
+    pending_values, take_buffer_change,
+};
 pub use task_failure::{TaskFailure, TaskFailures};
 #[cfg(test)]
 mod task_channel_tests;
@@ -162,3 +165,20 @@ pub use task_agenda::{interrupt_owner, scope_children, scope_owner, task_scope, 
 mod channel_storage;
 pub use channel_storage::new_channel_storage;
 pub use pseudolearn_abi::ChannelLayout;
+
+mod task_quantum;
+pub use task_quantum::{TASK_QUANTUM, TaskQuantum};
+#[cfg(test)]
+mod task_quantum_tests;
+
+mod snapshot_copy;
+mod snapshot_graph;
+pub use snapshot_copy::{snapshot_copy, snapshot_copy_many};
+#[cfg(test)]
+mod snapshot_copy_tests;
+
+pub mod continuation;
+
+pub mod channel_references;
+
+pub mod task_storage;

@@ -4025,10 +4025,30 @@
       "clase": "semantic",
       "tipos_argumentos": {}
     },
-    "taskArgumentNotTransferable": {
+    "snapshotNotSupported": {
       "mensajes": {
-        "es": "El argumento de tarea no se puede transferir de forma aislada",
-        "en": "The task argument cannot be transferred in isolation"
+        "es": "El tipo {type} no admite instantánea en {path}",
+        "en": "Type {type} does not support snapshots at {path}"
+      },
+      "argumentos": [
+        "type",
+        "path"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "type": "tipo",
+        "path": "lexema"
+      }
+    },
+    "immutableValueWrite": {
+      "mensajes": {
+        "es": "No se puede modificar un valor inmutable",
+        "en": "An immutable value cannot be modified"
       },
       "argumentos": [],
       "politica": "A",
@@ -4038,6 +4058,20 @@
       },
       "clase": "semantic",
       "tipos_argumentos": {}
+    },
+    "taskArgumentNotTransferable": {
+      "mensajes": {
+        "es": "El argumento de tarea no se puede transferir de forma aislada: {type} en {path}",
+        "en": "The task argument cannot be transferred in isolation: {type} at {path}"
+      },
+      "argumentos": ["type", "path"],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {"type": "tipo", "path": "lexema"}
     },
     "taskByReferenceArgument": {
       "mensajes": {
@@ -4069,17 +4103,17 @@
     },
     "taskErrorNotTransferable": {
       "mensajes": {
-        "es": "El error de tarea debe ser transferible",
-        "en": "A task error must be transferable"
+        "es": "El error de tarea debe ser transferible: {type} en {path}",
+        "en": "A task error must be transferable: {type} at {path}"
       },
-      "argumentos": [],
+      "argumentos": ["type", "path"],
       "politica": "A",
       "severidad": {
         "estricto": "error",
         "flexible": "error"
       },
       "clase": "semantic",
-      "tipos_argumentos": {}
+      "tipos_argumentos": {"type": "tipo", "path": "lexema"}
     },
     "taskScopeFailureUnbound": {
       "mensajes": {
@@ -4111,17 +4145,17 @@
     },
     "channelElementNotTransferable": {
       "mensajes": {
-        "es": "El elemento del canal debe ser transferible",
-        "en": "A channel element must be transferable"
+        "es": "El elemento del canal debe ser transferible: {type} en {path}",
+        "en": "A channel element must be transferable: {type} at {path}"
       },
-      "argumentos": [],
+      "argumentos": ["type", "path"],
       "politica": "A",
       "severidad": {
         "estricto": "error",
         "flexible": "error"
       },
       "clase": "semantic",
-      "tipos_argumentos": {}
+      "tipos_argumentos": {"type": "tipo", "path": "lexema"}
     },
     "channelOperationWithoutAwait": {
       "mensajes": {

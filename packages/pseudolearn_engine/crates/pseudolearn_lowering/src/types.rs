@@ -6,7 +6,8 @@ use pseudolearn_semantic::identities::TypeId;
 use pseudolearn_semantic::types::Type;
 
 pub fn lower_type(type_id: TypeId, module: &HirModule) -> IrType {
-    match module.types.get(type_id) {
+    match module.types.representation(type_id) {
+        Type::Immutable(inner) => lower_type(inner, module),
         Type::Integer => IrType::I64,
         Type::Real => IrType::F64,
         Type::Boolean => IrType::Bool,

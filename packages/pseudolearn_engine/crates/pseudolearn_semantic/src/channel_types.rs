@@ -18,9 +18,12 @@ pub(crate) fn resolve(session: &mut AnalysisSession<'_>, node: usize, name: &str
         return Some(Type::Error);
     }
     let element = crate::type_resolution::resolve(session, *arguments.first()?);
-    if !crate::task_failure_types::transferable(session, element) {
-        session.report(DiagnosticCode::ChannelElementNotTransferable, node);
-    }
+    crate::transferability::report(
+        session,
+        element,
+        node,
+        DiagnosticCode::ChannelElementNotTransferable,
+    );
     if let Some(record) = session
         .module
         .channels
@@ -30,11 +33,11 @@ pub(crate) fn resolve(session: &mut AnalysisSession<'_>, node: usize, name: &str
         return Some(Type::Record(record));
     }
     let record = RecordId(u32::try_from(session.module.records.len()).unwrap_or(u32::MAX));
-    let integer = session.module.types.intern(Type::Integer);
+    let reference = session.module.types.intern(Type::String);
     session.module.records.push(HirRecord {
         name: format!("$channel:{}", element.0),
         fields: Vec::new(),
-        leaf_types: vec![integer],
+        leaf_types: vec![reference],
         leaf_names: vec!["identity".to_owned()],
         span: session.span(node),
         syntax: node,
@@ -44,10 +47,11 @@ pub(crate) fn resolve(session: &mut AnalysisSession<'_>, node: usize, name: &str
 }
 
 pub(crate) fn element(session: &AnalysisSession<'_>, kind: &Type) -> Option<TypeId> {
+    let kind = crate::snapshot_types::underlying(session, kind);
     let Type::Record(record) = kind else {
         return None;
     };
-    session.module.channels.get(record).copied()
+    session.module.channels.get(&record).copied()
 }
 
 pub(crate) fn reject_operands(

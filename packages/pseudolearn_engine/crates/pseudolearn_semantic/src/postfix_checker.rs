@@ -58,7 +58,7 @@ fn element(session: &mut AnalysisSession<'_>, node: usize) -> ExpressionId {
         .map(|index| crate::expression_checker::check(session, index))
         .collect();
     check_indices(session, &indices, node);
-    let kind = match session.expression_type(array) {
+    let kind = match crate::snapshot_types::underlying(session, &session.expression_type(array)) {
         Type::Array { element, rank } => {
             if usize::try_from(rank).ok() != Some(indices.len()) {
                 session.report(DiagnosticCode::ArrayDimensionCountMismatch, node);
@@ -71,6 +71,7 @@ fn element(session: &mut AnalysisSession<'_>, node: usize) -> ExpressionId {
             session.module.types.intern(Type::Error)
         }
     };
+    let kind = crate::snapshot_types::read_type(session, array, kind);
     session.emit(
         HirExpression::Element { array, indices },
         kind,
@@ -96,7 +97,7 @@ fn member(
         return value;
     }
     let name_node = children.get(1).copied().unwrap_or(node);
-    match session.expression_type(receiver) {
+    match crate::snapshot_types::underlying(session, &session.expression_type(receiver)) {
         Type::Record(record) => {
             if let Some(call) = crate::interface_constraints::call(session, node, record, purpose) {
                 return call;

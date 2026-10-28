@@ -523,10 +523,10 @@ marca `[x]` sin evidencia en §11.
 
 ### PG-4.06 · Aislamiento transitivo e instantánea inmutable con coste declarado
 
-- [ ] `PG-4.06.01` Crear `LANG.TASK.ISOLATION` con `I1`–`I7`; editar `LANG.PROFILE.VOCABULARY` (`Inmutable`,
+- [x] `PG-4.06.01` Crear `LANG.TASK.ISOLATION` con `I1`–`I7`; editar `LANG.PROFILE.VOCABULARY` (`Inmutable`,
   `Instantanea`), `LIB.MODEL` (firma y coste de `Instantanea`), `DIAG.*` (`snapshotNotSupported`,
   `immutableValueWrite`).
-- [ ] `PG-4.06.02` Casos adversarios (todos deben **rechazarse** en compilación): `Vector` como argumento; registro con
+- [x] `PG-4.06.02` Casos adversarios (todos deben **rechazarse** en compilación): `Vector` como argumento; registro con
   campo de clase; `Opcional` de objeto; clausura que captura un objeto; clausura con entorno solo escalar (también se
   rechaza, `I2`); ciclo de clases `A → B → A` dentro de un registro; alias por parámetro por referencia; argumento de
   tipo genérico opaco; canal de `Vector`; error de tarea no transferible. Casos felices: `Instantanea` de vector de
@@ -534,47 +534,47 @@ marca `[x]` sin evidencia en §11.
   posiciones que compartían vector siguen compartiendo el copiado); `Inmutable` leído con `Para Cada`; resultado
   `Vector` movido desde una tarea terminada. Límite: `Instantanea` de vector vacío; instantánea que alcanza
   exactamente el presupuesto de celdas y la que lo supera por una.
-- [ ] `PG-4.06.03` Tests: `transferability_tests.rs`, `snapshot_types_tests.rs` en semantic;
+- [x] `PG-4.06.03` Tests: `transferability_tests.rs`, `snapshot_types_tests.rs` en semantic;
   `snapshot_copy_tests.rs` en runtime (alias y ciclos con memoria por identidad de asa).
-- [ ] `PG-4.06.04` Código: semantic `transferability.rs`, `snapshot_types.rs`; runtime `snapshot_copy.rs`; lowering
+- [x] `PG-4.06.04` Código: semantic `transferability.rs`, `snapshot_types.rs`; runtime `snapshot_copy.rs`; lowering
   `snapshot_values.rs`.
-- [ ] `PG-4.06.05` README del motor (`semantic`, `runtime`), incluida la fila de Swift `Sendable` y Pony de §3.1.
-- [ ] `PG-4.06.06` Ligera: tests anteriores.
+- [x] `PG-4.06.05` README del motor (`semantic`, `runtime`), incluida la fila de Swift `Sendable` y Pony de §3.1.
+- [x] `PG-4.06.06` Ligera: tests anteriores.
 - [ ] `PG-4.06.07` Pesada: `--only LANG.TASK.ISOLATION,LIB.MODEL` en `engine` (análisis) y `aot` (ejecución).
 
 ### PG-4.07 · Planificador lógico con identidades monotónicas, desempate y cesión por masa compartidos por VM y AOT
 
-- [ ] `PG-4.07.01` En `ENG.TASK.AGENDA`: `A1`–`A6`; editar `IR.OBSERVATION-POINTS` (la masa por tarea y los puntos de
+- [x] `PG-4.07.01` En `ENG.TASK.AGENDA`: `A1`–`A6`; editar `IR.OBSERVATION-POINTS` (la masa por tarea y los puntos de
   cesión no cambian la cuenta de `#R2`), `IR.INSTRUCTIONS` (operaciones nuevas, §5.1) e `IR.WELL-FORMEDNESS`
   (operaciones de suspensión solo en funciones suspendibles; cesión solo en aristas de retorno de bucle).
-- [ ] `PG-4.07.02` Casos: dos tareas con bucles de CPU que escriben ⇒ entrelazado exacto según `Q`; tarea que cede con
+- [x] `PG-4.07.02` Casos: dos tareas con bucles de CPU que escriben ⇒ entrelazado exacto según `Q`; tarea que cede con
   cola vacía ⇒ no hay `task_suspended`; despertar múltiple por `Cerrar` en orden de espera; tres hijas lanzadas
   seguidas ⇒ identidades `1, 2, 3` y primer turno del padre; límite (bucle de exactamente `Q` sentencias; tarea que
   nunca alcanza `Q`).
-- [ ] `PG-4.07.03` Tests: `task_agenda_tests.rs` (FIFO, desempate, cesión) en runtime;
+- [x] `PG-4.07.03` Tests: `task_agenda_tests.rs` (FIFO, desempate, cesión) en runtime;
   `suspension_points_tests.rs` y verificador en ir.
-- [ ] `PG-4.07.04` Código: ir `suspension_points.rs`, `verifier_suspension.rs`; bytecode (formas de 8 bytes de las
+- [x] `PG-4.07.04` Código: ir `suspension_points.rs`, `verifier_suspension.rs`; bytecode (formas de 8 bytes de las
   operaciones nuevas, despacho regenerado por `pseudolearn_vm_dispatch`); lowering `yield_points.rs`; runtime
   `task_agenda.rs`; VM `machine/yield_points.rs`.
-- [ ] `PG-4.07.05` README del motor (`ir`, `bytecode`, `runtime`, `vm`).
-- [ ] `PG-4.07.06` Ligera: tests de ir, bytecode y runtime tocados.
+- [x] `PG-4.07.05` README del motor (`ir`, `bytecode`, `runtime`, `vm`).
+- [x] `PG-4.07.06` Ligera: tests de ir, bytecode y runtime tocados.
 - [ ] `PG-4.07.07` Pesada: `--only ENG.TASK.AGENDA,IR.INSTRUCTIONS,IR.WELL-FORMEDNESS,IR.OBSERVATION-POINTS` en
   `engine` y `aot`; comparación de gemelos `Fast`/`Probed` acotada a estos contratos.
 
 ### PG-4.08 · Continuaciones con disposición y raíces comunes; el GC recorre marcos suspendidos, entornos y mensajes
 
-- [ ] `PG-4.08.01` Crear `ENG.TASK.MEMORY` con `M1`–`M3`; editar `RT.ABI` (disposiciones de continuación, tarea y
+- [x] `PG-4.08.01` Crear `ENG.TASK.MEMORY` con `M1`–`M3`; editar `RT.ABI` (disposiciones de continuación, tarea y
   canal) y `ENG.LIMITS` (celdas de continuaciones y canales).
-- [ ] `PG-4.08.02` Casos con `gc_stress`: 100 tareas suspendidas con referencias vivas; canal lleno de objetos;
+- [x] `PG-4.08.02` Casos con `gc_stress`: 100 tareas suspendidas con referencias vivas; canal lleno de objetos;
   instantánea cíclica en un canal; clausura capturada en el marco de una unidad suspendible; conteo de celdas
   observable igual antes y después de recolectar.
-- [ ] `PG-4.08.03` Tests: `continuation_layout_tests.rs` en abi; `suspension_spill_tests.rs` en VM; raíces en orden de
+- [x] `PG-4.08.03` Tests: `continuation_layout_tests.rs` en abi; `suspension_spill_tests.rs` en VM; raíces en orden de
   identidad en runtime.
-- [ ] `PG-4.08.04` Código: abi `continuation_layout.rs`, `task_layout.rs`; VM `machine/suspension.rs` (volcado y
+- [x] `PG-4.08.04` Código: abi `continuation_layout.rs`, `task_layout.rs`; VM `machine/suspension.rs` (volcado y
   restauración con el mapa de la RI), `machine/roots.rs` (raíces de la agenda), `machine/image.rs` (la imagen y el
   punto de control incluyen la agenda); timeline (puntos de control y `seek` con agenda).
-- [ ] `PG-4.08.05` README del motor (`abi`, `vm`, `timeline`).
-- [ ] `PG-4.08.06` Ligera: tests anteriores.
+- [x] `PG-4.08.05` README del motor (`abi`, `vm`, `timeline`).
+- [x] `PG-4.08.06` Ligera: tests anteriores.
 - [ ] `PG-4.08.07` Pesada: `--only ENG.TASK.MEMORY,RT.ABI,ENG.LIMITS,ENG.STATE.SNAPSHOT,ENG.STATE.INCREMENTAL` en
   `engine` y `aot` con `gc_stress`.
 
@@ -903,9 +903,9 @@ lo que documente su README tras la iteración 4. Desde `apps/pseudolearn_app`: `
 | `PG-4.03` | Implementación y ligera completas | `.01`–`.06`; reglas `R11`–`R16`, casos bilingües `C23`–`C31`, agregación de errores, tipos exactos, obligaciones del vínculo, cancelación y limpiezas de ámbitos anidados; tests filtrados y verificadores de esta iteración en verde | `.07` pesada pendiente; asociados probados como datos terminales, cancelación real probada en VM; no se declara cerrada la fase PG-4 |
 | `PG-4.04` | Implementación y ligera completas | `.01`–`.06`; `LANG.TASK.CHANNEL`, 21 casos bilingües, ABI, almacenamiento contabilizado, colas FIFO, contrapresión, cierre, selección textual y raíces VM; tests filtrados y verificadores de esta iteración en verde | `.07` pesada pendiente; ejecución AOT y serialización histórica completa pertenecen a tareas posteriores |
 | `PG-4.05` | Implementación y ligera completas | `.01`–`.06`; `ENG.TASK.AGENDA#R7`, cinco casos bilingües, clasificación de progreso y `taskDeadlock` con ubicaciones relacionadas; pruebas VM distinguen efecto pendiente y efecto abandonado | `.07` pesada pendiente; integración completa de abandono con cinta pertenece a PG-4.10 |
-| `PG-4.06` | | | |
-| `PG-4.07` | | | |
-| `PG-4.08` | | | |
+| `PG-4.06` | Implementación, ligera y pesada de `engine` completas; pesada de `aot` parcial | `.01`–`.06`; `LANG.TASK.ISOLATION` (`R1`–`R7`, 28 casos bilingües), `Instantanea` en VM y en AOT (`rt_aot_snapshot_copy`); `conform --subject engine`: ISOLATION 100 observaciones y LIB.MODEL 20, 0 divergencias | `.07` sin cerrar: en `aot` quedan `C1` y `C19` (usan `Lanzar`) y el `differential` los reporta; las reglas `R1` y `R3` siguen `pendiente` en `conformance-aot.yaml` |
+| `PG-4.07` | Implementación, ligera y pesada de `engine` completas; pesada de `aot` parcial | `.01`–`.06`; `ENG.TASK.AGENDA#R1`–`R6` con casos `C6`–`C13` (identidades y turno del padre, FIFO y despertar múltiple, cuanto exacto 1 024, efectos), `IR.WELL-FORMEDNESS#R12`; `engine`: AGENDA 52 observaciones, IR.INSTRUCTIONS 14, IR.WELL-FORMEDNESS 17, IR.OBSERVATION-POINTS 12 y su propiedad, 0 divergencias; `aot` baja `task.yield_check` como operación vacía | `.07` sin cerrar: `aot` no ejecuta tareas (52 divergencias de AGENDA, `pendiente`); «tarea que cede con cola vacía ⇒ sin `task_suspended`» no es observable hasta que existan los eventos de tarea de `PG-4.11`, se cubre solo por salida |
+| `PG-4.08` | Implementación, ligera y pesada de `engine` completas; pesada de `aot` parcial | `.01`–`.06`; `ENG.TASK.MEMORY#R1`–`R3` con 4 casos (100 tareas suspendidas, canal con objetos, clausura en marco suspendido), `ENG.LIMITS#R10` (canal exacto `1 + c·w`, tareas), `RT.ABI#R4`; etiquetas de forma de tarea y continuación corregidas (colisionaban con bytes y capacidades); `engine`: MEMORY 16, LIMITS 93, ENG.STATE.SNAPSHOT 24 e INCREMENTAL 4 con sus propiedades, 0 divergencias | `.07` sin cerrar: `aot` no ofrece tareas (MEMORY 16 y LIMITS 16 divergencias, `pendiente`); las propiedades `RT.ABI#P1`/`P2` de `aot` fallan con los programas de tareas del corpus; una instantánea cíclica no es construible en el lenguaje (los ciclos requieren clases, que `Instantanea` rechaza), por lo que solo la cubren los tests del runtime |
 | `PG-4.09` | | | |
 | `PG-4.10` | | | |
 | `PG-4.11` | | | |
@@ -960,6 +960,31 @@ Decisiones de implementación de esta iteración:
 7. No se ejecutaron conformidad, diferencial, GC forzado, campañas, pruebas AOT ni compilaciones release.
    La serialización histórica completa, la cinta concurrente y la ejecución nativa siguen en PG-4.08, PG-4.10
    y PG-4.12 respectivamente. Los README afectados documentan estas fronteras.
+
+Registro de la iteración que cierra PG-4.06 a PG-4.08 (sin `.07` completos):
+
+- Se partió del trabajo sin cerrar de una iteración previa; ninguna casilla estaba marcada. Se marcan `.01`–`.06` de los tres
+  puntos y `.07` permanece abierto por lo indicado arriba. Rama `feature/agregar-ruta-de-especificacion`, sin commit ni push.
+- Defectos de la iteración previa corregidos: etiquetas de forma `TASK`/`CONTINUATION` iguales a las de bytes y capacidades
+  (rompía `Bytes`, archivos y el recorrido del GC); `taskScopeFailureUnused` con argumento `type`; dos tarjetas de ayuda
+  con texto idéntico; función genérica suspendible registrada como no suspendible; programas de casos con identificadores
+  en inglés mal traducidos; recuento de operaciones de RI y de builtins en tests; ayudante de test que no reconocía
+  `func suspendible`; `ENG.LIMITS` y `RT.ABI` sin las reglas de `.08.01`.
+- Efecto de marcar la raíz como suspendible: las aristas de bucle de `Main` llevan `task.yield_check`; el sujeto `aot` lo baja
+  como operación vacía. El resto de operaciones de tarea figura en `UNSUPPORTED_OPERATIONS` del generador nativo.
+- Casos ajenos a estos puntos que se corrigieron porque bloqueaban la selección pesada (`SPEC-INDEPENDENT-ORACLE`, a revisar por la persona):
+  `LANG.TASK.SCOPE#C19` y `LANG.CONTROL.CLEANUP#C13` (el esperado `failed` partía de un ámbito sin vínculo, que `R15` rechaza;
+  ahora llevan vínculo y `Wait` devuelve `Resultado<Entero, Cadena>`; `C19` espera `completed`), el identificador `failure` de `C13`
+  (palabra reservada en inglés), `IR.WELL-FORMEDNESS#C13`/`C14` (sintaxis de RI y tramos), y el texto inglés con `Algoritmo`/`FinAlgoritmo`
+  en LIB.MODEL, CHANNEL, SCOPE, EXEC.MODEL, TRACE.EVENTS, DIAG.MESSAGES y AGENDA. Se reanclaron 18 contratos (`lock --check` y `export` pasan).
+- Verificación: `cargo test --workspace --no-fail-fast` solo falla `workloads_tests::generates_all_configurations…` (también falla en `HEAD`);
+  Clippy `--all-targets -D warnings` y `rust-checks all .` pasan; `cargo fmt --all --check` ya falla en `HEAD` por 52 archivos ajenos
+  (solo se formatearon los archivos tocados). `see validate` valida 187.
+- Pendientes ajenos detectados y no tocados: `LANG.TASK.SCOPE` (≈34 observaciones de `engine` divergentes), `LANG.TASK.SUSPENSION` (casos con
+  `Propagar` en `Main`), `API.STATE.QUERY#C8`, `LANG.MODULE.IMPORT#C10`, `LANG.CAPABILITY.PURITY#C23`, `LANG.LEXICAL.KEYWORD#C5`; la propiedad
+  `ENG.INPUT#P1` y la campaña completa de propiedades se detienen en un programa del corpus con errores de análisis. `aot` necesita una capacidad
+  `tasks` no anunciada para que casos, propiedades y `differential` omitan los programas de tareas (decisión de `PG-4.12`).
+- Espacio: 12–14 GiB libres durante la iteración (por debajo de los 25 GiB de §13); no se limpió nada.
 
 ---
 

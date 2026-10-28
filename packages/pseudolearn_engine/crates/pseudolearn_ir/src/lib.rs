@@ -56,3 +56,16 @@ mod type_checker_effects;
 mod type_checker_tasks_tests;
 
 mod type_checker_channels;
+
+mod verifier_suspension;
+#[cfg(test)]
+mod verifier_suspension_tests;
+
+mod type_checker_snapshots;
+
+mod parser_result;
+
+pub mod suspension_points;
+
+#[cfg(test)]
+mod suspension_points_tests;

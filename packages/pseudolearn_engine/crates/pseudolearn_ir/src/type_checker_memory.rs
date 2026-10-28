@@ -15,6 +15,7 @@ pub(crate) fn check_memory_instruction(
     module: &Module,
 ) -> Result<Option<IrType>, TypeError> {
     match operation {
+        Operation::SnapshotCopy => crate::type_checker_snapshots::check(operands, get_type),
         Operation::CellLocal => check_cell_local(operands),
         Operation::CellLoad | Operation::CellLoadRaw => check_cell_load(operands, get_type),
         Operation::CellStore => check_cell_store(operands, get_type, module),

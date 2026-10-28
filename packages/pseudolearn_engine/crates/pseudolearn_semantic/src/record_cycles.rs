@@ -18,6 +18,7 @@ pub(crate) fn layout(session: &mut AnalysisSession<'_>, records: &[RecordId]) {
         }
         walk(session, *root, &mut states);
     }
+    crate::collection_layouts::refresh(session);
 }
 
 fn walk(session: &mut AnalysisSession<'_>, root: RecordId, states: &mut [u8]) {
@@ -89,7 +90,7 @@ fn leaves_of(
     session: &AnalysisSession<'_>,
     field: &HirRecordField,
 ) -> (Vec<crate::identities::TypeId>, Vec<String>) {
-    let nested = match session.module.types.get(field.type_id) {
+    let nested = match session.module.types.representation(field.type_id) {
         Type::Record(inner) => session.module.records.get(slot(inner)),
         _ => None,
     };
@@ -109,6 +110,8 @@ fn leaves_of(
 fn compute(session: &mut AnalysisSession<'_>, record: RecordId) {
     if session.module.function_types.contains_key(&record)
         || session.module.variants.contains_key(&record)
+        || session.module.channels.contains_key(&record)
+        || session.module.task_failures.contains_key(&record)
     {
         return;
     }

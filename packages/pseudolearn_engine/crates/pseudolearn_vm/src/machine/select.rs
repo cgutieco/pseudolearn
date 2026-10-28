@@ -11,10 +11,7 @@ impl Machine<'_> {
     ) -> Result<Flow, Fault> {
         let channels = arguments
             .iter()
-            .map(|value| match value {
-                RuntimeValue::Scalar(value) => Ok(TaskChannelId(*value)),
-                _ => Err(INVALID_BYTECODE),
-            })
+            .map(|value| self.channel_identity(*value).map(TaskChannelId))
             .collect::<Result<Vec<_>, _>>()?;
         let step = match self.tasks.channel_replies.remove(&self.tasks.current) {
             Some(ChannelReply::Selected(branch, value)) => ChannelStep::Ready((branch, value)),

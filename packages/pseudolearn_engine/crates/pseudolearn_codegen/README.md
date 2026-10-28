@@ -288,3 +288,11 @@ Las llamadas indirectas usan una tabla de funciones con dirección y etiqueta de
 La generación nativa baja collection.* a un paquete de disposición y argumentos para rt_aot_collection; no serializa valores de tipo interfaz ni crea tablas nuevas de despacho. La selección de puntos de raíces incluye mutaciones que reservan y text.quote. La limpieza ya está explicitada en las aristas de RI y no introduce manejadores nativos.
 
 Los tests de estas capacidades se ejecutaron en selecciones acotadas, incluida la comparación de gemelos con recolección forzada. La conformidad del corpus sigue pendiente de la revisión editorial independiente de los contratos nuevos, y la medición de tamaño excede el presupuesto de Wasm.
+
+## Operaciones de tarea
+
+`task.yield_check` se baja como operación vacía: el sujeto nativo ejecuta un solo hilo lógico sin agenda, de modo que con cola
+vacía el cuanto nunca cede (`ENG.TASK.AGENDA`). `snapshot.copy` se baja a `rt_aot_snapshot_copy` con el mismo búfer de palabras
+que `effect_call`. Las demás operaciones de tarea, de espera de efecto y de canal se declaran en `UNSUPPORTED_OPERATIONS` y
+terminan con `CodegenError::Unsupported`; el catálogo de instrucciones exige que cada operación esté bajada o declarada ahí.
+El soporte nativo de tareas es un pendiente declarado.

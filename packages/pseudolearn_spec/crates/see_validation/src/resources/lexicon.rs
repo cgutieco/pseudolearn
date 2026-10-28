@@ -69,6 +69,7 @@ fn signature(entry: &Value) -> Result<(), String> {
         "string",
         "character",
         "anyPrimitive",
+        "anySnapshot",
         "anyClass",
     ];
     if parameters.iter().any(|parameter| {
@@ -88,6 +89,7 @@ fn signature(entry: &Value) -> Result<(), String> {
         "string",
         "character",
         "sameAsFirstArgument",
+        "immutableOfFirstArgument",
     ]
     .contains(&result)
     {

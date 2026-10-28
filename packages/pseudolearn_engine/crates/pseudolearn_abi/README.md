@@ -96,3 +96,13 @@ consultan al anfitrión; los demás producen un Resultado portable.
 `1 + capacidad × max(1, ancho)` celdas con aritmética comprobada. Una capacidad cero se rechaza antes
 de publicar la disposición. La reserva física incluye la cabecera común y las palabras del búfer; las
 colas de emisores y receptores pertenecen al runtime y conservan orden lógico, sin direcciones nativas.
+
+## Disposición propuesta para continuaciones de tarea
+
+`continuation_layout` reserva función, estado, enlace padre, resultado y anchos de los dos bancos
+tras la cabecera común; separa segmentos escalar y de referencias y rechaza más de 65535 ranuras.
+Su coste es una celda más las ranuras. `task_layout` separa identidad, padre, ámbito, estado,
+continuación y resultado y declara los desplazamientos referenciales. Los tests comprueban vacíos,
+límites, desbordamiento y posiciones. La asignación y el recorrido del montón consumen estas disposiciones. Las etiquetas de forma reservadas
+son `u32::MAX - 1` (vector), `- 2` (diccionario), `- 6` (canal), `- 7` (capacidad), `- 8` (bytes), `- 9`
+(tarea) y `- 10` (continuación); las clases de usuario ocupan las etiquetas inferiores a la de continuación.

@@ -15,9 +15,12 @@ pub(crate) fn spawned(session: &mut AnalysisSession<'_>, kind: &Type, node: usiz
     let Some(error) = task_error(session, kind) else {
         return;
     };
-    if !transferable(session, error) {
-        session.report(DiagnosticCode::TaskErrorNotTransferable, node);
-    }
+    crate::transferability::report(
+        session,
+        error,
+        node,
+        DiagnosticCode::TaskErrorNotTransferable,
+    );
     let Some(errors) = session.control.task_errors.last_mut() else {
         return;
     };
@@ -26,47 +29,6 @@ pub(crate) fn spawned(session: &mut AnalysisSession<'_>, kind: &Type, node: usiz
     } else if let Some(errors) = session.control.task_errors.last_mut() {
         errors.push(error);
     }
-}
-
-pub(crate) fn transferable(session: &AnalysisSession<'_>, kind: TypeId) -> bool {
-    match session.module.types.get(kind) {
-        Type::Integer
-        | Type::Real
-        | Type::Boolean
-        | Type::Character
-        | Type::String
-        | Type::Enum(_) => true,
-        Type::Record(record) => record_transferable(session, record),
-        Type::Object(class) => session.module.opaque_types.contains_key(&class),
-        Type::Error => true,
-        _ => false,
-    }
-}
-
-fn record_transferable(session: &AnalysisSession<'_>, record: RecordId) -> bool {
-    if session.module.function_types.contains_key(&record) {
-        return false;
-    }
-    if let Some(variant) = session.module.variants.get(&record) {
-        return variant
-            .payloads
-            .iter()
-            .flatten()
-            .all(|kind| transferable(session, *kind));
-    }
-    if let Some(error) = session.module.task_failures.get(&record) {
-        return transferable(session, *error);
-    }
-    session
-        .module
-        .records
-        .get(usize::try_from(record.0).unwrap_or(usize::MAX))
-        .is_some_and(|model| {
-            model
-                .leaf_types
-                .iter()
-                .all(|kind| transferable(session, *kind))
-        })
 }
 
 pub(crate) fn optional(session: &mut AnalysisSession<'_>, error: TypeId, node: usize) -> TypeId {
@@ -89,7 +51,8 @@ fn register(session: &mut AnalysisSession<'_>, error: TypeId, node: usize) -> Ty
         return session.module.types.intern(Type::Record(record));
     }
     let collection = crate::collection_types::register(session, node, (None, error));
-    let associated = session.module.types.intern(Type::Object(collection));
+    let vector = session.module.types.intern(Type::Object(collection));
+    let associated = session.module.types.intern(Type::Immutable(vector));
     let integer = session.module.types.intern(Type::Integer);
     let record = RecordId(u32::try_from(session.module.records.len()).unwrap_or(u32::MAX));
     let spanish = session.options.profile == pseudolearn_lexicon::Profile::Spanish;
@@ -153,9 +116,12 @@ pub(crate) fn resolve(session: &mut AnalysisSession<'_>, node: usize, name: &str
         return Some(Type::Error);
     }
     let error = crate::type_resolution::resolve(session, *arguments.first()?);
-    if !transferable(session, error) {
-        session.report(DiagnosticCode::TaskErrorNotTransferable, node);
-    }
+    crate::transferability::report(
+        session,
+        error,
+        node,
+        DiagnosticCode::TaskErrorNotTransferable,
+    );
     let kind = register(session, error, node);
     Some(session.module.types.get(kind))
 }

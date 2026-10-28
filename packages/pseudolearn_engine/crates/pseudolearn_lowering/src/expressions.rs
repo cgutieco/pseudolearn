@@ -149,10 +149,12 @@ fn lower_task_await(
         .and_then(|index| state.context.module.expressions.types.get(index))
         .copied();
     let result_type = task_type
-        .and_then(|type_id| match state.context.module.types.get(type_id) {
-            pseudolearn_semantic::Type::Task(result) => Some(result),
-            _ => None,
-        })
+        .and_then(
+            |type_id| match state.context.module.types.representation(type_id) {
+                pseudolearn_semantic::Type::Task(result) => Some(result),
+                _ => None,
+            },
+        )
         .map(|type_id| crate::types::lower_type(type_id, state.context.module))
         .unwrap_or(pseudolearn_ir::IrType::Unit);
     let result = state.builder.next_value();

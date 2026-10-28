@@ -87,42 +87,9 @@ impl Machine<'_> {
 }
 
 fn append_context_roots(context: &TaskContext, state: &mut RootState<'_, '_>) -> Result<(), Fault> {
-    append_frame_roots(
-        context.current.as_ref(),
-        context.root_position,
-        context.cursor.reference_base,
-        &mut RootState {
-            references: &context.references,
-            cells: &context.cells,
-            probed: state.probed,
-            roots: state.roots,
-        },
-    )?;
-    for frame in &context.frames {
-        let mut continuation = *frame
-            .function
-            .continuations
-            .get(frame.return_point)
-            .ok_or(INVALID_BYTECODE)?;
-        if state.probed {
-            continuation = *frame
-                .function
-                .fast_to_probed_returns
-                .get(continuation)
-                .ok_or(INVALID_BYTECODE)?;
-        }
-        append_frame_roots(
-            frame.function.as_ref(),
-            continuation.saturating_sub(1),
-            frame.reference_base,
-            &mut RootState {
-                references: &context.references,
-                cells: &context.cells,
-                probed: state.probed,
-                roots: state.roots,
-            },
-        )?;
-    }
+    state
+        .roots
+        .extend(context.spills.iter().map(|frame| frame.handle));
     Ok(())
 }
 

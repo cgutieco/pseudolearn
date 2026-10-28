@@ -100,7 +100,11 @@ fn print_function(buffer: &mut String, function: &Function) {
         block_map: &block_map,
         value_map: &value_map,
     };
-    buffer.push_str("func ");
+    buffer.push_str(if function.suspendible {
+        "func suspendible "
+    } else {
+        "func "
+    });
     if !function.name.starts_with('@') {
         buffer.push('@');
     }

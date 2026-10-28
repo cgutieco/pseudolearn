@@ -40,12 +40,12 @@ fn verifies_instruction_catalog_properties() {
 
 #[test]
 fn the_catalog_lists_every_operation_once_and_names_round_trip() {
-    assert_eq!(Operation::ALL.len(), 93);
+    assert_eq!(Operation::ALL.len(), 107);
     for operation in Operation::ALL {
         assert_eq!(Operation::from_name(operation.as_str()), Some(*operation));
     }
     let mut names: Vec<&str> = Operation::ALL.iter().map(Operation::as_str).collect();
     names.sort_unstable();
     names.dedup();
-    assert_eq!(names.len(), 93);
+    assert_eq!(names.len(), 107);
 }

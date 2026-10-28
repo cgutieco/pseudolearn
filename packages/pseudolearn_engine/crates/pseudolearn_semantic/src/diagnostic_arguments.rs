@@ -17,6 +17,7 @@ pub(crate) fn type_argument(session: &AnalysisSession<'_>, kind: &Type) -> Diagn
                 .map(|model| model.name.clone())
                 .unwrap_or_default(),
         ),
+        Type::Immutable(inner) => immutable_name(session, *inner),
         Type::Record(record) => TypeName::Named(record_name(session, *record)),
         Type::Object(class) => TypeName::Named(
             crate::hierarchy::class_model(session, *class)
@@ -123,6 +124,12 @@ fn variant_name(session: &AnalysisSession<'_>, record: crate::identities::Record
 }
 
 fn record_name(session: &AnalysisSession<'_>, record: crate::identities::RecordId) -> String {
+    if session.module.function_types.contains_key(&record) {
+        return KeywordKind::Subroutine
+            .lexeme(session.options.profile)
+            .unwrap_or("")
+            .to_owned();
+    }
     if session.module.variants.contains_key(&record) {
         return variant_name(session, record);
     }
@@ -156,4 +163,11 @@ fn argument_display(session: &AnalysisSession<'_>, kind: crate::identities::Type
             ",".repeat(usize::try_from(argument.rank.saturating_sub(1)).unwrap_or(0))
         )
     }
+}
+
+fn immutable_name(session: &AnalysisSession<'_>, inner: crate::identities::TypeId) -> TypeName {
+    let name =
+        pseudolearn_syntax::contextual_spelling("immutableType", session.options.profile.as_str())
+            .unwrap_or("");
+    TypeName::Named(format!("{name}<{}>", argument_display(session, inner)))
 }

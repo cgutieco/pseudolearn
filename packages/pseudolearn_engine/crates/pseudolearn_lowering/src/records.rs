@@ -19,7 +19,7 @@ pub(crate) fn targets(local: LocalId, module: &HirModule) -> Vec<LocalId> {
 }
 
 pub(crate) fn record_width(type_id: TypeId, module: &HirModule) -> Option<usize> {
-    let Type::Record(record) = module.types.get(type_id) else {
+    let Type::Record(record) = module.types.representation(type_id) else {
         return None;
     };
     usize::try_from(record.0)
@@ -148,7 +148,7 @@ fn leaf_types(expression: ExpressionId, module: &HirModule) -> Vec<TypeId> {
     let record = usize::try_from(expression.0)
         .ok()
         .and_then(|slot| module.expressions.types.get(slot))
-        .and_then(|type_id| match module.types.get(*type_id) {
+        .and_then(|type_id| match module.types.representation(*type_id) {
             Type::Record(record) => Some(record),
             _ => None,
         });

@@ -81,7 +81,7 @@ fn signature(
         .ok()
         .and_then(|index| state.context.module.expressions.types.get(index))
         .and_then(|kind| {
-            if let Type::Record(record) = state.context.module.types.get(*kind) {
+            if let Type::Record(record) = state.context.module.types.representation(*kind) {
                 Some(record)
             } else {
                 None

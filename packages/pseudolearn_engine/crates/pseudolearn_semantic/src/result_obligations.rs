@@ -56,18 +56,19 @@ pub(crate) fn finish(session: &mut AnalysisSession<'_>) {
             .and_then(|index| session.module.locals.get(index))
             .map(|declaration| (declaration.span, declaration.type_id));
         if let Some((span, type_id)) = declaration {
+            let failure =
+                crate::task_failure_types::is_failure(session, &session.module.types.get(type_id));
             session.diagnostics.push(Diagnostic::new(
-                if crate::task_failure_types::is_failure(
-                    session,
-                    &session.module.types.get(type_id),
-                ) {
+                if failure {
                     DiagnosticCode::TaskScopeFailureUnused
                 } else {
                     DiagnosticCode::ResultNotHandled
                 },
                 span,
             ));
-            crate::diagnostic_arguments::last_type(session, type_id);
+            if !failure {
+                crate::diagnostic_arguments::last_type(session, type_id);
+            }
         }
     }
 }

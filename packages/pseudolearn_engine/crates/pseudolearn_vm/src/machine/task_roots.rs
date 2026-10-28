@@ -5,7 +5,7 @@ use pseudolearn_runtime::{ChannelReply, Handle};
 impl VmTasks {
     pub(super) fn value_roots(&self) -> Vec<pseudolearn_runtime::Handle> {
         let pending = self.channel_replies.values().filter_map(reply_values);
-        let values = pseudolearn_runtime::channel_values(&self.channels)
+        let values = pseudolearn_runtime::pending_values(&self.channels)
             .chain(self.transport_values.values().flatten())
             .chain(pending)
             .flatten();
@@ -13,7 +13,13 @@ impl VmTasks {
             .copied()
             .chain(self.results.values().copied().flatten())
             .chain(
-                self.channel_storage
+                self.continuations
+                    .values()
+                    .flatten()
+                    .map(|frame| RuntimeValue::Reference(frame.handle.0)),
+            )
+            .chain(
+                self.task_storage
                     .values()
                     .map(|handle| RuntimeValue::Reference(handle.0)),
             )

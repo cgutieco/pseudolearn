@@ -89,8 +89,8 @@ pub(crate) fn register(
     class
 }
 
-fn leaves(session: &AnalysisSession<'_>, kind: TypeId) -> Vec<TypeId> {
-    if let Type::Record(record) = session.module.types.get(kind) {
+pub(crate) fn leaves(session: &AnalysisSession<'_>, kind: TypeId) -> Vec<TypeId> {
+    if let Type::Record(record) = session.module.types.representation(kind) {
         return session
             .module
             .records
@@ -113,8 +113,11 @@ fn fields(
         .module
         .classes
         .iter()
-        .map(|class| class.fields.len())
-        .sum::<usize>();
+        .flat_map(|class| &class.fields)
+        .map(|field| field.id.0)
+        .max()
+        .and_then(|last| usize::try_from(last).ok())
+        .map_or(0, |last| last.saturating_add(1));
     let names = leaf_names(session, value, values.0.len());
     let leaves = values.1.iter().filter_map(|index| {
         Some((
@@ -137,8 +140,8 @@ fn fields(
         .collect()
 }
 
-fn leaf_names(session: &AnalysisSession<'_>, kind: TypeId, width: usize) -> Vec<String> {
-    if let Type::Record(record) = session.module.types.get(kind) {
+pub(crate) fn leaf_names(session: &AnalysisSession<'_>, kind: TypeId, width: usize) -> Vec<String> {
+    if let Type::Record(record) = session.module.types.representation(kind) {
         if session.module.function_types.contains_key(&record) {
             return (0..width)
                 .map(|index| format!("function:{index}"))
@@ -160,14 +163,15 @@ fn leaf_names(session: &AnalysisSession<'_>, kind: TypeId, width: usize) -> Vec<
 }
 
 pub(crate) fn get(session: &AnalysisSession<'_>, kind: &Type) -> Option<HirCollection> {
+    let kind = crate::snapshot_types::underlying(session, kind);
     let Type::Object(class) = kind else {
         return None;
     };
-    session.module.collections.get(class).cloned()
+    session.module.collections.get(&class).cloned()
 }
 
 pub(crate) fn printable(session: &AnalysisSession<'_>, kind: TypeId) -> bool {
-    let kind = session.module.types.get(kind);
+    let kind = session.module.types.representation(kind);
     if crate::function_types::get(session, &kind).is_some() {
         return true;
     }

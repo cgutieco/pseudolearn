@@ -23,6 +23,7 @@ pub(crate) fn verify(
         return Ok(());
     }
     match instruction.opcode {
+        Opcode::SnapshotCopy => crate::verify_snapshot_types::verify(function, instruction),
         Opcode::ArrayNew => arrays::verify_array_new(function, instruction),
         Opcode::ArrayLoad => arrays::verify_array_access(module, function, instruction, false),
         Opcode::ArrayStore => arrays::verify_array_access(module, function, instruction, true),

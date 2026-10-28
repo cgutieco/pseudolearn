@@ -22,6 +22,7 @@ pub struct SavedControlFrame {
 
 #[derive(Clone, Debug, PartialEq)]
 pub struct MachineStateRecord {
+    pub(crate) tasks: super::tasks::VmTasks,
     pub effect_checkpoint: Option<Box<pseudolearn_runtime::EffectCheckpoint>>,
     pub effect_seq: u64,
     pub effect_result: Option<pseudolearn_runtime::HostReply>,
@@ -54,6 +55,7 @@ pub struct MachineStateRecord {
 impl MachineStateRecord {
     pub(super) fn clone_control(&self) -> Self {
         Self {
+            tasks: self.tasks.clone(),
             effect_checkpoint: self.effect_checkpoint.clone(),
             effect_seq: self.effect_seq,
             effect_result: self.effect_result.clone(),
@@ -121,6 +123,7 @@ impl<'program> Machine<'program> {
 
     pub(crate) fn capture_control_record(&self) -> MachineStateRecord {
         MachineStateRecord {
+            tasks: self.tasks.clone(),
             effect_checkpoint: self.effect_checkpoint.clone(),
             effect_seq: self.effect_seq,
             effect_result: self.effect_result.clone(),
@@ -152,6 +155,7 @@ impl<'program> Machine<'program> {
     }
 
     pub fn restore_machine_state(&mut self, record: &MachineStateRecord) {
+        self.tasks = record.tasks.clone();
         self.effect_checkpoint = record.effect_checkpoint.clone();
         self.effect_seq = record.effect_seq;
         self.effect_result = record.effect_result.clone();

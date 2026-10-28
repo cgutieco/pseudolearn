@@ -25,12 +25,13 @@ impl Machine<'_> {
         destination: Register,
         arguments: &[RuntimeValue],
     ) -> Result<Flow, Fault> {
-        let channel = arguments.first().and_then(|value| match value {
-            RuntimeValue::Scalar(value) => Some(*value),
-            _ => None,
-        });
+        if command == "new" {
+            return self.create_channel_result(destination, arguments);
+        }
+        let channel = arguments
+            .first()
+            .and_then(|value| self.channel_identity(*value).ok());
         let status = match command {
-            "new" => self.new_task_channel(arguments)?,
             "send" => {
                 return self.channel_send(
                     TaskChannelId(channel.ok_or(INVALID_BYTECODE)?),
@@ -56,6 +57,19 @@ impl Machine<'_> {
         Ok(Flow::Continue)
     }
 
+    fn create_channel_result(
+        &mut self,
+        destination: Register,
+        arguments: &[RuntimeValue],
+    ) -> Result<Flow, Fault> {
+        let handle = self.new_task_channel(arguments)?;
+        self.set_reference(
+            destination.index,
+            u32::try_from(handle).map_err(|_| INVALID_BYTECODE)?,
+        )?;
+        Ok(Flow::Continue)
+    }
+
     fn close_task_channel(&mut self, channel: TaskChannelId) -> Result<u64, Fault> {
         self.tasks.channels.close(channel).map_err(channel_fault)?;
         self.wake_channel_tasks()?;
@@ -70,21 +84,7 @@ impl Machine<'_> {
     }
 
     fn new_task_channel(&mut self, arguments: &[RuntimeValue]) -> Result<u64, Fault> {
-        let Some(RuntimeValue::Scalar(capacity)) = arguments.first() else {
-            return Err(INVALID_BYTECODE);
-        };
-        let capacity = usize::try_from(*capacity).map_err(|_| "channelCapacityInvalid")?;
-        if i64::from_ne_bytes(
-            u64::try_from(capacity)
-                .map_err(|_| "channelCapacityInvalid")?
-                .to_ne_bytes(),
-        ) < 1
-        {
-            return Err("channelCapacityInvalid");
-        }
-        if capacity > 65_536 {
-            return Err("channelCapacityExceeded");
-        }
+        let capacity = channel_capacity(arguments)?;
         let Some(RuntimeValue::Scalar(width)) = arguments.get(1) else {
             return Err(INVALID_BYTECODE);
         };
@@ -102,7 +102,13 @@ impl Machine<'_> {
             .create(capacity, 65_536)
             .map_err(channel_fault)?;
         self.tasks.channel_storage.insert(channel, storage);
-        Ok(channel.0)
+        pseudolearn_runtime::channel_references::set_channel_identity(
+            &mut self.heap,
+            storage,
+            channel.0,
+        )
+        .map_err(super::memory::memory_fault)?;
+        Ok(u64::from(storage.0))
     }
 
     fn channel_send(
@@ -205,6 +211,7 @@ impl Machine<'_> {
     }
 
     pub(super) fn wake_channel_tasks(&mut self) -> Result<(), Fault> {
+        self.flush_channel_buffers()?;
         while let Some((task, reply)) = self.tasks.channels.take_ready() {
             self.tasks.channel_replies.insert(task, reply);
             self.tasks
@@ -224,4 +231,18 @@ pub(super) fn channel_fault(error: ChannelError) -> Fault {
         ChannelError::IdentityExhausted => "resourceLimit",
         ChannelError::UnknownChannel | ChannelError::InsufficientBranches => INVALID_BYTECODE,
     }
+}
+
+fn channel_capacity(arguments: &[RuntimeValue]) -> Result<usize, Fault> {
+    let Some(RuntimeValue::Scalar(capacity)) = arguments.first() else {
+        return Err(INVALID_BYTECODE);
+    };
+    let capacity = usize::try_from(*capacity).map_err(|_| "channelCapacityInvalid")?;
+    if capacity == 0 || capacity > usize::try_from(i64::MAX).unwrap_or(usize::MAX) {
+        return Err("channelCapacityInvalid");
+    }
+    if capacity > 65_536 {
+        return Err("channelCapacityExceeded");
+    }
+    Ok(capacity)
 }

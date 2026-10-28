@@ -158,3 +158,19 @@ Verificación dirigida: `cargo test -p pseudolearn_runtime --lib task_`,
 `cargo test -p pseudolearn_runtime --test channel_storage_tests`. La persistencia completa de la agenda
 y las colas en las imágenes históricas sigue pendiente; los resultados de estas pruebas no certifican
 reconstrucción ni ejecución nativa de tareas.
+
+## Copia de grafos y cuanto cooperativo
+
+`snapshot_graph` enumera las referencias de arreglos y colecciones antes de copiar. El recorrido
+iterativo usa identidad de asa y conserva alias y ciclos; omite ranuras no ocupadas de diccionario y
+capacidad no usada de los bancos. `snapshot_copy_many` copia conjuntamente todas las referencias de
+un agregado, de modo que dos campos que compartían una colección siguen compartiendo su copia.
+Texto, capacidades y canales mantienen su identidad. La copia conserva máscaras de definición y
+reubica el puntero interno de la máscara de un arreglo entero. Cada bloque nuevo conserva el coste
+lógico del original y pasa por el presupuesto de creación; los auxiliares conservan coste cero.
+Se descartan copias por cada campo, que romperían alias, y recorridos recursivos del grafo.
+
+`TaskQuantum` comparte con los ejecutores el cuanto 1024 y la acumulación saturada de masa. Como solo
+ejecuta una tarea y cada reanudación reinicia la masa, basta un acumulador sin mapa ni asignaciones.
+Las vueltas inferiores al cuanto conservan la masa. Al consumirlo se reinicia, haya o no otra tarea
+lista; solo con otra lista se cede. No intervienen reloj físico ni semilla.

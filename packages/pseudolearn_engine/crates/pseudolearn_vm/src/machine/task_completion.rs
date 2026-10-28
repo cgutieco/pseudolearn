@@ -46,6 +46,8 @@ impl Machine<'_> {
                     .map_err(super::tasks::task_fault)?;
             }
         }
+        self.tasks.continuations.remove(&task);
+        self.tasks.task_storage.remove(&task);
         self.tasks.cancel_points.remove(&task);
         self.tasks.cleanup_depths.remove(&task);
         self.schedule_next(false, false)?;
@@ -86,6 +88,8 @@ impl Machine<'_> {
             .cancellation()
             .finish(task)
             .map_err(super::tasks::task_fault)?;
+        self.tasks.continuations.remove(&task);
+        self.tasks.task_storage.remove(&task);
         self.tasks.channels.cancel(task);
         self.tasks.pending_effects.remove(&task);
         self.tasks.channel_replies.remove(&task);

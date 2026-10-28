@@ -9,7 +9,8 @@
         "text.",
         "ref.",
         "host.random",
-        "collection."
+        "collection.",
+        "snapshot."
       ]
     },
     {

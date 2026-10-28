@@ -128,7 +128,7 @@
   "id": "R2",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La masa de sentencia de un bloque es el número de entradas a sentencia que contiene. El presupuesto de sentencias y la cancelación cuentan entradas a sentencia exactamente, cualquiera que sea la agrupación en bloques.",
+  "texto": "La masa de sentencia de un bloque es el número de entradas a sentencia que contiene. La agenda acumula esa misma masa por tarea, incluso en llamadas síncronas; task.yield_check no crea entradas adicionales ni modifica la masa. El presupuesto de sentencias y la cancelación cuentan entradas a sentencia exactamente, cualquiera que sea la agrupación en bloques.",
   "verificacion": [
     "C2",
     "C3"

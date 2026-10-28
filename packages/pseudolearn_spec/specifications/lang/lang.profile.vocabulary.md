@@ -1380,6 +1380,7 @@
         "en": "cancelled"
       }
     },
+    "immutableType": {"lexemas": {"es": "Inmutable", "en": "immutable"}},
     "channelType": {
       "lexemas": {
         "es": "Canal",

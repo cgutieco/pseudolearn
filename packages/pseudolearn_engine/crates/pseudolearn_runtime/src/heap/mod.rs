@@ -38,6 +38,8 @@ pub(crate) enum Shape {
     Bytes,
     Capability,
     Channel,
+    Continuation,
+    Task,
 }
 
 pub(crate) struct AllocationRequest {

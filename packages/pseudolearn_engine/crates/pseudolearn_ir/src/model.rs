@@ -64,6 +64,7 @@ impl OriginTable {
 
 #[derive(Clone, Debug, PartialEq)]
 pub struct Function {
+    pub suspendible: bool,
     pub name: String,
     pub parameters: Vec<(ValueId, IrType)>,
     pub return_type: IrType,
@@ -75,6 +76,7 @@ pub struct Function {
 impl Function {
     pub fn new(name: String, return_type: IrType) -> Self {
         Self {
+            suspendible: false,
             name,
             parameters: Vec::new(),
             return_type,

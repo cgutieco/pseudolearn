@@ -201,19 +201,10 @@ fn header_shape(request: &AllocationRequest) -> Result<(u32, u32), MemoryError> 
         Shape::Array {
             element,
             dimensions,
-        } => {
-            let rank = u32::try_from(dimensions.len()).map_err(|_| MemoryError::Resource)?;
-            if rank == 0 || rank > u32::from(u8::MAX) {
-                return Err(MemoryError::Resource);
-            }
-            Ok((
-                1,
-                encode_value_kind(*element)? | rank.wrapping_shl(ARRAY_RANK_STATUS_SHIFT) | literal,
-            ))
-        }
+        } => array_header(*element, dimensions, literal),
         Shape::Object(layout) => {
             let tag = layout.class.checked_add(3).ok_or(MemoryError::Resource)?;
-            if tag >= pseudolearn_abi::bytes_layout::BYTES_SHAPE_TAG {
+            if tag >= pseudolearn_abi::continuation_layout::CONTINUATION_SHAPE_TAG {
                 return Err(MemoryError::Resource);
             }
             let payload = u16::try_from(request.payload).map_err(|_| MemoryError::Resource)?;
@@ -223,6 +214,11 @@ fn header_shape(request: &AllocationRequest) -> Result<(u32, u32), MemoryError> 
         Shape::Auxiliary => Ok((u32::MAX, 0)),
         Shape::Vector => Ok((pseudolearn_abi::vector_layout::VECTOR_SHAPE_TAG, 0)),
         Shape::Dictionary => Ok((pseudolearn_abi::dictionary_layout::DICTIONARY_SHAPE_TAG, 0)),
+        Shape::Task => Ok((pseudolearn_abi::task_layout::TASK_SHAPE_TAG, 0)),
+        Shape::Continuation => Ok((
+            pseudolearn_abi::continuation_layout::CONTINUATION_SHAPE_TAG,
+            0,
+        )),
         Shape::Channel => Ok((pseudolearn_abi::channel_layout::CHANNEL_SHAPE_TAG, 0)),
         Shape::Bytes => Ok((pseudolearn_abi::bytes_layout::BYTES_SHAPE_TAG, 0)),
         Shape::Capability => Ok((pseudolearn_abi::capability_layout::CAPABILITY_SHAPE_TAG, 0)),
@@ -244,4 +240,19 @@ fn write_header(heap: &mut Heap, handle: Handle, header: CommonHeader) -> Result
     let [shape_and_flags, identity] = header.to_words();
     heap.store(handle, 0, shape_and_flags.as_u64())?;
     heap.store(handle, 1, identity.as_u64())
+}
+
+fn array_header(
+    element: ValueKind,
+    dimensions: &[u64],
+    literal: u32,
+) -> Result<(u32, u32), MemoryError> {
+    let rank = u32::try_from(dimensions.len()).map_err(|_| MemoryError::Resource)?;
+    if rank == 0 || rank > u32::from(u8::MAX) {
+        return Err(MemoryError::Resource);
+    }
+    Ok((
+        1,
+        encode_value_kind(element)? | rank.wrapping_shl(ARRAY_RANK_STATUS_SHIFT) | literal,
+    ))
 }

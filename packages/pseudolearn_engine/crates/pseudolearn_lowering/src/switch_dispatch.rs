@@ -133,7 +133,13 @@ fn comparison_operation(
                 .types
                 .get(index)
         })
-        .map(|kind| context.expression_context.module.types.get(*kind));
+        .map(|kind| {
+            context
+                .expression_context
+                .module
+                .types
+                .representation(*kind)
+        });
     match kind {
         Some(Type::String) => Operation::TextCmp,
         Some(Type::Character) => Operation::CharCmp,

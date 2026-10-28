@@ -9,7 +9,7 @@ mod compile;
 mod definitions;
 mod error;
 mod model;
-mod root_liveness;
+pub mod root_liveness;
 mod roots;
 mod verify;
 mod verify_collection_types;
@@ -38,3 +38,8 @@ mod verify_switch;
 mod verify_task_types;
 #[cfg(test)]
 mod verify_task_types_tests;
+
+mod verify_snapshot_types;
+
+#[cfg(test)]
+mod verify_snapshot_types_tests;

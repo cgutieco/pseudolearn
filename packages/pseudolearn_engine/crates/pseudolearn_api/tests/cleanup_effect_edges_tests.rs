@@ -8,7 +8,7 @@ fn blocks(source: &str) -> Result<Vec<Vec<String>>, String> {
     let mut blocks: Vec<Vec<String>> = Vec::new();
     let mut functions = 0_u32;
     for line in text.lines() {
-        if line.starts_with("func @") {
+        if line.starts_with("func ") {
             functions = functions.saturating_add(1);
         }
         if functions > 1 {
@@ -41,9 +41,14 @@ fn both_exit_edges_after_the_registration_close_the_file() -> Result<(), String>
 fn result_is_stored_before_the_cleanup_runs() -> Result<(), String> {
     for block in blocks(PROGRAM)? {
         if let Some(close) = position(&block, "file_close") {
-            let store = block.iter().rposition(|line| line.starts_with("cell.store"));
+            let store = block
+                .iter()
+                .rposition(|line| line.starts_with("cell.store"));
             assert!(store.is_some_and(|index| index < close), "{block:?}");
-            assert!(block.iter().any(|line| line.starts_with("return")), "{block:?}");
+            assert!(
+                block.iter().any(|line| line.starts_with("return")),
+                "{block:?}"
+            );
         }
     }
     Ok(())
@@ -62,6 +67,10 @@ fn failure_before_the_registration_runs_no_cleanup() -> Result<(), String> {
 
 #[test]
 fn program_without_cleanup_emits_no_closing_effect() -> Result<(), String> {
-    assert!(blocks(NO_CLEANUP)?.iter().all(|block| position(block, "file_close").is_none()));
+    assert!(
+        blocks(NO_CLEANUP)?
+            .iter()
+            .all(|block| position(block, "file_close").is_none())
+    );
     Ok(())
 }

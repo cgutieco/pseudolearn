@@ -51,6 +51,9 @@ pub(crate) fn argument(
     let expected = session.module.types.get(kind);
     let actual = session.expression_type(value);
     if passing == Passing::Reference {
+        if crate::snapshot_types::reject_write(session, value, node) {
+            return value;
+        }
         if expected != actual && actual != crate::types::Type::Error {
             session.report(DiagnosticCode::ByReferenceArgumentTypeMismatch, node);
         }

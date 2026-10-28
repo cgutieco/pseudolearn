@@ -28,10 +28,12 @@ pub(crate) fn lower_value(
     let enumeration = usize::try_from(expression.0)
         .ok()
         .and_then(|slot| context.module.expressions.types.get(slot))
-        .and_then(|type_id| match context.module.types.get(*type_id) {
-            Type::Enum(enumeration) => Some(enumeration),
-            _ => None,
-        });
+        .and_then(
+            |type_id| match context.module.types.representation(*type_id) {
+                Type::Enum(enumeration) => Some(enumeration),
+                _ => None,
+            },
+        );
     match enumeration {
         Some(enumeration) => member_name(value, enumeration, context, builder),
         None => value,
@@ -173,7 +175,7 @@ fn is_function(expression: ExpressionId, module: &pseudolearn_semantic::HirModul
         .ok()
         .and_then(|index| module.expressions.types.get(index))
         .is_some_and(|kind| {
-            if let Type::Record(record) = module.types.get(*kind) {
+            if let Type::Record(record) = module.types.representation(*kind) {
                 module.function_types.contains_key(&record)
             } else {
                 false

@@ -3995,3 +3995,22 @@
   "observacion": []
 }
 ```
+
+```instruccion
+{
+  "id": "O107",
+  "nombre": "snapshot.copy",
+  "firma": "snapshot.copy <count>, %sources..., %destination_cells... -> unit",
+  "clases_de_valor": [
+    "referencia"
+  ],
+  "semantica": "Copia el grafo conjunto de las fuentes referenciales preservando alias y ciclos. Guarda cada resultado en una celda del mismo tipo. La cantidad es positiva y el número de fuentes coincide con el de celdas. Comparte cadenas, canales y capacidades.",
+  "trampas": [
+    "cellLimitExceeded"
+  ],
+  "efectos": [
+    "asigna", "lee_memoria", "escribe_memoria"
+  ],
+  "observacion": []
+}
+```

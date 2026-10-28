@@ -733,7 +733,7 @@ El campo cancelacion de un caso indica la entrada a sentencia, contada desde uno
   ],
   "programas": {
     "es": "Algoritmo P\nDefinir stream Como Canal<Entero> <- Canal(1);\nSegun Aguardar stream.Recibir() Hacer\nNada: Escribir 0;\nAlgo(value): Escribir value;\nFinSegun\nFinAlgoritmo\n",
-    "en": "Algoritmo P\ndefine stream as channel<integer> <- channel(1);\nswitch await stream.receive() do\nnone: write 0;\nsome(value): write value;\nendSwitch\nFinAlgoritmo\n"
+    "en": "algorithm P\ndefine stream as channel<integer> <- channel(1);\nswitch await stream.receive() do\nnone: write 0;\nsome(value): write value;\nendSwitch\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",

@@ -72,12 +72,13 @@ pub(crate) fn field(
         session.named_report(DiagnosticCode::UndefinedMember, name_node, &spelling);
         return invalid(session, node);
     };
+    let result = crate::snapshot_types::read_type(session, receiver, found.type_id);
     session.emit(
         HirExpression::RecordField {
             record: receiver,
             offset: found.offset,
         },
-        found.type_id,
+        result,
         session.span(node),
     )
 }

@@ -157,7 +157,8 @@ fn aggregate_values(
     expression: ExpressionId,
     state: &mut ExpressionState<'_, '_>,
 ) -> Option<Vec<ValueId>> {
-    crate::task_values::values(expression, state)
+    crate::snapshot_values::values(expression, state)
+        .or_else(|| crate::task_values::values(expression, state))
         .or_else(|| crate::channel_operations::values(expression, state))
         .or_else(|| crate::effect_values::values(expression, state))
         .or_else(|| crate::collections::values(expression, state))

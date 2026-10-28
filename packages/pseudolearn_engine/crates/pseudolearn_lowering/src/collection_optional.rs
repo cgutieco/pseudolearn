@@ -49,7 +49,7 @@ fn variant(
         .expressions
         .types
         .get(usize::try_from(expression.0).ok()?)?;
-    let Type::Record(record) = state.context.module.types.get(kind) else {
+    let Type::Record(record) = state.context.module.types.representation(kind) else {
         return None;
     };
     state.context.module.variants.get(&record).cloned()

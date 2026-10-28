@@ -107,6 +107,9 @@ fn bind_record(
     actual: TypeId,
     binder: &mut Binder<'_>,
 ) -> Result<(), usize> {
+    if let Some(result) = bind_immutable(session, (arguments, name), actual, binder) {
+        return result;
+    }
     if let Some(model) = crate::collection_types::get(session, &session.module.types.get(actual)) {
         let identity = crate::collection_types::identity(session, name);
         if (model.key.is_some() && identity == Some("dictionaryType"))
@@ -209,4 +212,20 @@ fn field_type_nodes(session: &AnalysisSession<'_>, template: usize) -> Vec<usize
         nodes.extend(std::iter::repeat_n(kind, names));
     }
     nodes
+}
+
+fn bind_immutable(
+    session: &AnalysisSession<'_>,
+    syntax: (usize, &str),
+    actual: TypeId,
+    binder: &mut Binder<'_>,
+) -> Option<Result<(), usize>> {
+    if crate::collection_types::identity(session, syntax.1) != Some("immutableType") {
+        return None;
+    }
+    let Type::Immutable(inner) = session.module.types.get(actual) else {
+        return Some(Ok(()));
+    };
+    let child = session.children(syntax.0).first().copied()?;
+    Some(bind(session, child, inner, binder))
 }

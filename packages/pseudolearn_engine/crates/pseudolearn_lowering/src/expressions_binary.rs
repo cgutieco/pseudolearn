@@ -18,7 +18,7 @@ pub fn lower_binary_operation(
 ) -> ValueId {
     let (operand_type, span) = target;
     let (module, builder) = context;
-    match module.types.get(operand_type) {
+    match module.types.representation(operand_type) {
         Type::Integer | Type::Enum(_) => lower_integer_binary(operator, operands, span, builder),
         Type::Real => lower_real_binary(operator, operands, span, builder),
         Type::Boolean => lower_boolean_binary(operator, operands, span, builder),

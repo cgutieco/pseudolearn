@@ -47,6 +47,7 @@ fn wrap(
     let values = result_values(&cells, value, original, &mut builder);
     finish_result(module, result, &values, &mut builder);
     Function {
+        suspendible: true,
         name: builder.name,
         parameters: builder.parameters,
         return_type: IrType::Unit,
@@ -89,7 +90,7 @@ fn finish_result(
     values: &[ValueId],
     builder: &mut FunctionBuilder,
 ) {
-    let variant = match module.types.get(result) {
+    let variant = match module.types.representation(result) {
         Type::Record(record) => module.variants.get(&record),
         _ => None,
     };

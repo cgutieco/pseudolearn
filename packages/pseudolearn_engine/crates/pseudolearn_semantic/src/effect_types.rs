@@ -107,8 +107,9 @@ pub(crate) fn error_type(session: &mut AnalysisSession<'_>, node: usize) -> Type
 }
 
 pub(crate) fn receiver(session: &AnalysisSession<'_>, kind: &Type) -> Option<EffectValueKind> {
+    let kind = crate::snapshot_types::underlying(session, kind);
     let Type::Object(class) = kind else {
         return None;
     };
-    session.module.opaque_types.get(class).copied()
+    session.module.opaque_types.get(&class).copied()
 }

@@ -17,6 +17,10 @@ pub(crate) struct TypedSource {
 
 #[derive(Clone, Debug, PartialEq)]
 pub(crate) enum MemoryOp {
+    Snapshot {
+        sources: Vec<u16>,
+        destinations: Vec<u16>,
+    },
     Collection(super::collections::CollectionOperation),
     ArrayNew {
         destination: u16,

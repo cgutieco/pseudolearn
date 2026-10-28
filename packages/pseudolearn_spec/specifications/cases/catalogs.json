@@ -828,6 +828,12 @@
         "es": "ArchivoCap"
       }
     },
+    "immutableType": {
+      "lexemas": {
+        "en": "immutable",
+        "es": "Inmutable"
+      }
+    },
     "implementsKeyword": {
       "lexemas": {
         "en": "implements",
@@ -1329,18 +1335,24 @@
       "tipos_argumentos": {}
     },
     "channelElementNotTransferable": {
-      "argumentos": [],
+      "argumentos": [
+        "type",
+        "path"
+      ],
       "clase": "semantic",
       "mensajes": {
-        "en": "A channel element must be transferable",
-        "es": "El elemento del canal debe ser transferible"
+        "en": "A channel element must be transferable: {type} at {path}",
+        "es": "El elemento del canal debe ser transferible: {type} en {path}"
       },
       "politica": "A",
       "severidad": {
         "estricto": "error",
         "flexible": "error"
       },
-      "tipos_argumentos": {}
+      "tipos_argumentos": {
+        "path": "lexema",
+        "type": "tipo"
+      }
     },
     "channelOperationWithoutAwait": {
       "argumentos": [],
@@ -2484,6 +2496,20 @@
       "mensajes": {
         "en": "Binding is immutable; use define mutable to reassign it",
         "es": "El vínculo es inmutable; usá Definir Mutable para reasignarlo"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
+    "immutableValueWrite": {
+      "argumentos": [],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "An immutable value cannot be modified",
+        "es": "No se puede modificar un valor inmutable"
       },
       "politica": "A",
       "severidad": {
@@ -3840,6 +3866,26 @@
       },
       "tipos_argumentos": {}
     },
+    "snapshotNotSupported": {
+      "argumentos": [
+        "type",
+        "path"
+      ],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Type {type} does not support snapshots at {path}",
+        "es": "El tipo {type} no admite instantánea en {path}"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {
+        "path": "lexema",
+        "type": "tipo"
+      }
+    },
     "spawnOutsideTaskScope": {
       "argumentos": [],
       "clase": "semantic",
@@ -4105,18 +4151,24 @@
       "tipos_argumentos": {}
     },
     "taskArgumentNotTransferable": {
-      "argumentos": [],
+      "argumentos": [
+        "type",
+        "path"
+      ],
       "clase": "semantic",
       "mensajes": {
-        "en": "The task argument cannot be transferred in isolation",
-        "es": "El argumento de tarea no se puede transferir de forma aislada"
+        "en": "The task argument cannot be transferred in isolation: {type} at {path}",
+        "es": "El argumento de tarea no se puede transferir de forma aislada: {type} en {path}"
       },
       "politica": "A",
       "severidad": {
         "estricto": "error",
         "flexible": "error"
       },
-      "tipos_argumentos": {}
+      "tipos_argumentos": {
+        "path": "lexema",
+        "type": "tipo"
+      }
     },
     "taskByReferenceArgument": {
       "argumentos": [],
@@ -4147,18 +4199,24 @@
       "tipos_argumentos": {}
     },
     "taskErrorNotTransferable": {
-      "argumentos": [],
+      "argumentos": [
+        "type",
+        "path"
+      ],
       "clase": "semantic",
       "mensajes": {
-        "en": "A task error must be transferable",
-        "es": "El error de tarea debe ser transferible"
+        "en": "A task error must be transferable: {type} at {path}",
+        "es": "El error de tarea debe ser transferible: {type} en {path}"
       },
       "politica": "A",
       "severidad": {
         "estricto": "error",
         "flexible": "error"
       },
-      "tipos_argumentos": {}
+      "tipos_argumentos": {
+        "path": "lexema",
+        "type": "tipo"
+      }
     },
     "taskHandleEscape": {
       "argumentos": [],
@@ -5347,6 +5405,20 @@
       ],
       "retorno": "real"
     },
+    "snapshot": {
+      "alias": {
+        "en": [],
+        "es": []
+      },
+      "lexemas": {
+        "en": "snapshot",
+        "es": "Instantanea"
+      },
+      "parametros": [
+        "anySnapshot"
+      ],
+      "retorno": "immutableOfFirstArgument"
+    },
     "squareRoot": {
       "alias": {
         "en": [],
@@ -5620,6 +5692,190 @@
   },
   "helpCatalog": {
     "cards": [
+      {
+        "anchors": [
+          {
+            "element": "R4",
+            "specification": "LANG.TASK.ISOLATION",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [
+              "Copying counts cells; classes and functions are rejected."
+            ],
+            "examples": [
+              {
+                "case": "C11",
+                "kind": "executable",
+                "label": "Isolated snapshot",
+                "profile": "en",
+                "specification": "LANG.TASK.ISOLATION",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "snapshot",
+                "text": "Copies each reachable cell once and keeps internal aliases."
+              }
+            ],
+            "purpose": "Hands another task a data graph without sharing mutable objects.",
+            "summary": "Snapshot copies a value and returns an immutable view of the copy.",
+            "title": "Isolated snapshot"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [
+              "El coste de copia cuenta celdas; no admite clases ni funciones."
+            ],
+            "examples": [
+              {
+                "case": "C11",
+                "kind": "executable",
+                "label": "Instantánea aislada",
+                "profile": "es",
+                "specification": "LANG.TASK.ISOLATION",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "snapshot",
+                "text": "Copia una sola vez las celdas alcanzables y conserva los alias internos."
+              }
+            ],
+            "purpose": "Entrega a otra tarea un grafo de datos sin compartir objetos mutables.",
+            "summary": "Instantanea copia un valor y devuelve una vista inmutable de la copia.",
+            "title": "Instantánea aislada"
+          }
+        },
+        "id": "help.snapshot_builtin",
+        "identity": {
+          "id": "primary",
+          "kind": "role",
+          "role": "snapshot_builtin"
+        },
+        "tokens": [
+          {
+            "identity": "snapshot",
+            "source": {
+              "element": "D1",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R5",
+            "specification": "LANG.TASK.ISOLATION",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [
+              "There is no implicit conversion between a value and its immutable version; use snapshot."
+            ],
+            "examples": [
+              {
+                "case": "C11",
+                "kind": "executable",
+                "label": "Immutable value",
+                "profile": "en",
+                "specification": "LANG.TASK.ISOLATION",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "immutableType",
+                "text": "Writing to or calling a mutator on an immutable value is rejected at compile time."
+              }
+            ],
+            "purpose": "Guarantees that reads never return mutable collections or fields.",
+            "summary": "An immutable value is a read-only view of a copied value.",
+            "title": "Immutable value"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [
+              "No hay conversión implícita entre un valor y su versión inmutable; se obtiene con Instantanea."
+            ],
+            "examples": [
+              {
+                "case": "C11",
+                "kind": "executable",
+                "label": "Valor inmutable",
+                "profile": "es",
+                "specification": "LANG.TASK.ISOLATION",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "immutableType",
+                "text": "Escribir o llamar a un mutador sobre un valor inmutable se rechaza al compilar."
+              }
+            ],
+            "purpose": "Garantiza que las lecturas no devuelvan colecciones ni campos modificables.",
+            "summary": "Un valor Inmutable es una vista de solo lectura de un valor copiado.",
+            "title": "Valor inmutable"
+          }
+        },
+        "id": "help.immutable_type",
+        "identity": {
+          "id": "taskScope",
+          "kind": "construction",
+          "role": "immutable_type"
+        },
+        "tokens": [
+          {
+            "identity": "immutableType",
+            "source": {
+              "element": "D2",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
       {
         "anchors": [
           {
@@ -12971,6 +13227,35 @@
         "not"
       ],
       "roles": [
+        {
+          "identity": {
+            "id": "primary",
+            "kind": "role",
+            "role": "snapshot_builtin"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "snapshot"
+          ]
+        },
+        {
+          "identity": {
+            "id": "taskScope",
+            "kind": "construction",
+            "role": "immutable_type"
+          },
+          "productions": [
+            "taskScope",
+            "spawnStatement",
+            "spawnExpression",
+            "type"
+          ],
+          "tokens": [
+            "immutableType"
+          ]
+        },
         {
           "identity": {
             "id": "algorithm",

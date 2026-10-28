@@ -65,7 +65,7 @@ fn signature_types(
 }
 
 fn leaves(kind: TypeId, module: &HirModule) -> Vec<IrType> {
-    if let Type::Record(record) = module.types.get(kind) {
+    if let Type::Record(record) = module.types.representation(kind) {
         return usize::try_from(record.0)
             .ok()
             .and_then(|index| module.records.get(index))

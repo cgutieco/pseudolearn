@@ -4,7 +4,7 @@ use crate::{Fault, evaluate::INVALID_BYTECODE};
 use pseudolearn_runtime::TaskScopeId;
 use std::sync::Arc;
 
-#[derive(Clone)]
+#[derive(Clone, Debug, PartialEq)]
 pub(super) struct TaskResume {
     function: Arc<LoadedFunction>,
     function_index: usize,
@@ -32,6 +32,18 @@ impl TaskResume {
             reference_limit: machine.reference_limit,
             depth: machine.frames.len(),
         })
+    }
+
+    pub(super) fn spill_plan(
+        &self,
+        probed: bool,
+    ) -> Result<super::task_spill::SpilledFrame, Fault> {
+        super::suspension_maps::plan(
+            &self.function,
+            (self.cursor.program_counter, self.function_index),
+            (self.cursor.scalar_base, self.cursor.reference_base),
+            probed,
+        )
     }
 
     pub(super) fn apply(self, machine: &mut Machine<'_>) {

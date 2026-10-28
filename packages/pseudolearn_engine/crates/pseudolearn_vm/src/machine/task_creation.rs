@@ -47,6 +47,9 @@ impl Machine<'_> {
             .ok_or(INVALID_BYTECODE)?;
         let entry_position = self.entry_position(&callee);
         let mut context = TaskContext {
+            reusable: Vec::new(),
+            spills: Vec::new(),
+            bank_lengths: (callee.scalar_window, callee.reference_window),
             current_function_index: callee_index,
             cursor: Cursor {
                 program_counter: entry_position,

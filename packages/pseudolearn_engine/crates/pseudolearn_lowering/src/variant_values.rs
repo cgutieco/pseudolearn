@@ -11,7 +11,7 @@ pub(crate) fn model(expression: ExpressionId, module: &HirModule) -> Option<HirV
         .expressions
         .types
         .get(usize::try_from(expression.0).ok()?)?;
-    let Type::Record(record) = module.types.get(kind) else {
+    let Type::Record(record) = module.types.representation(kind) else {
         return None;
     };
     module.variants.get(&record).cloned()
@@ -163,7 +163,7 @@ pub(crate) fn project(
 }
 
 fn leaves(kind: TypeId, module: &HirModule) -> Vec<TypeId> {
-    match module.types.get(kind) {
+    match module.types.representation(kind) {
         Type::Record(record) => usize::try_from(record.0)
             .ok()
             .and_then(|index| module.records.get(index))

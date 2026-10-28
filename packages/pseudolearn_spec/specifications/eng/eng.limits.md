@@ -66,6 +66,21 @@
 }
 ```
 
+```regla
+{
+  "id": "R10",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Las tareas y los canales cuentan como celdas del montón: el almacenamiento de una tarea cuesta al menos una celda; un canal de capacidad c y ancho de elemento w, con w mínimo uno, cuesta 1 + c·w celdas; la continuación de una tarea suspendida cuesta una celda más sus ranuras, según ENG.TASK.MEMORY. Superar el límite de celdas al crearlos es un fallo del programa con cellLimitExceeded en el sitio de creación.",
+  "verificacion": [
+    "C20",
+    "C21",
+    "C22",
+    "C23"
+  ]
+}
+```
+
 ```caso
 {
   "id": "C1",
@@ -734,3 +749,119 @@ Este contrato cuantifica los recursos que LANG.SUBPROGRAM.RECURSION y LANG.ARRAY
 ## Colecciones e interfaces
 
 Vector y Diccionario derivan sus límites del presupuesto cells existente: como máximo min(cells, u32 máximo menos dos) elementos y min(cells, u32 máximo) palabras de almacenamiento variable. Las palabras incluyen capacidad y metadatos variables, con ocho bytes por palabra. La cabecera fija no cuenta en ese almacenamiento variable. Una mutación comprueba límites, reservas y aritmética antes de publicar cambios. Vector consume una celda lógica más longitud por máximo entre uno y ancho; Diccionario consume una más longitud por uno más máximo entre uno y ancho de valor. Las referencias alcanzables se contabilizan sin doble conteo. Se conserva cellLimitExceeded para el presupuesto global y collectionLimitExceeded para el límite estructural.
+
+```caso
+{
+  "id": "C20",
+  "regla": "R10",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "Algoritmo Main\nDefinir stream Como Canal<Entero> <- Canal(5);\nFinAlgoritmo\n",
+    "en": "algorithm Main\ndefine stream as channel<integer> <- channel(5);\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "",
+    "terminacion": "completed"
+  },
+  "limites": {
+    "celdas": 6
+  }
+}
+```
+
+```caso
+{
+  "id": "C21",
+  "regla": "R10",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "Algoritmo Main\nDefinir stream Como Canal<Entero> <- Canal(5);\nFinAlgoritmo\n",
+    "en": "algorithm Main\ndefine stream as channel<integer> <- channel(5);\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "",
+    "fallo": {
+      "codigo": "cellLimitExceeded"
+    }
+  },
+  "limites": {
+    "celdas": 5
+  }
+}
+```
+
+```caso
+{
+  "id": "C22",
+  "regla": "R10",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "SubProceso Suspendible Work()\nEscribir \"w\";\nFinSubProceso\nAlgoritmo Main\nTareas\nLanzar Work();\nLanzar Work();\nFinTareas\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Work()\nwrite \"w\";\nendSubroutine\nalgorithm Main\ntasks\nspawn Work();\nspawn Work();\nendTasks\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "w\nw\n",
+    "terminacion": "completed"
+  },
+  "limites": {
+    "celdas": 64
+  }
+}
+```
+
+```caso
+{
+  "id": "C23",
+  "regla": "R10",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "SubProceso Suspendible Work()\nEscribir \"w\";\nFinSubProceso\nAlgoritmo Main\nTareas\nLanzar Work();\nLanzar Work();\nFinTareas\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Work()\nwrite \"w\";\nendSubroutine\nalgorithm Main\ntasks\nspawn Work();\nspawn Work();\nendTasks\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "",
+    "fallo": {
+      "codigo": "cellLimitExceeded"
+    }
+  },
+  "limites": {
+    "celdas": 1
+  }
+}
+```

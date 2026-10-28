@@ -411,6 +411,10 @@
     "en": "sin",
     "es": "sin"
   },
+  "function:snapshot": {
+    "en": "snapshot",
+    "es": "Instantanea"
+  },
   "function:squareRoot": {
     "en": "sqrt",
     "es": "rc"

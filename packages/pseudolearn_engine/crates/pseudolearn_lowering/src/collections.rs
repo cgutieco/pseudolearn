@@ -10,7 +10,7 @@ pub(crate) fn model(expression: ExpressionId, module: &HirModule) -> Option<HirC
         .expressions
         .types
         .get(usize::try_from(expression.0).ok()?)?;
-    let Type::Object(class) = module.types.get(kind) else {
+    let Type::Object(class) = module.types.representation(kind) else {
         return None;
     };
     module.collections.get(&class).cloned()

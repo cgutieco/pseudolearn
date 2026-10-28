@@ -45,7 +45,7 @@ fn required_fields(chain: &[usize], module: &HirModule) -> BTreeSet<FieldId> {
         .flat_map(|class| &class.fields)
         .filter(|field| {
             matches!(
-                module.types.get(field.type_id),
+                module.types.representation(field.type_id),
                 Type::Integer | Type::Enum(_)
             )
         })

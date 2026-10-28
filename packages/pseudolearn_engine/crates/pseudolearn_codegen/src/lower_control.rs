@@ -21,6 +21,7 @@ pub(crate) const OPERATIONS: &[Operation] = &[
     Operation::Return,
     Operation::TrapMissingReturn,
     Operation::Unreachable,
+    Operation::TaskYieldCheck,
 ];
 
 pub(crate) fn lower(

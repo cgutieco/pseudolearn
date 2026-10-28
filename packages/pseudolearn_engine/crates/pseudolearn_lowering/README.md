@@ -134,3 +134,14 @@ no ejecuta sentencias posteriores del cuerpo cancelado. Los canales bajan por `c
 y `select_dispatch` reutiliza la unión y las decisiones de `Segun`. La inicialización implícita de
 una rama no emite una sentencia adicional. Las expresiones de canal se evalúan una sola vez antes
 de registrar la elección.
+
+## Instantáneas y retorno de bucles
+
+`snapshot_values` evalúa una vez el valor de origen, aplana sus hojas y emite una única copia conjunta
+de las referencias mediante celdas de salida locales. Los escalares conservan sus bits; repetir la
+instantánea de un valor ya inmutable conserva su aislamiento. El tipo inmutable se borra únicamente
+para decidir la representación de ejecución.
+
+`yield_points` identifica aristas de retorno mediante dominancia e introduce un bloque puente con
+`task.yield_check` y el salto original. Así una condición que abandona el bucle no cede, los argumentos
+SSA conservan sus definiciones y las unidades síncronas no adquieren instrucciones de cesión.

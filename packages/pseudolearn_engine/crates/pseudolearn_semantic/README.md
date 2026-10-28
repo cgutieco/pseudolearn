@@ -246,3 +246,22 @@ efectos incluyen canales, lanzamientos y las ramas de elección para conservar l
 
 Pruebas dirigidas: filtros `task_failure_types`, `channel_types` y `select_checker` de
 `cargo test -p pseudolearn_semantic --lib`.
+
+## Aislamiento e instantáneas
+
+`transferability` concentra el predicado estructural usado por argumentos de lanzamiento, elementos
+de canal y errores de tareas. Recorre iterativamente los campos por nombre, variantes y componentes incorporados;
+rechaza funciones aunque solo capturen escalares, clases, colecciones mutables, asas de tarea y
+parámetros genéricos opacos. Detecta ciclos de tipos sin recursión infinita y entrega tipo y ruta del
+primer componente rechazado a los diagnósticos. Bytes no expone mutación y conserva transferibilidad.
+
+`snapshot_support` comprueba el grafo estático que acepta `Instantanea`; `snapshot_types` conserva
+`Inmutable<T>` como tipo distinto, sin conversiones implícitas. Las lecturas de elementos, campos,
+variantes y enlaces de iteración conservan la restricción en los resultados mutables. Las escrituras
+y los métodos mutadores se rechazan antes de bajar a RI. Se toma de Swift Sendable la comprobación
+estructural y de Pony el aislamiento transitivo; se rechazan actores, capacidades de referencia y
+préstamos visibles en el lenguaje. Una tarea terminada entrega su resultado sin exigir transferibilidad.
+
+`FalloTareas<E>.Asociados` tiene tipo `Inmutable<Vector<E>>`: el informe puede transferirse sin
+exponer una colección mutable compartida. La construcción del informe crea su vector propio y
+solo presenta su vista inmutable; no se añade una copia redundante.

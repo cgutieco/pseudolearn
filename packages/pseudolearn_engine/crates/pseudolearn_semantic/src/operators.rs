@@ -64,11 +64,7 @@ pub(crate) fn binary(session: &mut AnalysisSession<'_>, node: usize) -> Expressi
         return crate::expression_checker::invalid(session, node);
     }
     let operator = crate::operator_tokens::operator(session.operator_kind(node));
-    let result = crate::operator_types::result_type(
-        operator,
-        &session.expression_type(left),
-        &session.expression_type(right),
-    );
+    let result = crate::snapshot_types::comparison_type(session, operator, (left, right));
     crate::operator_diagnostics::diagnose(session, (operator, left, right), node, &result);
     let (left, right) = binary_operands(session, operator, (left, right));
     let type_id = session.module.types.intern(result);

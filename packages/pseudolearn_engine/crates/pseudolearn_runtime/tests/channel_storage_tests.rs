@@ -23,3 +23,37 @@ fn channel_storage_charges_declared_capacity_before_publication() -> Result<(), 
     assert_eq!(heap_live_cells(&insufficient), 0);
     Ok(())
 }
+
+#[test]
+fn channel_masks_trace_only_occupied_reference_slots() -> Result<(), MemoryError> {
+    let mut heap = Heap::new(MemoryOptions::default());
+    let array = pseudolearn_runtime::new_array(
+        &mut heap,
+        pseudolearn_runtime::ValueKind::Integer,
+        &[2],
+        &[],
+    )?;
+    let storage = new_channel_storage(
+        &mut heap,
+        ChannelLayout::new(2, 1).ok_or(MemoryError::Internal)?,
+        &[array],
+    )?;
+    pseudolearn_runtime::channel_references::store_channel_slot(
+        &mut heap,
+        storage,
+        0,
+        &[(u64::from(array.0), true)],
+    )?;
+    let retained = heap.reachable_cells(&[storage])?;
+    heap.collect(&[storage])?;
+    assert_eq!(heap.reachable_cells(&[storage])?, retained);
+    pseudolearn_runtime::channel_references::store_channel_slot(&mut heap, storage, 0, &[])?;
+    assert_eq!(heap.reachable_cells(&[storage])?, 3);
+    assert!(
+        pseudolearn_runtime::channel_references::store_channel_slot(&mut heap, storage, 2, &[])
+            .is_err()
+    );
+    heap.collect(&[])?;
+    assert_eq!(heap.reachable_cells(&[])?, 0);
+    Ok(())
+}

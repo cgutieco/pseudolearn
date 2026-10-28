@@ -91,3 +91,18 @@ impl InstructionColumns {
         self.value_types.get(index).cloned().flatten()
     }
 }
+
+pub fn replace_operands(
+    columns: &mut InstructionColumns,
+    identifier: InstructionId,
+    operands: &[Operand],
+) {
+    let Some(index) = usize::try_from(identifier.0).ok() else {
+        return;
+    };
+    let start = columns.operands.len();
+    columns.operands.extend_from_slice(operands);
+    if let Some(range) = columns.operand_ranges.get_mut(index) {
+        *range = start..columns.operands.len();
+    }
+}

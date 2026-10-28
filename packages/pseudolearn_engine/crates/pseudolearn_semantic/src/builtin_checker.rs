@@ -11,12 +11,15 @@ pub(crate) fn check(
     mut arguments: Vec<ExpressionId>,
     node: usize,
 ) -> ExpressionId {
+    if function == BuiltinKind::Snapshot {
+        return crate::snapshot_types::check(session, arguments, node);
+    }
     let signature = signature_for_builtin(function);
     if signature.arity() != arguments.len() {
         crate::argument_checker::arity(session, (signature.arity(), arguments.len()), node);
     }
     for (expected, argument) in signature.parameter_types.iter().zip(&mut arguments) {
-        let actual = session.expression_type(*argument);
+        let actual = crate::snapshot_types::builtin_argument(session, function, *argument);
         if !compatible(expected, &actual) {
             session.report(DiagnosticCode::IncompatibleArgumentType, node);
         }

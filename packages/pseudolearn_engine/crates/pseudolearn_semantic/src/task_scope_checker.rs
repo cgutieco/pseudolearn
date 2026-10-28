@@ -12,6 +12,7 @@ pub(crate) fn check(session: &mut AnalysisSession<'_>, node: usize) -> Option<Hi
             body: Vec::new(),
         });
     }
+    check_suspendible_owner(session, node);
     session.control.task_scopes = session.control.task_scopes.saturating_add(1);
     session.control.task_errors.push(Vec::new());
     let body = session
@@ -47,4 +48,19 @@ fn failure_binding(
     let local = crate::task_bindings::declare(session, name_node, type_id, session.name(name_node));
     session.pending_results.insert(local);
     Some(local)
+}
+
+fn check_suspendible_owner(session: &mut AnalysisSession<'_>, node: usize) {
+    let current = usize::try_from(session.current.0)
+        .ok()
+        .and_then(|index| session.module.functions.get(index));
+    if current.is_some_and(|function| {
+        !function.suspendible
+            && !matches!(
+                function.kind,
+                crate::hir::FunctionKind::Main | crate::hir::FunctionKind::Function
+            )
+    }) {
+        session.report(DiagnosticCode::AwaitOutsideSuspendible, node);
+    }
 }

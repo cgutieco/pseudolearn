@@ -102,3 +102,9 @@ Los tests de estas capacidades se ejecutaron en selecciones acotadas, incluida l
 ### Ayuda de capacidades y bytes (`PG-3.03`)
 
 Las palabras contextuales de capacidades (`Consola`, `Argumentos`, `DirectorioCap`, `ArchivoCap`, `Reloj`, `Temporizador`, sus equivalentes en inglés), `Bytes`, `ErrorES`/`IoError` y las solicitudes `Solicitar…` se reconocen como identidades contextuales cuando están en posición de tipo o de llamada (`contextual_tokens::owns`), y `hover_for_token` les devuelve la descripción de la ficha `construction.capabilities` o `construction.bytes_io` de `TOOL.SERVICE.CATALOG` en el idioma pedido. Una variable llamada como una de esas palabras en otra posición no se convierte en identidad contextual. Cubre `tests/capability_help.rs` y el caso `TOOL.SERVICE.CATALOG` C7.
+
+## Proyección de tipos inmutables
+
+La presentación de `Inmutable<T>` usa la grafía contextual generada del perfil y presenta recursivamente
+el tipo interior. La ayuda incorpora fichas bilingües de la instantánea y del tipo inmutable desde
+el catálogo normativo, sin otra tabla de nombres en el servicio.

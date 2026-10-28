@@ -40,12 +40,12 @@ fn channel(
         .collect::<Option<Vec<_>>>()
         .ok_or(TypeError)?;
     let valid = match command {
-        "new" => kinds == [IrType::I64, IrType::I64] && *result == IrType::I64,
-        "send" => kinds.first() == Some(&IrType::I64) && *result == IrType::Bool,
-        "receive" | "close" => kinds == [IrType::I64] && *result == IrType::I64,
+        "new" => kinds == [IrType::I64, IrType::I64] && *result == IrType::Str,
+        "send" => kinds.first() == Some(&IrType::Str) && *result == IrType::Bool,
+        "receive" | "close" => kinds == [IrType::Str] && *result == IrType::I64,
         "select" => {
             kinds.len() >= 2
-                && kinds.iter().all(|kind| *kind == IrType::I64)
+                && kinds.iter().all(|kind| *kind == IrType::Str)
                 && *result == IrType::I64
         }
         "selected_present" => kinds.is_empty() && *result == IrType::I64,

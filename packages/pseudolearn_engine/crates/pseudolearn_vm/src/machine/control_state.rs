@@ -3,14 +3,14 @@ use std::sync::Arc;
 use crate::load::LoadedFunction;
 use pseudolearn_bytecode::Register;
 
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub(crate) struct Cursor {
     pub(crate) program_counter: usize,
     pub(crate) scalar_base: usize,
     pub(crate) reference_base: usize,
 }
 
-#[derive(Clone)]
+#[derive(Clone, Debug, PartialEq)]
 pub(crate) struct ControlFrame {
     pub(crate) function: Arc<LoadedFunction>,
     pub(crate) function_index: usize,

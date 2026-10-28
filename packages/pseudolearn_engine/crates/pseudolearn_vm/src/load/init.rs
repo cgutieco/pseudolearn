@@ -44,8 +44,7 @@ struct FunctionMappings {
 fn function_mappings(function: &BytecodeFunction) -> FunctionMappings {
     let (fast_to_probed_blocks, probed_to_fast_blocks) =
         block_mappings(&function.fast.blocks, &function.probed.blocks);
-    let (fast_to_probed_returns, probed_to_fast_returns) =
-        return_mappings(&function.return_points);
+    let (fast_to_probed_returns, probed_to_fast_returns) = return_mappings(&function.return_points);
     FunctionMappings {
         fast_to_probed_blocks,
         probed_to_fast_blocks,
@@ -61,6 +60,10 @@ pub(super) fn init_loaded_function(function: &BytecodeFunction) -> Result<Loaded
     let entry_mass = metadata::entry_mass(function);
     let continuations = continuations(function)?;
     let mut loaded = create_skeleton(function, mappings, windows);
+    loaded.reference_live = metadata::reference_live(function, false)?;
+    loaded.probed_reference_live = metadata::reference_live(function, true)?;
+    loaded.scalar_live = metadata::scalar_live(&function.fast)?;
+    loaded.probed_scalar_live = metadata::scalar_live(&function.probed)?;
     attach_execution_buffers(&mut loaded, buffers, continuations, entry_mass);
     Ok(loaded)
 }
@@ -175,7 +178,9 @@ fn return_mappings(return_points: &[ReturnPoint]) -> (Vec<usize>, Vec<usize>) {
 }
 
 pub(super) fn window(register_count: usize) -> Result<usize, VmTrap> {
-    let size = register_count.checked_add(1).ok_or_else(super::invalid_bytecode)?;
+    let size = register_count
+        .checked_add(1)
+        .ok_or_else(super::invalid_bytecode)?;
     if u16::try_from(register_count).is_err() {
         return Err(super::invalid_bytecode());
     }
@@ -189,7 +194,8 @@ pub(super) fn continuations(function: &BytecodeFunction) -> Result<Vec<usize>, V
             .ok()
             .and_then(|identifier| table.get_mut(identifier))
             .ok_or_else(super::invalid_bytecode)?;
-        *slot = usize::try_from(point.fast_continuation_pc).map_err(|_| super::invalid_bytecode())?;
+        *slot =
+            usize::try_from(point.fast_continuation_pc).map_err(|_| super::invalid_bytecode())?;
     }
     if table.contains(&usize::MAX) {
         return Err(super::invalid_bytecode());

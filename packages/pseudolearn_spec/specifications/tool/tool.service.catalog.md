@@ -571,6 +571,191 @@
     "format": "help-catalog/1",
     "cards": [
       {
+        "id": "help.snapshot_builtin",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "snapshot_builtin"
+        },
+        "tokens": [
+          {
+            "identity": "snapshot",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LANG.TASK.ISOLATION",
+            "version": "1.0.0",
+            "element": "R4"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Instantánea aislada",
+            "summary": "Instantanea copia un valor y devuelve una vista inmutable de la copia.",
+            "purpose": "Entrega a otra tarea un grafo de datos sin compartir objetos mutables.",
+            "parts": [
+              {
+                "identity": "snapshot",
+                "text": "Copia una sola vez las celdas alcanzables y conserva los alias internos."
+              }
+            ],
+            "constraints": [
+              "El coste de copia cuenta celdas; no admite clases ni funciones."
+            ],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C11",
+                "kind": "executable",
+                "label": "Instantánea aislada",
+                "profile": "es",
+                "specification": "LANG.TASK.ISOLATION",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Isolated snapshot",
+            "summary": "Snapshot copies a value and returns an immutable view of the copy.",
+            "purpose": "Hands another task a data graph without sharing mutable objects.",
+            "parts": [
+              {
+                "identity": "snapshot",
+                "text": "Copies each reachable cell once and keeps internal aliases."
+              }
+            ],
+            "constraints": [
+              "Copying counts cells; classes and functions are rejected."
+            ],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C11",
+                "kind": "executable",
+                "label": "Isolated snapshot",
+                "profile": "en",
+                "specification": "LANG.TASK.ISOLATION",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.immutable_type",
+        "identity": {
+          "kind": "construction",
+          "id": "taskScope",
+          "role": "immutable_type"
+        },
+        "tokens": [
+          {
+            "identity": "immutableType",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LANG.TASK.ISOLATION",
+            "version": "1.0.0",
+            "element": "R5"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Valor inmutable",
+            "summary": "Un valor Inmutable es una vista de solo lectura de un valor copiado.",
+            "purpose": "Garantiza que las lecturas no devuelvan colecciones ni campos modificables.",
+            "parts": [
+              {
+                "identity": "immutableType",
+                "text": "Escribir o llamar a un mutador sobre un valor inmutable se rechaza al compilar."
+              }
+            ],
+            "constraints": [
+              "No hay conversión implícita entre un valor y su versión inmutable; se obtiene con Instantanea."
+            ],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C11",
+                "kind": "executable",
+                "label": "Valor inmutable",
+                "profile": "es",
+                "specification": "LANG.TASK.ISOLATION",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Immutable value",
+            "summary": "An immutable value is a read-only view of a copied value.",
+            "purpose": "Guarantees that reads never return mutable collections or fields.",
+            "parts": [
+              {
+                "identity": "immutableType",
+                "text": "Writing to or calling a mutator on an immutable value is rejected at compile time."
+              }
+            ],
+            "constraints": [
+              "There is no implicit conversion between a value and its immutable version; use snapshot."
+            ],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C11",
+                "kind": "executable",
+                "label": "Immutable value",
+                "profile": "en",
+                "specification": "LANG.TASK.ISOLATION",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+
+      {
         "id": "construction.algorithm.entry",
         "identity": {
           "kind": "construction",
@@ -7920,6 +8105,36 @@
         "not"
       ],
       "roles": [
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "snapshot_builtin"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "snapshot"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "construction",
+            "id": "taskScope",
+            "role": "immutable_type"
+          },
+          "productions": [
+            "taskScope",
+            "spawnStatement",
+            "spawnExpression",
+            "type"
+          ],
+          "tokens": [
+            "immutableType"
+          ]
+        },
+
         {
           "identity": {
             "kind": "construction",

@@ -295,6 +295,7 @@
       ],
       "retorno": "character"
     },
+    "snapshot": {"lexemas": {"es": "Instantanea", "en": "snapshot"}, "alias": {"es": [], "en": []}, "parametros": ["anySnapshot"], "retorno": "immutableOfFirstArgument"},
     "shallowCopy": {
       "lexemas": {
         "es": "Copiar",
@@ -722,7 +723,7 @@ alterar las reglas generales de asignación entre ambos tipos.
   ],
   "programas": {
     "es": "Algoritmo P\nDefinir stream Como Canal<Entero> <- Canal(1);\nstream.Cerrar();\nElegir\nRecibir first Desde stream:\nRecibir second Desde stream:\nFinElegir\nFinAlgoritmo\n",
-    "en": "Algoritmo P\ndefine stream as channel<integer> <- channel(1);\nstream.close();\nselect\nreceive first from stream:\nreceive second from stream:\nendSelect\nFinAlgoritmo\n"
+    "en": "algorithm P\ndefine stream as channel<integer> <- channel(1);\nstream.close();\nselect\nreceive first from stream:\nreceive second from stream:\nendSelect\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",

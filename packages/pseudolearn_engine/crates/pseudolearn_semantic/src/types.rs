@@ -15,6 +15,7 @@ pub enum Type {
     Enum(EnumId),
     Record(RecordId),
     Task(TypeId),
+    Immutable(TypeId),
     Unknown,
     Error,
 }
@@ -51,8 +52,19 @@ impl TypeInterner {
             .unwrap_or(Type::Error)
     }
 
+    pub fn representation(&self, identifier: TypeId) -> Type {
+        let mut current = identifier;
+        for _ in 0..self.types.len() {
+            match self.get(current) {
+                Type::Immutable(inner) => current = inner,
+                kind => return kind,
+            }
+        }
+        Type::Error
+    }
+
     pub fn value_class(&self, identifier: TypeId) -> ValueClass {
-        match self.get(identifier) {
+        match self.representation(identifier) {
             Type::String | Type::Array { .. } | Type::Object(_) | Type::Task(_) => {
                 ValueClass::Reference
             }
