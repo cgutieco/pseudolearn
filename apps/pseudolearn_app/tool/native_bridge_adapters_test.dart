@@ -17,7 +17,9 @@ import 'package:pseudolearn_app/engine/rust/rust_syntax_help_source.dart';
 import 'package:pseudolearn_app/engine/rust/rust_transport.dart';
 
 const String fibonacci =
-    'Algoritmo P\nDefinir a, b, c, i Como Entero;\na <- 0;\nb <- 1;\n'
+    'Algoritmo P\nDefinir Mutable a Como Entero <- 0;\n'
+    'Definir Mutable b Como Entero <- 1;\n'
+    'Definir Mutable c Como Entero <- 0;\n'
     'Para i <- 1 Hasta 20 Con Paso 1 Hacer\nc <- a + b;\na <- b;\nb <- c;\n'
     'FinPara\nEscribir a;\nFinAlgoritmo\n';
 
@@ -113,7 +115,8 @@ void main() {
     execution.startExecution(
       sourceCode:
           'Clase C\nPublico Definir value Como Entero;\nFinClase\n'
-          'Algoritmo P\nDefinir x Como C;\nx <- Nuevo C();\nx.value <- 4;\nFinAlgoritmo\n',
+          'Algoritmo P\nDefinir x Como C <- Nuevo C();\n'
+          'x.value <- 4;\nFinAlgoritmo\n',
       profileId: SyntaxProfileId.classicSpanish,
       languageId: UiLanguageId.spanish,
     );
@@ -132,7 +135,9 @@ void main() {
   test('multidimensional arrays expose their shape', () async {
     final execution = RustProgramExecution(transport);
     execution.startExecution(
-      sourceCode: 'Algoritmo P\nDimension m[2,3] Como Entero;\nFinAlgoritmo\n',
+      sourceCode:
+          'Algoritmo P\nDimension m[2,3] Como Entero;\n'
+          'm[0,0] <- 7;\nEscribir m[0,0];\nFinAlgoritmo\n',
       profileId: SyntaxProfileId.classicSpanish,
       languageId: UiLanguageId.spanish,
     );
@@ -152,8 +157,10 @@ void main() {
     execution.startExecution(
       sourceCode:
           'Clase N\nPublico Definir otro Como N;\nFinClase\n'
-          'Algoritmo P\nDefinir a, b, c Como N;\na <- Nuevo N();\nb <- Nuevo N();\n'
-          'a.otro <- b;\nb.otro <- a;\nc <- a;\nFinAlgoritmo\n',
+          'Algoritmo P\nDefinir a Como N <- Nuevo N();\n'
+          'Definir b Como N <- Nuevo N();\n'
+          'Definir c Como N <- a;\na.otro <- b;\n'
+          'b.otro <- a;\nFinAlgoritmo\n',
       profileId: SyntaxProfileId.classicSpanish,
       languageId: UiLanguageId.spanish,
     );
@@ -173,8 +180,8 @@ void main() {
     final execution = RustProgramExecution(transport);
     execution.startExecution(
       sourceCode:
-          'Algoritmo P\nDefinir t Como Cadena;\nDefinir k Como Caracter;\n'
-          't <- "hola";\nk <- \'z\';\nFinAlgoritmo\n',
+          'Algoritmo P\nDefinir t Como Cadena <- "hola";\n'
+          'Definir k Como Caracter <- \'z\';\nEscribir k;\nFinAlgoritmo\n',
       profileId: SyntaxProfileId.classicSpanish,
       languageId: UiLanguageId.spanish,
     );
@@ -229,7 +236,8 @@ void main() {
     final execution = RustProgramExecution(transport);
     execution.startExecution(
       sourceCode:
-          'Algoritmo P\nDefinir x Como Entero;\nLeer x;\nEscribir x;\nFinAlgoritmo\n',
+          'Algoritmo P\nDefinir Mutable x Como Entero <- 0;\n'
+          'Leer x;\nEscribir x;\nFinAlgoritmo\n',
       profileId: SyntaxProfileId.classicSpanish,
       languageId: UiLanguageId.spanish,
     );
@@ -251,7 +259,8 @@ void main() {
     final execution = RustProgramExecution(transport);
     execution.startExecution(
       sourceCode:
-          'Algoritmo P\nDefinir x Como Entero;\nx <- 0;\nEscribir 1 div x;\nFinAlgoritmo\n',
+          'Algoritmo P\nDefinir x Como Entero <- 0;\n'
+          'Escribir 1 div x;\nFinAlgoritmo\n',
       profileId: SyntaxProfileId.classicSpanish,
       languageId: UiLanguageId.spanish,
     );
@@ -268,7 +277,8 @@ void main() {
     final analyzer = RustProgramAnalyzer(RustAnalysisApi(transport));
     final report = analyzer.analyze(
       sourceCode:
-          'Algoritmo P\nDefinir a Como Entero;\na <- "texto";\nFinAlgoritmo\n',
+          'Algoritmo P\nDefinir a Como Entero <- 1;\n'
+          'a <- "texto";\nFinAlgoritmo\n',
       profileId: SyntaxProfileId.classicSpanish,
       languageId: UiLanguageId.spanish,
     );
