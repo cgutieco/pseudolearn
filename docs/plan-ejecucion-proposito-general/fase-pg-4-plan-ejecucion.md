@@ -905,7 +905,7 @@ lo que documente su README tras la iteración 4. Desde `apps/pseudolearn_app`: `
 |---|---|---|---|
 | `PG-4.01` | Completa | `.01`–`.07`; 15 casos bilingües, 4 felices, 6 de diagnóstico y 5 de límite; verificaciones ligeras previas en verde. Tras las correcciones, `see validate` validó 187 especificaciones; `lock --check` y `see export --check` pasan. La conformidad pesada ejecutó 7 contratos de `engine`: 246 observaciones, 0 divergencias (`LANG.TASK.SUSPENSION` 60, `LANG.CAPABILITY.PURITY` 92, `LANG.LEXICAL.KEYWORD` 20, `LANG.LEXICAL.IDENTIFIER` 38, `LANG.PROFILE.VOCABULARY` y `LANG.PROFILE.TRANSLATION` 8 cada uno, `LANG.SYNTAX.GRAMMAR` 20). `cargo test -p pseudolearn_syntax`: 59 tests, 0 fallos. Se corrigieron los programas de `C3`, `C4`, `C14`, `C15` y `C23`; se preservaron esperados, estados y versiones. La evidencia previa con hashes obsoletos se conservó bajo nombres `*.before-pg-4-01-07-2026-10-28.json` en `results/` | PG-4 continúa abierta; esta casilla no declara cerrada la fase |
 | `PG-4.02` | Parcial; `.07` bloqueada en AOT | `.01`–`.06`; revisión de SCOPE en `engine`: código 0, 132 observaciones y 0 divergencias. CLEANUP: evidencia anterior vigente de `engine`, 52 observaciones y 0 divergencias, sin repetición en esta revisión. Se conservaron esperados, estados y versiones de los ocho casos corregidos; `validate` (187), `lock --check` y `export --check` pasan | AOT de SCOPE: código 1, rechazo `nativeTasksUnsupported` y respuesta sin cinta; el corredor aborta con `SEE-RECORDING` antes de guardar resultados. El `aot.json` anterior es de MEMORY y no certifica SCOPE. Falta el soporte nativo de `PG-4.12.04`; R5 y R6 siguen `pendiente` con resolución declarada en `PG-4.07`. La ruta de rechazo de `PG-4.12.07` no equivale a conformidad. Por §10.1 no se continúa con CLEANUP ni diferenciales. `.07`, PG-4.02 y PG-4 permanecen abiertos (`PHASE-GREEN`, `PHASE-STOP`) |
-| `PG-4.03` | Implementación y ligera completas | `.01`–`.06`; reglas `R11`–`R16`, casos bilingües `C23`–`C31`, agregación de errores, tipos exactos, obligaciones del vínculo, cancelación y limpiezas de ámbitos anidados; tests filtrados y verificadores de esta iteración en verde | `.07` pesada pendiente; asociados probados como datos terminales, cancelación real probada en VM; no se declara cerrada la fase PG-4 |
+| `PG-4.03` | Implementación y ligera completas; pesada parcial | `.01`–`.06`; reglas `R11`–`R16`, casos bilingües `C23`–`C31`, agregación de errores, tipos exactos, obligaciones del vínculo, cancelación y limpiezas de ámbitos anidados; tests filtrados y verificadores de esta iteración en verde. `.07` en `engine`: 132 observaciones, 0 divergencias | `.07` en `aot` aborta con `SEE-RECORDING` por `nativeTasksUnsupported`; falta `.12.04`. No se declara cerrada la casilla ni PG-4 |
 | `PG-4.04` | Implementación y ligera completas | `.01`–`.06`; `LANG.TASK.CHANNEL`, 21 casos bilingües, ABI, almacenamiento contabilizado, colas FIFO, contrapresión, cierre, selección textual y raíces VM; tests filtrados y verificadores de esta iteración en verde | `.07` pesada pendiente; ejecución AOT y serialización histórica completa pertenecen a tareas posteriores |
 | `PG-4.05` | Implementación y ligera completas | `.01`–`.06`; `ENG.TASK.AGENDA#R7`, cinco casos bilingües, clasificación de progreso y `taskDeadlock` con ubicaciones relacionadas; pruebas VM distinguen efecto pendiente y efecto abandonado | `.07` pesada pendiente; integración completa de abandono con cinta pertenece a PG-4.10 |
 | `PG-4.06` | Implementación, ligera y pesada de `engine` completas; pesada de `aot` parcial | `.01`–`.06`; `LANG.TASK.ISOLATION` (`R1`–`R7`, 28 casos bilingües), `Instantanea` en VM y en AOT (`rt_aot_snapshot_copy`); `conform --subject engine`: ISOLATION 100 observaciones y LIB.MODEL 20, 0 divergencias | `.07` sin cerrar: en `aot` quedan `C1` y `C19` (usan `Lanzar`) y el `differential` los reporta; las reglas `R1` y `R3` siguen `pendiente` en `conformance-aot.yaml` |
@@ -1103,6 +1103,23 @@ Decisiones de implementación de esta iteración:
 6. **App.** No se amplía `AstConstruct`; los textos de cabecera de los diagramas salen del propio nodo.
 7. **Generador de agendas.** Cada semilla produce un programa propio (parámetros en el texto) en lugar de ocho
    plantillas con `Argumentos`, porque no hay ejecución nativa que compilar por familia.
+
+Registro de ejecución de `PG-4.03.07` (2026-10-28):
+
+- Preparación: rama `feature/agregar-ruta-de-especificacion`, árbol limpio, 39 GiB libres al inicio. Se preservaron
+  `engine.json`, `aot.json` y sus matrices con copias y hashes bajo
+  `packages/pseudolearn_spec/results/pg-4-03-07-2026-10-28/`; no se liberó espacio porque no hizo falta.
+- `cargo run --locked -p see_cli --bin see -- conform --subject engine --only LANG.TASK.SCOPE`: código 0, 132
+  observaciones y 0 divergencias. Evidencia y matriz guardadas en el directorio anterior. Los archivos completos
+  `engine.json` y `matrix-engine.json` se restauraron y sus hashes coinciden con las copias previas.
+- `cargo build --locked --bin pseudo`: código 0. `cargo run --locked -p see_cli --bin see -- conform --subject aot
+  --only LANG.TASK.SCOPE`: código 1, `SEE-RECORDING`; los casos terminan `failed/analysisFailed` con
+  `nativeTasksUnsupported` y el corredor no recibe cinta. El adaptador AOT reprodujo tres solicitudes aisladas:
+  C1 y C15 con y sin grabación; las tres responden el mismo diagnóstico y no producen eventos ni cinta.
+- La selección se detuvo en el primer error como exige §10.1; no se ejecutaron `differential` ni otros contratos.
+  `aot.json` y `matrix-aot.json` conservaron sus hashes previos. La causa es la ausencia del soporte nativo de
+  `.12.04`, no una divergencia de los casos de fallo de tarea; no se alteraron corpus, esperados ni código.
+- Queda `.07` abierta y PG-4 sin cerrar (`PHASE-GREEN`, `PHASE-STOP`). Sin commit ni push; 39 GiB libres al terminar.
 
 ---
 
