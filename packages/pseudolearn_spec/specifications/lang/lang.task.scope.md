@@ -222,8 +222,8 @@
     "flexible"
   ],
   "programas": {
-    "es": "SubProceso Suspendible Print(value Como Entero)\nEscribir value;\nFinSubProceso\nAlgoritmo P\nTareas\nLanzar Print(1);\nLanzar Print(2);\nFinTareas\nFinAlgoritmo\n",
-    "en": "subroutine suspendable Print(value as integer)\nwrite value;\nendSubroutine\nalgorithm P\ntasks\nspawn Print(1);\nspawn Print(2);\nendTasks\nendAlgorithm\n"
+    "es": "SubProceso Suspendible EmitValue(value Como Entero)\nEscribir value;\nFinSubProceso\nAlgoritmo P\nTareas\nLanzar EmitValue(1);\nLanzar EmitValue(2);\nFinTareas\nFinAlgoritmo\n",
+    "en": "subroutine suspendable EmitValue(value as integer)\nwrite value;\nendSubroutine\nalgorithm P\ntasks\nspawn EmitValue(1);\nspawn EmitValue(2);\nendTasks\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -467,8 +467,8 @@
     "flexible"
   ],
   "programas": {
-    "es": "SubProceso Suspendible Use(items Como Vector<Entero>)\nFinSubProceso\nAlgoritmo P\nDefinir items Como Vector<Entero> <- Vector<Entero>();\nTareas\nLanzar Use(items);\nFinTareas\nFinAlgoritmo\n",
-    "en": "subroutine suspendable Use(items as vector<integer>)\nendSubroutine\nalgorithm P\ndefine items as vector<integer> <- vector<integer>();\ntasks\nspawn Use(items);\nendTasks\nendAlgorithm\n"
+    "es": "SubProceso Suspendible Use(items Como Vector<Entero>)\nFinSubProceso\nAlgoritmo P\nDefinir items Como Vector<Entero> <- Vector();\nTareas\nLanzar Use(items);\nFinTareas\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Use(items as vector<integer>)\nendSubroutine\nalgorithm P\ndefine items as vector<integer> <- vector();\ntasks\nspawn Use(items);\nendTasks\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -497,8 +497,8 @@
     "flexible"
   ],
   "programas": {
-    "es": "SubProceso Suspendible Use(value Como Entero Por Referencia)\nFinSubProceso\nAlgoritmo P\nDefinir value Como Entero <- 1;\nTareas\nLanzar Use(value);\nFinTareas\nFinAlgoritmo\n",
-    "en": "subroutine suspendable Use(value as integer by reference)\nendSubroutine\nalgorithm P\ndefine value as integer <- 1;\ntasks\nspawn Use(value);\nendTasks\nendAlgorithm\n"
+    "es": "SubProceso Suspendible Use(value Como Entero Por Referencia)\nFinSubProceso\nAlgoritmo P\nDefinir Mutable value Como Entero <- 1;\nTareas\nLanzar Use(value);\nFinTareas\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Use(value as integer by reference)\nendSubroutine\nalgorithm P\ndefine mutable value as integer <- 1;\ntasks\nspawn Use(value);\nendTasks\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -557,8 +557,8 @@
     "flexible"
   ],
   "programas": {
-    "es": "SubProceso Suspendible Work() Como Entero\nRetornar 1;\nFinSubProceso\nAlgoritmo P\nTareas\nDefinir t Como Tarea<Entero> <- Lanzar Work();\nDefinir other Como Tarea<Entero> <- Lanzar Work();\nt <- other;\nFinTareas\nFinAlgoritmo\n",
-    "en": "subroutine suspendable Work() as integer\nreturn 1;\nendSubroutine\nalgorithm P\ntasks\ndefine t as task<integer> <- spawn Work();\ndefine other as task<integer> <- spawn Work();\nt <- other;\nendTasks\nendAlgorithm\n"
+    "es": "SubProceso Suspendible Work() Como Entero\nRetornar 1;\nFinSubProceso\nAlgoritmo P\nTareas\nDefinir Mutable t Como Tarea<Entero> <- Lanzar Work();\nDefinir other Como Tarea<Entero> <- Lanzar Work();\nt <- other;\nFinTareas\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Work() as integer\nreturn 1;\nendSubroutine\nalgorithm P\ntasks\ndefine mutable t as task<integer> <- spawn Work();\ndefine other as task<integer> <- spawn Work();\nt <- other;\nendTasks\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -617,8 +617,8 @@
     "flexible"
   ],
   "programas": {
-    "es": "SubProceso Suspendible Work() Como Entero\nRetornar 1;\nFinSubProceso\nAlgoritmo P\nTareas\nDefinir t Como Tarea<Entero> <- Lanzar Work();\nDefinir closure Como SubProceso() <- SubProceso()\nDescartar t;\nFinSubProceso;\nFinTareas\nFinAlgoritmo\n",
-    "en": "subroutine suspendable Work() as integer\nreturn 1;\nendSubroutine\nalgorithm P\ntasks\ndefine t as task<integer> <- spawn Work();\ndefine closure as subroutine() <- subroutine()\ndiscard t;\nendSubroutine;\nendTasks\nendAlgorithm\n"
+    "es": "SubProceso Suspendible Work() Como Entero\nRetornar 1;\nFinSubProceso\nAlgoritmo P\nTareas\nDefinir t Como Tarea<Entero> <- Lanzar Work();\nDefinir closure Como SubProceso() <- SubProceso()\nDefinir captured Como Tarea<Entero> <- t;\nFinSubProceso;\nFinTareas\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Work() as integer\nreturn 1;\nendSubroutine\nalgorithm P\ntasks\ndefine t as task<integer> <- spawn Work();\ndefine closure as subroutine() <- subroutine()\ndefine captured as task<integer> <- t;\nendSubroutine;\nendTasks\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -677,11 +677,20 @@
     "flexible"
   ],
   "programas": {
-    "es": "SubProceso Suspendible Wait() Como Entero\nDefinir timer Como Temporizador <- Propagar SolicitarTemporizador();\nDiferir\nEscribir \"cleanup-first\";\nFinDiferir\nDiferir\nEscribir \"cleanup-second\";\nFinDiferir\nRetornar Propagar Aguardar timer.Esperar(100);\nFinSubProceso\nSubProceso Suspendible Fail() Como Resultado<Entero, Cadena>\nRetornar Error(\"failed\");\nFinSubProceso\nAlgoritmo P\nTareas failure\nDefinir waiting Como Tarea<Entero> <- Lanzar Wait();\nDefinir failed Como Tarea<Entero> <- Lanzar Fail();\nFinTareas\nSegun failure Hacer\nNada: Escribir \"ok\";\nAlgo(problem): Escribir problem.Primero;\nFinSegun\nFinAlgoritmo\n",
-    "en": "subroutine suspendable Wait() as integer\ndefine timer as Timer <- propagate requestTimer();\ndefer\nwrite \"cleanup-first\";\nendDefer\ndefer\nwrite \"cleanup-second\";\nendDefer\nreturn propagate await timer.wait(100);\nendSubroutine\nsubroutine suspendable Fail() as result<integer, string>\nreturn failure(\"failed\");\nendSubroutine\nalgorithm P\ntasks failure\ndefine waiting as task<integer> <- spawn Wait();\ndefine failed as task<integer> <- spawn Fail();\nendTasks\nswitch failure do\nnone: write \"ok\";\nsome(problem): write problem.first;\nendSwitch\nendAlgorithm\n"
+    "es": "SubProceso Suspendible Wait() Como Resultado<Entero, Cadena>\nDiferir\nEscribir \"cleanup-first\";\nFinDiferir\nDiferir\nEscribir \"cleanup-second\";\nFinDiferir\nSegun SolicitarTemporizador() Hacer\nExito(timer):\nDefinir limit Como Entero <- 100;\nSegun Aguardar timer.Esperar(limit) Hacer\nExito(value): Retornar Exito(value);\nError(problem): Retornar Error(\"timer\");\nFinSegun\nError(problem): Retornar Error(\"request\");\nFinSegun\nFinSubProceso\nSubProceso Suspendible Fail() Como Resultado<Entero, Cadena>\nRetornar Error(\"failed\");\nFinSubProceso\nAlgoritmo P\nTareas report\nDefinir waiting Como Tarea<Entero> <- Lanzar Wait();\nDefinir failed Como Tarea<Entero> <- Lanzar Fail();\nFinTareas\nSegun report Hacer\nNada: Escribir \"ok\";\nAlgo(problem): Escribir problem.Primero;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Wait() as result<integer, string>\ndefer\nwrite \"cleanup-first\";\nendDefer\ndefer\nwrite \"cleanup-second\";\nendDefer\nswitch requestTimer() do\nsuccess(timer):\ndefine limit as integer <- 100;\nswitch await timer.wait(limit) do\nsuccess(value): return success(value);\nfailure(problem): return failure(\"timer\");\nendSwitch\nfailure(problem): return failure(\"request\");\nendSwitch\nendSubroutine\nsubroutine suspendable Fail() as result<integer, string>\nreturn failure(\"failed\");\nendSubroutine\nalgorithm P\ntasks report\ndefine waiting as task<integer> <- spawn Wait();\ndefine failed as task<integer> <- spawn Fail();\nendTasks\nswitch report do\nnone: write \"ok\";\nsome(problem): write problem.first;\nendSwitch\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
+  "anfitrion": {
+    "permissions": [
+      "temporizador"
+    ],
+    "requested_permissions": [
+      "temporizador"
+    ],
+    "grabar_y_reproducir": true
+  },
   "espera": {
     "salida": "cleanup-second\ncleanup-first\nfailed\n",
     "terminacion": "completed"
@@ -702,11 +711,20 @@
     "flexible"
   ],
   "programas": {
-    "es": "SubProceso Suspendible Wait() Como Entero\nDefinir timer Como Temporizador <- Propagar SolicitarTemporizador();\nDiferir\nEscribir \"grandchild\";\nFinDiferir\nRetornar Propagar Aguardar timer.Esperar(100);\nFinSubProceso\nSubProceso Suspendible Child()\nDiferir\nEscribir \"child\";\nFinDiferir\nTareas\nLanzar Wait();\nFinTareas\nFinSubProceso\nSubProceso Suspendible Fail() Como Resultado<Entero, Cadena>\nRetornar Error(\"failed\");\nFinSubProceso\nAlgoritmo P\nTareas failure\nLanzar Child();\nLanzar Fail();\nFinTareas\nSegun failure Hacer\nNada: Escribir \"ok\";\nAlgo(problem): Escribir problem.Primero;\nFinSegun\nFinAlgoritmo\n",
-    "en": "subroutine suspendable Wait() as integer\ndefine timer as Timer <- propagate requestTimer();\ndefer\nwrite \"grandchild\";\nendDefer\nreturn propagate await timer.wait(100);\nendSubroutine\nsubroutine suspendable Child()\ndefer\nwrite \"child\";\nendDefer\ntasks\nspawn Wait();\nendTasks\nendSubroutine\nsubroutine suspendable Fail() as result<integer, string>\nreturn failure(\"failed\");\nendSubroutine\nalgorithm P\ntasks failure\nspawn Child();\nspawn Fail();\nendTasks\nswitch failure do\nnone: write \"ok\";\nsome(problem): write problem.first;\nendSwitch\nendAlgorithm\n"
+    "es": "SubProceso Suspendible Wait(stream Como Canal<Entero>) Como Resultado<Entero, Cadena>\nDiferir\nEscribir \"grandchild\";\nFinDiferir\nDefinir accepted Como Logico <- Aguardar stream.Enviar(1);\nSi accepted Entonces\nSino\nRetornar Error(\"closed\");\nFinSi\nSegun SolicitarTemporizador() Hacer\nExito(timer):\nDefinir limit Como Entero <- 100;\nSegun Aguardar timer.Esperar(limit) Hacer\nExito(value): Retornar Exito(value);\nError(problem): Retornar Error(\"timer\");\nFinSegun\nError(problem): Retornar Error(\"request\");\nFinSegun\nFinSubProceso\nSubProceso Suspendible Child(stream Como Canal<Entero>)\nDiferir\nEscribir \"child\";\nFinDiferir\nTareas childReport\nLanzar Wait(stream);\nFinTareas\nDescartar childReport;\nFinSubProceso\nSubProceso Suspendible Fail(stream Como Canal<Entero>) Como Resultado<Entero, Cadena>\nSegun Aguardar stream.Recibir() Hacer\nAlgo(signal): Retornar Error(\"failed\");\nNada: Retornar Error(\"closed\");\nFinSegun\nFinSubProceso\nAlgoritmo P\nDefinir stream Como Canal<Entero> <- Canal(1);\nTareas report\nLanzar Child(stream);\nLanzar Fail(stream);\nFinTareas\nSegun report Hacer\nNada: Escribir \"ok\";\nAlgo(problem): Escribir problem.Primero;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Wait(stream as channel<integer>) as result<integer, string>\ndefer\nwrite \"grandchild\";\nendDefer\ndefine accepted as boolean <- await stream.send(1);\nif accepted then\nelse\nreturn failure(\"closed\");\nendIf\nswitch requestTimer() do\nsuccess(timer):\ndefine limit as integer <- 100;\nswitch await timer.wait(limit) do\nsuccess(value): return success(value);\nfailure(problem): return failure(\"timer\");\nendSwitch\nfailure(problem): return failure(\"request\");\nendSwitch\nendSubroutine\nsubroutine suspendable Child(stream as channel<integer>)\ndefer\nwrite \"child\";\nendDefer\ntasks childReport\nspawn Wait(stream);\nendTasks\ndiscard childReport;\nendSubroutine\nsubroutine suspendable Fail(stream as channel<integer>) as result<integer, string>\nswitch await stream.receive() do\nsome(signal): return failure(\"failed\");\nnone: return failure(\"closed\");\nendSwitch\nendSubroutine\nalgorithm P\ndefine stream as channel<integer> <- channel(1);\ntasks report\nspawn Child(stream);\nspawn Fail(stream);\nendTasks\nswitch report do\nnone: write \"ok\";\nsome(problem): write problem.first;\nendSwitch\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
+  "anfitrion": {
+    "permissions": [
+      "temporizador"
+    ],
+    "requested_permissions": [
+      "temporizador"
+    ],
+    "grabar_y_reproducir": true
+  },
   "espera": {
     "salida": "grandchild\nchild\nfailed\n",
     "terminacion": "completed"
@@ -827,12 +845,21 @@
     "flexible"
   ],
   "programas": {
-    "es": "SubProceso Suspendible Wait() Como Entero\nDiferir\nEscribir \"cleanup\";\nFinDiferir\nDefinir timer Como Temporizador <- Propagar SolicitarTemporizador();\nRetornar Propagar Aguardar timer.Esperar(100);\nFinSubProceso\nAlgoritmo P\nTareas\nLanzar Wait();\nFinTareas\nFinAlgoritmo\n",
-    "en": "subroutine suspendable Wait() as integer\ndefer\nwrite \"cleanup\";\nendDefer\ndefine timer as Timer <- propagate requestTimer();\nreturn propagate await timer.wait(100);\nendSubroutine\nalgorithm P\ntasks\nspawn Wait();\nendTasks\nendAlgorithm\n"
+    "es": "SubProceso Suspendible Wait() Como Resultado<Entero, Cadena>\nDiferir\nEscribir \"cleanup\";\nFinDiferir\nSegun SolicitarTemporizador() Hacer\nExito(timer):\nDefinir limit Como Entero <- 100;\nSegun Aguardar timer.Esperar(limit) Hacer\nExito(value): Retornar Exito(value);\nError(problem): Retornar Error(\"timer\");\nFinSegun\nError(problem): Retornar Error(\"request\");\nFinSegun\nFinSubProceso\nAlgoritmo P\nTareas failureReport\nLanzar Wait();\nFinTareas\nDescartar failureReport;\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Wait() as result<integer, string>\ndefer\nwrite \"cleanup\";\nendDefer\nswitch requestTimer() do\nsuccess(timer):\ndefine limit as integer <- 100;\nswitch await timer.wait(limit) do\nsuccess(value): return success(value);\nfailure(problem): return failure(\"timer\");\nendSwitch\nfailure(problem): return failure(\"request\");\nendSwitch\nendSubroutine\nalgorithm P\ntasks failureReport\nspawn Wait();\nendTasks\ndiscard failureReport;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
   "cancelacion": 3,
+  "anfitrion": {
+    "permissions": [
+      "temporizador"
+    ],
+    "requested_permissions": [
+      "temporizador"
+    ],
+    "grabar_y_reproducir": false
+  },
   "espera": {
     "salida": "",
     "terminacion": "cancelled"

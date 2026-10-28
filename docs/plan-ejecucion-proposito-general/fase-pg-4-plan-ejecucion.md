@@ -454,21 +454,23 @@ marca `[x]` sin evidencia en §11.
   retornada, capturada y pasada); cancelación (hija suspendida en canal cancelada por fallo de hermana ejecuta sus
   `Diferir` en orden inverso; nieta cancelada antes que su madre); límite (`Aguardar t` dos veces; ámbito cuya unión no
   suspende porque las hijas ya terminaron; cancelación de una tarea que espera un efecto concurrente ⇒ efecto
-  `abandoned`). El corpus conserva `C1`–`C22`: `C22` verifica la clausura, `C15` y `C16` describen la cancelación y
-  el orden de limpiezas, y `C19` espera `abandoned` en la cinta. La integración de `C15`–`C16` aún no se ejecuta en
-  VM y falta el caso de cancelación mientras una hija espera un canal (`LANG.TASK.CHANNEL`, `PG-4.04.01`).
+  `abandoned`). `C22` verifica la clausura; `C15` y `C16`, la cancelación y el orden de limpiezas; `C19`, el
+  efecto `abandoned`; `C33` (añadido en `PG-4.04`) cancela mientras una hija espera un canal. La conformidad del
+  motor de estos casos quedó verificada en `PG-4.02.07`.
 - [x] `PG-4.02.03` Tests espejo: `task_scope_checker_tests.rs`, `task_handles_tests.rs` en semantic;
   `task_agenda_tests.rs` (cancelación y unión como estructura de datos) en runtime.
 - [x] `PG-4.02.04` Código: semantic (`task_scope_checker.rs`, `task_handles.rs`); lowering (`task_scopes.rs`, aristas
   de unión en `cleanup_edges.rs`); runtime (`task_agenda.rs`, `task_state.rs`); VM (`machine/tasks.rs`). La RI ahora
   declara `O94`–`O100`; lowering genera operaciones de ámbito, lanzamiento, espera y unión; la agenda FIFO y la VM
-  ejecutan tareas hijas con bancos y marcos aislados, resultados exitosos, esperas repetidas y unión de ámbitos
-  anidados. La recolección incluye las raíces de contextos suspendidos. Sigue pendiente conectar el fallo de una hija
-  con la cancelación de hermanas y la ejecución de `Diferir` (`PG-4.03`), además de esperas por canal y efecto
-  (`PG-4.04`) y continuaciones compartidas con AOT (`PG-4.08`).
+  ejecutan tareas hijas con bancos y marcos aislados, resultados, esperas repetidas, unión de ámbitos anidados,
+  cancelación cooperativa, limpiezas y esperas por canal y efecto (integradas en `PG-4.03`, `PG-4.04` y `PG-4.10`).
+  La recolección incluye las raíces de contextos suspendidos. AOT sigue rechazando operaciones de tarea según
+  `PG-4.12.04`.
 - [x] `PG-4.02.05` README del motor (`semantic`, `lowering`, `runtime`, `vm`).
 - [x] `PG-4.02.06` Ligera: tests de los módulos anteriores, `rust-checks`, Clippy por crate tocado.
-- [ ] `PG-4.02.07` Pesada: `--only LANG.TASK.SCOPE,LANG.CONTROL.CLEANUP` en `engine` y `aot`.
+- [ ] `PG-4.02.07` Pesada: `--only LANG.TASK.SCOPE,LANG.CONTROL.CLEANUP` en `engine` y `aot`. `engine` pasa
+  ambos contratos; `aot` detiene `LANG.TASK.SCOPE` con `nativeTasksUnsupported`, rechazo previsto por `PG-4.12.04`.
+  Queda abierta: no se ejecutaron el segundo contrato AOT ni el diferencial, conforme a la parada de §10.1.
 
 ### PG-4.03 · Política de fallos: el primero por orden lógico cancela a los hermanos; los demás se conservan
 
@@ -900,7 +902,7 @@ lo que documente su README tras la iteración 4. Desde `apps/pseudolearn_app`: `
 | Tarea | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
 | `PG-4.01` | Completa | `.01`–`.07`; 15 casos bilingües, 4 felices, 6 de diagnóstico y 5 de límite; verificaciones ligeras previas en verde. Tras las correcciones, `see validate` validó 187 especificaciones; `lock --check` y `see export --check` pasan. La conformidad pesada ejecutó 7 contratos de `engine`: 246 observaciones, 0 divergencias (`LANG.TASK.SUSPENSION` 60, `LANG.CAPABILITY.PURITY` 92, `LANG.LEXICAL.KEYWORD` 20, `LANG.LEXICAL.IDENTIFIER` 38, `LANG.PROFILE.VOCABULARY` y `LANG.PROFILE.TRANSLATION` 8 cada uno, `LANG.SYNTAX.GRAMMAR` 20). `cargo test -p pseudolearn_syntax`: 59 tests, 0 fallos. Se corrigieron los programas de `C3`, `C4`, `C14`, `C15` y `C23`; se preservaron esperados, estados y versiones. La evidencia previa con hashes obsoletos se conservó bajo nombres `*.before-pg-4-01-07-2026-10-28.json` en `results/` | PG-4 continúa abierta; esta casilla no declara cerrada la fase |
-| `PG-4.02` | Parcial; no cerrada | `.01`, `.03` y `.05`; avances de `.02` (`C22`, `C15`, `C16`, `C19`) y `.04` (RI `O94`–`O100`, lowering, agenda FIFO, ejecución VM y raíces suspendidas); 25 tests filtrados, `rust-checks all .`, Clippy de siete crates, formato dirigido, `see validate` (183 especificaciones), `lock --check`, `see export --check` y `git diff --check` pasan | `.02` aún requiere el caso y la ejecución de cancelación mientras una hija espera un canal; `.04` aún no conecta fallo de hija, cancelación cooperativa y limpiezas, ni esperas por canal/efecto o AOT. `.06` queda respaldada por estas verificaciones ligeras; `.07` sigue reservada para la iteración 5. `PHASE-GREEN` no se cumple para cerrar PG-4.02 |
+| `PG-4.02` | Parcial; pesada de `engine` completa, `aot` pendiente | `.01`–`.06`; `LANG.TASK.SCOPE` en `engine`: 132 observaciones, 0 divergencias; `LANG.CONTROL.CLEANUP` en `engine`: 52 observaciones, 0 divergencias. `see validate` (187), `lock --check`, `see export --check` y `git diff --check` pasan. Los programas de `C1`, `C8`, `C9`, `C11`, `C13`, `C15`, `C16` y `C20` se corrigieron conservando esperados, estados y versiones | `aot --only LANG.TASK.SCOPE` termina con `SEE-RECORDING`/`nativeTasksUnsupported`, conforme a la ruta de rechazo aprobada en `PG-4.12.04`; R5 y R6 nativas siguen pendientes de `PG-4.07`. Por §10.1 no se ejecutaron `LANG.CONTROL.CLEANUP` en AOT ni el diferencial. `.07` queda abierta; no se cumple `PHASE-GREEN` para cerrar PG-4.02 ni PG-4 |
 | `PG-4.03` | Implementación y ligera completas | `.01`–`.06`; reglas `R11`–`R16`, casos bilingües `C23`–`C31`, agregación de errores, tipos exactos, obligaciones del vínculo, cancelación y limpiezas de ámbitos anidados; tests filtrados y verificadores de esta iteración en verde | `.07` pesada pendiente; asociados probados como datos terminales, cancelación real probada en VM; no se declara cerrada la fase PG-4 |
 | `PG-4.04` | Implementación y ligera completas | `.01`–`.06`; `LANG.TASK.CHANNEL`, 21 casos bilingües, ABI, almacenamiento contabilizado, colas FIFO, contrapresión, cierre, selección textual y raíces VM; tests filtrados y verificadores de esta iteración en verde | `.07` pesada pendiente; ejecución AOT y serialización histórica completa pertenecen a tareas posteriores |
 | `PG-4.05` | Implementación y ligera completas | `.01`–`.06`; `ENG.TASK.AGENDA#R7`, cinco casos bilingües, clasificación de progreso y `taskDeadlock` con ubicaciones relacionadas; pruebas VM distinguen efecto pendiente y efecto abandonado | `.07` pesada pendiente; integración completa de abandono con cinta pertenece a PG-4.10 |
@@ -920,6 +922,16 @@ raíces suspendidas ante GC; el corpus valida y las pruebas ligeras pasan · Ver
 `git diff --check` · Pendientes de `.02`: ejecución de cancelación por fallo con `Diferir` y cancelación durante
 espera de canal; AOT y conformidad pesada (`.07`) siguen en sus tareas futuras · `PHASE-GREEN` no satisfecho para
 cerrar PG-4.02 ni la fase PG-4 (`PHASE-STOP`).
+
+Registro de ejecución de `PG-4.02.07` (2026-10-28): se corrigieron los programas de `LANG.TASK.SCOPE#C1`, `C8`,
+`C9`, `C11`, `C13`, `C15`, `C16` y `C20`, conservando esperados, estados y versiones, y se reancló el contrato.
+`engine` ejecutó `LANG.TASK.SCOPE` (132 observaciones) y `LANG.CONTROL.CLEANUP` (52), ambos con cero divergencias.
+El primer comando AOT, `conform --subject aot --only LANG.TASK.SCOPE`, se detuvo con `SEE-RECORDING` y
+`nativeTasksUnsupported`, comportamiento previsto por `PG-4.12.04`; por §10.1 no se ejecutaron
+`LANG.CONTROL.CLEANUP` en AOT ni `differential`. `see validate` validó 187 especificaciones; `lock --check`,
+`export --check` y `git diff --check` pasan. El disco tenía 40 GiB libres (targets: 326 MiB y 338 MiB); no hizo
+falta liberar espacio. Rama única, sin commit ni push. La casilla `.07` queda abierta y PG-4.02 no se declara
+cerrada (`PHASE-GREEN`, `PHASE-STOP`).
 
 
 Registro de la iteración conjunta autorizada de PG-4.03 a PG-4.05:
