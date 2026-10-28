@@ -418,27 +418,27 @@ marca `[x]` sin evidencia en §11.
 
 ### PG-4.01 · Funciones suspendibles y espera explícita, con identidad sintáctica bilingüe
 
-- [ ] `PG-4.01.01` Crear `LANG.TASK.SUSPENSION` (estable `1.0.0`, sujetos `engine` y `aot`, sin `cambio`) con
+- [x] `PG-4.01.01` Crear `LANG.TASK.SUSPENSION` (estable `1.0.0`, sujetos `engine` y `aot`, sin `cambio`) con
   `U1`–`U8`. Editar como texto oficial `LANG.PROFILE.VOCABULARY` (identidades de §3.3 que use esta regla),
   `LANG.SYNTAX.GRAMMAR` (producciones del modificador y del prefijo `Aguardar`), `LANG.CAPABILITY.PURITY` (regla
   nueva: una `Funcion` no es suspendible ni contiene `Aguardar`), `DIAG.CATALOG` y `DIAG.MESSAGES` (códigos
   `suspendibleModifierNotAllowed`, `suspendibleAsValue`, `awaitOutsideSuspendible`, `awaitInsideDefer`,
   `awaitOperandInvalid`, `suspendibleCallWithoutAwait`, con plantillas `es`/`en`).
-- [ ] `PG-4.01.02` Casos derivados de la regla (nunca capturados del motor): feliz (`Aguardar` de unidad suspendible
+- [x] `PG-4.01.02` Casos derivados de la regla (nunca capturados del motor): feliz (`Aguardar` de unidad suspendible
   en la raíz, cadena de tres unidades suspendibles, `Aguardar` dentro de una expresión aritmética y dentro de un
   argumento); infeliz (uno por código de diagnóstico); límite (unidad suspendible sin ningún punto de suspensión,
-  recursión suspendible de profundidad 3, identificador de un carácter, programa con `Aguardar` de un efecto ya
-  resuelto que no suspende). Cada caso en `es` y `en`.
-- [ ] `PG-4.01.03` Tests espejo: `pseudolearn_syntax` (árbol sin pérdida con el modificador contextual: `Suspendible`
+  recursión suspendible de profundidad 3, identificador de un carácter, `Suspendible` como identificador fuera de la
+  cabecera y programa con `Aguardar` de un efecto ya resuelto que no suspende). Cada caso en `es` y `en`.
+- [x] `PG-4.01.03` Tests espejo: `pseudolearn_syntax` (árbol sin pérdida con el modificador contextual: `Suspendible`
   sigue siendo identificador fuera de esa posición), `pseudolearn_semantic` (`suspension_checker_tests.rs`,
   `await_checker_tests.rs`).
-- [ ] `PG-4.01.04` Código: regenerar el léxico desde el corpus (`GEN-NO-HAND-COPY`; nunca editar el vocabulario
+- [x] `PG-4.01.04` Código: regenerar el léxico desde el corpus (`GEN-NO-HAND-COPY`; nunca editar el vocabulario
   generado a mano); producciones en `pseudolearn_syntax`; `suspension_checker.rs` y `await_checker.rs` en
   `pseudolearn_semantic`; marca `suspendible` en el HIR de la unidad; integración con `effect_check.rs`.
-- [ ] `PG-4.01.05` README de `pseudolearn_engine` (secciones `syntax` y `semantic`).
-- [ ] `PG-4.01.06` Ligera: `see validate`, `lock --check`, `cargo test -p pseudolearn_syntax <filtro>`,
-  `cargo test -p pseudolearn_semantic --lib suspension_checker await_checker`, `rust-checks all .` y Clippy de los dos
-  crates.
+- [x] `PG-4.01.05` README de `pseudolearn_engine` (secciones `syntax` y `semantic`).
+- [x] `PG-4.01.06` Ligera: `see validate`, `lock --check`, `cargo test -p pseudolearn_syntax <filtro>`,
+  `cargo test -p pseudolearn_semantic --lib suspension_checker`, `cargo test -p pseudolearn_semantic --lib
+  await_checker`, `rust-checks all .` y Clippy de los dos crates.
 - [ ] `PG-4.01.07` Pesada: `see conform --subject engine --only LANG.TASK.SUSPENSION,LANG.CAPABILITY.PURITY` y
   conjunto centinela léxico (§7.1.4).
 
@@ -890,7 +890,7 @@ lo que documente su README tras la iteración 4. Desde `apps/pseudolearn_app`: `
 
 | Tarea | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
-| `PG-4.01` | | | |
+| `PG-4.01` | Completa | `.01`–`.06`; 15 casos bilingües, 4 felices, 6 de diagnóstico y 5 de límite; tests filtrados de ambos crates, `rust-checks all .`, Clippy de ambos crates, `rustfmt --check` dirigido y `git diff --check` pasan. `see validate` validó 182 especificaciones; `lock --check` y `see export --check` verificaron sus artefactos. Reanclados los nueve IDs autorizados, sin cambiar estados ni versiones | `.07` pesado se difiere a la iteración 5 |
 | `PG-4.02` | | | |
 | `PG-4.03` | | | |
 | `PG-4.04` | | | |
@@ -902,10 +902,15 @@ lo que documente su README tras la iteración 4. Desde `apps/pseudolearn_app`: `
 | `PG-4.10` | | | |
 | `PG-4.11` | | | |
 | `PG-4.12` | | | |
-| Espacio liberado (§13) | | | |
+| Espacio liberado (§13) | Ejecutado | 2,8 GiB iniciales; limpieza de artefactos regenerables elevó el espacio libre a 33 GiB antes de compilar; quedan 32 GiB tras las verificaciones | Sin tocar datos personales ni evidencias |
 
-Revisión Git de cierre: · Verificadores ejecutados: · Suites omitidas y motivo: · Pendientes justificados: · Puntos de
-§4 cumplidos: · Decisiones de la persona:
+Revisión Git de cierre: cambios locales en `feature/agregar-ruta-de-especificacion`, sin commit ni push · Verificadores
+ejecutados: `see validate`, `lock --check`, `see export --check`, tests filtrados de `pseudolearn_syntax`,
+`suspension_checker` y `await_checker`, `rust-checks all .`, Clippy de ambos crates, comprobación de formato dirigida y
+`git diff --check` · Suites omitidas y motivo: conformidad pesada y conjunto centinela léxico (`PG-4.01.07`, reservados
+a la iteración 5) · Pendientes justificados: `.07` pesado · Puntos de §4 cumplidos: `.01`–`.06`; `PHASE-GREEN` cumplido para
+esta iteración · Decisiones de la persona: revisión independiente por Cesar Antonio Gutierrez Contreras y reanclaje
+autorizado; efecto resuelto verificado por salida y terminación `completed`; `task_suspended` queda para la iteración 5
 
 ---
 

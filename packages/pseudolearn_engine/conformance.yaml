@@ -6,6 +6,7 @@
     "ENG.EFFECT.TAPE",
     "LANG.CAPABILITY.MODEL",
     "LANG.CAPABILITY.PURITY",
+    "LANG.TASK.SUSPENSION",
     "LIB.IO",
     "LIB.TIME",
     "RT.HOST.INTERFACE",
@@ -1658,6 +1659,53 @@
       "regla": "LANG.CAPABILITY.PURITY@1.0.0#R5",
       "verificacion": "crates/pseudolearn_semantic/src/effect_check.rs",
       "estado": "cumple"
+    },
+    {
+      "regla": "LANG.CAPABILITY.PURITY@1.0.0#R6",
+      "verificacion": "crates/pseudolearn_semantic/src/await_checker.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TASK.SUSPENSION@1.0.0#R1",
+      "verificacion": "crates/pseudolearn_semantic/src/unit_resolver.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TASK.SUSPENSION@1.0.0#R2",
+      "verificacion": "crates/pseudolearn_semantic/src/suspension_checker.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TASK.SUSPENSION@1.0.0#R3",
+      "verificacion": "crates/pseudolearn_semantic/src/await_checker.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TASK.SUSPENSION@1.0.0#R4",
+      "verificacion": "crates/pseudolearn_semantic/src/await_checker.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TASK.SUSPENSION@1.0.0#R5",
+      "verificacion": "crates/pseudolearn_semantic/src/call_checker.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TASK.SUSPENSION@1.0.0#R6",
+      "verificacion": "crates/pseudolearn_semantic/src/await_checker.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TASK.SUSPENSION@1.0.0#R7",
+      "verificacion": "crates/pseudolearn_semantic/src/suspension_checker.rs",
+      "estado": "pendiente",
+      "resuelve_en": "PG-4.07"
+    },
+    {
+      "regla": "LANG.TASK.SUSPENSION@1.0.0#R8",
+      "verificacion": "crates/pseudolearn_api/src/execution_resource.rs",
+      "estado": "pendiente",
+      "resuelve_en": "PG-4.07"
     },
     {
       "regla": "LIB.IO@1.0.0#R1",

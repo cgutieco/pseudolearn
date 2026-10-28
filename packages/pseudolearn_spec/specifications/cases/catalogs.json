@@ -864,6 +864,12 @@
         "es": "SolicitarTemporizador"
       }
     },
+    "suspendibleModifier": {
+      "lexemas": {
+        "en": "suspendable",
+        "es": "Suspendible"
+      }
+    },
     "timerCapabilityType": {
       "lexemas": {
         "en": "Timer",
@@ -1025,6 +1031,48 @@
         "index": "numero",
         "size": "numero"
       }
+    },
+    "awaitInsideDefer": {
+      "argumentos": [],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Await is not allowed inside defer",
+        "es": "Aguardar no se permite dentro de Diferir"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
+    "awaitOperandInvalid": {
+      "argumentos": [],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Await requires a suspendable operation or task handle",
+        "es": "Aguardar requiere una operación suspendible o un asa de tarea"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
+    "awaitOutsideSuspendible": {
+      "argumentos": [],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Await is only allowed in a suspendable subprogram or root unit",
+        "es": "Aguardar solo se permite en una unidad suspendible o raíz"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
     },
     "bindingOutsideScope": {
       "argumentos": [
@@ -3854,6 +3902,48 @@
       },
       "tipos_argumentos": {}
     },
+    "suspendibleAsValue": {
+      "argumentos": [],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "A suspendable subprogram cannot be used as a value",
+        "es": "Una unidad suspendible no se puede usar como valor"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
+    "suspendibleCallWithoutAwait": {
+      "argumentos": [],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "A call to a suspendable subprogram must use await",
+        "es": "La llamada a una unidad suspendible debe llevar Aguardar"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
+    "suspendibleModifierNotAllowed": {
+      "argumentos": [],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "The suspendable modifier is not allowed on this declaration",
+        "es": "El modificador Suspendible no se admite en esta declaración"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
     "thisOutsideMethod": {
       "argumentos": [],
       "clase": "syntax",
@@ -5021,14 +5111,15 @@
       "algorithmUnit": "@algorithm, identifier, line, body, @endAlgorithm, line",
       "arguments": "@leftParenthesis, [ expressions ], @rightParenthesis",
       "assignmentStatement": "designator, @assignment, expression",
+      "awaitExpression": "@awaitKeyword, unary",
       "body": "{ trivia | statement | conditional | switch | whileLoop | repeatLoop | forLoop | forEachLoop | deferStatement }",
       "breakStatement": "identifier",
-      "callStatement": "identifier, arguments | postfix, @dot, identifier, arguments | @superClass, @dot, ( identifier | @constructor ), arguments",
+      "callStatement": "identifier, arguments | postfix, @dot, identifier, arguments | @superClass, @dot, ( identifier | @constructor ), arguments | awaitExpression",
       "classUnit": "@classKeyword, identifier, [ @inheritsFrom, identifier ], [ realization ], line, { fieldDeclaration | methodMember | constructorMember }, @endClass, line",
       "conditional": "@ifKeyword, expression, @then, line, body, [ @elseKeyword, line, body ], @endIf, line",
       "conjunction": "equality, { @and, equality }",
       "constantDeclaration": "@constantKeyword, identifier, @typeConnector, type, @assignment, expression",
-      "constructorMember": "@method, @constructor, parameters, line, body, @endMethod, line",
+      "constructorMember": "@method, @constructor, [ @suspendibleModifier ], parameters, line, body, @endMethod, line",
       "declaration": "@declare, [ @mutableKeyword ], identifier, @typeConnector, type, @assignment, expression",
       "deferStatement": "identifier, line, body, identifier, line",
       "designator": "identifier, { @leftBracket, expressions, @rightBracket | @dot, identifier }",
@@ -5046,7 +5137,7 @@
       "fieldDeclaration": "[ visibility ], ( fieldBinding | dimensionDeclaration ), terminator",
       "forEachLoop": "@forKeyword, identifier, iterationBindings, identifier, expression, @doKeyword, line, body, @endFor, line",
       "forLoop": "@forKeyword, identifier, @assignment, expression, @to, expression, [ @step, expression ], @doKeyword, line, body, @endFor, line",
-      "functionLiteral": "@subroutine, parameters, [ @typeConnector, type ], line, body, @endSubroutine",
+      "functionLiteral": "@subroutine, [ @suspendibleModifier ], parameters, [ @typeConnector, type ], line, body, @endSubroutine",
       "functionParameterType": "type, [ @byValue | @byReference ]",
       "functionType": "@subroutine, @leftParenthesis, [ functionParameterType, { @comma, functionParameterType } ], @rightParenthesis, [ @typeConnector, type ]",
       "importDeclaration": "@importKeyword, modulePath, [ @typeConnector, identifier ], terminator",
@@ -5058,7 +5149,7 @@
       "labels": "pattern, { @comma, pattern }",
       "line": "endOfLine | endOfFile",
       "literal": "signedInteger | realLiteral | characterLiteral | stringLiteral | @booleanTrue | @booleanFalse",
-      "methodMember": "[ visibility ], @method, identifier, parameters, [ @typeConnector, type ], line, body, @endMethod, line",
+      "methodMember": "[ visibility ], @method, [ @suspendibleModifier ], identifier, parameters, [ @typeConnector, type ], line, body, @endMethod, line",
       "moduleDirective": "importDeclaration | exportDeclaration",
       "modulePath": "identifier, { @dot, identifier }",
       "moduleUnit": "[ visibility ], ( subprogram | classUnit | interfaceUnit | enumUnit | recordUnit | constantDeclaration, terminator )",
@@ -5081,7 +5172,7 @@
       "returnStatement": "@returnKeyword, [ expression ]",
       "signedInteger": "[ @plus | @minus ], integerLiteral",
       "statement": "( declaration | constantDeclaration | dimensionDeclaration | assignmentStatement | output | input | callStatement | returnStatement | discardStatement | breakStatement ), terminator",
-      "subprogram": "@subroutine, identifier, [ typeParameters ], parameters, [ @typeConnector, type ], line, body, @endSubroutine, line",
+      "subprogram": "@subroutine, [ @suspendibleModifier ], identifier, [ typeParameters ], parameters, [ @typeConnector, type ], line, body, @endSubroutine, line",
       "switch": "@switchKeyword, expression, @doKeyword, line, { labels, @branchSeparator, body }, [ @defaultCase, @branchSeparator, body ], @endSwitch, line",
       "terminator": "@semicolon | endOfLine",
       "trivia": "whitespace | comment | endOfLine",
@@ -5089,7 +5180,7 @@
       "typeArguments": "@lessThan, type, { @comma, type }, @greaterThan",
       "typeParameter": "identifier, [ @branchSeparator, identifier ]",
       "typeParameters": "@lessThan, typeParameter, { @comma, typeParameter }, @greaterThan",
-      "unary": "( @plus | @minus | @not ), unary | postfix | propagation",
+      "unary": "( @plus | @minus | @not ), unary | awaitExpression | postfix | propagation",
       "variantConstruction": "@noneVariant | ( @someVariant | @successVariant | @errorVariant ), @leftParenthesis, expression, @rightParenthesis",
       "variantPattern": "@noneVariant | ( @someVariant | @successVariant | @errorVariant ), @leftParenthesis, identifier, @rightParenthesis",
       "visibility": "@publicVisibility | @privateVisibility",
@@ -5193,7 +5284,9 @@
       "successVariant",
       "errorVariant",
       "propagateKeyword",
-      "discardKeyword"
+      "discardKeyword",
+      "awaitKeyword",
+      "suspendibleModifier"
     ]
   },
   "helpCatalog": {
@@ -6799,6 +6892,11 @@
             "element": "R1",
             "specification": "LANG.SUBPROGRAM.DECLARATION",
             "version": "1.0.0"
+          },
+          {
+            "element": "R1",
+            "specification": "LANG.TASK.SUSPENSION",
+            "version": "1.0.0"
           }
         ],
         "availability": {
@@ -6850,6 +6948,10 @@
               {
                 "identity": "typeConnector",
                 "text": "Separates declared names from the type they receive."
+              },
+              {
+                "identity": "suspendibleModifier",
+                "text": "Marks a subprogram that may suspend."
               }
             ],
             "purpose": "The return type is optional, and the closing form must match the opener.",
@@ -6891,6 +6993,10 @@
               {
                 "identity": "typeConnector",
                 "text": "Separa los nombres declarados del tipo que reciben."
+              },
+              {
+                "identity": "suspendibleModifier",
+                "text": "Marca un subprograma que puede suspenderse."
               }
             ],
             "purpose": "El tipo de retorno es opcional; la forma de cierre debe corresponder a la apertura.",
@@ -6925,6 +7031,14 @@
             "identity": "typeConnector",
             "source": {
               "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "suspendibleModifier",
+            "source": {
+              "element": "D2",
               "specification": "LANG.PROFILE.VOCABULARY",
               "version": "1.0.0"
             }
@@ -9907,6 +10021,11 @@
             "element": "R1",
             "specification": "LANG.OPS.PRECEDENCE",
             "version": "1.0.0"
+          },
+          {
+            "element": "R2",
+            "specification": "LANG.TASK.SUSPENSION",
+            "version": "1.0.0"
           }
         ],
         "availability": {
@@ -9958,6 +10077,10 @@
               {
                 "identity": "not",
                 "text": "Reverses the logical value of its operand."
+              },
+              {
+                "identity": "awaitKeyword",
+                "text": "Waits for a suspendible operation in a prefix expression."
               }
             ],
             "purpose": "Unary use is distinguished from binary use by its syntactic position.",
@@ -9999,6 +10122,10 @@
               {
                 "identity": "not",
                 "text": "Invierte el valor lógico de su operando."
+              },
+              {
+                "identity": "awaitKeyword",
+                "text": "Espera una operación suspendible en una expresión prefija."
               }
             ],
             "purpose": "El uso unario se distingue del uso binario por la posición sintáctica.",
@@ -10031,6 +10158,14 @@
           },
           {
             "identity": "not",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "awaitKeyword",
             "source": {
               "element": "D1",
               "specification": "LANG.PROFILE.VOCABULARY",
@@ -12370,7 +12505,8 @@
           "tokens": [
             "subroutine",
             "endSubroutine",
-            "typeConnector"
+            "typeConnector",
+            "suspendibleModifier"
           ]
         },
         {
@@ -12748,7 +12884,8 @@
           "tokens": [
             "plus",
             "minus",
-            "not"
+            "not",
+            "awaitKeyword"
           ]
         },
         {
@@ -13135,6 +13272,16 @@
       "lexemas": {
         "en": "<-",
         "es": "<-"
+      }
+    },
+    "awaitKeyword": {
+      "alias": {
+        "en": [],
+        "es": []
+      },
+      "lexemas": {
+        "en": "await",
+        "es": "Aguardar"
       }
     },
     "booleanFalse": {

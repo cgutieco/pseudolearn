@@ -1100,3 +1100,49 @@
   }
 }
 ```
+
+```regla
+{
+  "id": "R6",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Una Funcion o Function no es suspendible y no puede contener Aguardar. Aguardar dentro de una función pura produce awaitOutsideSuspendible; la comprobación de pureza preserva este diagnóstico específico.",
+  "verificacion": [
+    "C23"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C23",
+  "regla": "R6",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "pureFunctionTransitiveSideEffect",
+        "severidad": "error"
+      },
+      {
+        "codigo": "awaitOutsideSuspendible",
+        "severidad": "error"
+      }
+    ]
+  },
+  "programas": {
+    "es": "SubProceso Suspendible Worker()\nFinSubProceso\nFuncion Calculate() Como Entero\nRetornar Aguardar Worker();\nFinFuncion\nAlgoritmo P\nEscribir Calculate();\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Worker()\nendSubroutine\nfunction Calculate() as integer\nreturn await Worker();\nend function\nalgorithm P\nwrite Calculate();\nendAlgorithm\n"
+  }
+}
+```

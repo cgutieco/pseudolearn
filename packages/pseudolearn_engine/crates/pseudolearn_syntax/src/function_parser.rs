@@ -47,6 +47,12 @@ pub(crate) fn literal(state: &mut ParserState<'_>) -> Result<usize, ()> {
     state.unit_context = NodeKind::Subprogram;
     state.inside_method = false;
     state.advance();
+    if crate::contextual::matches(state, "suspendibleModifier") {
+        let modifier = state.token();
+        let modifier_marker = state.nodes.len();
+        state.advance();
+        state.finish(NodeKind::SuspendibleModifier, modifier, modifier_marker);
+    }
     state.enter()?;
     let result = literal_body(state, (start, marker));
     state.leave();

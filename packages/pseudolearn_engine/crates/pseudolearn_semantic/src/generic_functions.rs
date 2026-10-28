@@ -14,6 +14,7 @@ struct SavedState {
     control: crate::control_context::ControlContext,
     closures: Vec<crate::function_model::ClosureFrame>,
     declarations: std::collections::BTreeMap<usize, Vec<crate::identities::LocalId>>,
+    awaited_calls: Vec<usize>,
     environment: Vec<(String, TypeId)>,
 }
 
@@ -28,6 +29,7 @@ impl SavedState {
             control: std::mem::take(&mut session.control),
             closures: std::mem::take(&mut session.closure_stack),
             declarations: std::mem::take(&mut session.declarations),
+            awaited_calls: std::mem::take(&mut session.awaited_calls),
             environment: std::mem::take(&mut session.generic.environment),
         }
     }
@@ -41,6 +43,7 @@ impl SavedState {
         session.control = self.control;
         session.closure_stack = self.closures;
         session.declarations = self.declarations;
+        session.awaited_calls = self.awaited_calls;
         session.generic.environment = self.environment;
     }
 }
@@ -110,6 +113,7 @@ fn register(
         closing_span: session.closing_span(template.node),
         syntax: template.node,
         private: false,
+        suspendible: false,
     });
     session.current = identifier;
     session.bindings = crate::block_scopes::BlockScopes::default();

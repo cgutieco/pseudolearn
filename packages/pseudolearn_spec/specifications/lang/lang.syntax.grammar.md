@@ -91,15 +91,15 @@
       "whileLoop": "@whileKeyword, expression, @doKeyword, line, body, @endWhile, line",
       "repeatLoop": "@repeat, line, body, @until, expression, line",
       "forLoop": "@forKeyword, identifier, @assignment, expression, @to, expression, [ @step, expression ], @doKeyword, line, body, @endFor, line",
-      "subprogram": "@subroutine, identifier, [ typeParameters ], parameters, [ @typeConnector, type ], line, body, @endSubroutine, line",
+      "subprogram": "@subroutine, [ @suspendibleModifier ], identifier, [ typeParameters ], parameters, [ @typeConnector, type ], line, body, @endSubroutine, line",
       "parameters": "@leftParenthesis, [ parameter, { @comma, parameter } ], @rightParenthesis",
       "parameter": "identifier, [ @leftBracket, { @comma }, @rightBracket ], [ @typeConnector, type ], [ @byValue | @byReference ]",
       "returnStatement": "@returnKeyword, [ expression ]",
       "classUnit": "@classKeyword, identifier, [ @inheritsFrom, identifier ], [ realization ], line, { fieldDeclaration | methodMember | constructorMember }, @endClass, line",
       "visibility": "@publicVisibility | @privateVisibility",
       "fieldDeclaration": "[ visibility ], ( fieldBinding | dimensionDeclaration ), terminator",
-      "methodMember": "[ visibility ], @method, identifier, parameters, [ @typeConnector, type ], line, body, @endMethod, line",
-      "constructorMember": "@method, @constructor, parameters, line, body, @endMethod, line",
+      "methodMember": "[ visibility ], @method, [ @suspendibleModifier ], identifier, parameters, [ @typeConnector, type ], line, body, @endMethod, line",
+      "constructorMember": "@method, @constructor, [ @suspendibleModifier ], parameters, line, body, @endMethod, line",
       "expressions": "expression, { @comma, expression }",
       "expression": "disjunction",
       "disjunction": "conjunction, { @or, conjunction }",
@@ -109,10 +109,11 @@
       "addition": "multiplication, { ( @plus | @minus ), multiplication }",
       "multiplication": "powerExpression, { ( @multiply | @divide | @integerDivide | @modulo ), powerExpression }",
       "powerExpression": "unary, [ @power, powerExpression ]",
-      "unary": "( @plus | @minus | @not ), unary | postfix | propagation",
+      "unary": "( @plus | @minus | @not ), unary | awaitExpression | postfix | propagation",
+      "awaitExpression": "@awaitKeyword, unary",
       "postfix": "primary, { @dot, identifier, [ arguments ] | @leftBracket, expressions, @rightBracket }",
       "primary": "literal | identifier, [ arguments ] | @leftParenthesis, expression, @rightParenthesis | instantiation | @thisObject, @dot, identifier, [ arguments ] | @superClass, @dot, ( identifier | @constructor ), arguments | variantConstruction | functionLiteral",
-      "callStatement": "identifier, arguments | postfix, @dot, identifier, arguments | @superClass, @dot, ( identifier | @constructor ), arguments",
+      "callStatement": "identifier, arguments | postfix, @dot, identifier, arguments | @superClass, @dot, ( identifier | @constructor ), arguments | awaitExpression",
       "arguments": "@leftParenthesis, [ expressions ], @rightParenthesis",
       "instantiation": "@newInstance, identifier, arguments",
       "literal": "signedInteger | realLiteral | characterLiteral | stringLiteral | @booleanTrue | @booleanFalse",
@@ -125,7 +126,7 @@
       "pattern": "literal | signedInteger | identifier, @dot, identifier | variantPattern",
       "variantPattern": "@noneVariant | ( @someVariant | @successVariant | @errorVariant ), @leftParenthesis, identifier, @rightParenthesis",
       "propagation": "@propagateKeyword, unary",
-      "functionLiteral": "@subroutine, parameters, [ @typeConnector, type ], line, body, @endSubroutine",
+      "functionLiteral": "@subroutine, [ @suspendibleModifier ], parameters, [ @typeConnector, type ], line, body, @endSubroutine",
       "functionType": "@subroutine, @leftParenthesis, [ functionParameterType, { @comma, functionParameterType } ], @rightParenthesis, [ @typeConnector, type ]",
       "functionParameterType": "type, [ @byValue | @byReference ]",
       "typeParameters": "@lessThan, typeParameter, { @comma, typeParameter }, @greaterThan",
@@ -237,7 +238,9 @@
       "successVariant",
       "errorVariant",
       "propagateKeyword",
-      "discardKeyword"
+      "discardKeyword",
+      "awaitKeyword",
+      "suspendibleModifier"
     ]
   }
 }
@@ -248,11 +251,12 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "D1 define la EBNF normativa con terminales de identidad abstracta, no lexemas de idioma. Coma es concatenación, | alternativa, [] opcional y {} repetición. Identificadores, literales, trivia y EOF son categorías léxicas. Las exigencias de rigor y restricciones de designador, anidamiento, retorno y listas se aplican además de las producciones; estricto exige semicolon en sentencias simples. El postfix no admite índices encadenados del mismo arreglo. Cada producción debe resolver sus referencias y ser alcanzable desde program.",
+  "texto": "D1 define la EBNF normativa con terminales de identidad abstracta, no lexemas de idioma. Coma es concatenación, | alternativa, [] opcional y {} repetición. Identificadores, literales, trivia y EOF son categorías léxicas. Las exigencias de rigor y restricciones de designador, anidamiento, retorno y listas se aplican además de las producciones; estricto exige semicolon en sentencias simples. El postfix no admite índices encadenados del mismo arreglo. Suspendible es un modificador válido solo en la cabecera de un subprograma tras el terminal subroutine; la gramática reconoce también su aparición en las demás posiciones declarativas para que el análisis semántico produzca suspendibleModifierNotAllowed. Aguardar es un operador prefijo de la producción awaitExpression. Cada producción debe resolver sus referencias y ser alcanzable desde program.",
   "verificacion": [
     "C1",
     "C2",
-    "C3"
+    "C3",
+    "C4"
   ]
 }
 ```
@@ -329,6 +333,31 @@
         "severidad": "error"
       }
     ]
+  },
+  "rigor": [
+    "estricto",
+    "flexible"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C4",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "SubProceso Suspendible Worker() Como Entero\nRetornar 1;\nFinSubProceso\nAlgoritmo P\nDefinir Suspendible Como Entero <- 1;\nEscribir Aguardar Worker(), Suspendible;\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Worker() as integer\nreturn 1;\nendSubroutine\nalgorithm P\ndefine suspendable as integer <- 1;\nwrite await Worker(), suspendable;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": []
   },
   "rigor": [
     "estricto",

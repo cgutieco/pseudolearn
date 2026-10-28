@@ -1,13 +1,14 @@
 #![forbid(unsafe_code)]
 
 use crate::hir::HirFunction;
-use crate::identities::{ClassId, ExpressionId, StatementId};
-use crate::interface_model::InterfaceId;
+use crate::identities::{ExpressionId, StatementId};
 use crate::session::AnalysisSession;
 use crate::statement_model::HirStatement;
 use pseudolearn_diagnostics::DiagnosticCode;
 use std::collections::{BTreeMap, BTreeSet};
 
+#[path = "effect_interface_realizations.rs"]
+mod effect_interface_realizations;
 #[path = "effect_pure_values.rs"]
 mod effect_pure_values;
 
@@ -16,7 +17,7 @@ pub(crate) fn check(session: &mut AnalysisSession<'_>) {
     let mut call_edges: BTreeMap<usize, BTreeSet<usize>> = BTreeMap::new();
     for (index, function) in session.module.functions.iter().enumerate() {
         let mut calls = BTreeSet::new();
-        if function_has_direct_effects(session, function, &mut calls) {
+        if function.suspendible || function_has_direct_effects(session, function, &mut calls) {
             direct_effects.insert(index);
         }
         call_edges.insert(index, calls);
@@ -29,16 +30,24 @@ pub(crate) fn check(session: &mut AnalysisSession<'_>) {
             continue;
         }
         if direct_effects.contains(&index) {
-            reports.push((DiagnosticCode::PureFunctionSideEffect, function.syntax, index));
+            reports.push((
+                DiagnosticCode::PureFunctionSideEffect,
+                function.syntax,
+                index,
+            ));
         } else if reasons.contains_key(&index) {
-            reports.push((DiagnosticCode::PureFunctionTransitiveSideEffect, function.syntax, index));
+            reports.push((
+                DiagnosticCode::PureFunctionTransitiveSideEffect,
+                function.syntax,
+                index,
+            ));
         }
     }
     for (code, syntax, index) in reports {
         report_with_chain(session, (code, syntax), &causal_chain(&reasons, index));
     }
     effect_pure_values::check_pure_function_values(session, &reasons);
-    check_interface_realizations(session, &reasons);
+    effect_interface_realizations::check(session, &reasons);
 }
 
 pub(crate) fn report_with_chain(
@@ -70,13 +79,16 @@ pub(crate) fn causal_chain(reasons: &BTreeMap<usize, Option<usize>>, start: usiz
     chain
 }
 
-
 fn attach_function_arguments(
     session: &AnalysisSession<'_>,
     call_edges: &mut BTreeMap<usize, BTreeSet<usize>>,
 ) {
     for expression in &session.module.expressions.kinds {
-        if let crate::expression_model::HirExpression::Call { function, arguments } = expression {
+        if let crate::expression_model::HirExpression::Call {
+            function,
+            arguments,
+        } = expression
+        {
             attach_call_arguments(session, call_edges, *function, arguments);
         }
     }
@@ -90,9 +102,10 @@ fn attach_call_arguments(
 ) {
     let target = usize::try_from(function.0).unwrap_or(usize::MAX);
     for argument in arguments {
-        if let (Some(origin), Some(edges)) =
-            (argument_function_origin(session, *argument), call_edges.get_mut(&target))
-        {
+        if let (Some(origin), Some(edges)) = (
+            argument_function_origin(session, *argument),
+            call_edges.get_mut(&target),
+        ) {
             edges.insert(origin);
         }
     }
@@ -148,7 +161,10 @@ fn block_has_effects(
     body: &[StatementId],
     calls: &mut BTreeSet<usize>,
 ) -> bool {
-    body.iter().filter(|id| statement_effects(session, **id, calls)).count() > 0
+    body.iter()
+        .filter(|id| statement_effects(session, **id, calls))
+        .count()
+        > 0
 }
 
 fn statement_effects(
@@ -164,7 +180,11 @@ fn statement_effects(
     for expression in crate::effect_operands::statement(statement) {
         effects |= crate::effect_calls::collect(session, expression, calls);
     }
-    effects | matches!(statement, HirStatement::Write { .. } | HirStatement::Read(_))
+    effects
+        | matches!(
+            statement,
+            HirStatement::Write { .. } | HirStatement::Read(_)
+        )
         | compound_effects(session, statement, calls)
 }
 
@@ -174,7 +194,11 @@ fn compound_effects(
     calls: &mut BTreeSet<usize>,
 ) -> bool {
     match statement {
-        HirStatement::Conditional { affirmative, negative, .. } => {
+        HirStatement::Conditional {
+            affirmative,
+            negative,
+            ..
+        } => {
             block_has_effects(session, affirmative, calls)
                 | block_has_effects(session, negative, calls)
         }
@@ -224,55 +248,4 @@ fn propagate_effects(
         }
     }
     reasons
-}
-
-fn check_interface_realizations(
-    session: &mut AnalysisSession<'_>,
-    reasons: &BTreeMap<usize, Option<usize>>,
-) {
-    let mut reports = Vec::new();
-    for class_index in 0..session.module.classes.len() {
-        let class = ClassId(u32::try_from(class_index).unwrap_or(u32::MAX));
-        session.enter_class_id(class);
-        for interface_index in 0..session.module.interfaces.len() {
-            let interface = InterfaceId(u32::try_from(interface_index).unwrap_or(u32::MAX));
-            if crate::interface_realizations::satisfies(session, class, interface) {
-                check_class_methods(session, (class, interface), reasons, &mut reports);
-            }
-        }
-    }
-    for (syntax, index) in reports {
-        let chain = causal_chain(reasons, index);
-        report_with_chain(session, (DiagnosticCode::PureFunctionInterfaceImpurity, syntax), &chain);
-    }
-}
-
-fn check_class_methods(
-    session: &AnalysisSession<'_>,
-    (class, interface): (ClassId, InterfaceId),
-    reasons: &BTreeMap<usize, Option<usize>>,
-    reports: &mut Vec<(usize, usize)>,
-) {
-    let Some(model) = session
-        .module
-        .interfaces
-        .get(usize::try_from(interface.0).unwrap_or(usize::MAX))
-        .cloned()
-    else {
-        return;
-    };
-    for expected in model.methods {
-        if !expected.pure {
-            continue;
-        }
-        let Some(found) = crate::hierarchy::find_method(session, class, &expected.name) else {
-            continue;
-        };
-        let index = usize::try_from(found.0).unwrap_or(usize::MAX);
-        if reasons.contains_key(&index) {
-            let syntax =
-                crate::hierarchy::function(session, found).map_or(0, |declaration| declaration.syntax);
-            reports.push((syntax, index));
-        }
-    }
 }

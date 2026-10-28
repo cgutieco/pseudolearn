@@ -139,7 +139,7 @@ fn assignment_or_call(state: &mut ParserState<'_>) -> Result<usize, ()> {
     if state
         .nodes
         .get(target)
-        .is_some_and(|node| node.kind == NodeKind::Postfix)
+        .is_some_and(|node| matches!(node.kind, NodeKind::Postfix | NodeKind::AwaitExpression))
     {
         return Ok(state.finish(NodeKind::CallStatement, start, marker));
     }

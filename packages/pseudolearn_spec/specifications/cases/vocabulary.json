@@ -31,6 +31,10 @@
     "en": "<-",
     "es": ":="
   },
+  "awaitKeyword": {
+    "en": "await",
+    "es": "Aguardar"
+  },
   "booleanFalse": {
     "en": "false",
     "es": "Falso"

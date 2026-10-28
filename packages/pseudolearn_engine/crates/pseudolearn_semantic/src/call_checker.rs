@@ -76,6 +76,7 @@ pub(crate) fn emit_call(
     let result = crate::hierarchy::function(session, function)
         .map(|function| function.result)
         .unwrap_or_else(|| session.module.types.intern(Type::Error));
+    crate::suspension_checker::call(session, (function, node));
     check_result(session, result, (node, purpose));
     session.called.insert(function);
     session.emit(

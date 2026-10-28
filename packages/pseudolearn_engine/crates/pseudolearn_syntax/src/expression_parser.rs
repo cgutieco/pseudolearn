@@ -37,6 +37,14 @@ pub(crate) fn parse_expression(state: &mut ParserState<'_>, minimum: u8) -> Resu
 fn prefix(state: &mut ParserState<'_>) -> Result<usize, ()> {
     let start = state.token();
     let marker = state.nodes.len();
+    if state.kind() == TokenKind::Keyword(KeywordKind::AwaitKeyword) {
+        state.enter()?;
+        state.advance();
+        let result = parse_expression(state, 80);
+        state.leave();
+        result?;
+        return Ok(state.finish(NodeKind::AwaitExpression, start, marker));
+    }
     if matches!(
         state.kind(),
         TokenKind::Plus

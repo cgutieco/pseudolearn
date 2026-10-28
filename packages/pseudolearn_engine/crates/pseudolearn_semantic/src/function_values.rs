@@ -11,6 +11,9 @@ pub(crate) fn reference(
     function: FunctionId,
     node: usize,
 ) -> ExpressionId {
+    if crate::suspension_checker::value(session, (function, node)) {
+        return crate::expression_checker::invalid(session, node);
+    }
     let signature = crate::function_types::signature(session, function);
     let kind = crate::function_types::intern(session, signature, node);
     let wrapper = if let Some(wrapper) = session.module.function_values.get(&function) {
@@ -48,6 +51,7 @@ fn create_wrapper(
         closing_span: session.span(node),
         syntax: node,
         private: true,
+        suspendible: false,
     });
     let parent = std::mem::replace(&mut session.current, wrapper);
     let environment = fill_wrapper(session, &function, original, node);

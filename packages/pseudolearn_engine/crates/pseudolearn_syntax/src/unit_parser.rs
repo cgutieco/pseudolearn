@@ -29,6 +29,12 @@ pub(crate) fn subprogram(state: &mut ParserState<'_>) -> Result<usize, ()> {
     let marker = state.nodes.len();
     state.unit_context = NodeKind::Subprogram;
     state.advance();
+    if crate::contextual::matches(state, "suspendibleModifier") {
+        let modifier = state.token();
+        let modifier_marker = state.nodes.len();
+        state.advance();
+        state.finish(NodeKind::SuspendibleModifier, modifier, modifier_marker);
+    }
     name(state, DiagnosticCode::ExpectedSubroutineName)?;
     crate::generic_parser::optional_parameters(state)?;
     parameters(state)?;
@@ -130,19 +136,7 @@ fn method(state: &mut ParserState<'_>, class_name: u32, modifier: bool) -> Resul
     let marker = state.nodes.len();
     state.advance();
     let constructor = state.kind() == TokenKind::Keyword(KeywordKind::Constructor);
-    check_method_name(state, class_name, constructor)?;
-    if constructor && modifier {
-        let span = state.span();
-        state.report(DiagnosticCode::ConstructorVisibilityNotAllowed, span);
-    }
-    parameters(state)?;
-    if state.keyword(KeywordKind::TypeConnector) {
-        if constructor {
-            let span = state.span();
-            state.report(DiagnosticCode::ConstructorReturnTypeNotAllowed, span);
-        }
-        parse_type(state)?;
-    }
+    parse_method_signature(state, (class_name, constructor, modifier))?;
     state.inside_method = true;
     parse_statement_block(state);
     state.inside_method = false;
@@ -161,6 +155,52 @@ fn method(state: &mut ParserState<'_>, class_name: u32, modifier: bool) -> Resul
         marker,
     );
     Ok(())
+}
+
+fn parse_method_signature(
+    state: &mut ParserState<'_>,
+    (class_name, constructor, modifier): (u32, bool, bool),
+) -> Result<(), ()> {
+    if constructor {
+        check_method_name(state, class_name, true)?;
+        suspendible_modifier(state);
+    } else {
+        suspendible_modifier(state);
+        check_method_name(state, class_name, false)?;
+    }
+    report_constructor_visibility(state, (constructor, modifier));
+    parameters(state)?;
+    parse_method_result(state, constructor)
+}
+
+fn report_constructor_visibility(
+    state: &mut ParserState<'_>,
+    (constructor, modifier): (bool, bool),
+) {
+    if constructor && modifier {
+        let span = state.span();
+        state.report(DiagnosticCode::ConstructorVisibilityNotAllowed, span);
+    }
+}
+
+fn parse_method_result(state: &mut ParserState<'_>, constructor: bool) -> Result<(), ()> {
+    if state.keyword(KeywordKind::TypeConnector) {
+        if constructor {
+            let span = state.span();
+            state.report(DiagnosticCode::ConstructorReturnTypeNotAllowed, span);
+        }
+        parse_type(state)?;
+    }
+    Ok(())
+}
+
+fn suspendible_modifier(state: &mut ParserState<'_>) {
+    if crate::contextual::matches(state, "suspendibleModifier") {
+        let modifier = state.token();
+        let marker = state.nodes.len();
+        state.advance();
+        state.finish(NodeKind::SuspendibleModifier, modifier, marker);
+    }
 }
 
 fn check_method_name(

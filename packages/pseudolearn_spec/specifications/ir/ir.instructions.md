@@ -3431,3 +3431,75 @@
   ]
 }
 ```
+
+```cobertura
+{
+  "id": "V147",
+  "regla": "LANG.CAPABILITY.PURITY#R6",
+  "sin_ri": "El rechazo de Aguardar en una Funcion se determina durante el análisis semántico."
+}
+```
+
+```cobertura
+{
+  "id": "V148",
+  "regla": "LANG.TASK.SUSPENSION#R1",
+  "sin_ri": "La marca suspendible se registra en HIR y no crea una instrucción de la RI."
+}
+```
+
+```cobertura
+{
+  "id": "V149",
+  "regla": "LANG.TASK.SUSPENSION#R2",
+  "sin_ri": "La prohibición de usar una unidad suspendible como valor se verifica durante el análisis semántico."
+}
+```
+
+```cobertura
+{
+  "id": "V150",
+  "regla": "LANG.TASK.SUSPENSION#R3",
+  "sin_ri": "El ámbito suspendible y la prioridad del bloque Diferir se verifican antes del lowering."
+}
+```
+
+```cobertura
+{
+  "id": "V151",
+  "regla": "LANG.TASK.SUSPENSION#R4",
+  "sin_ri": "La validez del operando de Aguardar se comprueba en análisis semántico."
+}
+```
+
+```cobertura
+{
+  "id": "V152",
+  "regla": "LANG.TASK.SUSPENSION#R5",
+  "sin_ri": "La cobertura inmediata de llamadas suspendibles se determina durante el análisis semántico."
+}
+```
+
+```cobertura
+{
+  "id": "V153",
+  "regla": "LANG.TASK.SUSPENSION#R6",
+  "sin_ri": "Aguardar conserva la expresión del operando y no requiere una instrucción nueva de la RI."
+}
+```
+
+```cobertura
+{
+  "id": "V154",
+  "regla": "LANG.TASK.SUSPENSION#R7",
+  "sin_ri": "La profundidad de llamadas se restringe por el análisis y el límite de ejecución, no por una instrucción nueva."
+}
+```
+
+```cobertura
+{
+  "id": "V155",
+  "regla": "LANG.TASK.SUSPENSION#R8",
+  "sin_ri": "El anfitrión resuelve la operación síncrona y Aguardar conserva su valor sin transición pendiente."
+}
+```

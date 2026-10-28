@@ -429,6 +429,16 @@
         ]
       }
     },
+    "awaitKeyword": {
+      "lexemas": {
+        "es": "Aguardar",
+        "en": "await"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      }
+    },
     "endSubroutine": {
       "lexemas": {
         "es": "FinSubProceso",
@@ -1182,6 +1192,12 @@
       "lexemas": {
         "es": "FinDiferir",
         "en": "endDefer"
+      }
+    },
+    "suspendibleModifier": {
+      "lexemas": {
+        "es": "Suspendible",
+        "en": "suspendable"
       }
     },
     "vectorType": {

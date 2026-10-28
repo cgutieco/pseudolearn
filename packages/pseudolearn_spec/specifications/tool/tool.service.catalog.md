@@ -2196,6 +2196,14 @@
               "version": "1.0.0",
               "element": "D1"
             }
+          },
+          {
+            "identity": "suspendibleModifier",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
           }
         ],
         "availability": {
@@ -2214,6 +2222,11 @@
         "anchors": [
           {
             "specification": "LANG.SUBPROGRAM.DECLARATION",
+            "version": "1.0.0",
+            "element": "R1"
+          },
+          {
+            "specification": "LANG.TASK.SUSPENSION",
             "version": "1.0.0",
             "element": "R1"
           }
@@ -2235,6 +2248,10 @@
               {
                 "identity": "typeConnector",
                 "text": "Separa los nombres declarados del tipo que reciben."
+              },
+              {
+                "identity": "suspendibleModifier",
+                "text": "Marca un subprograma que puede suspenderse."
               }
             ],
             "constraints": [],
@@ -2276,6 +2293,10 @@
               {
                 "identity": "typeConnector",
                 "text": "Separates declared names from the type they receive."
+              },
+              {
+                "identity": "suspendibleModifier",
+                "text": "Marks a subprogram that may suspend."
               }
             ],
             "constraints": [],
@@ -5304,6 +5325,14 @@
               "version": "1.0.0",
               "element": "D1"
             }
+          },
+          {
+            "identity": "awaitKeyword",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D1"
+            }
           }
         ],
         "availability": {
@@ -5324,6 +5353,11 @@
             "specification": "LANG.OPS.PRECEDENCE",
             "version": "1.0.0",
             "element": "R1"
+          },
+          {
+            "specification": "LANG.TASK.SUSPENSION",
+            "version": "1.0.0",
+            "element": "R2"
           }
         ],
         "content": {
@@ -5343,6 +5377,10 @@
               {
                 "identity": "not",
                 "text": "Invierte el valor lógico de su operando."
+              },
+              {
+                "identity": "awaitKeyword",
+                "text": "Espera una operación suspendible en una expresión prefija."
               }
             ],
             "constraints": [],
@@ -5384,6 +5422,10 @@
               {
                 "identity": "not",
                 "text": "Reverses the logical value of its operand."
+              },
+              {
+                "identity": "awaitKeyword",
+                "text": "Waits for a suspendible operation in a prefix expression."
               }
             ],
             "constraints": [],
@@ -7741,7 +7783,8 @@
           "tokens": [
             "subroutine",
             "endSubroutine",
-            "typeConnector"
+            "typeConnector",
+            "suspendibleModifier"
           ]
         },
         {
@@ -8119,7 +8162,8 @@
           "tokens": [
             "plus",
             "minus",
-            "not"
+            "not",
+            "awaitKeyword"
           ]
         },
         {

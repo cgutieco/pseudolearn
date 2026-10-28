@@ -25,6 +25,7 @@ pub(crate) fn check_for(
         NodeKind::FunctionLiteral => crate::closure_checker::check(session, node),
         NodeKind::VariantConstruction => crate::variant_checker::check(session, node, None),
         NodeKind::Propagation => crate::variant_checker::propagation(session, node),
+        NodeKind::AwaitExpression => crate::await_checker::check(session, node, purpose),
         NodeKind::Identifier => crate::name_resolution::local(session, node, purpose),
         NodeKind::Literal => literal(session, node),
         NodeKind::Unary => crate::operators::unary(session, node),

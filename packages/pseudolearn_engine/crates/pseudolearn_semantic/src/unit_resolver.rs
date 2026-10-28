@@ -85,19 +85,16 @@ pub(crate) fn register_function(
 ) -> FunctionId {
     let name_node = session.child(node, NodeKind::Identifier).unwrap_or(node);
     let name = session.name(name_node);
-    let result = session
-        .child(node, NodeKind::Type)
-        .map(|node| crate::type_resolution::resolve(session, node))
-        .unwrap_or_else(|| session.module.types.intern(Type::Unit));
+    let result = resolve_result(session, node);
     check_member_result(session, node, (owner, result));
     let kind = function_kind(session, node, result);
+    let suspendible =
+        kind == FunctionKind::Main || crate::suspension_checker::declared(session, node);
     let identifier = FunctionId(u32::try_from(session.module.functions.len()).unwrap_or(u32::MAX));
     let top_level = owner.is_none() && kind != FunctionKind::Main;
     let link_name = session.link_name_if(top_level, &name);
     session.tag_function();
-    if top_level {
-        register_name(session, &name, name_node, identifier);
-    }
+    register_top_level_name(session, (top_level, &name, name_node, identifier));
     let closing = session.closing_span(node);
     session.module.functions.push(HirFunction {
         kind,
@@ -110,12 +107,30 @@ pub(crate) fn register_function(
         closing_span: closing,
         syntax: node,
         private: false,
+        suspendible,
     });
+    crate::suspension_checker::declaration(session, node);
     open_scopes(session);
     session.current = identifier;
     crate::local_registry::parameters(session, node);
 
     identifier
+}
+
+fn resolve_result(session: &mut AnalysisSession<'_>, node: usize) -> crate::identities::TypeId {
+    session
+        .child(node, NodeKind::Type)
+        .map(|type_node| crate::type_resolution::resolve(session, type_node))
+        .unwrap_or_else(|| session.module.types.intern(Type::Unit))
+}
+
+fn register_top_level_name(
+    session: &mut AnalysisSession<'_>,
+    (top_level, name, name_node, identifier): (bool, &str, usize, FunctionId),
+) {
+    if top_level {
+        register_name(session, name, name_node, identifier);
+    }
 }
 
 fn check_member_result(

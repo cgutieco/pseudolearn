@@ -3898,6 +3898,90 @@
       },
       "clase": "syntax",
       "tipos_argumentos": {}
+    },
+    "suspendibleModifierNotAllowed": {
+      "mensajes": {
+        "es": "El modificador Suspendible no se admite en esta declaración",
+        "en": "The suspendable modifier is not allowed on this declaration"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "suspendibleAsValue": {
+      "mensajes": {
+        "es": "Una unidad suspendible no se puede usar como valor",
+        "en": "A suspendable subprogram cannot be used as a value"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "awaitOutsideSuspendible": {
+      "mensajes": {
+        "es": "Aguardar solo se permite en una unidad suspendible o raíz",
+        "en": "Await is only allowed in a suspendable subprogram or root unit"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "awaitInsideDefer": {
+      "mensajes": {
+        "es": "Aguardar no se permite dentro de Diferir",
+        "en": "Await is not allowed inside defer"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "awaitOperandInvalid": {
+      "mensajes": {
+        "es": "Aguardar requiere una operación suspendible o un asa de tarea",
+        "en": "Await requires a suspendable operation or task handle"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "suspendibleCallWithoutAwait": {
+      "mensajes": {
+        "es": "La llamada a una unidad suspendible debe llevar Aguardar",
+        "en": "A call to a suspendable subprogram must use await"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
     }
   }
 }

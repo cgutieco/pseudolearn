@@ -59,7 +59,9 @@ fn register(session: &mut AnalysisSession<'_>, node: usize) -> FunctionId {
         closing_span: session.closing_span(node),
         syntax: node,
         private: true,
+        suspendible: false,
     });
+    crate::suspension_checker::declaration(session, node);
     session.current = identifier;
     identifier
 }

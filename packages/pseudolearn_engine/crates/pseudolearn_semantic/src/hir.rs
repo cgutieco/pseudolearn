@@ -43,6 +43,7 @@ pub struct HirFunction {
     pub closing_span: Span,
     pub syntax: usize,
     pub private: bool,
+    pub suspendible: bool,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq)]

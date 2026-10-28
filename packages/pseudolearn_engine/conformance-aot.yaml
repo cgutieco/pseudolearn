@@ -6,6 +6,7 @@
     "ENG.EFFECT.TAPE",
     "LANG.CAPABILITY.MODEL",
     "LANG.CAPABILITY.PURITY",
+    "LANG.TASK.SUSPENSION",
     "LIB.IO",
     "LIB.TIME",
     "ENG.EXEC.EFFECT-ORDER",
@@ -1272,6 +1273,60 @@
       "regla": "LANG.CAPABILITY.PURITY@1.0.0#R5",
       "verificacion": "ejecutor",
       "estado": "cumple"
+    },
+    {
+      "regla": "LANG.CAPABILITY.PURITY@1.0.0#R6",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "La regla exige un diagnóstico del análisis semántico, que el adaptador AOT no anuncia."
+    },
+    {
+      "regla": "LANG.TASK.SUSPENSION@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "La regla se comprueba durante el análisis semántico, que el adaptador AOT no anuncia."
+    },
+    {
+      "regla": "LANG.TASK.SUSPENSION@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "La regla se comprueba durante el análisis semántico, que el adaptador AOT no anuncia."
+    },
+    {
+      "regla": "LANG.TASK.SUSPENSION@1.0.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "La regla se comprueba durante el análisis semántico, que el adaptador AOT no anuncia."
+    },
+    {
+      "regla": "LANG.TASK.SUSPENSION@1.0.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "La regla se comprueba durante el análisis semántico, que el adaptador AOT no anuncia."
+    },
+    {
+      "regla": "LANG.TASK.SUSPENSION@1.0.0#R5",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "La regla combina análisis estático y evaluación de la llamada, que queda para PG-4.07."
+    },
+    {
+      "regla": "LANG.TASK.SUSPENSION@1.0.0#R6",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "La regla evalúa expresiones con una operación que el adaptador AOT no anuncia en esta iteración."
+    },
+    {
+      "regla": "LANG.TASK.SUSPENSION@1.0.0#R7",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-4.07"
+    },
+    {
+      "regla": "LANG.TASK.SUSPENSION@1.0.0#R8",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-4.07"
     },
     {
       "regla": "LIB.IO@1.0.0#R1",

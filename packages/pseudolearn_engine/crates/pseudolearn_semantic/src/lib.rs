@@ -2,9 +2,12 @@
 
 mod argument_checker;
 mod assignment_checker;
+mod await_checker;
+#[cfg(test)]
+mod await_checker_tests;
 mod builtin_checker;
-pub mod capability_types;
 mod call_checker;
+pub mod capability_types;
 mod checker;
 mod class_registry;
 mod cleanup_checker;
@@ -26,9 +29,9 @@ mod control_checker;
 mod control_context;
 mod diagnostic_arguments;
 mod dimension_checker;
+pub(crate) mod effect_calls;
 pub(crate) mod effect_check;
 pub(crate) mod effect_operands;
-pub(crate) mod effect_calls;
 mod enum_access;
 mod enum_registry;
 mod expression_checker;
@@ -81,6 +84,9 @@ mod session;
 mod session_units;
 mod statement_checker;
 pub mod statement_model;
+mod suspension_checker;
+#[cfg(test)]
+mod suspension_checker_tests;
 mod switch_checker;
 mod type_declarations;
 mod type_resolution;
@@ -158,7 +164,7 @@ pub use pseudolearn_lexicon::Profile;
 
 mod function_containment;
 
-mod effect_types;
 mod effect_checker;
+mod effect_types;
 mod effect_vectors;
-pub use pseudolearn_abi::{EffectValueKind, EffectOperation, EFFECT_OPERATIONS, effect_operation};
+pub use pseudolearn_abi::{EFFECT_OPERATIONS, EffectOperation, EffectValueKind, effect_operation};

@@ -40,7 +40,8 @@
   "texto": "La capa de presentación resuelve plantilla por idioma de interfaz y sustituye argumentos tipados. El idioma de prosa es independiente del vocabulario del programa. Nunca traduce nombres del usuario; tokens usan lexema activo. Cada plantilla usa exactamente sus argumentos requeridos; no quedan marcadores sin resolver. Los mensajes describen el problema y la acción pertinente sin texto del anfitrión.",
   "verificacion": [
     "C1",
-    "C2"
+    "C2",
+    "C3"
   ]
 }
 ```
@@ -92,6 +93,36 @@
   "espera": {
     "arbol": "presente",
     "diagnosticos": []
+  },
+  "rigor": [
+    "estricto",
+    "flexible"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C3",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir Aguardar 1;\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite await 1;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "awaitOperandInvalid",
+        "severidad": "error"
+      }
+    ]
   },
   "rigor": [
     "estricto",

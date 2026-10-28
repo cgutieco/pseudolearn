@@ -145,11 +145,14 @@ Alternativas descartadas: Carbon y Zig inspiran tokens en columnas y postorden; 
 En el modo de archivo suelto, `Importar`/`Exportar` y `import`/`export` son identificadores dentro
 del programa. Las grafías del perfil activo solo se reconocen como directivas de módulo en posición
 de unidad superior y conservan allí `moduleSyntaxOutsideProject`; el modo de proyecto conserva su
-reconocimiento de directivas. No se reserva contexto para otras palabras.
+reconocimiento de directivas. `Suspendible`/`suspendable` es contextual únicamente entre la apertura
+de un `SubProceso` y su nombre, y en esa posición se conserva como nodo del árbol. Fuera de ella
+permanece identificador. `Aguardar`/`await` es reservada y forma un prefijo unario; el parser conserva
+el token y la trivia del operando en el árbol sin pérdida.
 
 ### semantic
 
-Problema: produce un hir tipado desde la resolución estática y verifica contratos de pureza transitiva. Elección: Columnas con índices tipados (`LocalId`, `FunctionId`, `ExpressionId`, `TypeId`); registro de firmas, jerarquía, ámbitos por unidad, tipos y flujo; HIR tipado con la clase de valor de cada expresión; desvirtualización por jerarquía de clases en mundo cerrado; análisis transitivo de efectos (`effect_check`) sobre el grafo cerrado de llamadas, clausuras capturadas, propagación de valores funcionales en argumentos e implementaciones de interfaz.
+Problema: produce un hir tipado desde la resolución estática y verifica contratos de pureza transitiva. Elección: Columnas con índices tipados (`LocalId`, `FunctionId`, `ExpressionId`, `TypeId`); registro de firmas, jerarquía, ámbitos por unidad, tipos y flujo; HIR tipado con la clase de valor de cada expresión y una marca explícita `suspendible` por unidad; desvirtualización por jerarquía de clases en mundo cerrado; análisis transitivo de efectos (`effect_check`) sobre el grafo cerrado de llamadas, clausuras capturadas, propagación de valores funcionales en argumentos e implementaciones de interfaz. `suspension_checker` valida declaraciones y evita que una unidad suspendible escape como valor. `await_checker` exige una unidad suspendible o raíz, rechaza su uso dentro de `Diferir` y valida la llamada directa, mientras que el análisis de expresiones conserva el resultado del operando. Una función pura sigue rechazando el efecto de una unidad suspendible aunque aparezca bajo `Aguardar`.
 Alternativas descartadas: Arenas con índices tipados evitan referencias enlazadas y sus tiempos de vida. Se rechaza Rc<RefCell<…>> por coste y errores dinámicos de préstamo. Se descarta marcar efectos en tiempo de ejecución o confiar en anotaciones manuales sin verificación del grafo de llamadas.
 
 ### project
