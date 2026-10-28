@@ -266,7 +266,7 @@
   "id": "R6",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La API proyecta la terminación awaiting_effect con su efecto pendiente y proporciona la operación effect_result para reanudar la ejecución con el resultado entregado por el anfitrión. Enviar input cuando se espera effect_result o effect_result cuando se espera input produce un error de uso.",
+  "texto": "La API proyecta la terminación awaiting_effect con su efecto pendiente (y, cuando hay más de uno, la lista pending_effects con todos en orden de effect_seq, cada uno con su task_id) y proporciona la operación effect_result para reanudar la ejecución con el resultado entregado por el anfitrión. Enviar input cuando se espera effect_result o effect_result cuando se espera input produce un error de uso.",
   "verificacion": [
     "C5",
     "C6",

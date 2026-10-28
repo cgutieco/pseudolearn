@@ -204,3 +204,16 @@ fn wasm_transport_cases_require_an_actual_wasm_capability() -> Result<(), String
     assert_eq!(required_capabilities(&wasm), vec!["app", "wasm"]);
     Ok(())
 }
+
+#[test]
+fn maps_task_and_channel_capacity_limits_to_the_wire_names() -> Result<(), String> {
+    let built = request(
+        json!({"operacion": "execute", "limites": {"tareas": 3, "capacidad_canal": 8}}),
+        json!({}),
+    )?;
+    assert_eq!(
+        built.get("limits"),
+        Some(&json!({"micro_steps": 100_000, "depth": 1000, "tasks": 3, "channel_capacity": 8}))
+    );
+    Ok(())
+}

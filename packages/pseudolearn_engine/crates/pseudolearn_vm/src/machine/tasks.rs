@@ -17,6 +17,10 @@ pub struct VmTasks {
     pub(super) channel_storage:
         BTreeMap<pseudolearn_runtime::TaskChannelId, pseudolearn_runtime::Handle>,
     pub(super) pending_effects: BTreeMap<TaskId, crate::PendingEffectRequest>,
+    pub(super) abandoned_requests: Vec<crate::PendingEffectRequest>,
+    pub(super) delivery_order: Vec<u64>,
+    pub(super) known_ready: Vec<TaskId>,
+    pub(super) delivered_effects: u64,
     pub(super) pending_delivery: Option<crate::PendingEffectRequest>,
     pub(super) outcomes: BTreeMap<TaskId, (bool, Vec<RuntimeValue>)>,
     pub(super) failures:
@@ -47,6 +51,10 @@ impl Default for VmTasks {
             scope_stacks: BTreeMap::new(),
             channel_storage: BTreeMap::new(),
             pending_effects: BTreeMap::new(),
+            abandoned_requests: Vec::new(),
+            delivery_order: Vec::new(),
+            known_ready: Vec::new(),
+            delivered_effects: 0,
             pending_delivery: None,
             outcomes: BTreeMap::new(),
             failures: BTreeMap::new(),
@@ -67,6 +75,27 @@ impl Default for VmTasks {
 }
 
 impl VmTasks {
+    pub(super) fn abandon_pending_effect(&mut self, task: TaskId) {
+        if let Some(request) = self.pending_effects.remove(&task) {
+            self.abandoned_requests.push(request);
+        }
+    }
+
+    pub(super) fn delivery_rank(&self, sequence: u64) -> (usize, u64) {
+        let rank = self
+            .delivery_order
+            .iter()
+            .position(|candidate| *candidate == sequence)
+            .unwrap_or(usize::MAX);
+        (rank, sequence)
+    }
+
+    pub(super) fn with_task_limit(limit: u64) -> Self {
+        let mut tasks = Self::default();
+        tasks.agenda.set_task_limit(limit);
+        tasks
+    }
+
     pub(super) fn contexts(&self) -> impl Iterator<Item = &TaskContext> {
         self.contexts.values()
     }
@@ -122,6 +151,8 @@ impl Machine<'_> {
         self.allocate_task_storage((task, scope.0), &context, &roots)?;
         self.tasks.contexts.insert(task, context);
         self.set_scalar(destination.index, task.0)?;
+        self.event_task_spawned(task, scope.0);
+        self.sync_ready_events("spawn");
         Ok(Flow::Continue)
     }
 
@@ -147,6 +178,7 @@ impl Machine<'_> {
                     .waiting()
                     .for_task(self.tasks.current, task)
                     .map_err(task_fault)?;
+                self.event_task_suspended("task", task.0);
                 self.schedule_next(true, true)?;
                 Ok(Flow::Continue)
             }
@@ -157,6 +189,12 @@ impl Machine<'_> {
         let scope = TaskScopeId(self.scalar(scope_register)?);
         match self.tasks.agenda.close_scope(scope).map_err(task_fault)? {
             TaskScopeJoin::Joined => {
+                let failed = self
+                    .tasks
+                    .failures
+                    .get(&scope)
+                    .is_some_and(|failures| !failures.errors().is_empty());
+                self.event_scope_joined(failed);
                 if let Some(stack) = self.tasks.scope_stacks.get_mut(&self.tasks.current)
                     && let Some(index) = stack.iter().position(|active| *active == scope)
                 {
@@ -180,6 +218,7 @@ impl Machine<'_> {
             .waiting()
             .for_scope(self.tasks.current, scope)
             .map_err(task_fault)?;
+        self.event_task_suspended("join", scope.0);
         self.schedule_next(true, true)?;
         Ok(Flow::Continue)
     }
@@ -197,6 +236,7 @@ impl Machine<'_> {
             .execution()
             .yield_task(self.tasks.current)
             .map_err(task_fault)?;
+        self.sync_ready_events("yield");
         self.schedule_next(true, false)?;
         Ok(Flow::Continue)
     }
@@ -249,7 +289,7 @@ impl Machine<'_> {
 
 pub(super) fn task_fault(error: TaskAgendaError) -> Fault {
     match error {
-        TaskAgendaError::IdentityExhausted => "taskLimitExceeded",
+        TaskAgendaError::IdentityExhausted | TaskAgendaError::LimitExceeded => "taskLimitExceeded",
         TaskAgendaError::UnknownScope
         | TaskAgendaError::UnknownTask
         | TaskAgendaError::InvalidTransition => INVALID_BYTECODE,

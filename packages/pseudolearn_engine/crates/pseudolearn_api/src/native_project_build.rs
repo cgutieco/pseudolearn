@@ -51,5 +51,7 @@ fn merged(requested: &ExecutionLimits, manifest: &ExecutionLimits) -> ExecutionL
         statements: requested.statements.or(manifest.statements),
         cells: requested.cells.or(manifest.cells),
         micro_steps: requested.micro_steps.or(manifest.micro_steps),
+        tasks: requested.tasks.or(manifest.tasks),
+        channel_capacity: requested.channel_capacity.or(manifest.channel_capacity),
     }
 }

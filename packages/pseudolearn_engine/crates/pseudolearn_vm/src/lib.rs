@@ -12,7 +12,7 @@ mod trap;
 mod vocabulary;
 mod wire;
 
-pub use events::{ChangeBuffer, EventPayload, TraceClass, TraceEvent};
+pub use events::{ChangeBuffer, EventField, EventPayload, TraceClass, TraceEvent};
 pub use load::{LoadedProgram, load};
 pub use machine::{
     ActiveFrameInspection, Cell, Machine, MachineDelta, MachineImage, MachineStateRecord,

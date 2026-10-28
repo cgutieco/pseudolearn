@@ -12,7 +12,7 @@ use super::{Cursor, Flow, Machine};
 const INITIAL_BANK_WORDS: usize = 64;
 
 macro_rules! machine_instance {
-    ($program:ident, $current:ident, $function_index:ident, $fuel:ident, $options:ident, $probed:ident, $inputs:ident) => {
+    ($program:ident, $current:ident, $function_index:ident, $fuel:ident, $options:ident, $probed:ident, $inputs:ident, $task_limit:ident) => {
         Machine {
             program: $program,
             current: $current,
@@ -54,7 +54,7 @@ macro_rules! machine_instance {
             effect_result: None,
             effect_checkpoint: None,
             effect_seq: 0,
-            tasks: super::tasks::VmTasks::default(),
+            tasks: super::tasks::VmTasks::with_task_limit($task_limit),
         }
     };
 }
@@ -122,6 +122,7 @@ impl<'program> Machine<'program> {
         } = initialization;
         let probed = options.twin_mode == TwinMode::Probed;
         let inputs = options.inputs.clone();
+        let task_limit = options.task_limit;
         machine_instance!(
             program,
             current,
@@ -129,7 +130,8 @@ impl<'program> Machine<'program> {
             fuel,
             options,
             probed,
-            inputs
+            inputs,
+            task_limit
         )
     }
 

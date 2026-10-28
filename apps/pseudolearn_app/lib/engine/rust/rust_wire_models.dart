@@ -1,3 +1,5 @@
+import 'rust_event_classes.dart';
+
 final class RustEvent {
   final String eventClass;
   final int line;
@@ -16,8 +18,12 @@ final class RustEvent {
   factory RustEvent.fromJson(Map<String, Object?> json) {
     final source = json['source'];
     final data = json['data'];
+    final eventClass = json['class'] as String;
+    if (!rustKnownEventClass(eventClass)) {
+      throw FormatException('Unknown event class: $eventClass');
+    }
     return RustEvent(
-      eventClass: json['class'] as String,
+      eventClass: eventClass,
       line: json['line'] as int,
       depth: json['depth'] as int,
       data: data is Map<String, Object?> ? data : const {},
@@ -44,6 +50,7 @@ final class PendingEffectRequest {
   final String operation;
   final String argumentsSummary;
   final int? sourceNodeId;
+  final int taskId;
 
   const PendingEffectRequest({
     required this.effectSeq,
@@ -51,6 +58,7 @@ final class PendingEffectRequest {
     required this.operation,
     required this.argumentsSummary,
     this.sourceNodeId,
+    this.taskId = 0,
   });
 
   factory PendingEffectRequest.fromJson(Map<String, Object?> json) =>
@@ -60,6 +68,7 @@ final class PendingEffectRequest {
         operation: (json['operation'] as String?) ?? '',
         argumentsSummary: (json['arguments_summary'] as String?) ?? '',
         sourceNodeId: (json['source_node_id'] as num?)?.toInt(),
+        taskId: (json['task_id'] as num?)?.toInt() ?? 0,
       );
 }
 
@@ -70,6 +79,7 @@ final class RustBatch {
   final String? failureMessage;
   final PendingEffectRequest? pendingEffect;
   final Map<String, Object?>? pendingRequest;
+  final List<PendingEffectRequest> pendingEffects;
 
   const RustBatch({
     required this.events,
@@ -78,6 +88,7 @@ final class RustBatch {
     this.failureMessage,
     this.pendingEffect,
     this.pendingRequest,
+    this.pendingEffects = const [],
   });
 
   factory RustBatch.fromJson(Map<String, Object?> json) {
@@ -99,6 +110,12 @@ final class RustBatch {
           ? PendingEffectRequest.fromJson(termination)
           : null,
       pendingRequest: json['pending_effect'] as Map<String, Object?>?,
+      pendingEffects: [
+        for (final pending
+            in (json['pending_effects'] as List<Object?>? ?? const [])
+                .cast<Map<String, Object?>>())
+          PendingEffectRequest.fromJson(pending),
+      ],
     );
   }
 

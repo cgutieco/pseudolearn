@@ -71,6 +71,7 @@ mod negotiation;
 mod program_view;
 mod program_view_annotations;
 mod program_view_effects;
+mod program_view_tasks;
 mod program_view_kind;
 mod program_view_members;
 mod program_view_nominal;
@@ -93,9 +94,12 @@ pub use resources::ApiSession;
 
 mod event_binary;
 mod event_codec;
+mod event_task_codec;
 
 #[cfg(feature = "native")]
 mod native_build;
+#[cfg(feature = "native")]
+mod native_tasks;
 #[cfg(feature = "native")]
 pub use native_build::{NativeBuildFailure, NativeBuildRequest, NativeObject, build_native_object};
 

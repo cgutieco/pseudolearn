@@ -43,6 +43,9 @@ pub fn tape_entry_hash(previous: &str, entry: &TapeEntry) -> String {
     if let Ok(bytes) = serde_json::to_vec(&fields) {
         digest.update(bytes);
     }
+    if let Some(delivery) = entry.delivery_seq {
+        digest.update(delivery.to_be_bytes());
+    }
     format!("{:x}", digest.finalize())
 }
 
@@ -56,13 +59,15 @@ pub(crate) fn validate(tape: &EffectTape) -> Result<(), ReplayError> {
         return Err(ReplayError::CorruptedTape);
     }
     let mut previous = identity_hash(&tape.identity);
+    let mut seen = std::collections::BTreeSet::new();
     for (index, entry) in tape.entries.iter().enumerate() {
-        let sequence = u64::try_from(index)
+        let position = u64::try_from(index)
             .ok()
             .and_then(|index| index.checked_add(1));
-        if sequence != Some(entry.effect_seq)
+        if !delivery_matches(entry, position)
+            || !seen.insert(entry.effect_seq)
             || entry.entry_hash != tape_entry_hash(&previous, entry)
-            || !(["committed", "failed", "uncertain"].contains(&entry.outcome.as_str())
+            || !(["committed", "failed", "uncertain", "abandoned"].contains(&entry.outcome.as_str())
                 || entry.outcome == "requested" && !tape.is_reproducible())
         {
             return Err(ReplayError::CorruptedTape);
@@ -70,4 +75,11 @@ pub(crate) fn validate(tape: &EffectTape) -> Result<(), ReplayError> {
         previous.clone_from(&entry.entry_hash);
     }
     Ok(())
+}
+
+fn delivery_matches(entry: &TapeEntry, position: Option<u64>) -> bool {
+    match entry.delivery_seq {
+        None => position == Some(entry.effect_seq),
+        Some(delivery) => position == Some(delivery) && entry.effect_seq != delivery,
+    }
 }

@@ -205,3 +205,41 @@ fn rejects_waits_for_unknown_scopes_and_tasks() {
         Err(TaskAgendaError::UnknownScope)
     );
 }
+
+#[test]
+fn spawn_succeeds_with_exactly_the_limit_of_live_tasks_and_fails_one_above() {
+    let (mut agenda, root) = TaskAgenda::with_running_root();
+    agenda.set_task_limit(2);
+    let Ok(scope) = agenda.create_scope(root) else {
+        return;
+    };
+    assert_eq!(agenda.spawn(scope), Ok(TaskId(1)));
+    assert_eq!(agenda.spawn(scope), Ok(TaskId(2)));
+    assert_eq!(agenda.spawn(scope), Err(TaskAgendaError::LimitExceeded));
+    assert_eq!(agenda.live_task_count(), 2);
+}
+
+#[test]
+fn finished_tasks_do_not_count_as_live() {
+    let (mut agenda, root) = TaskAgenda::with_running_root();
+    agenda.set_task_limit(1);
+    let Ok(scope) = agenda.create_scope(root) else {
+        return;
+    };
+    assert_eq!(agenda.spawn(scope), Ok(TaskId(1)));
+    assert_eq!(agenda.execution().begin(TaskId(1)), Ok(()));
+    assert_eq!(agenda.execution().complete(TaskId(1)), Ok(()));
+    assert_eq!(agenda.live_task_count(), 0);
+    assert_eq!(agenda.spawn(scope), Ok(TaskId(2)));
+}
+
+#[test]
+fn zero_limit_rejects_the_first_spawn_and_default_limit_is_4096() {
+    let (mut agenda, root) = TaskAgenda::with_running_root();
+    assert_eq!(crate::DEFAULT_TASK_LIMIT, 4_096);
+    agenda.set_task_limit(0);
+    let Ok(scope) = agenda.create_scope(root) else {
+        return;
+    };
+    assert_eq!(agenda.spawn(scope), Err(TaskAgendaError::LimitExceeded));
+}

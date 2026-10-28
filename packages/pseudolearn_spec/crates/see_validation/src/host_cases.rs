@@ -43,16 +43,50 @@ fn check_expectations(block: &Block, errors: &mut Vec<String>) {
     }
 }
 
-fn check_effect_sequence(effects: &[Value], errors: &mut Vec<String>) {
+pub(crate) fn check_effect_sequence(effects: &[Value], errors: &mut Vec<String>) {
+    let delivered_out_of_order = effects
+        .iter()
+        .any(|entry| entry.get("delivery_seq").is_some());
+    let valid = if delivered_out_of_order {
+        has_distinct_requests(effects) && has_increasing_deliveries(effects)
+    } else {
+        is_strictly_increasing(effects, "effect_seq")
+    };
+    if !valid {
+        errors.push("SEE-HOST: expected effect_seq must be strictly increasing".to_owned());
+    }
+}
+
+fn is_strictly_increasing(effects: &[Value], field: &str) -> bool {
     let mut previous = 0_u64;
     for entry in effects {
-        let sequence = entry.get("effect_seq").and_then(Value::as_u64).unwrap_or(0);
+        let sequence = entry.get(field).and_then(Value::as_u64).unwrap_or(0);
         if sequence <= previous {
-            errors.push("SEE-HOST: expected effect_seq must be strictly increasing".to_owned());
-            return;
+            return false;
         }
         previous = sequence;
     }
+    true
+}
+
+fn has_distinct_requests(effects: &[Value]) -> bool {
+    let mut seen = std::collections::BTreeSet::new();
+    effects
+        .iter()
+        .all(|entry| seen.insert(entry.get("effect_seq").and_then(Value::as_u64).unwrap_or(0)))
+}
+
+fn has_increasing_deliveries(effects: &[Value]) -> bool {
+    let mut previous = 0_u64;
+    for entry in effects {
+        if let Some(delivery) = entry.get("delivery_seq").and_then(Value::as_u64) {
+            if delivery <= previous {
+                return false;
+            }
+            previous = delivery;
+        }
+    }
+    true
 }
 
 fn check_replay_options(block: &Block, host: &Value, errors: &mut Vec<String>) {

@@ -67,3 +67,15 @@ fn keeps_suspended_task_references_alive_during_collection_in_another_task() {
     assert_eq!(response.termination.get("kind"), Some(&json!("completed")));
     assert_eq!(response.output, "ab\nretained\n");
 }
+
+#[test]
+fn a_child_suspended_on_a_channel_runs_its_deferred_cleanups_when_a_sibling_fails() {
+    let program = "SubProceso Suspendible Hold(stream Como Canal<Entero>)\nDiferir\nEscribir \"cleanup-first\";\nFinDiferir\nDiferir\nEscribir \"cleanup-second\";\nFinDiferir\nSegun Aguardar stream.Recibir() Hacer\nAlgo(value): Escribir value;\nNada: Escribir \"closed\";\nFinSegun\nFinSubProceso\nSubProceso Suspendible Fail() Como Resultado<Entero, Cadena>\nRetornar Error(\"failed\");\nFinSubProceso\nAlgoritmo P\nDefinir stream Como Canal<Entero> <- Canal(1);\nTareas problem\nLanzar Hold(stream);\nLanzar Fail();\nFinTareas\nSegun problem Hacer\nNada: Escribir \"ok\";\nAlgo(report): Escribir report.Primero;\nFinSegun\nFinAlgoritmo\n";
+    let response = pseudolearn_api::execute_program(&pseudolearn_api::ExecuteRequest {
+        program: program.to_owned(),
+        profile: "es".to_owned(),
+        strictness: "strict".to_owned(),
+        ..Default::default()
+    });
+    assert_eq!(response.output, "cleanup-second\ncleanup-first\nfailed\n", "{response:?}");
+}

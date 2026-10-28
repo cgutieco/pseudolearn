@@ -357,3 +357,150 @@
   }
 }
 ```
+
+```regla
+{
+  "id": "R5",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Los efectos que piden varias tareas a la vez se numeran en orden de petición y se entregan cuando la agenda está ociosa. El anfitrión puede entregarlos en cualquier orden; cada entrega se atribuye a la tarea que pidió el efecto y las demás tareas no avanzan hasta que se entrega el resultado de una de ellas. Sin orden declarado se entregan en orden de effect_seq.",
+  "verificacion": [
+    "C8",
+    "C9"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C8",
+  "regla": "R5",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "1\n2\n3\n",
+    "terminacion": "completed",
+    "anfitrion_observado": {
+      "llamadas": 3,
+      "recursos_abiertos": 0,
+      "estado_cinta": "reproducible",
+      "efectos": [
+        {
+          "effect_seq": 1,
+          "task_id": 1,
+          "capability_kind": "timer",
+          "operation": "request_timer",
+          "outcome": "committed"
+        },
+        {
+          "effect_seq": 2,
+          "task_id": 2,
+          "capability_kind": "timer",
+          "operation": "request_timer",
+          "outcome": "committed",
+          "delivery_seq": 3
+        },
+        {
+          "effect_seq": 3,
+          "task_id": 3,
+          "capability_kind": "timer",
+          "operation": "request_timer",
+          "outcome": "committed",
+          "delivery_seq": 5
+        }
+      ]
+    }
+  },
+  "programas": {
+    "es": "SubProceso Suspendible Pause(label Como Entero)\nDescartar Aguardar SolicitarTemporizador();\nEscribir label;\nFinSubProceso\nAlgoritmo Main\nTareas\nLanzar Pause(1);\nLanzar Pause(2);\nLanzar Pause(3);\nFinTareas\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Pause(label as integer)\ndiscard await requestTimer();\nwrite label;\nendSubroutine\nalgorithm Main\ntasks\nspawn Pause(1);\nspawn Pause(2);\nspawn Pause(3);\nendTasks\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": [
+      "temporizador"
+    ],
+    "requested_permissions": [
+      "temporizador"
+    ],
+    "grabar_y_reproducir": true
+  }
+}
+```
+
+```caso
+{
+  "id": "C9",
+  "regla": "R5",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "2\n1\n3\n",
+    "terminacion": "completed",
+    "anfitrion_observado": {
+      "llamadas": 3,
+      "recursos_abiertos": 0,
+      "estado_cinta": "reproducible",
+      "efectos": [
+        {
+          "effect_seq": 2,
+          "task_id": 2,
+          "capability_kind": "timer",
+          "operation": "request_timer",
+          "outcome": "committed",
+          "delivery_seq": 1
+        },
+        {
+          "effect_seq": 1,
+          "task_id": 1,
+          "capability_kind": "timer",
+          "operation": "request_timer",
+          "outcome": "committed",
+          "delivery_seq": 3
+        },
+        {
+          "effect_seq": 3,
+          "task_id": 3,
+          "capability_kind": "timer",
+          "operation": "request_timer",
+          "outcome": "committed",
+          "delivery_seq": 5
+        }
+      ]
+    }
+  },
+  "programas": {
+    "es": "SubProceso Suspendible Pause(label Como Entero)\nDescartar Aguardar SolicitarTemporizador();\nEscribir label;\nFinSubProceso\nAlgoritmo Main\nTareas\nLanzar Pause(1);\nLanzar Pause(2);\nLanzar Pause(3);\nFinTareas\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Pause(label as integer)\ndiscard await requestTimer();\nwrite label;\nendSubroutine\nalgorithm Main\ntasks\nspawn Pause(1);\nspawn Pause(2);\nspawn Pause(3);\nendTasks\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": [
+      "temporizador"
+    ],
+    "requested_permissions": [
+      "temporizador"
+    ],
+    "grabar_y_reproducir": true,
+    "orden_entrega": [
+      2,
+      1,
+      3
+    ]
+  }
+}
+```

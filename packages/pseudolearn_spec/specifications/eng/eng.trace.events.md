@@ -81,6 +81,79 @@
       "datos": [
         "codigo"
       ]
+    },
+    "task_spawned": {
+      "datos": [
+        "task",
+        "parent",
+        "scope"
+      ]
+    },
+    "task_suspended": {
+      "datos": [
+        "task",
+        "cause",
+        "target"
+      ]
+    },
+    "task_ready": {
+      "datos": [
+        "task",
+        "cause"
+      ]
+    },
+    "task_resumed": {
+      "datos": [
+        "task"
+      ]
+    },
+    "task_completed": {
+      "datos": [
+        "task",
+        "outcome"
+      ]
+    },
+    "task_cancel_requested": {
+      "datos": [
+        "task",
+        "reason",
+        "origin"
+      ]
+    },
+    "scope_joined": {
+      "datos": [
+        "task",
+        "outcome"
+      ]
+    },
+    "channel_created": {
+      "datos": [
+        "channel",
+        "capacity"
+      ]
+    },
+    "channel_sent": {
+      "datos": [
+        "channel"
+      ]
+    },
+    "channel_received": {
+      "datos": [
+        "channel",
+        "present"
+      ]
+    },
+    "channel_closed": {
+      "datos": [
+        "channel"
+      ]
+    },
+    "effect_delivered": {
+      "datos": [
+        "effect_seq",
+        "delivery_seq",
+        "task"
+      ]
     }
   }
 }
@@ -91,7 +164,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Una ejecución observada produce solo eventos de las clases de D1. No hay eventos de micro-paso ni de evaluación de subexpresiones.",
+  "texto": "Una ejecución observada produce solo eventos de las clases de D1, en el orden del alfabeto que la codificación binaria numera desde cero. No hay eventos de micro-paso ni de evaluación de subexpresiones.",
   "verificacion": [
     "C1"
   ]
@@ -923,11 +996,26 @@
         "linea": 2
       },
       {
+        "clase": "channel_created",
+        "datos": {
+          "capacity": 1,
+          "channel": 1
+        },
+        "linea": 2
+      },
+      {
         "clase": "statement_exited",
         "linea": 2
       },
       {
         "clase": "statement_entered",
+        "linea": 3
+      },
+      {
+        "clase": "channel_closed",
+        "datos": {
+          "channel": 1
+        },
         "linea": 3
       },
       {
@@ -940,15 +1028,581 @@
       },
       {
         "clase": "decision",
-        "linea": 4,
         "datos": {
-          "rama": "caso",
-          "indice": 0
-        }
+          "indice": 0,
+          "rama": "caso"
+        },
+        "linea": 4
       },
       {
         "clase": "statement_exited",
         "linea": 4
+      }
+    ]
+  }
+}
+```
+
+```regla
+{
+  "id": "R7",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Una ejecución observada con tareas, canales o efectos entregados emite además los eventos de tarea de D1, solo con el gemelo sondeado y sin valores de mensajes. task_spawned declara la tarea nueva, su padre y su ámbito; task_ready, la causa por la que una tarea queda lista (spawn, completion, channel, yield o resume); task_suspended, la causa (task, join, channel_send, channel_receive, select o effect) y su objetivo; task_resumed, la tarea que pasa a ejecutar; task_completed, su desenlace (success, error o cancelled); task_cancel_requested, la tarea, el motivo (sibling_failure o parent_cancelled) y la tarea de origen; scope_joined, la tarea dueña y el desenlace del ámbito (success o failure); channel_created, la identidad y la capacidad; channel_sent, channel_received (con present) y channel_closed, la identidad del canal; effect_delivered, el effect_seq entregado, su ordinal de entrega desde uno y la tarea receptora. La línea de un evento de tarea es la de la sentencia que contiene la instrucción que lo emite y, entre sentencias, la de la cabecera de la unidad en ejecución; task_suspended y task_resumed usan la instrucción que se reejecutará o ejecutará a continuación. Un programa sin tareas ni canales no emite ninguno.",
+  "verificacion": [
+    "C16",
+    "C17",
+    "C18"
+  ]
+}
+```
+
+```regla
+{
+  "id": "R8",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "La tarea dueña de un evento de las clases ordinarias es la última que recibió task_resumed y, antes de cualquier task_resumed, la tarea raíz; los eventos ordinarios no llevan la identidad de la tarea.",
+  "verificacion": [
+    "C16"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C16",
+  "regla": "R7",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "SubProceso Suspendible Work()\nEscribir 1;\nFinSubProceso\nAlgoritmo P\nTareas\nLanzar Work();\nFinTareas\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Work()\nwrite 1;\nendSubroutine\nalgorithm P\ntasks\nspawn Work();\nendTasks\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "trace",
+  "espera": {
+    "salida": "1\n",
+    "terminacion": "completed",
+    "eventos": [
+      {
+        "clase": "statement_entered",
+        "linea": 6
+      },
+      {
+        "clase": "task_spawned",
+        "datos": {
+          "parent": 0,
+          "scope": 0,
+          "task": 1
+        },
+        "linea": 6
+      },
+      {
+        "clase": "task_ready",
+        "datos": {
+          "cause": "spawn",
+          "task": 1
+        },
+        "linea": 6
+      },
+      {
+        "clase": "statement_exited",
+        "linea": 6
+      },
+      {
+        "clase": "task_suspended",
+        "datos": {
+          "cause": "join",
+          "target": 0,
+          "task": 0
+        },
+        "linea": 5
+      },
+      {
+        "clase": "task_resumed",
+        "datos": {
+          "task": 1
+        },
+        "linea": 1
+      },
+      {
+        "clase": "call",
+        "datos": {
+          "nombre": "Work"
+        },
+        "linea": 1
+      },
+      {
+        "clase": "statement_entered",
+        "linea": 2
+      },
+      {
+        "clase": "output",
+        "datos": {
+          "texto": "1\n"
+        },
+        "linea": 2
+      },
+      {
+        "clase": "statement_exited",
+        "linea": 2
+      },
+      {
+        "clase": "return",
+        "datos": {
+          "nombre": "Work"
+        },
+        "linea": 1
+      },
+      {
+        "clase": "task_completed",
+        "datos": {
+          "outcome": "success",
+          "task": 1
+        },
+        "linea": 1
+      },
+      {
+        "clase": "task_ready",
+        "datos": {
+          "cause": "completion",
+          "task": 0
+        },
+        "linea": 1
+      },
+      {
+        "clase": "task_resumed",
+        "datos": {
+          "task": 0
+        },
+        "linea": 5
+      },
+      {
+        "clase": "scope_joined",
+        "datos": {
+          "outcome": "success",
+          "task": 0
+        },
+        "linea": 5
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C17",
+  "regla": "R7",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "SubProceso Suspendible Take(stream Como Canal<Entero>)\nSegun Aguardar stream.Recibir() Hacer\nAlgo(value): Escribir value;\nNada: Escribir 0;\nFinSegun\nFinSubProceso\nAlgoritmo P\nDefinir stream Como Canal<Entero> <- Canal(1);\nTareas\nLanzar Take(stream);\nAguardar stream.Enviar(7);\nFinTareas\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Take(stream as channel<integer>)\nswitch await stream.receive() do\nsome(value): write value;\nnone: write 0;\nendSwitch\nendSubroutine\nalgorithm P\ndefine stream as channel<integer> <- channel(1);\ntasks\nspawn Take(stream);\nawait stream.send(7);\nendTasks\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "trace",
+  "espera": {
+    "salida": "7\n",
+    "terminacion": "completed",
+    "eventos": [
+      {
+        "clase": "statement_entered",
+        "linea": 8
+      },
+      {
+        "clase": "channel_created",
+        "datos": {
+          "capacity": 1,
+          "channel": 1
+        },
+        "linea": 8
+      },
+      {
+        "clase": "statement_exited",
+        "linea": 8
+      },
+      {
+        "clase": "statement_entered",
+        "linea": 10
+      },
+      {
+        "clase": "task_spawned",
+        "datos": {
+          "parent": 0,
+          "scope": 0,
+          "task": 1
+        },
+        "linea": 10
+      },
+      {
+        "clase": "task_ready",
+        "datos": {
+          "cause": "spawn",
+          "task": 1
+        },
+        "linea": 10
+      },
+      {
+        "clase": "statement_exited",
+        "linea": 10
+      },
+      {
+        "clase": "statement_entered",
+        "linea": 11
+      },
+      {
+        "clase": "channel_sent",
+        "datos": {
+          "channel": 1
+        },
+        "linea": 11
+      },
+      {
+        "clase": "statement_exited",
+        "linea": 11
+      },
+      {
+        "clase": "task_suspended",
+        "datos": {
+          "cause": "join",
+          "target": 0,
+          "task": 0
+        },
+        "linea": 9
+      },
+      {
+        "clase": "task_resumed",
+        "datos": {
+          "task": 1
+        },
+        "linea": 1
+      },
+      {
+        "clase": "call",
+        "datos": {
+          "nombre": "Take"
+        },
+        "linea": 1
+      },
+      {
+        "clase": "statement_entered",
+        "linea": 2
+      },
+      {
+        "clase": "channel_received",
+        "datos": {
+          "channel": 1,
+          "present": true
+        },
+        "linea": 2
+      },
+      {
+        "clase": "decision",
+        "datos": {
+          "indice": 0,
+          "rama": "caso"
+        },
+        "linea": 2
+      },
+      {
+        "clase": "statement_entered",
+        "linea": 3
+      },
+      {
+        "clase": "statement_exited",
+        "linea": 3
+      },
+      {
+        "clase": "statement_entered",
+        "linea": 3
+      },
+      {
+        "clase": "output",
+        "datos": {
+          "texto": "7\n"
+        },
+        "linea": 3
+      },
+      {
+        "clase": "statement_exited",
+        "linea": 3
+      },
+      {
+        "clase": "statement_exited",
+        "linea": 2
+      },
+      {
+        "clase": "return",
+        "datos": {
+          "nombre": "Take"
+        },
+        "linea": 1
+      },
+      {
+        "clase": "task_completed",
+        "datos": {
+          "outcome": "success",
+          "task": 1
+        },
+        "linea": 1
+      },
+      {
+        "clase": "task_ready",
+        "datos": {
+          "cause": "completion",
+          "task": 0
+        },
+        "linea": 1
+      },
+      {
+        "clase": "task_resumed",
+        "datos": {
+          "task": 0
+        },
+        "linea": 9
+      },
+      {
+        "clase": "scope_joined",
+        "datos": {
+          "outcome": "success",
+          "task": 0
+        },
+        "linea": 9
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C18",
+  "regla": "R7",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "SubProceso Suspendible Idle(stream Como Canal<Entero>)\nSegun Aguardar stream.Recibir() Hacer\nAlgo(value): Escribir value;\nNada: Escribir 0;\nFinSegun\nFinSubProceso\nSubProceso Suspendible Fail() Como Resultado<Entero, Cadena>\nRetornar Error(\"problem\");\nFinSubProceso\nAlgoritmo P\nDefinir stream Como Canal<Entero> <- Canal(1);\nTareas problem\nLanzar Idle(stream);\nLanzar Fail();\nFinTareas\nDescartar problem;\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Idle(stream as channel<integer>)\nswitch await stream.receive() do\nsome(value): write value;\nnone: write 0;\nendSwitch\nendSubroutine\nsubroutine suspendable Fail() as result<integer, string>\nreturn failure(\"problem\");\nendSubroutine\nalgorithm P\ndefine stream as channel<integer> <- channel(1);\ntasks problem\nspawn Idle(stream);\nspawn Fail();\nendTasks\ndiscard problem;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "trace",
+  "espera": {
+    "salida": "",
+    "terminacion": "completed",
+    "eventos": [
+      {
+        "clase": "statement_entered",
+        "linea": 11
+      },
+      {
+        "clase": "channel_created",
+        "datos": {
+          "capacity": 1,
+          "channel": 1
+        },
+        "linea": 11
+      },
+      {
+        "clase": "statement_exited",
+        "linea": 11
+      },
+      {
+        "clase": "statement_entered",
+        "linea": 13
+      },
+      {
+        "clase": "task_spawned",
+        "datos": {
+          "parent": 0,
+          "scope": 0,
+          "task": 1
+        },
+        "linea": 13
+      },
+      {
+        "clase": "task_ready",
+        "datos": {
+          "cause": "spawn",
+          "task": 1
+        },
+        "linea": 13
+      },
+      {
+        "clase": "statement_exited",
+        "linea": 13
+      },
+      {
+        "clase": "statement_entered",
+        "linea": 14
+      },
+      {
+        "clase": "task_spawned",
+        "datos": {
+          "parent": 0,
+          "scope": 0,
+          "task": 2
+        },
+        "linea": 14
+      },
+      {
+        "clase": "task_ready",
+        "datos": {
+          "cause": "spawn",
+          "task": 2
+        },
+        "linea": 14
+      },
+      {
+        "clase": "statement_exited",
+        "linea": 14
+      },
+      {
+        "clase": "task_suspended",
+        "datos": {
+          "cause": "join",
+          "target": 0,
+          "task": 0
+        },
+        "linea": 12
+      },
+      {
+        "clase": "task_resumed",
+        "datos": {
+          "task": 1
+        },
+        "linea": 1
+      },
+      {
+        "clase": "call",
+        "datos": {
+          "nombre": "Idle"
+        },
+        "linea": 1
+      },
+      {
+        "clase": "statement_entered",
+        "linea": 2
+      },
+      {
+        "clase": "task_suspended",
+        "datos": {
+          "cause": "channel_receive",
+          "target": 1,
+          "task": 1
+        },
+        "linea": 2
+      },
+      {
+        "clase": "task_resumed",
+        "datos": {
+          "task": 2
+        },
+        "linea": 7
+      },
+      {
+        "clase": "call",
+        "datos": {
+          "nombre": "Fail"
+        },
+        "linea": 7
+      },
+      {
+        "clase": "statement_entered",
+        "linea": 8
+      },
+      {
+        "clase": "statement_exited",
+        "linea": 8
+      },
+      {
+        "clase": "return",
+        "datos": {
+          "nombre": "Fail"
+        },
+        "linea": 7
+      },
+      {
+        "clase": "task_completed",
+        "datos": {
+          "outcome": "error",
+          "task": 2
+        },
+        "linea": 7
+      },
+      {
+        "clase": "task_cancel_requested",
+        "datos": {
+          "origin": 2,
+          "reason": "sibling_failure",
+          "task": 1
+        },
+        "linea": 7
+      },
+      {
+        "clase": "task_resumed",
+        "datos": {
+          "task": 1
+        },
+        "linea": 2
+      },
+      {
+        "clase": "task_completed",
+        "datos": {
+          "outcome": "cancelled",
+          "task": 1
+        },
+        "linea": 2
+      },
+      {
+        "clase": "task_ready",
+        "datos": {
+          "cause": "completion",
+          "task": 0
+        },
+        "linea": 2
+      },
+      {
+        "clase": "task_resumed",
+        "datos": {
+          "task": 0
+        },
+        "linea": 12
+      },
+      {
+        "clase": "scope_joined",
+        "datos": {
+          "outcome": "failure",
+          "task": 0
+        },
+        "linea": 12
+      },
+      {
+        "clase": "statement_entered",
+        "linea": 16
+      },
+      {
+        "clase": "statement_exited",
+        "linea": 16
       }
     ]
   }

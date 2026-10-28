@@ -8,7 +8,8 @@ impl Machine<'_> {
         let site = self.effect_site(site)?;
         let operation = self.effect_operation(&site)?;
         if let Some(reply) = self.effect_result.take() {
-            self.tasks.pending_effects.remove(&self.tasks.current);
+            let delivered = self.tasks.pending_effects.remove(&self.tasks.current);
+            self.event_effect_delivered(delivered.map_or(0, |request| request.effect_seq));
             self.complete_effect(&site, operation, &reply)?;
             return Ok(Flow::Continue);
         }
@@ -87,6 +88,7 @@ impl Machine<'_> {
             operation: site.operation,
             arguments_summary: format!("{{\"count\":{}}}", arguments.len()),
             source_node_id: Some(site.source_node_id),
+            task_id: self.tasks.current.0,
             receiver,
             arguments,
         };

@@ -1,6 +1,7 @@
 use super::{Flow, Machine};
 use crate::{Fault, RuntimeValue, evaluate::INVALID_BYTECODE};
 use pseudolearn_bytecode::{Register, RegisterClass};
+use crate::events::{EventField, TraceClass};
 use pseudolearn_runtime::{ChannelError, ChannelReply, ChannelStep, TaskChannelId};
 
 impl Machine<'_> {
@@ -72,6 +73,7 @@ impl Machine<'_> {
 
     fn close_task_channel(&mut self, channel: TaskChannelId) -> Result<u64, Fault> {
         self.tasks.channels.close(channel).map_err(channel_fault)?;
+        self.event_channel(TraceClass::ChannelClosed, channel.0, Vec::new());
         self.wake_channel_tasks()?;
         Ok(0)
     }
@@ -84,7 +86,7 @@ impl Machine<'_> {
     }
 
     fn new_task_channel(&mut self, arguments: &[RuntimeValue]) -> Result<u64, Fault> {
-        let capacity = channel_capacity(arguments)?;
+        let capacity = channel_capacity(arguments, self.options.channel_capacity_limit)?;
         let Some(RuntimeValue::Scalar(width)) = arguments.get(1) else {
             return Err(INVALID_BYTECODE);
         };
@@ -99,9 +101,14 @@ impl Machine<'_> {
         let channel = self
             .tasks
             .channels
-            .create(capacity, 65_536)
+            .create(capacity, self.options.channel_capacity_limit)
             .map_err(channel_fault)?;
         self.tasks.channel_storage.insert(channel, storage);
+        self.event_channel(
+            TraceClass::ChannelCreated,
+            channel.0,
+            vec![("capacity", EventField::Number(u64::try_from(capacity).unwrap_or(u64::MAX)))],
+        );
         pseudolearn_runtime::channel_references::set_channel_identity(
             &mut self.heap,
             storage,
@@ -134,10 +141,11 @@ impl Machine<'_> {
         self.wake_channel_tasks()?;
         match step {
             ChannelStep::Ready(sent) => {
+                self.event_channel(TraceClass::ChannelSent, channel.0, Vec::new());
                 self.set_scalar(destination.index, u64::from(sent))?;
                 Ok(Flow::Continue)
             }
-            ChannelStep::Waiting => self.wait_for_channel(channel),
+            ChannelStep::Waiting => self.wait_for_channel(channel, "channel_send"),
         }
     }
 
@@ -158,13 +166,18 @@ impl Machine<'_> {
         self.wake_channel_tasks()?;
         match step {
             ChannelStep::Ready(value) => {
+                self.event_channel(
+                    TraceClass::ChannelReceived,
+                    channel.0,
+                    vec![("present", EventField::Flag(value.is_some()))],
+                );
                 self.set_scalar(destination.index, u64::from(value.is_some()))?;
                 self.tasks
                     .transport_values
                     .insert(self.tasks.current, value);
                 Ok(Flow::Continue)
             }
-            ChannelStep::Waiting => self.wait_for_channel(channel),
+            ChannelStep::Waiting => self.wait_for_channel(channel, "channel_receive"),
         }
     }
 
@@ -194,7 +207,11 @@ impl Machine<'_> {
         Ok(Flow::Continue)
     }
 
-    pub(super) fn wait_for_channel(&mut self, channel: TaskChannelId) -> Result<Flow, Fault> {
+    pub(super) fn wait_for_channel(
+        &mut self,
+        channel: TaskChannelId,
+        cause: &str,
+    ) -> Result<Flow, Fault> {
         self.cursor.program_counter = self
             .cursor
             .program_counter
@@ -206,6 +223,7 @@ impl Machine<'_> {
             .waiting()
             .for_channel(self.tasks.current, channel)
             .map_err(super::tasks::task_fault)?;
+        self.event_task_suspended(cause, channel.0);
         self.schedule_next(true, true)?;
         Ok(Flow::Continue)
     }
@@ -220,6 +238,7 @@ impl Machine<'_> {
                 .resume(task)
                 .map_err(super::tasks::task_fault)?;
         }
+        self.sync_ready_events("channel");
         Ok(())
     }
 }
@@ -233,7 +252,7 @@ pub(super) fn channel_fault(error: ChannelError) -> Fault {
     }
 }
 
-fn channel_capacity(arguments: &[RuntimeValue]) -> Result<usize, Fault> {
+fn channel_capacity(arguments: &[RuntimeValue], maximum: usize) -> Result<usize, Fault> {
     let Some(RuntimeValue::Scalar(capacity)) = arguments.first() else {
         return Err(INVALID_BYTECODE);
     };
@@ -241,7 +260,7 @@ fn channel_capacity(arguments: &[RuntimeValue]) -> Result<usize, Fault> {
     if capacity == 0 || capacity > usize::try_from(i64::MAX).unwrap_or(usize::MAX) {
         return Err("channelCapacityInvalid");
     }
-    if capacity > 65_536 {
+    if capacity > maximum {
         return Err("channelCapacityExceeded");
     }
     Ok(capacity)

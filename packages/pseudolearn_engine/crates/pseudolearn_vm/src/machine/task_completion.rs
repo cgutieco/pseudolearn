@@ -44,8 +44,10 @@ impl Machine<'_> {
                     .execution()
                     .complete(task)
                     .map_err(super::tasks::task_fault)?;
+                self.event_task_completed(task, "success");
             }
         }
+        self.sync_ready_events("completion");
         self.tasks.continuations.remove(&task);
         self.tasks.task_storage.remove(&task);
         self.tasks.cancel_points.remove(&task);
@@ -72,10 +74,12 @@ impl Machine<'_> {
             .execution()
             .fail(task)
             .map_err(super::tasks::task_fault)?;
+        self.event_task_completed(task, "error");
         for sibling in cancelled {
+            self.event_cancel_requested(sibling, "sibling_failure", task.0);
             self.tasks.channels.cancel(sibling);
             self.tasks.channel_replies.remove(&sibling);
-            self.tasks.pending_effects.remove(&sibling);
+            self.tasks.abandon_pending_effect(sibling);
         }
         self.cancel_nested_scopes(scope)?;
         self.interrupt_scope_owner((scope, owner), waiting)?;
@@ -88,10 +92,11 @@ impl Machine<'_> {
             .cancellation()
             .finish(task)
             .map_err(super::tasks::task_fault)?;
+        self.event_task_completed(task, "cancelled");
         self.tasks.continuations.remove(&task);
         self.tasks.task_storage.remove(&task);
         self.tasks.channels.cancel(task);
-        self.tasks.pending_effects.remove(&task);
+        self.tasks.abandon_pending_effect(task);
         self.tasks.channel_replies.remove(&task);
         self.tasks.transport_values.remove(&task);
         if let Some(scope) = pseudolearn_runtime::task_scope(&self.tasks.agenda, task) {
@@ -108,7 +113,7 @@ impl Machine<'_> {
             self.tasks.aborted_scopes.insert(owner, scope);
             self.tasks.channels.cancel(owner);
             self.tasks.channel_replies.remove(&owner);
-            self.tasks.pending_effects.remove(&owner);
+            self.tasks.abandon_pending_effect(owner);
             if self.tasks.agenda.state(owner) == Some(TaskState::Waiting) {
                 let wake = pseudolearn_runtime::interrupt_owner(&mut self.tasks.agenda, owner)
                     .map_err(super::tasks::task_fault)?;

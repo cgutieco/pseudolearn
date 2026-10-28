@@ -52,6 +52,11 @@ fn build(request: &NativeBuildRequest) -> Result<NativeObject, NativeBuildFailur
         request.source,
     )
     .map_err(NativeBuildFailure::Rejected)?;
+    if pseudolearn_codegen::module_uses_tasks(&module) {
+        return Err(NativeBuildFailure::Rejected(vec![
+            crate::native_tasks::unsupported(&request.locale, request.source),
+        ]));
+    }
     let compiled = compile_module_to_executable_object(
         &module,
         &TargetConfig::host(),

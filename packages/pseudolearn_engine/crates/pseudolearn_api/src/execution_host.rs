@@ -12,6 +12,7 @@ impl ExecutionResource {
     ) -> Result<bool, ApiError> {
         let operation = pseudolearn_runtime::effect_operation(&pending.operation)
             .ok_or_else(|| usage("unknown effect operation"))?;
+        self.prepare_delivery(&pending)?;
         let source = pending
             .source_node_id
             .ok_or_else(|| usage("missing effect source"))?;
@@ -41,6 +42,67 @@ impl ExecutionResource {
         self.machine.supply_effect_result(reply);
         self.completing_effect = true;
         Ok(true)
+    }
+
+    pub(super) fn sync_reservations(&mut self) -> Result<(), ApiError> {
+        pseudolearn_timeline::sync_effect_reservations(&mut self.effects, &self.machine)
+            .map_err(crate::tape_wire::replay_error_to_api)
+    }
+
+    fn prepare_delivery(&mut self, pending: &PendingEffectRequest) -> Result<(), ApiError> {
+        pseudolearn_timeline::prepare_effect_delivery(&mut self.effects, &self.machine, pending)
+            .map_err(crate::tape_wire::replay_error_to_api)
+    }
+
+    pub(super) fn seal_abandoned_effects(&mut self) -> Result<(), ApiError> {
+        self.sync_reservations()?;
+        let abandoned = self
+            .machine
+            .abandoned_effect_requests()
+            .into_iter()
+            .map(|request| {
+                let receiver = request.receiver.clone();
+                pseudolearn_runtime::AbandonedEffect {
+                    vm_sequence: request.effect_seq,
+                    task: request.task_id,
+                    request: pseudolearn_runtime::HostEffectRequest {
+                        effect_seq: request.effect_seq,
+                        operation: request.operation,
+                        receiver,
+                        arguments: request.arguments,
+                        result_capability: None,
+                        source_node_id: request.source_node_id.unwrap_or(0),
+                    },
+                }
+            })
+            .collect();
+        self.effects
+            .seal_abandoned(abandoned)
+            .map_err(crate::tape_wire::replay_error_to_api)
+    }
+
+    pub(super) fn concurrent_pending_effects(&self) -> Option<Value> {
+        let requests = self.machine.pending_effect_requests();
+        (self.pending_host.is_some() && requests.len() > 1).then(|| {
+            Value::Array(
+                requests
+                    .iter()
+                    .map(|request| {
+                        let sequence = self
+                            .effects
+                            .reserved_sequence(request.effect_seq)
+                            .or_else(|| self.pending_host.as_ref().map(|pending| pending.effect_seq));
+                        serde_json::json!({
+                            "effect_seq": sequence,
+                            "task_id": request.task_id,
+                            "capability_kind": request.capability_kind,
+                            "operation": request.operation,
+                            "source_node_id": request.source_node_id,
+                        })
+                    })
+                    .collect(),
+            )
+        })
     }
 
     fn next_effect_sequence(&self) -> u64 {

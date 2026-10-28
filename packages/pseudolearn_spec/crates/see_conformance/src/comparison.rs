@@ -167,6 +167,11 @@ fn tape_entry_matches(expected: &Value, actual: &Value) -> bool {
             return false;
         }
     }
+    for field in ["task_id", "delivery_seq"] {
+        if expected.get(field).is_some() && expected.get(field) != actual.get(field) {
+            return false;
+        }
+    }
     let Some(key_id) = expected.get("secret_key_id").and_then(Value::as_str) else {
         return true;
     };

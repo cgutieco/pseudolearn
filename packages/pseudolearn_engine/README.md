@@ -538,3 +538,67 @@ cuentan tareas y canales (`ENG.LIMITS#R10`). El sujeto `engine` mide estos contr
 (`ENG.TASK.MEMORY`, `ENG.TASK.AGENDA`, `LANG.TASK.ISOLATION`). El sujeto `aot` solo ofrece
 `Instantanea` (`rt_aot_snapshot_copy`) y trata `task.yield_check` como operación vacía; las tareas,
 los canales y la espera de efectos nativos quedan `pendiente` hasta que el sujeto nativo ofrezca tareas.
+
+## Límites, entrega concurrente de efectos y eventos de tarea
+
+Los límites de tareas y canales son recursos del anfitrión como los de profundidad y celdas
+(`ENG.LIMITS#R11`): el máximo de tareas vivas (omisión 4 096) y el máximo de capacidad de un canal
+(omisión 65 536). Una tarea está viva desde su lanzamiento hasta que termina; la raíz y las
+terminadas no cuentan, de modo que un límite de `N` admite `N` hijas simultáneas y falla en el
+`Lanzar` número `N + 1` con `taskLimitExceeded`. La agenda guarda el límite (`TaskLimit`) y rechaza
+el lanzamiento antes de asignar identidad, así que un lanzamiento rechazado no consume identidades.
+La API acepta `tasks` y `channel_capacity` en `limits`; la CLI solo expone `--tareas`/`--tasks`
+porque ya expone los otros límites y la capacidad de canal no la pide ningún flujo de usuario. El
+límite de tareas entra en la identidad de ejecución de la cinta solo cuando se declara, para que las
+cintas de programas sin él conserven su forma.
+
+La entrega de efectos concurrentes separa tres números. `effect_seq` numera cada efecto o registro
+de consola en orden de petición: la API reserva los números de todos los efectos pendientes de la
+máquina antes de grabar cualquier entrada (`EffectSession::reserve`), así que la numeración refleja
+el orden en que las tareas pidieron, no el de entrega. La cinta se escribe en orden de entrega;
+`delivery_seq` es la posición de la entrada en la cinta y se omite cuando coincide con
+`effect_seq`, por lo que un programa sin efectos concurrentes graba la misma cinta de siempre
+(`task_id` vale 0 para la raíz). La validación exige posiciones coherentes y `effect_seq` únicos. La
+máquina entrega solo con la agenda ociosa y elige el efecto con menor rango en su orden de entrega
+(`set_delivery_order`); sin orden declarado es el de `effect_seq`. En grabación el orden sale de la
+clave `orden_entrega` del anfitrión falso; en reproducción sale de la cinta
+(`pseudolearn_runtime::delivery_order`), de modo que reproducir nunca consulta al anfitrión y una
+cinta cuyas entregas no corresponden a lo que pide el programa termina en `replay_divergence`.
+Un efecto cuya tarea se cancela mientras lo espera se mueve a una lista de abandonados; al terminar
+la ejecución se sella con el desenlace `abandoned` (y la cinta pasa a `UncertainExternalState` si la
+operación escribía). Un anfitrión desprendido recibe el efecto elegido en `pending_effect` y la
+lista completa en `pending_effects`; el efecto elegido es siempre el primero de la lista, porque la
+entrega fuera de orden con un anfitrión externo se declara antes de ejecutar (`orden_entrega`) y no
+se reordena a mitad de la espera. Los puntos de control de la cinta guardan el cursor de entrega
+separado de la secuencia reservada.
+
+Los eventos de tarea (`ENG.TRACE.EVENTS#R7`) se emiten solo con el gemelo sondeado, no llevan valores
+de mensajes y usan clases numeradas a continuación de las ordinarias en la codificación binaria. Las
+causas de listo (`spawn`, `completion`, `channel`, `yield`, `resume`) se obtienen comparando la cola
+de listas con la última observada, así que ninguna operación de la agenda necesita conocer los
+eventos. La línea de un evento de tarea es la de la instrucción que lo emite, y para suspensión y
+reanudación la de la instrucción que se reejecutará. El estado en un evento añade un resumen de
+todas las tareas cuando existe alguna además de la raíz; la captura de estado corresponde al
+instante posterior a la instrucción que produjo el evento, incluso si esa instrucción produjo
+varios. La vista pública proyecta como nodos explícitos `task_scope`, `spawn_statement`,
+`spawn_expression`, `await_expression`, `select_statement` y `receive_branch`, con roles
+estructurales y las marcas `builtin_type` y `suspendable`. Se añaden las identidades `channelClose` y
+`snapshotBuiltin` al vocabulario para que el catálogo de ayuda cubra todas las formas.
+
+La campaña `pg-tasks` del trabajador de medición genera programas desde una semilla (SplitMix64 vive
+solo en el trabajador) en ocho familias y comprueba salida, terminación, repetición byte a byte de la
+cinta y reproducción. La agenda no tiene semilla: la semilla solo elige tamaños, capacidades,
+permutaciones de entrega y la tarea que falla.
+
+## Sujeto nativo y tareas
+
+El código nativo no ofrece tareas ni canales todavía. La agenda, los canales y la instantánea
+comparten implementación en `pseudolearn_runtime`, pero generar funciones reanudables con volcado de
+valores vivos, el trampolín de la agenda y la espera de efectos concurrentes en `pseudolearn_codegen`
+y `pseudolearn_aot_rt` exige una disposición de continuaciones nativa que no existe; sin ella la
+comparación VM/AOT no puede dar cero diferencias, y el contrato exige no anunciar tareas nativas
+sin pasarla. Por eso el generador reconoce las operaciones de tarea (`UNSUPPORTED_OPERATIONS`) antes
+de emitir código y `build_native_object` devuelve el diagnóstico `nativeTasksUnsupported` con
+`NativeBuildFailure::Rejected`; la CLI lo muestra con salida 1 tanto en `build` como en
+`run --native`. Las reglas de tareas siguen `pendiente` en `conformance-aot.yaml` con su punto de
+resolución. Un programa sin tareas, aunque su raíz sea suspendible, se compila como siempre.

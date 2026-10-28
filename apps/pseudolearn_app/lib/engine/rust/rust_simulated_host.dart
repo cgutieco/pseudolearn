@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import '../../domain/model/execution/simulated_capabilities.dart';
+import 'rust_wire_models.dart';
 
 const int _readRight = 1;
 const int _writeRight = 2;
@@ -45,6 +46,10 @@ final class RustSimulatedHost {
   };
 
   int get openResources => _resources.length;
+
+  static List<PendingEffectRequest> deliveryOrder(
+    List<PendingEffectRequest> pendings,
+  ) => List.of(pendings)..sort((a, b) => a.effectSeq.compareTo(b.effectSeq));
 
   Map<String, Object?> reply(Map<String, Object?> json) {
     try {

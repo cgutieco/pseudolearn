@@ -5,6 +5,7 @@ import '../diagram/text_metrics.dart';
 import '../structogram/structogram_cell.dart';
 import 'rust_diagram_captions.dart';
 import 'rust_program_view.dart';
+import 'rust_task_nodes.dart';
 
 final class RustStructogramCellBuilder {
   final RustProgramView _view;
@@ -37,6 +38,8 @@ final class RustStructogramCellBuilder {
       'switch' => _selection(wrapper, node),
       'while_loop' || 'for_loop' => _preTestLoop(wrapper, node),
       'repeat_loop' => _postTestLoop(wrapper, node),
+      'task_scope' => _taskScope(wrapper, node),
+      'select_statement' => _receiveSelection(wrapper, node),
       _ => _leaf(wrapper, node),
     };
   }
@@ -118,11 +121,39 @@ final class RustStructogramCellBuilder {
         body: _body(node),
       );
 
+  StructogramCell _taskScope(RustViewNode wrapper, RustViewNode node) =>
+      StructogramLoop(
+        headerLines: _wrap(rustHeaderLine(node)),
+        position: StructogramLoopPosition.header,
+        nodeId: wrapper.id,
+        sourceLine: wrapper.range.startLine,
+        body: _body(node),
+      );
+
+  StructogramCell _receiveSelection(RustViewNode wrapper, RustViewNode node) {
+    final columns = [
+      for (final branch in rustChildrenForRole(_view, node, 'branch'))
+        StructogramColumn(
+          label: rustHeaderLine(branch),
+          body: _branch(_view.childForRole(branch, 'body')),
+        ),
+    ];
+    return StructogramBranch(
+      headerLines: _wrap(rustHeaderLine(node)),
+      isBinary: false,
+      nodeId: wrapper.id,
+      sourceLine: wrapper.range.startLine,
+      columns: columns.isEmpty ? [_emptyColumn()] : columns,
+    );
+  }
+
   StructogramCell _leaf(RustViewNode wrapper, RustViewNode node) =>
       StructogramLeaf(
         kind: switch (node.syntaxKind) {
           'call_statement' => StructogramLeafKind.call,
           'return_statement' => StructogramLeafKind.exit,
+          _ when rustNodeIsTaskOperation(_view, node) =>
+            StructogramLeafKind.call,
           _ => StructogramLeafKind.process,
         },
         lines: _wrap(_caption(node)),

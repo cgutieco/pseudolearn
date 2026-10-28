@@ -13,6 +13,8 @@ fn execution_limits_accept_valid_values_and_bilingual_aliases() -> Result<(), St
             "12",
             "--cells",
             "50",
+            "--tasks",
+            "8",
             "--help",
         ],
         vec![
@@ -25,6 +27,8 @@ fn execution_limits_accept_valid_values_and_bilingual_aliases() -> Result<(), St
             "12",
             "--celdas",
             "50",
+            "--tareas",
+            "8",
             "--ayuda",
         ],
     ] {
@@ -45,6 +49,8 @@ fn execution_limits_reject_missing_malformed_and_overflowing_values() -> Result<
         vec!["run", "--depth", "-1"],
         vec!["run", "--statements", "text"],
         vec!["run", "--cells", "18446744073709551616"],
+        vec!["run", "--tasks", "-1"],
+        vec!["run", "--tareas"],
         vec!["run", "--seed", "9223372036854775808"],
     ] {
         let output = Command::new(env!("CARGO_BIN_EXE_pseudo"))

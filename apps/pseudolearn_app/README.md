@@ -2599,3 +2599,22 @@ El adaptador Rust de la tabla de variables consume las entradas vector y diccion
 ### Proyección de capacidades en la vista del programa (`PG-3.09`)
 
 `RustViewSemantics` lee de cada nodo de la vista pública los atributos `builtin_type` (`bytes`, `io_error`), `capability_type` (`console`, `arguments`, `directory`, `file`, `clock`, `timer`) y `effect_operation` (identidad de `LIB.MODEL`) que proyecta `pseudolearn_api`; un nodo sin ellos no expone ninguno. La app solo los transporta: no interpreta la autoridad de una capacidad, que sigue siendo del anfitrión simulado (`RustSimulatedHost`). Cubre `test/engine/rust/rust_view_semantics_test.dart`.
+
+### Tareas: datos que la app consume y vistas que quedan para otra fase (`PG-4.11`)
+
+La fase entrega los datos y los nodos, no la interfaz de concurrencia. `RustEvent` rechaza una clase
+de evento desconocida con `FormatException` y `RustTaskEvent` da acceso tipado a las doce clases de
+tarea (`task_spawned` … `effect_delivered`); los eventos ordinarios no llevan identidad de tarea. El
+lote del motor añade `pendingEffects` con todos los efectos pendientes y su `taskId`; el anfitrión
+simulado los entrega en orden de `effect_seq` (`RustSimulatedHost.deliveryOrder`) y la compuerta de
+efectos falla si el motor ofrece uno distinto del primero, porque la ayuda determinista no admite
+entregas arbitrarias. Los diagramas dibujan el ámbito de tareas (hexágono de preparación en el
+ordinograma, bloque con cabecera en el estructograma), `Elegir` con una columna por rama de
+recepción, y marcan como llamada (subprograma en el ordinograma, celda de llamada en el
+estructograma) todo lanzamiento y toda sentencia que contenga `Aguardar`; ninguna construcción de
+tareas cae en el nodo de proceso. Los textos de cabecera son la primera línea del propio nodo, de
+modo que cambian con el perfil sin literales sueltos. `RustViewSemantics.suspendable` lee la marca de
+unidad suspendible. No se amplía `AstConstruct`: es la taxonomía de ejercicios y del panel de
+cobertura, y las construcciones de tareas entrarán en ella cuando existan ejercicios que las usen.
+Las proyecciones multicarril de concurrencia (flujo por tarea, estructura de creación y unión,
+ventana de eventos), la pila de foco por tarea y el paso por tarea pertenecen a `PG-B`.

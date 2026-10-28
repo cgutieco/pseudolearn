@@ -738,6 +738,12 @@
         "es": "Bytes"
       }
     },
+    "channelClose": {
+      "lexemas": {
+        "en": "close",
+        "es": "Cerrar"
+      }
+    },
     "channelReceive": {
       "lexemas": {
         "en": "receive",
@@ -892,6 +898,12 @@
       "lexemas": {
         "en": "requestTimer",
         "es": "SolicitarTemporizador"
+      }
+    },
+    "snapshotBuiltin": {
+      "lexemas": {
+        "en": "snapshot",
+        "es": "Instantanea"
       }
     },
     "suspendibleModifier": {
@@ -3259,6 +3271,20 @@
         "lexeme": "lexema",
         "type": "tipo"
       }
+    },
+    "nativeTasksUnsupported": {
+      "argumentos": [],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Native compilation does not offer tasks or channels yet; run the program with the virtual engine",
+        "es": "La compilación nativa todavía no ofrece tareas ni canales; ejecute el programa con el motor virtual"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
     },
     "negativeArraySize": {
       "argumentos": [
@@ -5826,6 +5852,10 @@
               {
                 "identity": "immutableType",
                 "text": "Writing to or calling a mutator on an immutable value is rejected at compile time."
+              },
+              {
+                "identity": "snapshotBuiltin",
+                "text": "Deep-copies a value and counts the copied cells as creation."
               }
             ],
             "purpose": "Guarantees that reads never return mutable collections or fields.",
@@ -5852,6 +5882,10 @@
               {
                 "identity": "immutableType",
                 "text": "Escribir o llamar a un mutador sobre un valor inmutable se rechaza al compilar."
+              },
+              {
+                "identity": "snapshotBuiltin",
+                "text": "Copia en profundidad un valor y cuenta las celdas copiadas como creación."
               }
             ],
             "purpose": "Garantiza que las lecturas no devuelvan colecciones ni campos modificables.",
@@ -5868,6 +5902,14 @@
         "tokens": [
           {
             "identity": "immutableType",
+            "source": {
+              "element": "D2",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "snapshotBuiltin",
             "source": {
               "element": "D2",
               "specification": "LANG.PROFILE.VOCABULARY",
@@ -7730,6 +7772,10 @@
                 "text": "Introduces the channel of a select branch."
               },
               {
+                "identity": "channelClose",
+                "text": "Closes the channel without suspending and wakes every waiter."
+              },
+              {
                 "identity": "selectKeyword",
                 "text": "Chooses the first ready receive branch in textual order."
               },
@@ -7813,6 +7859,10 @@
               {
                 "identity": "receiveSource",
                 "text": "Introduce el canal de una rama de Elegir."
+              },
+              {
+                "identity": "channelClose",
+                "text": "Cierra el canal sin suspender y despierta a quienes esperan."
               },
               {
                 "identity": "selectKeyword",
@@ -7941,6 +7991,14 @@
           },
           {
             "identity": "receiveSource",
+            "source": {
+              "element": "D2",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "channelClose",
             "source": {
               "element": "D2",
               "specification": "LANG.PROFILE.VOCABULARY",
@@ -13253,7 +13311,8 @@
             "type"
           ],
           "tokens": [
-            "immutableType"
+            "immutableType",
+            "snapshotBuiltin"
           ]
         },
         {
@@ -13466,6 +13525,7 @@
             "channelType",
             "channelSend",
             "channelReceive",
+            "channelClose",
             "receiveSource",
             "selectKeyword",
             "endSelect"
@@ -14100,10 +14160,39 @@
         "nombre"
       ]
     },
+    "channel_closed": {
+      "datos": [
+        "channel"
+      ]
+    },
+    "channel_created": {
+      "datos": [
+        "channel",
+        "capacity"
+      ]
+    },
+    "channel_received": {
+      "datos": [
+        "channel",
+        "present"
+      ]
+    },
+    "channel_sent": {
+      "datos": [
+        "channel"
+      ]
+    },
     "decision": {
       "datos": [
         "rama",
         "indice"
+      ]
+    },
+    "effect_delivered": {
+      "datos": [
+        "effect_seq",
+        "delivery_seq",
+        "task"
       ]
     },
     "failure": {
@@ -14129,11 +14218,55 @@
         "nombre"
       ]
     },
+    "scope_joined": {
+      "datos": [
+        "task",
+        "outcome"
+      ]
+    },
     "statement_entered": {
       "datos": []
     },
     "statement_exited": {
       "datos": []
+    },
+    "task_cancel_requested": {
+      "datos": [
+        "task",
+        "reason",
+        "origin"
+      ]
+    },
+    "task_completed": {
+      "datos": [
+        "task",
+        "outcome"
+      ]
+    },
+    "task_ready": {
+      "datos": [
+        "task",
+        "cause"
+      ]
+    },
+    "task_resumed": {
+      "datos": [
+        "task"
+      ]
+    },
+    "task_spawned": {
+      "datos": [
+        "task",
+        "parent",
+        "scope"
+      ]
+    },
+    "task_suspended": {
+      "datos": [
+        "task",
+        "cause",
+        "target"
+      ]
     }
   },
   "unsupportedConstructs": {

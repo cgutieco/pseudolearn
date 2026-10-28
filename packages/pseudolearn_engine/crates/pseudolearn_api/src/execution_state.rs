@@ -12,7 +12,29 @@ pub(crate) fn capture(machine: &Machine<'_>) -> Value {
         .into_iter()
         .filter_map(|handle| object(machine, handle))
         .collect();
-    json!({"marcos":frames,"objetos":objects})
+    let mut state = json!({"marcos":frames,"objetos":objects});
+    let summaries = machine.task_summaries();
+    if let (Some(fields), true) = (state.as_object_mut(), summaries.len() > 1) {
+        fields.insert("tareas".to_owned(), tasks(&summaries));
+    }
+    state
+}
+
+fn tasks(summaries: &[runtime::TaskSummary]) -> Value {
+    Value::Array(
+        summaries
+            .iter()
+            .map(|summary| {
+                json!({
+                    "tarea": summary.task,
+                    "padre": summary.parent,
+                    "estado": summary.state,
+                    "causa": summary.cause,
+                    "objetivo": summary.target,
+                })
+            })
+            .collect(),
+    )
 }
 
 pub(crate) fn value(value: &VariableValue) -> Value {

@@ -194,6 +194,8 @@ fn limits(case: &Block) -> Value {
         ("profundidad", "depth"),
         ("sentencias", "statements"),
         ("celdas", "cells"),
+        ("tareas", "tasks"),
+        ("capacidad_canal", "channel_capacity"),
     ] {
         if let Some(value) = declared.and_then(|declared| declared.get(name)) {
             limits.insert(wire.to_owned(), value.clone());

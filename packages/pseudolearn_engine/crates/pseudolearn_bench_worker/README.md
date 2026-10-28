@@ -108,3 +108,35 @@ Corpus de rendimiento del monorepo. Se conserva la separación entre procesos in
 ### E-PG-05: crecimiento de la cinta (`pg-tape`, `PG-3.13.01`–`.04`)
 
 `pseudolearn_bench_worker pg-tape <directorio> <proceso> <máquina>` ejecuta las nueve cargas de `pg_tape_loads.rs` (100, 1 000 y 10 000 efectos de consola, reloj y archivo de 64 B, con `max_tape_bytes` elevado para que el tope no interfiera), registra por carga las entradas, los bytes de la cinta serializada, su reproducibilidad y el tiempo, y escribe `tape-growth-<proceso>.json`; se niega a sobrescribir. Termina con error si el crecimiento no es lineal: `grows_linearly` compara las pendientes de bytes por entrada entre 100–1 000 y 1 000–10 000 con tolerancia del 5 %, y rechaza series vacías, planas o decrecientes. Medición de validación del 2026-10-27 (1 proceso, depuración): 338, 557 y 740 B por efecto de consola, reloj y archivo, crecimiento lineal en las tres. Las pruebas de `pg_tape_tests.rs` cubren las cargas, el camino feliz y la serie cuadrática o degenerada. Los vectores adversarios de `E-PG-09` se enumeran en `apps/pseudolearn_cli` y no en este miembro.
+
+### E-PG-06: agendas de tareas (`pg-tasks`, `PG-4.10`)
+
+`pseudolearn_bench_worker pg-tasks <directorio-nuevo> <primera-semilla> <última-semilla>` recorre las
+semillas `[primera, última)`. Cada semilla elige la familia `semilla mod 8` y sus parámetros con un
+SplitMix64 implementado en el trabajador, nunca en el motor:
+
+| Familia | Qué genera | Resultado esperado derivado |
+|---|---|---|
+| 0 | Abanico y unión de 1 a 1 000 tareas | Una línea por tarea y el cierre |
+| 1 | Productor y consumidor con capacidad 1, 2, 8 o 64 | Suma de 1 a n |
+| 2 | Hermana que falla entre 2 y 20 | Primer error y recuento de canceladas |
+| 3 | Dos tareas de CPU con cesión y una que espera | Orden de finalización por turnos |
+| 4 | `Elegir` con 2 a 4 canales, algunos listos | Gana la primera rama lista en orden textual |
+| 5 | Tareas esperando un canal que nadie envía | `taskDeadlock` |
+| 6 | Efectos concurrentes con permutación de entrega | Salida en el orden de la permutación |
+| 7 | Instantánea con alias bajo recolección forzada | Alias conservado en la copia |
+
+Por semilla se ejecuta el programa en vivo, se repite, y si termina se reproduce desde su cinta; la
+salida, la terminación y la cinta deben coincidir y la salida y la terminación deben ser las derivadas
+de la regla. La plantilla de cada familia lleva sus parámetros en el texto del programa (un programa
+por semilla) porque la ejecución nativa de tareas aún no existe y no hay ocho binarios que compilar;
+cuando el sujeto nativo ofrezca tareas la campaña pasará a parametrizar ocho plantillas por
+`Argumentos`. El resumen JSON (`tasks-<primera>-<última>.json`) no se sobrescribe y lista las semillas
+divergentes. Los datos crudos no se versionan. La campaña de 10 000 semillas se ejecuta en segundo
+plano, con notificación, y se parte por rangos si dura más de una hora; solo las pruebas unitarias del
+generador, del comparador y del resumen forman parte de la comprobación ligera.
+
+Procedencia de cada campaña: comando exacto, revisión Git, `rustc --version`, hardware, fecha, rango de
+semillas, ruta local ignorada de los datos crudos y el resumen JSON; el protocolo de regresión de
+`PERF.SUITE.CORE` (control `276a156`, al menos 10 procesos por 30 muestras, IC bootstrap 95 %) se aplica
+con los binarios `release` de control y de tratamiento sin tareas en los programas.

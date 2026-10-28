@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/domain/model/execution/simulated_capabilities.dart';
 import 'package:pseudolearn_app/engine/rust/rust_simulated_host.dart';
+import 'package:pseudolearn_app/engine/rust/rust_wire_models.dart';
 
 Map<String, Object?> capability(int slot, {int rights = 3, int kind = 2}) => {
   'slot': slot,
@@ -159,6 +160,27 @@ void main() {
       final simulated = host();
       final reply = simulated.reply(request('desconocida', receiver: capability(9)));
       expect(failureCode(reply), 'capacidad_cerrada');
+    });
+  });
+
+  group('delivery order', () {
+    PendingEffectRequest pending(int sequence) => PendingEffectRequest(
+      effectSeq: sequence,
+      capabilityKind: 'timer',
+      operation: 'request_timer',
+      argumentsSummary: '',
+    );
+
+    test('concurrent pending effects are delivered first-in first-out', () {
+      final order = RustSimulatedHost.deliveryOrder([pending(3), pending(1), pending(2)]);
+      expect(order.map((item) => item.effectSeq), [1, 2, 3]);
+    });
+
+    test('an empty pending list stays empty and the input is not mutated', () {
+      expect(RustSimulatedHost.deliveryOrder(const []), isEmpty);
+      final input = [pending(2), pending(1)];
+      RustSimulatedHost.deliveryOrder(input);
+      expect(input.first.effectSeq, 2);
     });
   });
 }

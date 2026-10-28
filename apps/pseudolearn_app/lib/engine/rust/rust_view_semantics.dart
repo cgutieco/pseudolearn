@@ -17,6 +17,7 @@ final class RustViewSemantics {
   final String? builtinType;
   final String? capabilityType;
   final String? effectOperation;
+  final bool suspendable;
 
   const RustViewSemantics({
     this.operators = const [],
@@ -30,6 +31,7 @@ final class RustViewSemantics {
     this.builtinType,
     this.capabilityType,
     this.effectOperation,
+    this.suspendable = false,
   });
 
   static const RustViewSemantics none = RustViewSemantics();
@@ -56,6 +58,7 @@ final class RustViewSemantics {
       builtinType: node['builtin_type'] as String?,
       capabilityType: node['capability_type'] as String?,
       effectOperation: node['effect_operation'] as String?,
+      suspendable: node['suspendable'] == true,
     );
   }
 }

@@ -1,5 +1,4 @@
 use crate::{EffectTape, ExecutionIdentity, ReplayError, TapeEntry, TapeReplayProvider};
-use sha2::{Digest, Sha256};
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct EffectRecord {
@@ -26,6 +25,9 @@ pub struct EffectSession {
     pub(crate) authority: crate::effect_authority::EffectAuthority,
     pub(crate) secrets: crate::secret_policy::SecretPolicy,
     pub(crate) pending: Option<crate::host_session::PendingHostEffect>,
+    pub(crate) current_task: u64,
+    pub(crate) reserved: std::collections::BTreeMap<u64, u64>,
+    pub(crate) active_reservation: Option<u64>,
 }
 
 impl EffectSession {
@@ -37,6 +39,9 @@ impl EffectSession {
             authority: Default::default(),
             pending: None,
             secrets: Default::default(),
+            current_task: 0,
+            reserved: Default::default(),
+            active_reservation: None,
         }
     }
 
@@ -50,6 +55,9 @@ impl EffectSession {
             authority: Default::default(),
             pending: None,
             secrets: Default::default(),
+            current_task: 0,
+            reserved: Default::default(),
+            active_reservation: None,
         })
     }
 
@@ -63,22 +71,10 @@ impl EffectSession {
             .sequence
             .checked_add(1)
             .ok_or(ReplayError::Divergence)?;
-        let secret = self.secrets.reference(&request.arguments, &payload);
-        let request_digest = secret
-            .as_ref()
-            .map(|secret| secret.value_hmac.clone())
-            .unwrap_or_else(|| format!("{:x}", Sha256::digest(&request.arguments)));
-        let payload = if self.replay.is_some() {
-            self.replay_payload(sequence, (&request, &request_digest), outcome)?
-        } else {
-            self.record_entry(sequence, (request, request_digest, secret), (outcome, &payload));
-            payload
-        };
-        self.sequence = sequence;
-        Ok(payload)
+        self.resolve_at(sequence, request, (payload, outcome))
     }
 
-    fn replay_payload(
+    pub(crate) fn replay_payload(
         &mut self,
         sequence: u64,
         (request, digest): (&EffectRecord, &str),
@@ -96,7 +92,7 @@ impl EffectSession {
         Ok(entry.payload_bytes.clone())
     }
 
-    fn record_entry(
+    pub(crate) fn record_entry(
         &mut self,
         sequence: u64,
         (request, request_digest, secret): (EffectRecord, String, Option<crate::SecretHandle>),
@@ -104,7 +100,8 @@ impl EffectSession {
     ) {
         self.tape.append(TapeEntry {
             effect_seq: sequence,
-            task_id: 0,
+            task_id: self.current_task,
+            delivery_seq: None,
             source_node_id: request.source_node_id,
             capability_kind: request.capability_kind,
             operation: request.operation,

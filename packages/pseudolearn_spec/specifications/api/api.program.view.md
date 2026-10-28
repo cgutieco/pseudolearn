@@ -616,3 +616,63 @@ La vista pública incluye interface_unit, interface_signature, realization, type
   }
 }
 ```
+
+```regla
+{
+  "id": "R4",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "La vista proyecta como nodos explícitos las construcciones de tareas: task_scope, spawn_statement, spawn_expression, await_expression, select_statement y receive_branch. Los tipos incorporados de tareas incluyen builtin_type (task, channel, immutable o task_failure) y las unidades declaradas suspendibles incluyen suspendable verdadero. task_scope declara los roles failure_binding y body, select_statement el rol branch y receive_branch los roles binding, channel y body. Ninguna construcción de tareas se proyecta como un nodo genérico de proceso.",
+  "verificacion": [
+    "C12"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C12",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "SubProceso Suspendible Work(stream Como Canal<Entero>) Como Resultado<Entero, Cadena>\nSegun Aguardar stream.Recibir() Hacer\nAlgo(value): Escribir value;\nNada: Escribir 0;\nFinSegun\nRetornar Exito(1);\nFinSubProceso\nAlgoritmo Main\nDefinir stream Como Canal<Entero> <- Canal(1);\nTareas problem\nDefinir job Como Tarea<Entero> <- Lanzar Work(stream);\nLanzar Work(stream);\nFinTareas\nDescartar problem;\nElegir\nRecibir first Desde stream:\nEscribir 1;\nRecibir second Desde stream:\nEscribir 2;\nFinElegir\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Work(stream as channel<integer>) as result<integer, string>\nswitch await stream.receive() do\nsome(value): write value;\nnone: write 0;\nendSwitch\nreturn success(1);\nendSubroutine\nalgorithm Main\ndefine stream as channel<integer> <- channel(1);\ntasks problem\ndefine job as task<integer> <- spawn Work(stream);\nspawn Work(stream);\nendTasks\ndiscard problem;\nselect\nreceive first from stream:\nwrite 1;\nreceive second from stream:\nwrite 2;\nendSelect\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "vista_programa": {
+      "syntax_kinds_include": [
+        "task_scope",
+        "spawn_statement",
+        "spawn_expression",
+        "await_expression",
+        "select_statement",
+        "receive_branch"
+      ],
+      "nodes_include": [
+        {
+          "syntax_kind": "type",
+          "builtin_type": "task"
+        },
+        {
+          "syntax_kind": "type",
+          "builtin_type": "channel"
+        },
+        {
+          "syntax_kind": "subroutine",
+          "suspendable": true
+        }
+      ]
+    }
+  }
+}
+```

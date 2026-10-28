@@ -45,6 +45,7 @@ pub struct PendingEffectRequest {
     pub operation: String,
     pub arguments_summary: String,
     pub source_node_id: Option<u32>,
+    pub task_id: u64,
 }
 
 #[derive(Clone, Debug, PartialEq)]

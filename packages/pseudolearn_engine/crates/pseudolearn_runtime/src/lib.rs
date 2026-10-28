@@ -6,7 +6,10 @@ pub use pseudolearn_abi::{
 
 mod effect_session;
 pub mod effect_tape;
+mod effect_reservation;
+mod tape_abandoned;
 mod tape_codec;
+mod tape_delivery;
 pub mod tape_privacy;
 pub mod tape_replay;
 pub use effect_session::{EffectRecord, EffectSession, console_record};
@@ -88,6 +91,8 @@ pub use statistics::HeapStatistics;
 mod collection_tests;
 
 pub use effect_tape::{EffectTape, ExecutionIdentity, TAPE_SCHEMA_V1, TapeEntry};
+pub use tape_abandoned::AbandonedEffect;
+pub use tape_delivery::{delivery_order, operation_may_write};
 pub use tape_codec::{decode_effect_tape, encode_effect_tape, tape_entry_hash};
 pub use tape_replay::{ExecutionMode, ReplayError, TapeReplayProvider};
 
@@ -129,8 +134,8 @@ pub use effect_checkpoint::{
 mod task_agenda;
 mod task_state;
 pub use task_agenda::{
-    TaskAgenda, TaskAgendaError, TaskCancellation, TaskChannelId, TaskExecution, TaskId,
-    TaskScopeId, TaskScopeJoin, TaskWaiting, TaskWake,
+    DEFAULT_TASK_LIMIT, TaskAgenda, TaskAgendaError, TaskCancellation, TaskChannelId,
+    TaskExecution, TaskId, TaskLimit, TaskSummary, TaskScopeId, TaskScopeJoin, TaskWaiting, TaskWake,
 };
 pub use task_state::TaskState;
 

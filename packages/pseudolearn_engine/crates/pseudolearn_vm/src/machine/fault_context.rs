@@ -26,7 +26,10 @@ impl Machine<'_> {
             return trap;
         }
         match fault {
-            "cellLimitExceeded" | "recursionDepthExceeded" | "statementBudgetExhausted" => {
+            "cellLimitExceeded"
+            | "recursionDepthExceeded"
+            | "statementBudgetExhausted"
+            | "taskLimitExceeded" => {
                 self.limit_arguments(fault, &mut trap.arguments);
             }
             "subroutineEndedWithoutReturn" => {
@@ -51,6 +54,12 @@ impl Machine<'_> {
                     DiagnosticArgument::Number(
                         u64::try_from(self.options.depth).unwrap_or(u64::MAX).into(),
                     ),
+                );
+            }
+            "taskLimitExceeded" => {
+                arguments.insert(
+                    "limit",
+                    DiagnosticArgument::Number(self.options.task_limit.into()),
                 );
             }
             "statementBudgetExhausted" => {

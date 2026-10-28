@@ -5,7 +5,7 @@ use crate::options::CliOptions;
 use crate::project_report::{Stream, render};
 use crate::project_session::prepare;
 use pseudolearn_api::{
-    ExecutionLimits, NativeBuildFailure, NativeBuildRequest, build_native_project_object,
+    NativeBuildFailure, NativeBuildRequest, build_native_project_object,
 };
 use std::path::Path;
 
@@ -60,12 +60,7 @@ fn build_request(options: &CliOptions) -> NativeBuildRequest {
         strictness: options.strictness.clone().unwrap_or("strict".to_owned()),
         seed: options.execution.seed.unwrap_or(42),
         forced_collection: false,
-        limits: ExecutionLimits {
-            depth: options.execution.depth,
-            statements: options.execution.statements,
-            cells: options.execution.cells,
-            micro_steps: None,
-        },
+        limits: options.execution.limits(),
         source_name: "project".to_owned(),
         locale: locale.clone(),
         error_template: messages::template("diagnosticError", locale).to_owned(),

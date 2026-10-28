@@ -141,6 +141,13 @@ pub(crate) fn options(request: &ExecuteRequest) -> RunOptions {
         } else {
             TwinMode::Fast
         },
+        task_limit: request.limits.tasks.unwrap_or(defaults.task_limit),
+        channel_capacity_limit: request
+            .limits
+            .channel_capacity
+            .map_or(defaults.channel_capacity_limit, |value| {
+                usize::try_from(value).unwrap_or(usize::MAX)
+            }),
         ..defaults
     }
 }

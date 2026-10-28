@@ -35,7 +35,7 @@ impl Machine<'_> {
                 Ok(Flow::Continue)
             }
             ChannelStep::Waiting => {
-                self.wait_for_channel(*channels.first().ok_or(INVALID_BYTECODE)?)
+                self.wait_for_channel(*channels.first().ok_or(INVALID_BYTECODE)?, "select")
             }
         }
     }

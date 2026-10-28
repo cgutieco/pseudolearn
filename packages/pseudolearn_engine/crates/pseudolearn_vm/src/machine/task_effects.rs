@@ -14,6 +14,7 @@ impl Machine<'_> {
             .waiting()
             .for_effect(task, request.effect_seq)
             .map_err(super::tasks::task_fault)?;
+        self.event_task_suspended("effect", request.effect_seq);
         self.tasks.pending_effects.insert(task, request);
         self.schedule_next(true, true)?;
         Ok(Flow::Continue)
@@ -27,7 +28,7 @@ impl Machine<'_> {
         };
         let (task, _) = effects
             .into_iter()
-            .min_by_key(|(_, sequence)| *sequence)
+            .min_by_key(|(_, sequence)| self.tasks.delivery_rank(*sequence))
             .ok_or(INVALID_BYTECODE)?;
         let request = self
             .tasks

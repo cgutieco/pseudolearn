@@ -134,6 +134,23 @@
 
 ```regla
 {
+  "id": "R11",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "El anfitrión configura además el máximo de tareas vivas y el máximo de capacidad de un canal. Una tarea está viva desde su lanzamiento hasta que termina; la tarea raíz y las tareas terminadas no cuentan. Lanzar una tarea cuando ya hay tantas vivas como el máximo es un fallo del programa con taskLimitExceeded en el sitio del lanzamiento, sin efectos posteriores. Crear un canal cuya capacidad supera el máximo es un fallo del programa con channelCapacityExceeded; una capacidad igual al máximo se admite. Las omisiones son 4 096 tareas y 65 536 de capacidad.",
+  "verificacion": [
+    "C24",
+    "C25",
+    "C26",
+    "C27",
+    "C28",
+    "C29"
+  ]
+}
+```
+
+```regla
+{
   "id": "R2",
   "fuerza": "DEBE",
   "clase": "semantica",
@@ -862,6 +879,178 @@ Vector y Diccionario derivan sus límites del presupuesto cells existente: como 
   },
   "limites": {
     "celdas": 1
+  }
+}
+```
+
+```caso
+{
+  "id": "C24",
+  "regla": "R11",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "SubProceso Suspendible Work()\nEscribir \"w\";\nFinSubProceso\nAlgoritmo Main\nTareas\nLanzar Work();\nLanzar Work();\nLanzar Work();\nFinTareas\nEscribir \"end\";\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Work()\nwrite \"w\";\nendSubroutine\nalgorithm Main\ntasks\nspawn Work();\nspawn Work();\nspawn Work();\nendTasks\nwrite \"end\";\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "w\nw\nw\nend\n",
+    "terminacion": "completed"
+  },
+  "limites": {
+    "tareas": 3
+  }
+}
+```
+
+```caso
+{
+  "id": "C25",
+  "regla": "R11",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "SubProceso Suspendible Work()\nEscribir \"w\";\nFinSubProceso\nAlgoritmo Main\nTareas\nLanzar Work();\nLanzar Work();\nLanzar Work();\nLanzar Work();\nFinTareas\nEscribir \"end\";\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Work()\nwrite \"w\";\nendSubroutine\nalgorithm Main\ntasks\nspawn Work();\nspawn Work();\nspawn Work();\nspawn Work();\nendTasks\nwrite \"end\";\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "",
+    "fallo": {
+      "codigo": "taskLimitExceeded"
+    }
+  },
+  "limites": {
+    "tareas": 3
+  }
+}
+```
+
+```caso
+{
+  "id": "C26",
+  "regla": "R11",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "SubProceso Suspendible Work()\nEscribir \"w\";\nFinSubProceso\nAlgoritmo Main\nTareas\nLanzar Work();\nLanzar Work();\nFinTareas\nTareas\nLanzar Work();\nLanzar Work();\nFinTareas\nEscribir \"end\";\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Work()\nwrite \"w\";\nendSubroutine\nalgorithm Main\ntasks\nspawn Work();\nspawn Work();\nendTasks\ntasks\nspawn Work();\nspawn Work();\nendTasks\nwrite \"end\";\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "w\nw\nw\nw\nend\n",
+    "terminacion": "completed"
+  },
+  "limites": {
+    "tareas": 2
+  }
+}
+```
+
+```caso
+{
+  "id": "C27",
+  "regla": "R11",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "Algoritmo Main\nDefinir stream Como Canal<Entero> <- Canal(8);\nEscribir \"ok\";\nFinAlgoritmo\n",
+    "en": "algorithm Main\ndefine stream as channel<integer> <- channel(8);\nwrite \"ok\";\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "ok\n",
+    "terminacion": "completed"
+  },
+  "limites": {
+    "capacidad_canal": 8
+  }
+}
+```
+
+```caso
+{
+  "id": "C28",
+  "regla": "R11",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "Algoritmo Main\nDefinir stream Como Canal<Entero> <- Canal(9);\nEscribir \"ok\";\nFinAlgoritmo\n",
+    "en": "algorithm Main\ndefine stream as channel<integer> <- channel(9);\nwrite \"ok\";\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "",
+    "fallo": {
+      "codigo": "channelCapacityExceeded"
+    }
+  },
+  "limites": {
+    "capacidad_canal": 8
+  }
+}
+```
+
+```caso
+{
+  "id": "C29",
+  "regla": "R11",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "Algoritmo Main\nDefinir stream Como Canal<Entero> <- Canal(65536);\nEscribir \"ok\";\nFinAlgoritmo\n",
+    "en": "algorithm Main\ndefine stream as channel<integer> <- channel(65536);\nwrite \"ok\";\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "ok\n",
+    "terminacion": "completed"
+  },
+  "limites": {
+    "celdas": 70000
   }
 }
 ```

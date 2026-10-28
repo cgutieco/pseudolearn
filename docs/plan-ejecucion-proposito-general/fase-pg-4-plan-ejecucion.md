@@ -448,7 +448,7 @@ marca `[x]` sin evidencia en §11.
   cancelación cooperativa de la del anfitrión y las trampas. Códigos: `spawnOutsideTaskScope`,
   `taskScopeInsideDefer`, `taskArgumentNotTransferable`
   (compartido con `PG-4.06`), `taskByReferenceArgument`, `taskHandleEscape`, `spawnTargetNotSuspendible`.
-- [ ] `PG-4.02.02` Casos: feliz (dos hijas unidas, hija sin valor como sentencia, ámbitos anidados de tres niveles,
+- [x] `PG-4.02.02` Casos: feliz (dos hijas unidas, hija sin valor como sentencia, ámbitos anidados de tres niveles,
   ámbito vacío); infeliz (un caso por código; `Lanzar` dentro de clausura y dentro de `Diferir`; asa asignada,
   retornada, capturada y pasada); cancelación (hija suspendida en canal cancelada por fallo de hermana ejecuta sus
   `Diferir` en orden inverso; nieta cancelada antes que su madre); límite (`Aguardar t` dos veces; ámbito cuya unión no
@@ -458,7 +458,7 @@ marca `[x]` sin evidencia en §11.
   VM y falta el caso de cancelación mientras una hija espera un canal (`LANG.TASK.CHANNEL`, `PG-4.04.01`).
 - [x] `PG-4.02.03` Tests espejo: `task_scope_checker_tests.rs`, `task_handles_tests.rs` en semantic;
   `task_agenda_tests.rs` (cancelación y unión como estructura de datos) en runtime.
-- [ ] `PG-4.02.04` Código: semantic (`task_scope_checker.rs`, `task_handles.rs`); lowering (`task_scopes.rs`, aristas
+- [x] `PG-4.02.04` Código: semantic (`task_scope_checker.rs`, `task_handles.rs`); lowering (`task_scopes.rs`, aristas
   de unión en `cleanup_edges.rs`); runtime (`task_agenda.rs`, `task_state.rs`); VM (`machine/tasks.rs`). La RI ahora
   declara `O94`–`O100`; lowering genera operaciones de ámbito, lanzamiento, espera y unión; la agenda FIFO y la VM
   ejecutan tareas hijas con bancos y marcos aislados, resultados exitosos, esperas repetidas y unión de ámbitos
@@ -580,76 +580,76 @@ marca `[x]` sin evidencia en §11.
 
 ### PG-4.09 · Límites de tareas y de colas como terminaciones definidas
 
-- [ ] `PG-4.09.01` Editar `ENG.LIMITS`: regla nueva con los límites `tasks` y `channel_capacity`, sus omisiones
+- [x] `PG-4.09.01` Editar `ENG.LIMITS`: regla nueva con los límites `tasks` y `channel_capacity`, sus omisiones
   (`4 096` y `65 536`; app `256` tareas, informativo como `#R8`) y su clasificación `failed`
   (`taskLimitExceeded`, `channelCapacityExceeded`).
-- [ ] `PG-4.09.02` Casos en el borde exacto: límite de tareas `N` con `N` vivas (pasa) y `N + 1` (falla en el
+- [x] `PG-4.09.02` Casos en el borde exacto: límite de tareas `N` con `N` vivas (pasa) y `N + 1` (falla en el
   `Lanzar`, con su tramo, sin efectos posteriores); capacidad igual al máximo (pasa) y máximo + 1 (falla); tareas
   terminadas no cuentan como vivas.
-- [ ] `PG-4.09.03` Tests: límites en `task_agenda_tests.rs` y `task_channel_tests.rs`.
-- [ ] `PG-4.09.04` Código: runtime y configuración de límites en `pseudolearn_api` (`RunOptions` y negociación).
+- [x] `PG-4.09.03` Tests: límites en `task_agenda_tests.rs` y `task_channel_tests.rs`.
+- [x] `PG-4.09.04` Código: runtime y configuración de límites en `pseudolearn_api` (`RunOptions` y negociación).
   Si la CLI ya expone límites configurables, añadir `tasks`; si no, nada (`SCOPE-YAGNI`).
-- [ ] `PG-4.09.05` README del motor y de la CLI si cambia.
-- [ ] `PG-4.09.06` Ligera: tests anteriores.
+- [x] `PG-4.09.05` README del motor y de la CLI si cambia.
+- [x] `PG-4.09.06` Ligera: tests anteriores.
 - [ ] `PG-4.09.07` Pesada: `--only ENG.LIMITS` en `engine` y `aot`.
 
 ### PG-4.10 · 10 000 agendas sembradas reproducen sus observables, con cero diferencias
 
-- [ ] `PG-4.10.01` Editar `ENG.EFFECT.TAPE` (`delivery_seq`, `abandoned`, `task_id` real; `D-PG4-14`),
+- [x] `PG-4.10.01` Editar `ENG.EFFECT.TAPE` (`delivery_seq`, `abandoned`, `task_id` real; `D-PG4-14`),
   `ENG.EXEC.EFFECT-ORDER` (orden de entrega), `ENG.EXEC.MODEL#R5` y `API.EXECUTE#R6` (lista de pendientes;
   `CF-PG4-04`), `RT.HOST.INTERFACE` (entrega con agenda ociosa) y el esquema del caso `see/1` (`anfitrion` acepta
   `orden_entrega`).
-- [ ] `PG-4.10.02` Casos: tres efectos concurrentes entregados en orden inverso graban `delivery_seq` y se reproducen
+- [x] `PG-4.10.02` Casos: tres efectos concurrentes entregados en orden inverso graban `delivery_seq` y se reproducen
   igual; misma cinta con orden alterado ⇒ `replay_divergence`; programa de `PG-3` sin `Aguardar` produce cinta
   idéntica byte a byte a la de antes de `PG-4`.
-- [ ] `PG-4.10.03` Tests: `tape_codec` y `tape_replay` con entregas desordenadas; anfitrión falso con orden declarado.
-- [ ] `PG-4.10.04` Código: runtime `effect_tape.rs`, `tape_codec.rs`, `tape_replay.rs`; VM `machine/effects.rs` y
+- [x] `PG-4.10.03` Tests: `tape_codec` y `tape_replay` con entregas desordenadas; anfitrión falso con orden declarado.
+- [x] `PG-4.10.04` Código: runtime `effect_tape.rs`, `tape_codec.rs`, `tape_replay.rs`; VM `machine/effects.rs` y
   `effect_completion.rs` (varios pendientes); timeline `effect_replay.rs`; API `execution_effects.rs`,
   `fake_host.rs`, `tape_wire.rs`; generador y campaña `pg_tasks` en `pseudolearn_bench_worker` (§7.3).
-- [ ] `PG-4.10.05` README del motor (`runtime`, `timeline`, `api`) y README del trabajador de medición.
-- [ ] `PG-4.10.06` Ligera: tests de cinta y del generador de agendas (sin ejecutar la campaña).
+- [x] `PG-4.10.05` README del motor (`runtime`, `timeline`, `api`) y README del trabajador de medición.
+- [x] `PG-4.10.06` Ligera: tests de cinta y del generador de agendas (sin ejecutar la campaña).
 - [ ] `PG-4.10.07` Pesada: campaña completa de 10 000 agendas (§7.3) con cero diferencias, más
   `--only ENG.EFFECT.TAPE,ENG.EXEC.EFFECT-ORDER,ENG.EXEC.MODEL,API.EXECUTE,RT.HOST.INTERFACE`.
 
 ### PG-4.11 · Eventos de tarea observables disponibles para la app
 
-- [ ] `PG-4.11.01` Editar `ENG.TRACE.EVENTS` (clases `E1`, regla `E2`), `API.WIRE-FORMAT` si el PLEV necesita códigos
+- [x] `PG-4.11.01` Editar `ENG.TRACE.EVENTS` (clases `E1`, regla `E2`), `API.WIRE-FORMAT` si el PLEV necesita códigos
   de clase nuevos, `API.STATE.QUERY` (el estado en un evento lista los marcos de la tarea actual y un resumen de todas
   las tareas: identidad, padre, estado, causa y objetivo), `API.PROGRAM.VIEW` (§3.3: modificador, `Aguardar`, ámbito
   con vínculo, `Lanzar`, `Elegir` y ramas, operaciones de canal, tipos nuevos) y `TOOL.SERVICE.CATALOG` (una ficha
   `es`/`en` por identidad de §3.3 con ejemplo verificable).
-- [ ] `PG-4.11.02` Casos: la cinta ilustrativa de seis pasos de `ADR-12` reproducida como caso de traza; consulta de
+- [x] `PG-4.11.02` Casos: la cinta ilustrativa de seis pasos de `ADR-12` reproducida como caso de traza; consulta de
   estado con una tarea suspendida y otra lista; vista pública de cada forma nueva; ayuda de cada identidad en ambos
   perfiles.
-- [ ] `PG-4.11.03` Tests: `event_codec` y `event_binary` con clases nuevas; `program_view_tasks_tests.rs`; tests Dart
+- [x] `PG-4.11.03` Tests: `event_codec` y `event_binary` con clases nuevas; `program_view_tasks_tests.rs`; tests Dart
   espejo de cada archivo de la app tocado (se escriben ahora, se **ejecutan** en la iteración 5).
-- [ ] `PG-4.11.04` Código: VM `events.rs`; API `event_codec.rs`, `event_binary.rs`, `state_pages.rs`,
+- [x] `PG-4.11.04` Código: VM `events.rs`; API `event_codec.rs`, `event_binary.rs`, `state_pages.rs`,
   `program_view_tasks.rs`; datos del catálogo; app: `rust_wire_models.dart` (clases de evento, lista de pendientes),
   `rust_execution_api.dart` y `rust_program_execution.dart` (`effect_result` por `effect_seq`),
   `rust_simulated_host.dart` (entrega FIFO determinista de varios pendientes), `rust_construct_projection.dart` y
   `rust_program_view_builder.dart` (tipos de nodo nuevos), `rust_flowchart_block_builder.dart` y
   `rust_structogram_cell_builder.dart` (nodos explícitos con marca de suspensión y textos desde l10n o catálogo, nunca
   literales sueltos en la capa equivocada).
-- [ ] `PG-4.11.05` README de `pseudolearn_engine` (`api`) y de `apps/pseudolearn_app` (qué entrega `PG-4` y qué queda
+- [x] `PG-4.11.05` README de `pseudolearn_engine` (`api`) y de `apps/pseudolearn_app` (qué entrega `PG-4` y qué queda
   para `PG-B`).
-- [ ] `PG-4.11.06` Ligera: tests Rust de codificación; `dart analyze` y `dart run tool/check_limits.dart` en la app.
+- [x] `PG-4.11.06` Ligera: tests Rust de codificación; `dart analyze` y `dart run tool/check_limits.dart` en la app.
 - [ ] `PG-4.11.07` Pesada: `--only ENG.TRACE.EVENTS,API.STATE.QUERY,API.PROGRAM.VIEW,TOOL.SERVICE.CATALOG,API.WIRE-FORMAT`;
   `flutter test test/architecture_test.dart` y tests espejo tocados; `bash tool/test_bridge.sh` (disparador de
   contrato JSON).
 
 ### PG-4.12 · `E-PG-06` ejecutado; métrica candidata medida; async nativo en AOT solo si pasa
 
-- [ ] `PG-4.12.01` Sin especificación normativa nueva: las métricas son candidatas (`PERF.PG.TASKS.*`) hasta que la
+- [x] `PG-4.12.01` Sin especificación normativa nueva: las métricas son candidatas (`PERF.PG.TASKS.*`) hasta que la
   persona las apruebe. Si la persona las aprueba en `P5`, se redactan después como identidades `PERF` propias.
-- [ ] `PG-4.12.02` Protocolo de §7.3 y §7.5 escrito en el README del trabajador antes de medir.
-- [ ] `PG-4.12.03` Tests del generador, del resumen y del comparador (`pg_tasks_*_tests.rs`).
+- [x] `PG-4.12.02` Protocolo de §7.3 y §7.5 escrito en el README del trabajador antes de medir.
+- [x] `PG-4.12.03` Tests del generador, del resumen y del comparador (`pg_tasks_*_tests.rs`).
 - [ ] `PG-4.12.04` Código AOT: codegen `suspension_frames.rs` (función reanudable con selector de estado y volcado),
   `lower_tasks.rs`, `lower_channels.rs`; `pseudolearn_aot_rt` `task_runtime.rs` y `task_channel.rs` (frontera
   `extern "C"` que delega en la agenda del runtime; `unsafe` solo en funciones breves con su fila de invariantes en el
   README) y `effects.rs` (peticiones concurrentes); `conformance-aot.yaml`: reglas de tareas en `pendiente` hasta la
   iteración 5.
-- [ ] `PG-4.12.05` README del motor (`codegen`, `aot_rt`, tabla de invariantes de `unsafe`) y del trabajador.
-- [ ] `PG-4.12.06` Ligera: `cargo check` y tests unitarios de codegen y `aot_rt` tocados.
+- [x] `PG-4.12.05` README del motor (`codegen`, `aot_rt`, tabla de invariantes de `unsafe`) y del trabajador.
+- [x] `PG-4.12.06` Ligera: `cargo check` y tests unitarios de codegen y `aot_rt` tocados.
 - [ ] `PG-4.12.07` Pesada: `E-PG-06` completo; si **toda** la comparación VM/AOT da cero diferencias, las reglas pasan a
   `cumple` en `conformance-aot.yaml`; si no, quedan `pendiente`, el README del motor declara que AOT no ofrece tareas
   y la CLI rechaza `--nativo` con tareas mediante un diagnóstico explícito. Nunca se anuncia async nativo sin pasar.
@@ -906,10 +906,10 @@ lo que documente su README tras la iteración 4. Desde `apps/pseudolearn_app`: `
 | `PG-4.06` | Implementación, ligera y pesada de `engine` completas; pesada de `aot` parcial | `.01`–`.06`; `LANG.TASK.ISOLATION` (`R1`–`R7`, 28 casos bilingües), `Instantanea` en VM y en AOT (`rt_aot_snapshot_copy`); `conform --subject engine`: ISOLATION 100 observaciones y LIB.MODEL 20, 0 divergencias | `.07` sin cerrar: en `aot` quedan `C1` y `C19` (usan `Lanzar`) y el `differential` los reporta; las reglas `R1` y `R3` siguen `pendiente` en `conformance-aot.yaml` |
 | `PG-4.07` | Implementación, ligera y pesada de `engine` completas; pesada de `aot` parcial | `.01`–`.06`; `ENG.TASK.AGENDA#R1`–`R6` con casos `C6`–`C13` (identidades y turno del padre, FIFO y despertar múltiple, cuanto exacto 1 024, efectos), `IR.WELL-FORMEDNESS#R12`; `engine`: AGENDA 52 observaciones, IR.INSTRUCTIONS 14, IR.WELL-FORMEDNESS 17, IR.OBSERVATION-POINTS 12 y su propiedad, 0 divergencias; `aot` baja `task.yield_check` como operación vacía | `.07` sin cerrar: `aot` no ejecuta tareas (52 divergencias de AGENDA, `pendiente`); «tarea que cede con cola vacía ⇒ sin `task_suspended`» no es observable hasta que existan los eventos de tarea de `PG-4.11`, se cubre solo por salida |
 | `PG-4.08` | Implementación, ligera y pesada de `engine` completas; pesada de `aot` parcial | `.01`–`.06`; `ENG.TASK.MEMORY#R1`–`R3` con 4 casos (100 tareas suspendidas, canal con objetos, clausura en marco suspendido), `ENG.LIMITS#R10` (canal exacto `1 + c·w`, tareas), `RT.ABI#R4`; etiquetas de forma de tarea y continuación corregidas (colisionaban con bytes y capacidades); `engine`: MEMORY 16, LIMITS 93, ENG.STATE.SNAPSHOT 24 e INCREMENTAL 4 con sus propiedades, 0 divergencias | `.07` sin cerrar: `aot` no ofrece tareas (MEMORY 16 y LIMITS 16 divergencias, `pendiente`); las propiedades `RT.ABI#P1`/`P2` de `aot` fallan con los programas de tareas del corpus; una instantánea cíclica no es construible en el lenguaje (los ciclos requieren clases, que `Instantanea` rechaza), por lo que solo la cubren los tests del runtime |
-| `PG-4.09` | | | |
-| `PG-4.10` | | | |
-| `PG-4.11` | | | |
-| `PG-4.12` | | | |
+| `PG-4.09` | Implementación y ligera completas | `.01`–`.06`; `ENG.LIMITS#R11` con `C24`–`C29` (borde exacto de tareas vivas, capacidad máxima y máximo + 1, terminadas no cuentan); `TaskLimit` en la agenda, `RunOptions.task_limit`/`channel_capacity_limit`, `limits.tasks`/`channel_capacity` en la API, `--tareas`/`--tasks` en la CLI; claves `tareas` y `capacidad_canal` en el esquema de casos; tests de runtime, API y CLI en verde | `.07` pesada no ejecutada por instrucción de la persona; `conform --subject engine --only ENG.LIMITS` se ejecutó como barrido de verificación de oráculos: 117 observaciones, 0 divergencias |
+| `PG-4.10` | Implementación y ligera completas | `.01`–`.06`; `ENG.EFFECT.TAPE#R6` (`C13`, `C14`), `ENG.EXEC.EFFECT-ORDER#R5` (`C8`, `C9`), `RT.HOST.INTERFACE#R5` (`C8`); `delivery_seq` opcional, `task_id` real, desenlace `abandoned`, reservas de `effect_seq` en orden de petición, `orden_entrega` del anfitrión falso, orden de entrega tomado de la cinta en reproducción, lista `pending_effects`; reproducción y `seek` de historia con entregas invertidas; generador y comparador de agendas (`pg_tasks_*`) con 12 tests | `.07` pesada no ejecutada (campaña de 10 000 semillas); barrido de verificación: EFFECT.TAPE 56, EFFECT-ORDER 36 y HOST.INTERFACE 32 observaciones, 0 divergencias |
+| `PG-4.11` | Implementación y ligera completas | `.01`–`.06`; `ENG.TRACE.EVENTS#R7`/`R8` con `C16`–`C18` y `C15` reescrito, `API.STATE.QUERY#R6`/`C9`, `API.PROGRAM.VIEW#R4`/`C12`, identidades `channelClose` y `snapshotBuiltin` con sus fichas; doce clases de evento en VM, codec JSON y binario; resumen de tareas en el estado; nodos y roles de tareas en la vista; app: `RustTaskEvent`, rechazo de clases desconocidas, `pendingEffects`, entrega FIFO, ordinograma y estructograma explícitos; `dart analyze` y `check_limits.dart` en verde | `.07` pesada no ejecutada; los tests Dart (`rust_event_classes_test`, `rust_task_diagram_builders_test` y ampliaciones) quedan escritos y sin ejecutar porque el arnés carga la biblioteca nativa; barrido: TRACE.EVENTS 69, STATE.QUERY 14 (1 divergencia previa `C8`), PROGRAM.VIEW 26, WIRE-FORMAT 7 y SERVICE.CATALOG 28 observaciones |
+| `PG-4.12` | Parcial: sin código AOT nativo | `.01`, `.02`, `.03`, `.05`, `.06`; campaña `pg-tasks` (ocho familias, SplitMix64 en el trabajador), protocolo en el README del trabajador, rechazo explícito de tareas en el sujeto nativo (`nativeTasksUnsupported`, `build` y `run --nativo`), reglas nativas de las reglas nuevas en `pendiente` | `.04` sin código de generación nativa de funciones reanudables, agenda y canales: exige disposición de continuaciones nativa y fue sustituido por la ruta de rechazo que el plan prevé si la comparación VM/AOT no pasa; `.07` pesada no ejecutada |
 | Espacio liberado (§13) | Ejecutado | 2,8 GiB iniciales; limpieza de artefactos regenerables elevó el espacio libre a 33 GiB antes de compilar; quedan 32 GiB tras las verificaciones | Sin tocar datos personales ni evidencias |
 
 Registro de la iteración solicitada de PG-4.02; la fase PG-4 sigue abierta: rama `feature/agregar-ruta-de-especificacion`,
@@ -985,6 +985,48 @@ Registro de la iteración que cierra PG-4.06 a PG-4.08 (sin `.07` completos):
   `ENG.INPUT#P1` y la campaña completa de propiedades se detienen en un programa del corpus con errores de análisis. `aot` necesita una capacidad
   `tasks` no anunciada para que casos, propiedades y `differential` omitan los programas de tareas (decisión de `PG-4.12`).
 - Espacio: 12–14 GiB libres durante la iteración (por debajo de los 25 GiB de §13); no se limpió nada.
+
+Registro de la iteración conjunta de PG-4.02 (pendientes), PG-4.09 a PG-4.12 (sin `.07`):
+
+- Rama `feature/agregar-ruta-de-especificacion`, sin commit ni push. Los `.07` de PG-4.09 a PG-4.12 se omiten por
+  instrucción de la persona; los de PG-4.01 a PG-4.08 siguen abiertos porque el sujeto `aot` no ofrece tareas.
+- Barrido de conformidad del sujeto `engine` (una orden `--only` por contrato, sin `aot` ni `differential`):
+  0 divergencias en `LANG.TASK.CHANNEL`, `LANG.CONTROL.CLEANUP`, `ENG.TASK.AGENDA`, `ENG.TASK.MEMORY`,
+  `LANG.TASK.ISOLATION`, `LIB.MODEL`, `ENG.EXEC.MODEL`, `ENG.LIMITS`, `ENG.EFFECT.TAPE`,
+  `ENG.EXEC.EFFECT-ORDER`, `RT.HOST.INTERFACE`, `ENG.TRACE.EVENTS`, `API.PROGRAM.VIEW`, `API.WIRE-FORMAT`,
+  `API.EXECUTE` y `TOOL.SERVICE.CATALOG`. Divergencias previas ajenas a esta iteración: `LANG.TASK.SCOPE`
+  (30 observaciones, casos `C1`, `C8`, `C9`, `C11`, `C13`, `C15`, `C16`, `C20` con errores de análisis en sus
+  programas), `LANG.TASK.SUSPENSION` (`Propagar` en la raíz), `LANG.CAPABILITY.PURITY#C23` y `API.STATE.QUERY#C8`.
+- La evidencia de propiedades del motor quedó obsoleta por las ediciones del corpus; para poder ejecutar `conform`
+  se apartó temporalmente (copias `properties-engine.pre-pg4-iteration.json` y `engine.pre-pg4-iteration.json`
+  en `results/`) y se restauró; `engine.json` contiene la última ejecución.
+- Verificación ligera: `see validate` (187), `lock --check`, `export --check`; `rust-checks all .` y Clippy
+  `-D warnings` de motor, especificaciones y CLI; `dart analyze` y `check_limits.dart`; tests de runtime (41 de
+  biblioteca y las pruebas de cinta), VM, línea temporal, API (40 archivos de prueba), CLI, trabajador y validador.
+- Espacio: 13 GiB al empezar; limpieza de nivel 1 elevó a 18 GiB; 14 GiB al terminar (por debajo de los 25 GiB de §13).
+
+Decisiones de implementación de esta iteración:
+
+1. **Tareas vivas.** Se cuentan las hijas no terminadas; la raíz no cuenta. El límite se comprueba antes de asignar
+   identidad. Capacidad máxima de canal: `channel_capacity`; el diagnóstico `taskLimitExceeded` lleva `limit`.
+2. **Cinta.** `effect_seq` numera en orden de petición, reservado cuando la API observa los pendientes; la cinta
+   se escribe en orden de entrega y `delivery_seq` es la posición en la cinta, omitida si coincide. La reproducción
+   deriva el orden de entrega de la cinta. `task_id` real; `abandoned` se sella al terminar. El anfitrión desprendido
+   no reordena a mitad de espera: el orden se declara antes con `orden_entrega`.
+3. **Eventos.** Solo con el gemelo sondeado; la línea es la de la instrucción emisora; `task_ready` tiene causas
+   `spawn`, `completion`, `channel`, `yield` y `resume`; `effect_delivered.delivery_seq` es un ordinal de entregas
+   de capacidad. Una instrucción puede producir varios eventos, así que el estado y la reconstrucción de historia
+   corresponden al instante posterior a la instrucción que contiene el evento pedido.
+4. **Corpus.** Se añaden `channelClose` y `snapshotBuiltin` al vocabulario porque el validador de cobertura de
+   ayuda exige una ficha por identidad; el esquema de casos admite `tareas`, `capacidad_canal`, `orden_entrega` y
+   `task_id`/`delivery_seq` en los efectos esperados. La orden de «orden alterado ⇒ `replay_divergence`» no es
+   expresable como caso del corpus (alterar el orden rompe el encadenado de hashes); se prueba en la API con una
+   cinta reordenada y vuelta a encadenar. Los vínculos de la app para las reglas nuevas quedan `pendiente` hasta
+   la verificación pesada.
+5. **Nativo.** `.12.04` no se implementa: el sujeto `aot` rechaza programas con tareas con `nativeTasksUnsupported`.
+6. **App.** No se amplía `AstConstruct`; los textos de cabecera de los diagramas salen del propio nodo.
+7. **Generador de agendas.** Cada semilla produce un programa propio (parámetros en el texto) en lugar de ocho
+   plantillas con `Argumentos`, porque no hay ejecución nativa que compilar por familia.
 
 ---
 

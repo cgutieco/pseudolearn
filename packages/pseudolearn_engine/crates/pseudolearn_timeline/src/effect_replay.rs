@@ -38,7 +38,7 @@ pub fn replay_machine_with_effects<'program>(
             return Err(TimelineError::ReplayFailure);
         }
     }
-    if machine_event_count(&machine) != target_count {
+    if machine_event_count(&machine) < target_count {
         return Err(TimelineError::ReplayFailure);
     }
     Ok(machine)
@@ -74,6 +74,9 @@ impl HistoryEffects {
         machine: &Machine<'_>,
         options: &RunOptions,
     ) -> Result<(), TimelineError> {
+        crate::effect_reservations::sync_effect_reservations(&mut self.session, machine)
+            .map_err(|_| TimelineError::ReplayFailure)?;
+        self.session.set_current_task(machine.current_task_id());
         let output = machine_output(machine);
         if !self.completing
             && let Some(text) = output
@@ -114,6 +117,8 @@ impl HistoryEffects {
     ) -> Result<(), TimelineError> {
         let operation = pseudolearn_runtime::effect_operation(&request.operation)
             .ok_or(TimelineError::ReplayFailure)?;
+        crate::effect_reservations::prepare_effect_delivery(&mut self.session, machine, request)
+            .map_err(|_| TimelineError::ReplayFailure)?;
         let mut disconnected = DisconnectedHost { calls: 0 };
         let reply = perform_host_effect(
             &mut self.session,

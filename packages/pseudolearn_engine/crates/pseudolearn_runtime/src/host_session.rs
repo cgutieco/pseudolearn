@@ -33,10 +33,7 @@ pub fn begin_host_effect(
         return Err(ReplayError::Divergence);
     }
     let mut request = HostEffectRequest {
-        effect_seq: session
-            .sequence
-            .checked_add(1)
-            .ok_or(ReplayError::Divergence)?,
+        effect_seq: session.next_request_sequence()?,
         operation: operation.identity.to_owned(),
         receiver,
         arguments,
@@ -81,15 +78,15 @@ pub fn resolve_host_effect(
         crate::tape_accounting::pop(&mut session.tape);
         crate::tape_accounting::set_status(&mut session.tape, pending.previous_status);
     }
-    let bytes = session.resolve(
+    let bytes = session.resolve_at(
+        sequence,
         EffectRecord {
             capability_kind: operation.capability_family().to_owned(),
             operation: operation.identity.to_owned(),
             arguments,
             source_node_id: pending.request.source_node_id,
         },
-        bytes,
-        reply.outcome(),
+        (bytes, reply.outcome()),
     )?;
     let reply: HostReply =
         serde_json::from_slice(&bytes).map_err(|_| ReplayError::CorruptedTape)?;
@@ -134,7 +131,7 @@ fn settle_authority(session: &mut EffectSession, request: &HostEffectRequest, re
     }
 }
 
-fn request_arguments(request: &HostEffectRequest) -> Result<Vec<u8>, ReplayError> {
+pub(crate) fn request_arguments(request: &HostEffectRequest) -> Result<Vec<u8>, ReplayError> {
     serde_json::to_vec(&(
         &request.receiver,
         &request.arguments,
@@ -161,7 +158,8 @@ fn record_requested(
     let count = session.tape.entries.len();
     session.tape.append(crate::TapeEntry {
         effect_seq: request.effect_seq,
-        task_id: 0,
+        task_id: session.current_task,
+        delivery_seq: None,
         source_node_id: request.source_node_id,
         capability_kind: operation.capability_family().to_owned(),
         operation: request.operation.clone(),

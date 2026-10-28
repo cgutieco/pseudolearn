@@ -73,7 +73,7 @@ impl ExecutionResource {
         options.cancelled = Some(cancelled.clone());
         let mut machine = create_owned_machine(program.clone(), Fuel::unlimited(), options.clone())
             .map_err(|trap| usage(trap.code))?;
-        machine.set_effect_checkpoint(pseudolearn_runtime::capture_effect_checkpoint(&effects));
+        execution_effects::configure_machine(&mut machine, request, &effects);
         let (initial_state, store) = initial_checkpoint(&machine)?;
         Ok(Self {
             program,
@@ -128,6 +128,7 @@ impl ExecutionResource {
         if let Some(fields) = response.as_object_mut() {
             fields.insert("effect_tape".to_owned(), crate::tape_wire::tape_to_value(self.effects.tape()));
             if let Some(pending) = &self.pending_host { fields.insert("pending_effect".to_owned(), json!(pending)); }
+            if let Some(list) = self.concurrent_pending_effects() { fields.insert("pending_effects".to_owned(), list); }
             fields.insert("host_observation".to_owned(), json!({"calls":self.host.calls,"open_resources":self.host.live_resource_count()}));
         }
         self.delivered = machine_event_count(&self.machine);

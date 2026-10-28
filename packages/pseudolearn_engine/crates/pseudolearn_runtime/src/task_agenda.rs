@@ -5,8 +5,14 @@ use std::collections::VecDeque;
 mod task_cancellation;
 #[path = "task_execution.rs"]
 mod task_execution;
+#[path = "task_limits.rs"]
+mod task_limits;
+#[path = "task_summary.rs"]
+mod task_summary;
 #[path = "task_scheduling.rs"]
 mod task_scheduling;
+pub use task_limits::{DEFAULT_TASK_LIMIT, TaskLimit};
+pub use task_summary::TaskSummary;
 
 pub use task_cancellation::{
     TaskCancellation, interrupt_owner, scope_children, scope_owner, task_scope, task_wait,
@@ -48,6 +54,7 @@ pub enum TaskWaitReason {
 pub enum TaskAgendaError {
     IdentityExhausted,
     InvalidTransition,
+    LimitExceeded,
     UnknownScope,
     UnknownTask,
 }
@@ -77,6 +84,7 @@ struct ScopeEntry {
 pub struct TaskAgenda {
     next_task: u64,
     next_scope: u64,
+    task_limit: TaskLimit,
     tasks: BTreeMap<TaskId, TaskEntry>,
     scopes: BTreeMap<TaskScopeId, ScopeEntry>,
     abandoned_effects: Vec<(TaskId, u64)>,
@@ -121,6 +129,7 @@ impl TaskAgenda {
             .get(&scope)
             .map(|scope| scope.owner)
             .ok_or(TaskAgendaError::UnknownScope)?;
+        self.ensure_task_capacity()?;
         let identifier = self.allocate_task()?;
         self.tasks.insert(
             identifier,

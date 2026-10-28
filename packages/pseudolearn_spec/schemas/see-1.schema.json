@@ -557,6 +557,14 @@
                   "type": "integer",
                   "minimum": 1
                 },
+                "task_id": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "delivery_seq": {
+                  "type": "integer",
+                  "minimum": 1
+                },
                 "capability_kind": {
                   "type": "string",
                   "minLength": 1
@@ -914,6 +922,14 @@
                         "type": "integer",
                         "minimum": 1
                       },
+                      "task_id": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "delivery_seq": {
+                        "type": "integer",
+                        "minimum": 1
+                      },
                       "capability_kind": {
                         "type": "string",
                         "minLength": 1
@@ -1101,6 +1117,14 @@
                 "type": "object",
                 "properties": {
                   "effect_seq": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "task_id": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "delivery_seq": {
                     "type": "integer",
                     "minimum": 1
                   },
@@ -1461,6 +1485,14 @@
                           "type": "integer",
                           "minimum": 1
                         },
+                        "task_id": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "delivery_seq": {
+                          "type": "integer",
+                          "minimum": 1
+                        },
                         "capability_kind": {
                           "type": "string",
                           "minLength": 1
@@ -1745,6 +1777,14 @@
               "minimum": 1
             },
             "celdas": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "tareas": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "capacidad_canal": {
               "type": "integer",
               "minimum": 1
             }
@@ -2388,6 +2428,13 @@
         "cancel_on_awaiting_effect": {
           "type": "integer",
           "minimum": 1
+        },
+        "orden_entrega": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1
+          }
         },
         "alterar_cinta": {
           "type": "string",

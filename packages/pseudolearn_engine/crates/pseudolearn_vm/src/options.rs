@@ -23,6 +23,8 @@ pub struct RunOptions {
     pub cancel_at_statement: Option<u64>,
     pub cancel_at_poll: Option<u64>,
     pub cancelled: Option<Arc<AtomicBool>>,
+    pub task_limit: u64,
+    pub channel_capacity_limit: usize,
 }
 
 impl Default for RunOptions {
@@ -38,6 +40,8 @@ impl Default for RunOptions {
             cancel_at_statement: None,
             cancel_at_poll: None,
             cancelled: None,
+            task_limit: pseudolearn_runtime::DEFAULT_TASK_LIMIT,
+            channel_capacity_limit: 65_536,
         }
     }
 }
@@ -53,5 +57,7 @@ impl PartialEq for RunOptions {
             && self.inputs == other.inputs
             && self.cancel_at_statement == other.cancel_at_statement
             && self.cancel_at_poll == other.cancel_at_poll
+            && self.task_limit == other.task_limit
+            && self.channel_capacity_limit == other.channel_capacity_limit
     }
 }

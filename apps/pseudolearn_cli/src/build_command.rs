@@ -4,7 +4,7 @@ use crate::native_linker::link_executable;
 use crate::options::CliOptions;
 use crate::run_command::render_diagnostics;
 use pseudolearn_api::{
-    ExecutionLimits, NativeBuildFailure, NativeBuildRequest, build_native_object,
+    NativeBuildFailure, NativeBuildRequest, build_native_object,
     detect_vocabulary_profile,
 };
 use std::path::Path;
@@ -78,12 +78,7 @@ fn build_request(options: &CliOptions, path: &str, source: String) -> NativeBuil
         strictness: options.strictness.clone().unwrap_or("strict".to_owned()),
         seed: options.execution.seed.unwrap_or(42),
         forced_collection: false,
-        limits: ExecutionLimits {
-            depth: options.execution.depth,
-            statements: options.execution.statements,
-            cells: options.execution.cells,
-            micro_steps: None,
-        },
+        limits: options.execution.limits(),
         source_name: path.to_owned(),
         locale: locale.clone(),
         error_template: messages::template("diagnosticError", locale).to_owned(),

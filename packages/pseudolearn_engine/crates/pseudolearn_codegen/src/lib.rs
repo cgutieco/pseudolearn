@@ -50,6 +50,7 @@ mod object_fast_path;
 mod runtime_calls;
 mod shadow_stack;
 mod target;
+mod task_support;
 mod type_mapping;
 mod value_types;
 mod word_conversion;
@@ -57,6 +58,7 @@ mod word_conversion;
 pub use abi_signatures::{
     FAULT_SYMBOL, INTEGER_POWER_SYMBOL, MATH_UNARY_SYMBOL, REAL_POWER_SYMBOL,
 };
+pub use task_support::module_uses_tasks;
 pub use entry_point::{MAIN_SYMBOL, METADATA_SYMBOL, RUNTIME_MAIN_SYMBOL};
 pub use error::CodegenError;
 pub use object_emitter::{CompiledObject, FunctionSymbol, function_symbol};

@@ -652,3 +652,135 @@
   }
 }
 ```
+
+```regla
+{
+  "id": "R6",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Las entradas de la cinta registran la tarea que pidió el efecto en task_id, que vale 0 para la tarea raíz. effect_seq numera los efectos en orden de petición y delivery_seq indica la posición de entrega en la cinta; delivery_seq se omite cuando coincide con effect_seq, de modo que un programa sin efectos concurrentes graba la misma cinta que antes de existir las tareas. Un efecto cuya tarea se cancela mientras lo espera queda abandonado y se sella con el desenlace abandoned al terminar la ejecución; si la operación escribía, la cinta pasa a UncertainExternalState. La reproducción entrega los resultados en el orden de la cinta y una entrega distinta de la grabada es replay_divergence.",
+  "verificacion": [
+    "C13",
+    "C14"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C13",
+  "regla": "R6",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "3\n2\n1\n",
+    "terminacion": "completed",
+    "anfitrion_observado": {
+      "llamadas": 3,
+      "recursos_abiertos": 0,
+      "estado_cinta": "reproducible",
+      "efectos": [
+        {
+          "effect_seq": 3,
+          "task_id": 3,
+          "capability_kind": "timer",
+          "operation": "request_timer",
+          "outcome": "committed",
+          "delivery_seq": 1
+        },
+        {
+          "effect_seq": 2,
+          "task_id": 2,
+          "capability_kind": "timer",
+          "operation": "request_timer",
+          "outcome": "committed",
+          "delivery_seq": 3
+        },
+        {
+          "effect_seq": 1,
+          "task_id": 1,
+          "capability_kind": "timer",
+          "operation": "request_timer",
+          "outcome": "committed",
+          "delivery_seq": 5
+        }
+      ]
+    }
+  },
+  "programas": {
+    "es": "SubProceso Suspendible Pause(label Como Entero)\nDescartar Aguardar SolicitarTemporizador();\nEscribir label;\nFinSubProceso\nAlgoritmo Main\nTareas\nLanzar Pause(1);\nLanzar Pause(2);\nLanzar Pause(3);\nFinTareas\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Pause(label as integer)\ndiscard await requestTimer();\nwrite label;\nendSubroutine\nalgorithm Main\ntasks\nspawn Pause(1);\nspawn Pause(2);\nspawn Pause(3);\nendTasks\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": [
+      "temporizador"
+    ],
+    "requested_permissions": [
+      "temporizador"
+    ],
+    "grabar_y_reproducir": true,
+    "orden_entrega": [
+      3,
+      2,
+      1
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C14",
+  "regla": "R6",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "done\n",
+    "terminacion": "completed",
+    "anfitrion_observado": {
+      "llamadas": 0,
+      "recursos_abiertos": 0,
+      "estado_cinta": "reproducible",
+      "efectos": [
+        {
+          "effect_seq": 1,
+          "task_id": 1,
+          "delivery_seq": 2,
+          "capability_kind": "timer",
+          "operation": "request_timer",
+          "outcome": "abandoned"
+        }
+      ]
+    }
+  },
+  "programas": {
+    "es": "SubProceso Suspendible Wait()\nDescartar Aguardar SolicitarTemporizador();\nFinSubProceso\nSubProceso Suspendible Fail() Como Resultado<Entero, Cadena>\nRetornar Error(\"problem\");\nFinSubProceso\nAlgoritmo Main\nTareas failureReport\nLanzar Wait();\nLanzar Fail();\nFinTareas\nDescartar failureReport;\nEscribir \"done\";\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Wait()\ndiscard await requestTimer();\nendSubroutine\nsubroutine suspendable Fail() as result<integer, string>\nreturn failure(\"problem\");\nendSubroutine\nalgorithm Main\ntasks failureReport\nspawn Wait();\nspawn Fail();\nendTasks\ndiscard failureReport;\nwrite \"done\";\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": [
+      "temporizador"
+    ],
+    "requested_permissions": [
+      "temporizador"
+    ],
+    "grabar_y_reproducir": true
+  }
+}
+```

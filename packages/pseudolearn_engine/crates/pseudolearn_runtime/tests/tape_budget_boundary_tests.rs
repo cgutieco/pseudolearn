@@ -20,6 +20,7 @@ fn entry(sequence: u64) -> TapeEntry {
     TapeEntry {
         effect_seq: sequence,
         task_id: 1,
+        delivery_seq: None,
         source_node_id: 10,
         capability_kind: "consola".to_owned(),
         operation: "escribir".to_owned(),

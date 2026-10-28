@@ -1,6 +1,6 @@
 use crate::{error::CliError, messages, options::CliOptions};
 use pseudolearn_api::{
-    ApiDiagnostic, ApiSession, ExecuteRequest, ExecutionLimits, detect_vocabulary_profile,
+    ApiDiagnostic, ApiSession, ExecuteRequest, detect_vocabulary_profile,
 };
 use serde_json::{Value, json};
 use std::io::{BufRead, Write};
@@ -215,12 +215,7 @@ pub(crate) fn build_request(options: &CliOptions, source: String) -> Result<Exec
             "none"
         }
         .to_owned(),
-        limits: ExecutionLimits {
-            depth: options.execution.depth,
-            statements: options.execution.statements,
-            cells: options.execution.cells,
-            micro_steps: None,
-        },
+        limits: options.execution.limits(),
         execution_mode,
         effect_tape,
         host: crate::physical_session::host_document(&options.execution),

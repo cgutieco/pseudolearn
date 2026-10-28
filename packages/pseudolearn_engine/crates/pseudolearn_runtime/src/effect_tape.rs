@@ -33,6 +33,8 @@ impl ExecutionIdentity {
 pub struct TapeEntry {
     pub effect_seq: u64,
     pub task_id: u64,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub delivery_seq: Option<u64>,
     pub source_node_id: u32,
     pub capability_kind: String,
     pub operation: String,
@@ -76,6 +78,10 @@ impl EffectTape {
         if self.status == ReproducibilityStatus::NonReproducibleTruncated {
             return;
         }
+        let position = u64::try_from(self.entries.len())
+            .unwrap_or(u64::MAX)
+            .saturating_add(1);
+        entry.delivery_seq = (entry.effect_seq != position).then_some(position);
         if entry.secret_reference.is_some() {
             entry.payload_bytes.clear();
         }
@@ -85,15 +91,7 @@ impl EffectTape {
             .map(|entry| entry.entry_hash.clone())
             .unwrap_or_else(|| crate::tape_codec::identity_hash(&self.identity));
         entry.entry_hash = crate::tape_codec::tape_entry_hash(&previous, &entry);
-        let status = match entry.outcome.as_str() {
-            "uncertain" => ReproducibilityStatus::UncertainExternalState,
-            _ if entry.secret_reference.is_some()
-                && self.status != ReproducibilityStatus::UncertainExternalState =>
-            {
-                ReproducibilityStatus::NonReproducibleRedacted
-            }
-            _ => self.status,
-        };
+        let status = self.status_after(&entry);
         let added = crate::tape_accounting::entry_bytes(&entry)
             .saturating_add(usize::from(!self.entries.is_empty()));
         let next = self
@@ -109,6 +107,21 @@ impl EffectTape {
         self.budget.current_bytes = next;
         self.status = status;
         self.entries.push(entry);
+    }
+
+    fn status_after(&self, entry: &TapeEntry) -> ReproducibilityStatus {
+        match entry.outcome.as_str() {
+            "uncertain" => ReproducibilityStatus::UncertainExternalState,
+            "abandoned" if crate::tape_delivery::operation_may_write(&entry.operation) => {
+                ReproducibilityStatus::UncertainExternalState
+            }
+            _ if entry.secret_reference.is_some()
+                && self.status != ReproducibilityStatus::UncertainExternalState =>
+            {
+                ReproducibilityStatus::NonReproducibleRedacted
+            }
+            _ => self.status,
+        }
     }
 
     pub fn is_reproducible(&self) -> bool {

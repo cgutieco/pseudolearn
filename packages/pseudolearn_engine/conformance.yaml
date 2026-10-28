@@ -891,6 +891,11 @@
       "estado": "cumple"
     },
     {
+      "regla": "ENG.LIMITS@1.0.0#R11",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
       "regla": "ENG.LIMITS@1.0.0#R8",
       "verificacion": "ejecutor",
       "estado": "exento",
@@ -983,6 +988,16 @@
     },
     {
       "regla": "ENG.TRACE.EVENTS@1.0.0#R5",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.TRACE.EVENTS@1.0.0#R7",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.TRACE.EVENTS@1.0.0#R8",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
@@ -1434,6 +1449,11 @@
       "estado": "cumple"
     },
     {
+      "regla": "API.PROGRAM.VIEW@1.0.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
       "regla": "API.PROGRAM.VIEW@1.0.0#R3",
       "verificacion": "ejecutor",
       "estado": "cumple"
@@ -1737,6 +1757,11 @@
       "estado": "cumple"
     },
     {
+      "regla": "ENG.EXEC.EFFECT-ORDER@1.0.0#R5",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
       "regla": "ENG.EXEC.EFFECT-ORDER@1.0.0#R4",
       "verificacion": "crates/pseudolearn_vm/src/machine/calls.rs",
       "estado": "cumple"
@@ -1744,6 +1769,11 @@
     {
       "regla": "ENG.EXEC.MODEL@1.0.0#R4",
       "verificacion": "crates/pseudolearn_vm/src/machine/control.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "RT.HOST.INTERFACE@1.0.0#R5",
+      "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
@@ -1797,6 +1827,11 @@
       "estado": "cumple"
     },
     {
+      "regla": "API.STATE.QUERY@1.0.0#R6",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
       "regla": "API.STATE.QUERY@1.0.0#R5",
       "verificacion": "crates/pseudolearn_api/src/execution_resource.rs",
       "estado": "cumple"
@@ -1814,6 +1849,11 @@
     {
       "regla": "API.EXECUTE@1.0.0#R6",
       "verificacion": "crates/pseudolearn_api/src/execution_resource.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.EFFECT.TAPE@1.0.0#R6",
+      "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {

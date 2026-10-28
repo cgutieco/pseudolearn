@@ -7,6 +7,7 @@ import '../diagram/post_test_loop_block.dart';
 import '../diagram/pre_test_loop_block.dart';
 import 'rust_diagram_captions.dart';
 import 'rust_program_view.dart';
+import 'rust_task_nodes.dart';
 
 final class RustFlowchartBlockBuilder {
   final RustProgramView _view;
@@ -38,6 +39,8 @@ final class RustFlowchartBlockBuilder {
       'while_loop' => _while(wrapper, node),
       'repeat_loop' => _repeat(wrapper, node),
       'for_loop' => _for(wrapper, node),
+      'task_scope' => _taskScope(wrapper, node),
+      'select_statement' => _receiveSelection(wrapper, node),
       'return_statement' => LayoutBlock.fromNode(
         _simpleNode(wrapper, node),
         hasExit: false,
@@ -136,6 +139,40 @@ final class RustFlowchartBlockBuilder {
         exitLabel: null,
       );
 
+  LayoutBlock _taskScope(RustViewNode wrapper, RustViewNode node) =>
+      LayoutBlock.stack([
+        LayoutBlock.fromNode(
+          _nodes.create(
+            shape: DiagramShape.preparation,
+            text: rustHeaderLine(node),
+            sourceLine: node.range.startLine,
+            nodeId: wrapper.id,
+          ),
+        ),
+        _body(node),
+      ]);
+
+  LayoutBlock _receiveSelection(RustViewNode wrapper, RustViewNode node) {
+    final columns = [
+      for (final branch in rustChildrenForRole(_view, node, 'branch'))
+        BranchColumn(
+          block: _branch(_view.childForRole(branch, 'body')),
+          label: rustHeaderLine(branch),
+          kind: DiagramEdgeKind.branchCase,
+        ),
+    ];
+    return BranchBlocks.selection(
+      selector: _nodes.create(
+        shape: DiagramShape.decision,
+        text: rustHeaderLine(node),
+        sourceLine: node.range.startLine,
+        nodeId: wrapper.id,
+      ),
+      junction: _nodes.connector(),
+      columns: columns.isEmpty ? [_emptyCase()] : columns,
+    );
+  }
+
   DiagramNode _decision(RustViewNode owner, RustViewNode? condition) =>
       _nodes.create(
         shape: DiagramShape.decision,
@@ -164,6 +201,7 @@ final class RustFlowchartBlockBuilder {
     'input' || 'output' => DiagramShape.inputOutput,
     'call_statement' => DiagramShape.subprogram,
     'return_statement' => DiagramShape.startEnd,
+    _ when rustNodeIsTaskOperation(_view, node) => DiagramShape.subprogram,
     _ => DiagramShape.process,
   };
 

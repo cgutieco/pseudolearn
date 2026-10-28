@@ -326,6 +326,12 @@
       "resuelve_en": "PG-4.12"
     },
     {
+      "regla": "ENG.LIMITS@1.0.0#R11",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-4.12"
+    },
+    {
       "regla": "ENG.LIMITS@1.0.0#R8",
       "verificacion": "ejecutor",
       "estado": "exento",
@@ -1387,10 +1393,22 @@
       "resuelve_en": "PG-3.12"
     },
     {
+      "regla": "ENG.EXEC.EFFECT-ORDER@1.0.0#R5",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-4.12"
+    },
+    {
       "regla": "ENG.EXEC.EFFECT-ORDER@1.0.0#R4",
       "verificacion": "ejecutor",
       "estado": "pendiente",
       "resuelve_en": "PG-3.12"
+    },
+    {
+      "regla": "RT.HOST.INTERFACE@1.0.0#R5",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-4.12"
     },
     {
       "regla": "RT.HOST.INTERFACE@1.0.0#R4",
@@ -1447,6 +1465,12 @@
       "regla": "ENG.EFFECT.TAPE@1.0.0#R4",
       "verificacion": "crates/pseudolearn_aot_rt/src/effect_runtime.rs",
       "estado": "cumple"
+    },
+    {
+      "regla": "ENG.EFFECT.TAPE@1.0.0#R6",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-4.12"
     },
     {
       "regla": "ENG.EFFECT.TAPE@1.0.0#R5",

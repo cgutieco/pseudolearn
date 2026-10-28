@@ -19,6 +19,7 @@ fn sample_entry(sequence: u64, operation: &str) -> TapeEntry {
     TapeEntry {
         effect_seq: sequence,
         task_id: 1,
+        delivery_seq: None,
         source_node_id: 5,
         capability_kind: "reloj".to_owned(),
         operation: operation.to_owned(),

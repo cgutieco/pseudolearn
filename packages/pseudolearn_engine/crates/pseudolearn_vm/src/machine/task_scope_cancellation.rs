@@ -20,8 +20,10 @@ impl Machine<'_> {
                     .request_subtree(child)
                     .map_err(super::tasks::task_fault)?;
                 for task in cancelled {
+                    let origin = self.tasks.current.0;
+                    self.event_cancel_requested(task, "parent_cancelled", origin);
                     self.tasks.channels.cancel(task);
-                    self.tasks.pending_effects.remove(&task);
+                    self.tasks.abandon_pending_effect(task);
                     self.tasks.channel_replies.remove(&task);
                 }
             }

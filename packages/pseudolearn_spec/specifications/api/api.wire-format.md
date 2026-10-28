@@ -47,7 +47,7 @@
 {
   "id": "D2",
   "termino": "lote binario de eventos",
-  "texto": "Encabezado de 16 bytes: firma ASCII PLEV, versión u16 igual a 1 o 2, reservado u16 igual a 0 y número de eventos n como u64. Siguen cuatro columnas de n elementos en little endian: clase u8 (posición de la clase en el alfabeto de ENG.TRACE.EVENTS), línea u32, profundidad de marco u32 y desplazamiento u32 en el pool. El pool final contiene, precedido por su longitud total u32, un objeto JSON canónico UTF-8 por evento con las claves data y source; source es null para un evento sintético y contiene revisión, node_id y tramo para un evento originado por el programa. La versión 2 puede añadir identity {project_id, revision_id, source_id} a source; la versión 1 conserva su significado y no admite ese campo. Los desplazamientos apuntan al inicio de cada objeto y las claves se ordenan por puntos de código."
+  "texto": "Encabezado de 16 bytes: firma ASCII PLEV, versión u16 igual a 1 o 2, reservado u16 igual a 0 y número de eventos n como u64. Siguen cuatro columnas de n elementos en little endian: clase u8 (posición desde cero de la clase en el alfabeto de ENG.TRACE.EVENTS, que incluye los eventos de tarea), línea u32, profundidad de marco u32 y desplazamiento u32 en el pool. El pool final contiene, precedido por su longitud total u32, un objeto JSON canónico UTF-8 por evento con las claves data y source; source es null para un evento sintético y contiene revisión, node_id y tramo para un evento originado por el programa. La versión 2 puede añadir identity {project_id, revision_id, source_id} a source; la versión 1 conserva su significado y no admite ese campo. Los desplazamientos apuntan al inicio de cada objeto y las claves se ordenan por puntos de código."
 }
 ```
 

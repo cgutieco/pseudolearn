@@ -677,6 +677,14 @@
               "version": "1.0.0",
               "element": "D2"
             }
+          },
+          {
+            "identity": "snapshotBuiltin",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
           }
         ],
         "availability": {
@@ -708,6 +716,10 @@
               {
                 "identity": "immutableType",
                 "text": "Escribir o llamar a un mutador sobre un valor inmutable se rechaza al compilar."
+              },
+              {
+                "identity": "snapshotBuiltin",
+                "text": "Copia en profundidad un valor y cuenta las celdas copiadas como creación."
               }
             ],
             "constraints": [
@@ -734,6 +746,10 @@
               {
                 "identity": "immutableType",
                 "text": "Writing to or calling a mutator on an immutable value is rejected at compile time."
+              },
+              {
+                "identity": "snapshotBuiltin",
+                "text": "Deep-copies a value and counts the copied cells as creation."
               }
             ],
             "constraints": [
@@ -2628,6 +2644,14 @@
               "version": "1.0.0",
               "element": "D2"
             }
+          },
+          {
+            "identity": "channelClose",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
           }
         ],
         "availability": {
@@ -2708,6 +2732,10 @@
               {
                 "identity": "receiveSource",
                 "text": "Introduce el canal de una rama de Elegir."
+              },
+              {
+                "identity": "channelClose",
+                "text": "Cierra el canal sin suspender y despierta a quienes esperan."
               },
               {
                 "identity": "selectKeyword",
@@ -2793,6 +2821,10 @@
               {
                 "identity": "receiveSource",
                 "text": "Introduces the channel of a select branch."
+              },
+              {
+                "identity": "channelClose",
+                "text": "Closes the channel without suspending and wakes every waiter."
               },
               {
                 "identity": "selectKeyword",
@@ -8131,7 +8163,8 @@
             "type"
           ],
           "tokens": [
-            "immutableType"
+            "immutableType",
+            "snapshotBuiltin"
           ]
         },
 
@@ -8345,6 +8378,7 @@
             "channelType",
             "channelSend",
             "channelReceive",
+            "channelClose",
             "receiveSource",
             "selectKeyword",
             "endSelect"

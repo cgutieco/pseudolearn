@@ -29,7 +29,7 @@ pub fn build_identity(request: &ExecuteRequest) -> ExecutionIdentity {
         ("cells".to_owned(), options.memory.cells),
         ("statements".to_owned(), options.statement_limit.unwrap_or(u64::MAX)),
         ("micro_steps".to_owned(), request.limits.micro_steps.unwrap_or(u64::MAX)),
-    ].into_iter().collect();
+    ].into_iter().chain(request.limits.tasks.map(|tasks| ("tasks".to_owned(), tasks))).collect();
     ExecutionIdentity {
         strictness: request.strictness.clone(),
         limits,

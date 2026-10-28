@@ -40,7 +40,7 @@ pub fn replay_machine_to_event<'program>(
             return Err(TimelineError::ReplayFailure);
         }
     }
-    if machine_event_count(&machine) != target_count {
+    if machine_event_count(&machine) < target_count {
         return Err(TimelineError::ReplayFailure);
     }
     Ok(machine)

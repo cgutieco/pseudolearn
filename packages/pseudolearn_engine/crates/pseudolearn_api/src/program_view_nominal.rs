@@ -50,6 +50,15 @@ pub(crate) fn child_role(
     parent: usize,
     child: usize,
 ) -> Option<&'static str> {
+    crate::program_view_tasks::child_role(tree, parent, child)
+        .or_else(|| nominal_role(tree, parent, child))
+}
+
+fn nominal_role(
+    tree: &pseudolearn_syntax::SyntaxTree,
+    parent: usize,
+    child: usize,
+) -> Option<&'static str> {
     use pseudolearn_syntax::NodeKind;
     let parent_node = tree.node(parent)?;
     let child_node = tree.node(child)?;

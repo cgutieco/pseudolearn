@@ -153,7 +153,8 @@
   "texto": "La cancelación cooperativa solo se solicita a una tarea que no está ejecutando y surte efecto al reanudarse, antes de otra sentencia fuera de Diferir. La tarea cancela y une primero a sus hijas vivas en orden de identidad; luego ejecuta sus limpiezas pendientes en orden inverso y termina cancelled. Un fallo de hermana solicita la misma cancelación y une el ámbito.",
   "verificacion": [
     "C15",
-    "C16"
+    "C16",
+    "C33"
   ]
 }
 ```
@@ -1197,6 +1198,31 @@
         "severidad": "error"
       }
     ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C33",
+  "regla": "R6",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "SubProceso Suspendible Hold(stream Como Canal<Entero>)\nDiferir\nEscribir \"cleanup-first\";\nFinDiferir\nDiferir\nEscribir \"cleanup-second\";\nFinDiferir\nSegun Aguardar stream.Recibir() Hacer\nAlgo(value): Escribir value;\nNada: Escribir \"closed\";\nFinSegun\nFinSubProceso\nSubProceso Suspendible Fail() Como Resultado<Entero, Cadena>\nRetornar Error(\"failed\");\nFinSubProceso\nAlgoritmo P\nDefinir stream Como Canal<Entero> <- Canal(1);\nTareas problem\nLanzar Hold(stream);\nLanzar Fail();\nFinTareas\nSegun problem Hacer\nNada: Escribir \"ok\";\nAlgo(report): Escribir report.Primero;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Hold(stream as channel<integer>)\ndefer\nwrite \"cleanup-first\";\nendDefer\ndefer\nwrite \"cleanup-second\";\nendDefer\nswitch await stream.receive() do\nsome(value): write value;\nnone: write \"closed\";\nendSwitch\nendSubroutine\nsubroutine suspendable Fail() as result<integer, string>\nreturn failure(\"failed\");\nendSubroutine\nalgorithm P\ndefine stream as channel<integer> <- channel(1);\ntasks problem\nspawn Hold(stream);\nspawn Fail();\nendTasks\nswitch problem do\nnone: write \"ok\";\nsome(report): write report.first;\nendSwitch\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "cleanup-second\ncleanup-first\nfailed\n",
+    "terminacion": "completed"
   }
 }
 ```

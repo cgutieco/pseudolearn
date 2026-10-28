@@ -7,6 +7,8 @@ pub struct ExecutionLimits {
     pub statements: Option<u64>,
     pub cells: Option<u64>,
     pub micro_steps: Option<u64>,
+    pub tasks: Option<u64>,
+    pub channel_capacity: Option<u64>,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]

@@ -109,3 +109,50 @@ fn incompatible_replay_and_alteration_options_are_rejected() {
     ]);
     assert_eq!(case_errors(conflicting).len(), 1);
 }
+
+use crate::host_cases::check_effect_sequence;
+
+fn effect_errors_for(effects: &[Value]) -> usize {
+    let mut errors = Vec::new();
+    check_effect_sequence(effects, &mut errors);
+    errors.len()
+}
+
+#[test]
+fn ordered_effects_without_delivery_marks_are_accepted() {
+    assert_eq!(effect_errors_for(&[json!({"effect_seq": 1}), json!({"effect_seq": 2})]), 0);
+}
+
+#[test]
+fn repeated_or_decreasing_effects_without_delivery_marks_are_rejected() {
+    assert_eq!(effect_errors_for(&[json!({"effect_seq": 2}), json!({"effect_seq": 1})]), 1);
+    assert_eq!(effect_errors_for(&[json!({"effect_seq": 1}), json!({"effect_seq": 1})]), 1);
+}
+
+#[test]
+fn out_of_order_delivery_is_accepted_when_marks_increase() {
+    let effects = [
+        json!({"effect_seq": 3, "delivery_seq": 1}),
+        json!({"effect_seq": 1, "delivery_seq": 3}),
+    ];
+    assert_eq!(effect_errors_for(&effects), 0);
+}
+
+#[test]
+fn out_of_order_delivery_is_rejected_for_duplicate_requests_or_decreasing_marks() {
+    let duplicate = [
+        json!({"effect_seq": 2, "delivery_seq": 1}),
+        json!({"effect_seq": 2, "delivery_seq": 3}),
+    ];
+    assert_eq!(effect_errors_for(&duplicate), 1);
+    let decreasing = [
+        json!({"effect_seq": 3, "delivery_seq": 5}),
+        json!({"effect_seq": 1, "delivery_seq": 3}),
+    ];
+    assert_eq!(effect_errors_for(&decreasing), 1);
+}
+
+#[test]
+fn an_empty_effect_list_is_accepted() {
+    assert_eq!(effect_errors_for(&[]), 0);
+}

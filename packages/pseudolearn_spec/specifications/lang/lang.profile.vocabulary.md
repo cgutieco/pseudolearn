@@ -1381,6 +1381,7 @@
       }
     },
     "immutableType": {"lexemas": {"es": "Inmutable", "en": "immutable"}},
+    "snapshotBuiltin": {"lexemas": {"es": "Instantanea", "en": "snapshot"}},
     "channelType": {
       "lexemas": {
         "es": "Canal",
@@ -1397,6 +1398,12 @@
       "lexemas": {
         "es": "Recibir",
         "en": "receive"
+      }
+    },
+    "channelClose": {
+      "lexemas": {
+        "es": "Cerrar",
+        "en": "close"
       }
     },
     "receiveSource": {

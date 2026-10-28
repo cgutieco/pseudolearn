@@ -69,7 +69,7 @@ la biblioteca del runtime incrustada en `pseudo` (`include_bytes!`) usando el dr
 elimina siempre. El resultado se copia junto al destino con un nombre provisional y se renombra, de modo que un fallo
 nunca crea ni sobrescribe la salida. Informa `buildSucceeded` con la ruta tal como se pidió. Sin `-o`/`--salida`/`--output`
 la salida es el nombre del archivo sin `.pseudo` (más `.exe` en Windows) en el directorio actual; si eso coincidiera con la
-fuente se usa `.out` para no sobrescribirla. `--semilla`, `--profundidad`, `--sentencias`, `--celdas`, `--rigor`,
+fuente se usa `.out` para no sobrescribirla. `--semilla`, `--profundidad`, `--sentencias`, `--celdas`, `--tareas`, `--rigor`,
 `--vocabulario` e `--idioma` se fijan en el ejecutable al compilar: el idioma de interfaz elige el idioma de los
 diagnósticos del ejecutable y sus plantillas de línea. Errores del programa: diagnósticos y código 1; fuente ausente: 2;
 ilegible, enlazador ausente o fallido: 3. El código del ejecutable es 0, 3, 4 o 5 según su propio protocolo.
@@ -87,7 +87,7 @@ cierra sin `shutdown`. Anuncia `execute` y `gc_stress`; no anuncia `observe`, `a
 sujeto está exento de observación y solo ejecuta.
 
 La ejecución de ejecutar/run usa únicamente la API pública con entrada estándar, semilla, límites
-de profundidad, sentencias y celdas. La traza se narra con las plantillas trace* del catálogo generado;
+de profundidad, sentencias, celdas y tareas vivas (`--tareas`/`--tasks`; omisión 4 096). La traza se narra con las plantillas trace* del catálogo generado;
 la salida del programa se conserva literalmente. ri/ir imprime la RI canónica de la API o el diagnóstico
 de la primera violación. No se introduce semántica propia ni se accede a capas internas. Los casos cli
 verifican ambos idiomas, opciones equivalentes, códigos de salida y errores operativos.
@@ -223,3 +223,8 @@ que el archivo existe, contiene efectos y permite repetir la salida, además del
 ### Registro de vectores de ataque de `E-PG-09`
 
 `tests/security_vector_registry.rs` declara la lista cerrada de ocho vectores (`..`, ruta absoluta, enlace simbólico saliente, NUL interior, amplificación de derechos, uso tras cierre, adulteración de un bit de la cinta y truncamiento) y la prueba que bloquea cada uno, en `tests/security_vectors.rs` y `src/physical_host_tests.rs`. La batería falla si un vector requerido no está registrado o si su prueba no existe, de modo que un vector nuevo sin prueba o una prueba borrada no pasan en verde. Tiene casos negativos para cada una de esas dos condiciones y para un archivo ilegible.
+
+Un programa con tareas o canales no se compila a código nativo todavía: `build` y `run --nativo`
+muestran el diagnóstico `nativeTasksUnsupported` (salida 1) en vez de un fallo de enlazado, y el
+programa se ejecuta con el motor virtual. `--tareas` limita las tareas vivas de la ejecución
+virtual (omisión 4 096) y excede con `taskLimitExceeded`.

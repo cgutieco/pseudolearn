@@ -420,3 +420,64 @@
 ## Colecciones e interfaces
 
 Una colección se conserva como referencia con identidad compartida. Su entrada de heap describe vector con longitud y elementos, o diccionario con longitud y entradas en inserción, cada una con clave y valor. Las hojas de registros se presentan por campo y las funciones conservan su marcador. La observación no cambia capacidad ni versión. Los metadatos internos de disposición no se proyectan como campos de objetos ordinarios.
+
+```regla
+{
+  "id": "R6",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Cuando el programa tiene tareas además de la raíz, el estado en un evento incluye tareas con un resumen de todas ellas en orden de identidad: tarea, padre (nulo para la raíz), estado (ready, running, waiting, cancel_requested, cleaning, completed, failed o cancelled), causa y objetivo de la espera (nulos si no espera). Los marcos listan los de la tarea en ejecución y la unidad de entrada de una tarea hija se nombra task: seguido de la unidad lanzada. El estado de un programa sin tareas no incluye tareas. El estado refleja el instante posterior a la instrucción que produjo el evento.",
+  "verificacion": [
+    "C9"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C9",
+  "regla": "R6",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "trace",
+  "espera": {
+    "salida": "7\n",
+    "terminacion": "completed",
+    "estado_en": {
+      "evento": 10,
+      "estado": {
+        "marcos": [
+          {
+            "unidad": "task:Take",
+            "variables": {}
+          }
+        ],
+        "objetos": {},
+        "tareas": [
+          {
+            "tarea": 0,
+            "padre": null,
+            "estado": "waiting",
+            "causa": "join",
+            "objetivo": 0
+          },
+          {
+            "tarea": 1,
+            "padre": 0,
+            "estado": "running",
+            "causa": null,
+            "objetivo": null
+          }
+        ]
+      }
+    }
+  },
+  "programa": "SubProceso Suspendible Take(stream Como Canal<Entero>)\nSegun Aguardar stream.Recibir() Hacer\nAlgo(value): Escribir value;\nNada: Escribir 0;\nFinSegun\nFinSubProceso\nAlgoritmo P\nDefinir stream Como Canal<Entero> <- Canal(1);\nTareas\nLanzar Take(stream);\nAguardar stream.Enviar(7);\nFinTareas\nFinAlgoritmo\n",
+  "perfil_base": "es"
+}
+```

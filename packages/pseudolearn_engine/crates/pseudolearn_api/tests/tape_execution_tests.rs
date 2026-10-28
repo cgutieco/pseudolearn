@@ -81,6 +81,7 @@ fn tape_value_round_trip_preserves_content() -> Result<(), String> {
     tape.append(TapeEntry {
         effect_seq: 1,
         task_id: 0,
+        delivery_seq: None,
         source_node_id: 1,
         capability_kind: "consola".to_owned(),
         operation: "escribir".to_owned(),

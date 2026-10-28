@@ -29,8 +29,14 @@ impl Machine<'_> {
         let context = self.tasks.contexts.remove(&next).ok_or(INVALID_BYTECODE)?;
         self.tasks.quantum.resumed(next);
         self.tasks.current = next;
+        self.sync_ready_events("resume");
         self.clear_task_continuation(next)?;
         context.restore(self)?;
+        self.event_task_resumed();
+        self.apply_aborted_scope(next)
+    }
+
+    fn apply_aborted_scope(&mut self, next: pseudolearn_runtime::TaskId) -> Result<(), Fault> {
         if let Some(scope) = self.tasks.aborted_scopes.remove(&next) {
             let resume = self
                 .tasks
@@ -56,6 +62,7 @@ impl Machine<'_> {
                 self.tasks.current = next;
                 self.clear_task_continuation(next)?;
                 context.restore(self)?;
+                self.event_task_resumed();
                 if self.resume_cancellation() {
                     return Ok(true);
                 }

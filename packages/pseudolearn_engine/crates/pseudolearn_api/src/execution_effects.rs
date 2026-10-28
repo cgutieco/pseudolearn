@@ -42,6 +42,7 @@ impl ExecutionResource {
             return self.replay_input();
         }
         if matches!(exit, RunExit::Completed(_)) {
+            self.seal_abandoned_effects()?;
             self.effects
                 .finish()
                 .map_err(crate::tape_wire::replay_error_to_api)?;
@@ -73,6 +74,9 @@ impl ExecutionResource {
     }
 
     pub(super) fn capture_console(&mut self) -> Result<(), ApiError> {
+        self.sync_reservations()?;
+        self.effects
+            .set_current_task(self.machine.current_task_id());
         let output = machine_output(&self.machine);
         if let Some(text) = output
             .get(self.output_cursor..)
@@ -137,6 +141,31 @@ pub(super) fn prepare_session(
     };
 
     Ok(effects)
+}
+
+pub(super) fn configure_machine(
+    machine: &mut pseudolearn_vm::Machine<'static>,
+    request: &ExecuteRequest,
+    effects: &EffectSession,
+) {
+    machine.set_delivery_order(delivery_order(request, effects));
+    machine.set_effect_checkpoint(pseudolearn_runtime::capture_effect_checkpoint(effects));
+}
+
+fn delivery_order(
+    request: &ExecuteRequest,
+    effects: &EffectSession,
+) -> Vec<u64> {
+    if effects.is_replaying() {
+        return pseudolearn_runtime::delivery_order(effects.tape());
+    }
+    request
+        .host
+        .as_ref()
+        .and_then(|host| host.get("orden_entrega"))
+        .and_then(Value::as_array)
+        .map(|order| order.iter().filter_map(Value::as_u64).collect())
+        .unwrap_or_default()
 }
 
 pub(super) fn prepare_host(

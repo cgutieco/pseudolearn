@@ -13,6 +13,14 @@ impl TaskAgenda {
         Ok(None)
     }
 
+    pub fn ready_tasks(&self) -> Vec<TaskId> {
+        self.ready
+            .iter()
+            .copied()
+            .filter(|task| self.state(*task) == Some(TaskState::Ready))
+            .collect()
+    }
+
     pub fn has_ready(&self) -> bool {
         self.ready
             .iter()

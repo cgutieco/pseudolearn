@@ -22,6 +22,9 @@ impl ViewKind {
 }
 
 pub(crate) fn classify(kind: NodeKind, parent: Option<NodeKind>) -> Option<ViewKind> {
+    if let Some(task_kind) = crate::program_view_tasks::classify(kind) {
+        return Some(task_kind);
+    }
     match kind {
         owner if is_declaration(owner) => Some(ViewKind::Declaration),
         NodeKind::DiscardStatement
@@ -57,6 +60,7 @@ pub(crate) fn classify(kind: NodeKind, parent: Option<NodeKind>) -> Option<ViewK
 
 pub(crate) fn syntax_name(kind: NodeKind) -> Option<&'static str> {
     nominal_name(kind)
+        .or_else(|| crate::program_view_tasks::syntax_name(kind))
         .or_else(|| declaration_or_statement_name(kind))
         .or_else(|| expression_name(kind))
 }

@@ -97,6 +97,10 @@ vinculos:
   - regla: API.PROGRAM.VIEW@1.0.0#R2
     verificacion: ejecutor
     estado: cumple
+  - regla: API.PROGRAM.VIEW@1.0.0#R4
+    verificacion: ejecutor
+    estado: pendiente
+    resuelve_en: PG-4.11
   - regla: API.PROGRAM.VIEW@1.0.0#R3
     verificacion: ejecutor
     estado: cumple
@@ -170,6 +174,14 @@ vinculos:
   - regla: ENG.TRACE.EVENTS@1.0.0#R5
     verificacion: ejecutor
     estado: cumple
+  - regla: ENG.TRACE.EVENTS@1.0.0#R7
+    verificacion: ejecutor
+    estado: pendiente
+    resuelve_en: PG-4.11
+  - regla: ENG.TRACE.EVENTS@1.0.0#R8
+    verificacion: ejecutor
+    estado: pendiente
+    resuelve_en: PG-4.11
   - regla: ENG.TRACE.EVENTS@1.0.0#R6
     verificacion: ejecutor
     estado: cumple

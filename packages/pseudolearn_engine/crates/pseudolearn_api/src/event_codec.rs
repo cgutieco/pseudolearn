@@ -148,6 +148,13 @@ pub(super) fn decode_event(value: &Value) -> Result<TraceEvent, ApiError> {
 }
 
 fn payload(class: TraceClass, value: Option<&Value>) -> Result<Option<EventPayload>, ApiError> {
+    if let Some(task_payload) = crate::event_task_codec::payload(class, value) {
+        return task_payload.map(Some);
+    }
+    ordinary_payload(class, value)
+}
+
+fn ordinary_payload(class: TraceClass, value: Option<&Value>) -> Result<Option<EventPayload>, ApiError> {
     let text = |name| {
         value
             .and_then(|value| value.get(name))
@@ -183,6 +190,7 @@ fn payload(class: TraceClass, value: Option<&Value>) -> Result<Option<EventPaylo
         TraceClass::Failure => Some(EventPayload::Failure {
             codigo: text("codigo")?,
         }),
+        _ => None,
     })
 }
 

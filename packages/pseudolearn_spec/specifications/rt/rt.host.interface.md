@@ -378,3 +378,85 @@ Los valores esperados de R3 se calculan con el oráculo independiente de see_ora
   }
 }
 ```
+
+```regla
+{
+  "id": "R5",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "El anfitrión recibe la lista de efectos pendientes solo cuando ninguna tarea puede avanzar y devuelve los resultados de uno en uno; el orden en que decide entregarlos es una entrada más de la ejecución y queda registrado en la cinta.",
+  "verificacion": [
+    "C8"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C8",
+  "regla": "R5",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "3\n1\n2\n",
+    "terminacion": "completed",
+    "anfitrion_observado": {
+      "llamadas": 3,
+      "recursos_abiertos": 0,
+      "estado_cinta": "reproducible",
+      "efectos": [
+        {
+          "effect_seq": 3,
+          "task_id": 3,
+          "capability_kind": "timer",
+          "operation": "request_timer",
+          "outcome": "committed",
+          "delivery_seq": 1
+        },
+        {
+          "effect_seq": 1,
+          "task_id": 1,
+          "capability_kind": "timer",
+          "operation": "request_timer",
+          "outcome": "committed",
+          "delivery_seq": 3
+        },
+        {
+          "effect_seq": 2,
+          "task_id": 2,
+          "capability_kind": "timer",
+          "operation": "request_timer",
+          "outcome": "committed",
+          "delivery_seq": 5
+        }
+      ]
+    }
+  },
+  "programas": {
+    "es": "SubProceso Suspendible Pause(label Como Entero)\nDescartar Aguardar SolicitarTemporizador();\nEscribir label;\nFinSubProceso\nAlgoritmo Main\nTareas\nLanzar Pause(1);\nLanzar Pause(2);\nLanzar Pause(3);\nFinTareas\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Pause(label as integer)\ndiscard await requestTimer();\nwrite label;\nendSubroutine\nalgorithm Main\ntasks\nspawn Pause(1);\nspawn Pause(2);\nspawn Pause(3);\nendTasks\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": [
+      "temporizador"
+    ],
+    "requested_permissions": [
+      "temporizador"
+    ],
+    "grabar_y_reproducir": true,
+    "orden_entrega": [
+      3,
+      1,
+      2
+    ]
+  }
+}
+```

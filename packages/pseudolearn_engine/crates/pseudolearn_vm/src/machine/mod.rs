@@ -22,6 +22,8 @@ mod roots;
 mod select;
 mod task_completion;
 mod task_context;
+mod task_events;
+mod task_queries;
 mod task_creation;
 mod task_effects;
 mod task_results;

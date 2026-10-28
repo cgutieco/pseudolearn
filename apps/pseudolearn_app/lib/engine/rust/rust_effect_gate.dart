@@ -43,6 +43,10 @@ final class RustEffectGate {
     final pending = batch.pendingEffect;
     final host = _host;
     if (request == null || pending == null || host == null) return;
+    final order = RustSimulatedHost.deliveryOrder(batch.pendingEffects);
+    if (order.isNotEmpty && order.first.effectSeq != pending.effectSeq) {
+      throw StateError('Effect delivery is not first-in first-out');
+    }
     _execution.provideEffectResult(
       execution,
       pending.effectSeq,

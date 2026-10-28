@@ -6,6 +6,7 @@ pub struct ExecutionArguments {
     pub depth: Option<usize>,
     pub statements: Option<u64>,
     pub cells: Option<u64>,
+    pub tasks: Option<u64>,
     pub trace: bool,
     pub native: bool,
     pub grants: Vec<String>,
@@ -33,6 +34,7 @@ pub fn parse_numeric(
             execution.statements = Some(choice.parse().map_err(|_| invalid())?);
         }
         "--celdas" | "--cells" => execution.cells = Some(choice.parse().map_err(|_| invalid())?),
+        "--tareas" | "--tasks" => execution.tasks = Some(choice.parse().map_err(|_| invalid())?),
         _ => return Err(invalid()),
     }
     *index = next.saturating_add(1);
@@ -86,4 +88,17 @@ pub fn parse_grant_option(
     }
     *index = next.saturating_add(1);
     Ok(())
+}
+
+impl ExecutionArguments {
+    pub fn limits(&self) -> pseudolearn_api::ExecutionLimits {
+        pseudolearn_api::ExecutionLimits {
+            depth: self.depth,
+            statements: self.statements,
+            cells: self.cells,
+            micro_steps: None,
+            tasks: self.tasks,
+            channel_capacity: None,
+        }
+    }
 }

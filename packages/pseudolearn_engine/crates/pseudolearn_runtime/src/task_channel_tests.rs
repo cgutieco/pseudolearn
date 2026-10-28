@@ -174,3 +174,10 @@ fn invalid_channel_operations_do_not_publish_partial_selection_waits() -> Result
     assert_eq!(channels.take_ready(), None);
     Ok(())
 }
+
+#[test]
+fn capacity_equal_to_the_maximum_is_accepted_and_one_above_is_rejected() {
+    let mut channels = TaskChannels::<u8>::default();
+    assert!(channels.create(4, 4).is_ok());
+    assert_eq!(channels.create(5, 4), Err(ChannelError::CapacityExceeded));
+}

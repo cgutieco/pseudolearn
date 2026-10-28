@@ -24,13 +24,13 @@ pub(crate) fn run_capturing(machine: &mut Machine<'_>, request: &ExecuteRequest)
     loop {
         let outcome = machine.step_instruction();
         let count = machine_events(machine).len();
-        let current = count.saturating_sub(1);
         let produced_event = count > previous_count;
-        if request.state_at == Some(current) && produced_event {
+        let within_step = |event: usize| event >= previous_count && event < count;
+        if request.state_at.is_some_and(within_step) && produced_event {
             captured.state = Some(crate::execution_state::capture(machine));
         }
         if let Some(Ok(page)) = &page_request
-            && page.event == current
+            && within_step(page.event)
             && produced_event
         {
             captured.page = Some(crate::state_pages::page(machine, page, "execute"));
