@@ -469,8 +469,10 @@ marca `[x]` sin evidencia en §11.
 - [x] `PG-4.02.05` README del motor (`semantic`, `lowering`, `runtime`, `vm`).
 - [x] `PG-4.02.06` Ligera: tests de los módulos anteriores, `rust-checks`, Clippy por crate tocado.
 - [ ] `PG-4.02.07` Pesada: `--only LANG.TASK.SCOPE,LANG.CONTROL.CLEANUP` en `engine` y `aot`. `engine` pasa
-  ambos contratos; `aot` detiene `LANG.TASK.SCOPE` con `nativeTasksUnsupported`, rechazo previsto por `PG-4.12.04`.
-  Queda abierta: no se ejecutaron el segundo contrato AOT ni el diferencial, conforme a la parada de §10.1.
+  SCOPE de nuevo (132 observaciones, 0 divergencias); CLEANUP conserva evidencia anterior vigente (52, 0).
+  `aot` detiene SCOPE con código 1: `nativeTasksUnsupported` provoca `failed/analysisFailed` sin cinta y el corredor
+  eleva `SEE-RECORDING`. Queda bloqueada por el soporte nativo pendiente de `PG-4.12.04`: la ruta de rechazo
+  de `PG-4.12.07` no satisface esta casilla. En la revisión no se repiten CLEANUP ni los diferenciales, por §10.1.
 
 ### PG-4.03 · Política de fallos: el primero por orden lógico cancela a los hermanos; los demás se conservan
 
@@ -902,7 +904,7 @@ lo que documente su README tras la iteración 4. Desde `apps/pseudolearn_app`: `
 | Tarea | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
 | `PG-4.01` | Completa | `.01`–`.07`; 15 casos bilingües, 4 felices, 6 de diagnóstico y 5 de límite; verificaciones ligeras previas en verde. Tras las correcciones, `see validate` validó 187 especificaciones; `lock --check` y `see export --check` pasan. La conformidad pesada ejecutó 7 contratos de `engine`: 246 observaciones, 0 divergencias (`LANG.TASK.SUSPENSION` 60, `LANG.CAPABILITY.PURITY` 92, `LANG.LEXICAL.KEYWORD` 20, `LANG.LEXICAL.IDENTIFIER` 38, `LANG.PROFILE.VOCABULARY` y `LANG.PROFILE.TRANSLATION` 8 cada uno, `LANG.SYNTAX.GRAMMAR` 20). `cargo test -p pseudolearn_syntax`: 59 tests, 0 fallos. Se corrigieron los programas de `C3`, `C4`, `C14`, `C15` y `C23`; se preservaron esperados, estados y versiones. La evidencia previa con hashes obsoletos se conservó bajo nombres `*.before-pg-4-01-07-2026-10-28.json` en `results/` | PG-4 continúa abierta; esta casilla no declara cerrada la fase |
-| `PG-4.02` | Parcial; pesada de `engine` completa, `aot` pendiente | `.01`–`.06`; `LANG.TASK.SCOPE` en `engine`: 132 observaciones, 0 divergencias; `LANG.CONTROL.CLEANUP` en `engine`: 52 observaciones, 0 divergencias. `see validate` (187), `lock --check`, `see export --check` y `git diff --check` pasan. Los programas de `C1`, `C8`, `C9`, `C11`, `C13`, `C15`, `C16` y `C20` se corrigieron conservando esperados, estados y versiones | `aot --only LANG.TASK.SCOPE` termina con `SEE-RECORDING`/`nativeTasksUnsupported`, conforme a la ruta de rechazo aprobada en `PG-4.12.04`; R5 y R6 nativas siguen pendientes de `PG-4.07`. Por §10.1 no se ejecutaron `LANG.CONTROL.CLEANUP` en AOT ni el diferencial. `.07` queda abierta; no se cumple `PHASE-GREEN` para cerrar PG-4.02 ni PG-4 |
+| `PG-4.02` | Parcial; `.07` bloqueada en AOT | `.01`–`.06`; revisión de SCOPE en `engine`: código 0, 132 observaciones y 0 divergencias. CLEANUP: evidencia anterior vigente de `engine`, 52 observaciones y 0 divergencias, sin repetición en esta revisión. Se conservaron esperados, estados y versiones de los ocho casos corregidos; `validate` (187), `lock --check` y `export --check` pasan | AOT de SCOPE: código 1, rechazo `nativeTasksUnsupported` y respuesta sin cinta; el corredor aborta con `SEE-RECORDING` antes de guardar resultados. El `aot.json` anterior es de MEMORY y no certifica SCOPE. Falta el soporte nativo de `PG-4.12.04`; R5 y R6 siguen `pendiente` con resolución declarada en `PG-4.07`. La ruta de rechazo de `PG-4.12.07` no equivale a conformidad. Por §10.1 no se continúa con CLEANUP ni diferenciales. `.07`, PG-4.02 y PG-4 permanecen abiertos (`PHASE-GREEN`, `PHASE-STOP`) |
 | `PG-4.03` | Implementación y ligera completas | `.01`–`.06`; reglas `R11`–`R16`, casos bilingües `C23`–`C31`, agregación de errores, tipos exactos, obligaciones del vínculo, cancelación y limpiezas de ámbitos anidados; tests filtrados y verificadores de esta iteración en verde | `.07` pesada pendiente; asociados probados como datos terminales, cancelación real probada en VM; no se declara cerrada la fase PG-4 |
 | `PG-4.04` | Implementación y ligera completas | `.01`–`.06`; `LANG.TASK.CHANNEL`, 21 casos bilingües, ABI, almacenamiento contabilizado, colas FIFO, contrapresión, cierre, selección textual y raíces VM; tests filtrados y verificadores de esta iteración en verde | `.07` pesada pendiente; ejecución AOT y serialización histórica completa pertenecen a tareas posteriores |
 | `PG-4.05` | Implementación y ligera completas | `.01`–`.06`; `ENG.TASK.AGENDA#R7`, cinco casos bilingües, clasificación de progreso y `taskDeadlock` con ubicaciones relacionadas; pruebas VM distinguen efecto pendiente y efecto abandonado | `.07` pesada pendiente; integración completa de abandono con cinta pertenece a PG-4.10 |
@@ -932,6 +934,67 @@ El primer comando AOT, `conform --subject aot --only LANG.TASK.SCOPE`, se detuvo
 `export --check` y `git diff --check` pasan. El disco tenía 40 GiB libres (targets: 326 MiB y 338 MiB); no hizo
 falta liberar espacio. Rama única, sin commit ni push. La casilla `.07` queda abierta y PG-4.02 no se declara
 cerrada (`PHASE-GREEN`, `PHASE-STOP`).
+
+Registro de revisión y reproducción de `PG-4.02.07` (2026-10-28), sobre `d2a96758`:
+
+- Preparación: rama `feature/agregar-ruta-de-especificacion`, árbol inicialmente limpio. Se preservaron siete
+  archivos de resultados anteriores y sus hashes SHA-256 en
+  `packages/pseudolearn_spec/results/pg-4-02-07-recheck-2026-10-28/` (`before-*`, `provenance.json`).
+- Espacio liberado (§13): 38 GiB iniciales; nivel 1, incrementales de Cargo (motor, especificaciones y CLI),
+  `xcrun simctl delete unavailable` y `npm cache clean --force`; 39 GiB tras la primera limpieza. Nivel 2,
+  `cargo clean` del motor (260,3 MiB) y de la CLI (1,3 GiB); 40 GiB antes de la selección pesada
+  (`df -k /`: 42 000 000 KiB disponibles, por encima de 41 943 040 KiB). `brew cleanup -n -s` estimó solo
+  19,6 MB y no se aplicó; tampoco se tocó el almacén pnpm compartible ni las cachés de IntelliJ, que estaba
+  abierto. No se borraron evidencias, fuentes versionadas ni datos personales.
+- Antes de la compilación de la CLI para AOT, el espacio había descendido a 41 600 000 KiB. Se retiró
+  únicamente `stable` (463 MiB, también era la toolchain predeterminada global), como permite el nivel 2;
+  se conserva `1.99.0`, fijada y comprobada en el motor y la CLI. El espacio volvió a 42 000 000 KiB,
+  suficiente para iniciar esa compilación. No se cambió la configuración global de toolchain predeterminada.
+- Auditoría previa: `validate` (187), `lock --check`, `export --check` y `git diff --check` pasan. Los hashes
+  de las dos evidencias conservadas de `engine` coinciden con los anclajes vigentes: SCOPE, 132 observaciones,
+  y CLEANUP, 52, todas `cumple`; son ejecuciones anteriores, no repeticiones de esta revisión.
+- Revisión crítica del corpus: 64 solicitudes JSONL de análisis compararon los ocho casos de `HEAD^` con
+  `d2a96758`, en ambos perfiles y rigores. Antes se reproducen el nombre reservado de C1, el constructor
+  inválido de C8, errores adicionales de inmutabilidad en C9/C11, descarte de un valor no Resultado en C13
+  y propagaciones incompatibles en C15/C16/C20. Después, C8/C9/C11/C13 conservan únicamente los errores
+  previstos; C1/C15/C16/C20 carecen de errores estáticos. Los ocho esperados permanecen idénticos.
+  C15 registra las limpiezas antes de la espera; C16 sincroniza el fallo por canal para que la nieta alcance
+  su limpieza antes de ser cancelada: R6 exige nieta antes que madre y orden inverso de limpiezas, de acuerdo
+  con la cola FIFO de `ENG.TASK.AGENDA`. C20 conserva la cancelación inmediata sin limpiezas de R9; su
+  evidencia anterior contiene cinta `incomplete`. No se encontraron errores nuevos que justifiquen editar el corpus.
+- Selección pesada, primer paso: `cargo run --locked -p see_cli --bin see -- conform --subject engine
+  --only LANG.TASK.SCOPE` termina con código 0, 132 observaciones y 0 divergencias. Se conserva la nueva
+  evidencia como `engine-scope-engine.json`, su matriz y los registros `engine-scope.*` en el directorio anterior.
+- Preparación AOT: `cargo build --locked --bin pseudo` desde la CLI termina con código 0; sus registros
+  `aot-build.*` permiten separar la compilación del tiempo límite de inicio del adaptador.
+- Segundo paso: `cargo run --locked -p see_cli --bin see -- conform --subject aot --only LANG.TASK.SCOPE`
+  termina con código 1 y `SEE-RECORDING`: respuesta nativa `failed/analysisFailed`, diagnóstico
+  `nativeTasksUnsupported`, sin cinta de efectos. Se conservan stdout, stderr y código de salida en
+  `aot-scope.*`. Se aplica la parada de §10.1: no se repite CLEANUP en ningún sujeto ni se ejecuta diferencial.
+  `.07` permanece abierta y PG-4 no se declara cerrada.
+- Reproducción aislada autorizada: `--only` compara solo IDs de especificación, por lo que la persona autorizó
+  JSONL para aislar casos sin ampliar la CLI. `pseudo --see-adapter aot` reproduce C1 y C15 (`es`, `strict`);
+  C15 es el primer caso del contrato que solicita `grabar_y_reproducir`. Ambos devuelven
+  `failed/analysisFailed`, `nativeTasksUnsupported` y ninguna cinta. Una tercera petición auxiliar de C15,
+  con reproducción desactivada solo en la petición, conserva el mismo rechazo: quitar esa comprobación
+  no aportaría conformidad. El proceso del adaptador termina con código 0 por cierre protocolario, que no
+  significa ejecución exitosa de los programas. Peticiones, respuestas y resumen: `aot-isolated.*`.
+- Causa verificada: la API rechaza la RI con operaciones de tarea antes de generar el objeto nativo; la
+  respuesta de rechazo no incluye cinta. El corredor compara la respuesta y después exige la cinta de C15;
+  `recording_replay` eleva `SEE-RECORDING`, por lo que la conformidad aborta antes de guardar resultados.
+  `aot.json`, su matriz y el diferencial anteriores permanecen intactos; el primero corresponde a
+  `ENG.TASK.MEMORY`, no a SCOPE. `verification.json` comprueba las siete copias, los hashes vigentes,
+  los esperados conservados y que no se reemplazó el diferencial.
+- Bloqueo y decisión pendiente: el rechazo documentado en el README del motor y permitido por `PG-4.12.07`
+  protege contra anunciar tareas nativas inexistentes, pero no satisface SCOPE ni el requisito de ambos sujetos
+  de esta casilla. Faltan continuaciones reanudables, agenda, canales y efectos concurrentes nativos de
+  `PG-4.12.04`; R5/R6 siguen pendientes con resolución declarada en `PG-4.07`. Para cerrar `.07` hay que
+  autorizar y completar esa dependencia, o aprobar explícitamente otro alcance de la casilla. No se cambian
+  sujetos, esperados, versiones ni vínculos para convertir el rechazo o un resultado no aplicable en cumplimiento.
+- Cierre de la revisión: el único archivo versionado modificado es este plan; las evidencias nuevas quedan
+  en el directorio local ignorado. Sin cambios del corpus ni del motor, sin commit ni push, sin cierre de PG-4.
+  El disco queda en 39 GiB tras recompilar. La revisión final del registro, de las evidencias y
+  `git diff --check` pasa; `PHASE-GREEN` no permite cerrar `.07`.
 
 
 Registro de la iteración conjunta autorizada de PG-4.03 a PG-4.05:
