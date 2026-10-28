@@ -70,30 +70,66 @@ fn extract_opcodes(
 }
 
 fn generate_opcodes(entries: &[OpcodeEntry]) -> String {
+    let chunks: Vec<_> = entries.chunks(25).collect();
     let mut output = String::new();
+    append_enum(entries, &mut output);
+    append_name_lookup(&chunks, &mut output);
+    append_name_mapping(&chunks, &mut output);
+    output.push_str("}\n");
+    output
+}
+
+fn append_enum(entries: &[OpcodeEntry], output: &mut String) {
     output.push_str("#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]\n");
     output.push_str("#[repr(u8)]\npub enum Opcode {\n");
     for (index, entry) in entries.iter().enumerate() {
         output.push_str(&format!("    {} = {index},\n", entry.variant));
     }
     output.push_str("}\n\nimpl Opcode {\n");
-    output.push_str("    pub fn from_name(name: &str) -> Option<Self> {\n        match name {\n");
-    for entry in entries {
+}
+
+fn append_name_lookup(chunks: &[&[OpcodeEntry]], output: &mut String) {
+    output.push_str("    pub fn from_name(name: &str) -> Option<Self> {\n");
+    for index in 0..chunks.len() {
         output.push_str(&format!(
-            "            \"{}\" => Some(Self::{}),\n",
-            entry.name, entry.variant
+            "        if let Some(opcode) = Self::from_name_slice_{index}(name) {{ return Some(opcode); }}\n"
         ));
     }
-    output.push_str("            _ => None,\n        }\n    }\n\n");
-    output.push_str("    pub fn as_name(self) -> &'static str {\n        match self {\n");
-    for entry in entries {
+    output.push_str("        None\n    }\n\n");
+    for (index, chunk) in chunks.iter().enumerate() {
         output.push_str(&format!(
-            "            Self::{} => \"{}\",\n",
-            entry.variant, entry.name
+            "    fn from_name_slice_{index}(name: &str) -> Option<Self> {{\n        match name {{\n"
+        ));
+        for entry in *chunk {
+            output.push_str(&format!(
+                "            \"{}\" => Some(Self::{}),\n",
+                entry.name, entry.variant
+            ));
+        }
+        output.push_str("            _ => None,\n        }\n    }\n\n");
+    }
+}
+
+fn append_name_mapping(chunks: &[&[OpcodeEntry]], output: &mut String) {
+    output.push_str("    pub fn as_name(self) -> &'static str {\n");
+    for index in 0..chunks.len() {
+        output.push_str(&format!(
+            "        if let Some(name) = Self::as_name_slice_{index}(self) {{ return name; }}\n"
         ));
     }
-    output.push_str("        }\n    }\n}\n");
-    output
+    output.push_str("        \"\"\n    }\n\n");
+    for (index, chunk) in chunks.iter().enumerate() {
+        output.push_str(&format!(
+            "    fn as_name_slice_{index}(opcode: Self) -> Option<&'static str> {{\n        match opcode {{\n"
+        ));
+        for entry in *chunk {
+            output.push_str(&format!(
+                "            Self::{} => Some(\"{}\"),\n",
+                entry.variant, entry.name
+            ));
+        }
+        output.push_str("            _ => None,\n        }\n    }\n\n");
+    }
 }
 
 fn to_pascal_case(name: &str) -> String {

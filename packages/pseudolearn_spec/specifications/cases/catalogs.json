@@ -4000,6 +4000,20 @@
       },
       "tipos_argumentos": {}
     },
+    "taskDeadlock": {
+      "argumentos": [],
+      "clase": "runtime",
+      "mensajes": {
+        "en": "The task agenda has no runnable tasks or pending effects that can resume it",
+        "es": "La agenda no tiene tareas listas ni efectos pendientes que puedan reanudarla"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
     "taskHandleEscape": {
       "argumentos": [],
       "clase": "semantic",
@@ -4013,6 +4027,24 @@
         "flexible": "error"
       },
       "tipos_argumentos": {}
+    },
+    "taskLimitExceeded": {
+      "argumentos": [
+        "limit"
+      ],
+      "clase": "runtime",
+      "mensajes": {
+        "en": "Live task limit reached: {limit}",
+        "es": "Se alcanzó el límite de tareas vivas: {limit}"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {
+        "limit": "numero"
+      }
     },
     "taskScopeInsideDefer": {
       "argumentos": [],

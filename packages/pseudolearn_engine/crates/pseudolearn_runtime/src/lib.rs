@@ -4,23 +4,22 @@ pub use pseudolearn_abi::{
     CapabilityKind, CollectionCommand, DictionaryKeyKind, DictionaryLayout, Handle, VectorLayout,
 };
 
+mod effect_session;
 pub mod effect_tape;
+mod tape_codec;
 pub mod tape_privacy;
 pub mod tape_replay;
-mod tape_codec;
-mod effect_session;
 pub use effect_session::{EffectRecord, EffectSession, console_record};
 mod arithmetic;
 mod array;
 mod bytes_buffer;
-mod cell;
 mod capability_table;
+mod cell;
 mod collection;
 mod dictionary;
 mod io_error;
 mod vector;
 pub use bytes_buffer::BytesBuffer;
-pub use io_error::IoError;
 pub use collection::{
     CollectionWords, collection_check_version, collection_layout, collection_length,
     collection_version, new_dictionary, new_vector,
@@ -30,6 +29,7 @@ pub use dictionary::{
     dictionary_entry, dictionary_find, dictionary_get, dictionary_lookup, dictionary_next,
     dictionary_remove, dictionary_set,
 };
+pub use io_error::IoError;
 pub use vector::{vector_get, vector_insert, vector_remove, vector_set};
 mod delta;
 mod error;
@@ -41,8 +41,8 @@ mod text;
 mod value;
 
 pub use capability_table::{
-    CapabilityEntry, CapabilityError, CapabilityTable, CapabilityToken, CommitOutcome,
-    EffectPhase, ReproducibilityStatus, RightsMask,
+    CapabilityEntry, CapabilityError, CapabilityTable, CapabilityToken, CommitOutcome, EffectPhase,
+    ReproducibilityStatus, RightsMask,
 };
 
 pub use array::{
@@ -87,43 +87,50 @@ pub use statistics::HeapStatistics;
 #[cfg(test)]
 mod collection_tests;
 
-pub use effect_tape::{EffectTape, ExecutionIdentity, TapeEntry, TAPE_SCHEMA_V1};
-pub use tape_replay::{ExecutionMode, ReplayError, TapeReplayProvider};
+pub use effect_tape::{EffectTape, ExecutionIdentity, TAPE_SCHEMA_V1, TapeEntry};
 pub use tape_codec::{decode_effect_tape, encode_effect_tape, tape_entry_hash};
+pub use tape_replay::{ExecutionMode, ReplayError, TapeReplayProvider};
 
 pub use tape_privacy::{DEFAULT_MAX_TAPE_BYTES, SecretHandle, TapeBudget};
 
 mod managed_bytes;
 mod managed_capability;
-pub use managed_bytes::{new_bytes, bytes_length, bytes_at, bytes_content};
-pub use managed_capability::{new_capability, capability_token};
+pub use managed_bytes::{bytes_at, bytes_content, bytes_length, new_bytes};
+pub use managed_capability::{capability_token, new_capability};
 
+mod effect_authority;
 mod host_effect;
 mod host_session;
 mod host_validation;
-mod effect_authority;
-pub use host_effect::{HostValue, HostCapability, HostFailure, HostReply, HostEffectRequest, HostEffectProvider};
-pub use host_session::{configure_host_authority, begin_host_effect, resolve_host_effect, perform_host_effect};
 pub use effect_authority::effective_permissions;
+pub use host_effect::{
+    HostCapability, HostEffectProvider, HostEffectRequest, HostFailure, HostReply, HostValue,
+};
+pub use host_session::{
+    begin_host_effect, configure_host_authority, perform_host_effect, resolve_host_effect,
+};
 
 mod memory_host;
-mod memory_host_files;
 mod memory_host_config;
+mod memory_host_files;
 pub use memory_host::MemoryHostProvider;
 
 mod host_words;
 mod local_effect;
 pub use host_words::{decode_host_value, host_reply_words};
 pub use local_effect::local_effect;
-pub use pseudolearn_abi::{EffectOperation, EffectValueKind, EFFECT_OPERATIONS, effect_operation};
+pub use pseudolearn_abi::{EFFECT_OPERATIONS, EffectOperation, EffectValueKind, effect_operation};
 
 mod effect_checkpoint;
-pub use effect_checkpoint::{EffectCheckpoint, capture_effect_checkpoint, replay_effect_checkpoint};
+pub use effect_checkpoint::{
+    EffectCheckpoint, capture_effect_checkpoint, replay_effect_checkpoint,
+};
 
 mod task_agenda;
 mod task_state;
 pub use task_agenda::{
-    TaskAgenda, TaskAgendaError, TaskCancellation, TaskExecution, TaskId, TaskScopeId, TaskScopeJoin,
+    TaskAgenda, TaskAgendaError, TaskCancellation, TaskChannelId, TaskExecution, TaskId,
+    TaskScopeId, TaskScopeJoin, TaskWaiting, TaskWake,
 };
 pub use task_state::TaskState;
 

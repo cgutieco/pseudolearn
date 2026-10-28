@@ -8,6 +8,7 @@ pub struct LoopExit {
     pub target: BlockId,
     pub normal: BlockId,
     pub depth: usize,
+    pub task_scope_depth: usize,
     pub locals: Vec<LocalId>,
     pub joined: bool,
 }
@@ -24,6 +25,7 @@ pub(crate) fn enter(body: &[StatementId], normal: BlockId, context: &mut Stateme
         target,
         normal,
         depth: context.builder.cleanup.scopes.len(),
+        task_scope_depth: context.builder.task_scopes.len(),
         locals,
         joined,
     });
@@ -69,6 +71,7 @@ pub(crate) fn lower(span: pseudolearn_source::Span, context: &mut StatementConte
     context
         .builder
         .emit_void(Operation::StmtEnter, vec![], span);
+    crate::task_scopes::emit_active_scope_joins(exit.task_scope_depth, span, context.builder);
     crate::cleanup_edges::emit(
         context.expression_context,
         context.environment,

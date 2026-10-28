@@ -90,7 +90,7 @@ Estado verificado en la revisión `276a156`.
 | Pureza transitiva | `LANG.CAPABILITY.PURITY#R1`–`#R5`; `pseudolearn_semantic/src/effect_check.rs` | Una `Funcion` no puede suspenderse ni operar tareas o canales; se reutiliza el mismo punto fijo |
 | Clausuras con entorno inmutable | `LANG.TYPES.FUNCTION#R1`; `capture_analysis.rs`, `capture_environment.rs` | La captura copia vínculos inmutables, **pero un objeto capturado conserva su identidad mutable**: no es aislamiento transitivo; `PG-4.06` lo resuelve en la frontera de tarea |
 | Colecciones compartidas | `LANG.TYPES.VECTOR#R1`, `LANG.TYPES.DICTIONARY#R1` (referencias compartidas mutables); `LANG.TYPES.RECORD#R3` (registros por valor, campos de clase compartidos); `LANG.CLASS.COPY#R1` (`Copiar` superficial); `LANG.SUBPROGRAM.BY-REFERENCE#R1` (alias permitido) | Definen exactamente qué tipos **no** pueden cruzar una frontera de tarea |
-| Limpieza léxica | `LANG.CONTROL.CLEANUP`; `pseudolearn_lowering/src/cleanup_edges.rs` | Se reutiliza para la cancelación cooperativa; hoy el corpus dice «No se añade limpieza ante cancelación» (conflicto `CF-PG4-01`, §3.5) |
+| Limpieza léxica | `LANG.CONTROL.CLEANUP`; `pseudolearn_lowering/src/cleanup_edges.rs` | `LANG.CONTROL.CLEANUP#R2` vigente ordena cancelar y unir a las hijas antes de ejecutar las limpiezas cooperativas; las trampas y la cancelación del anfitrión no ejecutan limpiezas |
 | Masa de sentencia | `IR.OBSERVATION-POINTS#R2`; combustible por bloque en la VM | Base de los puntos de cesión lógicos (`PG-4.07`), sin reloj físico |
 | Límites deterministas | `ENG.LIMITS#R1`–`#R9` | Se añaden límites de tareas y de capacidad de canal con la misma clasificación que las celdas |
 | Disposiciones únicas VM/AOT | `pseudolearn_abi/src/` (`frame.rs`, `closure_layout.rs`, `record_layout.rs`, `vector_layout.rs`…) | Se añaden `continuation_layout.rs`, `task_layout.rs`, `channel_layout.rs` |
@@ -403,7 +403,7 @@ reporta (`CONFLICT-REPORT`).
 
 | ID | Fuentes en choque | Propuesta | Estado |
 |---|---|---|---|
-| `CF-PG4-01` | `LANG.CONTROL.CLEANUP` vigente: «No se añade limpieza ante cancelación o efectos externos» frente a la hoja de ruta (§5, `C-06` → `PG-4`, limpieza ante cancelación) y `ADR-03` | Edición oficial de `LANG.CONTROL.CLEANUP`: la cancelación **cooperativa de tarea** ejecuta `Diferir`; la cancelación **del anfitrión** y las trampas siguen sin limpiezas | **Requiere a la persona en `P1`**; sin respuesta no se edita esa regla |
+| `CF-PG4-01` | Afirmación histórica de este plan frente a la regla vigente | `LANG.CONTROL.CLEANUP#R2` ya contiene la distinción propuesta: la cancelación cooperativa de tarea ejecuta `Diferir`; la cancelación del anfitrión y las trampas no | **Obsoleto en el estado actual del corpus**; no requiere editar `LANG.CONTROL.CLEANUP` en esta iteración |
 | `CF-PG4-02` | `README.md` del motor: «Fuera de alcance de producto: … concurrencia» y «una ejecución y su línea temporal se procesan secuencialmente» frente a `ADR-03` aprobado | Actualizar el README en el mismo cambio (`DOC-README-TRUTH`): concurrencia cooperativa de una sola tarea ejecutando a la vez; paralelismo fuera de alcance | Se aplica en la iteración 3; se informa, no bloquea |
 | `CF-PG4-03` | Plan de `PG-3` §5 cita 600 líneas por archivo frente a `architecture.yaml` (300) | Manda el archivo de reglas | Informativo |
 | `CF-PG4-04` | `ENG.EXEC.MODEL#R5` y `API.EXECUTE#R6` describen **un** efecto pendiente | Edición oficial: lista de pendientes en orden de `effect_seq`; con un solo pendiente la forma de `PG-3` no cambia | Se aplica en la iteración 1 |
@@ -444,21 +444,27 @@ marca `[x]` sin evidencia en §11.
 
 ### PG-4.02 · Ámbitos obligatorios: unión al salir, ningún hijo abandonado y cancelación cooperativa
 
-- [x] `PG-4.02.01` Crear `LANG.TASK.SCOPE` con `S1`–`S10`. Editar `LANG.CONTROL.CLEANUP` solo tras la respuesta de la
-  persona a `CF-PG4-01`. Códigos: `spawnOutsideTaskScope`, `taskScopeInsideDefer`, `taskArgumentNotTransferable`
+- [x] `PG-4.02.01` Crear `LANG.TASK.SCOPE` con `S1`–`S10`. `LANG.CONTROL.CLEANUP#R2` vigente ya distingue la
+  cancelación cooperativa de la del anfitrión y las trampas. Códigos: `spawnOutsideTaskScope`,
+  `taskScopeInsideDefer`, `taskArgumentNotTransferable`
   (compartido con `PG-4.06`), `taskByReferenceArgument`, `taskHandleEscape`, `spawnTargetNotSuspendible`.
 - [ ] `PG-4.02.02` Casos: feliz (dos hijas unidas, hija sin valor como sentencia, ámbitos anidados de tres niveles,
   ámbito vacío); infeliz (un caso por código; `Lanzar` dentro de clausura y dentro de `Diferir`; asa asignada,
   retornada, capturada y pasada); cancelación (hija suspendida en canal cancelada por fallo de hermana ejecuta sus
--  `Diferir` en orden inverso; nieta cancelada antes que su madre); límite (`Aguardar t` dos veces; ámbito cuya unión no
+  `Diferir` en orden inverso; nieta cancelada antes que su madre); límite (`Aguardar t` dos veces; ámbito cuya unión no
   suspende porque las hijas ya terminaron; cancelación de una tarea que espera un efecto concurrente ⇒ efecto
-  `abandoned`). El caso del efecto pendiente todavía no comprueba el resultado `abandoned` en la observación de la cinta.
+  `abandoned`). El corpus conserva `C1`–`C22`: `C22` verifica la clausura, `C15` y `C16` describen la cancelación y
+  el orden de limpiezas, y `C19` espera `abandoned` en la cinta. La integración de `C15`–`C16` aún no se ejecuta en
+  VM y falta el caso de cancelación mientras una hija espera un canal (`LANG.TASK.CHANNEL`, `PG-4.04.01`).
 - [x] `PG-4.02.03` Tests espejo: `task_scope_checker_tests.rs`, `task_handles_tests.rs` en semantic;
   `task_agenda_tests.rs` (cancelación y unión como estructura de datos) en runtime.
 - [ ] `PG-4.02.04` Código: semantic (`task_scope_checker.rs`, `task_handles.rs`); lowering (`task_scopes.rs`, aristas
-  de cancelación en `cleanup_edges.rs`); runtime (`task_agenda.rs`, `task_state.rs`); VM (`machine/tasks.rs`). El
-  runtime solo modela la agenda; lowering aún reduce los lanzamientos a llamadas y los ámbitos a bloques, y la VM no
-  ejecuta hijas ni une ámbitos. Falta integrar continuación, cancelación y limpieza.
+  de unión en `cleanup_edges.rs`); runtime (`task_agenda.rs`, `task_state.rs`); VM (`machine/tasks.rs`). La RI ahora
+  declara `O94`–`O100`; lowering genera operaciones de ámbito, lanzamiento, espera y unión; la agenda FIFO y la VM
+  ejecutan tareas hijas con bancos y marcos aislados, resultados exitosos, esperas repetidas y unión de ámbitos
+  anidados. La recolección incluye las raíces de contextos suspendidos. Sigue pendiente conectar el fallo de una hija
+  con la cancelación de hermanas y la ejecución de `Diferir` (`PG-4.03`), además de esperas por canal y efecto
+  (`PG-4.04`) y continuaciones compartidas con AOT (`PG-4.08`).
 - [x] `PG-4.02.05` README del motor (`semantic`, `lowering`, `runtime`, `vm`).
 - [x] `PG-4.02.06` Ligera: tests de los módulos anteriores, `rust-checks`, Clippy por crate tocado.
 - [ ] `PG-4.02.07` Pesada: `--only LANG.TASK.SCOPE,LANG.CONTROL.CLEANUP` en `engine` y `aot`.
@@ -893,7 +899,7 @@ lo que documente su README tras la iteración 4. Desde `apps/pseudolearn_app`: `
 | Tarea | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
 | `PG-4.01` | Completa | `.01`–`.06`; 15 casos bilingües, 4 felices, 6 de diagnóstico y 5 de límite; tests filtrados de ambos crates, `rust-checks all .`, Clippy de ambos crates, `rustfmt --check` dirigido y `git diff --check` pasan. `see validate` validó 182 especificaciones; `lock --check` y `see export --check` verificaron sus artefactos. Reanclados los nueve IDs autorizados, sin cambiar estados ni versiones | `.07` pesado se difiere a la iteración 5 |
-| `PG-4.02` | Parcial; no cerrada | `.01`, `.03`, `.05` y `.06`; `see validate` validó 183 especificaciones, `lock --check` y `see export --check` pasaron; las suites de los cinco crates, `rust-checks all .`, Clippy y formato dirigido pasaron | `.02` aún no verifica `abandoned` en la observación de cinta; falta una prueba VM de ejecución de hijas; `.04` no está integrada de extremo a extremo. La agenda de runtime es solo estructural, el lowering emite llamadas/bloques y la VM conserva una sola tarea raíz. `.07` pesada queda reservada para la iteración 5; `PHASE-GREEN` no se cumple para cerrar esta tarea |
+| `PG-4.02` | Parcial; no cerrada | `.01`, `.03` y `.05`; avances de `.02` (`C22`, `C15`, `C16`, `C19`) y `.04` (RI `O94`–`O100`, lowering, agenda FIFO, ejecución VM y raíces suspendidas); 25 tests filtrados, `rust-checks all .`, Clippy de siete crates, formato dirigido, `see validate` (183 especificaciones), `lock --check`, `see export --check` y `git diff --check` pasan | `.02` aún requiere el caso y la ejecución de cancelación mientras una hija espera un canal; `.04` aún no conecta fallo de hija, cancelación cooperativa y limpiezas, ni esperas por canal/efecto o AOT. `.06` queda respaldada por estas verificaciones ligeras; `.07` sigue reservada para la iteración 5. `PHASE-GREEN` no se cumple para cerrar PG-4.02 |
 | `PG-4.03` | | | |
 | `PG-4.04` | | | |
 | `PG-4.05` | | | |
@@ -906,13 +912,13 @@ lo que documente su README tras la iteración 4. Desde `apps/pseudolearn_app`: `
 | `PG-4.12` | | | |
 | Espacio liberado (§13) | Ejecutado | 2,8 GiB iniciales; limpieza de artefactos regenerables elevó el espacio libre a 33 GiB antes de compilar; quedan 32 GiB tras las verificaciones | Sin tocar datos personales ni evidencias |
 
-Registro de PG-4.02; la fase PG-4 sigue abierta: cambios locales en `feature/agregar-ruta-de-especificacion`, sin
-commit ni push · Verificadores ejecutados: `see validate`, `lock --check`, `see export --check`, `cargo test --offline`
-de los cinco crates tocados, `rust-checks all .`, Clippy dirigido, `rustfmt --check` dirigido y `git diff --check` ·
-Suites omitidas y motivo: conformidad pesada de PG-4.02 (`.07`), reservada para la iteración 5; tampoco se ejecutó
-conformidad de PG-4.01 (`.07`) · Pendientes: expectativa de cinta para `abandoned` en `.02`, prueba VM de tareas e
-integración end-to-end de `.04` · `PHASE-GREEN` no satisfecho para cerrar PG-4.02 · PG-4.01 conserva su registro de
-cierre anterior; las pruebas de continuación, aislamiento y reproducción de tareas quedan en sus iteraciones futuras
+Registro de la iteración solicitada de PG-4.02; la fase PG-4 sigue abierta: rama `feature/agregar-ruta-de-especificacion`,
+sin commit ni push · El cambio añade RI `O94`–`O100`, ejecución VM de tareas con unión de ámbitos y protección de
+raíces suspendidas ante GC; el corpus valida y las pruebas ligeras pasan · Verificadores: `see validate` (183),
+`lock --check`, `see export --check`, `rust-checks all .`, Clippy de siete crates, `rustfmt --check` dirigido y
+`git diff --check` · Pendientes de `.02`: ejecución de cancelación por fallo con `Diferir` y cancelación durante
+espera de canal; AOT y conformidad pesada (`.07`) siguen en sus tareas futuras · `PHASE-GREEN` no satisfecho para
+cerrar PG-4.02 ni la fase PG-4 (`PHASE-STOP`).
 
 ---
 

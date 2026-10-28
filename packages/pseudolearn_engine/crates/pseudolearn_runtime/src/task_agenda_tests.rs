@@ -1,4 +1,7 @@
-use crate::{TaskAgenda, TaskAgendaError, TaskId, TaskScopeJoin, TaskState};
+use crate::{
+    TaskAgenda, TaskAgendaError, TaskChannelId, TaskId, TaskScopeId, TaskScopeJoin, TaskState,
+    TaskWake,
+};
 
 #[test]
 fn assigns_monotonic_ids_and_joins_completed_children_without_waiting() {
@@ -43,7 +46,10 @@ fn orders_nested_cancellation_before_parent_and_abandons_waiting_effects() {
     };
     assert_eq!(agenda.spawn(nested_scope), Ok(TaskId(2)));
     assert_eq!(agenda.execution().begin(TaskId(2)), Ok(()));
-    assert_eq!(agenda.execution().wait_for_effect(TaskId(2), 7), Ok(()));
+    assert_eq!(
+        agenda.execution().waiting().for_effect(TaskId(2), 7),
+        Ok(())
+    );
     assert_eq!(
         agenda.cancellation().order(TaskId(1)),
         Ok(vec![TaskId(2), TaskId(1)])
@@ -80,7 +86,10 @@ fn sibling_failure_requests_cancellation_and_abandons_effects() {
     assert_eq!(agenda.spawn(scope), Ok(TaskId(1)));
     assert_eq!(agenda.spawn(scope), Ok(TaskId(2)));
     assert_eq!(agenda.execution().begin(TaskId(1)), Ok(()));
-    assert_eq!(agenda.execution().wait_for_effect(TaskId(1), 11), Ok(()));
+    assert_eq!(
+        agenda.execution().waiting().for_effect(TaskId(1), 11),
+        Ok(())
+    );
     assert_eq!(agenda.execution().begin(TaskId(2)), Ok(()));
     assert_eq!(agenda.execution().fail(TaskId(2)), Ok(vec![TaskId(1)]));
     assert_eq!(agenda.state(TaskId(1)), Some(TaskState::CancelRequested));
@@ -88,5 +97,111 @@ fn sibling_failure_requests_cancellation_and_abandons_effects() {
     assert_eq!(
         agenda.cancellation().abandoned_effects(),
         &[(TaskId(1), 11)]
+    );
+}
+
+#[test]
+fn resumes_channel_waits_with_their_channel_identity() {
+    let (mut agenda, root) = TaskAgenda::with_running_root();
+    let scope = agenda.create_scope(root);
+    let Ok(scope) = scope else {
+        return;
+    };
+    assert_eq!(agenda.spawn(scope), Ok(TaskId(1)));
+    assert_eq!(agenda.execution().begin(TaskId(1)), Ok(()));
+    assert_eq!(
+        agenda
+            .execution()
+            .waiting()
+            .for_channel(TaskId(1), TaskChannelId(4)),
+        Ok(())
+    );
+    assert_eq!(
+        agenda.execution().resume(TaskId(1)),
+        Ok(TaskWake::Channel(TaskChannelId(4)))
+    );
+    assert_eq!(agenda.state(TaskId(1)), Some(TaskState::Ready));
+}
+
+#[test]
+fn cancelling_a_channel_wait_does_not_abandon_an_effect() {
+    let (mut agenda, root) = TaskAgenda::with_running_root();
+    let scope = agenda.create_scope(root);
+    let Ok(scope) = scope else {
+        return;
+    };
+    assert_eq!(agenda.spawn(scope), Ok(TaskId(1)));
+    assert_eq!(agenda.spawn(scope), Ok(TaskId(2)));
+    assert_eq!(agenda.execution().begin(TaskId(1)), Ok(()));
+    assert_eq!(
+        agenda
+            .execution()
+            .waiting()
+            .for_channel(TaskId(1), TaskChannelId(9)),
+        Ok(())
+    );
+    assert_eq!(agenda.execution().begin(TaskId(2)), Ok(()));
+    assert_eq!(agenda.execution().fail(TaskId(2)), Ok(vec![TaskId(1)]));
+    assert_eq!(agenda.state(TaskId(1)), Some(TaskState::CancelRequested));
+    assert!(agenda.cancellation().abandoned_effects().is_empty());
+}
+
+#[test]
+fn schedules_ready_tasks_in_fifo_order_after_a_yield() {
+    let (mut agenda, root) = TaskAgenda::with_running_root();
+    let Ok(scope) = agenda.create_scope(root) else {
+        return;
+    };
+    assert_eq!(agenda.spawn(scope), Ok(TaskId(1)));
+    assert_eq!(agenda.spawn(scope), Ok(TaskId(2)));
+    assert_eq!(agenda.execution().take_ready(), Ok(Some(TaskId(1))));
+    assert_eq!(agenda.execution().yield_task(TaskId(1)), Ok(()));
+    assert_eq!(agenda.execution().take_ready(), Ok(Some(TaskId(2))));
+    assert_eq!(agenda.execution().take_ready(), Ok(Some(TaskId(1))));
+}
+
+#[test]
+fn wakes_scope_join_only_after_every_child_completes() {
+    let (mut agenda, root) = TaskAgenda::with_running_root();
+    let Ok(scope) = agenda.create_scope(root) else {
+        return;
+    };
+    assert_eq!(agenda.spawn(scope), Ok(TaskId(1)));
+    assert_eq!(agenda.spawn(scope), Ok(TaskId(2)));
+    assert_eq!(agenda.execution().waiting().for_scope(root, scope), Ok(()));
+    assert_eq!(agenda.execution().take_ready(), Ok(Some(TaskId(1))));
+    assert_eq!(agenda.execution().complete(TaskId(1)), Ok(()));
+    assert_eq!(agenda.state(root), Some(TaskState::Waiting));
+    assert_eq!(agenda.execution().take_ready(), Ok(Some(TaskId(2))));
+    assert_eq!(agenda.execution().complete(TaskId(2)), Ok(()));
+    assert_eq!(agenda.execution().take_ready(), Ok(Some(root)));
+}
+
+#[test]
+fn wakes_task_await_when_its_child_completes() {
+    let (mut agenda, root) = TaskAgenda::with_running_root();
+    let Ok(scope) = agenda.create_scope(root) else {
+        return;
+    };
+    assert_eq!(agenda.spawn(scope), Ok(TaskId(1)));
+    assert_eq!(
+        agenda.execution().waiting().for_task(root, TaskId(1)),
+        Ok(())
+    );
+    assert_eq!(agenda.execution().take_ready(), Ok(Some(TaskId(1))));
+    assert_eq!(agenda.execution().complete(TaskId(1)), Ok(()));
+    assert_eq!(agenda.execution().take_ready(), Ok(Some(root)));
+}
+
+#[test]
+fn rejects_waits_for_unknown_scopes_and_tasks() {
+    let (mut agenda, root) = TaskAgenda::with_running_root();
+    assert_eq!(
+        agenda.execution().waiting().for_task(root, TaskId(4)),
+        Err(TaskAgendaError::UnknownTask)
+    );
+    assert_eq!(
+        agenda.execution().waiting().for_scope(root, TaskScopeId(4)),
+        Err(TaskAgendaError::UnknownScope)
     );
 }

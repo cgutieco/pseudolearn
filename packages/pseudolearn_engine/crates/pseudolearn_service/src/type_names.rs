@@ -11,6 +11,11 @@ pub fn type_display(analysis: &ServiceAnalysis, type_id: TypeId, profile: Profil
         Type::Boolean => keyword_spelling(KeywordKind::BooleanType, profile),
         Type::Character => keyword_spelling(KeywordKind::CharacterType, profile),
         Type::String => keyword_spelling(KeywordKind::StringType, profile),
+        Type::Task(payload) => format!(
+            "{}<{}>",
+            keyword_spelling(KeywordKind::TaskType, profile),
+            type_display(analysis, payload, profile)
+        ),
         Type::Object(class_id) => collection_display(analysis, class_id, profile)
             .unwrap_or_else(|| class_name(analysis, class_id.0)),
         Type::Enum(enumeration) => declared_name(

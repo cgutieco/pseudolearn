@@ -9,7 +9,7 @@ pub(crate) fn check(
     operands: &[Operand],
     get_type: &impl Fn(ValueId) -> Option<IrType>,
 ) -> Result<Option<IrType>, TypeError> {
-    if operation != Operation::EffectCall {
+    if !matches!(operation, Operation::EffectCall | Operation::EffectAwait) {
         return Ok(None);
     }
     let descriptor = check_header(operands)?;

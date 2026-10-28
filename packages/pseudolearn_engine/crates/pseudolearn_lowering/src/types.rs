@@ -18,7 +18,7 @@ pub fn lower_type(type_id: TypeId, module: &HirModule) -> IrType {
             element: Box::new(lower_type(element, module)),
             dimension_rank: rank,
         },
-        Type::Task(payload) => lower_type(payload, module),
+        Type::Task(_) => IrType::I64,
         Type::Object(class_id) => {
             let class_name = usize::try_from(class_id.0)
                 .ok()

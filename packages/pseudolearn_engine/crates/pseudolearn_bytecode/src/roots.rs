@@ -42,9 +42,16 @@ pub(crate) fn safe_point(instruction: &Instruction) -> bool {
     matches!(
         instruction.opcode.as_name(),
         "effect_call"
+            | "effect.await"
             | "call"
             | "call.virtual"
             | "call.indirect"
+            | "call.suspendible"
+            | "task.scope_open"
+            | "task.spawn"
+            | "task.await"
+            | "task.scope_join"
+            | "task.yield_check"
             | "array.new"
             | "object.new"
             | "object.copy"

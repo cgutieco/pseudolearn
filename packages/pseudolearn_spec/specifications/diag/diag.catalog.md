@@ -4067,6 +4067,38 @@
       "clase": "semantic",
       "tipos_argumentos": {}
     },
+    "taskDeadlock": {
+      "mensajes": {
+        "es": "La agenda no tiene tareas listas ni efectos pendientes que puedan reanudarla",
+        "en": "The task agenda has no runnable tasks or pending effects that can resume it"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "runtime",
+      "tipos_argumentos": {}
+    },
+    "taskLimitExceeded": {
+      "mensajes": {
+        "es": "Se alcanzó el límite de tareas vivas: {limit}",
+        "en": "Live task limit reached: {limit}"
+      },
+      "argumentos": [
+        "limit"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "runtime",
+      "tipos_argumentos": {
+        "limit": "numero"
+      }
+    },
     "spawnTargetNotSuspendible": {
       "mensajes": {
         "es": "Lanzar requiere el nombre de una unidad suspendible",

@@ -28,6 +28,8 @@ número de veces.
 
 Suspensión por efectos (`effect_call` y `AwaitingEffect`): La VM suspende su ejecución ante una instrucción de efecto devolviendo `RunExit::AwaitingEffect(PendingEffectRequest)` con la secuencia del efecto, capacidad, operación y resumen de argumentos. El anfitrión reanuda la máquina invocando `supply_effect_result` con un `HostReply` (`Committed`, `Failed` o `Uncertain`), que la instrucción reejecutada consume para llenar sus celdas de resultado sin perder la sincronización con la línea temporal. La máquina no conoce la espera de entrada de `Leer`: `RunExit::AwaitingInput` y `RunExit::AwaitingEffect` son variantes distintas y `tests/vm_awaiting_effect_tests.rs` de `pseudolearn_api` (que compila programas completos hasta el bytecode) comprueba la carga útil, la distinción y la ausencia de suspensión sin efectos.
 
+Agenda de tareas (`machine/tasks.rs`): la raíz y cada hija tienen un contexto con función, cursor, bancos, celdas y marcos propios. La cola FIFO cambia el contexto activo al esperar una hija o unir un ámbito; el montón y la salida siguen siendo compartidos. Al recolectar, la VM recorre también los mapas de raíces de todos los contextos guardados. Una hija puede completar y devolver un resultado escalar o de referencia, y su padre puede aguardarla más de una vez. La agregación de `Resultado::Error`, la cancelación cooperativa con ejecución de `Diferir`, las esperas concurrentes por efecto y los despertares por canales no están conectados todavía.
+
 ## 3. Arquitectura y modelo del sistema
 
 `boolean_words(perfil)` publica las palabras lógicas del perfil desde la misma tabla generada que formatea la salida de la VM,
@@ -72,10 +74,11 @@ un `match` con un brazo por forma que llama a un evaluador o manejador `#[inline
 `VmTrap` con el span de la posición ejecutada. La tabla de formas es la única lista de operaciones: una
 operación nueva es una fila nueva.
 
-**Estado caliente.** La máquina guarda la función actual, el cursor (`pc`, base escalar, base de
-referencias), el combustible y la salida. Hay una sola pila escalar `Vec<u64>`, una pila de bits de
-definición alineada con ella, una pila de referencias `Vec<u32>` y una pila de control
-`Vec<ControlFrame>` de valores `Copy`. Una llamada coloca la ventana del llamado tras la del llamador,
+**Estado caliente.** La máquina guarda la función y el contexto activos, el cursor (`pc`, base escalar,
+base de referencias), el combustible y la salida. El contexto activo usa una pila escalar `Vec<u64>`,
+una pila de bits de definición alineada con ella, una pila de referencias `Vec<u32>` y una pila de
+control `Vec<ControlFrame>` de valores `Copy`. Al ceder una tarea, esos bancos y marcos se guardan en
+su contexto; al reanudarla, se restauran. Una llamada coloca la ventana del llamado tras la del llamador,
 crece las pilas por duplicación con `try_reserve` (fallo → `resourceLimit`, nunca pánico), copia los
 argumentos y salta al pc 0. El retorno restaura el cursor del marco y obtiene el pc de continuación por la
 identidad del punto de retorno con una carga indexada. Ninguna llamada asigna salvo cuando la pila crece.
@@ -157,8 +160,9 @@ primer registro modificado desde el punto anterior para que `MachineDelta` omita
   rápido y garantizan equivalencia estricta con la evaluación escalar y atribución exacta del span de la
   primera instrucción infractora en caso de fallo (`ENG.EXEC.EFFECT-ORDER#P1`).
 
-La implementación permanece secuencial y determinista. La exportación del corpus es una dependencia
-de datos. Las técnicas que requieren medición se aceptan solo tras conservar resultados y criterios.
+La VM ejecuta una sola tarea a la vez con cambios cooperativos de contexto y orden FIFO determinista.
+La exportación del corpus es una dependencia de datos. Las técnicas que requieren medición se aceptan
+solo tras conservar resultados y criterios.
 
 Vocabulario por sitio: el cargador conserva la tabla de perfiles por fuente y `Machine::formatted` resuelve el vocabulario
 con la fuente del tramo de la instrucción en curso (`text.format` y `out.write`), con el del módulo como respaldo. Así una

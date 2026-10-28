@@ -32,8 +32,10 @@ Invariantes: Toda RI traducida pasa el verificador y toda instrucción que puede
 
 La tabla de orígenes vincula valores SSA con variables declaradas para observación y no pertenece al formato textual normativo. La pureza se deriva del catálogo de efectos; no se materializan regiones que duplicarían información. Las llamadas directas infieren el tipo del resultado desde la firma de la función destino; `value.undefined` usa su operando explícito de tipo y `value.require` conserva el tipo del valor comprobado. Los intrínsecos `math.*` exigen y producen `f64`, `char.code` va de `char` a `i64` y `char.from_code` de `i64` a `char`; sin esa inferencia sus resultados quedaban sin tipo y el bytecode no podía asignarles registro. El verificador comprueba argumentos y usa asignabilidad nominal para permitir subtipos en argumentos de bloque y escrituras a celdas tipadas con una superclase. El chequeador hace disponibles los tipos inferidos a las instrucciones siguientes. El escritor conserva el tipo `f64` añadiendo `.0` a los literales que de otro modo se reanalizarían como enteros. Se rechazan catálogos manuales y comprobaciones tardías por instrucción.
 
-La implementación permanece secuencial y determinista. La exportación del corpus es una dependencia
-de datos. Las técnicas que requieren medición se aceptan solo tras conservar resultados y criterios.
+La ejecución conserva determinismo cooperativo: `task.scope_open`, `task.spawn`, `task.await` y
+`task.scope_join` son operaciones verificadas de la RI. `task.yield_check` y `call.suspendible`
+conservan identidad en la RI para sus consumidores. La exportación del corpus es una dependencia de
+datos. Las técnicas que requieren medición se aceptan solo tras conservar resultados y criterios.
 
 Problema: dos rangos locales iguales pueden pertenecer a archivos distintos. Elección: `IrSpan` conserva `SourceId` junto con línea y columna; el formato canónico escribe `@f<ID>:` para IDs no nulos y mantiene la forma anterior `@` para el documento suelto. El verificador rechaza coordenadas vacías o invertidas. Se rechaza inferir el archivo por nombre o por orden de carga. Medición del registro en el host: 20 bytes por tramo frente a los 16 bytes del diseño previo, un incremento fijo de 4 bytes (25 %) por tramo; el ID evita almacenar rutas o identidades compuestas repetidas en cada entrada.
 
@@ -88,3 +90,7 @@ a derecha, seguidos por celdas de resultado. Resultado usa tres hojas canónicas
 palabra escalar y referencia; ErrorES superpone código textual e incertidumbre. Las operaciones
 puras de Bytes usan una celda del tipo de resultado. El verificador valida aridad, bancos y celdas
 antes del bytecode; ninguna respuesta de host se convierte silenciosamente en cero.
+
+La familia de tareas ocupa `O94`–`O100`. El chequeador verifica clases, tipos de asa y destinos de
+`task.scope_open`, `task.spawn`, `task.await`, `task.scope_join`, `call.suspendible`, `effect.await` y
+`task.yield_check`; los consumidores de VM y bytecode conservan sus identidades de operación.

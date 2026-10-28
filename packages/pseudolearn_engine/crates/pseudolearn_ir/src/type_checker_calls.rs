@@ -14,7 +14,10 @@ pub fn check_call_result(
 ) -> Result<Option<IrType>, TypeError> {
     if !matches!(
         operation,
-        Operation::Call | Operation::CallVirtual | Operation::CallIndirect
+        Operation::Call
+            | Operation::CallVirtual
+            | Operation::CallIndirect
+            | Operation::CallSuspendible
     ) {
         return Ok(None);
     }

@@ -56,6 +56,7 @@ pub(crate) fn return_from(
     operands: Vec<pseudolearn_ir::Operand>,
 ) {
     let operands = snapshot_operands(context, span, operands);
+    crate::task_scopes::emit_active_scope_joins(0, span, context.builder);
     emit(
         context.expression_context,
         context.environment,

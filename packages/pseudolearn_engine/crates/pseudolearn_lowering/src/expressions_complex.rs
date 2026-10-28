@@ -17,6 +17,50 @@ pub fn lower_call(
     emit_function_call(arguments, function_index, span, state).0
 }
 
+pub fn lower_task_spawn(
+    arguments: &[ExpressionId],
+    function_index: u32,
+    span: Option<IrSpan>,
+    state: &mut ExpressionState<'_, '_>,
+) -> ValueId {
+    let function = usize::try_from(function_index)
+        .ok()
+        .and_then(|index| state.context.module.functions.get(index));
+    let function_name = resolve_target_function_name(function);
+    let mut lowered_arguments = Vec::new();
+    for (parameter_index, argument) in arguments.iter().copied().enumerate() {
+        let reference = is_reference_parameter(function, parameter_index, state);
+        lowered_arguments.extend(lower_call_argument(argument, (reference, span), state));
+    }
+    let scope = active_task_scope(span, state);
+    let result = state.builder.next_value();
+    state.builder.emit_with_target(
+        Operation::TaskSpawn,
+        vec![
+            pseudolearn_ir::Operand::Value(scope),
+            pseudolearn_ir::Operand::FunctionTarget {
+                function_name,
+                arguments: lowered_arguments,
+            },
+        ],
+        (Some(result), span),
+    );
+    result
+}
+
+fn active_task_scope(span: Option<IrSpan>, state: &mut ExpressionState<'_, '_>) -> ValueId {
+    if let Some(scope) = state.builder.task_scopes.last().copied() {
+        return scope;
+    }
+    let scope = state.builder.next_value();
+    state.builder.emit_with_target(
+        Operation::ConstI64,
+        vec![pseudolearn_ir::Operand::LiteralI64(0)],
+        (Some(scope), span),
+    );
+    scope
+}
+
 pub(crate) fn emit_function_call(
     arguments: &[ExpressionId],
     function_index: u32,

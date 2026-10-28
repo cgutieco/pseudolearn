@@ -30,7 +30,7 @@ Núcleo estático y determinista de PseudoLearn, con arquitectura Remanso. Sirve
 10. **La máquina nocional conserva su exactitud.** Mapas estáticos separan raíces, definición y variables
     observables del contenido accidental de los registros.
 
-La concurrencia de tareas aisladas forma parte del crecimiento del motor. El runtime ya modela su agenda y sus estados, pero la VM todavía no ejecuta hijas concurrentes ni suspende una tarea para unir su ámbito.
+La VM ejecuta cooperativamente la tarea raíz y sus hijas: conserva bancos y marcos separados por tarea, comparte montón y salida, y usa una cola FIFO para reanudar tareas listas. `Tareas`, `Lanzar`, `Aguardar` y la unión normal al salir del ámbito ya llegan a la ejecución. Las cancelaciones cooperativas, el agregado de errores de hijas, la espera por efecto dentro de una tarea y los canales aún requieren integración; AOT todavía no ejecuta las operaciones nuevas.
 Fuera de alcance técnico: motor durante la especificación, dependencias de UI, Cargo raíz y unsafe fuera de puentes generados y de `pseudolearn_aot_rt`.
 
 Codegen: Cranelift permanece como backend release y cumple `PERF.AOT.LEVEL#R1` a `#R3` (≤ 1,70 frente a V1F); trampas inmediatas con bloque frío compartido con identidad por sitio; sin transferencia AOT → VM porque `aot` está exento de observación. El nivel optimizado (≤ 1,30 frente a V1F-S) se retiró del contrato: ningún backend lo implementa y no hay fase que lo pida.
@@ -105,7 +105,7 @@ El backend nativo consume la misma RI; pseudolearn_service consume el árbol sin
 
 `crates` contiene las capas documentadas y las herramientas internas; `specification-export` aloja datos cuando exista el consumidor.
 Prohibido que una capa importe consumidores, UI, el núcleo Dart o see como crate. La exportación del corpus es una dependencia de datos, no de código.
-Concurrencia: el runtime lleva identidades, parentesco, ámbitos, estados y efectos abandonados de tareas. La VM conserva por ahora una sola tarea raíz; no cambia entre continuaciones ni ejecuta la unión de ámbitos. El anfitrión no recibe una API nueva para tareas.
+Concurrencia: `pseudolearn_runtime` conserva identidades monotónicas, ámbitos, estados, dependencias de espera y una cola FIFO. La VM guarda el cursor, los bancos, las celdas y los marcos de cada tarea en contextos separados; los mapas estáticos de raíces recorren también las tareas suspendidas durante el GC. La ejecución es cooperativa y usa una sola tarea a la vez, con montón y salida compartidos. El cambio entre contextos permite `Aguardar` y la unión de ámbitos; la propagación de fallos, la ejecución de `Diferir` por cancelación y las esperas por canal/efecto dentro de tareas siguen pendientes. El anfitrión no recibe una API nueva para tareas.
 `pseudolearn_aot_rt` es una hoja que importa source, abi, diagnostics, runtime y library; `pseudolearn_runtime` no importa `pseudolearn_library`, por lo que la frontera con la biblioteca matemática no puede vivir en el runtime. `pseudolearn_codegen` importa ir, diagnostics y `pseudolearn_aot_rt` (desplazamientos del contexto y tipos de sitio de fallo) y depende de `cranelift-codegen`, `cranelift-frontend`, `cranelift-module`, `cranelift-object` y `target-lexicon`; solo `pseudolearn_api` lo importa, para exponer la construcción de objetos ejecutables a la CLI y al adaptador `aot`. `pseudolearn_service` reside en el nivel 6 y alimenta a `pseudolearn_api`; `pseudolearn_wasm` reside en el nivel 10 y solo importa esa API.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
@@ -172,7 +172,7 @@ El verificador aplica la asignabilidad de clases a bloques, celdas y elementos d
 
 ### lowering
 
-Problema: traduce el hir a representación intermedia observable. Elección: HIR → RI; orden de evaluación normativo; inserción de puntos de observación y cálculo de masa por bloque; paso por referencia escalar como celda y parámetros arreglo como asas compartidas, porque el arreglo completo no se asigna. El lowering reconoce ámbitos, lanzamientos y esperas, pero aún los reduce a bloques y llamadas directas: no crea tareas ejecutables ni emite una operación de unión.
+Problema: traduce el hir a representación intermedia observable. Elección: HIR → RI; orden de evaluación normativo; inserción de puntos de observación y cálculo de masa por bloque; paso por referencia escalar como celda y parámetros arreglo como asas compartidas, porque el arreglo completo no se asigna. El lowering emite operaciones de RI propias para abrir y unir ámbitos, lanzar y esperar tareas, además de conservar uniones en las salidas léxicas. No emite todavía aristas de cancelación ni cesiones por cuanto.
 Alternativas descartadas: La RI tipada deriva del orden de evaluación del corpus; se rechaza optimizar antes de conservar los observables y sus nodos fuente.
 
 ### bytecode
@@ -195,7 +195,7 @@ montón cubren solo palabras usadas. Las asas pueden reutilizar una dirección f
 identidad ordinal. La tabla de capacidades aplica invalidación generacional por ranura, garantiza el
 invariante de no amplificación (`child_rights ⊆ parent_rights`) y aísla la E/S binaria mediante
 `BytesBuffer` y `IoError`. `#![forbid(unsafe_code)]` rige en este crate.
-La agenda de tareas es una estructura de datos determinista compartida: asigna identidades monotónicas, guarda el padre, el ámbito y los hijos, comprueba transiciones de estado y permite consultar si una unión terminó o sigue esperando. Una cancelación solicitada marca como abandonado el efecto que mantenía suspendida a esa tarea. La tarea no pasa a limpieza hasta que sus hijas son terminales; `finish_cancel` solo acepta una tarea después de entrar en limpieza. Esta estructura todavía no recibe eventos de la VM ni sella entregas tardías en la cinta.
+La agenda de tareas es una estructura de datos determinista compartida: asigna identidades monotónicas, guarda el padre, el ámbito y los hijos, comprueba transiciones de estado, mantiene dependencias de espera y permite consultar si una unión terminó o sigue esperando. El cambio de tarea, el despertar por finalización y el orden FIFO están conectados a la VM. La agenda modela cancelación y abandono de efectos, pero todavía no despacha limpiezas suspendidas ni conecta las entregas tardías con la cinta.
 Alternativas descartadas: V8 y JVM inspiran asas comprimidas; Swift inspira migas para texto UTF-8;
 Wasi y Capsicum inspiran descriptores por capacidad y generaciones. Se rechaza conteo de referencias
 por ciclos, movimiento por identidad, acceso directo a `std::fs` o `std::time` sin capacidad, e unsafe
@@ -214,7 +214,7 @@ Alternativas descartadas: LIB.MODEL y LIB.CORE definen firmas y efectos. Se rech
 
 La VM ejecuta valores escalares y referencias, texto, arreglos, celdas, objetos, llamadas virtuales,
 `Copiar`, formato de salida y azar. B5 conserva el gemelo sondeado, eventos, cambio de gemelo y entrada.
-La máquina inicializa el estado de una tarea raíz y valida que siga ejecutándose. No crea hijos, suspende una pila por tarea, reanuda continuaciones, une ámbitos ni conecta la cancelación con los bloques `Diferir`; por eso la ejecución de tareas aún no está habilitada de extremo a extremo.
+La máquina inicializa una raíz y conserva contextos de ejecución por hija con función, cursor, bancos, celdas y marcos independientes. La cola cambia entre esos contextos cuando una tarea espera otra o llega a la unión del ámbito. Las raíces estáticas del GC incluyen los contextos guardados. La ejecución de ámbitos, lanzamientos, esperas, resultados exitosos y unión normal está habilitada en VM; no lo están el agregado de `Resultado::Error`, la cancelación cooperativa con `Diferir`, los canales ni la continuación de tareas en AOT.
 
 Problema: ejecuta bytecode verificado emitiendo eventos observables. Elección: Bancos escalar (`u64`) y de referencias (`u32`) crecientes con longitud potencia de dos, con acceso `bank.get(index & MASK)`; ventanas solapadas para los argumentos; crecimiento en llamadas y comprobación independiente de la profundidad; **combustible por bloque** con caída exacta al gemelo sondeado; cambio de gemelo en O(1); trampas como `Result` de manejadores pequeños `#[inline(always)]`.
 Alternativas descartadas: Lua 5 inspira ventanas de registros; Ertl y Gregg inspiran superinstrucciones; Rohou, Swamy y Seznec apoyan medir match con tabla de saltos. Se descartan computed goto y ensamblador. La seguridad sale de máscaras y verificación previa.

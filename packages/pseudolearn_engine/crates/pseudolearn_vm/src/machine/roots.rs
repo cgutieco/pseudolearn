@@ -1,7 +1,14 @@
-use super::{Machine, cells::Cell};
+use super::{Machine, TaskContext, cells::Cell};
 use crate::load::LoadedFunction;
 use crate::{Fault, evaluate::INVALID_BYTECODE};
 use pseudolearn_runtime::{Handle, ValueKind};
+
+struct RootState<'banks, 'output> {
+    references: &'banks [u32],
+    cells: &'banks [Cell],
+    probed: bool,
+    roots: &'output mut Vec<Handle>,
+}
 
 impl Machine<'_> {
     pub(super) fn memory_roots(&mut self) -> Result<Vec<Handle>, Fault> {
@@ -30,6 +37,12 @@ impl Machine<'_> {
     }
 
     fn suspended_roots(&self, roots: &mut Vec<Handle>) -> Result<(), Fault> {
+        let mut state = RootState {
+            references: &self.references,
+            cells: &self.cells,
+            probed: self.probed,
+            roots,
+        };
         for frame in &self.frames {
             let mut continuation = *frame
                 .function
@@ -43,11 +56,15 @@ impl Machine<'_> {
                     .get(continuation)
                     .ok_or(INVALID_BYTECODE)?;
             }
-            self.frame_roots(
+            append_frame_roots(
                 frame.function.as_ref(),
-                (continuation.saturating_sub(1), frame.reference_base),
-                roots,
+                continuation.saturating_sub(1),
+                frame.reference_base,
+                &mut state,
             )?;
+        }
+        for context in self.tasks.contexts() {
+            append_context_roots(context, &mut state)?;
         }
         Ok(())
     }
@@ -58,45 +75,100 @@ impl Machine<'_> {
         (position, base): (usize, usize),
         roots: &mut Vec<Handle>,
     ) -> Result<(), Fault> {
-        let maps = if self.probed {
-            &function.probed_roots
-        } else {
-            &function.roots
+        let mut state = RootState {
+            references: &self.references,
+            cells: &self.cells,
+            probed: self.probed,
+            roots,
         };
-        let slots = maps.get(&position).ok_or(INVALID_BYTECODE)?;
-        for (register, is_cell) in slots {
-            let absolute = base
-                .checked_add(usize::from(*register))
-                .ok_or(INVALID_BYTECODE)?;
-            let bits = *self.references.get(absolute).ok_or(INVALID_BYTECODE)?;
-            if bits == 0 {
-                continue;
-            }
-            if *is_cell {
-                self.cell_roots(bits, roots)?;
-            } else {
-                roots.push(Handle(bits));
-            }
-        }
-        Ok(())
+        append_frame_roots(function, position, base, &mut state)
     }
+}
 
-    fn cell_roots(&self, bits: u32, roots: &mut Vec<Handle>) -> Result<(), Fault> {
-        let index = usize::try_from(bits.checked_sub(1).ok_or(INVALID_BYTECODE)?)
-            .map_err(|_| INVALID_BYTECODE)?;
-        match self.cells.get(index).ok_or(INVALID_BYTECODE)? {
-            Cell::Managed(cell) => roots.push(cell.owner),
-            Cell::Local {
-                kind: ValueKind::Reference,
-                absolute,
-                ..
-            } => {
-                roots.push(Handle(
-                    *self.references.get(*absolute).ok_or(INVALID_BYTECODE)?,
-                ));
-            }
-            _ => {}
+fn append_context_roots(context: &TaskContext, state: &mut RootState<'_, '_>) -> Result<(), Fault> {
+    append_frame_roots(
+        context.current.as_ref(),
+        context.root_position,
+        context.cursor.reference_base,
+        &mut RootState {
+            references: &context.references,
+            cells: &context.cells,
+            probed: state.probed,
+            roots: state.roots,
+        },
+    )?;
+    for frame in &context.frames {
+        let mut continuation = *frame
+            .function
+            .continuations
+            .get(frame.return_point)
+            .ok_or(INVALID_BYTECODE)?;
+        if state.probed {
+            continuation = *frame
+                .function
+                .fast_to_probed_returns
+                .get(continuation)
+                .ok_or(INVALID_BYTECODE)?;
         }
-        Ok(())
+        append_frame_roots(
+            frame.function.as_ref(),
+            continuation.saturating_sub(1),
+            frame.reference_base,
+            &mut RootState {
+                references: &context.references,
+                cells: &context.cells,
+                probed: state.probed,
+                roots: state.roots,
+            },
+        )?;
     }
+    Ok(())
+}
+
+fn append_frame_roots(
+    function: &LoadedFunction,
+    position: usize,
+    base: usize,
+    state: &mut RootState<'_, '_>,
+) -> Result<(), Fault> {
+    let maps = if state.probed {
+        &function.probed_roots
+    } else {
+        &function.roots
+    };
+    let slots = maps.get(&position).ok_or(INVALID_BYTECODE)?;
+    for (register, is_cell) in slots {
+        let absolute = base
+            .checked_add(usize::from(*register))
+            .ok_or(INVALID_BYTECODE)?;
+        let bits = *state.references.get(absolute).ok_or(INVALID_BYTECODE)?;
+        if bits == 0 {
+            continue;
+        }
+        if *is_cell {
+            append_cell_roots(bits, state)?;
+        } else {
+            state.roots.push(Handle(bits));
+        }
+    }
+    Ok(())
+}
+
+fn append_cell_roots(bits: u32, state: &mut RootState<'_, '_>) -> Result<(), Fault> {
+    let index = usize::try_from(bits.checked_sub(1).ok_or(INVALID_BYTECODE)?)
+        .map_err(|_| INVALID_BYTECODE)?;
+    match state.cells.get(index).ok_or(INVALID_BYTECODE)? {
+        Cell::Managed(cell) => state.roots.push(cell.owner),
+        Cell::Local {
+            kind: ValueKind::Reference,
+            absolute,
+            ..
+        } => {
+            state.roots.push(Handle(
+                *state.references.get(*absolute).ok_or(INVALID_BYTECODE)?,
+            ));
+        }
+        _ => {}
+    }
+    Ok(())
 }

@@ -175,7 +175,6 @@ fn dispatch_branch_statement(
         HirStatement::VariantMatch(matching) => {
             crate::statements_variant_match::lower(matching, span, context)
         }
-        HirStatement::TaskScope { body, .. } => crate::task_scopes::lower_scope(body, context),
         HirStatement::Conditional {
             condition,
             affirmative,

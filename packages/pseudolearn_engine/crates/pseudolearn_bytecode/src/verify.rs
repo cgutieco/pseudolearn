@@ -252,7 +252,7 @@ fn verify_return_point(
 ) -> Result<(), BytecodeError> {
     let is_call = matches!(
         instruction.opcode.as_name(),
-        "call" | "call.virtual" | "call.indirect"
+        "call" | "call.virtual" | "call.indirect" | "call.suspendible" | "task.spawn"
     );
     if !is_call {
         return Ok(());

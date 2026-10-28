@@ -38,8 +38,9 @@ Los límites y el paso de Para se congelan en temporales sin origen de variable 
 
 Escribir evalúa todos sus operandos antes del único out.write. Para evalúa inicial, final y paso una vez, comprueba paso, prueba inclusive por signo e incrementa con comprobación aun tras la última iteración. Los índices de celdas por referencia se evalúan y comprueban antes de llamar. La desvirtualización usa la jerarquía cerrada. Se omite value.require solo para lecturas demostradas asignadas; los enteros restantes reciben definición SSA.
 
-La implementación permanece secuencial y determinista. La exportación del corpus es una dependencia
-de datos. Las técnicas que requieren medición se aceptan solo tras conservar resultados y criterios.
+La traducción permanece determinista y conserva el orden de evaluación. La exportación del corpus es
+una dependencia de datos. Las técnicas que requieren medición se aceptan solo tras conservar
+resultados y criterios.
 El conjunto de variables acarreadas por un bucle incluye escrituras anidadas en condicionales,
 selecciones y bucles internos; así cada iteración recibe el valor SSA que dejó la anterior.
 
@@ -106,6 +107,8 @@ Los valores función se bajan como identidad numérica de código y asa de entor
 ## Colecciones, interfaces e iteración con limpieza
 
 Las interfaces se borran tras comprobar y monomorfizar; las llamadas conservan la resolución de clase y los slots virtuales existentes. Las colecciones se bajan a collection.* con hojas escalares antes de referencias; Buscar y Eliminar de diccionario construyen Opcional y conservan el valor previo antes de borrar. La salida recorre contenidos en orden, con texto delimitado y el marcador de clausura vigente. Para Cada evalúa el receptor una vez y comprueba su versión en la cabecera de cada avance, también antes de decidir el final. Los ámbitos de limpieza se representan durante compilación: cada arista de salida emite sus cuerpos en orden inverso. El retorno conserva primero el valor o las celdas de resultado; cuando hay limpiezas pendientes copia el operando con `value.require` antes de emitirlas, porque una limpieza puede reasignar la variable devuelta y los valores de una variable comparten registro. Los literales de delimitadores del formato de colecciones llevan el tramo de la expresión: sin él, las raíces léxicas no cubren la colección durante la recolección y un recolector forzado la libera antes de terminar de formatearla. Salir transporta los valores exteriores mediante parámetros SSA hacia la salida del bucle interior. No existe pila dinámica de manejadores y una trampa no atraviesa estas aristas.
+
+Los ámbitos de tarea emiten `task.scope_open`/`task.scope_join`; `Lanzar` emite `task.spawn` con el destino y sus argumentos; `Aguardar` emite `task.await`. Las uniones aparecen en la salida normal del ámbito y en las aristas de retorno o salida de bucle que cruzan ámbitos activos. Aún no se generan comprobaciones de cancelación ni aristas que ejecuten `Diferir` ante cancelación.
 
 Los tests de estas capacidades se ejecutaron en selecciones acotadas, incluida la comparación de gemelos con recolección forzada. La conformidad del corpus sigue pendiente de la revisión editorial independiente de los contratos nuevos, y la medición de tamaño excede el presupuesto de Wasm.
 

@@ -120,8 +120,8 @@ fn lower_complex_expression(
         HirExpression::TaskSpawn {
             function,
             arguments,
-        } => lower_call(arguments, function.0, span, state),
-        HirExpression::AwaitTask(value) => lower_expression_with_state(*value, state),
+        } => crate::expressions_complex::lower_task_spawn(arguments, function.0, span, state),
+        HirExpression::AwaitTask(value) => lower_task_await(*value, span, state),
         HirExpression::Builtin {
             function,
             arguments,
@@ -135,6 +135,35 @@ fn lower_complex_expression(
         HirExpression::Element { array, indices } => lower_element(*array, indices, span, state),
         _ => state.builder.next_value(),
     }
+}
+
+fn lower_task_await(
+    expression: ExpressionId,
+    span: Option<IrSpan>,
+    state: &mut ExpressionState<'_, '_>,
+) -> ValueId {
+    let task = lower_expression_with_state(expression, state);
+    let task_type = usize::try_from(expression.0)
+        .ok()
+        .and_then(|index| state.context.module.expressions.types.get(index))
+        .copied();
+    let result_type = task_type
+        .and_then(|type_id| match state.context.module.types.get(type_id) {
+            pseudolearn_semantic::Type::Task(result) => Some(result),
+            _ => None,
+        })
+        .map(|type_id| crate::types::lower_type(type_id, state.context.module))
+        .unwrap_or(pseudolearn_ir::IrType::Unit);
+    let result = state.builder.next_value();
+    state.builder.emit_with_target(
+        pseudolearn_ir::Operation::TaskAwait,
+        vec![
+            pseudolearn_ir::Operand::Value(task),
+            pseudolearn_ir::Operand::Type(result_type),
+        ],
+        (Some(result), span),
+    );
+    result
 }
 
 fn lower_logical(

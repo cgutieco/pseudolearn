@@ -71,7 +71,9 @@
   "clase": "semantica",
   "texto": "Cada operando tiene el tipo y la clase de valor que declara la firma de su instrucción.",
   "verificacion": [
-    "C4"
+    "C4",
+    "C13",
+    "C14"
   ]
 }
 ```
@@ -434,5 +436,48 @@
     }
   },
   "programa_ri": "module P es\nclass \"$environment1\" { capture0: i64, capture3: str }\nfunc @main() -> unit {\nb0() mass 0:\n  return\n}\n"
+}
+```
+
+```caso
+{
+  "id": "C13",
+  "regla": "R3",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "ir",
+  "espera": {
+    "ri": {
+      "aceptada": true
+    }
+  },
+  "programa_ri": "module P es\nfunc @main() -> unit {\nb0() mass 0:\n  %0 = task.scope_open\n  %1 = task.spawn %0, @worker() -> i64\n  %2 = task.await %1, i64\n  task.scope_join %0\n  return\n}\nfunc @worker() -> i64 {\nb0() mass 0:\n  %0 = const.i64 7\n  return %0\n}\n"
+}
+```
+
+```caso
+{
+  "id": "C14",
+  "regla": "R3",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "ir",
+  "espera": {
+    "ri": {
+      "aceptada": false,
+      "regla": "IR.WELL-FORMEDNESS#R3"
+    }
+  },
+  "programa_ri": "module P es\nfunc @main() -> unit {\nb0() mass 0:\n  %0 = const.str \"scope\"\n  %1 = task.spawn %0, @worker() -> i64\n  return\n}\nfunc @worker() -> i64 {\nb0() mass 0:\n  %0 = const.i64 7\n  return %0\n}\n"
 }
 ```

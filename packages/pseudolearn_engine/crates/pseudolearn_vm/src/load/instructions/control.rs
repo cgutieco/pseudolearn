@@ -38,9 +38,14 @@ pub(super) fn decode(
         Opcode::Switch => {
             super::switch::decode(context, loaded, (program_counter, probed), instruction)
         }
-        Opcode::Call | Opcode::CallVirtual | Opcode::CallIndirect => {
+        Opcode::Call | Opcode::CallVirtual | Opcode::CallIndirect | Opcode::CallSuspendible => {
             decode_call(context, loaded, instruction)
         }
+        Opcode::TaskScopeOpen
+        | Opcode::TaskSpawn
+        | Opcode::TaskAwait
+        | Opcode::TaskScopeJoin
+        | Opcode::TaskYieldCheck => super::task_control::decode(context, loaded, instruction),
         Opcode::Return => decode_return(instruction),
         Opcode::LoopCheckStep => decode_check_step(context, instruction),
         Opcode::TrapMissingReturn => Ok(Op::MissingReturn),
@@ -78,7 +83,7 @@ fn decode_branch(
     })
 }
 
-fn decode_call(
+pub(super) fn decode_call(
     context: &DecodeContext<'_>,
     loaded: &mut LoadedFunction,
     instruction: &Instruction,

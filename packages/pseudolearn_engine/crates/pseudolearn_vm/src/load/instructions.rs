@@ -15,6 +15,7 @@ use crate::dispatch::{DispatchKind, Op, dispatch_kind, select_fused, select_oper
 mod control;
 mod effects;
 mod switch;
+mod task_control;
 mod values;
 
 pub(super) struct DecodeContext<'module> {

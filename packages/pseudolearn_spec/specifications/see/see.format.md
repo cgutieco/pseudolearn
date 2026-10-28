@@ -40,7 +40,7 @@ justificacion: Revisión estructural manual contra el plan aprobado; la revisió
   "id": "R3",
   "fuerza": "DEBE",
   "clase": "sistema",
-  "texto": "Los bloques medicion, instruccion y cobertura son tipados. medicion declara métrica, unidad, suite, comparador, umbral, carácter provisional, plataformas y la regla de PERF.PROTOCOL que la rige. instruccion declara nombre, firma, clases de valor, semántica, trampas, efectos y observación. cobertura asocia una regla con instrucciones o con un motivo sin RI. Los casos admiten las operaciones trace, ir y cli con sus fuentes programa_ri y cli, límites del anfitrión y cancelación; las expectativas admiten la terminación cancelled, el tipo de límite alcanzado, eventos ordenados, el estado en un índice de evento, el resultado de RI, el código de salida, la salida de error y el JSON de máquina.",
+  "texto": "Los bloques medicion, instruccion y cobertura son tipados. medicion declara métrica, unidad, suite, comparador, umbral, carácter provisional, plataformas y la regla de PERF.PROTOCOL que la rige. instruccion declara nombre, firma, clases de valor, semántica, trampas, efectos y observación. cobertura asocia una regla con instrucciones o con un motivo sin RI. Los casos admiten las operaciones trace, ir y cli con sus fuentes programa_ri y cli, límites del anfitrión y cancelación; las expectativas admiten la terminación cancelled, el tipo de límite alcanzado, eventos ordenados, el estado en un índice de evento, el resultado de RI, el código de salida, la salida de error y el JSON de máquina. La observación de cinta admite efectos abandonados cuando una tarea cancelada deja un efecto pendiente.",
   "verificacion": [
     "estructural"
   ],
@@ -66,8 +66,9 @@ carga útil o cambiar la semilla antes de reproducir la cinta grabada para compr
 clave anfitrion_observado, dentro de espera, compara las llamadas recibidas por el proveedor
 (llamadas), los recursos que siguen abiertos tras el cierre final del anfitrión (recursos_abiertos),
 el estado de reproducibilidad de la cinta (estado_cinta), la secuencia ordenada de entradas de
-efecto del anfitrión con su effect_seq, capacidad, operación, desenlace e identidad de clave de
-secreto (efectos), y el código de rechazo al reproducir la cinta (reproduccion_fallo). Cuando la
+efecto del anfitrión con su effect_seq, capacidad, operación, desenlace (`committed`, `failed`, `uncertain`,
+`requested` o `abandoned`) e identidad de clave de secreto (efectos), y el código de rechazo al
+reproducir la cinta (reproduccion_fallo). Cuando la
 terminación esperada es awaiting_effect, efecto_pendiente compara effect_seq, capability_kind,
 operation, arguments_summary y source_node_id del efecto suspendido. Las llamadas de casos api
 admiten también start, advance, input, effect_result y cancel sobre recursos de ejecución. El

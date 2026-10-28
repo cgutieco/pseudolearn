@@ -5,8 +5,8 @@ mod cells;
 mod collections;
 mod control;
 mod delta;
-mod effects;
 mod effect_completion;
+mod effects;
 mod fault_context;
 mod image;
 mod initialization;
@@ -18,7 +18,10 @@ mod output;
 mod profile;
 mod registers;
 mod roots;
+mod task_context;
+mod task_creation;
 mod tasks;
+pub(super) use task_context::TaskContext;
 mod text;
 mod traps;
 
@@ -153,7 +156,7 @@ impl<'program> Machine<'program> {
     fn execute<Observer: OpcodeObserver>(&mut self, observer: &mut Observer) -> RunExit {
         loop {
             if !self.tasks.current_is_running() {
-                return RunExit::Trap(VmTrap::new("taskStateInvalid", None));
+                return RunExit::Trap(VmTrap::new(crate::evaluate::INVALID_BYTECODE, None));
             }
             let function = self.current.as_ref();
             let position = self.cursor.program_counter;
@@ -161,7 +164,15 @@ impl<'program> Machine<'program> {
             self.cursor.program_counter = position.wrapping_add(1);
             match step(self, function.operation(position, self.probed)) {
                 Ok(Flow::Continue) => {}
-                Ok(Flow::Completed(value)) => return RunExit::Completed(value),
+                Ok(Flow::Completed(value)) => match self.complete_task(value) {
+                    Ok(Some(exit)) => return exit,
+                    Ok(None) => {}
+                    Err(fault) => {
+                        let trap = self.trap_context(fault, position);
+                        self.record_failure(&trap);
+                        return RunExit::Trap(trap);
+                    }
+                },
                 Ok(Flow::Service(reason)) => return RunExit::Service(reason),
                 Ok(Flow::AwaitingInput) => return RunExit::AwaitingInput,
                 Ok(Flow::AwaitingEffect(pending)) => return RunExit::AwaitingEffect(pending),

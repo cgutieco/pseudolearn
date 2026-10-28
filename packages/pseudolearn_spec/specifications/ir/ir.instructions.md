@@ -3336,6 +3336,146 @@
 }
 ```
 
+```instruccion
+{
+  "id": "O94",
+  "nombre": "task.scope_open",
+  "firma": "task.scope_open -> i64",
+  "clases_de_valor": [
+    "escalar"
+  ],
+  "semantica": "Crea un ámbito de tareas cuyo dueño es la tarea actual y devuelve su identidad. Un ámbito vacío puede unirse sin suspender.",
+  "trampas": [
+    "taskLimitExceeded"
+  ],
+  "efectos": [
+    "tarea"
+  ],
+  "observacion": []
+}
+```
+
+```instruccion
+{
+  "id": "O95",
+  "nombre": "task.spawn",
+  "firma": "task.spawn %scope: i64, @funcion(%arg...): tipo -> i64",
+  "clases_de_valor": [
+    "escalar"
+  ],
+  "semantica": "Evalúa antes sus argumentos en el padre, crea una hija lista en el ámbito indicado sin ceder la ejecución y devuelve el asa local de la tarea.",
+  "trampas": [
+    "taskLimitExceeded",
+    "uninitializedVariableRead"
+  ],
+  "efectos": [
+    "tarea"
+  ],
+  "observacion": []
+}
+```
+
+```instruccion
+{
+  "id": "O96",
+  "nombre": "task.await",
+  "firma": "task.await %task: i64, <tipo> -> tipo",
+  "clases_de_valor": [
+    "escalar",
+    "referencia"
+  ],
+  "semantica": "Devuelve el resultado exitoso de la tarea indicada. Si aún no terminó, suspende solo a la tarea actual; una segunda espera devuelve el resultado ya conservado.",
+  "trampas": [
+    "uninitializedVariableRead",
+    "taskDeadlock"
+  ],
+  "efectos": [
+    "suspension"
+  ],
+  "observacion": []
+}
+```
+
+```instruccion
+{
+  "id": "O97",
+  "nombre": "task.scope_join",
+  "firma": "task.scope_join %scope: i64 -> unit",
+  "clases_de_valor": [],
+  "semantica": "Une todas las hijas del ámbito. Si quedan hijas vivas, suspende solo a la tarea actual hasta que terminen o el primer fallo solicite cancelación.",
+  "trampas": [
+    "taskDeadlock"
+  ],
+  "efectos": [
+    "suspension"
+  ],
+  "observacion": []
+}
+```
+
+```instruccion
+{
+  "id": "O98",
+  "nombre": "call.suspendible",
+  "firma": "call.suspendible @funcion(%arg...) -> tipo",
+  "clases_de_valor": [
+    "escalar",
+    "referencia"
+  ],
+  "semantica": "Invoca una unidad suspendible dentro de la misma tarea y conserva su continuación si la unidad suspende.",
+  "trampas": [
+    "recursionDepthExceeded",
+    "uninitializedVariableRead"
+  ],
+  "efectos": [
+    "llamada",
+    "suspension"
+  ],
+  "observacion": [
+    "call",
+    "return"
+  ]
+}
+```
+
+```instruccion
+{
+  "id": "O99",
+  "nombre": "effect.await",
+  "firma": "effect.await %cap: ref, <operacion>, <tipo>, n<nodo>, %arg..., %celda... -> i64",
+  "clases_de_valor": [
+    "escalar",
+    "referencia"
+  ],
+  "semantica": "Solicita un efecto concurrente para la tarea actual. La tarea queda suspendida mientras las demás tareas listas continúan; la máquina solo sale hacia el anfitrión cuando la agenda está ociosa.",
+  "trampas": [
+    "uninitializedVariableRead"
+  ],
+  "efectos": [
+    "suspension",
+    "llamada"
+  ],
+  "observacion": [
+    "call"
+  ]
+}
+```
+
+```instruccion
+{
+  "id": "O100",
+  "nombre": "task.yield_check",
+  "firma": "task.yield_check",
+  "clases_de_valor": [],
+  "semantica": "En una arista de retorno de bucle de una unidad suspendible, cede si la masa acumulada alcanzó el cuanto y hay otra tarea lista; de lo contrario continúa sin cambio de estado.",
+  "trampas": [],
+  "efectos": [
+    "suspension"
+  ],
+  "observacion": []
+}
+```
+
 ```cobertura
 {
   "id": "V136",
@@ -3484,7 +3624,11 @@
 {
   "id": "V153",
   "regla": "LANG.TASK.SUSPENSION#R6",
-  "sin_ri": "Aguardar conserva la expresión del operando y no requiere una instrucción nueva de la RI."
+  "instrucciones": [
+    "call.suspendible",
+    "task.await",
+    "effect.await"
+  ]
 }
 ```
 
@@ -3540,7 +3684,12 @@
 {
   "id": "V160",
   "regla": "LANG.TASK.SCOPE#R5",
-  "sin_ri": "La unión requiere la agenda de tareas y las operaciones de suspensión previstas para PG-4.07."
+  "instrucciones": [
+    "task.scope_open",
+    "task.spawn",
+    "task.await",
+    "task.scope_join"
+  ]
 }
 ```
 
@@ -3548,7 +3697,11 @@
 {
   "id": "V161",
   "regla": "LANG.TASK.SCOPE#R6",
-  "sin_ri": "La cancelación cooperativa requiere los puntos de reanudación de la agenda previstos para PG-4.07."
+  "instrucciones": [
+    "task.scope_join",
+    "effect.await",
+    "task.yield_check"
+  ]
 }
 ```
 
@@ -3564,7 +3717,9 @@
 {
   "id": "V163",
   "regla": "LANG.TASK.SCOPE#R8",
-  "sin_ri": "El abandono de un efecto requiere la agenda de efectos concurrentes prevista para PG-4.10."
+  "instrucciones": [
+    "effect.await"
+  ]
 }
 ```
 

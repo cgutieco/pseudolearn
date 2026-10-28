@@ -1,12 +1,15 @@
 use std::collections::BTreeMap;
+use std::collections::VecDeque;
 
 #[path = "task_cancellation.rs"]
 mod task_cancellation;
 #[path = "task_execution.rs"]
 mod task_execution;
+#[path = "task_scheduling.rs"]
+mod task_scheduling;
 
 pub use task_cancellation::TaskCancellation;
-pub use task_execution::TaskExecution;
+pub use task_execution::{TaskExecution, TaskWaiting};
 
 use crate::TaskState;
 
@@ -15,6 +18,25 @@ pub struct TaskId(pub u64);
 
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct TaskScopeId(pub u64);
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct TaskChannelId(pub u64);
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum TaskWake {
+    Effect(u64),
+    Channel(TaskChannelId),
+    Task(TaskId),
+    Scope(TaskScopeId),
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+enum TaskWaitReason {
+    Effect(u64),
+    Channel(TaskChannelId),
+    Task(TaskId),
+    Scope(TaskScopeId),
+}
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum TaskAgendaError {
@@ -36,7 +58,7 @@ struct TaskEntry {
     scope: Option<TaskScopeId>,
     children: Vec<TaskId>,
     state: TaskState,
-    waiting_effect: Option<u64>,
+    waiting: Option<TaskWaitReason>,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -52,6 +74,7 @@ pub struct TaskAgenda {
     tasks: BTreeMap<TaskId, TaskEntry>,
     scopes: BTreeMap<TaskScopeId, ScopeEntry>,
     abandoned_effects: Vec<(TaskId, u64)>,
+    ready: VecDeque<TaskId>,
 }
 
 impl TaskAgenda {
@@ -97,6 +120,7 @@ impl TaskAgenda {
             identifier,
             entry(Some(owner), Some(scope), TaskState::Ready),
         );
+        self.ready.push_back(identifier);
         if let Some(parent) = self.tasks.get_mut(&owner) {
             parent.children.push(identifier);
         }
@@ -171,8 +195,10 @@ impl TaskAgenda {
             return Ok(false);
         }
         entry.state = TaskState::CancelRequested;
-        if let Some(effect) = entry.waiting_effect.take() {
+        if let Some(TaskWaitReason::Effect(effect)) = entry.waiting.take() {
             self.abandoned_effects.push((task, effect));
+        } else {
+            entry.waiting = None;
         }
         Ok(true)
     }
@@ -243,6 +269,6 @@ fn entry(parent: Option<TaskId>, scope: Option<TaskScopeId>, state: TaskState) -
         scope,
         children: Vec::new(),
         state,
-        waiting_effect: None,
+        waiting: None,
     }
 }

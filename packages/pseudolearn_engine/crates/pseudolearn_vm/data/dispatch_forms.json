@@ -65,13 +65,20 @@
         "unreachable",
         "loop.check_step",
         "switch",
-        "call.indirect"
+        "call.indirect",
+        "call.suspendible",
+        "task.scope_open",
+        "task.spawn",
+        "task.await",
+        "task.scope_join",
+        "task.yield_check"
       ]
     },
     {
       "kind": "Effect",
       "names": [
-        "effect_call"
+        "effect_call",
+        "effect.await"
       ]
     }
   ],
@@ -711,6 +718,59 @@
         }
       ],
       "handler": "call"
+    },
+    {
+      "form": "TaskScopeOpen",
+      "fields": [
+        {
+          "name": "destination",
+          "type": "u16"
+        }
+      ],
+      "handler": "open_task_scope"
+    },
+    {
+      "form": "TaskSpawn",
+      "fields": [
+        {
+          "name": "scope",
+          "type": "u16"
+        },
+        {
+          "name": "site",
+          "type": "u32"
+        }
+      ],
+      "handler": "spawn_task"
+    },
+    {
+      "form": "TaskAwait",
+      "fields": [
+        {
+          "name": "task",
+          "type": "u16"
+        },
+        {
+          "name": "destination",
+          "type": "pseudolearn_bytecode::Register"
+        }
+      ],
+      "handler": "await_task"
+    },
+    {
+      "form": "TaskScopeJoin",
+      "fields": [
+        {
+          "name": "scope",
+          "type": "u16"
+        }
+      ],
+      "handler": "join_task_scope"
+    },
+    {
+      "form": "TaskYieldCheck",
+      "fields": [],
+      "handler": "yield_task"
     },
     {
       "form": "ReturnScalar",

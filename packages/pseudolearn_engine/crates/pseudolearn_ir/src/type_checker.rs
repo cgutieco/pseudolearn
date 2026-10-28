@@ -42,15 +42,29 @@ fn check_standard_instruction(
     if let Some(result) = check_texts(operation, operands, &get_type)? {
         return Ok(Some(result));
     }
-    if let Some(result) = crate::type_checker_memory::check_memory_instruction(
-        operation, operands, &get_type, module,
-    )? {
+    if let Some(result) =
+        check_memory_and_task_instructions(operation, operands, &get_type, module)?
+    {
         return Ok(Some(result));
     }
     if let Some(result) = check_call_result(operation, operands, module, &get_type)? {
         return Ok(Some(result));
     }
     check_control_and_io(operation, operands, &get_type)
+}
+
+fn check_memory_and_task_instructions(
+    operation: Operation,
+    operands: &[Operand],
+    get_type: &impl Fn(ValueId) -> Option<IrType>,
+    module: &Module,
+) -> Result<Option<IrType>, TypeError> {
+    if let Some(result) =
+        crate::type_checker_memory::check_memory_instruction(operation, operands, get_type, module)?
+    {
+        return Ok(Some(result));
+    }
+    crate::type_checker_tasks::check(operation, operands, get_type)
 }
 
 fn check_effects_and_values(

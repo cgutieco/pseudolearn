@@ -122,9 +122,10 @@ impl Definedness {
 fn queried_registers(instruction: &Instruction) -> Vec<Register> {
     match (instruction.opcode, instruction.operands.first()) {
         (Opcode::ValueRequire, Some(BytecodeOperand::Register(register))) => vec![*register],
-        (Opcode::Call, Some(BytecodeOperand::FunctionTarget { arguments, .. })) => {
-            arguments.clone()
-        }
+        (
+            Opcode::Call | Opcode::TaskSpawn | Opcode::CallSuspendible,
+            Some(BytecodeOperand::FunctionTarget { arguments, .. }),
+        ) => arguments.clone(),
         _ => Vec::new(),
     }
 }

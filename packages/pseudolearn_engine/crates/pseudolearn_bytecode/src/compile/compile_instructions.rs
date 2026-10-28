@@ -179,7 +179,11 @@ fn add_return_point(
 ) -> Result<Option<u32>, BytecodeError> {
     if !matches!(
         operation,
-        Operation::Call | Operation::CallVirtual | Operation::CallIndirect
+        Operation::Call
+            | Operation::CallVirtual
+            | Operation::CallIndirect
+            | Operation::CallSuspendible
+            | Operation::TaskSpawn
     ) {
         return Ok(None);
     }
@@ -214,7 +218,11 @@ pub(super) fn return_point_ids(
                 .ok_or(BytecodeError::UnsupportedOperation)?;
             if matches!(
                 operation,
-                Operation::Call | Operation::CallVirtual | Operation::CallIndirect
+                Operation::Call
+                    | Operation::CallVirtual
+                    | Operation::CallIndirect
+                    | Operation::CallSuspendible
+                    | Operation::TaskSpawn
             ) {
                 identifiers.insert(*instruction_id, next_identifier);
                 next_identifier = next_identifier

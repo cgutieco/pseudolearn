@@ -928,7 +928,8 @@
                           "committed",
                           "failed",
                           "uncertain",
-                          "requested"
+                          "requested",
+                          "abandoned"
                         ]
                       },
                       "secret_key_id": {
@@ -1474,7 +1475,8 @@
                             "committed",
                             "failed",
                             "uncertain",
-                            "requested"
+                            "requested",
+                            "abandoned"
                           ]
                         },
                         "secret_key_id": {
@@ -2190,7 +2192,9 @@
               "entrada",
               "azar",
               "control",
-              "llamada"
+              "llamada",
+              "tarea",
+              "suspension"
             ]
           },
           "uniqueItems": true

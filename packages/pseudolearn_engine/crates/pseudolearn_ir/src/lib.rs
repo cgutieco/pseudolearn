@@ -24,6 +24,7 @@ mod type_checker_dynamic_collections;
 pub mod type_checker_helpers;
 pub mod type_checker_intrinsics;
 mod type_checker_memory;
+mod type_checker_tasks;
 pub mod type_checker_values;
 pub mod type_parser;
 pub mod types;
@@ -50,3 +51,6 @@ pub use verifier_layouts::{ENVIRONMENT_CLASS_PREFIX, environment_fields_are_orde
 mod identifier_text;
 
 mod type_checker_effects;
+
+#[cfg(test)]
+mod type_checker_tasks_tests;

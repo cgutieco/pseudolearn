@@ -425,6 +425,36 @@
 
 ```caso
 {
+  "id": "C22",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "SubProceso Suspendible Work()\nFinSubProceso\nAlgoritmo P\nTareas\nDefinir operation Como SubProceso() <- SubProceso()\nLanzar Work();\nFinSubProceso;\nFinTareas\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Work()\nendSubroutine\nalgorithm P\ntasks\ndefine operation as subroutine() <- subroutine()\nspawn Work();\nendSubroutine;\nendTasks\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "spawnOutsideTaskScope",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
   "id": "C8",
   "regla": "R2",
   "perfiles": [
@@ -646,13 +676,13 @@
     "flexible"
   ],
   "programas": {
-    "es": "SubProceso Suspendible Wait() Como Entero\nDefinir timer Como Temporizador <- Propagar SolicitarTemporizador();\nDiferir\nEscribir \"cleanup\";\nFinDiferir\nRetornar Propagar Aguardar timer.Esperar(100);\nFinSubProceso\nSubProceso Suspendible Fail() Como Resultado<Entero, Cadena>\nRetornar Error(\"failed\");\nFinSubProceso\nAlgoritmo P\nTareas failure\nDefinir waiting Como Tarea<Entero> <- Lanzar Wait();\nDefinir failed Como Tarea<Entero> <- Lanzar Fail();\nFinTareas\nSegun failure Hacer\nNada: Escribir \"ok\";\nAlgo(problem): Escribir problem.Primero;\nFinSegun\nFinAlgoritmo\n",
-    "en": "subroutine suspendable Wait() as integer\ndefine timer as Timer <- propagate requestTimer();\ndefer\nwrite \"cleanup\";\nendDefer\nreturn propagate await timer.wait(100);\nendSubroutine\nsubroutine suspendable Fail() as result<integer, string>\nreturn failure(\"failed\");\nendSubroutine\nalgorithm P\ntasks failure\ndefine waiting as task<integer> <- spawn Wait();\ndefine failed as task<integer> <- spawn Fail();\nendTasks\nswitch failure do\nnone: write \"ok\";\nsome(problem): write problem.first;\nendSwitch\nendAlgorithm\n"
+    "es": "SubProceso Suspendible Wait() Como Entero\nDefinir timer Como Temporizador <- Propagar SolicitarTemporizador();\nDiferir\nEscribir \"cleanup-first\";\nFinDiferir\nDiferir\nEscribir \"cleanup-second\";\nFinDiferir\nRetornar Propagar Aguardar timer.Esperar(100);\nFinSubProceso\nSubProceso Suspendible Fail() Como Resultado<Entero, Cadena>\nRetornar Error(\"failed\");\nFinSubProceso\nAlgoritmo P\nTareas failure\nDefinir waiting Como Tarea<Entero> <- Lanzar Wait();\nDefinir failed Como Tarea<Entero> <- Lanzar Fail();\nFinTareas\nSegun failure Hacer\nNada: Escribir \"ok\";\nAlgo(problem): Escribir problem.Primero;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Wait() as integer\ndefine timer as Timer <- propagate requestTimer();\ndefer\nwrite \"cleanup-first\";\nendDefer\ndefer\nwrite \"cleanup-second\";\nendDefer\nreturn propagate await timer.wait(100);\nendSubroutine\nsubroutine suspendable Fail() as result<integer, string>\nreturn failure(\"failed\");\nendSubroutine\nalgorithm P\ntasks failure\ndefine waiting as task<integer> <- spawn Wait();\ndefine failed as task<integer> <- spawn Fail();\nendTasks\nswitch failure do\nnone: write \"ok\";\nsome(problem): write problem.first;\nendSwitch\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
-    "salida": "cleanup\nfailed\n",
+    "salida": "cleanup-second\ncleanup-first\nfailed\n",
     "terminacion": "completed"
   }
 }
@@ -751,9 +781,34 @@
   },
   "origen": "derivado",
   "operacion": "execute",
+  "anfitrion": {
+    "permissions": [
+      "temporizador"
+    ],
+    "requested_permissions": [
+      "temporizador"
+    ],
+    "grabar_y_reproducir": true
+  },
   "espera": {
     "salida": "",
-    "terminacion": "failed"
+    "terminacion": "failed",
+    "anfitrion_observado": {
+      "efectos": [
+        {
+          "effect_seq": 1,
+          "capability_kind": "timer",
+          "operation": "request_timer",
+          "outcome": "committed"
+        },
+        {
+          "effect_seq": 2,
+          "capability_kind": "timer",
+          "operation": "timer_wait",
+          "outcome": "abandoned"
+        }
+      ]
+    }
   }
 }
 ```
