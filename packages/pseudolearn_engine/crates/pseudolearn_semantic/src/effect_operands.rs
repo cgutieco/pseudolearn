@@ -4,6 +4,9 @@ use crate::statement_model::HirStatement;
 
 pub(crate) fn expression(expression: &HirExpression) -> Vec<ExpressionId> {
     match expression {
+        HirExpression::Channel(call) => receiver_arguments(call.receiver, &call.arguments),
+        HirExpression::TaskSpawn { arguments, .. } => arguments.clone(),
+        HirExpression::AwaitTask(task) => vec![*task],
         HirExpression::Effect {
             receiver,
             arguments,
@@ -13,12 +16,9 @@ pub(crate) fn expression(expression: &HirExpression) -> Vec<ExpressionId> {
             .copied()
             .chain(arguments.iter().copied())
             .collect(),
-        HirExpression::Collection(collection) => collection
-            .receiver
-            .iter()
-            .copied()
-            .chain(collection.arguments.iter().copied())
-            .collect(),
+        HirExpression::Collection(collection) => {
+            receiver_arguments(collection.receiver, &collection.arguments)
+        }
         HirExpression::IndirectCall { callee, arguments } => std::iter::once(*callee)
             .chain(arguments.iter().copied())
             .collect(),
@@ -99,6 +99,8 @@ pub(crate) fn statement(statement: &HirStatement) -> Vec<ExpressionId> {
 
 fn simple_statement(statement: &HirStatement) -> Vec<ExpressionId> {
     match statement {
+        HirStatement::Select(selection) => selection.channels.clone(),
+        HirStatement::Spawn(expression) => vec![*expression],
         HirStatement::Write { values, .. } => values.clone(),
         HirStatement::Read(places) => places.iter().flat_map(place).collect(),
         HirStatement::Call(value) => vec![*value],
@@ -119,4 +121,14 @@ fn place(place: &HirPlace) -> Vec<ExpressionId> {
             .collect(),
         HirPlace::Local(_) | HirPlace::WholeArray(_) | HirPlace::RecordField { .. } => Vec::new(),
     }
+}
+
+fn receiver_arguments(
+    receiver: Option<ExpressionId>,
+    arguments: &[ExpressionId],
+) -> Vec<ExpressionId> {
+    receiver
+        .into_iter()
+        .chain(arguments.iter().copied())
+        .collect()
 }

@@ -319,12 +319,13 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "D1 declara las dieciocho funciones incorporadas, lexemas canónicos, alias bilingües y firmas, y D2 (capabilityLibrary) declara el constructor Bytes(), sus consultas posicionales y UTF-8, las solicitudes de capacidades explícitas y los métodos de capacidad con sus receptores, parámetros, retorno en Resultado<T, ErrorES> y clasificación de efecto. Sus nombres no son palabras reservadas; un subprograma homónimo oculta la función libre. La cantidad y los tipos de argumentos se comprueban estáticamente antes de la ejecución.",
+  "texto": "D1 declara las dieciocho funciones incorporadas, lexemas canónicos, alias bilingües y firmas, y D2 (capabilityLibrary) declara el constructor Bytes(), sus consultas posicionales y UTF-8, las solicitudes de capacidades explícitas y los métodos de capacidad con sus receptores, parámetros, retorno en Resultado<T, ErrorES> y clasificación de efecto. Sus nombres no son palabras reservadas; un subprograma homónimo oculta la función libre. La cantidad y los tipos de argumentos se comprueban estáticamente antes de la ejecución. D3 declara el constructor contextual y Enviar, Recibir y Cerrar con sus tipos y necesidad de Aguardar; no son operaciones del anfitrión.",
   "verificacion": [
     "C1",
     "C2",
     "C3",
-    "C4"
+    "C4",
+    "C5"
   ]
 }
 ```
@@ -698,3 +699,36 @@ incertidumbre de una operación con potencial de escritura.
 Los parámetros text admiten Cadena o Caracter; un carácter se convierte sin pérdida a una cadena
 de un punto de código antes de emitir la solicitud. Esto conserva rutas de un solo carácter sin
 alterar las reglas generales de asignación entre ambos tipos.
+
+```definicion
+{
+  "id": "D3",
+  "termino": "channelLibrary",
+  "texto": "Canal(n) con contexto Canal<T> crea capacidad positiva explícita, como máximo 65 536 por omisión. Aguardar canal.Enviar(T) retorna Logico; Aguardar canal.Recibir() retorna Opcional<T>; canal.Cerrar() no retorna valor, no suspende y es idempotente. Son operaciones internas del runtime, nunca del anfitrión."
+}
+```
+
+```caso
+{
+  "id": "C5",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir stream Como Canal<Entero> <- Canal(1);\nstream.Cerrar();\nElegir\nRecibir first Desde stream:\nRecibir second Desde stream:\nFinElegir\nFinAlgoritmo\n",
+    "en": "Algoritmo P\ndefine stream as channel<integer> <- channel(1);\nstream.close();\nselect\nreceive first from stream:\nreceive second from stream:\nendSelect\nFinAlgoritmo\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "",
+    "terminacion": "completed"
+  }
+}
+```

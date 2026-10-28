@@ -174,3 +174,21 @@ mod effect_checker;
 mod effect_types;
 mod effect_vectors;
 pub use pseudolearn_abi::{EFFECT_OPERATIONS, EffectOperation, EffectValueKind, effect_operation};
+
+mod task_failure_types;
+
+#[cfg(test)]
+mod task_failure_types_tests;
+
+mod channel_checker;
+pub mod channel_model;
+mod channel_types;
+
+mod select_checker;
+
+#[cfg(test)]
+mod channel_types_tests;
+#[cfg(test)]
+mod select_checker_tests;
+
+mod task_bindings;

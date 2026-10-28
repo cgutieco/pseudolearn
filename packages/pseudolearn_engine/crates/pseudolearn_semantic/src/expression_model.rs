@@ -40,7 +40,9 @@ pub enum UnaryOperator {
 
 #[derive(Clone, Debug, PartialEq)]
 pub enum HirExpression {
+    Channel(crate::channel_model::ChannelExpression),
     Effect {
+        awaited: bool,
         operation: u32,
         receiver: Option<ExpressionId>,
         arguments: Vec<ExpressionId>,

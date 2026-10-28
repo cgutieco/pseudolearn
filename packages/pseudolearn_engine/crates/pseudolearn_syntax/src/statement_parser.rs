@@ -19,7 +19,10 @@ pub(crate) fn parse_case_body(state: &mut ParserState<'_>) -> usize {
     })
 }
 
-fn body_until(state: &mut ParserState<'_>, boundary: fn(&mut ParserState<'_>) -> bool) -> usize {
+pub(crate) fn body_until(
+    state: &mut ParserState<'_>,
+    boundary: fn(&mut ParserState<'_>) -> bool,
+) -> usize {
     let start = state.token();
     let marker = state.nodes.len();
     loop {
@@ -56,7 +59,7 @@ fn parse_statement(state: &mut ParserState<'_>) -> Result<usize, ()> {
             | KeywordKind::ForKeyword
             | KeywordKind::SwitchKeyword,
         ) => return crate::control_statement_parser::compound(state),
-        TokenKind::Keyword(KeywordKind::TasksKeyword) => {
+        TokenKind::Keyword(KeywordKind::TasksKeyword | KeywordKind::SelectKeyword) => {
             return crate::control_statement_parser::compound(state);
         }
         TokenKind::Keyword(KeywordKind::Declare) => crate::declaration_parser::declaration(state),
@@ -221,6 +224,7 @@ pub(crate) fn boundary(kind: TokenKind) -> bool {
                     | KeywordKind::EndAlgorithm
                     | KeywordKind::EndSubroutine
                     | KeywordKind::EndTasks
+                    | KeywordKind::EndSelect
                     | KeywordKind::EndClass
                     | KeywordKind::EndMethod
             )

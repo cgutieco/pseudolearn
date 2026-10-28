@@ -36,3 +36,5 @@ pub use vocabulary::boolean_words;
 pub use wire::{decode_plev, encode_plev};
 
 pub(crate) use trap::Fault;
+
+pub use model::TaskBlockedLocation;

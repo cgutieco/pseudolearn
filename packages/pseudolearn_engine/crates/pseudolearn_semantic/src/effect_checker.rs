@@ -28,6 +28,7 @@ pub(crate) fn check(
     crate::call_checker::check_result(session, result, (node, purpose));
     Some(session.emit(
         crate::HirExpression::Effect {
+            awaited: session.awaited_calls.contains(&node),
             operation: operation.id,
             receiver,
             arguments,

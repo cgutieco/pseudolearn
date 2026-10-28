@@ -8,6 +8,7 @@ pub(crate) fn values(
 ) -> Option<Vec<ValueId>> {
     let index = usize::try_from(expression.0).ok()?;
     let HirExpression::Effect {
+        awaited,
         operation,
         receiver,
         arguments,
@@ -20,9 +21,7 @@ pub(crate) fn values(
         .iter()
         .find(|candidate| candidate.id == operation)?;
     let span = expression_span(index, state);
-    let capability = receiver
-        .map(|receiver| lower_expression_with_state(receiver, state))
-        .unwrap_or_else(|| absent(span, state));
+    let capability = capability(receiver, span, state);
     let mut arguments: Vec<_> = arguments
         .into_iter()
         .map(|argument| lower_expression_with_state(argument, state))
@@ -31,9 +30,12 @@ pub(crate) fn values(
     let cells = result_cells(descriptor.fallible, kind, span, state);
     let result_type = result_type(expression, kind, state);
     arguments.extend(cells.iter().copied());
+    if awaited {
+        crate::suspension_points::prepare(state, span);
+    }
     crate::effect_calls::emit_effect_call(
         (capability, descriptor.identity, result_type, source_node_id),
-        arguments,
+        (arguments, awaited),
         span,
         state,
     );
@@ -93,4 +95,14 @@ fn absent(span: Option<IrSpan>, state: &mut ExpressionState<'_, '_>) -> ValueId 
         (Some(value), span),
     );
     value
+}
+
+fn capability(
+    receiver: Option<ExpressionId>,
+    span: Option<IrSpan>,
+    state: &mut ExpressionState<'_, '_>,
+) -> ValueId {
+    receiver
+        .map(|receiver| lower_expression_with_state(receiver, state))
+        .unwrap_or_else(|| absent(span, state))
 }

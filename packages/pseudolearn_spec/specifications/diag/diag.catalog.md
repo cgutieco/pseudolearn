@@ -4053,6 +4053,146 @@
       "clase": "semantic",
       "tipos_argumentos": {}
     },
+    "taskScopeErrorTypeMismatch": {
+      "mensajes": {
+        "es": "Las tareas falibles del ámbito requieren el mismo tipo exacto de error",
+        "en": "Fallible tasks in a scope require the same exact error type"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "taskErrorNotTransferable": {
+      "mensajes": {
+        "es": "El error de tarea debe ser transferible",
+        "en": "A task error must be transferable"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "taskScopeFailureUnbound": {
+      "mensajes": {
+        "es": "El ámbito falible necesita un vínculo para su fallo",
+        "en": "A fallible scope needs a failure binding"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "taskScopeFailureUnused": {
+      "mensajes": {
+        "es": "El vínculo del ámbito requiere tareas falibles y debe consumirse",
+        "en": "A scope failure binding requires fallible tasks and must be consumed"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "channelElementNotTransferable": {
+      "mensajes": {
+        "es": "El elemento del canal debe ser transferible",
+        "en": "A channel element must be transferable"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "channelOperationWithoutAwait": {
+      "mensajes": {
+        "es": "Enviar y Recibir requieren Aguardar",
+        "en": "Send and receive require await"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "pureFunctionTaskOperation": {
+      "mensajes": {
+        "es": "Una función pura no puede operar tareas ni canales",
+        "en": "A pure function cannot operate tasks or channels"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "selectNeedsTwoBranches": {
+      "mensajes": {
+        "es": "Elegir requiere al menos dos ramas de recepción",
+        "en": "Select requires at least two receive branches"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "channelCapacityExceeded": {
+      "mensajes": {
+        "es": "La capacidad del canal supera el máximo configurado",
+        "en": "Channel capacity exceeds the configured maximum"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "runtime",
+      "tipos_argumentos": {}
+    },
+    "channelCapacityInvalid": {
+      "mensajes": {
+        "es": "La capacidad del canal debe ser positiva",
+        "en": "Channel capacity must be positive"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
     "taskHandleEscape": {
       "mensajes": {
         "es": "El asa de tarea solo se puede usar con Aguardar en su ámbito",

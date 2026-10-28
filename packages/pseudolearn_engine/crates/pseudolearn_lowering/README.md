@@ -118,3 +118,19 @@ a derecha, seguidos por celdas de resultado. Resultado usa tres hojas canónicas
 palabra escalar y referencia; ErrorES superpone código textual e incertidumbre. Las operaciones
 puras de Bytes usan una celda del tipo de resultado. El verificador valida aridad, bancos y celdas
 antes del bytecode; ninguna respuesta de host se convierte silenciosamente en cero.
+
+## Resultados y suspensión cooperativa de tareas
+
+`task_wrappers` genera una entrada interna por destino de lanzamiento. Invoca la unidad con celdas
+locales de resultado y emite `task.outcome` con las hojas exitosas o las del error. Así una hija no
+recibe celdas locales prestadas del padre y los retornos compuestos mantienen la misma representación
+que las llamadas ordinarias. Las operaciones generadas conservan el tramo de la cabecera de la unidad.
+`task_values` concentra las cargas tipadas del transporte de resultados, compartidas con recepción
+y con el agregado del ámbito. `task_scope_result` enlaza el opcional después de la unión.
+
+`suspension_points` registra continuaciones de limpieza para los marcos y de salida para el cuerpo
+del ámbito antes de las esperas. Cada continuación usa los valores y limpiezas activos en ese punto;
+no ejecuta sentencias posteriores del cuerpo cancelado. Los canales bajan por `channel_operations`,
+y `select_dispatch` reutiliza la unión y las decisiones de `Segun`. La inicialización implícita de
+una rama no emite una sentencia adicional. Las expresiones de canal se evalúan una sola vez antes
+de registrar la elección.

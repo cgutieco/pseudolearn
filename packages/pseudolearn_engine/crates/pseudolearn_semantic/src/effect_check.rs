@@ -26,7 +26,7 @@ pub(crate) fn check(session: &mut AnalysisSession<'_>) {
     let reasons = propagate_effects(&direct_effects, &call_edges);
     let mut reports = Vec::new();
     for (index, function) in session.module.functions.iter().enumerate() {
-        if !is_pure_function(session, function) {
+        if !is_pure_function(session, function) || specific_task_error(session, function) {
             continue;
         }
         if direct_effects.contains(&index) {
@@ -206,23 +206,20 @@ fn compound_effects(
         | HirStatement::Repeat { body, .. }
         | HirStatement::For { body, .. }
         | HirStatement::ForEach { body, .. }
+        | HirStatement::TaskScope { body, .. }
         | HirStatement::Defer(body) => block_has_effects(session, body, calls),
+        HirStatement::Select(selection) => {
+            selection.cases.iter().for_each(|branch| {
+                block_has_effects(session, &branch.body, calls);
+            });
+            true
+        }
         HirStatement::Switch { cases, default, .. } => {
-            let cases_effect = cases
-                .iter()
-                .filter(|branch| block_has_effects(session, &branch.body, calls))
-                .count()
-                > 0;
-            cases_effect | block_has_effects(session, default, calls)
+            case_effects(session, cases, calls) | block_has_effects(session, default, calls)
         }
         HirStatement::VariantMatch(branch) => {
-            let effects = branch
-                .cases
-                .iter()
-                .filter(|case| block_has_effects(session, &case.body, calls))
-                .count()
-                > 0;
-            effects | block_has_effects(session, &branch.default, calls)
+            case_effects(session, &branch.cases, calls)
+                | block_has_effects(session, &branch.default, calls)
         }
         _ => false,
     }
@@ -248,4 +245,25 @@ fn propagate_effects(
         }
     }
     reasons
+}
+
+fn specific_task_error(session: &AnalysisSession<'_>, function: &HirFunction) -> bool {
+    session.diagnostics.iter().any(|diagnostic| {
+        diagnostic.code == DiagnosticCode::PureFunctionTaskOperation
+            && diagnostic.span.source_id == function.span.source_id
+            && diagnostic.span.start >= function.span.start
+            && diagnostic.span.ending <= function.span.ending
+    })
+}
+
+fn case_effects(
+    session: &AnalysisSession<'_>,
+    cases: &[crate::statement_model::HirCase],
+    calls: &mut BTreeSet<usize>,
+) -> bool {
+    cases
+        .iter()
+        .filter(|branch| block_has_effects(session, &branch.body, calls))
+        .count()
+        > 0
 }

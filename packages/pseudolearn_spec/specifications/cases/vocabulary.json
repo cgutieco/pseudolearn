@@ -243,6 +243,10 @@
     "en": "endRecord",
     "es": "Fin Registro"
   },
+  "endSelect": {
+    "en": "endSelect",
+    "es": "FinElegir"
+  },
   "endSubroutine": {
     "en": "endSubroutine",
     "es": "FinSubProceso"
@@ -642,6 +646,10 @@
   "rightParenthesis": {
     "en": ")",
     "es": ")"
+  },
+  "selectKeyword": {
+    "en": "select",
+    "es": "Elegir"
   },
   "semicolon": {
     "en": ";",

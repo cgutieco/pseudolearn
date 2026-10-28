@@ -27,6 +27,7 @@ pub(crate) fn collect(
                 .iter()
                 .any(|candidate| candidate.id == *operation && candidate.effect);
         }
+        effects |= matches!(expression, HirExpression::Channel(call) if call.action != crate::channel_model::ChannelAction::New);
         pending.extend(crate::effect_operands::expression(expression));
         collect_target(session, expression, calls, &mut pending);
     }

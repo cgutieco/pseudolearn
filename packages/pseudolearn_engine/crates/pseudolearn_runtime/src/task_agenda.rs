@@ -8,8 +8,14 @@ mod task_execution;
 #[path = "task_scheduling.rs"]
 mod task_scheduling;
 
-pub use task_cancellation::TaskCancellation;
+pub use task_cancellation::{
+    TaskCancellation, interrupt_owner, scope_children, scope_owner, task_scope, task_wait,
+};
 pub use task_execution::{TaskExecution, TaskWaiting};
+
+#[path = "task_deadlock.rs"]
+mod task_deadlock;
+pub use task_deadlock::{TaskBlock, TaskProgress, task_progress};
 
 use crate::TaskState;
 
@@ -19,7 +25,7 @@ pub struct TaskId(pub u64);
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct TaskScopeId(pub u64);
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
 pub struct TaskChannelId(pub u64);
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -31,7 +37,7 @@ pub enum TaskWake {
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-enum TaskWaitReason {
+pub enum TaskWaitReason {
     Effect(u64),
     Channel(TaskChannelId),
     Task(TaskId),
@@ -242,6 +248,7 @@ impl TaskAgenda {
 
     fn fail_task(&mut self, task: TaskId) -> Result<Vec<TaskId>, TaskAgendaError> {
         self.transition(task, TaskState::Running, TaskState::Failed)?;
+        self.wake_completed_dependents(task)?;
         let scope = self.tasks.get(&task).and_then(|entry| entry.scope);
         let Some(scope) = scope else {
             return Ok(Vec::new());

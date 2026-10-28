@@ -15,6 +15,7 @@ pub(crate) fn compound(state: &mut ParserState<'_>) -> Result<usize, ()> {
         TokenKind::Keyword(KeywordKind::Repeat) => repeat_loop(state),
         TokenKind::Keyword(KeywordKind::ForKeyword) => for_loop(state),
         TokenKind::Keyword(KeywordKind::TasksKeyword) => crate::task_scope_parser::parse(state),
+        TokenKind::Keyword(KeywordKind::SelectKeyword) => crate::select_parser::parse(state),
         _ => crate::switch_parser::switch(state),
     };
     state.leave();

@@ -37,6 +37,7 @@ pub(crate) enum Shape {
     Dictionary,
     Bytes,
     Capability,
+    Channel,
 }
 
 pub(crate) struct AllocationRequest {

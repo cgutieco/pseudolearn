@@ -30,7 +30,7 @@ Núcleo estático y determinista de PseudoLearn, con arquitectura Remanso. Sirve
 10. **La máquina nocional conserva su exactitud.** Mapas estáticos separan raíces, definición y variables
     observables del contenido accidental de los registros.
 
-La VM ejecuta cooperativamente la tarea raíz y sus hijas: conserva bancos y marcos separados por tarea, comparte montón y salida, y usa una cola FIFO para reanudar tareas listas. `Tareas`, `Lanzar`, `Aguardar` y la unión normal al salir del ámbito ya llegan a la ejecución. Las cancelaciones cooperativas, el agregado de errores de hijas, la espera por efecto dentro de una tarea y los canales aún requieren integración; AOT todavía no ejecuta las operaciones nuevas.
+La VM ejecuta cooperativamente la tarea raíz y sus hijas: conserva bancos y marcos separados por tarea, comparte montón y salida, y usa una cola FIFO para reanudar tareas listas. `Tareas`, `Lanzar`, `Aguardar` y la unión normal al salir del ámbito ya llegan a la ejecución. La cancelación cooperativa, el agregado de errores de hijas, las esperas por canal y la entrega de efectos pendientes ya se conectan con la agenda. Los canales acotados y Elegir comparten colas FIFO y decisiones por orden textual. La persistencia histórica completa y el registro concurrente de efectos abandonados siguen pendientes; AOT todavía no ejecuta las operaciones nuevas.
 Fuera de alcance técnico: motor durante la especificación, dependencias de UI, Cargo raíz y unsafe fuera de puentes generados y de `pseudolearn_aot_rt`.
 
 Codegen: Cranelift permanece como backend release y cumple `PERF.AOT.LEVEL#R1` a `#R3` (≤ 1,70 frente a V1F); trampas inmediatas con bloque frío compartido con identidad por sitio; sin transferencia AOT → VM porque `aot` está exento de observación. El nivel optimizado (≤ 1,30 frente a V1F-S) se retiró del contrato: ningún backend lo implementa y no hay fase que lo pida.
@@ -499,3 +499,18 @@ rr inspira grabar solo el no determinismo y reproducir; Python Tutor y Sorva ins
 El corpus API define recursos y codificaciones; se rechaza un objeto por evento en FFI y copiar todo el estado en cada paso.
 
 SEE.ADAPTER.PROTOCOL define JSONL y negociación. Se rechaza importar internos del motor o declarar observe sin soportar eventos.
+
+## Decisiones de tareas y comprobación dirigida
+
+La política de primer fallo usa orden de terminación, no identidad. Las entradas internas de lanzamiento
+separan las celdas de resultado de padre e hija; la cancelación usa continuaciones de limpieza
+registradas antes de suspender. Canales y selección permanecen como datos puros del runtime compartido,
+con reserva contable y raíces explícitas en la VM. Se conserva como referencia conceptual el ámbito
+estructurado y el canal acotado; se rechazan tareas desprendidas, selección aleatoria y envío por
+selección. La segunda tarea que aún no ejecutó su retorno al solicitar cancelación termina cancelada;
+los asociados solo contienen errores terminales ya registrados antes de aplicar esa cancelación.
+
+La comprobación ligera comprende los filtros de runtime y semantic documentados en sus README y
+los archivos `task_failure_tests`, `task_channel_tests`, `task_deadlock_tests` y `task_lowering_tests`
+de API, además de Clippy, formato, reglas mecánicas e integridad y exportación del corpus. La
+conformidad de engine y aot, ejecución nativa, campañas y recolección forzada se verifican por separado.

@@ -21,7 +21,7 @@ fn lowers_empty_and_nested_task_scopes() {
         failure: None,
         body: Vec::new(),
     });
-    module.statements.spans.resize(2, Span::default());
+    module.statements.spans.resize(2, Span::new(0, 1));
     module.functions.push(function(
         FunctionKind::Main,
         "main",
@@ -29,7 +29,7 @@ fn lowers_empty_and_nested_task_scopes() {
         vec![StatementId(0)],
     ));
 
-    let source = SourceText::new(String::new());
+    let source = SourceText::new("x".to_owned());
     let lowered = lower_module(&module, &source);
     assert!(lowered.is_ok());
     if let Ok(lowered) = lowered {
@@ -86,8 +86,8 @@ fn function(
         parameters: Vec::new(),
         result,
         body,
-        span: Span::default(),
-        closing_span: Span::default(),
+        span: Span::new(0, 1),
+        closing_span: Span::new(0, 1),
         syntax: 0,
         private: false,
         suspendible: false,

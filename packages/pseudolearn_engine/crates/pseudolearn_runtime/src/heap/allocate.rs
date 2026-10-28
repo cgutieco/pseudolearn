@@ -223,6 +223,7 @@ fn header_shape(request: &AllocationRequest) -> Result<(u32, u32), MemoryError> 
         Shape::Auxiliary => Ok((u32::MAX, 0)),
         Shape::Vector => Ok((pseudolearn_abi::vector_layout::VECTOR_SHAPE_TAG, 0)),
         Shape::Dictionary => Ok((pseudolearn_abi::dictionary_layout::DICTIONARY_SHAPE_TAG, 0)),
+        Shape::Channel => Ok((pseudolearn_abi::channel_layout::CHANNEL_SHAPE_TAG, 0)),
         Shape::Bytes => Ok((pseudolearn_abi::bytes_layout::BYTES_SHAPE_TAG, 0)),
         Shape::Capability => Ok((pseudolearn_abi::capability_layout::CAPABILITY_SHAPE_TAG, 0)),
     }

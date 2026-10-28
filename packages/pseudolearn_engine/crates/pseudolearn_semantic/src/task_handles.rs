@@ -27,7 +27,8 @@ pub(crate) fn spawn(
     if suspendible_target(session, node).is_none() {
         return crate::expression_checker::invalid(session, node);
     }
-    let call = checked_call(session, node, purpose);
+    let call_purpose = spawn_call_purpose(session, node, purpose);
+    let call = checked_call(session, node, call_purpose);
     let Some(HirExpression::Call {
         function,
         arguments,
@@ -37,6 +38,7 @@ pub(crate) fn spawn(
     };
     check_arguments(session, function, &arguments, node);
     let result = session.expression_type(call);
+    crate::task_failure_types::spawned(session, &result, node);
     let payload = task_payload(session, result);
     let kind = session.module.types.intern(Type::Task(payload));
     session.emit(
@@ -141,31 +143,12 @@ fn check_arguments(
 }
 
 fn transferable(session: &AnalysisSession<'_>, expression: ExpressionId) -> bool {
-    match session.expression_type(expression) {
-        Type::Integer
-        | Type::Real
-        | Type::Boolean
-        | Type::Character
-        | Type::String
-        | Type::Enum(_) => true,
-        Type::Record(record) => usize::try_from(record.0)
-            .ok()
-            .and_then(|index| session.module.records.get(index))
-            .is_some_and(|record| {
-                record.leaf_types.iter().all(|leaf| {
-                    matches!(
-                        session.module.types.get(*leaf),
-                        Type::Integer
-                            | Type::Real
-                            | Type::Boolean
-                            | Type::Character
-                            | Type::String
-                            | Type::Enum(_)
-                    )
-                })
-            }),
-        _ => false,
-    }
+    let kind = session
+        .module
+        .expressions
+        .types
+        .get(usize::try_from(expression.0).unwrap_or(usize::MAX));
+    kind.is_some_and(|kind| crate::task_failure_types::transferable(session, *kind))
 }
 
 fn task_payload(session: &mut AnalysisSession<'_>, result: Type) -> crate::identities::TypeId {
@@ -177,4 +160,26 @@ fn task_payload(session: &mut AnalysisSession<'_>, result: Type) -> crate::ident
         return *payload;
     }
     session.module.types.intern(result)
+}
+
+fn spawn_call_purpose(
+    session: &AnalysisSession<'_>,
+    node: usize,
+    purpose: ExpressionPurpose,
+) -> ExpressionPurpose {
+    target(session, node)
+        .and_then(|function| {
+            session
+                .module
+                .functions
+                .get(usize::try_from(function.0).ok()?)
+        })
+        .map(|function| {
+            if session.module.types.get(function.result) == Type::Unit {
+                purpose
+            } else {
+                ExpressionPurpose::Value
+            }
+        })
+        .unwrap_or(purpose)
 }

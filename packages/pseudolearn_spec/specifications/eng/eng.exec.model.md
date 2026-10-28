@@ -39,7 +39,7 @@
 {
   "id": "D1",
   "termino": "terminaciones",
-  "texto": "completed: el algoritmo principal alcanzó su cierre. failed: un diagnóstico de ejecución detuvo el programa. awaiting_input: Leer necesita un valor que el anfitrión no entregó. awaiting_effect: una operación de capacidad requiere un efecto externo que el anfitrión debe resolver mediante effect_result. cancelled: el anfitrión canceló la ejecución. limit_reached: se agotó un presupuesto del anfitrión."
+  "texto": "completed: el algoritmo principal alcanzó su cierre. failed: un diagnóstico de ejecución detuvo el programa. awaiting_input: Leer necesita un valor que el anfitrión no entregó. awaiting_effect: una operación de capacidad requiere un efecto externo que el anfitrión debe resolver mediante effect_result. cancelled: el anfitrión canceló la ejecución. limit_reached: se agotó un presupuesto del anfitrión. El bloqueo de tareas sin efecto pendiente no abandonado es failed con taskDeadlock."
 }
 ```
 
@@ -369,10 +369,11 @@ El campo cancelacion de un caso indica la entrada a sentencia, contada desde uno
   "id": "R5",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La terminación awaiting_effect representa una suspensión en la que el programa espera la resolución asíncrona o desacoplada de un efecto externo por parte del anfitrión. Expone effect_seq, capability_kind, operation, arguments_summary y source_node_id. Es estrictamente distinta de awaiting_input y solo puede ser reanudada mediante la operación effect_result. Si el anfitrión se desconecta o cancela la ejecución mientras espera en awaiting_effect, la sesión termina con cancelled sin esperar effect_result ni ejecutar nuevos efectos en Diferir, sella la cinta como Incomplete, deja el efecto pendiente en estado requested y rechaza cualquier effect_result posterior como error de uso. La reproducción desde cinta y la búsqueda histórica resuelven todo efecto desde la cinta y nunca producen awaiting_effect.",
+  "texto": "La terminación awaiting_effect representa una suspensión en la que el programa espera la resolución asíncrona o desacoplada de un efecto externo por parte del anfitrión. Expone effect_seq, capability_kind, operation, arguments_summary y source_node_id. Es estrictamente distinta de awaiting_input y solo puede ser reanudada mediante la operación effect_result. Si el anfitrión se desconecta o cancela la ejecución mientras espera en awaiting_effect, la sesión termina con cancelled sin esperar effect_result ni ejecutar nuevos efectos en Diferir, sella la cinta como Incomplete, deja el efecto pendiente en estado requested y rechaza cualquier effect_result posterior como error de uso. La reproducción desde cinta y la búsqueda histórica resuelven todo efecto desde la cinta y nunca producen awaiting_effect. La ausencia de tareas ejecutables solo es awaiting_effect si quedan efectos no abandonados capaces de reanudar una tarea viva; en otro caso es failed con taskDeadlock y sitios de suspensión relacionados por identidad de tarea.",
   "verificacion": [
     "C11",
-    "C14"
+    "C14",
+    "C15"
   ]
 }
 ```
@@ -713,6 +714,34 @@ El campo cancelacion de un caso indica la entrada a sentencia, contada desde uno
           }
         }
       ]
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C15",
+  "regla": "R5",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir stream Como Canal<Entero> <- Canal(1);\nSegun Aguardar stream.Recibir() Hacer\nNada: Escribir 0;\nAlgo(value): Escribir value;\nFinSegun\nFinAlgoritmo\n",
+    "en": "Algoritmo P\ndefine stream as channel<integer> <- channel(1);\nswitch await stream.receive() do\nnone: write 0;\nsome(value): write value;\nendSwitch\nFinAlgoritmo\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "",
+    "terminacion": "failed",
+    "fallo": {
+      "codigo": "taskDeadlock"
     }
   }
 }

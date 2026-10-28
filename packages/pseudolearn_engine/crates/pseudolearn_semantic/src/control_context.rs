@@ -12,6 +12,7 @@ pub(crate) struct ControlContext {
     pub loops: u32,
     pub cleaning: bool,
     pub task_scopes: u32,
+    pub task_errors: Vec<Vec<crate::identities::TypeId>>,
     pub awaiting_task_handle: bool,
     pub deferred: Vec<Vec<DeferredEffects>>,
 }

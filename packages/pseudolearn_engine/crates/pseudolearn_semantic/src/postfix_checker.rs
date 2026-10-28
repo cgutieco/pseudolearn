@@ -86,6 +86,9 @@ fn member(
     let children = session.children(node);
     let target = children.first().copied().unwrap_or(node);
     let receiver = crate::expression_checker::check(session, target);
+    if let Some(value) = crate::channel_checker::member(session, node, receiver) {
+        return value;
+    }
     if let Some(value) = crate::effect_checker::check(session, node, Some(receiver), purpose) {
         return value;
     }

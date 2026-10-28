@@ -334,14 +334,15 @@
   "id": "R4",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Una sentencia compuesta produce statement_entered antes de evaluar su condición o selector y statement_exited después de terminar. Cada evaluación de la condición de Si, Mientras, Repetir o de la prueba de Para produce decision con rama afirmativa si la condición es verdadera o la iteración continúa y negativa en caso contrario. Segun produce una decision con rama caso e indice, otro si ejecuta De Otro Modo o ninguna si no ejecuta ninguna rama.",
+  "texto": "Una sentencia compuesta produce statement_entered antes de evaluar su condición o selector y statement_exited después de terminar. Cada evaluación de la condición de Si, Mientras, Repetir o de la prueba de Para produce decision con rama afirmativa si la condición es verdadera o la iteración continúa y negativa en caso contrario. Segun produce una decision con rama caso e indice, otro si ejecuta De Otro Modo o ninguna si no ejecuta ninguna rama. Elegir emite una sola decisión caso con el índice textual de la recepción ganadora; los vínculos implícitos de las ramas no añaden sentencias observables.",
   "verificacion": [
     "C5",
     "C6",
     "C7",
     "C8",
     "C9",
-    "C10"
+    "C10",
+    "C15"
   ]
 }
 ```
@@ -892,5 +893,64 @@
   },
   "programa": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n",
   "perfil_base": "es"
+}
+```
+
+```caso
+{
+  "id": "C15",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir stream Como Canal<Entero> <- Canal(1);\nstream.Cerrar();\nElegir\nRecibir first Desde stream:\nRecibir second Desde stream:\nFinElegir\nFinAlgoritmo\n",
+    "en": "Algoritmo P\ndefine stream as channel<integer> <- channel(1);\nstream.close();\nselect\nreceive first from stream:\nreceive second from stream:\nendSelect\nFinAlgoritmo\n"
+  },
+  "origen": "derivado",
+  "operacion": "trace",
+  "espera": {
+    "salida": "",
+    "terminacion": "completed",
+    "eventos": [
+      {
+        "clase": "statement_entered",
+        "linea": 2
+      },
+      {
+        "clase": "statement_exited",
+        "linea": 2
+      },
+      {
+        "clase": "statement_entered",
+        "linea": 3
+      },
+      {
+        "clase": "statement_exited",
+        "linea": 3
+      },
+      {
+        "clase": "statement_entered",
+        "linea": 4
+      },
+      {
+        "clase": "decision",
+        "linea": 4,
+        "datos": {
+          "rama": "caso",
+          "indice": 0
+        }
+      },
+      {
+        "clase": "statement_exited",
+        "linea": 4
+      }
+    ]
+  }
 }
 ```

@@ -2363,6 +2363,86 @@
               "version": "1.0.0",
               "element": "D1"
             }
+          },
+          {
+            "identity": "selectKeyword",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          },
+          {
+            "identity": "endSelect",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          },
+          {
+            "identity": "taskFailureType",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          },
+          {
+            "identity": "taskFirstError",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          },
+          {
+            "identity": "taskAssociatedErrors",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          },
+          {
+            "identity": "taskCancelledCount",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          },
+          {
+            "identity": "channelType",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          },
+          {
+            "identity": "channelSend",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          },
+          {
+            "identity": "channelReceive",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          },
+          {
+            "identity": "receiveSource",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
           }
         ],
         "availability": {
@@ -2411,6 +2491,46 @@
               {
                 "identity": "taskType",
                 "text": "Declara el tipo local de un asa de tarea que solo se espera con Aguardar."
+              },
+              {
+                "identity": "taskFailureType",
+                "text": "Fallo de tareas agregado con primer error, asociados y cancelaciones."
+              },
+              {
+                "identity": "taskFirstError",
+                "text": "Primer error por orden de terminación."
+              },
+              {
+                "identity": "taskAssociatedErrors",
+                "text": "Errores posteriores conservados por orden de terminación."
+              },
+              {
+                "identity": "taskCancelledCount",
+                "text": "Cantidad de hijas canceladas."
+              },
+              {
+                "identity": "channelType",
+                "text": "Canal de capacidad positiva explícita y elementos transferibles."
+              },
+              {
+                "identity": "channelSend",
+                "text": "Envía con contrapresión y requiere Aguardar."
+              },
+              {
+                "identity": "channelReceive",
+                "text": "Recibe un opcional y requiere Aguardar."
+              },
+              {
+                "identity": "receiveSource",
+                "text": "Introduce el canal de una rama de Elegir."
+              },
+              {
+                "identity": "selectKeyword",
+                "text": "Elige la primera recepción lista en orden textual."
+              },
+              {
+                "identity": "endSelect",
+                "text": "Cierra la elección de recepciones."
               }
             ],
             "constraints": [],
@@ -2456,6 +2576,46 @@
               {
                 "identity": "taskType",
                 "text": "Declares the local type of a task handle that can only be awaited."
+              },
+              {
+                "identity": "taskFailureType",
+                "text": "Aggregated task failure with first error, associated errors and cancellations."
+              },
+              {
+                "identity": "taskFirstError",
+                "text": "First error in completion order."
+              },
+              {
+                "identity": "taskAssociatedErrors",
+                "text": "Later errors retained in completion order."
+              },
+              {
+                "identity": "taskCancelledCount",
+                "text": "Number of cancelled children."
+              },
+              {
+                "identity": "channelType",
+                "text": "Channel with explicit positive capacity and transferable elements."
+              },
+              {
+                "identity": "channelSend",
+                "text": "Sends with backpressure and requires await."
+              },
+              {
+                "identity": "channelReceive",
+                "text": "Receives an optional value and requires await."
+              },
+              {
+                "identity": "receiveSource",
+                "text": "Introduces the channel of a select branch."
+              },
+              {
+                "identity": "selectKeyword",
+                "text": "Chooses the first ready receive branch in textual order."
+              },
+              {
+                "identity": "endSelect",
+                "text": "Closes a receive selection."
               }
             ],
             "constraints": [],
@@ -7962,7 +8122,17 @@
             "tasksKeyword",
             "endTasks",
             "spawnKeyword",
-            "taskType"
+            "taskType",
+            "taskFailureType",
+            "taskFirstError",
+            "taskAssociatedErrors",
+            "taskCancelledCount",
+            "channelType",
+            "channelSend",
+            "channelReceive",
+            "receiveSource",
+            "selectKeyword",
+            "endSelect"
           ]
         },
         {

@@ -22,6 +22,7 @@ impl Machine<'_> {
             &mut roots,
         )?;
         self.suspended_roots(&mut roots)?;
+        roots.extend(self.tasks.value_roots());
         if self.options.inspect_memory {
             let cells = self
                 .heap

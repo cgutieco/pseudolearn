@@ -57,10 +57,10 @@ pub(crate) fn binary(session: &mut AnalysisSession<'_>, node: usize) -> Expressi
         .copied()
         .map(|child| crate::expression_checker::check(session, child))
         .unwrap_or_else(|| crate::expression_checker::invalid(session, node));
-    if crate::function_types::reject_operands(session, (left, right), node) {
-        return crate::expression_checker::invalid(session, node);
-    }
-    if crate::variant_checker::reject_operands(session, (left, right), node) {
+    if crate::channel_types::reject_operands(session, (left, right), node)
+        || crate::function_types::reject_operands(session, (left, right), node)
+        || crate::variant_checker::reject_operands(session, (left, right), node)
+    {
         return crate::expression_checker::invalid(session, node);
     }
     let operator = crate::operator_tokens::operator(session.operator_kind(node));

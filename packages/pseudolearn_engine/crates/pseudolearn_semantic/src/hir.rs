@@ -126,6 +126,8 @@ pub struct HirRecord {
 
 #[derive(Clone, Debug, Default, PartialEq)]
 pub struct HirModule {
+    pub channels: BTreeMap<crate::identities::RecordId, TypeId>,
+    pub task_failures: BTreeMap<crate::identities::RecordId, TypeId>,
     pub opaque_types: BTreeMap<ClassId, pseudolearn_abi::EffectValueKind>,
     pub collections: BTreeMap<ClassId, crate::collection_model::HirCollection>,
     pub interfaces: Vec<crate::interface_model::HirInterface>,

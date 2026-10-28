@@ -54,3 +54,5 @@ mod type_checker_effects;
 
 #[cfg(test)]
 mod type_checker_tasks_tests;
+
+mod type_checker_channels;

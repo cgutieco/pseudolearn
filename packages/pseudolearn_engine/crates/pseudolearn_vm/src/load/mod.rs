@@ -16,9 +16,7 @@ mod parallel_copy_tests;
 
 use std::sync::Arc;
 
-use pseudolearn_bytecode::{
-    BytecodeFunction, BytecodeModule, RegisterClass, VerifiedBytecode,
-};
+use pseudolearn_bytecode::{BytecodeFunction, BytecodeModule, RegisterClass, VerifiedBytecode};
 
 use crate::VmTrap;
 use definedness::Definedness;
@@ -118,3 +116,5 @@ pub(crate) fn scratch_register(
     };
     u16::try_from(count).map_err(|_| invalid_bytecode())
 }
+
+pub(crate) use instructions::task_results::TaskSite;

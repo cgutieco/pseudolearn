@@ -26,7 +26,7 @@ Los objetos conservan sus diseños en `Heap.layouts`, indexados por clase, y lle
 
 La recolección es no móvil y marca desde las asas raíz recibidas por la operación. Los bloques liberados se agrupan por tamaño físico para reutilizar direcciones. El texto usa un arena propio con migas de caracteres y una operación explícita de compactación que devuelve los desplazamientos movidos. La recolección compacta el arena automáticamente y, al descartar los índices de migas, libera solo los auxiliares que un texto referencia (una vez cada uno, porque los prefijos compartidos comparten índice): los búferes de `Vector` y `Diccionario` también son bloques auxiliares y no deben liberarse con ellos. El generador pseudoaleatorio recibe una semilla y mantiene su estado dentro de `RandomState`.
 
-Agenda de tareas (`task_agenda`): cada tarea distingue si espera una respuesta de efecto, un canal, otra tarea o la unión de un ámbito. La cola FIFO reanuda listas y las finalizaciones despiertan sus dependientes. Cancelar una espera de efecto abandona su secuencia; cancelar una espera de canal solo quita esa causa de espera. El fallo de una tarea solicita cancelar sus hermanas y descendientes por identidad. La API modela los estados de limpieza, pero el despacho de limpiezas cooperativas desde la VM todavía está pendiente.
+Agenda de tareas (`task_agenda`): cada tarea distingue si espera una respuesta de efecto, un canal, otra tarea o la unión de un ámbito. La cola FIFO reanuda listas y las finalizaciones despiertan sus dependientes. Cancelar una espera de efecto abandona su secuencia; cancelar una espera de canal solo quita esa causa de espera. El fallo de una tarea solicita cancelar sus hermanas y descendientes por identidad. La VM despacha las continuaciones de limpieza cooperativa registradas antes de cada espera y despierta las uniones tras finalizar la cancelación.
 
 Tabla de capacidades y efectos (`capability_table`): `CapabilityTable` gestiona las ranuras activas del anfitrión mediante `CapabilityToken` (índice y generación `u32`). Implementa la invalidación generacional en el cierre (`close`), de forma que cualquier intento de invocar un descriptor cerrado produce `CapacidadCerrada` (`CapabilityError::Closed`). Controla máscaras de derechos (`RightsMask`) para impedir amplificaciones no autorizadas. Modela el ciclo formal de compromiso de efectos en dos tipos separados, conforme a `CF-07` y `ENG.EXEC.EFFECT-COMMIT`: `EffectPhase` (`Requested` → `Resolved`, con `resolve()` que rechaza con `ReplayError::Divergence` una segunda resolución) y `CommitOutcome` (`Committed`, `Failed`, `Uncertain`, derivado de `HostReply::commit_outcome`). `host_session` guarda la fase en el efecto pendiente: `begin_host_effect` lo abre en `Requested` y asigna `effect_seq`, y `resolve_host_effect` exige exactamente una resolución con la misma secuencia; una resolución sin solicitud o repetida es un rechazo, nunca un efecto silencioso. Una respuesta `Uncertain` solo es válida para operaciones con potencial de mutación (`host_validation`), así que un fallo de lectura se clasifica siempre como `Failed`. Un corte o fallo externo incierto transiciona el estado a `ReproducibilityStatus::UncertainExternalState`. La operación `close_all` garantiza la liberación inmediata de todos los recursos del host ante corte o cancelación del anfitrión (`CF-11`).
 
@@ -129,3 +129,32 @@ sobre contenido completo; cada escritura sustituye el contenido y cada lectura d
 - `capability_kind` de cada entrada de cinta sale de `EffectOperation::capability_family` (`pseudolearn_abi`); como forma parte del hash de la entrada, una cinta grabada con nombres anteriores no verifica contra el formato actual.
 - `tape_codec::validate` no aplica el tope de bytes a una cinta sellada `NonReproducibleTruncated`: el presupuesto gobierna la admisión de entradas, y una cinta truncada puede ser más pequeña que su propia identidad. Así se decodifica y su reproducción se rechaza con `replay_non_reproducible`, no con `replay_corrupted_tape`. Una cinta reproducible que excede su presupuesto sigue siendo adulterada. Cubre `tests/tape_budget_boundary_tests.rs`.
 - La configuración del anfitrión en memoria acepta las directivas del corpus `cancel_on_awaiting_effect` y `alterar_cinta`; ambas las consumen el corredor de la API y el de conformidad, no el proveedor. Se mantiene `deny_unknown_fields` para cualquier otra clave. Cubre `tests/memory_host_config_tests.rs`.
+
+## Fallos, canales y progreso de tareas
+
+`task_failure` agrega errores como datos puros: el primero es el primer suceso registrado, aunque su
+tarea tenga identidad mayor; los asociados conservan orden de terminación. Una identidad terminal se
+cuenta una vez y las cancelaciones no pueden convertirse después en fallos. La condición de errores
+asociados se prueba directamente como una secuencia de sucesos; con una única tarea ejecutando y
+cancelación aplicada antes de reanudar, dos retornos inmediatos no producen dos fallos: la segunda
+hija termina cancelada. No se introduce ejecución simultánea para fabricar ese escenario.
+
+`task_channel` mantiene canales genéricos, capacidad positiva, colas FIFO y resultados de operaciones
+por tarea. `wait_queue` es dueño del orden de espera. La entrega directa precede al almacenamiento;
+recibir libera un hueco para el primer emisor. Cerrar es idempotente, conserva el búfer y despierta
+receptores con ausencia y emisores con falso. `channel_selection` evalúa disponibilidad en orden textual
+y retira todas las inscripciones de una selección en el mismo suceso de entrega o cierre. Cancelar
+retira también resultados aún no recogidos. `channel_values` expone las referencias retenidas al dueño
+del GC sin interpretar sus valores. `channel_storage` reserva en el montón las celdas declaradas por
+la disposición única; las colas y sus valores forman parte del estado de la agenda.
+
+`task_deadlock` distingue trabajo ejecutable, efectos pendientes, finalización y bloqueo. Solo los
+efectos asociados a tareas vivas en espera impiden el bloqueo; los abandonados se excluyen. Finalizar
+una cancelación despierta las uniones dependientes, y la limpieza se selecciona primero entre tareas
+cuyas hijas ya terminaron. Interrumpir el cuerpo dueño abandona su efecto si lo esperaba.
+
+Verificación dirigida: `cargo test -p pseudolearn_runtime --lib task_`,
+`cargo test -p pseudolearn_runtime --lib wait_queue` y
+`cargo test -p pseudolearn_runtime --test channel_storage_tests`. La persistencia completa de la agenda
+y las colas en las imágenes históricas sigue pendiente; los resultados de estas pruebas no certifican
+reconstrucción ni ejecución nativa de tareas.

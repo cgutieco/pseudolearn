@@ -69,7 +69,7 @@
       "modulePath": "identifier, { @dot, identifier }",
       "algorithmUnit": "@algorithm, identifier, line, body, @endAlgorithm, line",
       "body": "{ trivia | statement | conditional | switch | whileLoop | repeatLoop | forLoop | forEachLoop | deferStatement | taskScope }",
-      "statement": "( declaration | constantDeclaration | dimensionDeclaration | assignmentStatement | output | input | callStatement | returnStatement | discardStatement | breakStatement | spawnStatement ), terminator",
+      "statement": "selectStatement | ( declaration | constantDeclaration | dimensionDeclaration | assignmentStatement | output | input | callStatement | returnStatement | discardStatement | breakStatement | spawnStatement ), terminator",
       "declaration": "@declare, [ @mutableKeyword ], identifier, @typeConnector, type, @assignment, expression",
       "constantDeclaration": "@constantKeyword, identifier, @typeConnector, type, @assignment, expression",
       "enumUnit": "@enumKeyword, identifier, line, [ enumMembers, line ], @endEnum, line",
@@ -127,6 +127,8 @@
       "variantPattern": "@noneVariant | ( @someVariant | @successVariant | @errorVariant ), @leftParenthesis, identifier, @rightParenthesis",
       "propagation": "@propagateKeyword, unary",
       "functionLiteral": "@subroutine, [ @suspendibleModifier ], parameters, [ @typeConnector, type ], line, body, @endSubroutine",
+      "selectStatement": "@selectKeyword, receiveBranch, receiveBranch, { receiveBranch }, @endSelect",
+      "receiveBranch": "identifier, identifier, identifier, expression, @branchSeparator, { statement }",
       "taskScope": "@tasksKeyword, [ identifier ], line, body, @endTasks, line",
       "spawnStatement": "spawnExpression",
       "spawnExpression": "@spawnKeyword, identifier, arguments",
@@ -247,7 +249,9 @@
       "tasksKeyword",
       "endTasks",
       "spawnKeyword",
-      "taskType"
+      "taskType",
+      "selectKeyword",
+      "endSelect"
     ]
   }
 }

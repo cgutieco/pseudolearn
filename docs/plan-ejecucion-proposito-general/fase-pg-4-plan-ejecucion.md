@@ -471,54 +471,54 @@ marca `[x]` sin evidencia en §11.
 
 ### PG-4.03 · Política de fallos: el primero por orden lógico cancela a los hermanos; los demás se conservan
 
-- [ ] `PG-4.03.01` En `LANG.TASK.SCOPE`: reglas `F1`–`F6` y el tipo `FalloTareas<E>`; editar `LANG.PROFILE.VOCABULARY`
+- [x] `PG-4.03.01` En `LANG.TASK.SCOPE`: reglas `F1`–`F6` y el tipo `FalloTareas<E>`; editar `LANG.PROFILE.VOCABULARY`
   (tipo y campos) y `DIAG.*` (`taskScopeErrorTypeMismatch`, `taskErrorNotTransferable`, `taskScopeFailureUnbound`,
   `taskScopeFailureUnused`).
-- [ ] `PG-4.03.02` Casos: feliz (ningún fallo ⇒ `Nada`); fallo único ⇒ `Algo` con `Primero`, `Asociados` vacío y
-  `Canceladas` correcto; dos fallos donde el segundo termina antes de recibir la cancelación ⇒ un asociado; fallo de
+- [x] `PG-4.03.02` Casos: feliz (ningún fallo ⇒ `Nada`); fallo único ⇒ `Algo` con `Primero`, `Asociados` vacío y
+  `Canceladas` correcto; dos errores terminales registrados antes de cancelar ⇒ un asociado (modelo de datos); dos hijas con retorno inmediato ⇒ la segunda se cancela antes de retornar; fallo de
   la tarea con identidad mayor que termina primero ⇒ es `Primero` (orden de agenda, no de identidad); infeliz (uno por
   código); límite (fallo de la única hija; fallo con el cuerpo del ámbito suspendido en `Aguardar` de otra hija;
   trampa en una hija ⇒ `failed` global sin limpiezas).
-- [ ] `PG-4.03.03` Tests: `task_failure_tests.rs` en runtime (orden de primer fallo y asociados como datos puros);
+- [x] `PG-4.03.03` Tests: `task_failure_tests.rs` en runtime (orden de primer fallo y asociados como datos puros);
   `task_failure_types_tests.rs` en semantic.
-- [ ] `PG-4.03.04` Código: runtime `task_failure.rs`; semantic `task_failure_types.rs` y conexión con
+- [x] `PG-4.03.04` Código: runtime `task_failure.rs`; semantic `task_failure_types.rs` y conexión con
   `result_obligations.rs`; lowering del vínculo del ámbito.
-- [ ] `PG-4.03.05` README del motor.
-- [ ] `PG-4.03.06` Ligera: tests anteriores.
+- [x] `PG-4.03.05` README del motor.
+- [x] `PG-4.03.06` Ligera: tests anteriores.
 - [ ] `PG-4.03.07` Pesada: `--only LANG.TASK.SCOPE` en `engine` y `aot`.
 
 ### PG-4.04 · Canales con capacidad, cierre y contrapresión; elección resuelta por orden normativo
 
-- [ ] `PG-4.04.01` Crear `LANG.TASK.CHANNEL` con `C1`–`C8`; editar `LIB.MODEL` (métodos `Enviar`, `Recibir`,
+- [x] `PG-4.04.01` Crear `LANG.TASK.CHANNEL` con `C1`–`C8`; editar `LIB.MODEL` (métodos `Enviar`, `Recibir`,
   `Cerrar`), `ENG.TRACE.EVENTS` (`decision` de `Elegir`) y `DIAG.*` (`channelElementNotTransferable`,
   `channelOperationWithoutAwait`, `pureFunctionTaskOperation`, `selectNeedsTwoBranches`, `channelCapacityInvalid`).
-- [ ] `PG-4.04.02` Casos: productor/consumidor con capacidad 1 y 4; canal lleno que suspende al emisor y lo despierta
+- [x] `PG-4.04.02` Casos: productor/consumidor con capacidad 1 y 4; canal lleno que suspende al emisor y lo despierta
   al recibir; entrega directa a receptor en espera; `Recibir` de canal cerrado con datos y luego `Nada`; `Enviar` a
   canal cerrado ⇒ `Falso`; cierre con emisores y receptores en espera; `Cerrar` dos veces; `Elegir` con dos ramas
   listas ⇒ gana la primera textual; `Elegir` suspendido que despierta por cierre; mismo canal en dos ramas; infeliz
   (uno por código); límite (capacidad `1`, capacidad igual al máximo configurado, elemento de un registro con campo de
   clase rechazado).
-- [ ] `PG-4.04.03` Tests: `task_channel_tests.rs` y `wait_queue_tests.rs` en runtime; `channel_types_tests.rs` y
+- [x] `PG-4.04.03` Tests: `task_channel_tests.rs` y `wait_queue_tests.rs` en runtime; `channel_types_tests.rs` y
   `select_checker_tests.rs` en semantic.
-- [ ] `PG-4.04.04` Código: abi `channel_layout.rs`; runtime `task_channel.rs`, `wait_queue.rs`; semantic
+- [x] `PG-4.04.04` Código: abi `channel_layout.rs`; runtime `task_channel.rs`, `wait_queue.rs`; semantic
   `channel_types.rs`, `select_checker.rs`; lowering `channel_operations.rs`, `select_dispatch.rs`; VM
   `machine/channels.rs`, `machine/select.rs`.
-- [ ] `PG-4.04.05` README del motor.
-- [ ] `PG-4.04.06` Ligera: tests anteriores.
+- [x] `PG-4.04.05` README del motor.
+- [x] `PG-4.04.06` Ligera: tests anteriores.
 - [ ] `PG-4.04.07` Pesada: `--only LANG.TASK.CHANNEL,LIB.MODEL,ENG.TRACE.EVENTS` en `engine` y `aot`.
 
 ### PG-4.05 · Bloqueo sin tareas ejecutables ni efectos pendientes, distinto de la espera de efecto
 
-- [ ] `PG-4.05.01` En `ENG.TASK.AGENDA`: `A7`; editar `ENG.EXEC.MODEL` (bloqueo como `failed` con `taskDeadlock`,
+- [x] `PG-4.05.01` En `ENG.TASK.AGENDA`: `A7`; editar `ENG.EXEC.MODEL` (bloqueo como `failed` con `taskDeadlock`,
   distinto de `awaiting_effect`) y `DIAG.*` (`taskDeadlock` con ubicaciones relacionadas).
-- [ ] `PG-4.05.02` Casos: dos tareas que se reciben mutuamente ⇒ `taskDeadlock`; raíz en `FinTareas` con hija que
+- [x] `PG-4.05.02` Casos: dos tareas que se reciben mutuamente ⇒ `taskDeadlock`; raíz en `FinTareas` con hija que
   espera un canal que nadie cierra ⇒ `taskDeadlock`; mismo programa con un efecto concurrente pendiente ⇒
   `awaiting_effect` (no bloqueo); efecto pendiente abandonado como único pendiente ⇒ bloqueo si la raíz no puede
   avanzar; límite (una sola tarea, la raíz, en `Aguardar c.Recibir()` sin emisores ⇒ `taskDeadlock`).
-- [ ] `PG-4.05.03` Tests: `task_deadlock_tests.rs` en runtime.
-- [ ] `PG-4.05.04` Código: runtime `task_deadlock.rs`; VM `model.rs` (trampa con causas) y `machine/tasks.rs`.
-- [ ] `PG-4.05.05` README del motor (`vm`).
-- [ ] `PG-4.05.06` Ligera: tests anteriores.
+- [x] `PG-4.05.03` Tests: `task_deadlock_tests.rs` en runtime.
+- [x] `PG-4.05.04` Código: runtime `task_deadlock.rs`; VM `model.rs` (trampa con causas) y `machine/tasks.rs`.
+- [x] `PG-4.05.05` README del motor (`vm`).
+- [x] `PG-4.05.06` Ligera: tests anteriores.
 - [ ] `PG-4.05.07` Pesada: `--only ENG.TASK.AGENDA,ENG.EXEC.MODEL` en `engine` y `aot`.
 
 ### PG-4.06 · Aislamiento transitivo e instantánea inmutable con coste declarado
@@ -900,9 +900,9 @@ lo que documente su README tras la iteración 4. Desde `apps/pseudolearn_app`: `
 |---|---|---|---|
 | `PG-4.01` | Completa | `.01`–`.06`; 15 casos bilingües, 4 felices, 6 de diagnóstico y 5 de límite; tests filtrados de ambos crates, `rust-checks all .`, Clippy de ambos crates, `rustfmt --check` dirigido y `git diff --check` pasan. `see validate` validó 182 especificaciones; `lock --check` y `see export --check` verificaron sus artefactos. Reanclados los nueve IDs autorizados, sin cambiar estados ni versiones | `.07` pesado se difiere a la iteración 5 |
 | `PG-4.02` | Parcial; no cerrada | `.01`, `.03` y `.05`; avances de `.02` (`C22`, `C15`, `C16`, `C19`) y `.04` (RI `O94`–`O100`, lowering, agenda FIFO, ejecución VM y raíces suspendidas); 25 tests filtrados, `rust-checks all .`, Clippy de siete crates, formato dirigido, `see validate` (183 especificaciones), `lock --check`, `see export --check` y `git diff --check` pasan | `.02` aún requiere el caso y la ejecución de cancelación mientras una hija espera un canal; `.04` aún no conecta fallo de hija, cancelación cooperativa y limpiezas, ni esperas por canal/efecto o AOT. `.06` queda respaldada por estas verificaciones ligeras; `.07` sigue reservada para la iteración 5. `PHASE-GREEN` no se cumple para cerrar PG-4.02 |
-| `PG-4.03` | | | |
-| `PG-4.04` | | | |
-| `PG-4.05` | | | |
+| `PG-4.03` | Implementación y ligera completas | `.01`–`.06`; reglas `R11`–`R16`, casos bilingües `C23`–`C31`, agregación de errores, tipos exactos, obligaciones del vínculo, cancelación y limpiezas de ámbitos anidados; tests filtrados y verificadores de esta iteración en verde | `.07` pesada pendiente; asociados probados como datos terminales, cancelación real probada en VM; no se declara cerrada la fase PG-4 |
+| `PG-4.04` | Implementación y ligera completas | `.01`–`.06`; `LANG.TASK.CHANNEL`, 21 casos bilingües, ABI, almacenamiento contabilizado, colas FIFO, contrapresión, cierre, selección textual y raíces VM; tests filtrados y verificadores de esta iteración en verde | `.07` pesada pendiente; ejecución AOT y serialización histórica completa pertenecen a tareas posteriores |
+| `PG-4.05` | Implementación y ligera completas | `.01`–`.06`; `ENG.TASK.AGENDA#R7`, cinco casos bilingües, clasificación de progreso y `taskDeadlock` con ubicaciones relacionadas; pruebas VM distinguen efecto pendiente y efecto abandonado | `.07` pesada pendiente; integración completa de abandono con cinta pertenece a PG-4.10 |
 | `PG-4.06` | | | |
 | `PG-4.07` | | | |
 | `PG-4.08` | | | |
@@ -919,6 +919,47 @@ raíces suspendidas ante GC; el corpus valida y las pruebas ligeras pasan · Ver
 `git diff --check` · Pendientes de `.02`: ejecución de cancelación por fallo con `Diferir` y cancelación durante
 espera de canal; AOT y conformidad pesada (`.07`) siguen en sus tareas futuras · `PHASE-GREEN` no satisfecho para
 cerrar PG-4.02 ni la fase PG-4 (`PHASE-STOP`).
+
+
+Registro de la iteración conjunta autorizada de PG-4.03 a PG-4.05:
+
+- Implementados y marcados `.01`–`.06` de los tres puntos; `.07` permanece sin ejecutar por exclusión explícita
+  de la persona. Se mantiene la rama `feature/agregar-ruta-de-especificacion`, sin commit ni push; la fase PG-4
+  sigue abierta. La fila anterior de PG-4.02 conserva el estado histórico de su iteración, no declara su cierre.
+- Verificación ligera: 71 tests dirigidos pasan: API (17), runtime (28), ABI (1), semantic (17), syntax (2),
+  IR (2), lowering (2) y bytecode (2). Los filtros de runtime incluyen agenda, fallos, canales, bloqueo y cola;
+  los de semantic incluyen ámbitos, manejadores, errores, canales y selección. Se ejecutaron los cuatro archivos
+  `task_*_tests` nuevos de API y `task_scopes` de lowering. No se ejecutó ninguna batería completa del workspace.
+- `rust-checks all packages/pseudolearn_engine`, Clippy `--all-targets -- -D warnings` de los nueve crates tocados,
+  `rustfmt --check` dirigido y `git diff --check` pasan. Clippy de API activa su feature `native` porque sus
+  tests nativos importan símbolos condicionados por ella; esto compila los destinos, sin ejecutar AOT.
+- `see validate` valida 185 especificaciones; `lock --check` y `export --check` pasan. Se reanclaron los doce
+  contratos editados conservando estados y versiones; vocabulario, sintaxis y despacho se regeneraron desde
+  sus generadores. Las referencias de conformidad quedan pendientes de ejecución pesada.
+- Espacio: 28 GiB al iniciar esta iteración y 25 GiB al terminar las compilaciones dirigidas; sin limpieza,
+  sin borrar evidencias ni datos personales.
+
+Decisiones de implementación de esta iteración:
+
+1. Los nombres de plan `F1`–`F6`, `C1`–`C8` y `A7` se registran en el corpus como reglas estables
+   `LANG.TASK.SCOPE#R11`–`R16`, `LANG.TASK.CHANNEL#R1`–`R8` y `ENG.TASK.AGENDA#R7`.
+2. El primer fallo se decide por terminación lógica, aunque su identidad sea mayor. Con una única tarea
+   ejecutándose y cancelación antes de reanudar otra, dos retornos inmediatos no producen dos errores terminales:
+   la segunda hija cuenta como cancelada. Se precisó `.03.02` para comprobar asociados sobre eventos terminales
+   puros y la cancelación alcanzable en VM, sin inventar ejecución simultánea. `Asociados` conserva los errores
+   ya terminales antes de aplicar cancelación; el caso de fallo único prueba la colección vacía.
+3. Se usa un comando RI tipado `task.channel` para crear, enviar, recibir, cerrar y elegir, más `task.value_load`
+   para transportar agregados. `task.outcome`, `task.scope_result`, `task.cancel_point` y `task.scope_boundary`
+   expresan resultados y continuaciones de limpieza. Son `O101`–`O106`; las firmas y trampas viven en el corpus.
+4. Las entradas internas de lanzamiento son envoltorios con celdas propias de resultado. Las limpiezas conservan
+   su continuación incluso al llamar subprogramas; un fallo exterior cancela también los ámbitos anidados.
+5. Los canales usan capacidad positiva, máximo predeterminado 65536, reserva contable y colas FIFO. Selección
+   evalúa los canales una vez, prefiere la primera rama textual lista y retira sus registros hermanos al despertar.
+6. La VM distingue tareas ejecutables, efectos pendientes vigentes y bloqueo. Un efecto abandonado no mantiene
+   artificialmente `awaiting_effect`; el diagnóstico de bloqueo ordena ubicaciones por identidad de tarea.
+7. No se ejecutaron conformidad, diferencial, GC forzado, campañas, pruebas AOT ni compilaciones release.
+   La serialización histórica completa, la cinta concurrente y la ejecución nativa siguen en PG-4.08, PG-4.10
+   y PG-4.12 respectivamente. Los README afectados documentan estas fronteras.
 
 ---
 

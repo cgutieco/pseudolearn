@@ -85,3 +85,8 @@ mod variant_parser;
 mod function_parser;
 
 pub use tree::{contextual_identity, contextual_spelling};
+
+mod select_parser;
+
+#[cfg(test)]
+mod select_parser_tests;

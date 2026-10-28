@@ -8,6 +8,7 @@ use pseudolearn_ir::{
 #[derive(Clone, Debug, PartialEq)]
 pub struct FunctionBuilder {
     pub name: String,
+    pub generated_span: Option<IrSpan>,
     pub parameters: Vec<(ValueId, IrType)>,
     pub return_type: IrType,
     pub columns: InstructionColumns,
@@ -16,6 +17,7 @@ pub struct FunctionBuilder {
     pub receiver: Option<ValueId>,
     pub result_cells: Vec<ValueId>,
     pub task_scopes: Vec<ValueId>,
+    pub scope_exits: Vec<(ValueId, BlockId, usize)>,
     pub cleanup: crate::cleanup_edges::CleanupScopes,
     pub loop_exits: Vec<crate::loop_exits::LoopExit>,
     next_value_index: u32,
@@ -26,6 +28,7 @@ impl FunctionBuilder {
     pub fn new(name: String, return_type: IrType) -> Self {
         Self {
             name,
+            generated_span: None,
             parameters: Vec::new(),
             return_type,
             columns: InstructionColumns::new(),
@@ -34,6 +37,7 @@ impl FunctionBuilder {
             receiver: None,
             result_cells: Vec::new(),
             task_scopes: Vec::new(),
+            scope_exits: Vec::new(),
             cleanup: crate::cleanup_edges::CleanupScopes::default(),
             loop_exits: Vec::new(),
             next_value_index: 0,
@@ -83,6 +87,10 @@ impl FunctionBuilder {
         definition: InstructionDefinition,
         operands: Vec<Operand>,
     ) -> InstructionId {
+        let definition = InstructionDefinition {
+            span: definition.span.or(self.generated_span),
+            ..definition
+        };
         let instruction_id = self.columns.push_instruction(definition, &operands);
         if let Some(current) = self.current_block
             && let Some(block) = self

@@ -28,7 +28,7 @@ número de veces.
 
 Suspensión por efectos (`effect_call` y `AwaitingEffect`): La VM suspende su ejecución ante una instrucción de efecto devolviendo `RunExit::AwaitingEffect(PendingEffectRequest)` con la secuencia del efecto, capacidad, operación y resumen de argumentos. El anfitrión reanuda la máquina invocando `supply_effect_result` con un `HostReply` (`Committed`, `Failed` o `Uncertain`), que la instrucción reejecutada consume para llenar sus celdas de resultado sin perder la sincronización con la línea temporal. La máquina no conoce la espera de entrada de `Leer`: `RunExit::AwaitingInput` y `RunExit::AwaitingEffect` son variantes distintas y `tests/vm_awaiting_effect_tests.rs` de `pseudolearn_api` (que compila programas completos hasta el bytecode) comprueba la carga útil, la distinción y la ausencia de suspensión sin efectos.
 
-Agenda de tareas (`machine/tasks.rs`): la raíz y cada hija tienen un contexto con función, cursor, bancos, celdas y marcos propios. La cola FIFO cambia el contexto activo al esperar una hija o unir un ámbito; el montón y la salida siguen siendo compartidos. Al recolectar, la VM recorre también los mapas de raíces de todos los contextos guardados. Una hija puede completar y devolver un resultado escalar o de referencia, y su padre puede aguardarla más de una vez. La agregación de `Resultado::Error`, la cancelación cooperativa con ejecución de `Diferir`, las esperas concurrentes por efecto y los despertares por canales no están conectados todavía.
+Agenda de tareas (`machine/tasks.rs`): la raíz y cada hija tienen un contexto con función, cursor, bancos, celdas y marcos propios. La cola FIFO cambia el contexto activo al esperar una hija o unir un ámbito; el montón y la salida siguen siendo compartidos. Al recolectar, la VM recorre también los mapas de raíces de todos los contextos guardados. Una hija puede completar y devolver un resultado escalar o de referencia, y su padre puede aguardarla más de una vez. La agregación de `Resultado::Error`, la cancelación cooperativa con `Diferir`, las solicitudes concurrentes pendientes y los despertares de canales se conectan mediante los módulos de tareas; la persistencia histórica completa y la cinta concurrente aún requieren integración.
 
 ## 3. Arquitectura y modelo del sistema
 
@@ -229,3 +229,29 @@ reinterpretan cadenas o errores como cero. Las consultas puras de Bytes se resue
 ### Familia de capacidad en el efecto pendiente (`PG-3`)
 
 El `capability_kind` de `PendingEffectRequest` es `EffectOperation::capability_family` y coincide con el de la entrada de cinta correspondiente. Antes usaba el nombre de depuración del tipo de receptor, de modo que una solicitud de reloj se anunciaba como `host`.
+
+## Fallos recuperables, canales y bloqueo
+
+`task_completion` conecta el desenlace de la entrada interna con la agenda y el agregado del ámbito.
+Un primer error cancela hermanas y descendientes; `task_scope_cancellation` incluye los ámbitos
+anidados abiertos dentro del cuerpo dueño. `task_resume` conserva puntos de limpieza por marco y
+salidas por ámbito. La limpieza de una hija espera a sus descendientes; una cancelación de tarea
+salta a sus limpiezas y retorna por los puntos registrados de los marcos exteriores. Una trampa
+sigue terminando globalmente sin ejecutar estas continuaciones.
+
+`channels` conecta las colas compartidas con los bancos de la máquina; `select` conserva la rama y
+el valor recibidos para no repetir una operación después de suspender. `task_results` materializa
+los asociados en un vector del montón y entrega las hojas del agregado. `task_roots` incluye
+búferes, emisores, respuestas entregadas, resultados y errores retenidos. La reserva de cada canal
+cuenta las celdas de su capacidad explícita y rechaza capacidades mayores que 65 536.
+
+`task_effects` conserva las solicitudes concurrentes mientras otras tareas pueden ejecutar. Solo
+cuando no hay trabajo listo entrega un efecto pendiente al anfitrión. Una solicitud abandonada no
+puede evitar `taskDeadlock`; las ubicaciones relacionadas enumeran los sitios bloqueados por
+identidad. Tanto el bucle continuo como `step_instruction` aplican la finalización de hijas y
+la entrega de efectos, evitando diferencias entre ejecución directa y avance por la API.
+
+Pruebas de integración dirigidas en API: `task_failure_tests`, `task_channel_tests`,
+`task_deadlock_tests` y `task_lowering_tests`. Sigue pendiente serializar íntegramente este estado
+en imágenes históricas, integrar los desenlaces abandonados con la cinta concurrente y ejecutar
+estas operaciones en el backend nativo; esas comprobaciones no quedan certificadas por tests VM.

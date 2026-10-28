@@ -173,6 +173,12 @@ impl<'program> Machine<'program> {
     }
 
     fn finish_call(&mut self, value: Option<RuntimeValue>) -> Result<Flow, Fault> {
+        if let Some(flow) = self.cancelled_return() {
+            return Ok(flow);
+        }
+        if let Some(points) = self.tasks.cancel_points.get_mut(&self.tasks.current) {
+            points.remove(&self.frames.len());
+        }
         let Some(frame) = self.frames.pop() else {
             return Ok(Flow::Completed(value));
         };

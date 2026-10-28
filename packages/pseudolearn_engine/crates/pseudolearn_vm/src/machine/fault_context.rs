@@ -16,6 +16,15 @@ mod arrays;
 impl Machine<'_> {
     pub(super) fn trap_context(&self, fault: Fault, position: usize) -> VmTrap {
         let mut trap = VmTrap::new(fault, self.current.span(position, self.probed));
+        if fault == "taskDeadlock" {
+            trap.related.extend(
+                self.tasks
+                    .blocked_locations(self.probed)
+                    .into_iter()
+                    .filter_map(|blocked| blocked.span),
+            );
+            return trap;
+        }
         match fault {
             "cellLimitExceeded" | "recursionDepthExceeded" | "statementBudgetExhausted" => {
                 self.limit_arguments(fault, &mut trap.arguments);

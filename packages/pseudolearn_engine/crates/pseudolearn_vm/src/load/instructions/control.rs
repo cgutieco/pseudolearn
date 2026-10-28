@@ -24,6 +24,9 @@ pub(super) fn decode(
     (program_counter, probed): (u32, bool),
     instruction: &Instruction,
 ) -> Result<Op, VmTrap> {
+    if instruction.opcode.as_name().starts_with("task.") {
+        return decode_tasks(context, loaded, (program_counter, probed), instruction);
+    }
     match instruction.opcode {
         Opcode::Jump => {
             let edge = add_edge(
@@ -41,11 +44,6 @@ pub(super) fn decode(
         Opcode::Call | Opcode::CallVirtual | Opcode::CallIndirect | Opcode::CallSuspendible => {
             decode_call(context, loaded, instruction)
         }
-        Opcode::TaskScopeOpen
-        | Opcode::TaskSpawn
-        | Opcode::TaskAwait
-        | Opcode::TaskScopeJoin
-        | Opcode::TaskYieldCheck => super::task_control::decode(context, loaded, instruction),
         Opcode::Return => decode_return(instruction),
         Opcode::LoopCheckStep => decode_check_step(context, instruction),
         Opcode::TrapMissingReturn => Ok(Op::MissingReturn),
@@ -252,5 +250,30 @@ fn decode_check_step(context: &DecodeContext<'_>, instruction: &Instruction) -> 
         Some(Source::Register(source)) => Ok(Op::CheckStepRegister { source }),
         Some(Source::Immediate(word)) => Ok(Op::CheckStepImmediate { word }),
         None => Err(invalid_bytecode()),
+    }
+}
+
+fn decode_tasks(
+    context: &DecodeContext<'_>,
+    loaded: &mut LoadedFunction,
+    (program_counter, probed): (u32, bool),
+    instruction: &Instruction,
+) -> Result<Op, VmTrap> {
+    match instruction.opcode {
+        Opcode::TaskOutcome
+        | Opcode::TaskScopeResult
+        | Opcode::TaskCancelPoint
+        | Opcode::TaskScopeBoundary => {
+            super::task_results::decode(context, loaded, (program_counter, probed), instruction)
+        }
+        Opcode::TaskChannel | Opcode::TaskValueLoad => {
+            super::channels::decode(context, loaded, instruction)
+        }
+        Opcode::TaskScopeOpen
+        | Opcode::TaskSpawn
+        | Opcode::TaskAwait
+        | Opcode::TaskScopeJoin
+        | Opcode::TaskYieldCheck => super::task_control::decode(context, loaded, instruction),
+        _ => Err(invalid_bytecode()),
     }
 }

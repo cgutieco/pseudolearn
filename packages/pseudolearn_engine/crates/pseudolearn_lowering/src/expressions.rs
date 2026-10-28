@@ -142,6 +142,7 @@ fn lower_task_await(
     span: Option<IrSpan>,
     state: &mut ExpressionState<'_, '_>,
 ) -> ValueId {
+    crate::suspension_points::prepare(state, span);
     let task = lower_expression_with_state(expression, state);
     let task_type = usize::try_from(expression.0)
         .ok()
@@ -239,6 +240,12 @@ pub fn lower_expression_with_state(
     expression_id: ExpressionId,
     state: &mut ExpressionState<'_, '_>,
 ) -> ValueId {
+    if let Some(values) = crate::channel_operations::values(expression_id, state) {
+        return values
+            .first()
+            .copied()
+            .unwrap_or_else(|| state.builder.next_value());
+    }
     if let Some(values) = crate::effect_values::values(expression_id, state) {
         return values
             .first()

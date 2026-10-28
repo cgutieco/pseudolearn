@@ -6,8 +6,9 @@ use crate::variant_model::VariantFamily;
 use pseudolearn_diagnostics::{Diagnostic, DiagnosticCode, DiagnosticSeverity};
 
 pub(crate) fn is_result(session: &AnalysisSession<'_>, kind: &Type) -> bool {
-    crate::variant_types::get(session, kind)
-        .is_some_and(|variant| variant.family == VariantFamily::Result)
+    crate::task_failure_types::is_failure(session, kind)
+        || crate::variant_types::get(session, kind)
+            .is_some_and(|variant| variant.family == VariantFamily::Result)
 }
 
 pub(crate) fn consume(session: &mut AnalysisSession<'_>, expression: ExpressionId) {
@@ -55,9 +56,17 @@ pub(crate) fn finish(session: &mut AnalysisSession<'_>) {
             .and_then(|index| session.module.locals.get(index))
             .map(|declaration| (declaration.span, declaration.type_id));
         if let Some((span, type_id)) = declaration {
-            session
-                .diagnostics
-                .push(Diagnostic::new(DiagnosticCode::ResultNotHandled, span));
+            session.diagnostics.push(Diagnostic::new(
+                if crate::task_failure_types::is_failure(
+                    session,
+                    &session.module.types.get(type_id),
+                ) {
+                    DiagnosticCode::TaskScopeFailureUnused
+                } else {
+                    DiagnosticCode::ResultNotHandled
+                },
+                span,
+            ));
             crate::diagnostic_arguments::last_type(session, type_id);
         }
     }

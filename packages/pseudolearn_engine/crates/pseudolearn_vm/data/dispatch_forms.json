@@ -67,6 +67,12 @@
         "switch",
         "call.indirect",
         "call.suspendible",
+        "task.outcome",
+        "task.scope_result",
+        "task.cancel_point",
+        "task.scope_boundary",
+        "task.channel",
+        "task.value_load",
         "task.scope_open",
         "task.spawn",
         "task.await",
@@ -720,6 +726,56 @@
       "handler": "call"
     },
     {
+      "form": "TaskOutcome",
+      "fields": [
+        {
+          "name": "site",
+          "type": "u32"
+        }
+      ],
+      "handler": "task_outcome"
+    },
+    {
+      "form": "TaskScopeResult",
+      "fields": [
+        {
+          "name": "site",
+          "type": "u32"
+        }
+      ],
+      "handler": "task_scope_result"
+    },
+    {
+      "form": "TaskCancelPoint",
+      "fields": [
+        {
+          "name": "site",
+          "type": "u32"
+        }
+      ],
+      "handler": "task_cancel_point"
+    },
+    {
+      "form": "TaskScopeBoundary",
+      "fields": [
+        {
+          "name": "site",
+          "type": "u32"
+        }
+      ],
+      "handler": "task_scope_boundary"
+    },
+    {
+      "form": "TaskChannel",
+      "fields": [{"name": "site", "type": "u32"}],
+      "handler": "channel_operation"
+    },
+    {
+      "form": "TaskValueLoad",
+      "fields": [{"name": "destination", "type": "pseudolearn_bytecode::Register"}, {"name": "index", "type": "u32"}],
+      "handler": "channel_load"
+    },
+    {
       "form": "TaskScopeOpen",
       "fields": [
         {
@@ -746,6 +802,10 @@
     {
       "form": "TaskAwait",
       "fields": [
+        {
+          "name": "aggregate",
+          "type": "bool"
+        },
         {
           "name": "task",
           "type": "u16"

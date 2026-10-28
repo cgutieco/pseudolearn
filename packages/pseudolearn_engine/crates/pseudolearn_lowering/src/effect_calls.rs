@@ -4,8 +4,13 @@ use crate::expressions::ExpressionState;
 use pseudolearn_ir::{IrSpan, Operand, Operation, ValueId};
 
 pub fn emit_effect_call(
-    (capability, operation_name, result_type, source_node): (ValueId, &str, pseudolearn_ir::IrType, u32),
-    arguments: Vec<ValueId>,
+    (capability, operation_name, result_type, source_node): (
+        ValueId,
+        &str,
+        pseudolearn_ir::IrType,
+        u32,
+    ),
+    (arguments, awaited): (Vec<ValueId>, bool),
     span: Option<IrSpan>,
     state: &mut ExpressionState<'_, '_>,
 ) -> ValueId {
@@ -20,7 +25,11 @@ pub fn emit_effect_call(
         operands.push(Operand::Value(argument));
     }
     state.builder.emit_with_target(
-        Operation::EffectCall,
+        if awaited {
+            Operation::EffectAwait
+        } else {
+            Operation::EffectCall
+        },
         operands,
         (Some(result), span),
     );

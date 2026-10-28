@@ -47,6 +47,8 @@ pub(crate) fn safe_point(instruction: &Instruction) -> bool {
             | "call.virtual"
             | "call.indirect"
             | "call.suspendible"
+            | "task.scope_result"
+            | "task.channel"
             | "task.scope_open"
             | "task.spawn"
             | "task.await"

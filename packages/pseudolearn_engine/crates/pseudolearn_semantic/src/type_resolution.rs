@@ -46,6 +46,12 @@ fn task_type(session: &mut AnalysisSession<'_>, node: usize) -> TypeId {
 
 fn class_type(session: &mut AnalysisSession<'_>, node: usize) -> Type {
     let name = session.name(node);
+    if let Some(kind) = crate::task_failure_types::resolve(session, node, &name) {
+        return kind;
+    }
+    if let Some(kind) = crate::channel_types::resolve(session, node, &name) {
+        return kind;
+    }
     if let Some(kind) = crate::effect_types::resolve(session, node, &name) {
         return kind;
     }

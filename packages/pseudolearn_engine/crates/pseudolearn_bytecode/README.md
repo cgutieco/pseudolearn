@@ -102,3 +102,15 @@ Los tests de estas capacidades se ejecutaron en selecciones acotadas, incluida l
 effect_call es un punto seguro con mapas de raíces y definición: una respuesta puede alojar Bytes,
 texto o tokens de capacidad. Los argumentos, receptor y celdas de retorno permanecen vivos durante
 suspensión y reanudación. Se rechaza bytecode que omita estos mapas antes de cargarlo en la VM.
+
+## Puntos seguros de tareas
+
+La reserva y suspensión de canal y la materialización del agregado de fallos requieren mapas de
+raíces, igual que las llamadas y la unión de tareas. `roots` los genera y verifica para
+`task.channel` y `task.scope_result`. Las cargas `task.value_load` mantienen su banco estático.
+Las continuaciones de cancelación y de salida del cuerpo usan destinos de bloque verificados;
+el bytecode conserva esos destinos en ambos gemelos.
+
+`verify_task_types` reutiliza el comprobador de tipos de RI para rechazar operandos y bancos inválidos
+en las operaciones de tarea antes de cargarlas; los tests negativos alteran el comando, sus operandos
+y el banco de resultado. Así no se mantiene una segunda copia del contrato de tipos.

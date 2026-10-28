@@ -129,3 +129,10 @@ El reconocimiento de palabras compuestas pertenece a `compound_scanner.rs`; nunc
 Las palabras de interfaces, colecciones, iteración y limpieza son contextuales y provienen del recurso contextualVocabulary generado. No se incorporan al vocabulario reservado: un nombre interface fuera de una apertura sigue siendo identificador. Los nodos InterfaceUnit, InterfaceSignature, Realization y TypeParameter conservan las identidades nominales; IterationBindings separa los vínculos de la expresión recorrida. ForEachLoop, BreakStatement y DeferStatement conservan sus límites léxicos.
 
 Los tests de estas capacidades se ejecutaron en selecciones acotadas, incluida la comparación de gemelos con recolección forzada. La conformidad del corpus sigue pendiente de la revisión editorial independiente de los contratos nuevos, y la medición de tamaño excede el presupuesto de Wasm.
+
+## Elección de recepciones
+
+`select_parser` reconoce `Elegir … FinElegir` y ramas `Recibir nombre Desde canal:`. El cuerpo
+termina ante la siguiente recepción o el cierre, conservando los bloques interiores. Los nodos
+`SelectStatement` y `ReceiveBranch` se generan desde la gramática. La cantidad mínima de ramas
+se comprueba en semántica para producir el diagnóstico específico en lugar de perder el árbol.

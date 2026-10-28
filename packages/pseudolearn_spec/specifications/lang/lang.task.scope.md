@@ -838,3 +838,334 @@
   }
 }
 ```
+
+```regla
+{
+  "id": "R11",
+  "fuerza": "DEBE",
+  "clase": "ejecucion",
+  "texto": "Una tarea falible falla cuando retorna Error(e). El primer fallo se determina por orden de terminación en la agenda, nunca por identidad de tarea.",
+  "verificacion": [
+    "C23",
+    "C24",
+    "C25"
+  ]
+}
+```
+
+```regla
+{
+  "id": "R12",
+  "fuerza": "DEBE",
+  "clase": "ejecucion",
+  "texto": "El primer fallo solicita cancelar las demás hijas vivas por identidad y el cuerpo del ámbito dueño, que salta a la unión ejecutando las limpiezas abiertas dentro del bloque.",
+  "verificacion": [
+    "C24",
+    "C26"
+  ]
+}
+```
+
+```regla
+{
+  "id": "R13",
+  "fuerza": "DEBE",
+  "clase": "ejecucion",
+  "texto": "Los errores posteriores anteriores a surtir efecto la cancelación se conservan en Asociados por orden de terminación; los éxitos posteriores se descartan. Canceladas cuenta las hijas terminadas cancelled.",
+  "verificacion": [
+    "C24",
+    "C25"
+  ]
+}
+```
+
+```regla
+{
+  "id": "R14",
+  "fuerza": "DEBE",
+  "clase": "ejecucion",
+  "texto": "Todas las hijas falibles de un ámbito comparten el mismo E exacto, transferible; las infracciones producen taskScopeErrorTypeMismatch y taskErrorNotTransferable.",
+  "verificacion": [
+    "C27",
+    "C28"
+  ]
+}
+```
+
+```regla
+{
+  "id": "R15",
+  "fuerza": "DEBE",
+  "clase": "ejecucion",
+  "texto": "El vínculo inmutable del ámbito, visible tras FinTareas, tiene tipo Opcional<FalloTareas<E>>. Vale Nada sin fallos y Algo con Primero: E, Asociados: Vector<E> y Canceladas: Entero si falló. Un ámbito falible sin vínculo produce taskScopeFailureUnbound; un vínculo sin hijas falibles produce taskScopeFailureUnused. El vínculo se debe consumir como una obligación de resultado.",
+  "verificacion": [
+    "C23",
+    "C24",
+    "C29",
+    "C30",
+    "C31"
+  ]
+}
+```
+
+```regla
+{
+  "id": "R16",
+  "fuerza": "DEBE",
+  "clase": "ejecucion",
+  "texto": "Una trampa en cualquier hija termina globalmente como failed sin ejecutar limpiezas pendientes.",
+  "verificacion": [
+    "C21"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C23",
+  "regla": "R15",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "SubProceso Suspendible Work() Como Resultado<Entero, Cadena>\nRetornar Exito(1);\nFinSubProceso\nAlgoritmo P\nTareas failureReport\nLanzar Work();\nFinTareas\nSegun failureReport Hacer\nNada: Escribir \"ok\";\nAlgo(problem): Escribir problem.Primero;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Work() as result<integer, string>\nreturn success(1);\nendSubroutine\nAlgoritmo P\ntasks failureReport\nspawn Work();\nendTasks\nswitch failureReport do\nnone: write \"ok\";\nsome(problem): write problem.first;\nendSwitch\nFinAlgoritmo\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "ok\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C24",
+  "regla": "R11",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "SubProceso Suspendible Work() Como Resultado<Entero, Cadena>\nRetornar Error(\"failed\");\nFinSubProceso\nAlgoritmo P\nTareas failureReport\nLanzar Work();\nFinTareas\nSegun failureReport Hacer\nNada: Escribir \"ok\";\nAlgo(problem): Escribir problem.Primero, problem.Asociados.Longitud, problem.Canceladas;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Work() as result<integer, string>\nreturn failure(\"failed\");\nendSubroutine\nAlgoritmo P\ntasks failureReport\nspawn Work();\nendTasks\nswitch failureReport do\nnone: write \"ok\";\nsome(problem): write problem.first, problem.associated.length, problem.cancelled;\nendSwitch\nFinAlgoritmo\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "failed00\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C25",
+  "regla": "R13",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "SubProceso Suspendible Receive(stream Como Canal<Entero>)\nSegun Aguardar stream.Recibir() Hacer\nAlgo(receivedValue): Escribir receivedValue;\nNada: Escribir 0;\nFinSegun\nFinSubProceso\nSubProceso Suspendible Fail() Como Resultado<Entero, Cadena>\nRetornar Error(\"failed\");\nFinSubProceso\nAlgoritmo P\nDefinir stream Como Canal<Entero> <- Canal(1);\nTareas failureReport\nLanzar Receive(stream);\nLanzar Fail();\nFinTareas\nSegun failureReport Hacer\nNada: Escribir 0;\nAlgo(problem): Escribir problem.Primero, problem.Canceladas;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Receive(stream as channel<integer>)\nswitch await stream.receive() do\nsome(receivedValue): write receivedValue;\nnone: write 0;\nendSwitch\nendSubroutine\nsubroutine suspendable Fail() as result<integer, string>\nreturn failure(\"failed\");\nendSubroutine\nAlgoritmo P\ndefine stream as channel<integer> <- channel(1);\ntasks failureReport\nspawn Receive(stream);\nspawn Fail();\nendTasks\nswitch failureReport do\nnone: write 0;\nsome(problem): write problem.first, problem.cancelled;\nendSwitch\nFinAlgoritmo\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "failed1\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C26",
+  "regla": "R12",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "SubProceso Suspendible Work() Como Resultado<Entero, Cadena>\nRetornar Error(\"failed\");\nFinSubProceso\nAlgoritmo P\nTareas failureReport\nDefinir child Como Tarea<Entero> <- Lanzar Work();\nEscribir Aguardar child;\nFinTareas\nSegun failureReport Hacer\nNada: Escribir \"ok\";\nAlgo(problem): Escribir problem.Primero;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Work() as result<integer, string>\nreturn failure(\"failed\");\nendSubroutine\nAlgoritmo P\ntasks failureReport\ndefine child as task<integer> <- spawn Work();\nwrite await child;\nendTasks\nswitch failureReport do\nnone: write \"ok\";\nsome(problem): write problem.first;\nendSwitch\nFinAlgoritmo\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "failed\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C27",
+  "regla": "R14",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "SubProceso Suspendible First() Como Resultado<Entero, Cadena>\nRetornar Error(\"failure\");\nFinSubProceso\nSubProceso Suspendible Second() Como Resultado<Entero, Entero>\nRetornar Error(1);\nFinSubProceso\nAlgoritmo P\nTareas failureReport\nLanzar First();\nLanzar Second();\nFinTareas\nDescartar failureReport;\nFinAlgoritmo\n",
+    "en": "subroutine suspendable First() as result<integer, string>\nreturn failure(\"failure\");\nendSubroutine\nsubroutine suspendable Second() as result<integer, integer>\nreturn failure(1);\nendSubroutine\nAlgoritmo P\ntasks failureReport\nspawn First();\nspawn Second();\nendTasks\ndiscard failureReport;\nFinAlgoritmo\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "taskScopeErrorTypeMismatch",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C28",
+  "regla": "R14",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "SubProceso Suspendible Work() Como Resultado<Entero, Vector<Entero>>\nRetornar Error(Vector());\nFinSubProceso\nAlgoritmo P\nTareas failureReport\nLanzar Work();\nFinTareas\nDescartar failureReport;\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Work() as result<integer, vector<integer>>\nreturn failure(vector());\nendSubroutine\nAlgoritmo P\ntasks failureReport\nspawn Work();\nendTasks\ndiscard failureReport;\nFinAlgoritmo\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "taskErrorNotTransferable",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C29",
+  "regla": "R15",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "SubProceso Suspendible Work() Como Resultado<Entero, Cadena>\nRetornar Exito(1);\nFinSubProceso\nAlgoritmo P\nTareas\nLanzar Work();\nFinTareas\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Work() as result<integer, string>\nreturn success(1);\nendSubroutine\nAlgoritmo P\ntasks\nspawn Work();\nendTasks\nFinAlgoritmo\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "taskScopeFailureUnbound",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C30",
+  "regla": "R15",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nTareas failureReport\nFinTareas\nFinAlgoritmo\n",
+    "en": "Algoritmo P\ntasks failureReport\nendTasks\nFinAlgoritmo\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "taskScopeFailureUnused",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C31",
+  "regla": "R15",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "SubProceso Suspendible Fail() Como Resultado<Entero, Cadena>\nRetornar Error(\"failed\");\nFinSubProceso\nAlgoritmo P\nTareas failureReport\nLanzar Fail();\nFinTareas\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Fail() as result<integer, string>\nreturn failure(\"failed\");\nendSubroutine\nAlgoritmo P\ntasks failureReport\nspawn Fail();\nendTasks\nFinAlgoritmo\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "taskScopeFailureUnused",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```

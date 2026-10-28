@@ -34,3 +34,7 @@ pub use pseudolearn_ir::SourceProfile;
 pub use verify::verify_bytecode;
 
 mod verify_switch;
+
+mod verify_task_types;
+#[cfg(test)]
+mod verify_task_types_tests;

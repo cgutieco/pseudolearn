@@ -457,6 +457,18 @@
         "en": "spawn"
       }
     },
+    "selectKeyword": {
+      "lexemas": {
+        "es": "Elegir",
+        "en": "select"
+      }
+    },
+    "endSelect": {
+      "lexemas": {
+        "es": "FinElegir",
+        "en": "endSelect"
+      }
+    },
     "taskType": {
       "lexemas": {
         "es": "Tarea",
@@ -1342,6 +1354,54 @@
       "lexemas": {
         "es": "SolicitarTemporizador",
         "en": "requestTimer"
+      }
+    },
+    "taskFailureType": {
+      "lexemas": {
+        "es": "FalloTareas",
+        "en": "taskFailure"
+      }
+    },
+    "taskFirstError": {
+      "lexemas": {
+        "es": "Primero",
+        "en": "first"
+      }
+    },
+    "taskAssociatedErrors": {
+      "lexemas": {
+        "es": "Asociados",
+        "en": "associated"
+      }
+    },
+    "taskCancelledCount": {
+      "lexemas": {
+        "es": "Canceladas",
+        "en": "cancelled"
+      }
+    },
+    "channelType": {
+      "lexemas": {
+        "es": "Canal",
+        "en": "channel"
+      }
+    },
+    "channelSend": {
+      "lexemas": {
+        "es": "Enviar",
+        "en": "send"
+      }
+    },
+    "channelReceive": {
+      "lexemas": {
+        "es": "Recibir",
+        "en": "receive"
+      }
+    },
+    "receiveSource": {
+      "lexemas": {
+        "es": "Desde",
+        "en": "from"
       }
     }
   }

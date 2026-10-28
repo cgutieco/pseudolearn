@@ -97,7 +97,14 @@ fn finish_result(session: &mut AnalysisSession<'_>, local: LocalId) {
         session
             .diagnostics
             .push(pseudolearn_diagnostics::Diagnostic::new(
-                DiagnosticCode::ResultNotHandled,
+                if crate::task_failure_types::is_failure(
+                    session,
+                    &session.module.types.get(type_id),
+                ) {
+                    DiagnosticCode::TaskScopeFailureUnused
+                } else {
+                    DiagnosticCode::ResultNotHandled
+                },
                 span,
             ));
         crate::diagnostic_arguments::last_type(session, type_id);

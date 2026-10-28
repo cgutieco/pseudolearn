@@ -87,12 +87,15 @@ impl MachineStateRecord {
 
 impl<'program> Machine<'program> {
     pub fn step_instruction(&mut self) -> Option<RunExit> {
+        if let Some(request) = self.tasks.pending_delivery.take() {
+            return Some(RunExit::AwaitingEffect(request));
+        }
         let function = self.current.as_ref();
         let position = self.cursor.program_counter;
         self.cursor.program_counter = position.wrapping_add(1);
         match step(self, function.operation(position, self.probed)) {
             Ok(Flow::Continue) => None,
-            Ok(Flow::Completed(value)) => Some(RunExit::Completed(value)),
+            Ok(Flow::Completed(value)) => self.complete_step(value, position),
             Ok(Flow::Service(reason)) => Some(RunExit::Service(reason)),
             Ok(Flow::AwaitingInput) => Some(RunExit::AwaitingInput),
             Ok(Flow::AwaitingEffect(pending)) => Some(RunExit::AwaitingEffect(pending)),

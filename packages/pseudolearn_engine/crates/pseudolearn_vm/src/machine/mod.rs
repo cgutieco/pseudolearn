@@ -2,6 +2,7 @@
 
 mod calls;
 mod cells;
+mod channels;
 mod collections;
 mod control;
 mod delta;
@@ -18,8 +19,16 @@ mod output;
 mod profile;
 mod registers;
 mod roots;
+mod select;
+mod task_completion;
 mod task_context;
 mod task_creation;
+mod task_effects;
+mod task_results;
+mod task_resume;
+mod task_roots;
+mod task_scheduling;
+mod task_scope_cancellation;
 mod tasks;
 pub(super) use task_context::TaskContext;
 mod text;
@@ -155,6 +164,9 @@ fn trapped(trap: VmTrap) -> RunResult {
 impl<'program> Machine<'program> {
     fn execute<Observer: OpcodeObserver>(&mut self, observer: &mut Observer) -> RunExit {
         loop {
+            if let Some(request) = self.tasks.pending_delivery.take() {
+                return RunExit::AwaitingEffect(request);
+            }
             if !self.tasks.current_is_running() {
                 return RunExit::Trap(VmTrap::new(crate::evaluate::INVALID_BYTECODE, None));
             }

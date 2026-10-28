@@ -8,6 +8,7 @@ impl Machine<'_> {
         let site = self.effect_site(site)?;
         let operation = self.effect_operation(&site)?;
         if let Some(reply) = self.effect_result.take() {
+            self.tasks.pending_effects.remove(&self.tasks.current);
             self.complete_effect(&site, operation, &reply)?;
             return Ok(Flow::Continue);
         }
@@ -80,7 +81,7 @@ impl Machine<'_> {
             .checked_sub(1)
             .ok_or(INVALID_BYTECODE)?;
         self.effect_seq = self.effect_seq.checked_add(1).ok_or(INVALID_BYTECODE)?;
-        Ok(Flow::AwaitingEffect(PendingEffectRequest {
+        let request = PendingEffectRequest {
             effect_seq: self.effect_seq,
             capability_kind: operation.capability_family().to_owned(),
             operation: site.operation,
@@ -88,7 +89,12 @@ impl Machine<'_> {
             source_node_id: Some(site.source_node_id),
             receiver,
             arguments,
-        }))
+        };
+        if site.awaited {
+            self.wait_task_effect(request)
+        } else {
+            Ok(Flow::AwaitingEffect(request))
+        }
     }
 
     fn effect_receiver(

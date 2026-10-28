@@ -102,6 +102,7 @@ fn lower_with<'sources>(
         crate::lexical_origins::annotate(&mut origins, start, semantic_module, source_text);
     }
 
+    crate::task_wrappers::append(semantic_module, &mut functions);
     crate::function_prototypes::append(semantic_module, &mut functions);
     Ok(Module {
         name: "P".to_owned(),
@@ -126,3 +127,13 @@ mod function_prototypes;
 mod indirect_calls;
 
 mod effect_values;
+
+mod channel_operations;
+mod select_dispatch;
+
+mod task_wrappers;
+
+mod suspension_points;
+mod task_scope_result;
+
+mod task_values;

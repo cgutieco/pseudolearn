@@ -89,3 +89,10 @@ consultan al anfitrión; los demás producen un Resultado portable.
 ### Familia de capacidad de cada operación (`PG-3`)
 
 `EffectOperation::capability_family` es la única fuente del vocabulario cerrado `console`, `arguments`, `filesystem`, `clock` y `timer` con el que la cinta y la carga de `awaiting_effect` rotulan una operación. Se deriva del receptor (`Directory` y `File` son `filesystem`) y, para una solicitud de capacidad (`request_*`), de la capacidad solicitada; una operación sin receptor ni prefijo de solicitud cae en `host`. La función vive en la ABI porque la VM y el runtime la comparten y ninguno puede depender del otro; antes cada uno formateaba el nombre interno de Rust (`Directory`, `File`), que no era un contrato. `tests/effect_operation_family_tests.rs` cubre las operaciones con receptor, las solicitudes y una identidad inexistente.
+
+## Canales acotados
+
+`channel_layout` reserva la etiqueta `u32::MAX - 6`, declara capacidad y ancho y calcula exactamente
+`1 + capacidad × max(1, ancho)` celdas con aritmética comprobada. Una capacidad cero se rechaza antes
+de publicar la disposición. La reserva física incluye la cabecera común y las palabras del búfer; las
+colas de emisores y receptores pertenecen al runtime y conservan orden lógico, sin direcciones nativas.

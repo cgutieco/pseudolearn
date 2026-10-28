@@ -275,3 +275,12 @@ se normaliza ni se repara al leerla. El formato y sus hashes pertenecen al runti
 `program_view_effects.rs` añade a los nodos de la vista pública tres atributos: `builtin_type` (`bytes`, `io_error`) y `capability_type` (`console`, `arguments`, `directory`, `file`, `clock`, `timer`) en los nodos de tipo, reconocidos por su lexema en ambos perfiles con `pseudolearn_semantic::capability_types::find_capability_kind`, y `effect_operation` (identidad de `LIB.MODEL`, por ejemplo `file_open`) en los nodos postfijos, tomado de las expresiones `HirExpression::Effect` del análisis. La anotación reutiliza el análisis único de `program_view_annotations::call_names`, que ya resolvía `builtin`. Un programa sin capacidades no proyecta ninguno de los tres. Cubre `tests/program_view_effects.rs` y el caso `API.PROGRAM.VIEW` C11.
 
 El anfitrión en memoria acepta `cancel_on_awaiting_effect` y `alterar_cinta` (ver `pseudolearn_runtime`), de modo que el corredor de conformidad de `aot` ya no rechaza esos casos con `ruta_invalida`.
+
+## Integración de tareas y canales
+
+Las pruebas `task_failure_tests`, `task_channel_tests` y `task_deadlock_tests` atraviesan análisis,
+RI, bytecode y VM, incluido el avance con anfitrión desacoplado. Cubren resultados falibles,
+limpiezas cooperativas, contrapresión, elección por orden textual y ubicaciones relacionadas
+del bloqueo. `task_lowering_tests` localiza los rechazos en la frontera de RI o bytecode.
+Estos tests se ejecutan por archivo desde la raíz del motor; no sustituyen la conformidad de
+los sujetos ni las pruebas de reconstrucción histórica o de cinta concurrente.

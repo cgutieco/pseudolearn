@@ -76,3 +76,9 @@ pub struct MemoryCount {
     pub program_counter: usize,
     pub cells: u64,
 }
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct TaskBlockedLocation {
+    pub task_id: u64,
+    pub span: Option<pseudolearn_bytecode::SourceSpan>,
+}

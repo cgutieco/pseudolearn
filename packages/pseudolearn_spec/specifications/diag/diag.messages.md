@@ -37,11 +37,12 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La capa de presentación resuelve plantilla por idioma de interfaz y sustituye argumentos tipados. El idioma de prosa es independiente del vocabulario del programa. Nunca traduce nombres del usuario; tokens usan lexema activo. Cada plantilla usa exactamente sus argumentos requeridos; no quedan marcadores sin resolver. Los mensajes describen el problema y la acción pertinente sin texto del anfitrión.",
+  "texto": "La capa de presentación resuelve plantilla por idioma de interfaz y sustituye argumentos tipados. El idioma de prosa es independiente del vocabulario del programa. Nunca traduce nombres del usuario; tokens usan lexema activo. Cada plantilla usa exactamente sus argumentos requeridos; no quedan marcadores sin resolver. Los mensajes describen el problema y la acción pertinente sin texto del anfitrión. taskDeadlock presenta los sitios de suspensión como ubicaciones relacionadas en orden de identidad de tarea; los fallos de ámbito y canal usan las plantillas bilingües del catálogo.",
   "verificacion": [
     "C1",
     "C2",
-    "C3"
+    "C3",
+    "C4"
   ]
 }
 ```
@@ -128,5 +129,33 @@
     "estricto",
     "flexible"
   ]
+}
+```
+
+```caso
+{
+  "id": "C4",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir stream Como Canal<Entero> <- Canal(1);\nSegun Aguardar stream.Recibir() Hacer\nNada: Escribir 0;\nAlgo(value): Escribir value;\nFinSegun\nFinAlgoritmo\n",
+    "en": "Algoritmo P\ndefine stream as channel<integer> <- channel(1);\nswitch await stream.receive() do\nnone: write 0;\nsome(value): write value;\nendSwitch\nFinAlgoritmo\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "",
+    "terminacion": "failed",
+    "fallo": {
+      "codigo": "taskDeadlock"
+    }
+  }
 }
 ```

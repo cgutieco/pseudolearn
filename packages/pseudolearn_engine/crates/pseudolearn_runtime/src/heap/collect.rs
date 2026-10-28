@@ -72,7 +72,12 @@ impl Heap {
         ) {
             return crate::collection::references(self, handle, pending);
         }
-        if matches!(header.shape_tag, pseudolearn_abi::bytes_layout::BYTES_SHAPE_TAG | pseudolearn_abi::capability_layout::CAPABILITY_SHAPE_TAG) {
+        if matches!(
+            header.shape_tag,
+            pseudolearn_abi::bytes_layout::BYTES_SHAPE_TAG
+                | pseudolearn_abi::capability_layout::CAPABILITY_SHAPE_TAG
+                | pseudolearn_abi::channel_layout::CHANNEL_SHAPE_TAG
+        ) {
             return Ok(());
         }
         if header.shape_tag == 1 {

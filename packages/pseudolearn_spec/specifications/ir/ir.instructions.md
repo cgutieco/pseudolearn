@@ -3379,12 +3379,12 @@
 {
   "id": "O96",
   "nombre": "task.await",
-  "firma": "task.await %task: i64, <tipo> -> tipo",
+  "firma": "task.await %task: i64, <tipo> -> tipo | i64",
   "clases_de_valor": [
     "escalar",
     "referencia"
   ],
-  "semantica": "Devuelve el resultado exitoso de la tarea indicada. Si aún no terminó, suspende solo a la tarea actual; una segunda espera devuelve el resultado ya conservado.",
+  "semantica": "Devuelve el resultado exitoso de la tarea indicada. Si aún no terminó, suspende solo a la tarea actual; una segunda espera devuelve el resultado ya conservado. El tipo unit selecciona el transporte de un resultado compuesto: devuelve un estado i64 y prepara sus hojas para task.value_load.",
   "trampas": [
     "uninitializedVariableRead",
     "taskDeadlock"
@@ -3736,5 +3736,262 @@
   "id": "V165",
   "regla": "LANG.TASK.SCOPE#R10",
   "sin_ri": "Las trampas terminan la ejecución mediante la política existente de la máquina virtual."
+}
+```
+
+```cobertura
+{
+  "id": "V166",
+  "regla": "LANG.TASK.SCOPE#R11",
+  "instrucciones": [
+    "task.outcome"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V167",
+  "regla": "LANG.TASK.SCOPE#R12",
+  "instrucciones": [
+    "task.outcome",
+    "task.cancel_point",
+    "task.scope_boundary"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V168",
+  "regla": "LANG.TASK.SCOPE#R13",
+  "instrucciones": [
+    "task.outcome",
+    "task.scope_result"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V169",
+  "regla": "LANG.TASK.SCOPE#R14",
+  "sin_ri": "La política se aplica mediante operaciones de tarea y datos compartidos del runtime; la comprobación estática precede a la ejecución."
+}
+```
+
+```cobertura
+{
+  "id": "V170",
+  "regla": "LANG.TASK.SCOPE#R15",
+  "instrucciones": [
+    "task.scope_result",
+    "task.value_load"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V171",
+  "regla": "LANG.TASK.SCOPE#R16",
+  "sin_ri": "La política se aplica mediante operaciones de tarea y datos compartidos del runtime; la comprobación estática precede a la ejecución."
+}
+```
+
+```cobertura
+{
+  "id": "V172",
+  "regla": "LANG.TASK.CHANNEL#R1",
+  "sin_ri": "La política se aplica mediante operaciones de tarea y datos compartidos del runtime; la comprobación estática precede a la ejecución."
+}
+```
+
+```cobertura
+{
+  "id": "V173",
+  "regla": "LANG.TASK.CHANNEL#R2",
+  "instrucciones": [
+    "task.channel"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V174",
+  "regla": "LANG.TASK.CHANNEL#R3",
+  "instrucciones": [
+    "task.channel"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V175",
+  "regla": "LANG.TASK.CHANNEL#R4",
+  "instrucciones": [
+    "task.channel",
+    "task.value_load"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V176",
+  "regla": "LANG.TASK.CHANNEL#R5",
+  "instrucciones": [
+    "task.channel"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V177",
+  "regla": "LANG.TASK.CHANNEL#R6",
+  "sin_ri": "La política se aplica mediante operaciones de tarea y datos compartidos del runtime; la comprobación estática precede a la ejecución."
+}
+```
+
+```cobertura
+{
+  "id": "V178",
+  "regla": "LANG.TASK.CHANNEL#R7",
+  "instrucciones": [
+    "task.channel",
+    "task.value_load",
+    "switch"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V179",
+  "regla": "LANG.TASK.CHANNEL#R8",
+  "instrucciones": [
+    "stmt.enter",
+    "decide.case",
+    "stmt.exit"
+  ]
+}
+```
+
+
+```instruccion
+{
+  "id": "O101",
+  "nombre": "task.channel",
+  "firma": "task.channel <comando>, <tipo>, %arg... -> tipo",
+  "clases_de_valor": [
+    "escalar",
+    "referencia"
+  ],
+  "semantica": "Opera un canal acotado o una elección, con suspensión cooperativa y resultado por tarea.",
+  "trampas": [
+    "channelCapacityInvalid",
+    "channelCapacityExceeded",
+    "taskDeadlock",
+    "cellLimitExceeded"
+  ],
+  "efectos": [
+    "tarea"
+  ],
+  "observacion": []
+}
+```
+
+```instruccion
+{
+  "id": "O102",
+  "nombre": "task.value_load",
+  "firma": "task.value_load <tipo>, <indice> -> tipo",
+  "clases_de_valor": [
+    "escalar",
+    "referencia"
+  ],
+  "semantica": "Carga una hoja del último resultado de tarea o valor recibido por la tarea actual, con cero ausente si no hubo valor.",
+  "trampas": [],
+  "efectos": [
+    "tarea"
+  ],
+  "observacion": []
+}
+```
+
+```instruccion
+{
+  "id": "O103",
+  "nombre": "task.outcome",
+  "firma": "task.outcome <desenlace>, %hoja... -> unit",
+  "clases_de_valor": [
+    "escalar",
+    "referencia"
+  ],
+  "semantica": "Conserva el resultado exitoso o el error transferible de una tarea hija antes de su retorno.",
+  "trampas": [],
+  "efectos": [
+    "tarea"
+  ],
+  "observacion": []
+}
+```
+
+```instruccion
+{
+  "id": "O104",
+  "nombre": "task.scope_result",
+  "firma": "task.scope_result %scope: i64, <tipo> -> i64",
+  "clases_de_valor": [
+    "escalar",
+    "referencia"
+  ],
+  "semantica": "Después de la unión, prepara el agregado de fallos del ámbito y devuelve presencia.",
+  "trampas": [
+    "cellLimitExceeded"
+  ],
+  "efectos": [
+    "tarea"
+  ],
+  "observacion": []
+}
+```
+
+```instruccion
+{
+  "id": "O105",
+  "nombre": "task.cancel_point",
+  "firma": "task.cancel_point ^limpieza -> unit",
+  "clases_de_valor": [
+    "escalar",
+    "referencia"
+  ],
+  "semantica": "Registra la continuación de limpieza cooperativa del marco actual.",
+  "trampas": [],
+  "efectos": [
+    "tarea"
+  ],
+  "observacion": []
+}
+```
+
+```instruccion
+{
+  "id": "O106",
+  "nombre": "task.scope_boundary",
+  "firma": "task.scope_boundary %scope: i64, ^union -> unit",
+  "clases_de_valor": [
+    "escalar",
+    "referencia"
+  ],
+  "semantica": "Registra la salida cooperativa del cuerpo de un ámbito en su marco dueño.",
+  "trampas": [],
+  "efectos": [
+    "tarea"
+  ],
+  "observacion": []
 }
 ```

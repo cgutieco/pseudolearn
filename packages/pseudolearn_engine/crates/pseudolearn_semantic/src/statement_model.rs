@@ -10,6 +10,7 @@ pub struct HirCase {
 
 #[derive(Clone, Debug, PartialEq)]
 pub enum HirStatement {
+    Select(Box<crate::channel_model::HirSelect>),
     Defer(Vec<StatementId>),
     TaskScope {
         failure: Option<LocalId>,

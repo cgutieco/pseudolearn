@@ -13,15 +13,7 @@ pub(crate) fn lower_range(
     range: (usize, usize),
     state: &mut ExpressionState<'_, '_>,
 ) -> Vec<ValueId> {
-    if let Some(values) = crate::effect_values::values(expression, state)
-        .or_else(|| crate::collections::values(expression, state))
-    {
-        return slice(values, range);
-    }
-    if let Some(values) = crate::indirect_calls::aggregate(expression, state) {
-        return slice(values, range);
-    }
-    if let Some(values) = crate::variant_values::lower(expression, state) {
+    if let Some(values) = aggregate_values(expression, state) {
         return slice(values, range);
     }
     let (offset, count) = range;
@@ -159,4 +151,16 @@ fn lower_invocation(
         ),
         _ => Vec::new(),
     }
+}
+
+fn aggregate_values(
+    expression: ExpressionId,
+    state: &mut ExpressionState<'_, '_>,
+) -> Option<Vec<ValueId>> {
+    crate::task_values::values(expression, state)
+        .or_else(|| crate::channel_operations::values(expression, state))
+        .or_else(|| crate::effect_values::values(expression, state))
+        .or_else(|| crate::collections::values(expression, state))
+        .or_else(|| crate::indirect_calls::aggregate(expression, state))
+        .or_else(|| crate::variant_values::lower(expression, state))
 }

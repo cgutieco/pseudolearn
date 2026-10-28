@@ -58,6 +58,7 @@ pub(crate) struct CallSite {
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct EffectSite {
+    pub awaited: bool,
     pub destination: Option<Register>,
     pub capability: u16,
     pub operation: String,
@@ -91,6 +92,8 @@ pub(crate) struct ObservationSite {
 
 #[derive(Clone, Debug, Default, PartialEq)]
 pub(crate) struct LoadedFunction {
+    pub task_sites: Vec<super::instructions::task_results::TaskSite>,
+    pub channel_sites: Vec<super::instructions::channels::ChannelSite>,
     pub visibility: std::collections::BTreeMap<Register, SourceSpan>,
     pub name: String,
     pub declaration_span: Option<SourceSpan>,
@@ -171,7 +174,10 @@ pub(crate) struct LoadedProgramInner {
 
 impl LoadedProgram {
     pub fn uses_effects(&self) -> bool {
-        self.inner.functions.iter().any(|function| !function.effect_sites.is_empty())
+        self.inner
+            .functions
+            .iter()
+            .any(|function| !function.effect_sites.is_empty())
     }
 
     pub(crate) fn new(inner: LoadedProgramInner) -> Self {

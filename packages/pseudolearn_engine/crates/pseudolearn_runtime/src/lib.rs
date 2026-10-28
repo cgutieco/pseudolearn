@@ -140,3 +140,25 @@ mod task_agenda_tests;
 mod secret_policy;
 
 mod tape_accounting;
+
+mod task_channel;
+mod task_failure;
+mod wait_queue;
+pub use task_channel::{ChannelError, ChannelReply, ChannelStep, TaskChannels, channel_values};
+pub use task_failure::{TaskFailure, TaskFailures};
+#[cfg(test)]
+mod task_channel_tests;
+#[cfg(test)]
+mod task_failure_tests;
+#[cfg(test)]
+mod wait_queue_tests;
+
+pub use task_agenda::{TaskBlock, TaskProgress, TaskWaitReason, task_progress};
+#[cfg(test)]
+mod task_deadlock_tests;
+
+pub use task_agenda::{interrupt_owner, scope_children, scope_owner, task_scope, task_wait};
+
+mod channel_storage;
+pub use channel_storage::new_channel_storage;
+pub use pseudolearn_abi::ChannelLayout;

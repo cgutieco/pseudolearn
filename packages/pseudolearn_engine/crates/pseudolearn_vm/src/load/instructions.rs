@@ -12,10 +12,12 @@ use super::{LoadedFunction, Origin, invalid_bytecode};
 use crate::VmTrap;
 use crate::dispatch::{DispatchKind, Op, dispatch_kind, select_fused, select_operation};
 
+pub(crate) mod channels;
 mod control;
 mod effects;
 mod switch;
 mod task_control;
+pub(crate) mod task_results;
 mod values;
 
 pub(super) struct DecodeContext<'module> {

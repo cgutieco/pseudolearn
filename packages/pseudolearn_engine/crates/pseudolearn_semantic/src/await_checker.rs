@@ -37,7 +37,7 @@ pub(crate) fn check(
     expression
 }
 
-fn context(session: &mut AnalysisSession<'_>, node: usize) -> bool {
+pub(crate) fn context(session: &mut AnalysisSession<'_>, node: usize) -> bool {
     if session.control.cleaning {
         session.report(DiagnosticCode::AwaitInsideDefer, node);
         return false;
@@ -65,6 +65,9 @@ fn awaited_call(session: &AnalysisSession<'_>, node: usize) -> Option<usize> {
 }
 
 fn postfix_is_call(session: &AnalysisSession<'_>, node: usize) -> bool {
+    if session.child(node, NodeKind::Arguments).is_some() {
+        return true;
+    }
     session
         .tree
         .operator_tokens
@@ -86,7 +89,7 @@ fn valid_operand(session: &AnalysisSession<'_>, expression: ExpressionId) -> boo
         {
             true
         }
-        Some(HirExpression::Effect { .. }) => true,
+        Some(HirExpression::Effect { .. } | HirExpression::Channel(_)) => true,
         Some(HirExpression::Call { function, .. }) => usize::try_from(function.0)
             .ok()
             .and_then(|index| session.module.functions.get(index))

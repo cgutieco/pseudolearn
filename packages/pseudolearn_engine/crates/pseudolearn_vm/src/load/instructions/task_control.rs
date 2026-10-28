@@ -59,7 +59,14 @@ fn decode_task_await(instruction: &Instruction) -> Result<Op, VmTrap> {
     if task.class != RegisterClass::Scalar || instruction.operands.len() != 2 {
         return Err(invalid_bytecode());
     }
+    let aggregate = matches!(
+        instruction.operands.get(1),
+        Some(pseudolearn_bytecode::BytecodeOperand::Type(
+            pseudolearn_bytecode::ValueType::Unit
+        ))
+    );
     Ok(Op::TaskAwait {
+        aggregate,
         task: task.index,
         destination,
     })

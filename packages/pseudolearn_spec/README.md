@@ -405,3 +405,15 @@ reproducirla y las operaciones `start`, `advance`, `input`, `effect_result` y `c
 ### Propiedad de trampas y sujetos sin observación (`PG-3`)
 
 `property_traps.rs` genera programas con todos los enlaces inicializados (`Definir r Como Entero <- …`), porque el lenguaje rechaza el enlace sin inicializador y la propiedad fallaba en todos los sujetos antes de ejercer la regla, y solo pide el modo `observe: events` a los sujetos que anuncian la capacidad `observe`; el sujeto nativo lo rechaza por diseño. Cubre `property_traps_tests.rs`. Los casos con anfitrión admiten además `cancel_on_awaiting_effect` y `alterar_cinta` como directivas del corredor.
+
+### Contratos de tareas y canales
+
+Los fallos de ámbito amplían las reglas existentes conservando versión y estado. El formato exige
+identidades de regla `R…`: las seis reglas de fallos ocupan `LANG.TASK.SCOPE#R11`–`R16`, las ocho
+de canales `LANG.TASK.CHANNEL#R1`–`R8` y la detección de bloqueo `ENG.TASK.AGENDA#R7`. Los casos
+se derivan del orden FIFO, la cancelación antes de reanudar y la selección por orden textual; los
+lexemas de programa se mantienen bilingües y los nombres propios no se traducen. Las vinculaciones
+nuevas permanecen pendientes de conformidad hasta ejecutar a ambos sujetos. Un test del runtime
+sobre errores asociados comprueba sucesos terminales ya registrados; dos hijas con retornos
+inmediatos no implican por sí solas dos errores porque la segunda recibe la cancelación antes
+de ejecutar. Los esperados del corpus no se obtienen de capturas de ejecución.

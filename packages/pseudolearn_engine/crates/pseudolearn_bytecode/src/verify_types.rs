@@ -16,6 +16,9 @@ pub(crate) fn verify(
     function: &BytecodeFunction,
     instruction: &Instruction,
 ) -> Result<(), BytecodeError> {
+    if crate::verify_task_types::verify(function, instruction)? {
+        return Ok(());
+    }
     if crate::verify_collection_types::verify(module, function, instruction)? {
         return Ok(());
     }

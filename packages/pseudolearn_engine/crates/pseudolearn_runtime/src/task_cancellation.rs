@@ -18,7 +18,9 @@ impl TaskCancellation<'_> {
             task,
             super::TaskState::Cleaning,
             super::TaskState::Cancelled,
-        )
+        )?;
+        self.agenda.wake_completed_dependents(task)?;
+        Ok(())
     }
 
     pub fn order(&self, task: TaskId) -> Result<Vec<TaskId>, TaskAgendaError> {
@@ -39,4 +41,56 @@ impl TaskCancellation<'_> {
     pub fn abandoned_effects(&self) -> &[(TaskId, u64)] {
         &self.agenda.abandoned_effects
     }
+}
+
+pub fn task_scope(agenda: &TaskAgenda, task: TaskId) -> Option<super::TaskScopeId> {
+    agenda.tasks.get(&task)?.scope
+}
+
+pub fn scope_owner(agenda: &TaskAgenda, scope: super::TaskScopeId) -> Option<TaskId> {
+    Some(agenda.scopes.get(&scope)?.owner)
+}
+
+impl TaskCancellation<'_> {
+    pub fn take_cleanup(&mut self) -> Result<Option<TaskId>, TaskAgendaError> {
+        let candidate = self.agenda.tasks.iter().find_map(|(task, entry)| {
+            (entry.state == super::TaskState::CancelRequested
+                && entry.children.iter().all(|child| {
+                    self.agenda
+                        .state(*child)
+                        .is_some_and(super::TaskState::is_terminal)
+                }))
+            .then_some(*task)
+        });
+        if let Some(task) = candidate {
+            self.agenda.begin_cleanup(task)?;
+        }
+        Ok(candidate)
+    }
+}
+
+pub fn task_wait(agenda: &TaskAgenda, task: TaskId) -> Option<super::TaskWaitReason> {
+    agenda.tasks.get(&task)?.waiting
+}
+
+pub fn interrupt_owner(
+    agenda: &mut TaskAgenda,
+    task: TaskId,
+) -> Result<super::TaskWake, TaskAgendaError> {
+    if let Some(super::TaskWaitReason::Effect(sequence)) =
+        agenda.tasks.get(&task).and_then(|entry| entry.waiting)
+    {
+        agenda.abandoned_effects.push((task, sequence));
+    }
+    let wake = agenda.wake(task)?;
+    agenda.ready.push_back(task);
+    Ok(wake)
+}
+
+pub fn scope_children(agenda: &TaskAgenda, scope: super::TaskScopeId) -> Vec<TaskId> {
+    agenda
+        .scopes
+        .get(&scope)
+        .map(|scope| scope.children.clone())
+        .unwrap_or_default()
 }

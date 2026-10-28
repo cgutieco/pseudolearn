@@ -10,12 +10,10 @@ pub mod vector_layout;
 pub use bytes_layout::{
     BYTES_DATA_OFFSET, BYTES_HEADER_WORDS, BYTES_LENGTH_OFFSET, BYTES_SHAPE_TAG, bytes_cell_count,
 };
-pub use capability_layout::{
-    CAPABILITY_HEADER_WORDS, CAPABILITY_SHAPE_TAG, CapabilityKind,
-};
-pub use io_error_layout::IoErrorKind;
+pub use capability_layout::{CAPABILITY_HEADER_WORDS, CAPABILITY_SHAPE_TAG, CapabilityKind};
 pub use collection_command::CollectionCommand;
 pub use dictionary_layout::{DictionaryKeyKind, DictionaryLayout};
+pub use io_error_layout::IoErrorKind;
 pub use vector_layout::VectorLayout;
 pub mod frame;
 pub mod handle;
@@ -65,4 +63,9 @@ mod closure_layout;
 pub use closure_layout::ClosureLayout;
 
 mod effect_operation;
-pub use effect_operation::{EffectValueKind, EffectOperation, EFFECT_OPERATIONS, find_effect_operation, effect_operation};
+pub use effect_operation::{
+    EFFECT_OPERATIONS, EffectOperation, EffectValueKind, effect_operation, find_effect_operation,
+};
+
+pub mod channel_layout;
+pub use channel_layout::ChannelLayout;

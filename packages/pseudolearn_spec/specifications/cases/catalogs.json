@@ -738,6 +738,24 @@
         "es": "Bytes"
       }
     },
+    "channelReceive": {
+      "lexemas": {
+        "en": "receive",
+        "es": "Recibir"
+      }
+    },
+    "channelSend": {
+      "lexemas": {
+        "en": "send",
+        "es": "Enviar"
+      }
+    },
+    "channelType": {
+      "lexemas": {
+        "en": "channel",
+        "es": "Canal"
+      }
+    },
     "clockCapabilityType": {
       "lexemas": {
         "en": "Clock",
@@ -834,6 +852,12 @@
         "es": "ErrorES"
       }
     },
+    "receiveSource": {
+      "lexemas": {
+        "en": "from",
+        "es": "Desde"
+      }
+    },
     "requestArguments": {
       "lexemas": {
         "en": "requestArguments",
@@ -868,6 +892,30 @@
       "lexemas": {
         "en": "suspendable",
         "es": "Suspendible"
+      }
+    },
+    "taskAssociatedErrors": {
+      "lexemas": {
+        "en": "associated",
+        "es": "Asociados"
+      }
+    },
+    "taskCancelledCount": {
+      "lexemas": {
+        "en": "cancelled",
+        "es": "Canceladas"
+      }
+    },
+    "taskFailureType": {
+      "lexemas": {
+        "en": "taskFailure",
+        "es": "FalloTareas"
+      }
+    },
+    "taskFirstError": {
+      "lexemas": {
+        "en": "first",
+        "es": "Primero"
       }
     },
     "timerCapabilityType": {
@@ -1244,6 +1292,62 @@
       "mensajes": {
         "en": "Chained multidimensional array access is not allowed; use single brackets with commas",
         "es": "El acceso multidimensional encadenado no está permitido; use corchetes con comas"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
+    "channelCapacityExceeded": {
+      "argumentos": [],
+      "clase": "runtime",
+      "mensajes": {
+        "en": "Channel capacity exceeds the configured maximum",
+        "es": "La capacidad del canal supera el máximo configurado"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
+    "channelCapacityInvalid": {
+      "argumentos": [],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Channel capacity must be positive",
+        "es": "La capacidad del canal debe ser positiva"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
+    "channelElementNotTransferable": {
+      "argumentos": [],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "A channel element must be transferable",
+        "es": "El elemento del canal debe ser transferible"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
+    "channelOperationWithoutAwait": {
+      "argumentos": [],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Send and receive require await",
+        "es": "Enviar y Recibir requieren Aguardar"
       },
       "politica": "A",
       "severidad": {
@@ -3412,6 +3516,20 @@
       },
       "tipos_argumentos": {}
     },
+    "pureFunctionTaskOperation": {
+      "argumentos": [],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "A pure function cannot operate tasks or channels",
+        "es": "Una función pura no puede operar tareas ni canales"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
     "pureFunctionTransitiveSideEffect": {
       "argumentos": [],
       "clase": "semantic",
@@ -3700,6 +3818,20 @@
       "mensajes": {
         "en": "A constructor cannot return a value",
         "es": "Un constructor no puede retornar un valor"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
+    "selectNeedsTwoBranches": {
+      "argumentos": [],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Select requires at least two receive branches",
+        "es": "Elegir requiere al menos dos ramas de recepción"
       },
       "politica": "A",
       "severidad": {
@@ -4014,6 +4146,20 @@
       },
       "tipos_argumentos": {}
     },
+    "taskErrorNotTransferable": {
+      "argumentos": [],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "A task error must be transferable",
+        "es": "El error de tarea debe ser transferible"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
     "taskHandleEscape": {
       "argumentos": [],
       "clase": "semantic",
@@ -4045,6 +4191,48 @@
       "tipos_argumentos": {
         "limit": "numero"
       }
+    },
+    "taskScopeErrorTypeMismatch": {
+      "argumentos": [],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Fallible tasks in a scope require the same exact error type",
+        "es": "Las tareas falibles del ámbito requieren el mismo tipo exacto de error"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
+    "taskScopeFailureUnbound": {
+      "argumentos": [],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "A fallible scope needs a failure binding",
+        "es": "El ámbito falible necesita un vínculo para su fallo"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
+    "taskScopeFailureUnused": {
+      "argumentos": [],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "A scope failure binding requires fallible tasks and must be consumed",
+        "es": "El vínculo del ámbito requiere tareas falibles y debe consumirse"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
     },
     "taskScopeInsideDefer": {
       "argumentos": [],
@@ -5296,14 +5484,16 @@
       "program": "trivia, { moduleDirective }, { moduleUnit }, [ algorithmUnit, { moduleUnit } ], trivia, endOfFile",
       "propagation": "@propagateKeyword, unary",
       "realization": "identifier, identifier, { @comma, identifier }",
+      "receiveBranch": "identifier, identifier, identifier, expression, @branchSeparator, { statement }",
       "recordField": "fieldBinding, terminator",
       "recordUnit": "@recordKeyword, identifier, [ typeParameters ], line, { recordField }, @endRecord, line",
       "repeatLoop": "@repeat, line, body, @until, expression, line",
       "returnStatement": "@returnKeyword, [ expression ]",
+      "selectStatement": "@selectKeyword, receiveBranch, receiveBranch, { receiveBranch }, @endSelect",
       "signedInteger": "[ @plus | @minus ], integerLiteral",
       "spawnExpression": "@spawnKeyword, identifier, arguments",
       "spawnStatement": "spawnExpression",
-      "statement": "( declaration | constantDeclaration | dimensionDeclaration | assignmentStatement | output | input | callStatement | returnStatement | discardStatement | breakStatement | spawnStatement ), terminator",
+      "statement": "selectStatement | ( declaration | constantDeclaration | dimensionDeclaration | assignmentStatement | output | input | callStatement | returnStatement | discardStatement | breakStatement | spawnStatement ), terminator",
       "subprogram": "@subroutine, [ @suspendibleModifier ], identifier, [ typeParameters ], parameters, [ @typeConnector, type ], line, body, @endSubroutine, line",
       "switch": "@switchKeyword, expression, @doKeyword, line, { labels, @branchSeparator, body }, [ @defaultCase, @branchSeparator, body ], @endSwitch, line",
       "taskScope": "@tasksKeyword, [ identifier ], line, body, @endTasks, line",
@@ -5423,7 +5613,9 @@
       "tasksKeyword",
       "endTasks",
       "spawnKeyword",
-      "taskType"
+      "taskType",
+      "selectKeyword",
+      "endSelect"
     ]
   },
   "helpCatalog": {
@@ -7248,6 +7440,46 @@
               {
                 "identity": "taskType",
                 "text": "Declares the local type of a task handle that can only be awaited."
+              },
+              {
+                "identity": "taskFailureType",
+                "text": "Aggregated task failure with first error, associated errors and cancellations."
+              },
+              {
+                "identity": "taskFirstError",
+                "text": "First error in completion order."
+              },
+              {
+                "identity": "taskAssociatedErrors",
+                "text": "Later errors retained in completion order."
+              },
+              {
+                "identity": "taskCancelledCount",
+                "text": "Number of cancelled children."
+              },
+              {
+                "identity": "channelType",
+                "text": "Channel with explicit positive capacity and transferable elements."
+              },
+              {
+                "identity": "channelSend",
+                "text": "Sends with backpressure and requires await."
+              },
+              {
+                "identity": "channelReceive",
+                "text": "Receives an optional value and requires await."
+              },
+              {
+                "identity": "receiveSource",
+                "text": "Introduces the channel of a select branch."
+              },
+              {
+                "identity": "selectKeyword",
+                "text": "Chooses the first ready receive branch in textual order."
+              },
+              {
+                "identity": "endSelect",
+                "text": "Closes a receive selection."
               }
             ],
             "purpose": "Each task belongs to the lexical scope where it is spawned and cannot outlive it.",
@@ -7293,6 +7525,46 @@
               {
                 "identity": "taskType",
                 "text": "Declara el tipo local de un asa de tarea que solo se espera con Aguardar."
+              },
+              {
+                "identity": "taskFailureType",
+                "text": "Fallo de tareas agregado con primer error, asociados y cancelaciones."
+              },
+              {
+                "identity": "taskFirstError",
+                "text": "Primer error por orden de terminación."
+              },
+              {
+                "identity": "taskAssociatedErrors",
+                "text": "Errores posteriores conservados por orden de terminación."
+              },
+              {
+                "identity": "taskCancelledCount",
+                "text": "Cantidad de hijas canceladas."
+              },
+              {
+                "identity": "channelType",
+                "text": "Canal de capacidad positiva explícita y elementos transferibles."
+              },
+              {
+                "identity": "channelSend",
+                "text": "Envía con contrapresión y requiere Aguardar."
+              },
+              {
+                "identity": "channelReceive",
+                "text": "Recibe un opcional y requiere Aguardar."
+              },
+              {
+                "identity": "receiveSource",
+                "text": "Introduce el canal de una rama de Elegir."
+              },
+              {
+                "identity": "selectKeyword",
+                "text": "Elige la primera recepción lista en orden textual."
+              },
+              {
+                "identity": "endSelect",
+                "text": "Cierra la elección de recepciones."
               }
             ],
             "purpose": "Cada tarea pertenece al ámbito léxico donde se lanza y no puede sobrevivir a su cierre.",
@@ -7335,6 +7607,86 @@
             "identity": "taskType",
             "source": {
               "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "selectKeyword",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "endSelect",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "taskFailureType",
+            "source": {
+              "element": "D2",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "taskFirstError",
+            "source": {
+              "element": "D2",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "taskAssociatedErrors",
+            "source": {
+              "element": "D2",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "taskCancelledCount",
+            "source": {
+              "element": "D2",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "channelType",
+            "source": {
+              "element": "D2",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "channelSend",
+            "source": {
+              "element": "D2",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "channelReceive",
+            "source": {
+              "element": "D2",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "receiveSource",
+            "source": {
+              "element": "D2",
               "specification": "LANG.PROFILE.VOCABULARY",
               "version": "1.0.0"
             }
@@ -12821,7 +13173,17 @@
             "tasksKeyword",
             "endTasks",
             "spawnKeyword",
-            "taskType"
+            "taskType",
+            "taskFailureType",
+            "taskFirstError",
+            "taskAssociatedErrors",
+            "taskCancelledCount",
+            "channelType",
+            "channelSend",
+            "channelReceive",
+            "receiveSource",
+            "selectKeyword",
+            "endSelect"
           ]
         },
         {
@@ -13908,6 +14270,12 @@
         "es": "FinRegistro"
       }
     },
+    "endSelect": {
+      "lexemas": {
+        "en": "endSelect",
+        "es": "FinElegir"
+      }
+    },
     "endSubroutine": {
       "alias": {
         "en": [
@@ -14401,6 +14769,12 @@
       "lexemas": {
         "en": ")",
         "es": ")"
+      }
+    },
+    "selectKeyword": {
+      "lexemas": {
+        "en": "select",
+        "es": "Elegir"
       }
     },
     "semicolon": {

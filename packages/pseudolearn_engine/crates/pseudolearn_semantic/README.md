@@ -226,3 +226,23 @@ Los tipos opacos de capacidad y Bytes usan clases sintéticas con identidad prop
 constructores ordinarios para falsificar una capacidad. Las solicitudes y los métodos se resuelven
 contra la tabla generada del ABI. ErrorES es un registro con código y bandera de incertidumbre,
 compatible con las variantes Resultado ya existentes. Los efectos quedan explícitos en el HIR.
+
+## Tipos de fallos y canales
+
+`task_failure_types` infiere un único error exacto y transferible por ámbito, registra
+`FalloTareas<E>` y construye `Opcional<FalloTareas<E>>` al salir. El agregado expone `Primero`,
+`Asociados` y `Canceladas` con sus nombres activos de perfil. Un lanzamiento consume su resultado
+falible mediante el ámbito: no dispara la obligación de resultado descartado de una llamada ordinaria.
+El vínculo del ámbito exige consumo por patrón, propagación compatible o descarte explícito;
+`result_obligations` y el cierre de ámbitos informan `taskScopeFailureUnused` si queda pendiente.
+`task_bindings` declara los vínculos implícitos e inicializa sus componentes sin duplicar declaraciones.
+
+`channel_types` representa cada instancia por un registro interno de identidad escalar y comprueba
+transferibilidad transitiva. `channel_checker` exige contexto de tipo para `Canal(n)`, devuelve lógico
+al enviar y opcional al recibir, exige espera explícita y rechaza operaciones desde funciones puras.
+`select_checker` crea vínculos inmutables locales a cada rama y comprueba un mínimo de dos recepciones.
+Los nombres de tipo y método son contextuales; `Elegir` y `FinElegir` son reservados. Los recorridos de
+efectos incluyen canales, lanzamientos y las ramas de elección para conservar la comprobación transitiva.
+
+Pruebas dirigidas: filtros `task_failure_types`, `channel_types` y `select_checker` de
+`cargo test -p pseudolearn_semantic --lib`.

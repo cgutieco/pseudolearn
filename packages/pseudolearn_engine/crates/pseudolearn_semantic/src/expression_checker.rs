@@ -150,6 +150,9 @@ pub(crate) fn check_expected_for(
     expected: crate::identities::TypeId,
     purpose: ExpressionPurpose,
 ) -> ExpressionId {
+    if let Some(value) = crate::channel_checker::construct(session, node, expected) {
+        return value;
+    }
     if let Some(value) = crate::collection_checker::construct(session, node, expected) {
         return value;
     }

@@ -483,6 +483,9 @@ Puntos a cumplir:
 - [ ] `PG-4.04` Canales con capacidad explícita, cierre y contrapresión; elección simultánea resuelta por orden
   normativo.
 - [ ] `PG-4.05` Bloqueo sin tareas ejecutables ni efectos pendientes diagnosticado, distinto de la espera de efecto.
+  Implementados `.01`–`.06` de PG-4.03, PG-4.04 y PG-4.05 en una iteración conjunta; pruebas ligeras y
+  verificadores en verde. Solo sus puntos `.07` pesados quedan pendientes; los puntos globales conservan
+  la casilla abierta hasta esa verificación. Decisiones y evidencia en el resumen de la fase PG-4.
 - [ ] `PG-4.06` Aislamiento transitivo: captura o envío de una referencia mutable rechazado incluso a través de alias,
   ciclos, registros, clausuras o parámetros por referencia; instantánea inmutable explícita con coste declarado.
 - [ ] `PG-4.07` Planificador lógico con identidades monotónicas, desempate definido y puntos de cesión por masa de

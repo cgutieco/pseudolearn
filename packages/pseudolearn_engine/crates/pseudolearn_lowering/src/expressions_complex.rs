@@ -26,7 +26,7 @@ pub fn lower_task_spawn(
     let function = usize::try_from(function_index)
         .ok()
         .and_then(|index| state.context.module.functions.get(index));
-    let function_name = resolve_target_function_name(function);
+    let function_name = crate::task_wrappers::name(&resolve_target_function_name(function));
     let mut lowered_arguments = Vec::new();
     for (parameter_index, argument) in arguments.iter().copied().enumerate() {
         let reference = is_reference_parameter(function, parameter_index, state);
@@ -79,6 +79,9 @@ pub(crate) fn emit_function_call(
             (is_reference, span),
             state,
         ));
+    }
+    if target_function.is_some_and(|function| function.suspendible) {
+        crate::suspension_points::prepare(state, span);
     }
     let cells = result_cells(function_index, span, state);
     lowered_arguments.extend(cells.iter().copied());
