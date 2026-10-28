@@ -2,6 +2,7 @@ use crate::expression_checker::{ExpressionPurpose, check_for};
 use crate::expression_model::HirExpression;
 use crate::identities::ExpressionId;
 use crate::session::AnalysisSession;
+use crate::types::Type;
 use pseudolearn_diagnostics::DiagnosticCode;
 use pseudolearn_syntax::{NodeKind, TokenKind};
 
@@ -16,7 +17,17 @@ pub(crate) fn check(
     if let Some(call_node) = call_node {
         session.awaited_calls.push(call_node);
     }
+    let previous_task_handle = session.control.awaiting_task_handle;
+    session.control.awaiting_task_handle = true;
     let expression = check_for(session, operand, purpose);
+    session.control.awaiting_task_handle = previous_task_handle;
+    if let Type::Task(payload) = session.expression_type(expression) {
+        return session.emit(
+            HirExpression::AwaitTask(expression),
+            payload,
+            session.span(node),
+        );
+    }
     if call_node.is_some() {
         session.awaited_calls.pop();
     }
@@ -70,6 +81,11 @@ fn valid_operand(session: &AnalysisSession<'_>, expression: ExpressionId) -> boo
         .ok()
         .and_then(|index| session.module.expressions.kinds.get(index));
     match model {
+        Some(HirExpression::Local(_))
+            if matches!(session.expression_type(expression), Type::Task(_)) =>
+        {
+            true
+        }
         Some(HirExpression::Effect { .. }) => true,
         Some(HirExpression::Call { function, .. }) => usize::try_from(function.0)
             .ok()

@@ -88,6 +88,12 @@ mod suspension_checker;
 #[cfg(test)]
 mod suspension_checker_tests;
 mod switch_checker;
+mod task_handles;
+#[cfg(test)]
+mod task_handles_tests;
+mod task_scope_checker;
+#[cfg(test)]
+mod task_scope_checker_tests;
 mod type_declarations;
 mod type_resolution;
 mod type_scope;

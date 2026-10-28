@@ -151,6 +151,7 @@ fn setup_function(module: &mut HirModule) {
         owner: None,
         parameters: Vec::new(),
         result: unit_type,
+        suspendible: false,
         body: vec![StatementId(0), StatementId(1), StatementId(2)],
         span: Span::new(0, 60),
         closing_span: Span::new(56, 60),

@@ -55,6 +55,8 @@ fn check_kind(session: &mut AnalysisSession<'_>, node: usize) -> Option<Statemen
             HirStatement::Call(check_for(session, expression, ExpressionPurpose::Statement))
         }
         NodeKind::ReturnStatement => returned(session, node),
+        NodeKind::SpawnStatement => crate::task_handles::spawn_statement(session, node)?,
+        NodeKind::TaskScope => crate::task_scope_checker::check(session, node)?,
         NodeKind::DiscardStatement => crate::variant_statements::discard(session, node)?,
         NodeKind::Conditional
         | NodeKind::WhileLoop

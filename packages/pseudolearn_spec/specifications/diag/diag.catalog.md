@@ -373,6 +373,20 @@
       "clase": "syntax",
       "tipos_argumentos": {}
     },
+    "unclosedTaskScope": {
+      "mensajes": {
+        "es": "Ámbito de tareas sin cerrar",
+        "en": "Unclosed task scope"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
     "unclosedRepeatStatement": {
       "mensajes": {
         "es": "Bucle de repetición sin cerrar",
@@ -3973,6 +3987,90 @@
       "mensajes": {
         "es": "La llamada a una unidad suspendible debe llevar Aguardar",
         "en": "A call to a suspendable subprogram must use await"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "spawnOutsideTaskScope": {
+      "mensajes": {
+        "es": "Lanzar solo se permite en el cuerpo léxico directo de Tareas",
+        "en": "Spawn is only allowed in the direct lexical body of tasks"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "taskScopeInsideDefer": {
+      "mensajes": {
+        "es": "Tareas y Lanzar no se permiten dentro de Diferir",
+        "en": "Tasks and spawn are not allowed inside defer"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "taskArgumentNotTransferable": {
+      "mensajes": {
+        "es": "El argumento de tarea no se puede transferir de forma aislada",
+        "en": "The task argument cannot be transferred in isolation"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "taskByReferenceArgument": {
+      "mensajes": {
+        "es": "Un argumento de tarea no puede pasarse por referencia",
+        "en": "A task argument cannot be passed by reference"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "taskHandleEscape": {
+      "mensajes": {
+        "es": "El asa de tarea solo se puede usar con Aguardar en su ámbito",
+        "en": "A task handle can only be awaited within its scope"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "spawnTargetNotSuspendible": {
+      "mensajes": {
+        "es": "Lanzar requiere el nombre de una unidad suspendible",
+        "en": "Spawn requires the name of a suspendable subprogram"
       },
       "argumentos": [],
       "politica": "A",

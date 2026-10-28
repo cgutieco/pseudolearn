@@ -17,6 +17,9 @@ pub(crate) fn resolve(session: &mut AnalysisSession<'_>, node: usize) -> TypeId 
     ) {
         return variant_type(session, node);
     }
+    if session.token_kind(node) == Some(TokenKind::Keyword(KeywordKind::TaskType)) {
+        return task_type(session, node);
+    }
     let kind = match session.token_kind(node) {
         Some(TokenKind::Keyword(KeywordKind::IntegerType)) => Type::Integer,
         Some(TokenKind::Keyword(KeywordKind::RealType)) => Type::Real,
@@ -26,6 +29,19 @@ pub(crate) fn resolve(session: &mut AnalysisSession<'_>, node: usize) -> TypeId 
         _ => class_type(session, node),
     };
     session.module.types.intern(kind)
+}
+
+fn task_type(session: &mut AnalysisSession<'_>, node: usize) -> TypeId {
+    let payload = session
+        .children(node)
+        .into_iter()
+        .find(|child| session.kind(*child) == pseudolearn_syntax::NodeKind::Type)
+        .map(|child| resolve(session, child))
+        .unwrap_or_else(|| {
+            session.report(DiagnosticCode::ExpectedType, node);
+            session.module.types.intern(Type::Error)
+        });
+    session.module.types.intern(Type::Task(payload))
 }
 
 fn class_type(session: &mut AnalysisSession<'_>, node: usize) -> Type {

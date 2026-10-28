@@ -117,6 +117,11 @@ fn lower_complex_expression(
             function,
             arguments,
         } => lower_call(arguments, function.0, span, state),
+        HirExpression::TaskSpawn {
+            function,
+            arguments,
+        } => lower_call(arguments, function.0, span, state),
+        HirExpression::AwaitTask(value) => lower_expression_with_state(*value, state),
         HirExpression::Builtin {
             function,
             arguments,
@@ -206,7 +211,10 @@ pub fn lower_expression_with_state(
     state: &mut ExpressionState<'_, '_>,
 ) -> ValueId {
     if let Some(values) = crate::effect_values::values(expression_id, state) {
-        return values.first().copied().unwrap_or_else(|| state.builder.next_value());
+        return values
+            .first()
+            .copied()
+            .unwrap_or_else(|| state.builder.next_value());
     }
     if let Some(values) = crate::collections::values(expression_id, state) {
         return values

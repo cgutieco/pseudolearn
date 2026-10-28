@@ -54,6 +54,7 @@ macro_rules! machine_instance {
             effect_result: None,
             effect_checkpoint: None,
             effect_seq: 0,
+            tasks: super::tasks::VmTasks::default(),
         }
     };
 }

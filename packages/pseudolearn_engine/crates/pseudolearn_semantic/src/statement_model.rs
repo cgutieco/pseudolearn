@@ -11,6 +11,11 @@ pub struct HirCase {
 #[derive(Clone, Debug, PartialEq)]
 pub enum HirStatement {
     Defer(Vec<StatementId>),
+    TaskScope {
+        failure: Option<LocalId>,
+        body: Vec<StatementId>,
+    },
+    Spawn(ExpressionId),
     Break,
     ForEach {
         collection: ExpressionId,

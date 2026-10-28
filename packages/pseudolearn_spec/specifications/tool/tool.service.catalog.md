@@ -2325,6 +2325,165 @@
         }
       },
       {
+        "id": "help.task-scope",
+        "identity": {
+          "kind": "construction",
+          "id": "taskScope",
+          "role": "structured_task_scope"
+        },
+        "tokens": [
+          {
+            "identity": "tasksKeyword",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          },
+          {
+            "identity": "endTasks",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          },
+          {
+            "identity": "spawnKeyword",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          },
+          {
+            "identity": "taskType",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LANG.TASK.SCOPE",
+            "version": "1.0.0",
+            "element": "R1"
+          },
+          {
+            "specification": "LANG.TASK.SCOPE",
+            "version": "1.0.0",
+            "element": "R4"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Ámbito de tareas",
+            "summary": "Agrupa tareas hijas que se unen al cerrar el bloque.",
+            "purpose": "Cada tarea pertenece al ámbito léxico donde se lanza y no puede sobrevivir a su cierre.",
+            "parts": [
+              {
+                "identity": "tasksKeyword",
+                "text": "Abre un ámbito de tareas que puede estar vacío."
+              },
+              {
+                "identity": "endTasks",
+                "text": "Cierra el ámbito y une sus tareas hijas."
+              },
+              {
+                "identity": "spawnKeyword",
+                "text": "Lanza una unidad suspendible como hija del ámbito actual."
+              },
+              {
+                "identity": "taskType",
+                "text": "Declara el tipo local de un asa de tarea que solo se espera con Aguardar."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que ejecuta y une dos tareas",
+                "profile": "es",
+                "specification": "LANG.TASK.SCOPE",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C5",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: lanzamiento fuera del ámbito",
+                "profile": "es",
+                "specification": "LANG.TASK.SCOPE",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Task scope",
+            "summary": "Groups child tasks that are joined when the block closes.",
+            "purpose": "Each task belongs to the lexical scope where it is spawned and cannot outlive it.",
+            "parts": [
+              {
+                "identity": "tasksKeyword",
+                "text": "Opens a task scope that may be empty."
+              },
+              {
+                "identity": "endTasks",
+                "text": "Closes the scope and joins its child tasks."
+              },
+              {
+                "identity": "spawnKeyword",
+                "text": "Spawns a suspendible unit as a child of the current scope."
+              },
+              {
+                "identity": "taskType",
+                "text": "Declares the local type of a task handle that can only be awaited."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs and joins two tasks",
+                "profile": "en",
+                "specification": "LANG.TASK.SCOPE",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C5",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: spawn outside a scope",
+                "profile": "en",
+                "specification": "LANG.TASK.SCOPE",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
         "id": "help.parameter-mode",
         "identity": {
           "kind": "construction",
@@ -7785,6 +7944,25 @@
             "endSubroutine",
             "typeConnector",
             "suspendibleModifier"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "construction",
+            "id": "taskScope",
+            "role": "structured_task_scope"
+          },
+          "productions": [
+            "taskScope",
+            "spawnStatement",
+            "spawnExpression",
+            "type"
+          ],
+          "tokens": [
+            "tasksKeyword",
+            "endTasks",
+            "spawnKeyword",
+            "taskType"
           ]
         },
         {

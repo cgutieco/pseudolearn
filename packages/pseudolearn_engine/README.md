@@ -30,7 +30,7 @@ Núcleo estático y determinista de PseudoLearn, con arquitectura Remanso. Sirve
 10. **La máquina nocional conserva su exactitud.** Mapas estáticos separan raíces, definición y variables
     observables del contenido accidental de los registros.
 
-Fuera de alcance de producto: construcciones nuevas, concurrencia, reloj libre, efectos no grabables y JIT.
+La concurrencia de tareas aisladas forma parte del crecimiento del motor. El runtime ya modela su agenda y sus estados, pero la VM todavía no ejecuta hijas concurrentes ni suspende una tarea para unir su ámbito.
 Fuera de alcance técnico: motor durante la especificación, dependencias de UI, Cargo raíz y unsafe fuera de puentes generados y de `pseudolearn_aot_rt`.
 
 Codegen: Cranelift permanece como backend release y cumple `PERF.AOT.LEVEL#R1` a `#R3` (≤ 1,70 frente a V1F); trampas inmediatas con bloque frío compartido con identidad por sitio; sin transferencia AOT → VM porque `aot` está exento de observación. El nivel optimizado (≤ 1,30 frente a V1F-S) se retiró del contrato: ningún backend lo implementa y no hay fase que lo pida.
@@ -105,7 +105,7 @@ El backend nativo consume la misma RI; pseudolearn_service consume el árbol sin
 
 `crates` contiene las capas documentadas y las herramientas internas; `specification-export` aloja datos cuando exista el consumidor.
 Prohibido que una capa importe consumidores, UI, el núcleo Dart o see como crate. La exportación del corpus es una dependencia de datos, no de código.
-Concurrencia: una ejecución y su línea temporal se procesan secuencialmente; el anfitrión orquesta ejecuciones independientes.
+Concurrencia: el runtime lleva identidades, parentesco, ámbitos, estados y efectos abandonados de tareas. La VM conserva por ahora una sola tarea raíz; no cambia entre continuaciones ni ejecuta la unión de ámbitos. El anfitrión no recibe una API nueva para tareas.
 `pseudolearn_aot_rt` es una hoja que importa source, abi, diagnostics, runtime y library; `pseudolearn_runtime` no importa `pseudolearn_library`, por lo que la frontera con la biblioteca matemática no puede vivir en el runtime. `pseudolearn_codegen` importa ir, diagnostics y `pseudolearn_aot_rt` (desplazamientos del contexto y tipos de sitio de fallo) y depende de `cranelift-codegen`, `cranelift-frontend`, `cranelift-module`, `cranelift-object` y `target-lexicon`; solo `pseudolearn_api` lo importa, para exponer la construcción de objetos ejecutables a la CLI y al adaptador `aot`. `pseudolearn_service` reside en el nivel 6 y alimenta a `pseudolearn_api`; `pseudolearn_wasm` reside en el nivel 10 y solo importa esa API.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
@@ -152,7 +152,7 @@ el token y la trivia del operando en el árbol sin pérdida.
 
 ### semantic
 
-Problema: produce un hir tipado desde la resolución estática y verifica contratos de pureza transitiva. Elección: Columnas con índices tipados (`LocalId`, `FunctionId`, `ExpressionId`, `TypeId`); registro de firmas, jerarquía, ámbitos por unidad, tipos y flujo; HIR tipado con la clase de valor de cada expresión y una marca explícita `suspendible` por unidad; desvirtualización por jerarquía de clases en mundo cerrado; análisis transitivo de efectos (`effect_check`) sobre el grafo cerrado de llamadas, clausuras capturadas, propagación de valores funcionales en argumentos e implementaciones de interfaz. `suspension_checker` valida declaraciones y evita que una unidad suspendible escape como valor. `await_checker` exige una unidad suspendible o raíz, rechaza su uso dentro de `Diferir` y valida la llamada directa, mientras que el análisis de expresiones conserva el resultado del operando. Una función pura sigue rechazando el efecto de una unidad suspendible aunque aparezca bajo `Aguardar`.
+Problema: produce un hir tipado desde la resolución estática y verifica contratos de pureza transitiva. Elección: Columnas con índices tipados (`LocalId`, `FunctionId`, `ExpressionId`, `TypeId`); registro de firmas, jerarquía, ámbitos por unidad, tipos y flujo; HIR tipado con la clase de valor de cada expresión y una marca explícita `suspendible` por unidad; desvirtualización por jerarquía de clases en mundo cerrado; análisis transitivo de efectos (`effect_check`) sobre el grafo cerrado de llamadas, clausuras capturadas, propagación de valores funcionales en argumentos e implementaciones de interfaz. `suspension_checker` valida declaraciones y evita que una unidad suspendible escape como valor. `await_checker` exige una unidad suspendible o raíz, rechaza su uso dentro de `Diferir` y valida la llamada directa, mientras que el análisis de expresiones conserva el resultado del operando. Los ámbitos y asas de tarea tienen nodos HIR propios; el análisis limita `Lanzar` al ámbito léxico y restringe `Tarea<T>` a su uso con `Aguardar`, además de comprobar transferibilidad y parámetros por referencia. Una función pura sigue rechazando el efecto de una unidad suspendible aunque aparezca bajo `Aguardar`.
 Alternativas descartadas: Arenas con índices tipados evitan referencias enlazadas y sus tiempos de vida. Se rechaza Rc<RefCell<…>> por coste y errores dinámicos de préstamo. Se descarta marcar efectos en tiempo de ejecución o confiar en anotaciones manuales sin verificación del grafo de llamadas.
 
 ### project
@@ -172,7 +172,7 @@ El verificador aplica la asignabilidad de clases a bloques, celdas y elementos d
 
 ### lowering
 
-Problema: traduce el hir a representación intermedia observable. Elección: HIR → RI; orden de evaluación normativo; inserción de puntos de observación y cálculo de masa por bloque; paso por referencia escalar como celda y parámetros arreglo como asas compartidas, porque el arreglo completo no se asigna.
+Problema: traduce el hir a representación intermedia observable. Elección: HIR → RI; orden de evaluación normativo; inserción de puntos de observación y cálculo de masa por bloque; paso por referencia escalar como celda y parámetros arreglo como asas compartidas, porque el arreglo completo no se asigna. El lowering reconoce ámbitos, lanzamientos y esperas, pero aún los reduce a bloques y llamadas directas: no crea tareas ejecutables ni emite una operación de unión.
 Alternativas descartadas: La RI tipada deriva del orden de evaluación del corpus; se rechaza optimizar antes de conservar los observables y sus nodos fuente.
 
 ### bytecode
@@ -195,6 +195,7 @@ montón cubren solo palabras usadas. Las asas pueden reutilizar una dirección f
 identidad ordinal. La tabla de capacidades aplica invalidación generacional por ranura, garantiza el
 invariante de no amplificación (`child_rights ⊆ parent_rights`) y aísla la E/S binaria mediante
 `BytesBuffer` y `IoError`. `#![forbid(unsafe_code)]` rige en este crate.
+La agenda de tareas es una estructura de datos determinista compartida: asigna identidades monotónicas, guarda el padre, el ámbito y los hijos, comprueba transiciones de estado y permite consultar si una unión terminó o sigue esperando. Una cancelación solicitada marca como abandonado el efecto que mantenía suspendida a esa tarea. La tarea no pasa a limpieza hasta que sus hijas son terminales; `finish_cancel` solo acepta una tarea después de entrar en limpieza. Esta estructura todavía no recibe eventos de la VM ni sella entregas tardías en la cinta.
 Alternativas descartadas: V8 y JVM inspiran asas comprimidas; Swift inspira migas para texto UTF-8;
 Wasi y Capsicum inspiran descriptores por capacidad y generaciones. Se rechaza conteo de referencias
 por ciclos, movimiento por identidad, acceso directo a `std::fs` o `std::time` sin capacidad, e unsafe
@@ -213,6 +214,7 @@ Alternativas descartadas: LIB.MODEL y LIB.CORE definen firmas y efectos. Se rech
 
 La VM ejecuta valores escalares y referencias, texto, arreglos, celdas, objetos, llamadas virtuales,
 `Copiar`, formato de salida y azar. B5 conserva el gemelo sondeado, eventos, cambio de gemelo y entrada.
+La máquina inicializa el estado de una tarea raíz y valida que siga ejecutándose. No crea hijos, suspende una pila por tarea, reanuda continuaciones, une ámbitos ni conecta la cancelación con los bloques `Diferir`; por eso la ejecución de tareas aún no está habilitada de extremo a extremo.
 
 Problema: ejecuta bytecode verificado emitiendo eventos observables. Elección: Bancos escalar (`u64`) y de referencias (`u32`) crecientes con longitud potencia de dos, con acceso `bank.get(index & MASK)`; ventanas solapadas para los argumentos; crecimiento en llamadas y comprobación independiente de la profundidad; **combustible por bloque** con caída exacta al gemelo sondeado; cambio de gemelo en O(1); trampas como `Result` de manejadores pequeños `#[inline(always)]`.
 Alternativas descartadas: Lua 5 inspira ventanas de registros; Ertl y Gregg inspiran superinstrucciones; Rohou, Swamy y Seznec apoyan medir match con tabla de saltos. Se descartan computed goto y ensamblador. La seguridad sale de máscaras y verificación previa.

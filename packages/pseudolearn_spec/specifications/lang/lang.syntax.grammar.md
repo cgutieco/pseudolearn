@@ -68,8 +68,8 @@
       "exportDeclaration": "@exportKeyword, modulePath, terminator",
       "modulePath": "identifier, { @dot, identifier }",
       "algorithmUnit": "@algorithm, identifier, line, body, @endAlgorithm, line",
-      "body": "{ trivia | statement | conditional | switch | whileLoop | repeatLoop | forLoop | forEachLoop | deferStatement }",
-      "statement": "( declaration | constantDeclaration | dimensionDeclaration | assignmentStatement | output | input | callStatement | returnStatement | discardStatement | breakStatement ), terminator",
+      "body": "{ trivia | statement | conditional | switch | whileLoop | repeatLoop | forLoop | forEachLoop | deferStatement | taskScope }",
+      "statement": "( declaration | constantDeclaration | dimensionDeclaration | assignmentStatement | output | input | callStatement | returnStatement | discardStatement | breakStatement | spawnStatement ), terminator",
       "declaration": "@declare, [ @mutableKeyword ], identifier, @typeConnector, type, @assignment, expression",
       "constantDeclaration": "@constantKeyword, identifier, @typeConnector, type, @assignment, expression",
       "enumUnit": "@enumKeyword, identifier, line, [ enumMembers, line ], @endEnum, line",
@@ -77,7 +77,7 @@
       "recordUnit": "@recordKeyword, identifier, [ typeParameters ], line, { recordField }, @endRecord, line",
       "recordField": "fieldBinding, terminator",
       "names": "identifier, { @comma, identifier }",
-      "type": "@integerType | @realType | @booleanType | @characterType | @stringType | identifier, [ typeArguments ] | @optionalType, @lessThan, type, @greaterThan | @resultType, @lessThan, type, @comma, type, @greaterThan | functionType",
+      "type": "@integerType | @realType | @booleanType | @characterType | @stringType | @taskType, @lessThan, type, @greaterThan | identifier, [ typeArguments ] | @optionalType, @lessThan, type, @greaterThan | @resultType, @lessThan, type, @comma, type, @greaterThan | functionType",
       "dimensionDeclaration": "@dimension, dimensioned, { @comma, dimensioned }, @typeConnector, type",
       "dimensioned": "identifier, @leftBracket, expressions, @rightBracket",
       "assignmentStatement": "designator, @assignment, expression",
@@ -112,7 +112,7 @@
       "unary": "( @plus | @minus | @not ), unary | awaitExpression | postfix | propagation",
       "awaitExpression": "@awaitKeyword, unary",
       "postfix": "primary, { @dot, identifier, [ arguments ] | @leftBracket, expressions, @rightBracket }",
-      "primary": "literal | identifier, [ arguments ] | @leftParenthesis, expression, @rightParenthesis | instantiation | @thisObject, @dot, identifier, [ arguments ] | @superClass, @dot, ( identifier | @constructor ), arguments | variantConstruction | functionLiteral",
+      "primary": "literal | identifier, [ arguments ] | @leftParenthesis, expression, @rightParenthesis | instantiation | @thisObject, @dot, identifier, [ arguments ] | @superClass, @dot, ( identifier | @constructor ), arguments | variantConstruction | functionLiteral | spawnExpression",
       "callStatement": "identifier, arguments | postfix, @dot, identifier, arguments | @superClass, @dot, ( identifier | @constructor ), arguments | awaitExpression",
       "arguments": "@leftParenthesis, [ expressions ], @rightParenthesis",
       "instantiation": "@newInstance, identifier, arguments",
@@ -127,6 +127,9 @@
       "variantPattern": "@noneVariant | ( @someVariant | @successVariant | @errorVariant ), @leftParenthesis, identifier, @rightParenthesis",
       "propagation": "@propagateKeyword, unary",
       "functionLiteral": "@subroutine, [ @suspendibleModifier ], parameters, [ @typeConnector, type ], line, body, @endSubroutine",
+      "taskScope": "@tasksKeyword, [ identifier ], line, body, @endTasks, line",
+      "spawnStatement": "spawnExpression",
+      "spawnExpression": "@spawnKeyword, identifier, arguments",
       "functionType": "@subroutine, @leftParenthesis, [ functionParameterType, { @comma, functionParameterType } ], @rightParenthesis, [ @typeConnector, type ]",
       "functionParameterType": "type, [ @byValue | @byReference ]",
       "typeParameters": "@lessThan, typeParameter, { @comma, typeParameter }, @greaterThan",
@@ -240,7 +243,11 @@
       "propagateKeyword",
       "discardKeyword",
       "awaitKeyword",
-      "suspendibleModifier"
+      "suspendibleModifier",
+      "tasksKeyword",
+      "endTasks",
+      "spawnKeyword",
+      "taskType"
     ]
   }
 }
@@ -251,12 +258,38 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "D1 define la EBNF normativa con terminales de identidad abstracta, no lexemas de idioma. Coma es concatenación, | alternativa, [] opcional y {} repetición. Identificadores, literales, trivia y EOF son categorías léxicas. Las exigencias de rigor y restricciones de designador, anidamiento, retorno y listas se aplican además de las producciones; estricto exige semicolon en sentencias simples. El postfix no admite índices encadenados del mismo arreglo. Suspendible es un modificador válido solo en la cabecera de un subprograma tras el terminal subroutine; la gramática reconoce también su aparición en las demás posiciones declarativas para que el análisis semántico produzca suspendibleModifierNotAllowed. Aguardar es un operador prefijo de la producción awaitExpression. Cada producción debe resolver sus referencias y ser alcanzable desde program.",
+  "texto": "D1 define la EBNF normativa con terminales de identidad abstracta, no lexemas de idioma. Coma es concatenación, | alternativa, [] opcional y {} repetición. Identificadores, literales, trivia y EOF son categorías léxicas. Las exigencias de rigor y restricciones de designador, anidamiento, retorno y listas se aplican además de las producciones; estricto exige semicolon en sentencias simples. El postfix no admite índices encadenados del mismo arreglo. Suspendible es un modificador válido solo en la cabecera de un subprograma tras el terminal subroutine; la gramática reconoce también su aparición en las demás posiciones declarativas para que el análisis semántico produzca suspendibleModifierNotAllowed. Aguardar es un operador prefijo de la producción awaitExpression. Tareas abre un ámbito compuesto y Lanzar aparece como sentencia o inicializador de un asa. Cada producción debe resolver sus referencias y ser alcanzable desde program.",
   "verificacion": [
     "C1",
     "C2",
     "C3",
-    "C4"
+    "C4",
+    "C5"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C5",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "SubProceso Suspendible Worker() Como Entero\nRetornar 1;\nFinSubProceso\nAlgoritmo P\nTareas\nDefinir t Como Tarea<Entero> <- Lanzar Worker();\nEscribir Aguardar t;\nFinTareas\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Worker() as integer\nreturn 1;\nendSubroutine\nalgorithm P\ntasks\ndefine t as task<integer> <- spawn Worker();\nwrite await t;\nendTasks\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": []
+  },
+  "rigor": [
+    "estricto",
+    "flexible"
   ]
 }
 ```

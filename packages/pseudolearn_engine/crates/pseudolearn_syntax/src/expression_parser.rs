@@ -77,6 +77,9 @@ fn primary(state: &mut ParserState<'_>) -> Result<usize, ()> {
     if kind == TokenKind::Keyword(KeywordKind::Subroutine) {
         return crate::function_parser::literal(state);
     }
+    if kind == TokenKind::Keyword(KeywordKind::SpawnKeyword) {
+        return crate::task_scope_parser::spawn_expression(state);
+    }
     if crate::variant_parser::starts(kind) {
         return crate::variant_parser::construction(state);
     }

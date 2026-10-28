@@ -7,6 +7,7 @@
     "LANG.CAPABILITY.MODEL",
     "LANG.CAPABILITY.PURITY",
     "LANG.TASK.SUSPENSION",
+    "LANG.TASK.SCOPE",
     "LIB.IO",
     "LIB.TIME",
     "ENG.EXEC.EFFECT-ORDER",
@@ -1151,8 +1152,8 @@
     {
       "regla": "LANG.CONTROL.CLEANUP@1.0.0#R2",
       "verificacion": "ejecutor",
-      "estado": "exento",
-      "justificacion": "La regla incluye casos de análisis estático, no anunciado por el adaptador AOT; el sujeto engine los contrasta y los casos de ejecución se contrastan en ambos."
+      "estado": "pendiente",
+      "resuelve_en": "PG-4.07"
     },
     {
       "regla": "ENG.EXEC.EFFECT-COMMIT@1.0.0#R1",
@@ -1222,7 +1223,7 @@
     },
     {
       "regla": "ENG.EFFECT.TAPE@1.0.0#R1",
-      "verificacion": "crates/pseudolearn_aot_rt/src/effect_runtime.rs",
+      "verificacion": "crates/pseudolearn_aot_rt/src/effects.rs",
       "estado": "cumple"
     },
     {
@@ -1327,6 +1328,64 @@
       "verificacion": "ejecutor",
       "estado": "pendiente",
       "resuelve_en": "PG-4.07"
+    },
+    {
+      "regla": "LANG.TASK.SCOPE@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "La regla se comprueba durante el análisis semántico, que el adaptador AOT no anuncia."
+    },
+    {
+      "regla": "LANG.TASK.SCOPE@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "La regla se comprueba durante el análisis semántico, que el adaptador AOT no anuncia."
+    },
+    {
+      "regla": "LANG.TASK.SCOPE@1.0.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "La regla se comprueba durante el análisis semántico, que el adaptador AOT no anuncia."
+    },
+    {
+      "regla": "LANG.TASK.SCOPE@1.0.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "La regla se comprueba durante el análisis semántico, que el adaptador AOT no anuncia."
+    },
+    {
+      "regla": "LANG.TASK.SCOPE@1.0.0#R5",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-4.07"
+    },
+    {
+      "regla": "LANG.TASK.SCOPE@1.0.0#R6",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-4.07"
+    },
+    {
+      "regla": "LANG.TASK.SCOPE@1.0.0#R7",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "La regla se comprueba durante el análisis semántico, que el adaptador AOT no anuncia."
+    },
+    {
+      "regla": "LANG.TASK.SCOPE@1.0.0#R8",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-4.10"
+    },
+    {
+      "regla": "LANG.TASK.SCOPE@1.0.0#R9",
+      "verificacion": "crates/pseudolearn_aot_rt/src/effect_runtime.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TASK.SCOPE@1.0.0#R10",
+      "verificacion": "crates/pseudolearn_aot_rt/src/trap.rs",
+      "estado": "cumple"
     },
     {
       "regla": "LIB.IO@1.0.0#R1",

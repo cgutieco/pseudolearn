@@ -41,6 +41,7 @@ pub mod statements_read;
 pub mod statements_repeat;
 pub mod statements_switch;
 pub mod statements_while;
+mod task_scopes;
 pub mod types;
 
 pub use builder::FunctionBuilder;

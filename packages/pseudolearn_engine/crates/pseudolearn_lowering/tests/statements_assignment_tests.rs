@@ -45,6 +45,7 @@ fn module(addressed: bool) -> HirModule {
             owner: None,
             parameters: vec![LocalId(1)],
             result: unit,
+            suspendible: false,
             body: Vec::new(),
             span: Span::new(0, 1),
             closing_span: Span::new(0, 1),

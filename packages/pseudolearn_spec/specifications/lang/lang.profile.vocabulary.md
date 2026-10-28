@@ -439,6 +439,30 @@
         "en": []
       }
     },
+    "tasksKeyword": {
+      "lexemas": {
+        "es": "Tareas",
+        "en": "tasks"
+      }
+    },
+    "endTasks": {
+      "lexemas": {
+        "es": "FinTareas",
+        "en": "endTasks"
+      }
+    },
+    "spawnKeyword": {
+      "lexemas": {
+        "es": "Lanzar",
+        "en": "spawn"
+      }
+    },
+    "taskType": {
+      "lexemas": {
+        "es": "Tarea",
+        "en": "task"
+      }
+    },
     "endSubroutine": {
       "lexemas": {
         "es": "FinSubProceso",

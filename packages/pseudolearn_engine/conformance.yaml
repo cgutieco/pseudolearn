@@ -7,6 +7,7 @@
     "LANG.CAPABILITY.MODEL",
     "LANG.CAPABILITY.PURITY",
     "LANG.TASK.SUSPENSION",
+    "LANG.TASK.SCOPE",
     "LIB.IO",
     "LIB.TIME",
     "RT.HOST.INTERFACE",
@@ -1528,7 +1529,8 @@
     {
       "regla": "LANG.CONTROL.CLEANUP@1.0.0#R2",
       "verificacion": "ejecutor",
-      "estado": "cumple"
+      "estado": "pendiente",
+      "resuelve_en": "PG-4.07"
     },
     {
       "regla": "ENG.EXEC.EFFECT-COMMIT@1.0.0#R1",
@@ -1706,6 +1708,59 @@
       "verificacion": "crates/pseudolearn_api/src/execution_resource.rs",
       "estado": "pendiente",
       "resuelve_en": "PG-4.07"
+    },
+    {
+      "regla": "LANG.TASK.SCOPE@1.0.0#R1",
+      "verificacion": "crates/pseudolearn_semantic/src/task_scope_checker_tests.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TASK.SCOPE@1.0.0#R2",
+      "verificacion": "crates/pseudolearn_semantic/src/task_handles_tests.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TASK.SCOPE@1.0.0#R3",
+      "verificacion": "crates/pseudolearn_semantic/src/task_handles_tests.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TASK.SCOPE@1.0.0#R4",
+      "verificacion": "crates/pseudolearn_semantic/src/task_handles_tests.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TASK.SCOPE@1.0.0#R5",
+      "verificacion": "crates/pseudolearn_runtime/src/task_agenda_tests.rs",
+      "estado": "pendiente",
+      "resuelve_en": "PG-4.07"
+    },
+    {
+      "regla": "LANG.TASK.SCOPE@1.0.0#R6",
+      "verificacion": "crates/pseudolearn_runtime/src/task_agenda_tests.rs",
+      "estado": "pendiente",
+      "resuelve_en": "PG-4.07"
+    },
+    {
+      "regla": "LANG.TASK.SCOPE@1.0.0#R7",
+      "verificacion": "crates/pseudolearn_semantic/src/task_scope_checker_tests.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TASK.SCOPE@1.0.0#R8",
+      "verificacion": "crates/pseudolearn_runtime/src/task_agenda_tests.rs",
+      "estado": "pendiente",
+      "resuelve_en": "PG-4.10"
+    },
+    {
+      "regla": "LANG.TASK.SCOPE@1.0.0#R9",
+      "verificacion": "crates/pseudolearn_vm/src/machine/effects.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TASK.SCOPE@1.0.0#R10",
+      "verificacion": "crates/pseudolearn_vm/src/machine/traps.rs",
+      "estado": "cumple"
     },
     {
       "regla": "LIB.IO@1.0.0#R1",

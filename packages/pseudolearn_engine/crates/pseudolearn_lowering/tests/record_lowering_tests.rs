@@ -144,6 +144,7 @@ impl Fixture {
             owner: None,
             parameters,
             result,
+            suspendible: false,
             body,
             span: Span::new(0, 40),
             closing_span: Span::new(36, 40),

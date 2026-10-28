@@ -3708,6 +3708,34 @@
       },
       "tipos_argumentos": {}
     },
+    "spawnOutsideTaskScope": {
+      "argumentos": [],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Spawn is only allowed in the direct lexical body of tasks",
+        "es": "Lanzar solo se permite en el cuerpo léxico directo de Tareas"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
+    "spawnTargetNotSuspendible": {
+      "argumentos": [],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Spawn requires the name of a suspendable subprogram",
+        "es": "Lanzar requiere el nombre de una unidad suspendible"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
     "statementBudgetExhausted": {
       "argumentos": [
         "limit"
@@ -3936,6 +3964,62 @@
       "mensajes": {
         "en": "The suspendable modifier is not allowed on this declaration",
         "es": "El modificador Suspendible no se admite en esta declaración"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
+    "taskArgumentNotTransferable": {
+      "argumentos": [],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "The task argument cannot be transferred in isolation",
+        "es": "El argumento de tarea no se puede transferir de forma aislada"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
+    "taskByReferenceArgument": {
+      "argumentos": [],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "A task argument cannot be passed by reference",
+        "es": "Un argumento de tarea no puede pasarse por referencia"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
+    "taskHandleEscape": {
+      "argumentos": [],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "A task handle can only be awaited within its scope",
+        "es": "El asa de tarea solo se puede usar con Aguardar en su ámbito"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
+    "taskScopeInsideDefer": {
+      "argumentos": [],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Tasks and spawn are not allowed inside defer",
+        "es": "Tareas y Lanzar no se permiten dentro de Diferir"
       },
       "politica": "A",
       "severidad": {
@@ -4200,6 +4284,20 @@
       "mensajes": {
         "en": "Unclosed switch statement",
         "es": "Selector múltiple sin cerrar"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
+    "unclosedTaskScope": {
+      "argumentos": [],
+      "clase": "syntax",
+      "mensajes": {
+        "en": "Unclosed task scope",
+        "es": "Ámbito de tareas sin cerrar"
       },
       "politica": "A",
       "severidad": {
@@ -5112,7 +5210,7 @@
       "arguments": "@leftParenthesis, [ expressions ], @rightParenthesis",
       "assignmentStatement": "designator, @assignment, expression",
       "awaitExpression": "@awaitKeyword, unary",
-      "body": "{ trivia | statement | conditional | switch | whileLoop | repeatLoop | forLoop | forEachLoop | deferStatement }",
+      "body": "{ trivia | statement | conditional | switch | whileLoop | repeatLoop | forLoop | forEachLoop | deferStatement | taskScope }",
       "breakStatement": "identifier",
       "callStatement": "identifier, arguments | postfix, @dot, identifier, arguments | @superClass, @dot, ( identifier | @constructor ), arguments | awaitExpression",
       "classUnit": "@classKeyword, identifier, [ @inheritsFrom, identifier ], [ realization ], line, { fieldDeclaration | methodMember | constructorMember }, @endClass, line",
@@ -5162,7 +5260,7 @@
       "pattern": "literal | signedInteger | identifier, @dot, identifier | variantPattern",
       "postfix": "primary, { @dot, identifier, [ arguments ] | @leftBracket, expressions, @rightBracket }",
       "powerExpression": "unary, [ @power, powerExpression ]",
-      "primary": "literal | identifier, [ arguments ] | @leftParenthesis, expression, @rightParenthesis | instantiation | @thisObject, @dot, identifier, [ arguments ] | @superClass, @dot, ( identifier | @constructor ), arguments | variantConstruction | functionLiteral",
+      "primary": "literal | identifier, [ arguments ] | @leftParenthesis, expression, @rightParenthesis | instantiation | @thisObject, @dot, identifier, [ arguments ] | @superClass, @dot, ( identifier | @constructor ), arguments | variantConstruction | functionLiteral | spawnExpression",
       "program": "trivia, { moduleDirective }, { moduleUnit }, [ algorithmUnit, { moduleUnit } ], trivia, endOfFile",
       "propagation": "@propagateKeyword, unary",
       "realization": "identifier, identifier, { @comma, identifier }",
@@ -5171,12 +5269,15 @@
       "repeatLoop": "@repeat, line, body, @until, expression, line",
       "returnStatement": "@returnKeyword, [ expression ]",
       "signedInteger": "[ @plus | @minus ], integerLiteral",
-      "statement": "( declaration | constantDeclaration | dimensionDeclaration | assignmentStatement | output | input | callStatement | returnStatement | discardStatement | breakStatement ), terminator",
+      "spawnExpression": "@spawnKeyword, identifier, arguments",
+      "spawnStatement": "spawnExpression",
+      "statement": "( declaration | constantDeclaration | dimensionDeclaration | assignmentStatement | output | input | callStatement | returnStatement | discardStatement | breakStatement | spawnStatement ), terminator",
       "subprogram": "@subroutine, [ @suspendibleModifier ], identifier, [ typeParameters ], parameters, [ @typeConnector, type ], line, body, @endSubroutine, line",
       "switch": "@switchKeyword, expression, @doKeyword, line, { labels, @branchSeparator, body }, [ @defaultCase, @branchSeparator, body ], @endSwitch, line",
+      "taskScope": "@tasksKeyword, [ identifier ], line, body, @endTasks, line",
       "terminator": "@semicolon | endOfLine",
       "trivia": "whitespace | comment | endOfLine",
-      "type": "@integerType | @realType | @booleanType | @characterType | @stringType | identifier, [ typeArguments ] | @optionalType, @lessThan, type, @greaterThan | @resultType, @lessThan, type, @comma, type, @greaterThan | functionType",
+      "type": "@integerType | @realType | @booleanType | @characterType | @stringType | @taskType, @lessThan, type, @greaterThan | identifier, [ typeArguments ] | @optionalType, @lessThan, type, @greaterThan | @resultType, @lessThan, type, @comma, type, @greaterThan | functionType",
       "typeArguments": "@lessThan, type, { @comma, type }, @greaterThan",
       "typeParameter": "identifier, [ @branchSeparator, identifier ]",
       "typeParameters": "@lessThan, typeParameter, { @comma, typeParameter }, @greaterThan",
@@ -5286,7 +5387,11 @@
       "propagateKeyword",
       "discardKeyword",
       "awaitKeyword",
-      "suspendibleModifier"
+      "suspendibleModifier",
+      "tasksKeyword",
+      "endTasks",
+      "spawnKeyword",
+      "taskType"
     ]
   },
   "helpCatalog": {
@@ -7039,6 +7144,165 @@
             "identity": "suspendibleModifier",
             "source": {
               "element": "D2",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LANG.TASK.SCOPE",
+            "version": "1.0.0"
+          },
+          {
+            "element": "R4",
+            "specification": "LANG.TASK.SCOPE",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs and joins two tasks",
+                "profile": "en",
+                "specification": "LANG.TASK.SCOPE",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C5",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: spawn outside a scope",
+                "profile": "en",
+                "specification": "LANG.TASK.SCOPE",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "tasksKeyword",
+                "text": "Opens a task scope that may be empty."
+              },
+              {
+                "identity": "endTasks",
+                "text": "Closes the scope and joins its child tasks."
+              },
+              {
+                "identity": "spawnKeyword",
+                "text": "Spawns a suspendible unit as a child of the current scope."
+              },
+              {
+                "identity": "taskType",
+                "text": "Declares the local type of a task handle that can only be awaited."
+              }
+            ],
+            "purpose": "Each task belongs to the lexical scope where it is spawned and cannot outlive it.",
+            "summary": "Groups child tasks that are joined when the block closes.",
+            "title": "Task scope"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que ejecuta y une dos tareas",
+                "profile": "es",
+                "specification": "LANG.TASK.SCOPE",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C5",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: lanzamiento fuera del ámbito",
+                "profile": "es",
+                "specification": "LANG.TASK.SCOPE",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "tasksKeyword",
+                "text": "Abre un ámbito de tareas que puede estar vacío."
+              },
+              {
+                "identity": "endTasks",
+                "text": "Cierra el ámbito y une sus tareas hijas."
+              },
+              {
+                "identity": "spawnKeyword",
+                "text": "Lanza una unidad suspendible como hija del ámbito actual."
+              },
+              {
+                "identity": "taskType",
+                "text": "Declara el tipo local de un asa de tarea que solo se espera con Aguardar."
+              }
+            ],
+            "purpose": "Cada tarea pertenece al ámbito léxico donde se lanza y no puede sobrevivir a su cierre.",
+            "summary": "Agrupa tareas hijas que se unen al cerrar el bloque.",
+            "title": "Ámbito de tareas"
+          }
+        },
+        "id": "help.task-scope",
+        "identity": {
+          "id": "taskScope",
+          "kind": "construction",
+          "role": "structured_task_scope"
+        },
+        "tokens": [
+          {
+            "identity": "tasksKeyword",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "endTasks",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "spawnKeyword",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "taskType",
+            "source": {
+              "element": "D1",
               "specification": "LANG.PROFILE.VOCABULARY",
               "version": "1.0.0"
             }
@@ -12511,6 +12775,25 @@
         },
         {
           "identity": {
+            "id": "taskScope",
+            "kind": "construction",
+            "role": "structured_task_scope"
+          },
+          "productions": [
+            "taskScope",
+            "spawnStatement",
+            "spawnExpression",
+            "type"
+          ],
+          "tokens": [
+            "tasksKeyword",
+            "endTasks",
+            "spawnKeyword",
+            "taskType"
+          ]
+        },
+        {
+          "identity": {
             "id": "parameter",
             "kind": "construction",
             "role": "parameter_passing_mode"
@@ -13629,6 +13912,12 @@
         "es": "FinSegun"
       }
     },
+    "endTasks": {
+      "lexemas": {
+        "en": "endTasks",
+        "es": "FinTareas"
+      }
+    },
     "endWhile": {
       "alias": {
         "en": [
@@ -14102,6 +14391,12 @@
         "es": "Algo"
       }
     },
+    "spawnKeyword": {
+      "lexemas": {
+        "en": "spawn",
+        "es": "Lanzar"
+      }
+    },
     "step": {
       "alias": {
         "en": [
@@ -14171,6 +14466,18 @@
       "lexemas": {
         "en": "switch",
         "es": "Segun"
+      }
+    },
+    "taskType": {
+      "lexemas": {
+        "en": "task",
+        "es": "Tarea"
+      }
+    },
+    "tasksKeyword": {
+      "lexemas": {
+        "en": "tasks",
+        "es": "Tareas"
       }
     },
     "then": {

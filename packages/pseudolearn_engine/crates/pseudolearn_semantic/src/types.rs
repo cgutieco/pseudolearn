@@ -14,6 +14,7 @@ pub enum Type {
     Object(ClassId),
     Enum(EnumId),
     Record(RecordId),
+    Task(TypeId),
     Unknown,
     Error,
 }
@@ -52,7 +53,9 @@ impl TypeInterner {
 
     pub fn value_class(&self, identifier: TypeId) -> ValueClass {
         match self.get(identifier) {
-            Type::String | Type::Array { .. } | Type::Object(_) => ValueClass::Reference,
+            Type::String | Type::Array { .. } | Type::Object(_) | Type::Task(_) => {
+                ValueClass::Reference
+            }
             Type::Unit | Type::Never => ValueClass::Unit,
             _ => ValueClass::Scalar,
         }

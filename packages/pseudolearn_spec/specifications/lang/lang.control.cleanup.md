@@ -154,15 +154,41 @@
   "id": "R2",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Retornar y Propagar evalúan y conservan su resultado antes de ejecutar limpiezas, incluidas cargas de referencia y variantes Resultado<T, ErrorES>, de modo que cerrar una capacidad con Diferir al retornar o propagar un ErrorES nunca oculta el error primario. Se rechazan Retornar, Salir, Propagar y otro Diferir dentro de una limpieza; una función literal interior posee contexto independiente. Una trampa del programa o de una limpieza termina inmediatamente sin ejecutar limpiezas pendientes. No se añade limpieza ante cancelación o efectos externos.",
+  "texto": "Retornar y Propagar evalúan y conservan su resultado antes de ejecutar limpiezas, incluidas cargas de referencia y variantes Resultado<T, ErrorES>, de modo que cerrar una capacidad con Diferir al retornar o propagar un ErrorES nunca oculta el error primario. Se rechazan Retornar, Salir, Propagar y otro Diferir dentro de una limpieza; una función literal interior posee contexto independiente. Una trampa del programa o de una limpieza termina inmediatamente sin ejecutar limpiezas pendientes. La cancelación cooperativa de tarea cancela y une primero a sus hijas y luego ejecuta las limpiezas pendientes en orden inverso. La cancelación del anfitrión detiene toda la ejecución sin ejecutar limpiezas.",
   "verificacion": [
     "C5",
     "C6",
     "C7",
     "C10",
     "C11",
-    "C12"
+    "C12",
+    "C13"
   ]
+}
+```
+
+```caso
+{
+  "id": "C13",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "SubProceso Suspendible Wait() Como Resultado<Entero, Cadena>\nDefinir timer Como Temporizador <- Propagar SolicitarTemporizador();\nDiferir\nEscribir \"cleanup\";\nFinDiferir\nRetornar Exito(Propagar Aguardar timer.Esperar(100));\nFinSubProceso\nSubProceso Suspendible Fail() Como Resultado<Entero, Cadena>\nRetornar Error(\"failed\");\nFinSubProceso\nAlgoritmo P\nTareas failure\nDefinir waiting Como Tarea<Entero> <- Lanzar Wait();\nDefinir failed Como Tarea<Entero> <- Lanzar Fail();\nFinTareas\nSegun failure Hacer\nNada: Escribir \"ok\";\nAlgo(problem): Escribir problem.Primero;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Wait() as result<integer, string>\ndefine timer as Timer <- propagate requestTimer();\ndefer\nwrite \"cleanup\";\nendDefer\nreturn success(propagate await timer.wait(100));\nendSubroutine\nsubroutine suspendable Fail() as result<integer, string>\nreturn failure(\"failed\");\nendSubroutine\nalgorithm P\ntasks failure\ndefine waiting as task<integer> <- spawn Wait();\ndefine failed as task<integer> <- spawn Fail();\nendTasks\nswitch failure do\nnone: write \"ok\";\nsome(problem): write problem.first;\nendSwitch\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "cleanup\nfailed\n",
+    "terminacion": "completed"
+  }
 }
 ```
 

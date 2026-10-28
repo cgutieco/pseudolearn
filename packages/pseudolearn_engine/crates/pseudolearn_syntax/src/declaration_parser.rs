@@ -30,15 +30,41 @@ pub(crate) fn parse_type(state: &mut ParserState<'_>) -> Result<usize, ()> {
     if state.kind() == TokenKind::Keyword(KeywordKind::Subroutine) {
         return crate::function_parser::function_type(state);
     }
-    if matches!(
-        state.kind(),
-        TokenKind::Keyword(KeywordKind::OptionalType | KeywordKind::ResultType)
-    ) {
-        let result = state.kind() == TokenKind::Keyword(KeywordKind::ResultType);
+    if let Some(kind) = generic_type_kind(state.kind()) {
         state.advance();
-        crate::variant_parser::type_arguments(state, result)?;
-        return Ok(state.finish(NodeKind::Type, start, marker));
+        return generic_type(state, kind, start, marker);
     }
+    named_type(state, start, marker)
+}
+
+fn generic_type_kind(kind: TokenKind) -> Option<TokenKind> {
+    matches!(
+        kind,
+        TokenKind::Keyword(
+            KeywordKind::OptionalType | KeywordKind::ResultType | KeywordKind::TaskType
+        )
+    )
+    .then_some(kind)
+}
+
+fn generic_type(
+    state: &mut ParserState<'_>,
+    kind: TokenKind,
+    start: u32,
+    marker: usize,
+) -> Result<usize, ()> {
+    if kind == TokenKind::Keyword(KeywordKind::TaskType) {
+        task_type_arguments(state)?;
+    } else {
+        crate::variant_parser::type_arguments(
+            state,
+            kind == TokenKind::Keyword(KeywordKind::ResultType),
+        )?;
+    }
+    Ok(state.finish(NodeKind::Type, start, marker))
+}
+
+fn named_type(state: &mut ParserState<'_>, start: u32, marker: usize) -> Result<usize, ()> {
     match state.kind() {
         TokenKind::Identifier
         | TokenKind::Keyword(
@@ -58,6 +84,18 @@ pub(crate) fn parse_type(state: &mut ParserState<'_>) -> Result<usize, ()> {
         crate::generic_parser::type_arguments(state)?;
     }
     Ok(state.finish(NodeKind::Type, start, marker))
+}
+
+fn task_type_arguments(state: &mut ParserState<'_>) -> Result<(), ()> {
+    state.require(TokenKind::Less, DiagnosticCode::ExpectedType)?;
+    parse_type(state)?;
+    if state.eat(TokenKind::Comma) {
+        let span = state.span();
+        state.report(DiagnosticCode::ExpectedType, span);
+        return Err(());
+    }
+    state.require(TokenKind::Greater, DiagnosticCode::ExpectedType)?;
+    Ok(())
 }
 
 pub(crate) fn declaration(state: &mut ParserState<'_>) -> Result<usize, ()> {

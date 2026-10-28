@@ -120,6 +120,16 @@ pub use pseudolearn_abi::{EffectOperation, EffectValueKind, EFFECT_OPERATIONS, e
 mod effect_checkpoint;
 pub use effect_checkpoint::{EffectCheckpoint, capture_effect_checkpoint, replay_effect_checkpoint};
 
+mod task_agenda;
+mod task_state;
+pub use task_agenda::{
+    TaskAgenda, TaskAgendaError, TaskCancellation, TaskExecution, TaskId, TaskScopeId, TaskScopeJoin,
+};
+pub use task_state::TaskState;
+
+#[cfg(test)]
+mod task_agenda_tests;
+
 mod secret_policy;
 
 mod tape_accounting;

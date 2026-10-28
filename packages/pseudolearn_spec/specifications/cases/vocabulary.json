@@ -299,6 +299,10 @@
     "en": "endSwitch",
     "es": "Fin Segun"
   },
+  "endTasks": {
+    "en": "endTasks",
+    "es": "FinTareas"
+  },
   "endWhile": {
     "en": "endWhile",
     "es": "FinMientras"
@@ -647,6 +651,10 @@
     "en": "some",
     "es": "Algo"
   },
+  "spawnKeyword": {
+    "en": "spawn",
+    "es": "Lanzar"
+  },
   "step": {
     "en": "step",
     "es": "Con Paso"
@@ -698,6 +706,14 @@
   "switchKeyword": {
     "en": "switch",
     "es": "Segun"
+  },
+  "taskType": {
+    "en": "task",
+    "es": "Tarea"
+  },
+  "tasksKeyword": {
+    "en": "tasks",
+    "es": "Tareas"
   },
   "then": {
     "en": "then",

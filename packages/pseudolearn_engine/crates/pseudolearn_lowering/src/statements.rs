@@ -74,9 +74,16 @@ fn dispatch_simple_statement(
     span: Span,
     context: &mut StatementContext<'_, '_>,
 ) -> bool {
-    if crate::statements_cleanup::dispatch(statement, span, context) {
-        return true;
-    }
+    crate::statements_cleanup::dispatch(statement, span, context)
+        || crate::task_scopes::dispatch(statement, span, context)
+        || dispatch_core_simple_statement(statement, span, context)
+}
+
+fn dispatch_core_simple_statement(
+    statement: &HirStatement,
+    span: Span,
+    context: &mut StatementContext<'_, '_>,
+) -> bool {
     match statement {
         HirStatement::Declare(locals) => {
             lower_declare(locals, span, context);
@@ -168,6 +175,7 @@ fn dispatch_branch_statement(
         HirStatement::VariantMatch(matching) => {
             crate::statements_variant_match::lower(matching, span, context)
         }
+        HirStatement::TaskScope { body, .. } => crate::task_scopes::lower_scope(body, context),
         HirStatement::Conditional {
             condition,
             affirmative,
@@ -232,7 +240,7 @@ fn lower_write(
     context.builder.emit_void(Operation::StmtExit, vec![], span);
 }
 
-fn lower_statement_call(
+pub(crate) fn lower_statement_call(
     expression_id: ExpressionId,
     statement_span: Span,
     context: &mut StatementContext<'_, '_>,

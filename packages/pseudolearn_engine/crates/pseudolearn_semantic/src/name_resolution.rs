@@ -59,6 +59,9 @@ fn check_read(
     };
     let name = declaration.name.clone();
     let kind = session.module.types.get(declaration.type_id);
+    if matches!(kind, Type::Task(_)) && !session.control.awaiting_task_handle {
+        session.report(DiagnosticCode::TaskHandleEscape, node);
+    }
     if matches!(kind, Type::Array { .. }) && purpose == ExpressionPurpose::Value {
         session.named_report(DiagnosticCode::ArrayCannotBeUsedAsValue, node, &name);
         return;

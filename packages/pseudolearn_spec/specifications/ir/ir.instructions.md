@@ -3503,3 +3503,83 @@
   "sin_ri": "El anfitrión resuelve la operación síncrona y Aguardar conserva su valor sin transición pendiente."
 }
 ```
+
+```cobertura
+{
+  "id": "V156",
+  "regla": "LANG.TASK.SCOPE#R1",
+  "sin_ri": "La pertenencia léxica de Lanzar y las prohibiciones de Diferir se comprueban antes del lowering."
+}
+```
+
+```cobertura
+{
+  "id": "V157",
+  "regla": "LANG.TASK.SCOPE#R2",
+  "sin_ri": "El destino, los modos de parámetros y la transferibilidad se validan durante el análisis semántico."
+}
+```
+
+```cobertura
+{
+  "id": "V158",
+  "regla": "LANG.TASK.SCOPE#R3",
+  "sin_ri": "El tipo de retorno del asa y la obligación de conservar errores se determinan en el análisis semántico."
+}
+```
+
+```cobertura
+{
+  "id": "V159",
+  "regla": "LANG.TASK.SCOPE#R4",
+  "sin_ri": "El uso local permitido de un asa se impone durante el análisis semántico."
+}
+```
+
+```cobertura
+{
+  "id": "V160",
+  "regla": "LANG.TASK.SCOPE#R5",
+  "sin_ri": "La unión requiere la agenda de tareas y las operaciones de suspensión previstas para PG-4.07."
+}
+```
+
+```cobertura
+{
+  "id": "V161",
+  "regla": "LANG.TASK.SCOPE#R6",
+  "sin_ri": "La cancelación cooperativa requiere los puntos de reanudación de la agenda previstos para PG-4.07."
+}
+```
+
+```cobertura
+{
+  "id": "V162",
+  "regla": "LANG.TASK.SCOPE#R7",
+  "sin_ri": "La prohibición de suspender o lanzar desde Diferir se aplica en el análisis semántico."
+}
+```
+
+```cobertura
+{
+  "id": "V163",
+  "regla": "LANG.TASK.SCOPE#R8",
+  "sin_ri": "El abandono de un efecto requiere la agenda de efectos concurrentes prevista para PG-4.10."
+}
+```
+
+```cobertura
+{
+  "id": "V164",
+  "regla": "LANG.TASK.SCOPE#R9",
+  "sin_ri": "La cancelación del anfitrión conserva el flujo de terminación existente, fuera de instrucciones de la RI."
+}
+```
+
+```cobertura
+{
+  "id": "V165",
+  "regla": "LANG.TASK.SCOPE#R10",
+  "sin_ri": "Las trampas terminan la ejecución mediante la política existente de la máquina virtual."
+}
+```

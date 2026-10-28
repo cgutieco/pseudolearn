@@ -444,21 +444,23 @@ marca `[x]` sin evidencia en §11.
 
 ### PG-4.02 · Ámbitos obligatorios: unión al salir, ningún hijo abandonado y cancelación cooperativa
 
-- [ ] `PG-4.02.01` Crear `LANG.TASK.SCOPE` con `S1`–`S10`. Editar `LANG.CONTROL.CLEANUP` solo tras la respuesta de la
+- [x] `PG-4.02.01` Crear `LANG.TASK.SCOPE` con `S1`–`S10`. Editar `LANG.CONTROL.CLEANUP` solo tras la respuesta de la
   persona a `CF-PG4-01`. Códigos: `spawnOutsideTaskScope`, `taskScopeInsideDefer`, `taskArgumentNotTransferable`
   (compartido con `PG-4.06`), `taskByReferenceArgument`, `taskHandleEscape`, `spawnTargetNotSuspendible`.
 - [ ] `PG-4.02.02` Casos: feliz (dos hijas unidas, hija sin valor como sentencia, ámbitos anidados de tres niveles,
   ámbito vacío); infeliz (un caso por código; `Lanzar` dentro de clausura y dentro de `Diferir`; asa asignada,
   retornada, capturada y pasada); cancelación (hija suspendida en canal cancelada por fallo de hermana ejecuta sus
-  `Diferir` en orden inverso; nieta cancelada antes que su madre); límite (`Aguardar t` dos veces; ámbito cuya unión no
+-  `Diferir` en orden inverso; nieta cancelada antes que su madre); límite (`Aguardar t` dos veces; ámbito cuya unión no
   suspende porque las hijas ya terminaron; cancelación de una tarea que espera un efecto concurrente ⇒ efecto
-  `abandoned`).
-- [ ] `PG-4.02.03` Tests espejo: `task_scope_checker_tests.rs`, `task_handles_tests.rs` en semantic;
+  `abandoned`). El caso del efecto pendiente todavía no comprueba el resultado `abandoned` en la observación de la cinta.
+- [x] `PG-4.02.03` Tests espejo: `task_scope_checker_tests.rs`, `task_handles_tests.rs` en semantic;
   `task_agenda_tests.rs` (cancelación y unión como estructura de datos) en runtime.
 - [ ] `PG-4.02.04` Código: semantic (`task_scope_checker.rs`, `task_handles.rs`); lowering (`task_scopes.rs`, aristas
-  de cancelación en `cleanup_edges.rs`); runtime (`task_agenda.rs`, `task_state.rs`); VM (`machine/tasks.rs`).
-- [ ] `PG-4.02.05` README del motor (`semantic`, `lowering`, `runtime`, `vm`).
-- [ ] `PG-4.02.06` Ligera: tests de los módulos anteriores, `rust-checks`, Clippy por crate tocado.
+  de cancelación en `cleanup_edges.rs`); runtime (`task_agenda.rs`, `task_state.rs`); VM (`machine/tasks.rs`). El
+  runtime solo modela la agenda; lowering aún reduce los lanzamientos a llamadas y los ámbitos a bloques, y la VM no
+  ejecuta hijas ni une ámbitos. Falta integrar continuación, cancelación y limpieza.
+- [x] `PG-4.02.05` README del motor (`semantic`, `lowering`, `runtime`, `vm`).
+- [x] `PG-4.02.06` Ligera: tests de los módulos anteriores, `rust-checks`, Clippy por crate tocado.
 - [ ] `PG-4.02.07` Pesada: `--only LANG.TASK.SCOPE,LANG.CONTROL.CLEANUP` en `engine` y `aot`.
 
 ### PG-4.03 · Política de fallos: el primero por orden lógico cancela a los hermanos; los demás se conservan
@@ -891,7 +893,7 @@ lo que documente su README tras la iteración 4. Desde `apps/pseudolearn_app`: `
 | Tarea | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
 | `PG-4.01` | Completa | `.01`–`.06`; 15 casos bilingües, 4 felices, 6 de diagnóstico y 5 de límite; tests filtrados de ambos crates, `rust-checks all .`, Clippy de ambos crates, `rustfmt --check` dirigido y `git diff --check` pasan. `see validate` validó 182 especificaciones; `lock --check` y `see export --check` verificaron sus artefactos. Reanclados los nueve IDs autorizados, sin cambiar estados ni versiones | `.07` pesado se difiere a la iteración 5 |
-| `PG-4.02` | | | |
+| `PG-4.02` | Parcial; no cerrada | `.01`, `.03`, `.05` y `.06`; `see validate` validó 183 especificaciones, `lock --check` y `see export --check` pasaron; las suites de los cinco crates, `rust-checks all .`, Clippy y formato dirigido pasaron | `.02` aún no verifica `abandoned` en la observación de cinta; falta una prueba VM de ejecución de hijas; `.04` no está integrada de extremo a extremo. La agenda de runtime es solo estructural, el lowering emite llamadas/bloques y la VM conserva una sola tarea raíz. `.07` pesada queda reservada para la iteración 5; `PHASE-GREEN` no se cumple para cerrar esta tarea |
 | `PG-4.03` | | | |
 | `PG-4.04` | | | |
 | `PG-4.05` | | | |
@@ -904,13 +906,13 @@ lo que documente su README tras la iteración 4. Desde `apps/pseudolearn_app`: `
 | `PG-4.12` | | | |
 | Espacio liberado (§13) | Ejecutado | 2,8 GiB iniciales; limpieza de artefactos regenerables elevó el espacio libre a 33 GiB antes de compilar; quedan 32 GiB tras las verificaciones | Sin tocar datos personales ni evidencias |
 
-Revisión Git de cierre: cambios locales en `feature/agregar-ruta-de-especificacion`, sin commit ni push · Verificadores
-ejecutados: `see validate`, `lock --check`, `see export --check`, tests filtrados de `pseudolearn_syntax`,
-`suspension_checker` y `await_checker`, `rust-checks all .`, Clippy de ambos crates, comprobación de formato dirigida y
-`git diff --check` · Suites omitidas y motivo: conformidad pesada y conjunto centinela léxico (`PG-4.01.07`, reservados
-a la iteración 5) · Pendientes justificados: `.07` pesado · Puntos de §4 cumplidos: `.01`–`.06`; `PHASE-GREEN` cumplido para
-esta iteración · Decisiones de la persona: revisión independiente por Cesar Antonio Gutierrez Contreras y reanclaje
-autorizado; efecto resuelto verificado por salida y terminación `completed`; `task_suspended` queda para la iteración 5
+Registro de PG-4.02; la fase PG-4 sigue abierta: cambios locales en `feature/agregar-ruta-de-especificacion`, sin
+commit ni push · Verificadores ejecutados: `see validate`, `lock --check`, `see export --check`, `cargo test --offline`
+de los cinco crates tocados, `rust-checks all .`, Clippy dirigido, `rustfmt --check` dirigido y `git diff --check` ·
+Suites omitidas y motivo: conformidad pesada de PG-4.02 (`.07`), reservada para la iteración 5; tampoco se ejecutó
+conformidad de PG-4.01 (`.07`) · Pendientes: expectativa de cinta para `abandoned` en `.02`, prueba VM de tareas e
+integración end-to-end de `.04` · `PHASE-GREEN` no satisfecho para cerrar PG-4.02 · PG-4.01 conserva su registro de
+cierre anterior; las pruebas de continuación, aislamiento y reproducción de tareas quedan en sus iteraciones futuras
 
 ---
 

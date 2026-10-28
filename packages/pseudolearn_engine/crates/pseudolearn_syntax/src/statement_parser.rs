@@ -7,7 +7,9 @@ use pseudolearn_lexicon::KeywordKind;
 
 pub(crate) fn parse_statement_block(state: &mut ParserState<'_>) -> usize {
     body_until(state, |state| {
-        boundary(state.kind()) || crate::contextual::matches(state, "endDefer")
+        boundary(state.kind())
+            || crate::contextual::matches(state, "endDefer")
+            || state.kind() == TokenKind::Keyword(KeywordKind::EndTasks)
     })
 }
 
@@ -54,12 +56,18 @@ fn parse_statement(state: &mut ParserState<'_>) -> Result<usize, ()> {
             | KeywordKind::ForKeyword
             | KeywordKind::SwitchKeyword,
         ) => return crate::control_statement_parser::compound(state),
+        TokenKind::Keyword(KeywordKind::TasksKeyword) => {
+            return crate::control_statement_parser::compound(state);
+        }
         TokenKind::Keyword(KeywordKind::Declare) => crate::declaration_parser::declaration(state),
         TokenKind::Keyword(KeywordKind::ConstantKeyword) => crate::constant_parser::constant(state),
         TokenKind::Keyword(KeywordKind::Dimension) => crate::declaration_parser::dimension(state),
         TokenKind::Keyword(KeywordKind::Write) => output(state),
         TokenKind::Keyword(KeywordKind::Read) => input(state),
         TokenKind::Keyword(KeywordKind::ReturnKeyword) => returned(state),
+        TokenKind::Keyword(KeywordKind::SpawnKeyword) => {
+            crate::task_scope_parser::spawn_statement(state)
+        }
         TokenKind::Keyword(KeywordKind::DiscardKeyword) => crate::variant_parser::discard(state),
         TokenKind::Keyword(
             KeywordKind::ClassKeyword | KeywordKind::Subroutine | KeywordKind::Method,
@@ -136,11 +144,12 @@ fn assignment_or_call(state: &mut ParserState<'_>) -> Result<usize, ()> {
         parse_expression(state, 0)?;
         return Ok(state.finish(NodeKind::AssignmentStatement, start, marker));
     }
-    if state
-        .nodes
-        .get(target)
-        .is_some_and(|node| matches!(node.kind, NodeKind::Postfix | NodeKind::AwaitExpression))
-    {
+    if state.nodes.get(target).is_some_and(|node| {
+        matches!(
+            node.kind,
+            NodeKind::Postfix | NodeKind::AwaitExpression | NodeKind::SpawnExpression
+        )
+    }) {
         return Ok(state.finish(NodeKind::CallStatement, start, marker));
     }
     let span = state.span();
@@ -211,6 +220,7 @@ pub(crate) fn boundary(kind: TokenKind) -> bool {
                     | KeywordKind::DefaultCase
                     | KeywordKind::EndAlgorithm
                     | KeywordKind::EndSubroutine
+                    | KeywordKind::EndTasks
                     | KeywordKind::EndClass
                     | KeywordKind::EndMethod
             )

@@ -18,6 +18,7 @@ mod output;
 mod profile;
 mod registers;
 mod roots;
+mod tasks;
 mod text;
 mod traps;
 
@@ -108,6 +109,7 @@ pub struct Machine<'program> {
     pub(crate) effect_result: Option<pseudolearn_runtime::HostReply>,
     pub(crate) effect_seq: u64,
     pub(crate) effect_checkpoint: Option<Box<pseudolearn_runtime::EffectCheckpoint>>,
+    pub(crate) tasks: tasks::VmTasks,
 }
 
 pub fn run(program: &VerifiedBytecode, fuel: Fuel) -> RunResult {
@@ -150,6 +152,9 @@ fn trapped(trap: VmTrap) -> RunResult {
 impl<'program> Machine<'program> {
     fn execute<Observer: OpcodeObserver>(&mut self, observer: &mut Observer) -> RunExit {
         loop {
+            if !self.tasks.current_is_running() {
+                return RunExit::Trap(VmTrap::new("taskStateInvalid", None));
+            }
             let function = self.current.as_ref();
             let position = self.cursor.program_counter;
             observer.record(function, position);

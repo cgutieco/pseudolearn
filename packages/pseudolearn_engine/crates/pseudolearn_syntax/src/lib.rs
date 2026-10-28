@@ -23,6 +23,9 @@ pub mod reprint;
 pub mod schema;
 pub(crate) mod statement_parser;
 pub(crate) mod switch_parser;
+mod task_scope_parser;
+#[cfg(test)]
+mod task_scope_parser_tests;
 pub mod tokens;
 pub mod tree;
 pub(crate) mod unit_parser;
