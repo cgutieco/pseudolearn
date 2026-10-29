@@ -12,7 +12,7 @@ use super::{Cursor, Flow, Machine};
 const INITIAL_BANK_WORDS: usize = 64;
 
 macro_rules! machine_instance {
-    ($program:ident, $current:ident, $function_index:ident, $fuel:ident, $options:ident, $probed:ident, $inputs:ident, $task_limit:ident) => {
+    ($program:ident, $current:ident, $function_index:ident, $fuel:ident, $options:ident, $probed:ident, $inputs:ident, $task_limit:ident, $task_runtime_enabled:ident) => {
         Machine {
             program: $program,
             current: $current,
@@ -54,7 +54,7 @@ macro_rules! machine_instance {
             effect_result: None,
             effect_checkpoint: None,
             effect_seq: 0,
-            tasks: super::tasks::VmTasks::with_task_limit($task_limit),
+            tasks: super::tasks::VmTasks::with_task_limit($task_limit, $task_runtime_enabled),
         }
     };
 }
@@ -75,9 +75,15 @@ pub(super) fn execute_with<Observer: OpcodeObserver>(
 ) -> RunResult {
     match Machine::start(program, fuel, options) {
         Ok(mut machine) => {
-            let exit = machine
-                .enter_entry()
-                .unwrap_or_else(|| machine.execute(observer));
+            let exit = if machine.tasks.enabled {
+                machine
+                    .enter_entry::<true>()
+                    .unwrap_or_else(|| machine.execute::<true, _>(observer))
+            } else {
+                machine
+                    .enter_entry::<false>()
+                    .unwrap_or_else(|| machine.execute::<false, _>(observer))
+            };
             machine.finish(exit, fuel)
         }
         Err(trap) => super::trapped(trap),
@@ -123,6 +129,7 @@ impl<'program> Machine<'program> {
         let probed = options.twin_mode == TwinMode::Probed;
         let inputs = options.inputs.clone();
         let task_limit = options.task_limit;
+        let task_runtime_enabled = program.uses_task_runtime();
         machine_instance!(
             program,
             current,
@@ -131,7 +138,8 @@ impl<'program> Machine<'program> {
             options,
             probed,
             inputs,
-            task_limit
+            task_limit,
+            task_runtime_enabled
         )
     }
 
@@ -150,14 +158,14 @@ impl<'program> Machine<'program> {
         Ok(())
     }
 
-    pub(super) fn enter_entry(&mut self) -> Option<RunExit> {
+    pub(super) fn enter_entry<const TASK_RUNTIME: bool>(&mut self) -> Option<RunExit> {
         if self.probed {
             if let Some(&probed_start) = self.current.fast_to_probed_blocks.first() {
                 self.cursor.program_counter = probed_start;
             }
             return None;
         }
-        match self.charge_entry(self.current.entry_mass, 0) {
+        match self.charge_entry::<TASK_RUNTIME>(self.current.entry_mass, 0) {
             Flow::Service(reason) => Some(RunExit::Service(reason)),
             Flow::Continue
             | Flow::Completed(_)

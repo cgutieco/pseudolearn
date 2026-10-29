@@ -65,14 +65,8 @@ pub fn generated(
 ) -> Result<Workload, String> {
     let (lines, incomplete) = configuration;
     let word = |identity| keyword(corpus, profile, identity);
-    let mut program = format!(
-        "{} Benchmark\n{} accumulator {} {};\naccumulator <- 0;\n",
-        word("algorithm")?,
-        word("declare")?,
-        word("typeConnector")?,
-        word("integerType")?
-    );
-    for _ in 0..lines.saturating_sub(5) {
+    let mut program = benchmark_program_header(corpus, profile)?;
+    for _ in 0..lines.saturating_sub(4) {
         program.push_str("accumulator <- accumulator + 1;\n");
     }
     if incomplete {
@@ -96,6 +90,18 @@ pub fn generated(
         incomplete,
         corpus: false,
     })
+}
+
+fn benchmark_program_header(corpus: &Value, profile: &str) -> Result<String, String> {
+    let word = |identity| keyword(corpus, profile, identity);
+    Ok(format!(
+        "{} Benchmark\n{} {} accumulator {} {} <- 0;\n",
+        word("algorithm")?,
+        word("declare")?,
+        word("mutableKeyword")?,
+        word("typeConnector")?,
+        word("integerType")?
+    ))
 }
 
 fn keyword<'corpus>(
@@ -170,14 +176,16 @@ fn unicode_identifier_workload(
 
 fn unicode_identifier_program(corpus: &Value, profile: &str) -> Result<String, String> {
     let names = SPANISH_UNICODE_IDENTIFIERS;
-    let mut program = format!(
-        "{} Unicode\n{} {} {} {};\n",
-        keyword(corpus, profile, "algorithm")?,
-        keyword(corpus, profile, "declare")?,
-        names.join(", "),
-        keyword(corpus, profile, "typeConnector")?,
-        keyword(corpus, profile, "integerType")?
-    );
+    let mut program = format!("{} Unicode\n", keyword(corpus, profile, "algorithm")?);
+    let declaration = keyword(corpus, profile, "declare")?;
+    let mutable = keyword(corpus, profile, "mutableKeyword")?;
+    let type_connector = keyword(corpus, profile, "typeConnector")?;
+    let integer_type = keyword(corpus, profile, "integerType")?;
+    for name in names {
+        program.push_str(&format!(
+            "{declaration} {mutable} {name} {type_connector} {integer_type} <- 0;\n"
+        ));
+    }
     for (index, name) in names.iter().enumerate() {
         let assignment_name = match *name {
             "año" => "an\u{0303}o",

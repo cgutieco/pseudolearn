@@ -86,5 +86,15 @@ fn select_emits_one_decision_without_extra_binding_statements() {
         Some(&json!(0)),
         "{decisions:?}"
     );
-    assert_eq!(response.events.len(), 7, "{response:?}");
+    let statement_events = response
+        .events
+        .iter()
+        .filter(|event| {
+            matches!(
+                event.get("class").and_then(serde_json::Value::as_str),
+                Some("statement_entered" | "statement_exited")
+            )
+        })
+        .count();
+    assert_eq!(statement_events, 6, "{response:?}");
 }

@@ -22,16 +22,19 @@ mod roots;
 mod select;
 mod task_completion;
 mod task_context;
-mod task_events;
-mod task_queries;
 mod task_creation;
 mod task_effects;
+mod task_events;
+mod task_queries;
 mod task_results;
 mod task_resume;
 mod task_roots;
 mod task_scheduling;
 mod task_scope_cancellation;
+mod task_scopes;
 mod tasks;
+#[cfg(test)]
+mod tasks_tests;
 pub(super) use task_context::TaskContext;
 mod text;
 mod traps;
@@ -164,41 +167,75 @@ fn trapped(trap: VmTrap) -> RunResult {
 }
 
 impl<'program> Machine<'program> {
-    fn execute<Observer: OpcodeObserver>(&mut self, observer: &mut Observer) -> RunExit {
+    fn execute<const TASK_RUNTIME: bool, Observer: OpcodeObserver>(
+        &mut self,
+        observer: &mut Observer,
+    ) -> RunExit {
+        self.execute_loop::<TASK_RUNTIME, _>(observer)
+    }
+
+    fn execute_loop<const TASK_RUNTIME: bool, Observer: OpcodeObserver>(
+        &mut self,
+        observer: &mut Observer,
+    ) -> RunExit {
         loop {
-            if let Some(request) = self.tasks.pending_delivery.take() {
-                return RunExit::AwaitingEffect(request);
+            if TASK_RUNTIME && let Some(exit) = self.task_preflight() {
+                return exit;
             }
-            if !self.tasks.current_is_running() {
-                return RunExit::Trap(VmTrap::new(crate::evaluate::INVALID_BYTECODE, None));
+            if let Some(exit) = self.execute_instruction::<TASK_RUNTIME, _>(observer) {
+                return exit;
             }
-            let function = self.current.as_ref();
-            let position = self.cursor.program_counter;
-            observer.record(function, position);
-            self.cursor.program_counter = position.wrapping_add(1);
-            match step(self, function.operation(position, self.probed)) {
-                Ok(Flow::Continue) => {}
-                Ok(Flow::Completed(value)) => match self.complete_task(value) {
-                    Ok(Some(exit)) => return exit,
-                    Ok(None) => {}
-                    Err(fault) => {
-                        let trap = self.trap_context(fault, position);
-                        self.record_failure(&trap);
-                        return RunExit::Trap(trap);
-                    }
-                },
-                Ok(Flow::Service(reason)) => return RunExit::Service(reason),
-                Ok(Flow::AwaitingInput) => return RunExit::AwaitingInput,
-                Ok(Flow::AwaitingEffect(pending)) => return RunExit::AwaitingEffect(pending),
-                Ok(Flow::Cancelled) => return RunExit::Cancelled,
-                Ok(Flow::LimitReached(kind)) => return RunExit::LimitReached { kind },
+        }
+    }
+
+    #[inline(always)]
+    fn execute_instruction<const TASK_RUNTIME: bool, Observer: OpcodeObserver>(
+        &mut self,
+        observer: &mut Observer,
+    ) -> Option<RunExit> {
+        let function = self.current.as_ref();
+        let position = self.cursor.program_counter;
+        observer.record(function, position);
+        self.cursor.program_counter = position.wrapping_add(1);
+        match step::<TASK_RUNTIME>(
+            self,
+            position,
+            self.probed,
+            function.operation(position, self.probed),
+        ) {
+            Ok(Flow::Continue) => None,
+            Ok(Flow::Completed(value)) => match self.complete_task(value) {
+                Ok(exit) => exit,
                 Err(fault) => {
                     let trap = self.trap_context(fault, position);
                     self.record_failure(&trap);
-                    return RunExit::Trap(trap);
+                    Some(RunExit::Trap(trap))
                 }
+            },
+            Ok(Flow::Service(reason)) => Some(RunExit::Service(reason)),
+            Ok(Flow::AwaitingInput) => Some(RunExit::AwaitingInput),
+            Ok(Flow::AwaitingEffect(request)) => Some(RunExit::AwaitingEffect(request)),
+            Ok(Flow::Cancelled) => Some(RunExit::Cancelled),
+            Ok(Flow::LimitReached(kind)) => Some(RunExit::LimitReached { kind }),
+            Err(fault) => {
+                let trap = self.trap_context(fault, position);
+                self.record_failure(&trap);
+                Some(RunExit::Trap(trap))
             }
         }
+    }
+
+    fn task_preflight(&mut self) -> Option<RunExit> {
+        if let Some(request) = self.tasks.pending_delivery.take() {
+            return Some(RunExit::AwaitingEffect(request));
+        }
+        if !self.tasks.current_is_running() {
+            return Some(RunExit::Trap(VmTrap::new(
+                crate::evaluate::INVALID_BYTECODE,
+                None,
+            )));
+        }
+        None
     }
 
     pub(crate) fn current_span(&self) -> Option<pseudolearn_bytecode::SourceSpan> {

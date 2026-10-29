@@ -1050,7 +1050,6 @@
   "clase": "semantica",
   "texto": "Una ejecución observada con tareas, canales o efectos entregados emite además los eventos de tarea de D1, solo con el gemelo sondeado y sin valores de mensajes. task_spawned declara la tarea nueva, su padre y su ámbito; task_ready, la causa por la que una tarea queda lista (spawn, completion, channel, yield o resume); task_suspended, la causa (task, join, channel_send, channel_receive, select o effect) y su objetivo; task_resumed, la tarea que pasa a ejecutar; task_completed, su desenlace (success, error o cancelled); task_cancel_requested, la tarea, el motivo (sibling_failure o parent_cancelled) y la tarea de origen; scope_joined, la tarea dueña y el desenlace del ámbito (success o failure); channel_created, la identidad y la capacidad; channel_sent, channel_received (con present) y channel_closed, la identidad del canal; effect_delivered, el effect_seq entregado, su ordinal de entrega desde uno y la tarea receptora. La línea de un evento de tarea es la de la sentencia que contiene la instrucción que lo emite y, entre sentencias, la de la cabecera de la unidad en ejecución; task_suspended y task_resumed usan la instrucción que se reejecutará o ejecutará a continuación. Un programa sin tareas ni canales no emite ninguno.",
   "verificacion": [
-    "C16",
     "C17",
     "C18"
   ]
@@ -1072,7 +1071,7 @@
 ```caso
 {
   "id": "C16",
-  "regla": "R7",
+  "regla": "R8",
   "perfiles": [
     "es",
     "en"

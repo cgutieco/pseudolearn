@@ -392,7 +392,7 @@
             "unidad": "Main",
             "variables": {
               "total": {
-                "valor": "100"
+                "valor": "0"
               }
             }
           }

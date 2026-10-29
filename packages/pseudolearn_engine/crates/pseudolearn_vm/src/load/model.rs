@@ -1,8 +1,12 @@
 #![forbid(unsafe_code)]
 
+use super::invalid_bytecode;
 use super::memory;
-use crate::dispatch::Op;
+use crate::VmTrap;
+use crate::dispatch::{CompactOp, Op, TaskOp, compact_operation};
 use pseudolearn_bytecode::{Opcode, Register, RegisterClass, SourceSpan};
+
+const NO_TASK_OPERATION: u32 = u32::MAX;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub(crate) enum Source {
@@ -100,11 +104,14 @@ pub(crate) struct LoadedFunction {
     pub names: std::collections::BTreeMap<Register, String>,
     pub scalar_types: Vec<pseudolearn_bytecode::ValueType>,
     pub reference_types: Vec<pseudolearn_bytecode::ValueType>,
-    pub code: Vec<Op>,
+    pub code: Vec<CompactOp>,
+    pub task_operations: Vec<TaskOp>,
     pub mask: usize,
     pub spans: Vec<Option<SourceSpan>>,
     pub origins: Vec<Origin>,
-    pub probed_code: Vec<Op>,
+    pub probed_code: Vec<CompactOp>,
+    pub task_operation_indices: Vec<u32>,
+    pub probed_task_operation_indices: Vec<u32>,
     pub probed_mask: usize,
     pub probed_spans: Vec<Option<SourceSpan>>,
     pub probed_origins: Vec<Origin>,
@@ -136,18 +143,81 @@ pub(crate) struct LoadedFunction {
 }
 
 impl LoadedFunction {
+    pub(crate) fn store_operation(
+        &mut self,
+        decoded: Op,
+        position: usize,
+        probed: bool,
+    ) -> Result<CompactOp, VmTrap> {
+        let (operation, task_index) = compact_operation(decoded, &mut self.task_operations)
+            .map_err(|_| invalid_bytecode())?;
+        self.push_task_operation_index(position, probed, task_index)?;
+        Ok(operation)
+    }
+
+    pub(crate) fn store_unreachable(
+        &mut self,
+        position: usize,
+        probed: bool,
+    ) -> Result<(), VmTrap> {
+        self.push_task_operation_index(position, probed, None)
+    }
+
+    fn push_task_operation_index(
+        &mut self,
+        position: usize,
+        probed: bool,
+        task_index: Option<u32>,
+    ) -> Result<(), VmTrap> {
+        let indices = if probed {
+            &mut self.probed_task_operation_indices
+        } else {
+            &mut self.task_operation_indices
+        };
+        if indices.is_empty() {
+            if let Some(index) = task_index {
+                indices.resize(position, NO_TASK_OPERATION);
+                indices.push(index);
+            }
+            return Ok(());
+        }
+        if indices.len() != position {
+            return Err(invalid_bytecode());
+        }
+        let index = match task_index {
+            Some(index) => index,
+            None => NO_TASK_OPERATION,
+        };
+        indices.push(index);
+        Ok(())
+    }
+
+    pub(crate) fn task_operation(&self, position: usize, probed: bool) -> Option<TaskOp> {
+        let indices = if probed {
+            &self.probed_task_operation_indices
+        } else {
+            &self.task_operation_indices
+        };
+        let stored_index = *indices.get(position)?;
+        if stored_index == NO_TASK_OPERATION {
+            return None;
+        }
+        let index = usize::try_from(stored_index).ok()?;
+        self.task_operations.get(index).copied()
+    }
+
     #[inline(always)]
-    pub(crate) fn operation(&self, program_counter: usize, probed: bool) -> Op {
+    pub(crate) fn operation(&self, program_counter: usize, probed: bool) -> CompactOp {
         if probed && !self.probed_code.is_empty() {
             self.probed_code
                 .get(program_counter & self.probed_mask)
                 .copied()
-                .unwrap_or(Op::Unreachable)
+                .unwrap_or(CompactOp::Unreachable)
         } else {
             self.code
                 .get(program_counter & self.mask)
                 .copied()
-                .unwrap_or(Op::Unreachable)
+                .unwrap_or(CompactOp::Unreachable)
         }
     }
 
@@ -170,6 +240,7 @@ pub(crate) struct LoadedProgramInner {
     pub(crate) name: String,
     pub(crate) functions: Vec<std::sync::Arc<LoadedFunction>>,
     pub(crate) entry: usize,
+    pub(crate) uses_task_runtime: bool,
     pub(crate) literals: Vec<String>,
     pub(crate) classes: Vec<pseudolearn_bytecode::BytecodeClass>,
     pub(crate) vocabulary: String,
@@ -178,6 +249,10 @@ pub(crate) struct LoadedProgramInner {
 }
 
 impl LoadedProgram {
+    pub(crate) fn uses_task_runtime(&self) -> bool {
+        self.inner.uses_task_runtime
+    }
+
     pub fn uses_effects(&self) -> bool {
         self.inner
             .functions

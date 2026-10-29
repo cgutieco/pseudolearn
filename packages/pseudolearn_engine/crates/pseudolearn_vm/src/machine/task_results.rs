@@ -1,9 +1,53 @@
 use super::{Flow, Machine};
 use crate::load::TaskSite;
 use crate::{Fault, RuntimeValue, evaluate::INVALID_BYTECODE};
-use pseudolearn_runtime::{Handle, TaskScopeId};
+use pseudolearn_runtime::{Handle, TaskId, TaskScopeId};
 
 impl Machine<'_> {
+    pub(super) fn deliver_task_result(
+        &mut self,
+        task: TaskId,
+        (destination, aggregate): (pseudolearn_bytecode::Register, bool),
+    ) -> Result<Flow, Fault> {
+        let values = self.tasks.task_values.get(&task).cloned();
+        if let Some(values) = values {
+            let current = self.tasks.current;
+            self.tasks.transport_values.insert(current, Some(values));
+        }
+        let value = self
+            .tasks
+            .results
+            .get(&task)
+            .copied()
+            .flatten()
+            .unwrap_or(RuntimeValue::Scalar(0));
+        self.store_task_result(
+            destination,
+            if aggregate {
+                RuntimeValue::Scalar(0)
+            } else {
+                value
+            },
+        )?;
+        Ok(Flow::Continue)
+    }
+
+    fn store_task_result(
+        &mut self,
+        destination: pseudolearn_bytecode::Register,
+        value: RuntimeValue,
+    ) -> Result<(), Fault> {
+        match (destination.class, value) {
+            (pseudolearn_bytecode::RegisterClass::Scalar, RuntimeValue::Scalar(word)) => {
+                self.set_scalar(destination.index, word)
+            }
+            (pseudolearn_bytecode::RegisterClass::Reference, RuntimeValue::Reference(handle)) => {
+                self.set_reference(destination.index, handle)
+            }
+            _ => Err(INVALID_BYTECODE),
+        }
+    }
+
     pub(crate) fn task_outcome(&mut self, site: u32) -> Result<Flow, Fault> {
         let TaskSite::Outcome { failure, values } = self.task_site(site)? else {
             return Err(INVALID_BYTECODE);

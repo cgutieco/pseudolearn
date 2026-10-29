@@ -10,7 +10,7 @@ use super::model::{ObservationKind, ObservationSite};
 use super::operands::{predicate, scalar_destination, scalar_sources};
 use super::{LoadedFunction, Origin, invalid_bytecode};
 use crate::VmTrap;
-use crate::dispatch::{DispatchKind, Op, dispatch_kind, select_fused, select_operation};
+use crate::dispatch::{CompactOp, DispatchKind, Op, dispatch_kind, select_fused, select_operation};
 
 pub(crate) mod channels;
 mod control;
@@ -41,13 +41,15 @@ fn decode_fast(context: &DecodeContext<'_>, loaded: &mut LoadedFunction) -> Resu
         usize::try_from(context.function.fast.used_length).map_err(|_| invalid_bytecode())?;
     for (position, instruction) in context.function.fast.instructions.iter().enumerate() {
         if position >= used {
-            loaded.code.push(Op::Unreachable);
+            loaded.code.push(CompactOp::Unreachable);
+            loaded.store_unreachable(position, false)?;
             loaded.origins.push(Origin::default());
             continue;
         }
         let program_counter = u32::try_from(position).map_err(|_| invalid_bytecode())?;
-        let (operation, origin) =
+        let (decoded, origin) =
             decode_fast_position(context, loaded, program_counter, instruction)?;
+        let operation = loaded.store_operation(decoded, position, false)?;
         loaded.code.push(operation);
         loaded.origins.push(origin);
     }
@@ -59,12 +61,14 @@ fn decode_probed(context: &DecodeContext<'_>, loaded: &mut LoadedFunction) -> Re
         usize::try_from(context.function.probed.used_length).map_err(|_| invalid_bytecode())?;
     for (position, instruction) in context.function.probed.instructions.iter().enumerate() {
         if position >= used {
-            loaded.probed_code.push(Op::Unreachable);
+            loaded.probed_code.push(CompactOp::Unreachable);
+            loaded.store_unreachable(position, true)?;
             loaded.probed_origins.push(Origin::default());
             continue;
         }
         let program_counter = u32::try_from(position).map_err(|_| invalid_bytecode())?;
-        let operation = decode_instruction(context, loaded, (program_counter, true), instruction)?;
+        let decoded = decode_instruction(context, loaded, (program_counter, true), instruction)?;
+        let operation = loaded.store_operation(decoded, position, true)?;
         let origin = Origin {
             first: Some(instruction.opcode)
                 .filter(|opcode| dispatch_kind(*opcode) != DispatchKind::Observation),

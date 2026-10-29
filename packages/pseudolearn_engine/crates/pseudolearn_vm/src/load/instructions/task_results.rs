@@ -1,5 +1,8 @@
 use super::{DecodeContext, LoadedFunction, invalid_bytecode};
-use crate::{VmTrap, dispatch::Op};
+use crate::{
+    VmTrap,
+    dispatch::{Op, TaskOp},
+};
 use pseudolearn_bytecode::{BytecodeOperand, Instruction, Opcode, Register, ValueType};
 use pseudolearn_runtime::VectorLayout;
 
@@ -56,10 +59,10 @@ pub(super) fn decode(
     let index = u32::try_from(loaded.task_sites.len()).map_err(|_| invalid_bytecode())?;
     loaded.task_sites.push(site);
     match operation {
-        0 => Ok(Op::TaskOutcome { site: index }),
-        1 => Ok(Op::TaskScopeResult { site: index }),
-        2 => Ok(Op::TaskCancelPoint { site: index }),
-        _ => Ok(Op::TaskScopeBoundary { site: index }),
+        0 => Ok(Op::Task(TaskOp::Outcome { site: index })),
+        1 => Ok(Op::Task(TaskOp::ScopeResult { site: index })),
+        2 => Ok(Op::Task(TaskOp::CancelPoint { site: index })),
+        _ => Ok(Op::Task(TaskOp::ScopeBoundary { site: index })),
     }
 }
 

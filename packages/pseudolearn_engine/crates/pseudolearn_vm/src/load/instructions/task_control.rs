@@ -6,7 +6,7 @@ use super::super::operands::first_register;
 use super::DecodeContext;
 use super::{LoadedFunction, invalid_bytecode};
 use crate::VmTrap;
-use crate::dispatch::Op;
+use crate::dispatch::{Op, TaskOp};
 
 pub(super) fn decode(
     context: &DecodeContext<'_>,
@@ -30,9 +30,9 @@ fn decode_scope_open(instruction: &Instruction) -> Result<Op, VmTrap> {
     if destination.class != RegisterClass::Scalar || !instruction.operands.is_empty() {
         return Err(invalid_bytecode());
     }
-    Ok(Op::TaskScopeOpen {
+    Ok(Op::Task(TaskOp::ScopeOpen {
         destination: destination.index,
-    })
+    }))
 }
 
 fn decode_task_spawn(
@@ -47,10 +47,10 @@ fn decode_task_spawn(
     let Op::Call { site } = super::control::decode_call(context, loaded, instruction)? else {
         return Err(invalid_bytecode());
     };
-    Ok(Op::TaskSpawn {
+    Ok(Op::Task(TaskOp::Spawn {
         scope: scope.index,
         site,
-    })
+    }))
 }
 
 fn decode_task_await(instruction: &Instruction) -> Result<Op, VmTrap> {
@@ -65,11 +65,11 @@ fn decode_task_await(instruction: &Instruction) -> Result<Op, VmTrap> {
             pseudolearn_bytecode::ValueType::Unit
         ))
     );
-    Ok(Op::TaskAwait {
+    Ok(Op::Task(TaskOp::Await {
         aggregate,
         task: task.index,
         destination,
-    })
+    }))
 }
 
 fn decode_scope_join(instruction: &Instruction) -> Result<Op, VmTrap> {
@@ -77,12 +77,12 @@ fn decode_scope_join(instruction: &Instruction) -> Result<Op, VmTrap> {
     if scope.class != RegisterClass::Scalar || instruction.operands.len() != 1 {
         return Err(invalid_bytecode());
     }
-    Ok(Op::TaskScopeJoin { scope: scope.index })
+    Ok(Op::Task(TaskOp::ScopeJoin { scope: scope.index }))
 }
 
 fn decode_yield_check(instruction: &Instruction) -> Result<Op, VmTrap> {
     if instruction.operands.is_empty() && instruction.destination.is_none() {
-        Ok(Op::TaskYieldCheck)
+        Ok(Op::Task(TaskOp::YieldCheck))
     } else {
         Err(invalid_bytecode())
     }

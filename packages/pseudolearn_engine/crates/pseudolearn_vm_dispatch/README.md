@@ -39,14 +39,19 @@ tiene al menos una forma; si falta, la generación falla y la VM no compila.
   (`GEN-NO-HAND-COPY`) y añadir una operación no debe modificar el bucle. **Elección:** tabla de datos más
   generador; una operación nueva es una fila nueva. **Descartado:** escribir a mano el `match` de cientos
   de brazos, que mezclaría decodificación y semántica y repetiría cada forma de operando.
+- **Problema:** los programas sin tareas pagaban consultas dinámicas en control, llamada y retorno, y el
+  payload anidado de una operación de tarea agrandaba cada elemento del código cargado. **Elección:** el
+  modo constante se propaga a control, llamada y retorno; el código común usa `CompactOp` y guarda los
+  payloads de `TaskOp` en una tabla aparte. Una tabla de índices se crea solo en funciones con tareas, y
+  el recorrido ordinario no consulta ninguna de las dos. **Descartado:**
+  una consulta del modo en cada operación y repetir el payload de tarea en cada instrucción ordinaria.
 - **Problema:** el generador superaba el límite de tamaño de un `build.rs`. **Elección:** crate de
   herramienta propio, partido por responsabilidad y sujeto a `rust-checks`. **Descartado:** módulos con
   `#[path]` fuera de `src`, que el verificador no inspecciona.
 - **Problema:** el `match` generado es un artefacto de cientos de brazos que el lint de longitud de
   función rechazaría sin aportar legibilidad. **Elección:** el texto generado se emite compacto, una
   función por línea; se lee la tabla y el generador, nunca `OUT_DIR`. **Descartado:** atributos `allow`,
-  prohibidos en el repositorio, y repartir el despacho en dos niveles, que añadiría un salto indirecto por
-  operación.
+  prohibidos en el repositorio, y una segunda búsqueda para cada operación ordinaria.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

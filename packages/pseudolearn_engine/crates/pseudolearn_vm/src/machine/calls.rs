@@ -16,7 +16,7 @@ mod resolve;
 const RESOURCE_LIMIT: Fault = "resourceLimit";
 
 impl<'program> Machine<'program> {
-    pub(crate) fn call(&mut self, site: u32) -> Result<Flow, Fault> {
+    pub(crate) fn call<const TASK_RUNTIME: bool>(&mut self, site: u32) -> Result<Flow, Fault> {
         if self.frames.len().saturating_add(1) >= self.options.depth {
             return Err("recursionDepthExceeded");
         }
@@ -36,7 +36,7 @@ impl<'program> Machine<'program> {
             self.record_call_event(&callee.name);
         }
         self.enter_callee(&callee, callee_index, callee_cursor);
-        Ok(self.charge_entry(entry_mass, 0))
+        Ok(self.charge_entry::<TASK_RUNTIME>(entry_mass, 0))
     }
 
     fn push_control_frame(&mut self, site: &CallSite, caller: Cursor) -> Result<(), Fault> {
@@ -158,26 +158,37 @@ impl<'program> Machine<'program> {
         Ok(())
     }
 
-    pub(crate) fn return_scalar(&mut self, source: u16) -> Result<Flow, Fault> {
+    pub(crate) fn return_scalar<const TASK_RUNTIME: bool>(
+        &mut self,
+        source: u16,
+    ) -> Result<Flow, Fault> {
         let word = self.scalar(source)?;
-        self.finish_call(Some(RuntimeValue::Scalar(word)))
+        self.finish_call::<TASK_RUNTIME>(Some(RuntimeValue::Scalar(word)))
     }
 
-    pub(crate) fn return_reference(&mut self, source: u16) -> Result<Flow, Fault> {
+    pub(crate) fn return_reference<const TASK_RUNTIME: bool>(
+        &mut self,
+        source: u16,
+    ) -> Result<Flow, Fault> {
         let handle = self.reference(source)?;
-        self.finish_call(Some(RuntimeValue::Reference(handle)))
+        self.finish_call::<TASK_RUNTIME>(Some(RuntimeValue::Reference(handle)))
     }
 
-    pub(crate) fn return_unit(&mut self) -> Result<Flow, Fault> {
-        self.finish_call(None)
+    pub(crate) fn return_unit<const TASK_RUNTIME: bool>(&mut self) -> Result<Flow, Fault> {
+        self.finish_call::<TASK_RUNTIME>(None)
     }
 
-    fn finish_call(&mut self, value: Option<RuntimeValue>) -> Result<Flow, Fault> {
-        if let Some(flow) = self.cancelled_return() {
-            return Ok(flow);
-        }
-        if let Some(points) = self.tasks.cancel_points.get_mut(&self.tasks.current) {
-            points.remove(&self.frames.len());
+    fn finish_call<const TASK_RUNTIME: bool>(
+        &mut self,
+        value: Option<RuntimeValue>,
+    ) -> Result<Flow, Fault> {
+        if TASK_RUNTIME {
+            if let Some(flow) = self.cancelled_return() {
+                return Ok(flow);
+            }
+            if let Some(points) = self.tasks.cancel_points.get_mut(&self.tasks.current) {
+                points.remove(&self.frames.len());
+            }
         }
         let Some(frame) = self.frames.pop() else {
             return Ok(Flow::Completed(value));

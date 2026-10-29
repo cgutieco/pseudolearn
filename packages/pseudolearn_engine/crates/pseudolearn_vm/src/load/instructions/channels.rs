@@ -1,5 +1,8 @@
 use super::{DecodeContext, LoadedFunction, invalid_bytecode};
-use crate::{VmTrap, dispatch::Op};
+use crate::{
+    VmTrap,
+    dispatch::{Op, TaskOp},
+};
 use pseudolearn_bytecode::{BytecodeOperand, Instruction, Opcode, Register};
 
 #[derive(Clone, Debug, PartialEq)]
@@ -24,7 +27,7 @@ pub(super) fn decode(
         let index = super::super::operands::constant_word(context.function, *index)
             .and_then(|value| u32::try_from(value).ok())
             .ok_or_else(invalid_bytecode)?;
-        return Ok(Op::TaskValueLoad { destination, index });
+        return Ok(Op::Task(TaskOp::ValueLoad { destination, index }));
     }
     let [
         BytecodeOperand::Identifier(command),
@@ -47,5 +50,5 @@ pub(super) fn decode(
         destination,
         arguments,
     });
-    Ok(Op::TaskChannel { site })
+    Ok(Op::Task(TaskOp::Channel { site }))
 }

@@ -1,7 +1,7 @@
 use super::{Flow, Machine};
+use crate::events::{EventField, TraceClass};
 use crate::{Fault, RuntimeValue, evaluate::INVALID_BYTECODE};
 use pseudolearn_bytecode::{Register, RegisterClass};
-use crate::events::{EventField, TraceClass};
 use pseudolearn_runtime::{ChannelError, ChannelReply, ChannelStep, TaskChannelId};
 
 impl Machine<'_> {
@@ -107,7 +107,10 @@ impl Machine<'_> {
         self.event_channel(
             TraceClass::ChannelCreated,
             channel.0,
-            vec![("capacity", EventField::Number(u64::try_from(capacity).unwrap_or(u64::MAX)))],
+            vec![(
+                "capacity",
+                EventField::Number(u64::try_from(capacity).unwrap_or(u64::MAX)),
+            )],
         );
         pseudolearn_runtime::channel_references::set_channel_identity(
             &mut self.heap,
@@ -124,7 +127,8 @@ impl Machine<'_> {
         destination: Register,
         arguments: &[RuntimeValue],
     ) -> Result<Flow, Fault> {
-        let pending = self.tasks.channel_replies.remove(&self.tasks.current);
+        let current = self.tasks.current;
+        let pending = self.tasks.channel_replies.remove(&current);
         let step = match pending {
             Some(ChannelReply::Sent(sent)) => ChannelStep::Ready(sent),
             Some(_) => return Err(INVALID_BYTECODE),
@@ -133,7 +137,7 @@ impl Machine<'_> {
                 .channels
                 .send(
                     channel,
-                    self.tasks.current,
+                    current,
                     arguments.get(1..).ok_or(INVALID_BYTECODE)?.to_vec(),
                 )
                 .map_err(channel_fault)?,
@@ -154,13 +158,14 @@ impl Machine<'_> {
         channel: TaskChannelId,
         destination: Register,
     ) -> Result<Flow, Fault> {
-        let step = match self.tasks.channel_replies.remove(&self.tasks.current) {
+        let current = self.tasks.current;
+        let step = match self.tasks.channel_replies.remove(&current) {
             Some(ChannelReply::Received(value)) => ChannelStep::Ready(value),
             Some(_) => return Err(INVALID_BYTECODE),
             None => self
                 .tasks
                 .channels
-                .receive(channel, self.tasks.current)
+                .receive(channel, current)
                 .map_err(channel_fault)?,
         };
         self.wake_channel_tasks()?;
@@ -172,9 +177,7 @@ impl Machine<'_> {
                     vec![("present", EventField::Flag(value.is_some()))],
                 );
                 self.set_scalar(destination.index, u64::from(value.is_some()))?;
-                self.tasks
-                    .transport_values
-                    .insert(self.tasks.current, value);
+                self.tasks.transport_values.insert(current, value);
                 Ok(Flow::Continue)
             }
             ChannelStep::Waiting => self.wait_for_channel(channel, "channel_receive"),
@@ -217,11 +220,12 @@ impl Machine<'_> {
             .program_counter
             .checked_sub(1)
             .ok_or(INVALID_BYTECODE)?;
+        let current = self.tasks.current;
         self.tasks
             .agenda
             .execution()
             .waiting()
-            .for_channel(self.tasks.current, channel)
+            .for_channel(current, channel)
             .map_err(super::tasks::task_fault)?;
         self.event_task_suspended(cause, channel.0);
         self.schedule_next(true, true)?;

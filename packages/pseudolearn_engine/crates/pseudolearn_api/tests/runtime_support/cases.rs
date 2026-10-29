@@ -85,6 +85,7 @@ fn check(case: &Value) -> Result<(), String> {
         .and_then(Value::as_str)
         .ok_or("Missing strictness")?;
     let loaded = super::compile(source, profile, strictness)?;
+    let defaults = RunOptions::default();
     for collection in [
         CollectionPolicy::Automatic,
         CollectionPolicy::Forced,
@@ -105,7 +106,17 @@ fn check(case: &Value) -> Result<(), String> {
                     .unwrap_or(1 << 22),
                 collection,
             },
-            ..RunOptions::default()
+            task_limit: request
+                .pointer("/limits/tasks")
+                .and_then(Value::as_u64)
+                .unwrap_or(defaults.task_limit),
+            channel_capacity_limit: request
+                .pointer("/limits/channel_capacity")
+                .and_then(Value::as_u64)
+                .map_or(defaults.channel_capacity_limit, |value| {
+                    usize::try_from(value).unwrap_or(usize::MAX)
+                }),
+            ..defaults.clone()
         };
         let result = run_with_options(
             &loaded,

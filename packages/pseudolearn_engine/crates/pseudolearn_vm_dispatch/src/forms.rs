@@ -7,6 +7,7 @@ pub(crate) struct Variant {
     pub name: String,
     pub fields: Vec<(String, String)>,
     pub arm: String,
+    pub task: bool,
 }
 
 pub(crate) type Selection = (String, String);
@@ -100,6 +101,7 @@ fn expand_shape(
         name,
         fields: fields.clone(),
         arm: format!("{{ {evaluation} Ok(Flow::Continue) }}"),
+        task: false,
     });
     if row.fusable {
         let fused_name = format!("{}Branch{suffix}", row.form);
@@ -115,7 +117,10 @@ fn expand_shape(
         rendered.variants.push(Variant {
             name: fused_name,
             fields: fused_fields,
-            arm: format!("{{ {evaluation} machine.branch_on(value, then_edge, else_edge) }}"),
+            arm: format!(
+                "{{ {evaluation} machine.branch_on::<TASK_RUNTIME>(value, then_edge, else_edge) }}"
+            ),
+            task: false,
         });
     }
 }
@@ -199,9 +204,25 @@ pub(crate) fn special_variant(special: &serde_json::Value) -> GenerationResult<V
         .map(|(field, _)| field.as_str())
         .collect::<Vec<_>>()
         .join(", ");
+    let task_runtime_generic = matches!(
+        handler,
+        "jump"
+            | "branch"
+            | "call"
+            | "switch"
+            | "return_scalar"
+            | "return_reference"
+            | "return_unit"
+    );
+    let handler_call = if task_runtime_generic {
+        format!("machine.{handler}::<TASK_RUNTIME>({arguments})")
+    } else {
+        format!("machine.{handler}({arguments})")
+    };
     Ok(Variant {
+        task: name.starts_with("Task"),
         name,
         fields,
-        arm: format!("machine.{handler}({arguments})"),
+        arm: handler_call,
     })
 }

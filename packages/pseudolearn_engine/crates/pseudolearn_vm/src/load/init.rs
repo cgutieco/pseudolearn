@@ -3,15 +3,15 @@
 use super::metadata;
 use super::model::{LoadedFunction, Origin};
 use crate::VmTrap;
-use crate::dispatch::Op;
+use crate::dispatch::CompactOp;
 use pseudolearn_bytecode::{BasicBlock, BytecodeFunction, ReturnPoint, SourceSpan};
 
 struct CodeBuffers {
-    code: Vec<Op>,
+    code: Vec<CompactOp>,
     mask: usize,
     spans: Vec<Option<SourceSpan>>,
     origins: Vec<Origin>,
-    probed_code: Vec<Op>,
+    probed_code: Vec<CompactOp>,
     probed_mask: usize,
     probed_spans: Vec<Option<SourceSpan>>,
     probed_origins: Vec<Origin>,

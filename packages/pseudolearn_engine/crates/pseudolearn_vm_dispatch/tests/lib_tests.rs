@@ -32,8 +32,18 @@ fn generates_every_form_from_the_real_tables() {
     assert!(source.contains("pseudolearn_bytecode::Opcode::IntAdd => DispatchKind::Scalar"));
     assert!(source.contains("pseudolearn_bytecode::Opcode::Jump => DispatchKind::Control"));
     assert!(source.contains("pseudolearn_bytecode::Opcode::TextConcat => DispatchKind::Memory"));
-    assert!(source.contains("Op::Jump { edge } => machine.jump(edge)"));
-    assert!(source.contains("Op::ReturnUnit => machine.return_unit()"));
+    assert!(source.contains("CompactOp::Jump { edge } => machine.jump::<TASK_RUNTIME>(edge)"));
+    assert!(source.contains("CompactOp::ReturnUnit => machine.return_unit::<TASK_RUNTIME>()"));
+    assert!(source.contains(
+        "if TASK_RUNTIME && let Some(task) = machine.current.task_operation(position, probed)"
+    ));
+    assert!(source.contains("TaskOp::Channel { site } => machine.channel_operation(site)"));
+    assert!(source.contains("Task(TaskOp)"));
+    assert!(source.contains("enum CompactOp {"));
+    assert!(!source.contains("CompactOp::Task"));
+    assert!(
+        source.contains("Op::Task(task) => { let index = u32::try_from(task_operations.len())")
+    );
 }
 
 #[test]

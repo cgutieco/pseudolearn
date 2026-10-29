@@ -1,7 +1,7 @@
 use super::{Machine, cells::Cell};
 use crate::{
     Fault, VmTrap,
-    dispatch::Op,
+    dispatch::CompactOp,
     load::memory::{MemoryOp, TypedSource},
 };
 use pseudolearn_bytecode::{Opcode, Register, RegisterClass};
@@ -88,15 +88,16 @@ impl Machine<'_> {
 
     fn operation_arguments(&self, fault: Fault, position: usize, arguments: &mut Arguments) {
         match self.current.operation(position, self.probed) {
-            Op::ArrayRead1D { array, index, .. } | Op::ArrayWrite1D { array, index, .. } => {
+            CompactOp::ArrayRead1D { array, index, .. }
+            | CompactOp::ArrayWrite1D { array, index, .. } => {
                 self.array_arguments(fault, (array, std::slice::from_ref(&index)), arguments)
             }
-            Op::ObjectRead {
+            CompactOp::ObjectRead {
                 receiver, offset, ..
             } if fault == "uninitializedVariableRead" => {
                 self.object_field_name(receiver, offset, arguments);
             }
-            Op::Memory { site } => {
+            CompactOp::Memory { site } => {
                 if let Some(operation) = usize::try_from(site)
                     .ok()
                     .and_then(|site| self.current.memory.get(site))
@@ -104,20 +105,20 @@ impl Machine<'_> {
                     self.memory_arguments(fault, operation, arguments);
                 }
             }
-            Op::CharFromCodeRegister { source, .. } => {
+            CompactOp::CharFromCodeRegister { source, .. } => {
                 if let Ok(word) = self.scalar(source) {
                     number(arguments, "code", crate::evaluate::integer_of(word));
                 }
             }
-            Op::CharFromCodeImmediate { source, .. } => {
+            CompactOp::CharFromCodeImmediate { source, .. } => {
                 number(arguments, "code", crate::evaluate::integer_of(source))
             }
-            Op::RequireFailed { source }
-            | Op::RequireDefinedInteger { source, .. }
-            | Op::RequireSentinel { source, .. } => {
+            CompactOp::RequireFailed { source }
+            | CompactOp::RequireDefinedInteger { source, .. }
+            | CompactOp::RequireSentinel { source, .. } => {
                 self.variable_argument(source, RegisterClass::Scalar, arguments)
             }
-            Op::RequireReference { source, .. } => {
+            CompactOp::RequireReference { source, .. } => {
                 self.variable_argument(source, RegisterClass::Reference, arguments)
             }
             _ => {}

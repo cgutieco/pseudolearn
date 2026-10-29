@@ -14,6 +14,9 @@ mod parallel_copy;
 #[cfg(test)]
 mod parallel_copy_tests;
 
+#[cfg(test)]
+mod task_usage_tests;
+
 use std::sync::Arc;
 
 use pseudolearn_bytecode::{BytecodeFunction, BytecodeModule, RegisterClass, VerifiedBytecode};
@@ -44,12 +47,27 @@ pub fn load(program: &VerifiedBytecode) -> Result<LoadedProgram, VmTrap> {
         name: module.name.clone(),
         functions,
         entry,
+        uses_task_runtime: uses_task_runtime(module),
         literals,
         classes: module.classes.clone(),
         vocabulary: module.vocabulary.clone(),
         profiles: module.profiles.clone(),
         layouts: metadata::layouts(module)?,
     }))
+}
+
+fn uses_task_runtime(module: &BytecodeModule) -> bool {
+    module.functions.iter().any(|function| {
+        function
+            .fast
+            .instructions
+            .iter()
+            .chain(function.probed.instructions.iter())
+            .any(|instruction| {
+                let opcode = instruction.opcode.as_name();
+                opcode.starts_with("task.") || matches!(opcode, "call.suspendible" | "effect.await")
+            })
+    })
 }
 
 pub(crate) fn invalid_bytecode() -> VmTrap {

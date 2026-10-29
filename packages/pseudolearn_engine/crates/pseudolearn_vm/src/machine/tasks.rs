@@ -1,14 +1,12 @@
-use pseudolearn_bytecode::{Register, RegisterClass};
-use pseudolearn_runtime::{
-    TaskAgenda, TaskAgendaError, TaskId, TaskScopeId, TaskScopeJoin, TaskState,
-};
+use pseudolearn_runtime::{TaskAgenda, TaskAgendaError, TaskId, TaskScopeId, TaskState};
 use std::collections::BTreeMap;
 
-use super::{Flow, Machine, TaskContext};
+use super::TaskContext;
 use crate::{Fault, RuntimeValue, evaluate::INVALID_BYTECODE};
 
 #[derive(Clone, Debug, PartialEq)]
 pub struct VmTasks {
+    pub(super) enabled: bool,
     pub(super) continuations: BTreeMap<TaskId, Vec<super::task_spill::SpilledFrame>>,
     pub(super) task_storage: BTreeMap<TaskId, pseudolearn_runtime::Handle>,
     pub(super) cleanup_depths: BTreeMap<TaskId, usize>,
@@ -42,8 +40,8 @@ pub struct VmTasks {
 
 impl Default for VmTasks {
     fn default() -> Self {
-        let (agenda, current) = TaskAgenda::with_running_root();
         Self {
+            enabled: false,
             continuations: BTreeMap::new(),
             task_storage: BTreeMap::new(),
             cleanup_depths: BTreeMap::new(),
@@ -66,8 +64,8 @@ impl Default for VmTasks {
             channel_replies: BTreeMap::new(),
             transport_values: BTreeMap::new(),
             quantum: pseudolearn_runtime::TaskQuantum::default(),
-            agenda,
-            current,
+            agenda: TaskAgenda::default(),
+            current: TaskId(0),
             contexts: BTreeMap::new(),
             results: BTreeMap::new(),
         }
@@ -90,8 +88,16 @@ impl VmTasks {
         (rank, sequence)
     }
 
-    pub(super) fn with_task_limit(limit: u64) -> Self {
-        let mut tasks = Self::default();
+    pub(super) fn with_task_limit(limit: u64, enabled: bool) -> Self {
+        let mut tasks = Self {
+            enabled,
+            ..Self::default()
+        };
+        if enabled {
+            let (agenda, current) = TaskAgenda::with_running_root();
+            tasks.agenda = agenda;
+            tasks.current = current;
+        }
         tasks.agenda.set_task_limit(limit);
         tasks
     }
@@ -115,175 +121,6 @@ impl VmTasks {
         self.agenda
             .state(self.current)
             .is_some_and(|state| matches!(state, TaskState::Running | TaskState::Cleaning))
-    }
-}
-
-impl Machine<'_> {
-    pub(crate) fn open_task_scope(&mut self, destination: u16) -> Result<Flow, Fault> {
-        let scope = self
-            .tasks
-            .agenda
-            .create_scope(self.tasks.current)
-            .map_err(task_fault)?;
-        let stack = self
-            .tasks
-            .scope_stacks
-            .entry(self.tasks.current)
-            .or_default();
-        self.tasks
-            .scope_parents
-            .insert(scope, stack.last().copied());
-        stack.push(scope);
-        self.set_scalar(destination, scope.0)?;
-        Ok(Flow::Continue)
-    }
-
-    pub(crate) fn spawn_task(
-        &mut self,
-        scope_register: u16,
-        site_index: u32,
-    ) -> Result<Flow, Fault> {
-        let scope = TaskScopeId(self.scalar(scope_register)?);
-        let (mut context, destination) = self.create_task_context(site_index)?;
-        let roots = self.memory_roots()?;
-        context.spill(&mut self.heap, self.probed, (&roots, Vec::new()))?;
-        let task = self.tasks.agenda.spawn(scope).map_err(task_fault)?;
-        self.allocate_task_storage((task, scope.0), &context, &roots)?;
-        self.tasks.contexts.insert(task, context);
-        self.set_scalar(destination.index, task.0)?;
-        self.event_task_spawned(task, scope.0);
-        self.sync_ready_events("spawn");
-        Ok(Flow::Continue)
-    }
-
-    pub(crate) fn await_task(
-        &mut self,
-        aggregate: bool,
-        task_register: u16,
-        destination: Register,
-    ) -> Result<Flow, Fault> {
-        let task = TaskId(self.scalar(task_register)?);
-        match self.tasks.agenda.state(task).ok_or(INVALID_BYTECODE)? {
-            TaskState::Completed => self.deliver_task_result(task, (destination, aggregate)),
-            TaskState::Failed | TaskState::Cancelled => Err(INVALID_BYTECODE),
-            _ => {
-                self.cursor.program_counter = self
-                    .cursor
-                    .program_counter
-                    .checked_sub(1)
-                    .ok_or(INVALID_BYTECODE)?;
-                self.tasks
-                    .agenda
-                    .execution()
-                    .waiting()
-                    .for_task(self.tasks.current, task)
-                    .map_err(task_fault)?;
-                self.event_task_suspended("task", task.0);
-                self.schedule_next(true, true)?;
-                Ok(Flow::Continue)
-            }
-        }
-    }
-
-    pub(crate) fn join_task_scope(&mut self, scope_register: u16) -> Result<Flow, Fault> {
-        let scope = TaskScopeId(self.scalar(scope_register)?);
-        match self.tasks.agenda.close_scope(scope).map_err(task_fault)? {
-            TaskScopeJoin::Joined => {
-                let failed = self
-                    .tasks
-                    .failures
-                    .get(&scope)
-                    .is_some_and(|failures| !failures.errors().is_empty());
-                self.event_scope_joined(failed);
-                if let Some(stack) = self.tasks.scope_stacks.get_mut(&self.tasks.current)
-                    && let Some(index) = stack.iter().position(|active| *active == scope)
-                {
-                    stack.truncate(index);
-                }
-                Ok(Flow::Continue)
-            }
-            TaskScopeJoin::Waiting(_) => self.wait_for_scope(scope),
-        }
-    }
-
-    fn wait_for_scope(&mut self, scope: TaskScopeId) -> Result<Flow, Fault> {
-        self.cursor.program_counter = self
-            .cursor
-            .program_counter
-            .checked_sub(1)
-            .ok_or(INVALID_BYTECODE)?;
-        self.tasks
-            .agenda
-            .execution()
-            .waiting()
-            .for_scope(self.tasks.current, scope)
-            .map_err(task_fault)?;
-        self.event_task_suspended("join", scope.0);
-        self.schedule_next(true, true)?;
-        Ok(Flow::Continue)
-    }
-
-    pub(crate) fn yield_task(&mut self) -> Result<Flow, Fault> {
-        if !self
-            .tasks
-            .quantum
-            .at_backedge(self.tasks.current, self.tasks.agenda.has_ready())
-        {
-            return Ok(Flow::Continue);
-        }
-        self.tasks
-            .agenda
-            .execution()
-            .yield_task(self.tasks.current)
-            .map_err(task_fault)?;
-        self.sync_ready_events("yield");
-        self.schedule_next(true, false)?;
-        Ok(Flow::Continue)
-    }
-
-    fn deliver_task_result(
-        &mut self,
-        task: TaskId,
-        (destination, aggregate): (Register, bool),
-    ) -> Result<Flow, Fault> {
-        let values = self.tasks.task_values.get(&task).cloned();
-        if let Some(values) = values {
-            self.tasks
-                .transport_values
-                .insert(self.tasks.current, Some(values));
-        }
-        let value = self
-            .tasks
-            .results
-            .get(&task)
-            .copied()
-            .flatten()
-            .unwrap_or(RuntimeValue::Scalar(0));
-        self.store_task_result(
-            destination,
-            if aggregate {
-                RuntimeValue::Scalar(0)
-            } else {
-                value
-            },
-        )?;
-        Ok(Flow::Continue)
-    }
-
-    fn store_task_result(
-        &mut self,
-        destination: Register,
-        value: RuntimeValue,
-    ) -> Result<(), Fault> {
-        match (destination.class, value) {
-            (RegisterClass::Scalar, RuntimeValue::Scalar(word)) => {
-                self.set_scalar(destination.index, word)
-            }
-            (RegisterClass::Reference, RuntimeValue::Reference(handle)) => {
-                self.set_reference(destination.index, handle)
-            }
-            _ => Err(INVALID_BYTECODE),
-        }
     }
 }
 

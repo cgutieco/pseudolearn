@@ -10,6 +10,7 @@
     "responsable-motor"
   ],
   "sujetos": [
+    "cli",
     "engine",
     "app"
   ],
@@ -169,7 +170,7 @@
     }
   },
   "sujetos": [
-    "engine"
+    "cli"
   ]
 }
 ```

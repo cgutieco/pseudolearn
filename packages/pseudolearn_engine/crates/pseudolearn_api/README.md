@@ -36,8 +36,11 @@ principal, que es lo que el trabajador de rendimiento enlaza con un lanzador pro
 
 La compilación a módulo conserva metadatos laterales de origen que la representación textual no
 transporta. Los tests de integración compilan el corpus exportado y llaman directamente al bytecode y
-la VM; `runtime_edges` cubre ventanas, índices con efectos, subtipos, despacho virtual, copia y ausencia
-bajo las tres políticas de recolección. Esta vía de pruebas no implementa otro protocolo. `RunOptions` y los envoltorios existentes se mantienen junto con los recursos públicos de ejecución, entrada, cancelación y consultas.
+la VM; el arnés reenvía los límites declarados por cada caso, incluidos profundidad, celdas, tareas y
+capacidad de canal. `runtime_edges` cubre ventanas, índices con efectos, subtipos, despacho virtual,
+copia y ausencia bajo las tres políticas de recolección. Esta vía de pruebas no implementa otro
+protocolo. `RunOptions` y los envoltorios existentes se mantienen junto con los recursos públicos de
+ejecución, entrada, cancelación y consultas.
 
 Nivel 8. Dependencias internas permitidas: pseudolearn_source, pseudolearn_abi, pseudolearn_diagnostics, pseudolearn_lexicon, pseudolearn_syntax, pseudolearn_semantic, pseudolearn_ir, pseudolearn_lowering, pseudolearn_bytecode, pseudolearn_runtime, pseudolearn_library, pseudolearn_vm, pseudolearn_timeline, pseudolearn_codegen, pseudolearn_aot_rt. Externas: serde, serde_json.
 Prohibido importar capas superiores, paquetes de UI o internos de otros miembros.

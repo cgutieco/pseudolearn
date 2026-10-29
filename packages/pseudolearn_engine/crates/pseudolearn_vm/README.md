@@ -28,7 +28,7 @@ número de veces.
 
 Suspensión por efectos (`effect_call` y `AwaitingEffect`): La VM suspende su ejecución ante una instrucción de efecto devolviendo `RunExit::AwaitingEffect(PendingEffectRequest)` con la secuencia del efecto, capacidad, operación y resumen de argumentos. El anfitrión reanuda la máquina invocando `supply_effect_result` con un `HostReply` (`Committed`, `Failed` o `Uncertain`), que la instrucción reejecutada consume para llenar sus celdas de resultado sin perder la sincronización con la línea temporal. La máquina no conoce la espera de entrada de `Leer`: `RunExit::AwaitingInput` y `RunExit::AwaitingEffect` son variantes distintas y `tests/vm_awaiting_effect_tests.rs` de `pseudolearn_api` (que compila programas completos hasta el bytecode) comprueba la carga útil, la distinción y la ausencia de suspensión sin efectos.
 
-Agenda de tareas (`machine/tasks.rs`): la raíz y cada hija tienen un contexto con función, cursor, bancos, celdas y marcos propios. La cola FIFO cambia el contexto activo al esperar una hija o unir un ámbito; el montón y la salida siguen siendo compartidos. Al recolectar, la VM recorre también los mapas de raíces de todos los contextos guardados. Una hija puede completar y devolver un resultado escalar o de referencia, y su padre puede aguardarla más de una vez. La agregación de `Resultado::Error`, la cancelación cooperativa con `Diferir`, las solicitudes concurrentes pendientes y los despertares de canales se conectan mediante los módulos de tareas; la persistencia histórica completa y la cinta concurrente aún requieren integración.
+Agenda de tareas: `machine/tasks.rs` posee el estado de agenda; `machine/task_scopes.rs` crea, espera y une tareas; `machine/task_results.rs` entrega sus resultados. La raíz y cada hija tienen un contexto con función, cursor, bancos, celdas y marcos propios. La cola FIFO cambia el contexto activo al esperar una hija o unir un ámbito; el montón y la salida siguen siendo compartidos. Al recolectar, la VM recorre también los mapas de raíces de todos los contextos guardados. Una hija puede completar y devolver un resultado escalar o de referencia, y su padre puede aguardarla más de una vez. La agregación de `Resultado::Error`, la cancelación cooperativa con `Diferir`, las solicitudes concurrentes pendientes y los despertares de canales se conectan mediante los módulos de tareas; la persistencia histórica completa y la cinta concurrente aún requieren integración.
 
 ## 3. Arquitectura y modelo del sistema
 
@@ -56,7 +56,7 @@ Prohibido importar capas superiores, UI, Dart o el sistema de especificaciones c
 | `load/edges.rs`, `load/parallel_copy.rs` | Aristas con destino, masa, sondeo y copias de parámetros secuenciadas |
 | `load/instructions/` | Decodificación de operaciones escalares, valor, salida, entrada, control y observación |
 | `evaluate/` | Evaluadores puros palabra a palabra por familia, con trampas como `Fault` |
-| `machine/` | Estado de ejecución, bancos, control, llamadas, entrada, observación, salida y perfiles |
+| `machine/` | Estado de ejecución, bancos, control, llamadas, tareas, entrada, observación, salida y perfiles |
 
 **Forma de despacho.** Cada función cargada tiene un `Vec<Op>` de longitud potencia de dos (el bytecode ya
 llega acolchado con `unreachable`), una tabla lateral de spans, otra de opcodes de origen para el perfil,
@@ -66,6 +66,10 @@ en carga a operaciones distintas (`IntLess`, `RealGreaterOrEqual`…), y cada op
 registro/registro, registro/inmediato, inmediato/registro e inmediato/inmediato. Las parejas
 comparación-salto que elige el perfil de superinstrucciones se convierten en una sola operación fusionada
 que conserva la escritura del lógico intermedio.
+
+Las operaciones ordinarias cargan como `CompactOp`; los datos de `TaskOp` viven en una tabla paralela. Las
+funciones con tareas guardan un índice separado por instrucción suspendible; el camino ordinario no crea esa
+tabla ni consulta los payloads.
 
 **Despacho generado.** `build.rs` llama a `pseudolearn_vm_dispatch` con la exportación de `IR.INSTRUCTIONS` y
 `data/dispatch_forms.json`, y escribe en `OUT_DIR` el `enum Op`, la selección de forma y la función `step`,
@@ -82,6 +86,8 @@ su contexto; al reanudarla, se restauran. Una llamada coloca la ventana del llam
 crece las pilas por duplicación con `try_reserve` (fallo → `resourceLimit`, nunca pánico), copia los
 argumentos y salta al pc 0. El retorno restaura el cursor del marco y obtiene el pc de continuación por la
 identidad del punto de retorno con una carga indexada. Ninguna llamada asigna salvo cuando la pila crece.
+
+La carga marca una vez los programas con operaciones `task.*`, `call.suspendible` o `effect.await`. El bucle de ejecución elige entonces una de dos instancias compiladas del mismo recorrido: el camino sin tareas omite la consulta de agenda por instrucción, la contabilidad de masa y las búsquedas de cancelación; el camino suspendible conserva esas comprobaciones. La agenda sin tareas tampoco construye una entrada raíz.
 
 **Ausencia.** Reales, lógicos y caracteres guardan un centinela al quedar sin valor (NaN, `2`,
 `0xFFFF_FFFF`) y `value.require` lo comprueba. Los enteros no tienen centinela: el cargador clasifica cada
@@ -190,6 +196,7 @@ su código y span, `i64::MIN mod -1`, ceros con signo, intrínsecos matemáticos
 `registers_tests` (definición por parámetros de bloque, centinelas, copias cruzadas), `calls_tests`
 (recursión de 20 000 marcos con crecimiento de bancos, argumentos sin valor, trampas en el llamado),
 `load_tests` (carga reutilizable, entrada ausente, operación no soportada no alcanzada),
+`load/task_usage_tests.rs` (selección del recorrido con y sin operaciones suspendibles),
 `profile_tests` y `output_tests`; `load/parallel_copy_tests.rs` cubre la secuenciación de copias.
 Las suites añadidas en B5 verifican exhaustivamente el comportamiento observable:
 `execution_model_tests` (cancelación en sentencias y sondeos, bandera atómica),

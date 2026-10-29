@@ -2,6 +2,7 @@
   "sujeto": "cli",
   "paquete": "apps/pseudolearn_cli",
   "activadas": [
+    "API.WIRE-FORMAT",
     "TOOL.CLI.BUILD",
     "TOOL.CLI.CHECK",
     "TOOL.CLI.CONVENTIONS",
@@ -172,6 +173,35 @@
       "regla": "TOOL.CLI.RUN@1.0.0#R5",
       "verificacion": "ejecutor",
       "estado": "cumple"
+    },
+    {
+      "regla": "API.WIRE-FORMAT@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "API.WIRE-FORMAT@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "La CLI no expone la codificación ni decodificación de lotes binarios de eventos; ese contrato pertenece a los adaptadores de API que ejecutan P1."
+    },
+    {
+      "regla": "API.WIRE-FORMAT@1.0.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "La CLI no transporta respuestas binarias por Wasm; C3 verifica la propiedad del lote en la aplicación."
+    },
+    {
+      "regla": "API.WIRE-FORMAT@1.0.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "La CLI no acepta identidades de fuente en sus argumentos; C5 comprueba la validación de peticiones API con identidad suministrada."
+    },
+    {
+      "regla": "API.WIRE-FORMAT@1.0.0#R5",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "La CLI no ofrece negociación de versiones PLEV; C6–C9 verifican esa operación de la API."
     }
   ]
 }
