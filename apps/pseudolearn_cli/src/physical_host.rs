@@ -4,11 +4,13 @@ use crate::physical_request::Request;
 use cap_std::fs::Dir;
 use serde_json::{Value, json};
 use std::collections::BTreeMap;
+use std::sync::Arc;
 
 pub(crate) struct PhysicalHost {
     pub(crate) root: Option<(Dir, u8)>,
     pub(crate) entries: BTreeMap<u32, Entry>,
     logical_nanos: Option<i64>,
+    network_policy: Arc<crate::physical_network::NetworkPolicy>,
 }
 
 impl PhysicalHost {
@@ -17,12 +19,21 @@ impl PhysicalHost {
             root,
             entries: BTreeMap::new(),
             logical_nanos: None,
+            network_policy: Arc::new(crate::physical_network::NetworkPolicy::default_policy()),
         }
+    }
+
+    pub(crate) fn set_network_policy(&mut self, policy: crate::physical_network::NetworkPolicy) {
+        self.network_policy = Arc::new(policy);
+    }
+
+    pub(crate) fn network_policy(&self) -> &Arc<crate::physical_network::NetworkPolicy> {
+        &self.network_policy
     }
 
     pub fn perform(&mut self, raw: &Value) -> Value {
         if raw.get("operation").and_then(Value::as_str) == Some("network_send") {
-            return crate::physical_network_send::perform(raw);
+            return crate::physical_network_send::perform_with_policy(raw, &self.network_policy);
         }
         let outcome = serde_json::from_value::<Request>(raw.clone())
             .map_err(|_| HostError::INVALID_PATH)

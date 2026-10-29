@@ -175,6 +175,11 @@
       "estado": "cumple"
     },
     {
+      "regla": "TOOL.CLI.RUN@1.0.0#R6",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
       "regla": "API.WIRE-FORMAT@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"

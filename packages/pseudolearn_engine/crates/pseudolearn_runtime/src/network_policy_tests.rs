@@ -44,6 +44,23 @@ fn accepts_granted_http_and_https_origins_without_fragments() -> Result<(), Stri
 }
 
 #[test]
+fn configures_network_capabilities_from_declared_host_origins() {
+    let origins = crate::network_policy::configured_origins(Some(&serde_json::json!({
+        "network_origins":[
+            "https://api.example.test",
+            "http://127.0.0.1:8080"
+        ]
+    })));
+    assert_eq!(
+        origins,
+        BTreeSet::from([
+            "https://api.example.test:443".to_owned(),
+            "http://127.0.0.1:8080".to_owned()
+        ])
+    );
+}
+
+#[test]
 fn rejects_invalid_urls_and_ungranted_origins() {
     let origins = BTreeSet::from(["https://fake.test:443".to_owned()]);
     for url in [

@@ -8,33 +8,78 @@ use std::sync::atomic::Ordering;
 impl ExecutionResource {
     pub(super) fn resolve_pending(
         &mut self,
-        mut pending: PendingEffectRequest,
+        pending: PendingEffectRequest,
     ) -> Result<bool, ApiError> {
         let operation = pseudolearn_runtime::effect_operation(&pending.operation)
             .ok_or_else(|| usage("unknown effect operation"))?;
-        self.prepare_delivery(&pending)?;
         let source = pending
             .source_node_id
             .ok_or_else(|| usage("missing effect source"))?;
-        if self.cancel_on_effect == Some(self.next_effect_sequence())
-            && self.execution_mode.allows_external_host()
-        {
-            let request = self.begin_pending(operation, &pending, source)?;
-            self.pending_host = Some(request);
-            self.cancelled.store(true, Ordering::Relaxed);
-            self.settle_cancelled_suspension();
+        if self.resolve_cancelled_pending(operation, &pending, source)? {
             return Ok(false);
         }
         if self.reject_excess_network_request(operation, &pending, source)? {
             return Ok(true);
         }
         if self.detached_effects && self.execution_mode.allows_external_host() {
-            let request = self.begin_pending(operation, &pending, source)?;
-            pending.effect_seq = request.effect_seq;
-            self.pending_host = Some(request);
-            self.terminal = Some(RunExit::AwaitingEffect(pending));
+            return self.resolve_detached_pending(operation, pending, source);
+        }
+        self.resolve_attached_pending(operation, pending, source)
+    }
+
+    fn resolve_cancelled_pending(
+        &mut self,
+        operation: &pseudolearn_abi::EffectOperation,
+        pending: &PendingEffectRequest,
+        source: u32,
+    ) -> Result<bool, ApiError> {
+        if self.cancel_on_effect != Some(self.next_effect_sequence())
+            || !self.execution_mode.allows_external_host()
+        {
             return Ok(false);
         }
+        self.prepare_delivery(pending)?;
+        let request = self.begin_pending(operation, pending, source)?;
+        self.pending_host = Some(request);
+        self.cancelled.store(true, Ordering::Relaxed);
+        self.settle_cancelled_suspension();
+        Ok(true)
+    }
+
+    fn resolve_detached_pending(
+        &mut self,
+        operation: &pseudolearn_abi::EffectOperation,
+        mut pending: PendingEffectRequest,
+        source: u32,
+    ) -> Result<bool, ApiError> {
+        if self
+            .pending_hosts
+            .values()
+            .any(|host| host.machine_sequence == pending.effect_seq)
+        {
+            return self.wait_for_concurrent_reply(pending);
+        }
+        if self.activate_ready_host_effect()? {
+            return Ok(true);
+        }
+        if self.start_concurrent_host_effects(&pending)? {
+            return Ok(false);
+        }
+        self.prepare_delivery(&pending)?;
+        let request = self.begin_pending(operation, &pending, source)?;
+        pending.effect_seq = request.effect_seq;
+        self.pending_host = Some(request);
+        self.terminal = Some(RunExit::AwaitingEffect(pending));
+        Ok(false)
+    }
+
+    fn resolve_attached_pending(
+        &mut self,
+        operation: &pseudolearn_abi::EffectOperation,
+        pending: PendingEffectRequest,
+        source: u32,
+    ) -> Result<bool, ApiError> {
+        self.prepare_delivery(&pending)?;
         let reply = perform_host_effect(
             &mut self.effects,
             &mut self.host,
@@ -84,32 +129,6 @@ impl ExecutionResource {
             .map_err(crate::tape_wire::replay_error_to_api)
     }
 
-    pub(super) fn concurrent_pending_effects(&self) -> Option<Value> {
-        let requests = self.machine.pending_effect_requests();
-        (self.pending_host.is_some() && requests.len() > 1).then(|| {
-            Value::Array(
-                requests
-                    .iter()
-                    .map(|request| {
-                        let sequence =
-                            self.effects
-                                .reserved_sequence(request.effect_seq)
-                                .or_else(|| {
-                                    self.pending_host.as_ref().map(|pending| pending.effect_seq)
-                                });
-                        serde_json::json!({
-                            "effect_seq": sequence,
-                            "task_id": request.task_id,
-                            "capability_kind": request.capability_kind,
-                            "operation": request.operation,
-                            "source_node_id": request.source_node_id,
-                        })
-                    })
-                    .collect(),
-            )
-        })
-    }
-
     fn next_effect_sequence(&self) -> u64 {
         u64::try_from(self.effects.tape().entries().len())
             .unwrap_or(u64::MAX)
@@ -133,6 +152,7 @@ impl ExecutionResource {
         if !self.pending_network_limit_exceeded(pending) {
             return Ok(false);
         }
+        self.prepare_delivery(pending)?;
         let request = self.begin_pending(operation, pending, source)?;
         let reply = pseudolearn_runtime::resolve_host_effect(
             &mut self.effects,
@@ -147,7 +167,7 @@ impl ExecutionResource {
         Ok(true)
     }
 
-    fn mark_excess_network_requests(&mut self) {
+    pub(super) fn mark_excess_network_requests(&mut self) {
         let maximum = self.network_limits.pending;
         let requests = self
             .machine
@@ -178,10 +198,12 @@ impl ExecutionResource {
     }
 
     pub(super) fn settle_cancelled_suspension(&mut self) {
-        if self.pending_host.is_none() || !self.cancelled.load(Ordering::Relaxed) {
+        if !self.has_external_effects() || !self.cancelled.load(Ordering::Relaxed) {
             return;
         }
         self.pending_host = None;
+        self.pending_hosts.clear();
+        self.completed_hosts.clear();
         self.effects.abort();
         pseudolearn_runtime::HostEffectProvider::close_all(&mut self.host);
         self.terminal = Some(RunExit::Cancelled);
@@ -192,22 +214,74 @@ impl ExecutionResource {
             return Err(usage("external effect result rejected in replay mode"));
         }
         self.settle_cancelled_suspension();
-        let pending = self
-            .pending_host
-            .as_ref()
-            .ok_or_else(|| usage("execution is not awaiting effect"))?;
         let sequence = arguments
             .get("effect_seq")
             .and_then(Value::as_u64)
             .ok_or_else(|| usage("missing effect sequence"))?;
-        if sequence != pending.effect_seq {
-            return Err(usage("effect sequence mismatch"));
-        }
         let result = arguments
             .get("result")
             .ok_or_else(|| usage("missing effect result"))?;
         let reply: HostReply =
             serde_json::from_value(result.clone()).map_err(|error| usage(&error.to_string()))?;
+        if self.pending_hosts.contains_key(&sequence) {
+            return self.resolve_concurrent_host_result(sequence, reply);
+        }
+        self.resolve_single_host_result(sequence, reply)
+    }
+
+    fn resolve_concurrent_host_result(
+        &mut self,
+        sequence: u64,
+        reply: HostReply,
+    ) -> Result<(), ApiError> {
+        let pending = self
+            .pending_hosts
+            .remove(&sequence)
+            .ok_or_else(|| usage("execution is not awaiting effect"))?;
+        let operation = pseudolearn_runtime::effect_operation(&pending.request.operation)
+            .ok_or_else(|| usage("unknown effect operation"))?;
+        let source = pending
+            .request
+            .source_node_id
+            .ok_or_else(|| usage("missing effect source"))?;
+        self.prepare_delivery(&pending.request)?;
+        let request = self.begin_pending(operation, &pending.request, source)?;
+        if request.effect_seq != sequence {
+            return Err(usage("effect sequence mismatch"));
+        }
+        let reply = resolve_host_effect(&mut self.effects, sequence, reply)
+            .map_err(crate::tape_wire::replay_error_to_api)?;
+        self.completed_hosts.push_back(super::CompletedHostEffect {
+            machine_sequence: pending.machine_sequence,
+            reply,
+        });
+        self.clear_completed_host(sequence);
+        Ok(())
+    }
+
+    fn clear_completed_host(&mut self, sequence: u64) {
+        if self
+            .pending_host
+            .as_ref()
+            .is_some_and(|host| host.effect_seq == sequence)
+        {
+            self.pending_host = None;
+        }
+        self.terminal = None;
+    }
+
+    fn resolve_single_host_result(
+        &mut self,
+        sequence: u64,
+        reply: HostReply,
+    ) -> Result<(), ApiError> {
+        let pending = self
+            .pending_host
+            .as_ref()
+            .ok_or_else(|| usage("execution is not awaiting effect"))?;
+        if sequence != pending.effect_seq {
+            return Err(usage("effect sequence mismatch"));
+        }
         let reply = resolve_host_effect(&mut self.effects, sequence, reply)
             .map_err(crate::tape_wire::replay_error_to_api)?;
         self.machine.supply_effect_result(reply);

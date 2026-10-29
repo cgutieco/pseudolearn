@@ -6,7 +6,9 @@ Expone `pseudolearn_api` como módulo WebAssembly para navegadores. El crate con
 
 Responsabilidades: crear sesiones aisladas, reenviar operaciones y conservar la codificación exacta de enteros JSON de 64 bits.
 
-Fuera de alcance de producto: interfaz Flutter web, almacenamiento, autenticación, red y presentación.
+Fuera de alcance de producto: interfaz Flutter web, almacenamiento, autenticación y presentación. El
+transporte de una aplicación de producto queda fuera; `browser/` contiene el adaptador Fetch de
+referencia para comprobar la frontera de red de la API.
 
 Fuera de alcance técnico: AOT, Cranelift, memoria compartida, punteros prestados entre llamadas y buffers de bytes visibles al consumidor.
 
@@ -49,11 +51,19 @@ El crate es la capa exterior del motor y solo importa `pseudolearn_api`. La feat
 | Carpeta | Responsabilidad | Puede importar | Prohibido |
 |---|---|---|---|
 | `src/` | Enlace Wasm y sonda nativa para comparación | API, `serde_json`, `wasm-bindgen` | Cranelift, Flutter, app, I/O dentro del módulo Wasm |
-| `browser/` | Página mínima y pruebas Playwright sobre el paquete generado | Paquete Wasm, Node.js, Playwright Core | Lógica de motor duplicada, datos generados editados a mano |
+| `browser/` | Página mínima, adaptador Fetch y pruebas del paquete generado | Paquete Wasm, Fetch, Node.js, Playwright Core | Lógica de motor duplicada, datos generados editados a mano |
 
 `WasmSession.call(operation, argumentsJson)` analiza el objeto de argumentos en Rust, llama `ApiSession.call` y serializa su sobre de éxito o fallo. Los enteros de 64 bits viajan como tokens JSON, no como `Number` de JavaScript. La memoria es privada al módulo; cada llamada intercambia cadenas dueñas.
 
 La ejecución es síncrona. El anfitrión divide el trabajo en lotes, devuelve el control al navegador y solicita cancelación entre llamadas. El archivo de salida limita la memoria lineal a 256 MiB. Cualquier `Uint8Array` creado por un consumidor sobre la memoria del módulo queda invalidado cuando `memory.grow` reemplaza su `ArrayBuffer`; este crate no expone tales vistas.
+
+`browser/fetch_host.mjs` adapta `network_send` al `fetch` del navegador. `declareFetchHost(session)` comunica
+el descriptor A4 mediante `negotiate`; `performFetch(effect, { allowedOrigins, fetchImplementation })`
+permite inyectar el transporte y concede solo los orígenes incluidos explícitamente. Envía con
+`credentials: omit`, `cache: no-store` y `redirect: manual`; aborta al vencer el plazo y corta el flujo
+al superar el límite de bytes decodificados. El navegador valida TLS, aplica su política SSRF y
+descomprime contenido; el adaptador declara que no puede medir bytes de cable, distinguir errores de
+certificado ni leer de forma portable la ubicación de una redirección.
 
 La sonda `wasm_native_probe` usa el mismo protocolo de registros tabulados y mantiene una sesión nativa para comparar, operación por operación, las mismas solicitudes y respuestas que ejecuta Playwright.
 
@@ -90,6 +100,10 @@ El navegador consume las mismas operaciones y observables que la API. El anfitri
 ## 7. Verificación, testing y aseguramiento de calidad
 
 `cargo xtask verify` ejecuta formato, Clippy, pruebas del workspace, verificadores Rust y auditoría de dependencias. `bash tool/wasm.sh test` compila el artefacto release, comprueba que no aparece `native` ni Cranelift, valida reproducibilidad y ejecuta Playwright en Chrome.
+
+La comprobación ligera del adaptador Fetch usa `node --test browser/fetch_host.test.mjs`; no necesita
+servidor ni navegador. Sus casos cubren negociación A4, concesión de origen, opciones Fetch, fallos de
+conexión, redirecciones opacas, tope de cuerpo decodificado, plazo y petición mal formada.
 
 La prueba de navegador compara respuestas byte por byte con `wasm_native_probe` para completado, análisis, entrada, extremos de enteros, cancelación entre lotes y liberación. Otros casos rechazan JSON inválido, fuerzan crecimiento de memoria, comprueban la invalidación de vistas y verifican que superar el límite falla sin alterar la instancia.
 

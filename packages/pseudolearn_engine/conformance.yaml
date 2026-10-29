@@ -1377,6 +1377,11 @@
       "estado": "cumple"
     },
     {
+      "regla": "API.VERSIONING@1.0.0#R3",
+      "verificacion": "crates/pseudolearn_api/tests/versioning.rs",
+      "estado": "cumple"
+    },
+    {
       "regla": "API.STATE.QUERY@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"

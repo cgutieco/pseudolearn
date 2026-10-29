@@ -13,6 +13,8 @@ struct Configuration {
     clock: Vec<u64>,
     permissions: Vec<String>,
     requested_permissions: Option<Vec<String>>,
+    #[serde(rename = "network_origins")]
+    _network_origins: Vec<String>,
     faults: Vec<FaultConfiguration>,
     http: BTreeMap<String, HttpScriptConfiguration>,
     #[serde(rename = "secrets")]

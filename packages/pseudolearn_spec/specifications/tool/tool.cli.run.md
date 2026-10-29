@@ -658,3 +658,81 @@
   }
 }
 ```
+
+```regla
+{
+  "id": "R6",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "pseudo ejecutar acepta red como concesión y recibe orígenes HTTPS exactos con --origen y orígenes locales de loopback con --origen-local; ambas opciones pueden repetirse. El adaptador nativo rechaza --nativo cuando se concede red con error de uso y código 2, porque el ejecutable AOT no ofrece HTTP real.",
+  "verificacion": [
+    "C18",
+    "C19"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C18",
+  "regla": "R6",
+  "perfiles": ["es"],
+  "rigor": ["estricto"],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 2,
+    "salida": "",
+    "salida_error": "pseudo: valor no válido «red» para --native\n"
+  },
+  "cli": {
+    "argumentos": [
+      "run",
+      "--native",
+      "--grant",
+      "red",
+      "--origin",
+      "https://api.example.test",
+      "p.pseudo"
+    ],
+    "entorno": {},
+    "archivos": {
+      "p.pseudo": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C19",
+  "regla": "R6",
+  "perfiles": ["es"],
+  "rigor": ["estricto"],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 0,
+    "salida": "1\n",
+    "salida_error": ""
+  },
+  "cli": {
+    "argumentos": [
+      "run",
+      "--grant",
+      "red",
+      "--origin",
+      "https://api.example.test",
+      "--origin",
+      "https://files.example.test:8443",
+      "--local-origin",
+      "http://127.0.0.1:8080",
+      "p.pseudo"
+    ],
+    "entorno": {},
+    "archivos": {
+      "p.pseudo": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n"
+    }
+  }
+}
+```

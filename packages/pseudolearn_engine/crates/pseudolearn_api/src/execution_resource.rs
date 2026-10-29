@@ -5,7 +5,7 @@ use pseudolearn_vm::{
     LoadedProgram, Machine, RunExit, RunOptions, machine_event_count, take_machine_events,
 };
 use serde_json::{Value, json};
-use std::collections::BTreeSet;
+use std::collections::{BTreeMap, BTreeSet, VecDeque};
 use std::sync::{
     Arc,
     atomic::{AtomicBool, Ordering},
@@ -19,12 +19,16 @@ mod execution_resource_tests;
 mod execution_effects;
 #[path = "execution_host.rs"]
 mod execution_host;
+#[path = "execution_host_batch.rs"]
+mod execution_host_batch;
 #[path = "execution_response.rs"]
 mod execution_response;
 #[path = "execution_setup.rs"]
 mod execution_setup;
 
 const CHECKPOINT_STRIDE: usize = 256;
+
+use execution_host_batch::{CompletedHostEffect, PendingHostEffect};
 
 pub(crate) struct ExecutionResource {
     program: LoadedProgram,
@@ -52,6 +56,8 @@ pub(crate) struct ExecutionResource {
     detached_effects: bool,
     cancel_on_effect: Option<u64>,
     pending_host: Option<pseudolearn_runtime::HostEffectRequest>,
+    pending_hosts: BTreeMap<u64, PendingHostEffect>,
+    completed_hosts: VecDeque<CompletedHostEffect>,
     limit_rejected_network: BTreeSet<u64>,
     completing_effect: bool,
 }
@@ -108,6 +114,8 @@ impl ExecutionResource {
             detached_effects: prepared.detached_effects,
             cancel_on_effect: prepared.cancel_on_effect,
             pending_host: None,
+            pending_hosts: BTreeMap::new(),
+            completed_hosts: VecDeque::new(),
             completing_effect: false,
             limit_rejected_network: BTreeSet::new(),
         }
@@ -127,6 +135,7 @@ impl ExecutionResource {
         }
         self.settle_cancelled_suspension();
         if self.terminal.is_none() {
+            self.activate_ready_host_effect()?;
             self.drive_batch(maximum)?;
         }
 
@@ -143,7 +152,7 @@ impl ExecutionResource {
         self.add_effect_observation(&mut response);
         self.delivered = machine_event_count(&self.machine);
         take_machine_events(&mut self.machine);
-        if self.pending_host.is_none() {
+        if !self.has_external_effects() {
             self.machine
                 .set_effect_checkpoint(pseudolearn_runtime::capture_effect_checkpoint(
                     &self.effects,
@@ -162,8 +171,8 @@ impl ExecutionResource {
             "effect_tape".to_owned(),
             crate::tape_wire::tape_to_value(self.effects.tape()),
         );
-        if let Some(pending) = &self.pending_host {
-            fields.insert("pending_effect".to_owned(), json!(pending));
+        if let Some(pending) = self.pending_host_value() {
+            fields.insert("pending_effect".to_owned(), pending);
         }
         if let Some(list) = self.concurrent_pending_effects() {
             fields.insert("pending_effects".to_owned(), list);

@@ -16,6 +16,15 @@ impl AddressResolver for LoopbackResolver {
     }
 }
 
+struct DelayedResolver(Duration);
+
+impl AddressResolver for DelayedResolver {
+    fn resolve(&self, _hostname: &str, _port: u16) -> AddressLookup {
+        thread::sleep(self.0);
+        AddressLookup::Addresses(vec![SocketAddr::from((Ipv4Addr::LOCALHOST, 1))])
+    }
+}
+
 fn request(method: &str) -> NetworkRequest {
     NetworkRequest {
         method: method.to_owned(),
@@ -155,6 +164,27 @@ fn aborting_an_in_flight_request_closes_its_single_connection() -> Result<(), St
         connections.recv().map_err(|error| error.to_string())?,
         (1, true)
     );
+    Ok(())
+}
+
+#[test]
+fn deadline_covers_name_resolution() -> Result<(), String> {
+    let mut current = request("GET");
+    current.url = "http://localhost/resource".to_owned();
+    current.timeout_nanos = Some(1_000_000);
+    current.effective_timeout_nanos = Some(1_000_000);
+    let runtime = tokio::runtime::Builder::new_current_thread()
+        .enable_all()
+        .build()
+        .map_err(|error| error.to_string())?;
+    let reply = runtime.block_on(send_with_resolver(
+        current,
+        DelayedResolver(Duration::from_millis(50)),
+        true,
+        TlsConfiguration::from_host_roots(Vec::new()),
+    ));
+    assert_eq!(reply["outcome"], "failed");
+    assert_eq!(reply.pointer("/value/code"), Some(&json!("tiempo_agotado")));
     Ok(())
 }
 

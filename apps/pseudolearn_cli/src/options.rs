@@ -126,7 +126,10 @@ fn handle_valued_option(
         "--semilla" | "--seed" | "--profundidad" | "--depth" | "--sentencias" | "--statements"
         | "--celdas" | "--cells" | "--tareas" | "--tasks" | "--grabar-cinta" | "--record-tape"
         | "--reproducir-cinta" | "--replay-tape" | "--conceder" | "--grant" | "--archivos"
-        | "--files" => handle_execution_option(raw_arguments, current_index, locale, parsed),
+        | "--files" | "--origen" | "--origin" | "--origen-local" | "--local-origin"
+        | "--raiz-prueba" | "--test-root" => {
+            handle_execution_option(raw_arguments, current_index, locale, parsed)
+        }
         "--proyecto" | "--project" | "--entrada" | "--entry" => {
             handle_project_option(raw_arguments, current_index, locale, parsed)
         }
@@ -158,6 +161,13 @@ fn handle_execution_option(
                 &mut parsed.execution,
             )
         }
+        "--origen" | "--origin" | "--origen-local" | "--local-origin" | "--raiz-prueba"
+        | "--test-root" => crate::execution_options::parse_network_option(
+            raw_arguments,
+            current_index,
+            locale,
+            &mut parsed.execution,
+        ),
         _ => crate::execution_options::parse_numeric(
             raw_arguments,
             current_index,

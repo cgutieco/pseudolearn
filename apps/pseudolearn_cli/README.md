@@ -112,19 +112,28 @@ La reproducción de `Leer` es autónoma: la cinta guarda cada línea leída y la
 estándar. Decisión: la entrada leída se resuelve contra la entrada de cinta siguiente en ambos motores; si la cinta se
 agota, la reproducción termina con `replay_truncated_tape`.
 
-La política física de red está separada en `physical_network_address`, `physical_network_resolver` y
-`physical_network_tls`. El validador rechaza hosts inválidos y formas numéricas alternativas de IPv4;
-el resolvedor del sistema se puede sustituir por uno falso y `resolve_checked` examina toda la
-respuesta DNS una sola vez antes de entregar la instantánea comprobada de direcciones. Deniega los
-rangos locales, privados y especiales; una concesión local de prueba solo permite loopback.
-`physical_network_send` envía un único efecto por una conexión HTTP/1 de bajo nivel con Hyper 1.11.1;
-no reintenta, no sigue redirecciones y no carga cookies ni proxies. Se usa Tokio 1.54.1 para el
-transporte asíncrono y `tokio-rustls` 0.26.6 con Rustls 0.23.46 para HTTPS. Se eligió la conexión
-directa de Hyper ([API de handshake HTTP/1](https://docs.rs/hyper/1.11.1/hyper/client/conn/http1/fn.handshake.html));
-se descartó una capa cliente que añada políticas implícitas. La conexión se cierra al terminar la
-respuesta o al cancelar la espera. La respuesta se lee por bloques con los límites configurados y el
-plazo cubre resolución, conexión, TLS y respuesta. DNS se resuelve una vez, se validan todas las
-direcciones y se conecta a una sola dirección de esa instantánea, sin probar direcciones alternativas.
+La política física de red está separada en `physical_network_address`, `physical_network_resolver`,
+`physical_network_tls` y `physical_network`. El validador rechaza hosts inválidos y formas numéricas
+alternativas de IPv4; el resolvedor del sistema se puede sustituir por uno falso y `resolve_checked`
+examina toda la respuesta DNS una sola vez antes de entregar la instantánea comprobada de direcciones.
+Deniega los rangos locales, privados y especiales; una concesión `--local-origin` solo permite loopback.
+Cada petición debe coincidir con un origen exacto concedido. `--origin` acepta orígenes HTTPS; el
+origen local acepta HTTP con loopback. No se siguen redirecciones: el programa recibe la respuesta 3xx.
+
+La elección nativa es una conexión HTTP/1 directa con Hyper 1.11.1
+([API de handshake HTTP/1](https://docs.rs/hyper/1.11.1/hyper/client/conn/http1/fn.handshake.html)),
+Tokio 1.54.1 y `tokio-rustls` 0.26.6 con Rustls 0.23.46. Hyper se usa como capa de protocolo y
+conexión, no como cliente de alto nivel; la CLI controla DNS, proxy, redirecciones, certificados y
+límite de bytes. No se leen proxies del entorno, no se cargan cookies, no se reintenta y el TLS no
+admite modo inseguro. Se descartó `reqwest` 0.13.5 porque su cliente de alto nivel habilita proxies
+del sistema por defecto y sigue redirecciones por defecto; `ureq` 3.4.2 también toma proxies del
+entorno y su interfaz de resolvedor/transport está bajo `unversioned`. La conexión de Hyper recibe
+un `TcpStream` decidido por el resolvedor del adaptador y no crea un cliente que interprete esas
+variables. `flate2` 1.1.10 con backend Rust descodifica gzip en flujo; `wire_limit` mide el cuerpo
+recibido antes de descodificar y `effective_response_limit` corta los bytes decodificados.
+La conexión se cierra al terminar la respuesta o al cancelar la espera. El plazo cubre resolución,
+conexión, TLS y respuesta. DNS se resuelve una vez, se validan todas las direcciones y se conecta a
+una sola dirección de esa instantánea, sin probar direcciones alternativas.
 
 `TlsConfiguration` exige validación de certificados y admite raíces PEM añadidas por el anfitrión;
 la configuración de producción carga además las raíces del sistema
@@ -139,13 +148,17 @@ Rustls conserva una categoría distinta para certificados inválidos; los demás
 TLS se informan como fallos de conexión.
 `ring`, usado por Rustls, incorpora `windows-sys 0.52.0`; `cargo-deny` omite solo esa versión exacta
 en la regla existente de versiones múltiples, que sigue rechazando el resto de duplicados.
+Los certificados y claves de `tests/fixtures/tls` son material sintético para las pruebas loopback de
+certificado válido, expirado, host incorrecto y autofirmado; el proxy de prueba se inicia en un proceso
+hijo para aislar las variables `HTTPS_PROXY` del resto de los tests.
 
-La CLI aún no expone opciones para conceder red, fijar orígenes ni cargar raíces de prueba; la lista
-de permisos y las opciones de ejecución permanecen sin cambios en esta entrega. El transporte queda
-disponible en el proveedor para cuando la configuración de esa capacidad esté conectada.
+El `network_origins` del anfitrión API lleva los orígenes que el usuario concedió al CLI; el runtime
+valida con ellos cada `network_send` antes de pedir el resultado al transporte físico. En opciones
+bilingües, `--origin`/`--origen`, `--local-origin`/`--origen-local` y `--test-root`/`--raiz-prueba`
+son repetibles.
 
 Proveedor físico: `--conceder <lista>` (`--grant`) declara los permisos concedidos (`consola`, `argumentos`,
-`archivos_lectura`, `archivos_escritura`, `reloj`, `temporizador`; cualquier otro nombre es error de uso) y
+`archivos_lectura`, `archivos_escritura`, `reloj`, `temporizador`, `red`; también acepta `network` como alias) y
 `--archivos <DIR>` (`--files`) la única raíz de archivos. Sin `--conceder` el comportamiento no cambia y toda
 capacidad se deniega. Con `--conceder` la CLI arranca la ejecución en modo `detached` y atiende cada
 `awaiting_effect` como consumidor de la API pública: `physical_host.rs` despacha las operaciones, `physical_files.rs`
@@ -156,8 +169,15 @@ nunca se concatenan rutas. Defensas: la ruta debe ser relativa, sin `.`/`..`, si
 capacidad derivada deben ser subconjunto de los del padre; cerrar una capacidad la retira de la tabla y su uso posterior
 devuelve `capacidad_cerrada`; escribir reemplaza el contenido y un fallo tras mutar se informa como `Uncertain`.
 La reproducción (`--reproducir-cinta`) no abre la raíz ni toca disco. El reloj es el del sistema en la primera lectura
-y el temporizador es lógico (suma la duración sin dormir). No se declaran pendientes de esta decisión salvo que el
-proveedor físico solo ofrece una raíz y no modela argumentos de la línea de órdenes del programa.
+y el temporizador es lógico (suma la duración sin dormir). Para red, `--origin` es repetible y concede orígenes
+HTTPS exactos; `--local-origin` es repetible y concede HTTP solo para loopback; `--test-root` carga raíces PEM
+adicionales sin retirar las raíces del sistema. Conceder `red` sin origen no autoriza destinos. `--native` con
+`red` falla como error de uso, código 2: el runtime AOT no abre sockets. El anfitrión nativo declara sus garantías
+mediante `negotiate`; la declaración no concede permisos. El transporte valida DNS y todas las direcciones antes
+de conectar. La API entrega la lista completa de efectos de red pendientes; `physical_network_batch` ejecuta hasta
+ocho solicitudes en paralelo y devuelve sus resultados según finalizan. La VM pausa y reanuda la tarea asociada a
+cada secuencia, y la cinta registra ese orden de entrega. El proveedor físico todavía solo ofrece una raíz de
+archivos y no modela argumentos de la línea de órdenes del programa.
 
 `deny.toml` autoriza `BSD-3-Clause`, licencia de `subtle`, dependencia transitiva de `hmac` que el runtime usa para las
 referencias de secretos de la cinta; es la misma decisión que ya rige en el motor.
@@ -245,6 +265,14 @@ Verificadores, formato, Clippy, dependencias y tests mediante cargo xtask verify
 ## 8. Fuentes consultadas y genealogía conceptual
 
 El corpus TOOL.CLI es normativo. Las convenciones de CLI y gettext inspiran precedencia de preferencias; se rechaza que una forma de orden traduzca implícitamente la salida. LSP aporta locale para el idioma del cliente.
+
+Para la elección HTTP se consultaron las versiones exactas: la guía de [`reqwest` 0.13.5](https://docs.rs/reqwest/0.13.5/reqwest/)
+documenta que el cliente sigue redirecciones y usa proxies del sistema por omisión; [`ureq` 3.4.2](https://docs.rs/ureq/3.4.2/ureq/)
+también toma proxies del entorno y declara inestables sus interfaces de resolución/transporte. Se tomó de
+[`hyper` 1.11.1](https://docs.rs/hyper/1.11.1/hyper/client/conn/http1/fn.handshake.html) solo el protocolo HTTP/1
+de bajo nivel, dejando resolución, conexión, plazo, TLS, redirección y corte de flujo bajo el adaptador.
+[`flate2` 1.1.10](https://docs.rs/flate2/1.1.10/flate2/write/struct.MultiGzDecoder.html) aporta el decodificador
+gzip incremental de miembros concatenados; se fija el backend Rust para no incorporar compilación C.
 
 
 La cinta se obtiene de la sesión ejecutada y se publica mediante archivo provisional y renombrado;

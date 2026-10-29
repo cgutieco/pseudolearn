@@ -50,7 +50,9 @@ Estructuras y algoritmos: Recursos con identificador; operaciones totales que de
 
 Invariantes: Ningún pánico cruza la frontera.
 
-Anfitrión simulado y resultados de efectos (`fake_host`, `execution_resource`): `FakeHostProvider` provee un árbol virtual en memoria con archivos, argumentos y reloj lógico para aislar pruebas normativas. La terminación `awaiting_effect` comunica la petición pendiente en JSON; la operación `effect_result` valida exclusión mutua estricta con `input` (rechazando entradas si se espera un efecto y viceversa) antes de suministrar el resultado y reanudar la máquina.
+Anfitrión simulado y resultados de efectos (`fake_host`, `execution_resource`): `FakeHostProvider` provee un árbol virtual en memoria con archivos, argumentos y reloj lógico para aislar pruebas normativas. La terminación `awaiting_effect` comunica la petición pendiente en JSON; `pending_effects` incluye los argumentos completos de cada solicitud concurrente. `effect_result` acepta cualquier secuencia del lote externo pendiente, registra el resultado en el orden en que llega y ordena a la VM seleccionar la tarea correspondiente. La VM estaciona la tarea que estaba activa y la reanuda cuando le toca según la finalización externa. La operación conserva exclusión mutua estricta con `input` (rechazando entradas si se espera un efecto y viceversa).
+
+La negociación de red acepta `network_capabilities` con seis garantías exactas: validación TLS, disponibilidad del límite de cable, distinción de errores de certificado, visibilidad de ubicación de redirección, política SSRF y compresión. Devuelve el descriptor sin alterarlo; no concede permisos ni orígenes. El perfil nativo declara límite de cable, errores de certificado distinguibles, destino validado por adaptador y gzip. El perfil Fetch declara A4: límite de cable no disponible, errores de certificado y ubicación de redirección no distinguibles, política del navegador y descompresión del navegador.
 
 Ejecución síncrona determinista; los efectos del anfitrión solo cruzan capacidades inyectadas.
 

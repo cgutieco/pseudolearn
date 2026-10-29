@@ -648,25 +648,25 @@ derivado`, y sus esperados se derivan de la regla, nunca de la salida del motor 
 
 ### PG-5.06 · Adaptador nativo elegido con evidencia; adaptador Fetch con capacidades declaradas
 
-- [ ] `PG-5.06.01` Elección (iteración 4, antes de cualquier código del adaptador): evaluar los candidatos de D-PG5-17
+- [x] `PG-5.06.01` Elección (iteración 4, antes de cualquier código del adaptador): evaluar los candidatos de D-PG5-17
   con la tabla de §3.4.8; requiere **autorización de la persona para descargar crates** (§9). Registrar en §11 versión
   exacta, licencia, resultado de cada criterio, crecimiento del binario y la fuente leída de la documentación de esa
   versión. Si ninguno cumple los obligatorios, detenerse y reportar.
-- [ ] `PG-5.06.02` Especificación: `A3`, `A4` en `RT.HOST.INTERFACE` o `API.EXECUTE` (negociación); `TOOL.CLI.RUN`
+- [x] `PG-5.06.02` Especificación: `A3`, `A4` en `RT.HOST.INTERFACE` o `API.EXECUTE` (negociación); `TOOL.CLI.RUN`
   (concesiones candidatas `--conceder red`/`--grant network`, `--origen <URL>`/`--origin <URL>` repetible,
   `--origen-local <URL>`/`--local-origin <URL>` para loopback de prueba, `--raiz-prueba <PEM>`/`--test-root <PEM>`;
   `--nativo` con `red` ⇒ error de uso código 2).
-- [ ] `PG-5.06.03` Tests espejo: CLI `physical_network_tests.rs` (despacho y conversión de errores con transporte
+- [x] `PG-5.06.03` Tests espejo: CLI `physical_network_tests.rs` (despacho y conversión de errores con transporte
   falso), `execution_options` (opciones nuevas); web `fetch_host.test.mjs` con `fetch` falso (sin navegador).
-- [ ] `PG-5.06.04` Código: CLI `physical_network.rs` (puerto de transporte), `physical_network_send.rs`,
+- [x] `PG-5.06.04` Código: CLI `physical_network.rs` (puerto de transporte), `physical_network_send.rs`,
   `physical_network_reply.rs`, `physical_network_batch.rs` (D-PG5-21), integración en `physical_host.rs` y
   `physical_session.rs`; `architecture.yaml` y `deny.toml` de la CLI con la dependencia aprobada; web
   `crates/pseudolearn_wasm/browser/fetch_host.mjs` (`redirect: "manual"`, `credentials: "omit"`, `cache:
   "no-store"`, `AbortController` para el plazo, lectura por flujo con corte de bytes decodificados, mapeo de
   `TypeError` a `ConexionFallida`), declaración `A4` en la negociación del lado web.
-- [ ] `PG-5.06.05` README de la CLI (adaptador y opciones), del crate Wasm (adaptador Fetch y garantías declaradas) y
+- [x] `PG-5.06.05` README de la CLI (adaptador y opciones), del crate Wasm (adaptador Fetch y garantías declaradas) y
   del motor (negociación).
-- [ ] `PG-5.06.06` Ligera: `cargo check` y tests filtrados de la CLI; `cargo deny check` de la CLI (por cambio de
+- [x] `PG-5.06.06` Ligera: `cargo check` y tests filtrados de la CLI; `cargo deny check` de la CLI (por cambio de
   dependencias, disparador de §7.1.4 adelantado porque bloquea la elección); `node --test fetch_host.test.mjs` sin
   navegador.
 - [ ] `PG-5.06.07` Pesada: `E-PG-07` (§7.3) en nativo y en navegadores.
@@ -1019,13 +1019,13 @@ README y la regresión `PERF.SUITE.CORE`; desde `apps/pseudolearn_app`, `flutter
 | `PG-5.03` | Implementación, casos y verificaciones ligeras completados; únicamente `.07` excluida; fase sin cierre verde | Pruebas filtradas de API HTTP (6), límites API (4), runtime (8), JSON (4), sintaxis, opciones de API y mapeo SEE (11); `cargo check`, Clippy y `rust-checks` del motor y la CLI; `see validate` (190), `see lock --check` y `see export --check` pasan | El verificador completo sigue bloqueado por fallos de `LIB.TIME#C1` y limpieza de colecciones C12. `cargo deny check` no pudo actualizar su base de avisos por falta de red. No se ejecutó `.07`; sin commit ni push |
 | `PG-5.04` | Implementación y verificaciones ligeras completadas; `.07` excluida; fase sin cierre verde | 7 tests de runtime, 5 de política de direcciones, 7 del resolvedor, 1 de TLS y test ABI HTTP; `see validate` (191), `lock --check`, `export --check`, Clippy estricto, `rustfmt --check` y `rust-checks all .` de la CLI | La batería pesada y la conformidad de `LIB.HTTP.POLICY` siguen pendientes por exclusión explícita de `.07`. La configuración de TLS/resolvedor no se integra aún en transporte real; la elección de biblioteca pertenece a `PG-5.06.01`. Sin commit ni push |
 | `PG-5.05` | Implementación ligera `.01`–`.06` completada en una iteración; `.07` excluida; fase sin cierre verde | 20 tests `network_*` de la CLI, tests filtrados de clasificación y cinta en runtime, corpus (191), `lock --check`, `export --check`, `cargo check`, Clippy, `rustfmt`, `rust-checks`, `cargo deny` y build release | Sin conformidad pesada, commit ni push; la salida a red sigue sin opciones de concesión en la CLI |
-| `PG-5.06` | Evaluación anticipada parcial de `.01`; selección de transporte usada por `.05`, evidencia completa pendiente | Hyper 1.11.1 directo, Rustls 0.23.46, DNS inyectable, una conexión, respuesta 302 visible, cancelación y clasificación TLS; crecimiento release medido | Queda la matriz TLS y la prueba explícita de proxy/flujo antes de cerrar `.01`; no se abrieron las demás tareas de PG-5.06 |
+| `PG-5.06` | Implementación ligera de `.01`–`.06` completada en una iteración; `.07` excluida; fase sin cierre verde | Selección: Hyper 1.11.1 con HTTP/1 directo, Rustls 0.23.46 y `flate2` 1.1.10 con backend Rust; `cargo deny check` pasa sin ampliar licencias. Documentación consultada: [Hyper 1.11.1](https://docs.rs/hyper/1.11.1/hyper/client/conn/http1/fn.handshake.html), [reqwest 0.13.5](https://docs.rs/reqwest/0.13.5/reqwest/), [ureq 3.4.2](https://docs.rs/ureq/3.4.2/ureq/) y [flate2 1.1.10](https://docs.rs/flate2/1.1.10/flate2/). API: concurrencia fuera del orden de solicitud y cinta en orden de finalización (1 test), orden/reproducción de efectos (9) y negociación (3). Runtime: 6 tests de política y 4 de configuración. CLI: transporte, flujo, cancelación, proxy y matriz TLS (19), DNS (7), validación TLS (3), opciones (2), rechazo `--native` con red (2); Fetch (10). `see validate` (191), `lock --check`, `export --check`, `cargo check --all-targets`, Clippy estricto, `rustfmt --check`, `rust-checks all .` en engine y CLI; build `release` 17,886,160 → 17,998,784 bytes (+112,624; 0.11 MiB). | Se eligió Hyper porque expone el handshake sobre el `TcpStream` ya resuelto por el adaptador; la prueba con `HTTPS_PROXY` confirma cero conexiones al proxy. La matriz local acepta una raíz PEM declarada y rechaza certificados caducados, de host incorrecto y autofirmados; `/grande`, `/bomba-gzip`, `/lento`, redirección visible y cancelación también pasan. No se ejecutó `.07` (`E-PG-07`); sin commit ni push |
 | `PG-5.07` | | | |
 | `PG-5.08` | | | |
 | `PG-5.09` | | | |
 | `PG-5.10` | | | |
 | Lectura pendiente de §2 | | | |
-| Espacio liberado (§13) | No requerido | `df -h /`: 27 GiB libres; `du -sh`: engine incremental 2.8 GiB, spec incremental 567 MiB, rust_checks incremental 0 B, app native target 1.9 GiB | Supera el objetivo de 25 GiB; no se borraron cachés |
+| Espacio liberado (§13) | Nivel 1 | Antes de la compilación `release`: `df -h /` mostró 22 GiB libres. `du -sh`: engine incremental 1.2 GiB, CLI incremental 980 MiB, spec target 1.0 GiB y, en la segunda medición, CLI incremental 231 MiB. Se retiraron esos incrementales y el `target` ya verificado de spec; `df -h /` quedó en 25 GiB antes y después del build. | Se liberaron aproximadamente 3.4 GiB de artefactos regenerables; no se borraron archivos versionados ni resultados |
 
 Revisión Git de cierre: · Verificadores ejecutados: · Suites omitidas y por qué: · Pendientes justificados: ·
 Puntos de §4 cumplidos:

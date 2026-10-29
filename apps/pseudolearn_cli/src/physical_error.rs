@@ -17,6 +17,8 @@ impl HostError {
     pub const INTERRUPTED: Self = Self::certain("interrumpido");
     pub const CONNECTION_FAILED: Self = Self::certain("conexion_fallida");
     pub const CERTIFICATE_INVALID: Self = Self::certain("certificado_invalido");
+    pub const INVALID_RESPONSE: Self = Self::certain("respuesta_invalida");
+    pub const LIMIT_EXCEEDED: Self = Self::certain("limite_excedido");
     pub const UNCERTAIN_INTERRUPTED: Self = Self {
         code: "interrumpido",
         uncertain: true,

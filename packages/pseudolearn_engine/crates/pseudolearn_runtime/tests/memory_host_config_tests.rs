@@ -8,6 +8,15 @@ fn cancellation_directive_is_accepted_in_the_host_configuration() {
 }
 
 #[test]
+fn declared_network_origins_are_accepted_in_the_host_configuration() {
+    let host = json!({
+        "permissions":["red"],
+        "network_origins":["https://api.example.test"]
+    });
+    assert!(MemoryHostProvider::from_value(&host).is_ok());
+}
+
+#[test]
 fn unknown_host_keys_are_still_rejected() {
     let host = json!({"permissions": [], "unknown_directive": 1});
     assert!(MemoryHostProvider::from_value(&host).is_err());

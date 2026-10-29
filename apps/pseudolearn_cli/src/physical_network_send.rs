@@ -23,12 +23,19 @@ pub(super) struct NetworkRequest {
     pub(super) headers_limit: Option<u64>,
 }
 
-pub(crate) fn perform(raw: &Value) -> Value {
+pub(crate) fn perform_with_policy(
+    raw: &Value,
+    policy: &crate::physical_network::NetworkPolicy,
+) -> Value {
     let Some(value) = raw.pointer("/arguments/0/value").cloned() else {
         return HostError::INVALID_PATH.reply();
     };
     let Ok(request) = serde_json::from_value::<NetworkRequest>(value) else {
         return HostError::INVALID_PATH.reply();
+    };
+    let local_test_origin = match policy.local_test_origin(&request.url) {
+        Ok(local_test_origin) => local_test_origin,
+        Err(error) => return error.reply(),
     };
     let Ok(runtime) = tokio::runtime::Builder::new_current_thread()
         .enable_all()
@@ -39,8 +46,8 @@ pub(crate) fn perform(raw: &Value) -> Value {
     runtime.block_on(send_with_resolver(
         request,
         SystemAddressResolver,
-        false,
-        TlsConfiguration::from_host_roots(Vec::new()),
+        local_test_origin,
+        policy.tls_configuration().clone(),
     ))
 }
 

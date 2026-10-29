@@ -209,3 +209,150 @@
   "justificacion": "La ejecuta el sujeto engine en R4."
 }
 ```
+
+```regla
+{
+  "id": "R3",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Un anfitrión puede declarar sus garantías de red en negotiate mediante network_capabilities. El descriptor contiene exactamente tls_validation (true), wire_limit (available o unavailable), certificate_errors_distinguished (booleano), redirect_location_visible (booleano), ssrf_policy (adapter o browser) y compression (gzip o browser). La respuesta devuelve el descriptor sin modificarlo; un descriptor incompleto, con campos extra o con valores fuera de esas alternativas produce un error de uso. La declaración no concede permisos de red ni amplía los orígenes de la ejecución.",
+  "verificacion": [
+    "C5",
+    "C6",
+    "C7"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C5",
+  "regla": "R3",
+  "perfiles": ["es"],
+  "rigor": ["estricto"],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "negotiate",
+        "arguments": {
+          "network_capabilities": {
+            "tls_validation": true,
+            "wire_limit": "available",
+            "certificate_errors_distinguished": true,
+            "redirect_location_visible": true,
+            "ssrf_policy": "adapter",
+            "compression": "gzip"
+          }
+        }
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "network_capabilities": {
+              "tls_validation": true,
+              "wire_limit": "available",
+              "certificate_errors_distinguished": true,
+              "redirect_location_visible": true,
+              "ssrf_policy": "adapter",
+              "compression": "gzip"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": ["engine"]
+}
+```
+
+```caso
+{
+  "id": "C6",
+  "regla": "R3",
+  "perfiles": ["es"],
+  "rigor": ["estricto"],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "negotiate",
+        "arguments": {
+          "network_capabilities": {
+            "tls_validation": true,
+            "wire_limit": "unavailable",
+            "certificate_errors_distinguished": false,
+            "redirect_location_visible": false,
+            "ssrf_policy": "browser",
+            "compression": "browser"
+          }
+        }
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "network_capabilities": {
+              "tls_validation": true,
+              "wire_limit": "unavailable",
+              "certificate_errors_distinguished": false,
+              "redirect_location_visible": false,
+              "ssrf_policy": "browser",
+              "compression": "browser"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": ["engine"]
+}
+```
+
+```caso
+{
+  "id": "C7",
+  "regla": "R3",
+  "perfiles": ["es"],
+  "rigor": ["estricto"],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "negotiate",
+        "arguments": {
+          "network_capabilities": {
+            "tls_validation": true,
+            "wire_limit": "unavailable",
+            "certificate_errors_distinguished": false,
+            "redirect_location_visible": false,
+            "ssrf_policy": "browser"
+          }
+        }
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "failure": {
+            "family": "usage"
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": ["engine"]
+}
+```

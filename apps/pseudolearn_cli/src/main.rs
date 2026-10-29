@@ -22,7 +22,10 @@ mod options;
 mod physical_error;
 mod physical_files;
 mod physical_host;
+mod physical_network;
 pub mod physical_network_address;
+mod physical_network_batch;
+mod physical_network_body;
 pub mod physical_network_resolver;
 mod physical_network_send;
 pub mod physical_network_tls;
@@ -54,7 +57,15 @@ mod network_tls_tests;
 #[cfg(test)]
 mod physical_host_tests;
 #[cfg(test)]
+mod physical_network_body_tests;
+#[cfg(test)]
 mod physical_network_send_tests;
+#[cfg(test)]
+mod physical_network_stream_tests;
+#[cfg(test)]
+mod physical_network_tests;
+#[cfg(test)]
+mod physical_network_tls_send_tests;
 
 use check_command::execute_check;
 use error::CliError;

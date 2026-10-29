@@ -19,6 +19,9 @@ pub struct ExecutionArguments {
     pub native: bool,
     pub grants: Vec<String>,
     pub files_root: Option<String>,
+    pub origins: Vec<String>,
+    pub local_origins: Vec<String>,
+    pub test_roots: Vec<String>,
     pub record_tape: Option<String>,
     pub replay_tape: Option<String>,
 }
@@ -90,13 +93,39 @@ pub fn parse_grant_option(
                 if !crate::physical_session::PERMISSION_VOCABULARY.contains(&name) {
                     return Err(invalid());
                 }
-                execution.grants.push(name.to_owned());
+                execution.grants.push(if name == "network" {
+                    "red".to_owned()
+                } else {
+                    name.to_owned()
+                });
             }
         }
         "--archivos" | "--files" if !choice.is_empty() => {
             execution.files_root = Some(choice.to_owned());
         }
         _ => return Err(invalid()),
+    }
+    *index = next.saturating_add(1);
+    Ok(())
+}
+
+pub fn parse_network_option(
+    arguments: &[String],
+    index: &mut usize,
+    locale: &str,
+    execution: &mut ExecutionArguments,
+) -> Result<(), CliError> {
+    let flag = arguments.get(*index).map_or("", String::as_str);
+    let next = index.saturating_add(1);
+    let choice = arguments.get(next).map_or("", String::as_str);
+    if choice.is_empty() {
+        return Err(CliError::Usage(invalid_option_value(locale, flag, choice)));
+    }
+    match flag {
+        "--origen" | "--origin" => execution.origins.push(choice.to_owned()),
+        "--origen-local" | "--local-origin" => execution.local_origins.push(choice.to_owned()),
+        "--raiz-prueba" | "--test-root" => execution.test_roots.push(choice.to_owned()),
+        _ => return Err(CliError::Usage(invalid_option_value(locale, flag, choice))),
     }
     *index = next.saturating_add(1);
     Ok(())

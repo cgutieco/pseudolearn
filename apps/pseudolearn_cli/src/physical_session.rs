@@ -7,20 +7,31 @@ use cap_std::fs::Dir;
 use pseudolearn_api::ApiSession;
 use serde_json::{Value, json};
 
-pub(crate) const PERMISSION_VOCABULARY: [&str; 6] = [
+pub(crate) const PERMISSION_VOCABULARY: [&str; 8] = [
     "consola",
     "argumentos",
     "archivos_lectura",
     "archivos_escritura",
     "reloj",
     "temporizador",
+    "network",
+    "red",
 ];
 
 pub(crate) fn host_document(execution: &ExecutionArguments) -> Option<Value> {
     if execution.grants.is_empty() {
         return None;
     }
-    Some(json!({"permissions":execution.grants,"detached":true}))
+    let origins: Vec<&String> = execution
+        .origins
+        .iter()
+        .chain(&execution.local_origins)
+        .collect();
+    Some(json!({
+        "permissions":execution.grants,
+        "network_origins":origins,
+        "detached":true
+    }))
 }
 
 pub(crate) fn open_host(execution: &ExecutionArguments) -> Result<Option<PhysicalHost>, CliError> {
@@ -36,7 +47,23 @@ pub(crate) fn open_host(execution: &ExecutionArguments) -> Result<Option<Physica
         }
         _ => None,
     };
-    Ok(Some(PhysicalHost::new(root)))
+    let policy = crate::physical_network::NetworkPolicy::from_execution(execution)
+        .map_err(|error| CliError::Operational(error.code.to_owned()))?;
+    let mut host = PhysicalHost::new(root);
+    host.set_network_policy(policy);
+    Ok(Some(host))
+}
+
+pub(crate) fn declare_network_capabilities(session: &mut ApiSession) -> Result<(), CliError> {
+    let answer = session.call(
+        "negotiate",
+        &json!({"network_capabilities":crate::physical_network::NetworkCapabilities::value()}),
+    );
+    if answer.get("value").is_some() {
+        Ok(())
+    } else {
+        Err(CliError::Operational(answer.to_string()))
+    }
 }
 
 fn granted_rights(grants: &[String]) -> u8 {
@@ -51,17 +78,58 @@ pub(crate) fn resolve_effect(
     response: &Value,
     host: &mut PhysicalHost,
 ) -> Result<(), CliError> {
+    if let Some(effects) = response
+        .get("pending_effects")
+        .and_then(Value::as_array)
+        .filter(|effects| {
+            effects.len() > 1
+                && effects.iter().all(|effect| {
+                    effect.get("operation").and_then(Value::as_str) == Some("network_send")
+                })
+        })
+    {
+        return resolve_network_batch(session, resource, effects, host);
+    }
     let pending = response
         .get("pending_effect")
         .ok_or_else(|| CliError::Operational("missing pending effect".to_owned()))?;
-    let sequence = pending.get("effect_seq").cloned().unwrap_or(Value::Null);
     let reply = host.perform(pending);
+    submit_effect_result(session, resource, pending, &reply)
+}
+
+fn resolve_network_batch(
+    session: &mut ApiSession,
+    resource: &Value,
+    effects: &[Value],
+    host: &PhysicalHost,
+) -> Result<(), CliError> {
+    let completed = crate::physical_network_batch::perform(effects, host.network_policy())?;
+    if completed.len() != effects.len() {
+        return Err(CliError::Operational(
+            "network batch was incomplete".to_owned(),
+        ));
+    }
+    for (sequence, reply) in completed {
+        let effect = json!({"effect_seq":sequence});
+        submit_effect_result(session, resource, &effect, &reply)?;
+    }
+    Ok(())
+}
+
+fn submit_effect_result(
+    session: &mut ApiSession,
+    resource: &Value,
+    pending: &Value,
+    reply: &Value,
+) -> Result<(), CliError> {
+    let sequence = pending.get("effect_seq").cloned().unwrap_or(Value::Null);
     let answer = session.call(
         "effect_result",
         &json!({"resource":resource,"effect_seq":sequence,"result":reply}),
     );
-    match answer.get("value") {
-        Some(_) => Ok(()),
-        None => Err(CliError::Operational(answer.to_string())),
+    if answer.get("value").is_some() {
+        Ok(())
+    } else {
+        Err(CliError::Operational(answer.to_string()))
     }
 }

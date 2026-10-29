@@ -16,6 +16,9 @@ pub fn execute_run(options: &CliOptions) -> Result<i32, CliError> {
         return crate::native_run_command::execute_native(options, path, request);
     }
     let mut session = ApiSession::default();
+    if options.execution.grants.iter().any(|grant| grant == "red") {
+        crate::physical_session::declare_network_capabilities(&mut session)?;
+    }
     let analysis = result(session.call("create_analysis", &json!(request)))?;
     let mut start = serde_json::to_value(&request).map_err(operational)?;
     if let Some(fields) = start.as_object_mut() {

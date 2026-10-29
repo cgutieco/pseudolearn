@@ -5,7 +5,7 @@ use crate::physical_network_tls::TlsConfiguration;
 use crate::physical_network_transport_support::{self, TrackedIo};
 use bytes::Bytes;
 use http::{HeaderName, HeaderValue, Request, Uri};
-use http_body_util::{BodyExt, Full};
+use http_body_util::Full;
 use hyper::client::conn::http1;
 use hyper_util::rt::TokioIo;
 use rustls::pki_types::ServerName;
@@ -22,6 +22,7 @@ struct ConnectionTask(JoinHandle<()>);
 struct ResponseLimits {
     headers_count: usize,
     headers_bytes: usize,
+    wire_bytes: usize,
     body_bytes: usize,
 }
 
@@ -138,8 +139,15 @@ async fn collect_response(
     limits: ResponseLimits,
 ) -> Result<Value, HostError> {
     let status = response.status().as_u16();
+    let compressed = crate::physical_network_body::is_gzip(response.headers())?;
     let headers = response_headers(response.headers(), &limits)?;
-    let body = collect_body(response.into_body(), limits.body_bytes).await?;
+    let body = crate::physical_network_body::collect(
+        response.into_body(),
+        limits.wire_bytes,
+        limits.body_bytes,
+        compressed,
+    )
+    .await?;
     Ok(json!({"status":status,"headers":headers,"body":body,"final_url":uri.to_string()}))
 }
 
@@ -165,23 +173,6 @@ fn response_headers(
         return Err(HostError::INTERRUPTED);
     }
     Ok(headers)
-}
-
-async fn collect_body(
-    mut body_stream: hyper::body::Incoming,
-    limit: usize,
-) -> Result<Vec<u8>, HostError> {
-    let mut body = Vec::new();
-    while let Some(frame) = body_stream.frame().await {
-        let frame = frame.map_err(|_| HostError::INTERRUPTED)?;
-        if let Ok(chunk) = frame.into_data() {
-            if body.len().saturating_add(chunk.len()) > limit {
-                return Err(HostError::INTERRUPTED);
-            }
-            body.extend_from_slice(&chunk);
-        }
-    }
-    Ok(body)
 }
 
 fn build_request(request: &NetworkRequest, uri: Uri) -> Result<Request<Full<Bytes>>, HostError> {
@@ -257,6 +248,7 @@ fn response_limits(request: &NetworkRequest) -> Result<ResponseLimits, HostError
             request.header_bytes_limit,
             16_384,
         )?,
+        wire_bytes: physical_network_transport_support::limit(request.wire_limit, 8_388_608)?,
         body_bytes: physical_network_transport_support::limit(
             request.effective_response_limit,
             request

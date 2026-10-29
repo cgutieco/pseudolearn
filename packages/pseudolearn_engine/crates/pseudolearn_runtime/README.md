@@ -198,6 +198,11 @@ cabeceras de credenciales, y `Enviar` comprueba el permiso del origen de destino
 hosts ASCII y normalizan el origen por esquema, host y puerto efectivo; IPv6 se compara en su forma
 canónica y se rechazan las formas numéricas alternativas de IPv4.
 
+El anfitrión declara orígenes mediante `network_origins`, una lista de orígenes concedidos que se
+normaliza con las mismas reglas de URL que las peticiones. Los guiones de `http` conservan su
+comportamiento de pruebas y también aportan sus orígenes; un consumidor con transporte propio usa
+`network_origins` sin añadir respuestas ficticias.
+
 `NetworkLimits` fija los valores mínimos garantizados: 1 MiB para cuerpo decodificado y bytes de
 solicitud, 16 KiB para cabeceras, 64 cabeceras, cuatro peticiones de red pendientes y 30 segundos
 por petición. El anfitrión puede elevar sus límites de producto. El runtime recorta el cuerpo de

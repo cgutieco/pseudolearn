@@ -3,11 +3,16 @@ use pseudolearn_api::ExecuteRequest;
 use serde_json::{Value, json};
 use std::io::{Read, Write};
 
+#[cfg(test)]
+#[path = "native_run_command_tests.rs"]
+mod native_run_command_tests;
+
 pub(crate) fn execute_native(
     options: &CliOptions,
     path: &str,
     mut request: ExecuteRequest,
 ) -> Result<i32, CliError> {
+    reject_network_grant(options)?;
     if options.execution.trace {
         return Err(CliError::Usage(messages::invalid_option_value(
             &options.interface_language,
@@ -29,6 +34,17 @@ pub(crate) fn execute_native(
             .and_then(Value::as_str)
             != Some("completed"),
     ))
+}
+
+fn reject_network_grant(options: &CliOptions) -> Result<(), CliError> {
+    if options.execution.grants.iter().any(|grant| grant == "red") {
+        return Err(CliError::Usage(messages::invalid_option_value(
+            &options.interface_language,
+            "--native",
+            "red",
+        )));
+    }
+    Ok(())
 }
 
 fn present(

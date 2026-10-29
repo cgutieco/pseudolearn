@@ -1,7 +1,65 @@
 use super::{Machine, TaskContext};
 use crate::{Fault, evaluate::INVALID_BYTECODE};
+use pseudolearn_runtime::TaskId;
 
 impl Machine<'_> {
+    pub fn select_pending_effect(&mut self, effect_sequence: u64) -> Result<(), &'static str> {
+        let request = self
+            .tasks
+            .pending_effects
+            .values()
+            .find(|request| request.effect_seq == effect_sequence)
+            .cloned()
+            .ok_or(INVALID_BYTECODE)?;
+        let target = TaskId(request.task_id);
+        if self.tasks.current == target {
+            return Ok(());
+        }
+        let current = self.tasks.current;
+        let current_request = self
+            .tasks
+            .pending_effects
+            .get(&current)
+            .cloned()
+            .ok_or(INVALID_BYTECODE)?;
+        self.park_effect_task(current, current_request.effect_seq)?;
+        self.resume_effect_task(target)
+    }
+
+    fn park_effect_task(&mut self, task: TaskId, effect_sequence: u64) -> Result<(), Fault> {
+        self.tasks
+            .agenda
+            .execution()
+            .waiting()
+            .for_effect(task, effect_sequence)
+            .map_err(super::tasks::task_fault)?;
+        self.event_task_suspended("effect", effect_sequence);
+        let context = TaskContext::capture(self, true)?;
+        self.tasks.contexts.insert(task, context);
+        Ok(())
+    }
+
+    fn resume_effect_task(&mut self, task: TaskId) -> Result<(), Fault> {
+        self.tasks
+            .agenda
+            .execution()
+            .resume(task)
+            .map_err(super::tasks::task_fault)?;
+        self.tasks
+            .agenda
+            .execution()
+            .begin(task)
+            .map_err(super::tasks::task_fault)?;
+        let context = self.tasks.contexts.remove(&task).ok_or(INVALID_BYTECODE)?;
+        self.tasks.quantum.resumed(task);
+        self.tasks.current = task;
+        self.sync_ready_events("resume");
+        self.clear_task_continuation(task)?;
+        context.restore(self)?;
+        self.event_task_resumed();
+        self.apply_aborted_scope(task)
+    }
+
     pub(super) fn schedule_next(
         &mut self,
         preserve_current: bool,

@@ -34,12 +34,20 @@ pub(crate) fn validate_response(response: &HttpResponseValue) -> Result<(), IoEr
 }
 
 pub(crate) fn configured_origins(host: Option<&serde_json::Value>) -> BTreeSet<String> {
-    host.and_then(|value| value.get("http"))
+    let declared = host
+        .and_then(|value| value.get("network_origins"))
+        .and_then(serde_json::Value::as_array)
+        .into_iter()
+        .flatten()
+        .filter_map(serde_json::Value::as_str)
+        .filter_map(|origin| crate::network_url::parse_origin(origin).ok());
+    let scripted = host
+        .and_then(|value| value.get("http"))
         .and_then(serde_json::Value::as_object)
         .into_iter()
         .flat_map(serde_json::Map::keys)
-        .filter_map(|key| script_origin(key))
-        .collect()
+        .filter_map(|key| script_origin(key));
+    declared.chain(scripted).collect()
 }
 
 fn script_origin(key: &str) -> Option<String> {
