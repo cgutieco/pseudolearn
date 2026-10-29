@@ -708,10 +708,10 @@ derivado`, y sus esperados se derivan de la regla, nunca de la salida del motor 
 
 ### PG-5.09 · Casos integradores de ENT-1
 
-- [ ] `PG-5.09.01` Especificación: crear `LIB.SCENARIO.FILE-JSON`, `LIB.SCENARIO.HTTP-TASKS` y
+- [x] `PG-5.09.01` Especificación: crear `LIB.SCENARIO.FILE-JSON`, `LIB.SCENARIO.HTTP-TASKS` y
   `LIB.SCENARIO.BILINGUAL`, cada una con reglas que enuncian la composición observable (qué salida, terminación y
   cinta produce el programa en cada situación) y dependencias `usa` hacia las reglas que componen.
-- [ ] `PG-5.09.02` Casos, cada escenario con: camino feliz, **entrada vacía**, **permiso denegado**, **cancelación**
+- [x] `PG-5.09.02` Casos, cada escenario con: camino feliz, **entrada vacía**, **permiso denegado**, **cancelación**
   y **agotamiento**:
   - `FILE-JSON`: lee `entrada.json`, valida con `AnalizarJson`, extrae campos y escribe `salida.json` con `TextoJson`;
     archivo vacío ⇒ `ErrorJson(FinInesperado)` informado con línea y columna; sin `archivos_escritura` ⇒
@@ -725,11 +725,11 @@ derivado`, y sus esperados se derivan de la regla, nunca de la salida del motor 
   - `BILINGUAL`: biblioteca en `en` (módulo con `Publico` y JSON/texto) consumida por un programa `es` en un proyecto
     de dos módulos; misma salida con el programa traducido a `en`; entrada vacía; permiso denegado al leer;
     agotamiento de celdas. Sin genéricos entre módulos (`CF-PG5-03`).
-- [ ] `PG-5.09.03` Tests: ninguno nuevo de Rust (los casos del corpus no se duplican como tests, `AGENTS.md` §5).
-- [ ] `PG-5.09.04` Código: ninguno esperado; si un escenario no puede escribirse con lo existente, se detiene y se
+- [x] `PG-5.09.03` Tests: ninguno nuevo de Rust (los casos del corpus no se duplican como tests, `AGENTS.md` §5).
+- [x] `PG-5.09.04` Código: ninguno esperado; si un escenario no puede escribirse con lo existente, se detiene y se
   reporta (D-PG5-15).
-- [ ] `PG-5.09.05` README: ninguno salvo hallazgos.
-- [ ] `PG-5.09.06` Ligera: corpus (§7.1.1).
+- [x] `PG-5.09.05` README: ninguno salvo hallazgos.
+- [x] `PG-5.09.06` Ligera: corpus (§7.1.1).
 - [ ] `PG-5.09.07` Pesada: `--only` de los tres escenarios en `engine` y `aot` (con `CF-PG5-02` para tareas).
 
 ### PG-5.10 · `E-PG-07` y la parte de red de `E-PG-09`; métrica candidata de HTTP

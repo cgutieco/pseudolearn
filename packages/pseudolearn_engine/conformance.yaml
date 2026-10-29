@@ -149,7 +149,10 @@
     "LIB.CORE.BYTES",
     "LIB.JSON",
     "LIB.HTTP",
-    "LIB.HTTP.POLICY"
+    "LIB.HTTP.POLICY",
+    "LIB.SCENARIO.FILE-JSON",
+    "LIB.SCENARIO.HTTP-TASKS",
+    "LIB.SCENARIO.BILINGUAL"
   ],
   "fases_cerradas": [],
   "vinculos": [
@@ -2213,6 +2216,24 @@
       "verificacion": "ejecutor",
       "estado": "pendiente",
       "resuelve_en": "P6"
+    },
+    {
+      "regla": "LIB.SCENARIO.FILE-JSON@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-5.09.07"
+    },
+    {
+      "regla": "LIB.SCENARIO.HTTP-TASKS@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-5.09.07"
+    },
+    {
+      "regla": "LIB.SCENARIO.BILINGUAL@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-5.09.07"
     }
   ]
 }
