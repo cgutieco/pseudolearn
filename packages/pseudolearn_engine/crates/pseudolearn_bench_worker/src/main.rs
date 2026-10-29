@@ -11,6 +11,7 @@ mod paired;
 mod pg_campaign;
 mod pg_collect;
 mod pg_http_campaign;
+mod pg_http_growth;
 mod pg_http_summary;
 mod pg_http_workloads;
 mod pg_summary;
@@ -88,6 +89,8 @@ mod frontend_tests;
 mod pg_campaign_tests;
 #[cfg(test)]
 mod pg_http_campaign_tests;
+#[cfg(test)]
+mod pg_http_growth_tests;
 #[cfg(test)]
 mod pg_http_summary_tests;
 #[cfg(test)]

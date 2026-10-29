@@ -1,4 +1,5 @@
 use crate::aot::statistics::{Sampler, mean, percentile};
+use crate::pg_http_growth::{linear_fit, points_for};
 use crate::pg_http_workloads::{JSON_DEPTHS, workload_names};
 use serde_json::{Value, json};
 use std::collections::BTreeSet;
@@ -155,6 +156,15 @@ fn process_invalidations(process: &Value, name: &str) -> Vec<String> {
             samples.len()
         ));
     }
+    problems.extend(sample_invalidations(
+        samples,
+        text_of(process, "expected_output").as_str(),
+    ));
+    problems
+}
+
+fn sample_invalidations(samples: &[Value], expected_output: &str) -> Vec<String> {
+    let mut problems = Vec::new();
     for sample in samples {
         if sample
             .get("nanoseconds")
@@ -167,7 +177,7 @@ fn process_invalidations(process: &Value, name: &str) -> Vec<String> {
             .get("termination")
             .and_then(|value| value.get("kind"))
             != Some(&json!("completed"))
-            || text_of(sample, "output") != text_of(process, "expected_output")
+            || text_of(sample, "output") != expected_output
         {
             problems.push("sample output or termination differs from expectation".to_owned());
         }
@@ -184,83 +194,9 @@ pub(super) fn bootstrap_interval(process_means: &[f64]) -> (f64, f64) {
     (percentile(&estimates, 0.025), percentile(&estimates, 0.975))
 }
 
-fn points_for(results: &[Value], category: &str, depth: Option<usize>) -> Vec<(usize, f64)> {
-    results
-        .iter()
-        .filter(|result| text_of(result, "category") == category)
-        .filter(|result| {
-            depth.is_none_or(|expected| {
-                number_of(result, "json_nodes") == expected.saturating_add(1)
-            })
-        })
-        .filter_map(|result| {
-            let size = if category == "http_body" {
-                number_of(result, "body_bytes")
-            } else {
-                number_of(result, "input_bytes")
-            };
-            let average = result
-                .get("mean_process_nanoseconds")
-                .and_then(Value::as_f64)?;
-            Some((size, average))
-        })
-        .collect()
-}
-
-pub(super) fn linear_fit(points: &[(usize, f64)]) -> Option<Value> {
-    if points.len() < 2 {
-        return None;
-    }
-    let x_values = points
-        .iter()
-        .map(|(size, _)| u32::try_from(*size).map(f64::from))
-        .collect::<Result<Vec<_>, _>>()
-        .ok()?;
-    let y_values = points.iter().map(|(_, time)| *time).collect::<Vec<_>>();
-    let mean_x = mean(&x_values);
-    let mean_y = mean(&y_values);
-    let covariance = x_values
-        .iter()
-        .zip(&y_values)
-        .map(|(x, y)| (x - mean_x) * (y - mean_y))
-        .sum::<f64>();
-    let variance_x = x_values
-        .iter()
-        .map(|x| (x - mean_x) * (x - mean_x))
-        .sum::<f64>();
-    if variance_x == 0.0 {
-        return None;
-    }
-    let slope = covariance / variance_x;
-    let intercept = mean_y - slope * mean_x;
-    let total_variance = y_values
-        .iter()
-        .map(|value| (value - mean_y) * (value - mean_y))
-        .sum::<f64>();
-    let residual = x_values
-        .iter()
-        .zip(&y_values)
-        .map(|(x, y)| {
-            let difference = y - (intercept + slope * x);
-            difference * difference
-        })
-        .sum::<f64>();
-    let determination = if total_variance == 0.0 {
-        1.0
-    } else {
-        1.0 - residual / total_variance
-    };
-    Some(json!({
-        "slope_nanoseconds_per_byte": slope,
-        "intercept_nanoseconds": intercept,
-        "r_squared": determination,
-        "observations": points.len(),
-    }))
-}
-
 pub(super) fn nanoseconds_to_float(value: u64) -> f64 {
-    let high = u32::try_from(value >> 32).map_or(u32::MAX, |part| part);
-    let low = u32::try_from(value & 0xffff_ffff).map_or(u32::MAX, |part| part);
+    let high = u32::try_from(value >> 32).unwrap_or(u32::MAX);
+    let low = u32::try_from(value & 0xffff_ffff).unwrap_or(u32::MAX);
     f64::from(high) * 4_294_967_296.0 + f64::from(low)
 }
 
@@ -276,5 +212,5 @@ fn number_of(value: &Value, name: &str) -> usize {
         .get(name)
         .and_then(Value::as_u64)
         .and_then(|number| usize::try_from(number).ok())
-        .map_or(0, |number| number)
+        .unwrap_or(0)
 }

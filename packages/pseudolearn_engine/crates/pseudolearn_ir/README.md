@@ -111,3 +111,7 @@ grafo conjunto sin añadir sentencias ni convertir errores de tipos en comprobac
 trataba como referencia, aunque la ABI ya lo clasificaba como escalar, y rechazaba programas válidos
 al pasar de semántica a RI. Se conserva la tabla existente de operaciones y no se añaden instrucciones
 ni tipos a la RI.
+
+Las operaciones JSON guardan referencias de `JsonValue` en celdas de banco de referencia, cuyo tipo
+de transporte es `str`; el encabezado del efecto conserva el tipo semántico `$effect:JsonValue`. El
+verificador valida ambas fronteras por separado para `JsonResult` y `OptionalJsonValue`.

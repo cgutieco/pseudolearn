@@ -107,7 +107,7 @@ fn seeded_host_port_and_dns_combinations_preserve_address_policy() {
             _ => "api.example",
         };
         state = splitmix64(state);
-        let port = u16::try_from((state % 3).saturating_add(443)).map_or(443, |value| value);
+        let port = u16::try_from((state % 3).saturating_add(443)).unwrap_or(443);
         let addresses = if state & 1 == 0 {
             vec![address([8, 8, 8, 8], port)]
         } else {
@@ -118,7 +118,7 @@ fn seeded_host_port_and_dns_combinations_preserve_address_policy() {
         };
         let resolver = FakeResolver::new(addresses.clone(), false);
         let result = physical_network_resolver::resolve_checked(&resolver, host, port, false);
-        if resolver.calls.get() == 1 && addresses.iter().any(|entry| entry.ip().is_link_local()) {
+        if resolver.calls.get() == 1 && addresses.contains(&address([169, 254, 169, 254], port)) {
             assert_eq!(result, NetworkResolution::DestinationDenied);
         }
         if matches!(result, NetworkResolution::Addresses(_)) {

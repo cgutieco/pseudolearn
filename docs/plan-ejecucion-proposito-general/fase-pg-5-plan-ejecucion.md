@@ -734,17 +734,17 @@ derivado`, y sus esperados se derivan de la regla, nunca de la salida del motor 
 
 ### PG-5.10 · `E-PG-07` y la parte de red de `E-PG-09`; métrica candidata de HTTP
 
-- [ ] `PG-5.10.01` Protocolos de §7.3 y §7.4 y definición candidata de `PERF.PG.HTTP` (§6.1) redactados en el README
+- [x] `PG-5.10.01` Protocolos de §7.3 y §7.4 y definición candidata de `PERF.PG.HTTP` (§6.1) redactados en el README
   de `pseudolearn_bench_worker` antes de ejecutar nada; no se crea especificación `PERF.PG.HTTP` sin aprobación de la
   persona en `P6`.
-- [ ] `PG-5.10.02` Casos: no aplica (experimentos).
-- [ ] `PG-5.10.03` Tests: `pg_http_*_tests.rs` del trabajador (generación de cargas y resumen); registro de vectores
+- [x] `PG-5.10.02` Casos: no aplica (experimentos).
+- [x] `PG-5.10.03` Tests: `pg_http_*_tests.rs` del trabajador (generación de cargas y resumen); registro de vectores
   de red con sus negativos (`network_vector_registry` en la CLI).
-- [ ] `PG-5.10.04` Código: `pseudolearn_bench_worker/src/pg_http_workloads.rs`, `pg_http_campaign.rs`,
-  `pg_http_summary.rs`; CLI `tests/network_security_vectors.rs`, `tests/network_vector_registry.rs`,
+- [x] `PG-5.10.04` Código: `pseudolearn_bench_worker/src/pg_http_workloads.rs`, `pg_http_campaign.rs`,
+  `pg_http_summary.rs`, `pg_http_growth.rs`; CLI `tests/network_security_vectors.rs`, `tests/network_vector_registry.rs`,
   `tests/network_adapter_contract.rs`; web `browser/http_contract.test.mjs`.
-- [ ] `PG-5.10.05` README del trabajador, de la CLI y del crate Wasm.
-- [ ] `PG-5.10.06` Ligera: tests unitarios del trabajador filtrados; `cargo check --tests` de la CLI.
+- [x] `PG-5.10.05` README del trabajador, de la CLI y del crate Wasm.
+- [x] `PG-5.10.06` Ligera: tests unitarios del trabajador filtrados; `cargo check --tests` de la CLI.
 - [ ] `PG-5.10.07` Pesada: ejecutar §7.3, §7.4 y §7.5 con procedencia.
 
 ---
@@ -1024,7 +1024,7 @@ README y la regresión `PERF.SUITE.CORE`; desde `apps/pseudolearn_app`, `flutter
 | `PG-5.07` | Implementación ligera `.01`–`.06` completada en una iteración; `.07` excluida; fase sin cierre verde | Servidor: 4 tests filtrados del `xtask` (rutas, loopback, transmisión continua, demora y TLS). Corpus: caso negativo añadido y `see validate` (191), `lock --check`, `export --check`. CLI: `cargo check`, Clippy estricto, `rustfmt --check`, `rust-checks all .` y `cargo deny check` | No se ejecutaron la auditoría de URL ni la conformidad completa de `.07`; sin commit ni push |
 | `PG-5.08` | Implementación ligera `.01`–`.06` completada en una iteración; `.07` excluida; fase sin cierre verde | `PERF.ARTIFACT.SIZE` y el corpus siguen sin cambios. `cargo tree --locked -e normal` de `pseudolearn_api` sin `native`, `pseudolearn_wasm` y `pseudolearn_bridge` no contiene paquetes de HTTP, TLS ni resolución DNS; `rust-checks isolation` pasa en engine y app | El lock del puente se regeneró en modo offline por cuatro paquetes transitivos que faltaban del `serde_json` actual. No se ejecutó la medición `.07`; sin commit ni push |
 | `PG-5.09` | | | |
-| `PG-5.10` | | | |
+| `PG-5.10` | Implementación ligera `.01`–`.06` completada en una iteración; `.07` excluida; fase sin cierre verde | 12 tests `pg_http_` del trabajador; 4 tests del verificador RI para celdas de referencias JSON; `cargo check --tests` y Clippy estricto de CLI; Clippy estricto de worker e IR; `rustfmt --check` y `rust-checks all .` en engine y CLI; `node --check` y 10 tests de `fetch_host.test.mjs` | La comprobación del worker encontró que el verificador RI rechazaba referencias JSON válidas en celdas `str`; se ajustó el contrato `JsonResult`/`OptionalJsonValue` y se documentó en el README de IR. No se ejecutaron los contratos contra servidor real, Playwright ni las campañas de §7.3–§7.5; `.07` y la aprobación de `PERF.PG.HTTP` quedan para P6. Sin commit ni push |
 | Lectura pendiente de §2 | | | |
 | Espacio liberado (§13) | Nivel 1 | Antes de la compilación `release`: `df -h /` mostró 22 GiB libres. `du -sh`: engine incremental 1.2 GiB, CLI incremental 980 MiB, spec target 1.0 GiB y, en la segunda medición, CLI incremental 231 MiB. Se retiraron esos incrementales y el `target` ya verificado de spec; `df -h /` quedó en 25 GiB antes y después del build. | Se liberaron aproximadamente 3.4 GiB de artefactos regenerables; no se borraron archivos versionados ni resultados |
 

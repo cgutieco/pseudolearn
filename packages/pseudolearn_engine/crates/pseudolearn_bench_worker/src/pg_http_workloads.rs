@@ -58,7 +58,7 @@ fn body_workload(size: usize) -> Workload {
 
 fn body(size: usize) -> Vec<u8> {
     (0..size)
-        .map(|position| u8::try_from(position % 251).map_or(0, |byte| byte))
+        .map(|position| u8::try_from(position % 251).unwrap_or(0))
         .collect()
 }
 
@@ -72,9 +72,8 @@ fn json_workloads() -> Vec<Workload> {
 
 fn json_workload(size: usize, depth: usize) -> Workload {
     let document = json_document(size, depth);
-    let literal = json!(&document).to_string();
     let program = format!(
-        "Algoritmo Main\nDefinir parsed Como Resultado<ValorJson, ErrorJson> <- AnalizarJson({literal});\nSegun parsed Hacer\nExito(value): Escribir value.Tipo;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n"
+        "Algoritmo Main\nDefinir parsed Como Resultado<ValorJson, ErrorJson> <- AnalizarJson('{document}');\nSegun parsed Hacer\nExito(document): Escribir document.Tipo;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n"
     );
     Workload {
         name: format!("json-{size}-depth-{depth}"),

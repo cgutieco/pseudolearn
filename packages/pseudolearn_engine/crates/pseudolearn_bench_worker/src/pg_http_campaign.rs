@@ -12,6 +12,13 @@ struct PreparedWorkload {
     program: PreparedProgram,
 }
 
+struct ProcessIdentity<'identity> {
+    directory: &'identity str,
+    process: u64,
+    machine: &'identity str,
+    resolution: u64,
+}
+
 pub fn collect(arguments: &[String]) -> Result<(), String> {
     let [directory, process, machine] = arguments else {
         return Err("Usage: pg-http <new-directory> <process> <machine>".to_owned());
@@ -26,8 +33,14 @@ pub fn collect(arguments: &[String]) -> Result<(), String> {
     ensure_new_paths(directory, process, &workloads)?;
     let resolution = clock_resolution()?;
     let prepared = prepare_workloads(workloads)?;
+    let identity = ProcessIdentity {
+        directory,
+        process,
+        machine,
+        resolution,
+    };
     for workload in prepared {
-        save_process(directory, process, machine, resolution, workload)?;
+        save_process(&identity, workload)?;
     }
     Ok(())
 }
@@ -53,20 +66,14 @@ fn prepare_workloads(workloads: Vec<Workload>) -> Result<Vec<PreparedWorkload>, 
         .collect()
 }
 
-fn save_process(
-    directory: &str,
-    process: u64,
-    machine: &str,
-    resolution: u64,
-    prepared: PreparedWorkload,
-) -> Result<(), String> {
+fn save_process(identity: &ProcessIdentity<'_>, prepared: PreparedWorkload) -> Result<(), String> {
     let samples = measure(&prepared)?;
     let workload = &prepared.workload;
     let document = json!({
         "protocol": PROTOCOL,
-        "process": process,
-        "machine": machine,
-        "clock_resolution_nanoseconds": resolution,
+        "process": identity.process,
+        "machine": identity.machine,
+        "clock_resolution_nanoseconds": identity.resolution,
         "workload": workload.name,
         "category": workload.category,
         "body_bytes": workload.body_bytes,
@@ -75,7 +82,7 @@ fn save_process(
         "expected_output": workload.expected_output,
         "samples": samples,
     });
-    let path = process_path(directory, &workload.name, process);
+    let path = process_path(identity.directory, &workload.name, identity.process);
     let parent = path
         .parent()
         .ok_or_else(|| "Invalid campaign path".to_owned())?;

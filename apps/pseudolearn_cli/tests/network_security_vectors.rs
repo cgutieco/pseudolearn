@@ -19,7 +19,7 @@ fn server() -> Result<LoopbackServer, String> {
         .map_err(|error| error.to_string())?;
     let address = listener.local_addr().map_err(|error| error.to_string())?;
     let (sender, connected) = mpsc::channel();
-    let task = thread::spawn(move || serve_once(listener, sender));
+    let task = thread::spawn(move || serve_once(&listener, &sender));
     Ok(LoopbackServer {
         address,
         connected,
@@ -27,7 +27,7 @@ fn server() -> Result<LoopbackServer, String> {
     })
 }
 
-fn serve_once(listener: TcpListener, sender: Sender<bool>) {
+fn serve_once(listener: &TcpListener, sender: &Sender<bool>) {
     let deadline = Instant::now() + Duration::from_secs(4);
     while Instant::now() < deadline {
         match listener.accept() {

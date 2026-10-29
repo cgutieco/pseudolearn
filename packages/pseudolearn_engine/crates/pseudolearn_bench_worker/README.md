@@ -38,6 +38,9 @@ trabajador: permite contrastarlo con el trabajador Dart que consume el transport
 
 Tooling. Importa `pseudolearn_api`, `pseudolearn_bytecode`, `pseudolearn_vm`, `pseudolearn_timeline`, serde_json y estándar: `e06` necesita crear máquinas y líneas temporales para medirlas, y el resto de órdenes solo usa la API. Prohibido importar otros internos del motor.
 `src/workloads.rs` prepara fuentes desde la exportación; `src/frontend.rs` mide; `src/main.rs` presenta resultados. `src/corpus.rs` lee las diez cargas AWFY de medición; `src/aot/` contiene el experimento del código nativo: `emission` (tiempo de emisión), `launcher` y `launcher.template` (lanzador enlazado con el objeto), `measurement` (proceso y muestras), `baseline` (techo nativo y máquina virtual), `summary` (razones por familia, intervalos y criterios) y `statistics`; `src/e06/` contiene un módulo por métrica, estadística (percentil, media geométrica, pendiente con intervalo al 95 %) y el informe.
+`src/pg_http_workloads.rs` define las cargas cerradas; `src/pg_http_campaign.rs` prepara y mide cada
+proceso; `src/pg_http_summary.rs` valida crudos y agrega muestras; `src/pg_http_growth.rs` calcula
+las regresiones lineales candidatas por tamaño.
 El análisis crea estado nuevo por muestra. Ninguna entrada o salida ocurre dentro del intervalo.
 
 ## 4. Decisiones de diseño y fundamentos técnicos

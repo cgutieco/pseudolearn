@@ -101,12 +101,10 @@ fn cell_matches(descriptor: &EffectOperation, index: usize, kind: &IrType) -> bo
             *kind == if index == 0 { IrType::I64 } else { IrType::F64 }
         }
         EffectValueKind::OptionalText => *kind == IrType::Str,
-        EffectValueKind::OptionalJsonValue => {
-            matches!(kind, IrType::Object(name) if name == "$effect:JsonValue")
-        }
+        EffectValueKind::OptionalJsonValue => *kind == IrType::Str,
         EffectValueKind::JsonResult => {
             if index == 4 {
-                matches!(kind, IrType::Object(name) if name == "$effect:JsonValue")
+                *kind == IrType::Str
             } else {
                 *kind == IrType::I64
             }

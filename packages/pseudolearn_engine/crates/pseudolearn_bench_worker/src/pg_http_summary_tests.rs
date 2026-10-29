@@ -1,4 +1,4 @@
-use crate::pg_http_summary::{bootstrap_interval, invalidations, linear_fit, nanoseconds_to_float};
+use crate::pg_http_summary::{bootstrap_interval, invalidations, nanoseconds_to_float};
 use serde_json::{Value, json};
 
 fn sample(duration: u64, output: &str) -> Value {
@@ -37,22 +37,40 @@ fn accepts_ten_distinct_processes_with_thirty_valid_samples() {
 }
 
 #[test]
-fn rejects_repeated_processes_and_incorrect_sample_results() {
+fn computes_bootstrap_interval_deterministically() {
+    assert_eq!(
+        bootstrap_interval(&[10.0, 20.0, 30.0]),
+        bootstrap_interval(&[10.0, 20.0, 30.0])
+    );
+}
+
+#[test]
+fn rejects_repeated_processes_and_incorrect_sample_results() -> Result<(), String> {
     let mut processes = valid_processes();
-    processes[9]["process"] = json!(0);
-    processes[2]["samples"][0] = sample(0, "incorrect\n");
+    let repeated = processes.get_mut(9).ok_or("missing final process")?;
+    set_field(repeated, "process", json!(0))?;
+    let changed = processes.get_mut(2).ok_or("missing changed process")?;
+    let samples = changed
+        .get_mut("samples")
+        .and_then(Value::as_array_mut)
+        .ok_or("missing sample array")?;
+    let first_sample = samples.first_mut().ok_or("missing first sample")?;
+    *first_sample = sample(0, "incorrect\n");
     let problems = invalidations(&processes, "http-body-1024");
     assert!(problems.iter().any(|problem| problem.contains("repeated")));
     assert!(problems.iter().any(|problem| problem.contains("duration")));
     assert!(problems.iter().any(|problem| problem.contains("differs")));
+    Ok(())
 }
 
 #[test]
-fn rejects_mixed_machines_protocols_and_short_process_sets() {
+fn rejects_mixed_machines_protocols_and_short_process_sets() -> Result<(), String> {
     let mut processes = valid_processes();
     processes.pop();
-    processes[0]["protocol"] = json!("other/1");
-    processes[1]["machine"] = json!("different");
+    let first = processes.first_mut().ok_or("missing first process")?;
+    set_field(first, "protocol", json!("other/1"))?;
+    let second = processes.get_mut(1).ok_or("missing second process")?;
+    set_field(second, "machine", json!("different"))?;
     let problems = invalidations(&processes, "http-body-1024");
     assert!(problems.iter().any(|problem| problem.contains("processes")));
     assert!(problems.iter().any(|problem| problem.contains("protocol")));
@@ -61,20 +79,18 @@ fn rejects_mixed_machines_protocols_and_short_process_sets() {
             .iter()
             .any(|problem| problem.contains("one machine"))
     );
-}
-
-#[test]
-fn reports_linear_fit_and_reproducible_bootstrap_interval() {
-    let points = [(0, 100.0), (1024, 1124.0), (65_536, 65_636.0)];
-    let fit = linear_fit(&points);
-    assert!(fit.is_some());
-    assert_eq!(
-        bootstrap_interval(&[10.0, 20.0, 30.0]),
-        bootstrap_interval(&[10.0, 20.0, 30.0])
-    );
+    Ok(())
 }
 
 #[test]
 fn converts_nanoseconds_using_bounded_integer_parts() {
     assert_eq!(nanoseconds_to_float(1_000_000), 1_000_000.0);
+}
+
+fn set_field(document: &mut Value, name: &str, value: Value) -> Result<(), String> {
+    let object = document
+        .as_object_mut()
+        .ok_or_else(|| "expected JSON object".to_owned())?;
+    object.insert(name.to_owned(), value);
+    Ok(())
 }
