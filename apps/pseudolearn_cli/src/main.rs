@@ -22,6 +22,9 @@ mod options;
 mod physical_error;
 mod physical_files;
 mod physical_host;
+pub mod physical_network_address;
+pub mod physical_network_resolver;
+pub mod physical_network_tls;
 mod physical_request;
 mod physical_session;
 mod preferences_command;
@@ -39,6 +42,12 @@ mod translate_command;
 
 #[cfg(test)]
 mod confined_sources_tests;
+#[cfg(test)]
+mod network_address_policy_tests;
+#[cfg(test)]
+mod network_resolver_tests;
+#[cfg(test)]
+mod network_tls_tests;
 #[cfg(test)]
 mod physical_host_tests;
 

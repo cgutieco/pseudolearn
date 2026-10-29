@@ -148,7 +148,8 @@
     "LANG.CONTROL.CLEANUP",
     "LIB.CORE.BYTES",
     "LIB.JSON",
-    "LIB.HTTP"
+    "LIB.HTTP",
+    "LIB.HTTP.POLICY"
   ],
   "fases_cerradas": [],
   "vinculos": [
@@ -2171,6 +2172,42 @@
       "verificacion": "ejecutor",
       "estado": "pendiente",
       "resuelve_en": "PG-5.03.07"
+    },
+    {
+      "regla": "LIB.HTTP.POLICY@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "P6"
+    },
+    {
+      "regla": "LIB.HTTP.POLICY@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "P6"
+    },
+    {
+      "regla": "LIB.HTTP.POLICY@1.0.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "P6"
+    },
+    {
+      "regla": "LIB.HTTP.POLICY@1.0.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "P6"
+    },
+    {
+      "regla": "RT.HOST.INTERFACE@1.0.0#R8",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "P6"
+    },
+    {
+      "regla": "RT.HOST.INTERFACE@1.0.0#R9",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "P6"
     }
   ]
 }

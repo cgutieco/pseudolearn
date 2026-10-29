@@ -147,3 +147,7 @@ biblioteca local adquiera autoridad de red.
 el mínimo entre cada valor positivo y el límite del anfitrión; los valores no positivos producen
 `PeticionInvalida`. La biblioteca mantiene la petición como dato y no realiza I/O ni administra el
 plazo externo.
+
+`Redirigida` también construye una petición inmutable, pero puede fallar por política de seguridad.
+El despacho pasa esa operación local y fallible al runtime para devolver `Resultado<PeticionHttp,
+ErrorES>` sin conceder autoridad de red ni enviar la petición.

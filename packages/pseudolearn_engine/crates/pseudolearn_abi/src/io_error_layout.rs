@@ -18,10 +18,11 @@ pub enum IoErrorKind {
     InvalidCertificate,
     InvalidResponse,
     LimitExceeded,
+    RedirectDenied,
 }
 
 impl IoErrorKind {
-    pub const ALL: [Self; 16] = [
+    pub const ALL: [Self; 17] = [
         Self::NotFound,
         Self::PermissionDenied,
         Self::AlreadyExists,
@@ -38,6 +39,7 @@ impl IoErrorKind {
         Self::InvalidCertificate,
         Self::InvalidResponse,
         Self::LimitExceeded,
+        Self::RedirectDenied,
     ];
 
     pub fn code(self) -> &'static str {
@@ -58,6 +60,7 @@ impl IoErrorKind {
             Self::InvalidCertificate => "certificado_invalido",
             Self::InvalidResponse => "respuesta_invalida",
             Self::LimitExceeded => "limite_excedido",
+            Self::RedirectDenied => "redireccion_denegada",
         }
     }
 
@@ -79,6 +82,7 @@ impl IoErrorKind {
             13 => Some(Self::InvalidCertificate),
             14 => Some(Self::InvalidResponse),
             15 => Some(Self::LimitExceeded),
+            16 => Some(Self::RedirectDenied),
             _ => None,
         }
     }
@@ -101,6 +105,7 @@ impl IoErrorKind {
             Self::InvalidCertificate => 13,
             Self::InvalidResponse => 14,
             Self::LimitExceeded => 15,
+            Self::RedirectDenied => 16,
         }
     }
 }

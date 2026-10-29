@@ -112,6 +112,16 @@ La reproducción de `Leer` es autónoma: la cinta guarda cada línea leída y la
 estándar. Decisión: la entrada leída se resuelve contra la entrada de cinta siguiente en ambos motores; si la cinta se
 agota, la reproducción termina con `replay_truncated_tape`.
 
+La política física de red está separada en `physical_network_address`, `physical_network_resolver` y
+`physical_network_tls`. El validador rechaza hosts inválidos y formas numéricas alternativas de IPv4;
+el resolvedor del sistema se puede sustituir por uno falso y `resolve_checked` examina toda la
+respuesta DNS una sola vez antes de entregar la instantánea comprobada de direcciones. Deniega los
+rangos locales, privados y especiales; una concesión local de prueba solo permite loopback.
+`TlsConfiguration` exige validación de certificados y solo admite raíces añadidas por el anfitrión.
+Esta iteración no conecta aún esa configuración a un transporte HTTP real. La biblioteca cliente
+continúa sin elegir: `PG-5.06.01` debe evaluar las opciones aprobadas antes de integrarla. No se usan
+proxies del entorno ni del sistema como configuración implícita.
+
 Proveedor físico: `--conceder <lista>` (`--grant`) declara los permisos concedidos (`consola`, `argumentos`,
 `archivos_lectura`, `archivos_escritura`, `reloj`, `temporizador`; cualquier otro nombre es error de uso) y
 `--archivos <DIR>` (`--files`) la única raíz de archivos. Sin `--conceder` el comportamiento no cambia y toda

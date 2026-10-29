@@ -664,6 +664,19 @@
       },
       {
         "effect": false,
+        "en": "redirected",
+        "es": "Redirigida",
+        "fallible": true,
+        "family": "network",
+        "identity": "http_redirected",
+        "parameters": [
+          "http_response"
+        ],
+        "receiver": "http_request",
+        "result": "http_request"
+      },
+      {
+        "effect": false,
         "en": "status",
         "es": "Estado",
         "fallible": false,
@@ -21921,6 +21934,94 @@
             }
           }
         ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R3",
+            "specification": "LIB.HTTP.POLICY",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C2",
+                "kind": "executable",
+                "label": "Explicit redirect chain",
+                "profile": "en",
+                "specification": "LIB.HTTP.POLICY",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "http_redirected",
+                "text": "The operation returns a new request; it does not send it or follow the redirect automatically."
+              }
+            ],
+            "purpose": "It lets the program choose each hop and check the new origin when sending.",
+            "summary": "redirected prepares another request from the previous response.",
+            "title": "redirected"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C2",
+                "kind": "executable",
+                "label": "Cadena explícita de redirecciones",
+                "profile": "es",
+                "specification": "LIB.HTTP.POLICY",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "http_redirected",
+                "text": "La operación devuelve una petición nueva; no la envía ni sigue la redirección automáticamente."
+              }
+            ],
+            "purpose": "Permite decidir cada salto y comprobar el nuevo origen al enviar.",
+            "summary": "Redirigida prepara otra petición con la respuesta anterior.",
+            "title": "Redirigida"
+          }
+        },
+        "id": "help.pg504.http_redirected",
+        "identity": {
+          "id": "primary",
+          "kind": "role",
+          "role": "pg504_http_redirected"
+        },
+        "tokens": [
+          {
+            "identity": "http_redirected",
+            "source": {
+              "element": "D2",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          }
+        ]
       }
     ],
     "exclusions": [],
@@ -23967,6 +24068,19 @@
           ],
           "tokens": [
             "http_final_url"
+          ]
+        },
+        {
+          "identity": {
+            "id": "primary",
+            "kind": "role",
+            "role": "pg504_http_redirected"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "http_redirected"
           ]
         }
       ]

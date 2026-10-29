@@ -191,6 +191,13 @@ validación del runtime lo convierta en `RespuestaInvalida` al enviar; validar a
 el fallo de protocolo que debe observar el programa. `HEAD` conserva estado y cabeceras y entrega
 cuerpo vacío.
 
+`Redirigida` acepta solo 301, 302, 303, 307 y 308 con una sola cabecera `location`, resuelve la
+referencia contra la URL final y quita el fragmento. No envía ni sigue la petición. Convierte 303 y
+301/302 sobre `POST` en `GET` sin cuerpo; 307/308 conservan método y cuerpo. Cambiar el origen retira
+cabeceras de credenciales, y `Enviar` comprueba el permiso del origen de destino. Las URL validan
+hosts ASCII y normalizan el origen por esquema, host y puerto efectivo; IPv6 se compara en su forma
+canónica y se rechazan las formas numéricas alternativas de IPv4.
+
 `NetworkLimits` fija los valores mínimos garantizados: 1 MiB para cuerpo decodificado y bytes de
 solicitud, 16 KiB para cabeceras, 64 cabeceras, cuatro peticiones de red pendientes y 30 segundos
 por petición. El anfitrión puede elevar sus límites de producto. El runtime recorta el cuerpo de

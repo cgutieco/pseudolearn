@@ -28,7 +28,8 @@
   ],
   "titulo_en": "Host interface",
   "revisado_por": [
-    "revision-independiente-automatizada-r9"
+    "revision-independiente-automatizada-r9",
+    "Cesar Antonio Gutierrez Contreras"
   ]
 }
 ---
@@ -527,5 +528,27 @@ Los valores esperados de R3 se calculan con el oráculo independiente de see_ora
     "permissions": [],
     "requested_permissions": ["red"]
   }
+}
+```
+
+```regla
+{
+  "id": "R8",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Un adaptador que realiza solicitudes HTTP reales entrega las respuestas 3xx al programa sin seguirlas, no añade ni persiste cookies, no consulta proxies ambientales o del sistema y siempre valida certificados TLS. Solo el anfitrión puede añadir raíces de confianza de prueba; el programa no puede desactivar la validación.",
+  "verificacion": ["revision_humana"],
+  "justificacion": "Las pruebas locales validan que la configuración TLS solo representa validación obligatoria y raíces del anfitrión. El adaptador y las pruebas con certificado y proxy reales se incorporan en la batería excluida de esta iteración."
+}
+```
+
+```regla
+{
+  "id": "R9",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Un adaptador nativo resuelve cada host una sola vez, comprueba todas las direcciones devueltas y conecta solo a una de ese conjunto comprobado. Deniega loopback, redes privadas, enlace local, únicas locales, multidifusión, direcciones no especificadas, broadcast e IPv4 mapeadas en IPv6 que pertenezcan a esos rangos; una concesión local de prueba solo admite direcciones loopback.",
+  "verificacion": ["revision_humana"],
+  "justificacion": "Las pruebas unitarias cubren los rangos y la resolución única con resolvedor inyectado. La conexión fijada a una IP comprobada se integra con el transporte nativo y queda en la batería excluida de esta iteración."
 }
 ```

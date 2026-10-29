@@ -4234,3 +4234,35 @@
   "instrucciones": ["effect_call"]
 }
 ```
+
+```cobertura
+{
+  "id": "V205",
+  "regla": "LIB.HTTP.POLICY#R1",
+  "instrucciones": ["effect_call"]
+}
+```
+
+```cobertura
+{
+  "id": "V206",
+  "regla": "LIB.HTTP.POLICY#R2",
+  "instrucciones": ["effect_call"]
+}
+```
+
+```cobertura
+{
+  "id": "V207",
+  "regla": "LIB.HTTP.POLICY#R3",
+  "instrucciones": ["effect_call"]
+}
+```
+
+```cobertura
+{
+  "id": "V208",
+  "regla": "LIB.HTTP.POLICY#R4",
+  "instrucciones": ["effect_call"]
+}
+```

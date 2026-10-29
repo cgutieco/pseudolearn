@@ -1332,6 +1332,17 @@
         "fallible": false
       },
       {
+        "identity": "http_redirected",
+        "family": "network",
+        "receiver": "http_request",
+        "es": "Redirigida",
+        "en": "redirected",
+        "parameters": ["http_response"],
+        "result": "http_request",
+        "effect": false,
+        "fallible": true
+      },
+      {
         "identity": "http_status",
         "family": "network",
         "receiver": "http_response",

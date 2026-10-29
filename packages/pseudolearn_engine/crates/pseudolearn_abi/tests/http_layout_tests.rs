@@ -17,7 +17,9 @@ fn http_errors_round_trip_without_reusing_existing_tags() {
     assert_eq!(IoErrorKind::InvalidUrl.to_tag(), 9);
     assert_eq!(IoErrorKind::InvalidResponse.to_tag(), 14);
     assert_eq!(IoErrorKind::LimitExceeded.to_tag(), 15);
-    assert_eq!(IoErrorKind::ALL.len(), 16);
+    assert_eq!(IoErrorKind::RedirectDenied.to_tag(), 16);
+    assert_eq!(IoErrorKind::RedirectDenied.code(), "redireccion_denegada");
+    assert_eq!(IoErrorKind::ALL.len(), 17);
 }
 
 #[test]

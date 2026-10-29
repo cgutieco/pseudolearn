@@ -619,10 +619,13 @@ resolución. Un programa sin tareas, aunque su raíz sea suspendible, se compila
 ### Cliente HTTP/HTTPS del motor
 
 El motor representa método, petición y respuesta como valores tipados y conserva las operaciones
-puras HTTP en `pseudolearn_library`; autorización por origen, validación de solicitudes y proveedor
-de memoria pertenecen a `pseudolearn_runtime`. La API no añade conexiones reales: las pruebas usan
-guiones locales del anfitrión. Los estados 4xx y 5xx se devuelven como respuestas completas para que
-el programa decida cómo interpretarlos. `pseudolearn_ir` mantiene su tabla de operaciones existente;
-solo reconoce `HttpMethod` en el banco escalar. Las pruebas HTTP también cubren entregas concurrentes
-fuera del orden de petición y la divergencia de una solicitud durante reproducción desde cinta; el
-replay conserva aislamiento y nunca recurre al anfitrión.
+operaciones HTTP en `pseudolearn_library`; autorización por origen, validación de solicitudes,
+redirecciones explícitas y proveedor de memoria pertenecen a `pseudolearn_runtime`. `Redirigida`
+construye la siguiente petición sin enviarla; el programa llama a `Enviar`, que vuelve a comprobar
+el origen concedido. Al cambiar el origen se retiran credenciales y un descenso de HTTPS a HTTP se
+rechaza. La API no añade conexiones reales: las pruebas usan guiones locales del anfitrión. Los
+estados 4xx y 5xx se devuelven como respuestas completas para que el programa decida cómo
+interpretarlos. `pseudolearn_ir` mantiene su tabla de operaciones existente; solo reconoce
+`HttpMethod` en el banco escalar. Las pruebas HTTP también cubren entregas concurrentes fuera del
+orden de petición y la divergencia de una solicitud durante reproducción desde cinta; el replay
+conserva aislamiento y nunca recurre al anfitrión.

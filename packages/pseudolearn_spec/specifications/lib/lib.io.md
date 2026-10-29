@@ -99,7 +99,7 @@
   "id": "R2",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "El tipo ErrorES modela de manera portable los errores de entrada y salida con variantes para NoEncontrado, PermisoDenegado, YaExiste, FinDeArchivo, Utf8Invalido, RutaInvalida, CapacidadCerrada, TiempoAgotado, Interrumpido, UrlInvalida, PeticionInvalida, DestinoDenegado, ConexionFallida, CertificadoInvalido, RespuestaInvalida y LimiteExcedido, junto a una bandera booleana incierto para indicar incertidumbre sobre si la mutación externa llegó a confirmarse.",
+  "texto": "El tipo ErrorES modela de manera portable los errores de entrada y salida con variantes para NoEncontrado, PermisoDenegado, YaExiste, FinDeArchivo, Utf8Invalido, RutaInvalida, CapacidadCerrada, TiempoAgotado, Interrumpido, UrlInvalida, PeticionInvalida, DestinoDenegado, ConexionFallida, CertificadoInvalido, RespuestaInvalida, LimiteExcedido y RedireccionDenegada, junto a una bandera booleana incierto para indicar incertidumbre sobre si la mutación externa llegó a confirmarse.",
   "verificacion": [
     "C2",
     "C8",

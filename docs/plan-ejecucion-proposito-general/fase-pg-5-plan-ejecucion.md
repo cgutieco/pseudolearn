@@ -492,10 +492,10 @@ Descompresión admitida: solo `gzip` en el adaptador nativo; ambos límites (cab
 
 | ID | Fuentes en choque | Propuesta | Estado |
 |---|---|---|---|
-| `CF-PG5-01` | `PG-5.04` «redirecciones solo dentro del permiso» frente a D-PG5-08 (nunca seguir automáticamente) | Interpretación: no seguir nunca y ofrecer `Redirigida` cumple el punto con más seguridad; la persona confirma en `P1` | Pendiente de `P1` |
+| `CF-PG5-01` | `PG-5.04` «redirecciones solo dentro del permiso» frente a D-PG5-08 (nunca seguir automáticamente) | No seguir automáticamente; `Redirigida` crea la siguiente petición y `Enviar` vuelve a validar el permiso | Confirmado por la persona el 2026-10-29 |
 | `CF-PG5-02` | `R-11` «cliente nativo/VM/AOT» frente a §1.2.5–6 (AOT sin tareas ni E/S real) | AOT ejecuta HTTP con anfitrión de memoria y cinta; los casos con tareas divergen por `PG-4.12.04` y se registran como pendiente heredado, no como fallo de `PG-5` | Se informa; no bloquea salvo decisión contraria |
 | `CF-PG5-03` | Hoja de ruta §5 («biblioteca genérica en inglés») frente al README del motor (genéricos entre módulos fuera) | `PG-5.09` usa una biblioteca bilingüe no genérica; el caso genérico queda para una decisión de la persona (abrir genéricos entre módulos o retirar el adjetivo de ENT-1) | Pendiente de `P1` |
-| `CF-PG5-04` | `RT.HOST.INTERFACE#R1` («las únicas capacidades… salida, entrada y semilla») frente a capacidades de archivo y tiempo vigentes y a la red nueva | Edición oficial de `#R1`: nombra las capacidades implícitas (salida, entrada, semilla) y remite al resto a concesión explícita | Se aplica en la iteración 1 si la lectura confirma el choque |
+| `CF-PG5-04` | Supuesto choque de `RT.HOST.INTERFACE#R1` con capacidades de archivo, tiempo y red | La regla vigente ya limita las capacidades implícitas a salida, entrada y semilla, y exige concesión explícita para las demás. No requiere edición | Obsoleto tras inspeccionar el contrato vigente |
 | `CF-PG5-05` | `AGENTS.md` §9 asigna `node`/`pnpm` solo al frontend, pero `crates/pseudolearn_wasm/browser/` ya usa pnpm | Precedente existente, no creado por `PG-5`; el adaptador Fetch se añade ahí sin cadena nueva | Informativo |
 | `CF-PG5-06` | `PERF.SUITE.CORE` ya incumplido en `PG-4` | `PG-5` mide su regresión contra `a1de5355` y no puede empeorarla; no se declara verde lo que ya no lo era | Informativo |
 
@@ -607,25 +607,26 @@ derivado`, y sus esperados se derivan de la regla, nunca de la salida del motor 
 
 ### PG-5.04 · TLS, redirecciones dentro del permiso, credenciales, proxies y SSRF
 
-- [ ] `PG-5.04.01` Especificación: crear `LIB.HTTP.POLICY` (`H2`, `H8`, `H9`, `H10`), con las amenazas STRIDE de HTTP
-  de la hoja de ruta convertidas en reglas comprobables; `RT.HOST.INTERFACE` (obligaciones del adaptador: `H8`,
-  `H10`).
-- [ ] `PG-5.04.02` Casos (motor, anfitrión falso): `Redirigida` con 301/302 sobre `GET`, 303 sobre `POST` (pasa a
-  `GET` sin cuerpo), 307 y 308 (conservan método y cuerpo), `location` relativa, `location` ausente,
-  `https`→`http` ⇒ `RedireccionDenegada`, cambio de origen retira `authorization`, mismo origen la conserva, origen
-  nuevo no concedido ⇒ `Enviar` devuelve `DestinoDenegado`; cadena de tres redirecciones escrita por el programa;
+- [x] `PG-5.04.01` Especificación: crear `LIB.HTTP.POLICY` (`H2`, `H8`, `H9`, `H10`), con las amenazas STRIDE de HTTP
+  de la hoja de ruta convertidas en reglas comprobables; añadir `Redirigida` a la firma generada de `LIB.MODEL` y una
+  ficha en `TOOL.SERVICE.CATALOG`; `RT.HOST.INTERFACE` (obligaciones del adaptador: `H8`, `H10`).
+- [x] `PG-5.04.02` Casos (motor, anfitrión falso): `Redirigida` con 301/302 sobre `GET`, 303 sobre `POST` (pasa a
+  `GET` sin cuerpo), 307 y 308 (conservan método y cuerpo), `location` relativa, ausente o repetida,
+  `https`→`http` ⇒ `RedireccionDenegada`, cambio de origen retira `authorization`, mismo origen la conserva,
+  origen nuevo no concedido ⇒ `Enviar` devuelve `DestinoDenegado`; cadena de tres redirecciones escrita por el programa;
   host `2130706433`, `0x7f000001`, `0177.0.0.1` ⇒ `UrlInvalida`. Los casos de red real (TLS, DNS, proxy) **no** van al
   corpus: van a §7.3.
-- [ ] `PG-5.04.03` Tests espejo: `network_redirect_tests.rs` en runtime; en la CLI, `network_address_policy_tests.rs`
-  (rangos IPv4/IPv6, mapeadas, origen local de prueba) y `network_resolver_tests.rs` (resolvedor falso, fijación de
-  IP).
-- [ ] `PG-5.04.04` Código: runtime `network_redirect.rs`; CLI `physical_network_address.rs`,
+- [x] `PG-5.04.03` Tests espejo: `network_redirect_tests.rs` en runtime; en la CLI, `network_address_policy_tests.rs`
+  (rangos IPv4/IPv6, mapeadas, origen local de prueba), `network_resolver_tests.rs` (resolvedores del sistema y falso,
+  fijación de IP) y `network_tls_tests.rs`.
+- [x] `PG-5.04.04` Código: runtime `network_redirect.rs`; CLI `physical_network_address.rs`,
   `physical_network_resolver.rs` (puerto con implementación del sistema y falsa en tests), configuración TLS en
   `physical_network_tls.rs`.
-- [ ] `PG-5.04.05` README de la CLI (política de red, qué se tomó de la biblioteca elegida y qué se rechazó) y del
+- [x] `PG-5.04.05` README de la CLI (política de red, qué se tomó de la biblioteca elegida y qué se rechazó) y del
   motor (`Redirigida`).
-- [ ] `PG-5.04.06` Ligera: `cargo test -p pseudolearn_runtime --lib network_redirect`; desde la CLI,
-  `cargo test --bin pseudo network_address_policy` y `network_resolver` (filtros); Clippy y `rust-checks` de la CLI.
+- [x] `PG-5.04.06` Ligera: `cargo test -p pseudolearn_runtime --lib network_redirect`; desde la CLI,
+  `cargo test --bin pseudo network_address_policy`, `network_resolver` y `network_tls` (filtros), y el test ABI de HTTP;
+  Clippy, `rustfmt --check` y `rust-checks` de la CLI.
 - [ ] `PG-5.04.07` Pesada: `--only LIB.HTTP.POLICY` en `engine` y `aot`; batería de red de `E-PG-09` (§7.4).
 
 ### PG-5.05 · Sin reintento automático; estado incierto registrado
@@ -1015,7 +1016,7 @@ README y la regresión `PERF.SUITE.CORE`; desde `apps/pseudolearn_app`, `flutter
 | `PG-5.01` | Implementación ligera lista; pesada pendiente de iteración 6 | Iteración 2: tests filtrados de `library`, `abi`, `runtime`, `semantic`, `syntax`, `lexicon` y `see_validation`; `see validate`, `lock --check`, `export --check`; Clippy, rustfmt y `rust-checks` en `engine` y `spec` | `PG-5.01.07` se reserva a la iteración 6; parada en `P2` |
 | `PG-5.02` | Código, casos C1–C12 y verificaciones ligeras completados; conformidad pesada pendiente | Tests filtrados de ABI, runtime, semantic, project, API, `see_format`, `see_validation` y `see_conformance`; los casos de API atraviesan library e IR; `cargo check`, Clippy `--all-targets`, `rustfmt --check`, `rust-checks all .` de engine y spec; `see validate`, `see lock --check` y `see export --check` pasan | `LIB.HTTP` comienza `estable` con `Cesar Antonio Gutierrez Contreras` en `revisado_por`. Los vínculos engine/AOT quedan `pendiente` para P6; AOT R5 conserva `CF-PG5-02`. `LIB.HTTP#R6`/C8 mantienen un conflicto acotado a reproducir respuestas con credenciales. Sin commit ni push |
 | `PG-5.03` | Implementación, casos y verificaciones ligeras completados; únicamente `.07` excluida; fase sin cierre verde | Pruebas filtradas de API HTTP (6), límites API (4), runtime (8), JSON (4), sintaxis, opciones de API y mapeo SEE (11); `cargo check`, Clippy y `rust-checks` del motor y la CLI; `see validate` (190), `see lock --check` y `see export --check` pasan | El verificador completo sigue bloqueado por fallos de `LIB.TIME#C1` y limpieza de colecciones C12. `cargo deny check` no pudo actualizar su base de avisos por falta de red. No se ejecutó `.07`; sin commit ni push |
-| `PG-5.04` | Pendiente; fuera del alcance reanudado | Sin verificaciones en esta reanudación | No se implementó redirección ni política de red avanzada |
+| `PG-5.04` | Implementación y verificaciones ligeras completadas; `.07` excluida; fase sin cierre verde | 7 tests de runtime, 5 de política de direcciones, 7 del resolvedor, 1 de TLS y test ABI HTTP; `see validate` (191), `lock --check`, `export --check`, Clippy estricto, `rustfmt --check` y `rust-checks all .` de la CLI | La batería pesada y la conformidad de `LIB.HTTP.POLICY` siguen pendientes por exclusión explícita de `.07`. La configuración de TLS/resolvedor no se integra aún en transporte real; la elección de biblioteca pertenece a `PG-5.06.01`. Sin commit ni push |
 | `PG-5.05` | Pendiente; fuera del alcance reanudado | Sin verificaciones en esta reanudación | No se implementó negociación ni confirmación de escrituras |
 | `PG-5.06` | | | |
 | `PG-5.07` | | | |
@@ -1169,6 +1170,30 @@ en esta continuación; no se borraron cachés.
   hasta resolver ambas observaciones. `cargo deny check` no pudo actualizar su base de avisos por falta de red; la
   comprobación de licencias, fuentes y bans pasó con la base local.
 - **Parada:** `PG-5.03.07` queda como única tarea excluida; no se hizo commit ni push y la parada permanece en P3.
+
+### Registro de ejecución de PG-5.04 · 2026-10-29
+
+- **Alcance:** se implementó `PG-5.04.01`–`.06` en una iteración sobre `feature/agregar-ruta-de-especificacion`.
+  La persona confirmó `CF-PG5-01`: no hay seguimiento automático; `Redirigida` crea la siguiente petición y
+  `Enviar` vuelve a validar el permiso. Se excluyó `.07` como se pidió.
+- **Corpus y contratos:** se creó `LIB.HTTP.POLICY` con H2/H8/H9/H10 y casos C1–C8; `LIB.MODEL` incorpora la firma
+  `Redirigida`, `TOOL.SERVICE.CATALOG` su ficha y `RT.HOST.INTERFACE` las obligaciones R8/R9. `LIB.IO` añade
+  `RedireccionDenegada` como etiqueta ABI 16, sin renumerar etiquetas anteriores. Se editaron las especificaciones
+  congeladas conservando identidad y versión; el lock local se refrescó y la exportación se regeneró. Las reglas de
+  `LIB.HTTP.POLICY` y R8/R9 quedan pendientes de conformidad P6, no declaradas cumplidas.
+- **Implementación y documentación:** runtime construye redirecciones explícitas, resuelve ubicaciones relativas,
+  quita fragmentos, aplica las transformaciones de método/cuerpo y retira credenciales cuando cambia el origen.
+  La CLI aporta política de host/IP, resolvedor sustituible que valida el conjunto completo y configuración TLS con
+  validación obligatoria y raíces añadidas solo por el anfitrión. No se añadió cliente HTTP, conexión, seguimiento
+  automático ni proxy ambiental; la integración con transporte se reserva a la elección de biblioteca de
+  `PG-5.06.01`. Se actualizaron README de CLI, motor, runtime, biblioteca y ABI.
+- **Verificación ligera:** pasaron 7 tests de runtime, 5 de política de direcciones, 7 del resolvedor, 1 de TLS y
+  4 del test ABI HTTP; también `see validate` (191 especificaciones), `see lock --check`, `see export --check`,
+  Clippy estricto de la CLI, `rustfmt --check` en engine y CLI y `rust-checks all .` de la CLI. `git diff --check`
+  pasó. No se ejecutaron conformidad `--only LIB.HTTP.POLICY`, la batería E-PG-09 ni ninguna ruta de `.07`.
+- **Pendientes y parada:** la comprobación real de TLS, proxy y conexión fijada a IP depende del adaptador y la batería
+  de red. `.07` queda sin marcar; por ello no se declara `PHASE-GREEN` ni se cierra la fase. Rama correcta, cambios
+  locales sin commit ni push.
 
 ---
 

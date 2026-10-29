@@ -13,3 +13,18 @@ pub(crate) fn http_text_body(
         ))),
     }
 }
+
+pub(crate) fn http_redirected(
+    heap: &Heap,
+    receiver: pseudolearn_abi::Handle,
+    arguments: &[HostValue],
+) -> Result<HostReply, MemoryError> {
+    let request = crate::http_values::decode_request(heap, receiver)?;
+    let [HostValue::HttpResponse(response)] = arguments else {
+        return Err(MemoryError::Internal);
+    };
+    match crate::redirect_request(&request, response) {
+        Ok(redirected) => Ok(HostReply::Committed(HostValue::HttpRequest(redirected))),
+        Err(error) => Ok(HostReply::failure(error)),
+    }
+}

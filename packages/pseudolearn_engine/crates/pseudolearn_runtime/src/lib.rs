@@ -136,6 +136,10 @@ mod network_limits_tests;
 mod network_policy;
 #[cfg(test)]
 mod network_policy_tests;
+mod network_redirect;
+#[cfg(test)]
+mod network_redirect_tests;
+pub use network_redirect::redirect_request;
 mod network_url;
 pub use memory_host::MemoryHostProvider;
 

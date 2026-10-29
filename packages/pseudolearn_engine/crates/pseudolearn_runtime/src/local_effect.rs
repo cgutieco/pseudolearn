@@ -7,8 +7,12 @@ pub fn local_effect(
     operation: &EffectOperation,
     arguments: &[HostValue],
 ) -> Result<HostReply, MemoryError> {
-    if operation.identity == "http_text_body" {
-        return crate::local_http_effect::http_text_body(heap, receiver);
+    match operation.identity {
+        "http_text_body" => return crate::local_http_effect::http_text_body(heap, receiver),
+        "http_redirected" => {
+            return crate::local_http_effect::http_redirected(heap, receiver, arguments);
+        }
+        _ => {}
     }
     let value = match operation.identity {
         "bytes_new" => HostValue::Bytes(Vec::new()),

@@ -30,7 +30,7 @@ Búfer de bytes (`bytes_layout`): `BYTES_SHAPE_TAG = 0x0000_BA00` y `bytes_cell_
 
 JSON (`json_layout`): `JsonNodeKind` fija las etiquetas 0–5 para nulo, lógico, número, cadena, arreglo y objeto. El bloque usa `JSON_BLOCK_SHAPE_TAG = u32::MAX - 5`, dos palabras de metadatos tras la cabecera común y ocho palabras por nodo; los bytes de nombres y escalares ocupan el sufijo empaquetado. `JSON_VIEW_SHAPE_TAG = u32::MAX - 4` identifica el wrapper que conserva la asa del bloque y el índice del nodo.
 
-Errores de entrada/salida (`io_error_layout`): `IoErrorKind` unifica 16 códigos canónicos y sus etiquetas numéricas compartidas por runtime y VM. A los nueve fallos de E/S se añaden `url_invalida`, `peticion_invalida`, `destino_denegado`, `conexion_fallida`, `certificado_invalido`, `respuesta_invalida` y `limite_excedido`; las etiquetas existentes conservan su valor.
+Errores de entrada/salida (`io_error_layout`): `IoErrorKind` unifica 17 códigos canónicos y sus etiquetas numéricas compartidas por runtime y VM. A los nueve fallos de E/S se añaden `url_invalida`, `peticion_invalida`, `destino_denegado`, `conexion_fallida`, `certificado_invalido`, `respuesta_invalida`, `limite_excedido` y `redireccion_denegada`; las etiquetas existentes conservan su valor.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
