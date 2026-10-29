@@ -1,4 +1,7 @@
-use crate::{HttpMethod, HttpRequestValue, HttpResponseValue};
+use crate::{
+    HostEffectRequest, HostReply, HostValue, HttpMethod, HttpRequestValue, HttpResponseValue,
+    IoError,
+};
 use pseudolearn_abi::IoErrorKind;
 use std::collections::BTreeSet;
 
@@ -111,4 +114,33 @@ fn treats_http_error_statuses_as_responses() {
         crate::network_policy::validate_response(&response),
         Err(crate::IoError::from_kind(IoErrorKind::InvalidResponse))
     );
+}
+
+#[test]
+fn classifies_uncertain_network_replies_by_method() -> Result<(), String> {
+    let operation = crate::effect_operation("network_send").ok_or("missing network_send")?;
+    for method in HttpMethod::ALL {
+        let request = HostEffectRequest {
+            effect_seq: 1,
+            operation: "network_send".to_owned(),
+            receiver: None,
+            arguments: vec![HostValue::HttpRequest(request(
+                "https://fake.test/a",
+                method,
+            ))],
+            result_capability: None,
+            source_node_id: 0,
+        };
+        let uncertain = HostReply::failure(IoError::new(IoErrorKind::Interrupted, true));
+        let failed = HostReply::failure(IoError::from_kind(IoErrorKind::Interrupted));
+        let may_mutate = !matches!(method, HttpMethod::Get | HttpMethod::Head);
+        assert_eq!(
+            crate::host_validation::reply(operation, &request, &uncertain).is_ok(),
+            may_mutate,
+            "{}",
+            method.as_str()
+        );
+        assert!(crate::host_validation::reply(operation, &request, &failed).is_ok());
+    }
+    Ok(())
 }

@@ -21,6 +21,9 @@ impl PhysicalHost {
     }
 
     pub fn perform(&mut self, raw: &Value) -> Value {
+        if raw.get("operation").and_then(Value::as_str) == Some("network_send") {
+            return crate::physical_network_send::perform(raw);
+        }
         let outcome = serde_json::from_value::<Request>(raw.clone())
             .map_err(|_| HostError::INVALID_PATH)
             .and_then(|request| self.dispatch(&request));

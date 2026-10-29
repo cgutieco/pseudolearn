@@ -50,20 +50,26 @@ fn resolve_location(base_url: &str, location: &str) -> Result<String, IoError> {
             .map_err(|_| redirect_denied());
     }
     let (scheme, origin, base_path) = base_parts(base_url)?;
-    let resolved = if let Some(authority) = location.strip_prefix("//") {
-        format!("{scheme}:{authority}")
-    } else if location.starts_with('/') {
-        format!("{origin}{location}")
-    } else if location.starts_with('?') {
-        format!("{origin}{}{location}", path_without_query(&base_path))
-    } else if location.starts_with('#') {
-        format!("{origin}{base_path}")
-    } else {
-        resolve_path_reference(&origin, &base_path, location)
-    };
+    let resolved = resolve_reference(&scheme, &origin, &base_path, location);
     crate::network_url::parse_url(&resolved)
         .map(|parsed| parsed.without_fragment)
         .map_err(|_| redirect_denied())
+}
+
+fn resolve_reference(scheme: &str, origin: &str, base_path: &str, location: &str) -> String {
+    if let Some(authority) = location.strip_prefix("//") {
+        return format!("{scheme}:{authority}");
+    }
+    if location.starts_with('/') {
+        return format!("{origin}{location}");
+    }
+    if location.starts_with('?') {
+        return format!("{origin}{}{location}", path_without_query(base_path));
+    }
+    if location.starts_with('#') {
+        return format!("{origin}{base_path}");
+    }
+    resolve_path_reference(origin, base_path, location)
 }
 
 fn base_parts(base_url: &str) -> Result<(String, String, String), IoError> {

@@ -117,10 +117,32 @@ La política física de red está separada en `physical_network_address`, `physi
 el resolvedor del sistema se puede sustituir por uno falso y `resolve_checked` examina toda la
 respuesta DNS una sola vez antes de entregar la instantánea comprobada de direcciones. Deniega los
 rangos locales, privados y especiales; una concesión local de prueba solo permite loopback.
-`TlsConfiguration` exige validación de certificados y solo admite raíces añadidas por el anfitrión.
-Esta iteración no conecta aún esa configuración a un transporte HTTP real. La biblioteca cliente
-continúa sin elegir: `PG-5.06.01` debe evaluar las opciones aprobadas antes de integrarla. No se usan
-proxies del entorno ni del sistema como configuración implícita.
+`physical_network_send` envía un único efecto por una conexión HTTP/1 de bajo nivel con Hyper 1.11.1;
+no reintenta, no sigue redirecciones y no carga cookies ni proxies. Se usa Tokio 1.54.1 para el
+transporte asíncrono y `tokio-rustls` 0.26.6 con Rustls 0.23.46 para HTTPS. Se eligió la conexión
+directa de Hyper ([API de handshake HTTP/1](https://docs.rs/hyper/1.11.1/hyper/client/conn/http1/fn.handshake.html));
+se descartó una capa cliente que añada políticas implícitas. La conexión se cierra al terminar la
+respuesta o al cancelar la espera. La respuesta se lee por bloques con los límites configurados y el
+plazo cubre resolución, conexión, TLS y respuesta. DNS se resuelve una vez, se validan todas las
+direcciones y se conecta a una sola dirección de esa instantánea, sin probar direcciones alternativas.
+
+`TlsConfiguration` exige validación de certificados y admite raíces PEM añadidas por el anfitrión;
+la configuración de producción carga además las raíces del sistema
+([Rustls native certs](https://docs.rs/rustls-native-certs/0.8.5/rustls_native_certs/fn.load_native_certs.html))
+y usa el parser PEM de `rustls-pki-types` ([PemObject 1.15.1](https://docs.rs/rustls-pki-types/1.15.1/rustls_pki_types/pem/trait.PemObject.html));
+se descartó `rustls-pemfile`, cuyo mantenimiento terminó ([RUSTSEC-2025-0134](https://rustsec.org/advisories/RUSTSEC-2025-0134.html)).
+No hay modo inseguro. Un fallo antes del primer byte HTTP se informa como `Failed`; después de empezar
+a enviar un método con potencial de mutación, hasta completar la respuesta, se informa como
+`Uncertain`. `GET` y `HEAD` permanecen en `Failed`. La biblioteca no aplica reintentos. `deny.toml`
+añade únicamente `ISC`, autorizada para esta evaluación, junto a las licencias ya permitidas.
+Rustls conserva una categoría distinta para certificados inválidos; los demás fallos del handshake
+TLS se informan como fallos de conexión.
+`ring`, usado por Rustls, incorpora `windows-sys 0.52.0`; `cargo-deny` omite solo esa versión exacta
+en la regla existente de versiones múltiples, que sigue rechazando el resto de duplicados.
+
+La CLI aún no expone opciones para conceder red, fijar orígenes ni cargar raíces de prueba; la lista
+de permisos y las opciones de ejecución permanecen sin cambios en esta entrega. El transporte queda
+disponible en el proveedor para cuando la configuración de esa capacidad esté conectada.
 
 Proveedor físico: `--conceder <lista>` (`--grant`) declara los permisos concedidos (`consola`, `argumentos`,
 `archivos_lectura`, `archivos_escritura`, `reloj`, `temporizador`; cualquier otro nombre es error de uso) y

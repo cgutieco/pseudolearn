@@ -24,7 +24,10 @@ mod physical_files;
 mod physical_host;
 pub mod physical_network_address;
 pub mod physical_network_resolver;
+mod physical_network_send;
 pub mod physical_network_tls;
+mod physical_network_transport;
+mod physical_network_transport_support;
 mod physical_request;
 mod physical_session;
 mod preferences_command;
@@ -50,6 +53,8 @@ mod network_resolver_tests;
 mod network_tls_tests;
 #[cfg(test)]
 mod physical_host_tests;
+#[cfg(test)]
+mod physical_network_send_tests;
 
 use check_command::execute_check;
 use error::CliError;

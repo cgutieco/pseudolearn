@@ -89,6 +89,8 @@ pub use statistics::HeapStatistics;
 
 #[cfg(test)]
 mod collection_tests;
+#[cfg(test)]
+mod effect_tape_tests;
 
 pub use effect_tape::{EffectTape, ExecutionIdentity, TAPE_SCHEMA_V1, TapeEntry};
 pub use tape_abandoned::AbandonedEffect;

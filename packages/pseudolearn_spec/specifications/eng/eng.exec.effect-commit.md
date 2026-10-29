@@ -526,8 +526,8 @@
   "id": "R5",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "En las operaciones HTTP, GET y HEAD son de solo lectura y nunca producen Uncertain. POST, PUT, PATCH y DELETE tienen potencial de mutación; un fallo incierto después de iniciar el envío y antes de recibir una respuesta completa se conserva como Uncertain con Incierto verdadero.",
-  "verificacion": ["C8"]
+  "texto": "En las operaciones HTTP, GET y HEAD son de solo lectura y nunca producen Uncertain. POST, PUT, PATCH y DELETE tienen potencial de mutación. Un fallo antes del primer byte enviado se resuelve como Failed con Incierto falso; un fallo después de iniciar el envío y antes de recibir la respuesta completa se conserva como Uncertain con Incierto verdadero. El anfitrión registra exactamente un efecto network_send por llamada y no lo reintenta automáticamente.",
+  "verificacion": ["C8", "C9", "C10"]
 }
 ```
 
@@ -542,7 +542,14 @@
   "espera": {
     "salida": "{{lexema:booleanTrue}}\n",
     "terminacion": "completed",
-    "anfitrion_observado": {"llamadas": 2, "estado_cinta": "uncertain_external_state"}
+    "anfitrion_observado": {
+      "llamadas": 2,
+      "estado_cinta": "uncertain_external_state",
+      "efectos": [
+        {"effect_seq": 1, "capability_kind": "network", "operation": "request_network", "outcome": "committed"},
+        {"effect_seq": 2, "capability_kind": "network", "operation": "network_send", "outcome": "uncertain"}
+      ]
+    }
   },
   "programas": {
     "es": "Algoritmo Main\nDefinir net Como RedCap <- Propagar SolicitarRed();\nDefinir request Como PeticionHttp <- PeticionHttp(MetodoHttp.POST, \"https://fake.test/write\");\nSegun net.Enviar(request) Hacer\nExito(response): Escribir \"completado\";\nError(problem): Escribir problem.Incierto;\nFinSegun\nFinAlgoritmo\n",
@@ -552,6 +559,70 @@
     "permissions": ["red"],
     "requested_permissions": ["red"],
     "http": {"POST https://fake.test/write": {"fallo": "conexion_fallida", "incierto": true}}
+  }
+}
+```
+
+```caso
+{
+  "id": "C9",
+  "regla": "R5",
+  "perfiles": ["es", "en"],
+  "rigor": ["estricto", "flexible"],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "{{lexema:booleanFalse}}\n",
+    "terminacion": "completed",
+    "anfitrion_observado": {
+      "llamadas": 2,
+      "estado_cinta": "reproducible",
+      "efectos": [
+        {"effect_seq": 1, "capability_kind": "network", "operation": "request_network", "outcome": "committed"},
+        {"effect_seq": 2, "capability_kind": "network", "operation": "network_send", "outcome": "failed"}
+      ]
+    }
+  },
+  "programas": {
+    "es": "Algoritmo Main\nDefinir net Como RedCap <- Propagar SolicitarRed();\nSegun net.Enviar(PeticionHttp(MetodoHttp.GET, \"https://fake.test/read-cut\")) Hacer\nExito(response): Escribir Verdadero;\nError(problem): Escribir problem.Incierto;\nFinSegun\nFinAlgoritmo\n",
+    "en": "algorithm Main\ndefine net as NetworkCap <- propagate requestNetwork();\nswitch net.send(HttpRequest(HttpMethod.GET, \"https://fake.test/read-cut\")) do\nsuccess(response): write true;\nfailure(problem): write problem.uncertain;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": ["red"],
+    "requested_permissions": ["red"],
+    "http": {"GET https://fake.test/read-cut": {"fallo": "conexion_fallida", "incierto": false}}
+  }
+}
+```
+
+```caso
+{
+  "id": "C10",
+  "regla": "R5",
+  "perfiles": ["es", "en"],
+  "rigor": ["estricto", "flexible"],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "{{lexema:booleanTrue}}\n",
+    "terminacion": "completed",
+    "anfitrion_observado": {
+      "llamadas": 2,
+      "estado_cinta": "uncertain_external_state",
+      "efectos": [
+        {"effect_seq": 1, "capability_kind": "network", "operation": "request_network", "outcome": "committed"},
+        {"effect_seq": 2, "capability_kind": "network", "operation": "network_send", "outcome": "uncertain"}
+      ]
+    }
+  },
+  "programas": {
+    "es": "Algoritmo Main\nDefinir net Como RedCap <- Propagar SolicitarRed();\nSegun net.Enviar(PeticionHttp(MetodoHttp.DELETE, \"https://fake.test/delete-cut\")) Hacer\nExito(response): Escribir Falso;\nError(problem): Escribir problem.Incierto;\nFinSegun\nFinAlgoritmo\n",
+    "en": "algorithm Main\ndefine net as NetworkCap <- propagate requestNetwork();\nswitch net.send(HttpRequest(HttpMethod.DELETE, \"https://fake.test/delete-cut\")) do\nsuccess(response): write false;\nfailure(problem): write problem.uncertain;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": ["red"],
+    "requested_permissions": ["red"],
+    "http": {"DELETE https://fake.test/delete-cut": {"fallo": "conexion_fallida", "incierto": true}}
   }
 }
 ```

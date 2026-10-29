@@ -387,8 +387,8 @@
   "id": "R5",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "GET y HEAD son de solo lectura y no pueden producir Uncertain. POST, PUT, PATCH y DELETE pueden mutar; un fallo incierto de su envío conserva Incierto verdadero. Una llamada Enviar produce una sola solicitud al anfitrión y no se reintenta automáticamente. Cuando varias tareas esperan envíos HTTP, cada efecto conserva la tarea que lo pidió y la cinta distingue el orden de petición del orden de entrega.",
-  "verificacion": ["C7", "C10"]
+  "texto": "GET y HEAD son de solo lectura y no pueden producir Uncertain. POST, PUT, PATCH y DELETE pueden mutar; si el fallo ocurre antes del primer byte de la petición, se resuelve como Failed con Incierto falso, y si ocurre tras iniciar el envío y antes de recibir la respuesta completa, se resuelve como Uncertain con Incierto verdadero. Una llamada Enviar produce una sola solicitud al anfitrión y ningún componente reintenta automáticamente ningún método. Si la tarea que espera se cancela, el efecto queda abandoned, el adaptador aborta la conexión y no afirma que el servidor no lo procesó. Cuando varias tareas esperan envíos HTTP, cada efecto conserva la tarea que lo pidió y la cinta distingue el orden de petición del orden de entrega.",
+  "verificacion": ["C7", "C10", "C25", "C26", "C27"]
 }
 ```
 
@@ -411,7 +411,11 @@
     "terminacion": "completed",
     "anfitrion_observado": {
       "llamadas": 2,
-      "estado_cinta": "uncertain_external_state"
+      "estado_cinta": "uncertain_external_state",
+      "efectos": [
+        {"effect_seq": 1, "capability_kind": "network", "operation": "request_network", "outcome": "committed"},
+        {"effect_seq": 2, "capability_kind": "network", "operation": "network_send", "outcome": "uncertain"}
+      ]
     }
   },
   "programas": {
@@ -431,6 +435,102 @@
         "incierto": true
       }
     }
+  }
+}
+```
+
+```caso
+{
+  "id": "C25",
+  "regla": "R5",
+  "perfiles": ["es", "en"],
+  "rigor": ["estricto", "flexible"],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "{{lexema:booleanFalse}}\n",
+    "terminacion": "completed",
+    "anfitrion_observado": {
+      "llamadas": 2,
+      "estado_cinta": "reproducible",
+      "efectos": [
+        {"effect_seq": 1, "capability_kind": "network", "operation": "request_network", "outcome": "committed"},
+        {"effect_seq": 2, "capability_kind": "network", "operation": "network_send", "outcome": "failed"}
+      ]
+    }
+  },
+  "programas": {
+    "es": "Algoritmo Main\nDefinir net Como RedCap <- Propagar SolicitarRed();\nSegun net.Enviar(PeticionHttp(MetodoHttp.GET, \"https://fake.test/read-cut\")) Hacer\nExito(response): Escribir Verdadero;\nError(problem): Escribir problem.Incierto;\nFinSegun\nFinAlgoritmo\n",
+    "en": "algorithm Main\ndefine net as NetworkCap <- propagate requestNetwork();\nswitch net.send(HttpRequest(HttpMethod.GET, \"https://fake.test/read-cut\")) do\nsuccess(response): write true;\nfailure(problem): write problem.uncertain;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": ["red"],
+    "requested_permissions": ["red"],
+    "http": {"GET https://fake.test/read-cut": {"fallo": "conexion_fallida", "incierto": false}}
+  }
+}
+```
+
+```caso
+{
+  "id": "C26",
+  "regla": "R5",
+  "perfiles": ["es", "en"],
+  "rigor": ["estricto", "flexible"],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "{{lexema:booleanTrue}}\n",
+    "terminacion": "completed",
+    "anfitrion_observado": {
+      "llamadas": 2,
+      "estado_cinta": "uncertain_external_state",
+      "efectos": [
+        {"effect_seq": 1, "capability_kind": "network", "operation": "request_network", "outcome": "committed"},
+        {"effect_seq": 2, "capability_kind": "network", "operation": "network_send", "outcome": "uncertain"}
+      ]
+    }
+  },
+  "programas": {
+    "es": "Algoritmo Main\nDefinir net Como RedCap <- Propagar SolicitarRed();\nSegun net.Enviar(PeticionHttp(MetodoHttp.DELETE, \"https://fake.test/delete-cut\")) Hacer\nExito(response): Escribir Falso;\nError(problem): Escribir problem.Incierto;\nFinSegun\nFinAlgoritmo\n",
+    "en": "algorithm Main\ndefine net as NetworkCap <- propagate requestNetwork();\nswitch net.send(HttpRequest(HttpMethod.DELETE, \"https://fake.test/delete-cut\")) do\nsuccess(response): write false;\nfailure(problem): write problem.uncertain;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": ["red"],
+    "requested_permissions": ["red"],
+    "http": {"DELETE https://fake.test/delete-cut": {"fallo": "conexion_fallida", "incierto": true}}
+  }
+}
+```
+
+```caso
+{
+  "id": "C27",
+  "regla": "R5",
+  "perfiles": ["es", "en"],
+  "rigor": ["estricto", "flexible"],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "done\n",
+    "terminacion": "completed",
+    "anfitrion_observado": {
+      "llamadas": 1,
+      "estado_cinta": "uncertain_external_state",
+      "efectos": [
+        {"effect_seq": 1, "capability_kind": "network", "operation": "request_network", "outcome": "committed"},
+        {"effect_seq": 2, "task_id": 1, "capability_kind": "network", "operation": "network_send", "outcome": "abandoned"}
+      ]
+    }
+  },
+  "programas": {
+    "es": "SubProceso Suspendible Wait(net Como RedCap)\nDescartar Aguardar net.Enviar(PeticionHttp(MetodoHttp.POST, \"https://fake.test/abandoned-post\"));\nFinSubProceso\nSubProceso Suspendible Fail() Como Resultado<Entero, Cadena>\nRetornar Error(\"problem\");\nFinSubProceso\nAlgoritmo Main\nDefinir net Como RedCap <- Propagar SolicitarRed();\nTareas failureReport\nLanzar Wait(net);\nLanzar Fail();\nFinTareas\nDescartar failureReport;\nEscribir \"done\";\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Wait(net as NetworkCap)\ndiscard await net.send(HttpRequest(HttpMethod.POST, \"https://fake.test/abandoned-post\"));\nendSubroutine\nsubroutine suspendable Fail() as result<integer, string>\nreturn failure(\"problem\");\nendSubroutine\nalgorithm Main\ndefine net as NetworkCap <- propagate requestNetwork();\ntasks failureReport\nspawn Wait(net);\nspawn Fail();\nendTasks\ndiscard failureReport;\nwrite \"done\";\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": ["red"],
+    "requested_permissions": ["red"],
+    "grabar_y_reproducir": true
   }
 }
 ```

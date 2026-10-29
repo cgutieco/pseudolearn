@@ -631,17 +631,18 @@ derivado`, y sus esperados se derivan de la regla, nunca de la salida del motor 
 
 ### PG-5.05 · Sin reintento automático; estado incierto registrado
 
-- [ ] `PG-5.05.01` Especificación: `H6`, `H7` en `LIB.HTTP`; edición oficial de `ENG.EXEC.EFFECT-COMMIT` (tabla de
+- [x] `PG-5.05.01` Especificación: semántica prevista de `H6`/`H7` integrada en la regla vigente `R5` de `LIB.HTTP`;
+  edición oficial de `ENG.EXEC.EFFECT-COMMIT` (tabla de
   métodos) y de `ENG.EFFECT.TAPE` (sello `UncertainExternalState` también por red).
-- [ ] `PG-5.05.02` Casos: `POST` con corte declarado tras enviar ⇒ `Uncertain`, `Incierto = Verdadero`, cinta marcada
+- [x] `PG-5.05.02` Casos: `POST` con corte declarado tras enviar ⇒ `Uncertain`, `Incierto = Verdadero`, cinta marcada
   no reproducible de forma autónoma; mismo corte en `GET` ⇒ `Failed`, `Incierto = Falso`; `DELETE` con corte ⇒
   `Uncertain`; un único efecto registrado por llamada en todos ellos (prueba de no reintento en el motor); tarea
   cancelada mientras espera un `POST` ⇒ `abandoned`.
-- [ ] `PG-5.05.03` Tests espejo: clasificación en `network_policy_tests.rs`; en la CLI, `physical_network_send_tests.rs`
+- [x] `PG-5.05.03` Tests espejo: clasificación en `network_policy_tests.rs`; en la CLI, `physical_network_send_tests.rs`
   (servidor que cuenta conexiones: exactamente una por llamada).
-- [ ] `PG-5.05.04` Código: clasificación en runtime; envío en CLI `physical_network_send.rs` sin bucles de reintento.
-- [ ] `PG-5.05.05` README del motor y de la CLI.
-- [ ] `PG-5.05.06` Ligera: tests filtrados anteriores.
+- [x] `PG-5.05.04` Código: clasificación en runtime; envío en CLI `physical_network_send.rs` sin bucles de reintento.
+- [x] `PG-5.05.05` README del motor y de la CLI.
+- [x] `PG-5.05.06` Ligera: tests filtrados anteriores.
 - [ ] `PG-5.05.07` Pesada: `--only ENG.EXEC.EFFECT-COMMIT,ENG.EFFECT.TAPE` en `engine` y `aot`; integración con
   `/cerrar-a-mitad` (§7.3).
 
@@ -1017,8 +1018,8 @@ README y la regresión `PERF.SUITE.CORE`; desde `apps/pseudolearn_app`, `flutter
 | `PG-5.02` | Código, casos C1–C12 y verificaciones ligeras completados; conformidad pesada pendiente | Tests filtrados de ABI, runtime, semantic, project, API, `see_format`, `see_validation` y `see_conformance`; los casos de API atraviesan library e IR; `cargo check`, Clippy `--all-targets`, `rustfmt --check`, `rust-checks all .` de engine y spec; `see validate`, `see lock --check` y `see export --check` pasan | `LIB.HTTP` comienza `estable` con `Cesar Antonio Gutierrez Contreras` en `revisado_por`. Los vínculos engine/AOT quedan `pendiente` para P6; AOT R5 conserva `CF-PG5-02`. `LIB.HTTP#R6`/C8 mantienen un conflicto acotado a reproducir respuestas con credenciales. Sin commit ni push |
 | `PG-5.03` | Implementación, casos y verificaciones ligeras completados; únicamente `.07` excluida; fase sin cierre verde | Pruebas filtradas de API HTTP (6), límites API (4), runtime (8), JSON (4), sintaxis, opciones de API y mapeo SEE (11); `cargo check`, Clippy y `rust-checks` del motor y la CLI; `see validate` (190), `see lock --check` y `see export --check` pasan | El verificador completo sigue bloqueado por fallos de `LIB.TIME#C1` y limpieza de colecciones C12. `cargo deny check` no pudo actualizar su base de avisos por falta de red. No se ejecutó `.07`; sin commit ni push |
 | `PG-5.04` | Implementación y verificaciones ligeras completadas; `.07` excluida; fase sin cierre verde | 7 tests de runtime, 5 de política de direcciones, 7 del resolvedor, 1 de TLS y test ABI HTTP; `see validate` (191), `lock --check`, `export --check`, Clippy estricto, `rustfmt --check` y `rust-checks all .` de la CLI | La batería pesada y la conformidad de `LIB.HTTP.POLICY` siguen pendientes por exclusión explícita de `.07`. La configuración de TLS/resolvedor no se integra aún en transporte real; la elección de biblioteca pertenece a `PG-5.06.01`. Sin commit ni push |
-| `PG-5.05` | Pendiente; fuera del alcance reanudado | Sin verificaciones en esta reanudación | No se implementó negociación ni confirmación de escrituras |
-| `PG-5.06` | | | |
+| `PG-5.05` | Implementación ligera `.01`–`.06` completada en una iteración; `.07` excluida; fase sin cierre verde | 20 tests `network_*` de la CLI, tests filtrados de clasificación y cinta en runtime, corpus (191), `lock --check`, `export --check`, `cargo check`, Clippy, `rustfmt`, `rust-checks`, `cargo deny` y build release | Sin conformidad pesada, commit ni push; la salida a red sigue sin opciones de concesión en la CLI |
+| `PG-5.06` | Evaluación anticipada parcial de `.01`; selección de transporte usada por `.05`, evidencia completa pendiente | Hyper 1.11.1 directo, Rustls 0.23.46, DNS inyectable, una conexión, respuesta 302 visible, cancelación y clasificación TLS; crecimiento release medido | Queda la matriz TLS y la prueba explícita de proxy/flujo antes de cerrar `.01`; no se abrieron las demás tareas de PG-5.06 |
 | `PG-5.07` | | | |
 | `PG-5.08` | | | |
 | `PG-5.09` | | | |
@@ -1194,6 +1195,40 @@ en esta continuación; no se borraron cachés.
 - **Pendientes y parada:** la comprobación real de TLS, proxy y conexión fijada a IP depende del adaptador y la batería
   de red. `.07` queda sin marcar; por ello no se declara `PHASE-GREEN` ni se cierra la fase. Rama correcta, cambios
   locales sin commit ni push.
+
+### Registro de ejecución de PG-5.05 · 2026-10-29
+
+- **Alcance:** se implementaron `.01`–`.06` en una sola iteración sobre `feature/agregar-ruta-de-especificacion`.
+  Se excluyó `PG-5.05.07` de desarrollo y ejecución. La elección del transporte se adelantó con autorización
+  expresa para evaluar `PG-5.06.01`; no se avanzó al resto de PG-5.06.
+- **Corpus:** `LIB.HTTP` no contiene identidades `H6`/`H7`; se amplió la regla vigente `R5` y sus verificaciones,
+  sin inventar reglas paralelas. `C25`–`C27` cubren corte de GET, corte de DELETE y cancelación de POST. `R5` de
+  `ENG.EXEC.EFFECT-COMMIT` y sus casos `C8`–`C10` registran resultado, incertidumbre y un solo efecto. `R6` y
+  `C16` de `ENG.EFFECT.TAPE` sellan `UncertainExternalState` cuando se abandona `network_send`. Se refrescó el
+  lock y se regeneró la exportación conservando identidades y versiones.
+- **Implementación:** runtime conserva GET/HEAD como no mutadores y POST/PUT/PATCH/DELETE como mutadores; la
+  cancelación de un envío abandonado deja la cinta incierta. La CLI realiza un solo envío HTTP/1 por conexión, sin
+  reintento, redirección, cookies ni proxy ambiental; mide la incertidumbre desde el primer byte HTTP escrito,
+  limita la respuesta por flujo y aborta la tarea de conexión al cancelar. Rustls diferencia certificados inválidos
+  de otros fallos TLS. Se extrajo `resolve_reference` en el resolvedor de redirecciones para cumplir el límite de
+  anidamiento de `rust-checks` sin cambiar su comportamiento. Se actualizaron los README del motor y la CLI.
+- **Decisión de transporte adelantada:** se seleccionó Hyper `1.11.1` con Tokio `1.54.1`, Rustls `0.23.46`,
+  `tokio-rustls` `0.26.6` y raíces nativas `rustls-native-certs` `0.8.5`. La conexión directa de Hyper evita
+  capas que agreguen reintentos, proxy o seguimiento. Las fuentes consultadas y la decisión quedaron en el README
+  de la CLI. `cargo deny check` pasó con la base local; la persona autorizó agregar `ISC`. Se descartó
+  `rustls-pemfile` por su aviso de mantenimiento; `rustls-pki-types` `1.15.1` analiza PEM. El único skip nuevo de
+  versiones múltiples es `windows-sys@0.52.0`, requerido por `ring`.
+- **Verificación ligera:** pasaron los 20 tests filtrados `network_*` de la CLI, incluidos cinco loopback de
+  envío y cancelación, DNS/política y tres pruebas TLS; pasaron las pruebas filtradas de clasificación de métodos
+  y de cinta del runtime. También pasaron `cargo check --all-targets`, Clippy estricto, `rustfmt --check`,
+  `rust-checks all .` de CLI y runtime, `see validate` (191), `lock --check`, `export --check`, `cargo deny check`
+  y `git diff --check`. La toolchain fue `1.99.0` en macOS arm64. Con 27 GiB libres, el build release pasó:
+  17,886,160 bytes frente a 15,525,680 antes de añadir el transporte, crecimiento de 2,360,480 bytes (≈2.25 MiB).
+- **Pendientes de la evaluación `.06.01`:** falta la prueba de integración del proxy ambiental y la matriz de
+  servidor TLS local (certificado válido, vencido, de otro host y autofirmado), además del corte/plazo de respuesta
+  por flujo. La selección está documentada, pero `.06.01` no se declara cerrada hasta medir esos criterios.
+- **Parada:** `.07` permanece sin marcar y no se corrieron conformidad `--only`, baterías ni integración pesada. No
+  se declara `PHASE-GREEN` ni se cierra la fase; rama correcta, cambios locales sin commit ni push.
 
 ---
 

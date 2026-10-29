@@ -659,10 +659,11 @@
   "id": "R6",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Las entradas de la cinta registran la tarea que pidió el efecto en task_id, que vale 0 para la tarea raíz. effect_seq numera los efectos en orden de petición y delivery_seq indica la posición de entrega en la cinta; delivery_seq se omite cuando coincide con effect_seq, de modo que un programa sin efectos concurrentes graba la misma cinta que antes de existir las tareas. Un efecto cuya tarea se cancela mientras lo espera queda abandonado y se sella con el desenlace abandoned al terminar la ejecución; si la operación escribía, la cinta pasa a UncertainExternalState. La reproducción entrega los resultados en el orden de la cinta y una entrega distinta de la grabada es replay_divergence.",
+  "texto": "Las entradas de la cinta registran la tarea que pidió el efecto en task_id, que vale 0 para la tarea raíz. effect_seq numera los efectos en orden de petición y delivery_seq indica la posición de entrega en la cinta; delivery_seq se omite cuando coincide con effect_seq, de modo que un programa sin efectos concurrentes graba la misma cinta que antes de existir las tareas. Un efecto cuya tarea se cancela mientras lo espera queda abandonado y se sella con el desenlace abandoned al terminar la ejecución; si la operación escribía, incluida network_send, la cinta pasa a UncertainExternalState. La reproducción entrega los resultados en el orden de la cinta y una entrega distinta de la grabada es replay_divergence.",
   "verificacion": [
     "C13",
-    "C14"
+    "C14",
+    "C16"
   ]
 }
 ```
@@ -815,6 +816,38 @@
     "requested_permissions": ["red"],
     "grabar_y_reproducir": true,
     "http": {"GET https://fake.test/a": {"estado": 200}}
+  }
+}
+```
+```caso
+{
+  "id": "C16",
+  "regla": "R6",
+  "perfiles": ["es", "en"],
+  "rigor": ["estricto", "flexible"],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "done\n",
+    "terminacion": "completed",
+    "anfitrion_observado": {
+      "llamadas": 1,
+      "recursos_abiertos": 0,
+      "estado_cinta": "uncertain_external_state",
+      "efectos": [
+        {"effect_seq": 1, "capability_kind": "network", "operation": "request_network", "outcome": "committed"},
+        {"effect_seq": 2, "task_id": 1, "capability_kind": "network", "operation": "network_send", "outcome": "abandoned"}
+      ]
+    }
+  },
+  "programas": {
+    "es": "SubProceso Suspendible Wait(net Como RedCap)\nDescartar Aguardar net.Enviar(PeticionHttp(MetodoHttp.POST, \"https://fake.test/abandoned-post\"));\nFinSubProceso\nSubProceso Suspendible Fail() Como Resultado<Entero, Cadena>\nRetornar Error(\"problem\");\nFinSubProceso\nAlgoritmo Main\nDefinir net Como RedCap <- Propagar SolicitarRed();\nTareas failureReport\nLanzar Wait(net);\nLanzar Fail();\nFinTareas\nDescartar failureReport;\nEscribir \"done\";\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Wait(net as NetworkCap)\ndiscard await net.send(HttpRequest(HttpMethod.POST, \"https://fake.test/abandoned-post\"));\nendSubroutine\nsubroutine suspendable Fail() as result<integer, string>\nreturn failure(\"problem\");\nendSubroutine\nalgorithm Main\ndefine net as NetworkCap <- propagate requestNetwork();\ntasks failureReport\nspawn Wait(net);\nspawn Fail();\nendTasks\ndiscard failureReport;\nwrite \"done\";\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": ["red"],
+    "requested_permissions": ["red"],
+    "grabar_y_reproducir": true
   }
 }
 ```
