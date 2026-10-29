@@ -692,16 +692,17 @@ derivado`, y sus esperados se derivan de la regla, nunca de la salida del motor 
 
 ### PG-5.08 · `PERF.ARTIFACT.SIZE` se mantiene
 
-- [ ] `PG-5.08.01` Especificación: sin cambios en `PERF.ARTIFACT.SIZE` (no se aumentan presupuestos para ocultar una
+- [x] `PG-5.08.01` Especificación: sin cambios en `PERF.ARTIFACT.SIZE` (no se aumentan presupuestos para ocultar una
   regresión, `ADR-06`).
-- [ ] `PG-5.08.02` Casos: no aplica (medición, no comportamiento).
-- [ ] `PG-5.08.03` Tests: comprobación de grafo — `cargo tree --locked -e normal` en `packages/pseudolearn_engine`
+- [x] `PG-5.08.02` Casos: no aplica (medición, no comportamiento).
+- [x] `PG-5.08.03` Tests: comprobación de grafo — `cargo tree --locked -e normal` en `packages/pseudolearn_engine`
   (crates `pseudolearn_api` sin `native`, `pseudolearn_wasm`) y en `apps/pseudolearn_app/native` no contiene la
-  biblioteca HTTP elegida, `rustls`, `hyper` ni resolvedores DNS; se registra como test de arquitectura del miembro
-  si existe el mecanismo, o como orden documentada en el README.
-- [ ] `PG-5.08.04` Código: ninguno esperado.
-- [ ] `PG-5.08.05` README del motor y de la app (garantía de grafo).
-- [ ] `PG-5.08.06` Ligera: `cargo tree` anterior tras la iteración 4.
+  biblioteca HTTP elegida, `rustls`, `hyper` ni resolvedores DNS. Se amplió `isolation` en los archivos de reglas del
+  motor y del puente para comprobar esta restricción. `apps/pseudolearn_app/native/Cargo.lock` se actualizó para fijar
+  cuatro paquetes transitivos que faltaban del grafo actual del motor.
+- [x] `PG-5.08.04` Código: ninguno.
+- [x] `PG-5.08.05` README del motor y de la app (garantía de grafo).
+- [x] `PG-5.08.06` Ligera: `cargo tree` anterior tras la iteración 4.
 - [ ] `PG-5.08.07` Pesada: medición `PERF.ARTIFACT.SIZE` (biblioteca del puente `ios-arm64` ≤ 5 MiB, Wasm ≤ 900 KiB
   con Brotli) con el procedimiento del README de la app y del crate Wasm, comparada con `a1de5355`.
 
@@ -1021,7 +1022,7 @@ README y la regresión `PERF.SUITE.CORE`; desde `apps/pseudolearn_app`, `flutter
 | `PG-5.05` | Implementación ligera `.01`–`.06` completada en una iteración; `.07` excluida; fase sin cierre verde | 20 tests `network_*` de la CLI, tests filtrados de clasificación y cinta en runtime, corpus (191), `lock --check`, `export --check`, `cargo check`, Clippy, `rustfmt`, `rust-checks`, `cargo deny` y build release | Sin conformidad pesada, commit ni push; la salida a red sigue sin opciones de concesión en la CLI |
 | `PG-5.06` | Implementación ligera de `.01`–`.06` completada en una iteración; `.07` excluida; fase sin cierre verde | Selección: Hyper 1.11.1 con HTTP/1 directo, Rustls 0.23.46 y `flate2` 1.1.10 con backend Rust; `cargo deny check` pasa sin ampliar licencias. Documentación consultada: [Hyper 1.11.1](https://docs.rs/hyper/1.11.1/hyper/client/conn/http1/fn.handshake.html), [reqwest 0.13.5](https://docs.rs/reqwest/0.13.5/reqwest/), [ureq 3.4.2](https://docs.rs/ureq/3.4.2/ureq/) y [flate2 1.1.10](https://docs.rs/flate2/1.1.10/flate2/). API: concurrencia fuera del orden de solicitud y cinta en orden de finalización (1 test), orden/reproducción de efectos (9) y negociación (3). Runtime: 6 tests de política y 4 de configuración. CLI: transporte, flujo, cancelación, proxy y matriz TLS (19), DNS (7), validación TLS (3), opciones (2), rechazo `--native` con red (2); Fetch (10). `see validate` (191), `lock --check`, `export --check`, `cargo check --all-targets`, Clippy estricto, `rustfmt --check`, `rust-checks all .` en engine y CLI; build `release` 17,886,160 → 17,998,784 bytes (+112,624; 0.11 MiB). | Se eligió Hyper porque expone el handshake sobre el `TcpStream` ya resuelto por el adaptador; la prueba con `HTTPS_PROXY` confirma cero conexiones al proxy. La matriz local acepta una raíz PEM declarada y rechaza certificados caducados, de host incorrecto y autofirmados; `/grande`, `/bomba-gzip`, `/lento`, redirección visible y cancelación también pasan. No se ejecutó `.07` (`E-PG-07`); sin commit ni push |
 | `PG-5.07` | Implementación ligera `.01`–`.06` completada en una iteración; `.07` excluida; fase sin cierre verde | Servidor: 4 tests filtrados del `xtask` (rutas, loopback, transmisión continua, demora y TLS). Corpus: caso negativo añadido y `see validate` (191), `lock --check`, `export --check`. CLI: `cargo check`, Clippy estricto, `rustfmt --check`, `rust-checks all .` y `cargo deny check` | No se ejecutaron la auditoría de URL ni la conformidad completa de `.07`; sin commit ni push |
-| `PG-5.08` | | | |
+| `PG-5.08` | Implementación ligera `.01`–`.06` completada en una iteración; `.07` excluida; fase sin cierre verde | `PERF.ARTIFACT.SIZE` y el corpus siguen sin cambios. `cargo tree --locked -e normal` de `pseudolearn_api` sin `native`, `pseudolearn_wasm` y `pseudolearn_bridge` no contiene paquetes de HTTP, TLS ni resolución DNS; `rust-checks isolation` pasa en engine y app | El lock del puente se regeneró en modo offline por cuatro paquetes transitivos que faltaban del `serde_json` actual. No se ejecutó la medición `.07`; sin commit ni push |
 | `PG-5.09` | | | |
 | `PG-5.10` | | | |
 | Lectura pendiente de §2 | | | |

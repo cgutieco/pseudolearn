@@ -10,9 +10,42 @@ generated_sources:
   - crates/pseudolearn_vm/generated
 deterministic_output_crates: [pseudolearn_project, pseudolearn_ir, pseudolearn_lowering, pseudolearn_runtime, pseudolearn_library, pseudolearn_diagnostics, pseudolearn_syntax, pseudolearn_semantic, pseudolearn_bytecode, pseudolearn_vm, pseudolearn_timeline, pseudolearn_service, pseudolearn_api, pseudolearn_codegen, pseudolearn_wasm]
 isolation:
+  - package: pseudolearn_api
+    targets: [wasm32-unknown-unknown]
+    forbidden:
+      - pseudolearn_codegen
+      - pseudolearn_aot_rt
+      - "cranelift-*"
+      - http
+      - http-body-util
+      - hyper
+      - hyper-util
+      - reqwest
+      - ureq
+      - rustls
+      - rustls-native-certs
+      - tokio-rustls
+      - hickory-resolver
+      - trust-dns-resolver
+      - dns-lookup
   - package: pseudolearn_wasm
     targets: [wasm32-unknown-unknown]
-    forbidden: [pseudolearn_codegen, pseudolearn_aot_rt, "cranelift-*"]
+    forbidden:
+      - pseudolearn_codegen
+      - pseudolearn_aot_rt
+      - "cranelift-*"
+      - http
+      - http-body-util
+      - hyper
+      - hyper-util
+      - reqwest
+      - ureq
+      - rustls
+      - rustls-native-certs
+      - tokio-rustls
+      - hickory-resolver
+      - trust-dns-resolver
+      - dns-lookup
 layers:
   - name: pseudolearn_source
     path: crates/pseudolearn_source

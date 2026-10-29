@@ -72,7 +72,7 @@ su límite `catch_unwind`.
 
 `flutter_rust_bridge` y `flutter_rust_bridge_hooks` se fijan en `2.13.0`. Native Assets compila y
 empaqueta la biblioteca con el SDK de Rust fijado. El módulo `native` compila la API sin activar la
-feature `native` de `pseudolearn_api`, por lo que el puente no incorpora Cranelift. `rust-checks isolation` lo comprueba por destino (iOS en dispositivo y simulador, macOS arm64 y x86_64, Windows x64) y rechaza que `pseudolearn_codegen`, `pseudolearn_aot_rt` o cualquier `cranelift-*` sea alcanzable desde `pseudolearn_bridge`. Android no es un destino de la app y por eso no figura.
+feature `native` de `pseudolearn_api`, por lo que el puente no incorpora Cranelift. `rust-checks isolation` lo comprueba por destino (iOS en dispositivo y simulador, macOS arm64 y x86_64, Windows x64) y rechaza que `pseudolearn_codegen`, `pseudolearn_aot_rt`, cualquier `cranelift-*`, Hyper, `http`, Rustls, clientes HTTP o resolvedores DNS sean alcanzables desde `pseudolearn_bridge`. `cargo tree --locked -e normal` desde este directorio muestra el mismo grafo fijado por `Cargo.lock`. Android no es un destino de la app y por eso no figura.
 
 El build de Release macOS conserva los slices arm64 y x86_64 en `pseudolearn_bridge.framework`. iOS
 compila para dispositivo y simulador. Windows instala el DLL junto al ejecutable a través de

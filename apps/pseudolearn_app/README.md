@@ -2088,6 +2088,9 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
   generado de FFI tiene convenciones que no coinciden con las del código escrito a mano.
 - **Elección:** `flutter_rust_bridge`, su generador y `flutter_rust_bridge_hooks` se fijan juntos en `2.13.0`.
   El backend elegido es Native Assets; la integración conserva desactivada la feature `native` de `pseudolearn_api`.
+  El transporte HTTP con Hyper y Rustls reside en la CLI; el puente excluye Hyper, clientes HTTP, TLS y resolvedores
+  DNS. `rust-checks isolation` verifica los destinos nativos y `cargo tree --locked -e normal` permite revisar el grafo
+  fijado del puente desde `native/`.
   Las operaciones de frontera se declaran `#[frb(sync)]`; la configuración deja `default_dart_async: false`.
   La sesión vive en un registro local al hilo invocador y Dart transporta un handle `u64`; `ApiSession` no se expone
   como objeto opaco ni cruza hilos. El handle llega a Dart como `BigInt`, por lo que conserva todo el rango `u64`.

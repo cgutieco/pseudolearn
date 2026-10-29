@@ -13,7 +13,22 @@ isolation:
       - aarch64-apple-darwin
       - x86_64-apple-darwin
       - x86_64-pc-windows-msvc
-    forbidden: [pseudolearn_codegen, pseudolearn_aot_rt, "cranelift-*"]
+    forbidden:
+      - pseudolearn_codegen
+      - pseudolearn_aot_rt
+      - "cranelift-*"
+      - http
+      - http-body-util
+      - hyper
+      - hyper-util
+      - reqwest
+      - ureq
+      - rustls
+      - rustls-native-certs
+      - tokio-rustls
+      - hickory-resolver
+      - trust-dns-resolver
+      - dns-lookup
 layers:
   - name: pseudolearn_bridge
     path: .

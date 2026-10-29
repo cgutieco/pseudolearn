@@ -62,6 +62,7 @@ La medición final histórica de AWFY-core en macOS ARM64 obtuvo media geométri
 ignorados y aceptan archivos de referencia externos.
 Comandos de compilación y verificación:
 - Verificación completa del motor: `cargo xtask verify`.
+- Grafo de API sin AOT y transporte HTTP: `cargo tree --locked -e normal -p pseudolearn_api --no-default-features` y `cargo tree --locked -e normal -p pseudolearn_wasm`; `cargo xtask verify` comprueba el aislamiento declarado.
 - Compilación optimizada: `cargo build --release`.
 - Pruebas unitarias y de integración: `cargo test --workspace`.
 - Preparación Wasm: `rustup target add wasm32-unknown-unknown --toolchain 1.99.0` y `cargo install wasm-bindgen-cli --version 0.2.129 --locked`.
@@ -115,7 +116,7 @@ Concurrencia: `pseudolearn_runtime` conserva identidades monotónicas, ámbitos,
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
-Problema: los consumidores móviles y Wasm no compilan programas nativos. Elección: la API desactiva AOT por omisión y expone sus módulos y dependencias nativas solo con la feature `native`; la CLI y el trabajador AOT la activan explícitamente. Se descarta confiar en la eliminación de símbolos del enlazador, porque no elimina Cranelift del grafo de compilación. La exclusión se verifica con la clave `isolation` de `architecture.yaml` y `rust-checks isolation`: `pseudolearn_wasm` no alcanza `pseudolearn_codegen`, `pseudolearn_aot_rt` ni `cranelift-*` en `wasm32-unknown-unknown`, y el puente de la app lo comprueba en sus destinos iOS, macOS y Windows.
+Problema: los consumidores móviles y Wasm no compilan programas nativos ni deben incorporar transporte de red. Elección: la API desactiva AOT por omisión y expone sus módulos y dependencias nativas solo con la feature `native`; la CLI y el trabajador AOT la activan explícitamente. El transporte HTTP elegido, Hyper con Rustls, queda en la CLI; API, Wasm y puente móvil excluyen Hyper, `http`, Rustls, clientes HTTP y resolvedores DNS. Se descarta confiar en la eliminación de símbolos del enlazador, porque no elimina dependencias del grafo de compilación. La exclusión se verifica con la clave `isolation` de `architecture.yaml` y `rust-checks isolation`: `pseudolearn_api` y `pseudolearn_wasm` se comprueban en `wasm32-unknown-unknown`, y el puente de la app en sus destinos iOS, macOS y Windows.
 
 
 La arquitectura explota el determinismo para separar ejecución rápida de reconstrucción observable.
