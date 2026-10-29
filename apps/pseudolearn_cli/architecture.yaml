@@ -10,7 +10,7 @@ layers:
   - name: xtask
     path: xtask
     may_import: []
-    external_dependencies: []
+    external_dependencies: [flate2, rcgen, rustls, serde_json]
     unsafe_allowed: false
     tooling: true
 limits:

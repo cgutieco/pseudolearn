@@ -84,7 +84,7 @@
   "fuerza": "DEBE",
   "clase": "semantica",
   "texto": "SolicitarRed devuelve Resultado<RedCap, ErrorES> y exige el permiso red. La capacidad solo contiene los orígenes concedidos por el anfitrión. Limitar acepta un origen perteneciente a esa capacidad y devuelve otra capacidad cuyo conjunto es ese único origen; un origen no concedido produce DestinoDenegado. Cerrar invalida la capacidad.",
-  "verificacion": ["C1", "C2", "C3", "C9"]
+  "verificacion": ["C1", "C2", "C3", "C9", "C28"]
 }
 ```
 
@@ -531,6 +531,29 @@
     "permissions": ["red"],
     "requested_permissions": ["red"],
     "grabar_y_reproducir": true
+  }
+}
+```
+
+```caso
+{
+  "id": "C28",
+  "regla": "R1",
+  "perfiles": ["es", "en"],
+  "rigor": ["estricto", "flexible"],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "permiso_denegado\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir red Como RedCap <- Propagar SolicitarRed();\nDefinir respuesta Como RespuestaHttp <- Propagar red.Enviar(PeticionHttp(MetodoHttp.GET, \"https://fake.test/no-script\"));\nRetornar Exito(respuesta.Estado());\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(estado): Escribir estado;\nError(error): Escribir error.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<integer, IoError>\ndefine network as NetworkCap <- propagate requestNetwork();\ndefine response as HttpResponse <- propagate network.send(HttpRequest(HttpMethod.GET, \"https://fake.test/no-script\"));\nreturn success(response.status());\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(status): write status;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": [],
+    "requested_permissions": ["red"]
   }
 }
 ```

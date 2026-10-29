@@ -152,6 +152,35 @@ Los certificados y claves de `tests/fixtures/tls` son material sintético para l
 certificado válido, expirado, host incorrecto y autofirmado; el proxy de prueba se inicia en un proceso
 hijo para aislar las variables `HTTPS_PROXY` del resto de los tests.
 
+#### Servidor HTTP de pruebas local
+
+`cargo xtask http-test-server` inicia el servidor de integración en puertos efímeros de loopback y
+publica en una línea JSON `http_address`, `https_address`, `certificate_directory`, `root_certificate`
+y `tls_certificate`. El proceso queda en primer plano hasta que se detiene. `--bind` acepta solo una
+dirección loopback (`127.0.0.1` o `::1`); `--tls-certificate` selecciona `valid`, `expired`,
+`wrong-host` o `self-signed`. Por omisión se usa `127.0.0.1` y el certificado válido.
+
+El servidor crea sus certificados PEM bajo `target/http-test-server/<pid>/` al arrancar; no se
+versionan ni se reutilizan como certificados de producto. `root.pem` firma las variantes válida,
+expirada y de host incorrecto; `self-signed.pem` no depende de esa raíz. El código genera los
+certificados con [`rcgen` 0.14.10](https://docs.rs/rcgen/0.14.10/rcgen/struct.CertificateParams.html),
+sin invocar herramientas del sistema.
+
+| Ruta | Respuesta de prueba |
+|---|---|
+| `/texto`, `/binario`, `/vacio` | Cuerpo UTF-8, bytes no UTF-8 y respuesta vacía |
+| `/estado/404`, `/estado/500` | Estados HTTP completos 404 y 500 |
+| `/eco` | Método, ruta, cabeceras recibidas y cuerpo |
+| `/redireccion/mismo`, `/redireccion/otro-origen`, `/redireccion/http` | Respuesta 302 relativa, con otro origen y con bajada a HTTP |
+| `/grande`, `/infinito`, `/bomba-gzip` | 8 MiB + 1, flujo chunked sin fin y gzip que se expande a 8 MiB + 1 |
+| `/lento`, `/cerrar-a-mitad` | Espera de 60 segundos y cierre sin respuesta después de recibir el cuerpo |
+| `/json-profundo`, `/cabeceras-muchas`, `/contador` | JSON con 65 niveles, 65 cabeceras y contador de solicitudes por ruta |
+
+Todas las rutas responden también por TLS. El servidor no resuelve dominios externos ni sigue
+redirecciones; CORS permite que una página local use las direcciones impresas. Las pruebas de
+transporte con Playwright pueden tomar esas direcciones como destino de Fetch; `fetch_host.test.mjs`
+mantiene su transporte falso para las verificaciones unitarias.
+
 El `network_origins` del anfitrión API lleva los orígenes que el usuario concedió al CLI; el runtime
 valida con ellos cada `network_send` antes de pedir el resultado al transporte físico. En opciones
 bilingües, `--origin`/`--origen`, `--local-origin`/`--origen-local` y `--test-root`/`--raiz-prueba`

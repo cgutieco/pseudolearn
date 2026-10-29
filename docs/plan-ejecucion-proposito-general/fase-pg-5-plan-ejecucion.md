@@ -673,19 +673,19 @@ derivado`, y sus esperados se derivan de la regla, nunca de la salida del motor 
 
 ### PG-5.07 · Servidor de prueba local controlado; corpus sin Internet
 
-- [ ] `PG-5.07.01` Especificación: regla en `LIB.HTTP` o en el README de `pseudolearn_spec` (según dónde viva hoy la
+- [x] `PG-5.07.01` Especificación: regla en `LIB.HTTP` o en el README de `pseudolearn_spec` (según dónde viva hoy la
   política de conformidad sin red; la iteración 1 lo decide leyendo `SEE.ORACLE.POLICY`): ningún caso del corpus
   abre sockets; el anfitrión falso es la única fuente de respuestas.
-- [ ] `PG-5.07.02` Casos: un negativo del corredor que demuestra que un caso que pidiera red real sin `anfitrion.http`
+- [x] `PG-5.07.02` Casos: un negativo del corredor que demuestra que un caso que pidiera red real sin `anfitrion.http`
   recibe `PermisoDenegado` y no abre conexión.
-- [ ] `PG-5.07.03` Tests espejo: tests del propio servidor en `apps/pseudolearn_cli/xtask` (cada ruta de §7.3 responde
+- [x] `PG-5.07.03` Tests espejo: tests del propio servidor en `apps/pseudolearn_cli/xtask` (cada ruta de §7.3 responde
   lo guionizado; escucha solo en loopback; rechaza arrancar en otra interfaz).
-- [ ] `PG-5.07.04` Código: subcomando `http-test-server` del `xtask` de la CLI (puerto efímero impreso en la salida
+- [x] `PG-5.07.04` Código: subcomando `http-test-server` del `xtask` de la CLI (puerto efímero impreso en la salida
   estándar, directorio de certificados generado bajo `target/`, rutas de §7.3); certificados de prueba generados en
   tiempo de ejecución, nunca versionados; `architecture.yaml` de la CLI (dependencias del `xtask`).
-- [ ] `PG-5.07.05` README de la CLI (cómo lanzar el servidor, rutas y garantías) y del crate Wasm (cómo lo usan las
+- [x] `PG-5.07.05` README de la CLI (cómo lanzar el servidor, rutas y garantías) y del crate Wasm (cómo lo usan las
   pruebas de navegador).
-- [ ] `PG-5.07.06` Ligera: `cargo test` del `xtask` de la CLI filtrado al servidor.
+- [x] `PG-5.07.06` Ligera: `cargo test` del `xtask` de la CLI filtrado al servidor.
 - [ ] `PG-5.07.07` Pesada: auditoría `rg -n "https?://" packages/pseudolearn_spec/specifications` sin direcciones
   fuera de loopback y de `*.test` de ejemplo; conformidad completa de §10.1 sin red (se ejecuta con la red del
   sistema disponible; el corredor no la usa).
@@ -1020,7 +1020,7 @@ README y la regresión `PERF.SUITE.CORE`; desde `apps/pseudolearn_app`, `flutter
 | `PG-5.04` | Implementación y verificaciones ligeras completadas; `.07` excluida; fase sin cierre verde | 7 tests de runtime, 5 de política de direcciones, 7 del resolvedor, 1 de TLS y test ABI HTTP; `see validate` (191), `lock --check`, `export --check`, Clippy estricto, `rustfmt --check` y `rust-checks all .` de la CLI | La batería pesada y la conformidad de `LIB.HTTP.POLICY` siguen pendientes por exclusión explícita de `.07`. La configuración de TLS/resolvedor no se integra aún en transporte real; la elección de biblioteca pertenece a `PG-5.06.01`. Sin commit ni push |
 | `PG-5.05` | Implementación ligera `.01`–`.06` completada en una iteración; `.07` excluida; fase sin cierre verde | 20 tests `network_*` de la CLI, tests filtrados de clasificación y cinta en runtime, corpus (191), `lock --check`, `export --check`, `cargo check`, Clippy, `rustfmt`, `rust-checks`, `cargo deny` y build release | Sin conformidad pesada, commit ni push; la salida a red sigue sin opciones de concesión en la CLI |
 | `PG-5.06` | Implementación ligera de `.01`–`.06` completada en una iteración; `.07` excluida; fase sin cierre verde | Selección: Hyper 1.11.1 con HTTP/1 directo, Rustls 0.23.46 y `flate2` 1.1.10 con backend Rust; `cargo deny check` pasa sin ampliar licencias. Documentación consultada: [Hyper 1.11.1](https://docs.rs/hyper/1.11.1/hyper/client/conn/http1/fn.handshake.html), [reqwest 0.13.5](https://docs.rs/reqwest/0.13.5/reqwest/), [ureq 3.4.2](https://docs.rs/ureq/3.4.2/ureq/) y [flate2 1.1.10](https://docs.rs/flate2/1.1.10/flate2/). API: concurrencia fuera del orden de solicitud y cinta en orden de finalización (1 test), orden/reproducción de efectos (9) y negociación (3). Runtime: 6 tests de política y 4 de configuración. CLI: transporte, flujo, cancelación, proxy y matriz TLS (19), DNS (7), validación TLS (3), opciones (2), rechazo `--native` con red (2); Fetch (10). `see validate` (191), `lock --check`, `export --check`, `cargo check --all-targets`, Clippy estricto, `rustfmt --check`, `rust-checks all .` en engine y CLI; build `release` 17,886,160 → 17,998,784 bytes (+112,624; 0.11 MiB). | Se eligió Hyper porque expone el handshake sobre el `TcpStream` ya resuelto por el adaptador; la prueba con `HTTPS_PROXY` confirma cero conexiones al proxy. La matriz local acepta una raíz PEM declarada y rechaza certificados caducados, de host incorrecto y autofirmados; `/grande`, `/bomba-gzip`, `/lento`, redirección visible y cancelación también pasan. No se ejecutó `.07` (`E-PG-07`); sin commit ni push |
-| `PG-5.07` | | | |
+| `PG-5.07` | Implementación ligera `.01`–`.06` completada en una iteración; `.07` excluida; fase sin cierre verde | Servidor: 4 tests filtrados del `xtask` (rutas, loopback, transmisión continua, demora y TLS). Corpus: caso negativo añadido y `see validate` (191), `lock --check`, `export --check`. CLI: `cargo check`, Clippy estricto, `rustfmt --check`, `rust-checks all .` y `cargo deny check` | No se ejecutaron la auditoría de URL ni la conformidad completa de `.07`; sin commit ni push |
 | `PG-5.08` | | | |
 | `PG-5.09` | | | |
 | `PG-5.10` | | | |

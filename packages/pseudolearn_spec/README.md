@@ -432,8 +432,12 @@ bucles pequeños. El texto normativo explicita esta acumulación.
 
 `LIB.HTTP` declara los métodos, las respuestas HTTP completas y el formato de los guiones locales en
 `anfitrion.http`. Los guiones se resuelven por método y URL en el anfitrión de memoria; no habilitan
-conexiones públicas. La clave se valida y se interpreta en `see_validation`, mientras `see_format`
-permite URL literales en el texto de contratos sin aceptar enlaces Markdown externos.
+conexiones públicas. El corredor de conformidad nunca abre sockets ni resuelve nombres: `anfitrion.http`
+es la única fuente de respuestas HTTP para los casos. Un caso sin permiso de red recibe
+`PermisoDenegado` al solicitar la capacidad, antes de poder enviar una petición. Las comprobaciones de
+transporte real usan solo el servidor de prueba de la CLI ligado a loopback. La clave se valida y se
+interpreta en `see_validation`, mientras `see_format` permite URL literales en el texto de contratos
+sin aceptar enlaces Markdown externos.
 
 La regla `LIB.HTTP#R6` y su caso `C8` discrepan sobre cintas con credenciales: la regla pide conservar
 la respuesta completa para reproducirla, pero el caso exige una cinta marcada no reproducible tras

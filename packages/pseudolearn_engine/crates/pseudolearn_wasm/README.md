@@ -105,6 +105,13 @@ La comprobación ligera del adaptador Fetch usa `node --test browser/fetch_host.
 servidor ni navegador. Sus casos cubren negociación A4, concesión de origen, opciones Fetch, fallos de
 conexión, redirecciones opacas, tope de cuerpo decodificado, plazo y petición mal formada.
 
+Para comprobar transporte en navegador, iniciar `cargo xtask http-test-server` desde la CLI. El
+proceso publica `http_address`, `https_address` y `root_certificate` en su línea JSON inicial; el
+harness de Playwright puede usar las direcciones como destinos de Fetch y la raíz PEM para confiar en
+TLS dentro de su perfil de prueba, sin desactivar la validación. `browser/server.mjs` sigue sirviendo
+solo la página y los archivos Wasm. Los tests unitarios del adaptador mantienen `fetch` falso y no
+abren sockets.
+
 La prueba de navegador compara respuestas byte por byte con `wasm_native_probe` para completado, análisis, entrada, extremos de enteros, cancelación entre lotes y liberación. Otros casos rechazan JSON inválido, fuerzan crecimiento de memoria, comprueban la invalidación de vistas y verifican que superar el límite falla sin alterar la instancia.
 
 ## 8. Fuentes consultadas y genealogía conceptual
