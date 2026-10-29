@@ -6,6 +6,7 @@ use crate::inline_memory::spill_words;
 use crate::lower_text::value_type_of;
 use crate::lowering::{Instruction, Lowering, bind_result, operand_value};
 use crate::runtime_calls::{RuntimeCall, call_runtime};
+use crate::shadow_stack::{pop_roots, push_roots};
 use crate::word_conversion::to_word;
 use cranelift_codegen::ir::{InstBuilder, Value, types};
 use pseudolearn_ir::{IrType, Operand, Operation};
@@ -46,7 +47,9 @@ pub(crate) fn lower(
         span: instruction.span,
         operands: &[descriptor, buffer],
     };
+    let frame = push_roots(lowering, instruction)?;
     let result = call_runtime(lowering, &call)?;
+    pop_roots(lowering, frame);
     bind_result(lowering, instruction, result);
     Ok(())
 }

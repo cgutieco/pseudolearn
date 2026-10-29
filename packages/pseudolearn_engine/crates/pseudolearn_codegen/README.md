@@ -112,7 +112,9 @@ entero lleva un estado estático (definido, sin valor o con indicador) y todo pa
 entero sin valor estático atrapa sin comprobar, y sobre uno con indicador comprueba el indicador.
 
 Raíces: los puntos seguros son `call`, `call.virtual`, `array.new`, `object.new`, `object.copy`, `text.concat`,
-`text.format`, `const.str` e `in.read`. `liveness` calcula por flujo hacia atrás qué valores `str`, `array` y `obj` siguen
+`text.format`, `const.str`, `in.read` y `effect_call`. `effect_call` es punto seguro porque el runtime asigna al guardar el
+resultado de una operación local, y sus operandos temporales (por ejemplo un `ValorJson` recién construido) viven solo en
+registros; sin esa ventana de raíces un recolector forzado los liberaba antes de leerlos. `liveness` calcula por flujo hacia atrás qué valores `str`, `array` y `obj` siguen
 vivos al entrar en cada uno, incluidos sus operandos, y el generador los copia en `roots[root_top..]`, avanza `root_top`
 (comprueba `root_capacity`) y lo restaura al volver. Las celdas no son asas del montón; el runtime enraíza el contenido de las celdas locales de referencia y el propietario de las celdas de campo o elemento.
 

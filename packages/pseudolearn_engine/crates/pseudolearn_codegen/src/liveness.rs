@@ -25,6 +25,7 @@ pub(crate) const SAFE_POINTS: &[Operation] = &[
     Operation::CollectionRemove,
     Operation::InRead,
     Operation::ConstStr,
+    Operation::EffectCall,
 ];
 
 struct Analysis<'program> {

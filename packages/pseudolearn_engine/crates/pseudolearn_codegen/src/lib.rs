@@ -15,6 +15,8 @@ mod defined_producers;
 mod definition;
 mod dominated_facts;
 mod dominators;
+#[cfg(test)]
+mod effect_roots_tests;
 mod entry_point;
 mod error;
 mod fault_lexeme;
