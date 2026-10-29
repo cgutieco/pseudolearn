@@ -27,7 +27,7 @@ pub(crate) fn values(
         .map(|argument| lower_expression_with_state(argument, state))
         .collect();
     let kind = *state.context.module.expressions.types.get(index)?;
-    let cells = result_cells(descriptor.fallible, kind, span, state);
+    let cells = result_cells(kind, span, state);
     let result_type = result_type(expression, kind, state);
     arguments.extend(cells.iter().copied());
     if awaited {
@@ -54,12 +54,15 @@ fn expression_span(index: usize, state: &ExpressionState<'_, '_>) -> Option<IrSp
 }
 
 fn result_cells(
-    fallible: bool,
     kind: pseudolearn_semantic::TypeId,
     span: Option<IrSpan>,
     state: &mut ExpressionState<'_, '_>,
 ) -> Vec<ValueId> {
-    if fallible {
+    if matches!(
+        state.context.module.types.representation(kind),
+        pseudolearn_semantic::Type::Record(record)
+            if state.context.module.variants.contains_key(&record)
+    ) {
         return crate::expressions_complex::allocate_result_cells(kind, span, state);
     }
     let lowered = crate::types::lower_type(kind, state.context.module);
@@ -72,7 +75,13 @@ fn result_type(
     state: &ExpressionState<'_, '_>,
 ) -> IrType {
     let payload = crate::variant_values::model(expression, state.context.module)
-        .and_then(|variant| variant.payloads.first().copied().flatten())
+        .and_then(|variant| {
+            let position = match variant.family {
+                pseudolearn_semantic::variant_model::VariantFamily::Optional => 1,
+                pseudolearn_semantic::variant_model::VariantFamily::Result => 0,
+            };
+            variant.payloads.get(position).copied().flatten()
+        })
         .unwrap_or(kind);
     crate::types::lower_type(payload, state.context.module)
 }

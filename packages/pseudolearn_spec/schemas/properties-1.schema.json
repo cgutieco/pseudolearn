@@ -60,6 +60,7 @@
               "service_completion_templates",
               "service_format",
               "service_translate",
+              "json_text_roundtrip",
               "program_revision"
             ]
           },

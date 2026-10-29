@@ -9,7 +9,11 @@ pub fn run(arguments: Arguments) -> Result<String, String> {
     if let Some(result) = crate::math_contrast::dispatch(&arguments) {
         return result;
     }
-    let corpus = command_corpus(&arguments)?;
+    let corpus = if arguments.command == "export" {
+        storage::corpus(&arguments.root)?
+    } else {
+        command_corpus(&arguments)?
+    };
     match arguments.command.as_str() {
         "target-parity" => crate::target_parity::execute(&arguments, &corpus),
         "validate" => Ok(format!("Validated {} specifications", corpus.len())),

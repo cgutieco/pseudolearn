@@ -21,6 +21,7 @@
     "introducida_en": "2026"
   },
   "depende_de": [
+    {"id": "LIB.JSON", "version": ">=1.0.0, <2.0.0", "tipo": "requiere"},
     {
       "id": "LANG.TASK.SCOPE",
       "version": ">=1.0.0, <2.0.0",
@@ -37,7 +38,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Son transferibles los escalares, cadenas, enumerados, registros de campos transferibles, Opcional y Resultado de componentes transferibles, Canal de elemento transferible, FalloTareas de error transferible, Inmutable y capacidades. Bytes es transferible porque su interfaz no expone mutación. Los argumentos de Lanzar, elementos de Canal y errores de tareas usan el mismo predicado estructural.",
+  "texto": "Son transferibles los escalares, cadenas, enumerados, registros de campos transferibles, Opcional y Resultado de componentes transferibles, Canal de elemento transferible, FalloTareas de error transferible, Inmutable y capacidades. Bytes y ValorJson son transferibles porque sus interfaces no exponen mutación. Los argumentos de Lanzar, elementos de Canal y errores de tareas usan el mismo predicado estructural.",
   "verificacion": [
     "C1",
     "C2",

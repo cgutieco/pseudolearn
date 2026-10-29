@@ -54,7 +54,7 @@ pub fn check(corpus: &Corpus) -> Vec<String> {
 fn valid_element(element: &str) -> bool {
     let mut characters = element.chars();
     let prefix = characters.next();
-    prefix.is_some_and(|prefix| "RCDEQIPSMOV".contains(prefix))
+    prefix.is_some_and(|prefix| "RCDEQIPSMOVTBJ".contains(prefix))
         && !element.contains(' ')
         && element.len() > 1
         && characters.all(|character| character.is_ascii_digit())

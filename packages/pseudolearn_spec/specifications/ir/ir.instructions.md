@@ -4014,3 +4014,167 @@
   "observacion": []
 }
 ```
+
+
+
+```cobertura
+{
+  "id": "V181",
+  "regla": "LIB.MODEL#M1",
+  "sin_ri": "La consistencia de identidad y facetas se verifica sobre recursos generados por el corpus."
+}
+```
+
+```cobertura
+{
+  "id": "V182",
+  "regla": "LIB.MODEL#M2",
+  "sin_ri": "La consistencia de identidad y facetas se verifica sobre recursos generados por el corpus."
+}
+```
+
+```cobertura
+{
+  "id": "V183",
+  "regla": "LIB.MODEL#M3",
+  "sin_ri": "La consistencia de identidad y facetas se verifica sobre recursos generados por el corpus."
+}
+```
+
+```cobertura
+{
+  "id": "V184",
+  "regla": "LIB.MODEL#M4",
+  "sin_ri": "La consistencia de identidad y facetas se verifica sobre recursos generados por el corpus."
+}
+```
+
+```cobertura
+{
+  "id": "V185",
+  "regla": "LIB.CORE.TEXT#T1",
+  "instrucciones": [
+    "effect_call"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V186",
+  "regla": "LIB.CORE.TEXT#T2",
+  "instrucciones": [
+    "effect_call"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V187",
+  "regla": "LIB.CORE.TEXT#T3",
+  "instrucciones": [
+    "effect_call"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V188",
+  "regla": "LIB.CORE.BYTES#B1",
+  "instrucciones": [
+    "effect_call"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V189",
+  "regla": "LIB.CORE.BYTES#B2",
+  "instrucciones": [
+    "effect_call"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V190",
+  "regla": "LIB.JSON#J1",
+  "instrucciones": [
+    "effect_call"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V191",
+  "regla": "LIB.JSON#J2",
+  "instrucciones": [
+    "effect_call"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V192",
+  "regla": "LIB.JSON#J3",
+  "instrucciones": [
+    "effect_call"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V193",
+  "regla": "LIB.JSON#J4",
+  "instrucciones": [
+    "effect_call"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V194",
+  "regla": "LIB.JSON#J5",
+  "instrucciones": [
+    "effect_call"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V195",
+  "regla": "LIB.JSON#J6",
+  "instrucciones": [
+    "effect_call"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V196",
+  "regla": "LIB.JSON#J7",
+  "instrucciones": [
+    "effect_call"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V197",
+  "regla": "LIB.JSON#J8",
+  "instrucciones": [
+    "effect_call"
+  ]
+}
+```

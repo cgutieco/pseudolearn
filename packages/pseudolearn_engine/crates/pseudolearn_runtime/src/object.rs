@@ -130,7 +130,7 @@ fn copy_words(
 
 pub fn object_class(heap: &Heap, handle: Handle) -> Result<u32, MemoryError> {
     let shape_tag = heap.header(handle)?.shape_tag;
-    if shape_tag <= 2 || shape_tag == u32::MAX {
+    if shape_tag <= 2 || shape_tag >= pseudolearn_abi::continuation_layout::CONTINUATION_SHAPE_TAG {
         return Err(MemoryError::Internal);
     }
     shape_tag.checked_sub(3).ok_or(MemoryError::Internal)

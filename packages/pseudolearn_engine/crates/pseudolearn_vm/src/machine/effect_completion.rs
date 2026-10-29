@@ -3,6 +3,22 @@ use crate::{Fault, evaluate::INVALID_BYTECODE, load::model::EffectSite};
 use pseudolearn_runtime::{EffectOperation, HostReply};
 
 impl Machine<'_> {
+    pub(super) fn complete_local_view(
+        &mut self,
+        site: &EffectSite,
+        word: u64,
+    ) -> Result<(), Fault> {
+        let [register] = site.result_cells.as_slice() else {
+            return Err(INVALID_BYTECODE);
+        };
+        let cell = self.cell(*register)?;
+        self.store_cell(cell, word)?;
+        if let Some(destination) = site.destination {
+            self.set_scalar(destination.index, 0)?;
+        }
+        Ok(())
+    }
+
     fn echo_console_text(&mut self, site: &EffectSite) -> Result<(), Fault> {
         let register = site.arguments.first().ok_or(INVALID_BYTECODE)?;
         let text = pseudolearn_runtime::text_content(

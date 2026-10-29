@@ -5,6 +5,9 @@ use crate::types::Type;
 use pseudolearn_abi::EffectValueKind;
 
 pub(crate) fn resolve(session: &mut AnalysisSession<'_>, node: usize, name: &str) -> Option<Type> {
+    if let Some(kind) = crate::json_types::resolve(session, node, name) {
+        return Some(kind);
+    }
     let kind = match name {
         "Bytes" | "bytes" => EffectValueKind::Bytes,
         "ErrorES" | "IoError" => return Some(error_type(session, node)),
@@ -32,15 +35,30 @@ pub(crate) fn value_type(
 ) -> TypeId {
     let kind = match kind {
         EffectValueKind::Integer => Type::Integer,
+        EffectValueKind::Real => Type::Real,
         EffectValueKind::Boolean => Type::Boolean,
         EffectValueKind::Text => Type::String,
         EffectValueKind::TextList => return crate::effect_vectors::text_vector(session, node),
+        EffectValueKind::JsonValue
+        | EffectValueKind::JsonResult
+        | EffectValueKind::JsonKind
+        | EffectValueKind::OptionalBoolean
+        | EffectValueKind::OptionalInteger
+        | EffectValueKind::OptionalReal
+        | EffectValueKind::OptionalText
+        | EffectValueKind::OptionalJsonValue => {
+            return crate::json_types::value_type(session, node, kind);
+        }
         other => opaque(session, node, other),
     };
     session.module.types.intern(kind)
 }
 
-fn opaque(session: &mut AnalysisSession<'_>, node: usize, kind: EffectValueKind) -> Type {
+pub(crate) fn opaque(
+    session: &mut AnalysisSession<'_>,
+    node: usize,
+    kind: EffectValueKind,
+) -> Type {
     if let Some(class) = session
         .module
         .opaque_types

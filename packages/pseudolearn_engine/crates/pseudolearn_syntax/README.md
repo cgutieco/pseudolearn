@@ -41,6 +41,8 @@ inmutables tipadas y acceso a las producciones hijas; las identidades se derivan
 y de los terminales. El generador rechaza referencias sin resolver, delimitadores sin pareja y
 producciones vacías. `ErrorNode` es el único nodo sintético de recuperación. `analysisLimits` aporta
 la cota del análisis, sin una segunda constante escrita a mano.
+Las dos consultas de `contextualVocabulary` usan tablas ordenadas generadas y búsqueda binaria para
+mantener pequeño el cuerpo de consulta cuando crece el vocabulario.
 El recurso `unsupportedConstructs` genera las formas pedagógicas no reservadas; se reconocen solo
 en cabeceras estructurales, nunca al asignar o llamar un identificador homónimo.
 El árbol postorden mantiene `SyntaxNode { kind, first_token, subtree_size }`; las columnas laterales

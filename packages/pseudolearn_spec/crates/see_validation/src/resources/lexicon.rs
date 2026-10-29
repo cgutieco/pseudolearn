@@ -61,6 +61,35 @@ fn signature(entry: &Value) -> Result<(), String> {
     let Some(parameters) = entry.get("parametros") else {
         return Ok(());
     };
+    check_family(entry)?;
+    check_parameters(parameters)?;
+    check_return_kind(entry)
+}
+
+fn check_family(entry: &Value) -> Result<(), String> {
+    if ![
+        "numbers",
+        "text",
+        "bytes",
+        "collections",
+        "io",
+        "time",
+        "json",
+        "network",
+        "tasks",
+    ]
+    .contains(
+        &entry
+            .get("family")
+            .and_then(Value::as_str)
+            .ok_or("Missing builtin family")?,
+    ) {
+        return Err("Unknown builtin family".to_owned());
+    }
+    Ok(())
+}
+
+fn check_parameters(parameters: &Value) -> Result<(), String> {
     let parameters = parameters.as_array().ok_or("Invalid parameter list")?;
     let allowed = [
         "numeric",
@@ -71,6 +100,8 @@ fn signature(entry: &Value) -> Result<(), String> {
         "anyPrimitive",
         "anySnapshot",
         "anyClass",
+        "boolean",
+        "stringVector",
     ];
     if parameters.iter().any(|parameter| {
         parameter
@@ -79,6 +110,10 @@ fn signature(entry: &Value) -> Result<(), String> {
     }) {
         return Err("Unknown parameter kind".to_owned());
     }
+    Ok(())
+}
+
+fn check_return_kind(entry: &Value) -> Result<(), String> {
     let result = entry
         .get("retorno")
         .and_then(Value::as_str)
@@ -90,6 +125,9 @@ fn signature(entry: &Value) -> Result<(), String> {
         "character",
         "sameAsFirstArgument",
         "immutableOfFirstArgument",
+        "optionalInteger",
+        "boolean",
+        "stringVector",
     ]
     .contains(&result)
     {

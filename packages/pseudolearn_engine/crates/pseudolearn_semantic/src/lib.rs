@@ -59,6 +59,7 @@ pub mod interface_model;
 mod interface_realizations;
 mod interface_registry;
 mod interface_signatures;
+mod json_types;
 mod local_registry;
 mod module_calls;
 mod module_cycles;

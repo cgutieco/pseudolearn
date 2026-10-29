@@ -270,6 +270,12 @@
       "executor": "program_revision",
       "seed": 42,
       "samples": 100
+    },
+    {
+      "reference": "LIB.JSON@1.0.0#P1",
+      "executor": "json_text_roundtrip",
+      "seed": 42,
+      "samples": 100
     }
   ],
   "subjects": [

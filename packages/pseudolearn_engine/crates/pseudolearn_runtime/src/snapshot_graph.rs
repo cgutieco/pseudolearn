@@ -30,6 +30,8 @@ fn shared(heap: &Heap, handle: Handle) -> Result<bool, MemoryError> {
         heap.header(handle)?.shape_tag,
         2 | pseudolearn_abi::capability_layout::CAPABILITY_SHAPE_TAG
             | pseudolearn_abi::channel_layout::CHANNEL_SHAPE_TAG
+            | pseudolearn_abi::json_layout::JSON_BLOCK_SHAPE_TAG
+            | pseudolearn_abi::json_layout::JSON_VIEW_SHAPE_TAG
     ))
 }
 

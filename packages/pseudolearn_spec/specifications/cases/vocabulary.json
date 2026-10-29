@@ -363,13 +363,25 @@
     "en": "charFromCode",
     "es": "CaracterDesde"
   },
+  "function:contains": {
+    "en": "contains",
+    "es": "Contiene"
+  },
   "function:cosine": {
     "en": "cos",
     "es": "cos"
   },
+  "function:endsWith": {
+    "en": "endsWith",
+    "es": "TerminaCon"
+  },
   "function:exponential": {
     "en": "exp",
     "es": "exp"
+  },
+  "function:join": {
+    "en": "join",
+    "es": "Unir"
   },
   "function:length": {
     "en": "length",
@@ -383,6 +395,10 @@
     "en": "log",
     "es": "ln"
   },
+  "function:positionOf": {
+    "en": "indexOf",
+    "es": "PosicionDe"
+  },
   "function:random": {
     "en": "random",
     "es": "azar"
@@ -394,6 +410,10 @@
   "function:random.alias.es.0": {
     "en": "random",
     "es": "aleatorio"
+  },
+  "function:replaceAll": {
+    "en": "replace",
+    "es": "Reemplazar"
   },
   "function:round": {
     "en": "round",
@@ -415,6 +435,10 @@
     "en": "snapshot",
     "es": "Instantanea"
   },
+  "function:split": {
+    "en": "split",
+    "es": "Dividir"
+  },
   "function:squareRoot": {
     "en": "sqrt",
     "es": "rc"
@@ -422,6 +446,14 @@
   "function:squareRoot.alias.es.0": {
     "en": "sqrt",
     "es": "raiz"
+  },
+  "function:startsWith": {
+    "en": "startsWith",
+    "es": "EmpiezaCon"
+  },
+  "function:substring": {
+    "en": "substring",
+    "es": "Subcadena"
   },
   "function:textToInteger": {
     "en": "toInteger",
@@ -438,6 +470,10 @@
   "function:toText.alias.es.0": {
     "en": "toText",
     "es": "ConvertirATexto"
+  },
+  "function:trim": {
+    "en": "trim",
+    "es": "Recortar"
   },
   "function:truncate": {
     "en": "trunc",
@@ -486,6 +522,82 @@
   "integerType": {
     "en": "integer",
     "es": "Entero"
+  },
+  "jsonErrorCodeDepthExceeded": {
+    "en": "DepthExceeded",
+    "es": "ProfundidadExcedida"
+  },
+  "jsonErrorCodeDuplicateKey": {
+    "en": "DuplicateKey",
+    "es": "ClaveDuplicada"
+  },
+  "jsonErrorCodeField": {
+    "en": "code",
+    "es": "Codigo"
+  },
+  "jsonErrorCodeInvalidEscape": {
+    "en": "InvalidEscape",
+    "es": "EscapeInvalido"
+  },
+  "jsonErrorCodeInvalidSyntax": {
+    "en": "InvalidSyntax",
+    "es": "SintaxisInvalida"
+  },
+  "jsonErrorCodeTrailingContent": {
+    "en": "TrailingContent",
+    "es": "ContenidoSobrante"
+  },
+  "jsonErrorCodeType": {
+    "en": "JsonErrorCode",
+    "es": "CodigoErrorJson"
+  },
+  "jsonErrorCodeUnexpectedEnd": {
+    "en": "UnexpectedEnd",
+    "es": "FinInesperado"
+  },
+  "jsonErrorColumnField": {
+    "en": "column",
+    "es": "Columna"
+  },
+  "jsonErrorLineField": {
+    "en": "line",
+    "es": "Linea"
+  },
+  "jsonErrorType": {
+    "en": "JsonError",
+    "es": "ErrorJson"
+  },
+  "jsonKindArray": {
+    "en": "Array",
+    "es": "Arreglo"
+  },
+  "jsonKindBoolean": {
+    "en": "JsonBoolean",
+    "es": "JsonLogico"
+  },
+  "jsonKindNull": {
+    "en": "Null",
+    "es": "Nulo"
+  },
+  "jsonKindNumber": {
+    "en": "Number",
+    "es": "Numero"
+  },
+  "jsonKindObject": {
+    "en": "Object",
+    "es": "Objeto"
+  },
+  "jsonKindString": {
+    "en": "JsonStringKind",
+    "es": "CadenaJson"
+  },
+  "jsonKindType": {
+    "en": "JsonKind",
+    "es": "TipoJson"
+  },
+  "jsonValueType": {
+    "en": "JsonValue",
+    "es": "ValorJson"
   },
   "leftBracket": {
     "en": "[",

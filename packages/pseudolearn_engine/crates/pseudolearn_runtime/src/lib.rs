@@ -4,9 +4,9 @@ pub use pseudolearn_abi::{
     CapabilityKind, CollectionCommand, DictionaryKeyKind, DictionaryLayout, Handle, VectorLayout,
 };
 
+mod effect_reservation;
 mod effect_session;
 pub mod effect_tape;
-mod effect_reservation;
 mod tape_abandoned;
 mod tape_codec;
 mod tape_delivery;
@@ -92,8 +92,8 @@ mod collection_tests;
 
 pub use effect_tape::{EffectTape, ExecutionIdentity, TAPE_SCHEMA_V1, TapeEntry};
 pub use tape_abandoned::AbandonedEffect;
-pub use tape_delivery::{delivery_order, operation_may_write};
 pub use tape_codec::{decode_effect_tape, encode_effect_tape, tape_entry_hash};
+pub use tape_delivery::{delivery_order, operation_may_write};
 pub use tape_replay::{ExecutionMode, ReplayError, TapeReplayProvider};
 
 pub use tape_privacy::{DEFAULT_MAX_TAPE_BYTES, SecretHandle, TapeBudget};
@@ -101,6 +101,7 @@ pub use tape_privacy::{DEFAULT_MAX_TAPE_BYTES, SecretHandle, TapeBudget};
 mod managed_bytes;
 mod managed_capability;
 pub use managed_bytes::{bytes_at, bytes_content, bytes_length, new_bytes};
+pub mod json_document;
 pub use managed_capability::{capability_token, new_capability};
 
 mod effect_authority;
@@ -110,6 +111,7 @@ mod host_validation;
 pub use effect_authority::effective_permissions;
 pub use host_effect::{
     HostCapability, HostEffectProvider, HostEffectRequest, HostFailure, HostReply, HostValue,
+    JsonFailure, JsonResultValue,
 };
 pub use host_session::{
     begin_host_effect, configure_host_authority, perform_host_effect, resolve_host_effect,
@@ -124,6 +126,7 @@ mod host_words;
 mod local_effect;
 pub use host_words::{decode_host_value, host_reply_words};
 pub use local_effect::local_effect;
+pub use pseudolearn_abi::json_layout::JsonNodeKind;
 pub use pseudolearn_abi::{EFFECT_OPERATIONS, EffectOperation, EffectValueKind, effect_operation};
 
 mod effect_checkpoint;
@@ -135,7 +138,8 @@ mod task_agenda;
 mod task_state;
 pub use task_agenda::{
     DEFAULT_TASK_LIMIT, TaskAgenda, TaskAgendaError, TaskCancellation, TaskChannelId,
-    TaskExecution, TaskId, TaskLimit, TaskSummary, TaskScopeId, TaskScopeJoin, TaskWaiting, TaskWake,
+    TaskExecution, TaskId, TaskLimit, TaskScopeId, TaskScopeJoin, TaskSummary, TaskWaiting,
+    TaskWake,
 };
 pub use task_state::TaskState;
 

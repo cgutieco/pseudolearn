@@ -1054,3 +1054,47 @@ Vector y Diccionario derivan sus límites del presupuesto cells existente: como 
   }
 }
 ```
+
+```regla
+{
+  "id": "R12",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "max_json_depth es un límite positivo configurable por el anfitrión. El valor predeterminado del motor y AOT es 64. Cada arreglo u objeto cuenta un nivel y el valor raíz contenedor cuenta como nivel uno; el límite se acepta y superarlo devuelve ProfundidadExcedida como resultado de AnalizarJson.",
+  "verificacion": ["C35", "C36"]
+}
+```
+
+```caso
+{
+  "id": "C35",
+  "regla": "R12",
+  "perfiles": ["es", "en"],
+  "rigor": ["estricto", "flexible"],
+  "origen": "derivado",
+  "operacion": "execute",
+  "programas": {
+    "es": "Algoritmo P\nDefinir parsed Como Resultado<ValorJson, ErrorJson> <- AnalizarJson(\"[0]\");\nEscribir parsed.EsExito();\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine parsed as Result<JsonValue, JsonError> <- parseJson(\"[0]\");\nwrite parsed.isSuccess();\nendAlgorithm\n"
+  },
+  "limites": {"max_json_depth": 1},
+  "espera": {"salida": "Verdadero\n", "terminacion": "completed"}
+}
+```
+
+```caso
+{
+  "id": "C36",
+  "regla": "R12",
+  "perfiles": ["es", "en"],
+  "rigor": ["estricto", "flexible"],
+  "origen": "derivado",
+  "operacion": "execute",
+  "programas": {
+    "es": "Algoritmo P\nDefinir parsed Como Resultado<ValorJson, ErrorJson> <- AnalizarJson(\"[[0]]\");\nEscribir parsed.EsExito();\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine parsed as Result<JsonValue, JsonError> <- parseJson(\"[[0]]\");\nwrite parsed.isSuccess();\nendAlgorithm\n"
+  },
+  "limites": {"max_json_depth": 1},
+  "espera": {"salida": "Falso\n", "terminacion": "completed"}
+}
+```

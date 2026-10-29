@@ -28,6 +28,8 @@ Capacidades (`capability_layout`): `CapabilityKind` define las clases normativas
 
 Búfer de bytes (`bytes_layout`): `BYTES_SHAPE_TAG = 0x0000_BA00` y `bytes_cell_count(len)` formalizan la representación en celdas de 16 bytes para secuencias binarias independientes de cadenas UTF-8.
 
+JSON (`json_layout`): `JsonNodeKind` fija las etiquetas 0–5 para nulo, lógico, número, cadena, arreglo y objeto. El bloque usa `JSON_BLOCK_SHAPE_TAG = u32::MAX - 5`, dos palabras de metadatos tras la cabecera común y ocho palabras por nodo; los bytes de nombres y escalares ocupan el sufijo empaquetado. `JSON_VIEW_SHAPE_TAG = u32::MAX - 4` identifica el wrapper que conserva la asa del bloque y el índice del nodo.
+
 Errores de entrada/salida (`io_error_layout`): `IoErrorKind` unifica los 9 códigos canónicos de fallos de E/S (`notFound`, `permissionDenied`, `alreadyExists`, `endOfFile`, `invalidUtf8`, `invalidPath`, `closedCapability`, `timedOut`, `interrupted`) y sus etiquetas numéricas compartidas por runtime y VM.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
@@ -104,5 +106,6 @@ tras la cabecera común; separa segmentos escalar y de referencias y rechaza má
 Su coste es una celda más las ranuras. `task_layout` separa identidad, padre, ámbito, estado,
 continuación y resultado y declara los desplazamientos referenciales. Los tests comprueban vacíos,
 límites, desbordamiento y posiciones. La asignación y el recorrido del montón consumen estas disposiciones. Las etiquetas de forma reservadas
-son `u32::MAX - 1` (vector), `- 2` (diccionario), `- 6` (canal), `- 7` (capacidad), `- 8` (bytes), `- 9`
-(tarea) y `- 10` (continuación); las clases de usuario ocupan las etiquetas inferiores a la de continuación.
+son `u32::MAX - 1` (vector), `- 2` (diccionario), `- 4` (vista JSON), `- 5` (bloque JSON), `- 6`
+(canal), `- 7` (capacidad), `- 8` (bytes), `- 9` (tarea) y `- 10` (continuación); las clases de usuario
+ocupan las etiquetas inferiores a la de continuación.

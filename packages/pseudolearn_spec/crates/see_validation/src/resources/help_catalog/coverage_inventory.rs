@@ -15,19 +15,37 @@ const OPERATOR_PRODUCTIONS: [&str; 9] = [
     "unary",
 ];
 
+pub(super) struct TokenSources<'source> {
+    pub(super) vocabulary: &'source Map<String, Value>,
+    pub(super) functions: &'source Map<String, Value>,
+    pub(super) capability_library: &'source Map<String, Value>,
+    pub(super) productions: &'source Map<String, Value>,
+    pub(super) operators: BTreeSet<String>,
+}
+
 pub(super) fn token_category(
     identity: &str,
-    vocabulary: &Map<String, Value>,
-    functions: &Map<String, Value>,
-    operators: &BTreeSet<String>,
+    sources: &TokenSources<'_>,
 ) -> Result<&'static str, String> {
-    if operators.contains(identity) {
+    if sources.operators.contains(identity) {
         return Ok("operator");
     }
-    if functions.contains_key(identity) {
+    if sources.functions.contains_key(identity) {
         return Ok("builtin");
     }
-    if let Some(entry) = vocabulary.get(identity) {
+    if sources
+        .capability_library
+        .get("operations")
+        .and_then(Value::as_array)
+        .is_some_and(|operations| {
+            operations.iter().any(|operation| {
+                operation.get("identity").and_then(Value::as_str) == Some(identity)
+            })
+        })
+    {
+        return Ok("builtin");
+    }
+    if let Some(entry) = sources.vocabulary.get(identity) {
         return if alphabetic_lexeme(entry) {
             Ok("keyword")
         } else {

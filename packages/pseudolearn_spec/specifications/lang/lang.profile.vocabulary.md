@@ -1103,6 +1103,120 @@
         "es": [],
         "en": []
       }
+    },
+    "jsonValueType": {
+      "lexemas": {
+        "es": "ValorJson",
+        "en": "JsonValue"
+      }
+    },
+    "jsonKindType": {
+      "lexemas": {
+        "es": "TipoJson",
+        "en": "JsonKind"
+      }
+    },
+    "jsonErrorType": {
+      "lexemas": {
+        "es": "ErrorJson",
+        "en": "JsonError"
+      }
+    },
+    "jsonErrorCodeType": {
+      "lexemas": {
+        "es": "CodigoErrorJson",
+        "en": "JsonErrorCode"
+      }
+    },
+    "jsonKindNull": {
+      "lexemas": {
+        "es": "Nulo",
+        "en": "Null"
+      }
+    },
+    "jsonKindBoolean": {
+      "lexemas": {
+        "es": "JsonLogico",
+        "en": "JsonBoolean"
+      }
+    },
+    "jsonKindNumber": {
+      "lexemas": {
+        "es": "Numero",
+        "en": "Number"
+      }
+    },
+    "jsonKindString": {
+      "lexemas": {
+        "es": "CadenaJson",
+        "en": "JsonStringKind"
+      }
+    },
+    "jsonKindArray": {
+      "lexemas": {
+        "es": "Arreglo",
+        "en": "Array"
+      }
+    },
+    "jsonKindObject": {
+      "lexemas": {
+        "es": "Objeto",
+        "en": "Object"
+      }
+    },
+    "jsonErrorCodeField": {
+      "lexemas": {
+        "es": "Codigo",
+        "en": "code"
+      }
+    },
+    "jsonErrorLineField": {
+      "lexemas": {
+        "es": "Linea",
+        "en": "line"
+      }
+    },
+    "jsonErrorColumnField": {
+      "lexemas": {
+        "es": "Columna",
+        "en": "column"
+      }
+    },
+    "jsonErrorCodeInvalidSyntax": {
+      "lexemas": {
+        "es": "SintaxisInvalida",
+        "en": "InvalidSyntax"
+      }
+    },
+    "jsonErrorCodeUnexpectedEnd": {
+      "lexemas": {
+        "es": "FinInesperado",
+        "en": "UnexpectedEnd"
+      }
+    },
+    "jsonErrorCodeDuplicateKey": {
+      "lexemas": {
+        "es": "ClaveDuplicada",
+        "en": "DuplicateKey"
+      }
+    },
+    "jsonErrorCodeDepthExceeded": {
+      "lexemas": {
+        "es": "ProfundidadExcedida",
+        "en": "DepthExceeded"
+      }
+    },
+    "jsonErrorCodeInvalidEscape": {
+      "lexemas": {
+        "es": "EscapeInvalido",
+        "en": "InvalidEscape"
+      }
+    },
+    "jsonErrorCodeTrailingContent": {
+      "lexemas": {
+        "es": "ContenidoSobrante",
+        "en": "TrailingContent"
+      }
     }
   }
 }
@@ -1380,8 +1494,18 @@
         "en": "cancelled"
       }
     },
-    "immutableType": {"lexemas": {"es": "Inmutable", "en": "immutable"}},
-    "snapshotBuiltin": {"lexemas": {"es": "Instantanea", "en": "snapshot"}},
+    "immutableType": {
+      "lexemas": {
+        "es": "Inmutable",
+        "en": "immutable"
+      }
+    },
+    "snapshotBuiltin": {
+      "lexemas": {
+        "es": "Instantanea",
+        "en": "snapshot"
+      }
+    },
     "channelType": {
       "lexemas": {
         "es": "Canal",
@@ -1410,6 +1534,120 @@
       "lexemas": {
         "es": "Desde",
         "en": "from"
+      }
+    },
+    "jsonValueType": {
+      "lexemas": {
+        "es": "ValorJson",
+        "en": "JsonValue"
+      }
+    },
+    "jsonKindType": {
+      "lexemas": {
+        "es": "TipoJson",
+        "en": "JsonKind"
+      }
+    },
+    "jsonErrorType": {
+      "lexemas": {
+        "es": "ErrorJson",
+        "en": "JsonError"
+      }
+    },
+    "jsonErrorCodeType": {
+      "lexemas": {
+        "es": "CodigoErrorJson",
+        "en": "JsonErrorCode"
+      }
+    },
+    "jsonKindNull": {
+      "lexemas": {
+        "es": "Nulo",
+        "en": "Null"
+      }
+    },
+    "jsonKindBoolean": {
+      "lexemas": {
+        "es": "JsonLogico",
+        "en": "JsonBoolean"
+      }
+    },
+    "jsonKindNumber": {
+      "lexemas": {
+        "es": "Numero",
+        "en": "Number"
+      }
+    },
+    "jsonKindString": {
+      "lexemas": {
+        "es": "CadenaJson",
+        "en": "JsonStringKind"
+      }
+    },
+    "jsonKindArray": {
+      "lexemas": {
+        "es": "Arreglo",
+        "en": "Array"
+      }
+    },
+    "jsonKindObject": {
+      "lexemas": {
+        "es": "Objeto",
+        "en": "Object"
+      }
+    },
+    "jsonErrorCodeField": {
+      "lexemas": {
+        "es": "Codigo",
+        "en": "code"
+      }
+    },
+    "jsonErrorLineField": {
+      "lexemas": {
+        "es": "Linea",
+        "en": "line"
+      }
+    },
+    "jsonErrorColumnField": {
+      "lexemas": {
+        "es": "Columna",
+        "en": "column"
+      }
+    },
+    "jsonErrorCodeInvalidSyntax": {
+      "lexemas": {
+        "es": "SintaxisInvalida",
+        "en": "InvalidSyntax"
+      }
+    },
+    "jsonErrorCodeUnexpectedEnd": {
+      "lexemas": {
+        "es": "FinInesperado",
+        "en": "UnexpectedEnd"
+      }
+    },
+    "jsonErrorCodeDuplicateKey": {
+      "lexemas": {
+        "es": "ClaveDuplicada",
+        "en": "DuplicateKey"
+      }
+    },
+    "jsonErrorCodeDepthExceeded": {
+      "lexemas": {
+        "es": "ProfundidadExcedida",
+        "en": "DepthExceeded"
+      }
+    },
+    "jsonErrorCodeInvalidEscape": {
+      "lexemas": {
+        "es": "EscapeInvalido",
+        "en": "InvalidEscape"
+      }
+    },
+    "jsonErrorCodeTrailingContent": {
+      "lexemas": {
+        "es": "ContenidoSobrante",
+        "en": "TrailingContent"
       }
     }
   }

@@ -1,6 +1,5 @@
 use super::super::CoverageRow;
-use super::InventorySources;
-use super::catalog_inventory::token_category;
+use super::catalog_inventory::{TokenSources, token_category};
 use serde_json::{Map, Value};
 use std::collections::BTreeSet;
 
@@ -25,7 +24,7 @@ pub(super) fn check_productions(
 pub(super) fn card_content_covers(
     card: &Value,
     tokens: &BTreeSet<String>,
-    sources: &InventorySources<'_>,
+    sources: &TokenSources<'_>,
 ) -> Result<bool, String> {
     let required = required_token_parts(tokens, sources)?;
     for locale in ["es", "en"] {
@@ -38,16 +37,11 @@ pub(super) fn card_content_covers(
 
 fn required_token_parts(
     tokens: &BTreeSet<String>,
-    sources: &InventorySources<'_>,
+    sources: &TokenSources<'_>,
 ) -> Result<BTreeSet<String>, String> {
     let mut required = BTreeSet::new();
     for token in tokens {
-        let category = token_category(
-            token,
-            sources.vocabulary,
-            sources.functions,
-            &sources.operators,
-        )?;
+        let category = token_category(token, sources)?;
         if category != "token" {
             required.insert(token.clone());
         }

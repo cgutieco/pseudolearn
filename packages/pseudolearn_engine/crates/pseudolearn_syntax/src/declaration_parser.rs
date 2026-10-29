@@ -72,7 +72,11 @@ fn named_type(state: &mut ParserState<'_>, start: u32, marker: usize) -> Result<
             | KeywordKind::RealType
             | KeywordKind::BooleanType
             | KeywordKind::CharacterType
-            | KeywordKind::StringType,
+            | KeywordKind::StringType
+            | KeywordKind::JsonValueType
+            | KeywordKind::JsonKindType
+            | KeywordKind::JsonErrorType
+            | KeywordKind::JsonErrorCodeType,
         ) => state.advance(),
         _ => {
             let span = state.span();

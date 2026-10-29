@@ -83,6 +83,10 @@ fn token_source_exists(token: &Value, corpus: &Corpus) -> bool {
     else {
         return false;
     };
+    definition_has_identity(block, identifier)
+}
+
+fn definition_has_identity(block: &see_model::Block, identifier: &str) -> bool {
     if block.kind != "definicion" {
         return false;
     }
@@ -92,6 +96,16 @@ fn token_source_exists(token: &Value, corpus: &Corpus) -> bool {
             .get("valor")
             .and_then(Value::as_object)
             .is_some_and(|entries| entries.contains_key(identifier)),
+        "capabilityLibrary" => block
+            .fields
+            .get("valor")
+            .and_then(|value| value.get("operations"))
+            .and_then(Value::as_array)
+            .is_some_and(|operations| {
+                operations.iter().any(|operation| {
+                    operation.get("identity").and_then(Value::as_str) == Some(identifier)
+                })
+            }),
         _ => false,
     }
 }

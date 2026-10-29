@@ -7,6 +7,7 @@ pub(crate) fn available(executor: PropertyExecutor, declaration: &Value) -> bool
     let capability = match executor {
         PropertyExecutor::Determinism
         | PropertyExecutor::LoweringExecution
+        | PropertyExecutor::JsonTextRoundtrip
         | PropertyExecutor::FirstTrap
         | PropertyExecutor::FusedFirstTrap => "execute",
         PropertyExecutor::ObservationCorrespondence => "observe",
@@ -45,7 +46,9 @@ pub(crate) fn check(
             paired(scenario, subject, Some(("gc_stress", json!(true))))
         }
         PropertyExecutor::ObservationCorrespondence => observed(scenario, subject),
-        PropertyExecutor::LoweringExecution => normative(scenario, subject),
+        PropertyExecutor::LoweringExecution | PropertyExecutor::JsonTextRoundtrip => {
+            normative(scenario, subject)
+        }
         PropertyExecutor::ProgramRevision => crate::property_revision::check(scenario, subject),
         PropertyExecutor::ResourceLifecycle
         | PropertyExecutor::UsageErrors

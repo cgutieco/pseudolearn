@@ -4064,14 +4064,20 @@
         "es": "El argumento de tarea no se puede transferir de forma aislada: {type} en {path}",
         "en": "The task argument cannot be transferred in isolation: {type} at {path}"
       },
-      "argumentos": ["type", "path"],
+      "argumentos": [
+        "type",
+        "path"
+      ],
       "politica": "A",
       "severidad": {
         "estricto": "error",
         "flexible": "error"
       },
       "clase": "semantic",
-      "tipos_argumentos": {"type": "tipo", "path": "lexema"}
+      "tipos_argumentos": {
+        "type": "tipo",
+        "path": "lexema"
+      }
     },
     "taskByReferenceArgument": {
       "mensajes": {
@@ -4106,14 +4112,20 @@
         "es": "El error de tarea debe ser transferible: {type} en {path}",
         "en": "A task error must be transferable: {type} at {path}"
       },
-      "argumentos": ["type", "path"],
+      "argumentos": [
+        "type",
+        "path"
+      ],
       "politica": "A",
       "severidad": {
         "estricto": "error",
         "flexible": "error"
       },
       "clase": "semantic",
-      "tipos_argumentos": {"type": "tipo", "path": "lexema"}
+      "tipos_argumentos": {
+        "type": "tipo",
+        "path": "lexema"
+      }
     },
     "taskScopeFailureUnbound": {
       "mensajes": {
@@ -4148,14 +4160,20 @@
         "es": "El elemento del canal debe ser transferible: {type} en {path}",
         "en": "A channel element must be transferable: {type} at {path}"
       },
-      "argumentos": ["type", "path"],
+      "argumentos": [
+        "type",
+        "path"
+      ],
       "politica": "A",
       "severidad": {
         "estricto": "error",
         "flexible": "error"
       },
       "clase": "semantic",
-      "tipos_argumentos": {"type": "tipo", "path": "lexema"}
+      "tipos_argumentos": {
+        "type": "tipo",
+        "path": "lexema"
+      }
     },
     "channelOperationWithoutAwait": {
       "mensajes": {
@@ -4299,6 +4317,48 @@
         "flexible": "error"
       },
       "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "emptySeparator": {
+      "mensajes": {
+        "es": "El separador no puede estar vacío",
+        "en": "The separator cannot be empty"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "runtime",
+      "tipos_argumentos": {}
+    },
+    "bytesRangeOutOfBounds": {
+      "mensajes": {
+        "es": "El segmento excede los límites de Bytes",
+        "en": "The segment exceeds the bounds of Bytes"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "runtime",
+      "tipos_argumentos": {}
+    },
+    "jsonKindMismatch": {
+      "mensajes": {
+        "es": "La operación no admite este tipo JSON",
+        "en": "The operation does not accept this JSON kind"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "runtime",
       "tipos_argumentos": {}
     }
   }

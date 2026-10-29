@@ -222,6 +222,8 @@ fn header_shape(request: &AllocationRequest) -> Result<(u32, u32), MemoryError> 
         Shape::Channel => Ok((pseudolearn_abi::channel_layout::CHANNEL_SHAPE_TAG, 0)),
         Shape::Bytes => Ok((pseudolearn_abi::bytes_layout::BYTES_SHAPE_TAG, 0)),
         Shape::Capability => Ok((pseudolearn_abi::capability_layout::CAPABILITY_SHAPE_TAG, 0)),
+        Shape::JsonBlock => Ok((pseudolearn_abi::json_layout::JSON_BLOCK_SHAPE_TAG, 0)),
+        Shape::JsonView => Ok((pseudolearn_abi::json_layout::JSON_VIEW_SHAPE_TAG, 0)),
     }
 }
 

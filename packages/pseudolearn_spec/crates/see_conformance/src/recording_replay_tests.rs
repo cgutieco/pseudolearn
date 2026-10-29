@@ -73,7 +73,8 @@ fn tape_with_a_hexadecimal_secret_is_reported() {
 
 #[test]
 fn redacted_tape_has_no_leaks() {
-    let live = json!({"effect_tape":{"entries":[{"secret_ref":{"key_id":"k1","value_hmac":"ab"}}]}});
+    let live =
+        json!({"effect_tape":{"entries":[{"secret_ref":{"key_id":"k1","value_hmac":"ab"}}]}});
     assert!(leaked_secrets(&secret_request(), &live).is_empty());
     assert!(leaked_secrets(&secret_request(), &json!({})).is_empty());
 }
@@ -96,28 +97,46 @@ fn tape_alterations_and_replay_failure_checks_cover_happy_and_unhappy_paths() {
             ]
         }
     });
-    apply_alteration(&mut replay, "truncar_entrada");
+    assert_tape_alterations(&mut replay);
+    assert_replay_failure_cases();
+}
+
+fn assert_tape_alterations(replay: &mut Value) {
+    apply_alteration(replay, "truncar_entrada");
     assert_eq!(
-        replay.pointer("/effect_tape/entries").and_then(Value::as_array).map(Vec::len),
+        replay
+            .pointer("/effect_tape/entries")
+            .and_then(Value::as_array)
+            .map(Vec::len),
         Some(1)
     );
-    apply_alteration(&mut replay, "corromper_hash");
+    apply_alteration(replay, "corromper_hash");
     assert_eq!(
         replay.pointer("/effect_tape/entries/0/entry_hash"),
-        Some(&json!("0000000000000000000000000000000000000000000000000000000000000000"))
+        Some(&json!(
+            "0000000000000000000000000000000000000000000000000000000000000000"
+        ))
     );
-    apply_alteration(&mut replay, "corromper_payload");
+    apply_alteration(replay, "corromper_payload");
     assert_eq!(
         replay.pointer("/effect_tape/entries/0/payload_bytes"),
         Some(&json!([1, 2, 255]))
     );
-    apply_alteration(&mut replay, "cambiar_semilla");
+    apply_alteration(replay, "cambiar_semilla");
     assert_eq!(replay.get("seed"), Some(&json!(999_999)));
+}
 
+fn assert_replay_failure_cases() {
     let matching = json!({"termination":{"kind":"failed","code":"replay_truncated_tape"},"host_observation":{"calls":0}});
     assert!(compare_replay_failure("replay_truncated_tape", &matching).is_empty());
     let wrong_code = json!({"termination":{"kind":"failed","code":"replay_corrupted_tape"},"host_observation":{"calls":0}});
-    assert_eq!(compare_replay_failure("replay_truncated_tape", &wrong_code).len(), 1);
+    assert_eq!(
+        compare_replay_failure("replay_truncated_tape", &wrong_code).len(),
+        1
+    );
     let called_host = json!({"termination":{"kind":"failed","code":"replay_truncated_tape"},"host_observation":{"calls":1}});
-    assert_eq!(compare_replay_failure("replay_truncated_tape", &called_host).len(), 1);
+    assert_eq!(
+        compare_replay_failure("replay_truncated_tape", &called_host).len(),
+        1
+    );
 }

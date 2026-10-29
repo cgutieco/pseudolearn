@@ -72,7 +72,7 @@ layers:
   - name: pseudolearn_library
     path: crates/pseudolearn_library
     may_import: [pseudolearn_runtime, pseudolearn_diagnostics]
-    external_dependencies: []
+    external_dependencies: [serde, serde_json]
     unsafe_allowed: false
   - name: pseudolearn_aot_rt
     path: crates/pseudolearn_aot_rt

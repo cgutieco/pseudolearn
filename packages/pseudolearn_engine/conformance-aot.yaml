@@ -45,7 +45,10 @@
     "LANG.TYPES.DICTIONARY",
     "LANG.CONTROL.FOR-EACH",
     "LANG.CONTROL.EXIT",
-    "LANG.CONTROL.CLEANUP"
+    "LANG.CONTROL.CLEANUP",
+    "LIB.CORE.BYTES",
+    "LIB.JSON",
+    "LIB.MODEL"
   ],
   "fases_cerradas": [
     "R6"
@@ -151,7 +154,6 @@
       "estado": "exento",
       "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
     },
-
     {
       "regla": "LANG.TASK.SCOPE@1.0.0#R11",
       "verificacion": "ejecutor",
@@ -1647,6 +1649,98 @@
       "regla": "LIB.TIME@1.0.0#R2",
       "verificacion": "crates/pseudolearn_aot_rt/src/effect_runtime.rs",
       "estado": "cumple"
+    },
+    {
+      "regla": "ENG.LIMITS@1.0.0#R12",
+      "verificacion": "crates/pseudolearn_library/src/json_parse_tests.rs",
+      "estado": "pendiente",
+      "resuelve_en": "PG-5.03"
+    },
+    {
+      "regla": "LIB.MODEL@1.0.0#M1",
+      "verificacion": "../pseudolearn_spec/crates/see_validation/tests/resources/library_facets.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.MODEL@1.0.0#M2",
+      "verificacion": "../pseudolearn_spec/crates/see_validation/tests/resources/library_facets.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.MODEL@1.0.0#M3",
+      "verificacion": "../pseudolearn_spec/crates/see_validation/tests/resources/library_facets.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.MODEL@1.0.0#M4",
+      "verificacion": "../pseudolearn_spec/crates/see_validation/tests/resources/library_facets.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.CORE.TEXT@1.0.0#T1",
+      "verificacion": "crates/pseudolearn_library/src/text_search_tests.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.CORE.TEXT@1.0.0#T2",
+      "verificacion": "crates/pseudolearn_library/src/text_search_tests.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.CORE.TEXT@1.0.0#T3",
+      "verificacion": "crates/pseudolearn_library/src/text_search_tests.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.CORE.BYTES@1.0.0#B1",
+      "verificacion": "crates/pseudolearn_library/src/bytes_operations_tests.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.CORE.BYTES@1.0.0#B2",
+      "verificacion": "crates/pseudolearn_library/src/bytes_operations_tests.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.JSON@1.0.0#J1",
+      "verificacion": "crates/pseudolearn_library/src/json_parse_tests.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.JSON@1.0.0#J2",
+      "verificacion": "crates/pseudolearn_library/src/json_parse_tests.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.JSON@1.0.0#J3",
+      "verificacion": "crates/pseudolearn_library/src/json_parse_tests.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.JSON@1.0.0#J4",
+      "verificacion": "crates/pseudolearn_library/src/json_parse_tests.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.JSON@1.0.0#J5",
+      "verificacion": "crates/pseudolearn_library/src/json_parse_tests.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.JSON@1.0.0#J6",
+      "verificacion": "crates/pseudolearn_library/src/json_parse_tests.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.JSON@1.0.0#J7",
+      "verificacion": "crates/pseudolearn_library/src/json_parse_tests.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.JSON@1.0.0#J8",
+      "verificacion": "crates/pseudolearn_library/src/json_parse_tests.rs",
+      "estado": "pendiente",
+      "resuelve_en": "PG-5.01"
     }
   ]
 }

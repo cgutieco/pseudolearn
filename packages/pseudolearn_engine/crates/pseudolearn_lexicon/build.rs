@@ -50,77 +50,108 @@ fn generate_enums(
     functions: &serde_json::Map<String, serde_json::Value>,
 ) -> String {
     let mut code = String::new();
-    code.push_str("#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]\n");
-    code.push_str("pub enum KeywordKind {\n");
-    for identity in vocabulary.keys() {
-        let pascal = to_pascal_case(identity);
-        code.push_str(&format!("    {pascal},\n"));
-    }
-    code.push_str("}\n\n");
-    code.push_str("#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]\n");
-    code.push_str("pub enum BuiltinKind {\n");
-    for identity in functions.keys() {
-        let pascal = to_pascal_case(identity);
-        code.push_str(&format!("    {pascal},\n"));
-    }
-    code.push_str("}\n\n");
+    append_enum(&mut code, "KeywordKind", vocabulary);
+    append_enum(&mut code, "BuiltinKind", functions);
+    append_enum_tables(&mut code, "KeywordKind", "KEYWORD", vocabulary);
+    append_enum_tables(&mut code, "BuiltinKind", "BUILTIN", functions);
     code
+}
+
+fn append_enum(
+    code: &mut String,
+    enum_name: &str,
+    entries: &serde_json::Map<String, serde_json::Value>,
+) {
+    code.push_str("#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]\n");
+    code.push_str(&format!("pub enum {enum_name} {{\n"));
+    for identity in entries.keys() {
+        code.push_str(&format!("    {},\n", to_pascal_case(identity)));
+    }
+    code.push_str("}\n\n");
+}
+
+fn append_enum_tables(
+    code: &mut String,
+    enum_name: &str,
+    prefix: &str,
+    entries: &serde_json::Map<String, serde_json::Value>,
+) {
+    code.push_str(&format!("static {prefix}_KINDS: &[{enum_name}] = &[\n"));
+    for identity in entries.keys() {
+        code.push_str(&format!("    {enum_name}::{},\n", to_pascal_case(identity)));
+    }
+    code.push_str("];\n");
+    code.push('\n');
 }
 
 fn generate_keywords(vocabulary: &serde_json::Map<String, serde_json::Value>) -> String {
     let mut code = String::new();
-    code.push_str("impl KeywordKind {\n");
-    code.push_str("    pub fn all() -> &'static [KeywordKind] {\n        &[\n");
-    for identity in vocabulary.keys() {
-        let pascal = to_pascal_case(identity);
-        code.push_str(&format!("            Self::{pascal},\n"));
-    }
-    code.push_str("        ]\n    }\n");
-    code.push_str("    pub fn as_str(&self) -> &'static str {\n");
-    code.push_str("        match self {\n");
-    for identity in vocabulary.keys() {
-        let pascal = to_pascal_case(identity);
-        code.push_str(&format!("            Self::{pascal} => \"{identity}\",\n"));
-    }
-    code.push_str("        }\n");
-    code.push_str("    }\n");
-    code.push_str("}\n\n");
+    code.push_str(&enum_methods("KeywordKind", "KEYWORD", vocabulary));
 
     code.push_str(&perfect_hash::generate(
         "keyword",
         "KeywordKind",
         collect_pairs(vocabulary),
     ));
+    append_identity_helpers(&mut code, "KeywordKind", "keyword", vocabulary);
 
     code
 }
 
 fn generate_builtins(functions: &serde_json::Map<String, serde_json::Value>) -> String {
     let mut code = String::new();
-    code.push_str("impl BuiltinKind {\n");
-    code.push_str("    pub fn all() -> &'static [BuiltinKind] {\n        &[\n");
-    for identity in functions.keys() {
-        let pascal = to_pascal_case(identity);
-        code.push_str(&format!("            Self::{pascal},\n"));
-    }
-    code.push_str("        ]\n    }\n");
-    code.push_str("    pub fn as_str(&self) -> &'static str {\n");
-    code.push_str("        match self {\n");
-    for identity in functions.keys() {
-        let pascal = to_pascal_case(identity);
-        code.push_str(&format!("            Self::{pascal} => \"{identity}\",\n"));
-    }
-    code.push_str("        }\n");
-    code.push_str("    }\n");
-    code.push_str("}\n\n");
+    code.push_str(&enum_methods("BuiltinKind", "BUILTIN", functions));
 
     code.push_str(&perfect_hash::generate(
         "builtin",
         "BuiltinKind",
         collect_pairs(functions),
     ));
+    append_identity_helpers(&mut code, "BuiltinKind", "builtin", functions);
 
     code
+}
+
+fn enum_methods(
+    enum_name: &str,
+    prefix: &str,
+    entries: &serde_json::Map<String, serde_json::Value>,
+) -> String {
+    let helper_count = entries.len().div_ceil(32);
+    let identity_prefix = prefix.to_lowercase();
+    let parts = (0..helper_count)
+        .map(|part| format!("{identity_prefix}_identity_part_{part}(self)"))
+        .collect::<Vec<_>>();
+    let lookup = parts
+        .into_iter()
+        .reduce(|first, next| format!("{first}.or_else(|| {next})"))
+        .unwrap_or_else(|| "None".to_owned());
+    format!(
+        "impl {enum_name} {{\n    pub fn all() -> &'static [{enum_name}] {{ {prefix}_KINDS }}\n    pub fn as_str(&self) -> &'static str {{ {lookup}.unwrap_or(\"\") }}\n}}\n\n"
+    )
+}
+
+fn append_identity_helpers(
+    code: &mut String,
+    enum_name: &str,
+    prefix: &str,
+    entries: &serde_json::Map<String, serde_json::Value>,
+) {
+    for (part, identities) in entries.keys().collect::<Vec<_>>().chunks(32).enumerate() {
+        code.push_str(&format!(
+            "fn {prefix}_identity_part_{part}(kind: &{enum_name}) -> Option<&'static str> {{\n    match kind {{\n"
+        ));
+        for identity in identities {
+            code.push_str(&format!(
+                "        {enum_name}::{} => Some({identity:?}),\n",
+                to_pascal_case(identity)
+            ));
+        }
+        if entries.len() > 32 {
+            code.push_str("        _ => None,\n");
+        }
+        code.push_str("    }\n}\n\n");
+    }
 }
 
 type FormPair = (String, String);

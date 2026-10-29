@@ -33,7 +33,7 @@ fn effect_site(
     };
     let descriptor =
         pseudolearn_runtime::effect_operation(operation).ok_or_else(invalid_bytecode)?;
-    let count = if descriptor.fallible { 3 } else { 1 };
+    let count = descriptor.result_cell_count();
     if capability.class != RegisterClass::Reference
         || rest.len() != descriptor.parameters.len().saturating_add(count)
     {

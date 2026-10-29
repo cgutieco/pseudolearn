@@ -78,7 +78,7 @@ pub fn effect_operation_cells(identity: &str) -> Option<(usize, usize)> {
 }
 
 fn result_cell_count(operation: &EffectOperation) -> usize {
-    if operation.fallible { 3 } else { 1 }
+    operation.result_cell_count()
 }
 
 fn perform_effect(
@@ -86,11 +86,45 @@ fn perform_effect(
     operation: &EffectOperation,
     frame: &EffectFrame<'_>,
 ) -> Result<u64, Trap> {
+    if !operation.effect {
+        let receiver = Handle(u32::try_from(frame.capability).map_err(|_| internal())?);
+        let mut roots = entry.roots()?;
+        roots
+            .try_reserve(frame.arguments.len().saturating_add(1))
+            .map_err(|_| pseudolearn_runtime::MemoryError::Resource)?;
+        roots.push(receiver);
+        for (word, kind) in frame.arguments.iter().zip(operation.parameters) {
+            if !EffectOperation::is_scalar(*kind) {
+                roots.push(Handle(u32::try_from(*word).map_err(|_| internal())?));
+            }
+        }
+        let call = pseudolearn_library::LocalJsonViewCall::new(
+            receiver,
+            operation,
+            frame.arguments,
+            &roots,
+        );
+        if let Some(value) = pseudolearn_library::local_json_view(&mut entry.engine.heap, call)? {
+            store_local_view(entry, frame, value)?;
+            return Ok(0);
+        }
+    }
     let arguments = decode_arguments(entry, operation, frame.arguments)?;
     let reply = request_reply(entry, operation, frame, arguments)?;
     store_reply(entry, operation, frame, &reply)?;
     echo_console(entry, operation, &reply, frame.arguments)?;
     Ok(0)
+}
+
+fn store_local_view(
+    entry: &mut Entry<'_>,
+    frame: &EffectFrame<'_>,
+    value: u64,
+) -> Result<(), Trap> {
+    let [cell] = frame.cells else {
+        return Err(internal());
+    };
+    store_word(entry, u32::try_from(*cell).map_err(|_| internal())?, value)
 }
 
 fn store_reply(
@@ -137,15 +171,12 @@ fn request_reply(
 ) -> Result<HostReply, Trap> {
     let capability = Handle(u32::try_from(frame.capability).map_err(|_| internal())?);
     if !operation.effect {
-        return Ok(pseudolearn_runtime::local_effect(
-            &entry.engine.heap,
-            capability,
-            operation,
-            &arguments,
-        )?);
+        return local_reply(&entry.engine.heap, capability, operation, &arguments);
     }
     let receiver = match operation.receiver {
-        Some(_) => Some(pseudolearn_runtime::capability_token(&entry.engine.heap, capability)?.into()),
+        Some(_) => {
+            Some(pseudolearn_runtime::capability_token(&entry.engine.heap, capability)?.into())
+        }
         None => None,
     };
     let channel = &mut entry.engine.effects;
@@ -167,6 +198,19 @@ fn request_reply(
         (receiver, arguments, frame.source_node),
     )
     .map_err(|error| channel.reject(error))
+}
+
+fn local_reply(
+    heap: &pseudolearn_runtime::Heap,
+    capability: Handle,
+    operation: &EffectOperation,
+    arguments: &[HostValue],
+) -> Result<HostReply, Trap> {
+    match pseudolearn_library::local_operation(heap, capability, operation, arguments)? {
+        Some(value) => Ok(HostReply::Committed(value)),
+        None => pseudolearn_runtime::local_effect(heap, capability, operation, arguments)
+            .map_err(Trap::from),
+    }
 }
 
 fn echo_console(

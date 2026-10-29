@@ -6,6 +6,7 @@ pub mod capability_layout;
 mod collection_command;
 pub mod dictionary_layout;
 pub mod io_error_layout;
+pub mod json_layout;
 pub mod vector_layout;
 pub use bytes_layout::{
     BYTES_DATA_OFFSET, BYTES_HEADER_WORDS, BYTES_LENGTH_OFFSET, BYTES_SHAPE_TAG, bytes_cell_count,

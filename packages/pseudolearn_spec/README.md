@@ -88,12 +88,12 @@ esquema del recurso y sus referencias versionadas; `see_export` lo extrae sin co
 dependencia de documentación transitoria.
 
 El inventario 2026 deriva palabras reservadas de `vocabulary`, operadores de las producciones de
-expresión y asignación, e incorporadas de `functions`. Las 41 agrupaciones pedagógicas se declaran
-como datos con sus producciones fuente; no se infieren de la EBNF. Las 49 palabras reservadas, 17
-operadores y 18 incorporadas se explican en el contexto de una ficha mediante partes es/en. La matriz
-contiene 151 filas identidad/rol: 57 asociaciones de keyword, 20 de operador, 18 de incorporada,
-15 de token no alfabético y 41 de rol. Los alias conservan la identidad de su entrada fuente y no generan filas
-adicionales. Las fichas se
+expresión y asignación, e incorporadas de `functions` y `capabilityLibrary`. Las 41 agrupaciones
+pedagógicas se declaran como datos con sus producciones fuente; no se infieren de la EBNF. Las 129
+identidades de palabras reservadas, 17 operadores y 72 funciones incorporadas se explican en el
+contexto de una ficha mediante partes es/en. La matriz contiene 374 filas identidad/rol: 139 de
+keyword, 20 de operador, 72 de incorporada, 15 de token no alfabético y 128 de rol. Los alias
+conservan la identidad de su entrada fuente y no generan filas adicionales. Las fichas se
 redactan en ambos idiomas desde sus reglas ancladas; antes de mantener el inventario se revisan
 texto, identidades, disponibilidad, anclajes y la matriz completa. Cada elemento activo debe llegar
 a una ficha específica o a una exclusión tipada; una ficha genérica no cubre elementos sin asociar.
@@ -119,7 +119,7 @@ Problema: las propiedades nativas necesitan un oráculo independiente y artefact
 - El corpus y sus recursos son autosustentables. La investigación transitoria de la raíz no es una dependencia; una puerta local comprueba referencias externas y tiene casos negativos.
 - La migración cubre la edición 2026, español e inglés y rigores estricto/flexible. Las palabras reservadas y restricciones de identificadores son las vigentes. NFC se aplica a nombres y reconocimiento léxico; literales, comentarios y posiciones originales se conservan.
 - El índice documental del núcleo conserva la proyección educativa y una tabla completa de secciones hacia contratos existentes; la comprobación rechaza huecos, duplicados y destinos inexistentes.
-- Los recursos de vocabulario, funciones y diagnósticos se extraen del corpus y se verifican contra la exportación. Ningún consumidor mantiene una copia manual.
+- Los recursos de vocabulario, funciones y diagnósticos se extraen del corpus y se verifican contra la exportación. Ningún consumidor mantiene una copia manual. `LIB.MODEL` también valida facetas es/en, familias y fichas de ayuda de sus funciones y operaciones: las identidades y firmas no se duplican, las formas no colisionan dentro del perfil y cada símbolo tiene contenido bilingüe. Cada regla del validador tiene un fixture negativo.
 - Los casos admiten semilla explícita; la ausencia conserva 42. La comparación preserva resultados desfavorables y exenciones específicas de reglas con resolución declarada.
 - E-10 mide colisiones sobre programas locales con procedencia explícita. El estudio humano de E-14 requiere participantes y construcciones de la evolución del lenguaje; no se atribuyen resultados humanos a comprobaciones técnicas.
 

@@ -1,5 +1,17 @@
 use serde_json::Value;
 
+const TEXT_FUNCTIONS: &[&str] = &[
+    "substring",
+    "contains",
+    "positionOf",
+    "startsWith",
+    "endsWith",
+    "replaceAll",
+    "split",
+    "join",
+    "trim",
+];
+
 fn main() {
     println!("cargo:rerun-if-changed=../../../pseudolearn_spec/specifications/export.json");
     if let Err(error) = generate() {
@@ -18,9 +30,22 @@ fn generate() -> Result<(), String> {
         .pointer("/resources/capabilityLibrary/operations")
         .and_then(Value::as_array)
         .ok_or("missing capabilityLibrary")?;
+    let functions = corpus
+        .pointer("/resources/functions")
+        .and_then(Value::as_object)
+        .ok_or("missing functions")?;
     let mut source = String::from("pub static EFFECT_OPERATIONS: &[EffectOperation] = &[\n");
-    for (index, operation) in operations.iter().enumerate() {
+    let mut index = 0;
+    for operation in operations {
         source.push_str(&entry(index, operation)?);
+        index = index.checked_add(1).ok_or("too many effect operations")?;
+    }
+    for identity in TEXT_FUNCTIONS {
+        let function = functions
+            .get(*identity)
+            .ok_or_else(|| format!("missing function {identity}"))?;
+        source.push_str(&function_entry(index, identity, function)?);
+        index = index.checked_add(1).ok_or("too many effect operations")?;
     }
     source.push_str("];\n");
     let output = std::env::var("OUT_DIR").map_err(|error| error.to_string())?;
@@ -77,8 +102,9 @@ fn entry(index: usize, operation: &Value) -> Result<String, String> {
     let receiver = receiver_source(operation)?;
     let parameters = parameters_source(operation)?;
     Ok(format!(
-        "EffectOperation {{ id: {index}, identity: {:?}, receiver: {receiver}, spanish: {:?}, english: {:?}, parameters: &[{parameters}], result: EffectValueKind::{}, effect: {}, fallible: {} }},\n",
+        "EffectOperation {{ id: {index}, identity: {:?}, family: {:?}, receiver: {receiver}, spanish: {:?}, english: {:?}, parameters: &[{parameters}], result: EffectValueKind::{}, effect: {}, fallible: {} }},\n",
         text_field(operation, "identity")?,
+        text_field(operation, "family")?,
         text_field(operation, "es")?,
         text_field(operation, "en")?,
         value_kind(text_field(operation, "result")?)?,
@@ -87,13 +113,45 @@ fn entry(index: usize, operation: &Value) -> Result<String, String> {
     ))
 }
 
+fn function_entry(index: usize, identity: &str, function: &Value) -> Result<String, String> {
+    let parameters = function
+        .get("parametros")
+        .and_then(Value::as_array)
+        .ok_or("missing function parameters")?
+        .iter()
+        .map(|kind| {
+            value_kind(kind.as_str().ok_or("invalid function parameter")?)
+                .map(|kind| format!("EffectValueKind::{kind}"))
+        })
+        .collect::<Result<Vec<_>, _>>()?
+        .join(",");
+    let names = function.get("lexemas").ok_or("missing function facets")?;
+    Ok(format!(
+        "EffectOperation {{ id: {index}, identity: {identity:?}, family: {:?}, receiver: None, spanish: {:?}, english: {:?}, parameters: &[{parameters}], result: EffectValueKind::{}, effect: false, fallible: false }},\n",
+        text_field(function, "family")?,
+        text_field(names, "es")?,
+        text_field(names, "en")?,
+        value_kind(text_field(function, "retorno")?)?
+    ))
+}
+
 fn value_kind(name: &str) -> Result<&'static str, String> {
     match name {
         "integer" => Ok("Integer"),
+        "numeric" | "real" => Ok("Real"),
         "boolean" => Ok("Boolean"),
         "text" => Ok("Text"),
         "bytes" => Ok("Bytes"),
-        "text_list" => Ok("TextList"),
+        "stringVector" | "text_list" => Ok("TextList"),
+        "string" => Ok("Text"),
+        "json_value" => Ok("JsonValue"),
+        "json_result" => Ok("JsonResult"),
+        "json_kind" => Ok("JsonKind"),
+        "optionalBoolean" | "optional_boolean" => Ok("OptionalBoolean"),
+        "optionalInteger" | "optional_integer" => Ok("OptionalInteger"),
+        "optionalReal" | "optional_real" => Ok("OptionalReal"),
+        "optionalText" | "optional_text" => Ok("OptionalText"),
+        "optional_json_value" => Ok("OptionalJsonValue"),
         "console" => Ok("Console"),
         "arguments" => Ok("Arguments"),
         "directory" => Ok("Directory"),

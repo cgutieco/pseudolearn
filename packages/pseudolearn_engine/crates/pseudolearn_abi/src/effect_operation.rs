@@ -1,10 +1,19 @@
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum EffectValueKind {
     Integer,
+    Real,
     Boolean,
     Text,
     Bytes,
     TextList,
+    JsonValue,
+    JsonResult,
+    JsonKind,
+    OptionalBoolean,
+    OptionalInteger,
+    OptionalReal,
+    OptionalText,
+    OptionalJsonValue,
     Console,
     Arguments,
     Directory,
@@ -17,6 +26,7 @@ pub enum EffectValueKind {
 pub struct EffectOperation {
     pub id: u32,
     pub identity: &'static str,
+    pub family: &'static str,
     pub receiver: Option<EffectValueKind>,
     pub spanish: &'static str,
     pub english: &'static str,
@@ -44,6 +54,28 @@ pub fn find_effect_operation(
 }
 
 impl EffectOperation {
+    pub fn result_cell_count(&self) -> usize {
+        match self.result {
+            EffectValueKind::OptionalBoolean
+            | EffectValueKind::OptionalInteger
+            | EffectValueKind::OptionalReal => 2,
+            EffectValueKind::OptionalText | EffectValueKind::OptionalJsonValue => 1,
+            EffectValueKind::JsonResult => 5,
+            _ if self.fallible => 3,
+            _ => 1,
+        }
+    }
+
+    pub fn is_scalar(kind: EffectValueKind) -> bool {
+        matches!(
+            kind,
+            EffectValueKind::Integer
+                | EffectValueKind::Real
+                | EffectValueKind::Boolean
+                | EffectValueKind::JsonKind
+        )
+    }
+
     pub fn capability_family(&self) -> &'static str {
         match self.receiver {
             Some(EffectValueKind::Directory | EffectValueKind::File) => "filesystem",
@@ -54,6 +86,7 @@ impl EffectOperation {
             _ => match self.identity.strip_prefix("request_") {
                 Some("directory") => "filesystem",
                 Some(requested) => requested,
+                None if !self.family.is_empty() => self.family,
                 None => "host",
             },
         }

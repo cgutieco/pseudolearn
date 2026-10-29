@@ -4,3 +4,5 @@ mod grammar;
 mod help_catalog;
 #[path = "resources/lexicon.rs"]
 mod lexicon;
+#[path = "resources/library_facets.rs"]
+mod library_facets;

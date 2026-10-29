@@ -1,11 +1,12 @@
 use see_model::{Specification, field};
 use serde_json::Value;
 
-mod capability_library;
 pub mod analysis_limits;
+mod capability_library;
 pub mod grammar;
 pub mod help_catalog;
 pub mod lexicon;
+pub mod library_facets;
 pub mod structural;
 
 pub fn check(specification: &Specification) -> Vec<String> {

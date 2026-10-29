@@ -1,7 +1,7 @@
 use crate::load::model::EffectSite;
 use crate::machine::{Flow, Machine};
 use crate::{Fault, PendingEffectRequest, evaluate::INVALID_BYTECODE};
-use pseudolearn_runtime::{EffectOperation, EffectValueKind, HostCapability, HostValue};
+use pseudolearn_runtime::{EffectOperation, HostCapability, HostValue};
 
 impl Machine<'_> {
     pub(crate) fn effect_call(&mut self, site: u32) -> Result<Flow, Fault> {
@@ -11,6 +11,12 @@ impl Machine<'_> {
             let delivered = self.tasks.pending_effects.remove(&self.tasks.current);
             self.event_effect_delivered(delivered.map_or(0, |request| request.effect_seq));
             self.complete_effect(&site, operation, &reply)?;
+            return Ok(Flow::Continue);
+        }
+        if !operation.effect
+            && let Some(value) = self.try_local_json_view(&site, operation)?
+        {
+            self.complete_local_view(&site, value)?;
             return Ok(Flow::Continue);
         }
         let arguments = self.effect_arguments(&site, operation)?;
@@ -41,7 +47,7 @@ impl Machine<'_> {
             .iter()
             .zip(operation.parameters)
             .map(|(register, kind)| {
-                let word = if matches!(kind, EffectValueKind::Integer | EffectValueKind::Boolean) {
+                let word = if EffectOperation::is_scalar(*kind) {
                     self.scalar(*register)?
                 } else {
                     u64::from(self.reference(*register)?)
@@ -52,19 +58,65 @@ impl Machine<'_> {
             .collect()
     }
 
+    fn effect_argument_words(
+        &self,
+        site: &EffectSite,
+        operation: &EffectOperation,
+    ) -> Result<Vec<u64>, Fault> {
+        site.arguments
+            .iter()
+            .zip(operation.parameters)
+            .map(|(register, kind)| {
+                if EffectOperation::is_scalar(*kind) {
+                    self.scalar(*register)
+                } else {
+                    self.reference(*register).map(u64::from)
+                }
+            })
+            .collect()
+    }
+
+    fn try_local_json_view(
+        &mut self,
+        site: &EffectSite,
+        operation: &EffectOperation,
+    ) -> Result<Option<u64>, Fault> {
+        let receiver = pseudolearn_runtime::Handle(self.reference(site.capability)?);
+        let words = self.effect_argument_words(site, operation)?;
+        let mut roots = self.memory_roots()?;
+        roots
+            .try_reserve(words.len().saturating_add(1))
+            .map_err(|_| super::memory::memory_fault(pseudolearn_runtime::MemoryError::Resource))?;
+        roots.push(receiver);
+        for (word, kind) in words.iter().zip(operation.parameters) {
+            if !EffectOperation::is_scalar(*kind) {
+                roots.push(pseudolearn_runtime::Handle(
+                    u32::try_from(*word).map_err(|_| INVALID_BYTECODE)?,
+                ));
+            }
+        }
+        let call = pseudolearn_library::LocalJsonViewCall::new(receiver, operation, &words, &roots);
+        pseudolearn_library::local_json_view(&mut self.heap, call)
+            .map_err(super::memory::memory_fault)
+    }
+
     fn complete_local_effect(
         &mut self,
         site: &EffectSite,
         operation: &EffectOperation,
         arguments: &[HostValue],
     ) -> Result<Flow, Fault> {
-        let reply = pseudolearn_runtime::local_effect(
-            &self.heap,
-            pseudolearn_runtime::Handle(self.reference(site.capability)?),
-            operation,
-            arguments,
-        )
-        .map_err(super::memory::memory_fault)?;
+        let receiver = pseudolearn_runtime::Handle(self.reference(site.capability)?);
+        let reply =
+            match pseudolearn_library::local_operation(&self.heap, receiver, operation, arguments)
+                .map_err(super::memory::memory_fault)?
+            {
+                Some(value) => pseudolearn_runtime::HostReply::Committed(value),
+                None => {
+                    pseudolearn_runtime::local_effect(&self.heap, receiver, operation, arguments)
+                        .map_err(super::memory::memory_fault)?
+                }
+            };
         self.complete_effect(site, operation, &reply)?;
         Ok(Flow::Continue)
     }

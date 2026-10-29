@@ -7,6 +7,8 @@ publish = false
 [dependencies]
 pseudolearn_runtime = { path = "../pseudolearn_runtime", version = "=0.1.0" }
 pseudolearn_diagnostics = { path = "../pseudolearn_diagnostics", version = "=0.1.0" }
+serde = { version = "1.0" }
+serde_json = { version = "1.0", features = ["arbitrary_precision", "preserve_order"] }
 
 [lints]
 workspace = true

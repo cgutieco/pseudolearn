@@ -40,9 +40,10 @@ se generan para evitar construir cadenas candidatas en cada identificador. Se re
 
 El catálogo genera también la consulta inversa de identidad y perfil a lexema canónico. Se usa al
 presentar argumentos tipados de diagnóstico; no se mantiene un segundo diccionario de nombres de tipo.
-`KeywordKind::lexeme` y `BuiltinKind::lexeme` exponen el lexema canónico por perfil, y `KeywordKind::all` y
-`BuiltinKind::all` enumeran el vocabulario generado para herramientas de edición (autocompletado, formateo y
-traducción), que de este modo no copian listas de palabras.
+`KeywordKind::lexeme` y `BuiltinKind::lexeme` exponen el lexema canónico por perfil. `all` devuelve
+tablas estáticas de identidades y `as_str` resuelve desde el discriminante compacto del enumerado; el
+tamaño del vocabulario aumenta los datos generados, no el cuerpo de esos métodos. Las herramientas de
+edición (autocompletado, formateo y traducción) consumen las tablas sin copiar listas de palabras.
 
 ### Palabras reservadas por perfil
 

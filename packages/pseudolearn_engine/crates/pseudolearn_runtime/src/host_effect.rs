@@ -6,11 +6,35 @@ use serde::{Deserialize, Serialize};
 #[serde(tag = "kind", content = "value", rename_all = "snake_case")]
 pub enum HostValue {
     Integer(i64),
+    Real(u64),
     Boolean(bool),
     Text(String),
     Bytes(Vec<u8>),
     TextList(Vec<String>),
+    JsonValue(String),
+    JsonResult(JsonResultValue),
+    JsonKind(u8),
+    OptionalBoolean(Option<bool>),
+    OptionalInteger(Option<i64>),
+    OptionalReal(Option<u64>),
+    OptionalText(Option<String>),
+    OptionalJsonValue(Option<String>),
     Capability(HostCapability),
+}
+
+#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
+#[serde(tag = "kind", content = "value", rename_all = "snake_case")]
+pub enum JsonResultValue {
+    Value(String),
+    Error(JsonFailure),
+}
+
+#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct JsonFailure {
+    pub code: String,
+    pub line: i64,
+    pub column: i64,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]

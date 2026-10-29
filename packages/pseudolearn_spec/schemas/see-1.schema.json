@@ -1787,6 +1787,10 @@
             "capacidad_canal": {
               "type": "integer",
               "minimum": 1
+            },
+            "max_json_depth": {
+              "type": "integer",
+              "minimum": 1
             }
           },
           "additionalProperties": false

@@ -3,8 +3,9 @@
   "expect": "must name an alias",
   "edits": [
     {
-      "op": "remove",
-      "path": "/cards/0"
+      "op": "remove_id",
+      "path": "/cards",
+      "id": "construction.algorithm.entry"
     },
     {
       "op": "set",

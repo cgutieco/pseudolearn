@@ -510,13 +510,13 @@ derivado`, y sus esperados se derivan de la regla, nunca de la salida del motor 
 
 ### PG-5.01 · Biblioteca bilingüe con símbolo canónico y facetas generadas
 
-- [ ] `PG-5.01.01` Especificación: en `LIB.MODEL`, reglas `M1`–`M4` y campo `family` en cada fila de `D1`/`D2`; filas
+- [x] `PG-5.01.01` Especificación: en `LIB.MODEL`, reglas `M1`–`M4` y campo `family` en cada fila de `D1`/`D2`; filas
   nuevas de §3.3.1–§3.3.3; edición oficial de `LIB.CORE.TEXT` (`T1`–`T3`); crear `LIB.CORE.BYTES` (`B1`, `B2`) y
   `LIB.JSON` (`J1`–`J8`), estables `1.0.0`, sujetos `engine` y `aot`, sin `cambio`; `LANG.PROFILE.VOCABULARY` (tipos y
   miembros nuevos); `LANG.TASK.ISOLATION#R1` (transferibles); `ENG.LIMITS` (`max_json_depth`); `DIAG.CATALOG` y
   `DIAG.MESSAGES` (`emptySeparator`, `bytesRangeOutOfBounds`, `jsonKindMismatch`, con plantillas es/en);
   `TOOL.SERVICE.CATALOG` (una ficha por identidad nueva, con ejemplo derivado válido).
-- [ ] `PG-5.01.02` Casos: por cada función de texto, feliz, borde de §3.3.1 y, si atrapa, infeliz; bytes: vacío,
+- [x] `PG-5.01.02` Casos: por cada función de texto, feliz, borde de §3.3.1 y, si atrapa, infeliz; bytes: vacío,
   segmento total, segmento fuera de rango, unión con vacío, `BytesDesdeTexto` con carácter de cuatro bytes; JSON:
   documento con los seis tipos, objeto vacío, arreglo vacío, cadena con par sustituto, número `-0`, `1e400`
   (`ComoReal` ⇒ `Nada`), `9223372036854775808` (`ComoEntero` ⇒ `Nada`), clave duplicada, sustituto suelto, coma
@@ -524,11 +524,11 @@ derivado`, y sus esperados se derivan de la regla, nunca de la salida del motor 
   columna 5, `ConCampo` que reemplaza conservando posición, `ConElemento` sobre objeto ⇒ `jsonKindMismatch`,
   ida y vuelta `TextoJson`; facetas: un programa `en` y su traducción `es` con idéntica salida para cada familia;
   `ValorJson` lanzado a una tarea hija (transferible). Propiedad de ida y vuelta de `J7` en el archivo de propiedades.
-- [ ] `PG-5.01.03` Tests espejo: `see_validation` (validador de facetas `M1`–`M3` con fixture negativo: identidad sin
+- [x] `PG-5.01.03` Tests espejo: `see_validation` (validador de facetas `M1`–`M3` con fixture negativo: identidad sin
   `en`, firma distinta, ficha ausente, forma duplicada); `pseudolearn_library` (`text_search_tests.rs`,
   `text_split_tests.rs`, `json_parse_tests.rs`, `json_text_tests.rs`, `json_query_tests.rs`); `pseudolearn_abi`
   (`json_layout_tests.rs`); `pseudolearn_semantic` (tipos incorporados nuevos y transferibilidad).
-- [ ] `PG-5.01.04` Código: regenerar exportación, léxico y tabla de operaciones (`GEN-NO-HAND-COPY`);
+- [x] `PG-5.01.04` Código: regenerar exportación, léxico y tabla de operaciones (`GEN-NO-HAND-COPY`);
   `pseudolearn_abi/src/json_layout.rs`; `EffectValueKind` y `build.rs` con las clases nuevas; `pseudolearn_library`:
   `text_search.rs`, `text_split.rs`, `text_replace.rs`, `bytes_operations.rs`, `json_parse.rs`,
   `json_parse_strings.rs`, `json_text.rs`, `json_query.rs`, `json_build.rs`; `pseudolearn_runtime`:
@@ -536,9 +536,9 @@ derivado`, y sus esperados se derivan de la regla, nunca de la salida del motor 
   `transferability.rs`; `pseudolearn_lowering` y VM: llamadas a las operaciones puras por la vía existente de
   operaciones de biblioteca (si no existe vía genérica para puras con receptor, se reporta antes de crear
   instrucciones de RI nuevas); validador de facetas en `see_validation`.
-- [ ] `PG-5.01.05` README: motor (`library`, `runtime`, `abi`: representación JSON y su coste), `pseudolearn_spec`
+- [x] `PG-5.01.05` README: motor (`library`, `runtime`, `abi`: representación JSON y su coste), `pseudolearn_spec`
   (validador de facetas).
-- [ ] `PG-5.01.06` Ligera: `see validate`, `lock --check`, `export --check`; `cargo test -p pseudolearn_library --lib
+- [x] `PG-5.01.06` Ligera: `see validate`, `lock --check`, `export --check`; `cargo test -p pseudolearn_library --lib
   <módulo>` por módulo nuevo; `cargo test -p pseudolearn_abi --lib json_layout`; `cargo test -p see_validation
   <filtro de facetas>`; Clippy y `rust-checks` de los crates tocados.
 - [ ] `PG-5.01.07` Pesada: `see conform --only` de `LIB.MODEL`, `LIB.CORE.TEXT`, `LIB.CORE.BYTES`, `LIB.JSON`,
@@ -1004,7 +1004,7 @@ README y la regresión `PERF.SUITE.CORE`; desde `apps/pseudolearn_app`, `flutter
 
 | Tarea | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
-| `PG-5.01` | | | |
+| `PG-5.01` | Implementación ligera lista; pesada pendiente de iteración 6 | Iteración 2: tests filtrados de `library`, `abi`, `runtime`, `semantic`, `syntax`, `lexicon` y `see_validation`; `see validate`, `lock --check`, `export --check`; Clippy, rustfmt y `rust-checks` en `engine` y `spec` | `PG-5.01.07` se reserva a la iteración 6; parada en `P2` |
 | `PG-5.02` | | | |
 | `PG-5.03` | | | |
 | `PG-5.04` | | | |
@@ -1015,7 +1015,7 @@ README y la regresión `PERF.SUITE.CORE`; desde `apps/pseudolearn_app`, `flutter
 | `PG-5.09` | | | |
 | `PG-5.10` | | | |
 | Lectura pendiente de §2 | | | |
-| Espacio liberado (§13) | | | |
+| Espacio liberado (§13) | No requerido | `df -h /`: 32 GiB libres; `du -sh`: engine incremental 1.2 GiB, spec incremental 337 MiB, app native target 1.9 GiB | Supera el objetivo de 25 GiB; no se borraron cachés |
 
 Revisión Git de cierre: · Verificadores ejecutados: · Suites omitidas y por qué: · Pendientes justificados: ·
 Puntos de §4 cumplidos:

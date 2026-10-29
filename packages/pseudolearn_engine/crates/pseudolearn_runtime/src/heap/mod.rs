@@ -37,6 +37,8 @@ pub(crate) enum Shape {
     Dictionary,
     Bytes,
     Capability,
+    JsonBlock,
+    JsonView,
     Channel,
     Continuation,
     Task,

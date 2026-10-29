@@ -26,10 +26,19 @@ pub(crate) fn reply(
 pub(crate) fn value_kind(value: &HostValue) -> EffectValueKind {
     match value {
         HostValue::Integer(_) => EffectValueKind::Integer,
+        HostValue::Real(_) => EffectValueKind::Real,
         HostValue::Boolean(_) => EffectValueKind::Boolean,
         HostValue::Text(_) => EffectValueKind::Text,
         HostValue::Bytes(_) => EffectValueKind::Bytes,
         HostValue::TextList(_) => EffectValueKind::TextList,
+        HostValue::JsonValue(_) => EffectValueKind::JsonValue,
+        HostValue::JsonResult(_) => EffectValueKind::JsonResult,
+        HostValue::JsonKind(_) => EffectValueKind::JsonKind,
+        HostValue::OptionalBoolean(_) => EffectValueKind::OptionalBoolean,
+        HostValue::OptionalInteger(_) => EffectValueKind::OptionalInteger,
+        HostValue::OptionalReal(_) => EffectValueKind::OptionalReal,
+        HostValue::OptionalText(_) => EffectValueKind::OptionalText,
+        HostValue::OptionalJsonValue(_) => EffectValueKind::OptionalJsonValue,
         HostValue::Capability(capability) => match capability.kind {
             0 => EffectValueKind::Console,
             1 => EffectValueKind::Arguments,

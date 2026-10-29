@@ -13,7 +13,13 @@ pub(crate) fn lookup(
     member: usize,
 ) -> Option<Result<(EnumId, u32), ()>> {
     let name_node = identifier_of(session, target)?;
-    let enumeration = *session.declared.enums.get(&session.name(name_node))?;
+    let name = session.name(name_node);
+    let enumeration = session
+        .declared
+        .enums
+        .get(&name)
+        .copied()
+        .or_else(|| crate::json_types::builtin_enum(session, &name))?;
     let wanted = session.name(member);
     let ordinal = usize::try_from(enumeration.0)
         .ok()

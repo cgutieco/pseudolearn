@@ -42,7 +42,10 @@
     "C1",
     "C2",
     "C3",
-    "C4"
+    "C4",
+    "C5",
+    "C6",
+    "C7"
   ]
 }
 ```
@@ -157,5 +160,53 @@
       "codigo": "taskDeadlock"
     }
   }
+}
+```
+
+```caso
+{
+  "id": "C5",
+  "regla": "R1",
+  "perfiles": ["es", "en"],
+  "rigor": ["estricto", "flexible"],
+  "programas": {
+    "es": "Algoritmo P\nDefinir result Como Vector<Cadena> <- Dividir(\"a\", \"\");\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine result as Vector<String> <- split(\"a\", \"\");\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {"terminacion": "failed", "fallo": {"codigo": "emptySeparator"}}
+}
+```
+
+```caso
+{
+  "id": "C6",
+  "regla": "R1",
+  "perfiles": ["es", "en"],
+  "rigor": ["estricto", "flexible"],
+  "programas": {
+    "es": "Algoritmo P\nDefinir bytes Como Bytes <- BytesDesdeTexto(\"a\");\nbytes.Segmento(1, 1);\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine bytes as Bytes <- bytesFromText(\"a\");\nbytes.segment(1, 1);\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {"terminacion": "failed", "fallo": {"codigo": "bytesRangeOutOfBounds"}}
+}
+```
+
+```caso
+{
+  "id": "C7",
+  "regla": "R1",
+  "perfiles": ["es", "en"],
+  "rigor": ["estricto", "flexible"],
+  "programas": {
+    "es": "Algoritmo P\nDefinir parsed Como Resultado<ValorJson, ErrorJson> <- AnalizarJson(\"1\");\nDefinir value Como ValorJson <- parsed.Valor();\nvalue.ConElemento(JsonNulo());\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine parsed as Result<JsonValue, JsonError> <- parseJson(\"1\");\ndefine value as JsonValue <- parsed.value();\nvalue.withElement(jsonNull());\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {"terminacion": "failed", "fallo": {"codigo": "jsonKindMismatch"}}
 }
 ```

@@ -68,18 +68,7 @@ impl Heap {
         if self.visit_task_references(handle, header.shape_tag, pending)? {
             return Ok(());
         }
-        if matches!(
-            header.shape_tag,
-            pseudolearn_abi::vector_layout::VECTOR_SHAPE_TAG
-                | pseudolearn_abi::dictionary_layout::DICTIONARY_SHAPE_TAG
-        ) {
-            return crate::collection::references(self, handle, pending);
-        }
-        if matches!(
-            header.shape_tag,
-            pseudolearn_abi::bytes_layout::BYTES_SHAPE_TAG
-                | pseudolearn_abi::capability_layout::CAPABILITY_SHAPE_TAG
-        ) {
+        if self.visit_special_references(handle, header.shape_tag, pending)? {
             return Ok(());
         }
         if header.shape_tag == 1 {
@@ -95,6 +84,34 @@ impl Heap {
             self.visit_text_index(handle, pending)?;
         }
         Ok(())
+    }
+
+    fn visit_special_references(
+        &self,
+        handle: Handle,
+        shape: u32,
+        pending: &mut Vec<Handle>,
+    ) -> Result<bool, MemoryError> {
+        match shape {
+            pseudolearn_abi::vector_layout::VECTOR_SHAPE_TAG
+            | pseudolearn_abi::dictionary_layout::DICTIONARY_SHAPE_TAG => {
+                crate::collection::references(self, handle, pending)?;
+            }
+            pseudolearn_abi::json_layout::JSON_VIEW_SHAPE_TAG => {
+                pending.push(Handle(
+                    u32::try_from(self.word(
+                        handle,
+                        pseudolearn_abi::json_layout::JSON_VIEW_BLOCK_WORD_OFFSET,
+                    )?)
+                    .map_err(|_| MemoryError::Internal)?,
+                ));
+            }
+            pseudolearn_abi::bytes_layout::BYTES_SHAPE_TAG
+            | pseudolearn_abi::capability_layout::CAPABILITY_SHAPE_TAG
+            | pseudolearn_abi::json_layout::JSON_BLOCK_SHAPE_TAG => {}
+            _ => return Ok(false),
+        }
+        Ok(true)
     }
 
     fn visit_task_references(

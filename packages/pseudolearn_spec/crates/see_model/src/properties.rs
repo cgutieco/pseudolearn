@@ -89,4 +89,5 @@ pub enum PropertyExecutor {
     ServiceCompletionTemplates,
     ServiceFormat,
     ServiceTranslate,
+    JsonTextRoundtrip,
 }

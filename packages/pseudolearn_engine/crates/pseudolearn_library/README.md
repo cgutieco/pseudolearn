@@ -2,10 +2,10 @@
 
 ## 1. Qué es y qué no es
 
-Implementa conversiones, redondeo e intrínsecos matemáticos sobre valores del runtime: raíz cuadrada,
-valor absoluto, `ln`, `exp`, seno, coseno, arcotangente y potencia real, todos con el binario64 más
-cercano al valor exacto. Mantiene dominios y errores explícitos para que la VM atribuya las trampas al
-span de la instrucción. No añade construcciones del lenguaje, UI ni efectos libres del anfitrión.
+Implementa operaciones puras de texto, bytes y JSON, además de conversiones, redondeo e intrínsecos
+matemáticos sobre valores del runtime. Mantiene dominios y errores explícitos para que la VM atribuya
+las trampas al span de la instrucción. No añade construcciones del lenguaje, UI ni efectos libres del
+anfitrión.
 
 | Pendiente | Dependencia | Hito técnico |
 |---|---|---|
@@ -24,7 +24,7 @@ El formato de valores primitivos recibe los lexemas lógicos canónicos como dat
 `ATexto` y la salida comparten exactamente ese formateador; ningún literal de vocabulario se copia aquí.
 Las conversiones decimales validan gramática, rango y finitud antes de devolver una palabra.
 
-Nivel 6. Importa runtime y diagnostics; solo biblioteca estándar externa. Prohibido importar capas superiores, UI, Dart o el sistema de especificaciones como código.
+Nivel 6. Importa runtime y diagnostics; usa serde y serde_json para parsing y representación temporal. Prohibido importar capas superiores, UI, Dart o el sistema de especificaciones como código.
 
 Funciones puras sobre representaciones del runtime, sin estado global.
 
@@ -38,6 +38,13 @@ Funciones puras sobre representaciones del runtime, sin estado global.
 | `transcendental/ziv.rs` | Escalada de precisión hasta que los dos extremos del intervalo redondean igual |
 | `transcendental/{exponential,logarithm,trigonometric,arctangent,power}.rs` | Reducción de argumento y evaluación de cada función |
 | `transcendental/power_exact.rs` | Resultados exactos de la potencia antes de la escalada |
+| `text_search.rs`, `text_split.rs`, `text_replace.rs` | Búsqueda Unicode, segmentación, unión, reemplazo y recorte de texto |
+| `bytes_operations.rs` | Conversión UTF-8, segmentos comprobados y unión binaria |
+| `json_parse.rs`, `json_parse_strings.rs` | Parsing JSON, duplicados, límite de profundidad y ubicación de errores |
+| `json_text.rs`, `json_query.rs`, `json_build.rs` | Texto compacto, consultas, constructores y actualización inmutable |
+| `json_source.rs`, `json_source_scan.rs` | Conserva lexemas JSON no modificados al reemplazar valores y añadir miembros |
+| `json_local_views.rs` | Devuelve vistas del runtime para resultados de `Elemento` y `Campo` |
+| `local_operations.rs` | Despacha operaciones puras desde identidades de `LIB.MODEL` |
 
 Cada función calcula un intervalo que contiene con certeza el valor exacto: todas las operaciones
 redondean el extremo inferior hacia −∞ y el superior hacia +∞, y el resto de cada serie se suma como
@@ -65,6 +72,15 @@ constructor. El runtime suministra los descriptores que determinan el contenido 
 Invariantes: Mismo resultado binario64 y mismo texto en todas las plataformas. Los dominios inválidos y resultados no finitos atrapan antes de guardar un valor.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
+
+El parser valida antes de guardar el resultado y conserva números de precisión arbitraria y el orden
+de las claves. El runtime representa cada `ValorJson` como una vista de un bloque plano inmutable. Las
+consultas de `Elemento` y `Campo` entregan una vista al nodo hijo sin copiar su subárbol; la consulta de
+claves y las operaciones que atraviesan `HostValue` materializan temporalmente texto JSON. Las
+actualizaciones construyen un bloque nuevo, conservan el orden original al reemplazar un campo y
+mantienen los lexemas numéricos originales de los valores que no cambian.
+Las operaciones se generan como datos desde `LIB.MODEL` y comparten `EffectCall` con VM y AOT, sin
+instrucciones de RI nuevas.
 
 La libm del anfitrión puede diferir en el último bit, que el formato hace visible: en el contraste piloto la
 libm de macOS discrepó del oráculo en alrededor del 4 % de senos y cosenos y del 8 % de arcotangentes de
@@ -100,6 +116,8 @@ literales y los efectos del programa se preservan; idioma de interfaz y vocabula
 
 ## 7. Verificación, testing y aseguramiento de calidad
 
+`json_parse_tests.rs`, `json_local_views_tests.rs`, `json_query_tests.rs` y `json_text_tests.rs` cubren
+casos válidos e inválidos, profundidad, orden de claves, vistas compartidas y valores no representables.
 Oráculo racional de SEE en un millón de argumentos por función (aleatorios, bordes, subnormales, cercanía
 a múltiplos de π/2 y a uno, potencias exactas y puntos medios). Tests internos de naturales, enteros,
 intervalos, redondeo binario64 (empates, subnormales, desbordamiento, cero con signo) y potencias exactas;

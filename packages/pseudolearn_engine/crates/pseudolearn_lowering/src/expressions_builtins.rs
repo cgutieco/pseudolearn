@@ -13,7 +13,15 @@ pub fn lower_builtin_call(
     span: Option<IrSpan>,
     builder: &mut FunctionBuilder,
 ) -> ValueId {
-    let operation = match builtin {
+    let operation = builtin_operation(builtin);
+    let operands = arguments.iter().copied().map(Operand::Value).collect();
+    let result_value = builder.next_value();
+    builder.emit_with_target(operation, operands, (Some(result_value), span));
+    result_value
+}
+
+fn builtin_operation(builtin: BuiltinKind) -> Operation {
+    match builtin {
         BuiltinKind::SquareRoot => Operation::MathSqrt,
         BuiltinKind::AbsoluteValue => Operation::MathAbs,
         BuiltinKind::NaturalLogarithm => Operation::MathLn,
@@ -33,11 +41,16 @@ pub fn lower_builtin_call(
         BuiltinKind::Snapshot => Operation::SnapshotCopy,
         BuiltinKind::ShallowCopy => Operation::ObjectCopy,
         BuiltinKind::Random => Operation::HostRandom,
-    };
-    let operands = arguments.iter().copied().map(Operand::Value).collect();
-    let result_value = builder.next_value();
-    builder.emit_with_target(operation, operands, (Some(result_value), span));
-    result_value
+        BuiltinKind::Contains
+        | BuiltinKind::EndsWith
+        | BuiltinKind::Join
+        | BuiltinKind::PositionOf
+        | BuiltinKind::ReplaceAll
+        | BuiltinKind::Split
+        | BuiltinKind::StartsWith
+        | BuiltinKind::Substring
+        | BuiltinKind::Trim => Operation::Unreachable,
+    }
 }
 
 pub fn select_integer_binary_operation(operator: BinaryOperator) -> Option<Operation> {

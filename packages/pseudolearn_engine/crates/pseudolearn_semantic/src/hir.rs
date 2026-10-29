@@ -1,5 +1,5 @@
 use crate::expression_model::ExpressionColumns;
-use crate::identities::{ClassId, FieldId, FunctionId, LocalId, StatementId, TypeId};
+use crate::identities::{ClassId, EnumId, FieldId, FunctionId, LocalId, StatementId, TypeId};
 use crate::statement_model::StatementColumns;
 use crate::types::TypeInterner;
 use pseudolearn_source::Span;
@@ -126,6 +126,7 @@ pub struct HirRecord {
 
 #[derive(Clone, Debug, Default, PartialEq)]
 pub struct HirModule {
+    pub builtin_enums: BTreeMap<String, EnumId>,
     pub channels: BTreeMap<crate::identities::RecordId, TypeId>,
     pub task_failures: BTreeMap<crate::identities::RecordId, TypeId>,
     pub opaque_types: BTreeMap<ClassId, pseudolearn_abi::EffectValueKind>,

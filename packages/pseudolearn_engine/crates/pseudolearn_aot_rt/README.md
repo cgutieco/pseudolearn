@@ -238,6 +238,11 @@ antes de ejecutar y el proceso termina con el código 6. Se descarta una variabl
 vacío) y se descarta la entrada estándar (ya transporta las entradas del programa). El adaptador solo ofrece
 `execute`; `history_seek` se rechaza en la API antes de lanzar.
 
+Las operaciones puras de texto, bytes y JSON se resuelven localmente en `pseudolearn_library`. Para
+`json_element` y `json_field`, AOT entrega las palabras de los argumentos a `local_json_view` y escribe
+directamente la asa de la vista devuelta en la celda opcional. VM usa la misma función; ambos conservan
+el bloque y el índice del nodo sin crear otro documento.
+
 ### Reproducción autónoma de `Leer` y observación del anfitrión
 
 Decisión: cuando el canal de efectos trae una cinta para reproducir, `rt_aot_read` no lee la entrada estándar; resuelve

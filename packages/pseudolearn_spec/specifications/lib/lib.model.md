@@ -45,6 +45,7 @@
   "texto": "Identidad, nombres, alias y firma de cada función incorporada.",
   "valor": {
     "squareRoot": {
+      "family": "numbers",
       "lexemas": {
         "es": "rc",
         "en": "sqrt"
@@ -61,6 +62,7 @@
       "retorno": "real"
     },
     "absoluteValue": {
+      "family": "numbers",
       "lexemas": {
         "es": "abs",
         "en": "abs"
@@ -75,6 +77,7 @@
       "retorno": "real"
     },
     "naturalLogarithm": {
+      "family": "numbers",
       "lexemas": {
         "es": "ln",
         "en": "ln"
@@ -91,6 +94,7 @@
       "retorno": "real"
     },
     "exponential": {
+      "family": "numbers",
       "lexemas": {
         "es": "exp",
         "en": "exp"
@@ -105,6 +109,7 @@
       "retorno": "real"
     },
     "sine": {
+      "family": "numbers",
       "lexemas": {
         "es": "sen",
         "en": "sin"
@@ -121,6 +126,7 @@
       "retorno": "real"
     },
     "cosine": {
+      "family": "numbers",
       "lexemas": {
         "es": "cos",
         "en": "cos"
@@ -135,6 +141,7 @@
       "retorno": "real"
     },
     "arcTangent": {
+      "family": "numbers",
       "lexemas": {
         "es": "atan",
         "en": "atan"
@@ -151,6 +158,7 @@
       "retorno": "real"
     },
     "truncate": {
+      "family": "numbers",
       "lexemas": {
         "es": "trunc",
         "en": "trunc"
@@ -165,6 +173,7 @@
       "retorno": "integer"
     },
     "round": {
+      "family": "numbers",
       "lexemas": {
         "es": "redon",
         "en": "round"
@@ -179,6 +188,7 @@
       "retorno": "integer"
     },
     "random": {
+      "family": "numbers",
       "lexemas": {
         "es": "azar",
         "en": "random"
@@ -195,6 +205,7 @@
       "retorno": "real"
     },
     "toText": {
+      "family": "text",
       "lexemas": {
         "es": "ATexto",
         "en": "toText"
@@ -211,6 +222,7 @@
       "retorno": "string"
     },
     "textToInteger": {
+      "family": "numbers",
       "lexemas": {
         "es": "AEntero",
         "en": "toInteger"
@@ -225,6 +237,7 @@
       "retorno": "integer"
     },
     "textToReal": {
+      "family": "numbers",
       "lexemas": {
         "es": "AReal",
         "en": "toReal"
@@ -239,6 +252,7 @@
       "retorno": "real"
     },
     "length": {
+      "family": "text",
       "lexemas": {
         "es": "Longitud",
         "en": "length"
@@ -253,6 +267,7 @@
       "retorno": "integer"
     },
     "characterAt": {
+      "family": "text",
       "lexemas": {
         "es": "CaracterEn",
         "en": "charAt"
@@ -268,6 +283,7 @@
       "retorno": "character"
     },
     "characterCode": {
+      "family": "text",
       "lexemas": {
         "es": "CodigoDe",
         "en": "charCode"
@@ -282,6 +298,7 @@
       "retorno": "integer"
     },
     "characterFromCode": {
+      "family": "text",
       "lexemas": {
         "es": "CaracterDesde",
         "en": "charFromCode"
@@ -295,8 +312,168 @@
       ],
       "retorno": "character"
     },
-    "snapshot": {"lexemas": {"es": "Instantanea", "en": "snapshot"}, "alias": {"es": [], "en": []}, "parametros": ["anySnapshot"], "retorno": "immutableOfFirstArgument"},
+    "snapshot": {
+      "family": "collections",
+      "lexemas": {
+        "es": "Instantanea",
+        "en": "snapshot"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "anySnapshot"
+      ],
+      "retorno": "immutableOfFirstArgument"
+    },
+    "substring": {
+      "family": "text",
+      "lexemas": {
+        "es": "Subcadena",
+        "en": "substring"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "string",
+        "integer",
+        "integer"
+      ],
+      "retorno": "string"
+    },
+    "contains": {
+      "family": "text",
+      "lexemas": {
+        "es": "Contiene",
+        "en": "contains"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "string",
+        "string"
+      ],
+      "retorno": "boolean"
+    },
+    "positionOf": {
+      "family": "text",
+      "lexemas": {
+        "es": "PosicionDe",
+        "en": "indexOf"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "string",
+        "string"
+      ],
+      "retorno": "optionalInteger"
+    },
+    "startsWith": {
+      "family": "text",
+      "lexemas": {
+        "es": "EmpiezaCon",
+        "en": "startsWith"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "string",
+        "string"
+      ],
+      "retorno": "boolean"
+    },
+    "endsWith": {
+      "family": "text",
+      "lexemas": {
+        "es": "TerminaCon",
+        "en": "endsWith"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "string",
+        "string"
+      ],
+      "retorno": "boolean"
+    },
+    "replaceAll": {
+      "family": "text",
+      "lexemas": {
+        "es": "Reemplazar",
+        "en": "replace"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "string",
+        "string",
+        "string"
+      ],
+      "retorno": "string"
+    },
+    "split": {
+      "family": "text",
+      "lexemas": {
+        "es": "Dividir",
+        "en": "split"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "string",
+        "string"
+      ],
+      "retorno": "stringVector"
+    },
+    "join": {
+      "family": "text",
+      "lexemas": {
+        "es": "Unir",
+        "en": "join"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "stringVector",
+        "string"
+      ],
+      "retorno": "string"
+    },
+    "trim": {
+      "family": "text",
+      "lexemas": {
+        "es": "Recortar",
+        "en": "trim"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "string"
+      ],
+      "retorno": "string"
+    },
     "shallowCopy": {
+      "family": "collections",
       "lexemas": {
         "es": "Copiar",
         "en": "copy"
@@ -320,7 +497,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "D1 declara las dieciocho funciones incorporadas, lexemas canónicos, alias bilingües y firmas, y D2 (capabilityLibrary) declara el constructor Bytes(), sus consultas posicionales y UTF-8, las solicitudes de capacidades explícitas y los métodos de capacidad con sus receptores, parámetros, retorno en Resultado<T, ErrorES> y clasificación de efecto. Sus nombres no son palabras reservadas; un subprograma homónimo oculta la función libre. La cantidad y los tipos de argumentos se comprueban estáticamente antes de la ejecución. D3 declara el constructor contextual y Enviar, Recibir y Cerrar con sus tipos y necesidad de Aguardar; no son operaciones del anfitrión.",
+  "texto": "D1 declara las veintiocho funciones incorporadas con lexemas canónicos, alias bilingües, firmas y familia; D2 declara las operaciones de capacidad y de biblioteca con su identidad, familia, receptor, formas, parámetros, retorno y efecto. D3 declara el constructor contextual y Enviar, Recibir y Cerrar con sus tipos y necesidad de Aguardar; no son operaciones del anfitrión. Los nombres no son palabras reservadas; un subprograma homónimo oculta la función libre. La cantidad y los tipos de argumentos se comprueban estáticamente antes de la ejecución.",
   "verificacion": [
     "C1",
     "C2",
@@ -328,6 +505,58 @@
     "C4",
     "C5"
   ]
+}
+```
+
+```regla
+{
+  "id": "M1",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Cada símbolo de biblioteca tiene una identidad única y estable. Sus facetas es y en, incluidos sus alias, nombran esa identidad y conservan la misma firma, efecto y falibilidad.",
+  "verificacion": [
+    "estructural"
+  ],
+  "justificacion": "La estructura bilingüe y la identidad canónica se verifican desde el recurso generado y su fixture negativo."
+}
+```
+
+```regla
+{
+  "id": "M2",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Dentro de cada perfil, las funciones sin receptor tienen formas únicas; las operaciones con receptor tienen pares únicos de receptor y forma. Una forma no puede identificar dos símbolos distintos en el mismo contexto.",
+  "verificacion": [
+    "estructural"
+  ],
+  "justificacion": "La estructura bilingüe y la identidad canónica se verifican desde el recurso generado y su fixture negativo."
+}
+```
+
+```regla
+{
+  "id": "M3",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Cada identidad de biblioteca tiene una ficha de ayuda disponible en español e inglés. La ausencia de una faceta o de una ficha invalida el corpus.",
+  "verificacion": [
+    "estructural"
+  ],
+  "justificacion": "La estructura bilingüe y la identidad canónica se verifican desde el recurso generado y su fixture negativo."
+}
+```
+
+```regla
+{
+  "id": "M4",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Cada fila de D1 y D2 declara una familia de biblioteca: text, bytes, numbers, collections, io, time, json, network o tasks. Las fichas de ayuda permiten auditar los símbolos por esa familia.",
+  "verificacion": [
+    "estructural"
+  ],
+  "justificacion": "La estructura bilingüe y la identidad canónica se verifican desde el recurso generado y su fixture negativo."
 }
 ```
 
@@ -445,11 +674,12 @@
  {
   "id": "D2",
   "termino": "capabilityLibrary",
-  "texto": "Operaciones de capacidades y bytes con identidad estable, receptor, formas bilingües, parámetros, resultado y clasificación de efectos.",
+  "texto": "Operaciones de biblioteca y de capacidades con identidad estable, familia, receptor, formas bilingües, parámetros, resultado y clasificación de efectos.",
   "valor": {
     "operations": [
       {
         "identity": "request_console",
+        "family": "io",
         "receiver": null,
         "es": "SolicitarConsola",
         "en": "requestConsole",
@@ -460,6 +690,7 @@
       },
       {
         "identity": "request_arguments",
+        "family": "io",
         "receiver": null,
         "es": "SolicitarArgumentos",
         "en": "requestArguments",
@@ -470,6 +701,7 @@
       },
       {
         "identity": "request_directory",
+        "family": "io",
         "receiver": null,
         "es": "SolicitarDirectorio",
         "en": "requestDirectory",
@@ -482,6 +714,7 @@
       },
       {
         "identity": "request_clock",
+        "family": "time",
         "receiver": null,
         "es": "SolicitarReloj",
         "en": "requestClock",
@@ -492,6 +725,7 @@
       },
       {
         "identity": "request_timer",
+        "family": "time",
         "receiver": null,
         "es": "SolicitarTemporizador",
         "en": "requestTimer",
@@ -502,6 +736,7 @@
       },
       {
         "identity": "console_write",
+        "family": "io",
         "receiver": "console",
         "es": "Escribir",
         "en": "write",
@@ -514,6 +749,7 @@
       },
       {
         "identity": "arguments_values",
+        "family": "io",
         "receiver": "arguments",
         "es": "Valores",
         "en": "values",
@@ -524,6 +760,7 @@
       },
       {
         "identity": "directory_derive",
+        "family": "io",
         "receiver": "directory",
         "es": "Subdirectorio",
         "en": "subdirectory",
@@ -537,6 +774,7 @@
       },
       {
         "identity": "file_open",
+        "family": "io",
         "receiver": "directory",
         "es": "Abrir",
         "en": "open",
@@ -550,6 +788,7 @@
       },
       {
         "identity": "directory_close",
+        "family": "io",
         "receiver": "directory",
         "es": "Cerrar",
         "en": "close",
@@ -560,6 +799,7 @@
       },
       {
         "identity": "file_read_bytes",
+        "family": "io",
         "receiver": "file",
         "es": "LeerBytes",
         "en": "readBytes",
@@ -570,6 +810,7 @@
       },
       {
         "identity": "file_read_text",
+        "family": "io",
         "receiver": "file",
         "es": "LeerTexto",
         "en": "readText",
@@ -580,6 +821,7 @@
       },
       {
         "identity": "file_write_bytes",
+        "family": "io",
         "receiver": "file",
         "es": "EscribirBytes",
         "en": "writeBytes",
@@ -592,6 +834,7 @@
       },
       {
         "identity": "file_write_text",
+        "family": "io",
         "receiver": "file",
         "es": "EscribirTexto",
         "en": "writeText",
@@ -604,6 +847,7 @@
       },
       {
         "identity": "file_close",
+        "family": "io",
         "receiver": "file",
         "es": "Cerrar",
         "en": "close",
@@ -614,6 +858,7 @@
       },
       {
         "identity": "clock_now",
+        "family": "time",
         "receiver": "clock",
         "es": "Ahora",
         "en": "now",
@@ -624,6 +869,7 @@
       },
       {
         "identity": "timer_wait",
+        "family": "time",
         "receiver": "timer",
         "es": "Esperar",
         "en": "wait",
@@ -636,6 +882,7 @@
       },
       {
         "identity": "bytes_new",
+        "family": "bytes",
         "receiver": null,
         "es": "Bytes",
         "en": "Bytes",
@@ -646,6 +893,7 @@
       },
       {
         "identity": "bytes_length",
+        "family": "bytes",
         "receiver": "bytes",
         "es": "Longitud",
         "en": "length",
@@ -656,6 +904,7 @@
       },
       {
         "identity": "bytes_at",
+        "family": "bytes",
         "receiver": "bytes",
         "es": "En",
         "en": "at",
@@ -668,11 +917,293 @@
       },
       {
         "identity": "bytes_utf8",
+        "family": "bytes",
         "receiver": "bytes",
         "es": "TextoUtf8",
         "en": "utf8Text",
         "parameters": [],
         "result": "text",
+        "effect": false,
+        "fallible": true
+      },
+      {
+        "identity": "bytes_from_text",
+        "family": "bytes",
+        "receiver": null,
+        "es": "BytesDesdeTexto",
+        "en": "bytesFromText",
+        "parameters": [
+          "text"
+        ],
+        "result": "bytes",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "bytes_segment",
+        "family": "bytes",
+        "receiver": "bytes",
+        "es": "Segmento",
+        "en": "segment",
+        "parameters": [
+          "integer",
+          "integer"
+        ],
+        "result": "bytes",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "bytes_join",
+        "family": "bytes",
+        "receiver": "bytes",
+        "es": "Unir",
+        "en": "join",
+        "parameters": [
+          "bytes"
+        ],
+        "result": "bytes",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "json_parse",
+        "family": "json",
+        "receiver": null,
+        "es": "AnalizarJson",
+        "en": "parseJson",
+        "parameters": [
+          "text"
+        ],
+        "result": "json_result",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "json_text",
+        "family": "json",
+        "receiver": null,
+        "es": "TextoJson",
+        "en": "jsonText",
+        "parameters": [
+          "json_value"
+        ],
+        "result": "text",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "json_null",
+        "family": "json",
+        "receiver": null,
+        "es": "JsonNulo",
+        "en": "jsonNull",
+        "parameters": [],
+        "result": "json_value",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "json_boolean",
+        "family": "json",
+        "receiver": null,
+        "es": "JsonLogico",
+        "en": "jsonBoolean",
+        "parameters": [
+          "boolean"
+        ],
+        "result": "json_value",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "json_integer",
+        "family": "json",
+        "receiver": null,
+        "es": "JsonEntero",
+        "en": "jsonInteger",
+        "parameters": [
+          "integer"
+        ],
+        "result": "json_value",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "json_real",
+        "family": "json",
+        "receiver": null,
+        "es": "JsonReal",
+        "en": "jsonReal",
+        "parameters": [
+          "real"
+        ],
+        "result": "json_value",
+        "effect": false,
+        "fallible": true
+      },
+      {
+        "identity": "json_string",
+        "family": "json",
+        "receiver": null,
+        "es": "JsonCadena",
+        "en": "jsonString",
+        "parameters": [
+          "text"
+        ],
+        "result": "json_value",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "json_array",
+        "family": "json",
+        "receiver": null,
+        "es": "ArregloJson",
+        "en": "jsonArray",
+        "parameters": [],
+        "result": "json_value",
+        "effect": false,
+        "fallible": true
+      },
+      {
+        "identity": "json_object",
+        "family": "json",
+        "receiver": null,
+        "es": "ObjetoJson",
+        "en": "jsonObject",
+        "parameters": [],
+        "result": "json_value",
+        "effect": false,
+        "fallible": true
+      },
+      {
+        "identity": "json_kind",
+        "family": "json",
+        "receiver": "json_value",
+        "es": "Tipo",
+        "en": "kind",
+        "parameters": [],
+        "result": "json_kind",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "json_as_boolean",
+        "family": "json",
+        "receiver": "json_value",
+        "es": "ComoLogico",
+        "en": "asBoolean",
+        "parameters": [],
+        "result": "optional_boolean",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "json_as_integer",
+        "family": "json",
+        "receiver": "json_value",
+        "es": "ComoEntero",
+        "en": "asInteger",
+        "parameters": [],
+        "result": "optional_integer",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "json_as_real",
+        "family": "json",
+        "receiver": "json_value",
+        "es": "ComoReal",
+        "en": "asReal",
+        "parameters": [],
+        "result": "optional_real",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "json_as_text",
+        "family": "json",
+        "receiver": "json_value",
+        "es": "ComoCadena",
+        "en": "asText",
+        "parameters": [],
+        "result": "optional_text",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "json_length",
+        "family": "json",
+        "receiver": "json_value",
+        "es": "Longitud",
+        "en": "length",
+        "parameters": [],
+        "result": "integer",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "json_element",
+        "family": "json",
+        "receiver": "json_value",
+        "es": "Elemento",
+        "en": "element",
+        "parameters": [
+          "integer"
+        ],
+        "result": "optional_json_value",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "json_field",
+        "family": "json",
+        "receiver": "json_value",
+        "es": "Campo",
+        "en": "field",
+        "parameters": [
+          "text"
+        ],
+        "result": "optional_json_value",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "json_keys",
+        "family": "json",
+        "receiver": "json_value",
+        "es": "Claves",
+        "en": "keys",
+        "parameters": [],
+        "result": "text_list",
+        "effect": false,
+        "fallible": true
+      },
+      {
+        "identity": "json_with_element",
+        "family": "json",
+        "receiver": "json_value",
+        "es": "ConElemento",
+        "en": "withElement",
+        "parameters": [
+          "json_value"
+        ],
+        "result": "json_value",
+        "effect": false,
+        "fallible": true
+      },
+      {
+        "identity": "json_with_field",
+        "family": "json",
+        "receiver": "json_value",
+        "es": "ConCampo",
+        "en": "withField",
+        "parameters": [
+          "text",
+          "json_value"
+        ],
+        "result": "json_value",
         "effect": false,
         "fallible": true
       }
@@ -693,7 +1224,8 @@ devuelven la cantidad de bytes escritos; Valores devuelve Vector<Cadena>. Ahora 
 instante grabado en nanosegundos y Esperar recibe una duración no negativa en nanosegundos y devuelve
 el instante lógico de resolución. Cerrar devuelve Verdadero al cerrar y CapacidadCerrada al repetir.
 Bytes() construye la secuencia vacía; Longitud y En consultan longitud y un octeto con índice
-comprobado. TextoUtf8 devuelve Resultado<Cadena,ErrorES> y rechaza UTF-8 inválido. ErrorES contiene
+comprobado. BytesDesdeTexto codifica UTF-8, Segmento copia un intervalo de octetos y Unir concatena
+dos secuencias inmutables. TextoUtf8 devuelve Resultado<Cadena,ErrorES> y rechaza UTF-8 inválido. ErrorES contiene
 Codigo y Incierto (code y uncertain): el código es la variante portable, y la bandera informa
 incertidumbre de una operación con potencial de escritura.
 

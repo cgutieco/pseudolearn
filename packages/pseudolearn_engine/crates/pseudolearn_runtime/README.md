@@ -2,7 +2,7 @@
 
 ## 1. Qué es y qué no es
 
-`pseudolearn_runtime` proporciona las operaciones comprobadas de memoria y valores que comparten la VM y los consumidores del motor. Incluye aritmética primitiva, montón, objetos, arreglos, texto y estado aleatorio determinista.
+`pseudolearn_runtime` proporciona las operaciones comprobadas de memoria y valores que comparten la VM y los consumidores del motor. Incluye aritmética primitiva, montón, objetos, arreglos, texto, valores JSON y estado aleatorio determinista.
 
 No ejecuta bytecode, no conoce el lenguaje fuente y no traduce errores a mensajes localizados. Las fallas esperables se expresan con `Result` y `MemoryError` o `ArithmeticError`.
 
@@ -23,6 +23,8 @@ La API pública existente se consume mediante los tipos y funciones exportados p
 El montón guarda palabras `u64` en un vector plano. Cada asignación comienza con una cabecera `CommonHeader` de dos palabras: la primera empaqueta forma y banderas, y la segunda guarda el ordinal o la cantidad de puntos de código. Un vector ordenado de `BlockRecord` conserva solo dirección, tamaño físico y celdas lógicas para recolección y diferenciales. El valor cero representa una referencia ausente; las asas son desplazamientos de 32 bits dentro del vector y las asignaciones de objetos y arreglos reciben una identidad ordinal que no depende de su dirección física. Una dirección reutilizada recibe un ordinal nuevo, así que igualdad de asa no implica identidad de objeto.
 
 Los objetos conservan sus diseños en `Heap.layouts`, indexados por clase, y llevan el desplazamiento de campos en la cabecera. Los arreglos codifican tipo de elemento, rango y literal en las banderas; guardan el total, la cantidad de enteros definidos y la dirección del mapa de definición en sus primeras palabras. El arreglo de rango uno reutiliza el total como su dimensión; los de mayor rango guardan sus dimensiones antes de los datos. El mapa de definición distingue una celda sin inicializar de un entero cuyo valor sea cero. Las celdas auxiliares permiten representar ese mapa sin añadir etiquetas a los valores.
+
+`ValorJson` usa una vista de dos palabras útiles: asa del bloque de nodos e índice de nodo. El bloque conserva una tabla plana con ocho palabras por nodo y bytes UTF-8 empaquetados para claves y escalares. Un wrapper de forma propia guarda la vista; el recolector sigue su referencia al bloque. `Elemento` y `Campo` crean wrappers nuevos para nodos del mismo bloque. Como ambos son inmutables, `Copiar` y los snapshots comparten sus asas. El costo lógico del bloque suma nodos y palabras de texto; cada vista suma una celda.
 
 La recolección es no móvil y marca desde las asas raíz recibidas por la operación. Los bloques liberados se agrupan por tamaño físico para reutilizar direcciones. El texto usa un arena propio con migas de caracteres y una operación explícita de compactación que devuelve los desplazamientos movidos. La recolección compacta el arena automáticamente y, al descartar los índices de migas, libera solo los auxiliares que un texto referencia (una vez cada uno, porque los prefijos compartidos comparten índice): los búferes de `Vector` y `Diccionario` también son bloques auxiliares y no deben liberarse con ellos. El generador pseudoaleatorio recibe una semilla y mantiene su estado dentro de `RandomState`.
 
@@ -52,6 +54,8 @@ Problema: diferenciar la capacidad reservada del vector de palabras retiene dato
 
 El montón no mueve objetos: así, una recolección no altera identidades ni asas visibles. El ordinal identifica la asignación lógica, mientras el asa permite llegar a su almacenamiento actual. Los errores de capacidad, tamaño negativo, límite de celdas, índice, valor no inicializado e invariantes internos son variantes tipadas, no pánicos.
 
+El parser construye el bloque JSON desde un valor temporal de `serde_json`, con límite de profundidad 64. Serializar una vista recorre sus nodos y vuelve a escapar claves y cadenas; las operaciones que cruzan `HostValue` materializan temporalmente el texto del subárbol. Esos cruces cuestan O(n) en el tamaño recorrido, mientras las vistas retenidas evitan copiar subárboles en `Elemento` y `Campo`.
+
 Las dimensiones se convierten y multiplican con comprobación de rango; una dimensión cero produce un arreglo de cero elementos, mientras el rango vacío no representa un arreglo válido. El límite de celdas cuenta el costo lógico exacto y se comprueba con las celdas vivas antes de aceptar la asignación.
 
 ### Consulta del modo de reproducción
@@ -74,7 +78,7 @@ La colección automática puede activarse por presión de límite o asignaciones
 
 ## 7. Verificación, testing y aseguramiento de calidad
 
-Las pruebas de `tests/heap_tests.rs` y `tests/array_tests.rs` cubren asignación, acceso directo a metadatos en banda, rangos de arreglos, límites, errores, identidades, recolección, definición de enteros y crecimiento del almacenamiento. La regresión de reutilización verifica que una misma asa conserva una identidad ordinal distinta tras recolectar y reasignar. `tests/delta_tests.rs` cubre restauración y composición tras asignar, modificar y liberar bloques. Las pruebas de consumo en `pseudolearn_api` contrastan las operaciones con los casos del corpus bajo recolección automática, forzada y desactivada.
+Las pruebas de `tests/heap_tests.rs` y `tests/array_tests.rs` cubren asignación, acceso directo a metadatos en banda, rangos de arreglos, límites, errores, identidades, recolección, definición de enteros y crecimiento del almacenamiento. `tests/json_document_tests.rs` cubre el bloque plano, vistas hijas compartidas, supervivencia a GC, lexemas numéricos, escapes y profundidad. La regresión de reutilización verifica que una misma asa conserva una identidad ordinal distinta tras recolectar y reasignar. `tests/delta_tests.rs` cubre restauración y composición tras asignar, modificar y liberar bloques. Las pruebas de consumo en `pseudolearn_api` contrastan las operaciones con los casos del corpus bajo recolección automática, forzada y desactivada.
 
 Para aceptar un cambio, se ejecutan las pruebas dirigidas del crate afectado y `cargo xtask verify` desde la raíz del motor. La conformidad observable del lenguaje se mantiene en el corpus y se contrasta desde `packages/pseudolearn_spec`.
 

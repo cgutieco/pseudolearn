@@ -85,8 +85,8 @@ Los niveles siguientes solo importan los anteriores permitidos explícitamente.
 | 3 | pseudolearn_ir | Define la representación intermedia verificada | source, abi |
 | 4 | pseudolearn_lowering | Traduce el HIR a representación intermedia observable | semantic, ir, diagnostics |
 | 4 | pseudolearn_bytecode | Traduce RI verificada a representación de bytecode y gemelos | ir, source |
-| 4 | pseudolearn_runtime | Proporciona aritmética comprobada, montón, arreglos, objetos, texto y recolección | abi, diagnostics |
-| 5 | pseudolearn_library | Implementa conversiones, redondeo e intrínsecos matemáticos correctamente redondeados | runtime, diagnostics |
+| 4 | pseudolearn_runtime | Proporciona aritmética comprobada, montón, colecciones, valores JSON y recolección | abi, diagnostics |
+| 5 | pseudolearn_library | Implementa conversiones, texto, bytes, JSON e intrínsecos matemáticos | runtime, diagnostics |
 | 6 | pseudolearn_aot_rt | Frontera `extern "C"` entre código nativo generado y runtime: contexto `#[repr(C)]`, asignación, acceso a memoria, celdas, texto, matemática, azar, E/S y fallos con sitio | source, abi, diagnostics, runtime, library |
 | 7 | pseudolearn_codegen | Genera el objeto nativo del sujeto `aot` con Cranelift: las 74 operaciones de la RI, con acceso a memoria en línea, despacho virtual, pila de raíces y trampa fría compartida con identidad por sitio; en modo ejecutable añade `main` y los metadatos | ir, diagnostics, aot_rt |
 | 6 | pseudolearn_service | Proporciona análisis incremental por unidad, autocompletado bilingüe, hover, formateo canónico, traducción y sesión LSP | source, diagnostics, lexicon, syntax, semantic |
@@ -124,7 +124,7 @@ Alternativas descartadas: Unicode aporta UTF-8 y NFC para comparar identificador
 
 ### abi
 
-Problema: declara la disposición compartida de los valores de ejecución. Elección: Disposición de valores, cabeceras de objeto (clase o tipo de arreglo, ordinal), mapas de referencias por clase y forma del marco bicameral, como constantes y tipos compartidos.
+Problema: declara la disposición compartida de los valores de ejecución. Elección: Disposición de valores, cabeceras de objeto (clase o tipo de arreglo, ordinal), mapas de referencias por clase, nodos JSON de ocho palabras y forma del marco bicameral, como constantes y tipos compartidos. `JsonNodeKind` fija los ordinales nulos, lógico, número, cadena, arreglo y objeto usados entre el HIR, el runtime y la biblioteca.
 Alternativas descartadas: V8 y JVM inspiran referencias comprimidas. La disposición canónica permite banco de referencias como pila sombra; se rechazan marcos distintos por motor.
 
 ### diagnostics
@@ -149,6 +149,9 @@ reconocimiento de directivas. `Suspendible`/`suspendable` es contextual únicame
 de un `SubProceso` y su nombre, y en esa posición se conserva como nodo del árbol. Fuera de ella
 permanece identificador. `Aguardar`/`await` es reservada y forma un prefijo unario; el parser conserva
 el token y la trivia del operando en el árbol sin pérdida.
+Los tipos reservados `ValorJson`/`JsonValue`, `TipoJson`/`JsonKind`, `ErrorJson`/`JsonError` y
+`CodigoErrorJson`/`JsonErrorCode` se aceptan en posición de tipo; el resto de palabras reservadas
+sigue rechazado allí.
 
 ### semantic
 
@@ -200,6 +203,7 @@ Alternativas descartadas: V8 y JVM inspiran asas comprimidas; Swift inspira miga
 Wasi y Capsicum inspiran descriptores por capacidad y generaciones. Se rechaza conteo de referencias
 por ciclos, movimiento por identidad, acceso directo a `std::fs` o `std::time` sin capacidad, e unsafe
 en el runtime. Immix, LXR y Perceus son alternativas medibles sin adopción técnica.
+`ValorJson` conserva su documento como texto compacto en un bloque de texto administrado por el montón; las operaciones del anfitrión guardan raíces mediante las mismas asas y reglas de recolección que una cadena. Es una representación inmutable y transferible que no introduce un segundo grafo de nodos ni una política de recorrido del GC.
 
 ### library (B4 aceptada)
 
@@ -209,6 +213,10 @@ ejecuta constructores; el azar llega por la capacidad sembrada del anfitrión.
 
 Problema: implementa las funciones incorporadas sobre valores del runtime. Elección: Funciones incorporadas sobre los valores del runtime, sin estado global; azar desde la capacidad inyectada.
 Alternativas descartadas: LIB.MODEL y LIB.CORE definen firmas y efectos. Se rechazan reloj global, azar no inyectado y conversiones de tipos implícitas.
+
+Las funciones puras de texto, bytes y JSON se generan desde las identidades de `LIB.MODEL` y llegan a VM y AOT mediante `EffectCall`; no añaden instrucciones de RI. El analizador JSON usa `serde_json` con `arbitrary_precision` y `preserve_order` para conservar lexemas numéricos y el orden de claves. Una visita validante adicional rechaza claves repetidas y profundidad excesiva, y la compactación léxica elimina solo espacios fuera de cadenas para mantener el texto de cada número. Se aprovecha de `serde_json` el análisis de escapes y la representación de valores; se rechazan la conversión de números fuera de rango, el reemplazo silencioso de claves duplicadas y la serialización que altere el lexema numérico.
+
+`ValorJson` es una vista inmutable `(asa del bloque, índice del nodo)`. El bloque del montón contiene una tabla plana de ocho palabras por nodo y bytes UTF-8 compactados para claves y escalares; un wrapper pequeño guarda la asa del bloque y el índice. El recolector sigue la referencia del wrapper al bloque, y `Copiar` comparte las vistas y sus bloques inmutables. `Elemento` y `Campo` recorren los enlaces de hijos y crean otra vista al nodo encontrado, sin copiar el subárbol. Las actualizaciones construyen un bloque nuevo. La serialización y las operaciones que cruzan la interfaz `HostValue` materializan temporalmente el texto compacto del subárbol; por eso esos caminos cuestan O(n) en su tamaño y no mantienen otra tabla mutable.
 
 ### vm (B7)
 

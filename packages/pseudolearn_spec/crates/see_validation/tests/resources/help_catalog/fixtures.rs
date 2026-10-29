@@ -33,9 +33,56 @@ fn apply(catalog: &mut Value, edit: &Value) -> Result<(), String> {
             edit.get("value").cloned().ok_or("Missing edit value")?,
         ),
         Some("remove") => remove(catalog, path),
+        Some("remove_id") => remove_id(
+            catalog,
+            path,
+            edit.get("id")
+                .and_then(Value::as_str)
+                .ok_or("Missing edit identity")?,
+        ),
+        Some("remove_id_field") => remove_id_field(
+            catalog,
+            path,
+            edit.get("id")
+                .and_then(Value::as_str)
+                .ok_or("Missing edit identity")?,
+            edit.get("field")
+                .and_then(Value::as_str)
+                .ok_or("Missing edit field")?,
+        ),
         Some("duplicate") => duplicate(catalog, path),
         _ => Err("Unknown edit operation".to_owned()),
     }
+}
+
+fn remove_id_field(
+    catalog: &mut Value,
+    path: &str,
+    identity: &str,
+    field: &str,
+) -> Result<(), String> {
+    let entries = catalog
+        .pointer_mut(path)
+        .and_then(Value::as_array_mut)
+        .ok_or_else(|| format!("Missing array at {path}"))?;
+    let entry = entries
+        .iter_mut()
+        .find(|entry| entry.get("id").and_then(Value::as_str) == Some(identity))
+        .ok_or_else(|| format!("Missing identity {identity}"))?;
+    remove(entry, field)
+}
+
+fn remove_id(catalog: &mut Value, path: &str, identity: &str) -> Result<(), String> {
+    let entries = catalog
+        .pointer_mut(path)
+        .and_then(Value::as_array_mut)
+        .ok_or_else(|| format!("Missing array at {path}"))?;
+    let index = entries
+        .iter()
+        .position(|entry| entry.get("id").and_then(Value::as_str) == Some(identity))
+        .ok_or_else(|| format!("Missing identity {identity}"))?;
+    entries.remove(index);
+    Ok(())
 }
 
 fn set(catalog: &mut Value, path: &str, replacement: Value) -> Result<(), String> {

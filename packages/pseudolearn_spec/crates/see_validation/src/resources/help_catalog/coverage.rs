@@ -4,27 +4,20 @@ mod catalog_inventory;
 #[path = "coverage_presentation.rs"]
 mod catalog_presentation;
 use self::catalog_inventory::{
-    alphabetic_lexeme, array, grammar_operators, identity_key, operator_inventory, role_inventory,
-    source_resource, string_set, token_category,
+    TokenSources, alphabetic_lexeme, array, grammar_operators, identity_key, operator_inventory,
+    role_inventory, source_resource, string_set, token_category,
 };
 use self::catalog_presentation::{
     card_content_covers, card_token_set, check_productions, complete_scope, coverage_destination,
     coverage_row, row_order,
 };
 use see_model::Corpus;
-use serde_json::{Map, Value};
+use serde_json::Value;
 use std::collections::BTreeSet;
-
-struct InventorySources<'source> {
-    vocabulary: &'source Map<String, Value>,
-    functions: &'source Map<String, Value>,
-    productions: &'source Map<String, Value>,
-    operators: BTreeSet<String>,
-}
 
 struct CoverageMatrix<'catalog, 'source> {
     catalog: &'catalog Value,
-    sources: InventorySources<'source>,
+    sources: TokenSources<'source>,
     rows: Vec<CoverageRow>,
     roles: BTreeSet<(String, String, String)>,
     tokens: BTreeSet<String>,
@@ -36,6 +29,7 @@ pub(super) fn matrix(value: &Value, corpus: &Corpus) -> Result<Vec<CoverageRow>,
         source_resource(corpus, "LANG.PROFILE.VOCABULARY", "contextualVocabulary")?.clone(),
     );
     let functions = source_resource(corpus, "LIB.MODEL", "functions")?;
+    let capability_library = source_resource(corpus, "LIB.MODEL", "capabilityLibrary")?;
     let grammar = source_resource(corpus, "LANG.SYNTAX.GRAMMAR", "grammar")?;
     let productions = grammar
         .get("producciones")
@@ -45,9 +39,10 @@ pub(super) fn matrix(value: &Value, corpus: &Corpus) -> Result<Vec<CoverageRow>,
     if operators != grammar_operators(productions, &vocabulary) {
         return Err("operator inventory differs from grammar".to_owned());
     }
-    let sources = InventorySources {
+    let sources = TokenSources {
         vocabulary: &vocabulary,
         functions,
+        capability_library,
         productions,
         operators,
     };
@@ -55,7 +50,7 @@ pub(super) fn matrix(value: &Value, corpus: &Corpus) -> Result<Vec<CoverageRow>,
 }
 
 impl<'catalog, 'source> CoverageMatrix<'catalog, 'source> {
-    fn new(catalog: &'catalog Value, sources: InventorySources<'source>) -> Self {
+    fn new(catalog: &'catalog Value, sources: TokenSources<'source>) -> Self {
         Self {
             catalog,
             sources,
@@ -100,12 +95,7 @@ impl<'catalog, 'source> CoverageMatrix<'catalog, 'source> {
         destination: Option<String>,
     ) -> Result<(), String> {
         for token in tokens {
-            let category = token_category(
-                token,
-                self.sources.vocabulary,
-                self.sources.functions,
-                &self.sources.operators,
-            )?;
+            let category = token_category(token, &self.sources)?;
             if destination.is_some() {
                 self.tokens.insert(token.clone());
             }
@@ -158,7 +148,21 @@ impl<'catalog, 'source> CoverageMatrix<'catalog, 'source> {
             .sources
             .vocabulary
             .keys()
-            .chain(self.sources.functions.keys())
+            .map(String::as_str)
+            .chain(self.sources.functions.keys().map(String::as_str))
+            .chain(
+                self.sources
+                    .capability_library
+                    .get("operations")
+                    .and_then(Value::as_array)
+                    .into_iter()
+                    .flatten()
+                    .filter_map(|operation| operation.get("identity").and_then(Value::as_str))
+                    .filter(|identity| {
+                        identity.starts_with("json_")
+                            || ["bytes_from_text", "bytes_segment", "bytes_join"].contains(identity)
+                    }),
+            )
         {
             let category = self.token_category(identity);
             if let Some(category) = category
@@ -173,7 +177,9 @@ impl<'catalog, 'source> CoverageMatrix<'catalog, 'source> {
     fn token_category(&self, identity: &str) -> Option<&'static str> {
         if self.sources.operators.contains(identity) {
             Some("operator")
-        } else if self.sources.functions.contains_key(identity) {
+        } else if self.sources.functions.contains_key(identity)
+            || capability_contains(&self.sources, identity)
+        {
             Some("builtin")
         } else if self
             .sources
@@ -211,4 +217,16 @@ impl<'catalog, 'source> CoverageMatrix<'catalog, 'source> {
         }
         Ok(())
     }
+}
+
+fn capability_contains(sources: &TokenSources<'_>, identity: &str) -> bool {
+    sources
+        .capability_library
+        .get("operations")
+        .and_then(Value::as_array)
+        .is_some_and(|operations| {
+            operations.iter().any(|operation| {
+                operation.get("identity").and_then(Value::as_str) == Some(identity)
+            })
+        })
 }

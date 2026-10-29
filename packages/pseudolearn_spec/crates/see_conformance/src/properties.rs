@@ -95,6 +95,18 @@ fn scenario(
     scenarios: &[Scenario],
     sample: u32,
 ) -> Result<Scenario, String> {
+    if binding.executor == see_model::properties::PropertyExecutor::JsonTextRoundtrip {
+        return Ok(crate::property_json_roundtrip::scenario(
+            binding.seed,
+            sample,
+            if sample & 1 == 0 { "es" } else { "en" },
+            if sample & 2 == 0 {
+                "strict"
+            } else {
+                "flexible"
+            },
+        ));
+    }
     let index = usize::try_from(sample).map_err(|error| error.to_string())?;
     if let Some(scenario) = scenarios.get(index) {
         return Ok(scenario.clone());

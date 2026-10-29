@@ -566,7 +566,7 @@
 {
   "id": "D1",
   "termino": "helpCatalog",
-  "texto": "Catálogo exportado de fichas editoriales por tema y papel sintáctico.",
+  "texto": "Catálogo editorial tipado de operadores, roles y fichas bilingües.",
   "valor": {
     "format": "help-catalog/1",
     "cards": [
@@ -770,7 +770,6 @@
           }
         }
       },
-
       {
         "id": "construction.algorithm.entry",
         "identity": {
@@ -8113,6 +8112,6342 @@
             ]
           }
         }
+      },
+      {
+        "id": "help.pg501.substring",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_substring"
+        },
+        "tokens": [
+          {
+            "identity": "substring",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.CORE.TEXT",
+            "version": "1.0.0",
+            "element": "T1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Substring",
+            "summary": "Substring aplica su firma a cadenas y devuelve el resultado del contrato de texto.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "substring",
+                "text": "Substring aplica su firma a cadenas y devuelve el resultado del contrato de texto."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C5",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Substring",
+                "profile": "es",
+                "specification": "LIB.CORE.TEXT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Substring",
+            "summary": "Substring applies its signature to strings and returns the result defined by the text contract.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "substring",
+                "text": "Substring applies its signature to strings and returns the result defined by the text contract."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C5",
+                "kind": "executable",
+                "label": "Program that runs: Substring",
+                "profile": "en",
+                "specification": "LIB.CORE.TEXT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.contains",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_contains"
+        },
+        "tokens": [
+          {
+            "identity": "contains",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.CORE.TEXT",
+            "version": "1.0.0",
+            "element": "T1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Contains",
+            "summary": "Contains aplica su firma a cadenas y devuelve el resultado del contrato de texto.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "contains",
+                "text": "Contains aplica su firma a cadenas y devuelve el resultado del contrato de texto."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C5",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Contains",
+                "profile": "es",
+                "specification": "LIB.CORE.TEXT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Contains",
+            "summary": "Contains applies its signature to strings and returns the result defined by the text contract.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "contains",
+                "text": "Contains applies its signature to strings and returns the result defined by the text contract."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C5",
+                "kind": "executable",
+                "label": "Program that runs: Contains",
+                "profile": "en",
+                "specification": "LIB.CORE.TEXT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.positionof",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_positionOf"
+        },
+        "tokens": [
+          {
+            "identity": "positionOf",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.CORE.TEXT",
+            "version": "1.0.0",
+            "element": "T1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Position Of",
+            "summary": "Position Of aplica su firma a cadenas y devuelve el resultado del contrato de texto.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "positionOf",
+                "text": "Position Of aplica su firma a cadenas y devuelve el resultado del contrato de texto."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C5",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Position Of",
+                "profile": "es",
+                "specification": "LIB.CORE.TEXT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Position Of",
+            "summary": "Position Of applies its signature to strings and returns the result defined by the text contract.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "positionOf",
+                "text": "Position Of applies its signature to strings and returns the result defined by the text contract."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C5",
+                "kind": "executable",
+                "label": "Program that runs: Position Of",
+                "profile": "en",
+                "specification": "LIB.CORE.TEXT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.startswith",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_startsWith"
+        },
+        "tokens": [
+          {
+            "identity": "startsWith",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.CORE.TEXT",
+            "version": "1.0.0",
+            "element": "T1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Starts With",
+            "summary": "Starts With aplica su firma a cadenas y devuelve el resultado del contrato de texto.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "startsWith",
+                "text": "Starts With aplica su firma a cadenas y devuelve el resultado del contrato de texto."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C5",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Starts With",
+                "profile": "es",
+                "specification": "LIB.CORE.TEXT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Starts With",
+            "summary": "Starts With applies its signature to strings and returns the result defined by the text contract.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "startsWith",
+                "text": "Starts With applies its signature to strings and returns the result defined by the text contract."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C5",
+                "kind": "executable",
+                "label": "Program that runs: Starts With",
+                "profile": "en",
+                "specification": "LIB.CORE.TEXT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.endswith",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_endsWith"
+        },
+        "tokens": [
+          {
+            "identity": "endsWith",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.CORE.TEXT",
+            "version": "1.0.0",
+            "element": "T1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Ends With",
+            "summary": "Ends With aplica su firma a cadenas y devuelve el resultado del contrato de texto.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "endsWith",
+                "text": "Ends With aplica su firma a cadenas y devuelve el resultado del contrato de texto."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C5",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Ends With",
+                "profile": "es",
+                "specification": "LIB.CORE.TEXT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Ends With",
+            "summary": "Ends With applies its signature to strings and returns the result defined by the text contract.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "endsWith",
+                "text": "Ends With applies its signature to strings and returns the result defined by the text contract."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C5",
+                "kind": "executable",
+                "label": "Program that runs: Ends With",
+                "profile": "en",
+                "specification": "LIB.CORE.TEXT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.replaceall",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_replaceAll"
+        },
+        "tokens": [
+          {
+            "identity": "replaceAll",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.CORE.TEXT",
+            "version": "1.0.0",
+            "element": "T1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Replace All",
+            "summary": "Replace All aplica su firma a cadenas y devuelve el resultado del contrato de texto.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "replaceAll",
+                "text": "Replace All aplica su firma a cadenas y devuelve el resultado del contrato de texto."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C5",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Replace All",
+                "profile": "es",
+                "specification": "LIB.CORE.TEXT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Replace All",
+            "summary": "Replace All applies its signature to strings and returns the result defined by the text contract.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "replaceAll",
+                "text": "Replace All applies its signature to strings and returns the result defined by the text contract."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C5",
+                "kind": "executable",
+                "label": "Program that runs: Replace All",
+                "profile": "en",
+                "specification": "LIB.CORE.TEXT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.split",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_split"
+        },
+        "tokens": [
+          {
+            "identity": "split",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.CORE.TEXT",
+            "version": "1.0.0",
+            "element": "T1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Split",
+            "summary": "Split aplica su firma a cadenas y devuelve el resultado del contrato de texto.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "split",
+                "text": "Split aplica su firma a cadenas y devuelve el resultado del contrato de texto."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C5",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Split",
+                "profile": "es",
+                "specification": "LIB.CORE.TEXT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Split",
+            "summary": "Split applies its signature to strings and returns the result defined by the text contract.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "split",
+                "text": "Split applies its signature to strings and returns the result defined by the text contract."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C5",
+                "kind": "executable",
+                "label": "Program that runs: Split",
+                "profile": "en",
+                "specification": "LIB.CORE.TEXT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.join",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_join"
+        },
+        "tokens": [
+          {
+            "identity": "join",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.CORE.TEXT",
+            "version": "1.0.0",
+            "element": "T1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Join",
+            "summary": "Join aplica su firma a cadenas y devuelve el resultado del contrato de texto.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "join",
+                "text": "Join aplica su firma a cadenas y devuelve el resultado del contrato de texto."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C5",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Join",
+                "profile": "es",
+                "specification": "LIB.CORE.TEXT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Join",
+            "summary": "Join applies its signature to strings and returns the result defined by the text contract.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "join",
+                "text": "Join applies its signature to strings and returns the result defined by the text contract."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C5",
+                "kind": "executable",
+                "label": "Program that runs: Join",
+                "profile": "en",
+                "specification": "LIB.CORE.TEXT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.trim",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_trim"
+        },
+        "tokens": [
+          {
+            "identity": "trim",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.CORE.TEXT",
+            "version": "1.0.0",
+            "element": "T1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Trim",
+            "summary": "Trim aplica su firma a cadenas y devuelve el resultado del contrato de texto.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "trim",
+                "text": "Trim aplica su firma a cadenas y devuelve el resultado del contrato de texto."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C5",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Trim",
+                "profile": "es",
+                "specification": "LIB.CORE.TEXT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Trim",
+            "summary": "Trim applies its signature to strings and returns the result defined by the text contract.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "trim",
+                "text": "Trim applies its signature to strings and returns the result defined by the text contract."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C5",
+                "kind": "executable",
+                "label": "Program that runs: Trim",
+                "profile": "en",
+                "specification": "LIB.CORE.TEXT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.bytes_from_text",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_bytes_from_text"
+        },
+        "tokens": [
+          {
+            "identity": "bytes_from_text",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.CORE.BYTES",
+            "version": "1.0.0",
+            "element": "B1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Bytes from text",
+            "summary": "Bytes from text opera sobre secuencias binarias inmutables.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "bytes_from_text",
+                "text": "Bytes from text opera sobre secuencias binarias inmutables."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Bytes from text",
+                "profile": "es",
+                "specification": "LIB.CORE.BYTES",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Bytes from text",
+            "summary": "Bytes from text operates on immutable byte sequences.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "bytes_from_text",
+                "text": "Bytes from text operates on immutable byte sequences."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Bytes from text",
+                "profile": "en",
+                "specification": "LIB.CORE.BYTES",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.bytes_segment",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_bytes_segment"
+        },
+        "tokens": [
+          {
+            "identity": "bytes_segment",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.CORE.BYTES",
+            "version": "1.0.0",
+            "element": "B1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Bytes segment",
+            "summary": "Bytes segment opera sobre secuencias binarias inmutables.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "bytes_segment",
+                "text": "Bytes segment opera sobre secuencias binarias inmutables."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Bytes segment",
+                "profile": "es",
+                "specification": "LIB.CORE.BYTES",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Bytes segment",
+            "summary": "Bytes segment operates on immutable byte sequences.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "bytes_segment",
+                "text": "Bytes segment operates on immutable byte sequences."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Bytes segment",
+                "profile": "en",
+                "specification": "LIB.CORE.BYTES",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.bytes_join",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_bytes_join"
+        },
+        "tokens": [
+          {
+            "identity": "bytes_join",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.CORE.BYTES",
+            "version": "1.0.0",
+            "element": "B1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Bytes join",
+            "summary": "Bytes join opera sobre secuencias binarias inmutables.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "bytes_join",
+                "text": "Bytes join opera sobre secuencias binarias inmutables."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Bytes join",
+                "profile": "es",
+                "specification": "LIB.CORE.BYTES",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Bytes join",
+            "summary": "Bytes join operates on immutable byte sequences.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "bytes_join",
+                "text": "Bytes join operates on immutable byte sequences."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Bytes join",
+                "profile": "en",
+                "specification": "LIB.CORE.BYTES",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.json_parse",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_json_parse"
+        },
+        "tokens": [
+          {
+            "identity": "json_parse",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.JSON",
+            "version": "1.0.0",
+            "element": "J1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Json parse",
+            "summary": "Json parse construye, consulta o serializa un valor JSON inmutable.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "json_parse",
+                "text": "Json parse construye, consulta o serializa un valor JSON inmutable."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Json parse",
+                "profile": "es",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Json parse",
+            "summary": "Json parse builds, queries, or serializes an immutable JSON value.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "json_parse",
+                "text": "Json parse builds, queries, or serializes an immutable JSON value."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Json parse",
+                "profile": "en",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.json_text",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_json_text"
+        },
+        "tokens": [
+          {
+            "identity": "json_text",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.JSON",
+            "version": "1.0.0",
+            "element": "J1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Json text",
+            "summary": "Json text construye, consulta o serializa un valor JSON inmutable.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "json_text",
+                "text": "Json text construye, consulta o serializa un valor JSON inmutable."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Json text",
+                "profile": "es",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Json text",
+            "summary": "Json text builds, queries, or serializes an immutable JSON value.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "json_text",
+                "text": "Json text builds, queries, or serializes an immutable JSON value."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Json text",
+                "profile": "en",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.json_null",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_json_null"
+        },
+        "tokens": [
+          {
+            "identity": "json_null",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.JSON",
+            "version": "1.0.0",
+            "element": "J1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Json null",
+            "summary": "Json null construye, consulta o serializa un valor JSON inmutable.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "json_null",
+                "text": "Json null construye, consulta o serializa un valor JSON inmutable."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Json null",
+                "profile": "es",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Json null",
+            "summary": "Json null builds, queries, or serializes an immutable JSON value.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "json_null",
+                "text": "Json null builds, queries, or serializes an immutable JSON value."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Json null",
+                "profile": "en",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.json_boolean",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_json_boolean"
+        },
+        "tokens": [
+          {
+            "identity": "json_boolean",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.JSON",
+            "version": "1.0.0",
+            "element": "J1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Json boolean",
+            "summary": "Json boolean construye, consulta o serializa un valor JSON inmutable.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "json_boolean",
+                "text": "Json boolean construye, consulta o serializa un valor JSON inmutable."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Json boolean",
+                "profile": "es",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Json boolean",
+            "summary": "Json boolean builds, queries, or serializes an immutable JSON value.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "json_boolean",
+                "text": "Json boolean builds, queries, or serializes an immutable JSON value."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Json boolean",
+                "profile": "en",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.json_integer",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_json_integer"
+        },
+        "tokens": [
+          {
+            "identity": "json_integer",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.JSON",
+            "version": "1.0.0",
+            "element": "J1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Json integer",
+            "summary": "Json integer construye, consulta o serializa un valor JSON inmutable.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "json_integer",
+                "text": "Json integer construye, consulta o serializa un valor JSON inmutable."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Json integer",
+                "profile": "es",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Json integer",
+            "summary": "Json integer builds, queries, or serializes an immutable JSON value.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "json_integer",
+                "text": "Json integer builds, queries, or serializes an immutable JSON value."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Json integer",
+                "profile": "en",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.json_real",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_json_real"
+        },
+        "tokens": [
+          {
+            "identity": "json_real",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.JSON",
+            "version": "1.0.0",
+            "element": "J1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Json real",
+            "summary": "Json real construye, consulta o serializa un valor JSON inmutable.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "json_real",
+                "text": "Json real construye, consulta o serializa un valor JSON inmutable."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Json real",
+                "profile": "es",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Json real",
+            "summary": "Json real builds, queries, or serializes an immutable JSON value.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "json_real",
+                "text": "Json real builds, queries, or serializes an immutable JSON value."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Json real",
+                "profile": "en",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.json_string",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_json_string"
+        },
+        "tokens": [
+          {
+            "identity": "json_string",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.JSON",
+            "version": "1.0.0",
+            "element": "J1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Json string",
+            "summary": "Json string construye, consulta o serializa un valor JSON inmutable.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "json_string",
+                "text": "Json string construye, consulta o serializa un valor JSON inmutable."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Json string",
+                "profile": "es",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Json string",
+            "summary": "Json string builds, queries, or serializes an immutable JSON value.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "json_string",
+                "text": "Json string builds, queries, or serializes an immutable JSON value."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Json string",
+                "profile": "en",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.json_array",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_json_array"
+        },
+        "tokens": [
+          {
+            "identity": "json_array",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.JSON",
+            "version": "1.0.0",
+            "element": "J1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Json array",
+            "summary": "Json array construye, consulta o serializa un valor JSON inmutable.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "json_array",
+                "text": "Json array construye, consulta o serializa un valor JSON inmutable."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Json array",
+                "profile": "es",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Json array",
+            "summary": "Json array builds, queries, or serializes an immutable JSON value.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "json_array",
+                "text": "Json array builds, queries, or serializes an immutable JSON value."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Json array",
+                "profile": "en",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.json_object",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_json_object"
+        },
+        "tokens": [
+          {
+            "identity": "json_object",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.JSON",
+            "version": "1.0.0",
+            "element": "J1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Json object",
+            "summary": "Json object construye, consulta o serializa un valor JSON inmutable.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "json_object",
+                "text": "Json object construye, consulta o serializa un valor JSON inmutable."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Json object",
+                "profile": "es",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Json object",
+            "summary": "Json object builds, queries, or serializes an immutable JSON value.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "json_object",
+                "text": "Json object builds, queries, or serializes an immutable JSON value."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Json object",
+                "profile": "en",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.json_kind",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_json_kind"
+        },
+        "tokens": [
+          {
+            "identity": "json_kind",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.JSON",
+            "version": "1.0.0",
+            "element": "J1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Json kind",
+            "summary": "Json kind construye, consulta o serializa un valor JSON inmutable.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "json_kind",
+                "text": "Json kind construye, consulta o serializa un valor JSON inmutable."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Json kind",
+                "profile": "es",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Json kind",
+            "summary": "Json kind builds, queries, or serializes an immutable JSON value.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "json_kind",
+                "text": "Json kind builds, queries, or serializes an immutable JSON value."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Json kind",
+                "profile": "en",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.json_as_boolean",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_json_as_boolean"
+        },
+        "tokens": [
+          {
+            "identity": "json_as_boolean",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.JSON",
+            "version": "1.0.0",
+            "element": "J1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Json as boolean",
+            "summary": "Json as boolean construye, consulta o serializa un valor JSON inmutable.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "json_as_boolean",
+                "text": "Json as boolean construye, consulta o serializa un valor JSON inmutable."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Json as boolean",
+                "profile": "es",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Json as boolean",
+            "summary": "Json as boolean builds, queries, or serializes an immutable JSON value.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "json_as_boolean",
+                "text": "Json as boolean builds, queries, or serializes an immutable JSON value."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Json as boolean",
+                "profile": "en",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.json_as_integer",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_json_as_integer"
+        },
+        "tokens": [
+          {
+            "identity": "json_as_integer",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.JSON",
+            "version": "1.0.0",
+            "element": "J1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Json as integer",
+            "summary": "Json as integer construye, consulta o serializa un valor JSON inmutable.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "json_as_integer",
+                "text": "Json as integer construye, consulta o serializa un valor JSON inmutable."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Json as integer",
+                "profile": "es",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Json as integer",
+            "summary": "Json as integer builds, queries, or serializes an immutable JSON value.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "json_as_integer",
+                "text": "Json as integer builds, queries, or serializes an immutable JSON value."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Json as integer",
+                "profile": "en",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.json_as_real",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_json_as_real"
+        },
+        "tokens": [
+          {
+            "identity": "json_as_real",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.JSON",
+            "version": "1.0.0",
+            "element": "J1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Json as real",
+            "summary": "Json as real construye, consulta o serializa un valor JSON inmutable.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "json_as_real",
+                "text": "Json as real construye, consulta o serializa un valor JSON inmutable."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Json as real",
+                "profile": "es",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Json as real",
+            "summary": "Json as real builds, queries, or serializes an immutable JSON value.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "json_as_real",
+                "text": "Json as real builds, queries, or serializes an immutable JSON value."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Json as real",
+                "profile": "en",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.json_as_text",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_json_as_text"
+        },
+        "tokens": [
+          {
+            "identity": "json_as_text",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.JSON",
+            "version": "1.0.0",
+            "element": "J1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Json as text",
+            "summary": "Json as text construye, consulta o serializa un valor JSON inmutable.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "json_as_text",
+                "text": "Json as text construye, consulta o serializa un valor JSON inmutable."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Json as text",
+                "profile": "es",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Json as text",
+            "summary": "Json as text builds, queries, or serializes an immutable JSON value.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "json_as_text",
+                "text": "Json as text builds, queries, or serializes an immutable JSON value."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Json as text",
+                "profile": "en",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.json_length",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_json_length"
+        },
+        "tokens": [
+          {
+            "identity": "json_length",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.JSON",
+            "version": "1.0.0",
+            "element": "J1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Json length",
+            "summary": "Json length construye, consulta o serializa un valor JSON inmutable.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "json_length",
+                "text": "Json length construye, consulta o serializa un valor JSON inmutable."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Json length",
+                "profile": "es",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Json length",
+            "summary": "Json length builds, queries, or serializes an immutable JSON value.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "json_length",
+                "text": "Json length builds, queries, or serializes an immutable JSON value."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Json length",
+                "profile": "en",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.json_element",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_json_element"
+        },
+        "tokens": [
+          {
+            "identity": "json_element",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.JSON",
+            "version": "1.0.0",
+            "element": "J1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Json element",
+            "summary": "Json element construye, consulta o serializa un valor JSON inmutable.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "json_element",
+                "text": "Json element construye, consulta o serializa un valor JSON inmutable."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Json element",
+                "profile": "es",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Json element",
+            "summary": "Json element builds, queries, or serializes an immutable JSON value.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "json_element",
+                "text": "Json element builds, queries, or serializes an immutable JSON value."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Json element",
+                "profile": "en",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.json_field",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_json_field"
+        },
+        "tokens": [
+          {
+            "identity": "json_field",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.JSON",
+            "version": "1.0.0",
+            "element": "J1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Json field",
+            "summary": "Json field construye, consulta o serializa un valor JSON inmutable.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "json_field",
+                "text": "Json field construye, consulta o serializa un valor JSON inmutable."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Json field",
+                "profile": "es",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Json field",
+            "summary": "Json field builds, queries, or serializes an immutable JSON value.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "json_field",
+                "text": "Json field builds, queries, or serializes an immutable JSON value."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Json field",
+                "profile": "en",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.json_keys",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_json_keys"
+        },
+        "tokens": [
+          {
+            "identity": "json_keys",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.JSON",
+            "version": "1.0.0",
+            "element": "J1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Json keys",
+            "summary": "Json keys construye, consulta o serializa un valor JSON inmutable.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "json_keys",
+                "text": "Json keys construye, consulta o serializa un valor JSON inmutable."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Json keys",
+                "profile": "es",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Json keys",
+            "summary": "Json keys builds, queries, or serializes an immutable JSON value.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "json_keys",
+                "text": "Json keys builds, queries, or serializes an immutable JSON value."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Json keys",
+                "profile": "en",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.json_with_element",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_json_with_element"
+        },
+        "tokens": [
+          {
+            "identity": "json_with_element",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.JSON",
+            "version": "1.0.0",
+            "element": "J1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Json with element",
+            "summary": "Json with element construye, consulta o serializa un valor JSON inmutable.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "json_with_element",
+                "text": "Json with element construye, consulta o serializa un valor JSON inmutable."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Json with element",
+                "profile": "es",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Json with element",
+            "summary": "Json with element builds, queries, or serializes an immutable JSON value.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "json_with_element",
+                "text": "Json with element builds, queries, or serializes an immutable JSON value."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Json with element",
+                "profile": "en",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.json_with_field",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_json_with_field"
+        },
+        "tokens": [
+          {
+            "identity": "json_with_field",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.JSON",
+            "version": "1.0.0",
+            "element": "J1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Json with field",
+            "summary": "Json with field construye, consulta o serializa un valor JSON inmutable.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "json_with_field",
+                "text": "Json with field construye, consulta o serializa un valor JSON inmutable."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Json with field",
+                "profile": "es",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Json with field",
+            "summary": "Json with field builds, queries, or serializes an immutable JSON value.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "json_with_field",
+                "text": "Json with field builds, queries, or serializes an immutable JSON value."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Json with field",
+                "profile": "en",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.jsonvaluetype",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_jsonValueType"
+        },
+        "tokens": [
+          {
+            "identity": "jsonValueType",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.JSON",
+            "version": "1.0.0",
+            "element": "J1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Json Value Type",
+            "summary": "Json Value Type nombra un tipo o miembro del modelo JSON en español.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "jsonValueType",
+                "text": "Json Value Type nombra un tipo o miembro del modelo JSON en español."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Json Value Type",
+                "profile": "es",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Json Value Type",
+            "summary": "Json Value Type names a type or member of the JSON model in English.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "jsonValueType",
+                "text": "Json Value Type names a type or member of the JSON model in English."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Json Value Type",
+                "profile": "en",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.jsonkindtype",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_jsonKindType"
+        },
+        "tokens": [
+          {
+            "identity": "jsonKindType",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.JSON",
+            "version": "1.0.0",
+            "element": "J1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Json Kind Type",
+            "summary": "Json Kind Type nombra un tipo o miembro del modelo JSON en español.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "jsonKindType",
+                "text": "Json Kind Type nombra un tipo o miembro del modelo JSON en español."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Json Kind Type",
+                "profile": "es",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Json Kind Type",
+            "summary": "Json Kind Type names a type or member of the JSON model in English.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "jsonKindType",
+                "text": "Json Kind Type names a type or member of the JSON model in English."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Json Kind Type",
+                "profile": "en",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.jsonerrortype",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_jsonErrorType"
+        },
+        "tokens": [
+          {
+            "identity": "jsonErrorType",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.JSON",
+            "version": "1.0.0",
+            "element": "J1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Json Error Type",
+            "summary": "Json Error Type nombra un tipo o miembro del modelo JSON en español.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "jsonErrorType",
+                "text": "Json Error Type nombra un tipo o miembro del modelo JSON en español."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Json Error Type",
+                "profile": "es",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Json Error Type",
+            "summary": "Json Error Type names a type or member of the JSON model in English.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "jsonErrorType",
+                "text": "Json Error Type names a type or member of the JSON model in English."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Json Error Type",
+                "profile": "en",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.jsonerrorcodetype",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_jsonErrorCodeType"
+        },
+        "tokens": [
+          {
+            "identity": "jsonErrorCodeType",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.JSON",
+            "version": "1.0.0",
+            "element": "J1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Json Error Code Type",
+            "summary": "Json Error Code Type nombra un tipo o miembro del modelo JSON en español.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "jsonErrorCodeType",
+                "text": "Json Error Code Type nombra un tipo o miembro del modelo JSON en español."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Json Error Code Type",
+                "profile": "es",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Json Error Code Type",
+            "summary": "Json Error Code Type names a type or member of the JSON model in English.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "jsonErrorCodeType",
+                "text": "Json Error Code Type names a type or member of the JSON model in English."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Json Error Code Type",
+                "profile": "en",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.jsonkindnull",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_jsonKindNull"
+        },
+        "tokens": [
+          {
+            "identity": "jsonKindNull",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.JSON",
+            "version": "1.0.0",
+            "element": "J1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Json Kind Null",
+            "summary": "Json Kind Null nombra un tipo o miembro del modelo JSON en español.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "jsonKindNull",
+                "text": "Json Kind Null nombra un tipo o miembro del modelo JSON en español."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Json Kind Null",
+                "profile": "es",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Json Kind Null",
+            "summary": "Json Kind Null names a type or member of the JSON model in English.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "jsonKindNull",
+                "text": "Json Kind Null names a type or member of the JSON model in English."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Json Kind Null",
+                "profile": "en",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.jsonkindboolean",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_jsonKindBoolean"
+        },
+        "tokens": [
+          {
+            "identity": "jsonKindBoolean",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.JSON",
+            "version": "1.0.0",
+            "element": "J1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Json Kind Boolean",
+            "summary": "Json Kind Boolean nombra un tipo o miembro del modelo JSON en español.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "jsonKindBoolean",
+                "text": "Json Kind Boolean nombra un tipo o miembro del modelo JSON en español."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Json Kind Boolean",
+                "profile": "es",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Json Kind Boolean",
+            "summary": "Json Kind Boolean names a type or member of the JSON model in English.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "jsonKindBoolean",
+                "text": "Json Kind Boolean names a type or member of the JSON model in English."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Json Kind Boolean",
+                "profile": "en",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.jsonkindnumber",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_jsonKindNumber"
+        },
+        "tokens": [
+          {
+            "identity": "jsonKindNumber",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.JSON",
+            "version": "1.0.0",
+            "element": "J1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Json Kind Number",
+            "summary": "Json Kind Number nombra un tipo o miembro del modelo JSON en español.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "jsonKindNumber",
+                "text": "Json Kind Number nombra un tipo o miembro del modelo JSON en español."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Json Kind Number",
+                "profile": "es",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Json Kind Number",
+            "summary": "Json Kind Number names a type or member of the JSON model in English.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "jsonKindNumber",
+                "text": "Json Kind Number names a type or member of the JSON model in English."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Json Kind Number",
+                "profile": "en",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.jsonkindstring",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_jsonKindString"
+        },
+        "tokens": [
+          {
+            "identity": "jsonKindString",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.JSON",
+            "version": "1.0.0",
+            "element": "J1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Json Kind String",
+            "summary": "Json Kind String nombra un tipo o miembro del modelo JSON en español.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "jsonKindString",
+                "text": "Json Kind String nombra un tipo o miembro del modelo JSON en español."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Json Kind String",
+                "profile": "es",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Json Kind String",
+            "summary": "Json Kind String names a type or member of the JSON model in English.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "jsonKindString",
+                "text": "Json Kind String names a type or member of the JSON model in English."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Json Kind String",
+                "profile": "en",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.jsonkindarray",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_jsonKindArray"
+        },
+        "tokens": [
+          {
+            "identity": "jsonKindArray",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.JSON",
+            "version": "1.0.0",
+            "element": "J1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Json Kind Array",
+            "summary": "Json Kind Array nombra un tipo o miembro del modelo JSON en español.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "jsonKindArray",
+                "text": "Json Kind Array nombra un tipo o miembro del modelo JSON en español."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Json Kind Array",
+                "profile": "es",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Json Kind Array",
+            "summary": "Json Kind Array names a type or member of the JSON model in English.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "jsonKindArray",
+                "text": "Json Kind Array names a type or member of the JSON model in English."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Json Kind Array",
+                "profile": "en",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.jsonkindobject",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_jsonKindObject"
+        },
+        "tokens": [
+          {
+            "identity": "jsonKindObject",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.JSON",
+            "version": "1.0.0",
+            "element": "J1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Json Kind Object",
+            "summary": "Json Kind Object nombra un tipo o miembro del modelo JSON en español.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "jsonKindObject",
+                "text": "Json Kind Object nombra un tipo o miembro del modelo JSON en español."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Json Kind Object",
+                "profile": "es",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Json Kind Object",
+            "summary": "Json Kind Object names a type or member of the JSON model in English.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "jsonKindObject",
+                "text": "Json Kind Object names a type or member of the JSON model in English."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Json Kind Object",
+                "profile": "en",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.jsonerrorcodefield",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_jsonErrorCodeField"
+        },
+        "tokens": [
+          {
+            "identity": "jsonErrorCodeField",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.JSON",
+            "version": "1.0.0",
+            "element": "J1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Json Error Code Field",
+            "summary": "Json Error Code Field nombra un tipo o miembro del modelo JSON en español.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "jsonErrorCodeField",
+                "text": "Json Error Code Field nombra un tipo o miembro del modelo JSON en español."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Json Error Code Field",
+                "profile": "es",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Json Error Code Field",
+            "summary": "Json Error Code Field names a type or member of the JSON model in English.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "jsonErrorCodeField",
+                "text": "Json Error Code Field names a type or member of the JSON model in English."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Json Error Code Field",
+                "profile": "en",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.jsonerrorlinefield",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_jsonErrorLineField"
+        },
+        "tokens": [
+          {
+            "identity": "jsonErrorLineField",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.JSON",
+            "version": "1.0.0",
+            "element": "J1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Json Error Line Field",
+            "summary": "Json Error Line Field nombra un tipo o miembro del modelo JSON en español.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "jsonErrorLineField",
+                "text": "Json Error Line Field nombra un tipo o miembro del modelo JSON en español."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Json Error Line Field",
+                "profile": "es",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Json Error Line Field",
+            "summary": "Json Error Line Field names a type or member of the JSON model in English.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "jsonErrorLineField",
+                "text": "Json Error Line Field names a type or member of the JSON model in English."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Json Error Line Field",
+                "profile": "en",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.jsonerrorcolumnfield",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_jsonErrorColumnField"
+        },
+        "tokens": [
+          {
+            "identity": "jsonErrorColumnField",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.JSON",
+            "version": "1.0.0",
+            "element": "J1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Json Error Column Field",
+            "summary": "Json Error Column Field nombra un tipo o miembro del modelo JSON en español.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "jsonErrorColumnField",
+                "text": "Json Error Column Field nombra un tipo o miembro del modelo JSON en español."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Json Error Column Field",
+                "profile": "es",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Json Error Column Field",
+            "summary": "Json Error Column Field names a type or member of the JSON model in English.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "jsonErrorColumnField",
+                "text": "Json Error Column Field names a type or member of the JSON model in English."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Json Error Column Field",
+                "profile": "en",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.jsonerrorcodeinvalidsyntax",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_jsonErrorCodeInvalidSyntax"
+        },
+        "tokens": [
+          {
+            "identity": "jsonErrorCodeInvalidSyntax",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.JSON",
+            "version": "1.0.0",
+            "element": "J1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Json Error Code Invalid Syntax",
+            "summary": "Json Error Code Invalid Syntax nombra un tipo o miembro del modelo JSON en español.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "jsonErrorCodeInvalidSyntax",
+                "text": "Json Error Code Invalid Syntax nombra un tipo o miembro del modelo JSON en español."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Json Error Code Invalid Syntax",
+                "profile": "es",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Json Error Code Invalid Syntax",
+            "summary": "Json Error Code Invalid Syntax names a type or member of the JSON model in English.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "jsonErrorCodeInvalidSyntax",
+                "text": "Json Error Code Invalid Syntax names a type or member of the JSON model in English."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Json Error Code Invalid Syntax",
+                "profile": "en",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.jsonerrorcodeunexpectedend",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_jsonErrorCodeUnexpectedEnd"
+        },
+        "tokens": [
+          {
+            "identity": "jsonErrorCodeUnexpectedEnd",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.JSON",
+            "version": "1.0.0",
+            "element": "J1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Json Error Code Unexpected End",
+            "summary": "Json Error Code Unexpected End nombra un tipo o miembro del modelo JSON en español.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "jsonErrorCodeUnexpectedEnd",
+                "text": "Json Error Code Unexpected End nombra un tipo o miembro del modelo JSON en español."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Json Error Code Unexpected End",
+                "profile": "es",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Json Error Code Unexpected End",
+            "summary": "Json Error Code Unexpected End names a type or member of the JSON model in English.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "jsonErrorCodeUnexpectedEnd",
+                "text": "Json Error Code Unexpected End names a type or member of the JSON model in English."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Json Error Code Unexpected End",
+                "profile": "en",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.jsonerrorcodeduplicatekey",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_jsonErrorCodeDuplicateKey"
+        },
+        "tokens": [
+          {
+            "identity": "jsonErrorCodeDuplicateKey",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.JSON",
+            "version": "1.0.0",
+            "element": "J1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Json Error Code Duplicate Key",
+            "summary": "Json Error Code Duplicate Key nombra un tipo o miembro del modelo JSON en español.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "jsonErrorCodeDuplicateKey",
+                "text": "Json Error Code Duplicate Key nombra un tipo o miembro del modelo JSON en español."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Json Error Code Duplicate Key",
+                "profile": "es",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Json Error Code Duplicate Key",
+            "summary": "Json Error Code Duplicate Key names a type or member of the JSON model in English.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "jsonErrorCodeDuplicateKey",
+                "text": "Json Error Code Duplicate Key names a type or member of the JSON model in English."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Json Error Code Duplicate Key",
+                "profile": "en",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.jsonerrorcodedepthexceeded",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_jsonErrorCodeDepthExceeded"
+        },
+        "tokens": [
+          {
+            "identity": "jsonErrorCodeDepthExceeded",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.JSON",
+            "version": "1.0.0",
+            "element": "J1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Json Error Code Depth Exceeded",
+            "summary": "Json Error Code Depth Exceeded nombra un tipo o miembro del modelo JSON en español.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "jsonErrorCodeDepthExceeded",
+                "text": "Json Error Code Depth Exceeded nombra un tipo o miembro del modelo JSON en español."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Json Error Code Depth Exceeded",
+                "profile": "es",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Json Error Code Depth Exceeded",
+            "summary": "Json Error Code Depth Exceeded names a type or member of the JSON model in English.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "jsonErrorCodeDepthExceeded",
+                "text": "Json Error Code Depth Exceeded names a type or member of the JSON model in English."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Json Error Code Depth Exceeded",
+                "profile": "en",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.jsonerrorcodeinvalidescape",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_jsonErrorCodeInvalidEscape"
+        },
+        "tokens": [
+          {
+            "identity": "jsonErrorCodeInvalidEscape",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.JSON",
+            "version": "1.0.0",
+            "element": "J1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Json Error Code Invalid Escape",
+            "summary": "Json Error Code Invalid Escape nombra un tipo o miembro del modelo JSON en español.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "jsonErrorCodeInvalidEscape",
+                "text": "Json Error Code Invalid Escape nombra un tipo o miembro del modelo JSON en español."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Json Error Code Invalid Escape",
+                "profile": "es",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Json Error Code Invalid Escape",
+            "summary": "Json Error Code Invalid Escape names a type or member of the JSON model in English.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "jsonErrorCodeInvalidEscape",
+                "text": "Json Error Code Invalid Escape names a type or member of the JSON model in English."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Json Error Code Invalid Escape",
+                "profile": "en",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.jsonerrorcodetrailingcontent",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_jsonErrorCodeTrailingContent"
+        },
+        "tokens": [
+          {
+            "identity": "jsonErrorCodeTrailingContent",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.JSON",
+            "version": "1.0.0",
+            "element": "J1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Json Error Code Trailing Content",
+            "summary": "Json Error Code Trailing Content nombra un tipo o miembro del modelo JSON en español.",
+            "purpose": "La ficha conserva la identidad canónica y la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "jsonErrorCodeTrailingContent",
+                "text": "Json Error Code Trailing Content nombra un tipo o miembro del modelo JSON en español."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Json Error Code Trailing Content",
+                "profile": "es",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Json Error Code Trailing Content",
+            "summary": "Json Error Code Trailing Content names a type or member of the JSON model in English.",
+            "purpose": "The card preserves the canonical identity and signature declared by the library.",
+            "parts": [
+              {
+                "identity": "jsonErrorCodeTrailingContent",
+                "text": "Json Error Code Trailing Content names a type or member of the JSON model in English."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Json Error Code Trailing Content",
+                "profile": "en",
+                "specification": "LIB.JSON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.request_console",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_request_console"
+        },
+        "tokens": [
+          {
+            "identity": "request_console",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.IO",
+            "version": "1.0.0",
+            "element": "R1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Request console",
+            "summary": "Request console usa una capacidad de io.",
+            "purpose": "La operación conserva la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "request_console",
+                "text": "Request console usa una capacidad de io."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Request console",
+                "profile": "es",
+                "specification": "LIB.IO",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Request console",
+            "summary": "Request console uses a io capability.",
+            "purpose": "The operation preserves the signature declared by the library.",
+            "parts": [
+              {
+                "identity": "request_console",
+                "text": "Request console uses a io capability."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Request console",
+                "profile": "en",
+                "specification": "LIB.IO",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.request_arguments",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_request_arguments"
+        },
+        "tokens": [
+          {
+            "identity": "request_arguments",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.IO",
+            "version": "1.0.0",
+            "element": "R1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Request arguments",
+            "summary": "Request arguments usa una capacidad de io.",
+            "purpose": "La operación conserva la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "request_arguments",
+                "text": "Request arguments usa una capacidad de io."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Request arguments",
+                "profile": "es",
+                "specification": "LIB.IO",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Request arguments",
+            "summary": "Request arguments uses a io capability.",
+            "purpose": "The operation preserves the signature declared by the library.",
+            "parts": [
+              {
+                "identity": "request_arguments",
+                "text": "Request arguments uses a io capability."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Request arguments",
+                "profile": "en",
+                "specification": "LIB.IO",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.request_directory",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_request_directory"
+        },
+        "tokens": [
+          {
+            "identity": "request_directory",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.IO",
+            "version": "1.0.0",
+            "element": "R1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Request directory",
+            "summary": "Request directory usa una capacidad de io.",
+            "purpose": "La operación conserva la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "request_directory",
+                "text": "Request directory usa una capacidad de io."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Request directory",
+                "profile": "es",
+                "specification": "LIB.IO",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Request directory",
+            "summary": "Request directory uses a io capability.",
+            "purpose": "The operation preserves the signature declared by the library.",
+            "parts": [
+              {
+                "identity": "request_directory",
+                "text": "Request directory uses a io capability."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Request directory",
+                "profile": "en",
+                "specification": "LIB.IO",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.request_clock",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_request_clock"
+        },
+        "tokens": [
+          {
+            "identity": "request_clock",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.TIME",
+            "version": "1.0.0",
+            "element": "R1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Request clock",
+            "summary": "Request clock usa una capacidad de time.",
+            "purpose": "La operación conserva la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "request_clock",
+                "text": "Request clock usa una capacidad de time."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Request clock",
+                "profile": "es",
+                "specification": "LIB.TIME",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Request clock",
+            "summary": "Request clock uses a time capability.",
+            "purpose": "The operation preserves the signature declared by the library.",
+            "parts": [
+              {
+                "identity": "request_clock",
+                "text": "Request clock uses a time capability."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Request clock",
+                "profile": "en",
+                "specification": "LIB.TIME",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.request_timer",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_request_timer"
+        },
+        "tokens": [
+          {
+            "identity": "request_timer",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.TIME",
+            "version": "1.0.0",
+            "element": "R1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Request timer",
+            "summary": "Request timer usa una capacidad de time.",
+            "purpose": "La operación conserva la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "request_timer",
+                "text": "Request timer usa una capacidad de time."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Request timer",
+                "profile": "es",
+                "specification": "LIB.TIME",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Request timer",
+            "summary": "Request timer uses a time capability.",
+            "purpose": "The operation preserves the signature declared by the library.",
+            "parts": [
+              {
+                "identity": "request_timer",
+                "text": "Request timer uses a time capability."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Request timer",
+                "profile": "en",
+                "specification": "LIB.TIME",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.console_write",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_console_write"
+        },
+        "tokens": [
+          {
+            "identity": "console_write",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.IO",
+            "version": "1.0.0",
+            "element": "R1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Console write",
+            "summary": "Console write usa una capacidad de io.",
+            "purpose": "La operación conserva la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "console_write",
+                "text": "Console write usa una capacidad de io."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Console write",
+                "profile": "es",
+                "specification": "LIB.IO",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Console write",
+            "summary": "Console write uses a io capability.",
+            "purpose": "The operation preserves the signature declared by the library.",
+            "parts": [
+              {
+                "identity": "console_write",
+                "text": "Console write uses a io capability."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Console write",
+                "profile": "en",
+                "specification": "LIB.IO",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.arguments_values",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_arguments_values"
+        },
+        "tokens": [
+          {
+            "identity": "arguments_values",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.IO",
+            "version": "1.0.0",
+            "element": "R1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Arguments values",
+            "summary": "Arguments values usa una capacidad de io.",
+            "purpose": "La operación conserva la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "arguments_values",
+                "text": "Arguments values usa una capacidad de io."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Arguments values",
+                "profile": "es",
+                "specification": "LIB.IO",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Arguments values",
+            "summary": "Arguments values uses a io capability.",
+            "purpose": "The operation preserves the signature declared by the library.",
+            "parts": [
+              {
+                "identity": "arguments_values",
+                "text": "Arguments values uses a io capability."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Arguments values",
+                "profile": "en",
+                "specification": "LIB.IO",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.directory_derive",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_directory_derive"
+        },
+        "tokens": [
+          {
+            "identity": "directory_derive",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.IO",
+            "version": "1.0.0",
+            "element": "R1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Directory derive",
+            "summary": "Directory derive usa una capacidad de io.",
+            "purpose": "La operación conserva la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "directory_derive",
+                "text": "Directory derive usa una capacidad de io."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Directory derive",
+                "profile": "es",
+                "specification": "LIB.IO",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Directory derive",
+            "summary": "Directory derive uses a io capability.",
+            "purpose": "The operation preserves the signature declared by the library.",
+            "parts": [
+              {
+                "identity": "directory_derive",
+                "text": "Directory derive uses a io capability."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Directory derive",
+                "profile": "en",
+                "specification": "LIB.IO",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.file_open",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_file_open"
+        },
+        "tokens": [
+          {
+            "identity": "file_open",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.IO",
+            "version": "1.0.0",
+            "element": "R1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "File open",
+            "summary": "File open usa una capacidad de io.",
+            "purpose": "La operación conserva la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "file_open",
+                "text": "File open usa una capacidad de io."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: File open",
+                "profile": "es",
+                "specification": "LIB.IO",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "File open",
+            "summary": "File open uses a io capability.",
+            "purpose": "The operation preserves the signature declared by the library.",
+            "parts": [
+              {
+                "identity": "file_open",
+                "text": "File open uses a io capability."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: File open",
+                "profile": "en",
+                "specification": "LIB.IO",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.directory_close",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_directory_close"
+        },
+        "tokens": [
+          {
+            "identity": "directory_close",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.IO",
+            "version": "1.0.0",
+            "element": "R1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Directory close",
+            "summary": "Directory close usa una capacidad de io.",
+            "purpose": "La operación conserva la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "directory_close",
+                "text": "Directory close usa una capacidad de io."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Directory close",
+                "profile": "es",
+                "specification": "LIB.IO",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Directory close",
+            "summary": "Directory close uses a io capability.",
+            "purpose": "The operation preserves the signature declared by the library.",
+            "parts": [
+              {
+                "identity": "directory_close",
+                "text": "Directory close uses a io capability."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Directory close",
+                "profile": "en",
+                "specification": "LIB.IO",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.file_read_bytes",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_file_read_bytes"
+        },
+        "tokens": [
+          {
+            "identity": "file_read_bytes",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.IO",
+            "version": "1.0.0",
+            "element": "R1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "File read bytes",
+            "summary": "File read bytes usa una capacidad de io.",
+            "purpose": "La operación conserva la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "file_read_bytes",
+                "text": "File read bytes usa una capacidad de io."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: File read bytes",
+                "profile": "es",
+                "specification": "LIB.IO",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "File read bytes",
+            "summary": "File read bytes uses a io capability.",
+            "purpose": "The operation preserves the signature declared by the library.",
+            "parts": [
+              {
+                "identity": "file_read_bytes",
+                "text": "File read bytes uses a io capability."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: File read bytes",
+                "profile": "en",
+                "specification": "LIB.IO",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.file_read_text",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_file_read_text"
+        },
+        "tokens": [
+          {
+            "identity": "file_read_text",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.IO",
+            "version": "1.0.0",
+            "element": "R1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "File read text",
+            "summary": "File read text usa una capacidad de io.",
+            "purpose": "La operación conserva la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "file_read_text",
+                "text": "File read text usa una capacidad de io."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: File read text",
+                "profile": "es",
+                "specification": "LIB.IO",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "File read text",
+            "summary": "File read text uses a io capability.",
+            "purpose": "The operation preserves the signature declared by the library.",
+            "parts": [
+              {
+                "identity": "file_read_text",
+                "text": "File read text uses a io capability."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: File read text",
+                "profile": "en",
+                "specification": "LIB.IO",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.file_write_bytes",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_file_write_bytes"
+        },
+        "tokens": [
+          {
+            "identity": "file_write_bytes",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.IO",
+            "version": "1.0.0",
+            "element": "R1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "File write bytes",
+            "summary": "File write bytes usa una capacidad de io.",
+            "purpose": "La operación conserva la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "file_write_bytes",
+                "text": "File write bytes usa una capacidad de io."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: File write bytes",
+                "profile": "es",
+                "specification": "LIB.IO",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "File write bytes",
+            "summary": "File write bytes uses a io capability.",
+            "purpose": "The operation preserves the signature declared by the library.",
+            "parts": [
+              {
+                "identity": "file_write_bytes",
+                "text": "File write bytes uses a io capability."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: File write bytes",
+                "profile": "en",
+                "specification": "LIB.IO",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.file_write_text",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_file_write_text"
+        },
+        "tokens": [
+          {
+            "identity": "file_write_text",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.IO",
+            "version": "1.0.0",
+            "element": "R1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "File write text",
+            "summary": "File write text usa una capacidad de io.",
+            "purpose": "La operación conserva la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "file_write_text",
+                "text": "File write text usa una capacidad de io."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: File write text",
+                "profile": "es",
+                "specification": "LIB.IO",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "File write text",
+            "summary": "File write text uses a io capability.",
+            "purpose": "The operation preserves the signature declared by the library.",
+            "parts": [
+              {
+                "identity": "file_write_text",
+                "text": "File write text uses a io capability."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: File write text",
+                "profile": "en",
+                "specification": "LIB.IO",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.file_close",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_file_close"
+        },
+        "tokens": [
+          {
+            "identity": "file_close",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.IO",
+            "version": "1.0.0",
+            "element": "R1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "File close",
+            "summary": "File close usa una capacidad de io.",
+            "purpose": "La operación conserva la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "file_close",
+                "text": "File close usa una capacidad de io."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: File close",
+                "profile": "es",
+                "specification": "LIB.IO",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "File close",
+            "summary": "File close uses a io capability.",
+            "purpose": "The operation preserves the signature declared by the library.",
+            "parts": [
+              {
+                "identity": "file_close",
+                "text": "File close uses a io capability."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: File close",
+                "profile": "en",
+                "specification": "LIB.IO",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.clock_now",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_clock_now"
+        },
+        "tokens": [
+          {
+            "identity": "clock_now",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.TIME",
+            "version": "1.0.0",
+            "element": "R1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Clock now",
+            "summary": "Clock now usa una capacidad de time.",
+            "purpose": "La operación conserva la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "clock_now",
+                "text": "Clock now usa una capacidad de time."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Clock now",
+                "profile": "es",
+                "specification": "LIB.TIME",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Clock now",
+            "summary": "Clock now uses a time capability.",
+            "purpose": "The operation preserves the signature declared by the library.",
+            "parts": [
+              {
+                "identity": "clock_now",
+                "text": "Clock now uses a time capability."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Clock now",
+                "profile": "en",
+                "specification": "LIB.TIME",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.timer_wait",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_timer_wait"
+        },
+        "tokens": [
+          {
+            "identity": "timer_wait",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.TIME",
+            "version": "1.0.0",
+            "element": "R1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Timer wait",
+            "summary": "Timer wait usa una capacidad de time.",
+            "purpose": "La operación conserva la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "timer_wait",
+                "text": "Timer wait usa una capacidad de time."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Timer wait",
+                "profile": "es",
+                "specification": "LIB.TIME",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Timer wait",
+            "summary": "Timer wait uses a time capability.",
+            "purpose": "The operation preserves the signature declared by the library.",
+            "parts": [
+              {
+                "identity": "timer_wait",
+                "text": "Timer wait uses a time capability."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Timer wait",
+                "profile": "en",
+                "specification": "LIB.TIME",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.bytes_new",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_bytes_new"
+        },
+        "tokens": [
+          {
+            "identity": "bytes_new",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.CORE.BYTES",
+            "version": "1.0.0",
+            "element": "B1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Bytes new",
+            "summary": "Bytes new usa una capacidad de bytes.",
+            "purpose": "La operación conserva la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "bytes_new",
+                "text": "Bytes new usa una capacidad de bytes."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Bytes new",
+                "profile": "es",
+                "specification": "LIB.CORE.BYTES",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Bytes new",
+            "summary": "Bytes new uses a bytes capability.",
+            "purpose": "The operation preserves the signature declared by the library.",
+            "parts": [
+              {
+                "identity": "bytes_new",
+                "text": "Bytes new uses a bytes capability."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Bytes new",
+                "profile": "en",
+                "specification": "LIB.CORE.BYTES",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.bytes_length",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_bytes_length"
+        },
+        "tokens": [
+          {
+            "identity": "bytes_length",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.CORE.BYTES",
+            "version": "1.0.0",
+            "element": "B1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Bytes length",
+            "summary": "Bytes length usa una capacidad de bytes.",
+            "purpose": "La operación conserva la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "bytes_length",
+                "text": "Bytes length usa una capacidad de bytes."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Bytes length",
+                "profile": "es",
+                "specification": "LIB.CORE.BYTES",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Bytes length",
+            "summary": "Bytes length uses a bytes capability.",
+            "purpose": "The operation preserves the signature declared by the library.",
+            "parts": [
+              {
+                "identity": "bytes_length",
+                "text": "Bytes length uses a bytes capability."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Bytes length",
+                "profile": "en",
+                "specification": "LIB.CORE.BYTES",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.bytes_at",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_bytes_at"
+        },
+        "tokens": [
+          {
+            "identity": "bytes_at",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.CORE.BYTES",
+            "version": "1.0.0",
+            "element": "B1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Bytes at",
+            "summary": "Bytes at usa una capacidad de bytes.",
+            "purpose": "La operación conserva la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "bytes_at",
+                "text": "Bytes at usa una capacidad de bytes."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Bytes at",
+                "profile": "es",
+                "specification": "LIB.CORE.BYTES",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Bytes at",
+            "summary": "Bytes at uses a bytes capability.",
+            "purpose": "The operation preserves the signature declared by the library.",
+            "parts": [
+              {
+                "identity": "bytes_at",
+                "text": "Bytes at uses a bytes capability."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Bytes at",
+                "profile": "en",
+                "specification": "LIB.CORE.BYTES",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pg501.bytes_utf8",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pg501_bytes_utf8"
+        },
+        "tokens": [
+          {
+            "identity": "bytes_utf8",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.CORE.BYTES",
+            "version": "1.0.0",
+            "element": "B1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Bytes utf8",
+            "summary": "Bytes utf8 usa una capacidad de bytes.",
+            "purpose": "La operación conserva la firma declarada por la biblioteca.",
+            "parts": [
+              {
+                "identity": "bytes_utf8",
+                "text": "Bytes utf8 usa una capacidad de bytes."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Bytes utf8",
+                "profile": "es",
+                "specification": "LIB.CORE.BYTES",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Bytes utf8",
+            "summary": "Bytes utf8 uses a bytes capability.",
+            "purpose": "The operation preserves the signature declared by the library.",
+            "parts": [
+              {
+                "identity": "bytes_utf8",
+                "text": "Bytes utf8 uses a bytes capability."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Bytes utf8",
+                "profile": "en",
+                "specification": "LIB.CORE.BYTES",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
       }
     ],
     "exclusions": [],
@@ -8167,7 +14502,6 @@
             "snapshotBuiltin"
           ]
         },
-
         {
           "identity": {
             "kind": "construction",
@@ -9002,6 +15336,942 @@
           "tokens": [
             "bytesType",
             "ioErrorType"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_substring"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "substring"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_contains"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "contains"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_positionOf"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "positionOf"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_startsWith"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "startsWith"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_endsWith"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "endsWith"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_replaceAll"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "replaceAll"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_split"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "split"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_join"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "join"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_trim"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "trim"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_bytes_from_text"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "bytes_from_text"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_bytes_segment"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "bytes_segment"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_bytes_join"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "bytes_join"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_json_parse"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "json_parse"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_json_text"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "json_text"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_json_null"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "json_null"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_json_boolean"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "json_boolean"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_json_integer"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "json_integer"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_json_real"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "json_real"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_json_string"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "json_string"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_json_array"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "json_array"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_json_object"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "json_object"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_json_kind"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "json_kind"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_json_as_boolean"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "json_as_boolean"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_json_as_integer"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "json_as_integer"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_json_as_real"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "json_as_real"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_json_as_text"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "json_as_text"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_json_length"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "json_length"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_json_element"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "json_element"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_json_field"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "json_field"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_json_keys"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "json_keys"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_json_with_element"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "json_with_element"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_json_with_field"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "json_with_field"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_jsonValueType"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "jsonValueType"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_jsonKindType"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "jsonKindType"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_jsonErrorType"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "jsonErrorType"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_jsonErrorCodeType"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "jsonErrorCodeType"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_jsonKindNull"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "jsonKindNull"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_jsonKindBoolean"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "jsonKindBoolean"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_jsonKindNumber"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "jsonKindNumber"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_jsonKindString"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "jsonKindString"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_jsonKindArray"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "jsonKindArray"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_jsonKindObject"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "jsonKindObject"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_jsonErrorCodeField"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "jsonErrorCodeField"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_jsonErrorLineField"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "jsonErrorLineField"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_jsonErrorColumnField"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "jsonErrorColumnField"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_jsonErrorCodeInvalidSyntax"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "jsonErrorCodeInvalidSyntax"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_jsonErrorCodeUnexpectedEnd"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "jsonErrorCodeUnexpectedEnd"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_jsonErrorCodeDuplicateKey"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "jsonErrorCodeDuplicateKey"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_jsonErrorCodeDepthExceeded"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "jsonErrorCodeDepthExceeded"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_jsonErrorCodeInvalidEscape"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "jsonErrorCodeInvalidEscape"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_jsonErrorCodeTrailingContent"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "jsonErrorCodeTrailingContent"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_request_console"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "request_console"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_request_arguments"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "request_arguments"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_request_directory"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "request_directory"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_request_clock"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "request_clock"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_request_timer"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "request_timer"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_console_write"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "console_write"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_arguments_values"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "arguments_values"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_directory_derive"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "directory_derive"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_file_open"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "file_open"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_directory_close"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "directory_close"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_file_read_bytes"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "file_read_bytes"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_file_read_text"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "file_read_text"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_file_write_bytes"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "file_write_bytes"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_file_write_text"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "file_write_text"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_file_close"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "file_close"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_clock_now"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "clock_now"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_timer_wait"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "timer_wait"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_bytes_new"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "bytes_new"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_bytes_length"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "bytes_length"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_bytes_at"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "bytes_at"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pg501_bytes_utf8"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "bytes_utf8"
           ]
         }
       ]

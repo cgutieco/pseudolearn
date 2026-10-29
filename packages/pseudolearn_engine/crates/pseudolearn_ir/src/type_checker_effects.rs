@@ -37,7 +37,7 @@ fn check_header(operands: &[Operand]) -> Result<&'static EffectOperation, TypeEr
         .strip_prefix('n')
         .and_then(|source| source.parse::<u32>().ok())
         .is_some();
-    let output = if descriptor.fallible { 3 } else { 1 };
+    let output = descriptor.result_cell_count();
     let expected = descriptor
         .parameters
         .len()
@@ -84,10 +84,35 @@ fn check_cells(
 }
 
 fn cell_matches(descriptor: &EffectOperation, index: usize, kind: &IrType) -> bool {
-    if !descriptor.fallible {
-        return matches_kind(descriptor.result, kind);
+    if descriptor.fallible {
+        return *kind == if index == 2 { IrType::Str } else { IrType::I64 };
     }
-    *kind == if index == 2 { IrType::Str } else { IrType::I64 }
+    match descriptor.result {
+        EffectValueKind::OptionalBoolean => {
+            *kind
+                == if index == 0 {
+                    IrType::I64
+                } else {
+                    IrType::Bool
+                }
+        }
+        EffectValueKind::OptionalInteger => *kind == IrType::I64,
+        EffectValueKind::OptionalReal => {
+            *kind == if index == 0 { IrType::I64 } else { IrType::F64 }
+        }
+        EffectValueKind::OptionalText => *kind == IrType::Str,
+        EffectValueKind::OptionalJsonValue => {
+            matches!(kind, IrType::Object(name) if name == "$effect:JsonValue")
+        }
+        EffectValueKind::JsonResult => {
+            if index == 4 {
+                matches!(kind, IrType::Object(name) if name == "$effect:JsonValue")
+            } else {
+                *kind == IrType::I64
+            }
+        }
+        _ => matches_kind(descriptor.result, kind),
+    }
 }
 
 fn value_type(
@@ -103,8 +128,23 @@ fn value_type(
 fn matches_kind(kind: EffectValueKind, actual: &IrType) -> bool {
     match kind {
         EffectValueKind::Integer => *actual == IrType::I64,
+        EffectValueKind::Real => *actual == IrType::F64,
         EffectValueKind::Boolean => *actual == IrType::Bool,
         EffectValueKind::Text => *actual == IrType::Str,
+        EffectValueKind::JsonValue => {
+            matches!(actual, IrType::Object(name) if name == "$effect:JsonValue")
+        }
+        EffectValueKind::JsonResult => {
+            matches!(actual, IrType::Object(name) if name == "$effect:JsonValue")
+        }
+        EffectValueKind::JsonKind => *actual == IrType::I64,
+        EffectValueKind::OptionalBoolean => *actual == IrType::Bool,
+        EffectValueKind::OptionalInteger => *actual == IrType::I64,
+        EffectValueKind::OptionalReal => *actual == IrType::F64,
+        EffectValueKind::OptionalText => *actual == IrType::Str,
+        EffectValueKind::OptionalJsonValue => {
+            matches!(actual, IrType::Object(name) if name == "$effect:JsonValue")
+        }
         EffectValueKind::TextList => {
             matches!(actual, IrType::Object(name) if name.starts_with("$vector"))
         }

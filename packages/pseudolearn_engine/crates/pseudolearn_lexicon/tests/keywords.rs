@@ -1,4 +1,6 @@
-use pseudolearn_lexicon::{Profile, detect_opener, find_builtin, find_keyword};
+use pseudolearn_lexicon::{
+    BuiltinKind, KeywordKind, Profile, detect_opener, find_builtin, find_keyword,
+};
 
 #[test]
 fn resolves_every_generated_form_and_rejects_near_misses() -> Result<(), String> {
@@ -13,6 +15,24 @@ fn resolves_every_generated_form_and_rejects_near_misses() -> Result<(), String>
             .and_then(|resources| resources.get(resource))
             .and_then(serde_json::Value::as_object)
             .ok_or("Missing resource")?;
+        let generated = if builtin {
+            BuiltinKind::all()
+                .iter()
+                .map(|kind| kind.as_str().to_owned())
+                .collect::<std::collections::BTreeSet<_>>()
+        } else {
+            KeywordKind::all()
+                .iter()
+                .map(|kind| kind.as_str().to_owned())
+                .collect::<std::collections::BTreeSet<_>>()
+        };
+        assert_eq!(
+            generated,
+            entries
+                .keys()
+                .cloned()
+                .collect::<std::collections::BTreeSet<_>>()
+        );
         for (identity, entry) in entries {
             for profile in [Profile::Spanish, Profile::English] {
                 let canonical = entry
