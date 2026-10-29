@@ -14,7 +14,10 @@ pub(crate) fn parse_grants(arguments: &Value) -> Result<HostGrants, ApiError> {
     let object = grants
         .as_object()
         .ok_or_else(|| usage("grants must be an object"))?;
-    if object.keys().any(|name| name != "limits" && name != "permissions") {
+    if object
+        .keys()
+        .any(|name| name != "limits" && name != "permissions")
+    {
         return Err(usage("unknown grant category"));
     }
     let mut result = HostGrants::default();

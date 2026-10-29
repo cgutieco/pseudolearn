@@ -5,8 +5,7 @@ use pseudolearn_syntax::parse_source;
 
 #[test]
 fn detects_duplicate_variable_declaration() {
-    let source_code =
-        "Algoritmo Principal\n  Definir x Como Entero <- 1\n  Definir x Como Entero <- 2\nFinAlgoritmo\n";
+    let source_code = "Algoritmo Principal\n  Definir x Como Entero <- 1\n  Definir x Como Entero <- 2\nFinAlgoritmo\n";
     let source = SourceText::new(source_code.to_owned());
     let (tree, _) = parse_source(&source, Profile::Spanish);
     let (_, diagnostics) = analyze_semantics(&tree, &source, true);

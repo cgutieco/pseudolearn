@@ -148,7 +148,7 @@ impl MemoryHostProvider {
         if http_request.method == crate::HttpMethod::Head {
             response.body.clear();
         }
-        crate::network_policy::validate_response(&response)?;
+        crate::network_limits::validate_response(&response, http_request)?;
         Ok(HostValue::HttpResponse(response))
     }
 

@@ -57,6 +57,11 @@ fn http_request() -> HostValue {
         body: None,
         response_limit: None,
         timeout_nanos: None,
+        effective_response_limit: None,
+        effective_timeout_nanos: None,
+        wire_limit: None,
+        header_bytes_limit: None,
+        headers_limit: None,
     })
 }
 
@@ -119,6 +124,11 @@ fn rejects_invalid_requests_without_calling_the_host() -> Result<(), String> {
         body: None,
         response_limit: None,
         timeout_nanos: None,
+        effective_response_limit: None,
+        effective_timeout_nanos: None,
+        wire_limit: None,
+        header_bytes_limit: None,
+        headers_limit: None,
     });
     let reply = perform_host_effect(
         &mut session,

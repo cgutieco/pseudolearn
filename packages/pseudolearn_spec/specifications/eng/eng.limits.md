@@ -47,6 +47,14 @@
 
 ```definicion
 {
+  "id": "D2",
+  "termino": "límites externos y de JSON",
+  "texto": "Los mínimos garantizados son max_http_body_bytes = 1048576 bytes decodificados, max_http_wire_bytes = 1048576 bytes en el cable, max_http_header_bytes = 16384, max_http_headers = 64, max_pending_network = 4, max_http_timeout_nanos = 30000000000 y max_json_depth = 64. La CLI fija respectivamente 8388608, 8388608, 16384, 64, 8, 30000000000 y 64; la app fija 1048576, 1048576, 16384, 64, 4, 15000000000 y 64. Los límites de red producen valores ErrorES y no terminaciones del programa. El transporte detiene la lectura al superar el límite efectivo más un byte."
+}
+```
+
+```definicion
+{
   "id": "D1",
   "termino": "unidades de recurso",
   "texto": "Profundidad: marcos activos, incluido el del algoritmo principal; cada llamada a un subprograma, método o constructor declarado añade un marco y las funciones incorporadas no lo hacen. Sentencias: entradas a sentencia ejecutadas, una por cada evento statement_entered. Celdas: suma sobre los valores alcanzables desde los marcos activos; un objeto ocupa una celda más una por campo, un arreglo una más una por elemento y una cadena creada en ejecución una más una por cada ocho puntos de código, redondeando hacia arriba. Los literales del programa, los escalares y el texto que Escribir produce como salida no ocupan celdas. Las raíces del conteo son las variables en ámbito de cada marco activo, incluidos parámetros y receptor, y los valores intermedios ya evaluados de la sentencia en curso. Una misma cadena creada en ejecución cuenta una sola vez mientras sea alcanzable aunque tenga varios alias; dos cadenas creadas por separado cuentan por separado aunque compartan bytes. Los temporales muertos no son raíces. Cinta: bytes serializados acumulados en EffectTape bajo el límite max_tape_bytes."
@@ -1096,5 +1104,37 @@ Vector y Diccionario derivan sus límites del presupuesto cells existente: como 
   },
   "limites": {"max_json_depth": 1},
   "espera": {"salida": "Falso\n", "terminacion": "completed"}
+}
+```
+
+```regla
+{
+  "id": "R13",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "El anfitrión configura límites positivos de bytes HTTP, cabeceras, peticiones de red pendientes, tiempo externo y profundidad JSON según D2. El límite de profundidad JSON se aplica a cada arreglo y objeto con raíz en nivel uno. El exceso de bytes o de peticiones de red pendientes se entrega como LimiteExcedido; una petición que supera el máximo de pendientes no se envía al anfitrión. El agotamiento del plazo externo se entrega como TiempoAgotado; GET no es incierto y una mutación POST puede serlo después del envío. Estos errores son valores y mantienen la ejecución del programa. La profundidad excedida se representa como ProfundidadExcedida dentro del resultado de AnalizarJson.",
+  "verificacion": ["C37"]
+}
+```
+
+```caso
+{
+  "id": "C37",
+  "regla": "R13",
+  "perfiles": ["es", "en"],
+  "rigor": ["estricto", "flexible"],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {"salida": "limite_excedido\ncontinuó\n", "terminacion": "completed"},
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir net Como RedCap <- Propagar SolicitarRed();\nSegun net.Enviar(PeticionHttp(MetodoHttp.GET, \"https://fake.test/limited\")) Hacer\nExito(response): Retornar Exito(0);\nError(problem): Retornar Error(problem);\nFinSegun\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir \"aceptada\";\nError(problem): Escribir problem.Codigo;\nFinSegun\nEscribir \"continuó\";\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<integer, IoError>\ndefine net as NetworkCap <- propagate requestNetwork();\nswitch net.send(HttpRequest(HttpMethod.GET, \"https://fake.test/limited\")) do\nsuccess(response): return success(0);\nfailure(problem): return failure(problem);\nendSwitch\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write \"accepted\";\nfailure(problem): write problem.code;\nendSwitch\nwrite \"continuó\";\nendAlgorithm\n"
+  },
+  "limites": {"max_http_body_bytes": 1},
+  "anfitrion": {
+    "permissions": ["red"],
+    "requested_permissions": ["red"],
+    "http": {"GET https://fake.test/limited": {"estado": 200, "cuerpo": "xy"}}
+  }
 }
 ```

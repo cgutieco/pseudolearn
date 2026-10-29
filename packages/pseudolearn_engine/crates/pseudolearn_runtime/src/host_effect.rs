@@ -96,6 +96,16 @@ pub struct HttpRequestValue {
     pub body: Option<Vec<u8>>,
     pub response_limit: Option<i64>,
     pub timeout_nanos: Option<i64>,
+    #[serde(default)]
+    pub effective_response_limit: Option<u64>,
+    #[serde(default)]
+    pub effective_timeout_nanos: Option<u64>,
+    #[serde(default)]
+    pub wire_limit: Option<u64>,
+    #[serde(default)]
+    pub header_bytes_limit: Option<u64>,
+    #[serde(default)]
+    pub headers_limit: Option<u64>,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]

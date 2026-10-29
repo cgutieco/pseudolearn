@@ -1,7 +1,5 @@
 use crate::{error::CliError, messages, options::CliOptions};
-use pseudolearn_api::{
-    ApiDiagnostic, ApiSession, ExecuteRequest, detect_vocabulary_profile,
-};
+use pseudolearn_api::{ApiDiagnostic, ApiSession, ExecuteRequest, detect_vocabulary_profile};
 use serde_json::{Value, json};
 use std::io::{BufRead, Write};
 
@@ -60,7 +58,9 @@ fn stream_execution(
             Some("running") => {}
             Some("awaiting_effect") if host.is_some() => {
                 if let Some(physical) = host.as_deref_mut() {
-                    crate::physical_session::resolve_effect(session, resource, &response, physical)?;
+                    crate::physical_session::resolve_effect(
+                        session, resource, &response, physical,
+                    )?;
                 }
             }
             Some("awaiting_input") => {
@@ -188,7 +188,10 @@ fn operational(error: impl std::fmt::Display) -> CliError {
     CliError::Operational(error.to_string())
 }
 
-pub(crate) fn build_request(options: &CliOptions, source: String) -> Result<ExecuteRequest, CliError> {
+pub(crate) fn build_request(
+    options: &CliOptions,
+    source: String,
+) -> Result<ExecuteRequest, CliError> {
     let profile = options.vocabulary.clone().unwrap_or_else(|| {
         detect_vocabulary_profile(&source)
             .unwrap_or("es")

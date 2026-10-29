@@ -589,19 +589,19 @@ derivado`, y sus esperados se derivan de la regla, nunca de la salida del motor 
 
 ### PG-5.03 · Límites de bytes, profundidad JSON, peticiones pendientes y tiempo externo
 
-- [ ] `PG-5.03.01` Especificación: edición oficial de `ENG.LIMITS` con la tabla de §3.4.6 y su clasificación (no son
+- [x] `PG-5.03.01` Especificación: edición oficial de `ENG.LIMITS` con la tabla de §3.4.6 y su clasificación (no son
   terminaciones); regla de `LIB.HTTP` sobre recorte de `ConLimiteRespuesta`/`ConTiempoMaximo` y valores no positivos.
-- [ ] `PG-5.03.02` Casos: cuerpo exactamente en el límite (acepta) y límite + 1 (`LimiteExcedido`); `ConLimiteRespuesta`
+- [x] `PG-5.03.02` Casos: cuerpo exactamente en el límite (acepta) y límite + 1 (`LimiteExcedido`); `ConLimiteRespuesta`
   mayor que el del anfitrión (se recorta); `ConLimiteRespuesta(0)` ⇒ `PeticionInvalida`; `max_pending_network`
   pendientes y una más ⇒ `LimiteExcedido` local, sin efecto en el anfitrión; plazo superado declarado por el
   anfitrión falso en `GET` (`Failed`) y en `POST` tras enviar (`Uncertain`, `Incierto = Verdadero`); JSON con
   profundidad límite y límite + 1; respuesta del anfitrión falso que excede el límite efectivo ⇒ el motor la
   convierte en `LimiteExcedido` (`A2`); demasiadas cabeceras.
-- [ ] `PG-5.03.03` Tests espejo: `network_limits_tests.rs` en runtime; profundidad en `json_parse_tests.rs`.
-- [ ] `PG-5.03.04` Código: `pseudolearn_runtime/src/network_limits.rs`; configuración de límites en
+- [x] `PG-5.03.03` Tests espejo: `network_limits_tests.rs` en runtime; profundidad en `json_parse_tests.rs`.
+- [x] `PG-5.03.04` Código: `pseudolearn_runtime/src/network_limits.rs`; configuración de límites en
   `pseudolearn_api` (`execution_prepare.rs`) y en la CLI (`execution_options.rs`).
-- [ ] `PG-5.03.05` README del motor (límites) y de la CLI (valores por omisión).
-- [ ] `PG-5.03.06` Ligera: tests filtrados anteriores.
+- [x] `PG-5.03.05` README del motor (límites) y de la CLI (valores por omisión).
+- [x] `PG-5.03.06` Ligera: tests filtrados anteriores.
 - [ ] `PG-5.03.07` Pesada: `--only ENG.LIMITS,LIB.HTTP,LIB.JSON` en `engine` y `aot`; pruebas de integración de
   límites contra el servidor local (§7.3).
 
@@ -970,7 +970,7 @@ debe ser `feature/agregar-ruta-de-especificacion`; (3) protocolo de disco de §1
 |---|---|---|---|
 | **1 · Corpus** | Lectura pendiente de §2; tareas `.01` y `.02` de todos los puntos; `CF-PG5-04` | Integridad del corpus | **`P1`**: confirmaciones de §9; solo entonces `lock --refresh` |
 | **2 · Biblioteca pura** | `PG-5.01.03`–`.06`: tabla generada, léxico, texto, bytes, JSON, disposición JSON, tipos y transferibilidad, validador de facetas, fichas | Tests filtrados de `library`, `abi`, `runtime` (`json_document`), `semantic`, `see_validation`; Clippy y `rust-checks` | `P2`: informe breve y parada |
-| **3 · Red en el motor** | `PG-5.02` en motor según el alcance reanudado; `.03`–`.05` permanecen pendientes | Tests filtrados de los crates afectados; Clippy, rustfmt local y `rust-checks`; integridad y exportación del corpus | `P3`: informe breve y parada |
+| **3 · Red en el motor** | `PG-5.02` y `PG-5.03` en el motor; configuración CLI correspondiente cuando la tarea la incluya | Tests filtrados de los crates afectados; Clippy, rustfmt local y `rust-checks`; integridad y exportación del corpus | `P3`: informe breve y parada |
 | **4 · Adaptador nativo y servidor** | `PG-5.06.01` (elección con autorización), `PG-5.04`/`.05`/`.06` en la CLI, `PG-5.07` (servidor), `PG-5.08.06` (`cargo tree`) | `cargo check`, tests filtrados de la CLI y del `xtask`, `cargo deny check`, Clippy y `rust-checks` de la CLI | `P4`: informe breve y parada |
 | **5 · Web, app y trabajador** | `fetch_host.mjs` y su test sin navegador; app (anfitrión simulado, proyección, fichas visibles); `pg_http` y registro de vectores (código, no ejecución); `--nativo` con red rechazado | `node --test` del adaptador; `dart analyze` y `check_limits.dart` de lo tocado; tests unitarios filtrados del trabajador; `cargo check --tests` de la CLI | `P5`: informe breve y parada |
 | **6 · Conformidad pesada, experimentos y cierre** | Todas las tareas `.07`; §7.3, §7.4, §7.5; disparadores de §7.1.4; cierre común `PG-5.C01`–`C13`; commit y push | Todas las pesadas en verde | **`P6`**: la persona revisa y autoriza commit y push |
@@ -1014,7 +1014,7 @@ README y la regresión `PERF.SUITE.CORE`; desde `apps/pseudolearn_app`, `flutter
 |---|---|---|---|
 | `PG-5.01` | Implementación ligera lista; pesada pendiente de iteración 6 | Iteración 2: tests filtrados de `library`, `abi`, `runtime`, `semantic`, `syntax`, `lexicon` y `see_validation`; `see validate`, `lock --check`, `export --check`; Clippy, rustfmt y `rust-checks` en `engine` y `spec` | `PG-5.01.07` se reserva a la iteración 6; parada en `P2` |
 | `PG-5.02` | Código, casos C1–C12 y verificaciones ligeras completados; conformidad pesada pendiente | Tests filtrados de ABI, runtime, semantic, project, API, `see_format`, `see_validation` y `see_conformance`; los casos de API atraviesan library e IR; `cargo check`, Clippy `--all-targets`, `rustfmt --check`, `rust-checks all .` de engine y spec; `see validate`, `see lock --check` y `see export --check` pasan | `LIB.HTTP` comienza `estable` con `Cesar Antonio Gutierrez Contreras` en `revisado_por`. Los vínculos engine/AOT quedan `pendiente` para P6; AOT R5 conserva `CF-PG5-02`. `LIB.HTTP#R6`/C8 mantienen un conflicto acotado a reproducir respuestas con credenciales. Sin commit ni push |
-| `PG-5.03` | Pendiente; fuera del alcance reanudado | Sin verificaciones en esta reanudación | El usuario acotó el trabajo a `PG-5.02`; límites y cancelación quedan para su iteración |
+| `PG-5.03` | Implementación, casos y verificaciones ligeras completados; únicamente `.07` excluida; fase sin cierre verde | Pruebas filtradas de API HTTP (6), límites API (4), runtime (8), JSON (4), sintaxis, opciones de API y mapeo SEE (11); `cargo check`, Clippy y `rust-checks` del motor y la CLI; `see validate` (190), `see lock --check` y `see export --check` pasan | El verificador completo sigue bloqueado por fallos de `LIB.TIME#C1` y limpieza de colecciones C12. `cargo deny check` no pudo actualizar su base de avisos por falta de red. No se ejecutó `.07`; sin commit ni push |
 | `PG-5.04` | Pendiente; fuera del alcance reanudado | Sin verificaciones en esta reanudación | No se implementó redirección ni política de red avanzada |
 | `PG-5.05` | Pendiente; fuera del alcance reanudado | Sin verificaciones en esta reanudación | No se implementó negociación ni confirmación de escrituras |
 | `PG-5.06` | | | |
@@ -1143,6 +1143,32 @@ en esta continuación; no se borraron cachés.
 - **Impacto y verificación:** `see validate` pasó para 190 especificaciones después de añadir estado, revisor y
   vínculos; `see lock --check` y `see export --check` también pasaron. No se alteró la regla `LIB.HTTP#R6` ni C8; su
   conflicto sobre la reproducción de respuestas con credenciales sigue aislado. No se avanzó de P3 ni se ejecutó `.07`.
+
+### Registro de ejecución de P3 · 2026-10-29 · PG-5.03
+
+- **Alcance:** se implementó `PG-5.03.01`–`.06` en una iteración sobre `feature/agregar-ruta-de-especificacion`.
+  Solo se excluyó `.07`, según la instrucción de la persona; no se ejecutó conformidad pesada ni el servidor local.
+- **Corpus:** `ENG.LIMITS#D2` fija los valores de `§3.4.6`; `R13` distingue `LimiteExcedido`, `TiempoAgotado` y
+  `ProfundidadExcedida` como valores, no terminaciones, y prohíbe enviar solicitudes por encima del máximo pendiente.
+  `LIB.HTTP#R7` y `C13`–`C24` cubren límites inclusivos, recorte, valores no positivos, bytes en el cable, cabeceras,
+  exceso de pendientes, plazo GET/POST y normalización de respuestas excesivas. Se añadió `ENG.LIMITS#C37` para
+  comprobar que un exceso de respuesta conserva la ejecución. El anclaje de `ENG.LIMITS` se refrescó bajo el
+  congelamiento de versiones.
+- **Implementación y documentación:** el runtime valida tamaños de petición/respuesta, cabeceras y límites de
+  pendientes; la API conecta los límites configurables con la VM y el anfitrión; la CLI configura sus valores por
+  omisión. `max_json_depth` llega a la VM y se aplica al parser JSON. Se actualizaron los README del motor, runtime,
+  API, biblioteca, CLI y sintaxis.
+- **Verificación ligera:** pasaron 6 tests de corpus HTTP, 4 de límites de API, 8 de runtime, 4 de profundidad JSON,
+  los tests de opciones JSON de API y límites por omisión de CLI, los tests de sintaxis y 11 tests del mapeo SEE.
+  También pasaron `cargo check`, Clippy estricto y `rust-checks all .` del motor y la CLI; `see validate` validó 190
+  especificaciones, y pasaron `see lock --check` y `see export --check`.
+- **Bloqueos de verificación general:** `cargo xtask verify` de engine pasó exportación, formato y Clippy, pero el
+  test de limpieza de colecciones C12 falló: esperaba `utf8_invalido:Falso` y obtuvo `permiso_denegado:Falso`.
+  La ejecución dirigida de `LIB.TIME#C1` también falló: esperaba `100` y obtuvo `permiso_denegado`. El diff no toca
+  directamente el reloj ni las operaciones de colecciones; la causa sigue sin determinar y no se declara `PHASE-GREEN`
+  hasta resolver ambas observaciones. `cargo deny check` no pudo actualizar su base de avisos por falta de red; la
+  comprobación de licencias, fuentes y bans pasó con la base local.
+- **Parada:** `PG-5.03.07` queda como única tarea excluida; no se hizo commit ni push y la parada permanece en P3.
 
 ---
 

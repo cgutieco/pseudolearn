@@ -144,7 +144,11 @@ fn requested_permission_is_effective_only_when_granted() -> Result<(), String> {
         .map_err(|failure_codes| format!("{failure_codes:?}"))?;
     assert!(configuration.permissions.contains(&PermissionName::Console));
     assert!(!configuration.permissions.contains(&PermissionName::Clock));
-    assert!(!configuration.permissions.contains(&PermissionName::Arguments));
+    assert!(
+        !configuration
+            .permissions
+            .contains(&PermissionName::Arguments)
+    );
     Ok(())
 }
 

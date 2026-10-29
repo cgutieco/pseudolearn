@@ -15,8 +15,7 @@ fn hover_at(
 
 #[test]
 fn reports_declared_type_in_the_profile_language() -> Result<(), String> {
-    let code =
-        "Algoritmo Principal\n  Definir Mutable contador Como Entero <- 0;\n  con|tador <- 1;\nFinAlgoritmo\n";
+    let code = "Algoritmo Principal\n  Definir Mutable contador Como Entero <- 0;\n  con|tador <- 1;\nFinAlgoritmo\n";
     let outcome = hover_at(code, Profile::Spanish, true);
     let outcome = outcome.ok_or("expected hover")?;
     assert_eq!(outcome.type_name, "Entero");

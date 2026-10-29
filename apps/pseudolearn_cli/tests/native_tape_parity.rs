@@ -42,19 +42,36 @@ fn flags(native: bool, tape_flag: &str) -> Vec<&str> {
 }
 
 #[test]
-fn vm_tape_replays_natively_and_native_tape_replays_in_vm() -> Result<(), Box<dyn std::error::Error>> {
+fn vm_tape_replays_natively_and_native_tape_replays_in_vm() -> Result<(), Box<dyn std::error::Error>>
+{
     let space = workspace("tape-parity", PROGRAM)?;
     let vm_tape = space.directory.join("vm.json");
     let native_tape = space.directory.join("native.json");
     let vm = run(&space.source, &flags(false, "--record-tape"), &vm_tape, "")?;
-    let native = run(&space.source, &flags(true, "--record-tape"), &native_tape, "")?;
+    let native = run(
+        &space.source,
+        &flags(true, "--record-tape"),
+        &native_tape,
+        "",
+    )?;
     assert!(vm.status.success(), "{vm:?}");
     assert!(native.status.success(), "{native:?}");
     assert_eq!(vm.stdout, native.stdout);
     let vm_replayed_natively = run(&space.source, &flags(true, "--replay-tape"), &vm_tape, "")?;
-    let native_replayed_in_vm = run(&space.source, &flags(false, "--replay-tape"), &native_tape, "")?;
-    assert!(vm_replayed_natively.status.success(), "{vm_replayed_natively:?}");
-    assert!(native_replayed_in_vm.status.success(), "{native_replayed_in_vm:?}");
+    let native_replayed_in_vm = run(
+        &space.source,
+        &flags(false, "--replay-tape"),
+        &native_tape,
+        "",
+    )?;
+    assert!(
+        vm_replayed_natively.status.success(),
+        "{vm_replayed_natively:?}"
+    );
+    assert!(
+        native_replayed_in_vm.status.success(),
+        "{native_replayed_in_vm:?}"
+    );
     assert_eq!(vm_replayed_natively.stdout, vm.stdout);
     assert_eq!(native_replayed_in_vm.stdout, vm.stdout);
     std::fs::remove_dir_all(space.directory)?;
@@ -98,16 +115,37 @@ fn native_run_rejects_observation() -> Result<(), Box<dyn std::error::Error>> {
 const READER: &str = "Algoritmo Main\nDefinir Mutable name Como Cadena <- \"\";\nLeer name;\nEscribir name;\nFinAlgoritmo\n";
 
 #[test]
-fn replay_reads_input_from_the_tape_without_standard_input() -> Result<(), Box<dyn std::error::Error>> {
+fn replay_reads_input_from_the_tape_without_standard_input()
+-> Result<(), Box<dyn std::error::Error>> {
     let space = workspace("tape-read", READER)?;
     let vm_tape = space.directory.join("vm.json");
     let native_tape = space.directory.join("native.json");
-    let vm = run(&space.source, &flags(false, "--record-tape"), &vm_tape, "mundo\n")?;
-    let native = run(&space.source, &flags(true, "--record-tape"), &native_tape, "mundo\n")?;
+    let vm = run(
+        &space.source,
+        &flags(false, "--record-tape"),
+        &vm_tape,
+        "mundo\n",
+    )?;
+    let native = run(
+        &space.source,
+        &flags(true, "--record-tape"),
+        &native_tape,
+        "mundo\n",
+    )?;
     assert_eq!(vm.stdout, b"mundo\n");
     assert_eq!(native.stdout, b"mundo\n");
-    for (native_replay, tape) in [(false, &vm_tape), (true, &vm_tape), (false, &native_tape), (true, &native_tape)] {
-        let replayed = run(&space.source, &flags(native_replay, "--replay-tape"), tape, "")?;
+    for (native_replay, tape) in [
+        (false, &vm_tape),
+        (true, &vm_tape),
+        (false, &native_tape),
+        (true, &native_tape),
+    ] {
+        let replayed = run(
+            &space.source,
+            &flags(native_replay, "--replay-tape"),
+            tape,
+            "",
+        )?;
         assert!(replayed.status.success(), "{replayed:?}");
         assert_eq!(replayed.stdout, b"mundo\n");
     }

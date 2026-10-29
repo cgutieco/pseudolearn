@@ -86,7 +86,11 @@ impl EffectChannel {
             return Ok(None);
         }
         self.session
-            .resolve(console_record(operation, arguments), Vec::new(), "committed")
+            .resolve(
+                console_record(operation, arguments),
+                Vec::new(),
+                "committed",
+            )
             .map(Some)
             .map_err(|error| self.reject(error))
     }

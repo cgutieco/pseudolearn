@@ -8,27 +8,44 @@ fn every_kind_and_count_has_a_load() {
 }
 
 #[test]
-fn smallest_loads_complete_with_a_reproducible_tape_and_one_entry_per_effect() -> Result<(), String> {
-    for load in effect_loads().iter().filter(|load| load.count == EFFECT_COUNTS[0]) {
+fn smallest_loads_complete_with_a_reproducible_tape_and_one_entry_per_effect() -> Result<(), String>
+{
+    for load in effect_loads()
+        .iter()
+        .filter(|load| load.count == EFFECT_COUNTS[0])
+    {
         let record = measure(load)?;
         let entries = record
             .get("recorded_entries")
             .and_then(serde_json::Value::as_u64)
             .ok_or("entries")?;
         assert!(entries >= u64::from(load.count), "{}: {entries}", load.name);
-        assert_eq!(record.get("reproducible"), Some(&json!(true)), "{}", load.name);
+        assert_eq!(
+            record.get("reproducible"),
+            Some(&json!(true)),
+            "{}",
+            load.name
+        );
     }
     Ok(())
 }
 
 #[test]
 fn linear_series_is_accepted() {
-    assert!(grows_linearly(&[(100, 11_000), (1000, 101_000), (10_000, 1_001_000)]));
+    assert!(grows_linearly(&[
+        (100, 11_000),
+        (1000, 101_000),
+        (10_000, 1_001_000)
+    ]));
 }
 
 #[test]
 fn quadratic_series_is_rejected() {
-    assert!(!grows_linearly(&[(100, 10_000), (1000, 1_000_000), (10_000, 100_000_000)]));
+    assert!(!grows_linearly(&[
+        (100, 10_000),
+        (1000, 1_000_000),
+        (10_000, 100_000_000)
+    ]));
 }
 
 #[test]

@@ -69,8 +69,11 @@ fn rebuilt(tape: &EffectTape, change: impl Fn(&mut TapeEntry)) -> EffectTape {
 
 fn replay_session(tape: EffectTape) -> Result<EffectSession, ReplayError> {
     let mut session = EffectSession::from_tape(tape, &identity())?;
-    configure_host_authority(&mut session, Some(&serde_json::json!({"permissions":["reloj"]})))
-        .map_err(|_| ReplayError::Divergence)?;
+    configure_host_authority(
+        &mut session,
+        Some(&serde_json::json!({"permissions":["reloj"]})),
+    )
+    .map_err(|_| ReplayError::Divergence)?;
     Ok(session)
 }
 

@@ -42,14 +42,22 @@ fn granted_flags(arena: &Arena, grant: &str) -> Vec<String> {
     ]
 }
 
-fn blocked(arena: &Arena, source: &str, grant: &str, code: &str) -> Result<(), Box<dyn std::error::Error>> {
+fn blocked(
+    arena: &Arena,
+    source: &str,
+    grant: &str,
+    code: &str,
+) -> Result<(), Box<dyn std::error::Error>> {
     let flags = granted_flags(arena, grant);
     let refs: Vec<&str> = flags.iter().map(String::as_str).collect();
     let output = run(arena, source, &refs)?;
     let stdout = String::from_utf8_lossy(&output.stdout);
     assert_eq!(stdout, format!("{code}\n"), "{output:?}");
     assert!(!stdout.contains(CANARY));
-    assert_eq!(std::fs::read_to_string(arena.base.join("secret.txt"))?, CANARY);
+    assert_eq!(
+        std::fs::read_to_string(arena.base.join("secret.txt"))?,
+        CANARY
+    );
     Ok(())
 }
 
@@ -61,7 +69,15 @@ fn finish(arena: Arena) -> Result<(), Box<dyn std::error::Error>> {
 #[test]
 fn parent_directory_escape_is_blocked() -> Result<(), Box<dyn std::error::Error>> {
     let arena = arena("parent")?;
-    blocked(&arena, &program("\"../secret.txt\", \"lectura\"", "Retornar file.LeerTexto();\n"), "archivos_lectura", "ruta_invalida")?;
+    blocked(
+        &arena,
+        &program(
+            "\"../secret.txt\", \"lectura\"",
+            "Retornar file.LeerTexto();\n",
+        ),
+        "archivos_lectura",
+        "ruta_invalida",
+    )?;
     finish(arena)
 }
 
@@ -69,7 +85,15 @@ fn parent_directory_escape_is_blocked() -> Result<(), Box<dyn std::error::Error>
 fn absolute_path_is_blocked() -> Result<(), Box<dyn std::error::Error>> {
     let arena = arena("absolute")?;
     let absolute = arena.base.join("secret.txt").to_string_lossy().into_owned();
-    blocked(&arena, &program(&format!("\"{absolute}\", \"lectura\""), "Retornar file.LeerTexto();\n"), "archivos_lectura", "ruta_invalida")?;
+    blocked(
+        &arena,
+        &program(
+            &format!("\"{absolute}\", \"lectura\""),
+            "Retornar file.LeerTexto();\n",
+        ),
+        "archivos_lectura",
+        "ruta_invalida",
+    )?;
     finish(arena)
 }
 
@@ -78,22 +102,44 @@ fn absolute_path_is_blocked() -> Result<(), Box<dyn std::error::Error>> {
 fn outgoing_symbolic_link_is_blocked() -> Result<(), Box<dyn std::error::Error>> {
     let arena = arena("symlink")?;
     std::os::unix::fs::symlink(arena.base.join("secret.txt"), arena.granted.join("escape"))?;
-    blocked(&arena, &program("\"escape\", \"lectura\"", "Retornar file.LeerTexto();\n"), "archivos_lectura", "permiso_denegado")?;
+    blocked(
+        &arena,
+        &program("\"escape\", \"lectura\"", "Retornar file.LeerTexto();\n"),
+        "archivos_lectura",
+        "permiso_denegado",
+    )?;
     finish(arena)
 }
 
 #[test]
-fn write_amplification_from_a_read_only_grant_is_blocked() -> Result<(), Box<dyn std::error::Error>> {
+fn write_amplification_from_a_read_only_grant_is_blocked() -> Result<(), Box<dyn std::error::Error>>
+{
     let arena = arena("amplify")?;
-    blocked(&arena, &program("\"a.txt\", \"escritura\"", "Retornar file.LeerTexto();\n"), "archivos_lectura", "permiso_denegado")?;
-    assert_eq!(std::fs::read_to_string(arena.granted.join("a.txt"))?, "dentro");
+    blocked(
+        &arena,
+        &program("\"a.txt\", \"escritura\"", "Retornar file.LeerTexto();\n"),
+        "archivos_lectura",
+        "permiso_denegado",
+    )?;
+    assert_eq!(
+        std::fs::read_to_string(arena.granted.join("a.txt"))?,
+        "dentro"
+    );
     finish(arena)
 }
 
 #[test]
 fn use_after_close_is_blocked() -> Result<(), Box<dyn std::error::Error>> {
     let arena = arena("closed")?;
-    blocked(&arena, &program("\"a.txt\", \"lectura\"", "Descartar file.Cerrar();\nRetornar file.LeerTexto();\n"), "archivos_lectura", "capacidad_cerrada")?;
+    blocked(
+        &arena,
+        &program(
+            "\"a.txt\", \"lectura\"",
+            "Descartar file.Cerrar();\nRetornar file.LeerTexto();\n",
+        ),
+        "archivos_lectura",
+        "capacidad_cerrada",
+    )?;
     finish(arena)
 }
 
@@ -105,13 +151,25 @@ fn record(arena: &Arena) -> Result<(PathBuf, String), Box<dyn std::error::Error>
     arguments.extend(["--record-tape", &tape_text]);
     let source = program("\"a.txt\", \"lectura\"", "Retornar file.LeerTexto();\n");
     let output = run(arena, &source, &arguments)?;
-    assert_eq!(String::from_utf8_lossy(&output.stdout), "dentro\n", "{output:?}");
+    assert_eq!(
+        String::from_utf8_lossy(&output.stdout),
+        "dentro\n",
+        "{output:?}"
+    );
     Ok((tape, source))
 }
 
-fn replay_rejected(arena: &Arena, tape: &Path, source: &str) -> Result<(), Box<dyn std::error::Error>> {
+fn replay_rejected(
+    arena: &Arena,
+    tape: &Path,
+    source: &str,
+) -> Result<(), Box<dyn std::error::Error>> {
     let tape_text = tape.to_string_lossy().into_owned();
-    let output = run(arena, source, &["--grant", "archivos_lectura", "--replay-tape", &tape_text])?;
+    let output = run(
+        arena,
+        source,
+        &["--grant", "archivos_lectura", "--replay-tape", &tape_text],
+    )?;
     assert!(!output.status.success(), "{output:?}");
     assert!(output.stdout.is_empty(), "{output:?}");
     Ok(())
@@ -122,7 +180,9 @@ fn single_bit_flip_in_the_tape_is_rejected() -> Result<(), Box<dyn std::error::E
     let arena = arena("bitflip")?;
     let (tape, source) = record(&arena)?;
     let mut document: serde_json::Value = serde_json::from_slice(&std::fs::read(&tape)?)?;
-    let first = document.pointer_mut("/entries/0/payload_bytes/0").ok_or("missing payload")?;
+    let first = document
+        .pointer_mut("/entries/0/payload_bytes/0")
+        .ok_or("missing payload")?;
     let flipped = first.as_u64().ok_or("payload is not a byte")? ^ 1;
     *first = serde_json::json!(flipped);
     std::fs::write(&tape, serde_json::to_vec(&document)?)?;

@@ -54,11 +54,22 @@ fn record(load: &Load) -> (Value, u128) {
 
 fn check(name: &str, load: &Load) {
     let (value, elapsed) = record(load);
-    assert_eq!(value.get("output"), Some(&json!(load.expected_output)), "{name}");
+    assert_eq!(
+        value.get("output"),
+        Some(&json!(load.expected_output)),
+        "{name}"
+    );
     let tape = value.get("effect_tape").cloned().unwrap_or(Value::Null);
-    let entries = tape.get("entries").and_then(Value::as_array).map_or(0, Vec::len);
+    let entries = tape
+        .get("entries")
+        .and_then(Value::as_array)
+        .map_or(0, Vec::len);
     let console = entries.saturating_sub(load.expected_entries);
-    assert!(console <= 1, "{name}: {entries} entries, expected {}", load.expected_entries);
+    assert!(
+        console <= 1,
+        "{name}: {entries} entries, expected {}",
+        load.expected_entries
+    );
     if std::env::var_os("PSEUDO_EFFECT_LOAD_REPORT").is_some() {
         eprintln!(
             "{}",

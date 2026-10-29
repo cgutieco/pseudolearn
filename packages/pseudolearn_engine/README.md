@@ -52,6 +52,11 @@ Los builds directos necesitan primero la exportación ignorada del corpus:
 `(cd ../pseudolearn_spec && cargo run --locked -p see_cli --bin see -- export --root .)`. `cargo xtask verify`
 la genera antes de compilar.
 
+`ExecutionLimits` configura `max_json_depth` y los topes de HTTP. Engine usa 64 niveles JSON, 1 MiB
+de cuerpo decodificado y cable, 16 KiB y 64 cabeceras, cuatro peticiones pendientes y 30 segundos
+como valores predeterminados. `ConLimiteRespuesta` y `ConTiempoMaximo` solo reducen esos topes;
+`LimiteExcedido` y `TiempoAgotado` son resultados de `ErrorES`, no terminaciones del programa.
+
 La medición final histórica de AWFY-core en macOS ARM64 obtuvo media geométrica de 30,026× y mínimo de
 19,866×, con cero muestras descartadas. Las campañas nuevas escriben sus datos en directorios locales
 ignorados y aceptan archivos de referencia externos.

@@ -196,6 +196,13 @@ fn limits(case: &Block) -> Value {
         ("celdas", "cells"),
         ("tareas", "tasks"),
         ("capacidad_canal", "channel_capacity"),
+        ("max_json_depth", "max_json_depth"),
+        ("max_http_body_bytes", "max_http_body_bytes"),
+        ("max_http_wire_bytes", "max_http_wire_bytes"),
+        ("max_http_header_bytes", "max_http_header_bytes"),
+        ("max_http_headers", "max_http_headers"),
+        ("max_pending_network", "max_pending_network"),
+        ("max_http_timeout_nanos", "max_http_timeout_nanos"),
     ] {
         if let Some(value) = declared.and_then(|declared| declared.get(name)) {
             limits.insert(wire.to_owned(), value.clone());

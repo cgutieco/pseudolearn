@@ -101,8 +101,7 @@ fn initials_require_two_characters_and_segments() {
 
 #[test]
 fn detail_keys_are_stable_and_carry_arguments() -> Result<(), String> {
-    let code =
-        "Algoritmo P\n  Definir Mutable total Como Entero <- 0;\n  Mientras 1 = 1 Hacer\n    |\nFinAlgoritmo\n";
+    let code = "Algoritmo P\n  Definir Mutable total Como Entero <- 0;\n  Mientras 1 = 1 Hacer\n    |\nFinAlgoritmo\n";
     let entries = complete_marked(code, Profile::Spanish);
     let closer = entries.first().ok_or("no candidates")?;
     assert_eq!(closer.detail_key.as_deref(), Some("close_block"));

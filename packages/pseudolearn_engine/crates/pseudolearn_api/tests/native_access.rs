@@ -35,9 +35,7 @@ fn each_terminal_field_failure_matches_vm_diagnostics() -> Result<(), String> {
         } else {
             "Escribir node.value;"
         };
-        support::compare(&format!(
-            "{prefix}{read}\nFinAlgoritmo\n"
-        ))?;
+        support::compare(&format!("{prefix}{read}\nFinAlgoritmo\n"))?;
     }
     Ok(())
 }

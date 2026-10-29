@@ -3,8 +3,9 @@ use serde_json::json;
 
 fn warning_request(state_at: Option<usize>) -> ExecuteRequest {
     ExecuteRequest {
-        program: "algorithm P\ndefine mutable x as integer <- 0;\nx <- 1;\nwrite 1;\nendAlgorithm\n"
-            .to_owned(),
+        program:
+            "algorithm P\ndefine mutable x as integer <- 0;\nx <- 1;\nwrite 1;\nendAlgorithm\n"
+                .to_owned(),
         profile: "en".to_owned(),
         strictness: "flexible".to_owned(),
         state_at,

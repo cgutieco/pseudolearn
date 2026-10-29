@@ -99,7 +99,7 @@
   "id": "R2",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "El tipo ErrorES modela de manera portable los errores de entrada y salida con variantes para NoEncontrado, PermisoDenegado, YaExiste, FinDeArchivo, Utf8Invalido, RutaInvalida, CapacidadCerrada, TiempoAgotado, Interrumpido, UrlInvalida, PeticionInvalida, DestinoDenegado, ConexionFallida, CertificadoInvalido y RespuestaInvalida, junto a una bandera booleana incierto para indicar incertidumbre sobre si la mutación externa llegó a confirmarse.",
+  "texto": "El tipo ErrorES modela de manera portable los errores de entrada y salida con variantes para NoEncontrado, PermisoDenegado, YaExiste, FinDeArchivo, Utf8Invalido, RutaInvalida, CapacidadCerrada, TiempoAgotado, Interrumpido, UrlInvalida, PeticionInvalida, DestinoDenegado, ConexionFallida, CertificadoInvalido, RespuestaInvalida y LimiteExcedido, junto a una bandera booleana incierto para indicar incertidumbre sobre si la mutación externa llegó a confirmarse.",
   "verificacion": [
     "C2",
     "C8",
@@ -108,7 +108,8 @@
     "C11",
     "C12",
     "C13",
-    "C14"
+    "C14",
+    "C18"
   ]
 }
 ```
@@ -793,6 +794,27 @@
     "files": {
       "e": ""
     }
+  }
+}
+```
+
+```caso
+{
+  "id": "C18",
+  "regla": "R2",
+  "perfiles": ["es", "en"],
+  "rigor": ["estricto", "flexible"],
+  "origen": "derivado",
+  "operacion": "execute",
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir net Como RedCap <- Propagar SolicitarRed();\nSegun net.Enviar(PeticionHttp(MetodoHttp.GET, \"https://fake.test/limited\").ConLimiteRespuesta(1)) Hacer\nExito(response): Retornar Exito(0);\nError(problem): Retornar Error(problem);\nFinSegun\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir \"aceptada\";\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<integer, IoError>\ndefine net as NetworkCap <- propagate requestNetwork();\nswitch net.send(HttpRequest(HttpMethod.GET, \"https://fake.test/limited\").withResponseLimit(1)) do\nsuccess(response): return success(0);\nfailure(problem): return failure(problem);\nendSwitch\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write \"accepted\";\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "espera": {"salida": "limite_excedido\n", "terminacion": "completed"},
+  "anfitrion": {
+    "permissions": ["red"],
+    "requested_permissions": ["red"],
+    "http": {"GET https://fake.test/limited": {"estado": 200, "cuerpo": "xy"}}
   }
 }
 ```

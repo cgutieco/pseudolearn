@@ -7,7 +7,10 @@ const ENGLISH: &str = "subroutine Probe() as result<Bytes, IoError>\ndefine dire
 fn nodes_of(program: &str, profile: &str) -> Result<Vec<Value>, String> {
     let mut session = ApiSession::default();
     let document = session
-        .call("create_document", &json!({"program": program, "profile": profile}))
+        .call(
+            "create_document",
+            &json!({"program": program, "profile": profile}),
+        )
         .pointer("/value/resource")
         .cloned()
         .ok_or("missing document")?;
@@ -22,7 +25,11 @@ fn nodes_of(program: &str, profile: &str) -> Result<Vec<Value>, String> {
 fn attribute_values(nodes: &[Value], attribute: &str) -> Vec<String> {
     nodes
         .iter()
-        .filter_map(|node| node.get(attribute).and_then(Value::as_str).map(str::to_owned))
+        .filter_map(|node| {
+            node.get(attribute)
+                .and_then(Value::as_str)
+                .map(str::to_owned)
+        })
         .collect()
 }
 
@@ -44,8 +51,16 @@ fn capability_and_builtin_types_are_projected_in_both_profiles() -> Result<(), S
 fn effect_operations_are_projected_by_identity() -> Result<(), String> {
     for (program, profile) in [(SPANISH, "es"), (ENGLISH, "en")] {
         let operations = attribute_values(&nodes_of(program, profile)?, "effect_operation");
-        for expected in ["request_directory", "file_open", "file_close", "file_read_bytes"] {
-            assert!(operations.contains(&expected.to_owned()), "{profile}: {expected}");
+        for expected in [
+            "request_directory",
+            "file_open",
+            "file_close",
+            "file_read_bytes",
+        ] {
+            assert!(
+                operations.contains(&expected.to_owned()),
+                "{profile}: {expected}"
+            );
         }
     }
     Ok(())
@@ -53,7 +68,10 @@ fn effect_operations_are_projected_by_identity() -> Result<(), String> {
 
 #[test]
 fn a_program_without_capabilities_projects_no_effect_attributes() -> Result<(), String> {
-    let nodes = nodes_of("Proceso P\nDefinir x Como Entero <- 1;\nEscribir x;\nFinProceso\n", "es")?;
+    let nodes = nodes_of(
+        "Proceso P\nDefinir x Como Entero <- 1;\nEscribir x;\nFinProceso\n",
+        "es",
+    )?;
     assert!(attribute_values(&nodes, "effect_operation").is_empty());
     assert!(attribute_values(&nodes, "capability_type").is_empty());
     assert!(attribute_values(&nodes, "builtin_type").is_empty());

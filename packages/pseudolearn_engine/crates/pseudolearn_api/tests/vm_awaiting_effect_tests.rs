@@ -2,7 +2,8 @@ use pseudolearn_vm::{Fuel, RunExit, RunOptions};
 
 const CLOCK: &str = "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir clock Como Reloj <- Propagar SolicitarReloj();\nRetornar clock.Ahora();\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n";
 
-const READ: &str = "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nLeer x;\nEscribir x;\nFinAlgoritmo\n";
+const READ: &str =
+    "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nLeer x;\nEscribir x;\nFinAlgoritmo\n";
 
 fn exit_of(source: &str) -> Result<RunExit, String> {
     let module = pseudolearn_api::compile_source_to_module(source, "es", "strict")
@@ -10,7 +11,10 @@ fn exit_of(source: &str) -> Result<RunExit, String> {
     let bytecode =
         pseudolearn_bytecode::compile_module(&module).map_err(|error| format!("{error:?}"))?;
     let loaded = pseudolearn_vm::load(&bytecode).map_err(|error| format!("{error:?}"))?;
-    let fuel = Fuel { statements: 1000, probes: 1000 };
+    let fuel = Fuel {
+        statements: 1000,
+        probes: 1000,
+    };
     Ok(pseudolearn_vm::run_with_options(&loaded, fuel, RunOptions::default()).exit)
 }
 

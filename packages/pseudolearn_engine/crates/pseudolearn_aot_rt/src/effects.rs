@@ -1,5 +1,6 @@
 use crate::cells::store_word;
 use crate::context::AotRuntimeContext;
+use crate::effect_channel::EffectChannel;
 use crate::guard::{Entry, borrow_slice, run_entry};
 use crate::trap::Trap;
 use pseudolearn_runtime::{
@@ -171,7 +172,7 @@ fn request_reply(
 ) -> Result<HostReply, Trap> {
     let capability = Handle(u32::try_from(frame.capability).map_err(|_| internal())?);
     if !operation.effect {
-        return local_reply(&entry.engine.heap, capability, operation, &arguments);
+        return local_effect_reply(entry, capability, operation, &arguments);
     }
     let receiver = match operation.receiver {
         Some(_) => {
@@ -200,17 +201,43 @@ fn request_reply(
     .map_err(|error| channel.reject(error))
 }
 
-fn local_reply(
-    heap: &pseudolearn_runtime::Heap,
-    capability: Handle,
+fn local_effect_reply(
+    entry: &Entry<'_>,
+    receiver: Handle,
     operation: &EffectOperation,
     arguments: &[HostValue],
 ) -> Result<HostReply, Trap> {
-    match pseudolearn_library::local_operation(heap, capability, operation, arguments)? {
+    local_reply(pseudolearn_library::LocalOperationRequest {
+        heap: &entry.engine.heap,
+        receiver,
+        operation,
+        arguments,
+        maximum_json_depth: configured_json_depth(&entry.engine.effects),
+    })
+}
+
+fn local_reply(request: pseudolearn_library::LocalOperationRequest<'_>) -> Result<HostReply, Trap> {
+    match pseudolearn_library::local_operation(request)? {
         Some(value) => Ok(HostReply::Committed(value)),
-        None => pseudolearn_runtime::local_effect(heap, capability, operation, arguments)
-            .map_err(Trap::from),
+        None => pseudolearn_runtime::local_effect(
+            request.heap,
+            request.receiver,
+            request.operation,
+            request.arguments,
+        )
+        .map_err(Trap::from),
     }
+}
+
+fn configured_json_depth(effects: &EffectChannel) -> usize {
+    effects
+        .session()
+        .tape()
+        .identity
+        .limits
+        .get("max_json_depth")
+        .and_then(|depth| usize::try_from(*depth).ok())
+        .unwrap_or(pseudolearn_runtime::DEFAULT_JSON_DEPTH)
 }
 
 fn echo_console(

@@ -73,8 +73,15 @@ fn intact_tape_replays_in_both_isolated_modes_without_host_calls() -> Result<(),
     let tape = recorded_tape()?;
     for mode in ["replay_from_tape", "history_seek"] {
         let response = replay(mode, PROGRAM, 42, &tape);
-        assert_eq!(response.pointer("/value/output"), Some(&json!("holamundo\n")), "{response}");
-        assert_eq!(response.pointer("/value/host_observation/calls"), Some(&json!(0)));
+        assert_eq!(
+            response.pointer("/value/output"),
+            Some(&json!("holamundo\n")),
+            "{response}"
+        );
+        assert_eq!(
+            response.pointer("/value/host_observation/calls"),
+            Some(&json!(0))
+        );
     }
     Ok(())
 }
@@ -85,9 +92,15 @@ fn changed_source_seed_or_permissions_reject_with_identity_mismatch() -> Result<
     for mode in ["replay_from_tape", "history_seek"] {
         let other_source = format!("{PROGRAM}\n");
         let response = replay(mode, &other_source, 42, &tape);
-        assert_eq!(rejection(&response), Some("Invalid protocol: replay_identity_mismatch"));
+        assert_eq!(
+            rejection(&response),
+            Some("Invalid protocol: replay_identity_mismatch")
+        );
         let response = replay(mode, PROGRAM, 43, &tape);
-        assert_eq!(rejection(&response), Some("Invalid protocol: replay_identity_mismatch"));
+        assert_eq!(
+            rejection(&response),
+            Some("Invalid protocol: replay_identity_mismatch")
+        );
     }
     Ok(())
 }
@@ -141,8 +154,12 @@ fn altered_hash_payload_sequence_schema_or_fields_reject_as_corrupted() -> Resul
     let mut sequence = tape.clone();
     let mut unknown = tape.clone();
     *hash.pointer_mut("/entries/0/entry_hash").ok_or("hash")? = json!("00");
-    *payload.pointer_mut("/entries/1/payload_bytes/0").ok_or("payload")? = json!(255);
-    *sequence.pointer_mut("/entries/1/effect_seq").ok_or("sequence")? = json!(5);
+    *payload
+        .pointer_mut("/entries/1/payload_bytes/0")
+        .ok_or("payload")? = json!(255);
+    *sequence
+        .pointer_mut("/entries/1/effect_seq")
+        .ok_or("sequence")? = json!(5);
     unknown
         .as_object_mut()
         .ok_or("object")?
@@ -159,7 +176,11 @@ fn unknown_schema_version_is_not_a_replay_error() -> Result<(), String> {
     let mut tape = recorded_tape()?;
     *tape.pointer_mut("/format").ok_or("format")? = json!("pseudolearn.tape/v9");
     let response = replay("replay_from_tape", PROGRAM, 42, &tape);
-    assert_eq!(response.pointer("/failure/family"), Some(&json!("version")), "{response}");
+    assert_eq!(
+        response.pointer("/failure/family"),
+        Some(&json!("version")),
+        "{response}"
+    );
     Ok(())
 }
 
@@ -202,6 +223,10 @@ fn replay_rejects_external_input_without_consulting_anything() -> Result<(), Str
         "input",
         &json!({"resource":started.pointer("/value/resource"),"text":"x"}),
     );
-    assert_eq!(rejected.pointer("/failure/family"), Some(&json!("usage")), "{rejected}");
+    assert_eq!(
+        rejected.pointer("/failure/family"),
+        Some(&json!("usage")),
+        "{rejected}"
+    );
     Ok(())
 }

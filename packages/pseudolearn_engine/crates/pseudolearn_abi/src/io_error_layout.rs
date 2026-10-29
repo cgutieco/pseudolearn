@@ -17,10 +17,11 @@ pub enum IoErrorKind {
     ConnectionFailed,
     InvalidCertificate,
     InvalidResponse,
+    LimitExceeded,
 }
 
 impl IoErrorKind {
-    pub const ALL: [Self; 15] = [
+    pub const ALL: [Self; 16] = [
         Self::NotFound,
         Self::PermissionDenied,
         Self::AlreadyExists,
@@ -36,6 +37,7 @@ impl IoErrorKind {
         Self::ConnectionFailed,
         Self::InvalidCertificate,
         Self::InvalidResponse,
+        Self::LimitExceeded,
     ];
 
     pub fn code(self) -> &'static str {
@@ -55,6 +57,7 @@ impl IoErrorKind {
             Self::ConnectionFailed => "conexion_fallida",
             Self::InvalidCertificate => "certificado_invalido",
             Self::InvalidResponse => "respuesta_invalida",
+            Self::LimitExceeded => "limite_excedido",
         }
     }
 
@@ -75,6 +78,7 @@ impl IoErrorKind {
             12 => Some(Self::ConnectionFailed),
             13 => Some(Self::InvalidCertificate),
             14 => Some(Self::InvalidResponse),
+            15 => Some(Self::LimitExceeded),
             _ => None,
         }
     }
@@ -96,6 +100,7 @@ impl IoErrorKind {
             Self::ConnectionFailed => 12,
             Self::InvalidCertificate => 13,
             Self::InvalidResponse => 14,
+            Self::LimitExceeded => 15,
         }
     }
 }

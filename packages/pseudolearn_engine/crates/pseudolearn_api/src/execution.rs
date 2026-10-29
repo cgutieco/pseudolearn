@@ -4,6 +4,10 @@ use pseudolearn_vm::{
     Fuel, Machine, RunExit, RunOptions, TwinMode, create_machine, load, machine_events,
     machine_output,
 };
+
+#[cfg(test)]
+#[path = "execution_options_tests.rs"]
+mod execution_options_tests;
 use serde_json::json;
 
 pub fn execute_program(request: &ExecuteRequest) -> ExecuteResponse {
@@ -52,6 +56,9 @@ pub fn prepare_program(
 }
 
 pub fn execute_prepared(prepared: &PreparedProgram, request: &ExecuteRequest) -> ExecuteResponse {
+    if crate::execution_prepare::validate_execution_limits(request).is_err() {
+        return usage_rejected();
+    }
     let program = &prepared.program;
     let warnings = &prepared.warnings;
     if program.uses_effects() || request.execution_mode.is_some() || request.host.is_some() {
@@ -148,8 +155,13 @@ pub(crate) fn options(request: &ExecuteRequest) -> RunOptions {
             .map_or(defaults.channel_capacity_limit, |value| {
                 usize::try_from(value).unwrap_or(usize::MAX)
             }),
+        max_json_depth: max_json_depth(request, defaults.max_json_depth),
         ..defaults
     }
+}
+
+fn max_json_depth(request: &ExecuteRequest, default: usize) -> usize {
+    request.limits.max_json_depth.unwrap_or(default)
 }
 
 fn diagnostics(
@@ -187,6 +199,21 @@ fn rejected(diagnostics: Vec<crate::ApiDiagnostic>) -> ExecuteResponse {
         output: String::new(),
         termination: json!({"kind":"failed","code":"analysisFailed"}),
         diagnostics,
+        events: Vec::new(),
+        inputs_consumed: 0,
+        state_at: None,
+    }
+}
+
+fn usage_rejected() -> ExecuteResponse {
+    ExecuteResponse {
+        kind: "execute".to_owned(),
+        effect_tape: None,
+        pending_effect: None,
+        host_observation: None,
+        output: String::new(),
+        termination: json!({"kind":"failed","code":"usage"}),
+        diagnostics: Vec::new(),
         events: Vec::new(),
         inputs_consumed: 0,
         state_at: None,

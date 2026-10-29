@@ -1,13 +1,11 @@
-pub(crate) use crate::execution_prepare::{
-    CHECKPOINT_LIMIT, initial_checkpoint, prepare_program_and_warnings, usage,
-};
+pub(crate) use crate::execution_prepare::{CHECKPOINT_LIMIT, prepare_program_and_warnings, usage};
 use crate::{ApiDiagnostic, ApiError, ExecuteRequest};
 use pseudolearn_timeline::CheckpointStore;
 use pseudolearn_vm::{
-    Fuel, LoadedProgram, Machine, RunExit, RunOptions, TwinMode, create_owned_machine,
-    machine_event_count, machine_events, machine_output, take_machine_events,
+    LoadedProgram, Machine, RunExit, RunOptions, machine_event_count, take_machine_events,
 };
 use serde_json::{Value, json};
+use std::collections::BTreeSet;
 use std::sync::{
     Arc,
     atomic::{AtomicBool, Ordering},
@@ -21,6 +19,10 @@ mod execution_resource_tests;
 mod execution_effects;
 #[path = "execution_host.rs"]
 mod execution_host;
+#[path = "execution_response.rs"]
+mod execution_response;
+#[path = "execution_setup.rs"]
+mod execution_setup;
 
 const CHECKPOINT_STRIDE: usize = 256;
 
@@ -33,6 +35,7 @@ pub(crate) struct ExecutionResource {
     last_checkpoint_count: usize,
     retained_start: usize,
     options: RunOptions,
+    network_limits: pseudolearn_runtime::NetworkLimits,
     terminal: Option<RunExit>,
     delivered: usize,
     retained_events: usize,
@@ -49,6 +52,7 @@ pub(crate) struct ExecutionResource {
     detached_effects: bool,
     cancel_on_effect: Option<u64>,
     pending_host: Option<pseudolearn_runtime::HostEffectRequest>,
+    limit_rejected_network: BTreeSet<u64>,
     completing_effect: bool,
 }
 
@@ -58,45 +62,55 @@ impl ExecutionResource {
         Self::from_loaded(request, program, warnings)
     }
 
-    pub(crate) fn from_loaded(request: &ExecuteRequest, program: LoadedProgram, warnings: Vec<ApiDiagnostic>) -> Result<Self, ApiError> {
-        let execution_mode =
-            crate::tape_wire::parse_execution_mode(request.execution_mode.as_deref())?;
-        crate::tape_wire::validate_replay_tape(request, execution_mode)?;
-        let mut effects = execution_effects::prepare_session(request, execution_mode)?;
-        pseudolearn_runtime::configure_host_authority(&mut effects, request.host.as_ref()).map_err(|error| usage(error.code()))?;
-        let host = execution_effects::prepare_host(request, execution_mode)?;
-        let detached_effects = request.host.as_ref().and_then(|host| host.get("detached")).and_then(Value::as_bool).unwrap_or(false);
-        let cancel_on_effect = request.host.as_ref().and_then(|host| host.get("cancel_on_awaiting_effect")).and_then(Value::as_u64);
-        let cancelled = Arc::new(AtomicBool::new(false));
-        let mut options = crate::execution::options(request);
-        options.twin_mode = TwinMode::Probed;
-        options.cancelled = Some(cancelled.clone());
-        let mut machine = create_owned_machine(program.clone(), Fuel::unlimited(), options.clone())
-            .map_err(|trap| usage(trap.code))?;
-        execution_effects::configure_machine(&mut machine, request, &effects);
-        let (initial_state, store) = initial_checkpoint(&machine)?;
-        Ok(Self {
-            program,
-            machine,
-            initial_state,
-            store,
+    pub(crate) fn from_loaded(
+        request: &ExecuteRequest,
+        program: LoadedProgram,
+        warnings: Vec<ApiDiagnostic>,
+    ) -> Result<Self, ApiError> {
+        let (prepared, initialized) = execution_setup::prepare(request, program)?;
+        Ok(Self::from_prepared(
+            request,
+            warnings,
+            prepared,
+            initialized,
+        ))
+    }
+
+    fn from_prepared(
+        request: &ExecuteRequest,
+        warnings: Vec<ApiDiagnostic>,
+        prepared: execution_setup::PreparedExecution,
+        initialized: execution_setup::InitializedMachine,
+    ) -> Self {
+        Self {
+            program: initialized.program,
+            machine: initialized.machine,
+            initial_state: initialized.initial_state,
+            store: initialized.store,
             checkpoint_stride: CHECKPOINT_STRIDE,
             last_checkpoint_count: 0,
             retained_start: 0,
-            options,
+            options: initialized.options,
+            network_limits: prepared.network_limits,
             terminal: None,
             delivered: 0,
             retained_events: usize::MAX,
-            cancelled,
+            cancelled: prepared.cancelled,
             profile: request.profile.clone(),
             warnings,
             view: None,
             source: request.source,
-            execution_mode,
-            effects,
-            output_cursor: 0, input_cursor: 0,
-            host, detached_effects, cancel_on_effect, pending_host: None, completing_effect: false,
-        })
+            execution_mode: prepared.execution_mode,
+            effects: prepared.effects,
+            output_cursor: 0,
+            input_cursor: 0,
+            host: prepared.host,
+            detached_effects: prepared.detached_effects,
+            cancel_on_effect: prepared.cancel_on_effect,
+            pending_host: None,
+            completing_effect: false,
+            limit_rejected_network: BTreeSet::new(),
+        }
     }
 
     pub(crate) fn use_locale(&mut self, locale: String) {
@@ -116,29 +130,48 @@ impl ExecutionResource {
             self.drive_batch(maximum)?;
         }
 
-        let mut response = advance_response(AdvanceResponseInput {
-            machine: &self.machine,
-            start: 0,
-            terminal: self.terminal.as_ref(),
-            profile: &self.profile,
-            warnings: &self.warnings,
-            view: self.view.as_ref(),
-            source: self.source,
-        });
-        if let Some(fields) = response.as_object_mut() {
-            fields.insert("effect_tape".to_owned(), crate::tape_wire::tape_to_value(self.effects.tape()));
-            if let Some(pending) = &self.pending_host { fields.insert("pending_effect".to_owned(), json!(pending)); }
-            if let Some(list) = self.concurrent_pending_effects() { fields.insert("pending_effects".to_owned(), list); }
-            fields.insert("host_observation".to_owned(), json!({"calls":self.host.calls,"open_resources":self.host.live_resource_count()}));
-        }
+        let mut response =
+            execution_response::advance_response(execution_response::AdvanceResponseInput {
+                machine: &self.machine,
+                start: 0,
+                terminal: self.terminal.as_ref(),
+                profile: &self.profile,
+                warnings: &self.warnings,
+                view: self.view.as_ref(),
+                source: self.source,
+            });
+        self.add_effect_observation(&mut response);
         self.delivered = machine_event_count(&self.machine);
         take_machine_events(&mut self.machine);
         if self.pending_host.is_none() {
-            self.machine.set_effect_checkpoint(pseudolearn_runtime::capture_effect_checkpoint(&self.effects));
+            self.machine
+                .set_effect_checkpoint(pseudolearn_runtime::capture_effect_checkpoint(
+                    &self.effects,
+                ));
             self.record_checkpoint()?;
         }
         self.trim_history()?;
         Ok(response)
+    }
+
+    fn add_effect_observation(&self, response: &mut Value) {
+        let Some(fields) = response.as_object_mut() else {
+            return;
+        };
+        fields.insert(
+            "effect_tape".to_owned(),
+            crate::tape_wire::tape_to_value(self.effects.tape()),
+        );
+        if let Some(pending) = &self.pending_host {
+            fields.insert("pending_effect".to_owned(), json!(pending));
+        }
+        if let Some(list) = self.concurrent_pending_effects() {
+            fields.insert("pending_effects".to_owned(), list);
+        }
+        fields.insert(
+            "host_observation".to_owned(),
+            json!({"calls":self.host.calls,"open_resources":self.host.live_resource_count()}),
+        );
     }
 
     pub(crate) fn input(&mut self, text: String) -> Result<(), ApiError> {
@@ -223,8 +256,13 @@ impl ExecutionResource {
             .map_err(|_| usage("event outside retained horizon"))?;
         let mut options = self.options.clone();
         options.cancelled = None;
-        let machine = pseudolearn_timeline::replay_machine_with_effects(&self.program, image, event, (&options, self.effects.tape()))
-            .map_err(|_| usage("unreachable event"))?;
+        let machine = pseudolearn_timeline::replay_machine_with_effects(
+            &self.program,
+            image,
+            event,
+            (&options, self.effects.tape()),
+        )
+        .map_err(|_| usage("unreachable event"))?;
         Ok(machine)
     }
 
@@ -248,44 +286,4 @@ impl ExecutionResource {
         }
         Ok(())
     }
-}
-
-struct AdvanceResponseInput<'borrow, 'program> {
-    machine: &'borrow Machine<'program>,
-    start: usize,
-    terminal: Option<&'borrow RunExit>,
-    profile: &'borrow str,
-    warnings: &'borrow [ApiDiagnostic],
-    view: Option<&'borrow crate::program_view::ProgramView>,
-    source: Option<crate::ApiSourceIdentity>,
-}
-
-fn advance_response(input: AdvanceResponseInput<'_, '_>) -> Value {
-    let events: Vec<_> = machine_events(input.machine)
-        .get(input.start..)
-        .unwrap_or_default()
-        .iter()
-        .map(|event| crate::execution_wire::event_with_source(event, input.view))
-        .collect();
-    let termination = input
-        .terminal
-        .map(crate::execution_wire::termination)
-        .unwrap_or(json!({"kind":"running"}));
-    let mut diagnostics: Vec<_> = input.warnings.to_vec();
-    diagnostics.extend(
-        input
-            .machine
-            .execution_diagnostics()
-            .iter()
-            .map(|trap| crate::execution_wire::diagnostic(trap, input.profile, input.source)),
-    );
-    if let Some(RunExit::Trap(trap)) = input.terminal {
-        diagnostics.push(crate::execution_wire::diagnostic(
-            trap,
-            input.profile,
-            input.source,
-        ));
-    }
-    json!({"events":events,"output":machine_output(input.machine),"termination":termination,
-        "inputs_consumed":input.machine.input_consumed_count(),"diagnostics":diagnostics})
 }

@@ -87,7 +87,7 @@ cierra sin `shutdown`. Anuncia `execute` y `gc_stress`; no anuncia `observe`, `a
 sujeto está exento de observación y solo ejecuta.
 
 La ejecución de ejecutar/run usa únicamente la API pública con entrada estándar, semilla, límites
-de profundidad, sentencias, celdas y tareas vivas (`--tareas`/`--tasks`; omisión 4 096). La traza se narra con las plantillas trace* del catálogo generado;
+de profundidad, sentencias, celdas y tareas vivas (`--tareas`/`--tasks`; omisión 4 096). La CLI fija además `max_json_depth` en 64, cuerpo HTTP decodificado y cable en 8 MiB, cabeceras en 16 KiB y 64 campos, ocho peticiones pendientes y 30 segundos por petición. La traza se narra con las plantillas trace* del catálogo generado;
 la salida del programa se conserva literalmente. ri/ir imprime la RI canónica de la API o el diagnóstico
 de la primera violación. No se introduce semántica propia ni se accede a capas internas. Los casos cli
 verifican ambos idiomas, opciones equivalentes, códigos de salida y errores operativos.

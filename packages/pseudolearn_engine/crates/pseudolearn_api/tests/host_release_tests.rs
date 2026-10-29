@@ -29,10 +29,26 @@ fn observed(response: &Value, pointer: &str) -> Option<Value> {
 }
 
 fn assert_released_and_sealed(response: &Value, kind: &str) {
-    assert_eq!(observed(response, "/value/termination/kind"), Some(json!(kind)), "{response}");
-    assert_eq!(observed(response, "/value/host_observation/open_resources"), Some(json!(0)), "{response}");
-    assert_eq!(observed(response, "/value/host_observation/calls"), Some(json!(2)), "{response}");
-    assert_eq!(observed(response, "/value/effect_tape/status"), Some(json!("incomplete")), "{response}");
+    assert_eq!(
+        observed(response, "/value/termination/kind"),
+        Some(json!(kind)),
+        "{response}"
+    );
+    assert_eq!(
+        observed(response, "/value/host_observation/open_resources"),
+        Some(json!(0)),
+        "{response}"
+    );
+    assert_eq!(
+        observed(response, "/value/host_observation/calls"),
+        Some(json!(2)),
+        "{response}"
+    );
+    assert_eq!(
+        observed(response, "/value/effect_tape/status"),
+        Some(json!("incomplete")),
+        "{response}"
+    );
 }
 
 #[test]
@@ -50,15 +66,39 @@ fn host_cancellation_releases_the_open_capability_without_running_deferred_effec
 #[test]
 fn program_trap_releases_the_open_capability() {
     let response = run(OPEN_THEN_TRAP, json!({}));
-    assert_eq!(observed(&response, "/value/termination/kind"), Some(json!("failed")), "{response}");
-    assert_eq!(observed(&response, "/value/host_observation/open_resources"), Some(json!(0)), "{response}");
-    assert_eq!(observed(&response, "/value/effect_tape/status"), Some(json!("incomplete")), "{response}");
+    assert_eq!(
+        observed(&response, "/value/termination/kind"),
+        Some(json!("failed")),
+        "{response}"
+    );
+    assert_eq!(
+        observed(&response, "/value/host_observation/open_resources"),
+        Some(json!(0)),
+        "{response}"
+    );
+    assert_eq!(
+        observed(&response, "/value/effect_tape/status"),
+        Some(json!("incomplete")),
+        "{response}"
+    );
 }
 
 #[test]
 fn completed_run_keeps_the_tape_reproducible_and_leaves_no_open_resource() {
     let response = run(OPEN_THEN_FINISH, json!({}));
-    assert_eq!(observed(&response, "/value/termination/kind"), Some(json!("completed")), "{response}");
-    assert_eq!(observed(&response, "/value/host_observation/open_resources"), Some(json!(0)), "{response}");
-    assert_eq!(observed(&response, "/value/effect_tape/status"), Some(json!("reproducible")), "{response}");
+    assert_eq!(
+        observed(&response, "/value/termination/kind"),
+        Some(json!("completed")),
+        "{response}"
+    );
+    assert_eq!(
+        observed(&response, "/value/host_observation/open_resources"),
+        Some(json!(0)),
+        "{response}"
+    );
+    assert_eq!(
+        observed(&response, "/value/effect_tape/status"),
+        Some(json!("reproducible")),
+        "{response}"
+    );
 }

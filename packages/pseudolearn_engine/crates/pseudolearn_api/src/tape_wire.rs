@@ -5,6 +5,7 @@ use pseudolearn_timeline::{
 };
 use serde_json::{Value, json};
 use sha2::{Digest, Sha256};
+use std::collections::BTreeMap;
 
 fn package_graph_digest(request: &ExecuteRequest, source_digest: &str) -> String {
     let mut hasher = Sha256::new();
@@ -23,13 +24,7 @@ pub fn build_identity(request: &ExecuteRequest) -> ExecutionIdentity {
     let mut hasher = Sha256::new();
     hasher.update(request.program.as_bytes());
     let source_digest = format!("{:x}", hasher.finalize());
-    let options = crate::execution::options(request);
-    let limits = [
-        ("depth".to_owned(), u64::try_from(options.depth).unwrap_or(u64::MAX)),
-        ("cells".to_owned(), options.memory.cells),
-        ("statements".to_owned(), options.statement_limit.unwrap_or(u64::MAX)),
-        ("micro_steps".to_owned(), request.limits.micro_steps.unwrap_or(u64::MAX)),
-    ].into_iter().chain(request.limits.tasks.map(|tasks| ("tasks".to_owned(), tasks))).collect();
+    let limits = identity_limits(request);
     ExecutionIdentity {
         strictness: request.strictness.clone(),
         limits,
@@ -38,8 +33,63 @@ pub fn build_identity(request: &ExecuteRequest) -> ExecutionIdentity {
         profile: request.profile.clone(),
         seed: request.seed,
         statement_limit: request.limits.statements,
-        permissions: pseudolearn_runtime::effective_permissions(request.host.as_ref()).into_iter().collect(),
+        permissions: pseudolearn_runtime::effective_permissions(request.host.as_ref())
+            .into_iter()
+            .collect(),
     }
+}
+
+fn identity_limits(request: &ExecuteRequest) -> BTreeMap<String, u64> {
+    let options = crate::execution::options(request);
+    let mut limits: BTreeMap<String, u64> = [
+        (
+            "depth".to_owned(),
+            u64::try_from(options.depth).unwrap_or(u64::MAX),
+        ),
+        ("cells".to_owned(), options.memory.cells),
+        (
+            "statements".to_owned(),
+            options.statement_limit.unwrap_or(u64::MAX),
+        ),
+        (
+            "micro_steps".to_owned(),
+            request.limits.micro_steps.unwrap_or(u64::MAX),
+        ),
+    ]
+    .into_iter()
+    .collect();
+    limits.extend(
+        request
+            .limits
+            .tasks
+            .map(|tasks| ("tasks".to_owned(), tasks)),
+    );
+    limits.extend(request.limits.max_json_depth.and_then(|depth| {
+        u64::try_from(depth)
+            .ok()
+            .map(|depth| ("max_json_depth".to_owned(), depth))
+    }));
+    limits.extend(network_limit_entries(request));
+    limits
+}
+
+fn network_limit_entries(request: &ExecuteRequest) -> impl Iterator<Item = (String, u64)> + '_ {
+    [
+        ("max_http_body_bytes", request.limits.max_http_body_bytes),
+        ("max_http_wire_bytes", request.limits.max_http_wire_bytes),
+        (
+            "max_http_header_bytes",
+            request.limits.max_http_header_bytes,
+        ),
+        ("max_http_headers", request.limits.max_http_headers),
+        ("max_pending_network", request.limits.max_pending_network),
+        (
+            "max_http_timeout_nanos",
+            request.limits.max_http_timeout_nanos,
+        ),
+    ]
+    .into_iter()
+    .filter_map(|(name, value)| value.map(|value| (name.to_owned(), value)))
 }
 
 pub fn parse_execution_mode(name: Option<&str>) -> Result<ExecutionMode, ApiError> {
@@ -80,7 +130,9 @@ pub fn tape_to_value(tape: &EffectTape) -> Value {
 }
 
 pub fn tape_from_value(value: &Value) -> Result<EffectTape, ApiError> {
-    let format = value.get("format").and_then(Value::as_str)
+    let format = value
+        .get("format")
+        .and_then(Value::as_str)
         .ok_or_else(|| usage("missing tape format"))?;
     if format != TAPE_SCHEMA_V1 {
         return Err(ApiError::UnsupportedVersion(format.to_owned()));

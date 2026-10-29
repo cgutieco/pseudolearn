@@ -32,7 +32,8 @@ fn check_expectations(block: &Block, errors: &mut Vec<String>) {
         if expected.get("efecto_pendiente").is_some()
             && expected.get("terminacion").and_then(Value::as_str) != Some("awaiting_effect")
         {
-            errors.push("SEE-HOST: efecto_pendiente requires awaiting_effect termination".to_owned());
+            errors
+                .push("SEE-HOST: efecto_pendiente requires awaiting_effect termination".to_owned());
         }
         if let Some(effects) = expected
             .pointer("/anfitrion_observado/efectos")
@@ -130,16 +131,24 @@ const MUTATING_OPERATIONS: [&str; 6] = [
 ];
 
 fn check_fault(fault: &Value, errors: &mut Vec<String>) {
-    if fault.get("path").and_then(Value::as_str).is_some_and(|path| !valid_path(path)) {
+    if fault
+        .get("path")
+        .and_then(Value::as_str)
+        .is_some_and(|path| !valid_path(path))
+    {
         errors.push("SEE-HOST: invalid fault path".to_owned());
     }
     let operation = fault.get("operation").and_then(Value::as_str).unwrap_or("");
-    if fault.get("uncertain") == Some(&Value::Bool(true)) && !MUTATING_OPERATIONS.contains(&operation) {
+    if fault.get("uncertain") == Some(&Value::Bool(true))
+        && !MUTATING_OPERATIONS.contains(&operation)
+    {
         errors.push("SEE-HOST: uncertainty requires a mutating operation".to_owned());
     }
 }
 
 fn valid_path(path: &str) -> bool {
-    !path.is_empty() && !path.starts_with('/') && !path.contains(['\\', ':', '\0'])
+    !path.is_empty()
+        && !path.starts_with('/')
+        && !path.contains(['\\', ':', '\0'])
         && path.split('/').all(|part| !["", ".", ".."].contains(&part))
 }

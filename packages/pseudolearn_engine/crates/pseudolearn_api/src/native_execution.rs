@@ -60,7 +60,11 @@ pub fn protocol_rejected_native_response(error: &crate::ApiError) -> ExecuteResp
         crate::ApiError::InvalidProtocol(code) => code.as_str(),
         _ => "internalFault",
     };
-    let mut built = response(String::new(), json!({"kind":"failed","code":code}), Vec::new());
+    let mut built = response(
+        String::new(),
+        json!({"kind":"failed","code":code}),
+        Vec::new(),
+    );
     built.host_observation = Some(json!({"calls":0,"open_resources":0}));
     built
 }

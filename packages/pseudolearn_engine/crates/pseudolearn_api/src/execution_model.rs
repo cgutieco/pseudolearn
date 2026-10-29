@@ -9,6 +9,13 @@ pub struct ExecutionLimits {
     pub micro_steps: Option<u64>,
     pub tasks: Option<u64>,
     pub channel_capacity: Option<u64>,
+    pub max_json_depth: Option<usize>,
+    pub max_http_body_bytes: Option<u64>,
+    pub max_http_wire_bytes: Option<u64>,
+    pub max_http_header_bytes: Option<u64>,
+    pub max_http_headers: Option<u64>,
+    pub max_pending_network: Option<u64>,
+    pub max_http_timeout_nanos: Option<u64>,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]

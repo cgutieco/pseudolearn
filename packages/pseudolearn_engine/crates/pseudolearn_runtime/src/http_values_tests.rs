@@ -11,6 +11,11 @@ fn encodes_and_decodes_immutable_request_values() -> Result<(), crate::MemoryErr
         body: Some(vec![0, 255]),
         response_limit: Some(1024),
         timeout_nanos: Some(500),
+        effective_response_limit: None,
+        effective_timeout_nanos: None,
+        wire_limit: None,
+        header_bytes_limit: None,
+        headers_limit: None,
     };
     let bytes = crate::http_values::request_bytes(&request)?;
     let mut heap = Heap::new(MemoryOptions::default());

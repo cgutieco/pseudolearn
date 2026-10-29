@@ -4,8 +4,7 @@ use pseudolearn_syntax::{parse_source, reprint_lossless};
 
 #[test]
 fn parses_basic_algorithm_in_spanish() {
-    let source_code =
-        "Algoritmo Principal\n  Definir Mutable x Como Entero <- 0\n  x <- 42\n  Escribir x\nFinAlgoritmo\n";
+    let source_code = "Algoritmo Principal\n  Definir Mutable x Como Entero <- 0\n  x <- 42\n  Escribir x\nFinAlgoritmo\n";
     let source = SourceText::new(source_code.to_owned());
     let (tree, diagnostics) = parse_source(&source, Profile::Spanish);
     assert!(diagnostics.is_empty());

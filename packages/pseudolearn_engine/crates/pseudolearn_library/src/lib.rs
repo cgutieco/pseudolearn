@@ -33,7 +33,7 @@ pub use decimal::{DecimalError, parse_integer, parse_real};
 pub use error::LibraryError;
 pub use format::{BooleanLexemes, PrimitiveValue, format_value};
 pub use json_local_views::{LocalJsonViewCall, local_json_view};
-pub use local_operations::local_operation;
+pub use local_operations::{LocalOperationRequest, local_operation};
 pub use math::{absolute, square_root};
 pub use rounding::{round_real, truncate_real};
 pub use text_replace::{replace_all, trim_text};

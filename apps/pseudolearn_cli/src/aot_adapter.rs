@@ -4,8 +4,9 @@ use crate::native_cache::ExecutableCache;
 use crate::native_run::run_executable;
 use pseudolearn_api::{
     ENGINE_VERSION, ExecuteRequest, ExecuteResponse, NativeBuildFailure, NativeRunReport,
-    build_native_object, conformance_build_request, native_effect_input, native_execute_response, protocol_rejected_native_response,
-    rejected_native_response, supported_profiles, supported_strictness,
+    build_native_object, conformance_build_request, native_effect_input, native_execute_response,
+    protocol_rejected_native_response, rejected_native_response, supported_profiles,
+    supported_strictness,
 };
 use serde_json::{Value, json};
 use std::io::{BufRead, Write};
@@ -54,7 +55,10 @@ fn execute(request_value: &Value, cache: &mut ExecutableCache) -> Value {
     serde_json::to_value(response).unwrap_or(Value::Null)
 }
 
-pub(crate) fn execute_natively(request: &ExecuteRequest, cache: &mut ExecutableCache) -> ExecuteResponse {
+pub(crate) fn execute_natively(
+    request: &ExecuteRequest,
+    cache: &mut ExecutableCache,
+) -> ExecuteResponse {
     let object = match build_native_object(&conformance_build_request(request)) {
         Ok(object) => object,
         Err(NativeBuildFailure::Rejected(diagnostics)) => {

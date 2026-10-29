@@ -4,8 +4,7 @@ use crate::native_linker::link_executable;
 use crate::options::CliOptions;
 use crate::run_command::render_diagnostics;
 use pseudolearn_api::{
-    NativeBuildFailure, NativeBuildRequest, build_native_object,
-    detect_vocabulary_profile,
+    NativeBuildFailure, NativeBuildRequest, build_native_object, detect_vocabulary_profile,
 };
 use std::path::Path;
 

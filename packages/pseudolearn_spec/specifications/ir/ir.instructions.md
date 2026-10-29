@@ -4226,3 +4226,11 @@
   "instrucciones": ["effect_call"]
 }
 ```
+
+```cobertura
+{
+  "id": "V204",
+  "regla": "LIB.HTTP#R7",
+  "instrucciones": ["effect_call"]
+}
+```

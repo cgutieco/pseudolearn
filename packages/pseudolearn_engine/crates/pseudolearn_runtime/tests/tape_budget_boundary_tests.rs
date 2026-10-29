@@ -42,7 +42,9 @@ fn recorded(budget: usize, entries: u64) -> EffectTape {
 
 fn smallest_admitting_budget(entries: u64) -> Result<usize, String> {
     (0..4096usize)
-        .find(|budget| recorded(*budget, entries).entries().len() == usize::try_from(entries).unwrap_or(0))
+        .find(|budget| {
+            recorded(*budget, entries).entries().len() == usize::try_from(entries).unwrap_or(0)
+        })
         .ok_or_else(|| "no budget under 4096 admits the entries".to_owned())
 }
 
@@ -80,7 +82,10 @@ fn one_byte_above_the_exact_budget_admits_the_entry() -> Result<(), String> {
 fn second_entry_is_cut_at_its_own_exact_boundary() -> Result<(), String> {
     let exact = smallest_admitting_budget(2)?;
     let below = recorded(exact.saturating_sub(1), 2);
-    assert_eq!(below.status, ReproducibilityStatus::NonReproducibleTruncated);
+    assert_eq!(
+        below.status,
+        ReproducibilityStatus::NonReproducibleTruncated
+    );
     assert_eq!(below.entries().len(), 1);
     let exact_tape = recorded(exact, 2);
     assert_eq!(exact_tape.status, ReproducibilityStatus::Reproducible);

@@ -54,7 +54,7 @@ Problema: diferenciar la capacidad reservada del vector de palabras retiene dato
 
 El montón no mueve objetos: así, una recolección no altera identidades ni asas visibles. El ordinal identifica la asignación lógica, mientras el asa permite llegar a su almacenamiento actual. Los errores de capacidad, tamaño negativo, límite de celdas, índice, valor no inicializado e invariantes internos son variantes tipadas, no pánicos.
 
-El parser construye el bloque JSON desde un valor temporal de `serde_json`, con límite de profundidad 64. Serializar una vista recorre sus nodos y vuelve a escapar claves y cadenas; las operaciones que cruzan `HostValue` materializan temporalmente el texto del subárbol. Esos cruces cuestan O(n) en el tamaño recorrido, mientras las vistas retenidas evitan copiar subárboles en `Elemento` y `Campo`.
+El parser construye el bloque JSON desde un valor temporal de `serde_json`, con `max_json_depth` configurable y valor predeterminado 64. La VM recibe el límite en `RunOptions`; AOT lo obtiene de la identidad de ejecución. Cada arreglo u objeto cuenta un nivel, incluido el contenedor raíz. Serializar una vista recorre sus nodos y vuelve a escapar claves y cadenas; las operaciones que cruzan `HostValue` materializan temporalmente el texto del subárbol. Esos cruces cuestan O(n) en el tamaño recorrido, mientras las vistas retenidas evitan copiar subárboles en `Elemento` y `Campo`.
 
 Las dimensiones se convierten y multiplican con comprobación de rango; una dimensión cero produce un arreglo de cero elementos, mientras el rango vacío no representa un arreglo válido. El límite de celdas cuenta el costo lógico exacto y se comprueba con las celdas vivas antes de aceptar la asignación.
 
@@ -190,6 +190,14 @@ completo entre 100 y 599 salvo 101 es una respuesta comprometida; los códigos 4
 validación del runtime lo convierta en `RespuestaInvalida` al enviar; validar al cargarlo ocultaría
 el fallo de protocolo que debe observar el programa. `HEAD` conserva estado y cabeceras y entrega
 cuerpo vacío.
+
+`NetworkLimits` fija los valores mínimos garantizados: 1 MiB para cuerpo decodificado y bytes de
+solicitud, 16 KiB para cabeceras, 64 cabeceras, cuatro peticiones de red pendientes y 30 segundos
+por petición. El anfitrión puede elevar sus límites de producto. El runtime recorta el cuerpo de
+respuesta y el plazo solicitados al valor del anfitrión; un exceso de cuerpo o cabeceras devuelve
+`LimiteExcedido` como error de efecto y no termina el programa. El tamaño de cabeceras suma bytes
+UTF-8 del nombre y valor más cuatro bytes de delimitadores por campo. Una solicitud que supera el
+límite de bytes o de cabeceras se rechaza antes de invocar al anfitrión.
 
 Las operaciones que pueden mutar conservan los fallos externos inciertos; `GET` y `HEAD` no pueden
 devolver incertidumbre. La cinta usa la clasificación de efecto existente. Si una petición contiene

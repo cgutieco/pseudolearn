@@ -77,23 +77,7 @@ impl ExecutionResource {
         self.sync_reservations()?;
         self.effects
             .set_current_task(self.machine.current_task_id());
-        let output = machine_output(&self.machine);
-        if let Some(text) = output
-            .get(self.output_cursor..)
-            .filter(|text| !text.is_empty())
-        {
-            let bytes = text.as_bytes().to_vec();
-            let expected = self
-                .effects
-                .resolve(pseudolearn_runtime::console_record("write", bytes.clone()), bytes.clone(), "committed")
-                .map_err(crate::tape_wire::replay_error_to_api)?;
-            if expected != bytes {
-                return Err(crate::tape_wire::replay_error_to_api(
-                    pseudolearn_runtime::ReplayError::Divergence,
-                ));
-            }
-            self.output_cursor = output.len();
-        }
+        self.capture_output()?;
         let consumed = self.machine.input_consumed_count();
         while self.input_cursor < consumed {
             let text = self
@@ -109,6 +93,31 @@ impl ExecutionResource {
                 )
                 .map_err(crate::tape_wire::replay_error_to_api)?;
             self.input_cursor = self.input_cursor.saturating_add(1);
+        }
+        Ok(())
+    }
+
+    fn capture_output(&mut self) -> Result<(), ApiError> {
+        let output = machine_output(&self.machine);
+        if let Some(text) = output
+            .get(self.output_cursor..)
+            .filter(|text| !text.is_empty())
+        {
+            let bytes = text.as_bytes().to_vec();
+            let expected = self
+                .effects
+                .resolve(
+                    pseudolearn_runtime::console_record("write", bytes.clone()),
+                    bytes.clone(),
+                    "committed",
+                )
+                .map_err(crate::tape_wire::replay_error_to_api)?;
+            if expected != bytes {
+                return Err(crate::tape_wire::replay_error_to_api(
+                    pseudolearn_runtime::ReplayError::Divergence,
+                ));
+            }
+            self.output_cursor = output.len();
         }
         Ok(())
     }
@@ -152,10 +161,7 @@ pub(super) fn configure_machine(
     machine.set_effect_checkpoint(pseudolearn_runtime::capture_effect_checkpoint(effects));
 }
 
-fn delivery_order(
-    request: &ExecuteRequest,
-    effects: &EffectSession,
-) -> Vec<u64> {
+fn delivery_order(request: &ExecuteRequest, effects: &EffectSession) -> Vec<u64> {
     if effects.is_replaying() {
         return pseudolearn_runtime::delivery_order(effects.tape());
     }

@@ -1,5 +1,13 @@
 use crate::{error::CliError, messages::invalid_option_value};
 
+const MAX_HTTP_BODY_BYTES: u64 = 8_388_608;
+const MAX_HTTP_WIRE_BYTES: u64 = 8_388_608;
+const MAX_HTTP_HEADER_BYTES: u64 = 16_384;
+const MAX_HTTP_HEADERS: u64 = 64;
+const MAX_PENDING_NETWORK: u64 = 8;
+const MAX_HTTP_TIMEOUT_NANOS: u64 = 30_000_000_000;
+const MAX_JSON_DEPTH: usize = 64;
+
 #[derive(Clone, Debug, Default, Eq, PartialEq)]
 pub struct ExecutionArguments {
     pub seed: Option<i64>,
@@ -14,6 +22,10 @@ pub struct ExecutionArguments {
     pub record_tape: Option<String>,
     pub replay_tape: Option<String>,
 }
+
+#[cfg(test)]
+#[path = "execution_options_tests.rs"]
+mod execution_options_tests;
 
 pub fn parse_numeric(
     arguments: &[String],
@@ -99,6 +111,13 @@ impl ExecutionArguments {
             micro_steps: None,
             tasks: self.tasks,
             channel_capacity: None,
+            max_json_depth: Some(MAX_JSON_DEPTH),
+            max_http_body_bytes: Some(MAX_HTTP_BODY_BYTES),
+            max_http_wire_bytes: Some(MAX_HTTP_WIRE_BYTES),
+            max_http_header_bytes: Some(MAX_HTTP_HEADER_BYTES),
+            max_http_headers: Some(MAX_HTTP_HEADERS),
+            max_pending_network: Some(MAX_PENDING_NETWORK),
+            max_http_timeout_nanos: Some(MAX_HTTP_TIMEOUT_NANOS),
         }
     }
 }

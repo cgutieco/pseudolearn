@@ -40,16 +40,32 @@ fn text(output: &Output) -> String {
 }
 
 #[test]
-fn physical_read_records_a_tape_that_replays_without_the_disk() -> Result<(), Box<dyn std::error::Error>> {
+fn physical_read_records_a_tape_that_replays_without_the_disk()
+-> Result<(), Box<dyn std::error::Error>> {
     let space = space("read")?;
     let tape = space.base.join("tape.json");
     let directory = granted(&space).to_string_lossy().into_owned();
     let tape_path = tape.to_string_lossy().into_owned();
-    let live = run(&space, READER, &["--grant", "archivos_lectura", "--files", &directory, "--record-tape", &tape_path])?;
+    let live = run(
+        &space,
+        READER,
+        &[
+            "--grant",
+            "archivos_lectura",
+            "--files",
+            &directory,
+            "--record-tape",
+            &tape_path,
+        ],
+    )?;
     assert!(live.status.success(), "{live:?}");
     assert_eq!(text(&live), "hola\n");
     std::fs::remove_file(space.granted.join("a.txt"))?;
-    let replayed = run(&space, READER, &["--grant", "archivos_lectura", "--replay-tape", &tape_path])?;
+    let replayed = run(
+        &space,
+        READER,
+        &["--grant", "archivos_lectura", "--replay-tape", &tape_path],
+    )?;
     assert!(replayed.status.success(), "{replayed:?}");
     assert_eq!(text(&replayed), "hola\n");
     std::fs::remove_dir_all(space.base)?;
@@ -57,10 +73,15 @@ fn physical_read_records_a_tape_that_replays_without_the_disk() -> Result<(), Bo
 }
 
 #[test]
-fn parent_escape_is_denied_and_the_outside_file_is_never_read() -> Result<(), Box<dyn std::error::Error>> {
+fn parent_escape_is_denied_and_the_outside_file_is_never_read()
+-> Result<(), Box<dyn std::error::Error>> {
     let space = space("escape")?;
     let directory = granted(&space).to_string_lossy().into_owned();
-    let output = run(&space, ESCAPER, &["--grant", "archivos_lectura", "--files", &directory])?;
+    let output = run(
+        &space,
+        ESCAPER,
+        &["--grant", "archivos_lectura", "--files", &directory],
+    )?;
     assert_eq!(text(&output), "ruta_invalida\n", "{output:?}");
     std::fs::remove_dir_all(space.base)?;
     Ok(())
@@ -70,7 +91,11 @@ fn parent_escape_is_denied_and_the_outside_file_is_never_read() -> Result<(), Bo
 fn read_only_grant_denies_writing() -> Result<(), Box<dyn std::error::Error>> {
     let space = space("readonly")?;
     let directory = granted(&space).to_string_lossy().into_owned();
-    let denied = run(&space, WRITER, &["--grant", "archivos_lectura", "--files", &directory])?;
+    let denied = run(
+        &space,
+        WRITER,
+        &["--grant", "archivos_lectura", "--files", &directory],
+    )?;
     assert_eq!(text(&denied), "permiso_denegado\n", "{denied:?}");
     assert!(!space.granted.join("salida.txt").exists());
     std::fs::remove_dir_all(space.base)?;
@@ -78,12 +103,20 @@ fn read_only_grant_denies_writing() -> Result<(), Box<dyn std::error::Error>> {
 }
 
 #[test]
-fn write_grant_persists_the_file_inside_the_granted_directory() -> Result<(), Box<dyn std::error::Error>> {
+fn write_grant_persists_the_file_inside_the_granted_directory()
+-> Result<(), Box<dyn std::error::Error>> {
     let space = space("write")?;
     let directory = granted(&space).to_string_lossy().into_owned();
-    let output = run(&space, WRITER, &["--grant", "archivos_escritura", "--files", &directory])?;
+    let output = run(
+        &space,
+        WRITER,
+        &["--grant", "archivos_escritura", "--files", &directory],
+    )?;
     assert_eq!(text(&output), "8\n", "{output:?}");
-    assert_eq!(std::fs::read_to_string(space.granted.join("salida.txt"))?, "guardado");
+    assert_eq!(
+        std::fs::read_to_string(space.granted.join("salida.txt"))?,
+        "guardado"
+    );
     std::fs::remove_dir_all(space.base)?;
     Ok(())
 }

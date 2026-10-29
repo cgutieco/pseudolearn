@@ -15,10 +15,8 @@ fn a_declaration_without_initializer_is_rejected_in_both_modes() {
         let (module, diagnostics) = support::analyze(source, strict);
         assert!(module.is_none(), "strict={strict}");
         assert!(
-            diagnostics
-                .iter()
-                .any(|diagnostic| diagnostic.code
-                    == pseudolearn_diagnostics::DiagnosticCode::MissingBindingInitializer),
+            diagnostics.iter().any(|diagnostic| diagnostic.code
+                == pseudolearn_diagnostics::DiagnosticCode::MissingBindingInitializer),
             "strict={strict}"
         );
     }

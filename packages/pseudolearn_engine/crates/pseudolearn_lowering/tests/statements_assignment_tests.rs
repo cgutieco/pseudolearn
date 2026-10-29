@@ -116,7 +116,11 @@ fn addressed_mutable_initializer_creates_its_cell_before_any_call() {
 #[test]
 fn assigning_one_local_to_another_produces_distinct_origin_values() {
     let mut hir = module(false);
-    let integer = hir.locals.first().map(|local| local.type_id).unwrap_or(pseudolearn_semantic::identities::TypeId(0));
+    let integer = hir
+        .locals
+        .first()
+        .map(|local| local.type_id)
+        .unwrap_or(pseudolearn_semantic::identities::TypeId(0));
     hir.locals.push(HirLocal {
         name: "copy".to_owned(),
         type_id: integer,
@@ -159,5 +163,8 @@ fn assigning_one_local_to_another_produces_distinct_origin_values() {
     );
     assert_eq!(count(&builder, Operation::ValueReinterpret), 1);
     assert_eq!(origins.len(), 2);
-    assert_ne!(origins.first().map(|o| o.value), origins.get(1).map(|o| o.value));
+    assert_ne!(
+        origins.first().map(|o| o.value),
+        origins.get(1).map(|o| o.value)
+    );
 }

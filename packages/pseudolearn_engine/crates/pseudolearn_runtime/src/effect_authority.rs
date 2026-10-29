@@ -11,6 +11,7 @@ pub(crate) struct EffectAuthority {
     pub(crate) permissions: BTreeSet<String>,
     pub(crate) granted_network_origins: BTreeSet<String>,
     pub(crate) network_capabilities: BTreeMap<u32, BTreeSet<String>>,
+    pub(crate) network_limits: crate::NetworkLimits,
 }
 
 pub fn effective_permissions(host: Option<&serde_json::Value>) -> BTreeSet<String> {
@@ -39,6 +40,12 @@ pub(crate) fn prepare(
     operation: &EffectOperation,
     request: &mut HostEffectRequest,
 ) -> Result<(), IoError> {
+    if operation.identity == "network_send" {
+        let Some(HostValue::HttpRequest(http_request)) = request.arguments.first_mut() else {
+            return Err(IoError::from_kind(IoErrorKind::InvalidRequest));
+        };
+        crate::network_limits::prepare_request(http_request, authority.network_limits)?;
+    }
     let receiver = request
         .receiver
         .as_ref()

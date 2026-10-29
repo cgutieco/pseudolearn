@@ -1,6 +1,7 @@
 use crate::effect_channel::EffectChannel;
 use pseudolearn_runtime::{
-    EffectSession, EffectTape, ExecutionIdentity, MemoryHostProvider, configure_host_authority,
+    EffectSession, EffectTape, ExecutionIdentity, MemoryHostProvider, NetworkLimits,
+    configure_host_authority, configure_network_limits,
 };
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
@@ -36,6 +37,8 @@ impl EffectInput {
         };
         configure_host_authority(&mut session, host.as_ref())
             .map_err(|error| error.code().to_owned())?;
+        let limits = network_limits(&session);
+        configure_network_limits(&mut session, limits);
         let cancel_on_effect = host
             .as_ref()
             .and_then(|host| host.get("cancel_on_awaiting_effect"))
@@ -49,6 +52,37 @@ impl EffectInput {
         let mut channel = EffectChannel::new(session, provider);
         channel.cancel_on_effect = cancel_on_effect;
         Ok(channel)
+    }
+}
+
+fn network_limits(session: &EffectSession) -> NetworkLimits {
+    let defaults = NetworkLimits::default();
+    let configured = &session.tape().identity.limits;
+    NetworkLimits {
+        body_bytes: configured
+            .get("max_http_body_bytes")
+            .copied()
+            .unwrap_or(defaults.body_bytes),
+        wire_bytes: configured
+            .get("max_http_wire_bytes")
+            .copied()
+            .unwrap_or(defaults.wire_bytes),
+        header_bytes: configured
+            .get("max_http_header_bytes")
+            .copied()
+            .unwrap_or(defaults.header_bytes),
+        headers: configured
+            .get("max_http_headers")
+            .copied()
+            .unwrap_or(defaults.headers),
+        pending: configured
+            .get("max_pending_network")
+            .copied()
+            .unwrap_or(defaults.pending),
+        timeout_nanos: configured
+            .get("max_http_timeout_nanos")
+            .copied()
+            .unwrap_or(defaults.timeout_nanos),
     }
 }
 

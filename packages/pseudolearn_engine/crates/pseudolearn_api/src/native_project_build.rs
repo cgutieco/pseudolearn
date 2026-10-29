@@ -53,5 +53,22 @@ fn merged(requested: &ExecutionLimits, manifest: &ExecutionLimits) -> ExecutionL
         micro_steps: requested.micro_steps.or(manifest.micro_steps),
         tasks: requested.tasks.or(manifest.tasks),
         channel_capacity: requested.channel_capacity.or(manifest.channel_capacity),
+        max_json_depth: requested.max_json_depth.or(manifest.max_json_depth),
+        max_http_body_bytes: requested
+            .max_http_body_bytes
+            .or(manifest.max_http_body_bytes),
+        max_http_wire_bytes: requested
+            .max_http_wire_bytes
+            .or(manifest.max_http_wire_bytes),
+        max_http_header_bytes: requested
+            .max_http_header_bytes
+            .or(manifest.max_http_header_bytes),
+        max_http_headers: requested.max_http_headers.or(manifest.max_http_headers),
+        max_pending_network: requested
+            .max_pending_network
+            .or(manifest.max_pending_network),
+        max_http_timeout_nanos: requested
+            .max_http_timeout_nanos
+            .or(manifest.max_http_timeout_nanos),
     }
 }

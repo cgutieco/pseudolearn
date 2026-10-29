@@ -25,26 +25,54 @@ fn record_operation_emits_versioned_effect_tape() {
         Some(found_tape) => found_tape,
         None => return,
     };
-    assert_eq!(unwrapped_tape.get("format").and_then(serde_json::Value::as_str), Some("pseudolearn.tape/v1"));
-    assert_eq!(unwrapped_tape.get("status").and_then(serde_json::Value::as_str), Some("reproducible"));
+    assert_eq!(
+        unwrapped_tape
+            .get("format")
+            .and_then(serde_json::Value::as_str),
+        Some("pseudolearn.tape/v1")
+    );
+    assert_eq!(
+        unwrapped_tape
+            .get("status")
+            .and_then(serde_json::Value::as_str),
+        Some("reproducible")
+    );
     let identity = unwrapped_tape.get("identity");
     assert!(identity.is_some());
-    assert!(unwrapped_tape.get("entries").and_then(serde_json::Value::as_array).is_some_and(|entries| !entries.is_empty()));
+    assert!(
+        unwrapped_tape
+            .get("entries")
+            .and_then(serde_json::Value::as_array)
+            .is_some_and(|entries| !entries.is_empty())
+    );
 }
 
 #[test]
 fn replay_rejects_adulterated_recording() -> Result<(), String> {
     let program = "Algoritmo Main\nEscribir 42;\nFinAlgoritmo\n";
     let recording = execute_record(program);
-    let mut tape = recording.pointer("/value/effect_tape").cloned().ok_or_else(|| format!("missing tape: {recording}"))?;
-    *tape.pointer_mut("/entries/0/entry_hash").ok_or("missing entry hash")? = json!("bad_hash");
+    let mut tape = recording
+        .pointer("/value/effect_tape")
+        .cloned()
+        .ok_or_else(|| format!("missing tape: {recording}"))?;
+    *tape
+        .pointer_mut("/entries/0/entry_hash")
+        .ok_or("missing entry hash")? = json!("bad_hash");
     let mut session = ApiSession::default();
     let analysis = session.call("create_analysis", &json!({"program":program}));
-    let response = session.call("start", &json!({
-        "analysis":analysis.pointer("/value/resource"), "program":program,
-        "execution_mode":"replay_from_tape", "effect_tape":tape
-    }));
-    assert_eq!(response.pointer("/failure/detail").and_then(serde_json::Value::as_str), Some("Invalid protocol: replay_corrupted_tape"));
+    let response = session.call(
+        "start",
+        &json!({
+            "analysis":analysis.pointer("/value/resource"), "program":program,
+            "execution_mode":"replay_from_tape", "effect_tape":tape
+        }),
+    );
+    assert_eq!(
+        response
+            .pointer("/failure/detail")
+            .and_then(serde_json::Value::as_str),
+        Some("Invalid protocol: replay_corrupted_tape")
+    );
     Ok(())
 }
 
@@ -52,16 +80,28 @@ fn replay_rejects_adulterated_recording() -> Result<(), String> {
 fn replay_consumes_recorded_output() -> Result<(), String> {
     let program = "Algoritmo Main\nEscribir 42;\nEscribir 7;\nFinAlgoritmo\n";
     let recording = execute_record(program);
-    let tape = recording.pointer("/value/effect_tape").cloned().ok_or_else(|| format!("missing tape: {recording}"))?;
+    let tape = recording
+        .pointer("/value/effect_tape")
+        .cloned()
+        .ok_or_else(|| format!("missing tape: {recording}"))?;
     let mut session = ApiSession::default();
     let analysis = session.call("create_analysis", &json!({"program":program}));
-    let started = session.call("start", &json!({
-        "analysis":analysis.pointer("/value/resource"), "program":program,
-        "execution_mode":"replay_from_tape", "effect_tape":tape
-    }));
-    let response = session.call("advance", &json!({"resource":started.pointer("/value/resource"),"batch_size":1000}));
+    let started = session.call(
+        "start",
+        &json!({
+            "analysis":analysis.pointer("/value/resource"), "program":program,
+            "execution_mode":"replay_from_tape", "effect_tape":tape
+        }),
+    );
+    let response = session.call(
+        "advance",
+        &json!({"resource":started.pointer("/value/resource"),"batch_size":1000}),
+    );
     assert_eq!(response.pointer("/value/output"), Some(&json!("42\n7\n")));
-    assert_eq!(response.pointer("/value/termination/kind"), Some(&json!("completed")));
+    assert_eq!(
+        response.pointer("/value/termination/kind"),
+        Some(&json!("completed"))
+    );
     Ok(())
 }
 
@@ -102,7 +142,9 @@ fn tape_value_round_trip_preserves_content() -> Result<(), String> {
 #[test]
 fn recorded_entry_hashes_chain_the_previous_hash() -> Result<(), String> {
     let recording = execute_record("Algoritmo Main\nEscribir 1;\nEscribir 2;\nFinAlgoritmo\n");
-    let value = recording.pointer("/value/effect_tape").ok_or("missing tape")?;
+    let value = recording
+        .pointer("/value/effect_tape")
+        .ok_or("missing tape")?;
     let tape = tape_from_value(value).map_err(|failure| format!("{failure:?}"))?;
     let entries = tape.entries();
     assert!(entries.len() >= 2);
@@ -152,11 +194,15 @@ fn replay_mode_rejects_identity_mismatch() {
     });
     let outcome = session.call("start", &request_payload);
     assert_eq!(
-        outcome.pointer("/failure/family").and_then(serde_json::Value::as_str),
+        outcome
+            .pointer("/failure/family")
+            .and_then(serde_json::Value::as_str),
         Some("usage")
     );
     assert_eq!(
-        outcome.pointer("/failure/detail").and_then(serde_json::Value::as_str),
+        outcome
+            .pointer("/failure/detail")
+            .and_then(serde_json::Value::as_str),
         Some("Invalid protocol: replay_identity_mismatch")
     );
 }
@@ -186,11 +232,15 @@ fn replay_mode_rejects_non_reproducible_tape() {
     });
     let outcome = session.call("start", &request_payload);
     assert_eq!(
-        outcome.pointer("/failure/family").and_then(serde_json::Value::as_str),
+        outcome
+            .pointer("/failure/family")
+            .and_then(serde_json::Value::as_str),
         Some("usage")
     );
     assert_eq!(
-        outcome.pointer("/failure/detail").and_then(serde_json::Value::as_str),
+        outcome
+            .pointer("/failure/detail")
+            .and_then(serde_json::Value::as_str),
         Some("Invalid protocol: replay_non_reproducible")
     );
 }
@@ -200,8 +250,12 @@ fn two_identical_recordings_serialize_to_identical_tapes() -> Result<(), String>
     let program = "Algoritmo Main\nEscribir 42;\nEscribir 7;\nFinAlgoritmo\n";
     let first = execute_record(program);
     let second = execute_record(program);
-    let first_tape = first.pointer("/value/effect_tape").ok_or("missing first tape")?;
-    let second_tape = second.pointer("/value/effect_tape").ok_or("missing second tape")?;
+    let first_tape = first
+        .pointer("/value/effect_tape")
+        .ok_or("missing first tape")?;
+    let second_tape = second
+        .pointer("/value/effect_tape")
+        .ok_or("missing second tape")?;
     assert_eq!(first_tape, second_tape);
     assert_eq!(first_tape.to_string(), second_tape.to_string());
     Ok(())
@@ -222,17 +276,33 @@ fn recorded_input_reads_replay_from_the_tape_without_external_input() -> Result<
         .pointer("/entries")
         .and_then(serde_json::Value::as_array)
         .map_or(0, |entries| {
-            entries.iter().filter(|entry| entry.get("operation") == Some(&json!("read"))).count()
+            entries
+                .iter()
+                .filter(|entry| entry.get("operation") == Some(&json!("read")))
+                .count()
         });
     assert_eq!(reads, 1, "{tape}");
     let mut session = ApiSession::default();
     let analysis = session.call("create_analysis", &json!({"program":program}));
-    let started = session.call("start", &json!({
-        "analysis":analysis.pointer("/value/resource"),"program":program,"profile":"es",
-        "strictness":"strict","seed":42,"execution_mode":"replay_from_tape","effect_tape":tape
-    }));
-    let response = session.call("advance", &json!({"resource":started.pointer("/value/resource"),"batch_size":1000}));
-    assert_eq!(response.pointer("/value/output"), Some(&json!("42\n")), "{response}");
-    assert_eq!(response.pointer("/value/termination/kind"), Some(&json!("completed")));
+    let started = session.call(
+        "start",
+        &json!({
+            "analysis":analysis.pointer("/value/resource"),"program":program,"profile":"es",
+            "strictness":"strict","seed":42,"execution_mode":"replay_from_tape","effect_tape":tape
+        }),
+    );
+    let response = session.call(
+        "advance",
+        &json!({"resource":started.pointer("/value/resource"),"batch_size":1000}),
+    );
+    assert_eq!(
+        response.pointer("/value/output"),
+        Some(&json!("42\n")),
+        "{response}"
+    );
+    assert_eq!(
+        response.pointer("/value/termination/kind"),
+        Some(&json!("completed"))
+    );
     Ok(())
 }

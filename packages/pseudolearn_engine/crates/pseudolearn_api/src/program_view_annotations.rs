@@ -54,7 +54,9 @@ fn attributes_for(
             .or_else(|| crate::program_view_effects::type_attributes(node, context))
             .or_else(|| crate::program_view_tasks::type_attributes(node, context))
             .unwrap_or_else(|| crate::program_view_variants::attributes(node, context.tree)),
-        NodeKind::Subprogram | NodeKind::Subroutine => crate::program_view_tasks::subroutine_attributes(node, context),
+        NodeKind::Subprogram | NodeKind::Subroutine => {
+            crate::program_view_tasks::subroutine_attributes(node, context)
+        }
         NodeKind::Output => without_newline_attribute(node, context.tree),
         NodeKind::Unary | NodeKind::Minus | NodeKind::Not => {
             unary_attribute(node, context.tree).unwrap_or_default()
@@ -64,11 +66,7 @@ fn attributes_for(
     }
 }
 
-fn postfix_attributes(
-    node: &ViewNode,
-    tree: &SyntaxTree,
-    calls: &CallNames,
-) -> Attributes {
+fn postfix_attributes(node: &ViewNode, tree: &SyntaxTree, calls: &CallNames) -> Attributes {
     let mut attributes = Attributes::new();
     let span = (node.start_byte, node.end_byte);
     if let Some(builtin) = calls.builtins.get(&span) {
@@ -190,7 +188,8 @@ fn call_names(context: &AnnotationContext<'_>) -> CallNames {
                 calls.builtins.insert(key, function.as_str());
             }
             HirExpression::Effect { operation, .. } => {
-                if let Some(identity) = crate::program_view_effects::operation_identity(*operation) {
+                if let Some(identity) = crate::program_view_effects::operation_identity(*operation)
+                {
                     calls.effects.insert(key, identity);
                 }
             }

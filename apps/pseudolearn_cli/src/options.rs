@@ -124,8 +124,9 @@ fn handle_valued_option(
             handle_output_option(raw_arguments, current_index, locale, &mut parsed.output)
         }
         "--semilla" | "--seed" | "--profundidad" | "--depth" | "--sentencias" | "--statements"
-        | "--celdas" | "--cells" | "--tareas" | "--tasks" | "--grabar-cinta" | "--record-tape" | "--reproducir-cinta"
-        | "--replay-tape" | "--conceder" | "--grant" | "--archivos" | "--files" => handle_execution_option(raw_arguments, current_index, locale, parsed),
+        | "--celdas" | "--cells" | "--tareas" | "--tasks" | "--grabar-cinta" | "--record-tape"
+        | "--reproducir-cinta" | "--replay-tape" | "--conceder" | "--grant" | "--archivos"
+        | "--files" => handle_execution_option(raw_arguments, current_index, locale, parsed),
         "--proyecto" | "--project" | "--entrada" | "--entry" => {
             handle_project_option(raw_arguments, current_index, locale, parsed)
         }

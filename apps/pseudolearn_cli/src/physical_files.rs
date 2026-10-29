@@ -1,8 +1,6 @@
 use crate::physical_error::{HostError, committed};
 use crate::physical_host::PhysicalHost;
-use crate::physical_request::{
-    Argument, READ, Request, WRITE, checked_path, mode_rights,
-};
+use crate::physical_request::{Argument, READ, Request, WRITE, checked_path, mode_rights};
 use cap_std::fs::{Dir, File, OpenOptions};
 use serde_json::{Value, json};
 use std::io::{Read, Seek, SeekFrom, Write};
@@ -33,7 +31,9 @@ impl PhysicalHost {
         if rights & !granted != 0 {
             return Err(HostError::PERMISSION_DENIED);
         }
-        let clone = directory.try_clone().map_err(|error| HostError::from_io(&error))?;
+        let clone = directory
+            .try_clone()
+            .map_err(|error| HostError::from_io(&error))?;
         self.register(request, rights, Resource::Directory(clone))
     }
 
@@ -41,7 +41,9 @@ impl PhysicalHost {
         match request.operation.as_str() {
             "file_open" => self.open_file(request),
             "directory_derive" => self.derive_directory(request),
-            "file_read_bytes" => self.read_all(request).map(|bytes| committed("bytes", json!(bytes))),
+            "file_read_bytes" => self
+                .read_all(request)
+                .map(|bytes| committed("bytes", json!(bytes))),
             "file_read_text" => self.read_text(request),
             "file_write_bytes" | "file_write_text" => self.write_all(request),
             "file_close" | "directory_close" => self.close(request),

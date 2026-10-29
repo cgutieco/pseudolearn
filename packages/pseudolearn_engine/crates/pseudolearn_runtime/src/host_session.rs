@@ -23,6 +23,10 @@ pub fn configure_host_authority(
     Ok(())
 }
 
+pub fn configure_network_limits(session: &mut EffectSession, limits: crate::NetworkLimits) {
+    session.authority.network_limits = limits;
+}
+
 pub fn begin_host_effect(
     session: &mut EffectSession,
     operation: &EffectOperation,
@@ -68,10 +72,9 @@ pub fn resolve_host_effect(
     if pending.request.effect_seq != sequence {
         return Err(ReplayError::Divergence);
     }
-    pending.phase.resolve()?;
-    let operation = pseudolearn_abi::effect_operation(&pending.request.operation)
-        .ok_or(ReplayError::Divergence)?;
+    let operation = resolved_operation(&pending)?;
     let reply = pending.rejected.map(HostReply::failure).unwrap_or(reply);
+    let reply = normalize_network_reply(&pending.request, reply);
     crate::host_validation::reply(operation, &pending.request, &reply)?;
     let bytes = serde_json::to_vec(&reply).map_err(|_| ReplayError::CorruptedTape)?;
     let arguments = request_arguments(&pending.request)?;
@@ -94,6 +97,26 @@ pub fn resolve_host_effect(
     settle_authority(session, &pending.request, &reply);
     session.pending = None;
     Ok(reply)
+}
+
+fn normalize_network_reply(request: &HostEffectRequest, reply: HostReply) -> HostReply {
+    let Some(HostValue::HttpRequest(http_request)) = request.arguments.first() else {
+        return reply;
+    };
+    let HostReply::Committed(HostValue::HttpResponse(response)) = &reply else {
+        return reply;
+    };
+    match crate::network_limits::validate_response(response, http_request) {
+        Ok(()) => reply,
+        Err(error) => HostReply::failure(error),
+    }
+}
+
+fn resolved_operation(
+    pending: &PendingHostEffect,
+) -> Result<&'static EffectOperation, ReplayError> {
+    pending.phase.resolve()?;
+    pseudolearn_abi::effect_operation(&pending.request.operation).ok_or(ReplayError::Divergence)
 }
 
 pub fn perform_host_effect(

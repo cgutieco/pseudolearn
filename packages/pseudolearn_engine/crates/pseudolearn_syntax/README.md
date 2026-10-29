@@ -87,6 +87,9 @@ etiqueta de `Segun` que empieza por identificador (`Color.Rojo:`) cierra el cuer
 construcciones de registro y el acceso a miembros de enumerado no tienen sintaxis propia: son llamada y punto, que
 resuelve semantic. Las palabras nuevas son reservadas y se registran como aperturas de perfil.
 
+El acceso a `Codigo`/`code` de los errores de entrada/salida y JSON admite el lexema reservado después del punto;
+el selector se convierte en un nombre de miembro para que semantic resuelva el campo del tipo correcto.
+
 Los vínculos locales usan un analizador distinto de los campos: `Definir [Mutable] nombre Como tipo <- expresión` exige un inicializador; los campos conservan listas y ausencia de inicializador. Se conserva `Declaration` en ambos árboles para no duplicar la extracción de campos.
 
 Los tipos incorporados aceptan argumentos concretos entre ángulos con la misma cota de anidación del parser. `variant_parser` reconoce construcciones, patrones de carga útil, propagación y descarte; los genéricos de usuario no reservan palabras nuevas. La construcción y el patrón tienen nodos distintos: el patrón solo declara un nombre y no evalúa una llamada. Una rama de variante contiene un patrón; De Otro Modo es el comodín.

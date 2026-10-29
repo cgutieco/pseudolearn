@@ -1791,6 +1791,30 @@
             "max_json_depth": {
               "type": "integer",
               "minimum": 1
+            },
+            "max_http_body_bytes": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "max_http_wire_bytes": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "max_http_header_bytes": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "max_http_headers": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "max_pending_network": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "max_http_timeout_nanos": {
+              "type": "integer",
+              "minimum": 1
             }
           },
           "additionalProperties": false

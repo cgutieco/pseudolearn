@@ -19,6 +19,11 @@ fn request(method: HttpMethod, url: &str) -> HostEffectRequest {
             body: None,
             response_limit: None,
             timeout_nanos: None,
+            effective_response_limit: None,
+            effective_timeout_nanos: None,
+            wire_limit: None,
+            header_bytes_limit: None,
+            headers_limit: None,
         })],
         result_capability: None,
         source_node_id: 1,
@@ -151,65 +156,110 @@ fn records_and_replays_http_error_responses_without_the_host() -> Result<(), Str
 
 #[test]
 fn executes_http_corpus_cases_with_the_memory_host() -> Result<(), String> {
-    let corpus = include_str!("../../../../pseudolearn_spec/specifications/lib/lib.http.md");
-    for block in corpus.split("```caso\n").skip(1) {
-        let body = block.split("\n```").next().ok_or("missing case body")?;
-        let case: serde_json::Value =
-            serde_json::from_str(body).map_err(|error| error.to_string())?;
-        let case_id = case
-            .get("id")
-            .and_then(serde_json::Value::as_str)
-            .ok_or("missing HTTP case identity")?;
-        let program = case
-            .pointer("/programas/es")
-            .and_then(serde_json::Value::as_str)
-            .ok_or("missing Spanish HTTP program")?;
-        compile_source_to_ir(program, "es", "strict")
-            .map_err(|diagnostics| format!("case {case_id} lowering failed: {diagnostics:?}"))?;
-        let mut api = ApiSession::default();
-        let result = api.call(
-            "record",
-            &json!({
-                "request": {
-                    "program": program,
-                    "profile": "es",
-                    "strictness": "strict",
-                    "host": case.get("anfitrion").cloned().ok_or("missing HTTP host")?
-                },
-                "options": {"capture_states": false}
-            }),
-        );
-        let value = result
-            .get("value")
-            .ok_or_else(|| format!("case {case_id} failed: {result}"))?;
-        let expected = case
-            .pointer("/espera/salida")
-            .and_then(serde_json::Value::as_str)
-            .ok_or("missing expected output")?
-            .replace("{{lexema:booleanFalse}}", "Falso")
-            .replace("{{lexema:booleanTrue}}", "Verdadero");
+    for (corpus, only_rule) in [
+        (
+            include_str!("../../../../pseudolearn_spec/specifications/lib/lib.http.md"),
+            None,
+        ),
+        (
+            include_str!("../../../../pseudolearn_spec/specifications/eng/eng.limits.md"),
+            Some("R13"),
+        ),
+    ] {
+        for block in corpus.split("```caso\n").skip(1) {
+            let body = block.split("\n```").next().ok_or("missing case body")?;
+            let case: serde_json::Value =
+                serde_json::from_str(body).map_err(|error| error.to_string())?;
+            verify_http_corpus_case(&case, only_rule)?;
+        }
+    }
+    Ok(())
+}
+
+fn verify_http_corpus_case(case: &Value, only_rule: Option<&str>) -> Result<(), String> {
+    if only_rule.is_some_and(|rule| case.get("regla").and_then(Value::as_str) != Some(rule))
+        || case.get("anfitrion").is_none()
+    {
+        return Ok(());
+    }
+    let case_id = case
+        .get("id")
+        .and_then(Value::as_str)
+        .ok_or("missing HTTP case identity")?;
+    for profile in ["es", "en"] {
+        let value = execute_http_case(case, case_id, profile)?;
+        let expected = expected_http_output(case, profile)?;
         assert_eq!(
             value.get("output"),
             Some(&json!(expected)),
-            "{case_id}: {value}"
+            "{case_id} {profile}: {value}"
         );
         assert_eq!(
             value.pointer("/termination/kind"),
             Some(&json!("completed"))
         );
-        if let Some(expected_calls) = case.pointer("/espera/anfitrion_observado/llamadas") {
-            assert_eq!(
-                value.pointer("/host_observation/calls"),
-                Some(expected_calls)
-            );
-        }
-        if ["C10", "C12"].contains(&case_id) {
-            let expected_effects = case
-                .pointer("/espera/anfitrion_observado/efectos")
-                .and_then(Value::as_array)
-                .ok_or("missing concurrent HTTP effects")?;
-            assert_http_effects(expected_effects, value)?;
-        }
+        assert_http_observation(case, case_id, &value)?;
+    }
+    Ok(())
+}
+
+fn execute_http_case(case: &Value, case_id: &str, profile: &str) -> Result<Value, String> {
+    let program = case
+        .pointer(&format!("/programas/{profile}"))
+        .and_then(Value::as_str)
+        .ok_or("missing HTTP program")?;
+    compile_source_to_ir(program, profile, "strict")
+        .map_err(|diagnostics| format!("case {case_id} lowering failed: {diagnostics:?}"))?;
+    let host = case.get("anfitrion").cloned().ok_or("missing HTTP host")?;
+    let mut api = ApiSession::default();
+    let result = api.call(
+        "record",
+        &json!({
+            "request": {
+                "program": program,
+                "profile": profile,
+                "strictness": "strict",
+                "limits": case.get("limites").cloned().unwrap_or_else(|| json!({})),
+                "host": host
+            },
+            "options": {"capture_states": false}
+        }),
+    );
+    result
+        .get("value")
+        .cloned()
+        .ok_or_else(|| format!("case {case_id} failed: {result}"))
+}
+
+fn expected_http_output(case: &Value, profile: &str) -> Result<String, String> {
+    let (false_lexeme, true_lexeme) = if profile == "es" {
+        ("Falso", "Verdadero")
+    } else {
+        ("false", "true")
+    };
+    case.pointer("/espera/salida")
+        .and_then(Value::as_str)
+        .map(|output| {
+            output
+                .replace("{{lexema:booleanFalse}}", false_lexeme)
+                .replace("{{lexema:booleanTrue}}", true_lexeme)
+        })
+        .ok_or_else(|| "missing expected output".to_owned())
+}
+
+fn assert_http_observation(case: &Value, case_id: &str, value: &Value) -> Result<(), String> {
+    if let Some(expected_calls) = case.pointer("/espera/anfitrion_observado/llamadas") {
+        assert_eq!(
+            value.pointer("/host_observation/calls"),
+            Some(expected_calls)
+        );
+    }
+    if ["C10", "C12"].contains(&case_id) {
+        let expected_effects = case
+            .pointer("/espera/anfitrion_observado/efectos")
+            .and_then(Value::as_array)
+            .ok_or("missing concurrent HTTP effects")?;
+        assert_http_effects(expected_effects, value)?;
     }
     Ok(())
 }

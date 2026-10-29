@@ -140,7 +140,10 @@ fn dependency(
 pub(crate) fn requests(
     checker: &mut Checker,
     root: &Table,
-) -> (BTreeMap<LimitName, LimitRequest>, Vec<Field<PermissionName>>) {
+) -> (
+    BTreeMap<LimitName, LimitRequest>,
+    Vec<Field<PermissionName>>,
+) {
     let Some(entry) = root.entries.get("requests") else {
         return (BTreeMap::new(), Vec::new());
     };

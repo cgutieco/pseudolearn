@@ -25,6 +25,9 @@ impl ExecutionResource {
             self.settle_cancelled_suspension();
             return Ok(false);
         }
+        if self.reject_excess_network_request(operation, &pending, source)? {
+            return Ok(true);
+        }
         if self.detached_effects && self.execution_mode.allows_external_host() {
             let request = self.begin_pending(operation, &pending, source)?;
             pending.effect_seq = request.effect_seq;
@@ -88,10 +91,12 @@ impl ExecutionResource {
                 requests
                     .iter()
                     .map(|request| {
-                        let sequence = self
-                            .effects
-                            .reserved_sequence(request.effect_seq)
-                            .or_else(|| self.pending_host.as_ref().map(|pending| pending.effect_seq));
+                        let sequence =
+                            self.effects
+                                .reserved_sequence(request.effect_seq)
+                                .or_else(|| {
+                                    self.pending_host.as_ref().map(|pending| pending.effect_seq)
+                                });
                         serde_json::json!({
                             "effect_seq": sequence,
                             "task_id": request.task_id,
@@ -109,6 +114,52 @@ impl ExecutionResource {
         u64::try_from(self.effects.tape().entries().len())
             .unwrap_or(u64::MAX)
             .saturating_add(1)
+    }
+
+    fn pending_network_limit_exceeded(&mut self, pending: &PendingEffectRequest) -> bool {
+        if pending.operation != "network_send" {
+            return false;
+        }
+        self.mark_excess_network_requests();
+        self.limit_rejected_network.remove(&pending.effect_seq)
+    }
+
+    fn reject_excess_network_request(
+        &mut self,
+        operation: &pseudolearn_abi::EffectOperation,
+        pending: &PendingEffectRequest,
+        source: u32,
+    ) -> Result<bool, ApiError> {
+        if !self.pending_network_limit_exceeded(pending) {
+            return Ok(false);
+        }
+        let request = self.begin_pending(operation, pending, source)?;
+        let reply = pseudolearn_runtime::resolve_host_effect(
+            &mut self.effects,
+            request.effect_seq,
+            pseudolearn_runtime::HostReply::failure(pseudolearn_runtime::IoError::from_kind(
+                pseudolearn_abi::IoErrorKind::LimitExceeded,
+            )),
+        )
+        .map_err(crate::tape_wire::replay_error_to_api)?;
+        self.machine.supply_effect_result(reply);
+        self.completing_effect = true;
+        Ok(true)
+    }
+
+    fn mark_excess_network_requests(&mut self) {
+        let maximum = self.network_limits.pending;
+        let requests = self
+            .machine
+            .pending_effect_requests()
+            .into_iter()
+            .filter(|request| request.operation == "network_send");
+        for (index, request) in requests.enumerate() {
+            let count = u64::try_from(index).unwrap_or(u64::MAX).saturating_add(1);
+            if pseudolearn_runtime::pending_limit_exceeded(count, maximum) {
+                self.limit_rejected_network.insert(request.effect_seq);
+            }
+        }
     }
 
     fn begin_pending(

@@ -217,3 +217,37 @@ fn maps_task_and_channel_capacity_limits_to_the_wire_names() -> Result<(), Strin
     );
     Ok(())
 }
+
+#[test]
+fn maps_json_and_network_limits_to_the_execution_request() -> Result<(), String> {
+    let built = request(
+        json!({
+            "operacion": "execute",
+            "limites": {
+                "max_json_depth": 12,
+                "max_http_body_bytes": 1024,
+                "max_http_wire_bytes": 2048,
+                "max_http_header_bytes": 4096,
+                "max_http_headers": 32,
+                "max_pending_network": 3,
+                "max_http_timeout_nanos": 5000
+            }
+        }),
+        json!({}),
+    )?;
+    assert_eq!(
+        built.get("limits"),
+        Some(&json!({
+            "micro_steps": 100_000,
+            "depth": 1000,
+            "max_json_depth": 12,
+            "max_http_body_bytes": 1024,
+            "max_http_wire_bytes": 2048,
+            "max_http_header_bytes": 4096,
+            "max_http_headers": 32,
+            "max_pending_network": 3,
+            "max_http_timeout_nanos": 5000
+        }))
+    );
+    Ok(())
+}

@@ -154,7 +154,20 @@ fn payload(class: TraceClass, value: Option<&Value>) -> Result<Option<EventPaylo
     ordinary_payload(class, value)
 }
 
-fn ordinary_payload(class: TraceClass, value: Option<&Value>) -> Result<Option<EventPayload>, ApiError> {
+fn ordinary_payload(
+    class: TraceClass,
+    value: Option<&Value>,
+) -> Result<Option<EventPayload>, ApiError> {
+    if matches!(
+        class,
+        TraceClass::Call
+            | TraceClass::Return
+            | TraceClass::Output
+            | TraceClass::InputReceived
+            | TraceClass::Failure
+    ) {
+        return text_payload(class, value);
+    }
     let text = |name| {
         value
             .and_then(|value| value.get(name))
@@ -175,23 +188,34 @@ fn ordinary_payload(class: TraceClass, value: Option<&Value>) -> Result<Option<E
                 .and_then(|value| value.get("indice"))
                 .and_then(Value::as_u64),
         }),
-        TraceClass::Call => Some(EventPayload::Call {
-            nombre: text("nombre")?,
-        }),
-        TraceClass::Return => Some(EventPayload::Return {
-            nombre: text("nombre")?,
-        }),
-        TraceClass::Output => Some(EventPayload::Output {
-            texto: text("texto")?,
-        }),
-        TraceClass::InputReceived => Some(EventPayload::InputReceived {
-            texto: text("texto")?,
-        }),
-        TraceClass::Failure => Some(EventPayload::Failure {
-            codigo: text("codigo")?,
-        }),
         _ => None,
     })
+}
+
+fn text_payload(
+    class: TraceClass,
+    value: Option<&Value>,
+) -> Result<Option<EventPayload>, ApiError> {
+    let field = match class {
+        TraceClass::Call | TraceClass::Return => "nombre",
+        TraceClass::Output | TraceClass::InputReceived => "texto",
+        TraceClass::Failure => "codigo",
+        _ => return Ok(None),
+    };
+    let text = value
+        .and_then(|value| value.get(field))
+        .and_then(Value::as_str)
+        .map(str::to_owned)
+        .ok_or_else(|| usage("invalid event payload"))?;
+    let payload = match class {
+        TraceClass::Call => EventPayload::Call { nombre: text },
+        TraceClass::Return => EventPayload::Return { nombre: text },
+        TraceClass::Output => EventPayload::Output { texto: text },
+        TraceClass::InputReceived => EventPayload::InputReceived { texto: text },
+        TraceClass::Failure => EventPayload::Failure { codigo: text },
+        _ => return Ok(None),
+    };
+    Ok(Some(payload))
 }
 
 pub(super) fn serialization_failure(error: serde_json::Error) -> ApiError {

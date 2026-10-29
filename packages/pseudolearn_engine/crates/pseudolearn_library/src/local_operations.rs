@@ -2,30 +2,11 @@
 
 use crate::{bytes_operations, json_build, json_parse, json_query, json_text};
 use crate::{text_replace, text_search, text_split};
-use pseudolearn_runtime::{EffectOperation, Handle, Heap, HostValue, MemoryError};
+use pseudolearn_runtime::{HostValue, MemoryError};
 
-pub fn local_operation(
-    heap: &Heap,
-    receiver: Handle,
-    operation: &EffectOperation,
-    arguments: &[HostValue],
-) -> Result<Option<HostValue>, MemoryError> {
-    let receiver_value = operation
-        .receiver
-        .map(|kind| pseudolearn_runtime::decode_host_value(heap, kind, u64::from(receiver.0)))
-        .transpose()?;
-    match operation.family {
-        "text" => text_operation(operation.identity, arguments),
-        "bytes" => bytes_operation(receiver_value.as_ref(), operation.identity, arguments),
-        "json" => json_operation(receiver_value.as_ref(), operation.identity, arguments),
-        "network" => crate::http_operations::http_operation(
-            receiver_value.as_ref(),
-            operation.identity,
-            arguments,
-        ),
-        _ => Ok(None),
-    }
-}
+#[path = "local_operation_dispatch.rs"]
+mod local_operation_dispatch;
+pub use local_operation_dispatch::{LocalOperationRequest, local_operation};
 
 fn text_operation(
     identity: &str,
@@ -64,9 +45,10 @@ fn json_operation(
     receiver: Option<&HostValue>,
     identity: &str,
     arguments: &[HostValue],
+    maximum_json_depth: usize,
 ) -> Result<Option<HostValue>, MemoryError> {
     let value = match identity {
-        "json_parse" => Some(parse_json(arguments)?),
+        "json_parse" => Some(parse_json(arguments, maximum_json_depth)?),
         "json_text" => Some(serialize_json(arguments)?),
         "json_null" | "json_boolean" | "json_integer" | "json_real" | "json_string"
         | "json_array" | "json_object" => Some(json_build::construct(identity, arguments)?),
@@ -86,11 +68,14 @@ fn json_operation(
     Ok(value)
 }
 
-fn parse_json(arguments: &[HostValue]) -> Result<HostValue, MemoryError> {
+fn parse_json(
+    arguments: &[HostValue],
+    maximum_json_depth: usize,
+) -> Result<HostValue, MemoryError> {
     let [HostValue::Text(text)] = arguments else {
         return Err(MemoryError::Internal);
     };
-    json_parse::parse_json(text, 64).map(HostValue::JsonResult)
+    json_parse::parse_json(text, maximum_json_depth).map(HostValue::JsonResult)
 }
 
 fn serialize_json(arguments: &[HostValue]) -> Result<HostValue, MemoryError> {

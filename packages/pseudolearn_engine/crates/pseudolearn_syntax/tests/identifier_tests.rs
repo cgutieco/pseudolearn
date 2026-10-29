@@ -5,8 +5,7 @@ use pseudolearn_syntax::{TokenKind, parse_source, reprint_lossless};
 
 #[test]
 fn accepts_normalized_spanish_identifiers_and_preserves_original_ranges() -> Result<(), String> {
-    let program =
-        "Algoritmo P\nDefinir Mutable año Como Entero <- 0;\nan\u{0303}o <- 5;\nEscribir año;\nFinAlgoritmo\n";
+    let program = "Algoritmo P\nDefinir Mutable año Como Entero <- 0;\nan\u{0303}o <- 5;\nEscribir año;\nFinAlgoritmo\n";
     let source = SourceText::new(program.to_owned());
     let (tree, diagnostics) = parse_source(&source, Profile::Spanish);
     assert!(diagnostics.is_empty());

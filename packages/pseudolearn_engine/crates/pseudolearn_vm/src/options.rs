@@ -25,6 +25,7 @@ pub struct RunOptions {
     pub cancelled: Option<Arc<AtomicBool>>,
     pub task_limit: u64,
     pub channel_capacity_limit: usize,
+    pub max_json_depth: usize,
 }
 
 impl Default for RunOptions {
@@ -42,6 +43,7 @@ impl Default for RunOptions {
             cancelled: None,
             task_limit: pseudolearn_runtime::DEFAULT_TASK_LIMIT,
             channel_capacity_limit: 65_536,
+            max_json_depth: pseudolearn_runtime::DEFAULT_JSON_DEPTH,
         }
     }
 }
@@ -59,5 +61,6 @@ impl PartialEq for RunOptions {
             && self.cancel_at_poll == other.cancel_at_poll
             && self.task_limit == other.task_limit
             && self.channel_capacity_limit == other.channel_capacity_limit
+            && self.max_json_depth == other.max_json_depth
     }
 }

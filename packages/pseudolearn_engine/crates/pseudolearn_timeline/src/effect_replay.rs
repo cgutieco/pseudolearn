@@ -44,7 +44,10 @@ pub fn replay_machine_with_effects<'program>(
     Ok(machine)
 }
 
-fn history_effects(image: &MachineImage, tape: &EffectTape) -> Result<HistoryEffects, TimelineError> {
+fn history_effects(
+    image: &MachineImage,
+    tape: &EffectTape,
+) -> Result<HistoryEffects, TimelineError> {
     let checkpoint = image
         .state
         .effect_checkpoint

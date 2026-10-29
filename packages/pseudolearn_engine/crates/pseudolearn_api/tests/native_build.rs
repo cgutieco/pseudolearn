@@ -54,6 +54,13 @@ fn explicit_limits_and_flexible_strictness_are_accepted() -> Check {
         micro_steps: None,
         tasks: None,
         channel_capacity: None,
+        max_json_depth: None,
+        max_http_body_bytes: None,
+        max_http_wire_bytes: None,
+        max_http_header_bytes: None,
+        max_http_headers: None,
+        max_pending_network: None,
+        max_http_timeout_nanos: None,
     };
     assert!(build_native_object(&custom).is_ok());
     Ok(())
@@ -122,9 +129,16 @@ fn a_program_with_tasks_is_rejected_with_an_explicit_native_diagnostic() -> Chec
     let program = "SubProceso Suspendible Work()\nEscribir 1;\nFinSubProceso\nAlgoritmo P\nTareas\nLanzar Work();\nFinTareas\nFinAlgoritmo\n";
     match build_native_object(&request(program)) {
         Err(NativeBuildFailure::Rejected(diagnostics)) => {
-            let codes: Vec<&str> = diagnostics.iter().map(|diagnostic| diagnostic.code.as_str()).collect();
+            let codes: Vec<&str> = diagnostics
+                .iter()
+                .map(|diagnostic| diagnostic.code.as_str())
+                .collect();
             assert_eq!(codes, ["nativeTasksUnsupported"]);
-            assert!(diagnostics.iter().all(|diagnostic| !diagnostic.message.is_empty()));
+            assert!(
+                diagnostics
+                    .iter()
+                    .all(|diagnostic| !diagnostic.message.is_empty())
+            );
             Ok(())
         }
         other => Err(failure(other.map(|object| object.bytes.len()))),
@@ -136,7 +150,12 @@ fn a_program_with_channels_but_no_task_scope_is_rejected_too() -> Check {
     let program = "Algoritmo P\nDefinir stream Como Canal<Entero> <- Canal(1);\nFinAlgoritmo\n";
     match build_native_object(&request(program)) {
         Err(NativeBuildFailure::Rejected(diagnostics)) => {
-            assert_eq!(diagnostics.first().map(|diagnostic| diagnostic.code.as_str()), Some("nativeTasksUnsupported"));
+            assert_eq!(
+                diagnostics
+                    .first()
+                    .map(|diagnostic| diagnostic.code.as_str()),
+                Some("nativeTasksUnsupported")
+            );
             Ok(())
         }
         other => Err(failure(other.map(|object| object.bytes.len()))),

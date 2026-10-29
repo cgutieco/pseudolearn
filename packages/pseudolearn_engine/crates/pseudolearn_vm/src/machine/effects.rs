@@ -108,8 +108,14 @@ impl Machine<'_> {
     ) -> Result<Flow, Fault> {
         let receiver = pseudolearn_runtime::Handle(self.reference(site.capability)?);
         let reply =
-            match pseudolearn_library::local_operation(&self.heap, receiver, operation, arguments)
-                .map_err(super::memory::memory_fault)?
+            match pseudolearn_library::local_operation(pseudolearn_library::LocalOperationRequest {
+                heap: &self.heap,
+                receiver,
+                operation,
+                arguments,
+                maximum_json_depth: self.options.max_json_depth,
+            })
+            .map_err(super::memory::memory_fault)?
             {
                 Some(value) => pseudolearn_runtime::HostReply::Committed(value),
                 None => {

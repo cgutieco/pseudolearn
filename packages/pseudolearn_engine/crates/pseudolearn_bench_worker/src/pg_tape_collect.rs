@@ -20,7 +20,8 @@ pub fn collect(arguments: &[String]) -> Result<(), String> {
         return Err(format!("Refusing to overwrite {}", path.display()));
     }
     std::fs::create_dir_all(directory).map_err(|error| error.to_string())?;
-    let document = json!({"process": process, "machine": machine, "loads": records, "linear": linear});
+    let document =
+        json!({"process": process, "machine": machine, "loads": records, "linear": linear});
     std::fs::write(&path, document.to_string()).map_err(|error| error.to_string())?;
     if linear.values().all(|holds| *holds) {
         Ok(())
@@ -40,10 +41,16 @@ pub fn measure(load: &EffectLoad) -> Result<Value, String> {
     let response = execute_prepared(&program, &request);
     let nanoseconds = u64::try_from(start.elapsed().as_nanos()).unwrap_or(u64::MAX);
     if response.termination.get("kind").and_then(Value::as_str) != Some("completed") {
-        return Err(format!("{} {}: {:?}", load.name, load.count, response.termination));
+        return Err(format!(
+            "{} {}: {:?}",
+            load.name, load.count, response.termination
+        ));
     }
     let tape = response.effect_tape.ok_or("Missing effect tape")?;
-    let entries = tape.get("entries").and_then(Value::as_array).map_or(0, Vec::len);
+    let entries = tape
+        .get("entries")
+        .and_then(Value::as_array)
+        .map_or(0, Vec::len);
     let tape_bytes = u64::try_from(tape.to_string().len()).unwrap_or(u64::MAX);
     let reproducible = tape.get("status").and_then(Value::as_str) == Some("reproducible");
     Ok(json!({
@@ -59,10 +66,22 @@ pub fn measure(load: &EffectLoad) -> Result<Value, String> {
 pub fn linearity(records: &[Value]) -> Result<BTreeMap<String, bool>, String> {
     let mut series: BTreeMap<String, Vec<(u64, u64)>> = BTreeMap::new();
     for record in records {
-        let kind = record.get("kind").and_then(Value::as_str).ok_or("Missing kind")?;
-        let entries = record.get("recorded_entries").and_then(Value::as_u64).ok_or("Missing entries")?;
-        let bytes = record.get("tape_bytes").and_then(Value::as_u64).ok_or("Missing bytes")?;
-        series.entry(kind.to_owned()).or_default().push((entries, bytes));
+        let kind = record
+            .get("kind")
+            .and_then(Value::as_str)
+            .ok_or("Missing kind")?;
+        let entries = record
+            .get("recorded_entries")
+            .and_then(Value::as_u64)
+            .ok_or("Missing entries")?;
+        let bytes = record
+            .get("tape_bytes")
+            .and_then(Value::as_u64)
+            .ok_or("Missing bytes")?;
+        series
+            .entry(kind.to_owned())
+            .or_default()
+            .push((entries, bytes));
     }
     Ok(series
         .into_iter()

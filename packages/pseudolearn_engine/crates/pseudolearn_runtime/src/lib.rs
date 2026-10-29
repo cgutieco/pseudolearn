@@ -117,13 +117,22 @@ pub use host_effect::{
     HttpMethod, HttpRequestValue, HttpResponseValue, JsonFailure, JsonResultValue,
 };
 pub use host_session::{
-    begin_host_effect, configure_host_authority, perform_host_effect, resolve_host_effect,
+    begin_host_effect, configure_host_authority, configure_network_limits, perform_host_effect,
+    resolve_host_effect,
+};
+pub use network_limits::{
+    DEFAULT_HTTP_BODY_BYTES, DEFAULT_HTTP_HEADER_BYTES, DEFAULT_HTTP_HEADERS,
+    DEFAULT_HTTP_TIMEOUT_NANOS, DEFAULT_HTTP_WIRE_BYTES, DEFAULT_JSON_DEPTH,
+    DEFAULT_PENDING_NETWORK, NetworkLimits, pending_limit_exceeded,
 };
 
 mod memory_host;
 mod memory_host_config;
 mod memory_host_files;
 mod network_headers;
+mod network_limits;
+#[cfg(test)]
+mod network_limits_tests;
 mod network_policy;
 #[cfg(test)]
 mod network_policy_tests;

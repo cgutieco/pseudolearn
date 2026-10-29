@@ -143,6 +143,7 @@ de `pseudolearn_runtime`; solo `Enviar`, `SolicitarRed`, `Limitar` y `Cerrar` pa
 La separación conserva una sola implementación de las operaciones puras para VM y AOT y evita que la
 biblioteca local adquiera autoridad de red.
 
-`ConLimiteRespuesta` y `ConTiempoMaximo` guardan valores inmutables en la petición. La biblioteca no
-interpreta ni ejecuta esos límites; su aplicación pertenece a la capa runtime y al alcance de la
-gestión de límites externos.
+`ConLimiteRespuesta` y `ConTiempoMaximo` guardan valores inmutables en la petición. El runtime aplica
+el mínimo entre cada valor positivo y el límite del anfitrión; los valores no positivos producen
+`PeticionInvalida`. La biblioteca mantiene la petición como dato y no realiza I/O ni administra el
+plazo externo.

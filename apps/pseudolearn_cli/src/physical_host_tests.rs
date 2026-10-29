@@ -33,8 +33,8 @@ fn sandbox() -> Result<Sandbox, String> {
 }
 
 fn host(sandbox: &Sandbox, rights: u8) -> Result<PhysicalHost, String> {
-    let directory =
-        Dir::open_ambient_dir(&sandbox.granted, ambient_authority()).map_err(|error| error.to_string())?;
+    let directory = Dir::open_ambient_dir(&sandbox.granted, ambient_authority())
+        .map_err(|error| error.to_string())?;
     Ok(PhysicalHost::new(Some((directory, rights))))
 }
 
@@ -52,8 +52,10 @@ fn call(
     receiver: Option<&Value>,
     (arguments, result): (Vec<Value>, Option<Value>),
 ) -> Value {
-    host.perform(&json!({"effect_seq":1,"operation":operation,"receiver":receiver,
-        "arguments":arguments,"result_capability":result,"source_node_id":1}))
+    host.perform(
+        &json!({"effect_seq":1,"operation":operation,"receiver":receiver,
+        "arguments":arguments,"result_capability":result,"source_node_id":1}),
+    )
 }
 
 fn code(reply: &Value) -> Option<&str> {
@@ -83,8 +85,16 @@ fn reads_a_file_relative_to_the_granted_directory() -> Result<(), String> {
     let space = sandbox()?;
     let mut physical = host(&space, 3)?;
     assert_eq!(open_root(&mut physical, 3)["outcome"], "committed");
-    assert_eq!(open_file(&mut physical, "a.txt", "read", 1)["outcome"], "committed");
-    let read = call(&mut physical, "file_read_text", Some(&capability(1, 1, 3)), (vec![], None));
+    assert_eq!(
+        open_file(&mut physical, "a.txt", "read", 1)["outcome"],
+        "committed"
+    );
+    let read = call(
+        &mut physical,
+        "file_read_text",
+        Some(&capability(1, 1, 3)),
+        (vec![], None),
+    );
     assert_eq!(read.pointer("/value/value"), Some(&json!("hola")));
     Ok(())
 }
@@ -94,7 +104,13 @@ fn rejects_absolute_parent_and_nul_paths() -> Result<(), String> {
     let space = sandbox()?;
     let mut physical = host(&space, 3)?;
     open_root(&mut physical, 3);
-    for path in ["/etc/passwd", "../secret.txt", "sub/../../secret.txt", "a\0b", ""] {
+    for path in [
+        "/etc/passwd",
+        "../secret.txt",
+        "sub/../../secret.txt",
+        "a\0b",
+        "",
+    ] {
         let reply = open_file(&mut physical, path, "read", 1);
         assert_eq!(code(&reply), Some("ruta_invalida"), "{path:?}");
     }
@@ -124,7 +140,10 @@ fn denies_amplification_beyond_the_granted_rights() -> Result<(), String> {
         &mut physical,
         "file_open",
         Some(&capability(0, 1, 2)),
-        (vec![text("a.txt"), text("write")], Some(capability(1, 2, 3))),
+        (
+            vec![text("a.txt"), text("write")],
+            Some(capability(1, 2, 3)),
+        ),
     );
     assert_eq!(code(&reply), Some("permiso_denegado"));
     Ok(())
@@ -146,7 +165,10 @@ fn attenuated_read_only_directory_cannot_write() -> Result<(), String> {
         &mut physical,
         "file_open",
         Some(&capability(2, 1, 2)),
-        (vec![text("b.txt"), text("write")], Some(capability(3, 2, 3))),
+        (
+            vec![text("b.txt"), text("write")],
+            Some(capability(3, 2, 3)),
+        ),
     );
     assert_eq!(code(&write), Some("permiso_denegado"));
     let read = call(
@@ -165,9 +187,19 @@ fn use_after_close_reports_a_closed_capability() -> Result<(), String> {
     let mut physical = host(&space, 3)?;
     open_root(&mut physical, 3);
     open_file(&mut physical, "a.txt", "read", 1);
-    let closed = call(&mut physical, "file_close", Some(&capability(1, 1, 3)), (vec![], None));
+    let closed = call(
+        &mut physical,
+        "file_close",
+        Some(&capability(1, 1, 3)),
+        (vec![], None),
+    );
     assert_eq!(closed["outcome"], "committed");
-    let read = call(&mut physical, "file_read_text", Some(&capability(1, 1, 3)), (vec![], None));
+    let read = call(
+        &mut physical,
+        "file_read_text",
+        Some(&capability(1, 1, 3)),
+        (vec![], None),
+    );
     assert_eq!(code(&read), Some("capacidad_cerrada"));
     Ok(())
 }
@@ -177,7 +209,10 @@ fn write_replaces_content_on_disk_and_missing_file_is_not_found() -> Result<(), 
     let space = sandbox()?;
     let mut physical = host(&space, 3)?;
     open_root(&mut physical, 3);
-    assert_eq!(open_file(&mut physical, "nuevo.txt", "write", 1)["outcome"], "committed");
+    assert_eq!(
+        open_file(&mut physical, "nuevo.txt", "write", 1)["outcome"],
+        "committed"
+    );
     let written = call(
         &mut physical,
         "file_write_text",
@@ -185,7 +220,8 @@ fn write_replaces_content_on_disk_and_missing_file_is_not_found() -> Result<(), 
         (vec![text("contenido")], None),
     );
     assert_eq!(written.pointer("/value/value"), Some(&json!(9)));
-    let on_disk = std::fs::read_to_string(space.granted.join("nuevo.txt")).map_err(|error| error.to_string())?;
+    let on_disk = std::fs::read_to_string(space.granted.join("nuevo.txt"))
+        .map_err(|error| error.to_string())?;
     assert_eq!(on_disk, "contenido");
     let missing = open_file(&mut physical, "falta.txt", "read", 2);
     assert_eq!(code(&missing), Some("no_encontrado"));

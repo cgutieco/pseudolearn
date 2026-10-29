@@ -1,7 +1,7 @@
 use crate::class_layout::ClassDescriptor;
 use crate::config::{AotConfig, AotStreams};
-use crate::effect_channel::EffectChannel;
 use crate::context::{AotRuntimeContext, STATUS_CONTINUE, STATUS_LIMIT};
+use crate::effect_channel::EffectChannel;
 use crate::metadata::{ExecutableMetadata, ExecutableSettings};
 use crate::process_report::diagnostic_report;
 use crate::session::AotSession;

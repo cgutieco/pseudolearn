@@ -20,10 +20,10 @@ mod views;
 pub use checkpoint::Checkpoint;
 pub use effect_tape::{EffectTape, ExecutionIdentity, TAPE_SCHEMA_V1, TapeEntry};
 pub use error::TimelineError;
-pub use tape_privacy::{DEFAULT_MAX_TAPE_BYTES, SecretHandle, TapeBudget};
 pub use replay::{replay_machine_to_event, replay_to_event};
 pub use scheduler::{CostScheduler, SchedulerOptions};
 pub use store::{CaptureCost, CheckpointStore, StoreBudget, StoreStats};
+pub use tape_privacy::{DEFAULT_MAX_TAPE_BYTES, SecretHandle, TapeBudget};
 pub use tape_replay::{ExecutionMode, ReplayError, TapeReplayProvider};
 pub use timeline::{
     ArraySliceRange, ExecutionTimeline, timeline_checkpoints_count, timeline_horizon,

@@ -32,8 +32,8 @@ mod project_options;
 mod project_report;
 mod project_session;
 mod run_command;
-mod tape_files;
 mod runtime_archive;
+mod tape_files;
 mod trace_output;
 mod translate_command;
 

@@ -83,7 +83,10 @@ fn index(state: &mut ParserState<'_>, indexed: bool) -> Result<(), ()> {
 
 fn member(state: &mut ParserState<'_>) -> Result<(), ()> {
     state.advance();
-    if state.kind() == TokenKind::Keyword(KeywordKind::Constructor) {
+    if matches!(
+        state.kind(),
+        TokenKind::Keyword(KeywordKind::Constructor | KeywordKind::JsonErrorCodeField)
+    ) {
         let start = state.token();
         let marker = state.nodes.len();
         state.advance();

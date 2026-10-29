@@ -34,6 +34,11 @@ fn request_new(arguments: &[HostValue]) -> Result<HostValue, MemoryError> {
         body: None,
         response_limit: None,
         timeout_nanos: None,
+        effective_response_limit: None,
+        effective_timeout_nanos: None,
+        wire_limit: None,
+        header_bytes_limit: None,
+        headers_limit: None,
     }))
 }
 

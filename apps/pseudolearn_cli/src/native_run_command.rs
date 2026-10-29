@@ -9,9 +9,11 @@ pub(crate) fn execute_native(
     mut request: ExecuteRequest,
 ) -> Result<i32, CliError> {
     if options.execution.trace {
-        return Err(CliError::Usage(
-            messages::invalid_option_value(&options.interface_language, "--native", "--trace"),
-        ));
+        return Err(CliError::Usage(messages::invalid_option_value(
+            &options.interface_language,
+            "--native",
+            "--trace",
+        )));
     }
     request.inputs = read_input_lines()?;
     let mut cache = ExecutableCache::create().map_err(operational)?;
@@ -22,7 +24,10 @@ pub(crate) fn execute_native(
         crate::tape_files::persist(target, &document)?;
     }
     Ok(i32::from(
-        document.pointer("/termination/kind").and_then(Value::as_str) != Some("completed"),
+        document
+            .pointer("/termination/kind")
+            .and_then(Value::as_str)
+            != Some("completed"),
     ))
 }
 
@@ -47,7 +52,9 @@ fn present(
 
 fn read_input_lines() -> Result<Vec<String>, CliError> {
     let mut text = String::new();
-    std::io::stdin().read_to_string(&mut text).map_err(operational)?;
+    std::io::stdin()
+        .read_to_string(&mut text)
+        .map_err(operational)?;
     Ok(text.lines().map(str::to_owned).collect())
 }
 

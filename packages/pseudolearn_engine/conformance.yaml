@@ -2037,7 +2037,13 @@
       "regla": "ENG.LIMITS@1.0.0#R12",
       "verificacion": "crates/pseudolearn_library/src/json_parse_tests.rs",
       "estado": "pendiente",
-      "resuelve_en": "PG-5.03"
+      "resuelve_en": "PG-5.03.07"
+    },
+    {
+      "regla": "ENG.LIMITS@1.0.0#R13",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-5.03.07"
     },
     {
       "regla": "LIB.MODEL@1.0.0#M1",
@@ -2159,6 +2165,12 @@
       "verificacion": "crates/pseudolearn_api/tests/fake_host_http_tests.rs",
       "estado": "pendiente",
       "resuelve_en": "P6"
+    },
+    {
+      "regla": "LIB.HTTP@1.0.0#R7",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-5.03.07"
     }
   ]
 }

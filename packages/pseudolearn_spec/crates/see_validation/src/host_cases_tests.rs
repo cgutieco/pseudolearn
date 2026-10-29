@@ -33,7 +33,12 @@ fn uncertain_fault_is_accepted_on_every_mutating_operation() {
 
 #[test]
 fn uncertain_fault_is_rejected_on_read_only_operations() {
-    for operation in ["file_read_text", "file_read_bytes", "clock_now", "arguments_values"] {
+    for operation in [
+        "file_read_text",
+        "file_read_bytes",
+        "clock_now",
+        "arguments_values",
+    ] {
         assert_eq!(errors(fault(operation, true)).len(), 1, "{operation}");
     }
 }
@@ -120,13 +125,22 @@ fn effect_errors_for(effects: &[Value]) -> usize {
 
 #[test]
 fn ordered_effects_without_delivery_marks_are_accepted() {
-    assert_eq!(effect_errors_for(&[json!({"effect_seq": 1}), json!({"effect_seq": 2})]), 0);
+    assert_eq!(
+        effect_errors_for(&[json!({"effect_seq": 1}), json!({"effect_seq": 2})]),
+        0
+    );
 }
 
 #[test]
 fn repeated_or_decreasing_effects_without_delivery_marks_are_rejected() {
-    assert_eq!(effect_errors_for(&[json!({"effect_seq": 2}), json!({"effect_seq": 1})]), 1);
-    assert_eq!(effect_errors_for(&[json!({"effect_seq": 1}), json!({"effect_seq": 1})]), 1);
+    assert_eq!(
+        effect_errors_for(&[json!({"effect_seq": 2}), json!({"effect_seq": 1})]),
+        1
+    );
+    assert_eq!(
+        effect_errors_for(&[json!({"effect_seq": 1}), json!({"effect_seq": 1})]),
+        1
+    );
 }
 
 #[test]

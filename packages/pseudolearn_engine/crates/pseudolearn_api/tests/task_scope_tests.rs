@@ -77,5 +77,8 @@ fn a_child_suspended_on_a_channel_runs_its_deferred_cleanups_when_a_sibling_fail
         strictness: "strict".to_owned(),
         ..Default::default()
     });
-    assert_eq!(response.output, "cleanup-second\ncleanup-first\nfailed\n", "{response:?}");
+    assert_eq!(
+        response.output, "cleanup-second\ncleanup-first\nfailed\n",
+        "{response:?}"
+    );
 }

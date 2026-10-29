@@ -4,9 +4,7 @@ use crate::native_linker::link_executable;
 use crate::options::CliOptions;
 use crate::project_report::{Stream, render};
 use crate::project_session::prepare;
-use pseudolearn_api::{
-    NativeBuildFailure, NativeBuildRequest, build_native_project_object,
-};
+use pseudolearn_api::{NativeBuildFailure, NativeBuildRequest, build_native_project_object};
 use std::path::Path;
 
 pub fn execute_build(options: &CliOptions) -> Result<i32, CliError> {

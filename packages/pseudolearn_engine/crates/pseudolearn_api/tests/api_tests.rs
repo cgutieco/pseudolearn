@@ -3,9 +3,8 @@ use pseudolearn_api::{AnalyzeRequest, ExecuteRequest, execute_analyze, execute_p
 #[test]
 fn analyzes_valid_program() {
     let request = AnalyzeRequest {
-        program:
-            "Algoritmo Test\n  Definir a Como Entero <- 1;\n  Escribir a;\nFinAlgoritmo\n"
-                .to_owned(),
+        program: "Algoritmo Test\n  Definir a Como Entero <- 1;\n  Escribir a;\nFinAlgoritmo\n"
+            .to_owned(),
         profile: "es".to_owned(),
         strictness: "strict".to_owned(),
         source: None,

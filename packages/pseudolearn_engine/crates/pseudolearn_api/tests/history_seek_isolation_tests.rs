@@ -12,7 +12,10 @@ fn finished_session() -> Result<(ApiSession, Value, Value), String> {
             "strictness":"strict","seed":42,
             "host":{"permissions":["archivos_lectura"],"files":{"a":"hola","b":"mundo"}}}),
     );
-    let resource = started.pointer("/value/resource").cloned().ok_or("missing resource")?;
+    let resource = started
+        .pointer("/value/resource")
+        .cloned()
+        .ok_or("missing resource")?;
     let finished = session.call("advance", &json!({"resource":resource,"batch_size":1}));
     let mut last = finished;
     for _ in 0..200 {
@@ -25,7 +28,9 @@ fn finished_session() -> Result<(ApiSession, Value, Value), String> {
 }
 
 fn host_calls(response: &Value) -> Option<u64> {
-    response.pointer("/value/host_observation/calls").and_then(Value::as_u64)
+    response
+        .pointer("/value/host_observation/calls")
+        .and_then(Value::as_u64)
 }
 
 fn states(session: &mut ApiSession, resource: &Value, events: &[u64]) -> Vec<Value> {
@@ -41,15 +46,24 @@ fn seeking_forward_and_backward_never_calls_the_host_again() -> Result<(), Strin
     let calls = host_calls(&finished).ok_or("missing host observation")?;
     assert!(calls > 0, "{finished}");
     let horizon = session.call("horizon", &json!({"resource":resource}));
-    let first = horizon.pointer("/value/first").and_then(Value::as_u64).ok_or("first")?;
-    let last = horizon.pointer("/value/last").and_then(Value::as_u64).ok_or("last")?;
+    let first = horizon
+        .pointer("/value/first")
+        .and_then(Value::as_u64)
+        .ok_or("first")?;
+    let last = horizon
+        .pointer("/value/last")
+        .and_then(Value::as_u64)
+        .ok_or("last")?;
     assert!(last > first);
     let forward: Vec<u64> = (first..=last).collect();
     let backward: Vec<u64> = forward.iter().rev().copied().collect();
     let ascending = states(&mut session, &resource, &forward);
     let mut descending = states(&mut session, &resource, &backward);
     descending.reverse();
-    assert!(ascending.iter().all(|state| state.get("value").is_some()), "{ascending:?}");
+    assert!(
+        ascending.iter().all(|state| state.get("value").is_some()),
+        "{ascending:?}"
+    );
     assert_eq!(ascending, descending);
     let after = session.call("advance", &json!({"resource":resource,"batch_size":1}));
     assert_eq!(host_calls(&after), Some(calls), "{after}");
@@ -60,8 +74,15 @@ fn seeking_forward_and_backward_never_calls_the_host_again() -> Result<(), Strin
 fn seeking_past_the_horizon_is_a_usage_error_and_keeps_the_host_untouched() -> Result<(), String> {
     let (mut session, resource, finished) = finished_session()?;
     let calls = host_calls(&finished);
-    let beyond = session.call("query_state", &json!({"resource":resource,"event":1_000_000}));
-    assert_eq!(beyond.pointer("/failure/family"), Some(&json!("usage")), "{beyond}");
+    let beyond = session.call(
+        "query_state",
+        &json!({"resource":resource,"event":1_000_000}),
+    );
+    assert_eq!(
+        beyond.pointer("/failure/family"),
+        Some(&json!("usage")),
+        "{beyond}"
+    );
     let after = session.call("advance", &json!({"resource":resource,"batch_size":1}));
     assert_eq!(host_calls(&after), calls);
     Ok(())

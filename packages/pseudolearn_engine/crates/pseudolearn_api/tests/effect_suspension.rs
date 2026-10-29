@@ -42,12 +42,17 @@ impl Run {
     }
 
     fn reply(&mut self, sequence: &Value, result: Value) -> Value {
-        self.feed("effect_result", json!({"effect_seq":sequence,"result":result}))
+        self.feed(
+            "effect_result",
+            json!({"effect_seq":sequence,"result":result}),
+        )
     }
 }
 
 fn kind(response: &Value) -> Option<&str> {
-    response.pointer("/value/termination/kind").and_then(Value::as_str)
+    response
+        .pointer("/value/termination/kind")
+        .and_then(Value::as_str)
 }
 
 fn pending(response: &Value) -> Result<(Value, Value), String> {
@@ -71,8 +76,14 @@ fn clock_request_suspends_with_the_effect_payload() -> Result<(), String> {
     let mut run = start(CLOCK, &["reloj"])?;
     let first = run.advance();
     assert_eq!(kind(&first), Some("awaiting_effect"), "{first}");
-    assert_eq!(first.pointer("/value/termination/operation"), Some(&json!("request_clock")));
-    assert_eq!(first.pointer("/value/termination/effect_seq"), Some(&json!(1)));
+    assert_eq!(
+        first.pointer("/value/termination/operation"),
+        Some(&json!("request_clock"))
+    );
+    assert_eq!(
+        first.pointer("/value/termination/effect_seq"),
+        Some(&json!(1))
+    );
     Ok(())
 }
 
@@ -84,7 +95,10 @@ fn manual_resolution_completes_the_program() -> Result<(), String> {
     let accepted = run.reply(&sequence, committed("capability", capability));
     assert!(accepted.get("value").is_some(), "{accepted}");
     let second = run.advance();
-    assert_eq!(second.pointer("/value/termination/operation"), Some(&json!("clock_now")));
+    assert_eq!(
+        second.pointer("/value/termination/operation"),
+        Some(&json!("clock_now"))
+    );
     let (next, _) = pending(&second)?;
     run.reply(&next, committed("integer", json!(100)));
     let done = run.advance();
@@ -110,7 +124,11 @@ fn wrong_sequence_is_rejected_and_the_effect_stays_pending() -> Result<(), Strin
     let rejected = run.reply(&json!(99), committed("capability", capability.clone()));
     assert!(rejected.get("failure").is_some(), "{rejected}");
     let (sequence, _) = pending(&first)?;
-    assert!(run.reply(&sequence, committed("capability", capability)).get("value").is_some());
+    assert!(
+        run.reply(&sequence, committed("capability", capability))
+            .get("value")
+            .is_some()
+    );
     Ok(())
 }
 
@@ -168,13 +186,19 @@ fn uncertain_write_is_visible_to_the_program_and_marks_the_tape() -> Result<(), 
         run.reply(&sequence, committed(kind_name, capability));
     }
     let write = run.advance();
-    assert_eq!(write.pointer("/value/termination/operation"), Some(&json!("file_write_text")));
+    assert_eq!(
+        write.pointer("/value/termination/operation"),
+        Some(&json!("file_write_text"))
+    );
     let (sequence, _) = pending(&write)?;
     let uncertain = json!({"outcome":"uncertain","value":{"code":"interrumpido","uncertain":true}});
     assert!(run.reply(&sequence, uncertain).get("value").is_some());
     let done = run.advance();
     assert_eq!(kind(&done), Some("completed"), "{done}");
     assert_eq!(done.pointer("/value/output"), Some(&json!("incierto\n")));
-    assert_eq!(done.pointer("/value/effect_tape/status"), Some(&json!("uncertain_external_state")));
+    assert_eq!(
+        done.pointer("/value/effect_tape/status"),
+        Some(&json!("uncertain_external_state"))
+    );
     Ok(())
 }

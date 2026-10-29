@@ -16,8 +16,7 @@ fn insertion_for(marked: &str, profile: Profile) -> Option<(String, usize)> {
 #[test]
 fn trailing_whitespace_and_unicode_preserve_the_identifier_and_caret() {
     let code = "Algoritmo Medida\n\tDefinir Mutable duración Como Real <- 0.0;\n\tduración \t |\nFinAlgoritmo\n";
-    let expected =
-        "Algoritmo Medida\n\tDefinir Mutable duración Como Real <- 0.0;\n\tduración <- \nFinAlgoritmo\n";
+    let expected = "Algoritmo Medida\n\tDefinir Mutable duración Como Real <- 0.0;\n\tduración <- \nFinAlgoritmo\n";
     assert_eq!(
         insertion_for(code, Profile::Spanish),
         Some((

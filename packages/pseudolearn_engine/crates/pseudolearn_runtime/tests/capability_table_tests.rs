@@ -1,7 +1,7 @@
 use pseudolearn_abi::CapabilityKind;
 use pseudolearn_runtime::{
-    CapabilityError, CapabilityTable, CommitOutcome, EffectPhase, HostFailure, HostReply, HostValue,
-    ReplayError, ReproducibilityStatus, RightsMask,
+    CapabilityError, CapabilityTable, CommitOutcome, EffectPhase, HostFailure, HostReply,
+    HostValue, ReplayError, ReproducibilityStatus, RightsMask,
 };
 
 #[test]

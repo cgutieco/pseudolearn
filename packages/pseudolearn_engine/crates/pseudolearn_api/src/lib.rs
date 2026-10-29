@@ -71,12 +71,12 @@ mod negotiation;
 mod program_view;
 mod program_view_annotations;
 mod program_view_effects;
-mod program_view_tasks;
 mod program_view_kind;
 mod program_view_members;
 mod program_view_nominal;
 mod program_view_operations;
 mod program_view_relations;
+mod program_view_tasks;
 mod program_view_tokens;
 mod program_view_tree;
 mod program_view_values;
@@ -124,7 +124,8 @@ pub use native_effects::native_effect_input;
 mod native_execution;
 #[cfg(feature = "native")]
 pub use native_execution::{
-    NativeRunReport, conformance_build_request, protocol_rejected_native_response, native_execute_response, rejected_native_response,
+    NativeRunReport, conformance_build_request, native_execute_response,
+    protocol_rejected_native_response, rejected_native_response,
 };
 
 mod recording;

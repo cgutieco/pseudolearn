@@ -222,7 +222,6 @@ fn populate_terminal_fields(
         "host_tape".to_owned(),
         json!({"seed":request.seed,"inputs":request.inputs}),
     );
-
 }
 
 pub(crate) fn value(response: Value) -> Result<Value, ApiError> {
