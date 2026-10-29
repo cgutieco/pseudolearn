@@ -177,8 +177,8 @@ revisado_por:
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir array Como ValorJson <- ArregloJson();\nDefinir object Como ValorJson <- ObjetoJson();\nEscribir array.Longitud(), \":\", object.Longitud();\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine array as JsonValue <- jsonArray();\ndefine object as JsonValue <- jsonObject();\nwrite array.length(), \":\", object.length();\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir items Como ValorJson <- ArregloJson();\nDefinir mapping Como ValorJson <- ObjetoJson();\nEscribir items.Longitud(), \":\", mapping.Longitud();\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine items as JsonValue <- jsonArray();\ndefine mapping as JsonValue <- jsonObject();\nwrite items.length(), \":\", mapping.length();\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -202,8 +202,8 @@ revisado_por:
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir parsed Como Resultado<ValorJson, ErrorJson> <- AnalizarJson('\"\\uD83D\\uDE00\"');\nSegun parsed Hacer\nExito(document): Escribir TextoJson(document);\nError(problem): Escribir \"error\";\nFinSegun\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine parsed as result<JsonValue, JsonError> <- parseJson('\"\\uD83D\\uDE00\"');\nswitch parsed do\nsuccess(document): write jsonText(document);\nfailure(problem): write \"error\";\nendSwitch\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir parsed Como Resultado<ValorJson, ErrorJson> <- AnalizarJson('\"\\\\uD83D\\\\uDE00\"');\nSegun parsed Hacer\nExito(document): Escribir TextoJson(document);\nError(problem): Escribir \"error\";\nFinSegun\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine parsed as result<JsonValue, JsonError> <- parseJson('\"\\\\uD83D\\\\uDE00\"');\nswitch parsed do\nsuccess(document): write jsonText(document);\nfailure(problem): write \"error\";\nendSwitch\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -227,8 +227,8 @@ revisado_por:
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir negativeZero Como Resultado<ValorJson, ErrorJson> <- AnalizarJson('-0');\nDefinir hugeReal Como Resultado<ValorJson, ErrorJson> <- AnalizarJson('1e400');\nDefinir hugeInteger Como Resultado<ValorJson, ErrorJson> <- AnalizarJson('9223372036854775808');\nSegun negativeZero Hacer\nExito(document): Escribir TextoJson(document), \":\", document.ComoEntero();\nError(problem): Escribir \"error\";\nFinSegun\nSegun hugeReal Hacer\nExito(document): Segun document.ComoReal() Hacer\nNada: Escribir \"none\";\nAlgo(number): Escribir number;\nFinSegun\nError(problem): Escribir \"error\";\nFinSegun\nSegun hugeInteger Hacer\nExito(document): Segun document.ComoEntero() Hacer\nNada: Escribir \"none\";\nAlgo(number): Escribir number;\nFinSegun\nError(problem): Escribir \"error\";\nFinSegun\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine negativeZero as result<JsonValue, JsonError> <- parseJson('-0');\ndefine hugeReal as result<JsonValue, JsonError> <- parseJson('1e400');\ndefine hugeInteger as result<JsonValue, JsonError> <- parseJson('9223372036854775808');\nswitch negativeZero do\nsuccess(document): write jsonText(document), \":\", document.asInteger();\nfailure(problem): write \"error\";\nendSwitch\nswitch hugeReal do\nsuccess(document): switch document.asReal() do\nnone: write \"none\";\nsome(number): write number;\nendSwitch\nfailure(problem): write \"error\";\nendSwitch\nswitch hugeInteger do\nsuccess(document): switch document.asInteger() do\nnone: write \"none\";\nsome(number): write number;\nendSwitch\nfailure(problem): write \"error\";\nendSwitch\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir negativeZero Como Resultado<ValorJson, ErrorJson> <- AnalizarJson('-0');\nDefinir hugeReal Como Resultado<ValorJson, ErrorJson> <- AnalizarJson('1e400');\nDefinir hugeInteger Como Resultado<ValorJson, ErrorJson> <- AnalizarJson('9223372036854775808');\nSegun negativeZero Hacer\nExito(document): Segun document.ComoEntero() Hacer\nNada: Escribir \"none\";\nAlgo(value): Escribir TextoJson(document), \":\", value;\nFinSegun\nError(problem): Escribir problem.Codigo;\nFinSegun\nSegun hugeReal Hacer\nExito(document): Segun document.ComoReal() Hacer\nNada: Escribir \"none\";\nAlgo(number): Escribir number;\nFinSegun\nError(problem): Escribir problem.Codigo;\nFinSegun\nSegun hugeInteger Hacer\nExito(document): Segun document.ComoEntero() Hacer\nNada: Escribir \"none\";\nAlgo(number): Escribir number;\nFinSegun\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine negativeZero as result<JsonValue, JsonError> <- parseJson('-0');\ndefine hugeReal as result<JsonValue, JsonError> <- parseJson('1e400');\ndefine hugeInteger as result<JsonValue, JsonError> <- parseJson('9223372036854775808');\nswitch negativeZero do\nsuccess(document): switch document.asInteger() do\nnone: write \"none\";\nsome(value): write jsonText(document), \":\", value;\nendSwitch\nfailure(problem): write problem.code;\nendSwitch\nswitch hugeReal do\nsuccess(document): switch document.asReal() do\nnone: write \"none\";\nsome(number): write number;\nendSwitch\nfailure(problem): write problem.code;\nendSwitch\nswitch hugeInteger do\nsuccess(document): switch document.asInteger() do\nnone: write \"none\";\nsome(number): write number;\nendSwitch\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -277,8 +277,8 @@ revisado_por:
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir parsed Como Resultado<ValorJson, ErrorJson> <- AnalizarJson('\"\\uD800\"');\nSegun parsed Hacer\nExito(document): Escribir \"unexpected\";\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine parsed as result<JsonValue, JsonError> <- parseJson('\"\\uD800\"');\nswitch parsed do\nsuccess(document): write \"unexpected\";\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir parsed Como Resultado<ValorJson, ErrorJson> <- AnalizarJson('\"\\\\uD800\"');\nSegun parsed Hacer\nExito(document): Escribir \"unexpected\";\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine parsed as result<JsonValue, JsonError> <- parseJson('\"\\\\uD800\"');\nswitch parsed do\nsuccess(document): write \"unexpected\";\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -433,8 +433,8 @@ revisado_por:
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir parsed Como Resultado<ValorJson, ErrorJson> <- AnalizarJson('[\\n  1,\\n    x\\n]');\nSegun parsed Hacer\nExito(document): Escribir \"unexpected\";\nError(problem): Escribir problem.Linea, \":\", problem.Columna;\nFinSegun\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine parsed as result<JsonValue, JsonError> <- parseJson('[\\n  1,\\n    x\\n]');\nswitch parsed do\nsuccess(document): write \"unexpected\";\nfailure(problem): write problem.line, \":\", problem.column;\nendSwitch\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir parsed Como Resultado<ValorJson, ErrorJson> <- AnalizarJson('[\\n  1,\\n    x\\n]');\nSegun parsed Hacer\nExito(document): Escribir \"unexpected\";\nError(problem): Escribir problem.JsonLinea, \":\", problem.JsonColumna;\nFinSegun\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine parsed as result<JsonValue, JsonError> <- parseJson('[\\n  1,\\n    x\\n]');\nswitch parsed do\nsuccess(document): write \"unexpected\";\nfailure(problem): write problem.jsonLine, \":\", problem.jsonColumn;\nendSwitch\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -483,8 +483,8 @@ revisado_por:
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir object Como ValorJson <- ObjetoJson();\nobject.ConElemento(JsonNulo());\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine object as JsonValue <- jsonObject();\nobject.withElement(jsonNull());\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir mapping Como ValorJson <- ObjetoJson();\nmapping.ConElemento(JsonNulo());\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine mapping as JsonValue <- jsonObject();\nmapping.withElement(jsonNull());\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -509,8 +509,8 @@ revisado_por:
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir parsed Como Resultado<ValorJson, ErrorJson> <- AnalizarJson('{\"b\":2,\"a\":[1]}');\nSegun parsed Hacer\nExito(document): Definir keys Como Vector<Cadena> <- document.Claves();\nEscribir keys[0], \":\", keys[1], \":\", document.Campo(\"missing\"), \":\", document.Elemento(0);\nError(problem): Escribir \"error\";\nFinSegun\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine parsed as result<JsonValue, JsonError> <- parseJson('{\"b\":2,\"a\":[1]}');\nswitch parsed do\nsuccess(document): define keys as vector<string> <- document.keys();\nwrite keys[0], \":\", keys[1], \":\", document.field(\"missing\"), \":\", document.element(0);\nfailure(problem): write \"error\";\nendSwitch\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir parsed Como Resultado<ValorJson, ErrorJson> <- AnalizarJson('{\"b\":2,\"a\":[1]}');\nSegun parsed Hacer\nExito(document): Definir keys Como Vector<Cadena> <- document.Claves();\nDefinir Mutable missing Como Cadena <- \"Nada\";\nDefinir Mutable absent Como Cadena <- \"Nada\";\nSegun document.Campo(\"missing\") Hacer\nAlgo(value): missing <- \"Algo\";\nNada: missing <- \"Nada\";\nFinSegun\nSegun document.Elemento(0) Hacer\nAlgo(value): absent <- \"Algo\";\nNada: absent <- \"Nada\";\nFinSegun\nEscribir keys[0], \":\", keys[1], \":\", missing, \":\", absent;\nError(problem): Escribir \"error\";\nFinSegun\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine parsed as result<JsonValue, JsonError> <- parseJson('{\"b\":2,\"a\":[1]}');\nswitch parsed do\nsuccess(document): define keys as vector<string> <- document.keys();\ndefine mutable missing as string <- \"Nada\";\ndefine mutable absent as string <- \"Nada\";\nswitch document.field(\"missing\") do\nsome(value): missing <- \"Algo\";\nnone: missing <- \"Nada\";\nendSwitch\nswitch document.element(0) do\nsome(value): absent <- \"Algo\";\nnone: absent <- \"Nada\";\nendSwitch\nwrite keys[0], \":\", keys[1], \":\", missing, \":\", absent;\nfailure(problem): write \"error\";\nendSwitch\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",

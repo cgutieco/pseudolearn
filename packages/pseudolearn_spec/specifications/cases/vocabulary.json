@@ -556,12 +556,12 @@
     "es": "FinInesperado"
   },
   "jsonErrorColumnField": {
-    "en": "column",
-    "es": "Columna"
+    "en": "jsonColumn",
+    "es": "JsonColumna"
   },
   "jsonErrorLineField": {
-    "en": "line",
-    "es": "Linea"
+    "en": "jsonLine",
+    "es": "JsonLinea"
   },
   "jsonErrorType": {
     "en": "JsonError",
@@ -580,8 +580,8 @@
     "es": "Nulo"
   },
   "jsonKindNumber": {
-    "en": "Number",
-    "es": "Numero"
+    "en": "JsonNumber",
+    "es": "JsonNumero"
   },
   "jsonKindObject": {
     "en": "Object",

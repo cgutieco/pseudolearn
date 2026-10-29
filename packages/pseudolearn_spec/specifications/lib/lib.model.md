@@ -1040,7 +1040,7 @@
         ],
         "result": "json_value",
         "effect": false,
-        "fallible": true
+        "fallible": false
       },
       {
         "identity": "json_string",
@@ -1064,7 +1064,7 @@
         "parameters": [],
         "result": "json_value",
         "effect": false,
-        "fallible": true
+        "fallible": false
       },
       {
         "identity": "json_object",
@@ -1075,7 +1075,7 @@
         "parameters": [],
         "result": "json_value",
         "effect": false,
-        "fallible": true
+        "fallible": false
       },
       {
         "identity": "json_kind",
@@ -1178,7 +1178,7 @@
         "parameters": [],
         "result": "text_list",
         "effect": false,
-        "fallible": true
+        "fallible": false
       },
       {
         "identity": "json_with_element",
@@ -1191,7 +1191,7 @@
         ],
         "result": "json_value",
         "effect": false,
-        "fallible": true
+        "fallible": false
       },
       {
         "identity": "json_with_field",
@@ -1205,7 +1205,7 @@
         ],
         "result": "json_value",
         "effect": false,
-        "fallible": true
+        "fallible": false
       },
       {
         "identity": "request_network",

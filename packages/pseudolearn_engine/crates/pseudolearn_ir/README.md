@@ -115,3 +115,7 @@ ni tipos a la RI.
 Las operaciones JSON guardan referencias de `JsonValue` en celdas de banco de referencia, cuyo tipo
 de transporte es `str`; el encabezado del efecto conserva el tipo semántico `$effect:JsonValue`. El
 verificador valida ambas fronteras por separado para `JsonResult` y `OptionalJsonValue`.
+
+Los resultados `OptionalBoolean`, `OptionalInteger` y `OptionalReal` guardan etiqueta y carga en celdas `i64`: los
+variantes del motor almacenan todo escalar como palabra (los reales como sus bits), y el verificador exige esa
+representación en ambas celdas.

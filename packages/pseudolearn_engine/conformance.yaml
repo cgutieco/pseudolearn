@@ -2056,23 +2056,27 @@
     },
     {
       "regla": "LIB.MODEL@1.0.0#M1",
-      "verificacion": "../pseudolearn_spec/crates/see_validation/tests/resources/library_facets.rs",
-      "estado": "cumple"
+      "verificacion": "estructural",
+      "estado": "cumple",
+      "justificacion": "see validate verifica las facetas de biblioteca con el validador de facetas y su fixture negativo; la conformidad conserva evidencia estructural con la huella del corpus."
     },
     {
       "regla": "LIB.MODEL@1.0.0#M2",
-      "verificacion": "../pseudolearn_spec/crates/see_validation/tests/resources/library_facets.rs",
-      "estado": "cumple"
+      "verificacion": "estructural",
+      "estado": "cumple",
+      "justificacion": "see validate verifica las facetas de biblioteca con el validador de facetas y su fixture negativo; la conformidad conserva evidencia estructural con la huella del corpus."
     },
     {
       "regla": "LIB.MODEL@1.0.0#M3",
-      "verificacion": "../pseudolearn_spec/crates/see_validation/tests/resources/library_facets.rs",
-      "estado": "cumple"
+      "verificacion": "estructural",
+      "estado": "cumple",
+      "justificacion": "see validate verifica las facetas de biblioteca con el validador de facetas y su fixture negativo; la conformidad conserva evidencia estructural con la huella del corpus."
     },
     {
       "regla": "LIB.MODEL@1.0.0#M4",
-      "verificacion": "../pseudolearn_spec/crates/see_validation/tests/resources/library_facets.rs",
-      "estado": "cumple"
+      "verificacion": "estructural",
+      "estado": "cumple",
+      "justificacion": "see validate verifica las facetas de biblioteca con el validador de facetas y su fixture negativo; la conformidad conserva evidencia estructural con la huella del corpus."
     },
     {
       "regla": "LIB.CORE.TEXT@1.0.0#T1",

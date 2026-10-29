@@ -1142,8 +1142,8 @@
     },
     "jsonKindNumber": {
       "lexemas": {
-        "es": "Numero",
-        "en": "Number"
+        "es": "JsonNumero",
+        "en": "JsonNumber"
       }
     },
     "jsonKindString": {
@@ -1172,14 +1172,14 @@
     },
     "jsonErrorLineField": {
       "lexemas": {
-        "es": "Linea",
-        "en": "line"
+        "es": "JsonLinea",
+        "en": "jsonLine"
       }
     },
     "jsonErrorColumnField": {
       "lexemas": {
-        "es": "Columna",
-        "en": "column"
+        "es": "JsonColumna",
+        "en": "jsonColumn"
       }
     },
     "jsonErrorCodeInvalidSyntax": {
@@ -1574,8 +1574,8 @@
     },
     "jsonKindNumber": {
       "lexemas": {
-        "es": "Numero",
-        "en": "Number"
+        "es": "JsonNumero",
+        "en": "JsonNumber"
       }
     },
     "jsonKindString": {
@@ -1604,14 +1604,14 @@
     },
     "jsonErrorLineField": {
       "lexemas": {
-        "es": "Linea",
-        "en": "line"
+        "es": "JsonLinea",
+        "en": "jsonLine"
       }
     },
     "jsonErrorColumnField": {
       "lexemas": {
-        "es": "Columna",
-        "en": "column"
+        "es": "JsonColumna",
+        "en": "jsonColumn"
       }
     },
     "jsonErrorCodeInvalidSyntax": {

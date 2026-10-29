@@ -230,7 +230,7 @@
       "estado": {"marcos": [{"unidad": "Main", "variables": {}}], "objetos": {}}
     }
   },
-  "programa": "Algoritmo Main\nEscribir \"antes\";\nDefinir net Como RedCap <- Propagar SolicitarRed();\nDefinir response Como RespuestaHttp <- Propagar net.Enviar(PeticionHttp(MetodoHttp.GET, \"https://fake.test/once\"));\nEscribir response.Estado();\nFinAlgoritmo\n",
+  "programa": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir net Como RedCap <- Propagar SolicitarRed();\nDefinir response Como RespuestaHttp <- Propagar net.Enviar(PeticionHttp(MetodoHttp.GET, \"https://fake.test/once\"));\nRetornar Exito(response.Estado());\nFinSubProceso\nAlgoritmo Main\nEscribir \"antes\";\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Incierto;\nFinSegun\nFinAlgoritmo\n",
   "perfil_base": "es",
   "anfitrion": {
     "permissions": ["red"],

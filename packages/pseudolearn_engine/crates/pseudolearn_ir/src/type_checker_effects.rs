@@ -88,18 +88,9 @@ fn cell_matches(descriptor: &EffectOperation, index: usize, kind: &IrType) -> bo
         return *kind == if index == 2 { IrType::Str } else { IrType::I64 };
     }
     match descriptor.result {
-        EffectValueKind::OptionalBoolean => {
-            *kind
-                == if index == 0 {
-                    IrType::I64
-                } else {
-                    IrType::Bool
-                }
-        }
-        EffectValueKind::OptionalInteger => *kind == IrType::I64,
-        EffectValueKind::OptionalReal => {
-            *kind == if index == 0 { IrType::I64 } else { IrType::F64 }
-        }
+        EffectValueKind::OptionalBoolean
+        | EffectValueKind::OptionalInteger
+        | EffectValueKind::OptionalReal => *kind == IrType::I64,
         EffectValueKind::OptionalText => *kind == IrType::Str,
         EffectValueKind::OptionalJsonValue => *kind == IrType::Str,
         EffectValueKind::JsonResult => {

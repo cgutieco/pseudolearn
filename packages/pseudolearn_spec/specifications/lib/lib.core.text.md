@@ -209,7 +209,9 @@
     "C8",
     "C11",
     "C12",
-    "C15"
+    "C15",
+    "C17",
+    "C18"
   ]
 }
 ```
@@ -513,5 +515,63 @@
     "estricto",
     "flexible"
   ]
+}
+```
+
+```caso
+{
+  "id": "C17",
+  "regla": "T3",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir Mutable c Como Cadena <- \"\";\nc <- Recortar(\" x \");\nEscribir c;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine mutable c as string <- \"\";\nc <- trim(\" x \");\nwrite c;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "x\n",
+    "terminacion": "completed"
+  },
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "limites": {
+    "celdas": 2
+  }
+}
+```
+
+```caso
+{
+  "id": "C18",
+  "regla": "T3",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir Mutable c Como Cadena <- \"\";\nc <- Recortar(\" x \");\nEscribir c;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine mutable c as string <- \"\";\nc <- trim(\" x \");\nwrite c;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "",
+    "fallo": {
+      "codigo": "cellLimitExceeded"
+    }
+  },
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "limites": {
+    "celdas": 1
+  }
 }
 ```
