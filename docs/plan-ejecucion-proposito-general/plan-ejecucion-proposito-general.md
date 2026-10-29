@@ -570,7 +570,11 @@ Puntos a cumplir:
 
 Fuera de alcance: servidor HTTP, sockets arbitrarios, FFI y matemática ampliada sin demanda.
 
-Plan detallado: `fase-pg-5-plan-ejecucion.md`, pendiente de crear al iniciar la fase.
+Plan detallado: [fase-pg-5-plan-ejecucion.md](fase-pg-5-plan-ejecucion.md), creado el 2026-10-28 a petición de la
+persona y pendiente de su revisión (`PG-5.C02`). Deja constancia de que el diseño es a medida del propósito educativo
+y legible del lenguaje, de que las iteraciones 1 a 5 solo ejecutan verificaciones ligeras sobre lo programado y las
+pruebas pesadas se ejecutan únicamente en la iteración 6, de que la red real no entra en el corpus ni en el núcleo, y
+del protocolo para liberar espacio en disco. Crear el plan no inicia la fase (`PG-5.C01`).
 
 Cierre común (definiciones en §4.0):
 
@@ -994,7 +998,7 @@ La IA a cargo actualiza esta tabla al cerrar cada fase.
 | PG-2 | Cerrada · PG-2.01–.17 (`.15` retirado) | Sí | 2026-10-26 | `PG-2.C09` justificado; E-PG-10 diferido por la persona; intervalo de E-PG-04 informado |
 | PG-3 | En curso · PG-3.08, PG-3.11 y PG-3.12 cumplidos; resto abierto | Sí, C02 revisado (2026-10-26); revisión integral pendiente | Sin cierre de fase | `PG-3.C12` pendiente por revisión previa; E-PG-05 cumple el presupuesto por carga revisado el 2026-10-27; sin commit |
 | PG-4 | Cerrada · PG-4.01–.12 | Sí | 2026-10-28 · `a1de5355` | Tareas nativas en AOT (`PG-4.12.04`) y sus `.07`; presupuesto de `PERF.SUITE.CORE` no alcanzado |
-| PG-5 | Sin iniciar | No | | |
+| PG-5 | Sin iniciar | Sí, C02 pendiente de revisión | | |
 | PG-6A | Sin iniciar | No | | |
 | PG-6B | Sin iniciar | No | | |
 | PG-A | Sin iniciar | No | | |
