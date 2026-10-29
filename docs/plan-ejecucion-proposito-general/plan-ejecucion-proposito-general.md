@@ -476,57 +476,74 @@ R-06, R-10, R-12; capacidad C-09; riesgos K-05, K-08; experimento E-PG-06; ADR-0
 
 Puntos a cumplir:
 
-- [ ] `PG-4.01` Funciones suspendibles y espera explícita, con identidad sintáctica bilingüe.
-- [ ] `PG-4.02` Ámbitos de tareas obligatorios: unión al salir, ningún hijo abandonado y cancelación cooperativa.
-- [ ] `PG-4.03` Política de fallos: el primero por orden lógico cancela a los hermanos y los demás se conservan
+- [x] `PG-4.01` Funciones suspendibles y espera explícita, con identidad sintáctica bilingüe.
+- [x] `PG-4.02` Ámbitos de tareas obligatorios: unión al salir, ningún hijo abandonado y cancelación cooperativa.
+- [x] `PG-4.03` Política de fallos: el primero por orden lógico cancela a los hermanos y los demás se conservan
   asociados.
-- [ ] `PG-4.04` Canales con capacidad explícita, cierre y contrapresión; elección simultánea resuelta por orden
+- [x] `PG-4.04` Canales con capacidad explícita, cierre y contrapresión; elección simultánea resuelta por orden
   normativo.
-- [ ] `PG-4.05` Bloqueo sin tareas ejecutables ni efectos pendientes diagnosticado, distinto de la espera de efecto.
+- [x] `PG-4.05` Bloqueo sin tareas ejecutables ni efectos pendientes diagnosticado, distinto de la espera de efecto.
   Implementados `.01`–`.06` de PG-4.03, PG-4.04 y PG-4.05 en una iteración conjunta; pruebas ligeras y
-  verificadores en verde. Solo sus puntos `.07` pesados quedan pendientes; los puntos globales conservan
-  la casilla abierta hasta esa verificación. Decisiones y evidencia en el resumen de la fase PG-4.
-- [ ] `PG-4.06` Aislamiento transitivo: captura o envío de una referencia mutable rechazado incluso a través de alias,
+  verificadores en verde. Sus puntos `.07` pesados se ejecutaron en `engine` sin divergencias; la parte AOT
+  queda como pendiente justificado. Decisiones y evidencia en el resumen de la fase PG-4.
+- [x] `PG-4.06` Aislamiento transitivo: captura o envío de una referencia mutable rechazado incluso a través de alias,
   ciclos, registros, clausuras o parámetros por referencia; instantánea inmutable explícita con coste declarado.
-- [ ] `PG-4.07` Planificador lógico con identidades monotónicas, desempate definido y puntos de cesión por masa de
+- [x] `PG-4.07` Planificador lógico con identidades monotónicas, desempate definido y puntos de cesión por masa de
   sentencia compartidos por VM y AOT.
-- [ ] `PG-4.08` Continuaciones con disposición y mapas de raíces comunes; el GC recorre marcos suspendidos, entornos y
+- [x] `PG-4.08` Continuaciones con disposición y mapas de raíces comunes; el GC recorre marcos suspendidos, entornos y
   mensajes pendientes.
-- [ ] `PG-4.09` Límites de tareas y de colas como terminaciones definidas.
-- [ ] `PG-4.10` 10 000 agendas sembradas reproducen sus observables, con cero diferencias.
-- [ ] `PG-4.11` Eventos de tarea observables (identidad, padre, espera, reanudación, canal) disponibles para la app.
-- [ ] `PG-4.12` E-PG-06 ejecutado; métrica candidata de tareas medida; async nativo en AOT no se anuncia si falla.
+- [x] `PG-4.09` Límites de tareas y de colas como terminaciones definidas.
+- [x] `PG-4.10` 10 000 agendas sembradas reproducen sus observables, con cero diferencias.
+- [x] `PG-4.11` Eventos de tarea observables (identidad, padre, espera, reanudación, canal) disponibles para la app.
+- [x] `PG-4.12` E-PG-06 ejecutado; métrica candidata de tareas medida; async nativo en AOT no se anuncia si falla.
 
 Fuera de alcance: paralelismo CPU, actores públicos, tareas desprendidas y mutex en el lenguaje.
 
 Plan detallado: [fase-pg-4-plan-ejecucion.md](fase-pg-4-plan-ejecucion.md), creado el 2026-10-27 a petición de la
-persona y pendiente de su revisión (`PG-4.C02`). Deja constancia de que el diseño es a medida del lenguaje, de que las
+persona y revisado (`PG-4.C02`). Deja constancia de que el diseño es a medida del lenguaje, de que las
 iteraciones 1 a 4 solo ejecutan verificaciones ligeras y las pruebas pesadas se ejecutan únicamente en la iteración
 final, y del protocolo obligatorio para liberar espacio en disco. Crear el plan no inicia la fase (`PG-4.C01`).
 
 Cierre común (definiciones en §4.0):
 
-- [ ] `PG-4.C01` Autorización de la persona para iniciar la fase, en mensaje nuevo.
-- [ ] `PG-4.C02` Plan detallado creado según §5 y revisado por la persona.
-- [ ] `PG-4.C03` SPEC-FIRST y congelamiento respetados.
-- [ ] `PG-4.C04` Reglas nuevas con casos o propiedades y vínculos como datos.
-- [ ] `PG-4.C05` Tests feliz, infeliz y límite en carpetas espejo.
-- [ ] `PG-4.C06` Capas declaradas, imports permitidos y límites de tamaño.
-- [ ] `PG-4.C07` Sin comentarios ni TODO; código en inglés; Rust sin pánicos ni `unsafe` no declarado.
-- [ ] `PG-4.C08` README y reglas de los miembros afectados actualizados, sin citar `docs/`.
-- [ ] `PG-4.C09` Fichas de ayuda y datos de proyección de la sintaxis nueva, o justificación.
-- [ ] `PG-4.C10` Riesgos revisados y experimentos con procedencia o diferidos por la persona.
-- [ ] `PG-4.C11` Tests y verificadores de los miembros afectados en verde.
-- [ ] `PG-4.C12` Commit sin atribución de IA y push ordinario comprobado a la rama única.
-- [ ] `PG-4.C13` Resumen completo, informe a la persona y parada.
+- [x] `PG-4.C01` Autorización de la persona para iniciar la fase, en mensaje nuevo.
+- [x] `PG-4.C02` Plan detallado creado según §5 y revisado por la persona.
+- [x] `PG-4.C03` SPEC-FIRST y congelamiento respetados.
+- [x] `PG-4.C04` Reglas nuevas con casos o propiedades y vínculos como datos.
+- [x] `PG-4.C05` Tests feliz, infeliz y límite en carpetas espejo.
+- [x] `PG-4.C06` Capas declaradas, imports permitidos y límites de tamaño.
+- [x] `PG-4.C07` Sin comentarios ni TODO; código en inglés; Rust sin pánicos ni `unsafe` no declarado.
+- [x] `PG-4.C08` README y reglas de los miembros afectados actualizados, sin citar `docs/`.
+- [x] `PG-4.C09` Fichas de ayuda y datos de proyección de la sintaxis nueva, o justificación.
+- [x] `PG-4.C10` Riesgos revisados y experimentos con procedencia o diferidos por la persona.
+- [x] `PG-4.C11` Tests y verificadores de los miembros afectados en verde.
+- [x] `PG-4.C12` Commit sin atribución de IA y push ordinario comprobado a la rama única.
+- [x] `PG-4.C13` Resumen completo, informe a la persona y parada.
 
 #### Resumen de PG-4
 
+Estado a 2026-10-28: la persona declaró cerrada la fase con los pendientes justificados en el plan detallado
+(§11); todas las casillas de puntos y de cierre común están marcadas. Rige `PHASE-STOP`: no se inicia PG-5 sin
+autorización nueva.
+
 | Punto | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
-| | | | |
+| `PG-4.01` | Cumplido | 7 contratos en `engine`: 246 observaciones, 0 divergencias; `pseudolearn_syntax` 59 tests | — |
+| `PG-4.02`, `PG-4.03` | Cumplido en `engine`; AOT diferido | `LANG.TASK.SCOPE` 132 y `LANG.CONTROL.CLEANUP` 52 observaciones, 0 divergencias | AOT rechaza con `nativeTasksUnsupported` (`SEE-RECORDING`); depende de `PG-4.12.04` |
+| `PG-4.04`, `PG-4.05` | Cumplido en `engine`; AOT diferido | CHANNEL 84, LIB.MODEL 20, TRACE.EVENTS 69, AGENDA 52 y EXEC.MODEL 60 observaciones, 0 divergencias | Divergencias AOT por tareas nativas no construidas |
+| `PG-4.06`–`PG-4.09` | Cumplido en `engine`; AOT diferido | ISOLATION 100, AGENDA 52, IR 43, MEMORY 16, LIMITS 117, SNAPSHOT 24 e INCREMENTAL 4 observaciones, 0 divergencias | Reglas AOT siguen `pendiente`; `RT.ABI` sin evidencia válida en AOT |
+| `PG-4.10` | Cumplido en VM; comparación AOT diferida | E-PG-06: 10 000 semillas, 1 250 por familia, 0 divergencias; `tasks-0-10000.json` SHA-256 `d3364c0d…b724` | — |
+| `PG-4.11` | Cumplido | Engine, service, CLI y app en verde (TRACE.EVENTS 69, PROGRAM.VIEW 27, WIRE-FORMAT 7); bridge 20, arquitectura 37, clases de evento 5 | — |
+| `PG-4.12` | Cumplido con pendientes justificados | E-PG-06 ejecutado; PERF medida: 1,2192×, IC 95 % `[1,2119; 1,2243]`, manifiesto SHA-256 `fc9a4e12…1667` | `.12.04` no construido: async nativo en AOT no se anuncia; presupuesto PERF 1,02× no alcanzado |
 
-Revisión Git de cierre: · Verificadores ejecutados: · Pendientes justificados: · Decisiones de la persona:
+Revisión Git de cierre: commit `a1de5355`, publicado con push ordinario a `feature/agregar-ruta-de-especificacion` y
+sincronizado con `origin` · Verificadores ejecutados: `cargo test --locked --workspace`, Clippy `-D warnings`,
+`rust-checks all` y `toolchain`, `cargo deny check`, `see validate` (187), `lock --check`, `export --check`;
+conformidad `engine` en 26 contratos (1 151 observaciones, 0 divergencias); `dart analyze` y `check_limits.dart` ·
+Pendientes justificados: soporte de tareas nativas en AOT (`PG-4.12.04`) y los `.07` AOT que dependen de él;
+presupuesto de `PERF.SUITE.CORE` no cumplido; `cargo fmt --all --check` con diferencias previas ajenas · Decisiones
+de la persona: continuar todas las tareas pesadas pese a fallos de conformidad (2026-10-28); cierre de la fase con
+los pendientes justificados en el plan detallado (2026-10-28).
 
 ### 4.7 PG-5 · Biblioteca y HTTP
 
@@ -976,7 +993,7 @@ La IA a cargo actualiza esta tabla al cerrar cada fase.
 | PG-1 | PG-1.01–.07 cumplidos · fase en curso | Sí, revisión integral pendiente | Sin cierre de fase | PG-1.08–.13 y cierre común sin autorizar; PG-1.C01/C02 pendientes |
 | PG-2 | Cerrada · PG-2.01–.17 (`.15` retirado) | Sí | 2026-10-26 | `PG-2.C09` justificado; E-PG-10 diferido por la persona; intervalo de E-PG-04 informado |
 | PG-3 | En curso · PG-3.08, PG-3.11 y PG-3.12 cumplidos; resto abierto | Sí, C02 revisado (2026-10-26); revisión integral pendiente | Sin cierre de fase | `PG-3.C12` pendiente por revisión previa; E-PG-05 cumple el presupuesto por carga revisado el 2026-10-27; sin commit |
-| PG-4 | Sin iniciar | Sí, pendiente de revisión (C02) | | Lexemas candidatos, cuanto `Q` y `CF-PG4-01` a confirmar en `P1` |
+| PG-4 | Cerrada · PG-4.01–.12 | Sí | 2026-10-28 · `a1de5355` | Tareas nativas en AOT (`PG-4.12.04`) y sus `.07`; presupuesto de `PERF.SUITE.CORE` no alcanzado |
 | PG-5 | Sin iniciar | No | | |
 | PG-6A | Sin iniciar | No | | |
 | PG-6B | Sin iniciar | No | | |
