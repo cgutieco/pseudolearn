@@ -313,6 +313,17 @@ que el archivo existe, contiene efectos y permite repetir la salida, además del
 
 `tests/security_vector_registry.rs` declara la lista cerrada de ocho vectores (`..`, ruta absoluta, enlace simbólico saliente, NUL interior, amplificación de derechos, uso tras cierre, adulteración de un bit de la cinta y truncamiento) y la prueba que bloquea cada uno, en `tests/security_vectors.rs` y `src/physical_host_tests.rs`. La batería falla si un vector requerido no está registrado o si su prueba no existe, de modo que un vector nuevo sin prueba o una prueba borrada no pasan en verde. Tiene casos negativos para cada una de esas dos condiciones y para un archivo ilegible.
 
+`tests/network_vector_registry.rs` conserva el registro cerrado de E-PG-09: formas numéricas
+alternativas, direcciones locales y especiales, normalización y autoridad del host, DNS mixto y
+repetición de resolución, redirecciones, proxies, cabeceras, TLS, límites de cuerpo y plazo. Cada
+identidad apunta a la prueba que la bloquea en `tests/network_security_vectors.rs` o en los módulos
+unitarios de política y transporte. El registro exige tanto cada vector como su prueba e incluye
+negativos para un vector sin prueba y una prueba sin vector.
+
+`tests/network_adapter_contract.rs` usa `cargo xtask http-test-server` solo en loopback para comparar
+el contrato físico con las respuestas del protocolo común. La cobertura del proceso real y la
+batería adversaria pertenecen a la verificación pesada de P6; no forman parte de los filtros ligeros.
+
 Un programa con tareas o canales no se compila a código nativo todavía: `build` y `run --nativo`
 muestran el diagnóstico `nativeTasksUnsupported` (salida 1) en vez de un fallo de enlazado, y el
 programa se ejecuta con el motor virtual. `--tareas` limita las tareas vivas de la ejecución

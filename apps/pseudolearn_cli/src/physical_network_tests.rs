@@ -51,6 +51,31 @@ fn enforces_granted_origins_for_complete_request_urls() -> Result<(), String> {
             .local_test_origin("https://other.example.test/path")
             .is_err()
     );
+    assert!(
+        policy
+            .local_test_origin("https://api.example.test:444/path")
+            .is_err()
+    );
+    Ok(())
+}
+
+#[test]
+fn compares_hostnames_without_case_but_keeps_the_granted_port() -> Result<(), String> {
+    let execution = crate::execution_options::ExecutionArguments {
+        origins: vec!["https://api.example.test".to_owned()],
+        ..crate::execution_options::ExecutionArguments::default()
+    };
+    let policy = crate::physical_network::NetworkPolicy::from_execution(&execution)
+        .map_err(|error| error.code.to_owned())?;
+    assert_eq!(
+        policy.local_test_origin("https://API.EXAMPLE.TEST/path"),
+        Ok(false)
+    );
+    assert!(
+        policy
+            .local_test_origin("https://api.example.test:444/path")
+            .is_err()
+    );
     Ok(())
 }
 
@@ -61,6 +86,7 @@ fn rejects_insecure_or_non_origin_network_values() {
         ("http://api.example.test", true),
         ("https://api.example.test/path", false),
         ("https://user@api.example.test", false),
+        ("https://%2eapi.example.test", false),
         ("https://api.example.test/#fragment", false),
     ] {
         assert!(network_origin(value, local).is_err(), "{value}");

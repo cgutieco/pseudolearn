@@ -140,3 +140,28 @@ Procedencia de cada campaña: comando exacto, revisión Git, `rustc --version`, 
 semillas, ruta local ignorada de los datos crudos y el resumen JSON; el protocolo de regresión de
 `PERF.SUITE.CORE` (control `276a156`, al menos 10 procesos por 30 muestras, IC bootstrap 95 %) se aplica
 con los binarios `release` de control y de tratamiento sin tareas en los programas.
+
+### E-PG-07 y E-PG-09: medición HTTP del motor (`pg-http`)
+
+La campaña no abre sockets. Los casos HTTP ejecutan el motor con un anfitrión de memoria que entrega
+respuestas fijadas; los casos JSON analizan documentos en proceso. La compilación del programa queda
+fuera del intervalo y cada muestra comprueba la salida y la terminación esperadas. Las cargas HTTP
+reciben cuerpos de 0 B, 1 KiB, 64 KiB y 1 MiB. Las cargas JSON combinan textos de 1 KiB, 64 KiB y
+1 MiB con profundidad de contenedores 1, 16 y 64. El registro conserva por separado el tamaño del
+cuerpo, el texto analizado y los nodos generados, para que P6 pueda revisar el coste por byte y la
+memoria sin atribuir transporte al motor.
+
+`pg-http <directorio-nuevo> <proceso> <máquina>` toma treinta muestras de cada carga en un proceso
+independiente y rechaza sobrescribir resultados. `pg-http-summary <directorio>` exige diez procesos
+distintos, treinta muestras positivas por carga, una sola máquina, reloj con resolución positiva y
+salida y terminación correctas; calcula medianas por carga e intervalo bootstrap del 95 % sobre las
+medias por proceso con semilla 42. El resumen conserva datos crudos, tamaños y resultados de forma;
+no convierte las métricas candidatas en contratos.
+
+Presupuestos candidatos de `PERF.PG.HTTP`, pendientes de aprobación en P6: el coste por petición debe
+crecer linealmente con los bytes del cuerpo (0 B, 1 KiB, 64 KiB y 1 MiB), sin crecimiento
+superlineal; el análisis JSON debe ser O(bytes) y usar como máximo dos veces los bytes de entrada más
+una celda por nodo. La campaña mide el procesamiento del motor sin transporte. La memoria residente
+del adaptador nativo con respuesta ilimitada y el crecimiento lineal de la cinta se miden por separado
+con los protocolos HTTP de la fase. No se crea una especificación ni se declara un umbral vigente
+antes de P6.

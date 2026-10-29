@@ -108,11 +108,18 @@ conexión, redirecciones opacas, tope de cuerpo decodificado, plazo y petición 
 Para comprobar transporte en navegador, iniciar `cargo xtask http-test-server` desde la CLI. El
 proceso publica `http_address`, `https_address` y `root_certificate` en su línea JSON inicial; el
 harness de Playwright puede usar las direcciones como destinos de Fetch y la raíz PEM para confiar en
-TLS dentro de su perfil de prueba, sin desactivar la validación. `browser/server.mjs` sigue sirviendo
-solo la página y los archivos Wasm. Los tests unitarios del adaptador mantienen `fetch` falso y no
-abren sockets.
+TLS dentro de su perfil de prueba, sin desactivar la validación. `browser/server.mjs` sirve la página,
+los archivos Wasm y el módulo del adaptador para las pruebas. Los tests unitarios del adaptador
+mantienen `fetch` falso y no abren sockets.
 
 La prueba de navegador compara respuestas byte por byte con `wasm_native_probe` para completado, análisis, entrada, extremos de enteros, cancelación entre lotes y liberación. Otros casos rechazan JSON inválido, fuerzan crecimiento de memoria, comprueban la invalidación de vistas y verifican que superar el límite falla sin alterar la instancia.
+
+`browser/http_contract.test.mjs` ejercita el contrato Fetch contra `cargo xtask http-test-server`
+ligado a loopback: estados, cabeceras y cuerpos, redirecciones sin seguimiento, límites y fallos
+ambientales. La misma tabla de peticiones se compara con el adaptador nativo; solo se excluyen las
+diferencias ambientales declaradas por el perfil del navegador. Esta prueba usa Chromium, WebKit y
+Firefox y se reserva a P6. `fetch_host.test.mjs` sigue siendo la comprobación ligera con `fetch`
+falso y sin sockets.
 
 ## 8. Fuentes consultadas y genealogía conceptual
 

@@ -10,6 +10,9 @@ mod frontend;
 mod paired;
 mod pg_campaign;
 mod pg_collect;
+mod pg_http_campaign;
+mod pg_http_summary;
+mod pg_http_workloads;
 mod pg_summary;
 mod pg_tape_collect;
 mod pg_tape_loads;
@@ -45,6 +48,10 @@ fn main() -> std::process::ExitCode {
         "pg-tape" => pg_tape_collect::collect(&std::env::args().skip(2).collect::<Vec<_>>()),
         "pg-tasks" => pg_tasks_campaign::collect(&std::env::args().skip(2).collect::<Vec<_>>()),
         "pg-summary" => pg_summary::summarize(&std::env::args().skip(2).collect::<Vec<_>>()),
+        "pg-http" => pg_http_campaign::collect(&std::env::args().skip(2).collect::<Vec<_>>()),
+        "pg-http-summary" => {
+            pg_http_summary::summarize(&std::env::args().skip(2).collect::<Vec<_>>())
+        }
         "pg-verify" => pg_campaign::verify(&std::env::args().nth(2).unwrap_or_default()),
         "frontend" => frontend::collect(),
         "frontend-profile" => frontend::profile(),
@@ -79,6 +86,12 @@ fn collect_aot(arguments: &[String]) -> Result<(), String> {
 mod frontend_tests;
 #[cfg(test)]
 mod pg_campaign_tests;
+#[cfg(test)]
+mod pg_http_campaign_tests;
+#[cfg(test)]
+mod pg_http_summary_tests;
+#[cfg(test)]
+mod pg_http_workloads_tests;
 #[cfg(test)]
 mod pg_summary_tests;
 #[cfg(test)]

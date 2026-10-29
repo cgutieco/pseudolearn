@@ -9,6 +9,7 @@ export function createBrowserServer(engineDirectory) {
   const packageDirectory = resolve(engineDirectory, 'target/wasm-browser/pkg');
   const files = new Map([
     ['/', [resolve(browserDirectory, 'index.html'), 'text/html; charset=utf-8']],
+    ['/fetch_host.mjs', [resolve(browserDirectory, 'fetch_host.mjs'), 'text/javascript; charset=utf-8']],
     ['/pkg/pseudolearn_wasm.js', [resolve(packageDirectory, 'pseudolearn_wasm.js'), 'text/javascript; charset=utf-8']],
     ['/pkg/pseudolearn_wasm_bg.wasm', [resolve(packageDirectory, 'pseudolearn_wasm_bg.wasm'), 'application/wasm']],
   ]);

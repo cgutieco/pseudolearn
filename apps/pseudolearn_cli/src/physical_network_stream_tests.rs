@@ -155,3 +155,31 @@ fn times_out_a_slow_in_flight_response() -> Result<(), String> {
     assert!(await_request(&accepted)?);
     Ok(())
 }
+
+#[test]
+fn times_out_when_server_never_sends_a_response() -> Result<(), String> {
+    let listener =
+        TcpListener::bind((Ipv4Addr::LOCALHOST, 0)).map_err(|error| error.to_string())?;
+    let address = listener.local_addr().map_err(|error| error.to_string())?;
+    let (sender, accepted) = mpsc::channel();
+    thread::spawn(move || {
+        let result = listener.accept().map(|(mut stream, _)| {
+            stream
+                .set_read_timeout(Some(Duration::from_secs(3)))
+                .and_then(|()| read_request_headers(&mut stream))
+                .map(|()| {
+                    let _sent = sender.send(true);
+                    let mut buffer = [0; 1024];
+                    let _received = stream.read(&mut buffer);
+                })
+        });
+        if result.is_err() {
+            let _sent = sender.send(false);
+        }
+    });
+    let url = format!("http://localhost:{}/never", address.port());
+    let reply = send_request(request(url, 64, 128, 20_000_000), address)?;
+    assert_eq!(reply.pointer("/value/code"), Some(&json!("tiempo_agotado")));
+    assert!(await_request(&accepted)?);
+    Ok(())
+}

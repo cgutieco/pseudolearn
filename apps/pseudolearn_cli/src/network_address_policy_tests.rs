@@ -44,6 +44,7 @@ fn rejects_ssrf_ranges_for_ipv4_and_ipv6() -> Result<(), String> {
         IpAddr::V4(Ipv4Addr::LOCALHOST),
         IpAddr::V4(Ipv4Addr::new(10, 1, 2, 3)),
         IpAddr::V4(Ipv4Addr::new(169, 254, 10, 20)),
+        IpAddr::V4(Ipv4Addr::new(169, 254, 169, 254)),
         IpAddr::V4(Ipv4Addr::UNSPECIFIED),
         IpAddr::V4(Ipv4Addr::new(224, 0, 0, 1)),
         IpAddr::V6(Ipv6Addr::LOCALHOST),
