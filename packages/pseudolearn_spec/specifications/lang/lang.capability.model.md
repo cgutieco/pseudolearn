@@ -43,7 +43,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Las capacidades son valores opacos en el banco de referencias correspondientes a los tipos bilingües Consola/Console, Argumentos/Arguments, DirectorioCap/DirCap, ArchivoCap/FileCap, Reloj/Clock y Temporizador/Timer. Cada capacidad posee ranura, generación y máscara de derechos, impidiendo la falsificación o manipulación directa de descriptores de bajo nivel.",
+  "texto": "Las capacidades son valores opacos en el banco de referencias correspondientes a los tipos bilingües Consola/Console, Argumentos/Arguments, DirectorioCap/DirCap, ArchivoCap/FileCap, Reloj/Clock, Temporizador/Timer y RedCap/NetworkCap. Cada capacidad posee ranura, generación y máscara de derechos, impidiendo la falsificación o manipulación directa de descriptores de bajo nivel.",
   "verificacion": [
     "C1"
   ]
@@ -146,14 +146,15 @@
   "id": "R3",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Las capacidades de directorio permiten atenuar derechos y derivar subcapacidades para rutas lógicas hijas sin amplificación (los derechos de la hija son subconjunto estricto o igual a los del padre). Cualquier intento de solicitar derechos adicionales o escapar de la raíz mediante componentes de ruta especiales como .. o rutas absolutas es rechazado deterministamente.",
+  "texto": "Las capacidades de directorio permiten atenuar derechos y derivar subcapacidades para rutas lógicas hijas sin amplificación (los derechos de la hija son subconjunto estricto o igual a los del padre). Las capacidades RedCap permiten Limitar a un origen que ya pertenece a su conjunto concedido; la capacidad resultante contiene solo ese origen y no puede ampliarse. Cualquier intento de solicitar derechos adicionales, ampliar el conjunto de orígenes o escapar de la raíz mediante componentes de ruta especiales como .. o rutas absolutas es rechazado deterministamente.",
   "verificacion": [
     "C3",
     "C5",
     "C6",
     "C7",
     "C9",
-    "C10"
+    "C10",
+    "C11"
   ]
 }
 ```
@@ -464,6 +465,27 @@
     "files": {
       "sub/deep/c": "y"
     }
+  }
+}
+```
+
+```caso
+{
+  "id": "C11",
+  "regla": "R3",
+  "perfiles": ["es", "en"],
+  "rigor": ["estricto", "flexible"],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {"salida": "destino_denegado\n", "terminacion": "completed"},
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<RedCap, ErrorES>\nDefinir net Como RedCap <- Propagar SolicitarRed();\nRetornar net.Limitar(\"https://other.test\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir \"concedida\";\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<NetworkCap, IoError>\ndefine net as NetworkCap <- propagate requestNetwork();\nreturn net.restrict(\"https://other.test\");\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write \"granted\";\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": ["red"],
+    "requested_permissions": ["red"],
+    "http": {"GET https://fake.test/a": {"estado": 200}}
   }
 }
 ```

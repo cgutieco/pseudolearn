@@ -8,6 +8,7 @@ pub fn find_capability_kind(name: &str) -> Option<CapabilityKind> {
         "ArchivoCap" | "FileCap" => Some(CapabilityKind::File),
         "Reloj" | "Clock" => Some(CapabilityKind::Clock),
         "Temporizador" | "Timer" => Some(CapabilityKind::Timer),
+        "RedCap" | "NetworkCap" => Some(CapabilityKind::Network),
         _ => None,
     }
 }
@@ -26,6 +27,8 @@ pub fn capability_canonical_name(kind: CapabilityKind, spanish: bool) -> &'stati
         (CapabilityKind::Clock, false) => "Clock",
         (CapabilityKind::Timer, true) => "Temporizador",
         (CapabilityKind::Timer, false) => "Timer",
+        (CapabilityKind::Network, true) => "RedCap",
+        (CapabilityKind::Network, false) => "NetworkCap",
     }
 }
 

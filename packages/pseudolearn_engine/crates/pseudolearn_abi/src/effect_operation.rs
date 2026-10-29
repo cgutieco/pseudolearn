@@ -20,6 +20,10 @@ pub enum EffectValueKind {
     File,
     Clock,
     Timer,
+    Network,
+    HttpMethod,
+    HttpRequest,
+    HttpResponse,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -73,6 +77,7 @@ impl EffectOperation {
                 | EffectValueKind::Real
                 | EffectValueKind::Boolean
                 | EffectValueKind::JsonKind
+                | EffectValueKind::HttpMethod
         )
     }
 
@@ -83,6 +88,7 @@ impl EffectOperation {
             Some(EffectValueKind::Console) => "console",
             Some(EffectValueKind::Arguments) => "arguments",
             Some(EffectValueKind::Timer) => "timer",
+            Some(EffectValueKind::Network) => "network",
             _ => match self.identity.strip_prefix("request_") {
                 Some("directory") => "filesystem",
                 Some(requested) => requested,

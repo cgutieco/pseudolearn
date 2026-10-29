@@ -11,10 +11,16 @@ pub enum IoErrorKind {
     ClosedCapability,
     TimedOut,
     Interrupted,
+    InvalidUrl,
+    InvalidRequest,
+    DestinationDenied,
+    ConnectionFailed,
+    InvalidCertificate,
+    InvalidResponse,
 }
 
 impl IoErrorKind {
-    pub const ALL: [Self; 9] = [
+    pub const ALL: [Self; 15] = [
         Self::NotFound,
         Self::PermissionDenied,
         Self::AlreadyExists,
@@ -24,6 +30,12 @@ impl IoErrorKind {
         Self::ClosedCapability,
         Self::TimedOut,
         Self::Interrupted,
+        Self::InvalidUrl,
+        Self::InvalidRequest,
+        Self::DestinationDenied,
+        Self::ConnectionFailed,
+        Self::InvalidCertificate,
+        Self::InvalidResponse,
     ];
 
     pub fn code(self) -> &'static str {
@@ -37,6 +49,12 @@ impl IoErrorKind {
             Self::ClosedCapability => "capacidad_cerrada",
             Self::TimedOut => "tiempo_agotado",
             Self::Interrupted => "interrumpido",
+            Self::InvalidUrl => "url_invalida",
+            Self::InvalidRequest => "peticion_invalida",
+            Self::DestinationDenied => "destino_denegado",
+            Self::ConnectionFailed => "conexion_fallida",
+            Self::InvalidCertificate => "certificado_invalido",
+            Self::InvalidResponse => "respuesta_invalida",
         }
     }
 
@@ -51,6 +69,12 @@ impl IoErrorKind {
             6 => Some(Self::ClosedCapability),
             7 => Some(Self::TimedOut),
             8 => Some(Self::Interrupted),
+            9 => Some(Self::InvalidUrl),
+            10 => Some(Self::InvalidRequest),
+            11 => Some(Self::DestinationDenied),
+            12 => Some(Self::ConnectionFailed),
+            13 => Some(Self::InvalidCertificate),
+            14 => Some(Self::InvalidResponse),
             _ => None,
         }
     }
@@ -66,6 +90,12 @@ impl IoErrorKind {
             Self::ClosedCapability => 6,
             Self::TimedOut => 7,
             Self::Interrupted => 8,
+            Self::InvalidUrl => 9,
+            Self::InvalidRequest => 10,
+            Self::DestinationDenied => 11,
+            Self::ConnectionFailed => 12,
+            Self::InvalidCertificate => 13,
+            Self::InvalidResponse => 14,
         }
     }
 }

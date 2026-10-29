@@ -210,17 +210,74 @@ fn paginated_queries_accept_object_targets_and_reject_malformed_targets() -> Res
 #[test]
 fn host_schema_accepts_memory_files_and_rejects_invalid_shapes() -> Result<(), String> {
     for (host, valid) in [
-        (serde_json::json!({"files":{"a":[0,255]},"clock":[1,2],"permissions":["reloj"]}), true),
+        (
+            serde_json::json!({"files":{"a":[0,255]},"clock":[1,2],"permissions":["reloj"]}),
+            true,
+        ),
         (serde_json::json!({"files":{"a":[256]}}), false),
         (serde_json::json!({"clock":[-1]}), false),
-        (serde_json::json!({"permissions":["network"]}), false),
+        (serde_json::json!({"permissions":["network"]}), true),
+        (
+            serde_json::json!({"permissions":["red"],"http":{"GET http://fake.test/a":{"estado":200,"cabeceras":[["x-test","a"],["x-test","b"]],"cuerpo_bytes":[0,255]}}}),
+            true,
+        ),
+        (
+            serde_json::json!({"http":{"GET https://fake.test/a":{"estado":600}}}),
+            false,
+        ),
+        (
+            serde_json::json!({"http":{"GET https://fake.test/a":{"cuerpo":"text","cuerpo_bytes":[255]}}}),
+            false,
+        ),
+        (
+            serde_json::json!({"http":{"GET https://fake.test/a":{"cabeceras":[["x-test"]]}}}),
+            false,
+        ),
         (serde_json::json!({"files":{"/outside":"secret"}}), false),
         (serde_json::json!({"unknown":true}), false),
     ] {
         let mut specification = support::specification()?;
-        specification.blocks.last_mut().ok_or("missing case")?
-            .fields.insert("anfitrion".to_owned(), host);
-        assert_eq!(see_validation::schema::check(&specification).is_empty(), valid);
+        specification
+            .blocks
+            .last_mut()
+            .ok_or("missing case")?
+            .fields
+            .insert("anfitrion".to_owned(), host);
+        assert_eq!(
+            see_validation::schema::check(&specification).is_empty(),
+            valid
+        );
     }
+    Ok(())
+}
+
+#[test]
+fn validates_request_tape_mutation_against_replay_failure_expectation() -> Result<(), String> {
+    for (alteration, valid) in [("alterar_solicitud", true), ("unknown", false)] {
+        let mut specification = support::specification()?;
+        let case = specification.blocks.last_mut().ok_or("missing case")?;
+        case.fields.insert(
+            "anfitrion".to_owned(),
+            serde_json::json!({"alterar_cinta":alteration}),
+        );
+        expect_replay_failure(&mut specification)?;
+        assert_eq!(
+            see_validation::schema::check(&specification).is_empty(),
+            valid
+        );
+    }
+    Ok(())
+}
+
+fn expect_replay_failure(specification: &mut see_model::Specification) -> Result<(), String> {
+    let case = specification.blocks.last_mut().ok_or("missing case")?;
+    case.fields
+        .get_mut("espera")
+        .and_then(serde_json::Value::as_object_mut)
+        .ok_or("missing expected result")?
+        .insert(
+            "anfitrion_observado".to_owned(),
+            serde_json::json!({"reproduccion_fallo":"replay_divergence"}),
+        );
     Ok(())
 }

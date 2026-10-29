@@ -69,7 +69,7 @@ fallos por clave portable de ubicación, posición, código y campo; la ubicaci�
 `Configuration::package_input` convierte la configuración en un paquete del proyecto. Las excepciones de perfil
 se serializan por clave portable de ruta, no por el orden crudo de las claves TOML.
 
-Permisos y confinamiento (`capability_fs`): `PermissionName` (`Console`, `Arguments`, `FilesRead`, `FilesWrite`, `Clock`, `Timer`) modela el vocabulario cerrado de permisos de ejecución (`PG-3.03`). La autoridad efectiva (`resolve_permissions`) implementa denegación por defecto: un permiso solo es activo si el paquete lo solicita explícitamente y el anfitrión lo otorga en `HostGrants.permissions`. `capability_fs` define las reglas puras de confinamiento: `FileRights` implementa derechos atenuables (lectura, escritura, creación) sin amplificación, y `ConfinedDirectory` valida que las rutas lógicas queden circunscritas al directorio concedido sin secuencias de escape `..` ni rutas absolutas.
+Permisos y confinamiento (`capability_fs`): `PermissionName` (`Console`, `Arguments`, `FilesRead`, `FilesWrite`, `Clock`, `Timer`, `Network`) modela el vocabulario cerrado de permisos de ejecución. La autoridad efectiva (`resolve_permissions`) implementa denegación por defecto: un permiso solo es activo si el paquete lo solicita explícitamente y el anfitrión lo otorga en `HostGrants.permissions`. `capability_fs` define las reglas puras de confinamiento: `FileRights` implementa derechos atenuables (lectura, escritura, creación) sin amplificación, y `ConfinedDirectory` valida que las rutas lógicas queden circunscritas al directorio concedido sin secuencias de escape `..` ni rutas absolutas.
 
 Lock: `Lock::from_packages` normaliza (dependencias ordenadas y sin repetir), valida origen lógico, digests y aristas y
 rechaza un mismo nombre con dos orígenes. `Lock::parse` reutiliza el analizador del manifiesto (`lock_parser`),
@@ -233,3 +233,9 @@ Verificadores de capas, comentarios, nombres, límites, seguridad y atributos co
 
 Gleam: un archivo es un módulo. Rust: paquetes con raíz y rutas calificadas. Se toma la idea de módulo
 por archivo y de nombre derivado de la ruta; se rechazan la búsqueda en disco y los atributos de módulo.
+
+## Permiso de red en manifiestos
+
+`red` es el nombre público de `PermissionName::Network` y se normaliza antes de validar el manifiesto.
+Se conserva el enum tipado para que la autoridad no dependa de cadenas dispersas; no se introduce un
+permiso distinto para HTTP y HTTPS, que comparten la misma capacidad por origen.

@@ -2,7 +2,7 @@
 
 ## 1. Qué es y qué no es
 
-Aplica esquema, identidad, referencias, ciclo de vida, clasificación, hashes y vínculos. Mientras el versionado está congelado, una identidad nueva debe empezar estable en `1.0.0` sin `cambio`; una identidad existente conserva estado y versión, y no puede avanzar ni retroceder de estado. Las ediciones oficiales pueden cambiar texto y bloques, pero conservan identidad, estado y versión, omiten `cambio` y requieren reanclaje explícito. La estabilidad sigue exigiendo revisión independiente y evidencia en los sujetos declarados. El validador no completa `revisado_por`. Al reabrirse el versionado, los cambios usan las transiciones e incrementos de versión clasificados. El esquema JSON versionado usa únicamente type, required, properties, additionalProperties, enum, const, minLength, minimum, minItems, uniqueItems, items, $ref, anyOf y oneOf; el evaluador limita su profundidad. No anuncia soporte general de JSON Schema.
+Aplica esquema, identidad, referencias, ciclo de vida, clasificación, hashes y vínculos. Mientras el versionado está congelado, una identidad nueva debe empezar estable en `1.0.0` sin `cambio`; una identidad existente conserva estado y versión, y no puede avanzar ni retroceder de estado. Las ediciones oficiales pueden cambiar texto y bloques, pero conservan identidad, estado y versión, omiten `cambio` y requieren reanclaje explícito. La estabilidad sigue exigiendo revisión independiente y evidencia en los sujetos declarados. El validador no completa `revisado_por`. Al reabrirse el versionado, los cambios usan las transiciones e incrementos de versión clasificados. El esquema JSON versionado usa únicamente type, required, properties, additionalProperties, enum, const, minLength, minimum, maximum, minItems, maxItems, uniqueItems, items, $ref, anyOf, oneOf y not; el evaluador limita su profundidad. `maximum`, `maxItems` y `not` permiten expresar límites de respuesta HTTP y exclusión de cuerpos ambiguos sin validación especial acoplada al anfitrión. No anuncia soporte general de JSON Schema.
 
 ## 2. Guía operativa y ciclo de vida
 
@@ -90,3 +90,8 @@ validar estos datos no ejecuta ni importa al sujeto. Los negativos distinguen fo
 octeto fuera de rango, permiso desconocido, secuencias `effect_seq` no crecientes en `anfitrion_observado.efectos`,
 `efecto_pendiente` sin terminación `awaiting_effect` y combinaciones incoherentes entre `grabar_y_reproducir`,
 `alterar_cinta` y `reproduccion_fallo`.
+
+La clave `anfitrion.http` acepta guiones declarativos por método y URL con estados, cabeceras, cuerpos
+textuales o de bytes, fallos e incertidumbre. `alterar_cinta: alterar_solicitud` permite probar la
+divergencia HTTP durante reproducción. Se valida como dato cerrado; el validador no ejecuta el guion
+ni abre conexiones. Los nuevos discriminantes de fallo se prueban con positivos y negativos aislados.

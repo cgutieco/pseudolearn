@@ -67,7 +67,8 @@ pub(crate) fn validate(tape: &EffectTape) -> Result<(), ReplayError> {
         if !delivery_matches(entry, position)
             || !seen.insert(entry.effect_seq)
             || entry.entry_hash != tape_entry_hash(&previous, entry)
-            || !(["committed", "failed", "uncertain", "abandoned"].contains(&entry.outcome.as_str())
+            || !(["committed", "failed", "uncertain", "abandoned"]
+                .contains(&entry.outcome.as_str())
                 || entry.outcome == "requested" && !tape.is_reproducible())
         {
             return Err(ReplayError::CorruptedTape);

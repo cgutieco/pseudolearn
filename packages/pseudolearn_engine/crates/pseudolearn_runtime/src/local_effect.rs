@@ -7,6 +7,9 @@ pub fn local_effect(
     operation: &EffectOperation,
     arguments: &[HostValue],
 ) -> Result<HostReply, MemoryError> {
+    if operation.identity == "http_text_body" {
+        return crate::local_http_effect::http_text_body(heap, receiver);
+    }
     let value = match operation.identity {
         "bytes_new" => HostValue::Bytes(Vec::new()),
         "bytes_length" => HostValue::Integer(

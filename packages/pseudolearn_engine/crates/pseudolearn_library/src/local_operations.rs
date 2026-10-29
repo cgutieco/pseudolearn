@@ -18,6 +18,11 @@ pub fn local_operation(
         "text" => text_operation(operation.identity, arguments),
         "bytes" => bytes_operation(receiver_value.as_ref(), operation.identity, arguments),
         "json" => json_operation(receiver_value.as_ref(), operation.identity, arguments),
+        "network" => crate::http_operations::http_operation(
+            receiver_value.as_ref(),
+            operation.identity,
+            arguments,
+        ),
         _ => Ok(None),
     }
 }

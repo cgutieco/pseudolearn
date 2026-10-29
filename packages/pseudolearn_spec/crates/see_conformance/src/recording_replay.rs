@@ -119,14 +119,21 @@ pub(crate) fn apply_alteration(replay: &mut Value, alteration: &str) {
                 fields.insert("seed".to_owned(), json!(999_999));
             }
         }
+        "alterar_solicitud" => {
+            let _ = crate::recording_tape_mutation::alter_request_digest(replay);
+        }
         _ => {}
     }
 }
 
 pub(crate) fn compare_replay_failure(expected_code: &str, replayed: &Value) -> Vec<String> {
     let mut differences = Vec::new();
-    let kind = replayed.pointer("/termination/kind").and_then(Value::as_str);
-    let code = replayed.pointer("/termination/code").and_then(Value::as_str);
+    let kind = replayed
+        .pointer("/termination/kind")
+        .and_then(Value::as_str);
+    let code = replayed
+        .pointer("/termination/code")
+        .and_then(Value::as_str);
     if kind != Some("failed") || code != Some(expected_code) {
         differences.push(format!(
             "reproduccion_fallo: expected failed/{expected_code}, got {kind:?}/{code:?}"
@@ -187,11 +194,15 @@ pub(crate) fn leaked_secrets(request: &Value, live: &Value) -> Vec<String> {
     for (name, secret) in secrets {
         let value = secret.get("value").and_then(Value::as_str).unwrap_or("");
         let found = !value.is_empty()
-            && secret_forms(value)
-                .iter()
-                .any(|form| haystacks.iter().any(|haystack| haystack.contains(form.as_str())));
+            && secret_forms(value).iter().any(|form| {
+                haystacks
+                    .iter()
+                    .any(|haystack| haystack.contains(form.as_str()))
+            });
         if found {
-            leaks.push(format!("SEE-PRIVACY: secret {name} appears in the effect tape"));
+            leaks.push(format!(
+                "SEE-PRIVACY: secret {name} appears in the effect tape"
+            ));
         }
     }
     leaks

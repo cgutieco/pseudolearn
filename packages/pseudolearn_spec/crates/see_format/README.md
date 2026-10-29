@@ -2,7 +2,7 @@
 
 ## 1. Qué es y qué no es
 
-Convierte el encabezado YAML y los bloques cercados tipados de Markdown en Specification; acepta secuencias YAML y CRLF. La prosa fuera de bloques no ingresa al modelo. Rechaza enlaces HTTP externos en cualquier parte del archivo, incluida la prosa, y escribe una representación canónica legible sin alterar programas. Los fallos de lectura y formato se devuelven como Result.
+Convierte el encabezado YAML y los bloques cercados tipados de Markdown en Specification; acepta secuencias YAML y CRLF. La prosa fuera de bloques no ingresa al modelo. Rechaza enlaces documentales externos en prosa y bloques tipados, pero admite direcciones HTTP y HTTPS como datos de protocolo en ejemplos y anfitriones falsos. Escribe una representación canónica legible sin alterar programas. Los fallos de lectura y formato se devuelven como Result.
 
 ## 2. Guía operativa y ciclo de vida
 
@@ -14,8 +14,8 @@ Imports internos permitidos: model. Prohibidas las capas superiores y los sujeto
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
-Problema: el corpus debe ser autosuficiente y la prosa exterior a los bloques no forma parte del modelo. Elección: se inspecciona el texto fuente completo antes de analizarlo y se rechazan enlaces HTTP externos; las relaciones entre especificaciones se expresan por sus identidades internas.
-Se descarta limitar la inspección a los bloques tipados, porque dejaría pasar enlaces en títulos o prosa.
+Problema: el corpus no debe citar documentación externa, mientras los casos de protocolo necesitan direcciones URL. Elección: se rechazan direcciones web usadas como enlaces documentales y referencias `www.`; se admiten como datos de ejemplos y anfitriones falsos. Las relaciones entre especificaciones se expresan por sus identidades internas.
+Se descarta prohibir cada aparición de `http://` y `https://`, porque impediría especificar comportamiento de red como datos de prueba.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

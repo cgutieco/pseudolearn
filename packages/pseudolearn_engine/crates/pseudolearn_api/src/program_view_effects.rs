@@ -4,7 +4,10 @@ use pseudolearn_abi::{CapabilityKind, EFFECT_OPERATIONS};
 use pseudolearn_semantic::capability_types::find_capability_kind;
 use serde_json::json;
 
-pub(crate) fn type_attributes(node: &ViewNode, context: &AnnotationContext<'_>) -> Option<Attributes> {
+pub(crate) fn type_attributes(
+    node: &ViewNode,
+    context: &AnnotationContext<'_>,
+) -> Option<Attributes> {
     let token = first_token(context.tree, node.syntax_index)?;
     let name = context.tree.tokens.text(context.source.as_str(), token)?;
     if let Some(kind) = find_capability_kind(name) {
@@ -13,6 +16,9 @@ pub(crate) fn type_attributes(node: &ViewNode, context: &AnnotationContext<'_>) 
     match name {
         "Bytes" | "bytes" => Some(vec![("builtin_type", json!("bytes"))]),
         "ErrorES" | "IoError" => Some(vec![("builtin_type", json!("io_error"))]),
+        "PeticionHttp" | "HttpRequest" => Some(vec![("builtin_type", json!("http_request"))]),
+        "RespuestaHttp" | "HttpResponse" => Some(vec![("builtin_type", json!("http_response"))]),
+        "MetodoHttp" | "HttpMethod" => Some(vec![("builtin_type", json!("http_method"))]),
         _ => None,
     }
 }
@@ -32,5 +38,6 @@ fn capability_identity(kind: CapabilityKind) -> &'static str {
         CapabilityKind::File => "file",
         CapabilityKind::Clock => "clock",
         CapabilityKind::Timer => "timer",
+        CapabilityKind::Network => "network",
     }
 }

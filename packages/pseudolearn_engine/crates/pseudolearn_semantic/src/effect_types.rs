@@ -8,8 +8,13 @@ pub(crate) fn resolve(session: &mut AnalysisSession<'_>, node: usize, name: &str
     if let Some(kind) = crate::json_types::resolve(session, node, name) {
         return Some(kind);
     }
+    if let Some(kind) = crate::http_types::resolve(session, name) {
+        return Some(kind);
+    }
     let kind = match name {
         "Bytes" | "bytes" => EffectValueKind::Bytes,
+        "PeticionHttp" | "HttpRequest" => EffectValueKind::HttpRequest,
+        "RespuestaHttp" | "HttpResponse" => EffectValueKind::HttpResponse,
         "ErrorES" | "IoError" => return Some(error_type(session, node)),
         _ => capability_kind(name)?,
     };
@@ -25,6 +30,7 @@ fn capability_kind(name: &str) -> Option<EffectValueKind> {
         CapabilityKind::File => EffectValueKind::File,
         CapabilityKind::Clock => EffectValueKind::Clock,
         CapabilityKind::Timer => EffectValueKind::Timer,
+        CapabilityKind::Network => EffectValueKind::Network,
     })
 }
 
@@ -49,6 +55,7 @@ pub(crate) fn value_type(
         | EffectValueKind::OptionalJsonValue => {
             return crate::json_types::value_type(session, node, kind);
         }
+        EffectValueKind::HttpMethod => return crate::http_types::value_type(session, node),
         other => opaque(session, node, other),
     };
     session.module.types.intern(kind)

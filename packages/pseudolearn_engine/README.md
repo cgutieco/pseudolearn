@@ -610,3 +610,14 @@ de emitir código y `build_native_object` devuelve el diagnóstico `nativeTasksU
 `NativeBuildFailure::Rejected`; la CLI lo muestra con salida 1 tanto en `build` como en
 `run --native`. Las reglas de tareas siguen `pendiente` en `conformance-aot.yaml` con su punto de
 resolución. Un programa sin tareas, aunque su raíz sea suspendible, se compila como siempre.
+
+### Cliente HTTP/HTTPS del motor
+
+El motor representa método, petición y respuesta como valores tipados y conserva las operaciones
+puras HTTP en `pseudolearn_library`; autorización por origen, validación de solicitudes y proveedor
+de memoria pertenecen a `pseudolearn_runtime`. La API no añade conexiones reales: las pruebas usan
+guiones locales del anfitrión. Los estados 4xx y 5xx se devuelven como respuestas completas para que
+el programa decida cómo interpretarlos. `pseudolearn_ir` mantiene su tabla de operaciones existente;
+solo reconoce `HttpMethod` en el banco escalar. Las pruebas HTTP también cubren entregas concurrentes
+fuera del orden de petición y la divergencia de una solicitud durante reproducción desde cinta; el
+replay conserva aislamiento y nunca recurre al anfitrión.

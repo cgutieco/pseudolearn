@@ -61,16 +61,18 @@ pub enum PermissionName {
     FilesWrite,
     Clock,
     Timer,
+    Network,
 }
 
 impl PermissionName {
-    pub const ALL: [Self; 6] = [
+    pub const ALL: [Self; 7] = [
         Self::Console,
         Self::Arguments,
         Self::FilesRead,
         Self::FilesWrite,
         Self::Clock,
         Self::Timer,
+        Self::Network,
     ];
 
     pub fn parse(text: &str) -> Option<Self> {
@@ -81,6 +83,7 @@ impl PermissionName {
             "archivos_escritura" | "files_write" => Some(Self::FilesWrite),
             "reloj" | "clock" => Some(Self::Clock),
             "temporizador" | "timer" => Some(Self::Timer),
+            "red" | "network" => Some(Self::Network),
             _ => None,
         }
     }
@@ -93,6 +96,7 @@ impl PermissionName {
             Self::FilesWrite => "archivos_escritura",
             Self::Clock => "reloj",
             Self::Timer => "temporizador",
+            Self::Network => "red",
         }
     }
 }

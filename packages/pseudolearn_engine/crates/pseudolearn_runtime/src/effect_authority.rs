@@ -3,12 +3,14 @@ use crate::{
     RightsMask,
 };
 use pseudolearn_abi::{EffectOperation, EffectValueKind, IoErrorKind};
-use std::collections::BTreeSet;
+use std::collections::{BTreeMap, BTreeSet};
 
 #[derive(Clone, Debug, Default, Eq, PartialEq)]
 pub(crate) struct EffectAuthority {
     pub(crate) table: CapabilityTable,
     pub(crate) permissions: BTreeSet<String>,
+    pub(crate) granted_network_origins: BTreeSet<String>,
+    pub(crate) network_capabilities: BTreeMap<u32, BTreeSet<String>>,
 }
 
 pub fn effective_permissions(host: Option<&serde_json::Value>) -> BTreeSet<String> {
@@ -47,7 +49,14 @@ pub(crate) fn prepare(
         None => root_rights(&authority.permissions, operation.result)?,
     };
     if let Some(kind) = capability_kind(operation.result) {
-        request.result_capability = Some(authority.table.allocate(kind, rights).into());
+        let network_origins = (kind == CapabilityKind::Network)
+            .then(|| network_capability_origins(authority, operation, request))
+            .transpose()?;
+        let token = authority.table.allocate(kind, rights);
+        if let Some(origins) = network_origins {
+            authority.network_capabilities.insert(token.slot, origins);
+        }
+        request.result_capability = Some(token.into());
     }
     Ok(())
 }
@@ -65,6 +74,7 @@ fn validate_receiver(
     if operation.receiver.and_then(capability_kind) != Some(token.kind) {
         return Err(IoError::permission_denied());
     }
+    validate_network_receiver(authority, operation, token, arguments)?;
     let rights = match operation.identity {
         "file_open" | "directory_derive" => mode_rights(arguments.last())?,
         "file_read_bytes" | "file_read_text" => RightsMask::READ_ONLY,
@@ -116,6 +126,7 @@ fn root_rights(
         EffectValueKind::Arguments => "argumentos",
         EffectValueKind::Clock => "reloj",
         EffectValueKind::Timer => "temporizador",
+        EffectValueKind::Network => "red",
         EffectValueKind::Directory => {
             let rights = RightsMask {
                 read: permissions.contains("archivos_lectura"),
@@ -145,6 +156,58 @@ pub(crate) fn capability_kind(kind: EffectValueKind) -> Option<CapabilityKind> {
         EffectValueKind::File => Some(CapabilityKind::File),
         EffectValueKind::Clock => Some(CapabilityKind::Clock),
         EffectValueKind::Timer => Some(CapabilityKind::Timer),
+        EffectValueKind::Network => Some(CapabilityKind::Network),
         _ => None,
+    }
+}
+
+fn network_capability_origins(
+    authority: &EffectAuthority,
+    operation: &EffectOperation,
+    request: &HostEffectRequest,
+) -> Result<BTreeSet<String>, IoError> {
+    match operation.identity {
+        "request_network" => Ok(authority.granted_network_origins.clone()),
+        "network_restrict" => {
+            let origin = crate::network_url::parse_origin(text_argument(&request.arguments, 0)?)?;
+            Ok(BTreeSet::from([origin]))
+        }
+        _ => Ok(BTreeSet::new()),
+    }
+}
+
+fn validate_network_receiver(
+    authority: &EffectAuthority,
+    operation: &EffectOperation,
+    token: CapabilityToken,
+    arguments: &[HostValue],
+) -> Result<(), IoError> {
+    let origins = authority
+        .network_capabilities
+        .get(&token.slot)
+        .ok_or_else(IoError::permission_denied)?;
+    match operation.identity {
+        "network_restrict" => {
+            let origin = crate::network_url::parse_origin(text_argument(arguments, 0)?)?;
+            if !origins.contains(&origin) {
+                return Err(IoError::from_kind(IoErrorKind::DestinationDenied));
+            }
+        }
+        "network_send" => {
+            let request = crate::http_values::request_from_value(
+                arguments.first().ok_or_else(IoError::permission_denied)?,
+            )
+            .map_err(|_| IoError::permission_denied())?;
+            crate::network_policy::validate_request(request, origins)?;
+        }
+        _ => (),
+    }
+    Ok(())
+}
+
+fn text_argument(arguments: &[HostValue], index: usize) -> Result<&str, IoError> {
+    match arguments.get(index) {
+        Some(HostValue::Text(value)) => Ok(value),
+        _ => Err(IoError::permission_denied()),
     }
 }

@@ -9,6 +9,7 @@ mod bytes_operations;
 mod decimal;
 mod error;
 mod format;
+mod http_operations;
 mod json_build;
 mod json_local_views;
 mod json_parse;

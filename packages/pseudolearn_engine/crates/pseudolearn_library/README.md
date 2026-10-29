@@ -134,3 +134,15 @@ Ziv, CRlibm y CORE-MATH inspiran aproximación rápida y reevaluación adaptativ
 collection_operation es la fachada compartida por VM y AOT. Recibe una disposición estática y argumentos canónicos separados de sus raíces; deriva las operaciones de heap sin tablas persistentes de tipos dinámicos. quote_text conserva Unicode y escapa delimitadores, saltos y controles; la salida de una colección no normaliza cadenas.
 
 Los tests de estas capacidades se ejecutaron en selecciones acotadas, incluida la comparación de gemelos con recolección forzada. La conformidad del corpus sigue pendiente de la revisión editorial independiente de los contratos nuevos, y la medición de tamaño excede el presupuesto de Wasm.
+
+## Operaciones locales de HTTP
+
+Los constructores, las transformaciones inmutables de petición y los accesores de respuesta viven en
+`http_operations`, separados de la lógica de efectos. Esta capa forma valores mediante las funciones
+de `pseudolearn_runtime`; solo `Enviar`, `SolicitarRed`, `Limitar` y `Cerrar` pasan por el anfitrión.
+La separación conserva una sola implementación de las operaciones puras para VM y AOT y evita que la
+biblioteca local adquiera autoridad de red.
+
+`ConLimiteRespuesta` y `ConTiempoMaximo` guardan valores inmutables en la petición. La biblioteca no
+interpreta ni ejecuta esos límites; su aplicación pertenece a la capa runtime y al alcance de la
+gestión de límites externos.

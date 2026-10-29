@@ -19,7 +19,8 @@ pub(crate) fn lookup(
         .enums
         .get(&name)
         .copied()
-        .or_else(|| crate::json_types::builtin_enum(session, &name))?;
+        .or_else(|| crate::json_types::builtin_enum(session, &name))
+        .or_else(|| crate::http_types::builtin_enum(session, &name))?;
     let wanted = session.name(member);
     let ordinal = usize::try_from(enumeration.0)
         .ok()

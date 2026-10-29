@@ -863,3 +863,11 @@
   ]
 }
 ```
+
+```definicion
+{
+  "id": "D5",
+  "termino": "valores HTTP de efecto",
+  "texto": "En el canal de efectos, HttpRequest serializa método, URL, cabeceras ordenadas con repetidos, cuerpo opcional, límite de respuesta opcional y plazo opcional. HttpResponse serializa estado, cabeceras ordenadas con repetidos, bytes de cuerpo y URL final. Un request_network o network_send reproducido obtiene su HostReply de la cinta; no consulta al anfitrión."
+}
+```

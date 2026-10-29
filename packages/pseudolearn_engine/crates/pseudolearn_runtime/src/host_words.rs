@@ -10,6 +10,9 @@ pub fn decode_host_value(
         EffectValueKind::Integer => Ok(HostValue::Integer(i64::from_ne_bytes(word.to_ne_bytes()))),
         EffectValueKind::Real => Ok(HostValue::Real(word)),
         EffectValueKind::Boolean => Ok(HostValue::Boolean(word != 0)),
+        EffectValueKind::HttpMethod => Ok(HostValue::HttpMethod(
+            crate::HttpMethod::from_tag(word).ok_or(MemoryError::Internal)?,
+        )),
         EffectValueKind::JsonKind => Ok(HostValue::JsonKind(
             u8::try_from(word).map_err(|_| MemoryError::Internal)?,
         )),
@@ -21,6 +24,12 @@ pub fn decode_host_value(
         )),
         EffectValueKind::Bytes => Ok(HostValue::Bytes(crate::bytes_content(heap, handle(word)?)?)),
         EffectValueKind::TextList => Ok(HostValue::TextList(text_list(heap, handle(word)?)?)),
+        EffectValueKind::HttpRequest => Ok(HostValue::HttpRequest(
+            crate::http_values::decode_request(heap, handle(word)?)?,
+        )),
+        EffectValueKind::HttpResponse => Ok(HostValue::HttpResponse(
+            crate::http_values::decode_response(heap, handle(word)?)?,
+        )),
         _ => Ok(HostValue::Capability(
             crate::capability_token(heap, handle(word)?)?.into(),
         )),
@@ -124,12 +133,21 @@ fn encode_value(
     let (roots, type_identity) = allocation;
     let value = match value {
         HostValue::Integer(value) => return Ok(u64::from_ne_bytes(value.to_ne_bytes())),
+        HostValue::HttpMethod(value) => return Ok(value.to_tag()),
         HostValue::JsonKind(value) => return Ok(u64::from(*value)),
         HostValue::Real(value) => return Ok(*value),
         HostValue::Boolean(value) => return Ok(u64::from(*value)),
         HostValue::Text(text) => crate::new_text(heap, text, false, roots)?,
         HostValue::JsonValue(text) => crate::json_document::new_json_document(heap, text, roots)?,
         HostValue::Bytes(bytes) => crate::new_bytes(heap, bytes, roots)?,
+        HostValue::HttpRequest(request) => {
+            let bytes = crate::http_values::request_bytes(request)?;
+            crate::new_bytes(heap, &bytes, roots)?
+        }
+        HostValue::HttpResponse(response) => {
+            let bytes = crate::http_values::response_bytes(response)?;
+            crate::new_bytes(heap, &bytes, roots)?
+        }
         HostValue::JsonResult(_) | HostValue::OptionalBoolean(_) => {
             return Err(MemoryError::Internal);
         }

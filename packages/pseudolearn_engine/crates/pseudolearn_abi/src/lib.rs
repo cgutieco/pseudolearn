@@ -5,6 +5,7 @@ pub mod bytes_layout;
 pub mod capability_layout;
 mod collection_command;
 pub mod dictionary_layout;
+pub mod http_layout;
 pub mod io_error_layout;
 pub mod json_layout;
 pub mod vector_layout;
@@ -14,6 +15,7 @@ pub use bytes_layout::{
 pub use capability_layout::{CAPABILITY_HEADER_WORDS, CAPABILITY_SHAPE_TAG, CapabilityKind};
 pub use collection_command::CollectionCommand;
 pub use dictionary_layout::{DictionaryKeyKind, DictionaryLayout};
+pub use http_layout::{HTTP_REQUEST_PREFIX, HTTP_RESPONSE_PREFIX, HTTP_VALUE_PREFIX_BYTES};
 pub use io_error_layout::IoErrorKind;
 pub use vector_layout::VectorLayout;
 pub mod frame;

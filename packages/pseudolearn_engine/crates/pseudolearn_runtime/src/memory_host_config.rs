@@ -1,4 +1,4 @@
-use crate::{IoError, MemoryHostProvider};
+use crate::{HttpMethod, HttpResponseValue, IoError, MemoryHostProvider};
 use pseudolearn_abi::IoErrorKind;
 use serde::Deserialize;
 use serde_json::Value;
@@ -14,6 +14,7 @@ struct Configuration {
     permissions: Vec<String>,
     requested_permissions: Option<Vec<String>>,
     faults: Vec<FaultConfiguration>,
+    http: BTreeMap<String, HttpScriptConfiguration>,
     #[serde(rename = "secrets")]
     _secrets: BTreeMap<String, SecretConfiguration>,
     #[serde(rename = "secret_keys")]
@@ -44,6 +45,19 @@ struct FaultConfiguration {
 
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
+struct HttpScriptConfiguration {
+    estado: Option<u16>,
+    #[serde(default)]
+    cabeceras: Vec<(String, String)>,
+    cuerpo: Option<String>,
+    cuerpo_bytes: Option<Vec<u8>>,
+    fallo: Option<String>,
+    #[serde(default)]
+    incierto: bool,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
 struct SecretConfiguration {
     #[serde(rename = "key_id")]
     _key_id: String,
@@ -51,13 +65,14 @@ struct SecretConfiguration {
     _value: String,
 }
 
-const KNOWN_PERMISSIONS: [&str; 6] = [
+const KNOWN_PERMISSIONS: [&str; 7] = [
     "consola",
     "argumentos",
     "archivos_lectura",
     "archivos_escritura",
     "reloj",
     "temporizador",
+    "red",
 ];
 
 pub(crate) fn parse(value: &Value) -> Result<MemoryHostProvider, IoError> {
@@ -70,9 +85,11 @@ pub(crate) fn parse(value: &Value) -> Result<MemoryHostProvider, IoError> {
         return Err(invalid());
     }
     crate::secret_policy::SecretPolicy::from_host(Some(value))?;
+    let http_scripts = parse_http_scripts(config.http)?;
     let mut provider = MemoryHostProvider {
         arguments: config.arguments,
         clocks: config.clock.into(),
+        http_scripts,
         ..Default::default()
     };
     for (path, value) in config.files {
@@ -84,6 +101,69 @@ pub(crate) fn parse(value: &Value) -> Result<MemoryHostProvider, IoError> {
         provider.faults.push(memory_fault(fault)?);
     }
     Ok(provider)
+}
+
+fn parse_http_scripts(
+    configurations: BTreeMap<String, HttpScriptConfiguration>,
+) -> Result<BTreeMap<String, crate::memory_host::HttpScript>, IoError> {
+    configurations
+        .into_iter()
+        .map(|(key, configuration)| {
+            let script = parse_http_script(&key, configuration)?;
+            Ok((key, script))
+        })
+        .collect()
+}
+
+fn parse_http_script(
+    key: &str,
+    configuration: HttpScriptConfiguration,
+) -> Result<crate::memory_host::HttpScript, IoError> {
+    let (method, url) = key.split_once(' ').ok_or_else(invalid)?;
+    let method = HttpMethod::parse(method).ok_or_else(invalid)?;
+    let parsed = crate::network_url::parse_url(url)?;
+    let body = script_body(configuration.cuerpo, configuration.cuerpo_bytes)?;
+    let failure = configuration
+        .fallo
+        .map(|code| failure(code, configuration.incierto, method))
+        .transpose()?;
+    let response = if failure.is_some() {
+        if configuration.estado.is_some() || !configuration.cabeceras.is_empty() || !body.is_empty()
+        {
+            return Err(invalid());
+        }
+        None
+    } else {
+        let status = configuration.estado.ok_or_else(invalid)?;
+        let response = HttpResponseValue {
+            status,
+            headers: configuration.cabeceras,
+            body,
+            final_url: parsed.without_fragment,
+        };
+        Some(response)
+    };
+    Ok(crate::memory_host::HttpScript { response, failure })
+}
+
+fn script_body(text: Option<String>, bytes: Option<Vec<u8>>) -> Result<Vec<u8>, IoError> {
+    match (text, bytes) {
+        (Some(value), None) => Ok(value.into_bytes()),
+        (None, Some(value)) => Ok(value),
+        (None, None) => Ok(Vec::new()),
+        (Some(_), Some(_)) => Err(invalid()),
+    }
+}
+
+fn failure(code: String, uncertain: bool, method: HttpMethod) -> Result<IoError, IoError> {
+    let kind = IoErrorKind::ALL
+        .into_iter()
+        .find(|kind| kind.code() == code)
+        .ok_or_else(invalid)?;
+    if uncertain && matches!(method, HttpMethod::Get | HttpMethod::Head) {
+        return Err(invalid());
+    }
+    Ok(IoError::new(kind, uncertain))
 }
 
 fn memory_fault(fault: FaultConfiguration) -> Result<crate::memory_host::MemoryFault, IoError> {

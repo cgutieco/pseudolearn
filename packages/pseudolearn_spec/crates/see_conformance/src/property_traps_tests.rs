@@ -73,8 +73,11 @@ fn scenario_with_seed(seed: u64) -> Scenario {
 fn completed_expectation() -> Result<(u64, Value), String> {
     for seed in 0..256_u64 {
         let mut probe = subject(json!([]), json!({}));
-        let difference =
-            property_traps::check(PropertyExecutor::FirstTrap, &scenario_with_seed(seed), &mut probe)?;
+        let difference = property_traps::check(
+            PropertyExecutor::FirstTrap,
+            &scenario_with_seed(seed),
+            &mut probe,
+        )?;
         if let Some((expected, _)) = difference
             && expected.pointer("/termination/kind") == Some(&json!("completed"))
         {
@@ -88,8 +91,11 @@ fn completed_expectation() -> Result<(u64, Value), String> {
 fn subject_with_observation_receives_both_modes() -> Result<(), String> {
     let (seed, expected) = completed_expectation()?;
     let mut recorder = subject(json!(["observe"]), expected);
-    let difference =
-        property_traps::check(PropertyExecutor::FirstTrap, &scenario_with_seed(seed), &mut recorder)?;
+    let difference = property_traps::check(
+        PropertyExecutor::FirstTrap,
+        &scenario_with_seed(seed),
+        &mut recorder,
+    )?;
     assert!(difference.is_none());
     let modes: Vec<&str> = recorder
         .requests

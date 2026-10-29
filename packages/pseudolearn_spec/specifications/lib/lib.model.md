@@ -671,7 +671,7 @@
 ```
 
 ```definicion
- {
+{
   "id": "D2",
   "termino": "capabilityLibrary",
   "texto": "Operaciones de biblioteca y de capacidades con identidad estable, familia, receptor, formas bilingües, parámetros, resultado y clasificación de efectos.",
@@ -1206,11 +1206,213 @@
         "result": "json_value",
         "effect": false,
         "fallible": true
+      },
+      {
+        "identity": "request_network",
+        "family": "network",
+        "receiver": null,
+        "es": "SolicitarRed",
+        "en": "requestNetwork",
+        "parameters": [],
+        "result": "network",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "network_restrict",
+        "family": "network",
+        "receiver": "network",
+        "es": "Limitar",
+        "en": "restrict",
+        "parameters": [
+          "text"
+        ],
+        "result": "network",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "network_send",
+        "family": "network",
+        "receiver": "network",
+        "es": "Enviar",
+        "en": "send",
+        "parameters": [
+          "http_request"
+        ],
+        "result": "http_response",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "network_close",
+        "family": "network",
+        "receiver": "network",
+        "es": "Cerrar",
+        "en": "close",
+        "parameters": [],
+        "result": "boolean",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "http_request_new",
+        "family": "network",
+        "receiver": null,
+        "es": "PeticionHttp",
+        "en": "HttpRequest",
+        "parameters": [
+          "http_method",
+          "text"
+        ],
+        "result": "http_request",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "http_with_header",
+        "family": "network",
+        "receiver": "http_request",
+        "es": "ConCabecera",
+        "en": "withHeader",
+        "parameters": [
+          "text",
+          "text"
+        ],
+        "result": "http_request",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "http_with_body",
+        "family": "network",
+        "receiver": "http_request",
+        "es": "ConCuerpo",
+        "en": "withBody",
+        "parameters": [
+          "bytes"
+        ],
+        "result": "http_request",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "http_with_text_body",
+        "family": "network",
+        "receiver": "http_request",
+        "es": "ConCuerpoTexto",
+        "en": "withTextBody",
+        "parameters": [
+          "text"
+        ],
+        "result": "http_request",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "http_with_response_limit",
+        "family": "network",
+        "receiver": "http_request",
+        "es": "ConLimiteRespuesta",
+        "en": "withResponseLimit",
+        "parameters": ["integer"],
+        "result": "http_request",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "http_with_timeout",
+        "family": "network",
+        "receiver": "http_request",
+        "es": "ConTiempoMaximo",
+        "en": "withTimeout",
+        "parameters": ["integer"],
+        "result": "http_request",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "http_status",
+        "family": "network",
+        "receiver": "http_response",
+        "es": "Estado",
+        "en": "status",
+        "parameters": [],
+        "result": "integer",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "http_is_success",
+        "family": "network",
+        "receiver": "http_response",
+        "es": "EsExito",
+        "en": "isSuccess",
+        "parameters": [],
+        "result": "boolean",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "http_header",
+        "family": "network",
+        "receiver": "http_response",
+        "es": "Cabecera",
+        "en": "header",
+        "parameters": [
+          "text"
+        ],
+        "result": "optional_text",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "http_header_names",
+        "family": "network",
+        "receiver": "http_response",
+        "es": "NombresCabeceras",
+        "en": "headerNames",
+        "parameters": [],
+        "result": "text_list",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "http_body",
+        "family": "network",
+        "receiver": "http_response",
+        "es": "Cuerpo",
+        "en": "body",
+        "parameters": [],
+        "result": "bytes",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "http_text_body",
+        "family": "network",
+        "receiver": "http_response",
+        "es": "CuerpoTexto",
+        "en": "textBody",
+        "parameters": [],
+        "result": "text",
+        "effect": false,
+        "fallible": true
+      },
+      {
+        "identity": "http_final_url",
+        "family": "network",
+        "receiver": "http_response",
+        "es": "Url",
+        "en": "url",
+        "parameters": [],
+        "result": "text",
+        "effect": false,
+        "fallible": false
       }
     ]
   }
 }
-
 ```
 
 

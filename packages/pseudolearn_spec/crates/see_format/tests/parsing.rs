@@ -52,5 +52,14 @@ fn rejects_external_documentation_links_in_prose_and_contracts() -> Result<(), S
         ),
         Err("SEE-REFERENCE: external documentation link forbidden".to_owned())
     );
+    assert_eq!(
+        see_format::parsing::parse(
+            "external_markdown_link",
+            &format!("{text}\n[reference](https://example.invalid/spec)\n")
+        ),
+        Err("SEE-REFERENCE: external documentation link forbidden".to_owned())
+    );
+    let protocol_value = format!("{text}\n```caso\nid: C9\ntexto: GET https://fake.test/a\n```\n");
+    assert!(see_format::parsing::parse("protocol_value", &protocol_value).is_ok());
     Ok(())
 }

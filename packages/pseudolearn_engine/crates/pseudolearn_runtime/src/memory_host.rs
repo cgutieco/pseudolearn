@@ -10,6 +10,12 @@ pub(crate) struct MemoryFault {
     pub(crate) error: IoError,
 }
 
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub(crate) struct HttpScript {
+    pub(crate) response: Option<crate::HttpResponseValue>,
+    pub(crate) failure: Option<IoError>,
+}
+
 #[derive(Clone, Debug, Default, Eq, PartialEq)]
 pub struct MemoryHostProvider {
     pub files: BTreeMap<String, Vec<u8>>,
@@ -20,6 +26,7 @@ pub struct MemoryHostProvider {
     pub(crate) clocks: VecDeque<u64>,
     pub(crate) faults: Vec<MemoryFault>,
     pub(crate) resources: BTreeMap<u32, String>,
+    pub(crate) http_scripts: BTreeMap<String, HttpScript>,
 }
 
 impl MemoryHostProvider {
@@ -108,8 +115,41 @@ impl MemoryHostProvider {
                 integer_time(self.time_nanos)
             }
             "timer_wait" => self.wait(request),
+            "network_send" => self.send_network(request),
+            "network_close" => self.close_network(request),
             _ => crate::memory_host_files::perform(self, request),
         }
+    }
+
+    fn close_network(&mut self, request: &HostEffectRequest) -> Result<HostValue, IoError> {
+        if let Some(receiver) = &request.receiver {
+            self.resources.remove(&receiver.slot);
+        }
+        Ok(HostValue::Boolean(true))
+    }
+
+    fn send_network(&self, request: &HostEffectRequest) -> Result<HostValue, IoError> {
+        let http_request = match request.arguments.first() {
+            Some(HostValue::HttpRequest(value)) => value,
+            _ => return Err(IoError::from_kind(IoErrorKind::InvalidRequest)),
+        };
+        let key = crate::network_policy::request_key(http_request)?;
+        let script = self
+            .http_scripts
+            .get(&key)
+            .ok_or_else(|| IoError::from_kind(IoErrorKind::ConnectionFailed))?;
+        if let Some(error) = script.failure {
+            return Err(error);
+        }
+        let mut response = script
+            .response
+            .clone()
+            .ok_or_else(|| IoError::from_kind(IoErrorKind::InvalidResponse))?;
+        if http_request.method == crate::HttpMethod::Head {
+            response.body.clear();
+        }
+        crate::network_policy::validate_response(&response)?;
+        Ok(HostValue::HttpResponse(response))
     }
 
     fn wait(&mut self, request: &HostEffectRequest) -> Result<HostValue, IoError> {

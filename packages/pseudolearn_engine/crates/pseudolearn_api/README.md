@@ -287,3 +287,11 @@ limpiezas cooperativas, contrapresión, elección por orden textual y ubicacione
 del bloqueo. `task_lowering_tests` localiza los rechazos en la frontera de RI o bytecode.
 Estos tests se ejecutan por archivo desde la raíz del motor; no sustituyen la conformidad de
 los sujetos ni las pruebas de reconstrucción histórica o de cinta concurrente.
+
+## HTTP en el anfitrión de prueba
+
+`FakeHostProvider` usa el mapa `http` del anfitrión de memoria, indexado por método explícito y URL;
+no contiene un cliente de red real. Los estados HTTP completos se entregan al programa como
+`RespuestaHttp`, incluso cuando son 4xx o 5xx. La grabación y reproducción de respuestas no
+secretas atraviesa la API y la reproducción no llama al anfitrión. Las pruebas del API verifican esta
+frontera de integración; validación de URL, autorización y representación permanecen en runtime.

@@ -24,13 +24,13 @@ Los arreglos guardan total de elementos en la palabra 2, cantidad de elementos e
 
 Invariantes: Una sola disposición para runtime, VM, línea temporal y futuros consumidores nativos. NaN representa real ausente, 2 lógico ausente, 0xFFFFFFFF carácter ausente y asa cero referencia ausente.
 
-Capacidades (`capability_layout`): `CapabilityKind` define las clases normativas (`Console`, `Arguments`, `Directory`, `File`, `Clock`, `Timer`) y sus etiquetas numéricas (0..=5). `CAPABILITY_HEADER_WORDS = 2` y `CAPABILITY_SHAPE_TAG = 0x0000_CA00` definen la cabecera estándar en el montón para asas de capacidad, permitiendo que runtime, semántica, VM y línea temporal compartan la misma clasificación y disposición binaria sin descriptores externos.
+Capacidades (`capability_layout`): `CapabilityKind` define las clases normativas (`Console`, `Arguments`, `Directory`, `File`, `Clock`, `Timer`, `Network`) y sus etiquetas numéricas (0..=6). `CAPABILITY_HEADER_WORDS = 2` y `CAPABILITY_SHAPE_TAG = 0x0000_CA00` definen la cabecera estándar en el montón para asas de capacidad, permitiendo que runtime, semántica, VM y línea temporal compartan la misma clasificación y disposición binaria sin descriptores externos.
 
 Búfer de bytes (`bytes_layout`): `BYTES_SHAPE_TAG = 0x0000_BA00` y `bytes_cell_count(len)` formalizan la representación en celdas de 16 bytes para secuencias binarias independientes de cadenas UTF-8.
 
 JSON (`json_layout`): `JsonNodeKind` fija las etiquetas 0–5 para nulo, lógico, número, cadena, arreglo y objeto. El bloque usa `JSON_BLOCK_SHAPE_TAG = u32::MAX - 5`, dos palabras de metadatos tras la cabecera común y ocho palabras por nodo; los bytes de nombres y escalares ocupan el sufijo empaquetado. `JSON_VIEW_SHAPE_TAG = u32::MAX - 4` identifica el wrapper que conserva la asa del bloque y el índice del nodo.
 
-Errores de entrada/salida (`io_error_layout`): `IoErrorKind` unifica los 9 códigos canónicos de fallos de E/S (`notFound`, `permissionDenied`, `alreadyExists`, `endOfFile`, `invalidUtf8`, `invalidPath`, `closedCapability`, `timedOut`, `interrupted`) y sus etiquetas numéricas compartidas por runtime y VM.
+Errores de entrada/salida (`io_error_layout`): `IoErrorKind` unifica 15 códigos canónicos y sus etiquetas numéricas compartidas por runtime y VM. A los nueve fallos de E/S se añaden `url_invalida`, `peticion_invalida`, `destino_denegado`, `conexion_fallida`, `certificado_invalido` y `respuesta_invalida`; los códigos existentes conservan sus etiquetas.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
@@ -90,7 +90,7 @@ consultan al anfitrión; los demás producen un Resultado portable.
 
 ### Familia de capacidad de cada operación (`PG-3`)
 
-`EffectOperation::capability_family` es la única fuente del vocabulario cerrado `console`, `arguments`, `filesystem`, `clock` y `timer` con el que la cinta y la carga de `awaiting_effect` rotulan una operación. Se deriva del receptor (`Directory` y `File` son `filesystem`) y, para una solicitud de capacidad (`request_*`), de la capacidad solicitada; una operación sin receptor ni prefijo de solicitud cae en `host`. La función vive en la ABI porque la VM y el runtime la comparten y ninguno puede depender del otro; antes cada uno formateaba el nombre interno de Rust (`Directory`, `File`), que no era un contrato. `tests/effect_operation_family_tests.rs` cubre las operaciones con receptor, las solicitudes y una identidad inexistente.
+`EffectOperation::capability_family` es la única fuente del vocabulario cerrado `console`, `arguments`, `filesystem`, `clock`, `timer` y `network` con el que la cinta y la carga de `awaiting_effect` rotulan una operación. Se deriva del receptor (`Directory` y `File` son `filesystem`, la capacidad `Network` es `network`) y, para una solicitud de capacidad (`request_*`), de la capacidad solicitada; una operación sin receptor ni prefijo de solicitud cae en `host`. La función vive en la ABI porque la VM y el runtime la comparten y ninguno puede depender del otro; antes cada uno formateaba el nombre interno de Rust (`Directory`, `File`), que no era un contrato. `tests/effect_operation_family_tests.rs` cubre las operaciones con receptor, las solicitudes y una identidad inexistente.
 
 ## Canales acotados
 
@@ -109,3 +109,12 @@ límites, desbordamiento y posiciones. La asignación y el recorrido del montón
 son `u32::MAX - 1` (vector), `- 2` (diccionario), `- 4` (vista JSON), `- 5` (bloque JSON), `- 6`
 (canal), `- 7` (capacidad), `- 8` (bytes), `- 9` (tarea) y `- 10` (continuación); las clases de usuario
 ocupan las etiquetas inferiores a la de continuación.
+
+## Valores HTTP
+
+`http_layout` fija los prefijos `PLHR` y `PLHS` para las formas serializadas de petición y respuesta; así
+los valores inmutables conservan una codificación comprobable en el ABI compartido por runtime y
+ejecutores. `Network`, `HttpMethod`, `HttpRequest` y `HttpResponse` tienen identidades de valor
+propias. `HttpMethod` ocupa el banco escalar como `i64`; los demás valores HTTP usan referencias.
+Esta distinción permite que el verificador de RI compruebe métodos explícitos sin introducir tipos o
+instrucciones específicas en la representación intermedia.

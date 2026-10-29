@@ -42,7 +42,11 @@ pub(crate) fn check(
         .get("capabilities")
         .and_then(Value::as_array)
         .is_some_and(|values| values.contains(&json!("observe")));
-    let modes: &[&str] = if observing { &["none", "events"] } else { &["none"] };
+    let modes: &[&str] = if observing {
+        &["none", "events"]
+    } else {
+        &["none"]
+    };
     for observe in modes {
         let response = subject.exchange(&json!({"kind":"execute","program":program,
             "profile":"es","strictness":"strict","inputs":[],"seed":0,"observe":observe,

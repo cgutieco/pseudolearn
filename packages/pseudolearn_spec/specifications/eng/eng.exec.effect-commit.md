@@ -520,3 +520,38 @@
   }
 }
 ```
+
+```regla
+{
+  "id": "R5",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "En las operaciones HTTP, GET y HEAD son de solo lectura y nunca producen Uncertain. POST, PUT, PATCH y DELETE tienen potencial de mutación; un fallo incierto después de iniciar el envío y antes de recibir una respuesta completa se conserva como Uncertain con Incierto verdadero.",
+  "verificacion": ["C8"]
+}
+```
+
+```caso
+{
+  "id": "C8",
+  "regla": "R5",
+  "perfiles": ["es", "en"],
+  "rigor": ["estricto", "flexible"],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "{{lexema:booleanTrue}}\n",
+    "terminacion": "completed",
+    "anfitrion_observado": {"llamadas": 2, "estado_cinta": "uncertain_external_state"}
+  },
+  "programas": {
+    "es": "Algoritmo Main\nDefinir net Como RedCap <- Propagar SolicitarRed();\nDefinir request Como PeticionHttp <- PeticionHttp(MetodoHttp.POST, \"https://fake.test/write\");\nSegun net.Enviar(request) Hacer\nExito(response): Escribir \"completado\";\nError(problem): Escribir problem.Incierto;\nFinSegun\nFinAlgoritmo\n",
+    "en": "algorithm Main\ndefine net as NetworkCap <- propagate requestNetwork();\ndefine request as HttpRequest <- HttpRequest(HttpMethod.POST, \"https://fake.test/write\");\nswitch net.send(request) do\nsuccess(response): write \"committed\";\nfailure(problem): write problem.uncertain;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": ["red"],
+    "requested_permissions": ["red"],
+    "http": {"POST https://fake.test/write": {"fallo": "conexion_fallida", "incierto": true}}
+  }
+}
+```

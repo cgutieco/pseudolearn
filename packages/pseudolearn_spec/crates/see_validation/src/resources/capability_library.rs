@@ -33,6 +33,10 @@ const KINDS: &[&str] = &[
     "optional_real",
     "optional_text",
     "optional_json_value",
+    "network",
+    "http_method",
+    "http_request",
+    "http_response",
 ];
 
 pub(super) fn check(value: &Value) -> Result<(), String> {

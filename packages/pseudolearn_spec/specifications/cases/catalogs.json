@@ -533,6 +533,213 @@
         ],
         "receiver": "json_value",
         "result": "json_value"
+      },
+      {
+        "effect": true,
+        "en": "requestNetwork",
+        "es": "SolicitarRed",
+        "fallible": true,
+        "family": "network",
+        "identity": "request_network",
+        "parameters": [],
+        "receiver": null,
+        "result": "network"
+      },
+      {
+        "effect": true,
+        "en": "restrict",
+        "es": "Limitar",
+        "fallible": true,
+        "family": "network",
+        "identity": "network_restrict",
+        "parameters": [
+          "text"
+        ],
+        "receiver": "network",
+        "result": "network"
+      },
+      {
+        "effect": true,
+        "en": "send",
+        "es": "Enviar",
+        "fallible": true,
+        "family": "network",
+        "identity": "network_send",
+        "parameters": [
+          "http_request"
+        ],
+        "receiver": "network",
+        "result": "http_response"
+      },
+      {
+        "effect": true,
+        "en": "close",
+        "es": "Cerrar",
+        "fallible": true,
+        "family": "network",
+        "identity": "network_close",
+        "parameters": [],
+        "receiver": "network",
+        "result": "boolean"
+      },
+      {
+        "effect": false,
+        "en": "HttpRequest",
+        "es": "PeticionHttp",
+        "fallible": false,
+        "family": "network",
+        "identity": "http_request_new",
+        "parameters": [
+          "http_method",
+          "text"
+        ],
+        "receiver": null,
+        "result": "http_request"
+      },
+      {
+        "effect": false,
+        "en": "withHeader",
+        "es": "ConCabecera",
+        "fallible": false,
+        "family": "network",
+        "identity": "http_with_header",
+        "parameters": [
+          "text",
+          "text"
+        ],
+        "receiver": "http_request",
+        "result": "http_request"
+      },
+      {
+        "effect": false,
+        "en": "withBody",
+        "es": "ConCuerpo",
+        "fallible": false,
+        "family": "network",
+        "identity": "http_with_body",
+        "parameters": [
+          "bytes"
+        ],
+        "receiver": "http_request",
+        "result": "http_request"
+      },
+      {
+        "effect": false,
+        "en": "withTextBody",
+        "es": "ConCuerpoTexto",
+        "fallible": false,
+        "family": "network",
+        "identity": "http_with_text_body",
+        "parameters": [
+          "text"
+        ],
+        "receiver": "http_request",
+        "result": "http_request"
+      },
+      {
+        "effect": false,
+        "en": "withResponseLimit",
+        "es": "ConLimiteRespuesta",
+        "fallible": false,
+        "family": "network",
+        "identity": "http_with_response_limit",
+        "parameters": [
+          "integer"
+        ],
+        "receiver": "http_request",
+        "result": "http_request"
+      },
+      {
+        "effect": false,
+        "en": "withTimeout",
+        "es": "ConTiempoMaximo",
+        "fallible": false,
+        "family": "network",
+        "identity": "http_with_timeout",
+        "parameters": [
+          "integer"
+        ],
+        "receiver": "http_request",
+        "result": "http_request"
+      },
+      {
+        "effect": false,
+        "en": "status",
+        "es": "Estado",
+        "fallible": false,
+        "family": "network",
+        "identity": "http_status",
+        "parameters": [],
+        "receiver": "http_response",
+        "result": "integer"
+      },
+      {
+        "effect": false,
+        "en": "isSuccess",
+        "es": "EsExito",
+        "fallible": false,
+        "family": "network",
+        "identity": "http_is_success",
+        "parameters": [],
+        "receiver": "http_response",
+        "result": "boolean"
+      },
+      {
+        "effect": false,
+        "en": "header",
+        "es": "Cabecera",
+        "fallible": false,
+        "family": "network",
+        "identity": "http_header",
+        "parameters": [
+          "text"
+        ],
+        "receiver": "http_response",
+        "result": "optional_text"
+      },
+      {
+        "effect": false,
+        "en": "headerNames",
+        "es": "NombresCabeceras",
+        "fallible": false,
+        "family": "network",
+        "identity": "http_header_names",
+        "parameters": [],
+        "receiver": "http_response",
+        "result": "text_list"
+      },
+      {
+        "effect": false,
+        "en": "body",
+        "es": "Cuerpo",
+        "fallible": false,
+        "family": "network",
+        "identity": "http_body",
+        "parameters": [],
+        "receiver": "http_response",
+        "result": "bytes"
+      },
+      {
+        "effect": false,
+        "en": "textBody",
+        "es": "CuerpoTexto",
+        "fallible": true,
+        "family": "network",
+        "identity": "http_text_body",
+        "parameters": [],
+        "receiver": "http_response",
+        "result": "text"
+      },
+      {
+        "effect": false,
+        "en": "url",
+        "es": "Url",
+        "fallible": false,
+        "family": "network",
+        "identity": "http_final_url",
+        "parameters": [],
+        "receiver": "http_response",
+        "result": "text"
       }
     ]
   },
@@ -20218,6 +20425,1502 @@
             }
           }
         ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LIB.HTTP",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Use of requestNetwork",
+                "profile": "en",
+                "specification": "LIB.HTTP",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "request_network",
+                "text": "requestNetwork works with immutable HTTP values and preserves the request_network contract."
+              }
+            ],
+            "purpose": "The operation keeps its declared HTTP value or effect explicit.",
+            "summary": "requestNetwork works with immutable HTTP values and preserves the request_network contract.",
+            "title": "requestNetwork"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Uso de SolicitarRed",
+                "profile": "es",
+                "specification": "LIB.HTTP",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "request_network",
+                "text": "SolicitarRed trabaja con valores HTTP inmutables y conserva el contrato de request_network."
+              }
+            ],
+            "purpose": "La operación mantiene explícito el valor o efecto HTTP que declara la biblioteca.",
+            "summary": "SolicitarRed trabaja con valores HTTP inmutables y conserva el contrato de request_network.",
+            "title": "SolicitarRed"
+          }
+        },
+        "id": "help.pg502.request_network",
+        "identity": {
+          "id": "primary",
+          "kind": "role",
+          "role": "pg502_request_network"
+        },
+        "tokens": [
+          {
+            "identity": "request_network",
+            "source": {
+              "element": "D2",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LIB.HTTP",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C3",
+                "kind": "executable",
+                "label": "Use of restrict",
+                "profile": "en",
+                "specification": "LIB.HTTP",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "network_restrict",
+                "text": "restrict works with immutable HTTP values and preserves the network_restrict contract."
+              }
+            ],
+            "purpose": "The operation keeps its declared HTTP value or effect explicit.",
+            "summary": "restrict works with immutable HTTP values and preserves the network_restrict contract.",
+            "title": "restrict"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C3",
+                "kind": "executable",
+                "label": "Uso de Limitar",
+                "profile": "es",
+                "specification": "LIB.HTTP",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "network_restrict",
+                "text": "Limitar trabaja con valores HTTP inmutables y conserva el contrato de network_restrict."
+              }
+            ],
+            "purpose": "La operación mantiene explícito el valor o efecto HTTP que declara la biblioteca.",
+            "summary": "Limitar trabaja con valores HTTP inmutables y conserva el contrato de network_restrict.",
+            "title": "Limitar"
+          }
+        },
+        "id": "help.pg502.network_restrict",
+        "identity": {
+          "id": "primary",
+          "kind": "role",
+          "role": "pg502_network_restrict"
+        },
+        "tokens": [
+          {
+            "identity": "network_restrict",
+            "source": {
+              "element": "D2",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R3",
+            "specification": "LIB.HTTP",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Use of send",
+                "profile": "en",
+                "specification": "LIB.HTTP",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "network_send",
+                "text": "send works with immutable HTTP values and preserves the network_send contract."
+              }
+            ],
+            "purpose": "The operation keeps its declared HTTP value or effect explicit.",
+            "summary": "send works with immutable HTTP values and preserves the network_send contract.",
+            "title": "send"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Uso de Enviar",
+                "profile": "es",
+                "specification": "LIB.HTTP",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "network_send",
+                "text": "Enviar trabaja con valores HTTP inmutables y conserva el contrato de network_send."
+              }
+            ],
+            "purpose": "La operación mantiene explícito el valor o efecto HTTP que declara la biblioteca.",
+            "summary": "Enviar trabaja con valores HTTP inmutables y conserva el contrato de network_send.",
+            "title": "Enviar"
+          }
+        },
+        "id": "help.pg502.network_send",
+        "identity": {
+          "id": "primary",
+          "kind": "role",
+          "role": "pg502_network_send"
+        },
+        "tokens": [
+          {
+            "identity": "network_send",
+            "source": {
+              "element": "D2",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LIB.HTTP",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Use of close",
+                "profile": "en",
+                "specification": "LIB.HTTP",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "network_close",
+                "text": "close works with immutable HTTP values and preserves the network_close contract."
+              }
+            ],
+            "purpose": "The operation keeps its declared HTTP value or effect explicit.",
+            "summary": "close works with immutable HTTP values and preserves the network_close contract.",
+            "title": "close"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Uso de Cerrar",
+                "profile": "es",
+                "specification": "LIB.HTTP",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "network_close",
+                "text": "Cerrar trabaja con valores HTTP inmutables y conserva el contrato de network_close."
+              }
+            ],
+            "purpose": "La operación mantiene explícito el valor o efecto HTTP que declara la biblioteca.",
+            "summary": "Cerrar trabaja con valores HTTP inmutables y conserva el contrato de network_close.",
+            "title": "Cerrar"
+          }
+        },
+        "id": "help.pg502.network_close",
+        "identity": {
+          "id": "primary",
+          "kind": "role",
+          "role": "pg502_network_close"
+        },
+        "tokens": [
+          {
+            "identity": "network_close",
+            "source": {
+              "element": "D2",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R2",
+            "specification": "LIB.HTTP",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Use of HttpRequest",
+                "profile": "en",
+                "specification": "LIB.HTTP",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "http_request_new",
+                "text": "HttpRequest works with immutable HTTP values and preserves the http_request_new contract."
+              }
+            ],
+            "purpose": "The operation keeps its declared HTTP value or effect explicit.",
+            "summary": "HttpRequest works with immutable HTTP values and preserves the http_request_new contract.",
+            "title": "HttpRequest"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Uso de PeticionHttp",
+                "profile": "es",
+                "specification": "LIB.HTTP",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "http_request_new",
+                "text": "PeticionHttp trabaja con valores HTTP inmutables y conserva el contrato de http_request_new."
+              }
+            ],
+            "purpose": "La operación mantiene explícito el valor o efecto HTTP que declara la biblioteca.",
+            "summary": "PeticionHttp trabaja con valores HTTP inmutables y conserva el contrato de http_request_new.",
+            "title": "PeticionHttp"
+          }
+        },
+        "id": "help.pg502.http_request_new",
+        "identity": {
+          "id": "primary",
+          "kind": "role",
+          "role": "pg502_http_request_new"
+        },
+        "tokens": [
+          {
+            "identity": "http_request_new",
+            "source": {
+              "element": "D2",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R2",
+            "specification": "LIB.HTTP",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C8",
+                "kind": "executable",
+                "label": "Use of withHeader",
+                "profile": "en",
+                "specification": "LIB.HTTP",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "http_with_header",
+                "text": "withHeader works with immutable HTTP values and preserves the http_with_header contract."
+              }
+            ],
+            "purpose": "The operation keeps its declared HTTP value or effect explicit.",
+            "summary": "withHeader works with immutable HTTP values and preserves the http_with_header contract.",
+            "title": "withHeader"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C8",
+                "kind": "executable",
+                "label": "Uso de ConCabecera",
+                "profile": "es",
+                "specification": "LIB.HTTP",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "http_with_header",
+                "text": "ConCabecera trabaja con valores HTTP inmutables y conserva el contrato de http_with_header."
+              }
+            ],
+            "purpose": "La operación mantiene explícito el valor o efecto HTTP que declara la biblioteca.",
+            "summary": "ConCabecera trabaja con valores HTTP inmutables y conserva el contrato de http_with_header.",
+            "title": "ConCabecera"
+          }
+        },
+        "id": "help.pg502.http_with_header",
+        "identity": {
+          "id": "primary",
+          "kind": "role",
+          "role": "pg502_http_with_header"
+        },
+        "tokens": [
+          {
+            "identity": "http_with_header",
+            "source": {
+              "element": "D2",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R2",
+            "specification": "LIB.HTTP",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C4",
+                "kind": "executable",
+                "label": "Use of withBody",
+                "profile": "en",
+                "specification": "LIB.HTTP",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "http_with_body",
+                "text": "withBody works with immutable HTTP values and preserves the http_with_body contract."
+              }
+            ],
+            "purpose": "The operation keeps its declared HTTP value or effect explicit.",
+            "summary": "withBody works with immutable HTTP values and preserves the http_with_body contract.",
+            "title": "withBody"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C4",
+                "kind": "executable",
+                "label": "Uso de ConCuerpo",
+                "profile": "es",
+                "specification": "LIB.HTTP",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "http_with_body",
+                "text": "ConCuerpo trabaja con valores HTTP inmutables y conserva el contrato de http_with_body."
+              }
+            ],
+            "purpose": "La operación mantiene explícito el valor o efecto HTTP que declara la biblioteca.",
+            "summary": "ConCuerpo trabaja con valores HTTP inmutables y conserva el contrato de http_with_body.",
+            "title": "ConCuerpo"
+          }
+        },
+        "id": "help.pg502.http_with_body",
+        "identity": {
+          "id": "primary",
+          "kind": "role",
+          "role": "pg502_http_with_body"
+        },
+        "tokens": [
+          {
+            "identity": "http_with_body",
+            "source": {
+              "element": "D2",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R2",
+            "specification": "LIB.HTTP",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C4",
+                "kind": "executable",
+                "label": "Use of withTextBody",
+                "profile": "en",
+                "specification": "LIB.HTTP",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "http_with_text_body",
+                "text": "withTextBody works with immutable HTTP values and preserves the http_with_text_body contract."
+              }
+            ],
+            "purpose": "The operation keeps its declared HTTP value or effect explicit.",
+            "summary": "withTextBody works with immutable HTTP values and preserves the http_with_text_body contract.",
+            "title": "withTextBody"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C4",
+                "kind": "executable",
+                "label": "Uso de ConCuerpoTexto",
+                "profile": "es",
+                "specification": "LIB.HTTP",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "http_with_text_body",
+                "text": "ConCuerpoTexto trabaja con valores HTTP inmutables y conserva el contrato de http_with_text_body."
+              }
+            ],
+            "purpose": "La operación mantiene explícito el valor o efecto HTTP que declara la biblioteca.",
+            "summary": "ConCuerpoTexto trabaja con valores HTTP inmutables y conserva el contrato de http_with_text_body.",
+            "title": "ConCuerpoTexto"
+          }
+        },
+        "id": "help.pg502.http_with_text_body",
+        "identity": {
+          "id": "primary",
+          "kind": "role",
+          "role": "pg502_http_with_text_body"
+        },
+        "tokens": [
+          {
+            "identity": "http_with_text_body",
+            "source": {
+              "element": "D2",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R2",
+            "specification": "LIB.HTTP",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C4",
+                "kind": "executable",
+                "label": "Use of withResponseLimit",
+                "profile": "en",
+                "specification": "LIB.HTTP",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "http_with_response_limit",
+                "text": "withResponseLimit works with immutable HTTP values and preserves the http_with_response_limit contract."
+              }
+            ],
+            "purpose": "The operation keeps its declared HTTP value or effect explicit.",
+            "summary": "withResponseLimit works with immutable HTTP values and preserves the http_with_response_limit contract.",
+            "title": "withResponseLimit"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C4",
+                "kind": "executable",
+                "label": "Uso de ConLimiteRespuesta",
+                "profile": "es",
+                "specification": "LIB.HTTP",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "http_with_response_limit",
+                "text": "ConLimiteRespuesta trabaja con valores HTTP inmutables y conserva el contrato de http_with_response_limit."
+              }
+            ],
+            "purpose": "La operación mantiene explícito el valor o efecto HTTP que declara la biblioteca.",
+            "summary": "ConLimiteRespuesta trabaja con valores HTTP inmutables y conserva el contrato de http_with_response_limit.",
+            "title": "ConLimiteRespuesta"
+          }
+        },
+        "id": "help.pg502.http_with_response_limit",
+        "identity": {
+          "id": "primary",
+          "kind": "role",
+          "role": "pg502_http_with_response_limit"
+        },
+        "tokens": [
+          {
+            "identity": "http_with_response_limit",
+            "source": {
+              "element": "D2",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R2",
+            "specification": "LIB.HTTP",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C4",
+                "kind": "executable",
+                "label": "Use of withTimeout",
+                "profile": "en",
+                "specification": "LIB.HTTP",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "http_with_timeout",
+                "text": "withTimeout works with immutable HTTP values and preserves the http_with_timeout contract."
+              }
+            ],
+            "purpose": "The operation keeps its declared HTTP value or effect explicit.",
+            "summary": "withTimeout works with immutable HTTP values and preserves the http_with_timeout contract.",
+            "title": "withTimeout"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C4",
+                "kind": "executable",
+                "label": "Uso de ConTiempoMaximo",
+                "profile": "es",
+                "specification": "LIB.HTTP",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "http_with_timeout",
+                "text": "ConTiempoMaximo trabaja con valores HTTP inmutables y conserva el contrato de http_with_timeout."
+              }
+            ],
+            "purpose": "La operación mantiene explícito el valor o efecto HTTP que declara la biblioteca.",
+            "summary": "ConTiempoMaximo trabaja con valores HTTP inmutables y conserva el contrato de http_with_timeout.",
+            "title": "ConTiempoMaximo"
+          }
+        },
+        "id": "help.pg502.http_with_timeout",
+        "identity": {
+          "id": "primary",
+          "kind": "role",
+          "role": "pg502_http_with_timeout"
+        },
+        "tokens": [
+          {
+            "identity": "http_with_timeout",
+            "source": {
+              "element": "D2",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R4",
+            "specification": "LIB.HTTP",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C4",
+                "kind": "executable",
+                "label": "Use of status",
+                "profile": "en",
+                "specification": "LIB.HTTP",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "http_status",
+                "text": "status works with immutable HTTP values and preserves the http_status contract."
+              }
+            ],
+            "purpose": "The operation keeps its declared HTTP value or effect explicit.",
+            "summary": "status works with immutable HTTP values and preserves the http_status contract.",
+            "title": "status"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C4",
+                "kind": "executable",
+                "label": "Uso de Estado",
+                "profile": "es",
+                "specification": "LIB.HTTP",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "http_status",
+                "text": "Estado trabaja con valores HTTP inmutables y conserva el contrato de http_status."
+              }
+            ],
+            "purpose": "La operación mantiene explícito el valor o efecto HTTP que declara la biblioteca.",
+            "summary": "Estado trabaja con valores HTTP inmutables y conserva el contrato de http_status.",
+            "title": "Estado"
+          }
+        },
+        "id": "help.pg502.http_status",
+        "identity": {
+          "id": "primary",
+          "kind": "role",
+          "role": "pg502_http_status"
+        },
+        "tokens": [
+          {
+            "identity": "http_status",
+            "source": {
+              "element": "D2",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R4",
+            "specification": "LIB.HTTP",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C4",
+                "kind": "executable",
+                "label": "Use of isSuccess",
+                "profile": "en",
+                "specification": "LIB.HTTP",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "http_is_success",
+                "text": "isSuccess works with immutable HTTP values and preserves the http_is_success contract."
+              }
+            ],
+            "purpose": "The operation keeps its declared HTTP value or effect explicit.",
+            "summary": "isSuccess works with immutable HTTP values and preserves the http_is_success contract.",
+            "title": "isSuccess"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C4",
+                "kind": "executable",
+                "label": "Uso de EsExito",
+                "profile": "es",
+                "specification": "LIB.HTTP",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "http_is_success",
+                "text": "EsExito trabaja con valores HTTP inmutables y conserva el contrato de http_is_success."
+              }
+            ],
+            "purpose": "La operación mantiene explícito el valor o efecto HTTP que declara la biblioteca.",
+            "summary": "EsExito trabaja con valores HTTP inmutables y conserva el contrato de http_is_success.",
+            "title": "EsExito"
+          }
+        },
+        "id": "help.pg502.http_is_success",
+        "identity": {
+          "id": "primary",
+          "kind": "role",
+          "role": "pg502_http_is_success"
+        },
+        "tokens": [
+          {
+            "identity": "http_is_success",
+            "source": {
+              "element": "D2",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R4",
+            "specification": "LIB.HTTP",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C6",
+                "kind": "executable",
+                "label": "Use of header",
+                "profile": "en",
+                "specification": "LIB.HTTP",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "http_header",
+                "text": "header works with immutable HTTP values and preserves the http_header contract."
+              }
+            ],
+            "purpose": "The operation keeps its declared HTTP value or effect explicit.",
+            "summary": "header works with immutable HTTP values and preserves the http_header contract.",
+            "title": "header"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C6",
+                "kind": "executable",
+                "label": "Uso de Cabecera",
+                "profile": "es",
+                "specification": "LIB.HTTP",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "http_header",
+                "text": "Cabecera trabaja con valores HTTP inmutables y conserva el contrato de http_header."
+              }
+            ],
+            "purpose": "La operación mantiene explícito el valor o efecto HTTP que declara la biblioteca.",
+            "summary": "Cabecera trabaja con valores HTTP inmutables y conserva el contrato de http_header.",
+            "title": "Cabecera"
+          }
+        },
+        "id": "help.pg502.http_header",
+        "identity": {
+          "id": "primary",
+          "kind": "role",
+          "role": "pg502_http_header"
+        },
+        "tokens": [
+          {
+            "identity": "http_header",
+            "source": {
+              "element": "D2",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R4",
+            "specification": "LIB.HTTP",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C6",
+                "kind": "executable",
+                "label": "Use of headerNames",
+                "profile": "en",
+                "specification": "LIB.HTTP",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "http_header_names",
+                "text": "headerNames works with immutable HTTP values and preserves the http_header_names contract."
+              }
+            ],
+            "purpose": "The operation keeps its declared HTTP value or effect explicit.",
+            "summary": "headerNames works with immutable HTTP values and preserves the http_header_names contract.",
+            "title": "headerNames"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C6",
+                "kind": "executable",
+                "label": "Uso de NombresCabeceras",
+                "profile": "es",
+                "specification": "LIB.HTTP",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "http_header_names",
+                "text": "NombresCabeceras trabaja con valores HTTP inmutables y conserva el contrato de http_header_names."
+              }
+            ],
+            "purpose": "La operación mantiene explícito el valor o efecto HTTP que declara la biblioteca.",
+            "summary": "NombresCabeceras trabaja con valores HTTP inmutables y conserva el contrato de http_header_names.",
+            "title": "NombresCabeceras"
+          }
+        },
+        "id": "help.pg502.http_header_names",
+        "identity": {
+          "id": "primary",
+          "kind": "role",
+          "role": "pg502_http_header_names"
+        },
+        "tokens": [
+          {
+            "identity": "http_header_names",
+            "source": {
+              "element": "D2",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R4",
+            "specification": "LIB.HTTP",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C6",
+                "kind": "executable",
+                "label": "Use of body",
+                "profile": "en",
+                "specification": "LIB.HTTP",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "http_body",
+                "text": "body works with immutable HTTP values and preserves the http_body contract."
+              }
+            ],
+            "purpose": "The operation keeps its declared HTTP value or effect explicit.",
+            "summary": "body works with immutable HTTP values and preserves the http_body contract.",
+            "title": "body"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C6",
+                "kind": "executable",
+                "label": "Uso de Cuerpo",
+                "profile": "es",
+                "specification": "LIB.HTTP",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "http_body",
+                "text": "Cuerpo trabaja con valores HTTP inmutables y conserva el contrato de http_body."
+              }
+            ],
+            "purpose": "La operación mantiene explícito el valor o efecto HTTP que declara la biblioteca.",
+            "summary": "Cuerpo trabaja con valores HTTP inmutables y conserva el contrato de http_body.",
+            "title": "Cuerpo"
+          }
+        },
+        "id": "help.pg502.http_body",
+        "identity": {
+          "id": "primary",
+          "kind": "role",
+          "role": "pg502_http_body"
+        },
+        "tokens": [
+          {
+            "identity": "http_body",
+            "source": {
+              "element": "D2",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R4",
+            "specification": "LIB.HTTP",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C6",
+                "kind": "executable",
+                "label": "Use of textBody",
+                "profile": "en",
+                "specification": "LIB.HTTP",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "http_text_body",
+                "text": "textBody works with immutable HTTP values and preserves the http_text_body contract."
+              }
+            ],
+            "purpose": "The operation keeps its declared HTTP value or effect explicit.",
+            "summary": "textBody works with immutable HTTP values and preserves the http_text_body contract.",
+            "title": "textBody"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C6",
+                "kind": "executable",
+                "label": "Uso de CuerpoTexto",
+                "profile": "es",
+                "specification": "LIB.HTTP",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "http_text_body",
+                "text": "CuerpoTexto trabaja con valores HTTP inmutables y conserva el contrato de http_text_body."
+              }
+            ],
+            "purpose": "La operación mantiene explícito el valor o efecto HTTP que declara la biblioteca.",
+            "summary": "CuerpoTexto trabaja con valores HTTP inmutables y conserva el contrato de http_text_body.",
+            "title": "CuerpoTexto"
+          }
+        },
+        "id": "help.pg502.http_text_body",
+        "identity": {
+          "id": "primary",
+          "kind": "role",
+          "role": "pg502_http_text_body"
+        },
+        "tokens": [
+          {
+            "identity": "http_text_body",
+            "source": {
+              "element": "D2",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R4",
+            "specification": "LIB.HTTP",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Use of url",
+                "profile": "en",
+                "specification": "LIB.HTTP",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "http_final_url",
+                "text": "url works with immutable HTTP values and preserves the http_final_url contract."
+              }
+            ],
+            "purpose": "The operation keeps its declared HTTP value or effect explicit.",
+            "summary": "url works with immutable HTTP values and preserves the http_final_url contract.",
+            "title": "url"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Uso de Url",
+                "profile": "es",
+                "specification": "LIB.HTTP",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "http_final_url",
+                "text": "Url trabaja con valores HTTP inmutables y conserva el contrato de http_final_url."
+              }
+            ],
+            "purpose": "La operación mantiene explícito el valor o efecto HTTP que declara la biblioteca.",
+            "summary": "Url trabaja con valores HTTP inmutables y conserva el contrato de http_final_url.",
+            "title": "Url"
+          }
+        },
+        "id": "help.pg502.http_final_url",
+        "identity": {
+          "id": "primary",
+          "kind": "role",
+          "role": "pg502_http_final_url"
+        },
+        "tokens": [
+          {
+            "identity": "http_final_url",
+            "source": {
+              "element": "D2",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          }
+        ]
       }
     ],
     "exclusions": [],
@@ -22043,6 +23746,227 @@
           ],
           "tokens": [
             "bytes_utf8"
+          ]
+        },
+        {
+          "identity": {
+            "id": "primary",
+            "kind": "role",
+            "role": "pg502_request_network"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "request_network"
+          ]
+        },
+        {
+          "identity": {
+            "id": "primary",
+            "kind": "role",
+            "role": "pg502_network_restrict"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "network_restrict"
+          ]
+        },
+        {
+          "identity": {
+            "id": "primary",
+            "kind": "role",
+            "role": "pg502_network_send"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "network_send"
+          ]
+        },
+        {
+          "identity": {
+            "id": "primary",
+            "kind": "role",
+            "role": "pg502_network_close"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "network_close"
+          ]
+        },
+        {
+          "identity": {
+            "id": "primary",
+            "kind": "role",
+            "role": "pg502_http_request_new"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "http_request_new"
+          ]
+        },
+        {
+          "identity": {
+            "id": "primary",
+            "kind": "role",
+            "role": "pg502_http_with_header"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "http_with_header"
+          ]
+        },
+        {
+          "identity": {
+            "id": "primary",
+            "kind": "role",
+            "role": "pg502_http_with_body"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "http_with_body"
+          ]
+        },
+        {
+          "identity": {
+            "id": "primary",
+            "kind": "role",
+            "role": "pg502_http_with_text_body"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "http_with_text_body"
+          ]
+        },
+        {
+          "identity": {
+            "id": "primary",
+            "kind": "role",
+            "role": "pg502_http_with_response_limit"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "http_with_response_limit"
+          ]
+        },
+        {
+          "identity": {
+            "id": "primary",
+            "kind": "role",
+            "role": "pg502_http_with_timeout"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "http_with_timeout"
+          ]
+        },
+        {
+          "identity": {
+            "id": "primary",
+            "kind": "role",
+            "role": "pg502_http_status"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "http_status"
+          ]
+        },
+        {
+          "identity": {
+            "id": "primary",
+            "kind": "role",
+            "role": "pg502_http_is_success"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "http_is_success"
+          ]
+        },
+        {
+          "identity": {
+            "id": "primary",
+            "kind": "role",
+            "role": "pg502_http_header"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "http_header"
+          ]
+        },
+        {
+          "identity": {
+            "id": "primary",
+            "kind": "role",
+            "role": "pg502_http_header_names"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "http_header_names"
+          ]
+        },
+        {
+          "identity": {
+            "id": "primary",
+            "kind": "role",
+            "role": "pg502_http_body"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "http_body"
+          ]
+        },
+        {
+          "identity": {
+            "id": "primary",
+            "kind": "role",
+            "role": "pg502_http_text_body"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "http_text_body"
+          ]
+        },
+        {
+          "identity": {
+            "id": "primary",
+            "kind": "role",
+            "role": "pg502_http_final_url"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "http_final_url"
           ]
         }
       ]

@@ -265,3 +265,11 @@ préstamos visibles en el lenguaje. Una tarea terminada entrega su resultado sin
 `FalloTareas<E>.Asociados` tiene tipo `Inmutable<Vector<E>>`: el informe puede transferirse sin
 exponer una colección mutable compartida. La construcción del informe crea su vector propio y
 solo presenta su vista inmutable; no se añade una copia redundante.
+
+## Tipos HTTP contextuales
+
+`http_types` resuelve `RedCap`, `MetodoHttp`, `PeticionHttp` y `RespuestaHttp` como tipos
+incorporados; `MetodoHttp` expone únicamente sus seis miembros canónicos en ambos perfiles. Los
+nombres son contextuales y no se agregan palabras reservadas, para evitar cambiar el análisis de
+identificadores existentes. `RedCap` y los valores HTTP conservan la transferibilidad estructural
+necesaria para enviar solicitudes desde tareas suspendibles.

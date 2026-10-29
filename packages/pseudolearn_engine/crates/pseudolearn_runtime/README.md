@@ -178,3 +178,20 @@ Se descartan copias por cada campo, que romperían alias, y recorridos recursivo
 ejecuta una tarea y cada reanudación reinicia la masa, basta un acumulador sin mapa ni asignaciones.
 Las vueltas inferiores al cuanto conservan la masa. Al consumirlo se reinicia, haya o no otra tarea
 lista; solo con otra lista se cede. No intervienen reloj físico ni semilla.
+
+## Cliente HTTP con anfitrión controlado
+
+`network_url`, `network_headers` y `network_policy` comprueban URL, origen, cabeceras y cuerpo antes
+de invocar al proveedor. La capacidad conserva la concesión de orígenes del anfitrión y `Limitar`
+solo puede reducirla. El runtime no abre sockets: `MemoryHostProvider` resuelve guiones locales por
+método y URL, lo que hace deterministas las pruebas y evita depender de Internet. Un estado HTTP
+completo entre 100 y 599 salvo 101 es una respuesta comprometida; los códigos 4xx y 5xx quedan en
+`HttpResponse`. El cargador del anfitrión falso conserva incluso un estado 101 guionado para que la
+validación del runtime lo convierta en `RespuestaInvalida` al enviar; validar al cargarlo ocultaría
+el fallo de protocolo que debe observar el programa. `HEAD` conserva estado y cabeceras y entrega
+cuerpo vacío.
+
+Las operaciones que pueden mutar conservan los fallos externos inciertos; `GET` y `HEAD` no pueden
+devolver incertidumbre. La cinta usa la clasificación de efecto existente. Si una petición contiene
+credenciales redactadas, la cinta queda marcada como no reproducible y no expone el secreto; no se
+añade una ruta HTTP de reproducción que revele credenciales.

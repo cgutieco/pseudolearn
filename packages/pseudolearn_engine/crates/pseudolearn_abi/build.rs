@@ -158,6 +158,10 @@ fn value_kind(name: &str) -> Result<&'static str, String> {
         "file" => Ok("File"),
         "clock" => Ok("Clock"),
         "timer" => Ok("Timer"),
+        "network" => Ok("Network"),
+        "http_method" => Ok("HttpMethod"),
+        "http_request" => Ok("HttpRequest"),
+        "http_response" => Ok("HttpResponse"),
         _ => Err(format!("invalid effect data kind {name}")),
     }
 }

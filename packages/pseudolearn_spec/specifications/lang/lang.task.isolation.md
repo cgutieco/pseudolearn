@@ -38,7 +38,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Son transferibles los escalares, cadenas, enumerados, registros de campos transferibles, Opcional y Resultado de componentes transferibles, Canal de elemento transferible, FalloTareas de error transferible, Inmutable y capacidades. Bytes y ValorJson son transferibles porque sus interfaces no exponen mutación. Los argumentos de Lanzar, elementos de Canal y errores de tareas usan el mismo predicado estructural.",
+  "texto": "Son transferibles los escalares, cadenas, enumerados, registros de campos transferibles, Opcional y Resultado de componentes transferibles, Canal de elemento transferible, FalloTareas de error transferible, Inmutable y capacidades. Bytes, ValorJson, PeticionHttp y RespuestaHttp son transferibles porque sus interfaces no exponen mutación. MetodoHttp es un enumerado transferible. Los argumentos de Lanzar, elementos de Canal y errores de tareas usan el mismo predicado estructural.",
   "verificacion": [
     "C1",
     "C2",

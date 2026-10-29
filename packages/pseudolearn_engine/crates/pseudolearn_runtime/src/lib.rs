@@ -108,10 +108,13 @@ mod effect_authority;
 mod host_effect;
 mod host_session;
 mod host_validation;
+mod http_values;
+#[cfg(test)]
+mod http_values_tests;
 pub use effect_authority::effective_permissions;
 pub use host_effect::{
     HostCapability, HostEffectProvider, HostEffectRequest, HostFailure, HostReply, HostValue,
-    JsonFailure, JsonResultValue,
+    HttpMethod, HttpRequestValue, HttpResponseValue, JsonFailure, JsonResultValue,
 };
 pub use host_session::{
     begin_host_effect, configure_host_authority, perform_host_effect, resolve_host_effect,
@@ -120,10 +123,16 @@ pub use host_session::{
 mod memory_host;
 mod memory_host_config;
 mod memory_host_files;
+mod network_headers;
+mod network_policy;
+#[cfg(test)]
+mod network_policy_tests;
+mod network_url;
 pub use memory_host::MemoryHostProvider;
 
 mod host_words;
 mod local_effect;
+mod local_http_effect;
 pub use host_words::{decode_host_value, host_reply_words};
 pub use local_effect::local_effect;
 pub use pseudolearn_abi::json_layout::JsonNodeKind;

@@ -145,6 +145,7 @@ fn matches_kind(kind: EffectValueKind, actual: &IrType) -> bool {
         EffectValueKind::OptionalJsonValue => {
             matches!(actual, IrType::Object(name) if name == "$effect:JsonValue")
         }
+        EffectValueKind::HttpMethod => *actual == IrType::I64,
         EffectValueKind::TextList => {
             matches!(actual, IrType::Object(name) if name.starts_with("$vector"))
         }

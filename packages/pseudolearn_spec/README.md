@@ -427,3 +427,15 @@ pendientes de conformidad. El recurso de firmas admite la entrada de instantáne
 inmutable, y el catálogo presenta ambas identidades con ejemplos bilingües del corpus. La cesión
 conserva masa entre vueltas inferiores al cuanto: reiniciarla en cada vuelta impediría ceder a los
 bucles pequeños. El texto normativo explicita esta acumulación.
+
+### Contrato HTTP y anfitrión falso
+
+`LIB.HTTP` declara los métodos, las respuestas HTTP completas y el formato de los guiones locales en
+`anfitrion.http`. Los guiones se resuelven por método y URL en el anfitrión de memoria; no habilitan
+conexiones públicas. La clave se valida y se interpreta en `see_validation`, mientras `see_format`
+permite URL literales en el texto de contratos sin aceptar enlaces Markdown externos.
+
+La regla `LIB.HTTP#R6` y su caso `C8` discrepan sobre cintas con credenciales: la regla pide conservar
+la respuesta completa para reproducirla, pero el caso exige una cinta marcada no reproducible tras
+redactar el secreto. El motor conserva la política general de redacción y no reproducibilidad; la
+reproducción de esa respuesta queda pendiente de resolver en el contrato.

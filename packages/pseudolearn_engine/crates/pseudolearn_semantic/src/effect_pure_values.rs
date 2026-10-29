@@ -24,7 +24,11 @@ pub(super) fn check_pure_function_values(
         }
     }
     for expression in &session.module.expressions.kinds {
-        if let HirExpression::Call { function, arguments } = expression {
+        if let HirExpression::Call {
+            function,
+            arguments,
+        } = expression
+        {
             collect_impure_call_arguments(session, (*function, arguments), reasons, &mut reports);
         }
     }

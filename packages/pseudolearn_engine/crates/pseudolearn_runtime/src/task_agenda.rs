@@ -7,10 +7,10 @@ mod task_cancellation;
 mod task_execution;
 #[path = "task_limits.rs"]
 mod task_limits;
-#[path = "task_summary.rs"]
-mod task_summary;
 #[path = "task_scheduling.rs"]
 mod task_scheduling;
+#[path = "task_summary.rs"]
+mod task_summary;
 pub use task_limits::{DEFAULT_TASK_LIMIT, TaskLimit};
 pub use task_summary::TaskSummary;
 

@@ -18,6 +18,7 @@ pub fn configure_host_authority(
     host: Option<&serde_json::Value>,
 ) -> Result<(), IoError> {
     session.authority.permissions = crate::effect_authority::effective_permissions(host);
+    session.authority.granted_network_origins = crate::network_policy::configured_origins(host);
     session.secrets = crate::secret_policy::SecretPolicy::from_host(host)?;
     Ok(())
 }
@@ -120,13 +121,19 @@ pub fn perform_host_effect(
 
 fn settle_authority(session: &mut EffectSession, request: &HostEffectRequest, reply: &HostReply) {
     let closed = if matches!(reply, HostReply::Committed(_)) {
-        matches!(request.operation.as_str(), "file_close" | "directory_close")
-            .then_some(request.receiver.as_ref())
-            .flatten()
+        matches!(
+            request.operation.as_str(),
+            "file_close" | "directory_close" | "network_close"
+        )
+        .then_some(request.receiver.as_ref())
+        .flatten()
     } else {
         request.result_capability.as_ref()
     };
     if let Some(token) = closed.and_then(|token| token.token().ok()) {
+        if request.operation == "network_close" {
+            session.authority.network_capabilities.remove(&token.slot);
+        }
         let _closed = session.authority.table.close(&token);
     }
 }

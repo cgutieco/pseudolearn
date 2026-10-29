@@ -103,3 +103,11 @@ fuera de estas unidades y cesiones que no preceden inmediatamente a un salto hac
 El parser separa las instrucciones de tarea sin operandos para no consumir la operación siguiente.
 `snapshot.copy` recibe cantidad, fuentes referenciales y celdas destino con tipos exactos; copia el
 grafo conjunto sin añadir sentencias ni convertir errores de tipos en comprobaciones dinámicas.
+
+## Métodos HTTP en llamadas de efecto
+
+`HttpMethod` es un enumerado contextual representado como escalar `i64`. El verificador de
+`effect_call` reconoce ese valor en la firma de las operaciones HTTP; antes el chequeo genérico lo
+trataba como referencia, aunque la ABI ya lo clasificaba como escalar, y rechazaba programas válidos
+al pasar de semántica a RI. Se conserva la tabla existente de operaciones y no se añaden instrucciones
+ni tipos a la RI.

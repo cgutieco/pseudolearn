@@ -29,10 +29,7 @@ fn contains_external_document_link(value: &serde_json::Value) -> bool {
     match value {
         serde_json::Value::String(text) => {
             let normalized = text.to_ascii_lowercase();
-            normalized.contains("http://")
-                || normalized.contains("https://")
-                || normalized.contains("www.")
-                || normalized.contains("](//")
+            normalized.contains("www.") || normalized.contains("](") && normalized.contains("://")
         }
         serde_json::Value::Array(values) => values.iter().any(contains_external_document_link),
         serde_json::Value::Object(fields) => fields.values().any(contains_external_document_link),

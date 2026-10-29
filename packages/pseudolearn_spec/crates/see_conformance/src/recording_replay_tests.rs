@@ -101,6 +101,38 @@ fn tape_alterations_and_replay_failure_checks_cover_happy_and_unhappy_paths() {
     assert_replay_failure_cases();
 }
 
+#[test]
+fn altered_request_marker_changes_the_last_http_request_digest() {
+    let mut replay = json!({
+        "effect_tape": {
+            "entries": [
+                {"entry_hash":"prior"},
+                {
+                    "effect_seq":2,
+                    "task_id":0,
+                    "source_node_id":9,
+                    "capability_kind":"network",
+                    "operation":"network_send",
+                    "request_digest":"original",
+                    "secret_reference":null,
+                    "outcome":"committed",
+                    "payload_bytes":[],
+                    "entry_hash":"original-hash"
+                }
+            ]
+        }
+    });
+    apply_alteration(&mut replay, "alterar_solicitud");
+    assert_eq!(
+        replay.pointer("/effect_tape/entries/1/request_digest"),
+        Some(&json!("altered-request-digest"))
+    );
+    assert_ne!(
+        replay.pointer("/effect_tape/entries/1/entry_hash"),
+        Some(&json!("original-hash"))
+    );
+}
+
 fn assert_tape_alterations(replay: &mut Value) {
     apply_alteration(replay, "truncar_entrada");
     assert_eq!(

@@ -43,7 +43,7 @@ layers:
   - name: see_conformance
     path: crates/see_conformance
     may_import: [see_model, see_translation, see_format, see_generators, see_oracles]
-    external_dependencies: [serde_json]
+    external_dependencies: [serde_json, sha2]
     unsafe_allowed: false
   - name: see_export
     path: crates/see_export

@@ -40,7 +40,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Las únicas capacidades del anfitrión que usa un programa son la salida, la entrada y la semilla, inyectadas al iniciar. No hay reloj, variables de entorno, archivos, red ni fuente aleatoria implícitos.",
+  "texto": "La salida, la entrada y la semilla se inyectan al iniciar. El reloj, los archivos y la red requieren capacidades concedidas explícitamente por el anfitrión; no se leen variables de entorno ni hay fuente aleatoria ambiental implícita.",
   "verificacion": [
     "C1"
   ]
@@ -457,6 +457,75 @@ Los valores esperados de R3 se calculan con el oráculo independiente de see_ora
       1,
       2
     ]
+  }
+}
+```
+
+```regla
+{
+  "id": "R6",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "El anfitrión de memoria acepta respuestas HTTP declaradas en anfitrion.http, indexadas por método y URL. Cada respuesta declara estado y puede declarar cabeceras repetidas, cuerpo textual o bytes, fallo e incertidumbre. El proveedor de memoria nunca abre sockets ni resuelve nombres.",
+  "verificacion": ["C9"]
+}
+```
+
+```caso
+{
+  "id": "C9",
+  "regla": "R6",
+  "perfiles": ["es", "en"],
+  "rigor": ["estricto", "flexible"],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "200\n",
+    "terminacion": "completed",
+    "anfitrion_observado": {"llamadas": 2}
+  },
+  "programas": {
+    "es": "Algoritmo Main\nDefinir net Como RedCap <- Propagar SolicitarRed();\nDefinir request Como PeticionHttp <- PeticionHttp(MetodoHttp.GET, \"https://fake.test/a\");\nDefinir response Como RespuestaHttp <- Propagar net.Enviar(request);\nEscribir response.Estado();\nFinAlgoritmo\n",
+    "en": "algorithm Main\ndefine net as NetworkCap <- propagate requestNetwork();\ndefine request as HttpRequest <- HttpRequest(HttpMethod.GET, \"https://fake.test/a\");\ndefine response as HttpResponse <- propagate net.send(request);\nwrite response.status();\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": ["red"],
+    "requested_permissions": ["red"],
+    "http": {"GET https://fake.test/a": {"estado": 200}}
+  }
+}
+```
+
+```regla
+{
+  "id": "R7",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "La capacidad RedCap solo se concede cuando el anfitrión autoriza red y limita sus orígenes a los declarados. Sin permiso no se concede; una petición fuera del conjunto se rechaza antes de consultar al proveedor.",
+  "verificacion": ["C10"]
+}
+```
+
+```caso
+{
+  "id": "C10",
+  "regla": "R7",
+  "perfiles": ["es", "en"],
+  "rigor": ["estricto", "flexible"],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "permiso_denegado\n",
+    "terminacion": "completed",
+    "anfitrion_observado": {"llamadas": 1}
+  },
+  "programas": {
+    "es": "Algoritmo Main\nSegun SolicitarRed() Hacer\nExito(net): Escribir \"concedida\";\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "algorithm Main\nswitch requestNetwork() do\nsuccess(net): write \"granted\";\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": [],
+    "requested_permissions": ["red"]
   }
 }
 ```

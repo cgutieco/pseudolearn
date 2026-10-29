@@ -26,12 +26,28 @@ pub fn check(value: &Value, schema: &Value, root: &Value, depth: usize) -> Resul
             }
         }
     }
+    check_negated_schema(value, schema, root, next)?;
     scalar(value, schema)?;
     if let Some(properties) = value.as_object() {
         object(properties, schema, root, next)?;
     }
     if let Some(elements) = value.as_array() {
         array(elements, schema, root, next)?;
+    }
+    Ok(())
+}
+
+fn check_negated_schema(
+    value: &Value,
+    schema: &Value,
+    root: &Value,
+    depth: usize,
+) -> Result<(), String> {
+    if schema
+        .get("not")
+        .is_some_and(|denied| check(value, denied, root, depth).is_ok())
+    {
+        return Err("SEE-SCHEMA: negated schema matched".to_owned());
     }
     Ok(())
 }
@@ -68,12 +84,30 @@ fn scalar(value: &Value, schema: &Value) -> Result<(), String> {
     {
         return Err("SEE-SCHEMA: short string".to_owned());
     }
+    check_numeric_bounds(value, schema)
+}
+
+fn check_numeric_bounds(value: &Value, schema: &Value) -> Result<(), String> {
     if let Some(minimum) = schema.get("minimum").and_then(Value::as_i64)
         && value.as_i64().is_some_and(|number| number < minimum)
     {
         return Err("SEE-SCHEMA: number below minimum".to_owned());
     }
+    if let Some(maximum) = schema.get("maximum").and_then(Value::as_i64)
+        && integer_exceeds(value, maximum)
+    {
+        return Err("SEE-SCHEMA: number above maximum".to_owned());
+    }
     Ok(())
+}
+
+fn integer_exceeds(value: &Value, maximum: i64) -> bool {
+    if let Some(number) = value.as_i64() {
+        return number > maximum;
+    }
+    value
+        .as_u64()
+        .is_some_and(|number| u64::try_from(maximum).map_or(true, |bound| number > bound))
 }
 
 fn object(
@@ -113,6 +147,11 @@ fn array(elements: &[Value], schema: &Value, root: &Value, depth: usize) -> Resu
         && u64::try_from(elements.len()).unwrap_or(0) < minimum
     {
         return Err("SEE-SCHEMA: insufficient elements".to_owned());
+    }
+    if let Some(maximum) = schema.get("maxItems").and_then(Value::as_u64)
+        && u64::try_from(elements.len()).unwrap_or(u64::MAX) > maximum
+    {
+        return Err("SEE-SCHEMA: too many elements".to_owned());
     }
     if schema.get("uniqueItems") == Some(&Value::Bool(true)) {
         let mut seen = Vec::new();

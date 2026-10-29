@@ -147,7 +147,8 @@
     "LANG.CONTROL.EXIT",
     "LANG.CONTROL.CLEANUP",
     "LIB.CORE.BYTES",
-    "LIB.JSON"
+    "LIB.JSON",
+    "LIB.HTTP"
   ],
   "fases_cerradas": [],
   "vinculos": [
@@ -1758,6 +1759,11 @@
       "estado": "cumple"
     },
     {
+      "regla": "ENG.EXEC.EFFECT-COMMIT@1.0.0#R5",
+      "verificacion": "crates/pseudolearn_runtime/tests/network_effect_tests.rs",
+      "estado": "cumple"
+    },
+    {
       "regla": "ENG.EXEC.EFFECT-ORDER@1.0.0#R5",
       "verificacion": "ejecutor",
       "estado": "cumple"
@@ -1775,6 +1781,16 @@
     {
       "regla": "RT.HOST.INTERFACE@1.0.0#R5",
       "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "RT.HOST.INTERFACE@1.0.0#R6",
+      "verificacion": "crates/pseudolearn_api/tests/fake_host_http_tests.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "RT.HOST.INTERFACE@1.0.0#R7",
+      "verificacion": "crates/pseudolearn_runtime/tests/network_effect_tests.rs",
       "estado": "cumple"
     },
     {
@@ -2107,6 +2123,42 @@
       "regla": "LIB.JSON@1.0.0#J8",
       "verificacion": "crates/pseudolearn_library/src/json_parse_tests.rs",
       "estado": "cumple"
+    },
+    {
+      "regla": "LIB.HTTP@1.0.0#R1",
+      "verificacion": "crates/pseudolearn_api/tests/fake_host_http_tests.rs",
+      "estado": "pendiente",
+      "resuelve_en": "P6"
+    },
+    {
+      "regla": "LIB.HTTP@1.0.0#R2",
+      "verificacion": "crates/pseudolearn_api/tests/fake_host_http_tests.rs",
+      "estado": "pendiente",
+      "resuelve_en": "P6"
+    },
+    {
+      "regla": "LIB.HTTP@1.0.0#R3",
+      "verificacion": "crates/pseudolearn_api/tests/fake_host_http_tests.rs",
+      "estado": "pendiente",
+      "resuelve_en": "P6"
+    },
+    {
+      "regla": "LIB.HTTP@1.0.0#R4",
+      "verificacion": "crates/pseudolearn_api/tests/fake_host_http_tests.rs",
+      "estado": "pendiente",
+      "resuelve_en": "P6"
+    },
+    {
+      "regla": "LIB.HTTP@1.0.0#R5",
+      "verificacion": "crates/pseudolearn_api/tests/fake_host_http_tests.rs",
+      "estado": "pendiente",
+      "resuelve_en": "P6"
+    },
+    {
+      "regla": "LIB.HTTP@1.0.0#R6",
+      "verificacion": "crates/pseudolearn_api/tests/fake_host_http_tests.rs",
+      "estado": "pendiente",
+      "resuelve_en": "P6"
     }
   ]
 }

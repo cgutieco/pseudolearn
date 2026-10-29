@@ -20,6 +20,91 @@ pub enum HostValue {
     OptionalText(Option<String>),
     OptionalJsonValue(Option<String>),
     Capability(HostCapability),
+    HttpMethod(HttpMethod),
+    HttpRequest(HttpRequestValue),
+    HttpResponse(HttpResponseValue),
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "UPPERCASE")]
+pub enum HttpMethod {
+    Get,
+    Head,
+    Post,
+    Put,
+    Patch,
+    Delete,
+}
+
+impl HttpMethod {
+    pub const ALL: [Self; 6] = [
+        Self::Get,
+        Self::Head,
+        Self::Post,
+        Self::Put,
+        Self::Patch,
+        Self::Delete,
+    ];
+
+    pub fn from_tag(tag: u64) -> Option<Self> {
+        match tag {
+            0 => Some(Self::Get),
+            1 => Some(Self::Head),
+            2 => Some(Self::Post),
+            3 => Some(Self::Put),
+            4 => Some(Self::Patch),
+            5 => Some(Self::Delete),
+            _ => None,
+        }
+    }
+
+    pub fn to_tag(self) -> u64 {
+        match self {
+            Self::Get => 0,
+            Self::Head => 1,
+            Self::Post => 2,
+            Self::Put => 3,
+            Self::Patch => 4,
+            Self::Delete => 5,
+        }
+    }
+
+    pub fn as_str(self) -> &'static str {
+        match self {
+            Self::Get => "GET",
+            Self::Head => "HEAD",
+            Self::Post => "POST",
+            Self::Put => "PUT",
+            Self::Patch => "PATCH",
+            Self::Delete => "DELETE",
+        }
+    }
+
+    pub fn parse(value: &str) -> Option<Self> {
+        Self::ALL
+            .into_iter()
+            .find(|method| method.as_str() == value)
+    }
+}
+
+#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct HttpRequestValue {
+    pub method: HttpMethod,
+    pub url: String,
+    pub headers: Vec<(String, String)>,
+    pub body: Option<Vec<u8>>,
+    pub response_limit: Option<i64>,
+    pub timeout_nanos: Option<i64>,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct HttpResponseValue {
+    pub status: u16,
+    pub headers: Vec<(String, String)>,
+    pub body: Vec<u8>,
+    pub final_url: String,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]

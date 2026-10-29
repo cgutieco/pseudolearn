@@ -158,7 +158,10 @@ impl CapabilityTable {
     pub fn close(&mut self, token: &CapabilityToken) -> Result<(), CapabilityError> {
         self.validate(token)?;
         let index = usize::try_from(token.slot).map_err(|_| CapabilityError::InvalidToken)?;
-        let entry = self.entries.get_mut(index).ok_or(CapabilityError::NotFound)?;
+        let entry = self
+            .entries
+            .get_mut(index)
+            .ok_or(CapabilityError::NotFound)?;
         if entry.closed || entry.generation != token.generation {
             return Err(CapabilityError::Closed);
         }

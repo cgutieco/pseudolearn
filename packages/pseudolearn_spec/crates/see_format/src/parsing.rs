@@ -39,10 +39,7 @@ pub fn parse(path: &str, text: &str) -> Result<Specification, String> {
 
 fn contains_external_document_link(text: &str) -> bool {
     let normalized = text.to_ascii_lowercase();
-    normalized.contains("http://")
-        || normalized.contains("https://")
-        || normalized.contains("www.")
-        || normalized.contains("](//")
+    normalized.contains("www.") || normalized.contains("](") && normalized.contains("://")
 }
 
 fn parse_blocks(body: &str) -> Result<Vec<Block>, String> {

@@ -4178,3 +4178,51 @@
   ]
 }
 ```
+
+```cobertura
+{
+  "id": "V198",
+  "regla": "LIB.HTTP#R1",
+  "instrucciones": ["effect_call"]
+}
+```
+
+```cobertura
+{
+  "id": "V199",
+  "regla": "LIB.HTTP#R2",
+  "instrucciones": ["effect_call"]
+}
+```
+
+```cobertura
+{
+  "id": "V200",
+  "regla": "LIB.HTTP#R3",
+  "instrucciones": ["effect_call"]
+}
+```
+
+```cobertura
+{
+  "id": "V201",
+  "regla": "LIB.HTTP#R4",
+  "instrucciones": ["effect_call"]
+}
+```
+
+```cobertura
+{
+  "id": "V202",
+  "regla": "LIB.HTTP#R5",
+  "instrucciones": ["effect_call"]
+}
+```
+
+```cobertura
+{
+  "id": "V203",
+  "regla": "LIB.HTTP#R6",
+  "instrucciones": ["effect_call"]
+}
+```

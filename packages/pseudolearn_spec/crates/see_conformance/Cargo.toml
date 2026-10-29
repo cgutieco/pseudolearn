@@ -14,6 +14,7 @@ serde_json = "1"
 
 see_generators = { version = "0.1.0", path = "../see_generators" }
 see_oracles = { version = "0.1.0", path = "../see_oracles" }
+sha2 = "0.10"
 
 [dev-dependencies]
 see_format = { version = "0.1.0", path = "../see_format" }

@@ -3,6 +3,8 @@ use serde_json::Value;
 
 pub mod analysis_limits;
 mod capability_library;
+#[cfg(test)]
+mod capability_library_tests;
 pub mod grammar;
 pub mod help_catalog;
 pub mod lexicon;

@@ -547,13 +547,13 @@ derivado`, y sus esperados se derivan de la regla, nunca de la salida del motor 
 
 ### PG-5.02 · Cliente HTTP/HTTPS con métodos explícitos y 4xx/5xx como respuesta
 
-- [ ] `PG-5.02.01` Especificación: crear `LIB.HTTP` (`H1`–`H7`, `H11`–`H13`); `LANG.CAPABILITY.MODEL` (`RedCap` en
+- [x] `PG-5.02.01` Especificación: crear `LIB.HTTP` (`H1`–`H7`, `H11`–`H13`); `LANG.CAPABILITY.MODEL` (`RedCap` en
   `#R1`, atenuación por origen en `#R3`); `LIB.IO#R2` (variantes nuevas de `ErrorES`); `LIB.MODEL` (filas de
   §3.3.4); `ENG.EXEC.EFFECT-COMMIT` (clasificación `H6`); `ENG.EFFECT.TAPE` (`network`, `H11`);
   `API.PROJECT.MANIFEST#R4` (permiso `red`); `RT.HOST.INTERFACE` (`A1`, `A2`, `CF-PG5-04`); `API.WIRE-FORMAT` (forma de
   petición y respuesta); esquema `see-1` (clave `anfitrion.http`: respuestas guionizadas por método y URL, con
   `estado`, `cabeceras`, `cuerpo`, `cuerpo_bytes`, `fallo`, `incierto`); `TOOL.SERVICE.CATALOG` (fichas).
-- [ ] `PG-5.02.02` Casos (anfitrión falso, sin red): `GET` 200 con texto; `POST` con cuerpo de texto y eco; `HEAD`
+- [x] `PG-5.02.02` Casos (anfitrión falso, sin red): `GET` 200 con texto; `POST` con cuerpo de texto y eco; `HEAD`
   sin cuerpo; `PUT`, `PATCH`, `DELETE` con 204; 404 y 500 como `Exito` con `EsExito() = Falso`; cuerpo binario no
   UTF-8 ⇒ `CuerpoTexto` = `Error(Utf8Invalido)` y `Cuerpo` correcto; `Cabecera` sin distinguir mayúsculas y repetida;
   `SolicitarRed` sin permiso ⇒ `PermisoDenegado`; `Limitar` a origen no concedido ⇒ `DestinoDenegado`; `Enviar` tras
@@ -563,18 +563,26 @@ derivado`, y sus esperados se derivan de la regla, nunca de la salida del motor 
   desordenada declarada (`delivery_seq`); cinta grabada y reproducida sin consultar al anfitrión; reproducción con
   petición alterada ⇒ `replay_divergence`; `authorization` redactada en la cinta; límite: cuerpo vacío 200, estado 100
   consumido, 599, `101` ⇒ `RespuestaInvalida`.
-- [ ] `PG-5.02.03` Tests espejo: `pseudolearn_runtime` (`network_policy_tests.rs`: orígenes, cabeceras, URL;
+- C1–C12 cubren métodos, estados, cuerpo binario, validación, permisos, cierre, secretos, entregas concurrentes,
+  divergencia por petición alterada y límites de estado. La reproducción de una respuesta con credencial queda bajo el
+  conflicto `LIB.HTTP#R6`/C8.
+- [x] `PG-5.02.03` Tests espejo: `pseudolearn_runtime` (`network_policy_tests.rs`: orígenes, cabeceras, URL;
   `http_values_tests.rs`); `pseudolearn_api` (`fake_host` HTTP, `tape_wire`); `pseudolearn_semantic` (firmas y
   `Aguardar` sobre `Enviar`).
-- [ ] `PG-5.02.04` Código: `pseudolearn_abi/src/http_layout.rs`; `pseudolearn_runtime`: `network_origin.rs`,
-  `network_url.rs`, `network_policy.rs`, `network_headers.rs`, `http_values.rs`, ajustes en `effect_authority.rs`,
-  `local_effect.rs`, `host_validation.rs`, `tape_privacy.rs`, `memory_host*.rs` (respuestas guionizadas);
-  `pseudolearn_api`: `fake_host.rs`, `execution_effects.rs`, `tape_wire.rs`, `project_authority.rs` (permiso `red`),
-  `negotiation.rs` (garantías `A3`); `pseudolearn_vm` y `pseudolearn_aot_rt`: despacho de las operaciones nuevas por
-  la tabla generada; esquema `see-1` y su lector en `pseudolearn_spec`.
-- [ ] `PG-5.02.05` README del motor (`runtime`, `api`), de `pseudolearn_spec` (clave `anfitrion.http`).
-- [ ] `PG-5.02.06` Ligera: corpus (§7.1.1); `cargo test -p pseudolearn_runtime --lib network_policy`, `--lib
-  http_values`; `cargo test -p pseudolearn_api --lib fake_host`; Clippy y `rust-checks` de lo tocado.
+- [x] `PG-5.02.04` Código: ABI (`http_layout`, permiso y errores); runtime (`network_url`, `network_policy`,
+  `network_headers`, `http_values`, autoridad, validación, efectos locales y anfitrión de memoria); operaciones puras
+  en `pseudolearn_library`; tipos en `pseudolearn_semantic`; permiso `red` en `pseudolearn_project`; proyección API y
+  anfitrión falso; corrección del chequeo escalar de `HttpMethod` en RI; esquema `see-1`, lector y catálogo. La VM y
+  AOT usan la tabla generada compartida y no requirieron cambios propios de despacho.
+- [x] `PG-5.02.05` README del motor (`runtime`, `api`), de `pseudolearn_spec` (clave `anfitrion.http`), ABI,
+  semántica, biblioteca, proyecto y RI afectados.
+- [x] `PG-5.02.06` Ligera: tests filtrados de ABI, runtime (`network_policy`, `http_values`, `network_effect_tests`,
+  `memory_host_config_tests`), API (`fake_host_http_tests`), semantic, project, `see_format`, `see_validation` y
+  `see_conformance`; los casos de API atraviesan library e IR. `cargo check`, Clippy `--all-targets` y
+  `rust-checks all .` de los crates tocados; `rustfmt --check` de 61 archivos Rust tocados; `see validate`,
+  `see lock --check` tras reanclar los 12 IDs editados, y `see export --check`. Todo lo anterior pasa, incluido
+  `see validate` tras registrar la especificación como `estable`, su revisión por la persona y los vínculos de
+  conformidad pendientes de P6. La conformidad pesada sigue pendiente en `.07`.
 - [ ] `PG-5.02.07` Pesada: `--only` de `LIB.HTTP`, `LIB.IO`, `LANG.CAPABILITY.MODEL`, `ENG.EXEC.EFFECT-COMMIT`,
   `ENG.EFFECT.TAPE`, `RT.HOST.INTERFACE`, `API.EXECUTE`, `API.WIRE-FORMAT`, `API.PROJECT.MANIFEST` en `engine` y
   `aot` (los casos con tareas en AOT se registran bajo `CF-PG5-02`).
@@ -962,7 +970,7 @@ debe ser `feature/agregar-ruta-de-especificacion`; (3) protocolo de disco de §1
 |---|---|---|---|
 | **1 · Corpus** | Lectura pendiente de §2; tareas `.01` y `.02` de todos los puntos; `CF-PG5-04` | Integridad del corpus | **`P1`**: confirmaciones de §9; solo entonces `lock --refresh` |
 | **2 · Biblioteca pura** | `PG-5.01.03`–`.06`: tabla generada, léxico, texto, bytes, JSON, disposición JSON, tipos y transferibilidad, validador de facetas, fichas | Tests filtrados de `library`, `abi`, `runtime` (`json_document`), `semantic`, `see_validation`; Clippy y `rust-checks` | `P2`: informe breve y parada |
-| **3 · Red en el motor** | `PG-5.02`–`.05` en motor: valores HTTP, política, URL, cabeceras, redirección, límites, clasificación, cinta, anfitrión de memoria y falso, permiso del manifiesto, negociación, despacho VM/AOT | Tests filtrados de `abi`, `runtime`, `api`, `vm`; Clippy y `rust-checks` | `P3`: informe breve y parada |
+| **3 · Red en el motor** | `PG-5.02` en motor según el alcance reanudado; `.03`–`.05` permanecen pendientes | Tests filtrados de los crates afectados; Clippy, rustfmt local y `rust-checks`; integridad y exportación del corpus | `P3`: informe breve y parada |
 | **4 · Adaptador nativo y servidor** | `PG-5.06.01` (elección con autorización), `PG-5.04`/`.05`/`.06` en la CLI, `PG-5.07` (servidor), `PG-5.08.06` (`cargo tree`) | `cargo check`, tests filtrados de la CLI y del `xtask`, `cargo deny check`, Clippy y `rust-checks` de la CLI | `P4`: informe breve y parada |
 | **5 · Web, app y trabajador** | `fetch_host.mjs` y su test sin navegador; app (anfitrión simulado, proyección, fichas visibles); `pg_http` y registro de vectores (código, no ejecución); `--nativo` con red rechazado | `node --test` del adaptador; `dart analyze` y `check_limits.dart` de lo tocado; tests unitarios filtrados del trabajador; `cargo check --tests` de la CLI | `P5`: informe breve y parada |
 | **6 · Conformidad pesada, experimentos y cierre** | Todas las tareas `.07`; §7.3, §7.4, §7.5; disparadores de §7.1.4; cierre común `PG-5.C01`–`C13`; commit y push | Todas las pesadas en verde | **`P6`**: la persona revisa y autoriza commit y push |
@@ -1005,20 +1013,136 @@ README y la regresión `PERF.SUITE.CORE`; desde `apps/pseudolearn_app`, `flutter
 | Tarea | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
 | `PG-5.01` | Implementación ligera lista; pesada pendiente de iteración 6 | Iteración 2: tests filtrados de `library`, `abi`, `runtime`, `semantic`, `syntax`, `lexicon` y `see_validation`; `see validate`, `lock --check`, `export --check`; Clippy, rustfmt y `rust-checks` en `engine` y `spec` | `PG-5.01.07` se reserva a la iteración 6; parada en `P2` |
-| `PG-5.02` | | | |
-| `PG-5.03` | | | |
-| `PG-5.04` | | | |
-| `PG-5.05` | | | |
+| `PG-5.02` | Código, casos C1–C12 y verificaciones ligeras completados; conformidad pesada pendiente | Tests filtrados de ABI, runtime, semantic, project, API, `see_format`, `see_validation` y `see_conformance`; los casos de API atraviesan library e IR; `cargo check`, Clippy `--all-targets`, `rustfmt --check`, `rust-checks all .` de engine y spec; `see validate`, `see lock --check` y `see export --check` pasan | `LIB.HTTP` comienza `estable` con `Cesar Antonio Gutierrez Contreras` en `revisado_por`. Los vínculos engine/AOT quedan `pendiente` para P6; AOT R5 conserva `CF-PG5-02`. `LIB.HTTP#R6`/C8 mantienen un conflicto acotado a reproducir respuestas con credenciales. Sin commit ni push |
+| `PG-5.03` | Pendiente; fuera del alcance reanudado | Sin verificaciones en esta reanudación | El usuario acotó el trabajo a `PG-5.02`; límites y cancelación quedan para su iteración |
+| `PG-5.04` | Pendiente; fuera del alcance reanudado | Sin verificaciones en esta reanudación | No se implementó redirección ni política de red avanzada |
+| `PG-5.05` | Pendiente; fuera del alcance reanudado | Sin verificaciones en esta reanudación | No se implementó negociación ni confirmación de escrituras |
 | `PG-5.06` | | | |
 | `PG-5.07` | | | |
 | `PG-5.08` | | | |
 | `PG-5.09` | | | |
 | `PG-5.10` | | | |
 | Lectura pendiente de §2 | | | |
-| Espacio liberado (§13) | No requerido | `df -h /`: 32 GiB libres; `du -sh`: engine incremental 1.2 GiB, spec incremental 337 MiB, app native target 1.9 GiB | Supera el objetivo de 25 GiB; no se borraron cachés |
+| Espacio liberado (§13) | No requerido | `df -h /`: 27 GiB libres; `du -sh`: engine incremental 2.8 GiB, spec incremental 567 MiB, rust_checks incremental 0 B, app native target 1.9 GiB | Supera el objetivo de 25 GiB; no se borraron cachés |
 
 Revisión Git de cierre: · Verificadores ejecutados: · Suites omitidas y por qué: · Pendientes justificados: ·
 Puntos de §4 cumplidos:
+
+### Registro de ejecución de P3 · 2026-10-29
+
+- **Contexto:** la persona autorizó P3 y acotó el trabajo a `PG-5.02`–`PG-5.05` en el motor. La rama era
+  `feature/agregar-ruta-de-especificacion`, el árbol estaba limpio y había 32 GiB libres. El corpus no contiene
+  `LIB.HTTP`, `LIB.HTTP.POLICY` ni casos de HTTP para el anfitrión falso. El estado del plan mantiene pendiente P1:
+  confirmar las formas candidatas y aportar `revisado_por` antes de anclar especificaciones.
+- **Alternativas evaluadas:** (a) crear ahora las reglas y los casos a partir de §3 del plan y continuar; (b) escribir
+  el motor directamente desde ese plan y resolver manualmente la tabla generada; (c) dejar sin aplicar los cambios
+  dependientes de contratos ausentes, registrar el prerrequisito y detener P3. Se eligió **(c)**. La opción (a)
+  anclaría contratos sin la revisión requerida por P1 y `SPEC-VERSION-FREEZE`; la opción (b) haría depender el
+  comportamiento del plan transitorio, contradiría `SPEC-BEHAVIOR-TRUTH` y `SPEC-FIRST`, y editar a mano la tabla
+  generada contradiría `GEN-NO-HAND-COPY`.
+- **Impacto:** `PG-5.02`–`PG-5.05` siguen pendientes; no se modificó código ni README de paquetes y no se avanzó a P4.
+  No se ejecutaron tests filtrados, Clippy ni `rust-checks` porque ningún crate pudo tocarse sin los contratos y casos
+  previos. Las verificaciones pesadas de la iteración 6 también quedan pendientes. No se liberó espacio.
+- **Verificación:** rama y limpieza de Git confirmadas antes del trabajo; búsquedas locales confirmaron que faltan las
+  identidades HTTP y los casos del anfitrión falso; `df -h /` informó 32 GiB libres y `du -sh` informó 1.2 GiB de
+  incrementales de engine, 359 MiB de spec y 0 B de rust_checks. La edición de este registro se limita al plan.
+- **Pendiente para reanudar:** completar y revisar las reglas y casos previos al motor, resolver P1 (incluido
+  `revisado_por`) y luego ejecutar P3 con el contrato anclado. La parada de esta ejecución queda en P3.
+
+### Registro de reanudación de P3 · 2026-10-29 · PG-5.02
+
+- **Contexto:** la instrucción más reciente acotó esta ejecución a `PG-5.02`; no se avanzó a `PG-5.03`–`.05` ni a
+  P4. Rama `feature/agregar-ruta-de-especificacion`. El estado de `LIB.HTTP` no se pudo cerrar como contrato estable
+  sin la revisión independiente requerida.
+- **Decisión — tipos y RI:** se eligió `MetodoHttp` como enumerado contextual cerrado, con valor escalar en la ABI,
+  y `effect_call` existente para llevar operaciones HTTP. Se descartaron palabras reservadas y nuevas instrucciones
+  de RI: los nombres contextuales no rompen identificadores y la tabla de operaciones ya expresa el contrato.
+  El impacto es una comprobación de tipos en RI para `HttpMethod` como `i64`. Se verificó al compilar y ejecutar los
+  casos HTTP por la API.
+- **Decisión — anfitrión y respuestas:** se eligió el proveedor de memoria con guiones `anfitrion.http` por método y
+  URL, sin conexiones reales. Se descartó un cliente público de red en las pruebas para mantener determinismo y
+  aislamiento local. Los estados completos, incluidos 4xx/5xx, se conservan en `RespuestaHttp`; los fallos de envío
+  siguen siendo valores de error. Se verificó con C1–C9, cabeceras, bytes y pruebas de runtime/API.
+- **Decisión — campos de límite y tiempo:** se conservaron `ConLimiteRespuesta` y `ConTiempoMaximo` como constructores
+  inmutables del modelo solicitado; no se añadió recorte ni cancelación temporal, porque su comportamiento pertenece
+  a `PG-5.03`. Se descartó adelantar esos límites. Los valores se codifican y sobreviven a la serialización de la
+  petición; se verificó con `http_values_tests`.
+- **Decisión — credenciales y cinta:** no se cambió la política general que redacta secretos y marca la cinta como
+  no reproducible. `LIB.HTTP#R6` pide conservar la respuesta completa para reproducirla, mientras C8 exige
+  `non_reproducible_redacted`; se deja sin aplicar la reproducción de respuestas secretas y se registra el conflicto
+  para resolución editorial. Las pruebas verifican que no se filtre el valor y que respuestas sin secretos se
+  reproduzcan sin anfitrión.
+- **Conflicto de ciclo de vida:** `see validate` exige que una identidad nueva empiece `estable`, pero el ciclo de vida
+  exige revisión independiente y el plan reserva `revisado_por` al nombre que aporte la persona. Se conserva
+  `LIB.HTTP` en `experimental`; no se inventó un revisor ni se declara verde el validador. La única salida restante de
+  `see validate` es `SEE-STATE`. `see export --check` sí pasa.
+- **Impacto:** código y documentación de ABI, RI, runtime, biblioteca, semántica, proyecto, API y spec; permiso `red`,
+  operaciones y tipos HTTP, política de orígenes y anfitrión falso. Las tareas HTTP concurrentes y la divergencia por
+  petición alterada no tienen aún casos HTTP específicos; las reglas generales de tarea y reproducción no se
+  reescribieron. No hubo cambios de redirección ni se aplicó P4. No hay commit ni push.
+- **Verificación:** pasaron `cargo test` filtrados de `pseudolearn_abi`, `pseudolearn_runtime` (política, valores y
+  efectos), `pseudolearn_semantic`, `pseudolearn_project`, API HTTP, `see_format` y `see_validation` (incluida la
+  cobertura de identidades actualizada); Clippy de bibliotecas afectadas, Clippy de los targets HTTP modificados,
+  `rustfmt --check` en archivos tocados, `rust-checks all .` para engine y spec, y `see export --check`. Clippy global
+  `--all-targets` también intenta compilar `api/tests/native_benchmark.rs`, que depende de la feature `native`; el
+  filtro del target HTTP pasa. No se ejecutó la selección pesada `.07` ni `cargo xtask verify`.
+- **Decisión de parada:** `PG-5.02.03`–`.06` quedan verificadas; `.01` sigue bloqueada por el estado editorial y `.02`
+  conserva los casos HTTP concurrentes y de divergencia como pendientes. `PG-5.02.07` queda para P6. Se detiene en P3,
+  sin avanzar a `.03`–`.05`, P4, commit o push.
+
+Revisión Git de cierre: rama correcta; cambios locales sin commit; sin push. Verificadores: los enumerados arriba.
+Pendientes: conflicto `LIB.HTTP#R6`/C8 y suites pesadas `.07` de P6. Protocolo de disco: 27 GiB libres
+en esta continuación; no se borraron cachés.
+
+### Continuación de reanudación de P3 · 2026-10-29 · PG-5.02
+
+- **Contexto:** se continuó sobre `feature/agregar-ruta-de-especificacion` con los cambios locales de PG-5.02 sin
+  commit. La instrucción vigente se acotó solo a `PG-5.02`; no se trabajó en `PG-5.03`–`.05`, P4 ni P6.
+- **Decisión — casos concurrentes y reproducción divergente:** se completaron C10 y C11 para cubrir, respectivamente,
+  entregas fuera del orden de solicitud y divergencia por resumen de petición. Para C11 se eligió modificar el
+  `request_digest` de `network_send` y recalcular el hash encadenado; corromper solo el payload o el hash habría medido
+  corrupción de cinta, no una petición distinta. `alterar_solicitud` queda limitado al corredor de conformidad y no
+  agrega una instrucción ni una opción de ejecución del producto. Se verificó con la prueba API de divergencia aislada
+  y las pruebas de `see_conformance` sobre alteración.
+- **Decisión — estado HTTP 101:** el cargador del anfitrión falso conserva el estado guionado y el runtime valida la
+  respuesta al entregar `network_send`. Se descartó rechazar 101 al cargar la configuración porque impediría que el
+  programa observe `RespuestaInvalida` como resultado del efecto externo. C12 verifica que una respuesta vacía 200 se
+  entrega y que 101 se convierte en fallo reproducible; la secuencia esperada incluye los efectos de consola previos.
+- **Impacto y README:** se actualizaron los README de ABI, runtime, proyecto, motor y los paquetes previamente
+  afectados para explicar `Network`, el permiso `red`, los códigos HTTP y la frontera del anfitrión falso. Los casos
+  C1–C12 se ejecutaron por la API sin sockets públicos.
+- **Verificación:** pasaron tests filtrados de `pseudolearn_abi`, runtime (política, valores, efectos y configuración),
+  API HTTP (6), semantic, project, `see_format`, `see_validation` (esquema y referencias) y `see_conformance` (16 de
+  grabación). Pasaron `cargo check` de crates tocados, Clippy `--all-targets` de engine con la feature `native` y de
+  spec, `rustfmt --check` de 61 fuentes Rust tocadas y `rust-checks all .` en ambos paquetes. `see export --check`
+  pasó. `see validate` reportó únicamente `SEE-STATE`.
+- **Conflictos y pendientes:** se mantiene el estado `experimental` porque no existe la revisión independiente exigida
+  para publicar una identidad nueva como `estable`; no se asignó un revisor. `LIB.HTTP#R6` afirma que la respuesta
+  completa con credenciales se conserva para reproducirla, mientras C8 espera `non_reproducible_redacted`; se conserva
+  la política de redacción ya existente y se deja sin resolver solo la reproducción de respuestas secretas. `PG-5.02.07`
+  y las demás verificaciones pesadas siguen reservadas a P6. La casilla ligera `.06` queda abierta por `SEE-STATE`.
+- **Disco y parada:** `df -h /` informó 27 GiB libres; los incrementales medidos fueron 2.8 GiB (engine), 567 MiB
+  (spec) y 0 B (rust_checks); `apps/pseudolearn_app/native/target` ocupa 1.9 GiB. Se superó el umbral de 25 GiB y no
+  se borraron cachés. No se hizo commit ni push. La parada queda en P3.
+
+### Corrección editorial de PG-5.02 · 2026-10-29
+
+- **Contexto:** la persona aclaró que las especificaciones nuevas salen `estable` y `revisado_por` debe contener su
+  nombre una vez cumplidos los requisitos. La reanudación anterior dejó `LIB.HTTP` experimental por interpretar de
+  forma demasiado restrictiva la revisión independiente.
+- **Decisión:** se verificó `git config user.name` (`Cesar Antonio Gutierrez Contreras`) y se registró ese nombre en
+  `revisado_por`. `responsable-lenguaje` sigue como dueño, por lo que el validador reconoce al revisor como distinto.
+  Se añadieron los vínculos estables para `engine` y `aot`; se marcaron `pendiente` hasta P6 en vez de afirmar
+  conformidad pesada aún no ejecutada. AOT R5 queda pendiente de `CF-PG5-02` por las tareas que AOT no ejecuta.
+  Se reanclaron sin subir versión ni añadir `cambio` los 12 IDs editados: `API.PROJECT.MANIFEST`, `API.WIRE-FORMAT`,
+  `ENG.EFFECT.TAPE`, `ENG.EXEC.EFFECT-COMMIT`, `IR.INSTRUCTIONS`, `LANG.CAPABILITY.MODEL`, `LANG.TASK.ISOLATION`,
+  `LIB.HTTP`, `LIB.IO`, `LIB.MODEL`, `RT.HOST.INTERFACE` y `TOOL.SERVICE.CATALOG`.
+- **Alternativas:** se descartó conservar `experimental` y dejar abierto `SEE-STATE`, porque contradice la instrucción
+  explícita de la persona. También se descartó marcar los vínculos `cumple` antes de las campañas `.07`; se usa el
+  estado `pendiente` con su punto de resolución real.
+- **Impacto y verificación:** `see validate` pasó para 190 especificaciones después de añadir estado, revisor y
+  vínculos; `see lock --check` y `see export --check` también pasaron. No se alteró la regla `LIB.HTTP#R6` ni C8; su
+  conflicto sobre la reproducción de respuestas con credenciales sigue aislado. No se avanzó de P3 ni se ejecutó `.07`.
 
 ---
 

@@ -53,6 +53,7 @@ mod generic_state;
 mod hierarchy;
 pub mod hir;
 mod hir_finalization;
+mod http_types;
 pub mod identities;
 mod interface_constraints;
 pub mod interface_model;

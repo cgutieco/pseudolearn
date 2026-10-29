@@ -140,9 +140,10 @@
   "id": "R3",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Cada TapeEntry registra effect_seq, task_id, source_node_id, capability_kind, operation, request_digest, secret_reference, outcome, payload_bytes y entry_hash. El campo entry_hash es un resumen SHA-256 encadenado criptográficamente con el entry_hash de la entrada previa, garantizando detección de adulteración. El campo capability_kind toma un valor del vocabulario cerrado console, arguments, filesystem, clock y timer, determinado por la operación y no por el tipo interno del anfitrión; una solicitud de capacidad se registra bajo la familia de la capacidad solicitada.",
+  "texto": "Cada TapeEntry registra effect_seq, task_id, source_node_id, capability_kind, operation, request_digest, secret_reference, outcome, payload_bytes y entry_hash. El campo entry_hash es un resumen SHA-256 encadenado criptográficamente con el entry_hash de la entrada previa, garantizando detección de adulteración. El campo capability_kind toma un valor del vocabulario cerrado console, arguments, filesystem, clock, timer y network, determinado por la operación y no por el tipo interno del anfitrión; una solicitud de capacidad se registra bajo la familia de la capacidad solicitada.",
   "verificacion": [
-    "C3"
+    "C3",
+    "C15"
   ]
 }
 ```
@@ -781,6 +782,39 @@
       "temporizador"
     ],
     "grabar_y_reproducir": true
+  }
+}
+```
+
+```caso
+{
+  "id": "C15",
+  "regla": "R3",
+  "perfiles": ["es", "en"],
+  "rigor": ["estricto", "flexible"],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "200\n",
+    "terminacion": "completed",
+    "anfitrion_observado": {
+      "llamadas": 2,
+      "estado_cinta": "reproducible",
+      "efectos": [
+        {"effect_seq": 1, "capability_kind": "network", "operation": "request_network", "outcome": "committed"},
+        {"effect_seq": 2, "capability_kind": "network", "operation": "network_send", "outcome": "committed"}
+      ]
+    }
+  },
+  "programas": {
+    "es": "Algoritmo Main\nDefinir net Como RedCap <- Propagar SolicitarRed();\nDefinir request Como PeticionHttp <- PeticionHttp(MetodoHttp.GET, \"https://fake.test/a\");\nDefinir response Como RespuestaHttp <- Propagar net.Enviar(request);\nEscribir response.Estado();\nFinAlgoritmo\n",
+    "en": "algorithm Main\ndefine net as NetworkCap <- propagate requestNetwork();\ndefine request as HttpRequest <- HttpRequest(HttpMethod.GET, \"https://fake.test/a\");\ndefine response as HttpResponse <- propagate net.send(request);\nwrite response.status();\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "permissions": ["red"],
+    "requested_permissions": ["red"],
+    "grabar_y_reproducir": true,
+    "http": {"GET https://fake.test/a": {"estado": 200}}
   }
 }
 ```

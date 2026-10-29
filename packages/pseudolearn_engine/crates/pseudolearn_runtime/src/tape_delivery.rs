@@ -1,7 +1,7 @@
 use crate::{EffectTape, TapeEntry};
 
-const WRITING_MARKERS: [&str; 8] = [
-    "write", "delete", "remove", "create", "rename", "append", "truncate", "make",
+const WRITING_MARKERS: [&str; 9] = [
+    "write", "delete", "remove", "create", "rename", "append", "truncate", "make", "send",
 ];
 
 pub fn operation_may_write(identity: &str) -> bool {
