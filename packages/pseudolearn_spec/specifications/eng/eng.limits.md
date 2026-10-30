@@ -1082,11 +1082,11 @@ Vector y Diccionario derivan sus límites del presupuesto cells existente: como 
   "origen": "derivado",
   "operacion": "execute",
   "programas": {
-    "es": "Algoritmo P\nDefinir parsed Como Resultado<ValorJson, ErrorJson> <- AnalizarJson(\"[0]\");\nEscribir parsed.EsExito();\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine parsed as Result<JsonValue, JsonError> <- parseJson(\"[0]\");\nwrite parsed.isSuccess();\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir parsed Como Resultado<ValorJson, ErrorJson> <- AnalizarJson(\"[0]\");\nSegun parsed Hacer\nExito(document): Escribir Verdadero;\nError(problem): Escribir Falso;\nFinSegun\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine parsed as Result<JsonValue, JsonError> <- parseJson(\"[0]\");\nswitch parsed do\nsuccess(document): write true;\nfailure(problem): write false;\nendSwitch\nendAlgorithm\n"
   },
   "limites": {"max_json_depth": 1},
-  "espera": {"salida": "Verdadero\n", "terminacion": "completed"}
+  "espera": {"salida": "{{lexema:booleanTrue}}\n", "terminacion": "completed"}
 }
 ```
 
@@ -1099,11 +1099,11 @@ Vector y Diccionario derivan sus límites del presupuesto cells existente: como 
   "origen": "derivado",
   "operacion": "execute",
   "programas": {
-    "es": "Algoritmo P\nDefinir parsed Como Resultado<ValorJson, ErrorJson> <- AnalizarJson(\"[[0]]\");\nEscribir parsed.EsExito();\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine parsed as Result<JsonValue, JsonError> <- parseJson(\"[[0]]\");\nwrite parsed.isSuccess();\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir parsed Como Resultado<ValorJson, ErrorJson> <- AnalizarJson(\"[[0]]\");\nSegun parsed Hacer\nExito(document): Escribir Verdadero;\nError(problem): Escribir Falso;\nFinSegun\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine parsed as Result<JsonValue, JsonError> <- parseJson(\"[[0]]\");\nswitch parsed do\nsuccess(document): write true;\nfailure(problem): write false;\nendSwitch\nendAlgorithm\n"
   },
   "limites": {"max_json_depth": 1},
-  "espera": {"salida": "Falso\n", "terminacion": "completed"}
+  "espera": {"salida": "{{lexema:booleanFalse}}\n", "terminacion": "completed"}
 }
 ```
 

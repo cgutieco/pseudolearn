@@ -26,6 +26,12 @@ struct ResponseLimits {
     body_bytes: usize,
 }
 
+struct PreparedRequest {
+    outgoing: Request<Full<Bytes>>,
+    uri: Uri,
+    limits: ResponseLimits,
+}
+
 pub(super) struct TransportOptions {
     pub(super) local_test_origin: bool,
     pub(super) tls_configuration: TlsConfiguration,
@@ -59,6 +65,11 @@ pub(super) async fn send_once<Resolver: AddressResolver + Send + 'static>(
     options: TransportOptions,
 ) -> Result<Value, HostError> {
     let uri = physical_network_transport_support::request_uri(&request.url)?;
+    let prepared = PreparedRequest {
+        limits: response_limits(&request)?,
+        outgoing: build_request(&request, &uri)?,
+        uri: uri.clone(),
+    };
     let hostname = uri.host().ok_or(HostError::INVALID_PATH)?.to_owned();
     let port = uri
         .port_u16()
@@ -75,9 +86,9 @@ pub(super) async fn send_once<Resolver: AddressResolver + Send + 'static>(
             .connect(server_name, stream)
             .await
             .map_err(|error| crate::physical_network_tls::classify_handshake_error(&error))?;
-        send_over_stream(stream, request, uri, options.sent).await
+        send_over_stream(stream, prepared, options.sent).await
     } else {
-        send_over_stream(stream, request, uri, options.sent).await
+        send_over_stream(stream, prepared, options.sent).await
     }
 }
 
@@ -102,14 +113,17 @@ async fn resolve_address<Resolver: AddressResolver + Send + 'static>(
 
 async fn send_over_stream<Stream>(
     stream: Stream,
-    request: NetworkRequest,
-    uri: Uri,
+    prepared: PreparedRequest,
     sent: Arc<AtomicBool>,
 ) -> Result<Value, HostError>
 where
     Stream: AsyncRead + AsyncWrite + Unpin + Send + 'static,
 {
-    let limits = response_limits(&request)?;
+    let PreparedRequest {
+        outgoing,
+        uri,
+        limits,
+    } = prepared;
     let mut connection = http1::Builder::new();
     connection.max_headers(limits.headers_count);
     let tracked = TrackedIo {
@@ -123,7 +137,6 @@ where
     let connection_task = ConnectionTask(tokio::spawn(async move {
         let _ = connection_future.await;
     }));
-    let outgoing = build_request(&request, uri.clone())?;
     let response = sender
         .send_request(outgoing)
         .await
@@ -175,7 +188,7 @@ fn response_headers(
     Ok(headers)
 }
 
-fn build_request(request: &NetworkRequest, uri: Uri) -> Result<Request<Full<Bytes>>, HostError> {
+fn build_request(request: &NetworkRequest, uri: &Uri) -> Result<Request<Full<Bytes>>, HostError> {
     if !matches!(
         request.method.as_str(),
         "GET" | "HEAD" | "POST" | "PUT" | "PATCH" | "DELETE"
@@ -197,9 +210,10 @@ fn build_request(request: &NetworkRequest, uri: Uri) -> Result<Request<Full<Byte
         .ok_or(HostError::INVALID_PATH)?
         .as_str()
         .to_owned();
+    let target = physical_network_transport_support::origin_form(uri)?;
     let mut outgoing = Request::builder()
         .method(method)
-        .uri(uri)
+        .uri(target)
         .header(http::header::CONNECTION, "close")
         .header(http::header::HOST, authority)
         .body(Full::new(Bytes::from(body)))
@@ -217,6 +231,9 @@ fn append_headers(
     headers: &[(String, String)],
 ) -> Result<(), HostError> {
     for (name, value) in headers {
+        if physical_network_transport_support::is_reserved_header(name) {
+            return Err(HostError::INVALID_PATH);
+        }
         let name = HeaderName::from_bytes(name.as_bytes()).map_err(|_| HostError::INVALID_PATH)?;
         let value =
             HeaderValue::from_bytes(value.as_bytes()).map_err(|_| HostError::INVALID_PATH)?;

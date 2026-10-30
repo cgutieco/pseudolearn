@@ -55,7 +55,7 @@ describe('pseudolearn_wasm browser package', () => {
         {
           operation: 'create_analysis',
           argumentsJson: JSON.stringify({
-            program: 'Algoritmo Browser\nDefinir value Como Entero;\nEscribir "ñ🌍";\nLeer value;\nEscribir value;\nFinAlgoritmo\n',
+            program: 'Algoritmo Browser\nDefinir Mutable value Como Entero <- 0;\nEscribir "ñ🌍";\nLeer value;\nEscribir value;\nFinAlgoritmo\n',
           }),
         },
         { operation: 'start', argumentsJson: '{"analysis":2,"seed":-9223372036854775808}' },
@@ -71,7 +71,7 @@ describe('pseudolearn_wasm browser package', () => {
         {
           operation: 'create_analysis',
           argumentsJson: JSON.stringify({
-            program: 'Algoritmo Cancellation\nDefinir i Como Entero;\ni <- 0;\nMientras i < 2 Hacer\ni <- i + 1;\nFinMientras\nFinAlgoritmo\n',
+            program: 'Algoritmo Cancellation\nDefinir Mutable i Como Entero <- 0;\nMientras i < 2 Hacer\ni <- i + 1;\nFinMientras\nFinAlgoritmo\n',
           }),
         },
         { operation: 'start', argumentsJson: '{"analysis":5,"seed":42}' },

@@ -21,7 +21,7 @@ fn parse_error(error: &serde_json::Error) -> Result<JsonFailure, MemoryError> {
     Ok(JsonFailure {
         code: error_code(error, &description).to_owned(),
         line: i64::try_from(error.line()).map_err(|_| MemoryError::Resource)?,
-        column: i64::try_from(error.column()).map_err(|_| MemoryError::Resource)?,
+        column: i64::try_from(error.column().max(1)).map_err(|_| MemoryError::Resource)?,
     })
 }
 

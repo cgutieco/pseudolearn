@@ -40,7 +40,7 @@ Funciones puras sobre representaciones del runtime, sin estado global.
 | `transcendental/power_exact.rs` | Resultados exactos de la potencia antes de la escalada |
 | `text_search.rs`, `text_split.rs`, `text_replace.rs` | Búsqueda Unicode, segmentación, unión, reemplazo y recorte de texto |
 | `bytes_operations.rs` | Conversión UTF-8, segmentos comprobados y unión binaria |
-| `json_parse.rs`, `json_parse_strings.rs` | Parsing JSON, duplicados, límite de profundidad y ubicación de errores |
+| `json_parse.rs`, `json_parse_strings.rs` | Parsing JSON, duplicados, límite de profundidad y ubicación de errores; las posiciones empiezan en línea 1, columna 1, también para el texto vacío |
 | `json_text.rs`, `json_query.rs`, `json_build.rs` | Texto compacto, consultas, constructores y actualización inmutable |
 | `json_source.rs`, `json_source_scan.rs` | Conserva lexemas JSON no modificados al reemplazar valores y añadir miembros |
 | `json_local_views.rs` | Devuelve vistas del runtime para resultados de `Elemento` y `Campo` |

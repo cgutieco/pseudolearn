@@ -112,3 +112,59 @@ fn matches_statuses_bodies_and_redirects_from_the_local_contract_server() -> Res
     }
     Ok(())
 }
+
+fn failure_program(method: &str, url: &str, modifiers: &str) -> String {
+    format!(
+        "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir net Como RedCap <- Propagar SolicitarRed();\nDefinir request Como PeticionHttp <- PeticionHttp(MetodoHttp.{method}, \"{url}\"){modifiers};\nSegun net.Enviar(request) Hacer\nExito(response): Escribir response.Estado();\nError(problem): Escribir problem.Codigo, \":\", problem.Incierto;\nFinSegun\nRetornar Exito(0);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value):\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n"
+    )
+}
+
+fn execute_failure(server: &TestServer, label: &str, source: &str) -> Result<String, String> {
+    let directory = std::env::temp_dir().join(format!(
+        "pseudo-network-failure-{}-{label}",
+        std::process::id()
+    ));
+    std::fs::create_dir_all(&directory).map_err(|error| error.to_string())?;
+    let source_path = directory.join("main.pseudo");
+    std::fs::write(&source_path, source).map_err(|error| error.to_string())?;
+    let output = Command::new(env!("CARGO_BIN_EXE_pseudo"))
+        .arg("run")
+        .arg(&source_path)
+        .args(["--grant", "red", "--local-origin", &server.http_address])
+        .output()
+        .map_err(|error| error.to_string())?;
+    let _removed = std::fs::remove_dir_all(directory);
+    Ok(String::from_utf8_lossy(&output.stdout).into_owned())
+}
+
+#[test]
+fn marks_cut_mutating_requests_uncertain_and_cut_reads_certain() -> Result<(), String> {
+    let server = start_server()?;
+    let cut = format!("{}/cerrar-a-mitad", server.http_address);
+    let slow = format!("{}/lento", server.http_address);
+    for (label, method, url, modifiers, expected) in [
+        (
+            "post",
+            "POST",
+            &cut,
+            ".ConCuerpoTexto(\"x\")",
+            "interrumpido:Verdadero\n",
+        ),
+        ("delete", "DELETE", &cut, "", "interrumpido:Verdadero\n"),
+        ("get", "GET", &cut, "", "interrumpido:Falso\n"),
+        (
+            "slow",
+            "GET",
+            &slow,
+            ".ConTiempoMaximo(300000000)",
+            "tiempo_agotado:Falso\n",
+        ),
+    ] {
+        let source = failure_program(method, url, modifiers);
+        let actual = execute_failure(&server, label, &source)?;
+        if actual != expected {
+            return Err(format!("{label}: expected {expected:?}, got {actual:?}"));
+        }
+    }
+    Ok(())
+}

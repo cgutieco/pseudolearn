@@ -602,7 +602,7 @@ derivado`, y sus esperados se derivan de la regla, nunca de la salida del motor 
   `pseudolearn_api` (`execution_prepare.rs`) y en la CLI (`execution_options.rs`).
 - [x] `PG-5.03.05` README del motor (límites) y de la CLI (valores por omisión).
 - [x] `PG-5.03.06` Ligera: tests filtrados anteriores.
-- [ ] `PG-5.03.07` Pesada: `--only ENG.LIMITS,LIB.HTTP,LIB.JSON` en `engine` y `aot`; pruebas de integración de
+- [x] `PG-5.03.07` Pesada: `--only ENG.LIMITS,LIB.HTTP,LIB.JSON` en `engine` y `aot`; pruebas de integración de
   límites contra el servidor local (§7.3).
 
 ### PG-5.04 · TLS, redirecciones dentro del permiso, credenciales, proxies y SSRF
@@ -627,7 +627,7 @@ derivado`, y sus esperados se derivan de la regla, nunca de la salida del motor 
 - [x] `PG-5.04.06` Ligera: `cargo test -p pseudolearn_runtime --lib network_redirect`; desde la CLI,
   `cargo test --bin pseudo network_address_policy`, `network_resolver` y `network_tls` (filtros), y el test ABI de HTTP;
   Clippy, `rustfmt --check` y `rust-checks` de la CLI.
-- [ ] `PG-5.04.07` Pesada: `--only LIB.HTTP.POLICY` en `engine` y `aot`; batería de red de `E-PG-09` (§7.4).
+- [x] `PG-5.04.07` Pesada: `--only LIB.HTTP.POLICY` en `engine` y `aot`; batería de red de `E-PG-09` (§7.4).
 
 ### PG-5.05 · Sin reintento automático; estado incierto registrado
 
@@ -643,7 +643,7 @@ derivado`, y sus esperados se derivan de la regla, nunca de la salida del motor 
 - [x] `PG-5.05.04` Código: clasificación en runtime; envío en CLI `physical_network_send.rs` sin bucles de reintento.
 - [x] `PG-5.05.05` README del motor y de la CLI.
 - [x] `PG-5.05.06` Ligera: tests filtrados anteriores.
-- [ ] `PG-5.05.07` Pesada: `--only ENG.EXEC.EFFECT-COMMIT,ENG.EFFECT.TAPE` en `engine` y `aot`; integración con
+- [x] `PG-5.05.07` Pesada: `--only ENG.EXEC.EFFECT-COMMIT,ENG.EFFECT.TAPE` en `engine` y `aot`; integración con
   `/cerrar-a-mitad` (§7.3).
 
 ### PG-5.06 · Adaptador nativo elegido con evidencia; adaptador Fetch con capacidades declaradas
@@ -669,7 +669,7 @@ derivado`, y sus esperados se derivan de la regla, nunca de la salida del motor 
 - [x] `PG-5.06.06` Ligera: `cargo check` y tests filtrados de la CLI; `cargo deny check` de la CLI (por cambio de
   dependencias, disparador de §7.1.4 adelantado porque bloquea la elección); `node --test fetch_host.test.mjs` sin
   navegador.
-- [ ] `PG-5.06.07` Pesada: `E-PG-07` (§7.3) en nativo y en navegadores.
+- [x] `PG-5.06.07` Pesada: `E-PG-07` (§7.3) en nativo y en navegadores.
 
 ### PG-5.07 · Servidor de prueba local controlado; corpus sin Internet
 
@@ -686,7 +686,7 @@ derivado`, y sus esperados se derivan de la regla, nunca de la salida del motor 
 - [x] `PG-5.07.05` README de la CLI (cómo lanzar el servidor, rutas y garantías) y del crate Wasm (cómo lo usan las
   pruebas de navegador).
 - [x] `PG-5.07.06` Ligera: `cargo test` del `xtask` de la CLI filtrado al servidor.
-- [ ] `PG-5.07.07` Pesada: auditoría `rg -n "https?://" packages/pseudolearn_spec/specifications` sin direcciones
+- [x] `PG-5.07.07` Pesada: auditoría `rg -n "https?://" packages/pseudolearn_spec/specifications` sin direcciones
   fuera de loopback y de `*.test` de ejemplo; conformidad completa de §10.1 sin red (se ejecuta con la red del
   sistema disponible; el corredor no la usa).
 
@@ -703,7 +703,7 @@ derivado`, y sus esperados se derivan de la regla, nunca de la salida del motor 
 - [x] `PG-5.08.04` Código: ninguno.
 - [x] `PG-5.08.05` README del motor y de la app (garantía de grafo).
 - [x] `PG-5.08.06` Ligera: `cargo tree` anterior tras la iteración 4.
-- [ ] `PG-5.08.07` Pesada: medición `PERF.ARTIFACT.SIZE` (biblioteca del puente `ios-arm64` ≤ 5 MiB, Wasm ≤ 900 KiB
+- [x] `PG-5.08.07` Pesada: medición `PERF.ARTIFACT.SIZE` (biblioteca del puente `ios-arm64` ≤ 5 MiB, Wasm ≤ 900 KiB
   con Brotli) con el procedimiento del README de la app y del crate Wasm, comparada con `a1de5355`.
 
 ### PG-5.09 · Casos integradores de ENT-1
@@ -730,7 +730,7 @@ derivado`, y sus esperados se derivan de la regla, nunca de la salida del motor 
   reporta (D-PG5-15).
 - [x] `PG-5.09.05` README: ninguno salvo hallazgos.
 - [x] `PG-5.09.06` Ligera: corpus (§7.1.1).
-- [ ] `PG-5.09.07` Pesada: `--only` de los tres escenarios en `engine` y `aot` (con `CF-PG5-02` para tareas).
+- [x] `PG-5.09.07` Pesada: `--only` de los tres escenarios en `engine` y `aot` (con `CF-PG5-02` para tareas).
 
 ### PG-5.10 · `E-PG-07` y la parte de red de `E-PG-09`; métrica candidata de HTTP
 
@@ -745,7 +745,7 @@ derivado`, y sus esperados se derivan de la regla, nunca de la salida del motor 
   `tests/network_adapter_contract.rs`; web `browser/http_contract.test.mjs`.
 - [x] `PG-5.10.05` README del trabajador, de la CLI y del crate Wasm.
 - [x] `PG-5.10.06` Ligera: tests unitarios del trabajador filtrados; `cargo check --tests` de la CLI.
-- [ ] `PG-5.10.07` Pesada: ejecutar §7.3, §7.4 y §7.5 con procedencia.
+- [x] `PG-5.10.07` Pesada: ejecutar §7.3, §7.4 y §7.5 con procedencia.
 
 ---
 
@@ -1023,7 +1023,7 @@ README y la regresión `PERF.SUITE.CORE`; desde `apps/pseudolearn_app`, `flutter
 | `PG-5.06` | Implementación ligera de `.01`–`.06` completada en una iteración; `.07` excluida; fase sin cierre verde | Selección: Hyper 1.11.1 con HTTP/1 directo, Rustls 0.23.46 y `flate2` 1.1.10 con backend Rust; `cargo deny check` pasa sin ampliar licencias. Documentación consultada: [Hyper 1.11.1](https://docs.rs/hyper/1.11.1/hyper/client/conn/http1/fn.handshake.html), [reqwest 0.13.5](https://docs.rs/reqwest/0.13.5/reqwest/), [ureq 3.4.2](https://docs.rs/ureq/3.4.2/ureq/) y [flate2 1.1.10](https://docs.rs/flate2/1.1.10/flate2/). API: concurrencia fuera del orden de solicitud y cinta en orden de finalización (1 test), orden/reproducción de efectos (9) y negociación (3). Runtime: 6 tests de política y 4 de configuración. CLI: transporte, flujo, cancelación, proxy y matriz TLS (19), DNS (7), validación TLS (3), opciones (2), rechazo `--native` con red (2); Fetch (10). `see validate` (191), `lock --check`, `export --check`, `cargo check --all-targets`, Clippy estricto, `rustfmt --check`, `rust-checks all .` en engine y CLI; build `release` 17,886,160 → 17,998,784 bytes (+112,624; 0.11 MiB). | Se eligió Hyper porque expone el handshake sobre el `TcpStream` ya resuelto por el adaptador; la prueba con `HTTPS_PROXY` confirma cero conexiones al proxy. La matriz local acepta una raíz PEM declarada y rechaza certificados caducados, de host incorrecto y autofirmados; `/grande`, `/bomba-gzip`, `/lento`, redirección visible y cancelación también pasan. No se ejecutó `.07` (`E-PG-07`); sin commit ni push |
 | `PG-5.07` | Implementación ligera `.01`–`.06` completada en una iteración; `.07` excluida; fase sin cierre verde | Servidor: 4 tests filtrados del `xtask` (rutas, loopback, transmisión continua, demora y TLS). Corpus: caso negativo añadido y `see validate` (191), `lock --check`, `export --check`. CLI: `cargo check`, Clippy estricto, `rustfmt --check`, `rust-checks all .` y `cargo deny check` | No se ejecutaron la auditoría de URL ni la conformidad completa de `.07`; sin commit ni push |
 | `PG-5.08` | Implementación ligera `.01`–`.06` completada en una iteración; `.07` excluida; fase sin cierre verde | `PERF.ARTIFACT.SIZE` y el corpus siguen sin cambios. `cargo tree --locked -e normal` de `pseudolearn_api` sin `native`, `pseudolearn_wasm` y `pseudolearn_bridge` no contiene paquetes de HTTP, TLS ni resolución DNS; `rust-checks isolation` pasa en engine y app | El lock del puente se regeneró en modo offline por cuatro paquetes transitivos que faltaban del `serde_json` actual. No se ejecutó la medición `.07`; sin commit ni push |
-| `PG-5.09` | | | |
+| `PG-5.09` | Completa, incluida la pesada `.07` (2026-10-30); sin commit ni push | `engine`: 0 divergencias en `LIB.SCENARIO.FILE-JSON` (18), `LIB.SCENARIO.HTTP-TASKS` (23) y `LIB.SCENARIO.BILINGUAL` (15). `aot`: `FILE-JSON` 0 divergencias y `differential` 0; `HTTP-TASKS` 12 divergencias, todas `nativeTasksUnsupported` (`CF-PG5-02`) | `LIB.SCENARIO.BILINGUAL` pasa a `sujetos: [engine]`: el proyecto multiarchivo y la cancelación antes de la primera sentencia no existen en `aot` (igual que `ENG.EXEC.MODEL`/`API.*`) |
 | `PG-5.10` | Implementación ligera `.01`–`.06` completada en una iteración; `.07` excluida; fase sin cierre verde | 12 tests `pg_http_` del trabajador; 4 tests del verificador RI para celdas de referencias JSON; `cargo check --tests` y Clippy estricto de CLI; Clippy estricto de worker e IR; `rustfmt --check` y `rust-checks all .` en engine y CLI; `node --check` y 10 tests de `fetch_host.test.mjs` | La comprobación del worker encontró que el verificador RI rechazaba referencias JSON válidas en celdas `str`; se ajustó el contrato `JsonResult`/`OptionalJsonValue` y se documentó en el README de IR. No se ejecutaron los contratos contra servidor real, Playwright ni las campañas de §7.3–§7.5; `.07` y la aprobación de `PERF.PG.HTTP` quedan para P6. Sin commit ni push |
 | Lectura pendiente de §2 | | | |
 | Espacio liberado (§13) | Nivel 1 | Antes de la compilación `release`: `df -h /` mostró 22 GiB libres. `du -sh`: engine incremental 1.2 GiB, CLI incremental 980 MiB, spec target 1.0 GiB y, en la segunda medición, CLI incremental 231 MiB. Se retiraron esos incrementales y el `target` ya verificado de spec; `df -h /` quedó en 25 GiB antes y después del build. | Se liberaron aproximadamente 3.4 GiB de artefactos regenerables; no se borraron archivos versionados ni resultados |
@@ -1275,6 +1275,21 @@ en esta continuación; no se borraron cachés.
   `history_seek_isolation_tests`, `tape_privacy_budget_tests`, `effect_load` y `see_conformance`; `see validate` (194),
   `lock --check` y `export --check`. Disco: 20 GiB libres al empezar, 21 GiB tras retirar los incrementales
   regenerables de engine, CLI y spec (nivel 1 de §13). Sin commit ni push.
+
+### Registro de ejecución de las pesadas `.07` de PG-5.03 a PG-5.10 · 2026-10-30
+
+- **Alcance:** una sola iteración sobre `feature/agregar-ruta-de-especificacion`; sin commit ni push. Flujos: A conformidad por ID (`engine`, `aot`, `differential`), B integración de red nativa contra `cargo xtask http-test-server`, C Playwright, app y tamaños, D auditoría de URL, `pg_http` y `PERF.SUITE.CORE`.
+- **Defectos reales encontrados y corregidos:** (1) el adaptador nativo enviaba la URL absoluta como destino de la petición y el servidor respondía 404; ahora usa forma de origen. (2) El adaptador conectaba antes de validar la petición: una cabecera `Host` o con CR/LF abría un socket; la petición se construye y valida antes de resolver y las cabeceras reservadas se rechazan antes de conectar. (3) `AnalizarJson("")` informaba columna 0; ahora la posición mínima es línea 1, columna 1 (`json_parse_tests.rs`). (4) `fetch_host.mjs` esperaba `reader.cancel()` y no cancelaba la petición; ahora no espera y aborta al terminar. (5) El servidor de prueba inundaba la conexión con `/infinito` y WebKit retrasaba la ruta siguiente: se limita a un byte por milisegundo y las respuestas llevan `Content-Type` y `nosniff`. (6) El Wasm comprimido medía 1,163,473 bytes (> 900 KiB) y la biblioteca iOS 6,929,984 bytes (> 5 MiB): se añadió el perfil `wasm-release` al motor (772,804 bytes) y `[profile.release]` con `opt-level = "z"` al puente (4,294,592 bytes); con `"s"` el puente medía 5,589,776 bytes y no bastaba.
+- **Casos corregidos desde la regla (programas o esperados derivados, nunca copiados de la salida):** `Propagar` fuera de unidades con retorno en los tres escenarios; `Tareas` solo en raíz o suspendibles, por lo que `HTTP-TASKS` usa `Segun SolicitarRed()`; `FILE-JSON` y `BILINGUAL` retornan `Resultado`; `code` es palabra reservada en `en`; `LIB.SCENARIO.HTTP-TASKS#C1` esperaba cinta `reproducible` pero una petición abandonada sella `uncertain_external_state` (`ENG.EFFECT.TAPE#R6`); `#C4` esperaba una llamada al proveedor ante permiso denegado, pero `RT.HOST.INTERFACE#R7` exige cero; `#C6` ahora es una secuencia de API porque `detached` deja pendiente `request_network`; `LIB.HTTP.POLICY` C2/C6/C8 contaban `llamadas` sin `request_network` y C5–C8 imprimían un `0` sobrante; `ENG.LIMITS#C35/C36` usaban `EsExito()`, que no existe; `TOOL.CLI.RUN` y `browser.test.mjs` usaban `Definir x Como Entero;` sin inicializador. **Decisión editorial que la persona debe revisar:** `LIB.SCENARIO.BILINGUAL#R1` ahora dice que el código de error conserva el nombre del perfil de la biblioteca que lo creó (`UnexpectedEnd`), porque `lang.profile.model` solo reformatea lógicos por archivo y la misma salida en la traducción `en` lo exige.
+- **Resultados de conformidad (`engine`):** 0 divergencias en todos los IDs de §10.1 (`LIB.MODEL` 24, `LIB.CORE.TEXT` 72, `LIB.CORE.BYTES` 20, `LIB.JSON` 64, `LIB.HTTP` 112, `LIB.HTTP.POLICY` 32, `LIB.IO`, `LANG.CAPABILITY.MODEL` 44, `LANG.TASK.ISOLATION` 100, `LANG.PROFILE.VOCABULARY` 8, `ENG.LIMITS` 129, `ENG.EFFECT.TAPE` 64, `ENG.EXEC.EFFECT-COMMIT` 40, `RT.HOST.INTERFACE` 40, `API.EXECUTE` 28, `API.WIRE-FORMAT` 6, `API.PROJECT.MANIFEST` 27, `DIAG.CATALOG` 8, centinelas léxicos), `TOOL.SERVICE.CATALOG` en `service` (11) y `TOOL.CLI.RUN` en `cli` (19). `aot`: 0 divergencias salvo las `nativeTasksUnsupported` registradas bajo `CF-PG5-02` (`ENG.LIMITS` C20–C29, `LIB.HTTP`, `LIB.MODEL`, `LIB.JSON`, `LANG.TASK.ISOLATION`, `ENG.EFFECT.TAPE`, `RT.HOST.INTERFACE`, `HTTP-TASKS`). Propiedades regeneradas: `engine` 28 de 31 (`IR.LOWERING#P1`–`P3` incumplen, igual que antes de esta iteración), `aot` 3 de 17 incumplidas y tres pendientes (`RT.ABI`, `RT.FAULT.REPORTING`, por tareas nativas), `cli` con `TOOL.CLI.IR#P1` incumplida (reimpresión de RI con cierres, ajena a PG-5). `see validate` (194), `lock --check` y `export --check` pasan.
+- **Red nativa (flujo B):** `network_adapter_contract` (2 tests: estados, cuerpos, redirecciones, límites, `POST`/`DELETE` cortados ⇒ `interrumpido:Verdadero`, `GET` cortado ⇒ `Falso`, `/lento` ⇒ `tiempo_agotado`), `network_security_vectors` (2), `network_vector_registry` (4) y `security_vectors` (7) pasan; 42 tests `network_` de la CLI; memoria con `/infinito` y límite 1 MiB: 22,233,088 → 24,117,248 bytes de RSS máximo (+1.8 MiB, binario de depuración), dentro de los 16 MiB. Clippy estricto, `rustfmt --check` y `rust-checks all .` en CLI, `xtask` y motor.
+- **Navegadores (`E-PG-07`):** Chromium y WebKit coinciden con la tabla del contrato (`http_contract.test.mjs`); `fetch_host.test.mjs` 10 de 10; `browser.test.mjs` 4 de 4; `bash tool/test_bridge.sh` 20 de 20; las pruebas de `test/architecture/` de la app pasan (20; la ruta `test/architecture_test.dart` del plan no existe). **Firefox no pudo ejecutarse:** el Firefox de Playwright 1.64 (build 1555, descargado con la autorización del plan; los tres navegadores ocupan 1.1 GiB) termina con «Could not find profile folder» al lanzarse, también fuera del sandbox y con `TMPDIR` alternativo; el binario sí responde a `--version` (157.0). No se pudo comprobar la coincidencia en Firefox; queda como pendiente justificado.
+- **Tamaños (`PERF.ARTIFACT.SIZE`):** `packages/pseudolearn_benchmarks/results/pg-5-08-07-artifact-size.json` ⇒ `ios-arm64` 4,294,592 bytes (≤ 5,242,880) y Wasm 772,804 bytes con Brotli Q11/lgwin22 (≤ 921,600): veredicto `passed`. Los topes no cambian.
+- **`pg_http` (§7.5):** 10 procesos × 30 muestras por carga, `results/pg-5-http-2026-10-30/` (resumen `raw/summary.json`, SHA-256 `1effc84992d871bf6913251c83904ebd75926b704674e6d8e56c87919a5f66ef`): cuerpo HTTP con pendiente de 249.98 ns/byte y R² 0.9999993; análisis JSON ≈ 8.5–8.7 ns/byte con R² ≥ 0.999998 a profundidad 1, 16 y 64. Crecimiento lineal; `PERF.PG.HTTP` sigue pendiente de aprobación en `P6`.
+- **`PERF.SUITE.CORE` frente a `a1de5355`:** 20 parejas alternadas, 30 iteraciones, semilla 42, control compilado desde `git archive a1de5355` con la exportación regenerada en el árbol temporal y candidato del árbol de trabajo (`results/perf-pg5-core-2026-10-30/`). Media geométrica 1.0443 (presupuesto 1.02: **no se cumple**, pero mejora los 1.2192 de PG-4). Razones: sieve 1.036, permute 0.996, queens 1.258 [1.028; 1.709], towers 0.984, list 0.998, storage 1.006, bounce 1.029, mandelbrot 1.084, nbody 1.024, richards 1.053. Se informa tal cual; es un pendiente heredado de PG-4 que no se atribuye a un cambio concreto de PG-5.
+- **Auditoría de URL (`.07` de PG-5.07):** todas las direcciones de `specifications/` son `*.test` o representaciones numéricas de loopback de los casos negativos (`2130706433`, `0x7f000001`, `0177.0.0.1`).
+- **Disco:** 19 GiB al empezar; se retiraron `target/debug/incremental` de engine, CLI y spec y `apps/pseudolearn_app/build` (nivel 1); el nivel más bajo fue 12 GiB durante la construcción del control. No se tocaron `results/` ni cachés ajenas.
+- **Pendientes justificados:** Firefox no lanzable; `PERF.SUITE.CORE` 1.0443 > 1.02; divergencias de `aot` solo por tareas nativas (`CF-PG5-02`); `IR.LOWERING#P1`–`P3` y `TOOL.CLI.IR#P1`; aprobación de `PERF.PG.HTTP`, commit y push en `P6`.
 
 ---
 

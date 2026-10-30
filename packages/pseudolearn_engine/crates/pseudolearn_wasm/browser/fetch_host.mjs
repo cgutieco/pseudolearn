@@ -87,6 +87,7 @@ export async function performFetch(effect, options = {}) {
       : failure('conexion_fallida', sent && mutates(request.method));
   } finally {
     clearTimeout(timeout);
+    controller.abort();
   }
 }
 
@@ -114,7 +115,7 @@ async function readBody(stream, limit, signal) {
     if (part.done) return body;
     count += part.value.byteLength;
     if (count > limit) {
-      await reader.cancel();
+      reader.cancel().catch(() => undefined);
       return null;
     }
     for (const byte of part.value) body.push(byte);

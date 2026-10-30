@@ -13,6 +13,32 @@ pub(super) struct TrackedIo<Stream> {
     pub(super) sent: Arc<AtomicBool>,
 }
 
+const RESERVED_HEADERS: &[&str] = &[
+    "host",
+    "content-length",
+    "transfer-encoding",
+    "connection",
+    "upgrade",
+    "te",
+    "trailer",
+    "keep-alive",
+    "cookie",
+    "set-cookie",
+    "accept-encoding",
+];
+
+pub(super) fn is_reserved_header(name: &str) -> bool {
+    let lower = name.to_ascii_lowercase();
+    RESERVED_HEADERS.contains(&lower.as_str()) || lower.starts_with("proxy-")
+}
+
+pub(super) fn origin_form(uri: &Uri) -> Result<Uri, HostError> {
+    uri.path_and_query()
+        .map_or("/", |path| path.as_str())
+        .parse::<Uri>()
+        .map_err(|_| HostError::INVALID_PATH)
+}
+
 pub(super) fn limit(value: Option<u64>, default: u64) -> Result<usize, HostError> {
     match value {
         Some(value) => usize::try_from(value).map_err(|_| HostError::INVALID_PATH),

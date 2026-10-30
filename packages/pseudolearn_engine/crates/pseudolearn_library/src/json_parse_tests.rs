@@ -63,3 +63,13 @@ fn records_error_positions_and_unexpected_end() {
     }
     assert_eq!(error_code("[1", 64), Some("unexpectedEnd".to_owned()));
 }
+
+#[test]
+fn reports_empty_text_at_line_one_column_one() {
+    let result = parse_json("", 64);
+    assert!(matches!(&result, Ok(JsonResultValue::Error(_))));
+    if let Ok(JsonResultValue::Error(error)) = result {
+        assert_eq!(error.code, "unexpectedEnd");
+        assert_eq!((error.line, error.column), (1, 1));
+    }
+}

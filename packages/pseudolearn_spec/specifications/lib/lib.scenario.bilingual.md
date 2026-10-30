@@ -7,7 +7,7 @@
   "estado": "estable",
   "version": "1.0.0",
   "duenos": ["responsable-lenguaje"],
-  "sujetos": ["engine", "aot"],
+  "sujetos": ["engine"],
   "resumen": "Consumo desde español e inglés de una biblioteca inglesa con JSON y texto.",
   "titulo_en": "Bilingual cross-module scenario",
   "depende_de": [
@@ -30,7 +30,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La composición usa LANG.MODULE.MODEL@1.0.0#R1 y R2, LANG.MODULE.IMPORT@1.0.0#R1 y R2, API.PROJECT@1.0.0#R1, LIB.JSON@1.0.0#J1 y J7, LIB.IO@1.0.0#R2, ENG.LIMITS@1.0.0#R10 y ENG.EXEC.MODEL@1.0.0#R3 y R4. En un proyecto de una aplicación y una biblioteca, el módulo de biblioteca usa perfil en, declara Canonical como Público y analiza y serializa JSON dentro de una función que recibe y devuelve Cadena. Un módulo de aplicación es puede importar esa función y produce la misma salida que su traducción en. Ningún tipo genérico cruza la frontera del módulo. Una cadena vacía devuelve FinInesperado desde la función pública; un programa que intenta leer sin archivos_lectura obtiene PermisoDenegado; cancelar el programa antes de su primera sentencia termina cancelled; el agotamiento de celdas termina failed con cellLimitExceeded.",
+  "texto": "La composición usa LANG.MODULE.MODEL@1.0.0#R1 y R2, LANG.MODULE.IMPORT@1.0.0#R1 y R2, API.PROJECT@1.0.0#R1, LIB.JSON@1.0.0#J1 y J7, LIB.IO@1.0.0#R2, ENG.LIMITS@1.0.0#R10 y ENG.EXEC.MODEL@1.0.0#R3 y R4. En un proyecto de una aplicación y una biblioteca, el módulo de biblioteca usa perfil en, declara Canonical como Público y analiza y serializa JSON dentro de una función que recibe una Cadena y devuelve un Resultado de Cadena o CodigoErrorJson. Un módulo de aplicación es puede importar esa función y produce la misma salida que su traducción en. Ningún tipo genérico cruza la frontera del módulo. Una cadena vacía devuelve el código UnexpectedEnd, con el nombre del perfil de la biblioteca que lo creó y sin importar el perfil del módulo que lo escribe; un programa que intenta leer sin archivos_lectura obtiene PermisoDenegado; cancelar el programa antes de su primera sentencia termina cancelled; el agotamiento de celdas termina failed con cellLimitExceeded.",
   "verificacion": ["C1", "C2", "C3", "C4", "C5"]
 }
 ```
@@ -66,8 +66,8 @@
               {"name": "geo", "root": "geo", "kind": "library", "entries": [], "dependencies": {}}
             ],
             "files": [
-              {"path": "app/main", "source_id": 1, "profile": "es", "text": "Importar geo.catalogo.Canonical;\nAlgoritmo Main\nEscribir Canonical(\"{\\\"name\\\":\\\"Ada\\\",\\\"score\\\":7}\");\nFinAlgoritmo\n"},
-              {"path": "geo/catalogo", "source_id": 2, "profile": "en", "text": "Public subroutine Canonical(source as string) as string\ndefine parsed as result<JsonValue, JsonError> <- parseJson(source);\nswitch parsed do\nsuccess(document): return jsonText(document);\nfailure(problem): return problem.code;\nendSwitch\nendSubroutine\n"}
+              {"path": "app/main", "source_id": 1, "profile": "es", "text": "Importar geo.catalogo.Canonical;\nAlgoritmo Main\nSegun Canonical(\"{\\\"name\\\":\\\"Ada\\\",\\\"score\\\":7}\") Hacer\nExito(text): Escribir text;\nError(reason): Escribir reason;\nFinSegun\nFinAlgoritmo\n"},
+              {"path": "geo/catalogo", "source_id": 2, "profile": "en", "text": "Public subroutine Canonical(source as string) as result<string, JsonErrorCode>\ndefine parsed as result<JsonValue, JsonError> <- parseJson(source);\nswitch parsed do\nsuccess(document): return success(jsonText(document));\nfailure(problem): return failure(problem.code);\nendSwitch\nendSubroutine\n"}
             ]
           },
           "entry": "app/main"
@@ -86,8 +86,8 @@
               {"name": "geo", "root": "geo", "kind": "library", "entries": [], "dependencies": {}}
             ],
             "files": [
-              {"path": "app/main", "source_id": 3, "profile": "en", "text": "import geo.catalog.Canonical;\nalgorithm Main\nwrite Canonical(\"{\\\"name\\\":\\\"Ada\\\",\\\"score\\\":7}\");\nendAlgorithm\n"},
-              {"path": "geo/catalog", "source_id": 4, "profile": "en", "text": "Public subroutine Canonical(source as string) as string\ndefine parsed as result<JsonValue, JsonError> <- parseJson(source);\nswitch parsed do\nsuccess(document): return jsonText(document);\nfailure(problem): return problem.code;\nendSwitch\nendSubroutine\n"}
+              {"path": "app/main", "source_id": 3, "profile": "en", "text": "import geo.catalog.Canonical;\nalgorithm Main\nswitch Canonical(\"{\\\"name\\\":\\\"Ada\\\",\\\"score\\\":7}\") do\nsuccess(text): write text;\nfailure(reason): write reason;\nendSwitch\nendAlgorithm\n"},
+              {"path": "geo/catalog", "source_id": 4, "profile": "en", "text": "Public subroutine Canonical(source as string) as result<string, JsonErrorCode>\ndefine parsed as result<JsonValue, JsonError> <- parseJson(source);\nswitch parsed do\nsuccess(document): return success(jsonText(document));\nfailure(problem): return failure(problem.code);\nendSwitch\nendSubroutine\n"}
             ]
           },
           "entry": "app/main"
@@ -129,8 +129,8 @@
               {"name": "geo", "root": "geo", "kind": "library", "entries": [], "dependencies": {}}
             ],
             "files": [
-              {"path": "app/main", "source_id": 5, "profile": "es", "text": "Importar geo.catalogo.Canonical;\nAlgoritmo Main\nEscribir Canonical(\"\");\nFinAlgoritmo\n"},
-              {"path": "geo/catalogo", "source_id": 6, "profile": "en", "text": "Public subroutine Canonical(source as string) as string\ndefine parsed as result<JsonValue, JsonError> <- parseJson(source);\nswitch parsed do\nsuccess(document): return jsonText(document);\nfailure(problem): return problem.code;\nendSwitch\nendSubroutine\n"}
+              {"path": "app/main", "source_id": 5, "profile": "es", "text": "Importar geo.catalogo.Canonical;\nAlgoritmo Main\nSegun Canonical(\"\") Hacer\nExito(text): Escribir text;\nError(reason): Escribir reason;\nFinSegun\nFinAlgoritmo\n"},
+              {"path": "geo/catalogo", "source_id": 6, "profile": "en", "text": "Public subroutine Canonical(source as string) as result<string, JsonErrorCode>\ndefine parsed as result<JsonValue, JsonError> <- parseJson(source);\nswitch parsed do\nsuccess(document): return success(jsonText(document));\nfailure(problem): return failure(problem.code);\nendSwitch\nendSubroutine\n"}
             ]
           },
           "entry": "app/main"
@@ -141,7 +141,7 @@
   "espera": {
     "api": {
       "results": [
-        {"value": {"output": "{{lexema:jsonErrorCodeUnexpectedEnd}}\n", "diagnostics": [], "project_errors": []}}
+        {"value": {"output": "UnexpectedEnd\n", "diagnostics": [], "project_errors": []}}
       ]
     }
   }
@@ -155,8 +155,8 @@
   "perfiles": ["es", "en"],
   "rigor": ["estricto", "flexible"],
   "programas": {
-    "es": "Algoritmo Main\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nSegun directory.Abrir(\"entrada.txt\", \"lectura\") Hacer\nExito(file): Escribir \"inesperado\";\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
-    "en": "algorithm Main\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\nswitch directory.open(\"entrada.txt\", \"read\") do\nsuccess(file): write \"unexpected\";\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+    "es": "SubProceso Run() Como Resultado<Entero, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nSegun directory.Abrir(\"entrada.txt\", \"lectura\") Hacer\nExito(file): Escribir \"inesperado\";\nError(problem): Escribir problem.Codigo;\nFinSegun\nRetornar Exito(0);\nFinSubProceso\nAlgoritmo Main\nSegun Run() Hacer\nExito(value):\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Run() as result<integer, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\nswitch directory.open(\"entrada.txt\", \"read\") do\nsuccess(file): write \"unexpected\";\nfailure(problem): write problem.code;\nendSwitch\nreturn success(0);\nendSubroutine\nalgorithm Main\nswitch Run() do\nsuccess(value):\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",

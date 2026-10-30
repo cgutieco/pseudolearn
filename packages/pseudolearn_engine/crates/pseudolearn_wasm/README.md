@@ -99,6 +99,8 @@ El navegador consume las mismas operaciones y observables que la API. El anfitri
 
 ## 7. Verificación, testing y aseguramiento de calidad
 
+El módulo se compila con el perfil `wasm-release` del `Cargo.toml` del motor (`opt-level = "z"`, `lto = "fat"`, `strip`, `panic = "abort"`), no con `release`: con `release` el Wasm comprimido con Brotli Q11/lgwin22 medía 1,163,473 bytes y superaba el tope de 900 KiB tras `PG-5`; con `wasm-release` mide 772,804 bytes. El perfil `release` queda intacto para la CLI y el trabajador de medición.
+
 `cargo xtask verify` ejecuta formato, Clippy, pruebas del workspace, verificadores Rust y auditoría de dependencias. `bash tool/wasm.sh test` compila el artefacto release, comprueba que no aparece `native` ni Cranelift, valida reproducibilidad y ejecuta Playwright en Chrome.
 
 La comprobación ligera del adaptador Fetch usa `node --test browser/fetch_host.test.mjs`; no necesita

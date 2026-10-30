@@ -187,6 +187,8 @@ fn write_response<ResponseWriter: Write>(
         .push_str("Access-Control-Allow-Methods: GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS\r\n");
     output.push_str("Access-Control-Allow-Headers: *\r\n");
     output.push_str("Access-Control-Expose-Headers: x-echo-method, x-echo-path\r\n");
+    output
+        .push_str("Content-Type: application/octet-stream\r\nX-Content-Type-Options: nosniff\r\n");
     if response.infinite {
         return write_infinite_response(stream, output);
     }
@@ -218,6 +220,7 @@ fn write_infinite_response<ResponseWriter: Write>(
         if stream.write_all(b"1\r\nx\r\n").is_err() || stream.flush().is_err() {
             return Ok(());
         }
+        std::thread::sleep(std::time::Duration::from_millis(1));
     }
 }
 

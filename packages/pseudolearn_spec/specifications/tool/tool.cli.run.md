@@ -140,7 +140,7 @@
     ],
     "entorno": {},
     "archivos": {
-      "p.pseudo": "Algoritmo P\nDefinir x Como Entero;\nLeer x;\nEscribir x * 2;\nFinAlgoritmo\n"
+      "p.pseudo": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nLeer x;\nEscribir x * 2;\nFinAlgoritmo\n"
     },
     "entrada": "21\n"
   }
@@ -215,7 +215,7 @@
     ],
     "entorno": {},
     "archivos": {
-      "p.pseudo": "Algoritmo P\nDefinir x Como Entero;\nx <- 0;\nEscribir 1 div x;\nFinAlgoritmo\n"
+      "p.pseudo": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nx <- 0;\nEscribir 1 div x;\nFinAlgoritmo\n"
     }
   }
 }
@@ -245,7 +245,7 @@
     ],
     "entorno": {},
     "archivos": {
-      "p.pseudo": "Algoritmo P\nDefinir x Como Entero;\nLeer x;\nEscribir x;\nFinAlgoritmo\n"
+      "p.pseudo": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nLeer x;\nEscribir x;\nFinAlgoritmo\n"
     }
   }
 }
@@ -452,7 +452,7 @@
     "argumentos": ["ejecutar", "p.pseudo"],
     "entorno": {},
     "archivos": {
-      "p.pseudo": "Algoritmo P\nDefinir Importar, Exportar, import, export Como Entero;\nImportar <- 1;\nExportar <- 2;\nimport <- 3;\nexport <- 4;\nEscribir Importar, Exportar, import, export;\nFinAlgoritmo\n"
+      "p.pseudo": "Algoritmo P\nDefinir Importar Como Entero <- 1;\nDefinir Exportar Como Entero <- 2;\nDefinir import Como Entero <- 3;\nDefinir export Como Entero <- 4;\nEscribir Importar, Exportar, import, export;\nFinAlgoritmo\n"
     }
   }
 }

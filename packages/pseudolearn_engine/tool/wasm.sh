@@ -4,7 +4,7 @@ set -euo pipefail
 engine_directory="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 browser_directory="${engine_directory}/crates/pseudolearn_wasm/browser"
 package_directory="${engine_directory}/target/wasm-browser/pkg"
-wasm_file="${engine_directory}/target/wasm32-unknown-unknown/release/pseudolearn_wasm.wasm"
+wasm_file="${engine_directory}/target/wasm32-unknown-unknown/wasm-release/pseudolearn_wasm.wasm"
 action="${1:-build}"
 staging_directory=""
 
@@ -39,7 +39,7 @@ build_package() {
   RUSTFLAGS="-C link-arg=--max-memory=268435456" cargo build \
     --manifest-path "${engine_directory}/Cargo.toml" \
     --locked \
-    --release \
+    --profile wasm-release \
     --target wasm32-unknown-unknown \
     --package pseudolearn_wasm \
     --lib

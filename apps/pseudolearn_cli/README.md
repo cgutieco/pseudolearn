@@ -134,6 +134,11 @@ recibido antes de descodificar y `effective_response_limit` corta los bytes deco
 La conexión se cierra al terminar la respuesta o al cancelar la espera. El plazo cubre resolución,
 conexión, TLS y respuesta. DNS se resuelve una vez, se validan todas las direcciones y se conecta a
 una sola dirección de esa instantánea, sin probar direcciones alternativas.
+La petición completa (método, destino en forma de origen, cabeceras, límites) se construye y valida
+antes de resolver o conectar: una cabecera reservada (`host`, `connection`, `content-length`,
+`transfer-encoding`, `upgrade`, `te`, `trailer`, `keep-alive`, `cookie`, `set-cookie`,
+`accept-encoding`, `proxy-*`) o un valor con CR/LF nunca abre un socket. La línea de petición usa
+la ruta y la consulta, no la URL absoluta, y `Host` lo fija el adaptador.
 
 `TlsConfiguration` exige validación de certificados y admite raíces PEM añadidas por el anfitrión;
 la configuración de producción carga además las raíces del sistema
@@ -172,10 +177,11 @@ sin invocar herramientas del sistema.
 | `/estado/404`, `/estado/500` | Estados HTTP completos 404 y 500 |
 | `/eco` | Método, ruta, cabeceras recibidas y cuerpo |
 | `/redireccion/mismo`, `/redireccion/otro-origen`, `/redireccion/http` | Respuesta 302 relativa, con otro origen y con bajada a HTTP |
-| `/grande`, `/infinito`, `/bomba-gzip` | 8 MiB + 1, flujo chunked sin fin y gzip que se expande a 8 MiB + 1 |
+| `/grande`, `/infinito`, `/bomba-gzip` | 8 MiB + 1, flujo chunked sin fin (un byte por milisegundo, para que un navegador que cancela no sature la conexión siguiente) y gzip que se expande a 8 MiB + 1 |
 | `/lento`, `/cerrar-a-mitad` | Espera de 60 segundos y cierre sin respuesta después de recibir el cuerpo |
 | `/json-profundo`, `/cabeceras-muchas`, `/contador` | JSON con 65 niveles, 65 cabeceras y contador de solicitudes por ruta |
 
+Todas las respuestas llevan `Content-Type: application/octet-stream` y `X-Content-Type-Options: nosniff`.
 Todas las rutas responden también por TLS. El servidor no resuelve dominios externos ni sigue
 redirecciones; CORS permite que una página local use las direcciones impresas. Las pruebas de
 transporte con Playwright pueden tomar esas direcciones como destino de Fetch; `fetch_host.test.mjs`

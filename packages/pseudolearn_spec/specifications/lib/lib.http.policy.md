@@ -101,11 +101,11 @@
   "espera": {
     "salida": "302\n",
     "terminacion": "completed",
-    "anfitrion_observado": {"llamadas": 1}
+    "anfitrion_observado": {"llamadas": 2}
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir net Como RedCap <- Propagar SolicitarRed();\nDefinir request Como PeticionHttp <- PeticionHttp(MetodoHttp.GET, \"https://fake.test/start\").ConCabecera(\"Authorization\", \"demo\");\nDefinir response Como RespuestaHttp <- Propagar net.Enviar(request);\nEscribir response.Estado();\nRetornar Exito(0);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
-    "en": "subroutine Probe() as result<integer, IoError>\ndefine net as NetworkCap <- propagate requestNetwork();\ndefine request as HttpRequest <- HttpRequest(HttpMethod.GET, \"https://fake.test/start\").withHeader(\"Authorization\", \"demo\");\ndefine response as HttpResponse <- propagate net.send(request);\nwrite response.status();\nreturn success(0);\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir net Como RedCap <- Propagar SolicitarRed();\nDefinir request Como PeticionHttp <- PeticionHttp(MetodoHttp.GET, \"https://fake.test/start\").ConCabecera(\"Authorization\", \"demo\");\nDefinir response Como RespuestaHttp <- Propagar net.Enviar(request);\nEscribir response.Estado();\nRetornar Exito(0);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value):\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<integer, IoError>\ndefine net as NetworkCap <- propagate requestNetwork();\ndefine request as HttpRequest <- HttpRequest(HttpMethod.GET, \"https://fake.test/start\").withHeader(\"Authorization\", \"demo\");\ndefine response as HttpResponse <- propagate net.send(request);\nwrite response.status();\nreturn success(0);\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value):\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
     "permissions": ["red"],
@@ -142,7 +142,7 @@
   "espera": {
     "salida": "chain\n",
     "terminacion": "completed",
-    "anfitrion_observado": {"llamadas": 4}
+    "anfitrion_observado": {"llamadas": 5}
   },
   "programas": {
     "es": "SubProceso Follow(net Como RedCap) Como Resultado<Cadena, ErrorES>\nDefinir first_request Como PeticionHttp <- PeticionHttp(MetodoHttp.GET, \"https://fake.test/a/start\");\nDefinir first_response Como RespuestaHttp <- Propagar net.Enviar(first_request);\nDefinir second_request Como PeticionHttp <- Propagar first_request.Redirigida(first_response);\nDefinir second_response Como RespuestaHttp <- Propagar net.Enviar(second_request);\nDefinir third_request Como PeticionHttp <- Propagar second_request.Redirigida(second_response);\nDefinir third_response Como RespuestaHttp <- Propagar net.Enviar(third_request);\nDefinir fourth_request Como PeticionHttp <- Propagar third_request.Redirigida(third_response);\nDefinir fourth_response Como RespuestaHttp <- Propagar net.Enviar(fourth_request);\nRetornar fourth_response.CuerpoTexto();\nFinSubProceso\nSubProceso Probe() Como Resultado<Cadena, ErrorES>\nDefinir net Como RedCap <- Propagar SolicitarRed();\nRetornar Follow(net);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
@@ -233,8 +233,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir net Como RedCap <- Propagar SolicitarRed();\nDefinir request Como PeticionHttp <- PeticionHttp(MetodoHttp.GET, \"https://fake.test/start\").ConCabecera(\"Authorization\", \"demo\");\nDefinir response Como RespuestaHttp <- Propagar net.Enviar(request);\nDefinir redirected Como PeticionHttp <- Propagar request.Redirigida(response);\nSegun net.Enviar(redirected) Hacer\nExito(finalResponse): Escribir finalResponse.Estado();\nError(problem): Escribir problem.Codigo;\nFinSegun\nRetornar Exito(0);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
-    "en": "subroutine Probe() as result<integer, IoError>\ndefine net as NetworkCap <- propagate requestNetwork();\ndefine request as HttpRequest <- HttpRequest(HttpMethod.GET, \"https://fake.test/start\").withHeader(\"Authorization\", \"demo\");\ndefine response as HttpResponse <- propagate net.send(request);\ndefine redirected as HttpRequest <- propagate request.redirected(response);\nswitch net.send(redirected) do\nsuccess(finalResponse): write finalResponse.status();\nfailure(problem): write problem.code;\nendSwitch\nreturn success(0);\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir net Como RedCap <- Propagar SolicitarRed();\nDefinir request Como PeticionHttp <- PeticionHttp(MetodoHttp.GET, \"https://fake.test/start\").ConCabecera(\"Authorization\", \"demo\");\nDefinir response Como RespuestaHttp <- Propagar net.Enviar(request);\nDefinir redirected Como PeticionHttp <- Propagar request.Redirigida(response);\nSegun net.Enviar(redirected) Hacer\nExito(finalResponse): Escribir finalResponse.Estado();\nError(problem): Escribir problem.Codigo;\nFinSegun\nRetornar Exito(0);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value):\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<integer, IoError>\ndefine net as NetworkCap <- propagate requestNetwork();\ndefine request as HttpRequest <- HttpRequest(HttpMethod.GET, \"https://fake.test/start\").withHeader(\"Authorization\", \"demo\");\ndefine response as HttpResponse <- propagate net.send(request);\ndefine redirected as HttpRequest <- propagate request.redirected(response);\nswitch net.send(redirected) do\nsuccess(finalResponse): write finalResponse.status();\nfailure(problem): write problem.code;\nendSwitch\nreturn success(0);\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value):\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
     "permissions": ["red"],
@@ -270,8 +270,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir net Como RedCap <- Propagar SolicitarRed();\nSegun net.Enviar(PeticionHttp(MetodoHttp.GET, \"https://2130706433./a\")) Hacer\nExito(response): Escribir \"accepted\";\nError(problem): Escribir problem.Codigo;\nFinSegun\nRetornar Exito(0);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
-    "en": "subroutine Probe() as result<integer, IoError>\ndefine net as NetworkCap <- propagate requestNetwork();\nswitch net.send(HttpRequest(HttpMethod.GET, \"https://2130706433./a\")) do\nsuccess(response): write \"accepted\";\nfailure(problem): write problem.code;\nendSwitch\nreturn success(0);\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir net Como RedCap <- Propagar SolicitarRed();\nSegun net.Enviar(PeticionHttp(MetodoHttp.GET, \"https://2130706433./a\")) Hacer\nExito(response): Escribir \"accepted\";\nError(problem): Escribir problem.Codigo;\nFinSegun\nRetornar Exito(0);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value):\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<integer, IoError>\ndefine net as NetworkCap <- propagate requestNetwork();\nswitch net.send(HttpRequest(HttpMethod.GET, \"https://2130706433./a\")) do\nsuccess(response): write \"accepted\";\nfailure(problem): write problem.code;\nendSwitch\nreturn success(0);\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value):\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
     "permissions": ["red"],
@@ -294,11 +294,11 @@
   "espera": {
     "salida": "redireccion_denegada\n",
     "terminacion": "completed",
-    "anfitrion_observado": {"llamadas": 1}
+    "anfitrion_observado": {"llamadas": 2}
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir net Como RedCap <- Propagar SolicitarRed();\nDefinir request Como PeticionHttp <- PeticionHttp(MetodoHttp.GET, \"https://fake.test/duplicate\");\nDefinir response Como RespuestaHttp <- Propagar net.Enviar(request);\nSegun request.Redirigida(response) Hacer\nExito(next): Escribir \"accepted\";\nError(problem): Escribir problem.Codigo;\nFinSegun\nRetornar Exito(0);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
-    "en": "subroutine Probe() as result<integer, IoError>\ndefine net as NetworkCap <- propagate requestNetwork();\ndefine request as HttpRequest <- HttpRequest(HttpMethod.GET, \"https://fake.test/duplicate\");\ndefine response as HttpResponse <- propagate net.send(request);\nswitch request.redirected(response) do\nsuccess(next): write \"accepted\";\nfailure(problem): write problem.code;\nendSwitch\nreturn success(0);\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir net Como RedCap <- Propagar SolicitarRed();\nDefinir request Como PeticionHttp <- PeticionHttp(MetodoHttp.GET, \"https://fake.test/duplicate\");\nDefinir response Como RespuestaHttp <- Propagar net.Enviar(request);\nSegun request.Redirigida(response) Hacer\nExito(next): Escribir \"accepted\";\nError(problem): Escribir problem.Codigo;\nFinSegun\nRetornar Exito(0);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value):\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<integer, IoError>\ndefine net as NetworkCap <- propagate requestNetwork();\ndefine request as HttpRequest <- HttpRequest(HttpMethod.GET, \"https://fake.test/duplicate\");\ndefine response as HttpResponse <- propagate net.send(request);\nswitch request.redirected(response) do\nsuccess(next): write \"accepted\";\nfailure(problem): write problem.code;\nendSwitch\nreturn success(0);\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value):\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
     "permissions": ["red"],
