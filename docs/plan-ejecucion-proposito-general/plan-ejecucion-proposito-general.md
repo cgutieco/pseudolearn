@@ -26,6 +26,9 @@ se conservan como rastro de análisis, no como instrucciones vigentes.
   sin una fase intermedia de promoción de estado.
 - D-xx y TS-3 sin origen verificable se reconstruyen como propuestas nuevas; no se presume aprobación histórica.
 - Se permiten referencias internas entre documentos de docs/; ningún archivo externo dependerá de ellos.
+- El 2026-10-30 la persona confirmó para PG-6A que cada cambio es la versión oficial aunque sea
+  incompatible. Se conserva el retiro de migradores y retrocompatibilidad decidido en PG-2;
+  la extensión no añade el comando migrar que figuraba en la propuesta inicial.
 
 El detalle operativo está en [el plan de PG-0](fase-pg-0-plan-ejecucion.md).
 La petición directa de implementar PG-0 revisó y autorizó el plan. PG-0 quedó cerrada el 2026-10-22 con
@@ -633,7 +636,9 @@ Puntos a cumplir:
 - [ ] `PG-6A.05` Contrato de configuración declarativo con precedencia definida y sin secretos en archivos versionados.
 - [ ] `PG-6A.06` Gramática de resaltado generada desde el corpus, con verificador de obsolescencia (`GEN-NO-HAND-COPY`).
 - [ ] `PG-6A.07` Extensión de escritorio: cliente LSP, comandos de comprobar, ejecutar, detener, entrada, elegir entrada,
-  formatear, traducir y migrar; ningún parser normativo en el cliente; nada se ejecuta al abrir un proyecto.
+  formatear y traducir; ningún parser normativo en el cliente; nada se ejecuta al abrir un proyecto.
+  El migrador queda retirado por la decisión de la persona reconfirmada el 2026-10-30: solo versión oficial,
+  sin retrocompatibilidad aunque haya cambios incompatibles.
 - [ ] `PG-6A.08` Ayuda de PG-H integrada en hover y en el comando de explicar.
 - [ ] `PG-6A.09` Resultados equivalentes desde dos clientes LSP distintos.
 - [ ] `PG-6A.10` E-PG-02 completo, con sesiones de 100 archivos/10 000 líneas, Unicode/UTF-16 y ediciones obsoletas.
@@ -641,7 +646,9 @@ Puntos a cumplir:
 
 Fuera de alcance: publicación en Marketplace, DAP y variante web.
 
-Plan detallado: `fase-pg-6a-plan-ejecucion.md`, pendiente de crear al iniciar la fase.
+Plan detallado: [fase-pg-6a-plan-ejecucion.md](fase-pg-6a-plan-ejecucion.md), creado por encargo documental
+el 2026-10-30. Incluye F5 y VSIX local sin publicación, verificaciones ligeras por punto y pesadas
+acotadas en la iteración final. Implementación sin iniciar; CF-20 y revisión de la persona pendientes.
 
 Cierre común (definiciones en §4.0):
 

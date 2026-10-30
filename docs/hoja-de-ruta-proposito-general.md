@@ -19,6 +19,10 @@ se conservan como rastro de análisis, no como instrucciones vigentes.
   ni eficacia pedagógica. Las comprobaciones automatizables de calidad y rendimiento siguen obligatorias.
 - D-xx y TS-3 sin origen verificable se reconstruyen como propuestas nuevas; no se presume aprobación histórica.
 - Se permiten referencias internas entre documentos de docs/; ningún archivo externo dependerá de ellos.
+- Para PG-6A, la persona reconfirmó el 2026-10-30 el retiro de migradores y retrocompatibilidad:
+  cada cambio es la versión oficial aunque sea incompatible. Las menciones anteriores de migración
+  asistida quedan como rastro histórico sin vigencia. El uso inicial de la extensión es local,
+  mediante F5 y VSIX, sin publicación en Marketplace.
 
 El detalle operativo está en [el plan de PG-0](plan-ejecucion-proposito-general/fase-pg-0-plan-ejecucion.md).
 La petición directa de implementación revisó y autorizó PG-0.C02; su ejecución y cierre siguen sujetos a PHASE-GREEN.
@@ -326,7 +330,7 @@ Asignación de cada capacidad a las fases que la construyen; una capacidad repar
 |---|---|---|
 | C-01 Proyecto | PG-1 | — |
 | C-02 Módulos | PG-1 | — |
-| C-03 Ediciones/perfiles | PG-1 | PG-2 (migración de ámbitos e inmutabilidad), PG-6A (migración desde el editor) |
+| C-03 Ediciones/perfiles | PG-1 | PG-2 (ámbitos e inmutabilidad oficiales), PG-6A (configuración de perfiles desde el editor; sin migrador) |
 | C-04 Tipos y valores | PG-2 | — |
 | C-05 Abstracción | PG-2 | PG-4 (capturas entre tareas) |
 | C-06 Colecciones/control | PG-2 | PG-3 (limpieza ante error de efecto), PG-4 (limpieza ante cancelación) |
@@ -387,7 +391,7 @@ Camino crítico provisional por riesgo y mayor secuencia de cambios: PG-0 → PG
 | PG-3 Capacidades y cinta | PG-1; XL | Suspensión de servicio, registro/reproducción, permisos, limpieza, tiempo lógico; R-08/09/13 | K-06/07; E-PG-05/09 | Una cinta válida reproduce sin efecto real; cinta divergente/cortada falla; cancelación y caída de proceso no se anuncian como rollback; presupuesto de log y privacidad definidos |
 | PG-4 Tareas aisladas | PG-2, PG-3; XL | Async, árbol, colas/canales, aislamiento transitivo, planificador y raíces; R-06/10/12 | K-05/08; E-PG-06 | 10 000 agendas con semilla y entrega grabada, cero diferencias; adversarios de alias/cancelación/deadlock; mismo núcleo semántico en VM/AOT |
 | PG-5 Biblioteca y HTTP | PG-2 a PG-4; L | Adaptadores nativos/web, archivos, texto/bytes/JSON, HTTP y tiempo; R-07–13 | K-07/09; E-PG-07/09 | Servidor de prueba controlado y cintas independientes; TLS/redirect/DNS/permisos/límites; capacidades web explícitas; corpus no depende de Internet |
-| PG-6A Servicio y extensión inicial | PG-1, PG-2, PG-H; L | Workspace semántico, LSP con ayuda de PG-H, migración desde el editor, gramática generada, configuración, VSIX escritorio, miembro nuevo y CF-20; R-03/14/15/18/20 | K-03/10; E-PG-02 | Rename atómico multiarchivo, archivos cerrados, estados obsoletos, tokens y formato; dos clientes; instalar y correr proyecto sencillo |
+| PG-6A Servicio y extensión inicial | PG-1, PG-2, PG-H; L | Workspace semántico, LSP con ayuda de PG-H, gramática generada, configuración, VSIX escritorio local sin Marketplace, miembro nuevo y CF-20; R-03/14/15/18/20 | K-03/10; E-PG-02 | Rename atómico multiarchivo, archivos cerrados, estados obsoletos, tokens y formato; dos clientes; instalar y correr proyecto sencillo |
 | PG-6B Depuración y web | PG-4, PG-5, PG-6A; L | DAP VM, LSP en Worker, motor Wasm, comandos web y pruebas telefónicas; R-09/15/16 | K-10/11; E-PG-08 | DAP respeta revisión y horizonte; seek no reenvía HTTP; Unicode/i64 sin pérdida; informe móvil distingue cobertura y limitaciones reales |
 | PG-A App y sintaxis estática | PG-1/2, PG-H; L | Contrato de archivo aislado GP, proyección de tipos/valores/control, interfaz/realización, referencia/ejercicios; R-03/05–08/17–20 | K-16/18; E-PG-12 estático | Cada forma nueva tiene vista apropiada y foco trazable; geometría estable, texto accesible y errores visibles; archivo autocontenido sin proyecto editable ni imports requeridos |
 | PG-B App y tareas observables | PG-A, PG-3/4/5; L | Tareas, suspensiones, efectos/entradas por solicitud, tablas y pasos consistentes; R-09–13/19/20 | K-18/19; E-PG-12 dinámico | Mismas entradas/eventos producen mismas proyecciones; marcos/esperas de tareas sin mezcla; progreso lógico fiel y cancelación grabada; pruebas del puente real, no solo fakes |
