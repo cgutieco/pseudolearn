@@ -29,6 +29,7 @@ final class CodeTextInput extends StatelessWidget {
       focusNode: focusNode,
       readOnly: isReadOnly,
       maxLines: null,
+      scrollPhysics: const NeverScrollableScrollPhysics(),
       keyboardType: TextInputType.multiline,
       autocorrect: false,
       enableSuggestions: false,

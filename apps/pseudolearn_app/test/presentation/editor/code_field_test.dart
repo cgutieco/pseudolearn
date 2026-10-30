@@ -85,6 +85,36 @@ void main() {
       expect(find.text(code), findsOneWidget);
     });
 
+    testWidgets('allows vertical scrolling through long code',
+        (tester) async {
+      final code = List.generate(40, (line) => 'instruction $line').join('\n');
+
+      await tester.pumpWidget(_buildCodeField(
+        controller: HighlightController(text: code),
+        width: 260,
+        height: 160,
+      ));
+      await tester.pumpAndSettle();
+
+      final verticalScroll = find.byWidgetPredicate(
+        (widget) =>
+            widget is SingleChildScrollView &&
+            widget.scrollDirection == Axis.vertical,
+      );
+      final verticalPosition = tester.state<ScrollableState>(
+        find.descendant(
+          of: verticalScroll,
+          matching: find.byType(Scrollable),
+        ).first,
+      ).position;
+      expect(verticalPosition.maxScrollExtent, greaterThan(0));
+
+      await tester.drag(verticalScroll, const Offset(0, -120));
+      await tester.pumpAndSettle();
+
+      expect(verticalPosition.pixels, greaterThan(0));
+    });
+
     testWidgets('highlights active lines in gutter', (tester) async {
       const code = 'linea Uno\nlinea Dos\nlinea Tres';
 
@@ -183,6 +213,7 @@ void main() {
       expect(field.decoration?.focusedBorder, InputBorder.none);
       expect(field.decoration?.enabledBorder, InputBorder.none);
       expect(field.cursorWidth, 2.0);
+      expect(field.scrollPhysics, isA<NeverScrollableScrollPhysics>());
     });
 
     testWidgets(

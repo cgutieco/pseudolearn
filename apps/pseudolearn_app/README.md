@@ -963,7 +963,9 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
     - `AppText`: Tipografía vinculada a la escala semántica de tokens.
 2. **Componentes especializados:**
     - `CodeField`: Editor monoespaciado con resaltado sintáctico, canalón de líneas estático sin saltos de línea
-      suaves (*soft-wrap*), y desplazamiento horizontal independiente. Aísla completamente su `InputDecoration` con
+      suaves (*soft-wrap*), desplazamiento vertical del documento completo y desplazamiento horizontal independiente.
+      El campo de texto no captura el gesto vertical, que controla el contenedor del editor. Aísla completamente su
+      `InputDecoration` con
       `InputBorder.none` en todos los estados para evitar que el tema global de formularios de Material le inyecte
       contornos de recuadro; el foco se expresa exclusivamente mediante el fondo de la línea activa y el cursor del
       editor. **Recibe** su `HighlightController` desde fuera; no lo crea, porque el cursor tiene que ser alcanzable por
