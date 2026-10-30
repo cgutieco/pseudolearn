@@ -189,6 +189,9 @@ fn validate_network_receiver(
     token: CapabilityToken,
     arguments: &[HostValue],
 ) -> Result<(), IoError> {
+    if token.kind != CapabilityKind::Network {
+        return Ok(());
+    }
     let origins = authority
         .network_capabilities
         .get(&token.slot)

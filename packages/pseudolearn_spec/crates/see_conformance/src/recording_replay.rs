@@ -71,24 +71,44 @@ pub(crate) fn verify(
 ) -> Result<Vec<String>, String> {
     let mut differences = leaked_secrets(request, live);
     if requested(request) {
-        let replayed = session.request(&replay_request(request, live)?)?;
-        differences.extend(compare_replay(live, &replayed));
+        match replay_request(request, live) {
+            Ok(replay) => {
+                let replayed = session.request(&replay)?;
+                differences.extend(compare_replay(live, &replayed));
+            }
+            Err(missing_tape) => differences.push(missing_tape),
+        }
     }
     if let Some(expected_failure) = expected
         .pointer("/anfitrion_observado/reproduccion_fallo")
         .and_then(Value::as_str)
     {
-        let mut replay = replay_request(request, live)?;
-        if let Some(alteration) = request
-            .pointer("/host/alterar_cinta")
-            .and_then(Value::as_str)
-        {
-            apply_alteration(&mut replay, alteration);
-        }
-        let replayed = session.request(&replay)?;
-        differences.extend(compare_replay_failure(expected_failure, &replayed));
+        differences.extend(verify_expected_failure(
+            session,
+            (request, live),
+            expected_failure,
+        )?);
     }
     Ok(differences)
+}
+
+fn verify_expected_failure(
+    session: &mut Session,
+    (request, live): (&Value, &Value),
+    expected_failure: &str,
+) -> Result<Vec<String>, String> {
+    let mut replay = match replay_request(request, live) {
+        Ok(replay) => replay,
+        Err(missing_tape) => return Ok(vec![missing_tape]),
+    };
+    if let Some(alteration) = request
+        .pointer("/host/alterar_cinta")
+        .and_then(Value::as_str)
+    {
+        apply_alteration(&mut replay, alteration);
+    }
+    let replayed = session.request(&replay)?;
+    Ok(compare_replay_failure(expected_failure, &replayed))
 }
 
 pub(crate) fn apply_alteration(replay: &mut Value, alteration: &str) {

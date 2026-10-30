@@ -583,7 +583,7 @@ derivado`, y sus esperados se derivan de la regla, nunca de la salida del motor 
   `see lock --check` tras reanclar los 12 IDs editados, y `see export --check`. Todo lo anterior pasa, incluido
   `see validate` tras registrar la especificación como `estable`, su revisión por la persona y los vínculos de
   conformidad pendientes de P6. La conformidad pesada sigue pendiente en `.07`.
-- [ ] `PG-5.02.07` Pesada: `--only` de `LIB.HTTP`, `LIB.IO`, `LANG.CAPABILITY.MODEL`, `ENG.EXEC.EFFECT-COMMIT`,
+- [x] `PG-5.02.07` Pesada: `--only` de `LIB.HTTP`, `LIB.IO`, `LANG.CAPABILITY.MODEL`, `ENG.EXEC.EFFECT-COMMIT`,
   `ENG.EFFECT.TAPE`, `RT.HOST.INTERFACE`, `API.EXECUTE`, `API.WIRE-FORMAT`, `API.PROJECT.MANIFEST` en `engine` y
   `aot` (los casos con tareas en AOT se registran bajo `CF-PG5-02`).
 
@@ -1016,7 +1016,7 @@ README y la regresión `PERF.SUITE.CORE`; desde `apps/pseudolearn_app`, `flutter
 | Tarea | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
 | `PG-5.01` | Completa, incluida la pesada `.07` (2026-10-29); sin commit ni push | `.07`: `conform` de `engine` y `aot` por ID con `differential` tras cada par: `LIB.MODEL` (24 obs.), `LIB.CORE.TEXT` (72), `LIB.CORE.BYTES` (20), `LIB.JSON` (64), `LANG.TASK.ISOLATION` (100); `TOOL.SERVICE.CATALOG` en `service` (11, 0 divergencias, porque el contrato declara solo ese sujeto). Centinela léxico en ambos sujetos: `LANG.LEXICAL.KEYWORD`, `LANG.LEXICAL.IDENTIFIER`, `LANG.PROFILE.VOCABULARY`, `LANG.PROFILE.TRANSLATION`, 0 divergencias. `engine`: 0 divergencias en todo. `aot`: 16 divergencias, todas `nativeTasksUnsupported` (`LIB.MODEL#C5`, `LIB.JSON#C16`, `LANG.TASK.ISOLATION#C1` y `#C19`), registradas bajo `CF-PG5-02`. Propiedades de `engine` regeneradas: 28 de 31 cumplen, incluida `LIB.JSON#P1`. Ligeras de lo tocado: `rustfmt --check`, Clippy `-D warnings` y `rust-checks all .` en `pseudolearn_ir`, `pseudolearn_syntax` y `see_generators`; `see validate` (194), `lock --check`, `export --check`; 6 tests de `type_checker_effects_tests`, 3 de `postfix_parser_tests` | Subsanación (orden fijo de §10): (1) `LIB.SCENARIO.HTTP-TASKS#C7` usaba `Propagar` en `Main`; (2) el generador de propiedades usaba el campo `number`; (3) `jsonKindNumber` pasó de `Numero`/`Number` a `JsonNumero`/`JsonNumber` (reservaba `numero` en `PERF.SUITE.CORE#C3/C4`); (4) `jsonErrorLineField`/`jsonErrorColumnField` pasaron a `JsonLinea`/`JsonColumna` y `jsonLine`/`jsonColumn` (reservaban `columna` en `PERF.SUITE.CORE#C5/C6/C15/C16`), y el parser admite esos campos tras el punto; (5) `fallible` de `json_real`, `json_array`, `json_object`, `json_keys`, `json_with_element` y `json_with_field` pasó a `false`, porque la regla y las firmas de §3.3.3 los definen como trampa, no como `Resultado`; (6) el verificador de RI exigía celdas `f64`/`bool` para `OptionalReal`/`OptionalBoolean`, pero los variantes guardan palabras `i64`; (7) casos `LIB.JSON#C2,C3,C4,C6,C13,C14,C15` reescritos en el programa (nunca en el esperado: `\u` escapado, variables `array`/`object` renombradas, `Opcional` consultado con `Segun`); (8) `LIB.CORE.TEXT#T3` no tenía caso propio: añadidos `C17` y `C18` (límite de celdas con `Recortar`, derivados de `ENG.LIMITS#R2`); (9) vínculos `LIB.MODEL#M1`–`M4` pasan a `estructural`. Reanclados `LIB.MODEL`, `LIB.JSON`, `LIB.CORE.TEXT`, `LANG.PROFILE.VOCABULARY`, `LIB.SCENARIO.HTTP-TASKS`, `LIB.SCENARIO.FILE-JSON`. **Pendientes abiertos, no bloquean `.07`:** `IR.LOWERING#P1`–`P3` incumplen en `engine` (nunca tuvieron evidencia previa; no se probó que sean anteriores a `PG-5`); en `aot`, `RT.ABI#P1/P2` y `RT.FAULT.REPORTING#P1` fallan por `nativeTasksUnsupported`. **Resuelto después de cerrar `.07`:** `MEM.IDENTITY#P1` y `MEM.MANAGED.UNOBSERVABLE#P1` de `aot` fallaban con `internalFault` en `ConCampo("b", JsonNulo())` bajo `gc_stress`: `effect_call` no era punto seguro de `liveness`, así que un operando temporal solo en registro (el `ValorJson` recién construido) se liberaba antes de decodificarse. Ahora `EffectCall` está en `SAFE_POINTS`, `lower_effects.rs` abre y cierra la ventana de raíces, hay 2 tests (`effect_roots_tests.rs`) y el README de `codegen` lo documenta. Propiedades de `aot` regeneradas: 3 de 17 incumplen, todas por `nativeTasksUnsupported`, y `conform` de los cinco IDs de `aot` no cambia Cada edición de especificación invalida `results/properties-*.json`, por lo que hubo que regenerarlas (~25 min). Respaldos `*.before-pg-5-01-07-2026-10-29.json` en `results/` |
-| `PG-5.02` | Código, casos C1–C12 y verificaciones ligeras completados; conformidad pesada pendiente | Tests filtrados de ABI, runtime, semantic, project, API, `see_format`, `see_validation` y `see_conformance`; los casos de API atraviesan library e IR; `cargo check`, Clippy `--all-targets`, `rustfmt --check`, `rust-checks all .` de engine y spec; `see validate`, `see lock --check` y `see export --check` pasan | `LIB.HTTP` comienza `estable` con `Cesar Antonio Gutierrez Contreras` en `revisado_por`. Los vínculos engine/AOT quedan `pendiente` para P6; AOT R5 conserva `CF-PG5-02`. `LIB.HTTP#R6`/C8 mantienen un conflicto acotado a reproducir respuestas con credenciales. Sin commit ni push |
+| `PG-5.02` | Completa, incluida la pesada `.07` (2026-10-29), con el residuo de AOT bajo `CF-PG5-02`; sin commit ni push | Tests filtrados de ABI, runtime, semantic, project, API, `see_format`, `see_validation` y `see_conformance`; los casos de API atraviesan library e IR; `cargo check`, Clippy `--all-targets`, `rustfmt --check`, `rust-checks all .` de engine y spec; `see validate`, `see lock --check` y `see export --check` pasan | `LIB.HTTP` comienza `estable` con `Cesar Antonio Gutierrez Contreras` en `revisado_por`. Los vínculos engine/AOT quedan `pendiente` para P6; AOT R5 conserva `CF-PG5-02`. `LIB.HTTP#R6`/C8 mantienen un conflicto acotado a reproducir respuestas con credenciales. Sin commit ni push |
 | `PG-5.03` | Implementación, casos y verificaciones ligeras completados; únicamente `.07` excluida; fase sin cierre verde | Pruebas filtradas de API HTTP (6), límites API (4), runtime (8), JSON (4), sintaxis, opciones de API y mapeo SEE (11); `cargo check`, Clippy y `rust-checks` del motor y la CLI; `see validate` (190), `see lock --check` y `see export --check` pasan | El verificador completo sigue bloqueado por fallos de `LIB.TIME#C1` y limpieza de colecciones C12. `cargo deny check` no pudo actualizar su base de avisos por falta de red. No se ejecutó `.07`; sin commit ni push |
 | `PG-5.04` | Implementación y verificaciones ligeras completadas; `.07` excluida; fase sin cierre verde | 7 tests de runtime, 5 de política de direcciones, 7 del resolvedor, 1 de TLS y test ABI HTTP; `see validate` (191), `lock --check`, `export --check`, Clippy estricto, `rustfmt --check` y `rust-checks all .` de la CLI | La batería pesada y la conformidad de `LIB.HTTP.POLICY` siguen pendientes por exclusión explícita de `.07`. La configuración de TLS/resolvedor no se integra aún en transporte real; la elección de biblioteca pertenece a `PG-5.06.01`. Sin commit ni push |
 | `PG-5.05` | Implementación ligera `.01`–`.06` completada en una iteración; `.07` excluida; fase sin cierre verde | 20 tests `network_*` de la CLI, tests filtrados de clasificación y cinta en runtime, corpus (191), `lock --check`, `export --check`, `cargo check`, Clippy, `rustfmt`, `rust-checks`, `cargo deny` y build release | Sin conformidad pesada, commit ni push; la salida a red sigue sin opciones de concesión en la CLI |
@@ -1230,6 +1230,51 @@ en esta continuación; no se borraron cachés.
   por flujo. La selección está documentada, pero `.06.01` no se declara cerrada hasta medir esos criterios.
 - **Parada:** `.07` permanece sin marcar y no se corrieron conformidad `--only`, baterías ni integración pesada. No
   se declara `PHASE-GREEN` ni se cierra la fase; rama correcta, cambios locales sin commit ni push.
+
+### Registro de ejecución de PG-5.02.07 · 2026-10-29
+
+- **Alcance:** conformidad pesada por ID (`engine`, `aot` y `differential` tras cada par) de `LIB.HTTP`, `LIB.IO`,
+  `LANG.CAPABILITY.MODEL`, `ENG.EXEC.EFFECT-COMMIT`, `ENG.EFFECT.TAPE`, `RT.HOST.INTERFACE`, `API.EXECUTE`,
+  `API.WIRE-FORMAT` y `API.PROJECT.MANIFEST`. `--only` admite un único ID; la lista separada por comas falla con
+  «No specifications selected». `API.*` no declara `aot`.
+- **Hallazgos y subsanación (orden de §10):** (1) `validate_network_receiver` exigía una concesión de orígenes a todo
+  receptor y no solo a los de red, de modo que archivo, directorio, reloj, temporizador y consola devolvían
+  `permiso_denegado`; es la causa de los fallos de `LIB.TIME#C1` y de la limpieza de colecciones observados en
+  `PG-5.03`. Ahora solo se aplica a capacidades de red (`capability_receiver_tests.rs`, camino feliz e infeliz).
+  (2) En reproducción el anfitrión solo aporta su identidad, sin orígenes, y `begin_host_effect` rechazaba el envío
+  grabado como exitoso con `DestinoDenegado`; en reproducción ese rechazo ya no se aplica porque el resultado sale de
+  la cinta (`replays_concurrent_http_deliveries_with_an_identity_only_host`). (3) Los casos usaban `Propagar` dentro de
+  `Algoritmo Main` (`LIB.HTTP`, `ENG.EFFECT.TAPE`, `ENG.EXEC.EFFECT-COMMIT`, `RT.HOST.INTERFACE`): se reescribieron con
+  `Segun SolicitarRed()` o con un `SubProceso Probe`, con la misma salida y los mismos efectos esperados. (4)
+  `LIB.HTTP#C28` usaba `error`, palabra reservada del perfil `es`. (5) `LIB.HTTP#C27` y `ENG.EFFECT.TAPE#C16` pedían
+  reproducir una cinta `uncertain_external_state`, que no es reproducible: ahora esperan `replay_non_reproducible`.
+  (6) `LIB.HTTP#C11` nunca alteraba la cinta, porque el último efecto era una escritura y no `network_send`, y el error
+  de `alter_request_digest` se ignoraba; el caso pasaba por una denegación de origen espuria. El programa ya no escribe
+  tras el envío. (7) `LIB.HTTP#C8` omitía `request_network` en `efectos` y `RT.HOST.INTERFACE#C10` esperaba una llamada
+  al proveedor cuando `R7` exige rechazar antes de consultarlo. (8) El corredor abortaba la sesión de `aot` ante un
+  caso sin cinta; ahora lo registra como diferencia de ese caso y continúa.
+- **Resultado:** `engine` con 0 divergencias en los 9 IDs.
+  Observaciones: `LIB.IO` 72, `LANG.CAPABILITY.MODEL` 44, `ENG.EXEC.EFFECT-COMMIT` 40, `ENG.EFFECT.TAPE` 64,
+  `RT.HOST.INTERFACE` 40, `API.EXECUTE` 28, `API.WIRE-FORMAT` 6, `API.PROJECT.MANIFEST` 27, `LIB.HTTP` 112. `aot`:
+  `LIB.IO`, `LANG.CAPABILITY.MODEL` y `ENG.EXEC.EFFECT-COMMIT` sin divergencias y con `differential` en 0 sin resolver;
+  `LIB.HTTP` 12 (`C10`, `C24`, `C27`), `ENG.EFFECT.TAPE` 12 (`C13`, `C14`,
+  `C16`) y `RT.HOST.INTERFACE` 4 (`C8`), todas `nativeTasksUnsupported` y registradas bajo `CF-PG5-02`. Por eso
+  `differential` informa 12, 12 y 4 diferencias sin resolver en esos tres IDs. Se editaron y reanclaron `LIB.HTTP`,
+  `ENG.EFFECT.TAPE`, `ENG.EXEC.EFFECT-COMMIT` y `RT.HOST.INTERFACE`. Propiedades regeneradas: `engine` 28 de 31 (fallan
+  `IR.LOWERING#P1`–`P3`, igual que en `PG-5.01.07`) y `aot` con 3 de 17 incumplidas (`RT.ABI#P1/P2`, `RT.FAULT.REPORTING#P1`) y
+  tres `pendiente`. Respaldos `*.before-pg-5-02-07-2026-10-29.json`, `*.stale-pg-5-02-07.json` y `*.hold-pg-5-02-07.json` en
+  `results/`.
+- **Conflicto `LIB.HTTP#R6`/`C8` resuelto por la persona:** una cinta con credenciales queda `non_reproducible_redacted`
+  y reproducirla falla con `replay_non_reproducible`. `R6` conserva la respuesta completa solo si la petición no lleva
+  credenciales, y `C8` espera `replay_non_reproducible` en lugar de pedir `grabar_y_reproducir`. Se reanclaron
+  `LIB.HTTP`, las propiedades se regeneraron de nuevo (`engine` 3 de 31 y `aot` 3 de 17 incumplidas, como antes) y
+  `LIB.HTTP` quedó con 0 divergencias en `engine` y 12 en `aot` (`nativeTasksUnsupported`).
+- **Verificación ligera:** Clippy `-D warnings --all-targets` de runtime y API (con `native`) y de `see_conformance` y
+  `see_cli`; `rustfmt --check` de los archivos tocados; `rust-checks all .` de engine y spec; tests de
+  `capability_receiver_tests`, `fake_host_http_tests`, `host_release_tests`, `tape_rejection_tests`,
+  `history_seek_isolation_tests`, `tape_privacy_budget_tests`, `effect_load` y `see_conformance`; `see validate` (194),
+  `lock --check` y `export --check`. Disco: 20 GiB libres al empezar, 21 GiB tras retirar los incrementales
+  regenerables de engine, CLI y spec (nivel 1 de §13). Sin commit ni push.
 
 ---
 

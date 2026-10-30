@@ -460,8 +460,8 @@
     }
   },
   "programas": {
-    "es": "Algoritmo Main\nDefinir net Como RedCap <- Propagar SolicitarRed();\nSegun net.Enviar(PeticionHttp(MetodoHttp.GET, \"https://fake.test/read-cut\")) Hacer\nExito(response): Escribir Verdadero;\nError(problem): Escribir problem.Incierto;\nFinSegun\nFinAlgoritmo\n",
-    "en": "algorithm Main\ndefine net as NetworkCap <- propagate requestNetwork();\nswitch net.send(HttpRequest(HttpMethod.GET, \"https://fake.test/read-cut\")) do\nsuccess(response): write true;\nfailure(problem): write problem.uncertain;\nendSwitch\nendAlgorithm\n"
+    "es": "Algoritmo Main\nSegun SolicitarRed() Hacer\nExito(net):\nSegun net.Enviar(PeticionHttp(MetodoHttp.GET, \"https://fake.test/read-cut\")) Hacer\nExito(response): Escribir Verdadero;\nError(problem): Escribir problem.Incierto;\nFinSegun\nError(denied): Escribir denied.Incierto;\nFinSegun\nFinAlgoritmo\n",
+    "en": "algorithm Main\nswitch requestNetwork() do\nsuccess(net):\nswitch net.send(HttpRequest(HttpMethod.GET, \"https://fake.test/read-cut\")) do\nsuccess(response): write true;\nfailure(problem): write problem.uncertain;\nendSwitch\nfailure(denied): write denied.uncertain;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
     "permissions": ["red"],
@@ -492,8 +492,8 @@
     }
   },
   "programas": {
-    "es": "Algoritmo Main\nDefinir net Como RedCap <- Propagar SolicitarRed();\nSegun net.Enviar(PeticionHttp(MetodoHttp.DELETE, \"https://fake.test/delete-cut\")) Hacer\nExito(response): Escribir Falso;\nError(problem): Escribir problem.Incierto;\nFinSegun\nFinAlgoritmo\n",
-    "en": "algorithm Main\ndefine net as NetworkCap <- propagate requestNetwork();\nswitch net.send(HttpRequest(HttpMethod.DELETE, \"https://fake.test/delete-cut\")) do\nsuccess(response): write false;\nfailure(problem): write problem.uncertain;\nendSwitch\nendAlgorithm\n"
+    "es": "Algoritmo Main\nSegun SolicitarRed() Hacer\nExito(net):\nSegun net.Enviar(PeticionHttp(MetodoHttp.DELETE, \"https://fake.test/delete-cut\")) Hacer\nExito(response): Escribir Falso;\nError(problem): Escribir problem.Incierto;\nFinSegun\nError(denied): Escribir denied.Incierto;\nFinSegun\nFinAlgoritmo\n",
+    "en": "algorithm Main\nswitch requestNetwork() do\nsuccess(net):\nswitch net.send(HttpRequest(HttpMethod.DELETE, \"https://fake.test/delete-cut\")) do\nsuccess(response): write false;\nfailure(problem): write problem.uncertain;\nendSwitch\nfailure(denied): write denied.uncertain;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
     "permissions": ["red"],
@@ -520,17 +520,17 @@
       "efectos": [
         {"effect_seq": 1, "capability_kind": "network", "operation": "request_network", "outcome": "committed"},
         {"effect_seq": 2, "task_id": 1, "capability_kind": "network", "operation": "network_send", "outcome": "abandoned"}
-      ]
+      ],
+      "reproduccion_fallo": "replay_non_reproducible"
     }
   },
   "programas": {
-    "es": "SubProceso Suspendible Wait(net Como RedCap)\nDescartar Aguardar net.Enviar(PeticionHttp(MetodoHttp.POST, \"https://fake.test/abandoned-post\"));\nFinSubProceso\nSubProceso Suspendible Fail() Como Resultado<Entero, Cadena>\nRetornar Error(\"problem\");\nFinSubProceso\nAlgoritmo Main\nDefinir net Como RedCap <- Propagar SolicitarRed();\nTareas failureReport\nLanzar Wait(net);\nLanzar Fail();\nFinTareas\nDescartar failureReport;\nEscribir \"done\";\nFinAlgoritmo\n",
-    "en": "subroutine suspendable Wait(net as NetworkCap)\ndiscard await net.send(HttpRequest(HttpMethod.POST, \"https://fake.test/abandoned-post\"));\nendSubroutine\nsubroutine suspendable Fail() as result<integer, string>\nreturn failure(\"problem\");\nendSubroutine\nalgorithm Main\ndefine net as NetworkCap <- propagate requestNetwork();\ntasks failureReport\nspawn Wait(net);\nspawn Fail();\nendTasks\ndiscard failureReport;\nwrite \"done\";\nendAlgorithm\n"
+    "es": "SubProceso Suspendible Wait(net Como RedCap)\nDescartar Aguardar net.Enviar(PeticionHttp(MetodoHttp.POST, \"https://fake.test/abandoned-post\"));\nFinSubProceso\nSubProceso Suspendible Fail() Como Resultado<Entero, Cadena>\nRetornar Error(\"problem\");\nFinSubProceso\nAlgoritmo Main\nSegun SolicitarRed() Hacer\nExito(net):\nTareas failureReport\nLanzar Wait(net);\nLanzar Fail();\nFinTareas\nDescartar failureReport;\nEscribir \"done\";\nError(denied): Escribir denied.Incierto;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Wait(net as NetworkCap)\ndiscard await net.send(HttpRequest(HttpMethod.POST, \"https://fake.test/abandoned-post\"));\nendSubroutine\nsubroutine suspendable Fail() as result<integer, string>\nreturn failure(\"problem\");\nendSubroutine\nalgorithm Main\nswitch requestNetwork() do\nsuccess(net):\ntasks failureReport\nspawn Wait(net);\nspawn Fail();\nendTasks\ndiscard failureReport;\nwrite \"done\";\nfailure(denied): write denied.uncertain;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
     "permissions": ["red"],
-    "requested_permissions": ["red"],
-    "grabar_y_reproducir": true
+    "requested_permissions": ["red"]
   }
 }
 ```
@@ -548,7 +548,7 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir red Como RedCap <- Propagar SolicitarRed();\nDefinir respuesta Como RespuestaHttp <- Propagar red.Enviar(PeticionHttp(MetodoHttp.GET, \"https://fake.test/no-script\"));\nRetornar Exito(respuesta.Estado());\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(estado): Escribir estado;\nError(error): Escribir error.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir red Como RedCap <- Propagar SolicitarRed();\nDefinir respuesta Como RespuestaHttp <- Propagar red.Enviar(PeticionHttp(MetodoHttp.GET, \"https://fake.test/no-script\"));\nRetornar Exito(respuesta.Estado());\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(estado): Escribir estado;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
     "en": "subroutine Probe() as result<integer, IoError>\ndefine network as NetworkCap <- propagate requestNetwork();\ndefine response as HttpResponse <- propagate network.send(HttpRequest(HttpMethod.GET, \"https://fake.test/no-script\"));\nreturn success(response.status());\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(status): write status;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
@@ -563,7 +563,7 @@
   "id": "R6",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La cinta registra para network_send el estado, las cabeceras, el cuerpo y la URL final de la respuesta. Las cabeceras authorization y las clasificadas como credencial se sustituyen por SecretHandle antes de serializar; la respuesta completa se conserva para reproducirla. Una petición distinta de la registrada produce replay_divergence. En reproducción y al consultar el pasado no se envía una petición al anfitrión.",
+  "texto": "La cinta registra para network_send el estado, las cabeceras, el cuerpo y la URL final de la respuesta. Las cabeceras authorization y las clasificadas como credencial se sustituyen por SecretHandle antes de serializar; la respuesta completa se conserva para reproducirla solo cuando la petición no lleva credenciales; con credenciales la cinta queda non_reproducible_redacted y reproducirla falla con replay_non_reproducible. Una petición distinta de la registrada produce replay_divergence. En reproducción y al consultar el pasado no se envía una petición al anfitrión.",
   "verificacion": ["C8", "C11"]
 }
 ```
@@ -589,13 +589,20 @@
       "estado_cinta": "non_reproducible_redacted",
       "efectos": [
         {
+          "effect_seq": 1,
+          "capability_kind": "network",
+          "operation": "request_network",
+          "outcome": "committed"
+        },
+        {
           "effect_seq": 2,
           "capability_kind": "network",
           "operation": "network_send",
           "outcome": "committed",
           "secret_key_id": "k1"
         }
-      ]
+      ],
+      "reproduccion_fallo": "replay_non_reproducible"
     }
   },
   "programas": {
@@ -609,7 +616,6 @@
     "requested_permissions": [
       "red"
     ],
-    "grabar_y_reproducir": true,
     "secrets": {
       "authorization": {
         "key_id": "k1",
@@ -768,7 +774,7 @@
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
-    "salida": "200\n",
+    "salida": "",
     "terminacion": "completed",
     "anfitrion_observado": {
       "llamadas": 2,
@@ -776,8 +782,8 @@
     }
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir net Como RedCap <- Propagar SolicitarRed();\nDefinir request Como PeticionHttp <- PeticionHttp(MetodoHttp.GET, \"https://fake.test/a\");\nDefinir response Como RespuestaHttp <- Propagar net.Enviar(request);\nRetornar Exito(response.Estado());\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Incierto;\nFinSegun\nFinAlgoritmo\n",
-    "en": "subroutine Probe() as result<integer, IoError>\ndefine net as NetworkCap <- propagate requestNetwork();\ndefine request as HttpRequest <- HttpRequest(HttpMethod.GET, \"https://fake.test/a\");\ndefine response as HttpResponse <- propagate net.send(request);\nreturn success(response.status());\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.uncertain;\nendSwitch\nendAlgorithm\n"
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir net Como RedCap <- Propagar SolicitarRed();\nDefinir request Como PeticionHttp <- PeticionHttp(MetodoHttp.GET, \"https://fake.test/a\");\nDefinir response Como RespuestaHttp <- Propagar net.Enviar(request);\nRetornar Exito(response.Estado());\nFinSubProceso\nAlgoritmo Main\nDescartar Probe();\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<integer, IoError>\ndefine net as NetworkCap <- propagate requestNetwork();\ndefine request as HttpRequest <- HttpRequest(HttpMethod.GET, \"https://fake.test/a\");\ndefine response as HttpResponse <- propagate net.send(request);\nreturn success(response.status());\nendSubroutine\nalgorithm Main\ndiscard Probe();\nendAlgorithm\n"
   },
   "anfitrion": {
     "permissions": [

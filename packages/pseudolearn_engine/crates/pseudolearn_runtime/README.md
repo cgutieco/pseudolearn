@@ -201,7 +201,15 @@ canónica y se rechazan las formas numéricas alternativas de IPv4.
 El anfitrión declara orígenes mediante `network_origins`, una lista de orígenes concedidos que se
 normaliza con las mismas reglas de URL que las peticiones. Los guiones de `http` conservan su
 comportamiento de pruebas y también aportan sus orígenes; un consumidor con transporte propio usa
-`network_origins` sin añadir respuestas ficticias.
+`network_origins` sin añadir respuestas ficticias. En reproducción desde cinta el anfitrión solo aporta
+su identidad, sin orígenes ni guiones, así que `begin_host_effect` no aplica el rechazo
+`DestinoDenegado`: el resultado de cada envío sale de la cinta, que ya registró si el destino se
+concedió o se denegó. Aplicarlo convertía en fallo un envío grabado como exitoso y la reproducción
+divergía.
+
+La comprobación de orígenes por receptor solo se aplica a capacidades de red. Los receptores de archivo,
+directorio, reloj, temporizador y consola no tienen concesión de orígenes, y exigirla convertía toda
+operación sobre ellos en `permiso_denegado`.
 
 `NetworkLimits` fija los valores mínimos garantizados: 1 MiB para cuerpo decodificado y bytes de
 solicitud, 16 KiB para cabeceras, 64 cabeceras, cuatro peticiones de red pendientes y 30 segundos

@@ -552,8 +552,8 @@
     }
   },
   "programas": {
-    "es": "Algoritmo Main\nDefinir net Como RedCap <- Propagar SolicitarRed();\nDefinir request Como PeticionHttp <- PeticionHttp(MetodoHttp.POST, \"https://fake.test/write\");\nSegun net.Enviar(request) Hacer\nExito(response): Escribir \"completado\";\nError(problem): Escribir problem.Incierto;\nFinSegun\nFinAlgoritmo\n",
-    "en": "algorithm Main\ndefine net as NetworkCap <- propagate requestNetwork();\ndefine request as HttpRequest <- HttpRequest(HttpMethod.POST, \"https://fake.test/write\");\nswitch net.send(request) do\nsuccess(response): write \"committed\";\nfailure(problem): write problem.uncertain;\nendSwitch\nendAlgorithm\n"
+    "es": "Algoritmo Main\nSegun SolicitarRed() Hacer\nExito(net):\nDefinir request Como PeticionHttp <- PeticionHttp(MetodoHttp.POST, \"https://fake.test/write\");\nSegun net.Enviar(request) Hacer\nExito(response): Escribir \"completado\";\nError(problem): Escribir problem.Incierto;\nFinSegun\nError(denied): Escribir denied.Incierto;\nFinSegun\nFinAlgoritmo\n",
+    "en": "algorithm Main\nswitch requestNetwork() do\nsuccess(net):\ndefine request as HttpRequest <- HttpRequest(HttpMethod.POST, \"https://fake.test/write\");\nswitch net.send(request) do\nsuccess(response): write \"committed\";\nfailure(problem): write problem.uncertain;\nendSwitch\nfailure(denied): write denied.uncertain;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
     "permissions": ["red"],
@@ -584,8 +584,8 @@
     }
   },
   "programas": {
-    "es": "Algoritmo Main\nDefinir net Como RedCap <- Propagar SolicitarRed();\nSegun net.Enviar(PeticionHttp(MetodoHttp.GET, \"https://fake.test/read-cut\")) Hacer\nExito(response): Escribir Verdadero;\nError(problem): Escribir problem.Incierto;\nFinSegun\nFinAlgoritmo\n",
-    "en": "algorithm Main\ndefine net as NetworkCap <- propagate requestNetwork();\nswitch net.send(HttpRequest(HttpMethod.GET, \"https://fake.test/read-cut\")) do\nsuccess(response): write true;\nfailure(problem): write problem.uncertain;\nendSwitch\nendAlgorithm\n"
+    "es": "Algoritmo Main\nSegun SolicitarRed() Hacer\nExito(net):\nSegun net.Enviar(PeticionHttp(MetodoHttp.GET, \"https://fake.test/read-cut\")) Hacer\nExito(response): Escribir Verdadero;\nError(problem): Escribir problem.Incierto;\nFinSegun\nError(denied): Escribir denied.Incierto;\nFinSegun\nFinAlgoritmo\n",
+    "en": "algorithm Main\nswitch requestNetwork() do\nsuccess(net):\nswitch net.send(HttpRequest(HttpMethod.GET, \"https://fake.test/read-cut\")) do\nsuccess(response): write true;\nfailure(problem): write problem.uncertain;\nendSwitch\nfailure(denied): write denied.uncertain;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
     "permissions": ["red"],
@@ -616,8 +616,8 @@
     }
   },
   "programas": {
-    "es": "Algoritmo Main\nDefinir net Como RedCap <- Propagar SolicitarRed();\nSegun net.Enviar(PeticionHttp(MetodoHttp.DELETE, \"https://fake.test/delete-cut\")) Hacer\nExito(response): Escribir Falso;\nError(problem): Escribir problem.Incierto;\nFinSegun\nFinAlgoritmo\n",
-    "en": "algorithm Main\ndefine net as NetworkCap <- propagate requestNetwork();\nswitch net.send(HttpRequest(HttpMethod.DELETE, \"https://fake.test/delete-cut\")) do\nsuccess(response): write false;\nfailure(problem): write problem.uncertain;\nendSwitch\nendAlgorithm\n"
+    "es": "Algoritmo Main\nSegun SolicitarRed() Hacer\nExito(net):\nSegun net.Enviar(PeticionHttp(MetodoHttp.DELETE, \"https://fake.test/delete-cut\")) Hacer\nExito(response): Escribir Falso;\nError(problem): Escribir problem.Incierto;\nFinSegun\nError(denied): Escribir denied.Incierto;\nFinSegun\nFinAlgoritmo\n",
+    "en": "algorithm Main\nswitch requestNetwork() do\nsuccess(net):\nswitch net.send(HttpRequest(HttpMethod.DELETE, \"https://fake.test/delete-cut\")) do\nsuccess(response): write false;\nfailure(problem): write problem.uncertain;\nendSwitch\nfailure(denied): write denied.uncertain;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
     "permissions": ["red"],

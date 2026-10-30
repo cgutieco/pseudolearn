@@ -155,6 +155,53 @@ fn records_and_replays_http_error_responses_without_the_host() -> Result<(), Str
 }
 
 #[test]
+fn replays_concurrent_http_deliveries_with_an_identity_only_host() -> Result<(), String> {
+    let corpus = include_str!("../../../../pseudolearn_spec/specifications/lib/lib.http.md");
+    let case = corpus
+        .split("```caso\n")
+        .skip(1)
+        .filter_map(|block| block.split("\n```").next())
+        .filter_map(|block| serde_json::from_str::<serde_json::Value>(block).ok())
+        .find(|case| case.get("id").and_then(serde_json::Value::as_str) == Some("C10"))
+        .ok_or("missing concurrent HTTP case")?;
+    let program = case
+        .pointer("/programas/es")
+        .and_then(serde_json::Value::as_str)
+        .ok_or("missing Spanish HTTP program")?;
+    let host = case
+        .get("anfitrion")
+        .cloned()
+        .ok_or("missing HTTP fake host")?;
+    let mut api = ApiSession::default();
+    let recording = api.call(
+        "record",
+        &json!({"request": {"program": program, "profile": "es", "strictness": "strict", "host": host},
+            "options": {"capture_states": false}}),
+    );
+    let value = recording
+        .get("value")
+        .ok_or_else(|| format!("HTTP recording failed: {recording}"))?;
+    let identity_host = json!({"permissions": ["red"], "requested_permissions": ["red"]});
+    let replay = api.call(
+        "record",
+        &json!({"request": {"program": program, "profile": "es", "strictness": "strict",
+            "host": identity_host, "execution_mode": "replay_from_tape",
+            "effect_tape": value.get("effect_tape").cloned().ok_or("missing HTTP effect tape")?},
+            "options": {"capture_states": false}}),
+    );
+    assert_eq!(
+        replay.pointer("/value/output"),
+        value.get("output"),
+        "{replay}"
+    );
+    assert_eq!(
+        replay.pointer("/value/host_observation/calls"),
+        Some(&json!(0))
+    );
+    Ok(())
+}
+
+#[test]
 fn executes_http_corpus_cases_with_the_memory_host() -> Result<(), String> {
     for (corpus, only_rule) in [
         (

@@ -45,8 +45,13 @@ pub fn begin_host_effect(
         result_capability: None,
         source_node_id: source,
     };
+    let replaying = session.replay.is_some();
     let rejected =
-        crate::effect_authority::prepare(&mut session.authority, operation, &mut request).err();
+        crate::effect_authority::prepare(&mut session.authority, operation, &mut request)
+            .err()
+            .filter(|error| {
+                !(replaying && error.kind == pseudolearn_abi::IoErrorKind::DestinationDenied)
+            });
     let previous_status = session.tape.status;
     let recorded = record_requested(session, &request, operation)?;
     session.pending = Some(PendingHostEffect {

@@ -296,6 +296,9 @@ Los casos pueden restringir `sujetos` a un subconjunto explícito de los declara
   y un anfitrión reducido a los campos de identidad (`permissions`, `requested_permissions`, `max_tape_bytes`), de modo
   que la reproducción no dispone de archivos, argumentos ni reloj. Compara salida y terminación y exige cero llamadas al
   proveedor. Aplica a los sujetos que anuncian `execute` con cinta (`engine` y `aot`).
+  Si la ejecución viva no produjo cinta (por ejemplo, `aot` ante tareas), el caso registra esa ausencia como una
+  diferencia propia y la sesión continúa; abortar la sesión impedía medir los demás casos del sujeto y ocultaba la
+  causa bajo un fallo del corredor.
 - La clave `anfitrion_observado` de `espera` (`llamadas`, `recursos_abiertos`) compara la observación del anfitrión que
   devuelve el sujeto.
 - Si el anfitrión declara `secrets`, el corredor busca el valor de cada secreto en la cinta viva en forma textual,
