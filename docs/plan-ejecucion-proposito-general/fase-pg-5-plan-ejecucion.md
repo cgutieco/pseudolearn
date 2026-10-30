@@ -19,8 +19,7 @@
   solo replicar patrones o arquitecturas de otros lenguajes, sino acotado al propósito educativo y fácil de leer de mi
   lenguaje de programación. Para velocidad de desarrollo las fases deben ejecutar la menor cantidad de test solo
   acotados a lo programado y al final una fase de ejecución de test pesados para dar conformidad general».
-- Estado: plan detallado creado; **pendiente de revisión de la persona** (`PG-5.C02`). Crear este plan no inicia la
-  fase ni autoriza ninguna iteración de §10 (`PHASE-STOP`). `PG-5.C01` sigue pendiente.
+- Estado: **cerrada por la persona el 2026-10-30** (commit `c9414002`, publicado en `origin/feature/agregar-ruta-de-especificacion`). Todas las tareas `.01`–`.07` de `PG-5.01` a `PG-5.10` están marcadas. Pendientes justificados heredados al cierre, registrados en §11: Firefox no lanzable con Playwright 1.64 en este equipo, `PERF.SUITE.CORE` en 1,0443 frente al presupuesto de 1,02, divergencias de `aot` solo por tareas nativas (`CF-PG5-02`), propiedades `IR.LOWERING#P1`–`P3` y `TOOL.CLI.IR#P1`, y aprobación de `PERF.PG.HTTP` (`P6`).
 - Dependencias: `PG-2` cerrada (2026-10-26), `PG-3` con todos sus puntos y casillas marcados, `PG-4` cerrada por la
   persona el 2026-10-28 (commit `a1de5355`) con dos pendientes justificados que **condicionan esta fase**: tareas
   nativas en AOT no construidas (`PG-4.12.04`) y presupuesto de `PERF.SUITE.CORE` no alcanzado (1,2192× frente a
@@ -1028,7 +1027,7 @@ README y la regresión `PERF.SUITE.CORE`; desde `apps/pseudolearn_app`, `flutter
 | Lectura pendiente de §2 | | | |
 | Espacio liberado (§13) | Nivel 1 | Antes de la compilación `release`: `df -h /` mostró 22 GiB libres. `du -sh`: engine incremental 1.2 GiB, CLI incremental 980 MiB, spec target 1.0 GiB y, en la segunda medición, CLI incremental 231 MiB. Se retiraron esos incrementales y el `target` ya verificado de spec; `df -h /` quedó en 25 GiB antes y después del build. | Se liberaron aproximadamente 3.4 GiB de artefactos regenerables; no se borraron archivos versionados ni resultados |
 
-Revisión Git de cierre: · Verificadores ejecutados: · Suites omitidas y por qué: · Pendientes justificados: ·
+Revisión Git de cierre: `c9414002` en `feature/agregar-ruta-de-especificacion`, publicada. Verificadores ejecutados: los enumerados en el registro de las pesadas `.07`. Suites omitidas y por qué: Firefox (no lanza). Pendientes justificados: los del párrafo de estado.
 Puntos de §4 cumplidos:
 
 ### Registro de ejecución de P3 · 2026-10-29

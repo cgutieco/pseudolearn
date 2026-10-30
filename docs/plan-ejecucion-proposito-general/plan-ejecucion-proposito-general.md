@@ -552,53 +552,68 @@ capacidades C-07, C-08, C-10; riesgos K-07, K-09; experimentos E-PG-07, E-PG-09;
 
 Puntos a cumplir:
 
-- [ ] `PG-5.01` Biblioteca de texto, bytes, números vigentes, colecciones, E/S, tiempo, JSON y tareas, con un símbolo
+- [x] `PG-5.01` Biblioteca de texto, bytes, números vigentes, colecciones, E/S, tiempo, JSON y tareas, con un símbolo
   canónico y facetas es/en generadas.
-- [ ] `PG-5.02` Cliente HTTP/HTTPS: métodos explícitos, estado, cabeceras, cuerpo de texto o binario, y 4xx/5xx como
+- [x] `PG-5.02` Cliente HTTP/HTTPS: métodos explícitos, estado, cabeceras, cuerpo de texto o binario, y 4xx/5xx como
   respuesta, no como error.
-- [ ] `PG-5.03` Límites de bytes comprimidos y descomprimidos, profundidad JSON, peticiones pendientes y tiempo externo.
-- [ ] `PG-5.04` TLS no desactivable por código ordinario, redirecciones solo dentro del permiso, credenciales retiradas al
+- [x] `PG-5.03` Límites de bytes comprimidos y descomprimidos, profundidad JSON, peticiones pendientes y tiempo externo.
+- [x] `PG-5.04` TLS no desactivable por código ordinario, redirecciones solo dentro del permiso, credenciales retiradas al
   cambiar de origen, proxies del entorno no heredados y política contra SSRF.
-- [ ] `PG-5.05` Sin reintento automático de operaciones no idempotentes; estado incierto registrado.
-- [ ] `PG-5.06` Adaptador nativo elegido tras validar licencia, tamaño, plataformas y permisos; adaptador Fetch con
+- [x] `PG-5.05` Sin reintento automático de operaciones no idempotentes; estado incierto registrado.
+- [x] `PG-5.06` Adaptador nativo elegido tras validar licencia, tamaño, plataformas y permisos; adaptador Fetch con
   capacidades web declaradas.
-- [ ] `PG-5.07` Servidor de prueba local controlado; el corpus no depende de Internet.
-- [ ] `PG-5.08` `PERF.ARTIFACT.SIZE` se mantiene: sin dependencias de red en el módulo móvil fuera de presupuesto.
-- [ ] `PG-5.09` Casos integradores de ENT-1 relativos a archivos, JSON, HTTP con tareas y biblioteca bilingüe en
+- [x] `PG-5.07` Servidor de prueba local controlado; el corpus no depende de Internet.
+- [x] `PG-5.08` `PERF.ARTIFACT.SIZE` se mantiene: sin dependencias de red en el módulo móvil fuera de presupuesto.
+- [x] `PG-5.09` Casos integradores de ENT-1 relativos a archivos, JSON, HTTP con tareas y biblioteca bilingüe en
   verde, incluidos entrada vacía, permiso denegado, cancelación y agotamiento.
-- [ ] `PG-5.10` E-PG-07 y la parte de red de E-PG-09 ejecutados; métrica candidata de HTTP medida.
+- [x] `PG-5.10` E-PG-07 y la parte de red de E-PG-09 ejecutados; métrica candidata de HTTP medida.
 
 Fuera de alcance: servidor HTTP, sockets arbitrarios, FFI y matemática ampliada sin demanda.
 
 Plan detallado: [fase-pg-5-plan-ejecucion.md](fase-pg-5-plan-ejecucion.md), creado el 2026-10-28 a petición de la
-persona y pendiente de su revisión (`PG-5.C02`). Deja constancia de que el diseño es a medida del propósito educativo
+persona y revisado por ella (`PG-5.C02`). Deja constancia de que el diseño es a medida del propósito educativo
 y legible del lenguaje, de que las iteraciones 1 a 5 solo ejecutan verificaciones ligeras sobre lo programado y las
 pruebas pesadas se ejecutan únicamente en la iteración 6, de que la red real no entra en el corpus ni en el núcleo, y
 del protocolo para liberar espacio en disco. Crear el plan no inicia la fase (`PG-5.C01`).
 
 Cierre común (definiciones en §4.0):
 
-- [ ] `PG-5.C01` Autorización de la persona para iniciar la fase, en mensaje nuevo.
-- [ ] `PG-5.C02` Plan detallado creado según §5 y revisado por la persona.
-- [ ] `PG-5.C03` SPEC-FIRST y congelamiento respetados.
-- [ ] `PG-5.C04` Reglas nuevas con casos o propiedades y vínculos como datos.
-- [ ] `PG-5.C05` Tests feliz, infeliz y límite en carpetas espejo.
-- [ ] `PG-5.C06` Capas declaradas, imports permitidos y límites de tamaño.
-- [ ] `PG-5.C07` Sin comentarios ni TODO; código en inglés; Rust sin pánicos ni `unsafe` no declarado.
-- [ ] `PG-5.C08` README y reglas de los miembros afectados actualizados, sin citar `docs/`.
-- [ ] `PG-5.C09` Fichas de ayuda y datos de proyección de la sintaxis nueva, o justificación.
-- [ ] `PG-5.C10` Riesgos revisados y experimentos con procedencia o diferidos por la persona.
-- [ ] `PG-5.C11` Tests y verificadores de los miembros afectados en verde.
-- [ ] `PG-5.C12` Commit sin atribución de IA y push ordinario comprobado a la rama única.
-- [ ] `PG-5.C13` Resumen completo, informe a la persona y parada.
+- [x] `PG-5.C01` Autorización de la persona para iniciar la fase, en mensaje nuevo.
+- [x] `PG-5.C02` Plan detallado creado según §5 y revisado por la persona.
+- [x] `PG-5.C03` SPEC-FIRST y congelamiento respetados.
+- [x] `PG-5.C04` Reglas nuevas con casos o propiedades y vínculos como datos.
+- [x] `PG-5.C05` Tests feliz, infeliz y límite en carpetas espejo.
+- [x] `PG-5.C06` Capas declaradas, imports permitidos y límites de tamaño.
+- [x] `PG-5.C07` Sin comentarios ni TODO; código en inglés; Rust sin pánicos ni `unsafe` no declarado.
+- [x] `PG-5.C08` README y reglas de los miembros afectados actualizados, sin citar `docs/`.
+- [x] `PG-5.C09` Fichas de ayuda y datos de proyección de la sintaxis nueva, o justificación.
+- [x] `PG-5.C10` Riesgos revisados y experimentos con procedencia o diferidos por la persona.
+- [x] `PG-5.C11` Tests y verificadores de los miembros afectados en verde.
+- [x] `PG-5.C12` Commit sin atribución de IA y push ordinario comprobado a la rama única.
+- [x] `PG-5.C13` Resumen completo, informe a la persona y parada.
 
 #### Resumen de PG-5
 
+Estado a 2026-10-30: la persona declaró cerrada la fase con los pendientes justificados en el plan detallado
+(§11); todas las casillas de puntos y de cierre común están marcadas. Rige `PHASE-STOP`: no se inicia PG-6A sin
+autorización nueva.
+
 | Punto | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
-| | | | |
+| `PG-5.01`, `PG-5.02` | Cumplido en `engine`; AOT con residuo de tareas | `LIB.MODEL` 24, `LIB.CORE.TEXT` 72, `LIB.CORE.BYTES` 20, `LIB.JSON` 64, `LIB.HTTP` 112 y `LIB.IO` 72 observaciones, 0 divergencias en `engine` | Divergencias AOT solo por `nativeTasksUnsupported` (`CF-PG5-02`) |
+| `PG-5.03`–`PG-5.05` | Cumplido | `ENG.LIMITS` 129, `LIB.HTTP.POLICY` 32, `ENG.EFFECT.TAPE` 64 y `ENG.EXEC.EFFECT-COMMIT` 40 observaciones, 0 divergencias; integración nativa contra el servidor local (4 suites), `POST` cortado incierto, `GET` cortado no | Se corrigieron el destino de la petición y la validación previa a conectar |
+| `PG-5.06`, `PG-5.07` | Cumplido con pendiente justificado | Hyper 1.11.1 con Rustls 0.23.46; Chromium y WebKit coinciden con el contrato nativo; auditoría de URL sin direcciones fuera de loopback y `*.test` | Firefox de Playwright 1.64 no se lanza en el equipo |
+| `PG-5.08` | Cumplido | `ios-arm64` 4,294,592 bytes (≤ 5 MiB) y Wasm 772,804 bytes con Brotli (≤ 900 KiB) | Perfiles `wasm-release` y `[profile.release]` del puente; topes sin cambios |
+| `PG-5.09` | Cumplido | `FILE-JSON` 18, `HTTP-TASKS` 23 y `BILINGUAL` 15 observaciones, 0 divergencias en `engine` | `BILINGUAL` solo en `engine`; `HTTP-TASKS` en AOT depende de tareas nativas |
+| `PG-5.10` | Cumplido con pendiente justificado | `pg_http`: 10 procesos × 30 muestras, crecimiento lineal (R² ≥ 0,99999); `PERF.SUITE.CORE` 1,0443× frente a `a1de5355` | Presupuesto 1,02× no alcanzado; `PERF.PG.HTTP` pendiente de aprobación |
 
-Revisión Git de cierre: · Verificadores ejecutados: · Pendientes justificados: · Decisiones de la persona:
+Revisión Git de cierre: commit `c9414002`, publicado con push ordinario a `feature/agregar-ruta-de-especificacion` y
+sincronizado con `origin` · Verificadores ejecutados: conformidad `engine` en los IDs de la selección pesada, `service` y
+`cli`; `see validate` (194), `lock --check`, `export --check`; Clippy `-D warnings`, `rustfmt --check` y `rust-checks all`
+en motor, CLI y `xtask`; bridge 20, arquitectura de la app 20, `fetch_host` 10 y `browser.test.mjs` 4 · Pendientes
+justificados: Firefox no lanzable; `PERF.SUITE.CORE` 1,0443×; tareas nativas en AOT (`CF-PG5-02`); `IR.LOWERING#P1`–`P3`
+y `TOOL.CLI.IR#P1`; aprobación de `PERF.PG.HTTP` · Decisiones de la persona: cierre de la fase con los pendientes
+justificados en el plan detallado (2026-10-30).
 
 ### 4.8 PG-6A · Servicio y extensión inicial
 
@@ -998,7 +1013,7 @@ La IA a cargo actualiza esta tabla al cerrar cada fase.
 | PG-2 | Cerrada · PG-2.01–.17 (`.15` retirado) | Sí | 2026-10-26 | `PG-2.C09` justificado; E-PG-10 diferido por la persona; intervalo de E-PG-04 informado |
 | PG-3 | En curso · PG-3.08, PG-3.11 y PG-3.12 cumplidos; resto abierto | Sí, C02 revisado (2026-10-26); revisión integral pendiente | Sin cierre de fase | `PG-3.C12` pendiente por revisión previa; E-PG-05 cumple el presupuesto por carga revisado el 2026-10-27; sin commit |
 | PG-4 | Cerrada · PG-4.01–.12 | Sí | 2026-10-28 · `a1de5355` | Tareas nativas en AOT (`PG-4.12.04`) y sus `.07`; presupuesto de `PERF.SUITE.CORE` no alcanzado |
-| PG-5 | Sin iniciar | Sí, C02 pendiente de revisión | | |
+| PG-5 | Cerrada · PG-5.01–.10 | Sí, C02 revisado | 2026-10-30 · `c9414002` | Firefox no lanzable; presupuesto de `PERF.SUITE.CORE` no alcanzado; tareas nativas en AOT; aprobación de `PERF.PG.HTTP` |
 | PG-6A | Sin iniciar | No | | |
 | PG-6B | Sin iniciar | No | | |
 | PG-A | Sin iniciar | No | | |
