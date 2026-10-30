@@ -80,6 +80,7 @@ fn consumer_roots() -> Vec<PathBuf> {
         root.join("apps/pseudolearn_app/lib"),
         root.join("apps/pseudolearn_app/native/src"),
         root.join("apps/fe-pseudolearn/src"),
+        root.join("apps/pseudolearn_vscode/src"),
     ]
 }
 
@@ -119,6 +120,13 @@ fn the_scan_flags_a_deliberate_copy_and_accepts_clean_sources() -> Result<(), St
     )
     .map_err(|error| error.to_string())?;
     assert_eq!(find_copies(&scratch, &needles).len(), 1);
+    std::fs::write(
+        scratch.join("violation.ts"),
+        format!("export const description = \"{copied}\";\n"),
+    )
+    .map_err(|error| error.to_string())?;
+    assert_eq!(find_copies(&scratch, &needles).len(), 2);
+    std::fs::remove_file(scratch.join("violation.ts")).map_err(|error| error.to_string())?;
     std::fs::write(
         scratch.join("violation.dart"),
         "const label = 'Explicar';\n",

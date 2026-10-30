@@ -1,6 +1,6 @@
 use crate::hir::{FunctionKind, HirModule};
 use crate::identities::{ClassId, FunctionId};
-use crate::module_exports::{ExportResolver, Report, is_function};
+use crate::module_exports::{ExportResolver, is_function};
 use crate::module_imports::{UnitBindings, bind};
 use crate::module_symbols::{SymbolKind, UnitDeclarations, collect};
 use crate::session::{AnalysisSession, SemanticOptions, UnitView};
@@ -8,7 +8,7 @@ use pseudolearn_diagnostics::{Diagnostic, DiagnosticSeverity};
 use pseudolearn_lexicon::Profile;
 use pseudolearn_project::{ImportEdge, ModuleId, ProjectCatalog};
 use pseudolearn_source::SourceText;
-use pseudolearn_syntax::{NodeKind, SyntaxTree};
+use pseudolearn_syntax::SyntaxTree;
 use std::collections::BTreeMap;
 
 pub struct ProjectUnit<'syntax> {
@@ -44,12 +44,25 @@ pub fn analyze_project_detailed(
     options: SemanticOptions,
 ) -> ProjectAnalysis {
     if units.iter().any(|unit| unit.tree.has_errors) {
-        return ProjectAnalysis {
-            hir: None,
-            diagnostics: Vec::new(),
-            imports: Vec::new(),
-        };
+        return failed_project_analysis();
     }
+    analyze_valid_project(catalog, units, entry, options)
+}
+
+fn failed_project_analysis() -> ProjectAnalysis {
+    ProjectAnalysis {
+        hir: None,
+        diagnostics: Vec::new(),
+        imports: Vec::new(),
+    }
+}
+
+fn analyze_valid_project(
+    catalog: &ProjectCatalog,
+    units: &[ProjectUnit<'_>],
+    entry: Option<ModuleId>,
+    options: SemanticOptions,
+) -> ProjectAnalysis {
     let views = units
         .iter()
         .map(|unit| UnitView {
@@ -69,34 +82,43 @@ pub fn analyze_project_detailed(
         .iter()
         .map(|unit| pseudolearn_project::qualifier(catalog, unit.module))
         .collect();
-    let declarations = declarations(&mut session);
-    let mut resolver = ExportResolver::new(catalog, declarations, unit_profiles(units));
-    let bindings = resolve_links(&mut session, &mut resolver);
+    analyze_registered_project(catalog, units, entry, &mut session)
+}
+
+fn analyze_registered_project(
+    catalog: &ProjectCatalog,
+    units: &[ProjectUnit<'_>],
+    entry: Option<ModuleId>,
+    session: &mut AnalysisSession<'_>,
+) -> ProjectAnalysis {
+    let declarations = declarations(session);
+    let mut resolver = ExportResolver::new(
+        catalog,
+        declarations,
+        units.iter().map(|unit| unit.profile).collect(),
+    );
+    let bindings = resolve_links(session, &mut resolver);
     let imports = crate::module_cycles::import_edges(units, &resolver);
-    if crate::module_cycles::report(&mut session, catalog, &imports) {
+    if crate::module_cycles::report(session, catalog, &imports) {
         return ProjectAnalysis {
             hir: None,
-            diagnostics: session.diagnostics,
+            diagnostics: std::mem::take(&mut session.diagnostics),
             imports,
         };
     }
-    register(&mut session, &mut resolver, &bindings);
-    crate::module_structure::check(&mut session, catalog, units);
-    select_entry(&mut session, units, entry);
-    check_bodies(&mut session);
+    register(session, &mut resolver, &bindings);
+    crate::module_structure::check(session, catalog, units);
+    select_entry(session, units, entry);
+    check_bodies(session);
     let valid = !session
         .diagnostics
         .iter()
         .any(|diagnostic| diagnostic.severity == DiagnosticSeverity::Error);
     ProjectAnalysis {
-        hir: valid.then_some(session.module),
-        diagnostics: session.diagnostics,
+        hir: valid.then(|| std::mem::take(&mut session.module)),
+        diagnostics: std::mem::take(&mut session.diagnostics),
         imports,
     }
-}
-
-fn unit_profiles(units: &[ProjectUnit<'_>]) -> Vec<Profile> {
-    units.iter().map(|unit| unit.profile).collect()
 }
 
 fn check_bodies(session: &mut AnalysisSession<'_>) {
@@ -136,14 +158,10 @@ fn resolve_links(
         reports.append(&mut unit_reports);
     }
     for report in reports {
-        report_link(session, &report);
+        session.switch_unit(report.unit);
+        session.named_report(report.code, report.node, &report.lexeme);
     }
     bindings
-}
-
-fn report_link(session: &mut AnalysisSession<'_>, report: &Report) {
-    session.switch_unit(report.unit);
-    session.named_report(report.code, report.node, &report.lexeme);
 }
 
 fn register(
@@ -277,24 +295,4 @@ fn select_entry(
     if let Some((index, _)) = main {
         session.module.units.entry = Some(FunctionId(u32::try_from(index).unwrap_or(u32::MAX)));
     }
-}
-
-pub(crate) fn algorithm_nodes(session: &AnalysisSession<'_>) -> Vec<usize> {
-    session
-        .tree
-        .nodes
-        .iter()
-        .enumerate()
-        .filter(|(_, node)| node.kind == NodeKind::AlgorithmUnit)
-        .map(|(index, _)| index)
-        .collect()
-}
-
-pub(crate) fn program_node(session: &AnalysisSession<'_>) -> usize {
-    session
-        .tree
-        .nodes
-        .iter()
-        .rposition(|node| node.kind == NodeKind::Program)
-        .unwrap_or(0)
 }

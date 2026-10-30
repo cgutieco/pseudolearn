@@ -12,7 +12,7 @@
   "sujetos": [
     "service"
   ],
-  "resumen": "Servidor Language Server Protocol sobre JSON-RPC con capacidades de sincronización, navegación, diagnósticos, fragmentos y asistencia al teclear.",
+  "resumen": "Servidor Language Server Protocol sobre JSON-RPC con capacidades negociadas de workspace, navegación, diagnósticos, edición y asistencia al teclear.",
   "depende_de": [
     {
       "id": "TOOL.SERVICE.INCREMENTAL",
@@ -54,7 +54,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Al recibir initialize, el servidor responde con el objeto capabilities que declara textDocumentSync, completionProvider, hoverProvider, signatureHelpProvider, definitionProvider, referencesProvider, documentHighlightProvider, documentSymbolProvider y documentFormattingProvider, adoptando el idioma de locale. Ante shutdown devuelve null y ante exit finaliza limpiamente.",
+  "texto": "Al recibir initialize, el servidor negocia las capacidades del cliente y anuncia únicamente los proveedores implementados: sincronización incremental, completion, hover, signature help, definition, references, document highlight, document/workspace symbols, formatting, prepareRename/rename y semanticTokens full. La selección de workspace folders, relatedInformation, snippets, documentChanges y transactional failure handling depende de las capacidades declaradas por el cliente. El idioma de interfaz se negocia de forma independiente del perfil del documento. Ante shutdown devuelve null y ante exit después de shutdown finaliza con código 0.",
   "verificacion": [
     "C1"
   ]
@@ -66,7 +66,7 @@
   "id": "R2",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Tras didOpen y didChange, el servidor actualiza la sesión incremental y emite notificación textDocument/publishDiagnostics con posiciones 0-indexadas y mensajes localizados. Al recibir didClose, libera la sesión y publica lista vacía de diagnósticos.",
+  "texto": "Tras didOpen, didChange, didSave, cambios de workspace o resincronización, el servidor actualiza la sesión y publica diagnósticos con posiciones UTF-16 0-indexadas, versión y relatedInformation cuando fue negociado. didClose elimina el overlay y vuelve al texto del snapshot del proyecto más reciente; si el archivo pertenece al proyecto conserva su análisis y diagnósticos, y si es un documento suelto libera la sesión y publica lista vacía.",
   "verificacion": [
     "C2"
   ]
@@ -78,7 +78,7 @@
   "id": "R3",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Las peticiones textDocument/completion, textDocument/hover, textDocument/signatureHelp, textDocument/definition, textDocument/references, textDocument/documentHighlight, textDocument/documentSymbol y textDocument/formatting devuelven resultados coherentes con el motor convirtiendo entre posiciones 1-indexadas del motor y posiciones 0-indexadas de LSP.",
+  "texto": "Las peticiones textDocument/completion, textDocument/hover, textDocument/signatureHelp, textDocument/definition, textDocument/references, textDocument/documentHighlight, textDocument/documentSymbol, workspace/symbol, textDocument/formatting y textDocument/semanticTokens/full devuelven resultados coherentes con el motor convirtiendo entre posiciones 1-indexadas del motor y posiciones UTF-16 0-indexadas de LSP. La navegación incluye fuentes cerradas del proyecto y respeta la identidad semántica, visibilidad, alias y reexportaciones.",
   "verificacion": [
     "C3"
   ]
@@ -95,6 +95,56 @@
     "C4",
     "C5"
   ]
+}
+```
+
+```regla
+{
+  "id": "R6",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "El servidor anuncia navegación de workspace, prepareRename/rename y semanticTokens full cuando implementa esos métodos. Solo anuncia documentChanges, relatedInformation, snippets y el comportamiento de workspaceFolders que el cliente declaró; no anuncia delta ni range. El servidor expone una leyenda estable con tipos keyword, operator, number, string, comment, variable, function, class, property, parameter y type, y los datos semánticos siguen el orden y la codificación entera de LSP.",
+  "verificacion": ["C12", "C15"]
+}
+```
+
+```regla
+{
+  "id": "R7",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Los métodos workspace/symbol, textDocument/definition, textDocument/references y textDocument/documentHighlight consultan la identidad semántica del snapshot efectivo del proyecto. Incluyen archivos cerrados, distinguen homónimos y sombreado, respetan visibilidad privada, y siguen alias y reexportaciones. Al cerrar un archivo del proyecto el overlay desaparece y el servicio vuelve al contenido del snapshot más reciente.",
+  "verificacion": ["C13"]
+}
+```
+
+```regla
+{
+  "id": "R8",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "prepareRename devuelve el rango exacto y el texto actual del símbolo, o null fuera de un símbolo renombrable. rename rechaza nombres inválidos, palabras reservadas, colisiones, capacidades transaccionales ausentes y fuentes obsoletas; si se acepta, devuelve un único WorkspaceEdit de documentChanges con versiones para todos los documentos abiertos y sin aplicar cambios en el servidor.",
+  "verificacion": ["C14"]
+}
+```
+
+```regla
+{
+  "id": "R9",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "semanticTokens/full codifica tokens sobre la revisión actual del documento en posiciones UTF-16. Una respuesta calculada para una revisión sustituida se descarta. Los tokens toleran texto sintácticamente incompleto y no establecen validez del programa.",
+  "verificacion": ["C15"]
+}
+```
+
+```regla
+{
+  "id": "R10",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "$/cancelRequest se procesa mientras una consulta está en curso sin esperar detrás de esa consulta. Cada petición cancelada recibe una única respuesta de cancelación, y no publica después resultados de diagnóstico o respuesta tardíos para la revisión cancelada.",
+  "verificacion": ["C16"]
 }
 ```
 
@@ -172,7 +222,16 @@
         "id": 1,
         "method": "initialize",
         "params": {
-          "locale": "es"
+          "locale": "es",
+          "capabilities": {
+            "textDocument": {
+              "completion": {
+                "completionItem": {
+                  "snippetSupport": true
+                }
+              }
+            }
+          }
         }
       },
       {
@@ -859,5 +918,70 @@
     ],
     "proyeccion": "ayuda"
   }
+}
+```
+
+```caso
+{
+  "id": "C12",
+  "regla": "R6",
+  "perfiles": ["es", "en"],
+  "rigor": ["estricto"],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {"servicio": {"workspace_folders": true, "prepare_rename": true, "semantic_tokens_full": true}},
+  "servicio": {"suboperacion": "lsp", "mensajes": [{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"locale":"es","capabilities":{"workspace":{"workspaceFolders":{"supported":true},"workspaceEdit":{"documentChanges":true,"failureHandling":"transactional"}},"textDocument":{"publishDiagnostics":{"relatedInformation":true},"completion":{"completionItem":{"snippetSupport":true}},"semanticTokens":{}}}}}],"proyeccion":"capacidades_proyecto"}
+}
+```
+
+```caso
+{
+  "id": "C13",
+  "regla": "R7",
+  "perfiles": ["es", "en"],
+  "rigor": ["estricto"],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {"servicio": {"definicion_uri": "file:///geo/vectores.pseudo", "referencias": 2}},
+  "servicio": {"suboperacion":"lsp","mensajes":[{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"locale":"es","capabilities":{}}},{"jsonrpc":"2.0","method":"pseudolearn/workspaceSnapshot","params":{"project":{"project_id":1,"revision_id":1,"packages":[{"name":"app","root":"app","kind":"application","entries":["app/main"],"dependencies":{"geo":"geo"}},{"name":"geo","root":"geo","kind":"library","entries":[],"dependencies":{}}],"files":[{"path":"app/main","source_id":1,"text":"Importar geo.vectores.Doble;\\nAlgoritmo P\\nEscribir Doble(1);\\nFinAlgoritmo\\n"},{"path":"geo/vectores","source_id":2,"text":"Publico SubProceso Doble()\\nFinSubProceso\\n"}]},"uris":{"app/main":"file:///app/main.pseudo","geo/vectores":"file:///geo/vectores.pseudo"}}},{"jsonrpc":"2.0","id":2,"method":"textDocument/definition","params":{"textDocument":{"uri":"file:///app/main.pseudo"},"position":{"line":2,"character":9} }},{"jsonrpc":"2.0","id":3,"method":"textDocument/references","params":{"textDocument":{"uri":"file:///app/main.pseudo"},"position":{"line":2,"character":9},"context":{"includeDeclaration":true}}}],"proyeccion":"navegacion_proyecto"}
+}
+```
+
+```caso
+{
+  "id": "C14",
+  "regla": "R8",
+  "perfiles": ["es"],
+  "rigor": ["estricto"],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {"servicio": {"prepare_range":{"start":{"line":1,"character":16},"end":{"line":1,"character":21}},"rename_edits":2}},
+  "servicio": {"suboperacion":"lsp","mensajes":[{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"locale":"es","capabilities":{"workspace":{"workspaceEdit":{"documentChanges":true,"failureHandling":"transactional"}}}}},{"jsonrpc":"2.0","method":"textDocument/didOpen","params":{"textDocument":{"uri":"file:///rename.pseudo","languageId":"pseudolearn","version":1,"text":"Algoritmo Total\\nDefinir Mutable total Como Entero <- 0;\\nEscribir total;\\nFinAlgoritmo\\n"}}},{"jsonrpc":"2.0","id":2,"method":"textDocument/prepareRename","params":{"textDocument":{"uri":"file:///rename.pseudo"},"position":{"line":1,"character":16}}},{"jsonrpc":"2.0","id":3,"method":"textDocument/rename","params":{"textDocument":{"uri":"file:///rename.pseudo"},"position":{"line":1,"character":16},"newName":"suma"}}],"proyeccion":"rename"}
+}
+```
+
+```caso
+{
+  "id": "C15",
+  "regla": "R9",
+  "perfiles": ["en"],
+  "rigor": ["flexible"],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {"servicio": {"semantic_token_count":5,"token_encoding":"relative-utf16"}},
+  "servicio": {"suboperacion":"lsp","mensajes":[{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"locale":"en","capabilities":{"textDocument":{"semanticTokens":{}}}}},{"jsonrpc":"2.0","method":"textDocument/didOpen","params":{"textDocument":{"uri":"file:///tokens.pseudo","languageId":"pseudolearn","version":1,"text":"algorithm Main\\nwrite 1;\\nendAlgorithm\\n"}}},{"jsonrpc":"2.0","id":2,"method":"textDocument/semanticTokens/full","params":{"textDocument":{"uri":"file:///tokens.pseudo"}}}],"proyeccion":"semantic_tokens"}
+}
+```
+
+```caso
+{
+  "id": "C16",
+  "regla": "R10",
+  "perfiles": ["es"],
+  "rigor": ["estricto"],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {"servicio": {"cancelacion_silenciosa": true}},
+  "servicio": {"suboperacion":"lsp","mensajes":[{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"locale":"es"}},{"jsonrpc":"2.0","method":"$/cancelRequest","params":{"id":2}}],"proyeccion":"cancelacion"}
 }
 ```

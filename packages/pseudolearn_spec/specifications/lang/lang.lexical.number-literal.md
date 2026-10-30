@@ -47,6 +47,18 @@
 }
 ```
 
+```definicion
+{
+  "id": "D1",
+  "termino": "textmateNumber",
+  "texto": "Patrones declarativos de los literales decimales enteros y reales; el consumidor solo resalta candidatos.",
+  "valor": {
+    "integer": "[0-9]+",
+    "real": "[0-9]+\\.[0-9]+"
+  }
+}
+```
+
 ```caso
 {
   "id": "C1",

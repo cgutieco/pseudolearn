@@ -44,8 +44,25 @@
     "C2",
     "C3",
     "C4",
-    "C5"
+    "C5",
+    "C6"
   ]
+}
+```
+
+```definicion
+{
+  "id": "D1",
+  "termino": "textmateAccentFold",
+  "texto": "Variantes ortográficas españolas que el resaltador puede plegar al grafema base; este dato no decide la validez léxica.",
+  "valor": {
+    "a": ["á", "à", "ä", "â"],
+    "e": ["é", "è", "ë", "ê"],
+    "i": ["í", "ì", "ï", "î"],
+    "o": ["ó", "ò", "ö", "ô"],
+    "u": ["ú", "ù", "ü", "û"],
+    "n": ["ñ"]
+  }
 }
 ```
 
@@ -176,5 +193,30 @@
     "es": "SubProceso Suspendible Worker()\nFinSubProceso\nAlgoritmo P\nDefinir Suspendible Como Entero <- 1;\nEscribir Suspendible;\nAguardar Worker();\nFinAlgoritmo\n",
     "en": "subroutine suspendable Worker()\nendSubroutine\nalgorithm P\ndefine suspendable as integer <- 1;\nwrite suspendable;\nawait Worker();\nendAlgorithm\n"
   }
+}
+```
+
+```caso
+{
+  "id": "C6",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "ALGORITMO P\nDefinir valor Como LÓGICO <- VERDADERO;\nEscribir valor;\nFIN ALGORITMO\n",
+    "en": "ALGORITHM P\ndefine value as BOOLEAN <- TRUE;\nwrite value;\nEND ALGORITHM\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "{{lexema:booleanTrue}}\n",
+    "terminacion": "completed"
+  },
+  "rigor": [
+    "estricto",
+    "flexible"
+  ]
 }
 ```

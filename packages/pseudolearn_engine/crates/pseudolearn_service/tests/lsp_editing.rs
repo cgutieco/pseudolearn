@@ -4,9 +4,18 @@ use serde_json::{Value, json};
 const URI: &str = "file:///edicion.pseudo";
 
 fn ready_server(text: &str) -> LspServer {
+    configured_server(text, true)
+}
+
+fn configured_server(text: &str, snippets: bool) -> LspServer {
     let mut server = LspServer::new();
     server.handle_message(&json!({
-        "jsonrpc": "2.0", "id": 1, "method": "initialize", "params": { "locale": "es" }
+        "jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {
+            "locale": "es",
+            "capabilities": {
+                "textDocument": {"completion": {"completionItem": {"snippetSupport": snippets}}}
+            }
+        }
     }));
     server.handle_message(&json!({
         "jsonrpc": "2.0", "method": "textDocument/didOpen",
@@ -61,6 +70,32 @@ fn structured_candidates_are_snippets_and_plain_ones_are_text() -> Result<(), St
     assert_eq!(
         snippet.get("insertText"),
         Some(&json!("Si ${1:condicion} Entonces\n  $0\nSino\n  \nFinSi"))
+    );
+    Ok(())
+}
+
+#[test]
+fn structured_candidates_fall_back_to_plain_text_without_snippet_support() -> Result<(), String> {
+    let mut server = configured_server("Algoritmo P\n  Si\nFinAlgoritmo\n", false);
+    let answer = ask(
+        &mut server,
+        "textDocument/completion",
+        json!({ "textDocument": { "uri": URI }, "position": { "line": 1, "character": 4 } }),
+    );
+    let snippet = entry_with(
+        &answer
+            .pointer("/result/items")
+            .cloned()
+            .unwrap_or(Value::Null),
+        "Si",
+    )
+    .ok_or("Si missing")?;
+    assert_eq!(snippet.get("insertTextFormat"), Some(&json!(1)));
+    assert!(
+        !snippet
+            .get("insertText")
+            .and_then(Value::as_str)
+            .is_some_and(|text| text.contains("${1:"))
     );
     Ok(())
 }

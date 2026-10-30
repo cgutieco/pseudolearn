@@ -1,10 +1,23 @@
 use crate::document_session::LanguageService;
-use crate::lsp_help::EXPLAIN_COMMAND;
-use crate::lsp_protocol::{
-    INVALID_REQUEST, METHOD_NOT_FOUND, SERVER_NOT_INITIALIZED, failure, success,
-};
-use serde_json::{Value, json};
+use crate::request_cancellation::RequestCancellation;
+use crate::workspace_session::WorkspaceSession;
+use pseudolearn_lexicon::Profile;
+use serde_json::Value;
 use std::collections::BTreeMap;
+
+pub const SEMANTIC_TOKEN_TYPES: [&str; 11] = [
+    "keyword",
+    "operator",
+    "number",
+    "string",
+    "comment",
+    "variable",
+    "function",
+    "class",
+    "property",
+    "parameter",
+    "type",
+];
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Lifecycle {
@@ -18,9 +31,19 @@ pub struct LspServer {
     pub service: LanguageService,
     pub lifecycle: Lifecycle,
     pub locale: String,
+    pub profile: Profile,
     pub versions: BTreeMap<String, i64>,
     pub strict: bool,
     pub exit_code: Option<i32>,
+    pub workspace_session: Option<WorkspaceSession>,
+    pub workspace_uris: BTreeMap<String, String>,
+    pub client_snippets: bool,
+    pub client_related_information: bool,
+    pub client_document_changes: bool,
+    pub client_transactional_edits: bool,
+    pub client_workspace_folders: bool,
+    pub client_semantic_tokens: bool,
+    pub(crate) active_cancellation: Option<RequestCancellation>,
 }
 
 impl Default for LspServer {
@@ -35,9 +58,19 @@ impl LspServer {
             service: LanguageService::new(),
             lifecycle: Lifecycle::Uninitialized,
             locale: String::from("es"),
+            profile: Profile::Spanish,
             versions: BTreeMap::new(),
             strict: true,
             exit_code: None,
+            workspace_session: None,
+            workspace_uris: BTreeMap::new(),
+            client_snippets: false,
+            client_related_information: false,
+            client_document_changes: false,
+            client_transactional_edits: false,
+            client_workspace_folders: false,
+            client_semantic_tokens: false,
+            active_cancellation: None,
         }
     }
 
@@ -46,101 +79,108 @@ impl LspServer {
     }
 
     pub fn handle_message(&mut self, message: &Value) -> Vec<Value> {
-        let Some(method) = message.get("method").and_then(Value::as_str) else {
-            return Vec::new();
+        let Some(method) = valid_method(message) else {
+            return vec![crate::lsp_protocol::failure(
+                message,
+                crate::lsp_protocol::INVALID_REQUEST,
+                "invalid request",
+            )];
         };
+        self.handle_valid_message(method, message)
+    }
+
+    fn handle_valid_message(&mut self, method: &str, message: &Value) -> Vec<Value> {
+        if method == "exit" {
+            self.finish();
+            return Vec::new();
+        }
+        if method == "initialize" {
+            return vec![self.handle_initialize(message)];
+        }
+        self.handle_running_message(method, message)
+    }
+
+    fn handle_running_message(&mut self, method: &str, message: &Value) -> Vec<Value> {
         let is_request = message.get("id").is_some();
-        match method {
-            "exit" => {
-                self.exit_code = Some(if self.lifecycle == Lifecycle::ShuttingDown {
-                    0
-                } else {
-                    1
-                });
-                self.lifecycle = Lifecycle::Exited;
-                Vec::new()
-            }
-            "initialize" => vec![self.handle_initialize(message)],
-            _ if self.lifecycle == Lifecycle::Uninitialized => refuse(
+        if self.lifecycle == Lifecycle::Uninitialized {
+            return refuse(
                 message,
                 is_request,
-                SERVER_NOT_INITIALIZED,
+                crate::lsp_protocol::SERVER_NOT_INITIALIZED,
                 "server not initialized",
-            ),
-            _ if self.lifecycle != Lifecycle::Running => refuse(
+            );
+        }
+        if self.lifecycle != Lifecycle::Running {
+            return refuse(
                 message,
                 is_request,
-                INVALID_REQUEST,
+                crate::lsp_protocol::INVALID_REQUEST,
                 "server is shutting down",
-            ),
+            );
+        }
+        match method {
             "initialized" => Vec::new(),
             "shutdown" => {
                 self.lifecycle = Lifecycle::ShuttingDown;
-                vec![success(message, Value::Null)]
+                vec![crate::lsp_protocol::success(message, Value::Null)]
             }
             "textDocument/didOpen" => self.handle_did_open(message),
             "textDocument/didChange" => self.handle_did_change(message),
             "textDocument/didClose" => self.handle_did_close(message),
+            "textDocument/didSave" | "workspace/didChangeWorkspaceFolders" => Vec::new(),
+            "pseudolearn/workspaceSnapshot" => self.handle_workspace_snapshot(message),
+            "workspace/didChangeConfiguration" => self.handle_configuration_change(message),
             _ => self.route_request(method, message, is_request),
         }
     }
 
-    fn route_request(&mut self, method: &str, message: &Value, is_request: bool) -> Vec<Value> {
-        let answer = match method {
-            "textDocument/completion" => self.handle_completion(message),
-            "textDocument/hover" => self.handle_hover(message),
-            "textDocument/signatureHelp" => self.handle_signature_help(message),
-            "textDocument/definition" => self.handle_definition(message),
-            "textDocument/references" => self.handle_references(message),
-            "textDocument/documentHighlight" => self.handle_highlight(message),
-            "textDocument/documentSymbol" => self.handle_document_symbols(message),
-            "textDocument/formatting" => self.handle_formatting(message),
-            "textDocument/onTypeFormatting" => self.handle_on_type_formatting(message),
-            "workspace/executeCommand" => self.handle_execute_command(message),
-            _ => return refuse(message, is_request, METHOD_NOT_FOUND, "method not found"),
-        };
-        vec![answer]
+    fn finish(&mut self) {
+        self.exit_code = Some(if self.lifecycle == Lifecycle::ShuttingDown {
+            0
+        } else {
+            1
+        });
+        self.lifecycle = Lifecycle::Exited;
     }
 
-    fn handle_initialize(&mut self, message: &Value) -> Value {
-        if let Some(locale) = message.pointer("/params/locale").and_then(Value::as_str) {
-            self.locale = if locale.starts_with("en") { "en" } else { "es" }.to_owned();
+    fn handle_workspace_snapshot(&mut self, message: &Value) -> Vec<Value> {
+        let Some(request_parameters) = message.get("params") else {
+            return Vec::new();
+        };
+        if crate::lsp_workspace::install_snapshot(self, request_parameters).is_err() {
+            return Vec::new();
         }
-        if let Some(mode) = message
-            .pointer("/params/initializationOptions/strictness")
-            .and_then(Value::as_str)
-        {
-            self.strict = mode != "flexible";
-        }
-        self.lifecycle = Lifecycle::Running;
-        success(
-            message,
-            json!({
-                "capabilities": {
-                    "textDocumentSync": { "openClose": true, "change": 2 },
-                    "completionProvider": { "triggerCharacters": ["."], "resolveProvider": false },
-                    "hoverProvider": true,
-                    "signatureHelpProvider": { "triggerCharacters": ["(", ","] },
-                    "definitionProvider": true,
-                    "referencesProvider": true,
-                    "documentHighlightProvider": true,
-                    "documentSymbolProvider": true,
-                    "documentFormattingProvider": true,
-                    "executeCommandProvider": { "commands": [EXPLAIN_COMMAND] },
-                    "onTypeFormattingProvider": {
-                        "firstTriggerCharacter": "\n",
-                        "moreTriggerCharacter": [" ", ";", "(", "[", ")", "]", "\"", "'"]
-                    }
-                },
-                "serverInfo": { "name": "pseudolearn" }
-            }),
-        )
+        self.workspace_diagnostics_notifications()
+    }
+
+    pub fn handle_cancellable_message(
+        &mut self,
+        message: &Value,
+        cancellation: RequestCancellation,
+    ) -> Vec<Value> {
+        self.active_cancellation = Some(cancellation);
+        let responses = self.handle_message(message);
+        self.active_cancellation = None;
+        responses
+    }
+
+    pub(crate) fn request_cancelled(&self) -> bool {
+        self.active_cancellation
+            .as_ref()
+            .is_some_and(RequestCancellation::is_cancelled)
     }
 }
 
-fn refuse(message: &Value, is_request: bool, code: i64, text: &str) -> Vec<Value> {
+fn valid_method(message: &Value) -> Option<&str> {
+    if message.get("jsonrpc").and_then(Value::as_str) != Some("2.0") {
+        return None;
+    }
+    message.get("method").and_then(Value::as_str)
+}
+
+pub(crate) fn refuse(message: &Value, is_request: bool, code: i64, text: &str) -> Vec<Value> {
     if is_request {
-        vec![failure(message, code, text)]
+        vec![crate::lsp_protocol::failure(message, code, text)]
     } else {
         Vec::new()
     }

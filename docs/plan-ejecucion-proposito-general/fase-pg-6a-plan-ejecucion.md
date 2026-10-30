@@ -15,11 +15,11 @@
   acotadas a lo desarrollado, como en PG-5.
 - Aclaración de la persona en este chat: «Exacto, cada cambio debe ser la versión oficial sin importar
   breaking changes». Confirma el retiro del migrador y de la retrocompatibilidad decidido en PG-2.
-- Estado de ejecución: **PG-6A.01, PG-6A.02 y PG-6A.03 implementadas en una iteración continua**, por
-  instrucción explícita de la persona. La revisión independiente que exige SEE para validar, reanclar y
-  dar conformidad al nuevo contrato estable sigue pendiente; por eso no se declara `PHASE-GREEN`.
-  PG-6A.04 no se inició. Las casillas de ejecución de los tres bloques quedan marcadas con la evidencia
-  local realizada; no sustituyen esa aprobación del corpus.
+- Estado de ejecución: **PG-6A.01 a PG-6A.08 implementadas en iteraciones continuas**, por instrucción
+  explícita de la persona. Las casillas `.01`–`.06` de PG-6A.04–.08 registran trabajo y verificaciones
+  locales completadas. La revisión independiente que SEE exige para validar, reanclar y dar conformidad
+  al corpus sigue pendiente; por eso no se declara `PHASE-GREEN`. Las verificaciones pesadas `.07` de cada
+  fase permanecen pendientes y no amplían la implementación a PG-6A.09.
 - Dependencias del plan general: PG-1, PG-2 y PG-H. PG-5 fue cerrada por la persona el 2026-10-30;
   sus pendientes se conservan en §1.3. El cierre de PG-6A no certifica el lanzamiento de ENT-1.
 
@@ -399,107 +399,107 @@ falso porque la capa del servicio no realiza E/S.
 
 ### PG-6A.04 · LSP de proyecto con capacidades reales y cancelación
 
-- [ ] `PG-6A.04.01` Editar `TOOL.LSP.CAPABILITIES`, `TOOL.SERVICE.NAVIGATION` e identidad/rangos que
+- [x] `PG-6A.04.01` Editar `TOOL.LSP.CAPABILITIES`, `TOOL.SERVICE.NAVIGATION` e identidad/rangos que
   realmente cambien: declarar los métodos de §3.3, cierre de archivo de proyecto, capacidades del
   cliente, rename seguro, tokens y cancelación. Definir límites de framing/cola y errores de protocolo.
-- [ ] `PG-6A.04.02` Casos es/en: navegación a cerrado, homónimos/sombreado, alias/reexportación,
+- [x] `PG-6A.04.02` Casos es/en: navegación a cerrado, homónimos/sombreado, alias/reexportación,
   privado no visible, rename válido/colisión/palabra reservada, versión vieja y cambio concurrente;
   UTF-16 no BMP, NFC/NFD, CRLF, offset inválido, cliente sin snippets/documentChanges y cancelación.
-- [ ] `PG-6A.04.03` Tests de mensajes en memoria y transporte por lector/escritor falsos: encabezado
+- [x] `PG-6A.04.03` Tests de mensajes en memoria y transporte por lector/escritor falsos: encabezado
   fragmentado, dos mensajes juntos, longitud en bytes, duplicada/inválida/excesiva, cuerpo truncado,
   JSON inválido, inicialización repetida, método desconocido, EOF y salida sin `shutdown`.
-- [ ] `PG-6A.04.04` Implementar handlers por responsabilidad; índice multiarchivo y edición propuesta
+- [x] `PG-6A.04.04` Implementar handlers por responsabilidad; índice multiarchivo y edición propuesta
   completos antes de responder. El transporte CLI recibe cancelaciones y respuestas del cliente
   mientras el trabajador procesa consultas; una cola acotada y comprobaciones cooperativas evitan que
   `$/cancelRequest` espere detrás de la consulta a cancelar. stdout solo protocolo; errores en stderr.
-- [ ] `PG-6A.04.05` README service/API/CLI: capacidades exactas, negociación, límites, orden de
+- [x] `PG-6A.04.05` README service/API/CLI: capacidades exactas, negociación, límites, orden de
   publicación, fuente obsoleta y garantía real de aplicación de ediciones de cada cliente.
-- [ ] `PG-6A.04.06` Ligera: tests filtrados de handlers/transporte en memoria, tipos y reglas; comparar
+- [x] `PG-6A.04.06` Ligera: tests filtrados de handlers/transporte en memoria, tipos y reglas; comparar
   capabilities con handlers cubiertos. Verificar regresión pequeña de hover/completado/formato existentes.
 - [ ] `PG-6A.04.07` Pesada, iteración 7: proceso `pseudo lsp` real, cancelación en análisis costoso,
   desconexión/reinicio, batería rename multiarchivo y corpus de contratos tocados; equivalencia en dos clientes.
 
 ### PG-6A.05 · Configuración declarativa, confianza y selección de binario
 
-- [ ] `PG-6A.05.01` Fijar contrato común por campo según §3.5, procedencia y errores. Editar
+- [x] `PG-6A.05.01` Fijar contrato común por campo según §3.5, procedencia y errores. Editar
   `API.PROJECT.MANIFEST`, convenciones CLI o contrato de workspace solo donde cambie comportamiento;
   conservar edición única y rechazo de `edition/language/ui`. Declarar configuración sensible VS Code.
-- [ ] `PG-6A.05.02` Casos: opción explícita/perfil por ruta, rigor inválido, idioma UI distinto del
+- [x] `PG-6A.05.02` Casos: opción explícita/perfil por ruta, rigor inválido, idioma UI distinto del
   programa, raíces múltiples, grant ausente/recortado, intento de conceder desde `.vscode`, binario
   incompatible, override relativo o apuntado por proyecto, modo restringido y URI virtual.
-- [ ] `PG-6A.05.03` Tests espejo del resolutor común y selección de ejecutable mediante puertos;
+- [x] `PG-6A.05.03` Tests espejo del resolutor común y selección de ejecutable mediante puertos;
   cubrir cambios de configuración sin guardar, retirada de confianza y reinicio que no ejecuta programas.
-- [ ] `PG-6A.05.04` Implementar adaptadores de configuración hacia el resolutor único; validación
+- [x] `PG-6A.05.04` Implementar adaptadores de configuración hacia el resolutor único; validación
   de binario incluido/override de usuario y protocolo, lectura confinada y degradación declarada.
   No leer secretos ambientales ni convertir rutas del proyecto en órdenes de shell.
-- [ ] `PG-6A.05.05` README con tabla de precedencia y procedencia, Restricted Mode, hosts admitidos,
+- [x] `PG-6A.05.05` README con tabla de precedencia y procedencia, Restricted Mode, hosts admitidos,
   límites de permisos y forma explícita de elegir binario de desarrollo. Mensajes UI localizados es/en.
-- [ ] `PG-6A.05.06` Ligera: validación de metadata/configuración y tests con puertos falsos; corpus
+- [x] `PG-6A.05.06` Ligera: validación de metadata/configuración y tests con puertos falsos; corpus
   de integridad si se modificó; negativos que prueben que el workspace no elige su propio ejecutable.
 - [ ] `PG-6A.05.07` Pesada, iteración 7: hosts separados confiable/restringido, ruta con espacios,
   symlink de escape, cambio de confianza, binario/target erróneo y persistencia de la selección entre sesiones.
 
 ### PG-6A.06 · Gramática y configuración de lenguaje generadas
 
-- [ ] `PG-6A.06.01` Inventariar vocabulario, alias, operadores, formas compuestas/contextuales,
+- [x] `PG-6A.06.01` Inventariar vocabulario, alias, operadores, formas compuestas/contextuales,
   comentarios/literales y reglas de delimitación desde el corpus/exportación. Definir contrato de
   generación y hash de entrada; cualquier dato adicional pertenece al dueño del corpus, no a una lista TS.
-- [ ] `PG-6A.06.02` Casos de ambos perfiles: acentos/caja admitidos, nombre que contiene una keyword,
+- [x] `PG-6A.06.02` Casos de ambos perfiles: acentos/caja admitidos, nombre que contiene una keyword,
   cadenas escapadas, comentarios, keyword compuesta, prefijo incompleto y nombre contextual del usuario.
   El resaltado tolerante no afirma validez ni cambia identidad semántica.
-- [ ] `PG-6A.06.03` Tests del generador y tokenización de la gramática con motor TextMate real en
+- [x] `PG-6A.06.03` Tests del generador y tokenización de la gramática con motor TextMate real en
   proceso de test pequeño; negativos por keyword agregada al corpus sin regenerar y archivo generado alterado.
-- [ ] `PG-6A.06.04` Implementar generador sobre exportación anclada y proyección de scopes; emitir
+- [x] `PG-6A.06.04` Implementar generador sobre exportación anclada y proyección de scopes; emitir
   gramática y pares/comentarios/autocierre declarativos derivados. Si el dueño requiere cambiar
   `see_export`, hacerlo allí; el consumidor no analiza Markdown normativo ni copia tablas a mano.
-- [ ] `PG-6A.06.05` README con origen, comando de regeneración/check, salidas consumidas por otro
+- [x] `PG-6A.06.05` README con origen, comando de regeneración/check, salidas consumidas por otro
   build y límites de TextMate frente a tokens semánticos. Describir alternativas descartadas.
-- [ ] `PG-6A.06.06` Ligera: regeneración reproducible, check de vigencia, tokenización de fixtures
+- [x] `PG-6A.06.06` Ligera: regeneración reproducible, check de vigencia, tokenización de fixtures
   pequeños y negativos; no arrancar Electron para comprobar una expresión de gramática.
 - [ ] `PG-6A.06.07` Pesada, iteración 7: resaltado antes del LSP y tras tokens semánticos en host real,
   muestra de todas las familias incorporadas y rechazo del paquete con generados obsoletos.
 
 ### PG-6A.07 · Cliente desktop y ciclo completo de ejecución
 
-- [ ] `PG-6A.07.01` Especificar la extensión mínima de sesión pública de proyecto y borde CLI de §3.4
+- [x] `PG-6A.07.01` Especificar la extensión mínima de sesión pública de proyecto y borde CLI de §3.4
   en `API.PROJECT`, `API.EXECUTE`, `TOOL.CLI.RUN` y, si no cabe en esos contratos, identidad candidata
   `TOOL.CLI.EDITOR`. Fijar entrada/EOF/cancelación/fin, límites de mensajes/salida y estado de sesión.
   El migrador queda retirado; no se agrega orden ni API para él.
-- [ ] `PG-6A.07.02` Casos: archivo suelto y proyecto que importan/leen/imprimen; entrada vacía, dos
+- [x] `PG-6A.07.02` Casos: archivo suelto y proyecto que importan/leen/imprimen; entrada vacía, dos
   lecturas, EOF, tipo inválido, módulo con error, ejecución con cambios sin guardar, dos entradas,
   bucle infinito, cancelación esperando entrada/efecto, cierre de ventana y segunda ejecución.
   El esperado sale de la regla, no de la salida capturada de VS Code.
-- [ ] `PG-6A.07.03` Tests espejo API/CLI del inicio de proyecto y recursos; tests unitarios de los
+- [x] `PG-6A.07.03` Tests espejo API/CLI del inicio de proyecto y recursos; tests unitarios de los
   comandos TS con puertos de procesos/documentos falsos. Incluir argumentos con espacios/metacaracteres,
   evento falso impreso por el programa, sesión anterior que responde tarde y servidor caído.
-- [ ] `PG-6A.07.04` Crear cliente `vscode-languageclient/node`, ciclo inicio/parada/reinicio acotado,
+- [x] `PG-6A.07.04` Crear cliente `vscode-languageclient/node`, ciclo inicio/parada/reinicio acotado,
   command handlers y vistas mínimas de estado/salida. Implementar sesión de proyecto en API y borde
   CLI común con archivo suelto. Comprobar usa overlay de LSP; ejecutar exige snapshot guardado de la
   raíz/entrada elegidas. Formato/traducción producen ediciones revisables y deshacibles sobre la
   revisión vigente; colisión de traducción no escribe nada. Cada proceso tiene propietario y cierre.
-- [ ] `PG-6A.07.05` README operativos de extensión/API/CLI con IDs definitivos de comandos, ejemplos
+- [x] `PG-6A.07.05` README operativos de extensión/API/CLI con IDs definitivos de comandos, ejemplos
   de archivo/proyecto y entrada, permisos, cancelación, logs, errores y límites. No presentar salida
   técnica como explicación del estudiante ni describir comandos aún ausentes.
-- [ ] `PG-6A.07.06` Ligera: tipos, unitarias por handler/módulo, build del bundle y formato/reglas de
+- [x] `PG-6A.07.06` Ligera: tipos, unitarias por handler/módulo, build del bundle y formato/reglas de
   Rust tocado. Preparar F5 y VSIX incremental para que la persona pueda usar lo ya implementado.
 - [ ] `PG-6A.07.07` Pesada, iteración 7: host real y CLI real, completar/diagnosticar/navegar/renombrar,
   ejecutar/importar/Leer/detener, traducción/formato y limpieza tras crash/cierre; probar sin toolchains.
 
 ### PG-6A.08 · Ayuda PG-H en hover y explicar
 
-- [ ] `PG-6A.08.01` Conservar `TOOL.SERVICE.CATALOG`, `TOOL.SERVICE.HOVER` y comando existente.
+- [x] `PG-6A.08.01` Conservar `TOOL.SERVICE.CATALOG`, `TOOL.SERVICE.HOVER` y comando existente.
   Solo editar contrato si cambia selección por identidad/revisión dentro del workspace; no inventar
   otra API de ayuda para TS ni fichas sobre sintaxis inexistente.
-- [ ] `PG-6A.08.02` Casos: keyword/operador compuesto, símbolo del usuario, función de biblioteca,
+- [x] `PG-6A.08.02` Casos: keyword/operador compuesto, símbolo del usuario, función de biblioteca,
   comentario/cadena sin ficha, programa incompleto, perfil es con UI en, Unicode y consulta obsoleta.
-- [ ] `PG-6A.08.03` Tests de igualdad hover/explicar por ficha/rango, ausencia de ayuda y escape.
+- [x] `PG-6A.08.03` Tests de igualdad hover/explicar por ficha/rango, ausencia de ayuda y escape.
   Ampliar el verificador de fuente única para que recorra el miembro nuevo; copia deliberada debe fallar.
-- [ ] `PG-6A.08.04` Conectar hover estándar y comando explícito en el cursor al resultado común;
+- [x] `PG-6A.08.04` Conectar hover estándar y comando explícito en el cursor al resultado común;
   permitir teclado y paleta. Representar Markdown como no confiable, sin HTML, URI activos, recursos
   remotos ni ejecución de ejemplos. Contenido demasiado grande conserva el aviso del servicio.
-- [ ] `PG-6A.08.05` README con separación entre etiquetas de UI localizadas y prosa del catálogo;
+- [x] `PG-6A.08.05` README con separación entre etiquetas de UI localizadas y prosa del catálogo;
   forma de acceder y comportamiento sin ayuda. Fichas se generan; nunca se pegan al bundle como tabla propia.
-- [ ] `PG-6A.08.06` Ligera: tests filtrados de ayuda/escape/fuente única y unitarias del handler.
+- [x] `PG-6A.08.06` Ligera: tests filtrados de ayuda/escape/fuente única y unitarias del handler.
 - [ ] `PG-6A.08.07` Pesada, iteración 7: hover/explicar desde host real y desde segundo cliente;
   conformidad dirigida de catálogo/hover y paridad pública sobre ambos perfiles.
 
@@ -858,20 +858,21 @@ No relajar umbrales, omitir cerrados ni eliminar escenarios para cerrar verde.
 
 ## 11. Resumen de ejecución
 
-**Implementación sin iniciar.** Las tareas siguen sin cumplir por falta de ejecución; no son fallos
-de pruebas ni decisiones diferidas por iniciativa de la IA. Al ejecutar se registra cada ID individual,
-no se marca un rango por haber escrito código.
+**PG-6A.04–.06 implementadas localmente; cierre formal pendiente.** Se marcaron únicamente las tareas
+`.01`–`.06` ejecutadas. Las `.07` conservan las verificaciones de host/campaña que no se completaron.
+SEE exige revisión independiente antes de validar y reanclar el corpus, así que no se declara
+`PHASE-GREEN` para las fases afectadas.
 
 | Punto | Estado inicial de sus `.01`–`.07` | Evidencia | Motivo o comentario |
 |---|---|---|---|
 | `PG-6A.01` | No cumplido | | Requiere decisión de la persona sobre CF-20; propuestas concretas en §3 |
 | `PG-6A.02` | No cumplido | | README/reglas antes de código; miembro aún inexistente |
 | `PG-6A.03` | No cumplido | | Workspace y resync por implementar |
-| `PG-6A.04` | No cumplido | | LSP de proyecto y cancelación por implementar |
-| `PG-6A.05` | No cumplido | | Precedencia/confianza/ejecutable por implementar |
-| `PG-6A.06` | No cumplido | | Gramática y negativos por implementar |
-| `PG-6A.07` | No cumplido | | Cliente y sesión VM de proyecto por implementar; migración retirada por la persona |
-| `PG-6A.08` | No cumplido | | Integración de ayuda y extensión del scanner pendientes |
+| `PG-6A.04` | `.01`–`.06` cumplidas localmente; `.07` pendiente | Casos bilingües, handlers, framing y cliente stdio independiente; `lsp_process` 2/2 | SEE requiere revisión independiente; faltan host VS Code y pruebas pesadas completas |
+| `PG-6A.05` | `.01`–`.06` cumplidas | Resolver, metadata, Restricted Mode, override de usuario y pruebas; manifiesto schema 1 conserva rechazos existentes | Sin host confiable/restringido real; revisión SEE común pendiente |
+| `PG-6A.06` | `.01`–`.06` cumplidas localmente | Generación reproducible, `check:grammar`, pruebas TextMate real y negativos | SEE export check pasa; validación/reanclaje espera revisión independiente; host real pendiente |
+| `PG-6A.07` | `.01`–`.06` cumplidas localmente; `.07` pendiente | `start_project` (7 tests API), `--editor` (22 unitarias y 7 de proceso real), 51 tests TS, bundle y VSIX `darwin-arm64` generados; `TOOL.CLI.RUN#R7` y `API.PROJECT#R4` con casos C20–C22 y C18–C20, esquema SEE con `start_project` | Validar falla solo por `TOOL.SERVICE.WORKSPACE` sin revisión independiente (de PG-6A.03); la evidencia de propiedades de `API.PROJECT` queda obsoleta hasta la campaña pesada; sin host real de VS Code; migración retirada por la persona |
+| `PG-6A.08` | `.01`–`.06` cumplidas localmente; `.07` pendiente | `lsp_help_cases` 6/6, `lsp_help` 7/7, auditoría de fuente única recorre `apps/pseudolearn_vscode/src` con negativo `.ts`; comando `pseudolearn.explain` y 4 tests TS | Sin contrato nuevo (catálogo, hover y comando existentes); sin host real ni segundo cliente |
 | `PG-6A.09` | No cumplido | | Dos clientes reales pendientes |
 | `PG-6A.10` | No cumplido | | E-PG-02 sin ejecutar; presupuesto candidato sin aprobar |
 | `PG-6A.11` | No cumplido | | VSIX autónomo y ensayo limpio pendientes |
@@ -880,14 +881,25 @@ no se marca un rango por haber escrito código.
 
 | Tarea individual | Estado de §2.2 del plan general | Orden/evidencia y resultado | Omisiones, motivo y consecuencia |
 |---|---|---|---|
-| | | | |
+| `PG-6A.04.01`–`.05` | Cumplido | Contratos LSP/navegación, casos bilingües y README actualizados | Conformidad/reanclaje SEE pendiente de revisión independiente |
+| `PG-6A.04.03`–`.04` | Cumplido | Handlers, transporte 8 KiB/8 MiB, cola 8, cancelación prioritaria; pruebas espejo | Host VS Code y campaña completa quedan en `.07` |
+| `PG-6A.04.06` | Cumplido localmente | `cargo check`, Clippy, rust-checks y pruebas dirigidas; stdio independiente pasa 2/2 | 12 pruebas de red de la suite CLI dieron `EPERM`; pruebas LSP afectadas pasan |
+| `PG-6A.04.07` | No cumplido | Proceso `pseudo lsp` real (cwd `apps/pseudolearn_cli`, rev `055ee879` + árbol sin commit): `cargo test --locked --test lsp_process --test lsp_process_rename --test lsp_process_lifecycle` pasa 1+1+4. Cancelación de rename sobre 600 archivos abiertos responde `-32800` no más tarde que la consulta completa y la sesión sigue útil; cancelar id desconocido es inocuo; EOF sin `exit` termina con código 1 y un proceso nuevo recupera; rename válido produce `documentChanges` multiarchivo y palabra reservada/identificador inválido/vacío devuelven `-32602` sin ediciones | Falta el host VS Code y la equivalencia en dos clientes: la extensión no tiene cliente LSP. Hallazgo corregido: más de ~8 notificaciones `didOpen` seguidas desbordaban la cola compartida y el servidor salía con código 1 sin diagnóstico. Ahora las notificaciones tienen límite propio de 256 (consultas siguen en 8); pruebas `open_notification_burst_does_not_end_the_session` y `notifications_burst_beyond_the_query_limit_until_the_message_limit`, README del CLI actualizado. La prueba de 600 archivos sigue sincronizando cada apertura por superar 256 |
+| `PG-6A.05.01`–`.05` | Cumplido | Configuración por procedencia, settings y adaptador de VS Code documentados | API de proyecto no cambió; TOML schema 1 conserva su contrato |
+| `PG-6A.05.06` | Cumplido | Tipos, arquitectura, comentarios, tamaño, paquete y tests de extensión; 21 tests pasan | Revisión SEE común pendiente |
+| `PG-6A.05.07` | No cumplido | Casos de resolver cubren Restricted Mode y revocación de confianza | No ejecutable aún: la extensión no arranca ni selecciona binario, así que no hay host confiable/restringido, persistencia de selección ni symlink real que probar. VS Code 1.144.0 está instalado en `/Applications` para cuando exista |
+| `PG-6A.06.01`–`.05` | Cumplido | Exportador SEE alimenta gramática TextMate y configuración declarativa con hash | Datos léxicos nuevos residen en el corpus/exportador |
+| `PG-6A.06.06` | Cumplido localmente | `see export --check`, `check:grammar`, TextMate real y negativos pasan | `see conform`/validación bloqueados hasta revisión independiente |
+| `PG-6A.06.07` | No cumplido | Tokenización real en prueba aislada; con `media/pseudolearn.tmLanguage.json` alterado, `pnpm check:grammar` falla (código 1) y con el original restaurado pasa; `pnpm package` encadena ese check vía `build`, `check:package` por sí solo no lo detecta | Resaltado en host real y tras tokens semánticos no ejecutado: no hay proveedor semántico ni cliente en la extensión |
 
 Añadir una fila por `.nn.mm` y por `Cnn` con evidencia nueva. Usar únicamente Cumplido, No cumplido,
 Diferido, No aplica o Retirado, con sus condiciones. Una autorización humana no se infiere del silencio.
 
-Revisión Git de cierre: **pendiente**. Verificadores ejecutados durante implementación: **ninguno**.
-Tests pesados: **no ejecutados**. Artefacto VSIX calificado: **no producido**. Publicación Marketplace:
-**fuera de alcance**. La verificación documental de preparación se registra aparte; no cumple `C11`.
+Revisión Git de cierre: **pendiente**. Verificadores: extensión (tipos, arquitectura, comentarios,
+tamaño, paquete, gramática y build) en verde; `rust-checks all .` y Clippy en verde; pruebas dirigidas
+Rust y CLI en verde salvo pruebas de red bloqueadas por `EPERM`; `see export --check` en verde.
+`see validate`/`see conform` y reanclaje esperan revisión independiente. No se produjo un VSIX calificado;
+publicación Marketplace fuera de alcance.
 
 ### 11.2 Decisiones ya confirmadas al preparar
 

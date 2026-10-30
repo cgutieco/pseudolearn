@@ -1,8 +1,8 @@
 use crate::unit_partition::{UnitFingerprint, partition_units};
+use crate::workspace_index::{base_index, entry_failure, portable_key, project_failure};
 use crate::workspace_invalidation::compare_workspace;
 use crate::workspace_model::{
-    WorkspaceError, WorkspaceFileState, WorkspaceIndex, WorkspaceOverlay, WorkspaceResult,
-    WorkspaceSnapshot,
+    WorkspaceError, WorkspaceIndex, WorkspaceOverlay, WorkspaceResult, WorkspaceSnapshot,
 };
 use pseudolearn_diagnostics::{Diagnostic, DiagnosticCode, render::sort_diagnostics};
 use pseudolearn_lexicon::Profile;
@@ -11,7 +11,7 @@ use pseudolearn_project::{
 };
 use pseudolearn_semantic::{
     ProjectUnit, ResolvedUnitProfile, SemanticOptions, analyze_project_detailed,
-    resolve_project_profiles,
+    resolve_project_profiles, service_analysis_from_project,
 };
 use pseudolearn_source::{SourceText, Span, source_id};
 use pseudolearn_syntax::{SyntaxTree, parse_module_source};
@@ -30,6 +30,17 @@ struct ParsedWorkspace {
     diagnostics: Vec<Diagnostic>,
     units: BTreeMap<String, Vec<UnitFingerprint>>,
     modules: BTreeMap<ModuleId, String>,
+}
+
+struct CatalogAnalysisInput {
+    catalog: ProjectCatalog,
+    profiles: BTreeMap<String, ResolvedUnitProfile>,
+    entry: Option<ModuleId>,
+}
+
+struct WorkspaceAnalysisOutput {
+    parsed: ParsedWorkspace,
+    analysis: pseudolearn_semantic::ProjectAnalysis,
 }
 
 pub(crate) fn build_workspace(
@@ -57,7 +68,15 @@ pub(crate) fn build_workspace(
             return Ok(entry_failure(&request, &project, profiles.clone(), error));
         }
     };
-    analyze_catalog(request, project, catalog, profiles, entry)
+    analyze_catalog(
+        request,
+        project,
+        CatalogAnalysisInput {
+            catalog,
+            profiles,
+            entry,
+        },
+    )
 }
 
 fn effective_project(request: &WorkspaceBuildRequest<'_>) -> ProjectInput {
@@ -101,26 +120,40 @@ fn resolved_profiles(
 fn analyze_catalog(
     request: WorkspaceBuildRequest<'_>,
     project: ProjectInput,
-    catalog: ProjectCatalog,
-    profiles: BTreeMap<String, ResolvedUnitProfile>,
-    entry: Option<ModuleId>,
+    input: CatalogAnalysisInput,
 ) -> Result<(WorkspaceResult, WorkspaceIndex), WorkspaceError> {
-    let parsed = parse_catalog(&catalog, &profiles, &request.snapshot.options);
-    let units = project_units(&catalog, &parsed.trees, &parsed.profiles);
+    let parsed = parse_catalog(&input.catalog, &input.profiles, &request.snapshot.options);
+    let units = project_units(&input.catalog, &parsed.trees, &parsed.profiles);
     let profile = request
         .snapshot
         .options
         .requested_profile
         .unwrap_or_default();
     let analysis = analyze_project_detailed(
-        &catalog,
+        &input.catalog,
         &units,
-        entry,
+        input.entry,
         SemanticOptions {
             profile,
             strict: request.snapshot.options.strict,
         },
     );
+    assemble_workspace_result(
+        request,
+        project,
+        input.profiles,
+        WorkspaceAnalysisOutput { parsed, analysis },
+    )
+}
+
+fn assemble_workspace_result(
+    request: WorkspaceBuildRequest<'_>,
+    project: ProjectInput,
+    profiles: BTreeMap<String, ResolvedUnitProfile>,
+    output: WorkspaceAnalysisOutput,
+) -> Result<(WorkspaceResult, WorkspaceIndex), WorkspaceError> {
+    let parsed = output.parsed;
+    let analysis = output.analysis;
     let mut diagnostics = parsed.diagnostics;
     diagnostics.extend(analysis.diagnostics);
     sort_diagnostics(&mut diagnostics);
@@ -132,6 +165,10 @@ fn analyze_catalog(
     let result = WorkspaceResult {
         project_id: project.project_id,
         revision_id: project.revision_id,
+        service_analysis: analysis
+            .hir
+            .clone()
+            .map(|module| service_analysis_from_project(module, diagnostics.clone())),
         hir: analysis.hir,
         diagnostics,
         project_errors: Vec::new(),
@@ -207,67 +244,4 @@ fn project_units<'catalog>(
             })
         })
         .collect()
-}
-
-fn project_failure(
-    request: &WorkspaceBuildRequest<'_>,
-    project: &ProjectInput,
-    profiles: BTreeMap<String, ResolvedUnitProfile>,
-    errors: Vec<pseudolearn_project::ProjectError>,
-) -> (WorkspaceResult, WorkspaceIndex) {
-    let index = base_index(project, &request.snapshot.options, profiles);
-    let invalidation = compare_workspace(request.previous, &index);
-    let result = WorkspaceResult {
-        project_id: project.project_id,
-        revision_id: project.revision_id,
-        hir: None,
-        diagnostics: Vec::new(),
-        project_errors: errors,
-        imports: Vec::new(),
-        invalidation,
-    };
-    (result, index)
-}
-
-fn entry_failure(
-    request: &WorkspaceBuildRequest<'_>,
-    project: &ProjectInput,
-    profiles: BTreeMap<String, ResolvedUnitProfile>,
-    error: pseudolearn_project::ProjectError,
-) -> (WorkspaceResult, WorkspaceIndex) {
-    project_failure(request, project, profiles, vec![error])
-}
-
-fn base_index(
-    project: &ProjectInput,
-    options: &crate::workspace_model::WorkspaceOptions,
-    profiles: BTreeMap<String, ResolvedUnitProfile>,
-) -> WorkspaceIndex {
-    let files = project
-        .files
-        .iter()
-        .map(|file| {
-            (
-                portable_key(&file.path),
-                WorkspaceFileState {
-                    path: file.path.clone(),
-                    source_id: file.source_id,
-                    text: file.text.clone(),
-                },
-            )
-        })
-        .collect();
-    WorkspaceIndex {
-        packages: project.packages.clone(),
-        options: options.clone(),
-        files,
-        profiles,
-        units: BTreeMap::new(),
-        imports: Vec::new(),
-        modules: BTreeMap::new(),
-    }
-}
-
-fn portable_key(path: &str) -> String {
-    pseudolearn_project::logical_path_key(path).unwrap_or_else(|| path.to_owned())
 }

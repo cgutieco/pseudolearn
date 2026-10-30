@@ -24086,6 +24086,67 @@
       ]
     }
   },
+  "textmateAccentFold": {
+    "a": [
+      "á",
+      "à",
+      "ä",
+      "â"
+    ],
+    "e": [
+      "é",
+      "è",
+      "ë",
+      "ê"
+    ],
+    "i": [
+      "í",
+      "ì",
+      "ï",
+      "î"
+    ],
+    "n": [
+      "ñ"
+    ],
+    "o": [
+      "ó",
+      "ò",
+      "ö",
+      "ô"
+    ],
+    "u": [
+      "ú",
+      "ù",
+      "ü",
+      "û"
+    ]
+  },
+  "textmateComment": {
+    "start": "//"
+  },
+  "textmateIdentifier": {
+    "continue": "[A-Za-zñÑáéíóúüÁÉÍÓÚÜ_0-9\\p{M}]",
+    "start": "[A-Za-zñÑáéíóúüÁÉÍÓÚÜ_]"
+  },
+  "textmateNumber": {
+    "integer": "[0-9]+",
+    "real": "[0-9]+\\.[0-9]+"
+  },
+  "textmateTextLiteral": {
+    "delimiters": [
+      "\"",
+      "'"
+    ],
+    "escapeCodes": [
+      "n",
+      "t",
+      "r",
+      "\\",
+      "\"",
+      "'"
+    ],
+    "lineBreaksAllowed": false
+  },
   "traceEvents": {
     "call": {
       "datos": [

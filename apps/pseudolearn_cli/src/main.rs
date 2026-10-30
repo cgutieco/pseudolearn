@@ -6,6 +6,9 @@ mod aot_adapter;
 mod build_command;
 mod check_command;
 mod confined_sources;
+mod editor_command;
+mod editor_protocol;
+mod editor_session;
 mod error;
 mod execution_options;
 mod format_command;
@@ -13,6 +16,8 @@ mod ir_command;
 mod locale_resolution;
 mod lock_command;
 mod lsp_command;
+mod lsp_framing;
+mod lsp_transport_state;
 mod messages;
 mod native_cache;
 mod native_linker;
@@ -48,6 +53,16 @@ mod translate_command;
 
 #[cfg(test)]
 mod confined_sources_tests;
+#[cfg(test)]
+mod editor_command_tests;
+#[cfg(test)]
+mod editor_protocol_tests;
+#[cfg(test)]
+mod editor_session_tests;
+#[cfg(test)]
+mod lsp_command_tests;
+#[cfg(test)]
+mod lsp_framing_tests;
 #[cfg(test)]
 mod network_address_policy_tests;
 #[cfg(test)]
@@ -122,6 +137,7 @@ fn dispatch(raw_arguments: &[String]) -> Result<i32, CliError> {
         }
         "ri" | "ir" => execute_ir(&options, &options.positional_arguments),
         "bloquear" | "lock" => lock_command::execute_lock(&options),
+        "ejecutar" | "run" if options.execution.editor => editor_command::execute_editor(&options),
         "ejecutar" | "run" if is_project(&options) => project_command::execute_run(&options),
         "ejecutar" | "run" => run_command::execute_run(&options),
         "compilar" | "build" if is_project(&options) => project_build::execute_build(&options),

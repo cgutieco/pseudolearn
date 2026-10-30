@@ -188,6 +188,12 @@ importers:
       vitest:
         specifier: 5.0.4
         version: 5.0.4(@types/node@22.20.5)(vite@8.3.5(@types/node@22.20.5)(esbuild@0.28.2))
+      vscode-oniguruma:
+        specifier: 1.7.0
+        version: 1.7.0
+      vscode-textmate:
+        specifier: 9.3.2
+        version: 9.3.2
 
 packages:
 
@@ -1285,6 +1291,12 @@ packages:
   vscode-languageserver-types@3.18.4:
     resolution: {integrity: sha512-nQsacoiijvl0fRf2q28uFDrAVwRhdCa3QveiF7/CX0r18mLR5FU/1WskSsCKOjmEbtteKUnY8x8Yzxop+k0zwg==}
 
+  vscode-oniguruma@1.7.0:
+    resolution: {integrity: sha512-L9WMGRfrjOhgHSdOYgCt/yRMsXzLDJSL7BPrOZt73gU0iWO4mpqzqQzOz5srxqTvMBaR0XZTSrVWo4j55Rc6cA==}
+
+  vscode-textmate@9.3.2:
+    resolution: {integrity: sha512-n2uGbUcrjhUEBH16uGA0TvUfhWwliFZ1e3+pTjrkim1Mt7ydB41lV08aUvsi70OlzDWp6X7Bx3w/x3fAXIsN0Q==}
+
   why-is-node-running@3.2.1:
     resolution: {integrity: sha512-Tb2FUhB4vUsGQlfSquQLYkApkuPAFQXGFzxWKHHumVz2dK+X1RUm/HnID4+TfIGYJ1kTcwOaCk/buYCEJr6YjQ==}
     engines: {node: '>=20.11'}
@@ -2221,6 +2233,10 @@ snapshots:
   vscode-languageserver-textdocument@1.0.15: {}
 
   vscode-languageserver-types@3.18.4: {}
+
+  vscode-oniguruma@1.7.0: {}
+
+  vscode-textmate@9.3.2: {}
 
   why-is-node-running@3.2.1: {}
 

@@ -736,3 +736,113 @@
   }
 }
 ```
+
+```regla
+{
+  "id": "R7",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "pseudo ejecutar --editor, con un archivo o con --proyecto y --entrada, ejecuta bajo un protocolo de líneas JSON para clientes de editor y no concede archivos ni red. La salida estándar solo lleva eventos, uno por línea con las claves en el orden documentado: hello (schema 1, capabilities input, cancel y close, y limits con command_bytes 65536 y output_bytes 1048576) es siempre el primero; output lleva en text la salida del programa como texto, de modo que un programa que imprime JSON no fabrica eventos; awaiting_input anuncia que Leer espera; diagnostics lleva diagnostics, project_errors y sources y precede al fin cuando el análisis o la ejecución producen diagnósticos; finished lleva status, termination y exit_code y es siempre el último. La entrada estándar lleva una orden JSON por línea: input con text (la cadena vacía es una línea válida), cancel o close. Una línea de entrada sin orden que llegue antes de que Leer la espere se encola. status es completed solo si termination es completed; cancel, close o EOF mientras Leer espera terminan con cancelled o input_closed según el caso, y un EOF con el programa en marcha no lo detiene. El código de salida es 0 solo con completed. Una orden inválida o de más de 65536 bytes termina con protocol_error y la salida del programa que pase de 1048576 bytes termina con output_limit. Un uso incorrecto se reporta antes de cualquier evento.",
+  "verificacion": [
+    "C20",
+    "C21",
+    "C22"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C20",
+  "regla": "R7",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 0,
+    "salida": "{\"event\":\"hello\",\"schema\":1,\"capabilities\":[\"input\",\"cancel\",\"close\"],\"limits\":{\"command_bytes\":65536,\"output_bytes\":1048576}}\n{\"event\":\"awaiting_input\"}\n{\"event\":\"output\",\"text\":\"42\\n\"}\n{\"event\":\"finished\",\"status\":\"completed\",\"termination\":\"completed\",\"exit_code\":0}\n",
+    "salida_error": ""
+  },
+  "cli": {
+    "argumentos": [
+      "ejecutar",
+      "--editor",
+      "p.pseudo"
+    ],
+    "entorno": {},
+    "archivos": {
+      "p.pseudo": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nLeer x;\nEscribir x * 2;\nFinAlgoritmo\n"
+    },
+    "entrada": "{\"command\":\"input\",\"text\":\"21\"}\n"
+  }
+}
+```
+
+```caso
+{
+  "id": "C21",
+  "regla": "R7",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 1,
+    "salida": "{\"event\":\"hello\",\"schema\":1,\"capabilities\":[\"input\",\"cancel\",\"close\"],\"limits\":{\"command_bytes\":65536,\"output_bytes\":1048576}}\n{\"event\":\"awaiting_input\"}\n{\"event\":\"finished\",\"status\":\"input_closed\",\"termination\":null,\"exit_code\":1}\n",
+    "salida_error": ""
+  },
+  "cli": {
+    "argumentos": [
+      "run",
+      "--editor",
+      "p.pseudo"
+    ],
+    "entorno": {},
+    "archivos": {
+      "p.pseudo": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nLeer x;\nEscribir x * 2;\nFinAlgoritmo\n"
+    },
+    "entrada": ""
+  }
+}
+```
+
+```caso
+{
+  "id": "C22",
+  "regla": "R7",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 1,
+    "salida": "{\"event\":\"hello\",\"schema\":1,\"capabilities\":[\"input\",\"cancel\",\"close\"],\"limits\":{\"command_bytes\":65536,\"output_bytes\":1048576}}\n{\"event\":\"awaiting_input\"}\n{\"event\":\"finished\",\"status\":\"cancelled\",\"termination\":null,\"exit_code\":1}\n",
+    "salida_error": ""
+  },
+  "cli": {
+    "argumentos": [
+      "run",
+      "--editor",
+      "p.pseudo"
+    ],
+    "entorno": {},
+    "archivos": {
+      "p.pseudo": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nLeer x;\nEscribir x * 2;\nFinAlgoritmo\n"
+    },
+    "entrada": "{\"command\":\"cancel\"}\n"
+  }
+}
+```

@@ -75,6 +75,7 @@ mod operator_types;
 mod operators;
 mod postfix_checker;
 pub mod project_analysis;
+mod project_analysis_nodes;
 pub mod project_profile;
 mod record_access;
 mod record_cycles;
@@ -121,7 +122,7 @@ pub use project_analysis::{
 pub use project_profile::{ResolvedUnitProfile, resolve_project_profiles};
 pub use service_analysis::{
     ServiceAnalysis, ServiceReference, ServiceSymbol, ServiceSymbolCategory, ServiceSymbolTarget,
-    analyze_for_service,
+    analyze_for_service, service_analysis_from_project,
 };
 pub use session::SemanticOptions;
 pub use statement_model::{HirCase, HirDimension, HirStatement, StatementColumns};

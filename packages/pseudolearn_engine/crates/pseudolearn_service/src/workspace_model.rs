@@ -4,7 +4,7 @@ use pseudolearn_lexicon::Profile;
 use pseudolearn_project::{
     Configuration, ImportEdge, MalformedProject, ModuleId, PackageInput, ProjectError, ProjectInput,
 };
-use pseudolearn_semantic::{HirModule, ResolvedUnitProfile};
+use pseudolearn_semantic::{HirModule, ResolvedUnitProfile, ServiceAnalysis};
 use std::collections::BTreeMap;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -47,6 +47,7 @@ pub struct WorkspaceResult {
     pub project_id: u64,
     pub revision_id: u64,
     pub hir: Option<HirModule>,
+    pub service_analysis: Option<ServiceAnalysis>,
     pub diagnostics: Vec<Diagnostic>,
     pub project_errors: Vec<ProjectError>,
     pub imports: Vec<ImportEdge>,

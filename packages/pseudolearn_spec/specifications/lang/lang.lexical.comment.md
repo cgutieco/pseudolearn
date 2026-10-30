@@ -47,6 +47,17 @@
 }
 ```
 
+```definicion
+{
+  "id": "D1",
+  "termino": "textmateComment",
+  "texto": "Delimitador de comentario de línea para la proyección tolerante del editor.",
+  "valor": {
+    "start": "//"
+  }
+}
+```
+
 ```caso
 {
   "id": "C1",

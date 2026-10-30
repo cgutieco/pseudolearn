@@ -46,3 +46,6 @@ mod analysis_limits;
 
 #[path = "resources/structural.rs"]
 mod structural;
+
+#[path = "resources/textmate_grammar.rs"]
+mod textmate_grammar;

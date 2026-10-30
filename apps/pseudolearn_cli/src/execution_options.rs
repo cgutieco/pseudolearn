@@ -17,6 +17,7 @@ pub struct ExecutionArguments {
     pub tasks: Option<u64>,
     pub trace: bool,
     pub native: bool,
+    pub editor: bool,
     pub grants: Vec<String>,
     pub files_root: Option<String>,
     pub origins: Vec<String>,

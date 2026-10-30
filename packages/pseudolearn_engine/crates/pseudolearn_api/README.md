@@ -158,6 +158,12 @@ textos. `project_compile` es el paso común de análisis, enlace y bajada a un R
 (VM) y `build_native_project_object` (feature `native`), de modo que ambos ejecutan el mismo módulo. Un rechazo del
 proyecto (errores de proyecto, de manifiesto o diagnósticos) se devuelve como `NativeBuildFailure::ProjectRejected` con el
 mismo JSON que `execute_project`, sin objeto. Los límites del manifiesto se aplican salvo que la petición nativa los fije.
+`start_project` recibe los mismos argumentos que `execute_project` y, si el proyecto compila sin errores, devuelve un
+recurso de ejecución con el contrato de `start` de archivo suelto: `advance`, `input`, `cancel` y `release` conservan un único
+dueño. Comparte con `execute_project` el paso `project_compile` y la carga a la VM (`execution_request` y `load_compiled` en
+`project_operations`), de modo que no hay un segundo compilador de proyectos. Un rechazo devuelve el mismo JSON de errores que
+`execute_project` y no crea recurso. El recurso no lleva análisis ni vista del programa (`analysis` 0), por lo que las
+consultas de nodos no están disponibles para proyectos. El módulo `project_start` aloja únicamente esta operación.
 `execute_project` marca su identidad de fuente con `source_id` 0, que significa «cualquier archivo del proyecto»: cada
 diagnóstico de ejecución toma el `source_id` del tramo del fallo, de modo que un fallo dentro de un módulo importado
 nombra su archivo (el cero sigue reservado al documento suelto en las peticiones de documento).

@@ -1,6 +1,8 @@
 use crate::service_request::ServiceRequest;
 use pseudolearn_project::{FileInput, PackageInput, PackageKind, ProjectInput};
-use pseudolearn_service::{Profile, WorkspaceOptions, WorkspaceSession, WorkspaceSnapshot};
+use pseudolearn_service::{
+    Profile, SnapshotUpdateMode, WorkspaceOptions, WorkspaceSession, WorkspaceSnapshot,
+};
 use serde_json::{Map, Value, json};
 use std::collections::BTreeMap;
 
@@ -111,9 +113,9 @@ fn update_snapshot(
         return Err(pseudolearn_service::WorkspaceError::InvalidDocumentPath);
     };
     if resynchronize {
-        session.resynchronize(snapshot)
+        session.update_snapshot(snapshot, SnapshotUpdateMode::Resynchronize)
     } else {
-        session.update_snapshot(snapshot)
+        session.update_snapshot(snapshot, SnapshotUpdateMode::Advance)
     }
 }
 

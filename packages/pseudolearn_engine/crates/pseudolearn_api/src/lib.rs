@@ -51,6 +51,7 @@ mod project_operations;
 mod project_packages;
 mod project_profiles;
 mod project_resource;
+mod project_start;
 mod recording_digest;
 mod recording_options;
 mod reference_vocabulary;

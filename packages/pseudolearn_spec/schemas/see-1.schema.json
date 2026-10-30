@@ -1728,6 +1728,7 @@
                       "create_analysis",
                       "analyze_project",
                       "execute_project",
+                      "start_project",
                       "resolve_manifest",
                       "build_lock",
                       "resolve_lock",

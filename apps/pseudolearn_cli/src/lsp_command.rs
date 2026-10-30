@@ -1,79 +1,130 @@
+use crate::lsp_framing::{parse_lsp_message, read_next_payload};
+use crate::lsp_transport_state::{
+    LspJob, LspSharedState, LspTransportState, cancel_pending_requests, handle_cancellation,
+    is_cancelled, mark_completed, remove_active_request, send_shared_response, submit_message,
+};
 use crate::options::CliOptions;
 use pseudolearn_api::service::LspServer;
-use std::io::{BufRead, BufReader, Write};
+use serde_json::Value;
+use std::collections::HashMap;
+use std::io::{self, BufRead, BufReader, Write};
+use std::sync::atomic::{AtomicUsize, Ordering};
+use std::sync::mpsc::{Receiver, sync_channel};
+use std::sync::{Arc, Mutex};
+use std::thread;
 
 pub fn execute_lsp(options: &CliOptions) -> i32 {
-    let mut server = LspServer::new();
-    server.locale.clone_from(&options.interface_language);
-
     let standard_input = std::io::stdin();
     let mut reader = BufReader::new(standard_input.lock());
-    let mut standard_output = std::io::stdout().lock();
+    run_lsp_transport(
+        &mut reader,
+        Arc::new(Mutex::new(std::io::stdout())),
+        &options.interface_language,
+    )
+}
 
-    while let Some(body_payload) = read_next_payload(&mut reader) {
-        let Ok(request_json) = serde_json::from_slice::<serde_json::Value>(&body_payload) else {
-            continue;
+fn run_lsp_transport<Reader: BufRead, Writer: Write + Send + 'static>(
+    reader: &mut Reader,
+    standard_output: Arc<Mutex<Writer>>,
+    locale: &str,
+) -> i32 {
+    let (sender, receiver) = sync_channel(crate::lsp_transport_state::MAXIMUM_QUEUED_MESSAGES);
+    let shared_state = Arc::new(LspSharedState {
+        output: standard_output,
+        active_requests: Mutex::new(HashMap::new()),
+        queued_queries: AtomicUsize::new(0),
+    });
+    let transport_state = LspTransportState {
+        sender,
+        shared_state: shared_state.clone(),
+    };
+    let language = locale.to_owned();
+    let worker = thread::spawn(move || run_lsp_worker(receiver, &shared_state, language));
+    let received_exit = read_lsp_messages(reader, &transport_state).unwrap_or(false);
+    if !received_exit {
+        cancel_pending_requests(&transport_state.shared_state);
+    }
+    drop(transport_state);
+    let worker_code = worker.join().unwrap_or(1);
+    if received_exit { worker_code } else { 1 }
+}
+
+fn read_lsp_messages<Reader: BufRead, Writer: Write>(
+    reader: &mut Reader,
+    transport: &LspTransportState<Writer>,
+) -> io::Result<bool> {
+    loop {
+        let Some(payload) = read_next_payload(reader)? else {
+            return Ok(false);
         };
-
-        for response_json in server.handle_message(&request_json) {
-            if send_lsp_response(&mut standard_output, &response_json).is_err() {
-                return 1;
-            }
+        let message = parse_lsp_message(&payload).map_err(invalid_json)?;
+        if message.get("method").and_then(Value::as_str) == Some("$/cancelRequest") {
+            handle_cancellation(&message, &transport.shared_state)?;
+            continue;
         }
+        let received_exit = message.get("method").and_then(Value::as_str) == Some("exit");
+        submit_message(transport, &message)?;
+        if received_exit {
+            return Ok(true);
+        }
+    }
+}
 
+fn run_lsp_worker<Writer: Write + Send + 'static>(
+    receiver: Receiver<LspJob>,
+    shared_state: &LspSharedState<Writer>,
+    locale: String,
+) -> i32 {
+    let mut server = LspServer::new();
+    server.locale = locale;
+    for job in receiver {
+        if process_lsp_job(&job, shared_state, &mut server).is_err() {
+            return 1;
+        }
         if server.is_finished() {
             break;
         }
     }
-
     server.exit_code.unwrap_or(1)
 }
 
-fn read_next_payload<Reader: BufRead>(reader: &mut Reader) -> Option<Vec<u8>> {
-    let Ok(Some(content_length)) = read_headers(reader) else {
-        return None;
-    };
-    let mut body_payload = vec![0u8; content_length];
-    if reader.read_exact(&mut body_payload).is_err() {
-        return None;
+fn process_lsp_job<Writer: Write>(
+    job: &LspJob,
+    shared_state: &LspSharedState<Writer>,
+    server: &mut LspServer,
+) -> io::Result<()> {
+    if job.request_key.is_some() {
+        shared_state.queued_queries.fetch_sub(1, Ordering::Relaxed);
     }
-    Some(body_payload)
+    if job.cancellation.as_ref().is_some_and(is_cancelled) {
+        remove_active_request(shared_state, job.request_key.as_deref());
+        return Ok(());
+    }
+    let responses = handle_job_message(server, job);
+    if job.cancellation.as_ref().is_none_or(mark_completed) {
+        send_job_responses(shared_state, &responses)?;
+    }
+    remove_active_request(shared_state, job.request_key.as_deref());
+    Ok(())
 }
 
-fn send_lsp_response<Writer: Write>(
-    standard_output: &mut Writer,
-    response_json: &serde_json::Value,
-) -> Result<(), ()> {
-    let response_string = serde_json::to_string(response_json).map_err(|_| ())?;
-    let response_bytes = response_string.as_bytes();
-    let header = format!("Content-Length: {}\r\n\r\n", response_bytes.len());
-    standard_output
-        .write_all(header.as_bytes())
-        .map_err(|_| ())?;
-    standard_output.write_all(response_bytes).map_err(|_| ())?;
-    standard_output.flush().map_err(|_| ())
+fn handle_job_message(server: &mut LspServer, job: &LspJob) -> Vec<Value> {
+    match &job.cancellation {
+        Some(active) => server.handle_cancellable_message(&job.message, active.token.clone()),
+        None => server.handle_message(&job.message),
+    }
 }
 
-fn read_headers<Reader: BufRead>(reader: &mut Reader) -> Result<Option<usize>, std::io::Error> {
-    let mut content_length: Option<usize> = None;
-    let mut line_buffer = String::new();
-
-    loop {
-        line_buffer.clear();
-        let bytes_read = reader.read_line(&mut line_buffer)?;
-        if bytes_read == 0 {
-            return Ok(None);
-        }
-        let trimmed_line = line_buffer.trim();
-        if trimmed_line.is_empty() {
-            break;
-        }
-        if let Some(length_part) = trimmed_line.strip_prefix("Content-Length:")
-            && let Ok(parsed_length) = length_part.trim().parse::<usize>()
-        {
-            content_length = Some(parsed_length);
-        }
+fn send_job_responses<Writer: Write>(
+    shared_state: &LspSharedState<Writer>,
+    responses: &[Value],
+) -> io::Result<()> {
+    for response in responses {
+        send_shared_response(shared_state, response)?;
     }
+    Ok(())
+}
 
-    Ok(content_length)
+fn invalid_json(error: serde_json::Error) -> io::Error {
+    io::Error::new(io::ErrorKind::InvalidData, error)
 }

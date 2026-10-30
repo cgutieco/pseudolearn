@@ -29,7 +29,7 @@
     "publicMethodsPerClass": 7
   },
   "package": {
-    "included": ["README.md", "LICENSE.md", "third-party-notices.md", "package.json", "dist/**", "bin/**"],
+    "included": ["README.md", "LICENSE.md", "third-party-notices.md", "package.json", "dist/**", "bin/**", "media/**"],
     "excluded": [".env*", "*.map", "node_modules/**", "scripts/**", "src/**", "tests/**", "test-results/**"],
     "secretKeys": ["api_key", "password", "secret", "token"]
   }

@@ -119,34 +119,38 @@ pub(crate) fn collect_expression_occurrences(
             .get(index)
             .copied()
             .unwrap_or(Span::new(0, 0));
-        match kind {
-            HirExpression::Local(local_id) if !internal_symbol(module, *local_id) => {
-                occurrences.push(ServiceReference {
-                    span,
-                    target: ServiceSymbolTarget::Local(*local_id),
-                    is_write: false,
-                    is_declaration: false,
-                });
-            }
-            HirExpression::Call { function, .. } | HirExpression::VirtualCall { function, .. } => {
-                occurrences.push(ServiceReference {
-                    span,
-                    target: ServiceSymbolTarget::Function(*function),
-                    is_write: false,
-                    is_declaration: false,
-                });
-            }
-            HirExpression::Field { field, .. } => {
-                occurrences.push(ServiceReference {
-                    span,
-                    target: ServiceSymbolTarget::Field(*field),
-                    is_write: false,
-                    is_declaration: false,
-                });
-            }
-            _ => {}
+        if let Some(reference) = expression_reference(module, span, kind) {
+            occurrences.push(reference);
         }
     }
+}
+
+fn expression_reference(
+    module: &HirModule,
+    span: Span,
+    expression: &HirExpression,
+) -> Option<ServiceReference> {
+    let target = match expression {
+        HirExpression::Local(local_id) if !internal_symbol(module, *local_id) => {
+            ServiceSymbolTarget::Local(*local_id)
+        }
+        HirExpression::Call { function, .. }
+        | HirExpression::VirtualCall { function, .. }
+        | HirExpression::TaskSpawn { function, .. }
+        | HirExpression::FunctionValue(function)
+        | HirExpression::Captured { function, .. } => ServiceSymbolTarget::Function(*function),
+        HirExpression::Field { field, .. } => ServiceSymbolTarget::Field(*field),
+        HirExpression::New { class, .. } | HirExpression::This(class) => {
+            ServiceSymbolTarget::Class(*class)
+        }
+        _ => return None,
+    };
+    Some(ServiceReference {
+        span,
+        target,
+        is_write: false,
+        is_declaration: false,
+    })
 }
 
 fn internal_symbol(module: &HirModule, local: LocalId) -> bool {

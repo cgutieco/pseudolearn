@@ -64,7 +64,10 @@ fn codes(session: &WorkspaceSession) -> Vec<&'static str> {
 #[test]
 fn overlays_correct_errors_and_analyze_closed_imports() -> Result<(), String> {
     let mut initial = snapshot(project_files());
-    initial.project.files[0].text = "@".to_owned();
+    let Some(first_file) = initial.project.files.first_mut() else {
+        return Err("workspace fixture has no files".to_owned());
+    };
+    first_file.text = "@".to_owned();
     let mut session = WorkspaceSession::new(initial).map_err(|error| format!("{error:?}"))?;
     assert!(!codes(&session).is_empty());
     session
@@ -80,16 +83,16 @@ fn overlays_correct_errors_and_analyze_closed_imports() -> Result<(), String> {
 fn invalid_document_operations_preserve_workspace_revision() -> Result<(), String> {
     let mut session =
         WorkspaceSession::new(snapshot(project_files())).map_err(|error| format!("{error:?}"))?;
-    let initial_revision = session.revision_id();
+    let initial_revision = session.result().revision_id;
     assert_eq!(
         session.open_document("missing", 1, MAIN.to_owned()),
         Err(pseudolearn_service::WorkspaceError::DocumentNotFound)
     );
-    assert_eq!(session.revision_id(), initial_revision);
+    assert_eq!(session.result().revision_id, initial_revision);
     session
         .open_document("app/main", 1, MAIN.to_owned())
         .map_err(|error| format!("{error:?}"))?;
-    let open_revision = session.revision_id();
+    let open_revision = session.result().revision_id;
     assert_eq!(
         session.change_document("app/main", 1, "@".to_owned()),
         Err(pseudolearn_service::WorkspaceError::DocumentVersionDidNotAdvance)
@@ -98,7 +101,7 @@ fn invalid_document_operations_preserve_workspace_revision() -> Result<(), Strin
         session.close_document("missing"),
         Err(pseudolearn_service::WorkspaceError::DocumentNotOpen)
     );
-    assert_eq!(session.revision_id(), open_revision);
+    assert_eq!(session.result().revision_id, open_revision);
     assert!(session.matches_cold_analysis());
     Ok(())
 }
@@ -163,7 +166,7 @@ fn closing_an_overlay_restores_the_latest_snapshot_and_deleted_file() -> Result<
     ]);
     latest.project.revision_id = 2;
     session
-        .update_snapshot(latest)
+        .update_snapshot(latest, pseudolearn_service::SnapshotUpdateMode::Advance)
         .map_err(|error| format!("{error:?}"))?;
     assert!(!codes(&session).is_empty());
     session
@@ -177,13 +180,15 @@ fn closing_an_overlay_restores_the_latest_snapshot_and_deleted_file() -> Result<
     let mut deleted = snapshot(vec![file("app/main", 1, MAIN)]);
     deleted.project.revision_id = 3;
     session
-        .update_snapshot(deleted)
+        .update_snapshot(deleted, pseudolearn_service::SnapshotUpdateMode::Advance)
         .map_err(|error| format!("{error:?}"))?;
-    assert!(session.is_open("geo/vectores"));
     session
         .close_document("geo/vectores")
         .map_err(|error| format!("{error:?}"))?;
-    assert!(!session.is_open("geo/vectores"));
+    assert_eq!(
+        session.change_document("geo/vectores", 2, LIBRARY.to_owned()),
+        Err(pseudolearn_service::WorkspaceError::DocumentNotOpen)
+    );
     assert!(!codes(&session).is_empty());
     assert!(session.matches_cold_analysis());
     Ok(())
@@ -204,13 +209,19 @@ fn resynchronization_compares_full_text_and_configuration_inputs() -> Result<(),
     let mut session =
         WorkspaceSession::new(current.clone()).map_err(|error| format!("{error:?}"))?;
     let same_size_text = "Algoritmo P\nEscribir 2;\nFinAlgoritmo\n";
-    current.project.files[0].text = same_size_text.to_owned();
+    let Some(first_file) = current.project.files.first_mut() else {
+        return Err("workspace fixture has no files".to_owned());
+    };
+    first_file.text = same_size_text.to_owned();
     current.options.dependency_inputs.insert(
         "app/pseudolearn.lock".to_owned(),
         "digest = \"bbbb\"\n".to_owned(),
     );
     session
-        .resynchronize(current)
+        .update_snapshot(
+            current,
+            pseudolearn_service::SnapshotUpdateMode::Resynchronize,
+        )
         .map_err(|error| format!("{error:?}"))?;
     assert!(
         session
@@ -251,7 +262,7 @@ fn manifests_update_profiles_and_project_structure() -> Result<(), String> {
     initial.project.packages = vec![updated.package_input()];
     initial.options.configurations = vec![updated];
     session
-        .update_snapshot(initial)
+        .update_snapshot(initial, pseudolearn_service::SnapshotUpdateMode::Advance)
         .map_err(|error| format!("{error:?}"))?;
     assert!(
         session

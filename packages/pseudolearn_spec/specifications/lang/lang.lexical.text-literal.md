@@ -47,6 +47,19 @@
 }
 ```
 
+```definicion
+{
+  "id": "D1",
+  "termino": "textmateTextLiteral",
+  "texto": "Delimitadores y escapes de literales para la proyección tolerante del editor.",
+  "valor": {
+    "delimiters": ["\"", "'"],
+    "escapeCodes": ["n", "t", "r", "\\", "\"", "'"],
+    "lineBreaksAllowed": false
+  }
+}
+```
+
 ```caso
 {
   "id": "C1",

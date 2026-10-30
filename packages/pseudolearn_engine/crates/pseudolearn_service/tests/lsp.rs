@@ -69,12 +69,67 @@ fn announces_every_capability_and_shuts_down_cleanly() {
         capabilities.pointer("/completionProvider/resolveProvider"),
         Some(&json!(false))
     );
+    assert!(capabilities.get("semanticTokensProvider").is_none());
+    assert!(capabilities.get("renameProvider").is_none());
     server.handle_message(&json!({"jsonrpc":"2.0","method":"initialized","params":{}}));
     let shutdown = request(&mut server, 2, "shutdown", Value::Null);
     assert_eq!(shutdown.get("result"), Some(&Value::Null));
     server.handle_message(&json!({"jsonrpc":"2.0","method":"exit"}));
     assert!(server.is_finished());
     assert_eq!(server.exit_code, Some(0));
+}
+
+#[test]
+fn advertises_only_client_supported_project_features() {
+    let mut server = LspServer::new();
+    let answers = server.handle_message(&json!({
+        "jsonrpc":"2.0",
+        "id":1,
+        "method":"initialize",
+        "params":{
+            "capabilities":{
+                "textDocument":{
+                    "semanticTokens":{"requests":{"full":true}},
+                    "publishDiagnostics":{"relatedInformation":true},
+                    "completion":{"completionItem":{"snippetSupport":true}}
+                },
+                "workspace":{
+                    "workspaceFolders":{"supported":true},
+                    "workspaceEdit":{"documentChanges":true,"failureHandling":"transactional"}
+                }
+            }
+        }
+    }));
+    let capabilities = answers
+        .first()
+        .and_then(|answer| answer.pointer("/result/capabilities"))
+        .cloned()
+        .unwrap_or(Value::Null);
+    assert_eq!(
+        capabilities.pointer("/renameProvider/prepareProvider"),
+        Some(&json!(true))
+    );
+    assert_eq!(
+        capabilities.pointer("/semanticTokensProvider/full"),
+        Some(&json!(true))
+    );
+    assert_eq!(
+        capabilities.pointer("/workspace/workspaceFolders/supported"),
+        Some(&json!(true))
+    );
+
+    let mut limited = LspServer::new();
+    let answers = limited.handle_message(&json!({
+        "jsonrpc":"2.0","id":1,"method":"initialize",
+        "params":{"capabilities":{"workspace":{"workspaceEdit":{"documentChanges":true}}}}
+    }));
+    let capabilities = answers
+        .first()
+        .and_then(|answer| answer.pointer("/result/capabilities"))
+        .cloned()
+        .unwrap_or(Value::Null);
+    assert!(capabilities.get("renameProvider").is_none());
+    assert!(capabilities.get("semanticTokensProvider").is_none());
 }
 
 #[test]
@@ -104,6 +159,31 @@ fn unknown_requests_fail_and_unknown_notifications_are_ignored() {
     let ignored =
         server.handle_message(&json!({"jsonrpc":"2.0","method":"$/cancelRequest","params":{}}));
     assert!(ignored.is_empty());
+}
+
+#[test]
+fn invalid_json_rpc_shapes_return_invalid_request_errors() {
+    let mut server = LspServer::new();
+    let missing_method = server.handle_message(&json!({"jsonrpc":"2.0","id":1}));
+    assert_eq!(
+        missing_method
+            .first()
+            .and_then(|item| item.pointer("/error/code")),
+        Some(&json!(-32600))
+    );
+    let wrong_version =
+        server.handle_message(&json!({"jsonrpc":"1.0","id":2,"method":"initialize"}));
+    assert_eq!(
+        wrong_version
+            .first()
+            .and_then(|item| item.pointer("/error/code")),
+        Some(&json!(-32600))
+    );
+    let scalar = server.handle_message(&Value::Null);
+    assert_eq!(
+        scalar.first().and_then(|item| item.pointer("/error/code")),
+        Some(&json!(-32600))
+    );
 }
 
 #[test]

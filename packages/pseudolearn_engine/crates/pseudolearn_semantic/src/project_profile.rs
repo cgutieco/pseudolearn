@@ -10,6 +10,12 @@ pub struct ResolvedUnitProfile {
     pub mismatch: Option<String>,
 }
 
+struct ProfileSourceRequest<'input> {
+    file_profiles: &'input BTreeMap<String, Profile>,
+    configurations: &'input [Configuration],
+    request_profile: Option<Profile>,
+}
+
 pub fn resolve_project_profiles(
     files: &[FileInput],
     file_profiles: &BTreeMap<String, Profile>,
@@ -24,32 +30,28 @@ pub fn resolve_project_profiles(
             let resolved = resolve_profile(&profile_sources(
                 &path,
                 &file.text,
-                file_profiles,
-                configurations,
-                request_profile,
+                &ProfileSourceRequest {
+                    file_profiles,
+                    configurations,
+                    request_profile,
+                },
             ));
             (path, resolved_unit_profile(&resolved))
         })
         .collect()
 }
 
-fn profile_sources(
-    path: &str,
-    text: &str,
-    file_profiles: &BTreeMap<String, Profile>,
-    configurations: &[Configuration],
-    request_profile: Option<Profile>,
-) -> ProfileSources {
-    let configuration = owner(configurations, path);
+fn profile_sources(path: &str, text: &str, request: &ProfileSourceRequest<'_>) -> ProfileSources {
+    let configuration = owner(request.configurations, path);
     ProfileSources {
         argument: pseudolearn_project::logical_path_key(path)
-            .and_then(|key| file_profiles.get(&key))
+            .and_then(|key| request.file_profiles.get(&key))
             .copied()
             .map(to_choice),
         exception: configuration.and_then(|found| found.manifest.profile_exception_for(path)),
         package: configuration.and_then(|found| found.manifest.declared_profile()),
         opening: detect_opening_profile(text).map(to_choice),
-        request: request_profile.map(to_choice),
+        request: request.request_profile.map(to_choice),
     }
 }
 

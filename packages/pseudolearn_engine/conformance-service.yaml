@@ -111,6 +111,31 @@
       "estado": "cumple"
     },
     {
+      "regla": "TOOL.LSP.CAPABILITIES@1.0.0#R6",
+      "verificacion": "crates/pseudolearn_service/tests/lsp.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.LSP.CAPABILITIES@1.0.0#R7",
+      "verificacion": "crates/pseudolearn_service/tests/lsp_project_queries.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.LSP.CAPABILITIES@1.0.0#R8",
+      "verificacion": "crates/pseudolearn_service/tests/lsp_project_queries.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.LSP.CAPABILITIES@1.0.0#R9",
+      "verificacion": "crates/pseudolearn_service/tests/lsp_project_queries.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.LSP.CAPABILITIES@1.0.0#R10",
+      "verificacion": "crates/pseudolearn_service/tests/lsp_project_queries.rs",
+      "estado": "cumple"
+    },
+    {
       "regla": "TOOL.SERVICE.COMPLETION@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
@@ -258,6 +283,11 @@
     {
       "regla": "TOOL.SERVICE.NAVIGATION@1.0.0#R3",
       "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.NAVIGATION@1.0.0#R4",
+      "verificacion": "crates/pseudolearn_service/tests/lsp_project_queries.rs",
       "estado": "cumple"
     },
     {

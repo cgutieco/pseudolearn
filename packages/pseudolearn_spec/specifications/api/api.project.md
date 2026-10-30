@@ -1319,3 +1319,301 @@
   ]
 }
 ```
+
+```regla
+{
+  "id": "R4",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "La operación start_project recibe los mismos argumentos que execute_project, con entry obligatorio. Si hay diagnósticos de error, errores de proyecto o de manifiesto, devuelve únicamente esos resultados, igual que execute_project, y no crea recurso. Si no, devuelve resource y project_errors vacío, y la ejecución se maneja con advance, input, cancel y release con el mismo contrato y propietario único que una ejecución de programa suelto: advance informa awaiting_input cuando Leer espera, input entrega una línea (la cadena vacía es válida) y release invalida el recurso para operaciones posteriores. El resultado final y la salida de advance coinciden con los de execute_project para el mismo proyecto.",
+  "verificacion": [
+    "C18",
+    "C19",
+    "C20"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C18",
+  "regla": "R4",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "start_project",
+        "arguments": {
+          "profile": "es",
+          "strictness": "strict",
+          "entry": "app/main",
+          "project": {
+            "project_id": "1",
+            "revision_id": "1",
+            "packages": [
+              {
+                "name": "app",
+                "root": "app",
+                "kind": "application",
+                "entries": [
+                  "app/main"
+                ],
+                "dependencies": {
+                  "geo": "geo"
+                }
+              },
+              {
+                "name": "geo",
+                "root": "geo",
+                "kind": "library"
+              }
+            ],
+            "files": [
+              {
+                "path": "app/main",
+                "source_id": 1,
+                "text": "Importar geo.vectores.Doble;\nAlgoritmo P\nEscribir Doble(21);\nFinAlgoritmo\n"
+              },
+              {
+                "path": "geo/vectores",
+                "source_id": 2,
+                "text": "Publico SubProceso Doble(n Como Entero) Como Entero\nRetornar n * 2;\nFinSubProceso\n"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "operation": "advance",
+        "resource_from": 1,
+        "arguments": {
+          "batch_size": 4096
+        }
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "project_errors": []
+          }
+        },
+        {
+          "value": {
+            "output": "42\n",
+            "termination": {
+              "kind": "completed"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C19",
+  "regla": "R4",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "start_project",
+        "arguments": {
+          "profile": "es",
+          "strictness": "strict",
+          "entry": "app/main",
+          "project": {
+            "project_id": "1",
+            "revision_id": "1",
+            "packages": [
+              {
+                "name": "app",
+                "root": "app",
+                "kind": "application",
+                "entries": [
+                  "app/main"
+                ],
+                "dependencies": {
+                  "geo": "geo"
+                }
+              },
+              {
+                "name": "geo",
+                "root": "geo",
+                "kind": "library"
+              }
+            ],
+            "files": [
+              {
+                "path": "app/main",
+                "source_id": 1,
+                "text": "Importar geo.vectores.Doble;\nAlgoritmo P\nDefinir Mutable x Como Entero <- 0;\nLeer x;\nEscribir Doble(x);\nFinAlgoritmo\n"
+              },
+              {
+                "path": "geo/vectores",
+                "source_id": 2,
+                "text": "Publico SubProceso Doble(n Como Entero) Como Entero\nRetornar n * 2;\nFinSubProceso\n"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "operation": "advance",
+        "resource_from": 1,
+        "arguments": {
+          "batch_size": 4096
+        }
+      },
+      {
+        "operation": "input",
+        "resource_from": 1,
+        "arguments": {
+          "text": "21"
+        }
+      },
+      {
+        "operation": "advance",
+        "resource_from": 1,
+        "arguments": {
+          "batch_size": 4096
+        }
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "project_errors": []
+          }
+        },
+        {
+          "value": {
+            "termination": {
+              "kind": "awaiting_input"
+            }
+          }
+        },
+        {
+          "value": null
+        },
+        {
+          "value": {
+            "output": "42\n",
+            "termination": {
+              "kind": "completed"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C20",
+  "regla": "R4",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "start_project",
+        "arguments": {
+          "profile": "es",
+          "strictness": "strict",
+          "entry": "app/main",
+          "project": {
+            "project_id": "1",
+            "revision_id": "1",
+            "packages": [
+              {
+                "name": "app",
+                "root": "app",
+                "kind": "application",
+                "entries": [
+                  "app/main"
+                ],
+                "dependencies": {
+                  "geo": "geo"
+                }
+              },
+              {
+                "name": "geo",
+                "root": "geo",
+                "kind": "library"
+              }
+            ],
+            "files": [
+              {
+                "path": "app/main",
+                "source_id": 1,
+                "text": "Importar geo.nada.Doble;\nAlgoritmo P\nEscribir 1;\nFinAlgoritmo\n"
+              },
+              {
+                "path": "geo/vectores",
+                "source_id": 2,
+                "text": "Publico SubProceso Doble(n Como Entero) Como Entero\nRetornar n * 2;\nFinSubProceso\n"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "diagnostics": [
+              {
+                "code": "unresolvedModule"
+              }
+            ],
+            "project_errors": []
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```

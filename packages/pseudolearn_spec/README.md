@@ -178,6 +178,12 @@ Problema: las propiedades nativas necesitan un oráculo independiente y artefact
   la normalización de cada perfil: solo puede producir rechazos de más, nunca aceptar una ambigüedad.
 - Problema: prosa legible y datos verificables. Elección: Markdown con YAML y bloques tipados;
   serde-saphyr conserva la cadena segura usada en el monorepo. Se descarta DSL propio por coste.
+- Problema: los editores necesitan resaltar candidatos léxicos sin implementar otro scanner ni decidir
+  validez. Elección: `LANG.LEXICAL.IDENTIFIER`, `LANG.LEXICAL.NUMBER-LITERAL`,
+  `LANG.LEXICAL.COMMENT`, `LANG.LEXICAL.TEXT-LITERAL` y `LANG.LEXICAL.KEYWORD` declaran los datos
+  de proyección TextMate; `see_validation` comprueba su forma y `see_export` los entrega como recursos.
+  La gramática derivada es tolerante; tokens semánticos y diagnóstico siguen perteneciendo al motor.
+  Se rechaza una tabla léxica mantenida por cada consumidor.
 - Problema: versión mutable por edición silenciosa. Elección: SHA-256 del JSON canónico ordenado del
   encabezado contractual y bloques, excluyendo títulos, resumen y prosa; historial en lock.
   Se descarta hashear bytes Markdown porque espacio y presentación no cambian obligaciones.

@@ -2,6 +2,7 @@ use crate::workspace_analysis::{WorkspaceBuildRequest, build_workspace};
 use crate::workspace_model::{
     WorkspaceError, WorkspaceIndex, WorkspaceOverlay, WorkspaceResult, WorkspaceSnapshot,
 };
+use pseudolearn_lexicon::Profile;
 use pseudolearn_project::{FileInput, logical_path_key};
 use std::collections::BTreeMap;
 
@@ -11,6 +12,12 @@ pub struct WorkspaceSession {
     overlays: BTreeMap<String, WorkspaceOverlay>,
     index: WorkspaceIndex,
     result: WorkspaceResult,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum SnapshotUpdateMode {
+    Advance,
+    Resynchronize,
 }
 
 impl WorkspaceSession {
@@ -36,8 +43,52 @@ impl WorkspaceSession {
         &self.result
     }
 
-    pub fn revision_id(&self) -> u64 {
-        self.revision_id
+    pub(crate) fn files(&self) -> impl Iterator<Item = (&str, u32, &str)> {
+        self.index
+            .files
+            .values()
+            .map(|file| (file.path.as_str(), file.source_id, file.text.as_str()))
+    }
+
+    pub(crate) fn file_by_source_id(&self, source_id: u32) -> Option<(&str, &str)> {
+        self.index
+            .files
+            .values()
+            .find(|file| file.source_id == source_id)
+            .map(|file| (file.path.as_str(), file.text.as_str()))
+    }
+
+    pub(crate) fn file_by_path(&self, path: &str) -> Option<(u32, &str)> {
+        let key = document_key(path).ok()?;
+        self.index
+            .files
+            .get(&key)
+            .map(|file| (file.source_id, file.text.as_str()))
+    }
+
+    pub(crate) fn profile_for_path(&self, path: &str) -> Option<Profile> {
+        let key = document_key(path).ok()?;
+        self.index.profiles.get(&key).map(|profile| profile.profile)
+    }
+
+    pub(crate) fn strict(&self) -> bool {
+        self.index.options.strict
+    }
+
+    pub(crate) fn update_configuration(
+        &mut self,
+        profile: Profile,
+        strict: bool,
+    ) -> Result<(), WorkspaceError> {
+        if self.index.options.requested_profile == Some(profile)
+            && self.index.options.strict == strict
+        {
+            return Ok(());
+        }
+        let mut snapshot = self.snapshot.clone();
+        snapshot.options.requested_profile = Some(profile);
+        snapshot.options.strict = strict;
+        self.commit_candidate(snapshot, self.overlays.clone(), self.next_revision()?)
     }
 
     pub fn matches_cold_analysis(&self) -> bool {
@@ -53,10 +104,6 @@ impl WorkspaceSession {
             && cold.diagnostics == self.result.diagnostics
             && cold.project_errors == self.result.project_errors
             && cold.imports == self.result.imports
-    }
-
-    pub fn is_open(&self, path: &str) -> bool {
-        document_key(path).is_ok_and(|key| self.overlays.contains_key(&key))
     }
 
     pub fn open_document(
@@ -116,17 +163,21 @@ impl WorkspaceSession {
         self.commit_candidate(self.snapshot.clone(), overlays, self.next_revision()?)
     }
 
-    pub fn update_snapshot(&mut self, snapshot: WorkspaceSnapshot) -> Result<(), WorkspaceError> {
+    pub fn update_snapshot(
+        &mut self,
+        snapshot: WorkspaceSnapshot,
+        mode: SnapshotUpdateMode,
+    ) -> Result<(), WorkspaceError> {
         self.check_snapshot_identity(&snapshot)?;
-        if snapshot.project.revision_id <= self.snapshot.project.revision_id {
-            return Err(WorkspaceError::SnapshotRevisionDidNotAdvance);
-        }
-        self.commit_snapshot(snapshot)
-    }
-
-    pub fn resynchronize(&mut self, snapshot: WorkspaceSnapshot) -> Result<(), WorkspaceError> {
-        self.check_snapshot_identity(&snapshot)?;
-        if snapshot.project.revision_id < self.snapshot.project.revision_id {
+        let revision_did_not_advance = match mode {
+            SnapshotUpdateMode::Advance => {
+                snapshot.project.revision_id <= self.snapshot.project.revision_id
+            }
+            SnapshotUpdateMode::Resynchronize => {
+                snapshot.project.revision_id < self.snapshot.project.revision_id
+            }
+        };
+        if revision_did_not_advance {
             return Err(WorkspaceError::SnapshotRevisionDidNotAdvance);
         }
         self.commit_snapshot(snapshot)

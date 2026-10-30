@@ -39,16 +39,27 @@ fn compare_files(
         if file_changed || profile_changed {
             changed.insert(path.clone());
         }
-        if old_file.is_none() || new_file.is_none() || profile_changed {
-            signatures.insert(path.clone());
-        } else if file_changed {
-            let old_units = previous.units.get(&path).map(Vec::as_slice).unwrap_or(&[]);
-            let new_units = current.units.get(&path).map(Vec::as_slice).unwrap_or(&[]);
-            if compare_partitions(old_units, new_units).signature_invalidated {
-                signatures.insert(path);
-            }
+        if signature_changed(previous, current, &path) {
+            signatures.insert(path);
         }
     }
+}
+
+fn signature_changed(previous: &WorkspaceIndex, current: &WorkspaceIndex, path: &str) -> bool {
+    let old_file = previous.files.get(path);
+    let new_file = current.files.get(path);
+    if old_file.is_none()
+        || new_file.is_none()
+        || previous.profiles.get(path) != current.profiles.get(path)
+    {
+        return true;
+    }
+    if old_file == new_file {
+        return false;
+    }
+    let old_units = previous.units.get(path).map(Vec::as_slice).unwrap_or(&[]);
+    let new_units = current.units.get(path).map(Vec::as_slice).unwrap_or(&[]);
+    compare_partitions(old_units, new_units).signature_invalidated
 }
 
 fn compare_package_options(

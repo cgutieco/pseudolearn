@@ -169,12 +169,8 @@ pub(crate) fn has_errors(diagnostics: &[Diagnostic]) -> bool {
         .any(|diagnostic| diagnostic.severity == DiagnosticSeverity::Error)
 }
 
-fn run(compiled: Compiled) -> Result<Value, ApiError> {
-    let bytecode =
-        pseudolearn_bytecode::compile_module(&compiled.module).map_err(|_| internal())?;
-    let program = pseudolearn_vm::load(&bytecode).map_err(|_| internal())?;
-    let prepared = crate::execution::PreparedProgram::new(program, compiled.warnings);
-    let execution = ExecuteRequest {
+pub(crate) fn execution_request(compiled: &Compiled) -> ExecuteRequest {
+    ExecuteRequest {
         profile: compiled.request.profile.as_str().to_owned(),
         strictness: if compiled.request.strict {
             "strict"
@@ -182,14 +178,28 @@ fn run(compiled: Compiled) -> Result<Value, ApiError> {
             "flexible"
         }
         .to_owned(),
-        limits: compiled.limits,
+        limits: compiled.limits.clone(),
         source: Some(crate::ApiSourceIdentity {
             project_id: compiled.request.input.project_id,
             revision_id: compiled.request.input.revision_id,
             source_id: 0,
         }),
         ..ExecuteRequest::default()
-    };
+    }
+}
+
+pub(crate) fn load_compiled(
+    compiled: &Compiled,
+) -> Result<pseudolearn_vm::LoadedProgram, ApiError> {
+    let bytecode =
+        pseudolearn_bytecode::compile_module(&compiled.module).map_err(|_| internal())?;
+    pseudolearn_vm::load(&bytecode).map_err(|_| internal())
+}
+
+fn run(compiled: Compiled) -> Result<Value, ApiError> {
+    let program = load_compiled(&compiled)?;
+    let execution = execution_request(&compiled);
+    let prepared = crate::execution::PreparedProgram::new(program, compiled.warnings);
     let response = crate::execution::execute_prepared(&prepared, &execution);
     let mut value = serde_json::to_value(&response).map_err(|_| internal())?;
     if let Some(object) = value.as_object_mut() {

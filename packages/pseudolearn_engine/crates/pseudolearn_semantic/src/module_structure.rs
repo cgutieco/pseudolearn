@@ -1,4 +1,5 @@
-use crate::project_analysis::{ProjectUnit, algorithm_nodes, program_node};
+use crate::project_analysis::ProjectUnit;
+use crate::project_analysis_nodes::{algorithm_nodes, program_node};
 use crate::session::AnalysisSession;
 use pseudolearn_diagnostics::DiagnosticCode;
 use pseudolearn_project::ProjectCatalog;

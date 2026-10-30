@@ -54,6 +54,18 @@
 }
 ```
 
+```definicion
+{
+  "id": "D1",
+  "termino": "textmateIdentifier",
+  "texto": "Alfabeto declarativo para resaltar candidatos a identificador; el consumidor no lo usa para decidir validez ni identidad.",
+  "valor": {
+    "start": "[A-Za-zñÑáéíóúüÁÉÍÓÚÜ_]",
+    "continue": "[A-Za-zñÑáéíóúüÁÉÍÓÚÜ_0-9\\p{M}]"
+  }
+}
+```
+
 ```caso
 {
   "id": "C1",

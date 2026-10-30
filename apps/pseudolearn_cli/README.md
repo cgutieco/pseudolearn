@@ -65,7 +65,9 @@ formatear/format: aplica el estilo canónico al programa mediante el servicio de
 
 traducir/translate: realiza traducción bilingüe del código fuente hacia el perfil indicado por la opción requerida `--hacia` (`--to`). Detecta colisiones de identificadores con palabras reservadas del perfil destino (o con la traducción de una función estándar usada) y emite el diagnóstico `reservedLexemeUsedAsName` en la línea y columna del nombre, con código de salida 1 y sin escribir salida. El texto traducido conserva blancos, comentarios y literales. `--salida`/`-o` escribe el resultado en un archivo. Falta de opción o perfil no válido emite error de uso con código 2.
 
-lsp: ejecuta el servidor de lenguaje sobre entrada y salida estándar bajo el protocolo JSON-RPC 2.0 y framing `Content-Length`. Atiende el ciclo de vida completo (`initialize`, `shutdown`, `exit`) y los métodos de sincronización incremental, diagnósticos, compleción, información emergente, ayuda de firma, definición, referencias, resaltado, símbolos del documento y formateo. Termina con código 0 tras `shutdown` y `exit`, y con 1 si el cliente cierra la conexión o sale sin apagar.
+lsp: ejecuta el servidor JSON-RPC 2.0 sobre stdio y reserva stdout para respuestas y notificaciones con framing `Content-Length`. Limita el bloque de cabeceras a 8 KiB y el cuerpo a 8 MiB; una longitud ausente, duplicada, mal formada o excesiva termina el transporte con error. El lector puede procesar `$/cancelRequest` mientras el worker analiza, y mantiene hasta ocho consultas pendientes; una cola llena responde con error JSON-RPC `-32802`. Las notificaciones (por ejemplo ráfagas de `didOpen` al restaurar pestañas) comparten la cola del worker con un límite de 256 mensajes pendientes, independiente del de consultas; superarlo termina el transporte con error, porque descartar una notificación dejaría al servidor con un estado distinto del cliente.
+El servidor atiende sincronización incremental, diagnósticos, compleción, información emergente, ayuda de firma, navegación, resaltado, símbolos de documento/workspace, `prepareRename`, `rename`, `semanticTokens/full`, formato y ayuda. Las capacidades de workspace, rename transaccional, diagnósticos relacionados y tokens semánticos se anuncian solo según la negociación del cliente. Antes de pedir rename, el cliente materializa documentos cerrados encontrados por referencias, los sincroniza con sus versiones vigentes y recalcula `prepareRename` y referencias; las ediciones llevan esas versiones y el servidor rechaza la propuesta completa si falta una fuente sincronizada. Termina con código 0 tras `shutdown` y `exit`, y con 1 si la entrada se cierra antes de completar el ciclo de vida.
+Las respuestas a cancelación, consultas en cola y el worker serializan escrituras mediante el mismo bloqueo de salida para que los bytes del protocolo no se mezclen. El cliente LSP no recibe logs por stdout; los errores de framing y E/S terminan el proceso y se informan por stderr del anfitrión.
 
 compilar/build: lee y analiza la fuente con la API (`build_native_object`), y solo si no hay errores enlaza el objeto con
 la biblioteca del runtime incrustada en `pseudo` (`include_bytes!`) usando el driver `cc`, en un directorio temporal que se
@@ -259,6 +261,39 @@ Decisiones:
 - `compilar` genera un único objeto del grafo cerrado (`build_native_project_object`) con la tabla de nombres de fuente
   incrustada en el ejecutable; el código de salida de un fallo de ejecución del binario sigue siendo 3, como en archivo suelto.
 - `--json` de `comprobar` imprime la respuesta de `analyze_project`; en `ejecutar`, la de `execute_project`.
+
+### Modo editor de `ejecutar` (`--editor`)
+
+`pseudo ejecutar --editor` (archivo suelto, o `--proyecto <directorio> --entrada <ruta lógica>`) es el borde con el que un
+cliente de editor ejecuta un programa interactivo sin depurador ni DAP. Problema: `Leer` necesita entrada incremental, la
+salida del programa no puede confundirse con el protocolo y una ejecución en bucle debe poder cancelarse. Elección: líneas
+JSON en ambos sentidos, con una sesión por proceso; la identidad de sesión es el propio proceso y no hay multiplexación.
+Se descartó reutilizar el protocolo de observación SEE como API de producto y crear un protocolo de depuración paralelo.
+
+- **Salida estándar, solo eventos** (una línea JSON, claves en este orden): `hello` (`schema` 1, `capabilities`, `limits`),
+  `output` (`text`), `awaiting_input`, `diagnostics` (`diagnostics`, `project_errors`, `sources`), `protocol_error`
+  (`reason`) y `finished` (`status`, `termination`, `exit_code`). `hello` abre siempre y `finished` cierra siempre.
+  La salida del programa viaja como texto dentro de `output`: un programa que imprime JSON no fabrica eventos. La salida de
+  error queda reservada a fallos técnicos del proceso.
+- **Entrada estándar, una orden por línea:** `{"command":"input","text":…}` (la cadena vacía es una línea válida),
+  `{"command":"cancel"}` y `{"command":"close"}`. Un hilo lector aparte entrega las órdenes por un canal, de modo que
+  `cancel` se atiende entre lotes de 4096 pasos de VM y mientras se espera entrada. Las líneas de entrada que llegan antes
+  de que `Leer` las espere se encolan (hasta 1024). EOF con el programa en marcha no lo detiene; EOF con `Leer` esperando
+  termina con `input_closed`. Una entrada de tipo inválido sigue esperando, igual que en la ejecución normal.
+- **Estados de `finished.status`:** `completed` (código 0), `failed`, `cancelled`, `input_closed`, `output_limit` y
+  `protocol_error` (todos código 1). Un uso incorrecto (sin `--entrada`, archivo ausente) se reporta con el código de uso
+  u operativo habitual antes de emitir cualquier evento.
+- **Límites:** órdenes de hasta 65 536 bytes (`command_bytes`), salida acumulada de hasta 1 048 576 bytes (`output_bytes`;
+  la respuesta de la API acumula la salida, por lo que un tope mayor costaría memoria cuadrática en bucles que imprimen).
+  Cancelar, cerrar o superar un límite libera el recurso de ejecución; la API no tiene cancelación de espera de entrada, por
+  lo que cancelar una espera es dejar de alimentar y liberar el recurso.
+- **Permisos:** no se concede ningún archivo ni red; una ejecución que pidiera un efecto físico no declarado termina como
+  `failed`. Los permisos proceden únicamente de concesiones explícitas del usuario, nunca del workspace.
+
+El proyecto se carga con el mismo lector confinado que `comprobar`, se arranca con la operación `start_project` de la API y
+la CLI no duplica el compilador de proyectos. `src/editor_protocol.rs` define mensajes y límites, `src/editor_session.rs` el
+bombeo de lotes, entrada y cancelación sobre puertos (canal y escritor) y `src/editor_command.rs` el arranque y el hilo lector.
+Los tests unitarios usan canal y escritor falsos; `tests/editor_process.rs` ejercita el proceso real con archivo y proyecto.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

@@ -12,6 +12,11 @@ use crate::on_type::on_type;
 use crate::positions::offset_at;
 use serde_json::{Value, json};
 
+struct CompletionPresentation {
+    rank: usize,
+    snippets: bool,
+}
+
 impl LspServer {
     pub(crate) fn handle_completion(&self, message: &Value) -> Value {
         let uri = text_document_uri(message);
@@ -25,7 +30,17 @@ impl LspServer {
                     .entries
                     .iter()
                     .enumerate()
-                    .map(|(rank, entry)| completion_row(session, entry, &result.text_edit, rank))
+                    .map(|(rank, entry)| {
+                        completion_row(
+                            session,
+                            entry,
+                            &result.text_edit,
+                            CompletionPresentation {
+                                rank,
+                                snippets: self.client_snippets,
+                            },
+                        )
+                    })
                     .collect()
             })
             .unwrap_or_default();
@@ -85,6 +100,11 @@ impl LspServer {
 
     pub(crate) fn handle_definition(&self, message: &Value) -> Value {
         let uri = text_document_uri(message);
+        if self.workspace_session.is_some()
+            && let Some(response) = self.project_definition(uri, message)
+        {
+            return response;
+        }
         let result = self.service.session(uri).and_then(|session| {
             let position = position_from_request(session.text(), message);
             let range = session.queries().definition(position)?;
@@ -99,6 +119,11 @@ impl LspServer {
             .pointer("/params/context/includeDeclaration")
             .and_then(Value::as_bool)
             .unwrap_or(true);
+        if self.workspace_session.is_some()
+            && let Some(response) = self.project_references(uri, message, include_declaration)
+        {
+            return response;
+        }
         let locations: Vec<Value> = self
             .service
             .session(uri)
@@ -201,15 +226,15 @@ fn completion_row(
     session: &DocumentSession,
     entry: &CompletionEntry,
     replace: &CompletionTextEdit,
-    rank: usize,
+    presentation: CompletionPresentation,
 ) -> Value {
     let structured = !matches!(entry.action, CompletionAction::Plain);
     let (text, format) = if structured {
         let insertion = build_insertion(entry, replace, session.text(), session.profile);
-        (
-            insertion.lsp_snippet.unwrap_or_else(|| entry.label.clone()),
-            2,
-        )
+        match (presentation.snippets, insertion.lsp_snippet) {
+            (true, Some(snippet)) => (snippet, 2),
+            _ => (insertion.edit.text, 1),
+        }
     } else {
         (
             entry
@@ -225,6 +250,6 @@ fn completion_row(
         "detail": entry.detail,
         "insertText": text,
         "insertTextFormat": format,
-        "sortText": format!("{rank:05}")
+        "sortText": format!("{:05}", presentation.rank)
     })
 }

@@ -12,15 +12,79 @@
   "packageManager": "pnpm@12.8.1",
   "main": "./dist/extension.js",
   "extensionKind": ["workspace"],
-  "activationEvents": ["onStartupFinished"],
+  "activationEvents": ["onStartupFinished", "onLanguage:pseudolearn"],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": "limited",
+      "description": "PseudoLearn provides declarative highlighting in Restricted Mode. Executable overrides require a trusted development workspace.",
+      "restrictedConfigurations": ["pseudolearn.server.path"]
+    }
+  },
   "contributes": {
     "languages": [
       {
         "id": "pseudolearn",
         "aliases": ["PseudoLearn", "pseudolearn"],
-        "extensions": [".pseudo"]
+        "extensions": [".pseudo"],
+        "configuration": "./media/language-configuration.json"
       }
-    ]
+    ],
+    "grammars": [
+      {
+        "language": "pseudolearn",
+        "scopeName": "source.pseudolearn",
+        "path": "./media/pseudolearn.tmLanguage.json"
+      }
+    ],
+    "commands": [
+      { "command": "pseudolearn.runFile", "title": "Run File", "category": "PseudoLearn" },
+      { "command": "pseudolearn.runProject", "title": "Run Project", "category": "PseudoLearn" },
+      { "command": "pseudolearn.stopRun", "title": "Stop Run", "category": "PseudoLearn" },
+      { "command": "pseudolearn.selectEntry", "title": "Select Project Entry", "category": "PseudoLearn" },
+      { "command": "pseudolearn.explain", "title": "Explain at Cursor", "category": "PseudoLearn" },
+      { "command": "pseudolearn.translate", "title": "Translate Vocabulary", "category": "PseudoLearn" },
+      { "command": "pseudolearn.restartServer", "title": "Restart Language Server", "category": "PseudoLearn" }
+    ],
+    "keybindings": [
+      {
+        "command": "pseudolearn.explain",
+        "key": "ctrl+k ctrl+e",
+        "mac": "cmd+k cmd+e",
+        "when": "editorLangId == pseudolearn"
+      }
+    ],
+    "configuration": {
+      "title": "PseudoLearn",
+      "properties": {
+        "pseudolearn.profile": {
+          "type": "string",
+          "enum": ["es", "en"],
+          "default": "es",
+          "scope": "window",
+          "description": "Fallback vocabulary profile for workspace analyses."
+        },
+        "pseudolearn.strictness": {
+          "type": "string",
+          "enum": ["strict", "flexible"],
+          "default": "strict",
+          "scope": "window",
+          "description": "Analysis strictness for this workspace."
+        },
+        "pseudolearn.interfaceLanguage": {
+          "type": "string",
+          "enum": ["es", "en"],
+          "default": "es",
+          "scope": "machine",
+          "description": "Personal language for PseudoLearn diagnostics and extension messages."
+        },
+        "pseudolearn.server.path": {
+          "type": "string",
+          "default": "",
+          "scope": "machine",
+          "description": "Absolute user-only path to a development server executable."
+        }
+      }
+    }
   },
   "files": [
     "README.md",
@@ -28,7 +92,8 @@
     "third-party-notices.md",
     "package.json",
     "dist/**",
-    "bin/**"
+    "bin/**",
+    "media/**"
   ],
   "scripts": {
     "check:types": "tsc --noEmit",
@@ -36,8 +101,10 @@
     "check:comments": "node scripts/check-comments.mjs",
     "check:size": "node scripts/check-size.mjs",
     "check:package": "node scripts/check-package.mjs",
+    "generate:grammar": "node scripts/generate-grammar.mjs",
+    "check:grammar": "node scripts/generate-grammar.mjs --check",
     "test": "vitest run",
-    "build": "node scripts/build.mjs",
+    "build": "pnpm check:grammar && node scripts/build.mjs",
     "package": "pnpm build && node scripts/package.mjs"
   },
   "dependencies": {
@@ -49,6 +116,8 @@
     "@vscode/vsce": "4.0.0",
     "esbuild": "0.28.2",
     "typescript": "6.0.3",
+    "vscode-oniguruma": "1.7.0",
+    "vscode-textmate": "9.3.2",
     "vitest": "5.0.4"
   }
 }

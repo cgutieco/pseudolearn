@@ -1,5 +1,4 @@
 use crate::completion::{CompletionQuery, CompletionResult, complete_at_position_with_edit};
-use crate::formatter::{FormatOptions, format_source};
 use crate::help_catalog::HelpLocale;
 use crate::hover::{HoverOutcome, SignatureHelp, hover_at_position, signature_help_at_position};
 use crate::navigation::{
@@ -217,7 +216,9 @@ impl LanguageService {
         self.sessions.get(uri)
     }
 
-    pub fn format_text(&self, text: &str, options: FormatOptions) -> String {
-        format_source(text, options)
+    pub fn documents(&self) -> impl Iterator<Item = (&str, &DocumentSession)> {
+        self.sessions
+            .iter()
+            .map(|(uri, session)| (uri.as_str(), session))
     }
 }

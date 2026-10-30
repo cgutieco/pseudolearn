@@ -1,8 +1,8 @@
-use crate::hir::{HirClass, HirFunction, HirModule};
+use crate::hir::HirModule;
 use crate::identities::TypeId;
 pub use crate::service_model::*;
 use crate::session::{AnalysisSession, SemanticOptions};
-use pseudolearn_source::{SourceText, Span};
+use pseudolearn_source::{SourceId, SourceText, Span};
 use pseudolearn_syntax::SyntaxTree;
 
 impl ServiceAnalysis {
@@ -40,16 +40,32 @@ impl ServiceAnalysis {
         find_definition_span(&self.module, reference.target)
     }
 
-    pub fn references_at_byte_offset(&self, offset: usize) -> Vec<ServiceReference> {
-        let Some(reference) = innermost_reference(&self.occurrences, offset) else {
-            return Vec::new();
-        };
-        let target = reference.target;
+    pub fn reference_at_source_offset(
+        &self,
+        source_id: SourceId,
+        offset: usize,
+    ) -> Option<&ServiceReference> {
+        let position = u32::try_from(offset).unwrap_or(u32::MAX);
         self.occurrences
             .iter()
-            .filter(|candidate| candidate.target == target)
+            .filter(|reference| {
+                reference.span.source_id == source_id
+                    && reference.span.start <= position
+                    && position <= reference.span.ending
+            })
+            .min_by_key(|reference| reference.span.length())
+    }
+
+    pub fn references_for_target(&self, target: ServiceSymbolTarget) -> Vec<ServiceReference> {
+        self.occurrences
+            .iter()
+            .filter(|reference| reference.target == target)
             .cloned()
             .collect()
+    }
+
+    pub fn definition_span(&self, target: ServiceSymbolTarget) -> Option<Span> {
+        find_definition_span(&self.module, target)
     }
 
     pub fn visible_symbols_at_span(&self, span: Span) -> Vec<&ServiceSymbol> {
@@ -62,20 +78,21 @@ impl ServiceAnalysis {
             .find(|(candidate, _)| *candidate == span)
             .map(|(_, type_id)| *type_id)
     }
+}
 
-    pub fn class_by_name(&self, name: &str) -> Option<&HirClass> {
-        self.module
-            .classes
-            .iter()
-            .find(|class| class.name.eq_ignore_ascii_case(name))
-    }
-
-    pub fn function_by_name(&self, name: &str) -> Option<&HirFunction> {
-        self.module
-            .functions
-            .iter()
-            .find(|func| func.name.eq_ignore_ascii_case(name))
-    }
+pub fn references_at_byte_offset(
+    analysis: &ServiceAnalysis,
+    offset: usize,
+) -> Vec<ServiceReference> {
+    let Some(reference) = innermost_reference(&analysis.occurrences, offset) else {
+        return Vec::new();
+    };
+    analysis
+        .occurrences
+        .iter()
+        .filter(|candidate| candidate.target == reference.target)
+        .cloned()
+        .collect()
 }
 
 fn contains_offset(span: Span, offset: usize) -> bool {
@@ -150,6 +167,35 @@ pub fn analyze_for_service(
     ServiceAnalysis {
         module: session.module,
         diagnostics: session.diagnostics,
+        symbols,
+        occurrences,
+        expression_types,
+    }
+}
+
+pub fn service_analysis_from_project(
+    module: HirModule,
+    diagnostics: Vec<pseudolearn_diagnostics::Diagnostic>,
+) -> ServiceAnalysis {
+    let mut symbols = Vec::new();
+    let mut occurrences = Vec::new();
+    crate::service_collection::collect_symbols(
+        &module,
+        &std::collections::BTreeSet::new(),
+        &mut symbols,
+        &mut occurrences,
+    );
+    crate::service_collection::collect_expression_occurrences(&module, &mut occurrences);
+    let expression_types = module
+        .expressions
+        .spans
+        .iter()
+        .copied()
+        .zip(module.expressions.types.iter().copied())
+        .collect();
+    ServiceAnalysis {
+        module,
+        diagnostics,
         symbols,
         occurrences,
         expression_types,

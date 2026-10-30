@@ -92,6 +92,7 @@ fn apply_switch(flag: &str, parsed: &mut ParsedArguments) -> bool {
         "--json" => parsed.json_output = true,
         "--traza" | "--trace" => parsed.execution.trace = true,
         "--nativo" | "--native" => parsed.execution.native = true,
+        "--editor" => parsed.execution.editor = true,
         "--verificar" | "--check" => parsed.format_action = FormatAction::CheckOnly,
         "--escribir" | "--write" | "-w" => parsed.format_action = FormatAction::WriteInPlace,
         _ => return false,
