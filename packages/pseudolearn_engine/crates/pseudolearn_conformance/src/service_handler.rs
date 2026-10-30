@@ -31,6 +31,7 @@ pub fn handle_service_request(raw: &Value) -> Value {
         "incremental" => handle_incremental(&request),
         "node_identity" => handle_node_identity(&request),
         "random_probe" => handle_random_probe(&request),
+        "workspace" => crate::service_workspace::handle(&request),
         "lsp" => crate::lsp_handler::handle_lsp(raw),
         other => json!({ "error": format!("unsupported service operation: {other}") }),
     }

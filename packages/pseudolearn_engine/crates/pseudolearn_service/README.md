@@ -2,14 +2,14 @@
 
 ## 1. Qué es y qué no es
 
-Proporciona las herramientas de edición del lenguaje: sesiones de documento con edición por rango, identidad estable de nodos, autocompletado bilingüe, navegación (definición, referencias, resaltado, símbolos), información emergente y ayuda de firma, formateador canónico, traductor entre perfiles y servidor de Language Server Protocol.
+Proporciona las herramientas de edición del lenguaje: sesiones de documento con edición por rango, sesión persistente de proyecto con fuentes cerradas y overlays, análisis semántico de workspace, identidad estable de nodos, autocompletado bilingüe, navegación (definición, referencias, resaltado, símbolos), información emergente y ayuda de firma, formateador canónico, traductor entre perfiles y servidor de Language Server Protocol.
 
 Fuera de alcance: ejecución del motor, máquinas virtuales, interfaz de línea de comandos y interfaces gráficas. Tampoco hay inteligencia generativa: todo resultado se deriva de la gramática, del vocabulario bilingüe y del análisis semántico, y es determinista.
 
 | Pendiente | Motivo | Condición de resolución |
 |---|---|---|
 | Reutilizar resultados semánticos entre ediciones | Cada edición reconstruye árbol, análisis e índice del documento completo; las huellas por unidad solo informan qué unidades cambiaron. El costo medido cumple el presupuesto de latencia hasta diez mil líneas | Un presupuesto de latencia que el reanálisis completo deje de cumplir, o documentos de decenas de miles de líneas |
-| Extensión mínima para VS Code | Opcional; el servidor LSP ya sirve a cualquier editor compatible | Decisión de producto sobre distribución de extensiones |
+| Reutilización semántica incremental entre módulos | El workspace conserva revisiones, firmas y dependencias; cada actualización vuelve a analizar el snapshot completo para preservar igualdad exacta con el análisis frío | Perfil de coste medido y experimento E-PG-02 |
 
 ## 2. Guía operativa y ciclo de vida
 
@@ -20,11 +20,16 @@ Rust exacto del miembro, rustfmt y Clippy. Biblioteca del workspace; no se despl
 
 ## 3. Arquitectura y modelo del sistema
 
-Nivel 6. Importa `pseudolearn_source`, `pseudolearn_diagnostics`, `pseudolearn_lexicon`, `pseudolearn_syntax` y `pseudolearn_semantic`; externas: biblioteca estándar, `serde` y `serde_json`. Prohibido importar ejecución, máquina virtual, AOT o CLI.
+Nivel 6. Importa `pseudolearn_source`, `pseudolearn_diagnostics`, `pseudolearn_lexicon`, `pseudolearn_syntax`, `pseudolearn_semantic` y `pseudolearn_project`; externas: biblioteca estándar, `serde` y `serde_json`. Prohibido importar ejecución, máquina virtual, AOT, API o CLI.
+
+`workspace_session` separa la sesión persistente del proyecto de `DocumentSession`. El llamador entrega el snapshot completo, las configuraciones ya interpretadas y el contenido de manifiestos y lock como `dependency_inputs`; el servicio nunca abre archivos ni consulta el sistema de archivos. Los overlays se conservan por clave lógica y versión de documento. Al cerrar se toma la fuente del snapshot más reciente, y si la ruta desapareció el módulo deja de formar parte del catálogo. `resynchronize` acepta repetir la revisión observada porque su comparación es por contenido completo, no por marcas de tiempo.
+
+El índice de workspace compara el texto completo, source IDs, paquetes, configuraciones, entradas de dependencias, perfiles y firmas/unidades. El cambio de cuerpo informa el módulo editado, mientras que el cambio de firma propaga invalidación por el grafo de imports hacia sus dependientes transitivos. Cada paso vuelve a analizar el snapshot efectivo completo; la comparación de invalidación no afirma que exista reutilización de resultados semánticos.
 
 | Módulo | Responsabilidad |
 |---|---|
 | `document_session` | Sesión de un documento: texto, árbol, diagnósticos, análisis, índice de símbolos y huellas; edición por rango; consultas mediante `SessionQueries` |
+| `workspace_session`, `workspace_analysis`, `workspace_invalidation` | Snapshot de proyecto, overlay por ruta, consulta de archivos cerrados, reanálisis y cierre que restaura la fuente vigente; comparación de firmas y propagación de invalidación por imports |
 | `unit_partition` | Huellas de firma y de cuerpo por unidad de nivel superior; informe de unidades sin cambios o afectadas |
 | `node_identity` | Identidad estable de nodos anclada a la unidad (nombre, tipo y ordinal entre homónimas) |
 | `symbol_index` | Nombres de símbolos ubicados por token: declaraciones, usos y escrituras |
@@ -48,6 +53,10 @@ La resolución por posición selecciona solo tokens reales: el comienzo pertenec
 ## 4. Decisiones de diseño y fundamentos técnicos
 
 La sesión de edición conserva una sola fuente y su revisión local; no deduce la identidad del archivo a partir del nombre ni resuelve localizaciones de otra revisión. La identidad compuesta pertenece a la tabla de fuentes del llamador. Las posiciones del servicio siguen siendo locales al texto y se convierten entre escalares Unicode y UTF-16 en límites exactos.
+
+El workspace recibe snapshots completos ya confinados por el anfitrión. Las rutas y archivos se modelan con `pseudolearn_project`; el servicio no lee el disco. Un overlay reemplaza el texto de disco mientras el documento está abierto, sobrevive a snapshots donde ese archivo fue borrado y al cerrarse vuelve a la fuente más reciente o desaparece si ya no existe. Las versiones de documento y de workspace deben avanzar; una resincronización completa acepta igual revisión del anfitrión para recuperar eventos omitidos.
+
+La igualdad con el análisis frío es el invariante. Cada actualización analiza el catálogo completo, compara las huellas existentes de firma y cuerpo y propaga invalidación solo desde firmas o estructura de módulo por el grafo semántico de imports. Un cambio de cuerpo afecta el módulo editado, no invalida firmas dependientes. No se conserva caché semántica ni se introduce un framework de cómputo incremental antes de E-PG-02.
 
 Problema: mantener un documento editable con latencia baja. Elección: la sesión aplica ediciones por rango (posiciones en caracteres; en el protocolo, unidades UTF-16), reconstruye árbol, análisis e índice y calcula las huellas de firma y de cuerpo de cada unidad para informar qué unidades cambiaron y si alguna firma se invalidó. Las huellas emparejan unidades por nombre, tipo y ordinal, de modo que homónimas y renombrados no falsean el informe. La equivalencia con el análisis desde cero es verificable (`matches_cold_analysis`) y se somete a secuencias de ediciones aleatorias. Alternativas descartadas: dependencias de cómputo incremental (`salsa`, `rowan`), que duplican el árbol plano existente, y una caché de resultados semánticos por unidad, que exige desplazar todos los intervalos posteriores a la edición y no se justifica con las latencias medidas.
 

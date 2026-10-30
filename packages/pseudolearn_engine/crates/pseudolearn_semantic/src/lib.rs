@@ -75,6 +75,7 @@ mod operator_types;
 mod operators;
 mod postfix_checker;
 pub mod project_analysis;
+pub mod project_profile;
 mod record_access;
 mod record_cycles;
 mod record_locals;
@@ -114,7 +115,10 @@ pub use hir::{
 pub use identities::{
     ClassId, EnumId, ExpressionId, FieldId, FunctionId, LocalId, RecordId, StatementId, TypeId,
 };
-pub use project_analysis::{ProjectUnit, analyze_project};
+pub use project_analysis::{
+    ProjectAnalysis, ProjectUnit, analyze_project, analyze_project_detailed,
+};
+pub use project_profile::{ResolvedUnitProfile, resolve_project_profiles};
 pub use service_analysis::{
     ServiceAnalysis, ServiceReference, ServiceSymbol, ServiceSymbolCategory, ServiceSymbolTarget,
     analyze_for_service,

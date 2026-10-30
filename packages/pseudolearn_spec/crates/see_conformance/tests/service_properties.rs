@@ -156,6 +156,32 @@ fn probe_not_applicable(_: &Value) -> Value {
     service(json!({ "aplicable": false }))
 }
 
+fn workspace_consistent(_: &Value) -> Value {
+    service(json!({ "coincide_con_frio": true }))
+}
+
+fn workspace_divergent(_: &Value) -> Value {
+    service(json!({ "coincide_con_frio": false }))
+}
+
+#[test]
+fn workspace_property_requires_cold_equivalence_and_order_independence() -> Result<(), String> {
+    let capabilities = json!(["service"]);
+    let good = verdict(
+        PropertyExecutor::ServiceWorkspace,
+        capabilities.clone(),
+        workspace_consistent,
+    )?;
+    assert_eq!(good.verdict, "cumple");
+    let bad = verdict(
+        PropertyExecutor::ServiceWorkspace,
+        capabilities,
+        workspace_divergent,
+    )?;
+    assert_eq!(bad.verdict, "incumple");
+    Ok(())
+}
+
 #[test]
 fn incremental_and_identity_properties_follow_the_probe_answer() -> Result<(), String> {
     let capabilities = json!(["service"]);

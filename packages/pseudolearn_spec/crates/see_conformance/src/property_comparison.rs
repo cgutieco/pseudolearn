@@ -17,7 +17,8 @@ pub(crate) fn available(executor: PropertyExecutor, declaration: &Value) -> bool
         | PropertyExecutor::ServiceIncremental
         | PropertyExecutor::ServiceCompletionTemplates
         | PropertyExecutor::ServiceFormat
-        | PropertyExecutor::ServiceTranslate => "service",
+        | PropertyExecutor::ServiceTranslate
+        | PropertyExecutor::ServiceWorkspace => "service",
         _ => "api",
     };
     let offered = |name: &str| {
@@ -113,7 +114,8 @@ fn check_syntax_or_service(
         | PropertyExecutor::ServiceIncremental
         | PropertyExecutor::ServiceCompletionTemplates
         | PropertyExecutor::ServiceFormat
-        | PropertyExecutor::ServiceTranslate => {
+        | PropertyExecutor::ServiceTranslate
+        | PropertyExecutor::ServiceWorkspace => {
             crate::property_service::check(executor, scenario, subject)
         }
         _ => Err("SEE-PROPERTY: executor unavailable".to_owned()),

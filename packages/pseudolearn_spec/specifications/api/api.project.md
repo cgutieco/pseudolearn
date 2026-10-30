@@ -77,6 +77,18 @@
 }
 ```
 
+```regla
+{
+  "id": "R3",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Cada operación de proyecto analiza exclusivamente el snapshot completo recibido en esa llamada. project_id y revision_id identifican el proyecto y su revisión; no retienen overlays ni incorporan archivos, manifiestos o dependencias que no estén en la petición.",
+  "verificacion": [
+    "C17"
+  ]
+}
+```
+
 ```caso
 {
   "id": "C12",
@@ -1223,6 +1235,82 @@
             "family": "usage"
           }
         }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C17",
+  "regla": "R3",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "analyze_project",
+        "arguments": {
+          "profile": "es",
+          "strictness": "strict",
+          "project": {
+            "project_id": "9",
+            "revision_id": "1",
+            "packages": [
+              {
+                "name": "app",
+                "root": "app",
+                "kind": "application",
+                "entries": ["app/main"],
+                "dependencies": {}
+              }
+            ],
+            "files": [
+              {"path": "app/main", "source_id": 1, "text": "Algoritmo P\nFinAlgoritmo\n"}
+            ]
+          }
+        }
+      },
+      {
+        "operation": "analyze_project",
+        "arguments": {
+          "profile": "es",
+          "strictness": "strict",
+          "project": {
+            "project_id": "9",
+            "revision_id": "2",
+            "packages": [
+              {
+                "name": "app",
+                "root": "app",
+                "kind": "application",
+                "entries": ["app/main"],
+                "dependencies": {}
+              }
+            ],
+            "files": [
+              {"path": "app/main", "source_id": 1, "text": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n"}
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {"value": {"diagnostics": [], "project_errors": []}},
+        {"value": {"diagnostics": [], "project_errors": []}}
       ]
     }
   },

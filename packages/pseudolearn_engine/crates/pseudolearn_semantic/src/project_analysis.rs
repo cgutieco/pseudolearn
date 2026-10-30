@@ -6,7 +6,7 @@ use crate::module_symbols::{SymbolKind, UnitDeclarations, collect};
 use crate::session::{AnalysisSession, SemanticOptions, UnitView};
 use pseudolearn_diagnostics::{Diagnostic, DiagnosticSeverity};
 use pseudolearn_lexicon::Profile;
-use pseudolearn_project::{ModuleId, ProjectCatalog};
+use pseudolearn_project::{ImportEdge, ModuleId, ProjectCatalog};
 use pseudolearn_source::SourceText;
 use pseudolearn_syntax::{NodeKind, SyntaxTree};
 use std::collections::BTreeMap;
@@ -18,6 +18,12 @@ pub struct ProjectUnit<'syntax> {
     pub profile: Profile,
 }
 
+pub struct ProjectAnalysis {
+    pub hir: Option<HirModule>,
+    pub diagnostics: Vec<Diagnostic>,
+    pub imports: Vec<ImportEdge>,
+}
+
 type ClassTable = BTreeMap<(usize, String), ClassId>;
 type FunctionTable = BTreeMap<(usize, String), FunctionId>;
 
@@ -27,8 +33,22 @@ pub fn analyze_project(
     entry: Option<ModuleId>,
     options: SemanticOptions,
 ) -> (Option<HirModule>, Vec<Diagnostic>) {
+    let result = analyze_project_detailed(catalog, units, entry, options);
+    (result.hir, result.diagnostics)
+}
+
+pub fn analyze_project_detailed(
+    catalog: &ProjectCatalog,
+    units: &[ProjectUnit<'_>],
+    entry: Option<ModuleId>,
+    options: SemanticOptions,
+) -> ProjectAnalysis {
     if units.iter().any(|unit| unit.tree.has_errors) {
-        return (None, Vec::new());
+        return ProjectAnalysis {
+            hir: None,
+            diagnostics: Vec::new(),
+            imports: Vec::new(),
+        };
     }
     let views = units
         .iter()
@@ -39,7 +59,11 @@ pub fn analyze_project(
         })
         .collect();
     let Some(mut session) = AnalysisSession::for_units(views, options) else {
-        return (Some(HirModule::default()), Vec::new());
+        return ProjectAnalysis {
+            hir: Some(HirModule::default()),
+            diagnostics: Vec::new(),
+            imports: Vec::new(),
+        };
     };
     session.module.units.qualifiers = units
         .iter()
@@ -48,8 +72,13 @@ pub fn analyze_project(
     let declarations = declarations(&mut session);
     let mut resolver = ExportResolver::new(catalog, declarations, unit_profiles(units));
     let bindings = resolve_links(&mut session, &mut resolver);
-    if crate::module_cycles::report(&mut session, catalog, units, &resolver) {
-        return (None, session.diagnostics);
+    let imports = crate::module_cycles::import_edges(units, &resolver);
+    if crate::module_cycles::report(&mut session, catalog, &imports) {
+        return ProjectAnalysis {
+            hir: None,
+            diagnostics: session.diagnostics,
+            imports,
+        };
     }
     register(&mut session, &mut resolver, &bindings);
     crate::module_structure::check(&mut session, catalog, units);
@@ -59,7 +88,11 @@ pub fn analyze_project(
         .diagnostics
         .iter()
         .any(|diagnostic| diagnostic.severity == DiagnosticSeverity::Error);
-    (valid.then_some(session.module), session.diagnostics)
+    ProjectAnalysis {
+        hir: valid.then_some(session.module),
+        diagnostics: session.diagnostics,
+        imports,
+    }
 }
 
 fn unit_profiles(units: &[ProjectUnit<'_>]) -> Vec<Profile> {

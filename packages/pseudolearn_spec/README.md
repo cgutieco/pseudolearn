@@ -90,9 +90,9 @@ dependencia de documentación transitoria.
 El inventario 2026 deriva palabras reservadas de `vocabulary`, operadores de las producciones de
 expresión y asignación, e incorporadas de `functions` y `capabilityLibrary`. Las 41 agrupaciones
 pedagógicas se declaran como datos con sus producciones fuente; no se infieren de la EBNF. Las 129
-identidades de palabras reservadas, 17 operadores y 72 funciones incorporadas se explican en el
-contexto de una ficha mediante partes es/en. La matriz contiene 374 filas identidad/rol: 139 de
-keyword, 20 de operador, 72 de incorporada, 15 de token no alfabético y 128 de rol. Los alias
+identidades de palabras reservadas, 17 operadores y 90 identidades incorporadas se explican en el
+contexto de una ficha mediante partes es/en. La matriz contiene 410 filas identidad/rol: 139 de
+keyword, 20 de operador, 90 de incorporada, 15 de token no alfabético y 146 de rol. Los alias
 conservan la identidad de su entrada fuente y no generan filas adicionales. Las fichas se
 redactan en ambos idiomas desde sus reglas ancladas; antes de mantener el inventario se revisan
 texto, identidades, disponibilidad, anclajes y la matriz completa. Cada elemento activo debe llegar
@@ -255,9 +255,9 @@ semilla y cantidad de muestras. Incluye las treinta propiedades del motor y la C
 API y reimpresión heredadas; omitir una propiedad del sujeto es un error de vínculo. El archivo de datos conserva los vínculos regla–código y la validación
 rechaza duplicados, referencias retiradas y cantidades cero. Registrar un vínculo no es evidencia de ejecución.
 Las propiedades de las herramientas de edición (`service_format`, `service_translate`, `service_incremental`,
-`service_node_identity`, `service_completion_templates`) se ejecutan contra el sujeto `service` sobre cada programa de
+`service_workspace`, `service_node_identity`, `service_completion_templates`) se ejecutan contra el sujeto `service` sobre cada programa de
 ejecución del corpus: verifican idempotencia del formateo, identidad de la doble traducción, equivalencia de la edición
-incremental con el análisis desde cero, estabilidad de la identidad de nodos ante ediciones locales y validez sintáctica de
+incremental con el análisis desde cero, equivalencia del workspace y orden de archivos, estabilidad de la identidad de nodos ante ediciones locales y validez sintáctica de
 las plantillas. Un ejecutor que no encuentra contraejemplo en un sujeto sin la capacidad `service` queda `pendiente`, nunca `cumple`.
 Las propiedades de reimpresión y recuperación sin pérdida también las ejecuta el sujeto `service`.
 

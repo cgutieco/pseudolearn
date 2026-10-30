@@ -95,7 +95,7 @@ Los niveles siguientes solo importan los anteriores permitidos explícitamente.
 | 5 | pseudolearn_library | Implementa conversiones, texto, bytes, JSON e intrínsecos matemáticos | runtime, diagnostics |
 | 6 | pseudolearn_aot_rt | Frontera `extern "C"` entre código nativo generado y runtime: contexto `#[repr(C)]`, asignación, acceso a memoria, celdas, texto, matemática, azar, E/S y fallos con sitio | source, abi, diagnostics, runtime, library |
 | 7 | pseudolearn_codegen | Genera el objeto nativo del sujeto `aot` con Cranelift: las 74 operaciones de la RI, con acceso a memoria en línea, despacho virtual, pila de raíces y trampa fría compartida con identidad por sitio; en modo ejecutable añade `main` y los metadatos | ir, diagnostics, aot_rt |
-| 6 | pseudolearn_service | Proporciona análisis incremental por unidad, autocompletado bilingüe, hover, formateo canónico, traducción y sesión LSP | source, diagnostics, lexicon, syntax, semantic |
+| 6 | pseudolearn_service | Proporciona análisis incremental por unidad, sesión persistente de workspace, consultas bilingües y sesión LSP | source, diagnostics, lexicon, syntax, semantic, project |
 | 6 | pseudolearn_vm | Ejecuta bytecode verificado y devuelve terminación, servicio o trampa tipada | bytecode, runtime, library, diagnostics, vm_dispatch (compilación) |
 | 7 | pseudolearn_timeline | Reconstruye el estado observable de cualquier instante mediante puntos de control | vm, runtime, bytecode, diagnostics |
 | 8 | pseudolearn_api | Ofrece operaciones públicas totales sobre recursos del núcleo | source, project, abi, diagnostics, lexicon, syntax, semantic, ir, lowering, bytecode, runtime, library, vm, timeline, service, codegen, aot_rt |

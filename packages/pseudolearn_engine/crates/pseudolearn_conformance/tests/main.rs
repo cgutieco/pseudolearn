@@ -92,3 +92,40 @@ fn rejects_invalid_utf8_without_panicking() -> Result<(), String> {
     assert!(isolated(&[0xff, 0xfe, b'\n'])?.is_empty());
     Ok(())
 }
+
+#[test]
+fn workspace_overlay_repairs_source_and_resolves_a_closed_import() -> Result<(), String> {
+    let request = json!({
+        "kind": "service",
+        "suboperacion": "workspace",
+        "workspace": {
+            "project": {
+                "project_id": "1",
+                "revision_id": "1",
+                "packages": [
+                    {"name": "app", "root": "app", "kind": "application", "entries": ["app/main"], "dependencies": {"geo": "geo"}},
+                    {"name": "geo", "root": "geo", "kind": "library", "entries": [], "dependencies": {}}
+                ],
+                "files": [
+                    {"path": "app/main", "source_id": 1, "text": "@"},
+                    {"path": "geo/vectores", "source_id": 2, "text": "Publico SubProceso Doble(n Como Entero) Como Entero\nRetornar n * 2;\nFinSubProceso\n"}
+                ]
+            },
+            "options": {"profile": "es", "strictness": "strict"}
+        },
+        "actions": [
+            {"operation": "open", "path": "app/main", "version": 1, "text": "Importar geo.vectores.Doble;\nAlgoritmo P\nEscribir Doble(21);\nFinAlgoritmo\n"}
+        ]
+    });
+    let responses = isolated(format!("{request}\n").as_bytes())?;
+    assert_eq!(responses.len(), 1);
+    let result = responses
+        .first()
+        .and_then(|response| response.get("service"))
+        .ok_or("Missing workspace response")?;
+    assert_eq!(result.get("diagnostics"), Some(&json!([])));
+    assert_eq!(result.get("project_errors"), Some(&json!([])));
+    assert_eq!(result.get("errores"), Some(&json!([])));
+    assert_eq!(result.get("coincide_con_frio"), Some(&json!(true)));
+    Ok(())
+}

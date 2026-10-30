@@ -29,6 +29,34 @@ impl Profile {
     }
 }
 
+pub fn detect_opening_profile(source: &str) -> Option<Profile> {
+    let clean = source.trim_start_matches('\u{FEFF}');
+    let mut remainder = clean;
+    loop {
+        remainder = remainder.trim_start();
+        if remainder.starts_with("//") {
+            if let Some(next_line_index) = remainder.find('\n') {
+                remainder = remainder.get(next_line_index..).unwrap_or("");
+                continue;
+            }
+            return None;
+        }
+        if remainder.starts_with("/*") {
+            if let Some(close_index) = remainder.find("*/") {
+                remainder = remainder.get(close_index.saturating_add(2)..).unwrap_or("");
+                continue;
+            }
+            return None;
+        }
+        break;
+    }
+    let first_word: String = remainder
+        .chars()
+        .take_while(|character| character.is_alphabetic() || *character == '_')
+        .collect();
+    crate::detect_opener(&first_word)
+}
+
 pub fn fold_text(text: &str) -> String {
     text.chars()
         .flat_map(char::to_lowercase)

@@ -8,17 +8,19 @@ use pseudolearn_source::Span;
 pub(crate) fn report(
     session: &mut AnalysisSession<'_>,
     catalog: &ProjectCatalog,
-    units: &[ProjectUnit<'_>],
-    resolver: &ExportResolver<'_>,
+    edges: &[ImportEdge],
 ) -> bool {
-    let cycles = module_cycles(catalog, &import_edges(units, resolver));
+    let cycles = module_cycles(catalog, edges);
     for cycle in &cycles {
         report_cycle(session, catalog, cycle);
     }
     !cycles.is_empty()
 }
 
-fn import_edges(units: &[ProjectUnit<'_>], resolver: &ExportResolver<'_>) -> Vec<ImportEdge> {
+pub(crate) fn import_edges(
+    units: &[ProjectUnit<'_>],
+    resolver: &ExportResolver<'_>,
+) -> Vec<ImportEdge> {
     let mut edges = Vec::new();
     for (unit, owner) in units.iter().enumerate() {
         let Some(declarations) = resolver.declarations(unit) else {

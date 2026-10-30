@@ -1537,6 +1537,11 @@
       "estado": "cumple"
     },
     {
+      "regla": "API.PROJECT@1.0.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
       "regla": "LANG.MODULE.IMPORT@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"

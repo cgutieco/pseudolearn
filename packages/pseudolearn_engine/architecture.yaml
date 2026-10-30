@@ -147,7 +147,7 @@ layers:
     unsafe_allowed: false
   - name: pseudolearn_service
     path: crates/pseudolearn_service
-    may_import: [pseudolearn_source, pseudolearn_diagnostics, pseudolearn_lexicon, pseudolearn_syntax, pseudolearn_semantic]
+    may_import: [pseudolearn_source, pseudolearn_diagnostics, pseudolearn_lexicon, pseudolearn_syntax, pseudolearn_semantic, pseudolearn_project]
     external_dependencies: [serde, serde_json]
     unsafe_allowed: false
   - name: pseudolearn_api
@@ -162,7 +162,7 @@ layers:
     unsafe_allowed: true
   - name: pseudolearn_conformance
     path: crates/pseudolearn_conformance
-    may_import: [pseudolearn_api]
+    may_import: [pseudolearn_api, pseudolearn_service, pseudolearn_project]
     external_dependencies: [serde, serde_json]
     unsafe_allowed: false
   - name: pseudolearn_bench_worker

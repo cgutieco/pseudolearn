@@ -35,34 +35,7 @@ fn perform_analysis(request: &AnalyzeRequest) -> AnalyzeResponse {
 }
 
 pub fn detect_vocabulary_profile(source: &str) -> Option<&'static str> {
-    let clean = source.trim_start_matches('\u{FEFF}');
-    let mut remainder = clean;
-    loop {
-        remainder = remainder.trim_start();
-        if remainder.starts_with("//") {
-            if let Some(next_line_index) = remainder.find('\n') {
-                remainder = remainder.get(next_line_index..).unwrap_or("");
-                continue;
-            }
-            return None;
-        }
-        if remainder.starts_with("/*") {
-            if let Some(close_index) = remainder.find("*/") {
-                remainder = remainder.get(close_index.saturating_add(2)..).unwrap_or("");
-                continue;
-            }
-            return None;
-        }
-        break;
-    }
-    let first_word: String = remainder
-        .chars()
-        .take_while(|character| character.is_alphabetic() || *character == '_')
-        .collect();
-    if first_word.is_empty() {
-        return None;
-    }
-    pseudolearn_lexicon::detect_opener(&first_word).map(|profile| profile.as_str())
+    pseudolearn_lexicon::detect_opening_profile(source).map(|profile| profile.as_str())
 }
 
 pub fn line_and_column(source: &str, byte_offset: u32) -> (u32, u32) {

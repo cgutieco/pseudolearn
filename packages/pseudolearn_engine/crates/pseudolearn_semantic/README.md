@@ -19,8 +19,10 @@ La comprobación disponible usa, desde la raíz del monorepo,
 
 ## 3. Arquitectura y modelo del sistema
 
-Nivel 3. Dependencias internas permitidas: pseudolearn_abi, pseudolearn_source, pseudolearn_diagnostics, pseudolearn_lexicon, pseudolearn_syntax. Externas: biblioteca estándar; serde_json solo en pruebas del HIR contra el corpus.
+Nivel 3. Dependencias internas permitidas: pseudolearn_abi, pseudolearn_source, pseudolearn_project, pseudolearn_diagnostics, pseudolearn_lexicon, pseudolearn_syntax. Externas: biblioteca estándar; serde_json solo en pruebas del HIR contra el corpus.
 Prohibido importar capas superiores, paquetes de UI o internos de otros miembros.
+
+`project_profile` comparte entre API y servicio la resolución de perfil por argumento de archivo, excepción y perfil del paquete, palabra de apertura y perfil de la petición. El lexicon detecta solo la primera palabra reservada que fija el perfil; la capa semántica reúne esa señal con la política de proyecto existente para evitar que consumidores resuelvan perfiles con reglas divergentes.
 
 Estructuras y algoritmos: Columnas con índices tipados (`LocalId`, `FunctionId`, `ExpressionId`, `TypeId`) en columnas; resolución de nombres y después de tipos; HIR tipado con la clase de valor de cada expresión; resolución de jerarquía y ranuras virtuales en mundo cerrado.
 
@@ -77,6 +79,8 @@ siguen consultando mapas de nombres locales y reciben identidades globales. Cada
 unidad en `UnitTable`, que también guarda los calificadores de módulo, las funciones exportadas y la entrada
 seleccionada. Se rechaza concatenar fuentes y analizar módulos con sesiones separadas, porque renumerar
 identidades dentro de columnas de expresiones multiplicaría los puntos de fallo.
+
+La resolución de perfiles de archivos de proyecto se comparte aquí entre API y servicio. Aplica la misma precedencia de perfil explícito, excepción de manifiesto, perfil de paquete, apertura detectada y solicitud de proyecto. El detalle de discrepancia viaja junto al perfil elegido; ningún consumidor vuelve a implementar la política.
 
 Problema: importar, reexportar y alias deben conservar una sola identidad. Elección: `module_symbols` extrae
 declaraciones y directivas; `module_exports` calcula la tabla de exportación de cada módulo (símbolos públicos

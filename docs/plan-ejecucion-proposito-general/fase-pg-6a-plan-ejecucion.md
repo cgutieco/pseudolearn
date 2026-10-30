@@ -15,8 +15,10 @@
   acotadas a lo desarrollado, como en PG-5.
 - Aclaración de la persona en este chat: «Exacto, cada cambio debe ser la versión oficial sin importar
   breaking changes». Confirma el retiro del migrador y de la retrocompatibilidad decidido en PG-2.
-- Estado: **plan preparado; implementación sin iniciar**. Este encargo autoriza la documentación;
-  no da por revisado `PG-6A.C02`, no decide `CF-20` ni autoriza implementar la fase siguiente.
+- Estado de ejecución: **PG-6A.01, PG-6A.02 y PG-6A.03 implementadas en una iteración continua**, por
+  instrucción explícita de la persona. La revisión independiente que exige SEE para validar, reanclar y
+  dar conformidad al nuevo contrato estable sigue pendiente; por eso no se declara `PHASE-GREEN`.
+  PG-6A.04 no se inició.
 - Dependencias del plan general: PG-1, PG-2 y PG-H. PG-5 fue cerrada por la persona el 2026-10-30;
   sus pendientes se conservan en §1.3. El cierre de PG-6A no certifica el lanzamiento de ENT-1.
 
@@ -307,7 +309,30 @@ contra las versiones exactas fijadas; las fuentes externas no son normativa de P
 Convención heredada de PG-5: `.01` contrato → `.02` casos derivados → `.03` tests espejo → `.04` código
 → `.05` README/reglas → `.06` ligera → `.07` pesada. Los puntos de decisión/documentación no inventan
 una regla de lenguaje para rellenar la plantilla: su contrato y evidencia son documentales.
-Las casillas empiezan pendientes; crear este plan no cumple ninguna tarea de implementación.
+Las casillas describen el alcance planificado. El resultado ejecutado y la puerta pendiente se registran
+en §0.2.
+
+### 0.2 Resultado de PG-6A.01 a PG-6A.03
+
+La extensión privada `pseudolearn.pseudolearn-vscode` quedó implementada para uso local, con Node
+22.23.3, pnpm 12.8.1, TypeScript 6.0.3, VS Code mínimo `^1.144.0`, VSIX `0.1.0` y binario incluido
+solo para `darwin-arm64`. Se reservaron los derechos del código propio; el empaquetado genera avisos de
+dependencias desde el grafo Cargo y conserva los textos de licencia disponibles. La activación no
+inicia procesos. El override del binario requiere ruta absoluta y `NODE_ENV=development`.
+
+El servicio Rust ahora ofrece una sesión persistente de workspace separada de `document_session`.
+Recibe snapshots y datos de revisión, conserva overlays y módulos cerrados, invalida dependencias y
+permite resincronizar comparando contenido completo. La E/S y el confinamiento permanecen en la CLI.
+`API.PROJECT` y `TOOL.SERVICE.INCREMENTAL` conservan identidad, estado y versión; se añadió
+`TOOL.SERVICE.WORKSPACE` estable `1.0.0` porque el contrato persistente no cabía en los existentes.
+La dependencia `service → project` quedó declarada antes de usarla.
+
+La extensión pasó verificadores propios, negativos, tests, build, empaquetado e instalación local en
+F5 y VS Code Stable 1.144.0. Los tests dirigidos del servicio, API, propiedades SEE, validación de
+recursos y exportación pasaron; también pasó una lectura/resincronización real aislada. La suite amplia
+`pseudolearn_api` conserva un fallo ajeno al cambio en `historical_collection_state_contains_ordered_contents`.
+`see validate`, el reanclaje y `see conform` no pueden pasar hasta que una persona complete la revisión
+independiente y se registre en `revisado_por`; no se atribuye esa revisión en esta implementación.
 
 ### PG-6A.01 · Decidir miembro, cadena, derechos y alcance local
 

@@ -248,6 +248,12 @@
       "samples": 10
     },
     {
+      "reference": "TOOL.SERVICE.WORKSPACE@1.0.0#P1",
+      "executor": "service_workspace",
+      "seed": 42,
+      "samples": 10
+    },
+    {
       "reference": "TOOL.SERVICE.COMPLETION@1.0.0#P1",
       "executor": "service_completion_templates",
       "seed": 42,

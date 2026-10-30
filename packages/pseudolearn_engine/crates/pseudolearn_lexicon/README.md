@@ -58,6 +58,8 @@ La primera palabra de un archivo decide el perfil cuando es una apertura de unid
 `SubProceso`, lo son `Constante`, `Enumerado` y `Registro` (y sus equivalentes en inglés), de modo que un archivo que
 empieza por una declaración de tipo o de constante conserva la detección automática.
 
+`detect_opening_profile` omite BOM y comentarios iniciales, y consulta las aperturas generadas para devolver el perfil. La API pública mantiene su proyección textual llamando a esta única función del léxico.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código en inglés, cero comentarios, sin atributos doc/allow/expect ni unsafe.

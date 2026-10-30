@@ -8,6 +8,7 @@
     "TOOL.SERVICE.COMPLETION",
     "TOOL.SERVICE.HOVER",
     "TOOL.SERVICE.INCREMENTAL",
+    "TOOL.SERVICE.WORKSPACE",
     "TOOL.SERVICE.LOSSLESS-TREE",
     "TOOL.SERVICE.NAVIGATION",
     "TOOL.SERVICE.NODE-IDENTITY",
@@ -206,6 +207,31 @@
     },
     {
       "regla": "TOOL.SERVICE.INCREMENTAL@1.0.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.INCREMENTAL@1.0.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.WORKSPACE@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.WORKSPACE@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.WORKSPACE@1.0.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.WORKSPACE@1.0.0#R4",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },

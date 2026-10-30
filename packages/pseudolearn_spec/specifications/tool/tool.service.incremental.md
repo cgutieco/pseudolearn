@@ -78,6 +78,18 @@
 }
 ```
 
+```regla
+{
+  "id": "R4",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Una sesión incremental de documento conserva y modifica una sola secuencia de texto. Sus entradas no representan el snapshot de un proyecto, sus archivos cerrados, manifiestos ni lock; esa sincronización persistente pertenece al servicio de workspace.",
+  "verificacion": [
+    "C5"
+  ]
+}
+```
+
 ```caso
 {
   "id": "C1",
@@ -224,6 +236,40 @@
     "simbolos": [
       "limite"
     ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C5",
+  "regla": "R4",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "coincide_con_frio": true
+    }
+  },
+  "servicio": {
+    "suboperacion": "incremental",
+    "documento": "Importar geo.vectores.Doble;\nAlgoritmo P\nDoble(21);\nFinAlgoritmo\n",
+    "ediciones": [
+      {
+        "rango": {
+          "start": {"line": 3, "column": 8},
+          "end": {"line": 3, "column": 10}
+        },
+        "texto": "22"
+      }
+    ],
+    "comprobacion": "equivalencia_frio"
   }
 }
 ```

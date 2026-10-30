@@ -19,7 +19,7 @@ La comprobación disponible usa, desde la raíz del monorepo,
 
 ## 3. Arquitectura y modelo del sistema
 
-Nivel 9. Dependencias internas permitidas: pseudolearn_api. Externas: serde, serde_json.
+Nivel 9. Dependencias internas permitidas: pseudolearn_api, pseudolearn_service, pseudolearn_project y pseudolearn_lexicon. Externas: serde, serde_json.
 Prohibido importar capas superiores, paquetes de UI o internos de otros miembros.
 
 Estructuras y algoritmos: Binario del protocolo `see-protocol/1` sobre la API, con las capacidades `analyze`, `execute`, `observe`, `ir` y `cli` (esta última a través del binario `pseudo`).
@@ -42,6 +42,8 @@ fragmentos esperados tomados del catálogo, no del adaptador) y el anuncio del c
 proyectan por su código.
 
 La proyección `resolucion` de las consultas de servicio expone identidad o símbolo y certeza para comprobar la resolución por posición; los casos de API verifican además rangos léxicos y contextuales.
+
+La operación `workspace` recibe snapshots completos y acciones de overlays como JSON. Proyecta diagnósticos, errores de proyecto e invalidación, y compara el estado con una sesión nueva sobre los mismos datos; no realiza E/S. Importa `pseudolearn_service` para ejercitar el contrato público separado de las sesiones de documento.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

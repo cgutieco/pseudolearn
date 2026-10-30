@@ -15,6 +15,7 @@ mod service_handler;
 mod service_queries;
 mod service_request;
 mod service_text;
+mod service_workspace;
 
 fn main() {
     let raw_arguments: Vec<String> = std::env::args().skip(1).collect();

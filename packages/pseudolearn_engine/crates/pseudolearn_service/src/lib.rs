@@ -62,6 +62,10 @@ pub mod type_names;
 pub mod typing_lines;
 pub mod typing_plan;
 pub mod unit_partition;
+mod workspace_analysis;
+mod workspace_invalidation;
+pub mod workspace_model;
+pub mod workspace_session;
 
 pub use completion::{
     CompletionAction, CompletionEntry, CompletionKind, CompletionQuery, CompletionResult,
@@ -95,3 +99,7 @@ pub use template_session::{StopDirection, StopNavigation};
 pub use template_validity::{template_parses_cleanly, template_program, template_stops_valid};
 pub use translator::{TranslationError, translate_source};
 pub use unit_partition::{PartitionReport, UnitFingerprint, compare_partitions, partition_units};
+pub use workspace_model::{
+    WorkspaceError, WorkspaceInvalidation, WorkspaceOptions, WorkspaceResult, WorkspaceSnapshot,
+};
+pub use workspace_session::WorkspaceSession;
