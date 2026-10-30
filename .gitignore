@@ -16,6 +16,8 @@ lcov.info
 .idea/
 *.iml
 .vscode/
+!apps/pseudolearn_vscode/.vscode/
+!apps/pseudolearn_vscode/.vscode/**
 .junie/
 
 # macOS
@@ -43,3 +45,8 @@ packages/pseudolearn_spec/specifications/specifications.lock
 
 # Node.js
 node_modules/
+apps/pseudolearn_vscode/dist/
+apps/pseudolearn_vscode/bin/
+apps/pseudolearn_vscode/*.vsix
+apps/pseudolearn_vscode/.artifacts/
+apps/pseudolearn_vscode/third-party-notices.md

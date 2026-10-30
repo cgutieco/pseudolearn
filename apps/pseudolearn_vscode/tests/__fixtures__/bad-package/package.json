@@ -1,0 +1,9 @@
+{
+  "private": true,
+  "publisher": "pseudolearn",
+  "version": "0.1.0",
+  "engines": { "node": "22.23.3", "vscode": "^1.144.0" },
+  "packageManager": "pnpm@12.8.1",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "files": ["dist/**", "src/**"]
+}

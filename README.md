@@ -25,6 +25,7 @@ Las mediciones históricas conservan sus fuentes, hashes y condiciones; no certi
 | `apps/pseudolearn_cli` | Órdenes de usuario y adaptadores de conformidad | Cargo y rustup |
 | `apps/pseudolearn_backend` | Backend Supabase | Deno y CLI de Supabase |
 | `apps/fe-pseudolearn` | Sitio web Astro | Node y pnpm |
+| `apps/pseudolearn_vscode` | Extensión local de escritorio para VS Code | Node 22.23.3 y pnpm 12.8.1 |
 
 Los presupuestos AOT incumplidos y las validaciones de plataforma sin evidencia permanecen declarados
 en sus miembros. La validación posterior de plataformas se limita inicialmente a macOS e iOS.
@@ -44,6 +45,8 @@ README y manifiestos. Todos los miembros Rust fijan el mismo toolchain exacto; n
   `python3 -m unittest discover -s test -t .`.
 - Backend: desde su app, `deno task verify`.
 - Web: desde su app, `pnpm install --frozen-lockfile` y `pnpm check:all`.
+- VS Code: desde su app, `pnpm install --frozen-lockfile`, `pnpm check:types`, los verificadores
+  propios, `pnpm test`, `pnpm build` y `pnpm package`.
 
 Los secretos de despliegue se configuran en los canales de publicación; no son requisitos de tests
 unitarios. Ninguna comprobación local autoriza por sí misma un despliegue productivo.

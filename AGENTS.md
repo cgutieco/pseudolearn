@@ -199,7 +199,8 @@ En `.agents/skills/`:
 - El monorepo sostiene cinco cadenas de herramientas, y cada miembro usa solo la suya: `dart` y `flutter`
   para los recolectores de métricas y la app, `python3` con `fonttools` para el motor de marca, `deno` con la CLI de
   `supabase` para el backend (`apps/pseudolearn_backend`), y `node` con `pnpm` para el frontend web
-  (`apps/fe-pseudolearn`). La quinta es `cargo` y `rustup` para los verificadores Rust, `pseudolearn_spec`,
+  (`apps/fe-pseudolearn`) y para la extensión (`apps/pseudolearn_vscode`, Node 22.23.3 y pnpm 12.8.1).
+  La quinta es `cargo` y `rustup` para los verificadores Rust, `pseudolearn_spec`,
   `pseudolearn_engine`, `pseudolearn_cli` y los puentes. Cada miembro Rust fija la misma versión exacta en
   `rust-toolchain.toml`; no hay workspace Cargo raíz. Todas están en el `PATH`; los comandos se documentan sin rutas
   absolutas.

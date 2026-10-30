@@ -1,0 +1,36 @@
+{
+  "package": "pseudolearn_vscode",
+  "layers": {
+    "contracts": {
+      "directory": "src/contracts",
+      "imports": ["contracts"]
+    },
+    "application": {
+      "directory": "src/application",
+      "imports": ["application", "contracts"]
+    },
+    "adapters": {
+      "directory": "src/adapters",
+      "imports": ["adapters", "application", "contracts"]
+    },
+    "activation": {
+      "directory": "src/activation",
+      "imports": ["activation", "adapters", "application", "contracts"]
+    }
+  },
+  "unlayeredDirectories": ["media", "scripts", "tests", "bin", "dist"],
+  "forbiddenDirectories": ["src/common", "src/helpers", "src/misc", "src/utils"],
+  "ignoredDirectories": [".git", "dist", "node_modules", "out", "test-results"],
+  "size": {
+    "fileLines": 300,
+    "functionLines": 40,
+    "positionalParameters": 4,
+    "nestingDepth": 3,
+    "publicMethodsPerClass": 7
+  },
+  "package": {
+    "included": ["README.md", "LICENSE.md", "third-party-notices.md", "package.json", "dist/**", "bin/**"],
+    "excluded": [".env*", "*.map", "node_modules/**", "scripts/**", "src/**", "tests/**", "test-results/**"],
+    "secretKeys": ["api_key", "password", "secret", "token"]
+  }
+}
