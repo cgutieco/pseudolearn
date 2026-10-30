@@ -1,0 +1,7 @@
+schema = 1
+[package]
+name = "app"
+kind = "application"
+entries = ["app/main"]
+[dependencies]
+geo = { package = "geo" }

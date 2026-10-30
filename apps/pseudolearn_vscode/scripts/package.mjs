@@ -1,24 +1,34 @@
-import { chmodSync, copyFileSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
-import { basename, dirname, isAbsolute, join, resolve } from "node:path";
+import { mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
+import { basename, dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
+import { provenancePath } from "./build-cli.mjs";
+import {
+  bundleViolations,
+  listingViolations,
+  loadContract,
+  manifestViolations,
+  provenanceViolations,
+  sha256File,
+  vsixManifestViolations,
+} from "./lib/artifact.mjs";
+import { run as runCommand } from "./lib/run.mjs";
 
 const extensionRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const cliRoot = resolve(extensionRoot, "../../apps/pseudolearn_cli");
-const targetDirectory = resolve(extensionRoot, "bin/darwin-arm64");
 const outputDirectory = resolve(extensionRoot, ".artifacts");
-const binaryPath = resolve(targetDirectory, "pseudo");
-const artifactPath = resolve(outputDirectory, "pseudolearn-0.1.0-darwin-arm64.vsix");
 
-export function packageLocalExtension() {
+export function packageLocalExtension(root = extensionRoot) {
+  const contract = loadContract(root);
   assertQualifiedTarget(process.platform, process.arch);
-  mkdirSync(targetDirectory, { recursive: true });
-  packageBinary();
+  assertProvenance(root, contract);
+  runCommand("node", ["scripts/generate-grammar.mjs", "--check"], root);
   writeThirdPartyNotices();
   mkdirSync(outputDirectory, { recursive: true });
-  run("pnpm", ["exec", "vsce", "package", "--target", "darwin-arm64", "--no-dependencies", "--out", artifactPath]);
-  inspectArtifact(artifactPath);
+  const artifactPath = resolve(outputDirectory, contract.artifactName);
+  runCommand("pnpm", ["exec", "vsce", "package", "--target", contract.target.vscodeTarget, "--no-dependencies", "--out", artifactPath], root);
+  inspectArtifact(artifactPath, root, contract);
+  writeArtifactRecord(artifactPath, root, contract);
   return artifactPath;
 }
 
@@ -28,31 +38,59 @@ export function assertQualifiedTarget(platform, architecture) {
   }
 }
 
-function packageBinary() {
-  const override = process.env.PSEUDOLEARN_PSEUDO_PATH;
-  if (override) {
-    if (process.env.NODE_ENV !== "development" || !isAbsolute(override)) {
-      throw new Error("The pseudo override requires NODE_ENV=development and an absolute path.");
-    }
-    if (!statSync(override).isFile()) throw new Error("The pseudo override must name a file.");
-    copyFileSync(override, binaryPath);
-  } else {
-    run("cargo", ["build", "--locked", "--release", "--target", "aarch64-apple-darwin"], cliRoot);
-    copyFileSync(resolve(cliRoot, "target/aarch64-apple-darwin/release/pseudo"), binaryPath);
+function assertProvenance(root, contract) {
+  let provenance;
+  try {
+    provenance = JSON.parse(readFileSync(provenancePath(root), "utf8"));
+  } catch {
+    provenance = undefined;
   }
-  chmodSync(binaryPath, 0o755);
+  const actual = { binary: safeHash(resolve(root, contract.executable)), grammar: safeHash(resolve(root, contract.grammar)) };
+  const violations = provenanceViolations(provenance, actual, contract);
+  if (violations.length > 0) throw new Error(violations.join("\n"));
 }
 
-function inspectArtifact(path) {
-  const listing = run("unzip", ["-Z1", path]).split(/\r?\n/).filter(Boolean);
-  const packaged = listing.filter((entry) => entry.startsWith("extension/")).map((entry) => entry.slice("extension/".length));
-  const required = ["package.json", "readme.md", "LICENSE.md", "third-party-notices.md", "dist/extension.js", "bin/darwin-arm64/pseudo"];
-  for (const name of required) {
-    if (!packaged.includes(name)) throw new Error(`VSIX is missing ${name}.`);
+function safeHash(path) {
+  try {
+    return sha256File(path);
+  } catch {
+    return undefined;
   }
-  for (const name of packaged) {
-    if (isForbidden(name)) throw new Error(`VSIX contains forbidden resource ${name}.`);
-  }
+}
+
+function inspectArtifact(path, root, contract) {
+  const listing = runCommand("unzip", ["-Z1", path], root).split(/\r?\n/).filter(Boolean);
+  const vsixManifest = runCommand("unzip", ["-p", path, "extension.vsixmanifest"], root);
+  const bundle = readFileSync(resolve(root, contract.bundle), "utf8");
+  const manifest = JSON.parse(readFileSync(resolve(root, "package.json"), "utf8"));
+  const violations = [
+    ...listingViolations(listing, contract),
+    ...vsixManifestViolations(vsixManifest, contract),
+    ...bundleViolations(bundle, contract),
+    ...manifestViolations(manifest, contract),
+  ];
+  if (violations.length > 0) throw new Error(violations.join("\n"));
+}
+
+function writeArtifactRecord(path, root, contract) {
+  const provenance = JSON.parse(readFileSync(provenancePath(root), "utf8"));
+  const record = {
+    name: contract.artifactName,
+    path,
+    bytes: readFileSync(path).length,
+    sha256: sha256File(path),
+    binarySha256: provenance.binarySha256,
+    grammarSha256: provenance.grammarSha256,
+    bundleSha256: sha256File(resolve(root, contract.bundle)),
+    vscodeTarget: contract.target.vscodeTarget,
+    revision: provenance.revision,
+    dirty: provenance.dirty,
+    rustc: provenance.rustc,
+    cargo: provenance.cargo,
+    node: provenance.node,
+  };
+  writeFileSync(`${path}.json`, `${JSON.stringify(record, null, 2)}\n`);
+  writeFileSync(`${path}.sha256`, `${record.sha256}  ${contract.artifactName}\n`);
 }
 
 function writeThirdPartyNotices() {
@@ -63,7 +101,7 @@ function writeThirdPartyNotices() {
 }
 
 function loadCliDependencyPackages() {
-  const metadata = JSON.parse(run("cargo", [
+  const metadata = JSON.parse(runCommand("cargo", [
     "metadata",
     "--locked",
     "--format-version=1",
@@ -140,19 +178,6 @@ function packageLicenseFiles(packageInfo) {
     .map((entry) => join(packageDirectory, entry.name));
   if (packageInfo.license_file) files.push(resolve(packageDirectory, packageInfo.license_file));
   return [...new Set(files)].sort();
-}
-
-function isForbidden(path) {
-  const parts = path.split("/");
-  return parts.some((part) => ["src", "tests", "scripts", "node_modules", ".git"].includes(part))
-    || basename(path).startsWith(".env") || path.endsWith(".map");
-}
-
-function run(command, argumentsList, cwd = extensionRoot) {
-  const result = spawnSync(command, argumentsList, { cwd, encoding: "utf8", maxBuffer: 16 * 1024 * 1024, stdio: "pipe" });
-  if (result.error) throw result.error;
-  if (result.status !== 0) throw new Error(result.stderr || `${command} exited with status ${result.status}`);
-  return result.stdout;
 }
 
 if (basename(process.argv[1] ?? "") === basename(fileURLToPath(import.meta.url))) {

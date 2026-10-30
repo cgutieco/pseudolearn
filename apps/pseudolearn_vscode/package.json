@@ -104,8 +104,9 @@
     "generate:grammar": "node scripts/generate-grammar.mjs",
     "check:grammar": "node scripts/generate-grammar.mjs --check",
     "test": "vitest run",
+    "build:cli": "node scripts/build-cli.mjs",
     "build": "pnpm check:grammar && node scripts/build.mjs",
-    "package": "pnpm build && node scripts/package.mjs"
+    "package": "pnpm build:cli && pnpm build && node scripts/package.mjs"
   },
   "dependencies": {
     "vscode-languageclient": "10.1.2"

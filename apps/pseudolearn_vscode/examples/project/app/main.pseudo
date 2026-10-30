@@ -1,0 +1,7 @@
+Importar geo.vectores.Doble;
+Algoritmo Principal
+Definir Mutable numero Como Entero <- 0;
+Escribir "Dame un numero";
+Leer numero;
+Escribir Doble(numero);
+FinAlgoritmo

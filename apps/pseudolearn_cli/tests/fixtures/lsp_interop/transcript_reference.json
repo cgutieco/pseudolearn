@@ -1,0 +1,11 @@
+{
+ "steps": [
+  {"step": 1, "method": "initialize", "message": {"id": 91, "result": {"capabilities": {"renameProvider": {"prepareProvider": true}}}}},
+  {"step": 8, "method": "textDocument/definition", "message": {"id": 98, "result": {"uri": "file:///tmp/clientA-1/geo/vectores.pseudo", "range": {"start": {"line": 0, "character": 20}, "end": {"line": 0, "character": 25}}}}},
+  {"step": 12, "method": "textDocument/semanticTokens/full", "message": {"id": 102, "result": {"data": [2, 11, 5, 3, 0, 3, 9, 8, 2, 0]}}},
+  {"step": 18, "method": "textDocument/rename", "message": {"id": 114, "result": {"documentChanges": [{"textDocument": {"uri": "file:///tmp/clientA-1/geo/vectores.pseudo", "version": null}, "edits": [{"range": {"start": {"line": 0, "character": 20}, "end": {"line": 0, "character": 25}}, "newText": "Duplicar"}]}]}}}
+ ],
+ "diagnostics": {
+  "file:///tmp/clientA-1/app/malo.pseudo": []
+ }
+}

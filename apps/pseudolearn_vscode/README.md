@@ -50,6 +50,7 @@ Desde este directorio:
 - `pnpm check:package`
 - `pnpm test`
 - `pnpm build`
+- `pnpm build:cli`
 - `pnpm package`
 
 Los tests reflejan `src/` bajo `tests/`. Los verificadores tienen fixtures positivos y negativos; los tests de activación usan puertos falsos. `pnpm package` crea un VSIX local para macOS Apple silicon, genera los avisos del binario desde `cargo metadata` y valida su lista de contenidos. F5 y la instalación local del VSIX en VS Code Stable 1.144.0 son verificaciones del host, no publicación.
@@ -94,3 +95,74 @@ texto plano en el canal `PseudoLearn Help`. Sin ayuda en la posición se informa
 completo solo si su versión no cambió; una colisión de traducción no escribe nada. El formato usa el proveedor LSP estándar.
 La verificación en host real (completar, diagnosticar, navegar, renombrar, ejecutar con entrada, detener y limpieza tras
 cierre) y la ayuda desde un segundo cliente quedan para las verificaciones pesadas `PG-6A.07.07` y `PG-6A.08.07`.
+
+## 8. Contrato del artefacto local
+
+`artifact.contract.json` es el único dato que fija el artefacto: identidad `pseudolearn.pseudolearn-vscode` versión `0.1.0`
+(identifica el paquete, no una versión del lenguaje), VS Code mínimo `^1.144.0` (Stable), target `darwin-arm64`
+(`aarch64-apple-darwin` en Cargo), ejecutable `bin/darwin-arm64/pseudo`, gramática y configuración de lenguaje generadas,
+bundle `dist/extension.js`, licencia reservada (`LICENSE.md`) y SHA-256 como algoritmo de hash. Solo se afirma la plataforma
+de la que se dispone para ensayo real; ninguna otra tiene soporte declarado.
+
+- **Construcción por scripts, cada paso con un dueño.** `pnpm build:cli` (`scripts/build-cli.mjs`) ejecuta
+  `cargo build --locked --release --target aarch64-apple-darwin` en `apps/pseudolearn_cli`, copia el binario y escribe
+  `.artifacts/provenance.json` (revisión Git y si el árbol estaba sucio, `rustc`, `cargo`, `node`, target y hashes del binario y
+  de la gramática). Cargo se ejecuta en la CLI y nunca como toolchain interna de TypeScript. `pnpm build` comprueba que la
+  gramática esté vigente y genera el bundle. `pnpm package` encadena ambos y `scripts/package.mjs` empaqueta con `vsce`.
+- **El empaquetado falla** si el binario no tiene registro de procedencia o no coincide con él, si la gramática cambió después de
+  compilar el binario o necesita regenerarse, si el host no es `darwin-arm64`, si el bundle deja fuera una dependencia runtime
+  (`vscode-languageclient`) o `require`a un módulo que no contiene (solo `vscode` y módulos nativos de Node), si la identidad o el
+  mínimo de VS Code difieren del contrato, si `extension.vsixmanifest` declara otra plataforma, o si el contenido no es
+  exactamente el declarado: faltan archivos requeridos, hay un recurso no declarado o uno excluido (`src`, `tests`, `scripts`,
+  `examples`, `node_modules`, `.git`, `.artifacts`, `*.map`, `.env*`).
+- **Salida.** `.artifacts/pseudolearn-0.1.0-darwin-arm64.vsix`, más `<nombre>.vsix.json` (ruta, bytes, SHA-256 del VSIX, del
+  binario, de la gramática y del bundle, revisión, versiones de `rustc`, `cargo` y `node`) y `<nombre>.vsix.sha256`. Esos archivos
+  no se versionan. Un hash detecta una diferencia respecto del registro local; no es una firma ni prueba la autenticidad.
+- **Ejemplos mínimos reproducibles**, fuera del VSIX, en `examples/`: `file/saludo.pseudo` (entrada y salida),
+  `file/con-error.pseudo`, `project/` (paquetes `app` y `geo`, importado, `Leer` y `Escribir`) y `project-con-error/` (error en el
+  módulo importado).
+
+## 9. Uso antes del lanzamiento
+
+Estado: software previo a producción para uso privado. Plataforma ensayada: macOS Apple silicon con VS Code Stable 1.144.0 o
+superior. Que el VSIX se instale y funcione no certifica el lenguaje ni lo declara listo para producción. No hay Marketplace,
+Open VSX, telemetría ni actualización automática.
+
+**Con F5 (desde el checkout).** Requiere Node 22.23.3, pnpm 12.8.1 y la cadena Rust del repositorio.
+
+```bash
+pnpm install --frozen-lockfile
+pnpm build:cli
+pnpm build
+```
+
+Abre esta carpeta en VS Code y pulsa F5 con la configuración de extensión: se abre un Extension Development Host. Abre
+`examples/file/saludo.pseudo`: no se ejecuta al abrirlo.
+
+**Con el VSIX (sin checkout ni toolchains).**
+
+```bash
+pnpm package
+code --install-extension .artifacts/pseudolearn-0.1.0-darwin-arm64.vsix
+```
+
+También sirve «Extensions: Install from VSIX…» de la paleta. Comprueba el hash con `shasum -a 256` contra el
+archivo `.sha256` generado. Para un ensayo aislado que no toque el perfil habitual:
+`code --user-data-dir <dir-usuario> --extensions-dir <dir-extensiones> --install-extension <archivo.vsix>`. El VSIX usa el
+binario incluido y no necesita Cargo, Rust, Node ni pnpm. Las políticas de la organización se comprueban en el equipo de destino;
+no se desactiva ningún control de VS Code.
+
+**Seleccionar entrada, ejecutar, leer y detener.** Abre la carpeta `examples/project`. `PseudoLearn: Select Project Entry`
+elige `app/main` entre los módulos con algoritmo; `PseudoLearn: Run Project` la ejecuta y, cuando el programa espera, abre un
+cuadro de entrada (acepta vacío; cancelar el cuadro envía cancelación). `PseudoLearn: Run File` ejecuta el archivo activo
+guardado y `PseudoLearn: Stop Run` lo detiene. Con cambios sin guardar no se ejecuta. En Restricted Mode solo hay resaltado
+declarativo.
+
+**Actualizar, revertir y desinstalar.** Instalar un VSIX con la misma identidad sustituye al anterior. Para volver atrás se
+conserva el VSIX previo compatible, se desinstala la extensión (`code --uninstall-extension pseudolearn.pseudolearn-vscode`) y se
+instala ese archivo; volver a un VSIX anterior no restaura sintaxis anterior del lenguaje. Desinstalar cierra los procesos de la
+extensión y no borra los programas del usuario.
+
+**Logs y versión.** El canal `PseudoLearn (technical)` guarda los registros técnicos locales; la versión instalada aparece en la
+vista de extensiones y en `code --list-extensions --show-versions`. La identidad del binario incluido se comprueba con su SHA-256, que
+consta en el registro `.vsix.json` del paquete. No se registra la entrada del estudiante ni el entorno completo.

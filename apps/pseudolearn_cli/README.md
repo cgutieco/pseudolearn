@@ -295,6 +295,36 @@ la CLI no duplica el compilador de proyectos. `src/editor_protocol.rs` define me
 bombeo de lotes, entrada y cancelación sobre puertos (canal y escritor) y `src/editor_command.rs` el arranque y el hilo lector.
 Los tests unitarios usan canal y escritor falsos; `tests/editor_process.rs` ejercita el proceso real con archivo y proyecto.
 
+### Interoperabilidad con dos clientes LSP (PG-6A.09)
+
+Problema: que `pseudo lsp` responda bien a un solo cliente no demuestra que el protocolo esté bien dicho; un cliente puede
+tolerar un rango, una revisión o un orden que otro no. Elección: una **secuencia única** de pasos (`tests/fixtures/lsp_interop/sequence.json`)
+que ambos clientes ejecutan contra el proceso `pseudo lsp`, y un **comparador exacto** de las transcripciones resultantes.
+Cliente A: la extensión de VS Code (`vscode-languageclient`). Cliente B: el cliente stdio mínimo de `tests/lsp_interop/`
+(framing y JSON propios, sin `vscode-languageclient` ni `LspServer` en memoria). Ambos comparten el mismo motor: la
+interoperabilidad prueba que el transporte, las capacidades negociadas y la forma de los mensajes no dependen del cliente;
+**no** es un oráculo independiente de semántica, que sigue siendo del corpus.
+
+- **Superficie común:** `initialize`, `definition`, `references`, `hover`, `semanticTokens/full`, `documentSymbol`,
+  `prepareRename`, `rename`, más las notificaciones `didOpen`/`didChange`, `workspace/didChangeConfiguration`,
+  `pseudolearn/workspaceSnapshot` (resincronización con revisión nueva), `shutdown` y `exit`. Se compara la respuesta de cada
+  petición y el último `publishDiagnostics` por URI.
+- **Normalización permitida, y solo esta:** el id de transporte (se sustituye por el número del paso) y el prefijo de raíz de
+  los URI temporales (se sustituye por `file:///ROOT/`). No se normalizan códigos de error, mensajes, rangos UTF-16,
+  revisiones de documento, símbolos ni ediciones: un rango corrido una unidad, una `version` distinta, un archivo sin
+  diagnósticos publicados o un paso perdido producen una diferencia con su puntero JSON aunque el texto visible coincida.
+- **Fixture bilingüe:** proyecto `app`/`geo` con perfil `es` (importado cerrado, alias `Como V`, cadena con carácter no BMP
+  que cambia de longitud en una edición), documentos abiertos fuera del snapshot para el error de importación privada, la
+  sombra de un importado y la declaración repetida (con información relacionada), y un documento en perfil `en` detectado por
+  su texto. Los archivos adicionales con errores no entran en el snapshot porque un proyecto inválido no responde consultas.
+- **Secuencia:** initialize → snapshot → open (principal, errores, biblioteca cerrada abierta después) → consultas → cambio
+  v2 y cambio obsoleto v1 (debe ignorarse) → consultas y rename válido y rename a palabra reservada → configuración →
+  open en `en` → resync (revisión 2) → consultas → shutdown → exit.
+- **Versiones:** LSP 3.17, `pseudo` de esta revisión, `vscode-languageclient` el fijado en `apps/pseudolearn_vscode`.
+- **Qué cubren las pruebas ligeras:** `tests/lsp_interop/` prueba normalizador y comparador con negativos, valida la secuencia
+  y ejecuta el cliente B dos veces con raíces distintas exigiendo igualdad exacta. La transcripción del cliente A y la
+  comparación A↔B se obtienen en la verificación pesada con host real; no se lanzan en las iteraciones ligeras.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Problema: la CLI debe producir ejecutables autónomos sin que el usuario instale el runtime. Elección: incrustar la biblioteca

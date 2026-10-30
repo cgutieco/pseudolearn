@@ -18,7 +18,7 @@
       "imports": ["activation", "adapters", "application", "contracts"]
     }
   },
-  "unlayeredDirectories": ["media", "scripts", "tests", "bin", "dist"],
+  "unlayeredDirectories": ["media", "scripts", "tests", "bin", "dist", "examples"],
   "forbiddenDirectories": ["src/common", "src/helpers", "src/misc", "src/utils"],
   "ignoredDirectories": [".git", "dist", "node_modules", "out", "test-results"],
   "size": {

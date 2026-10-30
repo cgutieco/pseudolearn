@@ -9,6 +9,7 @@ mod project_campaign;
 mod statistics;
 mod thresholds;
 mod toolchain;
+mod workspace_campaign;
 
 pub fn collect(arguments: &[String]) -> Result<(), String> {
     let argument = |slot: usize| arguments.get(slot).map(String::as_str).unwrap_or_default();
@@ -23,6 +24,7 @@ pub fn collect(arguments: &[String]) -> Result<(), String> {
         "e20" => toolchain::run(argument(1), argument(2)),
         "help" => help_campaign::collect(arguments.get(1..).unwrap_or_default()),
         "project" => project_campaign::collect(arguments.get(1..).unwrap_or_default()),
+        "workspace" => workspace_campaign::collect(arguments.get(1..).unwrap_or_default()),
         _ => Err(
             "Usage: service e09|incremental <output> [measurements] | e20 <pseudo> <output>"
                 .to_owned(),

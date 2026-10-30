@@ -168,3 +168,51 @@ una celda por nodo. La campaña mide el procesamiento del motor sin transporte. 
 del adaptador nativo con respuesta ilimitada y el crecimiento lineal de la cinta se miden por separado
 con los protocolos HTTP de la fase. No se crea una especificación ni se declara un umbral vigente
 antes de P6.
+
+### E-PG-02: coste del servicio de workspace (`service workspace`)
+
+Problema: el servicio de workspace de `pseudo lsp` debe responder a una edición dentro de los umbrales de E-PG-02 y dar el
+mismo resultado que un análisis en frío, sin que la medición se confunda con el arranque de Electron ni con el host del
+editor. Elección: el trabajador mide **el RTT del proceso `pseudo lsp` por stdio**, que es lo único que el trabajador puede
+observar con las dependencias que ya declara (no importa `pseudolearn_service`); la medición en proceso del servicio queda
+como pendiente declarado, porque exigiría declarar esa dependencia y una instrumentación fuera del camino normal. Se descartó
+medir dentro del proceso del editor y vender el resultado como latencia de toda la interfaz.
+
+Comandos exactos (desde `packages/pseudolearn_engine`; `pseudo` es el binario release de `apps/pseudolearn_cli`):
+
+```bash
+cargo run --locked --release -p pseudolearn_bench_worker -- service workspace plan <directorio-nuevo>
+cargo run --locked --release -p pseudolearn_bench_worker -- service workspace run <directorio> <ruta-a-pseudo> <proceso>
+cargo run --locked --release -p pseudolearn_bench_worker -- service workspace summary <directorio>
+```
+
+`plan` escribe `plan.json` con la huella de cada caso y no necesita el binario: sirve para comprobar que el generador es
+determinista. `run` toma un proceso de medición (se invoca con `0`…`9` para los diez procesos del protocolo) y escribe
+`<directorio>/<carga>/<escenario>-process-NN.json`; el proceso `0` ejecuta además una vez los escenarios de corrección.
+`summary` valida cada registro, exige diez procesos distintos, una sola máquina y una sola huella por grupo, calcula el p95 agrupado
+del candidato y del control frío y escribe `summary.json`. Ningún comando sobrescribe un archivo existente.
+
+- **Propuesta `PERF.PG.SERVICE` (candidata, no normativa):** unidad, milisegundos de RTT desde la escritura del primer mensaje del
+  paso hasta la lectura de la respuesta de la petición final (`workspace/symbol` como barrera, o el propio `rename`); reloj,
+  monótono del sistema (`Instant`) detrás del rasgo `Clock`, con resolución observada en cada registro y duraciones menores que
+  la resolución conservadas, nunca descartadas; protocolo `pg-service/1`, semilla 42, treinta muestras por proceso y diez
+  procesos por carga y escenario (`PERF.PROTOCOL`). Calentamiento: cada muestra arranca un proceso `pseudo lsp` nuevo y su
+  preparación (inicialización, snapshot y apertura de documentos) queda fuera del intervalo y de las muestras; no se mide con
+  caché caliente de sesiones largas, límite que debe leerse junto a los resultados. El control es el estado editado cargado en
+  un proceso nuevo y comparado con la misma petición. Salida: crudos por proceso y resumen recalculable. Los umbrales de E-PG-02
+  se evalúan tal como están definidos: 100 ms de p95 para el diagnóstico tras edición y 500 ms para rename; la propuesta no
+  crea umbrales nuevos y el mismo 100 ms se aplica a manifiesto y cerrado porque el contrato no los distingue.
+- **Cargas:** biblioteca de 10, 100 y 1000 archivos con unas 10 000 líneas totales en todas (líneas por archivo = 10 000 / archivos)
+  más la carga ampliada identificada `files-1000-extended` (1000 archivos de unas 100 líneas). Reutiliza el generador de proyectos
+  de `service project`, de modo que no hay un segundo dueño de las fuentes sintéticas.
+- **Escenarios muestreados:** `body-edit`, `signature-edit` (edición abierta con `didChange`), `manifest-change` (nuevo alias de
+  dependencia por resincronización), `closed-file-change` (edición de un archivo cerrado por resincronización) y `rename`.
+  **Corrección, fuera del muestreo de latencia:** `stale-source` (revisión obsoleta ignorada), `empty-project`, `short-names`
+  (identificador de un carácter) y `unicode-source` (identificador con `ñ` y carácter no BMP).
+- **Equivalencia:** cada muestra compara los últimos diagnósticos publicados por archivo y la respuesta de la petición final con el
+  control en frío; una diferencia aborta el proceso antes de interpretar tiempos.
+- **Qué no afirma:** hoy cada instantánea nueva reconstruye la sesión de workspace completa, de modo que los escenarios de manifiesto
+  y de cerrado miden esa reconstrucción; «incremental» solo describe la forma del mensaje, no una garantía de no reanalizar todo,
+  hasta que la campaña lo demuestre. No se mide memoria ni el RTT del host de VS Code, que se registran por separado en la campaña
+  pesada. Las pruebas ligeras usan reloj y transporte falsos (`workspace_campaign/*_tests.rs`); la campaña de 30 muestras por 10
+  procesos y el registro de máquina, versiones y huellas pertenecen a la verificación pesada.

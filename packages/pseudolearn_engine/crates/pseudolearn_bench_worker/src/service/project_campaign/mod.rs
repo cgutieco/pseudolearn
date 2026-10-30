@@ -5,7 +5,7 @@ mod lock_inputs;
 mod measure;
 mod modules;
 mod profiles;
-mod shapes;
+pub(super) mod shapes;
 mod summary;
 mod verification;
 

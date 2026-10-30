@@ -15,11 +15,11 @@
   acotadas a lo desarrollado, como en PG-5.
 - Aclaración de la persona en este chat: «Exacto, cada cambio debe ser la versión oficial sin importar
   breaking changes». Confirma el retiro del migrador y de la retrocompatibilidad decidido en PG-2.
-- Estado de ejecución: **PG-6A.01 a PG-6A.08 implementadas en iteraciones continuas**, por instrucción
-  explícita de la persona. Las casillas `.01`–`.06` de PG-6A.04–.08 registran trabajo y verificaciones
-  locales completadas. La revisión independiente que SEE exige para validar, reanclar y dar conformidad
+- Estado de ejecución: **PG-6A.01 a PG-6A.11 implementadas en iteraciones continuas** (`.01`–`.06` de
+  PG-6A.09–.11 en una sola iteración ligera), por instrucción explícita de la persona. Las casillas
+  `.01`–`.06` de PG-6A.04–.11 registran trabajo y verificaciones locales completadas. La revisión independiente que SEE exige para validar, reanclar y dar conformidad
   al corpus sigue pendiente; por eso no se declara `PHASE-GREEN`. Las verificaciones pesadas `.07` de cada
-  fase permanecen pendientes y no amplían la implementación a PG-6A.09.
+  fase permanecen pendientes y no amplían la implementación más allá de PG-6A.11 (`PHASE-STOP`).
 - Dependencias del plan general: PG-1, PG-2 y PG-H. PG-5 fue cerrada por la persona el 2026-10-30;
   sus pendientes se conservan en §1.3. El cierre de PG-6A no certifica el lanzamiento de ENT-1.
 
@@ -505,38 +505,38 @@ falso porque la capa del servicio no realiza E/S.
 
 ### PG-6A.09 · Interoperabilidad con dos clientes LSP
 
-- [ ] `PG-6A.09.01` Fijar superficie común y normalización permitida: IDs de transporte y prefijo
+- [x] `PG-6A.09.01` Fijar superficie común y normalización permitida: IDs de transporte y prefijo
   temporal de URI. No normalizar códigos, mensajes, rangos, revisiones, símbolos ni ediciones distintas.
-- [ ] `PG-6A.09.02` Fixture de proyecto bilingüe con cerrado, alias, sombra, error relacionado y
+- [x] `PG-6A.09.02` Fixture de proyecto bilingüe con cerrado, alias, sombra, error relacionado y
   carácter no BMP; secuencia initialize/open/change/query/rename/config/resync/shutdown/exit.
-- [ ] `PG-6A.09.03` Tests de comparación con negativos: alterar un rango UTF-16, perder archivo,
+- [x] `PG-6A.09.03` Tests de comparación con negativos: alterar un rango UTF-16, perder archivo,
   cambiar símbolo o aceptar edición obsoleta debe producir diferencia, aunque el texto visible coincida.
-- [ ] `PG-6A.09.04` Preparar cliente A: extensión VS Code. Cliente B: arnés independiente con otra
+- [x] `PG-6A.09.04` Preparar cliente A: extensión VS Code. Cliente B: arnés independiente con otra
   implementación del cliente/transporte, escrito en la cadena ya declarada de CLI, sin importar
   `vscode-languageclient` ni llamar `LspServer` en memoria. Habla con `pseudo lsp` como proceso.
   No se crea un plugin de otro editor; si se usa un editor real como B, fijar su versión y alcance.
-- [ ] `PG-6A.09.05` Documentar secuencia, cliente B, versiones y qué prueba interoperabilidad frente
+- [x] `PG-6A.09.05` Documentar secuencia, cliente B, versiones y qué prueba interoperabilidad frente
   a corrección normativa. Ambos clientes comparten motor; no son un oráculo independiente de semántica.
-- [ ] `PG-6A.09.06` Ligera: tests del comparador y fixtures de mensajes sin lanzar los dos hosts.
+- [x] `PG-6A.09.06` Ligera: tests del comparador y fixtures de mensajes sin lanzar los dos hosts.
 - [ ] `PG-6A.09.07` Pesada, iteración 7: ejecutar misma secuencia en ambos, comparar exactamente
   resultados normalizados, negociar capacidades inferiores y conservar transcripts sin datos privados.
 
 ### PG-6A.10 · E-PG-02 y coste del servicio
 
-- [ ] `PG-6A.10.01` Leer `PERF.PROTOCOL`; fijar propuesta `PERF.PG.SERVICE` con unidad, reloj,
+- [x] `PG-6A.10.01` Leer `PERF.PROTOCOL`; fijar propuesta `PERF.PG.SERVICE` con unidad, reloj,
   calentamiento, control, salida y criterios de §6/§7.3. No convertir la propuesta en presupuesto
   normativo nuevo antes de aprobación. Umbrales de E-PG-02 se evalúan tal como ya están definidos.
-- [ ] `PG-6A.10.02` Cargas deterministas de 10/100/1000 archivos, control de 10 000 líneas totales y
+- [x] `PG-6A.10.02` Cargas deterministas de 10/100/1000 archivos, control de 10 000 líneas totales y
   carga ampliada identificada; cambios de cuerpo, firma, manifiesto, cerrado y fuente obsoleta.
   Incluir Unicode/UTF-16, nombres cortos válidos y proyecto vacío fuera del muestreo de latencia.
-- [ ] `PG-6A.10.03` Tests del generador/medidor/comparador con fixtures pequeños y reloj inyectado;
+- [x] `PG-6A.10.03` Tests del generador/medidor/comparador con fixtures pequeños y reloj inyectado;
   negativo que cambie un resultado y otro que exceda el umbral. No ejecutar todavía la campaña.
-- [ ] `PG-6A.10.04` Implementar subcomando específico del trabajador de benchmarks existente y
+- [x] `PG-6A.10.04` Implementar subcomando específico del trabajador de benchmarks existente y
   control frío sobre el mismo snapshot. Métricas del servicio separadas del RTT del host/proceso;
   instrumentación fuera del camino normal cuando no se solicita.
-- [ ] `PG-6A.10.05` README del trabajador/service: comando exacto, fuentes, semillas, máquina, coste
+- [x] `PG-6A.10.05` README del trabajador/service: comando exacto, fuentes, semillas, máquina, coste
   de caché, hashes y límites. No escribir «incremental» como sinónimo de «evita reanalizar todo» sin evidencia.
-- [ ] `PG-6A.10.06` Ligera: compilar y probar solo módulos del generador/medidor; validar formato y
+- [x] `PG-6A.10.06` Ligera: compilar y probar solo módulos del generador/medidor; validar formato y
   procedencia de una muestra sintética, sin medir campañas ni optimizar por intuición.
 - [ ] `PG-6A.10.07` Pesada, iteración 7: 30 muestras por proceso × 10 procesos por carga/escenario
   definido; p95 diagnóstico incremental ≤100 ms y rename ≤500 ms en la máquina identificada;
@@ -544,21 +544,21 @@ falso porque la capa del servicio no realiza E/S.
 
 ### PG-6A.11 · VSIX autónomo, instalación limpia y uso privado
 
-- [ ] `PG-6A.11.01` Fijar contrato de artefacto local: identidad y versión, VS Code mínimo/Stable,
+- [x] `PG-6A.11.01` Fijar contrato de artefacto local: identidad y versión, VS Code mínimo/Stable,
   target, ejecutable/gramática, licencia, hashes y compatibilidad. Seleccionar solo plataformas
   disponibles para ensayo real; las restantes quedan sin afirmar soporte.
-- [ ] `PG-6A.11.02` Preparar ejemplos mínimos reproducibles de archivo y proyecto con importado,
+- [x] `PG-6A.11.02` Preparar ejemplos mínimos reproducibles de archivo y proyecto con importado,
   entrada, salida y error. Añadir casos de binario ausente/alterado, target equivocado, gramática
   vieja, dependencia runtime ausente, instalación anterior y directorio con espacios/acentos.
-- [ ] `PG-6A.11.03` Tests de ensamblado/lista de contenidos/hash y negativos de exclusiones. El
+- [x] `PG-6A.11.03` Tests de ensamblado/lista de contenidos/hash y negativos de exclusiones. El
   empaquetado debe fallar si el binario no tiene procedencia o si la gramática requiere regenerarse.
-- [ ] `PG-6A.11.04` Construir CLI `--release --locked`, bundle y VSIX por plataforma mediante scripts
+- [x] `PG-6A.11.04` Construir CLI `--release --locked`, bundle y VSIX por plataforma mediante scripts
   de construcción del miembro; Cargo sigue ejecutándose en la CLI, nunca como toolchain interna
   de TS. Empaquetar únicamente artefactos declarados. Preparar los comandos locales de §7.4 y su reversión.
-- [ ] `PG-6A.11.05` README «Uso antes del lanzamiento»: F5, instalación VSIX, seleccionar entrada,
+- [x] `PG-6A.11.05` README «Uso antes del lanzamiento»: F5, instalación VSIX, seleccionar entrada,
   ejecutar/Leer/detener, actualizar/revertir/desinstalar y obtener logs/versión. Indicar estado previo
   a producción y plataformas ensayadas sin afirmar que instalarlo certifica el lenguaje.
-- [ ] `PG-6A.11.06` Ligera: lista de contenido, metadata, hashes, avisos y bundle; producir VSIX sin
+- [x] `PG-6A.11.06` Ligera: lista de contenido, metadata, hashes, avisos y bundle; producir VSIX sin
   ejecutar aún host limpio, campaña de instalación o publicación. Registrar nombre/ruta/hash reales.
 - [ ] `PG-6A.11.07` Pesada, iteración 7: instalar desde cero en directorios aislados y en el VS Code
   habitual cuando la persona lo use; comprobar proyecto sencillo sin Rust/Node/Cargo/checkout,
@@ -873,9 +873,9 @@ SEE exige revisión independiente antes de validar y reanclar el corpus, así qu
 | `PG-6A.06` | `.01`–`.06` cumplidas localmente | Generación reproducible, `check:grammar`, pruebas TextMate real y negativos | SEE export check pasa; validación/reanclaje espera revisión independiente; host real pendiente |
 | `PG-6A.07` | `.01`–`.06` cumplidas localmente; `.07` pendiente | `start_project` (7 tests API), `--editor` (22 unitarias y 7 de proceso real), 51 tests TS, bundle y VSIX `darwin-arm64` generados; `TOOL.CLI.RUN#R7` y `API.PROJECT#R4` con casos C20–C22 y C18–C20, esquema SEE con `start_project` | Validar falla solo por `TOOL.SERVICE.WORKSPACE` sin revisión independiente (de PG-6A.03); la evidencia de propiedades de `API.PROJECT` queda obsoleta hasta la campaña pesada; sin host real de VS Code; migración retirada por la persona |
 | `PG-6A.08` | `.01`–`.06` cumplidas localmente; `.07` pendiente | `lsp_help_cases` 6/6, `lsp_help` 7/7, auditoría de fuente única recorre `apps/pseudolearn_vscode/src` con negativo `.ts`; comando `pseudolearn.explain` y 4 tests TS | Sin contrato nuevo (catálogo, hover y comando existentes); sin host real ni segundo cliente |
-| `PG-6A.09` | No cumplido | | Dos clientes reales pendientes |
-| `PG-6A.10` | No cumplido | | E-PG-02 sin ejecutar; presupuesto candidato sin aprobar |
-| `PG-6A.11` | No cumplido | | VSIX autónomo y ensayo limpio pendientes |
+| `PG-6A.09` | `.01`–`.06` cumplidas localmente; `.07` pendiente | Secuencia única de 25 pasos (`tests/fixtures/lsp_interop/sequence.json`), cliente B stdio independiente, normalizador (solo id de transporte y prefijo de URI) y comparador exacto con negativos; `cargo test --test lsp_interop` 15/15 | Sin transcripción del cliente A ni comparación A↔B (host real); sin corpus nuevo; ambos clientes comparten motor |
+| `PG-6A.10` | `.01`–`.06` cumplidas localmente; `.07` pendiente | `service workspace plan\|run\|summary` en el trabajador; cargas 10/100/1000 (+ ampliada), 5 escenarios muestreados y 4 de corrección; 30 pruebas nuevas de generador/medidor/comparador con reloj y transporte falsos (158/158 del trabajador); `plan` determinista comprobado dos veces | Campaña 30×10 sin ejecutar; solo RTT de `pseudo lsp` (medición en proceso del servicio pendiente por imports del trabajador); propuesta `PERF.PG.SERVICE` sin aprobar |
+| `PG-6A.11` | `.01`–`.06` cumplidas localmente; `.07` pendiente | `artifact.contract.json`, `build-cli.mjs` (`cargo build --locked --release`), verificación de procedencia/contenido/bundle/hash en el empaquetado, 73 tests TS (22 nuevos con negativos), ejemplos validados con `pseudo`; VSIX `darwin-arm64` generado, sha256 `6bb1d67e…dd07f` | Sin instalación en VS Code, sin host limpio ni VSIX anterior para revertir; árbol Git sucio al construir; no es paquete calificado |
 
 ### 11.1 Registro obligatorio por tarea al ejecutar
 
@@ -891,6 +891,9 @@ SEE exige revisión independiente antes de validar y reanclar el corpus, así qu
 | `PG-6A.06.01`–`.05` | Cumplido | Exportador SEE alimenta gramática TextMate y configuración declarativa con hash | Datos léxicos nuevos residen en el corpus/exportador |
 | `PG-6A.06.06` | Cumplido localmente | `see export --check`, `check:grammar`, TextMate real y negativos pasan | `see conform`/validación bloqueados hasta revisión independiente |
 | `PG-6A.06.07` | No cumplido | Tokenización real en prueba aislada; con `media/pseudolearn.tmLanguage.json` alterado, `pnpm check:grammar` falla (código 1) y con el original restaurado pasa; `pnpm package` encadena ese check vía `build`, `check:package` por sí solo no lo detecta | Resaltado en host real y tras tokens semánticos no ejecutado: no hay proveedor semántico ni cliente en la extensión |
+| `PG-6A.09.01`–`.06` | Cumplido localmente | `cargo test --locked --test lsp_interop` (cwd `apps/pseudolearn_cli`): 15 pasan; Clippy y `rust-checks all .` en verde | Cliente A y comparación A↔B en `.07`; fixture con errores fuera del snapshot porque un proyecto inválido no responde consultas |
+| `PG-6A.10.01`–`.06` | Cumplido localmente | `cargo test --locked -p pseudolearn_bench_worker` (cwd `packages/pseudolearn_engine`): 158 pasan (30 nuevos); Clippy y `rust-checks all .` en verde; `service workspace plan` dos veces con igual resultado y rechazo de sobrescritura | Sin campaña; umbrales 100/500 ms evaluados tal como están, sin crear umbrales nuevos |
+| `PG-6A.11.01`–`.06` | Cumplido localmente | `pnpm check:types`, `check:architecture`, `check:comments`, `check:size`, `check:package`, `test` (73) y `package` en verde; VSIX `apps/pseudolearn_vscode/.artifacts/pseudolearn-0.1.0-darwin-arm64.vsix`, 7101360 bytes, sha256 completo `6bb1d67e06ce4c83c4ea76e83fa4f97e88977956527791c8e328c16e102dd07f` | Binario compilado con `--release --locked`; árbol sucio (cambios sin commit); instalación y host limpio en `.07` |
 
 Añadir una fila por `.nn.mm` y por `Cnn` con evidencia nueva. Usar únicamente Cumplido, No cumplido,
 Diferido, No aplica o Retirado, con sus condiciones. Una autorización humana no se infiere del silencio.

@@ -1,0 +1,423 @@
+{
+ "root_placeholder": "${ROOT}",
+ "steps": [
+  {
+   "kind": "request",
+   "method": "initialize",
+   "params": {
+    "locale": "es",
+    "initializationOptions": {
+     "profile": "es"
+    },
+    "capabilities": {
+     "textDocument": {
+      "completion": {
+       "completionItem": {
+        "snippetSupport": true
+       }
+      },
+      "publishDiagnostics": {
+       "relatedInformation": true
+      },
+      "semanticTokens": {
+       "requests": {
+        "full": true
+       }
+      }
+     },
+     "workspace": {
+      "workspaceEdit": {
+       "documentChanges": true,
+       "failureHandling": "transactional"
+      }
+     }
+    }
+   },
+   "step": 1
+  },
+  {
+   "kind": "notification",
+   "method": "initialized",
+   "params": {},
+   "step": 2
+  },
+  {
+   "kind": "notification",
+   "method": "pseudolearn/workspaceSnapshot",
+   "params": {
+    "project": {
+     "project_id": 7,
+     "revision_id": 1,
+     "packages": [
+      {
+       "name": "app",
+       "root": "app",
+       "kind": "application",
+       "entries": [
+        "app/main"
+       ],
+       "dependencies": {
+        "geo": "geo"
+       }
+      },
+      {
+       "name": "geo",
+       "root": "geo",
+       "kind": "library",
+       "entries": [],
+       "dependencies": {}
+      }
+     ],
+     "files": [
+      {
+       "path": "app/main",
+       "source_id": 1,
+       "text": "Importar geo.vectores.Doble;\nImportar geo.vectores Como V;\nAlgoritmo Main\nEscribir Doble(2);\nEscribir V.Doble(3);\nEscribir \"Hola 😀\";\nFinAlgoritmo\n"
+      },
+      {
+       "path": "geo/vectores",
+       "source_id": 2,
+       "text": "Publico SubProceso Doble(valor Como Entero) Como Entero\nRetornar valor * 2;\nFinSubProceso\nSubProceso Oculta(valor Como Entero) Como Entero\nRetornar valor;\nFinSubProceso\n"
+      }
+     ]
+    },
+    "uris": {
+     "app/main": "${ROOT}app/main.pseudo",
+     "geo/vectores": "${ROOT}geo/vectores.pseudo"
+    }
+   },
+   "step": 3
+  },
+  {
+   "kind": "notification",
+   "method": "textDocument/didOpen",
+   "params": {
+    "textDocument": {
+     "uri": "${ROOT}app/main.pseudo",
+     "languageId": "pseudolearn",
+     "version": 1,
+     "text": "Importar geo.vectores.Doble;\nImportar geo.vectores Como V;\nAlgoritmo Main\nEscribir Doble(2);\nEscribir V.Doble(3);\nEscribir \"Hola 😀\";\nFinAlgoritmo\n"
+    }
+   },
+   "step": 4
+  },
+  {
+   "kind": "notification",
+   "method": "textDocument/didOpen",
+   "params": {
+    "textDocument": {
+     "uri": "${ROOT}app/malo.pseudo",
+     "languageId": "pseudolearn",
+     "version": 1,
+     "text": "Importar geo.vectores.Oculta;\nAlgoritmo Malo\nEscribir Oculta(1);\nFinAlgoritmo\n"
+    }
+   },
+   "step": 5
+  },
+  {
+   "kind": "notification",
+   "method": "textDocument/didOpen",
+   "params": {
+    "textDocument": {
+     "uri": "${ROOT}app/sombra.pseudo",
+     "languageId": "pseudolearn",
+     "version": 1,
+     "text": "Importar geo.vectores.Doble;\nAlgoritmo Sombra\nDefinir Doble Como Entero;\nEscribir Doble;\nFinAlgoritmo\n"
+    }
+   },
+   "step": 6
+  },
+  {
+   "kind": "notification",
+   "method": "textDocument/didOpen",
+   "params": {
+    "textDocument": {
+     "uri": "${ROOT}app/repetido.pseudo",
+     "languageId": "pseudolearn",
+     "version": 1,
+     "text": "Algoritmo Repetido\nDefinir valor Como Entero <- 1;\nDefinir valor Como Entero <- 2;\nEscribir valor;\nFinAlgoritmo\n"
+    }
+   },
+   "step": 7
+  },
+  {
+   "kind": "request",
+   "method": "textDocument/definition",
+   "params": {
+    "textDocument": {
+     "uri": "${ROOT}app/main.pseudo"
+    },
+    "position": {
+     "line": 3,
+     "character": 9
+    }
+   },
+   "step": 8
+  },
+  {
+   "kind": "request",
+   "method": "textDocument/definition",
+   "params": {
+    "textDocument": {
+     "uri": "${ROOT}app/main.pseudo"
+    },
+    "position": {
+     "line": 4,
+     "character": 11
+    }
+   },
+   "step": 9
+  },
+  {
+   "kind": "request",
+   "method": "textDocument/references",
+   "params": {
+    "textDocument": {
+     "uri": "${ROOT}app/main.pseudo"
+    },
+    "position": {
+     "line": 3,
+     "character": 9
+    },
+    "context": {
+     "includeDeclaration": true
+    }
+   },
+   "step": 10
+  },
+  {
+   "kind": "request",
+   "method": "textDocument/hover",
+   "params": {
+    "textDocument": {
+     "uri": "${ROOT}app/main.pseudo"
+    },
+    "position": {
+     "line": 3,
+     "character": 9
+    }
+   },
+   "step": 11
+  },
+  {
+   "kind": "request",
+   "method": "textDocument/semanticTokens/full",
+   "params": {
+    "textDocument": {
+     "uri": "${ROOT}app/main.pseudo"
+    }
+   },
+   "step": 12
+  },
+  {
+   "kind": "notification",
+   "method": "textDocument/didChange",
+   "params": {
+    "textDocument": {
+     "uri": "${ROOT}app/main.pseudo",
+     "version": 2
+    },
+    "contentChanges": [
+     {
+      "text": "Importar geo.vectores.Doble;\nImportar geo.vectores Como V;\nAlgoritmo Main\nEscribir Doble(2);\nEscribir V.Doble(3);\nEscribir \"Adiós 😀😀\";\nFinAlgoritmo\n"
+     }
+    ]
+   },
+   "step": 13
+  },
+  {
+   "kind": "notification",
+   "method": "textDocument/didChange",
+   "params": {
+    "textDocument": {
+     "uri": "${ROOT}app/main.pseudo",
+     "version": 1
+    },
+    "contentChanges": [
+     {
+      "text": "Importar geo.vectores.Doble;\nImportar geo.vectores Como V;\nAlgoritmo Main\nEscribir Doble(2);\nEscribir V.Doble(3);\nEscribir \"Hola 😀\";\nFinAlgoritmo\n"
+     }
+    ]
+   },
+   "step": 14
+  },
+  {
+   "kind": "notification",
+   "method": "textDocument/didOpen",
+   "params": {
+    "textDocument": {
+     "uri": "${ROOT}geo/vectores.pseudo",
+     "languageId": "pseudolearn",
+     "version": 8,
+     "text": "Publico SubProceso Doble(valor Como Entero) Como Entero\nRetornar valor * 2;\nFinSubProceso\nSubProceso Oculta(valor Como Entero) Como Entero\nRetornar valor;\nFinSubProceso\n"
+    }
+   },
+   "step": 15
+  },
+  {
+   "kind": "request",
+   "method": "textDocument/documentSymbol",
+   "params": {
+    "textDocument": {
+     "uri": "${ROOT}app/main.pseudo"
+    }
+   },
+   "step": 16
+  },
+  {
+   "kind": "request",
+   "method": "textDocument/prepareRename",
+   "params": {
+    "textDocument": {
+     "uri": "${ROOT}app/main.pseudo"
+    },
+    "position": {
+     "line": 3,
+     "character": 9
+    }
+   },
+   "step": 17
+  },
+  {
+   "kind": "request",
+   "method": "textDocument/rename",
+   "params": {
+    "textDocument": {
+     "uri": "${ROOT}app/main.pseudo"
+    },
+    "position": {
+     "line": 3,
+     "character": 9
+    },
+    "newName": "Duplicar"
+   },
+   "step": 18
+  },
+  {
+   "kind": "request",
+   "method": "textDocument/rename",
+   "params": {
+    "textDocument": {
+     "uri": "${ROOT}app/sombra.pseudo"
+    },
+    "position": {
+     "line": 3,
+     "character": 9
+    },
+    "newName": "Escribir"
+   },
+   "step": 19
+  },
+  {
+   "kind": "notification",
+   "method": "workspace/didChangeConfiguration",
+   "params": {
+    "settings": {
+     "pseudolearn": {
+      "profile": "es"
+     }
+    }
+   },
+   "step": 20
+  },
+  {
+   "kind": "notification",
+   "method": "textDocument/didOpen",
+   "params": {
+    "textDocument": {
+     "uri": "${ROOT}app/english.pseudo",
+     "languageId": "pseudolearn",
+     "version": 1,
+     "text": "algorithm Greeter\ndefine count as integer <- 1;\nwrite count;\nendAlgorithm\n"
+    }
+   },
+   "step": 21
+  },
+  {
+   "kind": "notification",
+   "method": "pseudolearn/workspaceSnapshot",
+   "params": {
+    "project": {
+     "project_id": 7,
+     "revision_id": 2,
+     "packages": [
+      {
+       "name": "app",
+       "root": "app",
+       "kind": "application",
+       "entries": [
+        "app/main"
+       ],
+       "dependencies": {
+        "geo": "geo"
+       }
+      },
+      {
+       "name": "geo",
+       "root": "geo",
+       "kind": "library",
+       "entries": [],
+       "dependencies": {}
+      }
+     ],
+     "files": [
+      {
+       "path": "app/main",
+       "source_id": 1,
+       "text": "Importar geo.vectores.Doble;\nImportar geo.vectores Como V;\nAlgoritmo Main\nEscribir Doble(2);\nEscribir V.Doble(3);\nEscribir \"Hola 😀\";\nFinAlgoritmo\n"
+      },
+      {
+       "path": "geo/vectores",
+       "source_id": 2,
+       "text": "Publico SubProceso Doble(valor Como Entero) Como Entero\nRetornar valor * 2;\nFinSubProceso\nSubProceso Oculta(valor Como Entero) Como Entero\nRetornar valor;\nFinSubProceso\nPublico SubProceso Triple(valor Como Entero) Como Entero\nRetornar valor * 3;\nFinSubProceso\n"
+      }
+     ]
+    },
+    "uris": {
+     "app/main": "${ROOT}app/main.pseudo",
+     "geo/vectores": "${ROOT}geo/vectores.pseudo"
+    }
+   },
+   "step": 22
+  },
+  {
+   "kind": "request",
+   "method": "textDocument/references",
+   "params": {
+    "textDocument": {
+     "uri": "${ROOT}app/main.pseudo"
+    },
+    "position": {
+     "line": 3,
+     "character": 9
+    },
+    "context": {
+     "includeDeclaration": true
+    }
+   },
+   "step": 23
+  },
+  {
+   "kind": "request",
+   "method": "textDocument/semanticTokens/full",
+   "params": {
+    "textDocument": {
+     "uri": "${ROOT}app/english.pseudo"
+    }
+   },
+   "step": 24
+  },
+  {
+   "kind": "request",
+   "method": "shutdown",
+   "params": null,
+   "step": 25
+  },
+  {
+   "kind": "notification",
+   "method": "exit",
+   "params": null,
+   "step": 26
+  }
+ ]
+}
