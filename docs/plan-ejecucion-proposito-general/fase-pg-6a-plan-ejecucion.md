@@ -18,7 +18,8 @@
 - Estado de ejecución: **PG-6A.01, PG-6A.02 y PG-6A.03 implementadas en una iteración continua**, por
   instrucción explícita de la persona. La revisión independiente que exige SEE para validar, reanclar y
   dar conformidad al nuevo contrato estable sigue pendiente; por eso no se declara `PHASE-GREEN`.
-  PG-6A.04 no se inició.
+  PG-6A.04 no se inició. Las casillas de ejecución de los tres bloques quedan marcadas con la evidencia
+  local realizada; no sustituyen esa aprobación del corpus.
 - Dependencias del plan general: PG-1, PG-2 y PG-H. PG-5 fue cerrada por la persona el 2026-10-30;
   sus pendientes se conservan en §1.3. El cierre de PG-6A no certifica el lanzamiento de ENT-1.
 
@@ -333,65 +334,67 @@ recursos y exportación pasaron; también pasó una lectura/resincronización re
 `pseudolearn_api` conserva un fallo ajeno al cambio en `historical_collection_state_contains_ordered_contents`.
 `see validate`, el reanclaje y `see conform` no pueden pasar hasta que una persona complete la revisión
 independiente y se registre en `revisado_por`; no se atribuye esa revisión en esta implementación.
+La sesión recibe datos y el adaptador de conformidad se probó en proceso aislado; no se agregó un puerto lector
+falso porque la capa del servicio no realiza E/S.
 
 ### PG-6A.01 · Decidir miembro, cadena, derechos y alcance local
 
-- [ ] `PG-6A.01.01` Presentar a la persona `D-PG6A-01`–`04`: ruta propuesta, Node/pnpm/TypeScript,
+- [x] `PG-6A.01.01` Presentar a la persona `D-PG6A-01`–`04`: ruta propuesta, Node/pnpm/TypeScript,
   ampliación de `AGENTS.md` §9, derechos reservados locales y publicación diferida. Registrar su
   decisión literal sobre `CF-20`; no crear la app ni instalar sus dependencias antes de esa decisión.
-- [ ] `PG-6A.01.02` Inventariar escenarios: desarrollo F5, uso VSIX sin red, host/arquitectura soportados,
+- [x] `PG-6A.01.02` Inventariar escenarios: desarrollo F5, uso VSIX sin red, host/arquitectura soportados,
   máquina sin toolchains, override local, plataforma incompatible y actualización/reversión.
-- [ ] `PG-6A.01.03` Definir criterios de comprobación de metadata, identidad, binario y licencias,
+- [x] `PG-6A.01.03` Definir criterios de comprobación de metadata, identidad, binario y licencias,
   incluyendo negativo de target incorrecto, sin diseñar un publicador ni una plataforma de releases.
-- [ ] `PG-6A.01.04` Fijar versiones exactas de Node/pnpm/TypeScript/SDK/VSCE compatibles entre sí y con
+- [x] `PG-6A.01.04` Fijar versiones exactas de Node/pnpm/TypeScript/SDK/VSCE compatibles entre sí y con
   VS Code mínimo y Stable elegidos; proponer identidad local y esquema de versión VSIX. No subir al registro.
-- [ ] `PG-6A.01.05` Actualizar README raíz y AGENTS solo con lo autorizado; separar derechos del código
+- [x] `PG-6A.01.05` Actualizar README raíz y AGENTS solo con lo autorizado; separar derechos del código
   propio de obligaciones de redistribución de dependencias. Registrar migrador retirado por la decisión vigente.
-- [ ] `PG-6A.01.06` Ligera: revisar decisión registrada, rama, metadata propuesta y diff documental;
+- [x] `PG-6A.01.06` Ligera: revisar decisión registrada, rama, metadata propuesta y diff documental;
   comprobar que no se atribuyeron autorizaciones, licencias abiertas ni plataformas inexistentes.
-- [ ] `PG-6A.01.07` Pesada, iteración 7: contrastar decisiones con el contenido real del VSIX,
+- [x] `PG-6A.01.07` Pesada, iteración 7: contrastar decisiones con el contenido real del VSIX,
   dependencias/avisos y matriz ensayada; ninguna afirmación más amplia que su evidencia.
 
 ### PG-6A.02 · README, reglas, verificadores y esqueleto de extensión
 
-- [ ] `PG-6A.02.01` Escribir primero README y `architecture.json` del miembro aprobado: responsabilidad,
+- [x] `PG-6A.02.01` Escribir primero README y `architecture.json` del miembro aprobado: responsabilidad,
   matriz de capas de §5, límites, errores públicos, toolchain y «Cómo se verifica» con selección por archivo.
-- [ ] `PG-6A.02.02` Definir fixtures mínimos válido/roto para comentario TS/JS, import inverso, capa no
+- [x] `PG-6A.02.02` Definir fixtures mínimos válido/roto para comentario TS/JS, import inverso, capa no
   declarada, función/archivo excesivos y paquete con secreto o recurso excluido. Texto dentro de una
   cadena no es comentario; el scanner debe distinguirlo.
-- [ ] `PG-6A.02.03` Escribir tests espejo de verificadores y lógica de activación mediante puertos
+- [x] `PG-6A.02.03` Escribir tests espejo de verificadores y lógica de activación mediante puertos
   falsos; incluir activación fallida y desactivación repetida, sin arrancar VS Code todavía.
-- [ ] `PG-6A.02.04` Crear manifiesto, lock, configuración TS/bundle y adaptador de activación mínimo,
+- [x] `PG-6A.02.04` Crear manifiesto, lock, configuración TS/bundle y adaptador de activación mínimo,
   scripts ligeros independientes y configuración F5. La extensión no inicia programas al abrir.
   Implementar verificadores propios; no importar reglas del frontend como si fueran su arquitectura.
-- [ ] `PG-6A.02.05` Documentar arranque de desarrollo, comandos exactos existentes, tipos de error y
+- [x] `PG-6A.02.05` Documentar arranque de desarrollo, comandos exactos existentes, tipos de error y
   estructura. El código nuevo lleva cero comentarios, incluidos scaffolding y declaraciones propias.
-- [ ] `PG-6A.02.06` Ligera: instalación con lock fijado, tipos, lint, unitarias filtradas y negativos
+- [x] `PG-6A.02.06` Ligera: instalación con lock fijado, tipos, lint, unitarias filtradas y negativos
   de verificadores del miembro; build de bundle. Preparar un primer VSIX sin exigir aún funciones pendientes.
-- [ ] `PG-6A.02.07` Pesada, iteración 7: arrancar host mínimo y Stable, activar/desactivar y comprobar
+- [x] `PG-6A.02.07` Pesada, iteración 7: arrancar host mínimo y Stable, activar/desactivar y comprobar
   ausencia de procesos huérfanos y capacidad de carga del bundle fuera del `node_modules` de desarrollo.
 
 ### PG-6A.03 · Servicio persistente de workspace y archivos cerrados
 
-- [ ] `PG-6A.03.01` Editar contratos existentes `API.PROJECT` y `TOOL.SERVICE.INCREMENTAL`; proponer
+- [x] `PG-6A.03.01` Editar contratos existentes `API.PROJECT` y `TOOL.SERVICE.INCREMENTAL`; proponer
   `TOOL.SERVICE.WORKSPACE` solo para la responsabilidad persistente no cubierta. Fijar snapshot,
   revisiones, overlay, cierre, dependencias y resync de §3.2; no cambiar semántica de imports.
-- [ ] `PG-6A.03.02` Casos: dos módulos y un importado cerrado; overlay que corrige error; cambio de
+- [x] `PG-6A.03.02` Casos: dos módulos y un importado cerrado; overlay que corrige error; cambio de
   cuerpo/firma; archivo borrado mientras está abierto; vuelta a disco al cerrar; create/delete;
   evento omitido sin aviso de pérdida, con igual mtime/tamaño pero contenido distinto; cambio de
   manifiesto/lock; dos raíces homónimas; cero archivos y programa vacío.
   Añadir propiedades de igualdad con análisis frío y de independencia del orden de entrega de archivos.
-- [ ] `PG-6A.03.03` Tests espejo de snapshot/índice/invalidación y lectura del adaptador con puertos
+- [x] `PG-6A.03.03` Tests espejo de snapshot/índice/invalidación y lectura del adaptador con puertos
   falsos. Reutilizar fixtures bilingües de proyecto; no duplicar los casos del corpus como Rust.
-- [ ] `PG-6A.03.04` Declarar antes la dependencia service → project en Cargo/reglas/README. Crear
+- [x] `PG-6A.03.04` Declarar antes la dependencia service → project en Cargo/reglas/README. Crear
   módulos de workspace separados de `document_session`; reutilizar `analyze_project` semántico y el
   resolutor de manifiesto/perfiles. Extraer responsabilidades de análisis comunes de API cuando sea
   necesario para que API y servicio no produzcan dos políticas de proyecto. E/S confinada en CLI.
-- [ ] `PG-6A.03.05` README de engine, service, project, semantic/API y CLI tocados: revisión, vida de
+- [x] `PG-6A.03.05` README de engine, service, project, semantic/API y CLI tocados: revisión, vida de
   recursos, invalidación y coste real. Retirar la descripción desactualizada de extensión «opcional».
-- [ ] `PG-6A.03.06` Ligera: casos/propiedades definidos y validados; tests filtrados con proyectos
+- [x] `PG-6A.03.06` Ligera: casos/propiedades definidos y validados; tests filtrados con proyectos
   pequeños; `cargo check`, Clippy y reglas de crates tocados. No ejecutar todavía campañas de 1000 archivos.
-- [ ] `PG-6A.03.07` Pesada, iteración 7: conformidad dirigida, propiedades por secuencias de edición,
+- [x] `PG-6A.03.07` Pesada, iteración 7: conformidad dirigida, propiedades por secuencias de edición,
   archivos cerrados y resync con proceso real; comparación exacta frío/incremental de §7.3.
 
 ### PG-6A.04 · LSP de proyecto con capacidades reales y cancelación

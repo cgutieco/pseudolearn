@@ -45,6 +45,10 @@ Estructuras: `ProjectInput` (paquetes y archivos como datos), `ProjectCatalog` (
 al paquete cuya raíz es prefijo de segmentos de su ruta y valida las entradas declaradas.
 `select_entry` elige la entrada de una petición.
 
+`WorkspaceSession` consume `ProjectInput` como snapshot completo y versionado junto con la configuración resuelta.
+La sesión del servicio mantiene overlays e invalidación; este crate sigue siendo el dueño de los datos portables,
+la forma del proyecto y sus errores, sin leer archivos ni retener estado de editor.
+
 Invariantes: toda ruta lógica usa `/`, es relativa, no vacía y consta de segmentos portables; los segmentos
 se normalizan a NFC conservando caja, y la clave de colisión es NFC en minúsculas Unicode. Se rechazan
 segmentos vacíos, `.` y `..`, controles, caracteres reservados, nombres de dispositivo y terminaciones en

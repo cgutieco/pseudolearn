@@ -12,9 +12,7 @@ const binaryPath = resolve(targetDirectory, "pseudo");
 const artifactPath = resolve(outputDirectory, "pseudolearn-0.1.0-darwin-arm64.vsix");
 
 export function packageLocalExtension() {
-  if (process.platform !== "darwin" || process.arch !== "arm64") {
-    throw new Error("The qualified VSIX target requires a darwin-arm64 host.");
-  }
+  assertQualifiedTarget(process.platform, process.arch);
   mkdirSync(targetDirectory, { recursive: true });
   packageBinary();
   writeThirdPartyNotices();
@@ -22,6 +20,12 @@ export function packageLocalExtension() {
   run("pnpm", ["exec", "vsce", "package", "--target", "darwin-arm64", "--no-dependencies", "--out", artifactPath]);
   inspectArtifact(artifactPath);
   return artifactPath;
+}
+
+export function assertQualifiedTarget(platform, architecture) {
+  if (platform !== "darwin" || architecture !== "arm64") {
+    throw new Error("The qualified VSIX target requires a darwin-arm64 host.");
+  }
 }
 
 function packageBinary() {

@@ -6,7 +6,7 @@ Extensión privada de escritorio que integra PseudoLearn con VS Code. Se distrib
 
 El código propio está reservado para uso local y no se concede una licencia abierta. El empaquetado genera `third-party-notices.md` desde el grafo Cargo específico del binario incluido y conserva los textos de licencia disponibles junto a la lista SPDX de dependencias. La extensión no se publica en Marketplace ni Open VSX.
 
-Fuera de alcance de este incremento: cliente LSP funcional, comandos de edición o ejecución, depuración, plataformas no calificadas, workspace remoto, workspace virtual, actualizaciones automáticas, telemetría y publicación.
+Fuera de alcance de este incremento: cliente LSP funcional, comandos de edición o ejecución, depuración, plataformas no calificadas, workspace remoto, workspace virtual, actualizaciones automáticas, telemetría y publicación. No se incluye migrador ni selector de compatibilidad: cada edición se ofrece como la oficial aunque introduzca cambios incompatibles.
 
 ## 2. Guía operativa y ciclo de vida
 

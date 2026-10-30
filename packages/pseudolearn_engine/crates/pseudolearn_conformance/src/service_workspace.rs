@@ -29,15 +29,17 @@ pub fn handle(request: &ServiceRequest<'_>) -> Value {
 fn snapshot(value: Option<&Value>) -> Option<WorkspaceSnapshot> {
     let value = value?;
     let project = project(value.get("project")?)?;
-    let mut options = WorkspaceOptions::default();
-    options.requested_profile = profile(value.pointer("/options/profile"));
-    options.strict = value.pointer("/options/strictness")?.as_str()? != "flexible";
-    options.entry = value
-        .pointer("/options/entry")
-        .and_then(Value::as_str)
-        .map(str::to_owned);
-    options.file_profiles = profile_map(value.pointer("/options/file_profiles"));
-    options.dependency_inputs = string_map(value.pointer("/options/dependency_inputs"));
+    let options = WorkspaceOptions {
+        requested_profile: profile(value.pointer("/options/profile")),
+        strict: value.pointer("/options/strictness")?.as_str()? != "flexible",
+        entry: value
+            .pointer("/options/entry")
+            .and_then(Value::as_str)
+            .map(str::to_owned),
+        file_profiles: profile_map(value.pointer("/options/file_profiles")),
+        dependency_inputs: string_map(value.pointer("/options/dependency_inputs")),
+        ..WorkspaceOptions::default()
+    };
     Some(WorkspaceSnapshot { project, options })
 }
 

@@ -5,6 +5,7 @@ import { findComments } from "../../scripts/check-comments.mjs";
 import { collectArchitectureViolations } from "../../scripts/check-architecture.mjs";
 import { collectSizeViolations } from "../../scripts/check-size.mjs";
 import { collectPackageViolations } from "../../scripts/check-package.mjs";
+import { assertQualifiedTarget } from "../../scripts/package.mjs";
 
 const fixtureRoot = resolve(fileURLToPath(new URL("../__fixtures__/", import.meta.url)));
 
@@ -31,5 +32,11 @@ describe("extension source guards", () => {
     const violations = collectPackageViolations(resolve(fixtureRoot, "bad-package"));
     expect(violations.some((value) => value.includes("excluded resource is included"))).toBe(true);
     expect(violations.some((value) => value.includes("secret-bearing"))).toBe(true);
+  });
+
+  it("rejects package targets outside darwin arm64", () => {
+    expect(() => assertQualifiedTarget("darwin", "arm64")).not.toThrow();
+    expect(() => assertQualifiedTarget("linux", "arm64")).toThrow("darwin-arm64");
+    expect(() => assertQualifiedTarget("darwin", "x64")).toThrow("darwin-arm64");
   });
 });
