@@ -9,6 +9,7 @@ pub mod grammar;
 pub mod help_catalog;
 pub mod lexicon;
 pub mod library_facets;
+pub mod spanish_neutrality;
 pub mod structural;
 pub mod textmate_grammar;
 
@@ -39,10 +40,14 @@ pub fn check(specification: &Specification) -> Vec<String> {
             name => Err(format!("Unknown normative resource {name}")),
         };
         if let Err(error) = result {
-            errors.push(format!(
-                "SEE-RESOURCE: {}: {error}",
-                specification.metadata.id
-            ));
+            if error.starts_with("SEE-") {
+                errors.push(error);
+            } else {
+                errors.push(format!(
+                    "SEE-RESOURCE: {}: {error}",
+                    specification.metadata.id
+                ));
+            }
         }
     }
     errors
@@ -91,6 +96,9 @@ fn diagnostic(entry: &Value) -> Result<(), String> {
             .ok_or("Missing locale")?;
         if pattern.trim().is_empty() {
             return Err("Empty message".to_owned());
+        }
+        if profile == "es" {
+            spanish_neutrality::check(pattern)?;
         }
         markers.push(placeholders(pattern)?);
     }

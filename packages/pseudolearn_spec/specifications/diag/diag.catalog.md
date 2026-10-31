@@ -1123,7 +1123,7 @@
     },
     "reservedLexemeUsedAsName": {
       "mensajes": {
-        "es": "«{lexeme}» es una palabra reservada de este perfil, equivalente a {token}. Elegí otro nombre.",
+        "es": "«{lexeme}» es una palabra reservada de este perfil, equivalente a {token}. Elige otro nombre.",
         "en": "\"{lexeme}\" is a reserved word in this profile, equivalent to {token}. Choose another name."
       },
       "argumentos": [
@@ -3281,7 +3281,7 @@
     },
     "missingBindingInitializer": {
       "mensajes": {
-        "es": "El vínculo necesita un inicializador; añadí <- expresión",
+        "es": "El vínculo necesita un inicializador; añade <- expresión",
         "en": "Binding requires an initializer; add <- expression"
       },
       "argumentos": [],
@@ -3295,7 +3295,7 @@
     },
     "immutableBindingAssignment": {
       "mensajes": {
-        "es": "El vínculo es inmutable; usá Definir Mutable para reasignarlo",
+        "es": "El vínculo es inmutable; usa Definir Mutable para reasignarlo",
         "en": "Binding is immutable; use define mutable to reassign it"
       },
       "argumentos": [],
@@ -3411,7 +3411,7 @@
     },
     "resultNotHandled": {
       "mensajes": {
-        "es": "Resultado de tipo {type} sin tratar: manejalo con Segun, propagalo o descartalo explícitamente",
+        "es": "Resultado de tipo {type} sin tratar: manéjalo con Segun, propágalo o descártalo explícitamente",
         "en": "Unhandled result of type {type}: handle it with switch, propagate it, or discard it explicitly"
       },
       "argumentos": [

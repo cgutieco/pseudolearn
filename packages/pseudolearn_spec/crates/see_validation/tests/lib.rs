@@ -62,5 +62,6 @@ fn rejected_fixtures() -> Vec<(&'static str, &'static str)> {
         ("profile-openers", "SEE-PROFILE-OPENERS"),
         ("message-parity", "SEE-MESSAGE-PARITY"),
         ("message-arguments", "SEE-MESSAGE-ARGUMENTS"),
+        ("spanish-neutrality", "SEE-SPANISH-NEUTRALITY"),
     ]
 }

@@ -47,5 +47,8 @@ mod analysis_limits;
 #[path = "resources/structural.rs"]
 mod structural;
 
+#[path = "resources/spanish_neutrality.rs"]
+mod spanish_neutrality;
+
 #[path = "resources/textmate_grammar.rs"]
 mod textmate_grammar;

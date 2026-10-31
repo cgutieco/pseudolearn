@@ -21,6 +21,9 @@ fn message(key: &str, entry: &Value) -> Result<(), String> {
             .and_then(Value::as_str)
             .filter(|pattern| !pattern.trim().is_empty())
             .ok_or(format!("SEE-MESSAGE-PARITY: {key} lacks {locale}"))?;
+        if locale == "es" {
+            crate::resources::spanish_neutrality::check(pattern)?;
+        }
         markers.push(
             crate::resources::placeholders(pattern)
                 .map_err(|error| format!("SEE-MESSAGE-ARGUMENTS: {key}: {error}"))?,

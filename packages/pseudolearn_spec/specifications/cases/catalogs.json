@@ -3171,7 +3171,7 @@
       "clase": "semantic",
       "mensajes": {
         "en": "Binding is immutable; use define mutable to reassign it",
-        "es": "El vínculo es inmutable; usá Definir Mutable para reasignarlo"
+        "es": "El vínculo es inmutable; usa Definir Mutable para reasignarlo"
       },
       "politica": "A",
       "severidad": {
@@ -3781,7 +3781,7 @@
       "clase": "syntax",
       "mensajes": {
         "en": "Binding requires an initializer; add <- expression",
-        "es": "El vínculo necesita un inicializador; añadí <- expresión"
+        "es": "El vínculo necesita un inicializador; añade <- expresión"
       },
       "politica": "A",
       "severidad": {
@@ -4484,7 +4484,7 @@
       "clase": "syntax",
       "mensajes": {
         "en": "\"{lexeme}\" is a reserved word in this profile, equivalent to {token}. Choose another name.",
-        "es": "«{lexeme}» es una palabra reservada de este perfil, equivalente a {token}. Elegí otro nombre."
+        "es": "«{lexeme}» es una palabra reservada de este perfil, equivalente a {token}. Elige otro nombre."
       },
       "politica": "A",
       "severidad": {
@@ -4503,7 +4503,7 @@
       "clase": "semantic",
       "mensajes": {
         "en": "Unhandled result of type {type}: handle it with switch, propagate it, or discard it explicitly",
-        "es": "Resultado de tipo {type} sin tratar: manejalo con Segun, propagalo o descartalo explícitamente"
+        "es": "Resultado de tipo {type} sin tratar: manéjalo con Segun, propágalo o descártalo explícitamente"
       },
       "politica": "A",
       "severidad": {
@@ -7808,7 +7808,7 @@
           },
           "es": {
             "common_errors": [
-              "Falta una rama: cubrí las alternativas indicadas o añadí De Otro Modo."
+              "Falta una rama: cubre las alternativas indicadas o añade De Otro Modo."
             ],
             "constraints": [],
             "examples": [
@@ -12910,7 +12910,7 @@
           },
           "es": {
             "common_errors": [
-              "Resultado sin tratar: manejalo con Segun, usá Propagar o Descartar explícitamente."
+              "Resultado sin tratar: manéjalo con Segun, usa Propagar o Descartar explícitamente."
             ],
             "constraints": [
               "Segun exhaustivo, propagación visible o descarte explícito."

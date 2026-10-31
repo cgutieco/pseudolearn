@@ -1838,7 +1838,7 @@
             ],
             "constraints": [],
             "common_errors": [
-              "Falta una rama: cubrí las alternativas indicadas o añadí De Otro Modo."
+              "Falta una rama: cubre las alternativas indicadas o añade De Otro Modo."
             ],
             "examples": [
               {
@@ -6972,7 +6972,7 @@
               "Segun exhaustivo, propagación visible o descarte explícito."
             ],
             "common_errors": [
-              "Resultado sin tratar: manejalo con Segun, usá Propagar o Descartar explícitamente."
+              "Resultado sin tratar: manéjalo con Segun, usa Propagar o Descartar explícitamente."
             ],
             "examples": [
               {

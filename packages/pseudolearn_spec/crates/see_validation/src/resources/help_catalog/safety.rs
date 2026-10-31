@@ -29,19 +29,27 @@ pub(super) fn check(value: &Value) -> Result<(), String> {
     for card in cards {
         let identifier = card.get("id").and_then(Value::as_str).unwrap_or_default();
         let content = card.get("content").and_then(Value::as_object);
-        for localized in content.into_iter().flat_map(|entries| entries.values()) {
-            check_counts(identifier, localized)?;
-            let mut total_bytes = 0usize;
-            for (limit, text) in texts(localized) {
-                check_text(identifier, limit, text)?;
-                total_bytes = total_bytes.saturating_add(text.len());
-            }
-            if total_bytes > MAXIMUM_LOCALIZED_BYTES {
-                return Err(format!(
-                    "SEE-HELP-CATALOG: {identifier} editorial text exceeds its byte budget"
-                ));
-            }
+        for (locale, localized) in content.into_iter().flat_map(|entries| entries.iter()) {
+            check_localized(identifier, locale, localized)?;
         }
+    }
+    Ok(())
+}
+
+fn check_localized(identifier: &str, locale: &str, localized: &Value) -> Result<(), String> {
+    check_counts(identifier, localized)?;
+    let mut total_bytes = 0usize;
+    for (limit, text) in texts(localized) {
+        check_text(identifier, limit, text)?;
+        if locale == "es" {
+            super::super::spanish_neutrality::check(text)?;
+        }
+        total_bytes = total_bytes.saturating_add(text.len());
+    }
+    if total_bytes > MAXIMUM_LOCALIZED_BYTES {
+        return Err(format!(
+            "SEE-HELP-CATALOG: {identifier} editorial text exceeds its byte budget"
+        ));
     }
     Ok(())
 }
