@@ -1,7 +1,7 @@
 {
   "name": "PseudoLearn",
   "scopeName": "source.pseudolearn",
-  "sourceHash": "64a84cdc0d8ba91c220da3ee52e3a6e57d95feb63dc2a00957b64bd7e34f9331",
+  "sourceHash": "3bc60eae6647a801c39b39be2439b38d20b48a7e6d182d2820edd660597e55ce",
   "patterns": [
     {
       "match": "//.*$",
