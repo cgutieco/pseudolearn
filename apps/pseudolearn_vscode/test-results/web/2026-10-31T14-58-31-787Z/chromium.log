@@ -1,0 +1,33 @@
+@vscode/test-web: 0.0.81
+Downloading VS Code Stable[G[0KDownloading VS Code Stable: 35510/55544869 (0%)[G[0KDownloading VS Code Stable: 76070/55544869 (0%)[G[0KDownloading VS Code Stable: 133014/55544869 (0%)[G[0KDownloading VS Code Stable: 254694/55544869 (0%)[G[0KDownloading VS Code Stable: 400550/55544869 (1%)[G[0KDownloading VS Code Stable: 623790/55544869 (1%)[G[0KDownloading VS Code Stable: 931886/55544869 (2%)[G[0KDownloading VS Code Stable: 1661966/55544869 (3%)[G[0KDownloading VS Code Stable: 2097152/55544869 (4%)[G[0KDownloading VS Code Stable: 2116755/55544869 (4%)[G[0KDownloading VS Code Stable: 2206867/55544869 (4%)[G[0KDownloading VS Code Stable: 2333843/55544869 (4%)[G[0KDownloading VS Code Stable: 2530451/55544869 (5%)[G[0KDownloading VS Code Stable: 3890323/55544869 (7%)[G[0KDownloading VS Code Stable: 4439187/55544869 (8%)[G[0KDownloading VS Code Stable: 4562067/55544869 (8%)[G[0KDownloading VS Code Stable: 4728675/55544869 (9%)[G[0KDownloading VS Code Stable: 5844115/55544869 (11%)[G[0KDownloading VS Code Stable: 8388608/55544869 (15%)[G[0KDownloading VS Code Stable: 11454443/55544869 (21%)[G[0KDownloading VS Code Stable: 12582912/55544869 (23%)[G[0KDownloading VS Code Stable: 16777216/55544869 (30%)[G[0KDownloading VS Code Stable: 18665963/55544869 (34%)[G[0KDownloading VS Code Stable: 20971520/55544869 (38%)[G[0KDownloading VS Code Stable: 23039059/55544869 (41%)[G[0KDownloading VS Code Stable: 25165824/55544869 (45%)[G[0KDownloading VS Code Stable: 27262976/55544869 (49%)[G[0KDownloading VS Code Stable: 28138051/55544869 (51%)[G[0KDownloading VS Code Stable: 29360128/55544869 (53%)[G[0KDownloading VS Code Stable: 30604433/55544869 (55%)[G[0KDownloading VS Code Stable: 31457280/55544869 (57%)[G[0KDownloading VS Code Stable: 33418385/55544869 (60%)[G[0KDownloading VS Code Stable: 33554432/55544869 (60%)[G[0KDownloading VS Code Stable: 35651584/55544869 (64%)[G[0KDownloading VS Code Stable: 37260795/55544869 (67%)[G[0KDownloading VS Code Stable: 37748736/55544869 (68%)[G[0KDownloading VS Code Stable: 38898833/55544869 (70%)[G[0KDownloading VS Code Stable: 39370115/55544869 (71%)[G[0KDownloading VS Code Stable: 40015219/55544869 (72%)[G[0KDownloading VS Code Stable: 41917483/55544869 (75%)[G[0KDownloading VS Code Stable: 41943040/55544869 (76%)[G[0KDownloading VS Code Stable: 44040192/55544869 (79%)[G[0KDownloading VS Code Stable: 46137344/55544869 (83%)[G[0KDownloading VS Code Stable: 48234496/55544869 (87%)[G[0KDownloading VS Code Stable: 50188467/55544869 (90%)[G[0KDownloading VS Code Stable: 50331648/55544869 (91%)[G[0KDownloading VS Code Stable: 52428800/55544869 (94%)[G[0KDownloading VS Code Stable: 54525952/55544869 (98%)[G[0KDownloading VS Code Stable: complete
+Extracted to /Users/cgutieco/Personal/pseudolearn/apps/pseudolearn_vscode/.vscode-test-web/vscode-web-stable-2c33b50b16c472efe58357d1d2a8a5414bc23fbf
+Serving dev extensions from /Users/cgutieco/Personal/pseudolearn/apps/pseudolearn_vscode/.artifacts/web-extension
+Serving local content /Users/cgutieco/Personal/pseudolearn/apps/pseudolearn_vscode/tests/fixtures/web/project at /static/mount
+Listening on http://localhost:3000
+Opening browser on http://localhost:3000...
+Using ESM loader: true
+[RemoteAgentHost] Reconciling: desired=[], current=[]
+[AgentHost:remote] Initializing (remoteAuthority=none)
+Found additional builtin location extensions in env [ 'http://localhost:3000/static/extensions/fs' ]
+Updating additional builtin extensions cache
+[0mGET /static/devextensions/package.nls.json [33m404[0m 1.509 ms - 9[0m
+Request to 'http://localhost:3000/static/devextensions/package.nls.json' failed with status code 404
+Loading development extension at /static/devextensions
+[AccountPolicyGate] apply: state=inactive, reason=undefined, isRestricted=false
+vscode-test-web-support fs provider registers for vscode-test-web, initial content from http://localhost:3000/static/mount
+[RemoteAgentHost] Reconciling: desired=[], current=[]
+Settings Sync: Account status changed from uninitialized to unavailable
+[AccountPolicyGate] apply: state=inactive, reason=undefined, isRestricted=false
+
+Ignoring the error while validating workspace folder vscode-test-web://mount/ - ENOPRO: No file system provider found for resource 'vscode-test-web://mount/'
+Via 'product.json#extensionEnabledApiProposals' extension 'github.vscode-pull-request-github' wants API proposal 'agentsWindowActivation' but that proposal DOES NOT EXIST. Likely, the proposal has been finalized (check 'vscode.d.ts') or was abandoned.
+[AgentHost:remote] No remote agent connection available. Not connecting.
+Loading code for extension pseudolearn.pseudolearn-vscode failed: Cannot use import statement outside a module
+http://localhost:3000/static/devextensions/dist/web/browser_extension.js
+SyntaxError: Cannot use import statement outside a module
+	at new Function (<anonymous>)
+	at Tk._loadCommonJSModule (http://localhost:3000/static/build/out/vs/workbench/api/worker/extensionHostWorkerMain.js:286:29)
+	at async Promise.all (index 0)
+	at async oy._activate (http://localhost:3000/static/build/out/vs/workbench/api/worker/extensionHostWorkerMain.js:164:16021)
+	at async oy._waitForDepsThenActivate (http://localhost:3000/static/build/out/vs/workbench/api/worker/extensionHostWorkerMain.js:164:15963)
+	at async oy._initialize (http://localhost:3000/static/build/out/vs/workbench/api/worker/extensionHostWorkerMain.js:164:15330)

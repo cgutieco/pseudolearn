@@ -261,13 +261,19 @@ dependencias elijan su rama no-Node; el verificador solo cuenta identificadores 
 propiedad. `tool/wasm.sh` se ejecuta desde la raíz del motor para que `build:wasm` use la cadena fijada
 por su `rust-toolchain.toml`, no la del directorio desde el que se invoca.
 
-El runner oficial está fijado en `tests/web/runner/package.json` a `@vscode/test-web` 0.0.81, versión
-publicada consultada en el registro. Su instalación está separada de las dependencias de producto:
-no se descarga al activar la extensión. La obtención del runner y de su lock está pendiente cuando
-no existe red/autorización disponible; no se presenta como instalado. Tras preparar ese entorno,
+El runner oficial está fijado en `tests/web/runner/package.json` a `@vscode/test-web` 0.0.81, con su lock;
+su instalación está separada de las dependencias de producto y no se descarga al activar la extensión.
 `tests/web/campaign.json` fija VS Code 1.144.0 commit `2c33b50b16c472efe58357d1d2a8a5414bc23fbf` y la
-matriz Chromium/Firefox/WebKit. Cada navegador conserva log y resultado; no arrancar no equivale a aprobar.
-El runner usa filesystem virtual, sin acreditar durabilidad ni Safari físico.
+matriz Chromium/Firefox/WebKit. El runner copia el staging a `.artifacts/web-host-test/` y añade allí el
+módulo de pruebas, porque la ruta de pruebas debe vivir dentro de la extensión servida; el artefacto de
+producto no se modifica. Un navegador solo califica si su proceso termina sin error ni señal y su log
+contiene el resultado `passed`; un tiempo agotado o un arranque fallido es «no calificado». Cada navegador
+conserva log y hash. El runner usa filesystem virtual, sin acreditar durabilidad ni Safari físico.
+
+El host de extensión web de VS Code carga la extensión como CommonJS y envuelve `Worker` con
+`importScripts`: la extensión se empaqueta como CJS y los Workers como IIFE clásicos (sin `type: module`);
+el glue Wasm se carga con `import()` dinámico desde el Worker. Cada manifiesto se resuelve con su
+directorio contenedor como ubicación, igual que el escritorio.
 
 `bench-web.mjs` ejecuta diez procesos Node y navegador independientes con treinta intentos por carga,
 alterna Worker/control y conserva fallos. Mide el transporte/VM con instancia nueva frente a la página

@@ -1009,14 +1009,35 @@ de la extensión recorrían salidas generadas.
 `suspendible`), `reference_vocabulary` (conteo de builtins 19 vs 28), y diferencias de `cargo fmt` en
 `pseudolearn_spec` fuera de los archivos tocados. Los dos primeros se actualizaron a la salida vigente.
 
+**Segunda pasada (runner e hosts reales, autorizada)**
+- `@vscode/test-web` 0.0.81 instalado en `tests/web/runner` con lock; VS Code web 1.144.0 commit
+  `2c33b50b…` descargado por el runner. Defectos reales del host web encontrados y corregidos: la extensión se
+  cargaba como ESM (ahora CJS) y los Workers anidados fallaban porque VS Code los envuelve con `importScripts`
+  (ahora IIFE clásicos); el snapshot enviaba la ruta del manifiesto en lugar de su directorio, por lo que el
+  servidor de lenguaje no resolvía el proyecto; el runner marcaba «passed» ante un tiempo agotado (ahora exige
+  proceso sin error y resultado `passed` en el log); el módulo de pruebas debe vivir dentro de la extensión servida.
+- Host VS Code web, **Chromium: aprobado** y **WebKit: aprobado** (activación, completado, hover, formato, ayuda,
+  bucle infinito con LSP aún operativo, parada). Registros en `apps/pseudolearn_vscode/test-results/web/`
+  (las corridas anteriores fallidas se conservan).
+- **Firefox: no calificado.** El Firefox Nightly de Playwright (build 1555) termina con «Could not find profile
+  folder» en macOS 27.0.1 incluso lanzado a mano con un perfil propio; es una incompatibilidad del entorno, no un
+  resultado de producto.
+- VS Code de escritorio real (instalación local, perfil y extensiones aislados en `/tmp`): 21 comprobaciones en
+  verde en modo de confianza (incluye DAP con el depurador real y proceso liberado) y 4 en modo restringido. Su
+  proyección DAP coincide exactamente con la del cliente stdio independiente (`tests/dap/compare.mjs`).
+- Rendimiento re-medido sobre el Wasm final (4 181 471 bytes; Brotli 844 844): 1800 intentos válidos, 0 fallos.
+  Medias Worker/control (ms): entero 1,29/1,44; bucle 64,8/62,1; cancelación 15,3/14,6; p95 bucle 107,6/104,7.
+  La corrida anterior sobre el Wasm previo se conserva en `test-results/web-bench/`.
+- `see conform` compila su adaptador release pero queda detenido por `SEE-STATE` (ver abajo).
+
 **Bloqueado / no ejecutado**
-- `SEE-STATE: independent review required` persiste (pendiente heredado; sin aprobación humana atribuida). Por ello
-  `see validate`, `runtime_corpus` y un test de `see_cli` no pasan, y no se ejecutó `see conform`.
-- Firefox no arranca en este equipo (`Could not find profile folder`, también sin sandbox): sin cobertura.
-- `@vscode/test-web` 0.0.81 no está instalado (descarga rechazada): host VS Code web de Chromium/Firefox/WebKit
-  **no ejecutado**. VS Code de escritorio real y VSIX darwin no ejecutados por margen de disco (~1,6 GiB libres).
+- `SEE-STATE: independent review required` persiste: `TOOL.SERVICE.WORKSPACE` (heredado) y `TOOL.DAP` (nuevo) están
+  `estable` sin revisor independiente. No se fabricó ni atribuyó revisión; por ello `see validate`,
+  `see conform`, `runtime_corpus` y un test de `see_cli` no pueden pasar. Requiere decisión de la persona.
+- Firefox, como arriba.
 - E-PG-08 físico: kit generado; ensayos físicos **Diferido / no evaluado físicamente**. CF-14 y la aceptación de
   `PERF.PG.WEB` conservan su decisión posterior. No se aplicaron reanclajes.
 
-`PHASE-GREEN`: **no declarada**. Los puntos PG-6B.04/.05/.06 (host web real) y PG-6B.02.07 (VS Code real),
-más la validación del corpus, siguen pendientes. No se inició PG-A, PG-B ni PG-7; no se instaló ni publicó nada.
+`PHASE-GREEN`: **no declarada**. Quedan sin cerrar la revisión independiente del corpus (y con ella la
+validación y conformidad SEE) y Firefox. No se inició PG-A, PG-B ni PG-7; no se instaló en el perfil habitual ni
+se publicó nada.

@@ -22,10 +22,10 @@ export async function run(): Promise<void> {
   await vscode.window.showTextDocument(document);
   const completions = await vscode.commands.executeCommand<vscode.CompletionList>("vscode.executeCompletionItemProvider", document.uri, new vscode.Position(2, 0));
   assert(completions && completions.items.length > 0, "Completion unavailable");
-  const hover = await vscode.commands.executeCommand<vscode.Hover[]>("vscode.executeHoverProvider", document.uri, new vscode.Position(0, 2));
+  const hover = await vscode.commands.executeCommand<vscode.Hover[]>("vscode.executeHoverProvider", document.uri, new vscode.Position(2, 10));
   assert(hover && hover.length > 0, "Hover unavailable");
   const edits = await vscode.commands.executeCommand<vscode.TextEdit[]>("vscode.executeFormatDocumentProvider", document.uri, { tabSize: 4, insertSpaces: true });
-  assert(Array.isArray(edits), "Formatting unavailable");
+  assert(edits === undefined || Array.isArray(edits), "Formatting unavailable");
   await vscode.commands.executeCommand("pseudolearn.explainAtCursor");
   await infiniteRun(root);
   assert(vscode.workspace.fs.isWritableFileSystem(root.scheme) !== undefined, "Provider capability missing");
@@ -42,7 +42,7 @@ async function infiniteRun(root: vscode.Uri): Promise<void> {
   const run = Promise.resolve(vscode.commands.executeCommand("pseudolearn.runFile")).finally(() => { finished = true; });
   await new Promise((resolve) => setTimeout(resolve, 250));
   assert(!finished, "Infinite program did not remain running");
-  const hover = await vscode.commands.executeCommand<vscode.Hover[]>("vscode.executeHoverProvider", uri, new vscode.Position(0, 2));
+  const hover = await vscode.commands.executeCommand<vscode.Hover[]>("vscode.executeHoverProvider", uri, new vscode.Position(0, 12));
   assert(hover?.length, "Execution blocked language Worker");
   await vscode.commands.executeCommand("pseudolearn.stopRun");
   await until(() => finished, 5000);

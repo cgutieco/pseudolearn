@@ -1,0 +1,22 @@
+@vscode/test-web: 0.0.81
+Serving dev extensions from /Users/cgutieco/Personal/pseudolearn/apps/pseudolearn_vscode/.artifacts/web-extension
+Serving local content /Users/cgutieco/Personal/pseudolearn/apps/pseudolearn_vscode/tests/fixtures/web/project at /static/mount
+Listening on http://localhost:3000
+Opening browser on http://localhost:3000...
+Using ESM loader: true
+[RemoteAgentHost] Reconciling: desired=[], current=[]
+[AgentHost:remote] Initializing (remoteAuthority=none)
+Found additional builtin location extensions in env [ 'http://localhost:3000/static/extensions/fs' ]
+Updating additional builtin extensions cache
+[0mGET /static/devextensions/package.nls.json [33m404[0m 1.772 ms - 9[0m
+Request to 'http://localhost:3000/static/devextensions/package.nls.json' failed with status code 404
+Loading development extension at /static/devextensions
+[AccountPolicyGate] apply: state=inactive, reason=undefined, isRestricted=false
+vscode-test-web-support fs provider registers for vscode-test-web, initial content from http://localhost:3000/static/mount
+[RemoteAgentHost] Reconciling: desired=[], current=[]
+Settings Sync: Account status changed from uninitialized to unavailable
+[AccountPolicyGate] apply: state=inactive, reason=undefined, isRestricted=false
+
+Ignoring the error while validating workspace folder vscode-test-web://mount/ - ENOPRO: No file system provider found for resource 'vscode-test-web://mount/'
+Via 'product.json#extensionEnabledApiProposals' extension 'github.vscode-pull-request-github' wants API proposal 'agentsWindowActivation' but that proposal DOES NOT EXIST. Likely, the proposal has been finalized (check 'vscode.d.ts') or was abandoned.
+[AgentHost:remote] No remote agent connection available. Not connecting.

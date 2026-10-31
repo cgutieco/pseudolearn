@@ -1,0 +1,75 @@
+{
+  "target": "wasm-worker-control",
+  "physical": false,
+  "vscodeHost": false,
+  "seed": 42,
+  "preparation": "Fresh Wasm instance per attempt; fresh browser and Node process per process group",
+  "results": {
+    "control/integer-extreme": {
+      "attempts": 300,
+      "valid": 300,
+      "mean": 1.4443333292007445,
+      "p95": 1,
+      "ci95": [
+        1.4193333295981088,
+        1.4719999957084657
+      ],
+      "bootstrapSeed": 42681
+    },
+    "worker/integer-extreme": {
+      "attempts": 300,
+      "valid": 300,
+      "mean": 1.2940000029404959,
+      "p95": 1.2000000476837158,
+      "ci95": [
+        1.0876666645208994,
+        1.4993333371480306
+      ],
+      "bootstrapSeed": 42681
+    },
+    "control/loop": {
+      "attempts": 300,
+      "valid": 300,
+      "mean": 62.047333333492276,
+      "p95": 104.70000004768372,
+      "ci95": [
+        57.14400000135104,
+        71.66500000039737
+      ],
+      "bootstrapSeed": 42681
+    },
+    "worker/loop": {
+      "attempts": 300,
+      "valid": 300,
+      "mean": 64.80433333595593,
+      "p95": 107.60000002384186,
+      "ci95": [
+        59.648333339691156,
+        74.7796666721503
+      ],
+      "bootstrapSeed": 42681
+    },
+    "control/cancellation": {
+      "attempts": 300,
+      "valid": 300,
+      "mean": 14.57933333237966,
+      "p95": 24.59999990463257,
+      "ci95": [
+        13.40566666642825,
+        16.866999999682108
+      ],
+      "bootstrapSeed": 42681
+    },
+    "worker/cancellation": {
+      "attempts": 300,
+      "valid": 300,
+      "mean": 15.26466666897138,
+      "p95": 25.399999976158142,
+      "ci95": [
+        14.085666674772899,
+        17.57266667087873
+      ],
+      "bootstrapSeed": 42681
+    }
+  }
+}

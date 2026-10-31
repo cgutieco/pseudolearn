@@ -33,7 +33,7 @@ export class BrowserWorkspace {
       if (path.endsWith(".pseudo")) {
         files.push({ path, source_id: files.length + 1, text: source });
         uris[path] = uri.toString();
-      } else manifests.push({ location: path, text: source });
+      } else manifests.push({ location: path.slice(0, Math.max(0, path.lastIndexOf("/"))), text: source });
     }
     const resolved = await this.resolve(manifests);
     return { project: { project_id: "1", revision_id: String(++this.revision), manifests, files },

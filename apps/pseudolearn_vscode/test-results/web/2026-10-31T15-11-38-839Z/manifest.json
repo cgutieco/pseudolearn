@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "runner": "0.0.81",
+  "vscodeVersion": "1.144.0",
+  "vscodeCommit": "2c33b50b16c472efe58357d1d2a8a5414bc23fbf",
+  "quality": "stable",
+  "browsers": [
+    "chromium",
+    "firefox",
+    "webkit"
+  ],
+  "provider": "test-web virtual filesystem; in-memory writes, no durable persistence claim",
+  "physicalEvidence": false,
+  "records": [
+    {
+      "browser": "chromium",
+      "exitCode": 0,
+      "signal": null,
+      "error": "spawnSync /opt/homebrew/Cellar/node@22/22.23.3/bin/node ETIMEDOUT",
+      "status": "passed",
+      "logSha256": "d1ac35d0144f889ce656e4e637a3807c41d06798a16343c1536957c4b8e2e82a"
+    },
+    {
+      "browser": "firefox",
+      "exitCode": null,
+      "signal": "SIGTERM",
+      "error": "spawnSync /opt/homebrew/Cellar/node@22/22.23.3/bin/node ETIMEDOUT",
+      "status": "not-qualified",
+      "logSha256": "bf67099d8a9cef8ca3cf3b68446d72f862a8a1284c7350160223a61560aadfc3"
+    },
+    {
+      "browser": "webkit",
+      "exitCode": 0,
+      "signal": null,
+      "error": "spawnSync /opt/homebrew/Cellar/node@22/22.23.3/bin/node ETIMEDOUT",
+      "status": "passed",
+      "logSha256": "0ac2303d34ba6b9455b37846fafd685714edeb9328dcc2557ea63bfa683c6892"
+    }
+  ],
+  "provenance": {
+    "revision": "e9745b486d038f2ce5ec28911ea764054ae58d27",
+    "dirty": true,
+    "node": "v22.23.3",
+    "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+    "files": {
+      "package.json": "6826842c70430437791faa4645212f29f92300216130e44346c97f6f4f879756",
+      "README.md": "35772fa27a8320d0ee28d6b9be57dd5c94923ff36878bdc84c58f92eea661cae",
+      "LICENSE.md": "8cafbef1912e0c59f85726a8cb52d8a5455ef051a3c785b8e624c00ca8543d03",
+      "media/pseudolearn.tmLanguage.json": "ccd0c8d6a8925db5df10ff134be2b77d6859ff3c5ac3b7d6c66fbf02d587513b",
+      "media/language-configuration.json": "dee7d0601d1c4634bcc2c680da3162c1267a7c59a884ab2227337b5e9caed698",
+      "dist/web/browser_extension.js": "bcf9b253ab91a3045b3d3ae0f14c9dbcba864d21897be0fb3234ba333109b326",
+      "dist/web/language_worker.js": "924d43d15c128741ec3ffaacd75a82026f549f5aa4ac1aa12e942f8262a919ee",
+      "dist/web/execution_worker.js": "3b101a461abe904dec568692475645129b3dee8f2eacab46ba461d2f0607b6aa",
+      "dist/web/wasm/pseudolearn_wasm_bg.wasm": "03cbef9736c128108ea860ff174ba2d9e3cf1ef84fbfa8bb3a353c650704468a",
+      "dist/web/wasm/pseudolearn_wasm.js": "a733e21485353588fcade07f6fa74ba5ed6712ee95173951b705ce4b2605fbb4",
+      "third-party-notices.md": "cee271609db2588ce0243d19bac4f5659f7c69b0518d9e0d665c9e05a940b671"
+    },
+    "lock": "eb0349b01e2b7238f9182ac04b8a08708e22b6fa7753c5e43135399cb78e6c22",
+    "inputs": {
+      "../../packages/pseudolearn_engine/crates/pseudolearn_wasm/browser/fetch_host.mjs": "55e009f721bc0855705411f48a6212fc05dc2a8740bd16280ad3627df1f3f5e5"
+    }
+  }
+}

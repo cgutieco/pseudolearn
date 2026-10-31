@@ -18,7 +18,7 @@ export class BrowserWorkerClient implements ApiPort {
     channel: WorkerChannel; session: string; generation: number; wasm: string;
   }) {
     worker.onmessage = (event) => this.receive(event.data);
-    worker.onerror = () => this.fail("Worker failed");
+    worker.onerror = (event) => this.fail(`Worker failed${event.message ? `: ${event.message}` : ""}`);
     worker.onmessageerror = () => this.fail("Worker message failed");
     this.ready = this.request("initialize", "", identity.wasm).then(() => undefined);
   }

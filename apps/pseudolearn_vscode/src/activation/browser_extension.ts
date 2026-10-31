@@ -13,7 +13,7 @@ let generation = 0;
 function worker(context: vscode.ExtensionContext, channel: "language" | "execution"): BrowserWorkerClient {
   const url = vscode.Uri.joinPath(context.extensionUri, `dist/web/${channel}_worker.js`).toString();
   const wasm = vscode.Uri.joinPath(context.extensionUri, "dist/web/wasm/pseudolearn_wasm.js").toString();
-  return new BrowserWorkerClient(new Worker(url, { type: "module", name: `PseudoLearn ${channel}` }), {
+  return new BrowserWorkerClient(new Worker(url, { name: `PseudoLearn ${channel}` }), {
     channel, session: crypto.randomUUID(), generation: ++generation, wasm,
   });
 }

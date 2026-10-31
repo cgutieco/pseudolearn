@@ -50,3 +50,4 @@ apps/pseudolearn_vscode/bin/
 apps/pseudolearn_vscode/*.vsix
 apps/pseudolearn_vscode/.artifacts/
 apps/pseudolearn_vscode/third-party-notices.md
+apps/pseudolearn_vscode/.vscode-test-web/

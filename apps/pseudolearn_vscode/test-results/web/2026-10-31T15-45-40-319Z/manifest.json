@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "runner": "0.0.81",
+  "vscodeVersion": "1.144.0",
+  "vscodeCommit": "2c33b50b16c472efe58357d1d2a8a5414bc23fbf",
+  "quality": "stable",
+  "browsers": [
+    "chromium",
+    "firefox",
+    "webkit"
+  ],
+  "provider": "test-web virtual filesystem; in-memory writes, no durable persistence claim",
+  "physicalEvidence": false,
+  "records": [
+    {
+      "browser": "chromium",
+      "exitCode": 1,
+      "signal": null,
+      "status": "not-qualified",
+      "logSha256": "d96bdc3b90cc12215f3ed05f4e5f5a02ffa0c068696c8d871d5ad50480a4d741"
+    },
+    {
+      "browser": "firefox",
+      "exitCode": null,
+      "signal": "SIGTERM",
+      "error": "spawnSync /opt/homebrew/Cellar/node@22/22.23.3/bin/node ETIMEDOUT",
+      "status": "not-qualified",
+      "logSha256": "05b1fc78066a7ae2a0bd51ccc7c9196bdc04f8db1bf6fb173baa0153149e4882"
+    },
+    {
+      "browser": "webkit",
+      "exitCode": 1,
+      "signal": null,
+      "status": "not-qualified",
+      "logSha256": "ebc2de82b742d73fee1d9ff64d69f329de4dcbf4764627af865c80f160a7eaad"
+    }
+  ],
+  "provenance": {
+    "revision": "e9745b486d038f2ce5ec28911ea764054ae58d27",
+    "dirty": true,
+    "node": "v22.23.3",
+    "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+    "files": {
+      "package.json": "6826842c70430437791faa4645212f29f92300216130e44346c97f6f4f879756",
+      "README.md": "35772fa27a8320d0ee28d6b9be57dd5c94923ff36878bdc84c58f92eea661cae",
+      "LICENSE.md": "8cafbef1912e0c59f85726a8cb52d8a5455ef051a3c785b8e624c00ca8543d03",
+      "media/pseudolearn.tmLanguage.json": "ccd0c8d6a8925db5df10ff134be2b77d6859ff3c5ac3b7d6c66fbf02d587513b",
+      "media/language-configuration.json": "dee7d0601d1c4634bcc2c680da3162c1267a7c59a884ab2227337b5e9caed698",
+      "dist/web/browser_extension.js": "27b89ec2111b5d726f68465d4556a44ee07822072603ce79e1f4bd8325678dec",
+      "dist/web/language_worker.js": "2f7b3c32c4689437df31f78d68b51b70ccdebc5c525b2f37b2687ae1f37e8a87",
+      "dist/web/execution_worker.js": "f8dc60ba8c54a9dcf20e4945e4fb34344c3cf7f5ab0cde0f853c1add97852fa3",
+      "dist/web/wasm/pseudolearn_wasm_bg.wasm": "03cbef9736c128108ea860ff174ba2d9e3cf1ef84fbfa8bb3a353c650704468a",
+      "dist/web/wasm/pseudolearn_wasm.js": "a733e21485353588fcade07f6fa74ba5ed6712ee95173951b705ce4b2605fbb4",
+      "third-party-notices.md": "cee271609db2588ce0243d19bac4f5659f7c69b0518d9e0d665c9e05a940b671"
+    },
+    "lock": "eb0349b01e2b7238f9182ac04b8a08708e22b6fa7753c5e43135399cb78e6c22",
+    "inputs": {
+      "../../packages/pseudolearn_engine/crates/pseudolearn_wasm/browser/fetch_host.mjs": "55e009f721bc0855705411f48a6212fc05dc2a8740bd16280ad3627df1f3f5e5"
+    }
+  }
+}

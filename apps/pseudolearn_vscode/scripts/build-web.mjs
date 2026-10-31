@@ -57,12 +57,15 @@ async function buildBrowser() {
 }
 
 async function bundleEntries() {
-  const result = await build({ absWorkingDir: root, entryPoints: ["src/activation/browser_extension.ts", "src/activation/language_worker.ts", "src/activation/execution_worker.ts"],
-    outdir: resolve(stage, "dist/web"), bundle: true, format: "esm", platform: "browser", target: "es2022", external: ["vscode"],
-    conditions: ["browser"], define: { process: "undefined" }, metafile: true, legalComments: "none" });
-  const violations = graphViolations(result.metafile);
+  const shared = { absWorkingDir: root, outdir: resolve(stage, "dist/web"), bundle: true, platform: "browser", target: "es2022",
+    external: ["vscode"], conditions: ["browser"], define: { process: "undefined" }, metafile: true, legalComments: "none" };
+  const extension = await build({ ...shared, entryPoints: ["src/activation/browser_extension.ts"], format: "cjs" });
+  const workers = await build({ ...shared, entryPoints: ["src/activation/language_worker.ts", "src/activation/execution_worker.ts"], format: "iife" });
+  const metafile = { inputs: { ...extension.metafile.inputs, ...workers.metafile.inputs },
+    outputs: { ...extension.metafile.outputs, ...workers.metafile.outputs } };
+  const violations = graphViolations(metafile);
   if (violations.length) throw new Error(violations.join("\n"));
-  return result.metafile;
+  return metafile;
 }
 
 await buildBrowser();

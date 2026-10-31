@@ -1,0 +1,45 @@
+@vscode/test-web: 0.0.81
+Serving dev extensions from /Users/cgutieco/Personal/pseudolearn/apps/pseudolearn_vscode/.artifacts/web-host-test
+Serving local content /Users/cgutieco/Personal/pseudolearn/apps/pseudolearn_vscode/tests/fixtures/web/project at /static/mount
+Listening on http://localhost:3000
+Opening browser on http://localhost:3000...
+
+unhandledRejection browserType.launch: Failed to launch the browser process.
+Browser logs:
+
+<launching> /Users/cgutieco/Library/Caches/ms-playwright/firefox-1555/firefox/Nightly.app/Contents/MacOS/firefox -no-remote -headless -profile /var/folders/6n/90y4jf_96s70_n0spy5lzk380000gn/T/playwright_firefoxdev_profile-FmZLJW -juggler-pipe -silent
+<launched> pid=14855
+[pid=14855][err] *** You are running in headless mode.
+[pid=14855][err] Could not find profile folder.
+[pid=14855] <process did exit: exitCode=1, signal=null>
+[pid=14855] starting temporary directories cleanup
+Call log:
+  - <launching> /Users/cgutieco/Library/Caches/ms-playwright/firefox-1555/firefox/Nightly.app/Contents/MacOS/firefox -no-remote -headless -profile /var/folders/6n/90y4jf_96s70_n0spy5lzk380000gn/T/playwright_firefoxdev_profile-FmZLJW -juggler-pipe -silent
+  - <launched> pid=14855
+  - [pid=14855][err] *** You are running in headless mode.
+  - [pid=14855][err] Could not find profile folder.
+  - [pid=14855] <process did exit: exitCode=1, signal=null>
+  - [pid=14855] starting temporary directories cleanup
+  - [pid=14855] <gracefully close start>
+  - [pid=14855] <kill>
+  - [pid=14855] <skipped force kill spawnedProcess.killed=false processClosed=true>
+  - [pid=14855] finished temporary directories cleanup
+  - [pid=14855] <gracefully close end>
+
+    at openBrowser (/Users/cgutieco/Personal/pseudolearn/apps/pseudolearn_vscode/tests/web/runner/node_modules/.pnpm/@vscode+test-web@0.0.81/node_modules/@vscode/test-web/out/server/index.js:172:39)
+    at async /Users/cgutieco/Personal/pseudolearn/apps/pseudolearn_vscode/tests/web/runner/node_modules/.pnpm/@vscode+test-web@0.0.81/node_modules/@vscode/test-web/out/server/index.js:101:25 {
+  log: [
+    '  - <launching> /Users/cgutieco/Library/Caches/ms-playwright/firefox-1555/firefox/Nightly.app/Contents/MacOS/firefox -no-remote -headless -profile /var/folders/6n/90y4jf_96s70_n0spy5lzk380000gn/T/playwright_firefoxdev_profile-FmZLJW -juggler-pipe -silent',
+    '  - <launched> pid=14855',
+    '  - [pid=14855][err] *** You are running in headless mode.',
+    '  - [pid=14855][err] Could not find profile folder.',
+    '  - [pid=14855] <process did exit: exitCode=1, signal=null>',
+    '  - [pid=14855] starting temporary directories cleanup',
+    '  - [pid=14855] <gracefully close start>',
+    '  - [pid=14855] <kill>',
+    '  - [pid=14855] <skipped force kill spawnedProcess.killed=false processClosed=true>',
+    '  - [pid=14855] finished temporary directories cleanup',
+    '  - [pid=14855] <gracefully close end>'
+  ],
+  name: 'Error'
+}
