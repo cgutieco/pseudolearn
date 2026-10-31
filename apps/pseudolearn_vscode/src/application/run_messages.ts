@@ -1,5 +1,5 @@
 import type { InterfaceLanguage } from "../contracts/extension_configuration";
-import type { FinishStatus, RunState } from "../contracts/editor_run";
+import type { RunCompletion, RunState } from "../contracts/editor_run";
 
 const stateLabels: Record<RunState, Record<InterfaceLanguage, string>> = {
   idle: { es: "PseudoLearn: listo", en: "PseudoLearn: ready" },
@@ -15,7 +15,7 @@ const stateLabels: Record<RunState, Record<InterfaceLanguage, string>> = {
   serverDown: { es: "PseudoLearn: el proceso terminó", en: "PseudoLearn: the process ended" },
 };
 
-const finishLabels: Record<FinishStatus, Record<InterfaceLanguage, string>> = {
+const finishLabels = {
   completed: { es: "Ejecución completada.", en: "Run completed." },
   failed: { es: "La ejecución falló.", en: "The run failed." },
   cancelled: { es: "Ejecución cancelada.", en: "Run cancelled." },
@@ -31,8 +31,43 @@ export function stateLabel(state: RunState, language: InterfaceLanguage): string
   return stateLabels[state][language];
 }
 
-export function finishLabel(status: FinishStatus, language: InterfaceLanguage): string {
-  return finishLabels[status][language];
+export function finishLabel(completion: RunCompletion, language: InterfaceLanguage): string {
+  if (completion.status === "failed" && completion.termination === null && completion.diagnosticErrorCount === 0) {
+    return language === "es" ? "No se pudo iniciar el programa." : "The program could not be started.";
+  }
+  if (
+    completion.diagnosticErrorCount > 0
+    && (completion.status === "failed" || completion.status === "completed")
+  ) {
+    return diagnosticFailureLabel(completion.diagnosticErrorCount, language);
+  }
+  return finishLabels[completion.status][language];
+}
+
+export function stateConclusionLabel(
+  state: RunState,
+  language: InterfaceLanguage,
+): string | undefined {
+  if (state === "aborted") {
+    return language === "es" ? "Ejecución abortada por el anfitrión." : "Run aborted by the host.";
+  }
+  if (state === "serverDown") {
+    return language === "es"
+      ? "El anfitrión terminó la ejecución sin informar su resultado."
+      : "The host ended the run without reporting a result.";
+  }
+  return undefined;
+}
+
+function diagnosticFailureLabel(count: number, language: InterfaceLanguage): string {
+  if (language === "es") {
+    return count === 1
+      ? "No se ejecutó el programa: hay 1 error."
+      : `No se ejecutó el programa: hay ${count} errores.`;
+  }
+  return count === 1
+    ? "The program was not run: 1 error."
+    : `The program was not run: ${count} errors.`;
 }
 
 const refusals = {

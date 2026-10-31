@@ -1,7 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { RunController, stopGraceMilliseconds } from "../../src/application/run_controller";
+import { finishLabel } from "../../src/application/run_messages";
 import type {
   ProcessLauncherPort,
+  RunCompletion,
+  RunEvent,
   RunPresenterPort,
   RunProcessPort,
   RunSettings,
@@ -26,6 +29,8 @@ class FakeProcess implements RunProcessPort {
 class Harness {
   processes: FakeProcess[] = [];
   states: RunState[] = [];
+  completions: Array<RunCompletion | undefined> = [];
+  diagnostics: Array<Extract<RunEvent, { event: "diagnostics" }>> = [];
   output: string[] = [];
   technical: string[] = [];
   inputs: Array<string | undefined> = [];
@@ -44,8 +49,11 @@ class Harness {
     };
     const presenter: RunPresenterPort = {
       showOutput: (text) => this.output.push(text),
-      showDiagnostics: () => undefined,
-      showState: (state) => this.states.push(state),
+      showDiagnostics: (event) => this.diagnostics.push(event),
+      showState: (state, _language, completion) => {
+        this.states.push(state);
+        this.completions.push(completion);
+      },
       requestInput: async () => this.inputs.shift(),
       showTechnicalLine: (line) => this.technical.push(line),
     };
@@ -108,6 +116,21 @@ describe("RunController sessions", () => {
     process.lineListener('{"event":"output","text":"{\\"event\\":\\"finished\\"}"}');
     expect(harness.output).toEqual(['{"event":"finished"}']);
     expect(harness.controller.isActive).toBe(true);
+  });
+
+  it("does not report successful completion when diagnostics contain errors", () => {
+    const harness = new Harness();
+    const process = harness.start();
+    process.lineListener(
+      '{"event":"diagnostics","diagnostics":[{"severity":"error"}],"project_errors":[],"sources":[]}',
+    );
+    process.lineListener(
+      '{"event":"finished","status":"completed","termination":"completed","exit_code":0}',
+    );
+    const completion = harness.completions[harness.completions.length - 1];
+    expect(completion?.diagnosticErrorCount).toBe(1);
+    expect(finishLabel(completion!, "es")).toBe("No se ejecutó el programa: hay 1 error.");
+    expect(harness.diagnostics).toHaveLength(1);
   });
 
 });

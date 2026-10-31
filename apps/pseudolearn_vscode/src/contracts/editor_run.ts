@@ -41,6 +41,12 @@ export type RunState =
   | "aborted"
   | "serverDown";
 
+export interface RunCompletion {
+  status: FinishStatus;
+  termination: string | null;
+  diagnosticErrorCount: number;
+}
+
 export interface RunProcessPort {
   onLine(listener: (line: string) => void): void;
   onExit(listener: (code: number | null) => void): void;
@@ -58,8 +64,13 @@ export interface SchedulerPort {
 
 export interface RunPresenterPort {
   showOutput(text: string): void;
-  showDiagnostics(event: Extract<RunEvent, { event: "diagnostics" }>): void;
-  showState(state: RunState, language: InterfaceLanguage): void;
+  showDiagnostics(
+    event: Extract<RunEvent, { event: "diagnostics" }>,
+    workingDirectory: string,
+    language: InterfaceLanguage,
+    completion?: RunCompletion,
+  ): void;
+  showState(state: RunState, language: InterfaceLanguage, completion?: RunCompletion): void;
   requestInput(language: InterfaceLanguage): Promise<string | undefined>;
   showTechnicalLine(line: string): void;
 }

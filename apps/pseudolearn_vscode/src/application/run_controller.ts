@@ -1,6 +1,7 @@
 import type {
   ProcessLauncherPort,
   RunCommand,
+  RunCompletion,
   RunEvent,
   RunPresenterPort,
   RunProcessPort,
@@ -12,6 +13,7 @@ import type {
 import type { DisposablePort } from "../contracts/extension_host";
 import { buildRunArguments } from "./run_arguments";
 import { encodeRunCommand, parseRunEvent, supportedSchema } from "./run_events";
+import { countDiagnosticErrors } from "./diagnostic_report";
 
 export const stopGraceMilliseconds = 5000;
 
@@ -20,6 +22,8 @@ export type StartOutcome = { ok: true } | { ok: false; refusal: "runActive" };
 interface Session {
   process: RunProcessPort;
   finished: boolean;
+  workingDirectory: string;
+  diagnostics?: Extract<RunEvent, { event: "diagnostics" }>;
   graceTimer?: DisposablePort;
 }
 
@@ -45,7 +49,7 @@ export class RunController {
     const { target, workingDirectory, settings } = request;
     const args = buildRunArguments(target, settings);
     const process = this.ports.launcher.launch(settings.executable, args, workingDirectory);
-    const session: Session = { process, finished: false };
+    const session: Session = { process, finished: false, workingDirectory, diagnostics: undefined };
     this.active = session;
     this.state("starting", settings);
     process.onLine((line) => this.receive(session, settings, line));
@@ -98,13 +102,13 @@ export class RunController {
         void this.collectInput(session, settings);
         break;
       case "diagnostics":
-        this.ports.presenter.showDiagnostics(event);
+        session.diagnostics = mergeDiagnostics(session.diagnostics, event);
         break;
       case "protocol_error":
         this.ports.presenter.showTechnicalLine(event.reason);
         break;
       case "finished":
-        this.conclude(session, settings);
+        this.conclude(session, settings, event);
         break;
     }
   }
@@ -132,9 +136,19 @@ export class RunController {
     this.transmit(session, { command: "input", text });
   }
 
-  private conclude(session: Session, settings: RunSettings): void {
+  private conclude(
+    session: Session,
+    settings: RunSettings,
+    event: Extract<RunEvent, { event: "finished" }>,
+  ): void {
     session.finished = true;
-    this.state("finished", settings);
+    const completion: RunCompletion = {
+      status: event.status,
+      termination: event.termination,
+      diagnosticErrorCount: session.diagnostics ? countDiagnosticErrors(session.diagnostics) : 0,
+    };
+    this.presentDiagnostics(session, settings, completion);
+    this.state("finished", settings, completion);
   }
 
   private exited(session: Session, settings: RunSettings, code: number | null): void {
@@ -144,6 +158,7 @@ export class RunController {
     session.graceTimer?.dispose();
     this.active = undefined;
     if (!session.finished) {
+      this.presentDiagnostics(session, settings);
       this.state("serverDown", settings);
       this.ports.presenter.showTechnicalLine(`exit ${code ?? "signal"}`);
     }
@@ -156,6 +171,7 @@ export class RunController {
     session.graceTimer?.dispose();
     this.active = undefined;
     session.process.terminate();
+    this.presentDiagnostics(session, settings);
     this.state("aborted", settings);
   }
 
@@ -163,7 +179,42 @@ export class RunController {
     session.process.send(encodeRunCommand(command));
   }
 
-  private state(state: RunState, settings: RunSettings): void {
-    this.ports.presenter.showState(state, settings.language);
+  private presentDiagnostics(
+    session: Session,
+    settings: RunSettings,
+    completion?: RunCompletion,
+  ): void {
+    if (session.diagnostics) {
+      this.ports.presenter.showDiagnostics(
+        session.diagnostics,
+        session.workingDirectory,
+        settings.language,
+        completion,
+      );
+      session.diagnostics = undefined;
+    }
   }
+
+  private state(state: RunState, settings: RunSettings, completion?: RunCompletion): void {
+    this.ports.presenter.showState(state, settings.language, completion);
+  }
+}
+
+function mergeDiagnostics(
+  current: Extract<RunEvent, { event: "diagnostics" }> | undefined,
+  incoming: Extract<RunEvent, { event: "diagnostics" }>,
+): Extract<RunEvent, { event: "diagnostics" }> {
+  if (!current) {
+    return incoming;
+  }
+  const sources = new Map(current.sources.map((source) => [source.sourceId, source]));
+  for (const source of incoming.sources) {
+    sources.set(source.sourceId, source);
+  }
+  return {
+    event: "diagnostics",
+    diagnostics: [...current.diagnostics, ...incoming.diagnostics],
+    projectErrors: [...current.projectErrors, ...incoming.projectErrors],
+    sources: [...sources.values()],
+  };
 }

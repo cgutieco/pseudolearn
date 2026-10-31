@@ -75,12 +75,26 @@ Todos los comandos están bajo la categoría `PseudoLearn` en la paleta. Los IDs
 llegan intactas) y con entorno vacío; los idiomas, el perfil y el rigor salen de la configuración resuelta. Solo hay una sesión
 activa: una segunda ejecución se rechaza con un mensaje hasta que termine o se detenga. Ejecutar exige el snapshot guardado
 de la raíz o del archivo; con cambios sin guardar se rechaza y no se ejecuta una versión distinta de la que se ve. Comprobar y
-la navegación usan el overlay del editor a través del LSP. La salida del programa va al canal `PseudoLearn`, los diagnósticos
-de ejecución se listan allí y las líneas que el servidor no entiende van al canal técnico `PseudoLearn (technical)`, nunca
-como salida del estudiante. La barra de estado muestra el estado de la sesión.
+la navegación usan el overlay del editor a través del LSP. La salida de `Escribir` permanece intacta en el canal `PseudoLearn`.
+Los diagnósticos se agrupan y ordenan por archivo, línea y columna; en proyectos la ruta es relativa a la raíz. Cada error muestra
+el mensaje original del catálogo y, cuando se puede leer el archivo, su línea y un subrayado. Se muestran hasta 20 errores y una
+línea indica cuántos quedan ocultos. Los errores, advertencias e información también se publican en «Problemas» con sus rangos.
+Los campos JSON de cada diagnóstico van solo a `PseudoLearn (technical)`, con un límite de 40 registros, 2 KiB por registro y
+32 KiB por evento. Un archivo borrado, binario, ilegible o mayor a 1 MiB conserva línea y columna, pero no el fragmento.
+
+Las posiciones `line` y `column` del evento son base 1 y cuentan escalares Unicode, como define `LANG.SOURCE.POSITION`.
+La comprobación con `pseudo run --editor` y `missingBindingInitializer` en `    Definir nombre Como Cadena;` informó línea 2,
+columna 31, sobre el punto y coma. El marco separa CRLF, expande tabuladores según `editor.tabSize`
+y adapta escalares suplementarios a unidades UTF-16 al publicar rangos en VS Code.
+
+El resumen usa el evento `finished`: con errores informa que el programa no se ejecutó; solo `completed` sin errores dice
+«Ejecución completada». Cancelación, cierre de entrada, aborto del anfitrión y fallo del anfitrión tienen mensajes separados.
+Las líneas no reconocidas permanecen en el canal técnico; las líneas de salida no se interpretan como eventos. El JSON de
+diagnósticos nunca se presenta como salida del estudiante. La barra de estado muestra el estado de la sesión.
 
 **Entrada.** `awaiting_input` abre un cuadro de entrada: aceptar con texto vacío envía una línea vacía, mientras que cancelar
-el cuadro envía `cancel` y no una cadena vacía. **Detener** envía `cancel` y, si el proceso no responde en 5 s, lo termina
+el cuadro envía `cancel` y no una cadena vacía. El canal se muestra conservando el foco y `showInputBox` recibe el texto; la
+recepción de texto se verifica manualmente en el Extension Development Host. **Detener** envía `cancel` y, si el proceso no responde en 5 s, lo termina
 (`SIGKILL`) y lo presenta como «abortado por el anfitrión», sin inventar limpieza del lenguaje. Cerrar la ventana o desactivar
 la extensión envía `close` y termina el proceso propio; ningún proceso ajeno se toca. Las líneas de una sesión anterior que
 llegan tarde se ignoran. Un `hello` con otro `schema` aborta la sesión. No se concede ningún archivo ni red.
