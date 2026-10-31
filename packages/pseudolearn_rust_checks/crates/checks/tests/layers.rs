@@ -130,3 +130,6 @@ fn accepts_permitted_external_path_dependency() -> Result<(), Box<dyn std::error
     let _cleanup = std::fs::remove_dir_all(&external_path);
     Ok(())
 }
+
+#[path = "layers/debug_boundaries.rs"]
+mod debug_boundaries;

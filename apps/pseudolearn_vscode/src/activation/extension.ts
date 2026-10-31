@@ -5,6 +5,7 @@ import { registerCommands } from "./commands";
 import { ExtensionLifecycle } from "../application/extension_lifecycle";
 import { readVscodeConfiguration } from "../adapters/vscode_configuration";
 import { VscodeExtensionHost } from "../adapters/vscode_extension_host";
+import { registerDebugCommands } from "./debug_commands";
 
 let activeLifecycle: ExtensionLifecycle | undefined;
 
@@ -24,6 +25,7 @@ export function activate(context: vscode.ExtensionContext): void {
     return;
   }
   registerCommands(context, configuration.value);
+  registerDebugCommands(context, configuration.value);
 }
 
 export function deactivate(): void {

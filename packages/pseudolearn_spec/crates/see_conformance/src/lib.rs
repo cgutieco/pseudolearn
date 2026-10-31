@@ -1,6 +1,7 @@
 #![forbid(unsafe_code)]
 
 pub mod comparison;
+mod dap_comparison;
 pub mod execution;
 pub mod math_arguments;
 pub mod math_contrast;

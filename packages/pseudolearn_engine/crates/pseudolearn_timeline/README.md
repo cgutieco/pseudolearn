@@ -74,3 +74,16 @@ Los tests de estas capacidades se ejecutaron en selecciones acotadas, incluida l
 
 Los tipos de cinta y su verificación se reexportan desde runtime. Esta capa no mantiene otra
 implementación de formato, presupuesto ni hashes; la misma implementación es consumible por AOT.
+
+## Ventanas reconstruidas de eventos
+
+replay_event_window comparte la misma reproducción aislada de efectos que la consulta de estado.
+Recibe un rango y devuelve únicamente sus eventos; descarta los anteriores entre instrucciones.
+CheckpointStore conserva el evento de frontera de cada checkpoint para que una ventana pueda
+incluir exactamente el primer evento disponible aunque su imagen ya represente el estado posterior.
+El raleo retira esas fronteras junto con sus checkpoints: no se conserva una traza ilimitada.
+
+La reproducción de estado conserva los eventos de la instrucción objetivo hasta que el consumidor
+los drena; esto permite registrar otra frontera al reducir la retención sin perder su identidad.
+La continuación viva no participa en estas reconstrucciones y ningún fallo permite consultar un
+anfitrión físico como alternativa. Las ventanas del borde público se limitan a 4096 eventos.

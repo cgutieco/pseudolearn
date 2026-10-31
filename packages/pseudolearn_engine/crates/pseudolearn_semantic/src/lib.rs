@@ -55,6 +55,8 @@ pub mod hir;
 mod hir_finalization;
 mod http_types;
 pub mod identities;
+pub mod inspection_expression;
+mod inspection_records;
 mod interface_constraints;
 pub mod interface_model;
 mod interface_realizations;

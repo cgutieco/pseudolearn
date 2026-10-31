@@ -41,7 +41,7 @@ pub(crate) fn capture(machine: &Machine<'_>, handle: Handle) -> Option<(String, 
     Some((ordinal.to_string(), value))
 }
 
-fn element(
+pub(crate) fn element(
     machine: &Machine<'_>,
     fields: &[&(String, pseudolearn_bytecode::ValueType)],
     payload: &runtime::CollectionWords,
@@ -69,7 +69,7 @@ fn element(
     Some(json!({"campos":components}))
 }
 
-fn kind(kind: &pseudolearn_bytecode::ValueType) -> ValueKind {
+pub(crate) fn kind(kind: &pseudolearn_bytecode::ValueType) -> ValueKind {
     use pseudolearn_bytecode::ValueType;
     match kind {
         ValueType::I64 => ValueKind::Integer,

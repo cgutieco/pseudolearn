@@ -62,7 +62,7 @@ fn executes_ri_command_successfully() -> Result<(), Box<dyn std::error::Error>> 
     assert_eq!(output.status.code(), Some(0));
     let stdout = String::from_utf8_lossy(&output.stdout);
     assert!(stdout.contains("module P es"));
-    assert!(stdout.contains("func @main() -> unit"));
+    assert!(stdout.contains("func suspendible @main() -> unit"));
     assert!(stdout.contains("out.write"));
 
     let _removed = std::fs::remove_dir_all(&unique_directory);

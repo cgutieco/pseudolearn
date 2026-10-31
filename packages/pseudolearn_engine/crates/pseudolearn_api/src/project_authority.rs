@@ -24,7 +24,7 @@ pub(crate) fn execution_limits(
     request: &ProjectRequest,
     entry: Option<ModuleId>,
 ) -> ExecutionLimits {
-    let mut limits = ExecutionLimits::default();
+    let mut limits = request.execution.limits.clone();
     let owner = entry
         .and_then(|id| catalog.module(id))
         .and_then(|module| catalog.package(module.package))
@@ -38,10 +38,17 @@ pub(crate) fn execution_limits(
             continue;
         };
         match name {
-            LimitName::Cells => limits.cells = Some(value),
-            LimitName::Depth => limits.depth = Some(usize::try_from(value).unwrap_or(usize::MAX)),
-            LimitName::MicroSteps => limits.micro_steps = Some(value),
-            LimitName::Statements => limits.statements = Some(value),
+            LimitName::Cells => limits.cells = Some(value.min(limits.cells.unwrap_or(value))),
+            LimitName::Depth => {
+                let maximum = usize::try_from(value).unwrap_or(usize::MAX);
+                limits.depth = Some(maximum.min(limits.depth.unwrap_or(maximum)));
+            }
+            LimitName::MicroSteps => {
+                limits.micro_steps = Some(value.min(limits.micro_steps.unwrap_or(value)))
+            }
+            LimitName::Statements => {
+                limits.statements = Some(value.min(limits.statements.unwrap_or(value)))
+            }
         }
     }
     limits

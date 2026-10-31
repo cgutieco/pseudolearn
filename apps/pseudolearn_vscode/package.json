@@ -11,21 +11,34 @@
   },
   "packageManager": "pnpm@12.8.1",
   "main": "./dist/extension.js",
-  "extensionKind": ["workspace"],
-  "activationEvents": ["onStartupFinished", "onLanguage:pseudolearn"],
+  "extensionKind": [
+    "workspace"
+  ],
+  "activationEvents": [
+    "onStartupFinished",
+    "onLanguage:pseudolearn",
+    "onDebug:pseudolearn"
+  ],
   "capabilities": {
     "untrustedWorkspaces": {
       "supported": "limited",
       "description": "PseudoLearn provides declarative highlighting in Restricted Mode. Executable overrides require a trusted development workspace.",
-      "restrictedConfigurations": ["pseudolearn.server.path"]
+      "restrictedConfigurations": [
+        "pseudolearn.server.path"
+      ]
     }
   },
   "contributes": {
     "languages": [
       {
         "id": "pseudolearn",
-        "aliases": ["PseudoLearn", "pseudolearn"],
-        "extensions": [".pseudo"],
+        "aliases": [
+          "PseudoLearn",
+          "pseudolearn"
+        ],
+        "extensions": [
+          ".pseudo"
+        ],
         "configuration": "./media/language-configuration.json"
       }
     ],
@@ -37,13 +50,51 @@
       }
     ],
     "commands": [
-      { "command": "pseudolearn.runFile", "title": "Run File", "category": "PseudoLearn" },
-      { "command": "pseudolearn.runProject", "title": "Run Project", "category": "PseudoLearn" },
-      { "command": "pseudolearn.stopRun", "title": "Stop Run", "category": "PseudoLearn" },
-      { "command": "pseudolearn.selectEntry", "title": "Select Project Entry", "category": "PseudoLearn" },
-      { "command": "pseudolearn.explainAtCursor", "title": "Explain at Cursor", "category": "PseudoLearn" },
-      { "command": "pseudolearn.translate", "title": "Translate Vocabulary", "category": "PseudoLearn" },
-      { "command": "pseudolearn.restartServer", "title": "Restart Language Server", "category": "PseudoLearn" }
+      {
+        "command": "pseudolearn.runFile",
+        "title": "Run File",
+        "category": "PseudoLearn"
+      },
+      {
+        "command": "pseudolearn.runProject",
+        "title": "Run Project",
+        "category": "PseudoLearn"
+      },
+      {
+        "command": "pseudolearn.stopRun",
+        "title": "Stop Run",
+        "category": "PseudoLearn"
+      },
+      {
+        "command": "pseudolearn.selectEntry",
+        "title": "Select Project Entry",
+        "category": "PseudoLearn"
+      },
+      {
+        "command": "pseudolearn.explainAtCursor",
+        "title": "Explain at Cursor",
+        "category": "PseudoLearn"
+      },
+      {
+        "command": "pseudolearn.translate",
+        "title": "Translate Vocabulary",
+        "category": "PseudoLearn"
+      },
+      {
+        "command": "pseudolearn.restartServer",
+        "title": "Restart Language Server",
+        "category": "PseudoLearn"
+      },
+      {
+        "command": "pseudolearn.debugFile",
+        "title": "Debug File",
+        "category": "PseudoLearn"
+      },
+      {
+        "command": "pseudolearn.debugProject",
+        "title": "Debug Project",
+        "category": "PseudoLearn"
+      }
     ],
     "keybindings": [
       {
@@ -58,21 +109,30 @@
       "properties": {
         "pseudolearn.profile": {
           "type": "string",
-          "enum": ["es", "en"],
+          "enum": [
+            "es",
+            "en"
+          ],
           "default": "es",
           "scope": "window",
           "description": "Fallback vocabulary profile for workspace analyses."
         },
         "pseudolearn.strictness": {
           "type": "string",
-          "enum": ["strict", "flexible"],
+          "enum": [
+            "strict",
+            "flexible"
+          ],
           "default": "strict",
           "scope": "window",
           "description": "Analysis strictness for this workspace."
         },
         "pseudolearn.interfaceLanguage": {
           "type": "string",
-          "enum": ["es", "en"],
+          "enum": [
+            "es",
+            "en"
+          ],
           "default": "es",
           "scope": "machine",
           "description": "Personal language for PseudoLearn diagnostics and extension messages."
@@ -84,7 +144,62 @@
           "description": "Absolute user-only path to a development server executable."
         }
       }
-    }
+    },
+    "debuggers": [
+      {
+        "type": "pseudolearn",
+        "label": "PseudoLearn",
+        "languages": [
+          "pseudolearn"
+        ],
+        "configurationAttributes": {
+          "launch": {
+            "properties": {
+              "program": {
+                "type": "string",
+                "description": "Saved source URI path."
+              },
+              "project": {
+                "type": "string",
+                "description": "Project root."
+              },
+              "entry": {
+                "type": "string"
+              },
+              "stopOnEntry": {
+                "type": "boolean",
+                "default": true
+              },
+              "profile": {
+                "enum": [
+                  "es",
+                  "en"
+                ]
+              },
+              "strictness": {
+                "enum": [
+                  "strict",
+                  "flexible"
+                ]
+              },
+              "seed": {
+                "type": "string",
+                "default": "42"
+              }
+            }
+          }
+        },
+        "initialConfigurations": [
+          {
+            "type": "pseudolearn",
+            "request": "launch",
+            "name": "PseudoLearn: Debug File",
+            "program": "${file}",
+            "stopOnEntry": true
+          }
+        ]
+      }
+    ]
   },
   "files": [
     "README.md",
@@ -106,10 +221,20 @@
     "test": "vitest run",
     "build:cli": "node scripts/build-cli.mjs",
     "build": "pnpm check:grammar && node scripts/build.mjs",
-    "package": "pnpm build:cli && pnpm build && node scripts/package.mjs"
+    "package": "pnpm build:cli && pnpm build && node scripts/package.mjs",
+    "build:wasm": "bash ../../packages/pseudolearn_engine/tool/wasm.sh build",
+    "build:web": "pnpm check:grammar && node scripts/build-web.mjs",
+    "package:web": "pnpm build:wasm && pnpm build:web && node scripts/package-web.mjs",
+    "check:web": "node scripts/check-web.mjs",
+    "test:web": "node tests/web/run-web.mjs",
+    "bench:web": "node scripts/bench-web.mjs",
+    "kit:web": "node scripts/physical-kit.mjs",
+    "test:dap:stdio": "node tests/dap/run-stdio.mjs",
+    "test:dap:history": "node tests/dap/history_physical.mjs"
   },
   "dependencies": {
-    "vscode-languageclient": "10.1.2"
+    "vscode-languageclient": "10.1.2",
+    "vscode-languageserver-protocol": "3.18.4"
   },
   "devDependencies": {
     "@types/node": "22.20.5",

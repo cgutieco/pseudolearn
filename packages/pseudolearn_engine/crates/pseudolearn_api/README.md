@@ -304,3 +304,50 @@ no contiene un cliente de red real. Los estados HTTP completos se entregan al pr
 `RespuestaHttp`, incluso cuando son 4xx o 5xx. La grabación y reproducción de respuestas no
 secretas atraviesa la API y la reproducción no llama al anfitrión. Las pruebas del API verifican esta
 frontera de integración; validación de URL, autorización y representación permanecen en runtime.
+
+## Evaluación de inspección sin efectos
+
+`inspect_expression` reconstruye el evento y la tarea solicitados sobre una copia, toma únicamente los nombres visibles del marco y deriva sus tipos de los metadatos públicos de ejecución. La entrada de expresión del parser exige EOF; semántica valida un subconjunto sin llamadas y utiliza la resolución ordinaria. Lowering emite una función temporal con parámetros de captura, y el bytecode y los operadores de la VM calculan el resultado sobre un heap copiado sin anfitrión. No se concatena fuente ni se introduce otro evaluador.
+
+Los literales y capturas de texto se materializan en el heap temporal como valores explícitos. Las identidades y alias de arreglos y objetos se conservan dentro de la copia. El presupuesto incluye el heap capturado: una captura que ya excede 65536 celdas o el límite menor configurado falla antes de duplicarla. La evaluación limita texto a 8192 bytes, nodos a 1024, profundidad sintáctica y marcos a 64, sentencias a 4096 y bombeo a 65536 instrucciones. Las entradas y señales de cancelación del programa se desconectan del temporal; nunca recibe capacidades físicas.
+
+El resultado contiene `type`, `value` textual canónico y `reference` cuando representa una asignación retenida. Los rechazos sintácticos, de pureza, de tipos, dominio o presupuesto son errores de uso. La continuación, variables, salida, semilla, agenda y cinta de la ejecución viva permanecen intactas.
+
+## Control persistente e inspección de depuración
+
+El control de depuración pertenece a la API porque todos los consumidores deben detenerse con los
+mismos predicados del núcleo. `debug_configure` resuelve breakpoints por fuente y posición exacta;
+`debug_control` configura continuación, pasos, pausa o retroceso y `advance` bombea el mismo recurso
+vivo. Se descarta usar `step`, cuya responsabilidad anterior recompila una ejecución distinta.
+Las paradas ocurren en eventos de entrada a sentencia antes de sus efectos; salir usa el retorno
+que cierra el marco. La pausa conserva entradas y efectos pendientes y no cancela la ejecución.
+Salir desde el marco base de una tarea no tiene llamante al que volver: la tarea termina y la parada
+se informa como `task_terminated`. Un breakpoint solo se verifica sobre una entrada a sentencia cuyo
+tramo coincide exactamente con la línea y columna pedidas; nunca se desliza a otra sentencia.
+
+`debug_state` proyecta tareas, fuentes inmutables y ventanas de marcos (`start_frame`, `frame_count`,
+máximo 4096), con identidad y generación de parada. Los consumidores asignan sus handles de
+transporte; el núcleo conserva identidades lógicas. Las fuentes de proyecto tienen vistas por
+source_id y revisión, se analizan como módulos y conservan su texto inicial. El arranque de proyecto
+propaga semilla, entradas, observación, anfitrión, modo, cinta y límites efectivos; el manifiesto
+solo puede reducir límites del pedido. La identidad de la cinta usa una representación JSON
+canónica de todos los archivos del proyecto, no un programa concatenado para compilar.
+
+Punta viva y cursor de inspección son posiciones distintas. `history_events` reconstruye ventanas
+hacia adelante o atrás de hasta 4096 eventos; los controles históricos avanzan por ventanas con
+cesión al consumidor entre lotes. No reenvían salida ni efectos al anfitrión, no reemplazan la
+continuación y fallan exactamente fuera del horizonte. El control en la punta requiere otra orden
+para continuar el programa vivo después de recorrer el pasado. La terminación siempre cancela
+la punta aunque se inspeccione historia.
+
+Las consultas de marcos y páginas admiten task_id; la VM ofrece una copia de inspección del contexto
+seleccionado sin cambiar la agenda original. `query_page` admite offset directo o cursor exclusivo,
+y liga sus cursores también a tarea y generación de parada. Solo decodifica los valores de la
+ventana: metadatos léxicos pueden recorrerse para contar o resolver sombreado. object_fields reconoce
+objetos, arreglos, vectores y diccionarios; indexed distingue sus índices de campos con nombre.
+Los registros de lectura y las imágenes temporales no se confunden con el estado vivo.
+
+Verificación dirigida adicional: `cargo test --locked -p pseudolearn_api --test debug_control`,
+`--test history_events`, `--test inspection_expression` y `--test lsp_operations` en invocaciones
+separadas. Estas órdenes son los targets disponibles; su aprobación depende de la evidencia de
+cada campaña y no se deduce de haberlas documentado.

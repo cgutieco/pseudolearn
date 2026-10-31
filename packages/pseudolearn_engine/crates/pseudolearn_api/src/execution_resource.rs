@@ -6,25 +6,30 @@ use pseudolearn_vm::{
 };
 use serde_json::{Value, json};
 use std::collections::{BTreeMap, BTreeSet, VecDeque};
-use std::sync::{
-    Arc,
-    atomic::{AtomicBool, Ordering},
-};
+use std::sync::{Arc, atomic::AtomicBool};
 
 #[cfg(test)]
 #[path = "execution_resource_tests.rs"]
 mod execution_resource_tests;
 
+#[path = "execution_debug.rs"]
+mod execution_debug;
 #[path = "execution_effects.rs"]
 mod execution_effects;
 #[path = "execution_host.rs"]
 mod execution_host;
 #[path = "execution_host_batch.rs"]
 mod execution_host_batch;
+#[path = "execution_queries.rs"]
+mod execution_queries;
 #[path = "execution_response.rs"]
 mod execution_response;
 #[path = "execution_setup.rs"]
 mod execution_setup;
+#[path = "history_operations.rs"]
+mod history_operations;
+#[path = "inspection_operations.rs"]
+mod inspection_operations;
 
 const CHECKPOINT_STRIDE: usize = 256;
 
@@ -46,7 +51,9 @@ pub(crate) struct ExecutionResource {
     cancelled: Arc<AtomicBool>,
     profile: String,
     warnings: Vec<ApiDiagnostic>,
-    view: Option<crate::program_view::ProgramView>,
+    sources: crate::execution_sources::ExecutionSources,
+    debug: Option<crate::debug_model::DebugSession>,
+    syntax_profile: String,
     source: Option<crate::ApiSourceIdentity>,
     execution_mode: pseudolearn_timeline::ExecutionMode,
     effects: pseudolearn_runtime::EffectSession,
@@ -104,7 +111,9 @@ impl ExecutionResource {
             cancelled: prepared.cancelled,
             profile: request.profile.clone(),
             warnings,
-            view: None,
+            sources: crate::execution_sources::ExecutionSources::single(request),
+            debug: None,
+            syntax_profile: request.profile.clone(),
             source: request.source,
             execution_mode: prepared.execution_mode,
             effects: prepared.effects,
@@ -126,32 +135,36 @@ impl ExecutionResource {
     }
 
     pub(crate) fn attach_view(&mut self, view: crate::program_view::ProgramView) {
-        self.view = Some(view);
+        self.sources.views.insert(view.source_id().value(), view);
+    }
+
+    pub(crate) fn attach_sources(&mut self, sources: crate::execution_sources::ExecutionSources) {
+        self.sources = sources;
     }
 
     pub(crate) fn advance(&mut self, maximum: usize) -> Result<Value, ApiError> {
         if maximum == 0 {
             return Err(usage("batch size must be positive"));
         }
+        if self.debug.is_some() && maximum > 4096 {
+            return Err(usage("debug batch exceeds limit"));
+        }
+        if self
+            .debug
+            .as_ref()
+            .is_some_and(|debug| debug.history_direction.is_some())
+        {
+            return self.advance_history(maximum);
+        }
         self.settle_cancelled_suspension();
-        if self.terminal.is_none() {
+        if self.terminal.is_none() && !self.debug.as_ref().is_some_and(|debug| debug.stopped) {
             self.activate_ready_host_effect()?;
             self.drive_batch(maximum)?;
         }
 
-        let mut response =
-            execution_response::advance_response(execution_response::AdvanceResponseInput {
-                machine: &self.machine,
-                start: 0,
-                terminal: self.terminal.as_ref(),
-                profile: &self.profile,
-                warnings: &self.warnings,
-                view: self.view.as_ref(),
-                source: self.source,
-            });
+        let mut response = self.tip_response();
         self.add_effect_observation(&mut response);
         self.delivered = machine_event_count(&self.machine);
-        take_machine_events(&mut self.machine);
         if !self.has_external_effects() {
             self.machine
                 .set_effect_checkpoint(pseudolearn_runtime::capture_effect_checkpoint(
@@ -159,8 +172,22 @@ impl ExecutionResource {
                 ));
             self.record_checkpoint()?;
         }
+        self.capture_debug_response(&mut response)?;
+        take_machine_events(&mut self.machine);
         self.trim_history()?;
         Ok(response)
+    }
+
+    fn tip_response(&self) -> Value {
+        execution_response::advance_response(execution_response::AdvanceResponseInput {
+            machine: &self.machine,
+            start: 0,
+            terminal: self.terminal.as_ref(),
+            profile: &self.profile,
+            warnings: &self.warnings,
+            sources: &self.sources,
+            source: self.source,
+        })
     }
 
     fn add_effect_observation(&self, response: &mut Value) {
@@ -181,44 +208,6 @@ impl ExecutionResource {
             "host_observation".to_owned(),
             json!({"calls":self.host.calls,"open_resources":self.host.live_resource_count()}),
         );
-    }
-
-    pub(crate) fn input(&mut self, text: String) -> Result<(), ApiError> {
-        if !self.execution_mode.allows_external_host() {
-            return Err(usage("external input rejected in replay or seek mode"));
-        }
-        if !matches!(self.terminal, Some(RunExit::AwaitingInput)) {
-            return Err(usage("execution is not awaiting input"));
-        }
-        self.options.inputs.push(text.clone());
-        self.machine.supply_input(text);
-        self.terminal = None;
-        Ok(())
-    }
-
-    pub(crate) fn cancel(&self) {
-        self.cancelled.store(true, Ordering::Relaxed);
-    }
-
-    pub(crate) fn state(&self, event: usize) -> Result<Value, ApiError> {
-        let machine = self.machine_at(event)?;
-        Ok(crate::execution_state::capture(&machine))
-    }
-
-    pub(crate) fn query(
-        &self,
-        event: usize,
-        operation: &str,
-        arguments: &Value,
-    ) -> Result<Value, ApiError> {
-        crate::execution_state::query(&self.machine_at(event)?, operation, arguments)
-    }
-
-    pub(crate) fn query_page(&self, arguments: &Value, scope: &str) -> Result<Value, ApiError> {
-        let request = crate::state_pages::PageRequest::parse(arguments)?;
-        let revision = self.view.as_ref().map_or("", |view| view.revision());
-        let machine = self.machine_at(request.event)?;
-        crate::state_pages::page(&machine, &request, &format!("{scope}|{revision}"))
     }
 
     pub(crate) fn horizon(&self) -> Value {

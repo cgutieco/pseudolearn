@@ -1,0 +1,12 @@
+{
+  "entry": "app/main",
+  "breakpoint": { "path": "app/math.pseudo", "line": 2 },
+  "input": "20",
+  "expression": "number + 1",
+  "files": {
+    "app/pseudolearn.toml": "schema = 1\n[package]\nname = \"app\"\nkind = \"application\"\nentries = [\"app/main\"]\n",
+    "app/main.pseudo": "Importar app.worker.Work;\nAlgoritmo Main\nDefinir Mutable number Como Entero <- 0;\nLeer number;\nTareas\nLanzar Work(number);\nLanzar Work(number + 1);\nFinTareas\nFinAlgoritmo\n",
+    "app/worker.pseudo": "Importar app.math.Double;\nPublico SubProceso Suspendible Work(number Como Entero)\nEscribir Double(number);\nFinSubProceso\n",
+    "app/math.pseudo": "Publico SubProceso Double(number Como Entero) Como Entero\nRetornar number * 2;\nFinSubProceso\n"
+  }
+}

@@ -4,6 +4,7 @@ const { checks, record, step, sleep, until, pseudoProcesses, open } = require(".
 const { activationChecks, diagnosticChecks, navigationChecks } = require("./analysis.cjs");
 const { formatChecks, renameChecks } = require("./editing.cjs");
 const { refusalChecks, runChecks, lifecycleChecks } = require("./running.cjs");
+const { debugChecks } = require("./debugging.cjs");
 
 const extensionId = "pseudolearn.pseudolearn-vscode";
 
@@ -17,6 +18,7 @@ async function trustedSuite() {
   await formatChecks(main);
   await renameChecks(main, callPosition);
   await runChecks(main);
+  await debugChecks();
   await lifecycleChecks();
 }
 

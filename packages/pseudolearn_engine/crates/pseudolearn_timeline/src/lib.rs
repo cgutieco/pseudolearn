@@ -33,9 +33,9 @@ pub use views::{
     format_real,
 };
 
-pub use query_views::{capture_array_slice, capture_frame};
+pub use query_views::{capture_array_slice, capture_frame, capture_frame_window};
 
 mod effect_replay;
 mod effect_reservations;
-pub use effect_replay::replay_machine_with_effects;
+pub use effect_replay::{HistoricalEvent, replay_event_window, replay_machine_with_effects};
 pub use effect_reservations::{prepare_effect_delivery, sync_effect_reservations};

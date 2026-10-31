@@ -69,6 +69,9 @@ fn decode_probed(context: &DecodeContext<'_>, loaded: &mut LoadedFunction) -> Re
         let program_counter = u32::try_from(position).map_err(|_| invalid_bytecode())?;
         let decoded = decode_instruction(context, loaded, (program_counter, true), instruction)?;
         let operation = loaded.store_operation(decoded, position, true)?;
+        if instruction.opcode == Opcode::StmtEnter {
+            loaded.probed_statement_enters.push(position);
+        }
         let origin = Origin {
             first: Some(instruction.opcode)
                 .filter(|opcode| dispatch_kind(*opcode) != DispatchKind::Observation),

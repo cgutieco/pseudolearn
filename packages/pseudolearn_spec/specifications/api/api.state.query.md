@@ -481,3 +481,496 @@ Una colección se conserva como referencia con identidad compartida. Su entrada 
   "perfil_base": "es"
 }
 ```
+
+```regla
+{
+  "id": "R7",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "query_frame y query_variables admiten task opcional para consultar el contexto de una tarea activa o suspendida en event sin activarla ni cambiar la agenda. query_page añade task a la identidad de su cursor y conserva el límite de 4096 elementos. La tarea raíz conserva identidad cero. Un identificador desconocido, un marco ajeno o un cursor de otro stop, tarea, sesión o revisión devuelve uso. Las páginas de variables, campos y colecciones se leen por rango sin materializar el conjunto entero.",
+  "verificacion": [
+    "C10",
+    "C11"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C10",
+  "regla": "R7",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "create_analysis",
+        "arguments": {}
+      },
+      {
+        "operation": "start",
+        "arguments": {
+          "observe": "events",
+          "seed": 42
+        },
+        "resource_from": 0
+      },
+      {
+        "operation": "advance",
+        "arguments": {
+          "batch_size": 1
+        },
+        "resource_from": 1
+      },
+      {
+        "operation": "query_frame",
+        "arguments": {
+          "event": 0,
+          "frame": 0,
+          "task": 0
+        },
+        "resource_from": 1
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {}
+        },
+        {
+          "value": {}
+        },
+        {
+          "value": {}
+        },
+        {
+          "value": {
+            "unidad": "P"
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ],
+  "programa": "Algoritmo P\nDefinir Mutable total Como Entero <- 20;\ntotal <- total + 22;\nEscribir total;\nFinAlgoritmo\n",
+  "perfil_base": "es"
+}
+```
+
+```caso
+{
+  "id": "C11",
+  "regla": "R7",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "create_analysis",
+        "arguments": {}
+      },
+      {
+        "operation": "start",
+        "arguments": {
+          "observe": "events",
+          "seed": 42
+        },
+        "resource_from": 0
+      },
+      {
+        "operation": "query_frame",
+        "arguments": {
+          "event": 0,
+          "frame": 0,
+          "task": 999
+        },
+        "resource_from": 1
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {}
+        },
+        {
+          "value": {}
+        },
+        {
+          "failure": {
+            "family": "usage"
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ],
+  "programa": "Algoritmo P\nDefinir Mutable total Como Entero <- 20;\ntotal <- total + 22;\nEscribir total;\nFinAlgoritmo\n",
+  "perfil_base": "es"
+}
+```
+
+```regla
+{
+  "id": "R8",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "inspect_expression recibe resource, event, task_id opcional, frame y expression, sobre la revisión inmutable de la ejecución. Admite literales escalares, nombres léxicos, campos de datos, índices y operadores puros del lenguaje; rechaza llamadas, constructores ejecutables, asignación, propagación, espera, creación de tareas y capacidades. Reutiliza parser con EOF, resolución de tipos, lowering y operadores de VM existentes, sobre copia aislada sin anfitrión. Devuelve type y value como texto canónico de Rust y reference opcional. Texto mayor de 8192 bytes, más de 1024 nodos o profundidad mayor de 64 produce uso. El presupuesto temporal no supera 4096 sentencias, 64 marcos y 65536 celdas ni los límites menores del programa. Éxito, error o límite conservan variables, heap, azar, cinta, salida, agenda y continuación vivos.",
+  "verificacion": [
+    "C12",
+    "C13",
+    "C14",
+    "C15"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C12",
+  "regla": "R8",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "create_analysis",
+        "arguments": {}
+      },
+      {
+        "operation": "start",
+        "arguments": {
+          "observe": "events",
+          "seed": 42
+        },
+        "resource_from": 0
+      },
+      {
+        "operation": "advance",
+        "arguments": {
+          "batch_size": 2
+        },
+        "resource_from": 1
+      },
+      {
+        "operation": "inspect_expression",
+        "arguments": {
+          "event": 1,
+          "frame": 0,
+          "task_id": 0,
+          "expression": "total + 22"
+        },
+        "resource_from": 1
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {}
+        },
+        {
+          "value": {}
+        },
+        {
+          "value": {}
+        },
+        {
+          "value": {
+            "type": "integer",
+            "value": "42"
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ],
+  "programa": "Algoritmo P\nDefinir Mutable total Como Entero <- 20;\ntotal <- total + 22;\nEscribir total;\nFinAlgoritmo\n",
+  "perfil_base": "es"
+}
+```
+
+```caso
+{
+  "id": "C13",
+  "regla": "R8",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "create_analysis",
+        "arguments": {}
+      },
+      {
+        "operation": "start",
+        "arguments": {
+          "observe": "events",
+          "seed": 42
+        },
+        "resource_from": 0
+      },
+      {
+        "operation": "advance",
+        "arguments": {
+          "batch_size": 2
+        },
+        "resource_from": 1
+      },
+      {
+        "operation": "inspect_expression",
+        "arguments": {
+          "event": 1,
+          "frame": 0,
+          "expression": "Azar(10)"
+        },
+        "resource_from": 1
+      },
+      {
+        "operation": "inspect_expression",
+        "arguments": {
+          "event": 1,
+          "frame": 0,
+          "expression": "total <- 4"
+        },
+        "resource_from": 1
+      },
+      {
+        "operation": "inspect_expression",
+        "arguments": {
+          "event": 1,
+          "frame": 0,
+          "expression": "total 22"
+        },
+        "resource_from": 1
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {}
+        },
+        {
+          "value": {}
+        },
+        {
+          "value": {}
+        },
+        {
+          "failure": {
+            "family": "usage"
+          }
+        },
+        {
+          "failure": {
+            "family": "usage"
+          }
+        },
+        {
+          "failure": {
+            "family": "usage"
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ],
+  "programa": "Algoritmo P\nDefinir Mutable total Como Entero <- 20;\ntotal <- total + 22;\nEscribir total;\nFinAlgoritmo\n",
+  "perfil_base": "es"
+}
+```
+
+```caso
+{
+  "id": "C14",
+  "regla": "R8",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "create_analysis",
+        "arguments": {}
+      },
+      {
+        "operation": "start",
+        "arguments": {
+          "observe": "events",
+          "seed": 42
+        },
+        "resource_from": 0
+      },
+      {
+        "operation": "advance",
+        "arguments": {
+          "batch_size": 2
+        },
+        "resource_from": 1
+      },
+      {
+        "operation": "inspect_expression",
+        "arguments": {
+          "event": 1,
+          "frame": 0,
+          "expression": "9223372036854775807"
+        },
+        "resource_from": 1
+      },
+      {
+        "operation": "inspect_expression",
+        "arguments": {
+          "event": 1,
+          "frame": 0,
+          "expression": "1 / 0"
+        },
+        "resource_from": 1
+      },
+      {
+        "operation": "inspect_expression",
+        "arguments": {
+          "event": 1,
+          "frame": 0,
+          "expression": ""
+        },
+        "resource_from": 1
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {}
+        },
+        {
+          "value": {}
+        },
+        {
+          "value": {}
+        },
+        {
+          "value": {
+            "type": "integer",
+            "value": "9223372036854775807"
+          }
+        },
+        {
+          "failure": {
+            "family": "usage"
+          }
+        },
+        {
+          "failure": {
+            "family": "usage"
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ],
+  "programa": "Algoritmo P\nDefinir Mutable total Como Entero <- 20;\ntotal <- total + 22;\nEscribir total;\nFinAlgoritmo\n",
+  "perfil_base": "es"
+}
+```
+
+```caso
+{
+  "id": "C15",
+  "regla": "R8",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "inspect_expression",
+        "arguments": {
+          "resource": 0,
+          "event": 0,
+          "frame": 0,
+          "expression": "1"
+        }
+      },
+      {
+        "operation": "inspect_expression",
+        "arguments": {
+          "resource": 0,
+          "event": 0,
+          "frame": 0,
+          "expression": "                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 "
+        }
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "failure": {
+            "family": "usage"
+          }
+        },
+        {
+          "failure": {
+            "family": "usage"
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```

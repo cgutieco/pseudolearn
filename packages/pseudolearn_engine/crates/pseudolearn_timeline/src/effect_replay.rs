@@ -30,10 +30,10 @@ pub fn replay_machine_with_effects<'program>(
             effects.resolve(&mut machine, pending)?;
         }
         let reached = machine_event_count(&machine) >= target_count;
-        pseudolearn_vm::clear_machine_events(&mut machine);
         if reached {
             break;
         }
+        pseudolearn_vm::clear_machine_events(&mut machine);
         if exit.is_some() && !matches!(exit, Some(RunExit::AwaitingEffect(_))) {
             return Err(TimelineError::ReplayFailure);
         }
@@ -42,6 +42,64 @@ pub fn replay_machine_with_effects<'program>(
         return Err(TimelineError::ReplayFailure);
     }
     Ok(machine)
+}
+
+#[derive(Clone)]
+pub struct HistoricalEvent {
+    pub event: pseudolearn_vm::TraceEvent,
+    pub task: u64,
+}
+
+pub fn replay_event_window(
+    program: &LoadedProgram,
+    image: MachineImage,
+    range: (usize, usize),
+    configuration: (&RunOptions, &EffectTape),
+) -> Result<Vec<HistoricalEvent>, TimelineError> {
+    let (start, count) = range;
+    let end = start
+        .checked_add(count)
+        .ok_or(TimelineError::ReplayFailure)?;
+    let (options, tape) = configuration;
+    let mut effects = history_effects(&image, tape)?;
+    let mut machine = resume_machine(program, image, options.clone())
+        .map_err(|_| TimelineError::ReplayFailure)?;
+    machine.replace_input_tape(options.inputs.clone());
+    let mut events = Vec::new();
+    while machine_event_count(&machine) < end {
+        let before = machine_event_count(&machine);
+        let task = machine.current_task_id();
+        let exit = machine.step_instruction();
+        effects.observe(&machine, options)?;
+        if let Some(RunExit::AwaitingEffect(pending)) = &exit {
+            effects.resolve(&mut machine, pending)?;
+        }
+        let emitted = pseudolearn_vm::take_machine_events(&mut machine);
+        events.extend(window_events(emitted, (before, task), (start, end)));
+        if exit.is_some()
+            && !matches!(exit, Some(RunExit::AwaitingEffect(_)))
+            && machine_event_count(&machine) < end
+        {
+            return Err(TimelineError::ReplayFailure);
+        }
+    }
+    Ok(events)
+}
+
+fn window_events(
+    emitted: Vec<pseudolearn_vm::TraceEvent>,
+    origin: (usize, u64),
+    window: (usize, usize),
+) -> impl Iterator<Item = HistoricalEvent> {
+    let (before, task) = origin;
+    let (start, end) = window;
+    emitted
+        .into_iter()
+        .enumerate()
+        .filter_map(move |(offset, event)| {
+            let index = before.saturating_add(offset);
+            (index >= start && index < end).then_some(HistoricalEvent { event, task })
+        })
 }
 
 fn history_effects(

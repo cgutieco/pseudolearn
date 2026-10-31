@@ -871,3 +871,11 @@
   "texto": "En el canal de efectos, HttpRequest serializa método, URL, cabeceras ordenadas con repetidos, cuerpo opcional, límite de respuesta opcional y plazo opcional. HttpResponse serializa estado, cabeceras ordenadas con repetidos, bytes de cuerpo y URL final. Un request_network o network_send reproducido obtiene su HostReply de la cinta; no consulta al anfitrión."
 }
 ```
+
+```definicion
+{
+  "id": "D6",
+  "termino": "proyección Wasm de números exactos",
+  "texto": "WasmSession.call conserva su respuesta JSON original. callProjected devuelve response_json, texto exacto de esa respuesta, y projection_json, texto JSON con idénticos objetos, arreglos, booleanos, null y cadenas pero cada número representado como cadena decimal canónica. El consumidor usa la proyección para presentación y control sin redondear i64/u64 por Number, y conserva response_json opaco para reenviar payloads. La proyección es transporte, no una operación de ApiSession ni un segundo intérprete. Ambas cadenas son copias propias frente a memory.grow."
+}
+```

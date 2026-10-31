@@ -26,6 +26,30 @@ function effect(overrides = {}) {
 }
 
 describe('fetch host adapter', () => {
+  it('does not dispatch when the external signal was already aborted', async () => {
+    const controller = new AbortController();
+    controller.abort();
+    let calls = 0;
+    const response = await performFetch(effect(), options({ signal: controller.signal,
+      fetchImplementation: async () => { calls += 1; return new Response(null); } }));
+    assert.equal(calls, 0);
+    assert.equal(response.value.code, 'interrumpido');
+  });
+
+  it('aborts an in-flight mutation once and preserves uncertainty', async () => {
+    const controller = new AbortController();
+    let calls = 0;
+    const response = await performFetch(effect({ method: 'POST' }), options({ signal: controller.signal,
+      fetchImplementation: (_url, request) => new Promise((_resolve, reject) => {
+        calls += 1;
+        request.signal.addEventListener('abort', () => reject(new DOMException('aborted', 'AbortError')), { once: true });
+        controller.abort();
+      }) }));
+    assert.equal(calls, 1);
+    assert.equal(response.outcome, 'uncertain');
+    assert.equal(response.value.code, 'interrumpido');
+  });
+
   it('declares browser guarantees explicitly', () => {
     assert.deepEqual(NETWORK_CAPABILITIES, {
       tls_validation: true,

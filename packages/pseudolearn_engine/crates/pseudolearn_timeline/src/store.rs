@@ -28,6 +28,7 @@ pub struct StoreStats {
 }
 
 pub struct CheckpointStore {
+    boundary_events: std::collections::BTreeMap<usize, (pseudolearn_vm::TraceEvent, u64)>,
     pub(crate) tip: Option<MachineImage>,
     pub(crate) checkpoints: Vec<Checkpoint>,
     pub(crate) budget: StoreBudget,
@@ -45,6 +46,7 @@ impl CheckpointStore {
 
     pub fn with_budget(budget: StoreBudget) -> Self {
         Self {
+            boundary_events: std::collections::BTreeMap::new(),
             tip: None,
             checkpoints: Vec::new(),
             budget: StoreBudget {
@@ -92,6 +94,30 @@ impl CheckpointStore {
         event_index: usize,
     ) -> Result<(), TimelineError> {
         let statement_index = machine_statements_executed(machine);
+        self.advance_tip(machine, event_index)?;
+        self.checkpoints.push(Checkpoint {
+            event_index,
+            statement_index,
+            undo: None,
+        });
+        if let Some(event) = pseudolearn_vm::machine_events(machine).last() {
+            self.boundary_events
+                .insert(event_index, (event.clone(), machine.current_task_id()));
+        }
+        self.thin_to_budget();
+        self.boundary_events.retain(|index, _| {
+            self.checkpoints
+                .iter()
+                .any(|checkpoint| checkpoint.event_index == *index)
+        });
+        Ok(())
+    }
+
+    fn advance_tip(
+        &mut self,
+        machine: &Machine<'_>,
+        event_index: usize,
+    ) -> Result<(), TimelineError> {
         match self.tip.as_mut() {
             None => {
                 self.tip = Some(snapshot_machine_lean(machine));
@@ -111,12 +137,6 @@ impl CheckpointStore {
                 previous.undo = Some(undo);
             }
         }
-        self.checkpoints.push(Checkpoint {
-            event_index,
-            statement_index,
-            undo: None,
-        });
-        self.thin_to_budget();
         Ok(())
     }
 
@@ -146,5 +166,9 @@ impl CheckpointStore {
             .map(|checkpoint| checkpoint.event_index)
             .ok_or(TimelineError::ReplayFailure)?;
         Ok((image, event_index))
+    }
+
+    pub fn boundary_event(&self, event: usize) -> Option<&(pseudolearn_vm::TraceEvent, u64)> {
+        self.boundary_events.get(&event)
     }
 }

@@ -7,6 +7,10 @@ use std::sync::Arc;
 use std::sync::atomic::{AtomicBool, Ordering};
 use tokio::time::timeout;
 
+#[cfg(test)]
+#[path = "physical_network_cancel_tests.rs"]
+mod physical_network_cancel_tests;
+
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
 pub(super) struct NetworkRequest {
@@ -27,6 +31,22 @@ pub(crate) fn perform_with_policy(
     raw: &Value,
     policy: &crate::physical_network::NetworkPolicy,
 ) -> Value {
+    perform_controlled(raw, policy, None)
+}
+
+pub(crate) fn perform_cancellable(
+    raw: &Value,
+    policy: &crate::physical_network::NetworkPolicy,
+    cancellation: Arc<AtomicBool>,
+) -> Value {
+    perform_controlled(raw, policy, Some(cancellation))
+}
+
+fn perform_controlled(
+    raw: &Value,
+    policy: &crate::physical_network::NetworkPolicy,
+    cancellation: Option<Arc<AtomicBool>>,
+) -> Value {
     let Some(value) = raw.pointer("/arguments/0/value").cloned() else {
         return HostError::INVALID_PATH.reply();
     };
@@ -43,27 +63,44 @@ pub(crate) fn perform_with_policy(
     else {
         return HostError::INTERRUPTED.reply();
     };
-    runtime.block_on(send_with_resolver(
+    runtime.block_on(send_controlled(
         request,
         SystemAddressResolver,
         local_test_origin,
-        policy.tls_configuration().clone(),
+        (policy.tls_configuration().clone(), cancellation),
     ))
 }
 
+#[cfg(test)]
 pub(super) async fn send_with_resolver<Resolver: AddressResolver + Send + 'static>(
     request: NetworkRequest,
     resolver: Resolver,
     local_test_origin: bool,
     tls_configuration: TlsConfiguration,
 ) -> Value {
+    send_controlled(
+        request,
+        resolver,
+        local_test_origin,
+        (tls_configuration, None),
+    )
+    .await
+}
+
+async fn send_controlled<Resolver: AddressResolver + Send + 'static>(
+    request: NetworkRequest,
+    resolver: Resolver,
+    local_test_origin: bool,
+    control: (TlsConfiguration, Option<Arc<AtomicBool>>),
+) -> Value {
+    let (tls_configuration, cancellation) = control;
     let sent = Arc::new(AtomicBool::new(false));
     let method = request.method.clone();
     let duration = match crate::physical_network_transport::request_timeout(&request) {
         Ok(duration) => duration,
         Err(error) => return error.reply(),
     };
-    match timeout(
+    let request = timeout(
         duration,
         crate::physical_network_transport::send_once(
             request,
@@ -74,12 +111,31 @@ pub(super) async fn send_with_resolver<Resolver: AddressResolver + Send + 'stati
                 sent: sent.clone(),
             },
         ),
-    )
-    .await
-    {
-        Ok(Ok(response)) => committed("http_response", response),
-        Ok(Err(error)) => network_failure(error, &sent, &method),
-        Err(_) => network_failure(HostError::TIMED_OUT, &sent, &method),
+    );
+    let outcome = await_cancellable(request, cancellation.as_deref()).await;
+    match outcome {
+        None => network_failure(HostError::INTERRUPTED, &sent, &method),
+        Some(Ok(Ok(response))) => committed("http_response", response),
+        Some(Ok(Err(error))) => network_failure(error, &sent, &method),
+        Some(Err(_)) => network_failure(HostError::TIMED_OUT, &sent, &method),
+    }
+}
+
+async fn await_cancellable<Outcome>(
+    future: impl std::future::Future<Output = Outcome>,
+    cancellation: Option<&AtomicBool>,
+) -> Option<Outcome> {
+    if cancellation.is_none() {
+        return Some(future.await);
+    }
+    let mut future = std::pin::pin!(future);
+    loop {
+        if cancellation.is_some_and(|token| token.load(Ordering::SeqCst)) {
+            return None;
+        }
+        if let Ok(outcome) = timeout(std::time::Duration::from_millis(5), future.as_mut()).await {
+            return Some(outcome);
+        }
     }
 }
 

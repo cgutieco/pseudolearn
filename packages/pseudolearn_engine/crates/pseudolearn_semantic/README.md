@@ -277,3 +277,9 @@ incorporados; `MetodoHttp` expone únicamente sus seis miembros canónicos en am
 nombres son contextuales y no se agregan palabras reservadas, para evitar cambiar el análisis de
 identificadores existentes. `RedCap` y los valores HTTP conservan la transferibilidad estructural
 necesaria para enviar solicitudes desde tareas suspendibles.
+
+## Expresiones de inspección
+
+`inspection_expression` recibe el árbol de una expresión y un entorno explícito de nombres/tipos; reutiliza resolución léxica, operadores, campos e índices del analizador ordinario. Valida el subconjunto sin llamadas antes de comprobar tipos. Cada valor del marco es un parámetro inmutable; los literales de texto se convierten en capturas adicionales para que la ejecución temporal pueda conservar un heap aislado con identidades estables sin reinterpretar texto. No importa API, VM ni timeline.
+
+La inspección reconstruye vistas de registros aplanados desde las capturas léxicas explícitas; el acceso a campos usa el HIR y lowering de registros existentes. Un nombre de arreglo puede inspeccionarse como referencia sin materializar sus celdas. Las llamadas siguen rechazadas aunque sean puras o pertenezcan a una colección.

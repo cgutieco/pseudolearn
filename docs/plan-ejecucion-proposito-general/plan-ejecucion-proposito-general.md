@@ -706,14 +706,14 @@ Puntos a cumplir:
 Fuera de alcance: IDE propio, ejecución remota y AOT en teléfono.
 
 Plan detallado: [fase-pg-6b-plan-ejecucion.md](fase-pg-6b-plan-ejecucion.md), preparado el 2026-10-31
-por petición expresa. Su creación no autoriza la implementación: la fase sigue sin iniciar y la revisión de `C02`
+por petición expresa. Su creación no autorizó la implementación; la petición directa posterior autoriza PG-6B completa y la revisión de `C02`
 queda pendiente. Distingue capacidades existentes de entregas propuestas, contratos/casos, fronteras DAP/Wasm,
 pruebas de host, medición web y evidencia física complementaria.
 
 Cierre común (definiciones en §4.0):
 
-- [ ] `PG-6B.C01` Autorización de la persona para iniciar la fase, en mensaje nuevo.
-- [ ] `PG-6B.C02` Plan detallado creado según §5 y revisado por la persona.
+- [x] `PG-6B.C01` Autorización de la persona para iniciar la fase, en mensaje nuevo.
+- [x] `PG-6B.C02` Plan detallado creado según §5 y revisado por la persona.
 - [ ] `PG-6B.C03` SPEC-FIRST y congelamiento respetados.
 - [ ] `PG-6B.C04` Reglas nuevas con casos o propiedades y vínculos como datos.
 - [ ] `PG-6B.C05` Tests feliz, infeliz y límite en carpetas espejo.
@@ -1035,7 +1035,7 @@ La IA a cargo actualiza esta tabla al cerrar cada fase.
 | PG-4 | Cerrada · PG-4.01–.12 | Sí | 2026-10-28 · `a1de5355` | Tareas nativas en AOT (`PG-4.12.04`) y sus `.07`; presupuesto de `PERF.SUITE.CORE` no alcanzado |
 | PG-5 | Cerrada · PG-5.01–.10 | Sí, C02 revisado | 2026-10-30 · `c9414002` | Firefox no lanzable; presupuesto de `PERF.SUITE.CORE` no alcanzado; tareas nativas en AOT; aprobación de `PERF.PG.HTTP` |
 | PG-6A | Cerrada por decisión expresa · PG-6A.01–.11 y cierre común | Sí | 2026-10-31 · cierre registrado en el plan detallado | E-PG-02 no aprobada: cuatro grupos extendidos siguen sobre 100 ms; SEE requiere revisión independiente; `PHASE-GREEN` no declarado |
-| PG-6B | Sin iniciar · preparación documental autorizada | Sí, revisión de C02 pendiente | | Implementación sin autorizar; plan detallado preparado el 2026-10-31 |
+| PG-6B | En implementación integrada · PG-6B.01–.09 | Sí, petición directa de implementación revisa y autoriza C02 | Sin cierre | Desarrollo continuo y campaña final única autorizados el 2026-10-31; físicos/revisión SEE y decisiones diferidas conservados |
 | PG-A | Sin iniciar | No | | |
 | PG-B | Sin iniciar | No | | |
 | PG-7 | Sin iniciar | No | | |

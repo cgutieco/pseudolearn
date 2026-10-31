@@ -752,3 +752,400 @@
   }
 }
 ```
+
+```regla
+{
+  "id": "R7",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "El control de depuración conserva el mismo recurso de ejecución. debug_configure recibe resource, breakpoints con source_id, line y column opcional, y stop_on_entry; devuelve breakpoints resueltos con verified y stop_generation. debug_control recibe resource, command continue, next, step_in, step_out, step_back o pause y task_id opcional; configura el predicado que advance bombea por lotes y devuelve el estado de depuración. No recompila ni inicia otra ejecución. Entry, breakpoint, next y step_in paran en statement_entered antes de sus efectos; step_out para en el return del marco seleccionado. La selección de tarea no altera la agenda. pause conserva el evento confirmado, las esperas y la continuación sin cancelar. Una orden inválida o concurrente devuelve uso sin avanzar.",
+  "verificacion": [
+    "C8",
+    "C9",
+    "C10"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C8",
+  "regla": "R7",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "create_analysis",
+        "arguments": {}
+      },
+      {
+        "operation": "start",
+        "arguments": {
+          "observe": "events",
+          "seed": 42
+        },
+        "resource_from": 0
+      },
+      {
+        "operation": "debug_configure",
+        "arguments": {
+          "breakpoints": [],
+          "stop_on_entry": true
+        },
+        "resource_from": 1
+      },
+      {
+        "operation": "debug_control",
+        "arguments": {
+          "command": "continue"
+        },
+        "resource_from": 1
+      },
+      {
+        "operation": "advance",
+        "arguments": {
+          "batch_size": 64
+        },
+        "resource_from": 1
+      },
+      {
+        "operation": "debug_state",
+        "arguments": {},
+        "resource_from": 1
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {}
+        },
+        {
+          "value": {}
+        },
+        {
+          "value": {
+            "breakpoints": []
+          }
+        },
+        {
+          "value": {}
+        },
+        {
+          "value": {}
+        },
+        {
+          "value": {
+            "stopped": true,
+            "reason": "entry",
+            "output": ""
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ],
+  "programa": "Algoritmo P\nDefinir Mutable total Como Entero <- 20;\ntotal <- total + 22;\nEscribir total;\nFinAlgoritmo\n",
+  "perfil_base": "es"
+}
+```
+
+```caso
+{
+  "id": "C9",
+  "regla": "R7",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "create_analysis",
+        "arguments": {}
+      },
+      {
+        "operation": "start",
+        "arguments": {
+          "observe": "events",
+          "seed": 42
+        },
+        "resource_from": 0
+      },
+      {
+        "operation": "debug_configure",
+        "arguments": {
+          "breakpoints": [],
+          "stop_on_entry": true
+        },
+        "resource_from": 1
+      },
+      {
+        "operation": "debug_control",
+        "arguments": {
+          "command": "invalid"
+        },
+        "resource_from": 1
+      },
+      {
+        "operation": "debug_control",
+        "arguments": {
+          "command": "pause"
+        },
+        "resource_from": 1
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {}
+        },
+        {
+          "value": {}
+        },
+        {
+          "value": {
+            "breakpoints": []
+          }
+        },
+        {
+          "failure": {
+            "family": "usage"
+          }
+        },
+        {
+          "value": {
+            "stopped": true
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ],
+  "programa": "Algoritmo P\nDefinir Mutable total Como Entero <- 20;\ntotal <- total + 22;\nEscribir total;\nFinAlgoritmo\n",
+  "perfil_base": "es"
+}
+```
+
+```caso
+{
+  "id": "C10",
+  "regla": "R7",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "debug_control",
+        "arguments": {
+          "resource": 0,
+          "command": "continue"
+        }
+      },
+      {
+        "operation": "debug_configure",
+        "arguments": {
+          "resource": 0,
+          "breakpoints": []
+        }
+      },
+      {
+        "operation": "debug_state",
+        "arguments": {
+          "resource": 0
+        }
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "failure": {
+            "family": "usage"
+          }
+        },
+        {
+          "failure": {
+            "family": "usage"
+          }
+        },
+        {
+          "failure": {
+            "family": "usage"
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```regla
+{
+  "id": "R8",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "history_events recibe resource, start, count y direction opcional forward o backward y devuelve una ventana acotada de eventos retenidos, su horizonte y posición. count está entre cero y 4096; una posición anterior al horizonte, futura o una dirección inválida devuelve uso, sin aproximación. El cursor de inspección es independiente de la punta viva. Consultar, retroceder y volver a la punta conserva salida emitida, cinta, agenda y continuación; avanzar después de inspeccionar no repite efectos físicos ni reenvía salida histórica.",
+  "verificacion": [
+    "C11",
+    "C12"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C11",
+  "regla": "R8",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "create_analysis",
+        "arguments": {}
+      },
+      {
+        "operation": "start",
+        "arguments": {
+          "observe": "events",
+          "seed": 42
+        },
+        "resource_from": 0
+      },
+      {
+        "operation": "history_events",
+        "arguments": {
+          "start": 0,
+          "count": 0
+        },
+        "resource_from": 1
+      },
+      {
+        "operation": "history_events",
+        "arguments": {
+          "start": 0,
+          "count": 4097
+        },
+        "resource_from": 1
+      },
+      {
+        "operation": "history_events",
+        "arguments": {
+          "start": 0,
+          "count": 1,
+          "direction": "sideways"
+        },
+        "resource_from": 1
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {}
+        },
+        {
+          "value": {}
+        },
+        {
+          "value": {
+            "events": []
+          }
+        },
+        {
+          "failure": {
+            "family": "usage"
+          }
+        },
+        {
+          "failure": {
+            "family": "usage"
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ],
+  "programa": "Algoritmo P\nDefinir Mutable total Como Entero <- 20;\ntotal <- total + 22;\nEscribir total;\nFinAlgoritmo\n",
+  "perfil_base": "es"
+}
+```
+
+```caso
+{
+  "id": "C12",
+  "regla": "R8",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "history_events",
+        "arguments": {
+          "resource": 0,
+          "start": 0,
+          "count": 1
+        }
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "failure": {
+            "family": "usage"
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```

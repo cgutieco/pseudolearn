@@ -453,3 +453,9 @@ La regla `LIB.HTTP#R6` y su caso `C8` discrepan sobre cintas con credenciales: l
 la respuesta completa para reproducirla, pero el caso exige una cinta marcada no reproducible tras
 redactar el secreto. El motor conserva la política general de redacción y no reproducibilidad; la
 reproducción de esa respuesta queda pendiente de resolver en el contrato.
+
+## Depuración e integración LSP portátil
+
+El control de depuración se especifica en las operaciones públicas de ejecución y estado; el adaptador DAP solo traduce el protocolo. La expresión de inspección comparte compilador y VM, exige EOF y un subconjunto sin llamadas, y usa un estado aislado sin anfitrión. Las ventanas históricas conservan separadas la punta y la inspección. Una sesión LSP es un recurso persistente de API: Wasm no importa servicio directamente. El transporte Wasm puede devolver una proyección con números como cadenas sin alterar el JSON original.
+
+Los casos DAP usan entrada/salida de la capacidad CLI ya existente y un comparador de framing y campos observables. Los vínculos nuevos permanecen pendientes hasta la campaña, y las especificaciones conservan estados/versiones congelados. La preparación del contrato no concede revisión independiente ni autoriza reanclajes.

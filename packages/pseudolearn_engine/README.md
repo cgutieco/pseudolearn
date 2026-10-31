@@ -66,7 +66,7 @@ Comandos de compilación y verificación:
 - Compilación optimizada: `cargo build --release`.
 - Pruebas unitarias y de integración: `cargo test --workspace`.
 - Preparación Wasm: `rustup target add wasm32-unknown-unknown --toolchain 1.99.0` y `cargo install wasm-bindgen-cli --version 0.2.129 --locked`.
-- Generación reproducible del módulo y enlaces: `bash tool/wasm.sh build`.
+- Generación reproducible del módulo y enlaces: `bash tool/wasm.sh build`; el script entra en la raíz del motor para usar la cadena de `rust-toolchain.toml` sea cual sea el directorio de invocación.
 - Prueba del artefacto final en Chrome: `bash tool/wasm.sh test`.
 - Conformidad desde `packages/pseudolearn_spec`: `cargo run -p see_cli --bin see -- conform --subject engine --operation analyze`.
 - La campaña E-08 y sus datos de entrada son locales; no se incluyen capturas históricas en el checkout.
@@ -640,3 +640,17 @@ El proveedor físico conserva el mismo ciclo de compromiso para HTTP. Registra u
 antes de completar la respuesta son `Uncertain`. Si se cancela la tarea que espera un método con
 potencial de mutación, la cinta registra `abandoned` y `UncertainExternalState`, porque el servidor
 pudo haber procesado la petición.
+
+## Depuración persistente y variante browser
+
+La API es dueña del control de depuración VM, de las consultas por tarea y del cursor histórico.
+La CLI traduce DAP sin importar VM ni timeline; service conserva exclusivamente lenguaje y LSP.
+Los pasos no reinician el recurso ni introducen efectos adicionales. Las vistas de proyecto
+conservan fuentes y revisiones por módulo, y las consultas paginadas leen solo sus valores pedidos.
+Evaluate reutiliza syntax, semantic, lowering, bytecode y VM en una copia aislada con presupuesto.
+
+El borde Wasm sigue importando solo API. Un recurso API conserva la sesión LSP y el consumidor
+browser separa lenguaje y ejecución en Workers distintos. La proyección de transporte preserva el
+JSON exacto y convierte números a texto canónico para que JavaScript no redondee identidades o
+valores del programa. El anfitrión concede capacidades de forma explícita; la política del navegador
+no se anuncia como garantía nativa. La distribución web no incorpora DAP nativo ni AOT.

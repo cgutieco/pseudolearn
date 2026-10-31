@@ -21,6 +21,7 @@ pub mod expressions_complex;
 pub mod expressions_logical;
 mod expressions_objects;
 pub mod functions;
+pub mod inspection_lowering;
 mod iteration_values;
 pub mod loop_exits;
 mod parameter_passing;

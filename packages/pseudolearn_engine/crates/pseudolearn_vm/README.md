@@ -279,3 +279,16 @@ valores vivos del punto de suspensión (mapas de vivos de la RI, ampliados con l
 limpiezas pendientes), libera los bancos y los restaura en `unspill`; el volcado reutiliza el registro
 del mismo marco. `task_roots` aporta continuaciones, almacenamiento de tarea, resultados, mensajes de
 canal y fallos a las raíces. La ejecución AOT no ofrece todavía tareas.
+
+## Vistas de tarea y ventanas de variables
+
+La lectura de una tarea suspendida reconstruye una máquina de inspección desde una imagen y
+restaura en esa copia sus bancos volcados. La máquina original y su agenda no cambian. Un ID ajeno
+se rechaza antes de copiar el montón; una tarea terminada sin contexto retenido no se presenta como
+si tuviera pila. frame_name y frame_location consultan metadatos sin materializar variables.
+
+active_frame_window selecciona solo los nombres de la página pedida y timeline decodifica solo
+esos registros. La selección compara metadatos prestados para respetar el sombreado y el orden por
+nombre sin reservar el conjunto completo de variables. Se acepta recorrer esos metadatos para
+contar; se descarta capturar todos los valores y cortar después. Los límites del consumidor acotan
+la cantidad de elementos devueltos, mientras la restauración conserva los límites de la ejecución.

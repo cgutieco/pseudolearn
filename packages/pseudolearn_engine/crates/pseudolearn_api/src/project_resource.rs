@@ -44,6 +44,7 @@ struct WireProject {
 }
 
 pub(crate) struct ProjectRequest {
+    pub execution: crate::ExecuteRequest,
     pub profile: Profile,
     pub requested_profile: Option<Profile>,
     pub file_profiles: BTreeMap<String, Profile>,
@@ -77,6 +78,8 @@ impl ProjectRequest {
         let grants = crate::manifest_wire::parse_grants(arguments)?;
         let source = package_source(&wire, &grants)?;
         Ok(Self {
+            execution: serde_json::from_value(arguments.clone())
+                .map_err(|error| usage(&error.to_string()))?,
             profile,
             requested_profile,
             file_profiles: file_profiles(&wire)?,

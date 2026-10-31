@@ -3,6 +3,7 @@ use serde_json::Value;
 pub fn matches(name: &str, value: &Value, actual: &Value) -> bool {
     match name {
         "ri" => intermediate_representation(value, actual),
+        "dap" => crate::dap_comparison::matches(value, actual),
         "codigo_salida" => actual.get("exit_code") == Some(value),
         "salida_error" => actual.get("error_output") == Some(value),
         "json" => actual.get("json") == Some(value),
@@ -131,7 +132,7 @@ fn includes_nodes(expected: &Value, view: &Value) -> bool {
     })
 }
 
-fn subset(expected: &Value, actual: Option<&Value>) -> bool {
+pub(crate) fn subset(expected: &Value, actual: Option<&Value>) -> bool {
     let Some(actual) = actual else {
         return false;
     };

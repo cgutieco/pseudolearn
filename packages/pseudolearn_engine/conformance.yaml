@@ -2248,6 +2248,48 @@
       "verificacion": "ejecutor",
       "estado": "pendiente",
       "resuelve_en": "PG-5.09.07"
+    },
+    {
+      "regla": "API.EXECUTE@1.0.0#R7",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-6B"
+    },
+    {
+      "regla": "API.EXECUTE@1.0.0#R8",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-6B"
+    },
+    {
+      "regla": "API.STATE.QUERY@1.0.0#R7",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-6B"
+    },
+    {
+      "regla": "API.STATE.QUERY@1.0.0#R8",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-6B"
+    },
+    {
+      "regla": "API.MODEL@1.0.0#R7",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-6B"
+    },
+    {
+      "regla": "API.ERRORS@1.0.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-6B"
+    },
+    {
+      "regla": "API.MODEL@1.0.0#R8",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-6B"
     }
   ]
 }

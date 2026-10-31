@@ -2,7 +2,7 @@ import { readdirSync } from "node:fs";
 import { extname, join } from "node:path";
 
 const codeExtensions = new Set([".ts", ".tsx", ".js", ".mjs", ".cjs"]);
-const ignoredDirectories = new Set([".git", "bin", "dist", "node_modules", "__fixtures__"]);
+const ignoredDirectories = new Set([".git", ".artifacts", "bin", "dist", "node_modules", "test-results", "__fixtures__"]);
 
 export function codeFiles(root) {
   const files = [];

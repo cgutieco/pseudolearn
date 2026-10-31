@@ -30,13 +30,15 @@ pub use collection::{
 pub use collection::{collection_is_dictionary, collection_key, collection_load_word};
 pub use dictionary::{
     dictionary_entry, dictionary_find, dictionary_get, dictionary_lookup, dictionary_next,
-    dictionary_remove, dictionary_set,
+    dictionary_remove, dictionary_set, dictionary_window,
 };
 pub use io_error::IoError;
 pub use vector::{vector_get, vector_insert, vector_remove, vector_set};
 mod delta;
 mod error;
 mod heap;
+mod inspection_heap;
+pub use inspection_heap::clone_heap_bounded;
 mod object;
 mod random;
 mod snapshot;
@@ -63,12 +65,12 @@ pub use object::{
 };
 pub use random::RandomState;
 pub use snapshot::{
-    allocation_ordinal, arena_length, array_element_kind, heap_allocated_cells, heap_live_cells,
-    heap_ordinal, heap_used_words, heap_words, is_array_allocation, is_collection_allocation,
-    is_defined_element, is_defined_field, is_object_allocation, live_allocation_handles,
-    object_class_identifier, object_field_kinds, read_element_raw, read_field_raw,
-    restore_heap_block, set_heap_allocated_cells, set_heap_live_cells, set_heap_ordinal,
-    set_heap_used_words, truncate_arena,
+    allocation_handle, allocation_ordinal, arena_length, array_element_kind, heap_allocated_cells,
+    heap_live_cells, heap_ordinal, heap_used_words, heap_words, is_array_allocation,
+    is_collection_allocation, is_defined_element, is_defined_field, is_object_allocation,
+    live_allocation_handles, object_class_identifier, object_field_kind, object_field_kinds,
+    read_element_raw, read_field_raw, restore_heap_block, set_heap_allocated_cells,
+    set_heap_live_cells, set_heap_ordinal, set_heap_used_words, truncate_arena,
 };
 pub use text::{
     TextCompaction, TextPart, compare_text, concat_parts, concat_text, new_text, text_character,

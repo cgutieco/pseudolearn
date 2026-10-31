@@ -181,3 +181,21 @@ pub fn heap_live_cells(heap: &Heap) -> u64 {
 pub fn set_heap_live_cells(heap: &mut Heap, count: u64) {
     heap.live_cells = count;
 }
+
+pub fn allocation_handle(heap: &Heap, ordinal: u64) -> Option<Handle> {
+    heap.blocks.iter().find_map(|block| {
+        (allocation_ordinal(heap, block.handle).ok() == Some(ordinal)).then_some(block.handle)
+    })
+}
+
+pub fn object_field_kind(
+    heap: &Heap,
+    handle: Handle,
+    index: usize,
+) -> Result<ValueKind, MemoryError> {
+    heap.layout(handle)?
+        .fields
+        .get(index)
+        .copied()
+        .ok_or(MemoryError::IndexOutOfRange)
+}

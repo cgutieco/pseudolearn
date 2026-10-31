@@ -2,7 +2,7 @@
 
 ## 1. Qué es y qué no es
 
-Binario pseudo para comprobar, ejecutar, compilar, formatear, traducir e inspeccionar programas, e interactuar mediante un servidor de lenguaje (LSP). Análisis, preferencias, ejecución, compilación nativa, formateo, traducción e inspección de RI implementados sobre la API pública.
+Binario pseudo para comprobar, ejecutar, compilar, formatear, traducir e inspeccionar programas, e interactuar mediante un servidor de lenguaje (LSP) o un adaptador de depuración VM (DAP). Análisis, preferencias, ejecución, compilación nativa, formateo, traducción, depuración e inspección de RI implementados sobre la API pública.
 Fuera de alcance: semántica propia del lenguaje, UI gráfica y configuración ejecutable.
 
 Declarado fuera de esta entrega: la ayuda (`--ayuda`) todavía no lista `bloquear`, `--proyecto` ni `--entrada`, porque el caso de ayuda vigente fija su texto exacto; se actualizará con una decisión de la persona sobre ese esperado. Las dependencias `locked` (con digest) no se leen desde disco: el lock que escribe `bloquear` registra solo paquetes locales.
@@ -326,6 +326,56 @@ interoperabilidad prueba que el transporte, las capacidades negociadas y la form
 - **Qué cubren las pruebas ligeras:** `tests/lsp_interop/` prueba normalizador y comparador con negativos, valida la secuencia
   y ejecuta el cliente B dos veces con raíces distintas exigiendo igualdad exacta. La transcripción del cliente A y la
   comparación A↔B se obtienen en la verificación pesada con host real; no se lanzan en las iteraciones ligeras.
+
+### Adaptador de depuración VM
+
+`pseudo dap` reserva stdout para DAP con `Content-Length` UTF-8. Reutiliza el lector acotado del
+transporte LSP: cabeceras de hasta 8 KiB, cuerpo de hasta 8 MiB y rechazo de longitud ausente,
+duplicada, negativa o excesiva antes de reservar. Hay ocho requests pendientes como máximo; el
+desbordamiento o EOF sin `disconnect` termina como cierre anormal. El lector y el bombeo del recurso
+son independientes, por lo que `pause` se atiende entre lotes de 64 eventos sin cancelar la ejecución.
+
+El adaptador pertenece al borde CLI y consume únicamente operaciones de la API pública. No importa
+VM ni timeline y no modifica el servicio LSP. Las capas y el presupuesto de retención siguen siendo
+los del motor. Se descartó un crate DAP separado porque este transporte no tiene otro consumidor.
+Continuar y pasar usan el recurso vivo; la operación histórica `step`, que recompila, no se utiliza.
+
+La secuencia es `initialize`, `launch`, evento `initialized`, breakpoints y `configurationDone`.
+`launch` acepta `program` o `project` con `entry`, `workspaceRoot`, `profile`, `strictness`, semilla
+decimal i64 y `stopOnEntry` (por omisión verdadero). Solo se admite backend `vm`. La configuración
+no recibe permisos, orígenes, entorno, argumentos de proceso ni ejecutables. Las concesiones de un
+anfitrión independiente se entregan mediante las opciones personales de `pseudo dap`, por ejemplo
+`--grant`/`--files`/`--local-origin`; nunca mediante el manifiesto ni `launch.json`. La extensión exige
+confianza y rechaza fuentes sin guardar antes de crear el proceso.
+
+Las fuentes provienen de un snapshot inmutable. `sourceReference` devuelve su texto y `adapterData`
+conserva fuente/revisión; líneas y columnas se convierten una sola vez entre escalares del núcleo y
+UTF-16/base negociada del cliente. Un breakpoint reemplaza el conjunto de su fuente y solo se verifica
+si corresponde a una sentencia ejecutable exacta. No hay condiciones, logpoints ni traslado a otra
+línea. Las tareas son hilos lógicos: la raíz 0 obtiene un ID DAP positivo y los IDs no se reutilizan.
+Pila y variables aceptan páginas de hasta 4096; los handles opacos quedan ligados al stop y la tabla
+se limita a 65 536 referencias. Continuar, pasar o retroceder invalida los handles anteriores.
+
+`evaluate` admite `hover`, `watch` y `repl` como contextos de inspección equivalentes, nunca entrada
+del programa. Reutiliza el compilador/VM y la copia aislada de API: literales, nombres, campos, índices
+y operadores admitidos, sin llamadas, asignación, espera, tareas ni capacidades. Sus presupuestos y
+errores pertenecen a la API; no hay evaluador de expresiones en el adaptador. La entrada de programa
+se solicita con `pseudolearn/awaitingInput` y un token por espera; `pseudolearn/input` acepta acciones
+`line` o `cancel`. Una línea vacía es válida y un token ajeno, consumido o tardío se rechaza.
+
+`stepBack` mueve el cursor de inspección, conserva la punta y usa ventanas reconstruidas de la API.
+Continuar desde el pasado recorre historia sin repetir salida ni efectos. El proveedor físico nunca
+se entrega a replay. El bombeo de efectos vive en un worker acotado; la red reutiliza el transporte
+canónico con cancelación externa comprobada cada 5 ms y conserva `Uncertain` tras enviar un método
+mutante. La resolución de una respuesta no reanuda una VM pausada. Terminar invalida entrada,
+referencias, transportes y recursos propios una sola vez.
+
+El esquema de integración es
+[DAP de Microsoft, revisión `1248685afb6b5d08c45d1c1a1d157db277f63b07`](https://github.com/microsoft/debug-adapter-protocol/blob/1248685afb6b5d08c45d1c1a1d157db277f63b07/debugAdapterProtocol.json),
+SHA-256 `ff8ae4c6cfd588a050e9346c35fd104748a27ef4518d1c3268529ca6f8ff5818`.
+Se toman framing, nombres de mensajes, negociación de coordenadas y lifecycle; no se toman semánticas
+ajenas de pasos, tareas, efectos ni lenguaje. No se anuncian attach, modificación de variables,
+condiciones, reverseContinue, reinicio, memoria ni depuración AOT.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

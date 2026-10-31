@@ -1379,3 +1379,375 @@
   ]
 }
 ```
+
+```regla
+{
+  "id": "R7",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "create_lsp crea en ApiSession un recurso LSP persistente sin E/S y devuelve resource. lsp_message recibe resource y message como objeto JSON-RPC LSP y devuelve messages, la lista ordenada de respuestas y notificaciones del mismo LspServer que usa escritorio. Notificaciones sin respuesta devuelven lista vacía. release libera el recurso y devuelve null; operaciones posteriores o con otra clase de recurso devuelven uso. Los snapshots y overlays llegan como datos por el protocolo existente; el borde Wasm no importa servicio ni VM directamente.",
+  "verificacion": [
+    "C17",
+    "C18",
+    "C19"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C17",
+  "regla": "R7",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "create_lsp",
+        "arguments": {}
+      },
+      {
+        "operation": "lsp_message",
+        "arguments": {
+          "message": {
+            "jsonrpc": "2.0",
+            "id": 1,
+            "method": "initialize",
+            "params": {
+              "capabilities": {}
+            }
+          }
+        },
+        "resource_from": 0
+      },
+      {
+        "operation": "lsp_message",
+        "arguments": {
+          "message": {
+            "jsonrpc": "2.0",
+            "method": "initialized",
+            "params": {}
+          }
+        },
+        "resource_from": 0
+      },
+      {
+        "operation": "release",
+        "arguments": {},
+        "resource_from": 0
+      },
+      {
+        "operation": "lsp_message",
+        "arguments": {
+          "message": {
+            "jsonrpc": "2.0",
+            "id": 2,
+            "method": "shutdown"
+          }
+        },
+        "resource_from": 0
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {}
+        },
+        {
+          "value": {
+            "messages": [
+              {
+                "jsonrpc": "2.0",
+                "id": 1,
+                "result": {
+                  "capabilities": {
+                    "hoverProvider": true
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "value": {
+            "messages": []
+          }
+        },
+        {
+          "value": null
+        },
+        {
+          "failure": {
+            "family": "usage"
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C18",
+  "regla": "R7",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "lsp_message",
+        "arguments": {
+          "resource": 0,
+          "message": {
+            "jsonrpc": "2.0",
+            "id": 1,
+            "method": "initialize"
+          }
+        }
+      },
+      {
+        "operation": "create_lsp",
+        "arguments": {}
+      },
+      {
+        "operation": "lsp_message",
+        "arguments": {
+          "message": null
+        },
+        "resource_from": 1
+      },
+      {
+        "operation": "release",
+        "arguments": {},
+        "resource_from": 1
+      },
+      {
+        "operation": "release",
+        "arguments": {},
+        "resource_from": 1
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "failure": {
+            "family": "usage"
+          }
+        },
+        {
+          "value": {}
+        },
+        {
+          "failure": {
+            "family": "usage"
+          }
+        },
+        {
+          "value": null
+        },
+        {
+          "failure": {
+            "family": "usage"
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C19",
+  "regla": "R7",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "create_lsp",
+        "arguments": {}
+      },
+      {
+        "operation": "lsp_message",
+        "arguments": {
+          "message": {
+            "jsonrpc": "2.0",
+            "id": 1,
+            "method": "initialize",
+            "params": {
+              "capabilities": {}
+            }
+          }
+        },
+        "resource_from": 0
+      },
+      {
+        "operation": "lsp_message",
+        "arguments": {
+          "message": {
+            "jsonrpc": "2.0",
+            "id": 2,
+            "method": "shutdown",
+            "params": null
+          }
+        },
+        "resource_from": 0
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {}
+        },
+        {
+          "value": {
+            "messages": [
+              {
+                "id": 1
+              }
+            ]
+          }
+        },
+        {
+          "value": {
+            "messages": [
+              {
+                "id": 2,
+                "result": null
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```regla
+{
+  "id": "R8",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "translate recibe program, target_profile es o en y strictness opcional strict o flexible y devuelve text. Reutiliza el traductor del servicio sobre texto sin E/S; conserva los identificadores y literales, y rechaza el perfil inválido o una traducción imposible como error de uso. El transporte browser usa la misma operación sin interpretar sintaxis en TypeScript.",
+  "verificacion": [
+    "C20",
+    "C21"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C20",
+  "regla": "R8",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "translate",
+        "arguments": {
+          "program": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n",
+          "target_profile": "en"
+        }
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "text": "algorithm P\nwrite 1;\nendAlgorithm\n"
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C21",
+  "regla": "R8",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "translate",
+        "arguments": {
+          "program": "Algoritmo P\nFinAlgoritmo\n",
+          "target_profile": "invalid"
+        }
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "failure": {
+            "family": "usage"
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```

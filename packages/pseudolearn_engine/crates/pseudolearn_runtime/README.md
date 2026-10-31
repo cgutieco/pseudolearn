@@ -223,3 +223,9 @@ Las operaciones que pueden mutar conservan los fallos externos inciertos; `GET` 
 devolver incertidumbre. La cinta usa la clasificación de efecto existente. Si una petición contiene
 credenciales redactadas, la cinta queda marcada como no reproducible y no expone el secreto; no se
 añade una ruta HTTP de reproducción que revele credenciales.
+
+## Heap temporal de inspección
+
+`clone_heap_bounded` conserva asas, alias, datos y ordinales en una copia independiente; limita sus celdas al menor presupuesto del origen y el solicitado antes de copiar. Rechaza una captura que ya excede ese máximo. La copia desactiva recolección para que la evaluación temporal no recolecte referencias capturadas y respeta el límite en toda asignación posterior. No cambia opciones ni estado del heap vivo.
+
+Las consultas paginadas usan `dictionary_window`, que recorre únicamente ocupación para omitir entradas y carga claves/valores solo dentro de la ventana solicitada. `allocation_handle` busca el ordinal sin crear una lista intermedia y `object_field_kind` lee un único tipo sin copiar el diseño. Estos accesos conservan el orden de inserción y permiten páginas acotadas de objetos y diccionarios.

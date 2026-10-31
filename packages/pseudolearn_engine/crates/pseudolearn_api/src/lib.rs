@@ -60,14 +60,17 @@ pub use execution::{PreparedProgram, execute_prepared, execute_program, prepare_
 pub use execution_model::{ExecuteRequest, ExecuteResponse, ExecutionLimits};
 pub use fake_host::FakeHostProvider;
 
+mod debug_model;
 mod edit_session_operations;
 mod edit_session_wire;
 mod event_source;
 mod execution_capture;
 mod execution_prepare;
 mod execution_resource;
+mod execution_sources;
 pub mod fake_host;
 mod locale_operations;
+mod lsp_operations;
 mod negotiation;
 mod program_view;
 mod program_view_annotations;
@@ -87,6 +90,7 @@ mod service_help;
 mod service_help_card;
 mod service_operations;
 mod source_identity;
+mod state_object_pages;
 mod state_pages;
 mod token_conversion;
 mod typed_values;

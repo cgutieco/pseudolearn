@@ -13,7 +13,9 @@ impl ApiSession {
         };
         let request = execution_request(&compiled);
         let program = load_compiled(&compiled)?;
-        let execution = ExecutionResource::from_loaded(&request, program, compiled.warnings)?;
+        let sources = crate::execution_sources::ExecutionSources::project(&compiled.request)?;
+        let mut execution = ExecutionResource::from_loaded(&request, program, compiled.warnings)?;
+        execution.attach_sources(sources);
         let resource = self.insert(Resource::Execution {
             analysis: 0,
             execution: Box::new(execution),

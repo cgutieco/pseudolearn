@@ -55,6 +55,19 @@ El crate es la capa exterior del motor y solo importa `pseudolearn_api`. La feat
 
 `WasmSession.call(operation, argumentsJson)` analiza el objeto de argumentos en Rust, llama `ApiSession.call` y serializa su sobre de éxito o fallo. Los enteros de 64 bits viajan como tokens JSON, no como `Number` de JavaScript. La memoria es privada al módulo; cada llamada intercambia cadenas dueñas.
 
+`WasmSession.callProjected(operation, argumentsJson)` conserva `call` y añade una proyección de transporte.
+Devuelve un JSON con dos campos de texto: `response_json`, la respuesta API exacta, y `projection_json`,
+la misma estructura con cada número reemplazado por su representación decimal como cadena. Textos,
+booleanos y nulos permanecen intactos. El consumidor analiza solamente esta proyección; conserva la
+respuesta exacta como texto opaco y usa tokens numéricos canónicos al construir argumentos. Esto evita
+que un identificador, semilla o entero del programa pase por `Number`. La proyección no distingue un
+texto numérico de un número: los adaptadores conocen el tipo por el contrato de cada campo.
+
+El recurso `create_lsp`/`lsp_message` pertenece a API y conserva un servidor LSP por identificador.
+Wasm no importa service directamente. La llamada de LSP sigue siendo síncrona: cancelar durante una
+consulta no interrumpe el cálculo de Wasm; el anfitrión descarta el resultado obsoleto cuando recupera
+el control. Una terminación de Worker requiere reconstruir snapshot y overlays antes de reutilizarlo.
+
 La ejecución es síncrona. El anfitrión divide el trabajo en lotes, devuelve el control al navegador y solicita cancelación entre llamadas. El archivo de salida limita la memoria lineal a 256 MiB. Cualquier `Uint8Array` creado por un consumidor sobre la memoria del módulo queda invalidado cuando `memory.grow` reemplaza su `ArrayBuffer`; este crate no expone tales vistas.
 
 `browser/fetch_host.mjs` adapta `network_send` al `fetch` del navegador. `declareFetchHost(session)` comunica
@@ -64,6 +77,11 @@ permite inyectar el transporte y concede solo los orígenes incluidos explícita
 al superar el límite de bytes decodificados. El navegador valida TLS, aplica su política SSRF y
 descomprime contenido; el adaptador declara que no puede medir bytes de cable, distinguir errores de
 certificado ni leer de forma portable la ubicación de una redirección.
+
+`performFetch` acepta también `signal`, un `AbortSignal` externo. Una señal ya cancelada impide el
+despacho; la cancelación en vuelo aborta el transporte y retira el listener al terminar. Se devuelve
+`interrumpido` y una mutación ya enviada conserva el resultado `uncertain`; no se reintenta. La
+extensión consume este archivo canónico mediante su build, con declaración de tipos y hash de entrada.
 
 La sonda `wasm_native_probe` usa el mismo protocolo de registros tabulados y mantiene una sesión nativa para comparar, operación por operación, las mismas solicitudes y respuestas que ejecuta Playwright.
 

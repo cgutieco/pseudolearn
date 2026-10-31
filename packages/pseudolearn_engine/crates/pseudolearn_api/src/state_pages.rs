@@ -1,9 +1,9 @@
 use crate::ApiError;
 use crate::execution_resource::usage;
-use crate::execution_state::{query_object, value};
+use crate::execution_state::value;
 use crate::typed_values::typed_frame;
 use pseudolearn_runtime as runtime;
-use pseudolearn_timeline::{ArraySliceRange, capture_array_slice, capture_frame};
+use pseudolearn_timeline::{ArraySliceRange, capture_array_slice, capture_frame_window};
 use pseudolearn_vm::Machine;
 use serde_json::{Value, json};
 
@@ -15,6 +15,8 @@ pub(crate) struct PageRequest {
     pub(crate) event: usize,
     pub(crate) page_size: usize,
     pub(crate) cursor: Option<String>,
+    pub(crate) offset: usize,
+    pub(crate) task_id: Option<u64>,
 }
 
 impl PageRequest {
@@ -30,7 +32,17 @@ impl PageRequest {
         if page_size == 0 || page_size > MAXIMUM_PAGE_SIZE {
             return Err(usage("invalid page size"));
         }
+        if arguments.get("cursor").is_some_and(Value::is_string)
+            && arguments.get("offset").is_some()
+        {
+            return Err(usage("cursor and offset are mutually exclusive"));
+        }
         Ok(Self {
+            offset: page_offset(arguments)?,
+            task_id: arguments
+                .get("task_id")
+                .map(|value| value.as_u64().ok_or_else(|| usage("invalid task identity")))
+                .transpose()?,
             query: arguments
                 .get("query")
                 .and_then(Value::as_str)
@@ -47,6 +59,19 @@ impl PageRequest {
     }
 }
 
+fn page_offset(arguments: &Value) -> Result<usize, ApiError> {
+    arguments
+        .get("offset")
+        .map(|value| {
+            value
+                .as_u64()
+                .and_then(|number| usize::try_from(number).ok())
+                .ok_or_else(|| usage("invalid page offset"))
+        })
+        .transpose()
+        .map(|offset| offset.unwrap_or(0))
+}
+
 pub(crate) fn page(
     machine: &Machine<'_>,
     request: &PageRequest,
@@ -55,21 +80,40 @@ pub(crate) fn page(
     let binding = binding_hash(scope, request);
     let offset = match &request.cursor {
         Some(cursor) => offset_of(cursor, binding)?,
-        None => 0,
+        None => request.offset,
     };
     let (elements, total) = elements(machine, request, offset)?;
+    if offset > total {
+        return Err(usage("invalid page offset"));
+    }
     let end = offset.saturating_add(elements.len());
     let truncated = end < total;
     let next_cursor = truncated.then(|| format!("{binding:016x}.{end:x}"));
-    let mut response =
-        json!({"elements":elements,"truncated":truncated,"next_cursor":next_cursor,"total":total});
+    let mut response = json!({"elements":elements,"truncated":truncated,"next_cursor":next_cursor,"total":total,"values_read":elements.len()});
     if let (true, Some(fields)) = (request.query == "array_cells", response.as_object_mut()) {
         fields.insert(
             "dimensions".to_owned(),
             json!(array_dimensions(machine, request.target)?),
         );
     }
+    if let Some(fields) = response.as_object_mut() {
+        fields.insert("indexed".to_owned(), json!(indexed(machine, request)));
+    }
     Ok(response)
+}
+
+fn indexed(machine: &Machine<'_>, request: &PageRequest) -> bool {
+    if request.query == "array_cells" {
+        return true;
+    }
+    if request.query != "object_fields" {
+        return false;
+    }
+    runtime::allocation_handle(machine.heap(), request.target).is_some_and(|handle| {
+        runtime::is_array_allocation(machine.heap(), handle)
+            || runtime::is_collection_allocation(machine.heap(), handle)
+                && runtime::collection_is_dictionary(machine.heap(), handle) == Ok(false)
+    })
 }
 
 fn elements(
@@ -80,18 +124,24 @@ fn elements(
     match request.query.as_str() {
         "array_cells" => array_cells(machine, request, offset),
         "frame_variables" => {
-            let view = capture_frame(machine, target_index(request)?)
-                .map_err(|error| usage(&error.to_string()))?;
-            let variables = typed_frame(&view)
+            let (view, total) =
+                capture_frame_window(machine, target_index(request)?, (offset, request.page_size))
+                    .map_err(|error| usage(&error.to_string()))?;
+            let variables = typed_frame(&view);
+            let elements = variables
                 .get("variables")
-                .cloned()
-                .unwrap_or(Value::Null);
-            Ok(window(entries(&variables), offset, request.page_size))
+                .and_then(Value::as_object)
+                .map(|variables| {
+                    variables
+                        .iter()
+                        .map(|(name, value)| json!({"name":name,"value":value}))
+                        .collect()
+                })
+                .unwrap_or_default();
+            Ok((elements, total))
         }
         "object_fields" => {
-            let object = query_object(machine, request.target)?;
-            let fields = object.get("campos").cloned().unwrap_or(Value::Null);
-            Ok(window(entries(&fields), offset, request.page_size))
+            crate::state_object_pages::page(machine, request.target, (offset, request.page_size))
         }
         _ => Err(usage("unknown page query")),
     }
@@ -149,29 +199,10 @@ fn target_index(request: &PageRequest) -> Result<usize, ApiError> {
     usize::try_from(request.target).map_err(|_| usage("invalid frame"))
 }
 
-fn entries(map: &Value) -> Vec<Value> {
-    map.as_object()
-        .map(|fields| {
-            fields
-                .iter()
-                .map(|(name, content)| json!({"name":name,"value":content}))
-                .collect()
-        })
-        .unwrap_or_default()
-}
-
-fn window(all: Vec<Value>, offset: usize, page_size: usize) -> (Vec<Value>, usize) {
-    let total = all.len();
-    (
-        all.into_iter().skip(offset).take(page_size).collect(),
-        total,
-    )
-}
-
 fn binding_hash(scope: &str, request: &PageRequest) -> u64 {
     let text = format!(
-        "{scope}|{}|{}|{}|{}",
-        request.query, request.target, request.event, request.page_size
+        "{scope}|{}|{}|{}|{}|{:?}",
+        request.query, request.target, request.event, request.page_size, request.task_id
     );
     text.bytes().fold(0xcbf2_9ce4_8422_2325_u64, |hash, byte| {
         (hash ^ u64::from(byte)).wrapping_mul(0x0100_0000_01b3)

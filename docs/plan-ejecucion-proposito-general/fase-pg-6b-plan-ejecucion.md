@@ -9,15 +9,17 @@
 | Revisión inicial inspeccionada | `88c2c176ccde217b5e69c83d7bb262e30f0429f6`                                                                                                                                    |
 | Rama                           | `feature/agregar-ruta-de-especificacion`; sin ramas ni worktrees adicionales                                                                                                  |
 | Estado inicial del árbol       | Limpio; rama un commit por delante de `origin` al comenzar la preparación                                                                                                     |
-| Autorización de este encargo   | «Crea el plan de ejecución detallado para `4.9 PG-6B · Depuración y web` […] Debe ser detallado como para que el agente a cargo de implementarlo no tenga chance de alucinar» |
-| Alcance autorizado ahora       | Preparar este documento y enlazarlo desde el plan general                                                                                                                     |
-| Estado de implementación       | Sin iniciar; `C01` y la revisión humana de `C02` pendientes                                                                                                                   |
+| Autorización de este encargo | «Necesito que implementes en una sola iteración todas las fases»; confirmada con «Ok, ejecuta el plan» |
+| Alcance autorizado ahora | Implementar PG-6B.01–.09 y su cierre común; desarrollo continuo y campaña final única |
+| Estado de implementación | En curso; C01/C02 autorizados el 2026-10-31; verificaciones finales pendientes |
 | Dependencias                   | PG-4, PG-5 y PG-6A, con los residuos registrados en §1.2                                                                                                                      |
 | Entregables futuros            | DAP VM de escritorio, variante web de la misma extensión, evidencia de navegador, materiales e informe telefónico y mediciones web                                            |
 
-La petición de redactar el plan autoriza su preparación anticipada. No autoriza especificaciones,
-código, instalación en el perfil habitual, publicación ni ejecución de PG-A, PG-B o PG-7.
-`PHASE-STOP` sigue vigente. No marcar una casilla de implementación por haberla descrito aquí.
+La preparación documental inicial fue seguida por autorización expresa para ejecutar toda PG-6B en
+una sola iteración. Se conservan contratos → casos → tests escritos → código; las pruebas se ejecutan
+al terminar el desarrollo integrado, sin cierres ni permisos rutinarios entre puntos. La autorización
+incluye liberar cachés regenerables propias cuando sea necesario. No incluye instalación habitual,
+publicación ni ejecución de PG-A, PG-B o PG-7. `PHASE-STOP` se aplica al cierre conjunto.
 
 Este documento transitorio desarrolla la [hoja de ruta](../hoja-de-ruta-proposito-general.md),
 ADR-08/09/10 y los puntos `PG-6B.01`–`.09`. No es fuente normativa del motor: durante la ejecución,
@@ -857,8 +859,8 @@ evidencia completa. Una fase nueva requiere mensaje nuevo (`PHASE-STOP`).
 
 ### 10.1 Cierre común verificable
 
-- [ ] `PG-6B.C01` Mensaje nuevo de autorización registrado con alcance exacto.
-- [ ] `PG-6B.C02` Este plan revisado por la persona; propuestas/condiciones relevantes resueltas.
+- [x] `PG-6B.C01` Mensaje nuevo de autorización registrado con alcance exacto.
+- [x] `PG-6B.C02` Este plan revisado por la persona; propuestas/condiciones relevantes resueltas.
 - [ ] `PG-6B.C03` SPEC-FIRST y congelamiento: identidades nuevas estables 1.0.0, sin `cambio` ni
   revisión ficticia; existentes conservan identidad/estado/versión y siguen revisión/anclaje exigidos.
 - [ ] `PG-6B.C04` Reglas/casos/propiedades y vínculos de conformidad como datos; sin sujetos ni
@@ -950,3 +952,71 @@ cambios ajenos, locks, fuentes, paquetes de reversión ni resultados que sosteng
 Los hosts usan perfiles aislados; cerrar procesos propios y listeners aun al fallar. No tocar el perfil
 habitual ni matar procesos por coincidencia de nombre. Si falta espacio, reducir concurrencia y
 reportar la operación concreta afectada, sin limpieza indiscriminada.
+
+### 11.2 Ejecución integrada autorizada · 2026-10-31
+
+Revisión inicial de ejecución: `aaffb6bf`; árbol limpio y rama única sincronizada con su remoto.
+La petición directa de implementación revisa y autoriza el plan (`C01/C02`); no constituye revisión
+editorial independiente del corpus ni aceptación de una métrica candidata.
+
+Se distribuyen núcleo/API, corpus/evaluate, CLI/DAP y browser/artefactos. Los contratos y casos se
+escribieron antes del código; las compilaciones incrementales de integración no cierran tareas ni
+sustituyen la campaña final. No hay suites ni campañas aprobadas todavía.
+
+Entorno confirmado: Rust 1.99.0, Node 22.23.3, pnpm 12.8.1, wasm-bindgen 0.2.129 y target
+wasm32-unknown-unknown disponibles. El SDK instalado expone el cliente LSP browser.
+
+Espacio liberado: 6,0 GiB libres antes y 9,3 GiB después de retirar exclusivamente
+`target/debug/incremental` de engine, CLI y SEE, una vez comprobada la ausencia de compilaciones
+Rust activas. Sus tamaños lógicos sumaban unos 5 GiB. Se conservaron resultados, locks, fuentes,
+paquetes, perfiles y navegadores reutilizables. Los 25 GiB de PG-4/PG-5 no son una puerta de PG-6B;
+se mide margen antes de cada operación pesada y se limita su concurrencia.
+
+La descarga de `@vscode/test-web@0.0.81`, cuya publicación se consultó en el registro oficial,
+fue rechazada por el servicio de revisión automática con un límite de uso. El intento en sandbox
+falló por resolución DNS y el offline no encontró su metadata. El runner, los scripts y los tests se
+preparan igualmente; esos errores no acreditan cobertura de host. La restauración local de enlaces
+hacia paquetes exactos ya materializados permite continuar herramientas existentes sin afirmar una
+instalación congelada satisfactoria.
+
+### 11.3 Campaña de verificación y estado de cierre · 2026-10-31
+
+Revisión base `aaffb6bf`, árbol con cambios sin confirmar al verificar. Resultados por frente.
+
+**Cumplido (comprobado localmente)**
+- Motor (`cargo check/clippy -D warnings/fmt`, `pseudolearn_check_command all`): sin hallazgos. Tests dirigidos de
+  `pseudolearn_api` (depuración, tareas, historia, inspección, LSP, estado de colecciones), `pseudolearn_lowering`,
+  `pseudolearn_wasm`, `pseudolearn_service` en verde.
+- CLI: `cargo test` completo, Clippy, formato y verificadores en verde. DAP stdio independiente (proyecto de
+  tres módulos, tareas, entrada, referencias vencidas, evaluate, retroceso) y prueba física de historia
+  (POST loopback y archivos temporales conservan contadores, bytes y salida): aprobadas.
+- Extensión: tipos, arquitectura, comentarios, tamaños, paquete, gramática, `check:web` y 116 tests en verde.
+  Wasm empaquetado: 4 181 395 bytes, Brotli Q11 845 305 ≤ 921 600, memoria máxima 4096 páginas (256 MiB).
+- Corpus: esquema SEE corregido (operaciones API nuevas) y caso `API.ERRORS#C2` con programa; `see export --check`
+  verificado; tests de `see_conformance` en verde.
+- Rendimiento web (Chromium, `bench:web`): 10 procesos × 30 intentos × 3 cargas × {Worker, control}; 1800
+  intentos válidos, 0 fallos. Medias (ms): entero extremo 1,30/1,45; bucle 60,7/57,5; cancelación 14,4/13,5
+  (Worker/control). Crudos en `apps/pseudolearn_vscode/test-results/web-bench/`. No es aceptación de `PERF.PG.WEB`.
+- Contrato HTTP del Fetch canónico en Chromium y WebKit.
+
+**Defectos corregidos durante la campaña** (nuevos, de este trabajo): verificación de breakpoints sin fuente
+en ejecución de archivo único; `step_out` desde el marco base de una tarea; nombres de marco con `@`;
+IR de resultado agregado sin tramo; rutas DAP no canónicas; `wasm.sh` con cadena de Rust distinta de la fijada;
+avisos de terceros ante manifiestos sin nombre; globals Node por propiedad en el verificador web; verificadores
+de la extensión recorrían salidas generadas.
+
+**Antecedentes (fallaban antes de este cambio)**: `cli_tests::executes_ri_command_successfully` (esperaba un IR sin
+`suspendible`), `reference_vocabulary` (conteo de builtins 19 vs 28), y diferencias de `cargo fmt` en
+`pseudolearn_spec` fuera de los archivos tocados. Los dos primeros se actualizaron a la salida vigente.
+
+**Bloqueado / no ejecutado**
+- `SEE-STATE: independent review required` persiste (pendiente heredado; sin aprobación humana atribuida). Por ello
+  `see validate`, `runtime_corpus` y un test de `see_cli` no pasan, y no se ejecutó `see conform`.
+- Firefox no arranca en este equipo (`Could not find profile folder`, también sin sandbox): sin cobertura.
+- `@vscode/test-web` 0.0.81 no está instalado (descarga rechazada): host VS Code web de Chromium/Firefox/WebKit
+  **no ejecutado**. VS Code de escritorio real y VSIX darwin no ejecutados por margen de disco (~1,6 GiB libres).
+- E-PG-08 físico: kit generado; ensayos físicos **Diferido / no evaluado físicamente**. CF-14 y la aceptación de
+  `PERF.PG.WEB` conservan su decisión posterior. No se aplicaron reanclajes.
+
+`PHASE-GREEN`: **no declarada**. Los puntos PG-6B.04/.05/.06 (host web real) y PG-6B.02.07 (VS Code real),
+más la validación del corpus, siguen pendientes. No se inició PG-A, PG-B ni PG-7; no se instaló ni publicó nada.

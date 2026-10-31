@@ -28,10 +28,14 @@ fn historical_collection_state_contains_ordered_contents() -> Result<(), String>
     let mut observed = false;
     for event in 0..=last {
         let state = session.call("query_state", &json!({"resource":execution,"event":event}));
-        if state
-            .to_string()
-            .contains("\"vector\":{\"elementos\":[{\"valor\":\"9\"}],\"longitud\":1}")
-        {
+        if state.pointer("/value/objetos").is_some_and(|objects| {
+            objects.as_object().is_some_and(|map| {
+                map.values().any(|object| {
+                    object.pointer("/vector/elementos") == Some(&json!([{"valor":"9"}]))
+                        && object.pointer("/vector/longitud") == Some(&json!(1))
+                })
+            })
+        }) {
             observed = true;
         }
     }

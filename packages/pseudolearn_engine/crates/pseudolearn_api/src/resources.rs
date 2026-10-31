@@ -22,6 +22,7 @@ pub(crate) enum Resource {
         execution: Box<ExecutionResource>,
     },
     Editing(Box<pseudolearn_service::EditSession>),
+    Lsp(Box<pseudolearn_service::LspServer>),
 }
 
 static SESSION_COUNTER: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(1);
@@ -47,6 +48,9 @@ impl ApiSession {
 
     fn dispatch(&mut self, operation: &str, arguments: &Value) -> Result<Value, ApiError> {
         match operation {
+            "create_lsp" | "lsp_message" | "translate" => {
+                crate::lsp_operations::dispatch(self, operation, arguments)
+            }
             "record" => crate::recording::record(self, arguments),
             "step" => crate::stepping::step(self, arguments),
             "fault_stages" => Ok(crate::fault_injection::stages()),
@@ -184,6 +188,8 @@ impl ApiSession {
         };
         match operation {
             "advance" => execution.advance(count(arguments, "batch_size", Some(1))?),
+            "debug_configure" | "debug_control" | "debug_state" | "inspect_expression"
+            | "history_events" => execution.debug_operation(operation, arguments),
             "input" | "effect_result" => handle_execution_feed(execution, operation, arguments),
             "cancel" => {
                 execution.cancel();

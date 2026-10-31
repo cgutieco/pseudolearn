@@ -9,12 +9,18 @@ impl ExecutionResource {
     pub(super) fn drive_batch(&mut self, maximum: usize) -> Result<(), ApiError> {
         let initial_count = machine_event_count(&self.machine);
         loop {
+            let before = machine_event_count(&self.machine);
+            let task = self.machine.current_task_id();
             let exit = self.machine.step_instruction();
             self.capture_step_output()?;
+            let stopped = self.observe_debug_events(before, task);
             if let Some(exit) = exit {
                 if self.handle_exit(exit)? {
                     continue;
                 }
+                break;
+            }
+            if stopped {
                 break;
             }
             let emitted = machine_event_count(&self.machine).saturating_sub(initial_count);

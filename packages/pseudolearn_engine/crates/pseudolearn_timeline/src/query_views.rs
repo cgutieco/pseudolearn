@@ -18,3 +18,21 @@ pub fn capture_array_slice(
 ) -> Result<Vec<VariableValue>, TimelineError> {
     crate::array_view::read_slice(machine, ordinal, range)
 }
+
+pub fn capture_frame_window(
+    machine: &Machine<'_>,
+    position: usize,
+    range: (usize, usize),
+) -> Result<(FrameView, usize), TimelineError> {
+    let (frame, total) =
+        machine
+            .active_frame_window(position, range)
+            .ok_or(TimelineError::InvalidFrame {
+                frame_position: position,
+                total_frames: machine.active_frames_count(),
+            })?;
+    Ok((
+        crate::inspect::build_frame_view(machine, position, &frame),
+        total,
+    ))
+}

@@ -39,7 +39,7 @@ fn builtins_follow_the_profile_lexemes_and_declare_their_signature() {
             .pointer("/value/builtins")
             .and_then(Value::as_array)
             .map(Vec::len),
-        Some(19)
+        Some(28)
     );
 }
 

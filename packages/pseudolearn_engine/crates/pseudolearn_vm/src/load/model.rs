@@ -115,6 +115,7 @@ pub(crate) struct LoadedFunction {
     pub probed_mask: usize,
     pub probed_spans: Vec<Option<SourceSpan>>,
     pub probed_origins: Vec<Origin>,
+    pub probed_statement_enters: Vec<usize>,
     pub observations: Vec<ObservationSite>,
     pub fast_to_probed_blocks: Vec<usize>,
     pub probed_to_fast_blocks: Vec<usize>,

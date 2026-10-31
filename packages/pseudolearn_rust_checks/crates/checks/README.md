@@ -36,3 +36,5 @@ Tests válidos e inválidos, formato, Clippy y verificadores mediante `cargo xta
 ## 8. Fuentes consultadas y genealogía conceptual
 
 Cargo define la frontera de compilación; la política de capas pertenece a PseudoLearn.
+
+Los negativos de depuración cargan las reglas vigentes de servicio y CLI en fixtures Cargo aislados: rechazan servicio → VM/API y CLI → VM/timeline, y aceptan CLI → API pública. Las dependencias deliberadas son datos de prueba fuera del producto; ningún test altera los manifiestos reales.

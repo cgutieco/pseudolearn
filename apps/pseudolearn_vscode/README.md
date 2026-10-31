@@ -2,13 +2,13 @@
 
 ## 1. Qué es y qué no es
 
-Extensión privada de escritorio que integra PseudoLearn con VS Code. Se distribuye para uso local mediante F5 durante el desarrollo y archivos VSIX instalados manualmente. El primer artefacto calificado es para macOS Apple silicon (`darwin-arm64`). El paquete incluye el ejecutable `pseudo` para ese destino; no busca ejecutables en el workspace ni descarga binarios al activar.
+Extensión privada de escritorio y navegador que integra PseudoLearn con VS Code. Se distribuye para uso local mediante F5 durante el desarrollo y archivos VSIX instalados manualmente. El primer artefacto calificado es para macOS Apple silicon (`darwin-arm64`). El paquete incluye el ejecutable `pseudo` para ese destino; no busca ejecutables en el workspace ni descarga binarios al activar.
 
 El código propio está reservado para uso local y no se concede una licencia abierta. El empaquetado genera `third-party-notices.md` desde el grafo Cargo específico del binario incluido y conserva los textos de licencia disponibles junto a la lista SPDX de dependencias. La extensión no se publica en Marketplace ni Open VSX.
 
 El servidor LSP de proyecto expone navegación, diagnósticos relacionados, símbolos, `prepareRename`/`rename` y tokens semánticos `full` solo bajo las garantías negociadas. Para renombrar en varias fuentes, el cliente materializa y sincroniza los documentos cerrados, recalcula la selección y las referencias y aplica una edición versionada en una sola transacción. El transporte limita cabeceras a 8 KiB y cuerpos a 8 MiB. La configuración declarativa permite perfil y rigor de workspace, idioma de interfaz personal y una ruta absoluta de desarrollo para el servidor; el workspace no selecciona ejecutables ni concede permisos. Los recursos TextMate y de lenguaje se generan desde la exportación SEE.
 
-Fuera de alcance de este incremento: depuración, plataformas no calificadas, workspace remoto, workspace virtual, actualizaciones automáticas, telemetría y publicación. No se incluye migrador ni selector de compatibilidad: cada edición se ofrece como la oficial aunque introduzca cambios incompatibles. VS Code y el cliente LSP completo siguen siendo una verificación de host separada.
+La depuración de VM se ofrece en escritorio. La variante browser usa Workers y proveedores URI. Quedan fuera depuración browser, AOT/FFI/procesos browser, plataformas desktop no calificadas, actualizaciones automáticas, telemetría y publicación. No se incluye migrador ni selector de compatibilidad: cada edición se ofrece como la oficial aunque introduzca cambios incompatibles. VS Code y el cliente LSP completo siguen siendo una verificación de host separada.
 
 ## 2. Guía operativa y ciclo de vida
 
@@ -182,3 +182,103 @@ extensión y no borra los programas del usuario.
 **Logs y versión.** El canal `PseudoLearn (technical)` guarda los registros técnicos locales; la versión instalada aparece en la
 vista de extensiones y en `code --list-extensions --show-versions`. La identidad del binario incluido se comprueba con su SHA-256, que
 consta en el registro `.vsix.json` del paquete. No se registra la entrada del estudiante ni el entorno completo.
+
+## 10. Depuración VM de escritorio
+
+El debugger `pseudolearn` lanza `pseudo dap` sin shell ni entorno heredado. `pseudolearn.debugFile` y
+`pseudolearn.debugProject` crean configuraciones de archivo/proyecto guardados; no conceden capacidades.
+El adaptador TS transporta DAP y presenta entrada; Rust conserva puntos de parada, tareas, marcos,
+control de ejecución, historia y evaluación. Cabeceras de 8 KiB, cuerpos de 8 MiB y referencias de stop
+acotadas impiden reservas ilimitadas. El backend es VM; no se anuncia depuración AOT ni browser.
+
+La evaluación de inspección admite literales, nombres visibles, campos, índices y operadores puros;
+rechaza llamadas, asignación, espera, tareas y capacidades. El pasado se consulta sin reemplazar la
+continuación viva ni repetir HTTP/escrituras/salida. Las capacidades anunciadas dependen del contrato
+y la implementación Rust; la calificación exige ambos clientes e integración física del replay.
+
+## 11. Variante browser y capacidades
+
+Las cuatro capas existentes alojan una activación browser y dos Workers separados: lenguaje y ejecución.
+Cada Worker posee su propia instancia Wasm y recurso API. El servidor de lenguaje conserva LSP en Rust;
+TypeScript enumera fuentes y entrega snapshots por URI, sin interpretar manifiestos ni imports.
+`vscode-languageclient/browser` 10.1.2 y `vscode-languageserver-protocol/browser` 3.18.4 aportan el
+cliente y transporte. Se toman de estos SDK el protocolo y lifecycle; no semántica del lenguaje.
+
+El transporte conserva el JSON API exacto como texto y analiza la proyección numérica de Rust. Los
+números de control se reconstruyen solo en campos del esquema con rango seguro. El límite por mensaje
+es 8 MiB, hay ocho consultas RPC simultáneas y hasta 256 notificaciones en la cola LSP. Saturación o
+fallo del Worker cierra la sesión; reiniciar lenguaje reconstruye snapshot y overlays, conservando la
+ejecución separada. Cancelar una consulta síncrona de Wasm descarta su resultado al recuperar control;
+no se promete interrupción preemptiva. Una ejecución usa lotes de 64 eventos y cesión al event loop.
+
+Los comandos de ejecución, entrada, detener, formato, traducción, ayuda y selección de entrada usan
+los mismos contratos Rust. Solo se ejecutan fuentes guardadas en workspace confiable; Restricted Mode
+mantiene resaltado declarativo. El cargador atiende la primera raíz, rechaza enlaces detectables y
+limita profundidad a 64, archivos a 4096, cada fuente a 1 MiB y lectura de snapshot a 32 MiB; el límite
+de mensaje de 8 MiB sigue siendo el techo efectivo de transporte. Guardados y cambios de archivos
+resincronizan; un error informa snapshot desactualizado, sin inventar fuentes vacías.
+
+| Capacidad | Concesión y garantía |
+| --- | --- |
+| Editor | `workspace.fs`, URI y confirmación del proveedor; no acredita persistencia tras expulsión |
+| HTTP | `pseudolearn.grantNetwork` concede un origen exacto por gesto del usuario; vacío revoca y detiene |
+| Archivos del programa | `pseudolearn.grantFiles` concede lectura/escritura en memoria temporal propia, separada del editor |
+| Otros proveedores de programa | Sin garantía de confinamiento no se concede acceso físico |
+| Ausencias | Sin DAP web, AOT, FFI, procesos, cookies ambientales ni servidor remoto |
+
+Fetch procede del adaptador canónico Wasm, importado y hasheado por build. Conserva el descriptor A4:
+TLS del navegador, sin bytes de cable ni ubicación portable de redirección. Se aborta al cancelar; una
+mutación enviada puede terminar incierta. Las escrituras del proveedor solo son committed tras su
+confirmación; un fallo posterior al despacho es incierto y no se reintenta. El almacenamiento propio
+es temporal (1 MiB por archivo, 8 MiB total), sin symlinks ni persistencia. Los permisos del manifiesto
+no conceden autoridad. `pseudolearn.showCapabilities` muestra las capacidades disponibles.
+
+## 12. Construcción y verificación browser
+
+`artifact.contract.json` mantiene desktop y añade el destino web. El manifiesto web se deriva del
+manifest único: declara browser y omite main, debugger y configuración de ejecutable. El staging
+`.artifacts/web-extension/` contiene únicamente bundles/Workers, glue/Wasm, gramática, avisos y metadata;
+el VSIX web no contiene binario. Los generados Wasm y Fetch se consumen sin copiarlos a mano.
+
+```bash
+pnpm build:wasm
+pnpm build:web
+pnpm check:web
+node scripts/package-web.mjs
+node tests/web/run-web.mjs
+node scripts/bench-web.mjs
+node scripts/physical-kit.mjs
+```
+
+El checker verifica grafo browser sin Node, entradas externas declaradas, globals de Node mediante
+AST, inventario exacto, hashes de archivos/Fetch/lock, máximo de memoria 4096 páginas y Wasm Brotli
+Q11/lgwin22 ≤921 600 bytes. Un resultado fuera de presupuesto falla aunque el bundle cargue. Los
+avisos incluyen dependencias Cargo alcanzables del módulo Wasm y paquetes JS realmente empaquetados.
+Los registros guardan revisión, árbol sucio, toolchains y hashes. No se publica ni instala el perfil habitual.
+
+El bundle web define `process` como indefinido para que las rutas de detección de plataforma de las
+dependencias elijan su rama no-Node; el verificador solo cuenta identificadores libres, no nombres de
+propiedad. `tool/wasm.sh` se ejecuta desde la raíz del motor para que `build:wasm` use la cadena fijada
+por su `rust-toolchain.toml`, no la del directorio desde el que se invoca.
+
+El runner oficial está fijado en `tests/web/runner/package.json` a `@vscode/test-web` 0.0.81, versión
+publicada consultada en el registro. Su instalación está separada de las dependencias de producto:
+no se descarga al activar la extensión. La obtención del runner y de su lock está pendiente cuando
+no existe red/autorización disponible; no se presenta como instalado. Tras preparar ese entorno,
+`tests/web/campaign.json` fija VS Code 1.144.0 commit `2c33b50b16c472efe58357d1d2a8a5414bc23fbf` y la
+matriz Chromium/Firefox/WebKit. Cada navegador conserva log y resultado; no arrancar no equivale a aprobar.
+El runner usa filesystem virtual, sin acreditar durabilidad ni Safari físico.
+
+`bench-web.mjs` ejecuta diez procesos Node y navegador independientes con treinta intentos por carga,
+alterna Worker/control y conserva fallos. Mide el transporte/VM con instancia nueva frente a la página
+mínima del mismo Wasm; no mide por sí solo edición/render del editor ni RAM total. Los resúmenes
+recalculan p95 e IC95 bootstrap sobre medias por proceso (semilla 42681). La métrica normativa nueva
+permanece sin aprobación; los criterios experimentales no cambian presupuestos del corpus.
+
+El kit físico contiene 32 combinaciones y veinte ciclos por combinación, fuentes, hashes, control,
+formularios vacíos y analizador. `node scripts/physical-kit.mjs analyze <results.json>` rechaza muestras
+sintéticas, duplicadas, incompletas, de otro dispositivo/Wasm y pérdida de texto. Sin resultados físicos
+se conserva «no evaluado físicamente» y el diferimiento; WebKit no se presenta como Safari iPhone.
+
+Pendientes de calificación: campañas de host completas, evidencias reales de navegador, resultados de
+medición y revisión de cobertura. Las comprobaciones puntuales no certifican esos resultados ni CF-14.

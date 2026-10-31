@@ -6,6 +6,7 @@ browser_directory="${engine_directory}/crates/pseudolearn_wasm/browser"
 package_directory="${engine_directory}/target/wasm-browser/pkg"
 wasm_file="${engine_directory}/target/wasm32-unknown-unknown/wasm-release/pseudolearn_wasm.wasm"
 action="${1:-build}"
+cd "${engine_directory}"
 staging_directory=""
 
 trap 'if [[ -n "$staging_directory" ]]; then rm -rf "$staging_directory"; fi' EXIT

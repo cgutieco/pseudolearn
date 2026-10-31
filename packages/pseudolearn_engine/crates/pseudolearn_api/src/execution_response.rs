@@ -7,7 +7,7 @@ pub(super) struct AdvanceResponseInput<'borrow, 'program> {
     pub terminal: Option<&'borrow RunExit>,
     pub profile: &'borrow str,
     pub warnings: &'borrow [crate::ApiDiagnostic],
-    pub view: Option<&'borrow crate::program_view::ProgramView>,
+    pub sources: &'borrow crate::execution_sources::ExecutionSources,
     pub source: Option<crate::ApiSourceIdentity>,
 }
 
@@ -16,7 +16,7 @@ pub(super) fn advance_response(input: AdvanceResponseInput<'_, '_>) -> Value {
         .get(input.start..)
         .unwrap_or_default()
         .iter()
-        .map(|event| crate::execution_wire::event_with_source(event, input.view))
+        .map(|event| input.sources.event(event))
         .collect::<Vec<_>>();
     let termination = input
         .terminal

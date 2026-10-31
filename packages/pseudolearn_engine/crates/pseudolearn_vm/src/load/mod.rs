@@ -1,5 +1,6 @@
 #![forbid(unsafe_code)]
 
+mod breakpoint_locations;
 mod definedness;
 mod definitions;
 mod edges;

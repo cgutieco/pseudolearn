@@ -141,3 +141,7 @@ Los tests de estas capacidades se ejecutaron en selecciones acotadas, incluida l
 termina ante la siguiente recepción o el cierre, conservando los bloques interiores. Los nodos
 `SelectStatement` y `ReceiveBranch` se generan desde la gramática. La cantidad mínima de ramas
 se comprueba en semántica para producir el diagnóstico específico en lugar de perder el árbol.
+
+## Entrada de expresión para inspección
+
+`expression_entry::parse_expression_source` consume exclusivamente la expresión original mediante el parser existente y exige EOF, sin generar ni concatenar un algoritmo envolvente. Conserva tokens, spans y diagnósticos del texto recibido. La validación del subconjunto admisible corresponde a semántica y no cambia el parser del lenguaje.

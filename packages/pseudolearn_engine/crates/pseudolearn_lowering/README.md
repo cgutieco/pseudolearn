@@ -145,3 +145,7 @@ para decidir la representación de ejecución.
 `yield_points` identifica aristas de retorno mediante dominancia e introduce un bloque puente con
 `task.yield_check` y el salto original. Así una condición que abandona el bucle no cede, los argumentos
 SSA conservan sus definiciones y las unidades síncronas no adquieren instrucciones de cesión.
+
+## Lowering de inspección
+
+`inspection_lowering` convierte la expresión tipada en una función temporal con capturas explícitas como parámetros y retorno del valor. Reutiliza `lower_expression`, bancos y operaciones ordinarias, incluidos cortocircuito, campos e índices; no genera ni reanaliza texto de un programa envolvente. La función no contiene E/S ni llamadas admitidas por la frontera de inspección.

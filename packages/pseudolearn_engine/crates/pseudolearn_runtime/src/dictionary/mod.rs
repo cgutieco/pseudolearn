@@ -1,4 +1,6 @@
 mod index;
+mod window;
+pub use window::dictionary_window;
 mod rebuild;
 
 use crate::collection::storage::{read_word, write_word};

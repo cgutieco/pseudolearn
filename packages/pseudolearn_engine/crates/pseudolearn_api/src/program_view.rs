@@ -40,18 +40,25 @@ pub(crate) struct ProgramView {
 
 impl ProgramView {
     pub(crate) fn build(request: &AnalyzeRequest, revision: String) -> Result<Self, ApiError> {
+        Self::build_with_mode(request, revision, false)
+    }
+
+    pub(crate) fn build_project(
+        request: &AnalyzeRequest,
+        revision: String,
+    ) -> Result<Self, ApiError> {
+        Self::build_with_mode(request, revision, true)
+    }
+
+    fn build_with_mode(
+        request: &AnalyzeRequest,
+        revision: String,
+        project: bool,
+    ) -> Result<Self, ApiError> {
         let profile = Profile::from_name(&request.profile).unwrap_or(Profile::Spanish);
         let strict = request.strictness != "flexible";
-        let (source, tree) = parse_view_source(request, strict, profile)?;
-        let mut nodes = crate::program_view_tree::collect_nodes(&tree, &source);
-        let context = AnnotationContext {
-            tree: &tree,
-            source: &source,
-            profile,
-            strict,
-        };
-        crate::program_view_annotations::annotate(&mut nodes, &context);
-        crate::program_view_nominal::annotate(&mut nodes, &context, &revision);
+        let (source, tree) = parse_view_source(request, strict, profile, project)?;
+        let nodes = annotated_nodes(&tree, &source, (profile, strict), &revision);
         let by_span = index_by_span(&nodes);
         let schema = crate::diagnostic_conversion::schema(&tree, &source);
         let (inheritance, methods) =
@@ -166,10 +173,29 @@ impl ProgramView {
     }
 }
 
+fn annotated_nodes(
+    tree: &pseudolearn_syntax::SyntaxTree,
+    source: &pseudolearn_source::SourceText,
+    mode: (Profile, bool),
+    revision: &str,
+) -> Vec<ViewNode> {
+    let mut nodes = crate::program_view_tree::collect_nodes(tree, source);
+    let context = AnnotationContext {
+        tree,
+        source,
+        profile: mode.0,
+        strict: mode.1,
+    };
+    crate::program_view_annotations::annotate(&mut nodes, &context);
+    crate::program_view_nominal::annotate(&mut nodes, &context, revision);
+    nodes
+}
+
 fn parse_view_source(
     request: &AnalyzeRequest,
     strict: bool,
     profile: Profile,
+    project: bool,
 ) -> Result<
     (
         pseudolearn_source::SourceText,
@@ -179,7 +205,11 @@ fn parse_view_source(
 > {
     let source = crate::source_identity::source_text(request.program.clone(), request.source);
     let terminator = strict.then_some(DiagnosticCode::MissingStatementTerminator);
-    let (tree, _) = parse_source_with_terminator(&source, profile, terminator);
+    let (tree, _) = if project {
+        pseudolearn_syntax::parse_module_source(&source, profile, terminator)
+    } else {
+        parse_source_with_terminator(&source, profile, terminator)
+    };
     if tree.has_errors {
         return Err(crate::execution_resource::usage("analysis has errors"));
     }

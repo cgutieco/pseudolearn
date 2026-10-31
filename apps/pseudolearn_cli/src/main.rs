@@ -6,6 +6,21 @@ mod aot_adapter;
 mod build_command;
 mod check_command;
 mod confined_sources;
+mod dap_api;
+mod dap_breakpoints;
+mod dap_control;
+mod dap_effects;
+mod dap_inspection;
+mod dap_launch;
+mod dap_launch_options;
+mod dap_lifecycle;
+mod dap_protocol;
+mod dap_pump;
+mod dap_references;
+mod dap_session;
+mod dap_sources;
+mod dap_transport;
+mod dap_variables;
 mod editor_command;
 mod editor_protocol;
 mod editor_session;
@@ -54,6 +69,14 @@ mod translate_command;
 
 #[cfg(test)]
 mod confined_sources_tests;
+#[cfg(test)]
+mod dap_launch_options_tests;
+#[cfg(test)]
+mod dap_references_tests;
+#[cfg(test)]
+mod dap_session_tests;
+#[cfg(test)]
+mod dap_sources_tests;
 #[cfg(test)]
 mod editor_command_tests;
 #[cfg(test)]
@@ -148,6 +171,7 @@ fn dispatch(raw_arguments: &[String]) -> Result<i32, CliError> {
         "formatear" | "format" => format_command::execute_format(&options),
         "traducir" | "translate" => translate_command::execute_translate(&options),
         "lsp" => Ok(lsp_command::execute_lsp(&options)),
+        "dap" => Ok(dap_transport::execute(&options)),
         other => Err(CliError::Usage(unknown_command(
             &options.interface_language,
             other,

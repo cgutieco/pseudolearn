@@ -133,3 +133,94 @@
   }
 }
 ```
+
+```regla
+{
+  "id": "R4",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Las operaciones de depuración e inspección devuelven familia usage ante recurso, evento, tarea, marco, cursor o generación inválidos, expresión no admitida, dominio inválido o presupuesto excedido. No realizan llamadas externas, no convierten un rechazo de historia en LiveRecord y no alteran el estado vivo para recuperar un resultado.",
+  "verificacion": [
+    "C2"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C2",
+  "regla": "R4",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "perfil_base": "es",
+  "programa": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n",
+  "api": {
+    "calls": [
+      {
+        "operation": "create_analysis"
+      },
+      {
+        "operation": "start",
+        "resource_from": 0
+      },
+      {
+        "operation": "inspect_expression",
+        "resource_from": 1,
+        "arguments": {
+          "event": 99,
+          "frame": 0,
+          "expression": "1"
+        }
+      },
+      {
+        "operation": "debug_state",
+        "resource_from": 1
+      },
+      {
+        "operation": "history_events",
+        "resource_from": 1,
+        "arguments": {
+          "start": 99,
+          "count": 1
+        }
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {}
+        },
+        {
+          "value": {}
+        },
+        {
+          "failure": {
+            "family": "usage"
+          }
+        },
+        {
+          "failure": {
+            "family": "usage"
+          }
+        },
+        {
+          "failure": {
+            "family": "usage"
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```

@@ -80,7 +80,9 @@ function layerForPath(root, path, layers) {
 }
 
 function isHostImport(specifier) {
-  return specifier === "vscode" || specifier.startsWith("node:") || specifier === "vscode-languageclient";
+  return specifier === "vscode" || specifier.startsWith("node:") || specifier === "vscode-languageclient"
+    || specifier.startsWith("vscode-languageclient/") || specifier === "vscode-languageserver-protocol"
+    || specifier.startsWith("vscode-languageserver-protocol/");
 }
 
 function report(violations) {

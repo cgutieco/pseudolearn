@@ -70,3 +70,7 @@ El sistema especifica y contrasta el lenguaje vigente. Ninguna lógica del motor
 ## 8. Fuentes consultadas y genealogía conceptual
 
 Plan aprobado del sistema SEE. Las bibliotecas externas son infraestructura, nunca autoridad sobre el comportamiento de PseudoLearn.
+
+## Transcripciones DAP
+
+Los casos CLI de depuración entregan el framing completo por entrada estándar. La expectativa `dap` compara listas ordenadas `messages`, `responses` o `events` por campos explícitos, sin fijar secuencias de transporte que el caso no declara. El decodificador cuenta bytes UTF-8 y rechaza framing incompleto, longitud duplicada y límites excedidos. Esta comparación consume la capacidad CLI existente; no anuncia un sujeto DAP ni confunde pruebas de protocolo con otra implementación del lenguaje.

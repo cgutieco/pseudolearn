@@ -19,6 +19,7 @@ export function declareFetchHost(session) {
 }
 
 export async function performFetch(effect, options = {}) {
+  if (options.signal?.aborted) return failure('interrumpido');
   const request = requestValue(effect);
   if (request === null) return failure('peticion_invalida');
   const allowedOrigins = new Set(options.allowedOrigins ?? []);
@@ -41,6 +42,8 @@ export async function performFetch(effect, options = {}) {
   const responseLimit = request.effective_response_limit ?? request.response_limit ?? 8_388_608;
   if (!Number.isSafeInteger(responseLimit) || responseLimit < 0) return failure('peticion_invalida');
   const controller = new AbortController();
+  const externalAbort = () => controller.abort();
+  options.signal?.addEventListener('abort', externalAbort, { once: true });
   const timeout = setTimeout(() => controller.abort(), Math.max(1, Math.ceil(timeoutNanos / 1_000_000)));
   let sent = false;
   try {
@@ -82,11 +85,13 @@ export async function performFetch(effect, options = {}) {
       },
     };
   } catch {
+    if (options.signal?.aborted) return failure('interrumpido', sent && mutates(request.method));
     return controller.signal.aborted
       ? failure('tiempo_agotado', sent && mutates(request.method))
       : failure('conexion_fallida', sent && mutates(request.method));
   } finally {
     clearTimeout(timeout);
+    options.signal?.removeEventListener('abort', externalAbort);
     controller.abort();
   }
 }

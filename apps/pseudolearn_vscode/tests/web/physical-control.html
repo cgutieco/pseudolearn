@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="es">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PseudoLearn · Control E-PG-08</title>
+<h1>Control local E-PG-08</h1>
+<label>Fuente <textarea id="source" rows="12" cols="60">Algoritmo Probe
+Escribir 42;
+FinAlgoritmo</textarea></label>
+<label>Entrada <input id="input" value="21"></label>
+<button id="run" disabled>Ejecutar</button>
+<button id="stop">Detener</button>
+<pre id="output"></pre>
+<script type="module">
+import initialize, { WasmSession } from './pseudolearn_wasm.js';
+await initialize();
+const output = document.querySelector('#output');
+const button = document.querySelector('#run');
+let stopped = false;
+button.disabled = false;
+document.querySelector('#stop').onclick = () => { stopped = true; };
+button.onclick = async () => {
+  button.disabled = true;
+  stopped = false;
+  const session = new WasmSession();
+  const call = (operation, argumentsJson) => JSON.parse(JSON.parse(session.callProjected(operation, argumentsJson)).projection_json);
+  const started = performance.now();
+  try {
+    const analysis = call('create_analysis', JSON.stringify({ program: document.querySelector('#source').value }));
+    const resource = call('start', `{"analysis":${analysis.value.resource},"observe":"events","seed":42}`).value.resource;
+    for (;;) {
+      if (stopped) call('cancel', `{"resource":${resource}}`);
+      const response = call('advance', `{"resource":${resource},"batch_size":64}`).value;
+      output.textContent = response.output;
+      if (response.termination.kind === 'awaiting_input') call('input', `{"resource":${resource},"text":${JSON.stringify(document.querySelector('#input').value)}}`);
+      else if (response.termination.kind !== 'running') break;
+      await new Promise((resolve) => setTimeout(resolve, 0));
+    }
+    output.textContent += `\n${performance.now() - started} ms`;
+  } catch (error) { output.textContent = String(error); }
+  finally { session.free(); button.disabled = false; }
+};
+</script>
+</html>

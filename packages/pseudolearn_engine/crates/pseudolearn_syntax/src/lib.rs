@@ -6,6 +6,7 @@ mod contextual;
 pub(crate) mod control_statement_parser;
 pub(crate) mod declaration_parser;
 pub(crate) mod enum_parser;
+pub mod expression_entry;
 pub(crate) mod expression_parser;
 pub(crate) mod generic_parser;
 mod interface_parser;

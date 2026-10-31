@@ -171,6 +171,16 @@ pub(crate) fn has_errors(diagnostics: &[Diagnostic]) -> bool {
 
 pub(crate) fn execution_request(compiled: &Compiled) -> ExecuteRequest {
     ExecuteRequest {
+        program: json!(
+            compiled
+                .request
+                .input
+                .files
+                .iter()
+                .map(|file| json!({"path":file.path,"source_id":file.source_id,"text":file.text}))
+                .collect::<Vec<_>>()
+        )
+        .to_string(),
         profile: compiled.request.profile.as_str().to_owned(),
         strictness: if compiled.request.strict {
             "strict"
@@ -184,7 +194,7 @@ pub(crate) fn execution_request(compiled: &Compiled) -> ExecuteRequest {
             revision_id: compiled.request.input.revision_id,
             source_id: 0,
         }),
-        ..ExecuteRequest::default()
+        ..compiled.request.execution.clone()
     }
 }
 

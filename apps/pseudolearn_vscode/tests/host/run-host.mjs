@@ -39,7 +39,8 @@ if (transcriptDirectory) {
 const launch = spawnSync(
   application,
   ["--user-data-dir", userData, "--extensions-dir", extensions, `--extensionDevelopmentPath=${developmentPath}`, `--extensionTestsPath=${join(here, "suite.cjs")}`, "--no-sandbox", "--disable-gpu", "--disable-updates", "--skip-welcome", "--skip-release-notes", "--disable-telemetry", ...(mode === "trusted" ? ["--disable-workspace-trust"] : []), workspace],
-  { env: { ...environment, PSEUDOLEARN_HOST_MODE: mode, PSEUDOLEARN_HOST_RESULT: resultPath, PSEUDOLEARN_HOST_EXTENSIONS: extensions }, encoding: "utf8", timeout: 300000 },
+  { env: { ...environment, PSEUDOLEARN_HOST_MODE: mode, PSEUDOLEARN_HOST_RESULT: resultPath, PSEUDOLEARN_HOST_EXTENSIONS: extensions,
+    ...(process.env.PSEUDOLEARN_HOST_DAP_REPORT ? { PSEUDOLEARN_HOST_DAP_REPORT: resolve(process.env.PSEUDOLEARN_HOST_DAP_REPORT) } : {}) }, encoding: "utf8", timeout: 300000 },
 );
 process.stdout.write(launch.stdout ?? "");
 process.stderr.write((launch.stderr ?? "").split("\n").filter((line) => !line.includes("ERROR:")).slice(-20).join("\n"));
