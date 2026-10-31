@@ -705,7 +705,10 @@ Puntos a cumplir:
 
 Fuera de alcance: IDE propio, ejecución remota y AOT en teléfono.
 
-Plan detallado: `fase-pg-6b-plan-ejecucion.md`, pendiente de crear al iniciar la fase.
+Plan detallado: [fase-pg-6b-plan-ejecucion.md](fase-pg-6b-plan-ejecucion.md), preparado el 2026-10-31
+por petición expresa. Su creación no autoriza la implementación: la fase sigue sin iniciar y la revisión de `C02`
+queda pendiente. Distingue capacidades existentes de entregas propuestas, contratos/casos, fronteras DAP/Wasm,
+pruebas de host, medición web y evidencia física complementaria.
 
 Cierre común (definiciones en §4.0):
 
@@ -1032,7 +1035,7 @@ La IA a cargo actualiza esta tabla al cerrar cada fase.
 | PG-4 | Cerrada · PG-4.01–.12 | Sí | 2026-10-28 · `a1de5355` | Tareas nativas en AOT (`PG-4.12.04`) y sus `.07`; presupuesto de `PERF.SUITE.CORE` no alcanzado |
 | PG-5 | Cerrada · PG-5.01–.10 | Sí, C02 revisado | 2026-10-30 · `c9414002` | Firefox no lanzable; presupuesto de `PERF.SUITE.CORE` no alcanzado; tareas nativas en AOT; aprobación de `PERF.PG.HTTP` |
 | PG-6A | Cerrada por decisión expresa · PG-6A.01–.11 y cierre común | Sí | 2026-10-31 · cierre registrado en el plan detallado | E-PG-02 no aprobada: cuatro grupos extendidos siguen sobre 100 ms; SEE requiere revisión independiente; `PHASE-GREEN` no declarado |
-| PG-6B | Sin iniciar | No | | |
+| PG-6B | Sin iniciar · preparación documental autorizada | Sí, revisión de C02 pendiente | | Implementación sin autorizar; plan detallado preparado el 2026-10-31 |
 | PG-A | Sin iniciar | No | | |
 | PG-B | Sin iniciar | No | | |
 | PG-7 | Sin iniciar | No | | |
