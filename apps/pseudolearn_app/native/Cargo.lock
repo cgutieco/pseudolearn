@@ -695,6 +695,7 @@ version = "0.1.0"
 dependencies = [
  "pseudolearn_diagnostics",
  "pseudolearn_lexicon",
+ "pseudolearn_project",
  "pseudolearn_semantic",
  "pseudolearn_source",
  "pseudolearn_syntax",
