@@ -36,7 +36,9 @@
       "tipo": "usa"
     }
   ],
-  "revisado_por": []
+  "revisado_por": [
+    "cesar-antonio-gutierrez-contreras"
+  ]
 }
 ---
 

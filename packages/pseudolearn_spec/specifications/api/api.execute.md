@@ -1048,6 +1048,13 @@
         "resource_from": 0
       },
       {
+        "operation": "advance",
+        "arguments": {
+          "batch_size": 8
+        },
+        "resource_from": 1
+      },
+      {
         "operation": "history_events",
         "arguments": {
           "start": 0,
@@ -1077,6 +1084,9 @@
   "espera": {
     "api": {
       "results": [
+        {
+          "value": {}
+        },
         {
           "value": {}
         },

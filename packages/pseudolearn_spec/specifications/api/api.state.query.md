@@ -673,14 +673,14 @@ Una colección se conserva como referencia con identidad compartida. Su entrada 
       {
         "operation": "advance",
         "arguments": {
-          "batch_size": 2
+          "batch_size": 8
         },
         "resource_from": 1
       },
       {
         "operation": "inspect_expression",
         "arguments": {
-          "event": 1,
+          "event": 2,
           "frame": 0,
           "task_id": 0,
           "expression": "total + 22"

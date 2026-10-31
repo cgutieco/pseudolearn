@@ -367,97 +367,97 @@ iteraciones que tuvo PG-6A. Todas las casillas empiezan pendientes.
 
 ### PG-6B.01 · Ubicación y capa del adaptador DAP
 
-- [ ] `PG-6B.01.01` Confirmar inventario, matriz de imports y `D-PG6B-01`–`05`; fijar el protocolo
+- [x] `PG-6B.01.01` Confirmar inventario, matriz de imports y `D-PG6B-01`–`05`; fijar el protocolo
   DAP por revisión/hash y el alcance VM. Documentar frontera CLI→API y service sin VM/DAP.
-- [ ] `PG-6B.01.02` Escribir la matriz request/capacidad/error de §3.2 y derivar secuencias legales
+- [x] `PG-6B.01.02` Escribir la matriz request/capacidad/error de §3.2 y derivar secuencias legales
   e ilegales; registrar qué requiere nuevo contrato API y qué es mero transporte.
-- [ ] `PG-6B.01.03` Preparar tests negativos de arquitectura: intento CLI→VM/timeline, service→API/VM
+- [x] `PG-6B.01.03` Preparar tests negativos de arquitectura: intento CLI→VM/timeline, service→API/VM
   y Node alcanzable desde browser. Los fixtures deliberados no entran en recorridos ordinarios.
-- [ ] `PG-6B.01.04` Declarar módulos y puertos DAP/configuración dentro de los miembros actuales,
+- [x] `PG-6B.01.04` Declarar módulos y puertos DAP/configuración dentro de los miembros actuales,
   con una responsabilidad por archivo. No añadir ejecución al servidor LSP ni crear crate por rutina.
-- [ ] `PG-6B.01.05` Actualizar README CLI, API/engine y extensión con elección, límites, imports y
+- [x] `PG-6B.01.05` Actualizar README CLI, API/engine y extensión con elección, límites, imports y
   alternativas descartadas; actualizar reglas antes del código que dependa de ellas.
-- [ ] `PG-6B.01.06` Verificar docs, capas/imports y negativos; revisar que ninguna propuesta se
+- [x] `PG-6B.01.06` Verificar docs, capas/imports y negativos; revisar que ninguna propuesta se
   describa como operación existente ni que una regla de arquitectura autorice un import inverso.
-- [ ] `PG-6B.01.07` Comprobar con grafo real que el adaptador consume solo API, Wasm excluye AOT y
+- [x] `PG-6B.01.07` Comprobar con grafo real que el adaptador consume solo API, Wasm excluye AOT y
   service conserva su matriz. Registrar evidencia antes de aceptar el resto de DAP.
 
 ### PG-6B.02 · DAP VM de escritorio y evaluate puro
 
-- [ ] `PG-6B.02.01` Especificar `TOOL.DAP` propuesto y ampliar los contratos API de §3.3. Fijar
+- [x] `PG-6B.02.01` Especificar `TOOL.DAP` propuesto y ampliar los contratos API de §3.3. Fijar
   lifecycle, puntos de parada, identidad por tarea/fuente/revisión, proyecto, input, evaluate y errores.
 - [ ] `PG-6B.02.02` Derivar casos bilingües de archivo y proyecto de tres módulos; dos tareas con
   marcos distintos, suspensión, retorno, breakpoint repetido, edición durante pausa, referencias
   vencidas, paginación y expresiones rechazadas. Resultados derivados de reglas, sin capturas como oráculo.
-- [ ] `PG-6B.02.03` Añadir tests espejo de parser/semantic/lowering/VM/timeline/API para los gaps de
+- [x] `PG-6B.02.03` Añadir tests espejo de parser/semantic/lowering/VM/timeline/API para los gaps de
   §3.3, incluida lectura/asignación acotada al paginar; tests del framing/estado DAP y cliente TS con
   puertos falsos. Fallo esperado antes de código.
-- [ ] `PG-6B.02.04` Implementar primero núcleo público: configuración/vistas de proyecto, lectura
+- [x] `PG-6B.02.04` Implementar primero núcleo público: configuración/vistas de proyecto, lectura
   por tarea, control vivo y evaluate aislado. Después `pseudo dap`, descriptor/configuración VS Code,
   traducción de coordenadas y entrada explícita; capacidades solo tras cobertura completa.
-- [ ] `PG-6B.02.05` Actualizar README de cada crate modificado, CLI y extensión con subconjunto de
+- [x] `PG-6B.02.05` Actualizar README de cada crate modificado, CLI y extensión con subconjunto de
   evaluate, política de pausa, lifecycle, opciones y uso real; declarar nuevos comandos de verificación.
 - [ ] `PG-6B.02.06` Ejecutar contratos dirigidos, tests espejo y verificadores afectados. Comparar
   estado/cinta/agenda antes y después de evaluate feliz, rechazado y agotado. AOT rechaza debug VM.
-- [ ] `PG-6B.02.07` Ejecutar VS Code real y cliente stdio independiente sobre el mismo escenario:
+- [x] `PG-6B.02.07` Ejecutar VS Code real y cliente stdio independiente sobre el mismo escenario:
   launch/configuración, breakpoint importado, entrada, pasos, tareas, pila/variables paginadas, evaluate,
   terminate y limpieza. Comparar observables exactos con las únicas normalizaciones de §7.3.
 
 ### PG-6B.03 · Historia sin HTTP ni escrituras repetidas
 
-- [ ] `PG-6B.03.01` Completar en `API.EXECUTE`, `API.STATE.QUERY`, `ENG.EFFECT.TAPE` y DAP la
+- [x] `PG-6B.03.01` Completar en `API.EXECUTE`, `API.STATE.QUERY`, `ENG.EFFECT.TAPE` y DAP la
   separación punta/cursor, horizonte, respuestas en vuelo y errores sin fallback de §3.4.
 - [ ] `PG-6B.03.02` Añadir casos de consultas ascendentes/descendentes, StepBack, avanzar desde
   pasado, fin de horizonte, cinta alterada/truncada y efecto mutante incierto; no exigir que una cinta
   privada no reproducible se vuelva reproducible.
 - [ ] `PG-6B.03.03` Extender `history_seek_isolation_tests` con contadores de archivos/HTTP falsos;
   preparar integración física loopback y directorio temporal con hashes/contadores antes de implementar.
-- [ ] `PG-6B.03.04` Implementar cursor histórico DAP y referencias de stop sin sustituir la
+- [x] `PG-6B.03.04` Implementar cursor histórico DAP y referencias de stop sin sustituir la
   continuación viva; ventanas reconstruidas en timeline/API, no una traza ilimitada CLI. La
   reproducción no recibe proveedor real; terminar cancela también la punta.
-- [ ] `PG-6B.03.05` Documentar en API/timeline/CLI el pasado consultable, cinta/horizonte, errores y
+- [x] `PG-6B.03.05` Documentar en API/timeline/CLI el pasado consultable, cinta/horizonte, errores y
   qué ocurre con input/respuestas que llegan mientras se inspecciona historia.
 - [ ] `PG-6B.03.06` Probar que seek, pila, páginas y evaluate no cambian salida, azar, cinta,
   archivos ni contador HTTP y que ningún error activa LiveRecord.
-- [ ] `PG-6B.03.07` En proceso real, efectuar una escritura y POST a servidor local con contador;
+- [x] `PG-6B.03.07` En proceso real, efectuar una escritura y POST a servidor local con contador;
   retroceder, consultar y avanzar historia varias veces. Contador y bytes finales permanecen exactos;
   la siguiente sentencia viva sí puede causar un efecto nuevo una sola vez. Guardar evidencia de ambos.
 
 ### PG-6B.04 · Variante browser, LSP y ejecución separados
 
-- [ ] `PG-6B.04.01` Especificar recurso LSP API, esquema/versionado/cierre del transporte Worker,
+- [x] `PG-6B.04.01` Especificar recurso LSP API, esquema/versionado/cierre del transporte Worker,
   cancelación, lotes y exactitud numérica. Aprobar técnicamente el borde `D-PG6B-07` en `C02`, sin
   añadir imports Wasm→service ni semántica al cliente.
 - [ ] `PG-6B.04.02` Derivar casos de dos instancias aisladas, fuente obsoleta, Unicode/UTF-16,
   i64 mínimo/máximo, u64 máximo, respuesta tardía, Worker caído, memoria creciente y ejecución infinita.
-- [ ] `PG-6B.04.03` Tests espejo de recurso LSP, puertos de Workers y controlador de ejecución;
+- [x] `PG-6B.04.03` Tests espejo de recurso LSP, puertos de Workers y controlador de ejecución;
   fixture de bundle con Node transitivo y prueba que detecte redondeo de enteros.
-- [ ] `PG-6B.04.04` Implementar recurso API y borde Wasm; entradas browser y Workers; cliente LSP
+- [x] `PG-6B.04.04` Implementar recurso API y borde Wasm; entradas browser y Workers; cliente LSP
   browser, lectura de snapshot por URI y ejecución por lotes. Portar comandos actuales a puertos
   compartidos, incluyendo formato, traducción, explicar y selección de entrada, sin CLI en browser.
-- [ ] `PG-6B.04.05` Actualizar README API/Wasm/extensión, build y contratos de artefactos. Fortalecer
+- [x] `PG-6B.04.05` Actualizar README API/Wasm/extensión, build y contratos de artefactos. Fortalecer
   verificador de imports para subpaths y inputs externos; incluir su negativo.
 - [ ] `PG-6B.04.06` Probar independencia de Workers, cancelación entre lotes, liberación y exactitud
   de cada cruce host→Worker→Wasm→host; cancelación LSP en cola/durante llamada síncrona y
   resincronización tras timeout. Contrastar LSP con servidor Rust sobre el mismo snapshot.
-- [ ] `PG-6B.04.07` Cargar artefacto browser final en host real automatizado; bucle infinito en VM
+- [x] `PG-6B.04.07` Cargar artefacto browser final en host real automatizado; bucle infinito en VM
   no bloquea hover/diagnósticos; detener y volver a ejecutar no reinicia LSP ni aplica eventos anteriores.
 
 ### PG-6B.05 · Capacidades web y ausencias visibles
 
-- [ ] `PG-6B.05.01` Completar descriptor de capacidades y matriz proveedor/operación de §3.6;
+- [x] `PG-6B.05.01` Completar descriptor de capacidades y matriz proveedor/operación de §3.6;
   especificar concesión externa, resultados Committed/Failed/Uncertain y fallos ambientales sin
   alterar `LIB.HTTP` para fingir garantías nativas.
 - [ ] `PG-6B.05.02` Casos de origen no concedido, CORS, cabecera restringida, redirección opaca,
   plazo/cuerpo excesivo, cancelación tras envío, proveedor readonly, escape de raíz y escritura incierta.
 - [ ] `PG-6B.05.03` Tests del Fetch canónico con señal externa y puertos FS falsos; doble resolución,
   respuesta de sesión vieja y permiso revocado. Asegurar cero llamadas físicas cuando se deniega antes del envío.
-- [ ] `PG-6B.05.04` Consumir Fetch canónico en el build; implementar adaptadores de archivos del
+- [x] `PG-6B.05.04` Consumir Fetch canónico en el build; implementar adaptadores de archivos del
   programa separados del guardado del editor; conectar a `effect_result`, cinta y limpieza. Sin cookies,
   reintentos automáticos, credenciales del entorno, APIs ambientales ocultas ni host remoto.
-- [ ] `PG-6B.05.05` README de extensión/Wasm/CLI explican garantías por host/proveedor, comandos
+- [x] `PG-6B.05.05` README de extensión/Wasm/CLI explican garantías por host/proveedor, comandos
   ausentes y limitaciones. Mostrar al usuario una matriz entendible, no detalles internos irrelevantes.
-- [ ] `PG-6B.05.06` Tests de negociación y fallos con transporte falso; imports/artefacto verifican
+- [x] `PG-6B.05.06` Tests de negociación y fallos con transporte falso; imports/artefacto verifican
   que no se incluyeron Node, backend nativo, rutas privadas, secretos ni gramática editada a mano.
 - [ ] `PG-6B.05.07` Host browser con servidor HTTP/TLS de prueba y proveedor virtual: concesión,
   cuerpo/redirect/plazo, aborto en vuelo, guardado rechazado y desconexión. Comparar con nativo solo
@@ -465,17 +465,17 @@ iteraciones que tuvo PG-6A. Todas las casillas empiezan pendientes.
 
 ### PG-6B.06 · Host real de navegador
 
-- [ ] `PG-6B.06.01` Fijar matriz de navegadores/build VS Code, versiones publicadas del runner,
+- [x] `PG-6B.06.01` Fijar matriz de navegadores/build VS Code, versiones publicadas del runner,
   capacidades y método de instalación local; crear manifiesto de campaña con hashes y resultado esperado.
 - [ ] `PG-6B.06.02` Fixtures es/en de archivo suelto y proyecto de tres módulos con error en
   importado, Unicode, entrada vacía, cancelación y efectos concedidos/denegados; definir aserciones por paso.
 - [ ] `PG-6B.06.03` Crear runner espejo de host web y pruebas de sus verificadores con bundle
   incompleto, Worker ausente, hash incorrecto y entrada Node; no contar una página mínima como host VS Code.
-- [ ] `PG-6B.06.04` Añadir build/test web fijados y empaquetar artefacto browser. Mantener instalación
+- [x] `PG-6B.06.04` Añadir build/test web fijados y empaquetar artefacto browser. Mantener instalación
   desktop y su prueba de humo como consumidor afectado del manifiesto compartido.
-- [ ] `PG-6B.06.05` Documentar órdenes reproducibles, versiones realmente ensayadas y proveedor de
+- [x] `PG-6B.06.05` Documentar órdenes reproducibles, versiones realmente ensayadas y proveedor de
   archivos usado. Distinguir FS en memoria de persistencia y Chromium/WebKit/Firefox de Safari físico.
-- [ ] `PG-6B.06.06` Ejecutar tests dirigidos del runner, contratos de paquete, build e imports;
+- [x] `PG-6B.06.06` Ejecutar tests dirigidos del runner, contratos de paquete, build e imports;
   comprobar que una dependencia ausente falla antes de iniciar la campaña y no se descarga al activar producto.
 - [ ] `PG-6B.06.07` Ejecutar matriz Chromium, Firefox y WebKit automatizados: abrir/escribir,
   diagnosticar/completar/navegar/renombrar cerrado, formatear/traducir/ayuda, guardar, ejecutar/entrada,
@@ -483,17 +483,17 @@ iteraciones que tuvo PG-6A. Todas las casillas empiezan pendientes.
 
 ### PG-6B.07 · E-PG-08 físico y materiales reproducibles
 
-- [ ] `PG-6B.07.01` Transcribir el protocolo de §7.5, los criterios y la decisión previa que hace
+- [x] `PG-6B.07.01` Transcribir el protocolo de §7.5, los criterios y la decisión previa que hace
   complementario el ensayo físico; no abrir una nueva puerta de aprobación por ausencia de teléfonos.
-- [ ] `PG-6B.07.02` Preparar ambos programas/proyecto, textos inicial/final y resultados derivados,
+- [x] `PG-6B.07.02` Preparar ambos programas/proyecto, textos inicial/final y resultados derivados,
   red normal/pérdida, página mínima de control con el mismo Wasm y formulario por combinación/ciclo.
-- [ ] `PG-6B.07.03` Probar colector/analizador con datos sintéticos rotulados: duplicados, ciclo
+- [x] `PG-6B.07.03` Probar colector/analizador con datos sintéticos rotulados: duplicados, ciclo
   faltante, hash de fuente distinto, cancelación ausente y control de otro dispositivo deben fallar.
-- [ ] `PG-6B.07.04` Generar materiales y scripts reproducibles en extensión, sin IDE propio;
+- [x] `PG-6B.07.04` Generar materiales y scripts reproducibles en extensión, sin IDE propio;
   registrar SHA-256 de fuentes, Wasm y formularios. Los datos sintéticos nunca integran el resultado físico.
-- [ ] `PG-6B.07.05` README de uso y guion describen instalación permitida, teclado, conservación
+- [x] `PG-6B.07.05` README de uso y guion describen instalación permitida, teclado, conservación
   del texto, confirmación de guardado, recuperación y límites; no publicar ni usar cuentas ajenas.
-- [ ] `PG-6B.07.06` Verificar localmente integridad de materiales/control y cálculo de métricas;
+- [x] `PG-6B.07.06` Verificar localmente integridad de materiales/control y cálculo de métricas;
   identificar qué campos requieren a la persona o APIs no disponibles.
 - [ ] `PG-6B.07.07` Si la persona aporta recursos/resultados, ejecutar o analizar las 32 combinaciones
   y conservar crudos. Sin evidencia, registrar esta comprobación y la parte física del punto como
@@ -501,18 +501,18 @@ iteraciones que tuvo PG-6A. Todas las casillas empiezan pendientes.
 
 ### PG-6B.08 · Informe móvil y CF-14
 
-- [ ] `PG-6B.08.01` Definir categorías del informe: comprobado automatizado, comprobado físico,
+- [x] `PG-6B.08.01` Definir categorías del informe: comprobado automatizado, comprobado físico,
   no evaluado y no soportado; copiar la condición de decisión CF-14 sin darla por resuelta.
-- [ ] `PG-6B.08.02` Derivar escenarios de informe con evidencia completa, parcial y sin teléfonos;
+- [x] `PG-6B.08.02` Derivar escenarios de informe con evidencia completa, parcial y sin teléfonos;
   ninguno puede convertir WebKit en Safari iPhone ni una falta de datos en un fallo o éxito móvil.
-- [ ] `PG-6B.08.03` Tests del analizador de cobertura rechazan combinaciones inventadas, muestras
+- [x] `PG-6B.08.03` Tests del analizador de cobertura rechazan combinaciones inventadas, muestras
   sintéticas, pérdida de texto ocultada y cifras de memoria sin método.
-- [ ] `PG-6B.08.04` Elaborar informe desde manifiestos y crudos: proveedor/guardado/teclado,
+- [x] `PG-6B.08.04` Elaborar informe desde manifiestos y crudos: proveedor/guardado/teclado,
   red, ciclo básico, latencias, memoria/arranque y límites. Proponer opciones de CF-14 con evidencia,
   sin crear IDE, host remoto ni prometer móvil completo.
-- [ ] `PG-6B.08.05` Actualizar README de producto con cobertura real y limitaciones; decisiones
+- [x] `PG-6B.08.05` Actualizar README de producto con cobertura real y limitaciones; decisiones
   técnicas autosuficientes allí, informe de planificación en `docs/`, sin referencias inversas.
-- [ ] `PG-6B.08.06` Auditar cada afirmación contra la matriz y cada cifra contra crudos; ninguna
+- [x] `PG-6B.08.06` Auditar cada afirmación contra la matriz y cada cifra contra crudos; ninguna
   conclusión causal sobre enseñanza ni disponibilidad de todos los teléfonos.
 - [ ] `PG-6B.08.07` Registrar decisión explícita de la persona sobre CF-14 cuando exista. Sin ella,
   conservar su diferimiento ya autorizado y distinguirlo del informe técnico completado. El cierre no
@@ -520,20 +520,20 @@ iteraciones que tuvo PG-6A. Todas las casillas empiezan pendientes.
 
 ### PG-6B.09 · Métrica web candidata y tamaño del artefacto
 
-- [ ] `PG-6B.09.01` Fijar objetivos/controles de §6 y §7.6 bajo `PERF.PROTOCOL`; distinguir
+- [x] `PG-6B.09.01` Fijar objetivos/controles de §6 y §7.6 bajo `PERF.PROTOCOL`; distinguir
   criterios de E-PG-08, mediciones informativas y límite normativo `PERF.ARTIFACT.SIZE#R1`.
 - [ ] `PG-6B.09.02` Cargas con archivo/proyecto, edición, bucle cancelable, i64, memoria creciente,
   HTTP simulado y arranque frío/caliente; definir resultado correcto antes de medir.
-- [ ] `PG-6B.09.03` Tests de recolector/resumen con reloj falso y datos sintéticos: proceso faltante,
+- [x] `PG-6B.09.03` Tests de recolector/resumen con reloj falso y datos sintéticos: proceso faltante,
   muestra mala, salida divergente, unidad errónea y mezcla de dispositivo/build/control se rechazan.
-- [ ] `PG-6B.09.04` Implementar arnés en la cadena ya admitida de extensión/browser; registrar
+- [x] `PG-6B.09.04` Implementar arnés en la cadena ya admitida de extensión/browser; registrar
   preparación, motor, adaptador, I/O, total, tamaños y memoria disponible por separado. No añadir Node
   al paquete Dart de benchmarks ni un pipeline global raíz.
-- [ ] `PG-6B.09.05` Documentar en README comandos, hardware, reloj, semillas y límites del método;
+- [x] `PG-6B.09.05` Documentar en README comandos, hardware, reloj, semillas y límites del método;
   si se propone `PERF.PG.WEB` en corpus, seguir creación estable 1.0.0 y aprobación sin inventar umbrales.
-- [ ] `PG-6B.09.06` Verificar fórmulas, crudos, hashes, contenido de paquete, máximo lineal y
+- [x] `PG-6B.09.06` Verificar fórmulas, crudos, hashes, contenido de paquete, máximo lineal y
   compresión exacta; ningún número previo de PG-5 se usa como resultado nuevo.
-- [ ] `PG-6B.09.07` Ejecutar 10 procesos ×30 iteraciones por objetivo/carga y control emparejado,
+- [x] `PG-6B.09.07` Ejecutar 10 procesos ×30 iteraciones por objetivo/carga y control emparejado,
   conservar orden, fallos e intentos sin sustituirlos para reunir muestras válidas; calcular resumen/IC95.
   Medir Wasm Brotli y descarga/VSIX completos;
   informar aceptación/rechazo pendiente de la persona para la métrica candidata, sin bajar presupuestos.
@@ -861,23 +861,23 @@ evidencia completa. Una fase nueva requiere mensaje nuevo (`PHASE-STOP`).
 
 - [x] `PG-6B.C01` Mensaje nuevo de autorización registrado con alcance exacto.
 - [x] `PG-6B.C02` Este plan revisado por la persona; propuestas/condiciones relevantes resueltas.
-- [ ] `PG-6B.C03` SPEC-FIRST y congelamiento: identidades nuevas estables 1.0.0, sin `cambio` ni
+- [x] `PG-6B.C03` SPEC-FIRST y congelamiento: identidades nuevas estables 1.0.0, sin `cambio` ni
   revisión ficticia; existentes conservan identidad/estado/versión y siguen revisión/anclaje exigidos.
-- [ ] `PG-6B.C04` Reglas/casos/propiedades y vínculos de conformidad como datos; sin sujetos ni
+- [x] `PG-6B.C04` Reglas/casos/propiedades y vínculos de conformidad como datos; sin sujetos ni
   capacidades anunciados por conveniencia.
 - [ ] `PG-6B.C05` Corpus, espejo y consumidores afectados cubren feliz/infeliz/límites de §7.2.
-- [ ] `PG-6B.C06` Capas/imports/tamaños/nombres y grafo browser/Wasm pasan con sus negativos.
-- [ ] `PG-6B.C07` Cero comentarios/TODO, código en inglés/docs en español y reglas Rust estrictas.
-- [ ] `PG-6B.C08` README/reglas de todos los dueños actualizados, autosuficientes y sin citas a docs.
+- [x] `PG-6B.C06` Capas/imports/tamaños/nombres y grafo browser/Wasm pasan con sus negativos.
+- [x] `PG-6B.C07` Cero comentarios/TODO, código en inglés/docs en español y reglas Rust estrictas.
+- [x] `PG-6B.C08` README/reglas de todos los dueños actualizados, autosuficientes y sin citas a docs.
 - [ ] `PG-6B.C09` Justificación comprobable: fase sin sintaxis nueva del lenguaje; ayuda existente
   reutilizada y textos de UI es/en. Si finalmente añade construcción, ficha y proyección obligatorias.
 - [ ] `PG-6B.C10` Riesgos/experimentos revisados, procedencia y diferimientos físicos ya autorizados
   registrados sin atribuir evidencia o decisión humana inexistente.
 - [ ] `PG-6B.C11` Pruebas/verificadores pertinentes verdes, selección y omisiones justificadas;
   deuda heredada separada y ningún fallo nuevo oculto. Informar impedimentos de `PHASE-GREEN`.
-- [ ] `PG-6B.C12` Tras revisión de cambios y autorización Git vigente, usar skill `commit-message`,
+- [x] `PG-6B.C12` Tras revisión de cambios y autorización Git vigente, usar skill `commit-message`,
   commit sin atribución de IA y push ordinario comprobado a la rama única; sin force push.
-- [ ] `PG-6B.C13` Resumen por tarea y del plan general, informe de límites, revisión de cierre y parada.
+- [x] `PG-6B.C13` Resumen por tarea y del plan general, informe de límites, revisión de cierre y parada.
 
 ## 11. Resumen de ejecución
 
@@ -888,16 +888,16 @@ del plan general: Cumplido, No cumplido, Diferido, No aplica o Retirado, con sus
 
 | Punto             | Estado de implementación | Evidencia                        | Pendiente o condición                                          |
 |-------------------|--------------------------|----------------------------------|----------------------------------------------------------------|
-| `PG-6B.01`        | Pendiente; sin ejecutar  | Inventario y propuesta en §1/3/5 | Decisión técnica y declaración verificadas al implementar      |
-| `PG-6B.02`        | Pendiente; sin ejecutar  | Contratos/tareas propuestos      | Núcleo público, DAP VM y dos clientes reales                   |
-| `PG-6B.03`        | Pendiente; sin ejecutar  | Protocolo de aislamiento         | Contadores físicos de HTTP/archivos e historia                 |
-| `PG-6B.04`        | Pendiente; sin ejecutar  | Frontera Worker propuesta        | Recurso LSP, Workers separados e i64 exacto                    |
-| `PG-6B.05`        | Pendiente; sin ejecutar  | Matriz de capacidades            | Adaptadores, concesiones, fallos y limpieza                    |
-| `PG-6B.06`        | Pendiente; sin ejecutar  | Matriz de host objetivo          | Artefacto final y cobertura por navegador                      |
-| `PG-6B.07`        | Pendiente; sin ejecutar  | Protocolo de materiales          | Físico complementario; diferimiento previo si no hay evidencia |
-| `PG-6B.08`        | Pendiente; sin ejecutar  | Formato de informe               | CF-14 conserva decisión pendiente/diferida                     |
-| `PG-6B.09`        | Pendiente; sin ejecutar  | Protocolo de métricas            | Crudos/tamaño actuales y aceptación candidata separada         |
-| `PG-6B.C01`–`.13` | Pendiente; sin ejecutar  | Preparación documental solamente | Revisión humana/implementación/cierre aún no realizados        |
+| `PG-6B.01`        | Cumplido (7/7)           | Capas, imports, negativos, grafo Wasm sin AOT | —                                                               |
+| `PG-6B.02`        | Parcial (5/7)            | `TOOL.DAP`, núcleo público, VS Code real = stdio | `.02` sin casos `en`; `.06` sin comparación explícita de cinta/agenda ni rechazo AOT |
+| `PG-6B.03`        | Parcial (4/7)            | Prueba física loopback + archivos, cursor histórico | `.02` casos de cinta alterada/incierta; `.03` contadores en `history_seek_isolation_tests`; `.06` |
+| `PG-6B.04`        | Parcial (5/7)            | Recurso LSP, Workers, host VS Code web | `.02` casos dedicados; `.06` cancelación en cola y contraste con servidor Rust |
+| `PG-6B.05`        | Parcial (4/7)            | Capacidades, adaptadores, Fetch canónico | `.02` casos; `.03` señal externa/FS falso; `.07` HTTP/TLS en host web |
+| `PG-6B.06`        | Parcial (4/7)            | Chromium y WebKit aprobados en VS Code web | Firefox no arranca (no evaluado); fixtures es/en y verificadores negativos incompletos |
+| `PG-6B.07`        | Cumplido salvo `.07`     | Kit físico de 32 combinaciones, analizador | `.07` Diferido / no evaluado físicamente (decisión 2026-10-22) |
+| `PG-6B.08`        | Cumplido salvo `.07`     | `informe-movil-pg-6b.md` | `.07` decisión de la persona sobre CF-14 pendiente/diferida |
+| `PG-6B.09`        | Parcial (6/7)            | 1800 intentos válidos, Brotli 844 844 | `.02` cargas con proyecto, edición, memoria creciente y HTTP simulado |
+| `PG-6B.C01`–`.13` | C01–C04, C06–C08, C12, C13 | Ver §10.1                      | C05, C09, C10, C11 dependen de lo pendiente de arriba           |
 
 El rótulo «Pendiente; sin ejecutar» es ausencia de evaluación inicial, no un sexto estado de resultado.
 Al evaluar una tarea se reemplaza por uno de los cinco estados permitidos. No marcar el conjunto
@@ -1030,14 +1030,24 @@ de la extensión recorrían salidas generadas.
   La corrida anterior sobre el Wasm previo se conserva en `test-results/web-bench/`.
 - `see conform` compila su adaptador release pero queda detenido por `SEE-STATE` (ver abajo).
 
+**Revisión independiente y conformidad (tercera pasada)**
+- Por instrucción expresa de la persona (Cesar Antonio Gutierrez Contreras) se registró su nombre como revisor
+  independiente (`cesar-antonio-gutierrez-contreras`) en `TOOL.DAP` y `TOOL.SERVICE.WORKSPACE`. La revisión la
+  asume la persona; no la realizó el agente. Con ello `see validate` pasa (196 especificaciones), `see export
+  --check` verifica y los tests de `see_cli`, `see_validation` y `see_conformance` están en verde.
+- `see conform --subject engine` ya puede ejecutarse. Corregí tres casos nuevos con oráculo equivocado
+  (`API.MODEL#C20`: la traducción emite la ortografía canónica capitalizada; `API.EXECUTE#C11` y
+  `API.STATE.QUERY#C12`: faltaba avanzar antes de consultar) y dos casos previos con índice de recurso erróneo
+  (`API.PROJECT#C18/C19`). Resultado vigente: 14 → 9 observaciones incumplidas, todas en reglas que este cambio no
+  toca (`API.ANALYZE#R1` C3/C5, `DIAG.MESSAGES#R1` C5/C7, `LANG.MODULE.IMPORT#R2` C10) y 3 de 31 propiedades
+  (`IR.LOWERING#R1`–`R3`: IR de tareas/cierres; sondeo de contadores; diagnóstico `reservedLexemeUsedAsName`).
+  Son antecedentes de PG-5/PG-6A que el bloqueo `SEE-STATE` ocultaba; no se corrigen aquí para no ampliar el alcance.
+  Los 3 casos nuevos y los 2 corregidos pasan.
+
 **Bloqueado / no ejecutado**
-- `SEE-STATE: independent review required` persiste: `TOOL.SERVICE.WORKSPACE` (heredado) y `TOOL.DAP` (nuevo) están
-  `estable` sin revisor independiente. No se fabricó ni atribuyó revisión; por ello `see validate`,
-  `see conform`, `runtime_corpus` y un test de `see_cli` no pueden pasar. Requiere decisión de la persona.
+- Conformidad del motor no verde por los antecedentes de arriba; por ello `C11` y `PHASE-GREEN` no se declaran.
 - Firefox, como arriba.
 - E-PG-08 físico: kit generado; ensayos físicos **Diferido / no evaluado físicamente**. CF-14 y la aceptación de
   `PERF.PG.WEB` conservan su decisión posterior. No se aplicaron reanclajes.
 
-`PHASE-GREEN`: **no declarada**. Quedan sin cerrar la revisión independiente del corpus (y con ella la
-validación y conformidad SEE) y Firefox. No se inició PG-A, PG-B ni PG-7; no se instaló en el perfil habitual ni
-se publicó nada.
+`PHASE-GREEN`: **no declarada**. No se inició PG-A, PG-B ni PG-7; no se instaló en el perfil habitual ni se publicó.

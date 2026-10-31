@@ -1700,7 +1700,7 @@
       "results": [
         {
           "value": {
-            "text": "algorithm P\nwrite 1;\nendAlgorithm\n"
+            "text": "Algorithm P\nWrite 1;\nEndAlgorithm\n"
           }
         }
       ]

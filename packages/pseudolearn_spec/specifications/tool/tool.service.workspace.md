@@ -24,6 +24,9 @@
       "version": ">=1.0.0, <2.0.0",
       "tipo": "usa"
     }
+  ],
+  "revisado_por": [
+    "cesar-antonio-gutierrez-contreras"
   ]
 }
 ---

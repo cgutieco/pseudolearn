@@ -1392,7 +1392,7 @@
       },
       {
         "operation": "advance",
-        "resource_from": 1,
+        "resource_from": 0,
         "arguments": {
           "batch_size": 4096
         }
@@ -1482,21 +1482,21 @@
       },
       {
         "operation": "advance",
-        "resource_from": 1,
+        "resource_from": 0,
         "arguments": {
           "batch_size": 4096
         }
       },
       {
         "operation": "input",
-        "resource_from": 1,
+        "resource_from": 0,
         "arguments": {
           "text": "21"
         }
       },
       {
         "operation": "advance",
-        "resource_from": 1,
+        "resource_from": 0,
         "arguments": {
           "batch_size": 4096
         }
