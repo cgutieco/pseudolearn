@@ -1,4 +1,5 @@
-import { LanguageClient } from "vscode-languageclient/node";
+import * as vscode from "vscode";
+import { LanguageClient, type Middleware } from "vscode-languageclient/node";
 import type {
   ExplainAnswer,
   ExplainRequest,
@@ -29,6 +30,12 @@ export class VscodeLanguageClientFactory implements LanguageClientFactoryPort {
       {
         documentSelector: [{ scheme: "file", language: "pseudolearn" }],
         initializationOptions: this.options,
+        middleware: {
+          provideRenameEdits: async (...[document, position, newName, token, next]: RenameRequest) => {
+            await materializeWorkspaceSources();
+            return next(document, position, newName, token);
+          },
+        },
       },
     );
     return {
@@ -36,6 +43,18 @@ export class VscodeLanguageClientFactory implements LanguageClientFactoryPort {
       stop: (timeoutMilliseconds) => client.stop(timeoutMilliseconds),
       explain: (request) => explain(client, request),
     };
+  }
+}
+
+const materializationBatchSize = 64;
+
+type RenameRequest = Parameters<NonNullable<Middleware["provideRenameEdits"]>>;
+
+async function materializeWorkspaceSources(): Promise<void> {
+  const sources = await vscode.workspace.findFiles("**/*.pseudo", "**/node_modules/**");
+  for (let start = 0; start < sources.length; start += materializationBatchSize) {
+    const batch = sources.slice(start, start + materializationBatchSize);
+    await Promise.all(batch.map((source) => vscode.workspace.openTextDocument(source)));
   }
 }
 

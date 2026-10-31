@@ -18,12 +18,12 @@ async function formatChecks(main) {
 
 async function renameChecks(main, callPosition) {
   await step("rename across files is one edit and is reverted", async () => {
-    const geo = await vscode.workspace.openTextDocument(vscode.Uri.file(path.join(folder(), "geo/vectores.pseudo")));
     const edit = await vscode.commands.executeCommand("vscode.executeDocumentRenameProvider", main.uri, callPosition(), "Triple");
     if (!edit) throw new Error("no edit");
     const names = edit.entries().map(([uri]) => path.basename(uri.fsPath));
     if (!names.includes("main.pseudo") || !names.includes("vectores.pseudo")) throw new Error(names.join());
     await vscode.workspace.applyEdit(edit);
+    const geo = await vscode.workspace.openTextDocument(vscode.Uri.file(path.join(folder(), "geo/vectores.pseudo")));
     if (!geo.getText().includes("Triple") || !main.getText().includes("Triple")) throw new Error("not applied");
     for (const document of [geo, main]) {
       await vscode.window.showTextDocument(document);

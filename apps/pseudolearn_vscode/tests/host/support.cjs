@@ -33,7 +33,8 @@ async function until(label, probe, timeout = 20000) {
 function pseudoProcesses() {
   try {
     const output = execFileSync("/bin/ps", ["-axo", "pid=,command="], { encoding: "utf8" });
-    return output.split("\n").filter((line) => line.includes("/bin/darwin-arm64/pseudo"));
+    const own = process.env.PSEUDOLEARN_HOST_EXTENSIONS;
+    return output.split("\n").filter((line) => line.includes("/bin/darwin-arm64/pseudo") && line.includes(own));
   } catch {
     return [];
   }

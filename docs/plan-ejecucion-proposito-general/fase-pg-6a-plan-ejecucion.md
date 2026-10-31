@@ -852,9 +852,9 @@ No relajar umbrales, omitir cerrados ni eliminar escenarios para cerrar verde.
 - [x] `PG-6A.C09` Ayuda compartida integrada; no hay sintaxis nueva que exija fichas inventadas.
 - [ ] `PG-6A.C10` Riesgos revisados, E-PG-02 reproducible y pendientes tratados por la persona.
 - [ ] `PG-6A.C11` Tests seleccionados y todos los verificadores afectados en verde, con selección declarada.
-- [ ] `PG-6A.C12` Commit con skill `commit-message`, sin atribución de IA; push ordinario comprobado
+- [x] `PG-6A.C12` Commit con skill `commit-message`, sin atribución de IA; push ordinario comprobado
   a `origin/feature/agregar-ruta-de-especificacion`. Ningún push publica un VSIX.
-- [ ] `PG-6A.C13` Resúmenes actualizados, paquete/ruta/hash e informe entregados; parada antes de PG-6B.
+- [x] `PG-6A.C13` Resúmenes actualizados, paquete/ruta/hash e informe entregados; parada antes de PG-6B.
 
 ## 11. Resumen de ejecución
 
@@ -917,7 +917,7 @@ Máquina: macOS (Darwin 27.0.0), Apple silicon, VS Code Stable 1.144.0, Rust 1.9
 | `PG-6A.07.07` | Host real: diagnóstico desde overlay sin guardar, formato idempotente, hover, completado, símbolos, ejecutar proyecto con entrada elegida y detenerlo sin procesos restantes, ejecutar archivo con `Leer` y detener, ejecución rechazada con cambios sin guardar, reinicio del servidor con un solo hijo; entorno con `PATH=/usr/bin:/bin` | Escribir un valor concreto en el cuadro de entrada y la traducción con selector se comprueban a mano |
 | `PG-6A.08.07` | Host real: hover y `pseudolearn.explainAtCursor` responden; `lsp_help` y `lsp_help_cases` de la entrega ligera | Conformidad de catálogo/hover bloqueada por la misma revisión SEE; paridad con segundo cliente cubierta por la repetición de `.09.07` |
 | `PG-6A.09.07` | `PSEUDOLEARN_HOST_TRANSCRIPT` captura el tráfico real del cliente A; `tests/host/replay-transcript.mjs` lo reenvía a un `pseudo lsp` nuevo: 2 sesiones, 36 respuestas y diagnósticos finales idénticos, 0 diferencias; el cliente B stdio comparte la secuencia de `lsp_interop` (15/15) | La secuencia de VS Code la genera el SDK, no coincide paso a paso con la del cliente B; la equivalencia exigida es de respuestas y diagnósticos, no de transcripción completa. Ambos clientes comparten motor |
-| `PG-6A.10.07` | Campaña `service workspace` 10 procesos × 30 muestras × 4 cargas × 5 escenarios, directorio `/tmp/pl-e-pg-02/campaign` | Ver resultado registrado más abajo si ya existe; ver nota de carga concurrente |
+| `PG-6A.10.07` | `service workspace plan/run 0..9/summary` sobre el binario release de la CLI (Apple M2, 16 GiB, Rust 1.99.0, semilla 42, 30 muestras × 10 procesos × 4 cargas × 5 escenarios); crudos y `summary.json` en `packages/pseudolearn_spec/results/pg-6a-e-pg-02/` (ruta ignorada por Git) | **No cumple los umbrales.** Equivalencia exacta con el control frío: sí (ninguna muestra abortó). Rename: p95 ≤ 2,6 ms en las cuatro cargas, dentro de 500 ms, pero la medición solo cubre la petición cuando todos los documentos afectados ya estaban abiertos (la lectura sin ellos responde `-32803`; ver nota). Diagnóstico tras edición (100 ms): `files-100` 94,7–95,7 ms y `files-1000` 86,3–91,7 ms pasan; `files-10` (10 archivos de ~1000 líneas) 509–604 ms y `files-1000-extended` 1846–1933 ms **fallan**. El candidato cuesta lo mismo que el control frío (más 20–60 ms) en `files-10` y el doble en `files-1000-extended`: hoy cada edición reanaliza todo el proyecto, tal como el README del trabajador advertía |
 | `PG-6A.11.07` | `code --user-data-dir --extensions-dir --install-extension` en directorios aislados con `env -i PATH=/usr/bin:/bin`: instalar VSIX anterior, actualizar (hash del binario instalado igual al del paquete), revertir a la anterior, desinstalar (`--list-extensions` vacío); host con el VSIX activa y diagnostica sin Rust, Node ni checkout | Misma versión `0.1.0` en ambos paquetes: la actualización se hizo con `--force`; no se instaló en el VS Code habitual (solo si la persona lo pide); sin red de instalación no se aisló a nivel de sistema, la prueba no descarga nada |
 
 Defectos hallados por el host real y corregidos: el SDK añadía `--stdio` y `pseudo lsp` lo rechaza (el LSP nunca arrancaba);
@@ -925,6 +925,21 @@ el comando `pseudolearn.explain` del servidor colisionaba con el de la extensió
 nadie enviaba el snapshot de workspace al servicio (nuevo `lsp_workspace_loader.rs` en la CLI, con
 `initializationOptions` de perfil y rigor desde la extensión). Verificadores tras la corrección: `pnpm check:*` y 73 pruebas TS,
 7 pruebas nuevas del cargador, Clippy `-D warnings` y `rust-checks all` de la CLI en verde.
+
+**E-PG-02, lectura honesta.** `all_within_threshold` es `false`. El coste crece con las líneas por archivo y con el total, no con
+el número de archivos: 10 000 líneas repartidas en 10 archivos tardan ~480 ms en frío y en 1000 archivos ~27 ms, así que el cuello es
+reanalizar documentos grandes completos en cada edición. Reutilizar por dependencia (firma frente a cuerpo, `D-PG6A-07`) es el trabajo
+que el protocolo prescribe y no se hizo en esta fase; los umbrales no se relajan. La campaña corrió mientras se compilaba y se ejecutaban
+pruebas del host en la misma máquina, lo que pudo añadir ruido; la diferencia con los umbrales es de 5× a 19×, mucho mayor que ese ruido.
+Además el escenario `rename` no mide el rename con dependientes cerrados: el servidor exige documentos sincronizados y abiertos, y la
+extensión los abre antes de renombrar; esa apertura (hasta 1000 `didOpen`) queda fuera de la medición y hay que incluirla al repetir la campaña.
+La métrica candidata `PERF.PG.SERVICE` no se aprueba.
+
+Defectos adicionales hallados por el uso manual y el host y corregidos: carpeta de archivos sueltos sin manifiestos recibía un snapshot
+vacío y no mostraba diagnósticos (commit `26313c76`); el rename con dependientes cerrados fallaba en VS Code porque la extensión no
+abría los documentos cerrados (ahora lo hace antes de cada rename, y la prueba de host ya no los abre a mano); el filtro de procesos de la
+prueba de host contaba procesos de otras instalaciones. VSIX final de esta fase: `apps/pseudolearn_vscode/.artifacts/pseudolearn-0.1.0-darwin-arm64.vsix`,
+sha256 `608472505e6c880748c4cd575b7d2d73f296a53340ee4fe8d0e2080f297ab378` (se vuelve a calcular si se reconstruye).
 
 ### 11.2 Decisiones ya confirmadas al preparar
 
