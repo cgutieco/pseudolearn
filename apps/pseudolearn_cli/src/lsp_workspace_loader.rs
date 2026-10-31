@@ -106,13 +106,23 @@ fn cached_manifest(
     manifest: &crate::project_files::ManifestFile,
     manifest_cache: &BTreeMap<String, (String, Value)>,
 ) -> Option<Value> {
+    cached_manifest_with(manifest, manifest_cache, |request| {
+        project_session::call("resolve_manifest", request).ok()
+    })
+}
+
+pub(crate) fn cached_manifest_with(
+    manifest: &crate::project_files::ManifestFile,
+    manifest_cache: &BTreeMap<String, (String, Value)>,
+    mut resolve: impl FnMut(&Value) -> Option<Value>,
+) -> Option<Value> {
     if let Some((text, resolved)) = manifest_cache.get(&manifest.location)
         && text == &manifest.text
     {
         return Some(resolved.clone());
     }
     let request = json!({"manifest": manifest.text, "location": manifest.location});
-    project_session::call("resolve_manifest", &request).ok()
+    resolve(&request)
 }
 
 fn package_of(configuration: &Value) -> Option<Value> {

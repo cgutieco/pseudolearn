@@ -1,8 +1,56 @@
 use crate::lsp_workspace_loader::{
-    decode_file_uri, encode_file_uri, root_directory, snapshot_message,
+    cached_manifest_with, decode_file_uri, encode_file_uri, root_directory, snapshot_message,
 };
+use crate::project_files::ManifestFile;
 use serde_json::json;
+use std::collections::BTreeMap;
 use std::fs;
+
+#[test]
+fn unchanged_manifest_reuses_its_resolution() {
+    let manifest = ManifestFile {
+        location: "app/pseudolearn.toml".to_owned(),
+        text: "schema = 1".to_owned(),
+    };
+    let resolved = json!({"configuration":{"name":"app"}});
+    let cache = BTreeMap::from([(
+        manifest.location.clone(),
+        (manifest.text.clone(), resolved.clone()),
+    )]);
+    let mut calls = 0;
+    let result = cached_manifest_with(&manifest, &cache, |_| {
+        calls += 1;
+        None
+    });
+    assert_eq!(result, Some(resolved));
+    assert_eq!(calls, 0);
+}
+
+#[test]
+fn changed_manifest_uses_the_resolver_again() {
+    let manifest = ManifestFile {
+        location: "app/pseudolearn.toml".to_owned(),
+        text: "schema = 2".to_owned(),
+    };
+    let cache = BTreeMap::from([(
+        manifest.location.clone(),
+        (
+            "schema = 1".to_owned(),
+            json!({"configuration":{"name":"old"}}),
+        ),
+    )]);
+    let mut calls = 0;
+    let result = cached_manifest_with(&manifest, &cache, |request| {
+        calls += 1;
+        assert_eq!(request.get("manifest"), Some(&json!("schema = 2")));
+        Some(json!({"configuration":{"name":"new"}}))
+    });
+    assert_eq!(
+        result.and_then(|value| value.pointer("/configuration/name").cloned()),
+        Some(json!("new"))
+    );
+    assert_eq!(calls, 1);
+}
 
 #[test]
 fn uri_round_trips_spaces_accents_and_non_bmp() {
