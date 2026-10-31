@@ -116,13 +116,22 @@ impl<'source> Lexer<'source> {
         self.position = self.position.saturating_add(1);
         self.column = self.column.saturating_add(1);
         let start = self.position;
+        let mut generic_depth = 0_usize;
         while let Some(&byte) = self.characters.get(self.position) {
-            if byte.is_ascii_alphanumeric() || matches!(byte, b'.' | b'_' | b'-' | b':') {
-                self.position = self.position.saturating_add(1);
-                self.column = self.column.saturating_add(1);
-            } else {
+            let accepted = byte.is_ascii_alphanumeric()
+                || matches!(byte, b'.' | b'_' | b'-' | b':' | b'$' | b'<' | b'>')
+                || (byte == b',' && generic_depth > 0);
+            if !accepted {
                 break;
             }
+            match byte {
+                b'<' => generic_depth = generic_depth.saturating_add(1),
+                b'>' if generic_depth == 0 => break,
+                b'>' => generic_depth = generic_depth.saturating_sub(1),
+                _ => {}
+            }
+            self.position = self.position.saturating_add(1);
+            self.column = self.column.saturating_add(1);
         }
         let text = std::str::from_utf8(self.characters.get(start..self.position).unwrap_or(&[]))
             .map_err(|error| error.to_string())?;
@@ -175,7 +184,7 @@ impl<'source> Lexer<'source> {
     fn lex_word_or_block(&mut self) -> Result<TokenKind, String> {
         let start = self.position;
         while let Some(&byte) = self.characters.get(self.position) {
-            if byte.is_ascii_alphanumeric() || matches!(byte, b'.' | b'_') {
+            if byte.is_ascii_alphanumeric() || matches!(byte, b'.' | b'_' | b'$') {
                 self.position = self.position.saturating_add(1);
                 self.column = self.column.saturating_add(1);
             } else {

@@ -101,3 +101,32 @@ fn rejects_stray_character_at_the_end_of_the_text() {
         parse_module("module P es\nfunc @main() -> unit {\nb0() mass 0:\n  return\n}\n#").is_err()
     );
 }
+
+#[test]
+fn round_trips_synthetic_class_names_that_start_with_a_dollar_sign() {
+    let source = "module P es\nclass \"$environment0\" { capture0: i64 }\nfunc @$closure0() -> unit {\nb0() mass 0:\n  return\n}\nfunc @main() -> unit {\nb0() mass 0:\n  %0 = object.new $environment0 @6:6-6:17\n  return\n}\n";
+    let parsed = parse_module(source).map_err(|error| error.to_string());
+    assert!(parsed.is_ok());
+    if let Ok(module) = parsed {
+        assert_eq!(print_canonical(&module), source);
+    }
+}
+
+#[test]
+fn rejects_an_object_creation_whose_synthetic_class_is_not_declared() {
+    let source = "module P es\nfunc @main() -> unit {\nb0() mass 0:\n  %0 = object.new $environment9 @6:6-6:17\n  return\n}\n";
+    let verified = parse_module(source)
+        .map_err(|error| error.to_string())
+        .and_then(|module| pseudolearn_ir::verify_module(&module).map_err(str::to_owned));
+    assert!(verified.is_err());
+}
+
+#[test]
+fn round_trips_monomorphized_function_names_with_type_arguments() {
+    let source = "module P es\nfunc @main() -> unit {\nb0() mass 1:\n  stmt.enter @5:1-5:22\n  %0 = const.i64 4 @5:20-5:21\n  %1 = call @identidad<integer>(%0) @5:10-5:22\n  stmt.exit @5:1-5:22\n  return @6:1-6:13\n}\nfunc @identidad<integer>(%0: i64) -> i64 {\nb0() mass 1:\n  stmt.enter @2:1-2:15\n  stmt.exit @2:1-2:15\n  return %0 @2:1-2:15\n}\n";
+    let parsed = parse_module(source).map_err(|error| error.to_string());
+    assert!(parsed.is_ok());
+    if let Ok(module) = parsed {
+        assert_eq!(print_canonical(&module), source);
+    }
+}

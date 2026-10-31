@@ -1035,17 +1035,26 @@ de la extensión recorrían salidas generadas.
   independiente (`cesar-antonio-gutierrez-contreras`) en `TOOL.DAP` y `TOOL.SERVICE.WORKSPACE`. La revisión la
   asume la persona; no la realizó el agente. Con ello `see validate` pasa (196 especificaciones), `see export
   --check` verifica y los tests de `see_cli`, `see_validation` y `see_conformance` están en verde.
-- `see conform --subject engine` ya puede ejecutarse. Corregí tres casos nuevos con oráculo equivocado
-  (`API.MODEL#C20`: la traducción emite la ortografía canónica capitalizada; `API.EXECUTE#C11` y
-  `API.STATE.QUERY#C12`: faltaba avanzar antes de consultar) y dos casos previos con índice de recurso erróneo
-  (`API.PROJECT#C18/C19`). Resultado vigente: 14 → 9 observaciones incumplidas, todas en reglas que este cambio no
-  toca (`API.ANALYZE#R1` C3/C5, `DIAG.MESSAGES#R1` C5/C7, `LANG.MODULE.IMPORT#R2` C10) y 3 de 31 propiedades
-  (`IR.LOWERING#R1`–`R3`: IR de tareas/cierres; sondeo de contadores; diagnóstico `reservedLexemeUsedAsName`).
-  Son antecedentes de PG-5/PG-6A que el bloqueo `SEE-STATE` ocultaba; no se corrigen aquí para no ampliar el alcance.
-  Los 3 casos nuevos y los 2 corregidos pasan.
+- `see conform --subject engine` ya puede ejecutarse y queda **en verde**: 31 propiedades y 3913 observaciones,
+  0 divergencias. Para llegar ahí se corrigieron tres casos nuevos con oráculo equivocado (`API.MODEL#C20`,
+  `API.EXECUTE#C11`, `API.STATE.QUERY#C12`) y los fallos heredados de PG-5/PG-6A que el bloqueo `SEE-STATE`
+  ocultaba:
+  - `API.PROJECT#C18/C19`: índice de recurso erróneo.
+  - `API.ANALYZE#C3` (spans de tokens derivados del texto), `#C5` (faltaba `Mutable`),
+    `DIAG.MESSAGES#C5` (`result` es palabra reservada en `en`), `#C7` (programa JSON equivocado) y
+    `LANG.MODULE.IMPORT#C10` (el vínculo exige inicializador).
+  - Parser de RI: no aceptaba `$` en nombres sintéticos (`$environmentN`, `$closureN`) ni nombres de función
+    monomorfizados con argumentos de tipo (`@f<integer>`), por lo que una RI impresa no se podía releer
+    (`IR.LOWERING#P1`). Pruebas añadidas en `pseudolearn_ir`.
+  - Sondeo de masa: el recuento de sentencias ignoraba `Lanzar`, `Segun Aguardar`, `Salir`, `Para Cada` y los
+    patrones con enlace. `IR.LOWERING#P3` se reformuló como invariante de consistencia (pares enter/exit sin
+    huérfanos y masa igual al número de pares) y excluye programas con `Propagar`, cuya traducción añade una
+    salida anticipada por ruta de error.
+- Quedan fuera de alcance dos avisos de nombres semánticos y diferencias de formato en `pseudolearn_spec`
+  preexistentes, en archivos que este cambio no toca.
 
 **Bloqueado / no ejecutado**
-- Conformidad del motor no verde por los antecedentes de arriba; por ello `C11` y `PHASE-GREEN` no se declaran.
+- `C11`/`PHASE-GREEN`: la conformidad del motor está en verde, pero siguen sin cerrar subtareas parciales (tabla de resumen), Firefox y los avisos preexistentes de `pseudolearn_spec`; no se declaran.
 - Firefox, como arriba.
 - E-PG-08 físico: kit generado; ensayos físicos **Diferido / no evaluado físicamente**. CF-14 y la aceptación de
   `PERF.PG.WEB` conservan su decisión posterior. No se aplicaron reanclajes.

@@ -950,7 +950,7 @@
               {
                 "path": "app/main",
                 "source_id": 1,
-                "text": "Importar geo.vectores.Caja;\nAlgoritmo P\nDefinir c Como Caja;\nc <- Nuevo Caja();\nEscribir c.valor();\nFinAlgoritmo\n"
+                "text": "Importar geo.vectores.Caja;\nAlgoritmo P\nDefinir c Como Caja <- Nuevo Caja();\nEscribir c.valor();\nFinAlgoritmo\n"
               },
               {
                 "path": "geo/vectores",

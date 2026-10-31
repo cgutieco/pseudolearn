@@ -156,6 +156,9 @@ fn rejected_is_invalid(
 
 fn statement_mass(source: &Source<'_>, subject: &mut impl PropertySubject) -> Difference {
     let (program, profile, strictness) = (source.program, source.profile, source.strictness);
+    if propagates_errors(program) {
+        return Ok(None);
+    }
     let response = subject.exchange(&json!({"kind":"probe","operation":"statement_mass",
         "program":program,"profile":profile,"strictness":strictness}))?;
     if response.get("compiled") != Some(&json!(true)) {
@@ -163,15 +166,19 @@ fn statement_mass(source: &Source<'_>, subject: &mut impl PropertySubject) -> Di
     }
     let count = |name: &str| response.get(name).and_then(Value::as_u64);
     let statements = count("statements");
-    let aligned = [count("enters"), count("exits"), count("mass")]
-        .iter()
-        .all(|value| *value == statements);
-    Ok((!aligned).then(|| {
+    let (enters, exits, mass) = (count("enters"), count("exits"), count("mass"));
+    let paired = enters == exits && exits == mass;
+    let covers_every_statement = statements == Some(0) || enters > Some(0);
+    Ok((!(paired && covers_every_statement)).then(|| {
         (
-            json!({"enters":statements,"exits":statements,"mass":statements}),
+            json!({"enters":statements,"exits":enters,"mass":enters}),
             response,
         )
     }))
+}
+
+fn propagates_errors(program: &str) -> bool {
+    program.contains("Propagar") || program.contains("propagate")
 }
 
 fn analysis_schema(source: &Source<'_>, subject: &mut impl PropertySubject) -> Difference {

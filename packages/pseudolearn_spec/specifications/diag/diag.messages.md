@@ -167,15 +167,26 @@
 {
   "id": "C5",
   "regla": "R1",
-  "perfiles": ["es", "en"],
-  "rigor": ["estricto", "flexible"],
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
   "programas": {
-    "es": "Algoritmo P\nDefinir result Como Vector<Cadena> <- Dividir(\"a\", \"\");\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine result as Vector<String> <- split(\"a\", \"\");\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir parts Como Vector<Cadena> <- Dividir(\"a\", \"\");\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine parts as Vector<String> <- split(\"a\", \"\");\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
-  "espera": {"terminacion": "failed", "fallo": {"codigo": "emptySeparator"}}
+  "espera": {
+    "terminacion": "failed",
+    "fallo": {
+      "codigo": "emptySeparator"
+    }
+  }
 }
 ```
 
@@ -199,14 +210,25 @@
 {
   "id": "C7",
   "regla": "R1",
-  "perfiles": ["es", "en"],
-  "rigor": ["estricto", "flexible"],
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
   "programas": {
-    "es": "Algoritmo P\nDefinir parsed Como Resultado<ValorJson, ErrorJson> <- AnalizarJson(\"1\");\nDefinir value Como ValorJson <- parsed.Valor();\nvalue.ConElemento(JsonNulo());\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine parsed as Result<JsonValue, JsonError> <- parseJson(\"1\");\ndefine value as JsonValue <- parsed.value();\nvalue.withElement(jsonNull());\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir mapping Como ValorJson <- ObjetoJson();\nmapping.ConElemento(JsonNulo());\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine mapping as JsonValue <- jsonObject();\nmapping.withElement(jsonNull());\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
-  "espera": {"terminacion": "failed", "fallo": {"codigo": "jsonKindMismatch"}}
+  "espera": {
+    "terminacion": "failed",
+    "fallo": {
+      "codigo": "jsonKindMismatch"
+    }
+  }
 }
 ```

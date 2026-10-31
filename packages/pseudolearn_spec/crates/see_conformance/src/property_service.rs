@@ -46,10 +46,7 @@ pub(crate) fn check(
     }
 }
 
-fn workspace_equivalence(
-    program: &Program<'_>,
-    subject: &mut impl PropertySubject,
-) -> Difference {
+fn workspace_equivalence(program: &Program<'_>, subject: &mut impl PropertySubject) -> Difference {
     let first = service_outcome(subject, &workspace_request(program, false))?;
     let second = service_outcome(subject, &workspace_request(program, true))?;
     let valid = first.get("coincide_con_frio") == Some(&json!(true)) && first == second;
@@ -59,21 +56,30 @@ fn workspace_equivalence(
 fn workspace_request(program: &Program<'_>, reverse_files: bool) -> Value {
     let main = json!({"path": "app/main", "source_id": 1, "text": program.text});
     let library = json!({"path": "lib/helper", "source_id": 2, "text": "Publico SubProceso Helper()\nFinSubProceso\n"});
-    let files = if reverse_files { json!([library, main]) } else { json!([main, library]) };
-    service_request_with(program, "workspace", "", json!({
-        "workspace": {
-            "project": {
-                "project_id": "1", "revision_id": "1",
-                "packages": [
-                    {"name": "app", "root": "app", "kind": "application", "entries": ["app/main"], "dependencies": {}},
-                    {"name": "lib", "root": "lib", "kind": "library", "entries": [], "dependencies": {}}
-                ],
-                "files": files
+    let files = if reverse_files {
+        json!([library, main])
+    } else {
+        json!([main, library])
+    };
+    service_request_with(
+        program,
+        "workspace",
+        "",
+        json!({
+            "workspace": {
+                "project": {
+                    "project_id": "1", "revision_id": "1",
+                    "packages": [
+                        {"name": "app", "root": "app", "kind": "application", "entries": ["app/main"], "dependencies": {}},
+                        {"name": "lib", "root": "lib", "kind": "library", "entries": [], "dependencies": {}}
+                    ],
+                    "files": files
+                },
+                "options": {"profile": program.profile, "strictness": program.strictness}
             },
-            "options": {"profile": program.profile, "strictness": program.strictness}
-        },
-        "actions": [{"operation": "open", "path": "app/main", "version": 1, "text": program.text}]
-    }))
+            "actions": [{"operation": "open", "path": "app/main", "version": 1, "text": program.text}]
+        }),
+    )
 }
 
 fn text_of(request: &Value, name: &str) -> String {

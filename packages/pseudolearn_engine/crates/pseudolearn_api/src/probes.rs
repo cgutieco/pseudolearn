@@ -4,7 +4,7 @@ use pseudolearn_source::SourceText;
 use pseudolearn_syntax::{NodeKind, SyntaxTree, parse_source, reprint::reprint};
 use serde_json::{Value, json};
 
-const STATEMENT_KINDS: [NodeKind; 12] = [
+const STATEMENT_KINDS: [NodeKind; 17] = [
     NodeKind::AssignmentStatement,
     NodeKind::CallStatement,
     NodeKind::ReturnStatement,
@@ -17,6 +17,11 @@ const STATEMENT_KINDS: [NodeKind; 12] = [
     NodeKind::Input,
     NodeKind::Output,
     NodeKind::DimensionDeclaration,
+    NodeKind::SpawnStatement,
+    NodeKind::SelectStatement,
+    NodeKind::BreakStatement,
+    NodeKind::ForEachLoop,
+    NodeKind::DiscardStatement,
 ];
 
 pub fn probe(request: &Value) -> Value {
@@ -74,12 +79,16 @@ fn statements(tree: &SyntaxTree) -> usize {
         .iter()
         .enumerate()
         .filter(|(index, node)| {
-            STATEMENT_KINDS.contains(&node.kind)
+            (STATEMENT_KINDS.contains(&node.kind) || binds_a_value(node))
                 && !field_ranges
                     .iter()
                     .any(|(first, last)| (*first..=*last).contains(index))
         })
         .count()
+}
+
+fn binds_a_value(node: &pseudolearn_syntax::SyntaxNode) -> bool {
+    node.kind == NodeKind::VariantPattern && node.subtree_size > 1
 }
 
 fn observation_counts(module: &pseudolearn_ir::Module) -> (u64, u64, u64) {

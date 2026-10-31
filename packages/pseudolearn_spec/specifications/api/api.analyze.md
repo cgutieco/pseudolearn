@@ -161,12 +161,12 @@
         "kind": "operator",
         "span": {
           "start": {
-            "line": 4,
-            "column": 3
+            "line": 3,
+            "column": 23
           },
           "end": {
-            "line": 4,
-            "column": 5
+            "line": 3,
+            "column": 25
           }
         }
       },
@@ -174,12 +174,12 @@
         "kind": "integer_literal",
         "span": {
           "start": {
-            "line": 4,
-            "column": 6
+            "line": 3,
+            "column": 26
           },
           "end": {
-            "line": 4,
-            "column": 7
+            "line": 3,
+            "column": 27
           }
         }
       },
@@ -187,12 +187,12 @@
         "kind": "punctuation",
         "span": {
           "start": {
-            "line": 4,
-            "column": 7
+            "line": 3,
+            "column": 27
           },
           "end": {
-            "line": 4,
-            "column": 8
+            "line": 3,
+            "column": 28
           }
         }
       }
@@ -271,11 +271,11 @@
         "span": {
           "start": {
             "line": 2,
-            "column": 9
+            "column": 17
           },
           "end": {
             "line": 2,
-            "column": 12
+            "column": 20
           }
         }
       },
@@ -294,7 +294,7 @@
       }
     ]
   },
-  "programa": "Algoritmo P\nDefinir año Como Entero <- 0;\naño <- 5;\nEscribir año;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir Mutable año Como Entero <- 0;\naño <- 5;\nEscribir año;\nFinAlgoritmo\n",
   "perfil_base": "es",
   "sujetos": [
     "engine",

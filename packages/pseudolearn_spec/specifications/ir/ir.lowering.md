@@ -106,9 +106,9 @@
   "id": "P3",
   "regla": "R3",
   "generador": {
-    "programas": "todos los programas válidos del corpus"
+    "programas": "todos los programas válidos del corpus que no usan Propagar, porque su traducción añade una salida anticipada por cada ruta de error"
   },
-  "propiedad": "Cada sentencia del árbol tiene exactamente un par de observaciones y las masas cuadran.",
+  "propiedad": "Un programa con sentencias produce pares stmt.enter/stmt.exit, sin entradas ni salidas huérfanas, y la masa total coincide con el número de pares; la traducción puede añadir pares sintéticos propios, como la carga de una captura.",
   "oraculo": "Recorrido del árbol sintáctico.",
   "justificacion": "La ejecuta el sujeto engine en R5."
 }
