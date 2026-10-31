@@ -625,54 +625,64 @@ R-20; capacidades C-11, C-12; riesgos K-03, K-10; experimento E-PG-02; ADR-08, A
 
 Puntos a cumplir:
 
-- [ ] `PG-6A.01` La persona decide CF-20 y la ruta del miembro nuevo en `apps/`, su cadena de herramientas y la licencia
+- [x] `PG-6A.01` La persona decide CF-20 y la ruta del miembro nuevo en `apps/`, su cadena de herramientas y la licencia
   de la extensión.
-- [ ] `PG-6A.02` README y archivo de reglas del miembro nuevo escritos antes de su código, con verificador de comentarios
+- [x] `PG-6A.02` README y archivo de reglas del miembro nuevo escritos antes de su código, con verificador de comentarios
   propio y su caso negativo.
-- [ ] `PG-6A.03` Servicio de workspace: instantánea de proyecto, archivos cerrados, invalidación por dependencia y
+- [x] `PG-6A.03` Servicio de workspace: instantánea de proyecto, archivos cerrados, invalidación por dependencia y
   resincronización ante pérdida de eventos.
-- [ ] `PG-6A.04` LSP anuncia solo lo implementado: carpetas y configuración de workspace, diagnósticos relacionados,
+- [x] `PG-6A.04` LSP anuncia solo lo implementado: carpetas y configuración de workspace, diagnósticos relacionados,
   rename con prepareRename atómico y versionado, referencias, símbolos, tokens semánticos, formato y cancelación.
-- [ ] `PG-6A.05` Contrato de configuración declarativo con precedencia definida y sin secretos en archivos versionados.
-- [ ] `PG-6A.06` Gramática de resaltado generada desde el corpus, con verificador de obsolescencia (`GEN-NO-HAND-COPY`).
-- [ ] `PG-6A.07` Extensión de escritorio: cliente LSP, comandos de comprobar, ejecutar, detener, entrada, elegir entrada,
+- [x] `PG-6A.05` Contrato de configuración declarativo con precedencia definida y sin secretos en archivos versionados.
+- [x] `PG-6A.06` Gramática de resaltado generada desde el corpus, con verificador de obsolescencia (`GEN-NO-HAND-COPY`).
+- [x] `PG-6A.07` Extensión de escritorio: cliente LSP, comandos de comprobar, ejecutar, detener, entrada, elegir entrada,
   formatear y traducir; ningún parser normativo en el cliente; nada se ejecuta al abrir un proyecto.
   El migrador queda retirado por la decisión de la persona reconfirmada el 2026-10-30: solo versión oficial,
   sin retrocompatibilidad aunque haya cambios incompatibles.
-- [ ] `PG-6A.08` Ayuda de PG-H integrada en hover y en el comando de explicar.
-- [ ] `PG-6A.09` Resultados equivalentes desde dos clientes LSP distintos.
-- [ ] `PG-6A.10` E-PG-02 completo, con sesiones de 100 archivos/10 000 líneas, Unicode/UTF-16 y ediciones obsoletas.
-- [ ] `PG-6A.11` VSIX instalado desde cero ejecuta un proyecto sencillo.
+- [x] `PG-6A.08` Ayuda de PG-H integrada en hover y en el comando de explicar.
+- [x] `PG-6A.09` Resultados equivalentes desde dos clientes LSP distintos.
+- [x] `PG-6A.10` E-PG-02 completo, con sesiones de 100 archivos/10 000 líneas, Unicode/UTF-16 y ediciones obsoletas.
+- [x] `PG-6A.11` VSIX instalado desde cero ejecuta un proyecto sencillo.
 
 Fuera de alcance: publicación en Marketplace, DAP y variante web.
 
 Plan detallado: [fase-pg-6a-plan-ejecucion.md](fase-pg-6a-plan-ejecucion.md), creado por encargo documental
-el 2026-10-30. Incluye F5 y VSIX local sin publicación, verificaciones ligeras por punto y pesadas
-acotadas en la iteración final. Implementación sin iniciar; CF-20 y revisión de la persona pendientes.
+el 2026-10-30. La persona cerró PG-6A por decisión expresa el 2026-10-31 con los pendientes justificados allí.
+E-PG-02 se ejecutó, pero sus umbrales no se cumplen y `PERF.PG.SERVICE` no se aprueba. La repetición parcial del
+2026-10-31 conserva cuatro grupos extendidos por encima de 100 ms (§11.4 del plan detallado). `PHASE-GREEN` no se
+declara porque SEE sigue exigiendo revisión independiente; PG-6B permanece sin iniciar.
 
 Cierre común (definiciones en §4.0):
 
-- [ ] `PG-6A.C01` Autorización de la persona para iniciar la fase, en mensaje nuevo.
-- [ ] `PG-6A.C02` Plan detallado creado según §5 y revisado por la persona.
-- [ ] `PG-6A.C03` SPEC-FIRST y congelamiento respetados.
-- [ ] `PG-6A.C04` Reglas nuevas con casos o propiedades y vínculos como datos.
-- [ ] `PG-6A.C05` Tests feliz, infeliz y límite en carpetas espejo.
-- [ ] `PG-6A.C06` Capas declaradas, imports permitidos y límites de tamaño.
-- [ ] `PG-6A.C07` Sin comentarios ni TODO; código en inglés; Rust sin pánicos ni `unsafe` no declarado.
-- [ ] `PG-6A.C08` README y reglas de los miembros afectados actualizados, sin citar `docs/`.
-- [ ] `PG-6A.C09` Fichas de ayuda y datos de proyección de la sintaxis nueva, o justificación.
-- [ ] `PG-6A.C10` Riesgos revisados y experimentos con procedencia o diferidos por la persona.
-- [ ] `PG-6A.C11` Tests y verificadores de los miembros afectados en verde.
-- [ ] `PG-6A.C12` Commit sin atribución de IA y push ordinario comprobado a la rama única.
-- [ ] `PG-6A.C13` Resumen completo, informe a la persona y parada.
+- [x] `PG-6A.C01` Autorización de la persona para iniciar la fase, en mensaje nuevo.
+- [x] `PG-6A.C02` Plan detallado creado según §5 y revisado por la persona.
+- [x] `PG-6A.C03` SPEC-FIRST y congelamiento respetados.
+- [x] `PG-6A.C04` Reglas nuevas con casos o propiedades y vínculos como datos.
+- [x] `PG-6A.C05` Tests feliz, infeliz y límite en carpetas espejo.
+- [x] `PG-6A.C06` Capas declaradas, imports permitidos y límites de tamaño.
+- [x] `PG-6A.C07` Sin comentarios ni TODO; código en inglés; Rust sin pánicos ni `unsafe` no declarado.
+- [x] `PG-6A.C08` README y reglas de los miembros afectados actualizados, sin citar `docs/`.
+- [x] `PG-6A.C09` Fichas de ayuda y datos de proyección de la sintaxis nueva, o justificación.
+- [x] `PG-6A.C10` Riesgos revisados y experimentos con procedencia o diferidos por la persona.
+- [x] `PG-6A.C11` Tests y verificadores de los miembros afectados en verde.
+- [x] `PG-6A.C12` Commit sin atribución de IA y push ordinario comprobado a la rama única.
+- [x] `PG-6A.C13` Resumen completo, informe a la persona y parada.
 
 #### Resumen de PG-6A
 
 | Punto | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
-| | | | |
+| `PG-6A.01`–`.02` | Cumplido | Decisión CF-20; README, reglas y miembro de extensión documentados en el plan detallado | Cierre por decisión expresa de la persona, 2026-10-31 |
+| `PG-6A.03`–`.06` | Cumplido | Servicio de workspace, capacidades LSP, configuración y gramática generada; pruebas y verificadores de los miembros afectados | La revisión SEE independiente sigue pendiente para validar/reanclar corpus |
+| `PG-6A.07`–`.09` | Cumplido | Extensión de escritorio, comandos y comparación de clientes documentados en §11 del plan detallado | Sin publicación en Marketplace; fuera de alcance |
+| `PG-6A.10` | Cumplido: campaña ejecutada; métrica no aprobada | Corrida E-PG-02 y seguimiento parcial con datos crudos en `packages/pseudolearn_spec/results/pg-6a-e-pg-02-incremental-2026-10-31/` | Cuatro grupos de `files-1000-extended` siguen sobre 100 ms; `PERF.PG.SERVICE` no se aprueba |
+| `PG-6A.11` | Cumplido con pendientes justificados | Instalación limpia y ejecución de proyecto registradas en §11.4 del plan detallado | Sin instalación en el perfil habitual de VS Code |
+| `PG-6A.C01`–`.13` | Cerrado por decisión expresa | Autorización, revisión del plan, tests/verificadores, commits e informe registrados en el plan detallado | `PHASE-GREEN` no declarado; la validación SEE requiere revisión independiente |
 
-Revisión Git de cierre: · Verificadores ejecutados: · Pendientes justificados: · Decisiones de la persona:
+Revisión Git de cierre: 2026-10-31, cierre expreso registrado en el plan detallado. Seguimiento local posterior:
+`4030ecf6`, `836d4d5c`, `04ca8b48`, `b924310c`; sin push en esta intervención. Verificadores: suites dirigidas,
+Clippy y `rust-checks all` en los miembros afectados. Pendientes: cuatro grupos E-PG-02 extendidos incumplen el
+umbral y SEE exige revisión independiente. Decisión de la persona: cerrar PG-6A; no iniciar PG-6B.
 
 ### 4.9 PG-6B · Depuración y web
 
@@ -1021,7 +1031,7 @@ La IA a cargo actualiza esta tabla al cerrar cada fase.
 | PG-3 | En curso · PG-3.08, PG-3.11 y PG-3.12 cumplidos; resto abierto | Sí, C02 revisado (2026-10-26); revisión integral pendiente | Sin cierre de fase | `PG-3.C12` pendiente por revisión previa; E-PG-05 cumple el presupuesto por carga revisado el 2026-10-27; sin commit |
 | PG-4 | Cerrada · PG-4.01–.12 | Sí | 2026-10-28 · `a1de5355` | Tareas nativas en AOT (`PG-4.12.04`) y sus `.07`; presupuesto de `PERF.SUITE.CORE` no alcanzado |
 | PG-5 | Cerrada · PG-5.01–.10 | Sí, C02 revisado | 2026-10-30 · `c9414002` | Firefox no lanzable; presupuesto de `PERF.SUITE.CORE` no alcanzado; tareas nativas en AOT; aprobación de `PERF.PG.HTTP` |
-| PG-6A | Sin iniciar | No | | |
+| PG-6A | Cerrada por decisión expresa · PG-6A.01–.11 y cierre común | Sí | 2026-10-31 · cierre registrado en el plan detallado | E-PG-02 no aprobada: cuatro grupos extendidos siguen sobre 100 ms; SEE requiere revisión independiente; `PHASE-GREEN` no declarado |
 | PG-6B | Sin iniciar | No | | |
 | PG-A | Sin iniciar | No | | |
 | PG-B | Sin iniciar | No | | |
