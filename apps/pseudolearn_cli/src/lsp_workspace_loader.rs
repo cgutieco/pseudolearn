@@ -57,6 +57,9 @@ pub(crate) fn root_directory(initialize: &Value) -> Option<String> {
 pub(crate) fn snapshot_message(directory: &str, locale: &str, revision: u64) -> Option<Value> {
     let snapshot = project_files::load(directory, locale).ok()?;
     let packages = packages_of(&snapshot)?;
+    if packages.is_empty() {
+        return None;
+    }
     Some(json!({
         "jsonrpc": "2.0",
         "method": "pseudolearn/workspaceSnapshot",

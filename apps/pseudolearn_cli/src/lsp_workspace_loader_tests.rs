@@ -94,6 +94,19 @@ fn snapshot_describes_packages_files_and_uris_of_a_project() -> Result<(), Strin
 }
 
 #[test]
+fn a_folder_of_loose_files_without_manifests_produces_no_snapshot() -> Result<(), String> {
+    let directory =
+        std::env::temp_dir().join(format!("pseudo loader loose {}", std::process::id()));
+    fs::create_dir_all(&directory).map_err(|error| error.to_string())?;
+    fs::write(directory.join("hola.pseudo"), "Algoritmo X\nFinAlgoritmo\n")
+        .map_err(|error| error.to_string())?;
+    let produced = snapshot_message(directory.to_str().ok_or("path")?, "es", 1);
+    fs::remove_dir_all(&directory).map_err(|error| error.to_string())?;
+    assert!(produced.is_none());
+    Ok(())
+}
+
+#[test]
 fn missing_or_empty_roots_produce_no_snapshot() {
     assert!(snapshot_message("/definitely/missing/pseudo-root", "es", 1).is_none());
 }
