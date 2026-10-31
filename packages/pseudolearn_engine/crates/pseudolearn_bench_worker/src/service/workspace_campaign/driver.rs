@@ -7,6 +7,7 @@ use crate::service::workspace_campaign::record::{
 };
 use crate::service::workspace_campaign::run::run_case;
 use crate::service::workspace_campaign::scenario::Scenario;
+use crate::service::workspace_campaign::selection::Selection;
 use crate::service::workspace_campaign::summary::summarize;
 use crate::service::workspace_campaign::transport::ProcessTransport;
 use serde_json::{Value, json};
@@ -75,22 +76,36 @@ fn correctness_pass(binary: &str) -> Result<(), String> {
     Ok(())
 }
 
-pub fn run(directory: &str, binary: &str, process: &str) -> Result<(), String> {
+pub fn run(
+    directory: &str,
+    binary: &str,
+    process: &str,
+    selection: &Selection,
+) -> Result<(), String> {
     let process: usize = process.parse().map_err(|_| "process must be a number")?;
     if process == 0 {
         correctness_pass(binary)?;
     }
     for load in &LOADS {
+        if !selection.includes_load(load.name) {
+            continue;
+        }
         for scenario in Scenario::SAMPLED {
+            if !selection.includes(load.name, scenario) {
+                continue;
+            }
             sampled_record(Path::new(directory), load, scenario, (binary, process))?;
         }
     }
     Ok(())
 }
 
-fn records_in(directory: &Path) -> Result<Vec<Value>, String> {
+fn records_in(directory: &Path, selection: &Selection) -> Result<Vec<Value>, String> {
     let mut records = Vec::new();
     for load in &LOADS {
+        if !selection.includes_load(load.name) {
+            continue;
+        }
         let Ok(entries) = std::fs::read_dir(directory.join(load.name)) else {
             continue;
         };
@@ -102,8 +117,8 @@ fn records_in(directory: &Path) -> Result<Vec<Value>, String> {
     Ok(records)
 }
 
-pub fn summarize_directory(directory: &str) -> Result<(), String> {
+pub fn summarize_directory(directory: &str, selection: &Selection) -> Result<(), String> {
     let root = Path::new(directory);
-    let summary = summarize(&records_in(root)?)?;
+    let summary = summarize(&records_in(root, selection)?, selection)?;
     write_new(&root.join("summary.json"), &summary)
 }

@@ -107,8 +107,25 @@ fn boundary_cases_cover_empty_short_and_unicode_projects() {
 }
 
 #[test]
-fn rename_step_is_a_single_request() {
+fn rename_step_opens_every_dependency_before_renaming() {
     let case = build(&TINY_LOAD, Scenario::Rename);
-    assert_eq!(case.step.len(), 1);
-    assert_eq!(first_method(&case.step), "textDocument/rename");
+    assert!(case.step.len() > 1);
+    assert_eq!(
+        case.step
+            .iter()
+            .filter(|message| method_of(message) == "textDocument/didOpen")
+            .count(),
+        TINY_LOAD.files.saturating_sub(2)
+    );
+    assert_eq!(first_method(&case.step), "textDocument/didOpen");
+    assert_eq!(case.step.last().map(method_of), Some("textDocument/rename"));
+}
+
+#[test]
+fn workspace_load_times_snapshot_installation() {
+    let case = build(&TINY_LOAD, Scenario::WorkspaceLoad);
+    assert_eq!(first_method(&case.step), "pseudolearn/workspaceSnapshot");
+    assert!(case.step.last().is_some_and(|message| {
+        message.get("method").and_then(Value::as_str) == Some("textDocument/documentSymbol")
+    }));
 }

@@ -57,11 +57,17 @@ pub fn observe(
 ) -> Result<Observation, String> {
     let wanted = request_id(messages.last().ok_or("empty step")?)?;
     let mut published = Published::new();
+    let mut response = Value::Null;
     let started = clock.now_nanos();
     for message in messages {
         transport.send(message)?;
+        if let Some(identifier) = message.get("id").and_then(Value::as_u64) {
+            let current = await_response(transport, identifier, &mut published)?;
+            if identifier == wanted {
+                response = current;
+            }
+        }
     }
-    let response = await_response(transport, wanted, &mut published)?;
     let nanos = clock.now_nanos().saturating_sub(started);
     Ok(Observation {
         nanos,

@@ -3,7 +3,7 @@ use crate::service::workspace_campaign::clock::{Clock, nanos_to_millis};
 use crate::service::workspace_campaign::comparison::{Outcome, equivalent, merge};
 use crate::service::workspace_campaign::observation::{observe, settle};
 use crate::service::workspace_campaign::transport::Transport;
-use crate::service::workspace_campaign::wire::workspace_symbols;
+use crate::service::workspace_campaign::wire::document_symbols;
 use serde_json::Value;
 
 pub struct Samples {
@@ -13,7 +13,7 @@ pub struct Samples {
 
 fn settled(setup: &[Value]) -> Vec<Value> {
     let mut messages = setup.to_vec();
-    messages.push(workspace_symbols(SETTLE_ID));
+    messages.push(document_symbols(SETTLE_ID, "app/main"));
     messages
 }
 

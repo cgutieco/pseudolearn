@@ -171,48 +171,144 @@ antes de P6.
 
 ### E-PG-02: coste del servicio de workspace (`service workspace`)
 
-Problema: el servicio de workspace de `pseudo lsp` debe responder a una edición dentro de los umbrales de E-PG-02 y dar el
-mismo resultado que un análisis en frío, sin que la medición se confunda con el arranque de Electron ni con el host del
-editor. Elección: el trabajador mide **el RTT del proceso `pseudo lsp` por stdio**, que es lo único que el trabajador puede
-observar con las dependencias que ya declara (no importa `pseudolearn_service`); la medición en proceso del servicio queda
-como pendiente declarado, porque exigiría declarar esa dependencia y una instrumentación fuera del camino normal. Se descartó
-medir dentro del proceso del editor y vender el resultado como latencia de toda la interfaz.
+El trabajador mide **el RTT del proceso `pseudo lsp` por stdio**; no importa `pseudolearn_service` ni incluye el host de VS Code.
+Cada muestra arranca procesos nuevos para candidato y control. La preparación común (inicialización, snapshot y documentos de
+entrada ya abiertos) queda fuera del intervalo. En rename, la apertura de los demás archivos afectados y las barreras cada 64
+aperturas quedan dentro del intervalo; solo la apertura de los documentos iniciales queda fuera. El protocolo `pg-service/1`,
+semilla 42, treinta muestras por proceso y diez procesos por carga/escenario se mantienen; las duraciones menores a la resolución
+del reloj se conservan. Un desacuerdo con el control frío aborta la corrida antes de interpretar tiempos.
 
-Comandos exactos (desde `packages/pseudolearn_engine`; `pseudo` es el binario release de `apps/pseudolearn_cli`):
+Comandos desde `packages/pseudolearn_engine`; `pseudo` es el binario release de `apps/pseudolearn_cli`:
 
 ```bash
 cargo run --locked --release -p pseudolearn_bench_worker -- service workspace plan <directorio-nuevo>
-cargo run --locked --release -p pseudolearn_bench_worker -- service workspace run <directorio> <ruta-a-pseudo> <proceso>
+cargo run --locked --release -p pseudolearn_bench_worker -- service workspace run <directorio> <ruta-a-pseudo> <proceso> --load files-10 --scenario body-edit
+cargo run --locked --release -p pseudolearn_bench_worker -- service workspace summary <directorio> --load files-10 --scenario body-edit
 cargo run --locked --release -p pseudolearn_bench_worker -- service workspace summary <directorio>
 ```
 
-`plan` escribe `plan.json` con la huella de cada caso y no necesita el binario: sirve para comprobar que el generador es
-determinista. `run` toma un proceso de medición (se invoca con `0`…`9` para los diez procesos del protocolo) y escribe
-`<directorio>/<carga>/<escenario>-process-NN.json`; el proceso `0` ejecuta además una vez los escenarios de corrección.
-`summary` valida cada registro, exige diez procesos distintos, una sola máquina y una sola huella por grupo, calcula el p95 agrupado
-del candidato y del control frío y escribe `summary.json`. Ningún comando sobrescribe un archivo existente.
+`--load` y `--scenario` son repetibles; `run` toma el producto cartesiano de las selecciones. Los nombres desconocidos se
+rechazan. Se invoca `run` con procesos `0`…`9`; el proceso `0` ejecuta los escenarios de corrección una vez. Ningún comando
+sobrescribe archivos. `plan` escribe `plan.json` con las huellas deterministas.
 
-- **Propuesta `PERF.PG.SERVICE` (candidata, no normativa):** unidad, milisegundos de RTT desde la escritura del primer mensaje del
-  paso hasta la lectura de la respuesta de la petición final (`workspace/symbol` como barrera, o el propio `rename`); reloj,
-  monótono del sistema (`Instant`) detrás del rasgo `Clock`, con resolución observada en cada registro y duraciones menores que
-  la resolución conservadas, nunca descartadas; protocolo `pg-service/1`, semilla 42, treinta muestras por proceso y diez
-  procesos por carga y escenario (`PERF.PROTOCOL`). Calentamiento: cada muestra arranca un proceso `pseudo lsp` nuevo y su
-  preparación (inicialización, snapshot y apertura de documentos) queda fuera del intervalo y de las muestras; no se mide con
-  caché caliente de sesiones largas, límite que debe leerse junto a los resultados. El control es el estado editado cargado en
-  un proceso nuevo y comparado con la misma petición. Salida: crudos por proceso y resumen recalculable. Los umbrales de E-PG-02
-  se evalúan tal como están definidos: 100 ms de p95 para el diagnóstico tras edición y 500 ms para rename; la propuesta no
-  crea umbrales nuevos y el mismo 100 ms se aplica a manifiesto y cerrado porque el contrato no los distingue.
-- **Cargas:** biblioteca de 10, 100 y 1000 archivos con unas 10 000 líneas totales en todas (líneas por archivo = 10 000 / archivos)
-  más la carga ampliada identificada `files-1000-extended` (1000 archivos de unas 100 líneas). Reutiliza el generador de proyectos
-  de `service project`, de modo que no hay un segundo dueño de las fuentes sintéticas.
-- **Escenarios muestreados:** `body-edit`, `signature-edit` (edición abierta con `didChange`), `manifest-change` (nuevo alias de
-  dependencia por resincronización), `closed-file-change` (edición de un archivo cerrado por resincronización) y `rename`.
-  **Corrección, fuera del muestreo de latencia:** `stale-source` (revisión obsoleta ignorada), `empty-project`, `short-names`
-  (identificador de un carácter) y `unicode-source` (identificador con `ñ` y carácter no BMP).
-- **Equivalencia:** cada muestra compara los últimos diagnósticos publicados por archivo y la respuesta de la petición final con el
-  control en frío; una diferencia aborta el proceso antes de interpretar tiempos.
-- **Qué no afirma:** hoy cada instantánea nueva reconstruye la sesión de workspace completa, de modo que los escenarios de manifiesto
-  y de cerrado miden esa reconstrucción; «incremental» solo describe la forma del mensaje, no una garantía de no reanalizar todo,
-  hasta que la campaña lo demuestre. No se mide memoria ni el RTT del host de VS Code, que se registran por separado en la campaña
-  pesada. Las pruebas ligeras usan reloj y transporte falsos (`workspace_campaign/*_tests.rs`); la campaña de 30 muestras por 10
-  procesos y el registro de máquina, versiones y huellas pertenecen a la verificación pesada.
+Un resumen sin filtros es completo y exige los 28 grupos esperados (cuatro cargas por siete escenarios), diez procesos por grupo,
+una máquina y una huella común. Un resumen con cualquier filtro informa `partial: true` y `included_groups` con la lista exacta de
+grupos; rechaza los grupos esperados que falten. `all_within_threshold` solo se calcula sobre esos grupos. Un resultado parcial
+sirve para repetir fallos concretos y **no sustituye a la campaña completa**.
+
+- **Límites:** los escenarios de diagnóstico (`body-edit`, `signature-edit`, `manifest-change` y `closed-file-change`) deben quedar
+  en p95 ≤ 100 ms; `rename`, en p95 ≤ 500 ms. El paso de diagnóstico usa `textDocument/documentSymbol` como barrera ligera para
+  excluir el coste independiente de `workspace/symbol`. El paso de rename sí incluye los `didOpen` de las fuentes todavía cerradas,
+  seguidos por barreras cada 64 aperturas, y termina con rename. `workspace-load` mide la instalación del snapshot en el servicio;
+  `workspace-symbol` mide la consulta global de símbolos. Ambos registran p95 y control frío sin inventar un umbral.
+- **Cargas:** bibliotecas de 10, 100 y 1000 archivos con unas 10 000 líneas totales, más `files-1000-extended` (1000 archivos de
+  unas 100 líneas). Los escenarios reutilizan el generador de `service project`. Las cargas propuestas de 5000/10000 archivos y de
+  archivos de 5000 líneas quedan para una medición de escalado separada: no alteran el conjunto E-PG-02 y multiplicarían el tamaño
+  de las instantáneas y la duración de la campaña completa, que ya inicia 16 800 procesos LSP.
+- **Corrección, fuera del muestreo de latencia:** `stale-source`, `empty-project`, `short-names` y `unicode-source`. La sesión
+  compara análisis, diagnósticos, símbolos y referencias incrementales contra el análisis frío; las pruebas LSP comparan además
+  referencias y ediciones de rename.
+- **Límites de medición:** `workspace-load` comienza con el snapshot ya leído y con manifiestos ya resueltos; no mide la caminata de
+  disco de la CLI. El cargador evita resolver de nuevo un manifiesto sin cambios, pero vuelve a leer archivos fuente en cada save.
+  Tampoco se mide memoria ni latencia del host de VS Code. Las pruebas ligeras usan reloj y transporte falsos
+  (`workspace_campaign/*_tests.rs`); el resumen de la campaña conserva los p95 candidato y control por grupo.
+
+### Resultado parcial de repetición, 2026-10-31
+
+La repetición conservó 30 muestras por proceso, diez procesos ordenados de 0 a 9, semilla 42, comparación fría exacta y los
+umbrales de E-PG-02. Los datos ignorados por Git están en
+`packages/pseudolearn_spec/results/pg-6a-e-pg-02-incremental-2026-10-31/`; el resumen es parcial y contiene 20 grupos. La tabla
+compara los p95 de la campaña original con los de esta repetición. La campaña original cronometraba `workspace/symbol` como
+barrera de edición; la repetición usa `textDocument/documentSymbol` para que esa consulta global tenga su grupo separado. Por eso
+las latencias y controles de ambas columnas no son una comparación estricta del mismo tramo. El control nuevo instala desde el
+inicio el snapshot con el cambio y mide la misma barrera ligera.
+
+| Carga/escenario | Original candidato/control p95 ms | Repetición candidato/control p95 ms | Umbral | Estado |
+|---|---:|---:|---:|---|
+| `files-10/body-edit` | 509,336/478,362 | 16,334/0,039 | 100 | pasa |
+| `files-10/closed-file-change` | 524,908/495,903 | 31,953/0,038 | 100 | pasa |
+| `files-10/manifest-change` | 604,325/564,276 | 32,012/0,040 | 100 | pasa |
+| `files-10/signature-edit` | 531,880/498,128 | 16,438/0,039 | 100 | pasa |
+| `files-10/rename` | 0,491/0,482 | 3,165/3,157 | 500 | pasa; ahora incluye aperturas |
+| `files-100/body-edit` | 94,731/72,143 | 17,369/0,074 | 100 | pasa |
+| `files-100/closed-file-change` | 95,667/72,360 | 23,505/0,074 | 100 | pasa |
+| `files-100/manifest-change` | 95,401/72,267 | 23,600/0,074 | 100 | pasa |
+| `files-100/signature-edit` | 94,820/72,142 | 17,413/0,076 | 100 | pasa |
+| `files-100/rename` | 0,344/0,343 | 1,131/1,138 | 500 | pasa; ahora incluye aperturas |
+| `files-1000/body-edit` | 86,251/27,255 | 52,047/0,364 | 100 | pasa |
+| `files-1000/closed-file-change` | 91,662/28,297 | 59,276/0,372 | 100 | pasa |
+| `files-1000/manifest-change` | 87,858/27,363 | 59,200/0,370 | 100 | pasa |
+| `files-1000/signature-edit` | 88,509/28,559 | 52,129/0,377 | 100 | pasa |
+| `files-1000/rename` | 0,604/0,605 | 9,832/9,830 | 500 | pasa; ahora incluye aperturas |
+| `files-1000-extended/body-edit` | 1924,582/937,464 | 831,377/0,383 | 100 | falla |
+| `files-1000-extended/closed-file-change` | 1845,759/908,166 | 892,849/0,376 | 100 | falla |
+| `files-1000-extended/manifest-change` | 1932,851/918,805 | 891,173/0,373 | 100 | falla |
+| `files-1000-extended/signature-edit` | 1889,281/916,073 | 828,979/0,382 | 100 | falla |
+| `files-1000-extended/rename` | 2,519/2,527 | 13,837/13,827 | 500 | pasa; ahora incluye aperturas |
+
+El p95 extendido de edición continúa entre 8,3 y 8,9 veces por encima del umbral; no se relaja. El perfil de 60 segundos de CPU
+para `files-1000-extended/body-edit` contó 57 979 muestras del proceso `pseudo`: `analyze_project_detailed` fue marco
+representado en 7 891 (13,6 %), `build_workspace` en 11 006 (19,0 %), `parse_module_source` en 1 443 (2,5 %) y
+`LineIndex::build` en 432 (0,7 %). Las pilas son inclusivas. La causa medida sigue siendo el análisis semántico completo del
+proyecto tras cada cambio; el cacheo de árboles sintácticos no alcanza para esta carga.
+
+El costo independiente del snapshot instalado fue 60,114/59,983 ms p95 candidato/control en `files-1000` y
+901,531/902,288 ms en `files-1000-extended`. `workspace/symbol` antes de optimizar el índice de línea dio
+19,801/19,786 ms y 439,999/440,282 ms, respectivamente. Después, la repetición filtrada de solo ese escenario dio:
+
+| Carga | Lado | Mínimo | p50 | p90 | p95 | p99 | Máximo (ms) |
+|---|---|---:|---:|---:|---:|---:|---:|
+| `files-1000` | candidato | 17,593 | 17,831 | 18,001 | 18,147 | 18,453 | 19,229 |
+| `files-1000` | control frío | 17,602 | 17,818 | 17,975 | 18,141 | 18,532 | 21,275 |
+| `files-1000-extended` | candidato | 287,586 | 291,644 | 294,022 | 294,779 | 298,023 | 317,001 |
+| `files-1000-extended` | control frío | 287,930 | 291,605 | 294,315 | 295,513 | 309,575 | 332,379 |
+
+Los resúmenes de símbolos son parciales, con 300 muestras por lado y grupo y validación de equivalencia; no hay umbral aprobado
+para estos dos escenarios. La carga de 5000/10000 archivos y archivos de 5000 líneas se pospone: con el límite de 6,5 GiB
+libres antes de medir, multiplicaría snapshot, registros crudos y tiempo de procesos. No se añade al conjunto E-PG-02.
+
+Las corridas parciales duraron 4 199,67 s (20 grupos, diez procesos por grupo y 30 muestras por proceso), 1 424,91 s
+(carga y símbolos para `files-1000` y `files-1000-extended`) y 761,79 s (solo símbolos grandes tras optimizar), respectivamente.
+La última tomó 76,58; 76,24; 76,22; 76,06; 76,12; 75,89; 76,04; 76,28; 76,23 y 76,13 s en procesos 0–9. No se lanzó la
+campaña completa: cuatro grupos aún fallan, así que no se cumple la condición para lanzarla.
+
+Las dos primeras corridas usaron Rust/Cargo 1.99.0 y estos binarios release: CLI
+`5000d267b36ae94ef3ce000e274bb33657789efd3926bc6a30b3ac2e921fc478`; trabajador
+`69d71cd9c76c4c1468e3f50a8bb2a26789ae965f468efdc6268fe4d3a49529da`. La repetición de símbolos tras optimizar usó
+Rust/Cargo 1.99.1. El equipo fue un Mac mini Apple M2 de 8 núcleos (4 de rendimiento, 4 de eficiencia), 16 GB,
+macOS 27.0.1 (26A434), corriente alterna y modo de bajo consumo apagado. Huellas SHA-256: CLI
+`2e8119162f8b3be59940b2021ce5c7ac262485f2e83377b32ceb5a6cdb13aa82`; trabajador
+`a48035ff822d60f6bd05e77a10355c30037e19b5ebf8f8baa882c5975ab0b0c9`. Antes de la repetición de símbolos había 6,5 GiB
+disponibles en `/`. Las tres mediciones se hicieron con el equipo conectado a corriente y el modo de bajo consumo apagado. No se
+compilaron binarios ni corrieron tests durante las corridas. El sandbox impidió verificar la carga externa con `top`/`sysctl` y
+la traza de CPU mostró otros procesos; no puede certificarse el aislamiento de tareas ajenas. No se descartaron muestras lentas.
+
+Comando exacto de la repetición de símbolos, desde `packages/pseudolearn_engine`:
+
+```bash
+for worker_process in {0..9}; do
+  /usr/bin/time -p target/release/pseudolearn_bench_worker service workspace run /Users/cgutieco/Personal/pseudolearn/packages/pseudolearn_spec/results/pg-6a-e-pg-02-workspace-symbol-optimized-2026-10-31 /Users/cgutieco/Personal/pseudolearn/apps/pseudolearn_cli/target/release/pseudo "$worker_process" --load files-1000 --load files-1000-extended --scenario workspace-symbol || exit
+done
+target/release/pseudolearn_bench_worker service workspace summary /Users/cgutieco/Personal/pseudolearn/packages/pseudolearn_spec/results/pg-6a-e-pg-02-workspace-symbol-optimized-2026-10-31 --load files-1000 --load files-1000-extended --scenario workspace-symbol
+```
+
+Los comandos de medición registran crudos ignorados por Git; el resumen filtrado declara `partial: true` y nunca se presenta
+como campaña completa.
+
+Comando exacto de la repetición de edición, desde `packages/pseudolearn_engine`:
+
+```bash
+for worker_process in {0..9}; do
+  /usr/bin/time -p target/release/pseudolearn_bench_worker service workspace run /Users/cgutieco/Personal/pseudolearn/packages/pseudolearn_spec/results/pg-6a-e-pg-02-incremental-2026-10-31 /Users/cgutieco/Personal/pseudolearn/apps/pseudolearn_cli/target/release/pseudo "$worker_process" --load files-10 --load files-100 --load files-1000 --load files-1000-extended --scenario body-edit --scenario signature-edit --scenario manifest-change --scenario closed-file-change --scenario rename || exit
+done
+target/release/pseudolearn_bench_worker service workspace summary /Users/cgutieco/Personal/pseudolearn/packages/pseudolearn_spec/results/pg-6a-e-pg-02-incremental-2026-10-31 --load files-10 --load files-100 --load files-1000 --load files-1000-extended --scenario body-edit --scenario signature-edit --scenario manifest-change --scenario closed-file-change --scenario rename
+```
+
+Comando exacto de la medición de carga y símbolos previa a la optimización, desde el mismo directorio:
+
+```bash
+for worker_process in {0..9}; do
+  /usr/bin/time -p target/release/pseudolearn_bench_worker service workspace run /Users/cgutieco/Personal/pseudolearn/packages/pseudolearn_spec/results/pg-6a-e-pg-02-workspace-load-symbol-2026-10-31 /Users/cgutieco/Personal/pseudolearn/apps/pseudolearn_cli/target/release/pseudo "$worker_process" --load files-1000 --load files-1000-extended --scenario workspace-load --scenario workspace-symbol || exit
+done
+target/release/pseudolearn_bench_worker service workspace summary /Users/cgutieco/Personal/pseudolearn/packages/pseudolearn_spec/results/pg-6a-e-pg-02-workspace-load-symbol-2026-10-31 --load files-1000 --load files-1000-extended --scenario workspace-load --scenario workspace-symbol
+```

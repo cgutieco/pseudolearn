@@ -1,10 +1,12 @@
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd)]
 pub enum Scenario {
     BodyEdit,
     SignatureEdit,
     ManifestChange,
     ClosedFileChange,
     Rename,
+    WorkspaceLoad,
+    WorkspaceSymbol,
     StaleSource,
     EmptyProject,
     ShortNames,
@@ -15,12 +17,14 @@ pub const DIAGNOSTIC_THRESHOLD_MILLIS: f64 = 100.0;
 pub const RENAME_THRESHOLD_MILLIS: f64 = 500.0;
 
 impl Scenario {
-    pub const SAMPLED: [Scenario; 5] = [
+    pub const SAMPLED: [Scenario; 7] = [
         Scenario::BodyEdit,
         Scenario::SignatureEdit,
         Scenario::ManifestChange,
         Scenario::ClosedFileChange,
         Scenario::Rename,
+        Scenario::WorkspaceLoad,
+        Scenario::WorkspaceSymbol,
     ];
     pub const CORRECTNESS: [Scenario; 4] = [
         Scenario::StaleSource,
@@ -36,6 +40,8 @@ impl Scenario {
             Scenario::ManifestChange => "manifest-change",
             Scenario::ClosedFileChange => "closed-file-change",
             Scenario::Rename => "rename",
+            Scenario::WorkspaceLoad => "workspace-load",
+            Scenario::WorkspaceSymbol => "workspace-symbol",
             Scenario::StaleSource => "stale-source",
             Scenario::EmptyProject => "empty-project",
             Scenario::ShortNames => "short-names",
@@ -58,6 +64,7 @@ impl Scenario {
             | Scenario::SignatureEdit
             | Scenario::ManifestChange
             | Scenario::ClosedFileChange => Some(DIAGNOSTIC_THRESHOLD_MILLIS),
+            Scenario::WorkspaceLoad | Scenario::WorkspaceSymbol => None,
             _ => None,
         }
     }

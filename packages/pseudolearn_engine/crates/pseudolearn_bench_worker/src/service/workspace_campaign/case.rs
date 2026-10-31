@@ -7,6 +7,9 @@ use serde_json::Value;
 
 pub const BARRIER_ID: u64 = 9000;
 pub const SETTLE_ID: u64 = 9001;
+const RENAME_ID: u64 = 9002;
+const OPEN_BARRIER_START: u64 = 9100;
+const OPEN_BATCH_SIZE: usize = 64;
 const EDITED_MODULE: &str = "lib/m1";
 const ENTRY_MODULE: &str = "app/main";
 const DECLARATION: (u64, u64) = (0, 19);
@@ -69,10 +72,10 @@ fn edit_case(base: &Dataset, edited: &Dataset) -> Case {
         base_setup: session(base, &opened),
         step: vec![
             wire::change_document(EDITED_MODULE, 2, text_of(edited, EDITED_MODULE)),
-            wire::workspace_symbols(BARRIER_ID),
+            wire::document_symbols(BARRIER_ID, ENTRY_MODULE),
         ],
         cold_setup: session(edited, &opened),
-        cold_step: vec![wire::workspace_symbols(BARRIER_ID)],
+        cold_step: vec![wire::document_symbols(BARRIER_ID, ENTRY_MODULE)],
     }
 }
 
@@ -81,26 +84,75 @@ fn resync_case(base: &Dataset, edited: &Dataset, opened: &[&str]) -> Case {
         base_setup: session(base, opened),
         step: vec![
             wire::snapshot(edited, 2),
-            wire::workspace_symbols(BARRIER_ID),
+            wire::document_symbols(BARRIER_ID, ENTRY_MODULE),
         ],
         cold_setup: session(edited, opened),
-        cold_step: vec![wire::workspace_symbols(BARRIER_ID)],
+        cold_step: vec![wire::document_symbols(BARRIER_ID, ENTRY_MODULE)],
     }
 }
 
 fn rename_case(base: &Dataset) -> Case {
     let opened = [ENTRY_MODULE, EDITED_MODULE];
-    let step = vec![wire::rename(
-        BARRIER_ID,
+    let mut step = Vec::new();
+    let mut pending = 0usize;
+    let mut barrier_count = 0u64;
+    for file in base
+        .files
+        .iter()
+        .filter(|file| !opened.contains(&file.path.as_str()))
+    {
+        step.push(wire::open_document(&file.path, 1, &file.text));
+        pending = pending.saturating_add(1);
+        if pending == OPEN_BATCH_SIZE {
+            step.push(wire::document_symbols(
+                OPEN_BARRIER_START.saturating_add(barrier_count),
+                ENTRY_MODULE,
+            ));
+            pending = 0;
+            barrier_count = barrier_count.saturating_add(1);
+        }
+    }
+    if pending > 0 {
+        step.push(wire::document_symbols(
+            OPEN_BARRIER_START.saturating_add(barrier_count),
+            ENTRY_MODULE,
+        ));
+    }
+    step.push(wire::rename(
+        RENAME_ID,
         EDITED_MODULE,
         DECLARATION,
         "Renamed1",
-    )];
+    ));
     Case {
         base_setup: session(base, &opened),
         step: step.clone(),
         cold_setup: session(base, &opened),
         cold_step: step,
+    }
+}
+
+fn workspace_symbol_case(base: &Dataset) -> Case {
+    let query = vec![wire::workspace_symbols(BARRIER_ID)];
+    Case {
+        base_setup: session(base, &[]),
+        step: query.clone(),
+        cold_setup: session(base, &[]),
+        cold_step: query,
+    }
+}
+
+fn workspace_load_case(base: &Dataset) -> Case {
+    let initialize = vec![wire::initialize(1)];
+    let load = vec![
+        wire::snapshot(base, 1),
+        wire::document_symbols(BARRIER_ID, ENTRY_MODULE),
+    ];
+    Case {
+        base_setup: initialize.clone(),
+        step: load.clone(),
+        cold_setup: initialize,
+        cold_step: load,
     }
 }
 
@@ -148,6 +200,8 @@ pub fn build(load: &Load, scenario: Scenario) -> Case {
             &[ENTRY_MODULE],
         ),
         Scenario::Rename => rename_case(&dataset(load, Edit::None)),
+        Scenario::WorkspaceLoad => workspace_load_case(&dataset(load, Edit::None)),
+        Scenario::WorkspaceSymbol => workspace_symbol_case(&dataset(load, Edit::None)),
         Scenario::StaleSource => stale_case(&dataset(load, Edit::None)),
         Scenario::EmptyProject => static_case(&edge::empty_project()),
         Scenario::ShortNames => static_case(&edge::short_names()),

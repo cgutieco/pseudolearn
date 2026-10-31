@@ -66,6 +66,13 @@ pub fn workspace_symbols(id: u64) -> Value {
     json!({"jsonrpc": "2.0", "id": id, "method": "workspace/symbol", "params": {"query": ""}})
 }
 
+pub fn document_symbols(id: u64, path: &str) -> Value {
+    json!({
+        "jsonrpc": "2.0", "id": id, "method": "textDocument/documentSymbol",
+        "params": {"textDocument": {"uri": uri_of(path)}}
+    })
+}
+
 pub fn rename(id: u64, path: &str, position: (u64, u64), new_name: &str) -> Value {
     json!({
         "jsonrpc": "2.0", "id": id, "method": "textDocument/rename",

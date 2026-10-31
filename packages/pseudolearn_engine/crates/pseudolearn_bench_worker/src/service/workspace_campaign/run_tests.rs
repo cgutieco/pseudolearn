@@ -66,3 +66,13 @@ fn stale_revisions_and_boundary_projects_run_to_equivalence() -> Result<(), Stri
     }
     Ok(())
 }
+
+#[test]
+fn rename_opens_drain_through_fake_request_barriers() -> Result<(), String> {
+    let case = build(&TINY_LOAD, Scenario::Rename);
+    let mut connect = alternating_connect("same", "same");
+    let samples = run_case(&mut connect, &mut SteppingClock::new(2_000_000), &case, 1)?;
+    assert_eq!(samples.candidate_millis, vec![2.0]);
+    assert_eq!(samples.control_millis, vec![2.0]);
+    Ok(())
+}
