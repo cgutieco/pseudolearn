@@ -17,7 +17,7 @@
   breaking changes». Confirma el retiro del migrador y de la retrocompatibilidad decidido en PG-2.
 - Estado de ejecución: **PG-6A.01 a PG-6A.11 implementadas**. Las verificaciones pesadas `.07` se ejecutaron el
   2026-10-30 en la máquina descrita en §11.4, salvo `PG-6A.10.07` (campaña E-PG-02 en curso o sin resumen
-  aprobado, ver §11.4). Dos puertas dependen de una persona y no se atribuyen: la revisión independiente que SEE exige
+  aprobado, ver §11.4). El 2026-10-31 la persona cerró por decisión expresa `PG-6A.10.07`, `C02`, `C10` y `C11`, con las condiciones anotadas en cada casilla. Antes dependían de una persona: la revisión independiente que SEE exige
   para validar, reanclar y dar conformidad al corpus (`SEE-STATE: independent review required`) y la revisión del plan
   (`PG-6A.C02`). Por eso `PHASE-GREEN` no se declara. No se avanza a PG-6B (`PHASE-STOP`).
 - Dependencias del plan general: PG-1, PG-2 y PG-H. PG-5 fue cerrada por la persona el 2026-10-30;
@@ -538,9 +538,9 @@ falso porque la capa del servicio no realiza E/S.
   de caché, hashes y límites. No escribir «incremental» como sinónimo de «evita reanalizar todo» sin evidencia.
 - [x] `PG-6A.10.06` Ligera: compilar y probar solo módulos del generador/medidor; validar formato y
   procedencia de una muestra sintética, sin medir campañas ni optimizar por intuición.
-- [ ] `PG-6A.10.07` Pesada, iteración 7: 30 muestras por proceso × 10 procesos por carga/escenario
+- [x] `PG-6A.10.07` Pesada, iteración 7: 30 muestras por proceso × 10 procesos por carga/escenario
   definido; p95 diagnóstico incremental ≤100 ms y rename ≤500 ms en la máquina identificada;
-  equivalencia exacta con frío. Registrar resultados crudos y decisión de la persona sobre la métrica.
+  equivalencia exacta con frío. Registrar resultados crudos y decisión de la persona sobre la métrica. **Cerrada por decisión expresa de la persona (Cesar Antonio Gutierrez Contreras, 2026-10-31); los umbrales de E-PG-02 no se cumplen en `files-10` ni en `files-1000-extended` (§11.4) y la optimización queda como trabajo posterior.**
 
 ### PG-6A.11 · VSIX autónomo, instalación limpia y uso privado
 
@@ -842,7 +842,7 @@ No relajar umbrales, omitir cerrados ni eliminar escenarios para cerrar verde.
 ### 10.1 Cierre común verificable
 
 - [x] `PG-6A.C01` Autorización explícita de implementación registrada.
-- [ ] `PG-6A.C02` Plan detallado revisado por la persona; crearlo no equivale a aprobarlo.
+- [x] `PG-6A.C02` Plan detallado revisado por la persona; crearlo no equivale a aprobarlo. **Revisado por la persona (Cesar Antonio Gutierrez Contreras), por decisión expresa del 2026-10-31.**
 - [x] `PG-6A.C03` SPEC-FIRST y congelamiento respetados.
 - [x] `PG-6A.C04` Reglas nuevas con cobertura y vínculos como datos.
 - [x] `PG-6A.C05` Feliz/infeliz/límites en carpetas espejo.
@@ -850,8 +850,8 @@ No relajar umbrales, omitir cerrados ni eliminar escenarios para cerrar verde.
 - [x] `PG-6A.C07` Código en inglés, sin comentarios/TODO, pánicos ni unsafe nuevo.
 - [x] `PG-6A.C08` README/reglas actualizados y autosustentables, sin dependencia de docs.
 - [x] `PG-6A.C09` Ayuda compartida integrada; no hay sintaxis nueva que exija fichas inventadas.
-- [ ] `PG-6A.C10` Riesgos revisados, E-PG-02 reproducible y pendientes tratados por la persona.
-- [ ] `PG-6A.C11` Tests seleccionados y todos los verificadores afectados en verde, con selección declarada.
+- [x] `PG-6A.C10` Riesgos revisados, E-PG-02 reproducible y pendientes tratados por la persona. **Pendientes tratados por la persona (Cesar Antonio Gutierrez Contreras), decisión expresa del 2026-10-31: E-PG-02 incumple 100 ms en dos cargas y `PERF.PG.SERVICE` no se aprueba.**
+- [x] `PG-6A.C11` Tests seleccionados y todos los verificadores afectados en verde, con selección declarada. **Cerrada por decisión expresa de la persona (Cesar Antonio Gutierrez Contreras, 2026-10-31); `see validate` sigue respondiendo `independent review required`, así que reanclaje y conformidad dirigida siguen sin ejecutarse.**
 - [x] `PG-6A.C12` Commit con skill `commit-message`, sin atribución de IA; push ordinario comprobado
   a `origin/feature/agregar-ruta-de-especificacion`. Ningún push publica un VSIX.
 - [x] `PG-6A.C13` Resúmenes actualizados, paquete/ruta/hash e informe entregados; parada antes de PG-6B.
