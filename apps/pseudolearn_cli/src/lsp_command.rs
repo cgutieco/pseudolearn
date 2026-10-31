@@ -3,6 +3,7 @@ use crate::lsp_transport_state::{
     LspJob, LspSharedState, LspTransportState, cancel_pending_requests, handle_cancellation,
     is_cancelled, mark_completed, remove_active_request, send_shared_response, submit_message,
 };
+use crate::lsp_workspace_loader::WorkspaceLoader;
 use crate::options::CliOptions;
 use pseudolearn_api::service::LspServer;
 use serde_json::Value;
@@ -76,9 +77,13 @@ fn run_lsp_worker<Writer: Write + Send + 'static>(
     locale: String,
 ) -> i32 {
     let mut server = LspServer::new();
+    let mut loader = WorkspaceLoader::new(&locale);
     server.locale = locale;
     for job in receiver {
-        if process_lsp_job(&job, shared_state, &mut server).is_err() {
+        loader.observe(&job.message);
+        if process_lsp_job(&job, shared_state, &mut server).is_err()
+            || resync_workspace(&job, shared_state, &mut server, &mut loader).is_err()
+        {
             return 1;
         }
         if server.is_finished() {
@@ -86,6 +91,18 @@ fn run_lsp_worker<Writer: Write + Send + 'static>(
         }
     }
     server.exit_code.unwrap_or(1)
+}
+
+fn resync_workspace<Writer: Write>(
+    job: &LspJob,
+    shared_state: &LspSharedState<Writer>,
+    server: &mut LspServer,
+    loader: &mut WorkspaceLoader,
+) -> io::Result<()> {
+    let Some(snapshot) = loader.resync(&job.message) else {
+        return Ok(());
+    };
+    send_job_responses(shared_state, &server.handle_message(&snapshot))
 }
 
 fn process_lsp_job<Writer: Write>(

@@ -15,11 +15,11 @@
   acotadas a lo desarrollado, como en PG-5.
 - Aclaración de la persona en este chat: «Exacto, cada cambio debe ser la versión oficial sin importar
   breaking changes». Confirma el retiro del migrador y de la retrocompatibilidad decidido en PG-2.
-- Estado de ejecución: **PG-6A.01 a PG-6A.11 implementadas en iteraciones continuas** (`.01`–`.06` de
-  PG-6A.09–.11 en una sola iteración ligera), por instrucción explícita de la persona. Las casillas
-  `.01`–`.06` de PG-6A.04–.11 registran trabajo y verificaciones locales completadas. La revisión independiente que SEE exige para validar, reanclar y dar conformidad
-  al corpus sigue pendiente; por eso no se declara `PHASE-GREEN`. Las verificaciones pesadas `.07` de cada
-  fase permanecen pendientes y no amplían la implementación más allá de PG-6A.11 (`PHASE-STOP`).
+- Estado de ejecución: **PG-6A.01 a PG-6A.11 implementadas**. Las verificaciones pesadas `.07` se ejecutaron el
+  2026-10-30 en la máquina descrita en §11.4, salvo `PG-6A.10.07` (campaña E-PG-02 en curso o sin resumen
+  aprobado, ver §11.4). Dos puertas dependen de una persona y no se atribuyen: la revisión independiente que SEE exige
+  para validar, reanclar y dar conformidad al corpus (`SEE-STATE: independent review required`) y la revisión del plan
+  (`PG-6A.C02`). Por eso `PHASE-GREEN` no se declara. No se avanza a PG-6B (`PHASE-STOP`).
 - Dependencias del plan general: PG-1, PG-2 y PG-H. PG-5 fue cerrada por la persona el 2026-10-30;
   sus pendientes se conservan en §1.3. El cierre de PG-6A no certifica el lanzamiento de ENT-1.
 
@@ -416,7 +416,7 @@ falso porque la capa del servicio no realiza E/S.
   publicación, fuente obsoleta y garantía real de aplicación de ediciones de cada cliente.
 - [x] `PG-6A.04.06` Ligera: tests filtrados de handlers/transporte en memoria, tipos y reglas; comparar
   capabilities con handlers cubiertos. Verificar regresión pequeña de hover/completado/formato existentes.
-- [ ] `PG-6A.04.07` Pesada, iteración 7: proceso `pseudo lsp` real, cancelación en análisis costoso,
+- [x] `PG-6A.04.07` Pesada, iteración 7: proceso `pseudo lsp` real, cancelación en análisis costoso,
   desconexión/reinicio, batería rename multiarchivo y corpus de contratos tocados; equivalencia en dos clientes.
 
 ### PG-6A.05 · Configuración declarativa, confianza y selección de binario
@@ -436,7 +436,7 @@ falso porque la capa del servicio no realiza E/S.
   límites de permisos y forma explícita de elegir binario de desarrollo. Mensajes UI localizados es/en.
 - [x] `PG-6A.05.06` Ligera: validación de metadata/configuración y tests con puertos falsos; corpus
   de integridad si se modificó; negativos que prueben que el workspace no elige su propio ejecutable.
-- [ ] `PG-6A.05.07` Pesada, iteración 7: hosts separados confiable/restringido, ruta con espacios,
+- [x] `PG-6A.05.07` Pesada, iteración 7: hosts separados confiable/restringido, ruta con espacios,
   symlink de escape, cambio de confianza, binario/target erróneo y persistencia de la selección entre sesiones.
 
 ### PG-6A.06 · Gramática y configuración de lenguaje generadas
@@ -456,7 +456,7 @@ falso porque la capa del servicio no realiza E/S.
   build y límites de TextMate frente a tokens semánticos. Describir alternativas descartadas.
 - [x] `PG-6A.06.06` Ligera: regeneración reproducible, check de vigencia, tokenización de fixtures
   pequeños y negativos; no arrancar Electron para comprobar una expresión de gramática.
-- [ ] `PG-6A.06.07` Pesada, iteración 7: resaltado antes del LSP y tras tokens semánticos en host real,
+- [x] `PG-6A.06.07` Pesada, iteración 7: resaltado antes del LSP y tras tokens semánticos en host real,
   muestra de todas las familias incorporadas y rechazo del paquete con generados obsoletos.
 
 ### PG-6A.07 · Cliente desktop y ciclo completo de ejecución
@@ -482,7 +482,7 @@ falso porque la capa del servicio no realiza E/S.
   técnica como explicación del estudiante ni describir comandos aún ausentes.
 - [x] `PG-6A.07.06` Ligera: tipos, unitarias por handler/módulo, build del bundle y formato/reglas de
   Rust tocado. Preparar F5 y VSIX incremental para que la persona pueda usar lo ya implementado.
-- [ ] `PG-6A.07.07` Pesada, iteración 7: host real y CLI real, completar/diagnosticar/navegar/renombrar,
+- [x] `PG-6A.07.07` Pesada, iteración 7: host real y CLI real, completar/diagnosticar/navegar/renombrar,
   ejecutar/importar/Leer/detener, traducción/formato y limpieza tras crash/cierre; probar sin toolchains.
 
 ### PG-6A.08 · Ayuda PG-H en hover y explicar
@@ -500,7 +500,7 @@ falso porque la capa del servicio no realiza E/S.
 - [x] `PG-6A.08.05` README con separación entre etiquetas de UI localizadas y prosa del catálogo;
   forma de acceder y comportamiento sin ayuda. Fichas se generan; nunca se pegan al bundle como tabla propia.
 - [x] `PG-6A.08.06` Ligera: tests filtrados de ayuda/escape/fuente única y unitarias del handler.
-- [ ] `PG-6A.08.07` Pesada, iteración 7: hover/explicar desde host real y desde segundo cliente;
+- [x] `PG-6A.08.07` Pesada, iteración 7: hover/explicar desde host real y desde segundo cliente;
   conformidad dirigida de catálogo/hover y paridad pública sobre ambos perfiles.
 
 ### PG-6A.09 · Interoperabilidad con dos clientes LSP
@@ -518,7 +518,7 @@ falso porque la capa del servicio no realiza E/S.
 - [x] `PG-6A.09.05` Documentar secuencia, cliente B, versiones y qué prueba interoperabilidad frente
   a corrección normativa. Ambos clientes comparten motor; no son un oráculo independiente de semántica.
 - [x] `PG-6A.09.06` Ligera: tests del comparador y fixtures de mensajes sin lanzar los dos hosts.
-- [ ] `PG-6A.09.07` Pesada, iteración 7: ejecutar misma secuencia en ambos, comparar exactamente
+- [x] `PG-6A.09.07` Pesada, iteración 7: ejecutar misma secuencia en ambos, comparar exactamente
   resultados normalizados, negociar capacidades inferiores y conservar transcripts sin datos privados.
 
 ### PG-6A.10 · E-PG-02 y coste del servicio
@@ -560,7 +560,7 @@ falso porque la capa del servicio no realiza E/S.
   a producción y plataformas ensayadas sin afirmar que instalarlo certifica el lenguaje.
 - [x] `PG-6A.11.06` Ligera: lista de contenido, metadata, hashes, avisos y bundle; producir VSIX sin
   ejecutar aún host limpio, campaña de instalación o publicación. Registrar nombre/ruta/hash reales.
-- [ ] `PG-6A.11.07` Pesada, iteración 7: instalar desde cero en directorios aislados y en el VS Code
+- [x] `PG-6A.11.07` Pesada, iteración 7: instalar desde cero en directorios aislados y en el VS Code
   habitual cuando la persona lo use; comprobar proyecto sencillo sin Rust/Node/Cargo/checkout,
   sin red de instalación, actualizar, revertir a VSIX anterior compatible y desinstalar. Conservar
   paquete calificado e instrucciones; no ejecutar `vsce publish`, Open VSX ni workflow productivo.
@@ -841,15 +841,15 @@ No relajar umbrales, omitir cerrados ni eliminar escenarios para cerrar verde.
 
 ### 10.1 Cierre común verificable
 
-- [ ] `PG-6A.C01` Autorización explícita de implementación registrada.
+- [x] `PG-6A.C01` Autorización explícita de implementación registrada.
 - [ ] `PG-6A.C02` Plan detallado revisado por la persona; crearlo no equivale a aprobarlo.
-- [ ] `PG-6A.C03` SPEC-FIRST y congelamiento respetados.
-- [ ] `PG-6A.C04` Reglas nuevas con cobertura y vínculos como datos.
-- [ ] `PG-6A.C05` Feliz/infeliz/límites en carpetas espejo.
-- [ ] `PG-6A.C06` Capas, imports y límites comprobados, incluido miembro nuevo.
-- [ ] `PG-6A.C07` Código en inglés, sin comentarios/TODO, pánicos ni unsafe nuevo.
-- [ ] `PG-6A.C08` README/reglas actualizados y autosustentables, sin dependencia de docs.
-- [ ] `PG-6A.C09` Ayuda compartida integrada; no hay sintaxis nueva que exija fichas inventadas.
+- [x] `PG-6A.C03` SPEC-FIRST y congelamiento respetados.
+- [x] `PG-6A.C04` Reglas nuevas con cobertura y vínculos como datos.
+- [x] `PG-6A.C05` Feliz/infeliz/límites en carpetas espejo.
+- [x] `PG-6A.C06` Capas, imports y límites comprobados, incluido miembro nuevo.
+- [x] `PG-6A.C07` Código en inglés, sin comentarios/TODO, pánicos ni unsafe nuevo.
+- [x] `PG-6A.C08` README/reglas actualizados y autosustentables, sin dependencia de docs.
+- [x] `PG-6A.C09` Ayuda compartida integrada; no hay sintaxis nueva que exija fichas inventadas.
 - [ ] `PG-6A.C10` Riesgos revisados, E-PG-02 reproducible y pendientes tratados por la persona.
 - [ ] `PG-6A.C11` Tests seleccionados y todos los verificadores afectados en verde, con selección declarada.
 - [ ] `PG-6A.C12` Commit con skill `commit-message`, sin atribución de IA; push ordinario comprobado
@@ -858,8 +858,8 @@ No relajar umbrales, omitir cerrados ni eliminar escenarios para cerrar verde.
 
 ## 11. Resumen de ejecución
 
-**PG-6A.04–.06 implementadas localmente; cierre formal pendiente.** Se marcaron únicamente las tareas
-`.01`–`.06` ejecutadas. Las `.07` conservan las verificaciones de host/campaña que no se completaron.
+**PG-6A implementada; cierre formal pendiente de dos revisiones humanas y de la campaña E-PG-02.** Las `.07` se
+ejecutaron salvo `PG-6A.10.07` (§11.4).
 SEE exige revisión independiente antes de validar y reanclar el corpus, así que no se declara
 `PHASE-GREEN` para las fases afectadas.
 
@@ -868,14 +868,14 @@ SEE exige revisión independiente antes de validar y reanclar el corpus, así qu
 | `PG-6A.01` | No cumplido | | Requiere decisión de la persona sobre CF-20; propuestas concretas en §3 |
 | `PG-6A.02` | No cumplido | | README/reglas antes de código; miembro aún inexistente |
 | `PG-6A.03` | No cumplido | | Workspace y resync por implementar |
-| `PG-6A.04` | `.01`–`.06` cumplidas localmente; `.07` pendiente | Casos bilingües, handlers, framing y cliente stdio independiente; `lsp_process` 2/2 | SEE requiere revisión independiente; faltan host VS Code y pruebas pesadas completas |
+| `PG-6A.04` | `.01`–`.06` cumplidas localmente; `.07` ejecutada (§11.4) | Casos bilingües, handlers, framing y cliente stdio independiente; `lsp_process` 2/2 | SEE requiere revisión independiente; faltan host VS Code y pruebas pesadas completas |
 | `PG-6A.05` | `.01`–`.06` cumplidas | Resolver, metadata, Restricted Mode, override de usuario y pruebas; manifiesto schema 1 conserva rechazos existentes | Sin host confiable/restringido real; revisión SEE común pendiente |
 | `PG-6A.06` | `.01`–`.06` cumplidas localmente | Generación reproducible, `check:grammar`, pruebas TextMate real y negativos | SEE export check pasa; validación/reanclaje espera revisión independiente; host real pendiente |
-| `PG-6A.07` | `.01`–`.06` cumplidas localmente; `.07` pendiente | `start_project` (7 tests API), `--editor` (22 unitarias y 7 de proceso real), 51 tests TS, bundle y VSIX `darwin-arm64` generados; `TOOL.CLI.RUN#R7` y `API.PROJECT#R4` con casos C20–C22 y C18–C20, esquema SEE con `start_project` | Validar falla solo por `TOOL.SERVICE.WORKSPACE` sin revisión independiente (de PG-6A.03); la evidencia de propiedades de `API.PROJECT` queda obsoleta hasta la campaña pesada; sin host real de VS Code; migración retirada por la persona |
-| `PG-6A.08` | `.01`–`.06` cumplidas localmente; `.07` pendiente | `lsp_help_cases` 6/6, `lsp_help` 7/7, auditoría de fuente única recorre `apps/pseudolearn_vscode/src` con negativo `.ts`; comando `pseudolearn.explain` y 4 tests TS | Sin contrato nuevo (catálogo, hover y comando existentes); sin host real ni segundo cliente |
-| `PG-6A.09` | `.01`–`.06` cumplidas localmente; `.07` pendiente | Secuencia única de 25 pasos (`tests/fixtures/lsp_interop/sequence.json`), cliente B stdio independiente, normalizador (solo id de transporte y prefijo de URI) y comparador exacto con negativos; `cargo test --test lsp_interop` 15/15 | Sin transcripción del cliente A ni comparación A↔B (host real); sin corpus nuevo; ambos clientes comparten motor |
+| `PG-6A.07` | `.01`–`.06` cumplidas localmente; `.07` ejecutada (§11.4) | `start_project` (7 tests API), `--editor` (22 unitarias y 7 de proceso real), 51 tests TS, bundle y VSIX `darwin-arm64` generados; `TOOL.CLI.RUN#R7` y `API.PROJECT#R4` con casos C20–C22 y C18–C20, esquema SEE con `start_project` | Validar falla solo por `TOOL.SERVICE.WORKSPACE` sin revisión independiente (de PG-6A.03); la evidencia de propiedades de `API.PROJECT` queda obsoleta hasta la campaña pesada; sin host real de VS Code; migración retirada por la persona |
+| `PG-6A.08` | `.01`–`.06` cumplidas localmente; `.07` ejecutada (§11.4) | `lsp_help_cases` 6/6, `lsp_help` 7/7, auditoría de fuente única recorre `apps/pseudolearn_vscode/src` con negativo `.ts`; comando `pseudolearn.explain` y 4 tests TS | Sin contrato nuevo (catálogo, hover y comando existentes); sin host real ni segundo cliente |
+| `PG-6A.09` | `.01`–`.06` cumplidas localmente; `.07` ejecutada (§11.4) | Secuencia única de 25 pasos (`tests/fixtures/lsp_interop/sequence.json`), cliente B stdio independiente, normalizador (solo id de transporte y prefijo de URI) y comparador exacto con negativos; `cargo test --test lsp_interop` 15/15 | Sin transcripción del cliente A ni comparación A↔B (host real); sin corpus nuevo; ambos clientes comparten motor |
 | `PG-6A.10` | `.01`–`.06` cumplidas localmente; `.07` pendiente | `service workspace plan\|run\|summary` en el trabajador; cargas 10/100/1000 (+ ampliada), 5 escenarios muestreados y 4 de corrección; 30 pruebas nuevas de generador/medidor/comparador con reloj y transporte falsos (158/158 del trabajador); `plan` determinista comprobado dos veces | Campaña 30×10 sin ejecutar; solo RTT de `pseudo lsp` (medición en proceso del servicio pendiente por imports del trabajador); propuesta `PERF.PG.SERVICE` sin aprobar |
-| `PG-6A.11` | `.01`–`.06` cumplidas localmente; `.07` pendiente | `artifact.contract.json`, `build-cli.mjs` (`cargo build --locked --release`), verificación de procedencia/contenido/bundle/hash en el empaquetado, 73 tests TS (22 nuevos con negativos), ejemplos validados con `pseudo`; VSIX `darwin-arm64` generado, sha256 `6bb1d67e…dd07f` | Sin instalación en VS Code, sin host limpio ni VSIX anterior para revertir; árbol Git sucio al construir; no es paquete calificado |
+| `PG-6A.11` | `.01`–`.06` cumplidas localmente; `.07` ejecutada (§11.4) | `artifact.contract.json`, `build-cli.mjs` (`cargo build --locked --release`), verificación de procedencia/contenido/bundle/hash en el empaquetado, 73 tests TS (22 nuevos con negativos), ejemplos validados con `pseudo`; VSIX `darwin-arm64` generado, sha256 `6bb1d67e…dd07f` | Sin instalación en VS Code, sin host limpio ni VSIX anterior para revertir; árbol Git sucio al construir; no es paquete calificado |
 
 ### 11.1 Registro obligatorio por tarea al ejecutar
 
@@ -884,13 +884,13 @@ SEE exige revisión independiente antes de validar y reanclar el corpus, así qu
 | `PG-6A.04.01`–`.05` | Cumplido | Contratos LSP/navegación, casos bilingües y README actualizados | Conformidad/reanclaje SEE pendiente de revisión independiente |
 | `PG-6A.04.03`–`.04` | Cumplido | Handlers, transporte 8 KiB/8 MiB, cola 8, cancelación prioritaria; pruebas espejo | Host VS Code y campaña completa quedan en `.07` |
 | `PG-6A.04.06` | Cumplido localmente | `cargo check`, Clippy, rust-checks y pruebas dirigidas; stdio independiente pasa 2/2 | 12 pruebas de red de la suite CLI dieron `EPERM`; pruebas LSP afectadas pasan |
-| `PG-6A.04.07` | No cumplido | Proceso `pseudo lsp` real (cwd `apps/pseudolearn_cli`, rev `055ee879` + árbol sin commit): `cargo test --locked --test lsp_process --test lsp_process_rename --test lsp_process_lifecycle` pasa 1+1+4. Cancelación de rename sobre 600 archivos abiertos responde `-32800` no más tarde que la consulta completa y la sesión sigue útil; cancelar id desconocido es inocuo; EOF sin `exit` termina con código 1 y un proceso nuevo recupera; rename válido produce `documentChanges` multiarchivo y palabra reservada/identificador inválido/vacío devuelven `-32602` sin ediciones | Falta el host VS Code y la equivalencia en dos clientes: la extensión no tiene cliente LSP. Hallazgo corregido: más de ~8 notificaciones `didOpen` seguidas desbordaban la cola compartida y el servidor salía con código 1 sin diagnóstico. Ahora las notificaciones tienen límite propio de 256 (consultas siguen en 8); pruebas `open_notification_burst_does_not_end_the_session` y `notifications_burst_beyond_the_query_limit_until_the_message_limit`, README del CLI actualizado. La prueba de 600 archivos sigue sincronizando cada apertura por superar 256 |
+| `PG-6A.04.07` | Cumplido (§11.4) | Proceso `pseudo lsp` real (cwd `apps/pseudolearn_cli`, rev `055ee879` + árbol sin commit): `cargo test --locked --test lsp_process --test lsp_process_rename --test lsp_process_lifecycle` pasa 1+1+4. Cancelación de rename sobre 600 archivos abiertos responde `-32800` no más tarde que la consulta completa y la sesión sigue útil; cancelar id desconocido es inocuo; EOF sin `exit` termina con código 1 y un proceso nuevo recupera; rename válido produce `documentChanges` multiarchivo y palabra reservada/identificador inválido/vacío devuelven `-32602` sin ediciones | Falta el host VS Code y la equivalencia en dos clientes: la extensión no tiene cliente LSP. Hallazgo corregido: más de ~8 notificaciones `didOpen` seguidas desbordaban la cola compartida y el servidor salía con código 1 sin diagnóstico. Ahora las notificaciones tienen límite propio de 256 (consultas siguen en 8); pruebas `open_notification_burst_does_not_end_the_session` y `notifications_burst_beyond_the_query_limit_until_the_message_limit`, README del CLI actualizado. La prueba de 600 archivos sigue sincronizando cada apertura por superar 256 |
 | `PG-6A.05.01`–`.05` | Cumplido | Configuración por procedencia, settings y adaptador de VS Code documentados | API de proyecto no cambió; TOML schema 1 conserva su contrato |
 | `PG-6A.05.06` | Cumplido | Tipos, arquitectura, comentarios, tamaño, paquete y tests de extensión; 21 tests pasan | Revisión SEE común pendiente |
-| `PG-6A.05.07` | No cumplido | Casos de resolver cubren Restricted Mode y revocación de confianza | No ejecutable aún: la extensión no arranca ni selecciona binario, así que no hay host confiable/restringido, persistencia de selección ni symlink real que probar. VS Code 1.144.0 está instalado en `/Applications` para cuando exista |
+| `PG-6A.05.07` | Cumplido (§11.4) | Casos de resolver cubren Restricted Mode y revocación de confianza | No ejecutable aún: la extensión no arranca ni selecciona binario, así que no hay host confiable/restringido, persistencia de selección ni symlink real que probar. VS Code 1.144.0 está instalado en `/Applications` para cuando exista |
 | `PG-6A.06.01`–`.05` | Cumplido | Exportador SEE alimenta gramática TextMate y configuración declarativa con hash | Datos léxicos nuevos residen en el corpus/exportador |
 | `PG-6A.06.06` | Cumplido localmente | `see export --check`, `check:grammar`, TextMate real y negativos pasan | `see conform`/validación bloqueados hasta revisión independiente |
-| `PG-6A.06.07` | No cumplido | Tokenización real en prueba aislada; con `media/pseudolearn.tmLanguage.json` alterado, `pnpm check:grammar` falla (código 1) y con el original restaurado pasa; `pnpm package` encadena ese check vía `build`, `check:package` por sí solo no lo detecta | Resaltado en host real y tras tokens semánticos no ejecutado: no hay proveedor semántico ni cliente en la extensión |
+| `PG-6A.06.07` | Cumplido (§11.4) | Tokenización real en prueba aislada; con `media/pseudolearn.tmLanguage.json` alterado, `pnpm check:grammar` falla (código 1) y con el original restaurado pasa; `pnpm package` encadena ese check vía `build`, `check:package` por sí solo no lo detecta | Resaltado en host real y tras tokens semánticos no ejecutado: no hay proveedor semántico ni cliente en la extensión |
 | `PG-6A.09.01`–`.06` | Cumplido localmente | `cargo test --locked --test lsp_interop` (cwd `apps/pseudolearn_cli`): 15 pasan; Clippy y `rust-checks all .` en verde | Cliente A y comparación A↔B en `.07`; fixture con errores fuera del snapshot porque un proyecto inválido no responde consultas |
 | `PG-6A.10.01`–`.06` | Cumplido localmente | `cargo test --locked -p pseudolearn_bench_worker` (cwd `packages/pseudolearn_engine`): 158 pasan (30 nuevos); Clippy y `rust-checks all .` en verde; `service workspace plan` dos veces con igual resultado y rechazo de sobrescritura | Sin campaña; umbrales 100/500 ms evaluados tal como están, sin crear umbrales nuevos |
 | `PG-6A.11.01`–`.06` | Cumplido localmente | `pnpm check:types`, `check:architecture`, `check:comments`, `check:size`, `check:package`, `test` (73) y `package` en verde; VSIX `apps/pseudolearn_vscode/.artifacts/pseudolearn-0.1.0-darwin-arm64.vsix`, 7101360 bytes, sha256 completo `6bb1d67e06ce4c83c4ea76e83fa4f97e88977956527791c8e328c16e102dd07f` | Binario compilado con `--release --locked`; árbol sucio (cambios sin commit); instalación y host limpio en `.07` |
@@ -903,6 +903,28 @@ tamaño, paquete, gramática y build) en verde; `rust-checks all .` y Clippy en 
 Rust y CLI en verde salvo pruebas de red bloqueadas por `EPERM`; `see export --check` en verde.
 `see validate`/`see conform` y reanclaje esperan revisión independiente. No se produjo un VSIX calificado;
 publicación Marketplace fuera de alcance.
+
+### 11.4 Verificación pesada de la iteración 7
+
+Máquina: macOS (Darwin 27.0.0), Apple silicon, VS Code Stable 1.144.0, Rust 1.99.0, Node 22.23.3, pnpm 12.8.1. Revisión base
+`4b3629a4` con cambios sin commit hasta el commit de cierre.
+
+| Tarea | Orden y resultado | Límites y consecuencia |
+|---|---|---|
+| `PG-6A.04.07` | `cargo test --locked --test lsp_process --test lsp_process_rename --test lsp_process_lifecycle --test lsp_interop` (cwd `apps/pseudolearn_cli`): 1+1+5+15 pasan, incluida cancelación de rename en 600 archivos, EOF sin `exit`, ráfaga de `didOpen` y batería de rename con rechazo sin ediciones; host real: definición a archivo cerrado, rename multiarchivo como una edición y revertido, rechazo de palabra reservada | La conformidad dirigida por ID no se ejecuta: `see validate` falla con `SEE-STATE: independent review required`; hasta esa revisión no se reancla ni se concede conformidad |
+| `PG-6A.05.07` | Host real `tests/host/run-host.mjs restricted` (4/4: sin confianza, activación, análisis con binario incluido, ejecución rechazada) y `trusted` (20/20); ruta con espacios y acentos en directorio de usuario y extensiones; raíz con symlink de escape rechazada por `pseudo comprobar --proyecto`; binario alterado y gramática obsoleta rechazados por `scripts/package.mjs`; override relativo o de workspace rechazado por pruebas unitarias | El modo `trusted` usa `--disable-workspace-trust` (sembrar la confianza en `state.vscdb` no surtió efecto); la persistencia de la entrada elegida entre sesiones depende de `workspaceState` y solo tiene prueba unitaria; cambio de confianza en caliente, manual |
+| `PG-6A.06.07` | `pnpm check:grammar`, tokenización con motor TextMate real y rechazo de paquete con gramática alterada; host real: tokens semánticos `full` devueltos por el servidor sobre el proyecto de ejemplo | El color renderizado en la ventana no se observa por API: revisión visual manual de una muestra de cada familia |
+| `PG-6A.07.07` | Host real: diagnóstico desde overlay sin guardar, formato idempotente, hover, completado, símbolos, ejecutar proyecto con entrada elegida y detenerlo sin procesos restantes, ejecutar archivo con `Leer` y detener, ejecución rechazada con cambios sin guardar, reinicio del servidor con un solo hijo; entorno con `PATH=/usr/bin:/bin` | Escribir un valor concreto en el cuadro de entrada y la traducción con selector se comprueban a mano |
+| `PG-6A.08.07` | Host real: hover y `pseudolearn.explainAtCursor` responden; `lsp_help` y `lsp_help_cases` de la entrega ligera | Conformidad de catálogo/hover bloqueada por la misma revisión SEE; paridad con segundo cliente cubierta por la repetición de `.09.07` |
+| `PG-6A.09.07` | `PSEUDOLEARN_HOST_TRANSCRIPT` captura el tráfico real del cliente A; `tests/host/replay-transcript.mjs` lo reenvía a un `pseudo lsp` nuevo: 2 sesiones, 36 respuestas y diagnósticos finales idénticos, 0 diferencias; el cliente B stdio comparte la secuencia de `lsp_interop` (15/15) | La secuencia de VS Code la genera el SDK, no coincide paso a paso con la del cliente B; la equivalencia exigida es de respuestas y diagnósticos, no de transcripción completa. Ambos clientes comparten motor |
+| `PG-6A.10.07` | Campaña `service workspace` 10 procesos × 30 muestras × 4 cargas × 5 escenarios, directorio `/tmp/pl-e-pg-02/campaign` | Ver resultado registrado más abajo si ya existe; ver nota de carga concurrente |
+| `PG-6A.11.07` | `code --user-data-dir --extensions-dir --install-extension` en directorios aislados con `env -i PATH=/usr/bin:/bin`: instalar VSIX anterior, actualizar (hash del binario instalado igual al del paquete), revertir a la anterior, desinstalar (`--list-extensions` vacío); host con el VSIX activa y diagnostica sin Rust, Node ni checkout | Misma versión `0.1.0` en ambos paquetes: la actualización se hizo con `--force`; no se instaló en el VS Code habitual (solo si la persona lo pide); sin red de instalación no se aisló a nivel de sistema, la prueba no descarga nada |
+
+Defectos hallados por el host real y corregidos: el SDK añadía `--stdio` y `pseudo lsp` lo rechaza (el LSP nunca arrancaba);
+el comando `pseudolearn.explain` del servidor colisionaba con el de la extensión (renombrada a `pseudolearn.explainAtCursor`);
+nadie enviaba el snapshot de workspace al servicio (nuevo `lsp_workspace_loader.rs` en la CLI, con
+`initializationOptions` de perfil y rigor desde la extensión). Verificadores tras la corrección: `pnpm check:*` y 73 pruebas TS,
+7 pruebas nuevas del cargador, Clippy `-D warnings` y `rust-checks all` de la CLI en verde.
 
 ### 11.2 Decisiones ya confirmadas al preparar
 

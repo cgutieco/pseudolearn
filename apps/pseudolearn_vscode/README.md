@@ -14,7 +14,7 @@ Fuera de alcance de este incremento: depuración, plataformas no calificadas, wo
 
 Usa Node.js 22.23.3, pnpm 12.8.1, TypeScript 6.0.3, VS Code API 1.144.0 y `@vscode/vsce` 4.0.0. TextMate 9.3.2 y Oniguruma 1.7.0 tokenizan la gramática en pruebas. `vscode-languageclient` se fija en 10.1.2 para el cliente LSP fino de la siguiente etapa. El mínimo de VS Code es `^1.144.0`. La versión `0.1.0` identifica este artefacto de extensión, no una versión del lenguaje.
 
-La activación valida `pseudolearn.profile` y `pseudolearn.strictness` desde workspace, y `pseudolearn.interfaceLanguage` desde el usuario. `pseudolearn.server.path` acepta únicamente una ruta absoluta de usuario en desarrollo confiable; Restricted Mode y cualquier valor de workspace la rechazan. El binario incluido es la ruta predeterminada. La activación inicia el cliente LSP (`vscode-languageclient/node`) con el ejecutable resuelto y el argumento `lsp`, con entorno vacío; el ciclo es acotado (tres arranques fallidos consecutivos y parada con plazo de 2 s) y `PseudoLearn: Restart Language Server` lo reinicia con el presupuesto restablecido. La materialización de documentos cerrados para renombrar en varios archivos y la verificación en host real quedan pendientes de la verificación pesada. Para empaquetado de desarrollo, `PSEUDOLEARN_PSEUDO_PATH` selecciona el archivo de entrada del empaquetador y no es una configuración de workspace ni una opción de ejecución. El empaquetado ordinario compila e incluye el binario `darwin-arm64`. El VSIX usa el binario incluido, sin red ni toolchains en tiempo de ejecución.
+La activación valida `pseudolearn.profile` y `pseudolearn.strictness` desde workspace, y `pseudolearn.interfaceLanguage` desde el usuario. `pseudolearn.server.path` acepta únicamente una ruta absoluta de usuario en desarrollo confiable; Restricted Mode y cualquier valor de workspace la rechazan. El binario incluido es la ruta predeterminada. La activación inicia el cliente LSP (`vscode-languageclient/node`) con el ejecutable resuelto y el argumento `lsp`, con entorno vacío; el ciclo es acotado (tres arranques fallidos consecutivos y parada con plazo de 2 s) y `PseudoLearn: Restart Language Server` lo reinicia con el presupuesto restablecido. El cliente entrega `profile`, `strictness` y el idioma como `initializationOptions`; la CLI carga el workspace por su cuenta (ver README de la CLI). El ejecutable se lanza como `Executable` simple (`pseudo lsp`): el modo `TransportKind.stdio` del SDK añade `--stdio`, que `pseudo` rechaza. El servidor anuncia el comando `pseudolearn.explain` y el SDK lo registra en el host; por eso el comando propio de la extensión se llama `pseudolearn.explainAtCursor` y no colisiona. Para empaquetado de desarrollo, `PSEUDOLEARN_PSEUDO_PATH` selecciona el archivo de entrada del empaquetador y no es una configuración de workspace ni una opción de ejecución. El empaquetado ordinario compila e incluye el binario `darwin-arm64`. El VSIX usa el binario incluido, sin red ni toolchains en tiempo de ejecución.
 
 F5 requiere el checkout y la cadena de construcción; una instalación VSIX coincidente requiere VS Code Stable para macOS Apple silicon y no requiere Cargo, Rust, Node ni pnpm. En otra plataforma el artefacto no está calificado. La instalación y actualización son manuales: conservar el VSIX anterior permite revertir reinstalándolo. No hay actualización automática.
 
@@ -52,8 +52,10 @@ Desde este directorio:
 - `pnpm build`
 - `pnpm build:cli`
 - `pnpm package`
+- `node tests/host/run-host.mjs trusted [vsix]` y `node tests/host/run-host.mjs restricted [vsix]` (host real)
+- `node tests/host/replay-transcript.mjs <directorio-transcripción> <pseudo>`
 
-Los tests reflejan `src/` bajo `tests/`. Los verificadores tienen fixtures positivos y negativos; los tests de activación usan puertos falsos. `pnpm package` crea un VSIX local para macOS Apple silicon, genera los avisos del binario desde `cargo metadata` y valida su lista de contenidos. F5 y la instalación local del VSIX en VS Code Stable 1.144.0 son verificaciones del host, no publicación.
+Los tests reflejan `src/` bajo `tests/`. Los verificadores tienen fixtures positivos y negativos; los tests de activación usan puertos falsos. `pnpm package` crea un VSIX local para macOS Apple silicon, genera los avisos del binario desde `cargo metadata` y valida su lista de contenidos. F5 y la instalación local del VSIX en VS Code Stable 1.144.0 son verificaciones del host, no publicación. `tests/host/run-host.mjs` instala el VSIX en directorios de usuario y extensiones aislados (ruta con espacios y acentos, `PATH` reducido a `/usr/bin:/bin`, sin Cargo, Node ni checkout en el entorno) y abre VS Code con `--extensionTestsPath`. El modo `restricted` no desactiva Workspace Trust. El modo `trusted` usa `--disable-workspace-trust`, el mecanismo de VS Code para automatización: sembrar la confianza en `state.vscdb` no surtió efecto en 1.144.0 y la única forma de ejecutar programas en el host de pruebas es que el workspace sea de confianza. Con `PSEUDOLEARN_HOST_TRANSCRIPT=<dir>` el servidor configurado es un envoltorio que copia el tráfico LSP, y `replay-transcript.mjs` reenvía los mensajes del cliente A a un `pseudo lsp` nuevo, esperando cada respuesta, y exige respuestas y diagnósticos finales idénticos. Límites: el cuadro de entrada de `Leer` y el selector de entrada se accionan solo con comandos del workbench; escribir un valor concreto en el cuadro de entrada es una comprobación manual.
 
 ## 7. Comandos, ejecución interactiva y ayuda
 
@@ -65,7 +67,7 @@ Todos los comandos están bajo la categoría `PseudoLearn` en la paleta. Los IDs
 | `pseudolearn.runProject` | Ejecuta el proyecto de la primera carpeta del workspace con la entrada elegida |
 | `pseudolearn.selectEntry` | Elige el punto de entrada entre los módulos que informa `pseudo comprobar --json --proyecto`; se guarda en el estado del workspace |
 | `pseudolearn.stopRun` | Solicita cancelación a la sesión activa |
-| `pseudolearn.explain` | Muestra la ayuda de la posición del cursor; teclado `Cmd+K Cmd+E` (`Ctrl+K Ctrl+E`) y paleta |
+| `pseudolearn.explainAtCursor` | Muestra la ayuda de la posición del cursor; teclado `Cmd+K Cmd+E` (`Ctrl+K Ctrl+E`) y paleta |
 | `pseudolearn.translate` | Traduce el vocabulario del archivo guardado a `es` o `en` como una sola edición deshacible |
 | `pseudolearn.restartServer` | Reinicia el cliente LSP |
 
@@ -83,7 +85,7 @@ el cuadro envía `cancel` y no una cadena vacía. **Detener** envía `cancel` y,
 la extensión envía `close` y termina el proceso propio; ningún proceso ajeno se toca. Las líneas de una sesión anterior que
 llegan tarde se ignoran. Un `hello` con otro `schema` aborta la sesión. No se concede ningún archivo ni red.
 
-**Ayuda.** El hover estándar lo contesta el servidor LSP y `pseudolearn.explain` envía `workspace/executeCommand` con la
+**Ayuda.** El hover estándar lo contesta el servidor LSP y `pseudolearn.explainAtCursor` envía `workspace/executeCommand` con la
 versión del documento y formato `plaintext`: el resultado es el mismo contenido y rango que el hover, y un documento cambiado
 responde `ContentModified`, que se presenta como «repetí la consulta». La prosa de la ficha viene siempre del catálogo
 (`TOOL.SERVICE.CATALOG`); la extensión solo localiza sus propias etiquetas de interfaz (es/en) y no guarda ninguna tabla de

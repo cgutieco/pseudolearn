@@ -1,4 +1,4 @@
-import { LanguageClient, TransportKind } from "vscode-languageclient/node";
+import { LanguageClient } from "vscode-languageclient/node";
 import type {
   ExplainAnswer,
   ExplainRequest,
@@ -12,13 +12,24 @@ interface ExplainResult {
   contents?: { value?: unknown };
 }
 
+export interface LanguageServerOptions {
+  profile: "es" | "en";
+  strictness: "strict" | "flexible";
+  locale: "es" | "en";
+}
+
 export class VscodeLanguageClientFactory implements LanguageClientFactoryPort {
+  constructor(private readonly options: LanguageServerOptions) {}
+
   create(executable: string): LanguageClientPort {
     const client = new LanguageClient(
       "pseudolearn",
       "PseudoLearn",
-      { command: executable, args: ["lsp"], transport: TransportKind.stdio, options: { env: {} } },
-      { documentSelector: [{ scheme: "file", language: "pseudolearn" }] },
+      { command: executable, args: ["lsp"], options: { env: {} } },
+      {
+        documentSelector: [{ scheme: "file", language: "pseudolearn" }],
+        initializationOptions: this.options,
+      },
     );
     return {
       start: () => client.start(),

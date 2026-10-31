@@ -9,7 +9,7 @@ export function registerExplainCommand(
   language: InterfaceLanguage,
 ): vscode.Disposable[] {
   const presenter = new VscodeExplainPresenter(language);
-  const command = vscode.commands.registerCommand("pseudolearn.explain", () => {
+  const command = vscode.commands.registerCommand("pseudolearn.explainAtCursor", () => {
     const editor = vscode.window.activeTextEditor;
     if (editor?.document.languageId !== "pseudolearn") {
       return undefined;

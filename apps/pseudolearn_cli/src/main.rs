@@ -18,6 +18,7 @@ mod lock_command;
 mod lsp_command;
 mod lsp_framing;
 mod lsp_transport_state;
+mod lsp_workspace_loader;
 mod messages;
 mod native_cache;
 mod native_linker;
@@ -63,6 +64,8 @@ mod editor_session_tests;
 mod lsp_command_tests;
 #[cfg(test)]
 mod lsp_framing_tests;
+#[cfg(test)]
+mod lsp_workspace_loader_tests;
 #[cfg(test)]
 mod network_address_policy_tests;
 #[cfg(test)]

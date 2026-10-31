@@ -41,13 +41,13 @@
       { "command": "pseudolearn.runProject", "title": "Run Project", "category": "PseudoLearn" },
       { "command": "pseudolearn.stopRun", "title": "Stop Run", "category": "PseudoLearn" },
       { "command": "pseudolearn.selectEntry", "title": "Select Project Entry", "category": "PseudoLearn" },
-      { "command": "pseudolearn.explain", "title": "Explain at Cursor", "category": "PseudoLearn" },
+      { "command": "pseudolearn.explainAtCursor", "title": "Explain at Cursor", "category": "PseudoLearn" },
       { "command": "pseudolearn.translate", "title": "Translate Vocabulary", "category": "PseudoLearn" },
       { "command": "pseudolearn.restartServer", "title": "Restart Language Server", "category": "PseudoLearn" }
     ],
     "keybindings": [
       {
-        "command": "pseudolearn.explain",
+        "command": "pseudolearn.explainAtCursor",
         "key": "ctrl+k ctrl+e",
         "mac": "cmd+k cmd+e",
         "when": "editorLangId == pseudolearn"

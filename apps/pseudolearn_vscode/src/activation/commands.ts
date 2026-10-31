@@ -49,7 +49,11 @@ export function registerCommands(
     runner: new NodeCommandRunner(),
     controller,
   };
-  const client = new ClientLifecycle(new VscodeLanguageClientFactory(), settings.executable);
+  const client = new ClientLifecycle(new VscodeLanguageClientFactory({
+      profile: settings.profile,
+      strictness: settings.strictness,
+      locale: settings.language,
+    }), settings.executable);
   extension.subscriptions.push(
     presenter,
     { dispose: () => controller.dispose(settings) },
