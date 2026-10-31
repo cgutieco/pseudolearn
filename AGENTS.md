@@ -177,9 +177,10 @@ No hace falta leer cada línea. Estas señales delatan casi siempre una capa mez
 
 En `.agents/skills/`:
 
-| Skill            | Cuándo usarla                                                    |
-|------------------|------------------------------------------------------------------|
-| `commit-message` | Formato de los mensajes de commit del repositorio y sus paquetes |
+| Skill                         | Cuándo usarla                                                                  |
+|-------------------------------|--------------------------------------------------------------------------------|
+| `commit-message`              | Formato de los mensajes de commit del repositorio y sus paquetes               |
+| `update-pseudolearn-vscode`   | Instalar y verificar la extensión local en el perfil personal de VS Code       |
 
 ---
 
