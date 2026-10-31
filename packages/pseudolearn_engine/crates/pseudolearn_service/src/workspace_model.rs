@@ -5,7 +5,9 @@ use pseudolearn_project::{
     Configuration, ImportEdge, MalformedProject, ModuleId, PackageInput, ProjectError, ProjectInput,
 };
 use pseudolearn_semantic::{HirModule, ResolvedUnitProfile, ServiceAnalysis};
+use pseudolearn_syntax::SyntaxTree;
 use std::collections::BTreeMap;
+use std::sync::Arc;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct WorkspaceOptions {
@@ -82,11 +84,23 @@ pub(crate) struct WorkspaceOverlay {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
+pub(crate) struct ParsedUnitCache {
+    pub source_id: u32,
+    pub profile: Profile,
+    pub strict: bool,
+    pub tree: Arc<SyntaxTree>,
+    pub diagnostics: Vec<Diagnostic>,
+    pub units: Vec<UnitFingerprint>,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct WorkspaceIndex {
     pub packages: Vec<PackageInput>,
     pub options: WorkspaceOptions,
     pub files: BTreeMap<String, WorkspaceFileState>,
     pub profiles: BTreeMap<String, ResolvedUnitProfile>,
+    pub source_paths: BTreeMap<u32, String>,
+    pub parsed_units: BTreeMap<String, ParsedUnitCache>,
     pub units: BTreeMap<String, Vec<UnitFingerprint>>,
     pub imports: Vec<ImportEdge>,
     pub modules: BTreeMap<ModuleId, String>,

@@ -13,6 +13,10 @@ pub(crate) fn install_snapshot(
     let uris = parse_uris(request_parameters)?;
     let session = WorkspaceSession::new(snapshot).map_err(|error| format!("{error:?}"))?;
     server.workspace_session = Some(session);
+    server.workspace_paths = uris
+        .iter()
+        .map(|(path, uri)| (uri.clone(), path.clone()))
+        .collect();
     server.workspace_uris = uris;
     Ok(())
 }

@@ -9,6 +9,9 @@ impl LspServer {
         message: &Value,
         is_request: bool,
     ) -> Vec<Value> {
+        if method.starts_with("textDocument/") && !self.request_cancelled() {
+            self.ensure_workspace_document(message);
+        }
         let response = match method {
             "textDocument/completion" => self.handle_completion(message),
             "textDocument/hover" => self.handle_hover(message),

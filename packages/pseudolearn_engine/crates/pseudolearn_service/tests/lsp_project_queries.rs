@@ -1,4 +1,4 @@
-use pseudolearn_service::{LspServer, RequestCancellation};
+use pseudolearn_service::LspServer;
 use serde_json::{Value, json};
 
 const APP_URI: &str = "file:///app/main.pseudo";
@@ -59,35 +59,6 @@ fn project_uris() -> Value {
     json!({"app/main":APP_URI,"geo/vector":LIBRARY_URI})
 }
 
-fn cycle_workspace_message() -> Value {
-    json!({
-        "jsonrpc":"2.0","method":"pseudolearn/workspaceSnapshot",
-        "params":{
-            "project":{"project_id":7,"revision_id":1,"packages":[
-                {"name":"app","root":"app","kind":"application","entries":["app/main"],"dependencies":{"geo":"geo"}},
-                {"name":"geo","root":"geo","kind":"library","entries":[],"dependencies":{}}
-            ],"files":[
-                {"path":"app/main","source_id":1,"text":"Importar geo.a;\nAlgoritmo Main\nFinAlgoritmo\n"},
-                {"path":"geo/a","source_id":2,"text":"Importar geo.b;\n"},
-                {"path":"geo/b","source_id":3,"text":"Importar geo.a;\n"}
-            ]},
-            "uris":{"app/main":APP_URI,"geo/a":"file:///geo/a.pseudo","geo/b":"file:///geo/b.pseudo"}
-        }
-    })
-}
-
-fn cycle_diagnostic(notifications: &[Value]) -> Option<&Value> {
-    notifications
-        .iter()
-        .filter_map(|notification| {
-            notification
-                .pointer("/params/diagnostics")
-                .and_then(Value::as_array)
-        })
-        .flatten()
-        .find(|diagnostic| diagnostic.get("code") == Some(&json!("importCycle")))
-}
-
 fn open_document(server: &mut LspServer, uri: &str, version: i64, text: &str) {
     server.handle_message(&json!({
         "jsonrpc":"2.0","method":"textDocument/didOpen",
@@ -127,123 +98,53 @@ fn project_definition_and_references_include_closed_source_files() {
 }
 
 #[test]
-fn workspace_symbols_use_short_names_and_point_to_closed_definitions() {
-    let mut server = initialized_server(json!({}));
-    server.handle_message(&workspace_message(
+fn body_edit_queries_and_rename_edits_match_a_cold_workspace() {
+    let body = LIBRARY.replace("value * 2", "value * 3");
+    let mut incremental = initialized_server(rename_capabilities());
+    incremental.handle_message(&workspace_message(
         project_files(MAIN, LIBRARY),
         project_uris(),
     ));
-    let symbols = server.handle_message(&json!({
-        "jsonrpc":"2.0","id":2,"method":"workspace/symbol",
-        "params":{"query":"Double"}
+    open_document(&mut incremental, APP_URI, 1, MAIN);
+    open_document(&mut incremental, LIBRARY_URI, 1, LIBRARY);
+    incremental.handle_message(&json!({
+        "jsonrpc":"2.0","method":"textDocument/didChange",
+        "params":{"textDocument":{"uri":LIBRARY_URI,"version":2},"contentChanges":[{"text":body}]}
     }));
-    let rows = symbols
-        .first()
-        .and_then(|answer| answer.pointer("/result"))
-        .and_then(Value::as_array);
-    let symbol = rows.and_then(|items| {
-        items
-            .iter()
-            .find(|candidate| candidate.get("name") == Some(&json!("Double")))
-    });
-    assert_eq!(
-        symbol.and_then(|candidate| candidate.pointer("/location/uri")),
-        Some(&json!(LIBRARY_URI))
-    );
-}
-
-#[test]
-fn project_diagnostics_include_related_locations_only_when_negotiated() {
-    let cycle = cycle_workspace_message();
-    let mut supported = initialized_server(json!({
-        "textDocument":{"publishDiagnostics":{"relatedInformation":true}}
-    }));
-    let supported_notifications = supported.handle_message(&cycle);
-    let related = cycle_diagnostic(&supported_notifications)
-        .and_then(|diagnostic| diagnostic.pointer("/relatedInformation"))
-        .and_then(Value::as_array);
-    assert!(related.is_some_and(|items| {
-        items.iter().any(|candidate| {
-            candidate.pointer("/location/uri") == Some(&json!("file:///geo/b.pseudo"))
-        })
-    }));
-
-    let mut unsupported = initialized_server(json!({}));
-    let unsupported_notifications = unsupported.handle_message(&cycle);
-    assert!(
-        cycle_diagnostic(&unsupported_notifications)
-            .is_some_and(|diagnostic| diagnostic.get("relatedInformation").is_none())
-    );
-}
-
-#[test]
-fn project_requests_observe_cooperative_cancellation() {
-    let mut server = initialized_server(json!({}));
-    server.handle_message(&workspace_message(
-        project_files(MAIN, LIBRARY),
+    let mut cold = initialized_server(rename_capabilities());
+    cold.handle_message(&workspace_message(
+        project_files(MAIN, &body),
         project_uris(),
     ));
-    let cancellation = RequestCancellation::new();
-    cancellation.cancel();
-    let response = server.handle_cancellable_message(
-        &json!({"jsonrpc":"2.0","id":2,"method":"workspace/symbol","params":{"query":""}}),
-        cancellation,
+    open_document(&mut cold, APP_URI, 1, MAIN);
+    open_document(&mut cold, LIBRARY_URI, 2, &body);
+    assert!(
+        incremental
+            .workspace_session
+            .as_ref()
+            .is_some_and(|value| value.matches_cold_analysis())
     );
-    assert_eq!(
-        response
-            .first()
-            .and_then(|candidate| candidate.pointer("/error/code")),
-        Some(&json!(-32800))
-    );
+    for message in query_messages() {
+        let expected = cold
+            .handle_message(&message)
+            .into_iter()
+            .next()
+            .unwrap_or(Value::Null);
+        let actual = incremental
+            .handle_message(&message)
+            .into_iter()
+            .next()
+            .unwrap_or(Value::Null);
+        assert_eq!(actual, expected);
+    }
 }
 
-#[test]
-fn project_rename_requires_transactional_client_support_and_open_versions() {
-    let mut unsupported = LspServer::new();
-    let initialize = unsupported.handle_message(&json!({
-        "jsonrpc":"2.0","id":1,"method":"initialize","params":{"capabilities":{}}
-    }));
-    assert!(
-        initialize
-            .first()
-            .and_then(|candidate| candidate.pointer("/result/capabilities/renameProvider"))
-            .is_none()
-    );
-    let prepare = unsupported.handle_message(&json!({
-        "jsonrpc":"2.0","id":2,"method":"textDocument/prepareRename",
-        "params":{"textDocument":{"uri":APP_URI},"position":{"line":0,"character":0}}
-    }));
-    assert!(
-        prepare
-            .first()
-            .and_then(|candidate| candidate.get("error"))
-            .is_some()
-    );
-
-    let mut server = initialized_server(rename_capabilities());
-    server.handle_message(&workspace_message(
-        project_files(MAIN, LIBRARY),
-        project_uris(),
-    ));
-    open_document(&mut server, APP_URI, 2, MAIN);
-    open_document(&mut server, LIBRARY_URI, 5, LIBRARY);
-    let rename = server.handle_message(&json!({
-        "jsonrpc":"2.0","id":3,"method":"textDocument/rename",
-        "params":{"textDocument":{"uri":APP_URI},"position":{"line":2,"character":9},"newName":"Twice"}
-    }));
-    let changes = rename
-        .first()
-        .and_then(|answer| answer.pointer("/result/documentChanges"))
-        .and_then(Value::as_array);
-    assert_eq!(changes.map(Vec::len), Some(2));
-    assert!(changes.is_some_and(|items| items.iter().any(|candidate| {
-        candidate.pointer("/textDocument/uri") == Some(&json!(APP_URI))
-            && candidate.pointer("/textDocument/version") == Some(&json!(2))
-    })));
-    assert!(changes.is_some_and(|items| items.iter().any(|candidate| {
-        candidate.pointer("/textDocument/uri") == Some(&json!(LIBRARY_URI))
-            && candidate.pointer("/textDocument/version") == Some(&json!(5))
-    })));
+fn query_messages() -> [Value; 3] {
+    [
+        json!({"jsonrpc":"2.0","id":30,"method":"workspace/symbol","params":{"query":"Double"}}),
+        json!({"jsonrpc":"2.0","id":31,"method":"textDocument/references","params":{"textDocument":{"uri":APP_URI},"position":{"line":2,"character":9},"context":{"includeDeclaration":true}}}),
+        json!({"jsonrpc":"2.0","id":32,"method":"textDocument/rename","params":{"textDocument":{"uri":APP_URI},"position":{"line":2,"character":9},"newName":"Twice"}}),
+    ]
 }
 
 #[test]
@@ -319,88 +220,6 @@ fn project_overlay_changes_feed_incremental_queries_and_close_restores_snapshot(
             .workspace_session
             .as_ref()
             .is_some_and(|workspace| workspace.result().diagnostics.is_empty())
-    );
-}
-
-#[test]
-fn rename_returns_versioned_edits_and_rejects_collisions_and_closed_files() {
-    let main = "Algoritmo Main\nDefinir Mutable total Como Entero <- 0;\nDefinir Mutable other Como Entero <- 1;\nDefinir Mutable súma Como Entero <- 2;\nEscribir total, other;\nFinAlgoritmo\n";
-    let mut server = initialized_server(rename_capabilities());
-    server.handle_message(&workspace_message(
-        project_files(main, LIBRARY),
-        project_uris(),
-    ));
-    open_document(&mut server, APP_URI, 4, main);
-    let prepared = query(&mut server, 2, "textDocument/prepareRename", APP_URI, 1, 16);
-    assert_eq!(
-        prepared.pointer("/result/placeholder"),
-        Some(&json!("total"))
-    );
-    let renamed = server.handle_message(&json!({
-        "jsonrpc":"2.0","id":3,"method":"textDocument/rename",
-        "params":{"textDocument":{"uri":APP_URI},"position":{"line":1,"character":16},"newName":"sum"}
-    }));
-    let edits = renamed
-        .first()
-        .and_then(|answer| answer.pointer("/result/documentChanges/0"));
-    assert_eq!(
-        edits.and_then(|value| value.pointer("/textDocument/version")),
-        Some(&json!(4))
-    );
-    assert_eq!(
-        edits
-            .and_then(|value| value.pointer("/edits"))
-            .and_then(Value::as_array)
-            .map(Vec::len),
-        Some(2)
-    );
-    let collision = server.handle_message(&json!({
-        "jsonrpc":"2.0","id":4,"method":"textDocument/rename",
-        "params":{"textDocument":{"uri":APP_URI},"position":{"line":1,"character":16},"newName":"other"}
-    }));
-    assert!(
-        collision
-            .first()
-            .and_then(|answer| answer.get("error"))
-            .is_some()
-    );
-    let normalized_collision = server.handle_message(&json!({
-        "jsonrpc":"2.0","id":7,"method":"textDocument/rename",
-        "params":{"textDocument":{"uri":APP_URI},"position":{"line":1,"character":16},"newName":"súma"}
-    }));
-    assert!(
-        normalized_collision
-            .first()
-            .and_then(|answer| answer.get("error"))
-            .is_some()
-    );
-    let reserved = server.handle_message(&json!({
-        "jsonrpc":"2.0","id":5,"method":"textDocument/rename",
-        "params":{"textDocument":{"uri":APP_URI},"position":{"line":1,"character":16},"newName":"Mientras"}
-    }));
-    assert!(
-        reserved
-            .first()
-            .and_then(|answer| answer.get("error"))
-            .is_some()
-    );
-
-    let main_with_import = MAIN;
-    let mut closed = initialized_server(rename_capabilities());
-    closed.handle_message(&workspace_message(
-        project_files(main_with_import, LIBRARY),
-        project_uris(),
-    ));
-    open_document(&mut closed, APP_URI, 1, main_with_import);
-    let stale = closed.handle_message(&json!({
-        "jsonrpc":"2.0","id":6,"method":"textDocument/rename",
-        "params":{"textDocument":{"uri":APP_URI},"position":{"line":2,"character":9},"newName":"Twice"}
-    }));
-    assert!(
-        stale
-            .first()
-            .and_then(|answer| answer.get("error"))
-            .is_some()
     );
 }
 

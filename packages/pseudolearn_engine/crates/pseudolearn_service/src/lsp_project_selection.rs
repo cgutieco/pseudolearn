@@ -1,8 +1,9 @@
+use crate::lsp_protocol::lsp_range_from_offsets;
 use crate::lsp_session::LspServer;
-use crate::positions::{lsp_position_at, offset_from_lsp};
+use crate::positions::offset_from_lsp;
 use pseudolearn_semantic::ServiceSymbolTarget;
 use pseudolearn_source::{IdentifierNormalizer, SourceId};
-use serde_json::{Value, json};
+use serde_json::Value;
 
 pub(super) struct SelectedSymbol {
     pub(super) source_id: SourceId,
@@ -157,7 +158,5 @@ fn identifier_continue(glyph: char) -> bool {
 }
 
 pub(super) fn lsp_range(text: &str, start: usize, ending: usize) -> Value {
-    let (start_line, start_character) = lsp_position_at(text, start);
-    let (end_line, end_character) = lsp_position_at(text, ending);
-    json!({"start":{"line":start_line,"character":start_character},"end":{"line":end_line,"character":end_character}})
+    lsp_range_from_offsets(text, start, ending)
 }

@@ -43,9 +43,14 @@ pub fn offset_from_lsp(text: &str, line: u32, character: u32) -> usize {
 }
 
 pub fn lsp_position_at(text: &str, offset: usize) -> (u32, u32) {
-    let position = position_at(text, offset);
     let index = LineIndex::build(text);
-    let slot = usize::try_from(position.line.saturating_sub(1)).unwrap_or(0);
+    lsp_position_at_with_index(text, offset, &index)
+}
+
+pub fn lsp_position_at_with_index(text: &str, offset: usize, index: &LineIndex) -> (u32, u32) {
+    let clamped = u32::try_from(offset.min(text.len())).unwrap_or(u32::MAX);
+    let (line, _) = index.line_and_column(text, clamped);
+    let slot = usize::try_from(line.saturating_sub(1)).unwrap_or(0);
     let start = index
         .line_start(slot)
         .and_then(|value| usize::try_from(value).ok())
@@ -58,7 +63,7 @@ pub fn lsp_position_at(text: &str, offset: usize) -> (u32, u32) {
         .map(char::len_utf16)
         .sum();
     (
-        position.line.saturating_sub(1),
+        line.saturating_sub(1),
         u32::try_from(units).unwrap_or(u32::MAX),
     )
 }

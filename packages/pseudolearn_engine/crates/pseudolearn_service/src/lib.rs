@@ -78,7 +78,9 @@ mod workspace_analysis;
 mod workspace_index;
 mod workspace_invalidation;
 pub mod workspace_model;
+mod workspace_parse;
 pub mod workspace_session;
+mod workspace_snapshot;
 
 pub use completion::{
     CompletionAction, CompletionEntry, CompletionKind, CompletionQuery, CompletionResult,

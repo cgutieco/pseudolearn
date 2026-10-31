@@ -2,9 +2,19 @@ use crate::workspace_analysis::{WorkspaceBuildRequest, build_workspace};
 use crate::workspace_model::{
     WorkspaceError, WorkspaceIndex, WorkspaceOverlay, WorkspaceResult, WorkspaceSnapshot,
 };
+use crate::workspace_snapshot::{
+    document_key, empty_invalidation, rebase_overlays, same_snapshot_content,
+};
 use pseudolearn_lexicon::Profile;
-use pseudolearn_project::{FileInput, logical_path_key};
+use pseudolearn_project::logical_path_key;
 use std::collections::BTreeMap;
+
+#[path = "workspace_session_cold.rs"]
+mod cold;
+#[path = "workspace_document.rs"]
+mod document;
+
+use document::DocumentUpdate;
 
 pub struct WorkspaceSession {
     snapshot: WorkspaceSnapshot,
@@ -51,10 +61,10 @@ impl WorkspaceSession {
     }
 
     pub(crate) fn file_by_source_id(&self, source_id: u32) -> Option<(&str, &str)> {
+        let path = self.index.source_paths.get(&source_id)?;
         self.index
             .files
-            .values()
-            .find(|file| file.source_id == source_id)
+            .get(path)
             .map(|file| (file.path.as_str(), file.text.as_str()))
     }
 
@@ -91,43 +101,18 @@ impl WorkspaceSession {
         self.commit_candidate(snapshot, self.overlays.clone(), self.next_revision()?)
     }
 
-    pub fn matches_cold_analysis(&self) -> bool {
-        let Ok((cold, _)) = build_workspace(WorkspaceBuildRequest {
-            snapshot: &self.snapshot,
-            overlays: &self.overlays,
-            revision_id: self.revision_id,
-            previous: None,
-        }) else {
-            return false;
-        };
-        cold.hir == self.result.hir
-            && cold.diagnostics == self.result.diagnostics
-            && cold.project_errors == self.result.project_errors
-            && cold.imports == self.result.imports
-    }
-
     pub fn open_document(
         &mut self,
         path: &str,
         version: u64,
         text: String,
     ) -> Result<(), WorkspaceError> {
-        let key = document_key(path)?;
-        self.check_version(&key, version)?;
-        let file = self
-            .find_file(&key)
-            .ok_or(WorkspaceError::DocumentNotFound)?;
-        let mut overlays = self.overlays.clone();
-        overlays.insert(
-            key,
-            WorkspaceOverlay {
-                path: file.path,
-                source_id: file.source_id,
-                version,
-                text,
-            },
-        );
-        self.commit_candidate(self.snapshot.clone(), overlays, self.next_revision()?)
+        self.update_document(DocumentUpdate {
+            path: path.to_owned(),
+            version,
+            text,
+            require_open: false,
+        })
     }
 
     pub fn change_document(
@@ -136,21 +121,12 @@ impl WorkspaceSession {
         version: u64,
         text: String,
     ) -> Result<(), WorkspaceError> {
-        let key = document_key(path)?;
-        let previous = self
-            .overlays
-            .get(&key)
-            .ok_or(WorkspaceError::DocumentNotOpen)?;
-        if version <= previous.version {
-            return Err(WorkspaceError::DocumentVersionDidNotAdvance);
-        }
-        let mut overlays = self.overlays.clone();
-        let overlay = overlays
-            .get_mut(&key)
-            .ok_or(WorkspaceError::DocumentNotOpen)?;
-        overlay.version = version;
-        overlay.text = text;
-        self.commit_candidate(self.snapshot.clone(), overlays, self.next_revision()?)
+        self.update_document(DocumentUpdate {
+            path: path.to_owned(),
+            version,
+            text,
+            require_open: true,
+        })
     }
 
     pub fn close_document(&mut self, path: &str) -> Result<(), WorkspaceError> {
@@ -158,9 +134,31 @@ impl WorkspaceSession {
         if !self.overlays.contains_key(&key) {
             return Err(WorkspaceError::DocumentNotOpen);
         }
-        let mut overlays = self.overlays.clone();
-        overlays.remove(&key);
-        self.commit_candidate(self.snapshot.clone(), overlays, self.next_revision()?)
+        let same_as_snapshot = self
+            .overlays
+            .get(&key)
+            .zip(
+                self.snapshot
+                    .project
+                    .files
+                    .iter()
+                    .find(|file| logical_path_key(&file.path).as_deref() == Some(key.as_str())),
+            )
+            .is_some_and(|(current, file)| current.text == file.text);
+        if same_as_snapshot {
+            self.overlays.remove(&key);
+            return Ok(());
+        }
+        let revision_id = self.next_revision()?;
+        let previous = self
+            .overlays
+            .remove(&key)
+            .ok_or(WorkspaceError::DocumentNotOpen)?;
+        if let Err(error) = self.commit_current(revision_id) {
+            self.overlays.insert(key, previous);
+            return Err(error);
+        }
+        Ok(())
     }
 
     pub fn update_snapshot(
@@ -186,6 +184,14 @@ impl WorkspaceSession {
     fn commit_snapshot(&mut self, snapshot: WorkspaceSnapshot) -> Result<(), WorkspaceError> {
         let overlays = rebase_overlays(&self.overlays, &snapshot)?;
         let revision_id = self.next_revision()?.max(snapshot.project.revision_id);
+        if same_snapshot_content(&self.snapshot, &snapshot) && overlays == self.overlays {
+            self.snapshot = snapshot;
+            self.overlays = overlays;
+            self.revision_id = revision_id;
+            self.result.revision_id = revision_id;
+            self.result.invalidation = empty_invalidation();
+            return Ok(());
+        }
         self.commit_candidate(snapshot, overlays, revision_id)
     }
 
@@ -205,22 +211,6 @@ impl WorkspaceSession {
             return Err(WorkspaceError::DocumentVersionDidNotAdvance);
         }
         Ok(())
-    }
-
-    fn find_file(&self, key: &str) -> Option<FileInput> {
-        self.snapshot
-            .project
-            .files
-            .iter()
-            .find(|file| logical_path_key(&file.path).as_deref() == Some(key))
-            .cloned()
-            .or_else(|| {
-                self.overlays.get(key).map(|overlay| FileInput {
-                    path: overlay.path.clone(),
-                    source_id: overlay.source_id,
-                    text: overlay.text.clone(),
-                })
-            })
     }
 
     fn next_revision(&self) -> Result<u64, WorkspaceError> {
@@ -248,35 +238,28 @@ impl WorkspaceSession {
         self.result = result;
         Ok(())
     }
-}
 
-fn document_key(path: &str) -> Result<String, WorkspaceError> {
-    logical_path_key(path).ok_or(WorkspaceError::InvalidDocumentPath)
-}
+    fn commit_current(&mut self, revision_id: u64) -> Result<(), WorkspaceError> {
+        let (result, index) = build_workspace(WorkspaceBuildRequest {
+            snapshot: &self.snapshot,
+            overlays: &self.overlays,
+            revision_id,
+            previous: Some(&self.index),
+        })?;
+        self.revision_id = revision_id;
+        self.index = index;
+        self.result = result;
+        Ok(())
+    }
 
-fn rebase_overlays(
-    overlays: &BTreeMap<String, WorkspaceOverlay>,
-    snapshot: &WorkspaceSnapshot,
-) -> Result<BTreeMap<String, WorkspaceOverlay>, WorkspaceError> {
-    let files: BTreeMap<String, &FileInput> = snapshot
-        .project
-        .files
-        .iter()
-        .map(|file| {
-            logical_path_key(&file.path)
-                .map(|key| (key, file))
-                .ok_or(WorkspaceError::InvalidDocumentPath)
-        })
-        .collect::<Result<_, _>>()?;
-    Ok(overlays
-        .iter()
-        .map(|(key, overlay)| {
-            let mut rebased = overlay.clone();
-            if let Some(file) = files.get(key) {
-                rebased.path.clone_from(&file.path);
-                rebased.source_id = file.source_id;
+    fn restore_overlay(&mut self, key: String, previous: Option<WorkspaceOverlay>) {
+        match previous {
+            Some(overlay) => {
+                self.overlays.insert(key, overlay);
             }
-            (key.clone(), rebased)
-        })
-        .collect())
+            None => {
+                self.overlays.remove(&key);
+            }
+        }
+    }
 }

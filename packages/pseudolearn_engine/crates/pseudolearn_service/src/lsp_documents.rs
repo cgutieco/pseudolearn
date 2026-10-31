@@ -63,10 +63,7 @@ impl LspServer {
     }
 
     pub(crate) fn path_for_uri(&self, uri: &str) -> Option<String> {
-        self.workspace_uris
-            .iter()
-            .find(|(_, candidate)| candidate.as_str() == uri)
-            .map(|(path, _)| path.clone())
+        self.workspace_paths.get(uri).cloned()
     }
 
     pub(crate) fn uri_for_path(&self, path: &str) -> Option<&str> {
@@ -77,29 +74,55 @@ impl LspServer {
         let Ok(workspace_version) = u64::try_from(request.version) else {
             return Vec::new();
         };
+        let unchanged = self
+            .workspace_session
+            .as_ref()
+            .and_then(|workspace| workspace.file_by_path(&request.path))
+            .is_some_and(|(_, text)| text == request.text);
         let result = self.workspace_session.as_mut().map(|workspace| {
             workspace.open_document(&request.path, workspace_version, request.text.to_owned())
         });
         if result.is_some_and(|outcome| outcome.is_err()) {
             return Vec::new();
         }
+        self.versions
+            .insert(request.uri.to_owned(), request.version);
+        if unchanged {
+            return Vec::new();
+        }
+        self.workspace_diagnostics_notifications()
+    }
+
+    pub(crate) fn ensure_workspace_document(&mut self, message: &Value) {
+        let uri = text_document_uri(message).to_owned();
+        if uri.is_empty()
+            || self.service.session(&uri).is_some()
+            || !self.versions.contains_key(&uri)
+        {
+            return;
+        }
+        let Some(path) = self.path_for_uri(&uri) else {
+            return;
+        };
+        let Some((_, text)) = self
+            .workspace_session
+            .as_ref()
+            .and_then(|workspace| workspace.file_by_path(&path))
+        else {
+            return;
+        };
+        let text = text.to_owned();
         let profile = self
             .workspace_session
             .as_ref()
-            .and_then(|workspace| workspace.profile_for_path(&request.path))
-            .unwrap_or_else(|| detect_document_profile(request.text, self.locale_profile()));
+            .and_then(|workspace| workspace.profile_for_path(&path))
+            .unwrap_or_else(|| detect_document_profile(&text, self.locale_profile()));
         let strict = self
             .workspace_session
             .as_ref()
             .is_none_or(crate::workspace_session::WorkspaceSession::strict);
-        self.service.open_document(
-            request.uri.to_owned(),
-            request.text.to_owned(),
-            DocumentOptions { profile, strict },
-        );
-        self.versions
-            .insert(request.uri.to_owned(), request.version);
-        self.workspace_diagnostics_notifications()
+        self.service
+            .open_document(uri, text, DocumentOptions { profile, strict });
     }
 
     fn open_standalone_document(&mut self, uri: &str, text: &str, version: i64) -> Vec<Value> {

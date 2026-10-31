@@ -40,6 +40,11 @@ pub(super) fn base_index(
     options: &crate::workspace_model::WorkspaceOptions,
     profiles: BTreeMap<String, ResolvedUnitProfile>,
 ) -> WorkspaceIndex {
+    let source_paths = project
+        .files
+        .iter()
+        .map(|file| (file.source_id, portable_key(&file.path)))
+        .collect();
     let files = project
         .files
         .iter()
@@ -59,6 +64,8 @@ pub(super) fn base_index(
         options: options.clone(),
         files,
         profiles,
+        source_paths,
+        parsed_units: BTreeMap::new(),
         units: BTreeMap::new(),
         imports: Vec::new(),
         modules: BTreeMap::new(),

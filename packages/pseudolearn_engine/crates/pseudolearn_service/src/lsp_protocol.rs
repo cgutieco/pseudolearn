@@ -1,6 +1,7 @@
 use crate::completion::CompletionKind;
 use crate::navigation::{Position, Range};
-use crate::positions::{lsp_position_at, offset_at, offset_from_lsp, position_at};
+use crate::positions::{lsp_position_at_with_index, offset_at, offset_from_lsp, position_at};
+use pseudolearn_source::LineIndex;
 use serde_json::{Value, json};
 
 pub const SERVER_NOT_INITIALIZED: i64 = -32002;
@@ -50,8 +51,18 @@ pub fn position_from_request(text: &str, message: &Value) -> Position {
 }
 
 pub fn lsp_range_from_offsets(text: &str, start: usize, ending: usize) -> Value {
-    let (start_line, start_character) = lsp_position_at(text, start);
-    let (end_line, end_character) = lsp_position_at(text, ending);
+    let index = LineIndex::build(text);
+    lsp_range_from_offsets_with_index(text, start, ending, &index)
+}
+
+pub(crate) fn lsp_range_from_offsets_with_index(
+    text: &str,
+    start: usize,
+    ending: usize,
+    index: &LineIndex,
+) -> Value {
+    let (start_line, start_character) = lsp_position_at_with_index(text, start, index);
+    let (end_line, end_character) = lsp_position_at_with_index(text, ending, index);
     json!({
         "start": { "line": start_line, "character": start_character },
         "end": { "line": end_line, "character": end_character }

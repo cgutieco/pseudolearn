@@ -1,10 +1,10 @@
-use crate::unit_partition::{UnitFingerprint, partition_units};
 use crate::workspace_index::{base_index, entry_failure, portable_key, project_failure};
 use crate::workspace_invalidation::compare_workspace;
 use crate::workspace_model::{
     WorkspaceError, WorkspaceIndex, WorkspaceOverlay, WorkspaceResult, WorkspaceSnapshot,
 };
-use pseudolearn_diagnostics::{Diagnostic, DiagnosticCode, render::sort_diagnostics};
+use crate::workspace_parse::{ParsedWorkspace, parse_catalog};
+use pseudolearn_diagnostics::render::sort_diagnostics;
 use pseudolearn_lexicon::Profile;
 use pseudolearn_project::{
     BuildFailure, FileInput, ModuleId, ProjectCatalog, ProjectInput, select_entry,
@@ -13,23 +13,15 @@ use pseudolearn_semantic::{
     ProjectUnit, ResolvedUnitProfile, SemanticOptions, analyze_project_detailed,
     resolve_project_profiles, service_analysis_from_project,
 };
-use pseudolearn_source::{SourceText, Span, source_id};
-use pseudolearn_syntax::{SyntaxTree, parse_module_source};
+use pseudolearn_syntax::SyntaxTree;
 use std::collections::BTreeMap;
+use std::sync::Arc;
 
 pub(crate) struct WorkspaceBuildRequest<'input> {
     pub snapshot: &'input WorkspaceSnapshot,
     pub overlays: &'input BTreeMap<String, WorkspaceOverlay>,
     pub revision_id: u64,
     pub previous: Option<&'input WorkspaceIndex>,
-}
-
-struct ParsedWorkspace {
-    trees: Vec<SyntaxTree>,
-    profiles: Vec<Profile>,
-    diagnostics: Vec<Diagnostic>,
-    units: BTreeMap<String, Vec<UnitFingerprint>>,
-    modules: BTreeMap<ModuleId, String>,
 }
 
 struct CatalogAnalysisInput {
@@ -122,7 +114,12 @@ fn analyze_catalog(
     project: ProjectInput,
     input: CatalogAnalysisInput,
 ) -> Result<(WorkspaceResult, WorkspaceIndex), WorkspaceError> {
-    let parsed = parse_catalog(&input.catalog, &input.profiles, &request.snapshot.options);
+    let parsed = parse_catalog(
+        &input.catalog,
+        &input.profiles,
+        &request.snapshot.options,
+        request.previous,
+    );
     let units = project_units(&input.catalog, &parsed.trees, &parsed.profiles);
     let profile = request
         .snapshot
@@ -159,6 +156,7 @@ fn assemble_workspace_result(
     sort_diagnostics(&mut diagnostics);
     let mut index = base_index(&project, &request.snapshot.options, profiles);
     index.units = parsed.units;
+    index.parsed_units = parsed.cache;
     index.imports.clone_from(&analysis.imports);
     index.modules = parsed.modules;
     let invalidation = compare_workspace(request.previous, &index);
@@ -178,56 +176,9 @@ fn assemble_workspace_result(
     Ok((result, index))
 }
 
-fn parse_catalog(
-    catalog: &ProjectCatalog,
-    profiles: &BTreeMap<String, ResolvedUnitProfile>,
-    options: &crate::workspace_model::WorkspaceOptions,
-) -> ParsedWorkspace {
-    let mut trees = Vec::new();
-    let mut selected_profiles = Vec::new();
-    let mut diagnostics = Vec::new();
-    let mut units = BTreeMap::new();
-    let mut modules = BTreeMap::new();
-    let terminator = options
-        .strict
-        .then_some(DiagnosticCode::MissingStatementTerminator);
-    for module in catalog.modules() {
-        let Some(source) = catalog.source(module.id) else {
-            continue;
-        };
-        let path = portable_key(&module.path);
-        let resolved = profiles.get(&path);
-        let profile = resolved.map_or(Profile::default(), |value| value.profile);
-        let (tree, mut syntax) = parse_module_source(source, profile, terminator);
-        if let Some(mismatch) = resolved.and_then(|value| value.mismatch.clone()) {
-            syntax.push(profile_mismatch(source, mismatch));
-        }
-        diagnostics.append(&mut syntax);
-        units.insert(path.clone(), partition_units(&tree, source));
-        modules.insert(module.id, module.path.clone());
-        selected_profiles.push(profile);
-        trees.push(tree);
-    }
-    ParsedWorkspace {
-        trees,
-        profiles: selected_profiles,
-        diagnostics,
-        units,
-        modules,
-    }
-}
-
-fn profile_mismatch(source: &SourceText, lexeme: String) -> Diagnostic {
-    Diagnostic::new(
-        DiagnosticCode::ProfileMismatch,
-        Span::in_source(source_id(source), 0, 0),
-    )
-    .with_argument("lexeme", &lexeme)
-}
-
 fn project_units<'catalog>(
     catalog: &'catalog ProjectCatalog,
-    trees: &'catalog [SyntaxTree],
+    trees: &'catalog [Arc<SyntaxTree>],
     profiles: &[Profile],
 ) -> Vec<ProjectUnit<'catalog>> {
     catalog
@@ -238,7 +189,7 @@ fn project_units<'catalog>(
         .filter_map(|((module, tree), profile)| {
             catalog.source(module.id).map(|source| ProjectUnit {
                 module: module.id,
-                tree,
+                tree: tree.as_ref(),
                 source,
                 profile: *profile,
             })

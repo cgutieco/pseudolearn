@@ -1,9 +1,11 @@
-use crate::lsp_project_selection::{identifier_range, lsp_range, to_index};
-use crate::lsp_protocol::failure;
+use crate::lsp_project_selection::{identifier_range, to_index};
+use crate::lsp_protocol::{failure, lsp_range_from_offsets_with_index};
 use crate::lsp_session::LspServer;
 use pseudolearn_lexicon::KeywordKind;
 use pseudolearn_semantic::{ServiceSymbol, ServiceSymbolCategory, ServiceSymbolTarget};
+use pseudolearn_source::LineIndex;
 use serde_json::{Value, json};
+use std::collections::BTreeMap;
 
 impl LspServer {
     pub(crate) fn project_workspace_symbols(&self, message: &Value) -> Value {
@@ -14,6 +16,7 @@ impl LspServer {
             .pointer("/params/query")
             .and_then(Value::as_str)
             .unwrap_or("");
+        let mut line_indexes = BTreeMap::new();
         let symbols = self
             .workspace_session
             .as_ref()
@@ -22,14 +25,19 @@ impl LspServer {
                 analysis
                     .symbols
                     .iter()
-                    .filter_map(|symbol| self.workspace_symbol(symbol, query))
+                    .filter_map(|symbol| self.workspace_symbol(symbol, query, &mut line_indexes))
                     .collect::<Vec<_>>()
             })
             .unwrap_or_default();
         json!({"jsonrpc":"2.0","id":message.get("id"),"result":symbols})
     }
 
-    fn workspace_symbol(&self, symbol: &ServiceSymbol, query: &str) -> Option<Value> {
+    fn workspace_symbol(
+        &self,
+        symbol: &ServiceSymbol,
+        query: &str,
+        line_indexes: &mut BTreeMap<u32, LineIndex>,
+    ) -> Option<Value> {
         if self.request_cancelled() || !global_symbol_matches(symbol, query) {
             return None;
         }
@@ -40,7 +48,8 @@ impl LspServer {
         let workspace = self.workspace_session.as_ref()?;
         let analysis = workspace.result().service_analysis.as_ref()?;
         let definition = analysis.definition_span(target)?;
-        let (path, text) = workspace.file_by_source_id(definition.source_id.value())?;
+        let source_id = definition.source_id.value();
+        let (path, text) = workspace.file_by_source_id(source_id)?;
         let display_name = symbol.name.rsplit('.').next()?;
         let (start, ending) = identifier_range(
             text,
@@ -48,11 +57,14 @@ impl LspServer {
             display_name,
             false,
         )?;
+        let index = line_indexes
+            .entry(source_id)
+            .or_insert_with(|| LineIndex::build(text));
         let target_uri = self.uri_for_path(path)?;
         Some(json!({
             "name":display_name,
             "kind":symbol_kind(symbol.category),
-            "location":{"uri":target_uri,"range":lsp_range(text,start,ending)}
+            "location":{"uri":target_uri,"range":lsp_range_from_offsets_with_index(text,start,ending,index)}
         }))
     }
 

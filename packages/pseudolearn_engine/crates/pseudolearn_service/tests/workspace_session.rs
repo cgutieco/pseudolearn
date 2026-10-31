@@ -107,6 +107,27 @@ fn invalid_document_operations_preserve_workspace_revision() -> Result<(), Strin
 }
 
 #[test]
+fn opening_changing_and_closing_snapshot_text_reuse_the_analysis() -> Result<(), String> {
+    let mut session =
+        WorkspaceSession::new(snapshot(project_files())).map_err(|error| format!("{error:?}"))?;
+    let revision = session.result().revision_id;
+    session
+        .open_document("app/main", 1, MAIN.to_owned())
+        .map_err(|error| format!("{error:?}"))?;
+    assert_eq!(session.result().revision_id, revision);
+    session
+        .change_document("app/main", 2, MAIN.to_owned())
+        .map_err(|error| format!("{error:?}"))?;
+    assert_eq!(session.result().revision_id, revision);
+    session
+        .close_document("app/main")
+        .map_err(|error| format!("{error:?}"))?;
+    assert_eq!(session.result().revision_id, revision);
+    assert!(session.matches_cold_analysis());
+    Ok(())
+}
+
+#[test]
 fn body_changes_preserve_signatures_and_signature_changes_invalidate_importers()
 -> Result<(), String> {
     let mut session =
@@ -235,6 +256,26 @@ fn resynchronization_compares_full_text_and_configuration_inputs() -> Result<(),
 }
 
 #[test]
+fn identical_resynchronization_advances_revision_without_invalidating_files() -> Result<(), String>
+{
+    let initial = snapshot(project_files());
+    let mut session =
+        WorkspaceSession::new(initial.clone()).map_err(|error| format!("{error:?}"))?;
+    let mut repeated = initial;
+    repeated.project.revision_id = 2;
+    session
+        .update_snapshot(
+            repeated,
+            pseudolearn_service::SnapshotUpdateMode::Resynchronize,
+        )
+        .map_err(|error| format!("{error:?}"))?;
+    assert_eq!(session.result().revision_id, 2);
+    assert!(session.result().invalidation.changed_modules.is_empty());
+    assert!(session.matches_cold_analysis());
+    Ok(())
+}
+
+#[test]
 fn manifests_update_profiles_and_project_structure() -> Result<(), String> {
     let grants = HostGrants::default();
     let manifest_text = "schema = 1\n[package]\nname = \"app\"\nkind = \"application\"\nentries = [\"app/main\"]\nprofile = \"es\"\n";
@@ -305,5 +346,34 @@ fn snapshot_file_order_does_not_change_analysis() -> Result<(), String> {
     assert_eq!(first.result().hir, second.result().hir);
     assert_eq!(first.result().diagnostics, second.result().diagnostics);
     assert_eq!(first.result().imports, second.result().imports);
+    Ok(())
+}
+
+#[test]
+fn edit_sequences_match_cold_results_after_each_revision() -> Result<(), String> {
+    let mut reversed = project_files();
+    reversed.reverse();
+    let mut session =
+        WorkspaceSession::new(snapshot(reversed)).map_err(|error| format!("{error:?}"))?;
+    session
+        .open_document("geo/vectores", 1, LIBRARY.replace("n * 2", "n * 3"))
+        .map_err(|error| format!("{error:?}"))?;
+    assert!(session.matches_cold_analysis());
+    session
+        .change_document("geo/vectores", 2, LIBRARY.to_owned())
+        .map_err(|error| format!("{error:?}"))?;
+    assert!(session.matches_cold_analysis());
+    session
+        .change_document(
+            "geo/vectores",
+            3,
+            LIBRARY.replace("n Como Entero", "value Como Entero"),
+        )
+        .map_err(|error| format!("{error:?}"))?;
+    assert!(session.matches_cold_analysis());
+    session
+        .close_document("geo/vectores")
+        .map_err(|error| format!("{error:?}"))?;
+    assert!(session.matches_cold_analysis());
     Ok(())
 }
