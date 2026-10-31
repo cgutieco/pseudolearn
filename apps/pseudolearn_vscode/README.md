@@ -101,7 +101,7 @@ llegan tarde se ignoran. Un `hello` con otro `schema` aborta la sesión. No se c
 
 **Ayuda.** El hover estándar lo contesta el servidor LSP y `pseudolearn.explainAtCursor` envía `workspace/executeCommand` con la
 versión del documento y formato `plaintext`: el resultado es el mismo contenido y rango que el hover, y un documento cambiado
-responde `ContentModified`, que se presenta como «repetí la consulta». La prosa de la ficha viene siempre del catálogo
+responde `ContentModified`, que se presenta como «repite la consulta». La prosa de la ficha viene siempre del catálogo
 (`TOOL.SERVICE.CATALOG`); la extensión solo localiza sus propias etiquetas de interfaz (es/en) y no guarda ninguna tabla de
 fichas, lo que verifica la auditoría de fuente única, que recorre `src/` de este miembro. El hover se muestra como Markdown
 no confiable que gestiona el cliente LSP (sin HTML, enlaces de comando ni ejecución de ejemplos) y `explain` se muestra como

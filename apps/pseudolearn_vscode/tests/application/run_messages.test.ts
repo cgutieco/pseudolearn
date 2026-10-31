@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { finishLabel, stateConclusionLabel } from "../../src/application/run_messages";
+import { finishLabel, refusalMessage, stateConclusionLabel } from "../../src/application/run_messages";
 import type { RunCompletion, RunState } from "../../src/contracts/editor_run";
 
 const completion = (
@@ -41,5 +41,22 @@ describe("stateConclusionLabel", () => {
 
   it("does not create a conclusion for transient states", () => {
     expect(stateConclusionLabel("running", "en")).toBeUndefined();
+  });
+});
+
+describe("refusalMessage", () => {
+  it("localizes execution refusals in neutral Spanish and English", () => {
+    expect(refusalMessage("unsavedChanges", "es")).toBe(
+      "Guarda los cambios antes de ejecutar: la ejecución usa los archivos guardados.",
+    );
+    expect(refusalMessage("unsavedChanges", "en")).toBe(
+      "Save your changes before running: execution uses the saved files.",
+    );
+    expect(refusalMessage("noEntry", "es")).toBe(
+      "Elige un punto de entrada del proyecto antes de ejecutar.",
+    );
+    expect(refusalMessage("noEntry", "en")).toBe(
+      "Choose a project entry before running.",
+    );
   });
 });

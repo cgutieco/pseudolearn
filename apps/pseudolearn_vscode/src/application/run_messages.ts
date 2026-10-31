@@ -76,11 +76,11 @@ const refusals = {
     en: "A run is already active; stop it before starting another.",
   },
   unsavedChanges: {
-    es: "Guardá los cambios antes de ejecutar: la ejecución usa los archivos guardados.",
+    es: "Guarda los cambios antes de ejecutar: la ejecución usa los archivos guardados.",
     en: "Save your changes before running: execution uses the saved files.",
   },
   noEntry: {
-    es: "Elegí un punto de entrada del proyecto antes de ejecutar.",
+    es: "Elige un punto de entrada del proyecto antes de ejecutar.",
     en: "Choose a project entry before running.",
   },
   versionMismatch: {
