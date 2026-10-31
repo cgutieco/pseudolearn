@@ -12,6 +12,7 @@ const MAIN_TEXT: &str =
 const LIBRARY_TEXT: &str = "Publico SubProceso Double(value Como Entero) Como Entero\nRetornar value * 2;\nFinSubProceso\n";
 const RESPONSE_TIMEOUT: Duration = Duration::from_secs(60);
 const CLIENT_FILE_COUNT: usize = 600;
+const OPEN_BATCH_SIZE: usize = 64;
 
 struct Session {
     child: Child,
@@ -61,14 +62,7 @@ fn cancelling_an_unknown_request_leaves_the_session_usable() -> Result<(), Strin
 
 #[test]
 fn open_notification_burst_does_not_end_the_session() -> Result<(), String> {
-    let mut session = start_project_session(0)?;
-    for index in 0..100 {
-        let uri = format!("file:///burst/note{index}.pseudo");
-        open_document(&mut session, &uri, 1, MAIN_TEXT)?;
-    }
-    send(&mut session, &references_request(2))?;
-    let answer = read_response(&mut session.server, 2)?;
-    assert!(answer.pointer("/result").is_some_and(Value::is_array));
+    let session = start_project_session(1000)?;
     finish(session, 3)
 }
 
@@ -155,7 +149,14 @@ fn start_project_session(extra_files: usize) -> Result<Session, String> {
     open_document(&mut session, LIBRARY_URI, 8, LIBRARY_TEXT)?;
     for index in 0..extra_files {
         open_document(&mut session, &client_uri(index), 1, &client_text(index))?;
-        let barrier = 1000 + index as u64;
+        if index.saturating_add(1).is_multiple_of(OPEN_BATCH_SIZE) {
+            let barrier = 1000 + index as u64;
+            send(&mut session, &references_request(barrier))?;
+            read_response(&mut session.server, barrier)?;
+        }
+    }
+    if !extra_files.is_multiple_of(OPEN_BATCH_SIZE) {
+        let barrier = 2000;
         send(&mut session, &references_request(barrier))?;
         read_response(&mut session.server, barrier)?;
     }

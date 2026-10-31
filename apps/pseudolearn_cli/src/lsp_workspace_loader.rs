@@ -10,6 +10,7 @@ pub(crate) struct WorkspaceLoader {
     directory: Option<String>,
     revision: u64,
     locale: String,
+    manifests: BTreeMap<String, (String, Value)>,
 }
 
 impl WorkspaceLoader {
@@ -18,6 +19,7 @@ impl WorkspaceLoader {
             directory: None,
             revision: 0,
             locale: locale.to_owned(),
+            manifests: BTreeMap::new(),
         }
     }
 
@@ -36,7 +38,7 @@ impl WorkspaceLoader {
         }
         let directory = self.directory.as_deref()?;
         self.revision = self.revision.saturating_add(1);
-        snapshot_message(directory, &self.locale, self.revision)
+        snapshot_message_cached(directory, &self.locale, self.revision, &mut self.manifests)
     }
 }
 
@@ -54,9 +56,19 @@ pub(crate) fn root_directory(initialize: &Value) -> Option<String> {
     decode_file_uri(folder.or(root)?)
 }
 
+#[cfg(test)]
 pub(crate) fn snapshot_message(directory: &str, locale: &str, revision: u64) -> Option<Value> {
+    snapshot_message_cached(directory, locale, revision, &mut BTreeMap::new())
+}
+
+fn snapshot_message_cached(
+    directory: &str,
+    locale: &str,
+    revision: u64,
+    manifest_cache: &mut BTreeMap<String, (String, Value)>,
+) -> Option<Value> {
     let snapshot = project_files::load(directory, locale).ok()?;
-    let packages = packages_of(&snapshot)?;
+    let packages = packages_of(&snapshot, manifest_cache)?;
     if packages.is_empty() {
         return None;
     }
@@ -75,16 +87,32 @@ pub(crate) fn snapshot_message(directory: &str, locale: &str, revision: u64) -> 
     }))
 }
 
-fn packages_of(snapshot: &ProjectSnapshot) -> Option<Vec<Value>> {
-    snapshot
-        .manifests
-        .iter()
-        .map(|manifest| {
-            let request = json!({"manifest": manifest.text, "location": manifest.location});
-            let resolved = project_session::call("resolve_manifest", &request).ok()?;
-            package_of(resolved.get("configuration")?)
-        })
-        .collect()
+fn packages_of(
+    snapshot: &ProjectSnapshot,
+    manifest_cache: &mut BTreeMap<String, (String, Value)>,
+) -> Option<Vec<Value>> {
+    let mut packages = Vec::new();
+    let mut current = BTreeMap::new();
+    for manifest in &snapshot.manifests {
+        let resolved = cached_manifest(manifest, manifest_cache)?;
+        packages.push(package_of(resolved.get("configuration")?)?);
+        current.insert(manifest.location.clone(), (manifest.text.clone(), resolved));
+    }
+    *manifest_cache = current;
+    Some(packages)
+}
+
+fn cached_manifest(
+    manifest: &crate::project_files::ManifestFile,
+    manifest_cache: &BTreeMap<String, (String, Value)>,
+) -> Option<Value> {
+    if let Some((text, resolved)) = manifest_cache.get(&manifest.location)
+        && text == &manifest.text
+    {
+        return Some(resolved.clone());
+    }
+    let request = json!({"manifest": manifest.text, "location": manifest.location});
+    project_session::call("resolve_manifest", &request).ok()
 }
 
 fn package_of(configuration: &Value) -> Option<Value> {
