@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { listProjectEntries } from "../application/entry_choice";
+import { entryProblemMessage, listProjectEntries } from "../application/entry_choice";
 import { translateDocument } from "../application/translate_document";
 import { type CommandContext, entryKey, firstWorkspaceDirectory } from "./command_context";
 
@@ -13,12 +13,17 @@ export function registerProjectCommands(command: CommandContext): vscode.Disposa
 async function selectEntry(command: CommandContext): Promise<void> {
   const directory = firstWorkspaceDirectory(vscode.workspace);
   if (!directory) {
+    void vscode.window.showWarningMessage(entryProblemMessage("noFolder", vscode.env.language));
     return;
   }
   const entries = await listProjectEntries(command.runner, {
     directory,
     settings: command.settings,
   });
+  if (entries.length === 0) {
+    void vscode.window.showWarningMessage(entryProblemMessage("noModules", vscode.env.language));
+    return;
+  }
   const choice = await vscode.window.showQuickPick(entries);
   if (choice) {
     await command.extension.workspaceState.update(entryKey, choice);

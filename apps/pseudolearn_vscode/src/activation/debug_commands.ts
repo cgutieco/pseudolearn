@@ -3,6 +3,7 @@ import * as vscode from "vscode";
 import { NodeDebugAdapter } from "../adapters/node_debug_adapter";
 import { VscodeDocuments } from "../adapters/vscode_documents";
 import { debugLaunch } from "../application/debug_configuration";
+import { entryProblemMessage } from "../application/entry_choice";
 import { hasUnsavedChanges } from "../application/saved_snapshot_guard";
 import type { ResolvedExtensionConfiguration } from "../contracts/extension_configuration";
 import { entryKey } from "./command_context";
@@ -76,7 +77,10 @@ function startFile(): Thenable<boolean> | undefined {
 function startProject(extension: vscode.ExtensionContext): Thenable<boolean> | undefined {
   const folder = vscode.workspace.workspaceFolders?.[0];
   const entry = extension.workspaceState.get<string>(entryKey);
-  if (!folder || !entry) return undefined;
+  if (!folder || !entry) {
+    void vscode.window.showWarningMessage(entryProblemMessage(folder ? "noEntry" : "noFolder", vscode.env.language));
+    return undefined;
+  }
   return vscode.debug.startDebugging(folder, { type: "pseudolearn", request: "launch", name: "PseudoLearn", project: folder.uri.fsPath, entry });
 }
 

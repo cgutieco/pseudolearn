@@ -5,3 +5,4 @@ Escribir "Dame un numero";
 Leer numero;
 Escribir Doble(numero);
 FinAlgoritmo
+ 
