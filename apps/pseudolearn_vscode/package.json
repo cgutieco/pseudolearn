@@ -145,6 +145,11 @@
         }
       }
     },
+    "breakpoints": [
+      {
+        "language": "pseudolearn"
+      }
+    ],
     "debuggers": [
       {
         "type": "pseudolearn",

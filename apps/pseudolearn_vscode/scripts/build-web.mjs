@@ -20,6 +20,7 @@ function browserManifest() {
   const manifest = JSON.parse(readFileSync(resolve(root, "package.json"), "utf8"));
   delete manifest.main;
   delete manifest.contributes.debuggers;
+  delete manifest.contributes.breakpoints;
   delete manifest.contributes.configuration.properties["pseudolearn.server.path"];
   delete manifest.capabilities.untrustedWorkspaces.restrictedConfigurations;
   manifest.browser = `./${contract.web.browser}`;
