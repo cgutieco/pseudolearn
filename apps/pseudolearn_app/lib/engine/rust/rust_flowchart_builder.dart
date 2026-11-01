@@ -15,6 +15,7 @@ import 'rust_executable_unit_reader.dart';
 import 'rust_flowchart_block_builder.dart';
 import 'rust_program_view.dart';
 import 'rust_program_view_source.dart';
+import 'rust_statement_treatment.dart';
 import 'rust_transport.dart';
 
 final class RustFlowchartBuilder implements FlowchartBuilder {
@@ -33,6 +34,18 @@ final class RustFlowchartBuilder implements FlowchartBuilder {
     required SyntaxProfileId profileId,
     required UiLanguageId languageId,
   }) {
+    try {
+      return _build(sourceCode, profileId, languageId);
+    } on UnsupportedSyntaxView catch (failure) {
+      return DiagramProgram.unsupported([failure.syntaxKind]);
+    }
+  }
+
+  DiagramProgram _build(
+    String sourceCode,
+    SyntaxProfileId profileId,
+    UiLanguageId languageId,
+  ) {
     final captions = RustDiagramCaptions.load(_words, profileId);
     final view = _views.loadStructure(
       sourceCode: sourceCode,

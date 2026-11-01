@@ -1858,7 +1858,8 @@
                 "accept_candidate",
                 "template_navigation",
                 "help",
-                "help_revision"
+                "help_revision",
+                "class_diagram"
               ]
             },
             "input": {

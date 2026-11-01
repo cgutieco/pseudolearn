@@ -8,6 +8,7 @@
 - Rama comprobada: `feature/agregar-ruta-de-especificacion`; árbol limpio antes de redactar.
 - Petición: «Crea el plan de ejecución detallado para `4.10 PG-A · App y sintaxis estática`, lo suficientemente detallado para que el agente que complete las fases no tenga chance de alucinar».
 - Autorización actual: el 2026-11-01 la persona autorizó implementar `PG-A.01` y `PG-A.02` en una sola iteración, aun con `PG-1` abierto. Esta autorización no cierra `PG-1`, `PG-A` ni `PG-A.C01`–`PG-A.C13`, y no autoriza `.03`–`.09`, commit, push ni PG-B/PG-7. Al terminar `.01` y `.02`, informar y detenerse.
+- Autorización posterior: el 2026-11-01 la persona autorizó implementar `PG-A.03` y `PG-A.04` en una sola iteración. Tampoco cierra `PG-1`, `PG-A` ni `PG-A.C01`–`PG-A.C13`, y no autoriza `.05`–`.09`, commit, push ni PG-B/PG-7. Al terminar `.03` y `.04`, informar y detenerse.
 - Este documento es transitorio de `docs/`. Sus decisiones operativas deben trasladarse al corpus y a los README dueños sin citarlo desde fuera de `docs/` (`DOC-NO-TRANSIENT-REFS`).
 
 Las subsecciones de trabajo son puntos de PG-A, no fases nuevas. Una autorización posterior que nombre solo un punto no autoriza los demás ni el cierre común. Al completar el alcance autorizado se informa y se detiene (`PHASE-STOP`). Si la persona autoriza PG-A completa, las puertas técnicas internas no requieren pedir confirmación rutinaria; sí se detiene ante los conflictos y dependencias humanas expresamente identificados.
@@ -116,21 +117,21 @@ Salida exigida: un caso autocontenido reproducible por operación pública, CLI 
 
 ### PG-A.03 · Interfaces, realización y tipos visibles
 
-- [ ] `PG-A.03.01` Fijar contrato de representación en corpus de app: caja `«interface»`, operaciones/restricciones, realización discontinua con triángulo hueco hacia contrato, herencia continua, dependencia de uso diferenciada, estado inválido unido a diagnóstico y origen. Elegir contrato existente o identidad nueva revisada, sin inventar un ID supuestamente vigente.
+- [x] `PG-A.03.01` Fijar contrato de representación en corpus de app: caja `«interface»`, operaciones/restricciones, realización discontinua con triángulo hueco hacia contrato, herencia continua, dependencia de uso diferenciada, estado inválido unido a diagnóstico y origen. Elegir contrato existente o identidad nueva revisada, sin inventar un ID supuestamente vigente.
 - [ ] `PG-A.03.02` Derivar escenas: contrato solo, una y dos implementaciones, dos contratos, herencia más realización, método heredado, sobrescritura inválida y destino desconocido. Enumerar cajas/filas/relaciones y origen esperado manualmente. Resolver PA-PRE-02 antes de escribir cualquier caso de «valor de interfaz».
 - [ ] `PG-A.03.03` Añadir tests de `class_model`, adaptador de clases, layout/routing, pintores y accesibilidad. Afirmar dirección/estilo del triángulo y segmentos, no únicamente que se pintó una línea. Interfaz sin implementación sigue visible; relación inválida no parece válida solo por su color.
 - [ ] `PG-A.03.04` Implementar proyección de unidades aplicables y relaciones por ID. El layout calcula cajas/rutas; presentación dibuja estados ya derivados. La tabla usa valores concretos y restricciones aprobadas sin fabricar objeto/marco abstracto. Navegar firma/relación lleva al rango exacto; inspeccionar no modifica texto.
 - [ ] `PG-A.03.05` Hacer visibles y navegables parámetros genéricos, registros, enumerados y restricciones según la matriz de `.04`; no insertar pasos ejecutables para declaraciones. Reutilizar tokens de tema y localización para leyenda/estado, con ambos idiomas de interfaz.
-- [ ] `PG-A.03.06` Actualizar README app/API según cambios y ejecutar casos/escenas/negativos. Adjuntar evidencia de relaciones y diagnóstico con el puente real, completada en `.07`.
+- [x] `PG-A.03.06` Actualizar README app/API según cambios y ejecutar casos/escenas/negativos. Adjuntar evidencia de relaciones y diagnóstico con el puente real, completada en `.07`.
 
 ### PG-A.04 · Matriz exhaustiva y controles fieles
 
-- [ ] `PG-A.04.01` Fijar esquema de cobertura como datos: identidad de construcción y papel, anclaje regla/versión, formas públicas, vista, representación exacta/extensión declarada/no aplicable con motivo, foco/origen, estado, ayuda y casos/test. Separar taxonomía curricular `AstConstruct` del inventario exhaustivo de lenguaje.
+- [x] `PG-A.04.01` Fijar esquema de cobertura como datos: identidad de construcción y papel, anclaje regla/versión, formas públicas, vista, representación exacta/extensión declarada/no aplicable con motivo, foco/origen, estado, ayuda y casos/test. Separar taxonomía curricular `AstConstruct` del inventario exhaustivo de lenguaje.
 - [ ] `PG-A.04.02` Escribir contrato/casos para rechazo de identidades activas sin fila, filas obsoletas/duplicadas, celda sin motivo, ayuda inexistente, rol no cubierto y forma pública desconocida. Definir la respuesta visible no soportada sin entregar diagrama falso como válido.
-- [ ] `PG-A.04.03` Crear tests del verificador con fixtures aislados: quitar fila, agregar construcción activa, cambiar rol, repetir identidad, ocultar control en fallback y declarar «no aplicable» sin explicación. Cada violación debe fallar por causa esperada; un conjunto válido debe pasar.
+- [x] `PG-A.04.03` Crear tests del verificador con fixtures aislados: quitar fila, agregar construcción activa, cambiar rol, repetir identidad, ocultar control en fallback y declarar «no aplicable» sin explicación. Cada violación debe fallar por causa esperada; un conjunto válido debe pasar.
 - [ ] `PG-A.04.04` Completar todas las filas de §4.10 contra inventario vigente, incluidos controles previos. Implementar recorrido y manejadores de iteración, patrones, propagación, salidas y limpieza. Distinguir salida normal, ruptura, retorno y propagación; dibujar las limpiezas en su orden normativo, sin reevaluarlas para producir la escena.
-- [ ] `PG-A.04.05` Sustituir fallbacks silenciosos de ambos constructores por clasificación exhaustiva: proceso conocido permitido, contenedor/expresión proyectado en su dueño o fallo explícito. Un `_` que simplemente produce `process`, hoja ordinaria o `null` no demuestra cobertura.
-- [ ] `PG-A.04.06` Incorporar el verificador a la puerta local de la app, documentar comando real en README y probarlo con su negativo. Ampliar SEE solo si la regla necesita datos normativos/exportación; no crear un verificador global nuevo por comodidad. Registrar conjunto esperado frente al cubierto, sin porcentajes inventados.
+- [x] `PG-A.04.05` Sustituir fallbacks silenciosos de ambos constructores por clasificación exhaustiva: proceso conocido permitido, contenedor/expresión proyectado en su dueño o fallo explícito. Un `_` que simplemente produce `process`, hoja ordinaria o `null` no demuestra cobertura.
+- [x] `PG-A.04.06` Incorporar el verificador a la puerta local de la app, documentar comando real en README y probarlo con su negativo. Ampliar SEE solo si la regla necesita datos normativos/exportación; no crear un verificador global nuevo por comodidad. Registrar conjunto esperado frente al cubierto, sin porcentajes inventados.
 
 ### PG-A.05 · Import/export pegados
 
@@ -331,7 +332,11 @@ Registrar por participante seudónimo, consentimiento gestionado por la persona,
 
 Implementación autorizada: PG-A.01 y PG-A.02 ejecutados en esta iteración con PG-1 abierto. La API pública de análisis y la entrada de archivo suelto de CLI conservan texto, perfil y rigor; la app transporta esos valores intactos. La vista estática agrega solo las relaciones ausentes y la app las decodifica en modelos inmutables. `API.STATE.QUERY` no cambió.
 
-El registro sigue cada tarea de §4 y cada cierre común por su ID. Completar tareas de `.01` y `.02` no cierra PG-A ni habilita `.03`.
+Implementación autorizada posterior: PG-A.03 y PG-A.04 ejecutados en una sola iteración. La vista de clases proyecta contratos, realizaciones, restricciones y estados inválidos por identidad de nodo; la matriz de cobertura sintáctica y su verificador cubren las 78 formas públicas del motor; los constructores de diagramas clasifican de forma exhaustiva y reportan lo que no dibujan.
+
+Verificación `.03`/`.04`: `see validate` (196 especificaciones), `see conform --subject app --only API.PROGRAM.VIEW` (50 observaciones, 0 divergencias), `dart run tool/check_syntax_coverage.dart`, `dart run tool/check_limits.dart`, `flutter analyze --fatal-infos --fatal-warnings` y tests nuevos (contratos, formas, verificador, estado no soportado) en verde. La suite completa de Flutter tiene 29 fallos idénticos con y sin estos cambios (verificado con `git stash`): fixtures de transporte falso que el validador estricto del commit anterior rechaza, linaje de contenido, aislamiento de composición, corpus base de `robotAutonomo` y tabla de funciones incorporadas. `see lock --check` sigue fallando por `SEE-HASH` en `API.ANALYZE@1.0.0` (PA-PRE-05), y las reglas R6–R9 de `API.PROGRAM.VIEW` están sin reanclar y sin revisión independiente. El esquema de casos de SEE ganó el escenario `class_diagram`.
+
+El registro sigue cada tarea de §4 y cada cierre común por su ID. Completar tareas de `.01` y `.02` no cierra PG-A ni habilita `.03`; las tareas `.03` y `.04` parciales o pendientes quedan abiertas en la tabla.
 
 | Tarea / punto | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
@@ -347,18 +352,18 @@ El registro sigue cada tarea de §4 y cada cierre común por su ID. Completar ta
 | PG-A.02.04 | Cumplido | 10 pruebas API nominales, 6 de identidad, pruebas espejo Dart de modelos/decodificador/transporte | Alcance ejecutado; no implica cierre común de PG-A |
 | PG-A.02.05 | Cumplido | Modelos Dart inmutables y lectura tipada; proyección estática Rust con relaciones por IDs locales | Alcance ejecutado; no implica cierre común de PG-A |
 | PG-A.02.06 | Cumplido | README de API/app y matriz campo–contrato–prueba; verificadores y fallos anotados abajo | Alcance ejecutado; no implica cierre común de PG-A |
-| PG-A.03.01 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
-| PG-A.03.02 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
-| PG-A.03.03 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
-| PG-A.03.04 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
-| PG-A.03.05 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
-| PG-A.03.06 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
-| PG-A.04.01 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
-| PG-A.04.02 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
-| PG-A.04.03 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
-| PG-A.04.04 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
-| PG-A.04.05 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
-| PG-A.04.06 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
+| PG-A.03.01 | Cumplido | API.PROGRAM.VIEW#R6–R9 y casos C17–C23; PA-PRE-02 resuelto por contrato nominal | Se amplió un contrato existente porque un contrato nuevo exige revisión independiente que no consta; el texto editado queda sin reanclar (SEE-HASH heredado) y pendiente de revisión |
+| PG-A.03.02 | Parcial | Escenas: contrato solo, una y dos implementaciones, dos contratos, herencia más realización, incompleta, destino desconocido y restricción, en es/en | Falta la sobrescritura inválida; el método heredado queda cubierto solo por la realización heredada que no se redibuja |
+| PG-A.03.03 | Parcial | rust_type_contract_diagram_test, class_shapes_test (triángulo, punta abierta, guiones, color por estado), validadores de geometría de escena | Sin pruebas del árbol Semantics del lienzo: pertenecen a PG-A.07.04 |
+| PG-A.03.04 | Parcial | RustTypeContractProjection, ClassRelation/DiagramEdge con IDs, origen y diagnósticos; enrutado y pintores | La navegación de relación a rango exacto se prueba solo como dato (nodeId/origen), sin prueba de widget |
+| PG-A.03.05 | Pendiente | Restricciones visibles como relación de uso; registros, enumerados y parámetros genéricos quedan como extensiones declaradas en la matriz | Cajas de registro y enumerado no se dibujan; no se insertaron pasos ejecutables para declaraciones |
+| PG-A.03.06 | Cumplido | README de app; conformidad app de API.PROGRAM.VIEW: 50 observaciones, 0 divergencias, por el puente real | La evidencia de interfaz sobre FRB real se amplía en .07 |
+| PG-A.04.01 | Cumplido | Matriz como datos en lib/domain/model/diagram/coverage/, separada de AstConstruct; 78 formas públicas, 78 cubiertas | Inventario leído del código fuente del motor; la API no publica un catálogo |
+| PG-A.04.02 | Parcial | Códigos COV-* con casos negativos en check_syntax_coverage_test; respuesta visible no soportada con mensaje es/en | Las reglas del verificador no están en el corpus; son contrato de herramienta documentado en el README |
+| PG-A.04.03 | Cumplido | check_syntax_coverage_test: fila quitada, construcción activa añadida, rol cambiado, identidad repetida, sin motivo, control ocultado, regla y prueba inexistentes; conjunto válido pasa | Alcance ejecutado |
+| PG-A.04.04 | Parcial | Todas las filas contra el inventario vigente; for_each_loop dibujado como bucle en ordinograma y estructograma | Ruptura, limpieza y propagación se reportan como no soportadas: dibujarlas exige aristas de salida en la disposición; no se implementaron |
+| PG-A.04.05 | Cumplido | rustStatementTreatment exhaustivo; ambos constructores sin rama genérica; DiagramProgram.unsupported | Alcance ejecutado |
+| PG-A.04.06 | Cumplido | dart run tool/check_syntax_coverage.dart documentado en el README con su negativo; SEE no se amplió | Conjunto esperado 78, cubierto 78 |
 | PG-A.05.01 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
 | PG-A.05.02 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
 | PG-A.05.03 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
@@ -413,4 +418,4 @@ Puertas fallidas o incompletas, separadas de la implementación: `see conform --
 
 La conformidad adicional de `LANG.SOURCE.POSITION` no generó evidencia nueva porque `SEE-STALE` detectó la matriz engine local anterior de `API.PROGRAM.VIEW` con hash de corpus desactualizado. El caso sí cuenta con tests de identidad de fuente en Rust y tests de rangos Unicode/BOM en el adaptador Dart.
 
-No hubo commit ni push. No se cerró PG-1, PG-A ni ninguno de sus cierres comunes. La implementación queda reportada y la iteración se detiene aquí.
+No hubo commit ni push. No se cerró PG-1, PG-A ni ninguno de sus cierres comunes. La implementación de `.03` y `.04` queda reportada y la iteración se detiene aquí.

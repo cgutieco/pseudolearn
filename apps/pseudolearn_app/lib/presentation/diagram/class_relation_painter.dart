@@ -15,15 +15,30 @@ final class ClassRelationPainter {
 
   void paintRelation(Canvas canvas, DiagramEdge edge) {
     if (edge.points.length < 2) return;
-    canvas.drawPath(_pathOf(edge), _stroke);
-    if (edge.kind == DiagramEdgeKind.generalization) _paintArrow(canvas, edge);
+    final stroke = _strokeOf(edge);
+    canvas.drawPath(_lineOf(edge), stroke);
+    _paintHead(canvas, edge, stroke);
     _paintLabel(canvas, edge);
   }
 
-  Paint get _stroke => Paint()
-    ..color = colors.borders.strong
+  Paint _strokeOf(DiagramEdge edge) => Paint()
+    ..color = edge.isValid ? colors.borders.strong : colors.severities.error.border
     ..strokeWidth = EditorMetricsTokens.flowNodeBorderWidth
     ..style = PaintingStyle.stroke;
+
+  Path _lineOf(DiagramEdge edge) {
+    final path = _pathOf(edge);
+    final dashed = edge.kind == DiagramEdgeKind.realization ||
+        edge.kind == DiagramEdgeKind.usage;
+    if (!dashed) return path;
+    return ClassShapes.dashed(
+      path,
+      dash: edge.isValid
+          ? ClassDiagramMetrics.dashLength
+          : ClassDiagramMetrics.invalidDashLength,
+      gap: ClassDiagramMetrics.dashGap,
+    );
+  }
 
   Path _pathOf(DiagramEdge edge) {
     final path = Path()..moveTo(edge.points.first.x, edge.points.first.y);
@@ -33,13 +48,19 @@ final class ClassRelationPainter {
     return path;
   }
 
-  void _paintArrow(Canvas canvas, DiagramEdge edge) {
-    final head = ClassShapes.hollowArrowHead(
-      edge.points[edge.points.length - 2],
-      edge.points.last,
-    );
-    canvas.drawPath(head, Paint()..color = colors.surfaces.raised);
-    canvas.drawPath(head, _stroke);
+  void _paintHead(Canvas canvas, DiagramEdge edge, Paint stroke) {
+    final from = edge.points[edge.points.length - 2];
+    final tip = edge.points.last;
+    switch (edge.kind) {
+      case DiagramEdgeKind.generalization || DiagramEdgeKind.realization:
+        final head = ClassShapes.hollowArrowHead(from, tip);
+        canvas.drawPath(head, Paint()..color = colors.surfaces.raised);
+        canvas.drawPath(head, stroke);
+      case DiagramEdgeKind.usage:
+        canvas.drawPath(ClassShapes.openArrowHead(from, tip), stroke);
+      default:
+        return;
+    }
   }
 
   void _paintLabel(Canvas canvas, DiagramEdge edge) {

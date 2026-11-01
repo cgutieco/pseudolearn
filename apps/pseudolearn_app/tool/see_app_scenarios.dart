@@ -2,6 +2,7 @@ import 'package:pseudolearn_app/engine/rust/rust_transport.dart';
 
 import 'see_app_assist.dart';
 import 'see_app_boundary.dart';
+import 'see_app_class_diagram.dart';
 import 'see_app_completion.dart';
 import 'see_app_help.dart';
 import 'see_app_pace.dart';
@@ -16,6 +17,7 @@ Future<Map<String, Object?>> handleAppScenario(
     'boundary' => await runBoundaryScenario(transport, input),
     'pace' => await runPaceScenario(transport, input),
     'snapshot' => await runSnapshotScenario(transport, input),
+    'class_diagram' => await runClassDiagramScenario(transport, input),
     'completion' => await runCompletionScenario(transport, input),
     'edit_assistance' => await runEditAssistanceScenario(transport, input),
     'accept_candidate' => await runAcceptCandidateScenario(transport, input),

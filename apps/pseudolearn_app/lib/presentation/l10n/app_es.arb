@@ -338,6 +338,15 @@
   "@diagnosticsEmpty": {
     "description": "Mensaje en el panel de diagnósticos cuando no hay errores"
   },
+  "diagramUnsupportedSyntax": "Este diagrama todavía no puede representar fielmente: {kinds}. El resto del programa no se dibuja para no mostrar un diagrama falso.",
+  "@diagramUnsupportedSyntax": {
+    "description": "Mensaje cuando el programa usa construcciones que el diagrama aún no representa",
+    "placeholders": {
+      "kinds": {
+        "type": "String"
+      }
+    }
+  },
   "flowchartEmpty": "El ordinograma estará disponible cuando el código no tenga errores.",
   "@flowchartEmpty": {
     "description": "Mensaje del ordinograma cuando no hay AST válido"

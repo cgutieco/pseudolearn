@@ -338,6 +338,15 @@
   "@diagnosticsEmpty": {
     "description": "Message when diagnostics panel is clean"
   },
+  "diagramUnsupportedSyntax": "This diagram cannot faithfully show yet: {kinds}. The program is not drawn so that no false diagram is shown.",
+  "@diagramUnsupportedSyntax": {
+    "description": "Message when the program uses constructs the diagram cannot show yet",
+    "placeholders": {
+      "kinds": {
+        "type": "String"
+      }
+    }
+  },
   "flowchartEmpty": "The flowchart will be available when code is error-free.",
   "@flowchartEmpty": {
     "description": "Message when flowchart has no valid AST"

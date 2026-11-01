@@ -3,8 +3,10 @@ import '../../domain/model/diagram/structogram_metrics.dart';
 import '../diagram/diagram_vocabulary.dart';
 import '../diagram/text_metrics.dart';
 import '../structogram/structogram_cell.dart';
+import 'rust_caption_text.dart';
 import 'rust_diagram_captions.dart';
 import 'rust_program_view.dart';
+import 'rust_statement_treatment.dart';
 import 'rust_task_nodes.dart';
 
 final class RustStructogramCellBuilder {
@@ -33,14 +35,22 @@ final class RustStructogramCellBuilder {
 
   StructogramCell _statement(RustViewNode wrapper) {
     final node = _semanticStatement(wrapper);
-    return switch (node.syntaxKind) {
-      'conditional' => _conditional(wrapper, node),
-      'switch' => _selection(wrapper, node),
-      'while_loop' || 'for_loop' => _preTestLoop(wrapper, node),
-      'repeat_loop' => _postTestLoop(wrapper, node),
-      'task_scope' => _taskScope(wrapper, node),
-      'select_statement' => _receiveSelection(wrapper, node),
-      _ => _leaf(wrapper, node),
+    return switch (rustStatementTreatment(_view, node)) {
+      StatementTreatment.conditional => _conditional(wrapper, node),
+      StatementTreatment.selection => _selection(wrapper, node),
+      StatementTreatment.whileLoop ||
+      StatementTreatment.countedLoop => _preTestLoop(wrapper, node),
+      StatementTreatment.iteration => _iteration(wrapper, node),
+      StatementTreatment.repeatLoop => _postTestLoop(wrapper, node),
+      StatementTreatment.taskScope => _taskScope(wrapper, node),
+      StatementTreatment.receiveSelection => _receiveSelection(wrapper, node),
+      StatementTreatment.returnExit ||
+      StatementTreatment.call ||
+      StatementTreatment.inputOutput ||
+      StatementTreatment.process => _leaf(wrapper, node),
+      StatementTreatment.unsupported => throw UnsupportedSyntaxView(
+        rustUnsupportedKind(_view, node),
+      ),
     };
   }
 
@@ -74,7 +84,7 @@ final class RustStructogramCellBuilder {
     for (final branch in rustChildrenForRole(_view, node, 'case')) {
       columns.add(
         StructogramColumn(
-          label: _caption(_view.childForRole(branch, 'labels')),
+          label: rustCaptionOf(_view.childForRole(branch, 'labels')),
           body: _branch(_view.childForRole(branch, 'body')),
         ),
       );
@@ -83,14 +93,14 @@ final class RustStructogramCellBuilder {
     if (defaultCase != null) {
       columns.add(
         StructogramColumn(
-          label: _firstLine(defaultCase.text).replaceAll(':', '').trim(),
+          label: rustFirstLine(defaultCase.text).replaceAll(':', '').trim(),
           body: _branch(_view.childForRole(defaultCase, 'body')),
         ),
       );
     }
     return StructogramBranch(
       headerLines: _wrap(
-        _captions.selector(_caption(_view.childForRole(node, 'selector'))),
+        _captions.selector(rustCaptionOf(_view.childForRole(node, 'selector'))),
       ),
       isBinary: false,
       nodeId: wrapper.id,
@@ -118,6 +128,15 @@ final class RustStructogramCellBuilder {
         position: StructogramLoopPosition.footer,
         nodeId: wrapper.id,
         sourceLine: wrapper.range.endLine,
+        body: _body(node),
+      );
+
+  StructogramCell _iteration(RustViewNode wrapper, RustViewNode node) =>
+      StructogramLoop(
+        headerLines: _wrap(rustHeaderLine(node)),
+        position: StructogramLoopPosition.header,
+        nodeId: wrapper.id,
+        sourceLine: wrapper.range.startLine,
         body: _body(node),
       );
 
@@ -156,7 +175,7 @@ final class RustStructogramCellBuilder {
             StructogramLeafKind.call,
           _ => StructogramLeafKind.process,
         },
-        lines: _wrap(_caption(node)),
+        lines: _wrap(rustCaptionOf(node)),
         nodeId: wrapper.id,
         sourceLine: wrapper.range.startLine,
       );
@@ -182,22 +201,13 @@ final class RustStructogramCellBuilder {
 
   String _header(RustViewNode node) {
     final parts = rustChildrenForRole(_view, node, 'loop_header');
-    if (parts.isEmpty) return _caption(node);
-    return _captions.loopHeader(parts.map(_caption).toList());
-  }
-
-  String _caption(RustViewNode? node) {
-    if (node == null) return '';
-    final text = node.text.replaceAll('\n', ' ').trim();
-    return text.endsWith(';')
-        ? text.substring(0, text.length - 1).trimRight()
-        : text;
+    if (parts.isEmpty) return rustCaptionOf(node);
+    return _captions.loopHeader(parts.map(rustCaptionOf).toList());
   }
 
   String _question(RustViewNode? condition) =>
-      _vocabulary.asQuestion(_caption(condition));
+      _vocabulary.asQuestion(rustCaptionOf(condition));
 
-  String _firstLine(String text) => text.split('\n').first.trim();
 
   List<String> _wrap(String text) => _text.wrapText(
     text,

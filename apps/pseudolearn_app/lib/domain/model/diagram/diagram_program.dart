@@ -4,15 +4,24 @@ import 'diagram_unit.dart';
 final class DiagramProgram {
   final List<DiagramUnit> units;
   final Map<String, DiagramScene> _scenes;
+  final List<String> unsupportedKinds;
 
   const DiagramProgram({
     required this.units,
     required Map<String, DiagramScene> scenes,
-  }) : _scenes = scenes;
+  })  : _scenes = scenes,
+        unsupportedKinds = const [];
 
   const DiagramProgram.empty()
       : units = const [],
+        _scenes = const {},
+        unsupportedKinds = const [];
+
+  const DiagramProgram.unsupported(this.unsupportedKinds)
+      : units = const [],
         _scenes = const {};
+
+  bool get isUnsupported => unsupportedKinds.isNotEmpty;
 
   bool get isEmpty => units.isEmpty;
 

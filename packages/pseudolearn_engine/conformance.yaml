@@ -1480,6 +1480,30 @@
       "estado": "cumple"
     },
     {
+      "regla": "API.PROGRAM.VIEW@1.0.0#R6",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "La representación del diagrama de clases es responsabilidad del consumidor de la vista y solo la observa el sujeto app."
+    },
+    {
+      "regla": "API.PROGRAM.VIEW@1.0.0#R7",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "La representación del diagrama de clases es responsabilidad del consumidor de la vista y solo la observa el sujeto app."
+    },
+    {
+      "regla": "API.PROGRAM.VIEW@1.0.0#R8",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "La representación del diagrama de clases es responsabilidad del consumidor de la vista y solo la observa el sujeto app."
+    },
+    {
+      "regla": "API.PROGRAM.VIEW@1.0.0#R9",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "La representación del diagrama de clases es responsabilidad del consumidor de la vista y solo la observa el sujeto app."
+    },
+    {
       "regla": "API.STATE.QUERY@1.0.0#R4",
       "verificacion": "ejecutor",
       "estado": "cumple"

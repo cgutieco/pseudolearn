@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import '../../domain/model/diagram/class_model.dart';
 
 final class InheritanceLevels {
@@ -19,16 +21,17 @@ final class InheritanceLevels {
     ];
   }
 
-  static int depthOf(ClassBox box, Map<String, ClassBox> byName) {
-    final visited = <String>{box.name};
-    var depth = 0;
-    var current = box;
-    while (current.superclassName != null) {
-      final parent = byName[current.superclassName];
-      if (parent == null || !visited.add(parent.name)) return depth;
-      depth += 1;
-      current = parent;
+  static int depthOf(ClassBox box, Map<String, ClassBox> byName) =>
+      _depth(box, byName, {box.name});
+
+  static int _depth(ClassBox box, Map<String, ClassBox> byName, Set<String> path) {
+    var deepest = 0;
+    for (final name in [?box.superclassName, ...box.contractNames]) {
+      final parent = byName[name];
+      if (parent == null || !path.add(parent.name)) continue;
+      deepest = math.max(deepest, 1 + _depth(parent, byName, path));
+      path.remove(parent.name);
     }
-    return depth;
+    return deepest;
   }
 }

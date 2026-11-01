@@ -218,6 +218,9 @@ dart run tool/check_content.dart
 # 5. Verificación de integridad del sistema de diseño
 dart run tool/check_design_system.dart
 
+# 5b. Cobertura de las formas públicas de la vista por ordinograma, estructograma y estructura
+dart run tool/check_syntax_coverage.dart
+
 # 6. Biblioteca nativa de las pruebas y suite completa (unitarios, arquitectura, widgets, equivalencia de puertos)
 cargo build --release --locked --lib --manifest-path native/Cargo.toml
 flutter test
@@ -2617,6 +2620,29 @@ El adaptador Rust de la tabla de variables consume las entradas vector y diccion
 | Captura | `captures` con vínculo y modo `value` | `rust_program_view_test.dart`; `program_view_nominal.rs` |
 | Iteración y ámbito | `iteration` con colección, vínculos, cuerpo y dueño | `rust_program_view_test.dart`; `program_view_nominal.rs` |
 | Revisión, referencias y rangos | `revision_id`, IDs del mismo origen, hijos y tramos Unicode | `rust_program_view_test.dart`; `source_identity_tests.rs` |
+
+### Contratos, realizaciones y restricciones en el diagrama de clases (`PG-A.03`)
+
+La regla de representación vive en `API.PROGRAM.VIEW#R6`–`R9`, observada por el sujeto `app` con el escenario `class_diagram` (`tool/see_app_class_diagram.dart`), que resume la escena real que construye `RustClassDiagramBuilder` sin respuestas precalculadas. El motor no tiene caso propio para estas reglas: su vínculo está exento porque la representación es del consumidor.
+
+- **Caja de contrato.** Una interfaz es un `ClassBox` de tipo `interfaceContract`: cabecera con el estereotipo «interface» sobre el nombre, una fila por firma y ningún atributo. Permanece visible sin implementaciones. La lectura sale de los nodos `interface_unit`/`interface_signature` de la vista pública, no de `units`, que no los lista.
+- **Realización explícita.** Se proyecta una `ClassRelation` de tipo `realization` por cada realización explícita de `staticData.realizations`, por identidad de nodo. Se dibuja discontinua con triángulo hueco hacia el contrato; la herencia sigue continua. La realización heredada no se redibuja: la herencia la transporta y duplicarla sobrecargaría el lienzo sin añadir información.
+- **Estado inválido.** La relación conserva los códigos de diagnóstico y el nodo de origen (`originNodeId`), se pinta con el color de error, con guiones más cortos y con una etiqueta que empieza por `!`: nunca se distingue solo por el color. Un contrato desconocido no crea relación ni caja; aparece como fila de incidencia (`ClassRowRole.contractIssue`) en la clase, anclada al nodo de la referencia escrita, de modo que navegarla lleva al rango exacto.
+- **Restricción genérica.** Solo los subprogramas pueden declarar parámetros de tipo. Un subprograma con restricción se muestra como caja «subprogram» con su firma y una relación `usage` (discontinua, punta abierta) hacia el contrato, etiquetada con el nombre del parámetro. No se crean valores de interfaz ni despacho.
+- **Colocación.** `ClassBox.contractNames` hace que `InheritanceLevels` coloque el contrato por encima de sus realizaciones, con protección contra ciclos. Las relaciones se enrutan por `nodeId` y recurren al nombre solo si falta.
+- **Fuera de alcance de este punto.** Cajas de registro y enumerado, parámetros genéricos de tipo en clases (el lenguaje no los admite) y el árbol Semantics del lienzo (`PG-A.07`) quedan como extensiones declaradas en la matriz de cobertura. La etiqueta de una relación inválida muestra el código de diagnóstico, sin localizar; el mensaje localizado se obtiene del diagnóstico enlazado por origen.
+
+Pruebas: `rust_type_contract_diagram_test.dart` (motor real, es/en), `class_shapes_test.dart` (dirección del triángulo, punta abierta, guiones y color por estado).
+
+### Matriz de cobertura sintáctica y respuesta no soportada (`PG-A.04`)
+
+`lib/domain/model/diagram/coverage/` contiene la matriz como datos: cada fila declara construcción, papel público (`statement`, `declaration`, `expression`, `symbol`, `type`), formas públicas, anclaje de regla con versión, seis celdas (ordinograma, estructograma, estructura, foco, estado, ayuda) y la prueba que la respalda. Una celda es `exact`, `declaredExtension` o `notApplicable`, y las dos últimas exigen motivo. Es distinta de `AstConstruct`, que es la taxonomía curricular del panel de progreso y no prueba exhaustividad.
+
+`dart run tool/check_syntax_coverage.dart` contrasta la matriz con el inventario público del motor, que lee de los archivos `program_view_kind.rs` y `program_view_tasks.rs` (nombre de sintaxis y papel de cada forma). Falla con `COV-MISSING-ROW`, `COV-STALE-ROW`, `COV-DUPLICATE`, `COV-ROLE`, `COV-NO-REASON`, `COV-HIDDEN-CONTROL` (una construcción ejecutable marcada «no aplicable» en una vista), `COV-RULE` (anclaje inexistente en el corpus) y `COV-EVIDENCE` (prueba inexistente). Cada código tiene un caso negativo en `test/tool/check_syntax_coverage_test.dart`, y otro test contrasta la matriz real con el inventario real. Conjunto esperado frente a cubierto: 78 formas públicas, 78 cubiertas.
+
+- **Clasificación exhaustiva.** `rustStatementTreatment` decide para cada sentencia un tratamiento explícito: control, salida, llamada, E/S, paso de proceso o `unsupported`. Los constructores de ordinograma y estructograma ya no tienen una rama `_` que produzca un proceso. `for_each_loop` se dibuja como bucle de preámbulo (cabecera con la primera línea del propio nodo, de modo que cambia con el perfil sin literales sueltos) y una colección vacía conserva el bucle.
+- **Respuesta no soportada.** `Salir`, `Diferir` y `Propagar` no se dibujan: un `Salir` necesita una arista hacia la salida del bucle que el motor de disposición no sabe trazar, y las limpiezas y la salida de fallo de `Propagar` ocurren en puntos que dibujarlos mal sería una causalidad falsa. El constructor captura `UnsupportedSyntaxView` en su propio borde y devuelve `DiagramProgram.unsupported(kinds)`; el panel muestra qué formas faltan en vez de un diagrama parcial (`diagramUnsupportedSyntax`, es/en). Son extensiones declaradas en la matriz y se prueban en `rust_syntax_coverage_behavior_test.dart`.
+- **Pendientes declarados.** Dibujar la ruptura, las limpiezas en su orden normativo y la salida de propagación exige ampliar el motor de disposición con aristas de salida; registros, enumerados, patrones de variante y literales de función son extensiones documentadas en sus filas. La celda de ayuda de cada fila es una extensión hasta que la auditoría del catálogo de ayuda la cierre. El inventario se lee del código fuente del motor porque la API no publica aún un catálogo de formas; cuando exista, el verificador debe leerlo de ahí.
 
 ### Tareas: datos que la app consume y vistas que quedan para otra fase (`PG-4.11`)
 

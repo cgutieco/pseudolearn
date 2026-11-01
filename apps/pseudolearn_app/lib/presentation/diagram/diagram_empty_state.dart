@@ -8,12 +8,14 @@ import 'diagram_notation_switch.dart';
 final class DiagramEmptyState extends StatelessWidget {
   final DiagramNotation notation;
   final bool hasValidAst;
+  final List<String> unsupportedKinds;
   final ValueChanged<DiagramNotation>? onNotationSelected;
 
   const DiagramEmptyState({
     super.key,
     required this.notation,
     required this.hasValidAst,
+    this.unsupportedKinds = const [],
     this.onNotationSelected,
   });
 
@@ -26,9 +28,7 @@ final class DiagramEmptyState extends StatelessWidget {
           AppEmptyState(
             icon: Icons.account_tree_outlined,
             title: l10n.tabDiagrams,
-            description: hasValidAst && notation == DiagramNotation.classDiagram
-                ? l10n.classDiagramNoClasses
-                : _unavailableDescriptionOf(l10n, notation),
+            description: _descriptionOf(l10n),
           ),
           Positioned(
             top: ComponentMetricsTokens.flowCanvasZoomControlsInset,
@@ -42,6 +42,15 @@ final class DiagramEmptyState extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _descriptionOf(AppLocalizations l10n) {
+    if (unsupportedKinds.isNotEmpty) {
+      return l10n.diagramUnsupportedSyntax(unsupportedKinds.join(', '));
+    }
+    return hasValidAst && notation == DiagramNotation.classDiagram
+        ? l10n.classDiagramNoClasses
+        : _unavailableDescriptionOf(l10n, notation);
   }
 }
 

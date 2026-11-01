@@ -60,20 +60,27 @@ final class ClassBoxPainter extends CustomPainter {
 
   void _paintHeaderText(Canvas canvas, DiagramNode node) {
     final rect = _rectOf(node);
-    final painter = _layout(
-      node.lines.first,
-      maxWidth: rect.width - ClassDiagramMetrics.boxPadding * 2,
-      align: TextAlign.center,
-      weight: FontWeight.w700,
-      color: colors.text.primary,
-    );
-    painter.paint(
-      canvas,
-      Offset(
-        rect.center.dx - painter.width / 2,
-        rect.center.dy - painter.height / 2,
-      ),
-    );
+    final painters = [
+      for (var index = 0; index < node.lines.length; index++)
+        _layout(
+          node.lines[index],
+          maxWidth: rect.width - ClassDiagramMetrics.boxPadding * 2,
+          align: TextAlign.center,
+          weight: index == node.lines.length - 1
+              ? FontWeight.w700
+              : FontWeight.w500,
+          color: colors.text.primary,
+        ),
+    ];
+    var total = 0.0;
+    for (final painter in painters) {
+      total += painter.height;
+    }
+    var top = rect.center.dy - total / 2;
+    for (final painter in painters) {
+      painter.paint(canvas, Offset(rect.center.dx - painter.width / 2, top));
+      top += painter.height;
+    }
   }
 
   void _paintRowText(Canvas canvas, DiagramNode node) {

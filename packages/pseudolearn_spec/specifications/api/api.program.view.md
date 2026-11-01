@@ -866,3 +866,49 @@ La vista pública incluye interface_unit, interface_signature, realization, type
   }
 }
 ```
+
+## Representación de contratos en el diagrama de clases
+
+```regla
+{"id": "R6", "fuerza": "DEBE", "clase": "semantica", "texto": "El consumidor del diagrama de clases representa una interfaz como una caja con el estereotipo «interface», su nombre y una fila por operación con la forma «+ nombre(parámetros): retorno». No tiene atributos ni se instancia, y permanece visible aunque nadie la realice.", "verificacion": ["C17"]}
+```
+
+```caso
+{"id": "C17", "regla": "R6", "perfiles": ["en"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "class_diagram", "input": {"program": "interface Readable\nmethod readValue() as integer;\nendInterface\nalgorithm Main\nendAlgorithm\n", "profile": "en"}}, "espera": {"aplicacion": {"boxes": [{"name": "Readable", "stereotype": "«interface»", "rows": ["+ readValue(): integer"]}], "relations": []}}}
+```
+
+```regla
+{"id": "R7", "fuerza": "DEBE", "clase": "semantica", "texto": "Cada realización explícita válida se representa como una relación de realización dirigida desde la clase hacia el contrato, distinta de la herencia. La realización heredada no se dibuja de nuevo: la relación de herencia la transporta. El contrato ocupa un nivel superior al de sus realizaciones, de modo que las cajas se listan de arriba abajo.", "verificacion": ["C18", "C19", "C20"]}
+```
+
+```caso
+{"id": "C18", "regla": "R7", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "class_diagram", "input": {"program": "Interfaz Legible\nMetodo obtener() Como Entero;\nFinInterfaz\nClase Lector Realiza Legible\nMetodo obtener() Como Entero\nRetornar 1;\nFinMetodo\nFinClase\nAlgoritmo Principal\nFinAlgoritmo\n", "profile": "es"}}, "espera": {"aplicacion": {"boxes": [{"name": "Legible", "stereotype": "«interface»", "rows": ["+ obtener(): Entero"]}, {"name": "Lector", "rows": ["+ obtener(): Entero"]}], "relations": [{"kind": "realization", "from": "Lector", "to": "Legible", "valid": true, "diagnostics": []}]}}}
+```
+
+```caso
+{"id": "C19", "regla": "R7", "perfiles": ["en"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "class_diagram", "input": {"program": "interface Readable\nmethod readValue() as integer;\nendInterface\nclass Reader implements Readable\nmethod readValue() as integer\nreturn 7;\nendMethod\nendClass\nclass Writer implements Readable\nmethod readValue() as integer\nreturn 8;\nendMethod\nendClass\nalgorithm Main\nendAlgorithm\n", "profile": "en"}}, "espera": {"aplicacion": {"relations": [{"kind": "realization", "from": "Reader", "to": "Readable", "valid": true}, {"kind": "realization", "from": "Writer", "to": "Readable", "valid": true}]}}}
+```
+
+```caso
+{"id": "C20", "regla": "R7", "perfiles": ["en"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "class_diagram", "input": {"program": "interface Readable\nmethod readValue() as integer;\nendInterface\nclass Reader implements Readable\nmethod readValue() as integer\nreturn 7;\nendMethod\nendClass\nclass Child extends Reader\nendClass\nalgorithm Main\nendAlgorithm\n", "profile": "en"}}, "espera": {"aplicacion": {"relations": [{"kind": "generalization", "from": "Child", "to": "Reader", "valid": true}, {"kind": "realization", "from": "Reader", "to": "Readable", "valid": true}]}}}
+```
+
+```regla
+{"id": "R8", "fuerza": "DEBE", "clase": "semantica", "texto": "Una realización inválida se representa con la misma relación marcada como inválida, con los códigos de diagnóstico del análisis y el nodo de la declaración de origen. Un contrato desconocido no crea relación ni caja: aparece como una fila de incidencia en la clase que cita la referencia escrita y el diagnóstico, y conserva el nodo de esa referencia. La invalidez no depende solo del color.", "verificacion": ["C21", "C22"]}
+```
+
+```caso
+{"id": "C21", "regla": "R8", "perfiles": ["en"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "class_diagram", "input": {"program": "interface Needed\nmethod run() as integer;\nendInterface\nclass Broken implements Needed\nendClass\nalgorithm Main\nendAlgorithm\n", "profile": "en"}}, "espera": {"aplicacion": {"relations": [{"kind": "realization", "from": "Broken", "to": "Needed", "valid": false, "diagnostics": ["interfaceMethodMissing"], "has_origin": true}]}}}
+```
+
+```caso
+{"id": "C22", "regla": "R8", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "class_diagram", "input": {"program": "Clase Faltante Realiza Ausente\nFinClase\nAlgoritmo Principal\nFinAlgoritmo\n", "profile": "es"}}, "espera": {"aplicacion": {"boxes": [{"name": "Faltante", "rows": ["! Ausente (unknownInterface)"]}], "relations": []}}}
+```
+
+```regla
+{"id": "R9", "fuerza": "DEBE", "clase": "semantica", "texto": "Una restricción de parámetro genérico sobre un contrato conocido se representa como una relación de uso, distinta de la realización, desde una caja «subprogram» del subprograma que la declara hacia el contrato, etiquetada con el nombre del parámetro. No se crean valores de interfaz.", "verificacion": ["C23"]}
+```
+
+```caso
+{"id": "C23", "regla": "R9", "perfiles": ["en"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "class_diagram", "input": {"program": "interface Readable\nmethod readValue() as integer;\nendInterface\nsubroutine readOnce<T: Readable>(value as T) as integer\nreturn value.readValue();\nendSubroutine\nalgorithm Main\nendAlgorithm\n", "profile": "en"}}, "espera": {"aplicacion": {"boxes": [{"name": "Readable", "stereotype": "«interface»", "rows": ["+ readValue(): integer"]}, {"name": "readOnce", "stereotype": "«subprogram»", "rows": ["+ readOnce<T: Readable>(value: T): integer"]}], "relations": [{"kind": "usage", "from": "readOnce", "to": "Readable", "valid": true, "label": "T"}]}}}
+```

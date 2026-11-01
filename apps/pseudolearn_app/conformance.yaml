@@ -107,6 +107,18 @@ vinculos:
   - regla: API.PROGRAM.VIEW@1.0.0#R3
     verificacion: ejecutor
     estado: cumple
+  - regla: API.PROGRAM.VIEW@1.0.0#R6
+    verificacion: ejecutor
+    estado: cumple
+  - regla: API.PROGRAM.VIEW@1.0.0#R7
+    verificacion: ejecutor
+    estado: cumple
+  - regla: API.PROGRAM.VIEW@1.0.0#R8
+    verificacion: ejecutor
+    estado: cumple
+  - regla: API.PROGRAM.VIEW@1.0.0#R9
+    verificacion: ejecutor
+    estado: cumple
   - regla: API.WIRE-FORMAT@1.0.0#R1
     verificacion: ejecutor
     estado: cumple

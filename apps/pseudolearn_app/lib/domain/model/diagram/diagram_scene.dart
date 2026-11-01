@@ -31,6 +31,8 @@ enum DiagramEdgeKind {
   loopBack,
   generalization,
   association,
+  realization,
+  usage,
 }
 
 final class DiagramPoint {
@@ -85,6 +87,8 @@ final class DiagramEdge {
   final DiagramEdgeKind kind;
   final DiagramPoint? labelAnchor;
   final List<DiagramPoint> points;
+  final ProgramNodeId? originNodeId;
+  final List<String> diagnostics;
 
   const DiagramEdge({
     required this.fromId,
@@ -93,7 +97,11 @@ final class DiagramEdge {
     this.label,
     this.kind = DiagramEdgeKind.normal,
     this.labelAnchor,
+    this.originNodeId,
+    this.diagnostics = const [],
   });
+
+  bool get isValid => diagnostics.isEmpty;
 
   DiagramEdge shifted(double dx, double dy) => DiagramEdge(
         fromId: fromId,
@@ -102,6 +110,8 @@ final class DiagramEdge {
         kind: kind,
         labelAnchor: labelAnchor?.shifted(dx, dy),
         points: points.map((point) => point.shifted(dx, dy)).toList(),
+        originNodeId: originNodeId,
+        diagnostics: diagnostics,
       );
 }
 

@@ -4,7 +4,9 @@ import '../../domain/model/profiles/syntax_profile_id.dart';
 import '../../domain/ports/class_diagram_builder.dart';
 import '../classdiagram/class_diagram_layout.dart';
 import 'rust_program_view.dart';
+import 'rust_member_signature.dart';
 import 'rust_program_view_source.dart';
+import 'rust_type_contract_projection.dart';
 import 'rust_transport.dart';
 
 final class RustClassDiagramBuilder implements ClassDiagramBuilder {
@@ -39,7 +41,10 @@ final class RustClassDiagramBuilder implements ClassDiagramBuilder {
       for (final unit in classUnits) _classBox(view, unit, classNames),
     ];
     final relations = _relations(view, classUnits, classNames);
-    return ClassModel(classes: classes, relations: relations);
+    return RustTypeContractProjection(
+      view,
+      classes,
+    ).project(relations: relations);
   }
 
   ClassBox _classBox(
@@ -59,7 +64,7 @@ final class RustClassDiagramBuilder implements ClassDiagramBuilder {
       final row = ClassMemberRow(
         text: member.kind == 'field'
             ? _attributeSignature(member)
-            : _methodSignature(view, member, memberNode),
+            : RustMemberSignature(view).of(member.name, memberNode),
         visibility: _visibility(member.visibility),
         nodeId: memberNodeId,
         sourceLine: memberNode?.range.startLine ?? unit.range.startLine,
@@ -123,47 +128,6 @@ final class RustClassDiagramBuilder implements ClassDiagramBuilder {
     if (typeName == null) return member.name;
     final type = typeName + List.filled(member.dimensions, '[]').join();
     return '${member.name}: $type';
-  }
-
-  String _methodSignature(
-    RustProgramView view,
-    RustViewMember member,
-    RustViewNode? node,
-  ) {
-    if (node == null) return member.name;
-    final parameterGroup = view.childForRole(node, 'parameters');
-    final parameters = parameterGroup == null
-        ? const <String>[]
-        : [
-            for (final parameter in rustChildrenOf(view, parameterGroup))
-              if (parameter.syntaxKind == 'parameter')
-                _parameterSignature(view, parameter),
-          ];
-    final returnType = rustChildrenForRole(
-      view,
-      node,
-      'signature',
-    ).where((child) => child.syntaxKind == 'type');
-    final signature = '${member.name}(${parameters.join(', ')})';
-    if (returnType.isEmpty) return signature;
-    return '$signature: ${returnType.first.text}';
-  }
-
-  String _parameterSignature(RustProgramView view, RustViewNode parameter) {
-    final children = rustChildrenOf(view, parameter);
-    final name = children
-        .where((child) => child.syntaxKind == 'identifier')
-        .firstOrNull
-        ?.text;
-    final type = children
-        .where((child) => child.syntaxKind == 'type')
-        .firstOrNull
-        ?.text;
-    final dimensions = parameter.dimensions ?? 0;
-    if (name == null) return parameter.text.trim();
-    if (type == null) return name;
-    final typeName = type + List.filled(dimensions, '[]').join();
-    return '$name: $typeName';
   }
 
   ClassMemberVisibility _visibility(String visibility) => switch (visibility) {

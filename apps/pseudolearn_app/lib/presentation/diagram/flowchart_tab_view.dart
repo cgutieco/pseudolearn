@@ -66,6 +66,7 @@ final class _FlowchartTabViewState extends State<FlowchartTabView>
       return DiagramEmptyState(
         notation: widget.state.notation,
         hasValidAst: widget.state.hasValidAst,
+        unsupportedKinds: widget.state.unsupportedKinds,
         onNotationSelected: widget.onNotationSelected,
       );
     }

@@ -28,10 +28,21 @@ final class ClassBoxSizing {
 
   ClassBoxSize of(ClassBox box) => ClassBoxSize(
         width: _widthOf(box),
-        headerHeight: ClassDiagramMetrics.headerHeight,
+        headerHeight: headerHeightOf(box),
         attributesHeight: compartmentHeightOf(box.attributes.length),
         methodsHeight: compartmentHeightOf(box.methods.length),
       );
+
+  static double headerHeightOf(ClassBox box) =>
+      stereotypeOf(box.kind) == null
+          ? ClassDiagramMetrics.headerHeight
+          : ClassDiagramMetrics.headerHeight + DiagramMetrics.lineHeight;
+
+  static String? stereotypeOf(ClassBoxKind kind) => switch (kind) {
+        ClassBoxKind.classType => null,
+        ClassBoxKind.interfaceContract => '«interface»',
+        ClassBoxKind.constrainedSubprogram => '«subprogram»',
+      };
 
   static double compartmentHeightOf(int rowCount) => rowCount == 0
       ? ClassDiagramMetrics.emptyCompartmentHeight
@@ -40,6 +51,10 @@ final class ClassBoxSizing {
 
   double _widthOf(ClassBox box) {
     var widest = _headerWidthOf(box.name);
+    final stereotype = stereotypeOf(box.kind);
+    if (stereotype != null) {
+      widest = math.max(widest, _headerWidthOf(stereotype));
+    }
     for (final row in box.attributes) {
       widest = math.max(widest, _rowWidthOf(row));
     }

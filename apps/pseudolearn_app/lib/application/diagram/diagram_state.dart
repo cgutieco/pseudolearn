@@ -45,6 +45,12 @@ final class DiagramState extends Equatable {
         DiagramNotation.classDiagram => const [],
       };
 
+  List<String> get unsupportedKinds => switch (notation) {
+        DiagramNotation.flowchart => flowchart.unsupportedKinds,
+        DiagramNotation.structogram => structogram.unsupportedKinds,
+        DiagramNotation.classDiagram => const [],
+      };
+
   bool get hasClasses => classDiagram.isNotEmpty;
 
   DiagramState copyWith({
