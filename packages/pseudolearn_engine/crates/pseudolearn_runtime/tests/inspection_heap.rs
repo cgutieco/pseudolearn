@@ -6,7 +6,7 @@ fn bounds_a_heap_copy_without_altering_the_original() -> Result<(), pseudolearn_
     let mut original = Heap::new(MemoryOptions::default());
     let array = pseudolearn_runtime::new_array(&mut original, ValueKind::Integer, &[2], &[])?;
     pseudolearn_runtime::write_element(&mut original, array, (&[0], 7))?;
-    let mut copied = pseudolearn_runtime::clone_heap_bounded(&original, 2)?;
+    let mut copied = pseudolearn_runtime::clone_heap_bounded(&original, 3)?;
     pseudolearn_runtime::write_element(&mut copied, array, (&[0], 9))?;
     assert_eq!(
         pseudolearn_runtime::read_element(&original, array, &[0])?,

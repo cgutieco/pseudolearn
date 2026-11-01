@@ -12,6 +12,7 @@ use std::collections::BTreeMap;
 type Arguments = BTreeMap<&'static str, DiagnosticArgument>;
 
 mod arrays;
+mod text_effects;
 
 impl Machine<'_> {
     pub(super) fn trap_context(&self, fault: Fault, position: usize) -> VmTrap {
@@ -105,6 +106,7 @@ impl Machine<'_> {
                     self.memory_arguments(fault, operation, arguments);
                 }
             }
+            CompactOp::EffectCall { site } => self.text_effect_arguments(fault, site, arguments),
             CompactOp::CharFromCodeRegister { source, .. } => {
                 if let Ok(word) = self.scalar(source) {
                     number(arguments, "code", crate::evaluate::integer_of(word));

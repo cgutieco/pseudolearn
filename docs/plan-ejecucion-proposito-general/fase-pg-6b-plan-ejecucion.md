@@ -1015,11 +1015,12 @@ define el navegador que no arranca como «no evaluado»: Firefox queda así, sin
 evidencia suficiente: `02.02`, `03.02`, `04.02`, `05.02` (casos de corpus dedicados), `04.06`, `05.03`, `05.07`,
 `06.02`, `09.02`, y por diseño `07.07` y `08.07`. También `C05`, `C09`, `C10` y `C11`.
 
-**Antecedente corregido**: el ejecutor del corpus de runtime ignoraba `limites.max_json_depth` (`ENG.LIMITS#C36`);
-ahora lo aplica. **Antecedente sin corregir**: `LIB.CORE.TEXT#C7` falla en `runtime_corpus` porque el fallo
-`stringPositionOutOfRange` de la biblioteca de texto no transporta los argumentos `length` y `position` que el
-catálogo exige; requiere que `MemoryError` los lleve y pertenece a la biblioteca de texto. Por ello
-`cargo xtask verify` del motor no queda en verde y `PHASE-GREEN` sigue sin declararse.
+**Antecedentes corregidos**: el ejecutor del corpus de runtime ignoraba `limites.max_json_depth`
+(`ENG.LIMITS#C36`); `LIB.CORE.TEXT#C7` fallaba porque `stringPositionOutOfRange` de `Subcadena` no llevaba los
+argumentos `length` y `position` del catálogo (ahora los calcula el contexto de fallo de la VM); y
+`clone_heap_bounded` ignoraba las celdas recién asignadas, por lo que su presupuesto no rechazaba un heap
+mayor (su prueba usaba un presupuesto que solo pasaba por ese error). Tras ello `cargo xtask verify` del motor
+termina en verde y `see conform --subject engine` conserva 3913 observaciones con 0 divergencias.
 
 **Antecedentes (fallaban antes de este cambio)**: `cli_tests::executes_ri_command_successfully` (esperaba un IR sin
 `suspendible`), `reference_vocabulary` (conteo de builtins 19 vs 28), y diferencias de `cargo fmt` en
