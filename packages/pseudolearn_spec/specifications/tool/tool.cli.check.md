@@ -312,7 +312,7 @@
     ],
     "entorno": {},
     "archivos": {
-      "p.pseudo": "Algoritmo P\nDefinir x Como Entero;\nFinAlgoritmo\n"
+      "p.pseudo": "Algoritmo P\nDefinir x Como Entero <- 0;\nFinAlgoritmo\n"
     }
   }
 }
@@ -384,8 +384,8 @@
   "origen": "derivado",
   "operacion": "cli",
   "espera": {
-    "codigo_salida": 0,
-    "salida": "p.pseudo:2:10: advertencia: Variable no declarada: total [undeclaredVariable]\n",
+    "codigo_salida": 1,
+    "salida": "p.pseudo:2:10: error: Variable no declarada: total [undeclaredVariable]\n",
     "salida_error": ""
   },
   "cli": {
@@ -501,7 +501,7 @@
   "operacion": "cli",
   "espera": {
     "codigo_salida": 0,
-    "salida": "{\"diagnostics\":[],\"manifest_errors\":[],\"modules\":[{\"module\":\"informe\",\"package\":\"app\",\"path\":\"app/informe\"},{\"module\":\"main\",\"package\":\"app\",\"path\":\"app/main\"},{\"module\":\"vectores\",\"package\":\"geo\",\"path\":\"geo/vectores\"}],\"project_errors\":[]}\n",
+    "salida": "{\"diagnostics\":[],\"project_errors\":[],\"modules\":[{\"path\":\"app/informe\",\"package\":\"app\",\"module\":\"informe\"},{\"path\":\"app/main\",\"package\":\"app\",\"module\":\"main\"},{\"path\":\"geo/vectores\",\"package\":\"geo\",\"module\":\"vectores\"}],\"manifest_errors\":[]}\n",
     "salida_error": ""
   },
   "cli": {

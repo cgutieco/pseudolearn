@@ -1023,8 +1023,10 @@ y C16. El esquema SEE admite ahora `query_state`. Resultado real: `see conform -
 `TOOL.DAP`; `see conform --subject engine`, 3915 observaciones y 0 divergencias. El cliente DAP acota la cola a ocho
 peticiones simultáneas, por lo que cada caso tiene a lo sumo ocho. `04.02` y `05.02` siguen abiertas: sus escenarios
 (Workers, CORS, redirección opaca, desconexión) pertenecen al host web, que ningún sujeto del corpus ejecuta.
-Antecedentes sin corregir de la CLI: cuatro divergencias de `TOOL.CLI.CHECK` (R2, R3) y `TOOL.CLI.FORMAT` (R1, R2)
-cuyos programas declaran un vínculo sin inicializador, hoy rechazado por el lenguaje.
+Las cuatro divergencias heredadas de la CLI (`TOOL.CLI.CHECK` C6, C9, C14 y `TOOL.CLI.FORMAT` C1–C3) se
+corrigieron: los programas declaran el vínculo con inicializador, `C9` espera el error y código 1 que fija el
+lenguaje para una variable no declarada también en modo flexible, y `C14` usa el orden de campos de la respuesta de
+`analyze_project`. `see conform --subject cli` queda en 107 observaciones y 0 divergencias.
 
 **Antecedentes corregidos**: el ejecutor del corpus de runtime ignoraba `limites.max_json_depth`
 (`ENG.LIMITS#C36`); `LIB.CORE.TEXT#C7` fallaba porque `stringPositionOutOfRange` de `Subcadena` no llevaba los

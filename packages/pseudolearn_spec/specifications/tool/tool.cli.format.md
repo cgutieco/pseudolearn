@@ -90,7 +90,7 @@
   "operacion": "cli",
   "espera": {
     "codigo_salida": 0,
-    "salida": "Algoritmo Principal\n  Definir x Como Entero;\nFinAlgoritmo\n",
+    "salida": "Algoritmo Principal\n  Definir x Como Entero <- 0;\nFinAlgoritmo\n",
     "salida_error": ""
   },
   "cli": {
@@ -100,7 +100,7 @@
     ],
     "entorno": {},
     "archivos": {
-      "p.pseudo": "algoritmo Principal\ndefinir x como entero\nfinalgoritmo\n"
+      "p.pseudo": "algoritmo Principal\ndefinir x como entero <- 0\nfinalgoritmo\n"
     }
   }
 }
@@ -131,7 +131,7 @@
     ],
     "entorno": {},
     "archivos": {
-      "p.pseudo": "Algoritmo Principal\n  Definir x Como Entero;\nFinAlgoritmo\n"
+      "p.pseudo": "Algoritmo Principal\n  Definir x Como Entero <- 0;\nFinAlgoritmo\n"
     }
   }
 }
@@ -162,7 +162,7 @@
     ],
     "entorno": {},
     "archivos": {
-      "p.pseudo": "algoritmo Principal\ndefinir x como entero\nfinalgoritmo\n"
+      "p.pseudo": "algoritmo Principal\ndefinir x como entero <- 0\nfinalgoritmo\n"
     }
   }
 }
