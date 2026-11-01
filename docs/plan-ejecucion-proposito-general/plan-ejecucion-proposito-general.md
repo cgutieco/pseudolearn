@@ -691,48 +691,52 @@ Requisitos R-09, R-15, R-16; capacidades C-08, C-12, C-13; riesgos K-10, K-11; e
 
 Puntos a cumplir:
 
-- [ ] `PG-6B.01` Ubicación y capa del adaptador DAP decididas y declaradas; el servicio no importa VM ni DAP.
-- [ ] `PG-6B.02` DAP de escritorio con el mínimo de ADR-08: evaluate puro, tareas como hilos lógicos, revisión y
+- [x] `PG-6B.01` Ubicación y capa del adaptador DAP decididas y declaradas; el servicio no importa VM ni DAP.
+- [x] `PG-6B.02` DAP de escritorio con el mínimo de ADR-08: evaluate puro, tareas como hilos lógicos, revisión y
   horizonte respetados, StepBack solo en VM y nunca anunciado en AOT.
-- [ ] `PG-6B.03` Retroceder o consultar el pasado nunca reenvía HTTP ni reescribe archivos.
-- [ ] `PG-6B.04` Variante web: servicio en un Worker y ejecución en otro Worker separado, con borde LSP aprobado, lotes
+- [x] `PG-6B.03` Retroceder o consultar el pasado nunca reenvía HTTP ni reescribe archivos.
+- [x] `PG-6B.04` Variante web: servicio en un Worker y ejecución en otro Worker separado, con borde LSP aprobado, lotes
   cancelables y enteros i64 sin pérdida.
-- [ ] `PG-6B.05` Capacidades web explícitas (Fetch, sistema de archivos del editor) y capacidades ausentes visibles.
-- [ ] `PG-6B.06` Pruebas en host de navegador en los navegadores documentados.
-- [ ] `PG-6B.07` E-PG-08 en Safari iPhone y Chrome Android físicos, con resultados aportados por la persona.
-- [ ] `PG-6B.08` Informe móvil que distingue cobertura real de limitaciones, y la persona decide CF-14.
-- [ ] `PG-6B.09` Métrica candidata web medida y `PERF.ARTIFACT.SIZE` respetado.
+- [x] `PG-6B.05` Capacidades web explícitas (Fetch, sistema de archivos del editor) y capacidades ausentes visibles.
+- [x] `PG-6B.06` Pruebas en host de navegador en los navegadores documentados.
+- [ ] `PG-6B.07` (Diferido, «no evaluado físicamente») E-PG-08 en Safari iPhone y Chrome Android físicos, con resultados aportados por la persona.
+- [x] `PG-6B.08` Informe móvil que distingue cobertura real de limitaciones, y la persona decide CF-14.
+- [x] `PG-6B.09` Métrica candidata web medida y `PERF.ARTIFACT.SIZE` respetado.
 
 Fuera de alcance: IDE propio, ejecución remota y AOT en teléfono.
 
 Plan detallado: [fase-pg-6b-plan-ejecucion.md](fase-pg-6b-plan-ejecucion.md), preparado el 2026-10-31
-por petición expresa. Su creación no autorizó la implementación; la petición directa posterior autoriza PG-6B completa y la revisión de `C02`
-queda pendiente. Distingue capacidades existentes de entregas propuestas, contratos/casos, fronteras DAP/Wasm,
+por petición expresa; la petición directa posterior autorizó PG-6B completa. La persona cerró la fase por decisión expresa el 2026-11-01. Distingue capacidades existentes de entregas propuestas, contratos/casos, fronteras DAP/Wasm,
 pruebas de host, medición web y evidencia física complementaria.
 
 Cierre común (definiciones en §4.0):
 
 - [x] `PG-6B.C01` Autorización de la persona para iniciar la fase, en mensaje nuevo.
 - [x] `PG-6B.C02` Plan detallado creado según §5 y revisado por la persona.
-- [ ] `PG-6B.C03` SPEC-FIRST y congelamiento respetados.
-- [ ] `PG-6B.C04` Reglas nuevas con casos o propiedades y vínculos como datos.
-- [ ] `PG-6B.C05` Tests feliz, infeliz y límite en carpetas espejo.
-- [ ] `PG-6B.C06` Capas declaradas, imports permitidos y límites de tamaño.
-- [ ] `PG-6B.C07` Sin comentarios ni TODO; código en inglés; Rust sin pánicos ni `unsafe` no declarado.
-- [ ] `PG-6B.C08` README y reglas de los miembros afectados actualizados, sin citar `docs/`.
-- [ ] `PG-6B.C09` Fichas de ayuda y datos de proyección de la sintaxis nueva, o justificación.
-- [ ] `PG-6B.C10` Riesgos revisados y experimentos con procedencia o diferidos por la persona.
-- [ ] `PG-6B.C11` Tests y verificadores de los miembros afectados en verde.
-- [ ] `PG-6B.C12` Commit sin atribución de IA y push ordinario comprobado a la rama única.
-- [ ] `PG-6B.C13` Resumen completo, informe a la persona y parada.
+- [x] `PG-6B.C03` SPEC-FIRST y congelamiento respetados.
+- [x] `PG-6B.C04` Reglas nuevas con casos o propiedades y vínculos como datos.
+- [x] `PG-6B.C05` Tests feliz, infeliz y límite en carpetas espejo.
+- [x] `PG-6B.C06` Capas declaradas, imports permitidos y límites de tamaño.
+- [x] `PG-6B.C07` Sin comentarios ni TODO; código en inglés; Rust sin pánicos ni `unsafe` no declarado.
+- [x] `PG-6B.C08` README y reglas de los miembros afectados actualizados, sin citar `docs/`.
+- [x] `PG-6B.C09` Fichas de ayuda y datos de proyección de la sintaxis nueva, o justificación.
+- [x] `PG-6B.C10` Riesgos revisados y experimentos con procedencia o diferidos por la persona.
+- [x] `PG-6B.C11` Tests y verificadores de los miembros afectados en verde.
+- [x] `PG-6B.C12` Commit sin atribución de IA y push ordinario comprobado a la rama única.
+- [x] `PG-6B.C13` Resumen completo, informe a la persona y parada.
 
 #### Resumen de PG-6B
 
 | Punto | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
-| | | | |
+| `PG-6B.01`–`.03` | Cumplido | Capas e imports, DAP VM con `TOOL.DAP` C10–C15, historia sin efectos repetidos | — |
+| `PG-6B.04`–`.06` | Cumplido | Workers, LSP con contraste Rust, capacidades web, Chromium y WebKit aprobados | Firefox no arranca: «no evaluado», nunca aprobado |
+| `PG-6B.07` | Diferido | Kit físico de 32 combinaciones y analizador; `.07` sin ensayos | Decisión del 2026-10-22, reafirmada el 2026-11-01; «no evaluado físicamente» |
+| `PG-6B.08` | Cumplido | `informe-movil-pg-6b.md`; CF-14 decidido por la persona (opción 1) el 2026-11-01 | Sin cobertura móvil física |
+| `PG-6B.09` | Cumplido | 5400 intentos válidos, Brotli 844 844 B ≤ `PERF.ARTIFACT.SIZE#R1` | Aceptación de `PERF.PG.WEB` pendiente de la persona |
+| `PG-6B.C01`–`.13` | Cerrado por decisión expresa | Plan detallado §11 | `PHASE-GREEN` no declarado |
 
-Revisión Git de cierre: · Verificadores ejecutados: · Pendientes justificados: · Decisiones de la persona:
+Revisión Git de cierre: `98ea6f42` más el commit de cierre del 2026-11-01 · Verificadores ejecutados: `cargo xtask verify`, `cargo test` de la CLI, vitest y `check:*` de la extensión, `see conform` de `engine` y `cli` (con propiedades), Chromium y WebKit · Pendientes justificados: Firefox, ensayos físicos (`07.07`), `PERF.PG.WEB`, deuda heredada de `pseudolearn_spec` y PG-6A · Decisiones de la persona: cerrar PG-6B y CF-14 con la opción 1 (Cesar Antonio Gutierrez Contreras, 2026-11-01); no iniciar PG-A, PG-B ni PG-7.
 
 ### 4.10 PG-A · App y sintaxis estática
 

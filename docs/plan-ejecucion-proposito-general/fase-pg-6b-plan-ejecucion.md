@@ -11,7 +11,7 @@
 | Estado inicial del árbol       | Limpio; rama un commit por delante de `origin` al comenzar la preparación                                                                                                     |
 | Autorización de este encargo | «Necesito que implementes en una sola iteración todas las fases»; confirmada con «Ok, ejecuta el plan» |
 | Alcance autorizado ahora | Implementar PG-6B.01–.09 y su cierre común; desarrollo continuo y campaña final única |
-| Estado de implementación | En curso; C01/C02 autorizados el 2026-10-31; verificaciones finales pendientes |
+| Estado de implementación | Cerrada por decisión expresa de la persona el 2026-11-01; `PHASE-GREEN` no declarada |
 | Dependencias                   | PG-4, PG-5 y PG-6A, con los residuos registrados en §1.2                                                                                                                      |
 | Entregables futuros            | DAP VM de escritorio, variante web de la misma extensión, evidencia de navegador, materiales e informe telefónico y mediciones web                                            |
 
@@ -495,7 +495,7 @@ iteraciones que tuvo PG-6A. Todas las casillas empiezan pendientes.
   del texto, confirmación de guardado, recuperación y límites; no publicar ni usar cuentas ajenas.
 - [x] `PG-6B.07.06` Verificar localmente integridad de materiales/control y cálculo de métricas;
   identificar qué campos requieren a la persona o APIs no disponibles.
-- [ ] `PG-6B.07.07` Si la persona aporta recursos/resultados, ejecutar o analizar las 32 combinaciones
+- [ ] `PG-6B.07.07` **Diferido** (decisión del 2026-10-22, reafirmada el 2026-11-01 al cerrar la fase; «no evaluado físicamente»; no cumplida). Si la persona aporta recursos/resultados, ejecutar o analizar las 32 combinaciones
   y conservar crudos. Sin evidencia, registrar esta comprobación y la parte física del punto como
   Diferido por la decisión del 2026-10-22, «no evaluado físicamente», sin marcarlo cumplido.
 
@@ -514,9 +514,13 @@ iteraciones que tuvo PG-6A. Todas las casillas empiezan pendientes.
   técnicas autosuficientes allí, informe de planificación en `docs/`, sin referencias inversas.
 - [x] `PG-6B.08.06` Auditar cada afirmación contra la matriz y cada cifra contra crudos; ninguna
   conclusión causal sobre enseñanza ni disponibilidad de todos los teléfonos.
-- [ ] `PG-6B.08.07` Registrar decisión explícita de la persona sobre CF-14 cuando exista. Sin ella,
+- [x] `PG-6B.08.07` Registrar decisión explícita de la persona sobre CF-14 cuando exista. Sin ella,
   conservar su diferimiento ya autorizado y distinguirlo del informe técnico completado. El cierre no
   usa el carácter complementario para afirmar que la persona decidió una cobertura que no decidió.
+  **Cumplido el 2026-11-01** por decisión expresa de Cesar Antonio Gutierrez Contreras: ante el informe móvil
+  completado, pidió cerrar CF-14 y la fase con su nombre. La opción registrada es la 1 del informe (aceptar la cobertura
+  automatizada y declarar móvil «no evaluado físicamente», sin prometer teléfonos); es la recomendada y la persona delegó en
+  ella la elección. No hay evidencia física ni se afirma cobertura móvil.
 
 ### PG-6B.09 · Métrica web candidata y tamaño del artefacto
 
@@ -894,8 +898,8 @@ del plan general: Cumplido, No cumplido, Diferido, No aplica o Retirado, con sus
 | `PG-6B.04`        | Cumplido (7/7)           | Recurso LSP, Workers, host VS Code web, `browser_worker_client`/`browser_language_client`/`browser_run` tests, `test:lsp:contrast` | — |
 | `PG-6B.05`        | Cumplido (7/7)           | `browser_effect_host`/`browser_file_host` tests, escenarios HTTP y proveedor en Chromium y WebKit | TLS exitoso no ejercitable: los navegadores rechazan el certificado de prueba |
 | `PG-6B.06`        | Cumplido (7/7)           | Chromium y WebKit aprobados con escenarios es/en por paso; verificadores con negativos | Firefox no arranca (no evaluado, nunca aprobado) |
-| `PG-6B.07`        | Cumplido salvo `.07`     | Kit físico de 32 combinaciones, analizador | `.07` Diferido / no evaluado físicamente (decisión 2026-10-22) |
-| `PG-6B.08`        | Cumplido salvo `.07`     | `informe-movil-pg-6b.md` | `.07` decisión de la persona sobre CF-14 pendiente/diferida |
+| `PG-6B.07`        | Cumplido salvo `.07`     | Kit físico de 32 combinaciones, analizador | `.07` Diferido / no evaluado físicamente (decisión 2026-10-22, reafirmada 2026-11-01) |
+| `PG-6B.08`        | Cumplido (7/7)           | `informe-movil-pg-6b.md`, decisión CF-14 de la persona 2026-11-01 | — |
 | `PG-6B.09`        | Cumplido (7/7)           | 5400 intentos válidos (9 cargas × 2 objetivos × 10 procesos × 30), Brotli 844 844 | Aceptación de `PERF.PG.WEB` pendiente de la persona |
 | `PG-6B.C01`–`.13` | Todos                    | Ver §10.1                      | `PHASE-GREEN` no declarada (ver §11.3)                          |
 
@@ -1132,3 +1136,15 @@ de corpus no ejecutables); la persona delegó el resto de decisiones en la opci�
 **Siguen abiertas por diseño**: `07.07` (ensayos físicos diferidos por la decisión del 2026-10-22) y `08.07` (decisión de la
 persona sobre CF-14). `PHASE-GREEN` no se declara: Firefox no calificado, `07.07`/`08.07` sin evidencia humana, y la deuda
 heredada de `pseudolearn_spec` (formato y nombres) y de PG-6A. No se inició PG-A, PG-B ni PG-7; no se instaló ni publicó.
+
+**Cierre de fase · 2026-11-01**
+
+Cesar Antonio Gutierrez Contreras decidió cerrar `PG-6B · Depuración y web` y registrar su decisión sobre CF-14.
+CF-14 existía como diferimiento autorizado (PG-0) y como informe con tres opciones sin decidir (`informe-movil-pg-6b.md`); se
+registra la opción 1, aceptar la cobertura automatizada y declarar el móvil «no evaluado físicamente». Con ello `08.07` queda
+cumplida. `07.07` sigue **Diferido** por la decisión del 2026-10-22: no hay ensayos físicos y no se marca cumplida.
+
+La fase se cierra por decisión expresa, como PG-6A, **sin declarar `PHASE-GREEN`**. Impedimentos: Firefox no califica en esta
+máquina (no evaluado); `07.07` sin evidencia física; la aceptación de `PERF.PG.WEB` sigue sin decidirse; deuda heredada de
+`pseudolearn_spec` (formato y nombres) y de PG-6A (revisión SEE independiente, grupos E-PG-02). Verificaciones locales
+finales en verde el 2026-11-01 (§11.3). No se inició PG-A, PG-B ni PG-7. Rige `PHASE-STOP`.

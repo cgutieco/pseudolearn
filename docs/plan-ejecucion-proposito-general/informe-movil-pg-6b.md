@@ -38,12 +38,15 @@ Documento transitorio de planificación. Fuente de las cifras: crudos en
 El control es la página mínima con el mismo Wasm. La diferencia Worker/control es de unos 1 a 3 ms por
 carga; no se concluye nada sobre enseñanza ni sobre la disponibilidad en todos los teléfonos.
 
-## Opciones para CF-14 (decisión de la persona, no resuelta)
+## Opciones para CF-14 (decisión de la persona)
 
 1. Aceptar la cobertura automatizada y declarar móvil «no evaluado físicamente», sin prometer teléfonos.
 2. Ejecutar el kit físico en uno o más teléfonos antes de decidir; el analizador rechaza muestras
    sintéticas, duplicadas, incompletas o de otro dispositivo/Wasm.
 3. Limitar la variante web a escritorio hasta contar con evidencia física.
 
-Ninguna opción crea un IDE propio ni un host remoto. CF-14 y la aceptación de `PERF.PG.WEB` conservan su
-diferimiento autorizado.
+Ninguna opción crea un IDE propio ni un host remoto.
+
+**Decisión registrada el 2026-11-01:** Cesar Antonio Gutierrez Contreras cerró CF-14 con la opción 1: se acepta la
+cobertura automatizada y el móvil queda «no evaluado físicamente», sin prometer teléfonos. Los ensayos físicos (`PG-6B.07.07`)
+siguen diferidos y la aceptación de `PERF.PG.WEB` conserva su decisión posterior.
