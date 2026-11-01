@@ -386,7 +386,7 @@ iteraciones que tuvo PG-6A. Todas las casillas empiezan pendientes.
 
 - [x] `PG-6B.02.01` Especificar `TOOL.DAP` propuesto y ampliar los contratos API de §3.3. Fijar
   lifecycle, puntos de parada, identidad por tarea/fuente/revisión, proyecto, input, evaluate y errores.
-- [ ] `PG-6B.02.02` Derivar casos bilingües de archivo y proyecto de tres módulos; dos tareas con
+- [x] `PG-6B.02.02` Derivar casos bilingües de archivo y proyecto de tres módulos; dos tareas con
   marcos distintos, suspensión, retorno, breakpoint repetido, edición durante pausa, referencias
   vencidas, paginación y expresiones rechazadas. Resultados derivados de reglas, sin capturas como oráculo.
 - [x] `PG-6B.02.03` Añadir tests espejo de parser/semantic/lowering/VM/timeline/API para los gaps de
@@ -407,7 +407,7 @@ iteraciones que tuvo PG-6A. Todas las casillas empiezan pendientes.
 
 - [x] `PG-6B.03.01` Completar en `API.EXECUTE`, `API.STATE.QUERY`, `ENG.EFFECT.TAPE` y DAP la
   separación punta/cursor, horizonte, respuestas en vuelo y errores sin fallback de §3.4.
-- [ ] `PG-6B.03.02` Añadir casos de consultas ascendentes/descendentes, StepBack, avanzar desde
+- [x] `PG-6B.03.02` Añadir casos de consultas ascendentes/descendentes, StepBack, avanzar desde
   pasado, fin de horizonte, cinta alterada/truncada y efecto mutante incierto; no exigir que una cinta
   privada no reproducible se vuelva reproducible.
 - [x] `PG-6B.03.03` Extender `history_seek_isolation_tests` con contadores de archivos/HTTP falsos;
@@ -889,8 +889,8 @@ del plan general: Cumplido, No cumplido, Diferido, No aplica o Retirado, con sus
 | Punto             | Estado de implementación | Evidencia                        | Pendiente o condición                                          |
 |-------------------|--------------------------|----------------------------------|----------------------------------------------------------------|
 | `PG-6B.01`        | Cumplido (7/7)           | Capas, imports, negativos, grafo Wasm sin AOT | —                                                               |
-| `PG-6B.02`        | Parcial (6/7)            | `TOOL.DAP`, núcleo público, VS Code real = stdio, `inspection_isolation_tests` | `.02` sin casos bilingües dedicados |
-| `PG-6B.03`        | Parcial (6/7)            | Prueba física loopback + archivos, cursor histórico, `history_effect_counters_tests` | `.02` casos de cinta alterada/incierta |
+| `PG-6B.02`        | Cumplido (7/7)          | `TOOL.DAP` C10–C15 (es/en, archivo y proyecto de tres módulos), VS Code real = stdio, `inspection_isolation_tests` | — |
+| `PG-6B.03`        | Cumplido (7/7)          | Prueba física loopback + archivos, cursor histórico, `history_effect_counters_tests`, `API.STATE.QUERY` C16–C17 | — |
 | `PG-6B.04`        | Parcial (5/7)            | Recurso LSP, Workers, host VS Code web | `.02` casos dedicados; `.06` cancelación en cola y contraste con servidor Rust |
 | `PG-6B.05`        | Parcial (4/7)            | Capacidades, adaptadores, Fetch canónico | `.02` casos; `.03` señal externa/FS falso; `.07` HTTP/TLS en host web |
 | `PG-6B.06`        | Parcial (6/7)            | Chromium y WebKit aprobados en VS Code web; verificadores con negativos | Firefox no arranca (no evaluado, nunca aprobado); `.02` fixtures es/en |
@@ -1014,6 +1014,17 @@ archivo ni POST HTTP simulado, y salida, cinta y contador quedan iguales, tambi�
 define el navegador que no arranca como «no evaluado»: Firefox queda así, sin aprobación. Siguen abiertas, sin
 evidencia suficiente: `02.02`, `03.02`, `04.02`, `05.02` (casos de corpus dedicados), `04.06`, `05.03`, `05.07`,
 `06.02`, `09.02`, y por diseño `07.07` y `08.07`. También `C05`, `C09`, `C10` y `C11`.
+
+**Casos de corpus añadidos**: `TOOL.DAP` C10–C15 (archivo es/en y proyecto de tres módulos con dos tareas, evaluate
+aceptado y rechazado, breakpoint repetido, `sourceModified`, líneas no ejecutables, referencia vencida tras terminar,
+paginación de variables y `stepOut`) y `API.STATE.QUERY` C16–C17 (consultas ascendentes y descendentes, fin de
+horizonte, avance desde el pasado); cintas alteradas, truncadas e inciertas ya estaban en `ENG.EFFECT.TAPE` C8, C10–C12
+y C16. El esquema SEE admite ahora `query_state`. Resultado real: `see conform --subject cli` cumple los 14 casos de
+`TOOL.DAP`; `see conform --subject engine`, 3915 observaciones y 0 divergencias. El cliente DAP acota la cola a ocho
+peticiones simultáneas, por lo que cada caso tiene a lo sumo ocho. `04.02` y `05.02` siguen abiertas: sus escenarios
+(Workers, CORS, redirección opaca, desconexión) pertenecen al host web, que ningún sujeto del corpus ejecuta.
+Antecedentes sin corregir de la CLI: cuatro divergencias de `TOOL.CLI.CHECK` (R2, R3) y `TOOL.CLI.FORMAT` (R1, R2)
+cuyos programas declaran un vínculo sin inicializador, hoy rechazado por el lenguaje.
 
 **Antecedentes corregidos**: el ejecutor del corpus de runtime ignoraba `limites.max_json_depth`
 (`ENG.LIMITS#C36`); `LIB.CORE.TEXT#C7` fallaba porque `stringPositionOutOfRange` de `Subcadena` no llevaba los

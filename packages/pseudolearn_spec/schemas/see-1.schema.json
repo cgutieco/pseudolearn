@@ -1758,6 +1758,7 @@
                       "history_events",
                       "inspect_expression",
                       "query_frame",
+                      "query_state",
                       "translate"
                     ]
                   },

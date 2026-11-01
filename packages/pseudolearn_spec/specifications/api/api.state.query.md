@@ -108,7 +108,8 @@
   "clase": "semantica",
   "texto": "Toda consulta indica el instante como índice de evento; con seek puede ser un evento pasado y sin seek solo el actual.",
   "verificacion": [
-    "C2"
+    "C2",
+    "C16"
   ]
 }
 ```
@@ -361,7 +362,8 @@
   "clase": "semantica",
   "texto": "Las consultas de estado retrospectivas y el reposicionamiento seek en modo HistorySeek reconstruyen estados intermedios exclusivamente a partir de los puntos de control y la cinta de efectos grabada, sin reejecutar llamadas de entrada y salida ni consultar al anfitrión.",
   "verificacion": [
-    "C8"
+    "C8",
+    "C17"
   ]
 }
 ```
@@ -972,5 +974,201 @@ Una colección se conserva como referencia con identidad compartida. Su entrada 
   "sujetos": [
     "engine"
   ]
+}
+```
+
+```caso
+{
+  "id": "C16",
+  "regla": "R2",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "create_analysis",
+        "arguments": {}
+      },
+      {
+        "operation": "start",
+        "arguments": {
+          "observe": "events",
+          "seed": 42
+        },
+        "resource_from": 0
+      },
+      {
+        "operation": "advance",
+        "arguments": {
+          "batch_size": 1000
+        },
+        "resource_from": 1
+      },
+      {
+        "operation": "query_state",
+        "arguments": {
+          "event": 1
+        },
+        "resource_from": 1
+      },
+      {
+        "operation": "query_state",
+        "arguments": {
+          "event": 3
+        },
+        "resource_from": 1
+      },
+      {
+        "operation": "query_state",
+        "arguments": {
+          "event": 1
+        },
+        "resource_from": 1
+      },
+      {
+        "operation": "query_state",
+        "arguments": {
+          "event": 1000000
+        },
+        "resource_from": 1
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {}
+        },
+        {
+          "value": {}
+        },
+        {
+          "value": {
+            "termination": {
+              "kind": "completed"
+            }
+          }
+        },
+        {
+          "value": {}
+        },
+        {
+          "value": {}
+        },
+        {
+          "value": {}
+        },
+        {
+          "failure": {
+            "family": "usage"
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ],
+  "programa": "Algoritmo P\nDefinir Mutable total Como Entero <- 1;\ntotal <- total + 1;\nEscribir total;\nFinAlgoritmo\n",
+  "perfil_base": "es"
+}
+```
+
+```caso
+{
+  "id": "C17",
+  "regla": "R5",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "create_analysis",
+        "arguments": {}
+      },
+      {
+        "operation": "start",
+        "arguments": {
+          "observe": "events",
+          "seed": 42
+        },
+        "resource_from": 0
+      },
+      {
+        "operation": "advance",
+        "arguments": {
+          "batch_size": 2
+        },
+        "resource_from": 1
+      },
+      {
+        "operation": "query_state",
+        "arguments": {
+          "event": 1
+        },
+        "resource_from": 1
+      },
+      {
+        "operation": "advance",
+        "arguments": {
+          "batch_size": 1000
+        },
+        "resource_from": 1
+      },
+      {
+        "operation": "query_state",
+        "arguments": {
+          "event": 1
+        },
+        "resource_from": 1
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {}
+        },
+        {
+          "value": {}
+        },
+        {
+          "value": {}
+        },
+        {
+          "value": {}
+        },
+        {
+          "value": {
+            "termination": {
+              "kind": "completed"
+            }
+          }
+        },
+        {
+          "value": {}
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ],
+  "programa": "Algoritmo P\nDefinir Mutable total Como Entero <- 1;\ntotal <- total + 1;\nEscribir total;\nFinAlgoritmo\n",
+  "perfil_base": "es"
 }
 ```
