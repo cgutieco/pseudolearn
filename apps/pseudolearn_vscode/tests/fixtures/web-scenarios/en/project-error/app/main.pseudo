@@ -1,0 +1,6 @@
+import geo.vectors.double;
+algorithm Main
+define number as integer <- 21;
+write "ñandú 🌍";
+write double(number);
+endAlgorithm

@@ -1,0 +1,4 @@
+import geo.scales.scale;
+public subroutine double(number as integer) as integer
+return scale(number);
+endSubroutine

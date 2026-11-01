@@ -93,8 +93,9 @@ export class BrowserRun {
 
   private async input(): Promise<void> {
     const line = await vscode.window.showInputBox({ prompt: "PseudoLearn input / Entrada", ignoreFocusOut: true });
-    if (line === undefined || this.stopping) await this.stop();
-    else await this.api.call("input", encodeArguments({ resource: numeric(this.resource!), text: line }));
+    const cancelled = line === undefined || this.stopping;
+    if (cancelled) await this.stop();
+    await this.api.call("input", encodeArguments({ resource: numeric(this.resource!), text: cancelled ? "" : line }));
   }
 
   private async effect(value: Record<string, Projection>): Promise<void> {

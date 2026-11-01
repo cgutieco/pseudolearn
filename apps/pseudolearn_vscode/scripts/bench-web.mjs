@@ -7,15 +7,12 @@ import { dirname, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { hash } from "./lib/web-artifact.mjs";
 import { summarize } from "./lib/web-measurements.mjs";
+import { workloads as workloadsFor } from "./lib/web-workloads.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const stage = resolve(root, ".artifacts/web-extension");
 const script = fileURLToPath(import.meta.url);
-const workloads = [
-  { name: "integer-extreme", source: "Algoritmo Probe\nEscribir 9223372036854775807;\nFinAlgoritmo\n", expected: "9223372036854775807\n" },
-  { name: "loop", source: "Algoritmo Probe\nDefinir Mutable total Como Entero <- 0;\nMientras total < 1000 Hacer\ntotal <- total + 1;\nFinMientras\nEscribir total;\nFinAlgoritmo\n", expected: "1000\n" },
-  { name: "cancellation", source: "Algoritmo Probe\nMientras Verdadero Hacer\nFinMientras\nFinAlgoritmo\n", expected: "", cancel: true },
-];
+const workloads = workloadsFor(resolve(root, "tests/fixtures/web-scenarios"));
 
 async function serve() {
   const server = createServer((request, response) => {
@@ -40,13 +37,19 @@ async function sample(page, options) {
   } finally { clearTimeout(timer); }
 }
 
-async function measureIteration(page, processNumber, iteration) {
+async function measureIteration(pages, processNumber, iteration) {
   const rows = [];
   for (const workload of workloads) {
     const targets = (iteration + processNumber) % 2 ? ["worker", "control"] : ["control", "worker"];
-    for (const target of targets) rows.push(await attempt(page, { processNumber, iteration, target, workload }));
+    for (const target of targets) rows.push(await attemptOn(pages, { processNumber, iteration, target, workload }));
   }
   return rows;
+}
+
+async function attemptOn(pages, details) {
+  const page = details.workload.cold ? await pages.fresh() : pages.warm;
+  try { return await attempt(page, details); }
+  finally { if (details.workload.cold) await page.context().close(); }
 }
 
 async function attempt(page, { processNumber, iteration, target, workload }) {
@@ -60,13 +63,19 @@ async function child(processNumber) {
   const { chromium } = require("playwright-core");
   const { server, url } = await serve();
   const browser = await chromium.launch({ headless: true });
-  const page = await browser.newPage();
-  await page.goto(url);
-  await page.addScriptTag({ url: `${url}/benchmark.js` });
+  const prepare = async (context) => {
+    const opened = await context.newPage();
+    await opened.goto(url);
+    await opened.addScriptTag({ url: `${url}/benchmark.js` });
+    return opened;
+  };
+  const pages = { warm: await prepare(await browser.newContext()), fresh: async () => prepare(await browser.newContext()) };
   const rows = [];
   try {
     for (let iteration = 0; iteration < 30; iteration += 1) {
-      rows.push(...await measureIteration(page, processNumber, iteration));
+      rows.push(...await measureIteration(pages, processNumber, iteration));
+      await pages.warm.context().close();
+      pages.warm = await prepare(await browser.newContext());
     }
   } finally { await browser.close(); await new Promise((resolve) => server.close(resolve)); }
   process.stdout.write(`${JSON.stringify({ browser: browser.version(), rows })}\n`);

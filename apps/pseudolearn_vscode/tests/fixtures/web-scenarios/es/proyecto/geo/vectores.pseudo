@@ -1,0 +1,4 @@
+Importar geo.escalas.Escalar;
+Publico SubProceso Doble(numero Como Entero) Como Entero
+Retornar Escalar(numero);
+FinSubProceso

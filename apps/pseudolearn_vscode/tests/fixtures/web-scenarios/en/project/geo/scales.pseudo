@@ -1,0 +1,3 @@
+public subroutine scale(number as integer) as integer
+return number * 2;
+endSubroutine

@@ -4,6 +4,8 @@ import { containsUri } from "../application/uri_authority";
 import { encodeArguments } from "../application/canonical_arguments";
 import { answerValue, object, text } from "../application/wire_projection";
 
+const sourceSuffix = ".pseudo";
+
 interface Source { path: string; source_id: number; text: string }
 interface Manifest { location: string; text: string }
 
@@ -30,9 +32,10 @@ export class BrowserWorkspace {
       if (totalBytes > 33554432) throw new Error("Workspace snapshot exceeds 32 MiB");
       const path = uri.path.slice(this.root.path.replace(/\/$/, "").length + 1);
       const source = new TextDecoder("utf-8", { fatal: true }).decode(content);
-      if (path.endsWith(".pseudo")) {
-        files.push({ path, source_id: files.length + 1, text: source });
-        uris[path] = uri.toString();
+      if (path.endsWith(sourceSuffix)) {
+        const module = path.slice(0, -sourceSuffix.length);
+        files.push({ path: module, source_id: files.length + 1, text: source });
+        uris[module] = uri.toString();
       } else manifests.push({ location: path.slice(0, Math.max(0, path.lastIndexOf("/"))), text: source });
     }
     const resolved = await this.resolve(manifests);

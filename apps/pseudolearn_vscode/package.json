@@ -229,6 +229,7 @@
     "test:web": "node tests/web/run-web.mjs",
     "bench:web": "node scripts/bench-web.mjs",
     "kit:web": "node scripts/physical-kit.mjs",
+    "test:lsp:contrast": "node tests/web/lsp-contrast.mjs",
     "test:dap:stdio": "node tests/dap/run-stdio.mjs",
     "test:dap:history": "node tests/dap/history_physical.mjs"
   },

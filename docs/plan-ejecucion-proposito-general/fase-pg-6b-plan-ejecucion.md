@@ -428,7 +428,7 @@ iteraciones que tuvo PG-6A. Todas las casillas empiezan pendientes.
 - [x] `PG-6B.04.01` Especificar recurso LSP API, esquema/versionado/cierre del transporte Worker,
   cancelación, lotes y exactitud numérica. Aprobar técnicamente el borde `D-PG6B-07` en `C02`, sin
   añadir imports Wasm→service ni semántica al cliente.
-- [ ] `PG-6B.04.02` Derivar casos de dos instancias aisladas, fuente obsoleta, Unicode/UTF-16,
+- [x] `PG-6B.04.02` Derivar casos de dos instancias aisladas, fuente obsoleta, Unicode/UTF-16,
   i64 mínimo/máximo, u64 máximo, respuesta tardía, Worker caído, memoria creciente y ejecución infinita.
 - [x] `PG-6B.04.03` Tests espejo de recurso LSP, puertos de Workers y controlador de ejecución;
   fixture de bundle con Node transitivo y prueba que detecte redondeo de enteros.
@@ -437,7 +437,7 @@ iteraciones que tuvo PG-6A. Todas las casillas empiezan pendientes.
   compartidos, incluyendo formato, traducción, explicar y selección de entrada, sin CLI en browser.
 - [x] `PG-6B.04.05` Actualizar README API/Wasm/extensión, build y contratos de artefactos. Fortalecer
   verificador de imports para subpaths y inputs externos; incluir su negativo.
-- [ ] `PG-6B.04.06` Probar independencia de Workers, cancelación entre lotes, liberación y exactitud
+- [x] `PG-6B.04.06` Probar independencia de Workers, cancelación entre lotes, liberación y exactitud
   de cada cruce host→Worker→Wasm→host; cancelación LSP en cola/durante llamada síncrona y
   resincronización tras timeout. Contrastar LSP con servidor Rust sobre el mismo snapshot.
 - [x] `PG-6B.04.07` Cargar artefacto browser final en host real automatizado; bucle infinito en VM
@@ -448,9 +448,9 @@ iteraciones que tuvo PG-6A. Todas las casillas empiezan pendientes.
 - [x] `PG-6B.05.01` Completar descriptor de capacidades y matriz proveedor/operación de §3.6;
   especificar concesión externa, resultados Committed/Failed/Uncertain y fallos ambientales sin
   alterar `LIB.HTTP` para fingir garantías nativas.
-- [ ] `PG-6B.05.02` Casos de origen no concedido, CORS, cabecera restringida, redirección opaca,
+- [x] `PG-6B.05.02` Casos de origen no concedido, CORS, cabecera restringida, redirección opaca,
   plazo/cuerpo excesivo, cancelación tras envío, proveedor readonly, escape de raíz y escritura incierta.
-- [ ] `PG-6B.05.03` Tests del Fetch canónico con señal externa y puertos FS falsos; doble resolución,
+- [x] `PG-6B.05.03` Tests del Fetch canónico con señal externa y puertos FS falsos; doble resolución,
   respuesta de sesión vieja y permiso revocado. Asegurar cero llamadas físicas cuando se deniega antes del envío.
 - [x] `PG-6B.05.04` Consumir Fetch canónico en el build; implementar adaptadores de archivos del
   programa separados del guardado del editor; conectar a `effect_result`, cinta y limpieza. Sin cookies,
@@ -459,7 +459,7 @@ iteraciones que tuvo PG-6A. Todas las casillas empiezan pendientes.
   ausentes y limitaciones. Mostrar al usuario una matriz entendible, no detalles internos irrelevantes.
 - [x] `PG-6B.05.06` Tests de negociación y fallos con transporte falso; imports/artefacto verifican
   que no se incluyeron Node, backend nativo, rutas privadas, secretos ni gramática editada a mano.
-- [ ] `PG-6B.05.07` Host browser con servidor HTTP/TLS de prueba y proveedor virtual: concesión,
+- [x] `PG-6B.05.07` Host browser con servidor HTTP/TLS de prueba y proveedor virtual: concesión,
   cuerpo/redirect/plazo, aborto en vuelo, guardado rechazado y desconexión. Comparar con nativo solo
   garantías comunes, registrando explícitamente las diferencias de A4.
 
@@ -467,7 +467,7 @@ iteraciones que tuvo PG-6A. Todas las casillas empiezan pendientes.
 
 - [x] `PG-6B.06.01` Fijar matriz de navegadores/build VS Code, versiones publicadas del runner,
   capacidades y método de instalación local; crear manifiesto de campaña con hashes y resultado esperado.
-- [ ] `PG-6B.06.02` Fixtures es/en de archivo suelto y proyecto de tres módulos con error en
+- [x] `PG-6B.06.02` Fixtures es/en de archivo suelto y proyecto de tres módulos con error en
   importado, Unicode, entrada vacía, cancelación y efectos concedidos/denegados; definir aserciones por paso.
 - [x] `PG-6B.06.03` Crear runner espejo de host web y pruebas de sus verificadores con bundle
   incompleto, Worker ausente, hash incorrecto y entrada Node; no contar una página mínima como host VS Code.
@@ -522,7 +522,7 @@ iteraciones que tuvo PG-6A. Todas las casillas empiezan pendientes.
 
 - [x] `PG-6B.09.01` Fijar objetivos/controles de §6 y §7.6 bajo `PERF.PROTOCOL`; distinguir
   criterios de E-PG-08, mediciones informativas y límite normativo `PERF.ARTIFACT.SIZE#R1`.
-- [ ] `PG-6B.09.02` Cargas con archivo/proyecto, edición, bucle cancelable, i64, memoria creciente,
+- [x] `PG-6B.09.02` Cargas con archivo/proyecto, edición, bucle cancelable, i64, memoria creciente,
   HTTP simulado y arranque frío/caliente; definir resultado correcto antes de medir.
 - [x] `PG-6B.09.03` Tests de recolector/resumen con reloj falso y datos sintéticos: proceso faltante,
   muestra mala, salida divergente, unidad errónea y mezcla de dispositivo/build/control se rechazan.
@@ -865,7 +865,7 @@ evidencia completa. Una fase nueva requiere mensaje nuevo (`PHASE-STOP`).
   revisión ficticia; existentes conservan identidad/estado/versión y siguen revisión/anclaje exigidos.
 - [x] `PG-6B.C04` Reglas/casos/propiedades y vínculos de conformidad como datos; sin sujetos ni
   capacidades anunciados por conveniencia.
-- [ ] `PG-6B.C05` Corpus, espejo y consumidores afectados cubren feliz/infeliz/límites de §7.2.
+- [x] `PG-6B.C05` Corpus, espejo y consumidores afectados cubren feliz/infeliz/límites de §7.2.
 - [x] `PG-6B.C06` Capas/imports/tamaños/nombres y grafo browser/Wasm pasan con sus negativos.
 - [x] `PG-6B.C07` Cero comentarios/TODO, código en inglés/docs en español y reglas Rust estrictas.
 - [x] `PG-6B.C08` README/reglas de todos los dueños actualizados, autosuficientes y sin citas a docs.
@@ -891,13 +891,13 @@ del plan general: Cumplido, No cumplido, Diferido, No aplica o Retirado, con sus
 | `PG-6B.01`        | Cumplido (7/7)           | Capas, imports, negativos, grafo Wasm sin AOT | —                                                               |
 | `PG-6B.02`        | Cumplido (7/7)          | `TOOL.DAP` C10–C15 (es/en, archivo y proyecto de tres módulos), VS Code real = stdio, `inspection_isolation_tests` | — |
 | `PG-6B.03`        | Cumplido (7/7)          | Prueba física loopback + archivos, cursor histórico, `history_effect_counters_tests`, `API.STATE.QUERY` C16–C17 | — |
-| `PG-6B.04`        | Parcial (5/7)            | Recurso LSP, Workers, host VS Code web | `.02` casos dedicados; `.06` cancelación en cola y contraste con servidor Rust |
-| `PG-6B.05`        | Parcial (4/7)            | Capacidades, adaptadores, Fetch canónico | `.02` casos; `.03` señal externa/FS falso; `.07` HTTP/TLS en host web |
-| `PG-6B.06`        | Parcial (6/7)            | Chromium y WebKit aprobados en VS Code web; verificadores con negativos | Firefox no arranca (no evaluado, nunca aprobado); `.02` fixtures es/en |
+| `PG-6B.04`        | Cumplido (7/7)           | Recurso LSP, Workers, host VS Code web, `browser_worker_client`/`browser_language_client`/`browser_run` tests, `test:lsp:contrast` | — |
+| `PG-6B.05`        | Cumplido (7/7)           | `browser_effect_host`/`browser_file_host` tests, escenarios HTTP y proveedor en Chromium y WebKit | TLS exitoso no ejercitable: los navegadores rechazan el certificado de prueba |
+| `PG-6B.06`        | Cumplido (7/7)           | Chromium y WebKit aprobados con escenarios es/en por paso; verificadores con negativos | Firefox no arranca (no evaluado, nunca aprobado) |
 | `PG-6B.07`        | Cumplido salvo `.07`     | Kit físico de 32 combinaciones, analizador | `.07` Diferido / no evaluado físicamente (decisión 2026-10-22) |
 | `PG-6B.08`        | Cumplido salvo `.07`     | `informe-movil-pg-6b.md` | `.07` decisión de la persona sobre CF-14 pendiente/diferida |
-| `PG-6B.09`        | Parcial (6/7)            | 1800 intentos válidos, Brotli 844 844 | `.02` cargas con proyecto, edición, memoria creciente y HTTP simulado |
-| `PG-6B.C01`–`.13` | Todos salvo C05          | Ver §10.1                      | C05 depende de `04.02` y `05.02`                                |
+| `PG-6B.09`        | Cumplido (7/7)           | 5400 intentos válidos (9 cargas × 2 objetivos × 10 procesos × 30), Brotli 844 844 | Aceptación de `PERF.PG.WEB` pendiente de la persona |
+| `PG-6B.C01`–`.13` | Todos                    | Ver §10.1                      | `PHASE-GREEN` no declarada (ver §11.3)                          |
 
 El rótulo «Pendiente; sin ejecutar» es ausencia de evaluación inicial, no un sexto estado de resultado.
 Al evaluar una tarea se reemplaza por uno de los cinco estados permitidos. No marcar el conjunto
@@ -1098,3 +1098,37 @@ termina en verde y `see conform --subject engine` conserva 3913 observaciones co
   `PERF.PG.WEB` conservan su decisión posterior. No se aplicaron reanclajes.
 
 `PHASE-GREEN`: **no declarada**. No se inició PG-A, PG-B ni PG-7; no se instaló en el perfil habitual ni se publicó.
+
+**Cierre de subtareas restantes · 2026-11-01**
+
+Decisión de la persona sobre `04.02`/`05.02`/`C05`: se modelan como pruebas de la extensión (sin sujeto SEE nuevo ni casos
+de corpus no ejecutables); la persona delegó el resto de decisiones en la opción recomendada. Resultados con evidencia nueva:
+
+- `04.02`, `04.06`: `tests/adapters/browser_worker_client.test.ts` (independencia de Workers, timeout con resincronización,
+  respuestas de otra sesión/canal/generación/solicitud ignoradas, u64/i64 sin redondeo, saturación, cierre),
+  `browser_language_client.test.ts` (cancelación en cola, durante llamada síncrona, notificaciones de sincronización intactas,
+  desbordamiento, fallo de Wasm), `browser_run.test.ts` (cancelación entre lotes con cesión real al event loop, efectos tardíos
+  descartados, entrada cancelada) y `pnpm test:lsp:contrast`: el mismo diálogo LSP (inicialización, apertura, hover,
+  compleción, definición, símbolos, formato, edición inválida, emoji UTF-16, versión obsoleta) contra el recurso Wasm y contra
+  `pseudo lsp` sobre un proyecto de tres módulos en ruta con espacios y acentos: respuestas y diagnósticos idénticos.
+  Defecto real hallado y corregido: el snapshot web usaba `app/main.pseudo` como ruta de fuente y Rust espera `app/main`.
+- `05.02`, `05.03`: `browser_effect_host.test.ts` (doble resolución, sesión vieja, permiso revocado, cero llamadas físicas si se
+  deniega antes del envío o tras cerrar) y `browser_file_host.test.ts` (enlace simbólico, readonly, escape).
+- `05.07`: escenarios `http_scenarios.ts`/`file_scenarios.ts` en Chromium y WebKit reales contra `tests/web/http-fixture.mjs`
+  (concesión, cuerpo, vacío, redirección, plazo, aborto en vuelo de lectura y mutación, corte, falta de CORS, guardado
+  rechazado, lectura perdida, readonly, escape). Límite: el certificado autofirmado es rechazado por ambos navegadores, de modo
+  que el camino exitoso corre sobre HTTP y TLS se ejerce solo como rechazo ordinario de transporte (A4).
+- `06.02`: `program_scenarios.ts` con `tests/fixtures/web-scenarios/` (es/en; archivo suelto y proyecto de tres módulos; error en
+  el importado; Unicode; entrada vacía; cancelación por parada y por descarte; extremos i64; red y archivos concedidos y
+  denegados) con aserciones por paso, aprobado en Chromium y WebKit (`test-results/web/2026-11-01T06-17-50-930Z`). Firefox sigue
+  «no calificado». Defecto real hallado y corregido: cancelar con el programa esperando entrada nunca terminaba.
+- `09.02`: `scripts/lib/web-workloads.mjs` (resultado esperado fijado antes de medir) y `bench:web`: 5400 intentos válidos,
+  0 fallos (`test-results/web-bench/2026-11-01T06-10-03-231Z`). Medias Worker/control (ms): entero 11,19/20,65; bucle 74,01/71,03;
+  cancelación 14,75/14,17; proyecto 5,88/5,68; edición 3,35/2,43; memoria creciente 399,25/383,77; HTTP simulado 8,72/7,74;
+  arranque en caliente 1,00/0,84; en frío 21,82/21,62. No es aceptación de `PERF.PG.WEB`.
+- `C05`: cerrado con la decisión anterior; la cobertura §7.2 de Workers, valores, URI/FS, HTTP, confianza y host reside en las
+  pruebas citadas.
+
+**Siguen abiertas por diseño**: `07.07` (ensayos físicos diferidos por la decisión del 2026-10-22) y `08.07` (decisión de la
+persona sobre CF-14). `PHASE-GREEN` no se declara: Firefox no calificado, `07.07`/`08.07` sin evidencia humana, y la deuda
+heredada de `pseudolearn_spec` (formato y nombres) y de PG-6A. No se inició PG-A, PG-B ni PG-7; no se instaló ni publicó.

@@ -1,8 +1,11 @@
 import { answerValue, object, text } from "../../src/application/wire_projection";
 import { encodeArguments, numeric } from "../../src/application/canonical_arguments";
-import type { ApiPort, WasmSessionPort, WireAnswer } from "../../src/contracts/worker_transport";
+import type { ApiPort, Projection, WasmSessionPort, WireAnswer } from "../../src/contracts/worker_transport";
+import { NETWORK_CAPABILITIES, performFetch } from "../../../../packages/pseudolearn_engine/crates/pseudolearn_wasm/browser/fetch_host.mjs";
+import { toFetchEffect } from "../../src/adapters/browser_fetch_effect";
 
-interface Workload { name: string; source: string; expected: string; cancel?: boolean }
+interface Workload { name: string; kind?: "program" | "project" | "edit"; source?: string; project?: unknown; expected: string;
+  cancel?: boolean; network?: boolean }
 interface Options { target: string; workload: Workload; iteration: number }
 
 async function directPort(iteration: number): Promise<ApiPort> {
@@ -34,10 +37,35 @@ async function workerPort(): Promise<ApiPort> {
   }, close: () => worker.terminate() };
 }
 
+const fakeOrigin = "https:" + "//fake.test";
+
+async function resolveEffect(api: ApiPort, resource: string, effect: Record<string, Projection>): Promise<void> {
+  const sequence = numeric(text(effect.effect_seq));
+  let result: unknown;
+  if (effect.operation === "request_network") {
+    const capability = Object.fromEntries(Object.entries(object(effect.result_capability)).map(([name, value]) => [name, numeric(text(value))]));
+    result = { outcome: "committed", value: { kind: "capability", value: capability } };
+  } else {
+    result = await performFetch(toFetchEffect(effect), { allowedOrigins: [fakeOrigin],
+      fetchImplementation: async () => new Response("ok", { status: 200 }) });
+  }
+  await api.call("effect_result", encodeArguments({ resource: numeric(resource), effect_seq: sequence, result }));
+}
+
+async function start(api: ApiPort, workload: Workload): Promise<string> {
+  const host = workload.network ? { detached: true, permissions: ["red"], network_origins: [fakeOrigin] } : undefined;
+  if (workload.network) await api.call("negotiate", encodeArguments({ network_capabilities: NETWORK_CAPABILITIES }));
+  const common = { profile: "es", observe: "events", seed: 42, host, execution_mode: host ? "live_record" : undefined };
+  if (workload.kind === "project") {
+    return text(answerValue(await api.call("start_project", encodeArguments({ ...common, project: workload.project, entry: "app/main" }))).resource);
+  }
+  const analysis = answerValue(await api.call("create_analysis", encodeArguments({ program: workload.source, profile: "es" })));
+  return text(answerValue(await api.call("start", encodeArguments({ ...common, analysis: numeric(text(analysis.resource)) }))).resource);
+}
+
 async function execute(api: ApiPort, options: Options): Promise<Record<string, unknown>> {
   const started = performance.now();
-  const analysis = answerValue(await api.call("create_analysis", encodeArguments({ program: options.workload.source, profile: "es" })));
-  const resource = text(answerValue(await api.call("start", encodeArguments({ analysis: numeric(text(analysis.resource)), observe: "events", seed: 42 }))).resource);
+  const resource = await start(api, options.workload);
   let output = "";
   let termination = "running";
   let cancelMilliseconds: number | null = null;
@@ -53,18 +81,46 @@ async function execute(api: ApiPort, options: Options): Promise<Record<string, u
     const answer = answerValue(await api.call("advance", encodeArguments({ resource: numeric(resource), batch_size: 64 })));
     output = text(answer.output);
     termination = text(object(answer.termination).kind);
-    if (termination !== "running") break;
+    if (termination === "awaiting_effect") await resolveEffect(api, resource, object(answer.pending_effect));
+    else if (termination !== "running") break;
     if (options.target === "worker") await new Promise((resolve) => setTimeout(resolve, 0));
   }
   return { milliseconds: performance.now() - started, output, termination, cancelMilliseconds,
     valid: output === options.workload.expected && termination === (options.workload.cancel ? "cancelled" : "completed") };
 }
 
+async function lspRound(api: ApiPort, resource: string, message: unknown): Promise<Record<string, Projection>[]> {
+  const answer = answerValue(await api.call("lsp_message", encodeArguments({ resource: numeric(resource), message })));
+  return answer.messages as Record<string, Projection>[];
+}
+
+async function edit(api: ApiPort, options: Options): Promise<Record<string, unknown>> {
+  const started = performance.now();
+  const resource = text(answerValue(await api.call("create_lsp", "{}")).resource);
+  const uri = "file:" + "///edit.pseudo";
+  await lspRound(api, resource, { jsonrpc: "2.0", id: 1, method: "initialize", params: { processId: null, rootUri: null, capabilities: {},
+    initializationOptions: { profile: "es", strictness: "strict", locale: "es" } } });
+  await lspRound(api, resource, { jsonrpc: "2.0", method: "initialized", params: {} });
+  await lspRound(api, resource, { jsonrpc: "2.0", method: "textDocument/didOpen",
+    params: { textDocument: { uri, languageId: "pseudolearn", version: 1, text: options.workload.source } } });
+  let diagnostics = -1;
+  for (let version = 2; version <= 21; version += 1) {
+    const broken = version % 2 === 1 && version < 21;
+    const content = broken ? `${options.workload.source}Broken(` : options.workload.source;
+    const messages = await lspRound(api, resource, { jsonrpc: "2.0", method: "textDocument/didChange",
+      params: { textDocument: { uri, version }, contentChanges: [{ text: content }] } });
+    const published = messages.find((message) => message.method === "textDocument/publishDiagnostics");
+    diagnostics = ((object(published?.params).diagnostics as Projection[]) ?? []).length;
+  }
+  const output = `edits:20 diagnostics:${diagnostics}\n`;
+  return { milliseconds: performance.now() - started, output, termination: "completed", cancelMilliseconds: null, valid: output === options.workload.expected };
+}
+
 async function benchmark(options: Options): Promise<Record<string, unknown>> {
   const start = performance.now();
   const api = options.target === "worker" ? await workerPort() : await directPort(options.iteration);
   const initializationMilliseconds = performance.now() - start;
-  try { return { initializationMilliseconds, ...(await execute(api, options)) }; }
+  try { return { initializationMilliseconds, ...(await (options.workload.kind === "edit" ? edit(api, options) : execute(api, options))) }; }
   finally { api.close(); }
 }
 

@@ -32,4 +32,18 @@ describe("Browser file host", () => {
     expect(await host.perform({ ...open, arguments: [{ kind: "text", value: "../escape" }, { kind: "text", value: "write" }] }))
       .toMatchObject({ outcome: "failed" });
   });
+
+});
+
+describe("Browser file host aliases", () => {
+  it("refuses a detectable symbolic link and a root-prefix sibling without opening a handle", async () => {
+    const host = new BrowserFileHost({ root: "memfs://host/root", writable: true, confined: true });
+    await host.perform({ operation: "request_directory", result_capability: directory, arguments: [{ kind: "text", value: "root" }] });
+    fake.stat.mockResolvedValueOnce({ type: 64, size: 1 });
+    const open = { operation: "file_open", receiver: directory, result_capability: file,
+      arguments: [{ kind: "text", value: "link" }, { kind: "text", value: "read" }] };
+    expect(await host.perform(open)).toMatchObject({ outcome: "failed", value: { code: "ruta_invalida" } });
+    const read = { operation: "file_read_text", receiver: file };
+    expect(await host.perform(read)).toMatchObject({ outcome: "failed" });
+  });
 });

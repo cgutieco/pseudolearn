@@ -41,4 +41,14 @@ describe("Browser workspace snapshot", () => {
     const workspace = new BrowserWorkspace(api as never, fakeUri("/") as never);
     await expect(workspace.read()).rejects.toThrow("Invalid PseudoLearn manifest");
   });
+
+  it("keys sources and URIs by module path without the file extension", async () => {
+    const configuration = { package: { name: { value: "app" }, root: { value: "app" }, kind: { value: "application" },
+      entries: { value: ["app/main"] } }, dependencies: [] };
+    const api = port({ value: { configuration, manifest_errors: [] } });
+    const snapshot = await new BrowserWorkspace(api as never, fakeUri("/") as never).read();
+    expect(snapshot.project.files.map((file) => file.path)).toEqual(["app/main", "bad/extra"]);
+    expect(Object.keys(snapshot.uris)).toEqual(["app/main", "bad/extra"]);
+    expect(snapshot.uris["app/main"]).toBe("memfs://host/app/main.pseudo");
+  });
 });

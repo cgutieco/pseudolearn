@@ -248,6 +248,7 @@ node scripts/package-web.mjs
 node tests/web/run-web.mjs
 node scripts/bench-web.mjs
 node scripts/physical-kit.mjs
+pnpm test:lsp:contrast
 ```
 
 El checker verifica grafo browser sin Node, entradas externas declaradas, globals de Node mediante
@@ -260,6 +261,31 @@ El bundle web define `process` como indefinido para que las rutas de detección 
 dependencias elijan su rama no-Node; el verificador solo cuenta identificadores libres, no nombres de
 propiedad. `tool/wasm.sh` se ejecuta desde la raíz del motor para que `build:wasm` use la cadena fijada
 por su `rust-toolchain.toml`, no la del directorio desde el que se invoca.
+
+**Escenarios de host web.** `tests/web/index.ts` orquesta, dentro del host VS Code web, las comprobaciones de activación y los
+escenarios con aserciones por paso (cada paso se registra en el log como `STEP` y en el resultado JSON). Los escenarios de red usan
+`tests/web/http-fixture.mjs`, un servidor Node con listeners HTTP y TLS (certificado autofirmado generado con `openssl`) que ofrece
+rutas de cuerpo, vacío, 500, cuerpo excesivo, redirección, plazo, conexión colgada, corte de conexión y respuesta sin CORS, y
+cuenta las visitas por ruta. El runner lo arranca de forma asíncrona (un `spawnSync` bloquearía su propio servidor). Los archivos
+del programa usan `tests/web/memory_provider.ts`, un proveedor virtual con fallos inyectables (guardado rechazado, lectura
+perdida). `tests/web/http_scenarios.ts` y `file_scenarios.ts` ejecutan `BrowserEffectHost` real del producto sobre el `fetch` del
+navegador y ese proveedor; `program_scenarios.ts` ejecuta archivos sueltos y proyectos de tres módulos en español e inglés
+(`tests/fixtures/web-scenarios/`) con Workers reales del artefacto: salida Unicode, entrada, entrada vacía, cancelación (por
+parada y por descarte del cuadro de entrada), extremos de 64 bits, error en el módulo importado, y efectos concedidos y denegados.
+Cada resultado esperado procede de las reglas del lenguaje y del contrato de efectos, no de una captura.
+
+Límite declarado: Chromium y WebKit rechazan el certificado autofirmado (el runner no permite confiar en él: ni las opciones de
+línea de comandos de Chromium surtieron efecto), de modo que el camino exitoso de HTTP se ejerce sobre HTTP y TLS se comprueba como
+rechazo ordinario de transporte, indistinguible de otro fallo de conexión (descriptor A4). El resultado registra `tls` como
+`accepted` o `untrusted`; no se declara cobertura de TLS exitoso.
+
+`pnpm test:lsp:contrast` (`tests/web/lsp-contrast.mjs`) conduce el mismo diálogo LSP contra el recurso LSP del Wasm empaquetado y
+contra `pseudo lsp` sobre el mismo proyecto de tres módulos (carpeta con espacios y caracteres no ASCII), incluidos cambios
+inválidos, columnas UTF-16 tras un emoji y una versión obsoleta, y exige respuestas y diagnósticos idénticos. Su primera
+ejecución encontró un defecto real: el snapshot web identificaba cada fuente como `app/main.pseudo` y Rust espera la ruta de
+módulo `app/main`, por lo que los diagnósticos de proyecto no se actualizaban; ahora `BrowserWorkspace` usa rutas de módulo.
+Otro defecto real hallado por los escenarios: cancelar mientras el programa espera entrada nunca terminaba; ahora se cancela y se
+entrega una línea vacía para que la cancelación surta efecto, como hace la CLI.
 
 El runner oficial está fijado en `tests/web/runner/package.json` a `@vscode/test-web` 0.0.81, con su lock;
 su instalación está separada de las dependencias de producto y no se descarga al activar la extensión.
@@ -274,6 +300,13 @@ El host de extensión web de VS Code carga la extensión como CommonJS y envuelv
 `importScripts`: la extensión se empaqueta como CJS y los Workers como IIFE clásicos (sin `type: module`);
 el glue Wasm se carga con `import()` dinámico desde el Worker. Cada manifiesto se resuelve con su
 directorio contenedor como ubicación, igual que el escritorio.
+
+Las cargas de `scripts/lib/web-workloads.mjs` declaran su resultado correcto antes de medir y cualquier intento con salida distinta
+o terminación inesperada invalida la comparación: entero de 64 bits extremo, bucle acotado, bucle cancelable (cancelación tras
+diez lotes), proyecto de tres módulos, edición (veinte `didChange` LSP alternando inválido/válido, con diagnósticos finales
+vacíos), memoria creciente (vector de 4000 elementos), HTTP simulado (el adaptador Fetch canónico con un `fetch` virtual, sin red)
+y arranque en caliente (misma página con instancias previas) y en frío (contexto de navegador nuevo por intento). La página de
+medición se renueva en cada iteración porque un contexto acumula reservas de memoria Wasm y agota el espacio de direcciones.
 
 `bench-web.mjs` ejecuta diez procesos Node y navegador independientes con treinta intentos por carga,
 alterna Worker/control y conserva fallos. Mide el transporte/VM con instancia nueva frente a la página

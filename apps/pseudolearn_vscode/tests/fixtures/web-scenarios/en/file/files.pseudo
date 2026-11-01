@@ -1,0 +1,15 @@
+subroutine Run() as result<integer, IoError>
+define directory as DirCap <- propagate requestDirectory("root");
+define output as FileCap <- propagate directory.open("salida.txt", "write");
+defer
+discard output.close();
+endDefer
+discard output.writeText("guardado ñ");
+return success(0);
+endSubroutine
+algorithm Main
+switch Run() do
+success(value): write "written";
+failure(problem): write problem.code;
+endSwitch
+endAlgorithm
