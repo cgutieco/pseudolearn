@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import '../../domain/model/analysis/app_diagnostic.dart';
+import '../../domain/model/analysis/source_range.dart';
 import '../../domain/model/completion/completion_item.dart';
 import '../../domain/model/documents/document.dart';
 import '../../domain/model/editor/autosave_policy.dart';
@@ -20,9 +21,10 @@ import '../../domain/ports/text_entry_modality.dart';
 import 'editor_state.dart';
 
 part 'editor_cubit_helpers.dart';
+part 'editor_source_reveal.dart';
 
 final class EditorCubit extends Cubit<EditorState>
-    with _EditorDiagnosticSelection {
+    with _EditorDiagnosticSelection, _EditorSourceReveal {
   final DocumentRepository _repository;
   final ProgramAnalyzer _analyzer;
   final CompletionSource _completionSource;

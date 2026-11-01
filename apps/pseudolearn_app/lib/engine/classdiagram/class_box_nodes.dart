@@ -110,7 +110,7 @@ final class ClassBoxNodes {
     }
   }
 
-  String _rowTextOf(ClassMemberRow row) => row.role == ClassRowRole.contractIssue
+  String _rowTextOf(ClassMemberRow row) => row.role != ClassRowRole.member
       ? row.text
       : switch (row.visibility) {
         ClassMemberVisibility.public => '+ ${row.text}',

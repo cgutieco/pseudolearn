@@ -7,6 +7,7 @@ import 'rust_caption_text.dart';
 import 'rust_diagram_captions.dart';
 import 'rust_program_view.dart';
 import 'rust_statement_treatment.dart';
+import 'rust_structogram_exit_cells.dart';
 import 'rust_task_nodes.dart';
 
 final class RustStructogramCellBuilder {
@@ -14,8 +15,13 @@ final class RustStructogramCellBuilder {
   final DiagramVocabulary _vocabulary;
   final TextMetrics _text;
   final RustDiagramCaptions _captions;
+  late final RustStructogramExitCells _exits = RustStructogramExitCells(
+    view: _view,
+    vocabulary: _vocabulary,
+    wrap: _wrap,
+  );
 
-  const RustStructogramCellBuilder({
+  RustStructogramCellBuilder({
     required RustProgramView view,
     required DiagramVocabulary vocabulary,
     required RustDiagramCaptions captions,
@@ -28,9 +34,12 @@ final class RustStructogramCellBuilder {
   StructogramCell buildBody(RustViewNode body) {
     final statements = rustStatementsOf(_view, body);
     if (statements.isEmpty) return _emptyCell();
-    return StructogramStack([
-      for (final statement in statements) _statement(statement),
-    ]);
+    return _exits.closeScope(
+      body,
+      StructogramStack([
+        for (final statement in statements) _statement(statement),
+      ]),
+    );
   }
 
   StructogramCell _statement(RustViewNode wrapper) {
@@ -44,7 +53,9 @@ final class RustStructogramCellBuilder {
       StatementTreatment.repeatLoop => _postTestLoop(wrapper, node),
       StatementTreatment.taskScope => _taskScope(wrapper, node),
       StatementTreatment.receiveSelection => _receiveSelection(wrapper, node),
+      StatementTreatment.deferral => _deferral(wrapper, node),
       StatementTreatment.returnExit ||
+      StatementTreatment.breakExit ||
       StatementTreatment.call ||
       StatementTreatment.inputOutput ||
       StatementTreatment.process => _leaf(wrapper, node),
@@ -170,18 +181,28 @@ final class RustStructogramCellBuilder {
       StructogramLeaf(
         kind: switch (node.syntaxKind) {
           'call_statement' => StructogramLeafKind.call,
-          'return_statement' => StructogramLeafKind.exit,
+          'return_statement' ||
+          'break_statement' => StructogramLeafKind.exit,
           _ when rustNodeIsTaskOperation(_view, node) =>
             StructogramLeafKind.call,
           _ => StructogramLeafKind.process,
         },
-        lines: _wrap(rustCaptionOf(node)),
+        lines: _wrap(_exits.caption(node)),
         nodeId: wrapper.id,
         sourceLine: wrapper.range.startLine,
       );
 
-  StructogramCell _body(RustViewNode node) {
-    final body = _view.childForRole(node, 'body');
+  StructogramCell _deferral(RustViewNode wrapper, RustViewNode node) =>
+      StructogramLoop(
+        headerLines: _wrap(rustHeaderLine(node)),
+        position: StructogramLoopPosition.header,
+        nodeId: wrapper.id,
+        sourceLine: wrapper.range.startLine,
+        body: _body(node, role: 'cleanup_body'),
+      );
+
+  StructogramCell _body(RustViewNode node, {String role = 'body'}) {
+    final body = _view.childForRole(node, role);
     return body == null ? _emptyCell() : buildBody(body);
   }
 

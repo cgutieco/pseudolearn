@@ -1504,6 +1504,35 @@
       "justificacion": "La representación del diagrama de clases es responsabilidad del consumidor de la vista y solo la observa el sujeto app."
     },
     {
+      "regla": "API.PROGRAM.VIEW@1.0.0#R10",
+      "verificacion": "crates/pseudolearn_api/tests/program_view_exits.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "API.PROGRAM.VIEW@1.0.0#R11",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "La representación en ordinograma, estructograma y diagrama de clases y la matriz de cobertura son responsabilidad del consumidor de la vista y solo las observa el sujeto app."
+    },
+    {
+      "regla": "API.PROGRAM.VIEW@1.0.0#R12",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "La representación en ordinograma, estructograma y diagrama de clases y la matriz de cobertura son responsabilidad del consumidor de la vista y solo las observa el sujeto app."
+    },
+    {
+      "regla": "API.PROGRAM.VIEW@1.0.0#R13",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "La representación en ordinograma, estructograma y diagrama de clases y la matriz de cobertura son responsabilidad del consumidor de la vista y solo las observa el sujeto app."
+    },
+    {
+      "regla": "API.PROGRAM.VIEW@1.0.0#R14",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "La representación en ordinograma, estructograma y diagrama de clases y la matriz de cobertura son responsabilidad del consumidor de la vista y solo las observa el sujeto app."
+    },
+    {
       "regla": "API.STATE.QUERY@1.0.0#R4",
       "verificacion": "ejecutor",
       "estado": "cumple"

@@ -10,6 +10,8 @@ enum StatementTreatment {
   taskScope,
   receiveSelection,
   returnExit,
+  breakExit,
+  deferral,
   call,
   inputOutput,
   process,
@@ -22,15 +24,24 @@ final class UnsupportedSyntaxView implements Exception {
   const UnsupportedSyntaxView(this.syntaxKind);
 }
 
-const Set<String> _unsupportedInsideLeaf = {'propagation'};
+const String _propagationKind = 'propagation';
+
+const Set<String> _bodyRoles = {
+  'body',
+  'then_body',
+  'else_body',
+  'case',
+  'default_case',
+  'branch',
+};
 
 StatementTreatment rustStatementTreatment(
   RustProgramView view,
   RustViewNode node,
 ) {
   final treatment = _treatmentOfKind(node.syntaxKind);
-  if (!_isLeaf(treatment)) return treatment;
-  return _containsUnsupported(view, node)
+  if (_isLeaf(treatment)) return treatment;
+  return _headerPropagates(view, node)
       ? StatementTreatment.unsupported
       : treatment;
 }
@@ -45,6 +56,8 @@ StatementTreatment _treatmentOfKind(String syntaxKind) => switch (syntaxKind) {
   'task_scope' => StatementTreatment.taskScope,
   'select_statement' => StatementTreatment.receiveSelection,
   'return_statement' => StatementTreatment.returnExit,
+  'break_statement' => StatementTreatment.breakExit,
+  'defer_statement' => StatementTreatment.deferral,
   'call_statement' || 'spawn_statement' => StatementTreatment.call,
   'input' || 'output' => StatementTreatment.inputOutput,
   'assignment_statement' ||
@@ -56,22 +69,31 @@ StatementTreatment _treatmentOfKind(String syntaxKind) => switch (syntaxKind) {
 
 bool _isLeaf(StatementTreatment treatment) => switch (treatment) {
   StatementTreatment.returnExit ||
+  StatementTreatment.breakExit ||
+  StatementTreatment.deferral ||
   StatementTreatment.call ||
   StatementTreatment.inputOutput ||
-  StatementTreatment.process => true,
+  StatementTreatment.process ||
+  StatementTreatment.unsupported => true,
   _ => false,
 };
 
 String rustUnsupportedKind(RustProgramView view, RustViewNode node) =>
-    _firstUnsupportedInside(view, node) ?? node.syntaxKind;
+    _headerPropagates(view, node) ? _propagationKind : node.syntaxKind;
 
-bool _containsUnsupported(RustProgramView view, RustViewNode node) =>
-    _firstUnsupportedInside(view, node) != null;
-
-String? _firstUnsupportedInside(RustProgramView view, RustViewNode node) {
-  if (_unsupportedInsideLeaf.contains(node.syntaxKind)) return node.syntaxKind;
+bool _headerPropagates(RustProgramView view, RustViewNode node) {
   for (final child in rustChildrenOf(view, node)) {
-    final found = _firstUnsupportedInside(view, child);
+    if (_bodyRoles.contains(node.childRoles[child.id.value])) continue;
+    if (rustFirstPropagation(view, child) != null) return true;
+  }
+  return false;
+}
+
+RustViewNode? rustFirstPropagation(RustProgramView view, RustViewNode node) {
+  if (node.syntaxKind == _propagationKind) return node;
+  if (node.syntaxKind == 'function_literal') return null;
+  for (final child in rustChildrenOf(view, node)) {
+    final found = rustFirstPropagation(view, child);
     if (found != null) return found;
   }
   return null;

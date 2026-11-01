@@ -14,6 +14,7 @@ List<String> checkSyntaxCoverage({
   required Map<String, String> inventory,
   required bool Function(String id, String version, String rule) ruleExists,
   required bool Function(String path) evidenceExists,
+  required bool Function(String entry) helpExists,
 }) {
   final violations = <String>[];
   final owners = <String, String>{};
@@ -23,6 +24,7 @@ List<String> checkSyntaxCoverage({
       violations.add('COV-DUPLICATE: construct ${row.construct} is repeated');
     }
     _checkRow(row, inventory, ruleExists, evidenceExists, violations);
+    _checkHelp(row, helpExists, violations);
     for (final kind in row.syntaxKinds) {
       final previous = owners[kind];
       if (previous != null) {
@@ -75,4 +77,16 @@ void _checkRow(
   if (!evidenceExists(row.evidence)) {
     violations.add('COV-EVIDENCE: ${row.construct} cites missing ${row.evidence}');
   }
+}
+
+void _checkHelp(
+  SyntaxViewCoverageRow row,
+  bool Function(String) helpExists,
+  List<String> violations,
+) {
+  final entry = row.help.helpEntry;
+  if (!row.help.isExact || (entry.isNotEmpty && helpExists(entry))) return;
+  violations.add(
+    'COV-HELP: ${row.construct} declares exact help without an existing card ($entry)',
+  );
 }

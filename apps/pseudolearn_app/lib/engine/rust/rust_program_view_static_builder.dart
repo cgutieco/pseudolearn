@@ -14,6 +14,8 @@ final class _RustProgramViewStaticBuilder {
     captures: _captures(),
     iterations: _iterations(),
     scopes: _scopes(),
+    exits: _RustProgramViewExitBuilder(_nodes, _ordinals).exits(),
+    cleanupScopes: _RustProgramViewExitBuilder(_nodes, _ordinals).cleanupScopes(),
   );
 
   List<ProgramViewRealization> _realizations() {

@@ -56,6 +56,34 @@ algorithm Main
 endAlgorithm
 ''';
 
+const String _headerPropagation = '''
+subroutine First() as optional<integer>
+return none;
+endSubroutine
+subroutine Second() as optional<integer>
+if propagate First() > 0 then
+write 1;
+endIf
+return some(1);
+endSubroutine
+algorithm Main
+endAlgorithm
+''';
+
+const String _closurePropagation = '''
+subroutine First() as optional<integer>
+return none;
+endSubroutine
+subroutine make() as subroutine() as optional<integer>
+return subroutine() as optional<integer>
+define value as integer <- propagate First();
+return some(value);
+endSubroutine;
+endSubroutine
+algorithm Main
+endAlgorithm
+''';
+
 DiagramProgram _flowchart(String source) =>
     nativeTestEngine.flowchartBuilder.buildDiagram(
       sourceCode: source,
@@ -116,35 +144,50 @@ void main() {
   });
 
   group('forms without a faithful drawing are reported, not approximated', () {
-    final cases = {
+    test('a propagation inside a control header makes both diagrams unsupported', () {
+      final flowchart = _flowchart(_headerPropagation);
+      final structogram = _structogram(_headerPropagation);
+
+      expect(flowchart.isUnsupported, isTrue);
+      expect(flowchart.unsupportedKinds, ['propagation']);
+      expect(flowchart.isEmpty, isTrue);
+      expect(structogram.unsupportedKinds, ['propagation']);
+    });
+
+    test('a propagation inside a function literal is not an exit of the statement', () {
+      final flowchart = _flowchart(_closurePropagation);
+      final unit = flowchart.units.singleWhere((unit) => unit.name == 'make');
+
+      expect(flowchart.isUnsupported, isFalse);
+      expect(
+        flowchart.sceneFor(unit.id).edges.where(
+          (edge) => edge.kind == DiagramEdgeKind.propagationExit,
+        ),
+        isEmpty,
+      );
+    });
+
+    final drawn = {
       'break_statement': _break,
       'defer_statement': _defer,
       'propagation': _propagation,
     };
 
-    for (final entry in cases.entries) {
-      test('${entry.key} makes both diagrams unsupported', () {
-        final flowchart = _flowchart(entry.value);
-        final structogram = _structogram(entry.value);
-
-        expect(flowchart.isUnsupported, isTrue);
-        expect(flowchart.unsupportedKinds, [entry.key]);
-        expect(flowchart.isEmpty, isTrue);
-        expect(structogram.unsupportedKinds, [entry.key]);
+    for (final entry in drawn.entries) {
+      test('${entry.key} is drawn in both diagrams instead of reported', () {
+        expect(_flowchart(entry.value).isUnsupported, isFalse);
+        expect(_structogram(entry.value).isUnsupported, isFalse);
       });
     }
 
-    test('every unsupported sample is declared as an extension in the matrix', () {
-      for (final kind in ['break_statement', 'defer_statement', 'propagation']) {
+    test('every drawn exit form is exact in both notations of the matrix', () {
+      for (final kind in drawn.keys) {
         final row = syntaxViewCoverageMatrix.singleWhere(
           (row) => row.syntaxKinds.contains(kind),
         );
 
-        expect(
-          row.flowchart.representation,
-          CoverageRepresentation.declaredExtension,
-        );
-        expect(row.flowchart.reason, contains('unsupported'));
+        expect(row.flowchart.representation, CoverageRepresentation.exact);
+        expect(row.structogram.representation, CoverageRepresentation.exact);
       }
     });
 

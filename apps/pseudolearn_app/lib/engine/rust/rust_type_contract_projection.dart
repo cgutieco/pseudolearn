@@ -1,8 +1,10 @@
 import '../../domain/model/analysis/program_node_id.dart';
 import '../../domain/model/analysis/program_view_static_data.dart';
 import '../../domain/model/diagram/class_model.dart';
+import 'rust_generic_subprogram_boxes.dart';
 import 'rust_member_signature.dart';
 import 'rust_program_view.dart';
+import 'rust_value_type_projection.dart';
 
 final class RustTypeContractProjection {
   static const String invalidCode = 'invalid';
@@ -13,10 +15,12 @@ final class RustTypeContractProjection {
   final Map<int, List<ClassMemberRow>> _issues = {};
   final Map<int, List<String>> _contracts = {};
   final List<ClassRelation> _relations = [];
+  final RustGenericSubprogramBoxes _generics;
 
   RustTypeContractProjection(RustProgramView view, List<ClassBox> classBoxes)
     : _view = view,
       _classBoxes = classBoxes,
+      _generics = RustGenericSubprogramBoxes(view),
       _namesByNode = {for (final box in classBoxes) box.nodeId.value: box.name};
 
   ClassModel project({required List<ClassRelation> relations}) {
@@ -33,7 +37,12 @@ final class RustTypeContractProjection {
     _projectRealizations();
     _projectConstraints(subprograms);
     return [
-      for (final box in [..._classBoxes, ...interfaces, ...subprograms.values])
+      for (final box in [
+        ..._classBoxes,
+        ...interfaces,
+        ...RustValueTypeProjection(_view).boxes(),
+        ...subprograms.values,
+      ])
         _withContracts(box),
     ];
   }
@@ -87,55 +96,11 @@ final class RustTypeContractProjection {
   }
 
   Map<int, ClassBox> _subprogramBoxes() {
-    final owners = _constraintOwners();
-    final boxes = <int, ClassBox>{};
-    for (final unit in _view.units.where((u) => u.kind == 'subprogram')) {
-      if (!owners.values.contains(unit.nodeId.value)) continue;
-      final node = _view.nodeById(unit.nodeId);
-      boxes[unit.nodeId.value] = ClassBox(
-        name: unit.name,
-        attributes: const [],
-        methods: [
-          ClassMemberRow(
-            text: RustMemberSignature(_view).of(unit.name, node),
-            visibility: ClassMemberVisibility.public,
-            nodeId: unit.nodeId,
-            sourceLine: node?.range.startLine ?? unit.range.startLine,
-          ),
-        ],
-        nodeId: unit.nodeId,
-        sourceLine: node?.range.startLine ?? unit.range.startLine,
-        kind: ClassBoxKind.constrainedSubprogram,
-      );
-      _namesByNode[unit.nodeId.value] = unit.name;
+    final boxes = _generics.boxes(_generics.constraintOwners());
+    for (final box in boxes.values) {
+      _namesByNode[box.nodeId.value] = box.name;
     }
     return boxes;
-  }
-
-  Map<int, int> _constraintOwners() {
-    final wanted = {
-      for (final constraint in _view.staticData.constraints)
-        constraint.parameterNodeId.value,
-    };
-    final owners = <int, int>{};
-    for (final unit in _view.units.where((u) => u.kind == 'subprogram')) {
-      final root = _view.nodeById(unit.nodeId);
-      if (root == null) continue;
-      _collectOwners(root, owner: unit.nodeId.value, wanted: wanted, into: owners);
-    }
-    return owners;
-  }
-
-  void _collectOwners(
-    RustViewNode node, {
-    required int owner,
-    required Set<int> wanted,
-    required Map<int, int> into,
-  }) {
-    if (wanted.contains(node.id.value)) into[node.id.value] = owner;
-    for (final child in rustChildrenOf(_view, node)) {
-      _collectOwners(child, owner: owner, wanted: wanted, into: into);
-    }
   }
 
   void _projectRealizations() {
@@ -164,7 +129,7 @@ final class RustTypeContractProjection {
   }
 
   void _projectConstraints(Map<int, ClassBox> subprograms) {
-    final owners = _constraintOwners();
+    final owners = _generics.constraintOwners();
     for (final constraint in _view.staticData.constraints) {
       final ownerValue = owners[constraint.parameterNodeId.value];
       if (ownerValue == null || !subprograms.containsKey(ownerValue)) continue;

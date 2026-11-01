@@ -878,7 +878,7 @@ La vista pública incluye interface_unit, interface_signature, realization, type
 ```
 
 ```regla
-{"id": "R7", "fuerza": "DEBE", "clase": "semantica", "texto": "Cada realización explícita válida se representa como una relación de realización dirigida desde la clase hacia el contrato, distinta de la herencia. La realización heredada no se dibuja de nuevo: la relación de herencia la transporta. El contrato ocupa un nivel superior al de sus realizaciones, de modo que las cajas se listan de arriba abajo.", "verificacion": ["C18", "C19", "C20"]}
+{"id": "R7", "fuerza": "DEBE", "clase": "semantica", "texto": "Cada realización explícita válida se representa como una relación de realización dirigida desde la clase hacia el contrato, distinta de la herencia. La realización heredada no se dibuja de nuevo: la relación de herencia la transporta. El contrato ocupa un nivel superior al de sus realizaciones, de modo que las cajas se listan de arriba abajo.", "verificacion": ["C18", "C19", "C20", "C41"]}
 ```
 
 ```caso
@@ -893,8 +893,12 @@ La vista pública incluye interface_unit, interface_signature, realization, type
 {"id": "C20", "regla": "R7", "perfiles": ["en"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "class_diagram", "input": {"program": "interface Readable\nmethod readValue() as integer;\nendInterface\nclass Reader implements Readable\nmethod readValue() as integer\nreturn 7;\nendMethod\nendClass\nclass Child extends Reader\nendClass\nalgorithm Main\nendAlgorithm\n", "profile": "en"}}, "espera": {"aplicacion": {"relations": [{"kind": "generalization", "from": "Child", "to": "Reader", "valid": true}, {"kind": "realization", "from": "Reader", "to": "Readable", "valid": true}]}}}
 ```
 
+```caso
+{"id": "C41", "regla": "R7", "perfiles": ["en"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "class_diagram", "input": {"program": "interface Readable\nmethod readValue() as integer;\nendInterface\nclass Base\nmethod readValue() as integer\nreturn 1;\nendMethod\nendClass\nclass Child extends Base implements Readable\nendClass\nalgorithm Main\nendAlgorithm\n", "profile": "en"}}, "espera": {"aplicacion": {"relations": [{"kind": "generalization", "from": "Child", "to": "Base", "valid": true}, {"kind": "realization", "from": "Child", "to": "Readable", "valid": true, "diagnostics": []}]}}}
+```
+
 ```regla
-{"id": "R8", "fuerza": "DEBE", "clase": "semantica", "texto": "Una realización inválida se representa con la misma relación marcada como inválida, con los códigos de diagnóstico del análisis y el nodo de la declaración de origen. Un contrato desconocido no crea relación ni caja: aparece como una fila de incidencia en la clase que cita la referencia escrita y el diagnóstico, y conserva el nodo de esa referencia. La invalidez no depende solo del color.", "verificacion": ["C21", "C22"]}
+{"id": "R8", "fuerza": "DEBE", "clase": "semantica", "texto": "Una realización inválida se representa con la misma relación marcada como inválida, con los códigos de diagnóstico del análisis y el nodo de la declaración de origen. Un contrato desconocido no crea relación ni caja: aparece como una fila de incidencia en la clase que cita la referencia escrita y el diagnóstico, y conserva el nodo de esa referencia. La invalidez no depende solo del color.", "verificacion": ["C21", "C22", "C42"]}
 ```
 
 ```caso
@@ -905,10 +909,108 @@ La vista pública incluye interface_unit, interface_signature, realization, type
 {"id": "C22", "regla": "R8", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "class_diagram", "input": {"program": "Clase Faltante Realiza Ausente\nFinClase\nAlgoritmo Principal\nFinAlgoritmo\n", "profile": "es"}}, "espera": {"aplicacion": {"boxes": [{"name": "Faltante", "rows": ["! Ausente (unknownInterface)"]}], "relations": []}}}
 ```
 
+```caso
+{"id": "C42", "regla": "R8", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "class_diagram", "input": {"program": "Interfaz Legible\nMetodo obtener() Como Entero;\nFinInterfaz\nClase Lector Realiza Legible\nMetodo obtener(extra Como Entero) Como Entero\nRetornar extra;\nFinMetodo\nFinClase\nAlgoritmo Principal\nFinAlgoritmo\n", "profile": "es"}}, "espera": {"aplicacion": {"relations": [{"kind": "realization", "from": "Lector", "to": "Legible", "valid": false, "diagnostics": ["interfaceMethodSignatureMismatch"], "has_origin": true}]}}}
+```
+
 ```regla
 {"id": "R9", "fuerza": "DEBE", "clase": "semantica", "texto": "Una restricción de parámetro genérico sobre un contrato conocido se representa como una relación de uso, distinta de la realización, desde una caja «subprogram» del subprograma que la declara hacia el contrato, etiquetada con el nombre del parámetro. No se crean valores de interfaz.", "verificacion": ["C23"]}
 ```
 
 ```caso
 {"id": "C23", "regla": "R9", "perfiles": ["en"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "class_diagram", "input": {"program": "interface Readable\nmethod readValue() as integer;\nendInterface\nsubroutine readOnce<T: Readable>(value as T) as integer\nreturn value.readValue();\nendSubroutine\nalgorithm Main\nendAlgorithm\n", "profile": "en"}}, "espera": {"aplicacion": {"boxes": [{"name": "Readable", "stereotype": "«interface»", "rows": ["+ readValue(): integer"]}, {"name": "readOnce", "stereotype": "«subprogram»", "rows": ["+ readOnce<T: Readable>(value: T): integer"]}], "relations": [{"kind": "usage", "from": "readOnce", "to": "Readable", "valid": true, "label": "T"}]}}}
+```
+
+## Salidas, limpiezas y su representación en ordinograma y estructograma
+
+```regla
+{"id": "R10", "fuerza": "DEBE", "clase": "semantica", "texto": "La vista expone en cada nodo break_statement, return_statement y propagation el atributo control_exit con kind break, return o propagation; target_node_id del bucle interior que Salir termina o de la unidad o función literal que Retornar y Propagar abandonan, o null si la salida no tiene destino válido; y cleanups, los node_id de las sentencias Diferir ya registradas en los ámbitos abandonados en el orden en que se ejecutan, del ámbito interior al exterior y en orden inverso de registro dentro de cada uno. Cada lista de sentencias que registra limpiezas expone normal_cleanups en el orden de su fin normal, y cada defer_statement expone cleanup_scope_node_id. Una salida dentro de un cuerpo diferido no tiene destino ni limpiezas. Los datos son estáticos y no evalúan expresiones.", "verificacion": ["C24", "C25"]}
+```
+
+```caso
+{"id": "C24", "regla": "R10", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "control_flow", "input": {"program": "Algoritmo Main\nDefinir values Como Vector<Entero> <- Vector();\nDiferir\nEscribir 0;\nFinDiferir\nPara Cada value En values Hacer\nDiferir\nEscribir value;\nFinDiferir\nSi value = 2 Entonces\nSalir;\nFinSi\nFinPara\nFinAlgoritmo\n", "profile": "es", "notation": "flowchart", "unit": "Main"}}, "espera": {"aplicacion": {"exits": [{"kind": "break", "target": "for_each_loop", "cleanup_lines": [7]}], "normal_cleanups": [{"lines": [3]}, {"lines": [7]}]}}}
+```
+
+```caso
+{"id": "C25", "regla": "R10", "perfiles": ["en"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "control_flow", "input": {"program": "subroutine First() as optional<integer>\nreturn none;\nendSubroutine\nsubroutine Second() as optional<string>\ndefer\nwrite 0;\nendDefer\ndefine value as integer <- propagate First();\nreturn some(\"done\");\nendSubroutine\nalgorithm Main\nendAlgorithm\n", "profile": "en", "notation": "flowchart", "unit": "Second"}}, "espera": {"aplicacion": {"exits": [{"kind": "return", "target": "subroutine", "cleanup_lines": []}, {"kind": "propagation", "target": "subroutine", "cleanup_lines": [5]}, {"kind": "return", "target": "subroutine", "cleanup_lines": [5]}], "normal_cleanups": [{"lines": [5]}]}}}
+```
+
+```regla
+{"id": "R11", "fuerza": "DEBE", "clase": "semantica", "texto": "Ordinograma y estructograma distinguen cada salida. La salida normal sigue el flujo. Salir lleva por una arista de ruptura a un conector rotulado con el fin del bucle que termina, y ese bucle repite el mismo conector tras su salida normal; en el estructograma es una celda de salida. Retornar es un terminal o una celda de salida. Propagar añade a su sentencia una arista lateral hacia un terminal de fallo propagado; en el estructograma la celda de su sentencia lo anota. Diferir se dibuja como registro con su cuerpo al costado, unido por una arista de registro y sin flujo que lo atraviese; en el estructograma, como bloque con cabecera. Las limpiezas se rotulan por las líneas de sus sentencias Diferir en el orden de control_exit en cada salida anticipada y de normal_cleanups en un paso al final de su ámbito cuando ese final es alcanzable. El dibujo no evalúa las limpiezas.", "verificacion": ["C26", "C27", "C28"]}
+```
+
+```caso
+{"id": "C26", "regla": "R11", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "control_flow", "input": {"program": "Algoritmo Main\nDefinir values Como Vector<Entero> <- Vector();\nDiferir\nEscribir 0;\nFinDiferir\nPara Cada value En values Hacer\nDiferir\nEscribir value;\nFinDiferir\nSi value = 2 Entonces\nSalir;\nFinSi\nFinPara\nFinAlgoritmo\n", "profile": "es", "notation": "flowchart", "unit": "Main"}}, "espera": {"aplicacion": {"nodes": [{"shape": "startEnd", "text": "Inicio"}, {"shape": "process", "text": "Definir values Como Vector<Entero> <- Vector()"}, {"shape": "preparation", "text": "Diferir"}, {"shape": "inputOutput", "text": "Escribir 0"}, {"shape": "preparation", "text": "Para Cada value En values Hacer"}, {"shape": "preparation", "text": "Diferir"}, {"shape": "inputOutput", "text": "Escribir value"}, {"shape": "decision", "text": "¿value = 2?"}, {"shape": "process", "text": "Salir — limpiezas: línea 7"}, {"shape": "exitConnector", "text": "Fin del bucle (línea 6)"}, {"shape": "subprogram", "text": "Limpiezas al terminar: línea 7"}, {"shape": "exitConnector", "text": "Fin del bucle (línea 6)"}, {"shape": "subprogram", "text": "Limpiezas al terminar: línea 3"}, {"shape": "startEnd", "text": "Fin"}], "unsupported": [], "edges": [{"kind": "cleanupRegistration", "from": "Diferir", "to": "Escribir 0"}, {"kind": "cleanupRegistration", "from": "Diferir", "to": "Escribir value"}, {"kind": "breakExit", "from": "Salir — limpiezas: línea 7", "to": "Fin del bucle (línea 6)"}]}}}
+```
+
+```caso
+{"id": "C27", "regla": "R11", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "control_flow", "input": {"program": "SubProceso First() Como Opcional<Entero>\nRetornar Nada;\nFinSubProceso\nSubProceso Second() Como Opcional<Cadena>\nDiferir\nEscribir 0;\nFinDiferir\nDefinir v Como Entero <- Propagar First();\nRetornar Algo(\"listo\");\nFinSubProceso\nAlgoritmo Main\nFinAlgoritmo\n", "profile": "es", "notation": "flowchart", "unit": "Second"}}, "espera": {"aplicacion": {"nodes": [{"shape": "startEnd", "text": "Inicio"}, {"shape": "preparation", "text": "Diferir"}, {"shape": "inputOutput", "text": "Escribir 0"}, {"shape": "process", "text": "Definir v Como Entero <- Propagar First()"}, {"shape": "startEnd", "text": "Propaga el fallo — limpiezas: línea 5"}, {"shape": "startEnd", "text": "Retornar Algo(\"listo\") — limpiezas: línea 5"}, {"shape": "startEnd", "text": "Fin"}], "unsupported": [], "edges": [{"kind": "cleanupRegistration", "from": "Diferir", "to": "Escribir 0"}, {"kind": "propagationExit", "from": "Definir v Como Entero <- Propagar First()", "to": "Propaga el fallo — limpiezas: línea 5"}]}}}
+```
+
+```caso
+{"id": "C28", "regla": "R11", "perfiles": ["en"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "control_flow", "input": {"program": "algorithm Main\ndefine values as vector<integer> <- vector();\nfor each value in values do\ndefer\nwrite value;\nendDefer\nbreak;\nendFor\nendAlgorithm\n", "profile": "en", "notation": "structogram", "unit": "Main"}}, "espera": {"aplicacion": {"nodes": [{"shape": "cellProcess", "text": "define values as vector<integer> <- vector()"}, {"shape": "cellLoopHeader", "text": "for each value in values do"}, {"shape": "cellLoopHeader", "text": "defer"}, {"shape": "cellProcess", "text": "write value"}, {"shape": "cellExit", "text": "break — cleanups: line 4"}], "unsupported": []}}}
+```
+
+## Registros, enumerados y parámetros de tipo en el diagrama de clases
+
+```regla
+{"id": "R12", "fuerza": "DEBE", "clase": "semantica", "texto": "El diagrama de clases representa cada registro como una caja «record» con una fila «nombre: tipo» por campo declarado, cada enumerado como una caja «enumeration» con una fila por miembro en orden de fuente, y cada subprograma con parámetros de tipo como una caja «subprogram» con su firma, aunque sus parámetros no tengan restricción. Registros y enumerados se listan en orden de fuente después de clases e interfaces. Cada fila conserva el nodo de su declaración para navegar al rango exacto. No se crean relaciones, instancias ni pasos ejecutables para estas declaraciones.", "verificacion": ["C29", "C30"]}
+```
+
+```caso
+{"id": "C29", "regla": "R12", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "class_diagram", "input": {"program": "Enumerado Color\nRojo, Verde\nFinEnumerado\nRegistro Punto\nDefinir x, z Como Entero;\nFinRegistro\nSubProceso identity<T>(value Como T) Como T\nRetornar value;\nFinSubProceso\nAlgoritmo Main\nFinAlgoritmo\n", "profile": "es"}}, "espera": {"aplicacion": {"boxes": [{"name": "Color", "stereotype": "«enumeration»", "rows": ["Rojo", "Verde"]}, {"name": "Punto", "stereotype": "«record»", "rows": ["+ x: Entero", "+ z: Entero"]}, {"name": "identity", "stereotype": "«subprogram»", "rows": ["+ identity<T>(value: T): T"]}], "relations": []}}}
+```
+
+```caso
+{"id": "C30", "regla": "R12", "perfiles": ["en"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "class_diagram", "input": {"program": "record Pair\ndefine left as integer;\ndefine right as string;\nendRecord\nenum Level\nlow, high\nendEnum\nalgorithm Main\nendAlgorithm\n", "profile": "en"}}, "espera": {"aplicacion": {"boxes": [{"name": "Pair", "stereotype": "«record»", "rows": ["+ left: integer", "+ right: string"]}, {"name": "Level", "stereotype": "«enumeration»", "rows": ["low", "high"]}], "relations": []}}}
+```
+
+## Cobertura sintáctica de las vistas del consumidor
+
+```regla
+{"id": "R13", "fuerza": "DEBE", "clase": "estructural", "texto": "El consumidor que dibuja la vista declara como datos una matriz de cobertura con una fila por construcción, su papel público, sus formas, el anclaje de regla con versión y una celda por vista: ordinograma, estructograma, estructura, foco, estado y ayuda. Cada celda es exacta, extensión declarada o no aplicable, y las dos últimas exigen motivo; una ayuda exacta nombra una ficha del catálogo de ayuda. Su verificador rechaza una forma pública sin fila con COV-MISSING-ROW, una forma desconocida con COV-STALE-ROW, una fila o forma repetida con COV-DUPLICATE, un papel distinto del público con COV-ROLE, una celda sin motivo con COV-NO-REASON, una construcción ejecutable no aplicable en ordinograma o estructograma con COV-HIDDEN-CONTROL, una ayuda exacta sin ficha existente con COV-HELP, un anclaje inexistente con COV-RULE y una prueba inexistente con COV-EVIDENCE. La matriz vigente frente al inventario vigente no produce rechazos.", "verificacion": ["C31", "C32", "C33", "C34", "C35", "C36", "C37", "C38"]}
+```
+
+```caso
+{"id": "C31", "regla": "R13", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "syntax_coverage", "input": {"mutation": "none"}}, "espera": {"aplicacion": {"codes": []}}}
+```
+
+```caso
+{"id": "C32", "regla": "R13", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "syntax_coverage", "input": {"mutation": "remove_row"}}, "espera": {"aplicacion": {"codes": ["COV-MISSING-ROW"]}}}
+```
+
+```caso
+{"id": "C33", "regla": "R13", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "syntax_coverage", "input": {"mutation": "unknown_form"}}, "espera": {"aplicacion": {"codes": ["COV-STALE-ROW"]}}}
+```
+
+```caso
+{"id": "C34", "regla": "R13", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "syntax_coverage", "input": {"mutation": "duplicate_row"}}, "espera": {"aplicacion": {"codes": ["COV-DUPLICATE"]}}}
+```
+
+```caso
+{"id": "C35", "regla": "R13", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "syntax_coverage", "input": {"mutation": "change_role"}}, "espera": {"aplicacion": {"codes": ["COV-ROLE"]}}}
+```
+
+```caso
+{"id": "C36", "regla": "R13", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "syntax_coverage", "input": {"mutation": "drop_reason"}}, "espera": {"aplicacion": {"codes": ["COV-NO-REASON"]}}}
+```
+
+```caso
+{"id": "C37", "regla": "R13", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "syntax_coverage", "input": {"mutation": "missing_help"}}, "espera": {"aplicacion": {"codes": ["COV-HELP"]}}}
+```
+
+```caso
+{"id": "C38", "regla": "R13", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "syntax_coverage", "input": {"mutation": "hide_control"}}, "espera": {"aplicacion": {"codes": ["COV-HIDDEN-CONTROL"]}}}
+```
+
+```regla
+{"id": "R14", "fuerza": "DEBE", "clase": "semantica", "texto": "Cuando ordinograma o estructograma no pueden representar fielmente una forma de un programa, el consumidor no entrega ningún diagrama de ese programa como válido: devuelve un resultado no soportado que nombra las formas por su syntax_kind público y la superficie muestra un mensaje localizado que las enumera en lugar del lienzo. Propagar dentro de la cabecera de un control es una de esas formas.", "verificacion": ["C39", "C40"]}
+```
+
+```caso
+{"id": "C39", "regla": "R14", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "control_flow", "input": {"program": "SubProceso First() Como Opcional<Entero>\nRetornar Nada;\nFinSubProceso\nSubProceso Second() Como Opcional<Entero>\nSi Propagar First() > 0 Entonces\nEscribir 1;\nFinSi\nRetornar Algo(1);\nFinSubProceso\nAlgoritmo Main\nFinAlgoritmo\n", "profile": "es", "notation": "flowchart", "unit": "Second"}}, "espera": {"aplicacion": {"nodes": [], "unsupported": ["propagation"], "edges": []}}}
+```
+
+```caso
+{"id": "C40", "regla": "R14", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "control_flow", "input": {"program": "SubProceso First() Como Opcional<Entero>\nRetornar Nada;\nFinSubProceso\nSubProceso Second() Como Opcional<Entero>\nSi Propagar First() > 0 Entonces\nEscribir 1;\nFinSi\nRetornar Algo(1);\nFinSubProceso\nAlgoritmo Main\nFinAlgoritmo\n", "profile": "es", "notation": "structogram", "unit": "Second"}}, "espera": {"aplicacion": {"nodes": [], "unsupported": ["propagation"]}}}
 ```

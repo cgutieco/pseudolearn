@@ -102,7 +102,7 @@ final class BranchBlocks {
       width: placed.width,
       height: junction.y + junction.height,
       spineX: spine,
-      hasExit: true,
+      hasExit: placed.blocks.any((block) => block.hasExit),
       entryId: header.id,
       exitId: junction.id,
     );

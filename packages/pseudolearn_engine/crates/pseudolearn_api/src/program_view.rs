@@ -200,6 +200,7 @@ fn annotated_nodes(
     );
     let realizations =
         crate::program_view_nominal::annotate(&mut nodes, &context, revision, &analysis);
+    crate::program_view_exits::annotate(&mut nodes, revision);
     (nodes, realizations)
 }
 

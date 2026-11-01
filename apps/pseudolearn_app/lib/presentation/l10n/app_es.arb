@@ -1820,5 +1820,48 @@
   "helpExampleDiagnostic": "Diagnóstico deliberado",
   "@helpExampleDiagnostic": {
     "description": "Clase de ejemplo: programa con un diagnóstico deliberado"
+  },
+  "diagramRelationGeneralization": "Herencia",
+  "@diagramRelationGeneralization": {
+    "description": "Nombre accesible de una relación de herencia"
+  },
+  "diagramRelationAssociation": "Asociación",
+  "@diagramRelationAssociation": {
+    "description": "Nombre accesible de una relación de asociación"
+  },
+  "diagramRelationRealization": "Realización",
+  "@diagramRelationRealization": {
+    "description": "Nombre accesible de una relación de realización"
+  },
+  "diagramRelationUsage": "Uso",
+  "@diagramRelationUsage": {
+    "description": "Nombre accesible de una relación de uso"
+  },
+  "diagramRelationAccessible": "{kind} de {from} a {to}",
+  "@diagramRelationAccessible": {
+    "description": "Descripción accesible de una relación del diagrama de clases",
+    "placeholders": {
+      "kind": {
+        "type": "String"
+      },
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  },
+  "diagramRelationInvalidAccessible": "{relation}, inválida: {codes}",
+  "@diagramRelationInvalidAccessible": {
+    "description": "Descripción accesible de una relación inválida con sus diagnósticos",
+    "placeholders": {
+      "relation": {
+        "type": "String"
+      },
+      "codes": {
+        "type": "String"
+      }
+    }
   }
 }

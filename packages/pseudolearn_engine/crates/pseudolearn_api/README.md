@@ -266,6 +266,19 @@ La vista pública expone nodos de interfaces, realizaciones, parámetros restrin
 
 La vista también proyecta enumerados (`enum_unit` con `enum_identity` y `enum_members`), registros (`record_unit` con `record_identity` y `record_fields` hacia sus nodos `record_field`) y literales de función (`function_literal` con `closure_identity` y `captured_bindings` hacia las declaraciones capturadas). Los datos salen de `program_view_values.rs` a partir del análisis semántico, y las relaciones usan únicamente identificadores de nodos de la misma vista, que ya codifican proyecto, revisión y fuente: una relación hacia otra procedencia no se emite. Son atributos aditivos de solo lectura; el dibujo de diagramas con ellos pertenece a una fase posterior.
 
+`program_view_exits.rs` añade los datos de salida y limpieza de `API.PROGRAM.VIEW#R10` recorriendo solo la composición
+de la vista, después de las anotaciones nominales. Cada `break_statement`, `return_statement` y `propagation` recibe
+`control_exit` con `kind`, `target_node_id` y `cleanups`: se sube por los padres hasta el bucle interior (Salir) o
+hasta la unidad o `function_literal` (Retornar y Propagar), y en cada `body` atravesado se toman, en orden inverso, las
+`defer_statement` hermanas que preceden a la rama de la salida, primero el ámbito interior. Cruzar un
+`defer_statement` deja la salida sin destino ni limpiezas, igual que un Salir fuera de bucle: el análisis ya los
+rechaza y la vista no inventa un destino. Cada `body` con limpiezas recibe `normal_cleanups` y cada `defer_statement`
+su `cleanup_scope_node_id`. Es la misma noción de ámbito que usa el descenso a RI, que abre un ámbito de limpieza por
+lista de sentencias; se descarta leer los bloques de limpieza de la RI porque la vista no expone índices internos. El
+cuerpo diferido conserva el papel `cleanup_body` que ya publicaba la vista. Cubre `tests/program_view_exits.rs`
+(ruptura de bucle interior, retorno y propagación con limpiezas anidadas, fin normal, función literal, salida huérfana
+y salida dentro de un cuerpo diferido).
+
 Los tests de estas capacidades se ejecutaron en selecciones acotadas, incluida la comparación de gemelos con recolección forzada. La conformidad del corpus sigue pendiente de la revisión editorial independiente de los contratos nuevos, y la medición de tamaño excede el presupuesto de Wasm.
 
 

@@ -41,7 +41,9 @@ final class ClassBoxSizing {
   static String? stereotypeOf(ClassBoxKind kind) => switch (kind) {
         ClassBoxKind.classType => null,
         ClassBoxKind.interfaceContract => '«interface»',
-        ClassBoxKind.constrainedSubprogram => '«subprogram»',
+        ClassBoxKind.genericSubprogram => '«subprogram»',
+        ClassBoxKind.record => '«record»',
+        ClassBoxKind.enumeration => '«enumeration»',
       };
 
   static double compartmentHeightOf(int rowCount) => rowCount == 0

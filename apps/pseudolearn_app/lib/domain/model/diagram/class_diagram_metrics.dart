@@ -18,6 +18,7 @@ final class ClassDiagramMetrics {
   static const double dashLength = 8.0;
   static const double dashGap = 5.0;
   static const double invalidDashLength = 3.0;
+  static const double relationHitSize = 24.0;
 
   static double computeBoxGap(double widestLabelWidth) =>
       math.max(boxGapFloor, widestLabelWidth + corridorClearance * 2.0);

@@ -1,4 +1,5 @@
 import '../../domain/model/analysis/program_node_id.dart';
+import '../../domain/model/analysis/program_view_control_exit.dart';
 import '../../domain/model/analysis/program_view_static_data.dart';
 import '../../domain/model/analysis/source_range.dart';
 import 'rust_program_view_read_result.dart';
@@ -16,6 +17,8 @@ part 'rust_program_view_wire_references.dart';
 part 'rust_program_view_wire_static_nodes.dart';
 part 'rust_program_view_wire_semantics.dart';
 part 'rust_program_view_static_builder.dart';
+part 'rust_program_view_exit_builder.dart';
+part 'rust_program_view_wire_exits.dart';
 
 final class RustViewNode {
   final ProgramNodeId id;

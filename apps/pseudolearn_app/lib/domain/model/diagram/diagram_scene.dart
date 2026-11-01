@@ -1,4 +1,5 @@
 import '../analysis/program_node_id.dart';
+import '../analysis/source_range.dart';
 
 enum DiagramShape {
   startEnd,
@@ -8,6 +9,7 @@ enum DiagramShape {
   subprogram,
   preparation,
   connector,
+  exitConnector,
   cellProcess,
   cellCall,
   cellExit,
@@ -33,6 +35,9 @@ enum DiagramEdgeKind {
   association,
   realization,
   usage,
+  breakExit,
+  propagationExit,
+  cleanupRegistration,
 }
 
 final class DiagramPoint {
@@ -120,19 +125,25 @@ final class DiagramScene {
   final List<DiagramEdge> edges;
   final double width;
   final double height;
+  final Map<int, SourceRange> sourceRanges;
 
   const DiagramScene({
     required this.nodes,
     required this.edges,
     required this.width,
     required this.height,
+    this.sourceRanges = const {},
   });
 
   const DiagramScene.empty()
       : nodes = const [],
         edges = const [],
         width = 0.0,
-        height = 0.0;
+        height = 0.0,
+        sourceRanges = const {};
+
+  SourceRange? rangeOf(ProgramNodeId? nodeId) =>
+      nodeId == null ? null : sourceRanges[nodeId.value];
 
   bool get isEmpty => nodes.isEmpty;
 

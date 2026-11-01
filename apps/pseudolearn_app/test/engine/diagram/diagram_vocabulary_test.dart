@@ -33,4 +33,24 @@ void main() {
       expect(DiagramVocabulary.forLanguage(UiLanguageId.english).asQuestion('a > b'), 'a > b?');
     });
   });
+
+  group('ExitVocabulary', () {
+    final spanish = DiagramVocabulary.forLanguage(UiLanguageId.spanish).exits;
+    final english = DiagramVocabulary.forLanguage(UiLanguageId.english).exits;
+
+    test('names the end of a loop by its line in both languages', () {
+      expect(spanish.loopExit(6), 'Fin del bucle (línea 6)');
+      expect(english.loopExit(6), 'Loop end (line 6)');
+    });
+
+    test('lists one line in singular and several in plural', () {
+      expect(spanish.cleanupsAtEndOf([3]), 'Limpiezas al terminar: línea 3');
+      expect(english.cleanupsAtEndOf([5, 2]), 'Cleanups at end: lines 5, 2');
+    });
+
+    test('leaves a caption untouched when no cleanup runs', () {
+      expect(spanish.withCleanups('Salir', const []), 'Salir');
+      expect(english.withCleanups('break', [4]), 'break — cleanups: line 4');
+    });
+  });
 }

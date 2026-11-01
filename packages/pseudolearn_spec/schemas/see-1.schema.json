@@ -1859,7 +1859,9 @@
                 "template_navigation",
                 "help",
                 "help_revision",
-                "class_diagram"
+                "class_diagram",
+                "control_flow",
+                "syntax_coverage"
               ]
             },
             "input": {

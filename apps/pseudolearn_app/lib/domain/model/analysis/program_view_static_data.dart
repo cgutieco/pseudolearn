@@ -1,4 +1,5 @@
 import 'program_node_id.dart';
+import 'program_view_control_exit.dart';
 
 enum ProgramViewLinkStatus { valid, invalid }
 
@@ -108,6 +109,8 @@ final class ProgramViewStaticData {
   final List<ProgramViewCapture> captures;
   final List<ProgramViewIteration> iterations;
   final List<ProgramViewScope> scopes;
+  final List<ProgramViewControlExit> exits;
+  final List<ProgramViewCleanupScope> cleanupScopes;
 
   ProgramViewStaticData({
     required List<ProgramViewRealization> realizations,
@@ -116,12 +119,16 @@ final class ProgramViewStaticData {
     required List<ProgramViewCapture> captures,
     required List<ProgramViewIteration> iterations,
     required List<ProgramViewScope> scopes,
+    List<ProgramViewControlExit> exits = const [],
+    List<ProgramViewCleanupScope> cleanupScopes = const [],
   }) : realizations = List.unmodifiable(realizations),
        constraints = List.unmodifiable(constraints),
        variants = List.unmodifiable(variants),
        captures = List.unmodifiable(captures),
        iterations = List.unmodifiable(iterations),
-       scopes = List.unmodifiable(scopes);
+       scopes = List.unmodifiable(scopes),
+       exits = List.unmodifiable(exits),
+       cleanupScopes = List.unmodifiable(cleanupScopes);
 
   static final empty = ProgramViewStaticData(
     realizations: const [],

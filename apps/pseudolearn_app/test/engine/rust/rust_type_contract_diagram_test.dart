@@ -118,6 +118,34 @@ Algoritmo Principal
 FinAlgoritmo
 ''';
 
+const String _inheritedMethod = '''
+interface Readable
+method readValue() as integer;
+endInterface
+class Base
+method readValue() as integer
+return 1;
+endMethod
+endClass
+class Child extends Base implements Readable
+endClass
+algorithm Main
+endAlgorithm
+''';
+
+const String _invalidOverride = '''
+Interfaz Legible
+Metodo obtener() Como Entero;
+FinInterfaz
+Clase Lector Realiza Legible
+Metodo obtener(extra Como Entero) Como Entero
+Retornar extra;
+FinMetodo
+FinClase
+Algoritmo Principal
+FinAlgoritmo
+''';
+
 DiagramScene _sceneOf(
   String source, {
   SyntaxProfileId profile = SyntaxProfileId.english,
@@ -244,6 +272,38 @@ void main() {
 
       expect(_edges(scene, DiagramEdgeKind.realization), hasLength(1));
       expect(_headers(scene).first.lines.first, '«interface»');
+    });
+
+    test('a contract met by an inherited method is a valid realization', () {
+      final scene = _sceneOf(_inheritedMethod);
+      final realization = _edges(scene, DiagramEdgeKind.realization).single;
+      final child = _headers(scene).singleWhere(
+        (header) => header.lines.last == 'Child',
+      );
+
+      expect(realization.isValid, isTrue);
+      expect(realization.fromId, child.id.replaceFirst('_header', ''));
+      expect(
+        scene.nodes.where(
+          (node) =>
+              node.shape == DiagramShape.classRow &&
+              node.id.startsWith(child.id.replaceFirst('_header', '_')),
+        ),
+        isEmpty,
+      );
+    });
+
+    test('an operation implemented with another signature is an invalid realization', () {
+      final scene = _sceneOf(
+        _invalidOverride,
+        profile: SyntaxProfileId.classicSpanish,
+      );
+      final realization = _edges(scene, DiagramEdgeKind.realization).single;
+
+      expect(realization.isValid, isFalse);
+      expect(realization.diagnostics, ['interfaceMethodSignatureMismatch']);
+      expect(realization.label, '! interfaceMethodSignatureMismatch');
+      expect(realization.originNodeId, isNotNull);
     });
 
     test('a source that does not parse produces no contract boxes', () {

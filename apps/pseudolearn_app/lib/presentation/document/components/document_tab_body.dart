@@ -106,6 +106,8 @@ final class _FlowchartTabItem extends StatelessWidget {
                   context.read<DiagramCubit>().selectUnit(unitId),
               onNotationSelected: (notation) =>
                   context.read<DiagramCubit>().selectNotation(notation),
+              onSourceSelected: (range) =>
+                  context.read<EditorCubit>().revealSource(range),
             ),
           ),
     );

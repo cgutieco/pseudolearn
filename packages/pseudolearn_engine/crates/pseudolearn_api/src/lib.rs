@@ -75,6 +75,7 @@ mod negotiation;
 mod program_view;
 mod program_view_annotations;
 mod program_view_effects;
+mod program_view_exits;
 mod program_view_kind;
 mod program_view_members;
 mod program_view_nominal;

@@ -29,8 +29,25 @@ final class RustClassDiagramBuilder implements ClassDiagramBuilder {
       profileId: profileId,
     );
     if (view == null) return const DiagramScene.empty();
-    return _layout.of(_model(view));
+    return _withRanges(_layout.of(_model(view)), view);
   }
+
+  DiagramScene _withRanges(DiagramScene scene, RustProgramView view) =>
+      DiagramScene(
+        nodes: scene.nodes,
+        edges: scene.edges,
+        width: scene.width,
+        height: scene.height,
+        sourceRanges: {
+          for (final nodeId in [
+            for (final node in scene.nodes) node.nodeId,
+            for (final edge in scene.edges) edge.originNodeId,
+          ])
+            if (nodeId != null)
+              if (view.nodeById(nodeId) case final RustViewNode node)
+                nodeId.value: node.range,
+        },
+      );
 
   ClassModel _model(RustProgramView view) {
     final classUnits = view.units

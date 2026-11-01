@@ -4,17 +4,20 @@ import 'package:pseudolearn_app/domain/model/diagram/coverage/syntax_view_covera
 
 import 'syntax_coverage/coverage_check.dart';
 import 'syntax_coverage/engine_inventory.dart';
+import 'syntax_coverage/help_catalog.dart';
 
 const String _specificationsPath =
     '../../packages/pseudolearn_spec/specifications';
 
 void main() {
   final inventory = readEngineInventory();
+  final helpCards = readHelpCardIds();
   final violations = checkSyntaxCoverage(
     rows: syntaxViewCoverageMatrix,
     inventory: inventory,
     ruleExists: _ruleExists,
     evidenceExists: (path) => File(path).existsSync(),
+    helpExists: helpCards.contains,
   );
   final covered = {
     for (final row in syntaxViewCoverageMatrix) ...row.syntaxKinds,

@@ -1730,5 +1730,48 @@
   "helpExampleDiagnostic": "Deliberate diagnostic",
   "@helpExampleDiagnostic": {
     "description": "Clase de ejemplo: programa con un diagnóstico deliberado"
+  },
+  "diagramRelationGeneralization": "Generalization",
+  "@diagramRelationGeneralization": {
+    "description": "Accessible name of an inheritance relation"
+  },
+  "diagramRelationAssociation": "Association",
+  "@diagramRelationAssociation": {
+    "description": "Accessible name of an association relation"
+  },
+  "diagramRelationRealization": "Realization",
+  "@diagramRelationRealization": {
+    "description": "Accessible name of a realization relation"
+  },
+  "diagramRelationUsage": "Usage",
+  "@diagramRelationUsage": {
+    "description": "Accessible name of a usage relation"
+  },
+  "diagramRelationAccessible": "{kind} from {from} to {to}",
+  "@diagramRelationAccessible": {
+    "description": "Accessible description of a class diagram relation",
+    "placeholders": {
+      "kind": {
+        "type": "String"
+      },
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  },
+  "diagramRelationInvalidAccessible": "{relation}, invalid: {codes}",
+  "@diagramRelationInvalidAccessible": {
+    "description": "Accessible description of an invalid relation with its diagnostics",
+    "placeholders": {
+      "relation": {
+        "type": "String"
+      },
+      "codes": {
+        "type": "String"
+      }
+    }
   }
 }

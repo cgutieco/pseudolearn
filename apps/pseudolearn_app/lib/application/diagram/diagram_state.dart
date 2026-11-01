@@ -1,9 +1,11 @@
 import 'package:equatable/equatable.dart';
 import '../../domain/model/analysis/program_node_id.dart';
+import '../../domain/model/diagram/diagram_accessible_element.dart';
 import '../../domain/model/diagram/diagram_notation.dart';
 import '../../domain/model/diagram/diagram_program.dart';
 import '../../domain/model/diagram/diagram_scene.dart';
 import '../../domain/model/diagram/diagram_unit.dart';
+import 'class_diagram_accessibility.dart';
 
 final class DiagramState extends Equatable {
   final DiagramProgram flowchart;
@@ -52,6 +54,11 @@ final class DiagramState extends Equatable {
       };
 
   bool get hasClasses => classDiagram.isNotEmpty;
+
+  List<DiagramAccessibleElement> get accessibleElements =>
+      notation == DiagramNotation.classDiagram
+          ? ClassDiagramAccessibility(classDiagram).elements()
+          : const [];
 
   DiagramState copyWith({
     DiagramProgram? flowchart,

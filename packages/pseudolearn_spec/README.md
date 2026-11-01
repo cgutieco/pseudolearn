@@ -154,6 +154,12 @@ Problema: las propiedades nativas necesitan un oráculo independiente y artefact
   se añaden de forma compatible, sin esquema nuevo. Los contratos `TOOL.SERVICE.COMPLETION`, `TOOL.LSP.CAPABILITIES` y
   `APP.EDITOR.COMPLETION` crecen dentro de `0.1.0` con reanclaje autorizado de su hash; lo que no tenía dueño nace como
   `TOOL.SERVICE.ON-TYPE@0.1.0`. Se descarta abrir `0.2.0`: las versiones están congeladas por decisión de la persona.
+- Problema: la representación de la vista en diagramas y la matriz de cobertura del consumidor necesitaban casos
+  observables por el sujeto `app`. Elección: los escenarios `class_diagram`, `control_flow` y `syntax_coverage` se
+  añaden al enumerado de `aplicacion.scenario` de forma compatible. Resumen la escena real (cajas, filas,
+  relaciones, nodos, aristas de salida, formas no soportadas) o los códigos del verificador tras una mutación
+  declarada; no aceptan respuestas precalculadas. Las reglas `API.PROGRAM.VIEW#R6`–`R14` se redactaron sobre la
+  versión congelada sin `cambio` y quedan sin reanclar hasta su revisión independiente.
 - Problema: la prioridad del cierre se confundía con intención inequívoca y no cubría la continuación de asignación.
   Elección: `TOOL.SERVICE.COMPLETION#R13` exige intención escrita, elimina cierres inline en líneas vacías y contempla
   `nombre <- ` únicamente para un destino simple declarado y asignable. `R8` reutiliza cierres existentes sin tomar los

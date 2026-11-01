@@ -7,6 +7,7 @@ import 'package:pseudolearn_app/domain/model/diagram/coverage/syntax_view_covera
 
 import '../../tool/syntax_coverage/coverage_check.dart';
 import '../../tool/syntax_coverage/engine_inventory.dart';
+import '../../tool/syntax_coverage/help_catalog.dart';
 
 const Map<String, String> _inventory = {
   'while_loop': 'statement',
@@ -19,7 +20,7 @@ SyntaxViewCoverageRow _row({
   CoverageFamily family = CoverageFamily.control,
   List<String> kinds = const ['while_loop'],
   CoverageCell flowchart = const CoverageCell.exact(),
-  CoverageCell help = const CoverageCell.exact(),
+  CoverageCell help = const CoverageCell.help('help.present'),
   String rule = 'LANG.CONTROL.WHILE@1.0.0#R1',
   String evidence = 'present.dart',
 }) => SyntaxViewCoverageRow(
@@ -52,6 +53,7 @@ List<String> _check(
   inventory: inventory,
   ruleExists: (id, version, rule) => ruleKnown,
   evidenceExists: (path) => path == 'present.dart',
+  helpExists: (entry) => entry == 'help.present',
 );
 
 void main() {
@@ -159,6 +161,42 @@ void main() {
     test('an empty inventory with no rows is vacuously valid', () {
       expect(_check(const [], inventory: const {}), isEmpty);
     });
+
+    test('exact help naming a card that does not exist is rejected', () {
+      final violations = _check([
+        _row(help: const CoverageCell.help('help.missing')),
+        _literalRow,
+      ]);
+
+      expect(violations, [
+        'COV-HELP: loop declares exact help without an existing card (help.missing)',
+      ]);
+    });
+
+    test('exact help without a card is rejected', () {
+      final violations = _check([
+        _row(help: const CoverageCell.exact()),
+        _literalRow,
+      ]);
+
+      expect(violations.where((item) => item.startsWith('COV-HELP:')), hasLength(1));
+    });
+
+    test('declared help extensions need no card', () {
+      final violations = _check([
+        _row(help: const CoverageCell.extension('audited later')),
+        _literalRow,
+      ]);
+
+      expect(violations, isEmpty);
+    });
+
+    test('the help catalog lists every card of the corpus export', () {
+      final cards = readHelpCardIds();
+
+      expect(cards, contains('help.snapshot_builtin'));
+      expect(cards, isNot(contains('help.missing')));
+    });
   });
 
   group('inventoryOf', () {
@@ -205,6 +243,7 @@ fn is_expression(kind: NodeKind) -> bool {
         inventory: readEngineInventory(),
         ruleExists: (id, version, rule) => true,
         evidenceExists: (path) => File(path).existsSync(),
+        helpExists: readHelpCardIds().contains,
       );
 
       expect(violations, isEmpty);

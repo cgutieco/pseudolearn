@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../application/diagram/diagram_state.dart';
 import '../../application/diagram/focus_frame_projection.dart';
+import '../../domain/model/analysis/source_range.dart';
 import '../../domain/model/diagram/diagram_focus_frame.dart';
 import '../../domain/model/diagram/diagram_notation.dart';
 import '../../domain/model/execution/execution_focus.dart';
@@ -20,6 +21,7 @@ final class FlowchartTabView extends StatefulWidget {
   final bool followsExecutionFocus;
   final ValueChanged<String>? onUnitSelected;
   final ValueChanged<DiagramNotation>? onNotationSelected;
+  final ValueChanged<SourceRange>? onSourceSelected;
 
   const FlowchartTabView({
     super.key,
@@ -29,6 +31,7 @@ final class FlowchartTabView extends StatefulWidget {
     this.followsExecutionFocus = false,
     this.onUnitSelected,
     this.onNotationSelected,
+    this.onSourceSelected,
   });
 
   @override
@@ -81,6 +84,7 @@ final class _FlowchartTabViewState extends State<FlowchartTabView>
           flowViewport: _flowViewport,
           onUnitSelected: widget.onUnitSelected,
           onNotationSelected: widget.onNotationSelected,
+          onSourceSelected: widget.onSourceSelected,
           onZoomIn: _zoomIn,
           onZoomOut: _zoomOut,
           onFit: _fitToViewport,
@@ -174,6 +178,7 @@ final class _FlowchartStack extends StatelessWidget {
   final FlowchartViewport flowViewport;
   final ValueChanged<String>? onUnitSelected;
   final ValueChanged<DiagramNotation>? onNotationSelected;
+  final ValueChanged<SourceRange>? onSourceSelected;
   final VoidCallback onZoomIn;
   final VoidCallback onZoomOut;
   final VoidCallback onFit;
@@ -186,6 +191,7 @@ final class _FlowchartStack extends StatelessWidget {
     required this.flowViewport,
     this.onUnitSelected,
     this.onNotationSelected,
+    this.onSourceSelected,
     required this.onZoomIn,
     required this.onZoomOut,
     required this.onFit,
@@ -202,6 +208,7 @@ final class _FlowchartStack extends StatelessWidget {
           focus: focus,
           flowViewport: flowViewport,
           onInteractionStart: onInteractionStart,
+          onSourceSelected: onSourceSelected,
         ),
         DiagramControlsOverlay(
           units: state.units,

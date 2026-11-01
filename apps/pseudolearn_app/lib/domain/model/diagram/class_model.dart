@@ -4,9 +4,15 @@ enum ClassMemberVisibility { public, private }
 
 enum ClassRelationKind { generalization, association, realization, usage }
 
-enum ClassBoxKind { classType, interfaceContract, constrainedSubprogram }
+enum ClassBoxKind {
+  classType,
+  interfaceContract,
+  genericSubprogram,
+  record,
+  enumeration,
+}
 
-enum ClassRowRole { member, contractIssue }
+enum ClassRowRole { member, contractIssue, enumMember }
 
 final class ClassMemberRow {
   final String text;

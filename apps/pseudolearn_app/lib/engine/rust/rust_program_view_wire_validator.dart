@@ -37,7 +37,8 @@ final class _RustProgramViewWireValidator {
     if (!_validateNodeRows() ||
         !_validateUnitRows() ||
         !_validateRelationRows() ||
-        !_validateStaticRows()) {
+        !_validateStaticRows() ||
+        !_validateExitRows()) {
       return _failure;
     }
     return null;

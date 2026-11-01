@@ -1,12 +1,14 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import '../../domain/model/diagram/class_diagram_metrics.dart';
 import '../../domain/model/diagram/diagram_metrics.dart';
 import '../../domain/model/diagram/diagram_scene.dart';
 import '../theme/tokens/color_semantic.dart';
 import '../theme/tokens/editor_metrics.dart';
 import '../theme/font_role_style.dart';
 import '../theme/tokens/typography.dart';
+import 'class_shapes.dart';
 
 final class FlowchartEdgePainter {
   final AppSemanticColors colors;
@@ -23,13 +25,26 @@ final class FlowchartEdgePainter {
     for (var index = 1; index < edge.points.length; index++) {
       path.lineTo(edge.points[index].x, edge.points[index].y);
     }
-    canvas.drawPath(path, stroke);
+    canvas.drawPath(_styled(path, edge.kind), stroke);
     _paintArrowHead(canvas, edge, stroke.color);
     _paintLabel(canvas, edge);
   }
 
-  Color _strokeColorOf(DiagramEdgeKind kind) =>
-      kind == DiagramEdgeKind.loopBack ? colors.borders.focus : colors.borders.strong;
+  Color _strokeColorOf(DiagramEdgeKind kind) => switch (kind) {
+    DiagramEdgeKind.loopBack ||
+    DiagramEdgeKind.breakExit ||
+    DiagramEdgeKind.propagationExit => colors.borders.focus,
+    _ => colors.borders.strong,
+  };
+
+  Path _styled(Path path, DiagramEdgeKind kind) =>
+      kind == DiagramEdgeKind.cleanupRegistration
+      ? ClassShapes.dashed(
+          path,
+          dash: ClassDiagramMetrics.dashLength,
+          gap: ClassDiagramMetrics.dashGap,
+        )
+      : path;
 
   void _paintArrowHead(Canvas canvas, DiagramEdge edge, Color color) {
     final tip = edge.points.last;
