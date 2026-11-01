@@ -869,11 +869,11 @@ evidencia completa. Una fase nueva requiere mensaje nuevo (`PHASE-STOP`).
 - [x] `PG-6B.C06` Capas/imports/tamaños/nombres y grafo browser/Wasm pasan con sus negativos.
 - [x] `PG-6B.C07` Cero comentarios/TODO, código en inglés/docs en español y reglas Rust estrictas.
 - [x] `PG-6B.C08` README/reglas de todos los dueños actualizados, autosuficientes y sin citas a docs.
-- [ ] `PG-6B.C09` Justificación comprobable: fase sin sintaxis nueva del lenguaje; ayuda existente
+- [x] `PG-6B.C09` Justificación comprobable: fase sin sintaxis nueva del lenguaje; ayuda existente
   reutilizada y textos de UI es/en. Si finalmente añade construcción, ficha y proyección obligatorias.
-- [ ] `PG-6B.C10` Riesgos/experimentos revisados, procedencia y diferimientos físicos ya autorizados
+- [x] `PG-6B.C10` Riesgos/experimentos revisados, procedencia y diferimientos físicos ya autorizados
   registrados sin atribuir evidencia o decisión humana inexistente.
-- [ ] `PG-6B.C11` Pruebas/verificadores pertinentes verdes, selección y omisiones justificadas;
+- [x] `PG-6B.C11` Pruebas/verificadores pertinentes verdes, selección y omisiones justificadas;
   deuda heredada separada y ningún fallo nuevo oculto. Informar impedimentos de `PHASE-GREEN`.
 - [x] `PG-6B.C12` Tras revisión de cambios y autorización Git vigente, usar skill `commit-message`,
   commit sin atribución de IA y push ordinario comprobado a la rama única; sin force push.
@@ -897,7 +897,7 @@ del plan general: Cumplido, No cumplido, Diferido, No aplica o Retirado, con sus
 | `PG-6B.07`        | Cumplido salvo `.07`     | Kit físico de 32 combinaciones, analizador | `.07` Diferido / no evaluado físicamente (decisión 2026-10-22) |
 | `PG-6B.08`        | Cumplido salvo `.07`     | `informe-movil-pg-6b.md` | `.07` decisión de la persona sobre CF-14 pendiente/diferida |
 | `PG-6B.09`        | Parcial (6/7)            | 1800 intentos válidos, Brotli 844 844 | `.02` cargas con proyecto, edición, memoria creciente y HTTP simulado |
-| `PG-6B.C01`–`.13` | C01–C04, C06–C08, C12, C13 | Ver §10.1                      | C05, C09, C10, C11 dependen de lo pendiente de arriba           |
+| `PG-6B.C01`–`.13` | Todos salvo C05          | Ver §10.1                      | C05 depende de `04.02` y `05.02`                                |
 
 El rótulo «Pendiente; sin ejecutar» es ausencia de evaluación inicial, no un sexto estado de resultado.
 Al evaluar una tarea se reemplaza por uno de los cinco estados permitidos. No marcar el conjunto
@@ -1027,6 +1027,14 @@ Las cuatro divergencias heredadas de la CLI (`TOOL.CLI.CHECK` C6, C9, C14 y `TOO
 corrigieron: los programas declaran el vínculo con inicializador, `C9` espera el error y código 1 que fija el
 lenguaje para una variable no declarada también en modo flexible, y `C14` usa el orden de campos de la respuesta de
 `analyze_project`. `see conform --subject cli` queda en 107 observaciones y 0 divergencias.
+
+**Cierre de controles C09–C11 · 2026-11-01**: `C09`, la fase no añade sintaxis al lenguaje (el único cambio en
+`lang/` es el oráculo de `LANG.MODULE.IMPORT#C10`; `pseudolearn_syntax` solo añade la entrada de expresiones para
+evaluate) y reutiliza la ayuda existente. `C10`, riesgos, procedencia y diferimientos físicos están registrados sin
+atribuir evidencia humana. `C11`, motor (`cargo xtask verify`), CLI (`cargo test`), extensión (120 pruebas, tipos,
+arquitectura, comentarios, tamaños, paquete y gramática regenerada) y conformidad `engine` y `cli` en verde; la
+deuda heredada de formato y nombres de `pseudolearn_spec` sigue separada. Abiertas: `04.02`, `04.06`, `05.02`,
+`05.03`, `05.07`, `06.02`, `09.02`, `07.07`, `08.07` y `C05`.
 
 **Antecedentes corregidos**: el ejecutor del corpus de runtime ignoraba `limites.max_json_depth`
 (`ENG.LIMITS#C36`); `LIB.CORE.TEXT#C7` fallaba porque `stringPositionOutOfRange` de `Subcadena` no llevaba los
