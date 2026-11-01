@@ -761,7 +761,10 @@ Puntos a cumplir:
 
 Fuera de alcance: gestor de proyectos, edición gráfica inversa y control de rebobinado.
 
-Plan detallado: `fase-pg-a-plan-ejecucion.md`, pendiente de crear al iniciar la fase.
+Plan detallado: [fase-pg-a-plan-ejecucion.md](fase-pg-a-plan-ejecucion.md), preparado el 2026-11-01
+por petición expresa. La petición autoriza su preparación documental; implementación y revisión `C02`
+permanecen pendientes. Registra las dependencias abiertas, los conflictos normativos y las puertas de
+especificación, cobertura de vistas, puente real, accesibilidad y evidencia estática.
 
 Cierre común (definiciones en §4.0):
 
@@ -1040,6 +1043,6 @@ La IA a cargo actualiza esta tabla al cerrar cada fase.
 | PG-5 | Cerrada · PG-5.01–.10 | Sí, C02 revisado | 2026-10-30 · `c9414002` | Firefox no lanzable; presupuesto de `PERF.SUITE.CORE` no alcanzado; tareas nativas en AOT; aprobación de `PERF.PG.HTTP` |
 | PG-6A | Cerrada por decisión expresa · PG-6A.01–.11 y cierre común | Sí | 2026-10-31 · cierre registrado en el plan detallado | E-PG-02 no aprobada: cuatro grupos extendidos siguen sobre 100 ms; SEE requiere revisión independiente; `PHASE-GREEN` no declarado |
 | PG-6B | En implementación integrada · PG-6B.01–.09 | Sí, petición directa de implementación revisa y autoriza C02 | Sin cierre | Desarrollo continuo y campaña final única autorizados el 2026-10-31; físicos/revisión SEE y decisiones diferidas conservados |
-| PG-A | Sin iniciar | No | | |
+| PG-A | Sin iniciar | Sí, revisión de la persona pendiente | | Dependencias y conflictos previos en el plan detallado; implementación sin autorizar |
 | PG-B | Sin iniciar | No | | |
 | PG-7 | Sin iniciar | No | | |
