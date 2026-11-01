@@ -50,6 +50,16 @@ export function hash(path) {
   return createHash("sha256").update(readFileSync(path)).digest("hex");
 }
 
+export function hashViolations(base, expected, label) {
+  return Object.entries(expected).flatMap(([path, digest]) => {
+    try {
+      return hash(join(base, path)) === digest ? [] : [`${label}: ${path}`];
+    } catch {
+      return [`${label}: ${path} (unreadable)`];
+    }
+  });
+}
+
 export function memoryMaximum(bytes) {
   let offset = 8;
   const number = () => {

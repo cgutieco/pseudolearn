@@ -397,7 +397,7 @@ iteraciones que tuvo PG-6A. Todas las casillas empiezan pendientes.
   traducción de coordenadas y entrada explícita; capacidades solo tras cobertura completa.
 - [x] `PG-6B.02.05` Actualizar README de cada crate modificado, CLI y extensión con subconjunto de
   evaluate, política de pausa, lifecycle, opciones y uso real; declarar nuevos comandos de verificación.
-- [ ] `PG-6B.02.06` Ejecutar contratos dirigidos, tests espejo y verificadores afectados. Comparar
+- [x] `PG-6B.02.06` Ejecutar contratos dirigidos, tests espejo y verificadores afectados. Comparar
   estado/cinta/agenda antes y después de evaluate feliz, rechazado y agotado. AOT rechaza debug VM.
 - [x] `PG-6B.02.07` Ejecutar VS Code real y cliente stdio independiente sobre el mismo escenario:
   launch/configuración, breakpoint importado, entrada, pasos, tareas, pila/variables paginadas, evaluate,
@@ -410,14 +410,14 @@ iteraciones que tuvo PG-6A. Todas las casillas empiezan pendientes.
 - [ ] `PG-6B.03.02` Añadir casos de consultas ascendentes/descendentes, StepBack, avanzar desde
   pasado, fin de horizonte, cinta alterada/truncada y efecto mutante incierto; no exigir que una cinta
   privada no reproducible se vuelva reproducible.
-- [ ] `PG-6B.03.03` Extender `history_seek_isolation_tests` con contadores de archivos/HTTP falsos;
+- [x] `PG-6B.03.03` Extender `history_seek_isolation_tests` con contadores de archivos/HTTP falsos;
   preparar integración física loopback y directorio temporal con hashes/contadores antes de implementar.
 - [x] `PG-6B.03.04` Implementar cursor histórico DAP y referencias de stop sin sustituir la
   continuación viva; ventanas reconstruidas en timeline/API, no una traza ilimitada CLI. La
   reproducción no recibe proveedor real; terminar cancela también la punta.
 - [x] `PG-6B.03.05` Documentar en API/timeline/CLI el pasado consultable, cinta/horizonte, errores y
   qué ocurre con input/respuestas que llegan mientras se inspecciona historia.
-- [ ] `PG-6B.03.06` Probar que seek, pila, páginas y evaluate no cambian salida, azar, cinta,
+- [x] `PG-6B.03.06` Probar que seek, pila, páginas y evaluate no cambian salida, azar, cinta,
   archivos ni contador HTTP y que ningún error activa LiveRecord.
 - [x] `PG-6B.03.07` En proceso real, efectuar una escritura y POST a servidor local con contador;
   retroceder, consultar y avanzar historia varias veces. Contador y bytes finales permanecen exactos;
@@ -469,7 +469,7 @@ iteraciones que tuvo PG-6A. Todas las casillas empiezan pendientes.
   capacidades y método de instalación local; crear manifiesto de campaña con hashes y resultado esperado.
 - [ ] `PG-6B.06.02` Fixtures es/en de archivo suelto y proyecto de tres módulos con error en
   importado, Unicode, entrada vacía, cancelación y efectos concedidos/denegados; definir aserciones por paso.
-- [ ] `PG-6B.06.03` Crear runner espejo de host web y pruebas de sus verificadores con bundle
+- [x] `PG-6B.06.03` Crear runner espejo de host web y pruebas de sus verificadores con bundle
   incompleto, Worker ausente, hash incorrecto y entrada Node; no contar una página mínima como host VS Code.
 - [x] `PG-6B.06.04` Añadir build/test web fijados y empaquetar artefacto browser. Mantener instalación
   desktop y su prueba de humo como consumidor afectado del manifiesto compartido.
@@ -477,7 +477,7 @@ iteraciones que tuvo PG-6A. Todas las casillas empiezan pendientes.
   archivos usado. Distinguir FS en memoria de persistencia y Chromium/WebKit/Firefox de Safari físico.
 - [x] `PG-6B.06.06` Ejecutar tests dirigidos del runner, contratos de paquete, build e imports;
   comprobar que una dependencia ausente falla antes de iniciar la campaña y no se descarga al activar producto.
-- [ ] `PG-6B.06.07` Ejecutar matriz Chromium, Firefox y WebKit automatizados: abrir/escribir,
+- [x] `PG-6B.06.07` Ejecutar matriz Chromium, Firefox y WebKit automatizados: abrir/escribir,
   diagnosticar/completar/navegar/renombrar cerrado, formatear/traducir/ayuda, guardar, ejecutar/entrada,
   detener, reinicio y cierre. Un navegador que no arranca se registra como no evaluado, nunca aprobado.
 
@@ -889,11 +889,11 @@ del plan general: Cumplido, No cumplido, Diferido, No aplica o Retirado, con sus
 | Punto             | Estado de implementación | Evidencia                        | Pendiente o condición                                          |
 |-------------------|--------------------------|----------------------------------|----------------------------------------------------------------|
 | `PG-6B.01`        | Cumplido (7/7)           | Capas, imports, negativos, grafo Wasm sin AOT | —                                                               |
-| `PG-6B.02`        | Parcial (5/7)            | `TOOL.DAP`, núcleo público, VS Code real = stdio | `.02` sin casos `en`; `.06` sin comparación explícita de cinta/agenda ni rechazo AOT |
-| `PG-6B.03`        | Parcial (4/7)            | Prueba física loopback + archivos, cursor histórico | `.02` casos de cinta alterada/incierta; `.03` contadores en `history_seek_isolation_tests`; `.06` |
+| `PG-6B.02`        | Parcial (6/7)            | `TOOL.DAP`, núcleo público, VS Code real = stdio, `inspection_isolation_tests` | `.02` sin casos bilingües dedicados |
+| `PG-6B.03`        | Parcial (6/7)            | Prueba física loopback + archivos, cursor histórico, `history_effect_counters_tests` | `.02` casos de cinta alterada/incierta |
 | `PG-6B.04`        | Parcial (5/7)            | Recurso LSP, Workers, host VS Code web | `.02` casos dedicados; `.06` cancelación en cola y contraste con servidor Rust |
 | `PG-6B.05`        | Parcial (4/7)            | Capacidades, adaptadores, Fetch canónico | `.02` casos; `.03` señal externa/FS falso; `.07` HTTP/TLS en host web |
-| `PG-6B.06`        | Parcial (4/7)            | Chromium y WebKit aprobados en VS Code web | Firefox no arranca (no evaluado); fixtures es/en y verificadores negativos incompletos |
+| `PG-6B.06`        | Parcial (6/7)            | Chromium y WebKit aprobados en VS Code web; verificadores con negativos | Firefox no arranca (no evaluado, nunca aprobado); `.02` fixtures es/en |
 | `PG-6B.07`        | Cumplido salvo `.07`     | Kit físico de 32 combinaciones, analizador | `.07` Diferido / no evaluado físicamente (decisión 2026-10-22) |
 | `PG-6B.08`        | Cumplido salvo `.07`     | `informe-movil-pg-6b.md` | `.07` decisión de la persona sobre CF-14 pendiente/diferida |
 | `PG-6B.09`        | Parcial (6/7)            | 1800 intentos válidos, Brotli 844 844 | `.02` cargas con proyecto, edición, memoria creciente y HTTP simulado |
@@ -1004,6 +1004,22 @@ en ejecución de archivo único; `step_out` desde el marco base de una tarea; no
 IR de resultado agregado sin tramo; rutas DAP no canónicas; `wasm.sh` con cadena de Rust distinta de la fijada;
 avisos de terceros ante manifiestos sin nombre; globals Node por propiedad en el verificador web; verificadores
 de la extensión recorrían salidas generadas.
+
+**Cierre de subtareas parciales · 2026-10-31**: se cerraron `02.06`, `03.03`, `03.06`, `06.03` y `06.07` con
+evidencia nueva: `inspection_isolation_tests` (evaluate aceptado, rechazado y agotado no altera frame, salida,
+cinta ni observación del anfitrión frente a una ejecución de control; el rechazo del backend no VM está en
+`dap_launch_options_tests`), `history_effect_counters_tests` (consultas de historia no repiten escrituras de
+archivo ni POST HTTP simulado, y salida, cinta y contador quedan iguales, también ante consultas rechazadas),
+`hashViolations` y `memoryMaximum` con negativos en `web_artifact.test.mjs`. `06.07` se cierra porque el plan
+define el navegador que no arranca como «no evaluado»: Firefox queda así, sin aprobación. Siguen abiertas, sin
+evidencia suficiente: `02.02`, `03.02`, `04.02`, `05.02` (casos de corpus dedicados), `04.06`, `05.03`, `05.07`,
+`06.02`, `09.02`, y por diseño `07.07` y `08.07`. También `C05`, `C09`, `C10` y `C11`.
+
+**Antecedente corregido**: el ejecutor del corpus de runtime ignoraba `limites.max_json_depth` (`ENG.LIMITS#C36`);
+ahora lo aplica. **Antecedente sin corregir**: `LIB.CORE.TEXT#C7` falla en `runtime_corpus` porque el fallo
+`stringPositionOutOfRange` de la biblioteca de texto no transporta los argumentos `length` y `position` que el
+catálogo exige; requiere que `MemoryError` los lleve y pertenece a la biblioteca de texto. Por ello
+`cargo xtask verify` del motor no queda en verde y `PHASE-GREEN` sigue sin declararse.
 
 **Antecedentes (fallaban antes de este cambio)**: `cli_tests::executes_ri_command_successfully` (esperaba un IR sin
 `suspendible`), `reference_vocabulary` (conteo de builtins 19 vs 28), y diferencias de `cargo fmt` en

@@ -116,6 +116,11 @@ fn check(case: &Value) -> Result<(), String> {
                 .map_or(defaults.channel_capacity_limit, |value| {
                     usize::try_from(value).unwrap_or(usize::MAX)
                 }),
+            max_json_depth: request
+                .pointer("/limits/max_json_depth")
+                .and_then(Value::as_u64)
+                .and_then(|depth| usize::try_from(depth).ok())
+                .unwrap_or(defaults.max_json_depth),
             ..defaults.clone()
         };
         let result = run_with_options(

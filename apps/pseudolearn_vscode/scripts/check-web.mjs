@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { brotliCompressSync, constants } from "node:zlib";
-import { globalViolations, graphViolations, hash, inventoryViolations, memoryMaximum, walk } from "./lib/web-artifact.mjs";
+import { globalViolations, graphViolations, hash, hashViolations, inventoryViolations, memoryMaximum, walk } from "./lib/web-artifact.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const stage = resolve(root, ".artifacts/web-extension");
@@ -11,12 +11,8 @@ const metadata = JSON.parse(readFileSync(resolve(root, ".artifacts/web-metafile.
 const provenance = JSON.parse(readFileSync(resolve(root, ".artifacts/web-provenance.json"), "utf8"));
 const violations = [...graphViolations(metadata), ...inventoryViolations(walk(stage), contract.required)];
 for (const path of [contract.browser, ...contract.workers, contract.glue]) violations.push(...globalViolations(readFileSync(resolve(stage, path), "utf8")));
-for (const [path, expected] of Object.entries(provenance.files)) {
-  if (hash(resolve(stage, path)) !== expected) violations.push(`Hash mismatch: ${path}`);
-}
-for (const [path, expected] of Object.entries(provenance.inputs)) {
-  if (hash(resolve(root, path)) !== expected) violations.push(`Input changed: ${path}`);
-}
+violations.push(...hashViolations(stage, provenance.files, "Hash mismatch"));
+violations.push(...hashViolations(root, provenance.inputs, "Input changed"));
 if (hash(resolve(root, "pnpm-lock.yaml")) !== provenance.lock) violations.push("Lockfile changed after build");
 const manifest = JSON.parse(readFileSync(resolve(stage, "package.json"), "utf8"));
 if (manifest.main || manifest.browser !== `./${contract.browser}` || manifest.contributes.debuggers) violations.push("Invalid browser manifest");
