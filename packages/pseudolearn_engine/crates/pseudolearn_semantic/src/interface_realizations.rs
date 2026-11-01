@@ -103,11 +103,15 @@ fn validate_signature(
             expected,
         );
     } else if !crate::interface_signatures::matches(session, &expected.signature, function) {
-        let existing = session.diagnostics.iter().any(|diagnostic| {
+        let existing = session.diagnostics.iter_mut().find(|diagnostic| {
             diagnostic.code == DiagnosticCode::IncompatibleMethodOverride
                 && diagnostic.span == method.span
         });
-        if !existing {
+        if let Some(diagnostic) = existing {
+            if !diagnostic.related.contains(&expected.span) {
+                diagnostic.related.push(expected.span);
+            }
+        } else {
             report(
                 session,
                 DiagnosticCode::InterfaceMethodSignatureMismatch,

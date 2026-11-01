@@ -1,8 +1,7 @@
 use crate::program_view::ViewNode;
 use crate::program_view_annotations::AnnotationContext;
 use details::{
-    AncestorRealizations, ClassRealization, ExplicitTarget, RealizationValue, ResolvedRealization,
-    UnresolvedRealization,
+    ClassRealization, ExplicitTarget, RealizationValue, ResolvedRealization, UnresolvedRealization,
 };
 use pseudolearn_diagnostics::DiagnosticCode;
 use pseudolearn_semantic::interface_model::HirInterface;
@@ -10,10 +9,12 @@ use pseudolearn_semantic::{ClassId, ServiceAnalysis};
 use pseudolearn_source::Span;
 use pseudolearn_syntax::NodeKind;
 use serde_json::{Value, json};
-use std::collections::{BTreeMap, BTreeSet};
+use std::collections::BTreeMap;
 
 #[path = "program_view_static_details.rs"]
 mod details;
+#[path = "program_view_static_inherited.rs"]
+mod inherited;
 
 pub(crate) struct StaticProjection<'view> {
     pub(crate) nodes: &'view mut [ViewNode],
@@ -24,6 +25,7 @@ pub(crate) struct StaticProjection<'view> {
 
 impl StaticProjection<'_> {
     pub(crate) fn project(mut self) -> Value {
+        inherited::attach_method_signature_spans(&mut self);
         let realizations = self.realization_rows();
         self.attach_realizations(&realizations);
         self.attach_constraints();
@@ -153,79 +155,6 @@ impl StaticProjection<'_> {
         })
     }
 
-    fn append_inherited(&self, class_id: ClassId, class_node_id: &str, rows: &mut Vec<Value>) {
-        let Some(class) = details::class_index(self.analysis, class_id) else {
-            return;
-        };
-        let mut current = class.superclass;
-        let mut visited = vec![class_id];
-        let mut seen_interfaces = BTreeSet::new();
-        while let Some(ancestor_id) = current {
-            if visited.contains(&ancestor_id) {
-                break;
-            }
-            visited.push(ancestor_id);
-            let Some(ancestor) = details::class_index(self.analysis, ancestor_id) else {
-                break;
-            };
-            self.append_ancestor_realizations(AncestorRealizations {
-                class_node_id,
-                ancestor_id,
-                ancestor,
-                seen_interfaces: &mut seen_interfaces,
-                rows,
-            });
-            current = ancestor.superclass;
-        }
-    }
-
-    fn append_ancestor_realizations(&self, mut projection: AncestorRealizations<'_, '_>) {
-        let Some(origin_node_id) = self.identifiers.get(&projection.ancestor.syntax) else {
-            return;
-        };
-        for interface_id in self
-            .analysis
-            .module
-            .realizations
-            .get(&projection.ancestor_id)
-            .into_iter()
-            .flatten()
-        {
-            self.append_ancestor_interface(&mut projection, origin_node_id, interface_id.0);
-        }
-    }
-
-    fn append_ancestor_interface(
-        &self,
-        projection: &mut AncestorRealizations<'_, '_>,
-        origin_node_id: &str,
-        interface_id: u32,
-    ) {
-        if !projection.seen_interfaces.insert(interface_id) {
-            return;
-        }
-        let Some(interface_index) = usize::try_from(interface_id).ok() else {
-            return;
-        };
-        let Some(interface) = self.analysis.module.interfaces.get(interface_index) else {
-            return;
-        };
-        let Some(interface_node_id) = self.identifiers.get(&interface.syntax) else {
-            return;
-        };
-        let diagnostics = self.interface_diagnostics(projection.ancestor.span, interface);
-        projection
-            .rows
-            .push(details::realization_value(RealizationValue {
-                class_node_id: projection.class_node_id,
-                interface_node_id: Some(interface_node_id),
-                origin_node_id,
-                target_node_id: Some(interface_node_id),
-                origin: "inherited",
-                diagnostics,
-            }));
-    }
-
     fn interface_for(&self, class: ClassId, name: &str) -> Option<&HirInterface> {
         let unit = self.analysis.module.units.class_unit(class);
         self.analysis
@@ -233,26 +162,6 @@ impl StaticProjection<'_> {
             .interfaces
             .iter()
             .find(|interface| interface.unit == unit && interface.name == name)
-    }
-
-    fn interface_diagnostics(&self, class: Span, interface: &HirInterface) -> Vec<String> {
-        self.analysis
-            .diagnostics
-            .iter()
-            .filter(|diagnostic| {
-                matches!(
-                    diagnostic.code,
-                    DiagnosticCode::InterfaceMethodMissing
-                        | DiagnosticCode::InterfaceMethodNotPublic
-                        | DiagnosticCode::InterfaceMethodSignatureMismatch
-                ) && details::span_contains(class, diagnostic.span)
-                    && diagnostic
-                        .related
-                        .iter()
-                        .any(|related| details::span_contains(interface.span, *related))
-            })
-            .map(|diagnostic| diagnostic.code.as_str().to_owned())
-            .collect()
     }
 
     fn unknown_interface_diagnostics(&self, target: Span) -> Vec<String> {

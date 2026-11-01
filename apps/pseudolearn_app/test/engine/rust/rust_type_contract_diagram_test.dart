@@ -146,6 +146,83 @@ Algoritmo Principal
 FinAlgoritmo
 ''';
 
+const String _inheritedInvalidOverride = '''
+interface Readable
+method readValue() as integer;
+endInterface
+class Reader implements Readable
+method readValue() as integer
+return 7;
+endMethod
+endClass
+class Child extends Reader
+method readValue(extra as integer) as integer
+return extra;
+endMethod
+endClass
+algorithm Main
+endAlgorithm
+''';
+
+const String _validOverride = '''
+interface Readable
+method readValue() as integer;
+endInterface
+class Reader implements Readable
+method readValue() as integer
+return 7;
+endMethod
+endClass
+class Child extends Reader
+method readValue() as integer
+return 8;
+endMethod
+endClass
+algorithm Main
+endAlgorithm
+''';
+
+const String _grandchildInvalidOverride = '''
+interface Readable
+method readValue() as integer;
+endInterface
+class Reader implements Readable
+method readValue() as integer
+return 7;
+endMethod
+endClass
+class Child extends Reader
+method readValue() as integer
+return 8;
+endMethod
+endClass
+class Grandchild extends Child
+method readValue(extra as integer) as integer
+return extra;
+endMethod
+endClass
+algorithm Main
+endAlgorithm
+''';
+
+const String _inheritedInvalidOverrideSpanish = '''
+Interfaz Readable
+Metodo readValue() Como Entero;
+FinInterfaz
+Clase Reader Realiza Readable
+Metodo readValue() Como Entero
+Retornar 7;
+FinMetodo
+FinClase
+Clase Child Hereda De Reader
+Metodo readValue(extra Como Entero) Como Entero
+Retornar extra;
+FinMetodo
+FinClase
+Algoritmo Main
+FinAlgoritmo
+''';
+
 DiagramScene _sceneOf(
   String source, {
   SyntaxProfileId profile = SyntaxProfileId.english,
@@ -304,6 +381,89 @@ void main() {
       expect(realization.diagnostics, ['interfaceMethodSignatureMismatch']);
       expect(realization.label, '! interfaceMethodSignatureMismatch');
       expect(realization.originNodeId, isNotNull);
+    });
+
+    test('an incompatible inherited override draws an invalid relation in English', () {
+      final scene = _sceneOf(_inheritedInvalidOverride);
+      final child = _headers(
+        scene,
+      ).singleWhere((header) => header.lines.last == 'Child');
+      final reader = _headers(
+        scene,
+      ).singleWhere((header) => header.lines.last == 'Reader');
+      final readable = _headers(
+        scene,
+      ).singleWhere((header) => header.lines.last == 'Readable');
+      final childRelation = _edges(
+        scene,
+        DiagramEdgeKind.realization,
+      ).singleWhere((edge) => edge.fromId == child.id.replaceFirst('_header', ''));
+      final readerRelation = _edges(
+        scene,
+        DiagramEdgeKind.realization,
+      ).singleWhere((edge) => edge.fromId == reader.id.replaceFirst('_header', ''));
+
+      expect(childRelation.toId, readable.id.replaceFirst('_header', ''));
+      expect(childRelation.isValid, isFalse);
+      expect(childRelation.diagnostics, ['incompatibleMethodOverride']);
+      expect(childRelation.label, '! incompatibleMethodOverride');
+      expect(childRelation.originNodeId, isNotNull);
+      expect(readerRelation.isValid, isTrue);
+      expect(_edges(scene, DiagramEdgeKind.generalization), hasLength(1));
+    });
+
+    test('an incompatible inherited override draws an invalid relation in Spanish', () {
+      final scene = _sceneOf(
+        _inheritedInvalidOverrideSpanish,
+        profile: SyntaxProfileId.classicSpanish,
+      );
+      final child = _headers(
+        scene,
+      ).singleWhere((header) => header.lines.last == 'Child');
+      final relation = _edges(
+        scene,
+        DiagramEdgeKind.realization,
+      ).singleWhere((edge) => edge.fromId == child.id.replaceFirst('_header', ''));
+
+      expect(relation.isValid, isFalse);
+      expect(relation.diagnostics, ['incompatibleMethodOverride']);
+      expect(relation.label, '! incompatibleMethodOverride');
+      expect(relation.originNodeId, isNotNull);
+    });
+
+    test('a compatible override stays inherited and a grandchild override is invalid', () {
+      final validScene = _sceneOf(_validOverride);
+      final child = _headers(
+        validScene,
+      ).singleWhere((header) => header.lines.last == 'Child');
+      final validRelations = _edges(
+        validScene,
+        DiagramEdgeKind.realization,
+      );
+
+      expect(validRelations, hasLength(1));
+      expect(
+        validRelations.every(
+          (edge) => edge.fromId != child.id.replaceFirst('_header', ''),
+        ),
+        isTrue,
+      );
+
+      final grandchildScene = _sceneOf(_grandchildInvalidOverride);
+      final grandchild = _headers(
+        grandchildScene,
+      ).singleWhere((header) => header.lines.last == 'Grandchild');
+      final invalidGrandchild = _edges(
+        grandchildScene,
+        DiagramEdgeKind.realization,
+      ).singleWhere(
+        (edge) => edge.fromId == grandchild.id.replaceFirst('_header', ''),
+      );
+
+      expect(invalidGrandchild.isValid, isFalse);
+      expect(invalidGrandchild.diagnostics, ['incompatibleMethodOverride']);
+      expect(invalidGrandchild.originNodeId, isNotNull);
+      expect(_edges(grandchildScene, DiagramEdgeKind.generalization), hasLength(2));
     });
 
     test('a source that does not parse produces no contract boxes', () {

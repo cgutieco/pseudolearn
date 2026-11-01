@@ -27,6 +27,12 @@ final class _RustViewNodeBuilder {
       syntaxKind: node['syntax_kind'] as String,
       text: RustProgramView._textOf(span, _offsets),
       range: RustProgramView._rangeOf(span, _offsets),
+      signatureRange: node['method_signature_span'] is Map<String, Object?>
+          ? RustProgramView._rangeOf(
+              node['method_signature_span'] as Map<String, Object?>,
+              _offsets,
+            )
+          : null,
       dimensions: node['dimensions'] as int?,
       semantics: RustViewSemantics.fromJson(node),
       children: [

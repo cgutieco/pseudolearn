@@ -45,7 +45,7 @@ final class RustClassDiagramBuilder implements ClassDiagramBuilder {
           ])
             if (nodeId != null)
               if (view.nodeById(nodeId) case final RustViewNode node)
-                nodeId.value: node.range,
+                nodeId.value: node.signatureRange ?? node.range,
         },
       );
 

@@ -32,6 +32,7 @@ pub(super) struct ResolvedRealization<'node, 'class> {
 
 pub(super) struct AncestorRealizations<'node, 'class> {
     pub(super) class_node_id: &'node str,
+    pub(super) descendant_id: ClassId,
     pub(super) ancestor_id: ClassId,
     pub(super) ancestor: &'class HirClass,
     pub(super) seen_interfaces: &'node mut std::collections::BTreeSet<u32>,

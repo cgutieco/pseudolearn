@@ -682,12 +682,13 @@ La vista pública incluye interface_unit, interface_signature, realization, type
   "id": "R5",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La vista mantiene las relaciones estáticas mediante node_id de la misma revisión y fuente. Cada clase expone realizaciones explícitas e heredadas con clase, contrato resuelto si existe, declaración de origen, origen explicit o inherited, estado valid o invalid y códigos diagnósticos; un destino sin resolver solo puede citar su nodo sintáctico y no usa su nombre como identidad. Cada parámetro genérico expone sus restricciones y node_id del contrato, o invalidez diagnóstica si el contrato no existe. Las variantes conservan su discriminante y relacionan la carga por los papeles de sus hijos; none no inventa una carga. Las clausuras exponen cada vínculo de origen con modo value y no exponen direcciones ni un entorno materializado. Cada for_each enlaza colección, vínculos, cuerpo y dueño de ámbito. Herencia, sobrescritura y miembros incluyen node_id de clase y de destino cuando ambos nodos están disponibles; las etiquetas textuales existentes se conservan por compatibilidad. Ningún dato estático incorpora disposiciones, temporales ni estado de ejecución.",
+  "texto": "La vista mantiene las relaciones estáticas mediante node_id de la misma revisión y fuente. Cada clase expone realizaciones explícitas e heredadas con clase, contrato resuelto si existe, declaración de origen, origen explicit o inherited, estado valid o invalid y códigos diagnósticos; un destino sin resolver solo puede citar su nodo sintáctico y no usa su nombre como identidad. Una realización heredada es invalid si una sobrescritura incompatible diagnosticada por el análisis redefine en la cadena de herencia una operación de ese contrato; el diagnóstico se vincula por el tramo del método y el tramo relacionado de la firma del contrato, y origin_node_id identifica el método que sobrescribe. El nodo method_member de ese origen expone method_signature_span, el rango de su encabezado calculado desde la estructura sintáctica. Una realización heredada sin esa incidencia permanece valid. Cada parámetro genérico expone sus restricciones y node_id del contrato, o invalidez diagnóstica si el contrato no existe. Las variantes conservan su discriminante y relacionan la carga por los papeles de sus hijos; none no inventa una carga. Las clausuras exponen cada vínculo de origen con modo value y no exponen direcciones ni un entorno materializado. Cada for_each enlaza colección, vínculos, cuerpo y dueño de ámbito. Herencia, sobrescritura y miembros incluyen node_id de clase y de destino cuando ambos nodos están disponibles; las etiquetas textuales existentes se conservan por compatibilidad. Ningún dato estático incorpora disposiciones, temporales ni estado de ejecución.",
   "verificacion": [
     "C13",
     "C14",
     "C15",
-    "C16"
+    "C16",
+    "C43"
   ]
 }
 ```
@@ -878,7 +879,7 @@ La vista pública incluye interface_unit, interface_signature, realization, type
 ```
 
 ```regla
-{"id": "R7", "fuerza": "DEBE", "clase": "semantica", "texto": "Cada realización explícita válida se representa como una relación de realización dirigida desde la clase hacia el contrato, distinta de la herencia. La realización heredada no se dibuja de nuevo: la relación de herencia la transporta. El contrato ocupa un nivel superior al de sus realizaciones, de modo que las cajas se listan de arriba abajo.", "verificacion": ["C18", "C19", "C20", "C41"]}
+{"id": "R7", "fuerza": "DEBE", "clase": "semantica", "texto": "Cada realización explícita válida se representa como una relación de realización dirigida desde la clase hacia el contrato, distinta de la herencia. La realización heredada válida no se dibuja de nuevo: la relación de herencia la transporta. Una realización heredada inválida por incompatibleMethodOverride sí se representa desde la subclase hacia el contrato. El contrato ocupa un nivel superior al de sus realizaciones, de modo que las cajas se listan de arriba abajo.", "verificacion": ["C18", "C19", "C20", "C41", "C46"]}
 ```
 
 ```caso
@@ -898,7 +899,7 @@ La vista pública incluye interface_unit, interface_signature, realization, type
 ```
 
 ```regla
-{"id": "R8", "fuerza": "DEBE", "clase": "semantica", "texto": "Una realización inválida se representa con la misma relación marcada como inválida, con los códigos de diagnóstico del análisis y el nodo de la declaración de origen. Un contrato desconocido no crea relación ni caja: aparece como una fila de incidencia en la clase que cita la referencia escrita y el diagnóstico, y conserva el nodo de esa referencia. La invalidez no depende solo del color.", "verificacion": ["C21", "C22", "C42"]}
+{"id": "R8", "fuerza": "DEBE", "clase": "semantica", "texto": "Toda realización inválida, explícita o heredada, se representa con una relación inválida, los códigos del diagnóstico del análisis y el nodo de origen correspondiente. La realización heredada por incompatibleMethodOverride usa como origen el nodo del método sobrescrito de forma incompatible. Su relación es discontinua, usa color de error y guiones cortos, y lleva una etiqueta que empieza por ! e incluye el código; la semántica accesible anuncia que es inválida y sus códigos. Un contrato desconocido no crea relación ni caja: aparece como una fila de incidencia en la clase que cita la referencia escrita y el diagnóstico, y conserva el nodo de esa referencia. La invalidez no depende solo del color.", "verificacion": ["C21", "C22", "C42", "C44", "C45", "C47"]}
 ```
 
 ```caso
@@ -911,6 +912,26 @@ La vista pública incluye interface_unit, interface_signature, realization, type
 
 ```caso
 {"id": "C42", "regla": "R8", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "class_diagram", "input": {"program": "Interfaz Legible\nMetodo obtener() Como Entero;\nFinInterfaz\nClase Lector Realiza Legible\nMetodo obtener(extra Como Entero) Como Entero\nRetornar extra;\nFinMetodo\nFinClase\nAlgoritmo Principal\nFinAlgoritmo\n", "profile": "es"}}, "espera": {"aplicacion": {"relations": [{"kind": "realization", "from": "Lector", "to": "Legible", "valid": false, "diagnostics": ["interfaceMethodSignatureMismatch"], "has_origin": true}]}}}
+```
+
+```caso
+{"id":"C43","regla":"R5","perfiles":["es","en"],"rigor":["estricto"],"programas":{"es":"Interfaz Readable\nMetodo readValue() Como Entero;\nFinInterfaz\nClase Reader Realiza Readable\nMetodo readValue() Como Entero\nRetornar 7;\nFinMetodo\nFinClase\nClase Child Hereda De Reader\nMetodo readValue(extra Como Entero) Como Entero\nRetornar extra;\nFinMetodo\nFinClase\nAlgoritmo Main\nFinAlgoritmo\n","en":"interface Readable\nmethod readValue() as integer;\nendInterface\nclass Reader implements Readable\nmethod readValue() as integer\nreturn 7;\nendMethod\nendClass\nclass Child extends Reader\nmethod readValue(extra as integer) as integer\nreturn extra;\nendMethod\nendClass\nalgorithm Main\nendAlgorithm\n"},"origen":"derivado","operacion":"analyze","espera":{"arbol":"presente","vista_programa":{"realizations_include":[{"origin":"inherited","status":"invalid","diagnostics":["incompatibleMethodOverride"]}],"nodes_include":[{"syntax_kind":"method_member","method_signature_span":{"start":{"line":10},"end":{"line":10}}}],"relations_same_revision_and_source":true}}}
+```
+
+```caso
+{"id":"C44","regla":"R8","perfiles":["es"],"rigor":["estricto"],"origen":"derivado","operacion":"app","aplicacion":{"scenario":"class_diagram","input":{"program":"Interfaz Readable\nMetodo readValue() Como Entero;\nFinInterfaz\nClase Reader Realiza Readable\nMetodo readValue() Como Entero\nRetornar 7;\nFinMetodo\nFinClase\nClase Child Hereda De Reader\nMetodo readValue(extra Como Entero) Como Entero\nRetornar extra;\nFinMetodo\nFinClase\nAlgoritmo Main\nFinAlgoritmo\n","profile":"es"}},"espera":{"aplicacion":{"relations":[{"kind":"generalization","from":"Child","to":"Reader","valid":true},{"kind":"realization","from":"Reader","to":"Readable","valid":true},{"kind":"realization","from":"Child","to":"Readable","valid":false,"diagnostics":["incompatibleMethodOverride"],"has_origin":true}]}}}
+```
+
+```caso
+{"id":"C45","regla":"R8","perfiles":["en"],"rigor":["estricto"],"origen":"derivado","operacion":"app","aplicacion":{"scenario":"class_diagram","input":{"program":"interface Readable\nmethod readValue() as integer;\nendInterface\nclass Reader implements Readable\nmethod readValue() as integer\nreturn 7;\nendMethod\nendClass\nclass Child extends Reader\nmethod readValue(extra as integer) as integer\nreturn extra;\nendMethod\nendClass\nalgorithm Main\nendAlgorithm\n","profile":"en"}},"espera":{"aplicacion":{"relations":[{"kind":"generalization","from":"Child","to":"Reader","valid":true},{"kind":"realization","from":"Reader","to":"Readable","valid":true},{"kind":"realization","from":"Child","to":"Readable","valid":false,"diagnostics":["incompatibleMethodOverride"],"has_origin":true}]}}}
+```
+
+```caso
+{"id":"C46","regla":"R7","perfiles":["en"],"rigor":["estricto"],"origen":"derivado","operacion":"app","aplicacion":{"scenario":"class_diagram","input":{"program":"interface Readable\nmethod readValue() as integer;\nendInterface\nclass Reader implements Readable\nmethod readValue() as integer\nreturn 7;\nendMethod\nendClass\nclass Child extends Reader\nmethod readValue() as integer\nreturn 8;\nendMethod\nendClass\nalgorithm Main\nendAlgorithm\n","profile":"en"}},"espera":{"aplicacion":{"relations":[{"kind":"generalization","from":"Child","to":"Reader","valid":true},{"kind":"realization","from":"Reader","to":"Readable","valid":true}]}}}
+```
+
+```caso
+{"id":"C47","regla":"R8","perfiles":["en"],"rigor":["estricto"],"origen":"derivado","operacion":"app","aplicacion":{"scenario":"class_diagram","input":{"program":"interface Readable\nmethod readValue() as integer;\nendInterface\nclass Reader implements Readable\nmethod readValue() as integer\nreturn 7;\nendMethod\nendClass\nclass Child extends Reader\nmethod readValue() as integer\nreturn 8;\nendMethod\nendClass\nclass Grandchild extends Child\nmethod readValue(extra as integer) as integer\nreturn extra;\nendMethod\nendClass\nalgorithm Main\nendAlgorithm\n","profile":"en"}},"espera":{"aplicacion":{"relations":[{"kind":"generalization","from":"Child","to":"Reader","valid":true},{"kind":"generalization","from":"Grandchild","to":"Child","valid":true},{"kind":"realization","from":"Reader","to":"Readable","valid":true},{"kind":"realization","from":"Grandchild","to":"Readable","valid":false,"diagnostics":["incompatibleMethodOverride"],"has_origin":true}]}}}
 ```
 
 ```regla

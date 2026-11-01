@@ -26,6 +26,7 @@ final class RustViewNode {
   final String syntaxKind;
   final String text;
   final SourceRange range;
+  final SourceRange? signatureRange;
   final int? dimensions;
   final List<int> children;
   final Map<int, String> childRoles;
@@ -40,6 +41,7 @@ final class RustViewNode {
     required this.dimensions,
     required this.children,
     required this.childRoles,
+    this.signatureRange,
     this.semantics = RustViewSemantics.none,
   });
 }

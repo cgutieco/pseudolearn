@@ -105,7 +105,10 @@ final class RustTypeContractProjection {
 
   void _projectRealizations() {
     for (final realization in _view.staticData.realizations) {
-      if (realization.origin != ProgramViewRealizationOrigin.explicit) continue;
+      if (realization.origin == ProgramViewRealizationOrigin.inherited &&
+          realization.status == ProgramViewLinkStatus.valid) {
+        continue;
+      }
       final owner = _namesByNode[realization.classNodeId.value];
       if (owner == null) continue;
       final interfaceId = realization.interfaceNodeId;

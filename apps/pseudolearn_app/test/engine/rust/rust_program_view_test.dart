@@ -22,6 +22,32 @@ void main() {
     expect(view.nodeById(const ProgramNodeId(0))?.syntaxKind, 'identifier');
   });
 
+  test('decodes an exact method signature span', () {
+    final method = _node('rev.n0')
+      ..['syntax_kind'] = 'method_member'
+      ..['method_signature_span'] = _span('0', '1', 1, 1, 1, 2);
+    final result = RustProgramView.decode(
+      _viewJson(nodes: [method]),
+      SourceOffsetIndex('x'),
+    );
+
+    expect(result, isA<RustProgramViewReadSuccess>());
+    final view = (result as RustProgramViewReadSuccess).view;
+    expect(view.node('rev.n0')?.signatureRange?.startOffset, 0);
+    expect(view.node('rev.n0')?.signatureRange?.endOffset, 1);
+  });
+
+  test('rejects a method signature span outside its method node', () {
+    final method = _node('rev.n0')
+      ..['syntax_kind'] = 'method_member'
+      ..['method_signature_span'] = _span('1', '2', 1, 2, 1, 3);
+
+    expect(
+      _failure(_viewJson(nodes: [method]), 'xy').kind,
+      RustProgramViewReadFailureKind.invalidSpan,
+    );
+  });
+
   test('returns typed failures for absent and malformed required fields', () {
     final missingRevision = _viewJson(nodes: [_node('rev.n0')])
       ..remove('revision_id');

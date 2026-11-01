@@ -39,6 +39,24 @@ algorithm Main
 endAlgorithm
 ''';
 
+const String _inheritedInvalidEnglish = '''
+interface Readable
+method readValue() as integer;
+endInterface
+class Reader implements Readable
+method readValue() as integer
+return 7;
+endMethod
+endClass
+class Child extends Reader
+method readValue(extra as integer) as integer
+return extra;
+endMethod
+endClass
+algorithm Main
+endAlgorithm
+''';
+
 DiagramState _state(String source, SyntaxProfileId profile) => DiagramState(
   flowchart: const DiagramProgram.empty(),
   structogram: const DiagramProgram.empty(),
@@ -150,6 +168,34 @@ void main() {
       isTrue,
     );
     expect(selected.single.startLine, 4);
+  });
+
+  testWidgets('an invalid inherited relation selects the overriding signature', (
+    tester,
+  ) async {
+    final handle = tester.ensureSemantics();
+    final selected = await _pump(
+      tester,
+      source: _inheritedInvalidEnglish,
+      profile: SyntaxProfileId.english,
+      locale: const Locale('en'),
+    );
+    const label =
+        'Realization from Child to Readable, invalid: incompatibleMethodOverride';
+
+    expect(find.bySemanticsLabel(label), findsOneWidget);
+    tester.semantics.tap(find.semantics.byLabel(label));
+    await tester.pump();
+
+    expect(selected, hasLength(1));
+    expect(
+      _inheritedInvalidEnglish.substring(
+        selected.single.startOffset,
+        selected.single.endOffset,
+      ),
+      'method readValue(extra as integer) as integer',
+    );
+    handle.dispose();
   });
 
   testWidgets('tapping a signature row selects exactly that signature', (
