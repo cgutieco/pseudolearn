@@ -98,6 +98,8 @@ redactan en ambos idiomas desde sus reglas ancladas; antes de mantener el invent
 texto, identidades, disponibilidad, anclajes y la matriz completa. Cada elemento activo debe llegar
 a una ficha específica o a una exclusión tipada; una ficha genérica no cubre elementos sin asociar.
 
+El texto suelto de la edición 2026 tiene una sola entrada algorítmica y no requiere manifiesto. `LANG.PROGRAM.STRUCTURE` admite como declaraciones hermanas los tipos nominales, subprogramas y constantes de módulo; `LANG.MODULE.MODEL` conserva los diagnósticos de importación y exportación fuera de proyecto. El preludio fijo usa exclusivamente el catálogo exportado de `LIB.MODEL` y los tipos intrínsecos del lenguaje. Los contratos dueños determinan disponibilidad y colisiones; el preludio no concede capacidades ni lee el entorno. Los casos vigentes de estructura, edición, módulo, codificación, posiciones y capacidades cubren idioma, rigor, entrada vacía, colisiones, símbolos ausentes, BOM y efectos denegados.
+
 Los ejemplos de una ficha no contienen programas ni resultados: referencian casos vigentes del corpus por
 especificación, versión, identidad, perfil y rigor. Cada ficha lleva al menos uno por idioma, con el perfil
 de su idioma, y declara su clase: `executable` (el caso ejecuta el programa y termina sin fallo ni

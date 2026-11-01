@@ -26,6 +26,16 @@
       "id": "LANG.PROFILE.MODEL",
       "version": ">=1.0.0, <2.0.0",
       "tipo": "requiere"
+    },
+    {
+      "id": "LIB.MODEL",
+      "version": ">=1.0.0, <2.0.0",
+      "tipo": "usa"
+    },
+    {
+      "id": "LANG.CAPABILITY.MODEL",
+      "version": ">=1.0.0, <2.0.0",
+      "tipo": "usa"
     }
   ]
 }
@@ -43,6 +53,69 @@
     "C1",
     "C2"
   ]
+}
+```
+
+```regla
+{
+  "id": "R2",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "El preludio estándar de 2026 es fijo y está formado solo por los símbolos incorporados declarados por LIB.MODEL y los tipos intrínsecos declarados por los contratos de lenguaje. No se lee del entorno, del directorio de trabajo ni de paquetes instalados y no requiere un archivo adicional. La colisión de nombres sigue el contrato dueño de cada símbolo; un subprograma homónimo oculta una función libre incorporada. El preludio declara símbolos, nunca permisos: todo efecto requiere capacidad concedida por el anfitrión.",
+  "verificacion": [
+    "C3",
+    "C4"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C3",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir Longitud(\"ab\");\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite length(\"ab\");\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "2\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C4",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "SubProceso Longitud() Como Entero\nRetornar 9;\nFinSubProceso\nAlgoritmo P\nEscribir Longitud();\nFinAlgoritmo\n",
+    "en": "subroutine length() as integer\nreturn 9;\nendSubroutine\nalgorithm P\nwrite length();\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "9\n",
+    "terminacion": "completed"
+  }
 }
 ```
 

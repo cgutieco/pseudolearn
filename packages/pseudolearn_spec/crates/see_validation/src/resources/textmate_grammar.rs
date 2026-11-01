@@ -14,7 +14,11 @@ pub fn check(term: &str, value: &Value) -> Result<(), String> {
 fn pattern_fields(value: &Value, fields: &[&str]) -> Result<(), String> {
     let object = value.as_object().ok_or("Invalid TextMate patterns")?;
     for field in fields {
-        if object.get(*field).and_then(Value::as_str).is_none_or(str::is_empty) {
+        if object
+            .get(*field)
+            .and_then(Value::as_str)
+            .is_none_or(str::is_empty)
+        {
             return Err(format!("Missing TextMate pattern {field}"));
         }
     }
@@ -28,7 +32,11 @@ fn text_literal(value: &Value) -> Result<(), String> {
             .get(field)
             .and_then(Value::as_array)
             .ok_or_else(|| format!("Missing TextMate text literal {field}"))?;
-        if items.is_empty() || items.iter().any(|item| item.as_str().is_none_or(str::is_empty)) {
+        if items.is_empty()
+            || items
+                .iter()
+                .any(|escape_code| escape_code.as_str().is_none_or(str::is_empty))
+        {
             return Err(format!("Invalid TextMate text literal {field}"));
         }
     }
@@ -51,7 +59,9 @@ fn accent_fold(value: &Value) -> Result<(), String> {
         if base.chars().count() != 1 || !base.chars().all(char::is_lowercase) {
             return Err("Invalid TextMate accent fold base".to_owned());
         }
-        let variants = variants.as_array().ok_or("Invalid TextMate accent variants")?;
+        let variants = variants
+            .as_array()
+            .ok_or("Invalid TextMate accent variants")?;
         if variants.is_empty()
             || variants.iter().any(|variant| {
                 variant

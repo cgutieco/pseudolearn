@@ -112,11 +112,16 @@ fn captures(
                 declaration_identity(nodes, local.span.start, local.span.ending, identifiers)
             })
             .collect::<Vec<_>>();
+        let capture_links = captured
+            .iter()
+            .map(|binding| json!({"origin_node_id":binding,"binding_node_id":binding,"mode":"value"}))
+            .collect::<Vec<_>>();
         if let Some(node) = nodes.iter_mut().find(|node| node.syntax_index == syntax) {
             if let Some(identity) = identifiers.get(&syntax) {
                 node.attributes.push(("closure_identity", json!(identity)));
             }
             node.attributes.push(("captured_bindings", json!(captured)));
+            node.attributes.push(("captures", json!(capture_links)));
         }
     }
 }

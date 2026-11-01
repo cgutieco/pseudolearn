@@ -223,6 +223,51 @@ fn units_and_members_must_resolve_to_nodes_of_the_same_view() {
 }
 
 #[test]
+fn static_relations_resolve_and_reject_foreign_source_references() {
+    let expected = json!({"vista_programa": {
+        "relations_same_revision_and_source": true,
+        "realizations_include": [{"origin":"explicit","status":"valid"}],
+        "constraints_include": [{"status":"valid"}],
+        "captures_include": [{"mode":"value"}],
+        "iterations_include": ["collection_node_id","body_node_id"],
+        "variants_include_payload_roles": true,
+        "variants_without_payload": true
+    }});
+    let resolved = json!({"program_view": {
+        "revision_id":"revision-a",
+        "realizations":[{"class_node_id":"node-a","origin_node_id":"node-a","interface_node_id":"node-b","origin":"explicit","status":"valid"}],
+        "nodes":[
+            {"node_id":"node-a","constraints":[{"interface_node_id":"node-b","status":"valid"}],"captures":[{"origin_node_id":"node-b","binding_node_id":"node-b","mode":"value"}]},
+            {"node_id":"node-b"},
+            {"node_id":"node-c","syntax_kind":"for_each_loop","iteration":{"collection_node_id":"node-b","body_node_id":"node-c"}},
+            {"node_id":"node-d","syntax_kind":"variant_construction","variant":"some","child_roles":[{"node_id":"node-b","role":"payload"}]},
+            {"node_id":"node-e","syntax_kind":"variant_construction","variant":"none","child_roles":[]}
+        ]
+    }});
+    assert!(see_conformance::comparison::compare(&expected, &resolved).is_empty());
+    let foreign = json!({"program_view": {
+        "revision_id":"revision-a",
+        "realizations":[{"class_node_id":"node-a","origin_node_id":"node-a","interface_node_id":"other-source-node","origin":"explicit","status":"valid"}],
+        "nodes":[{"node_id":"node-a"}]
+    }});
+    let relations_expected = json!({"vista_programa":{"relations_same_revision_and_source":true}});
+    assert!(!see_conformance::comparison::compare(&relations_expected, &foreign).is_empty());
+}
+
+#[test]
+fn rejected_closure_captures_are_not_projected() {
+    let expected = json!({"vista_programa":{"closures_without_captures":true}});
+    let rejected = json!({"program_view":{"nodes":[
+        {"node_id":"node-a","syntax_kind":"function_literal","captures":[]}
+    ]}});
+    let projected = json!({"program_view":{"nodes":[
+        {"node_id":"node-a","syntax_kind":"function_literal","captures":[{"mode":"value"}]}
+    ]}});
+    assert!(see_conformance::comparison::compare(&expected, &rejected).is_empty());
+    assert!(!see_conformance::comparison::compare(&expected, &projected).is_empty());
+}
+
+#[test]
 fn page_cursor_marker_preserves_element_and_exact_snapshot_checks() {
     let expected = serde_json::json!({"estado_en":{"estado":{"elements":[{"sin_valor":true}],"truncated":true,"next_cursor":"opaque"}}});
     let actual = serde_json::json!({"state_at":{"elements":[{"sin_valor":true}],"truncated":true,"next_cursor":"scope.1","total":2}});

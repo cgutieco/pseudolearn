@@ -12,6 +12,8 @@ final class SourceOffsetIndex {
     }
   }
 
+  String get sourceCode => _source;
+
   int offsetOf(int line, int column) {
     final index = (line - 1).clamp(0, _lineStarts.length - 1);
     var offset = _lineStarts[index];
@@ -25,6 +27,29 @@ final class SourceOffsetIndex {
       remaining--;
     }
     return offset.clamp(0, _source.length);
+  }
+
+  bool isValidPosition(int line, int column) {
+    if (line < 1 || line > _lineStarts.length || column < 1) return false;
+    final lineIndex = line - 1;
+    final start = _lineStarts[lineIndex];
+    var end = lineIndex + 1 < _lineStarts.length
+        ? _lineStarts[lineIndex + 1] - 1
+        : _source.length;
+    if (end > start && _source.codeUnitAt(end - 1) == 0x0D) end--;
+    var offset = start;
+    var currentColumn = 1;
+    while (offset < end) {
+      final first = _source.codeUnitAt(offset);
+      final paired =
+          first >= 0xD800 &&
+          first <= 0xDBFF &&
+          offset + 1 < end &&
+          _isLowSurrogate(_source.codeUnitAt(offset + 1));
+      offset += paired ? 2 : 1;
+      currentColumn++;
+    }
+    return column <= currentColumn;
   }
 
   int? utf8OffsetAtUtf16(int offset) {
@@ -62,9 +87,6 @@ final class SourceOffsetIndex {
       endColumn: endColumn,
     );
   }
-
-  String textBetween(SourceRange range) =>
-      _source.substring(range.startOffset, range.endOffset);
 
   bool _isHighSurrogate(int codeUnit) =>
       codeUnit >= 0xD800 && codeUnit <= 0xDBFF;

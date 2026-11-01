@@ -1,7 +1,8 @@
 use serde_json::json;
 
 #[test]
-fn validates_generated_grammar_definitions_and_rejects_missing_lexical_data() -> Result<(), String> {
+fn validates_generated_grammar_definitions_and_rejects_missing_lexical_values() -> Result<(), String>
+{
     let mut specification = super::support::specification()?;
     for (term, value) in definitions() {
         specification.blocks.push(see_model::Block {
@@ -16,7 +17,10 @@ fn validates_generated_grammar_definitions_and_rejects_missing_lexical_data() ->
         });
     }
     assert!(see_validation::resources::check(&specification).is_empty());
-    let accent_fold = specification.blocks.last_mut().ok_or("Missing accent data")?;
+    let accent_fold = specification
+        .blocks
+        .last_mut()
+        .ok_or("Missing accent data")?;
     accent_fold
         .fields
         .insert("valor".to_owned(), json!({"a":[]}));

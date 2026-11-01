@@ -82,7 +82,8 @@
     "C12",
     "C13",
     "C20",
-    "C21"
+    "C21",
+    "C22"
   ]
 }
 ```
@@ -1101,6 +1102,36 @@
     "diagnosticos": [
       {
         "codigo": "expectedAlgorithmStart",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C22",
+  "regla": "R3",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Exportar paquete.simbolo;\nAlgoritmo P\nFinAlgoritmo\n",
+    "en": "export package.symbol;\nalgorithm P\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "moduleSyntaxOutsideProject",
         "severidad": "error"
       }
     ]

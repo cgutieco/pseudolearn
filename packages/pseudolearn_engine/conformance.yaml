@@ -581,6 +581,11 @@
       "estado": "cumple"
     },
     {
+      "regla": "LANG.EDITION.MODEL@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
       "regla": "LANG.IO.INPUT@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
@@ -1462,6 +1467,11 @@
     {
       "regla": "API.PROGRAM.VIEW@1.0.0#R4",
       "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "API.PROGRAM.VIEW@1.0.0#R5",
+      "verificacion": "crates/pseudolearn_api/tests/program_view_nominal.rs",
       "estado": "cumple"
     },
     {

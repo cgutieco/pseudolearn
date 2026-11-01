@@ -136,6 +136,23 @@ fn single_file_runs_in_editor_mode() -> Result<(), String> {
 }
 
 #[test]
+fn single_file_runs_without_working_directory_configuration() -> Result<(), String> {
+    let base = sandbox("file-isolated", LIBRARY).map_err(|error| error.to_string())?;
+    let working_directory = base.join("unrelated");
+    std::fs::create_dir_all(&working_directory).map_err(|error| error.to_string())?;
+    let source_path = base.join("p.pseudo");
+    let source_argument = source_path.to_str().ok_or("source path is not UTF-8")?;
+    let (events, code) = run_editor(
+        &working_directory,
+        &["run", "--editor", source_argument],
+        "{\"command\":\"input\",\"text\":\"41\"}\n",
+    )?;
+    assert_eq!(code, 0);
+    assert_eq!(printed(&events), "42\n");
+    Ok(())
+}
+
+#[test]
 fn closing_stdin_while_waiting_finishes_as_input_closed() -> Result<(), String> {
     let base = sandbox("eof", LIBRARY).map_err(|error| error.to_string())?;
     let (events, code) = run_editor(&base, &["run", "--editor", "p.pseudo"], "")?;

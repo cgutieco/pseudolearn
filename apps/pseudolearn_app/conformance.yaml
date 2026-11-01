@@ -101,6 +101,9 @@ vinculos:
     verificacion: ejecutor
     estado: pendiente
     resuelve_en: PG-4.11
+  - regla: API.PROGRAM.VIEW@1.0.0#R5
+    verificacion: test/engine/rust/rust_program_view_test.dart
+    estado: cumple
   - regla: API.PROGRAM.VIEW@1.0.0#R3
     verificacion: ejecutor
     estado: cumple

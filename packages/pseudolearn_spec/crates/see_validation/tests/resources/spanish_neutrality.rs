@@ -19,7 +19,10 @@ fn accepts_standard_spanish_without_voseo_or_regionalisms() {
 fn rejects_voseo_and_regional_expressions() {
     let violations = [
         ("El vínculo es inmutable; usá Definir Mutable", "usá"),
-        ("El vínculo necesita un inicializador; añadí <- expresión", "añadí"),
+        (
+            "El vínculo necesita un inicializador; añadí <- expresión",
+            "añadí",
+        ),
         ("Falta una rama: cubrí las alternativas", "cubrí"),
         ("Resultado sin tratar: manejalo con Segun", "manejalo"),
         ("Resultado sin tratar: propagalo o descartalo", "propagalo"),

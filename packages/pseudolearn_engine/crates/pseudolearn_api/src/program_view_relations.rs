@@ -1,4 +1,3 @@
-use crate::ApiUnit;
 use pseudolearn_source::SourceText;
 use pseudolearn_syntax::{NodeKind, SyntaxTree};
 use serde_json::{Value, json};
@@ -6,108 +5,142 @@ use std::collections::BTreeMap;
 
 struct ClassFacts {
     name: String,
+    syntax: usize,
     base: Option<String>,
-    methods: Vec<String>,
+    methods: Vec<MethodFacts>,
 }
 
-pub(crate) fn units(
-    schema: &[ApiUnit],
-    nodes: &[super::program_view::ViewNode],
-    revision: &str,
-) -> Value {
-    UnitProjection { nodes, revision }.project(schema)
+struct MethodFacts {
+    name: String,
+    syntax: usize,
 }
 
-struct UnitProjection<'unit> {
-    nodes: &'unit [super::program_view::ViewNode],
-    revision: &'unit str,
+struct MethodOverride<'facts> {
+    class: &'facts ClassFacts,
+    method: &'facts MethodFacts,
+    owner: &'facts ClassFacts,
+    overridden: &'facts MethodFacts,
 }
 
-impl UnitProjection<'_> {
-    fn project(&self, schema: &[ApiUnit]) -> Value {
-        Value::Array(
-            schema
-                .iter()
-                .enumerate()
-                .map(|(order, unit)| self.unit_value(order, unit))
-                .collect(),
-        )
+pub(crate) struct RelationProjection<'view> {
+    pub(crate) tree: &'view SyntaxTree,
+    pub(crate) source: &'view SourceText,
+    pub(crate) nodes: &'view [crate::program_view::ViewNode],
+    pub(crate) revision: &'view str,
+    pub(crate) source_identity: Option<crate::ApiSourceIdentity>,
+}
+
+impl RelationProjection<'_> {
+    pub(crate) fn project(&self) -> (Value, Value) {
+        let classes = class_facts(self.tree, self.source);
+        let by_name: BTreeMap<&str, &ClassFacts> = classes
+            .iter()
+            .map(|class| (class.name.as_str(), class))
+            .collect();
+        let inheritance = self.inheritance_rows(&classes, &by_name);
+        let methods = self.method_rows(&classes, &by_name);
+        (Value::Array(inheritance), Value::Array(methods))
     }
 
-    fn unit_value(&self, order: usize, unit: &ApiUnit) -> Value {
-        let syntax_kind = match unit.kind.as_str() {
-            "algorithm" => "algorithm_unit",
-            "class" => "class_unit",
-            _ => "subroutine",
-        };
-        let (node_id, span) = self.node_reference(unit, syntax_kind);
-        json!({
-            "kind":unit.kind,
-            "name":unit.name,
-            "order":order,
-            "node_id":node_id,
-            "span":span
-        })
+    fn inheritance_rows(
+        &self,
+        classes: &[ClassFacts],
+        by_name: &BTreeMap<&str, &ClassFacts>,
+    ) -> Vec<Value> {
+        classes
+            .iter()
+            .filter_map(|class| self.inheritance_relation(class, by_name))
+            .collect()
     }
 
-    fn node_reference(&self, unit: &ApiUnit, syntax_kind: &str) -> (Value, Value) {
-        let node = self.nodes.iter().enumerate().find(|(_, node)| {
-            node.syntax_kind == syntax_kind
-                && node.start == (unit.span.start.line, unit.span.start.column)
-                && node.end == (unit.span.end.line, unit.span.end.column)
-        });
-        node.map_or_else(
-            || (Value::Null, Value::Null),
-            |(index, node)| {
-                (
-                    json!(format!("{}.n{index:x}", self.revision)),
-                    json!({
-                        "start_byte": node.start_byte.to_string(),
-                        "end_byte": node.end_byte.to_string(),
-                        "start": {"line": node.start.0, "column": node.start.1},
-                        "end": {"line": node.end.0, "column": node.end.1}
-                    }),
-                )
-            },
-        )
-    }
-}
-
-pub(crate) fn inheritance_and_methods(tree: &SyntaxTree, source: &SourceText) -> (Value, Value) {
-    let classes = class_facts(tree, source);
-    let by_name: BTreeMap<&str, &ClassFacts> = classes
-        .iter()
-        .map(|class| (class.name.as_str(), class))
-        .collect();
-    let inheritance = classes
-        .iter()
-        .filter_map(|class| {
-            class
-                .base
-                .as_ref()
-                .map(|base| json!({"class":class.name,"base":base}))
-        })
-        .collect();
-    let mut methods = Vec::new();
-    for class in &classes {
-        for method in &class.methods {
-            if let Some(owner) = overridden_owner(class, method, &by_name) {
-                methods.push(json!({
-                    "class": class.name,
-                    "name": method,
-                    "overrides": format!("{owner}.{method}"),
-                }));
+    fn inheritance_relation(
+        &self,
+        class: &ClassFacts,
+        by_name: &BTreeMap<&str, &ClassFacts>,
+    ) -> Option<Value> {
+        let base = class.base.as_ref()?;
+        let mut relation = json!({"class":class.name,"base":base});
+        if let Some(fields) = relation.as_object_mut() {
+            if let Some(identity) = self.identity_for(class.syntax) {
+                fields.insert("class_node_id".to_owned(), json!(identity));
+            }
+            if let Some(owner) = by_name.get(base.as_str())
+                && let Some(identity) = self.identity_for(owner.syntax)
+            {
+                fields.insert("base_node_id".to_owned(), json!(identity));
             }
         }
+        Some(relation)
     }
-    (Value::Array(inheritance), Value::Array(methods))
+
+    fn method_rows(
+        &self,
+        classes: &[ClassFacts],
+        by_name: &BTreeMap<&str, &ClassFacts>,
+    ) -> Vec<Value> {
+        classes
+            .iter()
+            .flat_map(|class| {
+                class.methods.iter().filter_map(|method| {
+                    let (owner, overridden) = overridden_method(class, method, by_name)?;
+                    Some(self.method_relation(MethodOverride {
+                        class,
+                        method,
+                        owner,
+                        overridden,
+                    }))
+                })
+            })
+            .collect()
+    }
+
+    fn method_relation(&self, relation: MethodOverride<'_>) -> Value {
+        let mut value = json!({
+            "class":relation.class.name,
+            "name":relation.method.name,
+            "overrides":format!("{}.{}", relation.owner.name, relation.overridden.name),
+        });
+        if let Some(fields) = value.as_object_mut() {
+            self.insert_identity(fields, "class_node_id", relation.class.syntax);
+            self.insert_identity(fields, "method_node_id", relation.method.syntax);
+            self.insert_identity(
+                fields,
+                "overridden_method_node_id",
+                relation.overridden.syntax,
+            );
+        }
+        value
+    }
+
+    fn identity_for(&self, syntax: usize) -> Option<String> {
+        let ordinal = self
+            .nodes
+            .iter()
+            .position(|node| node.syntax_index == syntax)?;
+        Some(crate::program_view::node_identifier(
+            self.revision,
+            self.source_identity,
+            ordinal,
+        ))
+    }
+
+    fn insert_identity(
+        &self,
+        fields: &mut serde_json::Map<String, Value>,
+        name: &str,
+        syntax: usize,
+    ) {
+        if let Some(identity) = self.identity_for(syntax) {
+            fields.insert(name.to_owned(), json!(identity));
+        }
+    }
 }
 
-fn overridden_owner(
-    class: &ClassFacts,
-    method: &str,
-    by_name: &BTreeMap<&str, &ClassFacts>,
-) -> Option<String> {
+fn overridden_method<'class>(
+    class: &'class ClassFacts,
+    method: &MethodFacts,
+    by_name: &'class BTreeMap<&str, &'class ClassFacts>,
+) -> Option<(&'class ClassFacts, &'class MethodFacts)> {
     let mut visited = vec![class.name.as_str()];
     let mut current = class.base.as_deref();
     while let Some(name) = current {
@@ -116,8 +149,12 @@ fn overridden_owner(
         }
         visited.push(name);
         let ancestor = by_name.get(name)?;
-        if ancestor.methods.iter().any(|candidate| candidate == method) {
-            return Some(ancestor.name.clone());
+        if let Some(overridden) = ancestor
+            .methods
+            .iter()
+            .find(|candidate| candidate.name == method.name)
+        {
+            return Some((ancestor, overridden));
         }
         current = ancestor.base.as_deref();
     }
@@ -147,10 +184,18 @@ fn facts_of(tree: &SyntaxTree, source: &SourceText, class: usize) -> Option<Clas
         .filter(
             |index| matches!(tree.node(**index), Some(node) if node.kind == NodeKind::MethodMember),
         )
-        .filter_map(|index| identifier_children(tree, source, *index).into_iter().next())
+        .filter_map(|index| {
+            Some(MethodFacts {
+                name: identifier_children(tree, source, *index)
+                    .into_iter()
+                    .next()?,
+                syntax: *index,
+            })
+        })
         .collect();
     Some(ClassFacts {
         name,
+        syntax: class,
         base,
         methods,
     })

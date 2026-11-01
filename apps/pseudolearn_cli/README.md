@@ -101,7 +101,7 @@ verifican ambos idiomas, opciones equivalentes, códigos de salida y errores ope
 
 `ejecutar`/`run` conserva la entrada pública de archivo suelto con perfil y rigor existentes. No exige
 manifiesto ni imports para abrir un programa; las directivas de módulo siguen reservadas a la forma
-contextual de unidad superior y sus grafías se pueden usar como nombres dentro de un programa suelto.
+contextual de unidad superior y sus grafías se pueden usar como nombres dentro de un programa suelto. La CLI entrega el texto leído y la configuración seleccionada sin transformarlos a `AnalyzeRequest`; la ejecución no consulta manifiestos, directorio de trabajo ni entorno para determinar edición o símbolos. La auditoría confirmó que no hace falta una opción nueva.
 
 Perfil por archivo: `--vocabulario` equivale al argumento `profile` de la petición de proyecto; las excepciones por archivo
 las aporta el manifiesto y el idioma de interfaz no cambia el programa ni el lock.

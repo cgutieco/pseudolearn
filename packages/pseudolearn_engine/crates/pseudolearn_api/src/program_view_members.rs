@@ -34,33 +34,40 @@ impl MemberProjection<'_> {
         else {
             return;
         };
+        let class_node_id = view_identifier(self, class_index);
+        let mut owner = MemberOwner {
+            class_name: &class_name,
+            class_node_id: &class_node_id,
+            members,
+        };
         for member_index in self.tree.child_indices(class_index).iter().copied() {
-            self.append_member(&class_name, member_index, members);
+            self.append_member(&mut owner, member_index);
         }
     }
 
-    fn append_member(&self, class_name: &str, member_index: usize, members: &mut Vec<Value>) {
+    fn append_member(&self, owner: &mut MemberOwner<'_>, member_index: usize) {
         let Some(member) = self.tree.node(member_index) else {
             return;
         };
         match member.kind {
-            NodeKind::FieldDeclaration => self.append_fields(class_name, member_index, members),
+            NodeKind::FieldDeclaration => self.append_fields(owner, member_index),
             NodeKind::MethodMember | NodeKind::ConstructorMember => {
-                if let Some(value) = self.method_member(class_name, member_index) {
-                    members.push(value);
+                if let Some(value) = self.method_member(owner, member_index) {
+                    owner.members.push(value);
                 }
             }
             _ => {}
         }
     }
 
-    fn append_fields(&self, class_name: &str, field_index: usize, members: &mut Vec<Value>) {
+    fn append_fields(&self, owner: &mut MemberOwner<'_>, field_index: usize) {
         let field_type = member_type(self.tree, self.source, field_index);
         let visibility = member_visibility(self.tree, field_index);
         let node_id = view_identifier(self, field_index);
         for (name, dimensions) in field_members(self.tree, self.source, field_index) {
-            members.push(json!({
-                "class":class_name,
+            owner.members.push(json!({
+                "class":owner.class_name,
+                "class_node_id":owner.class_node_id,
                 "name":name,
                 "kind":"field",
                 "visibility":visibility,
@@ -71,7 +78,7 @@ impl MemberProjection<'_> {
         }
     }
 
-    fn method_member(&self, class_name: &str, member_index: usize) -> Option<Value> {
+    fn method_member(&self, owner: &MemberOwner<'_>, member_index: usize) -> Option<Value> {
         let member = self.tree.node(member_index)?;
         let name = identifier_children(self.tree, self.source, member_index)
             .into_iter()
@@ -82,7 +89,8 @@ impl MemberProjection<'_> {
             "constructor"
         };
         Some(json!({
-            "class":class_name,
+            "class":owner.class_name,
+            "class_node_id":owner.class_node_id,
             "name":name,
             "kind":kind,
             "visibility":member_visibility(self.tree, member_index),
@@ -90,6 +98,12 @@ impl MemberProjection<'_> {
             "node_id":view_identifier(self, member_index)
         }))
     }
+}
+
+struct MemberOwner<'members> {
+    class_name: &'members str,
+    class_node_id: &'members Value,
+    members: &'members mut Vec<Value>,
 }
 
 fn class_indices(tree: &SyntaxTree, root: usize) -> Vec<usize> {
@@ -115,7 +129,12 @@ fn view_identifier(projection: &MemberProjection<'_>, index: usize) -> Value {
     else {
         return Value::Null;
     };
-    json!(format!("{}.n{ordinal:x}", projection.revision))
+    let source = projection.nodes.get(ordinal).and_then(|node| node.source);
+    json!(crate::program_view::node_identifier(
+        projection.revision,
+        source,
+        ordinal
+    ))
 }
 
 fn field_members(tree: &SyntaxTree, source: &SourceText, field: usize) -> Vec<(String, usize)> {

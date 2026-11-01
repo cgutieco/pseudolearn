@@ -41,23 +41,18 @@ void main() {
     test('handles an empty source', () {
       final index = SourceOffsetIndex('');
       expect(index.offsetOf(1, 1), 0);
-      expect(
-        index.textBetween(
-          index.rangeOf(startLine: 1, startColumn: 1, endLine: 1, endColumn: 1),
-        ),
-        '',
-      );
     });
 
-    test('builds a range with text', () {
-      final index = SourceOffsetIndex('Escribir 1;\n');
+    test('builds a source range', () {
+      final index = SourceOffsetIndex('Escribir 1;');
       final range = index.rangeOf(
         startLine: 1,
         startColumn: 10,
         endLine: 1,
         endColumn: 11,
       );
-      expect(index.textBetween(range), '1');
+      expect(range.startOffset, 9);
+      expect(range.endOffset, 10);
     });
   });
 }

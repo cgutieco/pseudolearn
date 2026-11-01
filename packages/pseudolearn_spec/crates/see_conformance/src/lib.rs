@@ -33,6 +33,7 @@ pub mod target_programs;
 
 mod property_observation;
 
+mod program_view_comparison;
 mod property_revision;
 
 pub mod event_identity;

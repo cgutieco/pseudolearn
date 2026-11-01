@@ -676,3 +676,193 @@ La vista pública incluye interface_unit, interface_signature, realization, type
   }
 }
 ```
+
+```regla
+{
+  "id": "R5",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "La vista mantiene las relaciones estáticas mediante node_id de la misma revisión y fuente. Cada clase expone realizaciones explícitas e heredadas con clase, contrato resuelto si existe, declaración de origen, origen explicit o inherited, estado valid o invalid y códigos diagnósticos; un destino sin resolver solo puede citar su nodo sintáctico y no usa su nombre como identidad. Cada parámetro genérico expone sus restricciones y node_id del contrato, o invalidez diagnóstica si el contrato no existe. Las variantes conservan su discriminante y relacionan la carga por los papeles de sus hijos; none no inventa una carga. Las clausuras exponen cada vínculo de origen con modo value y no exponen direcciones ni un entorno materializado. Cada for_each enlaza colección, vínculos, cuerpo y dueño de ámbito. Herencia, sobrescritura y miembros incluyen node_id de clase y de destino cuando ambos nodos están disponibles; las etiquetas textuales existentes se conservan por compatibilidad. Ningún dato estático incorpora disposiciones, temporales ni estado de ejecución.",
+  "verificacion": [
+    "C13",
+    "C14",
+    "C15",
+    "C16"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C16",
+  "regla": "R5",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "Algoritmo Main\nDefinir Mutable counter Como Entero <- 1;\nDefinir callback Como SubProceso() Como Entero <- SubProceso() Como Entero\nRetornar counter;\nFinSubProceso;\nFinAlgoritmo\n",
+    "en": "algorithm Main\ndefine mutable counter as integer <- 1;\ndefine callback as subroutine() as integer <- subroutine() as integer\nreturn counter;\nendSubroutine;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "diagnosticos": [
+      {
+        "codigo": "mutableClosureCapture",
+        "severidad": "error"
+      }
+    ],
+    "vista_programa": {
+      "closures_without_captures": true
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C13",
+  "regla": "R5",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "Interfaz Readable\nMetodo readValue() Como Entero;\nFinInterfaz\nClase Reader Realiza Readable\nMetodo readValue() Como Entero\nRetornar 7;\nFinMetodo\nFinClase\nClase Writer Realiza Readable\nMetodo readValue() Como Entero\nRetornar 8;\nFinMetodo\nFinClase\nClase Child Hereda De Reader\nFinClase\nSubProceso readOnce<T: Readable>(value Como T) Como Entero\nRetornar value.readValue();\nFinSubProceso\nSubProceso make(value Como Entero) Como SubProceso() Como SubProceso() Como Entero\nDefinir captured Como Entero <- value;\nRetornar SubProceso() Como SubProceso() Como Entero\nRetornar SubProceso() Como Entero\nRetornar captured;\nFinSubProceso;\nFinSubProceso;\nFinSubProceso\nAlgoritmo Main\nDefinir values Como Vector<Entero> <- Vector();\nPara Cada value En values Hacer\nPara Cada nested En values Hacer\nEscribir nested;\nFinPara\nFinPara\nDefinir result Como Resultado<Entero, Cadena> <- Exito(1);\nSegun result Hacer\nExito(item): Escribir item;\nError(problem): Escribir problem;\nFinSegun\nFinAlgoritmo\n",
+    "en": "interface Readable\nmethod readValue() as integer;\nendInterface\nclass Reader implements Readable\nmethod readValue() as integer\nreturn 7;\nendMethod\nendClass\nclass Writer implements Readable\nmethod readValue() as integer\nreturn 8;\nendMethod\nendClass\nclass Child extends Reader\nendClass\nsubroutine readOnce<T: Readable>(value as T) as integer\nreturn value.readValue();\nendSubroutine\nsubroutine make(value as integer) as subroutine() as subroutine() as integer\ndefine captured as integer <- value;\nreturn subroutine() as subroutine() as integer\nreturn subroutine() as integer\nreturn captured;\nendSubroutine;\nendSubroutine;\nendSubroutine\nalgorithm Main\ndefine values as vector<integer> <- vector();\nfor each value in values do\nfor each nested in values do\nwrite nested;\nendFor\nendFor\ndefine outcome as result<integer, string> <- success(1);\nswitch outcome do\nsuccess(item): write item;\nfailure(problem): write problem;\nendSwitch\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "vista_programa": {
+      "relations_same_revision_and_source": true,
+      "realizations_include": [
+        {
+          "origin": "explicit",
+          "status": "valid"
+        },
+        {
+          "origin": "inherited",
+          "status": "valid"
+        }
+      ],
+      "constraints_include": [
+        {
+          "status": "valid"
+        }
+      ],
+      "iterations_include": [
+        "collection_node_id",
+        "bindings_node_id",
+        "body_node_id",
+        "scope_owner_node_id"
+      ],
+      "variants_include_payload_roles": true,
+      "captures_include": [
+        {
+          "mode": "value"
+        }
+      ]
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C14",
+  "regla": "R5",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "Interfaz Needed\nMetodo run() Como Entero;\nFinInterfaz\nClase Broken Realiza Needed\nFinClase\nClase Missing Realiza Absent\nFinClase\nSubProceso use<T: Absent>(item Como T)\nFinSubProceso\nAlgoritmo Main\nFinAlgoritmo\n",
+    "en": "interface Needed\nmethod run() as integer;\nendInterface\nclass Broken implements Needed\nendClass\nclass Missing implements Absent\nendClass\nsubroutine use<T: Absent>(item as T)\nendSubroutine\nalgorithm Main\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "vista_programa": {
+      "realizations_include": [
+        {
+          "origin": "explicit",
+          "status": "invalid",
+          "diagnostics": [
+            "interfaceMethodMissing"
+          ]
+        },
+        {
+          "origin": "explicit",
+          "status": "invalid",
+          "interface_node_id": null,
+          "diagnostics": [
+            "unknownInterface"
+          ]
+        }
+      ],
+      "constraints_include": [
+        {
+          "status": "invalid",
+          "interface_node_id": null,
+          "diagnostics": [
+            "unknownInterface"
+          ]
+        }
+      ],
+      "relations_same_revision_and_source": true
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C15",
+  "regla": "R5",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "Interfaz Marker\nFinInterfaz\nClase Marked Realiza Marker\nFinClase\nAlgoritmo Main\nDefinir absent Como Opcional<Entero> <- Nada;\nDescartar absent;\nDefinir values Como Vector<Entero> <- Vector();\nPara Cada item En values Hacer\nEscribir item;\nFinPara\nFinAlgoritmo\n",
+    "en": "interface Marker\nendInterface\nclass Marked implements Marker\nendClass\nalgorithm Main\ndefine absent as optional<integer> <- none;\ndiscard absent;\ndefine values as vector<integer> <- vector();\nfor each item in values do\nwrite item;\nendFor\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "vista_programa": {
+      "realizations_include": [
+        {
+          "origin": "explicit",
+          "status": "valid"
+        }
+      ],
+      "variants_without_payload": true,
+      "iterations_include": [
+        "collection_node_id",
+        "bindings_node_id",
+        "body_node_id",
+        "scope_owner_node_id"
+      ]
+    }
+  }
+}
+```

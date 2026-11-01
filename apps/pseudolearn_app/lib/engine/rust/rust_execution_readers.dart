@@ -1,6 +1,7 @@
 import 'rust_program_view.dart';
 import 'rust_wire_models.dart';
 import 'source_offset_index.dart';
+import 'source_offset_text.dart';
 
 bool isExecutableReport(Map<String, Object?> report) {
   final diagnostics = (report['diagnostics'] as List<Object?>)

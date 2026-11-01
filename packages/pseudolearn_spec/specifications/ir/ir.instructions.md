@@ -4266,3 +4266,11 @@
   "instrucciones": ["effect_call"]
 }
 ```
+
+```cobertura
+{
+  "id": "V209",
+  "regla": "LANG.EDITION.MODEL#R2",
+  "sin_ri": "El preludio resuelve símbolos antes de generar RI y no añade instrucciones."
+}
+```

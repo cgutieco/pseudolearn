@@ -7,7 +7,7 @@
 - Revisión inspeccionada: `d621b16bb413c43677f7f9588b7e46728ed282f0`.
 - Rama comprobada: `feature/agregar-ruta-de-especificacion`; árbol limpio antes de redactar.
 - Petición: «Crea el plan de ejecución detallado para `4.10 PG-A · App y sintaxis estática`, lo suficientemente detallado para que el agente que complete las fases no tenga chance de alucinar».
-- Autorización actual: preparar este documento y enlazarlo. No autoriza implementación, cierre, commit, push ni PG-B/PG-7. `PG-A.C01` y `PG-A.C02` continúan pendientes.
+- Autorización actual: el 2026-11-01 la persona autorizó implementar `PG-A.01` y `PG-A.02` en una sola iteración, aun con `PG-1` abierto. Esta autorización no cierra `PG-1`, `PG-A` ni `PG-A.C01`–`PG-A.C13`, y no autoriza `.03`–`.09`, commit, push ni PG-B/PG-7. Al terminar `.01` y `.02`, informar y detenerse.
 - Este documento es transitorio de `docs/`. Sus decisiones operativas deben trasladarse al corpus y a los README dueños sin citarlo desde fuera de `docs/` (`DOC-NO-TRANSIENT-REFS`).
 
 Las subsecciones de trabajo son puntos de PG-A, no fases nuevas. Una autorización posterior que nombre solo un punto no autoriza los demás ni el cierre común. Al completar el alcance autorizado se informa y se detiene (`PHASE-STOP`). Si la persona autoriza PG-A completa, las puertas técnicas internas no requieren pedir confirmación rutinaria; sí se detiene ante los conflictos y dependencias humanas expresamente identificados.
@@ -18,13 +18,13 @@ Las subsecciones de trabajo son puntos de PG-A, no fases nuevas. Una autorizaci�
 
 | ID local | Evidencia en la revisión inicial | Consecuencia antes de implementar |
 |---|---|---|
-| PA-PRE-01 | El plan general exige PG-1, PG-2 y PG-H. PG-H y PG-2 figuran cerradas; PG-1 figura en curso y su plan mantiene C01–C13 sin cerrar | La existencia de código posterior no prueba el cierre. Registrar la decisión de la persona que habilite esta dependencia o su cierre real; no marcar PG-1 ni comenzar PG-A por cuenta propia |
-| PA-PRE-02 | ADR-12 describe tipo declarado de interfaz y llamadas por interfaz. `LANG.TYPES.INTERFACE#R1/R3` declara que la interfaz no es tipo de valor y no existen valores ni tablas dinámicas de interfaz | `CONFLICT-REPORT`: presentar la discrepancia y esperar decisión antes de especificar esa representación. Recomendación pendiente: representar contrato nominal y restricción genérica, con valor concreto; no introducir valores de interfaz ni despacho nuevo |
+| PA-PRE-01 | El plan general exige PG-1, PG-2 y PG-H. PG-H y PG-2 figuran cerradas; PG-1 continúa abierto | Resuelto solo para el alcance autorizado: se implementan `.01` y `.02` con `PG-1` abierto; su estado y los cierres comunes de PG-A no cambian |
+| PA-PRE-02 | ADR-12 describe tipo declarado de interfaz y llamadas por interfaz. `LANG.TYPES.INTERFACE#R1/R3` declara que la interfaz no es tipo de valor y no existen valores ni tablas dinámicas de interfaz | Resuelto para `.02` por la suposición explícita aceptada: contrato nominal y restricción sobre valores concretos; no se introducen valores de interfaz ni despacho dinámico |
 | PA-PRE-03 | La hoja antigua dice «GP»; las decisiones del 2026-10-22 y `LANG.EDITION.MODEL#R1` mantienen exclusivamente 2026 | Aplicar la decisión explícita ya registrada: no crear edición GP, selector GP ni migrador. «Sintaxis nueva» significa sintaxis oficial vigente de 2026 |
-| PA-PRE-04 | `LANG.PROGRAM.STRUCTURE#R1` todavía enumera subprogramas/clases; existen contratos específicos de interfaces, registros y enumerados | Auditar si es enumeración incompleta o conflicto normativo. Presentar texto y contratos exactos; cualquier corrección oficial requiere resolución registrada antes de editar esa regla |
-| PA-PRE-05 | PG-6A/6B informan deuda heredada de validación SEE/revisión independiente y cierres por decisión expresa sin `PHASE-GREEN` | Medir la línea base; conservar fallos y su procedencia. No usar esos cierres para declarar una validación actual aprobada ni atribuir revisiones |
+| PA-PRE-04 | `LANG.PROGRAM.STRUCTURE#R1` enumeraba menos declaraciones que los contratos dueños; hay contratos para interfaces, registros y enumerados | Resuelto para `.01`: se trató como inventario incompleto y se alineó `R1` con los contratos dueños; permanece una sola entrada algorítmica |
+| PA-PRE-05 | PG-6A/6B informan deuda heredada de validación SEE/revisión independiente y cierres por decisión expresa sin `PHASE-GREEN`; el reanclaje local detectó desajustes en `API.ANALYZE` y `API.ERRORS`, que no se editaron aquí | Separar esa deuda del cambio actual. `see validate` sí pasa; no reanclar reglas ajenas por inferencia ni declarar verdes las puertas que fallen |
 
-La preparación del plan no resuelve PA-PRE-01/02/04/05. Se puede revisar el plan sin ejecutar producto. Las decisiones pendientes se registran literalmente, con fecha y alcance, en §9 y §11; no se sustituye una aprobación ausente por el paso del tiempo.
+La autorización del 2026-11-01 resuelve PA-PRE-01/02/04 para `.01` y `.02` únicamente. PA-PRE-05 conserva su deuda y sus fallos actuales se registran con procedencia en §11.
 
 ### 1.2 Lo que ya existe y lo que falta demostrar
 
@@ -96,23 +96,23 @@ Orden obligatorio por punto: regla → casos derivados → tests que detectan la
 
 ### PG-A.01 · Documento único y preludio público
 
-- [ ] `PG-A.01.01` Resolver las puertas de §1.1 y registrar autorización. Auditar análisis, ejecución, ayuda y servicio sobre documento aislado; localizar configuración pública reutilizable. Separar qué existe de lo que falta con rutas y casos.
-- [ ] `PG-A.01.02` Especificar el modo aislado en contratos dueños existentes; crear contrato adicional solo si no hay dueño. Fijar: una entrada, declaraciones hermanas admitidas, edición 2026, perfiles/rigores, inventario de preludio, disponibilidad y sombreado, rechazo de múltiples entradas, import/export sin resolución y relación de IDs/revisiones. Ninguna capacidad procede del preludio por sí sola. No decidir nombres ni reglas de sombreado sin norma revisada.
-- [ ] `PG-A.01.03` Derivar casos es/en y estricto/flexible: archivo autosuficiente válido, vacío, algoritmo vacío, dos entradas, nombre en colisión con preludio, símbolo ausente, Unicode/BOM, import no resuelto y ausencia de permisos. Expected de diagnósticos, salida e identidades viene de cada regla; no capturar resultados del motor.
-- [ ] `PG-A.01.04` Añadir pruebas API/CLI/puente que fallen sin configuración uniforme. Comparar el mismo archivo/configuración y el texto antes/después; abrir/consultar no edita, traduce ni migra. Variar directorio de ejecución y entorno del proceso para probar independencia.
-- [ ] `PG-A.01.05` Implementar en API/semántica solo las carencias demostradas; CLI acepta la misma configuración y el sujeto SEE la transporta. La app pasa configuración, no antepone texto/imports, crea manifiestos ocultos ni lee dependencias instaladas. El nombre del flag, si hace falta, se fija en corpus de CLI antes del parser.
-- [ ] `PG-A.01.06` Actualizar README de spec, crate/miembro engine, CLI y app afectados; registrar opción pública, inventario, límites, fallos y por qué. Verificar casos de este punto por engine, cli y app, más tests espejo y puertas afectadas de §7.
+- [x] `PG-A.01.01` Resolver las puertas de §1.1 y registrar autorización. Auditar análisis, ejecución, ayuda y servicio sobre documento aislado; localizar configuración pública reutilizable. Separar qué existe de lo que falta con rutas y casos.
+- [x] `PG-A.01.02` Especificar el modo aislado en contratos dueños existentes; crear contrato adicional solo si no hay dueño. Fijar: una entrada, declaraciones hermanas admitidas, edición 2026, perfiles/rigores, inventario de preludio, disponibilidad y sombreado, rechazo de múltiples entradas, import/export sin resolución y relación de IDs/revisiones. Ninguna capacidad procede del preludio por sí sola. No decidir nombres ni reglas de sombreado sin norma revisada.
+- [x] `PG-A.01.03` Derivar casos es/en y estricto/flexible: archivo autosuficiente válido, vacío, algoritmo vacío, dos entradas, nombre en colisión con preludio, símbolo ausente, Unicode/BOM, import no resuelto y ausencia de permisos. Expected de diagnósticos, salida e identidades viene de cada regla; no capturar resultados del motor.
+- [x] `PG-A.01.04` Añadir pruebas API/CLI/puente que fallen sin configuración uniforme. Comparar el mismo archivo/configuración y el texto antes/después; abrir/consultar no edita, traduce ni migra. Variar directorio de ejecución y entorno del proceso para probar independencia.
+- [x] `PG-A.01.05` Implementar en API/semántica solo las carencias demostradas; CLI acepta la misma configuración y el sujeto SEE la transporta. La app pasa configuración, no antepone texto/imports, crea manifiestos ocultos ni lee dependencias instaladas. El nombre del flag, si hace falta, se fija en corpus de CLI antes del parser.
+- [x] `PG-A.01.06` Actualizar README de spec, crate/miembro engine, CLI y app afectados; registrar opción pública, inventario, límites, fallos y por qué. Verificar casos de este punto por engine, cli y app, más tests espejo y puertas afectadas de §7.
 
 Salida exigida: un caso autocontenido reproducible por operación pública, CLI y FRB con configuración equivalente; fuente idéntica y sin manifiesto obligatorio. No basta ejecutar solo un `Algoritmo` tradicional.
 
 ### PG-A.02 · Modelos y proyección estática
 
-- [ ] `PG-A.02.01` Elaborar inventario de campos públicos actuales: forma, ID, revisión, rango, papeles, relación y condición de error. Para interfaz/realización/restricción/variante/captura/iteración/ámbito identificar campo existente o carencia. Contrastar también registros, constantes, inmutabilidad y tipos función; no reconstruirlos con regex.
-- [ ] `PG-A.02.02` Extender `API.PROGRAM.VIEW` y, solo si hace falta, `API.STATE.QUERY` con datos ausentes. Definir realización explícita/heredada y estado inválido, restricciones por identidad, discriminante/carga de variante, origen y modo de captura, vínculos/colección/cuerpo de iteración y dueño de ámbito. La representación de captura no expone direcciones ni materializa un entorno inexistente.
-- [ ] `PG-A.02.03` Derivar casos del contrato para interfaz vacía, dos implementaciones, contrato incompleto, restricción válida/inválida, captura transitiva y mutable rechazada, variante con/sin carga, colección vacía y ámbito anidado. Añadir casos de revisión ajena, ID ausente y rangos Unicode.
-- [ ] `PG-A.02.04` Escribir tests espejo de modelos y adaptadores, y de API donde cambie. Inyectar transporte para probar campos faltantes/desconocidos y errores tipados; los tests de integración usarán FRB real en `.07`. Ninguna excepción esperable debe escapar del puerto.
-- [ ] `PG-A.02.05` Crear/extender modelos inmutables y puertos pequeños; adaptar `rust_program_view*`/`rust_view_semantics.dart`. Conservar el mapa de identidad pública a índice local y revisión. Extraer archivos especializados antes de superar límites; no engordar `EditorCubit` ni `ClassModel` con responsabilidades ajenas.
-- [ ] `PG-A.02.06` Documentar invariantes en README de API/app, actualizar reglas solo si cambia realmente la arquitectura y ejecutar tests/casos del punto. Entregar tabla de campos consumidos con contrato y test por fila.
+- [x] `PG-A.02.01` Elaborar inventario de campos públicos actuales: forma, ID, revisión, rango, papeles, relación y condición de error. Para interfaz/realización/restricción/variante/captura/iteración/ámbito identificar campo existente o carencia. Contrastar también registros, constantes, inmutabilidad y tipos función; no reconstruirlos con regex.
+- [x] `PG-A.02.02` Extender `API.PROGRAM.VIEW` y, solo si hace falta, `API.STATE.QUERY` con datos ausentes. Definir realización explícita/heredada y estado inválido, restricciones por identidad, discriminante/carga de variante, origen y modo de captura, vínculos/colección/cuerpo de iteración y dueño de ámbito. La representación de captura no expone direcciones ni materializa un entorno inexistente.
+- [x] `PG-A.02.03` Derivar casos del contrato para interfaz vacía, dos implementaciones, contrato incompleto, restricción válida/inválida, captura transitiva y mutable rechazada, variante con/sin carga, colección vacía y ámbito anidado. Añadir casos de revisión ajena, ID ausente y rangos Unicode.
+- [x] `PG-A.02.04` Escribir tests espejo de modelos y adaptadores, y de API donde cambie. Inyectar transporte para probar campos faltantes/desconocidos y errores tipados; los tests de integración usarán FRB real en `.07`. Ninguna excepción esperable debe escapar del puerto.
+- [x] `PG-A.02.05` Crear/extender modelos inmutables y puertos pequeños; adaptar `rust_program_view*`/`rust_view_semantics.dart`. Conservar el mapa de identidad pública a índice local y revisión. Extraer archivos especializados antes de superar límites; no engordar `EditorCubit` ni `ClassModel` con responsabilidades ajenas.
+- [x] `PG-A.02.06` Documentar invariantes en README de API/app, actualizar reglas solo si cambia realmente la arquitectura y ejecutar tests/casos del punto. Entregar tabla de campos consumidos con contrato y test por fila.
 
 ### PG-A.03 · Interfaces, realización y tipos visibles
 
@@ -329,15 +329,88 @@ Registrar por participante seudónimo, consentimiento gestionado por la persona,
 
 ## 11. Resumen de ejecución
 
-Preparación documental: plan creado el 2026-11-01 a petición expresa. No implementa ni cierra ningún punto de producto; ninguna casilla de PG-A se marca por existir este documento. Las tareas permanecen pendientes hasta una autorización posterior y sus comprobaciones.
+Implementación autorizada: PG-A.01 y PG-A.02 ejecutados en esta iteración con PG-1 abierto. La API pública de análisis y la entrada de archivo suelto de CLI conservan texto, perfil y rigor; la app transporta esos valores intactos. La vista estática agrega solo las relaciones ausentes y la app las decodifica en modelos inmutables. `API.STATE.QUERY` no cambió.
 
-Al ejecutar, añadir **una fila por ID de tarea** de §4 y por cierre común; no sustituirlas por una fila de rango como evidencia. Estados permitidos: Cumplido, No cumplido, Diferido, No aplica o Retirado, según §2.2 del plan general. Antes de intentar una tarea permanece pendiente en su casilla, sin inventar uno de esos resultados.
+El registro sigue cada tarea de §4 y cada cierre común por su ID. Completar tareas de `.01` y `.02` no cierra PG-A ni habilita `.03`.
 
 | Tarea / punto | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
-| Preparación documental | Cumplido | Este documento y enlace desde §4.10 del plan general; revisión base en §0 | No equivale a `PG-A.C02` revisado por la persona |
-| PG-A.01–PG-A.09 | Sin iniciar; registro inicial | Casillas de §4 abiertas | Alcance autorizado actual: planificación |
-| PG-A.C01–PG-A.C13 | Pendientes; registro inicial | Casillas de §10.1 abiertas | Requieren ejecución/revisión/cierre según su contrato |
-| PA-PRE-01/02/04/05 | Pendientes; registro inicial | Fuentes concretas en §1.1 | No resueltas por este plan |
+| PG-A.01.01 | Cumplido | Autorización explícita del 2026-11-01; auditoría de AnalyzeRequest, CLI de archivo y transporte de app | Alcance ejecutado; no implica cierre común de PG-A |
+| PG-A.01.02 | Cumplido | LANG.PROGRAM.STRUCTURE#R1, LANG.EDITION.MODEL#R2, LANG.MODULE.MODEL#R3/C22 e IR.INSTRUCTIONS#V209 | Alcance ejecutado; no implica cierre común de PG-A |
+| PG-A.01.03 | Cumplido | Casos LANG.PROGRAM.STRUCTURE C1–C5, LANG.EDITION.MODEL C3–C4 y LANG.MODULE.MODEL C22 | Alcance ejecutado; no implica cierre común de PG-A |
+| PG-A.01.04 | Cumplido | Prueba de transporte Dart; editor_process prueba entrada suelta con entorno vacío y desde otro directorio | Alcance ejecutado; no implica cierre común de PG-A |
+| PG-A.01.05 | Cumplido | AnalyzeRequest, API y entrada CLI existentes; sin manifiesto, transformación ni opción nueva | Alcance ejecutado; no implica cierre común de PG-A |
+| PG-A.01.06 | Cumplido | README de spec, engine, CLI y app; conformidad SEE, pruebas dirigidas y límites registrados abajo | Alcance ejecutado; no implica cierre común de PG-A |
+| PG-A.02.01 | Cumplido | Inventario de campos y filas contrato/prueba en README de app; auditoría del esquema previo API.PROGRAM.VIEW | Alcance ejecutado; no implica cierre común de PG-A |
+| PG-A.02.02 | Cumplido | API.PROGRAM.VIEW#R5 y campos aditivos; API.STATE.QUERY permanece intacta | Alcance ejecutado; no implica cierre común de PG-A |
+| PG-A.02.03 | Cumplido | API.PROGRAM.VIEW C13–C16 en español/inglés y rigor estricto/flexible | Alcance ejecutado; no implica cierre común de PG-A |
+| PG-A.02.04 | Cumplido | 10 pruebas API nominales, 6 de identidad, pruebas espejo Dart de modelos/decodificador/transporte | Alcance ejecutado; no implica cierre común de PG-A |
+| PG-A.02.05 | Cumplido | Modelos Dart inmutables y lectura tipada; proyección estática Rust con relaciones por IDs locales | Alcance ejecutado; no implica cierre común de PG-A |
+| PG-A.02.06 | Cumplido | README de API/app y matriz campo–contrato–prueba; verificadores y fallos anotados abajo | Alcance ejecutado; no implica cierre común de PG-A |
+| PG-A.03.01 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
+| PG-A.03.02 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
+| PG-A.03.03 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
+| PG-A.03.04 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
+| PG-A.03.05 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
+| PG-A.03.06 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
+| PG-A.04.01 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
+| PG-A.04.02 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
+| PG-A.04.03 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
+| PG-A.04.04 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
+| PG-A.04.05 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
+| PG-A.04.06 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
+| PG-A.05.01 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
+| PG-A.05.02 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
+| PG-A.05.03 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
+| PG-A.05.04 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
+| PG-A.05.05 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
+| PG-A.06.01 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
+| PG-A.06.02 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
+| PG-A.06.03 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
+| PG-A.06.04 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
+| PG-A.06.05 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
+| PG-A.06.06 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
+| PG-A.07.01 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
+| PG-A.07.02 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
+| PG-A.07.03 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
+| PG-A.07.04 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
+| PG-A.07.05 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
+| PG-A.07.06 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
+| PG-A.07.07 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
+| PG-A.08.01 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
+| PG-A.08.02 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
+| PG-A.08.03 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
+| PG-A.08.04 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
+| PG-A.08.05 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
+| PG-A.09.01 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
+| PG-A.09.02 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
+| PG-A.09.03 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
+| PG-A.09.04 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
+| PG-A.09.05 | Pendiente | Casilla de §4 sin ejecutar | Fuera de la autorización actual, que se limita a PG-A.01 y PG-A.02 |
+| PG-A.C01 | Pendiente | Casilla de §10.1 | No autorizado el cierre común de PG-A |
+| PG-A.C02 | Pendiente | Casilla de §10.1 | No autorizado el cierre común de PG-A |
+| PG-A.C03 | Pendiente | Casilla de §10.1 | No autorizado el cierre común de PG-A |
+| PG-A.C04 | Pendiente | Casilla de §10.1 | No autorizado el cierre común de PG-A |
+| PG-A.C05 | Pendiente | Casilla de §10.1 | No autorizado el cierre común de PG-A |
+| PG-A.C06 | Pendiente | Casilla de §10.1 | No autorizado el cierre común de PG-A |
+| PG-A.C07 | Pendiente | Casilla de §10.1 | No autorizado el cierre común de PG-A |
+| PG-A.C08 | Pendiente | Casilla de §10.1 | No autorizado el cierre común de PG-A |
+| PG-A.C09 | Pendiente | Casilla de §10.1 | No autorizado el cierre común de PG-A |
+| PG-A.C10 | Pendiente | Casilla de §10.1 | No autorizado el cierre común de PG-A |
+| PG-A.C11 | Pendiente | Casilla de §10.1 | No autorizado el cierre común de PG-A |
+| PG-A.C12 | Pendiente | Casilla de §10.1 | No autorizado el cierre común de PG-A |
+| PG-A.C13 | Pendiente | Casilla de §10.1 | No autorizado el cierre común de PG-A |
+| Preparación documental | Cumplido | Este documento y enlace desde §4.10 del plan general | No equivale a `PG-A.C02` revisado por la persona |
+| PA-PRE-01 | Cumplido para .01/.02 | Autorización del 2026-11-01 | `PG-1` continúa abierto; solo se habilitaron estos dos puntos |
+| PA-PRE-02 | Cumplido para .02 | Contrato nominal y restricciones sobre valores concretos | Sin valores de interfaz ni despacho dinámico |
+| PA-PRE-03 | Cumplido | Edición 2026 y `LANG.EDITION.MODEL#R1/R2` | Sin selector ni migrador GP |
+| PA-PRE-04 | Cumplido para .01 | `LANG.PROGRAM.STRUCTURE#R1` y casos C1–C5 | Un algoritmo por archivo |
+| PA-PRE-05 | No cumplido; deuda heredada | Desajustes de lock y puerta de propiedades descritos después de la tabla | No se modificaron contratos ajenos ni estados/versiones congelados |
 
-Revisión Git de cierre de implementación: no existe. Verificadores de producto ejecutados en esta preparación: ninguno. Verificación documental de esta preparación: `git diff --check` sin errores; comprobación estructural de 52 tareas secuenciales únicas, nueve puntos y 13 cierres, con enlaces locales válidos; tres tests de la puerta documental aprobados mediante `rustc --edition=2024 --test packages/pseudolearn_spec/xtask/src/documentation.rs`, y ejecución de `documentation::check` sobre el monorepo sin violaciones. El binario y lanzador temporales se generaron fuera del repositorio. Estos resultados no certifican el producto. Pendientes justificados: autorización/revisión del plan, dependencias de §9 y todas las tareas de ejecución. Puntos de §4.10 cumplidos por esta preparación: ninguno. No se hizo commit ni push como parte de redactar el plan.
+Verificación en verde: `see validate` validó 196 especificaciones; `see export --check` aprobó; conformidad engine para `LANG.PROGRAM.STRUCTURE` (20 observaciones), `LANG.EDITION.MODEL` (16) y `LANG.MODULE.MODEL` (37), todas con cero divergencias; conformidad app para `API.PROGRAM.VIEW` (43 observaciones, cero divergencias); 10 tests `program_view_nominal`, 6 tests de identidad, 2 tests CLI de archivo suelto, `cargo clippy --locked -p pseudolearn_api --all-targets --features native -- -D warnings`, `cargo fmt --all --check`, verificador de reglas Rust del engine, límites Dart, análisis Flutter y suite Flutter (21 tests).
+
+Puertas fallidas o incompletas, separadas de la implementación: `see conform --subject engine --only API.PROGRAM.VIEW` observó 42 casos sin divergencias, pero termina en `SEE-REGRESSION` por el vínculo heredado de `API.PROGRAM.VIEW#R3`, cuyo único caso es de app y no ofrece caso engine; el reanclaje de los contratos editados queda bloqueado por `SEE-HASH` sobre `API.ANALYZE@1.0.0` y `API.ERRORS@1.0.0`, sin cambios a esos contratos. `cargo xtask verify` del engine llegó a tests después de Clippy, pero los tests de workspace terminaron con `No space left on device`; las pruebas dirigidas API sí pasan. `cargo xtask verify` de CLI pasó formato y Clippy, pero 12 pruebas de red local no pudieron abrir sockets (`Operation not permitted`); 104 tests de binario pasaron y las dos pruebas CLI dirigidas pasan. El verificador completo de spec pasó exportación, lint, tests y validaciones, pero quedó sin concluir en `see conform --subject engine --operation properties` por más de seis minutos y se interrumpió; no se declara verde.
+
+La conformidad adicional de `LANG.SOURCE.POSITION` no generó evidencia nueva porque `SEE-STALE` detectó la matriz engine local anterior de `API.PROGRAM.VIEW` con hash de corpus desactualizado. El caso sí cuenta con tests de identidad de fuente en Rust y tests de rangos Unicode/BOM en el adaptador Dart.
+
+No hubo commit ni push. No se cerró PG-1, PG-A ni ninguno de sus cierres comunes. La implementación queda reportada y la iteración se detiene aquí.

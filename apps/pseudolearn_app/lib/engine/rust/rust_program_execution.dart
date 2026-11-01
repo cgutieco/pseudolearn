@@ -16,6 +16,7 @@ import 'rust_focus_tracker.dart';
 import 'rust_output_assembler.dart';
 import 'rust_profile_name.dart';
 import 'rust_program_view.dart';
+import 'rust_program_view_read_result.dart';
 import 'rust_state_api.dart';
 import 'rust_transport.dart';
 import 'rust_watch_rows.dart';
@@ -85,10 +86,15 @@ final class RustProgramExecution implements ProgramExecution {
       return const ExecutionStep.unstarted();
     }
     final offsets = SourceOffsetIndex(sourceCode);
-    final view = RustProgramView.fromJson(
+    final viewResult = RustProgramView.decode(
       _analysis.programView(handle),
       offsets,
     );
+    if (viewResult is! RustProgramViewReadSuccess) {
+      _analysis.release(handle);
+      return const ExecutionStep.unstarted();
+    }
+    final view = viewResult.view;
     _handle = handle;
     _offsets = offsets;
     _view = view;
@@ -143,7 +149,9 @@ final class RustProgramExecution implements ProgramExecution {
     if (settlement == EffectSettlement.cancel) return _cancelled();
     final batch = _last;
     final execution = _executionId;
-    if (execution == null || batch?.pendingEffect == null || !_gate.canResolve) {
+    if (execution == null ||
+        batch?.pendingEffect == null ||
+        !_gate.canResolve) {
       return step();
     }
     _gate.answer(execution, batch!);
@@ -184,7 +192,6 @@ final class RustProgramExecution implements ProgramExecution {
     }
     return _snapshot();
   }
-
   void _recordEffects(RustEvent event) {
     switch (event.eventClass) {
       case 'output':
@@ -195,7 +202,6 @@ final class RustProgramExecution implements ProgramExecution {
         _inputPrompt = inputPromptOf(_view!, _offsets!, event);
     }
   }
-
   ExecutionStep _terminalStep() {
     final batch = _last;
     return switch (_termination) {

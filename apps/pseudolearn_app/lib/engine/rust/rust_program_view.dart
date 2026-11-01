@@ -1,9 +1,21 @@
 import '../../domain/model/analysis/program_node_id.dart';
+import '../../domain/model/analysis/program_view_static_data.dart';
 import '../../domain/model/analysis/source_range.dart';
+import 'rust_program_view_read_result.dart';
 import 'rust_view_semantics.dart';
 import 'source_offset_index.dart';
+import 'source_offset_text.dart';
 
 part 'rust_program_view_builder.dart';
+part 'rust_program_view_decoder.dart';
+part 'rust_program_view_wire_validator.dart';
+part 'rust_program_view_wire_nodes.dart';
+part 'rust_program_view_wire_relations.dart';
+part 'rust_program_view_wire_values.dart';
+part 'rust_program_view_wire_references.dart';
+part 'rust_program_view_wire_static_nodes.dart';
+part 'rust_program_view_wire_semantics.dart';
+part 'rust_program_view_static_builder.dart';
 
 final class RustViewNode {
   final ProgramNodeId id;
@@ -76,6 +88,7 @@ final class RustProgramView {
   final List<RustViewUnit> units;
   final List<RustViewMember> members;
   final Map<String, String> superclasses;
+  final ProgramViewStaticData staticData;
 
   const RustProgramView._({
     required this.revision,
@@ -84,25 +97,14 @@ final class RustProgramView {
     required this.units,
     required this.members,
     required this.superclasses,
+    required this.staticData,
   }) : _byIdentifier = byIdentifier,
        _identifiers = identifiers;
 
-  factory RustProgramView.fromJson(
+  static RustProgramViewReadResult decode(
     Map<String, Object?> json,
     SourceOffsetIndex offsets,
-  ) {
-    final nodes = (json['nodes'] as List<Object?>).cast<Map<String, Object?>>();
-    final ordinals = _ordinalsFor(nodes);
-    final viewNodes = _RustViewNodeBuilder(ordinals, offsets).build(nodes);
-    return RustProgramView._(
-      revision: json['revision_id'] as String,
-      byIdentifier: viewNodes.byIdentifier,
-      identifiers: viewNodes.identifiers,
-      units: _unitsFor(json, ordinals, offsets),
-      members: _membersFor(json, ordinals),
-      superclasses: _superclassesFor(json),
-    );
-  }
+  ) => _RustProgramViewDecoder(json, offsets).decode();
 
   RustViewNode? node(String? identifier) =>
       identifier == null ? null : _byIdentifier[identifier];

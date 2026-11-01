@@ -34,6 +34,7 @@ pub(crate) struct ProgramView {
     inheritance: Value,
     methods: Value,
     members: Value,
+    realizations: Value,
     source_id: pseudolearn_source::SourceId,
     source: Option<crate::ApiSourceIdentity>,
 }
@@ -58,12 +59,18 @@ impl ProgramView {
         let profile = Profile::from_name(&request.profile).unwrap_or(Profile::Spanish);
         let strict = request.strictness != "flexible";
         let (source, tree) = parse_view_source(request, strict, profile, project)?;
-        let nodes = annotated_nodes(&tree, &source, (profile, strict), &revision);
-        let by_span = index_by_span(&nodes);
+        let (nodes, realizations) = annotated_nodes(&tree, &source, (profile, strict), &revision);
         let schema = crate::diagnostic_conversion::schema(&tree, &source);
-        let (inheritance, methods) =
-            crate::program_view_relations::inheritance_and_methods(&tree, &source);
-        let units = crate::program_view_relations::units(&schema, &nodes, &revision);
+        let source_identity = crate::source_identity::api_identity(&source);
+        let (inheritance, methods) = crate::program_view_relations::RelationProjection {
+            tree: &tree,
+            source: &source,
+            nodes: &nodes,
+            revision: &revision,
+            source_identity,
+        }
+        .project();
+        let units = crate::program_view_units::units(&schema, &nodes, &revision, source_identity);
         let members =
             crate::program_view_members::members(crate::program_view_members::MemberProjection {
                 tree: &tree,
@@ -73,12 +80,13 @@ impl ProgramView {
             });
         Ok(Self {
             revision,
+            by_span: index_by_span(&nodes),
             nodes,
-            by_span,
             units,
             inheritance,
             methods,
             members,
+            realizations,
             source_id: pseudolearn_source::source_id(&source),
             source: crate::source_identity::api_identity(&source),
         })
@@ -89,13 +97,7 @@ impl ProgramView {
     }
 
     pub(crate) fn node_identifier(&self, ordinal: usize) -> String {
-        match self.source {
-            Some(source) => format!(
-                "p{:x}.r{:x}.f{:x}.n{ordinal:x}",
-                source.project_id, source.revision_id, source.source_id
-            ),
-            None => format!("{}.n{ordinal:x}", self.revision),
-        }
+        node_identifier(&self.revision, self.source, ordinal)
     }
 
     pub(crate) fn source_id(&self) -> pseudolearn_source::SourceId {
@@ -165,6 +167,7 @@ impl ProgramView {
             "inheritance": self.inheritance,
             "methods": self.methods,
             "members": self.members,
+            "realizations": self.realizations,
         });
         if let (Some(source), Some(fields)) = (self.source, value.as_object_mut()) {
             fields.insert("source".to_owned(), json!(source));
@@ -178,7 +181,7 @@ fn annotated_nodes(
     source: &pseudolearn_source::SourceText,
     mode: (Profile, bool),
     revision: &str,
-) -> Vec<ViewNode> {
+) -> (Vec<ViewNode>, Value) {
     let mut nodes = crate::program_view_tree::collect_nodes(tree, source);
     let context = AnnotationContext {
         tree,
@@ -187,8 +190,31 @@ fn annotated_nodes(
         strict: mode.1,
     };
     crate::program_view_annotations::annotate(&mut nodes, &context);
-    crate::program_view_nominal::annotate(&mut nodes, &context, revision);
-    nodes
+    let analysis = pseudolearn_semantic::analyze_for_service(
+        tree,
+        source,
+        pseudolearn_semantic::SemanticOptions {
+            profile: mode.0,
+            strict: mode.1,
+        },
+    );
+    let realizations =
+        crate::program_view_nominal::annotate(&mut nodes, &context, revision, &analysis);
+    (nodes, realizations)
+}
+
+pub(crate) fn node_identifier(
+    revision: &str,
+    source: Option<crate::ApiSourceIdentity>,
+    ordinal: usize,
+) -> String {
+    match source {
+        Some(source) => format!(
+            "p{:x}.r{:x}.f{:x}.n{ordinal:x}",
+            source.project_id, source.revision_id, source.source_id
+        ),
+        None => format!("{revision}.n{ordinal:x}"),
+    }
 }
 
 fn parse_view_source(

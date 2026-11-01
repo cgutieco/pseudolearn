@@ -30,10 +30,11 @@ pub fn check(specification: &Specification) -> Vec<String> {
             "grammar" => grammar::check(value),
             "helpCatalog" => help_catalog::check(value),
             "analysisLimits" => analysis_limits::check(value),
-            "textmateIdentifier" | "textmateNumber" | "textmateComment"
-            | "textmateTextLiteral" | "textmateAccentFold" => {
-                textmate_grammar::check(field(definition, "termino"), value)
-            }
+            "textmateIdentifier"
+            | "textmateNumber"
+            | "textmateComment"
+            | "textmateTextLiteral"
+            | "textmateAccentFold" => textmate_grammar::check(field(definition, "termino"), value),
             "unsupportedConstructs" => structural::check(value),
             crate::trace::ALPHABET_TERM => crate::trace::catalog(value),
             crate::cli::CONVENTIONS_TERM => crate::cli::conventions(value),

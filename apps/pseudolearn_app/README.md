@@ -2605,6 +2605,19 @@ El adaptador Rust de la tabla de variables consume las entradas vector y diccion
 
 `RustViewSemantics` lee de cada nodo de la vista pública los atributos `builtin_type` (`bytes`, `io_error`), `capability_type` (`console`, `arguments`, `directory`, `file`, `clock`, `timer`) y `effect_operation` (identidad de `LIB.MODEL`) que proyecta `pseudolearn_api`; un nodo sin ellos no expone ninguno. La app solo los transporta: no interpreta la autoridad de una capacidad, que sigue siendo del anfitrión simulado (`RustSimulatedHost`). Cubre `test/engine/rust/rust_view_semantics_test.dart`.
 
+### Datos estáticos tipados de la vista pública
+
+`RustProgramView.decode` conserva `revision_id` y crea el mapa de `node_id` público a ordinal local. Valida campos requeridos, tramos Unicode y vínculos de la vista antes de construir modelos inmutables de realizaciones, restricciones, variantes, capturas, iteraciones y ámbitos; un campo ausente o mal formado y una referencia inexistente o ajena devuelven `RustProgramViewReadFailure`. Los atributos desconocidos se ignoran para aceptar extensiones aditivas. `RustProgramViewSource` envía el texto original con perfil y rigor explícitos; los modelos solo describen datos estáticos y no calculan disposición ni dibujan diagramas.
+
+| Dato consumido | Campo de `API.PROGRAM.VIEW#R5` | Prueba de consumidor |
+|---|---|---|
+| Realización nominal | `realizations`, origen, validez y diagnósticos por `node_id` | `rust_program_view_test.dart`; `program_view_nominal.rs` |
+| Restricción genérica | `constraints` y destino de contrato por identidad | `rust_program_view_test.dart`; `program_view_nominal.rs` |
+| Variante y carga | `variant` y roles de hijos, sin carga sintética para `none` | `rust_program_view_test.dart`; `program_view_nominal.rs` |
+| Captura | `captures` con vínculo y modo `value` | `rust_program_view_test.dart`; `program_view_nominal.rs` |
+| Iteración y ámbito | `iteration` con colección, vínculos, cuerpo y dueño | `rust_program_view_test.dart`; `program_view_nominal.rs` |
+| Revisión, referencias y rangos | `revision_id`, IDs del mismo origen, hijos y tramos Unicode | `rust_program_view_test.dart`; `source_identity_tests.rs` |
+
 ### Tareas: datos que la app consume y vistas que quedan para otra fase (`PG-4.11`)
 
 La fase entrega los datos y los nodos, no la interfaz de concurrencia. `RustEvent` rechaza una clase
