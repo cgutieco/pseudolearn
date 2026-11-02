@@ -51,16 +51,19 @@ FakeRustTransport scripted(
     'analysis': (_) => {'tree': true, 'diagnostics': <Object?>[]},
     'program_view': (_) => {
       'revision_id': 'rev1',
+      'child_order': 'source',
       'units': <Object?>[],
       'nodes': <Object?>[],
       'members': <Object?>[],
       'inheritance': <Object?>[],
+      'methods': <Object?>[],
     },
     'start': (arguments) {
       started.add(arguments);
       return {'resource': 3};
     },
-    'advance': (_) => batches[next < batches.length ? next++ : batches.length - 1],
+    'advance': (_) =>
+        batches[next < batches.length ? next++ : batches.length - 1],
     'effect_result': (arguments) {
       answers.add(arguments);
       return null;
@@ -72,18 +75,21 @@ FakeRustTransport scripted(
 
 void main() {
   group('RustEffectGate', () {
-    test('answers pending effects with the sequence and drains to completion', () {
-      final answers = <Map<String, Object?>>[];
-      final transport = scripted(
-        [pending(1, 'request_clock'), pending(2, 'clock_now'), completed()],
-        answers,
-        [],
-      );
-      final gate = RustEffectGate(transport, clockCapabilities, true);
-      final batch = gate.drain(3, 25, []);
-      expect(batch.termination, RustTerminationKind.completed);
-      expect(answers.map((answer) => answer['effect_seq']), [1, 2]);
-    });
+    test(
+      'answers pending effects with the sequence and drains to completion',
+      () {
+        final answers = <Map<String, Object?>>[];
+        final transport = scripted(
+          [pending(1, 'request_clock'), pending(2, 'clock_now'), completed()],
+          answers,
+          [],
+        );
+        final gate = RustEffectGate(transport, clockCapabilities, true);
+        final batch = gate.drain(3, 25, []);
+        expect(batch.termination, RustTerminationKind.completed);
+        expect(answers.map((answer) => answer['effect_seq']), [1, 2]);
+      },
+    );
 
     test('without capabilities nothing is answered', () {
       final answers = <Map<String, Object?>>[];
@@ -99,13 +105,19 @@ void main() {
       final answers = <Map<String, Object?>>[];
       final transport = scripted([pending(1, 'request_clock')], answers, []);
       final gate = RustEffectGate(transport, clockCapabilities, false);
-      expect(gate.drain(3, 25, []).termination, RustTerminationKind.awaitingEffect);
+      expect(
+        gate.drain(3, 25, []).termination,
+        RustTerminationKind.awaitingEffect,
+      );
       expect(answers, isEmpty);
     });
   });
 
   group('RustProgramExecution effects', () {
-    RustProgramExecution begin(FakeRustTransport transport, {bool auto = true}) {
+    RustProgramExecution begin(
+      FakeRustTransport transport, {
+      bool auto = true,
+    }) {
       final execution = RustProgramExecution(
         transport,
         capabilities: clockCapabilities,
@@ -125,6 +137,7 @@ void main() {
       expect(started.single['host'], {
         'permissions': ['reloj'],
         'detached': true,
+        'clock': [100],
       });
     });
 
@@ -155,6 +168,7 @@ void main() {
       expect(cancelled.haltReason, 'cancelled');
       expect(answers, isEmpty);
       expect(transport.calls, contains('cancel'));
+      expect(transport.calls, contains('release'));
     });
   });
 }

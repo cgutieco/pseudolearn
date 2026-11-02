@@ -173,7 +173,14 @@ impl ApiSession {
         if let Some(locale) = self.locale_of(analysis) {
             execution.use_locale(locale.to_owned());
         }
-        Ok(json!({"resource":self.insert(Resource::Execution {analysis,execution})?}))
+        let identifier = self.insert(Resource::Execution {
+            analysis,
+            execution,
+        })?;
+        if let Some(Resource::Execution { execution, .. }) = self.resources.get_mut(&identifier) {
+            execution.set_resource_id(identifier);
+        }
+        Ok(json!({"resource":identifier}))
     }
 
     fn execution_operation(
@@ -222,7 +229,20 @@ fn handle_execution_feed(
                 .and_then(Value::as_str)
                 .ok_or_else(|| usage("missing input text"))?
                 .to_owned();
-            execution.input(text)?;
+            let task_id = arguments
+                .get("task_id")
+                .and_then(Value::as_u64)
+                .ok_or_else(|| usage("missing input task identity"))?;
+            let resource_id = arguments
+                .get("resource_id")
+                .and_then(Value::as_u64)
+                .ok_or_else(|| usage("missing input execution identity"))?;
+            let request_id = arguments
+                .get("request_id")
+                .and_then(Value::as_u64)
+                .filter(|request_id| *request_id > 0)
+                .ok_or_else(|| usage("missing input request identity"))?;
+            execution.input(resource_id, task_id, request_id, text)?;
             Ok(Value::Null)
         }
         "effect_result" => {

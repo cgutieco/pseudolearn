@@ -1,15 +1,16 @@
 import 'package:bloc/bloc.dart';
 import '../../domain/model/execution/execution_task_context.dart';
 import '../../domain/model/execution/execution_step.dart';
+import '../../domain/model/execution/input_wait.dart';
 import '../../domain/model/profiles/syntax_profile_id.dart';
 import '../../domain/model/settings/ui_language_id.dart';
+import '../../domain/model/execution/simulated_scenario.dart';
 import '../../domain/ports/program_execution.dart';
 import 'execution_state.dart';
+import 'execution_status_from_step.dart';
 import 'step_batch_runner.dart';
 import 'step_pace.dart';
 import 'step_settlement.dart';
-
-enum ExecutionViewAction { toggleOutputPanel, dismissStatusBanner }
 
 final class ExecutionCubit extends Cubit<ExecutionState> {
   final ProgramExecution _execution;
@@ -79,17 +80,20 @@ final class ExecutionCubit extends Cubit<ExecutionState> {
     await _drain();
   }
 
-  Future<void> provideInput(String rawInput) => _enqueue(() async {
-    if (!_hasStarted) return;
-    final step = _execution.provideInput(rawInput);
-    _processStep(step);
-    if (!_hasStarted) return;
-    if (_settlement.settlesOn(step, _fromRevision)) {
-      _settle();
-      return;
-    }
-    await _drain();
-  });
+  Future<void> provideInput(InputWait request, String rawInput) =>
+      _enqueue(() async {
+        if (!_hasStarted) return;
+        final pending = state.currentStep.inputWait;
+        if (pending == null || !pending.matches(request)) return;
+        final step = _execution.provideInput(request, rawInput);
+        _processStep(step);
+        if (!_hasStarted) return;
+        if (_settlement.settlesOn(step, _fromRevision)) {
+          _settle();
+          return;
+        }
+        await _drain();
+      });
 
   void stop() {
     _commandEpoch++;
@@ -109,31 +113,10 @@ final class ExecutionCubit extends Cubit<ExecutionState> {
     );
   }
 
-  void applyViewAction(ExecutionViewAction action) {
-    switch (action) {
-      case ExecutionViewAction.toggleOutputPanel:
-        _toggleOutputPanel();
-        return;
-      case ExecutionViewAction.dismissStatusBanner:
-        _dismissStatusBanner();
-        return;
-    }
-  }
-
-  void _toggleOutputPanel() {
-    final newExpanded = !state.isOutputPanelExpanded;
-    emit(
-      state.copyWith(
-        isOutputPanelExpanded: newExpanded,
-        userCollapsedOutput: !newExpanded,
-      ),
-    );
-  }
-
-  void _dismissStatusBanner() {
-    if (state.isStatusBannerDismissed) return;
-    emit(state.copyWith(isStatusBannerDismissed: true));
-  }
+  void applyViewAction(
+    ExecutionViewAction action, {
+    SimulatedScenario? scenario,
+  }) => emit(state.applyViewAction(action, scenario: scenario));
 
   Future<void> _drain() async {
     await _runner.runUntilSettled(
@@ -187,6 +170,7 @@ final class ExecutionCubit extends Cubit<ExecutionState> {
       sourceCode: sourceCode,
       profileId: profileId,
       languageId: languageId,
+      scenario: state.simulatedScenario,
     );
     emit(
       ExecutionState(
@@ -197,6 +181,7 @@ final class ExecutionCubit extends Cubit<ExecutionState> {
         statementNumber: 0,
         isOutputPanelExpanded: state.isOutputPanelExpanded,
         userCollapsedOutput: state.userCollapsedOutput,
+        simulatedScenario: state.simulatedScenario,
       ),
     );
     return initialStep;
@@ -213,7 +198,7 @@ final class ExecutionCubit extends Cubit<ExecutionState> {
     final advanced = step.focusRevision != state.currentStep.focusRevision;
     emit(
       state.copyWith(
-        status: _statusOf(step),
+        status: executionStatusFromStep(step),
         currentStep: step,
         outputLines: lines,
         statementNumber: advanced
@@ -225,17 +210,5 @@ final class ExecutionCubit extends Cubit<ExecutionState> {
         haltMessage: step.haltReason,
       ),
     );
-  }
-
-  ExecutionStatus _statusOf(ExecutionStep step) {
-    if (step.isUiSafetyLimitReached) {
-      return ExecutionStatus.uiSafetyLimitReached;
-    }
-    if (step.isStepLimitReached) return ExecutionStatus.stepLimitReached;
-    if (step.isHalted) return ExecutionStatus.haltedWithError;
-    if (step.isFinished) return ExecutionStatus.finishedSuccess;
-    if (step.isAwaitingInput) return ExecutionStatus.pausedAwaitingInput;
-    if (step.isAwaitingEffect) return ExecutionStatus.pausedAwaitingEffect;
-    return ExecutionStatus.running;
   }
 }

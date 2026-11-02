@@ -24,10 +24,10 @@ final class BehaviourChecker {
     required ProgramAnalyzer analyzer,
     OutputNormalizer normalizer = const OutputNormalizer(),
     int stepLimit = defaultStepLimit,
-  })  : _execution = execution,
-        _analyzer = analyzer,
-        _normalizer = normalizer,
-        _stepLimit = stepLimit;
+  }) : _execution = execution,
+       _analyzer = analyzer,
+       _normalizer = normalizer,
+       _stepLimit = stepLimit;
 
   ExerciseCheckResult checkBehaviour({
     required String sourceCode,
@@ -126,7 +126,11 @@ final class BehaviourChecker {
       );
       if (anomaly != null) return _stopWith(anomaly);
       if (step.isAwaitingInput) {
-        step = _execution.provideInput(inputs[consumedInputs]);
+        final request = step.inputWait;
+        if (request == null) {
+          return _stopWith(ExerciseCheckOutcome.programHalted);
+        }
+        step = _execution.provideInput(request, inputs[consumedInputs]);
         consumedInputs++;
       } else {
         step = _execution.step();

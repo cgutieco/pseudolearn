@@ -1,4 +1,5 @@
 import 'rust_event_classes.dart';
+import '../../domain/model/execution/input_wait.dart';
 
 final class RustEventSourceIdentity {
   final String projectId;
@@ -132,12 +133,47 @@ final class PendingEffectRequest {
       );
 }
 
+final class PendingInputRequest {
+  final int resourceId;
+  final int requestId;
+  final int taskId;
+
+  const PendingInputRequest({
+    required this.resourceId,
+    required this.requestId,
+    required this.taskId,
+  });
+
+  factory PendingInputRequest.fromJson(Map<String, Object?> json) {
+    final resourceId = json['resource_id'];
+    final requestId = json['request_id'];
+    final taskId = json['task_id'];
+    if (resourceId is! int ||
+        resourceId <= 0 ||
+        requestId is! int ||
+        requestId <= 0 ||
+        taskId is! int ||
+        taskId < 0) {
+      throw const FormatException('Invalid input request identity');
+    }
+    return PendingInputRequest(
+      resourceId: resourceId,
+      requestId: requestId,
+      taskId: taskId,
+    );
+  }
+
+  InputWait toDomain() =>
+      InputWait(resourceId: resourceId, requestId: requestId, taskId: taskId);
+}
+
 final class RustBatch {
   final List<RustEvent> events;
   final RustTerminationKind termination;
   final String? failureCode;
   final String? failureMessage;
   final PendingEffectRequest? pendingEffect;
+  final PendingInputRequest? pendingInput;
   final Map<String, Object?>? pendingRequest;
   final List<PendingEffectRequest> pendingEffects;
 
@@ -147,6 +183,7 @@ final class RustBatch {
     this.failureCode,
     this.failureMessage,
     this.pendingEffect,
+    this.pendingInput,
     this.pendingRequest,
     this.pendingEffects = const [],
   });
@@ -156,6 +193,16 @@ final class RustBatch {
     final diagnostics = (json['diagnostics'] as List<Object?>? ?? const [])
         .cast<Map<String, Object?>>();
     final kind = _kindOf(termination['kind'] as String);
+    final input = json['pending_input'];
+    if (input != null && input is! Map<String, Object?>) {
+      throw const FormatException('Invalid input request');
+    }
+    final pendingInput = input == null
+        ? null
+        : PendingInputRequest.fromJson(input as Map<String, Object?>);
+    if (kind == RustTerminationKind.awaitingInput && pendingInput == null) {
+      throw const FormatException('Missing input request identity');
+    }
     return RustBatch(
       events: (json['events'] as List<Object?>)
           .cast<Map<String, Object?>>()
@@ -169,6 +216,7 @@ final class RustBatch {
       pendingEffect: kind == RustTerminationKind.awaitingEffect
           ? PendingEffectRequest.fromJson(termination)
           : null,
+      pendingInput: pendingInput,
       pendingRequest: json['pending_effect'] as Map<String, Object?>?,
       pendingEffects: [
         for (final pending

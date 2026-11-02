@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/domain/model/execution/simulated_capabilities.dart';
+import 'package:pseudolearn_app/domain/model/execution/simulated_scenario.dart';
 import 'package:pseudolearn_app/engine/rust/rust_simulated_host.dart';
 import 'package:pseudolearn_app/engine/rust/rust_wire_models.dart';
 
@@ -53,6 +54,11 @@ Map<String, Object?> openRoot(RustSimulatedHost simulated) => simulated.reply(
   ),
 );
 
+Map<String, Object?> openNetwork(RustSimulatedHost simulated) =>
+    simulated.reply(
+      request('request_network', result: capability(0, rights: 4, kind: 7)),
+    );
+
 Map<String, Object?> openFile(
   RustSimulatedHost simulated,
   String path,
@@ -72,6 +78,12 @@ void main() {
       expect(host().hostDocument(), {
         'permissions': ['archivos_escritura', 'archivos_lectura'],
         'detached': true,
+        'files': {
+          'a': [104, 111, 108, 97],
+          'bad': [255],
+        },
+        'args': ['uno', 'dos'],
+        'clock': [100],
       });
     });
 
@@ -107,16 +119,26 @@ void main() {
         request('file_read_text', receiver: capability(1, kind: 3)),
       );
       expect(failureCode(invalid), 'utf8_invalido');
-      expect(failureCode(openFile(simulated, 'falta', 'lectura')), 'no_encontrado');
+      expect(
+        failureCode(openFile(simulated, 'falta', 'lectura')),
+        'no_encontrado',
+      );
     });
 
     test('rejects escapes, absolute paths and amplification', () {
       final simulated = host();
       openRoot(simulated);
       for (final path in ['../a', '/a', 'a/../b', '']) {
-        expect(failureCode(openFile(simulated, path, 'lectura')), 'ruta_invalida');
+        expect(
+          failureCode(openFile(simulated, path, 'lectura')),
+          'ruta_invalida',
+        );
       }
-      final reader = host(files: const {'a': [1]});
+      final reader = host(
+        files: const {
+          'a': [1],
+        },
+      );
       reader.reply(
         request(
           'request_directory',
@@ -140,7 +162,10 @@ void main() {
       openRoot(simulated);
       openFile(simulated, 'a', 'lectura');
       final file = capability(1, kind: 3);
-      expect(simulated.reply(request('file_close', receiver: file))['outcome'], 'committed');
+      expect(
+        simulated.reply(request('file_close', receiver: file))['outcome'],
+        'committed',
+      );
       final after = simulated.reply(request('file_read_text', receiver: file));
       expect(failureCode(after), 'capacidad_cerrada');
       expect(simulated.openResources, 1);
@@ -148,18 +173,164 @@ void main() {
 
     test('serves arguments, clock and timer', () {
       final simulated = host(permissions: const {'reloj', 'argumentos'});
-      expect(committedValue(simulated.reply(request('arguments_values'))), ['uno', 'dos']);
+      expect(committedValue(simulated.reply(request('arguments_values'))), [
+        'uno',
+        'dos',
+      ]);
       expect(committedValue(simulated.reply(request('clock_now'))), 100);
       final waited = simulated.reply(
-        request('timer_wait', arguments: [{'kind': 'integer', 'value': 50}]),
+        request(
+          'timer_wait',
+          arguments: [
+            {'kind': 'integer', 'value': 50},
+          ],
+        ),
       );
       expect(committedValue(waited), 150);
     });
 
     test('unknown operations are interrupted', () {
       final simulated = host();
-      final reply = simulated.reply(request('desconocida', receiver: capability(9)));
+      final reply = simulated.reply(
+        request('desconocida', receiver: capability(9)),
+      );
       expect(failureCode(reply), 'capacidad_cerrada');
+    });
+
+    test('copies scenario data before serving an execution', () {
+      final permissions = {'archivos_lectura'};
+      final contents = <int>[104, 111, 108, 97];
+      final files = <String, List<int>>{'a': contents};
+      final simulated = RustSimulatedHost(
+        SimulatedCapabilities(permissions: permissions, files: files),
+      );
+      permissions.clear();
+      contents[0] = 0;
+      files.clear();
+
+      openRoot(simulated);
+      openFile(simulated, 'a', 'read');
+      final reply = simulated.reply(
+        request('file_read_text', receiver: capability(1, kind: 3)),
+      );
+      expect(committedValue(reply), 'hola');
+    });
+
+    test('caps directory rights to the configured file permissions', () {
+      final simulated = host(permissions: const {'archivos_lectura'});
+      final root = simulated.reply(
+        request('request_directory', result: capability(0, rights: 3)),
+      );
+      expect(root['outcome'], 'committed');
+      expect(
+        failureCode(openFile(simulated, 'a', 'write')),
+        'permiso_denegado',
+      );
+    });
+
+    test('uses only the prepared HTTP response for the granted origin', () {
+      final simulated = RustSimulatedHost(
+        SimulatedScenario.preparedHttp.capabilities,
+      );
+      final requestNetwork = openNetwork(simulated);
+      expect(requestNetwork['outcome'], 'committed');
+      final response = simulated.reply(
+        request(
+          'network_send',
+          receiver: capability(0, rights: 4, kind: 7),
+          arguments: [
+            {
+              'kind': 'http_request',
+              'value': {
+                'method': 'GET',
+                'url': 'https://example.test/greeting',
+              },
+            },
+          ],
+        ),
+      );
+      final value = (response['value'] as Map<String, Object?>)['value'];
+      expect(response['outcome'], 'committed');
+      expect((value as Map<String, Object?>)['body'], [104, 111, 108, 97]);
+      expect(simulated.hostDocument()['network_origins'], [
+        'https://example.test',
+      ]);
+    });
+
+    test('rejects a prepared response outside the granted origin', () {
+      final simulated = RustSimulatedHost(
+        SimulatedScenario.preparedHttp.capabilities,
+      );
+      expect(openNetwork(simulated)['outcome'], 'committed');
+      final response = simulated.reply(
+        request(
+          'network_send',
+          receiver: capability(0, rights: 4, kind: 7),
+          arguments: [
+            {
+              'kind': 'http_request',
+              'value': {'method': 'GET', 'url': 'https://other.test/greeting'},
+            },
+          ],
+        ),
+      );
+
+      expect(response['outcome'], 'failed');
+      expect(failureCode(response), 'destino_denegado');
+    });
+
+    test('returns permission denial, timeout and uncertainty as data', () {
+      final denied =
+          RustSimulatedHost(SimulatedScenario.noPermissions.capabilities).reply(
+            request('request_clock', result: capability(0, rights: 4, kind: 4)),
+          );
+      final timeout = RustSimulatedHost(SimulatedScenario.timeout.capabilities)
+          .reply(
+            request(
+              'timer_wait',
+              arguments: [
+                {'kind': 'integer', 'value': 1},
+              ],
+            ),
+          );
+      final uncertain = RustSimulatedHost(
+        SimulatedScenario.uncertainResult.capabilities,
+      );
+      openNetwork(uncertain);
+      final uncertainReply = uncertain.reply(
+        request(
+          'network_send',
+          receiver: capability(0, rights: 4, kind: 7),
+          arguments: [
+            {
+              'kind': 'http_request',
+              'value': {'method': 'POST', 'url': 'https://example.test/update'},
+            },
+          ],
+        ),
+      );
+
+      expect(denied['outcome'], 'failed');
+      expect(failureCode(denied), 'permiso_denegado');
+      expect(timeout['outcome'], 'failed');
+      expect(failureCode(timeout), 'tiempo_agotado');
+      expect(uncertainReply['outcome'], 'uncertain');
+      expect(failureCode(uncertainReply), 'interrumpido');
+    });
+
+    test('release clears capability handles and a new host starts clean', () {
+      final simulated = host();
+      openRoot(simulated);
+      openFile(simulated, 'a', 'read');
+      expect(simulated.openResources, 2);
+      simulated.closeAll();
+      expect(simulated.openResources, 0);
+
+      final restarted = host();
+      expect(restarted.openResources, 0);
+      openRoot(restarted);
+      openFile(restarted, 'a', 'read');
+      expect(restarted.openResources, 2);
     });
   });
 
@@ -172,7 +343,11 @@ void main() {
     );
 
     test('concurrent pending effects are delivered first-in first-out', () {
-      final order = RustSimulatedHost.deliveryOrder([pending(3), pending(1), pending(2)]);
+      final order = RustSimulatedHost.deliveryOrder([
+        pending(3),
+        pending(1),
+        pending(2),
+      ]);
       expect(order.map((item) => item.effectSeq), [1, 2, 3]);
     });
 

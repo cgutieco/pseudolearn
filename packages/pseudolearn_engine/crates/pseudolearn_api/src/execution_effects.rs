@@ -47,6 +47,11 @@ impl ExecutionResource {
         if matches!(exit, RunExit::AwaitingInput) && !self.execution_mode.allows_external_host() {
             return self.replay_input();
         }
+        if matches!(exit, RunExit::AwaitingInput) {
+            self.issue_input_request()?;
+        } else {
+            self.pending_input = None;
+        }
         if matches!(exit, RunExit::Completed(_)) {
             self.seal_abandoned_effects()?;
             self.effects

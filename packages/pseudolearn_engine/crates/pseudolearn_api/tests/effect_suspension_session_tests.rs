@@ -121,11 +121,15 @@ fn session_alternates_effect_and_input_suspensions() -> Result<(), String> {
     assert!(waiting.pointer("/value/termination/effect_seq").is_none());
     let misplaced = run.reply(3, "committed", json!({"kind":"integer","value":1}));
     assert!(misplaced.get("failure").is_some(), "{misplaced}");
-    assert!(
-        run.call("input", json!({"text":"5"}))
-            .get("value")
-            .is_some()
+    let pending_input = waiting
+        .pointer("/value/pending_input")
+        .ok_or_else(|| format!("missing input identity: {waiting}"))?;
+    let accepted = run.call(
+        "input",
+        json!({"text":"5", "resource_id":pending_input["resource_id"],
+            "task_id":pending_input["task_id"], "request_id":pending_input["request_id"]}),
     );
+    assert!(accepted.get("value").is_some(), "{accepted}");
     let done = run.advance();
     assert_eq!(kind(&done), Some("completed"), "{done}");
     assert_eq!(done.pointer("/value/output"), Some(&json!("100\n5\n")));

@@ -11,6 +11,7 @@ import '../../shell/design_canvas.dart';
 import '../../shell/device_class.dart';
 import 'execution_stepper.dart';
 import 'output_panel.dart';
+import 'simulated_scenario_panel.dart';
 import 'tracking_strip.dart';
 
 final class DocumentFooter extends StatelessWidget {
@@ -78,6 +79,7 @@ final class _FooterBody extends StatelessWidget {
             return Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                const SimulatedScenarioPanel(),
                 _CompactTrackingStrip(isVisible: execState.isInFlight),
                 _FooterCommands(
                   editorState: editorState,

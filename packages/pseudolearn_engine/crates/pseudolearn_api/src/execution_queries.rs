@@ -1,23 +1,10 @@
 use super::{ExecutionResource, usage};
 use crate::ApiError;
-use pseudolearn_vm::{Machine, RunExit, RunOptions};
+use pseudolearn_vm::{Machine, RunOptions};
 use serde_json::Value;
 use std::sync::atomic::Ordering;
 
 impl ExecutionResource {
-    pub(crate) fn input(&mut self, text: String) -> Result<(), ApiError> {
-        if !self.execution_mode.allows_external_host() {
-            return Err(usage("external input rejected in replay or seek mode"));
-        }
-        if !matches!(self.terminal, Some(RunExit::AwaitingInput)) {
-            return Err(usage("execution is not awaiting input"));
-        }
-        self.options.inputs.push(text.clone());
-        self.machine.supply_input(text);
-        self.terminal = None;
-        Ok(())
-    }
-
     pub(crate) fn cancel(&self) {
         self.cancelled.store(true, Ordering::Relaxed);
     }

@@ -70,7 +70,24 @@ fn started_project_waits_for_input_and_accepts_a_line() -> Result<(), String> {
     let resource = start(&mut session, READING_MAIN)?;
     let waiting = advance(&mut session, &resource)?;
     assert_eq!(kind(&waiting), Some("awaiting_input"));
-    let fed = session.call("input", &json!({"resource": resource, "text": "7"}));
+    let pending_input = waiting
+        .get("pending_input")
+        .ok_or_else(|| format!("missing input identity: {waiting}"))?;
+    let resource_id = pending_input
+        .get("resource_id")
+        .ok_or("missing input resource identity")?;
+    let task_id = pending_input
+        .get("task_id")
+        .ok_or("missing input task identity")?;
+    let request_id = pending_input
+        .get("request_id")
+        .ok_or("missing input request identity")?;
+    let fed = session.call(
+        "input",
+        &json!({"resource": resource, "resource_id":resource_id,
+            "task_id":task_id,"request_id":request_id,
+            "text":"7"}),
+    );
     value(&fed)?;
     let finished = advance(&mut session, &resource)?;
     assert_eq!(kind(&finished), Some("completed"));
@@ -84,8 +101,26 @@ fn input_wait_is_cancelled_by_releasing_the_resource() -> Result<(), String> {
     let resource = start(&mut session, READING_MAIN)?;
     let waiting = advance(&mut session, &resource)?;
     assert_eq!(kind(&waiting), Some("awaiting_input"));
+    let pending_input = waiting
+        .get("pending_input")
+        .cloned()
+        .ok_or_else(|| format!("missing input identity: {waiting}"))?;
+    let resource_id = pending_input
+        .get("resource_id")
+        .ok_or("missing input resource identity")?;
+    let task_id = pending_input
+        .get("task_id")
+        .ok_or("missing input task identity")?;
+    let request_id = pending_input
+        .get("request_id")
+        .ok_or("missing input request identity")?;
     value(&session.call("release", &json!({"resource": resource})))?;
-    let late = session.call("input", &json!({"resource": resource, "text": "7"}));
+    let late = session.call(
+        "input",
+        &json!({"resource": resource, "resource_id":resource_id,
+            "task_id":task_id,"request_id":request_id,
+            "text":"7"}),
+    );
     assert!(late.get("value").is_none());
     Ok(())
 }

@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import '../../domain/model/execution/execution_step.dart';
 import '../../domain/model/execution/output_line.dart';
+import '../../domain/model/execution/simulated_scenario.dart';
 import 'step_batch_runner.dart';
 
 enum ExecutionStatus {
@@ -15,6 +16,12 @@ enum ExecutionStatus {
   finishedSuccess,
 }
 
+enum ExecutionViewAction {
+  toggleOutputPanel,
+  dismissStatusBanner,
+  selectScenario,
+}
+
 final class ExecutionState extends Equatable {
   final ExecutionStatus status;
   final ExecutionStep currentStep;
@@ -26,6 +33,7 @@ final class ExecutionState extends Equatable {
   final bool userCollapsedOutput;
   final bool isStatusBannerDismissed;
   final String? haltMessage;
+  final SimulatedScenario simulatedScenario;
 
   const ExecutionState({
     required this.status,
@@ -38,6 +46,7 @@ final class ExecutionState extends Equatable {
     this.userCollapsedOutput = false,
     this.isStatusBannerDismissed = false,
     this.haltMessage,
+    this.simulatedScenario = SimulatedScenario.noHost,
   });
 
   const ExecutionState.initial()
@@ -54,7 +63,8 @@ final class ExecutionState extends Equatable {
       isOutputPanelExpanded = false,
       userCollapsedOutput = false,
       isStatusBannerDismissed = false,
-      haltMessage = null;
+      haltMessage = null,
+      simulatedScenario = SimulatedScenario.noHost;
 
   bool get isNearStepLimit =>
       currentStep.stepNumber >= StepBatchRunner.warningUiAdvanceThreshold;
@@ -78,6 +88,33 @@ final class ExecutionState extends Equatable {
 
   bool get canStepOutOfBlock => currentStep.blockPosition.hasEnclosingBlock;
 
+  ExecutionState applyViewAction(
+    ExecutionViewAction action, {
+    SimulatedScenario? scenario,
+  }) {
+    switch (action) {
+      case ExecutionViewAction.toggleOutputPanel:
+        final expanded = !isOutputPanelExpanded;
+        return copyWith(
+          isOutputPanelExpanded: expanded,
+          userCollapsedOutput: !expanded,
+        );
+      case ExecutionViewAction.dismissStatusBanner:
+        return isStatusBannerDismissed
+            ? this
+            : copyWith(isStatusBannerDismissed: true);
+      case ExecutionViewAction.selectScenario:
+        return _selectedScenario(scenario);
+    }
+  }
+
+  ExecutionState _selectedScenario(SimulatedScenario? scenario) {
+    if (scenario == null || isInFlight || simulatedScenario == scenario) {
+      return this;
+    }
+    return copyWith(simulatedScenario: scenario);
+  }
+
   ExecutionState copyWith({
     ExecutionStatus? status,
     ExecutionStep? currentStep,
@@ -89,6 +126,7 @@ final class ExecutionState extends Equatable {
     bool? userCollapsedOutput,
     bool? isStatusBannerDismissed,
     String? haltMessage,
+    SimulatedScenario? simulatedScenario,
   }) {
     return ExecutionState(
       status: status ?? this.status,
@@ -103,6 +141,7 @@ final class ExecutionState extends Equatable {
       isStatusBannerDismissed:
           isStatusBannerDismissed ?? this.isStatusBannerDismissed,
       haltMessage: haltMessage,
+      simulatedScenario: simulatedScenario ?? this.simulatedScenario,
     );
   }
 
@@ -118,5 +157,6 @@ final class ExecutionState extends Equatable {
     userCollapsedOutput,
     isStatusBannerDismissed,
     haltMessage,
+    simulatedScenario,
   ];
 }

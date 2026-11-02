@@ -6,6 +6,7 @@ import 'package:pseudolearn_app/domain/model/execution/execution_branch.dart';
 import 'package:pseudolearn_app/domain/model/execution/execution_focus.dart';
 import 'package:pseudolearn_app/domain/model/execution/execution_step.dart';
 import 'package:pseudolearn_app/domain/model/execution/execution_task_context.dart';
+import 'package:pseudolearn_app/domain/model/execution/input_wait.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
 import 'package:pseudolearn_app/engine/rust/rust_program_execution.dart';
@@ -129,6 +130,8 @@ Map<String, Object?> batch(
 ]) => {
   'events': events,
   'termination': termination,
+  if (termination['kind'] == 'awaiting_input')
+    'pending_input': {'resource_id': 3, 'task_id': 0, 'request_id': 1},
   'diagnostics': diagnostics,
 };
 
@@ -607,9 +610,37 @@ void main() {
       final waiting = execution.step();
       expect(waiting.isAwaitingInput, isTrue);
       expect(waiting.inputPrompt, 'Escr');
-      execution.provideInput('5');
+      execution.provideInput(waiting.inputWait!, '5');
       expect(execution.outputLines.map((line) => line.text), ['5']);
       expect(execution.step().isFinished, isTrue);
+    });
+
+    test('rejects crossed input identity without advancing or sending it', () {
+      final transport = transportWith(
+        batches: [
+          batch(
+            [event('input_requested', node: 'n1')],
+            {'kind': 'awaiting_input'},
+          ),
+        ],
+      );
+      final execution = start(transport);
+      execution.step();
+      final waiting = execution.step();
+      final request = waiting.inputWait!;
+      final crossed = InputWait(
+        resourceId: request.resourceId,
+        taskId: request.taskId + 1,
+        requestId: request.requestId,
+      );
+      final callCount = transport.calls.length;
+      final rejected = execution.provideInput(crossed, '5');
+
+      expect(rejected.isAwaitingInput, isTrue);
+      expect(rejected.inputWait?.matches(request), isTrue);
+      expect(rejected.stepNumber, waiting.stepNumber);
+      expect(transport.calls.length, callCount);
+      expect(transport.calls, isNot(contains('input')));
     });
 
     test('failures halt with the rendered message', () {
@@ -671,7 +702,7 @@ void main() {
       expect(execution.step().isFinished, isTrue);
     });
 
-    test('stop cancels, releases once and exhausts later steps', () {
+    test('stop cancels and releases execution resources once each', () {
       final transport = transportWith(
         batches: [
           batch([event('statement_entered', node: 'n1')], {'kind': 'running'}),
@@ -682,7 +713,7 @@ void main() {
       execution.stop();
       execution.stop();
       expect(transport.calls.where((call) => call == 'cancel'), hasLength(1));
-      expect(transport.calls.where((call) => call == 'release'), hasLength(1));
+      expect(transport.calls.where((call) => call == 'release'), hasLength(2));
       expect(execution.step().isFinished, isTrue);
       expect(execution.outputLines, isEmpty);
     });

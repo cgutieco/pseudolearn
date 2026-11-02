@@ -2379,23 +2379,36 @@ abre autoridad real; ofrece capacidades simuladas en memoria y deja que el núcl
 - `EffectWait` (modelo) describe la espera: secuencia, clase de capacidad, operación y resumen de argumentos.
   `ExecutionStep.pendingEffect` la expone y `isAwaitingEffect` la resume; no mezcla la espera de efecto con
   `isAwaitingInput`, que sigue siendo solo `Leer`.
-- `SimulatedCapabilities` (modelo) declara permisos, archivos en memoria, argumentos e instante inicial del reloj. Con
-  permisos vacíos no se declara anfitrión y toda capacidad se deniega, como en el motor.
+- `SimulatedScenario` selecciona datos inmutables para siete escenarios: sin anfitrión, sin permisos, archivos
+  virtuales, HTTP preparado, tiempo lógico, timeout y resultado incierto. `ExecutionState` conserva la selección entre
+  ejecuciones; el panel del documento muestra siempre «Simulado» y ofrece una ayuda localizada sobre los límites.
+  `SimulatedCapabilities` declara permisos, archivos en memoria, argumentos, reloj lógico, orígenes y respuestas HTTP.
+  `RustSimulatedHost` copia la configuración al comenzar; mutaciones del llamador no cambian una ejecución activa.
+  Con permisos vacíos el escenario puede declarar un anfitrión sin autoridad: cualquier capacidad se deniega.
 - `ProgramExecution.settleEffect(EffectSettlement)` es el único método de continuación: `resolve` entrega al motor la
   respuesta del anfitrión simulado para la espera pendiente y `cancel` detiene la ejecución con `haltReason =
   'cancelled'` sin responder (el puerto se mantiene en cinco métodos públicos por el límite de la capa).
-- `RustSimulatedHost` responde a las operaciones del motor sobre memoria: consola, argumentos, reloj, temporizador
-  lógico, apertura y derivación de directorios y archivos, lectura de texto y bytes, escritura y cierre. Los derechos de
-  la raíz salen de la capacidad que asignó el motor (nunca se amplían), las rutas deben ser relativas y sin `.`/`..`, un
-  cierre invalida el uso posterior (`capacidad_cerrada`) y una lectura de texto no UTF-8 devuelve `utf8_invalido`.
+- `RustSimulatedHost` enruta operaciones del motor al almacén de archivos virtuales, a la tabla HTTP o a las respuestas
+  de consola, argumentos, reloj, temporizador y fallos. `RustSimulatedFiles` posee rutas y capacidades en memoria;
+  `RustSimulatedHttp` posee el filtro de orígenes y las respuestas HTTP preparadas. Ninguno abre archivos del equipo,
+  sockets, DNS ni relojes físicos. Los derechos de la raíz son la intersección entre los asignados por el motor y los
+  permisos del escenario; nunca se amplían. Las rutas son relativas y rechazan `.`/`..`; un cierre invalida el uso
+  posterior (`capacidad_cerrada`) y texto no UTF-8 devuelve `utf8_invalido`. HTTP busca coincidencia exacta por método y
+  URL en la tabla declarada, entrega respuestas 4xx/5xx como respuestas y no sigue redirecciones mediante red real.
+- `InputWait` identifica cada espera de `Leer` con `resourceId`, `taskId` y `requestId`; la respuesta envía esos tres
+  valores junto con el texto. La API vuelve a validarlos y rechaza una respuesta cruzada, tardía o duplicada. Un texto
+  inválido para el tipo vuelve a suspender la misma lectura con un `requestId` nuevo. La VM expone una sola espera
+  global de entrada, por lo que `Leer` sigue serializado; los efectos concurrentes conservan sus propios `effect_seq`
+  y no comparten identidad con la entrada.
 - `RustEffectGate` encapsula el ciclo `advance` → `effect_result`: en modo automático (por defecto, el que usa la
   ejecución paso a paso) responde las esperas con el anfitrión simulado y entrega `effect_seq` en cada respuesta, que el
-  motor exige; en modo manual se detiene en la primera espera para que la capa de aplicación la liquide. La clave
-  `host` de `start` lleva `{permissions, detached: true}`.
+  motor exige; en modo manual se detiene en la primera espera para que la capa de aplicación la liquide. El bombeo
+  automático no responde `Leer`. El `host` de `start` lleva la configuración declarada con `detached: true`. Al terminar,
+  cancelar o iniciar otro escenario se cierran las capacidades; detener también libera el recurso de ejecución en la API.
 
-Pendiente declarado: la proyección de vista pública de las capacidades se alimenta del catálogo del motor
-(`API.PROGRAM.VIEW`); tampoco hay aún una superficie visual para configurar capacidades simuladas ni para mostrar la
-espera (`PG-A`/`PG-B`).
+Pendiente declarado: la vista pública todavía no presenta los valores configurados del escenario como datos de
+inspección. El adaptador de ejecución no interpreta la autoridad de capacidades: la aplicación entrega concesiones y el
+motor valida las operaciones.
 
 ### 4.55 Import y export pegados: dependencia visible, nunca resuelta
 

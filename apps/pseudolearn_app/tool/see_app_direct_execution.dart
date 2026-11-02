@@ -56,6 +56,7 @@ final class _DirectRun {
   final List<RustEvent> events = [];
   final StringBuffer output = StringBuffer();
   RustTerminationKind termination = RustTerminationKind.running;
+  PendingInputRequest? pendingInput;
   String? failureCode;
   Object? preservedFrame;
 
@@ -70,9 +71,11 @@ final class _DirectRun {
         termination == RustTerminationKind.awaitingInput) {
       if (termination == RustTerminationKind.awaitingInput) {
         if (stopForInput || inputIndex >= inputs.length) break;
-        RustExecutionApi(
-          transport,
-        ).provideInput(execution, inputs[inputIndex++]);
+        RustExecutionApi(transport).provideInput(
+          execution,
+          pendingInput!.toDomain(),
+          inputs[inputIndex++],
+        );
       }
       _advance();
     }
@@ -103,6 +106,7 @@ final class _DirectRun {
       });
     }
     termination = batch.termination;
+    pendingInput = batch.pendingInput;
     failureCode = batch.failureCode;
   }
 }

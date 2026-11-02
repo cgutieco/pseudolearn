@@ -113,7 +113,25 @@ fn drive(
         let kind = batch.pointer("/termination/kind").and_then(Value::as_str);
         if kind == Some("awaiting_input") && !pending.is_empty() {
             let text = pending.remove(0);
-            value(session.call("input", &json!({"resource":resource,"text":text})))?;
+            let request = batch
+                .get("pending_input")
+                .ok_or_else(|| usage("missing input request identity"))?;
+            let task_id = request
+                .get("task_id")
+                .and_then(Value::as_u64)
+                .ok_or_else(|| usage("invalid input task identity"))?;
+            let resource_id = request
+                .get("resource_id")
+                .and_then(Value::as_u64)
+                .ok_or_else(|| usage("invalid input execution identity"))?;
+            let request_id = request
+                .get("request_id")
+                .and_then(Value::as_u64)
+                .ok_or_else(|| usage("invalid input request identity"))?;
+            value(session.call(
+                "input",
+                &json!({"resource":resource,"resource_id":resource_id,"task_id":task_id,"request_id":request_id,"text":text}),
+            ))?;
         } else if kind != Some("running") {
             return Ok(batch);
         }

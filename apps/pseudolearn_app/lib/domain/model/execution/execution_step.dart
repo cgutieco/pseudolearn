@@ -2,6 +2,7 @@ import 'block_position.dart';
 import 'effect_wait.dart';
 import 'execution_focus.dart';
 import 'execution_task_context.dart';
+import 'input_wait.dart';
 import 'watch_row.dart';
 
 final class ExecutionStep {
@@ -21,6 +22,7 @@ final class ExecutionStep {
   final bool isStepLimitReached;
   final bool isUiSafetyLimitReached;
   final bool isAwaitingInput;
+  final InputWait? inputWait;
   final String? inputPrompt;
   final String? expectedInputType;
   final EffectWait? pendingEffect;
@@ -42,6 +44,7 @@ final class ExecutionStep {
     this.isStepLimitReached = false,
     this.isUiSafetyLimitReached = false,
     this.isAwaitingInput = false,
+    this.inputWait,
     this.inputPrompt,
     this.expectedInputType,
     this.pendingEffect,
@@ -64,6 +67,7 @@ final class ExecutionStep {
       isStepLimitReached = false,
       isUiSafetyLimitReached = false,
       isAwaitingInput = false,
+      inputWait = null,
       inputPrompt = null,
       expectedInputType = null,
       pendingEffect = null;
@@ -85,6 +89,7 @@ final class ExecutionStep {
       isStepLimitReached = false,
       isUiSafetyLimitReached = false,
       isAwaitingInput = false,
+      inputWait = null,
       inputPrompt = null,
       expectedInputType = null,
       pendingEffect = null;

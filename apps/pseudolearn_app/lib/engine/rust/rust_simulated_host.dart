@@ -1,132 +1,129 @@
-import 'dart:convert';
-
 import '../../domain/model/execution/simulated_capabilities.dart';
+import 'rust_simulated_files.dart';
+import 'rust_simulated_http.dart';
 import 'rust_wire_models.dart';
 
 const int _readRight = 1;
 const int _writeRight = 2;
 
-final class _Request {
-  final String operation;
-  final List<Map<String, Object?>> arguments;
-  final Map<String, Object?>? capability;
-  final Map<String, Object?>? receiver;
-
-  _Request(Map<String, Object?> json)
-    : operation = json['operation'] as String,
-      arguments = (json['arguments'] as List<Object?>? ?? const [])
-          .cast<Map<String, Object?>>(),
-      capability = json['result_capability'] as Map<String, Object?>?,
-      receiver = json['receiver'] as Map<String, Object?>?;
-}
-
-final class _Resource {
-  final String path;
-  final int rights;
-
-  const _Resource(this.path, this.rights);
-}
-
 final class RustSimulatedHost {
   final SimulatedCapabilities _capabilities;
-  final Map<String, List<int>> _files;
-  final Map<int, _Resource> _resources = {};
+  final RustSimulatedFiles _files;
+  late final RustSimulatedHttp _http;
   int _clockNanos;
 
-  RustSimulatedHost(this._capabilities)
-    : _files = {
-        for (final entry in _capabilities.files.entries)
-          entry.key: List<int>.of(entry.value),
-      },
-      _clockNanos = _capabilities.clockStartNanos;
+  RustSimulatedHost(SimulatedCapabilities capabilities)
+    : _capabilities = _copyCapabilities(capabilities),
+      _files = RustSimulatedFiles(capabilities.files),
+      _clockNanos = capabilities.clockStartNanos {
+    _http = RustSimulatedHttp(_capabilities, _files);
+  }
 
-  Map<String, Object?> hostDocument() => {
-    'permissions': _capabilities.permissions.toList()..sort(),
-    'detached': true,
-  };
+  Map<String, Object?> hostDocument() {
+    final document = <String, Object?>{
+      'permissions': _capabilities.permissions.toList()..sort(),
+      'detached': true,
+    };
+    if (_capabilities.files.isNotEmpty) {
+      document['files'] = _capabilities.files;
+    }
+    if (_capabilities.arguments.isNotEmpty) {
+      document['args'] = _capabilities.arguments;
+    }
+    if (_capabilities.clockStartNanos != 0) {
+      document['clock'] = [_capabilities.clockStartNanos];
+    }
+    document.addAll(_http.hostFields);
+    final failures = _operationFailures;
+    if (failures.isNotEmpty) document['faults'] = failures;
+    return document;
+  }
 
-  int get openResources => _resources.length;
+  int get openResources => _files.openResources;
+
+  void closeAll() => _files.closeAll();
 
   static List<PendingEffectRequest> deliveryOrder(
     List<PendingEffectRequest> pendings,
-  ) => List.of(pendings)..sort((a, b) => a.effectSeq.compareTo(b.effectSeq));
+  ) =>
+      List.of(pendings)
+        ..sort((left, right) => left.effectSeq.compareTo(right.effectSeq));
 
   Map<String, Object?> reply(Map<String, Object?> json) {
     try {
-      return _committed(_Request(json));
-    } on _HostFailure catch (failure) {
+      return _committed(SimulatedHostRequest(json));
+    } on RustSimulatedHostFailure catch (failure) {
       return failure.reply;
     }
   }
 
-  Map<String, Object?> _committed(_Request request) {
-    final arguments = request.arguments;
+  Map<String, Object?> _committed(SimulatedHostRequest request) {
     if (request.operation == 'request_directory') {
-      return _register(request.capability, '', _grantedRights(request.capability));
+      if (!_hasPermission(request.operation)) {
+        throw RustSimulatedHostFailure.denied();
+      }
+      _failIfConfigured(request);
+      return _files.register(
+        request.capability,
+        '',
+        _grantedRights(request.capability),
+      );
     }
     if (request.operation.startsWith('request_')) {
-      return _register(request.capability, '', 0);
+      if (!_hasPermission(request.operation)) {
+        throw RustSimulatedHostFailure.denied();
+      }
+      _failIfConfigured(request);
+      return _files.register(request.capability, '', 0);
     }
+    if (request.operation != 'network_send') _failIfConfigured(request);
     return switch (request.operation) {
-      'console_write' => _value('integer', _text(arguments, 0).length),
+      'console_write' => _value('integer', _text(request.arguments, 0).length),
       'arguments_values' => _value('text_list', _capabilities.arguments),
       'clock_now' => _value('integer', _clockNanos),
-      'timer_wait' => _wait(arguments),
-      _ => _fileOperation(request),
+      'timer_wait' => _wait(request.arguments),
+      'network_send' => _http.reply(request),
+      _ => _files.reply(request),
     };
   }
 
-  Map<String, Object?> _fileOperation(_Request request) {
-    final parent = _resourceOf(request.receiver);
-    final arguments = request.arguments;
-    switch (request.operation) {
-      case 'file_open' || 'directory_derive':
-        final path = _join(parent.path, _text(arguments, 0));
-        final rights = _modeRights(_text(arguments, 1));
-        if (rights & ~parent.rights != 0) throw _HostFailure.denied();
-        if (request.operation == 'file_open' && !_files.containsKey(path)) {
-          if (rights & _writeRight == 0) throw _HostFailure.notFound();
-          _files[path] = [];
-        }
-        return _register(request.capability, path, rights);
-      case 'file_read_bytes':
-        return _value('bytes', _read(parent));
-      case 'file_read_text':
-        return _value('text', _decode(_read(parent)));
-      case 'file_write_bytes' || 'file_write_text':
-        return _write(parent, arguments);
-      case 'file_close' || 'directory_close':
-        _resources.remove((request.receiver!['slot'] as num).toInt());
-        return _value('boolean', true);
-    }
-    throw _HostFailure.interrupted();
+  SimulatedEffectFailure? _failureFor(SimulatedHostRequest request) {
+    return _capabilities.failures[request.operation];
   }
 
-  Map<String, Object?> _write(
-    _Resource target,
-    List<Map<String, Object?>> arguments,
-  ) {
-    if (target.rights & _writeRight == 0) throw _HostFailure.denied();
-    final raw = arguments.first;
-    final bytes = raw['kind'] == 'bytes'
-        ? (raw['value'] as List<Object?>).cast<int>()
-        : _text(arguments, 0).codeUnits;
-    _files[target.path] = List<int>.of(bytes);
-    return _value('integer', bytes.length);
-  }
-
-  List<int> _read(_Resource source) {
-    if (source.rights & _readRight == 0) throw _HostFailure.denied();
-    return _files[source.path] ?? (throw _HostFailure.notFound());
-  }
-
-  String _decode(List<int> bytes) {
-    try {
-      return utf8.decode(bytes);
-    } on FormatException {
-      throw _HostFailure('utf8_invalido');
+  void _failIfConfigured(SimulatedHostRequest request) {
+    final failure = _failureFor(request);
+    if (failure != null) {
+      throw RustSimulatedHostFailure(failure.code, failure.uncertain);
     }
   }
+
+  bool _hasPermission(String operation) {
+    final permission = switch (operation) {
+      'request_console' => 'consola',
+      'request_arguments' => 'argumentos',
+      'request_directory' => 'archivos',
+      'request_clock' => 'reloj',
+      'request_timer' => 'temporizador',
+      'request_network' => 'red',
+      _ => '',
+    };
+    if (permission == 'archivos') {
+      return _capabilities.permissions.contains('archivos_lectura') ||
+          _capabilities.permissions.contains('archivos_escritura');
+    }
+    return _capabilities.permissions.contains(permission);
+  }
+
+  List<Map<String, Object?>> get _operationFailures => [
+    for (final entry in _capabilities.failures.entries)
+      if (!entry.key.contains(' '))
+        {
+          'operation': entry.key,
+          'code': entry.value.code,
+          'uncertain': entry.value.uncertain,
+        },
+  ];
 
   Map<String, Object?> _wait(List<Map<String, Object?>> arguments) {
     final duration = (arguments.first['value'] as num).toInt();
@@ -134,47 +131,19 @@ final class RustSimulatedHost {
     return _value('integer', _clockNanos);
   }
 
-  _Resource _resourceOf(Map<String, Object?>? receiver) {
-    final slot = (receiver?['slot'] as num?)?.toInt();
-    return _resources[slot] ?? (throw _HostFailure('capacidad_cerrada'));
-  }
-
-  Map<String, Object?> _register(
-    Map<String, Object?>? capability,
-    String path,
-    int rights,
-  ) {
-    if (capability == null) throw _HostFailure.denied();
-    _resources[(capability['slot'] as num).toInt()] = _Resource(path, rights);
-    return _value('capability', capability);
-  }
-
-  static int _grantedRights(Map<String, Object?>? capability) =>
-      ((capability?['rights'] as num?)?.toInt() ?? 0) & (_readRight | _writeRight);
-
-  static int _modeRights(String mode) => switch (mode) {
-    'read' || 'lectura' => _readRight,
-    'write' || 'escritura' => _writeRight,
-    'read_write' || 'lectura_escritura' => _readRight | _writeRight,
-    _ => throw _HostFailure('ruta_invalida'),
-  };
-
-  static String _join(String parent, String child) {
-    final invalid =
-        child.isEmpty ||
-        child.startsWith('/') ||
-        child.contains('\\') ||
-        child.contains(':') ||
-        child.contains('\u0000') ||
-        child.split('/').any((part) => part.isEmpty || part == '.' || part == '..');
-    if (invalid) throw _HostFailure('ruta_invalida');
-    return parent.isEmpty ? child : '$parent/$child';
+  int _grantedRights(Map<String, Object?>? capability) {
+    final declared = (capability?['rights'] as num?)?.toInt() ?? 0;
+    final permissions = _capabilities.permissions;
+    final configured =
+        (permissions.contains('archivos_lectura') ? _readRight : 0) |
+        (permissions.contains('archivos_escritura') ? _writeRight : 0);
+    return declared & configured;
   }
 
   static String _text(List<Map<String, Object?>> arguments, int index) {
     final argument = index < arguments.length ? arguments[index] : null;
     if (argument == null || argument['kind'] != 'text') {
-      throw _HostFailure('ruta_invalida');
+      throw const RustSimulatedHostFailure('ruta_invalida');
     }
     return argument['value'] as String;
   }
@@ -185,17 +154,24 @@ final class RustSimulatedHost {
   };
 }
 
-final class _HostFailure implements Exception {
-  final String code;
-
-  const _HostFailure(this.code);
-
-  factory _HostFailure.denied() => const _HostFailure('permiso_denegado');
-  factory _HostFailure.notFound() => const _HostFailure('no_encontrado');
-  factory _HostFailure.interrupted() => const _HostFailure('interrumpido');
-
-  Map<String, Object?> get reply => {
-    'outcome': 'failed',
-    'value': {'code': code, 'uncertain': false},
-  };
-}
+SimulatedCapabilities _copyCapabilities(SimulatedCapabilities source) =>
+    SimulatedCapabilities(
+      permissions: Set.unmodifiable(source.permissions),
+      files: Map.unmodifiable({
+        for (final entry in source.files.entries)
+          entry.key: List<int>.unmodifiable(entry.value),
+      }),
+      arguments: List.unmodifiable(source.arguments),
+      clockStartNanos: source.clockStartNanos,
+      networkOrigins: Set.unmodifiable(source.networkOrigins),
+      httpResponses: Map.unmodifiable({
+        for (final entry in source.httpResponses.entries)
+          entry.key: SimulatedHttpResponse(
+            status: entry.value.status,
+            headers: Map.unmodifiable(Map.of(entry.value.headers)),
+            body: List<int>.unmodifiable(entry.value.body),
+          ),
+      }),
+      failures: Map.unmodifiable(Map.of(source.failures)),
+      hostEnabled: source.hostEnabled,
+    );

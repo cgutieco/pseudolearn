@@ -1,5 +1,6 @@
 import '../../domain/model/execution/effect_wait.dart';
 import '../../domain/model/execution/execution_step.dart';
+import '../../domain/model/execution/input_wait.dart';
 import 'rust_effect_gate.dart';
 import 'rust_focus_tracker.dart';
 import 'rust_wire_models.dart';
@@ -23,28 +24,28 @@ final class RustExecutionStepBuilder {
     bool finished = false,
     bool halted = false,
     bool awaitingInput = false,
+    InputWait? inputWait,
     String? prompt,
     String? reason,
-  }) {
-    return ExecutionStep(
-      stepNumber: stepNumber,
-      eventIndex: eventIndex,
-      taskId: tracker.currentTaskId,
-      taskContexts: tracker.taskContexts,
-      focus: tracker.focus,
-      focusRevision: tracker.focusRevision,
-      blockPosition: tracker.blockPosition,
-      scopeName: tracker.scopeName,
-      scopeDepth: tracker.scopeDepth,
-      variables: tracker.variables,
-      isFinished: finished,
-      isHalted: halted,
-      haltReason: reason,
-      isAwaitingInput: awaitingInput,
-      inputPrompt: prompt,
-      pendingEffect: pending,
-    );
-  }
+  }) => ExecutionStep(
+    stepNumber: stepNumber,
+    eventIndex: eventIndex,
+    taskId: tracker.currentTaskId,
+    taskContexts: tracker.taskContexts,
+    focus: tracker.focus,
+    focusRevision: tracker.focusRevision,
+    blockPosition: tracker.blockPosition,
+    scopeName: tracker.scopeName,
+    scopeDepth: tracker.scopeDepth,
+    variables: tracker.variables,
+    isFinished: finished,
+    isHalted: halted,
+    haltReason: reason,
+    isAwaitingInput: awaitingInput,
+    inputWait: inputWait,
+    inputPrompt: prompt,
+    pendingEffect: pending,
+  );
 
   ExecutionStep terminal({
     required RustFocusTracker tracker,
@@ -55,16 +56,13 @@ final class RustExecutionStepBuilder {
     required String? inputPrompt,
     required String? failureReason,
   }) => switch (termination) {
-    RustTerminationKind.completed => _finished(
-      tracker: tracker,
-      stepNumber: stepNumber,
-      eventIndex: eventIndex,
-    ),
+    RustTerminationKind.completed => _finished(tracker, stepNumber, eventIndex),
     RustTerminationKind.awaitingInput => build(
       tracker: tracker,
       stepNumber: stepNumber,
       eventIndex: eventIndex,
       awaitingInput: true,
+      inputWait: batch?.pendingInput?.toDomain(),
       prompt: inputPrompt,
     ),
     RustTerminationKind.awaitingEffect => _awaitingEffect(
@@ -78,20 +76,34 @@ final class RustExecutionStepBuilder {
       stepNumber: stepNumber,
       eventIndex: eventIndex,
     ).asStepLimitReached(),
-    _ => build(
+    _ => _halted(
       tracker: tracker,
       stepNumber: stepNumber,
       eventIndex: eventIndex,
-      halted: true,
-      reason: failureReason ?? batch?.failureMessage ?? batch?.failureCode,
+      failureReason: failureReason,
+      batch: batch,
     ),
   };
 
-  ExecutionStep _finished({
+  ExecutionStep _halted({
     required RustFocusTracker tracker,
     required int stepNumber,
     required int eventIndex,
+    required String? failureReason,
+    required RustBatch? batch,
   }) => build(
+    tracker: tracker,
+    stepNumber: stepNumber,
+    eventIndex: eventIndex,
+    halted: true,
+    reason: failureReason ?? batch?.failureMessage ?? batch?.failureCode,
+  );
+
+  ExecutionStep _finished(
+    RustFocusTracker tracker,
+    int stepNumber,
+    int eventIndex,
+  ) => build(
     tracker: tracker,
     stepNumber: stepNumber,
     eventIndex: eventIndex,

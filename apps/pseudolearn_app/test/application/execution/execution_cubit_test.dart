@@ -6,10 +6,13 @@ import 'package:pseudolearn_app/application/execution/execution_history_cubit.da
 import 'package:pseudolearn_app/application/execution/execution_state.dart';
 import 'package:pseudolearn_app/application/execution/step_batch_runner.dart';
 import 'package:pseudolearn_app/application/execution/step_pace.dart';
+import 'package:pseudolearn_app/domain/model/execution/input_wait.dart';
+import 'package:pseudolearn_app/domain/model/execution/simulated_scenario.dart';
 import 'package:pseudolearn_app/engine/execution/task_flow_projection.dart';
 import 'package:pseudolearn_app/engine/execution/task_structure_projection.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
+import '../../fakes/fake_program_execution.dart';
 
 const _counted = '''
 Algoritmo Contado
@@ -232,6 +235,29 @@ void main() {
       expect(cubit.state.isInFlight, isFalse);
     });
 
+    test('keeps the selected scenario across execution start', () async {
+      final execution = FakeProgramExecution();
+      final scenarioCubit = ExecutionCubit(execution: execution);
+      addTearDown(scenarioCubit.close);
+      scenarioCubit.applyViewAction(
+        ExecutionViewAction.selectScenario,
+        scenario: SimulatedScenario.preparedHttp,
+      );
+
+      await scenarioCubit.advance(
+        pace: StepPace.nextStatement,
+        sourceCode: _counted,
+        profileId: SyntaxProfileId.classicSpanish,
+        languageId: UiLanguageId.spanish,
+      );
+
+      expect(execution.lastScenario, SimulatedScenario.preparedHttp);
+      expect(
+        scenarioCubit.state.simulatedScenario,
+        SimulatedScenario.preparedHttp,
+      );
+    });
+
     test('a program that does not analyse halts without starting', () async {
       await cubit.runToEnd(_broken);
 
@@ -260,7 +286,7 @@ void main() {
         expect(cubit.state.status, ExecutionStatus.pausedAwaitingInput);
         expect(cubit.state.canStart, isFalse);
 
-        await cubit.provideInput('7');
+        await cubit.provideInput(cubit.state.currentStep.inputWait!, '7');
 
         expect(cubit.state.status, ExecutionStatus.finishedSuccess);
         expect(cubit.state.outputLines.map((line) => line.text), contains('7'));
@@ -269,7 +295,10 @@ void main() {
 
     test('providing input without an execution changes nothing', () async {
       final before = cubit.state;
-      await cubit.provideInput('7');
+      await cubit.provideInput(
+        const InputWait(resourceId: 0, taskId: 0, requestId: 1),
+        '7',
+      );
 
       expect(cubit.state, before);
     });

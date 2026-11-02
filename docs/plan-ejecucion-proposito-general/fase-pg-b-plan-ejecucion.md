@@ -7,7 +7,7 @@
 - Revisión inspeccionada: `5a0e12ae95d4f0a84743180e2a98f83a4423a16e`.
 - Rama comprobada: `feature/agregar-ruta-de-especificacion`; árbol limpio antes de preparar el plan.
 - Petición: «Crea el plan de ejecución detallado para `4.11 PG-B · App y tareas observables` como para que ninguna IA que lo ejecute pueda darse chance de alucinar».
-- Estado al redactar: la autorización cubría redactar este plan y enlazarlo desde el plan general, no su implementación ni la revisión C02. Instrucciones directas posteriores autorizaron una iteración de PG-B.01, una de PG-B.02 y, el 2026-11-02, una sola iteración de PG-B.03. Cada autorización se limita a su punto; no habilita los demás puntos, C02, commit, push, instalación ni inicio de PG-7.
+- Estado al redactar: la autorización cubría redactar este plan y enlazarlo desde el plan general, no su implementación ni la revisión C02. Instrucciones directas posteriores autorizaron una iteración de PG-B.01, PG-B.02 y PG-B.03; el 2026-11-02 se autorizó una sola iteración de PG-B.04, sin preguntas y eligiendo la opción recomendada. Cada autorización se limita a su punto; no habilita los demás puntos, C02, commit, push, instalación ni inicio de PG-7.
 - Documento transitorio: ninguna especificación, README ni código fuera de `docs/` podrá citarlo (`DOC-NO-TRANSIENT-REFS`). Las decisiones se trasladan a sus dueños en el mismo cambio (`DOC-README-TRUTH`, `DOC-NO-ORPHAN-DECISION`).
 
 ### 0.1 Reglas para quien ejecute
@@ -135,11 +135,11 @@ Cada punto incluye tareas en orden SPEC-FIRST. «Documentar» exige mover los po
 
 ### PG-B.04 · Efectos simulados y entradas identificadas
 
-- [ ] `PG-B.04.01` Contrato: auditar identidad de solicitud de `Leer` frente a `effect_seq` de efecto, destinatario y vida de cada una. `input` actual recibe recurso/texto: no fingir que acepta task/solicitud. Definir rechazo de respuesta obsoleta/duplicada antes de enviarla; si se requieren lecturas concurrentes direccionables no expresables, especificar extensión pública y casos antes de implementarla. Mantener exclusión `input`/`effect_result`.
-- [ ] `PG-B.04.02` Casos: B06/B07/B10/B11/B14; archivos virtuales, HTTP preparado, tiempo lógico, timeout, permiso denegado, resultado incierto y cancelación. Dos pendientes de tareas distintas; `Leer` inválido y reintento, respuesta cruzada/tardía, nueva ejecución con mismo texto.
-- [ ] `PG-B.04.03` Tests: configuración inmutable del escenario, reinicio limpio del host, cero ampliación de derechos, validación de destinatario y rótulo simulado siempre visible en panel y ayuda. Dobles espía comprueban ausencia de acceso externo; integración valida lo que realmente acepta API.
-- [ ] `PG-B.04.04` Código: escenario entrega datos al host del motor; VM decide espera, reanudación y fallo. Transportar tarea/solicitud en modelo y comando, validar identidad de ejecución antes de responder. Configuración y selección por estado/puerto, sin `await` en widgets ni E/S en `engine/` de Dart. No perder esperas por autoresolver toda la ejecución al precargar.
-- [ ] `PG-B.04.05` Documentación: permisos, límites, orden de entrega, escenario simulado, incertidumbre y origen de respuestas; guiones válidos es/en enlazados a fichas/casos. No abrir red/rutas del equipo para «hacer pasar» HTTP.
+- [x] `PG-B.04.01` Contrato: auditar identidad de solicitud de `Leer` frente a `effect_seq` de efecto, destinatario y vida de cada una. `input` actual recibe recurso/texto: no fingir que acepta task/solicitud. Definir rechazo de respuesta obsoleta/duplicada antes de enviarla; si se requieren lecturas concurrentes direccionables no expresables, especificar extensión pública y casos antes de implementarla. Mantener exclusión `input`/`effect_result`.
+- [x] `PG-B.04.02` Casos: B06/B07/B10/B11/B14; archivos virtuales, HTTP preparado, tiempo lógico, timeout, permiso denegado, resultado incierto y cancelación. Dos pendientes de tareas distintas; `Leer` inválido y reintento, respuesta cruzada/tardía, nueva ejecución con mismo texto.
+- [x] `PG-B.04.03` Tests: configuración inmutable del escenario, reinicio limpio del host, cero ampliación de derechos, validación de destinatario y rótulo simulado siempre visible en panel y ayuda. Dobles espía comprueban ausencia de acceso externo; integración valida lo que realmente acepta API.
+- [x] `PG-B.04.04` Código: escenario entrega datos al host del motor; VM decide espera, reanudación y fallo. Transportar tarea/solicitud en modelo y comando, validar identidad de ejecución antes de responder. Configuración y selección por estado/puerto, sin `await` en widgets ni E/S en `engine/` de Dart. No perder esperas por autoresolver toda la ejecución al precargar.
+- [x] `PG-B.04.05` Documentación: permisos, límites, orden de entrega, escenario simulado, incertidumbre y origen de respuestas; guiones válidos es/en enlazados a fichas/casos. No abrir red/rutas del equipo para «hacer pasar» HTTP.
 - [ ] `PG-B.04.06` Verificar: casos de capacidad/HTTP/entrada por FRB y adaptador app, recursos abiertos cero al liberar/cortar donde corresponde, cero consultas al host durante replay y respuesta ajena rechazada sin avanzar.
 
 ### PG-B.05 · Proyecciones reproducibles
@@ -394,12 +394,12 @@ Tabla esperada/observada por evento en el tracker de la app:
 | PG-B.03.04 | Cumplido | `ExecutionCubit`, `StepSettlement`, `StepBatchRunner`; tests cubit/widget | Comandos serializados, bombeo en lotes de 25, procesamiento de cada paso y selección de tarea sin cambiar agenda. |
 | PG-B.03.05 | Cumplido | README app §4.8/§4.10; ARB es/en | Compatibilidad de ritmos, condiciones y distinción entre tope UI y límite reportado por motor. |
 | PG-B.03.06 | Cumplido | Tests dirigidos, transporte nativo y generación del puente; resultados en §11.4 | La traza y terminación coinciden entre ambos ritmos, y el historial no duplica eventos ni salida. La suite completa queda como puerta de `PHASE-GREEN` del paquete. |
-| PG-B.04.01 | — | — | Sin ejecutar |
-| PG-B.04.02 | — | — | Sin ejecutar |
-| PG-B.04.03 | — | — | Sin ejecutar |
-| PG-B.04.04 | — | — | Sin ejecutar |
-| PG-B.04.05 | — | — | Sin ejecutar |
-| PG-B.04.06 | — | — | Sin ejecutar |
+| PG-B.04.01 | Cumplido | `execution_input.rs`, `execution_resource.rs`, `resources.rs`; README API | `input` exige `(resource_id, task_id, request_id)` y texto. `request_id` es independiente de `effect_seq`; la VM conserva una sola espera global `Leer` y la identidad valida destinatario y vigencia. |
+| PG-B.04.02 | Cumplido | Casos de entrada/API y escenarios de app; §11.5 | Cruce, respuesta obsoleta/duplicada/tardía, cancelación, reintento inválido con identidad nueva, ejecución homónima y los siete escenarios simulados. No se modifica el corpus congelado. |
+| PG-B.04.03 | Cumplido | Tests de host, capacidades, UI, entrada y efectos; §11.5 | Escenario inmutable por ejecución, derechos intersectados y no ampliables, ausencia de E/S externa, rótulo/ayuda «Simulado» y reinicio/liberación del anfitrión. |
+| PG-B.04.04 | Cumplido | Modelos `InputWait`/`SimulatedScenario`, puerto, `RustSimulatedHost`, `RustEffectGate`, `RustProgramExecution`; §11.5 | La VM decide suspensión/reanudación/fallo; la app entrega capacidades declaradas. Entrada serializada y efectos con secuencia/destinatario propios; las esperas no se autoresuelven como `Leer`. |
+| PG-B.04.05 | Cumplido | README app §4.54, README API; ARB es/en | Documentados permisos, límites, orden, respuestas exactas, incertidumbre, origen simulado y vida de identidades; interfaz localizada. |
+| PG-B.04.06 | No cumplido | Verificaciones dirigidas y suites amplias descritas en §11.5 | Pruebas API, FFI y app específicas pasan; no se cierra la puerta: la suite completa Flutter conserva 11 fallos ajenos al diff y la suite completa del crate API conserva el esperado antiguo de `program_view`. No se declara `PHASE-GREEN`. |
 | PG-B.05.01 | — | — | Sin ejecutar |
 | PG-B.05.02 | — | — | Sin ejecutar |
 | PG-B.05.03 | — | — | Sin ejecutar |
@@ -524,3 +524,26 @@ La instrucción directa del 2026-11-02 autorizó una sola iteración de `PG-B.03
 | Estado Git | Rama única conservada; sin commit ni publicación. |
 
 `.03.01–.06` quedan cumplidos en su alcance específico. Los 14 errores/fallos de la suite completa impiden declarar `PHASE-GREEN` para el paquete, aunque los tests específicos de este punto, el transporte Dart–FFI real y la generación del puente pasan. PG-B también conserva las observaciones previas registradas en `.01.06` y `.02.06`. Se informa y se para aquí (`PHASE-STOP`).
+
+### 11.5 Estado de ejecución de PG-B.04
+
+La instrucción directa del 2026-11-02 autorizó una sola iteración de `PG-B.04`, sin preguntas y eligiendo la opción recomendada. Se trabajó únicamente en `.04.01–.06`, sobre `feature/agregar-ruta-de-especificacion`; no hubo commit ni push. La autorización no habilita PG-B.05.
+
+#### Decisiones de implementación
+
+- `Leer` mantiene una sola espera global. Cada solicitud lleva `(resource_id, task_id, request_id)`; el contador de solicitud vive en el recurso de ejecución y no comparte identidad con `effect_seq`. La API valida destinatario y vigencia antes de pasar texto a la VM. Una respuesta rechazada no consume la espera; una lectura inválida genera una nueva identidad.
+- Los efectos conservan su secuencia y destinatario por tarea, incluida la liquidación concurrente. `input` y `effect_result` no se sustituyen ni se aceptan durante la espera contraria. Replay e historial no consultan al anfitrión.
+- Se eligieron siete escenarios de datos inmutables: sin anfitrión, sin permisos, archivos virtuales, HTTP preparado, reloj lógico, timeout y resultado incierto. Los archivos viven en memoria; HTTP solo usa coincidencia exacta de método y URL y no abre red, DNS ni redirecciones reales. Los derechos se limitan a la intersección de la concesión del motor y el escenario.
+- La app conserva el escenario entre ejecuciones y muestra «Simulado» con ayuda localizada. El anfitrión y sus capacidades se cierran al terminar, cancelar o sustituir la ejecución.
+
+#### Verificaciones ejecutadas
+
+- App enfocada: 79 tests pasan. `bash tool/test_bridge.sh` compila debug/release y pasan 23 tests Dart–FFI; el smoke `test/tool/bridge_benchmark_smoke_test.dart` pasa tras actualizar la entrada del escenario suspendido.
+- Verificadores de app: `flutter analyze --fatal-infos --fatal-warnings`, límites, contenido, design system y cobertura sintáctica pasan; cobertura 78/78.
+- Suite Flutter completa: la ejecución inicial terminó con 12 fallos; uno era el smoke FFI ya corregido y ahora pasa por separado. Los otros 11 son de aislamiento de imports, conteos de marcadores/ejercicios, diagramas, aserciones estructurales y métricas de diagramas de clases; sus tests no pertenecen al diff. No se pudo repetir la suite completa porque Flutter no abre `bin/cache/lockfile` en el SDK instalado, fuera del área escribible.
+- API Rust: `cargo fmt --all -- --check` y `cargo clippy --locked -p pseudolearn_api --all-targets --features native -- -D warnings` pasan. La suite completa del crate ejecuta todos sus tests salvo uno: `program_view::view_lists_units_in_source_order_with_inheritance_and_overrides`, cuyo esperado no incluye `class_node_id` ni `base_node_id`; todos los demás targets pasan.
+- Motor Rust: `CARGO_BUILD_JOBS=1 cargo xtask verify` pasa `see export`, formato y Clippy; `cargo test --workspace` no logra enlazar `lock_operations_tests`: `ld: write() failed, errno=28 (No space left on device)`.
+- Benchmarks: formato de 33 archivos sin cambios pendientes; `dart test` pasa 29 tests; `dart analyze --fatal-infos --fatal-warnings` y `dart run tool/check.dart` pasan.
+- `git diff --check` pasa. Rama única conservada, sin commit ni publicación.
+
+`.04.01–.05` quedan cumplidos en el alcance implementado. `.04.06` queda **No cumplido** como puerta de fase: los tests dirigidos de API, app y FFI pasan, pero no se obtiene verde de las suites completas de Flutter y del workspace Rust. Por `PHASE-GREEN`, PG-B.04 no se declara cerrada. Se informa y se para aquí (`PHASE-STOP`), antes de PG-B.05.

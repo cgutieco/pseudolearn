@@ -7,7 +7,7 @@ import 'rust_wire_models.dart';
 
 final class RustEffectGate {
   final RustExecutionApi _execution;
-  final RustSimulatedHost? _host;
+  RustSimulatedHost? _host;
   final bool _autoResolve;
 
   RustEffectGate(
@@ -15,17 +15,20 @@ final class RustEffectGate {
     SimulatedCapabilities capabilities,
     this._autoResolve,
   ) : _execution = RustExecutionApi(transport),
-      _host = capabilities.isEmpty ? null : RustSimulatedHost(capabilities);
+      _host = capabilities.hasHost ? RustSimulatedHost(capabilities) : null;
+
+  void reset(SimulatedCapabilities capabilities) {
+    close();
+    _host = capabilities.hasHost ? RustSimulatedHost(capabilities) : null;
+  }
+
+  void close() => _host?.closeAll();
 
   Map<String, Object?>? get hostDocument => _host?.hostDocument();
 
   bool get canResolve => _host != null;
 
-  RustBatch drain(
-    int execution,
-    int batchSize,
-    List<RustEvent> collected,
-  ) {
+  RustBatch drain(int execution, int batchSize, List<RustEvent> collected) {
     var batch = _execution.advance(execution, batchSize);
     collected.addAll(batch.events);
     while (_autoResolve &&

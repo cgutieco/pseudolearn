@@ -187,7 +187,13 @@ Map<String, Object?> _inputScenario() => {
     _advance(256),
   ],
   'timed': [
-    _call('input', {'resource': r'$execution.resource', 'text': '7'}),
+    _call('input', {
+      'resource': r'$execution.resource',
+      'resource_id': r'$last.pending_input.resource_id',
+      'task_id': r'$last.pending_input.task_id',
+      'request_id': r'$last.pending_input.request_id',
+      'text': '7',
+    }),
     _advance(256),
   ],
   'expected': {'last.termination.kind': 'completed', 'output': '7\n'},

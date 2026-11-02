@@ -20,6 +20,9 @@ impl ApiSession {
             analysis: 0,
             execution: Box::new(execution),
         })?;
+        if let Some(Resource::Execution { execution, .. }) = self.resources.get_mut(&resource) {
+            execution.set_resource_id(resource);
+        }
         Ok(json!({"resource": resource, "project_errors": []}))
     }
 }

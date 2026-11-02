@@ -1,3 +1,4 @@
+import '../../domain/model/execution/input_wait.dart';
 import 'rust_analysis_api.dart';
 import 'rust_execution_resource.dart';
 import 'rust_transport.dart';
@@ -44,8 +45,14 @@ final class RustExecutionApi {
     return RustBatch.fromJson(batch);
   }
 
-  void provideInput(int execution, String text) {
-    _transport.call('input', {'resource': execution, 'text': text});
+  void provideInput(int execution, InputWait request, String text) {
+    _transport.call('input', {
+      'resource': execution,
+      'resource_id': request.resourceId,
+      'task_id': request.taskId,
+      'request_id': request.requestId,
+      'text': text,
+    });
   }
 
   void provideEffectResult(int execution, int sequence, Object? result) {
@@ -59,6 +66,7 @@ final class RustExecutionApi {
   void stop(int? execution) {
     if (execution != null) {
       _transport.call('cancel', {'resource': execution});
+      _transport.call('release', {'resource': execution});
     }
     _resource?.clear();
   }

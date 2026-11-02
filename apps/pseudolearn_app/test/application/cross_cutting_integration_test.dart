@@ -167,7 +167,10 @@ FinProceso
           executionCubit.state.status,
           ExecutionStatus.pausedAwaitingInput,
         );
-        await executionCubit.provideInput('42');
+        await executionCubit.provideInput(
+          executionCubit.state.currentStep.inputWait!,
+          '42',
+        );
 
         for (
           var i = 0;

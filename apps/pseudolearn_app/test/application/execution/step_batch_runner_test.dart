@@ -8,6 +8,8 @@ import 'package:pseudolearn_app/domain/model/execution/effect_settlement.dart';
 import 'package:pseudolearn_app/domain/model/execution/execution_step.dart';
 import 'package:pseudolearn_app/domain/model/execution/effect_wait.dart';
 import 'package:pseudolearn_app/domain/model/execution/output_line.dart';
+import 'package:pseudolearn_app/domain/model/execution/input_wait.dart';
+import 'package:pseudolearn_app/domain/model/execution/simulated_scenario.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
 
@@ -243,13 +245,14 @@ final class _ScriptedExecution implements ProgramExecution {
     required String sourceCode,
     required SyntaxProfileId profileId,
     required UiLanguageId languageId,
+    SimulatedScenario? scenario,
   }) => _steps.first;
 
   @override
   ExecutionStep step() => _steps[_index++];
 
   @override
-  ExecutionStep provideInput(String rawInput) => step();
+  ExecutionStep provideInput(InputWait request, String rawInput) => step();
 
   @override
   ExecutionStep settleEffect(EffectSettlement settlement) => step();

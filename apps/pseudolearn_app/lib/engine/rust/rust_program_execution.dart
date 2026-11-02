@@ -5,13 +5,15 @@ import '../../domain/model/execution/effect_wait.dart';
 import '../../domain/model/execution/execution_step.dart';
 import '../../domain/model/execution/output_line.dart';
 import '../../domain/model/execution/simulated_capabilities.dart';
+import '../../domain/model/execution/simulated_scenario.dart';
+import '../../domain/model/execution/input_wait.dart';
 import '../../domain/model/profiles/syntax_profile_id.dart';
 import '../../domain/model/settings/ui_language_id.dart';
 import '../../domain/ports/program_execution.dart';
 import 'rust_analysis_api.dart';
 import 'rust_effect_gate.dart';
 import 'rust_execution_api.dart';
-import 'rust_execution_event_effects.dart';
+import 'rust_execution_event_consumer.dart';
 import 'rust_execution_resource.dart';
 import 'rust_execution_readers.dart';
 import 'rust_execution_step_builder.dart';
@@ -19,9 +21,7 @@ import 'rust_focus_tracker.dart';
 import 'rust_profile_name.dart';
 import 'rust_program_view.dart';
 import 'rust_program_view_read_result.dart';
-import 'rust_state_api.dart';
 import 'rust_transport.dart';
-import 'rust_watch_rows.dart';
 import 'rust_wire_models.dart';
 import 'source_offset_index.dart';
 
@@ -30,9 +30,9 @@ final class RustProgramExecution implements ProgramExecution {
 
   final RustAnalysisApi _analysis;
   final RustExecutionApi _execution;
-  final RustWatchRows _watch;
-  final RustEffectGate _gate;
-  final RustExecutionEventEffects _eventEffects = RustExecutionEventEffects();
+  final RustExecutionEventConsumer _events;
+  late final RustEffectGate _gate;
+  final SimulatedCapabilities _defaultCapabilities;
   static const RustExecutionStepBuilder _stepBuilder =
       RustExecutionStepBuilder();
   final Queue<RustEvent> _queue = Queue<RustEvent>();
@@ -55,19 +55,22 @@ final class RustProgramExecution implements ProgramExecution {
     RustExecutionResource? observationResource,
   }) : _analysis = RustAnalysisApi(transport),
        _execution = RustExecutionApi(transport, resource: observationResource),
-       _watch = RustWatchRows(RustStateApi(transport)),
-       _gate = RustEffectGate(transport, capabilities, autoResolveEffects);
+       _events = RustExecutionEventConsumer(transport),
+       _gate = RustEffectGate(transport, capabilities, autoResolveEffects),
+       _defaultCapabilities = capabilities;
 
   @override
-  List<OutputLine> get outputLines => _eventEffects.outputLines;
+  List<OutputLine> get outputLines => _events.outputLines;
 
   @override
   ExecutionStep startExecution({
     required String sourceCode,
     required SyntaxProfileId profileId,
     required UiLanguageId languageId,
+    SimulatedScenario? scenario,
   }) {
     stop();
+    _gate.reset(scenario?.capabilities ?? _defaultCapabilities);
     final handle = _analysis.open(
       source: sourceCode,
       profile: rustProfileName(profileId),
@@ -110,6 +113,10 @@ final class RustProgramExecution implements ProgramExecution {
       }
     }
     if (_queue.isNotEmpty) return _consume(_queue.removeFirst());
+    return _terminalStep();
+  }
+
+  ExecutionStep _terminalStep() {
     _tracker!.finishRoot(_termination, _failureReason);
     return _stepBuilder.terminal(
       tracker: _tracker!,
@@ -117,19 +124,24 @@ final class RustProgramExecution implements ProgramExecution {
       eventIndex: _eventIndex,
       termination: _termination,
       batch: _last,
-      inputPrompt: _eventEffects.inputPrompt,
+      inputPrompt: _events.inputPrompt,
       failureReason: _failureReason,
     );
   }
 
   @override
-  ExecutionStep provideInput(String rawInput) {
+  ExecutionStep provideInput(InputWait request, String rawInput) {
     final execution = _executionId;
-    if (execution == null) return step();
-    _execution.provideInput(execution, rawInput);
+    if (execution == null) return const ExecutionStep.exhausted();
+    if (request.resourceId != execution) return _terminalStep();
+    final pending = _last?.pendingInput;
+    if (pending == null || !pending.toDomain().matches(request)) {
+      return _terminalStep();
+    }
+    _execution.provideInput(execution, request, rawInput);
     _termination = RustTerminationKind.running;
     _failureReason = null;
-    _eventEffects.clearInputPrompt();
+    _events.clearInputPrompt();
     return step();
   }
 
@@ -148,7 +160,8 @@ final class RustProgramExecution implements ProgramExecution {
     _offsets = null;
     _last = null;
     _failureReason = null;
-    _eventEffects.clear();
+    _events.clear();
+    _gate.close();
     _execution.stop(execution);
     if (handle != null) _analysis.release(handle);
   }
@@ -178,6 +191,13 @@ final class RustProgramExecution implements ProgramExecution {
     _queue.addAll(collected);
     _last = batch;
     _termination = batch.termination;
+    if (batch.termination
+        case RustTerminationKind.completed ||
+            RustTerminationKind.cancelled ||
+            RustTerminationKind.failed ||
+            RustTerminationKind.limitReached) {
+      _gate.close();
+    }
   }
 
   void _failInvalidBatch() {
@@ -187,41 +207,19 @@ final class RustProgramExecution implements ProgramExecution {
 
   ExecutionStep _consume(RustEvent event) {
     _eventIndex++;
-    try {
-      if (!_tracker!.apply(event, _eventIndex)) {
-        _termination = RustTerminationKind.failed;
-        _failureReason = 'invalid_event_sequence';
-        _queue.clear();
-        return _snapshot(halted: true, reason: _failureReason);
-      }
-    } on Object {
+    final failure = _events.consume(
+      event: event,
+      eventIndex: _eventIndex,
+      execution: _executionId!,
+      view: _view!,
+      offsets: _offsets!,
+      tracker: _tracker!,
+    );
+    if (failure != null) {
       _termination = RustTerminationKind.failed;
-      _failureReason = 'invalid_event';
+      _failureReason = failure;
       _queue.clear();
       return _snapshot(halted: true, reason: _failureReason);
-    }
-    _eventEffects.record(event, _view!, _offsets!);
-    if (rustEventRequiresEnvironment(event.eventClass)) {
-      final result = _watch.at(
-        execution: _executionId!,
-        event: _eventIndex,
-        taskId: _tracker!.currentTaskId,
-        depth: event.depth,
-      );
-      if (result is RustEnvironmentFailure) {
-        _termination = RustTerminationKind.failed;
-        _failureReason = result.reason;
-        _queue.clear();
-        return _snapshot(halted: true, reason: _failureReason);
-      }
-      final environment = (result as RustEnvironmentValue).environment;
-      _tracker!.recordEnvironment(
-        taskId: _tracker!.currentTaskId,
-        eventIndex: _eventIndex,
-        scopeName: environment.scopeName,
-        scopeDepth: environment.depth,
-        variables: environment.rows,
-      );
     }
     return _snapshot();
   }

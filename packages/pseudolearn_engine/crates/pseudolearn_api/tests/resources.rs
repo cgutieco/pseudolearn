@@ -66,9 +66,26 @@ fn suspended_input_resumes_without_repeating_output() -> Result<(), String> {
             .unwrap_or(Value::Null),
         "8\n"
     );
+    let pending_input = first
+        .pointer("/value/pending_input")
+        .ok_or_else(|| format!("missing input identity: {first}"))?;
+    let resource_id = pending_input
+        .get("resource_id")
+        .ok_or("missing input resource identity")?;
+    let task_id = pending_input
+        .get("task_id")
+        .ok_or("missing input task identity")?;
+    let request_id = pending_input
+        .get("request_id")
+        .ok_or("missing input request identity")?;
     assert!(
         session
-            .call("input", &json!({"resource":resource,"text":"13"}))
+            .call(
+                "input",
+                &json!({"resource":resource,"resource_id":resource_id,
+                    "task_id":task_id,"request_id":request_id,
+                    "text":"13"}),
+            )
             .get("value")
             .is_some()
     );

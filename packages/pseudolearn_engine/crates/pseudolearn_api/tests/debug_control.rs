@@ -84,6 +84,18 @@ fn pause_preserves_input_and_rejects_unknown_commands() -> Result<(), String> {
         awaiting.pointer("/value/termination/kind"),
         Some(&json!("awaiting_input"))
     );
+    let pending_input = awaiting
+        .pointer("/value/pending_input")
+        .ok_or_else(|| format!("missing input identity: {awaiting}"))?;
+    let resource_id = pending_input
+        .get("resource_id")
+        .ok_or("missing input resource identity")?;
+    let task_id = pending_input
+        .get("task_id")
+        .ok_or("missing input task identity")?;
+    let request_id = pending_input
+        .get("request_id")
+        .ok_or("missing input request identity")?;
     let paused = session.call(
         "debug_control",
         &json!({"resource":resource,"command":"pause"}),
@@ -98,7 +110,12 @@ fn pause_preserves_input_and_rejects_unknown_commands() -> Result<(), String> {
         &json!({"resource":resource,"command":"restart"}),
     );
     assert_eq!(invalid.pointer("/failure/family"), Some(&json!("usage")));
-    session.call("input", &json!({"resource":resource,"text":""}));
+    session.call(
+        "input",
+        &json!({"resource":resource,"resource_id":resource_id,
+            "task_id":task_id,"request_id":request_id,
+            "text":""}),
+    );
     session.call(
         "debug_control",
         &json!({"resource":resource,"command":"continue"}),

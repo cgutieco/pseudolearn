@@ -111,7 +111,10 @@ fn manual_resolution_completes_the_program() -> Result<(), String> {
 fn input_is_rejected_while_an_effect_is_pending() -> Result<(), String> {
     let mut run = start(CLOCK, &["reloj"])?;
     run.advance();
-    let rejected = run.feed("input", json!({"text":"x"}));
+    let rejected = run.feed(
+        "input",
+        json!({"resource_id":run.resource,"task_id":0,"request_id":1,"text":"x"}),
+    );
     assert!(rejected.get("failure").is_some(), "{rejected}");
     Ok(())
 }

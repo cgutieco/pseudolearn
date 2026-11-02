@@ -479,9 +479,65 @@
   "@inputDialogPrompt": {
     "description": "Prompt for input dialog"
   },
+  "inputRequestIdentity": "Task {task}, request {request}",
+  "@inputRequestIdentity": {
+    "description": "Identity of the read request waiting for a response",
+    "placeholders": {
+      "task": { "type": "int" },
+      "request": { "type": "int" }
+    }
+  },
   "inputDialogSubmit": "Submit",
   "@inputDialogSubmit": {
     "description": "Submit button for input dialog"
+  },
+  "simulatedScenarioBadge": "Simulated",
+  "@simulatedScenarioBadge": {
+    "description": "Persistent label that effects run in a simulated scenario"
+  },
+  "simulatedScenarioHelpAction": "Help for simulated scenarios",
+  "@simulatedScenarioHelpAction": {
+    "description": "Accessible name for the scenario help button"
+  },
+  "simulatedScenarioHelpTitle": "Simulated scenario",
+  "@simulatedScenarioHelpTitle": {
+    "description": "Title of the simulated host help"
+  },
+  "simulatedScenarioHelpBody": "Effects use in-memory data from the selected scenario. The device file system, network and clock are never queried. HTTP only returns prepared responses; Read input is identified by task and request. Stop cancels the execution and releases its simulated resources.",
+  "@simulatedScenarioHelpBody": {
+    "description": "Scope and limits of the simulated host"
+  },
+  "simulatedScenarioHelpClose": "Close",
+  "@simulatedScenarioHelpClose": {
+    "description": "Button that closes the scenario help"
+  },
+  "simulatedScenarioNoHost": "No automatic host",
+  "@simulatedScenarioNoHost": {
+    "description": "Effects wait for a test response"
+  },
+  "simulatedScenarioNoPermissions": "No permissions",
+  "@simulatedScenarioNoPermissions": {
+    "description": "Scenario that denies all capabilities"
+  },
+  "simulatedScenarioVirtualFiles": "Virtual files",
+  "@simulatedScenarioVirtualFiles": {
+    "description": "Scenario with an in-memory sample file"
+  },
+  "simulatedScenarioPreparedHttp": "Prepared HTTP",
+  "@simulatedScenarioPreparedHttp": {
+    "description": "Scenario with a predefined local HTTP response"
+  },
+  "simulatedScenarioLogicalTime": "Logical time",
+  "@simulatedScenarioLogicalTime": {
+    "description": "Scenario with a deterministic clock and timer"
+  },
+  "simulatedScenarioTimeout": "Simulated timeout",
+  "@simulatedScenarioTimeout": {
+    "description": "Scenario that returns a timeout when waiting"
+  },
+  "simulatedScenarioUncertain": "Uncertain result",
+  "@simulatedScenarioUncertain": {
+    "description": "Scenario that preserves an uncertain external result"
   },
   "diagnosticsEmpty": "No issues detected",
   "@diagnosticsEmpty": {

@@ -22,6 +22,8 @@ mod execution_effects;
 mod execution_host;
 #[path = "execution_host_batch.rs"]
 mod execution_host_batch;
+#[path = "execution_input.rs"]
+mod execution_input;
 #[path = "execution_queries.rs"]
 mod execution_queries;
 #[path = "execution_response.rs"]
@@ -36,8 +38,10 @@ mod inspection_operations;
 const CHECKPOINT_STRIDE: usize = 256;
 
 use execution_host_batch::{CompletedHostEffect, PendingHostEffect};
+use execution_input::InputRequest;
 
 pub(crate) struct ExecutionResource {
+    resource_id: u64,
     program: LoadedProgram,
     machine: Machine<'static>,
     initial_state: Value,
@@ -65,6 +69,8 @@ pub(crate) struct ExecutionResource {
     detached_effects: bool,
     cancel_on_effect: Option<u64>,
     pending_host: Option<pseudolearn_runtime::HostEffectRequest>,
+    pending_input: Option<InputRequest>,
+    next_input_request_id: u64,
     pending_hosts: BTreeMap<u64, PendingHostEffect>,
     completed_hosts: VecDeque<CompletedHostEffect>,
     limit_rejected_network: BTreeSet<u64>,
@@ -98,6 +104,7 @@ impl ExecutionResource {
         initialized: execution_setup::InitializedMachine,
     ) -> Self {
         Self {
+            resource_id: 0,
             program: initialized.program,
             machine: initialized.machine,
             initial_state: initialized.initial_state,
@@ -125,11 +132,17 @@ impl ExecutionResource {
             detached_effects: prepared.detached_effects,
             cancel_on_effect: prepared.cancel_on_effect,
             pending_host: None,
+            pending_input: None,
+            next_input_request_id: 1,
             pending_hosts: BTreeMap::new(),
             completed_hosts: VecDeque::new(),
             completing_effect: false,
             limit_rejected_network: BTreeSet::new(),
         }
+    }
+
+    pub(crate) fn set_resource_id(&mut self, resource_id: u64) {
+        self.resource_id = resource_id;
     }
 
     pub(crate) fn use_locale(&mut self, locale: String) {
@@ -181,15 +194,22 @@ impl ExecutionResource {
     }
 
     fn tip_response(&self) -> Value {
-        execution_response::advance_response(execution_response::AdvanceResponseInput {
-            machine: &self.machine,
-            start: 0,
-            terminal: self.terminal.as_ref(),
-            profile: &self.profile,
-            warnings: &self.warnings,
-            sources: &self.sources,
-            source: self.source,
-        })
+        let mut response =
+            execution_response::advance_response(execution_response::AdvanceResponseInput {
+                machine: &self.machine,
+                start: 0,
+                terminal: self.terminal.as_ref(),
+                profile: &self.profile,
+                warnings: &self.warnings,
+                sources: &self.sources,
+                source: self.source,
+            });
+        if let Some(request) = &self.pending_input
+            && let Some(fields) = response.as_object_mut()
+        {
+            fields.insert("pending_input".to_owned(), request.to_value());
+        }
+        response
     }
 
     fn add_effect_observation(&self, response: &mut Value) {

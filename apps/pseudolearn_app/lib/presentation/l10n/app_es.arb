@@ -479,9 +479,65 @@
   "@inputDialogPrompt": {
     "description": "Mensaje de solicitud de dato"
   },
+  "inputRequestIdentity": "Tarea {task}, solicitud {request}",
+  "@inputRequestIdentity": {
+    "description": "Identidad de la lectura que está esperando respuesta",
+    "placeholders": {
+      "task": { "type": "int" },
+      "request": { "type": "int" }
+    }
+  },
   "inputDialogSubmit": "Ingresar",
   "@inputDialogSubmit": {
     "description": "Botón para enviar el dato ingresado"
+  },
+  "simulatedScenarioBadge": "Simulado",
+  "@simulatedScenarioBadge": {
+    "description": "Rótulo permanente que indica que los efectos se ejecutan en un escenario simulado"
+  },
+  "simulatedScenarioHelpAction": "Ayuda sobre escenarios simulados",
+  "@simulatedScenarioHelpAction": {
+    "description": "Nombre accesible del botón de ayuda del panel de escenarios"
+  },
+  "simulatedScenarioHelpTitle": "Escenario simulado",
+  "@simulatedScenarioHelpTitle": {
+    "description": "Título de la ayuda sobre el anfitrión simulado"
+  },
+  "simulatedScenarioHelpBody": "Los efectos usan datos en memoria del escenario elegido. No se consultan archivos, red ni reloj del equipo. HTTP solo devuelve respuestas preparadas; la entrada de Leer se identifica por tarea y solicitud. Detener cancela la ejecución y libera sus recursos simulados.",
+  "@simulatedScenarioHelpBody": {
+    "description": "Alcance y límites del anfitrión simulado"
+  },
+  "simulatedScenarioHelpClose": "Cerrar",
+  "@simulatedScenarioHelpClose": {
+    "description": "Botón que cierra la ayuda del escenario"
+  },
+  "simulatedScenarioNoHost": "Sin anfitrión automático",
+  "@simulatedScenarioNoHost": {
+    "description": "Efectos que esperan una respuesta externa de prueba"
+  },
+  "simulatedScenarioNoPermissions": "Sin permisos",
+  "@simulatedScenarioNoPermissions": {
+    "description": "Escenario que deniega todas las capacidades"
+  },
+  "simulatedScenarioVirtualFiles": "Archivos virtuales",
+  "@simulatedScenarioVirtualFiles": {
+    "description": "Escenario con un archivo de ejemplo en memoria"
+  },
+  "simulatedScenarioPreparedHttp": "HTTP preparado",
+  "@simulatedScenarioPreparedHttp": {
+    "description": "Escenario con una respuesta HTTP local predefinida"
+  },
+  "simulatedScenarioLogicalTime": "Tiempo lógico",
+  "@simulatedScenarioLogicalTime": {
+    "description": "Escenario con reloj y temporizador deterministas"
+  },
+  "simulatedScenarioTimeout": "Timeout simulado",
+  "@simulatedScenarioTimeout": {
+    "description": "Escenario que devuelve tiempo agotado al esperar"
+  },
+  "simulatedScenarioUncertain": "Resultado incierto",
+  "@simulatedScenarioUncertain": {
+    "description": "Escenario que conserva un resultado externo incierto"
   },
   "diagnosticsEmpty": "Sin problemas detectados",
   "@diagnosticsEmpty": {

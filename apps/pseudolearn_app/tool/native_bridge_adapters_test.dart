@@ -7,6 +7,8 @@ import 'package:pseudolearn_app/domain/model/analysis/app_diagnostic.dart';
 import 'package:pseudolearn_app/domain/model/help/help_query_result.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
+import 'package:pseudolearn_app/domain/model/execution/input_wait.dart';
+import 'package:pseudolearn_app/domain/model/execution/simulated_scenario.dart';
 import 'package:pseudolearn_app/engine/bridge/frb_generated.dart';
 import 'package:pseudolearn_app/engine/rust/native_rust_transport.dart';
 import 'package:pseudolearn_app/engine/rust/rust_analysis_api.dart';
@@ -247,12 +249,154 @@ void main() {
     }
     expect(step.isAwaitingInput, isTrue);
     expect(step.inputPrompt, 'x');
-    step = execution.provideInput('5');
+    final firstRequest = step.inputWait!;
+    expect(firstRequest.resourceId, greaterThan(0));
+    expect(firstRequest.requestId, greaterThan(0));
+    final crossed = execution.provideInput(
+      InputWait(
+        resourceId: firstRequest.resourceId,
+        taskId: firstRequest.taskId + 1,
+        requestId: firstRequest.requestId,
+      ),
+      'stale',
+    );
+    expect(crossed.inputWait?.matches(firstRequest), isTrue);
+
+    step = execution.provideInput(firstRequest, 'not an integer');
+    expect(step.isAwaitingInput, isTrue);
+    final retryRequest = step.inputWait!;
+    expect(retryRequest.resourceId, firstRequest.resourceId);
+    expect(retryRequest.taskId, firstRequest.taskId);
+    expect(retryRequest.requestId, firstRequest.requestId + 1);
+
+    step = execution.provideInput(firstRequest, '5');
+    expect(step.inputWait?.matches(retryRequest), isTrue);
+    step = execution.provideInput(retryRequest, '5');
     while (!step.isTerminal) {
       step = execution.step();
     }
     expect(step.isFinished, isTrue);
     expect(execution.outputLines.map((line) => line.text), ['5', '5']);
+    execution.stop();
+  });
+
+  test('virtual file scenario serves prepared bytes in both profiles', () {
+    final programs = [
+      (
+        SyntaxProfileId.classicSpanish,
+        '''SubProceso Probe() Como Resultado<Cadena, ErrorES>
+Definir directory Como DirectorioCap <- Propagar SolicitarDirectorio("root");
+Diferir
+Descartar directory.Cerrar();
+FinDiferir
+Definir file Como ArchivoCap <- Propagar directory.Abrir("datos.txt", "lectura");
+Diferir
+Descartar file.Cerrar();
+FinDiferir
+Retornar file.LeerTexto();
+FinSubProceso
+Algoritmo Main
+Segun Probe() Hacer
+Exito(value): Escribir value;
+Error(problem): Escribir problem.Codigo;
+FinSegun
+FinAlgoritmo
+''',
+      ),
+      (
+        SyntaxProfileId.english,
+        '''subroutine Probe() as result<string, IoError>
+define directory as DirCap <- propagate requestDirectory("root");
+defer
+discard directory.close();
+endDefer
+define file as FileCap <- propagate directory.open("datos.txt", "read");
+defer
+discard file.close();
+endDefer
+return file.readText();
+endSubroutine
+algorithm Main
+switch Probe() do
+success(value): write value;
+failure(problem): write problem.code;
+endSwitch
+endAlgorithm
+''',
+      ),
+    ];
+
+    for (final (profileId, sourceCode) in programs) {
+      final execution = RustProgramExecution(transport);
+      execution.startExecution(
+        sourceCode: sourceCode,
+        profileId: profileId,
+        languageId: UiLanguageId.english,
+        scenario: SimulatedScenario.virtualFiles,
+      );
+      var step = execution.step();
+      var count = 0;
+      while (!step.isTerminal && count++ < 500) {
+        step = execution.step();
+      }
+      expect(step.isFinished, isTrue);
+      expect(execution.outputLines.map((line) => line.text), ['PseudoLearn']);
+      execution.stop();
+    }
+  });
+
+  test('prepared HTTP response stays in memory in both profiles', () {
+    final programs = [
+      (
+        SyntaxProfileId.classicSpanish,
+        '''SubProceso Probe() Como Resultado<Entero, ErrorES>
+Definir net Como RedCap <- Propagar SolicitarRed();
+Definir request Como PeticionHttp <- PeticionHttp(MetodoHttp.GET, "https://example.test/greeting");
+Definir response Como RespuestaHttp <- Propagar net.Enviar(request);
+Retornar Exito(response.Estado());
+FinSubProceso
+Algoritmo Main
+Segun Probe() Hacer
+Exito(value): Escribir value;
+Error(problem): Escribir problem.Codigo;
+FinSegun
+FinAlgoritmo
+''',
+      ),
+      (
+        SyntaxProfileId.english,
+        '''subroutine Probe() as result<integer, IoError>
+define network as NetworkCap <- propagate requestNetwork();
+define response as HttpResponse <- propagate network.send(HttpRequest(HttpMethod.GET, "https://example.test/greeting"));
+return success(response.status());
+endSubroutine
+algorithm Main
+switch Probe() do
+success(status): write status;
+failure(problem): write problem.code;
+endSwitch
+endAlgorithm
+''',
+      ),
+    ];
+
+    for (final (profileId, sourceCode) in programs) {
+      final execution = RustProgramExecution(transport);
+      execution.startExecution(
+        sourceCode: sourceCode,
+        profileId: profileId,
+        languageId: UiLanguageId.spanish,
+        scenario: SimulatedScenario.preparedHttp,
+      );
+      var step = execution.step();
+      var count = 0;
+      while (!step.isTerminal && count++ < 500) {
+        step = execution.step();
+      }
+      expect(step.isFinished, isTrue);
+      expect(execution.outputLines.map((line) => line.text), ['200']);
+      execution.stop();
+    }
   });
 
   test('runtime failures halt with a reason', () async {
