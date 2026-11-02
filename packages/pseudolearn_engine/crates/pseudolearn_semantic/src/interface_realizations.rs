@@ -103,21 +103,29 @@ fn validate_signature(
             expected,
         );
     } else if !crate::interface_signatures::matches(session, &expected.signature, function) {
-        let existing = session.diagnostics.iter_mut().find(|diagnostic| {
-            diagnostic.code == DiagnosticCode::IncompatibleMethodOverride
-                && diagnostic.span == method.span
-        });
-        if let Some(diagnostic) = existing {
-            if !diagnostic.related.contains(&expected.span) {
-                diagnostic.related.push(expected.span);
-            }
-        } else {
-            report(
-                session,
-                DiagnosticCode::InterfaceMethodSignatureMismatch,
-                method.syntax,
-                expected,
-            );
+        report_signature_mismatch(session, expected, method);
+    }
+}
+
+fn report_signature_mismatch(
+    session: &mut AnalysisSession<'_>,
+    expected: &crate::interface_model::InterfaceMethod,
+    method: &crate::HirFunction,
+) {
+    let existing = session.diagnostics.iter_mut().find(|diagnostic| {
+        diagnostic.code == DiagnosticCode::IncompatibleMethodOverride
+            && diagnostic.span == method.span
+    });
+    if let Some(diagnostic) = existing {
+        if !diagnostic.related.contains(&expected.span) {
+            diagnostic.related.push(expected.span);
         }
+    } else {
+        report(
+            session,
+            DiagnosticCode::InterfaceMethodSignatureMismatch,
+            method.syntax,
+            expected,
+        );
     }
 }

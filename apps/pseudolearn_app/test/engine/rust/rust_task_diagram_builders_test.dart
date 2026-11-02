@@ -4,6 +4,7 @@ import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
 import 'package:pseudolearn_app/engine/rust/rust_flowchart_builder.dart';
 import 'package:pseudolearn_app/engine/rust/rust_structogram_builder.dart';
+import 'package:pseudolearn_app/engine/rust/source_offset_index.dart';
 
 import '../../fakes/fake_rust_transport.dart';
 
@@ -14,10 +15,17 @@ const _source =
     'FinTareas\n'
     'FinAlgoritmo\n';
 
-Map<String, Object?> _span(int startLine, int startColumn, int endLine, int endColumn) => {
-  'start': {'line': startLine, 'column': startColumn},
-  'end': {'line': endLine, 'column': endColumn},
-};
+Map<String, Object?> _span(int startLine, int startColumn, int endLine, int endColumn) {
+  final index = SourceOffsetIndex(_source);
+  int byteAt(int line, int column) =>
+      index.utf8OffsetAtUtf16(index.offsetOf(line, column))!;
+  return {
+    'start': {'line': startLine, 'column': startColumn},
+    'end': {'line': endLine, 'column': endColumn},
+    'start_byte': '${byteAt(startLine, startColumn)}',
+    'end_byte': '${byteAt(endLine, endColumn)}',
+  };
+}
 
 Map<String, Object?> _node(
   String id,
@@ -41,6 +49,8 @@ FakeRustTransport _transport() => FakeRustTransport({
   'analysis': (_) => {'tree': true, 'diagnostics': <Object?>[]},
   'program_view': (_) => {
     'revision_id': 'r1',
+    'child_order': 'source',
+    'methods': <Object?>[],
     'units': [
       {'kind': 'algorithm', 'name': 'P', 'order': 0, 'node_id': 'r1.n0', 'span': _span(1, 1, 5, 13)},
     ],

@@ -13,16 +13,15 @@ Map<String, Object?> _span(
 ) => {
   'start': {'line': startLine, 'column': startColumn},
   'end': {'line': endLine, 'column': endColumn},
+  'start_byte': '0',
+  'end_byte': '30',
 };
 
 Map<String, Object?> _node(String id, String kind, List<String> children) => {
   'node_id': id,
   'kind': 'declaration',
   'syntax_kind': kind,
-  'span': {
-    'start': {'line': 1, 'column': 1},
-    'end': {'line': 2, 'column': 13},
-  },
+  'span': _span(1, 1, 2, 13),
   'child_node_ids': children,
   'child_roles': [
     for (final child in children) {'node_id': child, 'role': 'parameters'},
@@ -36,6 +35,8 @@ void main() {
       'analysis': (_) => {'tree': true, 'diagnostics': <Object?>[]},
       'program_view': (_) => {
         'revision_id': 'r1',
+        'child_order': 'source',
+        'methods': <Object?>[],
         'units': [
           {
             'kind': 'subprogram',

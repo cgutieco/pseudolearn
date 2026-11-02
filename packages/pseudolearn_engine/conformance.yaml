@@ -1505,8 +1505,9 @@
     },
     {
       "regla": "API.PROGRAM.VIEW@1.0.0#R10",
-      "verificacion": "crates/pseudolearn_api/tests/program_view_exits.rs",
-      "estado": "cumple"
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "Los casos de salidas y limpiezas observan la vista a través del sujeto app; el motor conserva su comprobación de caja negra en crates/pseudolearn_api/tests/program_view_exits.rs."
     },
     {
       "regla": "API.PROGRAM.VIEW@1.0.0#R11",

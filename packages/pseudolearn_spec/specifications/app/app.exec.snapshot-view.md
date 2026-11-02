@@ -103,7 +103,7 @@
   "rigor": ["estricto"],
   "origen": "derivado",
   "operacion": "app",
-  "aplicacion": {"scenario": "snapshot", "input": {"program": "Clase Nodo\nPublico Definir siguiente Como Nodo;\nFinClase\nAlgoritmo P\nDefinir a, alias Como Nodo;\na <- Nuevo Nodo();\nalias <- a;\na.siguiente <- a;\nFinAlgoritmo\n", "query": "object_graph"}},
+  "aplicacion": {"scenario": "snapshot", "input": {"program": "Clase Nodo\nPublico Definir siguiente Como Nodo;\nFinClase\nAlgoritmo P\nDefinir Mutable a Como Nodo <- Nuevo Nodo();\nDefinir Mutable alias Como Nodo <- a;\na.siguiente <- a;\nFinAlgoritmo\n", "query": "object_graph"}},
   "espera": {"aplicacion": {"references": {"a": "1", "alias": "1"}, "objects": {"1": {"class": "Nodo", "fields": {"siguiente": {"ref": "1"}}}}}}
 }
 ```
@@ -116,7 +116,7 @@
   "rigor": ["estricto"],
   "origen": "derivado",
   "operacion": "app",
-  "aplicacion": {"scenario": "snapshot", "input": {"program": "Clase Base\nPublico Definir valor Como Entero;\nFinClase\nClase Hija Hereda De Base\nFinClase\nAlgoritmo P\nDefinir x Como Hija;\nx <- Nuevo Hija();\nx.valor <- 9;\nFinAlgoritmo\n", "query": "object_graph"}},
+  "aplicacion": {"scenario": "snapshot", "input": {"program": "Clase Base\nPublico Definir valor Como Entero;\nFinClase\nClase Hija Hereda De Base\nFinClase\nAlgoritmo P\nDefinir x Como Hija <- Nuevo Hija();\nx.valor <- 9;\nFinAlgoritmo\n", "query": "object_graph"}},
   "espera": {"aplicacion": {"objects": {"1": {"class": "Hija", "fields": {"valor": {"value": "9", "declared_in": "Base"}}}}}}
 }
 ```

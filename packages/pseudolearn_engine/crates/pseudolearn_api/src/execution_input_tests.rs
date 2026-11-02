@@ -1,4 +1,5 @@
 use super::super::ExecutionResource;
+use super::InputRequest;
 use crate::ExecuteRequest;
 use serde_json::Value;
 
@@ -19,6 +20,14 @@ fn waiting_execution(resource_id: u64) -> Result<ExecutionResource, String> {
     Ok(execution)
 }
 
+fn reply(resource_id: u64, task_id: u64, request_id: u64) -> InputRequest {
+    InputRequest {
+        resource_id,
+        task_id,
+        request_id,
+    }
+}
+
 fn request_id(response: &Value) -> Option<u64> {
     response.get("pending_input")?.get("request_id")?.as_u64()
 }
@@ -34,35 +43,39 @@ fn input_rejects_crossed_stale_and_duplicate_responses_without_consuming_them() 
             .map(|request| request.resource_id),
         Some(7)
     );
-    assert!(execution.input(7, 1, 1, "wrong task".to_owned()).is_err());
     assert!(
         execution
-            .input(7, 0, 2, "wrong request".to_owned())
+            .input(reply(7, 1, 1), "wrong task".to_owned())
             .is_err()
     );
     assert!(
         execution
-            .input(8, 0, 1, "wrong execution".to_owned())
+            .input(reply(7, 0, 2), "wrong request".to_owned())
+            .is_err()
+    );
+    assert!(
+        execution
+            .input(reply(8, 0, 1), "wrong execution".to_owned())
             .is_err()
     );
     assert_eq!(execution.machine.input_consumed_count(), 0);
 
     assert!(
         execution
-            .input(7, 0, 1, "not an integer".to_owned())
+            .input(reply(7, 0, 1), "not an integer".to_owned())
             .is_ok()
     );
     let next = execution
         .advance(64)
         .map_err(|error| format!("could not retry input request: {error:?}"))?;
     assert_eq!(request_id(&next), Some(2));
-    assert!(execution.input(7, 0, 1, "7".to_owned()).is_err());
+    assert!(execution.input(reply(7, 0, 1), "7".to_owned()).is_err());
     assert_eq!(execution.machine.input_consumed_count(), 1);
 
-    assert!(execution.input(7, 0, 2, "7".to_owned()).is_ok());
+    assert!(execution.input(reply(7, 0, 2), "7".to_owned()).is_ok());
     let completed = execution.advance(64);
     assert!(completed.is_ok());
-    assert!(execution.input(7, 0, 2, "7".to_owned()).is_err());
+    assert!(execution.input(reply(7, 0, 2), "7".to_owned()).is_err());
     assert_eq!(execution.machine.input_consumed_count(), 2);
     Ok(())
 }
@@ -71,7 +84,7 @@ fn input_rejects_crossed_stale_and_duplicate_responses_without_consuming_them() 
 fn cancellation_rejects_a_response_before_the_machine_receives_it() -> Result<(), String> {
     let mut execution = waiting_execution(7)?;
     execution.cancel();
-    assert!(execution.input(7, 0, 1, "7".to_owned()).is_err());
+    assert!(execution.input(reply(7, 0, 1), "7".to_owned()).is_err());
     assert_eq!(execution.machine.input_consumed_count(), 0);
     Ok(())
 }
@@ -108,7 +121,11 @@ fn a_response_from_an_execution_with_the_same_program_is_rejected() -> Result<()
             .map(|request| request.resource_id),
         Some(8)
     );
-    assert!(second.input(7, 0, 1, "stale response".to_owned()).is_err());
+    assert!(
+        second
+            .input(reply(7, 0, 1), "stale response".to_owned())
+            .is_err()
+    );
     assert_eq!(second.machine.input_consumed_count(), 0);
     Ok(())
 }

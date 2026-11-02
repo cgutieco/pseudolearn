@@ -8,6 +8,45 @@ pub(super) fn capture(execution: &ExecutionResource, arguments: &Value) -> Resul
         .debug
         .as_ref()
         .ok_or_else(|| usage("debugging not configured"))?;
+    let (requested_event, task) = requested_target(arguments, debug)?;
+    let ended = requested_event.is_none()
+        && debug.reason == "task_terminated"
+        && arguments.get("task_id").is_none();
+    let machine = match requested_event {
+        Some(event) => execution.inspection_machine(event, Some(task))?,
+        None => inspected_machine(execution, debug, task, ended)?,
+    };
+    let (frames, total) = if ended {
+        (Vec::new(), 0)
+    } else {
+        (
+            frames(execution, &machine, arguments)?,
+            machine.active_frames_count(),
+        )
+    };
+    let source = if requested_event.is_some() {
+        Value::Null
+    } else {
+        debug
+            .last
+            .as_ref()
+            .map(|event| execution.sources.event(event))
+            .unwrap_or(Value::Null)
+    };
+    let event = requested_event.or(debug.cursor);
+    Ok(
+        json!({"stop_generation":debug.generation,"event":event,"live_event":execution.delivered.checked_sub(1),
+        "reason":debug.reason,"stopped":debug.stopped,"task_id":task,"threads":threads(&machine),"frames":frames,
+        "total_frames":total,"sources":execution.sources.snapshot(),"source":source,
+        "termination":execution.terminal.as_ref().map(crate::execution_wire::termination).unwrap_or(json!({"kind":"running"})),
+        "output":machine_output(&execution.machine)}),
+    )
+}
+
+fn requested_target(
+    arguments: &Value,
+    debug: &crate::debug_model::DebugSession,
+) -> Result<(Option<usize>, u64), ApiError> {
     let requested_event = arguments
         .get("event")
         .map(|value| {
@@ -26,40 +65,7 @@ pub(super) fn capture(execution: &ExecutionResource, arguments: &Value) -> Resul
         (_, Some(task)) => task,
         (None, None) => debug.task,
     };
-    let ended = requested_event.is_none()
-        && debug.reason == "task_terminated"
-        && arguments.get("task_id").is_none();
-    let machine = match requested_event {
-        Some(event) => execution.inspection_machine(event, Some(task))?,
-        None => inspected_machine(execution, debug, task, ended)?,
-    };
-    let frames = if ended {
-        Vec::new()
-    } else {
-        frames(execution, &machine, arguments)?
-    };
-    let total = if ended {
-        0
-    } else {
-        machine.active_frames_count()
-    };
-    let event = requested_event.or(debug.cursor);
-    let source = if requested_event.is_some() {
-        Value::Null
-    } else {
-        debug
-            .last
-            .as_ref()
-            .map(|event| execution.sources.event(event))
-            .unwrap_or(Value::Null)
-    };
-    Ok(
-        json!({"stop_generation":debug.generation,"event":event,"live_event":execution.delivered.checked_sub(1),
-        "reason":debug.reason,"stopped":debug.stopped,"task_id":task,"threads":threads(&machine),"frames":frames,
-        "total_frames":total,"sources":execution.sources.snapshot(),"source":source,
-        "termination":execution.terminal.as_ref().map(crate::execution_wire::termination).unwrap_or(json!({"kind":"running"})),
-        "output":machine_output(&execution.machine)}),
-    )
+    Ok((requested_event, task))
 }
 
 fn inspected_machine<'execution>(

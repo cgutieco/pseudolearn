@@ -224,31 +224,10 @@ fn handle_execution_feed(
 ) -> Result<Value, ApiError> {
     match operation {
         "input" => {
-            let text = arguments
-                .get("text")
-                .and_then(Value::as_str)
-                .ok_or_else(|| usage("missing input text"))?
-                .to_owned();
-            let task_id = arguments
-                .get("task_id")
-                .and_then(Value::as_u64)
-                .ok_or_else(|| usage("missing input task identity"))?;
-            let resource_id = arguments
-                .get("resource_id")
-                .and_then(Value::as_u64)
-                .ok_or_else(|| usage("missing input execution identity"))?;
-            let request_id = arguments
-                .get("request_id")
-                .and_then(Value::as_u64)
-                .filter(|request_id| *request_id > 0)
-                .ok_or_else(|| usage("missing input request identity"))?;
-            execution.input(resource_id, task_id, request_id, text)?;
-            Ok(Value::Null)
+            let (reply, text) = crate::execution_resource::parse_input(arguments)?;
+            execution.input(reply, text).map(|()| Value::Null)
         }
-        "effect_result" => {
-            execution.effect_result(arguments)?;
-            Ok(Value::Null)
-        }
+        "effect_result" => execution.effect_result(arguments).map(|()| Value::Null),
         _ => Err(usage("unknown operation")),
     }
 }

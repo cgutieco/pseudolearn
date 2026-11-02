@@ -15,6 +15,39 @@ fn view(session: &mut ApiSession, document: &Value) -> Value {
     session.call("program_view", &json!({"resource":document}))
 }
 
+fn has_text(entry: &Value, field: &str) -> bool {
+    entry.get(field).and_then(Value::as_str).is_some()
+}
+
+fn assert_inheritance_and_overrides(result: &Value) -> Result<(), String> {
+    let inheritance = result
+        .pointer("/value/inheritance")
+        .and_then(Value::as_array)
+        .ok_or("missing inheritance")?;
+    assert_eq!(inheritance.len(), 1);
+    let relation = inheritance.first().ok_or("missing relation")?;
+    assert_eq!(relation.get("class"), Some(&json!("Hija")));
+    assert_eq!(relation.get("base"), Some(&json!("Base")));
+    assert!(has_text(relation, "class_node_id"));
+    assert!(has_text(relation, "base_node_id"));
+    let methods = result
+        .pointer("/value/methods")
+        .and_then(Value::as_array)
+        .ok_or("missing methods")?;
+    let method = methods
+        .iter()
+        .find(|entry| {
+            entry.get("class") == Some(&json!("Hija"))
+                && entry.get("name") == Some(&json!("valor"))
+                && entry.get("overrides") == Some(&json!("Base.valor"))
+        })
+        .ok_or("missing override")?;
+    assert!(has_text(method, "class_node_id"));
+    assert!(has_text(method, "method_node_id"));
+    assert!(has_text(method, "overridden_method_node_id"));
+    Ok(())
+}
+
 #[test]
 fn view_lists_units_in_source_order_with_inheritance_and_overrides() -> Result<(), String> {
     let mut session = ApiSession::default();
@@ -36,17 +69,7 @@ fn view_lists_units_in_source_order_with_inheritance_and_overrides() -> Result<(
         assert!(unit.get("node_id").and_then(Value::as_str).is_some());
         assert!(unit.get("span").and_then(Value::as_object).is_some());
     }
-    assert_eq!(
-        result.pointer("/value/inheritance"),
-        Some(&json!([{"class":"Hija","base":"Base"}]))
-    );
-    let methods = result.pointer("/value/methods").ok_or("missing methods")?;
-    assert!(
-        methods
-            .as_array()
-            .ok_or("methods")?
-            .contains(&json!({"class":"Hija","name":"valor","overrides":"Base.valor"}))
-    );
+    assert_inheritance_and_overrides(&result)?;
     let members = result
         .pointer("/value/members")
         .and_then(Value::as_array)

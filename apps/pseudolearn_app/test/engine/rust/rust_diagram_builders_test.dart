@@ -7,6 +7,7 @@ import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
 import 'package:pseudolearn_app/engine/rust/rust_class_diagram_builder.dart';
 import 'package:pseudolearn_app/engine/rust/rust_flowchart_builder.dart';
 import 'package:pseudolearn_app/engine/rust/rust_structogram_builder.dart';
+import 'package:pseudolearn_app/engine/rust/source_offset_index.dart';
 
 import '../../fakes/fake_rust_transport.dart';
 
@@ -34,15 +35,37 @@ Map<String, Object?> _position(int line, int column) => {
   'column': column,
 };
 
+Map<String, Object?> _spanIn(
+  String source,
+  int startLine,
+  int startColumn,
+  int endLine,
+  int endColumn,
+) {
+  final index = SourceOffsetIndex(source);
+  int byteAt(int line, int column) =>
+      index.utf8OffsetAtUtf16(index.offsetOf(line, column))!;
+  return {
+    'start': _position(startLine, startColumn),
+    'end': _position(endLine, endColumn),
+    'start_byte': '${byteAt(startLine, startColumn)}',
+    'end_byte': '${byteAt(endLine, endColumn)}',
+  };
+}
+
 Map<String, Object?> _span(
   int startLine,
   int startColumn,
   int endLine,
   int endColumn,
-) => {
-  'start': _position(startLine, startColumn),
-  'end': _position(endLine, endColumn),
-};
+) => _spanIn(_source, startLine, startColumn, endLine, endColumn);
+
+Map<String, Object?> _classSpan(
+  int startLine,
+  int startColumn,
+  int endLine,
+  int endColumn,
+) => _spanIn(_classSource, startLine, startColumn, endLine, endColumn);
 
 Map<String, Object?> _spanOf(
   String source,
@@ -57,7 +80,7 @@ Map<String, Object?> _spanOf(
     start = lineText.indexOf(fragment, searchFrom);
     searchFrom = start + fragment.length;
   }
-  return _span(line, start + 1, line, start + fragment.length + 1);
+  return _spanIn(source, line, start + 1, line, start + fragment.length + 1);
 }
 
 Map<String, Object?> _node({
@@ -98,6 +121,8 @@ FakeRustTransport _transport({bool valid = true}) => FakeRustTransport({
   },
   'program_view': (_) => {
     'revision_id': 'r1',
+    'child_order': 'source',
+    'methods': <Object?>[],
     'units': [
       {
         'kind': 'algorithm',
@@ -214,27 +239,29 @@ FakeRustTransport _classTransport() => FakeRustTransport({
   'analysis': (_) => {'tree': true, 'diagnostics': <Object?>[]},
   'program_view': (_) => {
     'revision_id': 'r1',
+    'child_order': 'source',
+    'methods': <Object?>[],
     'units': [
       {
         'kind': 'class',
         'name': 'Base',
         'order': 0,
         'node_id': 'r1.n0',
-        'span': _span(1, 1, 2, 9),
+        'span': _classSpan(1, 1, 2, 9),
       },
       {
         'kind': 'class',
         'name': 'Caja',
         'order': 1,
         'node_id': 'r1.n1',
-        'span': _span(3, 1, 7, 9),
+        'span': _classSpan(3, 1, 7, 9),
       },
       {
         'kind': 'algorithm',
         'name': 'P',
         'order': 2,
         'node_id': 'r1.n9',
-        'span': _span(8, 1, 9, 13),
+        'span': _classSpan(8, 1, 9, 13),
       },
     ],
     'nodes': [
@@ -242,13 +269,13 @@ FakeRustTransport _classTransport() => FakeRustTransport({
         id: 'r1.n0',
         kind: 'declaration',
         syntaxKind: 'class_unit',
-        span: _span(1, 1, 2, 9),
+        span: _classSpan(1, 1, 2, 9),
       ),
       _node(
         id: 'r1.n1',
         kind: 'declaration',
         syntaxKind: 'class_unit',
-        span: _span(3, 1, 7, 9),
+        span: _classSpan(3, 1, 7, 9),
         children: ['r1.n2', 'r1.n3'],
         roles: const {'r1.n2': 'member', 'r1.n3': 'member'},
       ),
@@ -266,7 +293,7 @@ FakeRustTransport _classTransport() => FakeRustTransport({
         id: 'r1.n3',
         kind: 'declaration',
         syntaxKind: 'method_member',
-        span: _span(5, 1, 6, 9),
+        span: _classSpan(5, 1, 6, 9),
         children: ['r1.n4', 'r1.n8'],
         roles: const {'r1.n4': 'parameters', 'r1.n8': 'signature'},
       ),
@@ -309,7 +336,7 @@ FakeRustTransport _classTransport() => FakeRustTransport({
         id: 'r1.n9',
         kind: 'declaration',
         syntaxKind: 'algorithm_unit',
-        span: _span(8, 1, 9, 13),
+        span: _classSpan(8, 1, 9, 13),
       ),
     ],
     'inheritance': [

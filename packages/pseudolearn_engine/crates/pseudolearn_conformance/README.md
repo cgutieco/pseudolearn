@@ -4,6 +4,8 @@
 
 Adapta la API al protocolo de conformidad por procesos. Implementa análisis, RI y ejecución JSONL sobre la API pública. La negociación anuncia únicamente operaciones implementadas.
 
+En las llamadas de una sesión `api`, un paso `input` que solo declara `text` completa `resource_id`, `task_id` y `request_id` desde la última `pending_input` de las respuestas anteriores; un campo ya declarado se respeta y sin solicitud pendiente la API rechaza el paso.
+
 Fuera de alcance: otras responsabilidades del motor, UI, I/O libre y construcciones nuevas.
 
 | Pendiente | Dependencia | Hito técnico |

@@ -1,11 +1,11 @@
 final class ClassDiagramCorpus {
   static const String robotAutonomo = '''
 Clase Componente
-    Publico Definir codigo Como Cadena
+    Publico Definir modelo Como Cadena
     Publico Definir costo Como Real
 
     Metodo Constructor(cod Como Cadena, c Como Real)
-        Este.codigo <- cod
+        Este.modelo <- cod
         Este.costo <- c
     FinMetodo
 
@@ -18,7 +18,7 @@ Clase Dispositivo Hereda De Componente
     Publico Definir fabricante Como Cadena
 
     Metodo Constructor(cod Como Cadena, c Como Real, fab Como Cadena)
-        Este.codigo <- cod
+        Este.modelo <- cod
         Este.costo <- c
         Este.fabricante <- fab
     FinMetodo
@@ -29,7 +29,7 @@ Clase Sensor Hereda De Dispositivo
     Publico Definir resolucion Como Entero
 
     Metodo Constructor(cod Como Cadena, c Como Real, fab Como Cadena, t Como Cadena, res Como Entero)
-        Este.codigo <- cod
+        Este.modelo <- cod
         Este.costo <- c
         Este.fabricante <- fab
         Este.tipoSensor <- t
@@ -42,7 +42,7 @@ Clase Computadora Hereda De Dispositivo
     Publico Definir memoriaRamMb Como Entero
 
     Metodo Constructor(cod Como Cadena, c Como Real, fab Como Cadena, freq Como Real, ram Como Entero)
-        Este.codigo <- cod
+        Este.modelo <- cod
         Este.costo <- c
         Este.fabricante <- fab
         Este.frecuenciaGhz <- freq
@@ -57,7 +57,7 @@ Clase RobotAutonomo Hereda De Componente
     Publico Definir sensorOptico Como Sensor
 
     Metodo Constructor(cod Como Cadena, c Como Real, bat Como Entero, comp Como Computadora, sens Como Sensor)
-        Este.codigo <- cod
+        Este.modelo <- cod
         Este.costo <- c
         Este.bateriaMah <- bat
         Este.cerebro <- comp
@@ -66,7 +66,7 @@ Clase RobotAutonomo Hereda De Componente
     FinMetodo
 
     Publico Metodo Operar()
-        Escribir Este.codigo
+        Escribir Este.modelo
     FinMetodo
 FinClase
 

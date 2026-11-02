@@ -43,11 +43,29 @@ List<Map<String, Object?>> _executeCalls(
     if (resourceIndex is int) {
       arguments['resource'] = _resourceFrom(results, resourceIndex);
     }
+    if (operation == 'input') _injectPendingInputIdentity(results, arguments);
     results.add(
       _callResult(transport, operation is String ? operation : '', arguments),
     );
   }
   return results;
+}
+
+void _injectPendingInputIdentity(
+  List<Map<String, Object?>> results,
+  Map<String, Object?> arguments,
+) {
+  for (final result in results.reversed) {
+    final value = result['value'];
+    final pending = value is Map ? value['pending_input'] : null;
+    if (pending is! Map) continue;
+    for (final field in const ['resource_id', 'task_id', 'request_id']) {
+      if (pending.containsKey(field)) {
+        arguments.putIfAbsent(field, () => pending[field]);
+      }
+    }
+    return;
+  }
 }
 
 Object? _resourceFrom(List<Map<String, Object?>> results, int index) {

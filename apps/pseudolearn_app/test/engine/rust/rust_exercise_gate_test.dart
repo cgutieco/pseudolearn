@@ -85,11 +85,11 @@ void main() {
       counts.update(entry.classification, (value) => value + 1, ifAbsent: () => 1);
     }
 
-    expect(exercises, hasLength(190));
+    expect(exercises, hasLength(192));
     expect(counts[ExerciseClass.notExecutable] ?? 0, 0);
     expect(counts[ExerciseClass.behavioural], 58);
-    expect(counts[ExerciseClass.mixed], 132);
-    expect(exercises.where((e) => e.profile == SyntaxProfileId.english), hasLength(95));
+    expect(counts[ExerciseClass.mixed], 134);
+    expect(exercises.where((e) => e.profile == SyntaxProfileId.english), hasLength(96));
   });
 
   for (final entry in exercises) {

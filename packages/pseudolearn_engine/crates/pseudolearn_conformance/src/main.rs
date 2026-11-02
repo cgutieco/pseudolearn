@@ -262,9 +262,30 @@ fn respond_api_calls(
                 .unwrap_or(Value::Null);
             arguments.insert("resource".to_owned(), resource);
         }
+        if operation == "input" {
+            inject_pending_input_identity(&results, &mut arguments);
+        }
         results.push(session.call(operation, &Value::Object(arguments)));
     }
     results
+}
+
+fn inject_pending_input_identity(results: &[Value], arguments: &mut Map<String, Value>) {
+    let Some(pending) = results
+        .iter()
+        .rev()
+        .find_map(|result| result.pointer("/value/pending_input"))
+        .and_then(Value::as_object)
+    else {
+        return;
+    };
+    for field in ["resource_id", "task_id", "request_id"] {
+        if let Some(value) = pending.get(field) {
+            arguments
+                .entry(field.to_owned())
+                .or_insert_with(|| value.clone());
+        }
+    }
 }
 
 fn inject_case_analysis_defaults(request: &Value, arguments: &mut Map<String, Value>) {

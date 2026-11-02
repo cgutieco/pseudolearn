@@ -53,6 +53,7 @@ impl ExecutionResource {
         source: u32,
     ) -> Result<bool, ApiError> {
         if self
+            .hosts
             .pending_hosts
             .values()
             .any(|host| host.machine_sequence == pending.effect_seq)
@@ -88,7 +89,7 @@ impl ExecutionResource {
         )
         .map_err(crate::tape_wire::replay_error_to_api)?;
         self.machine.supply_effect_result(reply);
-        self.completing_effect = true;
+        self.hosts.completing_effect = true;
         Ok(true)
     }
 
@@ -140,7 +141,7 @@ impl ExecutionResource {
             return false;
         }
         self.mark_excess_network_requests();
-        self.limit_rejected_network.remove(&pending.effect_seq)
+        self.hosts.forget_rejection(pending.effect_seq)
     }
 
     fn reject_excess_network_request(
@@ -163,7 +164,7 @@ impl ExecutionResource {
         )
         .map_err(crate::tape_wire::replay_error_to_api)?;
         self.machine.supply_effect_result(reply);
-        self.completing_effect = true;
+        self.hosts.completing_effect = true;
         Ok(true)
     }
 
@@ -177,7 +178,7 @@ impl ExecutionResource {
         for (index, request) in requests.enumerate() {
             let count = u64::try_from(index).unwrap_or(u64::MAX).saturating_add(1);
             if pseudolearn_runtime::pending_limit_exceeded(count, maximum) {
-                self.limit_rejected_network.insert(request.effect_seq);
+                self.hosts.limit_rejected_network.insert(request.effect_seq);
             }
         }
     }
@@ -202,8 +203,8 @@ impl ExecutionResource {
             return;
         }
         self.pending_host = None;
-        self.pending_hosts.clear();
-        self.completed_hosts.clear();
+        self.hosts.pending_hosts.clear();
+        self.hosts.completed_hosts.clear();
         self.effects.abort();
         pseudolearn_runtime::HostEffectProvider::close_all(&mut self.host);
         self.terminal = Some(RunExit::Cancelled);
@@ -223,7 +224,7 @@ impl ExecutionResource {
             .ok_or_else(|| usage("missing effect result"))?;
         let reply: HostReply =
             serde_json::from_value(result.clone()).map_err(|error| usage(&error.to_string()))?;
-        if self.pending_hosts.contains_key(&sequence) {
+        if self.hosts.pending_hosts.contains_key(&sequence) {
             return self.resolve_concurrent_host_result(sequence, reply);
         }
         self.resolve_single_host_result(sequence, reply)
@@ -235,6 +236,7 @@ impl ExecutionResource {
         reply: HostReply,
     ) -> Result<(), ApiError> {
         let pending = self
+            .hosts
             .pending_hosts
             .remove(&sequence)
             .ok_or_else(|| usage("execution is not awaiting effect"))?;
@@ -251,10 +253,7 @@ impl ExecutionResource {
         }
         let reply = resolve_host_effect(&mut self.effects, sequence, reply)
             .map_err(crate::tape_wire::replay_error_to_api)?;
-        self.completed_hosts.push_back(super::CompletedHostEffect {
-            machine_sequence: pending.machine_sequence,
-            reply,
-        });
+        self.hosts.complete(pending.machine_sequence, reply);
         self.clear_completed_host(sequence);
         Ok(())
     }
@@ -286,7 +285,7 @@ impl ExecutionResource {
             .map_err(crate::tape_wire::replay_error_to_api)?;
         self.machine.supply_effect_result(reply);
         self.pending_host = None;
-        self.completing_effect = true;
+        self.hosts.completing_effect = true;
         self.terminal = None;
         Ok(())
     }

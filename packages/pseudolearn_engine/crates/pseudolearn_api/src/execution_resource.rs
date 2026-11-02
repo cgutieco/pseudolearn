@@ -5,7 +5,6 @@ use pseudolearn_vm::{
     LoadedProgram, Machine, RunExit, RunOptions, machine_event_count, take_machine_events,
 };
 use serde_json::{Value, json};
-use std::collections::{BTreeMap, BTreeSet, VecDeque};
 use std::sync::{Arc, atomic::AtomicBool};
 
 pub(crate) use execution_queries::reject_task_alias;
@@ -37,8 +36,8 @@ mod inspection_operations;
 
 const CHECKPOINT_STRIDE: usize = 256;
 
-use execution_host_batch::{CompletedHostEffect, PendingHostEffect};
-use execution_input::InputRequest;
+use execution_host_batch::HostBookkeeping;
+pub(crate) use execution_input::{InputRequest, parse_input};
 
 pub(crate) struct ExecutionResource {
     resource_id: u64,
@@ -71,10 +70,7 @@ pub(crate) struct ExecutionResource {
     pending_host: Option<pseudolearn_runtime::HostEffectRequest>,
     pending_input: Option<InputRequest>,
     next_input_request_id: u64,
-    pending_hosts: BTreeMap<u64, PendingHostEffect>,
-    completed_hosts: VecDeque<CompletedHostEffect>,
-    limit_rejected_network: BTreeSet<u64>,
-    completing_effect: bool,
+    hosts: HostBookkeeping,
 }
 
 impl ExecutionResource {
@@ -134,10 +130,7 @@ impl ExecutionResource {
             pending_host: None,
             pending_input: None,
             next_input_request_id: 1,
-            pending_hosts: BTreeMap::new(),
-            completed_hosts: VecDeque::new(),
-            completing_effect: false,
-            limit_rejected_network: BTreeSet::new(),
+            hosts: HostBookkeeping::default(),
         }
     }
 
@@ -191,45 +184,6 @@ impl ExecutionResource {
         take_machine_events(&mut self.machine);
         self.trim_history()?;
         Ok(response)
-    }
-
-    fn tip_response(&self) -> Value {
-        let mut response =
-            execution_response::advance_response(execution_response::AdvanceResponseInput {
-                machine: &self.machine,
-                start: 0,
-                terminal: self.terminal.as_ref(),
-                profile: &self.profile,
-                warnings: &self.warnings,
-                sources: &self.sources,
-                source: self.source,
-            });
-        if let Some(request) = &self.pending_input
-            && let Some(fields) = response.as_object_mut()
-        {
-            fields.insert("pending_input".to_owned(), request.to_value());
-        }
-        response
-    }
-
-    fn add_effect_observation(&self, response: &mut Value) {
-        let Some(fields) = response.as_object_mut() else {
-            return;
-        };
-        fields.insert(
-            "effect_tape".to_owned(),
-            crate::tape_wire::tape_to_value(self.effects.tape()),
-        );
-        if let Some(pending) = self.pending_host_value() {
-            fields.insert("pending_effect".to_owned(), pending);
-        }
-        if let Some(list) = self.concurrent_pending_effects() {
-            fields.insert("pending_effects".to_owned(), list);
-        }
-        fields.insert(
-            "host_observation".to_owned(),
-            json!({"calls":self.host.calls,"open_resources":self.host.live_resource_count()}),
-        );
     }
 
     pub(crate) fn horizon(&self) -> Value {

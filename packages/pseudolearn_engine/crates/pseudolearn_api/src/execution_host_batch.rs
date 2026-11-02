@@ -4,6 +4,27 @@ use pseudolearn_runtime::HostReply;
 use pseudolearn_vm::{PendingEffectRequest, RunExit};
 use serde_json::Value;
 
+#[derive(Default)]
+pub(super) struct HostBookkeeping {
+    pub(super) pending_hosts: std::collections::BTreeMap<u64, PendingHostEffect>,
+    pub(super) completed_hosts: std::collections::VecDeque<CompletedHostEffect>,
+    pub(super) limit_rejected_network: std::collections::BTreeSet<u64>,
+    pub(super) completing_effect: bool,
+}
+
+impl HostBookkeeping {
+    pub(super) fn forget_rejection(&mut self, sequence: u64) -> bool {
+        self.limit_rejected_network.remove(&sequence)
+    }
+
+    pub(super) fn complete(&mut self, machine_sequence: u64, reply: HostReply) {
+        self.completed_hosts.push_back(CompletedHostEffect {
+            machine_sequence,
+            reply,
+        });
+    }
+}
+
 pub(super) struct PendingHostEffect {
     pub(super) machine_sequence: u64,
     pub(super) request: PendingEffectRequest,
@@ -16,9 +37,10 @@ pub(super) struct CompletedHostEffect {
 
 impl ExecutionResource {
     pub(super) fn concurrent_pending_effects(&self) -> Option<Value> {
-        (self.pending_hosts.len() > 1).then(|| {
+        (self.hosts.pending_hosts.len() > 1).then(|| {
             Value::Array(
-                self.pending_hosts
+                self.hosts
+                    .pending_hosts
                     .iter()
                     .map(|(sequence, host)| pending_host_value(*sequence, host))
                     .collect(),
@@ -30,14 +52,15 @@ impl ExecutionResource {
         if let Some(request) = &self.pending_host {
             return Some(serde_json::json!(request));
         }
-        self.pending_hosts
+        self.hosts
+            .pending_hosts
             .iter()
             .next()
             .map(|(sequence, host)| pending_host_value(*sequence, host))
     }
 
     pub(super) fn activate_ready_host_effect(&mut self) -> Result<bool, ApiError> {
-        let Some(completed) = self.completed_hosts.pop_front() else {
+        let Some(completed) = self.hosts.completed_hosts.pop_front() else {
             return Ok(false);
         };
         self.machine
@@ -45,14 +68,14 @@ impl ExecutionResource {
             .map_err(|_| usage("pending effect cannot be selected"))?;
         self.machine.supply_effect_result(completed.reply);
         self.pending_host = None;
-        self.completing_effect = true;
+        self.hosts.completing_effect = true;
         Ok(true)
     }
 
     pub(super) fn has_external_effects(&self) -> bool {
         self.pending_host.is_some()
-            || !self.pending_hosts.is_empty()
-            || !self.completed_hosts.is_empty()
+            || !self.hosts.pending_hosts.is_empty()
+            || !self.hosts.completed_hosts.is_empty()
     }
 
     pub(super) fn start_concurrent_host_effects(
@@ -66,7 +89,12 @@ impl ExecutionResource {
         self.mark_excess_network_requests();
         let requests = requests
             .into_iter()
-            .filter(|request| !self.limit_rejected_network.contains(&request.effect_seq))
+            .filter(|request| {
+                !self
+                    .hosts
+                    .limit_rejected_network
+                    .contains(&request.effect_seq)
+            })
             .collect::<Vec<_>>();
         if requests.len() < 2 {
             return Ok(false);
@@ -76,6 +104,7 @@ impl ExecutionResource {
             self.reserve_pending_host(request)?;
         }
         let selected = self
+            .hosts
             .pending_hosts
             .values()
             .find(|host| host.machine_sequence == pending.effect_seq)
@@ -95,6 +124,7 @@ impl ExecutionResource {
             return Ok(true);
         }
         let host = self
+            .hosts
             .pending_hosts
             .values()
             .find(|host| host.machine_sequence == pending.effect_seq)
@@ -112,7 +142,7 @@ impl ExecutionResource {
             .effects
             .reserved_sequence(request.effect_seq)
             .ok_or_else(|| usage("missing reserved effect sequence"))?;
-        self.pending_hosts.insert(
+        self.hosts.pending_hosts.insert(
             sequence,
             PendingHostEffect {
                 machine_sequence: request.effect_seq,

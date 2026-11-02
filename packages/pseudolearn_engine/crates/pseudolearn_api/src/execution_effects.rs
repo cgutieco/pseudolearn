@@ -32,11 +32,11 @@ impl ExecutionResource {
     }
 
     fn capture_step_output(&mut self) -> Result<(), ApiError> {
-        if !self.completing_effect {
+        if !self.hosts.completing_effect {
             return self.capture_console();
         }
         self.output_cursor = machine_output(&self.machine).len();
-        self.completing_effect = false;
+        self.hosts.completing_effect = false;
         Ok(())
     }
 

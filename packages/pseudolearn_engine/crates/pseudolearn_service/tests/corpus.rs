@@ -75,12 +75,12 @@ fn comment_texts(text: &str, profile: Profile) -> Vec<String> {
 #[test]
 fn corpus_has_the_reference_programs() -> Result<(), String> {
     let all = examples()?;
-    assert_eq!(all.len(), 172);
+    assert_eq!(all.len(), 174);
     assert_eq!(
         all.iter()
             .filter(|example| example.profile == Profile::English)
             .count(),
-        86
+        87
     );
     Ok(())
 }

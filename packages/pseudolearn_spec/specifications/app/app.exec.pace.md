@@ -134,7 +134,7 @@
   "rigor": ["estricto", "flexible"],
   "origen": "derivado",
   "operacion": "app",
-  "aplicacion": {"scenario": "pace", "input": {"programs": {"es": "Algoritmo P\nDefinir a, b, c, i Como Entero;\na <- 0;\nb <- 1;\nPara i <- 1 Hasta 20 Hacer\nc <- a + b;\na <- b;\nb <- c;\nFinPara\nEscribir a;\nFinAlgoritmo\n", "en": "algorithm P\ndefine a, b, c, i as integer;\na <- 0;\nb <- 1;\nfor i <- 1 to 20 do\nc <- a + b;\na <- b;\nb <- c;\nendFor\nwrite a;\nendAlgorithm\n"}, "paces": ["nextStatement", "overBlock", "outOfBlock", "toEnd"]}},
+  "aplicacion": {"scenario": "pace", "input": {"programs": {"es": "Algoritmo P\nDefinir Mutable a Como Entero <- 0;\nDefinir Mutable b Como Entero <- 1;\nDefinir Mutable c Como Entero <- 0;\nDefinir Mutable i Como Entero <- 0;\nPara i <- 1 Hasta 20 Hacer\nc <- a + b;\na <- b;\nb <- c;\nFinPara\nEscribir a;\nFinAlgoritmo\n", "en": "algorithm P\ndefine mutable a as integer <- 0;\ndefine mutable b as integer <- 1;\ndefine mutable c as integer <- 0;\ndefine mutable i as integer <- 0;\nfor i <- 1 to 20 do\nc <- a + b;\na <- b;\nb <- c;\nendFor\nwrite a;\nendAlgorithm\n"}, "paces": ["nextStatement", "overBlock", "outOfBlock", "toEnd"]}},
   "espera": {"aplicacion": {"output": "6765\n", "termination": "completed", "pace_results_equal": true}}
 }
 ```
@@ -157,7 +157,7 @@
   "rigor": ["estricto"],
   "origen": "derivado",
   "operacion": "app",
-  "aplicacion": {"scenario": "pace", "input": {"pace": "toEnd", "batch_size": 25, "program": "Algoritmo P\nDefinir i Como Entero;\ni <- 0;\nMientras Verdadero Hacer\ni <- i + 1;\nFinMientras\nFinAlgoritmo\n", "cancel_after_batches": 2}},
+  "aplicacion": {"scenario": "pace", "input": {"pace": "toEnd", "batch_size": 25, "program": "Algoritmo P\nDefinir Mutable i Como Entero <- 0;\nMientras Verdadero Hacer\ni <- i + 1;\nFinMientras\nFinAlgoritmo\n", "cancel_after_batches": 2}},
   "espera": {"aplicacion": {"termination": "cancelled", "events_ordered": true, "completed_effects_match_events": true, "no_events_after_cancel": true}}
 }
 ```
@@ -170,7 +170,7 @@
   "rigor": ["estricto"],
   "origen": "derivado",
   "operacion": "app",
-  "aplicacion": {"scenario": "pace", "input": {"pace": "toEnd", "program": "Algoritmo P\nDefinir x Como Entero;\nEscribir \"antes\";\nLeer x;\nEscribir x;\nFinAlgoritmo\n", "inputs": ["5"]}},
+  "aplicacion": {"scenario": "pace", "input": {"pace": "toEnd", "program": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nEscribir \"antes\";\nLeer x;\nEscribir x;\nFinAlgoritmo\n", "inputs": ["5"]}},
   "espera": {"aplicacion": {"first_stop": "awaiting_input", "after_input": {"termination": "completed", "output": "antes\n5\n"}}}
 }
 ```
@@ -193,7 +193,7 @@
   "rigor": ["estricto"],
   "origen": "derivado",
   "operacion": "app",
-  "aplicacion": {"scenario": "pace", "input": {"pace": "toEnd", "statement_limit": 3, "program": "Algoritmo P\nDefinir i Como Entero;\ni <- 0;\nMientras i < 100 Hacer\ni <- i + 1;\nFinMientras\nFinAlgoritmo\n"}},
+  "aplicacion": {"scenario": "pace", "input": {"pace": "toEnd", "statement_limit": 3, "program": "Algoritmo P\nDefinir Mutable i Como Entero <- 0;\nMientras i < 100 Hacer\ni <- i + 1;\nFinMientras\nFinAlgoritmo\n"}},
   "espera": {"aplicacion": {"termination": "limit_reached", "statement_limit": 3}}
 }
 ```
@@ -206,7 +206,7 @@
   "rigor": ["estricto"],
   "origen": "derivado",
   "operacion": "app",
-  "aplicacion": {"scenario": "pace", "input": {"pace": "toEnd", "program": "Algoritmo P\nDefinir x Como Real;\nx <- 1.0 / 0.0;\nEscribir x;\nFinAlgoritmo\n"}},
+  "aplicacion": {"scenario": "pace", "input": {"pace": "toEnd", "program": "Algoritmo P\nDefinir Mutable x Como Real <- 0.0;\nx <- 1.0 / 0.0;\nEscribir x;\nFinAlgoritmo\n"}},
   "espera": {"aplicacion": {"termination": "failed", "code": "divisionByZero", "events_before_failure_preserved": true, "later_events_absent": true}}
 }
 ```

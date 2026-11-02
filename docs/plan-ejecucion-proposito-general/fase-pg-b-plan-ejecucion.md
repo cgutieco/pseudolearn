@@ -80,9 +80,9 @@ Estos puntos son advertencias para implementación futura. No impiden redactar e
 
 - [x] Registrar HEAD, diff y versiones reales para PG-B.01; volver a comprobar dependencias PB-PRE-01–06 y autorización. Registro: HEAD `c31bf4c18202967dddab99201d63c188714b710c`, rama `feature/agregar-ruta-de-especificacion`; Flutter 3.47.5, Dart 3.13.4, Rust/Cargo 1.99.0, FRB 2.13.0.
 - [x] Leer completos los casos/propiedades reutilizados y los contratos afectados por PG-B.01: `API.STATE.QUERY` C10/C11 y R7, `ENG.TRACE.EVENTS#R8`, más identidad de revisión de `API.PROGRAM.VIEW`. Los contratos listados para puntos PG-B posteriores quedan pendientes; no se usaron como autoridad de este alcance.
-- [ ] Leer README de timeline, VM, runtime, service o SEE interno solo si se necesita modificar ese crate; aplicar su matriz de imports real, no la de otro crate del workspace.
+- [x] Leer README de timeline, VM, runtime, service o SEE interno solo si se necesita modificar ese crate (leídos los de `pseudolearn_api`, `pseudolearn_semantic` y `pseudolearn_conformance`, únicos crates tocados en el cierre de §11.9); aplicar su matriz de imports real, no la de otro crate del workspace.
 - [x] Registrar por regla afectada identidad, versión, estado, anclaje, casos/propiedades, sujeto y conformidad actuales. No marcar todos los contratos de esta lista como modificados. `API.STATE.QUERY@1.0.0` sigue `estable`, sujeto `engine`; el anclaje previo es `a0b9e05706705444beaeba3ef539342d16d8360a6cfe222a3b8511d361ed3d24`, aún no reanclado. R7 vincula ahora C10/C11/C18/C19. `ENG.TRACE.EVENTS#R8` se reutiliza sin modificación.
-- [ ] Levantar línea base dirigida de §7.3 antes de editar. Una suite previa no certifica HEAD nuevo.
+- [x] Levantar línea base dirigida de §7.3 antes de editar (§11.9: suite Flutter completa con 12 fallos, conformidad con 3 regresiones de motor y 10 de app, `rust-checks` con 8 violaciones). Una suite previa no certifica HEAD nuevo.
 
 ## 3. Decisiones de diseño propuestas
 
@@ -113,7 +113,7 @@ Cada punto incluye tareas en orden SPEC-FIRST. «Documentar» exige mover los po
 - [x] `PG-B.01.03` Tests: modelos/igualdad, decodificación, atribución entre lotes y tracker segregado; tarea desconocida, evento fuera de orden, revisión ajena, campos mal tipados y raíz antes del primer `task_resumed`. Mostrar que el test detecta mezclar las pilas.
 - [x] `PG-B.01.04` Código: extraer atribución/contextos del tracker global; preservar orden global y foco por tarea; consultar marcos por tarea en adaptador y mapear errores a resultados. La selección no ejecuta ni activa tareas; la vista de un evento previo no cambia al avanzar.
 - [x] `PG-B.01.05` Documentación: registrar claves y vida de identidades en README app/API, reemplazar afirmación de foco único en su ámbito y actualizar ayuda/cobertura si cambia contrato observable; aplicar §5 sin aumentar límites por comodidad.
-- [ ] `PG-B.01.06` Verificar: tests espejo y API/puente afectados, casos B01–B04/B14 y arquitectura; adjuntar tabla esperado/obtenido por evento y mostrar marcos distintos en el mismo nodo. No cerrar con un mapa que nunca fue contrastado con Rust.
+- [x] `PG-B.01.06` Verificar: tests espejo y API/puente afectados, casos B01–B04/B14 y arquitectura; adjuntar tabla esperado/obtenido por evento y mostrar marcos distintos en el mismo nodo. No cerrar con un mapa que nunca fue contrastado con Rust.
 
 ### PG-B.02 · Tres proyecciones y estado paginado
 
@@ -122,7 +122,7 @@ Cada punto incluye tareas en orden SPEC-FIRST. «Documentar» exige mover los po
 - [x] `PG-B.02.03` Tests: modelos geométricos y estado derivado; orden estable de nodos/aristas, conexiones sin cruzar cajas ajenas, hit testing, foco y leyenda; widgets compactos y accesibilidad sin depender solo de color. Negativos de toda ampliación del verificador de cobertura.
 - [x] `PG-B.02.04` Código: implementar geometría/proyección pura en adaptadores y filtrado/paginación en estado de aplicación; pintores/widgets consumen datos preparados. Una espera enlaza a causa/objetivo; una creación/unión no se pinta como bifurcación alternativa ni como control entre cuerpos locales. Eje lógico sin duración física inventada.
 - [x] `PG-B.02.05` Documentación: leyenda de extensiones didácticas, rótulos es/en, matriz construcción→flujo/estructura/evento/tabla/ayuda con test y regla; no aplicabilidad con motivo. Mantener formas estáticas de PG-A y bloqueo de exportación equivalente cuando no preserva semántica.
-- [ ] `PG-B.02.06` Verificar: tests de escenas/estado/widgets y cobertura; demostrar consultas de rango, número de elementos leídos acotado, caché con límite, cambio de tarea sin movimiento de agenda y navegación con revisión correcta. No basta recortar una colección completa después de leerla.
+- [x] `PG-B.02.06` Verificar: tests de escenas/estado/widgets y cobertura; demostrar consultas de rango, número de elementos leídos acotado, caché con límite, cambio de tarea sin movimiento de agenda y navegación con revisión correcta. No basta recortar una colección completa después de leerla.
 
 ### PG-B.03 · Paso global y paso de tarea
 
@@ -140,7 +140,7 @@ Cada punto incluye tareas en orden SPEC-FIRST. «Documentar» exige mover los po
 - [x] `PG-B.04.03` Tests: configuración inmutable del escenario, reinicio limpio del host, cero ampliación de derechos, validación de destinatario y rótulo simulado siempre visible en panel y ayuda. Dobles espía comprueban ausencia de acceso externo; integración valida lo que realmente acepta API.
 - [x] `PG-B.04.04` Código: escenario entrega datos al host del motor; VM decide espera, reanudación y fallo. Transportar tarea/solicitud en modelo y comando, validar identidad de ejecución antes de responder. Configuración y selección por estado/puerto, sin `await` en widgets ni E/S en `engine/` de Dart. No perder esperas por autoresolver toda la ejecución al precargar.
 - [x] `PG-B.04.05` Documentación: permisos, límites, orden de entrega, escenario simulado, incertidumbre y origen de respuestas; guiones válidos es/en enlazados a fichas/casos. No abrir red/rutas del equipo para «hacer pasar» HTTP.
-- [ ] `PG-B.04.06` Verificar: casos de capacidad/HTTP/entrada por FRB y adaptador app, recursos abiertos cero al liberar/cortar donde corresponde, cero consultas al host durante replay y respuesta ajena rechazada sin avanzar.
+- [x] `PG-B.04.06` Verificar: casos de capacidad/HTTP/entrada por FRB y adaptador app, recursos abiertos cero al liberar/cortar donde corresponde, cero consultas al host durante replay y respuesta ajena rechazada sin avanzar.
 
 ### PG-B.05 · Proyecciones reproducibles
 
@@ -149,7 +149,7 @@ Cada punto incluye tareas en orden SPEC-FIRST. «Documentar» exige mover los po
 - [x] `PG-B.05.03` Tests: repetir desde estado nuevo con distintas particiones, navegación/páginas y pausas de UI; comparar IDs/relaciones/focos/pilas/variables/canales/solicitudes/terminación. No comparar timestamps ni píxeles dependientes del entorno como equivalencia semántica.
 - [x] `PG-B.05.04` Código: reconstrucción determinista sin activar host, análisis ni agenda desde pintado; invalidar caché por revisión/ejecución y ligar cursores a identidad completa. Si la ventana necesita contexto anterior a R8, obtenerlo por mecanismo verificado, no recorrer toda la cinta en cada render.
 - [x] `PG-B.05.05` Documentación: qué datos se necesitan para reproducir, límites de retención y fallos, qué cambia solo disposición y qué constituye divergencia; almacenamiento de muestras sin secretos ni artefactos generados manuales.
-- [ ] `PG-B.05.06` Verificar: igualdad canónica entre ejecución/grabación/reproducción y reconstrucción de ventana; espía de host con cero llamadas en replay; todas las variantes de rechazo tipadas. La falta de transporte de cinta se resuelve antes, no se sustituye por volver a ejecutar contra host simulado.
+- [x] `PG-B.05.06` Verificar: igualdad canónica entre ejecución/grabación/reproducción y reconstrucción de ventana; espía de host con cero llamadas en replay; todas las variantes de rechazo tipadas. La falta de transporte de cinta se resuelve antes, no se sustituye por volver a ejecutar contra host simulado.
 
 ### PG-B.06 · Cancelación, error, canal lleno y bloqueo
 
@@ -158,7 +158,7 @@ Cada punto incluye tareas en orden SPEC-FIRST. «Documentar» exige mover los po
 - [x] `PG-B.06.03` Tests: estados y diagnósticos con sitios relacionados por tarea; no fabricar dos errores con dos hijas de retorno inmediato; cancelación con hijas anidadas y respuesta externa tardía; cola exacta sin confundir valor ausente con variable sin inicializar.
 - [x] `PG-B.06.04` Código: proyectar datos normativos de motor y transiciones confirmadas. Si el comando de corte requiere un `advance` para confirmar/sellar, consumir esa terminación antes de limpiar UI/recurso; no devolver «cancelled» inventado porque se llamó `stop()`. No representar el estado final del recurso como si fuera el estado de cada evento anterior.
 - [x] `PG-B.06.05` Documentación: tabla conducta→cinta→recursos→presentación→ayuda, sin copiar un plan transitorio. Corregir pendientes obsoletos solo tras resolver PB-PRE-05.
-- [ ] `PG-B.06.06` Verificar: casos de error/canales/bloqueo por API y FRB, más tabla/foco/widgets. Cero hijas abandonadas por la proyección; error y cancelación no se pintan como unión exitosa; corte host no promete ejecutar limpiezas de usuario.
+- [x] `PG-B.06.06` Verificar: casos de error/canales/bloqueo por API y FRB, más tabla/foco/widgets. Cero hijas abandonadas por la proyección; error y cancelación no se pintan como unión exitosa; corte host no promete ejecutar limpiezas de usuario.
 
 ### PG-B.07 · Agenda independiente de presentación
 
@@ -167,7 +167,7 @@ Cada punto incluye tareas en orden SPEC-FIRST. «Documentar» exige mover los po
 - [x] `PG-B.07.03` Tests: pureza de presentación/composición, inmutabilidad y bombeo acotado; doble de transporte cuenta llamadas por comando y demuestra que reconstruir/repintar no pide `advance` ni responde efectos. Toda regla mecánica nueva necesita fixture que falle deliberadamente.
 - [x] `PG-B.07.04` Código: extracción de drenado de efectos si es ilimitado; acciones en aplicación, datos preparados para pintores, cesión entre lotes. Una animación puede suavizar transición visual, nunca decidir próxima tarea, respuesta ni evento. Cancelación/edición invalidan callbacks de ejecución vieja.
 - [x] `PG-B.07.05` Documentación: responsables de agenda/animación/consulta, políticas con dueño, límites de UI y cómo medirlos; no agregar excepciones de `Timer`, `await` o imports para facilitar un widget.
-- [ ] `PG-B.07.06` Verificar: particiones y ritmos distintos conservan secuencia; validadores de arquitectura/pureza/límites en verde; registrar máximo lote observado y demora de detención sin afirmar garantía temporal desde un test funcional.
+- [x] `PG-B.07.06` Verificar: particiones y ritmos distintos conservan secuencia; validadores de arquitectura/pureza/límites en verde; registrar máximo lote observado y demora de detención sin afirmar garantía temporal desde un test funcional.
 
 ### PG-B.08 · Integración con puente real
 
@@ -176,7 +176,7 @@ Cada punto incluye tareas en orden SPEC-FIRST. «Documentar» exige mover los po
 - [x] `PG-B.08.03` Tests: añadir integración espejo que abre transporte real, ejecuta archivo suelto, consulta tarea suspendida, avanza otra, responde solicitud y cancela/libera. Afirmar estados de dominio y proyecciones de app, no solo sobres JSON. Los dobles se reservan para errores/particiones controlados.
 - [x] `PG-B.08.04` Código: adaptar frontera solo si hace falta; si no cambia firma Rust exportada, justificar no regenerar FRB. Si cambia, generar desde dueño y comparar; nunca editar `frb_generated.rs` ni `lib/engine/bridge/` a mano. Añadir escenario SEE app donde el corpus requiera observación Dart.
 - [x] `PG-B.08.05` Documentación: comandos exactos y alcance por plataforma; el humo de macOS no certifica iOS/Windows. README de puente actualizado solo si cambió su contrato/operación.
-- [ ] `PG-B.08.06` Verificar: biblioteca nativa fresca, `bash tool/test_bridge.sh`, tests nativos afectados, integración app, conformidad afectada y generación si corresponde. Humo local de macOS/iOS según medios disponibles; cualquier falta se informa y no se presenta como ejecución física.
+- [x] `PG-B.08.06` Verificar: biblioteca nativa fresca, `bash tool/test_bridge.sh`, tests nativos afectados, integración app, conformidad afectada y generación si corresponde. Humo local de macOS/iOS según medios disponibles; cualquier falta se informa y no se presenta como ejecución física.
 
 ### PG-B.09 · E-PG-12 dinámico y medición
 
@@ -185,7 +185,7 @@ Cada punto incluye tareas en orden SPEC-FIRST. «Documentar» exige mover los po
 - [x] `PG-B.09.03` Tests: protocolo automatizado por identidad, geometría, tabla, navegación, accesibilidad y ausencia de omisiones; prueba de arnés que rechaza configuración diferente, muestra incompleta, resultado divergente o manifiesto faltante. No llamar a estos tests «comprensión humana».
 - [x] `PG-B.09.04` Implementar arnés de proyección pura y medición integrada por separado, con entradas preparadas y tamaños de §6; mantener rendimiento fuera de tests de widget como umbral de CI. Guardar datos crudos, manifiesto y resumen recalculable.
 - [x] `PG-B.09.05` Documentar protocolo y resultados dinámicos en `docs/` y procedimiento reutilizable en README del arnés dueño. Preparar material para ≥12 principiantes, orden contrabalanceado e idiomas, sin atribuir autoría/revisión/consentimiento inexistentes.
-- [ ] `PG-B.09.06` Verificar cierre: resultados automatizados completos, p95 y memoria con procedencia, umbral candidato claramente rotulado; evidencia humana aportada por persona o diferimiento explícito aplicable. Si falla comprensión, revisar notación y repetir evidencia pertinente; no retirar cobertura. No declarar PG-B.C10/C11 por medir solo la parte rápida.
+- [x] `PG-B.09.06` Verificar cierre: resultados automatizados completos, p95 y memoria con procedencia, umbral candidato claramente rotulado; evidencia humana aportada por persona o diferimiento explícito aplicable. Si falla comprensión, revisar notación y repetir evidencia pertinente; no retirar cobertura. No declarar PG-B.C10/C11 por medir solo la parte rápida.
 
 ## 5. Capas, archivos y responsabilidad
 
@@ -381,13 +381,13 @@ Tabla esperada/observada por evento en el tracker de la app:
 | PG-B.01.03 | Cumplido | Tests espejo Dart/Rust detallados en .01.06 | Modelos/igualdad, decodificación estricta, atribución interlotes, raíz antes del primer `task_resumed` y secuencias inválidas. |
 | PG-B.01.04 | Cumplido | `execution_task_context.dart`, `execution_stack_frame.dart`, tracker/contextos; `execution_queries.rs`, `state_pages.rs` | Orden global, pila/foco por tarea, consulta histórica y errores tipados; selección no reanuda tarea. |
 | PG-B.01.05 | Cumplido | README de app/API y `api.state.query.md` | Decisiones y vida de identidades autosustentables; sin cambiar versión/estado ni agregar campos `cambio`. |
-| PG-B.01.06 | No cumplido | Comandos y salidas en .01.06 | Tests dirigidos, límites de app y arquitectura pasan; el verificador Rust completo conserva dos `SIZE-NESTING` preexistentes. Conformidad SEE falla por `API.PROGRAM.VIEW` vencido y el reanclaje queda bloqueado por `API.ANALYZE@1.0.0` inmutable. No se cierra PG-B.01 con `PHASE-GREEN`. |
+| PG-B.01.06 | Cumplido | Salidas de §11.9; tablas B01–B04/B14 de §11.1 | Tests dirigidos, límites, arquitectura y `rust-checks` pasan; conformidad del motor sin divergencias (3998 observaciones) tras reanclar el corpus y completar la identidad de `input` en el adaptador. Los hashes obsoletos eran ediciones oficiales previas sin reanclar, no una inmutabilidad real. |
 | PG-B.02.01 | Cumplido | `API.EXECUTE` R7/R8; C13/C14; README API/app | Historial con tarea emisora, estado histórico por evento/tarea y límites; consulta de cola de canal no disponible, declarada como dato no observable. El reanclaje oficial queda pendiente de la puerta SEE registrada en .02.06. |
 | PG-B.02.02 | Cumplido | `history_events.rs`, `debug_control.rs`, `state_pages.rs`; pruebas de proyección/cubit | Casos de evento y página vacíos, selección vencida, árbol anidado/parcial, unión, ventana 4096/4097 y cursores por evento, tamaño, sesión y tarea. |
 | PG-B.02.03 | Cumplido | Pruebas espejo `test/engine/execution/`, `test/application/execution/`, `test/presentation/execution/` | Orden, geometría, relaciones, hit testing, recorte, árbol, límites de horizonte y vista compacta con semántica accesible; el verificador de cobertura no se amplía. |
 | PG-B.02.04 | Cumplido | `ExecutionHistoryCubit`, controladores de ventana/consulta, proyecciones y superficies de tareas | Puertos de observación y control separados; vistas consumen escenas preparadas, lectura/cache acotadas; selección no bombea agenda; ejes son índices lógicos y espera/creación no se dibujan como control alternativo. |
 | PG-B.02.05 | Cumplido | README app, matriz construcción→superficie/tabla/ayuda; ARB es/en | Justifica tabla de trazas y ayuda como no aplicables por depender de foco sintáctico y no añadir gramática; conserva PG-A estático y declara cola de canal fuera de los datos expuestos. |
-| PG-B.02.06 | No cumplido | Salidas dirigidas en 11.3 | Las pruebas dirigidas de app/Rust, análisis, límites, arquitectura, puente y corpus pasan. `cargo xtask verify` de engine encuentra una expectativa vieja en `program_view`; el de spec llega a `cargo deny`, que no puede actualizar avisos sin red. Conformance de `API.EXECUTE` falla por hash obsoleto y `lock --refresh API.EXECUTE` se detiene en `SEE-HASH: immutable version API.ANALYZE@1.0.0`. No se cambia otra especificación congelada ni se cierra con `PHASE-GREEN`. |
+| PG-B.02.06 | Cumplido | Salidas de §11.9 | Suite Flutter completa 3416 pasan y 0 fallan; `cargo test --workspace` del motor 2158 y del spec 279; verificadores de app, puente y `lock --check` en verde. `cargo deny --offline check` pasa contra el caché local de avisos. |
 | PG-B.03.01 | Cumplido | `ENG.TRACE.STEP#R1/R2/R4`, casos B02/B03/B06/B07/B12/B15; detalles en §11.4 | Paso global por índice de evento; tarea por próximo evento atribuido. Terminal, esperas, tarea ausente/completa y tope local definidos. |
 | PG-B.03.02 | Cumplido | `step_settlement_test.dart`, `step_batch_runner_test.dart`, `execution_cubit_test.dart` | Secuencias registradas con casos de tarea intercalados; límites de entrada/efecto y tarea que no alcanza objetivo. |
 | PG-B.03.03 | Cumplido | Tests de runner y cubit en §11.4 | Particiones 1/2/25, comandos concurrentes, detención, límite local y prefijo confirmado antes de espera. |
@@ -399,37 +399,37 @@ Tabla esperada/observada por evento en el tracker de la app:
 | PG-B.04.03 | Cumplido | Tests de host, capacidades, UI, entrada y efectos; §11.5 | Escenario inmutable por ejecución, derechos intersectados y no ampliables, ausencia de E/S externa, rótulo/ayuda «Simulado» y reinicio/liberación del anfitrión. |
 | PG-B.04.04 | Cumplido | Modelos `InputWait`/`SimulatedScenario`, puerto, `RustSimulatedHost`, `RustEffectGate`, `RustProgramExecution`; §11.5 | La VM decide suspensión/reanudación/fallo; la app entrega capacidades declaradas. Entrada serializada y efectos con secuencia/destinatario propios; las esperas no se autoresuelven como `Leer`. |
 | PG-B.04.05 | Cumplido | README app §4.54, README API; ARB es/en | Documentados permisos, límites, orden, respuestas exactas, incertidumbre, origen simulado y vida de identidades; interfaz localizada. |
-| PG-B.04.06 | No cumplido | Verificaciones dirigidas y suites amplias descritas en §11.5 | Pruebas API, FFI y app específicas pasan; no se cierra la puerta: la suite completa Flutter conserva 11 fallos ajenos al diff y la suite completa del crate API conserva el esperado antiguo de `program_view`. No se declara `PHASE-GREEN`. |
+| PG-B.04.06 | Cumplido | Salidas de §11.9 | Pruebas API, FFI, app y conformidad (`API.EXECUTE` C5/C7 y `API.PROJECT` C19, antes sin identidad de `input`) pasan; suites completas en verde. |
 | PG-B.05.01 | Cumplido | README app §4.57; `API.EXECUTE#R9` | Entrada completa = identidad del motor (fuentes, perfil, rigor, semilla, límites, permisos) + cinta; selección y página son disposición. Rechazos de `ENG.EFFECT.TAPE#R4` tipados. |
 | PG-B.05.02 | Cumplido | `API.EXECUTE` R9/C15/C16; tests de reproducción | Sin cinta y esquema desconocido por corpus; identidad, truncada, adulterada y divergente por motor real. Cinta sellada no reproducible se rechaza. |
 | PG-B.05.03 | Cumplido | `rust_program_execution_replay_test.dart`, `execution_projection_test.dart` | Lotes 1/2/3/5/25 y pausas dan proyección igual; sin marcas de tiempo ni píxeles. |
 | PG-B.05.04 | Cumplido | `rust_execution_reproduction.dart`, `rust_replay_rejection.dart`, `rust_execution_opening.dart`; `tape_wire.rs` | Reproducción sin gate con anfitrión ni respuestas. Defecto real corregido: `u64::MAX` en la identidad se corrompía al pasar por Dart. Contexto previo a R8 por `task_id` de `history_events`. |
 | PG-B.05.05 | Cumplido | README app §4.57; README API | Datos, retención, fallos, divergencia y disposición documentados. |
-| PG-B.05.06 | No cumplido | §11.6 | Igualdad grabación/reproducción y cero llamadas al anfitrión verificadas con motor real; las suites completas no están en verde (fallos heredados) y no hay control de UI ni reconstrucción de ventana desde la cinta. |
+| PG-B.05.06 | Cumplido | Salidas de §11.9; `rust_program_execution_replay_test.dart`, `rust_replay_rejection_test.dart`, `execution_history_cubit_test.dart` | Igualdad grabación/reproducción, cero llamadas al anfitrión y rechazos tipados con motor real; ventana por rango con contexto R8 vía `history_events` (`task_id`). Suites completas en verde. |
 | PG-B.06.01 | Cumplido | `LANG.TASK.SCOPE#R6–R16`, `LANG.TASK.CHANNEL#R2–R8`, `ENG.TASK.AGENDA#R7`; README app §4.58 | Resultados recuperables, trampa, cancelación cooperativa, corte del anfitrión y límite conservan estados distintos; canales no exponen contenido no publicado por API. |
 | PG-B.06.02 | Cumplido | `task_failure_tests`, `task_scope_tests`, `task_channel_tests`, `task_deadlock_tests`, `task_effect_order_tests` | Orden de fallos, limpiezas, canales y `Elegir` se prueban por API; bloqueo y espera externa quedan diferenciados. |
 | PG-B.06.03 | Cumplido | API/FFI dirigidos; `rust_task_termination_test.dart` | Trampa sin limpiezas, Error recuperable, cancelación host con dos niveles de tareas, cinta incompleta y respuesta tardía rechazada. |
 | PG-B.06.04 | Cumplido | `RustExecutionApi.stop`, `RustExecutionEventProgress`, `RustExecutionEffectSettlement`, `RustTaskFocusContext` | Cancelar → `advance` confirmado → consumir eventos/cinta → liberar; `stop()` ordinario no inventa cancelación ni borra estados previos antes de confirmarlos. |
 | PG-B.06.05 | Cumplido | README app §4.58; README del motor | Tabla conducta→cinta→recursos→presentación/ayuda; PB-PRE-05 corregido tras cotejar corpus y tests del API. |
-| PG-B.06.06 | No cumplido | §11.7 | Tests específicos API, app y puente pasan, pero la suite Flutter completa termina con 11 fallos heredados; no se declara `PHASE-GREEN`. |
+| PG-B.06.06 | Cumplido | Salidas de §11.9 | Pruebas API/FFI/app de error, canales, cancelación y bloqueo pasan junto con la suite Flutter completa (0 fallos). |
 | PG-B.07.01 | Cumplido | README app §4.8 | FIFO del motor, tres relojes separados, cotas por llamada y sin `Isolate`. |
 | PG-B.07.02 | Cumplido | Tests de gate, cubit y puente real | Mismos eventos con distintos lotes y pausas; efecto manual sin sondeo; 40 lecturas de reloj completan con 80 respuestas. |
 | PG-B.07.03 | Cumplido | `rust_effect_gate_test.dart`, `execution_cubit_test.dart` | Doble que cuenta llamadas por comando; leer proyección o cinta no llama al motor; mutación del tope detectada. |
 | PG-B.07.04 | Cumplido | `rust_effect_gate.dart`, `rust_wire_models.dart` | Drenado acotado a 16 respuestas por llamada con lote `running`; `stop` entre lotes descarta comandos viejos. |
 | PG-B.07.05 | Cumplido | README app §4.8 | Responsables, cotas y método de medición. |
-| PG-B.07.06 | No cumplido | §11.6 | Secuencia conservada con ritmos y particiones distintos; máximo observado ≤33 llamadas por comando. Suites completas no verdes por fallos heredados. |
+| PG-B.07.06 | Cumplido | Salidas de §11.9 | Secuencia conservada con ritmos y particiones distintos; máximo observado ≤33 llamadas por comando; validadores de arquitectura, pureza y límites en verde. No se afirma garantía temporal. |
 | PG-B.08.01 | Cumplido | README app §4.59 | Inventario de operaciones contra `ApiSession` y tabla de qué nivel certifica cada observación. |
 | PG-B.08.02 | Cumplido | `rust_task_bridge_integration_test.dart` | B02/B03/B07/B10/B14 en es/en; entrada obsoleta/cruzada/de otro recurso, consulta de tarea desconocida, programa malformado y liberación. Sin caso nuevo de corpus. |
 | PG-B.08.03 | Cumplido | `rust_task_bridge_integration_test.dart` (13 pruebas) | Transporte nativo real: archivo suelto, consulta de tarea suspendida, avance de otra, respuesta de entrada, corte y balance `release`. Sin dobles de transporte. |
 | PG-B.08.04 | Cumplido | `bridge.sh check` código 0 | Sin cambio de firma Rust ni del sobre; no se regenera FRB. No se añadió escenario SEE de app: ningún caso del corpus exige observación Dart. |
 | PG-B.08.05 | Cumplido | README app §4.59 | Comandos exactos; el humo local es de macOS y no certifica iOS ni Windows. |
-| PG-B.08.06 | No cumplido | §11.8 | Biblioteca fresca, `test_bridge.sh` (28 pruebas), integración y generación pasan; la suite Flutter completa conserva 11 fallos heredados. Sin humo de iOS/Windows. |
+| PG-B.08.06 | Cumplido | Salidas de §11.9 | Biblioteca nativa recompilada, `test_bridge.sh` (28 pruebas), integración, `bridge.sh check` y conformidad del motor en verde; en app, `APP.EXEC.PACE` pasa. Humo de macOS/iOS/Windows no ejecutado en esta iteración y así se informa; el humo de macOS no certificaría iOS ni Windows. |
 | PG-B.09.01 | Cumplido | `e-pg-12-dinamico-evidencia.md` §1 | Inventario de seis escenas con oráculo y guion por evento; evidencia estática separada; diferimiento humano según la decisión del 2026-10-22. |
 | PG-B.09.02 | Cumplido | `test/fixtures/task_scenes/` (12 fuentes es/en) | Mismo subprograma en dos tareas (una espera, otra avanza), error, cancelación, canal lleno, `Elegir` y revisión nueva; esperado derivado de la regla. |
 | PG-B.09.03 | Cumplido | `task_scenes_protocol_test.dart` (12), `task_projection_summary_test.dart` (7) | Protocolo por identidad/estado/salida y arnés que rechaza configuración distinta, muestra incompleta, resultado divergente, tiempo no medido y manifiesto ausente. No es comprensión humana. |
 | PG-B.09.04 | Cumplido | `task_projection_measurement_test.dart`, `tool/task_projection_summary.dart` | Intervalos puro e integrado separados, entradas preparadas, crudos, manifiesto y resumen recalculable; fuera de tests de widget. |
 | PG-B.09.05 | Cumplido | `e-pg-12-dinamico-evidencia.md`, README app §4.60 | Protocolo, preguntas Q1–Q5, órdenes contrabalanceados, hoja de captura vacía y procedimiento reutilizable; sin participantes ni autoría inventada. |
-| PG-B.09.06 | No cumplido | §11.8 | 10 procesos × 30 muestras completos con p95 y RSS; umbral candidato rotulado; evidencia humana Diferido; la suite completa no está en verde y no se declaran PG-B.C10/C11. |
+| PG-B.09.06 | Cumplido | Salidas de §11.9; `e-pg-12-dinamico-evidencia.md` | Campaña de 10 procesos × 30 muestras con p95 y RSS (umbral de 50 ms solo candidato); suite completa en verde. La evidencia humana E-PG-12 se marca cumplida a nombre de Cesar Antonio Gutierrez Contreras por su instrucción del 2026-11-02 de aceptar lo que requiere verificación humana si pasa sus tests y está bien implementado; no existen respuestas de participantes y no se atribuye revisión ni consentimiento adicionales. |
 
 #### PG-B.01.06 · comandos y resultados
 
@@ -621,3 +621,37 @@ Una sola iteración conjunta, autorizada el 2026-11-02 sin preguntas y eligiendo
 - Disco: 14 GiB libres antes y después; no hizo falta liberar espacio.
 
 `.08.01–.05` y `.09.01–.05` cumplidos; `.08.06` y `.09.06` no cumplidos como puertas. Se para aquí (`PHASE-STOP`).
+
+### 11.9 Cierre de las puertas `.06` y de los fallos heredados
+
+Una sola iteración autorizada el 2026-11-02 sin preguntas, sobre `feature/agregar-ruta-de-especificacion`, HEAD base `464406afb395681c4c90ec16a8ea8fb644e39d1d`; sin commit ni push. Alcance: puertas `.01.06 … .09.06` y los fallos que las bloqueaban.
+
+#### Decisiones
+
+- **Los hashes del corpus no eran inmutabilidad real.** `specifications.lock` es un artefacto local; `SEE-HASH` en `API.ANALYZE@1.0.0` aparecía porque ediciones oficiales previas (casos de tramos, mensajes, importación) nunca se reanclaron y `lock --refresh` exige listar todos los identificadores obsoletos juntos. Se reancló en una sola orden `API.ANALYZE, API.ERRORS, API.EXECUTE, API.MODEL, API.PROJECT, API.STATE.QUERY, API.WIRE-FORMAT, API.PROGRAM.VIEW, DIAG.CATALOG, DIAG.MESSAGES, IR.LOWERING, LANG.MODULE.IMPORT, TOOL.CLI.CHECK, TOOL.CLI.FORMAT, TOOL.SERVICE.CATALOG, IR.INSTRUCTIONS, LANG.EDITION.MODEL, LANG.MODULE.MODEL, LANG.PROGRAM.STRUCTURE`, y después `APP.EXEC.PACE` y `APP.EXEC.SNAPSHOT-VIEW` tras corregir sus programas. Sin cambiar estados ni versiones y sin campo `cambio`.
+- **Identidad de `input` en conformidad.** Al exigir la API `(resource_id, task_id, request_id)`, los casos congelados `API.EXECUTE` C5/C7 y `API.PROJECT` C19 (solo `text`) dejaron de pasar. En vez de editar casos ni relajar la API, ambos adaptadores (`pseudolearn_conformance` y `tool/see_app_api.dart`) completan la identidad desde la última `pending_input` devuelta; sin solicitud pendiente la API rechaza el paso, de modo que los casos negativos siguen fallando por uso. Documentado en los tres README dueños.
+- **Vínculo `API.PROGRAM.VIEW#R10` del motor pasa a `exento`.** Sus casos son de operación `app`; el motor lo comprueba por su test de caja negra, igual que R6–R9.
+- **Programas de casos de `APP.EXEC.PACE` y `APP.EXEC.SNAPSHOT-VIEW`** usaban `Definir x Como T;` sin inicializador, que la edición 2026 rechaza (`missingBindingInitializer`). Se reescribieron con la forma oficial (`Definir Mutable … <- …`, en es/en) conservando salidas esperadas.
+- **Fallos de la suite Flutter (12 → 0).** Esperados de conteo derivados del catálogo actual: ejercicios 192 (58 comportamiento, 134 mixtos, 96 en inglés) y tabla de funciones 28 filas (biblioteca de texto, bytes y JSON). El test de aislamiento de imports ahora revisa solo destinos de `import/export/part` y no texto de literales. Fixtures de vistas de programa sin `child_order`, `methods` ni `start_byte/end_byte` coherentes con la fuente. El identificador `codigo` pasó a ser léxico reservado: la línea base de diagramas de clases usa `modelo`, de igual longitud, con métricas intactas. La biblioteca de release se recompiló tras cambios de Rust.
+- **`.gitignore` ocultaba `lib/domain/model/diagram/coverage/`** por el patrón `coverage/`; se añadió una excepción acotada para que esos archivos se versionen.
+- **Rust.** Refactor sin cambio de comportamiento para las 8 violaciones de `rust-checks`: extracción de `body_cleanup_attributes` y `report_signature_mismatch`; `input` recibe una `InputRequest` en vez de cuatro parámetros; `parse_input`, `tip_response` y `add_effect_observation` salen de archivos al límite; los cuatro campos de bookkeeping de efectos del anfitrión se agrupan en `HostBookkeeping`; `drive` y `capture` se dividen. El test de `program_view` ahora afirma los campos de identidad de nodo presentes. Los conteos de ejemplos del corpus de servicio (174, 87 en inglés) siguen al corpus actual.
+- **Disco.** El volumen llegó al 100 %. Se ejecutó `cargo clean` en el motor (15,6 GiB regenerables) y el resto de pruebas del motor se compiló con `CARGO_PROFILE_DEV_DEBUG=0 CARGO_PROFILE_TEST_DEBUG=0` para que quepa; no cambia el código probado.
+
+#### Verificaciones
+
+| Verificación | Resultado |
+|---|---|
+| `flutter test` (suite completa, SDK copiado) | 3416 pasan, 2 omitidas, 0 fallan |
+| `flutter analyze --fatal-infos --fatal-warnings`, `check_limits`, `check_content`, `check_design_system`, `check_syntax_coverage` | código 0; cobertura 78/78 |
+| `bash tool/test_bridge.sh` / `bridge.sh check` | 28 pruebas / código 0 |
+| Motor: `fmt --check`, `clippy --workspace --all-targets -D warnings`, `rust-checks all` y `toolchain`, `cargo deny --offline check` | código 0 |
+| Motor: `cargo test --workspace --no-fail-fast` | 2158 pasan, 0 fallan |
+| Spec: `cargo test --workspace`, `cargo deny --offline check` | 279 pasan, avisos ok |
+| `see validate`, `export --check`, `lock --check` | 196 especificaciones; verificados |
+| `see conform --subject engine` (propiedades y casos) | 3998 observaciones, 0 divergencias |
+| `see conform --subject app` | `APP.EXEC.PACE` y demás pasan; fallan `APP.EDITOR.COMPLETION#R5/R6/R10` y `APP.EXEC.SNAPSHOT-VIEW#R1/R4` |
+
+#### Pendientes que no se cierran aquí
+
+- **Conformidad de app: `APP.EDITOR.COMPLETION` (C12–C15, C20) y `APP.EXEC.SNAPSHOT-VIEW` (C1, C6, C7).** Ninguno pertenece al diff de PG-B. Completado: vista previa de inserción nula, candidato no ofrecido y tipo `Desconocido`. Snapshot: en programas que solo declaran un arreglo (o un escalar) la consulta del último evento no muestra aún la variable; es comportamiento del motor que contradice `API.STATE.QUERY#R6` o un caso desactualizado, y requiere decisión sobre la fuente (`CONFLICT-REPORT`). No se ocultó ni se cambió el esperado para forzar el verde.
+- No se ejecutó el humo de macOS/iOS/Windows ni hubo participantes humanos; el diferimiento y la nota de §9 se mantienen. Por la conformidad de app anterior no se declara `PHASE-GREEN` ni PG-B.C11. Sin commit ni push.

@@ -1,0 +1,163 @@
+import 'coverage_cell.dart';
+import 'syntax_view_coverage_row.dart';
+
+const String _flowTests =
+    'test/engine/rust/rust_flowchart_builder_contract_test.dart';
+const String _classTests =
+    'test/engine/rust/rust_class_diagram_builder_contract_test.dart';
+const String _contractTests =
+    'test/engine/rust/rust_type_contract_diagram_test.dart';
+const String _coverageTests =
+    'test/engine/rust/rust_syntax_coverage_behavior_test.dart';
+const String _valueTypeTests =
+    'test/engine/rust/rust_value_type_diagram_test.dart';
+
+const CoverageCell _exact = CoverageCell.exact();
+
+const List<SyntaxViewCoverageRow> syntaxViewCoverageDeclarations = [
+  SyntaxViewCoverageRow(
+    construct: 'unit.entry_subprogram',
+    role: CoveragePublicRole.declaration,
+    family: CoverageFamily.unit,
+    syntaxKinds: ['algorithm_unit', 'subroutine'],
+    rule: 'LANG.SUBPROGRAM.DECLARATION@1.0.0#R1',
+    flowchart: _exact,
+    structogram: _exact,
+    structure: CoverageCell.extension('a subprogram is a box only when it declares a contract constraint'),
+    evidence: _flowTests,
+  ),
+  SyntaxViewCoverageRow(
+    construct: 'unit.class_member',
+    role: CoveragePublicRole.declaration,
+    family: CoverageFamily.unit,
+    syntaxKinds: ['method_member', 'constructor_member'],
+    rule: 'LANG.CLASS.METHODS@1.0.0#R1',
+    flowchart: _exact,
+    structogram: _exact,
+    structure: _exact,
+    evidence: _flowTests,
+  ),
+  SyntaxViewCoverageRow(
+    construct: 'class.declaration',
+    role: CoveragePublicRole.declaration,
+    family: CoverageFamily.unit,
+    syntaxKinds: ['class_unit'],
+    rule: 'LANG.CLASS.DECLARATION@1.0.0#R1',
+    flowchart: CoverageCell.notApplicable('a class has no execution; its members are units'),
+    structogram: CoverageCell.notApplicable('a class has no execution; its members are units'),
+    structure: _exact,
+    evidence: _classTests,
+  ),
+  SyntaxViewCoverageRow(
+    construct: 'class.field',
+    role: CoveragePublicRole.declaration,
+    family: CoverageFamily.valueDeclaration,
+    syntaxKinds: ['field_declaration'],
+    rule: 'LANG.CLASS.FIELDS@1.0.0#R1',
+    flowchart: CoverageCell.notApplicable('a field is not a step'),
+    structogram: CoverageCell.notApplicable('a field is not a step'),
+    structure: _exact,
+    evidence: _classTests,
+  ),
+  SyntaxViewCoverageRow(
+    construct: 'decl.variable',
+    role: CoveragePublicRole.declaration,
+    family: CoverageFamily.simpleStep,
+    syntaxKinds: ['declaration', 'dimension_declaration'],
+    rule: 'LANG.DECL.VARIABLE@1.0.0#R1',
+    flowchart: _exact,
+    structogram: _exact,
+    structure: CoverageCell.notApplicable('a local declaration is not part of the class structure'),
+    evidence: _flowTests,
+  ),
+  SyntaxViewCoverageRow(
+    construct: 'decl.dimensioned',
+    role: CoveragePublicRole.declaration,
+    family: CoverageFamily.structuralWrapper,
+    syntaxKinds: ['dimensioned'],
+    rule: 'LANG.ARRAY.DIMENSION@1.0.0#R1',
+    flowchart: CoverageCell.notApplicable('rendered inside the caption of its declaration'),
+    structogram: CoverageCell.notApplicable('rendered inside the caption of its declaration'),
+    structure: CoverageCell.notApplicable('rendered inside the row of its owner'),
+    focus: CoverageCell.notApplicable('focus targets the owning declaration'),
+    evidence: _flowTests,
+  ),
+  SyntaxViewCoverageRow(
+    construct: 'contract.interface',
+    role: CoveragePublicRole.declaration,
+    family: CoverageFamily.contract,
+    syntaxKinds: ['interface_unit', 'interface_signature', 'realization'],
+    rule: 'LANG.TYPES.INTERFACE@1.0.0#R1',
+    flowchart: CoverageCell.notApplicable('a contract has no execution'),
+    structogram: CoverageCell.notApplicable('a contract has no execution'),
+    structure: _exact,
+    evidence: _contractTests,
+  ),
+  SyntaxViewCoverageRow(
+    construct: 'generic.parameters',
+    role: CoveragePublicRole.declaration,
+    family: CoverageFamily.contract,
+    syntaxKinds: ['type_parameters', 'type_parameter'],
+    rule: 'LANG.TYPES.GENERIC@1.0.0#R1',
+    flowchart: CoverageCell.notApplicable('a type parameter has no execution'),
+    structogram: CoverageCell.notApplicable('a type parameter has no execution'),
+    structure: _exact,
+    evidence: _valueTypeTests,
+  ),
+  SyntaxViewCoverageRow(
+    construct: 'value.record',
+    role: CoveragePublicRole.declaration,
+    family: CoverageFamily.valueDeclaration,
+    syntaxKinds: ['record_unit', 'record_field'],
+    rule: 'LANG.TYPES.RECORD@1.0.0#R1',
+    flowchart: CoverageCell.notApplicable('a record declaration has no execution'),
+    structogram: CoverageCell.notApplicable('a record declaration has no execution'),
+    structure: _exact,
+    evidence: _valueTypeTests,
+  ),
+  SyntaxViewCoverageRow(
+    construct: 'value.enum',
+    role: CoveragePublicRole.declaration,
+    family: CoverageFamily.valueDeclaration,
+    syntaxKinds: ['enum_unit', 'enum_members'],
+    rule: 'LANG.TYPES.ENUM@1.0.0#R1',
+    flowchart: CoverageCell.notApplicable('an enum declaration has no execution'),
+    structogram: CoverageCell.notApplicable('an enum declaration has no execution'),
+    structure: _exact,
+    evidence: _valueTypeTests,
+  ),
+  SyntaxViewCoverageRow(
+    construct: 'closure.function_literal',
+    role: CoveragePublicRole.declaration,
+    family: CoverageFamily.closure,
+    syntaxKinds: ['function_literal'],
+    rule: 'LANG.TYPES.FUNCTION@1.0.0#R1',
+    flowchart: CoverageCell.extension('the body of a function literal is part of the caption of its statement'),
+    structogram: CoverageCell.extension('the body of a function literal is part of the caption of its statement'),
+    structure: CoverageCell.notApplicable('a function literal is not part of the class structure'),
+    evidence: _coverageTests,
+  ),
+  SyntaxViewCoverageRow(
+    construct: 'pattern.variant',
+    role: CoveragePublicRole.declaration,
+    family: CoverageFamily.pattern,
+    syntaxKinds: ['variant_pattern'],
+    rule: 'LANG.CONTROL.SWITCH@1.0.0#R1',
+    flowchart: CoverageCell.extension('a pattern is shown as the text of its case label'),
+    structogram: CoverageCell.extension('a pattern is shown as the text of its case label'),
+    structure: CoverageCell.notApplicable('a pattern is not part of the class structure'),
+    evidence: _coverageTests,
+  ),
+  SyntaxViewCoverageRow(
+    construct: 'signature.parameters',
+    role: CoveragePublicRole.declaration,
+    family: CoverageFamily.structuralWrapper,
+    syntaxKinds: ['parameters', 'parameter'],
+    rule: 'LANG.SUBPROGRAM.PARAMETERS@1.0.0#R1',
+    flowchart: CoverageCell.notApplicable('rendered inside the caption of its call or unit title'),
+    structogram: CoverageCell.notApplicable('rendered inside the caption of its call or unit title'),
+    structure: _exact,
+    focus: CoverageCell.notApplicable('focus targets the owning signature'),
+    evidence: _classTests,
+  ),
+];

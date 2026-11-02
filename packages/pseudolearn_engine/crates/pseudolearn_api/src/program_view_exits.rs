@@ -62,14 +62,24 @@ fn exit_attributes(nodes: &[ViewNode], revision: &str) -> Vec<(usize, &'static s
             ));
         }
         if node.syntax_kind == "body" {
-            let registered = registered_cleanups(nodes, ordinal, None);
-            if !registered.is_empty() {
-                attributes.push((ordinal, "normal_cleanups", identities.list(&registered)));
-                for cleanup in registered {
-                    attributes.push((cleanup, "cleanup_scope_node_id", identities.value(ordinal)));
-                }
-            }
+            attributes.extend(body_cleanup_attributes(nodes, &identities, ordinal));
         }
+    }
+    attributes
+}
+
+fn body_cleanup_attributes(
+    nodes: &[ViewNode],
+    identities: &Identities<'_>,
+    ordinal: usize,
+) -> Vec<(usize, &'static str, Value)> {
+    let registered = registered_cleanups(nodes, ordinal, None);
+    if registered.is_empty() {
+        return Vec::new();
+    }
+    let mut attributes = vec![(ordinal, "normal_cleanups", identities.list(&registered))];
+    for cleanup in registered {
+        attributes.push((cleanup, "cleanup_scope_node_id", identities.value(ordinal)));
     }
     attributes
 }

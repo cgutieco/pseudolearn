@@ -10,6 +10,7 @@ doc/api/
 
 # Coverage
 coverage/
+!apps/pseudolearn_app/lib/domain/model/diagram/coverage/
 lcov.info
 
 # IDE

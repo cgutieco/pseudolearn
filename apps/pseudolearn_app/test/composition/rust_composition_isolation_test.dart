@@ -43,14 +43,19 @@ void main() {
       for (final file in Directory(
         directory,
       ).listSync(recursive: true).whereType<File>()) {
-        final text = file.readAsStringSync();
-        expect(text.contains('engine/rust/'), isFalse, reason: file.path);
-        expect(text.contains('engine/bridge/'), isFalse, reason: file.path);
-        expect(
-          text.contains('package:pseudolearn_core'),
-          isFalse,
-          reason: file.path,
-        );
+        final targets = [
+          for (final match in _import.allMatches(file.readAsStringSync()))
+            match.group(1)!,
+        ];
+        for (final target in targets) {
+          expect(target.contains('engine/rust/'), isFalse, reason: file.path);
+          expect(target.contains('engine/bridge/'), isFalse, reason: file.path);
+          expect(
+            target.contains('package:pseudolearn_core'),
+            isFalse,
+            reason: file.path,
+          );
+        }
       }
     }
   });

@@ -132,7 +132,7 @@ void main() {
           ParagraphBlock(text: '{{tabla:builtinFunctions}}'),
         ]);
 
-        expect((blocks.single as TableBlock).rows.length, 18);
+        expect((blocks.single as TableBlock).rows.length, 28);
       },
     );
 
