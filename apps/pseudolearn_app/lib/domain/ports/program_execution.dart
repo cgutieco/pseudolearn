@@ -1,4 +1,5 @@
 import '../model/execution/effect_settlement.dart';
+import '../model/execution/effect_tape.dart';
 import '../model/execution/execution_step.dart';
 import '../model/execution/input_wait.dart';
 import '../model/execution/output_line.dart';
@@ -14,6 +15,7 @@ abstract interface class ProgramExecution {
     required SyntaxProfileId profileId,
     required UiLanguageId languageId,
     SimulatedScenario? scenario,
+    EffectTape? replayTape,
   });
 
   ExecutionStep step();

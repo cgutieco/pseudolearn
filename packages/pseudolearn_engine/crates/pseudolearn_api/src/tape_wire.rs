@@ -47,17 +47,20 @@ fn identity_limits(request: &ExecuteRequest) -> BTreeMap<String, u64> {
             u64::try_from(options.depth).unwrap_or(u64::MAX),
         ),
         ("cells".to_owned(), options.memory.cells),
-        (
-            "statements".to_owned(),
-            options.statement_limit.unwrap_or(u64::MAX),
-        ),
-        (
-            "micro_steps".to_owned(),
-            request.limits.micro_steps.unwrap_or(u64::MAX),
-        ),
     ]
     .into_iter()
     .collect();
+    limits.extend(
+        options
+            .statement_limit
+            .map(|statements| ("statements".to_owned(), statements)),
+    );
+    limits.extend(
+        request
+            .limits
+            .micro_steps
+            .map(|steps| ("micro_steps".to_owned(), steps)),
+    );
     limits.extend(
         request
             .limits

@@ -2349,6 +2349,11 @@
       "resuelve_en": "PG-6B"
     },
     {
+      "regla": "API.EXECUTE@1.0.0#R9",
+      "verificacion": "crates/pseudolearn_api/tests/replay_transport_tests.rs",
+      "estado": "cumple"
+    },
+    {
       "regla": "API.STATE.QUERY@1.0.0#R7",
       "verificacion": "ejecutor",
       "estado": "pendiente",

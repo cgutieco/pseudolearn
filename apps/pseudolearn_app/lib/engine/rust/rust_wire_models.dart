@@ -1,5 +1,7 @@
 import 'rust_event_classes.dart';
-import '../../domain/model/execution/input_wait.dart';
+import 'rust_pending_input_request.dart';
+
+export 'rust_pending_input_request.dart';
 
 final class RustEventSourceIdentity {
   final String projectId;
@@ -133,40 +135,6 @@ final class PendingEffectRequest {
       );
 }
 
-final class PendingInputRequest {
-  final int resourceId;
-  final int requestId;
-  final int taskId;
-
-  const PendingInputRequest({
-    required this.resourceId,
-    required this.requestId,
-    required this.taskId,
-  });
-
-  factory PendingInputRequest.fromJson(Map<String, Object?> json) {
-    final resourceId = json['resource_id'];
-    final requestId = json['request_id'];
-    final taskId = json['task_id'];
-    if (resourceId is! int ||
-        resourceId <= 0 ||
-        requestId is! int ||
-        requestId <= 0 ||
-        taskId is! int ||
-        taskId < 0) {
-      throw const FormatException('Invalid input request identity');
-    }
-    return PendingInputRequest(
-      resourceId: resourceId,
-      requestId: requestId,
-      taskId: taskId,
-    );
-  }
-
-  InputWait toDomain() =>
-      InputWait(resourceId: resourceId, requestId: requestId, taskId: taskId);
-}
-
 final class RustBatch {
   final List<RustEvent> events;
   final RustTerminationKind termination;
@@ -176,6 +144,7 @@ final class RustBatch {
   final PendingInputRequest? pendingInput;
   final Map<String, Object?>? pendingRequest;
   final List<PendingEffectRequest> pendingEffects;
+  final Map<String, Object?>? effectTape;
 
   const RustBatch({
     required this.events,
@@ -186,6 +155,7 @@ final class RustBatch {
     this.pendingInput,
     this.pendingRequest,
     this.pendingEffects = const [],
+    this.effectTape,
   });
 
   factory RustBatch.fromJson(Map<String, Object?> json) {
@@ -204,6 +174,7 @@ final class RustBatch {
       throw const FormatException('Missing input request identity');
     }
     return RustBatch(
+      effectTape: _tapeOf(json['effect_tape']),
       events: (json['events'] as List<Object?>)
           .cast<Map<String, Object?>>()
           .map(RustEvent.fromJson)
@@ -226,6 +197,19 @@ final class RustBatch {
       ],
     );
   }
+
+  static Map<String, Object?>? _tapeOf(Object? tape) {
+    if (tape != null && tape is! Map<String, Object?>) {
+      throw const FormatException('Invalid effect tape');
+    }
+    return tape as Map<String, Object?>?;
+  }
+
+  RustBatch yielded() => RustBatch(
+    events: events,
+    termination: RustTerminationKind.running,
+    effectTape: effectTape,
+  );
 
   static RustTerminationKind _kindOf(String name) => switch (name) {
     'completed' => RustTerminationKind.completed,

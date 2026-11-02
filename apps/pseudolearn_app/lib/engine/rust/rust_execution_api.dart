@@ -1,3 +1,4 @@
+import '../../domain/model/execution/effect_tape.dart';
 import '../../domain/model/execution/input_wait.dart';
 import 'rust_analysis_api.dart';
 import 'rust_execution_resource.dart';
@@ -16,6 +17,7 @@ final class RustExecutionApi {
     Map<String, Object?>? host,
     String? revision, {
     int statementLimit = 0,
+    EffectTape? replay,
   }) {
     final started =
         _transport.call('start', {
@@ -25,6 +27,10 @@ final class RustExecutionApi {
                   ? {'statements': statementLimit}
                   : {},
               'host': ?host,
+              if (replay != null) ...{
+                'execution_mode': 'replay_from_tape',
+                'effect_tape': replay.toDocument(),
+              },
             })
             as Map<String, Object?>;
     final execution = started['resource'] as int;

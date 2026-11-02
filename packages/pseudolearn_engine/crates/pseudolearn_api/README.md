@@ -221,6 +221,13 @@ La vista pública conserva nodos explícitos de construcción y patrón de varia
   petición trae identidad de fuente válida, proyecto, revisión e identificador de fuente. Antes era la cadena `none`,
   que no distinguía grafos. Un cambio de programa o de revisión cambia el resumen y la reproducción lo rechaza con
   `replay_identity_mismatch`.
+- La identidad de la cinta solo lista los presupuestos configurados: `statements` y `micro_steps` no figuran cuando la
+  petición no los fija, y ningún entero de la cinta excede `i64::MAX`. Antes un presupuesto ausente se escribía como
+  `u64::MAX`; un consumidor que decodifica JSON con enteros de 64 bits con signo (la app Dart) reenviaba la cinta con
+  un número decimal distinto y la reproducción la rechazaba como `replay_corrupted_tape`. `tests/replay_transport_tests.rs`
+  verifica la ausencia de esos presupuestos y la cota de los enteros, el rechazo de inicio sin cinta (`usage`) y con un
+  esquema desconocido (`version`), que `advance` con anfitrión incluye `effect_tape` y que un segundo `advance` durante una
+  espera repite la misma solicitud sin eventos nuevos (propiedad sobre la que la app acota el drenado de efectos).
 - `native_effect_input` rechaza con error de uso toda petición nativa con `observe` distinto de `none`, con `state_at` o
   con modo `history_seek`: el sujeto nativo no ofrece observación ni retroceso y no los simula.
 - En `ReplayFromTape` y `HistorySeek`, cuando la máquina espera entrada (`awaiting_input`), el recurso de ejecución

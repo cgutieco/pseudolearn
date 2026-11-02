@@ -12,6 +12,7 @@ import 'package:pseudolearn_app/engine/execution/task_flow_projection.dart';
 import 'package:pseudolearn_app/engine/execution/task_structure_projection.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
+import 'package:pseudolearn_app/domain/model/execution/execution_step.dart';
 import '../../fakes/fake_program_execution.dart';
 
 const _counted = '''
@@ -75,6 +76,20 @@ Algoritmo ConTareas
   Escribir "raiz"
 FinAlgoritmo
 ''';
+
+final class _StoppingExecution extends FakeProgramExecution {
+  final void Function(int calls) onStep;
+  int calls = 0;
+
+  _StoppingExecution(this.onStep);
+
+  @override
+  ExecutionStep step() {
+    calls++;
+    onStep(calls);
+    return ExecutionStep(stepNumber: calls, scopeName: 'global', scopeDepth: 1);
+  }
+}
 
 extension on ExecutionCubit {
   Future<void> step() => advance(
@@ -233,6 +248,34 @@ void main() {
       expect(cubit.state.status, ExecutionStatus.idle);
       expect(cubit.state.currentStep.focus, isNull);
       expect(cubit.state.isInFlight, isFalse);
+    });
+
+    test('a stop issued during a pump ends it at the next yield', () async {
+      late final ExecutionCubit local;
+      final execution = _StoppingExecution((calls) {
+        if (calls == 3) Future<void>(local.stop);
+      });
+      local = ExecutionCubit(execution: execution);
+      addTearDown(local.close);
+
+      await local.runToEnd(_immediate);
+
+      expect(execution.calls, StepBatchRunner.defaultBatchSize);
+      expect(execution.isStopped, isTrue);
+      expect(local.state.status, ExecutionStatus.idle);
+    });
+
+    test('a start queued before a stop never reaches the engine', () async {
+      final execution = _StoppingExecution((_) {});
+      final local = ExecutionCubit(execution: execution);
+      addTearDown(local.close);
+
+      final queued = local.runToEnd(_immediate);
+      local.stop();
+      await queued;
+
+      expect(execution.calls, 0);
+      expect(local.state.status, ExecutionStatus.idle);
     });
 
     test('keeps the selected scenario across execution start', () async {

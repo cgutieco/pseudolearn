@@ -7,7 +7,7 @@
 - Revisión inspeccionada: `5a0e12ae95d4f0a84743180e2a98f83a4423a16e`.
 - Rama comprobada: `feature/agregar-ruta-de-especificacion`; árbol limpio antes de preparar el plan.
 - Petición: «Crea el plan de ejecución detallado para `4.11 PG-B · App y tareas observables` como para que ninguna IA que lo ejecute pueda darse chance de alucinar».
-- Estado al redactar: la autorización cubría redactar este plan y enlazarlo desde el plan general, no su implementación ni la revisión C02. Instrucciones directas posteriores autorizaron una iteración de PG-B.01, PG-B.02 y PG-B.03; el 2026-11-02 se autorizó una sola iteración de PG-B.04, sin preguntas y eligiendo la opción recomendada. Cada autorización se limita a su punto; no habilita los demás puntos, C02, commit, push, instalación ni inicio de PG-7.
+- Estado al redactar: la autorización cubría redactar este plan y enlazarlo desde el plan general, no su implementación ni la revisión C02. Instrucciones directas posteriores autorizaron una iteración de PG-B.01, PG-B.02 y PG-B.03; el 2026-11-02 se autorizó una sola iteración de PG-B.04 y otra de PG-B.05 y PG-B.07 conjuntas, sin preguntas y eligiendo la opción recomendada. Cada autorización se limita a su punto; no habilita los demás puntos, C02, commit, push, instalación ni inicio de PG-7.
 - Documento transitorio: ninguna especificación, README ni código fuera de `docs/` podrá citarlo (`DOC-NO-TRANSIENT-REFS`). Las decisiones se trasladan a sus dueños en el mismo cambio (`DOC-README-TRUTH`, `DOC-NO-ORPHAN-DECISION`).
 
 ### 0.1 Reglas para quien ejecute
@@ -144,11 +144,11 @@ Cada punto incluye tareas en orden SPEC-FIRST. «Documentar» exige mover los po
 
 ### PG-B.05 · Proyecciones reproducibles
 
-- [ ] `PG-B.05.01` Contrato: definir entrada completa y representación canónica de comparación: fuentes/perfil/rigor/configuración/semilla/límites/permisos/escenario/cinta/orden de entrega, revisión y secuencia de selección/página. Separar traza de eventos de cinta de efectos; una cinta no contiene necesariamente todos los campos de vista. Aplicar rechazos de `ENG.EFFECT.TAPE#R4`.
-- [ ] `PG-B.05.02` Casos: B01/B03/B06/B12/B14; reproducción íntegra y cinta de otra identidad, truncada, adulterada, incierta/redactada y orden de entrega divergente. No esperar replay exitoso de una cinta sellada no reproducible.
-- [ ] `PG-B.05.03` Tests: repetir desde estado nuevo con distintas particiones, navegación/páginas y pausas de UI; comparar IDs/relaciones/focos/pilas/variables/canales/solicitudes/terminación. No comparar timestamps ni píxeles dependientes del entorno como equivalencia semántica.
-- [ ] `PG-B.05.04` Código: reconstrucción determinista sin activar host, análisis ni agenda desde pintado; invalidar caché por revisión/ejecución y ligar cursores a identidad completa. Si la ventana necesita contexto anterior a R8, obtenerlo por mecanismo verificado, no recorrer toda la cinta en cada render.
-- [ ] `PG-B.05.05` Documentación: qué datos se necesitan para reproducir, límites de retención y fallos, qué cambia solo disposición y qué constituye divergencia; almacenamiento de muestras sin secretos ni artefactos generados manuales.
+- [x] `PG-B.05.01` Contrato: definir entrada completa y representación canónica de comparación: fuentes/perfil/rigor/configuración/semilla/límites/permisos/escenario/cinta/orden de entrega, revisión y secuencia de selección/página. Separar traza de eventos de cinta de efectos; una cinta no contiene necesariamente todos los campos de vista. Aplicar rechazos de `ENG.EFFECT.TAPE#R4`.
+- [x] `PG-B.05.02` Casos: B01/B03/B06/B12/B14; reproducción íntegra y cinta de otra identidad, truncada, adulterada, incierta/redactada y orden de entrega divergente. No esperar replay exitoso de una cinta sellada no reproducible.
+- [x] `PG-B.05.03` Tests: repetir desde estado nuevo con distintas particiones, navegación/páginas y pausas de UI; comparar IDs/relaciones/focos/pilas/variables/canales/solicitudes/terminación. No comparar timestamps ni píxeles dependientes del entorno como equivalencia semántica.
+- [x] `PG-B.05.04` Código: reconstrucción determinista sin activar host, análisis ni agenda desde pintado; invalidar caché por revisión/ejecución y ligar cursores a identidad completa. Si la ventana necesita contexto anterior a R8, obtenerlo por mecanismo verificado, no recorrer toda la cinta en cada render.
+- [x] `PG-B.05.05` Documentación: qué datos se necesitan para reproducir, límites de retención y fallos, qué cambia solo disposición y qué constituye divergencia; almacenamiento de muestras sin secretos ni artefactos generados manuales.
 - [ ] `PG-B.05.06` Verificar: igualdad canónica entre ejecución/grabación/reproducción y reconstrucción de ventana; espía de host con cero llamadas en replay; todas las variantes de rechazo tipadas. La falta de transporte de cinta se resuelve antes, no se sustituye por volver a ejecutar contra host simulado.
 
 ### PG-B.06 · Cancelación, error, canal lleno y bloqueo
@@ -162,11 +162,11 @@ Cada punto incluye tareas en orden SPEC-FIRST. «Documentar» exige mover los po
 
 ### PG-B.07 · Agenda independiente de presentación
 
-- [ ] `PG-B.07.01` Contrato: reiterar agenda FIFO/cesión por masa normativa; distinguir bombeo cooperativo de UI, animación y tiempo lógico del programa. Decidir límites de cada llamada síncrona y cola/caché antes de implementarlos; respetar prohibición de Isolate del README actual.
-- [ ] `PG-B.07.02` Casos: B02/B06/B12/B13/B15; mismas entradas con animación desactivada, más repintados, distintas velocidades, selección y redimensionado; efecto demorado manualmente sin sondeo infinito.
-- [ ] `PG-B.07.03` Tests: pureza de presentación/composición, inmutabilidad y bombeo acotado; doble de transporte cuenta llamadas por comando y demuestra que reconstruir/repintar no pide `advance` ni responde efectos. Toda regla mecánica nueva necesita fixture que falle deliberadamente.
-- [ ] `PG-B.07.04` Código: extracción de drenado de efectos si es ilimitado; acciones en aplicación, datos preparados para pintores, cesión entre lotes. Una animación puede suavizar transición visual, nunca decidir próxima tarea, respuesta ni evento. Cancelación/edición invalidan callbacks de ejecución vieja.
-- [ ] `PG-B.07.05` Documentación: responsables de agenda/animación/consulta, políticas con dueño, límites de UI y cómo medirlos; no agregar excepciones de `Timer`, `await` o imports para facilitar un widget.
+- [x] `PG-B.07.01` Contrato: reiterar agenda FIFO/cesión por masa normativa; distinguir bombeo cooperativo de UI, animación y tiempo lógico del programa. Decidir límites de cada llamada síncrona y cola/caché antes de implementarlos; respetar prohibición de Isolate del README actual.
+- [x] `PG-B.07.02` Casos: B02/B06/B12/B13/B15; mismas entradas con animación desactivada, más repintados, distintas velocidades, selección y redimensionado; efecto demorado manualmente sin sondeo infinito.
+- [x] `PG-B.07.03` Tests: pureza de presentación/composición, inmutabilidad y bombeo acotado; doble de transporte cuenta llamadas por comando y demuestra que reconstruir/repintar no pide `advance` ni responde efectos. Toda regla mecánica nueva necesita fixture que falle deliberadamente.
+- [x] `PG-B.07.04` Código: extracción de drenado de efectos si es ilimitado; acciones en aplicación, datos preparados para pintores, cesión entre lotes. Una animación puede suavizar transición visual, nunca decidir próxima tarea, respuesta ni evento. Cancelación/edición invalidan callbacks de ejecución vieja.
+- [x] `PG-B.07.05` Documentación: responsables de agenda/animación/consulta, políticas con dueño, límites de UI y cómo medirlos; no agregar excepciones de `Timer`, `await` o imports para facilitar un widget.
 - [ ] `PG-B.07.06` Verificar: particiones y ritmos distintos conservan secuencia; validadores de arquitectura/pureza/límites en verde; registrar máximo lote observado y demora de detención sin afirmar garantía temporal desde un test funcional.
 
 ### PG-B.08 · Integración con puente real
@@ -400,24 +400,24 @@ Tabla esperada/observada por evento en el tracker de la app:
 | PG-B.04.04 | Cumplido | Modelos `InputWait`/`SimulatedScenario`, puerto, `RustSimulatedHost`, `RustEffectGate`, `RustProgramExecution`; §11.5 | La VM decide suspensión/reanudación/fallo; la app entrega capacidades declaradas. Entrada serializada y efectos con secuencia/destinatario propios; las esperas no se autoresuelven como `Leer`. |
 | PG-B.04.05 | Cumplido | README app §4.54, README API; ARB es/en | Documentados permisos, límites, orden, respuestas exactas, incertidumbre, origen simulado y vida de identidades; interfaz localizada. |
 | PG-B.04.06 | No cumplido | Verificaciones dirigidas y suites amplias descritas en §11.5 | Pruebas API, FFI y app específicas pasan; no se cierra la puerta: la suite completa Flutter conserva 11 fallos ajenos al diff y la suite completa del crate API conserva el esperado antiguo de `program_view`. No se declara `PHASE-GREEN`. |
-| PG-B.05.01 | — | — | Sin ejecutar |
-| PG-B.05.02 | — | — | Sin ejecutar |
-| PG-B.05.03 | — | — | Sin ejecutar |
-| PG-B.05.04 | — | — | Sin ejecutar |
-| PG-B.05.05 | — | — | Sin ejecutar |
-| PG-B.05.06 | — | — | Sin ejecutar |
+| PG-B.05.01 | Cumplido | README app §4.57; `API.EXECUTE#R9` | Entrada completa = identidad del motor (fuentes, perfil, rigor, semilla, límites, permisos) + cinta; selección y página son disposición. Rechazos de `ENG.EFFECT.TAPE#R4` tipados. |
+| PG-B.05.02 | Cumplido | `API.EXECUTE` R9/C15/C16; tests de reproducción | Sin cinta y esquema desconocido por corpus; identidad, truncada, adulterada y divergente por motor real. Cinta sellada no reproducible se rechaza. |
+| PG-B.05.03 | Cumplido | `rust_program_execution_replay_test.dart`, `execution_projection_test.dart` | Lotes 1/2/3/5/25 y pausas dan proyección igual; sin marcas de tiempo ni píxeles. |
+| PG-B.05.04 | Cumplido | `rust_execution_reproduction.dart`, `rust_replay_rejection.dart`, `rust_execution_opening.dart`; `tape_wire.rs` | Reproducción sin gate con anfitrión ni respuestas. Defecto real corregido: `u64::MAX` en la identidad se corrompía al pasar por Dart. Contexto previo a R8 por `task_id` de `history_events`. |
+| PG-B.05.05 | Cumplido | README app §4.57; README API | Datos, retención, fallos, divergencia y disposición documentados. |
+| PG-B.05.06 | No cumplido | §11.6 | Igualdad grabación/reproducción y cero llamadas al anfitrión verificadas con motor real; las suites completas no están en verde (fallos heredados) y no hay control de UI ni reconstrucción de ventana desde la cinta. |
 | PG-B.06.01 | — | — | Sin ejecutar |
 | PG-B.06.02 | — | — | Sin ejecutar |
 | PG-B.06.03 | — | — | Sin ejecutar |
 | PG-B.06.04 | — | — | Sin ejecutar |
 | PG-B.06.05 | — | — | Sin ejecutar |
 | PG-B.06.06 | — | — | Sin ejecutar |
-| PG-B.07.01 | — | — | Sin ejecutar |
-| PG-B.07.02 | — | — | Sin ejecutar |
-| PG-B.07.03 | — | — | Sin ejecutar |
-| PG-B.07.04 | — | — | Sin ejecutar |
-| PG-B.07.05 | — | — | Sin ejecutar |
-| PG-B.07.06 | — | — | Sin ejecutar |
+| PG-B.07.01 | Cumplido | README app §4.8 | FIFO del motor, tres relojes separados, cotas por llamada y sin `Isolate`. |
+| PG-B.07.02 | Cumplido | Tests de gate, cubit y puente real | Mismos eventos con distintos lotes y pausas; efecto manual sin sondeo; 40 lecturas de reloj completan con 80 respuestas. |
+| PG-B.07.03 | Cumplido | `rust_effect_gate_test.dart`, `execution_cubit_test.dart` | Doble que cuenta llamadas por comando; leer proyección o cinta no llama al motor; mutación del tope detectada. |
+| PG-B.07.04 | Cumplido | `rust_effect_gate.dart`, `rust_wire_models.dart` | Drenado acotado a 16 respuestas por llamada con lote `running`; `stop` entre lotes descarta comandos viejos. |
+| PG-B.07.05 | Cumplido | README app §4.8 | Responsables, cotas y método de medición. |
+| PG-B.07.06 | No cumplido | §11.6 | Secuencia conservada con ritmos y particiones distintos; máximo observado ≤33 llamadas por comando. Suites completas no verdes por fallos heredados. |
 | PG-B.08.01 | — | — | Sin ejecutar |
 | PG-B.08.02 | — | — | Sin ejecutar |
 | PG-B.08.03 | — | — | Sin ejecutar |
@@ -547,3 +547,25 @@ La instrucción directa del 2026-11-02 autorizó una sola iteración de `PG-B.04
 - `git diff --check` pasa. Rama única conservada, sin commit ni publicación.
 
 `.04.01–.05` quedan cumplidos en el alcance implementado. `.04.06` queda **No cumplido** como puerta de fase: los tests dirigidos de API, app y FFI pasan, pero no se obtiene verde de las suites completas de Flutter y del workspace Rust. Por `PHASE-GREEN`, PG-B.04 no se declara cerrada. Se informa y se para aquí (`PHASE-STOP`), antes de PG-B.05.
+
+### 11.6 Estado de ejecución de PG-B.05 y PG-B.07
+
+Una sola iteración conjunta, autorizada el 2026-11-02 sin preguntas y eligiendo siempre la opción recomendada, sobre `feature/agregar-ruta-de-especificacion`. Sin commit ni push.
+
+#### Decisiones
+
+- La app transporta la cinta del motor y la devuelve en `replay_from_tape`; no valida cintas. Rechazos tipados en `ReplayRejection`.
+- Equivalencia por proyección canónica de eventos (sin etiqueta de revisión), salida, terminación y fallo.
+- Defecto hallado: la identidad de la cinta escribía presupuestos ausentes como `u64::MAX`; Dart lo reenviaba como otro número y el motor lo rechazaba. Ahora los presupuestos no configurados no figuran y ningún entero supera `i64::MAX`.
+- Nueva regla `API.EXECUTE#R9` con casos C15/C16 y vínculo en la conformidad del motor.
+- Drenado de efectos acotado a 16 respuestas por llamada (`maxResolutionsPerDrain`); la espera pendiente se repite idéntica en el siguiente `advance` (verificado en Rust).
+- Para cumplir los límites se extrajeron `RustExecutionOpening`, `RustExecutionReproduction`, `rust_event_signature`, `rust_replay_host` y `RustPendingInputRequest`.
+
+#### Verificaciones
+
+- Rust: `replay_transport_tests` (7) y `tape_rejection_tests` (8) pasan; Clippy estricto del crate y `cargo fmt --check` pasan; `rust-checks all` solo informa 8 violaciones preexistentes en archivos no tocados.
+- App: `flutter analyze`, límites, contenido, diseño y cobertura sintáctica pasan; `bash tool/test_bridge.sh` pasa con las pruebas nuevas de reproducción y bombeo contra el motor real.
+- Suite Flutter completa: 11 fallos, los mismos heredados de §11.5 (diagramas, ejercicios, aserciones estructurales, línea base de clases); ninguno toca este diff.
+- Corpus: `see validate` y `export --check` pasan; `lock --check` y `--refresh` informan el `SEE-HASH` heredado de `API.ANALYZE`. La conformidad del motor para `API.EXECUTE` exige regenerar evidencia obsoleta; ver resultado en el resumen de la iteración.
+
+`.05.01–.05` y `.07.01–.05` cumplidos; `.05.06` y `.07.06` no cumplidos como puertas por las suites heredadas. Se informa y se para (`PHASE-STOP`), antes de PG-B.06.

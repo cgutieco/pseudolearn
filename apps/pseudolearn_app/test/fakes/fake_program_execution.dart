@@ -1,4 +1,5 @@
 import 'package:pseudolearn_app/domain/model/execution/effect_settlement.dart';
+import 'package:pseudolearn_app/domain/model/execution/effect_tape.dart';
 import 'package:pseudolearn_app/domain/model/execution/execution_step.dart';
 import 'package:pseudolearn_app/domain/model/execution/output_line.dart';
 import 'package:pseudolearn_app/domain/model/execution/input_wait.dart';
@@ -28,6 +29,7 @@ base class FakeProgramExecution implements ProgramExecution {
     required SyntaxProfileId profileId,
     required UiLanguageId languageId,
     SimulatedScenario? scenario,
+    EffectTape? replayTape,
   }) {
     lastScenario = scenario;
     currentStepIndex = 0;

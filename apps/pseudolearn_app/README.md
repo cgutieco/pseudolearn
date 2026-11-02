@@ -794,6 +794,31 @@ infraestructura y el motor; la lógica de aplicación desconoce los widgets y el
   Ninguno de los dos crea eventos ni cambia los límites configurados para el programa.
 
   Las solicitudes de entrada detienen el bombeo; al recibir el dato, se conserva la condición del comando que esperaba.
+
+  **La agenda no depende de la presentación.** La agenda de tareas es del motor: orden FIFO y cesión por masa
+  normativa. La app no la decide. Hay tres relojes que no se mezclan: el bombeo cooperativo (cuándo cede el hilo de la
+  interfaz), la animación (cómo se suaviza visualmente una transición ya confirmada) y el tiempo lógico del programa
+  (el que el escenario declara). Ni la animación ni el repintado, la selección, el redimensionado o la velocidad piden
+  `advance` ni responden efectos: solo los comandos de `ExecutionCubit` llegan a `ProgramExecution.step()`. Leer
+  `outputLines`, `projection` o `recordedTape` no llama al motor. Cada llamada síncrona tiene una cota explícita:
+
+  | Frontera | Cota | Dueño |
+  |:--|:--|:--|
+  | Eventos por `advance` | 25 (`RustProgramExecution.batchSize`) | `rust_program_execution.dart` |
+  | Respuestas de efecto por comando | 16 (`RustEffectGate.maxResolutionsPerDrain`) | `rust_effect_gate.dart` |
+  | Llamadas al transporte por `step()` | `2 × 16 + 1` = 33 (`advance` y `effect_result`) | consecuencia de las dos anteriores |
+  | Avances por comando de interfaz | 25 entre cesiones; tope local 10 000 | `step_batch_runner.dart` |
+
+  Con el bombeo automático, el gate responde las esperas con el anfitrión simulado hasta 16 veces por llamada; si el
+  motor sigue esperando, devuelve un lote en estado `running` y la espera pendiente queda en el motor, que la repite
+  idéntica en el siguiente `advance` sin eventos nuevos. Así una ejecución con muchas esperas ya no resuelve todas en una
+  sola llamada síncrona. El 16 es un valor de seguridad de la interfaz, no un límite del lenguaje ni un cuanto
+  normativo; se verifica con `rust_effect_gate_test.dart` (doble de transporte que cuenta llamadas por comando) y con la
+  prueba del puente real «many effects are pumped in bounded commands», que además comprueba las 80 respuestas de una
+  traza de 40 lecturas de reloj. La demora de detención es, como mucho, el tiempo de una cesión: `stop` se atiende al
+  llegar a la siguiente cesión y los comandos encolados antes de ella se descartan; no se afirma garantía temporal
+  desde un test funcional. Medir el máximo de lote observado es contar, por comando, las operaciones `advance` y
+  `effect_result` del transporte, tal como hacen esos tests.
 - **Alternativas descartadas y por qué:**
     - *Uso de `Isolate`:* Descartado por la sobrecarga de serializar estados de AST y la latencia en repintar el
       resaltado de línea.
@@ -2463,6 +2488,62 @@ dart run tool/e_pg_12_static_summary.dart --output /tmp/e-pg12-summary.json /tmp
 
 Cambiar el sufijo por un archivo distinto para cada proceso. El protocolo de participantes conserva consentimiento y
 respuestas bajo responsabilidad de quien conduzca el estudio; no simula participantes ni recoge datos personales.
+
+### 4.57 Reproducción de una ejecución: cinta transportada, proyección canónica y rechazos tipados
+
+Problema: reproducir una ejecución con efectos no puede volver a consultar el anfitrión simulado, porque la segunda
+ejecución podría diferir de la primera sin que nadie lo note. Decisión: la app transporta la cinta de efectos que el
+motor ya graba, se la devuelve en modo `replay_from_tape` y compara la ejecución reproducida con la grabada mediante
+una proyección canónica. La app no valida la cinta: el motor es el único dueño de identidad, secuencia y hashes.
+
+- **Entrada completa de una reproducción.** Fuentes, perfil, rigor, semilla, límites y permisos son la identidad que el
+  motor ata a la cinta; el escenario aporta únicamente los permisos al reproducir. Los datos del escenario (archivos,
+  respuestas HTTP, reloj) no se vuelven a entregar: viven en la cinta. El orden de entrega queda registrado en la cinta
+  y la reproducción lo sigue. La revisión y la selección de tarea, evento o página no forman parte de lo que se
+  reproduce: son disposición, no ejecución.
+- **Transporte.** `RustBatch.effectTape` conserva el documento de cinta de la respuesta de `advance`. `EffectTape`
+  (modelo) lo guarda como texto JSON inmutable; `ProgramExecution.startExecution(replayTape: ...)` lo envía junto con el
+  modo. `ExecutionReproduction` (puerto de solo lectura) expone `recordedTape`, `replayRejection` y `projection`. La cinta
+  solo existe cuando hay anfitrión declarado y se conserva hasta el siguiente inicio, también después de `stop`; la app
+  nunca la escribe en disco ni la registra en el log. El motor redacta los argumentos secretos antes de serializarla.
+- **Enteros sin pérdida.** La cinta cruza una frontera JSON que Dart decodifica con enteros de 64 bits con signo. Una
+  identidad con `u64::MAX` como «sin límite» se reenviaba como número decimal distinto y el motor la rechazaba como
+  `replay_corrupted_tape`. La identidad ya no incluye `statements` ni `micro_steps` cuando no están configurados y
+  ningún entero de la cinta excede `i64::MAX`.
+- **Rechazos tipados.** `ReplayRejection` distingue `missingTape` y `unsupportedSchema` (fallos de inicio de uso y de
+  versión), los cinco códigos `replay_*` del motor (`identityMismatch`, `divergence`, `truncatedTape`, `corruptedTape`,
+  `nonReproducible`) y `engineRefused` para cualquier otro fallo que el motor emita durante una reproducción. Un
+  rechazo al iniciar devuelve un paso sin iniciar y libera el análisis; un rechazo durante el avance termina la ejecución
+  con `failed` y el código como motivo. Un fallo del transporte fuera de una reproducción no se oculta como rechazo: se
+  propaga como antes. Una cinta sellada como no reproducible (truncada por presupuesto, redactada o incierta) se rechaza
+  con `nonReproducible`; no se espera una reproducción exitosa de ella ni se vuelve a ejecutar contra el anfitrión para
+  sustituirla.
+- **Proyección canónica.** `ExecutionProjection` compara, en orden, la firma de cada evento consumido (clase, tarea
+  dueña según la atribución del motor, nodo sin la etiqueta de revisión, línea, profundidad y datos), las líneas de
+  salida con su clase, la terminación y el motivo de fallo. Dos ejecuciones son equivalentes solo si todo coincide;
+  `firstDivergence` informa el índice del primer evento distinto, o la longitud común si difieren cola o terminación.
+  Quedan fuera, a propósito, las marcas de tiempo, los píxeles, la etiqueta de revisión (contador de la sesión de
+  análisis: `rev1` y `rev4` pueden nombrar la misma fuente) y los identificadores de recurso. Pilas, variables y
+  solicitudes se derivan de esos eventos y de consultas por evento; sus pruebas viven en el rastreador de foco y en las
+  consultas paginadas. El estado de canales no tiene dato público, así que no forma parte de la proyección.
+- **Qué cambia solo la disposición.** Tamaño de lote, pausas de la interfaz, ritmo, selección, paginación,
+  redimensionado e idioma de la interfaz no cambian la proyección: la prueba repite la reproducción con lotes de 1, 2, 3, 5
+  y 25 eventos y pausando entre pasos. Constituye divergencia cualquier diferencia de la lista anterior.
+- **Invalidación.** El inicio de la reproducción usa el mismo `RustExecutionResource` que una ejecución viva: abre un
+  recurso con su revisión, de modo que cursores y cachés ligados a recurso y revisión no sobreviven a `stop` ni a un nuevo
+  inicio. `begin` limpia cinta, firmas y rechazo. Reconstruir una ventana no recorre la cinta: la atribución de eventos
+  ordinarios sale de `task_id` en `history_events`, por lo que la reproducción no se usa para obtener contexto previo.
+- **Retención y fallos.** La app guarda solo la cinta de la ejecución en curso, acotada por `max_tape_bytes` del motor
+  (16 MiB por omisión). Al agotarse el presupuesto el motor sella la cinta y el programa continúa; reproducirla se
+  rechaza. Las muestras para pruebas se generan en el momento y no se almacenan; los dobles de las pruebas llevan
+  documentos de cinta mínimos escritos a mano y no artefactos generados.
+- **Verificación.** `rust_program_execution_replay_test.dart` (doble de transporte: modo y cinta enviados, equivalencia
+  con distintas particiones, divergencia detectada, rechazos de inicio y de avance, cero `effect_result` ni `input`) y,
+  contra el motor real, «reproduction through the real engine» en `tool/native_bridge_adapters_test.dart` (equivalencia
+  con espía de transporte, cinta de otro programa, cinta truncada y cinta adulterada).
+
+Pendiente declarado: no existe aún un control de interfaz para reproducir una ejecución; la capacidad vive en el puerto
+y se verifica contra el motor real. El estado de canales y cola no es consultable por API, por lo que no se compara.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

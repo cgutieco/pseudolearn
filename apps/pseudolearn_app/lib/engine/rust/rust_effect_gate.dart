@@ -6,6 +6,8 @@ import 'rust_transport.dart';
 import 'rust_wire_models.dart';
 
 final class RustEffectGate {
+  static const int maxResolutionsPerDrain = 16;
+
   final RustExecutionApi _execution;
   RustSimulatedHost? _host;
   final bool _autoResolve;
@@ -31,9 +33,12 @@ final class RustEffectGate {
   RustBatch drain(int execution, int batchSize, List<RustEvent> collected) {
     var batch = _execution.advance(execution, batchSize);
     collected.addAll(batch.events);
+    var resolutions = 0;
     while (_autoResolve &&
         _host != null &&
         batch.termination == RustTerminationKind.awaitingEffect) {
+      if (resolutions == maxResolutionsPerDrain) return batch.yielded();
+      resolutions++;
       answer(execution, batch);
       batch = _execution.advance(execution, batchSize);
       collected.addAll(batch.events);

@@ -1323,3 +1323,133 @@
   "perfil_base": "es"
 }
 ```
+
+```regla
+{
+  "id": "R9",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Una ejecución en ReplayFromTape exige que la petición de inicio transporte la cinta de efectos: la ausencia de cinta es un fallo de uso y un esquema de cinta desconocido es un fallo de versión, ambos antes de crear el recurso de ejecución y sin consultar al anfitrión. La respuesta de avance de una ejecución con anfitrión incluye la cinta grabada hasta ese punto, de modo que el consumidor puede reproducirla sin volver a ejecutar contra el anfitrión. Un presupuesto no configurado no figura en la identidad de la cinta y ningún entero de la cinta excede el rango de 64 bits con signo, de modo que un consumidor que decodifica números JSON con enteros de 64 bits con signo la reenvía sin pérdida.",
+  "verificacion": [
+    "C15",
+    "C16"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C15",
+  "regla": "R9",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "create_analysis",
+        "arguments": {}
+      },
+      {
+        "operation": "start",
+        "arguments": {
+          "observe": "events",
+          "seed": 42,
+          "host": {
+            "permissions": [
+              "reloj"
+            ],
+            "detached": true
+          },
+          "execution_mode": "replay_from_tape"
+        },
+        "resource_from": 0
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {}
+        },
+        {
+          "failure": {
+            "family": "usage"
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ],
+  "programa": "Algoritmo P\nEscribir 42;\nFinAlgoritmo\n",
+  "perfil_base": "es"
+}
+```
+
+```caso
+{
+  "id": "C16",
+  "regla": "R9",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "create_analysis",
+        "arguments": {}
+      },
+      {
+        "operation": "start",
+        "arguments": {
+          "observe": "events",
+          "seed": 42,
+          "host": {
+            "permissions": [
+              "reloj"
+            ],
+            "detached": true
+          },
+          "execution_mode": "replay_from_tape",
+          "effect_tape": {
+            "format": "pseudolearn.tape/v0"
+          }
+        },
+        "resource_from": 0
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {}
+        },
+        {
+          "failure": {
+            "family": "version"
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ],
+  "programa": "Algoritmo P\nEscribir 42;\nFinAlgoritmo\n",
+  "perfil_base": "es"
+}
+```

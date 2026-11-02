@@ -5,6 +5,7 @@ import 'package:pseudolearn_app/application/execution/step_batch_runner.dart';
 import 'package:pseudolearn_app/application/execution/step_pace.dart';
 import 'package:pseudolearn_app/application/execution/step_settlement.dart';
 import 'package:pseudolearn_app/domain/model/execution/effect_settlement.dart';
+import 'package:pseudolearn_app/domain/model/execution/effect_tape.dart';
 import 'package:pseudolearn_app/domain/model/execution/execution_step.dart';
 import 'package:pseudolearn_app/domain/model/execution/effect_wait.dart';
 import 'package:pseudolearn_app/domain/model/execution/output_line.dart';
@@ -246,6 +247,7 @@ final class _ScriptedExecution implements ProgramExecution {
     required SyntaxProfileId profileId,
     required UiLanguageId languageId,
     SimulatedScenario? scenario,
+    EffectTape? replayTape,
   }) => _steps.first;
 
   @override

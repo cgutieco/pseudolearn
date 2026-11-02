@@ -73,6 +73,29 @@ FakeRustTransport scripted(
   });
 }
 
+FakeRustTransport settling(int effects, List<int> answers) {
+  var answered = 0;
+  return FakeRustTransport({
+    ...scripted([], [], []).handlers,
+    'advance': (_) => answered < effects
+        ? {
+            ...pending(answered + 1, 'clock_now'),
+            'events': [
+              {'class': 'statement_entered', 'line': 2, 'depth': 1},
+            ],
+          }
+        : completed(),
+    'effect_result': (arguments) {
+      answers.add(arguments['effect_seq'] as int);
+      answered++;
+      return null;
+    },
+  });
+}
+
+int advances(FakeRustTransport transport) =>
+    transport.calls.where((call) => call == 'advance').length;
+
 void main() {
   group('RustEffectGate', () {
     test(
@@ -110,6 +133,90 @@ void main() {
         RustTerminationKind.awaitingEffect,
       );
       expect(answers, isEmpty);
+    });
+  });
+
+  group('bounded effect draining', () {
+    test('one drain answers at most the budget and yields as running', () {
+      final answers = <int>[];
+      final transport = settling(40, answers);
+      final gate = RustEffectGate(transport, clockCapabilities, true);
+      final batch = gate.drain(3, 25, []);
+      expect(answers, hasLength(RustEffectGate.maxResolutionsPerDrain));
+      expect(batch.termination, RustTerminationKind.running);
+      expect(batch.pendingEffect, isNull);
+      expect(advances(transport), RustEffectGate.maxResolutionsPerDrain + 1);
+    });
+
+    test('successive drains answer every effect once and in order', () {
+      final answers = <int>[];
+      final transport = settling(40, answers);
+      final gate = RustEffectGate(transport, clockCapabilities, true);
+      var batch = gate.drain(3, 25, []);
+      var drains = 1;
+      while (batch.termination == RustTerminationKind.running) {
+        batch = gate.drain(3, 25, []);
+        drains++;
+      }
+      expect(batch.termination, RustTerminationKind.completed);
+      expect(answers, [for (var sequence = 1; sequence <= 40; sequence++) sequence]);
+      expect(drains, 3);
+    });
+
+    test('exactly the budget does not yield', () {
+      final answers = <int>[];
+      final gate = RustEffectGate(
+        settling(RustEffectGate.maxResolutionsPerDrain, answers),
+        clockCapabilities,
+        true,
+      );
+      expect(
+        gate.drain(3, 25, []).termination,
+        RustTerminationKind.completed,
+      );
+    });
+
+    test('one command never exceeds the per-call transport bound', () {
+      final transport = settling(100, []);
+      final execution = RustProgramExecution(
+        transport,
+        capabilities: clockCapabilities,
+      );
+      execution.startExecution(
+        sourceCode: 'Algoritmo P\nFinAlgoritmo\n',
+        profileId: SyntaxProfileId.classicSpanish,
+        languageId: UiLanguageId.spanish,
+      );
+      var largest = 0;
+      for (var index = 0; index < 400; index++) {
+        final before = transport.calls.length;
+        final step = execution.step();
+        final used = transport.calls.length - before;
+        if (used > largest) largest = used;
+        if (step.isTerminal) break;
+      }
+      expect(largest, lessThanOrEqualTo(2 * RustEffectGate.maxResolutionsPerDrain + 1));
+      expect(largest, greaterThan(1));
+    });
+
+    test('manual mode and a stop between batches leave nothing answered', () {
+      final answers = <int>[];
+      final transport = settling(40, answers);
+      final execution = RustProgramExecution(
+        transport,
+        capabilities: clockCapabilities,
+      );
+      execution.startExecution(
+        sourceCode: 'Algoritmo P\nFinAlgoritmo\n',
+        profileId: SyntaxProfileId.classicSpanish,
+        languageId: UiLanguageId.spanish,
+      );
+      execution.step();
+      final answered = answers.length;
+      execution.stop();
+      expect(answers, hasLength(answered));
+      expect(execution.step().isTerminal, isTrue);
+      expect(answers, hasLength(answered));
     });
   });
 
