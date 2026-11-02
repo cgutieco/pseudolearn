@@ -85,27 +85,40 @@ final class _TaskStructureDetails extends StatelessWidget {
           l10n.executionStructureStatus(_statusLabel(l10n, task.status)),
           variant: AppTextVariant.caption,
         ),
-        if (task.parentId != null)
+        if (task.outcome != null)
           AppText(
-            l10n.executionStructureParent(task.parentId!),
-            variant: AppTextVariant.caption,
-          )
-        else if (task.taskId != 0 && scene.beginsAtRetentionHorizon)
-          AppText(
-            l10n.executionStructureRelationUnavailable,
+            _outcomeLabel(l10n, task.outcome!),
             variant: AppTextVariant.caption,
           ),
-        if (task.scopeId != null)
-          AppText(
-            l10n.executionStructureScope(task.scopeId!),
-            variant: AppTextVariant.caption,
-          ),
+        ..._taskRelationships(task, scene, l10n),
         for (final join in task.joins)
           _TaskJoinLabel(taskId: task.taskId, join: join),
       ],
     );
   }
 }
+
+List<Widget> _taskRelationships(
+  TaskStructureNode task,
+  TaskStructureScene scene,
+  AppLocalizations l10n,
+) => [
+  if (task.parentId != null)
+    AppText(
+      l10n.executionStructureParent(task.parentId!),
+      variant: AppTextVariant.caption,
+    )
+  else if (task.taskId != 0 && scene.beginsAtRetentionHorizon)
+    AppText(
+      l10n.executionStructureRelationUnavailable,
+      variant: AppTextVariant.caption,
+    ),
+  if (task.scopeId != null)
+    AppText(
+      l10n.executionStructureScope(task.scopeId!),
+      variant: AppTextVariant.caption,
+    ),
+];
 
 final class _TaskJoinLabel extends StatelessWidget {
   final int taskId;
@@ -114,12 +127,17 @@ final class _TaskJoinLabel extends StatelessWidget {
   const _TaskJoinLabel({required this.taskId, required this.join});
 
   @override
-  Widget build(BuildContext context) => AppText(
-    AppLocalizations.of(
-      context,
-    )!.executionJoinLabel(taskId, join.eventIndex, join.outcome),
-    variant: AppTextVariant.caption,
-  );
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return AppText(
+      l10n.executionJoinLabel(
+        taskId,
+        join.eventIndex,
+        _outcomeLabel(l10n, join.outcome),
+      ),
+      variant: AppTextVariant.caption,
+    );
+  }
 }
 
 String _statusLabel(AppLocalizations l10n, String status) => switch (status) {
@@ -129,5 +147,22 @@ String _statusLabel(AppLocalizations l10n, String status) => switch (status) {
   'suspended' => l10n.executionStatusSuspended,
   'completed' => l10n.executionStatusCompleted,
   'cancellationRequested' => l10n.executionStatusCancellationRequested,
+  'failed' => l10n.executionStatusFailed,
+  'cancelled' => l10n.executionStatusCancelled,
+  'cancelledByHost' => l10n.executionStatusCancelledByHost,
+  'interruptedByFailure' => l10n.executionStatusInterruptedByFailure,
+  'interruptedByHost' => l10n.executionStatusInterruptedByHost,
+  'limitReached' => l10n.executionStatusLimitReached,
+  'interruptedByLimit' => l10n.executionStatusInterruptedByLimit,
   _ => status,
 };
+
+String _outcomeLabel(AppLocalizations l10n, String outcome) =>
+    switch (outcome) {
+      'success' => l10n.executionTaskOutcomeSuccess,
+      'error' || 'failure' => l10n.executionTaskOutcomeError,
+      'cancelled' => l10n.executionTaskOutcomeCancelled,
+      'cancelled_by_host' => l10n.executionTaskOutcomeCancelledByHost,
+      'limit_reached' => l10n.executionTaskOutcomeLimitReached,
+      _ => l10n.executionTaskOutcomeReported(outcome),
+    };

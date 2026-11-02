@@ -13,6 +13,7 @@ enum ExecutionStatus {
   stepLimitReached,
   uiSafetyLimitReached,
   haltedWithError,
+  cancelledByHost,
   finishedSuccess,
 }
 

@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import '../../domain/model/execution/execution_history_event.dart';
 import '../../domain/model/execution/execution_observation_state.dart';
+import '../../domain/model/execution/execution_task_context.dart';
 import '../../domain/model/execution/execution_value_page.dart';
 import 'execution_history_patch.dart';
 import 'execution_history_surface.dart';
@@ -21,6 +22,7 @@ typedef _ExecutionHistoryValues = ({
   int rangeEnd,
   ExecutionHistorySurface surface,
   List<ExecutionHistoryEvent> events,
+  List<ExecutionTaskContext> taskContexts,
   ExecutionObservationState? inspection,
   List<ExecutionValueEntry> values,
   int valueTotal,
@@ -43,6 +45,7 @@ final class ExecutionHistoryState extends Equatable {
   final int rangeEnd;
   final ExecutionHistorySurface surface;
   final List<ExecutionHistoryEvent> events;
+  final List<ExecutionTaskContext> taskContexts;
   final ExecutionObservationState? inspection;
   final List<ExecutionValueEntry> values;
   final int valueTotal;
@@ -64,6 +67,7 @@ final class ExecutionHistoryState extends Equatable {
     required this.rangeEnd,
     required this.surface,
     required this.events,
+    this.taskContexts = const [],
     required this.inspection,
     required this.values,
     required this.valueTotal,
@@ -86,6 +90,7 @@ final class ExecutionHistoryState extends Equatable {
       rangeEnd = -1,
       surface = ExecutionHistorySurface.flow,
       events = const [],
+      taskContexts = const [],
       inspection = null,
       values = const [],
       valueTotal = 0,
@@ -107,6 +112,7 @@ final class ExecutionHistoryState extends Equatable {
       rangeEnd = values.rangeEnd,
       surface = values.surface,
       events = values.events,
+      taskContexts = List.unmodifiable(values.taskContexts),
       inspection = values.inspection,
       values = values.values,
       valueTotal = values.valueTotal,
@@ -149,6 +155,7 @@ final class ExecutionHistoryState extends Equatable {
         rangeEnd: patch.rangeEnd ?? rangeEnd,
         surface: patch.surface ?? surface,
         events: patch.events ?? events,
+        taskContexts: patch.taskContexts ?? taskContexts,
         inspection: patch.clearInspection
             ? null
             : patch.inspection ?? inspection,
@@ -176,6 +183,7 @@ final class ExecutionHistoryState extends Equatable {
     rangeEnd,
     surface,
     events,
+    taskContexts,
     inspection,
     values,
     valueTotal,

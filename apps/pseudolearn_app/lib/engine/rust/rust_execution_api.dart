@@ -69,11 +69,33 @@ final class RustExecutionApi {
     });
   }
 
-  void stop(int? execution) {
-    if (execution != null) {
-      _transport.call('cancel', {'resource': execution});
-      _transport.call('release', {'resource': execution});
+  RustBatch? stop(
+    int? execution, {
+    bool cancel = true,
+    bool confirmCancellation = false,
+    bool release = true,
+    int batchSize = 25,
+  }) {
+    if (execution == null) {
+      _resource?.clear();
+      return null;
     }
-    _resource?.clear();
+    if (cancel) _transport.call('cancel', {'resource': execution});
+    try {
+      final rawBatch = confirmCancellation
+          ? _transport.call('advance', {
+              'resource': execution,
+              'batch_size': batchSize,
+            })
+          : null;
+      return rawBatch == null
+          ? null
+          : RustBatch.fromJson(rawBatch as Map<String, Object?>);
+    } finally {
+      if (release) {
+        _transport.call('release', {'resource': execution});
+        _resource?.clear();
+      }
+    }
   }
 }

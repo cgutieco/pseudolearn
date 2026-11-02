@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/domain/model/execution/effect_settlement.dart';
+import 'package:pseudolearn_app/domain/model/execution/execution_task_context.dart';
 import 'package:pseudolearn_app/domain/model/execution/simulated_capabilities.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
@@ -46,6 +47,7 @@ FakeRustTransport scripted(
   List<Map<String, Object?>> started,
 ) {
   var next = 0;
+  var cancelled = false;
   return FakeRustTransport({
     'create_analysis': (_) => {'resource': 2, 'document': 1},
     'analysis': (_) => {'tree': true, 'diagnostics': <Object?>[]},
@@ -62,13 +64,26 @@ FakeRustTransport scripted(
       started.add(arguments);
       return {'resource': 3};
     },
-    'advance': (_) =>
-        batches[next < batches.length ? next++ : batches.length - 1],
+    'advance': (_) => cancelled
+        ? {
+            'events': <Object?>[],
+            'diagnostics': <Object?>[],
+            'termination': {'kind': 'cancelled'},
+            'effect_tape': {
+              'format': 'pseudolearn.tape/v1',
+              'status': 'incomplete',
+              'entries': <Object?>[],
+            },
+          }
+        : batches[next < batches.length ? next++ : batches.length - 1],
     'effect_result': (arguments) {
       answers.add(arguments);
       return null;
     },
-    'cancel': (_) => null,
+    'cancel': (_) {
+      cancelled = true;
+      return null;
+    },
     'release': (_) => null,
   });
 }
@@ -159,7 +174,9 @@ void main() {
         drains++;
       }
       expect(batch.termination, RustTerminationKind.completed);
-      expect(answers, [for (var sequence = 1; sequence <= 40; sequence++) sequence]);
+      expect(answers, [
+        for (var sequence = 1; sequence <= 40; sequence++) sequence,
+      ]);
       expect(drains, 3);
     });
 
@@ -170,10 +187,7 @@ void main() {
         clockCapabilities,
         true,
       );
-      expect(
-        gate.drain(3, 25, []).termination,
-        RustTerminationKind.completed,
-      );
+      expect(gate.drain(3, 25, []).termination, RustTerminationKind.completed);
     });
 
     test('one command never exceeds the per-call transport bound', () {
@@ -195,7 +209,10 @@ void main() {
         if (used > largest) largest = used;
         if (step.isTerminal) break;
       }
-      expect(largest, lessThanOrEqualTo(2 * RustEffectGate.maxResolutionsPerDrain + 1));
+      expect(
+        largest,
+        lessThanOrEqualTo(2 * RustEffectGate.maxResolutionsPerDrain + 1),
+      );
       expect(largest, greaterThan(1));
     });
 
@@ -265,17 +282,26 @@ void main() {
       expect(finished.isFinished, isTrue);
     });
 
-    test('cancelling a wait halts the execution without answering', () {
+    test('cancelling a wait retains a host cancellation without answering', () {
       final answers = <Map<String, Object?>>[];
       final transport = scripted([pending(1, 'request_clock')], answers, []);
       final execution = begin(transport, auto: false);
       execution.step();
       final cancelled = execution.settleEffect(EffectSettlement.cancel);
-      expect(cancelled.isHalted, isTrue);
-      expect(cancelled.haltReason, 'cancelled');
+      expect(cancelled.isCancelled, isTrue);
+      expect(cancelled.isHalted, isFalse);
+      expect(cancelled.haltReason, 'cancelled_by_host');
+      expect(
+        cancelled.taskContexts.single.status,
+        ExecutionTaskStatus.cancelledByHost,
+      );
       expect(answers, isEmpty);
       expect(transport.calls, contains('cancel'));
       expect(transport.calls, contains('release'));
+      final cancellation = transport.calls.indexOf('cancel');
+      expect(transport.calls[cancellation + 1], 'advance');
+      expect(transport.calls[cancellation + 2], 'release');
+      expect(transport.calls.where((call) => call == 'cancel'), hasLength(1));
     });
   });
 }

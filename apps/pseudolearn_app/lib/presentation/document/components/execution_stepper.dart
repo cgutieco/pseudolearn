@@ -184,6 +184,7 @@ String _statusLabel(ExecutionState state, AppLocalizations l10n) {
     ExecutionStatus.pausedAwaitingEffect => l10n.executionStatusAwaitingEffect,
     ExecutionStatus.finishedSuccess => l10n.executionStatusFinished,
     ExecutionStatus.haltedWithError => l10n.executionStatusFinished,
+    ExecutionStatus.cancelledByHost => l10n.executionStatusCancelledByHost,
     ExecutionStatus.stepLimitReached => l10n.executionStatusFinished,
     ExecutionStatus.uiSafetyLimitReached => l10n.executionStatusUiSafetyLimit,
     ExecutionStatus.pausedAtStatement =>

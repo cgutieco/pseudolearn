@@ -6,6 +6,7 @@ ExecutionStatus executionStatusFromStep(ExecutionStep step) {
     return ExecutionStatus.uiSafetyLimitReached;
   }
   if (step.isStepLimitReached) return ExecutionStatus.stepLimitReached;
+  if (step.isCancelled) return ExecutionStatus.cancelledByHost;
   if (step.isHalted) return ExecutionStatus.haltedWithError;
   if (step.isFinished) return ExecutionStatus.finishedSuccess;
   if (step.isAwaitingInput) return ExecutionStatus.pausedAwaitingInput;

@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 import '../../domain/model/execution/effect_settlement.dart';
 import '../../domain/model/execution/effect_tape.dart';
 import '../../domain/model/execution/execution_projection.dart';
@@ -17,6 +15,8 @@ import 'rust_analysis_api.dart';
 import 'rust_effect_gate.dart';
 import 'rust_execution_api.dart';
 import 'rust_execution_event_consumer.dart';
+import 'rust_execution_effect_settlement.dart';
+import 'rust_execution_event_progress.dart';
 import 'rust_execution_opening.dart';
 import 'rust_execution_reproduction.dart';
 import 'rust_execution_resource.dart';
@@ -36,15 +36,17 @@ final class RustProgramExecution
   late final RustEffectGate _gate;
   final SimulatedCapabilities _defaultCapabilities;
   static const _stepBuilder = RustExecutionStepBuilder();
-  final _queue = Queue<RustEvent>();
+  static const _effectSettlement = RustExecutionEffectSettlement();
+  late final _progress = RustExecutionEventProgress(
+    consumer: _events,
+    reproduction: _reproduction,
+    stepBuilder: _stepBuilder,
+  );
 
   RustOpenedProgram? _opened;
   int? _executionId;
   RustFocusTracker? _tracker;
-  RustBatch? _last;
-  RustTerminationKind _termination = RustTerminationKind.running;
   String? _failureReason;
-  int _eventIndex = -1;
   int _stepCounter = 0;
 
   RustProgramExecution(
@@ -69,7 +71,7 @@ final class RustProgramExecution
 
   @override
   ExecutionProjection get projection => _reproduction.projection(
-    termination: _termination,
+    termination: _progress.termination,
     output: _events.outputLines,
     failure: _failureReason,
   );
@@ -116,7 +118,8 @@ final class RustProgramExecution
   ExecutionStep step() {
     if (_executionId == null) return const ExecutionStep.exhausted();
     _stepCounter++;
-    if (_queue.isEmpty && _termination == RustTerminationKind.running) {
+    if (_progress.events.isEmpty &&
+        _progress.termination == RustTerminationKind.running) {
       try {
         _fetchBatch();
       } on FormatException {
@@ -128,18 +131,20 @@ final class RustProgramExecution
         _fail(_reproduction.reject(failure).code);
       }
     }
-    if (_queue.isNotEmpty) return _consume(_queue.removeFirst());
+    if (_progress.events.isNotEmpty) {
+      return _consume(_progress.events.removeFirst());
+    }
     return _terminalStep();
   }
 
   ExecutionStep _terminalStep() {
-    _tracker!.finishRoot(_termination, _failureReason);
+    _tracker!.finishRoot(_progress.termination, _failureReason);
     return _stepBuilder.terminal(
       tracker: _tracker!,
       stepNumber: _stepCounter,
-      eventIndex: _eventIndex,
-      termination: _termination,
-      batch: _last,
+      eventIndex: _progress.eventIndex,
+      termination: _progress.termination,
+      batch: _progress.last,
       inputPrompt: _events.inputPrompt,
       failureReason: _failureReason,
     );
@@ -149,12 +154,12 @@ final class RustProgramExecution
   ExecutionStep provideInput(InputWait request, String rawInput) {
     final execution = _executionId;
     if (execution == null) return const ExecutionStep.exhausted();
-    final pending = _last?.pendingInput?.toDomain();
+    final pending = _progress.last?.pendingInput?.toDomain();
     if (request.resourceId != execution || pending?.matches(request) != true) {
       return _terminalStep();
     }
     _execution.provideInput(execution, request, rawInput);
-    _termination = RustTerminationKind.running;
+    _progress.termination = RustTerminationKind.running;
     _failureReason = null;
     _events.clearInputPrompt();
     return step();
@@ -166,12 +171,9 @@ final class RustProgramExecution
     final execution = _executionId;
     _opened = null;
     _executionId = null;
-    _queue.clear();
-    _termination = RustTerminationKind.running;
-    _eventIndex = -1;
+    _progress.clear();
     _stepCounter = 0;
     _tracker = null;
-    _last = null;
     _failureReason = null;
     _events.clear();
     _gate.close();
@@ -180,70 +182,63 @@ final class RustProgramExecution
   }
 
   @override
-  ExecutionStep settleEffect(EffectSettlement settlement) {
-    if (settlement == EffectSettlement.cancel) {
-      final number = _stepCounter;
-      stop();
-      return _stepBuilder.cancelled(number);
-    }
-    final batch = _last;
+  ExecutionStep settleEffect(EffectSettlement settlement) =>
+      _effectSettlement.settle(
+        settlement: settlement,
+        batch: _progress.last,
+        execution: _executionId,
+        gate: _gate,
+        advance: step,
+        onResolved: () {
+          _progress.termination = RustTerminationKind.running;
+        },
+        cancel: _cancelEffect,
+      );
+
+  ExecutionStep _cancelEffect() => _effectSettlement.cancel(
+    executionApi: _execution,
+    execution: _executionId,
+    batchSize: batchSize,
+    observe: _progress.observeBatch,
+    consume: _consume,
+    snapshot: _snapshot,
+    terminal: _terminalStep,
+    releaseConfirmed: _releaseConfirmed,
+  );
+
+  void _releaseConfirmed() {
+    final handle = _opened?.handle;
     final execution = _executionId;
-    if (execution == null ||
-        batch?.pendingEffect == null ||
-        !_gate.canResolve) {
-      return step();
-    }
-    _gate.answer(execution, batch!);
-    _termination = RustTerminationKind.running;
-    return step();
+    _opened = null;
+    _executionId = null;
+    _progress.events.clear();
+    _progress.last = null;
+    _tracker = null;
+    _gate.close();
+    _execution.stop(execution, cancel: false);
+    if (handle != null) _analysis.release(handle);
   }
 
-  void _fetchBatch() {
-    final collected = <RustEvent>[];
-    final batch = _gate.drain(_executionId!, batchSize, collected);
-    _queue.addAll(collected);
-    _last = batch;
-    _reproduction.observed(batch);
-    _termination = batch.termination;
-    if (batch.termination
-        case RustTerminationKind.completed ||
-            RustTerminationKind.cancelled ||
-            RustTerminationKind.failed ||
-            RustTerminationKind.limitReached) {
-      _gate.close();
-    }
-  }
+  void _fetchBatch() => _progress.drain(_gate, _executionId!, batchSize);
 
   void _fail(String reason) {
-    _termination = RustTerminationKind.failed;
+    _progress.termination = RustTerminationKind.failed;
     _failureReason = reason;
   }
 
-  ExecutionStep _consume(RustEvent event) {
-    _eventIndex++;
-    _reproduction.consumed(event);
-    final failure = _events.consume(
-      event: event,
-      eventIndex: _eventIndex,
-      execution: _executionId!,
-      view: _opened!.view,
-      offsets: _opened!.offsets,
-      tracker: _tracker!,
-    );
-    if (failure != null) {
-      _fail(failure);
-      _queue.clear();
-      return _snapshot(halted: true, reason: _failureReason);
-    }
-    return _snapshot();
-  }
+  ExecutionStep _consume(RustEvent event) => _progress.consume(
+    event: event,
+    execution: _executionId!,
+    view: _opened!.view,
+    offsets: _opened!.offsets,
+    tracker: _tracker!,
+    stepNumber: _stepCounter,
+    onFailure: _fail,
+  );
 
-  ExecutionStep _snapshot({bool halted = false, String? reason}) =>
-      _stepBuilder.build(
-        tracker: _tracker!,
-        stepNumber: _stepCounter,
-        eventIndex: _eventIndex,
-        halted: halted,
-        reason: reason,
-      );
+  ExecutionStep _snapshot() => _stepBuilder.build(
+    tracker: _tracker!,
+    stepNumber: _stepCounter,
+    eventIndex: _progress.eventIndex,
+  );
 }

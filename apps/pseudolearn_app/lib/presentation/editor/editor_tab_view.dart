@@ -87,32 +87,51 @@ final class _EditorExecutionStatusBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    return switch (status) {
-      ExecutionStatus.stepLimitReached => StatusBanner(
-        severity: AppSeverity.warning,
-        title: l10n.bannerStepLimitTitle,
-        message: l10n.bannerStepLimitBody,
-        onDismiss: onDismiss,
-      ),
-      ExecutionStatus.uiSafetyLimitReached => StatusBanner(
-        severity: AppSeverity.warning,
-        title: l10n.bannerUiSafetyLimitTitle,
-        message: l10n.bannerUiSafetyLimitBody,
-        onDismiss: onDismiss,
-      ),
-      ExecutionStatus.haltedWithError => StatusBanner(
-        severity: AppSeverity.error,
-        title: l10n.bannerErrorTitle,
-        message: haltMessage ?? l10n.executionRuntimeError,
-        onDismiss: onDismiss,
-      ),
-      ExecutionStatus.finishedSuccess => StatusBanner(
-        severity: AppSeverity.success,
-        title: l10n.bannerSuccessTitle,
-        onDismiss: onDismiss,
-      ),
-      _ => const SizedBox.shrink(),
-    };
+    final content = _executionBannerContent(
+      status,
+      AppLocalizations.of(context)!,
+      haltMessage,
+    );
+    if (content == null) return const SizedBox.shrink();
+    return StatusBanner(
+      severity: content.severity,
+      title: content.title,
+      message: content.message,
+      onDismiss: onDismiss,
+    );
   }
 }
+
+({AppSeverity severity, String title, String? message})?
+_executionBannerContent(
+  ExecutionStatus status,
+  AppLocalizations l10n,
+  String? haltMessage,
+) => switch (status) {
+  ExecutionStatus.stepLimitReached => (
+    severity: AppSeverity.warning,
+    title: l10n.bannerStepLimitTitle,
+    message: l10n.bannerStepLimitBody,
+  ),
+  ExecutionStatus.uiSafetyLimitReached => (
+    severity: AppSeverity.warning,
+    title: l10n.bannerUiSafetyLimitTitle,
+    message: l10n.bannerUiSafetyLimitBody,
+  ),
+  ExecutionStatus.cancelledByHost => (
+    severity: AppSeverity.warning,
+    title: l10n.bannerCancelledTitle,
+    message: l10n.bannerCancelledBody,
+  ),
+  ExecutionStatus.haltedWithError => (
+    severity: AppSeverity.error,
+    title: l10n.bannerErrorTitle,
+    message: haltMessage ?? l10n.executionRuntimeError,
+  ),
+  ExecutionStatus.finishedSuccess => (
+    severity: AppSeverity.success,
+    title: l10n.bannerSuccessTitle,
+    message: null,
+  ),
+  _ => null,
+};

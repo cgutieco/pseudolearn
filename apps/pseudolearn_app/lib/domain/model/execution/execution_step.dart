@@ -18,6 +18,7 @@ final class ExecutionStep {
   final List<WatchRow> variables;
   final bool isFinished;
   final bool isHalted;
+  final bool isCancelled;
   final String? haltReason;
   final bool isStepLimitReached;
   final bool isUiSafetyLimitReached;
@@ -40,6 +41,7 @@ final class ExecutionStep {
     this.variables = const [],
     this.isFinished = false,
     this.isHalted = false,
+    this.isCancelled = false,
     this.haltReason,
     this.isStepLimitReached = false,
     this.isUiSafetyLimitReached = false,
@@ -63,6 +65,7 @@ final class ExecutionStep {
       variables = const [],
       isFinished = false,
       isHalted = true,
+      isCancelled = false,
       haltReason = null,
       isStepLimitReached = false,
       isUiSafetyLimitReached = false,
@@ -85,6 +88,7 @@ final class ExecutionStep {
       variables = const [],
       isFinished = true,
       isHalted = false,
+      isCancelled = false,
       haltReason = null,
       isStepLimitReached = false,
       isUiSafetyLimitReached = false,
@@ -94,7 +98,8 @@ final class ExecutionStep {
       expectedInputType = null,
       pendingEffect = null;
 
-  bool get isTerminal => isFinished || isHalted || isStepLimitReached;
+  bool get isTerminal =>
+      isFinished || isHalted || isCancelled || isStepLimitReached;
 
   int? get currentLine => focus?.startLine;
 
@@ -110,6 +115,7 @@ final class ExecutionStep {
         scopeName: scopeName,
         scopeDepth: scopeDepth,
         variables: variables,
+        isCancelled: isCancelled,
         isStepLimitReached: true,
         isUiSafetyLimitReached: isUiSafetyLimitReached,
       );

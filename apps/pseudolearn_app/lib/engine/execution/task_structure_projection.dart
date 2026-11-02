@@ -1,4 +1,5 @@
 import '../../domain/model/execution/execution_history_event.dart';
+import '../../domain/model/execution/execution_task_context.dart';
 import '../../domain/model/execution/task_structure_scene.dart';
 import '../../domain/ports/task_structure_projector.dart';
 
@@ -9,6 +10,7 @@ final class TaskStructureProjection implements TaskStructureProjector {
   TaskStructureScene project({
     required List<ExecutionHistoryEvent> events,
     required int horizonFirst,
+    List<ExecutionTaskContext> taskContexts = const [],
   }) {
     final tasks = <int, _MutableTask>{0: _MutableTask.root()};
     final orderedEvents = events.toList()
@@ -32,10 +34,20 @@ final class TaskStructureProjection implements TaskStructureProjector {
       }
       if (event.eventClass == 'scope_joined') _recordJoin(tasks, event);
     }
+    _recordObservedStatuses(tasks, taskContexts);
     return TaskStructureScene(
       tasks: _orderedTasks(tasks),
       beginsAtRetentionHorizon: horizonFirst > 0,
     );
+  }
+
+  void _recordObservedStatuses(
+    Map<int, _MutableTask> tasks,
+    List<ExecutionTaskContext> contexts,
+  ) {
+    for (final context in contexts) {
+      tasks[context.taskId]?.observe(context.status, context.completionOutcome);
+    }
   }
 
   void _recordSpawn(Map<int, _MutableTask> tasks, ExecutionHistoryEvent event) {
@@ -118,7 +130,12 @@ final class _MutableTask {
 
   void complete(int event, String? result) {
     completedAtEvent = event;
-    status = 'completed';
+    status = result == 'cancelled' ? 'cancelled' : 'completed';
+    outcome = result;
+  }
+
+  void observe(ExecutionTaskStatus nextStatus, String? result) {
+    status = nextStatus.name;
     outcome = result;
   }
 

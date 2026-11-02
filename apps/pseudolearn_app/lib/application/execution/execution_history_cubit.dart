@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import '../../domain/model/execution/execution_history_event.dart';
 import '../../domain/model/execution/execution_observation_policy.dart';
+import '../../domain/model/execution/execution_task_context.dart';
 import '../../domain/model/execution/task_flow_scene.dart';
 import '../../domain/model/execution/task_structure_scene.dart';
 import '../../domain/ports/program_execution_observer.dart';
@@ -59,6 +60,7 @@ final class ExecutionHistoryCubit extends Cubit<ExecutionHistoryState> {
   TaskStructureScene projectStructure() => _structureProjector.project(
     events: state.events,
     horizonFirst: state.horizonFirst,
+    taskContexts: state.taskContexts,
   );
 
   void dispatch(ExecutionHistoryCommand command) {
@@ -124,6 +126,7 @@ final class ExecutionHistoryCubit extends Cubit<ExecutionHistoryState> {
 
   void _onExecutionState(ExecutionState executionState) {
     if (executionState.runId != state.runId) _beginRun(executionState);
+    _updateTaskContexts(executionState);
     final event = executionState.currentStep.eventIndex;
     if (event < 0) {
       if (!executionState.isInFlight) _clearRun(executionState.runId);
@@ -136,9 +139,20 @@ final class ExecutionHistoryCubit extends Cubit<ExecutionHistoryState> {
     _windows.reset();
     emit(
       ExecutionHistoryState.initial().copyWith(
-        ExecutionHistoryPatch(runId: executionState.runId, hasExecution: true),
+        ExecutionHistoryPatch(
+          runId: executionState.runId,
+          hasExecution: true,
+          taskContexts: executionState.currentStep.taskContexts,
+        ),
       ),
     );
+  }
+
+  void _updateTaskContexts(ExecutionState executionState) {
+    final contexts = executionState.currentStep.taskContexts;
+    if (contexts.isEmpty && state.taskContexts.isEmpty) return;
+    if (_sameContexts(contexts, state.taskContexts)) return;
+    emit(state.copyWith(ExecutionHistoryPatch(taskContexts: contexts)));
   }
 
   void _clearRun(int runId) {
@@ -199,4 +213,15 @@ final class ExecutionHistoryCubit extends Cubit<ExecutionHistoryState> {
       ),
     );
   }
+}
+
+bool _sameContexts(
+  List<ExecutionTaskContext> left,
+  List<ExecutionTaskContext> right,
+) {
+  if (left.length != right.length) return false;
+  for (var index = 0; index < left.length; index++) {
+    if (left[index] != right[index]) return false;
+  }
+  return true;
 }

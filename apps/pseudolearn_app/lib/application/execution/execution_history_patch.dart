@@ -1,5 +1,6 @@
 import '../../domain/model/execution/execution_history_event.dart';
 import '../../domain/model/execution/execution_observation_state.dart';
+import '../../domain/model/execution/execution_task_context.dart';
 import '../../domain/model/execution/execution_value_page.dart';
 import 'execution_history_surface.dart';
 
@@ -17,6 +18,7 @@ final class ExecutionHistoryPatch {
   final int? rangeEnd;
   final ExecutionHistorySurface? surface;
   final List<ExecutionHistoryEvent>? events;
+  final List<ExecutionTaskContext>? taskContexts;
   final ExecutionObservationState? inspection;
   final List<ExecutionValueEntry>? values;
   final int? valueTotal;
@@ -42,6 +44,7 @@ final class ExecutionHistoryPatch {
     this.rangeEnd,
     this.surface,
     this.events,
+    this.taskContexts,
     this.inspection,
     this.values,
     this.valueTotal,

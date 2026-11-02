@@ -7,6 +7,7 @@ import 'package:pseudolearn_app/domain/model/execution/execution_step.dart';
 ExecutionStep step({
   bool finished = false,
   bool halted = false,
+  bool cancelled = false,
   bool stepLimit = false,
   bool uiLimit = false,
   bool awaitingInput = false,
@@ -17,6 +18,7 @@ ExecutionStep step({
   scopeDepth: 1,
   isFinished: finished,
   isHalted: halted,
+  isCancelled: cancelled,
   isStepLimitReached: stepLimit,
   isUiSafetyLimitReached: uiLimit,
   isAwaitingInput: awaitingInput,
@@ -50,6 +52,10 @@ void main() {
     expect(
       executionStatusFromStep(step(halted: true)),
       ExecutionStatus.haltedWithError,
+    );
+    expect(
+      executionStatusFromStep(step(cancelled: true)),
+      ExecutionStatus.cancelledByHost,
     );
     expect(
       executionStatusFromStep(step(finished: true)),

@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import '../../domain/model/execution/execution_task_context.dart';
 import '../../domain/model/execution/execution_step.dart';
 import '../../domain/model/execution/input_wait.dart';
 import '../../domain/model/profiles/syntax_profile_id.dart';
@@ -154,7 +153,7 @@ final class ExecutionCubit extends Cubit<ExecutionState> {
   bool _canAdvanceTask(int taskId) {
     for (final task in state.currentStep.taskContexts) {
       if (task.taskId != taskId) continue;
-      return task.status != ExecutionTaskStatus.completed;
+      return !task.status.isTerminal;
     }
     return false;
   }

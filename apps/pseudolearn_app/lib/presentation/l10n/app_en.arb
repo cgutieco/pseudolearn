@@ -280,6 +280,22 @@
   "executionStatusSuspended": "Suspended",
   "executionStatusCompleted": "Completed",
   "executionStatusCancellationRequested": "Cancellation requested",
+  "executionStatusFailed": "Stopped by a program error",
+  "executionStatusCancelled": "Cancelled cooperatively",
+  "executionStatusCancelledByHost": "Cancelled by the host",
+  "executionStatusInterruptedByFailure": "Stopped after another task failed",
+  "executionStatusInterruptedByHost": "Stopped when the execution was cancelled",
+  "executionStatusLimitReached": "Execution limit reached",
+  "executionStatusInterruptedByLimit": "Stopped after reaching a limit",
+  "executionTaskOutcomeSuccess": "Outcome: success",
+  "executionTaskOutcomeError": "Outcome: recoverable Error",
+  "executionTaskOutcomeCancelled": "Outcome: cooperative cancellation",
+  "executionTaskOutcomeCancelledByHost": "Outcome: host cancellation",
+  "executionTaskOutcomeLimitReached": "Outcome: limit reached",
+  "executionTaskOutcomeReported": "Reported outcome: {outcome}",
+  "@executionTaskOutcomeReported": {
+    "placeholders": {"outcome": {"type": "String"}}
+  },
   "executionStructureStatus": "Status: {status}",
   "@executionStructureStatus": {
     "description": "Current observed status for a task",
@@ -452,6 +468,8 @@
     "description": "Title when the interface stops pumping for safety"
   },
   "bannerUiSafetyLimitBody": "The interface stopped pumping after 10,000 advances to stay responsive. This local cap is not a language limit.",
+  "bannerCancelledTitle": "Execution cancelled",
+  "bannerCancelledBody": "The host stopped the execution. Task cleanups did not run.",
   "@bannerUiSafetyLimitBody": {
     "description": "Explains that the local advance cap belongs to the interface"
   },

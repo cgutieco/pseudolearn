@@ -853,8 +853,9 @@ infraestructura y el motor; la lógica de aplicación desconoce los widgets y el
   `task` de `task_spawned` identifica la hija, no cambia el foco activo. `task_ready` tampoco selecciona una tarea;
   solo `task_resumed` cambia el contexto activo. Los eventos ordinarios pertenecen a la última tarea reanudada y, antes
   de la primera, a la raíz. Cada pila se crea vacía para su tarea y los límites de llamada solo modifican esa pila.
-  Al terminar la ejecución global, la raíz conserva su pila/foco/variables y queda `completed`; `completionOutcome`
-  registra `success`, la causa de fallo, `cancelled` o `limit_reached`. Una espera global no finaliza la raíz.
+  Al terminar globalmente, la raíz conserva pila/foco/variables: queda `completed` con `success` si termina bien,
+  `failed` con el motivo si hay una trampa, `cancelledByHost` ante un corte explícito del anfitrión, o `limitReached`
+  si se agota el límite del motor. Una espera global no finaliza la raíz.
 
   | Evento | Contexto que actualiza | Efecto en el foco y la pila |
   |---|---|---|
@@ -2411,8 +2412,9 @@ abre autoridad real; ofrece capacidades simuladas en memoria y deja que el núcl
   `RustSimulatedHost` copia la configuración al comenzar; mutaciones del llamador no cambian una ejecución activa.
   Con permisos vacíos el escenario puede declarar un anfitrión sin autoridad: cualquier capacidad se deniega.
 - `ProgramExecution.settleEffect(EffectSettlement)` es el único método de continuación: `resolve` entrega al motor la
-  respuesta del anfitrión simulado para la espera pendiente y `cancel` detiene la ejecución con `haltReason =
-  'cancelled'` sin responder (el puerto se mantiene en cinco métodos públicos por el límite de la capa).
+  respuesta del anfitrión simulado para la espera pendiente y `cancel` entrega una terminación `isCancelled` con
+  `haltReason = 'cancelled_by_host'`, sin responder la espera ni ejecutar limpiezas de usuario. El `stop()` ordinario
+  limpia y libera el recurso, pero no inventa una terminación para el historial.
 - `RustSimulatedHost` enruta operaciones del motor al almacén de archivos virtuales, a la tabla HTTP o a las respuestas
   de consola, argumentos, reloj, temporizador y fallos. `RustSimulatedFiles` posee rutas y capacidades en memoria;
   `RustSimulatedHttp` posee el filtro de orígenes y las respuestas HTTP preparadas. Ninguno abre archivos del equipo,
@@ -2544,6 +2546,39 @@ una proyección canónica. La app no valida la cinta: el motor es el único due�
 
 Pendiente declarado: no existe aún un control de interfaz para reproducir una ejecución; la capacidad vive en el puerto
 y se verifica contra el motor real. El estado de canales y cola no es consultable por API, por lo que no se compara.
+
+### 4.58 Resultados de tareas y terminaciones: error recuperable, trampa y corte del anfitrión
+
+`task_completed.outcome = error` representa un valor `Resultado::Error` que la tarea devuelve al ámbito. La tarea está
+completada y el error puede recuperarse; no se presenta como una trampa del programa. `task_completed.outcome = cancelled`
+representa la cancelación cooperativa de una tarea hermana, después de las hijas y limpiezas que exige el lenguaje.
+Una terminación global `failed` es una trampa: se marca como fallida la tarea que emitió el evento `failure` y las demás
+tareas que seguían activas quedan como interrumpidas por esa terminación. `cancelled` del recurso es un corte del
+anfitrión: no ejecuta limpiezas; las tareas que seguían activas quedan interrumpidas por el corte. `limit_reached` mantiene
+su identidad y no se mezcla con un fallo ni con una cancelación.
+
+La tabla de tareas combina los eventos retenidos con los contextos finales identificados por `task_id`. Esos contextos
+actualizan el estado de cada tarea sin fabricar eventos `task_completed` o `scope_joined`. Los resultados conocidos se
+localizan en español e inglés; un resultado desconocido se muestra como informado por el motor, nunca como éxito. La
+cancelación del anfitrión tiene una banda de advertencia propia y conserva el paso observado que la precede. La tabla no
+atribuye la trampa a una hija por su número de línea: usa el evento `failure` con la atribución de tarea de la cinta.
+
+Los eventos de canales exponen identidad y operación, pero no el contenido de la cola. La pestaña de estado conserva el
+aviso de que ese contenido no está disponible; no representa una cola vacía, llena o parcialmente consumida a partir de
+los eventos. Las pruebas del API `task_failure_tests`, `task_event_tests`, `task_channel_tests` y
+`task_deadlock_tests` cubren errores recuperables, cancelación cooperativa, trampas, limpiezas, canales y ubicaciones
+relacionadas del bloqueo. `rust_task_termination_test.dart` atraviesa el puente nativo para comprobar esos resultados en
+los contextos de tarea; `task_structure_projection_test.dart` y `task_structure_view_test.dart` verifican la proyección y
+sus rótulos accesibles.
+
+| Conducta | Cinta y eventos | Recursos y limpiezas | Presentación y ayuda |
+|---|---|---|---|
+| Una tarea devuelve `Resultado::Error` | `task_completed` conserva `outcome = error`; el programa puede seguir con terminación exitosa | La tarea queda completada y el ámbito recibe el resultado recuperable | La tabla muestra el estado completado y el resultado de error. No hace falta una ficha porque no aparece sintaxis nueva |
+| Una trampa termina la ejecución | `failure` atribuye la causa a la tarea activa y la terminación global queda `failed` | Se detienen las tareas sin iniciar limpiezas pendientes; los efectos ya confirmados no se revierten | La banda de error y la tabla distinguen la tarea que falló de las interrumpidas. La ubicación sale de la atribución del evento |
+| El error de una hija cancela hermanas | Se conserva el primer error por orden de terminación, `task_cancel_requested` y `task_completed = cancelled` | Las hijas se cancelan por identidad, ejecutan limpiezas LIFO y los efectos en espera quedan abandonados; una respuesta tardía se descarta y un efecto externo incierto conserva esa incertidumbre | La tabla separa la hija fallida, las hermanas canceladas y los errores ya ocurridos. Una unión con error no se dibuja como exitosa |
+| El anfitrión corta una espera | La API confirma terminación `cancelled`; la app no crea eventos de tarea ni una unión | El corte es inmediato, no ejecuta limpiezas de usuario y descarta la respuesta tardía; la cinta queda incompleta | Una banda localizada indica el corte y la tabla conserva los contextos observados antes de detener el recurso |
+| No queda trabajo listo | El motor informa `failed/taskDeadlock` con sitios de suspensión; una respuesta externa pendiente mantiene `awaiting_effect` | La espera externa capaz de reanudar no se clasifica como bloqueo definitivo | Se muestran sitios por tarea y se distingue bloqueo de espera externa. No se inventa el estado final de recursos para eventos previos |
+| Un canal está lleno, vacío o cerrado | La cinta conserva identidad y orden de eventos, no los valores de la cola | Un envío espera capacidad; al cerrar, el receptor consume primero lo encolado y después recibe `Nada` | La app no representa tamaño, contenido ni llenado de una cola que la API no expone. La ayuda gramatical no sustituye esa observación |
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

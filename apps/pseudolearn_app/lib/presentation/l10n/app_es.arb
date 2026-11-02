@@ -280,6 +280,22 @@
   "executionStatusSuspended": "Suspendida",
   "executionStatusCompleted": "Completada",
   "executionStatusCancellationRequested": "Cancelación solicitada",
+  "executionStatusFailed": "Detenida por un error del programa",
+  "executionStatusCancelled": "Cancelada cooperativamente",
+  "executionStatusCancelledByHost": "Cancelada por el anfitrión",
+  "executionStatusInterruptedByFailure": "Detenida por el error de otra tarea",
+  "executionStatusInterruptedByHost": "Detenida al cancelar la ejecución",
+  "executionStatusLimitReached": "Límite de ejecución alcanzado",
+  "executionStatusInterruptedByLimit": "Detenida al alcanzar un límite",
+  "executionTaskOutcomeSuccess": "Resultado: éxito",
+  "executionTaskOutcomeError": "Resultado: Error recuperable",
+  "executionTaskOutcomeCancelled": "Resultado: cancelación cooperativa",
+  "executionTaskOutcomeCancelledByHost": "Resultado: cancelación del anfitrión",
+  "executionTaskOutcomeLimitReached": "Resultado: límite alcanzado",
+  "executionTaskOutcomeReported": "Resultado informado: {outcome}",
+  "@executionTaskOutcomeReported": {
+    "placeholders": {"outcome": {"type": "String"}}
+  },
   "executionStructureStatus": "Estado: {status}",
   "@executionStructureStatus": {
     "description": "Estado observado de una tarea",
@@ -452,6 +468,8 @@
     "description": "Título del aviso cuando la interfaz detuvo el bombeo por seguridad"
   },
   "bannerUiSafetyLimitBody": "La interfaz detuvo el bombeo tras 10 000 avances para seguir respondiendo. Este tope local no es un límite del lenguaje.",
+  "bannerCancelledTitle": "Ejecución cancelada",
+  "bannerCancelledBody": "El anfitrión detuvo la ejecución. No se ejecutaron limpiezas de las tareas.",
   "@bannerUiSafetyLimitBody": {
     "description": "Explica que el tope local de avance pertenece a la interfaz"
   },

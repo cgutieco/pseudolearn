@@ -10,6 +10,25 @@ enum ExecutionTaskStatus {
   suspended,
   cancellationRequested,
   completed,
+  failed,
+  cancelled,
+  cancelledByHost,
+  interruptedByFailure,
+  interruptedByHost,
+  limitReached,
+  interruptedByLimit;
+
+  bool get isTerminal => switch (this) {
+    created || ready || running || suspended || cancellationRequested => false,
+    completed ||
+    failed ||
+    cancelled ||
+    cancelledByHost ||
+    interruptedByFailure ||
+    interruptedByHost ||
+    limitReached ||
+    interruptedByLimit => true,
+  };
 }
 
 final class ExecutionTaskContext {

@@ -153,11 +153,11 @@ Cada punto incluye tareas en orden SPEC-FIRST. «Documentar» exige mover los po
 
 ### PG-B.06 · Cancelación, error, canal lleno y bloqueo
 
-- [ ] `PG-B.06.01` Contrato: tabla de estados/transiciones según `LANG.TASK.SCOPE#R6`–`R16`, `LANG.TASK.CHANNEL#R2`–`R8`, `ENG.TASK.AGENDA#R7` y cinta. Diferenciar Error recuperable, trampa global, cancelación cooperativa de hermanas y cancelación del anfitrión; señalar recursos/limpiezas/efectos abandonados e incertidumbre.
-- [ ] `PG-B.06.02` Casos: B08/B09/B10/B11; primer error por orden de terminación, asociados solo si realmente ocurrieron antes de cancelar, limpiezas LIFO, canal lleno/abierto vacío/cerrado con datos/cerrado vacío, `Elegir` empatado, bloqueo sin efectos frente a espera externa capaz de reanudar.
-- [ ] `PG-B.06.03` Tests: estados y diagnósticos con sitios relacionados por tarea; no fabricar dos errores con dos hijas de retorno inmediato; cancelación con hijas anidadas y respuesta externa tardía; cola exacta sin confundir valor ausente con variable sin inicializar.
-- [ ] `PG-B.06.04` Código: proyectar datos normativos de motor y transiciones confirmadas. Si el comando de corte requiere un `advance` para confirmar/sellar, consumir esa terminación antes de limpiar UI/recurso; no devolver «cancelled» inventado porque se llamó `stop()`. No representar el estado final del recurso como si fuera el estado de cada evento anterior.
-- [ ] `PG-B.06.05` Documentación: tabla conducta→cinta→recursos→presentación→ayuda, sin copiar un plan transitorio. Corregir pendientes obsoletos solo tras resolver PB-PRE-05.
+- [x] `PG-B.06.01` Contrato: tabla de estados/transiciones según `LANG.TASK.SCOPE#R6`–`R16`, `LANG.TASK.CHANNEL#R2`–`R8`, `ENG.TASK.AGENDA#R7` y cinta. Diferenciar Error recuperable, trampa global, cancelación cooperativa de hermanas y cancelación del anfitrión; señalar recursos/limpiezas/efectos abandonados e incertidumbre.
+- [x] `PG-B.06.02` Casos: B08/B09/B10/B11; primer error por orden de terminación, asociados solo si realmente ocurrieron antes de cancelar, limpiezas LIFO, canal lleno/abierto vacío/cerrado con datos/cerrado vacío, `Elegir` empatado, bloqueo sin efectos frente a espera externa capaz de reanudar.
+- [x] `PG-B.06.03` Tests: estados y diagnósticos con sitios relacionados por tarea; no fabricar dos errores con dos hijas de retorno inmediato; cancelación con hijas anidadas y respuesta externa tardía; cola exacta sin confundir valor ausente con variable sin inicializar.
+- [x] `PG-B.06.04` Código: proyectar datos normativos de motor y transiciones confirmadas. Si el comando de corte requiere un `advance` para confirmar/sellar, consumir esa terminación antes de limpiar UI/recurso; no devolver «cancelled» inventado porque se llamó `stop()`. No representar el estado final del recurso como si fuera el estado de cada evento anterior.
+- [x] `PG-B.06.05` Documentación: tabla conducta→cinta→recursos→presentación→ayuda, sin copiar un plan transitorio. Corregir pendientes obsoletos solo tras resolver PB-PRE-05.
 - [ ] `PG-B.06.06` Verificar: casos de error/canales/bloqueo por API y FRB, más tabla/foco/widgets. Cero hijas abandonadas por la proyección; error y cancelación no se pintan como unión exitosa; corte host no promete ejecutar limpiezas de usuario.
 
 ### PG-B.07 · Agenda independiente de presentación
@@ -406,12 +406,12 @@ Tabla esperada/observada por evento en el tracker de la app:
 | PG-B.05.04 | Cumplido | `rust_execution_reproduction.dart`, `rust_replay_rejection.dart`, `rust_execution_opening.dart`; `tape_wire.rs` | Reproducción sin gate con anfitrión ni respuestas. Defecto real corregido: `u64::MAX` en la identidad se corrompía al pasar por Dart. Contexto previo a R8 por `task_id` de `history_events`. |
 | PG-B.05.05 | Cumplido | README app §4.57; README API | Datos, retención, fallos, divergencia y disposición documentados. |
 | PG-B.05.06 | No cumplido | §11.6 | Igualdad grabación/reproducción y cero llamadas al anfitrión verificadas con motor real; las suites completas no están en verde (fallos heredados) y no hay control de UI ni reconstrucción de ventana desde la cinta. |
-| PG-B.06.01 | — | — | Sin ejecutar |
-| PG-B.06.02 | — | — | Sin ejecutar |
-| PG-B.06.03 | — | — | Sin ejecutar |
-| PG-B.06.04 | — | — | Sin ejecutar |
-| PG-B.06.05 | — | — | Sin ejecutar |
-| PG-B.06.06 | — | — | Sin ejecutar |
+| PG-B.06.01 | Cumplido | `LANG.TASK.SCOPE#R6–R16`, `LANG.TASK.CHANNEL#R2–R8`, `ENG.TASK.AGENDA#R7`; README app §4.58 | Resultados recuperables, trampa, cancelación cooperativa, corte del anfitrión y límite conservan estados distintos; canales no exponen contenido no publicado por API. |
+| PG-B.06.02 | Cumplido | `task_failure_tests`, `task_scope_tests`, `task_channel_tests`, `task_deadlock_tests`, `task_effect_order_tests` | Orden de fallos, limpiezas, canales y `Elegir` se prueban por API; bloqueo y espera externa quedan diferenciados. |
+| PG-B.06.03 | Cumplido | API/FFI dirigidos; `rust_task_termination_test.dart` | Trampa sin limpiezas, Error recuperable, cancelación host con dos niveles de tareas, cinta incompleta y respuesta tardía rechazada. |
+| PG-B.06.04 | Cumplido | `RustExecutionApi.stop`, `RustExecutionEventProgress`, `RustExecutionEffectSettlement`, `RustTaskFocusContext` | Cancelar → `advance` confirmado → consumir eventos/cinta → liberar; `stop()` ordinario no inventa cancelación ni borra estados previos antes de confirmarlos. |
+| PG-B.06.05 | Cumplido | README app §4.58; README del motor | Tabla conducta→cinta→recursos→presentación/ayuda; PB-PRE-05 corregido tras cotejar corpus y tests del API. |
+| PG-B.06.06 | No cumplido | §11.7 | Tests específicos API, app y puente pasan, pero la suite Flutter completa termina con 11 fallos heredados; no se declara `PHASE-GREEN`. |
 | PG-B.07.01 | Cumplido | README app §4.8 | FIFO del motor, tres relojes separados, cotas por llamada y sin `Isolate`. |
 | PG-B.07.02 | Cumplido | Tests de gate, cubit y puente real | Mismos eventos con distintos lotes y pausas; efecto manual sin sondeo; 40 lecturas de reloj completan con 80 respuestas. |
 | PG-B.07.03 | Cumplido | `rust_effect_gate_test.dart`, `execution_cubit_test.dart` | Doble que cuenta llamadas por comando; leer proyección o cinta no llama al motor; mutación del tope detectada. |
@@ -568,4 +568,31 @@ Una sola iteración conjunta, autorizada el 2026-11-02 sin preguntas y eligiendo
 - Suite Flutter completa: 11 fallos, los mismos heredados de §11.5 (diagramas, ejercicios, aserciones estructurales, línea base de clases); ninguno toca este diff.
 - Corpus: `see validate` y `export --check` pasan; `lock --check` y `--refresh` informan el `SEE-HASH` heredado de `API.ANALYZE`. La conformidad del motor para `API.EXECUTE` exige regenerar evidencia obsoleta; ver resultado en el resumen de la iteración.
 
-`.05.01–.05` y `.07.01–.05` cumplidos; `.05.06` y `.07.06` no cumplidos como puertas por las suites heredadas. Se informa y se para (`PHASE-STOP`), antes de PG-B.06.
+`.05.01–.05` y `.07.01–.05` cumplidos; `.05.06` y `.07.06` no cumplidos como puertas por las suites heredadas. La iteración de PG-B.06 y su puerta quedan registradas en §11.7.
+
+### 11.7 Estado de ejecución de PG-B.06
+
+Una iteración, autorizada el 2026-11-02 sin preguntas y eligiendo la opción recomendada, sobre `feature/agregar-ruta-de-especificacion`. HEAD base `ba5640846aba77e0a6bc0110569b5e91eedf251a`; sin commit ni push. El alcance fue exclusivamente PG-B.06.
+
+#### Resolución de PB-PRE-05
+
+- Se cotejaron `LANG.TASK.SCOPE#R6–R16`, `LANG.TASK.CHANNEL#R2–R8` y `ENG.TASK.AGENDA#R7` con `task_failure_tests`, `task_scope_tests`, `task_channel_tests`, `task_deadlock_tests`, `task_effect_order_tests`, `effect_suspension_session_tests` y `host_release_tests` del API.
+- Las reglas y pruebas confirman que las limpiezas cooperativas, canales, efectos abandonados, cinta y bloqueo ya están integrados en VM/API. El anfitrión puede cancelar/liberar un recurso, pero no alterar la agenda de tareas. Se retiraron las frases que los describían como pendientes del README dueño; no se cambió el corpus congelado ni se inventó una operación Rust.
+
+#### Decisiones de implementación
+
+- `Resultado::Error` completa una tarea con resultado recuperable; la trampa global marca como fallida a la tarea que emitió `failure` e interrumpe las demás; `task_completed.outcome = cancelled` conserva la cancelación cooperativa. El corte host y el límite del motor tienen estados propios.
+- El corte del anfitrión ejecuta `cancel`, solicita un `advance`, procesa la terminación y eventos confirmados, registra la cinta incompleta y recién entonces libera el recurso. `stop()` ordinario solo limpia; no fabrica una terminación ni ejecuta limpiezas de usuario.
+- Se conservaron contextos finales por `task_id` sin crear `task_completed` o `scope_joined`. Resultado y estado se localizan en tabla y banda de ejecución. La cola de canal sigue declarada como no observable porque la API solo expone identidad/operación.
+- No se tocaron contratos, casos, evidencia SEE, motor Rust ni archivos generados. La corrección de PB-PRE-05 quedó en el README del motor y en la documentación de la app.
+
+#### Verificaciones
+
+- API Rust: 61 tests dirigidos pasan en `task_failure_tests`, `task_event_tests`, `task_channel_tests`, `task_deadlock_tests`, `task_scope_tests`, `task_effect_order_tests`, `effect_suspension`, `effect_suspension_session_tests` y `host_release_tests`; incluyen cancelación anidada, limpieza LIFO, cinta incompleta y rechazo de respuesta tardía.
+- App dirigida: 122 tests pasan en aplicación de ejecución, proyección de tareas, `RustProgramExecution`, compuerta de efectos, terminación de tareas, tabla, paso y runner. El caso de terminación ejecuta el motor nativo por FFI y cubre corte host con dos niveles de tareas, salida previa preservada y limpiezas omitidas.
+- `bash tool/test_bridge.sh`: código 0; builds debug/release y 28 tests Dart–FFI pasan.
+- `flutter analyze --fatal-infos --fatal-warnings`, `check_limits.dart`, `check_content.dart`, `check_design_system.dart` y `check_syntax_coverage.dart`: código 0; cobertura sintáctica 78/78. `git diff --check`: pasa.
+- Suite Flutter completa: 2622 pasan, 1 omitido y 11 fallan fuera del diff (aislamiento de imports, conteos de marcadores/ejercicios, diagramas, aserciones estructurales y baseline de clases). Por esa puerta no se declara `PHASE-GREEN`.
+- Disco antes de limpieza: 3,6 GiB disponibles (99 % usado). Se ejecutó `cargo clean` en el paquete motor, retirando 12,7 GiB de salidas regenerables, y se eliminó `apps/pseudolearn_app/build/` (120 MiB). Quedaron 14 GiB disponibles (94 % usado); no se eliminaron fuentes ni artefactos versionados.
+
+`.06.01–.06.05` cumplidos; `.06.06` queda **No cumplido** por los 11 fallos preexistentes de la suite completa. Se para aquí (`PHASE-STOP`), antes de PG-B.07.

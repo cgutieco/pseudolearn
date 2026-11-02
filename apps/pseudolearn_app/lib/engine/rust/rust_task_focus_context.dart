@@ -68,6 +68,38 @@ final class RustTaskFocusContext {
     this.variables = List.unmodifiable(variables);
   }
 
+  void finish({
+    required int taskId,
+    required RustTerminationKind termination,
+    required String? failureReason,
+    required bool failedTask,
+  }) {
+    final terminalStatus = switch (termination) {
+      RustTerminationKind.completed when taskId == 0 =>
+        ExecutionTaskStatus.completed,
+      RustTerminationKind.failed when taskId == 0 => ExecutionTaskStatus.failed,
+      RustTerminationKind.cancelled when taskId == 0 =>
+        ExecutionTaskStatus.cancelledByHost,
+      RustTerminationKind.limitReached when taskId == 0 =>
+        ExecutionTaskStatus.limitReached,
+      RustTerminationKind.failed when failedTask => ExecutionTaskStatus.failed,
+      RustTerminationKind.failed => ExecutionTaskStatus.interruptedByFailure,
+      RustTerminationKind.cancelled => ExecutionTaskStatus.interruptedByHost,
+      RustTerminationKind.limitReached =>
+        ExecutionTaskStatus.interruptedByLimit,
+      _ => null,
+    };
+    if (terminalStatus == null || status.isTerminal) return;
+    status = terminalStatus;
+    completionOutcome = switch (termination) {
+      RustTerminationKind.completed when taskId == 0 => 'success',
+      RustTerminationKind.failed when taskId == 0 => failureReason ?? 'error',
+      RustTerminationKind.cancelled when taskId == 0 => 'cancelled_by_host',
+      RustTerminationKind.limitReached when taskId == 0 => 'limit_reached',
+      _ => completionOutcome,
+    };
+  }
+
   ExecutionTaskContext snapshot(int taskId) => ExecutionTaskContext(
     taskId: taskId,
     status: status,

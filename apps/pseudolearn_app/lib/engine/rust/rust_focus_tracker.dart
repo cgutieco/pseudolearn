@@ -17,6 +17,7 @@ final class RustFocusTracker {
   };
 
   int _currentTaskId = 0;
+  int? _failedTaskId;
   int _focusRevision = 0;
 
   RustFocusTracker(this._view)
@@ -67,6 +68,7 @@ final class RustFocusTracker {
       return false;
     }
     if (context.focusRevision != previousRevision) _focusRevision++;
+    if (event.eventClass == 'failure') _failedTaskId = _currentTaskId;
     return true;
   }
 
@@ -89,17 +91,14 @@ final class RustFocusTracker {
   }
 
   void finishRoot(RustTerminationKind termination, String? failureReason) {
-    final outcome = switch (termination) {
-      RustTerminationKind.completed => 'success',
-      RustTerminationKind.failed => failureReason ?? 'error',
-      RustTerminationKind.cancelled => 'cancelled',
-      RustTerminationKind.limitReached => 'limit_reached',
-      _ => null,
-    };
-    if (outcome == null) return;
-    final root = _contexts[0]!;
-    root.status = ExecutionTaskStatus.completed;
-    root.completionOutcome = outcome;
+    for (final entry in _contexts.entries) {
+      entry.value.finish(
+        taskId: entry.key,
+        termination: termination,
+        failureReason: failureReason,
+        failedTask: entry.key == _failedTaskId,
+      );
+    }
   }
 
   bool _applyTaskEvent(RustTaskEvent event, int eventIndex) =>
@@ -171,15 +170,19 @@ final class RustFocusTracker {
 
   bool _completeTask(RustTaskEvent event, int eventIndex) {
     final context = _contextFor(event.task);
+    final outcome = event.textOf('outcome');
     if (context == null ||
+        !{'success', 'error', 'cancelled'}.contains(outcome) ||
         (context.status == ExecutionTaskStatus.cancellationRequested
             ? false
             : event.task != _currentTaskId ||
                   context.status != ExecutionTaskStatus.running)) {
       return false;
     }
-    context.status = ExecutionTaskStatus.completed;
-    context.completionOutcome = event.textOf('outcome');
+    context.status = outcome == 'cancelled'
+        ? ExecutionTaskStatus.cancelled
+        : ExecutionTaskStatus.completed;
+    context.completionOutcome = outcome;
     context.lastEventIndex = eventIndex;
     return true;
   }
@@ -188,7 +191,8 @@ final class RustFocusTracker {
     final context = _contextFor(event.task);
     if (context == null ||
         event.intOf('origin') != _currentTaskId ||
-        context.status == ExecutionTaskStatus.completed) {
+        context.status.isTerminal ||
+        context.status == ExecutionTaskStatus.running) {
       return false;
     }
     context.status = ExecutionTaskStatus.cancellationRequested;
