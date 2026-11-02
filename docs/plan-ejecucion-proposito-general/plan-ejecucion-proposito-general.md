@@ -817,7 +817,7 @@ Puntos a cumplir:
 
 Fuera de alcance: E/S real sin concesión del host y retroceso de producto no aprobado.
 
-Plan detallado: `fase-pg-b-plan-ejecucion.md`, pendiente de crear al iniciar la fase.
+Plan detallado: [fase-pg-b-plan-ejecucion.md](fase-pg-b-plan-ejecucion.md), creado el 2026-11-02 para revisión. La redacción no autoriza implementar PG-B ni marca C01/C02.
 
 Cierre común (definiciones en §4.0):
 
@@ -1048,5 +1048,5 @@ La IA a cargo actualiza esta tabla al cerrar cada fase.
 | PG-6A | Cerrada por decisión expresa · PG-6A.01–.11 y cierre común | Sí | 2026-10-31 · cierre registrado en el plan detallado | E-PG-02 no aprobada: cuatro grupos extendidos siguen sobre 100 ms; SEE requiere revisión independiente; `PHASE-GREEN` no declarado |
 | PG-6B | En implementación integrada · PG-6B.01–.09 | Sí, petición directa de implementación revisa y autoriza C02 | Sin cierre | Desarrollo continuo y campaña final única autorizados el 2026-10-31; físicos/revisión SEE y decisiones diferidas conservados |
 | PG-A | Cerrada por decisión expresa · PG-A.01–.09 y cierre común | Sí | 2026-11-02 · cierre expreso y push ordinario en rama única | `PHASE-GREEN` no declarado; SEE/Rust pendientes, suite completa no repetida al cierre y estudio humano E-PG-12 diferido |
-| PG-B | Sin iniciar | No | | |
+| PG-B | Sin iniciar · plan preparado para revisión | Sí, C02 pendiente | | Autorización de implementación, revisión del plan y dependencia PG-3 abierta |
 | PG-7 | Sin iniciar | No | | |
