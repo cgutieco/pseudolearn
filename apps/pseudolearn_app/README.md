@@ -2360,6 +2360,33 @@ conserva las demás unidades y la dependencia se muestra sin enlazar; nada inten
   formadas), `diagram_dependency_strip_test.dart` (es/en, toque, Semantics), `rust_class_diagram_integration_test.dart`
   (consulta de las tres fichas por FRB nativo con balance de recursos) y los casos C48–C52 por el puente real.
 
+### 4.56 Evidencia estática de E-PG-12
+
+El protocolo humano necesita escenas repetibles con contenido válido en los perfiles español e inglés, y una variante
+con una realización inválida. `test/fixtures/e_pg_12_static/` contiene el archivo autocontenido que reúne interfaz,
+dos implementaciones, `Resultado`, captura por valor e iteración. `e_pg_12_static_protocol_test.dart` lo valida por FRB
+real, comprueba identidades y relaciones del diagrama, y contrasta la realización inválida sin producir una escena
+válida.
+
+`e_pg_12_static_measurement_test.dart` mide, para 1, 10 y 100 realizaciones, la lectura de vista, la construcción
+completa del diagrama, el layout de un modelo sintético y el registro de comandos del pintor. Cada muestra usa un
+análisis nuevo. `view_operations` y `scene_operations` registran las llamadas al puente; `rss_bytes` es una lectura de
+RSS del proceso. Los comandos de pintado terminan en `PictureRecorder`: no miden rasterización GPU, interacción ni
+latencia de dispositivo. `scene_build_ns` incluye análisis, transporte, decodificación, proyección y layout; las APIs
+actuales no permiten separar esas etapas internas. Son medidas descriptivas del host de test y no fijan presupuesto.
+
+El test de medición queda omitido cuando no se define `E_PG12_OUTPUT`. Ejecutar diez procesos independientes conserva
+30 iteraciones por tamaño en cada archivo JSONL. El resumen valida el tamaño de la campaña y calcula percentiles,
+intervalos bootstrap del 95 % sobre medias por proceso y candidatos de punto de cambio sin descartar muestras:
+
+```sh
+E_PG12_OUTPUT=/tmp/e-pg12-process-01.jsonl flutter test --no-pub test/engine/rust/e_pg_12_static_measurement_test.dart
+dart run tool/e_pg_12_static_summary.dart --output /tmp/e-pg12-summary.json /tmp/e-pg12-process-*.jsonl
+```
+
+Cambiar el sufijo por un archivo distinto para cada proceso. El protocolo de participantes conserva consentimiento y
+respuestas bajo responsabilidad de quien conduzca el estudio; no simula participantes ni recoge datos personales.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 ### 5.1 Filosofía de código auto-explicativo

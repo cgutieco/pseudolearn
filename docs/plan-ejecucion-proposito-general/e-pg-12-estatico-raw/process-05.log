@@ -1,0 +1,24 @@
+00:00 +0: loading /Users/cgutieco/Personal/pseudolearn/apps/pseudolearn_app/test/engine/rust/e_pg_12_static_measurement_test.dart
+00:00 +0: records reproducible static view measurements
+00:07 +1: (tearDownAll)
+00:07 +1: All tests passed!
+real 9.62
+user 9.58
+sys 0.72
+           473677824  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+              179755  page reclaims
+                3704  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                  70  messages sent
+                 109  messages received
+                   0  signals received
+                 651  voluntary context switches
+               42163  involuntary context switches
+         12853815602  instructions retired
+          4707887504  cycles elapsed
+           152716152  peak memory footprint

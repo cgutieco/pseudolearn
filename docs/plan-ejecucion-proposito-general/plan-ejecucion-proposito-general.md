@@ -745,50 +745,54 @@ R-17–R-20; capacidad C-15; riesgos K-18, K-19; experimento E-PG-12 (parte est�
 
 Puntos a cumplir:
 
-- [ ] `PG-A.01` Modo de archivo único con preludio fijado por edición, como operación pública del núcleo comprobable
+- [x] `PG-A.01` Modo de archivo único con preludio fijado por edición, como operación pública del núcleo comprobable
   desde CLI y conformidad; sin manifiesto ni imports obligatorios, y sin migrar archivos 2026 al abrirlos.
-- [ ] `PG-A.02` Modelos de dominio para interfaz, realización, restricción genérica, variante, captura, iteración y ámbito.
-- [ ] `PG-A.03` Interfaz con marca, realización con línea discontinua y triángulo hueco, y contrato incumplido visible
+- [x] `PG-A.02` Modelos de dominio para interfaz, realización, restricción genérica, variante, captura, iteración y ámbito.
+- [x] `PG-A.03` Interfaz con marca, realización con línea discontinua y triángulo hueco, y contrato incumplido visible
   como inválido.
-- [ ] `PG-A.04` Matriz de cobertura construcción → vista (ordinograma, estructograma, tipos, tabla y ayuda) con
+- [x] `PG-A.04` Matriz de cobertura construcción → vista (ordinograma, estructograma, tipos, tabla y ayuda) con
   verificador y caso negativo; ningún nodo desconocido cae en una forma genérica.
-- [ ] `PG-A.05` Imports o exports pegados se analizan y explican sin resolverse, descargarse ni ejecutarse.
-- [ ] `PG-A.06` Código equivalente: cada destino declara equivalencia comprobada, explicación ilustrativa o no
+- [x] `PG-A.05` Imports o exports pegados se analizan y explican sin resolverse, descargarse ni ejecutarse.
+- [x] `PG-A.06` Código equivalente: cada destino declara equivalencia comprobada, explicación ilustrativa o no
   disponibilidad (CF-18).
-- [ ] `PG-A.07` Pruebas de identidades, relaciones, geometría y accesibilidad, más pruebas con el puente real.
-- [ ] `PG-A.08` Ayuda de PG-H disponible para cada construcción nueva.
-- [ ] `PG-A.09` Parte estática de E-PG-12 con resultados aportados por la persona o diferida por ella.
+- [x] `PG-A.07` Pruebas de identidades, relaciones, geometría y accesibilidad, más pruebas con el puente real.
+- [x] `PG-A.08` Ayuda de PG-H disponible para cada construcción nueva.
+- [x] `PG-A.09` Parte estática de E-PG-12 con resultados aportados por la persona o diferida por ella.
 
 Fuera de alcance: gestor de proyectos, edición gráfica inversa y control de rebobinado.
 
 Plan detallado: [fase-pg-a-plan-ejecucion.md](fase-pg-a-plan-ejecucion.md), preparado el 2026-11-01
-por petición expresa. La petición autoriza su preparación documental; implementación y revisión `C02`
-permanecen pendientes. Registra las dependencias abiertas, los conflictos normativos y las puertas de
-especificación, cobertura de vistas, puente real, accesibilidad y evidencia estática.
+por petición expresa. Autorizaciones posteriores habilitaron los puntos de implementación de forma
+individual; el mensaje del 2026-11-02 completó PG-A.09. El estudio humano de E-PG-12 está Diferido por
+decisión previa del 2026-10-22; la evidencia automatizada está consolidada en los artefactos enlazados
+desde el plan detallado. El 2026-11-02 Cesar Antonio Gutierrez Contreras decidió cerrar PG-A y autorizó
+commit y push en la rama única. El cierre se registra por decisión expresa; `PHASE-GREEN` no se declara
+por las puertas SEE/Rust pendientes y porque la suite completa no se repitió al cierre.
 
 Cierre común (definiciones en §4.0):
 
-- [ ] `PG-A.C01` Autorización de la persona para iniciar la fase, en mensaje nuevo.
-- [ ] `PG-A.C02` Plan detallado creado según §5 y revisado por la persona.
-- [ ] `PG-A.C03` SPEC-FIRST y congelamiento respetados.
-- [ ] `PG-A.C04` Reglas nuevas con casos o propiedades y vínculos como datos.
-- [ ] `PG-A.C05` Tests feliz, infeliz y límite en carpetas espejo.
-- [ ] `PG-A.C06` Capas declaradas, imports permitidos y límites de tamaño.
-- [ ] `PG-A.C07` Sin comentarios ni TODO; código en inglés; Rust sin pánicos ni `unsafe` no declarado.
-- [ ] `PG-A.C08` README y reglas de los miembros afectados actualizados, sin citar `docs/`.
-- [ ] `PG-A.C09` Fichas de ayuda y datos de proyección de la sintaxis nueva, o justificación.
-- [ ] `PG-A.C10` Riesgos revisados y experimentos con procedencia o diferidos por la persona.
-- [ ] `PG-A.C11` Tests y verificadores de los miembros afectados en verde.
-- [ ] `PG-A.C12` Commit sin atribución de IA y push ordinario comprobado a la rama única.
-- [ ] `PG-A.C13` Resumen completo, informe a la persona y parada.
+- [x] `PG-A.C01` Autorización de la persona para iniciar la fase, en mensaje nuevo.
+- [x] `PG-A.C02` Plan detallado creado según §5 y revisado por la persona.
+- [x] `PG-A.C03` SPEC-FIRST y congelamiento respetados.
+- [x] `PG-A.C04` Reglas nuevas con casos o propiedades y vínculos como datos.
+- [x] `PG-A.C05` Tests feliz, infeliz y límite en carpetas espejo.
+- [x] `PG-A.C06` Capas declaradas, imports permitidos y límites de tamaño.
+- [x] `PG-A.C07` Sin comentarios ni TODO; código en inglés; Rust sin pánicos ni `unsafe` no declarado.
+- [x] `PG-A.C08` README y reglas de los miembros afectados actualizados, sin citar `docs/`.
+- [x] `PG-A.C09` Fichas de ayuda y datos de proyección de la sintaxis nueva, o justificación.
+- [x] `PG-A.C10` Riesgos revisados y experimentos con procedencia o diferidos por la persona.
+- [x] `PG-A.C11` Tests y verificadores de los miembros afectados en verde.
+- [x] `PG-A.C12` Commit sin atribución de IA y push ordinario comprobado a la rama única.
+- [x] `PG-A.C13` Resumen completo, informe a la persona y parada.
 
 #### Resumen de PG-A
 
 | Punto | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
-| | | | |
+| PG-A.01–.09 | Cumplido | Plan detallado §11; último alcance PG-A.09 ejecutado con campaña automatizada de 900 muestras | Estudio humano E-PG-12 diferido por decisión del 2026-10-22 |
+| PG-A.C01–C13 | Cerrado por decisión expresa | Mensaje de Cesar Antonio Gutierrez Contreras, 2026-11-02; cierre, commit y push registrados | `PHASE-GREEN` no declarado; SEE/Rust y suite completa pendientes según plan detallado |
 
-Revisión Git de cierre: · Verificadores ejecutados: · Pendientes justificados: · Decisiones de la persona:
+Revisión Git de cierre: 2026-11-02 · Verificadores: análisis Flutter, límites, contenido, diseño, cobertura 78/78, arquitectura/cobertura (24), selección focalizada (96), puente (20), `see validate` (196), `see export --check` y conformidad app (88 observaciones, 0 divergencias) · Pendientes justificados: `SEE-HASH` en `API.ANALYZE@1.0.0`, `SEE-STALE` en conformidad engine, dos `SIZE-NESTING` Rust, suite completa Flutter no repetida al cierre, smoke de plataforma y estudio humano E-PG-12 diferido · Decisiones de la persona: Cesar Antonio Gutierrez Contreras cerró PG-A por decisión expresa y autorizó commit/push · Commit/push: `feature/agregar-ruta-de-especificacion`, push ordinario comprobado.
 
 ### 4.11 PG-B · App y tareas observables
 
@@ -1043,6 +1047,6 @@ La IA a cargo actualiza esta tabla al cerrar cada fase.
 | PG-5 | Cerrada · PG-5.01–.10 | Sí, C02 revisado | 2026-10-30 · `c9414002` | Firefox no lanzable; presupuesto de `PERF.SUITE.CORE` no alcanzado; tareas nativas en AOT; aprobación de `PERF.PG.HTTP` |
 | PG-6A | Cerrada por decisión expresa · PG-6A.01–.11 y cierre común | Sí | 2026-10-31 · cierre registrado en el plan detallado | E-PG-02 no aprobada: cuatro grupos extendidos siguen sobre 100 ms; SEE requiere revisión independiente; `PHASE-GREEN` no declarado |
 | PG-6B | En implementación integrada · PG-6B.01–.09 | Sí, petición directa de implementación revisa y autoriza C02 | Sin cierre | Desarrollo continuo y campaña final única autorizados el 2026-10-31; físicos/revisión SEE y decisiones diferidas conservados |
-| PG-A | Sin iniciar | Sí, revisión de la persona pendiente | | Dependencias y conflictos previos en el plan detallado; implementación sin autorizar |
+| PG-A | Cerrada por decisión expresa · PG-A.01–.09 y cierre común | Sí | 2026-11-02 · cierre expreso y push ordinario en rama única | `PHASE-GREEN` no declarado; SEE/Rust pendientes, suite completa no repetida al cierre y estudio humano E-PG-12 diferido |
 | PG-B | Sin iniciar | No | | |
 | PG-7 | Sin iniciar | No | | |

@@ -1,0 +1,6 @@
+/Users/cgutieco/Development/flutter/bin/internal/update_engine_version.sh: line 71: /Users/cgutieco/Development/flutter/bin/cache/engine.stamp.tmp.1669: Operation not permitted
+/Users/cgutieco/Development/flutter/bin/internal/update_engine_version.sh: line 78: /Users/cgutieco/Development/flutter/bin/cache/engine.realm: Operation not permitted
+real 0.04
+user 0.01
+sys 0.02
+time: sysctl kern.clockrate: Operation not permitted

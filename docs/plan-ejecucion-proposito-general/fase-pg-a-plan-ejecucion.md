@@ -11,6 +11,8 @@
 - Autorización posterior: el 2026-11-01 la persona autorizó implementar `PG-A.03` y `PG-A.04` en una sola iteración. Tampoco cierra `PG-1`, `PG-A` ni `PG-A.C01`–`PG-A.C13`, y no autoriza `.05`–`.09`, commit, push ni PG-B/PG-7. Al terminar `.03` y `.04`, informar y detenerse.
 - Autorización posterior: el 2026-11-01 la persona autorizó completar el remanente de `PG-A.03.02`: vincular la sobrescritura incompatible heredada al diagnóstico del análisis, dibujar solo esa realización inválida y navegar a la firma del método. No cierra `PG-A` ni `PG-A.C01`–`PG-A.C13`, no autoriza `.05`–`.09`, PG-B/PG-7, commit ni push.
 - Autorización posterior: el 2026-11-01 la persona autorizó implementar `PG-A.05` y `PG-A.06` en una sola iteración, con instrucción de elegir siempre la opción recomendada y resumir las decisiones al final. Tampoco cierra `PG-1`, `PG-A` ni `PG-A.C01`–`PG-A.C13`, y no autoriza `.07`–`.09`, commit, push ni PG-B/PG-7. Al terminar `.05` y `.06`, informar y detenerse.
+- Autorización posterior: el 2026-11-02 la persona autorizó implementar `PG-A.09 · E-PG-12 estático y cierre de evidencia` en una sola iteración y pidió un resumen de decisiones. El diferimiento humano complementario del 2026-10-22 sigue vigente. Esta autorización no cierra `PG-1`, `PG-A` ni `PG-A.C01`–`PG-A.C13`, y no autoriza commit, push ni PG-B/PG-7. Al terminar `.09`, informar y detenerse.
+- Decisión posterior de cierre: el 2026-11-02 Cesar Antonio Gutierrez Contreras pidió cerrar `4.10 PG-A · App y sintaxis estática` y autorizó el commit y push ordinario en la rama única. Esta instrucción supersede los límites de las autorizaciones previas respecto del cierre de PG-A; se registran `PG-A.C01`–`PG-A.C13` como cerrados por decisión expresa. `PHASE-GREEN` no se declara porque permanecen puertas SEE/Rust y la suite completa no se repitió al cierre.
 - Este documento es transitorio de `docs/`. Sus decisiones operativas deben trasladarse al corpus y a los README dueños sin citarlo desde fuera de `docs/` (`DOC-NO-TRANSIENT-REFS`).
 
 Las subsecciones de trabajo son puntos de PG-A, no fases nuevas. Una autorización posterior que nombre solo un punto no autoriza los demás ni el cierre común. Al completar el alcance autorizado se informa y se detiene (`PHASE-STOP`). Si la persona autoriza PG-A completa, las puertas técnicas internas no requieren pedir confirmación rutinaria; sí se detiene ante los conflictos y dependencias humanas expresamente identificados.
@@ -172,11 +174,11 @@ Salida exigida: un caso autocontenido reproducible por operación pública, CLI 
 
 ### PG-A.09 · E-PG-12 estático y cierre de evidencia
 
-- [ ] `PG-A.09.01` Preparar protocolo automatizable con escenas de §7, oráculo manual y configuración completa. Separar escenas estáticas de `.01`–`.08` del trabajo de tareas/eventos de PG-B; no declarar E-PG-12 completo por ejecutar esta parte.
-- [ ] `PG-A.09.02` Ejecutar comprobaciones de cero omisiones y cero confusiones de identidad, geometría y accesibilidad. Medir proyección estática según §6; conservar muestras crudas y resultados desfavorables. Las métricas candidatas no se convierten en presupuesto aprobado.
-- [ ] `PG-A.09.03` Preparar material humano: archivo con interfaz y dos implementaciones; variantes/Resultado, captura e iteración; preguntas, respuestas derivadas, orden contrabalanceado y registro por idioma/tarea. Piloto de al menos 12 principiantes solo si la persona aporta participantes/consentimiento y resultados; no simular participantes ni comprensión.
-- [ ] `PG-A.09.04` Registrar el diferimiento complementario ya autorizado el 2026-10-22, si no llegan resultados humanos. Dejar la casilla humana sin cumplir y el resumen como Diferido con esa procedencia; no pedir de nuevo el concepto aprobado. La parte automatizable sigue siendo obligatoria. No usar el ≥80 % humano como resultado de widget tests.
-- [ ] `PG-A.09.05` Consolidar por tarea/punto los resultados, hashes, comandos, fallos heredados/nuevos y omisiones justificadas; completar cierre común solo con sus evidencias y con autorización correspondiente. Informar a la persona y detenerse.
+- [x] `PG-A.09.01` Preparar protocolo automatizable con escenas de §7, oráculo manual y configuración completa. Separar escenas estáticas de `.01`–`.08` del trabajo de tareas/eventos de PG-B; no declarar E-PG-12 completo por ejecutar esta parte.
+- [x] `PG-A.09.02` Ejecutar comprobaciones de cero omisiones y cero confusiones de identidad, geometría y accesibilidad. Medir proyección estática según §6; conservar muestras crudas y resultados desfavorables. Las métricas candidatas no se convierten en presupuesto aprobado.
+- [x] `PG-A.09.03` Preparar material humano: archivo con interfaz y dos implementaciones; variantes/Resultado, captura e iteración; preguntas, respuestas derivadas, orden contrabalanceado y registro por idioma/tarea. Piloto de al menos 12 principiantes solo si la persona aporta participantes/consentimiento y resultados; no simular participantes ni comprensión.
+- [x] `PG-A.09.04` Registrar el diferimiento complementario ya autorizado el 2026-10-22, si no llegan resultados humanos. Dejar la casilla humana sin cumplir y el resumen como Diferido con esa procedencia; no pedir de nuevo el concepto aprobado. La parte automatizable sigue siendo obligatoria. No usar el ≥80 % humano como resultado de widget tests.
+- [x] `PG-A.09.05` Consolidar por tarea/punto los resultados, hashes, comandos, fallos heredados/nuevos y omisiones justificadas; completar cierre común solo con sus evidencias y con autorización correspondiente. Informar a la persona y detenerse.
 
 ### 4.10 Matriz mínima que debe expandirse al inventario real
 
@@ -316,19 +318,19 @@ Registrar por participante seudónimo, consentimiento gestionado por la persona,
 
 ### 10.1 Cierre común que se comprobará, sin marcar por redactar
 
-- [ ] `PG-A.C01` Mensaje nuevo que autoriza implementación, alcance y dependencias registrado.
-- [ ] `PG-A.C02` Plan revisado por la persona; decisiones pendientes resueltas con procedencia.
-- [ ] `PG-A.C03` SPEC-FIRST, 2026 y congelamiento sin estados/versiones ficticios.
-- [ ] `PG-A.C04` Reglas con casos/propiedades y vínculos como datos, evidencia por sujeto.
-- [ ] `PG-A.C05` Tests feliz/infeliz/límite y espejo; no duplicación de casos normativos en Rust.
-- [ ] `PG-A.C06` Capas/imports/tamaños en verde para archivos cambiados; sin relajar reglas.
-- [ ] `PG-A.C07` Código en inglés, cero comentarios/TODO, Rust sin pánicos ni unsafe no declarado.
-- [ ] `PG-A.C08` README/reglas dueños autosuficientes actualizados; nada externo depende de este plan.
-- [ ] `PG-A.C09` Cobertura estática, ayuda bilingüe y ejemplos por identidad/papel demostrados.
-- [ ] `PG-A.C10` Riesgos revisados; E-PG-12 estático automatizable ejecutado, humanidad con evidencia o diferimiento autorizado.
-- [ ] `PG-A.C11` Tests/verificadores afectados en verde; comandos, salidas y omisiones justificadas; deuda no ocultada.
-- [ ] `PG-A.C12` Commit según skill y push ordinario comprobado en rama única, dentro del alcance autorizado.
-- [ ] `PG-A.C13` Resumen aquí y plan general actualizados con evidencia, informe entregado y parada.
+- [x] `PG-A.C01` Mensaje nuevo que autoriza implementación, alcance y dependencias registrado.
+- [x] `PG-A.C02` Plan revisado por la persona; decisiones pendientes resueltas con procedencia.
+- [x] `PG-A.C03` SPEC-FIRST, 2026 y congelamiento sin estados/versiones ficticios.
+- [x] `PG-A.C04` Reglas con casos/propiedades y vínculos como datos, evidencia por sujeto.
+- [x] `PG-A.C05` Tests feliz/infeliz/límite y espejo; no duplicación de casos normativos en Rust.
+- [x] `PG-A.C06` Capas/imports/tamaños en verde para archivos cambiados; sin relajar reglas.
+- [x] `PG-A.C07` Código en inglés, cero comentarios/TODO, Rust sin pánicos ni unsafe no declarado.
+- [x] `PG-A.C08` README/reglas dueños autosuficientes actualizados; nada externo depende de este plan.
+- [x] `PG-A.C09` Cobertura estática, ayuda bilingüe y ejemplos por identidad/papel demostrados.
+- [x] `PG-A.C10` Riesgos revisados; E-PG-12 estático automatizable ejecutado, humanidad con evidencia o diferimiento autorizado.
+- [x] `PG-A.C11` Tests/verificadores afectados en verde; comandos, salidas y omisiones justificadas; deuda no ocultada.
+- [x] `PG-A.C12` Commit según skill y push ordinario comprobado en rama única, dentro del alcance autorizado.
+- [x] `PG-A.C13` Resumen aquí y plan general actualizados con evidencia, informe entregado y parada.
 
 ## 11. Resumen de ejecución
 
@@ -354,7 +356,13 @@ Verificación `.07`/`.08`: `see validate` (196 especificaciones), `see export` y
 
 Limitaciones de plataforma: CoreSimulator devolvió `Connection refused`; Flutter detectó el iPhone físico conectado, que no se usó para instalar la app. Se intentó el smoke macOS y Xcode lo rechazó porque no hay perfil de desarrollo para `com.pseudolearn.app`; no se habilitó la creación automática de perfiles. La biblioteca FRB Release sí quedó comprobada por los tests locales. El refresco global de anclajes SEE también se detiene en el hash heredado de `API.ANALYZE`; `see validate` y la conformidad de las identidades tocadas pasan.
 
-El registro sigue cada tarea de §4 y cada cierre común por su ID. PG-A permanece abierto: `.09` y los puntos comunes siguen pendientes y esta iteración no autoriza el cierre de fase.
+Implementación autorizada posterior: PG-A.09 ejecutado en una iteración (2026-11-02, sin commit ni push). Se añadieron escenas española/inglesa por FRB real y una variante con firma incompatible; el protocolo humano incluye cinco tareas, clave de respuestas, 10 órdenes contrabalanceados y hoja de captura. El estudio no se realizó: la evidencia de participantes permanece sin marcar y **Diferido** por la decisión del 2026-10-22. La campaña automatizada completó diez procesos, 30 iteraciones por tamaño (1, 10, 100) y 900 muestras, sin omisiones de caja/relación ni discrepancias en las cuatro llamadas de puente por operación.
+
+Resultados descriptivos: mediana/p95 de construcción completa 1.139/5.221 ms, 5.790/10.065 ms y 90.810/98.372 ms para 1, 10 y 100 realizaciones; el layout sintético registra 0.020/0.062, 0.042/0.174 y 0.365/1.119 ms, y el pintor 0.148/0.350, 0.750/1.316 y 23.688/29.388 ms. No se convierten candidatos en presupuesto: no se midieron rasterización GPU, interacción ni latencia física, y `scene_build_ns` no separa etapas internas. Todos los JSONL/logs, sus hashes, el manifiesto y el resumen recalculable están en `e-pg-12-estatico-raw/`, `e-pg-12-estatico-manifiesto.json` y `e-pg-12-estatico-resumen.json`; el informe desarrolla el oráculo y protocolo.
+
+Verificación `.09` y cierre: 96 tests focalizados pasan; también arquitectura/cobertura (24), `test_bridge.sh` (20), análisis Flutter, límites, contenido, diseño y cobertura sintáctica (78/78). `see validate` validó 196 especificaciones, `see export --check` aprobó y conformidad app ejecutó 88 observaciones sin divergencias. `see lock --check` sigue fallando por `SEE-HASH` en `API.ANALYZE@1.0.0`. Los diez procesos de medición concluyeron correctamente. La suite Flutter completa no se repitió al cierre; una corrida anterior tuvo 29 fallos de línea base y un fallo adicional que se corrigió después sin repetir esa suite. El primer intento de campaña sin permiso de escritura de cache falló antes de ejecutar el arnés; su log se preservó fuera del conjunto de muestras oficiales.
+
+El registro sigue cada tarea de §4 y cada cierre común por su ID. PG-A.09 quedó ejecutado: su campaña automatizable está consolidada y el estudio humano permanece **Diferido** conforme a la decisión del 2026-10-22. El 2026-11-02 Cesar Antonio Gutierrez Contreras decidió cerrar PG-A y autorizó su publicación. La fase se cierra por decisión expresa; `PHASE-GREEN` no se declara. Pendientes y límites: revisión independiente/reanclaje SEE, `SEE-HASH` en `API.ANALYZE@1.0.0`, `SEE-STALE` de engine, dos `SIZE-NESTING` Rust heredados, suite completa Flutter no repetida tras corregir un fallo de la corrida anterior, smoke de plataforma limitado y estudio humano diferido.
 
 | Tarea / punto | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
@@ -405,25 +413,25 @@ El registro sigue cada tarea de §4 y cada cierre común por su ID. PG-A permane
 | PG-A.08.03 | Cumplido | API service_help (14), help_resolution (11), rust_syntax_help_source, syntax_help_cubit_test, syntax_help_panel_test y pruebas FRB en es/en | Revisión obsoleta, ausencia, cursor por papel e idioma de interfaz cubiertos |
 | PG-A.08.04 | Cumplido | Ejemplo bilingüe `c4_contratos`, CON-C4-E7 con solución/casos visibles y ocultos; AstConstruct `interfaceDeclaration` | `specificationCases` ancla el objetivo a LANG.TYPES.INTERFACE C5 |
 | PG-A.08.05 | Cumplido | `see export`, `check_content.dart`, referencias de caso y FRB: clase navegada consulta ficha y ejemplos; conformidad app 88/0 | `see lock --check` sigue fallando solo por SEE-HASH heredado de API.ANALYZE |
-| PG-A.09.01 | Pendiente | Casilla de §4 sin ejecutar | Fuera del alcance solicitado, limitado a PG-A.07 y PG-A.08 |
-| PG-A.09.02 | Pendiente | Casilla de §4 sin ejecutar | Fuera del alcance solicitado, limitado a PG-A.07 y PG-A.08 |
-| PG-A.09.03 | Pendiente | Casilla de §4 sin ejecutar | Fuera del alcance solicitado, limitado a PG-A.07 y PG-A.08 |
-| PG-A.09.04 | Pendiente | Casilla de §4 sin ejecutar | Fuera del alcance solicitado, limitado a PG-A.07 y PG-A.08 |
-| PG-A.09.05 | Pendiente | Casilla de §4 sin ejecutar | Fuera del alcance solicitado, limitado a PG-A.07 y PG-A.08 |
-| PG-A.C01 | Pendiente | Casilla de §10.1 | No autorizado el cierre común de PG-A |
-| PG-A.C02 | Pendiente | Casilla de §10.1 | No autorizado el cierre común de PG-A |
-| PG-A.C03 | Pendiente | Casilla de §10.1 | No autorizado el cierre común de PG-A |
-| PG-A.C04 | Pendiente | Casilla de §10.1 | No autorizado el cierre común de PG-A |
-| PG-A.C05 | Pendiente | Casilla de §10.1 | No autorizado el cierre común de PG-A |
-| PG-A.C06 | Pendiente | Casilla de §10.1 | No autorizado el cierre común de PG-A |
-| PG-A.C07 | Pendiente | Casilla de §10.1 | No autorizado el cierre común de PG-A |
-| PG-A.C08 | Pendiente | Casilla de §10.1 | No autorizado el cierre común de PG-A |
-| PG-A.C09 | Pendiente | Casilla de §10.1 | No autorizado el cierre común de PG-A |
-| PG-A.C10 | Pendiente | Casilla de §10.1 | No autorizado el cierre común de PG-A |
-| PG-A.C11 | Pendiente | Casilla de §10.1 | No autorizado el cierre común de PG-A |
-| PG-A.C12 | Pendiente | Casilla de §10.1 | No autorizado el cierre común de PG-A |
-| PG-A.C13 | Pendiente | Casilla de §10.1 | No autorizado el cierre común de PG-A |
-| Preparación documental | Cumplido | Este documento y enlace desde §4.10 del plan general | No equivale a `PG-A.C02` revisado por la persona |
+| PG-A.09.01 | Cumplido | `e-pg-12-estatico-evidencia.md` §1–3; fixtures bilingües, oráculo normativo, secuencia automatizable y arnés documentado | Delimita escenas estáticas; tareas/eventos de PG-B no se evalúan |
+| PG-A.09.02 | Cumplido | Test FRB real en es/en, firma inválida con identidad conservada, tests de escena/layout/routing/Semantics/render; 900 muestras en 10 procesos | Cero omisiones y cuatro operaciones de puente por carga; las métricas son candidatas, no presupuesto aprobado |
+| PG-A.09.03 | Cumplido | `e-pg-12-estatico-evidencia.md` §3: fixture, cinco tareas, clave derivada, diez órdenes y hoja vacía de captura | Material listo; no se reclutaron ni simularon participantes |
+| PG-A.09.04 | Cumplido | `e-pg-12-estatico-evidencia.md` §4; diferimiento complementario autorizado el 2026-10-22 | La evidencia humana sigue sin cumplir; resultado **Diferido**, sin afirmar eficacia pedagógica |
+| PG-A.09.05 | Cumplido | Evidencia §4, `e-pg-12-estatico-resumen.json`, manifiesto y hashes de diez JSONL/logs crudos | Consolidación terminada; cierre común permanece pendiente por alcance/autorización |
+| PG-A.C01 | Cerrado por decisión expresa | Mensaje de Cesar Antonio Gutierrez Contreras del 2026-11-02 | Autorización de cierre y publicación de PG-A |
+| PG-A.C02 | Cerrado por decisión expresa | Plan detallado ejecutado; decisión de cierre del 2026-11-02 | La persona confirma que el plan ejecutable está completado |
+| PG-A.C03 | Cerrado por decisión expresa | Corpus sin cambios de estado o versión en PG-A.09 | No se declara `PHASE-GREEN`; reanclajes previos pendientes se conservan en §11 |
+| PG-A.C04 | Cerrado por decisión expresa | Casos y matrices registrados por punto; `see validate` valida 196 especificaciones | Revisión independiente y reanclaje de algunas reglas siguen pendientes |
+| PG-A.C05 | Cerrado por decisión expresa | Tests felices, negativos y límites; 96 focalizados y 24 de arquitectura/cobertura pasan | Suite completa Flutter no repetida al cierre; deuda registrada en §11 |
+| PG-A.C06 | Cerrado por decisión expresa | `check_limits`, análisis y pruebas de arquitectura pasan | Dos `SIZE-NESTING` Rust heredados; `PHASE-GREEN` no declarado |
+| PG-A.C07 | Cerrado por decisión expresa | Verificadores de límites/comentarios de app pasan; cambios nuevos sin comentarios ni TODO | Puertas Rust heredadas descritas en §11 |
+| PG-A.C08 | Cerrado por decisión expresa | README de app actualizado; documentación de fase autosuficiente dentro de `docs/` | No se introdujeron referencias al plan transitorio desde código |
+| PG-A.C09 | Cerrado por decisión expresa | Ayuda bilingüe, ejemplos y evidencia estática documentados en los puntos `.08` y `.09` | El estudio humano permanece diferido |
+| PG-A.C10 | Cerrado por decisión expresa | Riesgos de plataforma y E-PG-12 registrados con procedencia | No se afirma rasterización GPU, latencia física ni eficacia pedagógica |
+| PG-A.C11 | Cerrado por decisión expresa | Análisis, límites, contenido, diseño, cobertura, puente y tests dirigidos pasan; `see conform` 88/0 | `SEE-HASH`, `SEE-STALE`, dos límites Rust y suite completa pendiente; `PHASE-GREEN` no declarado |
+| PG-A.C12 | Cerrado por decisión expresa | Commit con identidad configurada de la persona y push ordinario a la rama única | Resultado remoto consignado en el resumen general |
+| PG-A.C13 | Cerrado por decisión expresa | Resumen de cierre en este documento y §4.10 del plan general | Informe entregado y parada antes de PG-B/PG-7 |
+| Preparación documental | Cumplido | Este documento y enlace desde §4.10 del plan general | La decisión de cierre del 2026-11-02 confirma la revisión y el alcance |
 | PA-PRE-01 | Cumplido para .01/.02 | Autorización del 2026-11-01 | `PG-1` continúa abierto; solo se habilitaron estos dos puntos |
 | PA-PRE-02 | Cumplido para .02 | Contrato nominal y restricciones sobre valores concretos | Sin valores de interfaz ni despacho dinámico |
 | PA-PRE-03 | Cumplido | Edición 2026 y `LANG.EDITION.MODEL#R1/R2` | Sin selector ni migrador GP |
@@ -436,4 +444,4 @@ Puertas fallidas o incompletas, separadas de la implementación: `see conform --
 
 La conformidad adicional de `LANG.SOURCE.POSITION` no generó evidencia nueva porque `SEE-STALE` detectó la matriz engine local anterior de `API.PROGRAM.VIEW` con hash de corpus desactualizado. El caso sí cuenta con tests de identidad de fuente en Rust y tests de rangos Unicode/BOM en el adaptador Dart.
 
-No hubo commit ni push. No se cerró PG-1, PG-A ni ninguno de sus cierres comunes. La implementación de `.03` y `.04` queda reportada y la iteración se detiene aquí.
+PG-A queda cerrada por decisión expresa de Cesar Antonio Gutierrez Contreras (2026-11-02). `PHASE-GREEN` no se declara por las puertas SEE/Rust y la suite completa no repetida al cierre. El estudio humano de E-PG-12 permanece diferido por decisión previa. El commit y el push ordinario en `feature/agregar-ruta-de-especificacion` se registran en el resumen general. No iniciar PG-B ni PG-7; regir `PHASE-STOP`.

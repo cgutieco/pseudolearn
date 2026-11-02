@@ -1,0 +1,208 @@
+{
+  "experimento": "E-PG-12 estático · PG-A.09",
+  "estado": "medición oficial completada",
+  "fecha_inicio_cliente": "2026-11-01",
+  "fecha_fin_cliente": "2026-11-02",
+  "rama": "feature/agregar-ruta-de-especificacion",
+  "revision_fuente": "2ad9ac4abb3b5a8f01410e7e30ca5f3ffb24db77",
+  "arbol_con_cambios": true,
+  "captura_de_procedencia": "Antes de la compilación nativa de la campaña; un smoke previo del arnés no forma parte de la evidencia.",
+  "fuentes_medidas": {
+    "lib/engine/rust/rust_class_diagram_builder.dart": "0362f56a018f93613a0302b4827e9850203ac46373c3c939cd8081dbcb4f29d3",
+    "lib/engine/rust/rust_program_view_source.dart": "1c481a311ea8e6c1aa716305212136408a5a841788feb09595e83abb2a4fcec7",
+    "lib/engine/classdiagram/class_diagram_layout.dart": "92537420a0bb9c1e91c2f6e996a13658c1b51eef873d2db6fc3b6b13ebf8b372",
+    "lib/presentation/diagram/class_box_painter.dart": "0b3a5f4d96063a7b16750332ebec733add6d3680bfa7610d7a3830fa73dc1d65",
+    "test/engine/rust/e_pg_12_static_measurement_test.dart": "11f7b3020b00586b5c244f67803a0c19aea1393786d0751732836352fa58d3fe",
+    "tool/e_pg_12_static_summary.dart": "8370b3daf118a055e85f63e2dcf7b3c91b89f56b3b118864694755b08edd2194",
+    "test/fixtures/e_pg_12_static/static_es.pseudo": "c72fbad34dfb06de35953e86bc4364a91caada6d38de32d286e18ccc5d4f5838",
+    "test/fixtures/e_pg_12_static/static_en.pseudo": "aea66ab86c7846b66316a8fd0b3b93e41d91514a7b2146a82c6519a7d6d2430f",
+    "apps/pseudolearn_app/README.md": "379666f339201389cec975ffb3a65ca05133184e3b86f3627a8b2206b4f20221",
+    "test/engine/rust/e_pg_12_static_protocol_test.dart": "7f8ff053183d556b581bb02db128ea4e88651fdfbb80ece8650142da2ff5adc5",
+    "test/tool/e_pg_12_static_summary_test.dart": "59c63965a8183a7a5ac966f9ed7fbd05ae32956f67b1fd086948291b81eb915d",
+    "e-pg-12-estatico-evidencia.md": "b556d681fcde0a391e1e81f596ca20625721786fdbb8075e25e891ee18296d7e"
+  },
+  "herramientas": {
+    "flutter": "3.47.5 stable, revisión 6a19cca56475dbfba1478ee68d7bd0c2ef891da1",
+    "dart": "3.13.4",
+    "rustc": "1.99.1 (58cf8f9c3 2026-10-13)",
+    "cargo": "1.99.1 (5f94df478 2026-08-27)"
+  },
+  "host": {
+    "sistema": "macOS 27.0.1 (26A434)",
+    "modelo": "Mac14,3",
+    "cpu_logica": 8,
+    "memoria_bytes": 17179869184
+  },
+  "compilacion_puente": {
+    "comando": "bash tool/test_bridge.sh",
+    "resultado": "correcto; compilación dev/release y 20 tests nativos del puente",
+    "binario_release_sha256": "f8959b0d98f65f6dd1c5db1543e0a9cbd64a923aecb7d522bcc4c4cfcf5c1cb8",
+    "cargo_lock_sha256": "3fa8cc82c37d9778b55ae7ead4dc6d696f157e218f77b142045b9b4829b264cd"
+  },
+  "configuracion": {
+    "modo": "flutter test en macOS; no es build Release ni benchmark de dispositivo",
+    "procesos_independientes": 10,
+    "process_ids": [
+      1815,
+      1886,
+      1964,
+      2035,
+      2114,
+      2192,
+      2328,
+      2447,
+      2567,
+      2680
+    ],
+    "iteraciones_por_proceso_y_tamano": 30,
+    "tamano_realizaciones": [
+      1,
+      10,
+      100
+    ],
+    "orden_por_iteracion": [
+      1,
+      10,
+      100
+    ],
+    "calentamientos_descartados": 0,
+    "semilla": 20261101,
+    "generacion_aleatoria": "ninguna; fuente determinista",
+    "validacion_por_muestra": "n+1 marcos de clase, n relaciones, 4 operaciones por carga del puente",
+    "salidas_crudas": "e-pg-12-estatico-raw/process-01.jsonl ... process-10.jsonl",
+    "logs_de_proceso": "e-pg-12-estatico-raw/process-01.log ... process-10.log",
+    "reloj": {
+      "tipo": "ticks monotónicos calibrados por proceso",
+      "ticks_por_segundo_rango": [
+        1000000829.7096016,
+        1000009567.1799788
+      ],
+      "resolucion_observada_ticks": 41,
+      "resolucion_aproximada_ns": 41
+    },
+    "fuentes_generadas": {
+      "1": {
+        "bytes": 187,
+        "sha256": "c8a16126be25131faff9e83b41065f3eedabc263c75b474498ea3b5ae564b44e"
+      },
+      "10": {
+        "bytes": 1060,
+        "sha256": "bdc999890ae315b490a5b491877533a17a3201a1297054ee3c35be64738cab44"
+      },
+      "100": {
+        "bytes": 9970,
+        "sha256": "d74e1417cbb8ad58afb5e882eaa7ba97fd6de1e6369235856b0d7a9e5cb59b43"
+      }
+    },
+    "memoria": "RSS actual muestreado después de cada muestra; máximo como cota inferior",
+    "envolvente_flutter_time": {
+      "real_segundos": [
+        9.46,
+        11.5
+      ],
+      "user_segundos": [
+        9.51,
+        11.31
+      ],
+      "system_segundos": [
+        0.71,
+        1.39
+      ],
+      "max_rss_bytes": [
+        473432064,
+        473694208
+      ],
+      "alcance": "proceso Flutter completo, incluido arranque; no atribuido a una etapa"
+    },
+    "metricas_no_cubiertas": "CPU por etapa, rasterización GPU, interacción y latencia física"
+  },
+  "hashes_resultados": {
+    "raw_sha256": {
+      "process-01.jsonl": "f7c1e8881b07123c0000e58929f20fb5d5e9495302c89dbf40531c9138834a41",
+      "process-02.jsonl": "58da753e93be814d5b812bcff5148c3481d6fa6e73234c06628409998b5461b9",
+      "process-03.jsonl": "6b53ffbdaa0e91ade6131287ac42780032c81dfce23e099b12458df086dd1398",
+      "process-04.jsonl": "908550e122e5ef16383db9efa5c776823973f53b07478aee6895ac0ef802d653",
+      "process-05.jsonl": "4eff0cfeaec5f23587624ca8e33f43252f75756293c759273045cbb670d7169e",
+      "process-06.jsonl": "ebcf875f6706fe55349bb16167cc831949d28cf3f0b580e252b838cdede94e97",
+      "process-07.jsonl": "7ad2d9e805cf8fd98b4070ed602ae87b2a888b4f453b03310fcb83059399afd2",
+      "process-08.jsonl": "368d140d80d1d1a86b6b0841e8436b917ee788fb0928d4abe6af8c09e1544e7b",
+      "process-09.jsonl": "d5b27910f023d4dbae0d6bade18a86d965d9503c58bf3e6ce3b51cb336050a66",
+      "process-10.jsonl": "db53f0e7edbf179ec1b6e39f18bedb32c598226d98b14e86430cd300d55bace8"
+    },
+    "logs_sha256": {
+      "process-01.log": "9fdc6f02c263bac550c262bb7e03a0a26f67d99cf9553d64d0591429a4edd7db",
+      "process-02.log": "48919c67987523c1777f6e2516a6861fdb2d91565048ac7706f8a4c5ed2add12",
+      "process-03.log": "9a2ebd1754e3e3284ee4d7d8cadee6d57afbd5ac1db4d9c5cad1533f8fb41271",
+      "process-04.log": "0fcf825520273ce1f87a3fc670f688a7f78a2ef8e313839442438b81a43445c7",
+      "process-05.log": "ac63dcc39e51443ce9170329604c6535f835ab5215c2e5d88031bff0e14242ee",
+      "process-06.log": "f0005383c7da14fbb882d12d1c81bd728cdcf622e314b3799c2dadeec5dc9b91",
+      "process-07.log": "c06b141a90aa4035dd9989d881e3b2f3c53e2e33849d34523843f49a8fce1d36",
+      "process-08.log": "4de2e3acce66c7e67cd0e8fd870e3600adc7a282fa1157105734a421cdb08001",
+      "process-09.log": "c78ff3b49adee7b68f5998b5efda3719c7aa178186b963fbe0e4eb2379ca270a",
+      "process-10.log": "681fe345a7d4316c9e4aef7d48aeede97c683d58a2deb99d1cd385e4eb80d4ae",
+      "pre-campaign-sdk-cache-denied.log": "38ed5ed8254f7b85dc0e75a16e56d30b118b02c394fd88666df8115259dcd726"
+    },
+    "resumen_sha256": "3b10de367ba4b56b89f0f48af0fe9534a926291c80b0df87ad9302466ac77c1c"
+  },
+  "estado_evidencia": {
+    "automatizada": "completada; 10 procesos, 30 muestras por tamaño y proceso, 900 muestras sin omisiones",
+    "humana": "diferida por decisión complementaria autorizada el 2026-10-22; sin participantes ni afirmación de eficacia",
+    "pg_a_09": "completado en el alcance autorizado el 2026-11-02",
+    "cierre_comun_pg_a": "cierre autorizado expresamente por Cesar Antonio Gutierrez Contreras el 2026-11-02; PHASE-GREEN no declarado",
+    "commit_push": "autorizados por mensaje de la persona el 2026-11-02"
+  },
+  "verificaciones": [
+    {
+      "comando": "flutter analyze --fatal-infos --fatal-warnings",
+      "resultado": "correcto"
+    },
+    {
+      "comando": "dart run tool/check_limits.dart",
+      "resultado": "correcto"
+    },
+    {
+      "comando": "dart run tool/check_syntax_coverage.dart",
+      "resultado": "correcto; 78/78 formas"
+    },
+    {
+      "comando": "bash tool/test_bridge.sh",
+      "resultado": "correcto; compilación dev/release y 20 tests"
+    },
+    {
+      "comando": "flutter test --no-pub test/architecture/ test/tool/spec_coverage_test.dart",
+      "resultado": "correcto; 24 tests"
+    },
+    {
+      "comando": "tests focalizados de protocolo, puente, identidad, layout, routing, accesibilidad, Semantics y render",
+      "resultado": "correcto; 96 tests"
+    },
+    {
+      "comando": "flutter test --no-pub test/engine/rust/e_pg_12_static_protocol_test.dart",
+      "resultado": "correcto; 2 idiomas y variante inválida"
+    },
+    {
+      "comando": "flutter test --no-pub test/tool/e_pg_12_static_summary_test.dart",
+      "resultado": "correcto; caso válido y negativo"
+    },
+    {
+      "comando": "dart run tool/check_content.dart",
+      "resultado": "correcto"
+    },
+    {
+      "comando": "dart run tool/check_design_system.dart",
+      "resultado": "correcto"
+    },
+    {
+      "comando": "cargo run -p see_cli --bin see -- validate",
+      "resultado": "correcto; 196 especificaciones"
+    },
+    {
+      "comando": "cargo run -p see_cli --bin see -- export --check",
+      "resultado": "correcto"
+    },
+    {
+      "comando": "cargo run -p see_cli --bin see -- conform --subject app --only API.PROGRAM.VIEW",
+      "resultado": "correcto; 88 observaciones, 0 divergencias"
+    }
+  ]
+}
