@@ -6,10 +6,10 @@ Esta campaña cubre proyecciones estáticas de PG-A. No evalúa tareas, suspensi
 canales ni el umbral humano de espera frente a ejecución; esa evidencia pertenece a PG-B. No presenta pruebas automáticas
 como comprensión pedagógica.
 
-La fuente de escenas es el archivo bilingüe de `apps/pseudolearn_app/test/fixtures/e_pg_12_static/`. El caso español usa
+La fuente de escenas es el archivo bilingüe de `apps/pseudolearn_app/test/fixtures/static_view_scenes/`. El caso español usa
 el perfil `classicSpanish`; el inglés usa `english`. Ambos contienen una interfaz, dos realizaciones, las alternativas
 `Resultado`, una clausura con captura por valor y una iteración con dos elementos. El test
-`apps/pseudolearn_app/test/engine/rust/e_pg_12_static_protocol_test.dart` analiza los dos archivos por FRB real,
+`apps/pseudolearn_app/test/engine/rust/static_view_protocol_test.dart` analiza los dos archivos por FRB real,
 comprueba los IDs de relaciones y variantes, captura, iteración, ámbitos, cajas, relaciones y liberación de recursos.
 También cambia la firma de una implementación, conserva su relación inválida y comprueba que tiene diagnóstico.
 
@@ -44,7 +44,7 @@ La campaña se ejecuta por proceso en este orden, con fuentes, perfil y configur
 Selección automatizable ejecutada:
 
 ```sh
-flutter test --no-pub test/engine/rust/e_pg_12_static_protocol_test.dart
+flutter test --no-pub test/engine/rust/static_view_protocol_test.dart
 flutter test --no-pub test/engine/rust/rust_type_contract_diagram_test.dart test/engine/rust/rust_value_type_diagram_test.dart test/engine/rust/rust_class_diagram_integration_test.dart
 flutter test --no-pub test/engine/classdiagram/class_diagram_layout_test.dart test/engine/classdiagram/class_relation_routing_test.dart test/engine/classdiagram/diagram_scene_validators_test.dart
 flutter test --no-pub test/application/diagram/class_diagram_accessibility_test.dart test/presentation/diagram/class_diagram_semantics_layer_test.dart test/presentation/rendering/diagram/class_diagram_render_test.dart
@@ -54,7 +54,7 @@ dart run tool/check_limits.dart
 flutter test --no-pub test/architecture/ test/tool/spec_coverage_test.dart
 ```
 
-El arnés de medición se activa solo con `E_PG12_OUTPUT` y deja una fila JSONL por muestra. Se lanzan diez procesos
+El arnés de medición se activa solo con `STATIC_VIEW_OUTPUT` y deja una fila JSONL por muestra. Se lanzan diez procesos
 Flutter independientes, treinta iteraciones por proceso y tamaño, siempre en orden 1, 10, 100. Cada iteración crea un
 análisis nuevo. No se eliminan muestras, incluidos arranques lentos. El reloj usa ticks monotónicos calibrados por
 proceso. La memoria RSS se muestrea después de cada tamaño.

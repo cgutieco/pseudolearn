@@ -1,0 +1,17 @@
+subroutine suspendable Wait(queue as channel<integer>)
+switch await queue.receive() do
+none: write 0;
+some(value): write value;
+endSwitch
+endSubroutine
+subroutine suspendable Fail() as result<integer, string>
+return failure("problem");
+endSubroutine
+algorithm Fault
+define queue as channel<integer> <- channel(1);
+tasks failureReport
+spawn Wait(queue);
+spawn Fail();
+endTasks
+discard failureReport;
+endAlgorithm

@@ -1,0 +1,18 @@
+{
+  "head": "d762c471f09e37bd429ab22db46ffdf1f8ecb064",
+  "working_tree_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "harness_sources_sha256": "6415fa693496f5289e5e370534052551bee9eac1fcf850dc2647690ca23c80c9",
+  "fixtures_sha256": "e13a11d3a2d9a1f96176125a88f7814d0e3767672530adcb9b9e1e9fcf2c42c2",
+  "flutter": "3.47.5",
+  "dart": "3.13.4",
+  "build_mode": "flutter test (modo test, no Release)",
+  "operating_system": "macOS 27.0.1",
+  "hardware": "Mac14,3 · 8 CPUs lógicas · 16 GiB",
+  "seed": "sin aleatoriedad en la carga; bootstrap con semilla 20261102",
+  "loads": "tareas x ventana: 0x100, 1x100, 10x100, 100x100, 100x4096 (programa generado en el arnés, perfil english)",
+  "candidate_threshold": 50,
+  "candidate_threshold_unit": "ms p95, ventana de 100 eventos; candidato no aprobado",
+  "processes": 10,
+  "iterations_per_process_and_load": 30,
+  "note": "El diff de archivos rastreados estaba vacío (hash de entrada vacía); todo el trabajo de PG-B.08/.09 son archivos nuevos identificados por los hashes de fuentes del arnés y de fixtures. Las notas de PG-B.08/.09 de docs/ y el README se escriben después de la medición."
+}

@@ -1,0 +1,26 @@
+subroutine suspendable Produce(queue as channel<integer>)
+define first as boolean <- await queue.send(81);
+define second as boolean <- await queue.send(82);
+define third as boolean <- await queue.send(83);
+if first and second and third then
+queue.close();
+endIf
+endSubroutine
+algorithm FullChannel
+define queue as channel<integer> <- channel(1);
+tasks
+spawn Produce(queue);
+switch await queue.receive() do
+none: write 0;
+some(value): write value;
+endSwitch
+switch await queue.receive() do
+none: write 0;
+some(other): write other;
+endSwitch
+switch await queue.receive() do
+none: write 0;
+some(last): write last;
+endSwitch
+endTasks
+endAlgorithm

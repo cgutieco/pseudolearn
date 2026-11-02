@@ -2467,25 +2467,25 @@ conserva las demás unidades y la dependencia se muestra sin enlazar; nada inten
 ### 4.56 Evidencia estática de E-PG-12
 
 El protocolo humano necesita escenas repetibles con contenido válido en los perfiles español e inglés, y una variante
-con una realización inválida. `test/fixtures/e_pg_12_static/` contiene el archivo autocontenido que reúne interfaz,
-dos implementaciones, `Resultado`, captura por valor e iteración. `e_pg_12_static_protocol_test.dart` lo valida por FRB
+con una realización inválida. `test/fixtures/static_view_scenes/` contiene el archivo autocontenido que reúne interfaz,
+dos implementaciones, `Resultado`, captura por valor e iteración. `static_view_protocol_test.dart` lo valida por FRB
 real, comprueba identidades y relaciones del diagrama, y contrasta la realización inválida sin producir una escena
 válida.
 
-`e_pg_12_static_measurement_test.dart` mide, para 1, 10 y 100 realizaciones, la lectura de vista, la construcción
+`static_view_measurement_test.dart` mide, para 1, 10 y 100 realizaciones, la lectura de vista, la construcción
 completa del diagrama, el layout de un modelo sintético y el registro de comandos del pintor. Cada muestra usa un
 análisis nuevo. `view_operations` y `scene_operations` registran las llamadas al puente; `rss_bytes` es una lectura de
 RSS del proceso. Los comandos de pintado terminan en `PictureRecorder`: no miden rasterización GPU, interacción ni
 latencia de dispositivo. `scene_build_ns` incluye análisis, transporte, decodificación, proyección y layout; las APIs
 actuales no permiten separar esas etapas internas. Son medidas descriptivas del host de test y no fijan presupuesto.
 
-El test de medición queda omitido cuando no se define `E_PG12_OUTPUT`. Ejecutar diez procesos independientes conserva
+El test de medición queda omitido cuando no se define `STATIC_VIEW_OUTPUT`. Ejecutar diez procesos independientes conserva
 30 iteraciones por tamaño en cada archivo JSONL. El resumen valida el tamaño de la campaña y calcula percentiles,
 intervalos bootstrap del 95 % sobre medias por proceso y candidatos de punto de cambio sin descartar muestras:
 
 ```sh
-E_PG12_OUTPUT=/tmp/e-pg12-process-01.jsonl flutter test --no-pub test/engine/rust/e_pg_12_static_measurement_test.dart
-dart run tool/e_pg_12_static_summary.dart --output /tmp/e-pg12-summary.json /tmp/e-pg12-process-*.jsonl
+STATIC_VIEW_OUTPUT=/tmp/static-view-process-01.jsonl flutter test --no-pub test/engine/rust/static_view_measurement_test.dart
+dart run tool/static_view_summary.dart --output /tmp/static-view-summary.json /tmp/static-view-process-*.jsonl
 ```
 
 Cambiar el sufijo por un archivo distinto para cada proceso. El protocolo de participantes conserva consentimiento y
@@ -2579,6 +2579,82 @@ sus rótulos accesibles.
 | El anfitrión corta una espera | La API confirma terminación `cancelled`; la app no crea eventos de tarea ni una unión | El corte es inmediato, no ejecuta limpiezas de usuario y descarta la respuesta tardía; la cinta queda incompleta | Una banda localizada indica el corte y la tabla conserva los contextos observados antes de detener el recurso |
 | No queda trabajo listo | El motor informa `failed/taskDeadlock` con sitios de suspensión; una respuesta externa pendiente mantiene `awaiting_effect` | La espera externa capaz de reanudar no se clasifica como bloqueo definitivo | Se muestran sitios por tarea y se distingue bloqueo de espera externa. No se inventa el estado final de recursos para eventos previos |
 | Un canal está lleno, vacío o cerrado | La cinta conserva identidad y orden de eventos, no los valores de la cola | Un envío espera capacidad; al cerrar, el receptor consume primero lo encolado y después recibe `Nada` | La app no representa tamaño, contenido ni llenado de una cola que la API no expone. La ayuda gramatical no sustituye esa observación |
+
+### 4.59 Integración con el puente real: qué certifica cada nivel
+
+La integración con tareas atraviesa el transporte nativo sin dobles: `rust_task_bridge_integration_test.dart` abre la
+biblioteca nativa, ejecuta un archivo suelto con dos tareas (una espera un efecto de temporizador y la otra avanza), consulta
+la tarea suspendida, responde la solicitud de entrada de la raíz, corta la ejecución y comprueba que los recursos del motor
+se liberan. Corre en ambos perfiles de sintaxis (español clásico e inglés) con la lengua de interfaz correspondiente.
+
+Las operaciones que usa la app contra `ApiSession` son `start`, `advance`, `input`, `effect_result`, `cancel` y `release`
+para la ejecución, y `history_events`, `debug_configure`, `debug_state` y `query_page` para la observación. `input`
+exige `(resource_id, task_id, request_id)`; `effect_result` exige la secuencia del efecto. Cada observación tiene un nivel
+que la certifica y los demás no la sustituyen:
+
+| Observación | La certifica | No la certifica |
+|---|---|---|
+| Estado de la tarea (`waiting`, `completed`, …) y marcos en un evento | API Rust (`state_pages`, `execution_queries`) y el adaptador `RustProgramExecutionObserver` | El cubit ni el widget: solo muestran lo que el adaptador devolvió |
+| Dueño de cada evento ordinario y contexto por tarea | Adaptación Dart (`RustFocusTracker` y contextos), comparada con la traza del motor | Un doble de transporte: solo prueba el algoritmo del tracker |
+| Rechazo de entrada obsoleta, cruzada o de otro recurso | Adaptación Dart (`RustProgramExecution.provideInput`), antes de llamar al motor | La API, que además valida la identidad por su cuenta |
+| Consultar no mueve la agenda | Conteo de llamadas `advance` del transporte real antes y después de consultar | Un test que solo reenvía `session.call` |
+| Liberación de recursos al terminar o cortar | Conteo de `release` frente a `create_analysis` y `start` en el transporte real | El cubit, que solo delega `stop()` |
+| Qué ve la persona (tabla, foco, banda) | Widget y cubit sobre el estado ya adaptado | El puente |
+
+Un evento de espera de efecto no suspende por sí mismo a la tarea que lo pidió en el momento de la consulta: la tarea
+queda en el estado que el motor informa para ese evento, y la tarea de la raíz espera en la unión. Las pruebas leen el
+estado de la tarea en el evento `task_suspended` correspondiente y no en la punta de la ejecución. El vocabulario de estado
+de la consulta es el del motor (`waiting`, no `suspended`).
+
+No hubo cambio de firma Rust: el sobre de `native/src/api.rs` es un único punto `call(operation, arguments)` hacia
+`ApiSession`, y las operaciones anteriores ya existían. Por eso no se regenera el puente; `bash tool/bridge.sh check` solo
+comprueba que las salidas versionadas siguen vigentes. Una discrepancia que requiera observación Dart y esté cubierta por el
+corpus de la app se añade como escenario del sujeto de app; este punto no encontró una carencia que lo exigiera.
+
+El humo local usa el host de desarrollo (macOS). No certifica iOS ni Windows: el humo de iOS requiere simulador y el de
+Windows un anfitrión Windows.
+
+```sh
+cargo build --release --locked --lib --manifest-path native/Cargo.toml
+bash tool/test_bridge.sh
+flutter test --no-pub test/engine/rust/rust_task_bridge_integration_test.dart
+```
+
+### 4.60 E-PG-12 dinámico: protocolo automatizado, arnés de medición y evidencia humana
+
+La parte dinámica de E-PG-12 se separa de la estática (§4.56). `test/fixtures/task_scenes/` contiene seis escenas
+bilingües, validadas por el análisis real: `identities` (un mismo subprograma en dos tareas, una espera y la otra avanza),
+`failure` (un error recuperable cancela a la hermana), `channel` (un canal de capacidad 1 llena y el emisor espera),
+`select` (dos ramas listas eligen la primera textual), `cancellation` (corte del anfitrión con limpiezas sin ejecutar) y la
+variante de revisión nueva, que se genera cambiando un argumento de `identities`.
+
+`task_scenes_protocol_test.dart` ejecuta cada escena por el puente real en ambos perfiles y comprueba contra un
+esperado derivado de la regla (estado de cada tarea, salida, causa de la espera y revisión del recurso). Es evidencia
+automatizada de identidad, estado y navegación, no de comprensión: la parte humana sigue su propio protocolo.
+
+`task_projection_measurement_test.dart` mide dos intervalos por separado y no los suma. El intervalo puro proyecta una
+ventana ya leída a escena de flujo y de estructura, sin FFI ni E/S. El intervalo integrado lee la ventana al motor,
+decodifica y proyecta el flujo. Ambos usan entradas preparadas fuera del intervalo y se validan después contra el recuento
+de marcadores y carriles. Las cargas son 0, 1, 10 y 100 tareas con una ventana de 100 eventos, más 100 tareas con la
+ventana máxima de 4096 eventos, que es la única donde las cien tareas son visibles. Cada iteración parte de una ejecución
+nueva. No se mide rasterización, presentación de frame ni dispositivo.
+
+El arnés queda omitido sin `TASK_PROJECTION_OUTPUT`. La campaña son diez procesos independientes con 30 iteraciones por carga.
+`tool/task_projection_summary.dart` exige un manifiesto de procedencia (revisión, hashes de entrada, versiones, modo de
+build, sistema y hardware) y rechaza una muestra incompleta, menos procesos, un resultado divergente dentro de una carga, una
+configuración de reloj distinta o un tiempo no medido. Calcula p50 y p95 por rango más cercano e intervalos bootstrap del 95 %
+sobre medias por proceso. El umbral de 50 ms para el p95 de la ventana de 100 eventos es un candidato, no un presupuesto
+aprobado: el resumen lo copia del manifiesto y no lo evalúa como aprobación.
+
+```sh
+TASK_PROJECTION_OUTPUT=build/task-projection/raw/process-01.jsonl flutter test --no-pub test/engine/rust/task_projection_measurement_test.dart
+dart run tool/task_projection_summary.dart --manifest MANIFEST.json --output build/task-projection/resumen.json build/task-projection/raw/process-*.jsonl
+```
+
+Cambiar el sufijo para cada proceso. La memoria es RSS del proceso Flutter completo, muestreada tras cada carga: es una cota
+inferior del pico y no se atribuye a una etapa. La evidencia humana (tareas de espera, unión, canal, cancelación frente a
+error y preguntas sobre simultaneidad) la conducen personas con consentimiento gestionado fuera del repositorio; este
+proyecto no simula participantes ni resultados. Mientras no existan, ese resultado se registra como diferido.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

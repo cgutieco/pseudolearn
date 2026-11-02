@@ -1,0 +1,12 @@
+SubProceso Suspendible Worker(label Como Entero)
+Si label = 1 Entonces
+Descartar Aguardar SolicitarTemporizador();
+FinSi
+Escribir label;
+FinSubProceso
+Algoritmo Identidades
+Tareas
+Lanzar Worker(1);
+Lanzar Worker(2);
+FinTareas
+FinAlgoritmo

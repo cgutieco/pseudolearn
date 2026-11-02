@@ -7,7 +7,7 @@
 - Revisión inspeccionada: `5a0e12ae95d4f0a84743180e2a98f83a4423a16e`.
 - Rama comprobada: `feature/agregar-ruta-de-especificacion`; árbol limpio antes de preparar el plan.
 - Petición: «Crea el plan de ejecución detallado para `4.11 PG-B · App y tareas observables` como para que ninguna IA que lo ejecute pueda darse chance de alucinar».
-- Estado al redactar: la autorización cubría redactar este plan y enlazarlo desde el plan general, no su implementación ni la revisión C02. Instrucciones directas posteriores autorizaron una iteración de PG-B.01, PG-B.02 y PG-B.03; el 2026-11-02 se autorizó una sola iteración de PG-B.04 y otra de PG-B.05 y PG-B.07 conjuntas, sin preguntas y eligiendo la opción recomendada. Cada autorización se limita a su punto; no habilita los demás puntos, C02, commit, push, instalación ni inicio de PG-7.
+- Estado al redactar: la autorización cubría redactar este plan y enlazarlo desde el plan general, no su implementación ni la revisión C02. Instrucciones directas posteriores autorizaron una iteración de PG-B.01, PG-B.02 y PG-B.03; el 2026-11-02 se autorizó una sola iteración de PG-B.04, otra de PG-B.05 y PG-B.07 conjuntas, otra de PG-B.06 y otra de PG-B.08 y PG-B.09 conjuntas, sin preguntas y eligiendo la opción recomendada. Cada autorización se limita a su punto; no habilita los demás puntos, C02, commit, push, instalación ni inicio de PG-7.
 - Documento transitorio: ninguna especificación, README ni código fuera de `docs/` podrá citarlo (`DOC-NO-TRANSIENT-REFS`). Las decisiones se trasladan a sus dueños en el mismo cambio (`DOC-README-TRUTH`, `DOC-NO-ORPHAN-DECISION`).
 
 ### 0.1 Reglas para quien ejecute
@@ -171,20 +171,20 @@ Cada punto incluye tareas en orden SPEC-FIRST. «Documentar» exige mover los po
 
 ### PG-B.08 · Integración con puente real
 
-- [ ] `PG-B.08.01` Contrato: inventario de operaciones y campos por escenario contra `ApiSession`, no contra métodos imaginados del bridge. Listar qué observación certifica API, adaptación Dart, cubit o widget. Conservar negociación/versiones y sesión/revisión.
-- [ ] `PG-B.08.02` Casos: seleccionar B01–B15 según la matriz §7.1, recursos inválidos/liberados, JSON/clase/versión desconocidos, reinicio, edición y cierre. Casos de sintaxis es/en desde reglas y casos vigentes, sin «traducir» identificadores propios ni relajar parser para fixtures.
-- [ ] `PG-B.08.03` Tests: añadir integración espejo que abre transporte real, ejecuta archivo suelto, consulta tarea suspendida, avanza otra, responde solicitud y cancela/libera. Afirmar estados de dominio y proyecciones de app, no solo sobres JSON. Los dobles se reservan para errores/particiones controlados.
-- [ ] `PG-B.08.04` Código: adaptar frontera solo si hace falta; si no cambia firma Rust exportada, justificar no regenerar FRB. Si cambia, generar desde dueño y comparar; nunca editar `frb_generated.rs` ni `lib/engine/bridge/` a mano. Añadir escenario SEE app donde el corpus requiera observación Dart.
-- [ ] `PG-B.08.05` Documentación: comandos exactos y alcance por plataforma; el humo de macOS no certifica iOS/Windows. README de puente actualizado solo si cambió su contrato/operación.
+- [x] `PG-B.08.01` Contrato: inventario de operaciones y campos por escenario contra `ApiSession`, no contra métodos imaginados del bridge. Listar qué observación certifica API, adaptación Dart, cubit o widget. Conservar negociación/versiones y sesión/revisión.
+- [x] `PG-B.08.02` Casos: seleccionar B01–B15 según la matriz §7.1, recursos inválidos/liberados, JSON/clase/versión desconocidos, reinicio, edición y cierre. Casos de sintaxis es/en desde reglas y casos vigentes, sin «traducir» identificadores propios ni relajar parser para fixtures.
+- [x] `PG-B.08.03` Tests: añadir integración espejo que abre transporte real, ejecuta archivo suelto, consulta tarea suspendida, avanza otra, responde solicitud y cancela/libera. Afirmar estados de dominio y proyecciones de app, no solo sobres JSON. Los dobles se reservan para errores/particiones controlados.
+- [x] `PG-B.08.04` Código: adaptar frontera solo si hace falta; si no cambia firma Rust exportada, justificar no regenerar FRB. Si cambia, generar desde dueño y comparar; nunca editar `frb_generated.rs` ni `lib/engine/bridge/` a mano. Añadir escenario SEE app donde el corpus requiera observación Dart.
+- [x] `PG-B.08.05` Documentación: comandos exactos y alcance por plataforma; el humo de macOS no certifica iOS/Windows. README de puente actualizado solo si cambió su contrato/operación.
 - [ ] `PG-B.08.06` Verificar: biblioteca nativa fresca, `bash tool/test_bridge.sh`, tests nativos afectados, integración app, conformidad afectada y generación si corresponde. Humo local de macOS/iOS según medios disponibles; cualquier falta se informa y no se presenta como ejecución física.
 
 ### PG-B.09 · E-PG-12 dinámico y medición
 
-- [ ] `PG-B.09.01` Contrato/protocolo: cerrar inventario de escenas §7.1 con oráculo manual y configuración completa; cruzar cada estado/espera/unión/solicitud con regla. Conservar evidencia estática separada y tratar el diferimiento humano según PB-PRE-06.
-- [ ] `PG-B.09.02` Casos: preparar fuentes bilingües validadas de mismo subprograma en dos tareas, una esperando y otra avanzando, error, cancelación, canal lleno, `Elegir` y revisión nueva; guion con evento exacto de cada pregunta y respuesta derivada antes de ejecutar.
-- [ ] `PG-B.09.03` Tests: protocolo automatizado por identidad, geometría, tabla, navegación, accesibilidad y ausencia de omisiones; prueba de arnés que rechaza configuración diferente, muestra incompleta, resultado divergente o manifiesto faltante. No llamar a estos tests «comprensión humana».
-- [ ] `PG-B.09.04` Implementar arnés de proyección pura y medición integrada por separado, con entradas preparadas y tamaños de §6; mantener rendimiento fuera de tests de widget como umbral de CI. Guardar datos crudos, manifiesto y resumen recalculable.
-- [ ] `PG-B.09.05` Documentar protocolo y resultados dinámicos en `docs/` y procedimiento reutilizable en README del arnés dueño. Preparar material para ≥12 principiantes, orden contrabalanceado e idiomas, sin atribuir autoría/revisión/consentimiento inexistentes.
+- [x] `PG-B.09.01` Contrato/protocolo: cerrar inventario de escenas §7.1 con oráculo manual y configuración completa; cruzar cada estado/espera/unión/solicitud con regla. Conservar evidencia estática separada y tratar el diferimiento humano según PB-PRE-06.
+- [x] `PG-B.09.02` Casos: preparar fuentes bilingües validadas de mismo subprograma en dos tareas, una esperando y otra avanzando, error, cancelación, canal lleno, `Elegir` y revisión nueva; guion con evento exacto de cada pregunta y respuesta derivada antes de ejecutar.
+- [x] `PG-B.09.03` Tests: protocolo automatizado por identidad, geometría, tabla, navegación, accesibilidad y ausencia de omisiones; prueba de arnés que rechaza configuración diferente, muestra incompleta, resultado divergente o manifiesto faltante. No llamar a estos tests «comprensión humana».
+- [x] `PG-B.09.04` Implementar arnés de proyección pura y medición integrada por separado, con entradas preparadas y tamaños de §6; mantener rendimiento fuera de tests de widget como umbral de CI. Guardar datos crudos, manifiesto y resumen recalculable.
+- [x] `PG-B.09.05` Documentar protocolo y resultados dinámicos en `docs/` y procedimiento reutilizable en README del arnés dueño. Preparar material para ≥12 principiantes, orden contrabalanceado e idiomas, sin atribuir autoría/revisión/consentimiento inexistentes.
 - [ ] `PG-B.09.06` Verificar cierre: resultados automatizados completos, p95 y memoria con procedencia, umbral candidato claramente rotulado; evidencia humana aportada por persona o diferimiento explícito aplicable. Si falla comprensión, revisar notación y repetir evidencia pertinente; no retirar cobertura. No declarar PG-B.C10/C11 por medir solo la parte rápida.
 
 ## 5. Capas, archivos y responsabilidad
@@ -205,7 +205,7 @@ No se crea otra capa ni otro miembro. Las rutas con **propuesto** aún no existe
 | `lib/presentation/document/components/execution_stepper.dart`, overlays de `lib/presentation/diagram/`; propuestos paneles específicos de tareas/eventos | presentation → model/application y sí misma | Sin puertos directos/engine/data/dart:io, `Timer`, `await`, filtrado/ordenación semánticos; widgets y pintores solo representación e interacción |
 | `lib/presentation/l10n/app_es.arb`, `app_en.arb` | Datos de presentación | Vocabulario visible bilingüe; generar localizaciones por procedimiento del miembro, sin editar generated |
 | `lib/composition/app_dependencies.dart` | composition → capas declaradas | Sin condicionales, workers ni localizadores de servicio; ensamblar control/consulta sobre mismo recurso |
-| `apps/pseudolearn_app/test/` espejo y fixtures bilingües propuestos `test/fixtures/e_pg_12_dynamic/` | Tests por responsabilidad de lib | No duplicar casos normativos Rust; fixtures no son esperados capturados. `tool/` solo arnés/adaptador/verificación |
+| `apps/pseudolearn_app/test/` espejo y fixtures bilingües propuestos `test/fixtures/task_scenes/` | Tests por responsabilidad de lib | No duplicar casos normativos Rust; fixtures no son esperados capturados. `tool/` solo arnés/adaptador/verificación |
 | `apps/pseudolearn_app/native/src/api.rs`, tests y README | Única capa bridge → API/FRB/serde_json según reglas | Sin semántica/UI/red; modificar solo si sobre o firma lo requiere. Salidas FRB generadas por su dueño |
 | `packages/pseudolearn_spec/specifications/{eng,api,lang,rt,lib,tool}/` y manifiestos de conformidad | Corpus/datos; identidades internas | Sin referencias externas ni `docs/`, estados/versiones congelados; agregar casos/vínculos en dueño existente. SEE interno no se modifica sin carencia de esquema demostrada |
 | `packages/pseudolearn_engine/crates/pseudolearn_api/src/{execution_queries,state_pages,execution_wire,execution_debug,history_operations,debug_state}.rs` y tests espejo | API, imports declarados en `architecture.yaml`; acceso público desde consumidor | Sin UI ni consumidores; solo ampliar contrato faltante/reparar divergencia demostrada. Leer README del crate antes |
@@ -418,18 +418,18 @@ Tabla esperada/observada por evento en el tracker de la app:
 | PG-B.07.04 | Cumplido | `rust_effect_gate.dart`, `rust_wire_models.dart` | Drenado acotado a 16 respuestas por llamada con lote `running`; `stop` entre lotes descarta comandos viejos. |
 | PG-B.07.05 | Cumplido | README app §4.8 | Responsables, cotas y método de medición. |
 | PG-B.07.06 | No cumplido | §11.6 | Secuencia conservada con ritmos y particiones distintos; máximo observado ≤33 llamadas por comando. Suites completas no verdes por fallos heredados. |
-| PG-B.08.01 | — | — | Sin ejecutar |
-| PG-B.08.02 | — | — | Sin ejecutar |
-| PG-B.08.03 | — | — | Sin ejecutar |
-| PG-B.08.04 | — | — | Sin ejecutar |
-| PG-B.08.05 | — | — | Sin ejecutar |
-| PG-B.08.06 | — | — | Sin ejecutar |
-| PG-B.09.01 | — | — | Sin ejecutar |
-| PG-B.09.02 | — | — | Sin ejecutar |
-| PG-B.09.03 | — | — | Sin ejecutar |
-| PG-B.09.04 | — | — | Sin ejecutar |
-| PG-B.09.05 | — | — | Sin ejecutar |
-| PG-B.09.06 | — | — | Sin ejecutar |
+| PG-B.08.01 | Cumplido | README app §4.59 | Inventario de operaciones contra `ApiSession` y tabla de qué nivel certifica cada observación. |
+| PG-B.08.02 | Cumplido | `rust_task_bridge_integration_test.dart` | B02/B03/B07/B10/B14 en es/en; entrada obsoleta/cruzada/de otro recurso, consulta de tarea desconocida, programa malformado y liberación. Sin caso nuevo de corpus. |
+| PG-B.08.03 | Cumplido | `rust_task_bridge_integration_test.dart` (13 pruebas) | Transporte nativo real: archivo suelto, consulta de tarea suspendida, avance de otra, respuesta de entrada, corte y balance `release`. Sin dobles de transporte. |
+| PG-B.08.04 | Cumplido | `bridge.sh check` código 0 | Sin cambio de firma Rust ni del sobre; no se regenera FRB. No se añadió escenario SEE de app: ningún caso del corpus exige observación Dart. |
+| PG-B.08.05 | Cumplido | README app §4.59 | Comandos exactos; el humo local es de macOS y no certifica iOS ni Windows. |
+| PG-B.08.06 | No cumplido | §11.8 | Biblioteca fresca, `test_bridge.sh` (28 pruebas), integración y generación pasan; la suite Flutter completa conserva 11 fallos heredados. Sin humo de iOS/Windows. |
+| PG-B.09.01 | Cumplido | `e-pg-12-dinamico-evidencia.md` §1 | Inventario de seis escenas con oráculo y guion por evento; evidencia estática separada; diferimiento humano según la decisión del 2026-10-22. |
+| PG-B.09.02 | Cumplido | `test/fixtures/task_scenes/` (12 fuentes es/en) | Mismo subprograma en dos tareas (una espera, otra avanza), error, cancelación, canal lleno, `Elegir` y revisión nueva; esperado derivado de la regla. |
+| PG-B.09.03 | Cumplido | `task_scenes_protocol_test.dart` (12), `task_projection_summary_test.dart` (7) | Protocolo por identidad/estado/salida y arnés que rechaza configuración distinta, muestra incompleta, resultado divergente, tiempo no medido y manifiesto ausente. No es comprensión humana. |
+| PG-B.09.04 | Cumplido | `task_projection_measurement_test.dart`, `tool/task_projection_summary.dart` | Intervalos puro e integrado separados, entradas preparadas, crudos, manifiesto y resumen recalculable; fuera de tests de widget. |
+| PG-B.09.05 | Cumplido | `e-pg-12-dinamico-evidencia.md`, README app §4.60 | Protocolo, preguntas Q1–Q5, órdenes contrabalanceados, hoja de captura vacía y procedimiento reutilizable; sin participantes ni autoría inventada. |
+| PG-B.09.06 | No cumplido | §11.8 | 10 procesos × 30 muestras completos con p95 y RSS; umbral candidato rotulado; evidencia humana Diferido; la suite completa no está en verde y no se declaran PG-B.C10/C11. |
 
 #### PG-B.01.06 · comandos y resultados
 
@@ -596,3 +596,28 @@ Una iteración, autorizada el 2026-11-02 sin preguntas y eligiendo la opción re
 - Disco antes de limpieza: 3,6 GiB disponibles (99 % usado). Se ejecutó `cargo clean` en el paquete motor, retirando 12,7 GiB de salidas regenerables, y se eliminó `apps/pseudolearn_app/build/` (120 MiB). Quedaron 14 GiB disponibles (94 % usado); no se eliminaron fuentes ni artefactos versionados.
 
 `.06.01–.06.05` cumplidos; `.06.06` queda **No cumplido** por los 11 fallos preexistentes de la suite completa. Se para aquí (`PHASE-STOP`), antes de PG-B.07.
+
+### 11.8 Estado de ejecución de PG-B.08 y PG-B.09
+
+Una sola iteración conjunta, autorizada el 2026-11-02 sin preguntas y eligiendo siempre la opción recomendada, sobre `feature/agregar-ruta-de-especificacion`. HEAD base `d762c471f09e37bd429ab22db46ffdf1f8ecb064`; sin commit ni push. El alcance fue exclusivamente `.08` y `.09`.
+
+#### Decisiones
+
+- La integración es un test espejo (`test/engine/rust/`) sobre el transporte nativo sin dobles, con `RecordingRustTransport` solo para contar operaciones. Se afirmó estado de dominio (contextos de tarea, observación por evento, salida, rechazos), no sobres JSON.
+- Oráculo corregido contra el motor, sin copiar la salida al esperado: la consulta de estado usa el vocabulario `waiting`; una tarea que espera un efecto se consulta en su evento `task_suspended`, no en la punta; el eco de la entrada es una línea de salida propia; una tarea completada no admite consulta de marcos.
+- No hubo cambio Rust ni de FRB; se justifica en el README (§4.59). No se creó escenario SEE de app ni se tocó el corpus congelado.
+- Las escenas dinámicas son seis fuentes bilingües validadas por el análisis real. `channel` usa tres envíos con capacidad 1 porque con dos el receptor en espera absorbe el primero y el emisor no espera.
+- La medición separa un intervalo puro y uno integrado, con 0/1/10/100 tareas y ventana de 100 eventos, más 100 tareas con ventana de 4096 (única donde las cien tareas son visibles). La carga literal «100 eventos / 100 tareas» no es alcanzable y se informa.
+- El umbral de 50 ms queda como candidato rotulado; el resumen no lo evalúa. La evidencia humana se registra como Diferido citando la decisión del 2026-10-22.
+
+#### Verificaciones
+
+- `flutter test --no-pub test/engine/rust/rust_task_bridge_integration_test.dart test/engine/rust/task_scenes_protocol_test.dart test/tool/task_projection_summary_test.dart test/architecture/`: todas pasan (52 en la ejecución conjunta).
+- `bash tool/test_bridge.sh`: código 0, 28 pruebas Dart–FFI. `RUSTUP_TOOLCHAIN=1.99.0 bash tool/bridge.sh check`: código 0.
+- `flutter analyze --fatal-infos --fatal-warnings`, `check_limits`, `check_content`, `check_design_system` y `check_syntax_coverage`: pasan.
+- Campaña dinámica: 10 procesos, código 0, 1500 muestras; resumen y crudos regenerables en `apps/pseudolearn_app/build/task-projection/` (fuera de git y de `docs/`).
+- Suite Flutter completa: 2653 pasan, 2 omitidas, 11 fallan fuera del diff (diagramas, aserciones estructurales, marcadores, aislamiento de imports, ejercicios, línea base de clases). Un duodécimo fallo transitorio (frescura de la biblioteca de release tras regenerar el puente) desapareció al recompilarla. No se declara `PHASE-GREEN`.
+- No se ejecutó el humo de iOS ni de Windows ni la conformidad SEE (`API.ANALYZE` inmutable sigue bloqueando el reanclaje).
+- Disco: 14 GiB libres antes y después; no hizo falta liberar espacio.
+
+`.08.01–.05` y `.09.01–.05` cumplidos; `.08.06` y `.09.06` no cumplidos como puertas. Se para aquí (`PHASE-STOP`).

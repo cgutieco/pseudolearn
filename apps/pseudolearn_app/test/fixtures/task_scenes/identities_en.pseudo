@@ -1,0 +1,12 @@
+subroutine suspendable Worker(label as integer)
+if label = 1 then
+discard await requestTimer();
+endIf
+write label;
+endSubroutine
+algorithm Identities
+tasks
+spawn Worker(1);
+spawn Worker(2);
+endTasks
+endAlgorithm
