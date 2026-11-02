@@ -7,7 +7,7 @@
 - Revisión inspeccionada: `5a0e12ae95d4f0a84743180e2a98f83a4423a16e`.
 - Rama comprobada: `feature/agregar-ruta-de-especificacion`; árbol limpio antes de preparar el plan.
 - Petición: «Crea el plan de ejecución detallado para `4.11 PG-B · App y tareas observables` como para que ninguna IA que lo ejecute pueda darse chance de alucinar».
-- Autorización vigente: redactar este plan y enlazarlo desde el plan general. No constituye autorización de implementación, aprobación de C02, cierre de dependencias, commit, push, instalación ni inicio de PG-7. C01 y C02 siguen abiertos hasta mensajes que autoricen y revisen explícitamente el alcance correspondiente.
+- Estado al redactar: la autorización cubría redactar este plan y enlazarlo desde el plan general, no su implementación ni la revisión C02. La instrucción posterior del 2026-11-02 autoriza PG-B.01 solamente y resuelve avanzar con PG-3 abierta para ese punto; no autoriza los demás puntos, C02, commit, push, instalación ni inicio de PG-7.
 - Documento transitorio: ninguna especificación, README ni código fuera de `docs/` podrá citarlo (`DOC-NO-TRANSIENT-REFS`). Las decisiones se trasladan a sus dueños en el mismo cambio (`DOC-README-TRUTH`, `DOC-NO-ORPHAN-DECISION`).
 
 ### 0.1 Reglas para quien ejecute
@@ -30,10 +30,10 @@ Rutas relativas a la raíz salvo indicación contraria. Esta sección describe i
 
 | ID | Evidencia disponible | Tratamiento exigido |
 |---|---|---|
-| PB-PRE-01 | PG-B depende de PG-A, PG-3, PG-4 y PG-5. PG-A está cerrada por decisión expresa el 2026-11-02; PG-4 y PG-5 figuran cerradas; PG-3 sigue en curso en el resumen global | Antes de implementar, comprobar los resúmenes detallados y obtener resolución explícita para avanzar con PG-3 abierta, o evidencia de su cierre. Crear este plan no levanta la dependencia |
+| PB-PRE-01 | PG-B depende de PG-A, PG-3, PG-4 y PG-5. PG-A está cerrada por decisión expresa el 2026-11-02; PG-4 y PG-5 figuran cerradas; PG-3 sigue en curso en el resumen global | Para el alcance exacto de PG-B.01, la instrucción directa de implementación del 2026-11-02 resuelve avanzar con PG-3 abierta. No cierra PG-3 ni autoriza otros puntos |
 | PB-PRE-02 | PG-A no declaró `PHASE-GREEN`: informó `SEE-HASH` en `API.ANALYZE`, `SEE-STALE` en conformidad engine, dos `SIZE-NESTING` Rust, suite completa Flutter no repetida y humo de plataforma pendiente | Reproducir línea base al iniciar; registrar errores vigentes, no presentarlos como comprobados hoy. Si impiden la puerta afectada, resolver dentro del alcance autorizado o informar bloqueo; no heredar un verde inexistente |
 | PB-PRE-03 | La hoja de ruta emplea denominaciones históricas GP; PG-A registra edición oficial exclusivamente 2026 | Mantener edición 2026 y perfiles es/en existentes. No crear selector GP, migrador ni segunda gramática |
-| PB-PRE-04 | `API.STATE.QUERY#R7` llama `task` al selector; `execution_queries.rs`, `state_pages.rs` y README de API utilizan `task_id` | Es una discrepancia literal que requiere informar y acordar alineación antes de cambiar ese contrato. Recomendación: conservar el cable `task_id`, aclarar la regla, derivar casos de aceptación/rechazo; no enviar ambos campos ni aceptar alias silenciosos |
+| PB-PRE-04 | `API.STATE.QUERY#R7` llamaba `task` al selector; `execution_queries.rs`, `state_pages.rs` y README de API utilizan `task_id` | Resuelto para PG-B.01 al aceptar la opción recomendada: conservar `task_id`, aclarar R7 y derivar casos de rechazo; `task` no se acepta como alias |
 | PB-PRE-05 | README del motor contiene párrafos antiguos que llaman pendientes a cancelación/canales/efectos que su introducción describe integrados; API documenta integración y tiene tests específicos | No resolver la contradicción documental por intuición. Informarla; antes de comprometer una conducta, contrastar regla, caso y prueba real y registrar corrección autorizada en el README dueño |
 | PB-PRE-06 | E-PG-12 humano quedó diferido por decisión del 2026-10-22 y el cierre de PG-A conserva ese diferimiento; evidencia estática excluye explícitamente tareas | Registrar el alcance literal del diferimiento al preparar la parte dinámica; no inventar participantes, volver a pedir conceptos ya aprobados ni trasladar métricas estáticas a esta fase. Si el alcance registrado no cubre el cierre dinámico, solicitar solo esa precisión |
 
@@ -78,10 +78,10 @@ Estos puntos son advertencias para implementación futura. No impiden redactar e
 
 ### 2.2 Antes del primer cambio de implementación
 
-- [ ] Registrar HEAD, diff y versiones reales de Flutter/Dart/Rust/FRB; volver a comprobar dependencias PB-PRE-01–06 y autorización.
-- [ ] Leer completos los casos/propiedades que se reutilizarán y contratos `API.PROGRAM.VIEW`, `API.MODEL`, `API.ERRORS`, `ENG.LIMITS`, `LANG.TASK.ISOLATION`, `ENG.TASK.MEMORY`, `LIB.MODEL`, `LIB.IO`, `LIB.TIME`, `LIB.HTTP`, `LIB.SCENARIO.HTTP-TASKS` y `TOOL.SERVICE.CATALOG`. No citar un caso como leído solo por existir su archivo.
+- [x] Registrar HEAD, diff y versiones reales para PG-B.01; volver a comprobar dependencias PB-PRE-01–06 y autorización. Registro: HEAD `c31bf4c18202967dddab99201d63c188714b710c`, rama `feature/agregar-ruta-de-especificacion`; Flutter 3.47.5, Dart 3.13.4, Rust/Cargo 1.99.0, FRB 2.13.0.
+- [x] Leer completos los casos/propiedades reutilizados y los contratos afectados por PG-B.01: `API.STATE.QUERY` C10/C11 y R7, `ENG.TRACE.EVENTS#R8`, más identidad de revisión de `API.PROGRAM.VIEW`. Los contratos listados para puntos PG-B posteriores quedan pendientes; no se usaron como autoridad de este alcance.
 - [ ] Leer README de timeline, VM, runtime, service o SEE interno solo si se necesita modificar ese crate; aplicar su matriz de imports real, no la de otro crate del workspace.
-- [ ] Registrar por regla afectada identidad, versión, estado, anclaje, casos/propiedades, sujeto y conformidad actuales. No marcar todos los contratos de esta lista como modificados.
+- [x] Registrar por regla afectada identidad, versión, estado, anclaje, casos/propiedades, sujeto y conformidad actuales. No marcar todos los contratos de esta lista como modificados. `API.STATE.QUERY@1.0.0` sigue `estable`, sujeto `engine`; el anclaje previo es `a0b9e05706705444beaeba3ef539342d16d8360a6cfe222a3b8511d361ed3d24`, aún no reanclado. R7 vincula ahora C10/C11/C18/C19. `ENG.TRACE.EVENTS#R8` se reutiliza sin modificación.
 - [ ] Levantar línea base dirigida de §7.3 antes de editar. Una suite previa no certifica HEAD nuevo.
 
 ## 3. Decisiones de diseño propuestas
@@ -108,11 +108,11 @@ Cada punto incluye tareas en orden SPEC-FIRST. «Documentar» exige mover los po
 
 ### PG-B.01 · Evento global, foco, pila y estado por tarea
 
-- [ ] `PG-B.01.01` Contrato: inventariar evento/ejecución/revisión/tarea/marco/nodo y la atribución R8; resolver PB-PRE-04. Identificar cómo enumerar marcos y tareas, cómo empieza una hija sin `call`, qué se conserva al terminar y cómo recuperar contexto al iniciar una ventana. Extender `API.STATE.QUERY`/`API.PROGRAM.VIEW` solo donde falten datos públicos; no exportar AST privado ni adoptar nombres de depuración como identidad de dominio.
-- [ ] `PG-B.01.02` Casos: derivar B01/B02/B03/B04/B14, con tabla por evento de dueño, foco, pila y variables. Incluir dos hijas del mismo subprograma con argumentos distintos y recursión dentro de una; no comparar solo nombres o profundidades.
-- [ ] `PG-B.01.03` Tests: modelos/igualdad, decodificación, atribución entre lotes y tracker segregado; tarea desconocida, evento fuera de orden, revisión ajena, campos mal tipados y raíz antes del primer `task_resumed`. Mostrar que el test detecta mezclar las pilas.
-- [ ] `PG-B.01.04` Código: extraer atribución/contextos del tracker global; preservar orden global y foco por tarea; consultar marcos por tarea en adaptador y mapear errores a resultados. La selección no ejecuta ni activa tareas; la vista de un evento previo no cambia al avanzar.
-- [ ] `PG-B.01.05` Documentación: registrar claves y vida de identidades en README app/API, reemplazar afirmación de foco único en su ámbito y actualizar ayuda/cobertura si cambia contrato observable; aplicar §5 sin aumentar límites por comodidad.
+- [x] `PG-B.01.01` Contrato: inventariar evento/ejecución/revisión/tarea/marco/nodo y la atribución R8; resolver PB-PRE-04. Identificar cómo enumerar marcos y tareas, cómo empieza una hija sin `call`, qué se conserva al terminar y cómo recuperar contexto al iniciar una ventana. Extender `API.STATE.QUERY`/`API.PROGRAM.VIEW` solo donde falten datos públicos; no exportar AST privado ni adoptar nombres de depuración como identidad de dominio.
+- [x] `PG-B.01.02` Casos: derivar B01/B02/B03/B04/B14, con tabla por evento de dueño, foco, pila y variables. Incluir dos hijas del mismo subprograma con argumentos distintos y recursión dentro de una; no comparar solo nombres o profundidades.
+- [x] `PG-B.01.03` Tests: modelos/igualdad, decodificación, atribución entre lotes y tracker segregado; tarea desconocida, evento fuera de orden, revisión ajena, campos mal tipados y raíz antes del primer `task_resumed`. Mostrar que el test detecta mezclar las pilas.
+- [x] `PG-B.01.04` Código: extraer atribución/contextos del tracker global; preservar orden global y foco por tarea; consultar marcos por tarea en adaptador y mapear errores a resultados. La selección no ejecuta ni activa tareas; la vista de un evento previo no cambia al avanzar.
+- [x] `PG-B.01.05` Documentación: registrar claves y vida de identidades en README app/API, reemplazar afirmación de foco único en su ámbito y actualizar ayuda/cobertura si cambia contrato observable; aplicar §5 sin aumentar límites por comodidad.
 - [ ] `PG-B.01.06` Verificar: tests espejo y API/puente afectados, casos B01–B04/B14 y arquitectura; adjuntar tabla esperado/obtenido por evento y mostrar marcos distintos en el mismo nodo. No cerrar con un mapa que nunca fue contrastado con Rust.
 
 ### PG-B.02 · Tres proyecciones y estado paginado
@@ -347,20 +347,41 @@ Para preparar este plan se verifican solo estructura, referencias y diff documen
 
 ## 11. Resumen de ejecución
 
-### 11.1 Estado de preparación
+### 11.1 Estado de ejecución de PG-B.01
 
-Plan redactado el 2026-11-02 sobre la revisión de §0. Comprobaciones de preparación: `git diff --check` sin errores y puerta real `DOC-NO-TRANSIENT-REFS` de `xtask/src/documentation.rs` ejecutada mediante lanzador temporal, en verde; `cargo test -p xtask documentation` desde spec, tres tests de referencias documentales en verde; comprobación local de 54 IDs de tarea consecutivos, enlaces internos y existencia de identidades del corpus citadas (excepto `PERF.PG.APP.VIEW`, rotulado como candidato). Estas comprobaciones no certifican la implementación. Implementación no iniciada. Las casillas de §4 y C01–C13 permanecen abiertas. La creación del documento no certifica pasos implementados ni revisión humana.
+El mensaje de la persona del 2026-11-02 autoriza exclusivamente PG-B.01 y resuelve avanzar con PG-3 abierta para ese punto. El mismo título repetido en la petición se interpreta como una sola tarea. No autoriza puntos PG-B posteriores, revisión del plan, commit ni push. Se conserva la rama `feature/agregar-ruta-de-especificacion`; HEAD de base `c31bf4c18202967dddab99201d63c188714b710c`, con diff de trabajo sin commit. La verificación final no alcanza `PHASE-GREEN` por las puertas SEE indicadas en PG-B.01.06.
 
-Al iniciar trabajo, completar la fila de cada tarea `PG-B.nn.mm`; no reemplazarla solo por una fila agregada del punto. Estados permitidos del plan general: Cumplido, No cumplido, Diferido, No aplica y Retirado. Una tarea todavía no intentada se indica «Sin ejecutar» en el motivo con estado sin asignar; no se etiqueta artificialmente como fallo ni diferimiento.
+Los estados de tarea son Cumplido, No cumplido, Diferido, No aplica y Retirado. Las verificaciones exitosas no se sustituyen por una descripción de intención. La prueba completa del crate API no se certifica: la invocación por omisión falla al compilar `native_effects`, que importa una función habilitada solo con `native`; el target afectado se probó por separado con y sin esa feature.
+
+#### B01/B02/B03/B04/B14: esperado derivado y observado
+
+| Escena | Esperado derivado | Observado |
+|---|---|---|
+| B01 Secuencial | Antes del primer `task_resumed`, los eventos ordinarios pertenecen a raíz cero; la ejecución conserva el foco secuencial y finaliza la raíz con su resultado. | `RustProgramExecution` proyecta foco, salida y resultado; su primera secuencia también comprueba atribución a raíz. El paso terminal informa raíz `completed` y `success`. |
+| B02 Identidades | Dos tareas hermanas en el mismo subprograma consultan el mismo sitio recursivo con argumentos independientes; sus marcos no se mezclan. | `task_id_reads_distinct_recursive_frames_for_sibling_tasks`: `query_frame` en la misma llamada `Recurse` devuelve `value=7` para tarea 1 y `value=9` para tarea 2, ambas en marco 2. |
+| B03 Suspensión | Inspeccionar una hija suspendida conserva su estado y no la activa ni cambia el siguiente evento de agenda. | `task_id_reads_a_suspended_child_without_changing_the_schedule` compara el siguiente `advance` tras consultar contra una ejecución de control sin consulta; respuestas iguales. |
+| B04 Pilas/estado | Cada tarea conserva foco, variables y pila propias; recursión añade marcos a la tarea activa y la lectura histórica permanece estable. | `task contexts keep independent stacks across event batches`, `old_event_state_is_stable_after_execution_advances` y la consulta por tarea a los marcos recursivos anteriores. |
+| B14 Revisión | Un evento con revisión ajena a la vista activa se rechaza; la identidad de nodo no se resuelve por número de línea ni ordinal suelto. | `unknown tasks, foreign revisions and out-of-order events halt cleanly` rechaza `rev2` frente a `rev1`; `RustEvent` conserva revisión, proyecto/fuente opcionales y `node_id`. |
+
+Tabla esperada/observada por evento en el tracker de la app:
+
+| Evento | Dueño | Foco esperado | Pila esperada | Variables esperadas | Observado |
+|---|---|---|---|---|---|
+| `statement_entered`, `call` antes de reanudar una hija | Raíz cero por R8 | El nodo de sentencia llamado, en el contexto raíz | Aumenta solo la pila de raíz | Consulta `task_id: 0` al índice global consumido | El primer evento se atribuye a raíz; al crear hijas, la raíz conserva dos marcos y ellas nacen sin foco/pila. |
+| `task_spawned`, `task_ready` | `data.task` recibe estado; raíz conserva selección activa | No cambia el foco activo; contexto hijo sin foco | Hijo empieza vacío; no hereda la pila del padre | Sin estado consultado hasta reanudar | El test Dart observa `created`, pila vacía y foco nulo; `task_ready` no selecciona la hija. |
+| `task_resumed`, eventos ordinarios | `data.task` se vuelve dueño activo | Foco anterior propio o el nodo ordinario actual | `statement_entered`/`call` modifican solo la pila de esa tarea | Se consulta por `task_id` y evento actual | El test Dart cambia dueño a tarea 1 sin alterar la pila raíz; API Rust lee `value=7` y `value=9` en el mismo nodo recursivo, marco 2 de tareas distintas. |
+| `task_suspended` | `data.task`, aunque ya no sea la activa | Conserva el foco de la tarea | Conserva su pila recursiva | Lectura histórica por el `task_id` suspendido | El API devuelve el marco `Consume` de la hija suspendida; la siguiente secuencia coincide con la ejecución de control sin consulta. |
+| `task_completed` | `data.task` que termina | Conserva el foco final | Conserva sus marcos finales | Conserva el último estado y resultado `success` | El test Dart observa `completed/success`; la proyección del paso incluye la instantánea retenida. |
+| Terminación global | Contexto raíz cero | Conserva su foco final | Conserva su pila final | Conserva variables y causa terminal | El paso terminal marca raíz `completed/success`; esperas de entrada/efecto no finalizan la raíz. |
 
 | Tarea | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
-| PG-B.01.01 | — | — | Sin ejecutar |
-| PG-B.01.02 | — | — | Sin ejecutar |
-| PG-B.01.03 | — | — | Sin ejecutar |
-| PG-B.01.04 | — | — | Sin ejecutar |
-| PG-B.01.05 | — | — | Sin ejecutar |
-| PG-B.01.06 | — | — | Sin ejecutar |
+| PG-B.01.01 | Cumplido | `API.STATE.QUERY@1.0.0` R7; C18/C19; README API/app; `ENG.TRACE.EVENTS#R8` | Se conserva `task_id`, se rechaza `task` y tipo mal formado; estados/versiones no cambian. Reanclaje pendiente en .01.06. |
+| PG-B.01.02 | Cumplido | Matriz B01/B02/B03/B04/B14 arriba; C18/C19 | Incluye hermanas, argumentos distintos, mismo sitio recursivo, suspensión e identidad de revisión. |
+| PG-B.01.03 | Cumplido | Tests espejo Dart/Rust detallados en .01.06 | Modelos/igualdad, decodificación estricta, atribución interlotes, raíz antes del primer `task_resumed` y secuencias inválidas. |
+| PG-B.01.04 | Cumplido | `execution_task_context.dart`, `execution_stack_frame.dart`, tracker/contextos; `execution_queries.rs`, `state_pages.rs` | Orden global, pila/foco por tarea, consulta histórica y errores tipados; selección no reanuda tarea. |
+| PG-B.01.05 | Cumplido | README de app/API y `api.state.query.md` | Decisiones y vida de identidades autosustentables; sin cambiar versión/estado ni agregar campos `cambio`. |
+| PG-B.01.06 | No cumplido | Comandos y salidas en .01.06 | Tests dirigidos, límites de app y arquitectura pasan; el verificador Rust completo conserva dos `SIZE-NESTING` preexistentes. Conformidad SEE falla por `API.PROGRAM.VIEW` vencido y el reanclaje queda bloqueado por `API.ANALYZE@1.0.0` inmutable. No se cierra PG-B.01 con `PHASE-GREEN`. |
 | PG-B.02.01 | — | — | Sin ejecutar |
 | PG-B.02.02 | — | — | Sin ejecutar |
 | PG-B.02.03 | — | — | Sin ejecutar |
@@ -410,11 +431,29 @@ Al iniciar trabajo, completar la fila de cada tarea `PG-B.nn.mm`; no reemplazarl
 | PG-B.09.05 | — | — | Sin ejecutar |
 | PG-B.09.06 | — | — | Sin ejecutar |
 
+#### PG-B.01.06 · comandos y resultados
+
+Base de ejecución: Flutter 3.47.5/Dart 3.13.4, FRB 2.13.0 y Rust/Cargo 1.99.0; sistema macOS arm64. Rama `feature/agregar-ruta-de-especificacion`; HEAD de base `c31bf4c18202967dddab99201d63c188714b710c`.
+
+- `FLUTTER_ROOT=/private/tmp/pseudolearn-flutter.aUpZMf FLUTTER_SUPPRESS_ANALYTICS=true XDG_CONFIG_HOME=/private/tmp/pseudolearn-flutter-config /Users/cgutieco/Development/flutter/bin/cache/dart-sdk/bin/dart /private/tmp/pseudolearn-flutter.aUpZMf/bin/cache/flutter_tools.snapshot test --no-pub --reporter expanded test/engine/rust/rust_event_classes_test.dart test/engine/rust/rust_program_execution_test.dart test/engine/rust/rust_watch_rows_test.dart test/domain/model/execution/execution_task_context_test.dart test/architecture/` — salida 0; 46 tests pasan, incluidos negativos de capas.
+- `FLUTTER_ROOT=/private/tmp/pseudolearn-flutter.aUpZMf FLUTTER_SUPPRESS_ANALYTICS=true XDG_CONFIG_HOME=/private/tmp/pseudolearn-flutter-config /Users/cgutieco/Development/flutter/bin/cache/dart-sdk/bin/dart /private/tmp/pseudolearn-flutter.aUpZMf/bin/cache/flutter_tools.snapshot analyze --suppress-analytics --fatal-infos --fatal-warnings` — salida 0, sin problemas.
+- `/private/tmp/pseudolearn-flutter.aUpZMf/bin/cache/dart-sdk/bin/dart --disable-dart-dev tool/check_limits.dart` — salida 0, todos los límites pasan.
+- `cargo test --locked -p pseudolearn_api --features native --test execution_queries` — salida 0, 4/4 tests.
+- `cargo clippy --locked -p pseudolearn_api --features native --test execution_queries -- -D warnings` — salida 0.
+- `cargo run --manifest-path packages/pseudolearn_rust_checks/Cargo.toml -p pseudolearn_check_command --bin rust-checks -- all packages/pseudolearn_engine` — salida 1 por `SIZE-NESTING` en `crates/pseudolearn_api/src/program_view_exits.rs:68` y `crates/pseudolearn_semantic/src/interface_realizations.rs:111`; ninguno de esos archivos pertenece al diff. PB-PRE-02 ya registra ambas observaciones.
+- `cargo fmt --all -- --check` y `git diff --check` — salida 0.
+- `cargo test --locked -p pseudolearn_api` — salida 101 al compilar `tests/native_effects.rs`: `native_effect_input` está detrás de la feature `native`. La ejecución dirigida con `--features native` pasa; no se presenta como suite completa del crate.
+- `cargo run -p see_cli --bin see -- validate` — salida 0, 196 especificaciones validadas. `cargo run -p see_cli --bin see -- export --check` — salida 0, export verificado.
+- `cargo run -p see_cli --bin see -- conform --subject engine --only API.STATE.QUERY` — salida 1, `SEE-STALE: engine evidence corpus hash mismatch for API.PROGRAM.VIEW`.
+- `cargo run -p see_cli --bin see -- lock --refresh API.STATE.QUERY` — salida 1, `SEE-HASH: immutable version API.ANALYZE@1.0.0`; el hash anterior de `API.STATE.QUERY` sigue visible en `specifications.lock`, por lo que el contrato modificado todavía requiere reanclaje.
+
+El primer intento del target Rust con `native` agotó el espacio temporal de compilación y clippy detectó índices potencialmente inseguros en el test. Se sustituyeron por selección explícita de tarea; `cargo clean -p pseudolearn_api` retiró 9.4 GiB de artefactos de compilación de ese paquete, y los comandos dirigidos arriba pasaron después. No se borraron fuentes. El fallo SEE restante no se corrige aquí porque requiere modificar evidencia de contratos fuera del alcance PG-B.01.
+
 ### 11.2 Cierre común: evidencia mínima por puerta
 
 | Puerta | Evidencia que debe existir antes de marcarla |
 |---|---|
-| PG-B.C01 | Mensaje nuevo que autoriza implementar y su alcance; resolución de dependencia abierta aplicable |
+| PG-B.C01 | Mensaje del 2026-11-02 autoriza exclusivamente PG-B.01; resuelve la dependencia PG-3 abierta solo para ese punto |
 | PG-B.C02 | Revisión/aprobación del plan por persona; no confundir entrega del archivo con revisión |
 | PG-B.C03 | Diff y anclajes selectivos: especificación→casos→tests→código; estados/versiones conservados |
 | PG-B.C04 | Regla→caso/propiedad→vínculo→sujeto; ningún caso esperado capturado sin revisión |
@@ -428,4 +467,4 @@ Al iniciar trabajo, completar la fila de cada tarea `PG-B.nn.mm`; no reemplazarl
 | PG-B.C12 | Autorización aplicable, skill commit-message, hash y comprobación de push ordinario a rama única |
 | PG-B.C13 | Resumen por tarea y general, pendientes justificados, informe y parada antes de PG-7 |
 
-Revisión Git de cierre: pendiente. Verificadores de implementación: no ejecutados durante la preparación documental. Pendientes: autorización/revisión del plan, dependencias y PB-PRE, implementación y sus verificaciones. Puntos de §4 cumplidos: ninguno por crear este plan. Commit/push: no realizados.
+Revisión Git final pendiente. Las verificaciones dirigidas ejecutadas para PG-B.01 constan arriba; el punto permanece abierto por .01.06 y no alcanza `PHASE-GREEN`. No se modificaron otros puntos de §4. No hubo commit ni push. Se informa el resultado y se para antes de PG-B.02 (`PHASE-STOP`).

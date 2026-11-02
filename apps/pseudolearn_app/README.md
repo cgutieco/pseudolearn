@@ -795,11 +795,46 @@ infraestructura y el motor; la lógica de aplicación desconoce los widgets y el
       fuera de la aplicación.
     - *Almacenes NoSQL (Hive / Isar):* Descartados por competir con los archivos por ser la fuente de verdad.
 
-### 4.10 Foco de ejecución unificado: un identificador de nodo en cuatro superficies
+### 4.10 Foco de ejecución y contextos independientes por tarea
 
-- **Problema:** Las cuatro superficies de trabajo (editor, diagramas, tabla de traza y código equivalente) necesitan
-  sincronizarse con la instrucción en curso sin recalcular cuatro análisis independientes.
-- **Elección:** `ExecutionState` mantiene una única instancia de `ExecutionFocus` construida sobre `ProgramNodeId`:
+- **Problema:** La traza conserva un orden global, pero cada tarea tiene su propia llamada, foco y variables. Un único
+  foco o una pila compartida mezcla dos hijas que ejecutan el mismo subprograma.
+- **Elección:** `ExecutionStep` conserva el índice global del evento seleccionado, su tarea activa y una instantánea
+  inmutable de `ExecutionTaskContext` por identidad de tarea. Cada contexto tiene estado de tarea, revisión de foco,
+  pila de bloques y marcos, variables y el último evento cuyo estado se consultó. El tracker mantiene un contador global
+  de foco para los ritmos existentes y uno por tarea para inspección.
+
+  La identidad de una tarea pertenece a una ejecución; la raíz es cero y las hijas nacen con `task_spawned`. El campo
+  `task` de `task_spawned` identifica la hija, no cambia el foco activo. `task_ready` tampoco selecciona una tarea;
+  solo `task_resumed` cambia el contexto activo. Los eventos ordinarios pertenecen a la última tarea reanudada y, antes
+  de la primera, a la raíz. Cada pila se crea vacía para su tarea y los límites de llamada solo modifican esa pila.
+  Al terminar la ejecución global, la raíz conserva su pila/foco/variables y queda `completed`; `completionOutcome`
+  registra `success`, la causa de fallo, `cancelled` o `limit_reached`. Una espera global no finaliza la raíz.
+
+  | Evento | Contexto que actualiza | Efecto en el foco y la pila |
+  |---|---|---|
+  | `statement_entered`, `statement_exited`, `decision`, `call`, `return`, salida y entrada | La última tarea reanudada; la raíz antes de la primera | Solo cambia el contexto dueño; los eventos de control refrescan variables en el índice global consumido |
+  | `task_spawned` | `data.task` nace en `created` sin marco; el padre conserva el índice del evento | No cambia la tarea activa ni hereda foco o pila |
+  | `task_ready` | `data.task` pasa a `ready` | No cambia la tarea activa |
+  | `task_resumed` | `data.task` pasa a `running` | Selecciona ese contexto y refresca sus variables; un cambio de tarea aumenta la revisión global de foco |
+  | `task_suspended` | `data.task` pasa a `suspended` | Conserva foco, pila y variables para consultar ese evento global |
+  | `task_completed` | `data.task` conserva estado `completed` y resultado | Conserva su última pila, foco y variables |
+  | `task_cancel_requested` | `data.task` conserva `cancellationRequested`; `data.origin` señala quién pidió cancelarla | No selecciona la tarea cancelada |
+  | `scope_joined` y `channel_*` | La tarea indicada por `scope_joined`; la activa para los eventos de canal | Actualiza el último evento sin cambiar foco o pila |
+  | `effect_delivered` | La tarea receptora de `data.task` | Actualiza su último evento sin reanudarla |
+
+  `RustEvent` conserva `revision_id`, identidad opcional de proyecto/fuente y `node_id`. Un evento cuya revisión no
+  coincide con la vista activa se rechaza como secuencia inválida. La selección de una tarea consulta `query_frame` y
+  `query_page` en el índice global elegido mediante `task_id`; no reanuda la tarea ni altera la agenda. Las consultas
+  al pasado siguen ligadas al mismo evento después de avanzar. Un lector que inicie una ventana en un índice distinto
+  de cero debe reconstruir la atribución y los contextos desde la historia retenida anterior; no puede asumir la raíz.
+  La ejecución actual comienza en el evento cero.
+
+  Los errores de consulta de estado se representan como fallos del paso, no como una tabla vacía. La identidad de nodo
+  solo enlaza con la vista de su revisión; nombres, líneas y profundidad no identifican una tarea ni un marco.
+
+  Las superficies de trabajo (editor, diagramas, tabla de traza y código equivalente) sincronizan el nodo de foco sin
+  recalcular análisis independientes. Conservan el mismo modelo `ExecutionFocus`:
     - En el **editor**, resalta la línea física en el canalón y el tramo de texto correspondiente.
     - En el **ordinograma**, resalta el símbolo activo y la arista correspondiente a la rama evaluada (
       `ExecutionBranch`).
@@ -811,7 +846,8 @@ infraestructura y el motor; la lógica de aplicación desconoce los widgets y el
 
   `API.PROGRAM.VIEW` y los eventos comparten revisión e identidad estructural. El adaptador normaliza
   nodos semánticos hacia su sentencia visible; las decisiones resaltan solo la cabecera y la entrada
-  de un contenedor no crea una parada adicional. Las páginas de estado consultan el evento consumido.
+  de un contenedor no crea una parada adicional. Las páginas de estado consultan el evento global consumido y la tarea
+  elegida.
 - **Alternativas descartadas y por qué:**
     - *Sincronización mediante eventos en `presentation/` (BlocListener cruzados):* Descartado porque introduce
       orquestación en la interfaz y produce desincronizaciones de estado.
@@ -2166,8 +2202,16 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
 - **Adaptadores (`lib/engine/rust/`):** `RustTransport` es la única frontera que ve JSON; `JsonRustTransport` la
   implementa sobre cualquier función de envío y `native_rust_transport.dart` es el único archivo que importa los
   enlaces generados. `RustProgramAnalyzer` implementa `ProgramAnalyzer` y `RustProgramExecution` implementa
-  `ProgramExecution`: cada `step()` consume un evento de un lote de 25 y proyecta foco, pila de bloques y filas de
-  observación (texto y carácter se muestran entre comillas según la etiqueta de tipo que añade la API; los arreglos como `[2x3]` con sus dimensiones). `RustBatch` y `RustTerminationKind` reconocen `awaitingEffect` junto con `PendingEffectRequest`, permitiendo que la interfaz o el entorno orquestador suministren el resultado del efecto mediante `provideEffectResult` y reanuden la máquina. `analyze` devuelve los tokens léxicos y sus tramos, y el adaptador proyecta categorías de resaltado desde ellos incluso cuando hay errores sintácticos. El idioma de los mensajes de diagnóstico se negocia con un `locale` independiente del perfil, y `AppDiagnostic` conserva los argumentos del motor. Los cuatro ritmos no tienen código propio: `StepSettlement` decide solo con `focusRevision`,
+  `ProgramExecution`: cada `step()` consume un evento de un lote de 25 y proyecta el índice global, la tarea activa y
+  contextos de foco, pila y variables segregados por `task_id`. Las consultas de marcos y colecciones pasan el mismo
+  `task_id` junto con el evento consumido; una consulta inválida produce un fallo del paso. El texto y el carácter se
+  muestran entre comillas según la etiqueta de tipo de la API; los arreglos muestran forma y dimensiones. `RustBatch`
+  y `RustTerminationKind` reconocen `awaitingEffect` junto con `PendingEffectRequest`, permitiendo que la interfaz o el
+  entorno orquestador suministren el resultado del efecto mediante `provideEffectResult` y reanuden la máquina.
+  `analyze` devuelve los tokens léxicos y sus tramos, y el adaptador proyecta categorías de resaltado desde ellos
+  incluso cuando hay errores sintácticos. El idioma de los mensajes de diagnóstico se negocia con un `locale`
+  independiente del perfil, y `AppDiagnostic` conserva los argumentos del motor. Los cuatro ritmos no tienen código
+  propio: `StepSettlement` decide solo con `focusRevision`,
   `blockPosition` y `nodeId`, que el adaptador reproduce según las reglas de foco de los puertos de la aplicación
   (un contenedor no mueve el foco; una llamada o retorno conserva el nodo anterior). El foco resuelve `unitId`
   recorriendo el subárbol de la unidad ejecutable o del miembro de clase desde la misma vista pública, con los
@@ -2769,5 +2813,6 @@ unidad suspendible. `AstConstruct` solo incorpora una familia cuando el currícu
 que necesita contabilizarla; por eso `interface_unit` ya se proyecta como `interfaz` a partir de
 `CON-C4-E7`, mientras las construcciones de tareas permanecen fuera hasta que un ejercicio de esa
 familia las use.
-Las proyecciones multicarril de concurrencia (flujo por tarea, estructura de creación y unión,
-ventana de eventos), la pila de foco por tarea y el paso por tarea pertenecen a `PG-B`.
+La estructura de creación y unión, la ventana paginada de eventos, la selección visual de tarea y el paso por tarea
+siguen pendientes. El foco, las pilas, los estados observados por tarea y las consultas con `task_id` ya se conservan
+en el modelo de ejecución.

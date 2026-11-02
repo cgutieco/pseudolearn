@@ -1,10 +1,43 @@
 import 'rust_event_classes.dart';
 
+final class RustEventSourceIdentity {
+  final String projectId;
+  final String revisionId;
+  final int sourceId;
+
+  const RustEventSourceIdentity({
+    required this.projectId,
+    required this.revisionId,
+    required this.sourceId,
+  });
+
+  factory RustEventSourceIdentity.fromJson(Map<String, Object?> json) {
+    final projectId = json['project_id'];
+    final revisionId = json['revision_id'];
+    final sourceId = json['source_id'];
+    if (projectId is! String ||
+        revisionId is! String ||
+        sourceId is! int ||
+        projectId.isEmpty ||
+        revisionId.isEmpty ||
+        sourceId <= 0) {
+      throw const FormatException('Invalid event source identity');
+    }
+    return RustEventSourceIdentity(
+      projectId: projectId,
+      revisionId: revisionId,
+      sourceId: sourceId,
+    );
+  }
+}
+
 final class RustEvent {
   final String eventClass;
   final int line;
   final int depth;
   final Map<String, Object?> data;
+  final String? sourceRevisionId;
+  final RustEventSourceIdentity? sourceIdentity;
   final String? nodeId;
 
   const RustEvent({
@@ -12,7 +45,9 @@ final class RustEvent {
     required this.line,
     required this.depth,
     required this.data,
-    required this.nodeId,
+    this.sourceRevisionId,
+    this.sourceIdentity,
+    this.nodeId,
   });
 
   factory RustEvent.fromJson(Map<String, Object?> json) {
@@ -22,15 +57,35 @@ final class RustEvent {
     if (!rustKnownEventClass(eventClass)) {
       throw FormatException('Unknown event class: $eventClass');
     }
-    return RustEvent(
+    if (source != null && source is! Map<String, Object?>) {
+      throw const FormatException('Invalid event source');
+    }
+    if (data != null && data is! Map<String, Object?>) {
+      throw const FormatException('Invalid event data');
+    }
+    final sourceFields = source as Map<String, Object?>?;
+    final sourceRevisionId = sourceFields?['revision_id'];
+    final sourceNodeId = sourceFields?['node_id'];
+    final identity = sourceFields?['identity'];
+    if ((sourceFields != null &&
+            (sourceRevisionId is! String || sourceNodeId is! String)) ||
+        (sourceNodeId != null && sourceNodeId is! String) ||
+        (identity != null && identity is! Map<String, Object?>)) {
+      throw const FormatException('Invalid event source identity');
+    }
+    final event = RustEvent(
       eventClass: eventClass,
       line: json['line'] as int,
       depth: json['depth'] as int,
-      data: data is Map<String, Object?> ? data : const {},
-      nodeId: source is Map<String, Object?>
-          ? source['node_id'] as String?
-          : null,
+      data: data as Map<String, Object?>? ?? const {},
+      sourceRevisionId: sourceRevisionId as String?,
+      sourceIdentity: identity == null
+          ? null
+          : RustEventSourceIdentity.fromJson(identity as Map<String, Object?>),
+      nodeId: sourceNodeId as String?,
     );
+    RustTaskEvent.tryFrom(event);
+    return event;
   }
 }
 

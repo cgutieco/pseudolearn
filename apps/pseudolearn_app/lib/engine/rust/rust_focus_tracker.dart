@@ -1,118 +1,224 @@
-import '../../domain/model/analysis/source_range.dart';
-import '../../domain/model/analysis/program_node_id.dart';
 import '../../domain/model/execution/block_position.dart';
-import '../../domain/model/execution/execution_branch.dart';
 import '../../domain/model/execution/execution_focus.dart';
-import 'rust_view_unit_index.dart';
+import '../../domain/model/execution/execution_task_context.dart';
+import '../../domain/model/execution/watch_row.dart';
+import 'rust_event_classes.dart';
 import 'rust_program_view.dart';
-import 'rust_statement_stack.dart';
+import 'rust_task_focus_context.dart';
+import 'rust_view_unit_index.dart';
 import 'rust_wire_models.dart';
 
 final class RustFocusTracker {
   final RustProgramView _view;
   final RustViewUnitIndex _units;
   final Map<int, RustViewNode> _focusNodes;
-  final RustStatementStack _stack = RustStatementStack();
+  final Map<int, RustTaskFocusContext> _contexts = {
+    0: RustTaskFocusContext.root(),
+  };
 
-  ExecutionFocus? focus;
-  int focusRevision = 0;
+  int _currentTaskId = 0;
+  int _focusRevision = 0;
 
   RustFocusTracker(this._view)
     : _units = RustViewUnitIndex.of(_view),
       _focusNodes = _indexFocusNodes(_view);
 
-  BlockPosition get blockPosition => _stack.position;
+  int get currentTaskId => _currentTaskId;
 
-  void apply(RustEvent event) {
-    switch (event.eventClass) {
-      case 'statement_entered':
-        _enterStatement(event);
-      case 'statement_exited':
-        _stack.exit();
-      case 'decision':
-        _focusOnDecision(event);
-      case 'call':
-        _enterSubroutine(event);
-      case 'return':
-        _markBoundary(ExecutionFocusKind.subroutineExited);
-        _stack.exitFrame();
+  ExecutionTaskContext get activeContext =>
+      _contexts[_currentTaskId]!.snapshot(_currentTaskId);
+
+  List<ExecutionTaskContext> get taskContexts {
+    final identifiers = _contexts.keys.toList()..sort();
+    return List.unmodifiable([
+      for (final identifier in identifiers)
+        _contexts[identifier]!.snapshot(identifier),
+    ]);
+  }
+
+  ExecutionFocus? get focus => _contexts[_currentTaskId]!.focus;
+
+  String get scopeName => _contexts[_currentTaskId]!.scopeName;
+
+  int get scopeDepth => _contexts[_currentTaskId]!.scopeDepth;
+
+  List<WatchRow> get variables => _contexts[_currentTaskId]!.variables;
+
+  int get focusRevision => _focusRevision;
+
+  BlockPosition get blockPosition => _contexts[_currentTaskId]!.stack.position;
+
+  bool apply(RustEvent event, int eventIndex) {
+    if (event.sourceRevisionId != null &&
+        event.sourceRevisionId != _view.revision) {
+      return false;
     }
-  }
-
-  void _enterStatement(RustEvent event) {
-    final source = _view.node(event.nodeId);
-    final node = source == null ? null : _focusNodes[source.id.value] ?? source;
-    if (node == null) return;
-    _stack.enter(node.id);
-    if (rustNodeIsContainer(_view, node)) return;
-    _focusOn(node.id, node, ExecutionFocusKind.statement);
-  }
-
-  void _focusOnDecision(RustEvent event) {
-    final source = _view.node(event.nodeId);
-    final node = source == null ? null : _focusNodes[source.id.value] ?? source;
-    if (node == null) return;
-    focus = ExecutionFocus(
-      nodeId: node.id,
-      range: _headerRange(node),
-      kind: ExecutionFocusKind.decision,
-      branch: _branchOf(event.data),
-      unitId: _units.unitIdOf(node.id),
-    );
-    focusRevision++;
-  }
-
-  void _enterSubroutine(RustEvent event) {
-    _stack.enterFrame();
-    final source = _view.node(event.nodeId);
-    final node = source == null ? null : _focusNodes[source.id.value] ?? source;
-    final previous = focus;
-    focus = ExecutionFocus(
-      nodeId: previous?.nodeId ?? const ProgramNodeId(0),
-      range: node?.range ?? previous!.range,
-      kind: ExecutionFocusKind.subroutineEntered,
-      unitId: previous?.unitId,
-    );
-    focusRevision++;
-  }
-
-  void _markBoundary(ExecutionFocusKind kind) {
-    final previous = focus;
-    if (previous != null) {
-      focus = ExecutionFocus(
-        nodeId: previous.nodeId,
-        range: previous.range,
-        kind: kind,
-        unitId: previous.unitId,
-      );
+    final taskEvent = RustTaskEvent.tryFrom(event);
+    if (taskEvent != null) return _applyTaskEvent(taskEvent, eventIndex);
+    final context = _contexts[_currentTaskId]!;
+    final previousRevision = context.focusRevision;
+    if (!context.applyOrdinary(
+      event: event,
+      eventIndex: eventIndex,
+      view: _view,
+      resolveNode: _resolveNode,
+      units: _units,
+    )) {
+      return false;
     }
-    focusRevision++;
+    if (context.focusRevision != previousRevision) _focusRevision++;
+    return true;
   }
 
-  void _focusOn(ProgramNodeId id, RustViewNode node, ExecutionFocusKind kind) {
-    focus = ExecutionFocus(
-      nodeId: id,
-      range: node.range,
-      kind: kind,
-      unitId: _units.unitIdOf(id),
+  bool recordEnvironment({
+    required int taskId,
+    required int eventIndex,
+    required String scopeName,
+    required int scopeDepth,
+    required List<WatchRow> variables,
+  }) {
+    final context = _contexts[taskId];
+    if (context == null) return false;
+    context.recordEnvironment(
+      eventIndex: eventIndex,
+      scopeName: scopeName,
+      scopeDepth: scopeDepth,
+      variables: variables,
     );
-    focusRevision++;
+    return true;
   }
 
-  ExecutionBranch? _branchOf(Map<String, Object?> data) {
-    final index = data['indice'] as int?;
-    return switch (data['rama']) {
-      'afirmativa' => const ExecutionBranch(
-        kind: ExecutionBranchKind.affirmative,
-      ),
-      'negativa' => const ExecutionBranch(kind: ExecutionBranchKind.negative),
-      'caso' => ExecutionBranch(
-        kind: ExecutionBranchKind.selectedCase,
-        caseIndex: index,
-      ),
-      'otro' => const ExecutionBranch(kind: ExecutionBranchKind.defaultCase),
+  void finishRoot(RustTerminationKind termination, String? failureReason) {
+    final outcome = switch (termination) {
+      RustTerminationKind.completed => 'success',
+      RustTerminationKind.failed => failureReason ?? 'error',
+      RustTerminationKind.cancelled => 'cancelled',
+      RustTerminationKind.limitReached => 'limit_reached',
       _ => null,
     };
+    if (outcome == null) return;
+    final root = _contexts[0]!;
+    root.status = ExecutionTaskStatus.completed;
+    root.completionOutcome = outcome;
+  }
+
+  bool _applyTaskEvent(RustTaskEvent event, int eventIndex) =>
+      switch (event.eventClass) {
+        'task_spawned' => _spawnTask(event, eventIndex),
+        'task_ready' => _readyTask(event, eventIndex),
+        'task_resumed' => _resumeTask(event, eventIndex),
+        'task_suspended' => _suspendTask(event, eventIndex),
+        'task_completed' => _completeTask(event, eventIndex),
+        'task_cancel_requested' => _requestTaskCancellation(event, eventIndex),
+        'scope_joined' => _recordJoin(event, eventIndex),
+        'effect_delivered' => _recordDelivery(event, eventIndex),
+        _ => _recordCurrentEvent(eventIndex),
+      };
+
+  bool _spawnTask(RustTaskEvent event, int eventIndex) {
+    final taskId = event.task;
+    final parent = event.intOf('parent');
+    if (taskId == null ||
+        taskId == 0 ||
+        parent != _currentTaskId ||
+        _contexts.containsKey(taskId)) {
+      return false;
+    }
+    _contexts[taskId] = RustTaskFocusContext.created(eventIndex);
+    _contexts[parent]!.lastEventIndex = eventIndex;
+    return true;
+  }
+
+  bool _readyTask(RustTaskEvent event, int eventIndex) {
+    final context = _contextFor(event.task);
+    if (context == null ||
+        (context.status != ExecutionTaskStatus.created &&
+            context.status != ExecutionTaskStatus.suspended)) {
+      return false;
+    }
+    context.status = ExecutionTaskStatus.ready;
+    context.lastEventIndex = eventIndex;
+    return true;
+  }
+
+  bool _resumeTask(RustTaskEvent event, int eventIndex) {
+    final taskId = event.task;
+    final context = _contextFor(taskId);
+    if (context == null ||
+        (context.status != ExecutionTaskStatus.ready &&
+            context.status != ExecutionTaskStatus.suspended &&
+            context.status != ExecutionTaskStatus.cancellationRequested)) {
+      return false;
+    }
+    if (_currentTaskId != taskId) _focusRevision++;
+    _currentTaskId = taskId!;
+    context.status = ExecutionTaskStatus.running;
+    context.lastEventIndex = eventIndex;
+    return true;
+  }
+
+  bool _suspendTask(RustTaskEvent event, int eventIndex) {
+    final context = _contextFor(event.task);
+    if (context == null ||
+        event.task != _currentTaskId ||
+        context.status != ExecutionTaskStatus.running) {
+      return false;
+    }
+    context.status = ExecutionTaskStatus.suspended;
+    context.lastEventIndex = eventIndex;
+    return true;
+  }
+
+  bool _completeTask(RustTaskEvent event, int eventIndex) {
+    final context = _contextFor(event.task);
+    if (context == null ||
+        (context.status == ExecutionTaskStatus.cancellationRequested
+            ? false
+            : event.task != _currentTaskId ||
+                  context.status != ExecutionTaskStatus.running)) {
+      return false;
+    }
+    context.status = ExecutionTaskStatus.completed;
+    context.completionOutcome = event.textOf('outcome');
+    context.lastEventIndex = eventIndex;
+    return true;
+  }
+
+  bool _requestTaskCancellation(RustTaskEvent event, int eventIndex) {
+    final context = _contextFor(event.task);
+    if (context == null ||
+        event.intOf('origin') != _currentTaskId ||
+        context.status == ExecutionTaskStatus.completed) {
+      return false;
+    }
+    context.status = ExecutionTaskStatus.cancellationRequested;
+    context.lastEventIndex = eventIndex;
+    return true;
+  }
+
+  bool _recordJoin(RustTaskEvent event, int eventIndex) {
+    if (event.task != _currentTaskId) return false;
+    return _recordCurrentEvent(eventIndex);
+  }
+
+  bool _recordDelivery(RustTaskEvent event, int eventIndex) {
+    final context = _contextFor(event.task);
+    if (context == null) return false;
+    context.lastEventIndex = eventIndex;
+    return true;
+  }
+
+  bool _recordCurrentEvent(int eventIndex) {
+    _contexts[_currentTaskId]!.lastEventIndex = eventIndex;
+    return true;
+  }
+
+  RustTaskFocusContext? _contextFor(int? taskId) =>
+      taskId == null ? null : _contexts[taskId];
+
+  RustViewNode? _resolveNode(RustEvent event) {
+    final source = _view.node(event.nodeId);
+    return source == null ? null : _focusNodes[source.id.value] ?? source;
   }
 }
 
@@ -121,17 +227,3 @@ Map<int, RustViewNode> _indexFocusNodes(RustProgramView view) => {
     for (final child in node.children)
       if (node.childRoles[child] == 'statement') child: node,
 };
-
-SourceRange _headerRange(RustViewNode node) {
-  final range = node.range;
-  final header = node.text.split('\n').first.split('\r').first;
-  final lineLength = header.length;
-  return SourceRange(
-    startOffset: range.startOffset,
-    endOffset: range.startOffset + lineLength,
-    startLine: range.startLine,
-    endLine: range.startLine,
-    startColumn: range.startColumn,
-    endColumn: range.startColumn + header.runes.length,
-  );
-}

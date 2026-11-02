@@ -5,19 +5,43 @@ import 'package:pseudolearn_app/engine/rust/rust_watch_rows.dart';
 
 void main() {
   test('collection rows preserve identity and distinguish lengths', () {
-    final rows = RustWatchRows(
-      const RustStateApi(_CollectionTransport()),
-    ).at(execution: 1, event: 2, depth: 1).rows;
+    final transport = _CollectionTransport();
+    final result = RustWatchRows(
+      RustStateApi(transport),
+    ).at(execution: 1, event: 2, taskId: 7, depth: 1);
+    final rows = (result as RustEnvironmentValue).environment.rows;
     expect(rows.map((row) => row.formattedValue), ['[2]#7', '{0}#8']);
     expect(rows.map((row) => row.identityBadge), [7, 8]);
+    expect(transport.queries, hasLength(5));
+    expect(transport.queries.map((query) => query['task_id']), everyElement(7));
+  });
+
+  test('a rejected task query becomes a state failure', () {
+    final result = RustWatchRows(
+      RustStateApi(_CollectionTransport(frameFailure: 'usage')),
+    ).at(execution: 1, event: 2, taskId: 99, depth: 1);
+
+    expect(result, isA<RustEnvironmentFailure>());
+    expect((result as RustEnvironmentFailure).reason, 'task_state_unavailable');
   });
 }
 
 final class _CollectionTransport implements RustTransport {
-  const _CollectionTransport();
+  final String? frameFailure;
+  final List<Map<String, Object?>> queries = [];
+
+  _CollectionTransport({this.frameFailure});
 
   @override
   Object? call(String operation, Map<String, Object?> arguments) {
+    queries.add(arguments);
+    final failureFamily = frameFailure;
+    if (operation == 'query_frame' && failureFamily != null) {
+      throw RustBridgeFailure(
+        family: failureFamily,
+        detail: 'frame query rejected',
+      );
+    }
     return switch (operation) {
       'query_frame' => {
         'unidad': 'Main',

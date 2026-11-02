@@ -43,15 +43,30 @@ final class RustTaskEvent {
   });
 
   static RustTaskEvent? tryFrom(RustEvent event) =>
-      rustTaskEventClasses.contains(event.eventClass)
-      ? RustTaskEvent(
-          eventClass: event.eventClass,
-          line: event.line,
-          data: event.data,
-        )
-      : null;
+      rustTaskEventClasses.contains(event.eventClass) ? _decode(event) : null;
 
-  int? intOf(String field) => (data[field] as num?)?.toInt();
+  static RustTaskEvent _decode(RustEvent event) {
+    final fields = _fieldsByClass[event.eventClass]!;
+    if (event.data.length != fields.length) {
+      throw const FormatException('Invalid task event data');
+    }
+    for (final entry in fields.entries) {
+      final value = event.data[entry.key];
+      final valid = switch (entry.value) {
+        _RustTaskField.number => value is int && value >= 0,
+        _RustTaskField.text => value is String,
+        _RustTaskField.flag => value is bool,
+      };
+      if (!valid) throw const FormatException('Invalid task event data');
+    }
+    return RustTaskEvent(
+      eventClass: event.eventClass,
+      line: event.line,
+      data: event.data,
+    );
+  }
+
+  int? intOf(String field) => data[field] as int?;
 
   String? textOf(String field) => data[field] as String?;
 
@@ -61,3 +76,48 @@ final class RustTaskEvent {
 
   int? get channel => intOf('channel');
 }
+
+enum _RustTaskField { number, text, flag }
+
+const Map<String, Map<String, _RustTaskField>> _fieldsByClass = {
+  'task_spawned': {
+    'task': _RustTaskField.number,
+    'parent': _RustTaskField.number,
+    'scope': _RustTaskField.number,
+  },
+  'task_suspended': {
+    'task': _RustTaskField.number,
+    'cause': _RustTaskField.text,
+    'target': _RustTaskField.number,
+  },
+  'task_ready': {'task': _RustTaskField.number, 'cause': _RustTaskField.text},
+  'task_resumed': {'task': _RustTaskField.number},
+  'task_completed': {
+    'task': _RustTaskField.number,
+    'outcome': _RustTaskField.text,
+  },
+  'task_cancel_requested': {
+    'task': _RustTaskField.number,
+    'reason': _RustTaskField.text,
+    'origin': _RustTaskField.number,
+  },
+  'scope_joined': {
+    'task': _RustTaskField.number,
+    'outcome': _RustTaskField.text,
+  },
+  'channel_created': {
+    'channel': _RustTaskField.number,
+    'capacity': _RustTaskField.number,
+  },
+  'channel_sent': {'channel': _RustTaskField.number},
+  'channel_received': {
+    'channel': _RustTaskField.number,
+    'present': _RustTaskField.flag,
+  },
+  'channel_closed': {'channel': _RustTaskField.number},
+  'effect_delivered': {
+    'effect_seq': _RustTaskField.number,
+    'delivery_seq': _RustTaskField.number,
+    'task': _RustTaskField.number,
+  },
+};

@@ -489,10 +489,12 @@ Una colección se conserva como referencia con identidad compartida. Su entrada 
   "id": "R7",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "query_frame y query_variables admiten task opcional para consultar el contexto de una tarea activa o suspendida en event sin activarla ni cambiar la agenda. query_page añade task a la identidad de su cursor y conserva el límite de 4096 elementos. La tarea raíz conserva identidad cero. Un identificador desconocido, un marco ajeno o un cursor de otro stop, tarea, sesión o revisión devuelve uso. Las páginas de variables, campos y colecciones se leen por rango sin materializar el conjunto entero.",
+  "texto": "query_frame y query_variables admiten task_id opcional para consultar el contexto de una tarea activa o suspendida en event sin activarla ni cambiar la agenda. query_page añade task_id a la identidad de su cursor y conserva el límite de 4096 elementos. La tarea raíz conserva identidad cero. El campo task no es alias de task_id: si aparece devuelve uso. Un identificador desconocido, mal tipado, un marco ajeno o un cursor de otro stop, tarea, sesión o revisión devuelve uso. Las páginas de variables, campos y colecciones se leen por rango sin materializar el conjunto entero.",
   "verificacion": [
     "C10",
-    "C11"
+    "C11",
+    "C18",
+    "C19"
   ]
 }
 ```
@@ -535,7 +537,7 @@ Una colección se conserva como referencia con identidad compartida. Su entrada 
         "arguments": {
           "event": 0,
           "frame": 0,
-          "task": 0
+          "task_id": 0
         },
         "resource_from": 1
       }
@@ -600,7 +602,7 @@ Una colección se conserva como referencia con identidad compartida. Su entrada 
         "arguments": {
           "event": 0,
           "frame": 0,
-          "task": 999
+          "task_id": 999
         },
         "resource_from": 1
       }
@@ -627,6 +629,130 @@ Una colección se conserva como referencia con identidad compartida. Su entrada 
     "engine"
   ],
   "programa": "Algoritmo P\nDefinir Mutable total Como Entero <- 20;\ntotal <- total + 22;\nEscribir total;\nFinAlgoritmo\n",
+  "perfil_base": "es"
+}
+```
+
+```caso
+{
+  "id": "C18",
+  "regla": "R7",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "create_analysis",
+        "arguments": {}
+      },
+      {
+        "operation": "start",
+        "arguments": {
+          "observe": "events",
+          "seed": 42
+        },
+        "resource_from": 0
+      },
+      {
+        "operation": "query_frame",
+        "arguments": {
+          "event": 0,
+          "frame": 0,
+          "task": 0
+        },
+        "resource_from": 1
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {}
+        },
+        {
+          "value": {}
+        },
+        {
+          "failure": {
+            "family": "usage"
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ],
+  "programa": "Algoritmo P\nDefinir Mutable total Como Entero <- 20;\nFinAlgoritmo\n",
+  "perfil_base": "es"
+}
+```
+
+```caso
+{
+  "id": "C19",
+  "regla": "R7",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "create_analysis",
+        "arguments": {}
+      },
+      {
+        "operation": "start",
+        "arguments": {
+          "observe": "events",
+          "seed": 42
+        },
+        "resource_from": 0
+      },
+      {
+        "operation": "query_frame",
+        "arguments": {
+          "event": 0,
+          "frame": 0,
+          "task_id": "0"
+        },
+        "resource_from": 1
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {}
+        },
+        {
+          "value": {}
+        },
+        {
+          "failure": {
+            "family": "usage"
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ],
+  "programa": "Algoritmo P\nDefinir Mutable total Como Entero <- 20;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```

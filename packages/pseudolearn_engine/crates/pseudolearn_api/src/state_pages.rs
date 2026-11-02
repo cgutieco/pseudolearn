@@ -21,6 +21,7 @@ pub(crate) struct PageRequest {
 
 impl PageRequest {
     pub(crate) fn parse(arguments: &Value) -> Result<Self, ApiError> {
+        crate::execution_resource::reject_task_alias(arguments)?;
         let number = |name: &str| {
             arguments
                 .get(name)

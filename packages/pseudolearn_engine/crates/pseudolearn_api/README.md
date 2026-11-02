@@ -373,10 +373,11 @@ continuación y fallan exactamente fuera del horizonte. El control en la punta r
 para continuar el programa vivo después de recorrer el pasado. La terminación siempre cancela
 la punta aunque se inspeccione historia.
 
-Las consultas de marcos y páginas admiten task_id; la VM ofrece una copia de inspección del contexto
-seleccionado sin cambiar la agenda original. `query_page` admite offset directo o cursor exclusivo,
-y liga sus cursores también a tarea y generación de parada. Solo decodifica los valores de la
-ventana: metadatos léxicos pueden recorrerse para contar o resolver sombreado. object_fields reconoce
+Las consultas `query_frame`, `query_variables` y `query_page` admiten `task_id`; la VM ofrece una copia de inspección
+del contexto seleccionado sin cambiar la agenda original. `task` no es alias y se rechaza, igual que un `task_id` con
+tipo distinto de entero sin signo. `query_page` admite offset directo o cursor exclusivo, y liga sus cursores también a
+tarea y generación de parada. Solo decodifica los valores de la ventana: metadatos léxicos pueden recorrerse para contar
+o resolver sombreado. `object_fields` reconoce
 objetos, arreglos, vectores y diccionarios; indexed distingue sus índices de campos con nombre.
 Los registros de lectura y las imágenes temporales no se confunden con el estado vivo.
 

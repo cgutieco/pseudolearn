@@ -11,9 +11,10 @@ import '../../domain/ports/program_execution.dart';
 import 'rust_analysis_api.dart';
 import 'rust_effect_gate.dart';
 import 'rust_execution_api.dart';
+import 'rust_execution_event_effects.dart';
 import 'rust_execution_readers.dart';
+import 'rust_execution_step_builder.dart';
 import 'rust_focus_tracker.dart';
-import 'rust_output_assembler.dart';
 import 'rust_profile_name.dart';
 import 'rust_program_view.dart';
 import 'rust_program_view_read_result.dart';
@@ -25,18 +26,14 @@ import 'source_offset_index.dart';
 
 final class RustProgramExecution implements ProgramExecution {
   static const int batchSize = 25;
-  static const Set<String> _environmentEvents = {
-    'statement_entered',
-    'statement_exited',
-    'decision',
-    'call',
-    'return',
-  };
 
   final RustAnalysisApi _analysis;
   final RustExecutionApi _execution;
   final RustWatchRows _watch;
   final RustEffectGate _gate;
+  final RustExecutionEventEffects _eventEffects = RustExecutionEventEffects();
+  static const RustExecutionStepBuilder _stepBuilder =
+      RustExecutionStepBuilder();
   final Queue<RustEvent> _queue = Queue<RustEvent>();
 
   RustAnalysisHandle? _handle;
@@ -44,15 +41,9 @@ final class RustProgramExecution implements ProgramExecution {
   RustProgramView? _view;
   RustFocusTracker? _tracker;
   SourceOffsetIndex? _offsets;
-  RustOutputAssembler _output = RustOutputAssembler();
-  RustEnvironment _environment = const RustEnvironment(
-    rows: [],
-    scopeName: 'global',
-    depth: 1,
-  );
   RustBatch? _last;
   RustTerminationKind _termination = RustTerminationKind.running;
-  String? _inputPrompt;
+  String? _failureReason;
   int _eventIndex = -1;
   int _stepCounter = 0;
 
@@ -66,7 +57,7 @@ final class RustProgramExecution implements ProgramExecution {
        _gate = RustEffectGate(transport, capabilities, autoResolveEffects);
 
   @override
-  List<OutputLine> get outputLines => List.unmodifiable(_output.lines);
+  List<OutputLine> get outputLines => _eventEffects.outputLines;
 
   @override
   ExecutionStep startExecution({
@@ -108,10 +99,25 @@ final class RustProgramExecution implements ProgramExecution {
     if (_executionId == null) return const ExecutionStep.exhausted();
     _stepCounter++;
     if (_queue.isEmpty && _termination == RustTerminationKind.running) {
-      _fetchBatch();
+      try {
+        _fetchBatch();
+      } on FormatException {
+        _failInvalidBatch();
+      } on TypeError {
+        _failInvalidBatch();
+      }
     }
     if (_queue.isNotEmpty) return _consume(_queue.removeFirst());
-    return _terminalStep();
+    _tracker!.finishRoot(_termination, _failureReason);
+    return _stepBuilder.terminal(
+      tracker: _tracker!,
+      stepNumber: _stepCounter,
+      eventIndex: _eventIndex,
+      termination: _termination,
+      batch: _last,
+      inputPrompt: _eventEffects.inputPrompt,
+      failureReason: _failureReason,
+    );
   }
 
   @override
@@ -120,7 +126,8 @@ final class RustProgramExecution implements ProgramExecution {
     if (execution == null) return step();
     _execution.provideInput(execution, rawInput);
     _termination = RustTerminationKind.running;
-    _inputPrompt = null;
+    _failureReason = null;
+    _eventEffects.clearInputPrompt();
     return step();
   }
 
@@ -134,19 +141,23 @@ final class RustProgramExecution implements ProgramExecution {
     _termination = RustTerminationKind.running;
     _eventIndex = -1;
     _stepCounter = 0;
-    _output = RustOutputAssembler();
-    _environment = const RustEnvironment(
-      rows: [],
-      scopeName: 'global',
-      depth: 1,
-    );
+    _tracker = null;
+    _view = null;
+    _offsets = null;
+    _last = null;
+    _failureReason = null;
+    _eventEffects.clear();
     if (execution != null) _execution.cancel(execution);
     if (handle != null) _analysis.release(handle);
   }
 
   @override
   ExecutionStep settleEffect(EffectSettlement settlement) {
-    if (settlement == EffectSettlement.cancel) return _cancelled();
+    if (settlement == EffectSettlement.cancel) {
+      final number = _stepCounter;
+      stop();
+      return _stepBuilder.cancelled(number);
+    }
     final batch = _last;
     final execution = _executionId;
     if (execution == null ||
@@ -159,18 +170,6 @@ final class RustProgramExecution implements ProgramExecution {
     return step();
   }
 
-  ExecutionStep _cancelled() {
-    final number = _stepCounter;
-    stop();
-    return ExecutionStep(
-      stepNumber: number,
-      scopeName: 'global',
-      scopeDepth: 1,
-      isHalted: true,
-      haltReason: 'cancelled',
-    );
-  }
-
   void _fetchBatch() {
     final collected = <RustEvent>[];
     final batch = _gate.drain(_executionId!, batchSize, collected);
@@ -179,46 +178,50 @@ final class RustProgramExecution implements ProgramExecution {
     _termination = batch.termination;
   }
 
+  void _failInvalidBatch() {
+    _termination = RustTerminationKind.failed;
+    _failureReason = 'invalid_event_batch';
+  }
+
   ExecutionStep _consume(RustEvent event) {
     _eventIndex++;
-    _tracker!.apply(event);
-    _recordEffects(event);
-    if (_environmentEvents.contains(event.eventClass)) {
-      _environment = _watch.at(
+    try {
+      if (!_tracker!.apply(event, _eventIndex)) {
+        _termination = RustTerminationKind.failed;
+        _failureReason = 'invalid_event_sequence';
+        _queue.clear();
+        return _snapshot(halted: true, reason: _failureReason);
+      }
+    } on Object {
+      _termination = RustTerminationKind.failed;
+      _failureReason = 'invalid_event';
+      _queue.clear();
+      return _snapshot(halted: true, reason: _failureReason);
+    }
+    _eventEffects.record(event, _view!, _offsets!);
+    if (rustEventRequiresEnvironment(event.eventClass)) {
+      final result = _watch.at(
         execution: _executionId!,
         event: _eventIndex,
+        taskId: _tracker!.currentTaskId,
         depth: event.depth,
+      );
+      if (result is RustEnvironmentFailure) {
+        _termination = RustTerminationKind.failed;
+        _failureReason = result.reason;
+        _queue.clear();
+        return _snapshot(halted: true, reason: _failureReason);
+      }
+      final environment = (result as RustEnvironmentValue).environment;
+      _tracker!.recordEnvironment(
+        taskId: _tracker!.currentTaskId,
+        eventIndex: _eventIndex,
+        scopeName: environment.scopeName,
+        scopeDepth: environment.depth,
+        variables: environment.rows,
       );
     }
     return _snapshot();
-  }
-  void _recordEffects(RustEvent event) {
-    switch (event.eventClass) {
-      case 'output':
-        _output.append('${event.data['texto']}');
-      case 'input_received':
-        _output.echoInput('${event.data['texto']}');
-      case 'input_requested':
-        _inputPrompt = inputPromptOf(_view!, _offsets!, event);
-    }
-  }
-  ExecutionStep _terminalStep() {
-    final batch = _last;
-    return switch (_termination) {
-      RustTerminationKind.completed => _snapshot(finished: true),
-      RustTerminationKind.awaitingInput => _snapshot(
-        awaitingInput: true,
-        prompt: _inputPrompt,
-      ),
-      RustTerminationKind.awaitingEffect => _snapshot(
-        pending: RustEffectGate.waitOf(batch?.pendingEffect),
-      ),
-      RustTerminationKind.limitReached => _snapshot().asStepLimitReached(),
-      _ => _snapshot(
-        halted: true,
-        reason: batch?.failureMessage ?? batch?.failureCode,
-      ),
-    };
   }
 
   ExecutionStep _snapshot({
@@ -229,21 +232,16 @@ final class RustProgramExecution implements ProgramExecution {
     String? prompt,
     String? reason,
   }) {
-    final tracker = _tracker!;
-    return ExecutionStep(
+    return _stepBuilder.build(
+      tracker: _tracker!,
       stepNumber: _stepCounter,
-      focus: tracker.focus,
-      focusRevision: tracker.focusRevision,
-      blockPosition: tracker.blockPosition,
-      scopeName: _environment.scopeName,
-      scopeDepth: _environment.depth,
-      variables: List.unmodifiable(_environment.rows),
-      isFinished: finished,
-      isHalted: halted,
-      haltReason: reason,
-      isAwaitingInput: awaitingInput,
-      inputPrompt: prompt,
-      pendingEffect: pending,
+      eventIndex: _eventIndex,
+      pending: pending,
+      finished: finished,
+      halted: halted,
+      awaitingInput: awaitingInput,
+      prompt: prompt,
+      reason: reason,
     );
   }
 }

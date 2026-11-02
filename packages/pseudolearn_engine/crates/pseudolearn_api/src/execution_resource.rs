@@ -8,6 +8,8 @@ use serde_json::{Value, json};
 use std::collections::{BTreeMap, BTreeSet, VecDeque};
 use std::sync::{Arc, atomic::AtomicBool};
 
+pub(crate) use execution_queries::reject_task_alias;
+
 #[cfg(test)]
 #[path = "execution_resource_tests.rs"]
 mod execution_resource_tests;

@@ -33,8 +33,7 @@ impl ExecutionResource {
         operation: &str,
         arguments: &Value,
     ) -> Result<Value, ApiError> {
-        let machine =
-            self.inspection_machine(event, arguments.get("task_id").and_then(Value::as_u64))?;
+        let machine = self.inspection_machine(event, task_id(arguments)?)?;
         crate::execution_state::query(&machine, operation, arguments)
     }
 
@@ -108,4 +107,19 @@ impl ExecutionResource {
         pseudolearn_lexicon::Profile::from_name(&self.syntax_profile)
             .unwrap_or(pseudolearn_lexicon::Profile::Spanish)
     }
+}
+
+pub(crate) fn task_id(arguments: &Value) -> Result<Option<u64>, ApiError> {
+    reject_task_alias(arguments)?;
+    arguments
+        .get("task_id")
+        .map(|value| value.as_u64().ok_or_else(|| usage("invalid task identity")))
+        .transpose()
+}
+
+pub(crate) fn reject_task_alias(arguments: &Value) -> Result<(), ApiError> {
+    if arguments.get("task").is_some() {
+        return Err(usage("use task_id"));
+    }
+    Ok(())
 }

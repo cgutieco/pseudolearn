@@ -1,10 +1,18 @@
+import 'dart:convert';
+
 import 'package:flutter_test/flutter_test.dart';
+import 'package:pseudolearn_app/domain/model/analysis/program_node_id.dart';
 import 'package:pseudolearn_app/domain/model/execution/execution_branch.dart';
 import 'package:pseudolearn_app/domain/model/execution/execution_focus.dart';
+import 'package:pseudolearn_app/domain/model/execution/execution_step.dart';
+import 'package:pseudolearn_app/domain/model/execution/execution_task_context.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
 import 'package:pseudolearn_app/engine/rust/rust_program_execution.dart';
+import 'package:pseudolearn_app/engine/rust/rust_program_view.dart';
+import 'package:pseudolearn_app/engine/rust/rust_program_view_read_result.dart';
 import 'package:pseudolearn_app/engine/rust/rust_transport.dart';
+import 'package:pseudolearn_app/engine/rust/source_offset_index.dart';
 
 import '../../fakes/fake_rust_transport.dart';
 
@@ -18,7 +26,7 @@ Map<String, Object?> node(
   String? parent,
   String? syntaxKind,
 }) => {
-  'node_id': id,
+  'node_id': _revisionNodeId(id),
   'kind': kind,
   'syntax_kind':
       syntaxKind ?? (kind == 'declaration' ? 'algorithm_unit' : 'output'),
@@ -26,8 +34,76 @@ Map<String, Object?> node(
     'start': {'line': line, 'column': 1},
     'end': {'line': line, 'column': 5},
   },
-  'child_node_ids': children,
-  'parent_node_id': ?parent,
+  'child_node_ids': [for (final child in children) _revisionNodeId(child)],
+  'child_roles': [
+    for (final child in children)
+      {'node_id': _revisionNodeId(child), 'role': 'statement'},
+  ],
+  'parent_node_id': parent == null ? null : _revisionNodeId(parent),
+};
+
+String _revisionNodeId(String identifier) =>
+    identifier.contains('.n') ? identifier : 'rev1.$identifier';
+
+Map<String, Object?> spanForSource(
+  Map<String, Object?> span,
+  String sourceCode,
+) {
+  final lines = sourceCode.split('\n');
+  final start = Map<String, Object?>.from(span['start'] as Map);
+  final end = Map<String, Object?>.from(span['end'] as Map);
+  final startLine = start['line'] as int;
+  final endLine = end['line'] as int;
+  final startColumn = (start['column'] as int).clamp(
+    1,
+    lines[startLine - 1].length + 1,
+  );
+  final endColumn = (end['column'] as int).clamp(
+    1,
+    lines[endLine - 1].length + 1,
+  );
+  start['column'] = startColumn;
+  end['column'] = endColumn;
+  final startByte = _sourceByteOffset(lines, startLine, startColumn);
+  final endByte = _sourceByteOffset(lines, endLine, endColumn);
+  return {
+    ...span,
+    'start': start,
+    'end': end,
+    'start_byte': '$startByte',
+    'end_byte': '$endByte',
+  };
+}
+
+int _sourceByteOffset(List<String> lines, int line, int column) {
+  final previousBytes = lines
+      .take(line - 1)
+      .fold<int>(0, (total, value) => total + utf8.encode(value).length + 1);
+  return previousBytes +
+      utf8.encode(lines[line - 1].substring(0, column - 1)).length;
+}
+
+Map<String, Object?> _nodeForSource(
+  Map<String, Object?> node,
+  String sourceCode,
+) => {
+  ...node,
+  'span': spanForSource(node['span'] as Map<String, Object?>, sourceCode),
+};
+
+Map<String, Object?> _unitForSource(
+  Map<String, Object?> unit,
+  String sourceCode,
+) => {
+  ...unit,
+  'node_id': _revisionNodeId(unit['node_id'] as String),
+  'span': spanForSource(unit['span'] as Map<String, Object?>, sourceCode),
+};
+
+Map<String, Object?> _memberForSource(Map<String, Object?> member) => {
+  ...member,
+  if (member['node_id'] case final String nodeId)
+    'node_id': _revisionNodeId(nodeId),
 };
 
 Map<String, Object?> event(
@@ -35,12 +111,15 @@ Map<String, Object?> event(
   String? node,
   int depth = 1,
   Map<String, Object?>? data,
+  String revision = 'rev1',
 }) => {
   'class': name,
   'line': 2,
   'depth': depth,
   'data': ?data,
-  'source': node == null ? null : {'node_id': node},
+  'source': node == null
+      ? null
+      : {'revision_id': revision, 'node_id': _revisionNodeId(node)},
 };
 
 Map<String, Object?> batch(
@@ -62,33 +141,58 @@ FakeRustTransport transportWith({
   Map<String, FakeRustHandler> extra = const {},
 }) {
   var next = 0;
+  var activeSource = source;
   return FakeRustTransport({
-    'create_analysis': (_) => {'resource': 2, 'document': 1},
+    'create_analysis': (arguments) {
+      activeSource = arguments['program'] as String;
+      return {'resource': 2, 'document': 1};
+    },
     'analysis': (_) => {'tree': true, 'diagnostics': diagnostics},
-    'program_view': (_) => {
-      'revision_id': 'rev1',
-      'units':
-          units ??
-          [
-            {
-              'kind': 'algorithm',
-              'name': 'P',
-              'order': 0,
-              'node_id': 'n0',
-              'span': {
-                'start': {'line': 1, 'column': 1},
-                'end': {'line': 3, 'column': 14},
-              },
-            },
-          ],
-      'nodes':
-          nodes ??
-          [
-            node('n0', 'declaration', 1, children: ['n1']),
-            node('n1', 'statement', 2, parent: 'n0'),
-          ],
-      'members': members ?? <Object?>[],
-      'inheritance': <Object?>[],
+    'program_view': (_) {
+      final view = <String, Object?>{
+        'revision_id': 'rev1',
+        'child_order': 'source',
+        'units': [
+          for (final unit
+              in units ??
+                  [
+                    {
+                      'kind': 'algorithm',
+                      'name': 'P',
+                      'order': 0,
+                      'node_id': 'n0',
+                      'span': {
+                        'start': {'line': 1, 'column': 1},
+                        'end': {'line': 3, 'column': 14},
+                      },
+                    },
+                  ])
+            _unitForSource(unit, activeSource),
+        ],
+        'nodes': [
+          for (final item
+              in nodes ??
+                  [
+                    node('n0', 'declaration', 1, children: ['n1']),
+                    node('n1', 'statement', 2, parent: 'n0'),
+                  ])
+            _nodeForSource(item, activeSource),
+        ],
+        'members': [
+          for (final member in members ?? <Map<String, Object?>>[])
+            _memberForSource(member),
+        ],
+        'inheritance': <Object?>[],
+        'methods': <Object?>[],
+      };
+      final result = RustProgramView.decode(
+        view,
+        SourceOffsetIndex(activeSource),
+      );
+      if (result case RustProgramViewReadFailure(:final kind, :final path)) {
+        throw StateError('$kind: $path');
+      }
+      return view;
     },
     'start': (_) => {'resource': 3},
     'advance': (_) =>
@@ -118,6 +222,156 @@ RustProgramExecution start(
 
 void main() {
   group('RustProgramExecution', () {
+    test('task contexts keep independent stacks across event batches', () {
+      final queryArguments = <Map<String, Object?>>[];
+      final execution = start(
+        transportWith(
+          batches: [
+            batch(
+              [
+                event('statement_entered', node: 'n1'),
+                event('call', node: 'n1'),
+                event(
+                  'task_spawned',
+                  data: {'task': 1, 'parent': 0, 'scope': 0},
+                ),
+                event('task_ready', data: {'task': 1, 'cause': 'spawn'}),
+              ],
+              {'kind': 'running'},
+            ),
+            batch(
+              [
+                event(
+                  'task_suspended',
+                  data: {'task': 0, 'cause': 'join', 'target': 0},
+                ),
+                event('task_resumed', data: {'task': 1}),
+                event('statement_entered', node: 'n1'),
+                event('call', node: 'n1'),
+                event('statement_entered', node: 'n1'),
+              ],
+              {'kind': 'running'},
+            ),
+            batch(
+              [
+                event('return', node: 'n1'),
+                event(
+                  'task_completed',
+                  data: {'task': 1, 'outcome': 'success'},
+                ),
+                event('task_ready', data: {'task': 0, 'cause': 'completion'}),
+                event('task_resumed', data: {'task': 0}),
+              ],
+              {'kind': 'completed'},
+            ),
+          ],
+          extra: {
+            'query_frame': (arguments) {
+              queryArguments.add(arguments);
+              return {'unidad': 'P', 'variables': <String, Object?>{}};
+            },
+          },
+        ),
+      );
+      final steps = <ExecutionStep>[];
+      for (var index = 0; index < 20; index++) {
+        final step = execution.step();
+        steps.add(step);
+        if (step.isTerminal) break;
+      }
+
+      final spawned = steps[2];
+      final root = spawned.taskContexts.firstWhere((task) => task.taskId == 0);
+      final child = spawned.taskContexts.firstWhere((task) => task.taskId == 1);
+      expect(spawned.eventIndex, 2);
+      expect(steps.first.taskId, 0);
+      expect(spawned.taskId, 0);
+      expect(root.frames, hasLength(2));
+      expect(child.status, ExecutionTaskStatus.created);
+      expect(child.frames, isEmpty);
+      expect(child.focus, isNull);
+
+      final recursive = steps[8];
+      final recursiveChild = recursive.taskContexts.firstWhere(
+        (task) => task.taskId == 1,
+      );
+      expect(recursive.taskId, 1);
+      expect(recursiveChild.frames, hasLength(2));
+      expect(recursiveChild.frames.last.statementNodes, [
+        const ProgramNodeId(1),
+      ]);
+
+      final childSnapshot = steps[6].taskContexts.firstWhere(
+        (task) => task.taskId == 1,
+      );
+      final suspendedRoot = steps[4].taskContexts.firstWhere(
+        (task) => task.taskId == 0,
+      );
+      final resumedRoot = steps[12];
+      final resumedRootContext = resumedRoot.taskContexts.firstWhere(
+        (task) => task.taskId == 0,
+      );
+      final suspendedChild = resumedRoot.taskContexts.firstWhere(
+        (task) => task.taskId == 1,
+      );
+      expect(resumedRoot.taskId, 0);
+      expect(resumedRootContext.frames, hasLength(2));
+      expect(suspendedRoot.status, ExecutionTaskStatus.suspended);
+      expect(suspendedChild.status, ExecutionTaskStatus.completed);
+      expect(suspendedChild.completionOutcome, 'success');
+      expect(childSnapshot.status, ExecutionTaskStatus.running);
+      expect(childSnapshot.frames, hasLength(1));
+      expect(queryArguments.map((arguments) => arguments['task_id']), [
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+      ]);
+      final finishedChild = steps.last.taskContexts.firstWhere(
+        (task) => task.taskId == 1,
+      );
+      expect(finishedChild.status, ExecutionTaskStatus.completed);
+      expect(finishedChild.completionOutcome, 'success');
+    });
+
+    test(
+      'unknown tasks, foreign revisions and out-of-order events halt cleanly',
+      () {
+        final invalidBatches = [
+          batch([event('return', node: 'n1')], {'kind': 'completed'}),
+          batch(
+            [
+              event('task_resumed', data: {'task': 9}),
+            ],
+            {'kind': 'completed'},
+          ),
+          batch(
+            [event('statement_entered', node: 'n1', revision: 'rev2')],
+            {'kind': 'completed'},
+          ),
+          batch(
+            [
+              event('task_resumed', data: {'task': 1.5}),
+            ],
+            {'kind': 'completed'},
+          ),
+        ];
+
+        for (final invalidBatch in invalidBatches) {
+          final execution = start(transportWith(batches: [invalidBatch]));
+          final result = execution.step();
+
+          expect(result.isHalted, isTrue);
+          expect(result.haltReason, isNotNull);
+        }
+      },
+    );
+
     test('focus resolves top-level executable unit identifiers', () {
       const sourceCode =
           'Algoritmo P\nEscribir 1;\nFinAlgoritmo\n'
@@ -270,6 +524,8 @@ void main() {
       final done = execution.step();
       expect(done.isFinished, isTrue);
       expect(done.isTerminal, isTrue);
+      expect(done.taskContexts.single.status, ExecutionTaskStatus.completed);
+      expect(done.taskContexts.single.completionOutcome, 'success');
     });
 
     test('container statements do not change the focus', () {
