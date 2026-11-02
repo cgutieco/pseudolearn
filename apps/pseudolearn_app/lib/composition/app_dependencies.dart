@@ -29,6 +29,7 @@ import '../domain/ports/sync_queue.dart';
 import '../domain/ports/syntax_help_source.dart';
 import '../domain/ports/syntax_reference_source.dart';
 import '../domain/ports/text_entry_modality.dart';
+import 'program_execution_session.dart';
 
 final class AppDependencies {
   final Clock clock;
@@ -45,6 +46,7 @@ final class AppDependencies {
   final SyncCoordinator syncCoordinator;
   final ProgramAnalyzer programAnalyzer;
   final ProgramExecution Function() createProgramExecution;
+  final ProgramExecutionSession Function()? createObservableExecutionSession;
   final FlowchartBuilder flowchartBuilder;
   final StructogramBuilder structogramBuilder;
   final ClassDiagramBuilder classDiagramBuilder;
@@ -78,6 +80,7 @@ final class AppDependencies {
     required this.syncCoordinator,
     required this.programAnalyzer,
     required this.createProgramExecution,
+    this.createObservableExecutionSession,
     required this.flowchartBuilder,
     required this.structogramBuilder,
     required this.classDiagramBuilder,

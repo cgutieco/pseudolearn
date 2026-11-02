@@ -2795,24 +2795,60 @@ El contrato del verificador es `API.PROGRAM.VIEW#R13`, con un caso por código o
 
 Pruebas: `rust_control_exit_diagram_test.dart` (motor real, es/en: conectores emparejados, bucle interior, ruptura huérfana, cuerpos laterales sin solapamiento, retornos con limpiezas, fin inalcanzable, propagación y estructograma), `rust_syntax_coverage_behavior_test.dart` y `check_syntax_coverage_test.dart`.
 
-### Tareas: datos que la app consume y vistas que quedan para otra fase (`PG-4.11`)
+### Proyecciones de tareas y estado paginado
 
-La fase entrega los datos y los nodos, no la interfaz de concurrencia. `RustEvent` rechaza una clase
-de evento desconocida con `FormatException` y `RustTaskEvent` da acceso tipado a las doce clases de
-tarea (`task_spawned` … `effect_delivered`); los eventos ordinarios no llevan identidad de tarea. El
-lote del motor añade `pendingEffects` con todos los efectos pendientes y su `taskId`; el anfitrión
-simulado los entrega en orden de `effect_seq` (`RustSimulatedHost.deliveryOrder`) y la compuerta de
-efectos falla si el motor ofrece uno distinto del primero, porque la ayuda determinista no admite
-entregas arbitrarias. Los diagramas dibujan el ámbito de tareas (hexágono de preparación en el
-ordinograma, bloque con cabecera en el estructograma), `Elegir` con una columna por rama de
-recepción, y marcan como llamada (subprograma en el ordinograma, celda de llamada en el
-estructograma) todo lanzamiento y toda sentencia que contenga `Aguardar`; ninguna construcción de
-tareas cae en el nodo de proceso. Los textos de cabecera son la primera línea del propio nodo, de
-modo que cambian con el perfil sin literales sueltos. `RustViewSemantics.suspendable` lee la marca de
-unidad suspendible. `AstConstruct` solo incorpora una familia cuando el currículo tiene un ejercicio
-que necesita contabilizarla; por eso `interface_unit` ya se proyecta como `interfaz` a partir de
-`CON-C4-E7`, mientras las construcciones de tareas permanecen fuera hasta que un ejercicio de esa
-familia las use.
-La estructura de creación y unión, la ventana paginada de eventos, la selección visual de tarea y el paso por tarea
-siguen pendientes. El foco, las pilas, los estados observados por tarea y las consultas con `task_id` ya se conservan
-en el modelo de ejecución.
+La observación de ejecución es un puerto (`ProgramExecutionObserver`) separado del control
+(`ProgramExecution`). La composición comparte el mismo `RustExecutionResource` entre el adaptador de
+control y el adaptador de observación, así seleccionar y consultar nunca crea una segunda ejecución
+ni bombea la agenda. `history_events` entrega ventanas con `task_id` de la cinta completa también
+para sentencias y salida ordinarias. `debug_state(event, task_id)` consulta el contexto de una tarea
+en un evento retenido mediante una máquina temporal: no mueve el cursor, la punta viva ni la agenda.
+El contrato también conserva el rechazo de identidades fuera del horizonte. Los cursores de
+`query_page` siguen siendo opacos y ligados por la API a la sesión, revisión, evento, tarea, consulta,
+destino y tamaño de página.
+
+La política de lectura es explícita: cada ventana de API admite como máximo 4096 eventos; la caché
+de la app retiene como máximo esos mismos 4096 y elimina entradas anteriores al horizonte; la
+navegación visual solicita rangos de hasta 96 eventos; las consultas de marcos usan ventanas de 32 y
+las de valores páginas de 64. La vista de eventos puede cambiar tarea y marco sin confundir el
+desplazamiento de página con el identificador real del marco. Un cursor de valores se solicita solo
+cuando se pide la página siguiente; no se lee la colección completa para recortarla después. Las
+consultas nunca actualizan el estado de control.
+
+Las tres superficies comparten selección de evento, rango y tarea:
+
+- **Flujo local:** una línea por identidad de tarea y marcas en orden de índice lógico. La creación
+  enlaza emisor e hija; una suspensión muestra una relación discontinua rotulada con causa y destino.
+  Estas relaciones describen identidad y espera, no flujo de control entre cuerpos. El eje anuncia el
+  índice de evento y no representa tiempo físico; no se infieren duración ni velocidad.
+- **Creación y uniones:** árbol determinista con progenitor y ámbito observados en `task_spawned`,
+  estado derivado de eventos en orden y la unión adscrita a la tarea que la emitió. Una unión no es
+  una rama alternativa. Si el horizonte perdió la creación, la vista avisa que el árbol es parcial;
+  un ámbito sin eventos no inventa una tarea o unión.
+- **Eventos y estado:** selecciona tarea, marco y página de variables para el evento elegido. El
+  evento mostrado conserva su clase, índice, tarea y datos originales. Los eventos de canal
+  identifican operación y canal, pero la API no publica la cola ni los valores de mensajes; la
+  interfaz lo explica y no reconstruye ese estado.
+
+Las etiquetas, leyendas y avisos tienen recursos en español e inglés. Los marcadores ofrecen nombre
+semántico con índice, tarea, clase y línea; los controles de evento, tarea y marco son navegables, y
+el rótulo de espera expone causa y destino. El significado no depende solo del color. Las formas
+estáticas del ordinograma y del estructograma de PG-A permanecen en sus vistas originales; estas
+proyecciones de concurrencia viven en la pestaña `Tareas`.
+
+| Dato de ejecución | Flujo | Estructura | Eventos y estado | Tabla de trazas | Ayuda | Evidencia y contrato |
+|---|---|---|---|---|---|---|
+| `task_spawned` | Marca de creación entre emisor e hija | Crea hija con progenitor y ámbito | Evento íntegro y tarea emisora | No aplica: las filas se abren por cambio de `focusRevision`, no por todo evento de agenda | No aplica: es estado de ejecución de sintaxis existente, no una forma gramatical nueva | Proyección de flujo/estructura; `history_events.rs`; `API.EXECUTE` R8/C13 |
+| `task_ready`, `task_resumed`, `task_suspended`, `task_completed`, `task_cancel_requested` | Marca en la línea de su emisor; suspensión enlaza causa y destino | Actualiza estado y resultado de la tarea | Evento íntegro, con tarea atribuida | No aplica: no cada transición cambia la fila de sentencia enfocada | No aplica por el mismo motivo curricular | Proyección de flujo/estructura; cubit; `API.EXECUTE` R7/R8 |
+| `scope_joined` | Marca del evento del emisor, sin conector de control | Unión en la tarea emisora con evento y resultado | Evento íntegro y resultado | No aplica: una unión no agrega una fila sintáctica | No aplica: no agrega una construcción al lenguaje | Proyección de estructura; prueba de uniones; `API.EXECUTE` R8 |
+| `channel_created`, `channel_sent`, `channel_received`, `channel_closed` | Marcas atribuibles sin inventar tránsito de datos | Sin nodo de tarea artificial | Operación e identidad del canal; aviso de cola no disponible | No aplica: los eventos de canal no son filas de sentencia | No aplica: el aviso documenta el límite del dato expuesto, no una forma del lenguaje | Vista de eventos; decodificador de eventos; `API.EXECUTE` R8 |
+| Evento ordinario (`statement_entered`, `output`, entre otros) | Marca asignada por `task_id` de la cinta completa | No crea una tarea por sí solo | Clase, fuente y valores del evento | Se conserva la fila por foco de sentencia, sin duplicarla por selección histórica | No aplica: la ayuda existente sigue resolviendo la fuente de sintaxis | `history_events.rs`, `debug_control.rs`; `API.EXECUTE` R7/R8 |
+
+Pruebas de la app: `test/engine/execution/task_flow_projection_test.dart` y
+`task_structure_projection_test.dart` cubren orden, relaciones, árbol anidado, unión, horizonte,
+árbol vacío y registros sin dueño; `test/application/execution/execution_history_cubit_test.dart`
+cubre selección independiente del evento vivo, paginación, errores y límites 4096/4097;
+`test/presentation/execution/task_projections_tab_view_test.dart` recorre las tres vistas en ancho
+compacto y comprueba semántica accesible. Las pruebas API `history_events.rs` y `debug_control.rs`
+comprueban atribución histórica y que consultar un evento anterior no mueve la ejecución. Los casos
+de conformance C13/C14 verifican contrato de atribución e inspección en `API.EXECUTE`.

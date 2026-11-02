@@ -101,6 +101,65 @@ fn cursor_from_another_session_is_rejected() -> Result<(), String> {
 }
 
 #[test]
+fn cursor_reused_with_another_task_is_rejected() -> Result<(), String> {
+    let mut session = ApiSession::default();
+    let analysis = session
+        .call(
+            "create_analysis",
+            &json!({"program":"SubProceso Suspendible Work()\nEscribir 1;\nFinSubProceso\nAlgoritmo P\nDimension values[5] Como Entero;\nTareas\nLanzar Work();\nFinTareas\nFinAlgoritmo\n"}),
+        )
+        .pointer("/value/resource")
+        .cloned()
+        .ok_or("missing analysis")?;
+    let started = session
+        .call("start", &json!({"analysis":analysis,"observe":"events"}))
+        .pointer("/value/resource")
+        .cloned()
+        .ok_or("missing execution")?;
+    let advanced = session.call("advance", &json!({"resource":started,"batch_size":4096}));
+    let live_events = advanced
+        .pointer("/value/events")
+        .and_then(Value::as_array)
+        .ok_or("missing events")?;
+    let historical = session.call(
+        "history_events",
+        &json!({"resource":started,"start":0,"count":live_events.len()}),
+    );
+    let events = historical
+        .pointer("/value/events")
+        .and_then(Value::as_array)
+        .ok_or_else(|| format!("missing history: {historical}"))?;
+    let event = events
+        .iter()
+        .position(|event| {
+            event.get("class").and_then(Value::as_str) == Some("statement_entered")
+                && event.get("task_id").and_then(Value::as_u64) == Some(1)
+        })
+        .ok_or_else(|| format!("missing child statement: {advanced}"))?;
+    let first = session.call(
+        "query_page",
+        &json!({"resource":started,"query":"array_cells","target":1,"event":event,
+            "page_size":1,"task_id":1}),
+    );
+    assert_eq!(
+        first.pointer("/value/truncated"),
+        Some(&json!(true)),
+        "{first}"
+    );
+    let cursor = first
+        .pointer("/value/next_cursor")
+        .cloned()
+        .ok_or("cursor")?;
+    let rejected = session.call(
+        "query_page",
+        &json!({"resource":started,"query":"array_cells","target":1,"event":event,
+            "page_size":1,"task_id":0,"cursor":cursor}),
+    );
+    assert_eq!(rejected.pointer("/failure/family"), Some(&json!("usage")));
+    Ok(())
+}
+
+#[test]
 fn invalid_sizes_queries_and_references_are_usage_errors() -> Result<(), String> {
     let mut session = ApiSession::default();
     let started = execution(&mut session, PROGRAM)?;

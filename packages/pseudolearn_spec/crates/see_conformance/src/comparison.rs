@@ -250,5 +250,8 @@ fn event_matches(
     expected.get("clase") == actual.get("class")
         && expected.get("linea") == actual.get("line")
         && expected.get("datos").unwrap_or(&empty) == actual.get("data").unwrap_or(&empty)
+        && expected
+            .get("task_id")
+            .is_none_or(|task| actual.get("task_id") == Some(task))
         && source_matches
 }

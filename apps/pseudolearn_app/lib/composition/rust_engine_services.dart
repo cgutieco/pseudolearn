@@ -22,6 +22,8 @@ import '../engine/rust/rust_exercise_checker.dart';
 import '../engine/rust/rust_program_construct_reader.dart';
 import '../engine/rust/rust_program_analyzer.dart';
 import '../engine/rust/rust_program_execution.dart';
+import '../engine/rust/rust_program_execution_observer.dart';
+import '../engine/rust/rust_execution_resource.dart';
 import '../engine/rust/rust_structural_assertion_checker.dart';
 import '../engine/rust/rust_structogram_builder.dart';
 import '../engine/rust/rust_template_source.dart';
@@ -33,12 +35,15 @@ import '../domain/ports/program_exporter.dart';
 import '../domain/ports/syntax_help_source.dart';
 import '../domain/ports/syntax_reference_source.dart';
 import 'engine_services.dart';
+import 'program_execution_session.dart';
 
 final class RustEngineServices implements EngineServices {
   @override
   final ProgramAnalyzer analyzer;
   @override
   final ProgramExecution Function() createProgramExecution;
+  @override
+  final ProgramExecutionSession Function() createObservableExecutionSession;
   @override
   final CompletionSource completionSource;
   @override
@@ -67,6 +72,7 @@ final class RustEngineServices implements EngineServices {
   const RustEngineServices({
     required this.analyzer,
     required this.createProgramExecution,
+    required this.createObservableExecutionSession,
     required this.completionSource,
     required this.contextualCompletionSource,
     required this.sourceEditor,
@@ -89,6 +95,17 @@ RustEngineServices buildRustEngineServices(RustTransport transport) {
   return RustEngineServices(
     analyzer: analyzer,
     createProgramExecution: () => RustProgramExecution(transport),
+    createObservableExecutionSession: () {
+      final resource = RustExecutionResource();
+      final execution = RustProgramExecution(
+        transport,
+        observationResource: resource,
+      );
+      return ProgramExecutionSession(
+        execution: execution,
+        observer: RustProgramExecutionObserver(transport, resource),
+      );
+    },
     completionSource: RustTemplateSource(transport),
     contextualCompletionSource: RustCompletionSource(transport),
     sourceEditor: RustSourceEditor(RustEditAssistSource(transport)),

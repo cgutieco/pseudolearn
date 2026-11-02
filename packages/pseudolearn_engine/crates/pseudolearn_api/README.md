@@ -373,6 +373,12 @@ continuación y fallan exactamente fuera del horizonte. El control en la punta r
 para continuar el programa vivo después de recorrer el pasado. La terminación siempre cancela
 la punta aunque se inspeccione historia.
 
+Cada evento devuelto por `history_events` lleva `task_id` de la cinta completa, también los eventos
+ordinarios de sentencia y salida. La identidad no se infiere de la tarea seleccionada al consultar:
+un evento conserva quién lo emitió aunque otra tarea sea la punta al leer la ventana. El horizonte
+define el único rango consultable; la API rechaza ventanas mayores de 4096 sin leer y recortar una
+colección completa.
+
 Las consultas `query_frame`, `query_variables` y `query_page` admiten `task_id`; la VM ofrece una copia de inspección
 del contexto seleccionado sin cambiar la agenda original. `task` no es alias y se rechaza, igual que un `task_id` con
 tipo distinto de entero sin signo. `query_page` admite offset directo o cursor exclusivo, y liga sus cursores también a
@@ -381,7 +387,15 @@ o resolver sombreado. `object_fields` reconoce
 objetos, arreglos, vectores y diccionarios; indexed distingue sus índices de campos con nombre.
 Los registros de lectura y las imágenes temporales no se confunden con el estado vivo.
 
+`debug_state` admite `event` y `task_id` juntos para leer la máquina de esa tarea en un evento retenido.
+Exige ambos datos para una lectura histórica, rechaza identidades y posiciones ajenas, y devuelve
+`source: null` porque la fuente viva corresponde a la parada, no a ese evento pasado. La inspección
+restaura una copia temporal y no cambia cursor, agenda ni continuación. `start_frame` y `frame_count`
+acotan los marcos; las páginas de variables de `query_page` siguen ligadas a ejecución, revisión,
+evento, tarea, consulta, destino y tamaño. La API no expone contenido de colas de canales; los eventos
+solo identifican operaciones, canal y tarea.
+
 Verificación dirigida adicional: `cargo test --locked -p pseudolearn_api --test debug_control`,
-`--test history_events`, `--test inspection_expression` y `--test lsp_operations` en invocaciones
-separadas. Estas órdenes son los targets disponibles; su aprobación depende de la evidencia de
-cada campaña y no se deduce de haberlas documentado.
+`--test history_events`, `--test state_pages`, `--test inspection_expression` y `--test lsp_operations`
+en invocaciones separadas. Estas órdenes son los targets disponibles; su aprobación depende de la
+evidencia de cada campaña y no se deduce de haberlas documentado.

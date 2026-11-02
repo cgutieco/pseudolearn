@@ -7,6 +7,7 @@ import '../application/diagram/diagram_projection.dart';
 import '../application/editor/editor_cubit.dart';
 import '../application/editor/help/syntax_help_cubit.dart';
 import '../application/execution/execution_cubit.dart';
+import '../application/execution/execution_history_cubit.dart';
 import '../application/export/export_cubit.dart';
 import '../application/knowledge/bank/exercise_bank_cubit.dart';
 import '../application/knowledge/diagram_block_resolver.dart';
@@ -25,6 +26,8 @@ import '../application/settings/settings_cubit.dart';
 import '../application/sync/sync_cubit.dart';
 import '../application/trace/trace_cubit.dart';
 import 'app_dependencies.dart';
+import '../engine/execution/task_flow_projection.dart';
+import '../engine/execution/task_structure_projection.dart';
 
 List<BlocProvider> buildAppProviders(AppDependencies dependencies) {
   return [
@@ -37,8 +40,8 @@ List<BlocProvider> buildAppProviders(AppDependencies dependencies) {
 }
 
 List<BlocProvider> createDocumentProviders(AppDependencies dependencies) {
-  final execution = ExecutionCubit(
-    execution: dependencies.createProgramExecution(),
+  final (:execution, :executionHistory) = _createExecutionProviders(
+    dependencies,
   );
   return [
     BlocProvider<LibraryCubit>(
@@ -51,6 +54,7 @@ List<BlocProvider> createDocumentProviders(AppDependencies dependencies) {
     createEditorProvider(dependencies),
     createSyntaxHelpProvider(dependencies),
     BlocProvider<ExecutionCubit>(create: (_) => execution),
+    BlocProvider<ExecutionHistoryCubit>(create: (_) => executionHistory),
     BlocProvider<DiagramCubit>(
       create: (_) => DiagramCubit(
         flowchartBuilder: dependencies.flowchartBuilder,
@@ -69,6 +73,21 @@ List<BlocProvider> createDocumentProviders(AppDependencies dependencies) {
     ),
     createSyncProvider(dependencies),
   ];
+}
+
+({ExecutionCubit execution, ExecutionHistoryCubit executionHistory})
+_createExecutionProviders(AppDependencies dependencies) {
+  final session = dependencies.createObservableExecutionSession?.call();
+  final execution = ExecutionCubit(
+    execution: session?.execution ?? dependencies.createProgramExecution(),
+  );
+  final history = ExecutionHistoryCubit(
+    executionStates: execution.stream,
+    observer: session?.observer,
+    flowProjector: const TaskFlowProjection(),
+    structureProjector: const TaskStructureProjection(),
+  );
+  return (execution: execution, executionHistory: history);
 }
 
 BlocProvider<EditorCubit> createEditorProvider(AppDependencies dependencies) {

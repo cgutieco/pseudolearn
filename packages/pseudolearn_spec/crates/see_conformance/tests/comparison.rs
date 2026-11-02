@@ -145,19 +145,24 @@ fn compares_lexical_tokens_and_rejects_missing_or_misaligned_tokens() {
 #[test]
 fn source_event_expectations_reject_missing_or_mismatched_provenance() {
     let expected = json!({"eventos": [
-        {"clase": "statement_entered", "linea": 2, "fuente": "nodo_programa"},
-        {"clase": "output", "linea": 2, "fuente": "nodo_programa"}
+        {"clase": "statement_entered", "linea": 2, "task_id": 0, "fuente": "nodo_programa"},
+        {"clase": "output", "linea": 2, "task_id": 0, "fuente": "nodo_programa"}
     ]});
     let actual = json!({"events": [
-        {"class": "statement_entered", "line": 2, "source": {"revision_id": "r1", "node_id": "n1", "span": {"start_byte": "0", "end_byte": "1"}}},
-        {"class": "output", "line": 2, "source": {"revision_id": "r1", "node_id": "n1", "span": {"start_byte": "0", "end_byte": "1"}}}
+        {"class": "statement_entered", "line": 2, "task_id": 0, "source": {"revision_id": "r1", "node_id": "n1", "span": {"start_byte": "0", "end_byte": "1"}}},
+        {"class": "output", "line": 2, "task_id": 0, "source": {"revision_id": "r1", "node_id": "n1", "span": {"start_byte": "0", "end_byte": "1"}}}
     ]});
     assert!(see_conformance::comparison::compare(&expected, &actual).is_empty());
     let wrong = json!({"events": [
-        {"class": "statement_entered", "line": 2, "source": {"revision_id": "r1", "node_id": "n1", "span": {"start_byte": "0", "end_byte": "1"}}},
-        {"class": "output", "line": 2, "source": {"revision_id": "r1", "node_id": "n2", "span": {"start_byte": "0", "end_byte": "1"}}}
+        {"class": "statement_entered", "line": 2, "task_id": 0, "source": {"revision_id": "r1", "node_id": "n1", "span": {"start_byte": "0", "end_byte": "1"}}},
+        {"class": "output", "line": 2, "task_id": 1, "source": {"revision_id": "r1", "node_id": "n2", "span": {"start_byte": "0", "end_byte": "1"}}}
     ]});
     assert!(!see_conformance::comparison::compare(&expected, &wrong).is_empty());
+    let wrong_task = json!({"events": [
+        {"class": "statement_entered", "line": 2, "task_id": 0, "source": {"revision_id": "r1", "node_id": "n1", "span": {"start_byte": "0", "end_byte": "1"}}},
+        {"class": "output", "line": 2, "task_id": 1, "source": {"revision_id": "r1", "node_id": "n1", "span": {"start_byte": "0", "end_byte": "1"}}}
+    ]});
+    assert!(!see_conformance::comparison::compare(&expected, &wrong_task).is_empty());
 }
 
 #[test]

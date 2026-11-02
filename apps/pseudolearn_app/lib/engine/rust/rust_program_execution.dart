@@ -12,6 +12,7 @@ import 'rust_analysis_api.dart';
 import 'rust_effect_gate.dart';
 import 'rust_execution_api.dart';
 import 'rust_execution_event_effects.dart';
+import 'rust_execution_resource.dart';
 import 'rust_execution_readers.dart';
 import 'rust_execution_step_builder.dart';
 import 'rust_focus_tracker.dart';
@@ -51,8 +52,9 @@ final class RustProgramExecution implements ProgramExecution {
     RustTransport transport, {
     SimulatedCapabilities capabilities = SimulatedCapabilities.none,
     bool autoResolveEffects = true,
+    RustExecutionResource? observationResource,
   }) : _analysis = RustAnalysisApi(transport),
-       _execution = RustExecutionApi(transport),
+       _execution = RustExecutionApi(transport, resource: observationResource),
        _watch = RustWatchRows(RustStateApi(transport)),
        _gate = RustEffectGate(transport, capabilities, autoResolveEffects);
 
@@ -90,7 +92,7 @@ final class RustProgramExecution implements ProgramExecution {
     _offsets = offsets;
     _view = view;
     _tracker = RustFocusTracker(view);
-    _executionId = _execution.start(handle, host: _gate.hostDocument);
+    _executionId = _execution.start(handle, _gate.hostDocument, view.revision);
     return _snapshot();
   }
 
@@ -147,7 +149,7 @@ final class RustProgramExecution implements ProgramExecution {
     _last = null;
     _failureReason = null;
     _eventEffects.clear();
-    if (execution != null) _execution.cancel(execution);
+    _execution.stop(execution);
     if (handle != null) _analysis.release(handle);
   }
 

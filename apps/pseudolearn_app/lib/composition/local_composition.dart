@@ -159,6 +159,8 @@ AppDependencies _assembleDependencies(_DependencyAssembly assembly) {
     syncCoordinator: assembly.sync.coordinator,
     programAnalyzer: assembly.engine.analyzer,
     createProgramExecution: assembly.engine.createProgramExecution,
+    createObservableExecutionSession:
+        assembly.engine.createObservableExecutionSession,
     flowchartBuilder: assembly.engine.flowchartBuilder,
     structogramBuilder: assembly.engine.structogramBuilder,
     classDiagramBuilder: assembly.engine.classDiagramBuilder,

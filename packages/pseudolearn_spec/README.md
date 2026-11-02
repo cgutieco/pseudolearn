@@ -91,8 +91,8 @@ El inventario 2026 deriva palabras reservadas de `vocabulary`, operadores de las
 expresión y asignación, e incorporadas de `functions` y `capabilityLibrary`. Las 41 agrupaciones
 pedagógicas se declaran como datos con sus producciones fuente; no se infieren de la EBNF. Las 129
 identidades de palabras reservadas, 17 operadores y 90 identidades incorporadas se explican en el
-contexto de una ficha mediante partes es/en. La matriz contiene 410 filas identidad/rol: 139 de
-keyword, 20 de operador, 90 de incorporada, 15 de token no alfabético y 146 de rol. Los alias
+contexto de una ficha mediante partes es/en. La matriz contiene 413 filas identidad/rol: 141 de
+keyword, 20 de operador, 90 de incorporada, 15 de token no alfabético y 147 de rol. Los alias
 conservan la identidad de su entrada fuente y no generan filas adicionales. Las fichas se
 redactan en ambos idiomas desde sus reglas ancladas; antes de mantener el inventario se revisan
 texto, identidades, disponibilidad, anclajes y la matriz completa. Cada elemento activo debe llegar

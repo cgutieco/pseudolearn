@@ -18,7 +18,7 @@ Future<Map<String, Object?>> runSnapshotScenario(
   try {
     final analysis = analysisApi.report(handle);
     if (analysis['tree'] != true) return {'error': 'analysis'};
-    final execution = executionApi.start(handle);
+    final execution = executionApi.start(handle, null, null);
     final retention = input['retention_events'];
     if (retention is int) {
       transport.call('set_retention', {

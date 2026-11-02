@@ -139,3 +139,56 @@ fn breakpoints_are_resolved_without_sliding_to_another_statement() -> Result<(),
     assert_eq!(stopped.pointer("/value/output"), Some(&json!("")));
     Ok(())
 }
+
+#[test]
+fn debug_state_reads_a_historical_task_without_moving_the_live_execution() -> Result<(), String> {
+    let mut session = ApiSession::default();
+    let resource = execution(
+        &mut session,
+        "Algoritmo Probe\nDefinir value Como Entero <- 41;\nEscribir value + 1;\nFinAlgoritmo\n",
+    )?;
+    session.call(
+        "debug_configure",
+        &json!({"resource":resource,"breakpoints":[]}),
+    );
+    let live = session.call("advance", &json!({"resource":resource,"batch_size":64}));
+    let horizon = session.call("horizon", &json!({"resource":resource}));
+    let historical = session.call(
+        "debug_state",
+        &json!({"resource":resource,"event":0,"task_id":0,"start_frame":0,"frame_count":1}),
+    );
+    assert_eq!(
+        historical.pointer("/value/event"),
+        Some(&json!(0)),
+        "{historical}"
+    );
+    assert_eq!(
+        historical.pointer("/value/total_frames"),
+        Some(&json!(1)),
+        "{historical}"
+    );
+    assert_eq!(
+        session.call("horizon", &json!({"resource":resource})),
+        horizon
+    );
+    assert_eq!(
+        session
+            .call("advance", &json!({"resource":resource,"batch_size":1}))
+            .pointer("/value/output"),
+        live.pointer("/value/output")
+    );
+    let out_of_range = session.call(
+        "debug_state",
+        &json!({"resource":resource,"event":4097,"task_id":0}),
+    );
+    assert_eq!(
+        out_of_range.pointer("/failure/family"),
+        Some(&json!("usage"))
+    );
+    let missing_task = session.call("debug_state", &json!({"resource":resource,"event":0}));
+    assert_eq!(
+        missing_task.pointer("/failure/family"),
+        Some(&json!("usage"))
+    );
+    Ok(())
+}

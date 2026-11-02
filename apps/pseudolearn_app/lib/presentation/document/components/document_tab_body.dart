@@ -5,6 +5,8 @@ import '../../../application/diagram/diagram_state.dart';
 import '../../../application/editor/editor_cubit.dart';
 import '../../../application/editor/editor_state.dart';
 import '../../../application/execution/execution_cubit.dart';
+import '../../../application/execution/execution_history_cubit.dart';
+import '../../../application/execution/execution_history_state.dart';
 import '../../../application/execution/execution_state.dart';
 import '../../../application/export/export_cubit.dart';
 import '../../../application/export/export_state.dart';
@@ -14,6 +16,7 @@ import '../../../application/trace/trace_cubit.dart';
 import '../../../application/trace/trace_state.dart';
 import '../../../domain/model/profiles/syntax_profile_id.dart';
 import '../../diagram/flowchart_tab_view.dart';
+import '../../execution/task_projections_tab_view.dart';
 import '../../export/export_tab_view.dart';
 import '../../trace/trace_table_tab_view.dart';
 import 'companion_layout.dart';
@@ -75,11 +78,23 @@ final class DocumentTabContent extends StatelessWidget {
         execState: execState,
         isSharingScreen: paneLayout != null,
       ),
+      DocumentTabKind.tasks => const _TaskProjectionsTabItem(),
       DocumentTabKind.trace => const _TraceTabItem(),
       DocumentTabKind.equivalentCode => _ExportTabItem(
         editorState: editorState,
       ),
     };
+  }
+}
+
+final class _TaskProjectionsTabItem extends StatelessWidget {
+  const _TaskProjectionsTabItem();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<ExecutionHistoryCubit, ExecutionHistoryState>(
+      builder: (context, state) => TaskProjectionsTabView(state: state),
+    );
   }
 }
 

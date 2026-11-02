@@ -24,10 +24,17 @@ impl ExecutionResource {
         if backward {
             events.reverse();
         }
-        Ok(
-            json!({"events":events.iter().map(|event| self.sources.event(&event.event)).collect::<Vec<_>>(),
-            "first":lower,"count":length,"horizon":self.horizon()}),
-        )
+        let events = events
+            .iter()
+            .map(|historical| {
+                let mut event = self.sources.event(&historical.event);
+                if let Some(fields) = event.as_object_mut() {
+                    fields.insert("task_id".to_owned(), json!(historical.task));
+                }
+                event
+            })
+            .collect::<Vec<_>>();
+        Ok(json!({"events":events,"first":lower,"count":length,"horizon":self.horizon()}))
     }
 
     fn boundary_event(

@@ -24,7 +24,7 @@ Future<Map<String, Object?>> runDirectExecution(
     final statementLimit = input['statement_limit'] as int? ?? 0;
     execution = RustExecutionApi(
       transport,
-    ).start(handle, statementLimit: statementLimit);
+    ).start(handle, null, null, statementLimit: statementLimit);
     return {
       ..._DirectRun(
         transport,

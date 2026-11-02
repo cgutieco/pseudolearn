@@ -117,11 +117,11 @@ Cada punto incluye tareas en orden SPEC-FIRST. «Documentar» exige mover los po
 
 ### PG-B.02 · Tres proyecciones y estado paginado
 
-- [ ] `PG-B.02.01` Contrato: definir datos públicos de las tres superficies y navegación tarea/marco/evento/rango. Auditar `history_events`, `debug_state`, `query_page` y horizonte antes de proponer API nueva. Si cola/estado de canal o ámbito no se consulta, especificar consulta acotada o dato observable faltante; no reconstruir mensajes desde eventos que no los contienen.
-- [ ] `PG-B.02.02` Casos: B02/B03/B05/B08/B09/B13/B14; incluir ámbito vacío, árbol anidado, unión sin espera, ausencia de más páginas, página vacía, horizonte expulsado, cursor de otra tarea/revisión/evento y 4096/4097 elementos solicitados.
-- [ ] `PG-B.02.03` Tests: modelos geométricos y estado derivado; orden estable de nodos/aristas, conexiones sin cruzar cajas ajenas, hit testing, foco y leyenda; widgets compactos y accesibilidad sin depender solo de color. Negativos de toda ampliación del verificador de cobertura.
-- [ ] `PG-B.02.04` Código: implementar geometría/proyección pura en adaptadores y filtrado/paginación en estado de aplicación; pintores/widgets consumen datos preparados. Una espera enlaza a causa/objetivo; una creación/unión no se pinta como bifurcación alternativa ni como control entre cuerpos locales. Eje lógico sin duración física inventada.
-- [ ] `PG-B.02.05` Documentación: leyenda de extensiones didácticas, rótulos es/en, matriz construcción→flujo/estructura/evento/tabla/ayuda con test y regla; no aplicabilidad con motivo. Mantener formas estáticas de PG-A y bloqueo de exportación equivalente cuando no preserva semántica.
+- [x] `PG-B.02.01` Contrato: definir datos públicos de las tres superficies y navegación tarea/marco/evento/rango. Auditar `history_events`, `debug_state`, `query_page` y horizonte antes de proponer API nueva. Si cola/estado de canal o ámbito no se consulta, especificar consulta acotada o dato observable faltante; no reconstruir mensajes desde eventos que no los contienen.
+- [x] `PG-B.02.02` Casos: B02/B03/B05/B08/B09/B13/B14; incluir ámbito vacío, árbol anidado, unión sin espera, ausencia de más páginas, página vacía, horizonte expulsado, cursor de otra tarea/revisión/evento y 4096/4097 elementos solicitados.
+- [x] `PG-B.02.03` Tests: modelos geométricos y estado derivado; orden estable de nodos/aristas, conexiones sin cruzar cajas ajenas, hit testing, foco y leyenda; widgets compactos y accesibilidad sin depender solo de color. Negativos de toda ampliación del verificador de cobertura.
+- [x] `PG-B.02.04` Código: implementar geometría/proyección pura en adaptadores y filtrado/paginación en estado de aplicación; pintores/widgets consumen datos preparados. Una espera enlaza a causa/objetivo; una creación/unión no se pinta como bifurcación alternativa ni como control entre cuerpos locales. Eje lógico sin duración física inventada.
+- [x] `PG-B.02.05` Documentación: leyenda de extensiones didácticas, rótulos es/en, matriz construcción→flujo/estructura/evento/tabla/ayuda con test y regla; no aplicabilidad con motivo. Mantener formas estáticas de PG-A y bloqueo de exportación equivalente cuando no preserva semántica.
 - [ ] `PG-B.02.06` Verificar: tests de escenas/estado/widgets y cobertura; demostrar consultas de rango, número de elementos leídos acotado, caché con límite, cambio de tarea sin movimiento de agenda y navegación con revisión correcta. No basta recortar una colección completa después de leerla.
 
 ### PG-B.03 · Paso global y paso de tarea
@@ -382,12 +382,12 @@ Tabla esperada/observada por evento en el tracker de la app:
 | PG-B.01.04 | Cumplido | `execution_task_context.dart`, `execution_stack_frame.dart`, tracker/contextos; `execution_queries.rs`, `state_pages.rs` | Orden global, pila/foco por tarea, consulta histórica y errores tipados; selección no reanuda tarea. |
 | PG-B.01.05 | Cumplido | README de app/API y `api.state.query.md` | Decisiones y vida de identidades autosustentables; sin cambiar versión/estado ni agregar campos `cambio`. |
 | PG-B.01.06 | No cumplido | Comandos y salidas en .01.06 | Tests dirigidos, límites de app y arquitectura pasan; el verificador Rust completo conserva dos `SIZE-NESTING` preexistentes. Conformidad SEE falla por `API.PROGRAM.VIEW` vencido y el reanclaje queda bloqueado por `API.ANALYZE@1.0.0` inmutable. No se cierra PG-B.01 con `PHASE-GREEN`. |
-| PG-B.02.01 | — | — | Sin ejecutar |
-| PG-B.02.02 | — | — | Sin ejecutar |
-| PG-B.02.03 | — | — | Sin ejecutar |
-| PG-B.02.04 | — | — | Sin ejecutar |
-| PG-B.02.05 | — | — | Sin ejecutar |
-| PG-B.02.06 | — | — | Sin ejecutar |
+| PG-B.02.01 | Cumplido | `API.EXECUTE` R7/R8; C13/C14; README API/app | Historial con tarea emisora, estado histórico por evento/tarea y límites; consulta de cola de canal no disponible, declarada como dato no observable. El reanclaje oficial queda pendiente de la puerta SEE registrada en .02.06. |
+| PG-B.02.02 | Cumplido | `history_events.rs`, `debug_control.rs`, `state_pages.rs`; pruebas de proyección/cubit | Casos de evento y página vacíos, selección vencida, árbol anidado/parcial, unión, ventana 4096/4097 y cursores por evento, tamaño, sesión y tarea. |
+| PG-B.02.03 | Cumplido | Pruebas espejo `test/engine/execution/`, `test/application/execution/`, `test/presentation/execution/` | Orden, geometría, relaciones, hit testing, recorte, árbol, límites de horizonte y vista compacta con semántica accesible; el verificador de cobertura no se amplía. |
+| PG-B.02.04 | Cumplido | `ExecutionHistoryCubit`, controladores de ventana/consulta, proyecciones y superficies de tareas | Puertos de observación y control separados; vistas consumen escenas preparadas, lectura/cache acotadas; selección no bombea agenda; ejes son índices lógicos y espera/creación no se dibujan como control alternativo. |
+| PG-B.02.05 | Cumplido | README app, matriz construcción→superficie/tabla/ayuda; ARB es/en | Justifica tabla de trazas y ayuda como no aplicables por depender de foco sintáctico y no añadir gramática; conserva PG-A estático y declara cola de canal fuera de los datos expuestos. |
+| PG-B.02.06 | No cumplido | Salidas dirigidas en 11.3 | Las pruebas dirigidas de app/Rust, análisis, límites, arquitectura, puente y corpus pasan. `cargo xtask verify` de engine encuentra una expectativa vieja en `program_view`; el de spec llega a `cargo deny`, que no puede actualizar avisos sin red. Conformance de `API.EXECUTE` falla por hash obsoleto y `lock --refresh API.EXECUTE` se detiene en `SEE-HASH: immutable version API.ANALYZE@1.0.0`. No se cambia otra especificación congelada ni se cierra con `PHASE-GREEN`. |
 | PG-B.03.01 | — | — | Sin ejecutar |
 | PG-B.03.02 | — | — | Sin ejecutar |
 | PG-B.03.03 | — | — | Sin ejecutar |
@@ -453,7 +453,7 @@ El primer intento del target Rust con `native` agotó el espacio temporal de com
 
 | Puerta | Evidencia que debe existir antes de marcarla |
 |---|---|
-| PG-B.C01 | Mensaje del 2026-11-02 autoriza exclusivamente PG-B.01; resuelve la dependencia PG-3 abierta solo para ese punto |
+| PG-B.C01 | La primera instrucción del 2026-11-02 autorizó PG-B.01 con PG-3 abierta para ese punto; una instrucción directa posterior autorizó una iteración de PG-B.02 y no PG-B.03 |
 | PG-B.C02 | Revisión/aprobación del plan por persona; no confundir entrega del archivo con revisión |
 | PG-B.C03 | Diff y anclajes selectivos: especificación→casos→tests→código; estados/versiones conservados |
 | PG-B.C04 | Regla→caso/propiedad→vínculo→sujeto; ningún caso esperado capturado sin revisión |
@@ -467,4 +467,32 @@ El primer intento del target Rust con `native` agotó el espacio temporal de com
 | PG-B.C12 | Autorización aplicable, skill commit-message, hash y comprobación de push ordinario a rama única |
 | PG-B.C13 | Resumen por tarea y general, pendientes justificados, informe y parada antes de PG-7 |
 
-Revisión Git final pendiente. Las verificaciones dirigidas ejecutadas para PG-B.01 constan arriba; el punto permanece abierto por .01.06 y no alcanza `PHASE-GREEN`. No se modificaron otros puntos de §4. No hubo commit ni push. Se informa el resultado y se para antes de PG-B.02 (`PHASE-STOP`).
+### 11.3 Estado de ejecución de PG-B.02
+
+La instrucción directa del 2026-11-02 autorizó una iteración completa de `PG-B.02`, pidió no solicitar aclaraciones y usar la opción recomendada. Se trabajó únicamente en `.02.01–.06`, en `feature/agregar-ruta-de-especificacion`, con `HEAD` `9cc05e39dec57fadfe6bb57c672cb07c1b0ce756`. No hubo commit ni push. PG-B.01 conserva su estado histórico y su puerta `.01.06` abierta.
+
+#### Decisiones de implementación
+
+- Se separó el puerto de observación del puerto de control de ejecución y ambos usan la misma sesión Rust. La observación consulta el historial por rango y el estado por tarea, evento y marco; no altera cursor ni agenda.
+- La ventana de historial y su caché tienen un tope de 4096 eventos. La vista de eventos muestra páginas de marcos y valores con cursores asociados a la misma sesión, revisión, tarea y evento. Al expulsarse el evento elegido, la selección avanza al primer evento retenido.
+- Las tres superficies comparten ese estado paginado: flujo por tarea con marcadores y relaciones de creación/espera; estructura jerárquica con uniones asignadas a la tarea emisora; y eventos con selección de tarea, marco y página de valores. Los ejes representan índices de eventos, sin inferir duración.
+- Se expone la atribución `task_id` en cada evento histórico y se amplía `debug_state` para leer un estado histórico con `event` y `task_id`. No se consultan colas internas de canales; se etiquetan como no observables y no se reconstruyen mensajes.
+- Se mantuvieron las formas estáticas de PG-A, se añadieron etiquetas es/en y semántica accesible, y se usaron tokens del sistema de diseño para medidas de presentación.
+- La matriz construcción→flujo/estructura/eventos/tabla/ayuda justifica como no aplicables la tabla de trazas sintácticas y la ayuda contextual: estas superficies describen eventos de ejecución y no añaden una construcción del lenguaje.
+- Se editaron R7/R8 y se añadieron C13/C14 en `API.EXECUTE` sin cambiar identidad, estado ni versión. El reanclaje no se completó porque el refresco se bloquea en `API.ANALYZE@1.0.0` inmutable.
+
+#### Verificaciones ejecutadas
+
+| Área | Verificación y resultado |
+|---|---|
+| Aplicación | Tests de arquitectura, flujo, estructura y vista compacta: 35 pasan. El test aislado de `ExecutionHistoryCubit`: 6 pasan. |
+| Aplicación | `flutter analyze --fatal-infos --fatal-warnings`, `tool/check_limits.dart`, `tool/check_content.dart`, `tool/check_design_system.dart` y `tool/check_syntax_coverage.dart`: pasan; cobertura de sintaxis 78/78. |
+| Aplicación | `bash tool/bridge.sh check`: termina con salida 0 y sin diferencia entre generaciones. El codegen emite avisos no fatales al no poder escribir el log global de telemetría. `bash tool/test_bridge.sh`: build debug/release y 20 tests FFI pasan. |
+| API Rust | `history_events`, `debug_control` y `state_pages`: 16 tests pasan; incluyen atribución de tarea, horizonte, lectura histórica sin mover agenda, tamaños/cursor inválidos y cursor cruzado de tarea. Clippy estricto dirigido y `cargo fmt --all -- --check`: pasan. |
+| Especificaciones | `see validate`: 196 especificaciones; `see export --check`: pasa. Los 15 tests de comparación dirigidos pasan. El test de matriz de ayuda detectó conteos desactualizados: se actualizó el esperado y README a 413 filas (141 keyword y 147 role), y el test pasa. |
+| Espacios de trabajo | `cargo xtask verify` de spec ejecuta Clippy y todos los tests correctamente; termina con `cargo deny check`, que intenta actualizar la base RustSec y falla porque el entorno no resuelve `github.com`. El intento con una copia temporal escribible del caché llega al mismo límite de red. |
+| Espacios de trabajo | `CARGO_BUILD_JOBS=1 cargo xtask verify` de engine evita la falta de espacio del primer intento y ejecuta los tests hasta `program_view`; falla `view_lists_units_in_source_order_with_inheritance_and_overrides`, cuyo esperado omite `class_node_id` y `base_node_id` presentes en la respuesta. El test y la implementación de `program_view` no pertenecen al diff; la discrepancia coincide con la observación previa de `API.PROGRAM.VIEW`. |
+| Conformidad | `see conform --subject engine --only API.EXECUTE` falla `SEE-STALE: engine evidence corpus hash mismatch for API.EXECUTE`. `see lock --refresh API.EXECUTE` falla `SEE-HASH: immutable version API.ANALYZE@1.0.0`; no se editó a mano el lock ni otro contrato congelado. |
+| Estado Git | `git diff --check`: pasa. Rama única conservada; cambios sin commit ni publicación. |
+
+`PG-B.02.01–.05` quedan implementados. `.02.06` queda **No cumplido** por la conformidad/anclaje SEE y las puertas completas de workspace descritas arriba; por ello PG-B.02 no se declara `PHASE-GREEN`. PG-B.03 no se inició. La fase previa PG-B.01 también sigue abierta por `.01.06`. Se informa y se para aquí (`PHASE-STOP`).

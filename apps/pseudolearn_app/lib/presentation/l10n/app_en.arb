@@ -199,6 +199,126 @@
     "description": "Tab label for the diagram tab and its notation switch"
   },
   "tabTrace": "Trace table",
+  "tabTasks": "Tasks",
+  "executionProjectionFlow": "Local flow",
+  "executionProjectionStructure": "Creation and joins",
+  "executionProjectionEvents": "Events and state",
+  "executionHistoryRange": "Events {first}–{last} · current {current}",
+  "@executionHistoryRange": {
+    "description": "Visible event range and the last consumed event",
+    "placeholders": {
+      "first": {"type": "int"},
+      "last": {"type": "int"},
+      "current": {"type": "int"}
+    }
+  },
+  "executionPreviousRange": "Previous event range",
+  "executionNextRange": "Next event range",
+  "executionFollowLive": "Follow current event",
+  "executionFlowAxis": "Logical event index; spacing does not represent elapsed time",
+  "executionFlowCreationLegend": "Task creation relation",
+  "executionFlowWaitLegend": "Wait linked to its cause and target",
+  "executionFlowConnector": "Event {eventIndex}, task {taskId}, wait cause {cause}, target {targetId}",
+  "@executionFlowConnector": {
+    "placeholders": {
+      "eventIndex": {"type": "int"},
+      "taskId": {"type": "int"},
+      "cause": {"type": "String"},
+      "targetId": {"type": "int"}
+    }
+  },
+  "executionTaskLane": "Task {taskId}",
+  "@executionTaskLane": {
+    "description": "Label for one task lane in the event flow",
+    "placeholders": {"taskId": {"type": "int"}}
+  },
+  "executionEventSemantics": "Event {eventIndex}, task {taskId}, {eventClass}, line {line}",
+  "@executionEventSemantics": {
+    "description": "Accessible label for an event marker",
+    "placeholders": {
+      "eventIndex": {"type": "int"},
+      "taskId": {"type": "int"},
+      "eventClass": {"type": "String"},
+      "line": {"type": "int"}
+    }
+  },
+  "executionStructureCreated": "Task {taskId} created by task {parentId} in scope {scopeId}",
+  "@executionStructureCreated": {
+    "description": "Creation relationship between tasks",
+    "placeholders": {
+      "taskId": {"type": "int"},
+      "parentId": {"type": "int"},
+      "scopeId": {"type": "int"}
+    }
+  },
+  "executionStructureRoot": "Root task",
+  "executionStructureParent": "Created by task {parentId}",
+  "@executionStructureParent": {
+    "placeholders": {"parentId": {"type": "int"}}
+  },
+  "executionStructureScope": "Scope {scopeId}",
+  "@executionStructureScope": {
+    "placeholders": {"scopeId": {"type": "int"}}
+  },
+  "executionStructureRelationUnavailable": "The parent task is outside retained history.",
+  "executionStatusCreated": "Created",
+  "executionStatusReady": "Ready",
+  "executionStatusRunning": "Running",
+  "executionStatusSuspended": "Suspended",
+  "executionStatusCompleted": "Completed",
+  "executionStatusCancellationRequested": "Cancellation requested",
+  "executionStructureStatus": "Status: {status}",
+  "@executionStructureStatus": {
+    "description": "Current observed status for a task",
+    "placeholders": {"status": {"type": "String"}}
+  },
+  "executionJoinLabel": "Task {taskId} joined children at event {eventIndex}: {outcome}",
+  "@executionJoinLabel": {
+    "description": "Scope join marker on the parent task",
+    "placeholders": {
+      "taskId": {"type": "int"},
+      "eventIndex": {"type": "int"},
+      "outcome": {"type": "String"}
+    }
+  },
+  "executionHistoryStartsAt": "Retained history begins at event {eventIndex}",
+  "@executionHistoryStartsAt": {
+    "description": "Explains that older task creation events have expired",
+    "placeholders": {"eventIndex": {"type": "int"}}
+  },
+  "executionTaskSelector": "Selected task",
+  "executionFrameSelector": "Selected frame",
+  "executionPreviousFrames": "Previous frame page",
+  "executionNextFrames": "Next frame page",
+  "executionFrameLabel": "Frame {frameId}: {name}",
+  "@executionFrameLabel": {
+    "description": "Frame selection option",
+    "placeholders": {
+      "frameId": {"type": "int"},
+      "name": {"type": "String"}
+    }
+  },
+  "executionVariablesLabel": "Variables at event {eventIndex}, task {taskId}, frame {frameId}",
+  "@executionVariablesLabel": {
+    "description": "Heading for the selected paginated frame state",
+    "placeholders": {
+      "eventIndex": {"type": "int"},
+      "taskId": {"type": "int"},
+      "frameId": {"type": "int"}
+    }
+  },
+  "executionNoVariables": "This frame has no variables.",
+  "executionValueUndefined": "Undefined",
+  "executionValueNull": "Null",
+  "executionValueReference": "Reference {identity}",
+  "@executionValueReference": {
+    "placeholders": {"identity": {"type": "int"}}
+  },
+  "executionLoadMoreValues": "Load next page",
+  "executionChannelStateUnavailable": "Channel events show operations and channel identity. The API does not expose queue contents or message values.",
+  "executionHistoryEmpty": "Run a program to inspect its task events.",
+  "executionObservationUnavailable": "Execution observation is unavailable for this session.",
+  "executionHistoryError": "The selected event or range is outside retained history or could not be read.",
   "@tabTrace": {
     "description": "Tab label for trace table"
   },

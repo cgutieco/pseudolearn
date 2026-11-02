@@ -1,16 +1,20 @@
 import 'rust_analysis_api.dart';
+import 'rust_execution_resource.dart';
 import 'rust_transport.dart';
 import 'rust_wire_models.dart';
 
 final class RustExecutionApi {
   final RustTransport _transport;
+  final RustExecutionResource? _resource;
 
-  const RustExecutionApi(this._transport);
+  const RustExecutionApi(this._transport, {RustExecutionResource? resource})
+    : _resource = resource;
 
   int start(
-    RustAnalysisHandle handle, {
-    int statementLimit = 0,
+    RustAnalysisHandle handle,
     Map<String, Object?>? host,
+    String? revision, {
+    int statementLimit = 0,
   }) {
     final started =
         _transport.call('start', {
@@ -22,7 +26,12 @@ final class RustExecutionApi {
               'host': ?host,
             })
             as Map<String, Object?>;
-    return started['resource'] as int;
+    final execution = started['resource'] as int;
+    final resource = _resource;
+    if (resource != null && revision != null) {
+      resource.open(execution, revision);
+    }
+    return execution;
   }
 
   RustBatch advance(int execution, int batchSize) {
@@ -47,7 +56,10 @@ final class RustExecutionApi {
     });
   }
 
-  void cancel(int execution) {
-    _transport.call('cancel', {'resource': execution});
+  void stop(int? execution) {
+    if (execution != null) {
+      _transport.call('cancel', {'resource': execution});
+    }
+    _resource?.clear();
   }
 }

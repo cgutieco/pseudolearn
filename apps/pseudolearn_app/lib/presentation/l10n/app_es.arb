@@ -199,6 +199,126 @@
     "description": "Pestaña de diagramas, con su conmutador de notación"
   },
   "tabTrace": "Prueba de escritorio",
+  "tabTasks": "Tareas",
+  "executionProjectionFlow": "Flujo local",
+  "executionProjectionStructure": "Creación y unión",
+  "executionProjectionEvents": "Eventos y estado",
+  "executionHistoryRange": "Eventos {first}–{last} · actual {current}",
+  "@executionHistoryRange": {
+    "description": "Rango visible de eventos y último evento consumido",
+    "placeholders": {
+      "first": {"type": "int"},
+      "last": {"type": "int"},
+      "current": {"type": "int"}
+    }
+  },
+  "executionPreviousRange": "Rango de eventos anterior",
+  "executionNextRange": "Rango de eventos siguiente",
+  "executionFollowLive": "Seguir el evento actual",
+  "executionFlowAxis": "Índice lógico del evento; el espacio no representa tiempo transcurrido",
+  "executionFlowCreationLegend": "Relación de creación de tarea",
+  "executionFlowWaitLegend": "Espera enlazada con su causa y objetivo",
+  "executionFlowConnector": "Evento {eventIndex}, tarea {taskId}, causa de espera {cause}, objetivo {targetId}",
+  "@executionFlowConnector": {
+    "placeholders": {
+      "eventIndex": {"type": "int"},
+      "taskId": {"type": "int"},
+      "cause": {"type": "String"},
+      "targetId": {"type": "int"}
+    }
+  },
+  "executionTaskLane": "Tarea {taskId}",
+  "@executionTaskLane": {
+    "description": "Rótulo de una tarea en el flujo de eventos",
+    "placeholders": {"taskId": {"type": "int"}}
+  },
+  "executionEventSemantics": "Evento {eventIndex}, tarea {taskId}, {eventClass}, línea {line}",
+  "@executionEventSemantics": {
+    "description": "Rótulo accesible de un marcador de evento",
+    "placeholders": {
+      "eventIndex": {"type": "int"},
+      "taskId": {"type": "int"},
+      "eventClass": {"type": "String"},
+      "line": {"type": "int"}
+    }
+  },
+  "executionStructureCreated": "Tarea {taskId} creada por tarea {parentId} en el ámbito {scopeId}",
+  "@executionStructureCreated": {
+    "description": "Relación de creación entre tareas",
+    "placeholders": {
+      "taskId": {"type": "int"},
+      "parentId": {"type": "int"},
+      "scopeId": {"type": "int"}
+    }
+  },
+  "executionStructureRoot": "Tarea raíz",
+  "executionStructureParent": "Creada por la tarea {parentId}",
+  "@executionStructureParent": {
+    "placeholders": {"parentId": {"type": "int"}}
+  },
+  "executionStructureScope": "Ámbito {scopeId}",
+  "@executionStructureScope": {
+    "placeholders": {"scopeId": {"type": "int"}}
+  },
+  "executionStructureRelationUnavailable": "La tarea padre quedó fuera del historial retenido.",
+  "executionStatusCreated": "Creada",
+  "executionStatusReady": "Lista",
+  "executionStatusRunning": "En ejecución",
+  "executionStatusSuspended": "Suspendida",
+  "executionStatusCompleted": "Completada",
+  "executionStatusCancellationRequested": "Cancelación solicitada",
+  "executionStructureStatus": "Estado: {status}",
+  "@executionStructureStatus": {
+    "description": "Estado observado de una tarea",
+    "placeholders": {"status": {"type": "String"}}
+  },
+  "executionJoinLabel": "La tarea {taskId} unió sus hijas en el evento {eventIndex}: {outcome}",
+  "@executionJoinLabel": {
+    "description": "Marca de unión sobre la tarea padre",
+    "placeholders": {
+      "taskId": {"type": "int"},
+      "eventIndex": {"type": "int"},
+      "outcome": {"type": "String"}
+    }
+  },
+  "executionHistoryStartsAt": "El historial retenido comienza en el evento {eventIndex}",
+  "@executionHistoryStartsAt": {
+    "description": "Explica que los eventos de creación anteriores ya vencieron",
+    "placeholders": {"eventIndex": {"type": "int"}}
+  },
+  "executionTaskSelector": "Tarea seleccionada",
+  "executionFrameSelector": "Marco seleccionado",
+  "executionPreviousFrames": "Página de marcos anterior",
+  "executionNextFrames": "Página de marcos siguiente",
+  "executionFrameLabel": "Marco {frameId}: {name}",
+  "@executionFrameLabel": {
+    "description": "Opción del selector de marcos",
+    "placeholders": {
+      "frameId": {"type": "int"},
+      "name": {"type": "String"}
+    }
+  },
+  "executionVariablesLabel": "Variables en evento {eventIndex}, tarea {taskId}, marco {frameId}",
+  "@executionVariablesLabel": {
+    "description": "Título del estado paginado del marco seleccionado",
+    "placeholders": {
+      "eventIndex": {"type": "int"},
+      "taskId": {"type": "int"},
+      "frameId": {"type": "int"}
+    }
+  },
+  "executionNoVariables": "Este marco no tiene variables.",
+  "executionValueUndefined": "Sin valor",
+  "executionValueNull": "Nulo",
+  "executionValueReference": "Referencia {identity}",
+  "@executionValueReference": {
+    "placeholders": {"identity": {"type": "int"}}
+  },
+  "executionLoadMoreValues": "Cargar página siguiente",
+  "executionChannelStateUnavailable": "Los eventos de canal muestran operaciones e identidad. La API no expone el contenido de la cola ni los valores de los mensajes.",
+  "executionHistoryEmpty": "Ejecuta un programa para inspeccionar sus eventos de tareas.",
+  "executionObservationUnavailable": "La observación de la ejecución no está disponible en esta sesión.",
+  "executionHistoryError": "El evento o el rango seleccionado venció del historial o no se pudo leer.",
   "@tabTrace": {
     "description": "Pestaña de tabla de prueba de escritorio"
   },

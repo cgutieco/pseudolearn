@@ -12,11 +12,14 @@ import '../domain/ports/source_editor.dart';
 import '../domain/ports/structogram_builder.dart';
 import '../domain/ports/syntax_help_source.dart';
 import '../domain/ports/syntax_reference_source.dart';
+import 'program_execution_session.dart';
 
 abstract interface class EngineServices {
   ProgramAnalyzer get analyzer;
 
   ProgramExecution Function() get createProgramExecution;
+
+  ProgramExecutionSession Function() get createObservableExecutionSession;
 
   FlowchartBuilder get flowchartBuilder;
 

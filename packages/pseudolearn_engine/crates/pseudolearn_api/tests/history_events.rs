@@ -25,13 +25,32 @@ fn retained_event_windows_match_live_events_in_both_directions() -> Result<(), S
         "history_events",
         &json!({"resource":resource,"start":0,"count":events.len()}),
     );
-    assert_eq!(
-        window.pointer("/value/events"),
-        Some(&json!(events)),
-        "{window}"
-    );
+    let historical = window
+        .pointer("/value/events")
+        .and_then(Value::as_array)
+        .ok_or("historical events")?;
+    assert_eq!(historical.len(), events.len(), "{window}");
+    for (live, retained) in events.iter().zip(historical) {
+        let mut expected = live.clone();
+        let actual_task = retained.get("task_id").and_then(Value::as_u64);
+        assert_eq!(actual_task, Some(0), "{retained}");
+        if let Some(fields) = expected.as_object_mut() {
+            fields.insert("task_id".to_owned(), json!(0));
+        }
+        assert_eq!(&expected, retained, "{window}");
+    }
     let reverse = session.call("history_events", &json!({"resource":resource,"start":events.len().saturating_sub(1),"count":events.len(),"direction":"backward"}));
-    let reversed: Vec<_> = events.iter().rev().cloned().collect();
+    let reversed: Vec<_> = events
+        .iter()
+        .rev()
+        .map(|event| {
+            let mut expected = event.clone();
+            if let Some(fields) = expected.as_object_mut() {
+                fields.insert("task_id".to_owned(), json!(0));
+            }
+            expected
+        })
+        .collect();
     assert_eq!(
         reverse.pointer("/value/events"),
         Some(&json!(reversed)),
@@ -45,6 +64,54 @@ fn retained_event_windows_match_live_events_in_both_directions() -> Result<(), S
     assert_eq!(
         after.pointer("/value/host_observation"),
         live.pointer("/value/host_observation")
+    );
+    Ok(())
+}
+
+#[test]
+fn history_events_preserve_runtime_task_attribution() -> Result<(), String> {
+    let mut session = ApiSession::default();
+    let analysis = session.call(
+        "create_analysis",
+        &json!({"program":"SubProceso Suspendible Work()\nEscribir 7;\nFinSubProceso\nAlgoritmo P\nTareas\nLanzar Work();\nFinTareas\nFinAlgoritmo\n"}),
+    );
+    let started = session.call(
+        "start",
+        &json!({"analysis":analysis.pointer("/value/resource"),"observe":"events"}),
+    );
+    let resource = started
+        .pointer("/value/resource")
+        .cloned()
+        .ok_or("resource")?;
+    let advanced = session.call("advance", &json!({"resource":resource,"batch_size":4096}));
+    let live_events = advanced
+        .pointer("/value/events")
+        .and_then(Value::as_array)
+        .ok_or("live events")?;
+    let retained = session.call(
+        "history_events",
+        &json!({"resource":resource,"start":0,"count":live_events.len()}),
+    );
+    let retained_events = retained
+        .pointer("/value/events")
+        .and_then(Value::as_array)
+        .ok_or("retained events")?;
+    assert_eq!(retained_events.len(), live_events.len());
+    let child_statement = retained_events.iter().find(|event| {
+        event.get("class").and_then(Value::as_str) == Some("statement_entered")
+            && event.get("line").and_then(Value::as_u64) == Some(2)
+    });
+    assert_eq!(
+        child_statement
+            .and_then(|event| event.get("task_id"))
+            .and_then(Value::as_u64),
+        Some(1),
+        "{retained}"
+    );
+    assert!(
+        retained_events
+            .iter()
+            .all(|event| { event.get("task_id").and_then(Value::as_u64).is_some() })
     );
     Ok(())
 }

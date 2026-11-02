@@ -8,12 +8,31 @@ pub(super) fn capture(execution: &ExecutionResource, arguments: &Value) -> Resul
         .debug
         .as_ref()
         .ok_or_else(|| usage("debugging not configured"))?;
-    let task = arguments
+    let requested_event = arguments
+        .get("event")
+        .map(|value| {
+            value
+                .as_u64()
+                .and_then(|number| usize::try_from(number).ok())
+                .ok_or_else(|| usage("invalid debug event"))
+        })
+        .transpose()?;
+    let requested_task = arguments
         .get("task_id")
-        .and_then(Value::as_u64)
-        .unwrap_or(debug.task);
-    let ended = debug.reason == "task_terminated" && arguments.get("task_id").is_none();
-    let machine = inspected_machine(execution, debug, task, ended)?;
+        .map(|value| value.as_u64().ok_or_else(|| usage("invalid debug task")))
+        .transpose()?;
+    let task = match (requested_event, requested_task) {
+        (Some(_), None) => return Err(usage("historical debug state requires task_id")),
+        (_, Some(task)) => task,
+        (None, None) => debug.task,
+    };
+    let ended = requested_event.is_none()
+        && debug.reason == "task_terminated"
+        && arguments.get("task_id").is_none();
+    let machine = match requested_event {
+        Some(event) => execution.inspection_machine(event, Some(task))?,
+        None => inspected_machine(execution, debug, task, ended)?,
+    };
     let frames = if ended {
         Vec::new()
     } else {
@@ -24,10 +43,20 @@ pub(super) fn capture(execution: &ExecutionResource, arguments: &Value) -> Resul
     } else {
         machine.active_frames_count()
     };
+    let event = requested_event.or(debug.cursor);
+    let source = if requested_event.is_some() {
+        Value::Null
+    } else {
+        debug
+            .last
+            .as_ref()
+            .map(|event| execution.sources.event(event))
+            .unwrap_or(Value::Null)
+    };
     Ok(
-        json!({"stop_generation":debug.generation,"event":debug.cursor,"live_event":execution.delivered.checked_sub(1),
-        "reason":debug.reason,"stopped":debug.stopped,"task_id":debug.task,"threads":threads(&machine),"frames":frames,
-        "total_frames":total,"sources":execution.sources.snapshot(),"source":debug.last.as_ref().map(|event|execution.sources.event(event)),
+        json!({"stop_generation":debug.generation,"event":event,"live_event":execution.delivered.checked_sub(1),
+        "reason":debug.reason,"stopped":debug.stopped,"task_id":task,"threads":threads(&machine),"frames":frames,
+        "total_frames":total,"sources":execution.sources.snapshot(),"source":source,
         "termination":execution.terminal.as_ref().map(crate::execution_wire::termination).unwrap_or(json!({"kind":"running"})),
         "output":machine_output(&execution.machine)}),
     )

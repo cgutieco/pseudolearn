@@ -32,8 +32,7 @@ SceneAction openKnowledgeCatalogue() {
     GoRouter.of(stage.appContext).go(knowledgeRoute);
     for (var attempt = 0; attempt < _bundleReadAttempts; attempt++) {
       await stage.tester.pump();
-      await stage.tester
-          .runAsync(() => Future<void>.delayed(_bundleReadSlice));
+      await stage.tester.runAsync(() => Future<void>.delayed(_bundleReadSlice));
       if (settled()) break;
     }
     await stage.tester.pumpAndSettle();
@@ -82,6 +81,7 @@ String tabLabelOf(DocumentTabKind tab, AppLocalizations l10n) {
   return switch (tab) {
     DocumentTabKind.editor => l10n.tabEditor,
     DocumentTabKind.flowchart => l10n.tabDiagrams,
+    DocumentTabKind.tasks => l10n.tabTasks,
     DocumentTabKind.trace => l10n.tabTrace,
     DocumentTabKind.equivalentCode => l10n.tabEquivalentCode,
   };

@@ -758,11 +758,12 @@
   "id": "R7",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "El control de depuración conserva el mismo recurso de ejecución. debug_configure recibe resource, breakpoints con source_id, line y column opcional, y stop_on_entry; devuelve breakpoints resueltos con verified y stop_generation. debug_control recibe resource, command continue, next, step_in, step_out, step_back o pause y task_id opcional; configura el predicado que advance bombea por lotes y devuelve el estado de depuración. No recompila ni inicia otra ejecución. Entry, breakpoint, next y step_in paran en statement_entered antes de sus efectos; step_out para en el return del marco seleccionado. La selección de tarea no altera la agenda. pause conserva el evento confirmado, las esperas y la continuación sin cancelar. Una orden inválida o concurrente devuelve uso sin avanzar.",
+  "texto": "El control de depuración conserva el mismo recurso de ejecución. debug_configure recibe resource, breakpoints con source_id, line y column opcional, y stop_on_entry; devuelve breakpoints resueltos con verified y stop_generation. debug_control recibe resource, command continue, next, step_in, step_out, step_back o pause y task_id opcional; configura el predicado que advance bombea por lotes y devuelve el estado de depuración. debug_state admite event opcional para consultar marcos y tareas en un evento retenido sin mover el cursor, la punta viva ni la agenda; event requiere task_id para identificar la máquina histórica. Cada página de marcos está acotada por start_frame y frame_count, máximo 4096. No recompila ni inicia otra ejecución. Entry, breakpoint, next y step_in paran en statement_entered antes de sus efectos; step_out para en el return del marco seleccionado. La selección de tarea no altera la agenda. pause conserva el evento confirmado, las esperas y la continuación sin cancelar. Una orden inválida, fuera del horizonte o concurrente devuelve uso sin avanzar.",
   "verificacion": [
     "C8",
     "C9",
-    "C10"
+    "C10",
+    "C14"
   ]
 }
 ```
@@ -1013,10 +1014,11 @@
   "id": "R8",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "history_events recibe resource, start, count y direction opcional forward o backward y devuelve una ventana acotada de eventos retenidos, su horizonte y posición. count está entre cero y 4096; una posición anterior al horizonte, futura o una dirección inválida devuelve uso, sin aproximación. El cursor de inspección es independiente de la punta viva. Consultar, retroceder y volver a la punta conserva salida emitida, cinta, agenda y continuación; avanzar después de inspeccionar no repite efectos físicos ni reenvía salida histórica.",
+  "texto": "history_events recibe resource, start, count y direction opcional forward o backward y devuelve una ventana acotada de eventos retenidos, su horizonte y posición. Cada evento incluye task_id, la tarea que emitió ese evento según la traza completa del motor, incluidos los eventos ordinarios. count está entre cero y 4096; una posición anterior al horizonte, futura o una dirección inválida devuelve uso, sin aproximación. El cursor de inspección es independiente de la punta viva. Consultar, retroceder y volver a la punta conserva salida emitida, cinta, agenda y continuación; avanzar después de inspeccionar no repite efectos físicos ni reenvía salida histórica.",
   "verificacion": [
     "C11",
-    "C12"
+    "C12",
+    "C13"
   ]
 }
 ```
@@ -1157,5 +1159,167 @@
   "sujetos": [
     "engine"
   ]
+}
+```
+
+```caso
+{
+  "id": "C13",
+  "regla": "R8",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "create_analysis",
+        "arguments": {}
+      },
+      {
+        "operation": "start",
+        "arguments": {
+          "observe": "events",
+          "seed": 42
+        },
+        "resource_from": 0
+      },
+      {
+        "operation": "advance",
+        "arguments": {
+          "batch_size": 8
+        },
+        "resource_from": 1
+      },
+      {
+        "operation": "history_events",
+        "arguments": {
+          "start": 0,
+          "count": 1
+        },
+        "resource_from": 1
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {}
+        },
+        {
+          "value": {}
+        },
+        {
+          "value": {}
+        },
+        {
+          "value": {
+            "events": [
+              {
+                "task_id": 0
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ],
+  "programa": "Algoritmo P\nEscribir 42;\nFinAlgoritmo\n",
+  "perfil_base": "es"
+}
+```
+
+```caso
+{
+  "id": "C14",
+  "regla": "R7",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "create_analysis",
+        "arguments": {}
+      },
+      {
+        "operation": "start",
+        "arguments": {
+          "observe": "events",
+          "seed": 42
+        },
+        "resource_from": 0
+      },
+      {
+        "operation": "debug_configure",
+        "arguments": {
+          "breakpoints": []
+        },
+        "resource_from": 1
+      },
+      {
+        "operation": "advance",
+        "arguments": {
+          "batch_size": 8
+        },
+        "resource_from": 1
+      },
+      {
+        "operation": "debug_state",
+        "arguments": {
+          "event": 0,
+          "task_id": 0,
+          "start_frame": 0,
+          "frame_count": 1
+        },
+        "resource_from": 1
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {}
+        },
+        {
+          "value": {}
+        },
+        {
+          "value": {
+            "breakpoints": []
+          }
+        },
+        {
+          "value": {}
+        },
+        {
+          "value": {
+            "event": 0,
+            "task_id": 0,
+            "total_frames": 1
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ],
+  "programa": "Algoritmo P\nEscribir 42;\nFinAlgoritmo\n",
+  "perfil_base": "es"
 }
 ```

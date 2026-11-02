@@ -39,6 +39,7 @@ final class RustEvent {
   final String? sourceRevisionId;
   final RustEventSourceIdentity? sourceIdentity;
   final String? nodeId;
+  final int? taskId;
 
   const RustEvent({
     required this.eventClass,
@@ -48,6 +49,7 @@ final class RustEvent {
     this.sourceRevisionId,
     this.sourceIdentity,
     this.nodeId,
+    this.taskId,
   });
 
   factory RustEvent.fromJson(Map<String, Object?> json) {
@@ -67,10 +69,12 @@ final class RustEvent {
     final sourceRevisionId = sourceFields?['revision_id'];
     final sourceNodeId = sourceFields?['node_id'];
     final identity = sourceFields?['identity'];
+    final taskId = json['task_id'];
     if ((sourceFields != null &&
             (sourceRevisionId is! String || sourceNodeId is! String)) ||
         (sourceNodeId != null && sourceNodeId is! String) ||
-        (identity != null && identity is! Map<String, Object?>)) {
+        (identity != null && identity is! Map<String, Object?>) ||
+        (taskId != null && (taskId is! int || taskId < 0))) {
       throw const FormatException('Invalid event source identity');
     }
     final event = RustEvent(
@@ -83,6 +87,7 @@ final class RustEvent {
           ? null
           : RustEventSourceIdentity.fromJson(identity as Map<String, Object?>),
       nodeId: sourceNodeId as String?,
+      taskId: taskId as int?,
     );
     RustTaskEvent.tryFrom(event);
     return event;
