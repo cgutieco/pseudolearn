@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../../domain/model/analysis/source_range.dart';
 import '../../domain/model/diagram/diagram_accessible_element.dart';
 import '../../domain/model/diagram/diagram_scene.dart';
@@ -17,21 +18,24 @@ final class ClassDiagramSemanticsLayer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final words = AppLocalizations.of(context)!;
-    return Stack(
-      children: [
-        for (final element in elements)
-          Positioned(
-            left: element.bounds.left,
-            top: element.bounds.top,
-            width: element.bounds.width,
-            height: element.bounds.height,
-            child: _AccessibleTarget(
-              label: _accessibleLabelOf(element, words),
-              range: element.range,
-              onSourceSelected: onSourceSelected,
+    return FocusTraversalGroup(
+      policy: ReadingOrderTraversalPolicy(),
+      child: Stack(
+        children: [
+          for (final element in elements)
+            Positioned(
+              left: element.bounds.left,
+              top: element.bounds.top,
+              width: element.bounds.width,
+              height: element.bounds.height,
+              child: _AccessibleTarget(
+                label: _accessibleLabelOf(element, words),
+                range: element.range,
+                onSourceSelected: onSourceSelected,
+              ),
             ),
-          ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -65,7 +69,7 @@ String _kindName(DiagramEdgeKind kind, AppLocalizations words) =>
       _ => words.diagramRelationUsage,
     };
 
-final class _AccessibleTarget extends StatelessWidget {
+final class _AccessibleTarget extends StatefulWidget {
   final String label;
   final SourceRange? range;
   final ValueChanged<SourceRange>? onSourceSelected;
@@ -77,13 +81,83 @@ final class _AccessibleTarget extends StatelessWidget {
   });
 
   @override
+  State<_AccessibleTarget> createState() => _AccessibleTargetState();
+}
+
+final class _AccessibleTargetState extends State<_AccessibleTarget> {
+  @override
   Widget build(BuildContext context) {
-    final target = range;
-    final select = onSourceSelected;
+    final select = widget.onSourceSelected;
+    final target = widget.range;
     final action = target == null || select == null
         ? null
         : () => select(target);
-    return Semantics(
+    return _FocusableSemanticTarget(label: widget.label, action: action);
+  }
+}
+
+final class _FocusableSemanticTarget extends StatefulWidget {
+  final String label;
+  final VoidCallback? action;
+
+  const _FocusableSemanticTarget({required this.label, required this.action});
+
+  @override
+  State<_FocusableSemanticTarget> createState() =>
+      _FocusableSemanticTargetState();
+}
+
+final class _FocusableSemanticTargetState
+    extends State<_FocusableSemanticTarget> {
+  bool _showFocusHighlight = false;
+
+  @override
+  Widget build(BuildContext context) => FocusableActionDetector(
+    enabled: widget.action != null,
+    shortcuts: const {
+      SingleActivator(LogicalKeyboardKey.enter): ActivateIntent(),
+      SingleActivator(LogicalKeyboardKey.space): ActivateIntent(),
+    },
+    actions: {
+      ActivateIntent: CallbackAction<ActivateIntent>(
+        onInvoke: (intent) {
+          widget.action?.call();
+          return null;
+        },
+      ),
+    },
+    onShowFocusHighlight: (show) {
+      if (_showFocusHighlight != show) {
+        setState(() => _showFocusHighlight = show);
+      }
+    },
+    child: _AccessibleSurface(
+      label: widget.label,
+      action: widget.action,
+      showFocusHighlight: _showFocusHighlight,
+    ),
+  );
+}
+
+final class _AccessibleSurface extends StatelessWidget {
+  final String label;
+  final VoidCallback? action;
+  final bool showFocusHighlight;
+
+  const _AccessibleSurface({
+    required this.label,
+    required this.action,
+    required this.showFocusHighlight,
+  });
+
+  @override
+  Widget build(BuildContext context) => DecoratedBox(
+    decoration: BoxDecoration(
+      border: showFocusHighlight
+          ? Border.all(color: Theme.of(context).colorScheme.primary, width: 2)
+          : null,
+    ),
+    child: Semantics(
       container: true,
       button: action != null,
       label: label,
@@ -93,6 +167,6 @@ final class _AccessibleTarget extends StatelessWidget {
         onTap: action,
         excludeFromSemantics: true,
       ),
-    );
-  }
+    ),
+  );
 }

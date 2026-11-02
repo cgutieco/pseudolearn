@@ -142,11 +142,12 @@
       "id": "CON-C4",
       "track": "C",
       "order": 4,
-      "title": "Herencia y despacho dinámico",
-      "summary": "Una subclase hereda las casillas de su superclase, y el despacho mira el objeto real.",
+      "title": "Herencia, interfaces y despacho dinámico",
+      "summary": "La herencia transmite miembros; una interfaz exige realización explícita.",
       "path": "modules/CON-C4_es.md",
       "constructs": [
-        "clase"
+        "clase",
+        "interfaz"
       ]
     },
     {
@@ -975,6 +976,15 @@
       "path": "exercises/CON-C4-E6_es.json"
     },
     {
+      "id": "CON-C4-E7",
+      "level": 2,
+      "kind": "crear",
+      "module": "CON-C4",
+      "title": "Lector y Escritor realizan Legible",
+      "summary": "Dos clases realizan el mismo contrato con resultados distintos.",
+      "path": "exercises/CON-C4-E7_es.json"
+    },
+    {
       "id": "CON-C5-E1",
       "level": 2,
       "kind": "crear",
@@ -1311,6 +1321,13 @@
       "title": "Perro y Gato hablando por turnos",
       "summary": "El despacho mira la clase real del objeto, no el tipo declarado.",
       "path": "examples/c4_despacho_es.pseudo",
+      "profile": "classic_spanish"
+    },
+    {
+      "id": "example-c4-contracts",
+      "title": "Lector y Escritor realizan Legible",
+      "summary": "Realizaciones explícitas de una firma compartida.",
+      "path": "examples/c4_contratos_es.pseudo",
       "profile": "classic_spanish"
     },
     {

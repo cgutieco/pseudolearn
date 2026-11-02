@@ -116,7 +116,7 @@ del núcleo; la aplicación traduce, orquesta y renderiza los resultados.
 | Adaptador SEE del sujeto `app` | Lanzador, escenarios APP y propiedades API sobre el transporte FRB generado | Implementado; 252 observaciones y tres propiedades API por el puente real pasan sin divergencias |
 | Resaltado y unidades de foco en la ruta Rust                    | `RustProgramAnalyzer` proyecta los tokens de `analyze`; `RustFocusTracker` deriva `unitId` de la vista pública del programa                | Resuelto                                                                                              |
 | Pruebas de widgets con el puente real                           | Los widgets se prueban con fakes; solo `ExecutionCubit` se ejercita contra la biblioteca nativa en `tool/native_bridge_adapters_test.dart` | Abierto |
-| Ficha de ayuda de `Importar` y `Exportar` | Catálogo de ayuda (`TOOL.SERVICE.CATALOG`): la consulta sobre una dependencia pegada responde `noHelp` | Abierto (`PG-A.08`) |
+| Ficha de ayuda de `Importar` y `Exportar` | Catálogo `TOOL.SERVICE.CATALOG` y resolución contextual del servicio; el pegado aislado conserva su diagnóstico, mientras la consulta sobre la directiva y su alias devuelve la ficha propia | Resuelto en PG-A.08; no enlaza paquetes ni habilita E/S |
 | Ampliar el subconjunto de código equivalente | Emisores Python y Rust: `Segun` en Python (exige 3.10 comprobable), arreglos con base 1, clases y valores de retorno en Rust, lógicos en la salida; cada ampliación necesita su caso diferencial (§4.11) | Abierto |
 
 ---
@@ -1097,6 +1097,19 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
 - **Alternativas descartadas y por qué:**
     - *Ruteo mediante fuerzas elásticas o grafos genéricos:* Descartado por ser no determinista y generar líneas
       diagonales contrarias al estándar ortogonal de UML.
+- **Accesibilidad y foco:** `ClassDiagramAccessibility` deriva los elementos semánticos de la escena, incluidos
+  nombre, firma, relación, invalidez y diagnósticos. El lienzo permite recorrerlos con Tab y activarlos con Enter,
+  espacio, toque o acción Semantics; el foco de teclado se dibuja con un borde primario de 2 dp. Los nombres completos
+  siguen disponibles aunque una caja recorte visualmente la firma, y cada selección conserva el rango fuente del
+  mismo nodo accesible.
+- **Observación de escenas inválidas:** el sujeto SEE deriva `invalid_accessible_relations` de los elementos accesibles
+  de la escena nativa; expone relación, diagnóstico, presencia del rango fuente y tamaño del hit target. Los casos
+  `API.PROGRAM.VIEW` C21, C42, C44, C45 y C47 contrastan esas observaciones, incluido el destino de 24 × 24 dp. La app no
+  duplica la geometría ni prepara respuestas de conformidad por adelantado.
+- **Evidencia:** `class_diagram_semantics_layer_test.dart` comprueba navegación y activación en un lienzo compacto con
+  escala de texto 2; `class_diagram_layout_test.dart` y `class_shapes_test.dart` cubren ruteo y límites; los tests
+  `rust_class_diagram_integration_test.dart` atraviesan FRB nativo, selección por Semantics, ayuda de clase y liberación
+  balanceada de recursos. `see_app_class_diagram_test.dart` valida la observación viva de escenas válidas e inválidas.
 
 ### 4.18 Base de conocimiento: contenido versionado, manifiesto v2, módulos canónicos y especificaciones proyectadas
 
@@ -1147,6 +1160,10 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
         3. Declara subprograma con nombre y aridad (`SubprogramSignatureAssertion`).
         4. Declara miembro de clase con visibilidad (`ClassMemberAssertion`).
         5. No supera N repeticiones de una construcción (`MaxOccurrencesAssertion`).
+    - **Rastreo normativo del ejercicio:** `specificationCases` conserva la identidad, versión y caso del contrato que
+      fundamenta el objetivo. `tool/check_content.dart` comprueba cada referencia contra el Markdown canónico del
+      contrato y exige la misma lista en español e inglés; la solución de referencia y los resultados esperados se
+      siguen verificando por el motor.
     - **Filosofía no punitiva:** No se muestran calificaciones ni porcentajes. Si fallan casos ocultos, se aísla y
       revela **exclusivamente el primer caso oculto fallido** con sus entradas y salidas esperadas.
     - **Código base inicial (`starterCode`) para ejercicios interactivos:** Los ejercicios con tipología `completar` o
@@ -2312,9 +2329,9 @@ abre autoridad real; ofrece capacidades simuladas en memoria y deja que el núcl
   motor exige; en modo manual se detiene en la primera espera para que la capa de aplicación la liquide. La clave
   `host` de `start` lleva `{permissions, detached: true}`.
 
-Pendiente declarado: las fichas bilingües de ayuda y la proyección de vista pública de las capacidades se alimentan del
-catálogo del motor (`TOOL.SERVICE.CATALOG`, `API.PROGRAM.VIEW`) y no se ampliaron en esta iteración; tampoco hay aún
-una superficie visual para configurar capacidades simuladas ni para mostrar la espera (`PG-A`/`PG-B`).
+Pendiente declarado: la proyección de vista pública de las capacidades se alimenta del catálogo del motor
+(`API.PROGRAM.VIEW`); tampoco hay aún una superficie visual para configurar capacidades simuladas ni para mostrar la
+espera (`PG-A`/`PG-B`).
 
 ### 4.55 Import y export pegados: dependencia visible, nunca resuelta
 
@@ -2333,12 +2350,15 @@ conserva las demás unidades y la dependencia se muestra sin enlazar; nada inten
   dependencias, selector de proyecto, descarga ni archivo auxiliar, y un import soportado visualmente no se anuncia como
   proyecto resuelto.
 - Una ruta vacía, incompleta, con `..` o absoluta es un error sintáctico adicional: no hay estructura ni filas.
+- `RustSyntaxHelpSource` aprovecha el diagnóstico del análisis aislado para resolver `Importar` y `Exportar`, y reconoce
+  `Como` como alias solo dentro de esa misma directiva. Cada papel obtiene su ficha propia del catálogo
+  (`help.module-import` o `help.module-export`), con idioma elegido por la interfaz sin cambiar el perfil español del
+  documento. La consulta no crea una dependencia enlazada ni habilita una operación de anfitrión.
 - Evidencia: `rust_program_dependencies_test.dart` (puente real; un transporte que registra operaciones afirma que
   solo se analizó, se leyó la vista y se liberó, sin `start`, `execute` ni operaciones de anfitrión, también cuando el
   texto nombra un paquete que existe en disco), `rust_program_view_dependencies_wire_test.dart` (filas ausentes y mal
-  formadas), `diagram_dependency_strip_test.dart` (es/en, toque, Semantics) y los casos C48–C52 por el puente real. La ficha
-  de ayuda de `Importar` no existe en el catálogo: la consulta responde `noHelp` sin ejecutar nada y cerrar ese hueco
-  pertenece a `PG-A.08`.
+  formadas), `diagram_dependency_strip_test.dart` (es/en, toque, Semantics), `rust_class_diagram_integration_test.dart`
+  (consulta de las tres fichas por FRB nativo con balance de recursos) y los casos C48–C52 por el puente real.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
@@ -2532,7 +2552,7 @@ Apple y no toca nada.
 |:-------------------------------|:-------------------------------------------------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------|:--------------------------------|
 | Linter estricto                | `flutter analyze --fatal-infos --fatal-warnings`                         | Errores de tipo, null safety, dead code, imports no usados                                                                                       | `analysis_options.yaml`         |
 | Límites métricos y comentarios | `dart run tool/check_limits.dart`                                        | Líneas de archivo, funciones, build, anidación, métodos, parámetros, y ausencia total de comentarios en código                                   | `architecture.yaml`             |
-| Invariantes de contenido       | `dart run tool/check_content.dart`                                       | Paridad de manifiestos, resolución de marcadores, 7 partes de módulos, sintaxis de ejemplos y soluciones de ejercicios                           | `architecture.yaml`             |
+| Invariantes de contenido       | `dart run tool/check_content.dart`                                       | Paridad de manifiestos y casos normativos, resolución de marcadores, 7 partes de módulos, sintaxis de ejemplos y soluciones de ejercicios       | `architecture.yaml`             |
 | Sistema de diseño              | `dart run tool/check_design_system.dart`                                 | Familias tipográficas en disco, ausencia de medidas crudas en padding/espacios y unicidad de `DesignCanvas`                                      | `architecture.yaml`             |
 | Cobertura de especificación    | `flutter test test/tool/spec_coverage_test.dart`                         | Proyección completa de las secciones de `language-spec.md` en especificaciones publicadas                                                        | `architecture.yaml`             |
 | Capas y dependencias           | `flutter test test/architecture/layering_test.dart`                      | Matriz de `may_import`, `forbidden_imports`, ausencia de imports package propios y rechazo del puente generado desde el dominio                   | `architecture.yaml`             |
@@ -2685,15 +2705,15 @@ La regla de representación vive en `API.PROGRAM.VIEW#R6`–`R9` y `R12`, observ
 - **Restricción genérica.** Solo los subprogramas pueden declarar parámetros de tipo. Un subprograma con restricción se muestra como caja «subprogram» con su firma y una relación `usage` (discontinua, punta abierta) hacia el contrato, etiquetada con el nombre del parámetro. No se crean valores de interfaz ni despacho.
 - **Registros, enumerados y parámetros de tipo (`R12`).** `RustValueTypeProjection` lee los nodos públicos `record_unit` y `enum_unit` (tampoco figuran en `units`): un registro es una caja «record» con una fila `nombre: tipo` por vínculo de cada campo declarado; un enumerado, una caja «enumeration» con una fila por miembro, sin marca de visibilidad (`ClassRowRole.enumMember`). `RustGenericSubprogramBoxes` da caja «subprogram» a todo subprograma con `type_parameters`, tenga o no restricción (`ClassBoxKind.genericSubprogram`). Ninguna de estas cajas crea relaciones ni pasos en ordinograma o estructograma. Cada fila conserva el nodo del miembro o del vínculo, de modo que navegarla lleva a su texto exacto.
 - **Colocación.** `ClassBox.contractNames` hace que `InheritanceLevels` coloque el contrato por encima de sus realizaciones, con protección contra ciclos. Las relaciones se enrutan por `nodeId` y recurren al nombre solo si falta. El orden de cajas es clases, interfaces, registros y enumerados en orden de fuente y subprogramas genéricos.
-- **Semántica accesible y navegación.** `RustClassDiagramBuilder` adjunta a la escena el rango de fuente de cada nodo y de cada origen de relación (`DiagramScene.sourceRanges`). `ClassDiagramAccessibility` (capa de aplicación) deriva un `DiagramAccessibleElement` por caja, fila y relación, con nombre, extremos, diagnósticos, límites y rango; la relación usa su origen y, si no lo tiene, la caja de la que parte, y su zona de toque es un cuadrado de `ClassDiagramMetrics.relationHitSize` en el centro de su tramo medio. `ClassDiagramSemanticsLayer` coloca sobre el lienzo un nodo `Semantics` con acción de toque por elemento; la relación se anuncia con su tipo localizado y, si es inválida, con «inválida: códigos» («invalid: codes»), de modo que la invalidez es texto accesible y no color. Tocar o activar el elemento llama a `EditorCubit.revealSource`, que reutiliza `pendingEdit` con el mismo texto y una selección igual al rango: la superficie del editor selecciona el código sin editarlo ni marcar el documento como modificado.
+- **Semántica accesible y navegación.** `RustClassDiagramBuilder` adjunta a la escena el rango de fuente de cada nodo y de cada origen de relación (`DiagramScene.sourceRanges`). `ClassDiagramAccessibility` (capa de aplicación) deriva un `DiagramAccessibleElement` por caja, fila y relación, con nombre, extremos, diagnósticos, límites y rango; la relación usa su origen y, si no lo tiene, la caja de la que parte, y su zona de toque es un cuadrado de `ClassDiagramMetrics.relationHitSize` en el centro de su tramo medio. `ClassDiagramSemanticsLayer` conserva el texto completo aunque el lienzo recorte una fila, expone cada destino como botón accesible y permite recorrerlos en orden de lectura con `Tab`; `Enter`, `Espacio` y la acción semántica activan la selección. El destino enfocado muestra un borde de 2 px con el color primario. La relación se anuncia con su tipo localizado y, si es inválida, con «inválida: códigos» («invalid: codes»), de modo que la invalidez es texto accesible y no color. Activar el elemento llama a `EditorCubit.revealSource`, que reutiliza `pendingEdit` con el mismo texto y una selección igual al rango: la superficie del editor selecciona el código sin editarlo ni marcar el documento como modificado.
 - **Sobrescritura incompatible heredada.** La vista conserva `incompatibleMethodOverride` cuando el análisis lo relaciona con la firma de una interfaz y marca inválida la realización heredada. El diagrama dibuja esa relación con el estilo de invalidez de `R8`; las realizaciones heredadas válidas siguen sin redibujarse. `method_signature_span`, derivado de la estructura sintáctica por la API, hace que tocar la relación seleccione exactamente el encabezado del método que sobrescribe. `ClassDiagramSemanticsLayer` anuncia la invalidez y el código del diagnóstico.
-- **Fuera de alcance de este punto.** Parámetros genéricos de tipo en clases (el lenguaje no los admite) y la navegación por teclado entre elementos del lienzo, que pertenece a la verificación de accesibilidad de `PG-A.07`. La etiqueta pintada de una relación inválida muestra el código de diagnóstico sin localizar; el mensaje localizado se obtiene del diagnóstico enlazado por origen.
+- **Fuera de alcance de este punto.** Parámetros genéricos de tipo en clases (el lenguaje no los admite). La etiqueta pintada de una relación inválida muestra el código de diagnóstico sin localizar; el mensaje localizado se obtiene del diagnóstico enlazado por origen.
 
-Pruebas: `rust_type_contract_diagram_test.dart` (motor real, es/en, incluidas las escenas de método heredado y firma incompatible), `rust_value_type_diagram_test.dart` (registros, enumerados, genéricos y nodos navegables), `class_shapes_test.dart` (dirección del triángulo, punta abierta, guiones y color por estado), `class_diagram_accessibility_test.dart`, `class_diagram_semantics_layer_test.dart` (árbol `Semantics`, acción de toque y rango exacto) y `editor_source_reveal_test.dart` (selección sin edición).
+Pruebas: `rust_type_contract_diagram_test.dart` (motor real, es/en, incluidas las escenas de método heredado y firma incompatible), `rust_value_type_diagram_test.dart` (registros, enumerados, genéricos y nodos navegables), `class_shapes_test.dart` (dirección del triángulo, punta abierta, guiones y color por estado), `class_diagram_layout_test.dart` (relaciones múltiples y etiquetas largas dentro del lienzo), `class_diagram_accessibility_test.dart` (límites de toque y rangos), `class_diagram_semantics_layer_test.dart` (árbol `Semantics`, rango exacto, teclado, vista compacta y escala de texto 2), `rust_class_diagram_integration_test.dart` (FRB nativo recién compilado, proyección → escena → selección → ayuda y balance de recursos) y `editor_source_reveal_test.dart` (selección sin edición).
 
 ### Matriz de cobertura sintáctica y respuesta no soportada (`PG-A.04`)
 
-`lib/domain/model/diagram/coverage/` contiene la matriz como datos: cada fila declara construcción, papel público (`statement`, `declaration`, `expression`, `symbol`, `type`), formas públicas, anclaje de regla con versión, seis celdas (ordinograma, estructograma, estructura, foco, estado, ayuda) y la prueba que la respalda. Una celda es `exact`, `declaredExtension` o `notApplicable`, y las dos últimas exigen motivo; una ayuda exacta se declara con `CoverageCell.help` y nombra una ficha del catálogo de ayuda. Es distinta de `AstConstruct`, que es la taxonomía curricular del panel de progreso y no prueba exhaustividad. Las filas están repartidas por familia en tres archivos (sentencias, declaraciones y expresiones) para respetar el límite de tamaño.
+`lib/domain/model/diagram/coverage/` contiene la matriz como datos: cada fila declara construcción, papel público (`statement`, `declaration`, `expression`, `symbol`, `type`), formas públicas, anclaje de regla con versión, seis celdas (ordinograma, estructograma, estructura, foco, estado, ayuda) y la prueba que la respalda. Una celda es `exact`, `declaredExtension` o `notApplicable`, y las dos últimas exigen motivo; una ayuda exacta se declara con `CoverageCell.help` y nombra una ficha del catálogo de ayuda. Es distinta de `AstConstruct`, que es la taxonomía curricular del panel de progreso y no prueba exhaustividad; incluye `interface_unit` porque el ejercicio bilingüe `CON-C4-E7` requiere medir esa construcción junto con las clases. Las filas están repartidas por familia en tres archivos (sentencias, declaraciones y expresiones) para respetar el límite de tamaño.
 
 El contrato del verificador es `API.PROGRAM.VIEW#R13`, con un caso por código observado por el escenario `syntax_coverage` (`tool/see_app_syntax_coverage.dart`), que aplica una mutación concreta a la matriz real (quitar, duplicar, cambiar papel, añadir forma, quitar motivo, ocultar control, ayuda inexistente) y devuelve los códigos que produce. `dart run tool/check_syntax_coverage.dart` contrasta la matriz con el inventario público del motor, que lee de los archivos `program_view_kind.rs` y `program_view_tasks.rs` (nombre de sintaxis y papel de cada forma), y con las fichas `helpCatalog` de `specifications/cases/catalogs.json`. Falla con `COV-MISSING-ROW`, `COV-STALE-ROW`, `COV-DUPLICATE`, `COV-ROLE`, `COV-NO-REASON`, `COV-HIDDEN-CONTROL` (una construcción ejecutable marcada «no aplicable» en una vista), `COV-HELP` (ayuda exacta sin ficha existente), `COV-RULE` (anclaje inexistente en el corpus) y `COV-EVIDENCE` (prueba inexistente). Cada código tiene un caso negativo en `test/tool/check_syntax_coverage_test.dart`, y otro test contrasta la matriz real con el inventario y el catálogo reales. Conjunto esperado frente a cubierto: 78 formas públicas, 78 cubiertas.
 
@@ -2718,7 +2738,9 @@ recepción, y marcan como llamada (subprograma en el ordinograma, celda de llama
 estructograma) todo lanzamiento y toda sentencia que contenga `Aguardar`; ninguna construcción de
 tareas cae en el nodo de proceso. Los textos de cabecera son la primera línea del propio nodo, de
 modo que cambian con el perfil sin literales sueltos. `RustViewSemantics.suspendable` lee la marca de
-unidad suspendible. No se amplía `AstConstruct`: es la taxonomía de ejercicios y del panel de
-cobertura, y las construcciones de tareas entrarán en ella cuando existan ejercicios que las usen.
+unidad suspendible. `AstConstruct` solo incorpora una familia cuando el currículo tiene un ejercicio
+que necesita contabilizarla; por eso `interface_unit` ya se proyecta como `interfaz` a partir de
+`CON-C4-E7`, mientras las construcciones de tareas permanecen fuera hasta que un ejercicio de esa
+familia las use.
 Las proyecciones multicarril de concurrencia (flujo por tarea, estructura de creación y unión,
 ventana de eventos), la pila de foco por tarea y el paso por tarea pertenecen a `PG-B`.

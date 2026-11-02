@@ -26,6 +26,14 @@ Algoritmo Roto
 FinAlgoritmo
 ''';
 
+const _withInterface = '''
+Interfaz Legible
+Metodo Obtener() Como Entero;
+FinInterfaz
+Algoritmo Probar
+FinAlgoritmo
+''';
+
 void main() {
   group('RustProgramConstructReader (PANT-06-F5)', () {
     final reader = nativeTestEngine.programConstructReader;
@@ -48,6 +56,16 @@ void main() {
       );
 
       expect(constructs, isEmpty);
+    });
+
+    test('an interface declaration has its own curriculum construct', () {
+      final constructs = reader.constructsOf(
+        sourceCode: _withInterface,
+        profileId: SyntaxProfileId.classicSpanish,
+      );
+
+      expect(constructs, contains(AstConstruct.interfaceDeclaration));
+      expect(constructs, isNot(contains(AstConstruct.classDeclaration)));
     });
 
     test('a program that does not analyse contributes nothing', () {

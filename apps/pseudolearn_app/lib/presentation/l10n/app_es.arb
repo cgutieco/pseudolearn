@@ -736,6 +736,10 @@
   "@exerciseConstructClassDeclaration": {
     "description": "Nombre de la construcción de clases y objetos"
   },
+  "exerciseConstructInterfaceDeclaration": "Interfaces",
+  "@exerciseConstructInterfaceDeclaration": {
+    "description": "Nombre de la declaración de interfaz"
+  },
   "exerciseClearFilters": "Limpiar filtros",
   "@exerciseClearFilters": {
     "description": "Botón para restablecer los filtros de ejercicios"
@@ -1623,6 +1627,10 @@
   "dashboardConceptClass": "Clase",
   "@dashboardConceptClass": {
     "description": "Nombre de la declaración de clase"
+  },
+  "dashboardConceptInterface": "Interfaz",
+  "@dashboardConceptInterface": {
+    "description": "Nombre de la declaración de interfaz"
   },
   "dashboardSpecificationTitle": "Cobertura de la especificación",
   "@dashboardSpecificationTitle": {

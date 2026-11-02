@@ -28,7 +28,9 @@ List<String> _compareModules(
   final where = '"$id" between "${a.code}" and "${b.code}"';
   final errors = <String>[];
   if (!_sameParts(one, other)) {
-    errors.add('Module $where does not declare the same parts in the same order');
+    errors.add(
+      'Module $where does not declare the same parts in the same order',
+    );
     return errors;
   }
   for (var index = 0; index < one.sections.length; index++) {
@@ -40,7 +42,9 @@ List<String> _compareModules(
     errors.add('Module $where does not reference the same exercises');
   }
   if (!_sameSet(one.anchorIds, other.anchorIds)) {
-    errors.add('Module $where does not reference the same specification anchors');
+    errors.add(
+      'Module $where does not reference the same specification anchors',
+    );
   }
   return errors;
 }
@@ -56,10 +60,14 @@ List<String> _compareSections(
     errors.add('Part "$part" of module $where has a different heading tree');
   }
   if (_countOf<CodeBlock>(one.blocks) != _countOf<CodeBlock>(other.blocks)) {
-    errors.add('Part "$part" of module $where has a different number of code blocks');
+    errors.add(
+      'Part "$part" of module $where has a different number of code blocks',
+    );
   }
   if (!_sameSet(_figureIds(one.blocks), _figureIds(other.blocks))) {
-    errors.add('Part "$part" of module $where references different illustrations');
+    errors.add(
+      'Part "$part" of module $where references different illustrations',
+    );
   }
   return errors;
 }
@@ -116,7 +124,9 @@ List<String> checkSpecificationParity(LoadedLanguage a, LoadedLanguage b) {
   for (final id in a.specificationBlocks.keys) {
     final other = b.specificationBlocks[id];
     if (other == null) {
-      errors.add('Specification section "$id" exists in "${a.code}" but not in "${b.code}"');
+      errors.add(
+        'Specification section "$id" exists in "${a.code}" but not in "${b.code}"',
+      );
       continue;
     }
     final where = '"$id" between "${a.code}" and "${b.code}"';
@@ -125,10 +135,14 @@ List<String> checkSpecificationParity(LoadedLanguage a, LoadedLanguage b) {
       errors.add('Specification section $where has a different heading tree');
     }
     if (_countOf<CodeBlock>(one) != _countOf<CodeBlock>(other)) {
-      errors.add('Specification section $where has a different number of code blocks');
+      errors.add(
+        'Specification section $where has a different number of code blocks',
+      );
     }
     if (_countOf<TableBlock>(one) != _countOf<TableBlock>(other)) {
-      errors.add('Specification section $where has a different number of tables');
+      errors.add(
+        'Specification section $where has a different number of tables',
+      );
     }
   }
   return errors;
@@ -143,11 +157,9 @@ List<String> checkExerciseParity(LoadedLanguage a, LoadedLanguage b) {
       continue;
     }
     final where = '"$id" between "${a.code}" and "${b.code}"';
-    errors.addAll(_compareExercises(
-      where,
-      a.exercises[id]!.exercise,
-      other.exercise,
-    ));
+    errors.addAll(
+      _compareExercises(where, a.exercises[id]!.exercise, other.exercise),
+    );
   }
   return errors;
 }
@@ -163,13 +175,26 @@ List<String> _compareExercises(String where, Exercise one, Exercise other) {
   if (!_sameCases(one.hiddenCases, other.hiddenCases)) {
     errors.add('Exercise $where does not declare the same hidden cases');
   }
+  if (!_sameStrings(one.specificationCases, other.specificationCases)) {
+    errors.add('Exercise $where does not cite the same specification cases');
+  }
   if (one.assertions.length != other.assertions.length) {
-    errors.add('Exercise $where does not declare the same number of assertions');
+    errors.add(
+      'Exercise $where does not declare the same number of assertions',
+    );
   }
   return errors;
 }
 
 bool _sameCases(List<ExerciseCase> one, List<ExerciseCase> other) {
+  if (one.length != other.length) return false;
+  for (var index = 0; index < one.length; index++) {
+    if (one[index] != other[index]) return false;
+  }
+  return true;
+}
+
+bool _sameStrings(List<String> one, List<String> other) {
   if (one.length != other.length) return false;
   for (var index = 0; index < one.length; index++) {
     if (one[index] != other[index]) return false;

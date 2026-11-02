@@ -40,23 +40,26 @@ final class LevelDropdown extends StatelessWidget {
 }
 
 List<DropdownMenuItem<ExerciseLevel?>> _levelItems(AppLocalizations l10n) => [
-      DropdownMenuItem<ExerciseLevel?>(
-        value: null,
-        child: AppText(l10n.exerciseFilterAllLevels, variant: AppTextVariant.caption),
-      ),
-      DropdownMenuItem<ExerciseLevel?>(
-        value: ExerciseLevel.reproduce,
-        child: AppText(l10n.exerciseLevel1, variant: AppTextVariant.caption),
-      ),
-      DropdownMenuItem<ExerciseLevel?>(
-        value: ExerciseLevel.compose,
-        child: AppText(l10n.exerciseLevel2, variant: AppTextVariant.caption),
-      ),
-      DropdownMenuItem<ExerciseLevel?>(
-        value: ExerciseLevel.design,
-        child: AppText(l10n.exerciseLevel3, variant: AppTextVariant.caption),
-      ),
-    ];
+  DropdownMenuItem<ExerciseLevel?>(
+    value: null,
+    child: AppText(
+      l10n.exerciseFilterAllLevels,
+      variant: AppTextVariant.caption,
+    ),
+  ),
+  DropdownMenuItem<ExerciseLevel?>(
+    value: ExerciseLevel.reproduce,
+    child: AppText(l10n.exerciseLevel1, variant: AppTextVariant.caption),
+  ),
+  DropdownMenuItem<ExerciseLevel?>(
+    value: ExerciseLevel.compose,
+    child: AppText(l10n.exerciseLevel2, variant: AppTextVariant.caption),
+  ),
+  DropdownMenuItem<ExerciseLevel?>(
+    value: ExerciseLevel.design,
+    child: AppText(l10n.exerciseLevel3, variant: AppTextVariant.caption),
+  ),
+];
 
 final class ConstructDropdown extends StatelessWidget {
   final AstConstruct? selectedConstruct;
@@ -94,18 +97,23 @@ final class ConstructDropdown extends StatelessWidget {
 List<DropdownMenuItem<AstConstruct?>> _constructItems(
   List<AstConstruct> constructs,
   AppLocalizations l10n,
-) =>
-    [
-      DropdownMenuItem<AstConstruct?>(
-        value: null,
-        child: AppText(l10n.exerciseFilterAllConstructs, variant: AppTextVariant.caption),
+) => [
+  DropdownMenuItem<AstConstruct?>(
+    value: null,
+    child: AppText(
+      l10n.exerciseFilterAllConstructs,
+      variant: AppTextVariant.caption,
+    ),
+  ),
+  for (final construct in constructs)
+    DropdownMenuItem<AstConstruct?>(
+      value: construct,
+      child: AppText(
+        _constructLabel(construct, l10n),
+        variant: AppTextVariant.caption,
       ),
-      for (final construct in constructs)
-        DropdownMenuItem<AstConstruct?>(
-          value: construct,
-          child: AppText(_constructLabel(construct, l10n), variant: AppTextVariant.caption),
-        ),
-    ];
+    ),
+];
 
 final class FilterContainer extends StatelessWidget {
   final AppThemeExtension theme;
@@ -133,13 +141,17 @@ final class FilterContainer extends StatelessWidget {
   }
 }
 
-String _constructLabel(AstConstruct construct, AppLocalizations l10n) => switch (construct) {
+String _constructLabel(AstConstruct construct, AppLocalizations l10n) =>
+    switch (construct) {
       AstConstruct.conditional => l10n.exerciseConstructConditional,
       AstConstruct.multipleSelection => l10n.exerciseConstructMultipleSelection,
       AstConstruct.conditionalLoop => l10n.exerciseConstructConditionalLoop,
-      AstConstruct.postConditionalLoop => l10n.exerciseConstructPostConditionalLoop,
+      AstConstruct.postConditionalLoop =>
+        l10n.exerciseConstructPostConditionalLoop,
       AstConstruct.countedLoop => l10n.exerciseConstructCountedLoop,
       AstConstruct.arrayDeclaration => l10n.exerciseConstructArrayDeclaration,
       AstConstruct.subprogram => l10n.exerciseConstructSubprogram,
       AstConstruct.classDeclaration => l10n.exerciseConstructClassDeclaration,
+      AstConstruct.interfaceDeclaration =>
+        l10n.exerciseConstructInterfaceDeclaration,
     };

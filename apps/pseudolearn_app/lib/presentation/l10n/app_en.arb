@@ -736,6 +736,10 @@
   "@exerciseConstructClassDeclaration": {
     "description": "Name for classes and objects construct"
   },
+  "exerciseConstructInterfaceDeclaration": "Interfaces",
+  "@exerciseConstructInterfaceDeclaration": {
+    "description": "Name for interface declarations"
+  },
   "exerciseClearFilters": "Clear filters",
   "@exerciseClearFilters": {
     "description": "Button to clear exercise filters"
@@ -1623,6 +1627,10 @@
   "dashboardConceptClass": "Class",
   "@dashboardConceptClass": {
     "description": "Name of the class declaration"
+  },
+  "dashboardConceptInterface": "Interface",
+  "@dashboardConceptInterface": {
+    "description": "Name of the interface declaration"
   },
   "dashboardSpecificationTitle": "Specification coverage",
   "@dashboardSpecificationTitle": {

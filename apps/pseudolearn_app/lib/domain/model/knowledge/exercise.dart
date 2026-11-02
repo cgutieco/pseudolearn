@@ -14,6 +14,7 @@ final class Exercise {
   final List<ExerciseCase> visibleCases;
   final List<ExerciseCase> hiddenCases;
   final List<StructuralAssertion> assertions;
+  final List<String> specificationCases;
   final String? starterCode;
 
   const Exercise({
@@ -26,6 +27,7 @@ final class Exercise {
     required this.hiddenCases,
     this.moduleId,
     this.assertions = const [],
+    this.specificationCases = const [],
     this.starterCode,
   });
 
@@ -45,19 +47,21 @@ final class Exercise {
           listEquals(visibleCases, other.visibleCases) &&
           listEquals(hiddenCases, other.hiddenCases) &&
           listEquals(assertions, other.assertions) &&
+          listEquals(specificationCases, other.specificationCases) &&
           starterCode == other.starterCode;
 
   @override
   int get hashCode => Object.hash(
-        id,
-        title,
-        statement,
-        level,
-        kind,
-        moduleId,
-        Object.hashAll(visibleCases),
-        Object.hashAll(hiddenCases),
-        Object.hashAll(assertions),
-        starterCode,
-      );
+    id,
+    title,
+    statement,
+    level,
+    kind,
+    moduleId,
+    Object.hashAll(visibleCases),
+    Object.hashAll(hiddenCases),
+    Object.hashAll(assertions),
+    Object.hashAll(specificationCases),
+    starterCode,
+  );
 }

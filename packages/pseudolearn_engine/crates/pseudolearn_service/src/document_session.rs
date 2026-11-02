@@ -121,6 +121,7 @@ impl DocumentSession {
             source: &self.source,
             analysis: &self.analysis,
             index: &self.index,
+            syntax_diagnostics: &self.syntax_diagnostics,
             profile: self.profile,
             locale,
         }

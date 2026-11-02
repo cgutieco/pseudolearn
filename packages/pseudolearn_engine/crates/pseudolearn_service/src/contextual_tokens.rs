@@ -194,6 +194,12 @@ pub(crate) fn construction(
     span: pseudolearn_source::Span,
     identity: &str,
 ) -> String {
+    let identity = match identity {
+        "importKeyword" => "importDeclaration",
+        "exportKeyword" => "exportDeclaration",
+        "inKeyword" => "eachKeyword",
+        _ => identity,
+    };
     for (kind, location) in analysis
         .module
         .expressions

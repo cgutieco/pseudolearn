@@ -1,0 +1,24 @@
+Interfaz Legible
+Metodo obtener(valor Como Entero) Como Entero;
+FinInterfaz
+
+Clase Lector Realiza Legible
+    Publico Metodo obtener(valor Como Entero) Como Entero
+        Retornar valor + 1;
+    FinMetodo
+FinClase
+
+Clase Escritor Realiza Legible
+    Publico Metodo obtener(valor Como Entero) Como Entero
+        Retornar valor * 2;
+    FinMetodo
+FinClase
+
+Algoritmo CompararContratos
+    Definir Mutable valor Como Entero <- 0;
+    Leer valor;
+    Definir lector Como Lector <- Nuevo Lector();
+    Definir escritor Como Escritor <- Nuevo Escritor();
+    Escribir lector.obtener(valor);
+    Escribir escritor.obtener(valor);
+FinAlgoritmo

@@ -9,6 +9,7 @@ import 'package:pseudolearn_app/domain/model/knowledge/expected_value_kind.dart'
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
 import 'loaded_content.dart';
+import 'normative_case_reference.dart';
 
 ExerciseChecker _runner() {
   return contentEngine.exerciseChecker;
@@ -22,6 +23,13 @@ List<String> checkExercise({
 }) {
   final exercise = loaded.exercise;
   final errors = <String>[];
+  errors.addAll(
+    checkNormativeCaseReferences(
+      exerciseId: exercise.id,
+      languageCode: languageCode,
+      references: exercise.specificationCases,
+    ),
+  );
   for (final defect in findExerciseDefects(exercise)) {
     errors.add('Exercise "${exercise.id}" ($languageCode): ${defect.name}');
   }

@@ -43,6 +43,18 @@ with the same number of parameters, the same types and the same return type. A d
 not a second version: it is an error, because it stops making sense to say which of the two "is" the
 method the subclass overrode.
 
+## The same signature needs an explicit realization
+
+{{ejemplo:example-c4-contracts}}
+
+{{diagrama:example-c4-contracts#clases}}
+
+`Reader` and `Writer` provide the same operation because each explicitly declares `implements
+Readable`; matching a name and signature alone does not create a relation. The diagram preserves each
+realization and its source origin. Exercise `CON-C4-E7` adds checkable calculations: its reference
+solution, inputs and expected outputs are paired with normative case
+`LANG.TYPES.INTERFACE@1.0.0#C5`, which fixes explicit realization and exact signature matching.
+
 :::parte prediccion
 
 - example-c4-despacho#12# What two lines does the program write, in order?
@@ -154,3 +166,4 @@ endAlgorithm
 - CON-C4-E4 Dispatch across three different shapes
 - CON-C4-E5 Savings account that extends Account
 - CON-C4-E6 Three-level hierarchy
+- CON-C4-E7 Reader and Writer implement Readable

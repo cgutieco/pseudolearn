@@ -1,8 +1,8 @@
 use pseudolearn_lexicon::Profile;
 use pseudolearn_service::marked_text::split_cursor;
 use pseudolearn_service::{
-    DocumentSession, HelpCertainty, HelpIdentityKind, HelpQueryOutcome, HelpResolution,
-    HoverCategory, resolve_help_at_position,
+    DocumentSession, HelpCertainty, HelpIdentityKind, HelpLocale, HelpQueryOutcome, HelpResolution,
+    HoverCategory, help_content, resolve_help_at_position,
 };
 
 fn resolve(marked: &str, profile: Profile, strict: bool) -> Option<HelpQueryOutcome> {
@@ -16,6 +16,11 @@ fn identity(resolution: &HelpResolution) -> Option<(&HelpIdentityKind, &str, &st
         .identity
         .as_ref()
         .map(|entry| (&entry.kind, entry.id.as_str(), entry.role.as_str()))
+}
+
+fn card_id(marked: &str, profile: Profile) -> Option<String> {
+    let result = resolve(marked, profile, true)?;
+    help_content(&result, HelpLocale::English).map(|content| content.card_id.to_owned())
 }
 
 #[test]
@@ -128,6 +133,64 @@ fn symbols_take_precedence_over_builtins_and_operators_are_resolved() -> Result<
     );
     assert_eq!(addition.hover, None);
     Ok(())
+}
+
+#[test]
+fn contextual_constructions_select_cards_by_their_resolved_identity() -> Result<(), String> {
+    let imports = "Importar geo.Punto Como P;\nAlgoritmo Main\nFinAlgoritmo\n";
+    let export = "Exportar geo.Punto;\nAlgoritmo Main\nFinAlgoritmo\n";
+    let iteration = "Algoritmo Main\nPara Cada value En values Hacer\nFinPara\nFinAlgoritmo\n";
+    let variants = "Algoritmo Main\nDefinir value Como Opcional<Entero>;\nFinAlgoritmo\n";
+    let import = resolve(
+        &imports.replace("Importar", "Im|portar"),
+        Profile::Spanish,
+        true,
+    )
+    .ok_or("missing standalone import resolution")?;
+    assert_eq!(import.token_identity.as_deref(), Some("importKeyword"));
+    assert_eq!(
+        identity(&import.resolution),
+        Some((
+            &HelpIdentityKind::Construction,
+            "importDeclaration",
+            "module_import"
+        ))
+    );
+    assert_eq!(
+        card_id(&imports.replace("Importar", "Im|portar"), Profile::Spanish).as_deref(),
+        Some("help.module-import")
+    );
+    assert_eq!(
+        card_id(&imports.replace("Como", "Co|mo"), Profile::Spanish).as_deref(),
+        Some("help.module-import")
+    );
+    assert_eq!(
+        card_id(&export.replace("Exportar", "Ex|portar"), Profile::Spanish).as_deref(),
+        Some("help.module-export")
+    );
+    assert_eq!(
+        card_id(&iteration.replace("Cada", "Ca|da"), Profile::Spanish).as_deref(),
+        Some("construction.for_each")
+    );
+    assert_eq!(
+        card_id(&iteration.replace("En", "E|n"), Profile::Spanish).as_deref(),
+        Some("construction.for_each")
+    );
+    assert_eq!(
+        card_id(&variants.replace("Opcional", "Opc|ional"), Profile::Spanish).as_deref(),
+        Some("help.variants")
+    );
+    Ok(())
+}
+
+#[test]
+fn function_literal_help_uses_the_closure_context() {
+    let source = "SubProceso make(value Como Entero) Como SubProceso() Como Entero\nDefinir captured Como Entero <- value;\nRetornar SubProceso() Como Entero\nRetornar captured;\nFinSubProceso;\nFinSubProceso\nAlgoritmo Main\nFinAlgoritmo\n";
+    let marked = source.replace("Retornar SubProceso", "Retornar Sub|Proceso");
+    assert_eq!(
+        card_id(&marked, Profile::Spanish).as_deref(),
+        Some("help.function-literal")
+    );
 }
 
 #[test]

@@ -23,6 +23,7 @@ const String _exercise = '''
   "hiddenCases": [
     {"inputs": ["7"], "expectedOutputs": ["49"], "expected": "numerico"}
   ],
+  "specificationCases": ["LANG.TYPES.INTERFACE@1.0.0#C5"],
   "assertions": [
     {
       "kind": "contiene",
@@ -55,7 +56,11 @@ void main() {
       expect(exercise.moduleId, 'CON-B1');
       expect(exercise.visibleCases.single.inputs, ['4']);
       expect(exercise.hiddenCases.single.expectedOutputs, ['49']);
-      expect(exercise.visibleCases.single.expectedValueKind, ExpectedValueKind.numeric);
+      expect(
+        exercise.visibleCases.single.expectedValueKind,
+        ExpectedValueKind.numeric,
+      );
+      expect(exercise.specificationCases, ['LANG.TYPES.INTERFACE@1.0.0#C5']);
       expect(exercise.assertions.single, isA<ContainsConstructAssertion>());
       expect(
         (exercise.assertions.single as ContainsConstructAssertion).construct,
@@ -84,6 +89,18 @@ void main() {
       expect(_parse(source).assertions, isEmpty);
     });
 
+    test('a specification case list must contain unique nonempty strings', () {
+      expect(
+        _failureOf(
+          _exercise.replaceAll(
+            '"specificationCases": ["LANG.TYPES.INTERFACE@1.0.0#C5"]',
+            '"specificationCases": ["", ""]',
+          ),
+        ),
+        ContentLoadFailure.exerciseMalformed,
+      );
+    });
+
     test('a level out of range is a named failure', () {
       expect(
         _failureOf(_exercise.replaceAll('"level": 1', '"level": 9')),
@@ -93,38 +110,53 @@ void main() {
 
     test('an unknown kind is a named failure', () {
       expect(
-        _failureOf(_exercise.replaceAll('"kind": "crear"', '"kind": "reordenar"')),
+        _failureOf(
+          _exercise.replaceAll('"kind": "crear"', '"kind": "reordenar"'),
+        ),
         ContentLoadFailure.exerciseMalformed,
       );
     });
 
     test('an unknown expected value kind is a named failure', () {
       expect(
-        _failureOf(_exercise.replaceAll('"expected": "numerico"', '"expected": "entero"')),
+        _failureOf(
+          _exercise.replaceAll(
+            '"expected": "numerico"',
+            '"expected": "entero"',
+          ),
+        ),
         ContentLoadFailure.exerciseMalformed,
       );
     });
 
     test('an assertion without its requirement is a named failure', () {
       expect(
-        _failureOf(_exercise.replaceAll(
-          '"requirement": "El enunciado pedia un bucle contado.",',
-          '"requirement": "   ",',
-        )),
+        _failureOf(
+          _exercise.replaceAll(
+            '"requirement": "El enunciado pedia un bucle contado.",',
+            '"requirement": "   ",',
+          ),
+        ),
         ContentLoadFailure.exerciseMalformed,
       );
     });
 
-    test('an assertion naming a construct the language does not have is a named failure', () {
-      expect(
-        _failureOf(_exercise.replaceAll('"bucle-contado"', '"corrutina"')),
-        ContentLoadFailure.exerciseMalformed,
-      );
-    });
+    test(
+      'an assertion naming a construct the language does not have is a named failure',
+      () {
+        expect(
+          _failureOf(_exercise.replaceAll('"bucle-contado"', '"corrutina"')),
+          ContentLoadFailure.exerciseMalformed,
+        );
+      },
+    );
 
-    test('a document that is not valid json is a named failure, never an exception', () {
-      expect(_failureOf('{ not json'), ContentLoadFailure.exerciseMalformed);
-    });
+    test(
+      'a document that is not valid json is a named failure, never an exception',
+      () {
+        expect(_failureOf('{ not json'), ContentLoadFailure.exerciseMalformed);
+      },
+    );
 
     test('a case with no inputs and no outputs is read as declared', () {
       final source = _exercise.replaceAll(

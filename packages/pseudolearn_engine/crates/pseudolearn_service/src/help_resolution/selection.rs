@@ -6,6 +6,9 @@ pub(super) fn token_identity(
     slot: usize,
     kind: TokenKind,
 ) -> Option<String> {
+    if let Some((_, _, identity)) = super::module_directive::module_directive(context, slot) {
+        return Some(identity.to_owned());
+    }
     if let Some(identity) = crate::contextual_tokens::collect(
         context.tree,
         context.source,

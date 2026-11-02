@@ -151,6 +151,38 @@ fn explicit_inherited_and_generic_contracts_use_revision_node_ids() -> Result<()
             .count(),
         2
     );
+    let implementations: Vec<_> = view
+        .get("members")
+        .and_then(Value::as_array)
+        .ok_or("missing members")?
+        .iter()
+        .filter(|member| {
+            member.get("name") == Some(&json!("readValue"))
+                && member.get("kind") == Some(&json!("method"))
+        })
+        .collect();
+    assert_eq!(implementations.len(), 2);
+    let first_implementation = implementations
+        .first()
+        .ok_or("missing first implementation")?;
+    let second_implementation = implementations
+        .get(1)
+        .ok_or("missing second implementation")?;
+    assert_ne!(
+        first_implementation.get("node_id"),
+        second_implementation.get("node_id")
+    );
+    assert_ne!(
+        first_implementation.get("class_node_id"),
+        second_implementation.get("class_node_id")
+    );
+    assert!(implementations.iter().all(|member| {
+        member.get("arity") == Some(&json!(0))
+            && member
+                .get("node_id")
+                .and_then(Value::as_str)
+                .is_some_and(|identifier| identifiers.contains(&identifier))
+    }));
     assert!(relations.iter().all(|relation| {
         ["class_node_id", "interface_node_id", "origin_node_id"]
             .iter()

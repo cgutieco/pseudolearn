@@ -29,6 +29,25 @@ fn query(session: &mut ApiSession, resource: u64, line: u32, column: u32, unit: 
     )
 }
 
+fn query_with_language(
+    session: &mut ApiSession,
+    resource: u64,
+    line: u32,
+    column: u32,
+    language: &str,
+) -> Value {
+    session.call(
+        "help_query",
+        &json!({
+            "resource": resource,
+            "revision": "1",
+            "position": {"line": line, "column": column, "unit": "unicode_scalar"},
+            "language": language,
+            "detail": "full"
+        }),
+    )
+}
+
 #[test]
 fn compound_query_reports_identity_and_complete_ranges() -> Result<(), String> {
     let mut session = ApiSession::default();
@@ -197,5 +216,118 @@ fn unary_and_binary_minus_select_different_cards() -> Result<(), String> {
         unary.pointer("/value/card/id")
     );
     assert_eq!(unary.pointer("/value/card/id"), Some(&json!("help.unary")));
+    Ok(())
+}
+
+#[test]
+fn contextual_import_export_and_iteration_tokens_select_their_own_cards() -> Result<(), String> {
+    let mut session = ApiSession::default();
+    let program = "Importar geo.Punto Como P;\nExportar geo.Punto;\nAlgoritmo Main\nPara Cada item En items Hacer\nFinPara\nFinAlgoritmo\n";
+    let resource = open(&mut session, program)?;
+    let import = query(&mut session, resource, 1, 1, "unicode_scalar");
+    assert_eq!(
+        import.pointer("/value/resolution/identity"),
+        Some(&json!({"kind":"construction","id":"importDeclaration","role":"module_import"}))
+    );
+    let alias = query(&mut session, resource, 1, 20, "unicode_scalar");
+    assert_eq!(
+        alias.pointer("/value/resolution/identity"),
+        Some(&json!({"kind":"construction","id":"importDeclaration","role":"alias"}))
+    );
+    assert_eq!(
+        alias.pointer("/value/card/id"),
+        Some(&json!("help.module-import"))
+    );
+    let export = query(&mut session, resource, 2, 1, "unicode_scalar");
+    assert_eq!(
+        export.pointer("/value/resolution/identity"),
+        Some(&json!({"kind":"construction","id":"exportDeclaration","role":"module_export"}))
+    );
+    for (line, column, card) in [
+        (1, 1, "help.module-import"),
+        (1, 23, "help.module-import"),
+        (2, 1, "help.module-export"),
+        (4, 6, "construction.for_each"),
+        (4, 16, "construction.for_each"),
+    ] {
+        let response = query(&mut session, resource, line, column, "unicode_scalar");
+        assert_eq!(response.pointer("/value/card/id"), Some(&json!(card)));
+    }
+    Ok(())
+}
+
+#[test]
+fn help_covers_generic_constraints_function_captures_variants_and_task_scopes() -> Result<(), String>
+{
+    let mut session = ApiSession::default();
+    let program = "Interfaz Legible\nMetodo leer() Como Entero;\nFinInterfaz\nSubProceso leerUna<T: Legible>(value Como T) Como Entero\nRetornar value.leer();\nFinSubProceso\nSubProceso make(n Como Entero) Como SubProceso() Como Entero\nRetornar SubProceso() Como Entero\nRetornar n;\nFinSubProceso;\nFinSubProceso\nAlgoritmo Main\nTareas\nFinTareas\nFinAlgoritmo\n";
+    let resource = open(&mut session, program)?;
+    let constraint = query(&mut session, resource, 4, 25, "unicode_scalar");
+    assert_eq!(
+        constraint.pointer("/value/resolution/identity"),
+        Some(&json!({"kind":"role","id":"subprogram","role":"generic_constraint"}))
+    );
+    assert_eq!(
+        constraint.pointer("/value/card/id"),
+        Some(&json!("help.subprogram"))
+    );
+    let literal = query(&mut session, resource, 8, 11, "unicode_scalar");
+    assert_eq!(
+        literal.pointer("/value/resolution/identity"),
+        Some(&json!({"kind":"construction","id":"functionLiteral","role":"opening"}))
+    );
+    assert_eq!(
+        literal.pointer("/value/card/id"),
+        Some(&json!("help.function-literal"))
+    );
+    let scope = query(&mut session, resource, 13, 1, "unicode_scalar");
+    assert_eq!(
+        scope.pointer("/value/card/id"),
+        Some(&json!("help.task-scope"))
+    );
+    Ok(())
+}
+
+#[test]
+fn a_query_from_an_old_document_revision_is_rejected() -> Result<(), String> {
+    let mut session = ApiSession::default();
+    let resource = open(
+        &mut session,
+        "Algoritmo P\nMientras Verdadero Hacer\nFinMientras\nFinAlgoritmo\n",
+    )?;
+    let edited = session.call(
+        "apply_edit",
+        &json!({"resource": resource, "revision": "1", "edits": [
+            {"start_utf8": "0", "end_utf8": "0", "text": " "}
+        ]}),
+    );
+    assert_eq!(edited.pointer("/value/revision"), Some(&json!("2")));
+    let stale = query(&mut session, resource, 2, 3, "unicode_scalar");
+    assert_eq!(stale.pointer("/value/stale_revision"), Some(&json!("2")));
+    assert_eq!(stale.pointer("/value/card"), None);
+    Ok(())
+}
+
+#[test]
+fn help_language_is_independent_of_the_english_document_profile() -> Result<(), String> {
+    let mut session = ApiSession::default();
+    let opened = session.call(
+        "open_edit_session",
+        &json!({"program": "algorithm Main\nwhile true do\nendWhile\nendAlgorithm\n", "profile": "en", "strictness": "strict"}),
+    );
+    let resource = opened
+        .pointer("/value/resource")
+        .and_then(Value::as_u64)
+        .ok_or("missing edit session resource")?;
+    let spanish = query_with_language(&mut session, resource, 2, 2, "es");
+    let english = query_with_language(&mut session, resource, 2, 2, "en");
+    assert_eq!(
+        spanish.pointer("/value/card/title"),
+        Some(&json!("Bucle Mientras"))
+    );
+    assert_eq!(
+        english.pointer("/value/card/title"),
+        Some(&json!("While loop"))
+    );
     Ok(())
 }

@@ -44,6 +44,18 @@ declararlo otra vez, con el mismo número de parámetros, los mismos tipos y el 
 firma distinta no es una segunda versión: es un error, porque deja de tener sentido decir cuál de las
 dos «es» el método que la subclase sobrescribió.
 
+## La misma firma necesita una realización declarada
+
+{{ejemplo:example-c4-contracts}}
+
+{{diagrama:example-c4-contracts#clases}}
+
+`Lector` y `Escritor` ofrecen la misma operación porque declaran explícitamente `Realiza Legible`;
+coincidir en el nombre y la firma por sí solos no crea una relación. El diagrama conserva cada
+realización y su origen de código. El ejercicio `CON-C4-E7` añade cálculo comprobable: la solución de
+referencia, sus entradas y resultados están emparejados con el caso normativo
+`LANG.TYPES.INTERFACE@1.0.0#C5`, que fija la realización explícita y la firma exacta.
+
 :::parte prediccion
 
 - example-c4-despacho#12# ¿Qué dos líneas escribe el programa, en orden?
@@ -155,3 +167,4 @@ FinAlgoritmo
 - CON-C4-E4 Despacho de tres formas distintas
 - CON-C4-E5 Cuenta de ahorro que hereda de Cuenta
 - CON-C4-E6 Jerarquía de tres niveles
+- CON-C4-E7 Lector y Escritor realizan Legible

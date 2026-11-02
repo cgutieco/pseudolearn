@@ -2434,13 +2434,23 @@
             "specification": "LANG.TASK.SUSPENSION",
             "version": "1.0.0",
             "element": "R1"
+          },
+          {
+            "specification": "LANG.TYPES.INTERFACE",
+            "version": "1.0.0",
+            "element": "R3"
+          },
+          {
+            "specification": "LANG.TYPES.GENERIC",
+            "version": "1.0.0",
+            "element": "R1"
           }
         ],
         "content": {
           "es": {
             "title": "Declaración de subprograma",
-            "summary": "Define una operación nombrada con parámetros y un cuerpo.",
-            "purpose": "El tipo de retorno es opcional; la forma de cierre debe corresponder a la apertura.",
+            "summary": "Declara una operación nombrada con parámetros y cuerpo; admite parámetros de tipo y restricciones nominales.",
+            "purpose": "El retorno es opcional y la forma de cierre corresponde a la apertura. Una restricción T: I permite usar en la definición las firmas de I.",
             "parts": [
               {
                 "identity": "subroutine",
@@ -2479,13 +2489,22 @@
                 "specification": "LANG.SUBPROGRAM.DECLARATION",
                 "strictness": "estricto",
                 "version": "1.0.0"
+              },
+              {
+                "case": "C9",
+                "kind": "executable",
+                "label": "Subprograma con restricción nominal",
+                "profile": "es",
+                "specification": "LANG.TYPES.INTERFACE",
+                "strictness": "estricto",
+                "version": "1.0.0"
               }
             ]
           },
           "en": {
             "title": "Subprogram declaration",
-            "summary": "Defines a named operation with parameters and a body.",
-            "purpose": "The return type is optional, and the closing form must match the opener.",
+            "summary": "Declares a named operation with parameters and a body; it accepts type parameters and nominal constraints.",
+            "purpose": "The return type is optional and the closing form matches its opener. A T: I constraint lets the definition use I signatures.",
             "parts": [
               {
                 "identity": "subroutine",
@@ -2522,6 +2541,127 @@
                 "label": "Deliberate diagnostic: Subprogram declaration",
                 "profile": "en",
                 "specification": "LANG.SUBPROGRAM.DECLARATION",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C9",
+                "kind": "executable",
+                "label": "Subprogram with a nominal constraint",
+                "profile": "en",
+                "specification": "LANG.TYPES.INTERFACE",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.function-literal",
+        "identity": {
+          "kind": "construction",
+          "id": "functionLiteral",
+          "role": "function_literal_capture"
+        },
+        "tokens": [
+          {
+            "identity": "subroutine",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          },
+          {
+            "identity": "endSubroutine",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LANG.TYPES.FUNCTION",
+            "version": "1.0.0",
+            "element": "R1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Literal de función y captura",
+            "summary": "Una función literal crea una clausura con los vínculos inmutables que utiliza.",
+            "purpose": "La clausura conserva su entorno mientras siga alcanzable, incluso después de que termine el marco que la creó.",
+            "parts": [
+              {
+                "identity": "subroutine",
+                "text": "Abre una función anónima con firma y cuerpo propios."
+              },
+              {
+                "identity": "endSubroutine",
+                "text": "Cierra la función literal y su cuerpo."
+              }
+            ],
+            "constraints": [
+              "No se pueden capturar vínculos mutables ni prestados."
+            ],
+            "common_errors": [
+              "mutableClosureCapture aparece cuando una clausura usa un vínculo mutable."
+            ],
+            "examples": [
+              {
+                "case": "C2",
+                "kind": "executable",
+                "label": "Clausura que conserva una captura",
+                "profile": "es",
+                "specification": "LANG.TYPES.FUNCTION",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Function literal and capture",
+            "summary": "A function literal creates a closure with the immutable bindings it uses.",
+            "purpose": "The closure keeps its environment reachable after the frame that created it returns.",
+            "parts": [
+              {
+                "identity": "subroutine",
+                "text": "Opens an anonymous function with its own signature and body."
+              },
+              {
+                "identity": "endSubroutine",
+                "text": "Closes the function literal and its body."
+              }
+            ],
+            "constraints": [
+              "Mutable and borrowed bindings cannot be captured."
+            ],
+            "common_errors": [
+              "mutableClosureCapture is reported when a closure uses a mutable binding."
+            ],
+            "examples": [
+              {
+                "case": "C2",
+                "kind": "executable",
+                "label": "Closure that retains a capture",
+                "profile": "en",
+                "specification": "LANG.TYPES.FUNCTION",
                 "strictness": "estricto",
                 "version": "1.0.0"
               }
@@ -3720,7 +3860,7 @@
             "common_errors": [],
             "examples": [
               {
-                "case": "C12",
+                "case": "C22",
                 "kind": "diagnostic",
                 "label": "Diagnóstico deliberado: Reexportación de símbolo",
                 "profile": "es",
@@ -3744,7 +3884,7 @@
             "common_errors": [],
             "examples": [
               {
-                "case": "C12",
+                "case": "C22",
                 "kind": "diagnostic",
                 "label": "Deliberate diagnostic: Symbol re-export",
                 "profile": "en",
@@ -6937,35 +7077,35 @@
             "parts": [
               {
                 "identity": "optionalType",
-                "text": "Opcional"
+                "text": "Declara un tipo que puede contener un valor o ausencia."
               },
               {
                 "identity": "resultType",
-                "text": "Resultado"
+                "text": "Declara un valor de éxito o de error."
               },
               {
                 "identity": "someVariant",
-                "text": "Algo"
+                "text": "Construye la variante presente de un opcional."
               },
               {
                 "identity": "noneVariant",
-                "text": "Nada"
+                "text": "Construye la variante ausente sin carga."
               },
               {
                 "identity": "successVariant",
-                "text": "Exito"
+                "text": "Construye el resultado exitoso con su carga."
               },
               {
                 "identity": "errorVariant",
-                "text": "Error"
+                "text": "Construye el resultado de error con su carga."
               },
               {
                 "identity": "propagateKeyword",
-                "text": "Propagar"
+                "text": "Propaga una ausencia o error desde la función actual."
               },
               {
                 "identity": "discardKeyword",
-                "text": "Descartar"
+                "text": "Consume explícitamente un valor de resultado sin inspeccionarlo."
               }
             ],
             "constraints": [
@@ -7002,35 +7142,35 @@
             "parts": [
               {
                 "identity": "optionalType",
-                "text": "optional"
+                "text": "Declares a type that can contain a value or absence."
               },
               {
                 "identity": "resultType",
-                "text": "result"
+                "text": "Declares a success value or an error value."
               },
               {
                 "identity": "someVariant",
-                "text": "some"
+                "text": "Constructs the present variant of an optional."
               },
               {
                 "identity": "noneVariant",
-                "text": "none"
+                "text": "Constructs the payload-free absent variant."
               },
               {
                 "identity": "successVariant",
-                "text": "success"
+                "text": "Constructs a successful result with its payload."
               },
               {
                 "identity": "errorVariant",
-                "text": "failure"
+                "text": "Constructs an error result with its payload."
               },
               {
                 "identity": "propagateKeyword",
-                "text": "propagate"
+                "text": "Propagates absence or error out of the current function."
               },
               {
                 "identity": "discardKeyword",
-                "text": "discard"
+                "text": "Explicitly consumes a result without inspecting it."
               }
             ],
             "constraints": [
@@ -7118,20 +7258,20 @@
         "content": {
           "es": {
             "title": "Interfaces nominales",
-            "summary": "Declara firmas públicas que una clase realiza explícitamente.",
-            "purpose": "Declara firmas públicas que una clase realiza explícitamente.",
+            "summary": "Un contrato reúne firmas públicas que una clase puede realizar.",
+            "purpose": "La interfaz declara operaciones, sin atributos ni cuerpos de método.",
             "parts": [
               {
                 "identity": "interfaceKeyword",
-                "text": "Declara firmas públicas que una clase realiza explícitamente."
+                "text": "Inicia la declaración de un contrato nominal."
               },
               {
                 "identity": "endInterface",
-                "text": "Declara firmas públicas que una clase realiza explícitamente."
+                "text": "Cierra el contrato y sus firmas."
               },
               {
                 "identity": "implementsKeyword",
-                "text": "Declara firmas públicas que una clase realiza explícitamente."
+                "text": "Declara que una clase realiza el contrato nombrado."
               }
             ],
             "constraints": [],
@@ -7150,20 +7290,20 @@
           },
           "en": {
             "title": "Nominal interfaces",
-            "summary": "Declares public signatures explicitly implemented by a class.",
-            "purpose": "Declares public signatures explicitly implemented by a class.",
+            "summary": "A contract groups public signatures that a class can implement.",
+            "purpose": "An interface declares operations without attributes or method bodies.",
             "parts": [
               {
                 "identity": "interfaceKeyword",
-                "text": "Declares public signatures explicitly implemented by a class."
+                "text": "Starts a nominal contract declaration."
               },
               {
                 "identity": "endInterface",
-                "text": "Declares public signatures explicitly implemented by a class."
+                "text": "Closes the contract and its signatures."
               },
               {
                 "identity": "implementsKeyword",
-                "text": "Declares public signatures explicitly implemented by a class."
+                "text": "Declares that a class implements the named contract."
               }
             ],
             "constraints": [],
@@ -7518,16 +7658,16 @@
         "content": {
           "es": {
             "title": "Para Cada",
-            "summary": "Recorre una colección una vez por elemento; rechaza modificaciones estructurales.",
-            "purpose": "Recorre una colección una vez por elemento; rechaza modificaciones estructurales.",
+            "summary": "Para Cada visita cada elemento de una colección exactamente una vez.",
+            "purpose": "La colección determina los valores del vínculo de iteración; su estructura no puede modificarse durante el recorrido.",
             "parts": [
               {
                 "identity": "eachKeyword",
-                "text": "Recorre una colección una vez por elemento; rechaza modificaciones estructurales."
+                "text": "Inicia un recorrido que ejecuta el cuerpo por cada elemento."
               },
               {
                 "identity": "inKeyword",
-                "text": "Recorre una colección una vez por elemento; rechaza modificaciones estructurales."
+                "text": "Introduce la colección cuyos elementos se vinculan durante el recorrido."
               }
             ],
             "constraints": [],
@@ -7546,16 +7686,16 @@
           },
           "en": {
             "title": "For each",
-            "summary": "Visits each collection element and rejects structural changes.",
-            "purpose": "Visits each collection element and rejects structural changes.",
+            "summary": "For each visits every element of a collection exactly once.",
+            "purpose": "The collection supplies the iteration binding; its structure cannot change during traversal.",
             "parts": [
               {
                 "identity": "eachKeyword",
-                "text": "Visits each collection element and rejects structural changes."
+                "text": "Starts a traversal that runs the body once per element."
               },
               {
                 "identity": "inKeyword",
-                "text": "Visits each collection element and rejects structural changes."
+                "text": "Introduces the collection whose elements are bound during traversal."
               }
             ],
             "constraints": [],
@@ -15968,9 +16108,17 @@
           }
         ],
         "availability": {
-          "editions": ["2026"],
-          "profiles": ["es", "en"],
-          "strictness": ["estricto", "flexible"]
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
         },
         "anchors": [
           {
@@ -16267,6 +16415,20 @@
             "endSubroutine",
             "typeConnector",
             "suspendibleModifier"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "construction",
+            "id": "functionLiteral",
+            "role": "function_literal_capture"
+          },
+          "productions": [
+            "subprogram"
+          ],
+          "tokens": [
+            "subroutine",
+            "endSubroutine"
           ]
         },
         {

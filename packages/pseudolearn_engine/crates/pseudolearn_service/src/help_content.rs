@@ -16,7 +16,7 @@ pub struct HelpContent {
 
 pub fn help_content(outcome: &HelpQueryOutcome, locale: HelpLocale) -> Option<HelpContent> {
     let identity = outcome.resolution.identity.as_ref()?;
-    let token = outcome.token_identity.as_deref()?;
+    let token = outcome.token_identity.as_deref();
     let card = select_card(identity, token)?;
     let content = card.content(locale);
     Some(HelpContent {
@@ -24,7 +24,7 @@ pub fn help_content(outcome: &HelpQueryOutcome, locale: HelpLocale) -> Option<He
         title: content.title,
         summary: content.summary,
         purpose: content.purpose,
-        description: token_description(token, locale),
+        description: token.and_then(|value| token_description(value, locale)),
         parts: content.parts,
         constraints: content.constraints,
         common_errors: content.common_errors,
@@ -32,23 +32,31 @@ pub fn help_content(outcome: &HelpQueryOutcome, locale: HelpLocale) -> Option<He
     })
 }
 
-fn select_card(identity: &HelpIdentity, token: &str) -> Option<&'static HelpCard> {
+fn select_card(identity: &HelpIdentity, token: Option<&str>) -> Option<&'static HelpCard> {
     let candidates: Vec<&'static HelpCard> = cards()
         .iter()
-        .filter(|card| card.tokens.contains(&token))
+        .filter(|card| token.is_none_or(|value| card.tokens.contains(&value)))
         .collect();
     let preferred = candidates
         .iter()
         .copied()
         .find(|card| fits_context(card, identity));
-    preferred.or_else(|| candidates.first().copied())
+    if matches!(
+        identity.kind,
+        HelpIdentityKind::Construction | HelpIdentityKind::Role
+    ) {
+        preferred
+    } else {
+        preferred.or_else(|| candidates.first().copied())
+    }
 }
 
 fn fits_context(card: &HelpCard, identity: &HelpIdentity) -> bool {
     match identity.kind {
         HelpIdentityKind::Operator => fits_operator_role(card.role, &identity.role),
         HelpIdentityKind::Construction | HelpIdentityKind::Role => {
-            construction_card_identity(&identity.id) == Some(card.identity)
+            card.identity == identity.id
+                || construction_card_identity(&identity.id) == Some(card.identity)
         }
         _ => false,
     }

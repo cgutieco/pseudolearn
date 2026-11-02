@@ -142,11 +142,12 @@
       "id": "CON-C4",
       "track": "C",
       "order": 4,
-      "title": "Inheritance and dynamic dispatch",
-      "summary": "A subclass inherits its superclass's boxes, and dispatch looks at the real object.",
+      "title": "Inheritance, interfaces and dynamic dispatch",
+      "summary": "Inheritance passes members down; an interface requires explicit realization.",
       "path": "modules/CON-C4_en.md",
       "constructs": [
-        "clase"
+        "clase",
+        "interfaz"
       ]
     },
     {
@@ -975,6 +976,15 @@
       "path": "exercises/CON-C4-E6_en.json"
     },
     {
+      "id": "CON-C4-E7",
+      "level": 2,
+      "kind": "crear",
+      "module": "CON-C4",
+      "title": "Reader and Writer implement Readable",
+      "summary": "Two classes implement the same contract with different results.",
+      "path": "exercises/CON-C4-E7_en.json"
+    },
+    {
       "id": "CON-C5-E1",
       "level": 2,
       "kind": "crear",
@@ -1311,6 +1321,13 @@
       "title": "Dog and Cat taking turns to speak",
       "summary": "Dispatch looks at the object's real class, not the declared type.",
       "path": "examples/c4_despacho_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-c4-contracts",
+      "title": "Reader and Writer implement Readable",
+      "summary": "Explicit realizations of one shared signature.",
+      "path": "examples/c4_contratos_en.pseudo",
       "profile": "english"
     },
     {

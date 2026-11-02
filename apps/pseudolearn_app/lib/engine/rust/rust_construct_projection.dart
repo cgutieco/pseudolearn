@@ -9,5 +9,6 @@ AstConstruct? rustConstructOf(String syntaxKind) => switch (syntaxKind) {
   'dimension_declaration' => AstConstruct.arrayDeclaration,
   'subroutine' => AstConstruct.subprogram,
   'class_unit' => AstConstruct.classDeclaration,
+  'interface_unit' => AstConstruct.interfaceDeclaration,
   _ => null,
 };

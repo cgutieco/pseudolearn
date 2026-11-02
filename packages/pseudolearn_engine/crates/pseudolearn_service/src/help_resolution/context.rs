@@ -1,4 +1,4 @@
-use super::{HelpIdentity, HelpIdentityKind, identity};
+use super::{HelpIdentity, HelpIdentityKind, ResolutionTarget, contextual_certainty, identity};
 use crate::query_context::QueryContext;
 use pseudolearn_lexicon::KeywordKind;
 use pseudolearn_source::Span;
@@ -9,11 +9,48 @@ pub(super) fn contextual_keyword(
     slot: usize,
     keyword: KeywordKind,
 ) -> Option<(HelpIdentity, Span)> {
+    if keyword == KeywordKind::TypeConnector
+        && let Some((identity, span, _)) = super::module_directive::module_directive(context, slot)
+    {
+        return Some((identity, span));
+    }
     let (node, span) = smallest_node(context, slot, |node| {
         contextual_parts(node, keyword).is_some()
     })?;
     let (kind, id, role) = contextual_parts(node, keyword)?;
     Some((identity(kind, id, role), span))
+}
+
+pub(super) fn generic_constraint(
+    context: &QueryContext<'_>,
+    slot: usize,
+) -> Option<(HelpIdentity, Span)> {
+    if context.tree.tokens.kind(slot) != Some(pseudolearn_syntax::TokenKind::Identifier) {
+        return None;
+    }
+    let (_, span) = smallest_node(context, slot, |node| node == NodeKind::TypeParameter)?;
+    let first = context
+        .tree
+        .nodes
+        .iter()
+        .enumerate()
+        .find_map(|(index, node)| {
+            (node.kind == NodeKind::TypeParameter
+                && context.tree.span_for_node(index) == Some(span))
+            .then(|| usize::try_from(node.first_token).ok())
+            .flatten()
+        })?;
+    if slot <= first
+        || !(first..slot).any(|index| {
+            context.tree.tokens.kind(index) == Some(pseudolearn_syntax::TokenKind::Colon)
+        })
+    {
+        return None;
+    }
+    Some((
+        identity(HelpIdentityKind::Role, "subprogram", "generic_constraint"),
+        span,
+    ))
 }
 
 fn contextual_parts(
@@ -22,6 +59,8 @@ fn contextual_parts(
 ) -> Option<(HelpIdentityKind, &'static str, &'static str)> {
     match node {
         NodeKind::AlgorithmUnit => algorithm_parts(keyword),
+        NodeKind::ImportDeclaration => import_parts(keyword),
+        NodeKind::FunctionLiteral => function_literal_parts(keyword),
         NodeKind::ForLoop => for_parts(keyword),
         NodeKind::WhileLoop => while_parts(keyword),
         NodeKind::Switch => switch_parts(keyword),
@@ -32,6 +71,60 @@ fn contextual_parts(
         | NodeKind::VariantPattern
         | NodeKind::Propagation
         | NodeKind::DiscardStatement => variant_parts(keyword),
+        _ => None,
+    }
+}
+
+pub(super) fn contextual_target(
+    context: &QueryContext<'_>,
+    slot: usize,
+    span: Span,
+) -> Option<ResolutionTarget> {
+    if let Some((identity, _, _)) = super::module_directive::module_directive(context, slot) {
+        return Some(ResolutionTarget {
+            identity: Some(identity),
+            symbol: None,
+            certainty: contextual_certainty(context),
+            enclosing: None,
+        });
+    }
+    let constructions = crate::contextual_tokens::collect(
+        context.tree,
+        context.source,
+        context.analysis,
+        context.profile,
+    );
+    let id = constructions.get(&slot)?;
+    Some(ResolutionTarget {
+        identity: Some(identity(
+            HelpIdentityKind::Construction,
+            &crate::contextual_tokens::construction(context.analysis, span, id),
+            "construction",
+        )),
+        symbol: None,
+        certainty: contextual_certainty(context),
+        enclosing: None,
+    })
+}
+
+fn import_parts(keyword: KeywordKind) -> Option<(HelpIdentityKind, &'static str, &'static str)> {
+    (keyword == KeywordKind::TypeConnector).then_some((
+        HelpIdentityKind::Construction,
+        "importDeclaration",
+        "alias",
+    ))
+}
+
+fn function_literal_parts(
+    keyword: KeywordKind,
+) -> Option<(HelpIdentityKind, &'static str, &'static str)> {
+    match keyword {
+        KeywordKind::Subroutine => {
+            Some((HelpIdentityKind::Construction, "functionLiteral", "opening"))
+        }
+        KeywordKind::EndSubroutine => {
+            Some((HelpIdentityKind::Construction, "functionLiteral", "closing"))
+        }
         _ => None,
     }
 }

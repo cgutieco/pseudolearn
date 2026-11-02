@@ -1,5 +1,6 @@
 use crate::help_catalog::HelpLocale;
 use crate::symbol_index::SymbolIndex;
+use pseudolearn_diagnostics::Diagnostic;
 use pseudolearn_lexicon::Profile;
 use pseudolearn_semantic::ServiceAnalysis;
 use pseudolearn_source::SourceText;
@@ -10,6 +11,7 @@ pub struct QueryContext<'query> {
     pub source: &'query SourceText,
     pub analysis: &'query ServiceAnalysis,
     pub index: &'query SymbolIndex,
+    pub syntax_diagnostics: &'query [Diagnostic],
     pub profile: Profile,
     pub locale: HelpLocale,
 }

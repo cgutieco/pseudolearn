@@ -137,20 +137,53 @@ void main() {
     });
   });
 
-  test('help over a pasted import answers without running anything', () {
+  test('help over a pasted import and alias follows the requested UI language', () {
     final transport = RecordingRustTransport(testTransport);
     final services = buildRustEngineServices(transport);
 
-    final result = services.syntaxHelpSource.query(
+    final english = services.syntaxHelpSource.query(
       sourceCode: _pasted,
       profileId: SyntaxProfileId.classicSpanish,
-      languageId: UiLanguageId.spanish,
+      languageId: UiLanguageId.english,
       cursorUtf16: 3,
       revision: 1,
     );
+    final spanish = services.syntaxHelpSource.query(
+      sourceCode: _pasted,
+      profileId: SyntaxProfileId.classicSpanish,
+      languageId: UiLanguageId.spanish,
+      cursorUtf16: _pasted.indexOf('Como') + 1,
+      revision: 2,
+    );
+    final exportEnglish = services.syntaxHelpSource.query(
+      sourceCode: _pasted,
+      profileId: SyntaxProfileId.classicSpanish,
+      languageId: UiLanguageId.english,
+      cursorUtf16: _pasted.indexOf('Exportar') + 2,
+      revision: 3,
+    );
+    final exportSpanish = services.syntaxHelpSource.query(
+      sourceCode: _pasted,
+      profileId: SyntaxProfileId.classicSpanish,
+      languageId: UiLanguageId.spanish,
+      cursorUtf16: _pasted.indexOf('Exportar') + 2,
+      revision: 4,
+    );
 
-    expect(result.outcome, isNot(HelpOutcome.failure));
-    expect(result.revision, 1);
+    expect(english.outcome, HelpOutcome.help);
+    expect(english.help?.card?.id, 'help.module-import');
+    expect(english.help?.card?.title, 'Module or symbol import');
+    expect(english.help?.card?.examples, isNotEmpty);
+    expect(spanish.outcome, HelpOutcome.help);
+    expect(spanish.help?.card?.id, 'help.module-import');
+    expect(spanish.help?.card?.title, 'Importación de módulo o símbolo');
+    expect(spanish.help?.card?.examples, isNotEmpty);
+    expect(exportEnglish.outcome, HelpOutcome.help);
+    expect(exportEnglish.help?.card?.id, 'help.module-export');
+    expect(exportEnglish.help?.card?.examples, isNotEmpty);
+    expect(exportSpanish.outcome, HelpOutcome.help);
+    expect(exportSpanish.help?.card?.id, 'help.module-export');
+    expect(exportSpanish.help?.card?.examples, isNotEmpty);
     expect(transport.operations, isNot(contains('start')));
     expect(transport.operations, isNot(contains('execute')));
   });

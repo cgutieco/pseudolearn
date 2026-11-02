@@ -1,8 +1,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:pseudolearn_app/domain/model/analysis/program_node_id.dart';
 import 'package:pseudolearn_app/domain/model/diagram/class_diagram_metrics.dart';
+import 'package:pseudolearn_app/domain/model/diagram/class_model.dart';
 import 'package:pseudolearn_app/domain/model/diagram/diagram_scene.dart';
+import 'package:pseudolearn_app/engine/classdiagram/class_diagram_layout.dart';
 import 'package:pseudolearn_app/presentation/diagram/class_box_painter.dart';
 import 'package:pseudolearn_app/presentation/diagram/class_shapes.dart';
 import 'package:pseudolearn_app/presentation/theme/tokens/color_semantic.dart';
@@ -49,6 +52,47 @@ void main() {
       expect(open.getBounds(), closed.getBounds());
       expect(open.computeMetrics().first.isClosed, isFalse);
       expect(closed.computeMetrics().first.isClosed, isTrue);
+    });
+
+    test('routed inheritance arrowheads stay inside the scene bounds', () {
+      final scene = const ClassDiagramLayout().of(
+        ClassModel(
+          classes: [
+            ClassBox(
+              name: 'Base',
+              attributes: [],
+              methods: [],
+              nodeId: ProgramNodeId(1),
+              sourceLine: 1,
+            ),
+            ClassBox(
+              name: 'Derived',
+              superclassName: 'Base',
+              attributes: [],
+              methods: [],
+              nodeId: ProgramNodeId(2),
+              sourceLine: 2,
+            ),
+          ],
+          relations: [
+            ClassRelation(
+              fromClassName: 'Derived',
+              toClassName: 'Base',
+              kind: ClassRelationKind.generalization,
+            ),
+          ],
+        ),
+      );
+      final edge = scene.edges.single;
+      final head = ClassShapes.hollowArrowHead(
+        edge.points[edge.points.length - 2],
+        edge.points.last,
+      ).getBounds();
+
+      expect(head.left, greaterThanOrEqualTo(0));
+      expect(head.top, greaterThanOrEqualTo(0));
+      expect(head.right, lessThanOrEqualTo(scene.width));
+      expect(head.bottom, lessThanOrEqualTo(scene.height));
     });
 
     test('dashing splits a line into separated segments', () {

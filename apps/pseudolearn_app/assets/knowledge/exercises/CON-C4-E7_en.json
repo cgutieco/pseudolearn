@@ -1,0 +1,23 @@
+{
+  "id": "CON-C4-E7",
+  "title": "Reader and Writer implement Readable",
+  "statement": "Declare the Readable interface with the method getValue(value as integer) as integer. Define Reader and Writer classes that implement it with that same signature: Reader returns the value plus one and Writer doubles it. Read an integer, create one object of each class, and write each result on its own line.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-C4",
+  "specificationCases": ["LANG.TYPES.INTERFACE@1.0.0#C5"],
+  "visibleCases": [
+    {"inputs": ["4"], "expectedOutputs": ["5", "8"], "expected": "numerico"},
+    {"inputs": ["0"], "expectedOutputs": ["1", "0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["11"], "expectedOutputs": ["12", "22"], "expected": "numerico"},
+    {"inputs": ["5"], "expectedOutputs": ["6", "10"], "expected": "numerico"},
+    {"inputs": ["1"], "expectedOutputs": ["2", "2"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "The solution declares concrete classes."},
+    {"kind": "contiene", "construct": "interfaz", "requirement": "The solution declares and implements the Readable contract."}
+  ],
+  "referenceSolution": "interface Readable\nmethod getValue(value as integer) as integer;\nendInterface\n\nclass Reader implements Readable\n    public method getValue(value as integer) as integer\n        return value + 1;\n    endMethod\nendClass\n\nclass Writer implements Readable\n    public method getValue(value as integer) as integer\n        return value * 2;\n    endMethod\nendClass\n\nalgorithm CompareContracts\n    define mutable value as integer <- 0;\n    read value;\n    define reader as Reader <- new Reader();\n    define writer as Writer <- new Writer();\n    write reader.getValue(value);\n    write writer.getValue(value);\nendAlgorithm\n"
+}

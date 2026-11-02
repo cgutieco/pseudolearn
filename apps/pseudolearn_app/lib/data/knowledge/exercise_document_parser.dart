@@ -35,7 +35,10 @@ final class ExerciseDocumentParser {
       );
     }
     final assertions = readStructuralAssertions(document['assertions']);
-    if (assertions == null) {
+    final specificationCases = _specificationCasesOf(
+      document['specificationCases'],
+    );
+    if (assertions == null || specificationCases == null) {
       return ContentLoadFailed(
         failure: ContentLoadFailure.exerciseMalformed,
         detail: '${document['id']}',
@@ -46,6 +49,7 @@ final class ExerciseDocumentParser {
       level: level,
       kind: kind,
       assertions: assertions,
+      specificationCases: specificationCases,
     );
   }
 
@@ -54,6 +58,7 @@ final class ExerciseDocumentParser {
     required ExerciseLevel level,
     required ExerciseKind kind,
     required List<StructuralAssertion> assertions,
+    required List<String> specificationCases,
   }) {
     final visible = _casesOf(document['visibleCases']);
     final hidden = _casesOf(document['hiddenCases']);
@@ -63,18 +68,34 @@ final class ExerciseDocumentParser {
         detail: '${document['id']}',
       );
     }
-    return ContentLoaded(Exercise(
-      id: document['id'] as String? ?? '',
-      title: document['title'] as String? ?? '',
-      statement: document['statement'] as String? ?? '',
-      level: level,
-      kind: kind,
-      moduleId: document['module'] as String?,
-      visibleCases: visible,
-      hiddenCases: hidden,
-      assertions: assertions,
-      starterCode: document['starterCode'] as String?,
-    ));
+    return ContentLoaded(
+      Exercise(
+        id: document['id'] as String? ?? '',
+        title: document['title'] as String? ?? '',
+        statement: document['statement'] as String? ?? '',
+        level: level,
+        kind: kind,
+        moduleId: document['module'] as String?,
+        visibleCases: visible,
+        hiddenCases: hidden,
+        assertions: assertions,
+        specificationCases: specificationCases,
+        starterCode: document['starterCode'] as String?,
+      ),
+    );
+  }
+
+  List<String>? _specificationCasesOf(Object? raw) {
+    if (raw == null) return const [];
+    if (raw is! List) return null;
+    final cases = <String>[];
+    for (final entry in raw) {
+      if (entry is! String || entry.trim().isEmpty || cases.contains(entry)) {
+        return null;
+      }
+      cases.add(entry);
+    }
+    return cases;
   }
 
   List<ExerciseCase>? _casesOf(Object? raw) {
@@ -83,15 +104,19 @@ final class ExerciseDocumentParser {
     final cases = <ExerciseCase>[];
     for (final entry in raw) {
       if (entry is! Map<String, dynamic>) return null;
-      final kind = ExpectedValueKind.fromSlug(entry['expected'] as String? ?? '');
+      final kind = ExpectedValueKind.fromSlug(
+        entry['expected'] as String? ?? '',
+      );
       final inputs = _stringsOf(entry['inputs']);
       final outputs = _stringsOf(entry['expectedOutputs']);
       if (kind == null || inputs == null || outputs == null) return null;
-      cases.add(ExerciseCase(
-        inputs: inputs,
-        expectedOutputs: outputs,
-        expectedValueKind: kind,
-      ));
+      cases.add(
+        ExerciseCase(
+          inputs: inputs,
+          expectedOutputs: outputs,
+          expectedValueKind: kind,
+        ),
+      );
     }
     return cases;
   }

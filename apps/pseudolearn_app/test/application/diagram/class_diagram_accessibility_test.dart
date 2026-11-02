@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/application/diagram/class_diagram_accessibility.dart';
 import 'package:pseudolearn_app/application/diagram/diagram_state.dart';
 import 'package:pseudolearn_app/domain/model/diagram/diagram_accessible_element.dart';
+import 'package:pseudolearn_app/domain/model/diagram/class_diagram_metrics.dart';
 import 'package:pseudolearn_app/domain/model/diagram/diagram_notation.dart';
 import 'package:pseudolearn_app/domain/model/diagram/diagram_program.dart';
 import 'package:pseudolearn_app/domain/model/diagram/diagram_scene.dart';
@@ -64,6 +65,8 @@ void main() {
       final realization = _relation(_elements(_invalid), DiagramEdgeKind.realization);
 
       expect(_invalid.substring(realization.range!.startOffset).startsWith('Clase Lector'), isTrue);
+      expect(realization.bounds.width, ClassDiagramMetrics.relationHitSize);
+      expect(realization.bounds.height, ClassDiagramMetrics.relationHitSize);
     });
 
     test('a relation without origin navigates to the box it starts from', () {

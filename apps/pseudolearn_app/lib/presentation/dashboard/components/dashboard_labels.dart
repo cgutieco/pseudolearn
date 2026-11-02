@@ -20,11 +20,11 @@ String levelLabelOf(ExerciseLevel level, AppLocalizations l10n) =>
     };
 
 String kindLabelOf(ExerciseKind kind, AppLocalizations l10n) => switch (kind) {
-      ExerciseKind.predict => l10n.exerciseKindPredict,
-      ExerciseKind.complete => l10n.exerciseKindComplete,
-      ExerciseKind.modify => l10n.exerciseKindModify,
-      ExerciseKind.create => l10n.exerciseKindCreate,
-    };
+  ExerciseKind.predict => l10n.exerciseKindPredict,
+  ExerciseKind.complete => l10n.exerciseKindComplete,
+  ExerciseKind.modify => l10n.exerciseKindModify,
+  ExerciseKind.create => l10n.exerciseKindCreate,
+};
 
 String conceptLabelOf(AstConstruct construct, AppLocalizations l10n) =>
     switch (construct) {
@@ -37,6 +37,7 @@ String conceptLabelOf(AstConstruct construct, AppLocalizations l10n) =>
       AstConstruct.arrayDeclaration => l10n.dashboardConceptArray,
       AstConstruct.subprogram => l10n.dashboardConceptSubprogram,
       AstConstruct.classDeclaration => l10n.dashboardConceptClass,
+      AstConstruct.interfaceDeclaration => l10n.dashboardConceptInterface,
     };
 
 String profileLabelOf(SyntaxProfileId profileId, AppLocalizations l10n) =>

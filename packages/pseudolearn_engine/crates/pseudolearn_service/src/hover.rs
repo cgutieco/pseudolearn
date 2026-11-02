@@ -69,14 +69,18 @@ fn keyword_hover(context: &QueryContext<'_>, kind: KeywordKind) -> HoverOutcome 
 }
 
 fn contextual_hover(context: &QueryContext<'_>, slot: usize) -> Option<HoverOutcome> {
-    let identity = crate::contextual_tokens::collect(
-        context.tree,
-        context.source,
-        context.analysis,
-        context.profile,
-    )
-    .get(&slot)
-    .copied()?;
+    let identity = crate::help_resolution::module_directive_context(context, slot)
+        .map(|(_, _, identity)| identity)
+        .or_else(|| {
+            crate::contextual_tokens::collect(
+                context.tree,
+                context.source,
+                context.analysis,
+                context.profile,
+            )
+            .get(&slot)
+            .copied()
+        })?;
     let description = token_description(identity, context.locale)?;
     Some(HoverOutcome {
         category: HoverCategory::Builtin,

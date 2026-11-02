@@ -1,9 +1,11 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/domain/model/analysis/program_node_id.dart';
 import 'package:pseudolearn_app/domain/model/diagram/class_diagram_metrics.dart';
+import 'package:pseudolearn_app/domain/model/diagram/diagram_metrics.dart';
 import 'package:pseudolearn_app/domain/model/diagram/class_model.dart';
 import 'package:pseudolearn_app/domain/model/diagram/diagram_scene.dart';
 import 'package:pseudolearn_app/engine/classdiagram/class_diagram_layout.dart';
+import 'package:pseudolearn_app/engine/diagram/text_metrics.dart';
 
 ClassMemberRow _row(String text, int id) => ClassMemberRow(
       text: text,
@@ -320,6 +322,53 @@ void main() {
       final sceneWide = _layout.of(modelWide);
 
       expect(sceneWide.width, greaterThan(sceneSmall.width));
+    });
+
+    test('long signatures and six routed relations keep labels and edges in bounds', () {
+      const label =
+          'aVeryLongAssociatedContractNameWithARestrictionAndMultiplicity 1';
+      final model = ClassModel(
+        classes: [
+          for (var index = 0; index < 6; index++)
+            _box(
+              'VeryLongDomainClassName$index',
+              methods: [
+                _row(
+                  '+ calculateWithAConstrainedGenericParameter<T: $label>()',
+                  index + 20,
+                ),
+              ],
+              id: index + 1,
+            ),
+        ],
+        relations: [
+          for (var index = 0; index < 6; index++)
+            ClassRelation(
+              fromClassName: 'VeryLongDomainClassName$index',
+              toClassName: 'VeryLongDomainClassName${(index + 1) % 6}',
+              kind: ClassRelationKind.association,
+              label: '$label $index',
+            ),
+        ],
+      );
+      final scene = _layout.of(model);
+      const textMetrics = TextMetrics();
+
+      expect(scene.edges, hasLength(6));
+      for (final edge in scene.edges) {
+        for (final point in edge.points) {
+          expect(point.x, inInclusiveRange(0, scene.width));
+          expect(point.y, inInclusiveRange(0, scene.height));
+        }
+        final anchor = edge.labelAnchor!;
+        final width =
+            textMetrics.advanceUnits(edge.label!) * DiagramMetrics.fontSize +
+            ClassDiagramMetrics.boxPadding;
+        expect(anchor.x - width / 2, greaterThanOrEqualTo(0));
+        expect(anchor.x + width / 2, lessThanOrEqualTo(scene.width));
+        expect(anchor.y - 9, greaterThanOrEqualTo(0));
+        expect(anchor.y + 9, lessThanOrEqualTo(scene.height));
+      }
     });
   });
 }

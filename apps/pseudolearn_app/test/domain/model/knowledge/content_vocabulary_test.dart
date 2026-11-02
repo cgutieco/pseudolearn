@@ -59,7 +59,7 @@ void main() {
     test('slugs are unique within each vocabulary', () {
       expect(ModulePart.values.map((p) => p.slug).toSet().length, 7);
       expect(ContentMarkerKind.values.map((k) => k.slug).toSet().length, 7);
-      expect(AstConstruct.values.map((c) => c.slug).toSet().length, 8);
+      expect(AstConstruct.values.map((c) => c.slug).toSet().length, 9);
     });
 
     test('an unknown slug is not a value, and neither is an empty one', () {
