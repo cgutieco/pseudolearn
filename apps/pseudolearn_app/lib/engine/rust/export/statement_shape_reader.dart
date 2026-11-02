@@ -11,11 +11,11 @@ final class StatementShapeReader {
     if (body == null) return const [];
     return [
       for (final child in rustChildrenOf(_view, body))
-        if (body.childRoles[child.id.value] == 'statement') _statement(child),
+        if (body.childRoles[child.id.value] == 'statement') ?_statement(child),
     ];
   }
 
-  StatementShape _statement(RustViewNode wrapper) {
+  StatementShape? _statement(RustViewNode wrapper) {
     final node = _inner(wrapper);
     final id = wrapper.id;
     final parts = rustChildrenOf(_view, node);
@@ -44,7 +44,7 @@ final class StatementShapeReader {
       'switch' => _switch(id, node),
       'return_statement' => ReturnShape(id, parts.isEmpty ? null : parts.first),
       'call_statement' => _call(id, parts.first),
-      _ => UnsupportedShape(id),
+      _ => null,
     };
   }
 

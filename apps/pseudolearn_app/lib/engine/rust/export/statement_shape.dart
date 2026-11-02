@@ -140,7 +140,3 @@ final class MethodCallShape extends StatementShape {
 
   bool get isSuperConstructor => call.semantics.superConstructor;
 }
-
-final class UnsupportedShape extends StatementShape {
-  const UnsupportedShape(super.origin);
-}

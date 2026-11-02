@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import '../../domain/model/export/export_blocker.dart';
 import '../../domain/model/export/target_language_id.dart';
 
 enum ExportStatus { initial, ready, analysisError, unavailable }
@@ -9,6 +10,7 @@ final class ExportState extends Equatable {
   final String exportedCode;
   final List<String> notes;
   final String unavailableReason;
+  final List<ExportBlocker> blockers;
   final Set<int> focusedLines;
 
   const ExportState({
@@ -17,6 +19,7 @@ final class ExportState extends Equatable {
     this.exportedCode = '',
     this.notes = const [],
     this.unavailableReason = '',
+    this.blockers = const [],
     this.focusedLines = const {},
   });
 
@@ -26,6 +29,7 @@ final class ExportState extends Equatable {
     String? exportedCode,
     List<String>? notes,
     String? unavailableReason,
+    List<ExportBlocker>? blockers,
     Set<int>? focusedLines,
   }) {
     return ExportState(
@@ -34,6 +38,7 @@ final class ExportState extends Equatable {
       exportedCode: exportedCode ?? this.exportedCode,
       notes: notes ?? this.notes,
       unavailableReason: unavailableReason ?? this.unavailableReason,
+      blockers: blockers ?? this.blockers,
       focusedLines: focusedLines ?? this.focusedLines,
     );
   }
@@ -45,6 +50,7 @@ final class ExportState extends Equatable {
         exportedCode,
         notes,
         unavailableReason,
+        blockers,
         focusedLines,
       ];
 }

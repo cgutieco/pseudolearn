@@ -5,7 +5,7 @@ use crate::{ApiError, ApiSession};
 use serde_json::{Value, json};
 
 pub fn analysis_program_view(request: &crate::AnalyzeRequest) -> Option<Value> {
-    ProgramView::build(request, "rev0".to_owned())
+    ProgramView::build_with_pending_links(request, "rev0".to_owned())
         .ok()
         .map(|view| view.to_json())
 }
@@ -27,7 +27,7 @@ impl ApiSession {
         let Some(Resource::Document(request)) = self.resources.get(&document) else {
             return Err(usage("invalid document"));
         };
-        let view = ProgramView::build(request, revision_of(document))?;
+        let view = ProgramView::build_with_pending_links(request, revision_of(document))?;
         if operation == "program_view" {
             return Ok(view.to_json());
         }

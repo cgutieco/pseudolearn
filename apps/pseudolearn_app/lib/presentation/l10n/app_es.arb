@@ -367,6 +367,55 @@
   "@classDiagramEmpty": {
     "description": "Mensaje del diagrama de clases cuando no hay AST válido"
   },
+  "diagramDependencyImport": "Importa {path}",
+  "@diagramDependencyImport": {
+    "description": "Fila de una dependencia importada que no se resuelve",
+    "placeholders": {
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "diagramDependencyImportAlias": "Importa {path} como {alias}",
+  "@diagramDependencyImportAlias": {
+    "description": "Fila de una dependencia importada con alias que no se resuelve",
+    "placeholders": {
+      "path": {
+        "type": "String"
+      },
+      "alias": {
+        "type": "String"
+      }
+    }
+  },
+  "diagramDependencyExport": "Exporta {path}",
+  "@diagramDependencyExport": {
+    "description": "Fila de una dependencia reexportada que no se resuelve",
+    "placeholders": {
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "diagramDependencyUnlinked": "Sin enlazar: este documento se analiza solo, así que no se ejecuta mientras tenga dependencias pendientes.",
+  "@diagramDependencyUnlinked": {
+    "description": "Estado de una dependencia pegada que no se resuelve"
+  },
+  "exportUnavailableConstructs": "Este programa no tiene un código equivalente comprobado en {target}: {constructs}. La primera aparece en la línea {line}. No se muestra una traducción parcial para no ofrecer como equivalente algo que no lo es.",
+  "@exportUnavailableConstructs": {
+    "description": "Mensaje cuando una construcción impide ofrecer código equivalente en el destino elegido",
+    "placeholders": {
+      "target": {
+        "type": "String"
+      },
+      "constructs": {
+        "type": "String"
+      },
+      "line": {
+        "type": "int"
+      }
+    }
+  },
   "classDiagramNoClasses": "Este documento no declara ninguna clase.",
   "@classDiagramNoClasses": {
     "description": "Mensaje del diagrama de clases cuando el documento analiza pero no declara clases"

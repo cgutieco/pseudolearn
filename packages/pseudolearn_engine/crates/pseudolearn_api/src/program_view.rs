@@ -1,9 +1,8 @@
 use crate::program_view_annotations::AnnotationContext;
 use crate::program_view_kind::ViewKind;
+use crate::program_view_source::{ParseMode, index_by_span, parse_view_source};
 use crate::{AnalyzeRequest, ApiError};
-use pseudolearn_diagnostics::DiagnosticCode;
 use pseudolearn_lexicon::Profile;
-use pseudolearn_syntax::parse_source_with_terminator;
 use serde_json::{Value, json};
 use std::collections::BTreeMap;
 
@@ -35,49 +34,48 @@ pub(crate) struct ProgramView {
     methods: Value,
     members: Value,
     realizations: Value,
+    dependencies: Option<Value>,
     source_id: pseudolearn_source::SourceId,
     source: Option<crate::ApiSourceIdentity>,
 }
 
 impl ProgramView {
     pub(crate) fn build(request: &AnalyzeRequest, revision: String) -> Result<Self, ApiError> {
-        Self::build_with_mode(request, revision, false)
+        Self::build_with_mode(request, revision, ParseMode::Standalone)
     }
 
     pub(crate) fn build_project(
         request: &AnalyzeRequest,
         revision: String,
     ) -> Result<Self, ApiError> {
-        Self::build_with_mode(request, revision, true)
+        Self::build_with_mode(request, revision, ParseMode::Project)
+    }
+
+    pub(crate) fn build_with_pending_links(
+        request: &AnalyzeRequest,
+        revision: String,
+    ) -> Result<Self, ApiError> {
+        Self::build_with_mode(request, revision, ParseMode::PendingLinks)
     }
 
     fn build_with_mode(
         request: &AnalyzeRequest,
         revision: String,
-        project: bool,
+        mode: ParseMode,
     ) -> Result<Self, ApiError> {
         let profile = Profile::from_name(&request.profile).unwrap_or(Profile::Spanish);
         let strict = request.strictness != "flexible";
-        let (source, tree) = parse_view_source(request, strict, profile, project)?;
+        let (source, tree) = parse_view_source(request, strict, profile, mode)?;
         let (nodes, realizations) = annotated_nodes(&tree, &source, (profile, strict), &revision);
         let schema = crate::diagnostic_conversion::schema(&tree, &source);
         let source_identity = crate::source_identity::api_identity(&source);
-        let (inheritance, methods) = crate::program_view_relations::RelationProjection {
-            tree: &tree,
-            source: &source,
-            nodes: &nodes,
-            revision: &revision,
-            source_identity,
-        }
-        .project();
+        let (inheritance, methods, members) = relations(&tree, &source, (&nodes, &revision));
         let units = crate::program_view_units::units(&schema, &nodes, &revision, source_identity);
-        let members =
-            crate::program_view_members::members(crate::program_view_members::MemberProjection {
-                tree: &tree,
-                source: &source,
-                nodes: &nodes,
-                revision: &revision,
-            });
+        let dependencies = crate::program_view_dependencies::pending(
+            (mode == ParseMode::PendingLinks).then_some(&tree),
+            &source,
+            (&revision, source_identity),
+        );
         Ok(Self {
             revision,
             by_span: index_by_span(&nodes),
@@ -87,8 +85,9 @@ impl ProgramView {
             methods,
             members,
             realizations,
+            dependencies,
             source_id: pseudolearn_source::source_id(&source),
-            source: crate::source_identity::api_identity(&source),
+            source: source_identity,
         })
     }
 
@@ -172,8 +171,34 @@ impl ProgramView {
         if let (Some(source), Some(fields)) = (self.source, value.as_object_mut()) {
             fields.insert("source".to_owned(), json!(source));
         }
+        if let (Some(dependencies), Some(fields)) = (&self.dependencies, value.as_object_mut()) {
+            fields.insert("dependencies".to_owned(), dependencies.clone());
+        }
         value
     }
+}
+
+fn relations(
+    tree: &pseudolearn_syntax::SyntaxTree,
+    source: &pseudolearn_source::SourceText,
+    (nodes, revision): (&[ViewNode], &str),
+) -> (Value, Value, Value) {
+    let (inheritance, methods) = crate::program_view_relations::RelationProjection {
+        tree,
+        source,
+        nodes,
+        revision,
+        source_identity: crate::source_identity::api_identity(source),
+    }
+    .project();
+    let members =
+        crate::program_view_members::members(crate::program_view_members::MemberProjection {
+            tree,
+            source,
+            nodes,
+            revision,
+        });
+    (inheritance, methods, members)
 }
 
 fn annotated_nodes(
@@ -216,49 +241,6 @@ pub(crate) fn node_identifier(
         ),
         None => format!("{revision}.n{ordinal:x}"),
     }
-}
-
-fn parse_view_source(
-    request: &AnalyzeRequest,
-    strict: bool,
-    profile: Profile,
-    project: bool,
-) -> Result<
-    (
-        pseudolearn_source::SourceText,
-        pseudolearn_syntax::SyntaxTree,
-    ),
-    ApiError,
-> {
-    let source = crate::source_identity::source_text(request.program.clone(), request.source);
-    let terminator = strict.then_some(DiagnosticCode::MissingStatementTerminator);
-    let (tree, _) = if project {
-        pseudolearn_syntax::parse_module_source(&source, profile, terminator)
-    } else {
-        parse_source_with_terminator(&source, profile, terminator)
-    };
-    if tree.has_errors {
-        return Err(crate::execution_resource::usage("analysis has errors"));
-    }
-    Ok((source, tree))
-}
-
-fn index_by_span(nodes: &[ViewNode]) -> BTreeMap<SpanKey, Vec<usize>> {
-    let mut by_span: BTreeMap<SpanKey, Vec<usize>> = BTreeMap::new();
-    for (ordinal, node) in nodes.iter().enumerate() {
-        by_span
-            .entry((
-                node.source
-                    .map_or(pseudolearn_source::SourceId::STANDALONE, |source| {
-                        pseudolearn_source::SourceId::new(source.source_id)
-                    }),
-                node.start,
-                node.end,
-            ))
-            .or_default()
-            .push(ordinal);
-    }
-    by_span
 }
 
 pub(crate) fn span_json(node: &ViewNode) -> Value {

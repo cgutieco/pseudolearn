@@ -297,6 +297,24 @@ se normaliza ni se repara al leerla. El formato y sus hashes pertenecen al runti
 - Los programas de `recording_options.rs` y `resources.rs` declaraban `Definir x Como Entero;` y asignaban; desde la mutabilidad explícita el análisis los rechaza, de modo que cinco pruebas de grabación y de recurso de ejecución fallaban sin que nadie lo viera. Declaran ahora `Definir Mutable … <- 0`.
 - `recording.rs` exporta la cinta de la sesión; `recording_digest.rs` resume eventos y no participa en la cadena de la cinta, que tiene su propio `entry_hash`. La implementación del formato vive en `pseudolearn_runtime`.
 
+### Dependencias pegadas sin enlazar en la vista del programa (`API.PROGRAM.VIEW#R15`)
+
+Problema: un documento que se analiza solo no tiene proyecto, de modo que `Importar` y `Exportar` no tienen contra qué
+resolverse, pero la estructura útil del resto del archivo no debe perderse. Elección: el análisis autónomo conserva su
+diagnóstico `moduleSyntaxOutsideProject` (no se creó un código nuevo) y la operación `program_view` usa
+`ProgramView::build_with_pending_links`. Cuando ese diagnóstico es el único error del documento, `program_view_source.rs`
+vuelve a leer el mismo texto con el analizador de módulos, que sí produce los nodos de la directiva, y la vista se
+construye sobre ese árbol. `program_view_dependencies.rs` añade la clave `dependencies`: una fila por directiva en orden de
+fuente con `dependency_id` (prefijo `d`, estable para la revisión y la fuente), `kind`, `visibility` (`local` para
+`Importar`, `exported` para `Exportar`, derivada de la regla y no de un prefijo), `path`, `alias`, `status`
+(`unlinked`), `diagnostic` y `span`. Los segmentos de la ruta no se emiten como nodos del árbol, para que ningún
+consumidor los trate como expresiones huérfanas. Una ruta vacía, incompleta, con `..` o absoluta es un error sintáctico
+distinto y la vista no existe; igual ocurre si junto a la directiva hay otro error. La ejecución, la grabación y la
+vista de eventos siguen usando `ProgramView::build`, que rechaza cualquier error: un documento con un enlace pendiente
+no se ejecuta. Nada de este camino abre disco ni red; la API no tiene anfitrión durante el análisis. Se descartó
+resolver el nombre contra el directorio de trabajo porque haría depender el resultado del entorno. Cubre
+`tests/program_view_dependencies.rs` (12) y los casos C48–C52 de `API.PROGRAM.VIEW` por el sujeto app.
+
 ### Proyección de tipos y operaciones de capacidad en la vista del programa (`PG-3.09`)
 
 `program_view_effects.rs` añade a los nodos de la vista pública tres atributos: `builtin_type` (`bytes`, `io_error`) y `capability_type` (`console`, `arguments`, `directory`, `file`, `clock`, `timer`) en los nodos de tipo, reconocidos por su lexema en ambos perfiles con `pseudolearn_semantic::capability_types::find_capability_kind`, y `effect_operation` (identidad de `LIB.MODEL`, por ejemplo `file_open`) en los nodos postfijos, tomado de las expresiones `HirExpression::Effect` del análisis. La anotación reutiliza el análisis único de `program_view_annotations::call_names`, que ya resolvía `builtin`. Un programa sin capacidades no proyecta ninguno de los tres. Cubre `tests/program_view_effects.rs` y el caso `API.PROGRAM.VIEW` C11.

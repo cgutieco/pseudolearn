@@ -1861,7 +1861,9 @@
                 "help_revision",
                 "class_diagram",
                 "control_flow",
-                "syntax_coverage"
+                "syntax_coverage",
+                "dependencies",
+                "export_support"
               ]
             },
             "input": {

@@ -62,8 +62,6 @@ final class RustShapeStatements {
         _call(s, buffer, indent);
       case final MethodCallShape s:
         _methodCall(s, buffer, indent);
-      case UnsupportedShape():
-        buffer.writeln('$indent// unsupported statement');
     }
   }
 
@@ -106,7 +104,7 @@ final class RustShapeStatements {
   }
 
   void _write(WriteShape s, TargetCodeBuilder buffer, String indent) {
-    final placeholders = List.filled(s.expressions.length, '{}').join(' ');
+    final placeholders = List.filled(s.expressions.length, '{}').join();
     final args = s.expressions.map(_writer.write).join(', ');
     final macro = s.withoutNewline ? 'print!' : 'println!';
     final full = args.isEmpty ? '""' : '"$placeholders", $args';

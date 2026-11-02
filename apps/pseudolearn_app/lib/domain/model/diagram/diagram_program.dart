@@ -1,3 +1,4 @@
+import '../analysis/program_dependency.dart';
 import 'diagram_scene.dart';
 import 'diagram_unit.dart';
 
@@ -5,21 +6,25 @@ final class DiagramProgram {
   final List<DiagramUnit> units;
   final Map<String, DiagramScene> _scenes;
   final List<String> unsupportedKinds;
+  final List<ProgramDependency> dependencies;
 
   const DiagramProgram({
     required this.units,
     required Map<String, DiagramScene> scenes,
+    this.dependencies = const [],
   })  : _scenes = scenes,
         unsupportedKinds = const [];
 
   const DiagramProgram.empty()
       : units = const [],
         _scenes = const {},
-        unsupportedKinds = const [];
+        unsupportedKinds = const [],
+        dependencies = const [];
 
   const DiagramProgram.unsupported(this.unsupportedKinds)
       : units = const [],
-        _scenes = const {};
+        _scenes = const {},
+        dependencies = const [];
 
   bool get isUnsupported => unsupportedKinds.isNotEmpty;
 
@@ -43,7 +48,16 @@ final class DiagramProgram {
       identical(this, other) ||
       other is DiagramProgram &&
           units.length == other.units.length &&
+          _hasSameDependencies(other.dependencies) &&
           _hasSameScenes(other._scenes);
+
+  bool _hasSameDependencies(List<ProgramDependency> others) {
+    if (dependencies.length != others.length) return false;
+    for (var index = 0; index < dependencies.length; index++) {
+      if (dependencies[index].id != others[index].id) return false;
+    }
+    return true;
+  }
 
   bool _hasSameScenes(Map<String, DiagramScene> otherScenes) {
     if (_scenes.length != otherScenes.length) return false;
@@ -54,5 +68,5 @@ final class DiagramProgram {
   }
 
   @override
-  int get hashCode => Object.hash(units.length, _scenes.length);
+  int get hashCode => Object.hash(units.length, _scenes.length, dependencies.length);
 }

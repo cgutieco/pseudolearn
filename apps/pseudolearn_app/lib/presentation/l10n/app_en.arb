@@ -367,6 +367,55 @@
   "@classDiagramEmpty": {
     "description": "Message when the class diagram has no valid AST"
   },
+  "diagramDependencyImport": "Imports {path}",
+  "@diagramDependencyImport": {
+    "description": "Row of an imported dependency that is not resolved",
+    "placeholders": {
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "diagramDependencyImportAlias": "Imports {path} as {alias}",
+  "@diagramDependencyImportAlias": {
+    "description": "Row of an imported dependency with an alias that is not resolved",
+    "placeholders": {
+      "path": {
+        "type": "String"
+      },
+      "alias": {
+        "type": "String"
+      }
+    }
+  },
+  "diagramDependencyExport": "Exports {path}",
+  "@diagramDependencyExport": {
+    "description": "Row of a re-exported dependency that is not resolved",
+    "placeholders": {
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "diagramDependencyUnlinked": "Unlinked: this document is analysed on its own, so it does not run while dependencies are pending.",
+  "@diagramDependencyUnlinked": {
+    "description": "Status of a pasted dependency that is not resolved"
+  },
+  "exportUnavailableConstructs": "This program has no verified equivalent code in {target}: {constructs}. The first one appears on line {line}. No partial translation is shown so that nothing is offered as equivalent that is not.",
+  "@exportUnavailableConstructs": {
+    "description": "Message when a construct prevents offering equivalent code in the chosen target",
+    "placeholders": {
+      "target": {
+        "type": "String"
+      },
+      "constructs": {
+        "type": "String"
+      },
+      "line": {
+        "type": "int"
+      }
+    }
+  },
   "classDiagramNoClasses": "This document declares no classes.",
   "@classDiagramNoClasses": {
     "description": "Message when the document parses but declares no classes"

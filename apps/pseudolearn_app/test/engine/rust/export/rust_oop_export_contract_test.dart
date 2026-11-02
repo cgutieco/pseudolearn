@@ -84,63 +84,73 @@ void main() {
       expect(code, contains('moto.Describir()'));
     });
 
-    test('exports OOP reference program to Rust', () {
+    test('withholds the OOP reference program from Rust', () {
       final result = exporter.export(
         sourceCode: _referenceOOP,
         targetLanguage: TargetLanguageId.rust,
         profileId: SyntaxProfileId.classicSpanish,
       );
 
-      expect(result, isA<ExportSuccess>());
-      final success = result as ExportSuccess;
-      final code = success.program.sourceCode;
-
-      expect(code, contains('struct Vehiculo {'));
-      expect(code, contains('pub marca: String,'));
-      expect(code, contains('pub velocidad: i64,'));
-      expect(code, contains('struct Motocicleta {'));
-      expect(code, contains('pub base: Vehiculo,'));
-      expect(code, contains('pub cilindrada: i64,'));
-      expect(code, contains('impl Vehiculo {'));
-      expect(code, contains('pub fn new(m: String) -> Self'));
-      expect(code, contains('pub fn Acelerar(&mut self, delta: i64)'));
-      expect(code, contains('impl Motocicleta {'));
-      expect(code, contains('Motocicleta::new('));
-      expect(code, contains('moto.Acelerar(75);'));
-      expect(code, contains('moto.Describir();'));
+      expect(result, isA<ExportUnavailable>());
+      final constructs = (result as ExportUnavailable).blockers.map(
+        (blocker) => blocker.construct,
+      );
+      expect(constructs, containsAll(['class_unit', 'constructor_member']));
     });
 
-    test('exports builtin functions and imports math in Python', () {
+    test('withholds a builtin without a proven equivalent from Python', () {
       final result = exporter.export(
         sourceCode: _builtinsProgram,
         targetLanguage: TargetLanguageId.python,
         profileId: SyntaxProfileId.classicSpanish,
       );
 
-      expect(result, isA<ExportSuccess>());
-      final success = result as ExportSuccess;
-      final code = success.program.sourceCode;
-
-      expect(code, contains('import math'));
-      expect(code, contains('math.sqrt(16)'));
-      expect(code, contains('round(r)'));
-      expect(code, contains('str(e)'));
+      expect(result, isA<ExportUnavailable>());
+      final constructs = (result as ExportUnavailable).blockers.map(
+        (blocker) => blocker.construct,
+      );
+      expect(constructs, contains('builtin:round'));
+      expect(constructs, isNot(contains('builtin:squareRoot')));
     });
 
-    test('exports builtin functions in Rust', () {
+    test('exports the proven builtins in Python', () {
+      const source = '''
+Proceso PruebaBuiltins
+    Definir Mutable r Como Real <- 0.0
+    Definir Mutable t Como Cadena <- ""
+    r <- rc(16)
+    t <- ATexto(3)
+    Escribir r, t
+FinProceso
+''';
+      final result = exporter.export(
+        sourceCode: source,
+        targetLanguage: TargetLanguageId.python,
+        profileId: SyntaxProfileId.classicSpanish,
+      );
+
+      expect(result, isA<ExportSuccess>());
+      final code = (result as ExportSuccess).program.sourceCode;
+      expect(code, contains('import math'));
+      expect(code, contains('math.sqrt(16)'));
+      expect(code, contains('str(3)'));
+    });
+
+    test('withholds real arithmetic and builtins from Rust', () {
       final result = exporter.export(
         sourceCode: _builtinsProgram,
         targetLanguage: TargetLanguageId.rust,
         profileId: SyntaxProfileId.classicSpanish,
       );
 
-      expect(result, isA<ExportSuccess>());
-      final success = result as ExportSuccess;
-      final code = success.program.sourceCode;
-
-      expect(code, contains('(16 as f64).sqrt()'));
-      expect(code, contains('(r as f64).round()'));
-      expect(code, contains('format!("{}", e)'));
+      expect(result, isA<ExportUnavailable>());
+      final constructs = (result as ExportUnavailable).blockers.map(
+        (blocker) => blocker.construct,
+      );
+      expect(
+        constructs,
+        containsAll(['type:real', 'literal:real', 'builtin:squareRoot']),
+      );
     });
   });
 }

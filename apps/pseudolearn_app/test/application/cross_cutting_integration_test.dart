@@ -226,15 +226,20 @@ FinProceso
           sourceCode: interactiveProgram,
           profileId: SyntaxProfileId.classicSpanish,
         );
-        expect(exportCubit.state.status, ExportStatus.ready);
-        expect(exportCubit.state.exportedCode, contains('input()'));
+        expect(exportCubit.state.status, ExportStatus.unavailable);
+        expect(exportCubit.state.exportedCode, isEmpty);
+        expect(
+          exportCubit.state.blockers.map((blocker) => blocker.construct),
+          contains('input'),
+        );
 
         exportCubit.selectLanguage(
           TargetLanguageId.rust,
           sourceCode: interactiveProgram,
           profileId: SyntaxProfileId.classicSpanish,
         );
-        expect(exportCubit.state.exportedCode, contains('fn main()'));
+        expect(exportCubit.state.status, ExportStatus.unavailable);
+        expect(exportCubit.state.exportedCode, isEmpty);
 
         await libraryCubit.loadDocuments();
         expect(libraryCubit.state.allDocuments.length, 1);

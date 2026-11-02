@@ -10,6 +10,7 @@ import '../theme/tokens/component_metrics.dart';
 import '../theme/tokens/motion.dart';
 import 'diagram_camera_animator.dart';
 import 'diagram_controls_overlay.dart';
+import 'diagram_dependency_strip.dart';
 import 'diagram_empty_state.dart';
 import 'flowchart_canvas.dart';
 import 'flowchart_viewport.dart';
@@ -210,6 +211,11 @@ final class _FlowchartStack extends StatelessWidget {
           onInteractionStart: onInteractionStart,
           onSourceSelected: onSourceSelected,
         ),
+        if (state.dependencies.isNotEmpty)
+          DiagramDependencyOverlay(
+            dependencies: state.dependencies,
+            onSourceSelected: onSourceSelected,
+          ),
         DiagramControlsOverlay(
           units: state.units,
           selectedUnitId: state.selectedUnitId,

@@ -1533,6 +1533,30 @@
       "justificacion": "La representación en ordinograma, estructograma y diagrama de clases y la matriz de cobertura son responsabilidad del consumidor de la vista y solo las observa el sujeto app."
     },
     {
+      "regla": "API.PROGRAM.VIEW@1.0.0#R15",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "Los casos de la regla los observa el sujeto app por el puente real; el motor la acredita con los tests de pseudolearn_api/tests/program_view_dependencies.rs, que no son un caso del corpus."
+    },
+    {
+      "regla": "API.PROGRAM.VIEW@1.0.0#R17",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "La clasificación de código equivalente por destino es responsabilidad del consumidor de la vista y solo la observa el sujeto app."
+    },
+    {
+      "regla": "API.PROGRAM.VIEW@1.0.0#R18",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El reemplazo del resultado de exportación por revisión es responsabilidad del consumidor de la vista y solo lo observa el sujeto app."
+    },
+    {
+      "regla": "API.PROGRAM.VIEW@1.0.0#R16",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El bloqueo de ejecución y exportación y la presentación de las dependencias son responsabilidad del consumidor de la vista y solo las observa el sujeto app."
+    },
+    {
       "regla": "API.STATE.QUERY@1.0.0#R4",
       "verificacion": "ejecutor",
       "estado": "cumple"

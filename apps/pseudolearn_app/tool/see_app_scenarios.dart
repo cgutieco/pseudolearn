@@ -5,6 +5,8 @@ import 'see_app_boundary.dart';
 import 'see_app_class_diagram.dart';
 import 'see_app_completion.dart';
 import 'see_app_control_flow.dart';
+import 'see_app_dependencies.dart';
+import 'see_app_export_support.dart';
 import 'see_app_help.dart';
 import 'see_app_pace.dart';
 import 'see_app_snapshot.dart';
@@ -21,6 +23,8 @@ Future<Map<String, Object?>> handleAppScenario(
     'snapshot' => await runSnapshotScenario(transport, input),
     'class_diagram' => await runClassDiagramScenario(transport, input),
     'control_flow' => await runControlFlowScenario(transport, input),
+    'export_support' => await runExportSupportScenario(transport, input),
+    'dependencies' => await runDependenciesScenario(transport, input),
     'syntax_coverage' => await runSyntaxCoverageScenario(input),
     'completion' => await runCompletionScenario(transport, input),
     'edit_assistance' => await runEditAssistanceScenario(transport, input),

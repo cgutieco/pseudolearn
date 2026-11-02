@@ -184,5 +184,9 @@ bool _hasRejectedDiagnostic(
 bool _anyError(Map<String, Object?> diagnostic) =>
     diagnostic['severity'] == 'error';
 
+const String _pendingLinkCode = 'moduleSyntaxOutsideProject';
+
 bool _syntaxError(Map<String, Object?> diagnostic) =>
-    _anyError(diagnostic) && diagnostic['class'] != 'semantic';
+    _anyError(diagnostic) &&
+    diagnostic['class'] != 'semantic' &&
+    diagnostic['code'] != _pendingLinkCode;

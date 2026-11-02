@@ -4,6 +4,8 @@ import '../../../domain/model/profiles/syntax_profile_id.dart';
 import '../../../domain/ports/program_exporter.dart';
 import '../rust_program_view_source.dart';
 import '../rust_transport.dart';
+import 'export_coverage.dart';
+import 'export_support.dart';
 import 'python_expression_rules.dart';
 import 'python_shape_emitter.dart';
 import 'rust_expression_rules.dart';
@@ -25,6 +27,8 @@ final class RustProgramExporter implements ProgramExporter {
   }) {
     final view = _views.load(sourceCode: sourceCode, profileId: profileId);
     if (view == null) return const ExportAnalysisError();
+    final blockers = ExportCoverage(view, _supportOf(targetLanguage)).blockers();
+    if (blockers.isNotEmpty) return ExportUnavailable('', blockers: blockers);
     final program = UnitShapeReader(view).read();
     return ExportSuccess(switch (targetLanguage) {
       TargetLanguageId.python => const PythonShapeEmitter().emit(
@@ -37,4 +41,10 @@ final class RustProgramExporter implements ProgramExporter {
       ),
     });
   }
+
+  ExportSupport _supportOf(TargetLanguageId targetLanguage) =>
+      switch (targetLanguage) {
+        TargetLanguageId.python => pythonExportSupport,
+        TargetLanguageId.rust => rustExportSupport,
+      };
 }

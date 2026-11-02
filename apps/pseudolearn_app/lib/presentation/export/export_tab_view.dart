@@ -29,9 +29,7 @@ final class ExportTabView extends StatelessWidget {
       ExportStatus.unavailable => AppEmptyState(
           icon: Icons.ios_share_outlined,
           title: l10n.tabEquivalentCode,
-          description: state.unavailableReason.isNotEmpty
-              ? state.unavailableReason
-              : l10n.exportComingSoon,
+          description: _unavailableDescription(l10n, state),
         ),
       ExportStatus.analysisError => AppEmptyState(
           icon: Icons.error_outline_rounded,
@@ -50,6 +48,22 @@ final class ExportTabView extends StatelessWidget {
             ),
     };
   }
+}
+
+String _unavailableDescription(AppLocalizations l10n, ExportState state) {
+  if (state.blockers.isNotEmpty) {
+    final constructs = <String>{
+      for (final blocker in state.blockers) blocker.construct,
+    };
+    return l10n.exportUnavailableConstructs(
+      state.selectedLanguage.displayName,
+      constructs.join(', '),
+      state.blockers.first.range.startLine,
+    );
+  }
+  return state.unavailableReason.isNotEmpty
+      ? state.unavailableReason
+      : l10n.exportComingSoon;
 }
 
 final class _ExportContent extends StatelessWidget {

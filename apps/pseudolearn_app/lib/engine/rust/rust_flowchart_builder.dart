@@ -62,6 +62,7 @@ final class RustFlowchartBuilder implements FlowchartBuilder {
     return DiagramProgram(
       units: entries.map((entry) => entry.unit).toList(),
       scenes: scenes,
+      dependencies: view.dependencies,
     );
   }
 

@@ -17,6 +17,7 @@ final class ComponentMetricsTokens {
   static const double flowCanvasZoomMax = 2.0;
   static const double flowCanvasZoomStep = 0.25;
   static const double flowCanvasZoomControlsInset = 16.0;
+  static const double flowCanvasDependencyStripMaxWidth = 360.0;
   static const double flowCanvasFocusPadding = 48.0;
   static const double flowCanvasFocusZoomMax = 1.25;
   static const double diagramNotationSegmentedMinWidth = 760.0;

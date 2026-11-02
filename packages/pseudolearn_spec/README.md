@@ -158,8 +158,8 @@ Problema: las propiedades nativas necesitan un oráculo independiente y artefact
   observables por el sujeto `app`. Elección: los escenarios `class_diagram`, `control_flow` y `syntax_coverage` se
   añaden al enumerado de `aplicacion.scenario` de forma compatible. Resumen la escena real (cajas, filas,
   relaciones, nodos, aristas de salida, formas no soportadas) o los códigos del verificador tras una mutación
-  declarada; no aceptan respuestas precalculadas. Las reglas `API.PROGRAM.VIEW#R6`–`R14` se redactaron sobre la
-  versión congelada sin `cambio` y quedan sin reanclar hasta su revisión independiente.
+  declarada; no aceptan respuestas precalculadas. Las reglas `API.PROGRAM.VIEW#R6`–`R18` se redactaron sobre la
+  versión congelada sin `cambio` y quedan sin reanclar hasta su revisión independiente. Los escenarios `dependencies` (`R15`, `R16`, casos C48–C52) y `export_support` (`R17`, `R18`, casos C53–C60) se añaden al enumerado de `aplicacion.scenario`: el primero resume las dependencias sin enlazar, el bloqueo de ejecución y exportación y las operaciones distintas de analizar y leer la vista; el segundo, la clasificación de código equivalente por destino sobre el cubit real.
 - Problema: la prioridad del cierre se confundía con intención inequívoca y no cubría la continuación de asignación.
   Elección: `TOOL.SERVICE.COMPLETION#R13` exige intención escrita, elimina cierres inline en líneas vacías y contempla
   `nombre <- ` únicamente para un destino simple declarado y asignable. `R8` reutiliza cierres existentes sin tomar los

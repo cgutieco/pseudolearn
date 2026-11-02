@@ -21,9 +21,19 @@ impl ViewKind {
     }
 }
 
+fn names_dependency(parent: NodeKind) -> bool {
+    matches!(
+        parent,
+        NodeKind::ModulePath | NodeKind::ImportDeclaration | NodeKind::ExportDeclaration
+    )
+}
+
 pub(crate) fn classify(kind: NodeKind, parent: Option<NodeKind>) -> Option<ViewKind> {
     if let Some(task_kind) = crate::program_view_tasks::classify(kind) {
         return Some(task_kind);
+    }
+    if kind == NodeKind::Identifier && parent.is_some_and(names_dependency) {
+        return None;
     }
     match kind {
         owner if is_declaration(owner) => Some(ViewKind::Declaration),

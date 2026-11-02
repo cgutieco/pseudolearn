@@ -1035,3 +1035,71 @@ La vista pública incluye interface_unit, interface_signature, realization, type
 ```caso
 {"id": "C40", "regla": "R14", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "control_flow", "input": {"program": "SubProceso First() Como Opcional<Entero>\nRetornar Nada;\nFinSubProceso\nSubProceso Second() Como Opcional<Entero>\nSi Propagar First() > 0 Entonces\nEscribir 1;\nFinSi\nRetornar Algo(1);\nFinSubProceso\nAlgoritmo Main\nFinAlgoritmo\n", "profile": "es", "notation": "structogram", "unit": "Second"}}, "espera": {"aplicacion": {"nodes": [], "unsupported": ["propagation"]}}}
 ```
+
+```regla
+{"id": "R15", "fuerza": "DEBE", "clase": "semantica", "texto": "Un documento que se analiza solo no enlaza dependencias: cada Importar y Exportar produce moduleSyntaxOutsideProject y ninguna de las dos lee disco, red ni paquetes. Cuando ese es el único error del documento, program_view conserva las demás unidades y expone dependencies, con una fila por directiva en orden de fuente que contiene dependency_id estable para la revisión y la fuente, kind import o export, visibility local para Importar y exported para Exportar, path con los segmentos de la ruta tal como están escritos, alias o null, status unlinked, diagnostic con el código moduleSyntaxOutsideProject y span exacto de la directiva. La vista no crea nodos para los segmentos de la ruta. Una ruta vacía, incompleta, con escape o absoluta es un error sintáctico adicional: no hay vista ni filas de dependencia. El texto del documento no cambia.", "verificacion": ["C48", "C49", "C50", "C51"]}
+```
+
+```regla
+{"id": "R16", "fuerza": "DEBE", "clase": "semantica", "texto": "El consumidor muestra cada dependencia sin enlazar con su ruta, alias, tipo y estado, y al seleccionarla navega al span exacto de su directiva sin modificar el texto. Mientras exista una dependencia sin enlazar la ejecución y la exportación permanecen bloqueadas y no se presenta ningún proyecto como resuelto. Construir las vistas, consultar ayuda o exportar un documento con dependencias no invoca ninguna operación distinta de analizar, leer la vista y liberar.", "verificacion": ["C48", "C51", "C52"]}
+```
+
+```caso
+{"id": "C48", "regla": "R15", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "dependencies", "input": {"program": "Importar geo.Punto Como P;\nExportar geo.formas.Circulo;\nAlgoritmo Main\nEscribir 1;\nFinAlgoritmo\n", "profile": "es"}}, "espera": {"aplicacion": {"structure": true, "dependencies": [{"kind": "importation", "path": ["geo", "Punto"], "alias": "P", "status": "unlinked", "diagnostic": "moduleSyntaxOutsideProject", "text": "Importar geo.Punto Como P;"}, {"kind": "exportation", "path": ["geo", "formas", "Circulo"], "alias": null, "status": "unlinked", "diagnostic": "moduleSyntaxOutsideProject", "text": "Exportar geo.formas.Circulo;"}], "units": ["Main"], "execution_started": false, "export_available": false, "operations_beyond_static": []}}}
+```
+
+```caso
+{"id": "C49", "regla": "R15", "perfiles": ["en"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "dependencies", "input": {"program": "import geo.Point as P;\nexport geo.shapes.Circle;\nalgorithm Main\nwrite 1;\nendAlgorithm\n", "profile": "en"}}, "espera": {"aplicacion": {"structure": true, "dependencies": [{"kind": "importation", "path": ["geo", "Point"], "alias": "P", "status": "unlinked", "diagnostic": "moduleSyntaxOutsideProject", "text": "import geo.Point as P;"}, {"kind": "exportation", "path": ["geo", "shapes", "Circle"], "alias": null, "status": "unlinked", "diagnostic": "moduleSyntaxOutsideProject", "text": "export geo.shapes.Circle;"}], "units": ["Main"], "execution_started": false, "export_available": false, "operations_beyond_static": []}}}
+```
+
+```caso
+{"id": "C50", "regla": "R15", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "dependencies", "input": {"program": "Importar geo.;\nAlgoritmo Main\nFinAlgoritmo\n", "profile": "es"}}, "espera": {"aplicacion": {"structure": false, "dependencies": [], "units": [], "execution_started": false, "export_available": false, "operations_beyond_static": []}}}
+```
+
+```caso
+{"id": "C51", "regla": "R15", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "dependencies", "input": {"program": "Importar pseudolearn_app.lib.main;\nAlgoritmo Main\nFinAlgoritmo\n", "profile": "es"}}, "espera": {"aplicacion": {"structure": true, "dependencies": [{"kind": "importation", "path": ["pseudolearn_app", "lib", "main"], "alias": null, "status": "unlinked", "diagnostic": "moduleSyntaxOutsideProject", "text": "Importar pseudolearn_app.lib.main;"}], "units": ["Main"], "execution_started": false, "export_available": false, "operations_beyond_static": []}}}
+```
+
+```caso
+{"id": "C52", "regla": "R16", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "dependencies", "input": {"program": "Algoritmo Main\nEscribir 1;\nFinAlgoritmo\n", "profile": "es"}}, "espera": {"aplicacion": {"structure": true, "dependencies": [], "units": ["Main"], "execution_started": true, "export_available": true, "operations_beyond_static": []}}}
+```
+
+```regla
+{"id": "R17", "fuerza": "DEBE", "clase": "semantica", "texto": "El consumidor ofrece código equivalente para un destino solo si cada construcción del programa pertenece al subconjunto comprobado de ese destino, es decir, el que una prueba diferencial ejecuta en el motor y en la traducción con la misma salida. Si una construcción queda fuera, sea una unidad que ningún emisor representa, una sentencia sin traducción, una incorporada, un operador, un literal, un tipo o una salida booleana sin equivalente comprobado, el resultado para ese destino es no disponible: no entrega ningún programa parcial y nombra cada construcción por su identidad pública con el rango exacto de su origen. Un error de análisis sigue siendo un error de análisis. La superficie muestra un mensaje localizado con las construcciones y la línea de la primera. La disponibilidad se decide por destino y las traducciones no se compilan ni ejecutan en el producto.", "verificacion": ["C53", "C54", "C55", "C56", "C57", "C60"]}
+```
+
+```regla
+{"id": "R18", "fuerza": "DEBE", "clase": "semantica", "texto": "Cada revisión de la fuente reemplaza el resultado de exportación anterior: si la revisión nueva no está disponible o tiene un error de análisis no permanece visible el código de la revisión anterior ni sus líneas de foco.", "verificacion": ["C58", "C59"]}
+```
+
+```caso
+{"id": "C53", "regla": "R17", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"program": "Proceso P\n  Definir Mutable x Como Entero <- 0;\n  Escribir \"antes\";\n  Leer x;\n  Escribir \"despues\";\nFinProceso\n", "target": "python", "profile": "es"}}, "espera": {"aplicacion": {"status": "unavailable", "constructs": ["input"], "first_line": 4, "code_visible": false, "focused_lines": 0, "ready": false}}}
+```
+
+```caso
+{"id": "C54", "regla": "R17", "perfiles": ["en"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"program": "algorithm Main\n  define mutable x as integer <- 0;\n  read x;\nendAlgorithm\n", "target": "python", "profile": "en"}}, "espera": {"aplicacion": {"status": "unavailable", "constructs": ["input"], "first_line": 3, "code_visible": false, "focused_lines": 0, "ready": false}}}
+```
+
+```caso
+{"id": "C55", "regla": "R17", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"program": "Funcion Doble(x Como Entero) Como Entero\n  Retornar x * 2;\nFinFuncion\nProceso P\n  Escribir Doble(2);\nFinProceso\n", "target": "rust", "profile": "es"}}, "espera": {"aplicacion": {"status": "unavailable", "constructs": ["value_return"], "first_line": 2, "code_visible": false, "focused_lines": 0, "ready": false}}}
+```
+
+```caso
+{"id": "C56", "regla": "R17", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"program": "Proceso P\n  Segun 1 Hacer\n    1:\n      Escribir \"uno\";\n  FinSegun\nFinProceso\n", "target": "python", "profile": "es"}}, "espera": {"aplicacion": {"status": "unavailable", "constructs": ["labels", "switch"], "first_line": 2, "code_visible": false, "focused_lines": 0, "ready": false}}}
+```
+
+```caso
+{"id": "C57", "regla": "R17", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"program": "Funcion Doble(x Como Entero) Como Entero\n  Retornar x * 2;\nFinFuncion\nProceso P\n  Escribir Doble(2);\nFinProceso\n", "target": "python", "profile": "es"}}, "espera": {"aplicacion": {"status": "ready", "constructs": [], "first_line": null, "code_visible": true, "focused_lines": 0, "ready": true}}}
+```
+
+```caso
+{"id": "C58", "regla": "R18", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"previous": "Proceso P\n  Escribir 1;\nFinProceso\n", "program": "Proceso P\n  Definir Mutable x Como Entero <- 0;\n  Leer x;\nFinProceso\n", "target": "python", "profile": "es"}}, "espera": {"aplicacion": {"status": "unavailable", "constructs": ["input"], "first_line": 3, "code_visible": false, "focused_lines": 0, "ready": false}}}
+```
+
+```caso
+{"id": "C59", "regla": "R18", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"previous": "Proceso P\n  Escribir 1;\nFinProceso\n", "program": "Proceso P\n  Escribir ;\n", "target": "python", "profile": "es"}}, "espera": {"aplicacion": {"status": "analysisError", "constructs": [], "first_line": null, "code_visible": false, "focused_lines": 0, "ready": false}}}
+```
+
+```caso
+{"id": "C60", "regla": "R17", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"program": "Proceso P\n  Escribir 3 > 2;\nFinProceso\n", "target": "python", "profile": "es"}}, "espera": {"aplicacion": {"status": "unavailable", "constructs": ["boolean_output"], "first_line": 2, "code_visible": false, "focused_lines": 0, "ready": false}}}
+```

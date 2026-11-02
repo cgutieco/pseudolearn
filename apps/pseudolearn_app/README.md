@@ -116,6 +116,8 @@ del núcleo; la aplicación traduce, orquesta y renderiza los resultados.
 | Adaptador SEE del sujeto `app` | Lanzador, escenarios APP y propiedades API sobre el transporte FRB generado | Implementado; 252 observaciones y tres propiedades API por el puente real pasan sin divergencias |
 | Resaltado y unidades de foco en la ruta Rust                    | `RustProgramAnalyzer` proyecta los tokens de `analyze`; `RustFocusTracker` deriva `unitId` de la vista pública del programa                | Resuelto                                                                                              |
 | Pruebas de widgets con el puente real                           | Los widgets se prueban con fakes; solo `ExecutionCubit` se ejercita contra la biblioteca nativa en `tool/native_bridge_adapters_test.dart` | Abierto |
+| Ficha de ayuda de `Importar` y `Exportar` | Catálogo de ayuda (`TOOL.SERVICE.CATALOG`): la consulta sobre una dependencia pegada responde `noHelp` | Abierto (`PG-A.08`) |
+| Ampliar el subconjunto de código equivalente | Emisores Python y Rust: `Segun` en Python (exige 3.10 comprobable), arreglos con base 1, clases y valores de retorno en Rust, lógicos en la salida; cada ampliación necesita su caso diferencial (§4.11) | Abierto |
 
 ---
 
@@ -832,6 +834,33 @@ infraestructura y el motor; la lógica de aplicación desconoce los widgets y el
   errores de análisis. Los emisores reciben formas con operadores, literales, incorporadas resueltas,
   receptores, parámetros y tipos abstractos; no reinterpretan lexemas del perfil. La firma del código
   equivalente tiene un dueño compartido. Se descartan emisores que dependan de un AST de otro lenguaje.
+- **Código equivalente honesto (`API.PROGRAM.VIEW#R17`/`R18`):** una traducción es equivalente solo si el programa
+  entero cae en el subconjunto comprobado de ese destino. `ExportSupport` (datos por destino) lista los
+  `syntax_kind` admitidos, las incorporadas, los operadores, literales y tipos que un destino no prueba;
+  `ExportCoverage` recorre todos los nodos de la vista y las unidades que ningún emisor lee, y `RustProgramExporter`
+  devuelve `ExportUnavailable` con una lista de `ExportBlocker` (construcción por su identidad pública, nodo y rango)
+  antes de emitir una sola línea. Un lector que descarta una unidad o una sentencia ya no produce un programa
+  parcial: `UnsupportedShape` y sus comentarios de relleno desaparecieron. Para programa mixto manda la construcción
+  menos soportada, un error de análisis sigue siendo `ExportAnalysisError`, y cada revisión nueva reemplaza el
+  resultado y limpia código y líneas de foco anteriores. La disponibilidad se decide por destino. Se descartó una
+  categoría de «ilustración»: no existe contenido rotulado ni pruebas que impidan copiarlo como equivalente.
+  - **Evidencia.** `test/engine/rust/export/export_differential_test.dart` ejecuta cada programa del subconjunto en el
+    motor y en `python3 -I` o `rustc --edition=2021` y compara la salida byte a byte (31 comparaciones). Es evidencia
+    de equivalencia para esos programas; las pruebas de cadenas emitidas no lo son. Límites: salida determinista, sin
+    entrada del usuario, sin concurrencia y con las versiones del host (`python3` 3.9, `rustc` 1.99).
+  - **Python:** comprobado para aritmética entera y real, `/` y `^`, salida (con `sep=""`), selección, `Mientras`,
+    `Repetir`, `Para`, subprogramas con y sin valor, recursión, clases con herencia y `Super`, concatenación de
+    textos y las incorporadas `Raiz`, `Longitud`, `ConvertirATexto` y `Trunc`. No disponible: `Segun` (`match`
+    exige Python 3.10 y el host de prueba tiene 3.9), arreglos (`Dimension` es base 1 en el motor y base 0 en el
+    emisor), `Leer`, `Abs`, `Redon` (el redondeo de Python difiere), `Azar`, `\`, salida de valores lógicos
+    (`True` frente a `Verdadero`) y toda construcción fuera de la lista.
+  - **Rust:** comprobado para enteros, textos, selección, `Mientras`, `Repetir`, `Para`, `Segun`, procedimientos,
+    llamadas, salida y `Longitud`, `ConvertirATexto` y `Trunc`. No disponible: clases e instanciación (`self`
+    inexistente en constructores), subprogramas con valor de retorno, valores reales, `/`, `^`, concatenación de
+    textos, `Raiz`, arreglos, `Leer` y lo mismo que Python no admite.
+  - **Arreglo conjunto de emisores.** La salida con varios argumentos añadía un espacio que el motor no escribe;
+    Python emite `sep=""` y Rust une los marcadores sin separador.
+
 - **Diagramas con errores semánticos:** La vista estructural permite representar clases o controles
   cuando hay errores semánticos, incluidos ciclos de herencia, siempre que la sintaxis sea válida.
   Los exportadores y la ejecución siguen exigiendo análisis válido. Se evita ocultar justamente la
@@ -2286,6 +2315,30 @@ abre autoridad real; ofrece capacidades simuladas en memoria y deja que el núcl
 Pendiente declarado: las fichas bilingües de ayuda y la proyección de vista pública de las capacidades se alimentan del
 catálogo del motor (`TOOL.SERVICE.CATALOG`, `API.PROGRAM.VIEW`) y no se ampliaron en esta iteración; tampoco hay aún
 una superficie visual para configurar capacidades simuladas ni para mostrar la espera (`PG-A`/`PG-B`).
+
+### 4.55 Import y export pegados: dependencia visible, nunca resuelta
+
+Problema: la app abre un solo archivo y no tiene proyecto, pero una persona puede pegar `Importar geo.Punto Como P;`.
+Decisión: el análisis conserva su diagnóstico (`moduleSyntaxOutsideProject`, el mismo de `LANG.MODULE.MODEL#R3`), la vista
+conserva las demás unidades y la dependencia se muestra sin enlazar; nada intenta resolverla.
+
+- `RustProgramViewSource.loadStructure` acepta ese único diagnóstico sintáctico (`load`, que usan el exportador y la
+  ejecución, sigue rechazando cualquier error). La vista decodifica `dependencies` en `ProgramDependency` (modelo
+  inmutable: tipo, ruta, alias, estado, código de diagnóstico y `SourceRange`) y valida cada fila con fallos tipados.
+- `DiagramProgram.dependencies` lo llena el constructor del ordinograma; `DiagramState.dependencies` lo expone para las
+  tres notaciones y `DiagramDependencyOverlay` dibuja una tarjeta con una fila por dependencia («Importa geo.Punto como
+  P», «Sin enlazar…»). Cada fila es un botón de Semantics y navega al rango exacto con el mismo `revealSource` que las
+  demás superficies, sin tocar el texto. Los textos están en ambos idiomas de la interfaz.
+- Ejecución y exportación quedan bloqueadas porque el análisis sigue reportando un error. No hay gestor de
+  dependencias, selector de proyecto, descarga ni archivo auxiliar, y un import soportado visualmente no se anuncia como
+  proyecto resuelto.
+- Una ruta vacía, incompleta, con `..` o absoluta es un error sintáctico adicional: no hay estructura ni filas.
+- Evidencia: `rust_program_dependencies_test.dart` (puente real; un transporte que registra operaciones afirma que
+  solo se analizó, se leyó la vista y se liberó, sin `start`, `execute` ni operaciones de anfitrión, también cuando el
+  texto nombra un paquete que existe en disco), `rust_program_view_dependencies_wire_test.dart` (filas ausentes y mal
+  formadas), `diagram_dependency_strip_test.dart` (es/en, toque, Semantics) y los casos C48–C52 por el puente real. La ficha
+  de ayuda de `Importar` no existe en el catálogo: la consulta responde `noHelp` sin ejecutar nada y cerrar ese hueco
+  pertenece a `PG-A.08`.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

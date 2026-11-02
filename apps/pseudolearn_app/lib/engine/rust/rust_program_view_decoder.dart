@@ -28,6 +28,7 @@ final class _RustProgramViewDecoder {
         members: _membersFor(_json, ordinals),
         superclasses: _superclassesFor(_json),
         staticData: staticData,
+        dependencies: _dependenciesFor(_json, _offsets),
       ),
     );
   }

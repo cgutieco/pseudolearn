@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import '../../domain/model/analysis/program_dependency.dart';
 import '../../domain/model/analysis/program_node_id.dart';
 import '../../domain/model/diagram/diagram_accessible_element.dart';
 import '../../domain/model/diagram/diagram_notation.dart';
@@ -52,6 +53,8 @@ final class DiagramState extends Equatable {
         DiagramNotation.structogram => structogram.unsupportedKinds,
         DiagramNotation.classDiagram => const [],
       };
+
+  List<ProgramDependency> get dependencies => flowchart.dependencies;
 
   bool get hasClasses => classDiagram.isNotEmpty;
 

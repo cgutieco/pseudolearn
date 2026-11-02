@@ -176,7 +176,7 @@ FinAlgoritmo
       expect(rsSuccess.program.sourceCode, contains('break;'));
     });
 
-    test('exports Switch Segun to Python match and Rust match', () {
+    test('exports Switch Segun to Rust and withholds Python', () {
       const source = '''
 Algoritmo SegunTest
   Definir Mutable op Como Entero <- 0
@@ -196,11 +196,11 @@ FinAlgoritmo
         targetLanguage: TargetLanguageId.python,
         profileId: SyntaxProfileId.classicSpanish,
       );
-      expect(pyResult, isA<ExportSuccess>());
-      final pySuccess = pyResult as ExportSuccess;
-      expect(pySuccess.program.sourceCode, contains('match op:'));
-      expect(pySuccess.program.sourceCode, contains('case 1:'));
-      expect(pySuccess.program.sourceCode, contains('case _:'));
+      expect(pyResult, isA<ExportUnavailable>());
+      expect(
+        (pyResult as ExportUnavailable).blockers.map((b) => b.construct),
+        contains('switch'),
+      );
 
       final rsResult = exporter.export(
         sourceCode: source,
@@ -214,7 +214,7 @@ FinAlgoritmo
       expect(rsSuccess.program.sourceCode, contains('_ => {'));
     });
 
-    test('exports Dimension arrays to Python and Rust', () {
+    test('withholds Dimension arrays from both targets', () {
       const source = '''
 Algoritmo ArrayTest
   Dimension a[10] Como Entero
@@ -227,23 +227,22 @@ FinAlgoritmo
         targetLanguage: TargetLanguageId.python,
         profileId: SyntaxProfileId.classicSpanish,
       );
-      expect(pyResult, isA<ExportSuccess>());
-      final pySuccess = pyResult as ExportSuccess;
-      expect(pySuccess.program.sourceCode, contains('a = [0] * (10)'));
-      expect(pySuccess.program.sourceCode, contains('a[0] = 42'));
+      expect(pyResult, isA<ExportUnavailable>());
+      expect(
+        (pyResult as ExportUnavailable).blockers.map((b) => b.construct),
+        contains('dimension_declaration'),
+      );
 
       final rsResult = exporter.export(
         sourceCode: source,
         targetLanguage: TargetLanguageId.rust,
         profileId: SyntaxProfileId.classicSpanish,
       );
-      expect(rsResult, isA<ExportSuccess>());
-      final rsSuccess = rsResult as ExportSuccess;
+      expect(rsResult, isA<ExportUnavailable>());
       expect(
-        rsSuccess.program.sourceCode,
-        contains('let mut a = vec![0; (10) as usize];'),
+        (rsResult as ExportUnavailable).blockers.map((b) => b.construct),
+        contains('dimension_declaration'),
       );
-      expect(rsSuccess.program.sourceCode, contains('a[(0) as usize] = 42;'));
     });
   });
 }

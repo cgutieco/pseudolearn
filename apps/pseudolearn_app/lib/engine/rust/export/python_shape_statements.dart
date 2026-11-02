@@ -68,8 +68,6 @@ final class PythonShapeStatements {
         buffer.writeln('$indent${s.name}($args)');
       case final MethodCallShape s:
         _methodCall(s, buffer, indent);
-      case UnsupportedShape():
-        buffer.writeln('$indent# Unsupported statement');
     }
   }
 
@@ -102,8 +100,9 @@ final class PythonShapeStatements {
 
   void _write(WriteShape s, TargetCodeBuilder buffer, String indent) {
     final args = s.expressions.map(_writer.write).join(', ');
+    final separator = s.expressions.length > 1 ? ', sep=""' : '';
     final end = s.withoutNewline ? ', end=""' : '';
-    buffer.writeln('${indent}print($args$end)');
+    buffer.writeln('${indent}print($args$separator$end)');
   }
 
   void _if(IfShape s, TargetCodeBuilder buffer, String indent) {

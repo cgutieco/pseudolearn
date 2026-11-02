@@ -55,6 +55,7 @@ final class ExportCubit extends Cubit<ExportState> {
       _program = null;
       emit(state.copyWith(
         status: ExportStatus.ready,
+        blockers: const [],
         exportedCode: '',
         notes: const [],
         focusedLines: const {},
@@ -76,6 +77,7 @@ final class ExportCubit extends Cubit<ExportState> {
         _program = program;
         emit(state.copyWith(
           status: ExportStatus.ready,
+          blockers: const [],
           exportedCode: program.sourceCode,
           notes: program.notes,
           focusedLines: const {},
@@ -84,15 +86,17 @@ final class ExportCubit extends Cubit<ExportState> {
         _program = null;
         emit(state.copyWith(
           status: ExportStatus.analysisError,
+          blockers: const [],
           exportedCode: '',
           notes: const [],
           focusedLines: const {},
         ));
-      case ExportUnavailable(:final reason):
+      case ExportUnavailable(:final reason, :final blockers):
         _program = null;
         emit(state.copyWith(
           status: ExportStatus.unavailable,
           unavailableReason: reason,
+          blockers: blockers,
           exportedCode: '',
           notes: const [],
           focusedLines: const {},

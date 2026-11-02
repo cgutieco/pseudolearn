@@ -2,10 +2,26 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/application/execution/execution_state.dart';
 import 'package:pseudolearn_app/application/export/export_cubit.dart';
 import 'package:pseudolearn_app/application/export/export_state.dart';
+import 'package:pseudolearn_app/domain/model/analysis/program_node_id.dart';
+import 'package:pseudolearn_app/domain/model/analysis/source_range.dart';
+import 'package:pseudolearn_app/domain/model/export/export_blocker.dart';
 import 'package:pseudolearn_app/domain/model/export/export_result.dart';
 import 'package:pseudolearn_app/domain/model/export/target_language_id.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import '../../fakes/fake_program_exporter.dart';
+
+const ExportBlocker _blocker = ExportBlocker(
+  construct: 'input',
+  origin: ProgramNodeId(3),
+  range: SourceRange(
+    startOffset: 4,
+    endOffset: 10,
+    startLine: 2,
+    startColumn: 1,
+    endLine: 2,
+    endColumn: 7,
+  ),
+);
 
 void main() {
   late FakeProgramExporter fakeExporter;
@@ -78,6 +94,69 @@ void main() {
 
       expect(cubit.state.status, equals(ExportStatus.unavailable));
       expect(cubit.state.unavailableReason, equals('Export engine not ready'));
+    });
+
+    test('a new source never leaves the previous code under an unavailable one', () {
+      cubit.updateSource(
+        sourceCode: 'x <- 10',
+        profileId: SyntaxProfileId.classicSpanish,
+      );
+      expect(cubit.state.exportedCode, isNotEmpty);
+
+      fakeExporter.nextResult = const ExportUnavailable(
+        '',
+        blockers: [_blocker],
+      );
+      cubit.updateSource(
+        sourceCode: 'Leer y',
+        profileId: SyntaxProfileId.classicSpanish,
+      );
+
+      expect(cubit.state.status, equals(ExportStatus.unavailable));
+      expect(cubit.state.exportedCode, isEmpty);
+      expect(cubit.state.blockers, equals(const [_blocker]));
+      expect(cubit.state.focusedLines, isEmpty);
+    });
+
+    test('blockers are cleared when the next revision is exportable', () {
+      fakeExporter.nextResult = const ExportUnavailable(
+        '',
+        blockers: [_blocker],
+      );
+      cubit.updateSource(
+        sourceCode: 'Leer y',
+        profileId: SyntaxProfileId.classicSpanish,
+      );
+      fakeExporter.nextResult = null;
+
+      cubit.updateSource(
+        sourceCode: 'x <- 10',
+        profileId: SyntaxProfileId.classicSpanish,
+      );
+
+      expect(cubit.state.status, equals(ExportStatus.ready));
+      expect(cubit.state.blockers, isEmpty);
+      expect(cubit.state.exportedCode, contains('Generated Python code'));
+    });
+
+    test('an analysis error after an unavailable result clears the blockers', () {
+      fakeExporter.nextResult = const ExportUnavailable(
+        '',
+        blockers: [_blocker],
+      );
+      cubit.updateSource(
+        sourceCode: 'Leer y',
+        profileId: SyntaxProfileId.classicSpanish,
+      );
+      fakeExporter.nextResult = null;
+
+      cubit.updateSource(
+        sourceCode: 'ERROR in code',
+        profileId: SyntaxProfileId.classicSpanish,
+      );
+
+      expect(cubit.state.status, equals(ExportStatus.analysisError));
+      expect(cubit.state.blockers, isEmpty);
     });
 
     test('reset restores initial state', () {
