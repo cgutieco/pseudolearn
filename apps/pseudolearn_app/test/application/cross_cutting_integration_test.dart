@@ -531,7 +531,7 @@ FinAlgoritmo
 
         expect(
           executionCubit.state.status,
-          equals(ExecutionStatus.stepLimitReached),
+          equals(ExecutionStatus.uiSafetyLimitReached),
         );
         expect(executionCubit.state.currentStep.isStepLimitReached, isTrue);
         expect(executionCubit.state.currentStep.isTerminal, isTrue);

@@ -8,7 +8,9 @@ enum ExecutionStatus {
   running,
   pausedAtStatement,
   pausedAwaitingInput,
+  pausedAwaitingEffect,
   stepLimitReached,
+  uiSafetyLimitReached,
   haltedWithError,
   finishedSuccess,
 }
@@ -39,32 +41,34 @@ final class ExecutionState extends Equatable {
   });
 
   const ExecutionState.initial()
-      : status = ExecutionStatus.idle,
-        currentStep = const ExecutionStep(
-          stepNumber: 0,
-          scopeName: 'global',
-          scopeDepth: 1,
-        ),
-        outputLines = const [],
-        runId = 0,
-        statementNumber = 0,
-        isOutputStale = false,
-        isOutputPanelExpanded = false,
-        userCollapsedOutput = false,
-        isStatusBannerDismissed = false,
-        haltMessage = null;
+    : status = ExecutionStatus.idle,
+      currentStep = const ExecutionStep(
+        stepNumber: 0,
+        scopeName: 'global',
+        scopeDepth: 1,
+      ),
+      outputLines = const [],
+      runId = 0,
+      statementNumber = 0,
+      isOutputStale = false,
+      isOutputPanelExpanded = false,
+      userCollapsedOutput = false,
+      isStatusBannerDismissed = false,
+      haltMessage = null;
 
   bool get isNearStepLimit =>
-      currentStep.stepNumber >= StepBatchRunner.warningStepThreshold;
+      currentStep.stepNumber >= StepBatchRunner.warningUiAdvanceThreshold;
 
   bool get canStart =>
       status != ExecutionStatus.running &&
-      status != ExecutionStatus.pausedAwaitingInput;
+      status != ExecutionStatus.pausedAwaitingInput &&
+      status != ExecutionStatus.pausedAwaitingEffect;
 
   bool get isInFlight =>
       status == ExecutionStatus.running ||
       status == ExecutionStatus.pausedAtStatement ||
-      status == ExecutionStatus.pausedAwaitingInput;
+      status == ExecutionStatus.pausedAwaitingInput ||
+      status == ExecutionStatus.pausedAwaitingEffect;
 
   bool get isPaused =>
       status == ExecutionStatus.pausedAtStatement ||
@@ -93,7 +97,8 @@ final class ExecutionState extends Equatable {
       runId: runId ?? this.runId,
       statementNumber: statementNumber ?? this.statementNumber,
       isOutputStale: isOutputStale ?? this.isOutputStale,
-      isOutputPanelExpanded: isOutputPanelExpanded ?? this.isOutputPanelExpanded,
+      isOutputPanelExpanded:
+          isOutputPanelExpanded ?? this.isOutputPanelExpanded,
       userCollapsedOutput: userCollapsedOutput ?? this.userCollapsedOutput,
       isStatusBannerDismissed:
           isStatusBannerDismissed ?? this.isStatusBannerDismissed,
@@ -103,15 +108,15 @@ final class ExecutionState extends Equatable {
 
   @override
   List<Object?> get props => [
-        status,
-        currentStep,
-        outputLines,
-        runId,
-        statementNumber,
-        isOutputStale,
-        isOutputPanelExpanded,
-        userCollapsedOutput,
-        isStatusBannerDismissed,
-        haltMessage,
-      ];
+    status,
+    currentStep,
+    outputLines,
+    runId,
+    statementNumber,
+    isOutputStale,
+    isOutputPanelExpanded,
+    userCollapsedOutput,
+    isStatusBannerDismissed,
+    haltMessage,
+  ];
 }

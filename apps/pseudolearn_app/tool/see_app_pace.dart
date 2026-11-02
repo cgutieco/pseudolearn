@@ -192,6 +192,7 @@ SyntaxProfileId _profileOf(Object? value) =>
     value == 'en' ? SyntaxProfileId.english : SyntaxProfileId.classicSpanish;
 
 StepPace _paceOf(Object? value) => switch (value) {
+  'nextEvent' => StepPace.nextEvent,
   'overBlock' => StepPace.overBlock,
   'outOfBlock' => StepPace.outOfBlock,
   'toEnd' => StepPace.toEnd,

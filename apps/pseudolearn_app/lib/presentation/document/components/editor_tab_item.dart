@@ -46,8 +46,9 @@ final class EditorTabItem extends StatelessWidget {
         onKeyPressed: (key, caret) => _applyKey(context, key, caret),
         onDiagnosticSelected: (d) =>
             context.read<EditorCubit>().selectDiagnostic(d),
-        onDismissStatusBanner: () =>
-            context.read<ExecutionCubit>().dismissStatusBanner(),
+        onDismissStatusBanner: () => context
+            .read<ExecutionCubit>()
+            .applyViewAction(ExecutionViewAction.dismissStatusBanner),
         onRun: onRun,
         onHelpRequested: (caret) => _requestHelp(context, caret),
         helpPanel: _HelpPanelSlot(state: helpState),

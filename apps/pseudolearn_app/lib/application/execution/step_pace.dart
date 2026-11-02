@@ -1,1 +1,1 @@
-enum StepPace { nextStatement, overBlock, outOfBlock, toEnd }
+enum StepPace { nextEvent, nextStatement, overBlock, outOfBlock, toEnd }

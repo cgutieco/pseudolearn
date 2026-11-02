@@ -26,12 +26,30 @@ final class DocumentFooter extends StatelessWidget {
   });
 
   @override
+  Widget build(BuildContext context) => _FooterVisibility(
+    onPace: onPace,
+    onStop: onStop,
+    onToggleOutput: onToggleOutput,
+  );
+}
+
+final class _FooterVisibility extends StatelessWidget {
+  final void Function(EditorState, StepPace) onPace;
+  final VoidCallback onStop;
+  final VoidCallback onToggleOutput;
+
+  const _FooterVisibility({
+    required this.onPace,
+    required this.onStop,
+    required this.onToggleOutput,
+  });
+
+  @override
   Widget build(BuildContext context) {
     final canvas = DesignCanvasScope.of(context);
     if (canvas.deviceClass == DeviceClass.compact && canvas.isKeyboardVisible) {
       return const SizedBox.shrink();
     }
-
     return _FooterBody(
       onPace: onPace,
       onStop: onStop,
@@ -61,17 +79,12 @@ final class _FooterBody extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 _CompactTrackingStrip(isVisible: execState.isInFlight),
-                OutputPanel(
-                  outputLines: execState.outputLines,
-                  isExpanded: execState.isOutputPanelExpanded,
-                  isStale: execState.isOutputStale,
-                  onToggle: onToggleOutput,
-                ),
-                ExecutionStepper(
-                  state: execState,
-                  isExecutable: editorState.report.isExecutable,
-                  onPace: (pace) => onPace(editorState, pace),
+                _FooterCommands(
+                  editorState: editorState,
+                  executionState: execState,
+                  onPace: onPace,
                   onStop: onStop,
+                  onToggleOutput: onToggleOutput,
                 ),
               ],
             );
@@ -82,6 +95,42 @@ final class _FooterBody extends StatelessWidget {
   }
 }
 
+final class _FooterCommands extends StatelessWidget {
+  final EditorState editorState;
+  final ExecutionState executionState;
+  final void Function(EditorState, StepPace) onPace;
+  final VoidCallback onStop;
+  final VoidCallback onToggleOutput;
+
+  const _FooterCommands({
+    required this.editorState,
+    required this.executionState,
+    required this.onPace,
+    required this.onStop,
+    required this.onToggleOutput,
+  });
+
+  @override
+  Widget build(BuildContext context) => Column(
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      OutputPanel(
+        outputLines: executionState.outputLines,
+        isExpanded: executionState.isOutputPanelExpanded,
+        isStale: executionState.isOutputStale,
+        onToggle: onToggleOutput,
+      ),
+      ExecutionStepper(
+        state: executionState,
+        isExecutable: editorState.report.isExecutable,
+        onPace: (pace) => onPace(editorState, pace),
+        onTaskStep: (taskId) =>
+            context.read<ExecutionCubit>().advanceTask(taskId: taskId),
+        onStop: onStop,
+      ),
+    ],
+  );
+}
 
 final class _CompactTrackingStrip extends StatelessWidget {
   final bool isVisible;
@@ -90,7 +139,8 @@ final class _CompactTrackingStrip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isCompact = DesignCanvasScope.of(context).deviceClass == DeviceClass.compact;
+    final isCompact =
+        DesignCanvasScope.of(context).deviceClass == DeviceClass.compact;
     if (!isCompact || !isVisible) return const SizedBox.shrink();
 
     return BlocBuilder<TraceCubit, TraceState>(

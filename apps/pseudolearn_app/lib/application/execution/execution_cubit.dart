@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import '../../domain/model/execution/execution_task_context.dart';
 import '../../domain/model/execution/execution_step.dart';
 import '../../domain/model/profiles/syntax_profile_id.dart';
 import '../../domain/model/settings/ui_language_id.dart';
@@ -8,11 +9,15 @@ import 'step_batch_runner.dart';
 import 'step_pace.dart';
 import 'step_settlement.dart';
 
+enum ExecutionViewAction { toggleOutputPanel, dismissStatusBanner }
+
 final class ExecutionCubit extends Cubit<ExecutionState> {
   final ProgramExecution _execution;
   final StepBatchRunner _runner;
+  Future<void> _commandTail = Future<void>.value();
   bool _stopRequested = false;
   bool _hasStarted = false;
+  int _commandEpoch = 0;
   int _runCounter = 0;
   StepSettlement _settlement = const StepSettlement.atAnyFocusChange();
   int _fromRevision = 0;
@@ -20,11 +25,37 @@ final class ExecutionCubit extends Cubit<ExecutionState> {
   ExecutionCubit({
     required ProgramExecution execution,
     StepBatchRunner runner = const StepBatchRunner(),
-  })  : _execution = execution,
-        _runner = runner,
-        super(const ExecutionState.initial());
+  }) : _execution = execution,
+       _runner = runner,
+       super(const ExecutionState.initial());
 
   Future<void> advance({
+    required StepPace pace,
+    required String sourceCode,
+    required SyntaxProfileId profileId,
+    required UiLanguageId languageId,
+  }) => _enqueue(
+    () => _advance(
+      pace: pace,
+      sourceCode: sourceCode,
+      profileId: profileId,
+      languageId: languageId,
+    ),
+  );
+
+  Future<void> advanceTask({required int taskId}) => _enqueue(() async {
+    if (!_hasStarted || state.status != ExecutionStatus.pausedAtStatement) {
+      return;
+    }
+    if (!_canAdvanceTask(taskId)) return;
+    _stopRequested = false;
+    final from = state.currentStep;
+    _settlement = StepSettlement.forTask(taskId: taskId, from: from);
+    _fromRevision = from.focusRevision;
+    await _drain();
+  });
+
+  Future<void> _advance({
     required StepPace pace,
     required String sourceCode,
     required SyntaxProfileId profileId,
@@ -48,37 +79,58 @@ final class ExecutionCubit extends Cubit<ExecutionState> {
     await _drain();
   }
 
-  Future<void> provideInput(String rawInput) async {
+  Future<void> provideInput(String rawInput) => _enqueue(() async {
     if (!_hasStarted) return;
-    _processStep(_execution.provideInput(rawInput));
+    final step = _execution.provideInput(rawInput);
+    _processStep(step);
     if (!_hasStarted) return;
+    if (_settlement.settlesOn(step, _fromRevision)) {
+      _settle();
+      return;
+    }
     await _drain();
-  }
+  });
 
   void stop() {
+    _commandEpoch++;
     _stopRequested = true;
     _execution.stop();
     _hasStarted = false;
-    emit(state.copyWith(
-      status: ExecutionStatus.idle,
-      currentStep: const ExecutionStep(
-        stepNumber: 0,
-        scopeName: 'global',
-        scopeDepth: 1,
+    emit(
+      state.copyWith(
+        status: ExecutionStatus.idle,
+        currentStep: const ExecutionStep(
+          stepNumber: 0,
+          scopeName: 'global',
+          scopeDepth: 1,
+        ),
+        isOutputStale: state.outputLines.isNotEmpty,
       ),
-      isOutputStale: state.outputLines.isNotEmpty,
-    ));
+    );
   }
 
-  void toggleOutputPanel() {
+  void applyViewAction(ExecutionViewAction action) {
+    switch (action) {
+      case ExecutionViewAction.toggleOutputPanel:
+        _toggleOutputPanel();
+        return;
+      case ExecutionViewAction.dismissStatusBanner:
+        _dismissStatusBanner();
+        return;
+    }
+  }
+
+  void _toggleOutputPanel() {
     final newExpanded = !state.isOutputPanelExpanded;
-    emit(state.copyWith(
-      isOutputPanelExpanded: newExpanded,
-      userCollapsedOutput: !newExpanded,
-    ));
+    emit(
+      state.copyWith(
+        isOutputPanelExpanded: newExpanded,
+        userCollapsedOutput: !newExpanded,
+      ),
+    );
   }
 
-  void dismissStatusBanner() {
+  void _dismissStatusBanner() {
     if (state.isStatusBannerDismissed) return;
     emit(state.copyWith(isStatusBannerDismissed: true));
   }
@@ -96,8 +148,32 @@ final class ExecutionCubit extends Cubit<ExecutionState> {
 
   void _settle() {
     if (!_hasStarted || _stopRequested) return;
-    if (state.currentStep.isAwaitingInput) return;
+    if (state.currentStep.isAwaitingInput ||
+        state.currentStep.isAwaitingEffect) {
+      return;
+    }
     emit(state.copyWith(status: ExecutionStatus.pausedAtStatement));
+  }
+
+  Future<void> _enqueue(Future<void> Function() command) {
+    final epoch = _commandEpoch;
+    final pending = _commandTail.then((_) async {
+      if (epoch != _commandEpoch || isClosed) return;
+      await command();
+    });
+    _commandTail = pending.then<void>(
+      (_) {},
+      onError: (Object error, StackTrace stackTrace) {},
+    );
+    return pending;
+  }
+
+  bool _canAdvanceTask(int taskId) {
+    for (final task in state.currentStep.taskContexts) {
+      if (task.taskId != taskId) continue;
+      return task.status != ExecutionTaskStatus.completed;
+    }
+    return false;
   }
 
   ExecutionStep _startNew({
@@ -112,39 +188,54 @@ final class ExecutionCubit extends Cubit<ExecutionState> {
       profileId: profileId,
       languageId: languageId,
     );
-    emit(ExecutionState(
-      status: ExecutionStatus.pausedAtStatement,
-      currentStep: initialStep,
-      outputLines: _execution.outputLines,
-      runId: _runCounter,
-      statementNumber: 0,
-      isOutputPanelExpanded: state.isOutputPanelExpanded,
-      userCollapsedOutput: state.userCollapsedOutput,
-    ));
+    emit(
+      ExecutionState(
+        status: ExecutionStatus.pausedAtStatement,
+        currentStep: initialStep,
+        outputLines: _execution.outputLines,
+        runId: _runCounter,
+        statementNumber: 0,
+        isOutputPanelExpanded: state.isOutputPanelExpanded,
+        userCollapsedOutput: state.userCollapsedOutput,
+      ),
+    );
     return initialStep;
   }
 
   void _processStep(ExecutionStep step) {
     if (step.isTerminal) _hasStarted = false;
     final lines = _execution.outputLines;
-    final shouldAutoExpand = lines.isNotEmpty && !state.isOutputPanelExpanded && !state.userCollapsedOutput;
+    final shouldAutoExpand =
+        lines.isNotEmpty &&
+        !state.isOutputPanelExpanded &&
+        !state.userCollapsedOutput;
 
     final advanced = step.focusRevision != state.currentStep.focusRevision;
-    emit(state.copyWith(
-      status: _statusOf(step),
-      currentStep: step,
-      outputLines: lines,
-      statementNumber: advanced ? state.statementNumber + 1 : state.statementNumber,
-      isOutputPanelExpanded: shouldAutoExpand ? true : state.isOutputPanelExpanded,
-      haltMessage: step.haltReason,
-    ));
+    emit(
+      state.copyWith(
+        status: _statusOf(step),
+        currentStep: step,
+        outputLines: lines,
+        statementNumber: advanced
+            ? state.statementNumber + 1
+            : state.statementNumber,
+        isOutputPanelExpanded: shouldAutoExpand
+            ? true
+            : state.isOutputPanelExpanded,
+        haltMessage: step.haltReason,
+      ),
+    );
   }
 
   ExecutionStatus _statusOf(ExecutionStep step) {
+    if (step.isUiSafetyLimitReached) {
+      return ExecutionStatus.uiSafetyLimitReached;
+    }
     if (step.isStepLimitReached) return ExecutionStatus.stepLimitReached;
     if (step.isHalted) return ExecutionStatus.haltedWithError;
     if (step.isFinished) return ExecutionStatus.finishedSuccess;
     if (step.isAwaitingInput) return ExecutionStatus.pausedAwaitingInput;
+    if (step.isAwaitingEffect) return ExecutionStatus.pausedAwaitingEffect;
     return ExecutionStatus.running;
   }
 }

@@ -72,6 +72,19 @@
   "@actionStepInto": {
     "description": "Action to advance a single statement inside a debugging session"
   },
+  "actionStepEvent": "Next event",
+  "@actionStepEvent": {
+    "description": "Action to advance exactly one global execution event"
+  },
+  "actionStepTask": "Step task",
+  "@actionStepTask": {
+    "description": "Action to advance until the next event for a selected task"
+  },
+  "executionStepTask": "Advance task {taskId}",
+  "@executionStepTask": {
+    "description": "Menu option to advance one selected task",
+    "placeholders": {"taskId": {"type": "int"}}
+  },
   "actionExport": "Export",
   "@actionExport": {
     "description": "Action to open export dialog"
@@ -388,6 +401,10 @@
   "@executionStatusAwaitingInput": {
     "description": "Footer status when execution waits for input"
   },
+  "executionStatusAwaitingEffect": "Waiting for an effect",
+  "@executionStatusAwaitingEffect": {
+    "description": "Footer status when execution waits for an effect response"
+  },
   "executionStatusFinished": "Execution finished",
   "@executionStatusFinished": {
     "description": "Footer status when the program finished successfully"
@@ -422,13 +439,25 @@
   "@tabEquivalentCode": {
     "description": "Label of the tab showing the program in Python or Rust"
   },
-  "bannerStepLimitTitle": "Step limit reached",
+  "bannerStepLimitTitle": "Execution limit reported by the engine",
   "@bannerStepLimitTitle": {
     "description": "Warning title when step limit reached"
   },
-  "bannerStepLimitBody": "The program reached the step limit without terminating. Check for potential infinite loops.",
+  "bannerStepLimitBody": "The engine reported that this execution reached a configured limit.",
   "@bannerStepLimitBody": {
     "description": "Warning body when step limit reached"
+  },
+  "bannerUiSafetyLimitTitle": "Local UI safety cap reached",
+  "@bannerUiSafetyLimitTitle": {
+    "description": "Title when the interface stops pumping for safety"
+  },
+  "bannerUiSafetyLimitBody": "The interface stopped pumping after 10,000 advances to stay responsive. This local cap is not a language limit.",
+  "@bannerUiSafetyLimitBody": {
+    "description": "Explains that the local advance cap belongs to the interface"
+  },
+  "executionStatusUiSafetyLimit": "Local UI safety cap",
+  "@executionStatusUiSafetyLimit": {
+    "description": "Footer status when the interface stopped pumping for safety"
   },
   "bannerSuccessTitle": "Execution finished successfully",
   "@bannerSuccessTitle": {

@@ -38,33 +38,40 @@ final class EditorTabView extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        if (!executionState.isStatusBannerDismissed)
-          _EditorExecutionStatusBanner(
-            status: executionState.status,
-            haltMessage: executionState.haltMessage,
-            onDismiss: onDismissStatusBanner,
-          ),
-        Expanded(
-          child: EditorSurface(
-            editorState: editorState,
-            executionState: executionState,
-            onCodeChanged: onCodeChanged,
-            onCursorMoved: onCursorMoved,
-            onDiagnosticSelected: onDiagnosticSelected,
-            onKeyPressed: onKeyPressed,
-            onRun: onRun,
-            keepsKeyBar: keepsKeyBar,
-            assistanceEnabled: assistanceEnabled,
-            onHelpRequested: onHelpRequested,
-            helpPanel: helpPanel,
-          ),
+  Widget build(BuildContext context) => _EditorTabContent(view: this);
+}
+
+final class _EditorTabContent extends StatelessWidget {
+  final EditorTabView view;
+
+  const _EditorTabContent({required this.view});
+
+  @override
+  Widget build(BuildContext context) => Column(
+    children: [
+      if (!view.executionState.isStatusBannerDismissed)
+        _EditorExecutionStatusBanner(
+          status: view.executionState.status,
+          haltMessage: view.executionState.haltMessage,
+          onDismiss: view.onDismissStatusBanner,
         ),
-      ],
-    );
-  }
+      Expanded(
+        child: EditorSurface(
+          editorState: view.editorState,
+          executionState: view.executionState,
+          onCodeChanged: view.onCodeChanged,
+          onCursorMoved: view.onCursorMoved,
+          onDiagnosticSelected: view.onDiagnosticSelected,
+          onKeyPressed: view.onKeyPressed,
+          onRun: view.onRun,
+          keepsKeyBar: view.keepsKeyBar,
+          assistanceEnabled: view.assistanceEnabled,
+          onHelpRequested: view.onHelpRequested,
+          helpPanel: view.helpPanel,
+        ),
+      ),
+    ],
+  );
 }
 
 final class _EditorExecutionStatusBanner extends StatelessWidget {
@@ -81,12 +88,17 @@ final class _EditorExecutionStatusBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-
     return switch (status) {
       ExecutionStatus.stepLimitReached => StatusBanner(
         severity: AppSeverity.warning,
         title: l10n.bannerStepLimitTitle,
         message: l10n.bannerStepLimitBody,
+        onDismiss: onDismiss,
+      ),
+      ExecutionStatus.uiSafetyLimitReached => StatusBanner(
+        severity: AppSeverity.warning,
+        title: l10n.bannerUiSafetyLimitTitle,
+        message: l10n.bannerUiSafetyLimitBody,
         onDismiss: onDismiss,
       ),
       ExecutionStatus.haltedWithError => StatusBanner(

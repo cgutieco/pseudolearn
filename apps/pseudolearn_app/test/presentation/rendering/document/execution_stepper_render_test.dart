@@ -70,6 +70,7 @@ Future<void> _pump(
               state: state,
               isExecutable: true,
               onPace: (_) {},
+              onTaskStep: (_) {},
               onStop: () {},
             ),
           ),

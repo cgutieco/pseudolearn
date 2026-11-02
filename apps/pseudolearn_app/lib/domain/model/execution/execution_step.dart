@@ -19,6 +19,7 @@ final class ExecutionStep {
   final bool isHalted;
   final String? haltReason;
   final bool isStepLimitReached;
+  final bool isUiSafetyLimitReached;
   final bool isAwaitingInput;
   final String? inputPrompt;
   final String? expectedInputType;
@@ -39,6 +40,7 @@ final class ExecutionStep {
     this.isHalted = false,
     this.haltReason,
     this.isStepLimitReached = false,
+    this.isUiSafetyLimitReached = false,
     this.isAwaitingInput = false,
     this.inputPrompt,
     this.expectedInputType,
@@ -60,6 +62,7 @@ final class ExecutionStep {
       isHalted = true,
       haltReason = null,
       isStepLimitReached = false,
+      isUiSafetyLimitReached = false,
       isAwaitingInput = false,
       inputPrompt = null,
       expectedInputType = null,
@@ -80,6 +83,7 @@ final class ExecutionStep {
       isHalted = false,
       haltReason = null,
       isStepLimitReached = false,
+      isUiSafetyLimitReached = false,
       isAwaitingInput = false,
       inputPrompt = null,
       expectedInputType = null,
@@ -89,19 +93,21 @@ final class ExecutionStep {
 
   int? get currentLine => focus?.startLine;
 
-  ExecutionStep asStepLimitReached() => ExecutionStep(
-    stepNumber: stepNumber,
-    eventIndex: eventIndex,
-    taskId: taskId,
-    taskContexts: taskContexts,
-    focus: focus,
-    focusRevision: focusRevision,
-    blockPosition: blockPosition,
-    scopeName: scopeName,
-    scopeDepth: scopeDepth,
-    variables: variables,
-    isStepLimitReached: true,
-  );
+  ExecutionStep asStepLimitReached({bool isUiSafetyLimitReached = false}) =>
+      ExecutionStep(
+        stepNumber: stepNumber,
+        eventIndex: eventIndex,
+        taskId: taskId,
+        taskContexts: taskContexts,
+        focus: focus,
+        focusRevision: focusRevision,
+        blockPosition: blockPosition,
+        scopeName: scopeName,
+        scopeDepth: scopeDepth,
+        variables: variables,
+        isStepLimitReached: true,
+        isUiSafetyLimitReached: isUiSafetyLimitReached,
+      );
 
   bool get isAwaitingEffect => pendingEffect != null;
 }

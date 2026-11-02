@@ -16,6 +16,7 @@ final class ExecutionStepper extends StatelessWidget {
   final ExecutionState state;
   final bool isExecutable;
   final void Function(StepPace) onPace;
+  final void Function(int) onTaskStep;
   final VoidCallback onStop;
 
   const ExecutionStepper({
@@ -23,6 +24,7 @@ final class ExecutionStepper extends StatelessWidget {
     required this.state,
     required this.isExecutable,
     required this.onPace,
+    required this.onTaskStep,
     required this.onStop,
   });
 
@@ -32,11 +34,22 @@ final class ExecutionStepper extends StatelessWidget {
 
     return Container(
       height: 64,
-      padding: const EdgeInsets.symmetric(horizontal: SpacingTokens.space4, vertical: SpacingTokens.space2),
-      decoration: BoxDecoration(color: theme.colors.surfaces.raised, boxShadow: theme.elevation.level2),
+      padding: const EdgeInsets.symmetric(
+        horizontal: SpacingTokens.space4,
+        vertical: SpacingTokens.space2,
+      ),
+      decoration: BoxDecoration(
+        color: theme.colors.surfaces.raised,
+        boxShadow: theme.elevation.level2,
+      ),
       child: Row(
         children: [
-          _PaceControls(state: state, isExecutable: isExecutable, onPace: onPace),
+          _PaceControls(
+            state: state,
+            isExecutable: isExecutable,
+            onPace: onPace,
+            onTaskStep: onTaskStep,
+          ),
           const SizedBox(width: SpacingTokens.space2),
           _StopControl(isActive: state.isInFlight, onStop: onStop),
           const SizedBox(width: SpacingTokens.space2),
@@ -51,23 +64,30 @@ final class _PaceControls extends StatelessWidget {
   final ExecutionState state;
   final bool isExecutable;
   final void Function(StepPace) onPace;
+  final void Function(int) onTaskStep;
 
   const _PaceControls({
     required this.state,
     required this.isExecutable,
     required this.onPace,
+    required this.onTaskStep,
   });
 
   @override
   Widget build(BuildContext context) {
     if (!state.isInFlight) {
-      return IdleControls(canExecute: isExecutable && state.canStart, onPace: onPace);
+      return IdleControls(
+        canExecute: isExecutable && state.canStart,
+        onPace: onPace,
+      );
     }
     return DebugControls(
       canStepOverBlock: state.canStepOverBlock,
       canStepOutOfBlock: state.canStepOutOfBlock,
       isPaused: state.status == ExecutionStatus.pausedAtStatement,
+      taskContexts: state.currentStep.taskContexts,
       onPace: onPace,
+      onTaskStep: onTaskStep,
     );
   }
 }
@@ -81,7 +101,8 @@ final class _StopControl extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final isCompact = DesignCanvasScope.of(context).deviceClass == DeviceClass.compact;
+    final isCompact =
+        DesignCanvasScope.of(context).deviceClass == DeviceClass.compact;
 
     if (isCompact) {
       return AppIconButton(
@@ -111,7 +132,9 @@ final class _StatusReadout extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final theme = AppThemeExtension.of(context);
-    final color = state.isNearStepLimit ? theme.colors.severities.warning.fg : theme.colors.text.secondary;
+    final color = state.isNearStepLimit
+        ? theme.colors.severities.warning.fg
+        : theme.colors.text.secondary;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -158,10 +181,14 @@ String _statusLabel(ExecutionState state, AppLocalizations l10n) {
     ExecutionStatus.idle => l10n.executionStatusIdle,
     ExecutionStatus.running => l10n.executionStatusRunning,
     ExecutionStatus.pausedAwaitingInput => l10n.executionStatusAwaitingInput,
+    ExecutionStatus.pausedAwaitingEffect => l10n.executionStatusAwaitingEffect,
     ExecutionStatus.finishedSuccess => l10n.executionStatusFinished,
     ExecutionStatus.haltedWithError => l10n.executionStatusFinished,
     ExecutionStatus.stepLimitReached => l10n.executionStatusFinished,
+    ExecutionStatus.uiSafetyLimitReached => l10n.executionStatusUiSafetyLimit,
     ExecutionStatus.pausedAtStatement =>
-      line == null ? l10n.executionStatusRunning : l10n.executionStatusPaused(line),
+      line == null
+          ? l10n.executionStatusRunning
+          : l10n.executionStatusPaused(line),
   };
 }

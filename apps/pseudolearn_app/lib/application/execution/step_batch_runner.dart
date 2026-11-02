@@ -4,15 +4,15 @@ import 'step_settlement.dart';
 
 final class StepBatchRunner {
   static const int defaultBatchSize = 25;
-  static const int maxTotalSteps = 10000;
-  static const int warningStepThreshold = 9000;
+  static const int maxUiAdvances = 10000;
+  static const int warningUiAdvanceThreshold = 9000;
 
   final int batchSize;
   final int maxSteps;
 
   const StepBatchRunner({
     this.batchSize = defaultBatchSize,
-    this.maxSteps = maxTotalSteps,
+    this.maxSteps = maxUiAdvances,
   });
 
   Future<void> runUntilSettled(
@@ -31,7 +31,7 @@ final class StepBatchRunner {
       previousRevision = step.focusRevision;
       if (settles) return;
       if (step.stepNumber >= maxSteps) {
-        onStep(step.asStepLimitReached());
+        onStep(step.asStepLimitReached(isUiSafetyLimitReached: true));
         return;
       }
       stepsInBatch++;

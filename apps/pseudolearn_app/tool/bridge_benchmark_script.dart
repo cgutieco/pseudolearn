@@ -89,7 +89,7 @@ final class BridgeBenchmarkScript {
         execution: RustProgramExecution(_transport),
         runner: StepBatchRunner(
           maxSteps:
-              arguments['step_limit'] as int? ?? StepBatchRunner.maxTotalSteps,
+              arguments['step_limit'] as int? ?? StepBatchRunner.maxUiAdvances,
         ),
       );
       return <String, Object?>{'ready': true};

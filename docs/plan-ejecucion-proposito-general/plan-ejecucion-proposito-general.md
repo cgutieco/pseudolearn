@@ -817,7 +817,7 @@ Puntos a cumplir:
 
 Fuera de alcance: E/S real sin concesión del host y retroceso de producto no aprobado.
 
-Plan detallado: [fase-pg-b-plan-ejecucion.md](fase-pg-b-plan-ejecucion.md), creado el 2026-11-02 para revisión. La redacción no autoriza implementar PG-B ni marca C01/C02.
+Plan detallado: [fase-pg-b-plan-ejecucion.md](fase-pg-b-plan-ejecucion.md), creado el 2026-11-02 para revisión. La instrucción directa del 2026-11-02 autoriza una sola iteración de PG-B.03; no autoriza los demás puntos de PG-B ni marca C01/C02 para la fase completa.
 
 Cierre común (definiciones en §4.0):
 

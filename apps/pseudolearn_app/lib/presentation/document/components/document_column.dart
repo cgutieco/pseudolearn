@@ -232,7 +232,9 @@ final class _Footer extends StatelessWidget {
     return DocumentFooter(
       onPace: onPace,
       onStop: () => context.read<ExecutionCubit>().stop(),
-      onToggleOutput: () => context.read<ExecutionCubit>().toggleOutputPanel(),
+      onToggleOutput: () => context.read<ExecutionCubit>().applyViewAction(
+        ExecutionViewAction.toggleOutputPanel,
+      ),
     );
   }
 }

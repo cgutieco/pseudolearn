@@ -1,8 +1,13 @@
 import '../../fakes/native_test_engine.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/application/execution/execution_cubit.dart';
+import 'package:pseudolearn_app/application/execution/execution_history_command.dart';
+import 'package:pseudolearn_app/application/execution/execution_history_cubit.dart';
 import 'package:pseudolearn_app/application/execution/execution_state.dart';
+import 'package:pseudolearn_app/application/execution/step_batch_runner.dart';
 import 'package:pseudolearn_app/application/execution/step_pace.dart';
+import 'package:pseudolearn_app/engine/execution/task_flow_projection.dart';
+import 'package:pseudolearn_app/engine/execution/task_structure_projection.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
 
@@ -45,6 +50,26 @@ Algoritmo Pide
   Definir Mutable n Como Entero <- 0
   Leer n
   Escribir n
+FinAlgoritmo
+''';
+
+const _endless = '''
+Algoritmo Interminable
+  Mientras Verdadero Hacer
+  FinMientras
+FinAlgoritmo
+''';
+
+const _taskProgram = '''
+SubProceso Suspendible Work(marker Como Entero)
+  Escribir marker;
+FinSubProceso
+Algoritmo ConTareas
+  Tareas
+    Lanzar Work(1);
+    Lanzar Work(2);
+  FinTareas
+  Escribir "raiz"
 FinAlgoritmo
 ''';
 
@@ -104,6 +129,65 @@ void main() {
         expect(cubit.state.statementNumber, greaterThan(0));
       },
     );
+
+    test(
+      'a global event step consumes one event without waiting for focus',
+      () async {
+        await cubit.pace(StepPace.nextEvent, _counted);
+        final firstEvent = cubit.state.currentStep.eventIndex;
+        await cubit.pace(StepPace.nextEvent, _counted);
+
+        expect(firstEvent, 0);
+        expect(cubit.state.currentStep.eventIndex, firstEvent + 1);
+      },
+    );
+
+    test(
+      'concurrent event commands are serialized in submission order',
+      () async {
+        await Future.wait([
+          cubit.pace(StepPace.nextEvent, _counted),
+          cubit.pace(StepPace.nextEvent, _counted),
+        ]);
+
+        expect(cubit.state.currentStep.eventIndex, 1);
+        expect(cubit.state.currentStep.stepNumber, 2);
+      },
+    );
+
+    test(
+      'a task step applies intervening events until the selected task runs',
+      () async {
+        await _advanceUntilTaskExists(cubit, 2);
+        final firstEvent = cubit.state.currentStep.eventIndex;
+        final seenTaskIds = <int>[];
+        final subscription = cubit.stream.listen(
+          (state) => seenTaskIds.add(state.currentStep.taskId),
+        );
+
+        await cubit.advanceTask(taskId: 2);
+        await subscription.cancel();
+
+        expect(cubit.state.currentStep.eventIndex, greaterThan(firstEvent));
+        expect(cubit.state.currentStep.taskId, 2);
+        expect(seenTaskIds, contains(1));
+        expect(cubit.state.outputLines.map((line) => line.text), contains('1'));
+        expect(cubit.state.status, ExecutionStatus.pausedAtStatement);
+      },
+    );
+
+    test('missing and completed tasks leave execution unchanged', () async {
+      await cubit.pace(StepPace.nextEvent, _taskProgram);
+      final running = cubit.state;
+      await cubit.advanceTask(taskId: 99);
+      expect(cubit.state, same(running));
+
+      await cubit.pace(StepPace.toEnd, _taskProgram);
+      final finished = cubit.state;
+      await cubit.advanceTask(taskId: 1);
+
+      expect(cubit.state, same(finished));
+    });
 
     test(
       'the counter counts statements, far below the interpreter tasks',
@@ -190,12 +274,31 @@ void main() {
       expect(cubit.state, before);
     });
 
+    test('the local UI cap stays distinct from an engine limit', () async {
+      final cappedCubit = ExecutionCubit(
+        execution: nativeTestEngine.createProgramExecution(),
+        runner: const StepBatchRunner(maxSteps: 20),
+      );
+      addTearDown(cappedCubit.close);
+
+      await cappedCubit.advance(
+        pace: StepPace.toEnd,
+        sourceCode: _endless,
+        profileId: SyntaxProfileId.classicSpanish,
+        languageId: UiLanguageId.spanish,
+      );
+
+      expect(cappedCubit.state.status, ExecutionStatus.uiSafetyLimitReached);
+      expect(cappedCubit.state.currentStep.isStepLimitReached, isTrue);
+      expect(cappedCubit.state.currentStep.isUiSafetyLimitReached, isTrue);
+    });
+
     test('toggling the output panel records the choice', () {
-      cubit.toggleOutputPanel();
+      cubit.applyViewAction(ExecutionViewAction.toggleOutputPanel);
       expect(cubit.state.isOutputPanelExpanded, isTrue);
       expect(cubit.state.userCollapsedOutput, isFalse);
 
-      cubit.toggleOutputPanel();
+      cubit.applyViewAction(ExecutionViewAction.toggleOutputPanel);
       expect(cubit.state.isOutputPanelExpanded, isFalse);
       expect(cubit.state.userCollapsedOutput, isTrue);
     });
@@ -204,9 +307,9 @@ void main() {
       await cubit.runToEnd(_immediate);
       expect(cubit.state.isStatusBannerDismissed, isFalse);
 
-      cubit.dismissStatusBanner();
+      cubit.applyViewAction(ExecutionViewAction.dismissStatusBanner);
       final dismissed = cubit.state;
-      cubit.dismissStatusBanner();
+      cubit.applyViewAction(ExecutionViewAction.dismissStatusBanner);
 
       expect(dismissed.isStatusBannerDismissed, isTrue);
       expect(cubit.state, same(dismissed));
@@ -214,7 +317,7 @@ void main() {
 
     test('dismissing with nothing to dismiss leaves the state untouched', () {
       final before = cubit.state;
-      cubit.dismissStatusBanner();
+      cubit.applyViewAction(ExecutionViewAction.dismissStatusBanner);
 
       expect(cubit.state.isStatusBannerDismissed, isTrue);
       expect(cubit.state.status, before.status);
@@ -222,7 +325,7 @@ void main() {
 
     test('a new run brings the dismissed banner back', () async {
       await cubit.runToEnd(_immediate);
-      cubit.dismissStatusBanner();
+      cubit.applyViewAction(ExecutionViewAction.dismissStatusBanner);
       expect(cubit.state.isStatusBannerDismissed, isTrue);
 
       await cubit.runToEnd(_immediate);
@@ -233,7 +336,7 @@ void main() {
 
     test('stopping keeps the dismissal of the run it belonged to', () async {
       await cubit.step();
-      cubit.dismissStatusBanner();
+      cubit.applyViewAction(ExecutionViewAction.dismissStatusBanner);
       cubit.stop();
 
       expect(cubit.state.isStatusBannerDismissed, isTrue);
@@ -258,6 +361,102 @@ void main() {
       }
       fail('never reached line $line');
     }
+
+    test(
+      'global stepping and root-task stepping preserve the same trace end',
+      () async {
+        final taskExecution = nativeTestEngine.createProgramExecution();
+        final taskCubit = ExecutionCubit(execution: taskExecution);
+        addTearDown(taskCubit.close);
+        final globalExecution = nativeTestEngine.createProgramExecution();
+        final globalCubit = ExecutionCubit(execution: globalExecution);
+        addTearDown(globalCubit.close);
+        final taskEventIndexes = <int>[];
+        final globalEventIndexes = <int>[];
+        final taskSubscription = taskCubit.stream.listen(
+          (state) =>
+              _recordEventIndex(taskEventIndexes, state.currentStep.eventIndex),
+        );
+        final globalSubscription = globalCubit.stream.listen(
+          (state) => _recordEventIndex(
+            globalEventIndexes,
+            state.currentStep.eventIndex,
+          ),
+        );
+        addTearDown(taskSubscription.cancel);
+        addTearDown(globalSubscription.cancel);
+
+        await taskCubit.pace(StepPace.nextEvent, _taskProgram);
+        await globalCubit.pace(StepPace.nextEvent, _taskProgram);
+        await Future<void>.delayed(Duration.zero);
+        taskEventIndexes.clear();
+        globalEventIndexes.clear();
+
+        for (
+          var count = 0;
+          count < 200 && !globalCubit.state.currentStep.isTerminal;
+          count++
+        ) {
+          await globalCubit.pace(StepPace.nextEvent, _taskProgram);
+        }
+        for (
+          var count = 0;
+          count < 200 && !taskCubit.state.currentStep.isTerminal;
+          count++
+        ) {
+          await taskCubit.advanceTask(taskId: 0);
+        }
+        await Future<void>.delayed(Duration.zero);
+
+        expect(taskCubit.state.currentStep.isFinished, isTrue);
+        expect(
+          taskCubit.state.currentStep.eventIndex,
+          globalCubit.state.currentStep.eventIndex,
+        );
+        expect(taskEventIndexes, globalEventIndexes);
+        expect(
+          taskCubit.state.outputLines.map((line) => line.text),
+          globalCubit.state.outputLines.map((line) => line.text),
+        );
+      },
+    );
+
+    test('history reads do not duplicate output or event indexes', () async {
+      final session = nativeTestEngine.createObservableExecutionSession();
+      final execution = ExecutionCubit(execution: session.execution);
+      final history = ExecutionHistoryCubit(
+        executionStates: execution.stream,
+        observer: session.observer,
+        flowProjector: const TaskFlowProjection(),
+        structureProjector: const TaskStructureProjection(),
+      );
+      addTearDown(history.close);
+      addTearDown(execution.close);
+
+      await _advanceUntilTaskExists(execution, 2);
+      await execution.advanceTask(taskId: 2);
+      await execution.advance(
+        pace: StepPace.toEnd,
+        sourceCode: _taskProgram,
+        profileId: SyntaxProfileId.classicSpanish,
+        languageId: UiLanguageId.spanish,
+      );
+      final output = execution.state.outputLines
+          .map((line) => line.text)
+          .toList();
+      final eventIndexes = history.state.events
+          .map((event) => event.index)
+          .toList();
+
+      history.dispatch(const FollowCurrentHistoryEvent());
+
+      expect(eventIndexes.toSet().length, eventIndexes.length);
+      expect(execution.state.outputLines.map((line) => line.text), output);
+      expect(
+        history.state.events.map((event) => event.index).toList(),
+        eventIndexes,
+      );
+    });
 
     test(
       'the loop header is a decision, and only there can a block be skipped',
@@ -328,4 +527,24 @@ void main() {
       },
     );
   });
+}
+
+Future<void> _advanceUntilTaskExists(ExecutionCubit cubit, int taskId) async {
+  for (var count = 0; count < 40; count++) {
+    if (cubit.state.currentStep.taskContexts.any(
+      (task) => task.taskId == taskId,
+    )) {
+      return;
+    }
+    await cubit.pace(StepPace.nextStatement, _taskProgram);
+    if (cubit.state.currentStep.isTerminal) break;
+  }
+  fail('task $taskId was not created');
+}
+
+void _recordEventIndex(List<int> indexes, int eventIndex) {
+  if (eventIndex < 0 || (indexes.isNotEmpty && indexes.last == eventIndex)) {
+    return;
+  }
+  indexes.add(eventIndex);
 }

@@ -7,7 +7,7 @@
 - Revisión inspeccionada: `5a0e12ae95d4f0a84743180e2a98f83a4423a16e`.
 - Rama comprobada: `feature/agregar-ruta-de-especificacion`; árbol limpio antes de preparar el plan.
 - Petición: «Crea el plan de ejecución detallado para `4.11 PG-B · App y tareas observables` como para que ninguna IA que lo ejecute pueda darse chance de alucinar».
-- Estado al redactar: la autorización cubría redactar este plan y enlazarlo desde el plan general, no su implementación ni la revisión C02. La instrucción posterior del 2026-11-02 autoriza PG-B.01 solamente y resuelve avanzar con PG-3 abierta para ese punto; no autoriza los demás puntos, C02, commit, push, instalación ni inicio de PG-7.
+- Estado al redactar: la autorización cubría redactar este plan y enlazarlo desde el plan general, no su implementación ni la revisión C02. Instrucciones directas posteriores autorizaron una iteración de PG-B.01, una de PG-B.02 y, el 2026-11-02, una sola iteración de PG-B.03. Cada autorización se limita a su punto; no habilita los demás puntos, C02, commit, push, instalación ni inicio de PG-7.
 - Documento transitorio: ninguna especificación, README ni código fuera de `docs/` podrá citarlo (`DOC-NO-TRANSIENT-REFS`). Las decisiones se trasladan a sus dueños en el mismo cambio (`DOC-README-TRUTH`, `DOC-NO-ORPHAN-DECISION`).
 
 ### 0.1 Reglas para quien ejecute
@@ -126,12 +126,12 @@ Cada punto incluye tareas en orden SPEC-FIRST. «Documentar» exige mover los po
 
 ### PG-B.03 · Paso global y paso de tarea
 
-- [ ] `PG-B.03.01` Contrato: fijar evento global siguiente según `ENG.TRACE.STEP#R1/R2`; paso de tarea consume hasta el próximo evento atribuido a esa tarea, aplicando todos los intermedios. Separar selección/consumo/punta precargada y ritmos didácticos ya existentes. Definir resultado cuando tarea está terminada, falla, espera entrada/efecto, se alcanza límite o no existe próximo evento; sin bucle infinito ni respuesta fabricada.
-- [ ] `PG-B.03.02` Casos: B02/B03/B06/B07/B12/B15. Derivar secuencia completa esperada y estado tras cada comando global o por tarea; seleccionar una tarea esperando mientras otra avanza. El lote que termina con espera primero entrega todos sus eventos confirmados.
-- [ ] `PG-B.03.03` Tests: particiones 1/2/25 y cortes antes/después de cada `task_resumed`; igualdad del prefijo consumido con pasos globales; comandos rápidos concurrentes, detener entre lotes, tarea terminada/inexistente, ejecución que nunca alcanza la condición y ausencia de eventos.
-- [ ] `PG-B.03.04` Código: ampliar control por un contrato pequeño, sin recrear análisis/sesión; bombear en lotes acotados y ceder a UI; aplicar eventos ajenos también a tabla/salida/esperas. Distinguir «tarea seleccionada espera» de «agenda global sin progreso». No exponer eventos futuros por haberlos precargado.
-- [ ] `PG-B.03.05` Documentación: comandos, condiciones terminales, compatibilidad de ritmos y límites de seguridad de UI; distinguir tope local 10000 del límite del lenguaje (`ENG.TRACE.STEP#R4`), sin renombrar uno como otro ni retirarlo silenciosamente.
-- [ ] `PG-B.03.06` Verificar: mismo programa/configuración/cinta con ambas formas de paso produce misma traza/terminación; FRB real más cubit/widget; salida no duplicada ni reemitida al consultar historia. Registrar diferencias de selección permitidas y estado canónico común.
+- [x] `PG-B.03.01` Contrato: fijar evento global siguiente según `ENG.TRACE.STEP#R1/R2`; paso de tarea consume hasta el próximo evento atribuido a esa tarea, aplicando todos los intermedios. Separar selección/consumo/punta precargada y ritmos didácticos ya existentes. Definir resultado cuando tarea está terminada, falla, espera entrada/efecto, se alcanza límite o no existe próximo evento; sin bucle infinito ni respuesta fabricada.
+- [x] `PG-B.03.02` Casos: B02/B03/B06/B07/B12/B15. Derivar secuencia completa esperada y estado tras cada comando global o por tarea; seleccionar una tarea esperando mientras otra avanza. El lote que termina con espera primero entrega todos sus eventos confirmados.
+- [x] `PG-B.03.03` Tests: particiones 1/2/25 y cortes antes/después de cada `task_resumed`; igualdad del prefijo consumido con pasos globales; comandos rápidos concurrentes, detener entre lotes, tarea terminada/inexistente, ejecución que nunca alcanza la condición y ausencia de eventos.
+- [x] `PG-B.03.04` Código: ampliar control por un contrato pequeño, sin recrear análisis/sesión; bombear en lotes acotados y ceder a UI; aplicar eventos ajenos también a tabla/salida/esperas. Distinguir «tarea seleccionada espera» de «agenda global sin progreso». No exponer eventos futuros por haberlos precargado.
+- [x] `PG-B.03.05` Documentación: comandos, condiciones terminales, compatibilidad de ritmos y límites de seguridad de UI; distinguir tope local 10000 del límite del lenguaje (`ENG.TRACE.STEP#R4`), sin renombrar uno como otro ni retirarlo silenciosamente.
+- [x] `PG-B.03.06` Verificar: mismo programa/configuración/cinta con ambas formas de paso produce misma traza/terminación; FRB real más cubit/widget; salida no duplicada ni reemitida al consultar historia. Registrar diferencias de selección permitidas y estado canónico común.
 
 ### PG-B.04 · Efectos simulados y entradas identificadas
 
@@ -388,12 +388,12 @@ Tabla esperada/observada por evento en el tracker de la app:
 | PG-B.02.04 | Cumplido | `ExecutionHistoryCubit`, controladores de ventana/consulta, proyecciones y superficies de tareas | Puertos de observación y control separados; vistas consumen escenas preparadas, lectura/cache acotadas; selección no bombea agenda; ejes son índices lógicos y espera/creación no se dibujan como control alternativo. |
 | PG-B.02.05 | Cumplido | README app, matriz construcción→superficie/tabla/ayuda; ARB es/en | Justifica tabla de trazas y ayuda como no aplicables por depender de foco sintáctico y no añadir gramática; conserva PG-A estático y declara cola de canal fuera de los datos expuestos. |
 | PG-B.02.06 | No cumplido | Salidas dirigidas en 11.3 | Las pruebas dirigidas de app/Rust, análisis, límites, arquitectura, puente y corpus pasan. `cargo xtask verify` de engine encuentra una expectativa vieja en `program_view`; el de spec llega a `cargo deny`, que no puede actualizar avisos sin red. Conformance de `API.EXECUTE` falla por hash obsoleto y `lock --refresh API.EXECUTE` se detiene en `SEE-HASH: immutable version API.ANALYZE@1.0.0`. No se cambia otra especificación congelada ni se cierra con `PHASE-GREEN`. |
-| PG-B.03.01 | — | — | Sin ejecutar |
-| PG-B.03.02 | — | — | Sin ejecutar |
-| PG-B.03.03 | — | — | Sin ejecutar |
-| PG-B.03.04 | — | — | Sin ejecutar |
-| PG-B.03.05 | — | — | Sin ejecutar |
-| PG-B.03.06 | — | — | Sin ejecutar |
+| PG-B.03.01 | Cumplido | `ENG.TRACE.STEP#R1/R2/R4`, casos B02/B03/B06/B07/B12/B15; detalles en §11.4 | Paso global por índice de evento; tarea por próximo evento atribuido. Terminal, esperas, tarea ausente/completa y tope local definidos. |
+| PG-B.03.02 | Cumplido | `step_settlement_test.dart`, `step_batch_runner_test.dart`, `execution_cubit_test.dart` | Secuencias registradas con casos de tarea intercalados; límites de entrada/efecto y tarea que no alcanza objetivo. |
+| PG-B.03.03 | Cumplido | Tests de runner y cubit en §11.4 | Particiones 1/2/25, comandos concurrentes, detención, límite local y prefijo confirmado antes de espera. |
+| PG-B.03.04 | Cumplido | `ExecutionCubit`, `StepSettlement`, `StepBatchRunner`; tests cubit/widget | Comandos serializados, bombeo en lotes de 25, procesamiento de cada paso y selección de tarea sin cambiar agenda. |
+| PG-B.03.05 | Cumplido | README app §4.8/§4.10; ARB es/en | Compatibilidad de ritmos, condiciones y distinción entre tope UI y límite reportado por motor. |
+| PG-B.03.06 | Cumplido | Tests dirigidos, transporte nativo y generación del puente; resultados en §11.4 | La traza y terminación coinciden entre ambos ritmos, y el historial no duplica eventos ni salida. La suite completa queda como puerta de `PHASE-GREEN` del paquete. |
 | PG-B.04.01 | — | — | Sin ejecutar |
 | PG-B.04.02 | — | — | Sin ejecutar |
 | PG-B.04.03 | — | — | Sin ejecutar |
@@ -496,3 +496,31 @@ La instrucción directa del 2026-11-02 autorizó una iteración completa de `PG-
 | Estado Git | `git diff --check`: pasa. Rama única conservada; cambios sin commit ni publicación. |
 
 `PG-B.02.01–.05` quedan implementados. `.02.06` queda **No cumplido** por la conformidad/anclaje SEE y las puertas completas de workspace descritas arriba; por ello PG-B.02 no se declara `PHASE-GREEN`. PG-B.03 no se inició. La fase previa PG-B.01 también sigue abierta por `.01.06`. Se informa y se para aquí (`PHASE-STOP`).
+
+### 11.4 Estado de ejecución de PG-B.03
+
+La instrucción directa del 2026-11-02 autorizó una sola iteración de `PG-B.03`, sin preguntas y con opción recomendada. Se trabajó únicamente en `.03.01–.06`, en la rama única `feature/agregar-ruta-de-especificacion`; no hubo commit ni push. La autorización de este punto no reabre PG-B.01/.02 ni autoriza PG-B.04.
+
+#### Decisiones de implementación
+
+- El paso global termina en el primer índice de evento posterior al actual. El paso de tarea consume en orden los eventos intermedios y se detiene en el próximo evento cuyo dueño atribuido coincide con la tarea elegida.
+- Los ritmos didácticos existentes (`nextStatement`, `overBlock`, `outOfBlock` y `toEnd`) conservan sus condiciones de asentamiento. La selección de tarea solo fija la condición de parada y no cambia el planificador ni activa una tarea.
+- Los comandos de avance y entrada se serializan. `stop()` cancela el bombeo vigente e invalida los comandos pendientes anteriores a la detención. El corredor cede a la UI cada 25 avances.
+- Esperas de entrada y efecto, terminación, fallo, tarea inexistente/completada y límite local terminan el bombeo sin fabricar eventos. Cada evento confirmado se aplica antes de evaluar el punto de parada, incluidos salida y estado observable.
+- El tope de 10 000 avances se identifica como límite de seguridad de UI y tiene estado/mensaje propios. El límite que informa el motor conserva estado separado.
+- La interfaz ofrece paso global; en el modo compacto combina ese comando y la selección de tarea en un menú para mantener el espacio disponible.
+
+#### Verificaciones ejecutadas
+
+| Área | Verificación y resultado |
+|---|---|
+| Suite dirigida | `flutter test test/application/execution/step_settlement_test.dart test/application/execution/step_batch_runner_test.dart test/application/execution/execution_cubit_test.dart test/application/cross_cutting_integration_test.dart test/presentation/document/components/execution_stepper_test.dart test/presentation/rendering/document/execution_stepper_render_test.dart` — 75 tests pasan, incluido el caso con el puente nativo de equivalencia de traza/terminación. |
+| Caso de equivalencia | Paso global y paso por tarea procesan el mismo prefijo confirmado, terminan con el mismo índice de evento y producen la misma salida. La lectura de historia no duplica índices ni salida. |
+| Suite completa | `flutter test --reporter json` — salida 1; 14 errores/fallos en tests de composición, catálogo de marcadores/ejercicios, diagramas, efectos y métricas de diagrama de clases. Ninguno de esos archivos de test está modificado en esta iteración. |
+| Verificadores de aplicación | `flutter analyze --fatal-infos --fatal-warnings`, `tool/check_limits.dart`, `tool/check_content.dart`, `tool/check_design_system.dart` y `tool/check_syntax_coverage.dart`: pasan; cobertura 78/78. |
+| Puente nativo | `bash tool/test_bridge.sh` — salida 0; build debug/release y 21 tests Dart–FFI pasan. |
+| Generación del puente | `RUSTUP_TOOLCHAIN=1.99.0 bash tool/bridge.sh check` — salida 0; las dos regeneraciones quedan idénticas. |
+| Integridad del diff | `git diff --check`: pasa. La suite completa impide declarar `PHASE-GREEN`. |
+| Estado Git | Rama única conservada; sin commit ni publicación. |
+
+`.03.01–.06` quedan cumplidos en su alcance específico. Los 14 errores/fallos de la suite completa impiden declarar `PHASE-GREEN` para el paquete, aunque los tests específicos de este punto, el transporte Dart–FFI real y la generación del puente pasan. PG-B también conserva las observaciones previas registradas en `.01.06` y `.02.06`. Se informa y se para aquí (`PHASE-STOP`).

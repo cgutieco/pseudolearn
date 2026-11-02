@@ -765,19 +765,35 @@ infraestructura y el motor; la lógica de aplicación desconoce los widgets y el
       funcionalidades
       y debilita la verificación hexagonal.
 
-### 4.8 Ejecución paso a paso didáctica: micro-lotes en el hilo de interfaz (`StepBatchRunner`)
+### 4.8 Ejecución paso a paso: bombeo cooperativo de eventos (`StepBatchRunner`)
 
-- **Problema:** El evaluador del núcleo avanza a nivel de micro-pasos de máquina (evaluar expresión, resolver operando).
-  Ejecutar un bucle largo de corrido bloquearía la interfaz o saturaría el renderizado.
-- **Elección:** `StepBatchRunner` ejecuta lotes acotados de micro-pasos en el hilo principal cediendo periódicamente el
-  control. La máquina se gobierna por cuatro ritmos unificados bajo `StepSettlement`:
-    - `nextStatement`: para al cambiar de sentencia observable (paso didáctico).
-    - `overBlock`: para cuando la profundidad de bloque es menor o igual a la inicial y no es el nodo saltado.
-    - `outOfBlock`: para cuando la profundidad desciende de la inicial.
-    - `toEnd`: ejecuta continuo hasta terminar, fallar o alcanzar el tope de seguridad (10 000 micro-pasos).
+- **Problema:** Avanzar por una traza larga sin ceder el hilo impediría que la interfaz repinte, atienda comandos o
+  responda a la acción de detener.
+- **Elección:** `ProgramExecution.step()` entrega como máximo el siguiente evento observable y `StepBatchRunner` cede
+  al bucle de eventos cada 25 avances. El tamaño del lote solo define cuándo se cede el hilo; no cambia la traza. Los
+  comandos de avance se serializan, y `stop` interrumpe el comando activo entre lotes y descarta comandos encolados antes
+  de esa detención. La operación no altera la agenda ni activa una tarea seleccionada.
 
-  Las solicitudes de entrada del usuario detienen el lote y emiten un estado de espera; al recibir el dato, la ejecución
-  continúa con la misma condición de parada.
+  `StepSettlement` mantiene separados estos comandos y ritmos:
+    - `nextEvent`: consume exactamente el evento global siguiente, aunque no cambie el foco.
+    - `nextStatement`: avanza hasta el próximo cambio de foco ejecutable.
+    - `overBlock`: avanza hasta quedar fuera del bloque inicial y en un nodo distinto.
+    - `outOfBlock`: avanza hasta salir del bloque que contiene el foco.
+    - `toEnd`: bombea hasta terminar, fallar, esperar una entrada o efecto, o encontrar un límite.
+    - `advanceTask(taskId)`: aplica cada evento global, incluidos los de otras tareas, hasta que el contexto activo
+      observado después del evento corresponda a `taskId`. Así, seleccionar una tarea lista o suspendida no la reanuda;
+      la agenda existente puede ejecutar otras tareas antes de que llegue su siguiente evento.
+
+  Una tarea desconocida o ya terminada no avanza ni produce un paso ficticio. Si la tarea elegida no vuelve a ejecutarse
+  antes de la terminación, fallo, espera global de entrada/efecto o límite, se entrega el último estado confirmado. Los
+  eventos intermedios se aplican a foco, variables, salida e historial en el orden global, también cuando el lote del
+  motor termina esperando una respuesta.
+
+  El tope de 10 000 avances es una protección local de la interfaz para un comando que no alcanza su condición; se
+  presenta como tope local y no como límite del lenguaje. Un límite informado por el motor mantiene su estado separado.
+  Ninguno de los dos crea eventos ni cambia los límites configurados para el programa.
+
+  Las solicitudes de entrada detienen el bombeo; al recibir el dato, se conserva la condición del comando que esperaba.
 - **Alternativas descartadas y por qué:**
     - *Uso de `Isolate`:* Descartado por la sobrecarga de serializar estados de AST y la latencia en repintar el
       resaltado de línea.
@@ -804,7 +820,11 @@ infraestructura y el motor; la lógica de aplicación desconoce los widgets y el
   pila de bloques y marcos, variables y el último evento cuyo estado se consultó. El tracker mantiene un contador global
   de foco para los ritmos existentes y uno por tarea para inspección.
 
-  La identidad de una tarea pertenece a una ejecución; la raíz es cero y las hijas nacen con `task_spawned`. El campo
+  La identidad de una tarea pertenece a una ejecución; la raíz es cero y las hijas nacen con `task_spawned`. El paso por
+  tarea compara el índice global consumido con la identidad del contexto activo resultante del evento. Por eso una hija
+  creada o lista todavía no recibe un paso propio: el primer límite de su selección es `task_resumed`, cuando pasa a
+  ejecutar. Los eventos de otras tareas entre el comando y ese límite también se proyectan; no quedan saltos en salida o
+  ventana de eventos. El campo
   `task` de `task_spawned` identifica la hija, no cambia el foco activo. `task_ready` tampoco selecciona una tarea;
   solo `task_resumed` cambia el contexto activo. Los eventos ordinarios pertenecen a la última tarea reanudada y, antes
   de la primera, a la raíz. Cada pila se crea vacía para su tarea y los límites de llamada solo modifican esa pila.
