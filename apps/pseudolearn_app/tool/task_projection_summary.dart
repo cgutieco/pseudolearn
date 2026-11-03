@@ -18,7 +18,10 @@ const List<String> requiredProvenance = [
   'seed',
   'loads',
   'candidate_threshold',
+  'scenes',
 ];
+
+const String realHostLabel = 'real';
 
 Future<void> main(List<String> arguments) async {
   if (arguments.length < 5 ||
@@ -92,6 +95,30 @@ void _requireManifest(Map<String, Object?>? manifest) {
     final value = manifest[field];
     if (value == null || value.toString().isEmpty) {
       throw FormatException('Manifest lacks provenance field $field.');
+    }
+  }
+  _requireRealHostScenes(manifest['scenes']);
+}
+
+void _requireRealHostScenes(Object? scenes) {
+  if (scenes is! List<Object?> || scenes.isEmpty) {
+    throw const FormatException('Manifest must list its scenes.');
+  }
+  for (final scene in scenes) {
+    if (scene is! Map<String, Object?>) {
+      throw const FormatException('Every scene must be an object.');
+    }
+    final mentionsSimulation = scene.entries.any(
+      (entry) =>
+          entry.key.toLowerCase().contains('simulat') ||
+          '${entry.value}'.toLowerCase().contains('simulat'),
+    );
+    if (mentionsSimulation || scene['host'] != realHostLabel) {
+      throw FormatException('Scene ${scene['id']} does not use the real host.');
+    }
+    final hash = scene['source_sha256'];
+    if (scene['id'] is! String || hash is! String || hash.isEmpty) {
+      throw const FormatException('Scene lacks its identity or source hash.');
     }
   }
 }

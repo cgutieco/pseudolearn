@@ -24,6 +24,32 @@ void main() {
     );
   });
 
+  test('rejects scenes that are not run on the real host', () {
+    for (final scene in [
+      {'id': 'identities', 'source_sha256': 'a', 'host': 'simulated'},
+      {'id': 'identities', 'source_sha256': 'a', 'host': 'real', 'simulatedScenario': 'x'},
+      {'id': 'identities', 'source_sha256': 'a'},
+      {'id': 'identities', 'host': 'real'},
+    ]) {
+      final manifest = _manifest()..['scenes'] = [scene];
+      expect(
+        () => buildTaskProjectionSummary(_samples(), manifest),
+        throwsFormatException,
+      );
+    }
+  });
+
+  test('rejects a manifest without scenes or with an empty list', () {
+    expect(
+      () => buildTaskProjectionSummary(_samples(), _manifest()..remove('scenes')),
+      throwsFormatException,
+    );
+    expect(
+      () => buildTaskProjectionSummary(_samples(), _manifest()..['scenes'] = []),
+      throwsFormatException,
+    );
+  });
+
   test('rejects an incomplete sample', () {
     final rows = _samples()..removeLast();
     expect(() => buildTaskProjectionSummary(rows, _manifest()), throwsFormatException);
@@ -66,6 +92,9 @@ Map<String, Object?> _manifest() => {
   'seed': 'fixed',
   'loads': 'x',
   'candidate_threshold': 50,
+  'scenes': [
+    {'id': 'identities', 'source_sha256': 'a', 'host': 'real'},
+  ],
 };
 
 List<Map<String, Object?>> _samples() => [

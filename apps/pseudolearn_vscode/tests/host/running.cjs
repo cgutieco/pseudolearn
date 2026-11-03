@@ -13,7 +13,8 @@ async function refusalChecks(main) {
     await vscode.commands.executeCommand("pseudolearn.runProject");
     await sleep(1500);
     if (programs().length > 0) throw new Error("a program was started");
-    await vscode.commands.executeCommand("undo");
+    await vscode.window.showTextDocument(main, { preserveFocus: false });
+    await vscode.commands.executeCommand("workbench.action.files.revert");
     await until("clean", () => !main.isDirty);
   });
 }

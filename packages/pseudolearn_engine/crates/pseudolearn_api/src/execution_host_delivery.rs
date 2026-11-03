@@ -38,4 +38,25 @@ impl ExecutionResource {
         }
         Ok(())
     }
+
+    pub(super) fn resolve_single_host_result(
+        &mut self,
+        sequence: u64,
+        reply: HostReply,
+    ) -> Result<(), ApiError> {
+        let pending = self
+            .pending_host
+            .as_ref()
+            .ok_or_else(|| usage("execution is not awaiting effect"))?;
+        if sequence != pending.effect_seq {
+            return Err(usage("effect sequence mismatch"));
+        }
+        let reply = resolve_host_effect(&mut self.effects, sequence, reply)
+            .map_err(crate::tape_wire::replay_error_to_api)?;
+        self.machine.supply_effect_result(reply);
+        self.pending_host = None;
+        self.hosts.completing_effect = true;
+        self.terminal = None;
+        Ok(())
+    }
 }

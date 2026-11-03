@@ -13,9 +13,12 @@ impl ExecutionResource {
             let task = self.machine.current_task_id();
             let exit = self.machine.step_instruction();
             self.capture_step_output()?;
+            self.collect_step_events(task);
             let stopped = self.observe_debug_events(before, task);
             if let Some(exit) = exit {
-                if self.handle_exit(exit)? {
+                let again = self.handle_exit(exit)?;
+                self.collect_step_events(task);
+                if again {
                     continue;
                 }
                 break;

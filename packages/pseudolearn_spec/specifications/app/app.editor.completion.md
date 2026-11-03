@@ -385,18 +385,18 @@
   "aplicacion": {
     "scenario": "accept_candidate",
     "input": {
-      "document": "Algoritmo P\n  Definir segundos Como Entero;\n  segundos\nFinAlgoritmo\n",
-      "cursor_utf16": 54,
+      "document": "Algoritmo P\n  Definir Mutable segundos Como Entero <- 0;\n  segundos\nFinAlgoritmo\n",
+      "cursor_utf16": 67,
       "profile": "es",
       "candidate": "segundos"
     }
   },
   "espera": {
     "aplicacion": {
-      "document_after": "Algoritmo P\n  Definir segundos Como Entero;\n  segundos <- \nFinAlgoritmo\n",
+      "document_after": "Algoritmo P\n  Definir Mutable segundos Como Entero <- 0;\n  segundos <- \nFinAlgoritmo\n",
       "selection_utf16": [
-        58,
-        58
+        71,
+        71
       ]
     }
   }
@@ -419,8 +419,8 @@
     "scenario": "edit_assistance",
     "input": {
       "query": "presentation",
-      "document": "Algoritmo P\n  Definir area Como Real;\n  area\nFinAlgoritmo\n",
-      "cursor_utf16": 44,
+      "document": "Algoritmo P\n  Definir Mutable area Como Real <- 1.5;\n  area\nFinAlgoritmo\n",
+      "cursor_utf16": 59,
       "onscreen_capable": true,
       "keyboard_visible": true
     }
@@ -451,8 +451,8 @@
     "scenario": "edit_assistance",
     "input": {
       "query": "presentation",
-      "document": "Algoritmo P\n  Definir area Como Real;\n  area\nFinAlgoritmo\n",
-      "cursor_utf16": 44,
+      "document": "Algoritmo P\n  Definir Mutable area Como Real <- 1.5;\n  area\nFinAlgoritmo\n",
+      "cursor_utf16": 59,
       "onscreen_capable": true,
       "keyboard_visible": false
     }
@@ -483,8 +483,8 @@
     "scenario": "edit_assistance",
     "input": {
       "query": "presentation",
-      "document": "Algoritmo P\n  Definir area Como Real;\n  area\nFinAlgoritmo\n",
-      "cursor_utf16": 44,
+      "document": "Algoritmo P\n  Definir Mutable area Como Real <- 1.5;\n  area\nFinAlgoritmo\n",
+      "cursor_utf16": 59,
       "onscreen_capable": false,
       "keyboard_visible": true
     }
@@ -720,8 +720,8 @@
   "aplicacion": {
     "scenario": "help",
     "input": {
-      "document": "Algoritmo P\n  Definir x Como Entero;\n  x <- 1;\nFinAlgoritmo\n",
-      "cursor_utf16": 39,
+      "document": "Algoritmo P\n  Definir Mutable x Como Entero <- 0;\n  x <- 1;\nFinAlgoritmo\n",
+      "cursor_utf16": 52,
       "profile": "es",
       "interface_language": "es"
     }

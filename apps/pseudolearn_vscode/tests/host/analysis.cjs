@@ -40,6 +40,7 @@ async function diagnosticChecks(main) {
     if (found.length !== 0) throw new Error(JSON.stringify(found.map((item) => item.message)));
   });
   await step("unsaved typo produces a diagnostic from the overlay", async () => {
+    await vscode.window.showTextDocument(main, { preserveFocus: false });
     const edit = new vscode.WorkspaceEdit();
     const start = main.positionAt(main.getText().indexOf("Doble(numero)") + "Doble(".length);
     edit.replace(main.uri, new vscode.Range(start, start.translate(0, "numero".length)), "totall");
@@ -47,8 +48,8 @@ async function diagnosticChecks(main) {
     const found = await until("diagnostic", () => (diagnosticsOf(main).length > 0 ? diagnosticsOf(main) : undefined));
     return found.map((item) => item.message).join(" | ");
   });
-  await step("undoing the typo clears the diagnostic", async () => {
-    await vscode.commands.executeCommand("undo");
+  await step("reverting the typo clears the diagnostic", async () => {
+    await vscode.commands.executeCommand("workbench.action.files.revert");
     await until("cleared", () => diagnosticsOf(main).length === 0);
   });
 }

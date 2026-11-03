@@ -16,7 +16,7 @@ const workspace = join(base, "espacio áéí");
 const developmentPath = join(base, "development");
 const resultPath = join(base, "result.json");
 
-cpSync(join(extensionRoot, "examples/project"), workspace, { recursive: true });
+cpSync(join(extensionRoot, "tests/host/fixtures/project"), workspace, { recursive: true });
 cpSync(join(extensionRoot, "examples/file/saludo.pseudo"), join(base, "saludo.pseudo"));
 mkdirSync(developmentPath, { recursive: true });
 writeFileSync(join(developmentPath, "package.json"), JSON.stringify({ name: "host-tests", publisher: "local", version: "0.0.0", engines: { vscode: "^1.144.0" } }));

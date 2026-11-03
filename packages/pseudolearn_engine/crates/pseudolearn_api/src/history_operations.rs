@@ -60,6 +60,17 @@ impl ExecutionResource {
         let end = start
             .checked_add(count)
             .ok_or_else(|| usage("history range overflow"))?;
+        if self.shadow_active() {
+            return self.shadow_window(start, end);
+        }
+        self.replayed_window(start, end)
+    }
+
+    fn replayed_window(
+        &self,
+        start: usize,
+        end: usize,
+    ) -> Result<Vec<pseudolearn_timeline::HistoricalEvent>, ApiError> {
         let (image, _) = self
             .store
             .image_at(start.saturating_sub(1))

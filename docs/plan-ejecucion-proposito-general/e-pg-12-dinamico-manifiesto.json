@@ -1,8 +1,8 @@
 {
-  "head": "d762c471f09e37bd429ab22db46ffdf1f8ecb064",
-  "working_tree_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-  "harness_sources_sha256": "6415fa693496f5289e5e370534052551bee9eac1fcf850dc2647690ca23c80c9",
-  "fixtures_sha256": "e13a11d3a2d9a1f96176125a88f7814d0e3767672530adcb9b9e1e9fcf2c42c2",
+  "head": "e6c397bc8442d89f8c3dc3170084ceffb7d872ec",
+  "working_tree_diff_sha256": "b0c8b83dc887f39c9a4e6f378deeec057c8fe09058d744a1945e6dafe667f66a",
+  "harness_sources_sha256": "fc42c52bedd215bd61c0ffc99ba7f3efc0b61b8ae059363d2d1c8419d3ad1201",
+  "fixtures_sha256": "768c041a41484dfdb0b1e3c836ba65c920f62431005baa26efd7889c5fbb2ff4",
   "flutter": "3.47.5",
   "dart": "3.13.4",
   "build_mode": "flutter test (modo test, no Release)",
@@ -14,5 +14,57 @@
   "candidate_threshold_unit": "ms p95, ventana de 100 eventos; candidato no aprobado",
   "processes": 10,
   "iterations_per_process_and_load": 30,
-  "note": "El diff de archivos rastreados estaba vacío (hash de entrada vacía); todo el trabajo de PG-B.08/.09 son archivos nuevos identificados por los hashes de fuentes del arnés y de fixtures. Las notas de PG-B.08/.09 de docs/ y el README se escriben después de la medición."
+  "note": "Regenerado el 2026-11-03 (PG-B.26) con el anfitrión real del puente; todas las escenas declaran host real. El diff de archivos rastreados excluye docs/ y se calculó con git diff HEAD sobre el árbol medido; el manifiesto de la campaña anterior (d762c471) se reemplaza. Recetas: harness_sources_sha256 = sha256 de la concatenación de task_projection_measurement_test.dart, task_scene_runner.dart, tool/task_projection_summary.dart, task_flow_projection.dart y task_structure_projection.dart; fixtures_sha256 = sha256 de la concatenación de test/fixtures/task_scenes/*.pseudo en orden alfabético.",
+  "scenes": [
+    {
+      "id": "cancellation",
+      "source_sha256": "418fbca9a7e5ea4f3441e57a727c8e1ecf63dc1f264ca43f1b5398d6c634708a",
+      "host": "real"
+    },
+    {
+      "id": "channel",
+      "source_sha256": "c417182c8c00c13fb901a17d67211cec8ba31681575e18f366308b0e77e20528",
+      "host": "real"
+    },
+    {
+      "id": "failure",
+      "source_sha256": "2d824e26fdd06ff4f0b79198b6965673341e395400d4f4a11f0d9b40b281510a",
+      "host": "real"
+    },
+    {
+      "id": "identities",
+      "source_sha256": "9926ae390c2491806b3c1221b880d27d1685d283763c17cae15c266d025a1c31",
+      "host": "real"
+    },
+    {
+      "id": "live_fetch",
+      "source_sha256": "16902345f32d7eacfb2126bc46b14540715647f4a8b1760ccc019ae6a132dd16",
+      "host": "real"
+    },
+    {
+      "id": "live_http",
+      "source_sha256": "464ef274040eb51fb4ba2e461984b2789273bab6f69d67b77b0a36cceff1916d",
+      "host": "real"
+    },
+    {
+      "id": "live_order",
+      "source_sha256": "ca9638ddc9b47b093ce2e3fa03ddab45bb5cfe6d169eb7f71e192381e7ff0c33",
+      "host": "real"
+    },
+    {
+      "id": "live_timer",
+      "source_sha256": "dad4e3990f3f291447d11f28c83b9c2fc497f63c483614ef4cb17c43a6a9c6ff",
+      "host": "real"
+    },
+    {
+      "id": "select",
+      "source_sha256": "8a39aa1c3be342c6342be8457a359f59f9b0e8cf4e56cd8d72f693784cb2f411",
+      "host": "real"
+    },
+    {
+      "id": "revision",
+      "source_sha256": "9926ae390c2491806b3c1221b880d27d1685d283763c17cae15c266d025a1c31",
+      "host": "real"
+    }
+  ]
 }

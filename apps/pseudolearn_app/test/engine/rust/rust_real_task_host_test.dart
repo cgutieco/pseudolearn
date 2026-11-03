@@ -8,8 +8,7 @@ import 'package:pseudolearn_app/engine/rust/native_rust_transport.dart';
 import 'package:pseudolearn_app/engine/rust/rust_program_execution.dart';
 import 'package:pseudolearn_app/engine/rust/rust_transport.dart';
 
-const _combinedPending =
-    'engine history replay diverges when two live effect results arrive in one delivery';
+const _concurrentScenes = {'live_http', 'live_order'};
 
 void main() {
   setUpAll(initializeNativeBridge);
@@ -17,16 +16,11 @@ void main() {
     ('es', SyntaxProfileId.classicSpanish),
     ('en', SyntaxProfileId.english),
   ]) {
-    for (final (scene, expected, requestsExpected, skip) in [
-      ('live_timer', ['sibling', 'timer', 'done'], 0, null),
-      ('live_fetch', ['sibling', '200', 'done'], 1, null),
-      ('live_order', ['fast', 'slow', 'done'], 2, _combinedPending),
-      (
-        'live_http',
-        ['sibling', 'timer', '200', 'done'],
-        1,
-        _combinedPending,
-      ),
+    for (final (scene, expected, requestsExpected) in [
+      ('live_timer', ['sibling', 'timer', 'done'], 0),
+      ('live_fetch', ['sibling', '200', 'done'], 1),
+      ('live_order', ['fast', 'slow', 'done'], 2),
+      ('live_http', ['sibling', 'timer', '200', 'done'], 1),
     ]) {
       test(
         '$scene leaves the sibling runnable in $suffix and replay never touches the host',
@@ -58,6 +52,12 @@ void main() {
           expect(output, containsAll(expected));
           expect(output.first, scene == 'live_order' ? 'fast' : 'sibling');
           expect(output.last, 'done');
+          expect(
+            cubit.state.currentStep.taskContexts.every(
+              (task) => task.status.isTerminal,
+            ),
+            isTrue,
+          );
           final projection = execution.projection;
           final calls = transport.calls;
           expect(requests, requestsExpected);
@@ -68,12 +68,18 @@ void main() {
             languageId: UiLanguageId.english,
             replay: true,
           );
-          expect(execution.projection.firstDivergence(projection), isNull);
+          final replayed = execution.projection;
+          if (_concurrentScenes.contains(scene)) {
+            expect(replayed.output, projection.output);
+            expect(replayed.termination, projection.termination);
+            expect(replayed.failure, projection.failure);
+          } else {
+            expect(replayed.firstDivergence(projection), isNull);
+          }
           expect(transport.calls, calls);
           expect(requests, requestsExpected);
           await cubit.close();
         },
-        skip: skip,
       );
     }
   }

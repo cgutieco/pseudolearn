@@ -81,6 +81,70 @@ FinAlgoritmo
     execution.stop();
   });
 
+  test('a loopback server that never answers ends with the real timeout error', () async {
+    final server = await HttpServer.bind(InternetAddress.loopbackIPv4, 0);
+    final held = <HttpRequest>[];
+    server.listen(held.add);
+    addTearDown(() => server.close(force: true));
+    final transport = openNativeTransport();
+    addTearDown(transport.close);
+    final execution = RustProgramExecution(transport);
+    await _run(execution, '''SubProceso Probe() Como Resultado<Entero, ErrorES>
+Definir net Como RedCap <- Propagar SolicitarRed();
+Definir request Como PeticionHttp <- PeticionHttp(MetodoHttp.GET, "http://127.0.0.1:${server.port}/").ConTiempoMaximo(200000000);
+Definir response Como RespuestaHttp <- Propagar net.Enviar(request);
+Retornar Exito(response.Estado());
+FinSubProceso
+Algoritmo Main
+Segun Probe() Hacer
+Exito(value): Escribir value;
+Error(problem): Escribir problem.Codigo;
+FinSegun
+FinAlgoritmo
+''');
+    expect(execution.outputLines.map((line) => line.text), ['tiempo_agotado']);
+    expect(held, hasLength(1));
+    execution.stop();
+  });
+
+  test('a missing file and a file the operating system denies are typed errors', () async {
+    final root = await Directory.systemTemp.createTemp('pgb-denied-');
+    addTearDown(() async {
+      await Process.run('chmod', ['644', '${root.path}/doc/cerrado.txt']);
+      await root.delete(recursive: true);
+    });
+    final environment = LocalExecutionEnvironment(root.path);
+    final directory = Directory(environment.directoryFor('doc'));
+    await directory.create(recursive: true);
+    final locked = File('${directory.path}/cerrado.txt');
+    await locked.writeAsString('secreto');
+    await Process.run('chmod', ['000', locked.path]);
+    final transport = openNativeTransport();
+    addTearDown(transport.close);
+    final execution = RustProgramExecution(transport, environment: environment);
+    await _run(execution, '''SubProceso Open(name Como Cadena) Como Resultado<Cadena, ErrorES>
+Definir directory Como DirectorioCap <- Propagar SolicitarDirectorio(".");
+Definir file Como ArchivoCap <- Propagar directory.Abrir(name, "lectura");
+Retornar file.LeerTexto();
+FinSubProceso
+Algoritmo Main
+Segun Open("falta.txt") Hacer
+Exito(value): Escribir value;
+Error(problem): Escribir problem.Codigo;
+FinSegun
+Segun Open("cerrado.txt") Hacer
+Exito(value): Escribir value;
+Error(problem): Escribir problem.Codigo;
+FinSegun
+FinAlgoritmo
+''', configuration: const ExecutionConfiguration(documentId: 'doc'));
+    expect(execution.outputLines.map((line) => line.text), [
+      'no_encontrado',
+      'permiso_denegado',
+    ]);
+    execution.stop();
+  });
+
   test('arguments reach the program with quotes, spaces and Unicode intact', () async {
     final transport = openNativeTransport();
     addTearDown(transport.close);

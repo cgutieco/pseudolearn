@@ -341,6 +341,22 @@ del bloqueo. `task_lowering_tests` localiza los rechazos en la frontera de RI o 
 Estos tests se ejecutan por archivo desde la raíz del motor; no sustituyen la conformidad de
 los sujetos ni las pruebas de reconstrucción histórica o de cinta concurrente.
 
+## Historia de una ejecución con entregas reales de efectos
+
+Problema: con un anfitrión desacoplado los resultados de varias esperas llegan en el orden en que terminan, agrupados entre
+dos `advance`, y el planificador vivo elige la tarea a reanudar antes de saber qué resultado llegará. Reconstruir un evento
+repitiendo la cinta sola (`replay_machine_with_effects`) resuelve cada espera en el orden de petición y no puede reproducir
+esas agrupaciones, así que respondía «evento inalcanzable». Elección: `ShadowLog` (`execution_shadow.rs`) guarda las
+operaciones que modifican la ejecución (`advance` con su tamaño, `effect_result` e `input`) y la petición original; si hubo
+al menos una entrega externa, `machine_at` y `history_window` repiten ese registro en un gemelo, un `ExecutionResource`
+nuevo construido con el mismo código, y toman de él la máquina o los eventos. El gemelo recoge los eventos de cada
+instrucción con su tarea. Si la instrucción que cruza el evento pedido emite varios, se devuelve el estado anterior a ella,
+no el posterior, para que una tarea que termina en esa instrucción siga siendo inspeccionable antes de su `task_completed`.
+Se descartan guardar una imagen por evento (coste proporcional a la ejecución) y enseñar a la reproducción de cinta las
+agrupaciones de entrega (la cinta no registra en qué lote llegó cada resultado). El camino anterior queda para ejecuciones
+sin entregas externas, con depurador configurado o cancelación, donde el registro no es completo. El coste de una consulta
+es el de repetir la ejecución hasta ese evento. Pruebas: `live_host_history_tests`.
+
 ## HTTP en el anfitrión de prueba
 
 `FakeHostProvider` usa el mapa `http` del anfitrión de memoria, indexado por método explícito y URL;

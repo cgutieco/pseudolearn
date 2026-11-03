@@ -266,7 +266,7 @@ Cada punto: `.01` especificación · `.02` casos · `.03` tests · `.04` código
   del SO.
 - [x] `PG-B.13.02` Casos: ruta absoluta, `..`, ruta inexistente, directorio sin permiso del SO (doble), atenuación que sí
   rechaza escapar de una subcapacidad creada por el programa.
-- [ ] `PG-B.13.03` Tests de resolución de rutas en macOS y Windows (letras de unidad, separadores, UNC) sobre el doble.
+- [x] `PG-B.13.03` Tests de resolución de rutas en macOS y Windows (letras de unidad, separadores, UNC) sobre el doble.
 - [x] `PG-B.13.04` Sin código aquí.
 - [x] `PG-B.13.05` Fichas de ayuda de `SolicitarDirectorio` y `Subdirectorio`.
 - [x] `PG-B.13.06` `see validate`, `export --check`.
@@ -276,7 +276,7 @@ Cada punto: `.01` especificación · `.02` casos · `.03` tests · `.04` código
 - [x] `PG-B.14.01` Regla de `Argumentos` en `RT.HOST.INTERFACE`: entrega los argumentos de ejecución del anfitrión, en
   orden y sin el nombre del programa.
 - [x] `PG-B.14.02` Casos: ninguno, uno, varios con espacios y Unicode, argumento vacío.
-- [ ] `PG-B.14.03` Tests del doble con argumentos.
+- [x] `PG-B.14.03` Tests del doble con argumentos.
 - [x] `PG-B.14.04` Sin código aquí.
 - [x] `PG-B.14.05` Ficha de ayuda de `SolicitarArgumentos` con el origen por anfitrión.
 - [x] `PG-B.14.06` `see validate`.
@@ -345,7 +345,7 @@ Cada punto: `.01` especificación · `.02` casos · `.03` tests · `.04` código
 - [x] `PG-B.19.04` `run --editor` y `pseudo dap` con anfitrión físico; carpeta del workspace o del archivo; retirar de la
   lista de rechazo las claves que dejan de significar algo; mensajes es/en sin «No se concede».
 - [x] `PG-B.19.05` README de extensión: Confianza de Workspace como límite de VS Code.
-- [ ] `PG-B.19.06` `vitest`, `check:*`, `node tests/host/run-host.mjs trusted`.
+- [x] `PG-B.19.06` `vitest`, `check:*`, `node tests/host/run-host.mjs trusted`.
 
 #### Bloque 4 · Extensión web
 
@@ -388,7 +388,7 @@ Cada punto: `.01` especificación · `.02` casos · `.03` tests · `.04` código
   argumentos (D-PGB-R06); temporizador real (D-PGB-R07).
 - [x] `PG-B.22.05` README de `native/`, app §4.49–§4.50 y §4.54 reescrita como «Anfitrión real en modo de archivo
   único».
-- [ ] `PG-B.22.06` `bash tool/test_bridge.sh`, `bash tool/bridge.sh check`, Clippy y `cargo deny` de `native/`,
+- [x] `PG-B.22.06` `bash tool/test_bridge.sh`, `bash tool/bridge.sh check`, Clippy y `cargo deny` de `native/`,
   `rust-checks isolation`.
 
 ##### PG-B.23 · Configuración de plataforma
@@ -419,21 +419,21 @@ Cada punto: `.01` especificación · `.02` casos · `.03` tests · `.04` código
 
 - [x] `PG-B.25.01` Sin contrato nuevo; resolver o reportar `APP.EDITOR.COMPLETION#R5/R6/R10` y
   `APP.EXEC.SNAPSHOT-VIEW#R1/R4` (PB-PRE-02).
-- [ ] `PG-B.25.02` Escenas B06, B10, B11 y B12 de §7.1 con efectos reales en loopback.
+- [x] `PG-B.25.02` Escenas B06, B10, B11 y B12 de §7.1 con efectos reales en loopback.
 - [x] `PG-B.25.03` Cintas grabadas por el anfitrión real; reproducción con espía de cero llamadas; corte del anfitrión
   durante HTTP; temporizador real sin alterar la agenda.
 - [x] `PG-B.25.04` Ajustes de adaptación que aparezcan; ninguno reintroduce simulación.
 - [x] `PG-B.25.05` README app §4.57–§4.59.
-- [ ] `PG-B.25.06` `see conform --subject app`; tests dirigidos de `test/engine/rust/` y `test/application/execution/`.
+- [x] `PG-B.25.06` `see conform --subject app`; tests dirigidos de `test/engine/rust/` y `test/application/execution/`.
 
 ##### PG-B.26 · E-PG-12 dinámico regenerado
 
-- [ ] `PG-B.26.01` Protocolo de PG-B.09 sin cambios.
-- [ ] `PG-B.26.02` Escenas regeneradas según D-PGB-R10.
-- [ ] `PG-B.26.03` Arnés rechaza escenas con escenario simulado.
-- [ ] `PG-B.26.04` Campaña automatizada repetida con procedencia.
-- [ ] `PG-B.26.05` `e-pg-12-dinamico-evidencia.md` actualizado; estudio humano con el diferimiento del 2026-10-22.
-- [ ] `PG-B.26.06` Resumen recalculable desde crudos.
+- [x] `PG-B.26.01` Protocolo de PG-B.09 sin cambios.
+- [x] `PG-B.26.02` Escenas regeneradas según D-PGB-R10.
+- [x] `PG-B.26.03` Arnés rechaza escenas con escenario simulado.
+- [x] `PG-B.26.04` Campaña automatizada repetida con procedencia.
+- [x] `PG-B.26.05` `e-pg-12-dinamico-evidencia.md` actualizado; estudio humano con el diferimiento del 2026-10-22.
+- [x] `PG-B.26.06` Resumen recalculable desde crudos.
 
 #### Bloque 7 · Aceptación por plataforma
 
@@ -1082,3 +1082,21 @@ Hallazgo de motor, no resuelto: con dos resultados de efecto entregados en una m
 Otros hallazgos: (1) `see conform --subject app --operation properties` falla con `usage` en `API.WIRE-FORMAT#P1`, por lo que `results/properties-app.json` (local, ignorado) se retiró por obsoleto y no se regeneró; (2) la evidencia local de motor también está obsoleta (`TOOL.DAP`).
 
 Abiertas: `PG-B.25.02`, `PG-B.25.06`. No ejecutado: PG-B.26 y siguientes. Sin commit ni push.
+
+### 11.16 Bloque 6 · cierre (PG-B.25 y PG-B.26) y abiertos de bloques anteriores
+
+HEAD `e6c397bc`, rama única; cambios sin confirmar. Se liberó disco (cachés de JetBrains, Playwright y DerivedData, `target/debug` del motor y simuladores no disponibles) y las compilaciones de Rust usaron `CARGO_INCREMENTAL=0` y sin información de depuración.
+
+| Punto | Cambio | Evidencia |
+|---|---|---|
+| Defecto de motor | `ExecutionResource` registra sus operaciones (`ShadowLog`, `execution_shadow.rs`) y, con entregas externas, reconstruye eventos y ventanas repitiéndolas en un gemelo; el estado en mitad de una instrucción multievento es el anterior a ella. README de la API. | `live_host_history_tests` 4/4 (reordenado, inverso, escalonado); motor `cargo test --workspace` 2201 en verde, Clippy limpio, `rust-checks all`; `see conform --subject engine`: 4026 observaciones, 0 divergencias; 31 propiedades |
+| PG-B.25.01/.02/.06 | Completado: los casos C12–C15 y C20 usaban `Definir x Como Entero;` sin inicializador (`LANG.DECL.UNINITIALIZED`); reescritos con `Definir Mutable … <- …` y posiciones recalculadas, `lock --refresh APP.EDITOR.COMPLETION`. Propiedades: los escenarios con bloque `anfitrion` solo los ejecuta `engine` (doble de prueba). B11: timeout real de un servidor que no responde y archivo inexistente / sin permiso del SO. | `see validate`, `export --check`, `lock --check`; `see conform --subject app`: 353 observaciones, 0 divergencias; `--operation properties` ejecuta 3; `rust_real_host_integration_test` 9/9 |
+| PG-B.25.03 | `live_http` y `live_order` activas (8 pruebas por perfil); la reproducción compara salida, terminación y fallo (límite en README app §4.59) | `rust_real_task_host_test` 8/8 |
+| PG-B.26 | Escenas `live_*` en el inventario (§1.1 de la evidencia); manifiesto con `scenes` y rechazo de escenas no reales (`task_projection_summary`); campaña de 10 procesos × 30 iteraciones × 5 cargas con procedencia; resumen recalculable (SHA-256 `6db3b6f2…`); estudio humano sigue **Diferido** (2026-10-22) | `task_projection_summary_test` 9/9; `e-pg-12-dinamico-evidencia.md` §4 |
+| PG-B.13.03 / PG-B.14.03 | Rutas de macOS y Windows (unidad, mixtas, UNC, confinadas) y argumentos (ninguno, uno, varios con espacios, Unicode y vacío, no texto) sobre el doble | `host_paths_tests` 6/6; `host_arguments_tests` 4/4 |
+| PG-B.19.06 | Las pruebas de host usan `tests/host/fixtures/project` (el `examples/project` actual es el programa de aceptación y no importa `geo`); la reversión de ediciones usa `workbench.action.files.revert`; gramática regenerada con `pnpm generate:grammar` | `vitest` 165/165, `check:*`, `pnpm package`, `run-host.mjs trusted`: 22 PASS, estado 0 |
+| PG-B.22.06 | `bridge.sh` ejecuta `cargo fmt` desde `native/` (la cadena fijada incluye rustfmt); `tests/api_execution.rs` formateado | `bash tool/bridge.sh check`, `tool/test_bridge.sh`, Clippy, `cargo deny check`, `rust-checks isolation` en verde |
+
+Suite Flutter completa: 2669 pruebas, 4 fallos, todos de PG-B.28–PG-B.30 (`rust_receiver_localization_test` ×2 y `execution_configuration_controls_test` ×2: rigor, persistencia y reproducción en la interfaz). `flutter analyze`, `check_limits`, `check_content`, `check_design_system`, `check_syntax_coverage` y `test/architecture` en verde.
+
+Abierto con motivo: `PG-B.19.03` (la prueba de host confiable que ejecuta el programa de PG-B.27 depende de ese programa y de Internet; pertenece a PG-B.27). Sin commit ni push.

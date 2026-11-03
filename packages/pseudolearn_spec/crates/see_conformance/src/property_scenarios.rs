@@ -74,12 +74,21 @@ pub(crate) fn runnable_by(scenario: &Scenario, declaration: &Value) -> bool {
         .iter()
         .any(|name| scenario.request.get(name).is_some())
         || scenario.request.get("observe") == Some(&json!("events"));
-    !needs_observation
+    let observes = !needs_observation
         || declaration
             .get("capabilities")
             .and_then(Value::as_array)
-            .is_some_and(|values| values.contains(&json!("observe")))
+            .is_some_and(|values| values.contains(&json!("observe")));
+    observes
+        && (!scenario.request.get("host").is_some_and(Value::is_object)
+            || hosts_double(declaration))
 }
+
+fn hosts_double(declaration: &Value) -> bool {
+    declaration.get("subject").and_then(Value::as_str) == Some(DOUBLE_SUBJECT)
+}
+
+const DOUBLE_SUBJECT: &str = "engine";
 
 pub(crate) fn generated(
     seed: GenerationSeed,
@@ -136,3 +145,7 @@ pub(crate) fn compilations(
     }
     Ok(scenarios)
 }
+
+#[cfg(test)]
+#[path = "property_scenarios_tests.rs"]
+mod property_scenarios_tests;

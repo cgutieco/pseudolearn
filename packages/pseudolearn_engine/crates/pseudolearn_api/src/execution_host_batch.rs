@@ -11,9 +11,21 @@ pub(super) struct HostBookkeeping {
     pub(super) completed_hosts: std::collections::VecDeque<CompletedHostEffect>,
     pub(super) limit_rejected_network: std::collections::BTreeSet<u64>,
     pub(super) completing_effect: bool,
+    pub(super) shadow: super::execution_shadow::ShadowLog,
 }
 
 impl HostBookkeeping {
+    pub(super) fn new(
+        request: &crate::ExecuteRequest,
+        prepared: &super::execution_setup::PreparedExecution,
+    ) -> Self {
+        let recording = prepared.detached_effects && prepared.execution_mode.allows_external_host();
+        Self {
+            shadow: super::execution_shadow::ShadowLog::for_execution(request, recording),
+            ..Self::default()
+        }
+    }
+
     pub(super) fn has_buffered_reply(&self, sequence: u64) -> bool {
         self.buffered_replies
             .iter()

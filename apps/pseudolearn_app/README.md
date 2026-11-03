@@ -2634,23 +2634,33 @@ corpus de la app se añade como escenario del sujeto de app; este punto no encon
 `rust_real_task_host_test.dart` ejecuta escenas de tareas contra un servidor HTTP de loopback y el temporizador real del
 anfitrión, en ambos perfiles, y vuelve a reproducir la cinta que el propio anfitrión grabó con un contador de llamadas
 `host_*` que debe quedar igual. `live_timer` deja avanzar a la hermana mientras la espera del temporizador sigue viva;
-`live_fetch` hace lo mismo con una petición HTTP real. `rust_real_host_integration_test.dart` prueba el corte durante una
+`live_fetch` hace lo mismo con una petición HTTP real; `live_http` y `live_order` combinan dos efectos vivos. `rust_real_host_integration_test.dart` prueba el corte durante una
 petición: la detención cierra el anfitrión sin esperar a la respuesta y cada `host_open` tiene su `host_close`. El paso de
 la ejecución solo entrega la solicitud al anfitrión cuando se resuelve la espera (`settleEffect`); un bucle que solo llama a
 `step()` nunca llega a abrir el socket.
 
-Pendiente declarado: con dos resultados de efecto entregados en una misma tanda (HTTP más temporizador, o dos HTTP que
-terminan fuera de orden) la reconstrucción de historia del motor no reproduce la cinta y la consulta de marcos responde
-«evento inalcanzable»; la app detiene la ejecución con `task_state_unavailable` en vez de mostrar una tabla inventada.
-Las escenas `live_http` y `live_order` quedan omitidas con ese motivo hasta que el motor reconstruya entregas intercaladas.
-Tampoco se verificó aún el timeout real del servidor ni el `PermisoDenegado` del sistema operativo con el anfitrión de la app.
+Dos resultados de efecto entregados en una misma tanda (HTTP más temporizador, o dos HTTP que terminan fuera de orden) ya
+no rompen la consulta de historia. Antes, la reconstrucción de un evento repetía la cinta resolviendo cada espera en el
+orden de petición, mientras el recurso vivo entregaba en el orden de llegada y agrupaba las entregas entre dos `advance`;
+la consulta respondía «evento inalcanzable» y la app detenía la ejecución con `task_state_unavailable`. Ahora el recurso
+de la API registra sus operaciones (`advance`, `effect_result`, `input`) y, cuando hubo entregas reales, reconstruye un
+evento repitiendo ese registro en un gemelo que usa el mismo código del modo en vivo. En mitad de una instrucción que
+emite varios eventos la consulta devuelve el estado anterior a esa instrucción, de modo que una tarea que termina en ella
+sigue siendo inspeccionable en los eventos previos a su `task_completed`. Las escenas `live_http` y `live_order`
+(`rust_real_task_host_test.dart`) lo ejercen con servidores de loopback de duración distinta.
 
-La puerta de conformidad de la app tuvo tres causas independientes de este punto: la vista de instantánea buscaba la
-referencia del arreglo solo en marcos con variables visibles, y un programa que solo declara el arreglo no emite ningún
-evento posterior a la declaración; el escenario `snapshot` usa entonces la primera referencia del montón, como hacen las
-pruebas de páginas del motor. Los casos `APP.EDITOR.COMPLETION#R5/R6/R10` esperan que se ofrezca una variable declarada y sin
-valor inicial como destino de asignación, y el motor solo ofrece variables con valor; es una contradicción entre el caso y el
-motor que se reporta sin resolver.
+Límite conocido: reproducir la cinta de una de esas ejecuciones reproduce la salida, la terminación, el fallo y las
+entregas, pero no los pares `task_resumed`/`task_suspended` especulativos que el planificador vivo emite al reanudar una
+tarea cuyo resultado aún no había llegado. Por eso para `live_http` y `live_order` la comparación de reproducción es de
+resultado y no de traza evento a evento.
+
+Los casos de completado `APP.EDITOR.COMPLETION#R5/R6/R10` usaban programas con `Definir x Como Entero;` sin inicializador,
+que `LANG.DECL.UNINITIALIZED` rechaza (`missingBindingInitializer`) y que por eso no producen símbolo ni candidato; se
+reescribieron como `Definir Mutable x Como Entero <- 0;` con las posiciones recalculadas. Las propiedades de conformidad que
+parten de casos con bloque `anfitrion` solo las ejecuta el sujeto que distribuye el doble de prueba (`engine`): el puente
+de la app no lo trae y devolvía `peticion_invalida`. La vista de instantánea buscaba la referencia del arreglo solo en marcos
+con variables visibles y un programa que solo declara el arreglo no emite ningún evento posterior; el escenario `snapshot`
+usa la primera referencia del montón, como las pruebas de páginas del motor.
 
 El humo local usa el host de desarrollo (macOS). No certifica iOS ni Windows: el humo de iOS requiere simulador y el de
 Windows un anfitrión Windows.
@@ -2680,7 +2690,7 @@ de marcadores y carriles. Las cargas son 0, 1, 10 y 100 tareas con una ventana d
 ventana máxima de 4096 eventos, que es la única donde las cien tareas son visibles. Cada iteración parte de una ejecución
 nueva. No se mide rasterización, presentación de frame ni dispositivo.
 
-El arnés queda omitido sin `TASK_PROJECTION_OUTPUT`. La campaña son diez procesos independientes con 30 iteraciones por carga.
+El manifiesto declara además `scenes`: cada escena con su identidad, el hash de sus fuentes y `host: real`. El resumen rechaza una lista vacía, una escena sin identidad o hash, y cualquier escena cuyo anfitrión no sea el real o cuyas claves o valores mencionen simulación; así una campaña no puede mezclar escenarios simulados. El arnés queda omitido sin `TASK_PROJECTION_OUTPUT`. La campaña son diez procesos independientes con 30 iteraciones por carga.
 `tool/task_projection_summary.dart` exige un manifiesto de procedencia (revisión, hashes de entrada, versiones, modo de
 build, sistema y hardware) y rechaza una muestra incompleta, menos procesos, un resultado divergente dentro de una carga, una
 configuración de reloj distinta o un tiempo no medido. Calcula p50 y p95 por rango más cercano e intervalos bootstrap del 95 %

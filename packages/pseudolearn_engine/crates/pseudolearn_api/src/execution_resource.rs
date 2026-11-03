@@ -33,6 +33,8 @@ mod execution_queries;
 mod execution_response;
 #[path = "execution_setup.rs"]
 mod execution_setup;
+#[path = "execution_shadow.rs"]
+mod execution_shadow;
 #[path = "history_operations.rs"]
 mod history_operations;
 #[path = "inspection_operations.rs"]
@@ -104,6 +106,7 @@ impl ExecutionResource {
         initialized: execution_setup::InitializedMachine,
     ) -> Self {
         Self {
+            hosts: HostBookkeeping::new(request, &prepared),
             resource_id: 0,
             program: initialized.program,
             machine: initialized.machine,
@@ -134,7 +137,6 @@ impl ExecutionResource {
             pending_host: None,
             pending_input: None,
             next_input_request_id: 1,
-            hosts: HostBookkeeping::default(),
         }
     }
 
@@ -168,9 +170,12 @@ impl ExecutionResource {
         {
             return self.advance_history(maximum);
         }
+        self.hosts.shadow.log_advance(maximum);
         self.settle_cancelled_suspension();
         if self.terminal.is_none() && !self.debug.as_ref().is_some_and(|debug| debug.stopped) {
+            let task = self.machine.current_task_id();
             self.activate_ready_host_effect()?;
+            self.collect_step_events(task);
             self.drive_batch(maximum)?;
         }
 
@@ -227,6 +232,9 @@ impl ExecutionResource {
     fn machine_at(&self, event: usize) -> Result<Machine<'_>, ApiError> {
         if event >= self.delivered || event < self.retained_start.max(self.store.stats().horizon) {
             return Err(usage("event outside retained horizon"));
+        }
+        if self.shadow_active() {
+            return self.shadow_machine(event);
         }
         let (image, _) = self
             .store

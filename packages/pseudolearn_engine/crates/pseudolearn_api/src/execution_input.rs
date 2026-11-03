@@ -7,6 +7,7 @@ use serde_json::{Value, json};
 #[path = "execution_input_tests.rs"]
 mod execution_input_tests;
 
+#[derive(Clone)]
 pub(crate) struct InputRequest {
     pub(crate) resource_id: u64,
     pub(crate) task_id: u64,
@@ -87,6 +88,7 @@ impl ExecutionResource {
             return Err(usage("input request identity mismatch"));
         }
         self.pending_input = None;
+        self.hosts.shadow.log_input(reply.clone(), text.clone());
         self.options.inputs.push(text.clone());
         self.machine.supply_input(text);
         self.terminal = None;

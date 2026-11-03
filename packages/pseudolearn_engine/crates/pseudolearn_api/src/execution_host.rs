@@ -1,6 +1,6 @@
 use super::{ExecutionResource, usage};
 use crate::ApiError;
-use pseudolearn_runtime::{HostReply, begin_host_effect, perform_host_effect, resolve_host_effect};
+use pseudolearn_runtime::{HostReply, begin_host_effect, perform_host_effect};
 use pseudolearn_vm::{PendingEffectRequest, RunExit};
 use serde_json::Value;
 use std::sync::atomic::Ordering;
@@ -229,6 +229,14 @@ impl ExecutionResource {
         if !self.execution_mode.allows_external_host() {
             return Err(usage("external effect result rejected in replay mode"));
         }
+        let delivered = self.deliver_effect_result(arguments);
+        if delivered.is_ok() {
+            self.hosts.shadow.log_effect_result(arguments);
+        }
+        delivered
+    }
+
+    fn deliver_effect_result(&mut self, arguments: &Value) -> Result<(), ApiError> {
         self.settle_cancelled_suspension();
         let sequence = arguments
             .get("effect_seq")
@@ -262,27 +270,6 @@ impl ExecutionResource {
             self.pending_host = None;
         }
         self.terminal = None;
-    }
-
-    fn resolve_single_host_result(
-        &mut self,
-        sequence: u64,
-        reply: HostReply,
-    ) -> Result<(), ApiError> {
-        let pending = self
-            .pending_host
-            .as_ref()
-            .ok_or_else(|| usage("execution is not awaiting effect"))?;
-        if sequence != pending.effect_seq {
-            return Err(usage("effect sequence mismatch"));
-        }
-        let reply = resolve_host_effect(&mut self.effects, sequence, reply)
-            .map_err(crate::tape_wire::replay_error_to_api)?;
-        self.machine.supply_effect_result(reply);
-        self.pending_host = None;
-        self.hosts.completing_effect = true;
-        self.terminal = None;
-        Ok(())
     }
 }
 
