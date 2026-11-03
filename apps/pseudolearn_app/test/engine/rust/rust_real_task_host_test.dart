@@ -8,58 +8,74 @@ import 'package:pseudolearn_app/engine/rust/native_rust_transport.dart';
 import 'package:pseudolearn_app/engine/rust/rust_program_execution.dart';
 import 'package:pseudolearn_app/engine/rust/rust_transport.dart';
 
+const _combinedPending =
+    'engine history replay diverges when two live effect results arrive in one delivery';
+
 void main() {
   setUpAll(initializeNativeBridge);
   for (final (suffix, profile) in [
     ('es', SyntaxProfileId.classicSpanish),
     ('en', SyntaxProfileId.english),
   ]) {
-    test(
-      'HTTP and a real timer leave the sibling runnable in $suffix and replay without a host',
-      () async {
-        final server = await HttpServer.bind(InternetAddress.loopbackIPv4, 0);
-        addTearDown(() => server.close(force: true));
-        var requests = 0;
-        server.listen((request) async {
-          requests++;
-          await Future<void>.delayed(const Duration(milliseconds: 100));
-          request.response.write('ok');
-          await request.response.close();
-        });
-        final source =
-            File('test/fixtures/task_scenes/live_http_$suffix.pseudo')
-                .readAsStringSync()
-                .replaceAll('__ORIGIN__', 'http://127.0.0.1:${server.port}');
-        final transport = _HostCounter(openNativeTransport());
-        addTearDown(transport.close);
-        final execution = RustProgramExecution(transport);
-        final cubit = ExecutionCubit(execution: execution);
-        await cubit.advance(
-          pace: StepPace.toEnd,
-          sourceCode: source,
-          profileId: profile,
-          languageId: UiLanguageId.english,
-        );
-        final output = execution.outputLines.map((line) => line.text).toList();
-        expect(output, containsAll(['sibling', 'timer', '200', 'done']));
-        expect(output.first, 'sibling');
-        expect(output.last, 'done');
-        final projection = execution.projection;
-        final calls = transport.calls;
-        expect(requests, 1);
-        await cubit.advance(
-          pace: StepPace.toEnd,
-          sourceCode: source,
-          profileId: profile,
-          languageId: UiLanguageId.english,
-          replay: true,
-        );
-        expect(execution.projection.firstDivergence(projection), isNull);
-        expect(transport.calls, calls);
-        expect(requests, 1);
-        await cubit.close();
-      },
-    );
+    for (final (scene, expected, requestsExpected, skip) in [
+      ('live_timer', ['sibling', 'timer', 'done'], 0, null),
+      ('live_fetch', ['sibling', '200', 'done'], 1, null),
+      ('live_order', ['fast', 'slow', 'done'], 2, _combinedPending),
+      (
+        'live_http',
+        ['sibling', 'timer', '200', 'done'],
+        1,
+        _combinedPending,
+      ),
+    ]) {
+      test(
+        '$scene leaves the sibling runnable in $suffix and replay never touches the host',
+        () async {
+          final server = await HttpServer.bind(InternetAddress.loopbackIPv4, 0);
+          addTearDown(() => server.close(force: true));
+          var requests = 0;
+          server.listen((request) async {
+            requests++;
+            final slow = request.uri.path == '/slow';
+            await Future<void>.delayed(Duration(milliseconds: slow ? 150 : 100));
+            request.response.write('ok');
+            await request.response.close();
+          });
+          final source = File('test/fixtures/task_scenes/${scene}_$suffix.pseudo')
+              .readAsStringSync()
+              .replaceAll('__ORIGIN__', 'http://127.0.0.1:${server.port}');
+          final transport = _HostCounter(openNativeTransport());
+          addTearDown(transport.close);
+          final execution = RustProgramExecution(transport);
+          final cubit = ExecutionCubit(execution: execution);
+          await cubit.advance(
+            pace: StepPace.toEnd,
+            sourceCode: source,
+            profileId: profile,
+            languageId: UiLanguageId.english,
+          );
+          final output = execution.outputLines.map((line) => line.text).toList();
+          expect(output, containsAll(expected));
+          expect(output.first, scene == 'live_order' ? 'fast' : 'sibling');
+          expect(output.last, 'done');
+          final projection = execution.projection;
+          final calls = transport.calls;
+          expect(requests, requestsExpected);
+          await cubit.advance(
+            pace: StepPace.toEnd,
+            sourceCode: source,
+            profileId: profile,
+            languageId: UiLanguageId.english,
+            replay: true,
+          );
+          expect(execution.projection.firstDivergence(projection), isNull);
+          expect(transport.calls, calls);
+          expect(requests, requestsExpected);
+          await cubit.close();
+        },
+        skip: skip,
+      );
+    }
   }
 }
 

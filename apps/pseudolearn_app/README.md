@@ -2629,6 +2629,29 @@ No hubo cambio de firma Rust: el sobre de `native/src/api.rs` es un único punto
 comprueba que las salidas versionadas siguen vigentes. Una discrepancia que requiera observación Dart y esté cubierta por el
 corpus de la app se añade como escenario del sujeto de app; este punto no encontró una carencia que lo exigiera.
 
+#### Tareas con efectos reales en loopback
+
+`rust_real_task_host_test.dart` ejecuta escenas de tareas contra un servidor HTTP de loopback y el temporizador real del
+anfitrión, en ambos perfiles, y vuelve a reproducir la cinta que el propio anfitrión grabó con un contador de llamadas
+`host_*` que debe quedar igual. `live_timer` deja avanzar a la hermana mientras la espera del temporizador sigue viva;
+`live_fetch` hace lo mismo con una petición HTTP real. `rust_real_host_integration_test.dart` prueba el corte durante una
+petición: la detención cierra el anfitrión sin esperar a la respuesta y cada `host_open` tiene su `host_close`. El paso de
+la ejecución solo entrega la solicitud al anfitrión cuando se resuelve la espera (`settleEffect`); un bucle que solo llama a
+`step()` nunca llega a abrir el socket.
+
+Pendiente declarado: con dos resultados de efecto entregados en una misma tanda (HTTP más temporizador, o dos HTTP que
+terminan fuera de orden) la reconstrucción de historia del motor no reproduce la cinta y la consulta de marcos responde
+«evento inalcanzable»; la app detiene la ejecución con `task_state_unavailable` en vez de mostrar una tabla inventada.
+Las escenas `live_http` y `live_order` quedan omitidas con ese motivo hasta que el motor reconstruya entregas intercaladas.
+Tampoco se verificó aún el timeout real del servidor ni el `PermisoDenegado` del sistema operativo con el anfitrión de la app.
+
+La puerta de conformidad de la app tuvo tres causas independientes de este punto: la vista de instantánea buscaba la
+referencia del arreglo solo en marcos con variables visibles, y un programa que solo declara el arreglo no emite ningún
+evento posterior a la declaración; el escenario `snapshot` usa entonces la primera referencia del montón, como hacen las
+pruebas de páginas del motor. Los casos `APP.EDITOR.COMPLETION#R5/R6/R10` esperan que se ofrezca una variable declarada y sin
+valor inicial como destino de asignación, y el motor solo ofrece variables con valor; es una contradicción entre el caso y el
+motor que se reporta sin resolver.
+
 El humo local usa el host de desarrollo (macOS). No certifica iOS ni Windows: el humo de iOS requiere simulador y el de
 Windows un anfitrión Windows.
 

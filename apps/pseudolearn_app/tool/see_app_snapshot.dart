@@ -79,13 +79,10 @@ Map<String, Object?> _arrayResult(
       continue;
     }
   }
+  final referenceId = reference ?? _firstHeapReference;
   if (reference == null) {
-    throw const RustBridgeFailure(
-      family: 'usage',
-      detail: 'execution has no visible array reference',
-    );
+    event = math.max(0, events.length - 1);
   }
-  final referenceId = reference;
   final pageSize = input['page_size'] as int? ?? 4096;
   final firstPage = _page(transport, execution, event, referenceId, pageSize);
   final dimensions = (firstPage['dimensions'] as List<Object?>).cast<int>();
@@ -291,6 +288,8 @@ Map<String, Object?> _retentionResult(
         events.length == previousCount,
   };
 }
+
+const int _firstHeapReference = 1;
 
 Map<String, Object?> _page(
   RustTransport transport,

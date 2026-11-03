@@ -1,0 +1,17 @@
+subroutine suspendable Fetch(label as string, net as NetworkCap, path as string)
+switch await net.send(HttpRequest(HttpMethod.GET, "__ORIGIN__" + path)) do
+success(response): write label;
+failure(problem): write problem.code;
+endSwitch
+endSubroutine
+algorithm Main
+switch requestNetwork() do
+success(net):
+tasks
+spawn Fetch("slow", net, "/slow");
+spawn Fetch("fast", net, "/fast");
+endTasks
+write "done";
+failure(problem): write problem.code;
+endSwitch
+endAlgorithm

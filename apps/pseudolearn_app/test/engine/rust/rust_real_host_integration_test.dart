@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/application/execution/execution_cubit.dart';
 import 'package:pseudolearn_app/application/execution/step_pace.dart';
+import 'package:pseudolearn_app/domain/model/execution/effect_settlement.dart';
 import 'package:pseudolearn_app/domain/model/execution/effect_tape.dart';
 import 'package:pseudolearn_app/domain/model/execution/execution_configuration.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
@@ -169,7 +170,10 @@ FinAlgoritmo
       languageId: UiLanguageId.spanish,
     );
     for (var count = 0; count < 50 && held.isEmpty; count++) {
-      execution.step();
+      final step = execution.step();
+      if (step.isAwaitingEffect) {
+        execution.settleEffect(EffectSettlement.resolve);
+      }
       await Future<void>.delayed(const Duration(milliseconds: 10));
     }
     expect(held, isNotEmpty);

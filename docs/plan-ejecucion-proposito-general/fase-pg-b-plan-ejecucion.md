@@ -417,13 +417,13 @@ Cada punto: `.01` especificación · `.02` casos · `.03` tests · `.04` código
 
 ##### PG-B.25 · Tareas observables con anfitrión real
 
-- [ ] `PG-B.25.01` Sin contrato nuevo; resolver o reportar `APP.EDITOR.COMPLETION#R5/R6/R10` y
+- [x] `PG-B.25.01` Sin contrato nuevo; resolver o reportar `APP.EDITOR.COMPLETION#R5/R6/R10` y
   `APP.EXEC.SNAPSHOT-VIEW#R1/R4` (PB-PRE-02).
 - [ ] `PG-B.25.02` Escenas B06, B10, B11 y B12 de §7.1 con efectos reales en loopback.
-- [ ] `PG-B.25.03` Cintas grabadas por el anfitrión real; reproducción con espía de cero llamadas; corte del anfitrión
+- [x] `PG-B.25.03` Cintas grabadas por el anfitrión real; reproducción con espía de cero llamadas; corte del anfitrión
   durante HTTP; temporizador real sin alterar la agenda.
-- [ ] `PG-B.25.04` Ajustes de adaptación que aparezcan; ninguno reintroduce simulación.
-- [ ] `PG-B.25.05` README app §4.57–§4.59.
+- [x] `PG-B.25.04` Ajustes de adaptación que aparezcan; ninguno reintroduce simulación.
+- [x] `PG-B.25.05` README app §4.57–§4.59.
 - [ ] `PG-B.25.06` `see conform --subject app`; tests dirigidos de `test/engine/rust/` y `test/application/execution/`.
 
 ##### PG-B.26 · E-PG-12 dinámico regenerado
@@ -1065,3 +1065,20 @@ llenó durante el build de iOS; se borraron solo `native/target/debug` y `native
 (2, receptor localizado, PG-B.28–B.30), `execution_configuration_controls_test` (2, rigor y reproducción en la UI,
 PG-B.28–B.30) y `rust_real_task_host_test` (2, HTTP y temporizador en tareas: la lectura de estado de una tarea con
 efecto pendiente devuelve `task_state_unavailable` y detiene la ejecución; PG-B.25). No se tocó ninguno. Sin commit ni push.
+
+### 11.15 Bloque 6 · Reverificación con efectos reales (PG-B.25)
+
+HEAD `24877831`, rama única, árbol limpio al iniciar. Solo se ejecutó PG-B.25; PG-B.26 queda sin tocar porque depende de que las escenas multitarea con dos resultados simultáneos funcionen.
+
+| Punto | Cambio | Evidencia |
+|---|---|---|
+| PG-B.25.01 | `APP.EXEC.SNAPSHOT-VIEW#R1/R4` resueltos: un programa que solo declara el arreglo no emite evento posterior a la declaración, así que ningún marco expone la referencia; el escenario `snapshot` (`tool/see_app_snapshot.dart`) usa la primera referencia del montón, como las pruebas de páginas del motor. `APP.EDITOR.COMPLETION#R5/R6/R10` reportados (`CONFLICT-REPORT`): los casos C12–C15 y C20 esperan que se ofrezca `segundos`/`area` declarados sin valor inicial como destino de asignación y el motor solo ofrece variables con valor (con `Definir Mutable` sin valor tampoco); C20 recibe tipo `Desconocido` | `see conform --subject app`: quedan solo esas tres reglas incumplidas y `API.ANALYZE#R2` sin evidencia por la causa de abajo |
+| PG-B.25.02 | Abierto: B10 (corte durante HTTP) y B12 (cinta del anfitrión real) cubiertos; B06 fuera de orden y B11 (timeout real y `PermisoDenegado`) no | ver pendiente |
+| PG-B.25.03 | Escenas `live_timer` y `live_fetch` (es/en): la hermana avanza mientras el temporizador o el HTTP siguen vivos, la cinta la graba el anfitrión y la reproducción deja el contador `host_*` igual y la proyección sin divergencia. `rust_real_host_integration_test.dart` corregido: el bucle solo llamaba `step()` y nunca resolvía la espera, así que el socket no se abría; ahora llama `settleEffect` | `flutter test test/engine/rust/rust_real_task_host_test.dart test/engine/rust/rust_real_host_integration_test.dart test/application/execution/`: verde (4 escenas omitidas por el defecto) |
+| PG-B.25.05 | README app §4.59 con la subsección de efectos reales, el pendiente declarado y la contradicción de completado | revisión |
+
+Hallazgo de motor, no resuelto: con dos resultados de efecto entregados en una misma tanda (HTTP más temporizador, o dos HTTP fuera de orden) `replay_machine_with_effects` falla (`Divergence` en `network_send`): resuelve en el orden de petición mientras la cinta está en orden de entrega, y las escrituras de consola de un lote quedan registradas entre resultados. Se probó `set_delivery_order` y entrega de resultados consecutivos de la cinta antes de seguir ejecutando; mueve el fallo pero no lo cierra, porque la cinta no conserva en qué lote se entregó cada resultado frente a la escritura de consola. Se revirtió el intento. Las escenas `live_http` y `live_order` quedan omitidas con el motivo en el propio test.
+
+Otros hallazgos: (1) `see conform --subject app --operation properties` falla con `usage` en `API.WIRE-FORMAT#P1`, por lo que `results/properties-app.json` (local, ignorado) se retiró por obsoleto y no se regeneró; (2) la evidencia local de motor también está obsoleta (`TOOL.DAP`).
+
+Abiertas: `PG-B.25.02`, `PG-B.25.06`. No ejecutado: PG-B.26 y siguientes. Sin commit ni push.

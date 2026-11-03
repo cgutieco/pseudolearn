@@ -1,0 +1,20 @@
+subroutine suspendable Wait()
+switch await requestTimer() do
+success(timer):
+switch await timer.wait(50000000) do
+success(instant): write "timer";
+failure(problem): write problem.code;
+endSwitch
+failure(problem): write problem.code;
+endSwitch
+endSubroutine
+subroutine suspendable Work()
+write "sibling";
+endSubroutine
+algorithm Main
+tasks
+spawn Wait();
+spawn Work();
+endTasks
+write "done";
+endAlgorithm
