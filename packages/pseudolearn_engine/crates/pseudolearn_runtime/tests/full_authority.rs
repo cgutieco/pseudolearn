@@ -42,3 +42,21 @@ fn session() -> EffectSession {
         65536,
     )
 }
+
+#[test]
+fn a_root_directory_carries_read_write_rights_without_grants() -> Result<(), String> {
+    let mut session = session();
+    configure_host_authority(&mut session, None).map_err(|error| format!("{error:?}"))?;
+    let operation = effect_operation("request_directory").ok_or("missing operation")?;
+    let request = begin_host_effect(
+        &mut session,
+        operation,
+        (None, vec![HostValue::Text("root".to_owned())]),
+        0,
+    )
+    .map_err(|error| format!("{error:?}"))?;
+    let capability = request.result_capability.ok_or("missing root capability")?;
+    assert!(capability.token().map_err(|error| format!("{error:?}"))?.rights.read);
+    assert!(capability.token().map_err(|error| format!("{error:?}"))?.rights.write);
+    Ok(())
+}

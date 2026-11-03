@@ -30,7 +30,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La composición usa LANG.MODULE.MODEL@1.0.0#R1 y R2, LANG.MODULE.IMPORT@1.0.0#R1 y R2, API.PROJECT@1.0.0#R1, LIB.JSON@1.0.0#J1 y J7, LIB.IO@1.0.0#R2, ENG.LIMITS@1.0.0#R10 y ENG.EXEC.MODEL@1.0.0#R3 y R4. En un proyecto de una aplicación y una biblioteca, el módulo de biblioteca usa perfil en, declara Canonical como Público y analiza y serializa JSON dentro de una función que recibe una Cadena y devuelve un Resultado de Cadena o CodigoErrorJson. Un módulo de aplicación es puede importar esa función y produce la misma salida que su traducción en. Ningún tipo genérico cruza la frontera del módulo. Una cadena vacía devuelve el código UnexpectedEnd, con el nombre del perfil de la biblioteca que lo creó y sin importar el perfil del módulo que lo escribe; un programa que intenta leer sin archivos_lectura obtiene PermisoDenegado; cancelar el programa antes de su primera sentencia termina cancelled; el agotamiento de celdas termina failed con cellLimitExceeded.",
+  "texto": "La composición usa LANG.MODULE.MODEL@1.0.0#R1 y R2, LANG.MODULE.IMPORT@1.0.0#R1 y R2, API.PROJECT@1.0.0#R1, LIB.JSON@1.0.0#J1 y J7, LIB.IO@1.0.0#R2, ENG.LIMITS@1.0.0#R10 y ENG.EXEC.MODEL@1.0.0#R3 y R4. En un proyecto de una aplicación y una biblioteca, el módulo de biblioteca usa perfil en, declara Canonical como Público y analiza y serializa JSON dentro de una función que recibe una Cadena y devuelve un Resultado de Cadena o CodigoErrorJson. Un módulo de aplicación es puede importar esa función y produce la misma salida que su traducción en. Ningún tipo genérico cruza la frontera del módulo. Una cadena vacía devuelve el código UnexpectedEnd, con el nombre del perfil de la biblioteca que lo creó y sin importar el perfil del módulo que lo escribe; un programa cuya apertura de lectura es denegada por el sistema operativo obtiene PermisoDenegado; cancelar el programa antes de su primera sentencia termina cancelled; el agotamiento de celdas termina failed con cellLimitExceeded.",
   "verificacion": ["C1", "C2", "C3", "C4", "C5"]
 }
 ```
@@ -173,7 +173,14 @@
   "anfitrion": {
     "files": {
       "entrada.txt": "contenido"
-    }
+    },
+    "faults": [
+      {
+        "operation": "file_open",
+        "path": "entrada.txt",
+        "code": "permiso_denegado"
+      }
+    ]
   }
 }
 ```

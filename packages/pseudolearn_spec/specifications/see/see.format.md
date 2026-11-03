@@ -51,8 +51,7 @@ justificacion: Revisión estructural manual contra el plan aprobado; la revisió
 
 Los casos pueden declarar anfitrion como datos de un proveedor en memoria. files contiene rutas
 relativas y textos UTF-8 o listas de octetos; args contiene argumentos; clock contiene instantes
-enteros no negativos en nanosegundos; permissions y requested_permissions declaran autoridad
-concedida y solicitada. faults contiene fallos por operación, ruta, código portable e incertidumbre;
+enteros no negativos en nanosegundos; faults contiene fallos por operación, ruta, código portable e incertidumbre;
 secrets contiene referencias con identidad de clave y valor solo para el proveedor de prueba, y
 secret_keys asocia cada identidad de clave con la clave que autentica la referencia; el corredor
 rechaza cualquier cinta viva que contenga el valor de un secreto en forma textual, escapada,

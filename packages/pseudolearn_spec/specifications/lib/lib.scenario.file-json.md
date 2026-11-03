@@ -27,7 +27,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La composición usa LIB.IO@1.0.0#R2 y R4, LIB.JSON@1.0.0#J3, J4 y J7, ENG.EXEC.MODEL@1.0.0#R4 y ENG.EFFECT.TAPE@1.0.0#R5. Con lectura y escritura concedidas, lee entrada.json, analiza exactamente su texto, extrae nombre y visitas, y escribe en salida.json la representación compacta producida por TextoJson. Una entrada vacía produce FinInesperado en línea 1, columna 1 sin abrir salida.json; una escritura sin permiso produce PermisoDenegado sin modificar archivos; la cancelación del anfitrión mientras file_write_text está pendiente termina cancelled, libera los recursos y sella la cinta incomplete; una profundidad max_json_depth + 1 produce ProfundidadExcedida y no escribe el archivo de salida.",
+  "texto": "La composición usa LIB.IO@1.0.0#R2 y R4, LIB.JSON@1.0.0#J3, J4 y J7, ENG.EXEC.MODEL@1.0.0#R4 y ENG.EFFECT.TAPE@1.0.0#R5. Con lectura y escritura disponibles, lee entrada.json, analiza exactamente su texto, extrae nombre y visitas, y escribe en salida.json la representación compacta producida por TextoJson. Una entrada vacía produce FinInesperado en línea 1, columna 1 sin abrir salida.json; una escritura denegada por el sistema operativo produce PermisoDenegado sin modificar archivos; la cancelación del anfitrión mientras file_write_text está pendiente termina cancelled, libera los recursos y sella la cinta incomplete; una profundidad max_json_depth + 1 produce ProfundidadExcedida y no escribe el archivo de salida.",
   "verificacion": ["C1", "C2", "C3", "C4", "C5"]
 }
 ```
@@ -136,7 +136,14 @@
   "anfitrion": {
     "files": {
       "entrada.json": "{\"nombre\":\"Ada\",\"visitas\":3}"
-    }
+    },
+    "faults": [
+      {
+        "operation": "file_open",
+        "path": "salida.json",
+        "code": "permiso_denegado"
+      }
+    ]
   }
 }
 ```
@@ -191,7 +198,7 @@
               "value": {
                 "slot": 0,
                 "generation": 1,
-                "rights": 2,
+                "rights": 3,
                 "kind": 2
               }
             }

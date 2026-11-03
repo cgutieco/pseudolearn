@@ -87,7 +87,7 @@ fn intact_tape_replays_in_both_isolated_modes_without_host_calls() -> Result<(),
 }
 
 #[test]
-fn changed_source_seed_or_permissions_reject_with_identity_mismatch() -> Result<(), String> {
+fn changed_source_or_seed_reject_with_identity_mismatch() -> Result<(), String> {
     let tape = recorded_tape()?;
     for mode in ["replay_from_tape", "history_seek"] {
         let other_source = format!("{PROGRAM}\n");

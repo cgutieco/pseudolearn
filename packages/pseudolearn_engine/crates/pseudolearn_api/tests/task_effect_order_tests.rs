@@ -166,19 +166,39 @@ fn a_cancelled_task_leaves_an_abandoned_entry_that_replays() {
     );
 }
 
+const SHARED_TIMER: &str = "SubProceso Suspendible Pause(clock Como Temporizador, label Como Entero)\nDescartar Aguardar clock.Esperar(50);\nEscribir label;\nFinSubProceso\nAlgoritmo Main\nSegun SolicitarTemporizador() Hacer\nExito(clock):\nTareas\nLanzar Pause(clock, 1);\nLanzar Pause(clock, 2);\nLanzar Pause(clock, 3);\nFinTareas\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n";
+
 #[test]
 fn a_detached_host_sees_every_concurrent_pending_effect() {
     let mut session = ApiSession::default();
-    let analysis = session.call("create_analysis", &json!({"program": THREE_TIMERS}));
+    let analysis = session.call("create_analysis", &json!({"program": SHARED_TIMER}));
     let started = session.call(
         "start",
-        &json!({"analysis": analysis.pointer("/value/resource"), "program": THREE_TIMERS,
+        &json!({"analysis": analysis.pointer("/value/resource"), "program": SHARED_TIMER,
             "host": { "detached": true}}),
     );
     let resource = started
         .pointer("/value/resource")
         .cloned()
         .unwrap_or(Value::Null);
+    let creation = session.call(
+        "advance",
+        &json!({"resource": resource, "batch_size": 1000}),
+    );
+    assert_eq!(
+        creation.pointer("/value/termination/operation"),
+        Some(&json!("request_timer")),
+        "{creation}"
+    );
+    let capability = creation
+        .pointer("/value/pending_effect/result_capability")
+        .cloned()
+        .unwrap_or(Value::Null);
+    session.call(
+        "effect_result",
+        &json!({"resource": resource, "effect_seq": 1,
+            "result": {"outcome": "committed", "value": {"kind": "capability", "value": capability}}}),
+    );
     let advanced = session.call(
         "advance",
         &json!({"resource": resource, "batch_size": 1000}),
@@ -193,7 +213,7 @@ fn a_detached_host_sees_every_concurrent_pending_effect() {
                 .collect()
         })
         .unwrap_or_default();
-    assert_eq!(tasks, vec![1, 2, 3]);
+    assert_eq!(tasks, vec![1, 2, 3], "{advanced}");
     let sequences: Vec<u64> = pending
         .map(|list| {
             list.iter()
@@ -201,7 +221,7 @@ fn a_detached_host_sees_every_concurrent_pending_effect() {
                 .collect()
         })
         .unwrap_or_default();
-    assert_eq!(sequences, vec![1, 2, 3]);
+    assert_eq!(sequences, vec![2, 3, 4]);
     let primary = advanced
         .pointer("/value/termination/effect_seq")
         .and_then(Value::as_u64);

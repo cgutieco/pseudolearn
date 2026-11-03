@@ -393,7 +393,7 @@
     "salida": "permiso_denegado\ncierto\n",
     "terminacion": "completed",
     "anfitrion_observado": {
-      "llamadas": 0,
+      "llamadas": 1,
       "estado_cinta": "reproducible",
       "efectos": [
         {
@@ -412,7 +412,13 @@
   "anfitrion": {
     "files": {
       "a": "hola"
-    }
+    },
+    "faults": [
+      {
+        "operation": "request_directory",
+        "code": "permiso_denegado"
+      }
+    ]
   }
 }
 ```

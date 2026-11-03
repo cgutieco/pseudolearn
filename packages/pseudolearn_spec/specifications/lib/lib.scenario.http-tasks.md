@@ -28,7 +28,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "ejecucion",
-  "texto": "La composición usa LIB.HTTP@1.0.0#R2, R5 y R7, LANG.TASK.SCOPE@1.0.0#R15, ENG.EFFECT.TAPE@1.0.0#R6, ENG.LIMITS@1.0.0#R13 y API.STATE.QUERY@1.0.0#R5. Las hijas envían una petición por recurso: una respuesta 500 es RespuestaHttp y no un error de transporte; una conexión fallida se conserva en FalloTareas.Primero y cancela las hermanas vivas; Canceladas cuenta las hijas canceladas. Una respuesta vacía conserva longitud cero. Sin permiso red no se envía ninguna solicitud. La cancelación de una hermana mientras POST sigue pendiente registra network_send como abandoned y sella la cinta uncertain_external_state. max_pending_network agotado produce LimiteExcedido antes de enviar la petición excedente. Consultar un evento anterior al envío después de completarlo no vuelve a enviar la petición ni aumenta las llamadas del anfitrión.",
+  "texto": "La composición usa LIB.HTTP@1.0.0#R2, R5 y R7, LANG.TASK.SCOPE@1.0.0#R15, ENG.EFFECT.TAPE@1.0.0#R6, ENG.LIMITS@1.0.0#R13 y API.STATE.QUERY@1.0.0#R5. Las hijas envían una petición por recurso: una respuesta 500 es RespuestaHttp y no un error de transporte; una conexión fallida se conserva en FalloTareas.Primero y cancela las hermanas vivas; Canceladas cuenta las hijas canceladas. Una respuesta vacía conserva longitud cero. Una denegación del sistema operativo inyectada en el envío llega al programa como PermisoDenegado. La cancelación de una hermana mientras POST sigue pendiente registra network_send como abandoned y sella la cinta uncertain_external_state. max_pending_network agotado produce LimiteExcedido antes de enviar la petición excedente. Consultar un evento anterior al envío después de completarlo no vuelve a enviar la petición ni aumenta las llamadas del anfitrión.",
   "verificacion": ["C1", "C2", "C3", "C4", "C5", "C6", "C7"]
 }
 ```
@@ -187,11 +187,18 @@
     "salida": "permiso_denegado\n",
     "terminacion": "completed",
     "anfitrion_observado": {
-      "llamadas": 0,
+      "llamadas": 2,
       "estado_cinta": "reproducible"
     }
   },
-  "anfitrion": {}
+  "anfitrion": {
+    "http": {
+      "GET https://fake.test/denied": {
+        "fallo": "permiso_denegado",
+        "incierto": false
+      }
+    }
+  }
 }
 ```
 

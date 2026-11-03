@@ -184,7 +184,7 @@
   "id": "R4",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "El anfitrión concede techos de límites mediante grants.limits y permisos mediante grants.permissions. Para cada límite solicitado en requests.limits el valor effective es el menor entre la solicitud (requested) y la concesión (granted), con procedencia manifest si la solicitud no supera la concesión y host si la concesión la recorta; el valor efectivo nunca supera la solicitud ni la concesión. Un límite solicitado sin concesión produce limitNotGranted en la línea y columna de su valor y no se aplica; un límite no solicitado no se aplica aunque exista una concesión. No se admiten requests.permissions ni grants.permissions: el programa tiene autoridad plena y el manifiesto no elige permisos. La atenuación voluntaria se expresa en el programa.",
+  "texto": "El anfitrión concede techos de límites mediante grants.limits. Para cada límite solicitado en requests.limits el valor effective es el menor entre la solicitud (requested) y la concesión (granted), con procedencia manifest si la solicitud no supera la concesión y host si la concesión la recorta; el valor efectivo nunca supera la solicitud ni la concesión. Un límite solicitado sin concesión produce limitNotGranted en la línea y columna de su valor y no se aplica; un límite no solicitado no se aplica aunque exista una concesión. No se admiten requests.permissions ni grants.permissions: el programa tiene autoridad plena y el manifiesto no elige permisos. La atenuación voluntaria se expresa en el programa.",
   "verificacion": [
     "C14",
     "C15",
@@ -301,7 +301,7 @@
                   "provenance": {
                     "source": "manifest",
                     "line": 11,
-                    "column": 1
+                    "column": 16
                   }
                 }
               ],
@@ -1043,7 +1043,7 @@
                 "code": "unknownField",
                 "field": "requests.permissions",
                 "line": 6,
-                "column": 16
+                "column": 1
               }
             ]
           }

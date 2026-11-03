@@ -211,14 +211,14 @@ fn paginated_queries_accept_object_targets_and_reject_malformed_targets() -> Res
 fn host_schema_accepts_memory_files_and_rejects_invalid_shapes() -> Result<(), String> {
     for (host, valid) in [
         (
-            serde_json::json!({"files":{"a":[0,255]},"clock":[1,2],"permissions":["reloj"]}),
+            serde_json::json!({"files":{"a":[0,255]},"clock":[1,2]}),
             true,
         ),
         (serde_json::json!({"files":{"a":[256]}}), false),
         (serde_json::json!({"clock":[-1]}), false),
-        (serde_json::json!({"permissions":["network"]}), true),
+        (serde_json::json!({"permissions":["network"]}), false),
         (
-            serde_json::json!({"permissions":["red"],"http":{"GET http://fake.test/a":{"estado":200,"cabeceras":[["x-test","a"],["x-test","b"]],"cuerpo_bytes":[0,255]}}}),
+            serde_json::json!({"http":{"GET http://fake.test/a":{"estado":200,"cabeceras":[["x-test","a"],["x-test","b"]],"cuerpo_bytes":[0,255]}}}),
             true,
         ),
         (
@@ -233,7 +233,6 @@ fn host_schema_accepts_memory_files_and_rejects_invalid_shapes() -> Result<(), S
             serde_json::json!({"http":{"GET https://fake.test/a":{"cabeceras":[["x-test"]]}}}),
             false,
         ),
-        (serde_json::json!({"files":{"/outside":"secret"}}), false),
         (serde_json::json!({"unknown":true}), false),
     ] {
         let mut specification = support::specification()?;
@@ -279,5 +278,27 @@ fn expect_replay_failure(specification: &mut see_model::Specification) -> Result
             "anfitrion_observado".to_owned(),
             serde_json::json!({"reproduccion_fallo":"replay_divergence"}),
         );
+    Ok(())
+}
+
+#[test]
+fn host_schema_accepts_system_paths_and_rejects_empty_ones() -> Result<(), String> {
+    for (host, valid) in [
+        (serde_json::json!({"files":{"/outside":"secret"}}), true),
+        (serde_json::json!({"files":{"../up":"x","C:\\data\\a":"y"}}), true),
+        (serde_json::json!({"files":{"":"empty path"}}), false),
+    ] {
+        let mut specification = support::specification()?;
+        specification
+            .blocks
+            .last_mut()
+            .ok_or("missing case")?
+            .fields
+            .insert("anfitrion".to_owned(), host);
+        assert_eq!(
+            see_validation::schema::check(&specification).is_empty(),
+            valid
+        );
+    }
     Ok(())
 }

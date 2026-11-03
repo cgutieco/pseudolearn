@@ -50,7 +50,8 @@
   "clase": "semantica",
   "texto": "Un destino HTTP usa esquema http o https, un host ASCII válido y el puerto efectivo. Se admite cualquier destino, incluido loopback, direcciones privadas y http público. El fragmento nunca se envía. Se rechazan hosts con credenciales y formas numéricas alternativas de IPv4, incluidas una sola cifra decimal, hexadecimal, octal y direcciones decimales con menos o más de cuatro componentes.",
   "verificacion": [
-    "C1"
+    "C1",
+    "C9"
   ]
 }
 ```
@@ -81,6 +82,44 @@
     "http": {
       "GET https://fake.test/grant": {
         "estado": 200
+      }
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C9",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "200\n201\n202\n0\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir net Como RedCap <- Propagar SolicitarRed();\nSegun net.Enviar(PeticionHttp(MetodoHttp.GET, \"http://127.0.0.1:8080/a\")) Hacer\nExito(response): Escribir response.Estado();\nError(problem): Escribir problem.Codigo;\nFinSegun\nSegun net.Enviar(PeticionHttp(MetodoHttp.GET, \"http://192.168.0.5/a\")) Hacer\nExito(response): Escribir response.Estado();\nError(problem): Escribir problem.Codigo;\nFinSegun\nSegun net.Enviar(PeticionHttp(MetodoHttp.GET, \"http://plain.test/a\")) Hacer\nExito(response): Escribir response.Estado();\nError(problem): Escribir problem.Codigo;\nFinSegun\nRetornar Exito(0);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<integer, IoError>\ndefine net as NetworkCap <- propagate requestNetwork();\nswitch net.send(HttpRequest(HttpMethod.GET, \"http://127.0.0.1:8080/a\")) do\nsuccess(response): write response.status();\nfailure(problem): write problem.code;\nendSwitch\nswitch net.send(HttpRequest(HttpMethod.GET, \"http://192.168.0.5/a\")) do\nsuccess(response): write response.status();\nfailure(problem): write problem.code;\nendSwitch\nswitch net.send(HttpRequest(HttpMethod.GET, \"http://plain.test/a\")) do\nsuccess(response): write response.status();\nfailure(problem): write problem.code;\nendSwitch\nreturn success(0);\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "http": {
+      "GET http://127.0.0.1:8080/a": {
+        "estado": 200
+      },
+      "GET http://192.168.0.5/a": {
+        "estado": 201
+      },
+      "GET http://plain.test/a": {
+        "estado": 202
       }
     }
   }

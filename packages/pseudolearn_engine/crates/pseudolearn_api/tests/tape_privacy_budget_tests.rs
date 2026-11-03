@@ -29,11 +29,10 @@ fn reader_host(budget: Option<usize>) -> Value {
     host
 }
 
-fn replay_rejection(program: &str, tape: &Value, host: &Value) -> Option<String> {
+fn replay_rejection(program: &str, tape: &Value) -> Option<String> {
     let mut session = ApiSession::default();
     let analysis = session.call("create_analysis", &json!({"program":program}));
-    let identity_host =
-        json!({"permissions":host.get("permissions").cloned().unwrap_or(Value::Null)});
+    let identity_host = json!({});
     let started = session.call(
         "start",
         &json!({"analysis":analysis.pointer("/value/resource"),"program":program,"profile":"es",
@@ -125,7 +124,7 @@ fn write_without_the_secret_value_keeps_the_tape_reproducible() {
 fn redacted_tape_cannot_be_replayed() {
     let recorded = record(WRITER, secret_host("s3cr3t", "clave-privada"));
     let tape = recorded.get("effect_tape").cloned().unwrap_or(Value::Null);
-    let rejection = replay_rejection(WRITER, &tape, &secret_host("s3cr3t", "clave-privada"));
+    let rejection = replay_rejection(WRITER, &tape);
     assert_eq!(
         rejection.as_deref(),
         Some("Invalid protocol: replay_non_reproducible")
@@ -175,7 +174,7 @@ fn truncated_tape_cannot_be_replayed() -> Result<(), String> {
     let exact = smallest_complete_budget()?;
     let truncated = record(READER, reader_host(Some(exact.saturating_sub(1))));
     let tape = truncated.get("effect_tape").cloned().unwrap_or(Value::Null);
-    let rejection = replay_rejection(READER, &tape, &reader_host(None));
+    let rejection = replay_rejection(READER, &tape);
     assert_eq!(
         rejection.as_deref(),
         Some("Invalid protocol: replay_non_reproducible")

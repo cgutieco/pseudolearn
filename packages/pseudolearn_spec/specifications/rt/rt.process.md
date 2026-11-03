@@ -156,7 +156,7 @@
   "id": "R4",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "El proceso nativo accede a argumentos y recursos externos únicamente mediante las capacidades explícitas inyectadas al inicializar según los permisos concedidos; sin concesión explícita el entorno permanece aislado por defecto.",
+  "texto": "El proceso nativo accede a argumentos y recursos externos únicamente mediante las capacidades explícitas que el programa solicita al inicializar; la autoridad es plena sobre las familias que el anfitrión soporta, sin manifiesto de permisos, y el programa no accede a nada que no haya solicitado.",
   "verificacion": [
     "C3"
   ]
@@ -178,10 +178,10 @@
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
-    "salida": "permiso_denegado\n",
+    "salida": "100\n",
     "terminacion": "completed",
     "anfitrion_observado": {
-      "llamadas": 0
+      "llamadas": 2
     }
   },
   "programas": {

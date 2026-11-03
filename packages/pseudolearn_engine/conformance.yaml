@@ -2299,31 +2299,30 @@
     },
     {
       "regla": "RT.HOST.INTERFACE@1.0.0#R8",
-      "verificacion": "crates/pseudolearn_runtime/tests/network_effect_tests.rs",
-      "estado": "cumple"
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "Regla de revisión humana: describe diferencias físicas de plataforma que solo se comprueban contra transportes reales; no hay observación automática posible."
     },
     {
       "regla": "RT.HOST.INTERFACE@1.0.0#R9",
-      "verificacion": "crates/pseudolearn_runtime/tests/network_effect_tests.rs",
-      "estado": "cumple"
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "Regla de revisión humana: describe diferencias físicas de plataforma que solo se comprueban contra transportes reales; no hay observación automática posible."
     },
     {
       "regla": "LIB.SCENARIO.FILE-JSON@1.0.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-5.09.07"
+      "estado": "cumple"
     },
     {
       "regla": "LIB.SCENARIO.HTTP-TASKS@1.0.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-5.09.07"
+      "estado": "cumple"
     },
     {
       "regla": "LIB.SCENARIO.BILINGUAL@1.0.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-5.09.07"
+      "estado": "cumple"
     },
     {
       "regla": "API.EXECUTE@1.0.0#R7",

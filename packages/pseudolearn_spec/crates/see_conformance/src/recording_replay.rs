@@ -2,7 +2,7 @@ use crate::protocol::Session;
 use serde_json::{Map, Value, json};
 
 const REPLAY_MODE: &str = "replay_from_tape";
-const IDENTITY_FIELDS: [&str; 3] = ["permissions", "requested_permissions", "max_tape_bytes"];
+const IDENTITY_FIELDS: [&str; 1] = ["max_tape_bytes"];
 
 pub(crate) fn requested(request: &Value) -> bool {
     request

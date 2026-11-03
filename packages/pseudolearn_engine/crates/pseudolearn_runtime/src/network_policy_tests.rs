@@ -62,6 +62,48 @@ fn unrestricted_network_accepts_any_http_destination() {
 }
 
 #[test]
+fn unrestricted_network_accepts_loopback_ports_and_transport_unrelated_headers() {
+    let mut cookie_request = request("http://localhost:8080/a", HttpMethod::Post);
+    cookie_request.headers = vec![
+        ("Cookie".to_owned(), "session=1".to_owned()),
+        ("Authorization".to_owned(), "Bearer token".to_owned()),
+    ];
+    cookie_request.body = Some(vec![1]);
+    let parsed = crate::network_policy::validate_request(&cookie_request, &BTreeSet::new());
+    assert_eq!(
+        parsed.map(|parsed| parsed.origin),
+        Ok("http://localhost:8080".to_owned())
+    );
+}
+
+#[test]
+fn a_voluntary_attenuation_is_the_only_source_of_destination_denial() {
+    let attenuated = BTreeSet::from(["http://127.0.0.1:9000".to_owned()]);
+    assert!(
+        crate::network_policy::validate_request(
+            &request("http://127.0.0.1:9000/a", HttpMethod::Get),
+            &attenuated,
+        )
+        .is_ok()
+    );
+    assert_eq!(
+        crate::network_policy::validate_request(
+            &request("http://127.0.0.1:9001/a", HttpMethod::Get),
+            &attenuated,
+        )
+        .map(|_| ()),
+        Err(crate::IoError::from_kind(IoErrorKind::DestinationDenied))
+    );
+    assert!(
+        crate::network_policy::validate_request(
+            &request("http://127.0.0.1:9001/a", HttpMethod::Get),
+            &BTreeSet::new(),
+        )
+        .is_ok()
+    );
+}
+
+#[test]
 fn rejects_invalid_urls_and_ungranted_origins() {
     let origins = BTreeSet::from(["https://fake.test:443".to_owned()]);
     for url in [

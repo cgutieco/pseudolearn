@@ -28,9 +28,9 @@ fn replay_that_consults_the_host_is_reported() {
 
 #[test]
 fn replay_request_keeps_only_identity_fields_of_the_host() -> Result<(), String> {
-    let request = json!({"host":{"permissions":["reloj"],"clock":[1],"grabar_y_reproducir":true}});
+    let request = json!({"host":{"max_tape_bytes":4096,"clock":[1],"grabar_y_reproducir":true}});
     let replay = replay_request(&request, &response("a\n", 1))?;
-    assert_eq!(replay.get("host"), Some(&json!({"permissions":["reloj"]})));
+    assert_eq!(replay.get("host"), Some(&json!({"max_tape_bytes":4096})));
     assert_eq!(replay.get("execution_mode"), Some(&json!(REPLAY_MODE)));
     Ok(())
 }

@@ -8,9 +8,22 @@ fn cancellation_directive_is_accepted_in_the_host_configuration() {
 }
 
 #[test]
-fn declared_network_origins_are_accepted_in_the_host_configuration() {
+fn an_empty_host_configuration_needs_no_authority_declaration() {
     let host = json!({});
     assert!(MemoryHostProvider::from_value(&host).is_ok());
+}
+
+#[test]
+fn retired_authority_keys_are_rejected_by_the_test_host() {
+    for key in [
+        "permissions",
+        "requested_permissions",
+        "network_origins",
+        "local_origins",
+    ] {
+        let host = json!({ key: [] });
+        assert!(MemoryHostProvider::from_value(&host).is_err(), "{key}");
+    }
 }
 
 #[test]

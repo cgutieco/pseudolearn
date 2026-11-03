@@ -61,7 +61,7 @@
   "id": "R2",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "El preludio estándar de 2026 es fijo y está formado solo por los símbolos incorporados declarados por LIB.MODEL y los tipos intrínsecos declarados por los contratos de lenguaje. No se lee del entorno, del directorio de trabajo ni de paquetes instalados y no requiere un archivo adicional. La colisión de nombres sigue el contrato dueño de cada símbolo; un subprograma homónimo oculta una función libre incorporada. El preludio declara símbolos, nunca permisos: todo efecto requiere capacidad concedida por el anfitrión.",
+  "texto": "El preludio estándar de 2026 es fijo y está formado solo por los símbolos incorporados declarados por LIB.MODEL y los tipos intrínsecos declarados por los contratos de lenguaje. No se lee del entorno, del directorio de trabajo ni de paquetes instalados y no requiere un archivo adicional. La colisión de nombres sigue el contrato dueño de cada símbolo; un subprograma homónimo oculta una función libre incorporada. El preludio declara símbolos, nunca permisos: todo efecto requiere una capacidad solicitada al anfitrión.",
   "verificacion": [
     "C3",
     "C4"

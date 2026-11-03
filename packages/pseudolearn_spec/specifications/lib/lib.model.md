@@ -1428,7 +1428,7 @@
 
 
 Las solicitudes de consola, argumentos, directorio identificado por nombre, reloj y temporizador
-devuelven Resultado del tipo de capacidad y ErrorES; no construyen capacidades sin concesión.
+devuelven Resultado del tipo de capacidad y ErrorES; no construyen capacidades sin solicitarlas al anfitrión.
 Los métodos de capacidad definidos en capabilityLibrary también devuelven Resultado. Abrir y
 Subdirectorio reciben un modo lectura, escritura o lectura_escritura (read, write o read_write en
 inglés); la apertura de escritura crea o trunca, y una derivación nunca amplía los derechos.

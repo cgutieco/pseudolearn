@@ -578,7 +578,7 @@ El campo cancelacion de un caso indica la entrada a sentencia, contada desde uno
               "value": {
                 "slot": 0,
                 "generation": 1,
-                "rights": 1,
+                "rights": 3,
                 "kind": 2
               }
             }

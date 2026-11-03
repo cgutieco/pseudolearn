@@ -182,8 +182,9 @@ lista; solo con otra lista se cede. No intervienen reloj físico ni semilla.
 ## Cliente HTTP con anfitrión controlado
 
 `network_url`, `network_headers` y `network_policy` comprueban URL, origen, cabeceras y cuerpo antes
-de invocar al proveedor. La capacidad conserva la concesión de orígenes del anfitrión y `Limitar`
-solo puede reducirla. El runtime no abre sockets: `MemoryHostProvider` resuelve guiones locales por
+de invocar al proveedor. La capacidad de red nace sin restricción de destino: `http` y `https` a
+cualquier host y dirección, loopback y privadas incluidas. `Limitar` es una atenuación voluntaria del
+programa y solo puede reducir el conjunto de orígenes de esa capacidad. El runtime no abre sockets: `MemoryHostProvider` resuelve guiones locales por
 método y URL, lo que hace deterministas las pruebas y evita depender de Internet. Un estado HTTP
 completo entre 100 y 599 salvo 101 es una respuesta comprometida; los códigos 4xx y 5xx quedan en
 `HttpResponse`. El cargador del anfitrión falso conserva incluso un estado 101 guionado para que la
@@ -194,22 +195,20 @@ cuerpo vacío.
 `Redirigida` acepta solo 301, 302, 303, 307 y 308 con una sola cabecera `location`, resuelve la
 referencia contra la URL final y quita el fragmento. No envía ni sigue la petición. Convierte 303 y
 301/302 sobre `POST` en `GET` sin cuerpo; 307/308 conservan método y cuerpo. Cambiar el origen retira
-cabeceras de credenciales, y `Enviar` comprueba el permiso del origen de destino. Las URL validan
+cabeceras de credenciales, y `Enviar` comprueba únicamente la atenuación voluntaria de la capacidad. Las URL validan
 hosts ASCII y normalizan el origen por esquema, host y puerto efectivo; IPv6 se compara en su forma
 canónica y se rechazan las formas numéricas alternativas de IPv4.
 
-El anfitrión declara orígenes mediante `network_origins`, una lista de orígenes concedidos que se
-normaliza con las mismas reglas de URL que las peticiones. Los guiones de `http` conservan su
-comportamiento de pruebas y también aportan sus orígenes; un consumidor con transporte propio usa
-`network_origins` sin añadir respuestas ficticias. En reproducción desde cinta el anfitrión solo aporta
-su identidad, sin orígenes ni guiones, así que `begin_host_effect` no aplica el rechazo
-`DestinoDenegado`: el resultado de cada envío sale de la cinta, que ya registró si el destino se
-concedió o se denegó. Aplicarlo convertía en fallo un envío grabado como exitoso y la reproducción
-divergía.
+El anfitrión de pruebas no declara orígenes ni permisos: `network_origins`, `local_origins`,
+`requested_permissions` y `permissions` son claves retiradas que el cargador rechaza. Los guiones de
+`http` solo aportan respuestas deterministas. En reproducción desde cinta el anfitrión aporta su
+identidad y nada más, y el resultado de cada envío sale de la cinta; aplicar de nuevo una atenuación
+convertiría en fallo un envío grabado como exitoso y la reproducción divergiría.
 
-La comprobación de orígenes por receptor solo se aplica a capacidades de red. Los receptores de archivo,
-directorio, reloj, temporizador y consola no tienen concesión de orígenes, y exigirla convertía toda
-operación sobre ellos en `permiso_denegado`.
+La comprobación de destino por receptor solo se aplica a capacidades de red atenuadas. Los receptores de
+archivo, directorio, reloj, temporizador y consola no tienen lista de orígenes. Los únicos
+`permiso_denegado` y `DestinoDenegado` que el runtime produce provienen de un fallo del sistema
+inyectado por el doble de pruebas o de una atenuación voluntaria del programa.
 
 `NetworkLimits` fija los valores mínimos garantizados: 1 MiB para cuerpo decodificado y bytes de
 solicitud, 16 KiB para cabeceras, 64 cabeceras, cuatro peticiones de red pendientes y 30 segundos
@@ -242,3 +241,10 @@ y la normalización portátil de sus fixtures requieren `test-host`; no son un a
 Las rutas iniciales admiten rutas absolutas, Windows y ..; una raíz derivada impide salir de ella.
 El host real lee el reloj del SO en cada operación y espera tiempo real en hilos independientes.
 La cinta registra esas lecturas y la semilla inicial: reproducir consume la cinta sin consultar al SO.
+
+El runtime no consulta entropía: recibe la semilla efectiva en `ExecutionIdentity`. Obtenerla del sistema
+operativo o aceptar una explícita es responsabilidad del anfitrión físico; el valor por omisión 42 de
+`ExecuteRequest` existe solo para el doble de pruebas del corpus. La identidad de la cinta incluye la
+semilla, y reproducir con otra semilla se rechaza con `replay_identity_mismatch`. Las lecturas de reloj
+y las duraciones de temporizador son entradas de cinta: la reproducción las entrega sin consultar al
+anfitrión (`live_time_tape_tests`).

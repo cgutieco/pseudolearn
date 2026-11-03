@@ -34,3 +34,25 @@ fn a_real_platform_denial_is_returned_to_the_program() {
         "{recorded}"
     );
 }
+
+#[test]
+fn retired_authority_keys_in_the_host_are_usage_failures() {
+    for key in [
+        "permissions",
+        "requested_permissions",
+        "network_origins",
+        "local_origins",
+    ] {
+        let recorded = ApiSession::default().call(
+            "record",
+            &json!({"request": {
+                "program": OPEN_FILE,
+                "profile": "es",
+                "strictness": "flexible",
+                "host": {key: [], "files": {"a": [1]}}
+            }, "options": {"capture_states": false}}),
+        );
+        assert!(recorded.pointer("/value").is_none(), "{key}: {recorded}");
+        assert!(recorded.pointer("/failure").is_some(), "{key}: {recorded}");
+    }
+}

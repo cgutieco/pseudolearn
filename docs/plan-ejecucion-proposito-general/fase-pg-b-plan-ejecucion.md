@@ -224,99 +224,99 @@ Cada punto: `.01` especificación · `.02` casos · `.03` tests · `.04` código
 
 ##### PG-B.10 · Autoridad plena por omisión
 
-- [ ] `PG-B.10.01` Reescribir `LANG.CAPABILITY.MODEL#R2`, `RT.HOST.INTERFACE#R1/R7`, `LIB.HTTP#R1` y las reglas de
+- [x] `PG-B.10.01` Reescribir `LANG.CAPABILITY.MODEL#R2`, `RT.HOST.INTERFACE#R1/R7`, `LIB.HTTP#R1` y las reglas de
   `requests`/`grants.permissions` de `API.PROJECT.MANIFEST` y `API.EXECUTE`: `Solicitar*` concede siempre la familia
   soportada por el anfitrión; sin intersección ni manifiesto de permisos; familia no soportada → `ErrorES` de plataforma.
-- [ ] `PG-B.10.02` Rederivar los casos que hoy esperan `permiso_denegado` por falta de concesión: pasan a probar éxito, o
+- [x] `PG-B.10.02` Rederivar los casos que hoy esperan `permiso_denegado` por falta de concesión: pasan a probar éxito, o
   denegación real del SO inyectada por el doble de prueba, o atenuación voluntaria. Perfiles es/en, ambos rigores.
-- [ ] `PG-B.10.03` Tests de semántica y runtime que fallan si reaparece una comprobación de permiso por concesión.
-- [ ] `PG-B.10.04` Sin código en este punto (el código es PG-B.16).
-- [ ] `PG-B.10.05` Fichas de `TOOL.SERVICE.CATALOG` sin lenguaje de concesión («si el permiso está activo»).
-- [ ] `PG-B.10.06` `see validate`, `export --check`; registro de IDs modificados para el reanclaje de PG-B.15.
+- [x] `PG-B.10.03` Tests de semántica y runtime que fallan si reaparece una comprobación de permiso por concesión.
+- [x] `PG-B.10.04` Sin código en este punto (el código es PG-B.16).
+- [x] `PG-B.10.05` Fichas de `TOOL.SERVICE.CATALOG` sin lenguaje de concesión («si el permiso está activo»).
+- [x] `PG-B.10.06` `see validate`, `export --check`; registro de IDs modificados para el reanclaje de PG-B.15.
 
 ##### PG-B.11 · Destinos de red
 
-- [ ] `PG-B.11.01` Reescribir `LIB.HTTP.POLICY#R1–R4`, `RT.HOST.INTERFACE#R8/R9` y `LIB.HTTP#R3`: `http` y `https` a
+- [x] `PG-B.11.01` Reescribir `LIB.HTTP.POLICY#R1–R4`, `RT.HOST.INTERFACE#R8/R9` y `LIB.HTTP#R3`: `http` y `https` a
   cualquier host y dirección (loopback, privadas incluidas); TLS validado; nativo sin seguir redirecciones, sin cookies ni
   proxies ambientales; descenso HTTPS→HTTP permitido en `Redirigida`; cabeceras rechazadas solo las del transporte
   (D-06a); navegador según D-PGB-R08.
-- [ ] `PG-B.11.02` Casos: loopback y dirección privada aceptadas; `http://` público aceptado en nativo; redirección a
+- [x] `PG-B.11.02` Casos: loopback y dirección privada aceptadas; `http://` público aceptado en nativo; redirección a
   `http`; `cookie` aceptada en nativo y `PeticionInvalida` de plataforma en navegador; CORS ausente como error tipado.
-- [ ] `PG-B.11.03` Tests del validador de destinos del runtime sin filtro de rangos.
-- [ ] `PG-B.11.04` Sin código aquí (PG-B.16, PG-B.18, PG-B.20).
-- [ ] `PG-B.11.05` Hoja de STRIDE y K-07 anotados como sustituidos en `docs/` (PG-7.15 completa la reconciliación).
-- [ ] `PG-B.11.06` `see validate`, `export --check`.
+- [x] `PG-B.11.03` Tests del validador de destinos del runtime sin filtro de rangos.
+- [x] `PG-B.11.04` Sin código aquí (PG-B.16, PG-B.18, PG-B.20).
+- [x] `PG-B.11.05` Hoja de STRIDE y K-07 anotados como sustituidos en `docs/` (PG-7.15 completa la reconciliación).
+- [x] `PG-B.11.06` `see validate`, `export --check`.
 
 ##### PG-B.12 · Tiempo y azar reales
 
-- [ ] `PG-B.12.01` Reescribir `LIB.TIME#R1/R2` y `RT.HOST.INTERFACE#R3`: en vivo, reloj del sistema en cada lectura y
+- [x] `PG-B.12.01` Reescribir `LIB.TIME#R1/R2` y `RT.HOST.INTERFACE#R3`: en vivo, reloj del sistema en cada lectura y
   temporizador que espera tiempo real sin bloquear otras tareas; semilla de entropía del SO grabada en la cinta; semilla
   explícita por opción del anfitrión; en reproducción, todo desde la cinta.
-- [ ] `PG-B.12.02` Casos en `ENG.EFFECT.TAPE` y `LIB.TIME`: dos lecturas de reloj distintas y crecientes con el doble de
+- [x] `PG-B.12.02` Casos en `ENG.EFFECT.TAPE` y `LIB.TIME`: dos lecturas de reloj distintas y crecientes con el doble de
   prueba; temporizador concurrente con otra tarea que avanza; cinta con semilla reproduce la misma secuencia de `azar`.
-- [ ] `PG-B.12.03` Tests de cinta con reloj y semilla reales grabados.
-- [ ] `PG-B.12.04` Sin código aquí (PG-B.17, PG-B.18).
-- [ ] `PG-B.12.05` README del runtime: modelo de tiempo vivo frente a reproducción.
-- [ ] `PG-B.12.06` `see validate`, `export --check`.
+- [x] `PG-B.12.03` Tests de cinta con reloj y semilla reales grabados.
+- [x] `PG-B.12.04` Sin código aquí (PG-B.17, PG-B.18).
+- [x] `PG-B.12.05` README del runtime: modelo de tiempo vivo frente a reproducción.
+- [x] `PG-B.12.06` `see validate`, `export --check`.
 
 ##### PG-B.13 · Archivos con rutas del sistema
 
-- [ ] `PG-B.13.01` Reescribir `LANG.CAPABILITY.MODEL#R3` y reglas de `LIB.IO`: rutas absolutas o relativas a la carpeta
+- [x] `PG-B.13.01` Reescribir `LANG.CAPABILITY.MODEL#R3` y reglas de `LIB.IO`: rutas absolutas o relativas a la carpeta
   de trabajo del anfitrión, `..` permitido; `Subdirectorio` confina lo que el programa decida; `PermisoDenegado` solo
   del SO.
-- [ ] `PG-B.13.02` Casos: ruta absoluta, `..`, ruta inexistente, directorio sin permiso del SO (doble), atenuación que sí
+- [x] `PG-B.13.02` Casos: ruta absoluta, `..`, ruta inexistente, directorio sin permiso del SO (doble), atenuación que sí
   rechaza escapar de una subcapacidad creada por el programa.
 - [ ] `PG-B.13.03` Tests de resolución de rutas en macOS y Windows (letras de unidad, separadores, UNC) sobre el doble.
-- [ ] `PG-B.13.04` Sin código aquí.
-- [ ] `PG-B.13.05` Fichas de ayuda de `SolicitarDirectorio` y `Subdirectorio`.
-- [ ] `PG-B.13.06` `see validate`, `export --check`.
+- [x] `PG-B.13.04` Sin código aquí.
+- [x] `PG-B.13.05` Fichas de ayuda de `SolicitarDirectorio` y `Subdirectorio`.
+- [x] `PG-B.13.06` `see validate`, `export --check`.
 
 ##### PG-B.14 · Argumentos reales
 
-- [ ] `PG-B.14.01` Regla de `Argumentos` en `RT.HOST.INTERFACE`: entrega los argumentos de ejecución del anfitrión, en
+- [x] `PG-B.14.01` Regla de `Argumentos` en `RT.HOST.INTERFACE`: entrega los argumentos de ejecución del anfitrión, en
   orden y sin el nombre del programa.
-- [ ] `PG-B.14.02` Casos: ninguno, uno, varios con espacios y Unicode, argumento vacío.
+- [x] `PG-B.14.02` Casos: ninguno, uno, varios con espacios y Unicode, argumento vacío.
 - [ ] `PG-B.14.03` Tests del doble con argumentos.
-- [ ] `PG-B.14.04` Sin código aquí.
-- [ ] `PG-B.14.05` Ficha de ayuda de `SolicitarArgumentos` con el origen por anfitrión.
-- [ ] `PG-B.14.06` `see validate`.
+- [x] `PG-B.14.04` Sin código aquí.
+- [x] `PG-B.14.05` Ficha de ayuda de `SolicitarArgumentos` con el origen por anfitrión.
+- [x] `PG-B.14.06` `see validate`.
 
 ##### PG-B.15 · Doble de prueba del corpus y reanclaje
 
-- [ ] `PG-B.15.01` Reescribir `RT.HOST.INTERFACE#R6` como doble de prueba del corpus, no distribuible (D-01a).
-- [ ] `PG-B.15.02` Rederivar todos los casos con bloque `anfitrion` que declaren `permissions`, `requested_permissions` o
+- [x] `PG-B.15.01` Reescribir `RT.HOST.INTERFACE#R6` como doble de prueba del corpus, no distribuible (D-01a).
+- [x] `PG-B.15.02` Rederivar todos los casos con bloque `anfitrion` que declaren `permissions`, `requested_permissions` o
   `network_origins` (inventario de §A.2.1 del análisis), retirando esas claves.
-- [ ] `PG-B.15.03` Caso negativo de `see validate` que rechaza un caso con `permissions` en el bloque de anfitrión.
-- [ ] `PG-B.15.04` Esquema de casos y validación SEE actualizados si el esquema conoce esas claves; regenerar
+- [x] `PG-B.15.03` Caso negativo de `see validate` que rechaza un caso con `permissions` en el bloque de anfitrión.
+- [x] `PG-B.15.04` Esquema de casos y validación SEE actualizados si el esquema conoce esas claves; regenerar
   `export.json`.
-- [ ] `PG-B.15.05` README de `pseudolearn_spec` si cambia el esquema.
-- [ ] `PG-B.15.06` `see validate`, `export --check`, `lock --refresh` de todos los IDs del bloque 1 en una sola orden,
+- [x] `PG-B.15.05` README de `pseudolearn_spec` si cambia el esquema.
+- [x] `PG-B.15.06` `see validate`, `export --check`, `lock --refresh` de todos los IDs del bloque 1 en una sola orden,
   `lock --check`.
 
 #### Bloque 2 · Motor y API
 
 ##### PG-B.16 · Runtime y API sin autoridad por concesión
 
-- [ ] `PG-B.16.01` Contrato ya fijado por el bloque 1.
-- [ ] `PG-B.16.02` Vincular los casos del bloque 1 al sujeto `engine` en `conformance.yaml`; retirar vínculos `P6` que
+- [x] `PG-B.16.01` Contrato ya fijado por el bloque 1.
+- [x] `PG-B.16.02` Vincular los casos del bloque 1 al sujeto `engine` en `conformance.yaml`; retirar vínculos `P6` que
   quedan sin objeto.
-- [ ] `PG-B.16.03` Tests de `pseudolearn_runtime` y `pseudolearn_api` que fallan con listas de orígenes o intersección.
-- [ ] `PG-B.16.04` Eliminar `network_origins`, `local_origins`, `requested_permissions` e intersección de autoridad de
+- [x] `PG-B.16.03` Tests de `pseudolearn_runtime` y `pseudolearn_api` que fallan con listas de orígenes o intersección.
+- [x] `PG-B.16.04` Eliminar `network_origins`, `local_origins`, `requested_permissions` e intersección de autoridad de
   runtime, API y `bench_worker`; `DestinoDenegado` solo en atenuación voluntaria; `FakeHostProvider` y `memory_host*`
   detrás de `test-host` (D-PGB-R09); regla `isolation` que impide activar `test-host` desde CLI, puente y Wasm.
-- [ ] `PG-B.16.05` README del motor, API y runtime; `architecture.yaml` (`isolation`).
-- [ ] `PG-B.16.06` `see conform --subject engine --only <IDs>`; `cargo test` de runtime y API; Clippy; `rust-checks all`
+- [x] `PG-B.16.05` README del motor, API y runtime; `architecture.yaml` (`isolation`).
+- [x] `PG-B.16.06` `see conform --subject engine --only <IDs>`; `cargo test` de runtime y API; Clippy; `rust-checks all`
   e `isolation` con caso negativo; `cargo tree -e features` de CLI, puente y Wasm sin `test-host`.
 
 ##### PG-B.17 · Cinta con tiempo real y semilla
 
-- [ ] `PG-B.17.01` Contrato fijado por PG-B.12.
-- [ ] `PG-B.17.02` Casos de PG-B.12 vinculados.
-- [ ] `PG-B.17.03` Tests de grabación y reproducción con reloj, temporizador y semilla vivos.
-- [ ] `PG-B.17.04` Grabar semilla y lecturas de reloj; el temporizador registra la duración real; reproducción sin
+- [x] `PG-B.17.01` Contrato fijado por PG-B.12.
+- [x] `PG-B.17.02` Casos de PG-B.12 vinculados.
+- [x] `PG-B.17.03` Tests de grabación y reproducción con reloj, temporizador y semilla vivos.
+- [x] `PG-B.17.04` Grabar semilla y lecturas de reloj; el temporizador registra la duración real; reproducción sin
   consultar al anfitrión.
-- [ ] `PG-B.17.05` README del runtime y timeline.
-- [ ] `PG-B.17.06` `see conform` de `ENG.EFFECT.TAPE` y `LIB.TIME`; tests de cinta truncada/alterada intactos.
+- [x] `PG-B.17.05` README del runtime y timeline.
+- [x] `PG-B.17.06` `see conform` de `ENG.EFFECT.TAPE` y `LIB.TIME`; tests de cinta truncada/alterada intactos.
 
 #### Bloque 3 · CLI y extensión de escritorio
 
@@ -977,3 +977,35 @@ Una sola iteración autorizada el 2026-11-02 sin preguntas, sobre `feature/agreg
 
 - **Conformidad de app: `APP.EDITOR.COMPLETION` (C12–C15, C20) y `APP.EXEC.SNAPSHOT-VIEW` (C1, C6, C7).** Ninguno pertenece al diff de PG-B. Completado: vista previa de inserción nula, candidato no ofrecido y tipo `Desconocido`. Snapshot: en programas que solo declaran un arreglo (o un escalar) la consulta del último evento no muestra aún la variable; es comportamiento del motor que contradice `API.STATE.QUERY#R6` o un caso desactualizado, y requiere decisión sobre la fuente (`CONFLICT-REPORT`). No se ocultó ni se cambió el esperado para forzar el verde.
 - No se ejecutó el humo de macOS/iOS/Windows ni hubo participantes humanos; el diferimiento y la nota de §9 se mantienen. Por la conformidad de app anterior no se declara `PHASE-GREEN` ni PG-B.C11. Sin commit ni push.
+
+### 11.10 Bloque 1 · Contrato del corpus (PG-B.10–PG-B.15)
+
+HEAD `6ebd084c`, rama única. El corpus de HEAD ya traía reescritas las reglas de autoridad plena, red, tiempo, rutas y
+doble de prueba; esta iteración cerró los restos y las carencias de casos.
+
+| Punto | Cambio | Evidencia |
+|---|---|---|
+| PG-B.10 | `RT.PROCESS#R4` y `C3` (éxito en lugar de `permiso_denegado`); `LANG.EDITION.MODEL`, `LIB.HTTP`, `LIB.MODEL`, `API.PROJECT.MANIFEST#R5` sin lenguaje de concesión; `ENG.EXEC.EFFECT-COMMIT#C6`, `LIB.SCENARIO.BILINGUAL#C3` y `LIB.SCENARIO.FILE-JSON#C3` derivan la denegación de un fallo de plataforma inyectado | `see validate`, `export --check`, `lock --check` |
+| PG-B.11 | `LIB.HTTP.POLICY#C9`: loopback con puerto, dirección privada y `http` público aceptados | ídem |
+| PG-B.14 | `RT.HOST.INTERFACE#C11–C13`: ningún argumento, espacios y Unicode, argumento vacío | ídem |
+| PG-B.15 | `SEE.FORMAT` sin `permissions`/`requested_permissions`; `IDENTITY_FIELDS` de la grabación sin permisos; tests del esquema de anfitrión actualizados (rutas de sistema aceptadas, vacías rechazadas) y rechazo de claves retiradas ya cubierto por `host_schema_rejects_retired_authority_configuration` | `cargo test` y Clippy de `see_validation`/`see_conformance` en verde |
+
+Reanclaje en una sola orden: `API.PROJECT.MANIFEST, ENG.EXEC.EFFECT-COMMIT, LANG.EDITION.MODEL, LIB.HTTP, LIB.HTTP.POLICY,
+LIB.MODEL, LIB.SCENARIO.BILINGUAL, LIB.SCENARIO.FILE-JSON, RT.HOST.INTERFACE, RT.PROCESS, SEE.FORMAT`.
+
+Conformidad del motor regenerada (la evidencia local estaba obsoleta): 4026 observaciones, 12 divergencias y 1 de 31
+propiedades en rojo, todas del código del motor que aún aplica la autoridad anterior (`API.PROJECT.MANIFEST#R3/R4`,
+`ENG.EXEC.MODEL#R5`, `LIB.SCENARIO.FILE-JSON#C4`, `LIB.SCENARIO.HTTP-TASKS#C4`); ningún caso tocado en esta iteración
+diverge. Se resuelven en PG-B.16. Quedan abiertas `PG-B.10.03`, `.11.03`, `.12.03`, `.13.03` y `.14.03`: son tests de
+runtime y del doble, que pertenecen a PG-B.16/PG-B.17. `RT.HOST.INTERFACE#R8/R9` siguen con `revision_humana`.
+
+### 11.11 Bloque 2 · Motor y API (PG-B.16–PG-B.17)
+
+HEAD `6ebd084c`, rama única. El código de autoridad plena, `test-host` e `isolation` ya estaban en HEAD; esta iteración cerró tests, corpus, vínculos y READMEs.
+
+| Punto | Cambio | Evidencia |
+|---|---|---|
+| PG-B.16 | Casos rederivados por la regla: `LIB.SCENARIO.FILE-JSON#C4` y `ENG.EXEC.MODEL#C14` (directorio raíz con derechos 3), `LIB.SCENARIO.HTTP-TASKS#C4` (denegación del SO inyectada), columnas de `API.PROJECT.MANIFEST#C1/C14`; `RT.HOST.INTERFACE#R8/R9` exentas (revisión humana); `LIB.SCENARIO.*` vinculados; tests de destinos sin filtro, claves retiradas y atenuación voluntaria | `see conform --subject engine`: 4026 observaciones, 0 divergencias; `validate`, `export --check`, `lock --check`; Clippy, `rust-checks all` e `isolation`; `cargo tree -e features` sin `test-host` en CLI, puente y Wasm |
+| PG-B.17 | `live_time_tape_tests`: lecturas de reloj grabadas, reproducción sin anfitrión, semilla distinta rechazada; README del runtime | `cargo test -p pseudolearn_api --test live_time_tape_tests` |
+
+`cargo test --workspace --no-fail-fast` en verde. `a_detached_host_sees_every_concurrent_pending_effect` pedía tres `SolicitarTemporizador` concurrentes, pero `6ebd084c` serializa los efectos que crean capacidades; el test pide ahora el temporizador una vez y verifica tres `Esperar` pendientes a la vez. Quedan abiertas `PG-B.13.03` y `PG-B.14.03`. Sin commit ni push.

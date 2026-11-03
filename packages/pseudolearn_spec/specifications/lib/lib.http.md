@@ -884,7 +884,7 @@
 }
 ```
 
-RedCap conserva los orígenes concedidos en la autoridad del motor; los bytes de respuesta y los valores de petición son inmutables. MetodoHttp reconoce sus seis miembros en contexto sin añadir palabras reservadas. Los guiones de anfitrion.http solo se ejecutan en el anfitrión de memoria y nunca abren conexiones.
+RedCap es un valor opaco cuya atenuación voluntaria conserva un único origen; los bytes de respuesta y los valores de petición son inmutables. MetodoHttp reconoce sus seis miembros en contexto sin añadir palabras reservadas. Los guiones de anfitrion.http solo se ejecutan en el doble de prueba del corpus y nunca abren conexiones.
 
 Una respuesta 1xx informativa pertenece al transporte y debe consumirse antes de entregar una respuesta completa. El anfitrión de memoria modela una respuesta final completa; la validación del motor acepta estados 100 a 599 salvo 101 para mantener el contrato común con adaptadores.
 
