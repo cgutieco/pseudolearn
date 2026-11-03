@@ -18,14 +18,25 @@ const resultPath = join(base, "result.json");
 
 cpSync(join(extensionRoot, "tests/host/fixtures/project"), workspace, { recursive: true });
 cpSync(join(extensionRoot, "examples/file/saludo.pseudo"), join(base, "saludo.pseudo"));
+cpSync(join(extensionRoot, "../pseudolearn_cli/examples/general-purpose/character.es.pseudo"), join(base, "character.pseudo"));
 mkdirSync(developmentPath, { recursive: true });
 writeFileSync(join(developmentPath, "package.json"), JSON.stringify({ name: "host-tests", publisher: "local", version: "0.0.0", engines: { vscode: "^1.144.0" } }));
 
+const runOutput = process.env.PSEUDOLEARN_HOST_RUN_OUTPUT ? resolve(process.env.PSEUDOLEARN_HOST_RUN_OUTPUT) : undefined;
 const transcriptDirectory = process.env.PSEUDOLEARN_HOST_TRANSCRIPT;
 const bundledServer = join(extensions, "pseudolearn.pseudolearn-vscode-0.1.0/bin/darwin-arm64/pseudo");
 const environment = { PATH: "/usr/bin:/bin", HOME: process.env.HOME, TMPDIR: process.env.TMPDIR };
 const install = spawnSync(commandLine, ["--user-data-dir", userData, "--extensions-dir", extensions, "--install-extension", vsix], { env: environment, encoding: "utf8" });
 process.stdout.write(install.stdout + install.stderr);
+
+if (runOutput) {
+  rmSync(runOutput, { force: true });
+  const wrapper = join(base, "pseudo-run-output.sh");
+  writeFileSync(wrapper, `#!/bin/bash\nif [ "$1" = "lsp" ]; then exec "${bundledServer}" "$@"; fi\n"${bundledServer}" "$@" | /usr/bin/tee -a "${runOutput}"\n`, { mode: 0o755 });
+  mkdirSync(join(userData, "User"), { recursive: true });
+  writeFileSync(join(userData, "User/settings.json"), JSON.stringify({ "pseudolearn.server.path": wrapper }));
+  environment.NODE_ENV = "development";
+}
 
 if (transcriptDirectory) {
   mkdirSync(transcriptDirectory, { recursive: true });
@@ -39,7 +50,7 @@ if (transcriptDirectory) {
 const launch = spawnSync(
   application,
   ["--user-data-dir", userData, "--extensions-dir", extensions, `--extensionDevelopmentPath=${developmentPath}`, `--extensionTestsPath=${join(here, "suite.cjs")}`, "--no-sandbox", "--disable-gpu", "--disable-updates", "--skip-welcome", "--skip-release-notes", "--disable-telemetry", ...(mode === "trusted" ? ["--disable-workspace-trust"] : []), workspace],
-  { env: { ...environment, PSEUDOLEARN_HOST_MODE: mode, PSEUDOLEARN_HOST_RESULT: resultPath, PSEUDOLEARN_HOST_EXTENSIONS: extensions,
+  { env: { ...environment, PSEUDOLEARN_HOST_MODE: mode, PSEUDOLEARN_HOST_RESULT: resultPath, PSEUDOLEARN_HOST_EXTENSIONS: extensions, ...(runOutput ? { PSEUDOLEARN_HOST_RUN_OUTPUT: runOutput } : {}),
     ...(process.env.PSEUDOLEARN_HOST_DAP_REPORT ? { PSEUDOLEARN_HOST_DAP_REPORT: resolve(process.env.PSEUDOLEARN_HOST_DAP_REPORT) } : {}) }, encoding: "utf8", timeout: 300000 },
 );
 process.stdout.write(launch.stdout ?? "");

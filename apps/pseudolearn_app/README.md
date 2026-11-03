@@ -244,6 +244,8 @@ FRB_DART_LOAD_EXTERNAL_LIBRARY_NATIVE_LIB_DIR="$PWD/build/native_assets/macos" \
 # 10. Conformidad de la composición de app desde el miembro de especificaciones
 cd ../../packages/pseudolearn_spec
 cargo run -p see_cli --bin see -- conform --subject app
+flutter test --no-pub --device-id "$SIMULATOR_ID" integration_test/real_api_acceptance_test.dart \
+  --dart-define=PSEUDOLEARN_ACCEPTANCE=true
 ```
 
 El humo de plataforma inicia el puente real y recorre análisis, completado, entrada y consulta de arreglos.

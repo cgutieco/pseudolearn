@@ -33,6 +33,7 @@ const fixture = await startHttpFixture();
 await build({ entryPoints: [resolve(root, "tests/web/index.ts")], outfile: testBundle,
   bundle: true, platform: "browser", format: "cjs", external: ["vscode"], legalComments: "none",
   define: { __FIXTURE__: JSON.stringify({ http: fixture.http, https: fixture.https }),
+    __ACCEPTANCE__: JSON.stringify(process.env.PSEUDOLEARN_WEB_ACCEPTANCE ? readFileSync(resolve(root, process.env.PSEUDOLEARN_WEB_ACCEPTANCE), "utf8") : ""),
     __SCENARIOS__: JSON.stringify(Object.fromEntries(scenarioSources())) } });
 const output = resolve(root, "test-results/web", new Date().toISOString().replace(/[:.]/g, "-"));
 mkdirSync(output, { recursive: true });

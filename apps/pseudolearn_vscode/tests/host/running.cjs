@@ -41,6 +41,20 @@ async function runChecks(main) {
   });
 }
 
+async function acceptanceChecks() {
+  if (!process.env.PSEUDOLEARN_HOST_RUN_OUTPUT) return;
+  await step("acceptance program reaches the real API without configuration", async () => {
+    await open("../character.pseudo");
+    await vscode.commands.executeCommand("pseudolearn.runFile");
+    await until("program started", () => programs().length > 0);
+    await until("program finished", () => programs().length === 0, 30000);
+    const output = require("node:fs").readFileSync(process.env.PSEUDOLEARN_HOST_RUN_OUTPUT, "utf8");
+    const written = output.split("\n").filter((line) => line.includes('"event":"output"'));
+    if (!/200/.test(written.join()) || !/Rick Sanchez/.test(written.join()) || !/Alive/.test(written.join())) throw new Error(`unexpected output: ${output.slice(-600)}`);
+    return written.join(" ");
+  });
+}
+
 async function lifecycleChecks() {
   await step("explain answers without error", async () => {
     await vscode.commands.executeCommand("pseudolearn.explainAtCursor");
@@ -53,4 +67,4 @@ async function lifecycleChecks() {
   });
 }
 
-module.exports = { refusalChecks, runChecks, lifecycleChecks };
+module.exports = { refusalChecks, runChecks, acceptanceChecks, lifecycleChecks };

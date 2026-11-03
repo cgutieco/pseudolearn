@@ -100,11 +100,11 @@ PG-B.01–.09 siguen vigentes. Se reverifican con efectos reales en PG-B.25; no 
 
 ### 2.2 Antes del primer cambio de implementación
 
-- [ ] Registrar HEAD, diff, versiones (Flutter, Dart, Rust, FRB, Node, pnpm) y espacio libre en disco.
-- [ ] Leer completos los casos de cada especificación del bloque 1 y la lista de vínculos de conformidad que los
+- [x] Registrar HEAD, diff, versiones (Flutter, Dart, Rust, FRB, Node, pnpm) y espacio libre en disco.
+- [x] Leer completos los casos de cada especificación del bloque 1 y la lista de vínculos de conformidad que los
   referencian (`conformance*.yaml` del motor, CLI y app; `differential-exemptions.json`; `property-conformance.json`).
-- [ ] Leer el README de `pseudolearn_runtime`, `pseudolearn_api`, `pseudolearn_wasm` y de cada crate que se toque.
-- [ ] Línea base dirigida de §7.3 en HEAD.
+- [x] Leer el README de `pseudolearn_runtime`, `pseudolearn_api`, `pseudolearn_wasm` y de cada crate que se toque.
+- [x] Línea base dirigida de §7.3 en HEAD.
 
 ## 3. Decisiones de diseño
 
@@ -340,7 +340,7 @@ Cada punto: `.01` especificación · `.02` casos · `.03` tests · `.04` código
 
 - [x] `PG-B.19.01` `TOOL.DAP`: `launch` acepta `args` y `cwd`; sin claves de permiso.
 - [x] `PG-B.19.02` Casos DAP con argumentos y carpeta de trabajo.
-- [ ] `PG-B.19.03` Tests de `run_arguments.ts` y `debug_configuration.ts`; prueba de host confiable que ejecuta el
+- [x] `PG-B.19.03` Tests de `run_arguments.ts` y `debug_configuration.ts`; prueba de host confiable que ejecuta el
   programa de PG-B.27.
 - [x] `PG-B.19.04` `run --editor` y `pseudo dap` con anfitrión físico; carpeta del workspace o del archivo; retirar de la
   lista de rechazo las claves que dejan de significar algo; mensajes es/en sin «No se concede».
@@ -444,8 +444,8 @@ Cada punto: `.01` especificación · `.02` casos · `.03` tests · `.04` código
 - [x] `PG-B.27.02` Esperado derivado de la respuesta documentada de la API, comprobado a mano el día de la ejecución.
 - [x] `PG-B.27.03` Sin test automatizado contra Internet (el corpus no depende de Internet).
 - [x] `PG-B.27.04` Sin código.
-- [ ] `PG-B.27.05` Registro por plataforma en §11: fecha, hora, salida real y código HTTP.
-- [ ] `PG-B.27.06` Ejecución sin configuración en CLI macOS, extensión escritorio macOS, extensión web Chromium y WebKit,
+- [x] `PG-B.27.05` Registro por plataforma en §11: fecha, hora, salida real y código HTTP.
+- [x] `PG-B.27.06` Ejecución sin configuración en CLI macOS, extensión escritorio macOS, extensión web Chromium y WebKit,
   app macOS y app iOS simulador. App Windows: «implementado, no verificable en este equipo».
 
 #### Bloque 8 · Características de la app que hoy no se pueden usar
@@ -1115,3 +1115,23 @@ HEAD `fa0308ad`, rama única, árbol limpio al iniciar; cambios sin confirmar.
 | Corpus | `app.exec.configuration.md` nuevo, `configuration` añadido al enumerado de `see-1.schema.json`, vínculos en `conformance.yaml`, reanclaje solo de `APP.EXEC.CONFIGURATION` | `see validate` (197), `lock --check`, `export --check` |
 
 `flutter analyze`, `check_limits`, `check_content`, `check_design_system`, `check_syntax_coverage` y `test/architecture` en verde; `flutter test` completo: 2673 pruebas, 2 omitidas, 0 fallos. Abiertas: `PG-B.27.05` y `PG-B.27.06` (plataformas interactivas), y con ellas `PG-B.19.03` en su parte de extensión. Sin commit ni push.
+
+### 11.18 Cierre del bloque 7 (PG-B.19.03, PG-B.27.05/.06)
+
+HEAD `5aaf4514`, rama única; cambios sin confirmar. Versiones: Flutter 3.47.5, Dart 3.13.4, rustc 1.99.1, Node 22.23.3, pnpm 12.8.1. Disco libre al iniciar 5,9 GiB; se borró `packages/pseudolearn_engine/target/debug` (7,7 GiB regenerables) y quedaron 14 GiB. La caché de Playwright no existía y se descargaron Chromium headless shell y WebKit (505 MiB) con aprobación expresa.
+
+Programa: `apps/pseudolearn_cli/examples/general-purpose/character.es.pseudo`. API el 2026-11-03 15:29 -05: HTTP 200, `name` «Rick Sanchez», `status` «Alive».
+
+| Plataforma | Fecha y hora (-05) | Salida real | Resultado |
+|---|---|---|---|
+| CLI macOS | 2026-11-03 14:51 | `200`, `Rick Sanchez`, `Alive` (§11.17) | ejecutada |
+| Extensión de escritorio macOS (`PSEUDOLEARN_HOST_RUN_OUTPUT`, `run-host.mjs trusted`, `pseudolearn.runFile`) | 2026-11-03 15:32 | `200\nRick Sanchez\nAlive\n`; todas las comprobaciones del anfitrión en verde | ejecutada |
+| Web Chromium (`PSEUDOLEARN_WEB_ACCEPTANCE`) | 2026-11-03 15:48 | `200\nRick Sanchez\nAlive\nPseudoLearn: completed\n` | ejecutada |
+| Web WebKit | 2026-11-03 15:48 | igual | ejecutada |
+| App iOS simulador (iPhone 18 Pro, `integration_test/real_api_acceptance_test.dart`) | 2026-11-03 15:47 | `[200, Rick Sanchez, Alive]` | ejecutada: motor y anfitrión de la app en el proceso de la app, sin pulsar la interfaz |
+| App macOS (`flutter test integration_test/real_api_acceptance_test.dart -d macos`, `PseudoLearn.app` Debug) | 2026-11-03 16:05 | `[200, Rick Sanchez, Alive]` | ejecutada, con el alcance de iOS (sin pulsar la interfaz). Antes (15:49) falló por falta de perfil de desarrollo; la persona aceptó el acuerdo de desarrolladores y Xcode creó el perfil |
+| App Windows | — | — | implementado, no verificable en este equipo |
+
+Cambios: pasos de aceptación opcionales (sin Internet no entran a la suite) en `tests/host/{run-host.mjs,running.cjs,suite.cjs}`, `tests/web/{acceptance_scenario.ts,index.ts,run-web.mjs}` e `integration_test/real_api_acceptance_test.dart`; READMEs de extensión y app. Verificadores: `check:types`, `check:comments`, `check:size`, `check:architecture` de la extensión; `flutter analyze --fatal-infos --fatal-warnings`, `check_limits` y `check_content` de la app, todos en verde.
+
+Sin abiertas en este bloque. Xcode reescribió `Runner.xcscheme` al abrir el proyecto y se restauró; `project.pbxproj` no cambió. Sin commit ni push.

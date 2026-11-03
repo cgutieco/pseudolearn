@@ -4,6 +4,7 @@ import { runHttpScenarios, probeTls, type Fixture } from "./http_scenarios";
 import { registerMemoryProvider } from "./memory_provider";
 import { runProgramScenarios } from "./program_scenarios";
 import { runHostChecks } from "./host_checks";
+import { runAcceptanceScenario } from "./acceptance_scenario";
 
 declare const __FIXTURE__: Fixture;
 
@@ -16,6 +17,7 @@ export async function run(): Promise<void> {
     await runHttpScenarios(recorder, __FIXTURE__, tls);
     await runFileScenarios(recorder, provider);
     await runProgramScenarios(recorder, provider, tls === "accepted" ? __FIXTURE__.https : __FIXTURE__.http);
+    await runAcceptanceScenario(recorder);
     console.log(JSON.stringify({ schema: 2, target: "vscode-web-host", result: "passed", tls, durablePersistence: false,
       steps: recorder.steps }));
   } catch (error) {

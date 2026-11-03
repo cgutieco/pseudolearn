@@ -814,42 +814,42 @@ Reformulada el 2026-11-02 ([análisis del 2026-11-02](analisis-lenguaje-completo
 
 Puntos de la versión anterior (ejecutados en iteraciones autorizadas según §11 del plan detallado; se marcan al cierre de la fase, tras reverificarse en PG-B.25/.26):
 
-- [ ] `PG-B.01` Evento global seleccionado más foco, pila y estado por tarea; dos tareas sobre el mismo subprograma no
+- [x] `PG-B.01` Evento global seleccionado más foco, pila y estado por tarea; dos tareas sobre el mismo subprograma no
   comparten marcos.
-- [ ] `PG-B.02` Tres proyecciones: flujo local por tarea con marcas de espera, estructura de creación y unión, y ventana
+- [x] `PG-B.02` Tres proyecciones: flujo local por tarea con marcas de espera, estructura de creación y unión, y ventana
   paginada de eventos y estados.
-- [ ] `PG-B.03` Paso global y paso por tarea con la semántica de ADR-12, sin congelar otras tareas ni alterar el
+- [x] `PG-B.03` Paso global y paso por tarea con la semántica de ADR-12, sin congelar otras tareas ni alterar el
   planificador.
-- [ ] `PG-B.04` **Retirado el 2026-11-02** (efectos simulados); la identidad de entradas por tarea y solicitud sigue vigente.
-- [ ] `PG-B.05` Las mismas entradas y la misma cinta producen las mismas proyecciones.
-- [ ] `PG-B.06` Cancelación, error, canal lleno y bloqueo representados por su camino normativo.
-- [ ] `PG-B.07` Ningún temporizador de presentación decide la agenda; los pintores no esperan efectos.
-- [ ] `PG-B.08` Pruebas con el puente real y no solo con dobles.
-- [ ] `PG-B.09` Parte dinámica de E-PG-12 automatizada; estudio humano diferido por la persona; métrica candidata medida.
+- [x] `PG-B.04` **Retirado el 2026-11-02** (efectos simulados); la identidad de entradas por tarea y solicitud sigue vigente.
+- [x] `PG-B.05` Las mismas entradas y la misma cinta producen las mismas proyecciones.
+- [x] `PG-B.06` Cancelación, error, canal lleno y bloqueo representados por su camino normativo.
+- [x] `PG-B.07` Ningún temporizador de presentación decide la agenda; los pintores no esperan efectos.
+- [x] `PG-B.08` Pruebas con el puente real y no solo con dobles.
+- [x] `PG-B.09` Parte dinámica de E-PG-12 automatizada; estudio humano diferido por la persona; métrica candidata medida.
 
 Puntos de la reformulación:
 
-- [ ] `PG-B.10` Autoridad plena por omisión en el corpus: sin denegación, intersección ni manifiesto de permisos.
-- [ ] `PG-B.11` Red a cualquier destino `http`/`https`, TLS validado, sin política SSRF; diferencias del navegador como errores tipados.
-- [ ] `PG-B.12` Reloj y temporizador reales en vivo; semilla de entropía grabada; reproducción desde cinta.
-- [ ] `PG-B.13` Archivos con rutas del sistema; atenuación solo voluntaria.
-- [ ] `PG-B.14` Argumentos de ejecución reales.
-- [ ] `PG-B.15` Anfitrión de memoria solo como doble de prueba del corpus; casos rederivados y reanclaje.
-- [ ] `PG-B.16` Runtime y API sin autoridad por concesión; doble de prueba inalcanzable desde producto.
-- [ ] `PG-B.17` Cinta con tiempo real y semilla.
-- [ ] `PG-B.18` CLI con anfitrión físico completo por omisión en el crate compartido `pseudolearn_host`; opciones de concesión eliminadas.
-- [ ] `PG-B.19` Extensión de escritorio y DAP con autoridad plena, argumentos y carpeta de trabajo.
-- [ ] `PG-B.20` Extensión web con anfitrión real: Fetch sin orígenes, archivos del workspace, reloj, temporizador y argumentos.
-- [ ] `PG-B.21` Capa y puerto de anfitrión en la app, declarados antes del código.
-- [ ] `PG-B.22` Anfitrión real en el puente de la app, con medición previa de `PERF.ARTIFACT.SIZE`.
-- [ ] `PG-B.23` Configuración de plataforma iOS, macOS y Windows.
-- [ ] `PG-B.24` Eliminación de raíz de la simulación de la app.
-- [ ] `PG-B.25` Reverificación de tareas observables con anfitrión real.
-- [ ] `PG-B.26` E-PG-12 dinámico regenerado sin simulación.
-- [ ] `PG-B.27` Aceptación: archivo único que consulta la API de Rick y Morty sin configurar nada, por plataforma; Windows rotulado «no verificado».
-- [ ] `PG-B.28` Selector de rigor en la app.
-- [ ] `PG-B.29` Control para reproducir una ejecución en la app.
-- [ ] `PG-B.30` Receptor localizado en la tabla de traza y cobertura completa de diagramas.
+- [x] `PG-B.10` Autoridad plena por omisión en el corpus: sin denegación, intersección ni manifiesto de permisos.
+- [x] `PG-B.11` Red a cualquier destino `http`/`https`, TLS validado, sin política SSRF; diferencias del navegador como errores tipados.
+- [x] `PG-B.12` Reloj y temporizador reales en vivo; semilla de entropía grabada; reproducción desde cinta.
+- [x] `PG-B.13` Archivos con rutas del sistema; atenuación solo voluntaria.
+- [x] `PG-B.14` Argumentos de ejecución reales.
+- [x] `PG-B.15` Anfitrión de memoria solo como doble de prueba del corpus; casos rederivados y reanclaje.
+- [x] `PG-B.16` Runtime y API sin autoridad por concesión; doble de prueba inalcanzable desde producto.
+- [x] `PG-B.17` Cinta con tiempo real y semilla.
+- [x] `PG-B.18` CLI con anfitrión físico completo por omisión en el crate compartido `pseudolearn_host`; opciones de concesión eliminadas.
+- [x] `PG-B.19` Extensión de escritorio y DAP con autoridad plena, argumentos y carpeta de trabajo.
+- [x] `PG-B.20` Extensión web con anfitrión real: Fetch sin orígenes, archivos del workspace, reloj, temporizador y argumentos.
+- [x] `PG-B.21` Capa y puerto de anfitrión en la app, declarados antes del código.
+- [x] `PG-B.22` Anfitrión real en el puente de la app, con medición previa de `PERF.ARTIFACT.SIZE`.
+- [x] `PG-B.23` Configuración de plataforma iOS, macOS y Windows.
+- [x] `PG-B.24` Eliminación de raíz de la simulación de la app.
+- [x] `PG-B.25` Reverificación de tareas observables con anfitrión real.
+- [x] `PG-B.26` E-PG-12 dinámico regenerado sin simulación.
+- [x] `PG-B.27` Aceptación: archivo único que consulta la API de Rick y Morty sin configurar nada, por plataforma; Windows rotulado «no verificado».
+- [x] `PG-B.28` Selector de rigor en la app.
+- [x] `PG-B.29` Control para reproducir una ejecución en la app.
+- [x] `PG-B.30` Receptor localizado en la tabla de traza y cobertura completa de diagramas.
 
 Fuera de alcance: app Flutter web; clases abstractas, miembros estáticos, visibilidad protegida, excepciones, servidor
 HTTP, sockets, procesos hijos, FFI y registro de paquetes (D-11, D-16–D-19).
@@ -859,17 +859,17 @@ La reescritura no autoriza implementar: C01 y C02 siguen pendientes.
 
 Cierre común (definiciones en §4.0):
 
-- [ ] `PG-B.C01` Autorización de la persona para iniciar la fase, en mensaje nuevo.
-- [ ] `PG-B.C02` Plan detallado creado según §5 y revisado por la persona.
-- [ ] `PG-B.C03` SPEC-FIRST y congelamiento respetados.
-- [ ] `PG-B.C04` Reglas nuevas con casos o propiedades y vínculos como datos.
-- [ ] `PG-B.C05` Tests feliz, infeliz y límite en carpetas espejo.
-- [ ] `PG-B.C06` Capas declaradas, imports permitidos y límites de tamaño.
-- [ ] `PG-B.C07` Sin comentarios ni TODO; código en inglés; Rust sin pánicos ni `unsafe` no declarado.
-- [ ] `PG-B.C08` README y reglas de los miembros afectados actualizados, sin citar `docs/`.
-- [ ] `PG-B.C09` Fichas de ayuda y datos de proyección de la sintaxis nueva, o justificación.
-- [ ] `PG-B.C10` Riesgos revisados y experimentos con procedencia o diferidos por la persona.
-- [ ] `PG-B.C11` Tests y verificadores de los miembros afectados en verde.
+- [x] `PG-B.C01` Autorización de la persona para iniciar la fase, en mensaje nuevo.
+- [x] `PG-B.C02` Plan detallado creado según §5 y revisado por la persona.
+- [x] `PG-B.C03` SPEC-FIRST y congelamiento respetados.
+- [x] `PG-B.C04` Reglas nuevas con casos o propiedades y vínculos como datos.
+- [x] `PG-B.C05` Tests feliz, infeliz y límite en carpetas espejo.
+- [x] `PG-B.C06` Capas declaradas, imports permitidos y límites de tamaño.
+- [x] `PG-B.C07` Sin comentarios ni TODO; código en inglés; Rust sin pánicos ni `unsafe` no declarado.
+- [x] `PG-B.C08` README y reglas de los miembros afectados actualizados, sin citar `docs/`.
+- [x] `PG-B.C09` Fichas de ayuda y datos de proyección de la sintaxis nueva, o justificación.
+- [x] `PG-B.C10` Riesgos revisados y experimentos con procedencia o diferidos por la persona.
+- [x] `PG-B.C11` Tests y verificadores de los miembros afectados en verde.
 - [ ] `PG-B.C12` Commit sin atribución de IA y push ordinario comprobado a la rama única.
 - [ ] `PG-B.C13` Resumen completo, informe a la persona y parada.
 
@@ -877,9 +877,10 @@ Cierre común (definiciones en §4.0):
 
 | Punto | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
-| | | | |
+| PG-B.01–PG-B.26, PG-B.28–PG-B.30 | Cumplido | §11.1–§11.17 del plan detallado; suite Flutter 2673/0 fallos; `see conform` motor y app sin divergencias | PG-B.04 retirado |
+| PG-B.27 | Cumplido | §11.18: CLI, extensión de escritorio, web Chromium y WebKit, app macOS y app iOS simulador con `200 / Rick Sanchez / Alive`; Windows rotulado «no verificable» | Apps sin pulsar la interfaz |
 
-Revisión Git de cierre: · Verificadores ejecutados: · Pendientes justificados: · Decisiones de la persona:
+Revisión Git de cierre: `5aaf4514` con cambios sin confirmar · Verificadores ejecutados: ver §11.16–§11.18 · Pendientes justificados: C12 y C13 · Decisiones de la persona: aprobación de la descarga de Playwright (2026-11-03)
 
 ### 4.12 PG-7 · Erradicación, calificación y distribución del lenguaje completo
 
