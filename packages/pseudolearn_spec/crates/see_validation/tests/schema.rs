@@ -285,7 +285,10 @@ fn expect_replay_failure(specification: &mut see_model::Specification) -> Result
 fn host_schema_accepts_system_paths_and_rejects_empty_ones() -> Result<(), String> {
     for (host, valid) in [
         (serde_json::json!({"files":{"/outside":"secret"}}), true),
-        (serde_json::json!({"files":{"../up":"x","C:\\data\\a":"y"}}), true),
+        (
+            serde_json::json!({"files":{"../up":"x","C:\\data\\a":"y"}}),
+            true,
+        ),
         (serde_json::json!({"files":{"":"empty path"}}), false),
     ] {
         let mut specification = support::specification()?;
