@@ -203,6 +203,7 @@ final class ExecutionCubit extends Cubit<ExecutionState> {
         isOutputPanelExpanded: state.isOutputPanelExpanded,
         userCollapsedOutput: state.userCollapsedOutput,
         configuration: configuration,
+        recordedTape: replayTape,
       ),
     );
     return initialStep;

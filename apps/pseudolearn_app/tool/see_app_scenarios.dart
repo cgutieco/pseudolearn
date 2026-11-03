@@ -4,6 +4,7 @@ import 'see_app_assist.dart';
 import 'see_app_boundary.dart';
 import 'see_app_class_diagram.dart';
 import 'see_app_completion.dart';
+import 'see_app_configuration.dart';
 import 'see_app_control_flow.dart';
 import 'see_app_dependencies.dart';
 import 'see_app_export_support.dart';
@@ -20,6 +21,7 @@ Future<Map<String, Object?>> handleAppScenario(
   final result = switch (request['scenario']) {
     'boundary' => await runBoundaryScenario(transport, input),
     'pace' => await runPaceScenario(transport, input),
+    'configuration' => await runConfigurationScenario(transport, input),
     'snapshot' => await runSnapshotScenario(transport, input),
     'class_diagram' => await runClassDiagramScenario(transport, input),
     'control_flow' => await runControlFlowScenario(transport, input),

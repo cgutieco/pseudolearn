@@ -77,7 +77,6 @@ void main() {
     tester,
   ) async {
     final semantics = tester.ensureSemantics();
-    addTearDown(semantics.dispose);
     final (editor, _, _) = await _mount(tester);
     expect(find.bySemanticsLabel('Strictness'), findsOneWidget);
     await tester.tap(find.byType(DropdownButton<String>));
@@ -93,6 +92,7 @@ void main() {
     expect(find.text('Check argument quotes and escapes.'), findsOneWidget);
     expect(editor.state.document?.executionArguments, ['two words', '', 'λ']);
     await editor.saveDocument();
+    semantics.dispose();
   });
 
   testWidgets(
@@ -126,6 +126,7 @@ void main() {
         ),
         findsOneWidget,
       );
+      await editor.saveDocument();
     },
   );
 }

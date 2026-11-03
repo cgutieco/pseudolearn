@@ -59,10 +59,11 @@ final class _Controls extends StatelessWidget {
   }
 
   void _replay(BuildContext context) {
-    final document = editor.document;
+    final current = context.read<EditorCubit>().state;
+    final document = current.document;
     context.read<ExecutionCubit>().advance(
       pace: StepPace.toEnd,
-      sourceCode: editor.sourceCode,
+      sourceCode: current.sourceCode,
       profileId: document?.profileId ?? SyntaxProfileId.classicSpanish,
       languageId: context.read<SettingsCubit>().state.language,
       replay: true,
@@ -123,6 +124,8 @@ final class _Strictness extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return Semantics(
+      container: true,
+      explicitChildNodes: true,
       label: l10n.executionStrictness,
       child: DropdownButton<String>(
         value: editor.document?.strictness ?? 'flexible',

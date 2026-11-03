@@ -3,6 +3,7 @@ paquete: apps/pseudolearn_app
 activadas:
   - APP.ENGINE.BOUNDARY
   - APP.EXEC.PACE
+  - APP.EXEC.CONFIGURATION
   - APP.EXEC.SNAPSHOT-VIEW
   - APP.EDITOR.COMPLETION
   - API.PROGRAM.VIEW
@@ -38,6 +39,12 @@ vinculos:
     verificacion: ejecutor
     estado: cumple
   - regla: APP.EXEC.PACE@1.0.0#R4
+    verificacion: ejecutor
+    estado: cumple
+  - regla: APP.EXEC.CONFIGURATION@1.0.0#R1
+    verificacion: ejecutor
+    estado: cumple
+  - regla: APP.EXEC.CONFIGURATION@1.0.0#R2
     verificacion: ejecutor
     estado: cumple
   - regla: APP.EXEC.SNAPSHOT-VIEW@1.0.0#R1

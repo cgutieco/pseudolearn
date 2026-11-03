@@ -103,8 +103,8 @@ del núcleo; la aplicación traduce, orquesta y renderiza los resultados.
 |:---------------------------------------------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------|:-------------------------------------------------------------------------------------------------------|
 | Tramos de comentario para el resaltado del editor              | La API Rust de análisis expone tokens léxicos con tramos y el adaptador los proyecta a categorías del editor                              | Resuelto                                                                                              |
 | Adaptador remoto de Supabase                                   | Definición de credenciales de red y esquema de sincronización remota                                                                         | Resuelto (sincronización bidireccional y outbox en SQLite, ver decisiones de diseño de sincronización) |
-| Vocabulario localizado de receptor de objeto en tabla de traza | RustWatchRows proyecta receptor con thisObject del vocabulario público del perfil | Implementado; prueba bilingüe por FFI |
-| Selector del eje de rigor del perfil (estricto/flexible)       | `rustStrictness` fija el rigor flexible para los adaptadores de usuario; falta control de UI y persistencia por documento  | Abierto                                                                                                |
+| Vocabulario localizado de receptor de objeto en tabla de traza | RustWatchRows proyecta receptor con thisObject del vocabulario público del perfil | Resuelto; `rust_receiver_localization_test` comprueba `this` y `Este` por el puente real, con programas de clase en cada perfil |
+| Selector del eje de rigor del perfil (estricto/flexible)       | `Document.strictness` se guarda por documento y `ExecutionConfigurationControls` lo edita; análisis y ejecución lo reciben. `rustStrictness` queda solo como valor de las consultas que no dependen del rigor (completado, ayuda gramatical, asistencia de edición y plantillas de diagnóstico) | Resuelto; `APP.EXEC.CONFIGURATION#R1` y prueba de widget accesible |
 | Purga local sin lápidas en «Cerrar sesión y borrar datos de este dispositivo» | `AccountCubit.signOut(deleteLocalData: true)` borra por `SyncingDocumentRepository`, que encola una lápida por documento; reutilizar `LocalAccountDataPurger` | Abierto |
 | Inicio de sesión en la nube desde el `.zip` portable de Windows | Registro de `pseudolearn://` en `HKCU` desde la propia app, o aviso en la página de descargas de que el portable solo sirve sin cuenta | Abierto |
 | Distribución en Microsoft Store y firma de binarios | Configuración de empaquetado MSIX (`CESARGUTIERREZ.PseudoLearn`, Store ID `9MXZB1XDWP9J`) y workflow `.github/workflows/push-production-windows-store.yml`; Microsoft Store firma el paquete oficial en certificación | Resuelto (pendiente revisión en Partner Center) |
@@ -2562,8 +2562,14 @@ una proyección canónica. La app no valida la cinta: el motor es el único due�
   contra el motor real, «reproduction through the real engine» en `tool/native_bridge_adapters_test.dart` (equivalencia
   con espía de transporte, cinta de otro programa, cinta truncada y cinta adulterada).
 
-Pendiente declarado: no existe aún un control de interfaz para reproducir una ejecución; la capacidad vive en el puerto
-y se verifica contra el motor real. El estado de canales y cola no es consultable por API, por lo que no se compara.
+**Control «Reproducir».** `ExecutionConfigurationControls` habilita el botón mientras `ExecutionState.recordedTape` no sea
+nulo y no haya una ejecución en curso. Al pulsarlo lee la fuente y el documento vigentes del `EditorCubit` en ese instante,
+no los capturados en la última construcción del widget, porque una edición posterior a esa construcción reproduciría
+con la fuente anterior y ocultaría el rechazo. El cubit conserva la cinta durante la reproducción (`_startNew` la
+mantiene), de modo que una reproducción rechazada o aceptada permite otra. El rechazo se muestra localizado
+(`executionReplayRejected`). `APP.EXEC.CONFIGURATION#R2` cubre cinta válida y fuente cambiada por el puente real; la
+prueba de widgets verifica el botón deshabilitado sin cinta. El estado de canales y cola no es consultable por API,
+por lo que no se compara.
 
 ### 4.58 Resultados de tareas y terminaciones: error recuperable, trampa y corte del anfitrión
 

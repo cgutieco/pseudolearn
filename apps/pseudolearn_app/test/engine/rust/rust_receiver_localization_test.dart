@@ -6,28 +6,24 @@ import '../../fakes/native_test_engine.dart';
 
 const _english = '''
 class Counter
-constructor()
-endConstructor
-method Show()
-write 1;
-endMethod
+    public method Show()
+        write 1;
+    endMethod
 endClass
 algorithm Main
-define value as Counter <- new Counter();
-value.Show();
+    define value as Counter <- new Counter();
+    value.Show();
 endAlgorithm
 ''';
 const _spanish = '''
 Clase Counter
-Constructor()
-FinConstructor
-Metodo Show()
-Escribir 1;
-FinMetodo
+    Publico Metodo Show()
+        Escribir 1;
+    FinMetodo
 FinClase
 Algoritmo Main
-Definir value Como Counter <- Nuevo Counter();
-value.Show();
+    Definir value Como Counter <- Nuevo Counter();
+    value.Show();
 FinAlgoritmo
 ''';
 

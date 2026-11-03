@@ -1852,6 +1852,7 @@
               "enum": [
                 "boundary",
                 "pace",
+                "configuration",
                 "snapshot",
                 "completion",
                 "edit_assistance",

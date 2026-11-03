@@ -439,11 +439,11 @@ Cada punto: `.01` especificación · `.02` casos · `.03` tests · `.04` código
 
 ##### PG-B.27 · Programa de aceptación
 
-- [ ] `PG-B.27.01` Programa es/en en archivo único: GET `https://rickandmortyapi.com/api/character/1`, imprime nombre y
+- [x] `PG-B.27.01` Programa es/en en archivo único: GET `https://rickandmortyapi.com/api/character/1`, imprime nombre y
   estado; variante que lee un archivo de la carpeta de trabajo y usa `Esperar`.
-- [ ] `PG-B.27.02` Esperado derivado de la respuesta documentada de la API, comprobado a mano el día de la ejecución.
-- [ ] `PG-B.27.03` Sin test automatizado contra Internet (el corpus no depende de Internet).
-- [ ] `PG-B.27.04` Sin código.
+- [x] `PG-B.27.02` Esperado derivado de la respuesta documentada de la API, comprobado a mano el día de la ejecución.
+- [x] `PG-B.27.03` Sin test automatizado contra Internet (el corpus no depende de Internet).
+- [x] `PG-B.27.04` Sin código.
 - [ ] `PG-B.27.05` Registro por plataforma en §11: fecha, hora, salida real y código HTTP.
 - [ ] `PG-B.27.06` Ejecución sin configuración en CLI macOS, extensión escritorio macOS, extensión web Chromium y WebKit,
   app macOS y app iOS simulador. App Windows: «implementado, no verificable en este equipo».
@@ -452,31 +452,31 @@ Cada punto: `.01` especificación · `.02` casos · `.03` tests · `.04` código
 
 ##### PG-B.28 · Selector de rigor
 
-- [ ] `PG-B.28.01` Reutilizar `LANG.PROFILE.STRICTNESS`; sin regla nueva.
-- [ ] `PG-B.28.02` Escenario SEE de app con el mismo programa en ambos rigores.
-- [ ] `PG-B.28.03` Tests de cubit, persistencia por documento y widget accesible.
-- [ ] `PG-B.28.04` Control en ajustes del documento; `rustStrictness` deja de estar fijo.
-- [ ] `PG-B.28.05` README app §1.5 (pendiente resuelto).
-- [ ] `PG-B.28.06` Verificadores de app.
+- [x] `PG-B.28.01` Reutilizar `LANG.PROFILE.STRICTNESS`; sin regla nueva.
+- [x] `PG-B.28.02` Escenario SEE de app con el mismo programa en ambos rigores.
+- [x] `PG-B.28.03` Tests de cubit, persistencia por documento y widget accesible.
+- [x] `PG-B.28.04` Control en ajustes del documento; `rustStrictness` deja de estar fijo.
+- [x] `PG-B.28.05` README app §1.5 (pendiente resuelto).
+- [x] `PG-B.28.06` Verificadores de app.
 
 ##### PG-B.29 · Reproducir una ejecución
 
-- [ ] `PG-B.29.01` Reutilizar `API.EXECUTE#R9` y `ENG.EFFECT.TAPE`.
-- [ ] `PG-B.29.02` Escenario con cinta válida y con cinta rechazada.
-- [ ] `PG-B.29.03` Tests de cubit y widget; espía de anfitrión con cero llamadas.
-- [ ] `PG-B.29.04` Control «Reproducir» que usa el puerto `execution_reproduction.dart` existente; rechazos localizados.
-- [ ] `PG-B.29.05` README app §4.57 (pendiente resuelto).
-- [ ] `PG-B.29.06` Verificadores de app; `tool/test_bridge.sh`.
+- [x] `PG-B.29.01` Reutilizar `API.EXECUTE#R9` y `ENG.EFFECT.TAPE`.
+- [x] `PG-B.29.02` Escenario con cinta válida y con cinta rechazada.
+- [x] `PG-B.29.03` Tests de cubit y widget; espía de anfitrión con cero llamadas.
+- [x] `PG-B.29.04` Control «Reproducir» que usa el puerto `execution_reproduction.dart` existente; rechazos localizados.
+- [x] `PG-B.29.05` README app §4.57 (pendiente resuelto).
+- [x] `PG-B.29.06` Verificadores de app; `tool/test_bridge.sh`.
 
 ##### PG-B.30 · Localización del receptor y cobertura completa
 
-- [ ] `PG-B.30.01` Sin regla nueva.
-- [ ] `PG-B.30.02` Filas de cobertura de patrones de variante y literales de función con su proyección esperada.
-- [ ] `PG-B.30.03` Tests de `watch_row_projection.dart` en perfil inglés; `check_syntax_coverage.dart` con caso negativo
+- [x] `PG-B.30.01` Sin regla nueva.
+- [x] `PG-B.30.02` Filas de cobertura de patrones de variante y literales de función con su proyección esperada.
+- [x] `PG-B.30.03` Tests de `watch_row_projection.dart` en perfil inglés; `check_syntax_coverage.dart` con caso negativo
   que rechaza una fila «extensión».
-- [ ] `PG-B.30.04` Vocabulario de receptor parametrizado por perfil; proyección de las dos formas en las vistas.
-- [ ] `PG-B.30.05` README app §1.5 y sección de cobertura.
-- [ ] `PG-B.30.06` Verificadores de app; cobertura sin filas «extensión».
+- [x] `PG-B.30.04` Vocabulario de receptor parametrizado por perfil; proyección de las dos formas en las vistas.
+- [x] `PG-B.30.05` README app §1.5 y sección de cobertura.
+- [x] `PG-B.30.06` Verificadores de app; cobertura sin filas «extensión».
 
 ## 5. Capas, archivos y responsabilidad
 
@@ -1100,3 +1100,18 @@ HEAD `e6c397bc`, rama única; cambios sin confirmar. Se liberó disco (cachés d
 Suite Flutter completa: 2669 pruebas, 4 fallos, todos de PG-B.28–PG-B.30 (`rust_receiver_localization_test` ×2 y `execution_configuration_controls_test` ×2: rigor, persistencia y reproducción en la interfaz). `flutter analyze`, `check_limits`, `check_content`, `check_design_system`, `check_syntax_coverage` y `test/architecture` en verde.
 
 Abierto con motivo: `PG-B.19.03` (la prueba de host confiable que ejecuta el programa de PG-B.27 depende de ese programa y de Internet; pertenece a PG-B.27). Sin commit ni push.
+
+### 11.17 Bloque 7 · Aceptación por plataforma (PG-B.27–PG-B.30)
+
+HEAD `fa0308ad`, rama única, árbol limpio al iniciar; cambios sin confirmar.
+
+| Punto | Cambio | Evidencia |
+|---|---|---|
+| PG-B.27.01–.04 | Programas de aceptación ya presentes en `apps/pseudolearn_cli/examples/general-purpose` (`character.{es,en}.pseudo` sin configuración y `character-file-time.{es,en}.pseudo` con archivo y `Esperar`); sin test automatizado contra Internet, sin código nuevo | `curl` el 2026-11-03 14:50 -05: HTTP 200, `name` = «Rick Sanchez», `status` = «Alive» |
+| PG-B.27.05/.06 | CLI macOS ejecutada (única plataforma de este bloque ejecutable sin interfaz): las cuatro variantes imprimen `200`, `Rick Sanchez`, `Alive` (las dos con archivo anteponen `PseudoLearn`), salida 0, 2026-11-03 14:51 -05. **Abiertas** extensión de escritorio macOS, extensión web Chromium y WebKit, app macOS y app iOS simulador (requieren sesión interactiva con Internet); app Windows: «implementado, no verificable en este equipo» | `pseudo run <programa>` |
+| PG-B.28 | Control de rigor existente y accesible; defecto: la etiqueta semántica se fusionaba con el valor («Strictness\nFlexible»), ahora `container` + `explicitChildNodes`. `rustStrictness` solo queda en consultas independientes del rigor. `APP.EXEC.CONFIGURATION@1.0.0#R1` (C1–C3, escenario `configuration`) | `execution_configuration_controls_test` 2/2; `see conform --subject app`: 363 observaciones, 0 divergencias |
+| PG-B.29 | Defecto: `ExecutionCubit._startNew` descartaba la cinta al reproducir, así que el botón quedaba deshabilitado tras la primera reproducción; el botón lee el estado vigente del `EditorCubit` al pulsar. `APP.EXEC.CONFIGURATION@1.0.0#R2` (C4–C5): cinta válida y fuente cambiada (`identityMismatch`) | mismas pruebas; `tool/test_bridge.sh` 21/21 |
+| PG-B.30 | Defecto de prueba, no de código: los programas de `rust_receiver_localization_test` no analizaban (constructor explícito inexistente en la sintaxis); reescritos con método público. Cobertura sin filas «extensión» (78/78) con caso negativo existente | `rust_receiver_localization_test` 2/2; `check_syntax_coverage` |
+| Corpus | `app.exec.configuration.md` nuevo, `configuration` añadido al enumerado de `see-1.schema.json`, vínculos en `conformance.yaml`, reanclaje solo de `APP.EXEC.CONFIGURATION` | `see validate` (197), `lock --check`, `export --check` |
+
+`flutter analyze`, `check_limits`, `check_content`, `check_design_system`, `check_syntax_coverage` y `test/architecture` en verde; `flutter test` completo: 2673 pruebas, 2 omitidas, 0 fallos. Abiertas: `PG-B.27.05` y `PG-B.27.06` (plataformas interactivas), y con ellas `PG-B.19.03` en su parte de extensión. Sin commit ni push.
