@@ -5,15 +5,15 @@ use serde_json::{Value, json};
 use std::io::Write;
 use std::process::{Command, Stdio};
 
-const CLOCK_PROGRAM: &str = "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir clock Como Reloj <- Propagar SolicitarReloj();\nRetornar clock.Ahora();\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n";
+const INPUT_PROGRAM: &str = "Algoritmo Main\nDefinir Mutable value Como Entero <- 0;\nLeer value;\nEscribir value;\nFinAlgoritmo\n";
 
 fn host() -> Value {
-    json!({"permissions":["reloj"],"requested_permissions":["reloj"],"clock":[100,200]})
+    Value::Null
 }
 
 fn request(extra: &Value) -> Result<Value, String> {
-    let mut base = json!({"kind":"execute","program":CLOCK_PROGRAM,"profile":"es","strictness":"strict",
-        "inputs":[],"seed":42,"observe":"none","limits":{"micro_steps":100_000},"host":host()});
+    let mut base = json!({"kind":"execute","program":INPUT_PROGRAM,"profile":"es","strictness":"strict",
+        "inputs":["100"],"seed":42,"observe":"none","limits":{"micro_steps":100_000},"host":host()});
     let fields = base.as_object_mut().ok_or("request is not an object")?;
     for (key, value) in extra.as_object().ok_or("extra is not an object")? {
         fields.insert(key.clone(), value.clone());
@@ -144,22 +144,6 @@ fn native_rejects_a_tampered_tape_without_consulting_the_host() -> Result<(), St
 }
 
 #[test]
-fn denied_permission_is_reported_identically() -> Result<(), String> {
-    let denied =
-        request(&json!({"host":{"permissions":[],"requested_permissions":["reloj"],"clock":[1]}}))?;
-    let engine = engine(&denied)?;
-    let native = converse(&["aot"], &denied)?;
-    assert_ne!(engine.get("output"), Some(&json!("")), "{engine}");
-    assert_ne!(engine.get("output"), Some(&json!("100\n")), "{engine}");
-    assert_eq!(native.get("output"), engine.get("output"), "{native}");
-    assert_eq!(
-        tape_of(&native)?.get("entries"),
-        tape_of(&engine)?.get("entries")
-    );
-    Ok(())
-}
-
-#[test]
 fn native_rejects_history_seek() -> Result<(), String> {
     let native = converse(
         &["aot"],
@@ -177,11 +161,11 @@ fn native_rejects_history_seek() -> Result<(), String> {
 fn native_tape_is_inspected_with_seek_by_the_engine() -> Result<(), String> {
     let native = converse(&["aot"], &request(&json!({}))?)?;
     let mut session = ApiSession::default();
-    let analysis = session.call("create_analysis", &json!({"program":CLOCK_PROGRAM}));
+    let analysis = session.call("create_analysis", &json!({"program":INPUT_PROGRAM}));
     let started = session.call(
         "start",
-        &json!({"analysis":analysis.pointer("/value/resource"),"program":CLOCK_PROGRAM,
-            "profile":"es","strictness":"strict","inputs":[],"seed":42,
+        &json!({"analysis":analysis.pointer("/value/resource"),"program":INPUT_PROGRAM,
+            "profile":"es","strictness":"strict","inputs":["100"],"seed":42,
             "limits":{"micro_steps":100_000},"observe":"events",
             "execution_mode":"history_seek","effect_tape":tape_of(&native)?,"host":host()}),
     );

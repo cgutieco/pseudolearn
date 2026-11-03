@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { containsUri, authorizeFile } from "../../src/application/uri_authority";
+import { containsUri } from "../../src/application/uri_authority";
 
 describe("URI authority", () => {
   it("accepts components with escaped Unicode and preserves authority", () => {
@@ -13,11 +13,8 @@ describe("URI authority", () => {
     expect(containsUri("memfs://host/root", "memfs://host/root/a%2Fb")).toBe(false);
   });
 
-  it("requires a separate grant and provider confinement", () => {
-    const grant = { root: "memfs://host/root", writable: false, confined: true };
-    expect(authorizeFile(grant, "memfs://host/root/a", false)).toBe(true);
-    expect(authorizeFile(grant, "memfs://host/root/a", true)).toBe(false);
-    expect(authorizeFile({ ...grant, confined: false }, "memfs://host/root/a", false)).toBe(false);
-    expect(authorizeFile(undefined, "memfs://host/root/a", false)).toBe(false);
+  it("keeps voluntary root confinement separate from sibling prefixes", () => {
+    expect(containsUri("memfs://host/root", "memfs://host/root/a")).toBe(true);
+    expect(containsUri("memfs://host/root", "memfs://host/root-two/a")).toBe(false);
   });
 });

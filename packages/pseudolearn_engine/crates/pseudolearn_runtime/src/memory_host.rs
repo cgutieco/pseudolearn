@@ -26,6 +26,7 @@ pub struct MemoryHostProvider {
     pub(crate) clocks: VecDeque<u64>,
     pub(crate) faults: Vec<MemoryFault>,
     pub(crate) resources: BTreeMap<u32, String>,
+    pub(crate) directory_roots: BTreeMap<u32, String>,
     pub(crate) http_scripts: BTreeMap<String, HttpScript>,
 }
 
@@ -49,6 +50,7 @@ impl MemoryHostProvider {
         if !crate::memory_host_files::valid_path(&path) {
             return Err(IoErrorKind::InvalidPath);
         }
+        let path = crate::host_paths::normalize(&path).map_err(|error| error.kind)?;
         self.files.insert(path, content);
         Ok(())
     }
@@ -77,10 +79,21 @@ impl HostEffectProvider for MemoryHostProvider {
 
     fn close_all(&mut self) {
         self.resources.clear();
+        self.directory_roots.clear();
     }
 }
 
 impl MemoryHostProvider {
+    fn request_directory(&mut self, request: &HostEffectRequest) -> Result<HostValue, IoError> {
+        let path = text(request, 0)?;
+        let path = if path == "root" || path == "." {
+            String::new()
+        } else {
+            crate::host_paths::normalize(path)?
+        };
+        crate::memory_host_files::register(self, request, path)
+    }
+
     fn resolve(&mut self, request: &HostEffectRequest) -> Result<HostValue, IoError> {
         let path = crate::memory_host_files::request_path(self, request).ok();
         if let Some(fault) = self.faults.iter().find(|fault| {
@@ -93,12 +106,7 @@ impl MemoryHostProvider {
             return Err(fault.error);
         }
         match request.operation.as_str() {
-            "request_directory" => {
-                if text(request, 0)? != "root" {
-                    return Err(IoError::not_found());
-                }
-                crate::memory_host_files::register(self, request, String::new())
-            }
+            "request_directory" => self.request_directory(request),
             name if name.starts_with("request_") => {
                 crate::memory_host_files::register(self, request, String::new())
             }
@@ -116,6 +124,7 @@ impl MemoryHostProvider {
             }
             "timer_wait" => self.wait(request),
             "network_send" => self.send_network(request),
+            "network_restrict" => crate::memory_host_files::register(self, request, String::new()),
             "network_close" => self.close_network(request),
             _ => crate::memory_host_files::perform(self, request),
         }

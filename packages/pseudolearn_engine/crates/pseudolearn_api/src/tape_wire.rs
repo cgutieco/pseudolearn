@@ -33,9 +33,6 @@ pub fn build_identity(request: &ExecuteRequest) -> ExecutionIdentity {
         profile: request.profile.clone(),
         seed: request.seed,
         statement_limit: request.limits.statements,
-        permissions: pseudolearn_runtime::effective_permissions(request.host.as_ref())
-            .into_iter()
-            .collect(),
     }
 }
 

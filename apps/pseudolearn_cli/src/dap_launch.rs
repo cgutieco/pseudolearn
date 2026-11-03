@@ -13,7 +13,7 @@ pub(crate) fn launch(session: &mut DapSession, arguments: &Value) -> Result<(), 
     } else {
         file(session, &options, arguments)?;
     }
-    session.effects = host.map(crate::dap_effects::EffectHost::new);
+    session.effects = host.map(crate::dap_effects::EffectHost::new).transpose()?;
     session.stop_on_entry = arguments
         .get("stopOnEntry")
         .and_then(Value::as_bool)

@@ -22,8 +22,8 @@ fn read_body_program(limit: i64) -> String {
 
 fn host(body: &str) -> serde_json::Value {
     json!({
-        "permissions": ["red"],
-        "requested_permissions": ["red"],
+
+
         "http": {"GET https://fake.test/a": {"estado": 200, "cuerpo": body}}
     })
 }
@@ -91,8 +91,8 @@ fn rejects_only_requests_above_the_pending_limit_without_calling_the_host() {
             ..Default::default()
         },
         host: Some(json!({
-            "permissions": ["red"],
-            "requested_permissions": ["red"],
+
+
             "http": {
                 "GET https://fake.test/one": {"estado": 200},
                 "GET https://fake.test/two": {"estado": 201}

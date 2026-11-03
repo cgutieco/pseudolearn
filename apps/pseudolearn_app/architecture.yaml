@@ -57,6 +57,15 @@ layers:
       - 'package:flutter/cupertino.dart'
       - 'package:bloc/'
 
+  - id: 2
+    name: host
+    path: host
+    may_import: [ model, ports ]
+    forbidden_imports:
+      - 'package:flutter/'
+      - 'package:pseudolearn_app/engine/'
+      - 'package:bloc/'
+
   - id: 3
     name: application
     path: application
@@ -82,7 +91,7 @@ layers:
   - id: 5
     name: composition
     path: composition
-    may_import: [ model, ports, engine, data, application, presentation ]
+    may_import: [ model, ports, engine, data, host, application, presentation ]
     forbidden_imports: [ ]
 
 # Ningún archivo de lib/ puede importar esto, sea cual sea su capa.
@@ -218,6 +227,7 @@ color_literal_owner_paths:
 duration_literal_owner_paths:
   - presentation/theme/tokens/
   - domain/model/editor/autosave_policy.dart
+  - domain/model/execution/execution_polling_policy.dart
 
 # Rutas exentas del test de literales de texto destinado a una persona. No es una lista de
 # perdones: es la lista de los archivos cuya responsabilidad *es* el vocabulario mostrado a una

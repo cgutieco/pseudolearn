@@ -10,7 +10,7 @@ import 'package:pseudolearn_app/domain/model/execution/execution_step.dart';
 import 'package:pseudolearn_app/domain/model/execution/effect_wait.dart';
 import 'package:pseudolearn_app/domain/model/execution/output_line.dart';
 import 'package:pseudolearn_app/domain/model/execution/input_wait.dart';
-import 'package:pseudolearn_app/domain/model/execution/simulated_scenario.dart';
+import 'package:pseudolearn_app/domain/model/execution/execution_configuration.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
 
@@ -181,25 +181,28 @@ void main() {
       expect(outputs[2], outputs[0]);
     });
 
-    test('a pending effect ends the pump after all confirmed events', () async {
-      final execution = _ScriptedExecution([
-        _eventStep(0, 0),
-        _eventStep(1, 1),
-        _waitingForEffect(2),
-      ]);
-      final steps = <ExecutionStep>[];
+    test(
+      'a pending effect keeps confirmed events visible until the user stops',
+      () async {
+        final execution = _ScriptedExecution([
+          _eventStep(0, 0),
+          _eventStep(1, 1),
+          _waitingForEffect(2),
+        ]);
+        final steps = <ExecutionStep>[];
 
-      await const StepBatchRunner(batchSize: 25).runUntilSettled(
-        execution,
-        settlement: _toEnd,
-        fromRevision: 0,
-        shouldStop: () => false,
-        onStep: steps.add,
-      );
+        await const StepBatchRunner(batchSize: 25).runUntilSettled(
+          execution,
+          settlement: _toEnd,
+          fromRevision: 0,
+          shouldStop: () => steps.any((step) => step.isAwaitingEffect),
+          onStep: steps.add,
+        );
 
-      expect(steps.map((step) => step.eventIndex), [0, 1, 2]);
-      expect(steps.last.isAwaitingEffect, isTrue);
-    });
+        expect(steps.map((step) => step.eventIndex), [0, 1, 2]);
+        expect(steps.last.isAwaitingEffect, isTrue);
+      },
+    );
 
     test(
       'a task target that never appears reaches the local UI safety cap',
@@ -246,7 +249,7 @@ final class _ScriptedExecution implements ProgramExecution {
     required String sourceCode,
     required SyntaxProfileId profileId,
     required UiLanguageId languageId,
-    SimulatedScenario? scenario,
+    ExecutionConfiguration configuration = const ExecutionConfiguration(),
     EffectTape? replayTape,
   }) => _steps.first;
 

@@ -1,3 +1,4 @@
+import '../host/local_execution_environment.dart';
 import 'dart:io';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:supabase/supabase.dart' show SupabaseClient;
@@ -104,7 +105,10 @@ AppDependencies buildLocalDependencies({
   documentsDirectory: documentsDirectory,
   index: index,
   progressStore: progressStore,
-  engine: buildRustEngineServices(transport),
+  engine: buildRustEngineServices(
+    transport,
+    environment: LocalExecutionEnvironment(documentsDirectory.path),
+  ),
 );
 
 AppDependencies _buildLocalDependencies({

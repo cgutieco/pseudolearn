@@ -1,4 +1,5 @@
 import 'package:pseudolearn_app/domain/model/diagram/coverage/syntax_view_coverage_row.dart';
+import 'package:pseudolearn_app/domain/model/diagram/coverage/coverage_cell.dart';
 
 const Set<CoverageFamily> _executableFamilies = {
   CoverageFamily.control,
@@ -7,7 +8,9 @@ const Set<CoverageFamily> _executableFamilies = {
   CoverageFamily.task,
 };
 
-final RegExp _anchorPattern = RegExp(r'^([A-Z][A-Z0-9.\-]*)@(\d+\.\d+\.\d+)#(R\d+)$');
+final RegExp _anchorPattern = RegExp(
+  r'^([A-Z][A-Z0-9.\-]*)@(\d+\.\d+\.\d+)#(R\d+)$',
+);
 
 List<String> checkSyntaxCoverage({
   required List<SyntaxViewCoverageRow> rows,
@@ -53,12 +56,21 @@ void _checkRow(
   for (final kind in row.syntaxKinds) {
     final role = inventory[kind];
     if (role == null) {
-      violations.add('COV-STALE-ROW: ${row.construct} lists unknown form $kind');
+      violations.add(
+        'COV-STALE-ROW: ${row.construct} lists unknown form $kind',
+      );
     } else if (role != row.role.name) {
       violations.add(
         'COV-ROLE: ${row.construct} declares ${row.role.name} but $kind is $role',
       );
     }
+  }
+  if (row.cells.any(
+    (cell) => cell.representation == CoverageRepresentation.declaredExtension,
+  )) {
+    violations.add(
+      'COV-EXTENSION: ${row.construct} has an unfinished representation',
+    );
   }
   if (row.cells.any((cell) => cell.needsReason && cell.reason.trim().isEmpty)) {
     violations.add('COV-NO-REASON: ${row.construct} has a cell without reason');
@@ -72,10 +84,14 @@ void _checkRow(
   final anchor = _anchorPattern.firstMatch(row.rule);
   if (anchor == null ||
       !ruleExists(anchor.group(1)!, anchor.group(2)!, anchor.group(3)!)) {
-    violations.add('COV-RULE: ${row.construct} cites ${row.rule}, which does not exist');
+    violations.add(
+      'COV-RULE: ${row.construct} cites ${row.rule}, which does not exist',
+    );
   }
   if (!evidenceExists(row.evidence)) {
-    violations.add('COV-EVIDENCE: ${row.construct} cites missing ${row.evidence}');
+    violations.add(
+      'COV-EVIDENCE: ${row.construct} cites missing ${row.evidence}',
+    );
   }
 }
 

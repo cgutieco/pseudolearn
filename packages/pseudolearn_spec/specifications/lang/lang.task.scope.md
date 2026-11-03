@@ -683,12 +683,6 @@
   "origen": "derivado",
   "operacion": "execute",
   "anfitrion": {
-    "permissions": [
-      "temporizador"
-    ],
-    "requested_permissions": [
-      "temporizador"
-    ],
     "grabar_y_reproducir": true
   },
   "espera": {
@@ -717,12 +711,6 @@
   "origen": "derivado",
   "operacion": "execute",
   "anfitrion": {
-    "permissions": [
-      "temporizador"
-    ],
-    "requested_permissions": [
-      "temporizador"
-    ],
     "grabar_y_reproducir": true
   },
   "espera": {
@@ -801,12 +789,6 @@
   "origen": "derivado",
   "operacion": "execute",
   "anfitrion": {
-    "permissions": [
-      "temporizador"
-    ],
-    "requested_permissions": [
-      "temporizador"
-    ],
     "grabar_y_reproducir": true
   },
   "espera": {
@@ -852,12 +834,6 @@
   "operacion": "execute",
   "cancelacion": 3,
   "anfitrion": {
-    "permissions": [
-      "temporizador"
-    ],
-    "requested_permissions": [
-      "temporizador"
-    ],
     "grabar_y_reproducir": false
   },
   "espera": {

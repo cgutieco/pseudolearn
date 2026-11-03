@@ -10,8 +10,11 @@
 - Fecha de esta versión: 2026-11-02, America/Lima. Revisión inspeccionada: `194bd9ce`. Rama:
   `feature/agregar-ruta-de-especificacion`. Cambios ajenos presentes y conservados:
   `apps/pseudolearn_vscode/examples/project/app/main.pseudo`, `apps/pseudolearn_vscode/media/pseudolearn.tmLanguage.json`.
-- Petición: «Rewrite PG-B plan» (2026-11-02), tras aceptar las recomendaciones del análisis. **Autoriza redactar este
-  plan, no implementarlo.** `PG-B.C01` (autorización de inicio) y `PG-B.C02` (revisión del plan) siguen pendientes.
+- Petición inicial: «Rewrite PG-B plan» (2026-11-02), tras aceptar las recomendaciones del análisis.
+  La petición posterior «Implementa `4.11 PG-B · Lenguaje completo con anfitriones reales y app con tareas observables`
+  […] en una sola iteración. No me hagas preguntas, elige siempre la opción recomendada» autoriza la ejecución
+  integral y la selección de las recomendaciones. C01/C02 quedan autorizados por esa instrucción directa.
+  Revisión inicial de la ejecución: `04b4153868cc3ab63f90c2b0e1445e4adb8832bf`, árbol limpio y rama única.
 - Historia conservada: la versión anterior de este plan (preparada el 2026-11-02 sobre `5a0e12ae`) y sus iteraciones de
   PG-B.01–PG-B.09 quedan como evidencia en §4.1 y §11.1–§11.9. Sus casillas no se desmarcan. PG-B.04 pasa a **Retirado**
   (§4.1); su parte de entradas identificadas sigue vigente.

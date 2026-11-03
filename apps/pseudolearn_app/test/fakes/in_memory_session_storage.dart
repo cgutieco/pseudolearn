@@ -11,7 +11,7 @@ final class InMemorySessionStorage implements SessionStorage {
 
   @override
   Future<void> write(String key, String value) async {
-    if (throwOnWrite) throw Exception('Simulated keychain failure');
+    if (throwOnWrite) throw Exception('Injected keychain failure');
     _data[key] = value;
   }
 

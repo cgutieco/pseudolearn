@@ -9,8 +9,12 @@ const perform = async (host: BrowserEffectHost, effect: unknown): Promise<Resolu
 
 async function opened(provider: MemoryProvider, writable: boolean, mode: string, relative = "data.txt") {
   const grant = { root: "pseudolearn-fixture://files/root", writable, confined: true };
-  const host = new BrowserEffectHost({ origins: [], files: grant });
+  const host = new BrowserEffectHost({ root: grant.root });
   await perform(host, directoryEffect());
+  await perform(host, { effect_seq: writable ? "derive-write" : "derive-read", operation: "directory_derive",
+    receiver: { slot: "1", generation: "1", rights: "3", kind: "2" },
+    result_capability: { slot: "1", generation: "1", rights: writable ? "3" : "1", kind: "2" },
+    arguments: [{ kind: "text", value: "." }, { kind: "text", value: writable ? "read_write" : "read" }] });
   const file = await perform(host, openEffect(relative, mode));
   return { host, file, provider };
 }
@@ -33,7 +37,7 @@ async function disconnectAndDeny(recorder: Recorder, provider: MemoryProvider): 
   const reader = await opened(provider, true, "lectura");
   provider.faults.disconnectReads = true;
   const read = await perform(reader.host, readEffect());
-  recorder.equal([read.outcome, read.value.code], ["failed", "interrumpido"], "disconnect during a read fails without data");
+  recorder.equal([read.outcome, read.value.code], ["failed", "no_encontrado"], "disconnect during a read fails without data");
   provider.faults.disconnectReads = false;
   const attempts = provider.writeAttempts();
   const readonly = await opened(provider, false, "escritura");

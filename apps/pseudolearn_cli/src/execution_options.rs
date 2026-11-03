@@ -8,6 +8,18 @@ const MAX_PENDING_NETWORK: u64 = 8;
 const MAX_HTTP_TIMEOUT_NANOS: u64 = 30_000_000_000;
 const MAX_JSON_DEPTH: usize = 64;
 
+const RETIRED_AUTHORITY_OPTIONS: &[&str] = &[
+    "--grant",
+    "--conceder",
+    "--files",
+    "--archivos",
+    "--origin",
+    "--origen",
+    "--local-origin",
+    "--origen-local",
+    "--files-root",
+];
+
 #[derive(Clone, Debug, Default, Eq, PartialEq)]
 pub struct ExecutionArguments {
     pub seed: Option<i64>,
@@ -18,10 +30,8 @@ pub struct ExecutionArguments {
     pub trace: bool,
     pub native: bool,
     pub editor: bool,
-    pub grants: Vec<String>,
-    pub files_root: Option<String>,
-    pub origins: Vec<String>,
-    pub local_origins: Vec<String>,
+    pub program_arguments: Vec<String>,
+    pub working_directory: Option<String>,
     pub test_roots: Vec<String>,
     pub record_tape: Option<String>,
     pub replay_tape: Option<String>,
@@ -38,6 +48,13 @@ pub fn parse_numeric(
     execution: &mut ExecutionArguments,
 ) -> Result<(), CliError> {
     let flag = arguments.get(*index).map_or("", String::as_str);
+    if RETIRED_AUTHORITY_OPTIONS.contains(&flag) {
+        return Err(CliError::Usage(crate::messages::render(
+            "retiredAuthorityOption",
+            locale,
+            &[("option", flag)],
+        )));
+    }
     let next = index.saturating_add(1);
     let choice = arguments.get(next).map_or("", String::as_str);
     let invalid = || CliError::Usage(invalid_option_value(locale, flag, choice));
@@ -78,38 +95,6 @@ pub fn parse_tape_option(
     Ok(())
 }
 
-pub fn parse_grant_option(
-    arguments: &[String],
-    index: &mut usize,
-    locale: &str,
-    execution: &mut ExecutionArguments,
-) -> Result<(), CliError> {
-    let flag = arguments.get(*index).map_or("", String::as_str);
-    let next = index.saturating_add(1);
-    let choice = arguments.get(next).map_or("", String::as_str);
-    let invalid = || CliError::Usage(invalid_option_value(locale, flag, choice));
-    match flag {
-        "--conceder" | "--grant" => {
-            for name in choice.split(',') {
-                if !crate::physical_session::PERMISSION_VOCABULARY.contains(&name) {
-                    return Err(invalid());
-                }
-                execution.grants.push(if name == "network" {
-                    "red".to_owned()
-                } else {
-                    name.to_owned()
-                });
-            }
-        }
-        "--archivos" | "--files" if !choice.is_empty() => {
-            execution.files_root = Some(choice.to_owned());
-        }
-        _ => return Err(invalid()),
-    }
-    *index = next.saturating_add(1);
-    Ok(())
-}
-
 pub fn parse_network_option(
     arguments: &[String],
     index: &mut usize,
@@ -123,8 +108,6 @@ pub fn parse_network_option(
         return Err(CliError::Usage(invalid_option_value(locale, flag, choice)));
     }
     match flag {
-        "--origen" | "--origin" => execution.origins.push(choice.to_owned()),
-        "--origen-local" | "--local-origin" => execution.local_origins.push(choice.to_owned()),
         "--raiz-prueba" | "--test-root" => execution.test_roots.push(choice.to_owned()),
         _ => return Err(CliError::Usage(invalid_option_value(locale, flag, choice))),
     }

@@ -144,6 +144,7 @@ final class RustBatch {
   final PendingInputRequest? pendingInput;
   final Map<String, Object?>? pendingRequest;
   final List<PendingEffectRequest> pendingEffects;
+  final List<Map<String, Object?>> pendingRequests;
   final Map<String, Object?>? effectTape;
 
   const RustBatch({
@@ -155,6 +156,7 @@ final class RustBatch {
     this.pendingInput,
     this.pendingRequest,
     this.pendingEffects = const [],
+    this.pendingRequests = const [],
     this.effectTape,
   });
 
@@ -189,6 +191,7 @@ final class RustBatch {
           : null,
       pendingInput: pendingInput,
       pendingRequest: json['pending_effect'] as Map<String, Object?>?,
+      pendingRequests: _requestsOf(json),
       pendingEffects: [
         for (final pending
             in (json['pending_effects'] as List<Object?>? ?? const [])
@@ -197,6 +200,14 @@ final class RustBatch {
       ],
     );
   }
+
+  static List<Map<String, Object?>> _requestsOf(Map<String, Object?> json) =>
+      json['pending_effects'] != null
+      ? (json['pending_effects'] as List<Object?>).cast<Map<String, Object?>>()
+      : [
+          if (json['pending_effect'] case final Map<String, Object?> effect)
+            effect,
+        ];
 
   static Map<String, Object?>? _tapeOf(Object? tape) {
     if (tape != null && tape is! Map<String, Object?>) {

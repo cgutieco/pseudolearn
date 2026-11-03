@@ -6,7 +6,6 @@ import 'package:pseudolearn_app/domain/model/execution/execution_observation_sta
 import 'package:pseudolearn_app/domain/model/execution/execution_step.dart';
 import 'package:pseudolearn_app/domain/model/execution/execution_task_context.dart';
 import 'package:pseudolearn_app/domain/model/execution/input_wait.dart';
-import 'package:pseudolearn_app/domain/model/execution/simulated_capabilities.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
 import 'package:pseudolearn_app/engine/rust/native_rust_transport.dart';
@@ -101,7 +100,6 @@ final class _Session {
       transport,
       RustProgramExecution(
         transport,
-        capabilities: const SimulatedCapabilities(permissions: {'temporizador'}),
         autoResolveEffects: false,
         observationResource: resource,
       ),
@@ -120,15 +118,18 @@ ExecutionStep _start(_Session session, BridgeScenario scenario) =>
       languageId: scenario.language,
     );
 
-ExecutionStep _until(
+Future<ExecutionStep> _until(
   _Session session,
   ExecutionStep from,
   bool Function(ExecutionStep step) reached,
-) {
+) async {
   var step = from;
   for (var count = 0; count < stepBound; count++) {
     if (reached(step) || step.isTerminal) return step;
-    step = session.execution.step();
+    await Future<void>.delayed(const Duration(milliseconds: 1));
+    step = step.isAwaitingEffect
+        ? session.execution.settleEffect(EffectSettlement.resolve)
+        : session.execution.step();
   }
   fail('the condition was not reached within $stepBound steps');
 }
@@ -169,42 +170,52 @@ List<String> _lines(_Session session) =>
 void main() {
   for (final scenario in scenarios) {
     group('real bridge with tasks · ${scenario.label}', () {
-      test('a suspended task is inspected while another one advances', () {
+      test(
+        'a suspended task is inspected while another one advances',
+        () async {
+          final session = _Session.open();
+          final step = await _until(
+            session,
+            _start(session, scenario),
+            (step) => step.isAwaitingEffect,
+          );
+
+          expect(step.isAwaitingEffect, isTrue);
+          expect(step.pendingEffect?.operation, 'request_timer');
+          expect(_task(step, rootTask).status, ExecutionTaskStatus.suspended);
+          expect(
+            _task(step, advancingTask).status,
+            ExecutionTaskStatus.completed,
+          );
+          expect(_task(step, waitingTask).status.isTerminal, isFalse);
+          expect(_lines(session), ['before', '7']);
+
+          final suspendedAt = _eventIndex(
+            session,
+            'task_suspended',
+            waitingTask,
+          );
+          final state = _state(session, suspendedAt, waitingTask);
+          expect(state.taskId, waitingTask);
+          expect(state.frames.map((frame) => frame.name), contains('Wait'));
+          expect(_stateOf(state, waitingTask), 'waiting');
+          expect(_stateOf(state, advancingTask), isNot('completed'));
+
+          final later = _state(session, step.eventIndex, rootTask);
+          expect(_stateOf(later, advancingTask), 'completed');
+          expect(_stateOf(later, waitingTask), isNot('waiting'));
+
+          final calls = session.count('advance');
+          _state(session, suspendedAt, waitingTask);
+          expect(session.count('advance'), calls);
+          expect(_lines(session), ['before', '7']);
+          session.execution.stop();
+        },
+      );
+
+      test('an unknown task is a typed result, not an exception', () async {
         final session = _Session.open();
-        final step = _until(
-          session,
-          _start(session, scenario),
-          (step) => step.isAwaitingEffect,
-        );
-
-        expect(step.isAwaitingEffect, isTrue);
-        expect(step.pendingEffect?.operation, 'request_timer');
-        expect(_task(step, rootTask).status, ExecutionTaskStatus.suspended);
-        expect(_task(step, advancingTask).status, ExecutionTaskStatus.completed);
-        expect(_task(step, waitingTask).status.isTerminal, isFalse);
-        expect(_lines(session), ['before', '7']);
-
-        final suspendedAt = _eventIndex(session, 'task_suspended', waitingTask);
-        final state = _state(session, suspendedAt, waitingTask);
-        expect(state.taskId, waitingTask);
-        expect(state.frames.map((frame) => frame.name), contains('Wait'));
-        expect(_stateOf(state, waitingTask), 'waiting');
-        expect(_stateOf(state, advancingTask), isNot('completed'));
-
-        final later = _state(session, step.eventIndex, rootTask);
-        expect(_stateOf(later, advancingTask), 'completed');
-        expect(_stateOf(later, waitingTask), isNot('waiting'));
-
-        final calls = session.count('advance');
-        _state(session, suspendedAt, waitingTask);
-        expect(session.count('advance'), calls);
-        expect(_lines(session), ['before', '7']);
-        session.execution.stop();
-      });
-
-      test('an unknown task is a typed result, not an exception', () {
-        final session = _Session.open();
-        final step = _until(
+        final step = await _until(
           session,
           _start(session, scenario),
           (step) => step.isAwaitingEffect,
@@ -221,86 +232,101 @@ void main() {
         session.execution.stop();
       });
 
-      test('resolving the effect resumes the waiting task and then asks for input', () {
+      test(
+        'resolving the effect resumes the waiting task and then asks for input',
+        () async {
+          final session = _Session.open();
+          final waiting = await _until(
+            session,
+            _start(session, scenario),
+            (step) => step.isAwaitingEffect,
+          );
+          expect(waiting.isAwaitingEffect, isTrue);
+
+          final resumed = await _until(
+            session,
+            session.execution.settleEffect(EffectSettlement.resolve),
+            (step) => step.isAwaitingInput,
+          );
+
+          expect(resumed.isAwaitingInput, isTrue);
+          expect(resumed.inputWait?.taskId, rootTask);
+          expect(_lines(session), ['before', '7', 'after']);
+          expect(
+            _task(resumed, waitingTask).status,
+            ExecutionTaskStatus.completed,
+          );
+          session.execution.stop();
+        },
+      );
+
+      test(
+        'stale and foreign input is rejected before it reaches the engine',
+        () async {
+          final session = _Session.open();
+          var step = await _until(
+            session,
+            _start(session, scenario),
+            (step) => step.isAwaitingEffect,
+          );
+          step = await _until(
+            session,
+            session.execution.settleEffect(EffectSettlement.resolve),
+            (step) => step.isAwaitingInput,
+          );
+          final real = step.inputWait!;
+          final inputCalls = session.count('input');
+
+          final stale = InputWait(
+            resourceId: real.resourceId,
+            taskId: real.taskId,
+            requestId: real.requestId + 1,
+          );
+          final foreign = InputWait(
+            resourceId: real.resourceId,
+            taskId: waitingTask,
+            requestId: real.requestId,
+          );
+          final other = InputWait(
+            resourceId: real.resourceId + 1,
+            taskId: real.taskId,
+            requestId: real.requestId,
+          );
+          for (final request in [stale, foreign, other]) {
+            final answered = session.execution.provideInput(request, '5');
+            expect(answered.isAwaitingInput, isTrue);
+          }
+
+          expect(session.count('input'), inputCalls);
+          expect(_lines(session), ['before', '7', 'after']);
+
+          final finished = session.execution.provideInput(real, '5');
+          final end = await _until(
+            session,
+            finished,
+            (step) => step.isFinished,
+          );
+          expect(end.isFinished, isTrue);
+          final expected = ['before', '7', 'after', '5', '5'];
+          expect(_lines(session), expected);
+          session.execution.provideInput(real, '6');
+          expect(_lines(session), expected);
+          session.execution.stop();
+        },
+      );
+
+      test('cancelling releases every engine resource it opened', () async {
         final session = _Session.open();
-        final waiting = _until(
+        final waiting = await _until(
           session,
           _start(session, scenario),
           (step) => step.isAwaitingEffect,
         );
         expect(waiting.isAwaitingEffect, isTrue);
 
-        final resumed = _until(
-          session,
-          session.execution.settleEffect(EffectSettlement.resolve),
-          (step) => step.isAwaitingInput,
+        final cancelled = session.execution.settleEffect(
+          EffectSettlement.cancel,
         );
-
-        expect(resumed.isAwaitingInput, isTrue);
-        expect(resumed.inputWait?.taskId, rootTask);
-        expect(_lines(session), ['before', '7', 'after']);
-        expect(_task(resumed, waitingTask).status, ExecutionTaskStatus.completed);
-        session.execution.stop();
-      });
-
-      test('stale and foreign input is rejected before it reaches the engine', () {
-        final session = _Session.open();
-        var step = _until(
-          session,
-          _start(session, scenario),
-          (step) => step.isAwaitingEffect,
-        );
-        step = _until(
-          session,
-          session.execution.settleEffect(EffectSettlement.resolve),
-          (step) => step.isAwaitingInput,
-        );
-        final real = step.inputWait!;
-        final inputCalls = session.count('input');
-
-        final stale = InputWait(
-          resourceId: real.resourceId,
-          taskId: real.taskId,
-          requestId: real.requestId + 1,
-        );
-        final foreign = InputWait(
-          resourceId: real.resourceId,
-          taskId: waitingTask,
-          requestId: real.requestId,
-        );
-        final other = InputWait(
-          resourceId: real.resourceId + 1,
-          taskId: real.taskId,
-          requestId: real.requestId,
-        );
-        for (final request in [stale, foreign, other]) {
-          final answered = session.execution.provideInput(request, '5');
-          expect(answered.isAwaitingInput, isTrue);
-        }
-
-        expect(session.count('input'), inputCalls);
-        expect(_lines(session), ['before', '7', 'after']);
-
-        final finished = session.execution.provideInput(real, '5');
-        final end = _until(session, finished, (step) => step.isFinished);
-        expect(end.isFinished, isTrue);
-        final expected = ['before', '7', 'after', '5', '5'];
-        expect(_lines(session), expected);
-        session.execution.provideInput(real, '6');
-        expect(_lines(session), expected);
-        session.execution.stop();
-      });
-
-      test('cancelling releases every engine resource it opened', () {
-        final session = _Session.open();
-        final waiting = _until(
-          session,
-          _start(session, scenario),
-          (step) => step.isAwaitingEffect,
-        );
-        expect(waiting.isAwaitingEffect, isTrue);
-
-        final cancelled = session.execution.settleEffect(EffectSettlement.cancel);
 
         expect(cancelled.isCancelled, isTrue);
         expect(cancelled.isHalted, isFalse);
@@ -308,51 +334,60 @@ void main() {
           _task(cancelled, waitingTask).status,
           ExecutionTaskStatus.interruptedByHost,
         );
-        expect(session.execution.recordedTape?.toDocument()['status'], 'incomplete');
+        expect(
+          session.execution.recordedTape?.toDocument()['status'],
+          'incomplete',
+        );
         final opened =
             session.count('create_analysis') + session.count('start');
         session.execution.stop();
         expect(session.count('release'), opened);
       });
 
-      test('stopping a finished run releases its resources exactly once', () {
-        final session = _Session.open();
-        var step = _until(
-          session,
-          _start(session, scenario),
-          (step) => step.isAwaitingEffect,
-        );
-        step = _until(
-          session,
-          session.execution.settleEffect(EffectSettlement.resolve),
-          (step) => step.isAwaitingInput,
-        );
-        _until(
-          session,
-          session.execution.provideInput(step.inputWait!, '1'),
-          (step) => step.isFinished,
-        );
-        final opened =
-            session.count('create_analysis') + session.count('start');
-        session.execution.stop();
-        session.execution.stop();
-        expect(session.count('release'), opened);
-      });
+      test(
+        'stopping a finished run releases its resources exactly once',
+        () async {
+          final session = _Session.open();
+          var step = await _until(
+            session,
+            _start(session, scenario),
+            (step) => step.isAwaitingEffect,
+          );
+          step = await _until(
+            session,
+            session.execution.settleEffect(EffectSettlement.resolve),
+            (step) => step.isAwaitingInput,
+          );
+          await _until(
+            session,
+            session.execution.provideInput(step.inputWait!, '1'),
+            (step) => step.isFinished,
+          );
+          final opened =
+              session.count('create_analysis') + session.count('start');
+          session.execution.stop();
+          session.execution.stop();
+          expect(session.count('release'), opened);
+        },
+      );
     });
   }
 
-  test('an unknown operation and a malformed class never reach the app model', () {
-    final session = _Session.open();
-    expect(
-      () => session.transport.call('no_such_operation', const {}),
-      throwsA(anything),
-    );
-    final step = session.execution.startExecution(
-      sourceCode: 'Algoritmo',
-      profileId: SyntaxProfileId.classicSpanish,
-      languageId: UiLanguageId.spanish,
-    );
-    expect(step.isTerminal, isTrue);
-    expect(step.isFinished, isFalse);
-  });
+  test(
+    'an unknown operation and a malformed class never reach the app model',
+    () async {
+      final session = _Session.open();
+      expect(
+        () => session.transport.call('no_such_operation', const {}),
+        throwsA(anything),
+      );
+      final step = session.execution.startExecution(
+        sourceCode: 'Algoritmo',
+        profileId: SyntaxProfileId.classicSpanish,
+        languageId: UiLanguageId.spanish,
+      );
+      expect(step.isTerminal, isTrue);
+      expect(step.isFinished, isFalse);
+    },
+  );
 }

@@ -246,12 +246,6 @@
     "en": "subroutine Probe() as result<string, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\ndefine second as FileCap <- propagate directory.open(\"b\", \"read\");\ndefine left as string <- propagate file.readText();\ndefine right as string <- propagate second.readText();\nreturn success(left + right);\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "archivos_lectura"
-    ],
-    "requested_permissions": [
-      "archivos_lectura"
-    ],
     "files": {
       "a": "hola",
       "b": "mundo"
@@ -303,12 +297,6 @@
         "resource_from": 0,
         "arguments": {
           "host": {
-            "permissions": [
-              "reloj"
-            ],
-            "requested_permissions": [
-              "reloj"
-            ],
             "detached": true
           }
         }
@@ -481,12 +469,6 @@
         "resource_from": 0,
         "arguments": {
           "host": {
-            "permissions": [
-              "reloj"
-            ],
-            "requested_permissions": [
-              "reloj"
-            ],
             "detached": true
           }
         }
@@ -649,12 +631,6 @@
         "resource_from": 0,
         "arguments": {
           "host": {
-            "permissions": [
-              "reloj"
-            ],
-            "requested_permissions": [
-              "reloj"
-            ],
             "detached": true
           }
         }
@@ -1361,9 +1337,6 @@
           "observe": "events",
           "seed": 42,
           "host": {
-            "permissions": [
-              "reloj"
-            ],
             "detached": true
           },
           "execution_mode": "replay_from_tape"
@@ -1418,9 +1391,6 @@
           "observe": "events",
           "seed": 42,
           "host": {
-            "permissions": [
-              "reloj"
-            ],
             "detached": true
           },
           "execution_mode": "replay_from_tape",

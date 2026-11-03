@@ -165,12 +165,6 @@
     }
   },
   "anfitrion": {
-    "permissions": [
-      "temporizador"
-    ],
-    "requested_permissions": [
-      "temporizador"
-    ],
     "detached": true
   }
 }
@@ -202,12 +196,6 @@
     }
   },
   "anfitrion": {
-    "permissions": [
-      "temporizador"
-    ],
-    "requested_permissions": [
-      "temporizador"
-    ],
     "detached": true
   }
 }
@@ -429,14 +417,7 @@
     "salida": "early\nlate\n",
     "terminacion": "completed"
   },
-  "anfitrion": {
-    "permissions": [
-      "temporizador"
-    ],
-    "requested_permissions": [
-      "temporizador"
-    ]
-  }
+  "anfitrion": {}
 }
 ```
 

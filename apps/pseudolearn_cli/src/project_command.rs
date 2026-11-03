@@ -17,8 +17,9 @@ pub fn execute_check(options: &CliOptions) -> Result<i32, CliError> {
 }
 
 pub fn execute_run(options: &CliOptions) -> Result<i32, CliError> {
-    let prepared = prepare(options, true)?;
-    let outcome = call("execute_project", &prepared.arguments)?;
+    let mut prepared = prepare(options, true)?;
+    crate::project_execution::configure(options, &mut prepared.arguments)?;
+    let outcome = crate::project_execution::run(options, &prepared.arguments)?;
     if options.json_output {
         println!("{outcome}");
     } else {

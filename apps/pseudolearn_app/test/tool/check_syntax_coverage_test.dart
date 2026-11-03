@@ -58,15 +58,23 @@ List<String> _check(
 
 void main() {
   group('checkSyntaxCoverage', () {
+    test('unfinished extensions are rejected even with a reason', () {
+      expect(
+        _check([
+          _row(flowchart: const CoverageCell.extension('unfinished')),
+          _literalRow,
+        ]),
+        contains(startsWith('COV-EXTENSION')),
+      );
+    });
     test('a complete valid set passes', () {
       expect(_check([_row(), _literalRow]), isEmpty);
     });
 
     test('a removed row is reported as a missing public form', () {
-      expect(
-        _check([_row()]),
-        ['COV-MISSING-ROW: public form literal has no row'],
-      );
+      expect(_check([_row()]), [
+        'COV-MISSING-ROW: public form literal has no row',
+      ]);
     });
 
     test('an active construct added to the inventory needs a row', () {
@@ -75,11 +83,17 @@ void main() {
         inventory: {..._inventory, 'for_each_loop': 'statement'},
       );
 
-      expect(violations, ['COV-MISSING-ROW: public form for_each_loop has no row']);
+      expect(violations, [
+        'COV-MISSING-ROW: public form for_each_loop has no row',
+      ]);
     });
 
     test('a row for a form that no longer exists is stale', () {
-      final violations = _check([_row(), _literalRow, _row(construct: 'old', kinds: ['gone'])]);
+      final violations = _check([
+        _row(),
+        _literalRow,
+        _row(construct: 'old', kinds: ['gone']),
+      ]);
 
       expect(violations.any((v) => v.startsWith('COV-STALE-ROW')), isTrue);
     });
@@ -94,7 +108,11 @@ void main() {
     });
 
     test('a repeated identity is reported', () {
-      final violations = _check([_row(), _literalRow, _row(construct: 'again')]);
+      final violations = _check([
+        _row(),
+        _literalRow,
+        _row(construct: 'again'),
+      ]);
 
       expect(violations.single, startsWith('COV-DUPLICATE'));
     });
@@ -127,16 +145,6 @@ void main() {
       ]);
 
       expect(violations.single, startsWith('COV-HIDDEN-CONTROL'));
-    });
-
-    test('a declared extension on an executable construct is allowed', () {
-      expect(
-        _check([
-          _row(flowchart: const CoverageCell.extension('reported as unsupported')),
-          _literalRow,
-        ]),
-        isEmpty,
-      );
     });
 
     test('an unknown rule anchor and a malformed one are reported', () {
@@ -179,16 +187,19 @@ void main() {
         _literalRow,
       ]);
 
-      expect(violations.where((item) => item.startsWith('COV-HELP:')), hasLength(1));
+      expect(
+        violations.where((item) => item.startsWith('COV-HELP:')),
+        hasLength(1),
+      );
     });
 
-    test('declared help extensions need no card', () {
+    test('declared help extensions are rejected', () {
       final violations = _check([
         _row(help: const CoverageCell.extension('audited later')),
         _literalRow,
       ]);
 
-      expect(violations, isEmpty);
+      expect(violations.single, startsWith('COV-EXTENSION'));
     });
 
     test('the help catalog lists every card of the corpus export', () {

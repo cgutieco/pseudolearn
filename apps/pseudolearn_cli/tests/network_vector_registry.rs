@@ -6,19 +6,7 @@ struct Vector {
     test: &'static str,
 }
 
-const REQUIRED: [&str; 24] = [
-    "alternative_numeric_ipv4",
-    "ipv4_mapped_ipv6",
-    "ipv6_loopback",
-    "unspecified_ipv4",
-    "metadata_link_local",
-    "trailing_dot_hostname",
-    "uppercase_hostname",
-    "user_info_hostname",
-    "percent_encoded_hostname",
-    "ungranted_port",
-    "mixed_public_private_dns",
-    "dns_rebinding",
+const REQUIRED: [&str; 11] = [
     "redirect_to_http",
     "cross_origin_authorization_redirect",
     "environment_proxy",
@@ -30,70 +18,9 @@ const REQUIRED: [&str; 24] = [
     "gzip_expansion",
     "infinite_body",
     "never_responding_server",
-    "seeded_combinations",
 ];
 
-const REGISTRY: [Vector; 24] = [
-    vector(
-        "alternative_numeric_ipv4",
-        "src/network_address_policy_tests.rs",
-        "rejects_alternative_numeric_ip_forms",
-    ),
-    vector(
-        "ipv4_mapped_ipv6",
-        "src/network_address_policy_tests.rs",
-        "rejects_ssrf_ranges_for_ipv4_and_ipv6",
-    ),
-    vector(
-        "ipv6_loopback",
-        "src/network_address_policy_tests.rs",
-        "rejects_ssrf_ranges_for_ipv4_and_ipv6",
-    ),
-    vector(
-        "unspecified_ipv4",
-        "src/network_address_policy_tests.rs",
-        "rejects_ssrf_ranges_for_ipv4_and_ipv6",
-    ),
-    vector(
-        "metadata_link_local",
-        "src/network_address_policy_tests.rs",
-        "rejects_ssrf_ranges_for_ipv4_and_ipv6",
-    ),
-    vector(
-        "trailing_dot_hostname",
-        "src/network_resolver_tests.rs",
-        "rejects_a_forbidden_address_from_a_trailing_dot_hostname",
-    ),
-    vector(
-        "uppercase_hostname",
-        "src/physical_network_tests.rs",
-        "compares_hostnames_without_case_but_keeps_the_granted_port",
-    ),
-    vector(
-        "user_info_hostname",
-        "src/physical_network_tests.rs",
-        "rejects_insecure_or_non_origin_network_values",
-    ),
-    vector(
-        "percent_encoded_hostname",
-        "src/physical_network_tests.rs",
-        "rejects_insecure_or_non_origin_network_values",
-    ),
-    vector(
-        "ungranted_port",
-        "src/physical_network_tests.rs",
-        "enforces_granted_origins_for_complete_request_urls",
-    ),
-    vector(
-        "mixed_public_private_dns",
-        "src/network_resolver_tests.rs",
-        "rejects_every_address_if_any_resolution_is_forbidden",
-    ),
-    vector(
-        "dns_rebinding",
-        "src/network_resolver_tests.rs",
-        "dns_rebinding_cannot_change_the_single_checked_snapshot",
-    ),
+const REGISTRY: [Vector; 11] = [
     vector(
         "redirect_to_http",
         "tests/network_adapter_contract.rs",
@@ -106,7 +33,7 @@ const REGISTRY: [Vector; 24] = [
     ),
     vector(
         "environment_proxy",
-        "src/physical_network_tls_send_tests.rs",
+        "../../packages/pseudolearn_engine/crates/pseudolearn_host/src/physical_network_tls_send_tests.rs",
         "ignores_the_https_proxy_environment_variable",
     ),
     vector(
@@ -121,17 +48,17 @@ const REGISTRY: [Vector; 24] = [
     ),
     vector(
         "wrong_host_certificate",
-        "src/physical_network_tls_send_tests.rs",
+        "../../packages/pseudolearn_engine/crates/pseudolearn_host/src/physical_network_tls_send_tests.rs",
         "rejects_expired_wrong_host_and_untrusted_self_signed_certificates",
     ),
     vector(
         "expired_certificate",
-        "src/physical_network_tls_send_tests.rs",
+        "../../packages/pseudolearn_engine/crates/pseudolearn_host/src/physical_network_tls_send_tests.rs",
         "rejects_expired_wrong_host_and_untrusted_self_signed_certificates",
     ),
     vector(
         "self_signed_certificate",
-        "src/physical_network_tls_send_tests.rs",
+        "../../packages/pseudolearn_engine/crates/pseudolearn_host/src/physical_network_tls_send_tests.rs",
         "rejects_expired_wrong_host_and_untrusted_self_signed_certificates",
     ),
     vector(
@@ -146,13 +73,8 @@ const REGISTRY: [Vector; 24] = [
     ),
     vector(
         "never_responding_server",
-        "src/physical_network_stream_tests.rs",
+        "../../packages/pseudolearn_engine/crates/pseudolearn_host/src/physical_network_stream_tests.rs",
         "times_out_when_server_never_sends_a_response",
-    ),
-    vector(
-        "seeded_combinations",
-        "src/network_resolver_tests.rs",
-        "seeded_host_port_and_dns_combinations_preserve_address_policy",
     ),
 ];
 

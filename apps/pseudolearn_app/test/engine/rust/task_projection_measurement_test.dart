@@ -73,8 +73,7 @@ void main() {
           count: load.window,
         );
         final read =
-            (window as ExecutionObservationValue<ExecutionHistoryWindow>)
-                .value;
+            (window as ExecutionObservationValue<ExecutionHistoryWindow>).value;
         final integratedFlow = flow.project(
           events: read.events,
           rangeStart: read.events.first.index,
@@ -135,7 +134,7 @@ final class _Prepared {
 }
 
 _Prepared _prepare(MeasuredLoad load) {
-  final run = TaskSceneRun.open(timerPermitted: false);
+  final run = TaskSceneRun.open();
   final step = run.until(
     run.execution.startExecution(
       sourceCode: _programOf(load.tasks),
@@ -156,7 +155,15 @@ _Prepared _prepare(MeasuredLoad load) {
   final start = all.length - count;
   final window = all.sublist(start);
   final horizon = retained.horizonFirst;
-  return _Prepared(run, step, window, window.first.index, all.length, horizon, load.tasks);
+  return _Prepared(
+    run,
+    step,
+    window,
+    window.first.index,
+    all.length,
+    horizon,
+    load.tasks,
+  );
 }
 
 void _expectEquivalent(
@@ -167,7 +174,10 @@ void _expectEquivalent(
 ) {
   expect(pure.markers.length, prepared.events.length);
   expect(integrated.markers.length, pure.markers.length);
-  expect(integrated.lanes.map((lane) => lane.taskId), pure.lanes.map((lane) => lane.taskId));
+  expect(
+    integrated.lanes.map((lane) => lane.taskId),
+    pure.lanes.map((lane) => lane.taskId),
+  );
   expect(structure.tasks.length, inInclusiveRange(1, prepared.tasks + 1));
   expect(pure.lanes.length, lessThanOrEqualTo(prepared.tasks + 1));
   if (prepared.horizonFirst == 0 &&
@@ -178,7 +188,9 @@ void _expectEquivalent(
 
 String _programOf(int tasks) {
   if (tasks == 0) return 'algorithm Main\nwrite 1;\nendAlgorithm\n';
-  final spawns = [for (var index = 0; index < tasks; index++) 'spawn Work($index);'];
+  final spawns = [
+    for (var index = 0; index < tasks; index++) 'spawn Work($index);',
+  ];
   return [
     'subroutine suspendable Work(marker as integer)',
     'write marker;',

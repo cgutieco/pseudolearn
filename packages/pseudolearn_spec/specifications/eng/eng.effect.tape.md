@@ -71,14 +71,6 @@
     "en": "subroutine Probe() as result<string, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine file as FileCap <- propagate directory.open(\"n\", \"write\");\ndiscard file.writeText(\"dato\");\ndiscard file.close();\ndefine reader as FileCap <- propagate directory.open(\"n\", \"read\");\nreturn reader.readText();\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "archivos_lectura",
-      "archivos_escritura"
-    ],
-    "requested_permissions": [
-      "archivos_lectura",
-      "archivos_escritura"
-    ],
     "grabar_y_reproducir": true
   }
 }
@@ -89,7 +81,7 @@
   "id": "R2",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "ExecutionIdentity resume de forma canónica la huella del programa: código fuente, grafo de dependencias, perfil, semilla, límites efectivos y permisos efectivos. Dos ejecuciones con idéntica ExecutionIdentity y entradas de cinta producen idéntica traza de estados y salidas.",
+  "texto": "ExecutionIdentity resume canónicamente código fuente, grafo de dependencias, perfil, semilla efectiva y límites efectivos. La semilla proviene de entropía del sistema operativo salvo opción explícita y queda grabada. No existen permisos efectivos. Dos ejecuciones con idéntica identidad y entradas de cinta producen idéntica traza y salida; reproducción e historia no consultan al anfitrión.",
   "verificacion": [
     "C2"
   ]
@@ -119,14 +111,6 @@
     "en": "subroutine Probe() as result<integer, IoError>\ndefine clock as Clock <- propagate requestClock();\ndefine timer as Timer <- propagate requestTimer();\ndefine instant as integer <- propagate clock.now();\nreturn timer.wait(50);\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "reloj",
-      "temporizador"
-    ],
-    "requested_permissions": [
-      "reloj",
-      "temporizador"
-    ],
     "clock": [
       100
     ],
@@ -171,12 +155,6 @@
     "en": "subroutine Probe() as result<string, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\ndefine second as FileCap <- propagate directory.open(\"b\", \"read\");\ndefine left as string <- propagate file.readText();\ndefine right as string <- propagate second.readText();\nreturn success(left + right);\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "archivos_lectura"
-    ],
-    "requested_permissions": [
-      "archivos_lectura"
-    ],
     "files": {
       "a": "hola",
       "b": "mundo"
@@ -230,12 +208,6 @@
     "en": "subroutine Probe() as result<string, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\nreturn file.readText();\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code; if problem.uncertain then write \"incierto\"; else write \"cierto\"; endIf\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "archivos_lectura"
-    ],
-    "requested_permissions": [
-      "archivos_lectura"
-    ],
     "files": {
       "a": "hola"
     },
@@ -278,12 +250,6 @@
     "en": "subroutine Probe() as result<integer, IoError>\ndefine values as Arguments <- propagate requestArguments();\ndefine list as vector<string> <- propagate values.values();\nreturn success(list.length());\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "argumentos"
-    ],
-    "requested_permissions": [
-      "argumentos"
-    ],
     "args": [
       "uno",
       "dos"
@@ -357,14 +323,6 @@
     "en": "subroutine Probe() as result<integer, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine file as FileCap <- propagate directory.open(\"n\", \"write\");\nreturn file.writeText(\"s3cr3t\");\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "archivos_lectura",
-      "archivos_escritura"
-    ],
-    "requested_permissions": [
-      "archivos_lectura",
-      "archivos_escritura"
-    ],
     "secrets": {
       "token": {
         "key_id": "k1",
@@ -405,18 +363,6 @@
     "en": "subroutine Probe() as result<string, IoError>\ndefine values as Arguments <- propagate requestArguments();\ndefine list as vector<string> <- propagate values.values();\ndefine clock as Clock <- propagate requestClock();\ndefine instant as integer <- propagate clock.now();\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\ndefine content as string <- propagate file.readText();\ndefine timer as Timer <- propagate requestTimer();\ndefine waited as integer <- propagate timer.wait(5);\nreturn success(content);\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "argumentos",
-      "reloj",
-      "temporizador",
-      "archivos_lectura"
-    ],
-    "requested_permissions": [
-      "argumentos",
-      "reloj",
-      "temporizador",
-      "archivos_lectura"
-    ],
     "args": [
       "uno",
       "dos"
@@ -462,12 +408,6 @@
     "en": "subroutine Probe() as result<integer, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\ndefine first as string <- propagate file.readText();\ndefine second as string <- propagate file.readText();\ndefine third as string <- propagate file.readText();\nreturn success(3);\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "archivos_lectura"
-    ],
-    "requested_permissions": [
-      "archivos_lectura"
-    ],
     "files": {
       "a": "hola"
     },
@@ -554,12 +494,6 @@
     "en": "subroutine Probe() as result<string, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\nreturn file.readText();\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "archivos_lectura"
-    ],
-    "requested_permissions": [
-      "archivos_lectura"
-    ],
     "files": {
       "a": "hola"
     },
@@ -597,12 +531,6 @@
     "en": "subroutine Probe() as result<string, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\nreturn file.readText();\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "archivos_lectura"
-    ],
-    "requested_permissions": [
-      "archivos_lectura"
-    ],
     "files": {
       "a": "hola"
     },
@@ -640,12 +568,6 @@
     "en": "subroutine Probe() as result<string, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\nreturn file.readText();\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "archivos_lectura"
-    ],
-    "requested_permissions": [
-      "archivos_lectura"
-    ],
     "files": {
       "a": "hola"
     },
@@ -722,12 +644,6 @@
     "en": "subroutine suspendable Pause(label as integer)\ndiscard await requestTimer();\nwrite label;\nendSubroutine\nalgorithm Main\ntasks\nspawn Pause(1);\nspawn Pause(2);\nspawn Pause(3);\nendTasks\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "temporizador"
-    ],
-    "requested_permissions": [
-      "temporizador"
-    ],
     "grabar_y_reproducir": true,
     "orden_entrega": [
       3,
@@ -776,12 +692,6 @@
     "en": "subroutine suspendable Wait()\ndiscard await requestTimer();\nendSubroutine\nsubroutine suspendable Fail() as result<integer, string>\nreturn failure(\"problem\");\nendSubroutine\nalgorithm Main\ntasks failureReport\nspawn Wait();\nspawn Fail();\nendTasks\ndiscard failureReport;\nwrite \"done\";\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "temporizador"
-    ],
-    "requested_permissions": [
-      "temporizador"
-    ],
     "grabar_y_reproducir": true
   }
 }
@@ -791,8 +701,14 @@
 {
   "id": "C15",
   "regla": "R3",
-  "perfiles": ["es", "en"],
-  "rigor": ["estricto", "flexible"],
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
@@ -802,8 +718,18 @@
       "llamadas": 2,
       "estado_cinta": "reproducible",
       "efectos": [
-        {"effect_seq": 1, "capability_kind": "network", "operation": "request_network", "outcome": "committed"},
-        {"effect_seq": 2, "capability_kind": "network", "operation": "network_send", "outcome": "committed"}
+        {
+          "effect_seq": 1,
+          "capability_kind": "network",
+          "operation": "request_network",
+          "outcome": "committed"
+        },
+        {
+          "effect_seq": 2,
+          "capability_kind": "network",
+          "operation": "network_send",
+          "outcome": "committed"
+        }
       ]
     }
   },
@@ -812,10 +738,12 @@
     "en": "subroutine Probe() as result<integer, IoError>\ndefine net as NetworkCap <- propagate requestNetwork();\ndefine request as HttpRequest <- HttpRequest(HttpMethod.GET, \"https://fake.test/a\");\ndefine response as HttpResponse <- propagate net.send(request);\nreturn success(response.status());\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.uncertain;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": ["red"],
-    "requested_permissions": ["red"],
     "grabar_y_reproducir": true,
-    "http": {"GET https://fake.test/a": {"estado": 200}}
+    "http": {
+      "GET https://fake.test/a": {
+        "estado": 200
+      }
+    }
   }
 }
 ```
@@ -823,8 +751,14 @@
 {
   "id": "C16",
   "regla": "R6",
-  "perfiles": ["es", "en"],
-  "rigor": ["estricto", "flexible"],
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
@@ -835,8 +769,19 @@
       "recursos_abiertos": 0,
       "estado_cinta": "uncertain_external_state",
       "efectos": [
-        {"effect_seq": 1, "capability_kind": "network", "operation": "request_network", "outcome": "committed"},
-        {"effect_seq": 2, "task_id": 1, "capability_kind": "network", "operation": "network_send", "outcome": "abandoned"}
+        {
+          "effect_seq": 1,
+          "capability_kind": "network",
+          "operation": "request_network",
+          "outcome": "committed"
+        },
+        {
+          "effect_seq": 2,
+          "task_id": 1,
+          "capability_kind": "network",
+          "operation": "network_send",
+          "outcome": "abandoned"
+        }
       ],
       "reproduccion_fallo": "replay_non_reproducible"
     }
@@ -845,9 +790,6 @@
     "es": "SubProceso Suspendible Wait(net Como RedCap)\nDescartar Aguardar net.Enviar(PeticionHttp(MetodoHttp.POST, \"https://fake.test/abandoned-post\"));\nFinSubProceso\nSubProceso Suspendible Fail() Como Resultado<Entero, Cadena>\nRetornar Error(\"problem\");\nFinSubProceso\nAlgoritmo Main\nSegun SolicitarRed() Hacer\nExito(net):\nTareas failureReport\nLanzar Wait(net);\nLanzar Fail();\nFinTareas\nDescartar failureReport;\nEscribir \"done\";\nError(denied): Escribir denied.Incierto;\nFinSegun\nFinAlgoritmo\n",
     "en": "subroutine suspendable Wait(net as NetworkCap)\ndiscard await net.send(HttpRequest(HttpMethod.POST, \"https://fake.test/abandoned-post\"));\nendSubroutine\nsubroutine suspendable Fail() as result<integer, string>\nreturn failure(\"problem\");\nendSubroutine\nalgorithm Main\nswitch requestNetwork() do\nsuccess(net):\ntasks failureReport\nspawn Wait(net);\nspawn Fail();\nendTasks\ndiscard failureReport;\nwrite \"done\";\nfailure(denied): write denied.uncertain;\nendSwitch\nendAlgorithm\n"
   },
-  "anfitrion": {
-    "permissions": ["red"],
-    "requested_permissions": ["red"]
-  }
+  "anfitrion": {}
 }
 ```

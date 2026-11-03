@@ -1,11 +1,11 @@
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 use std::process::{Command, Output};
 
-const READER: &str = "SubProceso Probe() Como Resultado<Cadena, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a.txt\", \"lectura\");\nRetornar file.LeerTexto();\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n";
+const READER: &str = "SubProceso Probe() Como Resultado<Cadena, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\".\");\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a.txt\", \"lectura\");\nRetornar file.LeerTexto();\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n";
 
-const ESCAPER: &str = "SubProceso Probe() Como Resultado<Cadena, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"../secret.txt\", \"lectura\");\nRetornar file.LeerTexto();\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n";
+const ESCAPER: &str = "SubProceso Probe() Como Resultado<Cadena, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\".\");\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"../secret.txt\", \"lectura\");\nRetornar file.LeerTexto();\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n";
 
-const WRITER: &str = "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"salida.txt\", \"escritura\");\nRetornar file.EscribirTexto(\"guardado\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n";
+const WRITER: &str = "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\".\");\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"salida.txt\", \"escritura\");\nRetornar file.EscribirTexto(\"guardado\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n";
 
 struct Space {
     base: PathBuf,
@@ -25,14 +25,11 @@ fn run(space: &Space, program: &str, extra: &[&str]) -> std::io::Result<Output> 
     let source = space.base.join("main.pseudo");
     std::fs::write(&source, program)?;
     Command::new(env!("CARGO_BIN_EXE_pseudo"))
+        .current_dir(&space.granted)
         .arg("run")
         .arg(&source)
         .args(extra)
         .output()
-}
-
-fn granted(space: &Space) -> &Path {
-    &space.granted
 }
 
 fn text(output: &Output) -> String {
@@ -44,28 +41,12 @@ fn physical_read_records_a_tape_that_replays_without_the_disk()
 -> Result<(), Box<dyn std::error::Error>> {
     let space = space("read")?;
     let tape = space.base.join("tape.json");
-    let directory = granted(&space).to_string_lossy().into_owned();
     let tape_path = tape.to_string_lossy().into_owned();
-    let live = run(
-        &space,
-        READER,
-        &[
-            "--grant",
-            "archivos_lectura",
-            "--files",
-            &directory,
-            "--record-tape",
-            &tape_path,
-        ],
-    )?;
+    let live = run(&space, READER, &["--record-tape", &tape_path])?;
     assert!(live.status.success(), "{live:?}");
     assert_eq!(text(&live), "hola\n");
     std::fs::remove_file(space.granted.join("a.txt"))?;
-    let replayed = run(
-        &space,
-        READER,
-        &["--grant", "archivos_lectura", "--replay-tape", &tape_path],
-    )?;
+    let replayed = run(&space, READER, &["--replay-tape", &tape_path])?;
     assert!(replayed.status.success(), "{replayed:?}");
     assert_eq!(text(&replayed), "hola\n");
     std::fs::remove_dir_all(space.base)?;
@@ -73,28 +54,21 @@ fn physical_read_records_a_tape_that_replays_without_the_disk()
 }
 
 #[test]
-fn parent_escape_is_denied_and_the_outside_file_is_never_read()
--> Result<(), Box<dyn std::error::Error>> {
+fn parent_paths_are_available_with_full_authority() -> Result<(), Box<dyn std::error::Error>> {
     let space = space("escape")?;
-    let directory = granted(&space).to_string_lossy().into_owned();
-    let output = run(
-        &space,
-        ESCAPER,
-        &["--grant", "archivos_lectura", "--files", &directory],
-    )?;
-    assert_eq!(text(&output), "ruta_invalida\n", "{output:?}");
+    let output = run(&space, ESCAPER, &[])?;
+    assert_eq!(text(&output), "afuera\n", "{output:?}");
     std::fs::remove_dir_all(space.base)?;
     Ok(())
 }
 
 #[test]
-fn read_only_grant_denies_writing() -> Result<(), Box<dyn std::error::Error>> {
+fn voluntary_read_only_directory_denies_writing() -> Result<(), Box<dyn std::error::Error>> {
     let space = space("readonly")?;
-    let directory = granted(&space).to_string_lossy().into_owned();
     let denied = run(
         &space,
-        WRITER,
-        &["--grant", "archivos_lectura", "--files", &directory],
+        &WRITER.replace("Definir file", "Definir bounded Como DirectorioCap <- Propagar directory.Subdirectorio(\".\", \"lectura\");\nDefinir file").replace("directory.Abrir", "bounded.Abrir"),
+        &[],
     )?;
     assert_eq!(text(&denied), "permiso_denegado\n", "{denied:?}");
     assert!(!space.granted.join("salida.txt").exists());
@@ -103,15 +77,10 @@ fn read_only_grant_denies_writing() -> Result<(), Box<dyn std::error::Error>> {
 }
 
 #[test]
-fn write_grant_persists_the_file_inside_the_granted_directory()
--> Result<(), Box<dyn std::error::Error>> {
+fn full_authority_persists_files_in_the_working_directory() -> Result<(), Box<dyn std::error::Error>>
+{
     let space = space("write")?;
-    let directory = granted(&space).to_string_lossy().into_owned();
-    let output = run(
-        &space,
-        WRITER,
-        &["--grant", "archivos_escritura", "--files", &directory],
-    )?;
+    let output = run(&space, WRITER, &[])?;
     assert_eq!(text(&output), "8\n", "{output:?}");
     assert_eq!(
         std::fs::read_to_string(space.granted.join("salida.txt"))?,

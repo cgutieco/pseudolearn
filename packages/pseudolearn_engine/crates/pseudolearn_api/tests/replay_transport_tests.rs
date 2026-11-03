@@ -4,7 +4,7 @@ use serde_json::{Value, json};
 const CLOCK: &str = "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir clock Como Reloj <- Propagar SolicitarReloj();\nRetornar clock.Ahora();\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n";
 
 fn host() -> Value {
-    json!({"permissions":["reloj"],"detached":true})
+    json!({"detached":true})
 }
 
 fn start_replay(extra: Value) -> Value {

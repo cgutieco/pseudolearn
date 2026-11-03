@@ -14,14 +14,13 @@ fn identity() -> ExecutionIdentity {
         profile: "es".to_owned(),
         seed: 1,
         statement_limit: None,
-        permissions: vec!["red".to_owned()],
     }
 }
 
 fn host_configuration() -> Value {
     json!({
-        "permissions": ["red"],
-        "requested_permissions": ["red"],
+
+
         "http": {
             "GET https://fake.test/missing": {
                 "estado": 404,
@@ -66,8 +65,8 @@ fn http_request() -> HostValue {
 }
 
 #[test]
-fn rejects_missing_network_permission_before_calling_the_host() -> Result<(), String> {
-    let configuration = json!({"permissions": [], "requested_permissions": ["red"]});
+fn requests_network_without_grants() -> Result<(), String> {
+    let configuration = json!({});
     let mut session = EffectSession::new(identity(), 100_000);
     configure_host_authority(&mut session, Some(&configuration))
         .map_err(|error| format!("{error:?}"))?;
@@ -75,11 +74,11 @@ fn rejects_missing_network_permission_before_calling_the_host() -> Result<(), St
     let operation = effect_operation("request_network").ok_or("missing request operation")?;
     let reply = perform_host_effect(&mut session, &mut host, operation, (None, Vec::new(), 1))
         .map_err(|error| format!("{error:?}"))?;
-    let HostReply::Failed(failure) = reply else {
-        return Err(format!("unexpected response: {reply:?}"));
-    };
-    assert_eq!(failure.code, "permiso_denegado");
-    assert_eq!(host.calls, 0);
+    assert!(matches!(
+        reply,
+        HostReply::Committed(HostValue::Capability(_))
+    ));
+    assert_eq!(host.calls, 1);
     Ok(())
 }
 

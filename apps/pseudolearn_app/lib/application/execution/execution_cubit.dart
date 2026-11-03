@@ -1,9 +1,13 @@
+import '../../domain/model/execution/replay_rejection.dart';
+import '../../domain/ports/execution_context.dart';
+import '../../domain/model/execution/effect_tape.dart';
+import '../../domain/ports/execution_reproduction.dart';
 import 'package:bloc/bloc.dart';
 import '../../domain/model/execution/execution_step.dart';
 import '../../domain/model/execution/input_wait.dart';
 import '../../domain/model/profiles/syntax_profile_id.dart';
 import '../../domain/model/settings/ui_language_id.dart';
-import '../../domain/model/execution/simulated_scenario.dart';
+import '../../domain/model/execution/execution_configuration.dart';
 import '../../domain/ports/program_execution.dart';
 import 'execution_state.dart';
 import 'execution_status_from_step.dart';
@@ -34,12 +38,16 @@ final class ExecutionCubit extends Cubit<ExecutionState> {
     required String sourceCode,
     required SyntaxProfileId profileId,
     required UiLanguageId languageId,
+    ExecutionConfiguration configuration = const ExecutionConfiguration(),
+    bool replay = false,
   }) => _enqueue(
     () => _advance(
       pace: pace,
       sourceCode: sourceCode,
       profileId: profileId,
       languageId: languageId,
+      configuration: configuration,
+      replay: replay,
     ),
   );
 
@@ -60,13 +68,26 @@ final class ExecutionCubit extends Cubit<ExecutionState> {
     required String sourceCode,
     required SyntaxProfileId profileId,
     required UiLanguageId languageId,
+    ExecutionConfiguration configuration = const ExecutionConfiguration(),
+    bool replay = false,
   }) async {
     _stopRequested = false;
+    final tape = replay ? state.recordedTape : null;
+    if (replay && tape == null) {
+      emit(state.copyWith(replayRejection: ReplayRejection.missingTape));
+      return;
+    }
+    if (replay) {
+      _execution.stop();
+      _hasStarted = false;
+    }
     if (!_hasStarted) {
       final started = _startNew(
         sourceCode: sourceCode,
         profileId: profileId,
         languageId: languageId,
+        configuration: configuration,
+        replayTape: tape,
       );
       if (started.isTerminal) {
         _processStep(started);
@@ -112,10 +133,8 @@ final class ExecutionCubit extends Cubit<ExecutionState> {
     );
   }
 
-  void applyViewAction(
-    ExecutionViewAction action, {
-    SimulatedScenario? scenario,
-  }) => emit(state.applyViewAction(action, scenario: scenario));
+  void applyViewAction(ExecutionViewAction action) =>
+      emit(state.applyViewAction(action));
 
   Future<void> _drain() async {
     await _runner.runUntilSettled(
@@ -162,6 +181,8 @@ final class ExecutionCubit extends Cubit<ExecutionState> {
     required String sourceCode,
     required SyntaxProfileId profileId,
     required UiLanguageId languageId,
+    ExecutionConfiguration configuration = const ExecutionConfiguration(),
+    EffectTape? replayTape,
   }) {
     _hasStarted = true;
     _runCounter++;
@@ -169,7 +190,8 @@ final class ExecutionCubit extends Cubit<ExecutionState> {
       sourceCode: sourceCode,
       profileId: profileId,
       languageId: languageId,
-      scenario: state.simulatedScenario,
+      configuration: configuration,
+      replayTape: replayTape,
     );
     emit(
       ExecutionState(
@@ -180,7 +202,7 @@ final class ExecutionCubit extends Cubit<ExecutionState> {
         statementNumber: 0,
         isOutputPanelExpanded: state.isOutputPanelExpanded,
         userCollapsedOutput: state.userCollapsedOutput,
-        simulatedScenario: state.simulatedScenario,
+        configuration: configuration,
       ),
     );
     return initialStep;
@@ -200,6 +222,15 @@ final class ExecutionCubit extends Cubit<ExecutionState> {
         status: executionStatusFromStep(step),
         currentStep: step,
         outputLines: lines,
+        workingDirectory: _execution is ExecutionContext
+            ? (_execution as ExecutionContext).workingDirectory
+            : null,
+        recordedTape: _execution is ExecutionReproduction
+            ? (_execution as ExecutionReproduction).recordedTape
+            : null,
+        replayRejection: _execution is ExecutionReproduction
+            ? (_execution as ExecutionReproduction).replayRejection
+            : null,
         statementNumber: advanced
             ? state.statementNumber + 1
             : state.statementNumber,

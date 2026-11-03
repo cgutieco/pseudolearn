@@ -9,7 +9,7 @@ name = "conformance_adapter"
 path = "src/main.rs"
 
 [dependencies]
-pseudolearn_api = { path = "../pseudolearn_api", version = "=0.1.0" }
+pseudolearn_api = { path = "../pseudolearn_api", version = "=0.1.0" , features = ["test-host"]}
 pseudolearn_service = { path = "../pseudolearn_service", version = "=0.1.0" }
 pseudolearn_project = { path = "../pseudolearn_project", version = "=0.1.0" }
 serde = { version = "1.0", features = ["derive"] }

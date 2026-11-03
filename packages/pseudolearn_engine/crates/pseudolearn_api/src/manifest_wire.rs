@@ -14,10 +14,7 @@ pub(crate) fn parse_grants(arguments: &Value) -> Result<HostGrants, ApiError> {
     let object = grants
         .as_object()
         .ok_or_else(|| usage("grants must be an object"))?;
-    if object
-        .keys()
-        .any(|name| name != "limits" && name != "permissions")
-    {
+    if object.keys().any(|name| name != "limits") {
         return Err(usage("unknown grant category"));
     }
     let mut result = HostGrants::default();
@@ -35,27 +32,6 @@ pub(crate) fn parse_grants(arguments: &Value) -> Result<HostGrants, ApiError> {
                 .ok_or_else(|| usage("limit grant must be an unsigned integer"))?;
             result.limits.insert(limit, ceiling);
         }
-    }
-    if let Some(permissions) = object.get("permissions") {
-        result.permissions = parse_permissions(permissions)?;
-    }
-    Ok(result)
-}
-
-fn parse_permissions(
-    permissions: &Value,
-) -> Result<std::collections::BTreeSet<pseudolearn_project::PermissionName>, ApiError> {
-    let permissions_list = permissions
-        .as_array()
-        .ok_or_else(|| usage("permission grants must be an array"))?;
-    let mut result = std::collections::BTreeSet::new();
-    for permission_value in permissions_list {
-        let name = permission_value
-            .as_str()
-            .ok_or_else(|| usage("permission grant must be a string"))?;
-        let permission = pseudolearn_project::PermissionName::parse(name)
-            .ok_or_else(|| usage("unknown permission grant"))?;
-        result.insert(permission);
     }
     Ok(result)
 }
@@ -120,18 +96,12 @@ pub(crate) fn configuration(configuration: &Configuration) -> Value {
         .iter()
         .map(|element| json!({"alias": element.alias, "package": element.package, "provenance": provenance(Provenance::Manifest(element.position))}))
         .collect();
-    let permissions: Vec<Value> = configuration
-        .permissions
-        .iter()
-        .map(|permission| json!(permission.as_str()))
-        .collect();
     json!({
         "schema": 1,
         "package": package,
         "profiles": profiles,
         "dependencies": dependencies,
         "limits": limits(configuration),
-        "permissions": permissions,
     })
 }
 

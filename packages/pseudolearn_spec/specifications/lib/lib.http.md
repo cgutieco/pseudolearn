@@ -83,8 +83,14 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "SolicitarRed devuelve Resultado<RedCap, ErrorES> y exige el permiso red. La capacidad solo contiene los orígenes concedidos por el anfitrión. Limitar acepta un origen perteneciente a esa capacidad y devuelve otra capacidad cuyo conjunto es ese único origen; un origen no concedido produce DestinoDenegado. Cerrar invalida la capacidad.",
-  "verificacion": ["C1", "C2", "C3", "C9", "C28"]
+  "texto": "SolicitarRed devuelve Resultado<RedCap, ErrorES> con autoridad plena sobre cualquier destino http o https. Limitar acepta un origen y devuelve otra capacidad de ese único origen; si la capacidad ya estaba limitada, otro origen produce DestinoDenegado. Cerrar invalida la capacidad. No se requieren concesiones ni configuración de orígenes.",
+  "verificacion": [
+    "C1",
+    "C2",
+    "C3",
+    "C9",
+    "C28"
+  ]
 }
 ```
 
@@ -111,12 +117,6 @@
     "en": "subroutine Probe() as result<string, IoError>\ndefine net as NetworkCap <- propagate requestNetwork();\ndefine request as HttpRequest <- HttpRequest(HttpMethod.GET, \"https://fake.test/a\").withResponseLimit(16).withTimeout(1000);\ndefine response as HttpResponse <- propagate net.send(request);\nreturn response.textBody();\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.uncertain;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "red"
-    ],
-    "requested_permissions": [
-      "red"
-    ],
     "http": {
       "GET https://fake.test/a": {
         "estado": 200,
@@ -156,9 +156,11 @@
     "en": "algorithm Main\nswitch requestNetwork() do\nsuccess(net): write \"granted\";\nfailure(problem): write problem.uncertain;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [],
-    "requested_permissions": [
-      "red"
+    "faults": [
+      {
+        "operation": "request_network",
+        "code": "permiso_denegado"
+      }
     ]
   }
 }
@@ -183,16 +185,10 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado<RedCap, ErrorES>\nDefinir net Como RedCap <- Propagar SolicitarRed();\nRetornar net.Limitar(\"https://other.test\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(net): Escribir \"concedida\";\nError(problem): Escribir problem.Incierto;\nFinSegun\nFinAlgoritmo\n",
-    "en": "subroutine Probe() as result<NetworkCap, IoError>\ndefine net as NetworkCap <- propagate requestNetwork();\nreturn net.restrict(\"https://other.test\");\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(net): write \"granted\";\nfailure(problem): write problem.uncertain;\nendSwitch\nendAlgorithm\n"
+    "es": "SubProceso Probe() Como Resultado<RedCap, ErrorES>\nDefinir net Como RedCap <- Propagar SolicitarRed();\nDefinir limited Como RedCap <- Propagar net.Limitar(\"https://fake.test\");\nRetornar limited.Limitar(\"https://other.test\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(net): Escribir \"concedida\";\nError(problem): Escribir problem.Incierto;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<NetworkCap, IoError>\ndefine net as NetworkCap <- propagate requestNetwork();\ndefine limited as NetworkCap <- propagate net.restrict(\"https://fake.test\");\nreturn limited.restrict(\"https://other.test\");\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(net): write \"granted\";\nfailure(problem): write problem.uncertain;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "red"
-    ],
-    "requested_permissions": [
-      "red"
-    ],
     "http": {
       "GET https://fake.test/a": {
         "estado": 200
@@ -238,12 +234,6 @@
     "en": "subroutine Probe() as result<integer, IoError>\ndefine net as NetworkCap <- propagate requestNetwork();\ndefine get as HttpRequest <- HttpRequest(HttpMethod.GET, \"https://fake.test/missing\");\ndefine missing as HttpResponse <- propagate net.send(get);\nwrite missing.status();\nwrite missing.isSuccess();\ndefine post as HttpRequest <- HttpRequest(HttpMethod.POST, \"https://fake.test/echo\").withTextBody(\"eco\");\ndefine echoed as HttpResponse <- propagate net.send(post);\nwrite propagate echoed.textBody();\ndefine head as HttpRequest <- HttpRequest(HttpMethod.HEAD, \"https://fake.test/head\");\ndefine headed as HttpResponse <- propagate net.send(head);\nwrite headed.body().length();\ndefine put as HttpRequest <- HttpRequest(HttpMethod.PUT, \"https://fake.test/update\");\ndefine updated as HttpResponse <- propagate net.send(put);\nwrite updated.status();\ndefine patch as HttpRequest <- HttpRequest(HttpMethod.PATCH, \"https://fake.test/patch\");\ndefine patched as HttpResponse <- propagate net.send(patch);\nwrite patched.status();\ndefine delete as HttpRequest <- HttpRequest(HttpMethod.DELETE, \"https://fake.test/delete\");\ndefine deleted as HttpResponse <- propagate net.send(delete);\nwrite deleted.status();\nreturn success(0);\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): if value < 0 then\nwrite value;\nendIf\nfailure(problem): write problem.uncertain;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "red"
-    ],
-    "requested_permissions": [
-      "red"
-    ],
     "http": {
       "GET https://fake.test/missing": {
         "estado": 404
@@ -275,8 +265,10 @@
   "id": "R3",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Enviar valida en el motor antes de consultar al anfitrión: la capacidad está abierta, la URL usa http o https y tiene host ASCII sin credenciales, el origen está concedido, los nombres de cabecera son tokens HTTP y sus valores no contienen CR, LF ni NUL. Rechaza las cabeceras host, content-length, transfer-encoding, connection, upgrade, te, trailer, keep-alive, proxy-*, cookie, set-cookie y accept-encoding. GET y HEAD no admiten cuerpo. Los fallos de validación son ErrorES y no consultan al anfitrión.",
-  "verificacion": ["C5"]
+  "texto": "Enviar valida antes de consultar al anfitrión: capacidad abierta, URL http o https con host ASCII sin credenciales, atenuación voluntaria de origen, nombres de cabecera como tokens HTTP y valores sin CR, LF ni NUL. Rechaza únicamente cabeceras controladas por el transporte: host, content-length, transfer-encoding, connection, upgrade, te, trailer, keep-alive y accept-encoding. Cookie y set-cookie se admiten en nativo; el navegador informa sus restricciones como PeticionInvalida de plataforma. GET y HEAD no admiten cuerpo. Los fallos de validación son ErrorES y no consultan al anfitrión.",
+  "verificacion": [
+    "C5"
+  ]
 }
 ```
 
@@ -306,12 +298,6 @@
     "en": "subroutine Send(request as HttpRequest) as result<string, IoError>\ndefine net as NetworkCap <- propagate requestNetwork();\ndefine response as HttpResponse <- propagate net.send(request);\nreturn success(response.url());\nendSubroutine\nalgorithm Main\nswitch Send(HttpRequest(HttpMethod.GET, \"ftp://fake.test/a\")) do\nsuccess(value): write value;\nfailure(problem): write problem.uncertain;\nendSwitch\nswitch Send(HttpRequest(HttpMethod.GET, \"https://user@fake.test/a\")) do\nsuccess(value): write value;\nfailure(problem): write problem.uncertain;\nendSwitch\nswitch Send(HttpRequest(HttpMethod.GET, \"fake.test/a\")) do\nsuccess(value): write value;\nfailure(problem): write problem.uncertain;\nendSwitch\nswitch Send(HttpRequest(HttpMethod.GET, \"https://tést.test/a\")) do\nsuccess(value): write value;\nfailure(problem): write problem.uncertain;\nendSwitch\nswitch Send(HttpRequest(HttpMethod.GET, \"https://fake.test/a\").withTextBody(\"x\")) do\nsuccess(value): write value;\nfailure(problem): write problem.uncertain;\nendSwitch\nswitch Send(HttpRequest(HttpMethod.GET, \"https://fake.test/a\").withHeader(\"host\", \"fake.test\")) do\nsuccess(value): write value;\nfailure(problem): write problem.uncertain;\nendSwitch\nswitch Send(HttpRequest(HttpMethod.GET, \"https://fake.test/a\").withHeader(\"x-test\", \"a\\r\\nb\")) do\nsuccess(value): write value;\nfailure(problem): write problem.uncertain;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "red"
-    ],
-    "requested_permissions": [
-      "red"
-    ],
     "http": {
       "GET https://fake.test/a": {
         "estado": 200
@@ -354,12 +340,6 @@
     "en": "subroutine Probe() as result<integer, IoError>\ndefine net as NetworkCap <- propagate requestNetwork();\ndefine request as HttpRequest <- HttpRequest(HttpMethod.GET, \"https://fake.test/binary\");\ndefine response as HttpResponse <- propagate net.send(request);\nswitch response.header(\"x-test\") do\nsome(value): write value;\nnone: write \"missing\";\nendSwitch\nwrite response.body().at(0);\nswitch response.textBody() do\nsuccess(text): write text;\nfailure(problem): write problem.uncertain;\nendSwitch\nreturn success(0);\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): if value < 0 then\nwrite value;\nendIf\nfailure(problem): write problem.uncertain;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "red"
-    ],
-    "requested_permissions": [
-      "red"
-    ],
     "http": {
       "GET https://fake.test/binary": {
         "estado": 599,
@@ -413,8 +393,18 @@
       "llamadas": 2,
       "estado_cinta": "uncertain_external_state",
       "efectos": [
-        {"effect_seq": 1, "capability_kind": "network", "operation": "request_network", "outcome": "committed"},
-        {"effect_seq": 2, "capability_kind": "network", "operation": "network_send", "outcome": "uncertain"}
+        {
+          "effect_seq": 1,
+          "capability_kind": "network",
+          "operation": "request_network",
+          "outcome": "committed"
+        },
+        {
+          "effect_seq": 2,
+          "capability_kind": "network",
+          "operation": "network_send",
+          "outcome": "uncertain"
+        }
       ]
     }
   },
@@ -423,12 +413,6 @@
     "en": "subroutine Probe() as result<boolean, IoError>\ndefine net as NetworkCap <- propagate requestNetwork();\ndefine request as HttpRequest <- HttpRequest(HttpMethod.POST, \"https://fake.test/write\");\nswitch net.send(request) do\nsuccess(response): return success(false);\nfailure(problem): return success(problem.uncertain);\nendSwitch\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.uncertain;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "red"
-    ],
-    "requested_permissions": [
-      "red"
-    ],
     "http": {
       "POST https://fake.test/write": {
         "fallo": "conexion_fallida",
@@ -443,8 +427,14 @@
 {
   "id": "C25",
   "regla": "R5",
-  "perfiles": ["es", "en"],
-  "rigor": ["estricto", "flexible"],
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
@@ -454,8 +444,18 @@
       "llamadas": 2,
       "estado_cinta": "reproducible",
       "efectos": [
-        {"effect_seq": 1, "capability_kind": "network", "operation": "request_network", "outcome": "committed"},
-        {"effect_seq": 2, "capability_kind": "network", "operation": "network_send", "outcome": "failed"}
+        {
+          "effect_seq": 1,
+          "capability_kind": "network",
+          "operation": "request_network",
+          "outcome": "committed"
+        },
+        {
+          "effect_seq": 2,
+          "capability_kind": "network",
+          "operation": "network_send",
+          "outcome": "failed"
+        }
       ]
     }
   },
@@ -464,9 +464,12 @@
     "en": "algorithm Main\nswitch requestNetwork() do\nsuccess(net):\nswitch net.send(HttpRequest(HttpMethod.GET, \"https://fake.test/read-cut\")) do\nsuccess(response): write true;\nfailure(problem): write problem.uncertain;\nendSwitch\nfailure(denied): write denied.uncertain;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": ["red"],
-    "requested_permissions": ["red"],
-    "http": {"GET https://fake.test/read-cut": {"fallo": "conexion_fallida", "incierto": false}}
+    "http": {
+      "GET https://fake.test/read-cut": {
+        "fallo": "conexion_fallida",
+        "incierto": false
+      }
+    }
   }
 }
 ```
@@ -475,8 +478,14 @@
 {
   "id": "C26",
   "regla": "R5",
-  "perfiles": ["es", "en"],
-  "rigor": ["estricto", "flexible"],
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
@@ -486,8 +495,18 @@
       "llamadas": 2,
       "estado_cinta": "uncertain_external_state",
       "efectos": [
-        {"effect_seq": 1, "capability_kind": "network", "operation": "request_network", "outcome": "committed"},
-        {"effect_seq": 2, "capability_kind": "network", "operation": "network_send", "outcome": "uncertain"}
+        {
+          "effect_seq": 1,
+          "capability_kind": "network",
+          "operation": "request_network",
+          "outcome": "committed"
+        },
+        {
+          "effect_seq": 2,
+          "capability_kind": "network",
+          "operation": "network_send",
+          "outcome": "uncertain"
+        }
       ]
     }
   },
@@ -496,9 +515,12 @@
     "en": "algorithm Main\nswitch requestNetwork() do\nsuccess(net):\nswitch net.send(HttpRequest(HttpMethod.DELETE, \"https://fake.test/delete-cut\")) do\nsuccess(response): write false;\nfailure(problem): write problem.uncertain;\nendSwitch\nfailure(denied): write denied.uncertain;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": ["red"],
-    "requested_permissions": ["red"],
-    "http": {"DELETE https://fake.test/delete-cut": {"fallo": "conexion_fallida", "incierto": true}}
+    "http": {
+      "DELETE https://fake.test/delete-cut": {
+        "fallo": "conexion_fallida",
+        "incierto": true
+      }
+    }
   }
 }
 ```
@@ -507,8 +529,14 @@
 {
   "id": "C27",
   "regla": "R5",
-  "perfiles": ["es", "en"],
-  "rigor": ["estricto", "flexible"],
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
@@ -518,8 +546,19 @@
       "llamadas": 1,
       "estado_cinta": "uncertain_external_state",
       "efectos": [
-        {"effect_seq": 1, "capability_kind": "network", "operation": "request_network", "outcome": "committed"},
-        {"effect_seq": 2, "task_id": 1, "capability_kind": "network", "operation": "network_send", "outcome": "abandoned"}
+        {
+          "effect_seq": 1,
+          "capability_kind": "network",
+          "operation": "request_network",
+          "outcome": "committed"
+        },
+        {
+          "effect_seq": 2,
+          "task_id": 1,
+          "capability_kind": "network",
+          "operation": "network_send",
+          "outcome": "abandoned"
+        }
       ],
       "reproduccion_fallo": "replay_non_reproducible"
     }
@@ -528,10 +567,7 @@
     "es": "SubProceso Suspendible Wait(net Como RedCap)\nDescartar Aguardar net.Enviar(PeticionHttp(MetodoHttp.POST, \"https://fake.test/abandoned-post\"));\nFinSubProceso\nSubProceso Suspendible Fail() Como Resultado<Entero, Cadena>\nRetornar Error(\"problem\");\nFinSubProceso\nAlgoritmo Main\nSegun SolicitarRed() Hacer\nExito(net):\nTareas failureReport\nLanzar Wait(net);\nLanzar Fail();\nFinTareas\nDescartar failureReport;\nEscribir \"done\";\nError(denied): Escribir denied.Incierto;\nFinSegun\nFinAlgoritmo\n",
     "en": "subroutine suspendable Wait(net as NetworkCap)\ndiscard await net.send(HttpRequest(HttpMethod.POST, \"https://fake.test/abandoned-post\"));\nendSubroutine\nsubroutine suspendable Fail() as result<integer, string>\nreturn failure(\"problem\");\nendSubroutine\nalgorithm Main\nswitch requestNetwork() do\nsuccess(net):\ntasks failureReport\nspawn Wait(net);\nspawn Fail();\nendTasks\ndiscard failureReport;\nwrite \"done\";\nfailure(denied): write denied.uncertain;\nendSwitch\nendAlgorithm\n"
   },
-  "anfitrion": {
-    "permissions": ["red"],
-    "requested_permissions": ["red"]
-  }
+  "anfitrion": {}
 }
 ```
 
@@ -539,12 +575,18 @@
 {
   "id": "C28",
   "regla": "R1",
-  "perfiles": ["es", "en"],
-  "rigor": ["estricto", "flexible"],
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
-    "salida": "permiso_denegado\n",
+    "salida": "200\n",
     "terminacion": "completed"
   },
   "programas": {
@@ -552,8 +594,11 @@
     "en": "subroutine Probe() as result<integer, IoError>\ndefine network as NetworkCap <- propagate requestNetwork();\ndefine response as HttpResponse <- propagate network.send(HttpRequest(HttpMethod.GET, \"https://fake.test/no-script\"));\nreturn success(response.status());\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(status): write status;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [],
-    "requested_permissions": ["red"]
+    "http": {
+      "GET https://fake.test/no-script": {
+        "estado": 200
+      }
+    }
   }
 }
 ```
@@ -610,12 +655,6 @@
     "en": "subroutine Probe() as result<integer, IoError>\ndefine net as NetworkCap <- propagate requestNetwork();\ndefine request as HttpRequest <- HttpRequest(HttpMethod.GET, \"https://fake.test/secret\").withHeader(\"authorization\", \"Bearer secreto\");\ndefine response as HttpResponse <- propagate net.send(request);\nreturn success(response.status());\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.uncertain;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "red"
-    ],
-    "requested_permissions": [
-      "red"
-    ],
     "secrets": {
       "authorization": {
         "key_id": "k1",
@@ -657,12 +696,6 @@
     "en": "subroutine Probe() as result<boolean, IoError>\ndefine net as NetworkCap <- propagate requestNetwork();\ndefine closed as boolean <- propagate net.close();\ndefine request as HttpRequest <- HttpRequest(HttpMethod.GET, \"https://fake.test/a\");\nswitch net.send(request) do\nsuccess(response): return success(false);\nfailure(problem): return success(problem.uncertain);\nendSwitch\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.uncertain;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "red"
-    ],
-    "requested_permissions": [
-      "red"
-    ],
     "http": {
       "GET https://fake.test/a": {
         "estado": 200
@@ -732,12 +765,6 @@
     "en": "subroutine suspendable Fetch(label as integer, net as NetworkCap, url as string)\ndefine request as HttpRequest <- HttpRequest(HttpMethod.GET, url);\nswitch await net.send(request) do\nsuccess(response): write label;\nwrite response.status();\nfailure(problem): write problem.uncertain;\nendSwitch\nendSubroutine\nalgorithm Main\nswitch requestNetwork() do\nsuccess(net):\ntasks\nspawn Fetch(1, net, \"https://fake.test/one\");\nspawn Fetch(2, net, \"https://fake.test/two\");\nspawn Fetch(3, net, \"https://fake.test/three\");\nendTasks\nfailure(problem): write problem.uncertain;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "red"
-    ],
-    "requested_permissions": [
-      "red"
-    ],
     "grabar_y_reproducir": true,
     "orden_entrega": [
       4,
@@ -786,12 +813,6 @@
     "en": "subroutine Probe() as result<integer, IoError>\ndefine net as NetworkCap <- propagate requestNetwork();\ndefine request as HttpRequest <- HttpRequest(HttpMethod.GET, \"https://fake.test/a\");\ndefine response as HttpResponse <- propagate net.send(request);\nreturn success(response.status());\nendSubroutine\nalgorithm Main\ndiscard Probe();\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "red"
-    ],
-    "requested_permissions": [
-      "red"
-    ],
     "http": {
       "GET https://fake.test/a": {
         "estado": 200
@@ -851,12 +872,6 @@
     "en": "subroutine Probe() as result<integer, IoError>\ndefine net as NetworkCap <- propagate requestNetwork();\ndefine empty as HttpResponse <- propagate net.send(HttpRequest(HttpMethod.GET, \"https://fake.test/empty\"));\nwrite empty.status();\nwrite empty.isSuccess();\nwrite empty.body().length();\nswitch net.send(HttpRequest(HttpMethod.GET, \"https://fake.test/informational\")) do\nsuccess(response): return success(1);\nfailure(problem): return success(0);\nendSwitch\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.uncertain;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "red"
-    ],
-    "requested_permissions": [
-      "red"
-    ],
     "http": {
       "GET https://fake.test/empty": {
         "estado": 200
@@ -906,12 +921,6 @@ Una respuesta 1xx informativa pertenece al transporte y debe consumirse antes de
     "en": "subroutine Probe() as result<integer, IoError>\ndefine net as NetworkCap <- propagate requestNetwork();\nswitch net.send(HttpRequest(HttpMethod.GET, \"https://fake.test/exact\").withResponseLimit(4)) do\nsuccess(response): return success(response.body().length());\nfailure(problem): return failure(problem);\nendSwitch\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "red"
-    ],
-    "requested_permissions": [
-      "red"
-    ],
     "http": {
       "GET https://fake.test/exact": {
         "estado": 200,
@@ -945,12 +954,6 @@ Una respuesta 1xx informativa pertenece al transporte y debe consumirse antes de
     "en": "subroutine Probe() as result<integer, IoError>\ndefine net as NetworkCap <- propagate requestNetwork();\nswitch net.send(HttpRequest(HttpMethod.GET, \"https://fake.test/over\").withResponseLimit(4)) do\nsuccess(response): return success(1);\nfailure(problem): return failure(problem);\nendSwitch\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "red"
-    ],
-    "requested_permissions": [
-      "red"
-    ],
     "http": {
       "GET https://fake.test/over": {
         "estado": 200,
@@ -987,12 +990,6 @@ Una respuesta 1xx informativa pertenece al transporte y debe consumirse antes de
     "max_http_body_bytes": 4
   },
   "anfitrion": {
-    "permissions": [
-      "red"
-    ],
-    "requested_permissions": [
-      "red"
-    ],
     "http": {
       "GET https://fake.test/clipped": {
         "estado": 200,
@@ -1025,14 +1022,7 @@ Una respuesta 1xx informativa pertenece al transporte y debe consumirse antes de
     "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir net Como RedCap <- Propagar SolicitarRed();\nSegun net.Enviar(PeticionHttp(MetodoHttp.GET, \"https://fake.test/zero-response\").ConLimiteRespuesta(0)) Hacer\nExito(response): Retornar Exito(1);\nError(problem): Retornar Error(problem);\nFinSegun\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
     "en": "subroutine Probe() as result<integer, IoError>\ndefine net as NetworkCap <- propagate requestNetwork();\nswitch net.send(HttpRequest(HttpMethod.GET, \"https://fake.test/zero-response\").withResponseLimit(0)) do\nsuccess(response): return success(1);\nfailure(problem): return failure(problem);\nendSwitch\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
-  "anfitrion": {
-    "permissions": [
-      "red"
-    ],
-    "requested_permissions": [
-      "red"
-    ]
-  }
+  "anfitrion": {}
 }
 ```
 
@@ -1058,14 +1048,7 @@ Una respuesta 1xx informativa pertenece al transporte y debe consumirse antes de
     "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir net Como RedCap <- Propagar SolicitarRed();\nSegun net.Enviar(PeticionHttp(MetodoHttp.GET, \"https://fake.test/zero-time\").ConTiempoMaximo(0)) Hacer\nExito(response): Retornar Exito(1);\nError(problem): Retornar Error(problem);\nFinSegun\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
     "en": "subroutine Probe() as result<integer, IoError>\ndefine net as NetworkCap <- propagate requestNetwork();\nswitch net.send(HttpRequest(HttpMethod.GET, \"https://fake.test/zero-time\").withTimeout(0)) do\nsuccess(response): return success(1);\nfailure(problem): return failure(problem);\nendSwitch\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
-  "anfitrion": {
-    "permissions": [
-      "red"
-    ],
-    "requested_permissions": [
-      "red"
-    ]
-  }
+  "anfitrion": {}
 }
 ```
 
@@ -1092,12 +1075,6 @@ Una respuesta 1xx informativa pertenece al transporte y debe consumirse antes de
     "en": "subroutine Probe() as result<integer, IoError>\ndefine net as NetworkCap <- propagate requestNetwork();\nswitch net.send(HttpRequest(HttpMethod.GET, \"https://fake.test/get-timeout\").withTimeout(1000)) do\nsuccess(response): return success(1);\nfailure(problem): return failure(problem);\nendSwitch\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nwrite problem.uncertain;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "red"
-    ],
-    "requested_permissions": [
-      "red"
-    ],
     "http": {
       "GET https://fake.test/get-timeout": {
         "fallo": "tiempo_agotado"
@@ -1130,12 +1107,6 @@ Una respuesta 1xx informativa pertenece al transporte y debe consumirse antes de
     "en": "subroutine Probe() as result<integer, IoError>\ndefine net as NetworkCap <- propagate requestNetwork();\nswitch net.send(HttpRequest(HttpMethod.POST, \"https://fake.test/post-timeout\").withTextBody(\"data\").withTimeout(1000)) do\nsuccess(response): return success(1);\nfailure(problem): return failure(problem);\nendSwitch\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nwrite problem.uncertain;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "red"
-    ],
-    "requested_permissions": [
-      "red"
-    ],
     "http": {
       "POST https://fake.test/post-timeout": {
         "fallo": "tiempo_agotado",
@@ -1172,12 +1143,6 @@ Una respuesta 1xx informativa pertenece al transporte y debe consumirse antes de
     "max_http_headers": 1
   },
   "anfitrion": {
-    "permissions": [
-      "red"
-    ],
-    "requested_permissions": [
-      "red"
-    ],
     "http": {
       "GET https://fake.test/headers": {
         "estado": 200,
@@ -1223,12 +1188,6 @@ Una respuesta 1xx informativa pertenece al transporte y debe consumirse antes de
     "max_http_body_bytes": 4
   },
   "anfitrion": {
-    "permissions": [
-      "red"
-    ],
-    "requested_permissions": [
-      "red"
-    ],
     "http": {
       "GET https://fake.test/host-limit": {
         "estado": 200,
@@ -1265,12 +1224,6 @@ Una respuesta 1xx informativa pertenece al transporte y debe consumirse antes de
     "max_http_wire_bytes": 2
   },
   "anfitrion": {
-    "permissions": [
-      "red"
-    ],
-    "requested_permissions": [
-      "red"
-    ],
     "http": {
       "POST https://fake.test/wire-exact": {
         "estado": 200
@@ -1305,14 +1258,7 @@ Una respuesta 1xx informativa pertenece al transporte y debe consumirse antes de
   "limites": {
     "max_http_wire_bytes": 1
   },
-  "anfitrion": {
-    "permissions": [
-      "red"
-    ],
-    "requested_permissions": [
-      "red"
-    ]
-  }
+  "anfitrion": {}
 }
 ```
 
@@ -1345,12 +1291,6 @@ Una respuesta 1xx informativa pertenece al transporte y debe consumirse antes de
     "max_pending_network": 1
   },
   "anfitrion": {
-    "permissions": [
-      "red"
-    ],
-    "requested_permissions": [
-      "red"
-    ],
     "http": {
       "GET https://fake.test/first": {
         "estado": 200

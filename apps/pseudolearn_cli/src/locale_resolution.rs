@@ -18,6 +18,9 @@ pub fn determine_interface_language(raw_arguments: &[String]) -> String {
 
 fn find_language_flag(raw_arguments: &[String]) -> Option<String> {
     for (position, argument) in raw_arguments.iter().enumerate() {
+        if argument == "--" {
+            break;
+        }
         if argument == "--idioma" || argument == "--language" {
             let next_index = position.saturating_add(1);
             let next_value = raw_arguments.get(next_index)?;

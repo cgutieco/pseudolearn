@@ -7,10 +7,13 @@ export function debugLaunch(configuration: Record<string, unknown>): DebugLaunch
   if (configuration.backend !== undefined && configuration.backend !== "vm") {
     return { ok: false, reason: "backend" };
   }
-  const authority = ["grants", "permissions", "origins", "filesRoot", "serverPath", "env", "args"];
+  const authority = ["grants", "permissions", "origins", "filesRoot", "serverPath", "env"];
   if (authority.some((field) => configuration[field] !== undefined)) {
     return { ok: false, reason: "authority" };
   }
+  if (configuration.args !== undefined && (!Array.isArray(configuration.args)
+      || configuration.args.some((value: unknown) => typeof value !== "string"))) return { ok: false, reason: "options" };
+  if (configuration.cwd !== undefined && !text(configuration.cwd)) return { ok: false, reason: "options" };
   const program = text(configuration.program);
   const project = text(configuration.project);
   if (Boolean(program) === Boolean(project)) {
@@ -37,6 +40,8 @@ function options(configuration: Record<string, unknown>, value: DebugLaunch): De
   if (configuration.strictness !== undefined && !["strict", "flexible"].includes(String(configuration.strictness))) {
     return { ok: false, reason: "options" };
   }
+  if (Array.isArray(configuration.args)) value.args = configuration.args as string[];
+  if (text(configuration.cwd)) value.cwd = text(configuration.cwd);
   if (seed !== undefined) value.seed = seed;
   if (configuration.profile !== undefined) value.profile = configuration.profile as "es" | "en";
   if (configuration.strictness !== undefined) value.strictness = configuration.strictness as "strict" | "flexible";

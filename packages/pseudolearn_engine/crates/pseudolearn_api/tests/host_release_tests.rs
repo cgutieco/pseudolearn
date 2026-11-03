@@ -13,8 +13,8 @@ fn run(program: &str, extra: Value) -> Value {
         "profile": "es",
         "strictness": "strict",
         "host": {
-            "permissions": ["archivos_lectura"],
-            "requested_permissions": ["archivos_lectura"],
+
+
             "files": {"a": "hola"}
         }
     });

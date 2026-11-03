@@ -5,7 +5,7 @@ import '../model/execution/input_wait.dart';
 import '../model/execution/output_line.dart';
 import '../model/profiles/syntax_profile_id.dart';
 import '../model/settings/ui_language_id.dart';
-import '../model/execution/simulated_scenario.dart';
+import '../model/execution/execution_configuration.dart';
 
 abstract interface class ProgramExecution {
   List<OutputLine> get outputLines;
@@ -14,7 +14,7 @@ abstract interface class ProgramExecution {
     required String sourceCode,
     required SyntaxProfileId profileId,
     required UiLanguageId languageId,
-    SimulatedScenario? scenario,
+    ExecutionConfiguration configuration = const ExecutionConfiguration(),
     EffectTape? replayTape,
   });
 

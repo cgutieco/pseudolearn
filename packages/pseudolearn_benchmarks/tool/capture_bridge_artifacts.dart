@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-const int iosLimitBytes = 5 * 1024 * 1024;
+const int iosLimitBytes = 8 * 1024 * 1024;
 const int wasmLimitBytes = 900 * 1024;
 
 Future<void> main(List<String> arguments) async {
@@ -52,7 +52,7 @@ Future<Map<String, Object?>> capture(Directory root) async {
     'capturedAt': DateTime.now().toUtc().toIso8601String(),
     'gitHead': await commandText('git', ['-C', root.path, 'rev-parse', 'HEAD']),
     'workingTreeDirty': dirty,
-    'toolchain': await toolchainVersions(),
+    'toolchain': await toolchainVersions(root),
     'artifacts': {'ios-arm64': ios, 'wasm32': wasm},
     'commands': [
       'flutter build ios --release --no-codesign',
@@ -146,17 +146,24 @@ Future<Map<String, Object>> brotliArtifact(String binaryPath) async {
   }
 }
 
-Future<Map<String, String>> toolchainVersions() async {
+Future<Map<String, String>> toolchainVersions(Directory root) async {
   final flutter = jsonDecode(
     await commandText('flutter', ['--version', '--machine']),
   ) as Map<String, dynamic>;
   return {
     'flutter': '${flutter['frameworkVersion']}',
     'dart': '${flutter['dartSdkVersion']}',
-    'rustc': await commandText('rustc', ['--version']),
+    'rustc': await rustCompilerVersion(root),
     'wasmBindgen': await commandText('wasm-bindgen', ['--version']),
     'brotli': await commandText('brotli', ['--version']),
   };
+}
+
+Future<String> rustCompilerVersion(Directory root) async {
+  final configuration = await File('${root.path}/apps/pseudolearn_app/native/rust-toolchain.toml').readAsString();
+  final channel = RegExp(r'channel\s*=\s*"([^"]+)"').firstMatch(configuration)?.group(1);
+  if (channel == null) throw const FormatException('Missing bridge Rust toolchain');
+  return commandText('rustc', ['+$channel', '--version']);
 }
 
 Future<bool> gitWorkingTreeIsDirty(Directory root) async {

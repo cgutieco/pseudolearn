@@ -6,6 +6,7 @@ publish = false
 
 [features]
 telemetry = []
+test-host = []
 
 [dependencies]
 serde = { version = "1.0", features = ["derive"] }
@@ -17,3 +18,6 @@ pseudolearn_diagnostics = { path = "../pseudolearn_diagnostics", version = "=0.1
 
 [lints]
 workspace = true
+
+[dev-dependencies]
+pseudolearn_runtime = { path = ".", features = ["test-host"] }

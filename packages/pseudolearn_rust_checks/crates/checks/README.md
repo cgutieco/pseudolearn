@@ -38,3 +38,7 @@ Tests válidos e inválidos, formato, Clippy y verificadores mediante `cargo xta
 Cargo define la frontera de compilación; la política de capas pertenece a PseudoLearn.
 
 Los negativos de depuración cargan las reglas vigentes de servicio y CLI en fixtures Cargo aislados: rechazan servicio → VM/API y CLI → VM/timeline, y aceptan CLI → API pública. Las dependencias deliberadas son datos de prueba fuera del producto; ningún test altera los manifiestos reales.
+
+La regla isolation inspecciona paquetes y features alcanzables del grafo normal y de build. Una
+restricción package/feature falla solo cuando esa feature está habilitada, sin rechazar una feature
+meramente declarada. El caso negativo prueba activación y ausencia sobre el mismo fixture.

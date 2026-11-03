@@ -33,8 +33,11 @@ final class RustWatchRows {
   static const String _absent = '-';
 
   final RustStateApi _state;
+  String _receiverName = 'thisObject';
 
-  const RustWatchRows(this._state);
+  RustWatchRows(this._state);
+
+  void useReceiverName(String name) => _receiverName = name;
 
   RustEnvironmentResult at({
     required int execution,
@@ -92,6 +95,8 @@ final class RustWatchRows {
     final scope = frame['unidad'] as String;
     final variables = (frame['variables'] as Map<String, Object?>).entries;
     return [
+      if (frame['receptor'] case final receiver?)
+        _rowOf(point, (_receiverName, scope), receiver),
       for (final entry in variables)
         _rowOf(point, (entry.key, scope), _resolve(entry.value, frames)),
     ];

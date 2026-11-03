@@ -288,7 +288,7 @@
   "id": "R3",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "--semilla fija la semilla de RT.HOST.INTERFACE; sin ella se usa 42. --profundidad, --sentencias y --celdas fijan los límites de ENG.LIMITS; por omisión la CLI admite 100 000 marcos y no tiene presupuesto de sentencias.",
+  "texto": "--semilla fija la semilla de RT.HOST.INTERFACE; sin ella se obtiene entropía del sistema operativo y se graba la semilla efectiva. --profundidad, --sentencias y --celdas fijan límites; por omisión la CLI admite 100 000 marcos sin presupuesto de sentencias. Los argumentos después de -- se entregan al programa en orden, sin el nombre del ejecutable. La carpeta de trabajo es el directorio actual.",
   "verificacion": [
     "C8",
     "C9"
@@ -664,7 +664,7 @@
   "id": "R6",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "pseudo ejecutar acepta red como concesión y recibe orígenes HTTPS exactos con --origen y orígenes locales de loopback con --origen-local; ambas opciones pueden repetirse. El adaptador nativo rechaza --nativo cuando se concede red con error de uso y código 2, porque el ejecutable AOT no ofrece HTTP real.",
+  "texto": "La ejecución VM usa el anfitrión físico completo por omisión: HTTP y HTTPS a cualquier destino, archivos del sistema, reloj y temporizador reales y argumentos. Las opciones --conceder, --grant, --archivos, --files, --origen, --origin, --origen-local y --local-origin están retiradas y producen error de uso: ya no se necesitan concesiones. Las raíces TLS de prueba solo se configuran mediante --raiz-prueba o --test-root.",
   "verificacion": [
     "C18",
     "C19"
@@ -676,23 +676,24 @@
 {
   "id": "C18",
   "regla": "R6",
-  "perfiles": ["es"],
-  "rigor": ["estricto"],
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
   "origen": "derivado",
   "operacion": "cli",
   "espera": {
     "codigo_salida": 2,
     "salida": "",
-    "salida_error": "pseudo: valor no válido «red» para --native\n"
+    "salida_error": "pseudo: --grant ya no hace falta; las capacidades tienen autoridad plena por omisión\n"
   },
   "cli": {
     "argumentos": [
       "run",
-      "--native",
       "--grant",
       "red",
-      "--origin",
-      "https://api.example.test",
       "p.pseudo"
     ],
     "entorno": {},
@@ -707,8 +708,12 @@
 {
   "id": "C19",
   "regla": "R6",
-  "perfiles": ["es"],
-  "rigor": ["estricto"],
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
   "origen": "derivado",
   "operacion": "cli",
   "espera": {
@@ -719,14 +724,6 @@
   "cli": {
     "argumentos": [
       "run",
-      "--grant",
-      "red",
-      "--origin",
-      "https://api.example.test",
-      "--origin",
-      "https://files.example.test:8443",
-      "--local-origin",
-      "http://127.0.0.1:8080",
       "p.pseudo"
     ],
     "entorno": {},
@@ -742,7 +739,7 @@
   "id": "R7",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "pseudo ejecutar --editor, con un archivo o con --proyecto y --entrada, ejecuta bajo un protocolo de líneas JSON para clientes de editor y no concede archivos ni red. La salida estándar solo lleva eventos, uno por línea con las claves en el orden documentado: hello (schema 1, capabilities input, cancel y close, y limits con command_bytes 65536 y output_bytes 1048576) es siempre el primero; output lleva en text la salida del programa como texto, de modo que un programa que imprime JSON no fabrica eventos; awaiting_input anuncia que Leer espera; diagnostics lleva diagnostics, project_errors y sources y precede al fin cuando el análisis o la ejecución producen diagnósticos; finished lleva status, termination y exit_code y es siempre el último. La entrada estándar lleva una orden JSON por línea: input con text (la cadena vacía es una línea válida), cancel o close. Una línea de entrada sin orden que llegue antes de que Leer la espere se encola. status es completed solo si termination es completed; cancel, close o EOF mientras Leer espera terminan con cancelled o input_closed según el caso, y un EOF con el programa en marcha no lo detiene. El código de salida es 0 solo con completed. Una orden inválida o de más de 65536 bytes termina con protocol_error y la salida del programa que pase de 1048576 bytes termina con output_limit. Un uso incorrecto se reporta antes de cualquier evento.",
+  "texto": "pseudo ejecutar --editor, con un archivo o con --proyecto y --entrada, ejecuta bajo un protocolo de líneas JSON para clientes de editor con el anfitrión físico completo por omisión. La salida estándar solo lleva eventos, uno por línea con las claves en el orden documentado: hello (schema 1, capabilities input, cancel y close, y limits con command_bytes 65536 y output_bytes 1048576) es siempre el primero; output lleva en text la salida del programa como texto, de modo que un programa que imprime JSON no fabrica eventos; awaiting_input anuncia que Leer espera; diagnostics lleva diagnostics, project_errors y sources y precede al fin cuando el análisis o la ejecución producen diagnósticos; finished lleva status, termination y exit_code y es siempre el último. La entrada estándar lleva una orden JSON por línea: input con text (la cadena vacía es una línea válida), cancel o close. Una línea de entrada sin orden que llegue antes de que Leer la espere se encola. status es completed solo si termination es completed; cancel, close o EOF mientras Leer espera terminan con cancelled o input_closed según el caso, y un EOF con el programa en marcha no lo detiene. El código de salida es 0 solo con completed. Una orden inválida o de más de 65536 bytes termina con protocol_error y la salida del programa que pase de 1048576 bytes termina con output_limit. Un uso incorrecto se reporta antes de cualquier evento.",
   "verificacion": [
     "C20",
     "C21",

@@ -6,6 +6,7 @@ use serde_json::Value;
 
 #[derive(Default)]
 pub(super) struct HostBookkeeping {
+    pub(super) buffered_replies: std::collections::VecDeque<(u64, HostReply)>,
     pub(super) pending_hosts: std::collections::BTreeMap<u64, PendingHostEffect>,
     pub(super) completed_hosts: std::collections::VecDeque<CompletedHostEffect>,
     pub(super) limit_rejected_network: std::collections::BTreeSet<u64>,
@@ -13,6 +14,12 @@ pub(super) struct HostBookkeeping {
 }
 
 impl HostBookkeeping {
+    pub(super) fn has_buffered_reply(&self, sequence: u64) -> bool {
+        self.buffered_replies
+            .iter()
+            .any(|(buffered, _)| *buffered == sequence)
+    }
+
     pub(super) fn forget_rejection(&mut self, sequence: u64) -> bool {
         self.limit_rejected_network.remove(&sequence)
     }
@@ -28,6 +35,7 @@ impl HostBookkeeping {
 pub(super) struct PendingHostEffect {
     pub(super) machine_sequence: u64,
     pub(super) request: PendingEffectRequest,
+    pub(super) external: pseudolearn_runtime::HostEffectRequest,
 }
 
 pub(super) struct CompletedHostEffect {
@@ -37,26 +45,37 @@ pub(super) struct CompletedHostEffect {
 
 impl ExecutionResource {
     pub(super) fn concurrent_pending_effects(&self) -> Option<Value> {
-        (self.hosts.pending_hosts.len() > 1).then(|| {
-            Value::Array(
-                self.hosts
-                    .pending_hosts
-                    .iter()
-                    .map(|(sequence, host)| pending_host_value(*sequence, host))
-                    .collect(),
-            )
-        })
+        let mut requests = self
+            .hosts
+            .pending_hosts
+            .iter()
+            .filter(|(sequence, _)| !self.hosts.has_buffered_reply(**sequence))
+            .map(|(sequence, host)| pending_host_value(*sequence, host))
+            .collect::<Vec<_>>();
+        if let Some(request) = &self.pending_host {
+            requests.push(self.prepared_host_value(request));
+        }
+        (requests.len() > 1).then(|| Value::Array(requests))
     }
 
     pub(super) fn pending_host_value(&self) -> Option<Value> {
         if let Some(request) = &self.pending_host {
-            return Some(serde_json::json!(request));
+            return Some(self.prepared_host_value(request));
         }
         self.hosts
             .pending_hosts
             .iter()
             .next()
             .map(|(sequence, host)| pending_host_value(*sequence, host))
+    }
+
+    fn prepared_host_value(&self, request: &pseudolearn_runtime::HostEffectRequest) -> Value {
+        let family = pseudolearn_runtime::effect_operation(&request.operation)
+            .map_or("", |operation| operation.capability_family());
+        serde_json::json!({"effect_seq":request.effect_seq,"task_id":self.machine.current_task_id(),
+            "capability_kind":family,"operation":request.operation,"receiver":request.receiver,
+            "result_capability":request.result_capability,"source_node_id":request.source_node_id,
+            "arguments":request.arguments})
     }
 
     pub(super) fn activate_ready_host_effect(&mut self) -> Result<bool, ApiError> {
@@ -83,7 +102,7 @@ impl ExecutionResource {
         pending: &PendingEffectRequest,
     ) -> Result<bool, ApiError> {
         let requests = self.machine.pending_effect_requests();
-        if requests.len() < 2 {
+        if requests.len() < 2 || super::execution_host_preflight::creates_capability(pending) {
             return Ok(false);
         }
         self.mark_excess_network_requests();
@@ -102,6 +121,9 @@ impl ExecutionResource {
         self.sync_reservations()?;
         for request in requests {
             self.reserve_pending_host(request)?;
+        }
+        if !self.hosts.completed_hosts.is_empty() {
+            return Ok(true);
         }
         let selected = self
             .hosts
@@ -142,13 +164,31 @@ impl ExecutionResource {
             .effects
             .reserved_sequence(request.effect_seq)
             .ok_or_else(|| usage("missing reserved effect sequence"))?;
+        let operation = pseudolearn_runtime::effect_operation(&request.operation)
+            .ok_or_else(|| usage("unknown effect operation"))?;
+        let mut external = pseudolearn_runtime::HostEffectRequest {
+            effect_seq: sequence,
+            receiver: request.receiver.clone(),
+            arguments: request.arguments.clone(),
+            operation: request.operation.clone(),
+            result_capability: None,
+            source_node_id: request
+                .source_node_id
+                .ok_or_else(|| usage("missing effect source"))?,
+        };
+        let validation =
+            pseudolearn_runtime::validate_host_request(&self.effects, operation, &mut external);
         self.hosts.pending_hosts.insert(
             sequence,
             PendingHostEffect {
                 machine_sequence: request.effect_seq,
                 request,
+                external,
             },
         );
+        if let Err(error) = validation {
+            self.resolve_concurrent_host_result(sequence, HostReply::failure(error))?;
+        }
         Ok(())
     }
 }
@@ -158,8 +198,10 @@ fn pending_host_value(sequence: u64, host: &PendingHostEffect) -> Value {
         "effect_seq": sequence,
         "task_id": host.request.task_id,
         "capability_kind": host.request.capability_kind,
-        "operation": host.request.operation,
-        "source_node_id": host.request.source_node_id,
-        "arguments": host.request.arguments,
+        "operation": host.external.operation,
+        "receiver": host.external.receiver,
+        "result_capability": host.external.result_capability,
+        "source_node_id": host.external.source_node_id,
+        "arguments": host.external.arguments,
     })
 }

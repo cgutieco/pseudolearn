@@ -424,6 +424,21 @@ void main() {
       },
     );
 
+    test('host cannot import engine or presentation', () {
+      final violations = validateArchitecture(
+        config: config,
+        packageRoot: packageRoot,
+        customSourceRoot: p.join(
+          packageRoot,
+          'test/architecture/fixtures/host_importing_engine',
+        ),
+      );
+      expect(
+        violations.any((v) => v.violationType == 'layer_forbidden_import'),
+        isTrue,
+      );
+    });
+
     test('Negative fixture: undeclared layer folder fails check', () {
       final fixturePath = p.join(
         packageRoot,

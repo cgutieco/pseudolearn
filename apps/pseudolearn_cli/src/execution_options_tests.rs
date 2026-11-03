@@ -14,41 +14,38 @@ fn supplies_cli_limits_from_the_language_contract() {
 }
 
 #[test]
-fn parses_network_grant_and_repeated_origins() -> Result<(), String> {
+fn preserves_program_arguments_after_the_separator() -> Result<(), String> {
     let arguments = [
         "run",
-        "--grant",
-        "red",
-        "--origen",
-        "https://api.example.test",
-        "--origin",
-        "https://files.example.test:8443",
-        "--origen-local",
-        "http://127.0.0.1:8080",
         "--test-root",
         "root.pem",
+        "--",
+        "",
+        "λ",
+        "--seed",
+        "17",
     ]
     .map(str::to_owned);
     let options =
         crate::options::parse_cli_options(&arguments).map_err(|error| format!("{error:?}"))?;
-    assert_eq!(options.execution.grants, ["red"]);
     assert_eq!(
-        options.execution.origins,
-        [
-            "https://api.example.test",
-            "https://files.example.test:8443"
-        ]
+        options.execution.program_arguments,
+        ["", "λ", "--seed", "17"]
     );
-    assert_eq!(options.execution.local_origins, ["http://127.0.0.1:8080"]);
     assert_eq!(options.execution.test_roots, ["root.pem"]);
-    assert_eq!(
-        crate::physical_session::host_document(&options.execution)
-            .and_then(|host| host.get("network_origins").cloned()),
-        Some(serde_json::json!([
-            "https://api.example.test",
-            "https://files.example.test:8443",
-            "http://127.0.0.1:8080"
-        ]))
-    );
+    assert_eq!(options.execution.seed, None);
     Ok(())
+}
+
+#[test]
+fn rejects_retired_authority_options() {
+    for flag in [
+        "--grant",
+        "--origin",
+        "--origen",
+        "--files-root",
+        "--origen-local",
+    ] {
+        assert!(crate::options::parse_cli_options(&["run".to_owned(), flag.to_owned()]).is_err());
+    }
 }

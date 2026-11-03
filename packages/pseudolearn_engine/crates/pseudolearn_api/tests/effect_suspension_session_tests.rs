@@ -14,7 +14,7 @@ fn start(limits: Value) -> Result<Run, String> {
     let started = session.call(
         "start",
         &json!({"analysis":analysis.pointer("/value/resource"),"program":CLOCK_THEN_READ,
-            "limits":limits,"host":{"permissions":["reloj"],"detached":true}}),
+            "limits":limits,"host":{"detached":true}}),
     );
     let resource = started
         .pointer("/value/resource")
@@ -230,7 +230,7 @@ fn replay(mode: &str, tape: &Value) -> Value {
     let started = session.call(
         "start",
         &json!({"analysis":analysis.pointer("/value/resource"),"program":CLOCK,"profile":"es",
-            "strictness":"strict","seed":42,"host":{"permissions":["reloj"],"detached":true},
+            "strictness":"strict","seed":42,"host":{"detached":true},
             "execution_mode":mode,"effect_tape":tape}),
     );
     session.call(
@@ -244,7 +244,7 @@ fn replay_and_seek_never_suspend_even_with_a_detached_host() -> Result<(), Strin
     let recording = ApiSession::default().call(
         "record",
         &json!({"request":{"program":CLOCK,"profile":"es","strictness":"strict","seed":42,
-            "host":{"permissions":["reloj"],"clock":[100]}}}),
+            "host":{"clock":[100]}}}),
     );
     let tape = recording
         .pointer("/value/effect_tape")

@@ -34,7 +34,7 @@ fn malformed_or_noncanonical_launch_configuration_is_rejected() -> Result<(), St
 }
 
 #[test]
-fn workspace_launch_never_grants_capabilities() -> Result<(), String> {
+fn launch_rejects_retired_authority_configuration() -> Result<(), String> {
     let mut options = parse_cli_options(&[]).ok().ok_or("missing options")?;
     for field in [
         "permissions",
@@ -42,12 +42,26 @@ fn workspace_launch_never_grants_capabilities() -> Result<(), String> {
         "origins",
         "filesRoot",
         "env",
-        "args",
         "serverPath",
     ] {
         let arguments = json!({field:"untrusted"});
         assert!(configure(&mut options, &arguments).is_err());
-        assert_eq!(options.execution.grants.len(), 0);
     }
+    Ok(())
+}
+
+#[test]
+fn launch_preserves_empty_and_unicode_arguments() -> Result<(), String> {
+    let mut options = parse_cli_options(&[]).ok().ok_or("missing options")?;
+    configure(&mut options, &json!({"args":["", "λ", "--seed"]}))?;
+    assert_eq!(options.execution.program_arguments, ["", "λ", "--seed"]);
+    assert!(configure(&mut options, &json!({"args":[1]})).is_err());
+    assert!(
+        configure(
+            &mut options,
+            &json!({"cwd":"/missing-pseudolearn-directory"})
+        )
+        .is_err()
+    );
     Ok(())
 }

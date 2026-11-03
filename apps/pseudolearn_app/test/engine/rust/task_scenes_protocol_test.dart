@@ -7,31 +7,34 @@ import 'task_scene_runner.dart';
 void main() {
   for (final language in SceneLanguage.values) {
     group('task scenes · ${language.suffix}', () {
-      test('identities: one subprogram, one task waits and the other runs', () {
-        final run = TaskSceneRun.open();
-        final step = run.until(
-          run.start(sceneSource('identities', language), language),
-          (step) => step.isAwaitingEffect,
-        );
+      test(
+        'identities: one subprogram, one task waits and the other runs',
+        () async {
+          final run = TaskSceneRun.open();
+          final step = run.until(
+            run.start(sceneSource('identities', language), language),
+            (step) => step.isAwaitingEffect,
+          );
 
-        expect(step.pendingEffect?.operation, 'request_timer');
-        expect(taskOf(step, 1).status.isTerminal, isFalse);
-        expect(taskOf(step, 2).status, ExecutionTaskStatus.completed);
-        expect(taskOf(step, 0).status, ExecutionTaskStatus.suspended);
-        expect(run.lines, ['2']);
-        expect(taskOf(step, 1).scopeName, contains('Worker'));
-        expect(taskOf(step, 2).scopeName, contains('Worker'));
-        expect(taskOf(step, 1).frames, isNotEmpty);
+          expect(step.pendingEffect?.operation, 'request_timer');
+          expect(taskOf(step, 1).status.isTerminal, isFalse);
+          expect(taskOf(step, 2).status, ExecutionTaskStatus.completed);
+          expect(taskOf(step, 0).status, ExecutionTaskStatus.suspended);
+          expect(run.lines, ['2']);
+          expect(taskOf(step, 1).scopeName, contains('Worker'));
+          expect(taskOf(step, 2).scopeName, contains('Worker'));
+          expect(taskOf(step, 1).frames, isNotEmpty);
 
-        final end = run.until(
-          run.execution.settleEffect(EffectSettlement.resolve),
-          (step) => step.isFinished,
-        );
-        expect(end.isFinished, isTrue);
-        expect(run.lines, ['2', '1']);
-        expect(taskOf(end, 1).status, ExecutionTaskStatus.completed);
-        run.execution.stop();
-      });
+          final end = await run.untilSettled(
+            run.execution.settleEffect(EffectSettlement.resolve),
+            (step) => step.isFinished,
+          );
+          expect(end.isFinished, isTrue);
+          expect(run.lines, ['2', '1']);
+          expect(taskOf(end, 1).status, ExecutionTaskStatus.completed);
+          run.execution.stop();
+        },
+      );
 
       test('failure: a recoverable error cancels the sibling only', () {
         final run = TaskSceneRun.open();
@@ -94,29 +97,34 @@ void main() {
         run.execution.stop();
       });
 
-      test('revision: a new run gets another revision and drops the old one', () {
-        final first = sceneSource('identities', language);
-        final second = first.replaceFirst('Worker(2)', 'Worker(5)');
-        final run = TaskSceneRun.open();
-        run.until(run.start(first, language), (step) => step.isAwaitingEffect);
-        final firstRevision = run.resource.revisionId;
-        final firstResource = run.resource.identifier;
+      test(
+        'revision: a new run gets another revision and drops the old one',
+        () {
+          final first = sceneSource('identities', language);
+          final second = first.replaceFirst('Worker(2)', 'Worker(5)');
+          final run = TaskSceneRun.open();
+          run.until(
+            run.start(first, language),
+            (step) => step.isAwaitingEffect,
+          );
+          final firstRevision = run.resource.revisionId;
+          final firstResource = run.resource.identifier;
 
-        final step = run.until(
-          run.start(second, language),
-          (step) => step.isAwaitingEffect,
-        );
+          final step = run.until(
+            run.start(second, language),
+            (step) => step.isAwaitingEffect,
+          );
 
-        expect(run.resource.revisionId, isNot(firstRevision));
-        expect(run.resource.identifier, isNot(firstResource));
-        expect(run.lines, ['5']);
-        expect(
-          run.events.map((event) => event.revisionId).toSet(),
-          {run.resource.revisionId},
-        );
-        expect(step.isAwaitingEffect, isTrue);
-        run.execution.stop();
-      });
+          expect(run.resource.revisionId, isNot(firstRevision));
+          expect(run.resource.identifier, isNot(firstResource));
+          expect(run.lines, ['5']);
+          expect(run.events.map((event) => event.revisionId).toSet(), {
+            run.resource.revisionId,
+          });
+          expect(step.isAwaitingEffect, isTrue);
+          run.execution.stop();
+        },
+      );
     });
   }
 }

@@ -454,3 +454,30 @@ Un programa con tareas o canales no se compila a código nativo todavía: `build
 muestran el diagnóstico `nativeTasksUnsupported` (salida 1) en vez de un fallo de enlazado, y el
 programa se ejecuta con el motor virtual. `--tareas` limita las tareas vivas de la ejecución
 virtual (omisión 4 096) y excede con `taskLimitExceeded`.
+
+## Ejecución con anfitrión completo
+
+run y run --editor, proyectos y DAP atienden efectos con `pseudolearn_host`, compartido con la app.
+La carpeta inicial es el directorio actual; DAP admite cwd existente y args de cadenas. Los argumentos
+de run se escriben tras -- y conservan vacíos, espacios y Unicode. No se requieren opciones de
+concesión; las retiradas se rechazan como uso inválido. --seed conserva la semilla explícita y su
+omisión usa entropía del SO. --test-root añade raíces TLS únicamente para pruebas locales.
+
+Los archivos admiten rutas absolutas y .. desde la raíz inicial. Derivar un directorio confina esa
+capacidad con cap-std y derechos no amplificables. HTTP admite todos los destinos HTTP/HTTPS sin
+filtro de rangos; valida TLS mediante el sistema, devuelve redirecciones y no hereda cookies ni
+proxies. Se admiten cabeceras de credenciales explícitas; solo se reservan las del transporte.
+La cola física acotada y sus hilos independientes permiten que temporizadores y red esperen sin
+bloquear otras tareas. La entrada interactiva devuelve identidad completa de la solicitud.
+
+El transporte y sus pruebas TLS, gzip, cancelación y plazos viven en el crate compartido. Los vectores
+de confinamiento se aplican a subcapacidades voluntarias; los antiguos vetos SSRF dejan de ser reglas.
+AOT conserva el alcance de su backend y su ampliación física se verifica separadamente de la VM.
+
+El transporte reutiliza getrandom 0.2.17, ya presente por ring, para evitar una segunda versión del
+proveedor de entropía. Las licencias de transporte permiten BSD-3-Clause (subtle), ISC (ring y WebPKI)
+y CDLA-Permissive-2.0 para los datos de raíces de respaldo del verificador de plataforma. La puerta
+de dependencias mantiene el rechazo de duplicados y omite versiones exactas inevitables de
+io-lifetimes y bindings Windows heredadas de cap-std. El puente también omite hashbrown 0.14.5
+(oslog de FRB) y miniz_oxide 0.8.9 (backtrace de FRB), manteniendo las versiones actuales usadas por
+indexmap y flate2. Estas excepciones son de compatibilidad de dependencias, sin cambiar validación TLS.

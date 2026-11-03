@@ -310,23 +310,17 @@ fn dependencies_need_a_package_name() {
 }
 
 #[test]
-fn permissions_are_a_closed_empty_vocabulary() {
+fn retired_authority_fields_are_unknown_regardless_of_value() {
     let head = "schema = 1\n[package]\nname = \"a\"\nkind = \"library\"\n[requests]\n";
-    assert!(resolve(&format!("{head}permissions = []\n")).is_ok());
-    only(
-        &format!("{head}permissions = [\"net\"]\n"),
-        ManifestErrorCode::UnknownPermission,
-        "requests.permissions[0]",
-        6,
-        16,
-    );
-    only(
-        &format!("{head}permissions = [1]\n"),
-        ManifestErrorCode::InvalidValue,
-        "requests.permissions[0]",
-        6,
-        16,
-    );
+    for value in ["[]", "[1]", "[\"net\"]"] {
+        only(
+            &format!("{head}permissions = {value}\n"),
+            ManifestErrorCode::UnknownField,
+            "requests.permissions",
+            6,
+            1,
+        );
+    }
 }
 
 #[test]

@@ -7,5 +7,6 @@ abstract interface class ProgramAnalyzer {
     required String sourceCode,
     required SyntaxProfileId profileId,
     required UiLanguageId languageId,
+    String strictness = 'flexible',
   });
 }

@@ -10,6 +10,11 @@ impl ExecutionResource {
         &mut self,
         pending: PendingEffectRequest,
     ) -> Result<bool, ApiError> {
+        let pending = if self.detached_effects && self.execution_mode.allows_external_host() {
+            self.select_capability_effect(pending)?
+        } else {
+            pending
+        };
         let operation = pseudolearn_runtime::effect_operation(&pending.operation)
             .ok_or_else(|| usage("unknown effect operation"))?;
         let source = pending
@@ -64,10 +69,13 @@ impl ExecutionResource {
             return Ok(true);
         }
         if self.start_concurrent_host_effects(&pending)? {
-            return Ok(false);
+            return self.activate_ready_host_effect();
         }
         self.prepare_delivery(&pending)?;
         let request = self.begin_pending(operation, &pending, source)?;
+        if self.finish_rejected_host(request.effect_seq)? {
+            return Ok(true);
+        }
         pending.effect_seq = request.effect_seq;
         self.pending_host = Some(request);
         self.terminal = Some(RunExit::AwaitingEffect(pending));
@@ -98,7 +106,10 @@ impl ExecutionResource {
             .map_err(crate::tape_wire::replay_error_to_api)
     }
 
-    fn prepare_delivery(&mut self, pending: &PendingEffectRequest) -> Result<(), ApiError> {
+    pub(super) fn prepare_delivery(
+        &mut self,
+        pending: &PendingEffectRequest,
+    ) -> Result<(), ApiError> {
         pseudolearn_timeline::prepare_effect_delivery(&mut self.effects, &self.machine, pending)
             .map_err(crate::tape_wire::replay_error_to_api)
     }
@@ -183,7 +194,7 @@ impl ExecutionResource {
         }
     }
 
-    fn begin_pending(
+    pub(super) fn begin_pending(
         &mut self,
         operation: &pseudolearn_abi::EffectOperation,
         pending: &PendingEffectRequest,
@@ -199,12 +210,16 @@ impl ExecutionResource {
     }
 
     pub(super) fn settle_cancelled_suspension(&mut self) {
-        if !self.has_external_effects() || !self.cancelled.load(Ordering::Relaxed) {
+        if (!self.has_external_effects() && self.pending_input.is_none())
+            || !self.cancelled.load(Ordering::Relaxed)
+        {
             return;
         }
+        self.pending_input = None;
         self.pending_host = None;
         self.hosts.pending_hosts.clear();
         self.hosts.completed_hosts.clear();
+        self.hosts.buffered_replies.clear();
         self.effects.abort();
         pseudolearn_runtime::HostEffectProvider::close_all(&mut self.host);
         self.terminal = Some(RunExit::Cancelled);
@@ -225,40 +240,20 @@ impl ExecutionResource {
         let reply: HostReply =
             serde_json::from_value(result.clone()).map_err(|error| usage(&error.to_string()))?;
         if self.hosts.pending_hosts.contains_key(&sequence) {
+            if self.hosts.has_buffered_reply(sequence) {
+                return Err(usage("effect result was already supplied"));
+            }
+            if self.pending_host.is_some() {
+                self.hosts.buffered_replies.push_back((sequence, reply));
+                return Ok(());
+            }
             return self.resolve_concurrent_host_result(sequence, reply);
         }
-        self.resolve_single_host_result(sequence, reply)
+        self.resolve_single_host_result(sequence, reply)?;
+        self.flush_buffered_host_replies()
     }
 
-    fn resolve_concurrent_host_result(
-        &mut self,
-        sequence: u64,
-        reply: HostReply,
-    ) -> Result<(), ApiError> {
-        let pending = self
-            .hosts
-            .pending_hosts
-            .remove(&sequence)
-            .ok_or_else(|| usage("execution is not awaiting effect"))?;
-        let operation = pseudolearn_runtime::effect_operation(&pending.request.operation)
-            .ok_or_else(|| usage("unknown effect operation"))?;
-        let source = pending
-            .request
-            .source_node_id
-            .ok_or_else(|| usage("missing effect source"))?;
-        self.prepare_delivery(&pending.request)?;
-        let request = self.begin_pending(operation, &pending.request, source)?;
-        if request.effect_seq != sequence {
-            return Err(usage("effect sequence mismatch"));
-        }
-        let reply = resolve_host_effect(&mut self.effects, sequence, reply)
-            .map_err(crate::tape_wire::replay_error_to_api)?;
-        self.hosts.complete(pending.machine_sequence, reply);
-        self.clear_completed_host(sequence);
-        Ok(())
-    }
-
-    fn clear_completed_host(&mut self, sequence: u64) {
+    pub(super) fn clear_completed_host(&mut self, sequence: u64) {
         if self
             .pending_host
             .as_ref()

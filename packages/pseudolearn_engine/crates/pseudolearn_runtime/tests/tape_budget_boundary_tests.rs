@@ -12,7 +12,6 @@ fn identity() -> ExecutionIdentity {
         profile: "es".to_owned(),
         seed: 42,
         statement_limit: Some(100),
-        permissions: vec!["consola".to_owned()],
     }
 }
 

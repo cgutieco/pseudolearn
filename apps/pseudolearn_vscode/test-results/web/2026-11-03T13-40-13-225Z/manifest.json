@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "runner": "0.0.81",
+  "vscodeVersion": "1.144.0",
+  "vscodeCommit": "2c33b50b16c472efe58357d1d2a8a5414bc23fbf",
+  "quality": "stable",
+  "browsers": [
+    "chromium",
+    "firefox",
+    "webkit"
+  ],
+  "provider": "test-web virtual filesystem; in-memory writes, no durable persistence claim",
+  "physicalEvidence": false,
+  "records": [
+    {
+      "browser": "chromium",
+      "exitCode": 0,
+      "signal": null,
+      "status": "passed",
+      "logSha256": "fc68fbcddc99cce5ac1db8d568a1f72b3cf3893c061041bb55892b8221e30f97"
+    },
+    {
+      "browser": "webkit",
+      "exitCode": 0,
+      "signal": null,
+      "status": "passed",
+      "logSha256": "4c2a026d06cfe50f118ca05e743adfbf039fd856e7b9e222494b9bc7dbd1e3ea"
+    }
+  ],
+  "provenance": {
+    "revision": "04b4153868cc3ab63f90c2b0e1445e4adb8832bf",
+    "dirty": true,
+    "node": "v22.23.3",
+    "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+    "files": {
+      "package.json": "6826842c70430437791faa4645212f29f92300216130e44346c97f6f4f879756",
+      "README.md": "887c7c2bd5ac6d74fa87bfa54d9696dc7c3265ab10101506844c7785cc8e4af6",
+      "LICENSE.md": "8cafbef1912e0c59f85726a8cb52d8a5455ef051a3c785b8e624c00ca8543d03",
+      "media/pseudolearn.tmLanguage.json": "0351e7bd2e25e60c46f63e90341dbfe96bef3062529bd5d2338716a894d1af6a",
+      "media/language-configuration.json": "dee7d0601d1c4634bcc2c680da3162c1267a7c59a884ab2227337b5e9caed698",
+      "dist/web/browser_extension.js": "ac8eb85184ac518ad0730567fc5b3ec75b0e69f6b1116675997bcf9f37e3006f",
+      "dist/web/language_worker.js": "2f7b3c32c4689437df31f78d68b51b70ccdebc5c525b2f37b2687ae1f37e8a87",
+      "dist/web/execution_worker.js": "f8dc60ba8c54a9dcf20e4945e4fb34344c3cf7f5ab0cde0f853c1add97852fa3",
+      "dist/web/wasm/pseudolearn_wasm_bg.wasm": "68d1f095afd31c4e9159bb17422db22030a9e59d66576aca912f5f6c86cc7b8e",
+      "dist/web/wasm/pseudolearn_wasm.js": "a733e21485353588fcade07f6fa74ba5ed6712ee95173951b705ce4b2605fbb4",
+      "third-party-notices.md": "8fde2d94541d5f80782b3d1e63db6eb99f6b0daa7ee18e5c4568da29633f6eac"
+    },
+    "lock": "eb0349b01e2b7238f9182ac04b8a08708e22b6fa7753c5e43135399cb78e6c22",
+    "inputs": {
+      "../../packages/pseudolearn_engine/crates/pseudolearn_wasm/browser/fetch_host.mjs": "0647f609e3d95e482022d0de1252c4218388e23f4992c0bb8aef13081a1ee227"
+    }
+  }
+}

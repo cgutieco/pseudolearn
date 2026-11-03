@@ -1,5 +1,5 @@
 subroutine Run() as result<integer, IoError>
-define directory as DirCap <- propagate requestDirectory("root");
+define directory as DirCap <- propagate requestDirectory(".");
 define output as FileCap <- propagate directory.open("salida.txt", "write");
 defer
 discard output.close();

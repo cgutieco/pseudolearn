@@ -273,14 +273,7 @@
     "es": "SubProceso Probe(x Como Entero) Como Resultado<Cadena, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(ATexto(10 div x));\nRetornar Exito(\"listo\");\nFinSubProceso\nAlgoritmo Main\nDefinir Mutable zero Como Entero <- 0;\nSegun Probe(zero) Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
     "en": "subroutine Probe(x as integer) as result<string, IoError>\ndefine directory as DirCap <- propagate requestDirectory(toText(10 div x));\nreturn success(\"listo\");\nendSubroutine\nalgorithm Main\ndefine mutable zero as integer <- 0;\nswitch Probe(zero) do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
-  "anfitrion": {
-    "permissions": [
-      "archivos_lectura"
-    ],
-    "requested_permissions": [
-      "archivos_lectura"
-    ]
-  }
+  "anfitrion": {}
 }
 ```
 
@@ -343,12 +336,6 @@
     "en": "subroutine Probe() as result<string, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine pointer as FileCap <- propagate directory.open(\"nombre\", \"read\");\ndefine target as FileCap <- propagate directory.open(propagate pointer.readText(), \"read\");\nreturn target.readText();\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "archivos_lectura"
-    ],
-    "requested_permissions": [
-      "archivos_lectura"
-    ],
     "files": {
       "nombre": "destino",
       "destino": "contenido"
@@ -424,12 +411,6 @@
     "en": "subroutine suspendable Pause(label as integer)\ndiscard await requestTimer();\nwrite label;\nendSubroutine\nalgorithm Main\ntasks\nspawn Pause(1);\nspawn Pause(2);\nspawn Pause(3);\nendTasks\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "temporizador"
-    ],
-    "requested_permissions": [
-      "temporizador"
-    ],
     "grabar_y_reproducir": true
   }
 }
@@ -489,12 +470,6 @@
     "en": "subroutine suspendable Pause(label as integer)\ndiscard await requestTimer();\nwrite label;\nendSubroutine\nalgorithm Main\ntasks\nspawn Pause(1);\nspawn Pause(2);\nspawn Pause(3);\nendTasks\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "temporizador"
-    ],
-    "requested_permissions": [
-      "temporizador"
-    ],
     "grabar_y_reproducir": true,
     "orden_entrega": [
       2,

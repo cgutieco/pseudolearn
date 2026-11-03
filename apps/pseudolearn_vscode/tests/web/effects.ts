@@ -11,7 +11,7 @@ export function networkEffect(url: string, overrides: Record<string, unknown> = 
 }
 
 export const directoryEffect = () => ({ effect_seq: next(), operation: "request_directory", result_capability: directoryToken,
-  arguments: [{ kind: "text", value: "root" }] });
+  arguments: [{ kind: "text", value: "." }] });
 
 export const openEffect = (relative: string, mode: string) => ({ effect_seq: next(), operation: "file_open", receiver: directoryToken,
   result_capability: fileToken, arguments: [{ kind: "text", value: relative }, { kind: "text", value: mode }] });

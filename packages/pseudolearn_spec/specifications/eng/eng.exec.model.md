@@ -419,12 +419,6 @@ El campo cancelacion de un caso indica la entrada a sentencia, contada desde uno
     "en": "subroutine Probe() as result<integer, IoError>\ndefine clock as Clock <- propagate requestClock();\nreturn clock.now();\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "reloj"
-    ],
-    "requested_permissions": [
-      "reloj"
-    ],
     "detached": true
   }
 }
@@ -473,12 +467,6 @@ El campo cancelacion de un caso indica la entrada a sentencia, contada desde uno
     "en": "subroutine Probe(directory as DirCap) as result<integer, IoError>\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\ndefer\ndiscard file.close();\nendDefer\ndefine mutable n as integer <- 0;\nwhile true do\nn <- n + 1;\nendWhile\nreturn success(n);\nendSubroutine\nalgorithm Main\ndefine opened as result<DirCap, IoError> <- requestDirectory(\"root\");\nswitch opened do\nsuccess(root): switch Probe(root) do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "archivos_lectura"
-    ],
-    "requested_permissions": [
-      "archivos_lectura"
-    ],
     "files": {
       "a": "hola"
     }
@@ -531,12 +519,6 @@ El campo cancelacion de un caso indica la entrada a sentencia, contada desde uno
     "en": "subroutine Probe(directory as DirCap) as result<integer, IoError>\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\ndefer\ndiscard file.close();\nendDefer\ndefine mutable n as integer <- 0;\nwhile true do\nn <- n + 1;\nendWhile\nreturn success(n);\nendSubroutine\nalgorithm Main\ndefine opened as result<DirCap, IoError> <- requestDirectory(\"root\");\nswitch opened do\nsuccess(root): switch Probe(root) do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "archivos_lectura"
-    ],
-    "requested_permissions": [
-      "archivos_lectura"
-    ],
     "files": {
       "a": "hola"
     }
@@ -573,12 +555,6 @@ El campo cancelacion de un caso indica la entrada a sentencia, contada desde uno
         "resource_from": 0,
         "arguments": {
           "host": {
-            "permissions": [
-              "archivos_lectura"
-            ],
-            "requested_permissions": [
-              "archivos_lectura"
-            ],
             "detached": true
           }
         }

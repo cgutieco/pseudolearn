@@ -467,7 +467,7 @@
   "id": "R9",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "terminate, disconnect y EOF cancelan la punta y cierran recursos, entrada y transportes propios una sola vez. Launch no concede permisos desde launch.json; ejecutar exige Workspace Trust y concesiones personales explícitas. El proceso se crea sin shell y con binario verificado. EOF sin cierre completo se informa como terminación anormal.",
+  "texto": "terminate, disconnect y EOF cancelan la punta y cierran recursos, entrada y transportes propios una sola vez. Launch acepta args como lista de cadenas y cwd como carpeta de trabajo; tiene autoridad plena sin claves de permisos. Ejecutar exige Workspace Trust del editor. El proceso se crea sin shell y con binario verificado. EOF sin cierre completo se informa como terminación anormal.",
   "verificacion": [
     "C9"
   ]

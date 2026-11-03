@@ -1,135 +1,80 @@
 use crate::error::CliError;
 use crate::execution_options::ExecutionArguments;
 use crate::physical_host::PhysicalHost;
-use crate::physical_request::{READ, WRITE};
-use cap_std::ambient_authority;
-use cap_std::fs::Dir;
 use pseudolearn_api::ApiSession;
 use serde_json::{Value, json};
 
-pub(crate) const PERMISSION_VOCABULARY: [&str; 8] = [
-    "consola",
-    "argumentos",
-    "archivos_lectura",
-    "archivos_escritura",
-    "reloj",
-    "temporizador",
-    "network",
-    "red",
-];
-
 pub(crate) fn host_document(execution: &ExecutionArguments) -> Option<Value> {
-    if execution.grants.is_empty() {
-        return None;
-    }
-    let origins: Vec<&String> = execution
-        .origins
-        .iter()
-        .chain(&execution.local_origins)
-        .collect();
-    Some(json!({
-        "permissions":execution.grants,
-        "network_origins":origins,
-        "detached":true
-    }))
+    execution
+        .replay_tape
+        .is_none()
+        .then(|| json!({"detached":true}))
 }
 
 pub(crate) fn open_host(execution: &ExecutionArguments) -> Result<Option<PhysicalHost>, CliError> {
-    if execution.grants.is_empty() || execution.replay_tape.is_some() {
+    if execution.replay_tape.is_some() {
         return Ok(None);
     }
-    let rights = granted_rights(&execution.grants);
-    let root = match (&execution.files_root, rights) {
-        (Some(path), granted) if granted != 0 => {
-            let directory = Dir::open_ambient_dir(path, ambient_authority())
-                .map_err(|error| CliError::Operational(error.to_string()))?;
-            Some((directory, granted))
-        }
-        _ => None,
-    };
-    let policy = crate::physical_network::NetworkPolicy::from_execution(execution)
-        .map_err(|error| CliError::Operational(error.code.to_owned()))?;
-    let mut host = PhysicalHost::new(root);
-    host.set_network_policy(policy);
+    let directory = execution
+        .working_directory
+        .as_ref()
+        .map(std::path::PathBuf::from)
+        .map_or_else(std::env::current_dir, Ok)
+        .map_err(|error| CliError::Operational(error.to_string()))?;
+    let certificates = execution
+        .test_roots
+        .iter()
+        .map(|path| std::fs::read(path).map_err(|error| CliError::Operational(error.to_string())))
+        .collect::<Result<Vec<_>, _>>()?;
+    let mut host = PhysicalHost::new(directory, execution.program_arguments.clone());
+    host.set_network_policy(pseudolearn_host::NetworkPolicy::from_host_roots(
+        certificates,
+    ));
     Ok(Some(host))
 }
 
 pub(crate) fn declare_network_capabilities(session: &mut ApiSession) -> Result<(), CliError> {
     let answer = session.call(
         "negotiate",
-        &json!({"network_capabilities":crate::physical_network::NetworkCapabilities::value()}),
+        &json!({"network_capabilities":json!({"tls_validation":true,"wire_limit":"available","certificate_errors_distinguished":true,"redirect_location_visible":true,"ssrf_policy":"none","compression":"gzip"})}),
     );
     if answer.get("value").is_some() {
         Ok(())
     } else {
         Err(CliError::Operational(answer.to_string()))
     }
-}
-
-fn granted_rights(grants: &[String]) -> u8 {
-    let has = |name: &str| grants.iter().any(|grant| grant == name);
-    (if has("archivos_lectura") { READ } else { 0 })
-        | (if has("archivos_escritura") { WRITE } else { 0 })
 }
 
 pub(crate) fn resolve_effect(
     session: &mut ApiSession,
     resource: &Value,
     response: &Value,
-    host: &mut PhysicalHost,
+    host: &mut crate::dap_effects::EffectHost,
 ) -> Result<(), CliError> {
-    if let Some(effects) = response
+    let effects = response
         .get("pending_effects")
         .and_then(Value::as_array)
-        .filter(|effects| {
-            effects.len() > 1
-                && effects.iter().all(|effect| {
-                    effect.get("operation").and_then(Value::as_str) == Some("network_send")
-                })
-        })
-    {
-        return resolve_network_batch(session, resource, effects, host);
+        .cloned()
+        .unwrap_or_else(|| {
+            response
+                .get("pending_effect")
+                .cloned()
+                .into_iter()
+                .collect()
+        });
+    for effect in effects {
+        host.submit(effect).map_err(CliError::Operational)?;
     }
-    let pending = response
-        .get("pending_effect")
-        .ok_or_else(|| CliError::Operational("missing pending effect".to_owned()))?;
-    let reply = host.perform(pending);
-    submit_effect_result(session, resource, pending, &reply)
-}
-
-fn resolve_network_batch(
-    session: &mut ApiSession,
-    resource: &Value,
-    effects: &[Value],
-    host: &PhysicalHost,
-) -> Result<(), CliError> {
-    let completed = crate::physical_network_batch::perform(effects, host.network_policy())?;
-    if completed.len() != effects.len() {
-        return Err(CliError::Operational(
-            "network batch was incomplete".to_owned(),
-        ));
+    for (request, reply) in host.completed() {
+        let answer = session.call(
+            "effect_result",
+            &json!({"resource":resource,
+            "effect_seq":request.get("effect_seq"),"result":reply}),
+        );
+        if answer.get("value").is_none() {
+            return Err(CliError::Operational(answer.to_string()));
+        }
     }
-    for (sequence, reply) in completed {
-        let effect = json!({"effect_seq":sequence});
-        submit_effect_result(session, resource, &effect, &reply)?;
-    }
+    std::thread::sleep(std::time::Duration::from_millis(1));
     Ok(())
-}
-
-fn submit_effect_result(
-    session: &mut ApiSession,
-    resource: &Value,
-    pending: &Value,
-    reply: &Value,
-) -> Result<(), CliError> {
-    let sequence = pending.get("effect_seq").cloned().unwrap_or(Value::Null);
-    let answer = session.call(
-        "effect_result",
-        &json!({"resource":resource,"effect_seq":sequence,"result":reply}),
-    );
-    if answer.get("value").is_some() {
-        Ok(())
-    } else {
-        Err(CliError::Operational(answer.to_string()))
-    }
 }

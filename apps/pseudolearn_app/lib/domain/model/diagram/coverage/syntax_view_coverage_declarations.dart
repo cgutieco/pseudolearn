@@ -23,7 +23,10 @@ const List<SyntaxViewCoverageRow> syntaxViewCoverageDeclarations = [
     rule: 'LANG.SUBPROGRAM.DECLARATION@1.0.0#R1',
     flowchart: _exact,
     structogram: _exact,
-    structure: CoverageCell.extension('a subprogram is a box only when it declares a contract constraint'),
+    structure: CoverageCell.notApplicable(
+      'subprogram contracts are represented by their own structural rows',
+    ),
+    help: CoverageCell.help('help.subprogram'),
     evidence: _flowTests,
   ),
   SyntaxViewCoverageRow(
@@ -35,6 +38,7 @@ const List<SyntaxViewCoverageRow> syntaxViewCoverageDeclarations = [
     flowchart: _exact,
     structogram: _exact,
     structure: _exact,
+    help: CoverageCell.help('help.method'),
     evidence: _flowTests,
   ),
   SyntaxViewCoverageRow(
@@ -43,9 +47,14 @@ const List<SyntaxViewCoverageRow> syntaxViewCoverageDeclarations = [
     family: CoverageFamily.unit,
     syntaxKinds: ['class_unit'],
     rule: 'LANG.CLASS.DECLARATION@1.0.0#R1',
-    flowchart: CoverageCell.notApplicable('a class has no execution; its members are units'),
-    structogram: CoverageCell.notApplicable('a class has no execution; its members are units'),
+    flowchart: CoverageCell.notApplicable(
+      'a class has no execution; its members are units',
+    ),
+    structogram: CoverageCell.notApplicable(
+      'a class has no execution; its members are units',
+    ),
     structure: _exact,
+    help: CoverageCell.help('help.class'),
     evidence: _classTests,
   ),
   SyntaxViewCoverageRow(
@@ -57,6 +66,7 @@ const List<SyntaxViewCoverageRow> syntaxViewCoverageDeclarations = [
     flowchart: CoverageCell.notApplicable('a field is not a step'),
     structogram: CoverageCell.notApplicable('a field is not a step'),
     structure: _exact,
+    help: CoverageCell.help('help.class'),
     evidence: _classTests,
   ),
   SyntaxViewCoverageRow(
@@ -67,7 +77,10 @@ const List<SyntaxViewCoverageRow> syntaxViewCoverageDeclarations = [
     rule: 'LANG.DECL.VARIABLE@1.0.0#R1',
     flowchart: _exact,
     structogram: _exact,
-    structure: CoverageCell.notApplicable('a local declaration is not part of the class structure'),
+    structure: CoverageCell.notApplicable(
+      'a local declaration is not part of the class structure',
+    ),
+    help: CoverageCell.help('help.variables'),
     evidence: _flowTests,
   ),
   SyntaxViewCoverageRow(
@@ -76,10 +89,17 @@ const List<SyntaxViewCoverageRow> syntaxViewCoverageDeclarations = [
     family: CoverageFamily.structuralWrapper,
     syntaxKinds: ['dimensioned'],
     rule: 'LANG.ARRAY.DIMENSION@1.0.0#R1',
-    flowchart: CoverageCell.notApplicable('rendered inside the caption of its declaration'),
-    structogram: CoverageCell.notApplicable('rendered inside the caption of its declaration'),
-    structure: CoverageCell.notApplicable('rendered inside the row of its owner'),
+    flowchart: CoverageCell.notApplicable(
+      'rendered inside the caption of its declaration',
+    ),
+    structogram: CoverageCell.notApplicable(
+      'rendered inside the caption of its declaration',
+    ),
+    structure: CoverageCell.notApplicable(
+      'rendered inside the row of its owner',
+    ),
     focus: CoverageCell.notApplicable('focus targets the owning declaration'),
+    help: CoverageCell.help('help.arrays'),
     evidence: _flowTests,
   ),
   SyntaxViewCoverageRow(
@@ -91,6 +111,7 @@ const List<SyntaxViewCoverageRow> syntaxViewCoverageDeclarations = [
     flowchart: CoverageCell.notApplicable('a contract has no execution'),
     structogram: CoverageCell.notApplicable('a contract has no execution'),
     structure: _exact,
+    help: CoverageCell.help('construction.interface'),
     evidence: _contractTests,
   ),
   SyntaxViewCoverageRow(
@@ -100,8 +121,11 @@ const List<SyntaxViewCoverageRow> syntaxViewCoverageDeclarations = [
     syntaxKinds: ['type_parameters', 'type_parameter'],
     rule: 'LANG.TYPES.GENERIC@1.0.0#R1',
     flowchart: CoverageCell.notApplicable('a type parameter has no execution'),
-    structogram: CoverageCell.notApplicable('a type parameter has no execution'),
+    structogram: CoverageCell.notApplicable(
+      'a type parameter has no execution',
+    ),
     structure: _exact,
+    help: CoverageCell.help('construction.interface'),
     evidence: _valueTypeTests,
   ),
   SyntaxViewCoverageRow(
@@ -110,9 +134,14 @@ const List<SyntaxViewCoverageRow> syntaxViewCoverageDeclarations = [
     family: CoverageFamily.valueDeclaration,
     syntaxKinds: ['record_unit', 'record_field'],
     rule: 'LANG.TYPES.RECORD@1.0.0#R1',
-    flowchart: CoverageCell.notApplicable('a record declaration has no execution'),
-    structogram: CoverageCell.notApplicable('a record declaration has no execution'),
+    flowchart: CoverageCell.notApplicable(
+      'a record declaration has no execution',
+    ),
+    structogram: CoverageCell.notApplicable(
+      'a record declaration has no execution',
+    ),
     structure: _exact,
+    help: CoverageCell.help('help.record'),
     evidence: _valueTypeTests,
   ),
   SyntaxViewCoverageRow(
@@ -121,9 +150,14 @@ const List<SyntaxViewCoverageRow> syntaxViewCoverageDeclarations = [
     family: CoverageFamily.valueDeclaration,
     syntaxKinds: ['enum_unit', 'enum_members'],
     rule: 'LANG.TYPES.ENUM@1.0.0#R1',
-    flowchart: CoverageCell.notApplicable('an enum declaration has no execution'),
-    structogram: CoverageCell.notApplicable('an enum declaration has no execution'),
+    flowchart: CoverageCell.notApplicable(
+      'an enum declaration has no execution',
+    ),
+    structogram: CoverageCell.notApplicable(
+      'an enum declaration has no execution',
+    ),
     structure: _exact,
+    help: CoverageCell.help('help.enum'),
     evidence: _valueTypeTests,
   ),
   SyntaxViewCoverageRow(
@@ -132,9 +166,12 @@ const List<SyntaxViewCoverageRow> syntaxViewCoverageDeclarations = [
     family: CoverageFamily.closure,
     syntaxKinds: ['function_literal'],
     rule: 'LANG.TYPES.FUNCTION@1.0.0#R1',
-    flowchart: CoverageCell.extension('the body of a function literal is part of the caption of its statement'),
-    structogram: CoverageCell.extension('the body of a function literal is part of the caption of its statement'),
-    structure: CoverageCell.notApplicable('a function literal is not part of the class structure'),
+    flowchart: _exact,
+    structogram: _exact,
+    structure: CoverageCell.notApplicable(
+      'a function literal is not part of the class structure',
+    ),
+    help: CoverageCell.help('help.function-literal'),
     evidence: _coverageTests,
   ),
   SyntaxViewCoverageRow(
@@ -143,9 +180,12 @@ const List<SyntaxViewCoverageRow> syntaxViewCoverageDeclarations = [
     family: CoverageFamily.pattern,
     syntaxKinds: ['variant_pattern'],
     rule: 'LANG.CONTROL.SWITCH@1.0.0#R1',
-    flowchart: CoverageCell.extension('a pattern is shown as the text of its case label'),
-    structogram: CoverageCell.extension('a pattern is shown as the text of its case label'),
-    structure: CoverageCell.notApplicable('a pattern is not part of the class structure'),
+    flowchart: _exact,
+    structogram: _exact,
+    structure: CoverageCell.notApplicable(
+      'a pattern is not part of the class structure',
+    ),
+    help: CoverageCell.help('help.variants'),
     evidence: _coverageTests,
   ),
   SyntaxViewCoverageRow(
@@ -154,10 +194,15 @@ const List<SyntaxViewCoverageRow> syntaxViewCoverageDeclarations = [
     family: CoverageFamily.structuralWrapper,
     syntaxKinds: ['parameters', 'parameter'],
     rule: 'LANG.SUBPROGRAM.PARAMETERS@1.0.0#R1',
-    flowchart: CoverageCell.notApplicable('rendered inside the caption of its call or unit title'),
-    structogram: CoverageCell.notApplicable('rendered inside the caption of its call or unit title'),
+    flowchart: CoverageCell.notApplicable(
+      'rendered inside the caption of its call or unit title',
+    ),
+    structogram: CoverageCell.notApplicable(
+      'rendered inside the caption of its call or unit title',
+    ),
     structure: _exact,
     focus: CoverageCell.notApplicable('focus targets the owning signature'),
+    help: CoverageCell.help('help.parameter-mode'),
     evidence: _classTests,
   ),
 ];

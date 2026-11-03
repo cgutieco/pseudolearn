@@ -753,12 +753,6 @@ Este contrato cuantifica los recursos que LANG.SUBPROGRAM.RECURSION y LANG.ARRAY
     "en": "subroutine Probe() as result<integer, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\ndefine first as string <- propagate file.readText();\ndefine second as string <- propagate file.readText();\nreturn success(2);\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "archivos_lectura"
-    ],
-    "requested_permissions": [
-      "archivos_lectura"
-    ],
     "files": {
       "a": "hola"
     },
@@ -1121,20 +1115,34 @@ Vector y Diccionario derivan sus límites del presupuesto cells existente: como 
 {
   "id": "C37",
   "regla": "R13",
-  "perfiles": ["es", "en"],
-  "rigor": ["estricto", "flexible"],
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
   "origen": "derivado",
   "operacion": "execute",
-  "espera": {"salida": "limite_excedido\ncontinuó\n", "terminacion": "completed"},
+  "espera": {
+    "salida": "limite_excedido\ncontinuó\n",
+    "terminacion": "completed"
+  },
   "programas": {
     "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir net Como RedCap <- Propagar SolicitarRed();\nSegun net.Enviar(PeticionHttp(MetodoHttp.GET, \"https://fake.test/limited\")) Hacer\nExito(response): Retornar Exito(0);\nError(problem): Retornar Error(problem);\nFinSegun\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir \"aceptada\";\nError(problem): Escribir problem.Codigo;\nFinSegun\nEscribir \"continuó\";\nFinAlgoritmo\n",
     "en": "subroutine Probe() as result<integer, IoError>\ndefine net as NetworkCap <- propagate requestNetwork();\nswitch net.send(HttpRequest(HttpMethod.GET, \"https://fake.test/limited\")) do\nsuccess(response): return success(0);\nfailure(problem): return failure(problem);\nendSwitch\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write \"accepted\";\nfailure(problem): write problem.code;\nendSwitch\nwrite \"continuó\";\nendAlgorithm\n"
   },
-  "limites": {"max_http_body_bytes": 1},
+  "limites": {
+    "max_http_body_bytes": 1
+  },
   "anfitrion": {
-    "permissions": ["red"],
-    "requested_permissions": ["red"],
-    "http": {"GET https://fake.test/limited": {"estado": 200, "cuerpo": "xy"}}
+    "http": {
+      "GET https://fake.test/limited": {
+        "estado": 200,
+        "cuerpo": "xy"
+      }
+    }
   }
 }
 ```

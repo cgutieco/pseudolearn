@@ -90,7 +90,7 @@ fn retains_credentials_only_for_the_same_origin() -> Result<(), String> {
 }
 
 #[test]
-fn rejects_unsupported_missing_duplicate_and_downgrade_redirects() {
+fn rejects_invalid_redirects_and_accepts_http_destinations() {
     let original = request(HttpMethod::Get);
     let unsupported = response(304, "https://fake.test/start", Some("/next"));
     assert_eq!(
@@ -117,7 +117,7 @@ fn rejects_unsupported_missing_duplicate_and_downgrade_redirects() {
     );
     assert_eq!(
         crate::redirect_request(&original, &downgrade).map(|_| ()),
-        Err(crate::IoError::from_kind(IoErrorKind::RedirectDenied))
+        Ok(())
     );
 }
 

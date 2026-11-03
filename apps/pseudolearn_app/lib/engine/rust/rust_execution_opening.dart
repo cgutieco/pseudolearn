@@ -28,11 +28,13 @@ final class RustExecutionOpening {
     required String sourceCode,
     required SyntaxProfileId profileId,
     required UiLanguageId languageId,
+    String strictness = 'flexible',
   }) {
     final handle = _analysis.open(
       source: sourceCode,
       profile: rustProfileName(profileId),
       locale: rustLocaleName(languageId),
+      strictness: strictness,
     );
     if (!isExecutableReport(_analysis.report(handle))) {
       _analysis.release(handle);

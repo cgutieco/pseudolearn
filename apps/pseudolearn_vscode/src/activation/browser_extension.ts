@@ -5,7 +5,6 @@ import { BrowserWorkspace } from "../adapters/browser_workspace";
 import { BrowserRun } from "../adapters/browser_run";
 import { browserCommands } from "../adapters/browser_commands";
 import type { BrowserCommands } from "../adapters/browser_commands";
-import { registerScratchFiles } from "../adapters/browser_scratch_files";
 
 let active: BrowserCommands | undefined;
 let generation = 0;
@@ -30,8 +29,8 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
   const root = vscode.workspace.workspaceFolders?.[0]?.uri;
   const workspace = root ? new BrowserWorkspace(languageApi, root) : undefined;
   const run = new BrowserRun(runApi, output);
-  active = { extension: context, api: languageApi, language, workspace, run, output, grants: { origins: [] }, options };
-  context.subscriptions.push(output, registerScratchFiles(), ...browserCommands(active), { dispose: () => { run.close(); void language.close(); } },
+  active = { extension: context, api: languageApi, language, workspace, run, output, host: { root: vscode.workspace.workspaceFolders?.[0]?.uri.toString() }, options };
+  context.subscriptions.push(output, ...browserCommands(active), { dispose: () => { run.close(); void language.close(); } },
     vscode.commands.registerCommand("pseudolearn.restartServer", () => restart(context)),
     vscode.workspace.onDidSaveTextDocument(() => void synchronize(active!)),
     vscode.workspace.onDidCreateFiles(() => void synchronize(active!)),

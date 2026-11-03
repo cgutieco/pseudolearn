@@ -46,14 +46,13 @@ async function resolveEffect(api: ApiPort, resource: string, effect: Record<stri
     const capability = Object.fromEntries(Object.entries(object(effect.result_capability)).map(([name, value]) => [name, numeric(text(value))]));
     result = { outcome: "committed", value: { kind: "capability", value: capability } };
   } else {
-    result = await performFetch(toFetchEffect(effect), { allowedOrigins: [fakeOrigin],
-      fetchImplementation: async () => new Response("ok", { status: 200 }) });
+    result = await performFetch(toFetchEffect(effect), { fetchImplementation: async () => new Response("ok", { status: 200 }) });
   }
   await api.call("effect_result", encodeArguments({ resource: numeric(resource), effect_seq: sequence, result }));
 }
 
 async function start(api: ApiPort, workload: Workload): Promise<string> {
-  const host = workload.network ? { detached: true, permissions: ["red"], network_origins: [fakeOrigin] } : undefined;
+  const host = workload.network ? { detached: true } : undefined;
   if (workload.network) await api.call("negotiate", encodeArguments({ network_capabilities: NETWORK_CAPABILITIES }));
   const common = { profile: "es", observe: "events", seed: 42, host, execution_mode: host ? "live_record" : undefined };
   if (workload.kind === "project") {

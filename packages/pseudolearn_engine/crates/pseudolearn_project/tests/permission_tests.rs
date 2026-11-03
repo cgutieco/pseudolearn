@@ -1,17 +1,23 @@
-use pseudolearn_project::PermissionName;
+use pseudolearn_project::{Configuration, HostGrants, ManifestErrorCode, ManifestRequest};
 
 #[test]
-fn parses_network_permission_in_both_facets() {
-    assert_eq!(PermissionName::parse("red"), Some(PermissionName::Network));
-    assert_eq!(
-        PermissionName::parse("network"),
-        Some(PermissionName::Network)
-    );
-    assert_eq!(PermissionName::Network.as_str(), "red");
-}
-
-#[test]
-fn rejects_permissions_outside_the_closed_vocabulary() {
-    assert_eq!(PermissionName::parse("http"), None);
-    assert_eq!(PermissionName::parse("network_access"), None);
+fn retired_authority_field_is_rejected_even_when_empty() {
+    let grants = HostGrants::default();
+    for value in ["[]", "[\"red\"]", "[\"unknown\"]"] {
+        let text = format!(
+            "schema = 1\n[package]\nname = \"pkg\"\nkind = \"library\"\n[requests]\npermissions = {value}\n"
+        );
+        let request = ManifestRequest {
+            text: &text,
+            location: "app",
+            grants: &grants,
+            max_bytes: 4096,
+        };
+        let errors = Configuration::resolve(&request).err().unwrap_or_default();
+        assert!(
+            errors
+                .iter()
+                .any(|error| error.code == ManifestErrorCode::UnknownField)
+        );
+    }
 }

@@ -33,158 +33,188 @@ void main() {
       }
     });
 
-    test('saves and loads document correctly with and without exerciseId',
-        () async {
-      final now = DateTime(2026, 8, 15, 12, 0);
-      final unlinked = Document(
-        id: 'doc-abc',
-        title: 'Mi Algoritmo',
-        content: 'algoritmo Test\n  escribir "Hola"\nfin',
-        profileId: SyntaxProfileId.classicSpanish,
-        revision: 1,
-        createdAt: now,
-        updatedAt: now,
-      );
-      final linked = Document(
-        id: 'doc-linked',
-        title: 'Ejercicio Suma',
-        content: 'algoritmo Suma fin',
-        profileId: SyntaxProfileId.classicSpanish,
-        revision: 1,
-        createdAt: now,
-        updatedAt: now,
-        exerciseId: 'con-b1-ej1',
-      );
-
-      await repo.saveDocument(unlinked);
-      await repo.saveDocument(linked);
-
-      final loadedUnlinked = await repo.loadDocument('doc-abc');
-      expect(loadedUnlinked, isNotNull);
-      expect(loadedUnlinked!.title, 'Mi Algoritmo');
-      expect(loadedUnlinked.exerciseId, isNull);
-
-      final loadedLinked = await repo.loadDocument('doc-linked');
-      expect(loadedLinked, isNotNull);
-      expect(loadedLinked!.title, 'Ejercicio Suma');
-      expect(loadedLinked.exerciseId, 'con-b1-ej1');
-
-      final list = await repo.listDocuments();
-      expect(list.length, 2);
-    });
+    test(
+      'persists strictness and arguments including empty Unicode values',
+      () async {
+        final now = DateTime(2026, 11, 3);
+        final document = Document(
+          id: 'configuration',
+          title: 'Configuration',
+          content: '',
+          profileId: SyntaxProfileId.english,
+          revision: 1,
+          createdAt: now,
+          updatedAt: now,
+          strictness: 'strict',
+          executionArguments: const ['', 'two words', 'λ'],
+        );
+        await repo.saveDocument(document);
+        final loaded = await repo.loadDocument(document.id);
+        expect(loaded?.strictness, 'strict');
+        expect(loaded?.executionArguments, ['', 'two words', 'λ']);
+      },
+    );
 
     test(
-        'deleteDocument removes file from disk but preserves row with tombstone in index (TEST-BOTH-PATHS)',
-        () async {
-      final now = DateTime(2026, 8, 15, 12, 0);
-      final doc = Document(
-        id: 'doc-xyz',
-        title: 'Borrar',
-        content: 'algoritmo Borrar fin',
-        profileId: SyntaxProfileId.english,
-        revision: 1,
-        createdAt: now,
-        updatedAt: now,
-        exerciseId: 'con-b1-ej2',
-      );
+      'saves and loads document correctly with and without exerciseId',
+      () async {
+        final now = DateTime(2026, 8, 15, 12, 0);
+        final unlinked = Document(
+          id: 'doc-abc',
+          title: 'Mi Algoritmo',
+          content: 'algoritmo Test\n  escribir "Hola"\nfin',
+          profileId: SyntaxProfileId.classicSpanish,
+          revision: 1,
+          createdAt: now,
+          updatedAt: now,
+        );
+        final linked = Document(
+          id: 'doc-linked',
+          title: 'Ejercicio Suma',
+          content: 'algoritmo Suma fin',
+          profileId: SyntaxProfileId.classicSpanish,
+          revision: 1,
+          createdAt: now,
+          updatedAt: now,
+          exerciseId: 'con-b1-ej1',
+        );
 
-      await repo.saveDocument(doc);
-      final file = File('${tempDir.path}/${doc.id}.pseudo');
-      expect(file.existsSync(), isTrue);
-      expect(await repo.loadDocument('doc-xyz'), isNotNull);
+        await repo.saveDocument(unlinked);
+        await repo.saveDocument(linked);
 
-      await repo.deleteDocument('doc-xyz');
+        final loadedUnlinked = await repo.loadDocument('doc-abc');
+        expect(loadedUnlinked, isNotNull);
+        expect(loadedUnlinked!.title, 'Mi Algoritmo');
+        expect(loadedUnlinked.exerciseId, isNull);
 
-      expect(file.existsSync(), isFalse);
-      expect(await repo.loadDocument('doc-xyz'), isNull);
+        final loadedLinked = await repo.loadDocument('doc-linked');
+        expect(loadedLinked, isNotNull);
+        expect(loadedLinked!.title, 'Ejercicio Suma');
+        expect(loadedLinked.exerciseId, 'con-b1-ej1');
 
-      expect(await repo.listDocuments(), isEmpty);
-
-      final tombstones = await index.listTombstones();
-      expect(tombstones, hasLength(1));
-      expect(tombstones.first.id, 'doc-xyz');
-
-      final raw = await db
-          .query('documents_index', where: 'id = ?', whereArgs: ['doc-xyz']);
-      expect(raw, hasLength(1));
-      expect(raw.first['deleted_at'], isNotNull);
-    });
-
-    test(
-        'saving document twice advances revision in index, not only in file (TEST-BOTH-PATHS)',
-        () async {
-      final now = DateTime(2026, 8, 15, 12, 0);
-      final docV1 = Document(
-        id: 'doc-adv',
-        title: 'Algoritmo Revision',
-        content: 'algoritmo Rev fin',
-        profileId: SyntaxProfileId.classicSpanish,
-        revision: 1,
-        createdAt: now,
-        updatedAt: now,
-      );
-
-      await repo.saveDocument(docV1);
-      var indexed = await index.get('doc-adv');
-      expect(indexed, isNotNull);
-      expect(indexed!.revision, 1);
-
-      var file = File('${tempDir.path}/doc-adv.pseudo');
-      expect(file.readAsStringSync(), contains('revision: 1'));
-
-      final docV2 = docV1.copyWith(
-        revision: 2,
-        updatedAt: DateTime(2026, 8, 15, 12, 5),
-      );
-      await repo.saveDocument(docV2);
-
-      indexed = await index.get('doc-adv');
-      expect(indexed, isNotNull);
-      expect(indexed!.revision, 2);
-
-      file = File('${tempDir.path}/doc-adv.pseudo');
-      expect(file.readAsStringSync(), contains('revision: 2'));
-    });
+        final list = await repo.listDocuments();
+        expect(list.length, 2);
+      },
+    );
 
     test(
-        'rebuildIndex discovers orphan files and updates index preserving exercise links',
-        () async {
-      final now = DateTime(2026, 8, 15, 12, 0);
-      final doc1 = Document(
-        id: 'doc-1',
-        title: 'Uno',
-        content: 'algoritmo Uno fin',
-        profileId: SyntaxProfileId.classicSpanish,
-        revision: 1,
-        createdAt: now,
-        updatedAt: now,
-      );
-      final doc2 = Document(
-        id: 'doc-2',
-        title: 'Dos con Ejercicio',
-        content: 'algoritmo Dos fin',
-        profileId: SyntaxProfileId.classicSpanish,
-        revision: 1,
-        createdAt: now,
-        updatedAt: now,
-        exerciseId: 'con-b1-ej1',
-      );
-      await repo.saveDocument(doc1);
-      await repo.saveDocument(doc2);
+      'deleteDocument removes file from disk but preserves row with tombstone in index (TEST-BOTH-PATHS)',
+      () async {
+        final now = DateTime(2026, 8, 15, 12, 0);
+        final doc = Document(
+          id: 'doc-xyz',
+          title: 'Borrar',
+          content: 'algoritmo Borrar fin',
+          profileId: SyntaxProfileId.english,
+          revision: 1,
+          createdAt: now,
+          updatedAt: now,
+          exerciseId: 'con-b1-ej2',
+        );
 
-      await IndexSchema.clear(index.database);
-      expect(await index.listAll(), isEmpty);
+        await repo.saveDocument(doc);
+        final file = File('${tempDir.path}/${doc.id}.pseudo');
+        expect(file.existsSync(), isTrue);
+        expect(await repo.loadDocument('doc-xyz'), isNotNull);
 
-      await repo.rebuildIndex();
-      final rebuiltList = await repo.listDocuments();
-      expect(rebuiltList.length, 2);
+        await repo.deleteDocument('doc-xyz');
 
-      final summary1 = rebuiltList.firstWhere((d) => d.id == 'doc-1');
-      expect(summary1.exerciseId, isNull);
+        expect(file.existsSync(), isFalse);
+        expect(await repo.loadDocument('doc-xyz'), isNull);
 
-      final summary2 = rebuiltList.firstWhere((d) => d.id == 'doc-2');
-      expect(summary2.exerciseId, 'con-b1-ej1');
-    });
+        expect(await repo.listDocuments(), isEmpty);
+
+        final tombstones = await index.listTombstones();
+        expect(tombstones, hasLength(1));
+        expect(tombstones.first.id, 'doc-xyz');
+
+        final raw = await db.query(
+          'documents_index',
+          where: 'id = ?',
+          whereArgs: ['doc-xyz'],
+        );
+        expect(raw, hasLength(1));
+        expect(raw.first['deleted_at'], isNotNull);
+      },
+    );
+
+    test(
+      'saving document twice advances revision in index, not only in file (TEST-BOTH-PATHS)',
+      () async {
+        final now = DateTime(2026, 8, 15, 12, 0);
+        final docV1 = Document(
+          id: 'doc-adv',
+          title: 'Algoritmo Revision',
+          content: 'algoritmo Rev fin',
+          profileId: SyntaxProfileId.classicSpanish,
+          revision: 1,
+          createdAt: now,
+          updatedAt: now,
+        );
+
+        await repo.saveDocument(docV1);
+        var indexed = await index.get('doc-adv');
+        expect(indexed, isNotNull);
+        expect(indexed!.revision, 1);
+
+        var file = File('${tempDir.path}/doc-adv.pseudo');
+        expect(file.readAsStringSync(), contains('revision: 1'));
+
+        final docV2 = docV1.copyWith(
+          revision: 2,
+          updatedAt: DateTime(2026, 8, 15, 12, 5),
+        );
+        await repo.saveDocument(docV2);
+
+        indexed = await index.get('doc-adv');
+        expect(indexed, isNotNull);
+        expect(indexed!.revision, 2);
+
+        file = File('${tempDir.path}/doc-adv.pseudo');
+        expect(file.readAsStringSync(), contains('revision: 2'));
+      },
+    );
+
+    test(
+      'rebuildIndex discovers orphan files and updates index preserving exercise links',
+      () async {
+        final now = DateTime(2026, 8, 15, 12, 0);
+        final doc1 = Document(
+          id: 'doc-1',
+          title: 'Uno',
+          content: 'algoritmo Uno fin',
+          profileId: SyntaxProfileId.classicSpanish,
+          revision: 1,
+          createdAt: now,
+          updatedAt: now,
+        );
+        final doc2 = Document(
+          id: 'doc-2',
+          title: 'Dos con Ejercicio',
+          content: 'algoritmo Dos fin',
+          profileId: SyntaxProfileId.classicSpanish,
+          revision: 1,
+          createdAt: now,
+          updatedAt: now,
+          exerciseId: 'con-b1-ej1',
+        );
+        await repo.saveDocument(doc1);
+        await repo.saveDocument(doc2);
+
+        await IndexSchema.clear(index.database);
+        expect(await index.listAll(), isEmpty);
+
+        await repo.rebuildIndex();
+        final rebuiltList = await repo.listDocuments();
+        expect(rebuiltList.length, 2);
+
+        final summary1 = rebuiltList.firstWhere((d) => d.id == 'doc-1');
+        expect(summary1.exerciseId, isNull);
+
+        final summary2 = rebuiltList.firstWhere((d) => d.id == 'doc-2');
+        expect(summary2.exerciseId, 'con-b1-ej1');
+      },
+    );
 
     test('corrupted file returns null when parsed', () {
       final corruptedFile = File('${tempDir.path}/bad.pseudo');

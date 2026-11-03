@@ -48,6 +48,14 @@ final class RustExecutableUnitReader {
         ),
       );
     }
+    _appendLiterals(view, vocabulary, entries);
+    return _ordered(entries, classMethods);
+  }
+
+  List<RustExecutableUnit> _ordered(
+    List<RustExecutableUnit> entries,
+    List<RustExecutableUnit> classMethods,
+  ) {
     final algorithms = entries.where(
       (entry) => entry.unit.kind == DiagramUnitKind.algorithm,
     );
@@ -115,6 +123,38 @@ final class RustExecutableUnitReader {
             ),
             kind: kind,
             className: className,
+            name: name,
+            sourceLine: node.range.startLine,
+            nodeId: node.id,
+          ),
+          body: body,
+          node: node,
+        ),
+      );
+    }
+  }
+
+  void _appendLiterals(
+    RustProgramView view,
+    DiagramVocabulary vocabulary,
+    List<RustExecutableUnit> entries,
+  ) {
+    for (final node in view.nodes.where(
+      (node) => node.syntaxKind == 'function_literal',
+    )) {
+      final body = view.childForRole(node, 'body');
+      if (body == null) continue;
+      final name = 'λ@${node.range.startLine}:${node.range.startColumn}';
+      entries.add(
+        RustExecutableUnit(
+          unit: DiagramUnit(
+            id: 'literal:${node.id}',
+            displayName: vocabulary.formatUnitTitle(
+              kind: DiagramUnitKind.subroutine,
+              name: name,
+              isFunction: _returnsValue(view, node),
+            ),
+            kind: DiagramUnitKind.subroutine,
             name: name,
             sourceLine: node.range.startLine,
             nodeId: node.id,

@@ -45,9 +45,7 @@ final class SyntaxViewCoverageRow {
     this.state = const CoverageCell.notApplicable(
       'the execution table shows values, never syntax',
     ),
-    this.help = const CoverageCell.extension(
-      'the help catalog entry is audited by the help review',
-    ),
+    required this.help,
     required this.evidence,
   });
 

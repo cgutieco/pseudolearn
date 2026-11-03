@@ -1,7 +1,9 @@
+import '../../domain/model/execution/effect_tape.dart';
+import '../../domain/model/execution/replay_rejection.dart';
 import 'package:equatable/equatable.dart';
 import '../../domain/model/execution/execution_step.dart';
 import '../../domain/model/execution/output_line.dart';
-import '../../domain/model/execution/simulated_scenario.dart';
+import '../../domain/model/execution/execution_configuration.dart';
 import 'step_batch_runner.dart';
 
 enum ExecutionStatus {
@@ -17,11 +19,7 @@ enum ExecutionStatus {
   finishedSuccess,
 }
 
-enum ExecutionViewAction {
-  toggleOutputPanel,
-  dismissStatusBanner,
-  selectScenario,
-}
+enum ExecutionViewAction { toggleOutputPanel, dismissStatusBanner }
 
 final class ExecutionState extends Equatable {
   final ExecutionStatus status;
@@ -34,7 +32,10 @@ final class ExecutionState extends Equatable {
   final bool userCollapsedOutput;
   final bool isStatusBannerDismissed;
   final String? haltMessage;
-  final SimulatedScenario simulatedScenario;
+  final String? workingDirectory;
+  final EffectTape? recordedTape;
+  final ReplayRejection? replayRejection;
+  final ExecutionConfiguration configuration;
 
   const ExecutionState({
     required this.status,
@@ -47,7 +48,10 @@ final class ExecutionState extends Equatable {
     this.userCollapsedOutput = false,
     this.isStatusBannerDismissed = false,
     this.haltMessage,
-    this.simulatedScenario = SimulatedScenario.noHost,
+    this.workingDirectory,
+    this.recordedTape,
+    this.replayRejection,
+    this.configuration = const ExecutionConfiguration(),
   });
 
   const ExecutionState.initial()
@@ -65,7 +69,10 @@ final class ExecutionState extends Equatable {
       userCollapsedOutput = false,
       isStatusBannerDismissed = false,
       haltMessage = null,
-      simulatedScenario = SimulatedScenario.noHost;
+      workingDirectory = null,
+      recordedTape = null,
+      replayRejection = null,
+      configuration = const ExecutionConfiguration();
 
   bool get isNearStepLimit =>
       currentStep.stepNumber >= StepBatchRunner.warningUiAdvanceThreshold;
@@ -89,10 +96,7 @@ final class ExecutionState extends Equatable {
 
   bool get canStepOutOfBlock => currentStep.blockPosition.hasEnclosingBlock;
 
-  ExecutionState applyViewAction(
-    ExecutionViewAction action, {
-    SimulatedScenario? scenario,
-  }) {
+  ExecutionState applyViewAction(ExecutionViewAction action) {
     switch (action) {
       case ExecutionViewAction.toggleOutputPanel:
         final expanded = !isOutputPanelExpanded;
@@ -104,16 +108,7 @@ final class ExecutionState extends Equatable {
         return isStatusBannerDismissed
             ? this
             : copyWith(isStatusBannerDismissed: true);
-      case ExecutionViewAction.selectScenario:
-        return _selectedScenario(scenario);
     }
-  }
-
-  ExecutionState _selectedScenario(SimulatedScenario? scenario) {
-    if (scenario == null || isInFlight || simulatedScenario == scenario) {
-      return this;
-    }
-    return copyWith(simulatedScenario: scenario);
   }
 
   ExecutionState copyWith({
@@ -127,7 +122,10 @@ final class ExecutionState extends Equatable {
     bool? userCollapsedOutput,
     bool? isStatusBannerDismissed,
     String? haltMessage,
-    SimulatedScenario? simulatedScenario,
+    String? workingDirectory,
+    EffectTape? recordedTape,
+    ReplayRejection? replayRejection,
+    ExecutionConfiguration? configuration,
   }) {
     return ExecutionState(
       status: status ?? this.status,
@@ -142,7 +140,10 @@ final class ExecutionState extends Equatable {
       isStatusBannerDismissed:
           isStatusBannerDismissed ?? this.isStatusBannerDismissed,
       haltMessage: haltMessage,
-      simulatedScenario: simulatedScenario ?? this.simulatedScenario,
+      workingDirectory: workingDirectory ?? this.workingDirectory,
+      recordedTape: recordedTape ?? this.recordedTape,
+      replayRejection: replayRejection,
+      configuration: configuration ?? this.configuration,
     );
   }
 
@@ -158,6 +159,9 @@ final class ExecutionState extends Equatable {
     userCollapsedOutput,
     isStatusBannerDismissed,
     haltMessage,
-    simulatedScenario,
+    workingDirectory,
+    recordedTape,
+    replayRejection,
+    configuration,
   ];
 }

@@ -1,3 +1,5 @@
+import '../../domain/model/profiles/syntax_profile_id.dart';
+import 'rust_editor_vocabulary.dart';
 import '../../domain/model/execution/output_line.dart';
 import 'rust_execution_event_effects.dart';
 import 'rust_execution_readers.dart';
@@ -11,16 +13,21 @@ import 'source_offset_index.dart';
 
 final class RustExecutionEventConsumer {
   final RustWatchRows _watch;
+  final RustEditorVocabulary _vocabulary;
   final RustExecutionEventEffects _effects = RustExecutionEventEffects();
 
   RustExecutionEventConsumer(RustTransport transport)
-    : _watch = RustWatchRows(RustStateApi(transport));
+    : _watch = RustWatchRows(RustStateApi(transport)),
+      _vocabulary = RustEditorVocabulary(transport);
 
   List<OutputLine> get outputLines => _effects.outputLines;
 
   String? get inputPrompt => _effects.inputPrompt;
 
   void clear() => _effects.clear();
+
+  void configure(SyntaxProfileId profile) =>
+      _watch.useReceiverName(_vocabulary.receiverName(profile));
 
   void clearInputPrompt() => _effects.clearInputPrompt();
 

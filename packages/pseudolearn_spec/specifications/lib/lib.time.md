@@ -38,7 +38,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La consulta de la capacidad Reloj produce instantes de tiempo lógicos grabados en la cinta, garantizando que repeticiones posteriores de la ejecución reproduzcan exactamente la misma secuencia temporal sin consultar el reloj físico del anfitrión.",
+  "texto": "En vivo, cada consulta de Reloj lee el reloj del sistema del anfitrión y devuelve nanosegundos desde la época Unix. Cada lectura se graba en la cinta. En reproducción se devuelve la lectura grabada sin consultar al reloj físico; el tiempo de presentación nunca decide la agenda.",
   "verificacion": [
     "C1",
     "C3"
@@ -69,12 +69,6 @@
     "en": "subroutine Probe() as result<integer, IoError>\ndefine clock as Clock <- propagate requestClock();\nreturn clock.now();\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "reloj"
-    ],
-    "requested_permissions": [
-      "reloj"
-    ],
     "clock": [
       100,
       200
@@ -89,7 +83,7 @@
   "id": "R2",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La operación sobre la capacidad Temporizador avanza el tiempo lógico del programa mediante la entrega determinista de eventos de temporizador, permitiendo pausas reproducibles y suspensiones de efecto coordinadas.",
+  "texto": "En vivo, Temporizador espera la duración real solicitada en nanosegundos sin impedir que otras tareas listas avancen ni bloquear la interfaz. Al terminar entrega el instante real, que se graba en la cinta. La cancelación interrumpe la espera. En reproducción entrega el resultado grabado sin esperar tiempo físico.",
   "verificacion": [
     "C2",
     "C4",
@@ -121,12 +115,6 @@
     "en": "subroutine Probe() as result<integer, IoError>\ndefine clock as Timer <- propagate requestTimer();\nreturn clock.wait(50);\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "temporizador"
-    ],
-    "requested_permissions": [
-      "temporizador"
-    ],
     "grabar_y_reproducir": true
   }
 }
@@ -159,12 +147,6 @@
     "en": "subroutine Probe() as result<integer, IoError>\ndefine clock as Clock <- propagate requestClock();\ndefine first as integer <- propagate clock.now();\nwrite first;\nreturn clock.now();\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "reloj"
-    ],
-    "requested_permissions": [
-      "reloj"
-    ],
     "clock": [
       100,
       200,
@@ -202,14 +184,6 @@
     "en": "subroutine Probe() as result<integer, IoError>\ndefine clock as Clock <- propagate requestClock();\ndefine timer as Timer <- propagate requestTimer();\ndefine first as integer <- propagate clock.now();\nwrite first;\nreturn timer.wait(50);\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "reloj",
-      "temporizador"
-    ],
-    "requested_permissions": [
-      "reloj",
-      "temporizador"
-    ],
     "clock": [
       100
     ],
@@ -245,12 +219,6 @@
     "en": "subroutine Probe() as result<integer, IoError>\ndefine timer as Timer <- propagate requestTimer();\nreturn timer.wait(0);\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "temporizador"
-    ],
-    "requested_permissions": [
-      "temporizador"
-    ],
     "grabar_y_reproducir": true
   }
 }

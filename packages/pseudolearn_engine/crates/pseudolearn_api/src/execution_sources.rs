@@ -22,12 +22,14 @@ impl ExecutionSources {
 
     pub(crate) fn project(
         request: &crate::project_resource::ProjectRequest,
+        profiles: &[pseudolearn_ir::SourceProfile],
     ) -> Result<Self, ApiError> {
         let mut sources = Self::default();
         for file in &request.input.files {
-            let profile = pseudolearn_project::logical_path_key(&file.path)
-                .and_then(|path| request.file_profiles.get(&path))
-                .copied()
+            let profile = profiles
+                .iter()
+                .find(|profile| profile.source_id.value() == file.source_id)
+                .and_then(|profile| pseudolearn_lexicon::Profile::from_name(&profile.vocabulary))
                 .unwrap_or(request.profile);
             let analysis = AnalyzeRequest {
                 program: file.text.clone(),

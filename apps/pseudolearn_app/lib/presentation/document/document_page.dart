@@ -1,3 +1,4 @@
+import '../../domain/model/execution/execution_configuration.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../application/diagram/diagram_cubit.dart';
@@ -60,6 +61,11 @@ final class _DocumentPageState extends State<DocumentPage> {
       sourceCode: currentEditor.sourceCode,
       profileId: profileId,
       languageId: languageId,
+      configuration: ExecutionConfiguration(
+        documentId: widget.documentId,
+        strictness: currentEditor.document?.strictness ?? 'flexible',
+        arguments: currentEditor.document?.executionArguments ?? const [],
+      ),
     );
     if (currentEditor.document?.exerciseId != null && pace == StepPace.toEnd) {
       _onCheckExercise(context, currentEditor);

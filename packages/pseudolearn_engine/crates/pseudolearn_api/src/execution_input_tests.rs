@@ -129,3 +129,22 @@ fn a_response_from_an_execution_with_the_same_program_is_rejected() -> Result<()
     assert_eq!(second.machine.input_consumed_count(), 0);
     Ok(())
 }
+
+#[test]
+fn cancelling_an_input_wait_terminates_without_a_fabricated_input() -> Result<(), String> {
+    let mut execution = waiting_execution(7)?;
+    execution.cancel();
+    let response = execution
+        .advance(64)
+        .map_err(|error| format!("advance failed: {error:?}"))?;
+    assert_eq!(
+        response
+            .pointer("/termination/kind")
+            .and_then(Value::as_str),
+        Some("cancelled")
+    );
+    assert!(execution.pending_input.is_none());
+    assert_eq!(execution.machine.input_consumed_count(), 0);
+    assert!(execution.input(reply(7, 0, 1), "late".to_owned()).is_err());
+    Ok(())
+}

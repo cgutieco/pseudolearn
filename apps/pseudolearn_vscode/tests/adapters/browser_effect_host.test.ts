@@ -31,7 +31,7 @@ afterEach(() => {
 describe("Browser effect host network resolution", () => {
   it("resolves a granted request once and rejects a replayed sequence", async () => {
     const calls = stubFetch(async () => new Response(new Uint8Array([111, 107]), { status: 200 }));
-    const host = new BrowserEffectHost({ origins: [origin] });
+    const host = new BrowserEffectHost({ });
     const first = await host.perform(sendEffect("1")) as { outcome: string; value: { value: { body: number[] } } };
     expect(first.outcome).toBe("committed");
     expect(first.value.value.body).toEqual([111, 107]);
@@ -39,14 +39,11 @@ describe("Browser effect host network resolution", () => {
     expect(calls).toHaveBeenCalledTimes(1);
   });
 
-  it("makes no physical call when the origin is denied before dispatch", async () => {
+  it("accepts an HTTP destination without origin configuration", async () => {
     const calls = stubFetch(async () => new Response(null));
-    const host = new BrowserEffectHost({ origins: [] });
-    const denied = await host.perform(sendEffect("1")) as { value: { code: string } };
-    expect(denied.value.code).toBe("destino_denegado");
-    const other = new BrowserEffectHost({ origins: ["https://other.example.test"] });
-    expect((await other.perform(sendEffect("1")) as { value: { code: string } }).value.code).toBe("destino_denegado");
-    expect(calls).not.toHaveBeenCalled();
+    const host = new BrowserEffectHost();
+    expect((await host.perform(sendEffect("1")) as { outcome: string }).outcome).toBe("committed");
+    expect(calls).toHaveBeenCalledTimes(1);
   });
 
 });
@@ -54,20 +51,18 @@ describe("Browser effect host network resolution", () => {
 describe("Browser effect host closed and revoked sessions", () => {
   it("makes no physical call after the host closes", async () => {
     const calls = stubFetch(async () => new Response(null));
-    const host = new BrowserEffectHost({ origins: [origin] });
+    const host = new BrowserEffectHost({ });
     host.close();
     expect(await host.perform(sendEffect("1"))).toEqual({ outcome: "failed", value: { code: "interrumpido", uncertain: false } });
     expect(calls).not.toHaveBeenCalled();
   });
 
-  it("denies a request once the origin grant is revoked", async () => {
-    const calls = stubFetch(async () => new Response(new Uint8Array([1]), { status: 200 }));
-    const grants = { origins: [origin] };
-    const host = new BrowserEffectHost(grants);
-    expect((await host.perform(sendEffect("1")) as { outcome: string }).outcome).toBe("committed");
-    grants.origins.length = 0;
-    expect((await host.perform(sendEffect("2")) as { value: { code: string } }).value.code).toBe("destino_denegado");
-    expect(calls).toHaveBeenCalledTimes(1);
+  it("keeps authority between requests without a grant store", async () => {
+    const calls = stubFetch(async () => new Response(null, { status: 204 }));
+    const host = new BrowserEffectHost();
+    await host.perform(sendEffect("1"));
+    await host.perform(sendEffect("2"));
+    expect(calls).toHaveBeenCalledTimes(2);
   });
 
 });
@@ -81,14 +76,14 @@ describe("Browser effect host stale sessions", () => {
         release = () => resolve(new Response(new Uint8Array([9]), { status: 200 }));
       } else resolve(new Response(new Uint8Array([7]), { status: 200 }));
     }));
-    const stale = new BrowserEffectHost({ origins: [origin] });
+    const stale = new BrowserEffectHost({ });
     const pending = stale.perform(sendEffect("1", { method: "POST" }));
     await vi.waitFor(() => expect(calls).toHaveBeenCalledTimes(1));
     stale.close();
     const aborted = await pending as { outcome: string; value: { code: string } };
     expect(aborted).toEqual({ outcome: "uncertain", value: { code: "interrumpido", uncertain: true } });
     release?.();
-    const fresh = new BrowserEffectHost({ origins: [origin] });
+    const fresh = new BrowserEffectHost({ });
     const answer = await fresh.perform(sendEffect("1")) as { outcome: string; value: { value: { body: number[] } } };
     expect(answer.outcome).toBe("committed");
     expect(answer.value.value.body).toEqual([7]);
@@ -96,7 +91,7 @@ describe("Browser effect host stale sessions", () => {
 
   it("reports a network failure of a read as a plain failure", async () => {
     stubFetch(async () => { throw new TypeError("network"); });
-    const host = new BrowserEffectHost({ origins: [origin] });
+    const host = new BrowserEffectHost({ });
     expect(await host.perform(sendEffect("1"))).toEqual({ outcome: "failed", value: { code: "conexion_fallida", uncertain: false } });
   });
 });
@@ -105,7 +100,7 @@ describe("Browser effect host file isolation", () => {
   const directory = { slot: "1", generation: "1", rights: "3", kind: "2" };
 
   it("never reaches the provider without a file grant", async () => {
-    const host = new BrowserEffectHost({ origins: [] });
+    const host = new BrowserEffectHost({ });
     const denied = await host.perform({ effect_seq: "1", operation: "request_directory", result_capability: directory,
       arguments: [{ kind: "text", value: "root" }] }) as { outcome: string };
     expect(denied.outcome).toBe("failed");

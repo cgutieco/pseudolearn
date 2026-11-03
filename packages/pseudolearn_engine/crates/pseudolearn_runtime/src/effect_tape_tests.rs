@@ -10,7 +10,6 @@ fn identity() -> ExecutionIdentity {
         profile: "en".to_owned(),
         seed: 0,
         statement_limit: None,
-        permissions: vec!["red".to_owned()],
     }
 }
 

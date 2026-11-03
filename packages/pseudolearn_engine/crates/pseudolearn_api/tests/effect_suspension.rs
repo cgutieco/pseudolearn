@@ -10,13 +10,13 @@ struct Run {
     resource: Value,
 }
 
-fn start(program: &str, permissions: &[&str]) -> Result<Run, String> {
+fn start(program: &str, _families: &[&str]) -> Result<Run, String> {
     let mut session = ApiSession::default();
     let analysis = session.call("create_analysis", &json!({"program":program}));
     let started = session.call(
         "start",
         &json!({"analysis":analysis.pointer("/value/resource"),"program":program,
-            "host":{"permissions":permissions,"detached":true}}),
+            "host":{"detached":true}}),
     );
     let resource = started
         .pointer("/value/resource")

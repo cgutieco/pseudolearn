@@ -103,7 +103,7 @@ del núcleo; la aplicación traduce, orquesta y renderiza los resultados.
 |:---------------------------------------------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------|:-------------------------------------------------------------------------------------------------------|
 | Tramos de comentario para el resaltado del editor              | La API Rust de análisis expone tokens léxicos con tramos y el adaptador los proyecta a categorías del editor                              | Resuelto                                                                                              |
 | Adaptador remoto de Supabase                                   | Definición de credenciales de red y esquema de sincronización remota                                                                         | Resuelto (sincronización bidireccional y outbox en SQLite, ver decisiones de diseño de sincronización) |
-| Vocabulario localizado de receptor de objeto en tabla de traza | Parametrización en `watch_row_projection.dart` para perfiles no hispanos                                                                     | Abierto                                                                                                |
+| Vocabulario localizado de receptor de objeto en tabla de traza | RustWatchRows proyecta receptor con thisObject del vocabulario público del perfil | Implementado; prueba bilingüe por FFI |
 | Selector del eje de rigor del perfil (estricto/flexible)       | `rustStrictness` fija el rigor flexible para los adaptadores de usuario; falta control de UI y persistencia por documento  | Abierto                                                                                                |
 | Purga local sin lápidas en «Cerrar sesión y borrar datos de este dispositivo» | `AccountCubit.signOut(deleteLocalData: true)` borra por `SyncingDocumentRepository`, que encola una lápida por documento; reutilizar `LocalAccountDataPurger` | Abierto |
 | Inicio de sesión en la nube desde el `.zip` portable de Windows | Registro de `pseudolearn://` en `HKCU` desde la propia app, o aviso en la página de descargas de que el portable solo sirve sin cuenta | Abierto |
@@ -112,7 +112,7 @@ del núcleo; la aplicación traduce, orquesta y renderiza los resultados.
 | Petición de reseña en Microsoft Store                           | Publicación de Windows como MSIX en Microsoft Store y un adaptador de `StoreReviewPrompt` que abra la reseña de la Store; `in_app_review` solo ofrece el diálogo nativo en iOS y macOS (ver §4.46) | Abierto |
 | Andamiaje de la plataforma web                                 | Creación de `web/` y de un adaptador de `TextEntryModality` para navegador; hasta entonces la barra de teclas no se verifica ahí (ver §4.33) | Abierto                                                                                                |
 | Campaña E-NR2 | Medición con muestras independientes en dispositivo, escritorio y navegador, con procedencia y resumen recalculable | Pendiente; falta el ejecutor de medición y la prueba física, que la persona repetirá después |
-| Tamaños de artefactos R8 | Biblioteca ios-arm64 Release y módulo Wasm con Brotli Q11/lgwin22 | Medición registrada tras PG-5: 4,294,592 bytes (4.10 MiB) y 772,804 bytes (754.7 KiB), dentro de sus presupuestos de 5 MiB y 900 KiB. El puente declara `[profile.release]` con `opt-level = "z"`, `lto = "fat"` y `codegen-units = 1`: con el perfil por omisión medía 6,929,984 bytes y con `opt-level = "s"` 5,589,776 bytes, ambos sobre el tope |
+| Tamaños de artefactos R8 | Biblioteca ios-arm64 Release y módulo Wasm con Brotli Q11/lgwin22 | Medición registrada tras PG-5: 4,294,592 bytes (4.10 MiB) y 772,804 bytes (754.7 KiB), dentro de sus presupuestos de 8 MiB y 900 KiB. El puente declara `[profile.release]` con `opt-level = "z"`, `lto = "fat"` y `codegen-units = 1`: con el perfil por omisión medía 6,929,984 bytes y con `opt-level = "s"` 5,589,776 bytes, ambos sobre el tope |
 | Adaptador SEE del sujeto `app` | Lanzador, escenarios APP y propiedades API sobre el transporte FRB generado | Implementado; 252 observaciones y tres propiedades API por el puente real pasan sin divergencias |
 | Resaltado y unidades de foco en la ruta Rust                    | `RustProgramAnalyzer` proyecta los tokens de `analyze`; `RustFocusTracker` deriva `unitId` de la vista pública del programa                | Resuelto                                                                                              |
 | Pruebas de widgets con el puente real                           | Los widgets se prueban con fakes; solo `ExecutionCubit` se ejercita contra la biblioteca nativa en `tool/native_bridge_adapters_test.dart` | Abierto |
@@ -570,6 +570,8 @@ infraestructura y el motor; la lógica de aplicación desconoce los widgets y el
 └────────────────────────────────────────────────────────────────────────┘
 ```
 
+La capa `host` comparte el anillo 2 con engine y data; solo importa model y ports y posee el contexto físico por documento.
+
 ### 3.3 Catálogo de carpetas, responsabilidades e invariantes
 
 | Capa / Directorio        | Responsabilidad única                                                                                                                                                                                                                                                                                              | Puede importar (`may_import`)                                             | Prohibido importar (`forbidden_imports`)                                                                                                       |
@@ -809,7 +811,7 @@ infraestructura y el motor; la lógica de aplicación desconoce los widgets y el
   | Llamadas al transporte por `step()` | `2 × 16 + 1` = 33 (`advance` y `effect_result`) | consecuencia de las dos anteriores |
   | Avances por comando de interfaz | 25 entre cesiones; tope local 10 000 | `step_batch_runner.dart` |
 
-  Con el bombeo automático, el gate responde las esperas con el anfitrión simulado hasta 16 veces por llamada; si el
+  Con el bombeo automático, el gate responde las esperas con el anfitrión real hasta 16 veces por llamada; si el
   motor sigue esperando, devuelve un lote en estado `running` y la espera pendiente queda en el motor, que la repite
   idéntica en el siguiente `advance` sin eventos nuevos. Así una ejecución con muchas esperas ya no resuelve todas en una
   sola llamada síncrona. El 16 es un valor de seguridad de la interfaz, no un límite del lenguaje ni un cuanto
@@ -2221,8 +2223,8 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
   generado de FFI tiene convenciones que no coinciden con las del código escrito a mano.
 - **Elección:** `flutter_rust_bridge`, su generador y `flutter_rust_bridge_hooks` se fijan juntos en `2.13.0`.
   El backend elegido es Native Assets; la integración conserva desactivada la feature `native` de `pseudolearn_api`.
-  El transporte HTTP con Hyper y Rustls reside en la CLI; el puente excluye Hyper, clientes HTTP, TLS y resolvedores
-  DNS. `rust-checks isolation` verifica los destinos nativos y `cargo tree --locked -e normal` permite revisar el grafo
+  El transporte HTTP con Hyper y Rustls reside en `pseudolearn_host`, compartido con la CLI; el puente
+  incorpora transporte y raíces TLS de plataforma, conservando excluidos AOT, Cranelift y `test-host`. `rust-checks isolation` verifica los destinos nativos y `cargo tree --locked -e normal` permite revisar el grafo
   fijado del puente desde `native/`.
   Las operaciones de frontera se declaran `#[frb(sync)]`; la configuración deja `default_dart_async: false`.
   La sesión vive en un registro local al hilo invocador y Dart transporta un handle `u64`; `ApiSession` no se expone
@@ -2342,9 +2344,9 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
   indicada con `--output`.
 - **Medición observada:** tras añadir `Vector`, `Diccionario`, interfaces y limpieza, el framework ios-arm64
   ocupa 4,566,624 bytes (4.36 MiB) y el Wasm comprimido 819,420 bytes (800.21 KiB). Ambos quedan dentro de los
-  presupuestos ampliados de 5 MiB y 900 KiB (antes 3 MiB y 600 KiB, con 2,985,792 y 530,599 bytes); el margen
-  de iOS es del 13 %, de modo que una dependencia nueva puede agotarlo y la captura debe repetirse al añadirla. Esta medición certifica
-  `PERF.ARTIFACT.SIZE`, que no exige dispositivo físico: mide bytes del binario de release.
+  presupuestos vigentes de 8 MiB y 900 KiB (antes 3 MiB y 600 KiB, con 2,985,792 y 530,599 bytes); el margen
+  de aquella captura correspondía al tope anterior de 5 MiB. Es evidencia histórica; una dependencia nueva exige
+  repetir la captura. `PERF.ARTIFACT.SIZE` mide bytes del binario Release y no exige dispositivo físico.
 - **Límite:** el build iOS Release se generó sin firma y se midió antes de empaquetar Flutter. El iPhone 17
   con iOS 27.0.1 ejecutó la prueba en Profile, donde el runner no encontró el Dart VM Service por Wi-Fi y
   quedó visible la pantalla inicial; no se atribuyen tiempos de ejecución a esa captura. `flutter drive --release`
@@ -2397,46 +2399,36 @@ Render: el panel dibuja siempre texto, sin Markdown, enlaces, imágenes ni recon
 
 Frontera entre currículo, interfaz y catálogo: la base de conocimiento conserva su narrativa pedagógica; la interfaz, sus etiquetas y mensajes localizados; la semántica normativa del lenguaje (qué hace una palabra, sus partes, restricciones y ejemplos) solo llega de la ficha que devuelve la consulta. Ningún archivo de `lib/` ni recurso localizado puede repetir prosa de una ficha: lo comprueba una prueba del motor que recorre esta aplicación, con una violación deliberada que demuestra que falla. Una modificación de una ficha llega a la API, al servidor LSP y a esta consulta por generación, sin cambios de código.
 
-### 4.54 Esperas de efecto y capacidades simuladas en modo de archivo único
+### 4.54 Anfitrión real en modo de archivo único
 
-Problema: el núcleo suspende la ejecución con `awaiting_effect` cuando un programa usa una capacidad (archivo, reloj,
-temporizador, argumentos) y el modo educativo de archivo único no tiene manifiesto ni anfitrión real. Decisión: la app no
-abre autoridad real; ofrece capacidades simuladas en memoria y deja que el núcleo siga siendo quien valida derechos.
+La app ejecuta capacidades contra el anfitrión Rust compartido con la CLI. `ExecutionEnvironment`
+expone una carpeta por documento; `LocalExecutionEnvironment` la deriva de la carpeta de documentos
+como execution/<identidad codificada>. La capa host solo importa modelo y puertos; admite dart:io y
+prohíbe interfaz Flutter, engine y application. La composición inyecta el puerto en RustEffectGate.
+No hay implementación Dart de HTTP, reloj, temporizador ni archivos del lenguaje.
 
-- `EffectWait` (modelo) describe la espera: secuencia, clase de capacidad, operación y resumen de argumentos.
-  `ExecutionStep.pendingEffect` la expone y `isAwaitingEffect` la resume; no mezcla la espera de efecto con
-  `isAwaitingInput`, que sigue siendo solo `Leer`.
-- `SimulatedScenario` selecciona datos inmutables para siete escenarios: sin anfitrión, sin permisos, archivos
-  virtuales, HTTP preparado, tiempo lógico, timeout y resultado incierto. `ExecutionState` conserva la selección entre
-  ejecuciones; el panel del documento muestra siempre «Simulado» y ofrece una ayuda localizada sobre los límites.
-  `SimulatedCapabilities` declara permisos, archivos en memoria, argumentos, reloj lógico, orígenes y respuestas HTTP.
-  `RustSimulatedHost` copia la configuración al comenzar; mutaciones del llamador no cambian una ejecución activa.
-  Con permisos vacíos el escenario puede declarar un anfitrión sin autoridad: cualquier capacidad se deniega.
-- `ProgramExecution.settleEffect(EffectSettlement)` es el único método de continuación: `resolve` entrega al motor la
-  respuesta del anfitrión simulado para la espera pendiente y `cancel` entrega una terminación `isCancelled` con
-  `haltReason = 'cancelled_by_host'`, sin responder la espera ni ejecutar limpiezas de usuario. El `stop()` ordinario
-  limpia y libera el recurso, pero no inventa una terminación para el historial.
-- `RustSimulatedHost` enruta operaciones del motor al almacén de archivos virtuales, a la tabla HTTP o a las respuestas
-  de consola, argumentos, reloj, temporizador y fallos. `RustSimulatedFiles` posee rutas y capacidades en memoria;
-  `RustSimulatedHttp` posee el filtro de orígenes y las respuestas HTTP preparadas. Ninguno abre archivos del equipo,
-  sockets, DNS ni relojes físicos. Los derechos de la raíz son la intersección entre los asignados por el motor y los
-  permisos del escenario; nunca se amplían. Las rutas son relativas y rechazan `.`/`..`; un cierre invalida el uso
-  posterior (`capacidad_cerrada`) y texto no UTF-8 devuelve `utf8_invalido`. HTTP busca coincidencia exacta por método y
-  URL en la tabla declarada, entrega respuestas 4xx/5xx como respuestas y no sigue redirecciones mediante red real.
-- `InputWait` identifica cada espera de `Leer` con `resourceId`, `taskId` y `requestId`; la respuesta envía esos tres
-  valores junto con el texto. La API vuelve a validarlos y rechaza una respuesta cruzada, tardía o duplicada. Un texto
-  inválido para el tipo vuelve a suspender la misma lectura con un `requestId` nuevo. La VM expone una sola espera
-  global de entrada, por lo que `Leer` sigue serializado; los efectos concurrentes conservan sus propios `effect_seq`
-  y no comparten identidad con la entrada.
-- `RustEffectGate` encapsula el ciclo `advance` → `effect_result`: en modo automático (por defecto, el que usa la
-  ejecución paso a paso) responde las esperas con el anfitrión simulado y entrega `effect_seq` en cada respuesta, que el
-  motor exige; en modo manual se detiene en la primera espera para que la capa de aplicación la liquide. El bombeo
-  automático no responde `Leer`. El `host` de `start` lleva la configuración declarada con `detached: true`. Al terminar,
-  cancelar o iniciar otro escenario se cierran las capacidades; detener también libera el recurso de ejecución en la API.
+RustEffectGate abre un HostWorker por recurso, envía solicitudes con effect_seq y sondea respuestas.
+Una operación lenta mantiene visible la espera; no consume el presupuesto de pasos ni bloquea la UI.
+HostWorker conserva archivos y atiende HTTP y temporizadores en hilos independientes. Cancelar,
+liberar, detener o reiniciar cierra el anfitrión; reproducción no lo abre ni envía effect_result.
+La entrada de Leer conserva su identidad propia (recurso, tarea, solicitud).
 
-Pendiente declarado: la vista pública todavía no presenta los valores configurados del escenario como datos de
-inspección. El adaptador de ejecución no interpreta la autoridad de capacidades: la aplicación entrega concesiones y el
-motor valida las operaciones.
+El documento persiste rigor y argumentos; la barra de ejecución permite editarlos y reproducir la
+última cinta. Los argumentos admiten comillas, vacíos, espacios y Unicode. El rigor se propaga al
+análisis y ejecución. La semilla viva usa entropía del SO y queda grabada; reproducción conserva la
+semilla de la cinta. Los errores de reproducción se muestran y no inician una ejecución viva alternativa.
+
+La nueva capa se verifica con una importación prohibida deliberada. La puerta de contenido rechaza
+identificadores y claves del anfitrión retirado, con fixture negativo. Las pruebas Dart–FFI ejercitan
+HTTP loopback, archivos reales y reproducción con cero llamadas nuevas al anfitrión.
+
+### Configuración del transporte por plataforma
+
+iOS declara NSLocalNetworkUsageDescription en español e inglés y NSAllowsArbitraryLoads, autorizado
+explícitamente para ejecutar programas educativos con HTTP arbitrario. HTTPS mantiene validación TLS
+en Rust contra las raíces de plataforma; ATS no se usa para desactivar esa validación. macOS conserva
+los entitlements de red cliente y acceso a datos del contenedor. Windows declara internetClient y
+privateNetworkClientServer. El build y la ejecución de Windows quedan no verificados en macOS.
 
 ### 4.55 Import y export pegados: dependencia visible, nunca resuelta
 
@@ -2494,13 +2486,13 @@ respuestas bajo responsabilidad de quien conduzca el estudio; no simula particip
 
 ### 4.57 Reproducción de una ejecución: cinta transportada, proyección canónica y rechazos tipados
 
-Problema: reproducir una ejecución con efectos no puede volver a consultar el anfitrión simulado, porque la segunda
+Problema: reproducir una ejecución con efectos no puede volver a consultar el anfitrión real, porque la segunda
 ejecución podría diferir de la primera sin que nadie lo note. Decisión: la app transporta la cinta de efectos que el
 motor ya graba, se la devuelve en modo `replay_from_tape` y compara la ejecución reproducida con la grabada mediante
 una proyección canónica. La app no valida la cinta: el motor es el único dueño de identidad, secuencia y hashes.
 
-- **Entrada completa de una reproducción.** Fuentes, perfil, rigor, semilla, límites y permisos son la identidad que el
-  motor ata a la cinta; el escenario aporta únicamente los permisos al reproducir. Los datos del escenario (archivos,
+- **Entrada completa de una reproducción.** Fuentes, perfil, rigor, semilla y límites son la identidad que el
+  motor ata a la cinta; no se aporta un anfitrión al reproducir. Los datos del anfitrión (archivos,
   respuestas HTTP, reloj) no se vuelven a entregar: viven en la cinta. El orden de entrega queda registrado en la cinta
   y la reproducción lo sigue. La revisión y la selección de tarea, evento o página no forman parte de lo que se
   reproduce: son disposición, no ejecución.
@@ -2976,7 +2968,7 @@ El adaptador Rust de la tabla de variables consume las entradas vector y diccion
 
 ### Proyección de capacidades en la vista del programa (`PG-3.09`)
 
-`RustViewSemantics` lee de cada nodo de la vista pública los atributos `builtin_type` (`bytes`, `io_error`), `capability_type` (`console`, `arguments`, `directory`, `file`, `clock`, `timer`) y `effect_operation` (identidad de `LIB.MODEL`) que proyecta `pseudolearn_api`; un nodo sin ellos no expone ninguno. La app solo los transporta: no interpreta la autoridad de una capacidad, que sigue siendo del anfitrión simulado (`RustSimulatedHost`). Cubre `test/engine/rust/rust_view_semantics_test.dart`.
+`RustViewSemantics` lee de cada nodo de la vista pública los atributos `builtin_type` (`bytes`, `io_error`), `capability_type` (`console`, `arguments`, `directory`, `file`, `clock`, `timer`) y `effect_operation` (identidad de `LIB.MODEL`) que proyecta `pseudolearn_api`; un nodo sin ellos no expone ninguno. La app solo los transporta: no interpreta la autoridad de una capacidad, que sigue siendo del anfitrión real (`HostWorker`). Cubre `test/engine/rust/rust_view_semantics_test.dart`.
 
 ### Datos estáticos tipados de la vista pública
 
@@ -3017,7 +3009,7 @@ El contrato del verificador es `API.PROGRAM.VIEW#R13`, con un caso por código o
 - **Clasificación exhaustiva.** `rustStatementTreatment` decide para cada sentencia un tratamiento explícito: control, ruptura, registro diferido, retorno, llamada, E/S, paso de proceso o `unsupported`. Los constructores de ordinograma y estructograma no tienen una rama `_` que produzca un proceso. `for_each_loop` se dibuja como bucle de preámbulo (cabecera con la primera línea del propio nodo, de modo que cambia con el perfil sin literales sueltos) y una colección vacía conserva el bucle.
 - **Salidas y limpiezas (`R10`, `R11`).** La app no decide a qué bucle sale un `Salir` ni qué limpiezas corren: lee `control_exit`, `normal_cleanups` y `cleanup_scope_node_id` de la vista (`ProgramViewControlExit`, `ProgramViewCleanupScope`), validados en la frontera por `rust_program_view_wire_exits.dart` y consultados mediante `RustControlExits`. En el ordinograma, `Salir` es un paso con arista `breakExit` hacia un conector rotulado `exitConnector` («Fin del bucle (línea N)»), y el bucle destino repite ese conector tras su salida normal: es la notación de conectores emparejados y evita trazar una arista que cruzaría columnas vecinas. `Retornar` sigue siendo terminal. `Propagar` añade a su sentencia una arista lateral `propagationExit` hacia un terminal «Propaga el fallo», sin cortar el flujo normal (`SideBlock`). `Diferir` es un paso de preparación con su cuerpo al costado, unido por una arista discontinua `cleanupRegistration` que el flujo no atraviesa. Cada salida anticipada anota «limpiezas: líneas …» en el orden de `control_exit`, y un paso de subproceso «Limpiezas al terminar: líneas …» cierra el ámbito cuyo final es alcanzable, en el orden de `normal_cleanups`; las líneas son las de las sentencias `Diferir`, así que el dibujo nunca evalúa una limpieza. En el estructograma, `Salir` y `Retornar` son celdas de salida con la misma anotación, `Diferir` es un bloque con cabecera que contiene su cuerpo, la sentencia que propaga se anota con «si falla, propaga» y las limpiezas de fin normal son una celda de llamada. El texto sale de `ExitVocabulary` dentro de `diagram_vocabulary.dart`, en ambos idiomas de interfaz. Una selección cuyas ramas no continúan ya no declara salida, de modo que el fin de ámbito tras dos `Retornar` no se dibuja como alcanzable.
 - **Respuesta no soportada (`R14`).** `Propagar` dentro de la cabecera de un control (condición, selector, colección o encabezado de bucle) se reporta como no soportado: dibujar su salida obligaría a partir la decisión. El constructor captura `UnsupportedSyntaxView` en su propio borde y devuelve `DiagramProgram.unsupported(kinds)`; el panel muestra qué formas faltan en vez de un diagrama parcial (`diagramUnsupportedSyntax`, es/en). El escenario `control_flow` (`tool/see_app_control_flow.dart`) observa ese resultado y la escena real.
-- **Pendientes declarados.** Patrones de variante y literales de función siguen como extensiones documentadas en sus filas. La celda de ayuda de cada fila es una extensión hasta que la auditoría del catálogo de ayuda asigne fichas con `CoverageCell.help`. El inventario se lee del código fuente del motor porque la API no publica aún un catálogo de formas; cuando exista, el verificador debe leerlo de ahí.
+- **Pendientes declarados.** Los patrones conservan la etiqueta completa de cada caso y los literales de función tienen una unidad seleccionable con su cuerpo. Cada fila asigna una ficha existente mediante `CoverageCell.help`; la puerta rechaza cualquier extensión pendiente con COV-EXTENSION. El inventario se lee del código fuente del motor porque la API no publica aún un catálogo de formas; cuando exista, el verificador debe leerlo de ahí.
 
 Pruebas: `rust_control_exit_diagram_test.dart` (motor real, es/en: conectores emparejados, bucle interior, ruptura huérfana, cuerpos laterales sin solapamiento, retornos con limpiezas, fin inalcanzable, propagación y estructograma), `rust_syntax_coverage_behavior_test.dart` y `check_syntax_coverage_test.dart`.
 
@@ -3078,3 +3070,20 @@ cubre selección independiente del evento vivo, paginación, errores y límites 
 compacto y comprueba semántica accesible. Las pruebas API `history_events.rs` y `debug_control.rs`
 comprueban atribución histórica y que consultar un evento anterior no mueve la ejecución. Los casos
 de conformance C13/C14 verifican contrato de atribución e inspección en `API.EXECUTE`.
+
+Medición intermedia local del 2026-11-03, fuentes modificadas sobre 04b4153868cc3ab63f90c2b0e1445e4adb8832bf:
+ios-arm64 Release 5.989.360 bytes, SHA-256
+cd90dbf8d48abf3d7673bfa65b49c55188c1b4435c55eae31ce597c42c6a51e4,
+con símbolos separados y UUID coincidente. El Wasm Brotli Q11/lgwin22 mide 842.655 bytes,
+SHA-256 633df31c149568458b1266a94a6a9ee9606463eab360d6513db5b501cdecbf31.
+Ambos caben en los presupuestos vigentes de 8 MiB y 900 KiB. Se modificaron después la entrega
+de efectos concurrentes y la reutilización de entropía; falta recapturar los artefactos finales.
+El campo de argumentos usa
+un ancho semántico propio de componente para conservar espacio legible sin literales de diseño.
+
+La fila de receptor se obtiene de `receptor` del marco público; su nombre procede de `thisObject`
+del vocabulario del perfil, sin lexemas propios en Dart. Los marcos sin receptor conservan sus variables.
+
+El rigor y los argumentos son preferencias locales por documento. Se guardan en su cabecera y
+se conservan al adoptar contenido remoto del mismo documento; no se amplía el protocolo del backend.
+El selector de rigor tiene una etiqueta semántica localizada además de sus valores visibles.

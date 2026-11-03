@@ -13,7 +13,10 @@ impl ApiSession {
         };
         let request = execution_request(&compiled);
         let program = load_compiled(&compiled)?;
-        let sources = crate::execution_sources::ExecutionSources::project(&compiled.request)?;
+        let sources = crate::execution_sources::ExecutionSources::project(
+            &compiled.request,
+            &compiled.module.profiles,
+        )?;
         let mut execution = ExecutionResource::from_loaded(&request, program, compiled.warnings)?;
         execution.attach_sources(sources);
         let resource = self.insert(Resource::Execution {

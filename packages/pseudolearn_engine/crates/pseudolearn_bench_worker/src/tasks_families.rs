@@ -136,7 +136,7 @@ fn concurrent_effects(seed: u64, random: &mut SplitMix64) -> Agenda {
         "SubProceso Suspendible Pause(label Como Entero)\nDescartar Aguardar SolicitarTemporizador();\nEscribir label;\nFinSubProceso\nAlgoritmo Main\nTareas\n{spawns}FinTareas\nFinAlgoritmo\n"
     );
     let output: String = order.iter().map(|label| format!("{label}\n")).collect();
-    let host = json!({"permissions": ["temporizador"], "requested_permissions": ["temporizador"], "orden_entrega": order});
+    let host = json!({  "orden_entrega": order});
     Agenda {
         host: Some(host),
         ..agenda(seed, 6, program, completed(output))

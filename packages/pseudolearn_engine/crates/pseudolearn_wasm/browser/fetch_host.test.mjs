@@ -3,7 +3,7 @@ import { describe, it } from 'node:test';
 import { NETWORK_CAPABILITIES, declareFetchHost, performFetch } from './fetch_host.mjs';
 
 function options(overrides = {}) {
-  return { allowedOrigins: ['https://example.test'], ...overrides };
+  return overrides;
 }
 
 function effect(overrides = {}) {
@@ -76,7 +76,7 @@ describe('fetch host adapter', () => {
     assert.deepEqual(declared, NETWORK_CAPABILITIES);
   });
 
-  it('sends without credentials, cache reuse, or redirect following', async () => {
+  it('sends without credentials or cache reuse and follows browser redirects', async () => {
     let actualUrl;
     let actualOptions;
     const response = await performFetch(effect(), options({
@@ -92,7 +92,7 @@ describe('fetch host adapter', () => {
     assert.equal(actualUrl, 'https://example.test/resource');
     assert.equal(actualOptions.credentials, 'omit');
     assert.equal(actualOptions.cache, 'no-store');
-    assert.equal(actualOptions.redirect, 'manual');
+    assert.equal(actualOptions.redirect, 'follow');
     assert.deepEqual(response.value.value.body, [111, 107]);
     assert.equal(response.value.value.final_url, actualUrl);
   });
@@ -107,17 +107,13 @@ describe('fetch host adapter', () => {
     assert.deepEqual(response.value, { code: 'conexion_fallida', uncertain: true });
   });
 
-  it('denies an origin outside the host grant before calling fetch', async () => {
-    let called = false;
-    const response = await performFetch(effect(), {
-      allowedOrigins: ['https://other.example.test'],
-      fetchImplementation: async () => {
-        called = true;
-        return new Response(null);
-      },
-    });
-    assert.equal(called, false);
-    assert.equal(response.value.code, 'destino_denegado');
+  it('accepts a destination without an origin grant', async () => {
+    let calls = 0;
+    const response = await performFetch(effect({ url: 'http://127.0.0.1/private' }), options({
+      fetchImplementation: async () => { calls += 1; return new Response(null, { status: 204 }); },
+    }));
+    assert.equal(calls, 1);
+    assert.equal(response.outcome, 'committed');
   });
 
   it('rejects opaque redirects without exposing a location', async () => {

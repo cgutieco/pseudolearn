@@ -1,7 +1,7 @@
 import { Recorder } from "./check";
 import type { MemoryProvider } from "./memory_provider";
 import { openStack, optionsFor, projectRequest, type Answer, type Stack } from "./scenario_stack";
-import type { BrowserGrants } from "../../src/contracts/host_capabilities";
+import type { BrowserHostContext } from "../../src/contracts/host_capabilities";
 
 declare const __SCENARIOS__: Record<string, string>;
 
@@ -24,38 +24,38 @@ export function seedProject(provider: MemoryProvider): void {
   for (const [path, text] of Object.entries(__SCENARIOS__)) provider.seed(`/${path}`, text);
 }
 
-interface FileRun { path: string; profile: Profile; answers: Answer[]; grants: BrowserGrants; origin?: string }
+interface FileRun { path: string; profile: Profile; answers: Answer[]; context: BrowserHostContext; origin?: string }
 
 async function runFile(request: FileRun): Promise<Stack> {
   const stack = openStack(request.answers);
-  await stack.run.start({ program: sourceOf(request.path, request.origin), ...optionsFor(request.profile) }, request.grants);
+  await stack.run.start({ program: sourceOf(request.path, request.origin), ...optionsFor(request.profile) }, request.context);
   return stack;
 }
 
 async function unicodeAndInput(recorder: Recorder, profile: Profile): Promise<void> {
   const file = names[profile];
   recorder.within(`${profile} file input`);
-  const filled = await runFile({ path: file.saludo, profile, answers: ["Ana ñ"], grants: { origins: [] } });
+  const filled = await runFile({ path: file.saludo, profile, answers: ["Ana ñ"], context: { } });
   recorder.equal(joined(filled).includes("ñandú 🌍\n"), true, "Unicode output survives the Worker boundary");
   recorder.equal(joined(filled).includes(profile === "es" ? "Hola Ana ñ\n" : "Hello Ana ñ\n"), true, "typed input reaches the program");
   recorder.equal([filled.prompts(), joined(filled).endsWith("PseudoLearn: completed\n")], [1, true], "one prompt and a completed run");
-  const empty = await runFile({ path: file.saludo, profile, answers: [""], grants: { origins: [] } });
+  const empty = await runFile({ path: file.saludo, profile, answers: [""], context: { } });
   recorder.equal(joined(empty).includes(profile === "es" ? "Hola \n" : "Hello \n"), true, "empty input is a valid empty line");
-  const extremes = await runFile({ path: file.entero, profile, answers: [], grants: { origins: [] } });
+  const extremes = await runFile({ path: file.entero, profile, answers: [], context: { } });
   recorder.equal(joined(extremes).startsWith("9223372036854775807\n-9223372036854775808\n"), true, "64-bit extremes keep every digit");
 }
 
 async function cancellation(recorder: Recorder, profile: Profile): Promise<void> {
   recorder.within(`${profile} cancellation`);
   const stack = openStack([]);
-  const finished = stack.run.start({ program: sourceOf(names[profile].bucle), ...optionsFor(profile) }, { origins: [] });
+  const finished = stack.run.start({ program: sourceOf(names[profile].bucle), ...optionsFor(profile) }, { });
   await wait(300);
   recorder.equal(joined(stack), "start\n".replace("start", profile === "es" ? "inicio" : "start"), "program started and is still running");
   await stack.run.stop();
   await finished;
   recorder.equal(joined(stack).endsWith("PseudoLearn: cancelled\n"), true, "stop ends the run as cancelled");
   const declined = openStack([undefined]);
-  await declined.run.start({ program: sourceOf(names[profile].saludo), ...optionsFor(profile) }, { origins: [] });
+  await declined.run.start({ program: sourceOf(names[profile].saludo), ...optionsFor(profile) }, { });
   recorder.equal([declined.prompts(), joined(declined).endsWith("PseudoLearn: cancelled\n")], [1, true], "dismissing the input box cancels the run");
 }
 
@@ -63,12 +63,12 @@ async function project(recorder: Recorder, profile: Profile): Promise<void> {
   const place = names[profile];
   recorder.within(`${profile} project`);
   const good = openStack([]);
-  await good.run.start(await projectRequest(good, `pseudolearn-fixture:/${place.proyecto}`, profile), { origins: [] });
+  await good.run.start(await projectRequest(good, `pseudolearn-fixture:/${place.proyecto}`, profile), { });
   recorder.equal(joined(good), "ñandú 🌍\n42\nPseudoLearn: completed\n", "three modules run and the imported result is exact");
   const broken = openStack([]);
   const request = await projectRequest(broken, `pseudolearn-fixture:/${place.error}`, profile);
   let rejection = "";
-  await broken.run.start(request, { origins: [] }).catch((error: Error) => { rejection = error.message; });
+  await broken.run.start(request, { }).catch((error: Error) => { rejection = error.message; });
   recorder.equal(rejection, "Program rejected before execution", "an error in the imported module rejects the program");
   recorder.equal(joined(broken), "", "nothing runs after the rejection");
 }
@@ -76,14 +76,13 @@ async function project(recorder: Recorder, profile: Profile): Promise<void> {
 async function effects(recorder: Recorder, profile: Profile, origin: string, provider: MemoryProvider): Promise<void> {
   const place = names[profile];
   recorder.within(`${profile} effects`);
-  const granted = await runFile({ path: place.red, profile, answers: [], grants: { origins: [origin] }, origin });
-  recorder.equal(joined(granted), "200\n2\nPseudoLearn: completed\n", "granted origin returns status and body length");
-  const denied = await runFile({ path: place.red, profile, answers: [], grants: { origins: [] }, origin });
-  recorder.equal(joined(denied), "permiso_denegado\nPseudoLearn: completed\n", "no network permission sends nothing");
-  const files = await runFile({ path: place.archivo, profile, answers: [], grants: { origins: [], files: { root: "pseudolearn-fixture://files/root", writable: true, confined: true } } });
-  recorder.equal([joined(files).startsWith(profile === "es" ? "escrito\n" : "written\n"), provider.text("/root/salida.txt")], [true, "guardado ñ"], "granted files are written through the provider");
-  const refused = await runFile({ path: place.archivo, profile, answers: [], grants: { origins: [] } });
-  recorder.equal(joined(refused), "permiso_denegado\nPseudoLearn: completed\n", "ungranted files are denied");
+  const granted = await runFile({ path: place.red, profile, answers: [], context: { }, origin });
+  recorder.equal(joined(granted), "200\n2\nPseudoLearn: completed\n", "network returns status and body length without configuration");
+  const denied = await runFile({ path: place.red, profile, answers: [], context: { }, origin });
+  recorder.equal(joined(denied), "200\n2\nPseudoLearn: completed\n", "repeated network execution needs no grant");
+  const files = await runFile({ path: place.archivo, profile, answers: [], context: { root: "pseudolearn-fixture://files/root" } });
+  recorder.equal([joined(files).startsWith(profile === "es" ? "escrito\n" : "written\n"), provider.text("/root/salida.txt")], [true, "guardado ñ"], "files are written through the editor provider");
+
 }
 
 export async function runProgramScenarios(recorder: Recorder, provider: MemoryProvider, origin: string): Promise<void> {

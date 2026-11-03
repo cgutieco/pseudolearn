@@ -410,3 +410,25 @@ Verificación dirigida adicional: `cargo test --locked -p pseudolearn_api --test
 `--test history_events`, `--test state_pages`, `--test inspection_expression` y `--test lsp_operations`
 en invocaciones separadas. Estas órdenes son los targets disponibles; su aprobación depende de la
 evidencia de cada campaña y no se deduce de haberlas documentado.
+
+## Separación del anfitrión
+
+La API produce efectos pendientes por omisión y no distribuye el doble de memoria. `test-host`
+activa ese doble solo para conformidad y pruebas. Sus pruebas propias lo habilitan mediante una
+dependencia de desarrollo sobre el mismo crate, declarada en la matriz. La configuración de proyecto
+rechaza requests.permissions y grants.permissions como campos desconocidos; límites voluntarios se
+conservan. La identidad de cinta incluye semilla, fuentes, perfil, rigor y límites, sin permisos.
+El descriptor de red declara ssrf_policy none en nativo o browser en navegador; no concede autoridad.
+
+Cancelar una espera de Leer limpia la solicitud pendiente y devuelve cancelled en el siguiente
+avance, igual que una espera de efecto. No exige ni acepta una entrada inventada para desbloquear
+la cancelación; una respuesta tardía se rechaza y no incrementa entradas consumidas.
+
+Antes de entregar efectos al host, la API comprueba derechos, atenuación y límites sobre una copia
+pequeña de autoridad, sin copiar la cinta. Un rechazo se resuelve internamente y nunca provoca E/S.
+Las creaciones de capacidades se preparan individualmente para asignar tokens definitivos; las
+operaciones independientes ya preparadas se pueden atender en paralelo. La respuesta de una
+operación independiente que llegue mientras se está preparando una capacidad se conserva hasta
+cerrar esa preparación. La entrega queda serializada y grabada por el motor, sin repetir solicitudes.
+Los lotes públicos conservan receptor, límites efectivos y token de resultado; no son solicitudes
+incompletas reconstruidas por el consumidor.

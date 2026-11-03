@@ -13,14 +13,10 @@ fn effect_protocol_requires_one_matching_resolution() -> Result<(), String> {
         profile: "es".to_owned(),
         seed: 42,
         statement_limit: None,
-        permissions: vec!["reloj".to_owned()],
     };
     let mut session = EffectSession::new(identity, 10000);
-    configure_host_authority(
-        &mut session,
-        Some(&serde_json::json!({"permissions":["reloj"]})),
-    )
-    .map_err(|error| format!("{error:?}"))?;
+    configure_host_authority(&mut session, Some(&serde_json::json!({})))
+        .map_err(|error| format!("{error:?}"))?;
     let reply = HostReply::Committed(HostValue::Integer(1));
     assert_eq!(
         resolve_host_effect(&mut session, 1, reply.clone()),

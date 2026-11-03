@@ -21,6 +21,10 @@ mod execution_effects;
 mod execution_host;
 #[path = "execution_host_batch.rs"]
 mod execution_host_batch;
+#[path = "execution_host_delivery.rs"]
+mod execution_host_delivery;
+#[path = "execution_host_preflight.rs"]
+mod execution_host_preflight;
 #[path = "execution_input.rs"]
 mod execution_input;
 #[path = "execution_queries.rs"]
@@ -64,7 +68,7 @@ pub(crate) struct ExecutionResource {
     effects: pseudolearn_runtime::EffectSession,
     output_cursor: usize,
     input_cursor: usize,
-    host: crate::FakeHostProvider,
+    host: pseudolearn_runtime::ExecutionHostProvider,
     detached_effects: bool,
     cancel_on_effect: Option<u64>,
     pending_host: Option<pseudolearn_runtime::HostEffectRequest>,

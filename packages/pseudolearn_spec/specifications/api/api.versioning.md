@@ -215,7 +215,7 @@
   "id": "R3",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Un anfitrión puede declarar sus garantías de red en negotiate mediante network_capabilities. El descriptor contiene exactamente tls_validation (true), wire_limit (available o unavailable), certificate_errors_distinguished (booleano), redirect_location_visible (booleano), ssrf_policy (adapter o browser) y compression (gzip o browser). La respuesta devuelve el descriptor sin modificarlo; un descriptor incompleto, con campos extra o con valores fuera de esas alternativas produce un error de uso. La declaración no concede permisos de red ni amplía los orígenes de la ejecución.",
+  "texto": "Un anfitrión puede declarar sus garantías de red en negotiate mediante network_capabilities. El descriptor contiene exactamente tls_validation (true), wire_limit (available o unavailable), certificate_errors_distinguished (booleano), redirect_location_visible (booleano), ssrf_policy (none o browser) y compression (gzip o browser). La respuesta devuelve el descriptor sin modificarlo; un descriptor incompleto, con campos extra o con valores fuera de esas alternativas produce un error de uso. La declaración describe el transporte; la autoridad inicial de red es plena y las restricciones voluntarias de la ejecución se conservan.",
   "verificacion": [
     "C5",
     "C6",
@@ -242,7 +242,7 @@
             "wire_limit": "available",
             "certificate_errors_distinguished": true,
             "redirect_location_visible": true,
-            "ssrf_policy": "adapter",
+            "ssrf_policy": "none",
             "compression": "gzip"
           }
         }
@@ -259,7 +259,7 @@
               "wire_limit": "available",
               "certificate_errors_distinguished": true,
               "redirect_location_visible": true,
-              "ssrf_policy": "adapter",
+              "ssrf_policy": "none",
               "compression": "gzip"
             }
           }

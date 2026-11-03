@@ -1,7 +1,8 @@
 import 'spacing.dart';
 
 final class ComponentMetricsTokens {
-  static const double editorKeyBarContainerHeight = SpacingTokens.targetTouchMin;
+  static const double editorKeyBarContainerHeight =
+      SpacingTokens.targetTouchMin;
   static const double editorKeyCapHeight = 32.0;
   static const double editorTemplateRowHeight = SpacingTokens.targetTouchMin;
   static const double editorTemplateChipHeight = 32.0;
@@ -25,7 +26,9 @@ final class ComponentMetricsTokens {
   static const double contextMenuMinWidth = 180.0;
   static const double contextMenuItemHeight = 40.0;
   static const double progressStepsDotSize = 8.0;
-  static const Duration buttonCopyConfirmedDuration = Duration(milliseconds: 1600);
+  static const Duration buttonCopyConfirmedDuration = Duration(
+    milliseconds: 1600,
+  );
   static const int outputLinesVisible = 5;
   static const double navRailWidth = 96.0;
   static const double bottomBarHeight = 64.0;
@@ -34,6 +37,7 @@ final class ComponentMetricsTokens {
   static const double outputPanelBodyHeight = 120.0;
   static const double diagnosticsListHeight = 140.0;
   static const double diagnosticsEmptyHeight = 100.0;
+  static const double executionArgumentsWidth = 240.0;
   static const double inlineTitleFieldWidth = 240.0;
   static const double inlineTitleFieldHeight = 36.0;
   static const double codeGutterWidth = 24.0;

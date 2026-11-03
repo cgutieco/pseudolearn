@@ -116,7 +116,7 @@ Concurrencia: `pseudolearn_runtime` conserva identidades monotónicas, ámbitos,
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
-Problema: los consumidores móviles y Wasm no compilan programas nativos ni deben incorporar transporte de red. Elección: la API desactiva AOT por omisión y expone sus módulos y dependencias nativas solo con la feature `native`; la CLI y el trabajador AOT la activan explícitamente. El transporte HTTP elegido, Hyper con Rustls, queda en la CLI; API, Wasm y puente móvil excluyen Hyper, `http`, Rustls, clientes HTTP y resolvedores DNS. Se descarta confiar en la eliminación de símbolos del enlazador, porque no elimina dependencias del grafo de compilación. La exclusión se verifica con la clave `isolation` de `architecture.yaml` y `rust-checks isolation`: `pseudolearn_api` y `pseudolearn_wasm` se comprueban en `wasm32-unknown-unknown`, y el puente de la app en sus destinos iOS, macOS y Windows.
+Problema: los consumidores móviles y Wasm no compilan programas nativos, mientras CLI y app necesitan efectos reales sin duplicar el transporte. Elección: la API desactiva AOT por omisión y expone sus módulos y dependencias de compilación solo con la feature `native`; la CLI y el trabajador AOT la activan explícitamente. `pseudolearn_host` concentra HTTP con Hyper y Rustls, archivos y tiempo físicos para CLI y puente de app. API y Wasm excluyen transporte nativo; el puente lo incorpora sin AOT ni Cranelift. Se descarta confiar en la eliminación de símbolos del enlazador: la clave `isolation` de `architecture.yaml` comprueba los grafos por destino y también impide distribuir `test-host`.
 
 
 La arquitectura explota el determinismo para separar ejecución rápida de reconstrucción observable.
@@ -656,3 +656,31 @@ browser separa lenguaje y ejecución en Workers distintos. La proyección de tra
 JSON exacto y convierte números a texto canónico para que JavaScript no redondee identidades o
 valores del programa. El anfitrión concede capacidades de forma explícita; la política del navegador
 no se anuncia como garantía nativa. La distribución web no incorpora DAP nativo ni AOT.
+
+## Anfitrión físico y autoridad inicial
+
+`pseudolearn_host` es una capa hoja sin imports del motor. CLI y puente nativo comparten su transporte
+real: archivos del sistema, HTTP/HTTPS, reloj, temporizador, argumentos y entropía. La API y Wasm
+siguen sin dependencias de red o AOT por omisión. El puente incorpora la hoja HTTP/TLS y mantiene
+excluido AOT. `isolation` rechaza `pseudolearn_runtime/test-host` y `pseudolearn_api/test-host` en los
+grafos de distribución de CLI, puente y Wasm, comprobando las features efectivamente habilitadas.
+
+La autoridad inicial es plena; el runtime valida capacidades y límites sin listas de permisos ni
+orígenes concedidos. `Subdirectorio` y `Limitar` son atenuaciones voluntarias. No existe filtro de
+rangos de direcciones. Los dobles de memoria quedan tras `test-host`, sin activación por omisión;
+conformidad y benchmarks los activan explícitamente. Las dependencias de desarrollo sobre el propio
+crate activan esa feature para sus pruebas; la matriz declara ese acceso a la misma capa. No forman
+parte del grafo normal que verifican los consumidores.
+
+Las vistas de proyectos conservan el perfil resuelto de cada fuente del módulo compilado. Esto
+permite ejecutar e inspeccionar proyectos con excepciones de vocabulario sin reinterpretar cada
+archivo con el perfil de entrada. Los cuerpos de funciones literales exponen roles de unidad para
+que los consumidores recorran su cuerpo sin deducir relaciones a partir del texto.
+
+El transporte reutiliza getrandom 0.2.17, ya presente por ring, para evitar una segunda versión del
+proveedor de entropía. Las licencias de transporte permiten BSD-3-Clause (subtle), ISC (ring y WebPKI)
+y CDLA-Permissive-2.0 para los datos de raíces de respaldo del verificador de plataforma. La puerta
+de dependencias mantiene el rechazo de duplicados y omite versiones exactas inevitables de
+io-lifetimes y bindings Windows heredadas de cap-std. El puente también omite hashbrown 0.14.5
+(oslog de FRB) y miniz_oxide 0.8.9 (backtrace de FRB), manteniendo las versiones actuales usadas por
+indexmap y flate2. Estas excepciones son de compatibilidad de dependencias, sin cambiar validación TLS.

@@ -19,6 +19,7 @@ pub(crate) struct Running<'run> {
     pub resource: &'run Value,
     pub sources: &'run Value,
     pub output_limit: usize,
+    pub effects: Option<crate::dap_effects::EffectHost>,
 }
 
 struct Pump<'pump, Sink: Write> {
@@ -67,8 +68,12 @@ impl<Sink: Write> Pump<'_, Sink> {
             let kind = termination_kind(&response);
             match kind.as_deref() {
                 Some("running") => {}
+                Some("awaiting_effect") => {
+                    crate::editor_effects::resolve(&mut self.running, &response)
+                        .map_err(io::Error::other)?;
+                }
                 Some("awaiting_input") => {
-                    if let Some(status) = self.provide_input()? {
+                    if let Some(status) = self.provide_input(&response)? {
                         return self.abandon(status);
                     }
                 }
@@ -131,11 +136,11 @@ impl<Sink: Write> Pump<'_, Sink> {
         }
     }
 
-    fn provide_input(&mut self) -> io::Result<Option<FinishStatus>> {
+    fn provide_input(&mut self, response: &Value) -> io::Result<Option<FinishStatus>> {
         emit(self.sink, &awaiting_input())?;
         loop {
             if let Some(text) = self.pending.pop_front() {
-                let accepted = self.submit(&text);
+                let accepted = self.submit(&text, response);
                 return Ok((!accepted).then_some(FinishStatus::Failed));
             }
             if self.input_closed {
@@ -150,13 +155,13 @@ impl<Sink: Write> Pump<'_, Sink> {
         }
     }
 
-    fn submit(&mut self, text: &str) -> bool {
+    fn submit(&mut self, text: &str, response: &Value) -> bool {
+        let mut request = response.get("pending_input").cloned().unwrap_or(json!({}));
+        request["resource"] = self.running.resource.clone();
+        request["text"] = json!(text);
         self.running
             .session
-            .call(
-                "input",
-                &json!({"resource": self.running.resource, "text": text}),
-            )
+            .call("input", &request)
             .get("value")
             .is_some()
     }

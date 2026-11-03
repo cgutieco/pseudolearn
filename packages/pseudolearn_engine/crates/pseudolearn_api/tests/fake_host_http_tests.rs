@@ -33,8 +33,8 @@ fn request(method: HttpMethod, url: &str) -> HostEffectRequest {
 #[test]
 fn returns_http_error_status_as_a_response() -> Result<(), String> {
     let configuration = json!({
-        "permissions": ["red"],
-        "requested_permissions": ["red"],
+
+
         "http": {
             "GET https://fake.test/missing": {
                 "estado": 404,
@@ -56,8 +56,8 @@ fn returns_http_error_status_as_a_response() -> Result<(), String> {
 #[test]
 fn preserves_uncertain_outcomes_for_mutating_methods() -> Result<(), String> {
     let configuration = json!({
-        "permissions": ["red"],
-        "requested_permissions": ["red"],
+
+
         "http": {
             "POST https://fake.test/write": {
                 "fallo": "conexion_fallida",
@@ -78,10 +78,7 @@ fn preserves_uncertain_outcomes_for_mutating_methods() -> Result<(), String> {
 
 #[test]
 fn reports_missing_http_scripts_without_network_access() -> Result<(), String> {
-    let configuration = json!({
-        "permissions": ["red"],
-        "requested_permissions": ["red"]
-    });
+    let configuration = json!({});
     let mut host =
         FakeHostProvider::from_value(&configuration).map_err(|error| format!("{error:?}"))?;
     let reply = host.perform(&request(HttpMethod::Get, "https://fake.test/missing"));
@@ -181,7 +178,7 @@ fn replays_concurrent_http_deliveries_with_an_identity_only_host() -> Result<(),
     let value = recording
         .get("value")
         .ok_or_else(|| format!("HTTP recording failed: {recording}"))?;
-    let identity_host = json!({"permissions": ["red"], "requested_permissions": ["red"]});
+    let identity_host = json!({});
     let replay = api.call(
         "record",
         &json!({"request": {"program": program, "profile": "es", "strictness": "strict",
@@ -341,8 +338,8 @@ fn assert_http_effects(expected: &[Value], execution: &Value) -> Result<(), Stri
 fn rejects_http_request_digest_divergence_with_no_scripted_response() -> Result<(), String> {
     let program = "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir net Como RedCap <- Propagar SolicitarRed();\nDefinir request Como PeticionHttp <- PeticionHttp(MetodoHttp.GET, \"https://fake.test/a\");\nDefinir response Como RespuestaHttp <- Propagar net.Enviar(request);\nRetornar Exito(response.Estado());\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Incierto;\nFinSegun\nFinAlgoritmo\n";
     let host = json!({
-        "permissions": ["red"],
-        "requested_permissions": ["red"],
+
+
         "http": {"GET https://fake.test/a": {"estado": 200}}
     });
     compile_source_to_ir(program, "es", "strict")
@@ -356,7 +353,7 @@ fn rejects_http_request_digest_divergence_with_no_scripted_response() -> Result<
         .pointer("/value/effect_tape")
         .ok_or_else(|| format!("HTTP recording failed: {recording}"))?;
     let changed_tape = altered_http_request_tape(tape_value)?;
-    let replay_host = json!({"permissions":["red"],"requested_permissions":["red"]});
+    let replay_host = json!({});
     assert_eq!(
         replay_http_tape(program, &replay_host, &changed_tape)?.pointer("/failure/detail"),
         Some(&json!("Invalid protocol: replay_divergence"))

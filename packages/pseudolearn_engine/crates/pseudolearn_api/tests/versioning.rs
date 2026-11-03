@@ -35,7 +35,7 @@ fn reports_native_and_fetch_network_capabilities() {
             "wire_limit":"available",
             "certificate_errors_distinguished":true,
             "redirect_location_visible":true,
-            "ssrf_policy":"adapter",
+            "ssrf_policy":"none",
             "compression":"gzip"
         }),
         json!({
@@ -64,7 +64,7 @@ fn rejects_incomplete_or_unsupported_network_capabilities() {
             "wire_limit":"available",
             "certificate_errors_distinguished":true,
             "redirect_location_visible":true,
-            "ssrf_policy":"adapter",
+            "ssrf_policy":"none",
             "compression":"gzip"
         }),
         json!({
@@ -72,7 +72,7 @@ fn rejects_incomplete_or_unsupported_network_capabilities() {
             "wire_limit":"unknown",
             "certificate_errors_distinguished":true,
             "redirect_location_visible":true,
-            "ssrf_policy":"adapter",
+            "ssrf_policy":"none",
             "compression":"gzip"
         }),
         json!({
@@ -80,7 +80,7 @@ fn rejects_incomplete_or_unsupported_network_capabilities() {
             "wire_limit":"available",
             "certificate_errors_distinguished":true,
             "redirect_location_visible":true,
-            "ssrf_policy":"adapter",
+            "ssrf_policy":"none",
             "compression":"gzip",
             "proxy":true
         }),

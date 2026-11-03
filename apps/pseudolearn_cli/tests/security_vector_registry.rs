@@ -35,8 +35,8 @@ const REGISTRY: [Vector; 8] = [
     },
     Vector {
         name: "nul_in_path",
-        file: "src/physical_host_tests.rs",
-        test: "rejects_absolute_parent_and_nul_paths",
+        file: "tests/security_vectors.rs",
+        test: "nul_in_path_is_rejected",
     },
     Vector {
         name: "rights_amplification",

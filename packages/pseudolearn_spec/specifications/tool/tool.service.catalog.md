@@ -551,7 +551,7 @@
   "operacion": "service",
   "espera": {
     "servicio": {
-      "descripcion": "Opaque capability handle for reading monotonic or logical time."
+      "descripcion": "Opaque capability for reading the system clock live and recorded readings during replay."
     }
   },
   "servicio": {
@@ -8026,8 +8026,8 @@
         "content": {
           "es": {
             "title": "Capacidades explícitas",
-            "summary": "Tipos opacos y solicitudes con permiso explícito para efectos externos.",
-            "purpose": "Representa autoridad explícita concedida por el anfitrión para consola, argumentos, archivos y tiempo.",
+            "summary": "Tipos opacos para efectos externos con autoridad plena por omisión y atenuación voluntaria.",
+            "purpose": "Permite usar consola, argumentos, archivos y tiempo reales del anfitrión sin configurar permisos.",
             "parts": [
               {
                 "identity": "consoleCapabilityType",
@@ -8039,7 +8039,7 @@
               },
               {
                 "identity": "directoryCapabilityType",
-                "text": "Capacidad opaca que autoriza operar dentro de un directorio concedido."
+                "text": "Capacidad de directorio con rutas del sistema; una derivación voluntaria confina su raíz y derechos."
               },
               {
                 "identity": "fileCapabilityType",
@@ -8047,7 +8047,7 @@
               },
               {
                 "identity": "clockCapabilityType",
-                "text": "Capacidad opaca para leer tiempo monótono o lógico."
+                "text": "Capacidad opaca para leer el reloj del sistema en vivo y las lecturas grabadas al reproducir."
               },
               {
                 "identity": "timerCapabilityType",
@@ -8055,15 +8055,15 @@
               },
               {
                 "identity": "requestConsole",
-                "text": "Solicita al anfitrión una capacidad de consola si el permiso está activo."
+                "text": "Obtiene la capacidad de consola del anfitrión sin concesiones previas."
               },
               {
                 "identity": "requestArguments",
-                "text": "Solicita al anfitrión la capacidad de lectura de argumentos."
+                "text": "Obtiene argumentos de CLI tras --, args del editor o el campo de argumentos de la app, en orden y sin el nombre del programa."
               },
               {
                 "identity": "requestDirectory",
-                "text": "Solicita al anfitrión una capacidad sobre una raíz de directorio nombrada."
+                "text": "Abre un directorio por ruta absoluta o relativa a la carpeta de trabajo, con .. permitido; la plataforma puede denegar acceso."
               },
               {
                 "identity": "requestClock",
@@ -8090,8 +8090,8 @@
           },
           "en": {
             "title": "Explicit capabilities",
-            "summary": "Opaque types and permission-checked requests for external effects.",
-            "purpose": "Represents explicit host-granted authority for console, arguments, files, and time.",
+            "summary": "Opaque types for external effects with full initial authority and voluntary attenuation.",
+            "purpose": "Uses real host console, arguments, files, and time without configuring permissions.",
             "parts": [
               {
                 "identity": "consoleCapabilityType",
@@ -8103,7 +8103,7 @@
               },
               {
                 "identity": "directoryCapabilityType",
-                "text": "Opaque capability handle that authorizes operating inside a granted directory."
+                "text": "Directory capability with system paths; voluntary derivation confines its root and rights."
               },
               {
                 "identity": "fileCapabilityType",
@@ -8111,7 +8111,7 @@
               },
               {
                 "identity": "clockCapabilityType",
-                "text": "Opaque capability handle for reading monotonic or logical time."
+                "text": "Opaque capability for reading the system clock live and recorded readings during replay."
               },
               {
                 "identity": "timerCapabilityType",
@@ -8119,15 +8119,15 @@
               },
               {
                 "identity": "requestConsole",
-                "text": "Requests a console capability from the host when permitted."
+                "text": "Obtains the host console capability without prior grants."
               },
               {
                 "identity": "requestArguments",
-                "text": "Requests an arguments capability from the host."
+                "text": "Returns CLI arguments after --, editor args or the app argument field in order, excluding the program name."
               },
               {
                 "identity": "requestDirectory",
-                "text": "Requests a directory capability for a named root from the host."
+                "text": "Opens a directory by absolute path or relative to the working directory, including ..; the platform may deny access."
               },
               {
                 "identity": "requestClock",

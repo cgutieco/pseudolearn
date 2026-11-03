@@ -17,14 +17,27 @@ pub fn configure_host_authority(
     session: &mut EffectSession,
     host: Option<&serde_json::Value>,
 ) -> Result<(), IoError> {
-    session.authority.permissions = crate::effect_authority::effective_permissions(host);
-    session.authority.granted_network_origins = crate::network_policy::configured_origins(host);
     session.secrets = crate::secret_policy::SecretPolicy::from_host(host)?;
     Ok(())
 }
 
 pub fn configure_network_limits(session: &mut EffectSession, limits: crate::NetworkLimits) {
     session.authority.network_limits = limits;
+}
+
+pub fn validate_host_request(
+    session: &EffectSession,
+    operation: &EffectOperation,
+    request: &mut HostEffectRequest,
+) -> Result<(), IoError> {
+    crate::effect_authority::prepare(&mut session.authority.clone(), operation, request)
+}
+
+pub fn pending_host_rejection(session: &EffectSession) -> Option<IoError> {
+    session
+        .pending
+        .as_ref()
+        .and_then(|pending| pending.rejected)
 }
 
 pub fn begin_host_effect(
@@ -45,13 +58,8 @@ pub fn begin_host_effect(
         result_capability: None,
         source_node_id: source,
     };
-    let replaying = session.replay.is_some();
     let rejected =
-        crate::effect_authority::prepare(&mut session.authority, operation, &mut request)
-            .err()
-            .filter(|error| {
-                !(replaying && error.kind == pseudolearn_abi::IoErrorKind::DestinationDenied)
-            });
+        crate::effect_authority::prepare(&mut session.authority, operation, &mut request).err();
     let previous_status = session.tape.status;
     let recorded = record_requested(session, &request, operation)?;
     session.pending = Some(PendingHostEffect {

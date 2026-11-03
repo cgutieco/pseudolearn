@@ -152,8 +152,14 @@
 {
   "id": "C3",
   "regla": "R1",
-  "perfiles": ["es", "en"],
-  "rigor": ["estricto", "flexible"],
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
   "programas": {
     "es": "SubProceso Run() Como Resultado<Entero, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nSegun directory.Abrir(\"entrada.txt\", \"lectura\") Hacer\nExito(file): Escribir \"inesperado\";\nError(problem): Escribir problem.Codigo;\nFinSegun\nRetornar Exito(0);\nFinSubProceso\nAlgoritmo Main\nSegun Run() Hacer\nExito(value):\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
     "en": "subroutine Run() as result<integer, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\nswitch directory.open(\"entrada.txt\", \"read\") do\nsuccess(file): write \"unexpected\";\nfailure(problem): write problem.code;\nendSwitch\nreturn success(0);\nendSubroutine\nalgorithm Main\nswitch Run() do\nsuccess(value):\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
@@ -165,9 +171,9 @@
     "terminacion": "completed"
   },
   "anfitrion": {
-    "permissions": [],
-    "requested_permissions": ["archivos_lectura"],
-    "files": {"entrada.txt": "contenido"}
+    "files": {
+      "entrada.txt": "contenido"
+    }
   }
 }
 ```

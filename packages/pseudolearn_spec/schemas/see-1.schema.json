@@ -2441,38 +2441,6 @@
             }
           }
         },
-        "permissions": {
-          "type": "array",
-          "uniqueItems": true,
-          "items": {
-            "enum": [
-              "consola",
-              "argumentos",
-              "archivos_lectura",
-              "archivos_escritura",
-              "reloj",
-              "temporizador",
-              "red",
-              "network"
-            ]
-          }
-        },
-        "requested_permissions": {
-          "type": "array",
-          "uniqueItems": true,
-          "items": {
-            "enum": [
-              "consola",
-              "argumentos",
-              "archivos_lectura",
-              "archivos_escritura",
-              "reloj",
-              "temporizador",
-              "red",
-              "network"
-            ]
-          }
-        },
         "faults": {
           "type": "array",
           "items": {

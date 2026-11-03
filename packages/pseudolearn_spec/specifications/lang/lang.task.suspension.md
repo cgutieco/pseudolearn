@@ -535,13 +535,7 @@ La marca de suspensión es explícita en las unidades declaradas y contextual en
     "clock": [
       100
     ],
-    "grabar_y_reproducir": true,
-    "permissions": [
-      "reloj"
-    ],
-    "requested_permissions": [
-      "reloj"
-    ]
+    "grabar_y_reproducir": true
   },
   "espera": {
     "salida": "100\n",

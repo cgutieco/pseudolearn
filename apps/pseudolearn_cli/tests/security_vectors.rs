@@ -5,7 +5,7 @@ const CANARY: &str = "CANARY-FUERA-DE-LA-RAIZ";
 
 fn program(open: &str, tail: &str) -> String {
     format!(
-        "SubProceso Probe() Como Resultado<Cadena, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir file Como ArchivoCap <- Propagar directory.Abrir({open});\n{tail}FinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n"
+        "SubProceso Probe() Como Resultado<Cadena, ErrorES>\nDefinir root Como DirectorioCap <- Propagar SolicitarDirectorio(\".\");\nDefinir directory Como DirectorioCap <- Propagar root.Subdirectorio(\".\", \"lectura\");\nDefinir file Como ArchivoCap <- Propagar directory.Abrir({open});\n{tail}FinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n"
     )
 }
 
@@ -27,19 +27,15 @@ fn run(arena: &Arena, source: &str, extra: &[&str]) -> std::io::Result<Output> {
     let path = arena.base.join("main.pseudo");
     std::fs::write(&path, source)?;
     Command::new(env!("CARGO_BIN_EXE_pseudo"))
+        .current_dir(&arena.granted)
         .arg("run")
         .arg(&path)
         .args(extra)
         .output()
 }
 
-fn granted_flags(arena: &Arena, grant: &str) -> Vec<String> {
-    vec![
-        "--grant".to_owned(),
-        grant.to_owned(),
-        "--files".to_owned(),
-        arena.granted.to_string_lossy().into_owned(),
-    ]
+fn granted_flags(_arena: &Arena, _grant: &str) -> Vec<String> {
+    Vec::new()
 }
 
 fn blocked(
@@ -165,11 +161,7 @@ fn replay_rejected(
     source: &str,
 ) -> Result<(), Box<dyn std::error::Error>> {
     let tape_text = tape.to_string_lossy().into_owned();
-    let output = run(
-        arena,
-        source,
-        &["--grant", "archivos_lectura", "--replay-tape", &tape_text],
-    )?;
+    let output = run(arena, source, &["--replay-tape", &tape_text])?;
     assert!(!output.status.success(), "{output:?}");
     assert!(output.stdout.is_empty(), "{output:?}");
     Ok(())
@@ -202,5 +194,17 @@ fn truncated_tape_is_rejected() -> Result<(), Box<dyn std::error::Error>> {
         .pop();
     std::fs::write(&tape, serde_json::to_vec(&document)?)?;
     replay_rejected(&arena, &tape, &source)?;
+    finish(arena)
+}
+
+#[test]
+fn nul_in_path_is_rejected() -> Result<(), Box<dyn std::error::Error>> {
+    let arena = arena("nul")?;
+    blocked(
+        &arena,
+        &program("\"a\0.txt\", \"lectura\"", "Retornar file.LeerTexto();\n"),
+        "archivos_lectura",
+        "ruta_invalida",
+    )?;
     finish(arena)
 }

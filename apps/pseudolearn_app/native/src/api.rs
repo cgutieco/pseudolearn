@@ -1,5 +1,5 @@
+use crate::bridge_session::BridgeSession;
 use flutter_rust_bridge::frb;
-use pseudolearn_api::ApiSession;
 use serde_json::{Value, json};
 use std::cell::RefCell;
 use std::collections::BTreeMap;
@@ -37,7 +37,7 @@ pub fn close_session(session_identifier: u64) -> Result<(), String> {
 
 struct SessionRegistry {
     next_identifier: u64,
-    sessions: BTreeMap<u64, ApiSession>,
+    sessions: BTreeMap<u64, BridgeSession>,
 }
 
 impl SessionRegistry {
@@ -54,7 +54,7 @@ impl SessionRegistry {
             .checked_add(1)
             .ok_or_else(|| "session identifiers exhausted".to_owned())?;
         self.next_identifier = identifier;
-        self.sessions.insert(identifier, ApiSession::default());
+        self.sessions.insert(identifier, BridgeSession::default());
         Ok(identifier)
     }
 

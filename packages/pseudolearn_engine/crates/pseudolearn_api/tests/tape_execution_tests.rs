@@ -115,7 +115,6 @@ fn tape_value_round_trip_preserves_content() -> Result<(), String> {
         profile: "es".to_owned(),
         seed: 7,
         statement_limit: Some(50),
-        permissions: vec!["reloj".to_owned()],
     };
     let mut tape = EffectTape::new(identity);
     tape.append(TapeEntry {

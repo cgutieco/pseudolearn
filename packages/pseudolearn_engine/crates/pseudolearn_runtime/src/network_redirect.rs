@@ -12,9 +12,6 @@ pub fn redirect_request(
     let target = resolve_location(&response.final_url, location)?;
     let source = crate::network_url::parse_url(&response.final_url)?;
     let destination = crate::network_url::parse_url(&target).map_err(|_| redirect_denied())?;
-    if source.scheme == "https" && destination.scheme == "http" {
-        return Err(redirect_denied());
-    }
     let mut redirected = request.clone();
     redirected.url = destination.without_fragment;
     if changes_to_get(response.status, request.method) {

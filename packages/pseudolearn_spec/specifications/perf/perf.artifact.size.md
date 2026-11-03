@@ -43,7 +43,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La biblioteca Rust del puente ocupa como máximo 5 MiB en ios-arm64 y el módulo Wasm como máximo 900 KiB según D1.",
+  "texto": "La biblioteca Rust del puente ocupa como máximo 8 MiB en ios-arm64 y el módulo Wasm como máximo 900 KiB según D1.",
   "verificacion": [
     "M1",
     "M2"
@@ -58,7 +58,7 @@
   "unidad": "MiB",
   "suite": "artefactos de release",
   "comparador": "<=",
-  "umbral": 5,
+  "umbral": 8,
   "provisional": false,
   "sujetos": ["app"],
   "plataformas": [

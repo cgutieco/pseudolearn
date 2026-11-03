@@ -7,6 +7,8 @@ export interface DebugLaunch {
   strictness?: "strict" | "flexible";
   seed?: string;
   workspaceRoot?: string;
+  args?: string[];
+  cwd?: string;
 }
 
 export type DebugLaunchResult =

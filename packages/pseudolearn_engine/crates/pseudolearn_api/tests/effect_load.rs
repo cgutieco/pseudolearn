@@ -25,7 +25,7 @@ fn clock_load(count: usize) -> Load {
     let instants: Vec<usize> = (1..=count).collect();
     Load {
         program: clock_program(count),
-        host: json!({"permissions":["reloj"],"clock":instants}),
+        host: json!({"clock":instants}),
         expected_output: format!("{}\n", count.saturating_mul(count.saturating_add(1)) / 2),
         expected_entries: count.saturating_add(2),
     }
@@ -34,7 +34,7 @@ fn clock_load(count: usize) -> Load {
 fn file_load(count: usize, size: usize) -> Load {
     Load {
         program: file_program(count),
-        host: json!({"permissions":["archivos_lectura"],"files":{"a":vec![7u8; size]}}),
+        host: json!({"files":{"a":vec![7u8; size]}}),
         expected_output: format!("{}\n", count.saturating_mul(size)),
         expected_entries: count.saturating_add(3),
     }

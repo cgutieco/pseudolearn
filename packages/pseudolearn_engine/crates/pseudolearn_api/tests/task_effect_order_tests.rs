@@ -4,7 +4,7 @@ use serde_json::{Value, json};
 const THREE_TIMERS: &str = "SubProceso Suspendible Pause(label Como Entero)\nDescartar Aguardar SolicitarTemporizador();\nEscribir label;\nFinSubProceso\nAlgoritmo Main\nTareas\nLanzar Pause(1);\nLanzar Pause(2);\nLanzar Pause(3);\nFinTareas\nFinAlgoritmo\n";
 
 fn host(order: Value) -> Value {
-    json!({"permissions": ["temporizador"], "requested_permissions": ["temporizador"], "orden_entrega": order})
+    json!({  "orden_entrega": order})
 }
 
 fn record(request: Value) -> Value {
@@ -173,7 +173,7 @@ fn a_detached_host_sees_every_concurrent_pending_effect() {
     let started = session.call(
         "start",
         &json!({"analysis": analysis.pointer("/value/resource"), "program": THREE_TIMERS,
-            "host": {"permissions": ["temporizador"], "detached": true}}),
+            "host": { "detached": true}}),
     );
     let resource = started
         .pointer("/value/resource")

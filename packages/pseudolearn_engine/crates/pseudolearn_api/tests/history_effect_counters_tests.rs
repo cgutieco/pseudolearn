@@ -38,11 +38,11 @@ fn run_to_end(program: &str, host: Value) -> Result<Finished, String> {
 }
 
 fn file_host() -> Value {
-    json!({"permissions":["archivos_lectura","archivos_escritura"],"files":{"n":""}})
+    json!({"files":{"n":""}})
 }
 
 fn http_host() -> Value {
-    json!({"permissions":["red"],"requested_permissions":["red"],
+    json!({
         "http":{"POST https://fake.test/write":{"estado":201}}})
 }
 

@@ -95,3 +95,22 @@ fn accepts_architecture_without_isolation_rules() -> Result<(), Box<dyn std::err
     assert!(pseudolearn_checks::isolation::check(&fixture.root, &fixture.rules()?)?.is_empty());
     Ok(())
 }
+
+#[test]
+fn rejects_a_forbidden_feature_only_when_it_is_enabled() -> Result<(), Box<dyn std::error::Error>> {
+    let fixture = fixture::Fixture::create()?;
+    add_native_backend(&fixture)?;
+    depend_on_native_backend(&fixture)?;
+    let manifest = fixture.root.join("native_backend/Cargo.toml");
+    let original = std::fs::read_to_string(&manifest)?;
+    std::fs::write(&manifest, format!("{original}\n[features]\ntest-host = []\n"))?;
+    let mut rules = fixture.rules()?;
+    rules.isolation = vec![isolation_rule("native_backend/test-host")];
+    assert!(pseudolearn_checks::isolation::check(&fixture.root, &rules)?.is_empty());
+    let consumer = fixture.root.join("subject/Cargo.toml");
+    let original = std::fs::read_to_string(&consumer)?;
+    std::fs::write(consumer, original.replace("path = \"../native_backend\"",
+        "path = \"../native_backend\", features = [\"test-host\"]"))?;
+    assert_eq!(pseudolearn_checks::isolation::check(&fixture.root, &rules)?.len(), 1);
+    Ok(())
+}

@@ -1,6 +1,6 @@
 use crate::effect_channel::EffectChannel;
 use pseudolearn_runtime::{
-    EffectSession, EffectTape, ExecutionIdentity, MemoryHostProvider, NetworkLimits,
+    EffectSession, EffectTape, ExecutionHostProvider, ExecutionIdentity, NetworkLimits,
     configure_host_authority, configure_network_limits,
 };
 use serde::{Deserialize, Serialize};
@@ -45,9 +45,9 @@ impl EffectInput {
             .and_then(Value::as_u64);
         let provider = match host.as_ref().filter(|_| !replaying) {
             Some(host) => {
-                MemoryHostProvider::from_value(host).map_err(|error| error.code().to_owned())?
+                ExecutionHostProvider::from_value(host).map_err(|error| error.code().to_owned())?
             }
-            None => MemoryHostProvider::new(),
+            None => ExecutionHostProvider::new(),
         };
         let mut channel = EffectChannel::new(session, provider);
         channel.cancel_on_effect = cancel_on_effect;

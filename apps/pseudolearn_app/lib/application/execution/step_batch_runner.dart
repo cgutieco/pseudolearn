@@ -1,3 +1,5 @@
+import '../../domain/model/execution/effect_settlement.dart';
+import '../../domain/model/execution/execution_polling_policy.dart';
 import '../../domain/model/execution/execution_step.dart';
 import '../../domain/ports/program_execution.dart';
 import 'step_settlement.dart';
@@ -25,7 +27,15 @@ final class StepBatchRunner {
     var previousRevision = fromRevision;
     var stepsInBatch = 0;
     while (!shouldStop()) {
-      final step = execution.step();
+      var step = execution.step();
+      if (step.isAwaitingEffect) {
+        onStep(step);
+        await Future<void>.delayed(ExecutionPollingPolicy.hostPollInterval);
+        if (shouldStop()) return;
+        step = execution.settleEffect(EffectSettlement.resolve);
+        onStep(step);
+        if (step.isAwaitingEffect) continue;
+      }
       onStep(step);
       final settles = settlement.settlesOn(step, previousRevision);
       previousRevision = step.focusRevision;

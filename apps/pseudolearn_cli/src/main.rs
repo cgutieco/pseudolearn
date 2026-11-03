@@ -22,6 +22,7 @@ mod dap_sources;
 mod dap_transport;
 mod dap_variables;
 mod editor_command;
+mod editor_effects;
 mod editor_protocol;
 mod editor_session;
 mod error;
@@ -40,23 +41,12 @@ mod native_linker;
 mod native_run;
 mod native_run_command;
 mod options;
-mod physical_error;
-mod physical_files;
 mod physical_host;
-mod physical_network;
-pub mod physical_network_address;
-mod physical_network_batch;
-mod physical_network_body;
-pub mod physical_network_resolver;
-mod physical_network_send;
-pub mod physical_network_tls;
-mod physical_network_transport;
-mod physical_network_transport_support;
-mod physical_request;
 mod physical_session;
 mod preferences_command;
 mod project_build;
 mod project_command;
+mod project_execution;
 mod project_files;
 mod project_options;
 mod project_report;
@@ -89,24 +79,6 @@ mod lsp_command_tests;
 mod lsp_framing_tests;
 #[cfg(test)]
 mod lsp_workspace_loader_tests;
-#[cfg(test)]
-mod network_address_policy_tests;
-#[cfg(test)]
-mod network_resolver_tests;
-#[cfg(test)]
-mod network_tls_tests;
-#[cfg(test)]
-mod physical_host_tests;
-#[cfg(test)]
-mod physical_network_body_tests;
-#[cfg(test)]
-mod physical_network_send_tests;
-#[cfg(test)]
-mod physical_network_stream_tests;
-#[cfg(test)]
-mod physical_network_tests;
-#[cfg(test)]
-mod physical_network_tls_send_tests;
 
 use check_command::execute_check;
 use error::CliError;

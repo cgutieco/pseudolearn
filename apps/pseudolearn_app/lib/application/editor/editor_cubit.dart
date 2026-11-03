@@ -1,3 +1,5 @@
+import '../../domain/model/analysis/analysis_report.dart';
+import '../../domain/model/execution/execution_configuration.dart';
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import '../../domain/model/analysis/app_diagnostic.dart';
@@ -19,7 +21,6 @@ import '../../domain/ports/program_analyzer.dart';
 import '../../domain/ports/source_editor.dart';
 import '../../domain/ports/text_entry_modality.dart';
 import 'editor_state.dart';
-
 part 'editor_cubit_helpers.dart';
 part 'editor_source_reveal.dart';
 
@@ -34,7 +35,6 @@ final class EditorCubit extends Cubit<EditorState>
   final Clock _clock;
   Timer? _autosaveTimer;
   int _completionRevision = 0;
-
   EditorCubit({
     required DocumentRepository repository,
     required ProgramAnalyzer analyzer,
@@ -52,7 +52,6 @@ final class EditorCubit extends Cubit<EditorState>
        _sourceEditor = sourceEditor,
        _clock = clock,
        super(EditorState.initial(showsKeyBar: textEntry.hasOnscreenTextEntry));
-
   Future<void> loadDocument(
     String id, {
     UiLanguageId languageId = UiLanguageId.spanish,
@@ -75,6 +74,7 @@ final class EditorCubit extends Cubit<EditorState>
     int? cursorUtf16,
     UiLanguageId languageId = UiLanguageId.spanish,
     bool assisted = false,
+    ExecutionConfiguration? executionConfiguration,
   }) {
     final profileId =
         state.document?.profileId ?? SyntaxProfileId.classicSpanish;
@@ -88,26 +88,16 @@ final class EditorCubit extends Cubit<EditorState>
     final code = assist?.sourceCode ?? newCode;
     final changed = assist != null && assist.sourceCode != newCode;
     final revision = _nextCompletionRevision();
-    emit(
-      state.copyWith(
-        sourceCode: code,
-        report: _analyzer.analyze(
-          sourceCode: code,
-          profileId: profileId,
-          languageId: languageId,
-        ),
-        contextualCompletions: _queryCompletions(
-          sourceCode: code,
-          profileId: profileId,
-          cursorUtf16: changed ? assist.caret.start : cursor,
-          revision: revision,
-        ),
-        completionRevision: revision,
-        isDirty: true,
-        pendingEdit: changed ? assist : null,
-        templateActive: assist?.templateActive ?? false,
-      ),
-    );
+    emit(_editedDocumentState(
+      code: code,
+      profileId: profileId,
+      languageId: languageId,
+      configuration: executionConfiguration,
+      assist: assist,
+      changed: changed,
+      cursor: cursor,
+      revision: revision,
+    ));
     _scheduleAutosave();
   }
 
@@ -115,7 +105,6 @@ final class EditorCubit extends Cubit<EditorState>
     _cancelAutosave();
     final doc = state.document;
     if (doc == null || !state.isDirty) return;
-
     emit(state.copyWith(isSaving: true));
     try {
       final updated = doc.copyWith(
@@ -176,6 +165,7 @@ final class EditorCubit extends Cubit<EditorState>
         sourceCode: edit.sourceCode,
         profileId: profileId,
         languageId: languageId,
+        strictness: state.document?.strictness ?? 'flexible',
       ),
       contextualCompletions: _queryCompletions(
         sourceCode: edit.sourceCode,
@@ -212,7 +202,6 @@ final class EditorCubit extends Cubit<EditorState>
   }
 
   int _nextCompletionRevision() => _completionRevision += 1;
-
   List<CompletionItem> _queryCompletions({
     required String sourceCode,
     required SyntaxProfileId profileId,

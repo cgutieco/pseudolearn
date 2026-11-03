@@ -35,6 +35,7 @@ import '../domain/ports/program_exporter.dart';
 import '../domain/ports/syntax_help_source.dart';
 import '../domain/ports/syntax_reference_source.dart';
 import 'engine_services.dart';
+import '../domain/ports/execution_environment.dart';
 import 'program_execution_session.dart';
 
 final class RustEngineServices implements EngineServices {
@@ -88,24 +89,19 @@ final class RustEngineServices implements EngineServices {
   });
 }
 
-RustEngineServices buildRustEngineServices(RustTransport transport) {
+RustEngineServices buildRustEngineServices(
+  RustTransport transport, {
+  ExecutionEnvironment? environment,
+}) {
   final analysis = RustAnalysisApi(transport);
   final analyzer = RustProgramAnalyzer(analysis);
   final vocabulary = RustEditorVocabulary(transport);
   return RustEngineServices(
     analyzer: analyzer,
-    createProgramExecution: () => RustProgramExecution(transport),
-    createObservableExecutionSession: () {
-      final resource = RustExecutionResource();
-      final execution = RustProgramExecution(
-        transport,
-        observationResource: resource,
-      );
-      return ProgramExecutionSession(
-        execution: execution,
-        observer: RustProgramExecutionObserver(transport, resource),
-      );
-    },
+    createProgramExecution: () =>
+        RustProgramExecution(transport, environment: environment),
+    createObservableExecutionSession: () =>
+        _observableSession(transport, environment),
     completionSource: RustTemplateSource(transport),
     contextualCompletionSource: RustCompletionSource(transport),
     sourceEditor: RustSourceEditor(RustEditAssistSource(transport)),
@@ -124,5 +120,20 @@ RustEngineServices buildRustEngineServices(RustTransport transport) {
       ),
       structure: RustStructuralAssertionChecker(transport),
     ),
+  );
+}
+
+ProgramExecutionSession _observableSession(
+  RustTransport transport,
+  ExecutionEnvironment? environment,
+) {
+  final resource = RustExecutionResource();
+  return ProgramExecutionSession(
+    execution: RustProgramExecution(
+      transport,
+      observationResource: resource,
+      environment: environment,
+    ),
+    observer: RustProgramExecutionObserver(transport, resource),
   );
 }

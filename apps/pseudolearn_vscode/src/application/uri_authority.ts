@@ -1,4 +1,3 @@
-import type { FileGrant } from "../contracts/host_capabilities";
 
 function components(value: string): { scheme: string; authority: string; parts: string[] } | undefined {
   const match = /^([a-zA-Z][a-zA-Z0-9+.-]*):(?:\/\/([^/]*))?(\/[^?#]*)$/.exec(value);
@@ -18,8 +17,4 @@ export function containsUri(root: string, candidate: string): boolean {
   return parent !== undefined && child !== undefined && parent.scheme === child.scheme
     && parent.authority === child.authority && child.parts.length >= parent.parts.length
     && parent.parts.every((part, index) => part === child.parts[index]);
-}
-
-export function authorizeFile(grant: FileGrant | undefined, uri: string, write: boolean): boolean {
-  return grant !== undefined && grant.confined && (!write || grant.writable) && containsUri(grant.root, uri);
 }

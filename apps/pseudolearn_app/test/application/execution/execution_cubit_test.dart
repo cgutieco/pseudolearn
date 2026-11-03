@@ -1,3 +1,4 @@
+import 'package:pseudolearn_app/domain/model/execution/replay_rejection.dart';
 import '../../fakes/native_test_engine.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/application/execution/execution_cubit.dart';
@@ -7,7 +8,7 @@ import 'package:pseudolearn_app/application/execution/execution_state.dart';
 import 'package:pseudolearn_app/application/execution/step_batch_runner.dart';
 import 'package:pseudolearn_app/application/execution/step_pace.dart';
 import 'package:pseudolearn_app/domain/model/execution/input_wait.dart';
-import 'package:pseudolearn_app/domain/model/execution/simulated_scenario.dart';
+import 'package:pseudolearn_app/domain/model/execution/execution_configuration.dart';
 import 'package:pseudolearn_app/engine/execution/task_flow_projection.dart';
 import 'package:pseudolearn_app/engine/execution/task_structure_projection.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
@@ -115,6 +116,21 @@ extension on ExecutionCubit {
 }
 
 void main() {
+  test('replay without a tape never starts a live execution', () async {
+    final execution = FakeProgramExecution();
+    final cubit = ExecutionCubit(execution: execution);
+    await cubit.advance(
+      pace: StepPace.toEnd,
+      sourceCode: _immediate,
+      profileId: SyntaxProfileId.classicSpanish,
+      languageId: UiLanguageId.spanish,
+      replay: true,
+    );
+    expect(execution.lastConfiguration, isNull);
+    expect(cubit.state.replayRejection, ReplayRejection.missingTape);
+    await cubit.close();
+  });
+
   group('ExecutionCubit', () {
     late ExecutionCubit cubit;
 
@@ -278,27 +294,24 @@ void main() {
       expect(local.state.status, ExecutionStatus.idle);
     });
 
-    test('keeps the selected scenario across execution start', () async {
+    test('keeps document execution configuration when starting', () async {
       final execution = FakeProgramExecution();
-      final scenarioCubit = ExecutionCubit(execution: execution);
-      addTearDown(scenarioCubit.close);
-      scenarioCubit.applyViewAction(
-        ExecutionViewAction.selectScenario,
-        scenario: SimulatedScenario.preparedHttp,
+      final local = ExecutionCubit(execution: execution);
+      addTearDown(local.close);
+      const configuration = ExecutionConfiguration(
+        documentId: 'doc',
+        strictness: 'strict',
+        arguments: ['á b', ''],
       );
-
-      await scenarioCubit.advance(
+      await local.advance(
         pace: StepPace.nextStatement,
         sourceCode: _counted,
         profileId: SyntaxProfileId.classicSpanish,
         languageId: UiLanguageId.spanish,
+        configuration: configuration,
       );
-
-      expect(execution.lastScenario, SimulatedScenario.preparedHttp);
-      expect(
-        scenarioCubit.state.simulatedScenario,
-        SimulatedScenario.preparedHttp,
-      );
+      expect(execution.lastConfiguration, configuration);
+      expect(local.state.configuration, configuration);
     });
 
     test('a program that does not analyse halts without starting', () async {

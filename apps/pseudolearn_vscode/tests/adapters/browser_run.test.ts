@@ -18,12 +18,12 @@ const running = () => answer({ output: "", termination: { kind: "running" } });
 function fixture(advance: () => WireAnswer | Promise<WireAnswer>) {
   const operations: string[] = [];
   const output: string[] = [];
-  const api = { close: vi.fn(), call: vi.fn(async (operation: string) => {
+  const api = { close: vi.fn(), call: vi.fn(async (operation: string, _argumentsJson?: string) => {
     operations.push(operation);
     if (operation === "create_analysis") return answer({ resource: "5" });
     if (operation === "start") return answer({ resource: "6" });
     if (operation === "advance") return advance();
-    return answer({});
+    return answer(null);
   }) };
   const channel = { append: (text: string) => output.push(text), appendLine: (text: string) => output.push(`${text}\n`) };
   return { api, operations, output, run: new BrowserRun(api, channel as never) };
@@ -43,9 +43,9 @@ describe("Browser run batching and cancellation", () => {
       if (operation === "create_analysis") return answer({ resource: "5" });
       if (operation === "start") return answer({ resource: "6" });
       if (operation === "advance") return cancelled ? answer({ output: "", termination: { kind: "cancelled" } }) : running();
-      return answer({});
+      return answer(null);
     });
-    const finished = subject.run.start({ source: "x" }, { origins: [] });
+    const finished = subject.run.start({ source: "x" }, { });
     await wait(30);
     expect(subject.operations.filter((operation) => operation === "advance").length).toBeGreaterThan(1);
     await subject.run.stop();
@@ -59,7 +59,7 @@ describe("Browser run batching and cancellation", () => {
   it("rejects a second run and an untrusted workspace before touching the engine", async () => {
     const subject = fixture(() => running());
     host.trusted = false;
-    await expect(subject.run.start({ source: "x" }, { origins: [] })).rejects.toThrow("Workspace trust is required");
+    await expect(subject.run.start({ source: "x" }, { })).rejects.toThrow("Workspace trust is required");
     expect(subject.api.call).not.toHaveBeenCalled();
   });
 });
@@ -79,9 +79,9 @@ describe("Browser run stale effect handling", () => {
       if (operation === "advance") return subject.operations.includes("cancel")
         ? answer({ output: "", termination: { kind: "cancelled" } })
         : answer({ output: "", termination: { kind: "awaiting_effect" }, pending_effect: effect });
-      return answer({});
+      return answer(null);
     });
-    const finished = subject.run.start({ source: "x" }, { origins: ["https://granted.example.test"] });
+    const finished = subject.run.start({ source: "x" }, { });
     await wait(20);
     await subject.run.stop();
     release?.();
@@ -101,11 +101,30 @@ describe("Browser run input cancellation", () => {
       if (operation === "create_analysis") return answer({ resource: "5" });
       if (operation === "start") return answer({ resource: "6" });
       if (operation === "advance") return answer({ output: "", termination: { kind: cancelled ? "cancelled" : "awaiting_input" } });
-      return answer({});
+      return answer(null);
     });
-    await subject.run.start({ source: "x" }, { origins: [] });
+    await subject.run.start({ source: "x" }, { });
     const order = subject.operations.filter((operation) => ["cancel", "input"].includes(operation));
-    expect(order).toEqual(["cancel", "input"]);
+    expect(order).toEqual(["cancel"]);
     expect(subject.output.join("")).toContain("PseudoLearn: cancelled");
+  });
+});
+
+describe("Browser input identity", () => {
+  it("returns the exact waiting task and request identities", async () => {
+    host.input.mockResolvedValueOnce("");
+    let supplied = false;
+    let submitted: unknown;
+    const subject = fixture(() => running());
+    subject.api.call.mockImplementation(async (operation: string, argumentsJson?: string) => {
+      if (operation === "create_analysis") return answer({ resource: "5" });
+      if (operation === "start") return answer({ resource: "6" });
+      if (operation === "advance") return answer({ output: "", termination: { kind: supplied ? "completed" : "awaiting_input" },
+        pending_input: { resource_id: "6", task_id: "2", request_id: "3" } });
+      if (operation === "input") { submitted = JSON.parse(argumentsJson!); supplied = true; }
+      return answer(null);
+    });
+    await subject.run.start({ source: "x" }, {});
+    expect(submitted).toEqual({ resource: 6, text: "", resource_id: 6, task_id: 2, request_id: 3 });
   });
 });

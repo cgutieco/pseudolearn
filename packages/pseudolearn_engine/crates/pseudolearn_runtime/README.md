@@ -229,3 +229,16 @@ añade una ruta HTTP de reproducción que revele credenciales.
 `clone_heap_bounded` conserva asas, alias, datos y ordinales en una copia independiente; limita sus celdas al menor presupuesto del origen y el solicitado antes de copiar. Rechaza una captura que ya excede ese máximo. La copia desactiva recolección para que la evaluación temporal no recolecte referencias capturadas y respeta el límite en toda asignación posterior. No cambia opciones ni estado del heap vivo.
 
 Las consultas paginadas usan `dictionary_window`, que recorre únicamente ocupación para omitir entradas y carga claves/valores solo dentro de la ventana solicitada. `allocation_handle` busca el ordinal sin crear una lista intermedia y `object_field_kind` lee un único tipo sin copiar el diseño. Estos accesos conservan el orden de inserción y permiten páginas acotadas de objetos y diccionarios.
+
+## Autoridad y reloj del anfitrión
+
+La capacidad inicial ofrece toda la familia soportada; no se intersectan permisos ni orígenes del
+anfitrión. El runtime valida derechos y límites, y la atenuación voluntaria conserva sus restricciones
+en vivo y reproducción. HTTP/HTTPS admite direcciones públicas, privadas y loopback. Solo una
+restricción de red pedida por el programa puede producir `DestinoDenegado`.
+
+El proveedor de producción está separado y entrega efectos pendientes al consumidor. `memory_host*`
+y la normalización portátil de sus fixtures requieren `test-host`; no son un anfitrión distribuido.
+Las rutas iniciales admiten rutas absolutas, Windows y ..; una raíz derivada impide salir de ella.
+El host real lee el reloj del SO en cada operación y espera tiempo real en hilos independientes.
+La cinta registra esas lecturas y la semilla inicial: reproducir consume la cinta sin consultar al SO.

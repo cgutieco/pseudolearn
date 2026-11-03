@@ -10,8 +10,6 @@ const FORBIDDEN: &[&str] = &[
     "te",
     "trailer",
     "keep-alive",
-    "cookie",
-    "set-cookie",
     "accept-encoding",
 ];
 
@@ -66,5 +64,5 @@ fn valid_value(value: &str) -> bool {
 
 fn forbidden(name: &str) -> bool {
     let lower = name.to_ascii_lowercase();
-    FORBIDDEN.contains(&lower.as_str()) || lower.starts_with("proxy-")
+    FORBIDDEN.contains(&lower.as_str())
 }

@@ -12,7 +12,6 @@ pub struct ExecutionIdentity {
     pub profile: String,
     pub seed: i64,
     pub statement_limit: Option<u64>,
-    pub permissions: Vec<String>,
 }
 
 impl ExecutionIdentity {
@@ -24,7 +23,6 @@ impl ExecutionIdentity {
             && self.profile == other.profile
             && self.seed == other.seed
             && self.statement_limit == other.statement_limit
-            && self.permissions == other.permissions
     }
 }
 

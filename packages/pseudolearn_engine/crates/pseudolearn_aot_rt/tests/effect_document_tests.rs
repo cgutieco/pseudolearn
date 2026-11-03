@@ -3,11 +3,11 @@ use serde_json::{Value, json};
 
 fn identity(seed: i64) -> Value {
     json!({"strictness":"strict","limits":{},"source_digest":"abc","package_graph_digest":"none",
-        "profile":"es","seed":seed,"statement_limit":null,"permissions":["reloj"]})
+        "profile":"es","seed":seed,"statement_limit":null,})
 }
 
 fn live_input() -> Vec<u8> {
-    json!({"host":{"permissions":["reloj"],"clock":[7]},"identity":identity(1),
+    json!({"host":{"clock":[7]},"identity":identity(1),
         "max_tape_bytes":null,"tape":null})
     .to_string()
     .into_bytes()
@@ -61,8 +61,8 @@ fn rejected_output_carries_the_failure_code() -> Result<(), String> {
 }
 
 #[test]
-fn unknown_host_permission_is_rejected() -> Result<(), String> {
-    let input = json!({"host":{"permissions":["nuclear"]},"identity":identity(1),
+fn retired_host_authority_configuration_is_rejected() -> Result<(), String> {
+    let input = json!({"host":{"permissions":[]},"identity":identity(1),
         "max_tape_bytes":null,"tape":null})
     .to_string();
     let parsed = EffectInput::parse(input.as_bytes()).ok_or("input rejected")?;

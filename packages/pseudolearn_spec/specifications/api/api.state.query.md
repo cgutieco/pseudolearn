@@ -406,12 +406,6 @@
   "programa": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir clock Como Reloj <- Propagar SolicitarReloj();\nRetornar clock.Ahora();\nFinSubProceso\nAlgoritmo Main\nDefinir Mutable total Como Entero <- 0;\nSegun Probe() Hacer\nExito(value): total <- value;\nError(problem): total <- 0 - 1;\nFinSegun\nFinAlgoritmo\n",
   "perfil_base": "es",
   "anfitrion": {
-    "permissions": [
-      "reloj"
-    ],
-    "requested_permissions": [
-      "reloj"
-    ],
     "clock": [
       100
     ]

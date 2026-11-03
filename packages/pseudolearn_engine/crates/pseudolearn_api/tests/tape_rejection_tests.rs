@@ -6,11 +6,11 @@ use serde_json::{Value, json};
 const PROGRAM: &str = "SubProceso Probe() Como Resultado<Cadena, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\nDefinir second Como ArchivoCap <- Propagar directory.Abrir(\"b\", \"lectura\");\nDefinir left Como Cadena <- Propagar file.LeerTexto();\nDefinir right Como Cadena <- Propagar second.LeerTexto();\nRetornar Exito(left + right);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n";
 
 fn live_host() -> Value {
-    json!({"permissions":["archivos_lectura"],"files":{"a":"hola","b":"mundo"}})
+    json!({"files":{"a":"hola","b":"mundo"}})
 }
 
 fn identity_host() -> Value {
-    json!({"permissions":["archivos_lectura"]})
+    json!({})
 }
 
 fn recorded_tape() -> Result<Value, String> {

@@ -17,12 +17,13 @@ final class RustAnalysisApi {
     required String source,
     required String profile,
     String? locale,
+    String strictness = rustStrictness,
   }) {
     final created =
         _transport.call('create_analysis', {
               'program': source,
               'profile': profile,
-              'strictness': rustStrictness,
+              'strictness': strictness,
               'locale': ?locale,
             })
             as Map<String, Object?>;

@@ -16,9 +16,7 @@ pub fn execute_run(options: &CliOptions) -> Result<i32, CliError> {
         return crate::native_run_command::execute_native(options, path, request);
     }
     let mut session = ApiSession::default();
-    if options.execution.grants.iter().any(|grant| grant == "red") {
-        crate::physical_session::declare_network_capabilities(&mut session)?;
-    }
+    crate::physical_session::declare_network_capabilities(&mut session)?;
     let analysis = result(session.call("create_analysis", &json!(request)))?;
     let mut start = serde_json::to_value(&request).map_err(operational)?;
     if let Some(fields) = start.as_object_mut() {
@@ -32,7 +30,10 @@ pub fn execute_run(options: &CliOptions) -> Result<i32, CliError> {
         Err(error) if options.execution.replay_tape.is_some() => return Err(error),
         Err(_) => return render_rejected(options, path, &request),
     };
-    let mut host = crate::physical_session::open_host(&options.execution)?;
+    let mut host = crate::physical_session::open_host(&options.execution)?
+        .map(crate::dap_effects::EffectHost::new)
+        .transpose()
+        .map_err(CliError::Operational)?;
     stream_execution(
         (&mut session, &resource, host.as_mut()),
         options,
@@ -44,7 +45,7 @@ fn stream_execution(
     (session, resource, mut host): (
         &mut ApiSession,
         &Value,
-        Option<&mut crate::physical_host::PhysicalHost>,
+        Option<&mut crate::dap_effects::EffectHost>,
     ),
     options: &CliOptions,
     source: (&str, &str),
@@ -67,7 +68,7 @@ fn stream_execution(
                 }
             }
             Some("awaiting_input") => {
-                if !feed_input(session, resource)? {
+                if !feed_input(session, resource, &response)? {
                     return finish(options, source.0, &response);
                 }
             }
@@ -81,7 +82,11 @@ fn stream_execution(
     }
 }
 
-fn feed_input(session: &mut ApiSession, resource: &Value) -> Result<bool, CliError> {
+pub(crate) fn feed_input(
+    session: &mut ApiSession,
+    resource: &Value,
+    response: &Value,
+) -> Result<bool, CliError> {
     let mut input = String::new();
     let count = std::io::stdin()
         .lock()
@@ -90,10 +95,10 @@ fn feed_input(session: &mut ApiSession, resource: &Value) -> Result<bool, CliErr
     if count == 0 {
         return Ok(false);
     }
-    result(session.call(
-        "input",
-        &json!({"resource":resource,"text":input.trim_end_matches(['\r','\n'])}),
-    ))?;
+    let mut request = response.get("pending_input").cloned().unwrap_or(json!({}));
+    request["resource"] = resource.clone();
+    request["text"] = json!(input.trim_end_matches(['\r', '\n']));
+    result(session.call("input", &request))?;
     Ok(true)
 }
 
@@ -214,7 +219,7 @@ pub(crate) fn build_request(
         program: source,
         profile,
         strictness: options.strictness.clone().unwrap_or("strict".to_owned()),
-        seed: options.execution.seed.unwrap_or(42),
+        seed: execution_seed(options, effect_tape.as_ref())?,
         observe: if options.execution.trace {
             "events"
         } else {
@@ -227,4 +232,18 @@ pub(crate) fn build_request(
         host: crate::physical_session::host_document(&options.execution),
         ..ExecuteRequest::default()
     })
+}
+
+fn execution_seed(options: &CliOptions, tape: Option<&Value>) -> Result<i64, CliError> {
+    options
+        .execution
+        .seed
+        .or_else(|| {
+            tape.and_then(|tape| tape.pointer("/identity/seed"))
+                .and_then(Value::as_i64)
+        })
+        .map_or_else(
+            || pseudolearn_host::entropy_seed().map_err(CliError::Operational),
+            Ok,
+        )
 }

@@ -5,8 +5,8 @@ import 'package:pseudolearn_app/domain/model/execution/execution_history_event.d
 import 'package:pseudolearn_app/domain/model/execution/execution_history_window.dart';
 import 'package:pseudolearn_app/domain/model/execution/execution_observation_result.dart';
 import 'package:pseudolearn_app/domain/model/execution/execution_step.dart';
+import 'package:pseudolearn_app/domain/model/execution/effect_settlement.dart';
 import 'package:pseudolearn_app/domain/model/execution/execution_task_context.dart';
-import 'package:pseudolearn_app/domain/model/execution/simulated_capabilities.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
 import 'package:pseudolearn_app/engine/rust/native_rust_transport.dart';
@@ -41,15 +41,12 @@ final class TaskSceneRun {
 
   TaskSceneRun._(this.transport, this.execution, this.observer, this.resource);
 
-  factory TaskSceneRun.open({bool timerPermitted = true}) {
+  factory TaskSceneRun.open() {
     final transport = openNativeTransport();
     addTearDown(transport.close);
     final resource = RustExecutionResource();
     final execution = RustProgramExecution(
       transport,
-      capabilities: SimulatedCapabilities(
-        permissions: timerPermitted ? const {'temporizador'} : const {},
-      ),
       autoResolveEffects: false,
       observationResource: resource,
     );
@@ -81,6 +78,21 @@ final class TaskSceneRun {
     fail('the condition was not reached within $bound steps');
   }
 
+  Future<ExecutionStep> untilSettled(
+    ExecutionStep from,
+    bool Function(ExecutionStep step) reached,
+  ) async {
+    var step = from;
+    for (var count = 0; count < sceneStepBound; count++) {
+      if (reached(step) || step.isTerminal) return step;
+      await Future<void>.delayed(const Duration(milliseconds: 2));
+      step = step.isAwaitingEffect
+          ? execution.settleEffect(EffectSettlement.resolve)
+          : execution.step();
+    }
+    fail('the condition was not reached after settling real effects');
+  }
+
   List<String> get lines =>
       execution.outputLines.map((line) => line.text).toList();
 
@@ -101,7 +113,6 @@ List<ExecutionHistoryEvent> eventsOf(
   int taskId,
 ) => events
     .where(
-      (event) =>
-          event.eventClass == eventClass && event.data['task'] == taskId,
+      (event) => event.eventClass == eventClass && event.data['task'] == taskId,
     )
     .toList();

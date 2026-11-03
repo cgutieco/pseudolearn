@@ -12,7 +12,6 @@ fn identity() -> ExecutionIdentity {
         profile: "es".to_owned(),
         seed: 42,
         statement_limit: None,
-        permissions: Vec::new(),
     }
 }
 

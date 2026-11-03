@@ -12,4 +12,16 @@ final class RustEditorVocabulary {
             'profile': rustProfileName(profileId),
           })
           as Map<String, Object?>;
+  String receiverName(SyntaxProfileId profileId) {
+    try {
+      final words = forProfile(profileId)['keywords'] as List<Object?>;
+      for (final raw in words) {
+        final pair = raw as List<Object?>;
+        if (pair.first == 'thisObject') return pair.last as String;
+      }
+    } on Object {
+      return 'thisObject';
+    }
+    return 'thisObject';
+  }
 }

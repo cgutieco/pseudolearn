@@ -37,8 +37,8 @@ fn body_workload(size: usize) -> Workload {
         json!({"estado": 200, "cuerpo_bytes": body(size)}),
     );
     let host = json!({
-        "permissions": ["red"],
-        "requested_permissions": ["red"],
+
+
         "http": scripts
     });
     Workload {

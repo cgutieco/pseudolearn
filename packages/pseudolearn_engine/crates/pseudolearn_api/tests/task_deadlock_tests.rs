@@ -6,7 +6,7 @@ fn pending_effect_keeps_blocked_channel_receivers_awaiting_the_host() {
     let response = execute_program(&ExecuteRequest {
         program: "SubProceso Suspendible Wait()\nDescartar Aguardar SolicitarTemporizador();\nFinSubProceso\nAlgoritmo Main\nDefinir queue Como Canal<Entero> <- Canal(2);\nTareas\nLanzar Wait();\nSegun Aguardar queue.Recibir() Hacer\nNada: Escribir 0;\nAlgo(value): Escribir value;\nFinSegun\nFinTareas\nFinAlgoritmo\n".to_owned(),
         profile: "es".to_owned(), strictness: "strict".to_owned(),
-        host: Some(json!({"permissions": ["temporizador"], "requested_permissions": ["temporizador"], "detached": true})),
+        host: Some(json!({  "detached": true})),
         ..Default::default()
     });
     assert_eq!(
@@ -42,7 +42,7 @@ fn an_abandoned_effect_does_not_keep_a_later_channel_wait_pending() {
     let response = execute_program(&ExecuteRequest {
         program: "SubProceso Suspendible Wait()\nDescartar Aguardar SolicitarTemporizador();\nFinSubProceso\nSubProceso Suspendible Fail() Como Resultado<Entero, Cadena>\nRetornar Error(\"problem\");\nFinSubProceso\nAlgoritmo Main\nDefinir queue Como Canal<Entero> <- Canal(3);\nTareas failureReport\nLanzar Wait();\nLanzar Fail();\nFinTareas\nDescartar failureReport;\nSegun Aguardar queue.Recibir() Hacer\nNada: Escribir 0;\nAlgo(value): Escribir value;\nFinSegun\nFinAlgoritmo\n".to_owned(),
         profile: "es".to_owned(), strictness: "strict".to_owned(),
-        host: Some(json!({"permissions": ["temporizador"], "requested_permissions": ["temporizador"], "detached": true})),
+        host: Some(json!({  "detached": true})),
         ..Default::default()
     });
     assert_eq!(

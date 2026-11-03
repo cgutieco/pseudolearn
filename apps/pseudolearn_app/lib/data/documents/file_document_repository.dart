@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:path/path.dart' as p;
 import '../../domain/model/documents/document.dart';
@@ -53,6 +54,8 @@ Document? _buildDocumentFromHeader(String headerText, String bodyText) {
     createdAt: DateTime.tryParse(map['created_at'] ?? '') ?? DateTime.now(),
     updatedAt: DateTime.tryParse(map['updated_at'] ?? '') ?? DateTime.now(),
     exerciseId: map['exercise_id'],
+    strictness: map['strictness'] == 'strict' ? 'strict' : 'flexible',
+    executionArguments: _readArguments(map['execution_arguments']),
   );
 }
 
@@ -74,6 +77,8 @@ String serializeDocumentFile(Document doc) {
   buffer.writeln('title: ${doc.title}');
   buffer.writeln('profile: ${doc.profileId.name}');
   buffer.writeln('revision: ${doc.revision}');
+  buffer.writeln('strictness: ${doc.strictness}');
+  buffer.writeln('execution_arguments: ${jsonEncode(doc.executionArguments)}');
   buffer.writeln('created_at: ${doc.createdAt.toIso8601String()}');
   buffer.writeln('updated_at: ${doc.updatedAt.toIso8601String()}');
   if (doc.exerciseId != null) {
@@ -88,10 +93,7 @@ final class FileDocumentRepository implements DocumentRepository {
   final Directory directory;
   final MetadataIndex index;
 
-  const FileDocumentRepository({
-    required this.directory,
-    required this.index,
-  });
+  const FileDocumentRepository({required this.directory, required this.index});
 
   @override
   Future<List<DocumentSummary>> listDocuments() async {
@@ -141,5 +143,17 @@ final class FileDocumentRepository implements DocumentRepository {
   @override
   Future<void> rebuildIndex() async {
     await rebuildMetadataIndex(directory: directory, index: index);
+  }
+}
+
+List<String> _readArguments(String? text) {
+  if (text == null) return const [];
+  try {
+    final value = jsonDecode(text);
+    return value is List && value.every((element) => element is String)
+        ? value.cast<String>()
+        : const [];
+  } on FormatException {
+    return const [];
   }
 }

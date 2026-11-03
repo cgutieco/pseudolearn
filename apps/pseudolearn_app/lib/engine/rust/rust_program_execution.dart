@@ -1,11 +1,12 @@
+import '../../domain/ports/execution_context.dart';
 import '../../domain/model/execution/effect_settlement.dart';
 import '../../domain/model/execution/effect_tape.dart';
 import '../../domain/model/execution/execution_projection.dart';
 import '../../domain/model/execution/execution_step.dart';
 import '../../domain/model/execution/output_line.dart';
 import '../../domain/model/execution/replay_rejection.dart';
-import '../../domain/model/execution/simulated_capabilities.dart';
-import '../../domain/model/execution/simulated_scenario.dart';
+import '../../domain/model/execution/execution_configuration.dart';
+import '../../domain/ports/execution_environment.dart';
 import '../../domain/model/execution/input_wait.dart';
 import '../../domain/model/profiles/syntax_profile_id.dart';
 import '../../domain/model/settings/ui_language_id.dart';
@@ -22,19 +23,19 @@ import 'rust_execution_reproduction.dart';
 import 'rust_execution_resource.dart';
 import 'rust_execution_step_builder.dart';
 import 'rust_focus_tracker.dart';
-import 'rust_replay_host.dart';
 import 'rust_transport.dart';
 import 'rust_wire_models.dart';
 
+part 'rust_program_execution_start.dart';
+
 final class RustProgramExecution
-    implements ProgramExecution, ExecutionReproduction {
+    implements ProgramExecution, ExecutionReproduction, ExecutionContext {
   static const int batchSize = 25;
   final RustAnalysisApi _analysis;
   final RustExecutionApi _execution;
   final RustExecutionEventConsumer _events;
   final _reproduction = RustExecutionReproduction();
   late final RustEffectGate _gate;
-  final SimulatedCapabilities _defaultCapabilities;
   static const _stepBuilder = RustExecutionStepBuilder();
   static const _effectSettlement = RustExecutionEffectSettlement();
   late final _progress = RustExecutionEventProgress(
@@ -51,17 +52,19 @@ final class RustProgramExecution
 
   RustProgramExecution(
     RustTransport transport, {
-    SimulatedCapabilities capabilities = SimulatedCapabilities.none,
+    ExecutionEnvironment? environment,
     bool autoResolveEffects = true,
     RustExecutionResource? observationResource,
   }) : _analysis = RustAnalysisApi(transport),
        _execution = RustExecutionApi(transport, resource: observationResource),
        _events = RustExecutionEventConsumer(transport),
-       _gate = RustEffectGate(transport, capabilities, autoResolveEffects),
-       _defaultCapabilities = capabilities;
+       _gate = RustEffectGate(transport, environment, autoResolveEffects);
 
   @override
   List<OutputLine> get outputLines => _events.outputLines;
+
+  @override
+  String? get workingDirectory => _gate.workingDirectory;
 
   @override
   EffectTape? get recordedTape => _reproduction.recordedTape;
@@ -81,37 +84,16 @@ final class RustProgramExecution
     required String sourceCode,
     required SyntaxProfileId profileId,
     required UiLanguageId languageId,
-    SimulatedScenario? scenario,
+    ExecutionConfiguration configuration = const ExecutionConfiguration(),
     EffectTape? replayTape,
   }) {
-    stop();
-    _reproduction.begin(replaying: replayTape != null);
-    final capabilities = scenario?.capabilities ?? _defaultCapabilities;
-    _gate.reset(replayTape == null ? capabilities : SimulatedCapabilities.none);
-    final opened = RustExecutionOpening(_analysis).open(
+    return _startConfigured(
       sourceCode: sourceCode,
       profileId: profileId,
       languageId: languageId,
+      configuration: configuration,
+      replayTape: replayTape,
     );
-    if (opened == null) return const ExecutionStep.unstarted();
-    _opened = opened;
-    _tracker = RustFocusTracker(opened.view);
-    try {
-      _executionId = _execution.start(
-        opened.handle,
-        replayTape == null
-            ? _gate.hostDocument
-            : replayHostDocument(capabilities),
-        opened.view.revision,
-        replay: replayTape,
-      );
-    } on RustBridgeFailure catch (failure) {
-      if (replayTape == null) rethrow;
-      _reproduction.reject(failure);
-      stop();
-      return const ExecutionStep.unstarted();
-    }
-    return _snapshot();
   }
 
   @override

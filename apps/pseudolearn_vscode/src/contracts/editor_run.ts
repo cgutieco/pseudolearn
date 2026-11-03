@@ -77,6 +77,7 @@ export interface RunPresenterPort {
 
 export interface RunSettings {
   executable: string;
+  args?: readonly string[];
   language: InterfaceLanguage;
   profile: "es" | "en";
   strictness: "strict" | "flexible";

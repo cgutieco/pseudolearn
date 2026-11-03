@@ -72,7 +72,6 @@ fn execute(
     let output = Command::new(env!("CARGO_BIN_EXE_pseudo"))
         .arg("run")
         .arg(&source_path)
-        .args(["--grant", "red", "--local-origin", &server.http_address])
         .output()
         .map_err(|error| error.to_string())?;
     let _removed = std::fs::remove_dir_all(directory);
@@ -119,7 +118,7 @@ fn failure_program(method: &str, url: &str, modifiers: &str) -> String {
     )
 }
 
-fn execute_failure(server: &TestServer, label: &str, source: &str) -> Result<String, String> {
+fn execute_failure(_server: &TestServer, label: &str, source: &str) -> Result<String, String> {
     let directory = std::env::temp_dir().join(format!(
         "pseudo-network-failure-{}-{label}",
         std::process::id()
@@ -130,7 +129,6 @@ fn execute_failure(server: &TestServer, label: &str, source: &str) -> Result<Str
     let output = Command::new(env!("CARGO_BIN_EXE_pseudo"))
         .arg("run")
         .arg(&source_path)
-        .args(["--grant", "red", "--local-origin", &server.http_address])
         .output()
         .map_err(|error| error.to_string())?;
     let _removed = std::fs::remove_dir_all(directory);

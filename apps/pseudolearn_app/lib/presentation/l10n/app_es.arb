@@ -83,7 +83,11 @@
   "executionStepTask": "Avanzar en tarea {taskId}",
   "@executionStepTask": {
     "description": "Opción del menú para avanzar una tarea concreta",
-    "placeholders": {"taskId": {"type": "int"}}
+    "placeholders": {
+      "taskId": {
+        "type": "int"
+      }
+    }
   },
   "actionExport": "Exportar",
   "@actionExport": {
@@ -220,9 +224,15 @@
   "@executionHistoryRange": {
     "description": "Rango visible de eventos y último evento consumido",
     "placeholders": {
-      "first": {"type": "int"},
-      "last": {"type": "int"},
-      "current": {"type": "int"}
+      "first": {
+        "type": "int"
+      },
+      "last": {
+        "type": "int"
+      },
+      "current": {
+        "type": "int"
+      }
     }
   },
   "executionPreviousRange": "Rango de eventos anterior",
@@ -234,49 +244,83 @@
   "executionFlowConnector": "Evento {eventIndex}, tarea {taskId}, causa de espera {cause}, objetivo {targetId}",
   "@executionFlowConnector": {
     "placeholders": {
-      "eventIndex": {"type": "int"},
-      "taskId": {"type": "int"},
-      "cause": {"type": "String"},
-      "targetId": {"type": "int"}
+      "eventIndex": {
+        "type": "int"
+      },
+      "taskId": {
+        "type": "int"
+      },
+      "cause": {
+        "type": "String"
+      },
+      "targetId": {
+        "type": "int"
+      }
     }
   },
   "executionTaskLane": "Tarea {taskId}",
   "@executionTaskLane": {
     "description": "Rótulo de una tarea en el flujo de eventos",
-    "placeholders": {"taskId": {"type": "int"}}
+    "placeholders": {
+      "taskId": {
+        "type": "int"
+      }
+    }
   },
   "executionEventSemantics": "Evento {eventIndex}, tarea {taskId}, {eventClass}, línea {line}",
   "@executionEventSemantics": {
     "description": "Rótulo accesible de un marcador de evento",
     "placeholders": {
-      "eventIndex": {"type": "int"},
-      "taskId": {"type": "int"},
-      "eventClass": {"type": "String"},
-      "line": {"type": "int"}
+      "eventIndex": {
+        "type": "int"
+      },
+      "taskId": {
+        "type": "int"
+      },
+      "eventClass": {
+        "type": "String"
+      },
+      "line": {
+        "type": "int"
+      }
     }
   },
   "executionStructureCreated": "Tarea {taskId} creada por tarea {parentId} en el ámbito {scopeId}",
   "@executionStructureCreated": {
     "description": "Relación de creación entre tareas",
     "placeholders": {
-      "taskId": {"type": "int"},
-      "parentId": {"type": "int"},
-      "scopeId": {"type": "int"}
+      "taskId": {
+        "type": "int"
+      },
+      "parentId": {
+        "type": "int"
+      },
+      "scopeId": {
+        "type": "int"
+      }
     }
   },
   "executionStructureRoot": "Tarea raíz",
   "executionStructureParent": "Creada por la tarea {parentId}",
   "@executionStructureParent": {
-    "placeholders": {"parentId": {"type": "int"}}
+    "placeholders": {
+      "parentId": {
+        "type": "int"
+      }
+    }
   },
   "executionStructureScope": "Ámbito {scopeId}",
   "@executionStructureScope": {
-    "placeholders": {"scopeId": {"type": "int"}}
+    "placeholders": {
+      "scopeId": {
+        "type": "int"
+      }
+    }
   },
   "executionStructureRelationUnavailable": "La tarea padre quedó fuera del historial retenido.",
   "executionStatusCreated": "Creada",
   "executionStatusReady": "Lista",
-  "executionStatusRunning": "En ejecución",
+  "executionStatusRunning": "Ejecutando",
   "executionStatusSuspended": "Suspendida",
   "executionStatusCompleted": "Completada",
   "executionStatusCancellationRequested": "Cancelación solicitada",
@@ -294,26 +338,44 @@
   "executionTaskOutcomeLimitReached": "Resultado: límite alcanzado",
   "executionTaskOutcomeReported": "Resultado informado: {outcome}",
   "@executionTaskOutcomeReported": {
-    "placeholders": {"outcome": {"type": "String"}}
+    "placeholders": {
+      "outcome": {
+        "type": "String"
+      }
+    }
   },
   "executionStructureStatus": "Estado: {status}",
   "@executionStructureStatus": {
     "description": "Estado observado de una tarea",
-    "placeholders": {"status": {"type": "String"}}
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
   },
   "executionJoinLabel": "La tarea {taskId} unió sus hijas en el evento {eventIndex}: {outcome}",
   "@executionJoinLabel": {
     "description": "Marca de unión sobre la tarea padre",
     "placeholders": {
-      "taskId": {"type": "int"},
-      "eventIndex": {"type": "int"},
-      "outcome": {"type": "String"}
+      "taskId": {
+        "type": "int"
+      },
+      "eventIndex": {
+        "type": "int"
+      },
+      "outcome": {
+        "type": "String"
+      }
     }
   },
   "executionHistoryStartsAt": "El historial retenido comienza en el evento {eventIndex}",
   "@executionHistoryStartsAt": {
     "description": "Explica que los eventos de creación anteriores ya vencieron",
-    "placeholders": {"eventIndex": {"type": "int"}}
+    "placeholders": {
+      "eventIndex": {
+        "type": "int"
+      }
+    }
   },
   "executionTaskSelector": "Tarea seleccionada",
   "executionFrameSelector": "Marco seleccionado",
@@ -323,17 +385,27 @@
   "@executionFrameLabel": {
     "description": "Opción del selector de marcos",
     "placeholders": {
-      "frameId": {"type": "int"},
-      "name": {"type": "String"}
+      "frameId": {
+        "type": "int"
+      },
+      "name": {
+        "type": "String"
+      }
     }
   },
   "executionVariablesLabel": "Variables en evento {eventIndex}, tarea {taskId}, marco {frameId}",
   "@executionVariablesLabel": {
     "description": "Título del estado paginado del marco seleccionado",
     "placeholders": {
-      "eventIndex": {"type": "int"},
-      "taskId": {"type": "int"},
-      "frameId": {"type": "int"}
+      "eventIndex": {
+        "type": "int"
+      },
+      "taskId": {
+        "type": "int"
+      },
+      "frameId": {
+        "type": "int"
+      }
     }
   },
   "executionNoVariables": "Este marco no tiene variables.",
@@ -341,7 +413,11 @@
   "executionValueNull": "Nulo",
   "executionValueReference": "Referencia {identity}",
   "@executionValueReference": {
-    "placeholders": {"identity": {"type": "int"}}
+    "placeholders": {
+      "identity": {
+        "type": "int"
+      }
+    }
   },
   "executionLoadMoreValues": "Cargar página siguiente",
   "executionChannelStateUnavailable": "Los eventos de canal muestran operaciones e identidad. La API no expone el contenido de la cola ni los valores de los mensajes.",
@@ -409,7 +485,6 @@
       }
     }
   },
-  "executionStatusRunning": "Ejecutando",
   "@executionStatusRunning": {
     "description": "Estado del pie mientras la ejecución avanza sin pausas"
   },
@@ -501,61 +576,17 @@
   "@inputRequestIdentity": {
     "description": "Identidad de la lectura que está esperando respuesta",
     "placeholders": {
-      "task": { "type": "int" },
-      "request": { "type": "int" }
+      "task": {
+        "type": "int"
+      },
+      "request": {
+        "type": "int"
+      }
     }
   },
   "inputDialogSubmit": "Ingresar",
   "@inputDialogSubmit": {
     "description": "Botón para enviar el dato ingresado"
-  },
-  "simulatedScenarioBadge": "Simulado",
-  "@simulatedScenarioBadge": {
-    "description": "Rótulo permanente que indica que los efectos se ejecutan en un escenario simulado"
-  },
-  "simulatedScenarioHelpAction": "Ayuda sobre escenarios simulados",
-  "@simulatedScenarioHelpAction": {
-    "description": "Nombre accesible del botón de ayuda del panel de escenarios"
-  },
-  "simulatedScenarioHelpTitle": "Escenario simulado",
-  "@simulatedScenarioHelpTitle": {
-    "description": "Título de la ayuda sobre el anfitrión simulado"
-  },
-  "simulatedScenarioHelpBody": "Los efectos usan datos en memoria del escenario elegido. No se consultan archivos, red ni reloj del equipo. HTTP solo devuelve respuestas preparadas; la entrada de Leer se identifica por tarea y solicitud. Detener cancela la ejecución y libera sus recursos simulados.",
-  "@simulatedScenarioHelpBody": {
-    "description": "Alcance y límites del anfitrión simulado"
-  },
-  "simulatedScenarioHelpClose": "Cerrar",
-  "@simulatedScenarioHelpClose": {
-    "description": "Botón que cierra la ayuda del escenario"
-  },
-  "simulatedScenarioNoHost": "Sin anfitrión automático",
-  "@simulatedScenarioNoHost": {
-    "description": "Efectos que esperan una respuesta externa de prueba"
-  },
-  "simulatedScenarioNoPermissions": "Sin permisos",
-  "@simulatedScenarioNoPermissions": {
-    "description": "Escenario que deniega todas las capacidades"
-  },
-  "simulatedScenarioVirtualFiles": "Archivos virtuales",
-  "@simulatedScenarioVirtualFiles": {
-    "description": "Escenario con un archivo de ejemplo en memoria"
-  },
-  "simulatedScenarioPreparedHttp": "HTTP preparado",
-  "@simulatedScenarioPreparedHttp": {
-    "description": "Escenario con una respuesta HTTP local predefinida"
-  },
-  "simulatedScenarioLogicalTime": "Tiempo lógico",
-  "@simulatedScenarioLogicalTime": {
-    "description": "Escenario con reloj y temporizador deterministas"
-  },
-  "simulatedScenarioTimeout": "Timeout simulado",
-  "@simulatedScenarioTimeout": {
-    "description": "Escenario que devuelve tiempo agotado al esperar"
-  },
-  "simulatedScenarioUncertain": "Resultado incierto",
-  "@simulatedScenarioUncertain": {
-    "description": "Escenario que conserva un resultado externo incierto"
   },
   "diagnosticsEmpty": "Sin problemas detectados",
   "@diagnosticsEmpty": {
@@ -987,7 +1018,9 @@
   "@exerciseStripTitle": {
     "description": "Título de la franja de ejercicio en el editor",
     "placeholders": {
-      "title": { "type": "String" }
+      "title": {
+        "type": "String"
+      }
     }
   },
   "exerciseStripCollapse": "Contraer franja de ejercicio",
@@ -1010,8 +1043,12 @@
   "@exercisePassedCount": {
     "description": "Resultado pedagógico de casos superados",
     "placeholders": {
-      "passed": { "type": "int" },
-      "total": { "type": "int" }
+      "passed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
     }
   },
   "exerciseAllCasesPassed": "¡Cumple todos los casos de prueba!",
@@ -1026,21 +1063,27 @@
   "@exerciseHiddenInputs": {
     "description": "Entrada del caso oculto fallido",
     "placeholders": {
-      "inputs": { "type": "String" }
+      "inputs": {
+        "type": "String"
+      }
     }
   },
   "exerciseHiddenExpected": "Salida esperada: {expected}",
   "@exerciseHiddenExpected": {
     "description": "Salida esperada del caso oculto fallido",
     "placeholders": {
-      "expected": { "type": "String" }
+      "expected": {
+        "type": "String"
+      }
     }
   },
   "exerciseHiddenActual": "Salida obtenida: {actual}",
   "@exerciseHiddenActual": {
     "description": "Salida obtenida del caso oculto fallido",
     "placeholders": {
-      "actual": { "type": "String" }
+      "actual": {
+        "type": "String"
+      }
     }
   },
   "exerciseOutcomeParseError": "El programa contiene errores de sintaxis y no puede comprobarse.",
@@ -1067,7 +1110,9 @@
   "@exerciseNotFoundInCatalog": {
     "description": "Aviso cuando el ejercicio vinculado no existe en el catálogo",
     "placeholders": {
-      "id": { "type": "String" }
+      "id": {
+        "type": "String"
+      }
     }
   },
   "exerciseVisibleCasesTitle": "Casos de prueba visibles:",
@@ -1078,21 +1123,27 @@
   "@exerciseCaseInputsLabel": {
     "description": "Entradas de un caso de prueba visible",
     "placeholders": {
-      "inputs": { "type": "String" }
+      "inputs": {
+        "type": "String"
+      }
     }
   },
   "exerciseCaseOutputsLabel": "Salida esperada: {outputs}",
   "@exerciseCaseOutputsLabel": {
     "description": "Salidas de un caso de prueba visible",
     "placeholders": {
-      "outputs": { "type": "String" }
+      "outputs": {
+        "type": "String"
+      }
     }
   },
   "exerciseUnmetAssertion": "Falta la restricción: {requirement}",
   "@exerciseUnmetAssertion": {
     "description": "Mensaje de aserción estructural no cumplida",
     "placeholders": {
-      "requirement": { "type": "String" }
+      "requirement": {
+        "type": "String"
+      }
     }
   },
   "onboardingStepOf": "Paso {current} de {total}",
@@ -2140,6 +2191,21 @@
         "type": "String"
       },
       "codes": {
+        "type": "String"
+      }
+    }
+  },
+  "executionStrictness": "Rigor",
+  "executionStrict": "Estricto",
+  "executionFlexible": "Flexible",
+  "executionArguments": "Argumentos",
+  "executionArgumentsInvalid": "Revisa las comillas y los escapes de los argumentos.",
+  "executionReplay": "Reproducir",
+  "executionReplayRejected": "La cinta no se puede reproducir con esta fuente y configuración.",
+  "executionWorkingDirectory": "Carpeta de trabajo: {path}",
+  "@executionWorkingDirectory": {
+    "placeholders": {
+      "path": {
         "type": "String"
       }
     }

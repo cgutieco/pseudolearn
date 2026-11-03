@@ -16,7 +16,7 @@ fn start() -> Result<Execution, String> {
         &json!({
             "analysis":analysis.pointer("/value/resource"),
             "program":CONCURRENT_HTTP,
-            "host":{"permissions":["red"],"requested_permissions":["red"],"detached":true,
+            "host":{"detached":true,
                 "http":{"GET https://fake.test/one":{"estado":200},
                     "GET https://fake.test/two":{"estado":200}}}
         }),

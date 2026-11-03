@@ -25,22 +25,25 @@ final class FakeAuthGateway implements AuthGateway {
 
   @override
   Future<AccountSession?> restoreSession() async {
-    if (throwOnRestore) throw StateError('Simulated restoreSession error');
+    if (throwOnRestore) throw StateError('Injected restoreSession error');
     return currentSession;
   }
 
   @override
   Future<AuthOutcome> signIn(AuthMethod method, {String? email}) async {
-    if (throwOnSignIn) throw StateError('Simulated signIn error');
-    final outcome = nextOutcome ??
+    if (throwOnSignIn) throw StateError('Injected signIn error');
+    final outcome =
+        nextOutcome ??
         (currentSession != null
             ? Authenticated(currentSession!)
-            : Authenticated(AccountSession(
-                userId: 'user_123',
-                email: email ?? 'test@example.com',
-                displayName: 'Test User',
-                provider: method,
-              )));
+            : Authenticated(
+                AccountSession(
+                  userId: 'user_123',
+                  email: email ?? 'test@example.com',
+                  displayName: 'Test User',
+                  provider: method,
+                ),
+              ));
     if (outcome is Authenticated) {
       currentSession = outcome.session;
       _sessionController.add(currentSession);
@@ -50,7 +53,7 @@ final class FakeAuthGateway implements AuthGateway {
 
   @override
   Future<AuthOutcome?> completeSignInFromLink(Uri link) async {
-    if (throwOnCompleteFromLink) throw StateError('Simulated link error');
+    if (throwOnCompleteFromLink) throw StateError('Injected link error');
     final outcome = nextLinkOutcome;
     if (outcome is Authenticated) {
       currentSession = outcome.session;
@@ -61,7 +64,7 @@ final class FakeAuthGateway implements AuthGateway {
 
   @override
   Future<void> signOut() async {
-    if (throwOnSignOut) throw StateError('Simulated signOut error');
+    if (throwOnSignOut) throw StateError('Injected signOut error');
     currentSession = null;
     _sessionController.add(null);
   }

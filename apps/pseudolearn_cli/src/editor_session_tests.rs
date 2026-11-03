@@ -40,6 +40,7 @@ fn run_limited(
     let mut sink: Vec<u8> = Vec::new();
     let sources = json!([]);
     let running = Running {
+        effects: None,
         session: &mut session,
         resource: &resource,
         sources: &sources,

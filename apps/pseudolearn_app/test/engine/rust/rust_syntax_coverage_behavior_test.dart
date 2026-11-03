@@ -102,6 +102,28 @@ List<DiagramNode> _nodes(DiagramProgram program) =>
     program.sceneFor(program.defaultUnit?.id).nodes;
 
 void main() {
+  test('function literal bodies are selectable units in both diagrams', () {
+    for (final builder in [_flowchart, _structogram]) {
+      final program = builder(_closurePropagation);
+      final literal = program.units.singleWhere(
+        (unit) => unit.name.startsWith('λ@'),
+      );
+      final scene = program.sceneFor(literal.id);
+      expect(
+        scene.nodes.any((node) => node.lines.join().contains('First()')),
+        isTrue,
+      );
+      expect(
+        scene.nodes.any((node) => node.lines.join().contains('some(value)')),
+        isTrue,
+      );
+      expect(
+        program.units.map((unit) => unit.id).toSet().length,
+        program.units.length,
+      );
+    }
+  });
+
   group('iteration is drawn as a loop, never as a generic process', () {
     test('the flowchart has a preparation header and a body step', () {
       final nodes = _nodes(_flowchart(_iteration));
@@ -135,37 +157,44 @@ void main() {
 
       expect(flowchart.isUnsupported, isFalse);
       expect(
-        _nodes(flowchart).where(
-          (node) => node.shape == DiagramShape.preparation,
-        ),
+        _nodes(
+          flowchart,
+        ).where((node) => node.shape == DiagramShape.preparation),
         hasLength(1),
       );
     });
   });
 
   group('forms without a faithful drawing are reported, not approximated', () {
-    test('a propagation inside a control header makes both diagrams unsupported', () {
-      final flowchart = _flowchart(_headerPropagation);
-      final structogram = _structogram(_headerPropagation);
+    test(
+      'a propagation inside a control header makes both diagrams unsupported',
+      () {
+        final flowchart = _flowchart(_headerPropagation);
+        final structogram = _structogram(_headerPropagation);
 
-      expect(flowchart.isUnsupported, isTrue);
-      expect(flowchart.unsupportedKinds, ['propagation']);
-      expect(flowchart.isEmpty, isTrue);
-      expect(structogram.unsupportedKinds, ['propagation']);
-    });
+        expect(flowchart.isUnsupported, isTrue);
+        expect(flowchart.unsupportedKinds, ['propagation']);
+        expect(flowchart.isEmpty, isTrue);
+        expect(structogram.unsupportedKinds, ['propagation']);
+      },
+    );
 
-    test('a propagation inside a function literal is not an exit of the statement', () {
-      final flowchart = _flowchart(_closurePropagation);
-      final unit = flowchart.units.singleWhere((unit) => unit.name == 'make');
+    test(
+      'a propagation inside a function literal is not an exit of the statement',
+      () {
+        final flowchart = _flowchart(_closurePropagation);
+        final unit = flowchart.units.singleWhere((unit) => unit.name == 'make');
 
-      expect(flowchart.isUnsupported, isFalse);
-      expect(
-        flowchart.sceneFor(unit.id).edges.where(
-          (edge) => edge.kind == DiagramEdgeKind.propagationExit,
-        ),
-        isEmpty,
-      );
-    });
+        expect(flowchart.isUnsupported, isFalse);
+        expect(
+          flowchart
+              .sceneFor(unit.id)
+              .edges
+              .where((edge) => edge.kind == DiagramEdgeKind.propagationExit),
+          isEmpty,
+        );
+      },
+    );
 
     final drawn = {
       'break_statement': _break,

@@ -147,8 +147,5 @@ fn check_fault(fault: &Value, errors: &mut Vec<String>) {
 }
 
 fn valid_path(path: &str) -> bool {
-    !path.is_empty()
-        && !path.starts_with('/')
-        && !path.contains(['\\', ':', '\0'])
-        && path.split('/').all(|part| !["", ".", ".."].contains(&part))
+    !path.is_empty() && !path.contains('\0')
 }

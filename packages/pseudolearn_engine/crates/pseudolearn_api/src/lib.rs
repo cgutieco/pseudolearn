@@ -58,6 +58,7 @@ mod reference_vocabulary;
 mod stepping;
 pub use execution::{PreparedProgram, execute_prepared, execute_program, prepare_program};
 pub use execution_model::{ExecuteRequest, ExecuteResponse, ExecutionLimits};
+#[cfg(feature = "test-host")]
 pub use fake_host::FakeHostProvider;
 
 mod debug_model;
@@ -68,6 +69,7 @@ mod execution_capture;
 mod execution_prepare;
 mod execution_resource;
 mod execution_sources;
+#[cfg(feature = "test-host")]
 pub mod fake_host;
 mod locale_operations;
 mod lsp_operations;

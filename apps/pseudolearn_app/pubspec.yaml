@@ -97,7 +97,7 @@ msix_config:
   logo_path: windows/runner/resources/app_icon.png
   store: true
   sign_msix: false
-  capabilities: internetClient
+  capabilities: internetClient,privateNetworkClientServer
   protocol_activation: pseudolearn
   file_extension: .pseudo
   languages: es-ES, en-US

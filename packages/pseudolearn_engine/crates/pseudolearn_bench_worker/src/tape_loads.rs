@@ -39,8 +39,8 @@ fn clock_load(count: u32) -> EffectLoad {
             "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir clock Como Reloj <- Propagar SolicitarReloj();\nDefinir Mutable i Como Entero <- 0;\nMientras i < {count} Hacer\nDescartar clock.Ahora();\ni <- i + 1;\nFinMientras\nRetornar Exito(i);\nFinSubProceso\nAlgoritmo P\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n"
         ),
         host: json!({
-            "permissions": ["reloj"],
-            "requested_permissions": ["reloj"],
+
+
             "clock": instants,
             "max_tape_bytes": TAPE_CEILING,
         }),
@@ -55,8 +55,8 @@ fn file_load(count: u32) -> EffectLoad {
             "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\nDefinir Mutable i Como Entero <- 0;\nMientras i < {count} Hacer\nDescartar file.LeerTexto();\ni <- i + 1;\nFinMientras\nRetornar Exito(i);\nFinSubProceso\nAlgoritmo P\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n"
         ),
         host: json!({
-            "permissions": ["archivos_lectura"],
-            "requested_permissions": ["archivos_lectura"],
+
+
             "files": {"a": "0123456789012345678901234567890123456789012345678901234567890123"},
             "max_tape_bytes": TAPE_CEILING,
         }),

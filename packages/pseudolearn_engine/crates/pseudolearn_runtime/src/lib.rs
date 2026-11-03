@@ -115,14 +115,14 @@ mod host_validation;
 mod http_values;
 #[cfg(test)]
 mod http_values_tests;
-pub use effect_authority::effective_permissions;
+pub use effect_authority::capability_kind;
 pub use host_effect::{
     HostCapability, HostEffectProvider, HostEffectRequest, HostFailure, HostReply, HostValue,
     HttpMethod, HttpRequestValue, HttpResponseValue, JsonFailure, JsonResultValue,
 };
 pub use host_session::{
-    begin_host_effect, configure_host_authority, configure_network_limits, perform_host_effect,
-    resolve_host_effect,
+    begin_host_effect, configure_host_authority, configure_network_limits, pending_host_rejection,
+    perform_host_effect, resolve_host_effect, validate_host_request,
 };
 pub use network_limits::{
     DEFAULT_HTTP_BODY_BYTES, DEFAULT_HTTP_HEADER_BYTES, DEFAULT_HTTP_HEADERS,
@@ -130,8 +130,11 @@ pub use network_limits::{
     DEFAULT_PENDING_NETWORK, NetworkLimits, pending_limit_exceeded,
 };
 
+#[cfg(feature = "test-host")]
 mod memory_host;
+#[cfg(feature = "test-host")]
 mod memory_host_config;
+#[cfg(feature = "test-host")]
 mod memory_host_files;
 mod network_headers;
 mod network_limits;
@@ -145,7 +148,14 @@ mod network_redirect;
 mod network_redirect_tests;
 pub use network_redirect::redirect_request;
 mod network_url;
+#[cfg(not(feature = "test-host"))]
+pub use detached_host::DetachedHostProvider as ExecutionHostProvider;
+#[cfg(feature = "test-host")]
 pub use memory_host::MemoryHostProvider;
+#[cfg(feature = "test-host")]
+pub use memory_host::MemoryHostProvider as ExecutionHostProvider;
+#[cfg(not(feature = "test-host"))]
+mod detached_host;
 
 mod host_words;
 mod local_effect;
@@ -217,3 +227,6 @@ pub mod continuation;
 pub mod channel_references;
 
 pub mod task_storage;
+
+#[cfg(feature = "test-host")]
+mod host_paths;

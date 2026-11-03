@@ -114,3 +114,7 @@ Los trabajadores admiten `mode: "smoke"` con una única iteración funcional. El
 La suite AWFY-core selecciona diez algoritmos compatibles con el lenguaje vigente. Sus programas y
 controles se consumen desde la exportación del corpus. Los estimadores y presupuestos proceden de
 `PERF.PROTOCOL`; la variabilidad de hardware y la estacionariedad no demostrada se declaran en cada captura.
+
+El presupuesto vigente de biblioteca ios-arm64 es 8 MiB, ampliado con autorización para compartir
+el anfitrión físico Rust entre consumidores. El Wasm conserva 900 KiB; la captura sigue comprobando
+símbolos separados, arquitectura y SHA-256 antes de aprobar el tamaño.

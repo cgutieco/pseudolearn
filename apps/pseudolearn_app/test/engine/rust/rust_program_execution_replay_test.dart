@@ -2,7 +2,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/domain/model/execution/effect_tape.dart';
 import 'package:pseudolearn_app/domain/model/execution/execution_step.dart';
 import 'package:pseudolearn_app/domain/model/execution/replay_rejection.dart';
-import 'package:pseudolearn_app/domain/model/execution/simulated_capabilities.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
 import 'package:pseudolearn_app/engine/rust/rust_program_execution.dart';
@@ -17,11 +16,6 @@ const Map<String, Object?> tapeDocument = {
     {'seq': 1, 'kind': 'request_clock'},
   ],
 };
-
-const SimulatedCapabilities clock = SimulatedCapabilities(
-  permissions: {'reloj'},
-  clockStartNanos: 100,
-);
 
 List<Map<String, Object?>> programEvents() => [
   event('statement_entered', node: 'n1'),
@@ -48,15 +42,8 @@ List<Map<String, Object?>> partition(int size, {bool withTape = true}) {
   return batches;
 }
 
-RustProgramExecution begin(
-  FakeRustTransport transport, {
-  EffectTape? tape,
-  SimulatedCapabilities capabilities = clock,
-}) {
-  final execution = RustProgramExecution(
-    transport,
-    capabilities: capabilities,
-  );
+RustProgramExecution begin(FakeRustTransport transport, {EffectTape? tape}) {
+  final execution = RustProgramExecution(transport);
   execution.startExecution(
     sourceCode: 'Algoritmo P\nEscribir 1;\nFinAlgoritmo\n',
     profileId: SyntaxProfileId.classicSpanish,
@@ -106,7 +93,7 @@ void main() {
       );
       expect(started.single['execution_mode'], 'replay_from_tape');
       expect(started.single['effect_tape'], tapeDocument);
-      expect(started.single['host'], containsPair('permissions', ['reloj']));
+      expect(started.single.containsKey('host'), isFalse);
     });
 
     test('live runs never send a mode or a tape', () {
@@ -121,10 +108,7 @@ void main() {
         final live = begin(recording(partition(5), []));
         drive(live);
         final transport = recording(partition(size), []);
-        final replay = begin(
-          transport,
-          tape: live.recordedTape,
-        );
+        final replay = begin(transport, tape: live.recordedTape);
         drive(replay);
         expect(replay.projection.termination, 'completed');
         expect(replay.projection.firstDivergence(live.projection), isNull);
@@ -152,7 +136,10 @@ void main() {
     test('pausing between steps does not change the projection', () {
       final live = begin(recording(partition(5), []));
       drive(live);
-      final replay = begin(recording(partition(2), []), tape: live.recordedTape);
+      final replay = begin(
+        recording(partition(2), []),
+        tape: live.recordedTape,
+      );
       replay.step();
       replay.outputLines;
       replay.projection;
@@ -209,9 +196,10 @@ void main() {
         extra: {
           'advance': (_) {
             if (calls++ == 0) {
-              return batch([event('statement_entered', node: 'n1')], {
-                'kind': 'running',
-              });
+              return batch(
+                [event('statement_entered', node: 'n1')],
+                {'kind': 'running'},
+              );
             }
             throw const RustBridgeFailure(
               family: 'usage',
@@ -236,10 +224,8 @@ void main() {
       final transport = transportWith(
         batches: partition(5),
         extra: {
-          'advance': (_) => throw const RustBridgeFailure(
-            family: 'internal',
-            detail: 'boom',
-          ),
+          'advance': (_) =>
+              throw const RustBridgeFailure(family: 'internal', detail: 'boom'),
         },
       );
       final live = begin(transport);
@@ -266,7 +252,6 @@ void main() {
       begin(
         recording(partition(5), started),
         tape: EffectTape.fromDocument(tapeDocument),
-        capabilities: SimulatedCapabilities.none,
       );
       expect(started.single.containsKey('host'), isFalse);
     });

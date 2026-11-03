@@ -127,3 +127,8 @@ con serde_derive. Estas selecciones no alteran el comportamiento del lenguaje Ps
 
 La auditoría de licencias excluye solo crates privados con publish=false; sus dependencias externas
 se auditan normalmente. Los avisos de seguridad no se ignoran.
+
+La lista `isolation.forbidden` también admite `paquete/característica`. El árbol se lee con
+`--format "{p}|{f}"` y aristas normales y de build: una característica prohibida solo falla cuando
+Cargo la activa en el grafo del producto. El caso negativo activa `test-host` transitivamente; el
+control con la característica declarada pero apagada pasa. No se incorpora el grafo de desarrollo.

@@ -2,7 +2,7 @@ import * as vscode from "vscode";
 import { BrowserRun } from "../../src/adapters/browser_run";
 import { BrowserWorkerClient } from "../../src/adapters/browser_worker_client";
 import { BrowserWorkspace } from "../../src/adapters/browser_workspace";
-import type { BrowserGrants } from "../../src/contracts/host_capabilities";
+import type { BrowserHostContext } from "../../src/contracts/host_capabilities";
 
 export type Answer = string | undefined;
 
@@ -37,4 +37,4 @@ export async function projectRequest(stack: Stack, root: string, profile: "es" |
   return { project: snapshot.project, entry: "app/main", ...optionsFor(profile) };
 }
 
-export type { BrowserGrants };
+export type { BrowserHostContext };

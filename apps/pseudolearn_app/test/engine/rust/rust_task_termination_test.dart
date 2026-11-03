@@ -2,7 +2,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/domain/model/execution/effect_settlement.dart';
 import 'package:pseudolearn_app/domain/model/execution/execution_task_context.dart';
 import 'package:pseudolearn_app/domain/model/execution/execution_step.dart';
-import 'package:pseudolearn_app/domain/model/execution/simulated_capabilities.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
 import 'package:pseudolearn_app/domain/ports/program_execution.dart';
@@ -111,7 +110,6 @@ void main() {
   test('marks host cancellation separately and skips task cleanups', () {
     final execution = RustProgramExecution(
       testTransport,
-      capabilities: const SimulatedCapabilities(permissions: {'temporizador'}),
       autoResolveEffects: false,
     );
     var step = _start(execution, _nestedEffectCancellationProgram);

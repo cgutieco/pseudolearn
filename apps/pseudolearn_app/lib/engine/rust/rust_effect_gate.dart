@@ -1,65 +1,82 @@
 import '../../domain/model/execution/effect_wait.dart';
-import '../../domain/model/execution/simulated_capabilities.dart';
+import '../../domain/model/execution/execution_configuration.dart';
+import '../../domain/ports/execution_environment.dart';
 import 'rust_execution_api.dart';
-import 'rust_simulated_host.dart';
 import 'rust_transport.dart';
 import 'rust_wire_models.dart';
 
 final class RustEffectGate {
   static const int maxResolutionsPerDrain = 16;
-
+  final RustTransport _transport;
   final RustExecutionApi _execution;
-  RustSimulatedHost? _host;
+  final ExecutionEnvironment? _environment;
   final bool _autoResolve;
+  ExecutionConfiguration _configuration = const ExecutionConfiguration();
+  int? _resource;
+  bool _replaying = false;
 
-  RustEffectGate(
-    RustTransport transport,
-    SimulatedCapabilities capabilities,
-    this._autoResolve,
-  ) : _execution = RustExecutionApi(transport),
-      _host = capabilities.hasHost ? RustSimulatedHost(capabilities) : null;
+  RustEffectGate(this._transport, this._environment, this._autoResolve)
+    : _execution = RustExecutionApi(_transport);
 
-  void reset(SimulatedCapabilities capabilities) {
+  void reset(ExecutionConfiguration configuration, {required bool replaying}) {
     close();
-    _host = capabilities.hasHost ? RustSimulatedHost(capabilities) : null;
+    _configuration = configuration;
+    _replaying = replaying;
   }
 
-  void close() => _host?.closeAll();
+  void close() {
+    final resource = _resource;
+    _resource = null;
+    if (resource != null) _transport.call('host_close', {'resource': resource});
+  }
 
-  Map<String, Object?>? get hostDocument => _host?.hostDocument();
-
-  bool get canResolve => _host != null;
+  Map<String, Object?> get hostDocument => const {'detached': true};
+  bool get canResolve => !_replaying;
+  String? get workingDirectory =>
+      _environment?.directoryFor(_configuration.documentId);
 
   RustBatch drain(int execution, int batchSize, List<RustEvent> collected) {
     var batch = _execution.advance(execution, batchSize);
     collected.addAll(batch.events);
     var resolutions = 0;
     while (_autoResolve &&
-        _host != null &&
+        canResolve &&
         batch.termination == RustTerminationKind.awaitingEffect) {
-      if (resolutions == maxResolutionsPerDrain) return batch.yielded();
+      if (resolutions == maxResolutionsPerDrain || !answer(execution, batch)) {
+        return batch;
+      }
       resolutions++;
-      answer(execution, batch);
       batch = _execution.advance(execution, batchSize);
       collected.addAll(batch.events);
     }
     return batch;
   }
 
-  void answer(int execution, RustBatch batch) {
-    final request = batch.pendingRequest;
-    final pending = batch.pendingEffect;
-    final host = _host;
-    if (request == null || pending == null || host == null) return;
-    final order = RustSimulatedHost.deliveryOrder(batch.pendingEffects);
-    if (order.isNotEmpty && order.first.effectSeq != pending.effectSeq) {
-      throw StateError('Effect delivery is not first-in first-out');
+  bool answer(int execution, RustBatch batch) {
+    if (_replaying) return false;
+    if (_resource == null) {
+      final directory = _environment?.directoryFor(_configuration.documentId);
+      _transport.call('host_open', {
+        'resource': execution,
+        'directory': ?directory,
+        'args': _configuration.arguments,
+      });
+      _resource = execution;
     }
-    _execution.provideEffectResult(
-      execution,
-      pending.effectSeq,
-      host.reply(request),
-    );
+    for (final effect in batch.pendingRequests) {
+      _transport.call('host_submit', {'resource': execution, 'effect': effect});
+    }
+    final replies =
+        _transport.call('host_poll', {'resource': execution}) as List<Object?>;
+    for (final raw in replies) {
+      final reply = raw as Map<String, Object?>;
+      _execution.provideEffectResult(
+        execution,
+        reply['effect_seq'] as int,
+        reply['result'],
+      );
+    }
+    return replies.isNotEmpty;
   }
 
   static EffectWait? waitOf(PendingEffectRequest? request) => request == null

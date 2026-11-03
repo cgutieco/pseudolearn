@@ -54,54 +54,6 @@ pub struct ManifestDependency {
 }
 
 #[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
-pub enum PermissionName {
-    Console,
-    Arguments,
-    FilesRead,
-    FilesWrite,
-    Clock,
-    Timer,
-    Network,
-}
-
-impl PermissionName {
-    pub const ALL: [Self; 7] = [
-        Self::Console,
-        Self::Arguments,
-        Self::FilesRead,
-        Self::FilesWrite,
-        Self::Clock,
-        Self::Timer,
-        Self::Network,
-    ];
-
-    pub fn parse(text: &str) -> Option<Self> {
-        match text {
-            "consola" | "console" => Some(Self::Console),
-            "argumentos" | "arguments" => Some(Self::Arguments),
-            "archivos_lectura" | "files_read" => Some(Self::FilesRead),
-            "archivos_escritura" | "files_write" => Some(Self::FilesWrite),
-            "reloj" | "clock" => Some(Self::Clock),
-            "temporizador" | "timer" => Some(Self::Timer),
-            "red" | "network" => Some(Self::Network),
-            _ => None,
-        }
-    }
-
-    pub fn as_str(self) -> &'static str {
-        match self {
-            Self::Console => "consola",
-            Self::Arguments => "argumentos",
-            Self::FilesRead => "archivos_lectura",
-            Self::FilesWrite => "archivos_escritura",
-            Self::Clock => "reloj",
-            Self::Timer => "temporizador",
-            Self::Network => "red",
-        }
-    }
-}
-
-#[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
 pub enum LimitName {
     Cells,
     Depth,
@@ -137,5 +89,4 @@ pub struct Manifest {
     pub profiles: Vec<ProfileException>,
     pub dependencies: Vec<ManifestDependency>,
     pub limits: BTreeMap<LimitName, LimitRequest>,
-    pub permissions: Vec<Field<PermissionName>>,
 }

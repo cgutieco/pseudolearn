@@ -5,6 +5,7 @@ edition = "2024"
 publish = false
 
 [features]
+test-host = ["pseudolearn_runtime/test-host"]
 telemetry = ["pseudolearn_runtime/telemetry"]
 
 [dependencies]

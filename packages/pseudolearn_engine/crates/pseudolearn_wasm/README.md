@@ -144,3 +144,8 @@ falso y sin sockets.
 ## 8. Fuentes consultadas y genealogía conceptual
 
 `wasm-bindgen` aporta la generación de enlaces JavaScript desde Rust. Se fija la misma versión para el crate y el CLI para mantener compatible el formato de enlace. WebAssembly define la memoria lineal y el reemplazo del `ArrayBuffer` al crecer; el contrato de este paquete evita compartir vistas entre llamadas.
+
+Fetch usa autoridad inicial plena, sin allowedOrigins. El navegador valida TLS, aplica CORS y
+contenido mixto y sigue redirecciones. Cookie y las cabeceras reservadas por Fetch se rechazan antes
+de enviar, como error de petición de plataforma. Se omiten credenciales ambientales y caché; no hay
+proxy ni respuesta alternativa. El bundle Wasm mantiene excluidos transporte nativo y test-host.

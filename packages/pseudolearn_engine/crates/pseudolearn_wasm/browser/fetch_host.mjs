@@ -22,7 +22,6 @@ export async function performFetch(effect, options = {}) {
   if (options.signal?.aborted) return failure('interrumpido');
   const request = requestValue(effect);
   if (request === null) return failure('peticion_invalida');
-  const allowedOrigins = new Set(options.allowedOrigins ?? []);
   let parsedUrl;
   try {
     parsedUrl = new URL(request.url);
@@ -34,7 +33,8 @@ export async function performFetch(effect, options = {}) {
       || parsedUrl.password !== '') {
     return failure('url_invalida');
   }
-  if (!allowedOrigins.has(parsedUrl.origin)) return failure('destino_denegado');
+  if (request.headers.some(([name]) => ['cookie', 'set-cookie', 'origin', 'referer', 'user-agent'].includes(name.toLowerCase())
+      || name.toLowerCase().startsWith('sec-') || name.toLowerCase().startsWith('proxy-'))) return failure('peticion_invalida');
   const fetchImplementation = options.fetchImplementation ?? globalThis.fetch;
   if (typeof fetchImplementation !== 'function') return failure('conexion_fallida');
   const timeoutNanos = request.effective_timeout_nanos ?? request.timeout_nanos ?? 30_000_000_000;
@@ -54,7 +54,7 @@ export async function performFetch(effect, options = {}) {
       body: request.body === null ? undefined : Uint8Array.from(request.body),
       credentials: 'omit',
       cache: 'no-store',
-      redirect: 'manual',
+      redirect: 'follow',
       signal: controller.signal,
     });
     if (response.type === 'opaqueredirect' || response.status === 0
@@ -63,7 +63,7 @@ export async function performFetch(effect, options = {}) {
     }
     const headers = Array.from(response.headers.entries());
     const headerBytes = headers.reduce(
-      (total, [name, value]) => total + utf8Length(name) + utf8Length(value),
+      (total, [name, value]) => total + utf8Length(name) + utf8Length(value) + 4,
       0,
     );
     if (headers.length > (request.headers_limit ?? 64)

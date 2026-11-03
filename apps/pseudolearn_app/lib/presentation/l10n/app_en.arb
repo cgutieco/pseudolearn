@@ -83,7 +83,11 @@
   "executionStepTask": "Advance task {taskId}",
   "@executionStepTask": {
     "description": "Menu option to advance one selected task",
-    "placeholders": {"taskId": {"type": "int"}}
+    "placeholders": {
+      "taskId": {
+        "type": "int"
+      }
+    }
   },
   "actionExport": "Export",
   "@actionExport": {
@@ -220,9 +224,15 @@
   "@executionHistoryRange": {
     "description": "Visible event range and the last consumed event",
     "placeholders": {
-      "first": {"type": "int"},
-      "last": {"type": "int"},
-      "current": {"type": "int"}
+      "first": {
+        "type": "int"
+      },
+      "last": {
+        "type": "int"
+      },
+      "current": {
+        "type": "int"
+      }
     }
   },
   "executionPreviousRange": "Previous event range",
@@ -234,44 +244,78 @@
   "executionFlowConnector": "Event {eventIndex}, task {taskId}, wait cause {cause}, target {targetId}",
   "@executionFlowConnector": {
     "placeholders": {
-      "eventIndex": {"type": "int"},
-      "taskId": {"type": "int"},
-      "cause": {"type": "String"},
-      "targetId": {"type": "int"}
+      "eventIndex": {
+        "type": "int"
+      },
+      "taskId": {
+        "type": "int"
+      },
+      "cause": {
+        "type": "String"
+      },
+      "targetId": {
+        "type": "int"
+      }
     }
   },
   "executionTaskLane": "Task {taskId}",
   "@executionTaskLane": {
     "description": "Label for one task lane in the event flow",
-    "placeholders": {"taskId": {"type": "int"}}
+    "placeholders": {
+      "taskId": {
+        "type": "int"
+      }
+    }
   },
   "executionEventSemantics": "Event {eventIndex}, task {taskId}, {eventClass}, line {line}",
   "@executionEventSemantics": {
     "description": "Accessible label for an event marker",
     "placeholders": {
-      "eventIndex": {"type": "int"},
-      "taskId": {"type": "int"},
-      "eventClass": {"type": "String"},
-      "line": {"type": "int"}
+      "eventIndex": {
+        "type": "int"
+      },
+      "taskId": {
+        "type": "int"
+      },
+      "eventClass": {
+        "type": "String"
+      },
+      "line": {
+        "type": "int"
+      }
     }
   },
   "executionStructureCreated": "Task {taskId} created by task {parentId} in scope {scopeId}",
   "@executionStructureCreated": {
     "description": "Creation relationship between tasks",
     "placeholders": {
-      "taskId": {"type": "int"},
-      "parentId": {"type": "int"},
-      "scopeId": {"type": "int"}
+      "taskId": {
+        "type": "int"
+      },
+      "parentId": {
+        "type": "int"
+      },
+      "scopeId": {
+        "type": "int"
+      }
     }
   },
   "executionStructureRoot": "Root task",
   "executionStructureParent": "Created by task {parentId}",
   "@executionStructureParent": {
-    "placeholders": {"parentId": {"type": "int"}}
+    "placeholders": {
+      "parentId": {
+        "type": "int"
+      }
+    }
   },
   "executionStructureScope": "Scope {scopeId}",
   "@executionStructureScope": {
-    "placeholders": {"scopeId": {"type": "int"}}
+    "placeholders": {
+      "scopeId": {
+        "type": "int"
+      }
+    }
   },
   "executionStructureRelationUnavailable": "The parent task is outside retained history.",
   "executionStatusCreated": "Created",
@@ -294,26 +338,44 @@
   "executionTaskOutcomeLimitReached": "Outcome: limit reached",
   "executionTaskOutcomeReported": "Reported outcome: {outcome}",
   "@executionTaskOutcomeReported": {
-    "placeholders": {"outcome": {"type": "String"}}
+    "placeholders": {
+      "outcome": {
+        "type": "String"
+      }
+    }
   },
   "executionStructureStatus": "Status: {status}",
   "@executionStructureStatus": {
     "description": "Current observed status for a task",
-    "placeholders": {"status": {"type": "String"}}
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
   },
   "executionJoinLabel": "Task {taskId} joined children at event {eventIndex}: {outcome}",
   "@executionJoinLabel": {
     "description": "Scope join marker on the parent task",
     "placeholders": {
-      "taskId": {"type": "int"},
-      "eventIndex": {"type": "int"},
-      "outcome": {"type": "String"}
+      "taskId": {
+        "type": "int"
+      },
+      "eventIndex": {
+        "type": "int"
+      },
+      "outcome": {
+        "type": "String"
+      }
     }
   },
   "executionHistoryStartsAt": "Retained history begins at event {eventIndex}",
   "@executionHistoryStartsAt": {
     "description": "Explains that older task creation events have expired",
-    "placeholders": {"eventIndex": {"type": "int"}}
+    "placeholders": {
+      "eventIndex": {
+        "type": "int"
+      }
+    }
   },
   "executionTaskSelector": "Selected task",
   "executionFrameSelector": "Selected frame",
@@ -323,17 +385,27 @@
   "@executionFrameLabel": {
     "description": "Frame selection option",
     "placeholders": {
-      "frameId": {"type": "int"},
-      "name": {"type": "String"}
+      "frameId": {
+        "type": "int"
+      },
+      "name": {
+        "type": "String"
+      }
     }
   },
   "executionVariablesLabel": "Variables at event {eventIndex}, task {taskId}, frame {frameId}",
   "@executionVariablesLabel": {
     "description": "Heading for the selected paginated frame state",
     "placeholders": {
-      "eventIndex": {"type": "int"},
-      "taskId": {"type": "int"},
-      "frameId": {"type": "int"}
+      "eventIndex": {
+        "type": "int"
+      },
+      "taskId": {
+        "type": "int"
+      },
+      "frameId": {
+        "type": "int"
+      }
     }
   },
   "executionNoVariables": "This frame has no variables.",
@@ -341,7 +413,11 @@
   "executionValueNull": "Null",
   "executionValueReference": "Reference {identity}",
   "@executionValueReference": {
-    "placeholders": {"identity": {"type": "int"}}
+    "placeholders": {
+      "identity": {
+        "type": "int"
+      }
+    }
   },
   "executionLoadMoreValues": "Load next page",
   "executionChannelStateUnavailable": "Channel events show operations and channel identity. The API does not expose queue contents or message values.",
@@ -409,7 +485,6 @@
       }
     }
   },
-  "executionStatusRunning": "Running",
   "@executionStatusRunning": {
     "description": "Footer status while execution advances without pausing"
   },
@@ -501,61 +576,17 @@
   "@inputRequestIdentity": {
     "description": "Identity of the read request waiting for a response",
     "placeholders": {
-      "task": { "type": "int" },
-      "request": { "type": "int" }
+      "task": {
+        "type": "int"
+      },
+      "request": {
+        "type": "int"
+      }
     }
   },
   "inputDialogSubmit": "Submit",
   "@inputDialogSubmit": {
     "description": "Submit button for input dialog"
-  },
-  "simulatedScenarioBadge": "Simulated",
-  "@simulatedScenarioBadge": {
-    "description": "Persistent label that effects run in a simulated scenario"
-  },
-  "simulatedScenarioHelpAction": "Help for simulated scenarios",
-  "@simulatedScenarioHelpAction": {
-    "description": "Accessible name for the scenario help button"
-  },
-  "simulatedScenarioHelpTitle": "Simulated scenario",
-  "@simulatedScenarioHelpTitle": {
-    "description": "Title of the simulated host help"
-  },
-  "simulatedScenarioHelpBody": "Effects use in-memory data from the selected scenario. The device file system, network and clock are never queried. HTTP only returns prepared responses; Read input is identified by task and request. Stop cancels the execution and releases its simulated resources.",
-  "@simulatedScenarioHelpBody": {
-    "description": "Scope and limits of the simulated host"
-  },
-  "simulatedScenarioHelpClose": "Close",
-  "@simulatedScenarioHelpClose": {
-    "description": "Button that closes the scenario help"
-  },
-  "simulatedScenarioNoHost": "No automatic host",
-  "@simulatedScenarioNoHost": {
-    "description": "Effects wait for a test response"
-  },
-  "simulatedScenarioNoPermissions": "No permissions",
-  "@simulatedScenarioNoPermissions": {
-    "description": "Scenario that denies all capabilities"
-  },
-  "simulatedScenarioVirtualFiles": "Virtual files",
-  "@simulatedScenarioVirtualFiles": {
-    "description": "Scenario with an in-memory sample file"
-  },
-  "simulatedScenarioPreparedHttp": "Prepared HTTP",
-  "@simulatedScenarioPreparedHttp": {
-    "description": "Scenario with a predefined local HTTP response"
-  },
-  "simulatedScenarioLogicalTime": "Logical time",
-  "@simulatedScenarioLogicalTime": {
-    "description": "Scenario with a deterministic clock and timer"
-  },
-  "simulatedScenarioTimeout": "Simulated timeout",
-  "@simulatedScenarioTimeout": {
-    "description": "Scenario that returns a timeout when waiting"
-  },
-  "simulatedScenarioUncertain": "Uncertain result",
-  "@simulatedScenarioUncertain": {
-    "description": "Scenario that preserves an uncertain external result"
   },
   "diagnosticsEmpty": "No issues detected",
   "@diagnosticsEmpty": {
@@ -987,7 +1018,9 @@
   "@exerciseStripTitle": {
     "description": "Title of the exercise strip in editor",
     "placeholders": {
-      "title": { "type": "String" }
+      "title": {
+        "type": "String"
+      }
     }
   },
   "exerciseStripCollapse": "Collapse exercise strip",
@@ -1010,8 +1043,12 @@
   "@exercisePassedCount": {
     "description": "Pedagogical result of passed cases",
     "placeholders": {
-      "passed": { "type": "int" },
-      "total": { "type": "int" }
+      "passed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
     }
   },
   "exerciseAllCasesPassed": "Meets all test cases!",
@@ -1026,21 +1063,27 @@
   "@exerciseHiddenInputs": {
     "description": "Input of failed hidden case",
     "placeholders": {
-      "inputs": { "type": "String" }
+      "inputs": {
+        "type": "String"
+      }
     }
   },
   "exerciseHiddenExpected": "Expected: {expected}",
   "@exerciseHiddenExpected": {
     "description": "Expected output of failed hidden case",
     "placeholders": {
-      "expected": { "type": "String" }
+      "expected": {
+        "type": "String"
+      }
     }
   },
   "exerciseHiddenActual": "Actual: {actual}",
   "@exerciseHiddenActual": {
     "description": "Actual output of failed hidden case",
     "placeholders": {
-      "actual": { "type": "String" }
+      "actual": {
+        "type": "String"
+      }
     }
   },
   "exerciseOutcomeParseError": "Program contains syntax errors and cannot be checked.",
@@ -1067,7 +1110,9 @@
   "@exerciseNotFoundInCatalog": {
     "description": "Notice when linked exercise does not exist in catalog",
     "placeholders": {
-      "id": { "type": "String" }
+      "id": {
+        "type": "String"
+      }
     }
   },
   "exerciseVisibleCasesTitle": "Visible test cases:",
@@ -1078,21 +1123,27 @@
   "@exerciseCaseInputsLabel": {
     "description": "Inputs of a visible test case",
     "placeholders": {
-      "inputs": { "type": "String" }
+      "inputs": {
+        "type": "String"
+      }
     }
   },
   "exerciseCaseOutputsLabel": "Expected output: {outputs}",
   "@exerciseCaseOutputsLabel": {
     "description": "Outputs of a visible test case",
     "placeholders": {
-      "outputs": { "type": "String" }
+      "outputs": {
+        "type": "String"
+      }
     }
   },
   "exerciseUnmetAssertion": "Missing requirement: {requirement}",
   "@exerciseUnmetAssertion": {
     "description": "Message for unmet structural assertion",
     "placeholders": {
-      "requirement": { "type": "String" }
+      "requirement": {
+        "type": "String"
+      }
     }
   },
   "onboardingStepOf": "Step {current} of {total}",
@@ -1377,7 +1428,7 @@
   "@settingsThemeOptions": {
     "description": "Label of the theme options group"
   },
-  "settingsThemeNotice": "\u201cSystem theme\u201d follows the light or dark appearance of your device",
+  "settingsThemeNotice": "“System theme” follows the light or dark appearance of your device",
   "@settingsThemeNotice": {
     "description": "Notice explaining what the system theme option does"
   },
@@ -2050,6 +2101,21 @@
         "type": "String"
       },
       "codes": {
+        "type": "String"
+      }
+    }
+  },
+  "executionStrictness": "Strictness",
+  "executionStrict": "Strict",
+  "executionFlexible": "Flexible",
+  "executionArguments": "Arguments",
+  "executionArgumentsInvalid": "Check argument quotes and escapes.",
+  "executionReplay": "Replay",
+  "executionReplayRejected": "The tape cannot be replayed with this source and configuration.",
+  "executionWorkingDirectory": "Working directory: {path}",
+  "@executionWorkingDirectory": {
+    "placeholders": {
+      "path": {
         "type": "String"
       }
     }

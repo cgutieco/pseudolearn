@@ -2,10 +2,7 @@ use crate::{HostEffectRequest, HostValue, IoError, MemoryHostProvider};
 use pseudolearn_abi::IoErrorKind;
 
 pub(crate) fn valid_path(path: &str) -> bool {
-    !path.is_empty()
-        && !path.starts_with('/')
-        && !path.contains(['\\', ':', '\0'])
-        && path.split('/').all(|part| !["", ".", ".."].contains(&part))
+    !path.is_empty() && !path.contains('\0')
 }
 
 pub(crate) fn request_path(
@@ -22,14 +19,11 @@ pub(crate) fn request_path(
         .ok_or_else(|| IoError::from_kind(IoErrorKind::ClosedCapability))?;
     if matches!(request.operation.as_str(), "file_open" | "directory_derive") {
         let path = crate::memory_host::text(request, 0)?;
-        if !valid_path(path) {
-            return Err(IoError::from_kind(IoErrorKind::InvalidPath));
-        }
-        Ok(if parent.is_empty() {
-            path.to_owned()
-        } else {
-            format!("{parent}/{path}")
-        })
+        let root = provider
+            .directory_roots
+            .get(&token.slot)
+            .map(String::as_str);
+        crate::host_paths::join(parent, path, root)
     } else {
         Ok(parent.clone())
     }
@@ -45,6 +39,18 @@ pub(crate) fn register(
         .as_ref()
         .ok_or_else(IoError::permission_denied)?
         .clone();
+    let parent_root = request
+        .receiver
+        .as_ref()
+        .and_then(|token| provider.directory_roots.get(&token.slot))
+        .cloned();
+    if request.operation == "directory_derive" {
+        provider
+            .directory_roots
+            .insert(capability.slot, path.clone());
+    } else if let Some(root) = parent_root {
+        provider.directory_roots.insert(capability.slot, root);
+    }
     provider.resources.insert(capability.slot, path);
     Ok(HostValue::Capability(capability))
 }

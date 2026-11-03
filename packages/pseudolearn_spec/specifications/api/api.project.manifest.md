@@ -56,7 +56,7 @@
   "id": "R2",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "El esquema versión 1 admite: schema, entero obligatorio igual a 1 (otro valor produce unsupportedSchema); la tabla package con name (cadena no vacía, obligatoria), kind (application o library, obligatorio), profile (es o en; por defecto es) y entries (arreglo de rutas lógicas; por defecto vacío); la tabla profiles, de ruta lógica del paquete a es o en; la tabla dependencies, de alias a una tabla en línea con package (cadena no vacía); y la tabla requests con limits (depth, statements, cells y micro_steps, enteros positivos) y permissions (arreglo de cadenas). Toda ruta lógica es relativa, no vacía y usa /; rechaza componentes vacíos, . y .., barras inversas, raíces o unidades absolutas, controles, caracteres reservados portables, nombres de dispositivo y componentes terminados en punto o espacio. Sus segmentos se normalizan a NFC conservando caja. La clave de comparación aplica minúsculas Unicode a NFC; dos rutas distintas que colisionan, incluidos directorios implícitos y las entradas repetidas por clave, producen invalidPath. Una referencia con otra caja o forma Unicode equivalente resuelve la ruta canónica. Cualquier otra clave, incluidas edition, language y ui, produce unknownField: el manifiesto no elige edición ni idioma de interfaz. Un valor de tipo o contenido inválido produce invalidValue; una ruta de entrada o de perfil que no es una ruta lógica, colisiona o no está bajo la raíz del paquete, invalidPath; un campo obligatorio ausente, missingField, ubicado en la cabecera de su tabla o en la línea 1 columna 1 si es de la raíz. La raíz del paquete es la ubicación del manifiesto y no se escribe en él.",
+  "texto": "El esquema versión 1 admite: schema, entero obligatorio igual a 1 (otro valor produce unsupportedSchema); la tabla package con name (cadena no vacía, obligatoria), kind (application o library, obligatorio), profile (es o en; por defecto es) y entries (arreglo de rutas lógicas; por defecto vacío); la tabla profiles, de ruta lógica del paquete a es o en; la tabla dependencies, de alias a una tabla en línea con package (cadena no vacía); y la tabla requests con limits (depth, statements, cells y micro_steps, enteros positivos). Toda ruta lógica es relativa, no vacía y usa /; rechaza componentes vacíos, . y .., barras inversas, raíces o unidades absolutas, controles, caracteres reservados portables, nombres de dispositivo y componentes terminados en punto o espacio. Sus segmentos se normalizan a NFC conservando caja. La clave de comparación aplica minúsculas Unicode a NFC; dos rutas distintas que colisionan, incluidos directorios implícitos y las entradas repetidas por clave, producen invalidPath. Una referencia con otra caja o forma Unicode equivalente resuelve la ruta canónica. Cualquier otra clave, incluidas edition, language y ui, produce unknownField: el manifiesto no elige edición ni idioma de interfaz. Un valor de tipo o contenido inválido produce invalidValue; una ruta de entrada o de perfil que no es una ruta lógica, colisiona o no está bajo la raíz del paquete, invalidPath; un campo obligatorio ausente, missingField, ubicado en la cabecera de su tabla o en la línea 1 columna 1 si es de la raíz. La raíz del paquete es la ubicación del manifiesto y no se escribe en él.",
   "verificacion": [
     "C8",
     "C9",
@@ -171,7 +171,7 @@
   "id": "R3",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La configuración resuelta contiene schema; para cada campo del paquete (name, root, kind, profile, entries) su value y su provenance; las excepciones de perfil y las dependencias, ordenadas por ruta y por alias, con su procedencia; los límites solicitados con su autoridad; y permissions. La procedencia es manifest con line y column del valor, default si el campo se omitió, location para la raíz o host para un valor recortado por una concesión. La resolución es una función pura del texto, la ubicación y las concesiones: no lee archivos ni ejecuta nada. Las excepciones de perfil se resuelven como datos; su aplicación al análisis por archivo no forma parte de esta regla.",
+  "texto": "La configuración resuelta contiene schema; para cada campo del paquete (name, root, kind, profile, entries) su value y su provenance; las excepciones de perfil y las dependencias, ordenadas por ruta y por alias, con su procedencia; los límites solicitados con su autoridad;; no contiene permisos. La procedencia es manifest con line y column del valor, default si el campo se omitió, location para la raíz o host para un valor recortado por una concesión. La resolución es una función pura del texto, la ubicación y las concesiones: no lee archivos ni ejecuta nada. Las excepciones de perfil se resuelven como datos; su aplicación al análisis por archivo no forma parte de esta regla.",
   "verificacion": [
     "C1",
     "C2"
@@ -184,7 +184,7 @@
   "id": "R4",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "El anfitrión concede techos de límites mediante grants.limits y permisos mediante grants.permissions. Para cada límite solicitado en requests.limits el valor effective es el menor entre la solicitud (requested) y la concesión (granted), con procedencia manifest si la solicitud no supera la concesión y host si la concesión la recorta; el valor efectivo nunca supera la solicitud ni la concesión. Un límite solicitado sin concesión produce limitNotGranted en la línea y columna de su valor y no se aplica; un límite no solicitado no se aplica aunque exista una concesión. El vocabulario cerrado de permisos reconoce consola, argumentos, archivos_lectura, archivos_escritura, reloj, temporizador y red (y sus alias en inglés console, arguments, files_read, files_write, clock, timer y network); cualquier otro permiso solicitado produce unknownPermission en la línea y columna de su valor. Los permisos efectivos son la intersección entre los solicitados y los concedidos; ningún contenido del paquete puede amplificar su propia autoridad.",
+  "texto": "El anfitrión concede techos de límites mediante grants.limits y permisos mediante grants.permissions. Para cada límite solicitado en requests.limits el valor effective es el menor entre la solicitud (requested) y la concesión (granted), con procedencia manifest si la solicitud no supera la concesión y host si la concesión la recorta; el valor efectivo nunca supera la solicitud ni la concesión. Un límite solicitado sin concesión produce limitNotGranted en la línea y columna de su valor y no se aplica; un límite no solicitado no se aplica aunque exista una concesión. No se admiten requests.permissions ni grants.permissions: el programa tiene autoridad plena y el manifiesto no elige permisos. La atenuación voluntaria se expresa en el programa.",
   "verificacion": [
     "C14",
     "C15",
@@ -229,7 +229,7 @@
       {
         "operation": "resolve_manifest",
         "arguments": {
-          "manifest": "# Paquete de la aplicación\nschema = 1\n\n[package]\nname = \"app\"\nkind = \"application\"\nprofile = \"en\"\nentries = [\"app/main\"]\n\n[profiles]\n\"app/legacy\" = \"es\"\n\n[dependencies]\ngeo = { package = \"geo\" }\n\n[requests.limits]\ndepth = 200\nstatements = 1000\n\n[requests]\npermissions = []\n",
+          "manifest": "# Paquete de la aplicación\nschema = 1\n\n[package]\nname = \"app\"\nkind = \"application\"\nprofile = \"en\"\nentries = [\"app/main\"]\n\n[profiles]\n\"app/legacy\" = \"es\"\n\n[dependencies]\ngeo = { package = \"geo\" }\n\n[requests.limits]\ndepth = 200\nstatements = 1000\n\n[requests]\n",
           "location": "app",
           "grants": {
             "limits": {
@@ -301,7 +301,7 @@
                   "provenance": {
                     "source": "manifest",
                     "line": 11,
-                    "column": 16
+                    "column": 1
                   }
                 }
               ],
@@ -335,8 +335,7 @@
                     "source": "host"
                   }
                 }
-              },
-              "permissions": []
+              }
             }
           }
         }
@@ -421,8 +420,7 @@
               },
               "profiles": [],
               "dependencies": [],
-              "limits": {},
-              "permissions": []
+              "limits": {}
             }
           }
         }
@@ -1042,8 +1040,8 @@
             "configuration": null,
             "manifest_errors": [
               {
-                "code": "unknownPermission",
-                "field": "requests.permissions[0]",
+                "code": "unknownField",
+                "field": "requests.permissions",
                 "line": 6,
                 "column": 16
               }

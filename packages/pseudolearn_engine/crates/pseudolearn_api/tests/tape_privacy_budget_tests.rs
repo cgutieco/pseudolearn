@@ -16,12 +16,12 @@ fn record(program: &str, host: Value) -> Value {
 }
 
 fn secret_host(value: &str, key: &str) -> Value {
-    json!({"permissions":["archivos_escritura"],"requested_permissions":["archivos_escritura"],
+    json!({
         "secrets":{"token":{"key_id":"k1","value":value}},"secret_keys":{"k1":key}})
 }
 
 fn reader_host(budget: Option<usize>) -> Value {
-    let mut host = json!({"permissions":["archivos_lectura"],"requested_permissions":["archivos_lectura"],
+    let mut host = json!({
         "files":{"a":"hola"}});
     if let (Some(fields), Some(budget)) = (host.as_object_mut(), budget) {
         fields.insert("max_tape_bytes".to_owned(), json!(budget));

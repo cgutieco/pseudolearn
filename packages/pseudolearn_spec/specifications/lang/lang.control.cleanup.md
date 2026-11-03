@@ -189,14 +189,7 @@
     "salida": "cleanup\nfailed\n",
     "terminacion": "completed"
   },
-  "anfitrion": {
-    "permissions": [
-      "temporizador"
-    ],
-    "requested_permissions": [
-      "temporizador"
-    ]
-  }
+  "anfitrion": {}
 }
 ```
 
@@ -406,14 +399,11 @@
   "origen": "derivado",
   "operacion": "execute",
   "anfitrion": {
-    "permissions": [
-      "archivos_lectura"
-    ],
-    "requested_permissions": [
-      "archivos_lectura"
-    ],
     "files": {
-      "malo.txt": [255, 254]
+      "malo.txt": [
+        255,
+        254
+      ]
     }
   },
   "espera": {

@@ -195,9 +195,10 @@ fn child_role(tree: &SyntaxTree, parent: usize, child: usize) -> &'static str {
             loop_role(parent_node.kind, child_node.kind)
         }
         NodeKind::Switch => switch_role(child_node.kind),
-        NodeKind::AlgorithmUnit | NodeKind::Subroutine | NodeKind::Subprogram => {
-            unit_role(child_node.kind)
-        }
+        NodeKind::AlgorithmUnit
+        | NodeKind::Subroutine
+        | NodeKind::Subprogram
+        | NodeKind::FunctionLiteral => unit_role(child_node.kind),
         NodeKind::ClassUnit => class_role(child_node.kind),
         NodeKind::MethodMember | NodeKind::ConstructorMember => member_role(child_node.kind),
         NodeKind::Parameters => "parameter",
@@ -237,7 +238,6 @@ fn switch_role(child: NodeKind) -> &'static str {
         _ => "selector",
     }
 }
-
 fn unit_role(child: NodeKind) -> &'static str {
     if child == NodeKind::Body {
         "body"
@@ -245,7 +245,6 @@ fn unit_role(child: NodeKind) -> &'static str {
         "signature"
     }
 }
-
 fn class_role(child: NodeKind) -> &'static str {
     match child {
         NodeKind::FieldDeclaration | NodeKind::MethodMember | NodeKind::ConstructorMember => {

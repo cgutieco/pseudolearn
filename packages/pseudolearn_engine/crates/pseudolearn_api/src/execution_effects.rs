@@ -188,14 +188,14 @@ fn delivery_order(request: &ExecuteRequest, effects: &EffectSession) -> Vec<u64>
 pub(super) fn prepare_host(
     request: &ExecuteRequest,
     mode: ExecutionMode,
-) -> Result<crate::FakeHostProvider, ApiError> {
+) -> Result<pseudolearn_runtime::ExecutionHostProvider, ApiError> {
     if !mode.allows_external_host() {
-        return Ok(crate::FakeHostProvider::default());
+        return Ok(pseudolearn_runtime::ExecutionHostProvider::default());
     }
     request
         .host
         .as_ref()
-        .map(crate::FakeHostProvider::from_value)
+        .map(pseudolearn_runtime::ExecutionHostProvider::from_value)
         .transpose()
         .map(|host| host.unwrap_or_default())
         .map_err(|error| usage(error.code()))

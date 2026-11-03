@@ -8,31 +8,8 @@ use std::collections::{BTreeMap, BTreeSet};
 #[derive(Clone, Debug, Default, Eq, PartialEq)]
 pub(crate) struct EffectAuthority {
     pub(crate) table: CapabilityTable,
-    pub(crate) permissions: BTreeSet<String>,
-    pub(crate) granted_network_origins: BTreeSet<String>,
     pub(crate) network_capabilities: BTreeMap<u32, BTreeSet<String>>,
     pub(crate) network_limits: crate::NetworkLimits,
-}
-
-pub fn effective_permissions(host: Option<&serde_json::Value>) -> BTreeSet<String> {
-    let names = |key| {
-        host.and_then(|host| host.get(key))
-            .and_then(serde_json::Value::as_array)
-            .into_iter()
-            .flatten()
-            .filter_map(serde_json::Value::as_str)
-            .map(str::to_owned)
-            .collect::<BTreeSet<_>>()
-    };
-    let granted = names("permissions");
-    if host.is_some_and(|host| host.get("requested_permissions").is_some()) {
-        granted
-            .intersection(&names("requested_permissions"))
-            .cloned()
-            .collect()
-    } else {
-        granted
-    }
 }
 
 pub(crate) fn prepare(
@@ -53,7 +30,7 @@ pub(crate) fn prepare(
         .transpose()?;
     let rights = match receiver {
         Some(token) => validate_receiver(authority, operation, token, &request.arguments)?,
-        None => root_rights(&authority.permissions, operation.result)?,
+        None => root_rights(operation.result)?,
     };
     if let Some(kind) = capability_kind(operation.result) {
         let network_origins = (kind == CapabilityKind::Network)
@@ -124,38 +101,19 @@ pub(crate) fn mode_rights(value: Option<&HostValue>) -> Result<RightsMask, IoErr
     }
 }
 
-fn root_rights(
-    permissions: &BTreeSet<String>,
-    kind: EffectValueKind,
-) -> Result<RightsMask, IoError> {
-    let permission = match kind {
-        EffectValueKind::Console => "consola",
-        EffectValueKind::Arguments => "argumentos",
-        EffectValueKind::Clock => "reloj",
-        EffectValueKind::Timer => "temporizador",
-        EffectValueKind::Network => "red",
-        EffectValueKind::Directory => {
-            let rights = RightsMask {
-                read: permissions.contains("archivos_lectura"),
-                write: permissions.contains("archivos_escritura"),
-                execute: false,
-            };
-            return if rights.read || rights.write {
-                Ok(rights)
-            } else {
-                Err(IoError::permission_denied())
-            };
-        }
-        _ => return Err(IoError::permission_denied()),
-    };
-    if permissions.contains(permission) {
-        Ok(RightsMask::EXECUTE_ONLY)
-    } else {
-        Err(IoError::permission_denied())
+fn root_rights(kind: EffectValueKind) -> Result<RightsMask, IoError> {
+    match kind {
+        EffectValueKind::Directory => Ok(RightsMask::READ_WRITE),
+        EffectValueKind::Console
+        | EffectValueKind::Arguments
+        | EffectValueKind::Clock
+        | EffectValueKind::Timer
+        | EffectValueKind::Network => Ok(RightsMask::EXECUTE_ONLY),
+        _ => Err(IoError::permission_denied()),
     }
 }
 
-pub(crate) fn capability_kind(kind: EffectValueKind) -> Option<CapabilityKind> {
+pub fn capability_kind(kind: EffectValueKind) -> Option<CapabilityKind> {
     match kind {
         EffectValueKind::Console => Some(CapabilityKind::Console),
         EffectValueKind::Arguments => Some(CapabilityKind::Arguments),
@@ -169,12 +127,12 @@ pub(crate) fn capability_kind(kind: EffectValueKind) -> Option<CapabilityKind> {
 }
 
 fn network_capability_origins(
-    authority: &EffectAuthority,
+    _authority: &EffectAuthority,
     operation: &EffectOperation,
     request: &HostEffectRequest,
 ) -> Result<BTreeSet<String>, IoError> {
     match operation.identity {
-        "request_network" => Ok(authority.granted_network_origins.clone()),
+        "request_network" => Ok(BTreeSet::new()),
         "network_restrict" => {
             let origin = crate::network_url::parse_origin(text_argument(&request.arguments, 0)?)?;
             Ok(BTreeSet::from([origin]))
@@ -199,7 +157,7 @@ fn validate_network_receiver(
     match operation.identity {
         "network_restrict" => {
             let origin = crate::network_url::parse_origin(text_argument(arguments, 0)?)?;
-            if !origins.contains(&origin) {
+            if !origins.is_empty() && !origins.contains(&origin) {
                 return Err(IoError::from_kind(IoErrorKind::DestinationDenied));
             }
         }

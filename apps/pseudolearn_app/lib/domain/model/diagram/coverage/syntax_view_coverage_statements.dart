@@ -24,6 +24,7 @@ const List<SyntaxViewCoverageRow> syntaxViewCoverageStatements = [
     flowchart: _exact,
     structogram: _exact,
     structure: _notDrawn,
+    help: CoverageCell.help('help.conditional'),
     evidence: _flowTests,
   ),
   SyntaxViewCoverageRow(
@@ -35,6 +36,7 @@ const List<SyntaxViewCoverageRow> syntaxViewCoverageStatements = [
     flowchart: _exact,
     structogram: _exact,
     structure: _notDrawn,
+    help: CoverageCell.help('help.switch'),
     evidence: _flowTests,
   ),
   SyntaxViewCoverageRow(
@@ -43,10 +45,15 @@ const List<SyntaxViewCoverageRow> syntaxViewCoverageStatements = [
     family: CoverageFamily.structuralWrapper,
     syntaxKinds: ['default_case'],
     rule: 'LANG.CONTROL.SWITCH@1.0.0#R1',
-    flowchart: CoverageCell.notApplicable('drawn as a column of the owning switch'),
-    structogram: CoverageCell.notApplicable('drawn as a column of the owning switch'),
+    flowchart: CoverageCell.notApplicable(
+      'drawn as a column of the owning switch',
+    ),
+    structogram: CoverageCell.notApplicable(
+      'drawn as a column of the owning switch',
+    ),
     structure: _notDrawn,
     focus: CoverageCell.notApplicable('focus targets the owning switch'),
+    help: CoverageCell.help('help.switch'),
     evidence: _flowTests,
   ),
   SyntaxViewCoverageRow(
@@ -58,6 +65,7 @@ const List<SyntaxViewCoverageRow> syntaxViewCoverageStatements = [
     flowchart: _exact,
     structogram: _exact,
     structure: _notDrawn,
+    help: CoverageCell.help('help.while'),
     evidence: _flowTests,
   ),
   SyntaxViewCoverageRow(
@@ -69,6 +77,7 @@ const List<SyntaxViewCoverageRow> syntaxViewCoverageStatements = [
     flowchart: _exact,
     structogram: _exact,
     structure: _notDrawn,
+    help: CoverageCell.help('help.repeat'),
     evidence: _flowTests,
   ),
   SyntaxViewCoverageRow(
@@ -80,6 +89,7 @@ const List<SyntaxViewCoverageRow> syntaxViewCoverageStatements = [
     flowchart: _exact,
     structogram: _exact,
     structure: _notDrawn,
+    help: CoverageCell.help('construction.for_each'),
     evidence: _coverageTests,
   ),
   SyntaxViewCoverageRow(
@@ -88,10 +98,15 @@ const List<SyntaxViewCoverageRow> syntaxViewCoverageStatements = [
     family: CoverageFamily.structuralWrapper,
     syntaxKinds: ['iteration_bindings'],
     rule: 'LANG.CONTROL.FOR-EACH@1.0.0#R1',
-    flowchart: CoverageCell.notApplicable('rendered inside the header of the iteration'),
-    structogram: CoverageCell.notApplicable('rendered inside the header of the iteration'),
+    flowchart: CoverageCell.notApplicable(
+      'rendered inside the header of the iteration',
+    ),
+    structogram: CoverageCell.notApplicable(
+      'rendered inside the header of the iteration',
+    ),
     structure: _notDrawn,
     focus: CoverageCell.notApplicable('focus targets the owning iteration'),
+    help: CoverageCell.help('construction.for_each'),
     evidence: _coverageTests,
   ),
   SyntaxViewCoverageRow(
@@ -103,6 +118,7 @@ const List<SyntaxViewCoverageRow> syntaxViewCoverageStatements = [
     flowchart: _exact,
     structogram: _exact,
     structure: _notDrawn,
+    help: CoverageCell.help('construction.break'),
     evidence: _exitTests,
   ),
   SyntaxViewCoverageRow(
@@ -114,6 +130,7 @@ const List<SyntaxViewCoverageRow> syntaxViewCoverageStatements = [
     flowchart: _exact,
     structogram: _exact,
     structure: _notDrawn,
+    help: CoverageCell.help('help.return'),
     evidence: _flowTests,
   ),
   SyntaxViewCoverageRow(
@@ -125,6 +142,7 @@ const List<SyntaxViewCoverageRow> syntaxViewCoverageStatements = [
     flowchart: _exact,
     structogram: _exact,
     structure: _notDrawn,
+    help: CoverageCell.help('construction.defer'),
     evidence: _exitTests,
   ),
   SyntaxViewCoverageRow(
@@ -136,6 +154,7 @@ const List<SyntaxViewCoverageRow> syntaxViewCoverageStatements = [
     flowchart: _exact,
     structogram: _exact,
     structure: _notDrawn,
+    help: CoverageCell.help('help.subprogram-call'),
     evidence: _flowTests,
   ),
   SyntaxViewCoverageRow(
@@ -147,6 +166,7 @@ const List<SyntaxViewCoverageRow> syntaxViewCoverageStatements = [
     flowchart: _exact,
     structogram: _exact,
     structure: _notDrawn,
+    help: CoverageCell.help('help.output'),
     evidence: _flowTests,
   ),
   SyntaxViewCoverageRow(
@@ -158,6 +178,7 @@ const List<SyntaxViewCoverageRow> syntaxViewCoverageStatements = [
     flowchart: _exact,
     structogram: _exact,
     structure: _notDrawn,
+    help: CoverageCell.help('help.assignment'),
     evidence: _flowTests,
   ),
   SyntaxViewCoverageRow(
@@ -166,56 +187,15 @@ const List<SyntaxViewCoverageRow> syntaxViewCoverageStatements = [
     family: CoverageFamily.structuralWrapper,
     syntaxKinds: ['body', 'statement'],
     rule: 'LANG.PROGRAM.STRUCTURE@1.0.0#R1',
-    flowchart: CoverageCell.notApplicable('a wrapper has no shape; its statements do'),
-    structogram: CoverageCell.notApplicable('a wrapper has no cell; its statements do'),
+    flowchart: CoverageCell.notApplicable(
+      'a wrapper has no shape; its statements do',
+    ),
+    structogram: CoverageCell.notApplicable(
+      'a wrapper has no cell; its statements do',
+    ),
     structure: _notDrawn,
     focus: CoverageCell.notApplicable('focus targets the wrapped statement'),
+    help: CoverageCell.help('help.terminator'),
     evidence: _flowTests,
-  ),
-  SyntaxViewCoverageRow(
-    construct: 'task.scope_select',
-    role: CoveragePublicRole.statement,
-    family: CoverageFamily.task,
-    syntaxKinds: ['task_scope', 'select_statement'],
-    rule: 'LANG.TASK.SCOPE@1.0.0#R1',
-    flowchart: _exact,
-    structogram: _exact,
-    structure: _notDrawn,
-    evidence: 'test/engine/rust/rust_task_diagram_builders_test.dart',
-  ),
-  SyntaxViewCoverageRow(
-    construct: 'task.spawn',
-    role: CoveragePublicRole.statement,
-    family: CoverageFamily.task,
-    syntaxKinds: ['spawn_statement'],
-    rule: 'LANG.TASK.SCOPE@1.0.0#R1',
-    flowchart: _exact,
-    structogram: _exact,
-    structure: _notDrawn,
-    evidence: 'test/engine/rust/rust_task_diagram_builders_test.dart',
-  ),
-  SyntaxViewCoverageRow(
-    construct: 'task.receive_branch',
-    role: CoveragePublicRole.statement,
-    family: CoverageFamily.structuralWrapper,
-    syntaxKinds: ['receive_branch'],
-    rule: 'LANG.TASK.CHANNEL@1.0.0#R1',
-    flowchart: CoverageCell.notApplicable('drawn as a column of the owning select'),
-    structogram: CoverageCell.notApplicable('drawn as a column of the owning select'),
-    structure: _notDrawn,
-    focus: CoverageCell.notApplicable('focus targets the owning select'),
-    evidence: 'test/engine/rust/rust_task_diagram_builders_test.dart',
-  ),
-  SyntaxViewCoverageRow(
-    construct: 'task.await',
-    role: CoveragePublicRole.expression,
-    family: CoverageFamily.expression,
-    syntaxKinds: ['await_expression', 'spawn_expression'],
-    rule: 'LANG.TASK.SUSPENSION@1.0.0#R1',
-    flowchart: CoverageCell.notApplicable('rendered inside the caption of the statement that suspends'),
-    structogram: CoverageCell.notApplicable('rendered inside the caption of the statement that suspends'),
-    structure: _notDrawn,
-    focus: CoverageCell.notApplicable('focus targets the owning statement'),
-    evidence: 'test/engine/rust/rust_task_diagram_builders_test.dart',
   ),
 ];

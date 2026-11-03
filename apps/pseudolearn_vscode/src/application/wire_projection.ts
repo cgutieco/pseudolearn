@@ -16,6 +16,15 @@ export function answerValue(answer: WireAnswer): Record<string, Projection> {
   return object(envelope.value);
 }
 
+export function acceptAnswer(answer: WireAnswer): void {
+  const envelope = object(answer.projection);
+  if (envelope.failure !== undefined) {
+    const failure = object(envelope.failure);
+    throw new Error(String(failure.detail ?? failure.family ?? "API operation failed"));
+  }
+  if (!("value" in envelope)) throw new Error("Missing API answer value");
+}
+
 export function text(value: Projection | undefined): string {
   if (typeof value !== "string") throw new Error("Expected projected text");
   return value;

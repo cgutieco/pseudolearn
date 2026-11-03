@@ -6,6 +6,7 @@ publish = false
 
 [features]
 default = []
+test-host = ["pseudolearn_runtime/test-host", "pseudolearn_aot_rt?/test-host"]
 native = ["dep:pseudolearn_codegen", "dep:pseudolearn_aot_rt"]
 
 [dependencies]
@@ -32,3 +33,6 @@ pseudolearn_service = {path="../pseudolearn_service",version="=0.1.0"}
 
 [lints]
 workspace = true
+
+[dev-dependencies]
+pseudolearn_api = { path = ".", features = ["test-host"] }

@@ -11,7 +11,6 @@ fn sample_identity() -> ExecutionIdentity {
         profile: "es".to_owned(),
         seed: 10,
         statement_limit: None,
-        permissions: vec!["reloj".to_owned()],
     }
 }
 

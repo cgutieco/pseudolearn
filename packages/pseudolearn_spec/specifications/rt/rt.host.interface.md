@@ -41,7 +41,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La salida, la entrada y la semilla se inyectan al iniciar. El reloj, los archivos y la red requieren capacidades concedidas explícitamente por el anfitrión; no se leen variables de entorno ni hay fuente aleatoria ambiental implícita.",
+  "texto": "La salida y la entrada se inyectan al iniciar. Archivos, red, reloj, temporizador y argumentos tienen autoridad plena por omisión, sin concesiones. Argumentos entrega los argumentos de ejecución en orden, sin el nombre del programa, conservando espacios, Unicode y argumentos vacíos. Los errores del sistema operativo o navegador son ErrorES tipados de plataforma.",
   "verificacion": [
     "C1"
   ]
@@ -101,7 +101,7 @@
   "id": "R3",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La fuente aleatoria es xoshiro256** cuyo estado inicial son las cuatro primeras salidas de SplitMix64 a partir de la semilla, un entero con signo de 64 bits reinterpretado en complemento a dos. Cada llamada a azar toma la siguiente salida s de 64 bits y devuelve (s desplazado 11 bits a la derecha) × 2⁻⁵³. La semilla por omisión es 42.",
+  "texto": "La fuente aleatoria es xoshiro256** cuyo estado inicial son las cuatro primeras salidas de SplitMix64 a partir de la semilla, un entero con signo de 64 bits reinterpretado en complemento a dos. Cada llamada a azar toma la siguiente salida s de 64 bits y devuelve (s desplazado 11 bits a la derecha) × 2⁻⁵³. En vivo, si no se declara una semilla, el anfitrión obtiene entropía del sistema operativo; la semilla efectiva queda en la identidad de la cinta. Una semilla explícita prevalece. La reproducción usa la semilla grabada sin consultar entropía.",
   "verificacion": [
     "C2",
     "C3",
@@ -246,12 +246,6 @@ Los valores esperados de R3 se calculan con el oráculo independiente de see_ora
     "en": "subroutine Probe(directory as DirCap) as result<integer, IoError>\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\ndefer\ndiscard file.close();\nendDefer\ndefine mutable zero as integer <- 0;\nreturn success(10 div zero);\nendSubroutine\nalgorithm Main\ndefine opened as result<DirCap, IoError> <- requestDirectory(\"root\");\nswitch opened do\nsuccess(root): switch Probe(root) do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "archivos_lectura"
-    ],
-    "requested_permissions": [
-      "archivos_lectura"
-    ],
     "files": {
       "a": "hola"
     }
@@ -301,12 +295,6 @@ Los valores esperados de R3 se calculan con el oráculo independiente de see_ora
     "en": "subroutine Probe(directory as DirCap) as result<integer, IoError>\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\ndefer\ndiscard file.close();\nendDefer\ndefine mutable n as integer <- 0;\nwhile true do\nn <- n + 1;\nendWhile\nreturn success(n);\nendSubroutine\nalgorithm Main\ndefine opened as result<DirCap, IoError> <- requestDirectory(\"root\");\nswitch opened do\nsuccess(root): switch Probe(root) do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "archivos_lectura"
-    ],
-    "requested_permissions": [
-      "archivos_lectura"
-    ],
     "files": {
       "a": "hola"
     }
@@ -366,12 +354,6 @@ Los valores esperados de R3 se calculan con el oráculo independiente de see_ora
     "en": "subroutine Probe(directory as DirCap) as result<string, IoError>\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\ndefer\ndiscard file.close();\nendDefer\nreturn file.readText();\nendSubroutine\nalgorithm Main\ndefine opened as result<DirCap, IoError> <- requestDirectory(\"root\");\nswitch opened do\nsuccess(root): switch Probe(root) do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "archivos_lectura"
-    ],
-    "requested_permissions": [
-      "archivos_lectura"
-    ],
     "files": {
       "a": "hola"
     },
@@ -446,12 +428,6 @@ Los valores esperados de R3 se calculan con el oráculo independiente de see_ora
     "en": "subroutine suspendable Pause(label as integer)\ndiscard await requestTimer();\nwrite label;\nendSubroutine\nalgorithm Main\ntasks\nspawn Pause(1);\nspawn Pause(2);\nspawn Pause(3);\nendTasks\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "temporizador"
-    ],
-    "requested_permissions": [
-      "temporizador"
-    ],
     "grabar_y_reproducir": true,
     "orden_entrega": [
       3,
@@ -467,8 +443,10 @@ Los valores esperados de R3 se calculan con el oráculo independiente de see_ora
   "id": "R6",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "El anfitrión de memoria acepta respuestas HTTP declaradas en anfitrion.http, indexadas por método y URL. Cada respuesta declara estado y puede declarar cabeceras repetidas, cuerpo textual o bytes, fallo e incertidumbre. El proveedor de memoria nunca abre sockets ni resuelve nombres.",
-  "verificacion": ["C9"]
+  "texto": "El anfitrión de memoria es exclusivamente un doble de prueba del corpus, no distribuible ni accesible desde CLI, extensión o app. Acepta respuestas HTTP declaradas en anfitrion.http, indexadas por método y URL, con estado, cabeceras repetidas, cuerpo textual o bytes, fallo e incertidumbre. Nunca abre sockets ni resuelve nombres. La configuración de prueba no admite permissions, requested_permissions, network_origins ni local_origins.",
+  "verificacion": [
+    "C9"
+  ]
 }
 ```
 
@@ -476,23 +454,33 @@ Los valores esperados de R3 se calculan con el oráculo independiente de see_ora
 {
   "id": "C9",
   "regla": "R6",
-  "perfiles": ["es", "en"],
-  "rigor": ["estricto", "flexible"],
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
     "salida": "200\n",
     "terminacion": "completed",
-    "anfitrion_observado": {"llamadas": 2}
+    "anfitrion_observado": {
+      "llamadas": 2
+    }
   },
   "programas": {
     "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir net Como RedCap <- Propagar SolicitarRed();\nDefinir request Como PeticionHttp <- PeticionHttp(MetodoHttp.GET, \"https://fake.test/a\");\nDefinir response Como RespuestaHttp <- Propagar net.Enviar(request);\nRetornar Exito(response.Estado());\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Incierto;\nFinSegun\nFinAlgoritmo\n",
     "en": "subroutine Probe() as result<integer, IoError>\ndefine net as NetworkCap <- propagate requestNetwork();\ndefine request as HttpRequest <- HttpRequest(HttpMethod.GET, \"https://fake.test/a\");\ndefine response as HttpResponse <- propagate net.send(request);\nreturn success(response.status());\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.uncertain;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": ["red"],
-    "requested_permissions": ["red"],
-    "http": {"GET https://fake.test/a": {"estado": 200}}
+    "http": {
+      "GET https://fake.test/a": {
+        "estado": 200
+      }
+    }
   }
 }
 ```
@@ -502,8 +490,10 @@ Los valores esperados de R3 se calculan con el oráculo independiente de see_ora
   "id": "R7",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La capacidad RedCap solo se concede cuando el anfitrión autoriza red y limita sus orígenes a los declarados. Sin permiso no se concede; una petición fuera del conjunto se rechaza antes de consultar al proveedor.",
-  "verificacion": ["C10"]
+  "texto": "SolicitarRed concede autoridad sobre cualquier destino http o https, incluidos loopback y redes privadas. No existe lista de orígenes del anfitrión. Limitar es una atenuación voluntaria del programa y no puede amplificar una capacidad ya atenuada.",
+  "verificacion": [
+    "C10"
+  ]
 }
 ```
 
@@ -511,22 +501,34 @@ Los valores esperados de R3 se calculan con el oráculo independiente de see_ora
 {
   "id": "C10",
   "regla": "R7",
-  "perfiles": ["es", "en"],
-  "rigor": ["estricto", "flexible"],
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
     "salida": "permiso_denegado\n",
     "terminacion": "completed",
-    "anfitrion_observado": {"llamadas": 0}
+    "anfitrion_observado": {
+      "llamadas": 1
+    }
   },
   "programas": {
     "es": "Algoritmo Main\nSegun SolicitarRed() Hacer\nExito(net): Escribir \"concedida\";\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
     "en": "algorithm Main\nswitch requestNetwork() do\nsuccess(net): write \"granted\";\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [],
-    "requested_permissions": ["red"]
+    "faults": [
+      {
+        "operation": "request_network",
+        "code": "permiso_denegado"
+      }
+    ]
   }
 }
 ```
@@ -536,9 +538,11 @@ Los valores esperados de R3 se calculan con el oráculo independiente de see_ora
   "id": "R8",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Un adaptador que realiza solicitudes HTTP reales entrega las respuestas 3xx al programa sin seguirlas, no añade ni persiste cookies, no consulta proxies ambientales o del sistema y siempre valida certificados TLS. Solo el anfitrión puede añadir raíces de confianza de prueba; el programa no puede desactivar la validación.",
-  "verificacion": ["revision_humana"],
-  "justificacion": "Las pruebas locales validan que la configuración TLS solo representa validación obligatoria y raíces del anfitrión. El adaptador y las pruebas con certificado y proxy reales se incorporan en la batería excluida de esta iteración."
+  "texto": "El adaptador nativo entrega las respuestas 3xx sin seguirlas, no añade ni persiste cookies, no consulta proxies ambientales o del sistema y valida siempre certificados TLS mediante las raíces de la plataforma. Solo el anfitrión puede añadir raíces de prueba. El navegador puede seguir redirecciones y entrega la URL final; CORS, contenido mixto y cabeceras prohibidas se informan como ErrorES con causa de plataforma. El programa nunca puede desactivar TLS.",
+  "verificacion": [
+    "revision_humana"
+  ],
+  "justificacion": "Los casos derivados verifican el contrato; las pruebas de transporte comprueban las diferencias físicas de plataforma."
 }
 ```
 
@@ -547,8 +551,10 @@ Los valores esperados de R3 se calculan con el oráculo independiente de see_ora
   "id": "R9",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Un adaptador nativo resuelve cada host una sola vez, comprueba todas las direcciones devueltas y conecta solo a una de ese conjunto comprobado. Deniega loopback, redes privadas, enlace local, únicas locales, multidifusión, direcciones no especificadas, broadcast e IPv4 mapeadas en IPv6 que pertenezcan a esos rangos; una concesión local de prueba solo admite direcciones loopback.",
-  "verificacion": ["revision_humana"],
-  "justificacion": "Las pruebas unitarias cubren los rangos y la resolución única con resolvedor inyectado. La conexión fijada a una IP comprobada se integra con el transporte nativo y queda en la batería excluida de esta iteración."
+  "texto": "El adaptador nativo resuelve cada host una sola vez y conecta a una dirección de esa respuesta. No filtra loopback, redes privadas ni otros rangos por política del lenguaje. Los fallos de resolución o conexión son errores tipados; no se heredan proxies ni credenciales ambientales.",
+  "verificacion": [
+    "revision_humana"
+  ],
+  "justificacion": "Los casos derivados verifican el contrato; las pruebas de transporte comprueban las diferencias físicas de plataforma."
 }
 ```

@@ -1,3 +1,4 @@
+import 'content/execution_host_checks.dart';
 import 'dart:io';
 import 'package:path/path.dart' as p;
 import 'content/knowledge_validation.dart';
@@ -13,7 +14,10 @@ Future<void> main(List<String> args) async {
 
   final knowledgeDir = Directory(knowledgeTarget);
 
-  final errors = await validateKnowledgeDirectory(knowledgeDir);
+  final errors = [
+    ...await validateKnowledgeDirectory(knowledgeDir),
+    ...await validateExecutionHostDirectory(Directory(p.join(basePath, 'lib'))),
+  ];
   closeContentEngine();
 
   if (errors.isNotEmpty) {

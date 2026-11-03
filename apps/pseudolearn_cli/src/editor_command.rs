@@ -44,6 +44,10 @@ pub fn execute_editor(options: &CliOptions) -> Result<i32, CliError> {
                 resource: &started.resource,
                 sources: &started.sources,
                 output_limit: MAXIMUM_OUTPUT_BYTES,
+                effects: crate::physical_session::open_host(&options.execution)?
+                    .map(crate::dap_effects::EffectHost::new)
+                    .transpose()
+                    .map_err(operational)?,
             };
             let status = drive(running, &inbound, &mut sink).map_err(operational)?;
             Ok(status.exit_code())
@@ -52,7 +56,8 @@ pub fn execute_editor(options: &CliOptions) -> Result<i32, CliError> {
 }
 
 fn launch_project(options: &CliOptions) -> Result<Launch, CliError> {
-    let prepared = prepare(options, true)?;
+    let mut prepared = prepare(options, true)?;
+    crate::project_execution::configure(options, &mut prepared.arguments)?;
     let sources: Vec<Value> = prepared
         .snapshot
         .sources

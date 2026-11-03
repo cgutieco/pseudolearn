@@ -48,6 +48,17 @@ pub fn parse_cli_options(raw_arguments: &[String]) -> Result<CliOptions, CliErro
     let mut parsed = ParsedArguments::default();
     let mut current_index = 0;
     while current_index < raw_arguments.len() {
+        if raw_arguments
+            .get(current_index)
+            .is_some_and(|argument| argument == "--")
+        {
+            parsed.execution.program_arguments = raw_arguments
+                .iter()
+                .skip(current_index.saturating_add(1))
+                .cloned()
+                .collect();
+            break;
+        }
         handle_argument_step(
             raw_arguments,
             &mut current_index,
@@ -148,14 +159,6 @@ fn handle_execution_option(
     match current {
         "--grabar-cinta" | "--record-tape" | "--reproducir-cinta" | "--replay-tape" => {
             crate::execution_options::parse_tape_option(
-                raw_arguments,
-                current_index,
-                locale,
-                &mut parsed.execution,
-            )
-        }
-        "--conceder" | "--grant" | "--archivos" | "--files" => {
-            crate::execution_options::parse_grant_option(
                 raw_arguments,
                 current_index,
                 locale,

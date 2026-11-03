@@ -11,10 +11,6 @@ struct Configuration {
     #[serde(rename = "args")]
     arguments: Vec<String>,
     clock: Vec<u64>,
-    permissions: Vec<String>,
-    requested_permissions: Option<Vec<String>>,
-    #[serde(rename = "network_origins")]
-    _network_origins: Vec<String>,
     faults: Vec<FaultConfiguration>,
     http: BTreeMap<String, HttpScriptConfiguration>,
     #[serde(rename = "secrets")]
@@ -67,25 +63,8 @@ struct SecretConfiguration {
     _value: String,
 }
 
-const KNOWN_PERMISSIONS: [&str; 7] = [
-    "consola",
-    "argumentos",
-    "archivos_lectura",
-    "archivos_escritura",
-    "reloj",
-    "temporizador",
-    "red",
-];
-
 pub(crate) fn parse(value: &Value) -> Result<MemoryHostProvider, IoError> {
     let config: Configuration = serde_json::from_value(value.clone()).map_err(|_| invalid())?;
-    let mut permissions = config
-        .permissions
-        .iter()
-        .chain(config.requested_permissions.iter().flatten());
-    if permissions.any(|permission| !KNOWN_PERMISSIONS.contains(&permission.as_str())) {
-        return Err(invalid());
-    }
     crate::secret_policy::SecretPolicy::from_host(Some(value))?;
     let http_scripts = parse_http_scripts(config.http)?;
     let mut provider = MemoryHostProvider {

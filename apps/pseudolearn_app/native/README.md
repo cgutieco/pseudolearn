@@ -65,14 +65,14 @@ El sobre JSON conserva la identidad opcional `source` de la API sin convertirla 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
 `ApiSession` contiene estado `!Sync`, mientras los puertos de la app son síncronos. La sesión vive en
-un registro local al hilo invocador y se identifica con un `u64`; no se expone como objeto opaco ni se
-crea un worker. Cada llamada lleva un JSON completo que Rust decodifica a valores propios. Las
+un registro local al hilo invocador y se identifica con un `u64`. El registro conserva también un
+HostWorker independiente por ejecución; la API continúa en su hilo propietario. Cada llamada lleva un JSON completo que Rust decodifica a valores propios. Las
 respuestas de error conservan familia y detalle; los fallos internos de la API quedan contenidos en
 su límite `catch_unwind`.
 
 `flutter_rust_bridge` y `flutter_rust_bridge_hooks` se fijan en `2.13.0`. Native Assets compila y
 empaqueta la biblioteca con el SDK de Rust fijado. El módulo `native` compila la API sin activar la
-feature `native` de `pseudolearn_api`, por lo que el puente no incorpora Cranelift. `rust-checks isolation` lo comprueba por destino (iOS en dispositivo y simulador, macOS arm64 y x86_64, Windows x64) y rechaza que `pseudolearn_codegen`, `pseudolearn_aot_rt`, cualquier `cranelift-*`, Hyper, `http`, Rustls, clientes HTTP o resolvedores DNS sean alcanzables desde `pseudolearn_bridge`. `cargo tree --locked -e normal` desde este directorio muestra el mismo grafo fijado por `Cargo.lock`. Android no es un destino de la app y por eso no figura.
+feature `native` de `pseudolearn_api`, por lo que el puente no incorpora Cranelift. `rust-checks isolation` lo comprueba por destino (iOS en dispositivo y simulador, macOS arm64 y x86_64, Windows x64) y rechaza que `pseudolearn_codegen`, `pseudolearn_aot_rt`, cualquier `cranelift-*` o las features `test-host` sean alcanzables desde `pseudolearn_bridge`. HTTP y TLS se incorporan exclusivamente a través de `pseudolearn_host`. `cargo tree --locked -e normal` desde este directorio muestra el mismo grafo fijado por `Cargo.lock`. Android no es un destino de la app y por eso no figura.
 
 El build de Release macOS conserva los slices arm64 y x86_64 en `pseudolearn_bridge.framework`. iOS
 compila para dispositivo y simulador. Windows instala el DLL junto al ejecutable a través de
@@ -123,3 +123,39 @@ limpio; `bash tool/bridge.sh clean-checkout` lo comprueba en un árbol de trabaj
   empaquetado de la biblioteca a través de hooks.
 - [Llamadas síncronas de flutter_rust_bridge](https://cjycode.com/flutter_rust_bridge/guides/concurrency/sync-dart):
   uso acotado desde puertos síncronos.
+
+## Anfitrión físico compartido
+
+`BridgeSession` posee la API y sus `HostWorker`. Las operaciones `host_open`, `host_submit`, `host_poll`
+y `host_close` transportan solicitudes identificadas por `effect_seq`; ningún transporte se duplica
+en Dart. La carpeta de trabajo y los argumentos son datos aportados por la composición. Abrir crea
+la carpeta por documento; errores de apertura son fallos tipados de transporte. Cancelar, liberar o
+cerrar la sesión destruye sus workers y activa la cancelación de solicitudes en curso.
+
+Archivos permanecen en un worker propietario; HTTP y temporizadores se ejecutan en hilos separados
+para que una espera no bloquee otras tareas ni la interfaz. Las colas admiten 32 solicitudes; la VM
+conserva identidad, agenda y orden de entrega en cinta. El host no sigue redirecciones, usa las raíces
+TLS del sistema y no hereda cookies ni proxies. La semilla procede de entropía del SO salvo opción
+explícita; reproducción toma la identidad grabada y no abre un anfitrión.
+
+El presupuesto ios-arm64 pasa a 8 MiB por autorización explícita del propietario para compartir este
+transporte con la CLI. Release conserva opt-level z, LTO fat y una unidad; los símbolos se separan.
+El presupuesto Wasm permanece en 900 KiB. Las pruebas físicas son locales, sin dependencia de Internet.
+
+Medición intermedia local del 2026-11-03, fuentes modificadas sobre 04b4153868cc3ab63f90c2b0e1445e4adb8832bf:
+ios-arm64 Release 5.989.360 bytes, SHA-256
+cd90dbf8d48abf3d7673bfa65b49c55188c1b4435c55eae31ce597c42c6a51e4,
+con símbolos separados y UUID coincidente. El Wasm Brotli Q11/lgwin22 mide 842.655 bytes,
+SHA-256 633df31c149568458b1266a94a6a9ee9606463eab360d6513db5b501cdecbf31.
+Ambos caben en los presupuestos vigentes de 8 MiB y 900 KiB. Se modificaron después la entrega
+de efectos concurrentes y la reutilización de entropía; falta recapturar los artefactos finales.
+El campo de argumentos usa
+un ancho semántico propio de componente para conservar espacio legible sin literales de diseño.
+
+El transporte reutiliza getrandom 0.2.17, ya presente por ring, para evitar una segunda versión del
+proveedor de entropía. Las licencias de transporte permiten BSD-3-Clause (subtle), ISC (ring y WebPKI)
+y CDLA-Permissive-2.0 para los datos de raíces de respaldo del verificador de plataforma. La puerta
+de dependencias mantiene el rechazo de duplicados y omite versiones exactas inevitables de
+io-lifetimes y bindings Windows heredadas de cap-std. El puente también omite hashbrown 0.14.5
+(oslog de FRB) y miniz_oxide 0.8.9 (backtrace de FRB), manteniendo las versiones actuales usadas por
+indexmap y flate2. Estas excepciones son de compatibilidad de dependencias, sin cambiar validación TLS.

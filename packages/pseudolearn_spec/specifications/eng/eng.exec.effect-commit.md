@@ -95,12 +95,6 @@
     "en": "subroutine Probe() as result<string, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\nreturn file.readText();\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "archivos_lectura"
-    ],
-    "requested_permissions": [
-      "archivos_lectura"
-    ],
     "files": {
       "a": "hola"
     },
@@ -156,12 +150,6 @@
     "en": "subroutine Probe() as result<integer, IoError>\ndefine clock as Clock <- propagate requestClock();\ndefine first as integer <- propagate clock.now();\ndefine second as integer <- propagate clock.now();\nreturn success(first * 1000 + second);\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "reloj"
-    ],
-    "requested_permissions": [
-      "reloj"
-    ],
     "clock": [
       100,
       200
@@ -232,12 +220,6 @@
     "en": "subroutine Probe() as result<string, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\nreturn file.readText();\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code; if problem.uncertain then write \"incierto\"; else write \"cierto\"; endIf\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "archivos_lectura"
-    ],
-    "requested_permissions": [
-      "archivos_lectura"
-    ],
     "files": {
       "a": "hola"
     },
@@ -300,14 +282,6 @@
     "en": "subroutine Probe() as result<integer, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine file as FileCap <- propagate directory.open(\"a\", \"write\");\nreturn file.writeText(\"x\");\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code; if problem.uncertain then write \"incierto\"; else write \"cierto\"; endIf\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "archivos_lectura",
-      "archivos_escritura"
-    ],
-    "requested_permissions": [
-      "archivos_lectura",
-      "archivos_escritura"
-    ],
     "files": {},
     "faults": [
       {
@@ -392,12 +366,6 @@
     "en": "subroutine Probe() as result<integer, IoError>\ndefine clock as Clock <- propagate requestClock();\nreturn success((propagate clock.now()) * 1000 + (propagate clock.now()));\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "reloj"
-    ],
-    "requested_permissions": [
-      "reloj"
-    ],
     "clock": [
       100,
       200
@@ -442,10 +410,6 @@
     "en": "subroutine Probe() as result<string, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\nreturn file.readText();\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code; if problem.uncertain then write \"incierto\"; else write \"cierto\"; endIf\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [],
-    "requested_permissions": [
-      "archivos_lectura"
-    ],
     "files": {
       "a": "hola"
     }
@@ -500,14 +464,6 @@
     "en": "subroutine Probe() as result<integer, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine file as FileCap <- propagate directory.open(\"a\", \"write\");\nreturn file.writeText(\"x\");\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code; if problem.uncertain then write \"incierto\"; else write \"cierto\"; endIf\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": [
-      "archivos_lectura",
-      "archivos_escritura"
-    ],
-    "requested_permissions": [
-      "archivos_lectura",
-      "archivos_escritura"
-    ],
     "files": {},
     "faults": [
       {
@@ -535,8 +491,14 @@
 {
   "id": "C8",
   "regla": "R5",
-  "perfiles": ["es", "en"],
-  "rigor": ["estricto", "flexible"],
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
@@ -546,8 +508,18 @@
       "llamadas": 2,
       "estado_cinta": "uncertain_external_state",
       "efectos": [
-        {"effect_seq": 1, "capability_kind": "network", "operation": "request_network", "outcome": "committed"},
-        {"effect_seq": 2, "capability_kind": "network", "operation": "network_send", "outcome": "uncertain"}
+        {
+          "effect_seq": 1,
+          "capability_kind": "network",
+          "operation": "request_network",
+          "outcome": "committed"
+        },
+        {
+          "effect_seq": 2,
+          "capability_kind": "network",
+          "operation": "network_send",
+          "outcome": "uncertain"
+        }
       ]
     }
   },
@@ -556,9 +528,12 @@
     "en": "algorithm Main\nswitch requestNetwork() do\nsuccess(net):\ndefine request as HttpRequest <- HttpRequest(HttpMethod.POST, \"https://fake.test/write\");\nswitch net.send(request) do\nsuccess(response): write \"committed\";\nfailure(problem): write problem.uncertain;\nendSwitch\nfailure(denied): write denied.uncertain;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": ["red"],
-    "requested_permissions": ["red"],
-    "http": {"POST https://fake.test/write": {"fallo": "conexion_fallida", "incierto": true}}
+    "http": {
+      "POST https://fake.test/write": {
+        "fallo": "conexion_fallida",
+        "incierto": true
+      }
+    }
   }
 }
 ```
@@ -567,8 +542,14 @@
 {
   "id": "C9",
   "regla": "R5",
-  "perfiles": ["es", "en"],
-  "rigor": ["estricto", "flexible"],
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
@@ -578,8 +559,18 @@
       "llamadas": 2,
       "estado_cinta": "reproducible",
       "efectos": [
-        {"effect_seq": 1, "capability_kind": "network", "operation": "request_network", "outcome": "committed"},
-        {"effect_seq": 2, "capability_kind": "network", "operation": "network_send", "outcome": "failed"}
+        {
+          "effect_seq": 1,
+          "capability_kind": "network",
+          "operation": "request_network",
+          "outcome": "committed"
+        },
+        {
+          "effect_seq": 2,
+          "capability_kind": "network",
+          "operation": "network_send",
+          "outcome": "failed"
+        }
       ]
     }
   },
@@ -588,9 +579,12 @@
     "en": "algorithm Main\nswitch requestNetwork() do\nsuccess(net):\nswitch net.send(HttpRequest(HttpMethod.GET, \"https://fake.test/read-cut\")) do\nsuccess(response): write true;\nfailure(problem): write problem.uncertain;\nendSwitch\nfailure(denied): write denied.uncertain;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": ["red"],
-    "requested_permissions": ["red"],
-    "http": {"GET https://fake.test/read-cut": {"fallo": "conexion_fallida", "incierto": false}}
+    "http": {
+      "GET https://fake.test/read-cut": {
+        "fallo": "conexion_fallida",
+        "incierto": false
+      }
+    }
   }
 }
 ```
@@ -599,8 +593,14 @@
 {
   "id": "C10",
   "regla": "R5",
-  "perfiles": ["es", "en"],
-  "rigor": ["estricto", "flexible"],
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
@@ -610,8 +610,18 @@
       "llamadas": 2,
       "estado_cinta": "uncertain_external_state",
       "efectos": [
-        {"effect_seq": 1, "capability_kind": "network", "operation": "request_network", "outcome": "committed"},
-        {"effect_seq": 2, "capability_kind": "network", "operation": "network_send", "outcome": "uncertain"}
+        {
+          "effect_seq": 1,
+          "capability_kind": "network",
+          "operation": "request_network",
+          "outcome": "committed"
+        },
+        {
+          "effect_seq": 2,
+          "capability_kind": "network",
+          "operation": "network_send",
+          "outcome": "uncertain"
+        }
       ]
     }
   },
@@ -620,9 +630,12 @@
     "en": "algorithm Main\nswitch requestNetwork() do\nsuccess(net):\nswitch net.send(HttpRequest(HttpMethod.DELETE, \"https://fake.test/delete-cut\")) do\nsuccess(response): write false;\nfailure(problem): write problem.uncertain;\nendSwitch\nfailure(denied): write denied.uncertain;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
-    "permissions": ["red"],
-    "requested_permissions": ["red"],
-    "http": {"DELETE https://fake.test/delete-cut": {"fallo": "conexion_fallida", "incierto": true}}
+    "http": {
+      "DELETE https://fake.test/delete-cut": {
+        "fallo": "conexion_fallida",
+        "incierto": true
+      }
+    }
   }
 }
 ```

@@ -1,6 +1,5 @@
 use pseudolearn_project::{
-    Configuration, HostGrants, LimitName, ManifestErrorCode, ManifestRequest, PermissionName,
-    Provenance,
+    Configuration, HostGrants, LimitName, ManifestErrorCode, ManifestRequest, Provenance,
 };
 
 fn manifest(limits: &[(&str, u64)]) -> String {
@@ -17,7 +16,6 @@ fn manifest(limits: &[(&str, u64)]) -> String {
 fn grants(limits: &[(LimitName, u64)]) -> HostGrants {
     HostGrants {
         limits: limits.iter().copied().collect(),
-        permissions: std::collections::BTreeSet::new(),
     }
 }
 
@@ -128,36 +126,5 @@ fn effective_value_never_exceeds_request_or_grant() -> Result<(), String> {
         assert!(effective <= requested && effective <= granted);
         assert_eq!(effective, requested.min(granted));
     }
-    Ok(())
-}
-
-#[test]
-fn requested_permission_is_effective_only_when_granted() -> Result<(), String> {
-    let manifest_source = "schema = 1\n[package]\nname = \"pkg\"\nkind = \"library\"\n[requests]\npermissions = [\"consola\", \"reloj\"]\n";
-    let mut granted_permissions = std::collections::BTreeSet::new();
-    granted_permissions.insert(PermissionName::Console);
-    let host_grants = HostGrants {
-        limits: std::collections::BTreeMap::new(),
-        permissions: granted_permissions,
-    };
-    let configuration = resolve(manifest_source, &host_grants)
-        .map_err(|failure_codes| format!("{failure_codes:?}"))?;
-    assert!(configuration.permissions.contains(&PermissionName::Console));
-    assert!(!configuration.permissions.contains(&PermissionName::Clock));
-    assert!(
-        !configuration
-            .permissions
-            .contains(&PermissionName::Arguments)
-    );
-    Ok(())
-}
-
-#[test]
-fn default_denial_when_no_permissions_granted() -> Result<(), String> {
-    let manifest_source = "schema = 1\n[package]\nname = \"pkg\"\nkind = \"library\"\n[requests]\npermissions = [\"archivos_lectura\", \"temporizador\"]\n";
-    let host_grants = HostGrants::default();
-    let configuration = resolve(manifest_source, &host_grants)
-        .map_err(|failure_codes| format!("{failure_codes:?}"))?;
-    assert!(configuration.permissions.is_empty());
     Ok(())
 }

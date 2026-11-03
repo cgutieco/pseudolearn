@@ -1,12 +1,6 @@
-export interface FileGrant {
-  root: string;
-  writable: boolean;
-  confined: boolean;
-}
-
-export interface BrowserGrants {
-  origins: string[];
-  files?: FileGrant;
+export interface BrowserHostContext {
+  root?: string;
+  args?: readonly string[];
 }
 
 export interface EffectResolution {

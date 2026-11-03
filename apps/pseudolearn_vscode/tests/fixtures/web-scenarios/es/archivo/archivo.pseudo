@@ -1,5 +1,5 @@
 SubProceso Run() Como Resultado<Entero, ErrorES>
-Definir directory Como DirectorioCap <- Propagar SolicitarDirectorio("root");
+Definir directory Como DirectorioCap <- Propagar SolicitarDirectorio(".");
 Definir output Como ArchivoCap <- Propagar directory.Abrir("salida.txt", "escritura");
 Diferir
 Descartar output.Cerrar();

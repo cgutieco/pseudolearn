@@ -1,11 +1,14 @@
 import * as vscode from "vscode";
 import type { ApiPort, Projection } from "../contracts/worker_transport";
-import type { BrowserGrants } from "../contracts/host_capabilities";
+import type { BrowserHostContext } from "../contracts/host_capabilities";
 import { encodeArguments, numeric } from "../application/canonical_arguments";
-import { answerValue, object, text } from "../application/wire_projection";
+import { acceptAnswer, answerValue, object, text } from "../application/wire_projection";
 import { BrowserEffectHost, NETWORK_CAPABILITIES } from "./browser_effect_host";
 
+interface CompletedEffect { effect: Record<string, Projection>; result: unknown }
+
 export class BrowserRun {
+  private readonly pendingEffects = new Map<string, Promise<CompletedEffect>>();
   private resource: string | undefined;
   private stopping = false;
   private effects: BrowserEffectHost | undefined;
@@ -14,14 +17,15 @@ export class BrowserRun {
 
   constructor(private readonly api: ApiPort, private readonly output: vscode.OutputChannel) {}
 
-  async start(argumentsValue: Record<string, unknown>, grants: BrowserGrants): Promise<void> {
+  async start(argumentsValue: Record<string, unknown>, host: BrowserHostContext): Promise<void> {
     if (this.resource || this.starting) throw new Error("A program is already running");
     if (!vscode.workspace.isTrusted) throw new Error("Workspace trust is required");
     this.starting = true;
     this.stopping = false;
-    this.effects = new BrowserEffectHost(grants);
+    this.pendingEffects.clear();
+    this.effects = new BrowserEffectHost(host);
     try {
-      await this.prepare(argumentsValue, grants);
+      await this.prepare(argumentsValue, host);
       if (this.stopping) await this.stop();
       await this.drive();
     } finally {
@@ -31,12 +35,12 @@ export class BrowserRun {
     }
   }
 
-  private async prepare(argumentsValue: Record<string, unknown>, grants: BrowserGrants): Promise<void> {
+  private async prepare(argumentsValue: Record<string, unknown>, _host: BrowserHostContext): Promise<void> {
     await this.api.call("negotiate", encodeArguments({ network_capabilities: NETWORK_CAPABILITIES }));
-    const permissions = grants.origins.length ? ["red"] : [];
-    if (grants.files) permissions.push("archivos_lectura", ...(grants.files.writable ? ["archivos_escritura"] : []));
-    const request = { ...argumentsValue, observe: "events", host: { detached: true, permissions,
-      network_origins: grants.origins }, execution_mode: "live_record" };
+    const entropy = crypto.getRandomValues(new Uint32Array(2));
+    const seed = BigInt.asIntN(64, (BigInt(entropy[0]!) << 32n) | BigInt(entropy[1]!));
+    const request = { ...argumentsValue, seed: argumentsValue.seed ?? numeric(seed.toString()),
+      observe: "events", host: { detached: true }, execution_mode: "live_record" };
     const result = argumentsValue.project ? await this.api.call("start_project", encodeArguments(request))
       : await this.startFile(request);
     const value = answerValue(result);
@@ -76,7 +80,7 @@ export class BrowserRun {
 
   private async handleResponse(value: Record<string, Projection>): Promise<boolean> {
     const termination = object(value.termination);
-    if (termination.kind === "awaiting_input") { await this.input(); return true; }
+    if (termination.kind === "awaiting_input") { await this.input(value); return true; }
     if (termination.kind === "awaiting_effect") { await this.effect(value); return true; }
     if (termination.kind === "running") return true;
     this.output.appendLine(`PseudoLearn: ${termination.kind}`);
@@ -91,17 +95,32 @@ export class BrowserRun {
     this.analysis = undefined;
   }
 
-  private async input(): Promise<void> {
+  private async input(value: Record<string, Projection>): Promise<void> {
     const line = await vscode.window.showInputBox({ prompt: "PseudoLearn input / Entrada", ignoreFocusOut: true });
     const cancelled = line === undefined || this.stopping;
-    if (cancelled) await this.stop();
-    await this.api.call("input", encodeArguments({ resource: numeric(this.resource!), text: cancelled ? "" : line }));
+    if (cancelled) { await this.stop(); return; }
+    const pending = object(value.pending_input);
+    acceptAnswer(await this.api.call("input", encodeArguments({ resource: numeric(this.resource!), text: line,
+      resource_id: numeric(text(pending.resource_id)), task_id: numeric(text(pending.task_id)),
+      request_id: numeric(text(pending.request_id)) })));
+
   }
 
   private async effect(value: Record<string, Projection>): Promise<void> {
-    const effect = object(value.pending_effect);
-    const result = await this.effects!.perform(effect);
+    const requests = Array.isArray(value.pending_effects) ? value.pending_effects : [value.pending_effect];
+    for (const raw of requests) {
+      const effect = object(raw);
+      const sequence = text(effect.effect_seq);
+      if (!this.pendingEffects.has(sequence)) {
+        this.pendingEffects.set(sequence, this.effects!.perform(effect).then((result) => ({ effect, result })));
+      }
+    }
+    const completed = await Promise.race(this.pendingEffects.values());
+    const sequence = text(completed.effect.effect_seq);
+    this.pendingEffects.delete(sequence);
     if (this.stopping) return;
-    await this.api.call("effect_result", encodeArguments({ resource: numeric(this.resource!), effect_seq: numeric(text(effect.effect_seq)), result }));
+    acceptAnswer(await this.api.call("effect_result", encodeArguments({ resource: numeric(this.resource!),
+      effect_seq: numeric(sequence), result: completed.result })));
+
   }
 }

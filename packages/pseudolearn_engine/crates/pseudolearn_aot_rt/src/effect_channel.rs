@@ -1,19 +1,19 @@
 use crate::trap::Trap;
 use pseudolearn_runtime::{
-    EffectSession, ExecutionIdentity, MemoryHostProvider, ReplayError, console_record,
+    EffectSession, ExecutionHostProvider, ExecutionIdentity, ReplayError, console_record,
 };
 use std::collections::BTreeMap;
 
 pub struct EffectChannel {
     pub(crate) session: EffectSession,
-    pub(crate) provider: MemoryHostProvider,
+    pub(crate) provider: ExecutionHostProvider,
     pub(crate) cancel_on_effect: Option<u64>,
     pub(crate) cancelled: bool,
     failure: Option<ReplayError>,
 }
 
 impl EffectChannel {
-    pub fn new(session: EffectSession, provider: MemoryHostProvider) -> Self {
+    pub fn new(session: EffectSession, provider: ExecutionHostProvider) -> Self {
         Self {
             session,
             provider,
@@ -39,14 +39,13 @@ impl EffectChannel {
             profile: String::new(),
             seed: 0,
             statement_limit: None,
-            permissions: Vec::new(),
         };
         Self::new(
             EffectSession::new(
                 identity,
                 pseudolearn_runtime::tape_privacy::DEFAULT_MAX_TAPE_BYTES,
             ),
-            MemoryHostProvider::new(),
+            ExecutionHostProvider::new(),
         )
     }
 

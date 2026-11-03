@@ -8,7 +8,7 @@ pub(super) struct PreparedExecution {
     pub network_limits: pseudolearn_runtime::NetworkLimits,
     pub execution_mode: ExecutionMode,
     pub effects: pseudolearn_runtime::EffectSession,
-    pub host: crate::FakeHostProvider,
+    pub host: pseudolearn_runtime::ExecutionHostProvider,
     pub detached_effects: bool,
     pub cancel_on_effect: Option<u64>,
     pub cancelled: Arc<AtomicBool>,
@@ -44,7 +44,7 @@ fn prepare_execution(request: &ExecuteRequest) -> Result<PreparedExecution, ApiE
     let host = crate::execution_resource::execution_effects::prepare_host(request, execution_mode)?;
     let detached_effects = host_setting(request, "detached")
         .and_then(Value::as_bool)
-        .unwrap_or(false);
+        .unwrap_or(!cfg!(feature = "test-host"));
     let cancel_on_effect =
         host_setting(request, "cancel_on_awaiting_effect").and_then(Value::as_u64);
     Ok(PreparedExecution {

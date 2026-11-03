@@ -10,6 +10,7 @@ extension _EditorDocumentLoading on EditorCubit {
         sourceCode: document.content,
         profileId: document.profileId,
         languageId: languageId,
+        strictness: document.strictness,
       ),
       completions: _completionSource.getCompletions(document.profileId),
       contextualCompletions: _queryCompletions(
@@ -59,4 +60,49 @@ extension _EditorTypingAssist on EditorCubit {
     final tail = after.substring(cursorUtf16);
     return before == '$head$tail' ? after[cursorUtf16 - 1] : null;
   }
+}
+
+extension _EditorExecutionConfiguration on EditorCubit {
+  EditorState _editedDocumentState({
+    required String code,
+    required SyntaxProfileId profileId,
+    required UiLanguageId languageId,
+    required ExecutionConfiguration? configuration,
+    required SourceEdit? assist,
+    required bool changed,
+    required int cursor,
+    required int revision,
+  }) => state.copyWith(
+    document: _configuredDocument(configuration),
+    sourceCode: code,
+    report: _configuredAnalysis(code, profileId, languageId, configuration: configuration),
+    contextualCompletions: _queryCompletions(
+      sourceCode: code,
+      profileId: profileId,
+      cursorUtf16: changed ? assist!.caret.start : cursor,
+      revision: revision,
+    ),
+    completionRevision: revision,
+    isDirty: true,
+    pendingEdit: changed ? assist : null,
+    templateActive: assist?.templateActive ?? false,
+  );
+
+  AnalysisReport _configuredAnalysis(
+    String code,
+    SyntaxProfileId profile,
+    UiLanguageId language,
+    {ExecutionConfiguration? configuration}
+  ) => _analyzer.analyze(
+    sourceCode: code,
+    profileId: profile,
+    languageId: language,
+    strictness: _configuredDocument(configuration)?.strictness ?? 'flexible',
+  );
+
+  Document? _configuredDocument(ExecutionConfiguration? configuration) =>
+      state.document?.copyWith(
+        strictness: configuration?.strictness,
+        executionArguments: configuration?.arguments,
+      );
 }

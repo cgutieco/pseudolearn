@@ -83,7 +83,6 @@ fn run(server: &LoopbackServer, label: &str, header: &str) -> Result<Output, Str
     let output = Command::new(env!("CARGO_BIN_EXE_pseudo"))
         .arg("run")
         .arg(&program_path)
-        .args(["--grant", "red", "--local-origin", &origin])
         .output()
         .map_err(|error| error.to_string())?;
     let _removed = std::fs::remove_dir_all(directory);

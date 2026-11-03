@@ -62,9 +62,6 @@ fn every_identity_component_changes_the_identity() {
         changed(|request| request.strictness = "flexible".to_owned()),
         changed(|request| request.profile = "en".to_owned()),
         changed(|request| request.program.push('\n')),
-        changed(|request| {
-            request.host = Some(serde_json::json!({"permissions":["reloj"]}));
-        }),
     ];
     for (index, variant) in variants.iter().enumerate() {
         assert!(!baseline.matches(variant), "variant {index}");

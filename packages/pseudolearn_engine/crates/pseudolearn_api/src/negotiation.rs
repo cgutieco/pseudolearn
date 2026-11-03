@@ -90,7 +90,7 @@ fn valid_network_capabilities(value: &Value) -> bool {
             .is_some_and(Value::is_boolean)
         && matches!(
             value.get("ssrf_policy").and_then(Value::as_str),
-            Some("adapter" | "browser")
+            Some("none" | "browser")
         )
         && matches!(
             value.get("compression").and_then(Value::as_str),

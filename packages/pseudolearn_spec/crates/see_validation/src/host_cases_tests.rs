@@ -50,7 +50,7 @@ fn certain_fault_is_accepted_on_read_only_operations() {
 
 #[test]
 fn invalid_memory_paths_are_rejected() {
-    assert_eq!(errors(json!({"files":{"../a":"x"}})).len(), 1);
+    assert_eq!(errors(json!({"files":{"":"x"}})).len(), 1);
     assert_eq!(errors(json!({"files":{"a":[256]}})).len(), 1);
     assert!(errors(json!({"files":{"a/b":[0,255]}})).is_empty());
 }
@@ -169,4 +169,21 @@ fn out_of_order_delivery_is_rejected_for_duplicate_requests_or_decreasing_marks(
 #[test]
 fn an_empty_effect_list_is_accepted() {
     assert_eq!(effect_errors_for(&[]), 0);
+}
+
+#[test]
+fn host_schema_rejects_retired_authority_configuration() -> Result<(), String> {
+    let schema: Value = serde_json::from_str(include_str!("../../../schemas/see-1.schema.json"))
+        .map_err(|error| error.to_string())?;
+    let host_schema = schema.pointer("/$defs/host").ok_or("missing host schema")?;
+    assert!(crate::schema_engine::check(&json!({}), host_schema, &schema, 0).is_ok());
+    for key in [
+        "permissions",
+        "requested_permissions",
+        "network_origins",
+        "local_origins",
+    ] {
+        assert!(crate::schema_engine::check(&json!({key: []}), host_schema, &schema, 0).is_err());
+    }
+    Ok(())
 }

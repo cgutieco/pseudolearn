@@ -321,3 +321,20 @@ se conserva «no evaluado físicamente» y el diferimiento; WebKit no se present
 
 Pendientes de calificación: campañas de host completas, evidencias reales de navegador, resultados de
 medición y revisión de cobertura. Las comprobaciones puntuales no certifican esos resultados ni CF-14.
+
+## Anfitriones reales
+
+Escritorio usa la CLI compartida: carpeta del workspace o archivo, args y cwd para DAP, sin concesiones
+de capacidades. La Confianza de Workspace de VS Code sigue siendo el límite para ejecutar programas.
+El host web usa workspace.fs para archivos, Date.now para reloj, esperas cancelables reales y los
+argumentos de la ejecución. No mantiene un sistema de archivos virtual propio ni comandos de concesión.
+
+Fetch accede directamente a HTTP/HTTPS según el navegador, sigue sus redirecciones y conserva CORS,
+contenido mixto y restricciones de cabeceras. Omite cookies ambientales y caché; errores de plataforma
+son resultados tipados. No se evita CORS mediante proxies ni se sustituye una respuesta rechazada.
+La capacidad de red no necesita una lista de orígenes. showCapabilities describe estos límites.
+
+Las subcapacidades de archivos del host web rechazan enlaces simbólicos en el recorrido: workspace.fs
+no ofrece descriptores confinados. La raíz inicial conserva acceso pleno a los enlaces que soporte
+el proveedor. Las respuestas API de éxito con valor null se reconocen como confirmaciones; entrada
+y efectos validan las respuestas y mantienen la identidad completa de solicitud.

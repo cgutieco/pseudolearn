@@ -13,6 +13,8 @@ isolation:
   - package: pseudolearn_api
     targets: [wasm32-unknown-unknown]
     forbidden:
+      - pseudolearn_runtime/test-host
+      - pseudolearn_api/test-host
       - pseudolearn_codegen
       - pseudolearn_aot_rt
       - "cranelift-*"
@@ -31,6 +33,8 @@ isolation:
   - package: pseudolearn_wasm
     targets: [wasm32-unknown-unknown]
     forbidden:
+      - pseudolearn_runtime/test-host
+      - pseudolearn_api/test-host
       - pseudolearn_codegen
       - pseudolearn_aot_rt
       - "cranelift-*"
@@ -47,6 +51,11 @@ isolation:
       - trust-dns-resolver
       - dns-lookup
 layers:
+  - name: pseudolearn_host
+    path: crates/pseudolearn_host
+    may_import: []
+    external_dependencies: [serde, serde_json, cap-std, bytes, flate2, http, http-body-util, hyper, hyper-util, rustls, rustls-platform-verifier, tokio, tokio-rustls, getrandom]
+    unsafe_allowed: false
   - name: pseudolearn_source
     path: crates/pseudolearn_source
     may_import: []
@@ -99,7 +108,7 @@ layers:
     unsafe_allowed: false
   - name: pseudolearn_runtime
     path: crates/pseudolearn_runtime
-    may_import: [pseudolearn_abi, pseudolearn_diagnostics]
+    may_import: [pseudolearn_runtime, pseudolearn_abi, pseudolearn_diagnostics]
     external_dependencies: [serde, serde_json, sha2, hmac]
     unsafe_allowed: false
   - name: pseudolearn_library
@@ -152,7 +161,7 @@ layers:
     unsafe_allowed: false
   - name: pseudolearn_api
     path: crates/pseudolearn_api
-    may_import: [pseudolearn_source, pseudolearn_project, pseudolearn_abi, pseudolearn_diagnostics, pseudolearn_lexicon, pseudolearn_syntax, pseudolearn_semantic, pseudolearn_ir, pseudolearn_lowering, pseudolearn_bytecode, pseudolearn_runtime, pseudolearn_library, pseudolearn_vm, pseudolearn_timeline, pseudolearn_service, pseudolearn_codegen, pseudolearn_aot_rt]
+    may_import: [pseudolearn_api, pseudolearn_source, pseudolearn_project, pseudolearn_abi, pseudolearn_diagnostics, pseudolearn_lexicon, pseudolearn_syntax, pseudolearn_semantic, pseudolearn_ir, pseudolearn_lowering, pseudolearn_bytecode, pseudolearn_runtime, pseudolearn_library, pseudolearn_vm, pseudolearn_timeline, pseudolearn_service, pseudolearn_codegen, pseudolearn_aot_rt]
     external_dependencies: [serde, serde_json, sha2]
     unsafe_allowed: false
   - name: pseudolearn_wasm
