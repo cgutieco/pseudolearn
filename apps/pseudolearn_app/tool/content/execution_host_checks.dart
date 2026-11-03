@@ -20,8 +20,9 @@ Future<List<String>> validateExecutionHostDirectory(Directory directory) async {
     followLinks: false,
   )) {
     if (entry is! File ||
-        (!entry.path.endsWith('.dart') && !entry.path.endsWith('.arb')))
+        (!entry.path.endsWith('.dart') && !entry.path.endsWith('.arb'))) {
       continue;
+    }
     errors.addAll(
       validateExecutionHostSource(await entry.readAsString(), entry.path),
     );

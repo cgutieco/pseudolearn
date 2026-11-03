@@ -34,7 +34,7 @@ fn has_original_identifier_span(analysis: &Value) -> bool {
         .is_some_and(|tokens| {
             tokens.iter().any(|token| {
                 token.get("kind") == Some(&json!("identifier"))
-                    && token.pointer("/span/start/line") == Some(&json!(3))
+                    && token.pointer("/span/start/line") == Some(&json!(7))
                     && token.pointer("/span/start/column") == Some(&json!(1))
                     && token.pointer("/span/end/column") == Some(&json!(5))
             })
@@ -130,7 +130,7 @@ fn source_identity_crosses_the_native_json_boundary_exactly() {
 #[test]
 fn loose_unicode_source_round_trips_through_native_json_analysis() -> Result<(), String> {
     let session = session_identifier();
-    let program = "Algoritmo P\nDefinir año, Importar, Exportar, import, export Como Entero;\nan\u{0303}o <- 5;\nImportar <- 1;\nExportar <- 2;\nimport <- 3;\nexport <- 4;\nEscribir año, Importar, Exportar, import, export;\nFinAlgoritmo\n";
+    let program = "Algoritmo P\nDefinir Mutable año Como Entero <- 0;\nDefinir Mutable Importar Como Entero <- 0;\nDefinir Mutable Exportar Como Entero <- 0;\nDefinir Mutable import Como Entero <- 0;\nDefinir Mutable export Como Entero <- 0;\nan\u{0303}o <- 5;\nImportar <- 1;\nExportar <- 2;\nimport <- 3;\nexport <- 4;\nEscribir año, Importar, Exportar, import, export;\nFinAlgoritmo\n";
     let (analysis, document) = single_file_analysis(session, program)?;
     assert_eq!(analysis.pointer("/value/diagnostics"), Some(&json!([])));
     assert_eq!(stored_program(session, document)?, program);

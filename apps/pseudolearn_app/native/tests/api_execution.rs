@@ -134,7 +134,7 @@ fn cancellation_is_repeatable_and_stops_later_events() {
 fn execution_limits_are_independent_of_batch_size() {
     let session = session_identifier();
     let program =
-        "Algoritmo P\nDefinir x Como Entero;\nx <- 1;\nx <- 2;\nEscribir x;\nFinAlgoritmo\n";
+        "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nx <- 1;\nx <- 2;\nEscribir x;\nFinAlgoritmo\n";
     let analysis = create_analysis(session, program);
     let execution = start_execution(session, analysis, json!({"statements":1}));
     let response = advance(session, execution, 128);

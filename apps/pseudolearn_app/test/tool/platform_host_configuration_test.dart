@@ -29,4 +29,16 @@ void main() {
       contains('internetClient,privateNetworkClientServer'),
     );
   });
+
+  test('macOS declares outgoing network access and no server in release', () {
+    final release = File(
+      'macos/Runner/Release.entitlements',
+    ).readAsStringSync();
+    final debug = File(
+      'macos/Runner/DebugProfile.entitlements',
+    ).readAsStringSync();
+    expect(release, contains('com.apple.security.network.client'));
+    expect(debug, contains('com.apple.security.network.client'));
+    expect(release, isNot(contains('com.apple.security.network.server')));
+  });
 }

@@ -584,6 +584,7 @@ La capa `host` comparte el anillo 2 con engine y data; solo importa model y port
 | `domain/ports/`          | Contratos abstractos e interfaces requeridas                                                                                                                                                                                                                                                                       | `model`                                                                   | `engine`, `data`, `application`, `presentation`, `flutter/`, el transporte del motor, `bloc`, `dart:io`, `dart:ui`                                  |
 | `engine/`                | Adaptación y traducción entre el transporte del motor y `domain`                                                                                                                                                                                                                                                        | `model`, `ports`, el transporte del motor                                      | `data`, `application`, `presentation`, `flutter/`, `dart:io`, `dart:ui`, `RegExp`                                                              |
 | `engine/editing/`        | Cálculo puro de la edición en el cursor (`LexiconSourceEditor`) y derivación de las teclas desde el léxico del perfil (`ProfileKeySource`)                                                                                                                                                                         | `model`, `ports`, el transporte del motor                                      | `data`, `application`, `presentation`, `flutter/`, `dart:io`, `dart:ui`, `RegExp`                                                              |
+| `host/`                  | Contexto físico de ejecución por documento: carpeta de trabajo real (`LocalExecutionEnvironment` implementa `ExecutionEnvironment`); admite `dart:io`, prohíbe interfaz Flutter y `engine/`                                                                                                                                                                                                                                                                                                                                                          |
 | `data/`                  | Persistencia en disco, SQLite y lectura de activos                                                                                                                                                                                                                                                                 | `model`, `ports`, `dart:io`, `sqflite`, `package:markdown`                | `engine`, `application`, `presentation`, el transporte del motor, `flutter/material.dart`, `flutter/widgets.dart`, `bloc`                           |
 | `data/auth/`             | Adaptadores de autenticación nativa de plataforma, cliente Dart puro `supabase`, almacenamiento seguro de token y forma del enlace de retorno (`SupabaseAuthGateway`, `SupabaseAccountDeletionGateway`, `SupabaseSessionPersistence`, `NativeCredentialSource`, `SessionStorage`, `authCallbackUrl`)                                             | `domain/model`, `domain/ports`, `package:supabase`, almacenamiento seguro | `engine`, `application`, `presentation`, el transporte del motor, `flutter/material.dart`, `flutter/widgets.dart`, `flutter/cupertino.dart`, `bloc` |
 | `data/platform/`         | Adaptadores de servicios del sistema operativo: reloj, generación de identificadores, sondeo de conectividad, recepción de enlaces entrantes, modalidad de entrada de texto, apertura de enlaces, versión instalada, petición de reseña en la tienda y soporte de autenticación nativa (`SystemClock`, `RandomIdentifierGenerator`, `ConnectivityMonitorAdapter`, `AppLinksIncomingLinkSource`, `PlatformTextEntryModality`, `PlatformExternalUrlLauncher`, `PlatformNativeAuthSupport`, `PlatformAppVersionSource`, `PlatformStoreReviewPrompt`) | `domain/model`, `domain/ports`, `dart:io`, `package:app_links`, `package:url_launcher`, `package:package_info_plus`, `package:in_app_review` | `engine`, `application`, `presentation`, el transporte del motor, `flutter/material.dart`, `flutter/widgets.dart`, `flutter/cupertino.dart`, `bloc` |
@@ -2429,6 +2430,30 @@ explícitamente para ejecutar programas educativos con HTTP arbitrario. HTTPS ma
 en Rust contra las raíces de plataforma; ATS no se usa para desactivar esa validación. macOS conserva
 los entitlements de red cliente y acceso a datos del contenedor. Windows declara internetClient y
 privateNetworkClientServer. El build y la ejecución de Windows quedan no verificados en macOS.
+
+Lista de comprobación por plataforma antes de publicar:
+
+| Plataforma | Clave o declaración | Dónde | Qué habilita |
+|---|---|---|---|
+| iOS | `NSLocalNetworkUsageDescription` en `es` e `en` | `ios/Runner/Info.plist` y `*.lproj/InfoPlist.strings` | Peticiones a servicios de la red local; el sistema muestra el texto localizado al pedir permiso |
+| iOS | `NSAllowsArbitraryLoads` | `ios/Runner/Info.plist` | HTTP sin cifrar a loopback y direcciones privadas, que el lenguaje permite por diseño |
+| macOS | `network.client` | `macos/Runner/*.entitlements` | Salida de red del anfitrión |
+| macOS | `network.server` solo en Debug y Profile | `macos/Runner/DebugProfile.entitlements` | Servicio de depuración de Flutter; Release no lo declara |
+| Windows | `internetClient,privateNetworkClientServer` | `msix_config.capabilities` de `pubspec.yaml` | Internet y red privada desde el paquete MSIX |
+
+Justificación para la revisión de tienda: PseudoLearn es un entorno de ejecución de programas escritos por la
+persona usuaria, y esos programas pueden pedir cualquier URL `http` o `https`, incluidas las de su red local o
+su propia máquina. Por eso no existe una lista de dominios que declarar en ATS; la validación TLS de HTTPS no
+depende de ATS porque la hace Rust contra las raíces de la plataforma. Los archivos que tocan los programas
+quedan en la carpeta del documento dentro del contenedor de la app. La prueba
+`test/tool/platform_host_configuration_test.dart` falla si desaparece alguna de estas claves.
+
+Mediciones de PG-B.22 y PG-B.23 sobre `96188d7b` con el árbol modificado: la biblioteca del puente con
+`pseudolearn_host` en ios-arm64 Release, con símbolos de depuración y locales retirados, mide 5.913.976 bytes
+(5,64 MiB) y cabe en el tope de 8 MiB de `PERF.ARTIFACT.SIZE#R1`. `flutter build ios --simulator --debug` y
+`flutter build macos --release` terminan correctamente. El build de Windows no se ejecutó (no hay
+cadena de herramientas en este equipo): queda no verificado. `flutter build macos --debug` exige un perfil de
+desarrollo de Apple que este equipo no tiene; no es un fallo del proyecto.
 
 ### 4.55 Import y export pegados: dependencia visible, nunca resuelta
 

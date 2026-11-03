@@ -19,13 +19,7 @@ extension _RustExecutionStart on RustProgramExecution {
       strictness: configuration.strictness,
     );
     if (opened == null) {
-      if (replayTape != null)
-        _reproduction.reject(
-          const RustBridgeFailure(
-            family: 'usage',
-            detail: 'Invalid protocol: analysis has errors',
-          ),
-        );
+      _rejectUnopened(replayTape);
       return const ExecutionStep.unstarted();
     }
     _opened = opened;
@@ -44,5 +38,15 @@ extension _RustExecutionStart on RustProgramExecution {
       return const ExecutionStep.unstarted();
     }
     return _snapshot();
+  }
+
+  void _rejectUnopened(EffectTape? replayTape) {
+    if (replayTape == null) return;
+    _reproduction.reject(
+      const RustBridgeFailure(
+        family: 'usage',
+        detail: 'Invalid protocol: analysis has errors',
+      ),
+    );
   }
 }

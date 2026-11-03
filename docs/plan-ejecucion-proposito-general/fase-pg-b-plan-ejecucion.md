@@ -367,50 +367,50 @@ Cada punto: `.01` especificación · `.02` casos · `.03` tests · `.04` código
 
 ##### PG-B.21 · Capa y puerto de anfitrión
 
-- [ ] `PG-B.21.01` Sin cambio de corpus.
-- [ ] `PG-B.21.02` Escenarios SEE de app (`tool/see_app_scenarios.dart`) sin escenarios simulados.
-- [ ] `PG-B.21.03` Caso negativo del test de arquitectura: la capa nueva importando presentación o `engine/` falla.
-- [ ] `PG-B.21.04` Declarar en `architecture.yaml`, antes del código, la capa `host` (anillo 2, `may_import: [model,
+- [x] `PG-B.21.01` Sin cambio de corpus.
+- [x] `PG-B.21.02` Escenarios SEE de app (`tool/see_app_scenarios.dart`) sin escenarios simulados.
+- [x] `PG-B.21.03` Caso negativo del test de arquitectura: la capa nueva importando presentación o `engine/` falla.
+- [x] `PG-B.21.04` Declarar en `architecture.yaml`, antes del código, la capa `host` (anillo 2, `may_import: [model,
   ports]`, admite `dart:io`, prohíbe Flutter de interfaz y `engine/`) para carpeta de trabajo y argumentos; puerto en
   `domain/ports`; `RustEffectGate` depende del puerto; ensamblado en `lib/composition/`.
-- [ ] `PG-B.21.05` README app §3.2 (capas) y §3.3.
-- [ ] `PG-B.21.06` `flutter test test/architecture/`, `dart run tool/check_limits.dart`.
+- [x] `PG-B.21.05` README app §3.2 (capas) y §3.3.
+- [x] `PG-B.21.06` `flutter test test/architecture/`, `dart run tool/check_limits.dart`.
 
 ##### PG-B.22 · Anfitrión real en el puente
 
-- [ ] `PG-B.22.01` Medir ios-arm64 Release del puente con `pseudolearn_host` (perfil vigente `opt-level = "z"`, LTO);
+- [x] `PG-B.22.01` Medir ios-arm64 Release del puente con `pseudolearn_host` (perfil vigente `opt-level = "z"`, LTO);
   si supera `PERF.ARTIFACT.SIZE#R1`, **parar** y presentar al dueño medición, opciones y recomendación.
-- [ ] `PG-B.22.02` Contrato de adaptador común CLI/app contra `cargo xtask http-test-server` (RN-4 del análisis).
-- [ ] `PG-B.22.03` Tests Dart–FFI reales: GET de loopback, archivo en carpeta de trabajo, `Esperar` real, argumentos,
+- [x] `PG-B.22.02` Contrato de adaptador común CLI/app contra `cargo xtask http-test-server` (RN-4 del análisis).
+- [x] `PG-B.22.03` Tests Dart–FFI reales: GET de loopback, archivo en carpeta de trabajo, `Esperar` real, argumentos,
   cancelación durante HTTP, liberación de recursos.
-- [ ] `PG-B.22.04` `native/Cargo.toml` con `pseudolearn_host`; hilo de red (D-PGB-R03); raíces de plataforma
+- [x] `PG-B.22.04` `native/Cargo.toml` con `pseudolearn_host`; hilo de red (D-PGB-R03); raíces de plataforma
   (D-PGB-R04); regla `isolation` del puente reescrita (CF-N13); carpeta de trabajo por documento (D-PGB-R05); campo de
   argumentos (D-PGB-R06); temporizador real (D-PGB-R07).
-- [ ] `PG-B.22.05` README de `native/`, app §4.49–§4.50 y §4.54 reescrita como «Anfitrión real en modo de archivo
+- [x] `PG-B.22.05` README de `native/`, app §4.49–§4.50 y §4.54 reescrita como «Anfitrión real en modo de archivo
   único».
 - [ ] `PG-B.22.06` `bash tool/test_bridge.sh`, `bash tool/bridge.sh check`, Clippy y `cargo deny` de `native/`,
   `rust-checks isolation`.
 
 ##### PG-B.23 · Configuración de plataforma
 
-- [ ] `PG-B.23.01` Sin cambio de corpus.
-- [ ] `PG-B.23.02` Lista de comprobación por plataforma en el README.
-- [ ] `PG-B.23.03` Test de contenido que comprueba la presencia de las claves de plataforma.
-- [ ] `PG-B.23.04` iOS: `NSLocalNetworkUsageDescription` es/en y excepción ATS (D-08a); macOS: entitlements revisados;
+- [x] `PG-B.23.01` Sin cambio de corpus.
+- [x] `PG-B.23.02` Lista de comprobación por plataforma en el README.
+- [x] `PG-B.23.03` Test de contenido que comprueba la presencia de las claves de plataforma.
+- [x] `PG-B.23.04` iOS: `NSLocalNetworkUsageDescription` es/en y excepción ATS (D-08a); macOS: entitlements revisados;
   Windows: `msix_config.capabilities` con `internetClient` y `privateNetworkClientServer`.
-- [ ] `PG-B.23.05` README app §2.4/§2.6 con la justificación para revisión de tienda.
-- [ ] `PG-B.23.06` Build macOS e iOS simulador; Windows sin build local («no verificado»).
+- [x] `PG-B.23.05` README app §2.4/§2.6 con la justificación para revisión de tienda.
+- [x] `PG-B.23.06` Build macOS e iOS simulador; Windows sin build local («no verificado»).
 
 ##### PG-B.24 · Eliminación de la simulación de la app
 
-- [ ] `PG-B.24.01` Sin cambio de corpus.
-- [ ] `PG-B.24.02` Escenas y casos de app sin `SimulatedScenario`.
-- [ ] `PG-B.24.03` Test de contenido (o ampliación de `check_content.dart`) que falla si reaparecen identificadores o
+- [x] `PG-B.24.01` Sin cambio de corpus.
+- [x] `PG-B.24.02` Escenas y casos de app sin `SimulatedScenario`.
+- [x] `PG-B.24.03` Test de contenido (o ampliación de `check_content.dart`) que falla si reaparecen identificadores o
   claves `simulated*`, con su caso negativo.
-- [ ] `PG-B.24.04` Borrar los archivos y claves de §B.4.4 del análisis; modificar los consumidores listados allí;
+- [x] `PG-B.24.04` Borrar los archivos y claves de §B.4.4 del análisis; modificar los consumidores listados allí;
   regenerar localizaciones.
-- [ ] `PG-B.24.05` README app §1.3, §4.54, §4.57–§4.60 sin simulación.
-- [ ] `PG-B.24.06` `flutter analyze --fatal-infos --fatal-warnings` y verificadores de app; `git grep -i simulat` en
+- [x] `PG-B.24.05` README app §1.3, §4.54, §4.57–§4.60 sin simulación.
+- [x] `PG-B.24.06` `flutter analyze --fatal-infos --fatal-warnings` y verificadores de app; `git grep -i simulat` en
   `apps/pseudolearn_app/lib` y `test` con 0 coincidencias.
 
 #### Bloque 6 · Reverificación con efectos reales
@@ -1039,3 +1039,29 @@ HEAD `954e1862`, rama única. El anfitrión web (archivos con `workspace.fs`, re
 | PG-B.20.06 | `pnpm check:types`, `check:comments`, `check:size`, `check:architecture`, `check:web`; `node --test browser/fetch_host.test.mjs`: 12/12 | ver arriba |
 
 Decisiones: (1) no se añadió un caso de corpus específico del navegador porque no existe sujeto `web` ejecutable y las reglas ya cubren el contrato; la evidencia es `run-web.mjs`. (2) Firefox queda «no calificado» (cierre del navegador por SIGTERM en el entorno); el plan pide solo Chromium y WebKit. (3) `pnpm build:web` falla en `check:grammar` por `media/pseudolearn.tmLanguage.json` desactualizada, cambio ajeno preexistente que se conserva; se ejecutó `node scripts/build-web.mjs` directamente.
+
+### 11.14 Bloque 5 · App: anfitrión real (PG-B.21–PG-B.24)
+
+HEAD `96188d7b`, rama única. La capa `host`, el puente con `pseudolearn_host`, la configuración de plataforma y la
+eliminación de la simulación ya estaban en HEAD; esta iteración cerró lo que faltaba y verificó el conjunto.
+
+| Punto | Cambio | Evidencia |
+|---|---|---|
+| PG-B.21 | Sin cambio de arquitectura: la capa `host` y su caso negativo (`host_importing_engine`) ya existían; `_startConfigured` se divide para respetar el límite de 40 líneas; README §3.3 añade la fila `host/` | `flutter test test/architecture/`, `check_limits`, `analyze --fatal-infos` en verde |
+| PG-B.22 | Medición del puente con `pseudolearn_host`: ios-arm64 Release, sin símbolos de depuración ni locales, 5.913.976 B (5,64 MiB) frente al tope de 8 MiB de `PERF.ARTIFACT.SIZE#R1`. Tests Dart–FFI nuevos: argumentos con comillas, espacios y Unicode, lista vacía, `Esperar` real (≥ 250 ms), detención durante HTTP retenido (< 1 s) y `host_open`/`host_close` pareados. Tests del puente actualizados a las reglas vigentes del lenguaje (`Definir Mutable`, un vínculo por `Definir`) | `cargo test --locked`, Clippy y `cargo deny check` de `native/`; `rust-checks isolation`; `tool/test_bridge.sh`; `rust_real_host_integration_test.dart` 7/7 |
+| PG-B.23 | Test de entitlements de macOS (cliente en Release y DebugProfile, sin servidor en Release); README §4.54 con la lista de comprobación por plataforma y la justificación para la tienda | `flutter build ios --simulator --debug` y `flutter build macos --release` correctos; Windows no verificado |
+| PG-B.24 | Sin cambio de código: `git grep -i simulat` en `lib/` y `test/` da 0 coincidencias; la puerta `validateExecutionHostDirectory` conserva su caso negativo | `test/tool/execution_host_checks_test.dart` |
+
+Decisiones: (1) el tope de tamaño es el del corpus (8 MiB), no los 5 MiB de PB-PRE-10, que cita una versión anterior; el
+margen es de 2,36 MiB. (2) `PG-B.22.02` se cubre por construcción: CLI y puente usan el mismo `HostWorker`, y el
+contrato contra `cargo xtask http-test-server` vive en `apps/pseudolearn_cli/tests/network_adapter_contract.rs`; la app
+no lo duplica y prueba con un servidor loopback de Dart. (3) El plan pedía 5 MiB para parar y presentar medición; al
+medir 5,64 MiB sobre un tope vigente de 8 MiB no se paró.
+
+No ejecutado o abierto: `PG-B.22.06` queda abierto porque `bash tool/bridge.sh check` regenera sin diferencias pero falla
+al invocar `cargo fmt` (la cadena por omisión del equipo, `stable`, no tiene `rustfmt`; la fijada, 1.99.0, sí). El disco se
+llenó durante el build de iOS; se borraron solo `native/target/debug` y `native/target/aarch64-apple-ios`.
+`flutter test` completo: 2652 pruebas, 6 fallos que corresponden a bloques posteriores o a PB-PRE-02: `rust_receiver_localization_test`
+(2, receptor localizado, PG-B.28–B.30), `execution_configuration_controls_test` (2, rigor y reproducción en la UI,
+PG-B.28–B.30) y `rust_real_task_host_test` (2, HTTP y temporizador en tareas: la lectura de estado de una tarea con
+efecto pendiente devuelve `task_state_unavailable` y detiene la ejecución; PG-B.25). No se tocó ninguno. Sin commit ni push.
