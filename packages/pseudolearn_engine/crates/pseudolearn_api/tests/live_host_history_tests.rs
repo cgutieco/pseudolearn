@@ -36,8 +36,25 @@ fn inspect_live_run(program: &str, reverse: bool) -> Result<(), String> {
 }
 
 fn inspect_staged_run(program: &str, reverse: bool, staged: bool) -> Result<(), String> {
-    let mut timer_answered = false;
     let mut session = ApiSession::default();
+    let resource = start_live_execution(&mut session, program)?;
+    let settings = RunSettings {
+        reverse,
+        staged,
+        timer_answered: false,
+    };
+    let (last, delivered) = advance_live_execution(&mut session, &resource, settings)?;
+    verify_live_history(&mut session, &resource, &delivered)?;
+    verify_event_queries(&mut session, &resource, delivered.len())?;
+    assert_eq!(
+        last.pointer("/value/termination/kind"),
+        Some(&json!("completed")),
+        "{last}"
+    );
+    Ok(())
+}
+
+fn start_live_execution(session: &mut ApiSession, program: &str) -> Result<Value, String> {
     let analysis = session.call("create_analysis", &json!({"program":program}));
     let started = session.call(
         "start",
@@ -48,46 +65,93 @@ fn inspect_staged_run(program: &str, reverse: bool, staged: bool) -> Result<(), 
         .pointer("/value/resource")
         .cloned()
         .ok_or_else(|| format!("start failed: {started}"))?;
+    Ok(resource)
+}
+
+struct RunSettings {
+    reverse: bool,
+    staged: bool,
+    timer_answered: bool,
+}
+
+fn advance_live_execution(
+    session: &mut ApiSession,
+    resource: &Value,
+    mut settings: RunSettings,
+) -> Result<(Value, Vec<Value>), String> {
     let mut last = Value::Null;
-    let mut delivered: Vec<Value> = Vec::new();
+    let mut delivered = Vec::new();
     for _ in 0..200 {
         last = session.call("advance", &json!({"resource":resource,"batch_size":25}));
-        let events = last
-            .pointer("/value/events")
-            .and_then(Value::as_array)
-            .cloned()
-            .unwrap_or_default();
-        delivered.extend(events);
+        delivered.extend(event_batch(&last));
         if last.pointer("/value/termination/kind") == Some(&json!("completed")) {
             break;
         }
-        let mut effects = pending(&last);
-        if reverse {
-            effects.reverse();
-        }
-        for effect in effects {
-            let operation = effect.get("operation").and_then(Value::as_str).unwrap_or("");
-            if staged && operation == "network_send" && !timer_answered {
-                continue;
-            }
-            if operation == "timer_wait" {
-                timer_answered = true;
-            }
-            let result = answer(&effect);
-            let delivered = session.call(
-                "effect_result",
-                &json!({"resource":resource,"effect_seq":effect.get("effect_seq"),"result":result}),
-            );
-            if delivered.get("value").is_none() {
-                return Err(format!("rejected: {delivered}"));
-            }
-        }
+        deliver_pending_effects(session, resource, &last, &mut settings)?;
     }
     assert_eq!(
         last.pointer("/value/termination/kind"),
         Some(&json!("completed")),
         "{last}"
     );
+    Ok((last, delivered))
+}
+
+fn event_batch(response: &Value) -> Vec<Value> {
+    response
+        .pointer("/value/events")
+        .and_then(Value::as_array)
+        .cloned()
+        .unwrap_or_default()
+}
+
+fn deliver_pending_effects(
+    session: &mut ApiSession,
+    resource: &Value,
+    response: &Value,
+    settings: &mut RunSettings,
+) -> Result<(), String> {
+    let mut effects = pending(response);
+    if settings.reverse {
+        effects.reverse();
+    }
+    for effect in effects {
+        let operation = effect
+            .get("operation")
+            .and_then(Value::as_str)
+            .unwrap_or("");
+        if settings.staged && operation == "network_send" && !settings.timer_answered {
+            continue;
+        }
+        if operation == "timer_wait" {
+            settings.timer_answered = true;
+        }
+        deliver_effect(session, resource, &effect)?;
+    }
+    Ok(())
+}
+
+fn deliver_effect(
+    session: &mut ApiSession,
+    resource: &Value,
+    effect: &Value,
+) -> Result<(), String> {
+    let result = answer(effect);
+    let response = session.call(
+        "effect_result",
+        &json!({"resource":resource,"effect_seq":effect.get("effect_seq"),"result":result}),
+    );
+    if response.get("value").is_none() {
+        return Err(format!("rejected: {response}"));
+    }
+    Ok(())
+}
+
+fn verify_live_history(
+    session: &mut ApiSession,
+    resource: &Value,
+    delivered: &[Value],
+) -> Result<(), String> {
     let total = u64::try_from(delivered.len()).map_err(|error| error.to_string())?;
     if std::env::var("GRID").is_ok() {
         for (index, event) in delivered.iter().enumerate() {
@@ -111,22 +175,15 @@ fn inspect_staged_run(program: &str, reverse: bool, staged: bool) -> Result<(), 
             "event {index}: {live} vs {historic}"
         );
     }
-    let mut lifetimes = std::collections::BTreeMap::new();
-    for (index, event) in delivered.iter().enumerate() {
-        let index = u64::try_from(index).map_err(|error| error.to_string())?;
-        let task = event.pointer("/data/task").and_then(Value::as_u64);
-        match (event.get("class").and_then(Value::as_str), task) {
-            (Some("task_ready"), Some(task)) => {
-                lifetimes.entry(task).or_insert((index, u64::MAX));
-            }
-            (Some("task_completed"), Some(task)) => {
-                if let Some(entry) = lifetimes.get_mut(&task) {
-                    entry.1 = index;
-                }
-            }
-            _ => {}
-        }
-    }
+    Ok(())
+}
+
+fn verify_event_queries(
+    session: &mut ApiSession,
+    resource: &Value,
+    event_count: usize,
+) -> Result<(), String> {
+    let total = u64::try_from(event_count).map_err(|error| error.to_string())?;
     for event in 0..total {
         for task in 0..4 {
             let frame = session.call(
@@ -135,7 +192,7 @@ fn inspect_staged_run(program: &str, reverse: bool, staged: bool) -> Result<(), 
             );
             let message = frame.to_string();
             if std::env::var("GRID").is_ok() {
-                eprintln!("GRID {event} {task} {}", if message.contains("invalid task") { "X" } else { "." });
+                print_query_grid(event, task, &message);
             }
             assert!(
                 !message.contains("unreachable event"),
@@ -144,6 +201,15 @@ fn inspect_staged_run(program: &str, reverse: bool, staged: bool) -> Result<(), 
         }
     }
     Ok(())
+}
+
+fn print_query_grid(event: u64, task: u64, message: &str) {
+    let result = if message.contains("invalid task") {
+        "X"
+    } else {
+        "."
+    };
+    eprintln!("GRID {event} {task} {result}");
 }
 
 const TWO_FETCHES: &str = "SubProceso Suspendible Fetch(label Como Cadena, net Como RedCap, path Como Cadena)\nSegun Aguardar net.Enviar(PeticionHttp(MetodoHttp.GET, \"http://127.0.0.1:1\" + path)) Hacer\nExito(response): Escribir label;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinSubProceso\nAlgoritmo Main\nSegun SolicitarRed() Hacer\nExito(net):\nTareas\nLanzar Fetch(\"slow\", net, \"/slow\");\nLanzar Fetch(\"fast\", net, \"/fast\");\nFinTareas\nEscribir \"done\";\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n";
