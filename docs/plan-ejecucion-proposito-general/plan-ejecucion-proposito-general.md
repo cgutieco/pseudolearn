@@ -870,8 +870,8 @@ Cierre común (definiciones en §4.0):
 - [x] `PG-B.C09` Fichas de ayuda y datos de proyección de la sintaxis nueva, o justificación.
 - [x] `PG-B.C10` Riesgos revisados y experimentos con procedencia o diferidos por la persona.
 - [x] `PG-B.C11` Tests y verificadores de los miembros afectados en verde.
-- [ ] `PG-B.C12` Commit sin atribución de IA y push ordinario comprobado a la rama única.
-- [ ] `PG-B.C13` Resumen completo, informe a la persona y parada.
+- [x] `PG-B.C12` Commit sin atribución de IA y push ordinario comprobado a la rama única.
+- [x] `PG-B.C13` Resumen completo, informe a la persona y parada.
 
 #### Resumen de PG-B
 
@@ -880,7 +880,7 @@ Cierre común (definiciones en §4.0):
 | PG-B.01–PG-B.26, PG-B.28–PG-B.30 | Cumplido | §11.1–§11.17 del plan detallado; suite Flutter 2673/0 fallos; `see conform` motor y app sin divergencias | PG-B.04 retirado |
 | PG-B.27 | Cumplido | §11.18: CLI, extensión de escritorio, web Chromium y WebKit, app macOS y app iOS simulador con `200 / Rick Sanchez / Alive`; Windows rotulado «no verificable» | Apps sin pulsar la interfaz |
 
-Revisión Git de cierre: `5aaf4514` con cambios sin confirmar · Verificadores ejecutados: ver §11.16–§11.18 · Pendientes justificados: C12 y C13 · Decisiones de la persona: aprobación de la descarga de Playwright (2026-11-03)
+Revisión Git de cierre: `8da720b5`, push ordinario comprobado · Verificadores ejecutados: ver §11.16–§11.18 · Pendientes justificados: ninguno · Decisiones de la persona: aprobación de la descarga de Playwright (2026-11-03)
 
 ### 4.12 PG-7 · Erradicación, calificación y distribución del lenguaje completo
 
