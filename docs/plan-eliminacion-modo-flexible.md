@@ -2,15 +2,15 @@
 
 ## 0. Metadatos y contrato de ejecución
 
-- Fecha: 2026-11-03, America/Lima. Revisión inspeccionada: `53c04124`. Rama: `feature/agregar-ruta-de-especificacion`.
-  Cambios ajenos presentes y conservados: `apps/pseudolearn_app/macos/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme`,
-  `apps/pseudolearn_cli/examples/general-purpose/character.es.pseudo`, `apps/pseudolearn_vscode/media/pseudolearn.tmLanguage.json`.
+- Fecha: 2026-11-03, America/Lima. HEAD al iniciar PF-0: `6fb7bd7fd7b6b55e3e212d13b5095453bcfa2db7`. Rama:
+  `feature/agregar-ruta-de-especificacion`. El árbol de trabajo y el índice estaban limpios.
 - Petición: eliminar el modo flexible y toda etiqueta del modo estricto, de modo que el lenguaje sea uno solo y lo que hoy
   exige el modo estricto pase a ser el lenguaje oficial; quitar también el selector de rigor de la app; asegurar que los
   errores sean claros, incluido un marcador de línea. El lenguaje no ha salido a producción, así que los cambios de ruptura
   se hacen ahora y no queda rastro de funciones obsoletas ni de código muerto.
-- Estado: plan **sin ejecutar**. Este análisis no ejecutó ninguna suite; los conteos son de `grep` e incluyen falsos
-  positivos (por ejemplo «BEM estricto» en el frontend o `strict-casts` en el análisis de Dart).
+- Estado: PF-0 ejecutado y detenido por `PHASE-STOP`; esperar autorización explícita antes de PF-1. La línea base está
+  registrada en §7. Los conteos históricos de `grep` de §3 son orientativos e incluyen falsos positivos (por ejemplo
+  «BEM estricto» en el frontend o `strict-casts` en el análisis de Dart).
 - Documento transitorio: ninguna especificación, README ni código fuera de `docs/` puede citarlo (`DOC-NO-TRANSIENT-REFS`).
   Cada decisión se traslada a su dueño en el mismo cambio (`DOC-README-TRUTH`, `DOC-NO-ORPHAN-DECISION`).
 
@@ -70,9 +70,12 @@ usan los compiladores modernos.
 
 - Solo en la salida de texto de la CLI. La salida `--json` no cambia: ya lleva línea, columna y tramo.
 - La app no lo necesita: el editor ya marca la posición con el subrayado y la lista «N problemas».
-- Si el diagnóstico abarca varias líneas, el marcador muestra la primera y subraya hasta el final de ella.
-- Las líneas muy largas se recortan alrededor de la columna, con puntos suspensivos en los extremos.
-- Los tabuladores se expanden a un ancho fijo, para que la marca caiga bajo el carácter correcto.
+- La línea de diagnóstico de `tool.cli.messages` queda intacta. Se agregan exactamente dos líneas:
+  `    {n} | {texto de fuente}` y `{5 + dígitos(n) espacios}| {columna visible - 1 espacios}^`. `n` es el número de
+  línea decimal, sin relleno; el `^` único apunta al inicio del tramo. Si el tramo cruza líneas, solo se muestra la
+  primera línea y el mismo `^`.
+- Las líneas se presentan en una ventana de hasta 80 columnas visibles, centrada alrededor de la marca cuando sea
+  posible; cada extremo recortado lleva `…`. Los tabuladores se expanden a cuatro columnas antes de alinear el `^`.
 - La columna cuenta como el resto de la herramienta cuenta columnas; el ancho visual de caracteres no latinos se
   decide en PF-4 leyendo `tool.cli.messages` antes de tocar nada.
 - Hoy la regla de `pseudo comprobar` dice «una línea por diagnóstico». Esa frase se reescribe, y con ella los casos de
@@ -99,14 +102,14 @@ del parámetro y datos del corpus.
 
 ### PF-0 · Inventario y línea base (tamaño S)
 
-- [ ] PF-0.1 Registrar HEAD, diff y resultados de las suites de cada miembro afectado como línea base.
-- [ ] PF-0.2 Buscar comportamiento exclusivo de flexible oculto en datos y no en ramas de código. Las entradas históricas
+- [x] PF-0.1 Registrar HEAD, diff y resultados de las suites de cada miembro afectado como línea base.
+- [x] PF-0.2 Buscar comportamiento exclusivo de flexible oculto en datos y no en ramas de código. Las entradas históricas
       `REF-FLEXIBLE-INITIALIZATION` y `REF-STRICT-INFERENCE` sugieren que la advertencia de lectura sin inicializar y la
       información `inferredVariableType` dependían del modo. Confirmar en el motor actual cuál es el comportamiento real
       y reportarlo si contradice el corpus.
-- [ ] PF-0.3 Ejecutar `comprobar` en el lenguaje actual sobre todos los programas de ejemplo, onboarding, conocimiento,
+- [x] PF-0.3 Ejecutar `comprobar` en el lenguaje actual sobre todos los programas de ejemplo, onboarding, conocimiento,
       benchmarks y fixtures, y registrar cuántos fallan. Es la medida real del riesgo de D-09.
-- [ ] PF-0.4 Leer `tool.cli.messages` y `tool.cli.check` y fijar el formato exacto del marcador (§2.1).
+- [x] PF-0.4 Leer `tool.cli.messages` y `tool.cli.check` y fijar el formato exacto del marcador (§2.1).
 
 ### PF-1 · Especificación (tamaño L)
 
@@ -207,7 +210,7 @@ del parámetro y datos del corpus.
 
 | Fase | HEAD inicial | Comandos y salida | Resultado | Pendientes |
 |---|---|---|---|---|
-| PF-0 | | | | |
+| PF-0 | `6fb7bd7fd7b6b55e3e212d13b5095453bcfa2db7` | Inventario y línea base en §7; verificadores locales en verde | PF-0 completado; detenida la ejecución por PHASE-STOP | PF-1 requiere autorización explícita nueva |
 | PF-1 | | | | |
 | PF-2 | | | | |
 | PF-3 | | | | |
@@ -215,3 +218,40 @@ del parámetro y datos del corpus.
 | PF-5 | | | | |
 | PF-6 | | | | |
 | PF-7 | | | | |
+
+### Línea base de PF-0
+
+- Estado inicial: rama `feature/agregar-ruta-de-especificacion`, HEAD `6fb7bd7fd7b6b55e3e212d13b5095453bcfa2db7`,
+  índice y diff de trabajo vacíos. El repositorio no tiene cambios ajenos al iniciar esta fase.
+- PF-0.1: `cargo xtask verify` de `pseudolearn_spec` terminó en verde: 197 especificaciones validadas, 31 propiedades
+  ejecutadas y 4.026 observaciones de conformidad sin divergencias. `cargo xtask verify` de `pseudolearn_engine` y
+  `pseudolearn_cli` también terminó en verde, incluidos Clippy, tests, verificadores Rust y auditorías de dependencias.
+  `pseudolearn_app`: `flutter analyze --fatal-infos --fatal-warnings`, límites, contenido, sistema visual y cobertura de
+  sintaxis en verde; `flutter test` pasó 2.673 tests y omitió 2; el generador pasó 9 tests. `fe-pseudolearn`: `pnpm
+  check:all`, `test:e2e` (32), `test:a11y` (22) y `test:visual` (6) en verde; el chequeo integral también cubrió 198
+  tests unitarios. `pseudolearn_vscode`: checks de tipos, arquitectura, comentarios, tamaño y paquete en verde; 165 tests.
+  `pseudolearn_benchmarks`: 29 tests, análisis, límites y formato en verde. Backend: la búsqueda no encontró código ni
+  documentación operativa relacionada con el modo flexible; no se ejecutó su suite.
+- Para dejar esas puertas en verde, se aplicó el formato requerido por rustfmt y dart format en sus archivos señalados
+  por los verificadores. Clippy detectó que un helper de la prueba de historia viva del motor excedía el límite de
+  función; se dividió por responsabilidades y el verificador completo del motor terminó en verde. Ningún cambio altera
+  el comportamiento del producto.
+- PF-0.2: `LANG.DECL.UNINITIALIZED#R1` establece `missingBindingInitializer` como error en ambos modos y evita valores por
+  defecto; el sondeo `Definir Mutable valor Como Entero; Escribir valor;` produce solo ese error en estricto y flexible.
+  `LANG.SUBPROGRAM.PARAMETERS#R1` permite omitir el tipo en flexible y exige `expectedType` en estricto; no es una
+  contradicción: es el comportamiento que D-03 propone volver obligatorio. Omitir `;` da `missingStatementTerminator`
+  solo en estricto, como prevé `LANG.PROFILE.STRICTNESS#R1`; omitir `Con Paso` da `missingStepClause` solo en estricto,
+  como prevén `LANG.PROFILE.STRICTNESS#R1` y `LANG.CONTROL.FOR#R1`. La asignación a un nombre no declarado da
+  `undeclaredVariable` en ambos modos, según `LANG.TYPES.INFERENCE#R1`;
+  los sondeos no emitieron `inferredVariableType`. Las diferencias históricas `REF-FLEXIBLE-INITIALIZATION` y
+  `REF-STRICT-INFERENCE` pertenecen al sujeto `reference` retirado, no describen una regresión del motor actual.
+- PF-0.3, `pseudo comprobar --json`: 231 archivos `.pseudo` versionados; 210 sueltos, de los que 115 producen errores
+  (432 diagnósticos; 368 son `missingStatementTerminator`, concentrados en 113 ejemplos de conocimiento). Los otros
+  21 módulos se analizaron en sus 8 proyectos y perfiles declarados: 5 proyectos pasan y 3 proyectos negativos producen
+  el error previsto. Entre 16 programas de benchmark, 6 fallan (2 cargas Annex y `queens`, `towers`, `list`, `storage` de
+  CORE), principalmente por terminadores omitidos, conectores de tipo e inicializadores. Se extrajeron además 94 cercas
+  `pseudo` de la documentación de conocimiento: todas generan diagnósticos al analizarlas como archivos completos; son
+  fragmentos pedagógicos o ejemplos negativos, por lo que no se mezclan con el conteo de programas independientes.
+- PF-0.4: el formato de texto existente continúa como primera línea; luego se imprime una línea de fuente con número y
+  una línea de indicador con `^` en la columna inicial. Solo se presenta la primera línea de spans multilínea. JSON queda
+  intacto. La expansión de tabuladores, recorte y ancho visual Unicode quedan descritos en §2.1 para PF-4.
