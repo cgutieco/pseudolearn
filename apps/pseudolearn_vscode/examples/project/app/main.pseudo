@@ -1,8 +1,13 @@
-Importar geo.vectores.Doble;
-Algoritmo Principal
-Definir Mutable numero Como Entero <- 0;
-Escribir "Dame un numero";
-Leer numero;
-Escribir Doble(numero);
+SubProceso Obtener() Como Resultado<Cadena, ErrorES>
+Definir net Como RedCap <- Propagar SolicitarRed();
+Definir peticion Como PeticionHttp <- PeticionHttp(MetodoHttp.GET, "https://rickandmortyapi.com/api/character/1").ConLimiteRespuesta(65536).ConTiempoMaximo(5000);
+Definir respuesta Como RespuestaHttp <- Propagar net.Enviar(peticion);
+Retornar respuesta.CuerpoTexto();
+FinSubProceso
+
+Algoritmo Main
+Segun Obtener() Hacer
+Exito(texto): Escribir texto;
+Error(problema): Escribir "No se pudo consultar la API. Resultado incierto: ", problema.Incierto;
+FinSegun
 FinAlgoritmo
- 

@@ -30,6 +30,14 @@ se conservan como rastro de análisis, no como instrucciones vigentes.
   incompatible. Se conserva el retiro de migradores y retrocompatibilidad decidido en PG-2;
   la extensión no añade el comando migrar que figuraba en la propuesta inicial.
 
+- El 2026-11-02 la persona decidió que el lenguaje no viene bloqueado ni simulado en ninguna plataforma: autoridad
+  plena por omisión sin concesiones, anfitriones reales en CLI, extensión y app, cero simulación en producto y eliminación
+  de raíz de lo que quede muerto. Aceptó D-01–D-19 del [análisis del 2026-11-02](analisis-lenguaje-completo-sin-simulacion.md). Sustituye, sin desmarcar casillas, a PG-3.03 («denegación
+  por defecto»), PG-5.04 (política SSRF), PG-5.07 en lo relativo a concesiones, PG-6B.05 (capacidades web explícitas) y
+  PG-B.04 (efectos simulados, retirado). Reformula PG-B y PG-7 y añade PG-L, PG-S y PG-N; el compilador nativo completo
+  se implementa en su propia fase. Lo que un lenguaje de propósito general necesita y hoy falta o está a medias entra en
+  fases; no se publica nada que se sienta como prueba de concepto.
+
 El detalle operativo está en [el plan de PG-0](fase-pg-0-plan-ejecucion.md).
 La petición directa de implementar PG-0 revisó y autorizó el plan. PG-0 quedó cerrada el 2026-10-22 con
 verificaciones en verde, tras autorizar la persona el reanclaje de seis identidades y la ejecución fuera del
@@ -110,10 +118,14 @@ fases son técnicamente independientes, pero no autoriza ejecutarlas en paralelo
 | PG-6A | Servicio y extensión inicial | PG-1, PG-2, PG-H | `fase-pg-6a-plan-ejecucion.md` |
 | PG-6B | Depuración y web | PG-4, PG-5, PG-6A | `fase-pg-6b-plan-ejecucion.md` |
 | PG-A | App y sintaxis estática | PG-1, PG-2, PG-H | `fase-pg-a-plan-ejecucion.md` |
-| PG-B | App y tareas observables | PG-A, PG-3, PG-4, PG-5 | `fase-pg-b-plan-ejecucion.md` |
-| PG-7 | Calificación y distribución | PG-5, PG-6B, PG-B | `fase-pg-7-plan-ejecucion.md` |
+| PG-B | Lenguaje completo con anfitriones reales y app con tareas observables | PG-A, PG-3, PG-4, PG-5, PG-6B | `fase-pg-b-plan-ejecucion.md` |
+| PG-L | Lenguaje sin restricciones de construcción | PG-B (bloque de corpus) | `fase-pg-l-plan-ejecucion.md` |
+| PG-S | Biblioteca estándar de producción | PG-B, PG-L | `fase-pg-s-plan-ejecucion.md` |
+| PG-N | Compilador nativo completo | PG-B, PG-L, PG-S | `fase-pg-n-plan-ejecucion.md` |
+| PG-7 | Erradicación, calificación y distribución del lenguaje completo | PG-B, PG-L, PG-S, PG-N | `fase-pg-7-plan-ejecucion.md` |
 
-ENT-1 se considera entregado únicamente cuando PG-7 está completada.
+ENT-1 se considera entregado únicamente cuando PG-7 está completada. Las secciones §4.13–§4.15 (PG-L, PG-S, PG-N) se
+numeran después de PG-7 para no renumerar referencias existentes; el orden de ejecución es el de esta tabla.
 
 ## 4. Fases y puntos de cierre
 
@@ -794,12 +806,13 @@ Cierre común (definiciones en §4.0):
 
 Revisión Git de cierre: 2026-11-02 · Verificadores: análisis Flutter, límites, contenido, diseño, cobertura 78/78, arquitectura/cobertura (24), selección focalizada (96), puente (20), `see validate` (196), `see export --check` y conformidad app (88 observaciones, 0 divergencias) · Pendientes justificados: `SEE-HASH` en `API.ANALYZE@1.0.0`, `SEE-STALE` en conformidad engine, dos `SIZE-NESTING` Rust, suite completa Flutter no repetida al cierre, smoke de plataforma y estudio humano E-PG-12 diferido · Decisiones de la persona: Cesar Antonio Gutierrez Contreras cerró PG-A por decisión expresa y autorizó commit/push · Commit/push: `feature/agregar-ruta-de-especificacion`, push ordinario comprobado.
 
-### 4.11 PG-B · App y tareas observables
+### 4.11 PG-B · Lenguaje completo con anfitriones reales y app con tareas observables
 
-Objetivo: la app enseña asincronía, efectos y concurrencia sin falsear causalidad ni simultaneidad. Requisitos R-09–R-13,
-R-19, R-20; capacidad C-15; riesgos K-18, K-19; experimento E-PG-12 (parte dinámica); ADR-12.
+Objetivo: todo programa válido se ejecuta con autoridad plena y efectos reales en CLI, extensión (escritorio y web) y
+app (macOS, iOS, Windows), sin concesiones ni simulación; la app enseña tareas y efectos reales sin falsear causalidad.
+Reformulada el 2026-11-02 ([análisis del 2026-11-02](analisis-lenguaje-completo-sin-simulacion.md), §B.2). Requisitos R-10–R-12, R-19, R-20; C-15; K-18/K-19; E-PG-12 dinámico.
 
-Puntos a cumplir:
+Puntos de la versión anterior (ejecutados en iteraciones autorizadas según §11 del plan detallado; se marcan al cierre de la fase, tras reverificarse en PG-B.25/.26):
 
 - [ ] `PG-B.01` Evento global seleccionado más foco, pila y estado por tarea; dos tareas sobre el mismo subprograma no
   comparten marcos.
@@ -807,17 +820,42 @@ Puntos a cumplir:
   paginada de eventos y estados.
 - [ ] `PG-B.03` Paso global y paso por tarea con la semántica de ADR-12, sin congelar otras tareas ni alterar el
   planificador.
-- [ ] `PG-B.04` Escenarios de efectos simulados rotulados como tales, y entradas identificadas por tarea y solicitud.
+- [ ] `PG-B.04` **Retirado el 2026-11-02** (efectos simulados); la identidad de entradas por tarea y solicitud sigue vigente.
 - [ ] `PG-B.05` Las mismas entradas y la misma cinta producen las mismas proyecciones.
 - [ ] `PG-B.06` Cancelación, error, canal lleno y bloqueo representados por su camino normativo.
 - [ ] `PG-B.07` Ningún temporizador de presentación decide la agenda; los pintores no esperan efectos.
 - [ ] `PG-B.08` Pruebas con el puente real y no solo con dobles.
-- [ ] `PG-B.09` Parte dinámica de E-PG-12 con resultados aportados por la persona o diferida por ella; métrica candidata
-  de proyección medida.
+- [ ] `PG-B.09` Parte dinámica de E-PG-12 automatizada; estudio humano diferido por la persona; métrica candidata medida.
 
-Fuera de alcance: E/S real sin concesión del host y retroceso de producto no aprobado.
+Puntos de la reformulación:
 
-Plan detallado: [fase-pg-b-plan-ejecucion.md](fase-pg-b-plan-ejecucion.md), creado el 2026-11-02 para revisión. La instrucción directa del 2026-11-02 autoriza una sola iteración de PG-B.03; no autoriza los demás puntos de PG-B ni marca C01/C02 para la fase completa.
+- [ ] `PG-B.10` Autoridad plena por omisión en el corpus: sin denegación, intersección ni manifiesto de permisos.
+- [ ] `PG-B.11` Red a cualquier destino `http`/`https`, TLS validado, sin política SSRF; diferencias del navegador como errores tipados.
+- [ ] `PG-B.12` Reloj y temporizador reales en vivo; semilla de entropía grabada; reproducción desde cinta.
+- [ ] `PG-B.13` Archivos con rutas del sistema; atenuación solo voluntaria.
+- [ ] `PG-B.14` Argumentos de ejecución reales.
+- [ ] `PG-B.15` Anfitrión de memoria solo como doble de prueba del corpus; casos rederivados y reanclaje.
+- [ ] `PG-B.16` Runtime y API sin autoridad por concesión; doble de prueba inalcanzable desde producto.
+- [ ] `PG-B.17` Cinta con tiempo real y semilla.
+- [ ] `PG-B.18` CLI con anfitrión físico completo por omisión en el crate compartido `pseudolearn_host`; opciones de concesión eliminadas.
+- [ ] `PG-B.19` Extensión de escritorio y DAP con autoridad plena, argumentos y carpeta de trabajo.
+- [ ] `PG-B.20` Extensión web con anfitrión real: Fetch sin orígenes, archivos del workspace, reloj, temporizador y argumentos.
+- [ ] `PG-B.21` Capa y puerto de anfitrión en la app, declarados antes del código.
+- [ ] `PG-B.22` Anfitrión real en el puente de la app, con medición previa de `PERF.ARTIFACT.SIZE`.
+- [ ] `PG-B.23` Configuración de plataforma iOS, macOS y Windows.
+- [ ] `PG-B.24` Eliminación de raíz de la simulación de la app.
+- [ ] `PG-B.25` Reverificación de tareas observables con anfitrión real.
+- [ ] `PG-B.26` E-PG-12 dinámico regenerado sin simulación.
+- [ ] `PG-B.27` Aceptación: archivo único que consulta la API de Rick y Morty sin configurar nada, por plataforma; Windows rotulado «no verificado».
+- [ ] `PG-B.28` Selector de rigor en la app.
+- [ ] `PG-B.29` Control para reproducir una ejecución en la app.
+- [ ] `PG-B.30` Receptor localizado en la tabla de traza y cobertura completa de diagramas.
+
+Fuera de alcance: app Flutter web; clases abstractas, miembros estáticos, visibilidad protegida, excepciones, servidor
+HTTP, sockets, procesos hijos, FFI y registro de paquetes (D-11, D-16–D-19).
+
+Plan detallado: [fase-pg-b-plan-ejecucion.md](fase-pg-b-plan-ejecucion.md), reescrito el 2026-11-02 para revisión.
+La reescritura no autoriza implementar: C01 y C02 siguen pendientes.
 
 Cierre común (definiciones en §4.0):
 
@@ -843,30 +881,35 @@ Cierre común (definiciones en §4.0):
 
 Revisión Git de cierre: · Verificadores ejecutados: · Pendientes justificados: · Decisiones de la persona:
 
-### 4.12 PG-7 · Calificación y distribución
+### 4.12 PG-7 · Erradicación, calificación y distribución del lenguaje completo
 
-Objetivo: demostrar ENT-1 completo y dejarlo listo para distribuir. Requisitos R-01–R-20; capacidad C-14; riesgos K-01,
-K-12 y revisión final de todos.
-
-Puntos a cumplir:
+Objetivo: demostrar que el 100 % del lenguaje corre en todos sus backends y plataformas, sin restos de la política
+anterior, y dejarlo listo para distribuir. Requisitos R-01–R-20; capacidad C-14; riesgos K-01, K-12 y revisión final.
 
 - [ ] `PG-7.01` Conformidad completa de todos los sujetos sin regresiones no exentas, con procedencia.
-- [ ] `PG-7.02` Presupuestos de rendimiento candidatos aceptados o rechazados por la persona, con medición reproducible.
-- [ ] `PG-7.03` Las 16 capacidades C-01–C-16 cumplen su criterio de salida.
+- [ ] `PG-7.02` Presupuestos de rendimiento candidatos aceptados o rechazados por la persona, con medición reproducible; incluye `PERF.SUITE.CORE` y los límites de recurso por omisión.
+- [ ] `PG-7.03` Las 16 capacidades C-01–C-16 cumplen su criterio de salida, con C-07 y C-08 según la autoridad plena.
 - [ ] `PG-7.04` Trazabilidad bidireccional sin huecos: punto base, requisito, capacidad, fase y paquete.
-- [ ] `PG-7.05` Casos negativos de K-05, K-06, K-07 y K-13 reproducibles y revisados; riesgos residuales aceptados por la
-  persona.
-- [ ] `PG-7.06` Documentación de uso bilingüe del entregable.
+- [ ] `PG-7.05` Casos negativos de K-05, K-06, K-13 y de la atenuación voluntaria (K-07 reformulado) reproducibles y revisados; riesgos residuales aceptados por la persona.
+- [ ] `PG-7.06` Documentación de uso bilingüe del entregable, con los límites reales de cada plataforma.
 - [ ] `PG-7.07` Licencia implantada y licencias de dependencias y artefactos comprobadas.
-- [ ] `PG-7.08` Artefactos por plataforma verificables con hashes y capacidades negociadas documentadas.
+- [ ] `PG-7.08` Artefactos por plataforma verificables con hashes y límites de plataforma documentados.
 - [ ] `PG-7.09` Todos los casos integradores de ENT-1 en verde.
-- [ ] `PG-7.10` Publicación en canales externos solo con aprobación explícita de la persona, o registrada como no
-  realizada.
+- [ ] `PG-7.10` Publicación en canales externos solo con aprobación explícita de la persona, o registrada como no realizada.
 - [ ] `PG-7.11` Informe final de ENT-1 y propuesta de qué capacidad futura FUT-xx evaluar, sin activarla.
+- `PG-7.12` **Retirado** el 2026-11-02 antes de existir: el compilador nativo completo es la fase PG-N.
+- [ ] `PG-7.13` CLI y extensión para Windows x64, implementados; «no verificado» sin ejecución real.
+- [ ] `PG-7.14` Barrido de eliminación de raíz con verificador mecánico y caso negativo.
+- [ ] `PG-7.15` Reconciliación documental: este plan (incluida §5.4), hoja de ruta y planes de fase.
+- [ ] `PG-7.16` Aceptación final de la persona en la app y en las demás plataformas.
+- [ ] `PG-7.17` Cero vínculos de conformidad `pendiente` sin fase viva; fichas para toda celda de cobertura.
+- [ ] `PG-7.18` Depuración en la extensión web con el contrato `TOOL.DAP`.
+- [ ] `PG-7.19` Latencia del servicio de lenguaje de E-PG-02 dentro de umbral, o umbral nuevo aprobado por la persona.
 
-Fuera de alcance: capacidades FUT-01–FUT-14.
+Fuera de alcance: FUT-01–FUT-14 y lo descartado en D-16–D-19.
 
-Plan detallado: `fase-pg-7-plan-ejecucion.md`, pendiente de crear al iniciar la fase.
+Plan detallado: `fase-pg-7-plan-ejecucion.md`, pendiente de crear al iniciar la fase. Contenido de referencia en el
+[análisis del 2026-11-02](analisis-lenguaje-completo-sin-simulacion.md), §B.3.
 
 Cierre común (definiciones en §4.0):
 
@@ -892,12 +935,137 @@ Cierre común (definiciones en §4.0):
 
 Revisión Git de cierre: · Verificadores ejecutados: · Pendientes justificados: · Decisiones de la persona:
 
+### 4.13 PG-L · Lenguaje sin restricciones de construcción
+
+Objetivo: que toda construcción de la edición 2026 se combine con las demás sin diagnósticos de «no soportado».
+Origen: [análisis del 2026-11-02](analisis-lenguaje-completo-sin-simulacion.md), §A.8.1 y §B.3a.
+
+- [ ] `PG-L.01` Registros como elemento de arreglo y vector, campo de clase, parámetro y resultado de métodos y constructores, y por referencia.
+- [ ] `PG-L.02` Visibilidad y exportación de constantes, enumerados y registros entre módulos.
+- [ ] `PG-L.03` Genéricos exportables entre módulos.
+- [ ] `PG-L.04` Clases genéricas y variantes genéricas de usuario.
+- [ ] `PG-L.05` Comprobación de plantillas genéricas sin instanciar y símbolo de plantilla en el servicio.
+- [ ] `PG-L.06` Liberación de memoria por ámbito de bloque.
+- [ ] `PG-L.07` App y extensión con diagramas, traza, ayuda y resaltado para todo lo anterior.
+
+Plan detallado: `fase-pg-l-plan-ejecucion.md`, pendiente de crear al iniciar la fase.
+
+Cierre común (definiciones en §4.0):
+
+- [ ] `PG-L.C01` Autorización de la persona para iniciar la fase, en mensaje nuevo.
+- [ ] `PG-L.C02` Plan detallado creado según §5 y revisado por la persona.
+- [ ] `PG-L.C03` SPEC-FIRST y congelamiento respetados.
+- [ ] `PG-L.C04` Reglas nuevas con casos o propiedades y vínculos como datos.
+- [ ] `PG-L.C05` Tests feliz, infeliz y límite en carpetas espejo.
+- [ ] `PG-L.C06` Capas declaradas, imports permitidos y límites de tamaño.
+- [ ] `PG-L.C07` Sin comentarios ni TODO; código en inglés; Rust sin pánicos ni `unsafe` no declarado.
+- [ ] `PG-L.C08` README y reglas de los miembros afectados actualizados, sin citar `docs/`.
+- [ ] `PG-L.C09` Fichas de ayuda y datos de proyección de la sintaxis nueva, o justificación.
+- [ ] `PG-L.C10` Riesgos revisados y experimentos con procedencia o diferidos por la persona.
+- [ ] `PG-L.C11` Tests y verificadores de los miembros afectados en verde.
+- [ ] `PG-L.C12` Commit sin atribución de IA y push ordinario comprobado a la rama única.
+- [ ] `PG-L.C13` Resumen completo, informe a la persona y parada.
+
+#### Resumen de PG-L
+
+| Punto | Estado | Evidencia | Motivo o comentario |
+|---|---|---|---|
+| | | | |
+
+Revisión Git de cierre: · Verificadores ejecutados: · Pendientes justificados: · Decisiones de la persona:
+
+### 4.14 PG-S · Biblioteca estándar de producción
+
+Objetivo: cubrir lo que cualquier lenguaje de propósito general trae, con identidad única, facetas es/en y fichas.
+Origen: [análisis del 2026-11-02](analisis-lenguaje-completo-sin-simulacion.md), §A.8.2 y §B.3b.
+
+- [ ] `PG-S.01` Mayúsculas y minúsculas de texto.
+- [ ] `PG-S.02` Ordenar, invertir y buscar en colecciones.
+- [ ] `PG-S.03` Mínimo, máximo, piso, techo y funciones trigonométricas y logarítmicas faltantes.
+- [ ] `PG-S.04` Archivos: listar, existir, borrar, renombrar, crear directorio y añadir.
+- [ ] `PG-S.05` Fecha y hora de calendario con zona horaria e ISO 8601.
+- [ ] `PG-S.06` Variables de entorno de solo lectura.
+- [ ] `PG-S.07` Código de salida y salida de error.
+- [ ] `PG-S.08` Formato de números en texto.
+- [ ] `PG-S.09` Cada operación en VM, extensión web y app de las tres plataformas.
+
+Plan detallado: `fase-pg-s-plan-ejecucion.md`, pendiente de crear al iniciar la fase.
+
+Cierre común (definiciones en §4.0):
+
+- [ ] `PG-S.C01` Autorización de la persona para iniciar la fase, en mensaje nuevo.
+- [ ] `PG-S.C02` Plan detallado creado según §5 y revisado por la persona.
+- [ ] `PG-S.C03` SPEC-FIRST y congelamiento respetados.
+- [ ] `PG-S.C04` Reglas nuevas con casos o propiedades y vínculos como datos.
+- [ ] `PG-S.C05` Tests feliz, infeliz y límite en carpetas espejo.
+- [ ] `PG-S.C06` Capas declaradas, imports permitidos y límites de tamaño.
+- [ ] `PG-S.C07` Sin comentarios ni TODO; código en inglés; Rust sin pánicos ni `unsafe` no declarado.
+- [ ] `PG-S.C08` README y reglas de los miembros afectados actualizados, sin citar `docs/`.
+- [ ] `PG-S.C09` Fichas de ayuda y datos de proyección de la sintaxis nueva, o justificación.
+- [ ] `PG-S.C10` Riesgos revisados y experimentos con procedencia o diferidos por la persona.
+- [ ] `PG-S.C11` Tests y verificadores de los miembros afectados en verde.
+- [ ] `PG-S.C12` Commit sin atribución de IA y push ordinario comprobado a la rama única.
+- [ ] `PG-S.C13` Resumen completo, informe a la persona y parada.
+
+#### Resumen de PG-S
+
+| Punto | Estado | Evidencia | Motivo o comentario |
+|---|---|---|---|
+| | | | |
+
+Revisión Git de cierre: · Verificadores ejecutados: · Pendientes justificados: · Decisiones de la persona:
+
+### 4.15 PG-N · Compilador nativo completo
+
+Objetivo: que `pseudo build` y `pseudo run --nativo` ejecuten todo programa válido con la misma salida, efectos y cinta
+que la VM en macOS, Linux y Windows, sin exigir herramientas al usuario. Origen: [análisis del 2026-11-02](analisis-lenguaje-completo-sin-simulacion.md), §B.3c.
+
+- [ ] `PG-N.01` `RT.PROCESS` y `RT.ABI` reescritas para autoridad plena, semilla de entropía, código de salida y salida de error.
+- [ ] `PG-N.02` Contrato de continuación nativa y raíces de recolección.
+- [ ] `PG-N.03` Funciones suspendibles, ámbitos de tareas, unión, cancelación y limpieza en código nativo.
+- [ ] `PG-N.04` Agenda nativa y canales con la misma semántica que la VM.
+- [ ] `PG-N.05` Recolector sobre marcos suspendidos, continuaciones, mensajes y canales.
+- [ ] `PG-N.06` Efectos concurrentes y cinta con el mismo orden de entrega que la VM.
+- [ ] `PG-N.07` Runtime nativo enlazado con `pseudolearn_host`: archivos, red, reloj, temporizador, argumentos y entorno reales.
+- [ ] `PG-N.08` Biblioteca de PG-S y construcciones de PG-L en código nativo; vínculos de módulos, perfil y JSON acreditados.
+- [ ] `PG-N.09` Enlazador incluido: `pseudo build` sin compilador de C instalado; `.exe` en Windows.
+- [ ] `PG-N.10` Destinos macOS arm64/x86_64, Linux x64 y Windows x64; Windows «no verificado» sin ejecución real.
+- [ ] `PG-N.11` Diferencial VM/AOT con cero diferencias, incluidas las 10 000 agendas de E-PG-06.
+- [ ] `PG-N.12` `PERF.AOT.LEVEL` mantenido con tareas presentes.
+- [ ] `PG-N.13` Eliminación de `nativeTasksUnsupported` y de todo pendiente declarado de tareas nativas.
+
+Plan detallado: `fase-pg-n-plan-ejecucion.md`, pendiente de crear al iniciar la fase.
+
+Cierre común (definiciones en §4.0):
+
+- [ ] `PG-N.C01` Autorización de la persona para iniciar la fase, en mensaje nuevo.
+- [ ] `PG-N.C02` Plan detallado creado según §5 y revisado por la persona.
+- [ ] `PG-N.C03` SPEC-FIRST y congelamiento respetados.
+- [ ] `PG-N.C04` Reglas nuevas con casos o propiedades y vínculos como datos.
+- [ ] `PG-N.C05` Tests feliz, infeliz y límite en carpetas espejo.
+- [ ] `PG-N.C06` Capas declaradas, imports permitidos y límites de tamaño.
+- [ ] `PG-N.C07` Sin comentarios ni TODO; código en inglés; Rust sin pánicos ni `unsafe` no declarado.
+- [ ] `PG-N.C08` README y reglas de los miembros afectados actualizados, sin citar `docs/`.
+- [ ] `PG-N.C09` Fichas de ayuda y datos de proyección de la sintaxis nueva, o justificación.
+- [ ] `PG-N.C10` Riesgos revisados y experimentos con procedencia o diferidos por la persona.
+- [ ] `PG-N.C11` Tests y verificadores de los miembros afectados en verde.
+- [ ] `PG-N.C12` Commit sin atribución de IA y push ordinario comprobado a la rama única.
+- [ ] `PG-N.C13` Resumen completo, informe a la persona y parada.
+
+#### Resumen de PG-N
+
+| Punto | Estado | Evidencia | Motivo o comentario |
+|---|---|---|---|
+| | | | |
+
+Revisión Git de cierre: · Verificadores ejecutados: · Pendientes justificados: · Decisiones de la persona:
+
 ## 5. Reglas para crear cada `fase-<id>-plan-ejecucion.md`
 
 ### 5.1 Nombre, lugar y momento
 
 - Ruta: esta misma carpeta. Nombre exacto: `fase-<id>-plan-ejecucion.md`, con `<id>` en minúsculas tomado de la tabla
-  de §3 (`pg-0`, `pg-h`, `pg-1` … `pg-6a`, `pg-6b`, `pg-a`, `pg-b`, `pg-7`).
+  de §3 (`pg-0`, `pg-h`, `pg-1` … `pg-6a`, `pg-6b`, `pg-a`, `pg-b`, `pg-l`, `pg-s`, `pg-n`, `pg-7`).
 - Nunca empieza por dígitos y nunca se llama `README.md`: la puerta de referencias transitorias identifica los documentos
   de `docs/` por su nombre y por su prefijo numérico.
 - Se crea al iniciar la fase, después de la autorización de la persona y antes de cualquier especificación o código.
@@ -959,8 +1127,9 @@ Estas recomendaciones orientan el diseño detallado; no sustituyen a las reglas 
 
 **Seguridad**
 
-- Autoridad explícita: denegación por defecto, capacidades no amplificables y ningún acceso ambiental a `cwd`, variables
-  de entorno, proxies o credenciales.
+- Autoridad plena por omisión (decisión de la persona del 2026-11-02): ninguna capacidad se deniega por política ni
+  requiere concesión; la atenuación es voluntaria y no amplificable; no se heredan proxies ni credenciales ambientales;
+  TLS siempre validado.
 - Fallos esperables como valores tipados; ningún pánico ni excepción cruza una frontera pública. En Rust, las reglas de
   `QUALITY-NO-PANIC` y `unsafe` solo donde el archivo de reglas lo declara, con su invariante documentada.
 - Límites para todo lo que crece: combustible, instancias genéricas, tareas, colas, bytes, profundidad y tiempo externo,
@@ -1048,5 +1217,8 @@ La IA a cargo actualiza esta tabla al cerrar cada fase.
 | PG-6A | Cerrada por decisión expresa · PG-6A.01–.11 y cierre común | Sí | 2026-10-31 · cierre registrado en el plan detallado | E-PG-02 no aprobada: cuatro grupos extendidos siguen sobre 100 ms; SEE requiere revisión independiente; `PHASE-GREEN` no declarado |
 | PG-6B | En implementación integrada · PG-6B.01–.09 | Sí, petición directa de implementación revisa y autoriza C02 | Sin cierre | Desarrollo continuo y campaña final única autorizados el 2026-10-31; físicos/revisión SEE y decisiones diferidas conservados |
 | PG-A | Cerrada por decisión expresa · PG-A.01–.09 y cierre común | Sí | 2026-11-02 · cierre expreso y push ordinario en rama única | `PHASE-GREEN` no declarado; SEE/Rust pendientes, suite completa no repetida al cierre y estudio humano E-PG-12 diferido |
-| PG-B | Sin iniciar · plan preparado para revisión | Sí, C02 pendiente | | Autorización de implementación, revisión del plan y dependencia PG-3 abierta |
-| PG-7 | Sin iniciar | No | | |
+| PG-B | Reformulada el 2026-11-02 · PG-B.01–.03, .05–.09 ejecutados; .04 retirado; .10–.30 sin iniciar | Sí, reescrito; C02 pendiente | | C01/C02; parada en PG-B.22.01 si el puente supera `PERF.ARTIFACT.SIZE` |
+| PG-L | Sin iniciar | No | | |
+| PG-S | Sin iniciar | No | | |
+| PG-N | Sin iniciar | No | | |
+| PG-7 | Sin iniciar · reformulada el 2026-11-02 | No | | |

@@ -1,110 +1,135 @@
-# Fase PG-B · App y tareas observables — plan de ejecución
+# Fase PG-B · Lenguaje completo con anfitriones reales y app con tareas observables — plan de ejecución
 
 ## 0. Metadatos y contrato de ejecución
 
-- Origen: §4.11 del [plan general](plan-ejecucion-proposito-general.md); ADR-03/12/13, R-09–R-13/R-19/R-20, C-15, K-18/K-19 y E-PG-12 de la [hoja de ruta](../hoja-de-ruta-proposito-general.md).
-- Fecha de preparación: 2026-11-02, America/Lima.
-- Revisión inspeccionada: `5a0e12ae95d4f0a84743180e2a98f83a4423a16e`.
-- Rama comprobada: `feature/agregar-ruta-de-especificacion`; árbol limpio antes de preparar el plan.
-- Petición: «Crea el plan de ejecución detallado para `4.11 PG-B · App y tareas observables` como para que ninguna IA que lo ejecute pueda darse chance de alucinar».
-- Estado al redactar: la autorización cubría redactar este plan y enlazarlo desde el plan general, no su implementación ni la revisión C02. Instrucciones directas posteriores autorizaron una iteración de PG-B.01, PG-B.02 y PG-B.03; el 2026-11-02 se autorizó una sola iteración de PG-B.04, otra de PG-B.05 y PG-B.07 conjuntas, otra de PG-B.06 y otra de PG-B.08 y PG-B.09 conjuntas, sin preguntas y eligiendo la opción recomendada. Cada autorización se limita a su punto; no habilita los demás puntos, C02, commit, push, instalación ni inicio de PG-7.
-- Documento transitorio: ninguna especificación, README ni código fuera de `docs/` podrá citarlo (`DOC-NO-TRANSIENT-REFS`). Las decisiones se trasladan a sus dueños en el mismo cambio (`DOC-README-TRUTH`, `DOC-NO-ORPHAN-DECISION`).
+- Fase: PG-B, reformulada el 2026-11-02. Nombre anterior: «App y tareas observables».
+- Origen: §B.2 de [analisis-lenguaje-completo-sin-simulacion.md](analisis-lenguaje-completo-sin-simulacion.md), que
+  reformula §4.11 del [plan general](plan-ejecucion-proposito-general.md). Requisitos del dueño RQ-1–RQ-7 y decisiones
+  D-01–D-19 aceptadas el 2026-11-02 (§0.1 y §0.2 de ese análisis). Se conservan ADR-03/12/13, R-10–R-12, R-19, R-20,
+  C-15, K-18/K-19 y E-PG-12 de la [hoja de ruta](../hoja-de-ruta-proposito-general.md) en lo que no contradicen RQ-1–RQ-3.
+- Fecha de esta versión: 2026-11-02, America/Lima. Revisión inspeccionada: `194bd9ce`. Rama:
+  `feature/agregar-ruta-de-especificacion`. Cambios ajenos presentes y conservados:
+  `apps/pseudolearn_vscode/examples/project/app/main.pseudo`, `apps/pseudolearn_vscode/media/pseudolearn.tmLanguage.json`.
+- Petición: «Rewrite PG-B plan» (2026-11-02), tras aceptar las recomendaciones del análisis. **Autoriza redactar este
+  plan, no implementarlo.** `PG-B.C01` (autorización de inicio) y `PG-B.C02` (revisión del plan) siguen pendientes.
+- Historia conservada: la versión anterior de este plan (preparada el 2026-11-02 sobre `5a0e12ae`) y sus iteraciones de
+  PG-B.01–PG-B.09 quedan como evidencia en §4.1 y §11.1–§11.9. Sus casillas no se desmarcan. PG-B.04 pasa a **Retirado**
+  (§4.1); su parte de entradas identificadas sigue vigente.
+- Documento transitorio: ninguna especificación, README ni código fuera de `docs/` podrá citarlo
+  (`DOC-NO-TRANSIENT-REFS`). Cada decisión se traslada a su dueño en el mismo cambio (`DOC-README-TRUTH`,
+  `DOC-NO-ORPHAN-DECISION`).
 
 ### 0.1 Reglas para quien ejecute
 
-1. Antes de modificar, releer `AGENTS.md`, README y reglas del miembro y del crate afectado; comprobar rama, HEAD y diff. Si cambió HEAD, actualizar el inventario y distinguir hechos vigentes de esta fotografía. Conservar cambios ajenos.
-2. Este plan distingue **existente comprobado**, **propuesta de implementación** y **carencia por verificar**. Los nombres propuestos de §5 no son clases, operaciones ni archivos existentes. No usar un nombre de esta guía como prueba de que una API lo admite.
-3. Secuencia obligatoria por punto: contrato → casos con esperado derivado → tests que detectan la ausencia → implementación → README/reglas → verificaciones. Si el contrato ya cubre la conducta, documentar su reutilización; no inventar una regla nueva para justificar cada archivo.
-4. Mantener por cada tarea una fila de §11 con HEAD/diff, reglas/casos, archivos, comandos, salida/código de salida, alcance y límites. «Se implementó», «parece funcionar» o un test que solo comprueba el mismo algoritmo no son evidencia suficiente.
-5. No convertir datos ausentes en raíz/cero, éxito, lista vacía o estado aproximado. La raíz cero se usa únicamente donde el contrato lo establece. Desconocidos y errores esperables atraviesan el puerto como resultados tipados; no escapan `FormatException`, `StateError` ni fallos del transporte.
-6. No deducir semántica con regex, texto de cabecera, orden de pintado, profundidad aislada o número de línea. Sí aplicar la atribución explícita de `ENG.TRACE.EVENTS#R8` sobre la secuencia íntegra de eventos.
-7. Una discrepancia corpus/implementación no se arregla copiando la salida del motor al esperado. Una contradicción entre fuentes se informa con ID, texto y alcance, y se espera decisión para el trabajo dependiente (`CONFLICT-REPORT`). Puede continuarse trabajo independiente autorizado.
-8. Cumplir `SPEC-VERSION-FREEZE`: conservar identidad, estado y versión, sin `cambio`; reanclar solamente los contratos modificados y revisados. Nunca asignarse revisión humana ni refrescar todo el corpus para ocultar deuda.
-9. Al terminar el alcance autorizado, informar y parar (`PHASE-STOP`). Las puertas internas de §10 no son fases nuevas ni exigen confirmaciones rutinarias si la persona autorizó el conjunto; no amplían una autorización parcial.
+1. Antes de modificar, releer `AGENTS.md`, el README y el archivo de reglas del miembro y del crate afectado; comprobar
+   rama, HEAD y diff. Si cambió HEAD, actualizar el inventario de §1 y distinguir hechos vigentes de esta fotografía.
+   Conservar cambios ajenos.
+2. Este plan distingue **existente comprobado**, **propuesta** y **carencia por verificar**. Un nombre propuesto en §5
+   (crate, capa, archivo, operación) no existe hasta que se cree; no usarlo como prueba de que una API lo admite.
+3. Secuencia obligatoria por punto: especificación → casos con esperado derivado → tests que detectan la ausencia →
+   código → README y reglas → verificación. El borrado de lo que el punto deja muerto ocurre **en el mismo cambio** que
+   su reemplazo, no después.
+4. Por cada tarea, una fila de §11 con HEAD/diff, reglas y casos, archivos, comandos, salida y código de salida, alcance y
+   límites. «Se implementó», «parece funcionar» o un test que repite el algoritmo no son evidencia.
+5. Prohibido reintroducir simulación en producto (RQ-3): respuestas preparadas, archivos virtuales, reloj lógico en vivo,
+   escenarios, semilla fija por omisión o rótulos «Simulado». El único anfitrión no real permitido es el doble de prueba
+   del corpus (D-01a), detrás de una característica de pruebas e inaccesible desde CLI, extensión y app.
+6. Prohibido reintroducir concesiones (RQ-1): ninguna opción, comando, campo de manifiesto ni diálogo para «permitir» red,
+   archivos, reloj, temporizador o argumentos. Un fallo de plataforma (CORS, sandbox, ATS, aviso del sistema) se entrega
+   como `ErrorES` tipado con su causa; nunca se presenta como política de PseudoLearn.
+7. Una discrepancia corpus/implementación no se arregla copiando la salida del motor al esperado
+   (`SPEC-INDEPENDENT-ORACLE`). Una contradicción entre fuentes se informa con ID, texto y alcance y se espera decisión
+   (`CONFLICT-REPORT`); puede seguirse trabajo independiente autorizado.
+8. `SPEC-VERSION-FREEZE`: editar texto oficial en la misma identidad, estado y versión, sin `cambio`; no borrar reglas
+   (se reescriben); reanclar con `lock --refresh` listando en una sola orden todos los IDs modificados y revisados.
+9. Al terminar el alcance autorizado, informar y parar (`PHASE-STOP`). Las puertas de §10 no amplían una autorización
+   parcial.
 
 ## 1. Punto de partida comprobado
 
-Rutas relativas a la raíz salvo indicación contraria. Esta sección describe inspección de fuentes, no una campaña de pruebas ejecutada para este plan.
+Rutas relativas a la raíz. Inspección de fuentes en `194bd9ce`; no se ejecutó ninguna suite para redactar este plan.
 
 ### 1.1 Dependencias y puertas previas
 
-| ID | Evidencia disponible | Tratamiento exigido |
+| ID | Evidencia | Tratamiento exigido |
 |---|---|---|
-| PB-PRE-01 | PG-B depende de PG-A, PG-3, PG-4 y PG-5. PG-A está cerrada por decisión expresa el 2026-11-02; PG-4 y PG-5 figuran cerradas; PG-3 sigue en curso en el resumen global | Para el alcance exacto de PG-B.01, la instrucción directa de implementación del 2026-11-02 resuelve avanzar con PG-3 abierta. No cierra PG-3 ni autoriza otros puntos |
-| PB-PRE-02 | PG-A no declaró `PHASE-GREEN`: informó `SEE-HASH` en `API.ANALYZE`, `SEE-STALE` en conformidad engine, dos `SIZE-NESTING` Rust, suite completa Flutter no repetida y humo de plataforma pendiente | Reproducir línea base al iniciar; registrar errores vigentes, no presentarlos como comprobados hoy. Si impiden la puerta afectada, resolver dentro del alcance autorizado o informar bloqueo; no heredar un verde inexistente |
-| PB-PRE-03 | La hoja de ruta emplea denominaciones históricas GP; PG-A registra edición oficial exclusivamente 2026 | Mantener edición 2026 y perfiles es/en existentes. No crear selector GP, migrador ni segunda gramática |
-| PB-PRE-04 | `API.STATE.QUERY#R7` llamaba `task` al selector; `execution_queries.rs`, `state_pages.rs` y README de API utilizan `task_id` | Resuelto para PG-B.01 al aceptar la opción recomendada: conservar `task_id`, aclarar R7 y derivar casos de rechazo; `task` no se acepta como alias |
-| PB-PRE-05 | README del motor contiene párrafos antiguos que llaman pendientes a cancelación/canales/efectos que su introducción describe integrados; API documenta integración y tiene tests específicos | No resolver la contradicción documental por intuición. Informarla; antes de comprometer una conducta, contrastar regla, caso y prueba real y registrar corrección autorizada en el README dueño |
-| PB-PRE-06 | E-PG-12 humano quedó diferido por decisión del 2026-10-22 y el cierre de PG-A conserva ese diferimiento; evidencia estática excluye explícitamente tareas | Registrar el alcance literal del diferimiento al preparar la parte dinámica; no inventar participantes, volver a pedir conceptos ya aprobados ni trasladar métricas estáticas a esta fase. Si el alcance registrado no cubre el cierre dinámico, solicitar solo esa precisión |
+| PB-PRE-01 | PG-A, PG-4, PG-5, PG-6A y PG-6B cerradas; PG-3 figura «en curso» en §6 del plan general aunque su §4.5 marca todas las casillas | Mantener la resolución ya aplicada: avanzar con autorización expresa; no cerrar PG-3 desde aquí |
+| PB-PRE-02 | Tras §11.9: suite Flutter 3416/0 fallos; motor 2158/0; `see conform --subject app` con fallos en `APP.EDITOR.COMPLETION#R5/R6/R10` y `APP.EXEC.SNAPSHOT-VIEW#R1/R4` | Línea base de HEAD al iniciar; los dos contratos de app se resuelven en PG-B.25 o se reportan |
+| PB-PRE-07 | El corpus estable impone denegación por defecto, política SSRF, tiempo lógico y semilla fija (`LANG.CAPABILITY.MODEL#R2/R3`, `RT.HOST.INTERFACE#R1/R3/R6–R9`, `LIB.HTTP#R1/R3`, `LIB.HTTP.POLICY#R1–R4`, `LIB.TIME#R1/R2`, `API.PROJECT.MANIFEST`) | Bloque 1 los reescribe antes de cualquier código (CF-N02–CF-N07 del análisis) |
+| PB-PRE-08 | §5.4 del plan general recomienda «denegación por defecto» y «ningún acceso ambiental a `cwd`, variables de entorno…» | Choca con RQ-1; la instrucción del dueño prevalece (AGENTS.md §3). PG-7.15 actualiza §5.4; aquí se registra y no se aplica |
+| PB-PRE-09 | README del motor y `isolation` de `packages/pseudolearn_engine/architecture.yaml` prohíben Hyper, Rustls, `http` y DNS en API, Wasm y puente de app | D-02b exige reescribir esa decisión para el puente (CF-N13) antes de PG-B.22 |
+| PB-PRE-10 | `PERF.ARTIFACT.SIZE`: ios-arm64 ≤ 5 MiB; medido 4 294 592 B tras PG-5 | PG-B.22.01 mide primero el puente con red y para si no cabe (CF-N11) |
 
-Estos puntos son advertencias para implementación futura. No impiden redactar el plan pedido. La documentación histórica no autoriza corregir de oficio todas las fases previas.
+### 1.2 Inventario real de lo que esta fase cambia
 
-### 1.2 Inventario real y brechas
-
-| Dueño existente | Hecho inspeccionado | Consecuencia de PG-B |
+| Dueño existente | Hecho inspeccionado | Consecuencia |
 |---|---|---|
-| `apps/pseudolearn_app/lib/engine/rust/rust_event_classes.dart` | Nueve clases ordinarias y doce de tareas/canales/entrega; `RustTaskEvent` lee el mapa de datos | Reutilizar alfabeto vigente; tipar campos por clase y rechazar desconocidos sin fallback |
-| `rust_wire_models.dart` en ese directorio | `RustEvent` conserva clase, línea, profundidad, datos y `nodeId`; no conserva la identidad completa de revisión. `PendingEffectRequest` tiene `taskId` con cero por defecto; `RustBatch` conserva lista de pendientes | Preservar identidad/revisión y distinguir campos obligatorios, compatibilidad y ausencia. No asumir que `termination` incluye `task_id`: `execution_wire.rs` no lo incluye en `awaiting_effect`; la lista sí tiene su contrato |
-| `rust_focus_tracker.dart` / `rust_statement_stack.dart` | Un tracker conserva un único foco y una única pila; procesa entrada/salida, decisión, llamada/retorno | Segregar contexto por tarea; un cambio de tarea no apila una llamada de otra |
-| `rust_program_execution.dart` | Una cola global; consume un evento por `step()`, pero precarga lotes de 25; un entorno/foco y un índice global; `provideInput(String)` y `stop()` sin destinatario | Mantener evento entregado separado de punta calculada y selección. Procesar todos los intermedios sin exponer estado futuro |
-| `rust_state_api.dart` / `rust_watch_rows.dart` | Consultas sin selector de tarea; filas recorren marcos por profundidad; hay consulta de forma paginada de un elemento, no tabla completa paginada | Consumir consultas por tarea y rango; no usar `state` completo para después recortar la tabla |
-| `domain/ports/program_execution.dart` | Cinco métodos y getter de salida; no hay puerto de observación de tareas/historia | Segregar puertos; no exceder cinco métodos públicos por clase para añadir todo al puerto existente |
-| `application/execution/` | `ExecutionCubit`, `ExecutionState`, `StepSettlement`, `StepBatchRunner`; ritmos por foco/bloque y tope local 10000; cesión con `Future.delayed(Duration.zero)` entre lotes | Paso por evento y por tarea requieren comandos explícitos; no rebautizar `nextStatement` como evento. La cesión de UI no cambia el cuanto normativo |
-| `rust_effect_gate.dart` | En automático puede resolver varias esperas y acumular sus eventos antes de entregarlos; en manual se detiene; exige primera secuencia FIFO del host simulado | Acotar bombeo; mostrar espera/entrega confirmadas. FIFO es política de este host, no restricción universal del motor |
-| `rust_simulated_host.dart` / `SimulatedCapabilities` | Archivos/argumentos/reloj/temporizador en memoria; no hay guiones HTTP en este modelo; operación no atendida devuelve fallo | Añadir escenarios HTTP declarados si faltan, por el protocolo de efectos vigente; no afirmar que la UI actual ya simula HTTP ni recurrir a red |
-| `domain/model/execution/effect_wait.dart` y `execution_step.dart` | Una espera y un foco agregados | Mantener compatibilidad secuencial, añadir identidades y colecciones de observación con dueños pequeños |
-| `packages/pseudolearn_engine/crates/pseudolearn_api/src/execution_queries.rs` / `state_pages.rs` | Inspección de copia por `task_id`; cursor ligado a consulta, evento, tarea y generación; máximo 4096 | Reutilizar y probar por FRB; consulta no debe activar la tarea inspeccionada |
-| `execution_state.rs` del mismo crate | `state` materializa marcos/objetos y, con hijas, resumen de tareas | No usar este camino sin límite para la ventana de cien tareas; verificar disponibilidad de resumen acotado en `debug_state` antes de pedir ampliación |
-| `execution_debug.rs`, `history_operations.rs`, `debug_state.rs` y README de API | `history_events`, `debug_state` y control persistente existen; ventana de eventos y marcos hasta 4096; cursor y punta separados | Aprovechar consultas sin activar por accidente comandos de depuración, breakpoints ni retroceso de producto |
-| `apps/pseudolearn_app/native/src/api.rs` | Sobre JSON genérico hacia `ApiSession`; sesiones `thread_local`, FRB síncrono | Una operación JSON de API no exige por sí sola cambiar firma FRB ni crear hilo. Regenerar solo si cambian fuentes del generador |
-| `tool/see_app_adapter.dart`, `tool/see_app_api.dart`, `tool/see_app_scenarios.dart` en la app | Sujeto app atraviesa transporte real y admite escenarios | Una prueba que solo reenvía `session.call` certifica API/puente, no la proyección Dart: añadir observaciones del modelo/vista real |
+| `packages/pseudolearn_engine/crates/pseudolearn_api/src/execution_setup.rs` | Toda ejecución usa `crate::FakeHostProvider`; `configure_host_authority` aplica la autoridad declarada; `detached` delega efectos | PG-B.16: el falso pasa a característica de pruebas; sin autoridad por concesión |
+| `crates/pseudolearn_runtime/src/{memory_host,memory_host_config,memory_host_files,local_http_effect,effect_authority,capability_table,host_validation}.rs` | Anfitrión de memoria y autorización por orígenes y permisos | PG-B.16 |
+| `apps/pseudolearn_cli/src/physical_host.rs` | `arguments_values` → `[]`; `clock_now` congela tras la primera lectura; `timer_wait` no espera | PG-B.12, PG-B.14, PG-B.18 |
+| `apps/pseudolearn_cli/src/physical_network_{address,resolver,tls,transport,send,batch,body}.rs`, `physical_files.rs`, `physical_session.rs`, `physical_request.rs` | Transporte Hyper/Rustls/Tokio, filtro de rangos privados, raíz única `cap-std` | Se extraen a `pseudolearn_host` (PG-B.22) sin el filtro (PG-B.11, PG-B.18) |
+| `apps/pseudolearn_cli/src/{options,execution_options,messages}.rs` | `--conceder`, `--archivos`, `--origen`, `--origen-local`, `--raiz-prueba` | PG-B.18 |
+| `apps/pseudolearn_vscode/src/application/{run_arguments,debug_configuration}.ts` | `run --editor` sin concesiones; `launch.json` rechaza `grants`, `permissions`, `origins`, `filesRoot`, `env`, `args` | PG-B.19 |
+| `apps/pseudolearn_vscode/src/adapters/{browser_commands,browser_effect_host,browser_file_host,browser_scratch_files}.ts`, `src/contracts/host_capabilities.ts` | Comandos de concesión, orígenes, archivos en memoria; sin reloj, temporizador ni argumentos | PG-B.20 |
+| `packages/pseudolearn_engine/crates/pseudolearn_wasm/browser/fetch_host.mjs` | `performFetch(effect, { allowedOrigins, … })` | PG-B.20 |
+| `apps/pseudolearn_app/lib/{domain/model/execution,engine/rust,presentation/document/components}/…simulated…` | Siete escenarios simulados, anfitrión, archivos y HTTP simulados, panel y selector | PG-B.24 |
+| `apps/pseudolearn_app/architecture.yaml` | `engine` prohíbe `dart:io`; no hay capa de anfitrión | PG-B.21 |
+| `apps/pseudolearn_app/native/Cargo.toml` | Solo `pseudolearn_api` sin red | PG-B.22 |
+| `apps/pseudolearn_app/{ios/Runner/Info.plist,macos/Runner/*.entitlements,pubspec.yaml}` | Sin ATS ni `NSLocalNetworkUsageDescription`; macOS con `network.client`; MSIX `internetClient` | PG-B.23 |
+| README app §1.5 | Rigor fijo flexible; sin control de reproducción; receptor no localizado | PG-B.28–PG-B.30 |
 
-### 1.3 Contrato que ya resuelve la atribución
+### 1.3 Lo que no cambia
 
-`ENG.TRACE.EVENTS#R8` establece que un evento ordinario pertenece a la última tarea de `task_resumed`; antes de la primera, a la raíz cero. No falta una identidad normativa en cada evento ordinario. El consumidor debe conservar el último dueño a través de lotes, eventos sin foco y páginas; filtrar antes de atribuir destruye la información necesaria. Una ventana que comienza a mitad de cinta necesita contexto anterior verificado, no inicializarse arbitrariamente en raíz.
-
-`task_spawned.task` identifica la hija; no significa que esa hija esté ejecutando. `task_ready` tampoco significa ejecución. `effect_delivered.task` identifica receptora; recibir un resultado no equivale a ejecutar continuación. El estado posterior de `API.STATE.QUERY#R6` y la atribución del evento tienen responsabilidades distintas; no intercambiarlos.
+La atribución `ENG.TRACE.EVENTS#R8`, las proyecciones por tarea, el paso global y por tarea, la cinta y su reproducción
+sin efectos, la identidad `(resource_id, task_id, request_id)` de `Leer` y los caminos de cancelación/error de
+PG-B.01–.09 siguen vigentes. Se reverifican con efectos reales en PG-B.25; no se rediseñan.
 
 ## 2. Lectura realizada y lectura de entrada obligatoria
 
-### 2.1 Fuentes consultadas para esta revisión
+### 2.1 Fuentes consultadas para esta versión
 
-- [x] `AGENTS.md` aportado en la conversación y `README.md` raíz; plan general §2–§5, hoja de ruta ADR-12, requisitos, riesgos y E-PG-12.
-- [x] README de app: arquitectura/capas, ejecución/foco, verificación, puente, simulación, cobertura y pendientes de tareas; `apps/pseudolearn_app/architecture.yaml`.
-- [x] `apps/pseudolearn_app/native/README.md`, sus reglas y `src/api.rs`.
-- [x] README y `architecture.yaml` de `packages/pseudolearn_engine` y `packages/pseudolearn_spec`; README de `pseudolearn_api`, en especial consultas, efectos y control persistente.
-- [x] Reglas/definiciones de `ENG.TRACE.EVENTS`, `ENG.TRACE.STEP`, `ENG.TASK.AGENDA`, `ENG.STATE.SNAPSHOT`, `ENG.STATE.INCREMENTAL`, `ENG.EFFECT.TAPE`, `ENG.EXEC.EFFECT-ORDER`, `ENG.EXEC.EFFECT-COMMIT`, `ENG.INPUT`, `API.EXECUTE`, `API.STATE.QUERY`, `API.WIRE-FORMAT`, `LANG.TASK.SCOPE`, `LANG.TASK.SUSPENSION`, `LANG.TASK.CHANNEL`, `RT.HOST.INTERFACE` y `PERF.PROTOCOL`.
-- [x] Implementaciones de §1.2 y tests de contratos de ejecución/foco; inventario de tests API de tareas, efectos, historia y depuración; cierre de PG-A y material estático de E-PG-12.
+- [x] `AGENTS.md`; plan general §0, §2–§6; análisis del 2026-11-02 completo; versión anterior de este plan.
+- [x] Corpus: `LANG.CAPABILITY.MODEL`, `RT.HOST.INTERFACE`, `LIB.HTTP`, `LIB.HTTP.POLICY`, `LIB.TIME`, `LIB.IO`,
+  `API.PROJECT.MANIFEST` (reglas de permisos), `RT.PROCESS`, `TOOL.SERVICE.CATALOG` (fichas de capacidad).
+- [x] README y reglas: motor (`README.md`, `architecture.yaml` con `isolation`), API (`FakeHostProvider`), CLI, extensión,
+  app (§1, §2.1, §4.50, §4.54, §4.57), puente `native/`.
+- [x] Código citado en §1.2.
 
 ### 2.2 Antes del primer cambio de implementación
 
-- [x] Registrar HEAD, diff y versiones reales para PG-B.01; volver a comprobar dependencias PB-PRE-01–06 y autorización. Registro: HEAD `c31bf4c18202967dddab99201d63c188714b710c`, rama `feature/agregar-ruta-de-especificacion`; Flutter 3.47.5, Dart 3.13.4, Rust/Cargo 1.99.0, FRB 2.13.0.
-- [x] Leer completos los casos/propiedades reutilizados y los contratos afectados por PG-B.01: `API.STATE.QUERY` C10/C11 y R7, `ENG.TRACE.EVENTS#R8`, más identidad de revisión de `API.PROGRAM.VIEW`. Los contratos listados para puntos PG-B posteriores quedan pendientes; no se usaron como autoridad de este alcance.
-- [x] Leer README de timeline, VM, runtime, service o SEE interno solo si se necesita modificar ese crate (leídos los de `pseudolearn_api`, `pseudolearn_semantic` y `pseudolearn_conformance`, únicos crates tocados en el cierre de §11.9); aplicar su matriz de imports real, no la de otro crate del workspace.
-- [x] Registrar por regla afectada identidad, versión, estado, anclaje, casos/propiedades, sujeto y conformidad actuales. No marcar todos los contratos de esta lista como modificados. `API.STATE.QUERY@1.0.0` sigue `estable`, sujeto `engine`; el anclaje previo es `a0b9e05706705444beaeba3ef539342d16d8360a6cfe222a3b8511d361ed3d24`, aún no reanclado. R7 vincula ahora C10/C11/C18/C19. `ENG.TRACE.EVENTS#R8` se reutiliza sin modificación.
-- [x] Levantar línea base dirigida de §7.3 antes de editar (§11.9: suite Flutter completa con 12 fallos, conformidad con 3 regresiones de motor y 10 de app, `rust-checks` con 8 violaciones). Una suite previa no certifica HEAD nuevo.
+- [ ] Registrar HEAD, diff, versiones (Flutter, Dart, Rust, FRB, Node, pnpm) y espacio libre en disco.
+- [ ] Leer completos los casos de cada especificación del bloque 1 y la lista de vínculos de conformidad que los
+  referencian (`conformance*.yaml` del motor, CLI y app; `differential-exemptions.json`; `property-conformance.json`).
+- [ ] Leer el README de `pseudolearn_runtime`, `pseudolearn_api`, `pseudolearn_wasm` y de cada crate que se toque.
+- [ ] Línea base dirigida de §7.3 en HEAD.
 
-## 3. Decisiones de diseño propuestas
+## 3. Decisiones de diseño
 
-Las elecciones son recomendaciones para la revisión del plan. No modifican por sí mismas el corpus. Las decisiones conceptuales de ADR-03/12/13 ya aprobadas se respetan sin pedirlas nuevamente.
+Las decisiones D-01–D-19 del análisis están aceptadas y no se vuelven a pedir. Esta tabla fija cómo se implementan.
 
-| ID | Opciones | Criterio | Elección propuesta y dueño documental | Reversión |
+| ID | Opciones | Criterio | Elección y dueño documental | Reversión |
 |---|---|---|---|---|
-| D-PGB-01 | Atribuir por R8; añadir task a cada evento; deducir por línea | Contrato vigente y cero semántica alternativa | R8 sobre cinta completa, con contexto de inicio de ventana; README app | Si la API no permite obtener contexto acotado, ampliar primero contrato/consulta, sin cambiar R8 unilateralmente |
-| D-PGB-02 | Pila global; contextos por tarea | Mismo nodo no implica mismo marco | Mapa de contextos por identidad de ejecución/tarea; cada uno con foco/pila; README app | Extraer estructuras por responsabilidad si exceden límites; nunca volver a mezclar marcos |
-| D-PGB-03 | Agrandar `ProgramExecution`; puertos segregados | Límite de cinco métodos y consumidores simples | Puerto de observación separado del control; compartir recurso en composición estática; README app | Ajustar contratos mínimos tras tests de consumidores, sin crear segunda sesión |
-| D-PGB-04 | Comandos de depurador; filtro de eventos sobre avance | Paso global de un evento difiere de parar en sentencia | Reutilizar `advance` y predicados de consumo sobre evento; evaluar API de control solo si conserva exactamente ADR-12. No usar operación `step` que recompila; README app/API si cambia | Si el bombeo no conserva límites/continuación, corregir API tras casos; no emular agenda |
-| D-PGB-05 | Resolver todo al precargar; bombeo acotado con estados de espera | Evitar UI congelada y estados futuros | Host en memoria entrega solo donde agenda/API permiten, con respuestas explícitas y eventos confirmados; README app | Reducir lote o separar compuerta, sin temporizadores semánticos |
-| D-PGB-06 | FIFO como ley universal; política del escenario | Motor admite orden externo grabado | FIFO por omisión en app; otro orden solo si escenario lo declara y API lo valida. Reconstrucción sigue cinta; README app | Mantener inicialmente solo FIFO si basta, sin rechazar como inválida una cinta legal por otro orden |
-| D-PGB-07 | Historial completo en Dart; ventanas retenidas | Volumen acotado y horizonte explícito | Consultas de API, páginas y caché acotada con expulsión determinista; README app/API | Añadir consulta pública mínima si falta contexto/estado de canal, sin leer privados VM desde Dart |
-| D-PGB-08 | Panel único saturado; tres proyecciones coordinadas | ADR-12 y compact accesible | Flujo local, creación/unión y eventos/estado con selector común de tarea y evento; README app | Cambiar disposición/agrupación si E-PG-12 falla; preservar cobertura |
-| D-PGB-09 | Un «cancelado» genérico; caminos normativos | Cooperativa, corte host, trampa y Error tienen efectos distintos | Estados y causas diferenciados, sin acción nueva de cancelar hija si el contrato no la ofrece; README app | Revisar rótulos, no igualar semánticas |
-| D-PGB-10 | HTTP real; respuestas de escenario | Denegación por defecto y reproducibilidad | Extender host de memoria por protocolo vigente y guiones declarados; cero DNS/sockets; README app | Preferir proveedor de memoria existente si API permite configuración equivalente; comprobar antes de duplicar protocolo |
-| D-PGB-11 | Métrica candidata como aprobado; medir y presentar resultado | R-12 y PERF.PROTOCOL | Medir p95 de 100 eventos/100 tareas visibles, mantener ≤50 ms como candidato; README del arnés dueño | Si no se logra, publicar resultado y proponer ajuste; aprobación solo por persona |
+| D-PGB-R01 | Conservar `Solicitar*` con concesión implícita; eliminar las capacidades como tipos | No romper programas válidos; la atenuación voluntaria es útil | `Solicitar*` siempre concede la familia que el anfitrión soporta; `Limitar` y `Subdirectorio` quedan como atenuación voluntaria. README motor y runtime | Si un caso derivado exige retirar un tipo, se reporta |
+| D-PGB-R02 | Ubicación de `pseudolearn_host`: crate del workspace del motor; paquete nuevo en `packages/` | Debe consumirlo también `pseudolearn_aot_rt` en PG-N; reutilizar `rust-checks`, `cargo deny` y Clippy del motor | Crate `crates/pseudolearn_host` del motor, sin importar crates del motor: opera sobre el formato público de efecto de `API.EXECUTE` con `serde_json`. Declarado en `architecture.yaml` antes del código. README motor y del crate | Si una dependencia exige otra cadena, paquete propio en `packages/` |
+| D-PGB-R03 | Red del puente: hilo Rust propio; usar el `Future` de Dart | El puente FRB es síncrono y con sesiones `thread_local` | Hilo de trabajo Rust con runtime Tokio de un hilo; Dart consulta resultados listos al bombear, sin bloquear la UI ni crear Isolate. README `native/` | Si FRB asíncrono resulta más simple y cumple límites, se documenta y cambia |
+| D-PGB-R04 | Raíces de confianza: `rustls-native-certs`; verificador de plataforma | `rustls-native-certs` no cubre iOS **[I]** | Verificador de plataforma con soporte macOS, iOS, Windows y Linux, validado por licencia y tamaño (`cargo deny`) antes de adoptarlo. README `pseudolearn_host` | Si ninguno cumple, D-02a para la app |
+| D-PGB-R05 | Carpeta de trabajo de la app: contenedor por documento; carpeta única | Rutas relativas predecibles y visibles | Carpeta real por documento dentro del contenedor de la app (iOS/macOS sandbox) o de `%LOCALAPPDATA%` (Windows), creada al ejecutar; ruta mostrada en la consola. README app | Carpeta única si el dueño la prefiere |
+| D-PGB-R06 | Argumentos en la app: campo de texto; lista editable | Igual que la configuración de ejecución de un IDE | Campo de argumentos por documento con separación por espacios y comillas; persistido con el documento. README app | — |
+| D-PGB-R07 | Temporizador real en paso a paso: esperar con la UI viva; saltar la espera | RQ-3 prohíbe saltar | Espera real cooperativa; el botón detener la corta; mientras espera la banda muestra «esperando temporizador». README app | — |
+| D-PGB-R08 | Diferencias del navegador: error; adaptación | D-07a | Redirección seguida por el navegador con URL final; CORS, contenido mixto y cabecera prohibida como `ErrorES` con causa de plataforma. Regla en `RT.HOST.INTERFACE#R8` por sujeto | — |
+| D-PGB-R09 | Doble de prueba del corpus: característica `test-host`; crate separado | D-01a; aislamiento comprobable | Característica `test-host` en API y runtime, activada solo por `pseudolearn_conformance`, tests y `bench_worker`; `rust-checks isolation` comprueba que CLI, puente y Wasm no la activan. README motor | Crate separado si la característica contamina el grafo |
+| D-PGB-R10 | Escenas E-PG-12: conservar; regenerar | Ninguna debe depender de simulación | Regenerar con anfitrión real y servidor loopback; las que no usen efectos se conservan con su hash | — |
+
+Conservadas de la versión anterior: D-PGB-01–D-PGB-09 y D-PGB-11. **D-PGB-10 queda retirada** (era «extender host de
+memoria… cero DNS/sockets»).
 
 ## 4. Desglose por punto
 
-Cada punto incluye tareas en orden SPEC-FIRST. «Documentar» exige mover los porqués al README del miembro, no enlazar este plan. Los casos de §7.1 son IDs locales de planificación: no son casos SEE existentes.
+Los IDs `PG-B.nn` nunca se reutilizan. §4.1 conserva sin cambios las tareas ejecutadas de la versión anterior; §4.2 añade los puntos de la reformulación.
+
+### 4.1 Puntos de la versión anterior (PG-B.01–PG-B.09)
+
+PG-B.01–.03 y .05–.09 quedan absorbidos y se reverifican con anfitrión real en PG-B.25 y PG-B.26. **PG-B.04 queda Retirado** el 2026-11-02 por RQ-3: sus tareas `.04.02`–`.04.05` sobre escenarios simulados pierden efecto y su implementación se borra en PG-B.24; la identidad de entradas de `.04.01` y `.04.04` sigue vigente. Las casillas `[x]` registran lo ejecutado entonces y no se desmarcan.
 
 ### PG-B.01 · Evento global, foco, pila y estado por tarea
 
@@ -133,7 +158,7 @@ Cada punto incluye tareas en orden SPEC-FIRST. «Documentar» exige mover los po
 - [x] `PG-B.03.05` Documentación: comandos, condiciones terminales, compatibilidad de ritmos y límites de seguridad de UI; distinguir tope local 10000 del límite del lenguaje (`ENG.TRACE.STEP#R4`), sin renombrar uno como otro ni retirarlo silenciosamente.
 - [x] `PG-B.03.06` Verificar: mismo programa/configuración/cinta con ambas formas de paso produce misma traza/terminación; FRB real más cubit/widget; salida no duplicada ni reemitida al consultar historia. Registrar diferencias de selección permitidas y estado canónico común.
 
-### PG-B.04 · Efectos simulados y entradas identificadas
+### PG-B.04 · Efectos simulados y entradas identificadas (Retirado el 2026-11-02)
 
 - [x] `PG-B.04.01` Contrato: auditar identidad de solicitud de `Leer` frente a `effect_seq` de efecto, destinatario y vida de cada una. `input` actual recibe recurso/texto: no fingir que acepta task/solicitud. Definir rechazo de respuesta obsoleta/duplicada antes de enviarla; si se requieren lecturas concurrentes direccionables no expresables, especificar extensión pública y casos antes de implementarla. Mantener exclusión `input`/`effect_result`.
 - [x] `PG-B.04.02` Casos: B06/B07/B10/B11/B14; archivos virtuales, HTTP preparado, tiempo lógico, timeout, permiso denegado, resultado incierto y cancelación. Dos pendientes de tareas distintas; `Leer` inválido y reintento, respuesta cruzada/tardía, nueva ejecución con mismo texto.
@@ -187,68 +212,332 @@ Cada punto incluye tareas en orden SPEC-FIRST. «Documentar» exige mover los po
 - [x] `PG-B.09.05` Documentar protocolo y resultados dinámicos en `docs/` y procedimiento reutilizable en README del arnés dueño. Preparar material para ≥12 principiantes, orden contrabalanceado e idiomas, sin atribuir autoría/revisión/consentimiento inexistentes.
 - [x] `PG-B.09.06` Verificar cierre: resultados automatizados completos, p95 y memoria con procedencia, umbral candidato claramente rotulado; evidencia humana aportada por persona o diferimiento explícito aplicable. Si falla comprensión, revisar notación y repetir evidencia pertinente; no retirar cobertura. No declarar PG-B.C10/C11 por medir solo la parte rápida.
 
+### 4.2 Puntos nuevos de la reformulación
+
+Cada punto: `.01` especificación · `.02` casos · `.03` tests · `.04` código (incluye el borrado de lo que deja muerto) ·
+`.05` README y reglas · `.06` verificación.
+
+#### Bloque 1 · Contrato del corpus
+
+##### PG-B.10 · Autoridad plena por omisión
+
+- [ ] `PG-B.10.01` Reescribir `LANG.CAPABILITY.MODEL#R2`, `RT.HOST.INTERFACE#R1/R7`, `LIB.HTTP#R1` y las reglas de
+  `requests`/`grants.permissions` de `API.PROJECT.MANIFEST` y `API.EXECUTE`: `Solicitar*` concede siempre la familia
+  soportada por el anfitrión; sin intersección ni manifiesto de permisos; familia no soportada → `ErrorES` de plataforma.
+- [ ] `PG-B.10.02` Rederivar los casos que hoy esperan `permiso_denegado` por falta de concesión: pasan a probar éxito, o
+  denegación real del SO inyectada por el doble de prueba, o atenuación voluntaria. Perfiles es/en, ambos rigores.
+- [ ] `PG-B.10.03` Tests de semántica y runtime que fallan si reaparece una comprobación de permiso por concesión.
+- [ ] `PG-B.10.04` Sin código en este punto (el código es PG-B.16).
+- [ ] `PG-B.10.05` Fichas de `TOOL.SERVICE.CATALOG` sin lenguaje de concesión («si el permiso está activo»).
+- [ ] `PG-B.10.06` `see validate`, `export --check`; registro de IDs modificados para el reanclaje de PG-B.15.
+
+##### PG-B.11 · Destinos de red
+
+- [ ] `PG-B.11.01` Reescribir `LIB.HTTP.POLICY#R1–R4`, `RT.HOST.INTERFACE#R8/R9` y `LIB.HTTP#R3`: `http` y `https` a
+  cualquier host y dirección (loopback, privadas incluidas); TLS validado; nativo sin seguir redirecciones, sin cookies ni
+  proxies ambientales; descenso HTTPS→HTTP permitido en `Redirigida`; cabeceras rechazadas solo las del transporte
+  (D-06a); navegador según D-PGB-R08.
+- [ ] `PG-B.11.02` Casos: loopback y dirección privada aceptadas; `http://` público aceptado en nativo; redirección a
+  `http`; `cookie` aceptada en nativo y `PeticionInvalida` de plataforma en navegador; CORS ausente como error tipado.
+- [ ] `PG-B.11.03` Tests del validador de destinos del runtime sin filtro de rangos.
+- [ ] `PG-B.11.04` Sin código aquí (PG-B.16, PG-B.18, PG-B.20).
+- [ ] `PG-B.11.05` Hoja de STRIDE y K-07 anotados como sustituidos en `docs/` (PG-7.15 completa la reconciliación).
+- [ ] `PG-B.11.06` `see validate`, `export --check`.
+
+##### PG-B.12 · Tiempo y azar reales
+
+- [ ] `PG-B.12.01` Reescribir `LIB.TIME#R1/R2` y `RT.HOST.INTERFACE#R3`: en vivo, reloj del sistema en cada lectura y
+  temporizador que espera tiempo real sin bloquear otras tareas; semilla de entropía del SO grabada en la cinta; semilla
+  explícita por opción del anfitrión; en reproducción, todo desde la cinta.
+- [ ] `PG-B.12.02` Casos en `ENG.EFFECT.TAPE` y `LIB.TIME`: dos lecturas de reloj distintas y crecientes con el doble de
+  prueba; temporizador concurrente con otra tarea que avanza; cinta con semilla reproduce la misma secuencia de `azar`.
+- [ ] `PG-B.12.03` Tests de cinta con reloj y semilla reales grabados.
+- [ ] `PG-B.12.04` Sin código aquí (PG-B.17, PG-B.18).
+- [ ] `PG-B.12.05` README del runtime: modelo de tiempo vivo frente a reproducción.
+- [ ] `PG-B.12.06` `see validate`, `export --check`.
+
+##### PG-B.13 · Archivos con rutas del sistema
+
+- [ ] `PG-B.13.01` Reescribir `LANG.CAPABILITY.MODEL#R3` y reglas de `LIB.IO`: rutas absolutas o relativas a la carpeta
+  de trabajo del anfitrión, `..` permitido; `Subdirectorio` confina lo que el programa decida; `PermisoDenegado` solo
+  del SO.
+- [ ] `PG-B.13.02` Casos: ruta absoluta, `..`, ruta inexistente, directorio sin permiso del SO (doble), atenuación que sí
+  rechaza escapar de una subcapacidad creada por el programa.
+- [ ] `PG-B.13.03` Tests de resolución de rutas en macOS y Windows (letras de unidad, separadores, UNC) sobre el doble.
+- [ ] `PG-B.13.04` Sin código aquí.
+- [ ] `PG-B.13.05` Fichas de ayuda de `SolicitarDirectorio` y `Subdirectorio`.
+- [ ] `PG-B.13.06` `see validate`, `export --check`.
+
+##### PG-B.14 · Argumentos reales
+
+- [ ] `PG-B.14.01` Regla de `Argumentos` en `RT.HOST.INTERFACE`: entrega los argumentos de ejecución del anfitrión, en
+  orden y sin el nombre del programa.
+- [ ] `PG-B.14.02` Casos: ninguno, uno, varios con espacios y Unicode, argumento vacío.
+- [ ] `PG-B.14.03` Tests del doble con argumentos.
+- [ ] `PG-B.14.04` Sin código aquí.
+- [ ] `PG-B.14.05` Ficha de ayuda de `SolicitarArgumentos` con el origen por anfitrión.
+- [ ] `PG-B.14.06` `see validate`.
+
+##### PG-B.15 · Doble de prueba del corpus y reanclaje
+
+- [ ] `PG-B.15.01` Reescribir `RT.HOST.INTERFACE#R6` como doble de prueba del corpus, no distribuible (D-01a).
+- [ ] `PG-B.15.02` Rederivar todos los casos con bloque `anfitrion` que declaren `permissions`, `requested_permissions` o
+  `network_origins` (inventario de §A.2.1 del análisis), retirando esas claves.
+- [ ] `PG-B.15.03` Caso negativo de `see validate` que rechaza un caso con `permissions` en el bloque de anfitrión.
+- [ ] `PG-B.15.04` Esquema de casos y validación SEE actualizados si el esquema conoce esas claves; regenerar
+  `export.json`.
+- [ ] `PG-B.15.05` README de `pseudolearn_spec` si cambia el esquema.
+- [ ] `PG-B.15.06` `see validate`, `export --check`, `lock --refresh` de todos los IDs del bloque 1 en una sola orden,
+  `lock --check`.
+
+#### Bloque 2 · Motor y API
+
+##### PG-B.16 · Runtime y API sin autoridad por concesión
+
+- [ ] `PG-B.16.01` Contrato ya fijado por el bloque 1.
+- [ ] `PG-B.16.02` Vincular los casos del bloque 1 al sujeto `engine` en `conformance.yaml`; retirar vínculos `P6` que
+  quedan sin objeto.
+- [ ] `PG-B.16.03` Tests de `pseudolearn_runtime` y `pseudolearn_api` que fallan con listas de orígenes o intersección.
+- [ ] `PG-B.16.04` Eliminar `network_origins`, `local_origins`, `requested_permissions` e intersección de autoridad de
+  runtime, API y `bench_worker`; `DestinoDenegado` solo en atenuación voluntaria; `FakeHostProvider` y `memory_host*`
+  detrás de `test-host` (D-PGB-R09); regla `isolation` que impide activar `test-host` desde CLI, puente y Wasm.
+- [ ] `PG-B.16.05` README del motor, API y runtime; `architecture.yaml` (`isolation`).
+- [ ] `PG-B.16.06` `see conform --subject engine --only <IDs>`; `cargo test` de runtime y API; Clippy; `rust-checks all`
+  e `isolation` con caso negativo; `cargo tree -e features` de CLI, puente y Wasm sin `test-host`.
+
+##### PG-B.17 · Cinta con tiempo real y semilla
+
+- [ ] `PG-B.17.01` Contrato fijado por PG-B.12.
+- [ ] `PG-B.17.02` Casos de PG-B.12 vinculados.
+- [ ] `PG-B.17.03` Tests de grabación y reproducción con reloj, temporizador y semilla vivos.
+- [ ] `PG-B.17.04` Grabar semilla y lecturas de reloj; el temporizador registra la duración real; reproducción sin
+  consultar al anfitrión.
+- [ ] `PG-B.17.05` README del runtime y timeline.
+- [ ] `PG-B.17.06` `see conform` de `ENG.EFFECT.TAPE` y `LIB.TIME`; tests de cinta truncada/alterada intactos.
+
+#### Bloque 3 · CLI y extensión de escritorio
+
+##### PG-B.18 · CLI con anfitrión físico completo
+
+- [ ] `PG-B.18.01` Reescribir `TOOL.CLI.RUN`, `TOOL.CLI.CONVENTIONS` y `TOOL.CLI.MESSAGES`: sin opciones de concesión;
+  argumentos del programa tras `--`; carpeta de trabajo = directorio actual; `--semilla` opcional.
+- [ ] `PG-B.18.02` Casos de CLI: programa con red, archivos y argumentos sin opciones; opción retirada como error de uso
+  con mensaje que explica que ya no hace falta.
+- [ ] `PG-B.18.03` Tests contra `cargo xtask http-test-server` en loopback: GET/POST, 4xx/5xx, timeout, TLS inválido,
+  redirección entregada, cancelación; `Esperar 1 s` mide ≥ 1 s; reloj creciente.
+- [ ] `PG-B.18.04` Extraer el anfitrión físico a `pseudolearn_host` (lo consume la CLI desde aquí); eliminar
+  `--conceder`/`--grant`, `--archivos`/`--files`, `--origen`/`--origin`, `--origen-local`/`--local-origin`; conservar
+  `--raiz-prueba` solo si las pruebas TLS lo exigen, documentado como opción de pruebas; eliminar el filtro de rangos,
+  `network_address_policy_tests.rs` y las entradas SSRF de `tests/network_vector_registry.rs` y
+  `tests/network_security_vectors.rs`; reloj, temporizador y argumentos reales.
+- [ ] `PG-B.18.05` README de CLI y de `pseudolearn_host`; `deny.toml` si cambian dependencias.
+- [ ] `PG-B.18.06` `cargo test` de CLI y `pseudolearn_host`; Clippy; `rust-checks all`; `see conform --subject cli`.
+
+##### PG-B.19 · Extensión de escritorio y DAP
+
+- [ ] `PG-B.19.01` `TOOL.DAP`: `launch` acepta `args` y `cwd`; sin claves de permiso.
+- [ ] `PG-B.19.02` Casos DAP con argumentos y carpeta de trabajo.
+- [ ] `PG-B.19.03` Tests de `run_arguments.ts` y `debug_configuration.ts`; prueba de host confiable que ejecuta el
+  programa de PG-B.27.
+- [ ] `PG-B.19.04` `run --editor` y `pseudo dap` con anfitrión físico; carpeta del workspace o del archivo; retirar de la
+  lista de rechazo las claves que dejan de significar algo; mensajes es/en sin «No se concede».
+- [ ] `PG-B.19.05` README de extensión: Confianza de Workspace como límite de VS Code.
+- [ ] `PG-B.19.06` `vitest`, `check:*`, `node tests/host/run-host.mjs trusted`.
+
+#### Bloque 4 · Extensión web
+
+##### PG-B.20 · Anfitrión web real
+
+- [ ] `PG-B.20.01` Contrato de diferencias de plataforma fijado en PG-B.11; regla de archivos sobre el sistema de
+  archivos del editor.
+- [ ] `PG-B.20.02` Casos web: archivos del workspace, reloj, temporizador, argumentos, CORS ausente, contenido mixto.
+- [ ] `PG-B.20.03` `tests/web/http_scenarios.ts` y `file_scenarios.ts` sin pasos de concesión; la ruta «sin CORS» del
+  servidor de pruebas espera el error de plataforma.
+- [ ] `PG-B.20.04` Eliminar `pseudolearn.grantNetwork`, `pseudolearn.grantFiles`, `BrowserGrants`,
+  `browser_scratch_files.ts` y `allowedOrigins` de `fetch_host.mjs`; archivos con `workspace.fs`; reloj, temporizador
+  y argumentos en `BrowserEffectHost`; `showCapabilities` muestra los límites del navegador.
+- [ ] `PG-B.20.05` README de extensión y de `pseudolearn_wasm`.
+- [ ] `PG-B.20.06` `pnpm build:web`, `pnpm check:web`, `node tests/web/run-web.mjs` en Chromium y WebKit;
+  `node --test browser/fetch_host.test.mjs`.
+
+#### Bloque 5 · App: anfitrión real en macOS, iOS y Windows
+
+##### PG-B.21 · Capa y puerto de anfitrión
+
+- [ ] `PG-B.21.01` Sin cambio de corpus.
+- [ ] `PG-B.21.02` Escenarios SEE de app (`tool/see_app_scenarios.dart`) sin escenarios simulados.
+- [ ] `PG-B.21.03` Caso negativo del test de arquitectura: la capa nueva importando presentación o `engine/` falla.
+- [ ] `PG-B.21.04` Declarar en `architecture.yaml`, antes del código, la capa `host` (anillo 2, `may_import: [model,
+  ports]`, admite `dart:io`, prohíbe Flutter de interfaz y `engine/`) para carpeta de trabajo y argumentos; puerto en
+  `domain/ports`; `RustEffectGate` depende del puerto; ensamblado en `lib/composition/`.
+- [ ] `PG-B.21.05` README app §3.2 (capas) y §3.3.
+- [ ] `PG-B.21.06` `flutter test test/architecture/`, `dart run tool/check_limits.dart`.
+
+##### PG-B.22 · Anfitrión real en el puente
+
+- [ ] `PG-B.22.01` Medir ios-arm64 Release del puente con `pseudolearn_host` (perfil vigente `opt-level = "z"`, LTO);
+  si supera `PERF.ARTIFACT.SIZE#R1`, **parar** y presentar al dueño medición, opciones y recomendación.
+- [ ] `PG-B.22.02` Contrato de adaptador común CLI/app contra `cargo xtask http-test-server` (RN-4 del análisis).
+- [ ] `PG-B.22.03` Tests Dart–FFI reales: GET de loopback, archivo en carpeta de trabajo, `Esperar` real, argumentos,
+  cancelación durante HTTP, liberación de recursos.
+- [ ] `PG-B.22.04` `native/Cargo.toml` con `pseudolearn_host`; hilo de red (D-PGB-R03); raíces de plataforma
+  (D-PGB-R04); regla `isolation` del puente reescrita (CF-N13); carpeta de trabajo por documento (D-PGB-R05); campo de
+  argumentos (D-PGB-R06); temporizador real (D-PGB-R07).
+- [ ] `PG-B.22.05` README de `native/`, app §4.49–§4.50 y §4.54 reescrita como «Anfitrión real en modo de archivo
+  único».
+- [ ] `PG-B.22.06` `bash tool/test_bridge.sh`, `bash tool/bridge.sh check`, Clippy y `cargo deny` de `native/`,
+  `rust-checks isolation`.
+
+##### PG-B.23 · Configuración de plataforma
+
+- [ ] `PG-B.23.01` Sin cambio de corpus.
+- [ ] `PG-B.23.02` Lista de comprobación por plataforma en el README.
+- [ ] `PG-B.23.03` Test de contenido que comprueba la presencia de las claves de plataforma.
+- [ ] `PG-B.23.04` iOS: `NSLocalNetworkUsageDescription` es/en y excepción ATS (D-08a); macOS: entitlements revisados;
+  Windows: `msix_config.capabilities` con `internetClient` y `privateNetworkClientServer`.
+- [ ] `PG-B.23.05` README app §2.4/§2.6 con la justificación para revisión de tienda.
+- [ ] `PG-B.23.06` Build macOS e iOS simulador; Windows sin build local («no verificado»).
+
+##### PG-B.24 · Eliminación de la simulación de la app
+
+- [ ] `PG-B.24.01` Sin cambio de corpus.
+- [ ] `PG-B.24.02` Escenas y casos de app sin `SimulatedScenario`.
+- [ ] `PG-B.24.03` Test de contenido (o ampliación de `check_content.dart`) que falla si reaparecen identificadores o
+  claves `simulated*`, con su caso negativo.
+- [ ] `PG-B.24.04` Borrar los archivos y claves de §B.4.4 del análisis; modificar los consumidores listados allí;
+  regenerar localizaciones.
+- [ ] `PG-B.24.05` README app §1.3, §4.54, §4.57–§4.60 sin simulación.
+- [ ] `PG-B.24.06` `flutter analyze --fatal-infos --fatal-warnings` y verificadores de app; `git grep -i simulat` en
+  `apps/pseudolearn_app/lib` y `test` con 0 coincidencias.
+
+#### Bloque 6 · Reverificación con efectos reales
+
+##### PG-B.25 · Tareas observables con anfitrión real
+
+- [ ] `PG-B.25.01` Sin contrato nuevo; resolver o reportar `APP.EDITOR.COMPLETION#R5/R6/R10` y
+  `APP.EXEC.SNAPSHOT-VIEW#R1/R4` (PB-PRE-02).
+- [ ] `PG-B.25.02` Escenas B06, B10, B11 y B12 de §7.1 con efectos reales en loopback.
+- [ ] `PG-B.25.03` Cintas grabadas por el anfitrión real; reproducción con espía de cero llamadas; corte del anfitrión
+  durante HTTP; temporizador real sin alterar la agenda.
+- [ ] `PG-B.25.04` Ajustes de adaptación que aparezcan; ninguno reintroduce simulación.
+- [ ] `PG-B.25.05` README app §4.57–§4.59.
+- [ ] `PG-B.25.06` `see conform --subject app`; tests dirigidos de `test/engine/rust/` y `test/application/execution/`.
+
+##### PG-B.26 · E-PG-12 dinámico regenerado
+
+- [ ] `PG-B.26.01` Protocolo de PG-B.09 sin cambios.
+- [ ] `PG-B.26.02` Escenas regeneradas según D-PGB-R10.
+- [ ] `PG-B.26.03` Arnés rechaza escenas con escenario simulado.
+- [ ] `PG-B.26.04` Campaña automatizada repetida con procedencia.
+- [ ] `PG-B.26.05` `e-pg-12-dinamico-evidencia.md` actualizado; estudio humano con el diferimiento del 2026-10-22.
+- [ ] `PG-B.26.06` Resumen recalculable desde crudos.
+
+#### Bloque 7 · Aceptación por plataforma
+
+##### PG-B.27 · Programa de aceptación
+
+- [ ] `PG-B.27.01` Programa es/en en archivo único: GET `https://rickandmortyapi.com/api/character/1`, imprime nombre y
+  estado; variante que lee un archivo de la carpeta de trabajo y usa `Esperar`.
+- [ ] `PG-B.27.02` Esperado derivado de la respuesta documentada de la API, comprobado a mano el día de la ejecución.
+- [ ] `PG-B.27.03` Sin test automatizado contra Internet (el corpus no depende de Internet).
+- [ ] `PG-B.27.04` Sin código.
+- [ ] `PG-B.27.05` Registro por plataforma en §11: fecha, hora, salida real y código HTTP.
+- [ ] `PG-B.27.06` Ejecución sin configuración en CLI macOS, extensión escritorio macOS, extensión web Chromium y WebKit,
+  app macOS y app iOS simulador. App Windows: «implementado, no verificable en este equipo».
+
+#### Bloque 8 · Características de la app que hoy no se pueden usar
+
+##### PG-B.28 · Selector de rigor
+
+- [ ] `PG-B.28.01` Reutilizar `LANG.PROFILE.STRICTNESS`; sin regla nueva.
+- [ ] `PG-B.28.02` Escenario SEE de app con el mismo programa en ambos rigores.
+- [ ] `PG-B.28.03` Tests de cubit, persistencia por documento y widget accesible.
+- [ ] `PG-B.28.04` Control en ajustes del documento; `rustStrictness` deja de estar fijo.
+- [ ] `PG-B.28.05` README app §1.5 (pendiente resuelto).
+- [ ] `PG-B.28.06` Verificadores de app.
+
+##### PG-B.29 · Reproducir una ejecución
+
+- [ ] `PG-B.29.01` Reutilizar `API.EXECUTE#R9` y `ENG.EFFECT.TAPE`.
+- [ ] `PG-B.29.02` Escenario con cinta válida y con cinta rechazada.
+- [ ] `PG-B.29.03` Tests de cubit y widget; espía de anfitrión con cero llamadas.
+- [ ] `PG-B.29.04` Control «Reproducir» que usa el puerto `execution_reproduction.dart` existente; rechazos localizados.
+- [ ] `PG-B.29.05` README app §4.57 (pendiente resuelto).
+- [ ] `PG-B.29.06` Verificadores de app; `tool/test_bridge.sh`.
+
+##### PG-B.30 · Localización del receptor y cobertura completa
+
+- [ ] `PG-B.30.01` Sin regla nueva.
+- [ ] `PG-B.30.02` Filas de cobertura de patrones de variante y literales de función con su proyección esperada.
+- [ ] `PG-B.30.03` Tests de `watch_row_projection.dart` en perfil inglés; `check_syntax_coverage.dart` con caso negativo
+  que rechaza una fila «extensión».
+- [ ] `PG-B.30.04` Vocabulario de receptor parametrizado por perfil; proyección de las dos formas en las vistas.
+- [ ] `PG-B.30.05` README app §1.5 y sección de cobertura.
+- [ ] `PG-B.30.06` Verificadores de app; cobertura sin filas «extensión».
+
 ## 5. Capas, archivos y responsabilidad
 
 ### 5.1 Respuestas obligatorias antes de editar
 
-No se crea otra capa ni otro miembro. Las rutas con **propuesto** aún no existen y solo se crean si la responsabilidad no tiene dueño adecuado tras leer el archivo actual. Para cada archivo finalmente elegido se registra una fila propia con capa, imports y dueño en §11; esta tabla agrupa candidatos de la misma responsabilidad para preparar el trabajo.
+Las rutas **propuestas** no existen. Para cada archivo finalmente elegido se registra una fila en §11 con capa, imports y
+dueño. Las filas de la versión anterior para PG-B.01–.09 siguen válidas salvo la de `rust_simulated_host` y
+`simulated_capabilities`, que se borran.
 
-| Archivos existentes o propuesta | Capa e imports permitidos | Prohibido y responsabilidad/dueño |
+| Archivos | Capa e imports permitidos | Prohibido · responsabilidad |
 |---|---|---|
-| Este archivo y enlace de plan general | Documentación transitoria raíz; enlaces internos de `docs/` | Sin producción, ni referencias entrantes desde fuera de `docs/`; dueño de secuencia/evidencia, no autoridad técnica del paquete |
-| `apps/pseudolearn_app/lib/domain/model/execution/{execution_focus,execution_step,effect_wait,watch_row}.dart`; propuestos `task_execution_context.dart`, `execution_observation.dart`, `event_window.dart`, `pending_input.dart` | model: sí misma, sin otras capas | Sin Flutter/bloc/FRB/E/S; cada archivo representa contexto, observación, ventana o solicitud, no su adquisición |
-| `lib/domain/ports/program_execution.dart`; propuestos `execution_observation_source.dart` y contrato de control segregado si hace falta | ports → model | Sin motor/transporte/application/Flutter; control existente conserva compatibilidad o migración explícita de todos sus consumidores |
-| `lib/engine/rust/{rust_wire_models,rust_event_classes,rust_focus_tracker,rust_statement_stack,rust_program_execution,rust_execution_api,rust_state_api,rust_watch_rows}.dart`; propuestos `rust_event_owner.dart`, `rust_task_contexts.dart`, `rust_event_window_source.dart` | engine → model/ports y sí misma | Sin application/presentation/data/Flutter/E/S/regex; atribución, adaptación, pila y consulta en dueños distintos. No concentrar todos los estados en el tracker |
-| `lib/engine/rust/{rust_effect_gate,rust_simulated_host}.dart`; `lib/domain/model/execution/simulated_capabilities.dart` | engine o model según archivo | Host entrega resultados por protocolo, no agenda ni interpretación. Extraer respuestas HTTP a dueño especializado si hace falta, sin archivo genérico helpers/utils |
-| `lib/application/execution/{execution_cubit,execution_state,step_batch_runner,step_settlement,step_pace}.dart`; propuestos estado/control de observación segregados | application → model/ports y sí misma; bloc/equatable existentes | Sin engine/data/presentation/Flutter/E/S/regex; comandos, selección, filtros, paginación y estados inmutables. No concentrar trabajo nuevo en EditorCubit |
-| `lib/engine/diagram/` para geometría nueva y `lib/domain/model/diagram/` para datos de escena, si se requieren | engine → model/ports; model → sí misma | No meter geometría Flutter ni consultas de motor en painter; reutilizar layout existente cuando conserve significado |
-| `lib/presentation/document/components/execution_stepper.dart`, overlays de `lib/presentation/diagram/`; propuestos paneles específicos de tareas/eventos | presentation → model/application y sí misma | Sin puertos directos/engine/data/dart:io, `Timer`, `await`, filtrado/ordenación semánticos; widgets y pintores solo representación e interacción |
-| `lib/presentation/l10n/app_es.arb`, `app_en.arb` | Datos de presentación | Vocabulario visible bilingüe; generar localizaciones por procedimiento del miembro, sin editar generated |
-| `lib/composition/app_dependencies.dart` | composition → capas declaradas | Sin condicionales, workers ni localizadores de servicio; ensamblar control/consulta sobre mismo recurso |
-| `apps/pseudolearn_app/test/` espejo y fixtures bilingües propuestos `test/fixtures/task_scenes/` | Tests por responsabilidad de lib | No duplicar casos normativos Rust; fixtures no son esperados capturados. `tool/` solo arnés/adaptador/verificación |
-| `apps/pseudolearn_app/native/src/api.rs`, tests y README | Única capa bridge → API/FRB/serde_json según reglas | Sin semántica/UI/red; modificar solo si sobre o firma lo requiere. Salidas FRB generadas por su dueño |
-| `packages/pseudolearn_spec/specifications/{eng,api,lang,rt,lib,tool}/` y manifiestos de conformidad | Corpus/datos; identidades internas | Sin referencias externas ni `docs/`, estados/versiones congelados; agregar casos/vínculos en dueño existente. SEE interno no se modifica sin carencia de esquema demostrada |
-| `packages/pseudolearn_engine/crates/pseudolearn_api/src/{execution_queries,state_pages,execution_wire,execution_debug,history_operations,debug_state}.rs` y tests espejo | API, imports declarados en `architecture.yaml`; acceso público desde consumidor | Sin UI ni consumidores; solo ampliar contrato faltante/reparar divergencia demostrada. Leer README del crate antes |
-| timeline/VM/runtime/service, solo condicionalmente | Cada crate importa exclusivamente su lista de `architecture.yaml` | Sin imports hacia API/consumidores si su regla no lo permite; no mover semántica al service ni implementar tareas AOT como parte lateral de esta fase |
+| `packages/pseudolearn_spec/specifications/{lang,lib,rt,api,tool}/…` del bloque 1; `conformance*.yaml`, `differential-exemptions.json`, `property-conformance.json` | Corpus y datos; identidades internas | Sin `docs/` ni enlaces externos; congelamiento; un dueño por regla |
+| Propuesto `packages/pseudolearn_engine/crates/pseudolearn_host/` | Crate hoja del motor: `serde_json`, `cap-std`, Hyper, Rustls, Tokio, verificador de plataforma; **no** importa crates del motor | Sin semántica del lenguaje ni validación normativa (vive en el runtime); responsabilidad: atender efectos reales con el formato público de `API.EXECUTE` |
+| `crates/pseudolearn_runtime/src/…` y `crates/pseudolearn_api/src/{execution_setup,fake_host,…}.rs` | Según `architecture.yaml` del motor | Sin transporte de red; el doble solo bajo `test-host` |
+| `packages/pseudolearn_engine/architecture.yaml` | Reglas | `isolation`: puente admite `pseudolearn_host`; API y Wasm siguen sin transporte; nadie de producto activa `test-host` |
+| `apps/pseudolearn_cli/src/{options,execution_options,messages,physical_*}.rs` | Capas del `architecture.yaml` de la CLI | La CLI deja de poseer el transporte: lo consume de `pseudolearn_host` |
+| `apps/pseudolearn_vscode/src/{application,adapters,contracts}/…` de §1.2 | Capas de `architecture.json` | Sin concesiones; diferencias de navegador como errores tipados |
+| `apps/pseudolearn_app/native/{Cargo.toml,src/api.rs}` | Capa bridge: API, `pseudolearn_host`, FRB, `serde_json` | Sin semántica ni UI; FRB generado no se edita a mano |
+| Propuesta capa `apps/pseudolearn_app/lib/host/` | `host` → `model`, `ports`; admite `dart:io` | Sin Flutter de interfaz, `engine/`, `application/`; responsabilidad: carpeta de trabajo y argumentos |
+| `lib/domain/ports/` (puerto de anfitrión propuesto) | ports → model | Sin `dart:io` ni motor |
+| `lib/engine/rust/{rust_effect_gate,rust_program_execution,rust_replay_host}.dart` | engine → model, ports | Sin `dart:io`; delega efectos al puente |
+| `lib/application/execution/{execution_cubit,execution_state}.dart` | application → model, ports | Sin selección de escenario |
+| `lib/presentation/document/components/document_footer.dart` y controles nuevos de rigor y reproducción | presentation → model, application | Sin E/S ni `Timer` semántico |
+| `lib/presentation/l10n/app_{es,en}.arb` | Datos de presentación | Generados por el procedimiento del miembro |
+| `apps/pseudolearn_app/{ios/Runner/Info.plist,macos/Runner/*.entitlements,pubspec.yaml}` | Configuración de plataforma | Solo claves de §4.2 PG-B.23 |
 
-Los límites de app son 250 líneas/archivo, 40/función, 30/build, tres parámetros posicionales, anidación tres y cinco métodos públicos. Rust usa 300/40/cuatro/tres/siete según reglas del miembro. No se elevan para acomodar esta fase. Una carpeta funcional nueva queda dentro de su capa declarada; una capa nueva exigiría decisión y reglas antes del código (`LAYER-DECLARED`). Tests espejo; Rust interno en archivos hermanos `_tests.rs` y caja negra en `tests/`.
+Límites que no se elevan: app 250 líneas/archivo, 40/función, 30/build, tres parámetros posicionales, anidación tres,
+cinco métodos públicos; Rust 300/40/cuatro/tres/siete; extensión 300/40/cuatro/tres/siete.
 
-### 5.2 Tabla de campos que debe entregar la implementación
+### 5.2 Tabla de campos
 
-Antes de cerrar `.01`–`.04`, completar una fila por campo consumido: contrato/regla, operación pública exacta, clave/tipo wire, obligatoriedad, identidad/vida, modelo destino, error al faltar, caso/test y consumidor. Como mínimo: evento/índice/horizonte, source y revisión, dueño por R8, tarea/padre/estado/espera, marco/unidad, ámbito/unión, canal/capacidad/estado de cola observable, effect_seq/delivery_seq, solicitud de entrada y cursor. Campo sin fuente pública suficiente es carencia de contrato; no se llena desde heurística.
+Se conserva la exigencia de la versión anterior (campo consumido → contrato, operación, clave, tipo, obligatoriedad,
+vida, modelo, error, caso, consumidor) y se añaden: carpeta de trabajo efectiva, argumentos entregados, semilla grabada,
+causa de error de plataforma y URL final de respuesta.
 
 ## 6. Presupuestos de rendimiento y seguridad
 
-### 6.1 Protocolo de medición
+### 6.1 Rendimiento
 
-`PERF.PG.APP.VIEW` y p95 ≤50 ms para ventana de 100 eventos/100 tareas visibles son **candidatos**, no contratos aprobados. Cumplir o incumplir se publica sin cambiar el umbral a posteriori. No usar la campaña estática de PG-A como línea base dinámica equivalente.
+- `PERF.ARTIFACT.SIZE#R1` (ios-arm64 ≤ 5 MiB; Wasm Brotli ≤ 900 KiB) se mide en PG-B.22.01 antes de integrar y al cierre.
+- `PERF.SUITE.CORE`: la infraestructura de anfitrión inactiva no entra en el camino caliente; medición contra `194bd9ce`
+  con `PERF.PROTOCOL` (≥ 10 procesos, ≥ 30 iteraciones).
+- `PERF.PG.APP.VIEW` candidato de la versión anterior: protocolo de medición sin cambios (cargas 0/1/10/100, intervalo
+  puro e integrado separados, procedencia antes de compilar, todas las muestras).
+- `PERF.PG.HTTP`: el transporte real se mide solo en loopback; el tiempo de Internet nunca mide el compilador.
 
-- Cargas: 0, 1, 10 y 100 eventos/tareas visibles; caso principal 100/100 con varias tareas del mismo subprograma; retenidos mayores que ventana visible para demostrar paginación, y colecciones 0/1/4096/4097. Declarar límites configurados suficientes; no suponer que el máximo predeterminado admite cien tareas vivas.
-- Entrada preparada: fuentes, escena, estado por tarea y cinta validados antes de medir. Intervalo puro: proyección de esa ventana a modelos/geométrica, sin compilación/FFI/E/S. Intervalo integrado separado: consulta/decodificación/proyección; render separado si se mide. No sumar resultados de intervalos distintos como si fueran la misma métrica.
-- Control equivalente: misma ventana y datos, salida canónica y geometría correctas; comparar implementación previa solo donde existe la misma conducta. Para novedad sin control previo equivalente informar coste absoluto. Registrar prueba de consulta acotada y diferencia entre frío/caliente.
-- `PERF.PROTOCOL`: ≥10 procesos independientes y ≥30 iteraciones por proceso/carga, estado nuevo, semilla fija, validación de resultado/terminación fuera del intervalo. Procedencia antes de compilar: HEAD/diff, fuentes del arnés, hash de entrada/cinta, versiones, modo de build, SO y hardware.
-- Conservar resolución del reloj, todas las muestras y candidatos de cambio; ningún descarte selectivo. Publicar p50/p95 con estimador declarado y crudos; intervalos del 95 % y emparejamiento por proceso según protocolo. RSS máxima muestreada como cota inferior, CPU acumulada y bytes/cantidad de elementos/cachés; memoria no medida no vale cero.
-- Demostrar que cambios de viewport/animación/página no alteran agenda; un reloj de medición observa, nunca decide. Latencia de detención se mide aparte, sin inventar un presupuesto aprobado.
+### 6.2 Seguridad y límites que se conservan
 
-### 6.2 Límites y pruebas adversarias
-
-| Frontera | Control y evidencia exigida |
+| Frontera | Control |
 |---|---|
-| Cursor/identidad | Otra sesión, recurso, ejecución, tarea, evento, revisión, generación o tamaño no reutiliza página. Rechazo sin cambio de agenda |
-| Ventana | `history_events` 0–4096; fuera de horizonte/futuro y tamaño excesivo fallan explícitamente. Ventana parcial no muestra datos como completos |
-| Valores | Consultas paginadas, aliases e identidad conservados; cero materialización global para recortar después. Profundidad/cantidad/bytes siempre acotados por contrato efectivo |
-| Retención | Definir antes del código tope de eventos/tareas/escenas/caché y política de expulsión; no se permite crecimiento sin límite ni un número nuevo sin dueño README/caso de borde |
-| Efectos | Sin permisos por omisión, sin ampliación de derechos, sockets/DNS/disco real ni credenciales en paneles/logs; límites de cuerpo/cabeceras/tiempo/pendientes del motor, sin elevarlos desde UI |
-| Solicitudes | Doble envío, respuesta tardía o de ejecución vieja y confusión input/effect_result rechazados sin avanzar. Texto de entrada no puede dirigir otra tarea por nombre visible |
-| Cancelación/liberación | Confirmación del motor, recursos liberados, respuesta tardía rechazada; verificar vida de recurso de ejecución y análisis, no asumir que cancelar equivale a liberar |
-| Reproducción | Cinta inválida no activa host; incertidumbre/redacción/truncamiento visibles, sin resultados sintéticos |
-| Hilo UI | Ninguna llamada/bucle sin cota por lote; prueba de stop/edición durante bombeo; sin Isolate ni async en pintores |
+| TLS | Siempre validado; raíces de prueba solo por opción de pruebas de la CLI |
+| Recursos | `max_http_*`, pendientes de red, combustible, tareas, colas y salida con terminación definida (D-14) |
+| Secretos | Cabeceras `authorization` y credenciales por referencia en la cinta; nunca en paneles ni logs |
+| Doble de prueba | Inalcanzable desde CLI, puente y Wasm, comprobado por `isolation` con caso negativo |
+| Reproducción | Cinta inválida no activa el anfitrión; incertidumbre y redacción visibles |
+| Hilo UI | Bombeo acotado; la red vive en el hilo Rust; stop durante HTTP y durante `Esperar` probado |
+| Solicitudes | Doble envío, respuesta tardía o de ejecución vieja rechazados sin avanzar |
 
-Si un límite aún no tiene valor, se registra como tarea de contrato/configuración pendiente en el punto dueño; no se considera cerrado con esta tabla.
+Se eliminan de esta tabla, respecto de la versión anterior: «sin permisos por omisión», «sin ampliación de derechos» y
+«sockets/DNS/disco real» como prohibición.
 
 ## 7. Pruebas, verificadores y experimentos
 
-### 7.1 Matriz mínima de escenas
+### 7.1 Matriz de escenas
 
 IDs B01–B15 son locales a este plan. La implementación los vinculará a IDs SEE existentes o nuevos sin reutilizar identidades. Esperados derivados antes de ejecutar; incluir perfiles es/en y ambos rigores donde el contrato lo declare, con idioma UI independiente.
 
@@ -272,15 +561,22 @@ IDs B01–B15 son locales a este plan. La implementación los vinculará a IDs S
 
 No se fuerza cada combinación en todos los niveles: corpus demuestra semántica; tests espejo demuestran transformación; widgets demuestran interacción/representación; FRB real demuestra integración. Cada fila debe identificar qué prueba observa cada afirmación. Negativos obligatorios para validadores nuevos o ampliados: evento/clase/campo desconocido, fila de cobertura ausente/duplicada, identidad sin ayuda, cursor inválido y procedencia de medición incompleta, según el verificador dueño.
 
+Cambios de la reformulación sobre esa matriz:
+
+| Escena | Cambio |
+|---|---|
+| B06 Efectos | «sin permisos» sale del borde; entra «error de plataforma» y «dos peticiones HTTP reales en loopback entregadas fuera de orden» |
+| B11 Error | «timeout/denegación» pasa a «timeout real del servidor loopback y `PermisoDenegado` del SO» |
+| B12 Reproducción | La cinta proviene del anfitrión real |
+| B16 (nueva) Anfitrión real | Archivo de la carpeta de trabajo, `Esperar` real, reloj creciente, argumentos, HTTP loopback; borde: ruta inexistente, carpeta sin permiso, servidor caído, TLS inválido, cancelación durante HTTP y durante `Esperar` |
+| B17 (nueva) Aceptación | Programa de PG-B.27 por plataforma (manual, Internet) |
+
 ### 7.2 E-PG-12 dinámico
 
-Preparar un documento hermano propuesto `e-pg-12-dinamico-evidencia.md` al ejecutar `.09`, con fuentes y hashes, configuración, cinta, oráculo por evento, secuencia de acciones, evidencia automatizada, medición, limitaciones y decisión humana. No crearlo ahora como si existieran resultados.
+Protocolo sin cambios (preguntas, contrabalanceo, ≥ 12 principiantes gestionados por la persona, diferimiento del
+2026-10-22 vigente). Escenas regeneradas según D-PGB-R10.
 
-Preguntas humanas mínimas: qué tarea ejecuta; cuál espera y por qué; qué valores/marcos corresponden a cada hija del mismo subprograma; si entregar un efecto ya ejecutó la continuación; por qué no terminó la unión; por qué canal lleno causa espera y cuándo progresa; diferencia entre cancelación y error; si la pantalla demuestra instrucciones simultáneas en varios núcleos. Contrabalancear orden e idioma, registrar respuestas/aciertos/tiempos si se miden y denominadores. La meta candidata ≥80 % en espera frente a ejecución en paralelo se informa por tarea/idioma; no promediarla con interfaz frente a instancia para ocultar fallos.
-
-Piloto con al menos doce principiantes y consentimiento gestionado por la persona. La IA prepara material y análisis, no recluta ni inventa sujetos/datos. Aplicar diferimiento previo solo si su alcance lo cubre y citar decisión/fecha; ausencia de participantes nunca se llama «No aplica» por conveniencia. Un test automatizado sin confusión de IDs no demuestra comprensión humana.
-
-### 7.3 Comandos y alcance de verificación
+### 7.3 Comandos y alcance
 
 Ejecutar desde el miembro indicado. Esta lista prescribe verificaciones futuras; no son resultados de la preparación documental. Antes de cada comando con filtro nuevo, comprobar target y opción en README/Cargo/CLI; si no existe, registrar carencia, no inventar resultado ni una orden parecida.
 
@@ -302,50 +598,73 @@ Ejecutar desde el miembro indicado. Esta lista prescribe verificaciones futuras;
 | Cierre, app | Verificadores anteriores y suites afectadas; `flutter test` completo si cambia puerto/estado común con impacto transversal o aparecen fallas fuera de selección | Justificar alcance/omisiones con riesgo y evidencia, no por ahorrar tiempo. No repetir suites verdes sin cambios ni preocupación pendiente |
 | Plataforma | Humo macOS/iOS con órdenes de `apps/pseudolearn_app/README.md` §2.5 y escenas de tareas añadidas al target real | Integración de esa plataforma; físico/Actions solo con disponibilidad y autorización aplicables |
 
-Si se modifica SEE interno, leer su README, escribir negativos y ejecutar sus tests/xtask; no dar por cubierto un verificador porque `validate` pasó sobre entradas válidas. No ampliar a CLI/VS Code/Wasm/AOT si no son consumidores afectados; si se cambia wire público, inventariarlos y agregar sus comprobaciones pertinentes antes del cierre.
+Comandos añadidos por la reformulación:
 
-Para preparar este plan se verifican solo estructura, referencias y diff documental. No se ejecuta una suite de producto para atribuirle verde a una implementación aún no autorizada.
+| Momento/miembro | Comando | Qué certifica |
+|---|---|---|
+| Corpus | `cargo run -p see_cli --bin see -- validate`, `export --check`, `lock --refresh <IDs>`, `lock --check` | Bloque 1 y reanclaje |
+| Motor | `cargo test --locked -p pseudolearn_runtime`, `-p pseudolearn_api`, `-p pseudolearn_host`; `cargo clippy --workspace --all-targets -- -D warnings`; `rust-checks all` e `isolation` | Bloques 2–3 |
+| Grafo | `cargo tree --locked -e features` en CLI, `native/` y `pseudolearn_wasm` | Sin `test-host` en producto |
+| CLI | `cargo test --locked`; `cargo xtask http-test-server` para la integración | PG-B.18 |
+| Extensión | `pnpm test`, `pnpm check:types`, `pnpm check:architecture`, `pnpm check:comments`, `pnpm check:size`, `node tests/host/run-host.mjs trusted`, `pnpm build:web`, `pnpm check:web`, `node tests/web/run-web.mjs` | PG-B.19–.20 |
+| App | `flutter analyze --fatal-infos --fatal-warnings`, `check_limits`, `check_content`, `check_design_system`, `check_syntax_coverage`, `flutter test test/architecture/`, `bash tool/test_bridge.sh`, `bash tool/bridge.sh check` | PG-B.21–.30 |
+| Tamaño | Build Release ios-arm64 del puente y medición | PG-B.22.01 y cierre |
+| Plataforma | Humo macOS y iOS simulador (README app §2.5); Windows sin humo local | PG-B.23, PG-B.27 |
+| Erradicación | `git grep -n -i -E "simulat|grantNetwork|grantFiles|--conceder|--grant|--origin|--local-origin|network_origins|requested_permissions|local_origins"` fuera del doble y de `docs/` | 0 coincidencias |
+
+Antes de cada comando nuevo, comprobar que existe en el README o el manifiesto del miembro; si no existe, registrar la
+carencia y no inventar una orden parecida.
 
 ## 8. Riesgos y señales tempranas
 
-| Riesgo | Señal verificable | Mitigación/puerta |
+| Riesgo | Señal | Mitigación/puerta |
 |---|---|---|
-| K-18 Falsa causalidad | Dos hijas comparten marco; lista se pinta ejecutando; unión antes de terminales | B02–B05 y tabla por evento; bloquear cierre `.01`–`.03` |
-| K-19 Cobertura didáctica incompleta | await como rombo, canal oculto, efecto como proceso genérico o forma nueva sin ayuda | Matriz y negativos, B08/B09/B11, leyenda es/en, `.02/.09` |
-| PB-K01 Dueño perdido al paginar | Primera página parcial atribuye todo a raíz | Contexto R8 verificado y prueba de corte en cada transición |
-| PB-K02 Estado futuro por precarga | Tabla muestra resultado antes de `effect_delivered` visible | Separar índice consumido/punta; consultar evento exacto; B03/B06 |
-| PB-K03 UI decide agenda | Cambiar animación/selección altera traza o entrega | B12/B15, espías y pureza de presentación |
-| PB-K04 Memoria o bloqueo sin cota | `state` completo por evento, cola automática ilimitada, releer todo historial para página | Medición/contadores, páginas/caché/bombeo con límite en §6 |
-| PB-K05 Mezcla de cortes | stop muestra limpiezas cooperativas o cancela recurso sin confirmar | B10/B11 y auditoría de vida de recursos |
-| PB-K06 Evidencia aparente | Pasarela SEE aprueba JSON pero tracker/widget siguen únicos | `.08` observa modelo/proyección real; doble y FRB distinguidos |
-| PB-K07 Deuda heredada invisibilizada | Reanclaje global, fallos omitidos, cierre previo citado como verde | Línea base PB-PRE-02/05 y C11 con comandos/logs de HEAD actual |
-| PB-K08 Exposición de datos | Argumentos HTTP/secretos aparecen completos en tabla/log | Casos adversarios/redacción, permisos y cinta no reproducible |
-| PB-K09 Comprensión o métrica inventadas | Automatización llamada estudio, p95 sin muestras o umbral aprobado sin mensaje | `.09`, procedencia PERF y dependencia humana registrada |
+| K-18 Falsa causalidad | Dos hijas comparten marco | Escenas B02–B05 (sin cambios) |
+| K-19 Cobertura incompleta | Forma sin vista o con «extensión» | PG-B.30 y negativos de cobertura |
+| PB-K10 Tamaño iOS | El puente supera 5 MiB | PG-B.22.01 para y pide decisión |
+| PB-K11 Divergencia CLI/app | Mismo caso, resultado distinto | Un solo `pseudolearn_host` y contrato de adaptador común |
+| PB-K12 Pruebas inestables | Fallos intermitentes con red | Solo loopback en pruebas; Internet solo en PG-B.27 |
+| PB-K13 Simulación residual | `git grep` de §7.3 con coincidencias | Puerta de erradicación en cada bloque |
+| PB-K14 UI congelada por red o `Esperar` | Stop sin efecto durante una espera | Hilo Rust; tests de stop en B16 |
+| PB-K15 Rechazo de tienda | Rechazo 2.5.2 o ATS | Justificación en README y notas de revisión (dueño) |
+| PB-K16 Windows sin verificar | Defecto en el primer uso | Tests unitarios de rutas Windows; rotulado «no verificado» |
+| PB-K07 Deuda heredada invisibilizada | Fallos omitidos | Línea base de HEAD y C11 con comandos y logs |
 
 ## 9. Dependencias de la persona
 
-| Momento | Dependencia concreta | Acción del ejecutor |
+| Momento | Dependencia | Acción |
 |---|---|---|
-| Antes de implementar | Revisión de este plan, autorización de alcance y resolución de PG-3 abierta | Solicitar únicamente decisiones faltantes; no marcar C01/C02 por la petición de redacción |
-| Antes de contrato/consulta afectada | PB-PRE-04 y contradicciones efectivas PB-PRE-05 | Presentar textos, conducta vigente, recomendación y alcance; esperar respuesta para ese cambio |
-| Antes de atribuir revisión | Revisión independiente requerida de cambios normativos/anclajes | Preparar diff y casos; no escribir nombre humano por inferencia |
-| `.09` | Resultados humanos o diferimiento explícito cuyo alcance cubra dinámica | Respetar diferimiento existente, precisar solo si necesario; no fabricar evidencia |
-| Al valorar métrica | Aceptar/rechazar presupuesto candidato o medición desfavorable | Entregar muestras/resumen antes de pedir decisión; no tratar ≥/≤ como aprobación |
-| Humo/plataformas | Dispositivo y permisos de ejecución cuando hagan falta | Completar primero lo local; informar exactamente qué plataforma falta |
-| Publicación/cierre | Alcance autorizado de commit/push y cierre de fase | Preparar diff/validaciones primero; si no está autorizado, no publicar. No abrir Actions ni desplegar para sustituir checks locales |
+| Antes de implementar | `PG-B.C01` autorización de inicio y `PG-B.C02` revisión de este plan | No marcar por la petición de redacción |
+| PG-B.22.01 | Decisión si el puente supera `PERF.ARTIFACT.SIZE` | Presentar medición y opciones; esperar |
+| Reanclaje | Revisión independiente de cambios normativos, si SEE la exige | Preparar diff y casos; no escribir nombres por inferencia |
+| PG-B.23 | Texto de justificación de tienda (ATS, red local) | Proponer borrador |
+| PG-B.26 | Estudio humano o mantener el diferimiento | Respetar el diferimiento vigente |
+| PG-B.27 | Ejecución manual con Internet; Windows si hay equipo | Preparar programa y lista de comprobación |
+| Cierre | Commit y push en la rama única | Solo con autorización |
 
 ## 10. Orden de ejecución y puntos de control
 
-1. **P0 · Revisión y entrada.** Mantener plan como preparado; resolver C01/C02 y PB-PRE-01–06 aplicables, releer fuentes, registrar línea base y campo→contrato. Parar trabajo dependiente ante conflicto, sin editar fuentes para «conciliarlas» a solas.
-2. **P1 · Identidad y contratos.** Ejecutar `.01.01–.03`, y especificación/casos/tests de `.02–.07` donde compartan contrato. Cubrir contexto R8, selector de tarea, solicitud, ventanas/canales y límites. Puerta: no queda campo consumido sin origen público ni esperado derivado.
-3. **P2 · Estado por tarea.** Completar `.01`, infraestructura de consulta de `.02` y reconstrucción base de `.05`. Puerta: dos hijas mismo nodo conservan pilas/variables independientes por FRB; páginas y revisión no cambian agenda.
-4. **P3 · Control y efectos.** Completar `.03/.04/.06/.07`, implementando temprano sus pruebas `.08`. Puerta: paso global/tarea conserva prefijo, espera no bloquea falsas tareas, respuestas direccionadas, caminos de error/cancelación distintos, llamadas y retención acotadas.
-5. **P4 · Tres superficies.** Completar `.02/.05` y widgets vinculados; FRB, escenas por cinta, geometría/accesibilidad, cobertura/ayuda. Puerta: todas las filas B01–B15 tienen evidencia del nivel que afirma su resultado, y cero omisiones silenciosas.
-6. **P5 · Integración y experimento.** Completar `.08/.09`, medición con procedencia y tratamiento humano aplicable. Publicar también resultados desfavorables y límites físicos; no convertir rendimiento o comprensión insuficientes en verde cambiando etiquetas.
-7. **P6 · Revisión de cierre.** Revisar diff contra alcance y las tres preguntas de capa por archivo; ejecutar pruebas/validadores afectados de §7.3 en revisión final; completar C03–C11 con evidencia propia y pendientes. Fallos obligatorios dejan fase abierta, salvo cierre excepcional expresamente decidido por persona, que no se llama `PHASE-GREEN`.
-8. **P7 · Publicación autorizada y parada.** Si commit/push están autorizados, leer/aplicar skill `commit-message`, commit sin atribución de IA y push ordinario a `feature/agregar-ruta-de-especificacion`; comprobar rama/HEAD remoto y registrar hash. Sin force, ramas nuevas ni publicación externa. Completar resumen general/C12/C13, informar y parar antes de PG-7.
+1. **P0 · Entrada.** C01/C02; §2.2; línea base.
+2. **P1 · Corpus (bloque 1).** PG-B.10–.15. Puerta: `see validate`, `export --check`, `lock --check` en verde con los IDs
+   reanclados; ningún caso con permisos en el anfitrión.
+3. **P2 · Motor (bloque 2).** PG-B.16–.17. Puerta: conformidad `engine` de los IDs del bloque 1 sin divergencias;
+   `test-host` ausente del grafo de producto.
+4. **P3 · CLI y escritorio (bloque 3).** PG-B.18–.19. Puerta: PG-B.27 en CLI y extensión de escritorio contra loopback.
+5. **P4 · Web (bloque 4).** PG-B.20. Puerta: Chromium y WebKit con archivos, reloj, temporizador, argumentos y HTTP.
+6. **P5 · App (bloque 5).** PG-B.21–.24, con **parada obligatoria en PG-B.22.01** si el tamaño no cabe. Puerta:
+   erradicación de §7.3 en la app.
+7. **P6 · Reverificación y características (bloques 6 y 8).** PG-B.25, .26, .28–.30.
+8. **P7 · Aceptación (bloque 7).** PG-B.27 por plataforma.
+9. **P8 · Cierre.** Revisión del diff contra el alcance y las tres preguntas de capa; C03–C11 con evidencia; commit y
+   push solo si están autorizados (skill `commit-message`, sin atribución de IA, rama única). Informe y parada antes de
+   PG-L.
 
 ## 11. Resumen de ejecución
+
+### 11.0 Reformulación del 2026-11-02
+
+Las subsecciones 11.1–11.9 registran las iteraciones de la versión anterior (PG-B.01–PG-B.09) y se conservan sin cambios. Sus menciones a escenarios simulados describen lo que existía entonces; PG-B.24 los elimina. Las filas de los puntos nuevos PG-B.10–PG-B.30 se añaden aquí al ejecutarlos. Estado a la fecha de esta versión: plan reescrito, C01/C02 pendientes, ningún punto nuevo iniciado.
+
 
 ### 11.1 Estado de ejecución de PG-B.01
 
