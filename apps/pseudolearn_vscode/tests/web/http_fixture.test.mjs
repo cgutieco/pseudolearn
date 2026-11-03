@@ -17,7 +17,7 @@ function secureStatus(path) {
 }
 
 describe("HTTP and TLS fixture", () => {
-  it("serves the granted body with CORS and counts each hit", async () => {
+  it("serves the body with CORS and counts each hit", async () => {
     const response = await fetch(`${fixture.http}/ok`);
     expect(await response.text()).toBe("ok");
     expect(response.headers.get("access-control-allow-origin")).toBe("*");

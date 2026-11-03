@@ -8,8 +8,7 @@ const perform = async (host: BrowserEffectHost, effect: unknown): Promise<Resolu
   await host.perform(effect as Record<string, Projection>) as Resolution;
 
 async function opened(provider: MemoryProvider, writable: boolean, mode: string, relative = "data.txt") {
-  const grant = { root: "pseudolearn-fixture://files/root", writable, confined: true };
-  const host = new BrowserEffectHost({ root: grant.root });
+  const host = new BrowserEffectHost({ root: "pseudolearn-fixture://files/root" });
   await perform(host, directoryEffect());
   await perform(host, { effect_seq: writable ? "derive-write" : "derive-read", operation: "directory_derive",
     receiver: { slot: "1", generation: "1", rights: "3", kind: "2" },
@@ -41,7 +40,7 @@ async function disconnectAndDeny(recorder: Recorder, provider: MemoryProvider): 
   provider.faults.disconnectReads = false;
   const attempts = provider.writeAttempts();
   const readonly = await opened(provider, false, "escritura");
-  recorder.equal(readonly.file.outcome, "failed", "read-only grant refuses write handles");
+  recorder.equal(readonly.file.outcome, "failed", "read-only handle refuses write handles");
   const escape = await opened(provider, true, "escritura", "../escape.txt");
   recorder.equal([escape.file.outcome, escape.file.value.code], ["failed", "ruta_invalida"], "root escape is refused");
   recorder.equal(provider.writeAttempts(), attempts, "refused operations never reach the provider");

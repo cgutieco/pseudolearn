@@ -469,7 +469,10 @@
   "clase": "semantica",
   "texto": "terminate, disconnect y EOF cancelan la punta y cierran recursos, entrada y transportes propios una sola vez. Launch acepta args como lista de cadenas y cwd como carpeta de trabajo; tiene autoridad plena sin claves de permisos. Ejecutar exige Workspace Trust del editor. El proceso se crea sin shell y con binario verificado. EOF sin cierre completo se informa como terminación anormal.",
   "verificacion": [
-    "C9"
+    "C9",
+    "C16",
+    "C17",
+    "C18"
   ]
 }
 ```
@@ -1180,6 +1183,157 @@
             "threadId": 1
           }
         },
+        {
+          "event": "terminated"
+        }
+      ]
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C16",
+  "regla": "R9",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "cli": {
+    "argumentos": [
+      "dap"
+    ],
+    "entorno": {},
+    "entrada": "Content-Length: 64\r\n\r\n{\"seq\":1,\"type\":\"request\",\"command\":\"initialize\",\"arguments\":{}}Content-Length: 129\r\n\r\n{\"seq\":2,\"type\":\"request\",\"command\":\"launch\",\"arguments\":{\"program\":\"p.pseudo\",\"stopOnEntry\":true,\"args\":[\"\",\"λ\"],\"cwd\":\"work\"}}Content-Length: 64\r\n\r\n{\"seq\":3,\"type\":\"request\",\"command\":\"disconnect\",\"arguments\":{}}",
+    "archivos": {
+      "p.pseudo": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n",
+      "work/a.txt": "hola"
+    }
+  },
+  "espera": {
+    "codigo_salida": 0,
+    "dap": {
+      "responses": [
+        {
+          "command": "initialize",
+          "success": true
+        },
+        {
+          "command": "launch",
+          "success": true
+        },
+        {
+          "command": "disconnect",
+          "success": true
+        }
+      ],
+      "events": [
+        {
+          "event": "initialized"
+        },
+        {
+          "event": "terminated"
+        }
+      ]
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C17",
+  "regla": "R9",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "cli": {
+    "argumentos": [
+      "dap"
+    ],
+    "entorno": {},
+    "entrada": "Content-Length: 64\r\n\r\n{\"seq\":1,\"type\":\"request\",\"command\":\"initialize\",\"arguments\":{}}Content-Length: 97\r\n\r\n{\"seq\":2,\"type\":\"request\",\"command\":\"launch\",\"arguments\":{\"program\":\"p.pseudo\",\"args\":[\"uno\",2]}}Content-Length: 64\r\n\r\n{\"seq\":3,\"type\":\"request\",\"command\":\"disconnect\",\"arguments\":{}}",
+    "archivos": {
+      "p.pseudo": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n"
+    }
+  },
+  "espera": {
+    "codigo_salida": 0,
+    "dap": {
+      "responses": [
+        {
+          "command": "initialize",
+          "success": true
+        },
+        {
+          "command": "launch",
+          "success": false
+        },
+        {
+          "command": "disconnect",
+          "success": true
+        }
+      ],
+      "events": [
+        {
+          "event": "terminated"
+        }
+      ]
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C18",
+  "regla": "R9",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "cli": {
+    "argumentos": [
+      "dap"
+    ],
+    "entorno": {},
+    "entrada": "Content-Length: 64\r\n\r\n{\"seq\":1,\"type\":\"request\",\"command\":\"initialize\",\"arguments\":{}}Content-Length: 96\r\n\r\n{\"seq\":2,\"type\":\"request\",\"command\":\"launch\",\"arguments\":{\"program\":\"p.pseudo\",\"cwd\":\"missing\"}}Content-Length: 64\r\n\r\n{\"seq\":3,\"type\":\"request\",\"command\":\"disconnect\",\"arguments\":{}}",
+    "archivos": {
+      "p.pseudo": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n"
+    }
+  },
+  "espera": {
+    "codigo_salida": 0,
+    "dap": {
+      "responses": [
+        {
+          "command": "initialize",
+          "success": true
+        },
+        {
+          "command": "launch",
+          "success": false
+        },
+        {
+          "command": "disconnect",
+          "success": true
+        }
+      ],
+      "events": [
         {
           "event": "terminated"
         }

@@ -76,10 +76,10 @@ async function project(recorder: Recorder, profile: Profile): Promise<void> {
 async function effects(recorder: Recorder, profile: Profile, origin: string, provider: MemoryProvider): Promise<void> {
   const place = names[profile];
   recorder.within(`${profile} effects`);
-  const granted = await runFile({ path: place.red, profile, answers: [], context: { }, origin });
-  recorder.equal(joined(granted), "200\n2\nPseudoLearn: completed\n", "network returns status and body length without configuration");
+  const first = await runFile({ path: place.red, profile, answers: [], context: { }, origin });
+  recorder.equal(joined(first), "200\n2\nPseudoLearn: completed\n", "network returns status and body length without configuration");
   const denied = await runFile({ path: place.red, profile, answers: [], context: { }, origin });
-  recorder.equal(joined(denied), "200\n2\nPseudoLearn: completed\n", "repeated network execution needs no grant");
+  recorder.equal(joined(denied), "200\n2\nPseudoLearn: completed\n", "repeated network execution needs no configuration");
   const files = await runFile({ path: place.archivo, profile, answers: [], context: { root: "pseudolearn-fixture://files/root" } });
   recorder.equal([joined(files).startsWith(profile === "es" ? "escrito\n" : "written\n"), provider.text("/root/salida.txt")], [true, "guardado ñ"], "files are written through the editor provider");
 

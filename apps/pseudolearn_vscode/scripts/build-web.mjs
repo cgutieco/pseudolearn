@@ -27,7 +27,7 @@ function browserManifest() {
   manifest.extensionKind = ["workspace"];
   manifest.activationEvents = manifest.activationEvents.filter((event) => !event.startsWith("onDebug"));
   manifest.contributes.commands = manifest.contributes.commands.filter((command) => !command.command.startsWith("pseudolearn.debug"));
-  for (const [command, title] of [["grantNetwork", "Grant Network Origin"], ["grantFiles", "Grant Temporary Program Files"], ["showCapabilities", "Show Browser Capabilities"]]) {
+  for (const [command, title] of [["showCapabilities", "Show Browser Capabilities"]]) {
     manifest.contributes.commands.push({ command: `pseudolearn.${command}`, title, category: "PseudoLearn" });
   }
   manifest.files = ["README.md", "LICENSE.md", "third-party-notices.md", "package.json", "dist/**", "media/**"];

@@ -69,7 +69,7 @@ describe("Browser run stale effect handling", () => {
     let release: (() => void) | undefined;
     vi.stubGlobal("fetch", () => new Promise<Response>((resolve) => { release = () => resolve(new Response(new Uint8Array([1]))); }));
     const effect = { effect_seq: "1", operation: "network_send", arguments: [{ kind: "http_request", value: {
-      method: "GET", url: "https://granted.example.test/x", headers: [], body: null,
+      method: "GET", url: "https://destination.example.test/x", headers: [], body: null,
       effective_response_limit: "4", effective_timeout_nanos: "1000000000" } }] };
     const subject = fixture(() => answer({ output: "", termination: { kind: "awaiting_effect" }, pending_effect: effect }));
     subject.api.call.mockImplementation(async (operation: string) => {

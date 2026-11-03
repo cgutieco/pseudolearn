@@ -97,7 +97,7 @@ el cuadro envía `cancel` y no una cadena vacía. El canal se muestra conservand
 recepción de texto se verifica manualmente en el Extension Development Host. **Detener** envía `cancel` y, si el proceso no responde en 5 s, lo termina
 (`SIGKILL`) y lo presenta como «abortado por el anfitrión», sin inventar limpieza del lenguaje. Cerrar la ventana o desactivar
 la extensión envía `close` y termina el proceso propio; ningún proceso ajeno se toca. Las líneas de una sesión anterior que
-llegan tarde se ignoran. Un `hello` con otro `schema` aborta la sesión. No se concede ningún archivo ni red.
+llegan tarde se ignoran. Un `hello` con otro `schema` aborta la sesión. La ejecución usa el anfitrión físico completo de la CLI (archivos del sistema, red, reloj y temporizador reales) con la carpeta del workspace o del archivo como carpeta de trabajo; no hay opciones ni comandos de concesión.
 
 **Ayuda.** El hover estándar lo contesta el servidor LSP y `pseudolearn.explainAtCursor` envía `workspace/executeCommand` con la
 versión del documento y formato `plaintext`: el resultado es el mismo contenido y rango que el hover, y un documento cambiado
@@ -186,7 +186,7 @@ consta en el registro `.vsix.json` del paquete. No se registra la entrada del es
 ## 10. Depuración VM de escritorio
 
 El debugger `pseudolearn` lanza `pseudo dap` sin shell ni entorno heredado. `pseudolearn.debugFile` y
-`pseudolearn.debugProject` crean configuraciones de archivo/proyecto guardados; no conceden capacidades.
+`pseudolearn.debugProject` crean configuraciones de archivo/proyecto guardados. `launch.json` admite `args` (lista de cadenas) y `cwd`; las claves `grants`, `permissions`, `origins` y `filesRoot` del modelo de concesiones anterior se rechazan con un error explícito en vez de ignorarse en silencio, para que ninguna configuración antigua aparente restringir una ejecución que ya tiene autoridad plena.
 El adaptador TS transporta DAP y presenta entrada; Rust conserva puntos de parada, tareas, marcos,
 control de ejecución, historia y evaluación. Cabeceras de 8 KiB, cuerpos de 8 MiB y referencias de stop
 acotadas impiden reservas ilimitadas. El backend es VM; no se anuncia depuración AOT ni browser.
@@ -218,20 +218,21 @@ limita profundidad a 64, archivos a 4096, cada fuente a 1 MiB y lectura de snaps
 de mensaje de 8 MiB sigue siendo el techo efectivo de transporte. Guardados y cambios de archivos
 resincronizan; un error informa snapshot desactualizado, sin inventar fuentes vacías.
 
-| Capacidad | Concesión y garantía |
+| Capacidad | Garantía y límite del navegador |
 | --- | --- |
-| Editor | `workspace.fs`, URI y confirmación del proveedor; no acredita persistencia tras expulsión |
-| HTTP | `pseudolearn.grantNetwork` concede un origen exacto por gesto del usuario; vacío revoca y detiene |
-| Archivos del programa | `pseudolearn.grantFiles` concede lectura/escritura en memoria temporal propia, separada del editor |
-| Otros proveedores de programa | Sin garantía de confinamiento no se concede acceso físico |
+| Archivos del programa | `workspace.fs` sobre el sistema de archivos del editor, con rutas absolutas o relativas a la carpeta del workspace; `..` permitido; escritura committed tras la confirmación del proveedor; no acredita persistencia tras expulsión |
+| HTTP | `fetch` a cualquier destino `http` o `https`; CORS, contenido mixto y cabeceras que Fetch reserva (`cookie`, `origin`, `referer`, `user-agent`, `sec-*`, `proxy-*`) llegan como `ErrorES` con causa de plataforma; el navegador sigue las redirecciones y valida TLS |
+| Reloj y temporizador | `Date.now()` en cada lectura; `Esperar` espera tiempo real sin bloquear otras tareas y se corta al detener |
+| Argumentos | Los de `BrowserHostContext.args`, en orden y sin el nombre del programa |
 | Ausencias | Sin DAP web, AOT, FFI, procesos, cookies ambientales ni servidor remoto |
 
 Fetch procede del adaptador canónico Wasm, importado y hasheado por build. Conserva el descriptor A4:
 TLS del navegador, sin bytes de cable ni ubicación portable de redirección. Se aborta al cancelar; una
 mutación enviada puede terminar incierta. Las escrituras del proveedor solo son committed tras su
 confirmación; un fallo posterior al despacho es incierto y no se reintenta. El almacenamiento propio
-es temporal (1 MiB por archivo, 8 MiB total), sin symlinks ni persistencia. Los permisos del manifiesto
-no conceden autoridad. `pseudolearn.showCapabilities` muestra las capacidades disponibles.
+Cada lectura o escritura de archivo admite hasta 1 MiB. No existen comandos ni diálogos de concesión:
+`Solicitar*` concede la familia que el navegador soporta y una familia ausente es un `ErrorES` de
+plataforma. `pseudolearn.showCapabilities` muestra los límites del navegador.
 
 ## 12. Construcción y verificación browser
 

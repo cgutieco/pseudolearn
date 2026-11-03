@@ -71,9 +71,9 @@ el control. Una terminación de Worker requiere reconstruir snapshot y overlays 
 La ejecución es síncrona. El anfitrión divide el trabajo en lotes, devuelve el control al navegador y solicita cancelación entre llamadas. El archivo de salida limita la memoria lineal a 256 MiB. Cualquier `Uint8Array` creado por un consumidor sobre la memoria del módulo queda invalidado cuando `memory.grow` reemplaza su `ArrayBuffer`; este crate no expone tales vistas.
 
 `browser/fetch_host.mjs` adapta `network_send` al `fetch` del navegador. `declareFetchHost(session)` comunica
-el descriptor A4 mediante `negotiate`; `performFetch(effect, { allowedOrigins, fetchImplementation })`
-permite inyectar el transporte y concede solo los orígenes incluidos explícitamente. Envía con
-`credentials: omit`, `cache: no-store` y `redirect: manual`; aborta al vencer el plazo y corta el flujo
+el descriptor A4 mediante `negotiate`; `performFetch(effect, { signal, fetchImplementation })`
+permite inyectar el transporte y cancelar; no filtra destinos. Envía con
+`credentials: omit`, `cache: no-store` y `redirect: follow`; aborta al vencer el plazo y corta el flujo
 al superar el límite de bytes decodificados. El navegador valida TLS, aplica su política SSRF y
 descomprime contenido; el adaptador declara que no puede medir bytes de cable, distinguir errores de
 certificado ni leer de forma portable la ubicación de una redirección.
@@ -145,7 +145,7 @@ falso y sin sockets.
 
 `wasm-bindgen` aporta la generación de enlaces JavaScript desde Rust. Se fija la misma versión para el crate y el CLI para mantener compatible el formato de enlace. WebAssembly define la memoria lineal y el reemplazo del `ArrayBuffer` al crecer; el contrato de este paquete evita compartir vistas entre llamadas.
 
-Fetch usa autoridad inicial plena, sin allowedOrigins. El navegador valida TLS, aplica CORS y
+Fetch no recibe lista de orígenes: la autoridad es plena. El navegador valida TLS, aplica CORS y
 contenido mixto y sigue redirecciones. Cookie y las cabeceras reservadas por Fetch se rechazan antes
 de enviar, como error de petición de plataforma. Se omiten credenciales ambientales y caché; no hay
 proxy ni respuesta alternativa. El bundle Wasm mantiene excluidos transporte nativo y test-host.

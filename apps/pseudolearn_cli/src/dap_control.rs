@@ -71,7 +71,10 @@ impl DapSession {
                 let text = argument(request, "text")
                     .as_str()
                     .ok_or("missing input line")?;
-                self.call("input", &json!({"resource":self.execution()?,"text":text}))?;
+                let mut request = self.input_identity.clone();
+                request["resource"] = self.execution()?;
+                request["text"] = json!(text);
+                self.call("input", &request)?;
                 self.input_token = None;
             }
             _ => return Err("invalid input action".to_owned()),

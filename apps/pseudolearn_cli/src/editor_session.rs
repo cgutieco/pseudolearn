@@ -57,9 +57,6 @@ pub(crate) fn drive<Sink: Write>(
 impl<Sink: Write> Pump<'_, Sink> {
     fn run(&mut self) -> io::Result<FinishStatus> {
         loop {
-            if let Some(status) = self.drain_inbound()? {
-                return self.abandon(status);
-            }
             let response = self.advance();
             self.present_output(&response)?;
             if self.printed > self.running.output_limit {
@@ -67,10 +64,17 @@ impl<Sink: Write> Pump<'_, Sink> {
             }
             let kind = termination_kind(&response);
             match kind.as_deref() {
-                Some("running") => {}
+                Some("running") => {
+                    if let Some(status) = self.drain_inbound()? {
+                        return self.abandon(status);
+                    }
+                }
                 Some("awaiting_effect") => {
                     crate::editor_effects::resolve(&mut self.running, &response)
                         .map_err(io::Error::other)?;
+                    if let Some(status) = self.drain_inbound()? {
+                        return self.abandon(status);
+                    }
                 }
                 Some("awaiting_input") => {
                     if let Some(status) = self.provide_input(&response)? {

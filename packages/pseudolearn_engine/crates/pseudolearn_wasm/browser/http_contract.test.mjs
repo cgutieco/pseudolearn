@@ -70,7 +70,7 @@ describe('Fetch HTTP contract across browsers', () => {
           }));
           const results = [];
           for (const request of requests) {
-            const response = await performFetch(request, { allowedOrigins: [origin] });
+            const response = await performFetch(request);
             results.push(response.outcome === 'committed'
               ? {
                 outcome: response.outcome,

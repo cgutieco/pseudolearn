@@ -119,18 +119,14 @@ La reproducción de `Leer` es autónoma: la cinta guarda cada línea leída y la
 estándar. Decisión: la entrada leída se resuelve contra la entrada de cinta siguiente en ambos motores; si la cinta se
 agota, la reproducción termina con `replay_truncated_tape`.
 
-La política física de red está separada en `physical_network_address`, `physical_network_resolver`,
-`physical_network_tls` y `physical_network`. El validador rechaza hosts inválidos y formas numéricas
-alternativas de IPv4; el resolvedor del sistema se puede sustituir por uno falso y `resolve_checked`
-examina toda la respuesta DNS una sola vez antes de entregar la instantánea comprobada de direcciones.
-Deniega los rangos locales, privados y especiales; una concesión `--local-origin` solo permite loopback.
-Cada petición debe coincidir con un origen exacto concedido. `--origin` acepta orígenes HTTPS; el
-origen local acepta HTTP con loopback. No se siguen redirecciones: el programa recibe la respuesta 3xx.
+El transporte físico vive en `pseudolearn_host`, compartido con la app: la CLI no posee código de red. Acepta
+`http` y `https` a cualquier host y dirección (loopback y privadas incluidas) porque el programa dueño de la ejecución es
+quien decide a dónde habla. No se siguen redirecciones: el programa recibe la respuesta 3xx.
 
 La elección nativa es una conexión HTTP/1 directa con Hyper 1.11.1
 ([API de handshake HTTP/1](https://docs.rs/hyper/1.11.1/hyper/client/conn/http1/fn.handshake.html)),
 Tokio 1.54.1 y `tokio-rustls` 0.26.6 con Rustls 0.23.46. Hyper se usa como capa de protocolo y
-conexión, no como cliente de alto nivel; la CLI controla DNS, proxy, redirecciones, certificados y
+conexión, no como cliente de alto nivel; el crate de anfitrión controla DNS, proxy, redirecciones, certificados y
 límite de bytes. No se leen proxies del entorno, no se cargan cookies, no se reintenta y el TLS no
 admite modo inseguro. Se descartó `reqwest` 0.13.5 porque su cliente de alto nivel habilita proxies
 del sistema por defecto y sigue redirecciones por defecto; `ureq` 3.4.2 también toma proxies del
@@ -139,8 +135,8 @@ un `TcpStream` decidido por el resolvedor del adaptador y no crea un cliente que
 variables. `flate2` 1.1.10 con backend Rust descodifica gzip en flujo; `wire_limit` mide el cuerpo
 recibido antes de descodificar y `effective_response_limit` corta los bytes decodificados.
 La conexión se cierra al terminar la respuesta o al cancelar la espera. El plazo cubre resolución,
-conexión, TLS y respuesta. DNS se resuelve una vez, se validan todas las direcciones y se conecta a
-una sola dirección de esa instantánea, sin probar direcciones alternativas.
+conexión, TLS y respuesta. DNS se resuelve una vez y se conecta a una sola dirección de esa instantánea, sin probar
+direcciones alternativas.
 La petición completa (método, destino en forma de origen, cabeceras, límites) se construye y valida
 antes de resolver o conectar: una cabecera reservada (`host`, `connection`, `content-length`,
 `transfer-encoding`, `upgrade`, `te`, `trailer`, `keep-alive`, `cookie`, `set-cookie`,
@@ -194,32 +190,18 @@ redirecciones; CORS permite que una página local use las direcciones impresas. 
 transporte con Playwright pueden tomar esas direcciones como destino de Fetch; `fetch_host.test.mjs`
 mantiene su transporte falso para las verificaciones unitarias.
 
-El `network_origins` del anfitrión API lleva los orígenes que el usuario concedió al CLI; el runtime
-valida con ellos cada `network_send` antes de pedir el resultado al transporte físico. En opciones
-bilingües, `--origin`/`--origen`, `--local-origin`/`--origen-local` y `--test-root`/`--raiz-prueba`
-son repetibles.
-
-Proveedor físico: `--conceder <lista>` (`--grant`) declara los permisos concedidos (`consola`, `argumentos`,
-`archivos_lectura`, `archivos_escritura`, `reloj`, `temporizador`, `red`; también acepta `network` como alias) y
-`--archivos <DIR>` (`--files`) la única raíz de archivos. Sin `--conceder` el comportamiento no cambia y toda
-capacidad se deniega. Con `--conceder` la CLI arranca la ejecución en modo `detached` y atiende cada
-`awaiting_effect` como consumidor de la API pública: `physical_host.rs` despacha las operaciones, `physical_files.rs`
-las operaciones de archivo y `physical_session.rs` el ciclo `effect_result`. La raíz se abre una sola vez con
-`cap_std::fs::Dir::open_ambient_dir` en la frontera de la CLI y toda ruta posterior se resuelve relativa a un `Dir`;
-nunca se concatenan rutas. Defensas: la ruta debe ser relativa, sin `.`/`..`, sin vacío, `\`, `:` ni NUL
-(`ruta_invalida`); `cap-std` rechaza además enlaces simbólicos salientes (`permiso_denegado`); los derechos de una
-capacidad derivada deben ser subconjunto de los del padre; cerrar una capacidad la retira de la tabla y su uso posterior
-devuelve `capacidad_cerrada`; escribir reemplaza el contenido y un fallo tras mutar se informa como `Uncertain`.
-La reproducción (`--reproducir-cinta`) no abre la raíz ni toca disco. El reloj es el del sistema en la primera lectura
-y el temporizador es lógico (suma la duración sin dormir). Para red, `--origin` es repetible y concede orígenes
-HTTPS exactos; `--local-origin` es repetible y concede HTTP solo para loopback; `--test-root` carga raíces PEM
-adicionales sin retirar las raíces del sistema. Conceder `red` sin origen no autoriza destinos. `--native` con
-`red` falla como error de uso, código 2: el runtime AOT no abre sockets. El anfitrión nativo declara sus garantías
-mediante `negotiate`; la declaración no concede permisos. El transporte valida DNS y todas las direcciones antes
-de conectar. La API entrega la lista completa de efectos de red pendientes; `physical_network_batch` ejecuta hasta
-ocho solicitudes en paralelo y devuelve sus resultados según finalizan. La VM pausa y reanuda la tarea asociada a
-cada secuencia, y la cinta registra ese orden de entrega. El proveedor físico todavía solo ofrece una raíz de
-archivos y no modela argumentos de la línea de órdenes del programa.
+Cada ejecución en vivo arranca la API en modo `detached` y atiende cada `awaiting_effect` como consumidor de la API
+pública: `physical_session.rs` abre el anfitrión y recorre el ciclo `effect_result`; `pseudolearn_host` despacha las
+operaciones. La carpeta de trabajo es el directorio actual; las rutas absolutas, relativas y `..` se resuelven contra el
+sistema de archivos, y solo las capacidades derivadas con `Subdirectorio` quedan confinadas con `cap-std` (derechos no
+amplificables, enlaces simbólicos salientes rechazados dentro de esa subcapacidad). Cerrar una capacidad la retira de la
+tabla y su uso posterior devuelve `capacidad_cerrada`; escribir reemplaza el contenido y un fallo tras mutar se informa
+como `Uncertain`. La reproducción (`--reproducir-cinta`) no abre anfitrión ni toca disco. El reloj es el del sistema en
+cada lectura y el temporizador espera tiempo real de forma cancelable. `--test-root` carga raíces PEM adicionales sin
+retirar las del sistema y existe solo para las pruebas TLS locales. `--native` con red falla como error de uso (código 2):
+el runtime AOT no abre sockets. El anfitrión nativo declara sus garantías mediante `negotiate`. La API entrega la lista
+completa de efectos de red pendientes; el anfitrión ejecuta hasta ocho solicitudes en paralelo y devuelve sus resultados
+según finalizan. La VM pausa y reanuda la tarea asociada a cada secuencia, y la cinta registra ese orden de entrega.
 
 `deny.toml` autoriza `BSD-3-Clause`, licencia de `subtle`, dependencia transitiva de `hmac` que el runtime usa para las
 referencias de secretos de la cinta; es la misma decisión que ya rige en el motor.
@@ -289,8 +271,8 @@ Se descartó reutilizar el protocolo de observación SEE como API de producto y 
   la respuesta de la API acumula la salida, por lo que un tope mayor costaría memoria cuadrática en bucles que imprimen).
   Cancelar, cerrar o superar un límite libera el recurso de ejecución; la API no tiene cancelación de espera de entrada, por
   lo que cancelar una espera es dejar de alimentar y liberar el recurso.
-- **Permisos:** no se concede ningún archivo ni red; una ejecución que pidiera un efecto físico no declarado termina como
-  `failed`. Los permisos proceden únicamente de concesiones explícitas del usuario, nunca del workspace.
+- **Autoridad:** la ejecución usa el anfitrión físico completo con la carpeta del archivo o del workspace; no existe
+  concesión alguna ni el workspace puede ampliarla o recortarla.
 
 El proyecto se carga con el mismo lector confinado que `comprobar`, se arranca con la operación `start_project` de la API y
 la CLI no duplica el compilador de proyectos. `src/editor_protocol.rs` define mensajes y límites, `src/editor_session.rs` el
@@ -343,9 +325,8 @@ Continuar y pasar usan el recurso vivo; la operación histórica `step`, que rec
 La secuencia es `initialize`, `launch`, evento `initialized`, breakpoints y `configurationDone`.
 `launch` acepta `program` o `project` con `entry`, `workspaceRoot`, `profile`, `strictness`, semilla
 decimal i64 y `stopOnEntry` (por omisión verdadero). Solo se admite backend `vm`. La configuración
-no recibe permisos, orígenes, entorno, argumentos de proceso ni ejecutables. Las concesiones de un
-anfitrión independiente se entregan mediante las opciones personales de `pseudo dap`, por ejemplo
-`--grant`/`--files`/`--local-origin`; nunca mediante el manifiesto ni `launch.json`. La extensión exige
+no recibe entorno ni ejecutables; acepta `args` (lista de cadenas) y `cwd` (carpeta existente, por omisión la del
+workspace o la del archivo). No existen claves de permiso ni opciones de concesión. La extensión exige
 confianza y rechaza fuentes sin guardar antes de crear el proceso.
 
 Las fuentes provienen de un snapshot inmutable. `sourceReference` devuelve su texto y `adapterData`

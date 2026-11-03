@@ -56,7 +56,19 @@ fn a_root_directory_carries_read_write_rights_without_grants() -> Result<(), Str
     )
     .map_err(|error| format!("{error:?}"))?;
     let capability = request.result_capability.ok_or("missing root capability")?;
-    assert!(capability.token().map_err(|error| format!("{error:?}"))?.rights.read);
-    assert!(capability.token().map_err(|error| format!("{error:?}"))?.rights.write);
+    assert!(
+        capability
+            .token()
+            .map_err(|error| format!("{error:?}"))?
+            .rights
+            .read
+    );
+    assert!(
+        capability
+            .token()
+            .map_err(|error| format!("{error:?}"))?
+            .rights
+            .write
+    );
     Ok(())
 }

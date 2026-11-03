@@ -91,7 +91,7 @@ fn full_authority_persists_files_in_the_working_directory() -> Result<(), Box<dy
 }
 
 #[test]
-fn unknown_grant_is_a_usage_error() -> Result<(), Box<dyn std::error::Error>> {
+fn a_retired_grant_option_is_a_usage_error() -> Result<(), Box<dyn std::error::Error>> {
     let space = space("unknown")?;
     let output = run(&space, READER, &["--grant", "red_http"])?;
     assert_eq!(output.status.code(), Some(2));

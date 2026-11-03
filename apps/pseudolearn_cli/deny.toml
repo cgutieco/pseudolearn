@@ -8,6 +8,7 @@ ignore = true
 [bans]
 multiple-versions = "deny"
 skip = [
+    { crate = "syn@3.0.9" },
     { crate = "hashbrown@0.16.1" },
     { crate = "io-lifetimes@2.0.4" },
     { crate = "windows-sys@0.52.0" },

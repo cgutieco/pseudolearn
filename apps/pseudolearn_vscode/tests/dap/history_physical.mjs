@@ -24,11 +24,11 @@ const server = createServer((request, response) => {
 server.on("connection", (socket) => { sockets.add(socket); socket.on("close", () => sockets.delete(socket)); });
 await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
 const origin = `http://127.0.0.1:${server.address().port}`;
-const argumentsList = ["--grant", "red,archivos_lectura,archivos_escritura", "--files", directory, "--local-origin", origin];
+const argumentsList = [];
 
 function program(path = "/count") {
   return `SubProceso Probe() Como Resultado<Entero, ErrorES>
-Definir directory Como DirectorioCap <- Propagar SolicitarDirectorio("root");
+Definir directory Como DirectorioCap <- Propagar SolicitarDirectorio(${JSON.stringify(directory)});
 Definir file Como ArchivoCap <- Propagar directory.Abrir("out.txt", "escritura");
 Definir written Como Entero <- Propagar file.EscribirTexto("guardado");
 Definir net Como RedCap <- Propagar SolicitarRed();

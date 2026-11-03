@@ -322,45 +322,45 @@ Cada punto: `.01` especificación · `.02` casos · `.03` tests · `.04` código
 
 ##### PG-B.18 · CLI con anfitrión físico completo
 
-- [ ] `PG-B.18.01` Reescribir `TOOL.CLI.RUN`, `TOOL.CLI.CONVENTIONS` y `TOOL.CLI.MESSAGES`: sin opciones de concesión;
+- [x] `PG-B.18.01` Reescribir `TOOL.CLI.RUN`, `TOOL.CLI.CONVENTIONS` y `TOOL.CLI.MESSAGES`: sin opciones de concesión;
   argumentos del programa tras `--`; carpeta de trabajo = directorio actual; `--semilla` opcional.
-- [ ] `PG-B.18.02` Casos de CLI: programa con red, archivos y argumentos sin opciones; opción retirada como error de uso
+- [x] `PG-B.18.02` Casos de CLI: programa con red, archivos y argumentos sin opciones; opción retirada como error de uso
   con mensaje que explica que ya no hace falta.
-- [ ] `PG-B.18.03` Tests contra `cargo xtask http-test-server` en loopback: GET/POST, 4xx/5xx, timeout, TLS inválido,
+- [x] `PG-B.18.03` Tests contra `cargo xtask http-test-server` en loopback: GET/POST, 4xx/5xx, timeout, TLS inválido,
   redirección entregada, cancelación; `Esperar 1 s` mide ≥ 1 s; reloj creciente.
-- [ ] `PG-B.18.04` Extraer el anfitrión físico a `pseudolearn_host` (lo consume la CLI desde aquí); eliminar
+- [x] `PG-B.18.04` Extraer el anfitrión físico a `pseudolearn_host` (lo consume la CLI desde aquí); eliminar
   `--conceder`/`--grant`, `--archivos`/`--files`, `--origen`/`--origin`, `--origen-local`/`--local-origin`; conservar
   `--raiz-prueba` solo si las pruebas TLS lo exigen, documentado como opción de pruebas; eliminar el filtro de rangos,
   `network_address_policy_tests.rs` y las entradas SSRF de `tests/network_vector_registry.rs` y
   `tests/network_security_vectors.rs`; reloj, temporizador y argumentos reales.
-- [ ] `PG-B.18.05` README de CLI y de `pseudolearn_host`; `deny.toml` si cambian dependencias.
-- [ ] `PG-B.18.06` `cargo test` de CLI y `pseudolearn_host`; Clippy; `rust-checks all`; `see conform --subject cli`.
+- [x] `PG-B.18.05` README de CLI y de `pseudolearn_host`; `deny.toml` si cambian dependencias.
+- [x] `PG-B.18.06` `cargo test` de CLI y `pseudolearn_host`; Clippy; `rust-checks all`; `see conform --subject cli`.
 
 ##### PG-B.19 · Extensión de escritorio y DAP
 
-- [ ] `PG-B.19.01` `TOOL.DAP`: `launch` acepta `args` y `cwd`; sin claves de permiso.
-- [ ] `PG-B.19.02` Casos DAP con argumentos y carpeta de trabajo.
+- [x] `PG-B.19.01` `TOOL.DAP`: `launch` acepta `args` y `cwd`; sin claves de permiso.
+- [x] `PG-B.19.02` Casos DAP con argumentos y carpeta de trabajo.
 - [ ] `PG-B.19.03` Tests de `run_arguments.ts` y `debug_configuration.ts`; prueba de host confiable que ejecuta el
   programa de PG-B.27.
-- [ ] `PG-B.19.04` `run --editor` y `pseudo dap` con anfitrión físico; carpeta del workspace o del archivo; retirar de la
+- [x] `PG-B.19.04` `run --editor` y `pseudo dap` con anfitrión físico; carpeta del workspace o del archivo; retirar de la
   lista de rechazo las claves que dejan de significar algo; mensajes es/en sin «No se concede».
-- [ ] `PG-B.19.05` README de extensión: Confianza de Workspace como límite de VS Code.
+- [x] `PG-B.19.05` README de extensión: Confianza de Workspace como límite de VS Code.
 - [ ] `PG-B.19.06` `vitest`, `check:*`, `node tests/host/run-host.mjs trusted`.
 
 #### Bloque 4 · Extensión web
 
 ##### PG-B.20 · Anfitrión web real
 
-- [ ] `PG-B.20.01` Contrato de diferencias de plataforma fijado en PG-B.11; regla de archivos sobre el sistema de
+- [x] `PG-B.20.01` Contrato de diferencias de plataforma fijado en PG-B.11; regla de archivos sobre el sistema de
   archivos del editor.
-- [ ] `PG-B.20.02` Casos web: archivos del workspace, reloj, temporizador, argumentos, CORS ausente, contenido mixto.
-- [ ] `PG-B.20.03` `tests/web/http_scenarios.ts` y `file_scenarios.ts` sin pasos de concesión; la ruta «sin CORS» del
+- [x] `PG-B.20.02` Casos web: archivos del workspace, reloj, temporizador, argumentos, CORS ausente, contenido mixto.
+- [x] `PG-B.20.03` `tests/web/http_scenarios.ts` y `file_scenarios.ts` sin pasos de concesión; la ruta «sin CORS» del
   servidor de pruebas espera el error de plataforma.
-- [ ] `PG-B.20.04` Eliminar `pseudolearn.grantNetwork`, `pseudolearn.grantFiles`, `BrowserGrants`,
+- [x] `PG-B.20.04` Eliminar `pseudolearn.grantNetwork`, `pseudolearn.grantFiles`, `BrowserGrants`,
   `browser_scratch_files.ts` y `allowedOrigins` de `fetch_host.mjs`; archivos con `workspace.fs`; reloj, temporizador
   y argumentos en `BrowserEffectHost`; `showCapabilities` muestra los límites del navegador.
-- [ ] `PG-B.20.05` README de extensión y de `pseudolearn_wasm`.
-- [ ] `PG-B.20.06` `pnpm build:web`, `pnpm check:web`, `node tests/web/run-web.mjs` en Chromium y WebKit;
+- [x] `PG-B.20.05` README de extensión y de `pseudolearn_wasm`.
+- [x] `PG-B.20.06` `pnpm build:web`, `pnpm check:web`, `node tests/web/run-web.mjs` en Chromium y WebKit;
   `node --test browser/fetch_host.test.mjs`.
 
 #### Bloque 5 · App: anfitrión real en macOS, iOS y Windows
@@ -1009,3 +1009,33 @@ HEAD `6ebd084c`, rama única. El código de autoridad plena, `test-host` e `isol
 | PG-B.17 | `live_time_tape_tests`: lecturas de reloj grabadas, reproducción sin anfitrión, semilla distinta rechazada; README del runtime | `cargo test -p pseudolearn_api --test live_time_tape_tests` |
 
 `cargo test --workspace --no-fail-fast` en verde. `a_detached_host_sees_every_concurrent_pending_effect` pedía tres `SolicitarTemporizador` concurrentes, pero `6ebd084c` serializa los efectos que crean capacidades; el test pide ahora el temporizador una vez y verifica tres `Esperar` pendientes a la vez. Quedan abiertas `PG-B.13.03` y `PG-B.14.03`. Sin commit ni push.
+
+### 11.12 Bloque 3 · CLI y extensión de escritorio (PG-B.18–PG-B.19)
+
+HEAD `954e1862`, rama única. El anfitrión físico compartido (`pseudolearn_host`), el corpus de CLI/DAP y la mayor parte de la CLI ya estaban en HEAD; esta iteración cerró lo que faltaba y verificó el conjunto.
+
+| Punto | Cambio | Evidencia |
+|---|---|---|
+| PG-B.18 | `--origen`, `--origin`, `--origen-local`, `--local-origin` y `--files-root` ya se enrutan al error de uso `retiredAuthorityOption` (antes caían en «valor inválido»); `tests/full_authority_host.rs` (argumentos tras `--`, `Esperar` real ≥ 1 s con reloj creciente, ocho opciones retiradas con su mensaje); README de CLI sin SSRF, orígenes ni `--conceder`; `deny.toml` de CLI y motor omiten `syn@3.0.9` (duplicado que introduce `jni` vía `rustls-platform-verifier`) | `cargo test --locked`, Clippy, `rust-checks all`, `cargo deny check` en verde |
+| PG-B.18 (hallazgo) | `editor_session` descartaba una orden `cancel` ya encolada antes del primer `advance`, de modo que `TOOL.CLI.RUN#R7/C22` no veía `awaiting_input`; la cola se consulta ahora después de cada lote | `see conform --subject cli`: 110 observaciones, 0 divergencias |
+| PG-B.19 | `TOOL.DAP#R9/C16–C18` (lanzamiento con `args` y `cwd`, `args` no cadena, `cwd` inexistente), reanclado `TOOL.DAP`; el DAP enviaba `input` sin la identidad `(resource_id, task_id, request_id)` que exige la API desde PG-B.01, por lo que `tests/dap/run-stdio.mjs` fallaba: ahora guarda `pending_input` y lo reenvía; `history_physical.mjs` sin opciones retiradas; pruebas de `run_arguments.ts` y `debug_configuration.ts`; README de la extensión | `pnpm test` 160/160, `check:types`, `check:architecture`, `check:comments`, `check:size`, `test:dap:stdio` y `test:dap:history` en verde |
+
+Decisiones: (1) `launch.json` sigue **rechazando** `grants`, `permissions`, `origins` y `filesRoot` con el error de autoridad en lugar de retirarlas de la lista de rechazo, porque ignorarlas en silencio haría creer que una configuración antigua restringe una ejecución que ya tiene autoridad plena; `env` y `serverPath` siguen rechazadas. (2) Los casos DAP con argumentos no esperan salida del programa, porque la sesión termina en EOF antes de que los efectos físicos asincrónicos completen; el paso real de argumentos y `cwd` lo cubren `tests/full_authority_host.rs` y `test:dap:history`. (3) `--raiz-prueba`/`--test-root` se conserva, documentada como opción de pruebas TLS.
+
+No ejecutado: `node tests/host/run-host.mjs trusted` (requiere VS Code instalado y el VSIX empaquetado; el programa de aceptación de PG-B.27 pertenece al bloque 7). Los bloques 4 en adelante no se tocaron. Sin commit ni push.
+
+Quedan abiertas `PG-B.19.03` (prueba de host confiable con el programa de PG-B.27) y `PG-B.19.06` (parte `run-host.mjs trusted`), por la razón anterior.
+
+### 11.13 Bloque 4 · Extensión web (PG-B.20)
+
+HEAD `954e1862`, rama única. El anfitrión web (archivos con `workspace.fs`, reloj, temporizador real, argumentos, Fetch sin lista de orígenes) y la ausencia de comandos de concesión ya estaban en HEAD; esta iteración eliminó los restos y añadió la evidencia que faltaba.
+
+| Punto | Cambio | Evidencia |
+|---|---|---|
+| PG-B.20.01/.02 | Sin cambio de corpus: `LIB.HTTP.POLICY#R2/R4` y `RT.HOST.INTERFACE#R8/R9` ya fijan CORS, contenido mixto y cabeceras de plataforma; archivos, reloj, temporizador y argumentos rigen por las reglas de autoridad plena del bloque 1 | `see validate` no se re-ejecutó (sin cambios de corpus) |
+| PG-B.20.03 | Escenarios web sin vocabulario de concesión; la ruta `/nocors` espera `conexion_fallida` | `node tests/web/run-web.mjs`: Chromium y WebKit `passed` |
+| PG-B.20.04 | `scripts/build-web.mjs` ya no registra `pseudolearn.grantNetwork` ni `pseudolearn.grantFiles` en el manifiesto web; `showCapabilities` describe reloj, temporizador, argumentos y errores de plataforma; pruebas nuevas de argumentos, reloj creciente, espera real, interrupción y duración negativa en `BrowserEffectHost` | `vitest run`: 31 archivos, 165 pruebas |
+| PG-B.20.05 | README de la extensión (tabla de capacidades, párrafo de almacenamiento temporal retirado) y de `pseudolearn_wasm` (`performFetch` sin `allowedOrigins`, `redirect: follow`) | revisión |
+| PG-B.20.06 | `pnpm check:types`, `check:comments`, `check:size`, `check:architecture`, `check:web`; `node --test browser/fetch_host.test.mjs`: 12/12 | ver arriba |
+
+Decisiones: (1) no se añadió un caso de corpus específico del navegador porque no existe sujeto `web` ejecutable y las reglas ya cubren el contrato; la evidencia es `run-web.mjs`. (2) Firefox queda «no calificado» (cierre del navegador por SIGTERM en el entorno); el plan pide solo Chromium y WebKit. (3) `pnpm build:web` falla en `check:grammar` por `media/pseudolearn.tmLanguage.json` desactualizada, cambio ajeno preexistente que se conserva; se ejecutó `node scripts/build-web.mjs` directamente.

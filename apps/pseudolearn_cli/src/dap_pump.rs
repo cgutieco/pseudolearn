@@ -74,7 +74,7 @@ impl DapSession {
         }
         match kind {
             "running" => Ok(()),
-            "awaiting_input" => self.await_input(),
+            "awaiting_input" => self.await_input(batch),
             "awaiting_effect" => self.dispatch_effects(batch),
             _ => {
                 self.pending.push(event(
@@ -97,7 +97,7 @@ impl DapSession {
         self.output_bytes = self.output_bytes.max(output.len());
     }
 
-    fn await_input(&mut self) -> Result<(), String> {
+    fn await_input(&mut self, batch: &Value) -> Result<(), String> {
         self.input_generation = self
             .input_generation
             .checked_add(1)
@@ -109,6 +109,7 @@ impl DapSession {
             self.input_generation
         );
         self.input_token = Some(token.clone());
+        self.input_identity = batch.get("pending_input").cloned().unwrap_or(Value::Null);
         self.pending
             .push(event("pseudolearn/awaitingInput", json!({"token":token})));
         Ok(())

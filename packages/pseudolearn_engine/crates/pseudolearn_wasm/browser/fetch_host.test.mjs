@@ -107,7 +107,7 @@ describe('fetch host adapter', () => {
     assert.deepEqual(response.value, { code: 'conexion_fallida', uncertain: true });
   });
 
-  it('accepts a destination without an origin grant', async () => {
+  it('accepts a private destination without configuration', async () => {
     let calls = 0;
     const response = await performFetch(effect({ url: 'http://127.0.0.1/private' }), options({
       fetchImplementation: async () => { calls += 1; return new Response(null, { status: 204 }); },

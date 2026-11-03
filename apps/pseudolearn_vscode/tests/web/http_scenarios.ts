@@ -20,7 +20,7 @@ export async function probeTls(fixture: Fixture): Promise<"accepted" | "untruste
 }
 
 async function unrestricted(recorder: Recorder, origin: string, fixture: Fixture): Promise<void> {
-  recorder.within("http without grants");
+  recorder.within("http without configuration");
   const host = new BrowserEffectHost();
   const before = (await hits(fixture))["/ok"] ?? 0;
   const answer = await perform(host, networkEffect(origin + "/ok"));
