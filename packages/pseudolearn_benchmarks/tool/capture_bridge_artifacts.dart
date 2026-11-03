@@ -160,9 +160,14 @@ Future<Map<String, String>> toolchainVersions(Directory root) async {
 }
 
 Future<String> rustCompilerVersion(Directory root) async {
-  final configuration = await File('${root.path}/apps/pseudolearn_app/native/rust-toolchain.toml').readAsString();
-  final channel = RegExp(r'channel\s*=\s*"([^"]+)"').firstMatch(configuration)?.group(1);
-  if (channel == null) throw const FormatException('Missing bridge Rust toolchain');
+  final configuration = await File(
+    '${root.path}/apps/pseudolearn_app/native/rust-toolchain.toml',
+  ).readAsString();
+  final channel = RegExp(r'channel\s*=\s*"([^"]+)"')
+      .firstMatch(configuration)
+      ?.group(1);
+  if (channel == null)
+    throw const FormatException('Missing bridge Rust toolchain');
   return commandText('rustc', ['+$channel', '--version']);
 }
 
