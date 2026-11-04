@@ -1,7 +1,7 @@
 Algorithm RepeatLoop
-  Define Mutable n As Integer <- 1
+  Define Mutable n As Integer <- 1;
   Repeat
-    Write n
-    n <- n + 1
+    Write n;
+    n <- n + 1;
   Until n > 1
 EndAlgorithm

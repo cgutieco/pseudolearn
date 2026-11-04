@@ -128,11 +128,11 @@ the program doing so cannot be read.
 
 ```pseudo
 Subroutine Test()
-  Write x
+  Write x;
 EndSubroutine
 Algorithm GlobalError
-  Define x As Integer <- 5
-  Test()
+  Define x As Integer <- 5;
+  Test();
 EndAlgorithm
 ```
 

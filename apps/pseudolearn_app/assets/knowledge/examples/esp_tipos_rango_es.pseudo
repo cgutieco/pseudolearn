@@ -1,5 +1,5 @@
 Algoritmo RangoNumerico
-  Definir minEntero Como Entero <- -9223372036854775807
-  Definir maxEntero Como Entero <- 9223372036854775807
-  Escribir minEntero, maxEntero
+  Definir minEntero Como Entero <- -9223372036854775807;
+  Definir maxEntero Como Entero <- 9223372036854775807;
+  Escribir minEntero, maxEntero;
 FinAlgoritmo

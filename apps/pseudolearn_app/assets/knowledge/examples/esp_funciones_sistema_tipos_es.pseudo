@@ -1,5 +1,5 @@
 Algoritmo FuncionesTipo
-  Definir txt Como Cadena <- ATexto(123)
-  Definir prim Como Caracter <- CaracterEn(txt, 0)
-  Escribir txt, prim
+  Definir txt Como Cadena <- ATexto(123);
+  Definir prim Como Caracter <- CaracterEn(txt, 0);
+  Escribir txt, prim;
 FinAlgoritmo

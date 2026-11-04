@@ -1,5 +1,5 @@
 Algorithm OperatorDecisions
-  Define power As Integer <- 2 ^ 3 ^ 2
-  Define flag As Boolean <- !(2 > 3)
-  Write power, flag
+  Define power As Integer <- 2 ^ 3 ^ 2;
+  Define flag As Boolean <- !(2 > 3);
+  Write power, flag;
 EndAlgorithm

@@ -1,5 +1,5 @@
 Algoritmo Numeros
-  Definir a Como Entero <- -42
-  Definir b Como Real <- 3.14
-  Escribir a, b
+  Definir a Como Entero <- -42;
+  Definir b Como Real <- 3.14;
+  Escribir a, b;
 FinAlgoritmo

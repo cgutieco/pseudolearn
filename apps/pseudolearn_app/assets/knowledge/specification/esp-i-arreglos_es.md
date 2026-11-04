@@ -54,8 +54,8 @@ arreglos se pasen siempre por referencia.
 
 ```pseudo
 Algoritmo ErrorArregloValor
-  Dimension a[3] Como Entero
-  Escribir a
+  Dimension a[3] Como Entero;
+  Escribir a;
 FinAlgoritmo
 ```
 

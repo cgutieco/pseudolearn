@@ -53,8 +53,8 @@ always passed by reference.
 
 ```pseudo
 Algorithm ArrayValueNotAllowed
-  Dimension a[3] As Integer
-  Write a
+  Dimension a[3] As Integer;
+  Write a;
 EndAlgorithm
 ```
 

@@ -1,7 +1,7 @@
 Algoritmo BucleMientras
-  Definir Mutable n Como Entero <- 0
+  Definir Mutable n Como Entero <- 0;
   Mientras n > 0 Hacer
-    Escribir n
-    n <- n - 1
+    Escribir n;
+    n <- n - 1;
   FinMientras
 FinAlgoritmo

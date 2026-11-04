@@ -1,9 +1,9 @@
 Clase Cuenta
-  Publico Definir titular Como Cadena
-  Privado Definir saldo Como Entero
+  Publico Definir titular Como Cadena;
+  Privado Definir saldo Como Entero;
 FinClase
 Algoritmo AtributosVisibilidad
-  Definir c Como Cuenta <- Nuevo Cuenta()
-  c.titular <- "Ana"
-  Escribir c.titular
+  Definir c Como Cuenta <- Nuevo Cuenta();
+  c.titular <- "Ana";
+  Escribir c.titular;
 FinAlgoritmo

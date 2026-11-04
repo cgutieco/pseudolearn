@@ -1,6 +1,6 @@
 SubProceso Mensaje()
-  Escribir "Hermano del algoritmo"
+  Escribir "Hermano del algoritmo";
 FinSubProceso
 Algoritmo DondeVive
-  Mensaje()
+  Mensaje();
 FinAlgoritmo

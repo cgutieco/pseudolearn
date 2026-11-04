@@ -37,10 +37,10 @@ comparison instead of letting it pass.
 
 ```pseudo
 Algorithm CompareReals
-  Define a As Real <- 0.1 + 0.2
-  Define b As Real <- 0.3
+  Define a As Real <- 0.1 + 0.2;
+  Define b As Real <- 0.3;
   If a = b Then
-    Write "Equal"
+    Write "Equal";
   EndIf
 EndAlgorithm
 ```

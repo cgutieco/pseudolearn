@@ -1,8 +1,8 @@
 Algorithm Conditional
-  Define x As Integer <- 5
+  Define x As Integer <- 5;
   If x > 0 Then
-    Write "Positive"
+    Write "Positive";
   Else
-    Write "Not positive"
+    Write "Not positive";
   EndIf
 EndAlgorithm

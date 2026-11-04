@@ -1,8 +1,8 @@
 Clase Contador
-  Publico Definir total Como Entero
+  Publico Definir total Como Entero;
 FinClase
 Algoritmo DeclaracionClase
-  Definir c Como Contador <- Nuevo Contador()
-  c.total <- 5
-  Escribir c.total
+  Definir c Como Contador <- Nuevo Contador();
+  c.total <- 5;
+  Escribir c.total;
 FinAlgoritmo

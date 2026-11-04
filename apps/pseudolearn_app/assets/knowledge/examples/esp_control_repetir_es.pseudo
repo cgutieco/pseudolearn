@@ -1,7 +1,7 @@
 Algoritmo BucleRepetir
-  Definir Mutable n Como Entero <- 1
+  Definir Mutable n Como Entero <- 1;
   Repetir
-    Escribir n
-    n <- n + 1
+    Escribir n;
+    n <- n + 1;
   Hasta Que n > 1
 FinAlgoritmo

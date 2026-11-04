@@ -1,5 +1,5 @@
 Algoritmo Espacios
-Definir Mutable x Como Entero <- 0
-    x <- 10
-  Escribir x
+Definir Mutable x Como Entero <- 0;
+    x <- 10;
+  Escribir x;
 FinAlgoritmo

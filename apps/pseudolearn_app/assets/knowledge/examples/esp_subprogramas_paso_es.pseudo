@@ -1,10 +1,10 @@
 SubProceso ProbarPaso(va Como Entero Por Valor, vb Como Entero Por Referencia)
-  va <- 10
-  vb <- 20
+  va <- 10;
+  vb <- 20;
 FinSubProceso
 Algoritmo PasoParametros
-  Definir n1 Como Entero <- 1
-  Definir Mutable n2 Como Entero <- 2
-  ProbarPaso(n1, n2)
-  Escribir n1, n2
+  Definir n1 Como Entero <- 1;
+  Definir Mutable n2 Como Entero <- 2;
+  ProbarPaso(n1, n2);
+  Escribir n1, n2;
 FinAlgoritmo

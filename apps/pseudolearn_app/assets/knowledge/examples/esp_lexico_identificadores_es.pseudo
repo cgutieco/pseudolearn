@@ -1,7 +1,7 @@
 Algoritmo Identificadores
-  Definir total Como Entero <- 1
-  Definir _contador Como Entero <- 2
-  Definir valor1 Como Entero <- 3
-  Definir suma_total Como Entero <- total + _contador + valor1
-  Escribir suma_total
+  Definir total Como Entero <- 1;
+  Definir _contador Como Entero <- 2;
+  Definir valor1 Como Entero <- 3;
+  Definir suma_total Como Entero <- total + _contador + valor1;
+  Escribir suma_total;
 FinAlgoritmo

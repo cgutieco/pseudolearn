@@ -1,5 +1,5 @@
 Algorithm ForGuarantees
   For i <- 5 To 1 Step -2 Do
-    Write i
+    Write i;
   EndFor
 EndAlgorithm

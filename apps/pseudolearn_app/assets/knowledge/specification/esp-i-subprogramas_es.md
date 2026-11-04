@@ -131,11 +131,11 @@ necesidad técnica sino porque el programa que lo hace no se puede leer.
 
 ```pseudo
 SubProceso Probar()
-  Escribir x
+  Escribir x;
 FinSubProceso
 Algoritmo ErrorGlobal
-  Definir x Como Entero <- 5
-  Probar()
+  Definir x Como Entero <- 5;
+  Probar();
 FinAlgoritmo
 ```
 

@@ -1,6 +1,6 @@
 Algoritmo OrdenEvaluacion
-  Dimension v[3] Como Entero
-  Definir i Como Entero <- 0
-  v[i] <- 10
-  Escribir v[i]
+  Dimension v[3] Como Entero;
+  Definir i Como Entero <- 0;
+  v[i] <- 10;
+  Escribir v[i];
 FinAlgoritmo

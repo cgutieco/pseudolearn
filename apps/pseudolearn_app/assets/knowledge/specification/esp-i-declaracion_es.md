@@ -33,8 +33,8 @@ palabra no se estaría usando.
 
 ```pseudo
 Algoritmo ReasignarInmutable
-  Definir x Como Entero <- 5
-  x <- 6
+  Definir x Como Entero <- 5;
+  x <- 6;
 FinAlgoritmo
 ```
 

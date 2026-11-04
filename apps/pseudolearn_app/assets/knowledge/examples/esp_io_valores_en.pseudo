@@ -1,6 +1,6 @@
 Algorithm DisplayValues
-  Define e As Integer <- 42; Define r As Real <- 3.14
-  Define l As Boolean <- True; Define c As Character <- 'X'
-  Define s As String <- "Text"
-  Write e, r, l, c, s
+  Define e As Integer <- 42; Define r As Real <- 3.14;
+  Define l As Boolean <- True; Define c As Character <- 'X';
+  Define s As String <- "Text";
+  Write e, r, l, c, s;
 EndAlgorithm

@@ -1,11 +1,11 @@
 Algorithm SwitchCase
-  Define opt As Integer <- 2
+  Define opt As Integer <- 2;
   Switch opt Do
     1:
-      Write "One"
+      Write "One";
     2:
-      Write "Two"
+      Write "Two";
     Otherwise:
-      Write "Other"
+      Write "Other";
   EndSwitch
 EndAlgorithm

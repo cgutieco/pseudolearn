@@ -1,5 +1,5 @@
 Algorithm TypeRelationships
-  Define e As Integer <- 5
-  Define r As Real <- e
-  Write r
+  Define e As Integer <- 5;
+  Define r As Real <- e;
+  Write r;
 EndAlgorithm

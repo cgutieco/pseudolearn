@@ -1,8 +1,8 @@
 Algoritmo Condicional
-  Definir x Como Entero <- 5
+  Definir x Como Entero <- 5;
   Si x > 0 Entonces
-    Escribir "Positivo"
+    Escribir "Positivo";
   Sino
-    Escribir "No positivo"
+    Escribir "No positivo";
   FinSi
 FinAlgoritmo

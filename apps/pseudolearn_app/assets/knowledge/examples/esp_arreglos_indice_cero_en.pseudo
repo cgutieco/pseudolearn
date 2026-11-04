@@ -1,7 +1,7 @@
 Algorithm ZeroIndex
-  Dimension numbers[3] As Integer
+  Dimension numbers[3] As Integer;
   For i <- 0 To 2 Step 1 Do
-    numbers[i] <- i * 10
-    Write numbers[i]
+    numbers[i] <- i * 10;
+    Write numbers[i];
   EndFor
 EndAlgorithm

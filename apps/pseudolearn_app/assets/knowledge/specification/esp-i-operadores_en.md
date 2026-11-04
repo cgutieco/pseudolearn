@@ -29,7 +29,7 @@ and a string is neither and the language rejects it.
 
 ```pseudo
 Algorithm ConcatError
-  Define message As String <- "Total: " + 5
+  Define message As String <- "Total: " + 5;
 EndAlgorithm
 ```
 

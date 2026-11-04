@@ -33,8 +33,8 @@ the word would not be doing anything.
 
 ```pseudo
 Algorithm ReassignImmutable
-  Define x As Integer <- 5
-  x <- 6
+  Define x As Integer <- 5;
+  x <- 6;
 EndAlgorithm
 ```
 

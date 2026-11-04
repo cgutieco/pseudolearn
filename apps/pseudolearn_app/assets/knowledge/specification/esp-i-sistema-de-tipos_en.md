@@ -110,7 +110,7 @@ assignment.
 
 ```pseudo
 Algorithm Undeclared
-  x <- 10
+  x <- 10;
 EndAlgorithm
 ```
 
@@ -145,7 +145,7 @@ from any method of its class even if that method is never called.
 
 ```pseudo
 Algorithm DeclaredUnused
-  Define total As Integer <- 0
+  Define total As Integer <- 0;
 EndAlgorithm
 ```
 

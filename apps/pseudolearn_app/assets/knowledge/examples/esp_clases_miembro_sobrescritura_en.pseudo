@@ -4,9 +4,9 @@ Class Animal
 EndClass
 Class Dog Inherits From Animal
   Method Speak()
-    Write "Woof"
+    Write "Woof";
   EndMethod
 EndClass
 Algorithm Overriding
-  Define a As Animal <- New Dog(); a.Speak()
+  Define a As Animal <- New Dog(); a.Speak();
 EndAlgorithm

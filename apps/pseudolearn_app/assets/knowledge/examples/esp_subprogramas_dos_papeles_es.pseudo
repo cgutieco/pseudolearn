@@ -1,10 +1,10 @@
 SubProceso Saludar()
-  Escribir "Hola"
+  Escribir "Hola";
 FinSubProceso
 SubProceso Duplicar(n Como Entero) Como Entero
-  Retornar n * 2
+  Retornar n * 2;
 FinSubProceso
 Algoritmo DosPapeles
-  Saludar()
-  Escribir Duplicar(4)
+  Saludar();
+  Escribir Duplicar(4);
 FinAlgoritmo

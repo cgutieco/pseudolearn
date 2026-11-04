@@ -38,10 +38,10 @@ de esa comparación en vez de dejarla pasar.
 
 ```pseudo
 Algoritmo CompararReales
-  Definir a Como Real <- 0.1 + 0.2
-  Definir b Como Real <- 0.3
+  Definir a Como Real <- 0.1 + 0.2;
+  Definir b Como Real <- 0.3;
   Si a = b Entonces
-    Escribir "Iguales"
+    Escribir "Iguales";
   FinSi
 FinAlgoritmo
 ```

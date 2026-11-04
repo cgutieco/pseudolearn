@@ -1,10 +1,10 @@
 Class Item
-  Public Define value As Integer
+  Public Define value As Integer;
 EndClass
 Algorithm ShallowCopyExample
-  Define i1 As Item <- New Item()
-  i1.value <- 10
-  Define i2 As Item <- copy(i1)
-  i2.value <- 20
-  Write i1.value, i2.value
+  Define i1 As Item <- New Item();
+  i1.value <- 10;
+  Define i2 As Item <- copy(i1);
+  i2.value <- 20;
+  Write i1.value, i2.value;
 EndAlgorithm

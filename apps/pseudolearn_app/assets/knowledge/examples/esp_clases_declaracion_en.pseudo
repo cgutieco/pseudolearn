@@ -1,8 +1,8 @@
 Class Counter
-  Public Define total As Integer
+  Public Define total As Integer;
 EndClass
 Algorithm ClassDeclaration
-  Define c As Counter <- New Counter()
-  c.total <- 5
-  Write c.total
+  Define c As Counter <- New Counter();
+  c.total <- 5;
+  Write c.total;
 EndAlgorithm

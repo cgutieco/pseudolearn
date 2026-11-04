@@ -1,9 +1,9 @@
 Class Calculator
   Method Add(a As Integer, b As Integer) As Integer
-    Return a + b
+    Return a + b;
   EndMethod
 EndClass
 Algorithm ClassMethods
-  Define c As Calculator <- New Calculator()
-  Write c.Add(3, 4)
+  Define c As Calculator <- New Calculator();
+  Write c.Add(3, 4);
 EndAlgorithm

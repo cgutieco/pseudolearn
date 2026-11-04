@@ -14,6 +14,9 @@
   PF-2 como fase separada y reubicar los cambios incompatibles en fases atómicas. PF-1 queda reprogramada y no ejecutada;
   sus entregables se reasignan en §4. La línea base está registrada en §7. Los conteos históricos de `grep` de §3 son
   orientativos e incluyen falsos positivos (por ejemplo «BEM estricto» en el frontend o `strict-casts` en el análisis de Dart).
+- Adelanto autorizado por la persona (2026-11-03): corregir dentro de PF-3 la parte de PF-6.4 necesaria para que los
+  programas y fragmentos ejecutables de la base de conocimiento cumplan el lenguaje único y no bloqueen las pruebas de
+  corpus del motor. Se conservan las identidades y versiones congeladas; no se inicia PF-4.
 - Documento transitorio: ninguna especificación, README ni código fuera de `docs/` puede citarlo (`DOC-NO-TRANSIENT-REFS`).
   Cada decisión se traslada a su dueño en el mismo cambio (`DOC-README-TRUTH`, `DOC-NO-ORPHAN-DECISION`).
 
@@ -163,7 +166,10 @@ junto con su consumidor; el reanclaje ocurre en esa misma fase. La persona autor
       quitar `strictness`, `strict` e `is_strict` de las firmas, modelos y operaciones; `execution_sources`, `ir_execution`,
       `native_build`, `diagnostic_template`, `edit_session_operations` y `program_view` incluidos.
 - [x] PF-3.6 Reescribir los ~90 tests que pasan `strictness` o comparan modos; no duplicar casos del corpus como tests.
-- [ ] PF-3.7 README de cada crate tocado y `cargo xtask verify` en verde.
+- [x] PF-3.7 README del miembro tocado y puertas dirigidas en verde: los dos tests de corpus que recorren los programas
+      completos; verificadores de contenido, límites, sistema visual y cobertura de sintaxis de la app; validación,
+      exportación y conformidad engine del paquete de especificaciones. Por instrucción de la persona, la suite integral
+      y pesada del motor se reasigna a PF-7.5, donde se ejecutará la misma `cargo xtask verify` completa.
 
 ### PF-4 · Marcador de línea (tamaño M)
 
@@ -194,6 +200,7 @@ junto con su consumidor; el reanclaje ocurre en esa misma fase. La persona autor
       secciones que hablan de rigor, en español e inglés, desde el corpus y no a mano si existe generador
       (`GEN-NO-HAND-COPY`).
 - [ ] PF-6.4 Corregir los programas de onboarding y de la base de conocimiento que no pasen `comprobar` (D-09).
+      El subalcance que bloqueaba PF-3 se adelanta y se registra como ejecución parcial, no como cierre de PF-6.4.
 - [ ] PF-6.5 `flutter analyze`, tests y verificadores del paquete en verde; `see conform --subject app` sin regresiones
       frente a la línea base de PF-0.
 
@@ -207,6 +214,9 @@ junto con su consumidor; el reanclaje ocurre en esa misma fase. La persona autor
 - [ ] PF-7.4 Comprobación manual de cierre: `git grep` de `strictness`, `strict`, `estricto`, `flexible`, `rigor` e
       `is_strict` fuera de `docs/`; cada coincidencia restante se justifica una por una (por ejemplo `strict-casts`) y el
       resultado queda registrado en este plan.
+- [ ] PF-7.5 Repetir las puertas integrales de cierre: `cargo xtask verify` en motor, CLI y spec; `flutter analyze`,
+      tests y verificadores de la app; verificaciones completas de la extensión; `see validate` y `see conform` frente
+      a la línea base de PF-0. Esta ejecución incluye la suite pesada del motor y sus tests de sockets locales.
 
 ## 5. Riesgos
 
@@ -223,7 +233,7 @@ junto con su consumidor; el reanclaje ocurre en esa misma fase. La persona autor
 
 - Cada fase: tests propios en verde y todos los verificadores del miembro en verde, empuje ordinario comprobado a la rama
   única y parada a la espera de confirmación.
-- Cierre del plan: PF-7.4 registrado, `see validate` y `see conform` sin regresiones frente a PF-0, `flutter analyze` y
+- Cierre del plan: PF-7.5 registrado, `see validate` y `see conform` sin regresiones frente a PF-0, `flutter analyze` y
   suite de la app, `cargo xtask verify` de motor, CLI y spec, y suite de la extensión en verde.
 
 ## 7. Registro de ejecución
@@ -233,7 +243,7 @@ junto con su consumidor; el reanclaje ocurre en esa misma fase. La persona autor
 | PF-0 | `6fb7bd7fd7b6b55e3e212d13b5095453bcfa2db7` | Inventario y línea base en §7; verificadores locales en verde | PF-0 completado; detenida la ejecución por PHASE-STOP | PF-1 requiere autorización explícita nueva |
 | PF-1 | | Reordenamiento autorizado el 2026-11-03; entregables reasignados a PF-2–PF-6 por dependencia de verificación | No ejecutada como fase independiente | Ninguno; no se modificó corpus ni código para PF-1 |
 | PF-2 | `7e673d03cd6be3de62b4ebab9a904a17a21bf97e` | `cargo fmt --all --check`, Clippy estricto, `cargo test --workspace`, cargo-deny offline (advisories/bans/licenses/sources ok), `rust-checks all .`, `rust-checks toolchain ../..`, build release del adaptador engine, `see validate` (197), `see export --check`, conformidad de propiedades (31 ejecutadas, 0 pendientes), conformidad completa (4026 observaciones, 0 divergencias) | Completada; verificadores en verde. `cargo xtask verify` se detuvo al intentar bloquear `/Users/cgutieco/.cargo/advisory-dbs/db.lock`, de solo lectura; cargo-deny pasó con base local temporal | Ninguno |
-| PF-3 | `653716989a56291a09befa8361aca7a697faa3b1` | Código, especificaciones, casos, README y tests de PF-3.1–3.6 implementados. `see validate` (197), `see export --check`, propiedades (31, 0 pendientes), conformidad completa (2182 observaciones, 0 divergencias), formato, Clippy, verificadores Rust y cargo-deny offline (advisories/bans/licenses/sources ok). La suite del motor pasó con las dos pruebas de corpus excluidas; `cargo xtask verify` de spec pasó sus tests y verificadores salvo el bloqueo de cargo-deny global, que pasó con la base temporal offline. | PF-3.7 pendiente; la suite íntegra del motor falla en dos pruebas de `service/tests/corpus.rs`: los 174 programas de ejemplo de la app se exigen formateables y traducibles. El plan reserva la corrección de esos activos para PF-6.4, en conflicto con el gate PF-3.7. Se pidió resolución de alcance; PF-3 no se cierra. | Definir si se adelanta PF-6.4 o se acepta que PF-3 permanezca abierto hasta corregir esos ejemplos. |
+| PF-3 | `4f47a044605c412d877d6c9aac159eb81b994d2c` | PF-3.1–3.6 y la documentación del miembro implementadas. `cargo test -p pseudolearn_service --test corpus every_program -- --nocapture`: pasan `every_program_formats_without_loss_and_idempotently` y `every_program_survives_double_translation_in_canonical_form`. Los verificadores de la app (`check_content.dart`, `check_limits.dart`, `check_design_system.dart`, `check_syntax_coverage.dart`) pasan con Dart directo y el puente nativo local. Spec: `see validate` (197), `see export --check`, `see conform --subject engine` (2182 observaciones, 0 divergencias). La ejecución integral del motor alcanzó exportación y Clippy; en la pasada sandbox fallaron 12 tests de sockets locales con `Operation not permitted`; la repetición autorizada fuera del sandbox se canceló por instrucción de la persona durante la suite. La fase ya había ejecutado la suite del motor con estos dos tests de corpus excluidos, además de formato, Clippy, rust-checks y cargo-deny offline; en PF-7.5 se repetirá el `cargo xtask verify` integral. | PF-3 completado el 2026-11-04 con el subalcance necesario de PF-6.4 adelantado; sin cambios a identidades o versiones congeladas del corpus y sin iniciar PF-4. | PF-6.4 conserva el resto de sus activos. PF-7.5 debe ejecutar la suite integral del motor, incluida la de sockets locales, y las puertas completas de cierre. |
 | PF-4 | | | | |
 | PF-5 | | | | |
 | PF-6 | | | | |

@@ -1,8 +1,8 @@
 SubProceso Calcular(n Como Entero) Como Entero
-  Retornar n * 2
+  Retornar n * 2;
 FinSubProceso
 Algoritmo LlamadaSubprograma
-  Definir res Como Entero <- Calcular(5)
-  Definir otro Como Entero <- Calcular(10)
-  Escribir res, otro
+  Definir res Como Entero <- Calcular(5);
+  Definir otro Como Entero <- Calcular(10);
+  Escribir res, otro;
 FinAlgoritmo

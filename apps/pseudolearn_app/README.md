@@ -1221,6 +1221,12 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
       `<ejemplo>#<paso>#<variable>`) y compara la predicción del estudiante contra el valor observable en la máquina.
     - **Ilustraciones catalogadas:** `illustrationCatalog` mapea identificadores estables a constructores de widgets
       programáticos (`MemoryBoxesIllustration`), garantizando soporte vectorial sin imágenes rasterizadas.
+    - **Programas completos y diagnósticos demostrativos:** Los programas de `examples/` y las cercas que ilustran
+      diagnósticos conservan la gramática única del motor: cada sentencia termina en `;`, cada bucle `Para`/`For`
+      declara `Con Paso`/`Step` y cada parámetro tiene tipo explícito. Una cerca que enseña un error semántico deja
+      inválida solo la construcción que explica; el resto de su sintaxis debe ser válida para que aparezca el
+      diagnóstico previsto. `tool/check_content.dart` analiza los ejemplos declarados y contrasta los diagnósticos
+      citados por subsección.
 - **Alternativas descartadas y por qué:**
     - *Redacción de especificaciones con valores de sintaxis cableados:* Descartada porque generaría divergencias cuando
       el

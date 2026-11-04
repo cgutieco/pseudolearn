@@ -1,5 +1,5 @@
 Algorithm ShortCircuit
-  Define n As Integer <- 0
-  Define valid As Boolean <- (n <> 0) & (10 / n > 1)
-  Write valid
+  Define n As Integer <- 0;
+  Define valid As Boolean <- (n <> 0) & (10 / n > 1);
+  Write valid;
 EndAlgorithm

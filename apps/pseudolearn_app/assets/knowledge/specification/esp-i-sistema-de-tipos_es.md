@@ -113,7 +113,7 @@ implícita entre primitivos, de entero a real, se aplica ahí como en cualquier 
 
 ```pseudo
 Algoritmo SinDeclarar
-  x <- 10
+  x <- 10;
 FinAlgoritmo
 ```
 
@@ -148,7 +148,7 @@ desde cualquier método de su clase aunque ese método no se llame nunca.
 
 ```pseudo
 Algoritmo DeclaradaNoUsada
-  Definir total Como Entero <- 0
+  Definir total Como Entero <- 0;
 FinAlgoritmo
 ```
 
