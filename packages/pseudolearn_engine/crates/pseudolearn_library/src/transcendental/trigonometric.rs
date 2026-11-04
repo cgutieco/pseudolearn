@@ -36,6 +36,18 @@ pub fn cosine(value: f64) -> Result<f64, LibraryError> {
 
 fn attempt(argument: &Decomposed, wave: Wave, precision: u64) -> Result<Option<f64>, LibraryError> {
     let working = precision.saturating_add(GUARD_BITS);
+    Ok(round_interval(
+        &enclose(argument, wave == Wave::Cosine, working)?,
+        signed_precision(working),
+    ))
+}
+
+pub(super) fn enclose(
+    argument: &Decomposed,
+    cosine: bool,
+    working: u64,
+) -> Result<Interval, LibraryError> {
+    let wave = if cosine { Wave::Cosine } else { Wave::Sine };
     let (reduced, quadrant) = reduce(argument, working)?;
     let square = reduced.multiply(&reduced, working);
     let series = FactorialSeries {
@@ -53,7 +65,7 @@ fn attempt(argument: &Decomposed, wave: Wave, precision: u64) -> Result<Option<f
         factorial_sum(&series, Interval::one(working), cosine_divisor)?
     };
     let result = if shifted >= 2 { value.negate() } else { value };
-    Ok(round_interval(&result, signed_precision(working)))
+    Ok(result)
 }
 
 fn sine_divisor(index: u64) -> Option<u64> {

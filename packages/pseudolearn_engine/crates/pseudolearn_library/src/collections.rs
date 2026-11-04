@@ -21,17 +21,19 @@ pub fn collection_operation(
         return create(heap, request, roots);
     }
     let handle = Handle(u32::try_from(word(request, 0)?).map_err(|_| MemoryError::Internal)?);
+    if matches!(
+        request.command,
+        CollectionCommand::Clone
+            | CollectionCommand::Commit
+            | CollectionCommand::Reverse
+            | CollectionCommand::BeginSort
+    ) {
+        return reorder(heap, request, handle, roots);
+    }
     match request.command {
         CollectionCommand::Length => runtime::collection_length(heap, handle).map(u64::from),
         CollectionCommand::Version => runtime::collection_version(heap, handle).map(u64::from),
-        CollectionCommand::Check => {
-            runtime::collection_check_version(
-                heap,
-                handle,
-                u32::try_from(word(request, 1)?).map_err(|_| MemoryError::CollectionModified)?,
-            )?;
-            Ok(0)
-        }
+        CollectionCommand::Check => check_version(heap, handle, word(request, 1)?),
         CollectionCommand::Load => {
             runtime::collection_load_word(heap, handle, (integer(word(request, 1)?), request.leaf))
         }
@@ -154,4 +156,43 @@ fn create(
         runtime::new_vector(heap, request.layout, roots)?
     };
     Ok(u64::from(handle.0))
+}
+
+fn reorder(
+    heap: &mut Heap,
+    request: &CollectionRequest<'_>,
+    handle: Handle,
+    roots: &[Handle],
+) -> Result<u64, MemoryError> {
+    match request.command {
+        CollectionCommand::BeginSort => {
+            runtime::vector_begin_sort(heap, handle)?;
+            Ok(0)
+        }
+        CollectionCommand::Clone => {
+            runtime::vector_clone(heap, handle, roots).map(|copy| u64::from(copy.0))
+        }
+        CollectionCommand::Commit => {
+            runtime::vector_commit(
+                heap,
+                handle,
+                Handle(u32::try_from(word(request, 1)?).map_err(|_| MemoryError::Internal)?),
+            )?;
+            Ok(0)
+        }
+        CollectionCommand::Reverse => {
+            runtime::vector_reverse(heap, handle)?;
+            Ok(0)
+        }
+        _ => Err(MemoryError::Internal),
+    }
+}
+
+fn check_version(heap: &Heap, handle: Handle, version: u64) -> Result<u64, MemoryError> {
+    runtime::collection_check_version(
+        heap,
+        handle,
+        u32::try_from(version).map_err(|_| MemoryError::CollectionModified)?,
+    )?;
+    Ok(0)
 }

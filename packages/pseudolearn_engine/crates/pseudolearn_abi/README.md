@@ -118,3 +118,7 @@ ejecutores. `Network`, `HttpMethod`, `HttpRequest` y `HttpResponse` tienen ident
 propias. `HttpMethod` ocupa el banco escalar como `i64`; los demás valores HTTP usan referencias.
 Esta distinción permite que el verificador de RI compruebe métodos explícitos sin introducir tipos o
 instrucciones específicas en la representación intermedia.
+
+## Ampliación numérica y de colecciones
+
+CollectionCommand conserva los códigos previos y añade Clone=12, Commit=13, Reverse=14 y BeginSort=15. Son operaciones internas sobre vectores con disposición estática compartida; no incorporan autoridad del anfitrión.

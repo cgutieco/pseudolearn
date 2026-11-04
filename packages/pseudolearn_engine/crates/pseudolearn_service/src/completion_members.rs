@@ -41,6 +41,9 @@ pub fn member_candidates(scope: &SourceScope<'_>, receiver: &Receiver, pool: &mu
     let Some(class_index) = receiver_class(scope, analysis, receiver) else {
         return;
     };
+    if crate::completion_collections::add(analysis, class_index, scope.profile, pool) {
+        return;
+    }
     for index in class_chain(analysis, class_index) {
         let Some(class) = analysis.module.classes.get(index) else {
             continue;

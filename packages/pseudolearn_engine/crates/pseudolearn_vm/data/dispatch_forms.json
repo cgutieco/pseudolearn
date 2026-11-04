@@ -1,6 +1,23 @@
 {
   "categories": [
     {
+      "kind": "ExtendedScalar",
+      "names": [
+        "math.tan",
+        "math.asin",
+        "math.acos",
+        "math.atan2",
+        "math.log10",
+        "math.log2",
+        "real.floor",
+        "real.ceil",
+        "int.min",
+        "int.max",
+        "real.min",
+        "real.max"
+      ]
+    },
+    {
       "kind": "Memory",
       "prefixes": [
         "array.",
@@ -768,12 +785,26 @@
     },
     {
       "form": "TaskChannel",
-      "fields": [{"name": "site", "type": "u32"}],
+      "fields": [
+        {
+          "name": "site",
+          "type": "u32"
+        }
+      ],
       "handler": "channel_operation"
     },
     {
       "form": "TaskValueLoad",
-      "fields": [{"name": "destination", "type": "pseudolearn_bytecode::Register"}, {"name": "index", "type": "u32"}],
+      "fields": [
+        {
+          "name": "destination",
+          "type": "pseudolearn_bytecode::Register"
+        },
+        {
+          "name": "index",
+          "type": "u32"
+        }
+      ],
       "handler": "channel_load"
     },
     {
@@ -1036,6 +1067,16 @@
         }
       ],
       "handler": "effect_call"
+    },
+    {
+      "form": "ExtendedScalar",
+      "fields": [
+        {
+          "name": "site",
+          "type": "u32"
+        }
+      ],
+      "handler": "extended_scalar"
     }
   ]
 }

@@ -3529,6 +3529,28 @@
       "severidad": "error",
       "clase": "runtime",
       "tipos_argumentos": {}
+    },
+    "elementTypeNotOrderable": {
+      "mensajes": {
+        "es": "El tipo de elemento requiere un comparador",
+        "en": "The element type requires a comparator"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": "error",
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "elementTypeNotComparable": {
+      "mensajes": {
+        "es": "El tipo de elemento no admite búsqueda por valor",
+        "en": "The element type does not support value search"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": "error",
+      "clase": "semantic",
+      "tipos_argumentos": {}
     }
   }
 }

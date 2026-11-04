@@ -95,6 +95,9 @@ fn scenario(
     scenarios: &[Scenario],
     sample: u32,
 ) -> Result<Scenario, String> {
+    if binding.executor == see_model::properties::PropertyExecutor::MathOracle {
+        return crate::property_math::scenario(binding.seed, sample);
+    }
     if binding.executor == see_model::properties::PropertyExecutor::JsonTextRoundtrip {
         return Ok(crate::property_json_roundtrip::scenario(
             binding.seed,

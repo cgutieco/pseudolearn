@@ -1,5 +1,8 @@
 #![forbid(unsafe_code)]
 
+mod collection_frames;
+mod extended_scalar;
+
 mod calls;
 mod cells;
 mod channels;
@@ -240,17 +243,12 @@ impl<'program> Machine<'program> {
 
     pub(crate) fn current_span(&self) -> Option<pseudolearn_bytecode::SourceSpan> {
         let position = self.cursor.program_counter.saturating_sub(1);
-        self.current
-            .span(position, self.probed)
+        self.visible_span(position)
             .or(self.current.declaration_span)
     }
 
     pub(crate) fn current_line(&self) -> u32 {
         self.current_span().map(|span| span.start_line).unwrap_or(1)
-    }
-
-    pub(crate) fn current_depth(&self) -> u32 {
-        u32::try_from(self.frames.len().saturating_add(1)).unwrap_or(1)
     }
 
     fn record_failure(&mut self, trap: &VmTrap) {

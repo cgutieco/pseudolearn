@@ -315,3 +315,410 @@
   }
 }
 ```
+
+```regla
+{
+  "id": "R4",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Ordenar()/sort() e Invertir()/reverse() mutan el vector y aumentan su versión estructural incluso vacío o unitario. El orden natural admite Entero, Real, Caracter, Cadena y Logico (Falso antes de Verdadero); las cadenas se ordenan por puntos de código sin normalización; los ceros reales son iguales. Ordenar(comparador) admite un SubProceso(T,T) Como Entero síncrono por valor: negativo, cero o positivo. El orden es estable y conserva el multiconjunto. La mezcla termina con comparadores inconsistentes. La ordenación trabaja en copias O(n) contabilizadas en celdas y no confirma parcialmente el reordenamiento ante fallo del comparador, combustible o memoria. Rechaza cualquier escritura al receptor por alias durante el comparador, incluido reemplazar un elemento, así como una ordenación anidada sobre el mismo receptor con collectionModifiedDuringIteration; los efectos propios del comparador no se revierten. Un recorrido activo detecta la nueva versión. La mezcla interna no introduce pasos visibles; el cuerpo de usuario del comparador conserva sus observaciones.",
+  "verificacion": [
+    "C12",
+    "C13",
+    "C14",
+    "C17",
+    "C18",
+    "C19",
+    "C20",
+    "C21",
+    "C22",
+    "C23",
+    "C25",
+    "C27"
+  ]
+}
+```
+
+```regla
+{
+  "id": "R5",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "PosicionDe(x)/indexOf(x) devuelve Opcional<Entero> con la primera posición desde cero o Nada; Contiene(x)/contains(x) devuelve Logico. Admiten solo elementos primitivos y usan igualdad de valor, incluyendo igualdad entre ceros reales y contenido Unicode exacto. No mutan el receptor y pueden consultar vistas inmutables.",
+  "verificacion": [
+    "C15",
+    "C16",
+    "C24",
+    "C26"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C12",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir values Como Vector<Entero> <- Vector();\nvalues.Agregar(3); values.Agregar(-1); values.Agregar(3);\nvalues.Ordenar(); Escribir values[0], \":\", values[1], \":\", values[2];\nvalues.Invertir(); Escribir values[0], \":\", values[2];\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine values as vector<integer> <- vector();\nvalues.append(3); values.append(-1); values.append(3);\nvalues.sort(); write values[0], \":\", values[1], \":\", values[2];\nvalues.reverse(); write values[0], \":\", values[2];\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "-1:3:3\n3:-1\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C13",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir values Como Vector<Entero> <- Vector(); values.Ordenar(); values.Invertir();\nEscribir values.Longitud();\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine values as vector<integer> <- vector(); values.sort(); values.reverse();\nwrite values.length();\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "0\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C14",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir values Como Vector<Entero> <- Vector(); values.Agregar(1);\nPara Cada element En values Hacer\nvalues.Ordenar();\nFinPara\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine values as vector<integer> <- vector(); values.append(1);\nfor each element in values do\nvalues.sort();\nendFor\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "fallo": {
+      "codigo": "collectionModifiedDuringIteration"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C15",
+  "regla": "R5",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir values Como Vector<Entero> <- Vector(); values.Agregar(7); values.Agregar(7);\nEscribir values.Contiene(7), \":\", values.Contiene(8);\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine values as vector<integer> <- vector(); values.append(7); values.append(7);\nwrite values.contains(7), \":\", values.contains(8);\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "Verdadero:Falso\n",
+    "terminacion": "completed"
+  },
+  "esperas": {
+    "es": {
+      "salida": "Verdadero:Falso\n",
+      "terminacion": "completed"
+    },
+    "en": {
+      "salida": "true:false\n",
+      "terminacion": "completed"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C16",
+  "regla": "R5",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir values Como Vector<Entero> <- Vector(); Escribir values.Contiene(1);\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine values as vector<integer> <- vector(); write values.contains(1);\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "Falso\n",
+    "terminacion": "completed"
+  },
+  "esperas": {
+    "es": {
+      "salida": "Falso\n",
+      "terminacion": "completed"
+    },
+    "en": {
+      "salida": "false\n",
+      "terminacion": "completed"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C17",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir values Como Vector<Entero> <- Vector();\nvalues.Agregar(32);\nvalues.Agregar(21);\nvalues.Agregar(12);\nvalues.Agregar(11);\nvalues.Ordenar(SubProceso(left Como Entero, right Como Entero) Como Entero\nRetornar left MOD 10 - right MOD 10;\nFinSubProceso);\nEscribir values[0], \":\", values[1], \":\", values[2], \":\", values[3];\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine values as vector<integer> <- vector();\nvalues.append(32);\nvalues.append(21);\nvalues.append(12);\nvalues.append(11);\nvalues.sort(subroutine(left as integer, right as integer) as integer\nreturn left mod 10 - right mod 10;\nendSubroutine);\nwrite values[0], \":\", values[1], \":\", values[2], \":\", values[3];\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "21:11:32:12\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C18",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir values Como Vector<Entero> <- Vector();\nvalues.Agregar(32);\nvalues.Agregar(21);\nvalues.Agregar(12);\nvalues.Agregar(11);\nvalues.Ordenar(SubProceso(left Como Entero, right Como Entero) Como Entero\nRetornar 0;\nFinSubProceso);\nEscribir values[0], \":\", values[1], \":\", values[2], \":\", values[3];\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine values as vector<integer> <- vector();\nvalues.append(32);\nvalues.append(21);\nvalues.append(12);\nvalues.append(11);\nvalues.sort(subroutine(left as integer, right as integer) as integer\nreturn 0;\nendSubroutine);\nwrite values[0], \":\", values[1], \":\", values[2], \":\", values[3];\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "32:21:12:11\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C19",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir values Como Vector<Entero> <- Vector();\nvalues.Agregar(32);\nvalues.Agregar(21);\nvalues.Agregar(12);\nvalues.Agregar(11);\nvalues.Ordenar(SubProceso(left Como Entero, right Como Entero) Como Entero\nRetornar -1;\nFinSubProceso);\nEscribir values[0], \":\", values[1], \":\", values[2], \":\", values[3];\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine values as vector<integer> <- vector();\nvalues.append(32);\nvalues.append(21);\nvalues.append(12);\nvalues.append(11);\nvalues.sort(subroutine(left as integer, right as integer) as integer\nreturn -1;\nendSubroutine);\nwrite values[0], \":\", values[1], \":\", values[2], \":\", values[3];\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "32:21:12:11\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C20",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir values Como Vector<Entero> <- Vector();\nvalues.Agregar(2);\nvalues.Agregar(1);\nvalues.Ordenar(SubProceso(left Como Entero, right Como Entero) Como Entero\nRetornar left DIV (right - right);\nFinSubProceso);\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine values as vector<integer> <- vector();\nvalues.append(2);\nvalues.append(1);\nvalues.sort(subroutine(left as integer, right as integer) as integer\nreturn left div (right - right);\nendSubroutine);\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "fallo": {
+      "codigo": "divisionByZero"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C21",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir values Como Vector<Entero> <- Vector();\nvalues.Agregar(2);\nvalues.Agregar(1);\nvalues.Ordenar(SubProceso(left Como Entero, right Como Entero) Como Entero\nvalues.Agregar(9);\nRetornar left - right;\nFinSubProceso);\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine values as vector<integer> <- vector();\nvalues.append(2);\nvalues.append(1);\nvalues.sort(subroutine(left as integer, right as integer) as integer\nvalues.append(9);\nreturn left - right;\nendSubroutine);\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "fallo": {
+      "codigo": "collectionModifiedDuringIteration"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C22",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir values Como Vector<Real> <- Vector();\nvalues.Agregar(0.0);\nvalues.Agregar(-0.0);\nvalues.Agregar(1.0);\nvalues.Ordenar(); Escribir values[0], \":\", values[1], \":\", values[2];\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine values as vector<real> <- vector();\nvalues.append(0.0);\nvalues.append(-0.0);\nvalues.append(1.0);\nvalues.sort(); write values[0], \":\", values[1], \":\", values[2];\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "0.0:-0.0:1.0\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C23",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir values Como Vector<Cadena> <- Vector();\nvalues.Agregar(\"éé\");\nvalues.Agregar(\"ZZ\");\nvalues.Agregar(\"aa\");\nvalues.Ordenar(); Escribir values[0], \":\", values[1], \":\", values[2];\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine values as vector<string> <- vector();\nvalues.append(\"éé\");\nvalues.append(\"ZZ\");\nvalues.append(\"aa\");\nvalues.sort(); write values[0], \":\", values[1], \":\", values[2];\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "ZZ:aa:éé\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C24",
+  "regla": "R5",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir values Como Vector<Entero> <- Vector();\nvalues.Agregar(7);\nvalues.Agregar(8);\nvalues.Agregar(7);\nSegun values.PosicionDe(7) Hacer\nAlgo(found): Escribir found;\nNada: Escribir -1;\nFinSegun\nSegun values.PosicionDe(9) Hacer\nAlgo(found): Escribir found;\nNada: Escribir -1;\nFinSegun\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine values as vector<integer> <- vector();\nvalues.append(7);\nvalues.append(8);\nvalues.append(7);\nswitch values.indexOf(7) do\nsome(found): write found;\nnone: write -1;\nendSwitch\nswitch values.indexOf(9) do\nsome(found): write found;\nnone: write -1;\nendSwitch\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "0\n-1\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C25",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir values Como Vector<Vector<Entero>> <- Vector(); values.Ordenar();\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine values as vector<vector<integer>> <- vector(); values.sort();\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "elementTypeNotOrderable",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C26",
+  "regla": "R5",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir values Como Vector<Vector<Entero>> <- Vector(); Escribir values.Contiene(Vector());\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine values as vector<vector<integer>> <- vector(); write values.contains(vector());\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "elementTypeNotComparable",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C27",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir values Como Vector<Logico> <- Vector(); values.Agregar(Verdadero); values.Agregar(Falso); values.Ordenar(); Si values[0] = Falso Entonces Escribir 1; FinSi\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine values as vector<boolean> <- vector(); values.append(true); values.append(false); values.sort(); if values[0] = false then write 1; endIf\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "1\n",
+    "terminacion": "completed"
+  }
+}
+```

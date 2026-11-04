@@ -55,7 +55,7 @@ pub fn builtin_type_display(word: &str, profile: Profile) -> String {
         "string" => KeywordKind::StringType,
         "character" => KeywordKind::CharacterType,
         "boolean" => KeywordKind::BooleanType,
-        "numeric" => return numeric_label(profile).to_owned(),
+        "numeric" | "widestNumeric" => return numeric_label(profile).to_owned(),
         "anySnapshot" => return "T".to_owned(),
         "immutableOfFirstArgument" => {
             return format!(

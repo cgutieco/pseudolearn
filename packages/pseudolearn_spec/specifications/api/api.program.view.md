@@ -60,7 +60,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Una sesión que negocia program_view devuelve una proyección de solo lectura asociada a una revisión inmutable del documento. La proyección contiene las unidades de nivel superior en orden de fuente, con clase, nombre y tramo; los nodos disponibles de declaraciones, sentencias, expresiones, tipos y símbolos resueltos; las relaciones de composición entre ellos; y las relaciones de herencia, miembros y sobrescritura. Cada relación de miembro identifica el nodo público que la representa. Diagramas, emisores Python y Rust y comprobaciones estructurales consumen esta misma proyección. No expone índices, direcciones ni disposiciones privadas del CST, HIR o bytecode, y no obliga al consumidor a volver a analizar el texto.",
+  "texto": "Una sesión que negocia program_view devuelve una proyección de solo lectura asociada a una revisión inmutable del documento. La proyección contiene las unidades de nivel superior en orden de fuente, con clase, nombre y tramo; los nodos disponibles de declaraciones, sentencias, expresiones, tipos y símbolos resueltos; las relaciones de composición entre ellos; y las relaciones de herencia, miembros y sobrescritura. Cada relación de miembro identifica el nodo público que la representa. Diagramas, emisores Python y Rust y comprobaciones estructurales consumen esta misma proyección. No expone índices, direcciones ni disposiciones privadas del CST, HIR o bytecode, y no obliga al consumidor a volver a analizar el texto. Las llamadas resueltas a Ordenar, Invertir, PosicionDe, Contiene de vector y Claves de diccionario incluyen collection_operation con identidad contextual vectorSort, vectorReverse, vectorIndexOf, vectorContains o dictionaryKeys; no se infiere del lexema.",
   "verificacion": [
     "C1",
     "C2"
@@ -814,7 +814,15 @@ La vista pública incluye interface_unit, interface_signature, realization, type
 ## Representación de contratos en el diagrama de clases
 
 ```regla
-{"id": "R6", "fuerza": "DEBE", "clase": "semantica", "texto": "El consumidor del diagrama de clases representa una interfaz como una caja con el estereotipo «interface», su nombre y una fila por operación con la forma «+ nombre(parámetros): retorno». No tiene atributos ni se instancia, y permanece visible aunque nadie la realice.", "verificacion": ["C17"]}
+{
+  "id": "R6",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "El consumidor del diagrama de clases representa una interfaz como una caja con el estereotipo «interface», su nombre y una fila por operación con la forma «+ nombre(parámetros): retorno». No tiene atributos ni se instancia, y permanece visible aunque nadie la realice.",
+  "verificacion": [
+    "C17"
+  ]
+}
 ```
 
 ```caso
@@ -822,7 +830,19 @@ La vista pública incluye interface_unit, interface_signature, realization, type
 ```
 
 ```regla
-{"id": "R7", "fuerza": "DEBE", "clase": "semantica", "texto": "Cada realización explícita válida se representa como una relación de realización dirigida desde la clase hacia el contrato, distinta de la herencia. La realización heredada válida no se dibuja de nuevo: la relación de herencia la transporta. Una realización heredada inválida por incompatibleMethodOverride sí se representa desde la subclase hacia el contrato. El contrato ocupa un nivel superior al de sus realizaciones, de modo que las cajas se listan de arriba abajo.", "verificacion": ["C18", "C19", "C20", "C41", "C46"]}
+{
+  "id": "R7",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Cada realización explícita válida se representa como una relación de realización dirigida desde la clase hacia el contrato, distinta de la herencia. La realización heredada válida no se dibuja de nuevo: la relación de herencia la transporta. Una realización heredada inválida por incompatibleMethodOverride sí se representa desde la subclase hacia el contrato. El contrato ocupa un nivel superior al de sus realizaciones, de modo que las cajas se listan de arriba abajo.",
+  "verificacion": [
+    "C18",
+    "C19",
+    "C20",
+    "C41",
+    "C46"
+  ]
+}
 ```
 
 ```caso
@@ -842,7 +862,20 @@ La vista pública incluye interface_unit, interface_signature, realization, type
 ```
 
 ```regla
-{"id": "R8", "fuerza": "DEBE", "clase": "semantica", "texto": "Toda realización inválida, explícita o heredada, se representa con una relación inválida, los códigos del diagnóstico del análisis y el nodo de origen correspondiente. La realización heredada por incompatibleMethodOverride usa como origen el nodo del método sobrescrito de forma incompatible. Su relación es discontinua, usa color de error y guiones cortos, y lleva una etiqueta que empieza por ! e incluye el código; la semántica accesible anuncia que es inválida y sus códigos. Un contrato desconocido no crea relación ni caja: aparece como una fila de incidencia en la clase que cita la referencia escrita y el diagnóstico, y conserva el nodo de esa referencia. La invalidez no depende solo del color.", "verificacion": ["C21", "C22", "C42", "C44", "C45", "C47"]}
+{
+  "id": "R8",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Toda realización inválida, explícita o heredada, se representa con una relación inválida, los códigos del diagnóstico del análisis y el nodo de origen correspondiente. La realización heredada por incompatibleMethodOverride usa como origen el nodo del método sobrescrito de forma incompatible. Su relación es discontinua, usa color de error y guiones cortos, y lleva una etiqueta que empieza por ! e incluye el código; la semántica accesible anuncia que es inválida y sus códigos. Un contrato desconocido no crea relación ni caja: aparece como una fila de incidencia en la clase que cita la referencia escrita y el diagnóstico, y conserva el nodo de esa referencia. La invalidez no depende solo del color.",
+  "verificacion": [
+    "C21",
+    "C22",
+    "C42",
+    "C44",
+    "C45",
+    "C47"
+  ]
+}
 ```
 
 ```caso
@@ -878,7 +911,15 @@ La vista pública incluye interface_unit, interface_signature, realization, type
 ```
 
 ```regla
-{"id": "R9", "fuerza": "DEBE", "clase": "semantica", "texto": "Una restricción de parámetro genérico sobre un contrato conocido se representa como una relación de uso, distinta de la realización, desde una caja «subprogram» del subprograma que la declara hacia el contrato, etiquetada con el nombre del parámetro. No se crean valores de interfaz.", "verificacion": ["C23"]}
+{
+  "id": "R9",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Una restricción de parámetro genérico sobre un contrato conocido se representa como una relación de uso, distinta de la realización, desde una caja «subprogram» del subprograma que la declara hacia el contrato, etiquetada con el nombre del parámetro. No se crean valores de interfaz.",
+  "verificacion": [
+    "C23"
+  ]
+}
 ```
 
 ```caso
@@ -888,7 +929,16 @@ La vista pública incluye interface_unit, interface_signature, realization, type
 ## Salidas, limpiezas y su representación en ordinograma y estructograma
 
 ```regla
-{"id": "R10", "fuerza": "DEBE", "clase": "semantica", "texto": "La vista expone en cada nodo break_statement, return_statement y propagation el atributo control_exit con kind break, return o propagation; target_node_id del bucle interior que Salir termina o de la unidad o función literal que Retornar y Propagar abandonan, o null si la salida no tiene destino válido; y cleanups, los node_id de las sentencias Diferir ya registradas en los ámbitos abandonados en el orden en que se ejecutan, del ámbito interior al exterior y en orden inverso de registro dentro de cada uno. Cada lista de sentencias que registra limpiezas expone normal_cleanups en el orden de su fin normal, y cada defer_statement expone cleanup_scope_node_id. Una salida dentro de un cuerpo diferido no tiene destino ni limpiezas. Los datos son estáticos y no evalúan expresiones.", "verificacion": ["C24", "C25"]}
+{
+  "id": "R10",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "La vista expone en cada nodo break_statement, return_statement y propagation el atributo control_exit con kind break, return o propagation; target_node_id del bucle interior que Salir termina o de la unidad o función literal que Retornar y Propagar abandonan, o null si la salida no tiene destino válido; y cleanups, los node_id de las sentencias Diferir ya registradas en los ámbitos abandonados en el orden en que se ejecutan, del ámbito interior al exterior y en orden inverso de registro dentro de cada uno. Cada lista de sentencias que registra limpiezas expone normal_cleanups en el orden de su fin normal, y cada defer_statement expone cleanup_scope_node_id. Una salida dentro de un cuerpo diferido no tiene destino ni limpiezas. Los datos son estáticos y no evalúan expresiones.",
+  "verificacion": [
+    "C24",
+    "C25"
+  ]
+}
 ```
 
 ```caso
@@ -900,7 +950,17 @@ La vista pública incluye interface_unit, interface_signature, realization, type
 ```
 
 ```regla
-{"id": "R11", "fuerza": "DEBE", "clase": "semantica", "texto": "Ordinograma y estructograma distinguen cada salida. La salida normal sigue el flujo. Salir lleva por una arista de ruptura a un conector rotulado con el fin del bucle que termina, y ese bucle repite el mismo conector tras su salida normal; en el estructograma es una celda de salida. Retornar es un terminal o una celda de salida. Propagar añade a su sentencia una arista lateral hacia un terminal de fallo propagado; en el estructograma la celda de su sentencia lo anota. Diferir se dibuja como registro con su cuerpo al costado, unido por una arista de registro y sin flujo que lo atraviese; en el estructograma, como bloque con cabecera. Las limpiezas se rotulan por las líneas de sus sentencias Diferir en el orden de control_exit en cada salida anticipada y de normal_cleanups en un paso al final de su ámbito cuando ese final es alcanzable. El dibujo no evalúa las limpiezas.", "verificacion": ["C26", "C27", "C28"]}
+{
+  "id": "R11",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Ordinograma y estructograma distinguen cada salida. La salida normal sigue el flujo. Salir lleva por una arista de ruptura a un conector rotulado con el fin del bucle que termina, y ese bucle repite el mismo conector tras su salida normal; en el estructograma es una celda de salida. Retornar es un terminal o una celda de salida. Propagar añade a su sentencia una arista lateral hacia un terminal de fallo propagado; en el estructograma la celda de su sentencia lo anota. Diferir se dibuja como registro con su cuerpo al costado, unido por una arista de registro y sin flujo que lo atraviese; en el estructograma, como bloque con cabecera. Las limpiezas se rotulan por las líneas de sus sentencias Diferir en el orden de control_exit en cada salida anticipada y de normal_cleanups en un paso al final de su ámbito cuando ese final es alcanzable. El dibujo no evalúa las limpiezas.",
+  "verificacion": [
+    "C26",
+    "C27",
+    "C28"
+  ]
+}
 ```
 
 ```caso
@@ -918,7 +978,16 @@ La vista pública incluye interface_unit, interface_signature, realization, type
 ## Registros, enumerados y parámetros de tipo en el diagrama de clases
 
 ```regla
-{"id": "R12", "fuerza": "DEBE", "clase": "semantica", "texto": "El diagrama de clases representa cada registro como una caja «record» con una fila «nombre: tipo» por campo declarado, cada enumerado como una caja «enumeration» con una fila por miembro en orden de fuente, y cada subprograma con parámetros de tipo como una caja «subprogram» con su firma, aunque sus parámetros no tengan restricción. Registros y enumerados se listan en orden de fuente después de clases e interfaces. Cada fila conserva el nodo de su declaración para navegar al rango exacto. No se crean relaciones, instancias ni pasos ejecutables para estas declaraciones.", "verificacion": ["C29", "C30"]}
+{
+  "id": "R12",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "El diagrama de clases representa cada registro como una caja «record» con una fila «nombre: tipo» por campo declarado, cada enumerado como una caja «enumeration» con una fila por miembro en orden de fuente, y cada subprograma con parámetros de tipo como una caja «subprogram» con su firma, aunque sus parámetros no tengan restricción. Registros y enumerados se listan en orden de fuente después de clases e interfaces. Cada fila conserva el nodo de su declaración para navegar al rango exacto. No se crean relaciones, instancias ni pasos ejecutables para estas declaraciones.",
+  "verificacion": [
+    "C29",
+    "C30"
+  ]
+}
 ```
 
 ```caso
@@ -932,7 +1001,22 @@ La vista pública incluye interface_unit, interface_signature, realization, type
 ## Cobertura sintáctica de las vistas del consumidor
 
 ```regla
-{"id": "R13", "fuerza": "DEBE", "clase": "estructural", "texto": "El consumidor que dibuja la vista declara como datos una matriz de cobertura con una fila por construcción, su papel público, sus formas, el anclaje de regla con versión y una celda por vista: ordinograma, estructograma, estructura, foco, estado y ayuda. Cada celda es exacta, extensión declarada o no aplicable, y las dos últimas exigen motivo; una ayuda exacta nombra una ficha del catálogo de ayuda. Su verificador rechaza una forma pública sin fila con COV-MISSING-ROW, una forma desconocida con COV-STALE-ROW, una fila o forma repetida con COV-DUPLICATE, un papel distinto del público con COV-ROLE, una celda sin motivo con COV-NO-REASON, una construcción ejecutable no aplicable en ordinograma o estructograma con COV-HIDDEN-CONTROL, una ayuda exacta sin ficha existente con COV-HELP, un anclaje inexistente con COV-RULE y una prueba inexistente con COV-EVIDENCE. La matriz vigente frente al inventario vigente no produce rechazos.", "verificacion": ["C31", "C32", "C33", "C34", "C35", "C36", "C37", "C38"]}
+{
+  "id": "R13",
+  "fuerza": "DEBE",
+  "clase": "estructural",
+  "texto": "El consumidor que dibuja la vista declara como datos una matriz de cobertura con una fila por construcción, su papel público, sus formas, el anclaje de regla con versión y una celda por vista: ordinograma, estructograma, estructura, foco, estado y ayuda. Cada celda es exacta, extensión declarada o no aplicable, y las dos últimas exigen motivo; una ayuda exacta nombra una ficha del catálogo de ayuda. Su verificador rechaza una forma pública sin fila con COV-MISSING-ROW, una forma desconocida con COV-STALE-ROW, una fila o forma repetida con COV-DUPLICATE, un papel distinto del público con COV-ROLE, una celda sin motivo con COV-NO-REASON, una construcción ejecutable no aplicable en ordinograma o estructograma con COV-HIDDEN-CONTROL, una ayuda exacta sin ficha existente con COV-HELP, un anclaje inexistente con COV-RULE y una prueba inexistente con COV-EVIDENCE. La matriz vigente frente al inventario vigente no produce rechazos.",
+  "verificacion": [
+    "C31",
+    "C32",
+    "C33",
+    "C34",
+    "C35",
+    "C36",
+    "C37",
+    "C38"
+  ]
+}
 ```
 
 ```caso
@@ -968,7 +1052,16 @@ La vista pública incluye interface_unit, interface_signature, realization, type
 ```
 
 ```regla
-{"id": "R14", "fuerza": "DEBE", "clase": "semantica", "texto": "Cuando ordinograma o estructograma no pueden representar fielmente una forma de un programa, el consumidor no entrega ningún diagrama de ese programa como válido: devuelve un resultado no soportado que nombra las formas por su syntax_kind público y la superficie muestra un mensaje localizado que las enumera en lugar del lienzo. Propagar dentro de la cabecera de un control es una de esas formas.", "verificacion": ["C39", "C40"]}
+{
+  "id": "R14",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Cuando ordinograma o estructograma no pueden representar fielmente una forma de un programa, el consumidor no entrega ningún diagrama de ese programa como válido: devuelve un resultado no soportado que nombra las formas por su syntax_kind público y la superficie muestra un mensaje localizado que las enumera en lugar del lienzo. Propagar dentro de la cabecera de un control es una de esas formas.",
+  "verificacion": [
+    "C39",
+    "C40"
+  ]
+}
 ```
 
 ```caso
@@ -980,11 +1073,32 @@ La vista pública incluye interface_unit, interface_signature, realization, type
 ```
 
 ```regla
-{"id": "R15", "fuerza": "DEBE", "clase": "semantica", "texto": "Un documento que se analiza solo no enlaza dependencias: cada Importar y Exportar produce moduleSyntaxOutsideProject y ninguna de las dos lee disco, red ni paquetes. Cuando ese es el único error del documento, program_view conserva las demás unidades y expone dependencies, con una fila por directiva en orden de fuente que contiene dependency_id estable para la revisión y la fuente, kind import o export, visibility local para Importar y exported para Exportar, path con los segmentos de la ruta tal como están escritos, alias o null, status unlinked, diagnostic con el código moduleSyntaxOutsideProject y span exacto de la directiva. La vista no crea nodos para los segmentos de la ruta. Una ruta vacía, incompleta, con escape o absoluta es un error sintáctico adicional: no hay vista ni filas de dependencia. El texto del documento no cambia.", "verificacion": ["C48", "C49", "C50", "C51"]}
+{
+  "id": "R15",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Un documento que se analiza solo no enlaza dependencias: cada Importar y Exportar produce moduleSyntaxOutsideProject y ninguna de las dos lee disco, red ni paquetes. Cuando ese es el único error del documento, program_view conserva las demás unidades y expone dependencies, con una fila por directiva en orden de fuente que contiene dependency_id estable para la revisión y la fuente, kind import o export, visibility local para Importar y exported para Exportar, path con los segmentos de la ruta tal como están escritos, alias o null, status unlinked, diagnostic con el código moduleSyntaxOutsideProject y span exacto de la directiva. La vista no crea nodos para los segmentos de la ruta. Una ruta vacía, incompleta, con escape o absoluta es un error sintáctico adicional: no hay vista ni filas de dependencia. El texto del documento no cambia.",
+  "verificacion": [
+    "C48",
+    "C49",
+    "C50",
+    "C51"
+  ]
+}
 ```
 
 ```regla
-{"id": "R16", "fuerza": "DEBE", "clase": "semantica", "texto": "El consumidor muestra cada dependencia sin enlazar con su ruta, alias, tipo y estado, y al seleccionarla navega al span exacto de su directiva sin modificar el texto. Mientras exista una dependencia sin enlazar la ejecución y la exportación permanecen bloqueadas y no se presenta ningún proyecto como resuelto. Construir las vistas, consultar ayuda o exportar un documento con dependencias no invoca ninguna operación distinta de analizar, leer la vista y liberar.", "verificacion": ["C48", "C51", "C52"]}
+{
+  "id": "R16",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "El consumidor muestra cada dependencia sin enlazar con su ruta, alias, tipo y estado, y al seleccionarla navega al span exacto de su directiva sin modificar el texto. Mientras exista una dependencia sin enlazar la ejecución y la exportación permanecen bloqueadas y no se presenta ningún proyecto como resuelto. Construir las vistas, consultar ayuda o exportar un documento con dependencias no invoca ninguna operación distinta de analizar, leer la vista y liberar.",
+  "verificacion": [
+    "C48",
+    "C51",
+    "C52"
+  ]
+}
 ```
 
 ```caso
@@ -1008,11 +1122,33 @@ La vista pública incluye interface_unit, interface_signature, realization, type
 ```
 
 ```regla
-{"id": "R17", "fuerza": "DEBE", "clase": "semantica", "texto": "El consumidor ofrece código equivalente para un destino solo si cada construcción del programa pertenece al subconjunto comprobado de ese destino, es decir, el que una prueba diferencial ejecuta en el motor y en la traducción con la misma salida. Si una construcción queda fuera, sea una unidad que ningún emisor representa, una sentencia sin traducción, una incorporada, un operador, un literal, un tipo o una salida booleana sin equivalente comprobado, el resultado para ese destino es no disponible: no entrega ningún programa parcial y nombra cada construcción por su identidad pública con el rango exacto de su origen. Un error de análisis sigue siendo un error de análisis. La superficie muestra un mensaje localizado con las construcciones y la línea de la primera. La disponibilidad se decide por destino y las traducciones no se compilan ni ejecutan en el producto.", "verificacion": ["C53", "C54", "C55", "C56", "C57", "C60"]}
+{
+  "id": "R17",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "El consumidor ofrece código equivalente para un destino solo si cada construcción del programa pertenece al subconjunto comprobado de ese destino, es decir, el que una prueba diferencial ejecuta en el motor y en la traducción con la misma salida. Si una construcción queda fuera, sea una unidad que ningún emisor representa, una sentencia sin traducción, una incorporada, un operador, un literal, un tipo o una salida booleana sin equivalente comprobado, el resultado para ese destino es no disponible: no entrega ningún programa parcial y nombra cada construcción por su identidad pública con el rango exacto de su origen. Un error de análisis sigue siendo un error de análisis. La superficie muestra un mensaje localizado con las construcciones y la línea de la primera. La disponibilidad se decide por destino y las traducciones no se compilan ni ejecutan en el producto.",
+  "verificacion": [
+    "C53",
+    "C54",
+    "C55",
+    "C56",
+    "C57",
+    "C60"
+  ]
+}
 ```
 
 ```regla
-{"id": "R18", "fuerza": "DEBE", "clase": "semantica", "texto": "Cada revisión de la fuente reemplaza el resultado de exportación anterior: si la revisión nueva no está disponible o tiene un error de análisis no permanece visible el código de la revisión anterior ni sus líneas de foco.", "verificacion": ["C58", "C59"]}
+{
+  "id": "R18",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Cada revisión de la fuente reemplaza el resultado de exportación anterior: si la revisión nueva no está disponible o tiene un error de análisis no permanece visible el código de la revisión anterior ni sus líneas de foco.",
+  "verificacion": [
+    "C58",
+    "C59"
+  ]
+}
 ```
 
 ```caso

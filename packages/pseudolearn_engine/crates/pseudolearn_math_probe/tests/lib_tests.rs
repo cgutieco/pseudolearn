@@ -6,6 +6,10 @@ fn word(value: f64) -> String {
 
 #[test]
 fn evaluates_unary_and_binary_functions() {
+    assert_eq!(
+        evaluate_line("atan2", &format!("{} {}", word(0.0), word(1.0))),
+        Ok(word(0.0))
+    );
     assert_eq!(evaluate_line("exp", &word(0.0)), Ok(word(1.0)));
     assert_eq!(
         evaluate_line("pow", &format!("{} {}", word(2.0), word(10.0))),
@@ -25,7 +29,7 @@ fn reports_non_finite_results_by_their_trap() {
 fn rejects_malformed_lines() {
     assert!(evaluate_line("exp", "zz").is_err());
     assert!(evaluate_line("pow", &word(2.0)).is_err());
-    assert!(evaluate_line("tan", &word(1.0)).is_err());
+    assert!(evaluate_line("unknown", &word(1.0)).is_err());
 }
 
 #[test]

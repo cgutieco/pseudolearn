@@ -20,6 +20,7 @@ mod property_api;
 mod property_comparison;
 mod property_evidence;
 mod property_json_roundtrip;
+mod property_math;
 mod property_recording;
 mod property_resources;
 mod property_scenarios;

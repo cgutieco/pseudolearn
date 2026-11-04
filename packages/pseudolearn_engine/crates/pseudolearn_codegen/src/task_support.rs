@@ -11,5 +11,13 @@ fn function_uses_tasks(function: &Function) -> bool {
         .iter()
         .flat_map(|block| block.instructions.iter())
         .filter_map(|instruction| function.columns.operation(*instruction))
-        .any(|operation| UNSUPPORTED_OPERATIONS.contains(&operation))
+        .any(|operation| {
+            UNSUPPORTED_OPERATIONS.contains(&operation)
+                && (operation.as_str().starts_with("task.")
+                    || matches!(
+                        operation,
+                        pseudolearn_ir::Operation::CallSuspendible
+                            | pseudolearn_ir::Operation::EffectAwait
+                    ))
+        })
 }

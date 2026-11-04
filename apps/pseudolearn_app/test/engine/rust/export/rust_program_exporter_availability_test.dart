@@ -27,6 +27,30 @@ ExportBlocker _blocker(List<ExportBlocker> blockers, String construct) =>
     blockers.firstWhere((blocker) => blocker.construct == construct);
 
 void main() {
+  test('collection calls and extended numeric builtins declare blockers', () {
+    const collection =
+        'algorithm P\ndefine values as vector<integer> <- vector();\nvalues.sort();\nendAlgorithm\n';
+    const numeric = 'algorithm P\nwrite tan(0);\nendAlgorithm\n';
+    for (final target in TargetLanguageId.values) {
+      expect(
+        _blockersOf(
+          collection,
+          target,
+          profile: SyntaxProfileId.english,
+        ).map((blocker) => blocker.construct),
+        contains('collection:vectorSort'),
+      );
+      expect(
+        _blockersOf(
+          numeric,
+          target,
+          profile: SyntaxProfileId.english,
+        ).map((blocker) => blocker.construct),
+        contains('builtin:tangent'),
+      );
+    }
+  });
+
   group('a program with a construct no emitter proves is withheld whole', () {
     test('a known valid unit does not rescue a mixed program', () {
       const source =
@@ -169,7 +193,10 @@ void main() {
 
       final blockers = _blockersOf(source, TargetLanguageId.rust);
 
-      expect(_textOf(source, _blocker(blockers, 'value_return')), contains('x * 2'));
+      expect(
+        _textOf(source, _blocker(blockers, 'value_return')),
+        contains('x * 2'),
+      );
     });
   });
 
@@ -196,7 +223,10 @@ void main() {
         profileId: SyntaxProfileId.english,
       );
       expect(exported, isA<ExportSuccess>());
-      expect((exported as ExportSuccess).program.sourceCode, contains('print(a, a, sep="")'));
+      expect(
+        (exported as ExportSuccess).program.sourceCode,
+        contains('print(a, a, sep="")'),
+      );
     });
   });
 

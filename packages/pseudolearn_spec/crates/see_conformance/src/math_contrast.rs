@@ -12,6 +12,9 @@ pub enum MathOutcome {
 
 pub fn expected(function: MathFunction, arguments: &[f64]) -> Result<MathOutcome, String> {
     let result = match (function, arguments) {
+        (MathFunction::Arctangent2, [vertical, horizontal]) => {
+            see_oracles::atan2(*vertical, *horizontal)
+        }
         (MathFunction::Power, [base, exponent]) => power(*base, *exponent),
         (_, [argument]) => rounded(oracle_function(function, *argument)?, *argument),
         _ => return Err("Argument count does not match the function".to_owned()),
@@ -31,7 +34,14 @@ fn oracle_function(function: MathFunction, argument: f64) -> Result<Function, St
         MathFunction::Sine => Function::Sine,
         MathFunction::Cosine => Function::Cosine,
         MathFunction::Arctangent => Function::Arctangent,
-        MathFunction::Power => return Err(format!("Power requires two arguments, got {argument}")),
+        MathFunction::Tangent => Function::Tangent,
+        MathFunction::ArcSine => Function::ArcSine,
+        MathFunction::ArcCosine => Function::ArcCosine,
+        MathFunction::Logarithm2 => Function::Logarithm2,
+        MathFunction::Logarithm10 => Function::Logarithm10,
+        MathFunction::Arctangent2 | MathFunction::Power => {
+            return Err(format!("Power requires two arguments, got {argument}"));
+        }
     };
     Ok(selected)
 }

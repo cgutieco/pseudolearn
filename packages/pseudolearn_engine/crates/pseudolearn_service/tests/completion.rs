@@ -195,3 +195,16 @@ fn every_template_parses_without_errors_in_its_valid_position() {
         }
     }
 }
+
+#[test]
+fn completes_collection_members_from_the_receiver_type() {
+    let entries = complete_marked(
+        "algorithm P\ndefine values as vector<integer> <- vector();\nvalues.|",
+        Profile::English,
+    );
+    let names = labels(&entries);
+    for expected in ["sort", "reverse", "indexOf", "contains"] {
+        assert!(names.contains(&expected), "{expected}: {names:?}");
+    }
+    assert!(!names.contains(&"keys"));
+}

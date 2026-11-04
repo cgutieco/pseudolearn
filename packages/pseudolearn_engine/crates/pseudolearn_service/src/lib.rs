@@ -4,6 +4,7 @@ pub mod block_layout;
 pub mod block_matching;
 pub mod completion;
 pub mod completion_assignment;
+mod completion_collections;
 pub mod completion_expected;
 pub mod completion_inline;
 pub mod completion_keywords;

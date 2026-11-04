@@ -3,23 +3,37 @@
 use std::path::Path;
 
 use pseudolearn_library::{
-    LibraryError, arctangent, cosine, exponential, natural_logarithm, real_power, sine,
+    LibraryError, arc_cosine, arc_sine, arc_tangent2, arctangent, cosine, exponential, logarithm2,
+    logarithm10, natural_logarithm, real_power, sine, tangent,
 };
 
 type Unary = fn(f64) -> Result<f64, LibraryError>;
 
-const UNARY: [(&str, Unary); 5] = [
+const UNARY: [(&str, Unary); 10] = [
     ("exp", exponential),
     ("ln", natural_logarithm),
     ("sin", sine),
     ("cos", cosine),
     ("atan", arctangent),
+    ("tan", tangent),
+    ("asin", arc_sine),
+    ("acos", arc_cosine),
+    ("log2", logarithm2),
+    ("log10", logarithm10),
 ];
 
 pub fn probe_directory(directory: &Path) -> Result<usize, String> {
+    if !directory.is_dir() {
+        return Err("Argument directory does not exist".to_owned());
+    }
     let mut evaluated = 0_usize;
-    for name in ["exp", "ln", "sin", "cos", "atan", "pow"] {
+    for name in [
+        "exp", "ln", "sin", "cos", "atan", "pow", "tan", "asin", "acos", "atan2", "log2", "log10",
+    ] {
         let source = directory.join(format!("{name}.arguments"));
+        if !source.exists() {
+            continue;
+        }
         let text = std::fs::read_to_string(&source)
             .map_err(|error| format!("{}: {error}", source.display()))?;
         let mut output = String::with_capacity(text.len());
@@ -31,6 +45,9 @@ pub fn probe_directory(directory: &Path) -> Result<usize, String> {
         let target = directory.join(format!("{name}.results"));
         std::fs::write(&target, output)
             .map_err(|error| format!("{}: {error}", target.display()))?;
+    }
+    if evaluated == 0 {
+        return Err("No argument files found".to_owned());
     }
     Ok(evaluated)
 }
@@ -45,6 +62,7 @@ pub fn evaluate_line(name: &str, line: &str) -> Result<String, String> {
         })
         .collect::<Result<Vec<_>, _>>()?;
     let result = match (name, arguments.as_slice()) {
+        ("atan2", [vertical, horizontal]) => arc_tangent2(*vertical, *horizontal),
         ("pow", [base, exponent]) => real_power(*base, *exponent),
         (_, [argument]) => unary(name)?(*argument),
         _ => return Err(format!("{name}: wrong argument count")),

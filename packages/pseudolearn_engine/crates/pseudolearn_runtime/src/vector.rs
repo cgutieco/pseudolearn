@@ -17,6 +17,7 @@ pub fn vector_set(
     handle: Handle,
     target: (i64, CollectionWords),
 ) -> Result<(), MemoryError> {
+    crate::collection::reorder::check_sorting(heap, handle)?;
     let index = position(heap, handle, target.0, false)?;
     write_value(heap, handle, index, &target.1)
 }
@@ -27,6 +28,7 @@ pub fn vector_insert(
     target: (i64, CollectionWords),
     roots: &[Handle],
 ) -> Result<(), MemoryError> {
+    crate::collection::reorder::check_sorting(heap, handle)?;
     let index = position(heap, handle, target.0, true)?;
     let length = collection_length(heap, handle)?;
     let next = length.checked_add(1).ok_or(MemoryError::CollectionLimit)?;
@@ -60,6 +62,7 @@ pub fn vector_insert(
 }
 
 pub fn vector_remove(heap: &mut Heap, handle: Handle, index: i64) -> Result<(), MemoryError> {
+    crate::collection::reorder::check_sorting(heap, handle)?;
     let index = position(heap, handle, index, false)?;
     let length = collection_length(heap, handle)?;
     let version = collection::next_version(heap, handle)?;

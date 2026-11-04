@@ -1,4 +1,6 @@
 mod access;
+pub(crate) mod reorder;
+pub use reorder::{vector_begin_sort, vector_clone, vector_commit, vector_reverse};
 pub(crate) mod storage;
 pub use access::{collection_is_dictionary, collection_key, collection_load_word};
 pub(crate) use storage::{buffer, clear_value, read_value, reserve_buffers, write_value};

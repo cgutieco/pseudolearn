@@ -248,3 +248,11 @@ operativo o aceptar una explícita es responsabilidad del anfitrión físico; el
 distinto se rechaza con `replay_identity_mismatch`. Las lecturas de reloj
 y las duraciones de temporizador son entradas de cinta: la reproducción las entrega sin consultar al
 anfitrión (`live_time_tape_tests`).
+
+## Ampliación numérica y de colecciones
+
+El reordenamiento conserva identidad y alias. La copia superficial cuenta celdas y retiene referencias durante asignaciones. Commit valida disposición y longitud antes de escribir; commit y reverse comprueban el incremento de versión antes de modificar elementos.
+
+Durante una ordenación, el bit cero de status_flags de la cabecera (bit 32 de su primera palabra) protege el vector receptor de todas las
+escrituras por alias, incluso reemplazos sin cambio estructural. Commit libera esa protección. Una
+trampa es terminal para esa ejecución; no se reanuda un vector parcialmente protegido después del fallo.

@@ -11,6 +11,10 @@ void main() {
     expect(capability.capabilityType, 'file');
     expect(builtin.builtinType, 'io_error');
     expect(operation.effectOperation, 'file_open');
+    final collection = RustViewSemantics.fromJson({
+      'collection_operation': 'vectorSort',
+    });
+    expect(collection.collectionOperation, 'vectorSort');
   });
 
   test('a node without the new attributes projects none of them', () {
@@ -19,6 +23,7 @@ void main() {
     expect(semantics.capabilityType, isNull);
     expect(semantics.builtinType, isNull);
     expect(semantics.effectOperation, isNull);
+    expect(semantics.collectionOperation, isNull);
   });
 
   test('the empty semantics carries no capability information', () {

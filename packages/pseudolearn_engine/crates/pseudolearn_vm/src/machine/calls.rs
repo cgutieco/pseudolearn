@@ -17,9 +17,6 @@ const RESOURCE_LIMIT: Fault = "resourceLimit";
 
 impl<'program> Machine<'program> {
     pub(crate) fn call<const TASK_RUNTIME: bool>(&mut self, site: u32) -> Result<Flow, Fault> {
-        if self.frames.len().saturating_add(1) >= self.options.depth {
-            return Err("recursionDepthExceeded");
-        }
         let site = self
             .current
             .calls
@@ -27,6 +24,12 @@ impl<'program> Machine<'program> {
             .copied()
             .ok_or(INVALID_BYTECODE)?;
         let (callee, callee_index) = self.resolve_callee(&site)?;
+        if self.frames.len().saturating_add(1) >= self.options.depth
+            && !callee.name.starts_with("@__collection.")
+            && usize::try_from(self.current_depth()).unwrap_or(usize::MAX) >= self.options.depth
+        {
+            return Err("recursionDepthExceeded");
+        }
         let caller = self.cursor;
         let callee_cursor = self.callee_cursor(&callee)?;
         let entry_mass = callee.entry_mass;
@@ -88,6 +91,9 @@ impl<'program> Machine<'program> {
     }
 
     fn record_call_event(&mut self, callee_name: &str) {
+        if callee_name.starts_with("@__collection.") {
+            return;
+        }
         let line = self.current_line();
         let depth = self.current_depth();
         let name = callee_name.trim_start_matches('@').to_owned();
@@ -235,6 +241,9 @@ impl<'program> Machine<'program> {
     }
 
     fn record_return_event(&mut self, callee_name: String) {
+        if callee_name.starts_with("__collection.") {
+            return;
+        }
         let line = self.current_line();
         let depth = self.current_depth();
         self.events.push(TraceEvent {

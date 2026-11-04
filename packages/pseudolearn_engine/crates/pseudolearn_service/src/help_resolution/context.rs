@@ -95,6 +95,9 @@ pub(super) fn contextual_target(
         context.profile,
     );
     let id = constructions.get(&slot)?;
+    if let Some(target) = token_role(context, id) {
+        return Some(target);
+    }
     Some(ResolutionTarget {
         identity: Some(identity(
             HelpIdentityKind::Construction,
@@ -246,4 +249,19 @@ fn variant_parts(keyword: KeywordKind) -> Option<(HelpIdentityKind, &'static str
     } else {
         None
     }
+}
+
+fn token_role(context: &QueryContext<'_>, id: &str) -> Option<ResolutionTarget> {
+    if let Some(card) = crate::help_catalog::cards()
+        .iter()
+        .find(|card| card.kind == "role" && card.tokens == [id])
+    {
+        return Some(ResolutionTarget {
+            identity: Some(identity(HelpIdentityKind::Role, card.identity, card.role)),
+            symbol: None,
+            certainty: contextual_certainty(context),
+            enclosing: None,
+        });
+    }
+    None
 }

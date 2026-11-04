@@ -291,3 +291,107 @@
   }
 }
 ```
+
+```regla
+{
+  "id": "R4",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Claves()/keys() devuelve una copia Vector<K> con las claves actuales en orden de inserción; borrar y reinsertar ubica la clave al final. La copia cuenta celdas y no modifica el diccionario. Una vista inmutable devuelve claves con el aislamiento de lectura existente.",
+  "verificacion": [
+    "C11",
+    "C12",
+    "C13",
+    "C14"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C11",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir values Como Diccionario<Cadena,Entero> <- Diccionario();\nvalues[\"bb\"] <- 1; values[\"aa\"] <- 2;\nDefinir names Como Vector<Cadena> <- values.Claves();\nEscribir names[0], \":\", names[1];\nDefinir removed Como Opcional<Entero> <- values.Eliminar(\"bb\");\nvalues[\"bb\"] <- 3; names[0] <- \"zz\";\nDefinir reordered Como Vector<Cadena> <- values.Claves();\nEscribir names[0], \":\", names[1], \":\", reordered[0], \":\", reordered[1];\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine values as dictionary<string,integer> <- dictionary();\nvalues[\"bb\"] <- 1; values[\"aa\"] <- 2;\ndefine names as vector<string> <- values.keys();\nwrite names[0], \":\", names[1];\ndefine removed as optional<integer> <- values.remove(\"bb\");\nvalues[\"bb\"] <- 3; names[0] <- \"zz\";\ndefine reordered as vector<string> <- values.keys();\nwrite names[0], \":\", names[1], \":\", reordered[0], \":\", reordered[1];\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "bb:aa\nzz:aa:aa:bb\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C12",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir values Como Diccionario<Entero,Entero> <- Diccionario();\nEscribir values.Claves().Longitud();\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine values as dictionary<integer,integer> <- dictionary();\nwrite values.keys().length();\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "0\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C13",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "programas": {
+    "es": "Algoritmo P\nDefinir values Como Diccionario<Entero,Entero> <- Diccionario();\nDefinir names Como Vector<Entero> <- values.Claves();\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine values as dictionary<integer,integer> <- dictionary();\ndefine names as vector<integer> <- values.keys();\nendAlgorithm\n"
+  },
+  "limites": {
+    "celdas": 1
+  },
+  "espera": {
+    "salida": "",
+    "fallo": {
+      "codigo": "cellLimitExceeded"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C14",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "programas": {
+    "es": "Algoritmo P\nDefinir values Como Diccionario<Entero,Entero> <- Diccionario();\nvalues[7] <- 1;\nDefinir frozen Como Inmutable<Diccionario<Entero,Entero>> <- Instantanea(values);\nDefinir names Como Inmutable<Vector<Entero>> <- frozen.Claves();\nEscribir names[0];\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine values as dictionary<integer,integer> <- dictionary();\nvalues[7] <- 1;\ndefine frozen as immutable<dictionary<integer,integer>> <- snapshot(values);\ndefine names as immutable<vector<integer>> <- frozen.keys();\nwrite names[0];\nendAlgorithm\n"
+  },
+  "espera": {
+    "salida": "7\n",
+    "terminacion": "completed"
+  }
+}
+```

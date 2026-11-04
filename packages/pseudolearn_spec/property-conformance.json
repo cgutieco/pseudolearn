@@ -282,6 +282,12 @@
       "executor": "json_text_roundtrip",
       "seed": 42,
       "samples": 100
+    },
+    {
+      "reference": "LIB.CORE.MATH@1.0.0#P1",
+      "executor": "math_oracle",
+      "seed": 20261104,
+      "samples": 96
     }
   ],
   "subjects": [

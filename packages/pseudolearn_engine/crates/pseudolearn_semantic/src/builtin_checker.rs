@@ -18,23 +18,21 @@ pub(crate) fn check(
     if signature.arity() != arguments.len() {
         crate::argument_checker::arity(session, (signature.arity(), arguments.len()), node);
     }
+    let widest = signature.return_type == "widestNumeric";
+    let real = !widest
+        || arguments
+            .iter()
+            .any(|argument| session.expression_type(*argument) == Type::Real);
     for (expected, argument) in signature.parameter_types.iter().zip(&mut arguments) {
         let actual = crate::snapshot_types::builtin_argument(session, function, *argument);
         if !compatible(expected, &actual) {
             session.report(DiagnosticCode::IncompatibleArgumentType, node);
         }
-        if matches!(*expected, "numeric" | "real") {
+        if real && matches!(*expected, "numeric" | "real") {
             *argument = crate::expression_checker::widen(session, *argument, &Type::Real);
         }
     }
-    let result = if signature.return_type == "sameAsFirstArgument" {
-        arguments
-            .first()
-            .map(|argument| session.expression_type(*argument))
-            .unwrap_or(Type::Error)
-    } else {
-        primitive(signature.return_type)
-    };
+    let result = result_type(session, signature.return_type, &arguments, (widest, real));
     let result = session.module.types.intern(result);
     session.emit(
         HirExpression::Builtin {
@@ -69,5 +67,23 @@ fn primitive(name: &str) -> Type {
         "character" => Type::Character,
         "string" => Type::String,
         _ => Type::Error,
+    }
+}
+
+fn result_type(
+    session: &AnalysisSession<'_>,
+    return_type: &str,
+    arguments: &[ExpressionId],
+    (widest, real): (bool, bool),
+) -> Type {
+    if widest {
+        if real { Type::Real } else { Type::Integer }
+    } else if return_type == "sameAsFirstArgument" {
+        arguments
+            .first()
+            .map(|argument| session.expression_type(*argument))
+            .unwrap_or(Type::Error)
+    } else {
+        primitive(return_type)
     }
 }

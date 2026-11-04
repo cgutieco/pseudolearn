@@ -49,14 +49,49 @@ pub(crate) fn logarithm(argument: &Rational, precision: i64) -> Result<Interval,
     let guard = precision.checked_add(32).ok_or_else(arithmetic_error)?;
     let epsilon = rational::epsilon(guard)?;
     let logarithm = series::logarithm(&reduced, &epsilon)?;
-    let binary_scale = interval::scale(
-        &series::logarithm(&integer(2), &epsilon)?,
-        &integer(exponent),
-    )?;
+    let binary_scale = interval::scale(&binary_logarithm(guard)?, &integer(exponent))?;
     interval::add(&logarithm, &binary_scale)
 }
 
+std::thread_local! {
+    static CACHED_QUARTER_TURN: std::cell::RefCell<Option<(i64, Interval)>> = const { std::cell::RefCell::new(None) };
+    static CACHED_BINARY_LOGARITHM: std::cell::RefCell<Option<(i64, Interval)>> = const { std::cell::RefCell::new(None) };
+}
+
+fn binary_logarithm(precision: i64) -> Result<Interval, String> {
+    if let Some(interval) = CACHED_BINARY_LOGARITHM.with(|cache| {
+        cache
+            .borrow()
+            .as_ref()
+            .filter(|(bits, _)| *bits == precision)
+            .map(|(_, interval)| interval.clone())
+    }) {
+        return Ok(interval);
+    }
+    let interval = series::logarithm(&integer(2), &rational::epsilon(precision)?)?;
+    CACHED_BINARY_LOGARITHM.with(|cache| *cache.borrow_mut() = Some((precision, interval.clone())));
+    Ok(interval)
+}
+
 pub(crate) fn quarter_pi(precision: i64) -> Result<Interval, String> {
+    let output = precision.checked_add(16).ok_or_else(arithmetic_error)?;
+    if let Some(interval) = CACHED_QUARTER_TURN.with(|cache| {
+        cache
+            .borrow()
+            .as_ref()
+            .filter(|(bits, _)| *bits >= precision)
+            .map(|(_, interval)| interval.clone())
+    }) {
+        return crate::dyadic::compress(&interval, output);
+    }
+    let cached_precision = precision.max(1280);
+    let interval = quarter_turn_uncached(cached_precision)?;
+    CACHED_QUARTER_TURN
+        .with(|cache| *cache.borrow_mut() = Some((cached_precision, interval.clone())));
+    crate::dyadic::compress(&interval, output)
+}
+
+fn quarter_turn_uncached(precision: i64) -> Result<Interval, String> {
     let epsilon = rational::epsilon(precision.checked_add(16).ok_or_else(arithmetic_error)?)?;
     let first = series::arctangent(&rational::divide(&integer(1), &integer(5))?, &epsilon)?;
     let second = series::arctangent(&rational::divide(&integer(1), &integer(239))?, &epsilon)?;
@@ -118,7 +153,8 @@ fn reduce_angle(argument: &Rational, precision: i64) -> Result<(Rational, Ration
         &interval::point(argument.clone()),
         &interval::scale(&half_pi, &multiple)?,
     )?;
-    let center_bound = crate::dyadic::bound(&interval::center(&reduced)?, guard)?;
+    let output_precision = precision.checked_add(32).ok_or_else(arithmetic_error)?;
+    let center_bound = crate::dyadic::bound(&interval::center(&reduced)?, output_precision)?;
     let radius = rational::add(
         &interval::radius(&reduced)?,
         &interval::radius(&center_bound)?

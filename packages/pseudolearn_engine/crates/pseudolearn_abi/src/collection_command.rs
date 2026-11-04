@@ -13,6 +13,10 @@ pub enum CollectionCommand {
     Next,
     Key,
     ArrayLength,
+    Clone,
+    Commit,
+    Reverse,
+    BeginSort,
 }
 
 impl CollectionCommand {
@@ -30,6 +34,10 @@ impl CollectionCommand {
             Self::Next => 9,
             Self::Key => 10,
             Self::ArrayLength => 11,
+            Self::Clone => 12,
+            Self::Commit => 13,
+            Self::Reverse => 14,
+            Self::BeginSort => 15,
         }
     }
 
@@ -47,6 +55,10 @@ impl CollectionCommand {
             9 => Some(Self::Next),
             10 => Some(Self::Key),
             11 => Some(Self::ArrayLength),
+            12 => Some(Self::Clone),
+            13 => Some(Self::Commit),
+            14 => Some(Self::Reverse),
+            15 => Some(Self::BeginSort),
             _ => None,
         }
     }

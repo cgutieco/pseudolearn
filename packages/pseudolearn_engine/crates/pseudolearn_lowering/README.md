@@ -149,3 +149,7 @@ SSA conservan sus definiciones y las unidades síncronas no adquieren instruccio
 ## Lowering de inspección
 
 `inspection_lowering` convierte la expresión tipada en una función temporal con capturas explícitas como parámetros y retorno del valor. Reutiliza `lower_expression`, bancos y operaciones ordinarias, incluidos cortocircuito, campos e índices; no genera ni reanaliza texto de un programa envolvente. La función no contiene E/S ni llamadas admitidas por la frontera de inspección.
+
+## Ampliación numérica y de colecciones
+
+La mezcla estable se sintetiza y reutiliza por tipo y firma de comparador. Los auxiliares no emiten stmt.enter ni decisiones visibles; el comparador conserva sus llamadas y observaciones. Dos copias contabilizadas en celdas aíslan el reordenamiento hasta comprobar la versión y confirmar las hojas completas. Los efectos propios del comparador no se revierten. La búsqueda y la copia de claves usan auxiliares tipados.

@@ -50,6 +50,7 @@ fn builtin_operation(builtin: BuiltinKind) -> Operation {
         | BuiltinKind::StartsWith
         | BuiltinKind::Substring
         | BuiltinKind::Trim => Operation::Unreachable,
+        other => numeric_operation(other).unwrap_or(Operation::Unreachable),
     }
 }
 
@@ -105,5 +106,58 @@ pub fn lower_builtin(
     for &argument_id in arguments {
         lowered.push(lower_expression_with_state(argument_id, state));
     }
+    if let Some(value) = integer_extremum(function, (arguments, &lowered), span, state) {
+        return value;
+    }
     lower_builtin_call(function, &lowered, span, state.builder)
+}
+
+fn numeric_operation(builtin: BuiltinKind) -> Option<Operation> {
+    Some(match builtin {
+        BuiltinKind::Tangent => Operation::MathTan,
+        BuiltinKind::ArcSine => Operation::MathAsin,
+        BuiltinKind::ArcCosine => Operation::MathAcos,
+        BuiltinKind::ArcTangent2 => Operation::MathAtan2,
+        BuiltinKind::Logarithm10 => Operation::MathLog10,
+        BuiltinKind::Logarithm2 => Operation::MathLog2,
+        BuiltinKind::Floor => Operation::RealFloor,
+        BuiltinKind::Ceiling => Operation::RealCeil,
+        BuiltinKind::Minimum => Operation::RealMin,
+        BuiltinKind::Maximum => Operation::RealMax,
+        _ => return None,
+    })
+}
+
+fn integer_extremum(
+    function: BuiltinKind,
+    (arguments, lowered): (&[ExpressionId], &[ValueId]),
+    span: Option<IrSpan>,
+    state: &mut ExpressionState<'_, '_>,
+) -> Option<ValueId> {
+    if matches!(function, BuiltinKind::Minimum | BuiltinKind::Maximum)
+        && arguments.first().is_some_and(|argument| {
+            state
+                .context
+                .module
+                .expressions
+                .types
+                .get(usize::try_from(argument.0).unwrap_or(usize::MAX))
+                .is_some_and(|kind| {
+                    state.context.module.types.get(*kind) == pseudolearn_semantic::Type::Integer
+                })
+        })
+    {
+        let operation = if function == BuiltinKind::Minimum {
+            Operation::IntMin
+        } else {
+            Operation::IntMax
+        };
+        return Some(crate::collections::emit(
+            operation,
+            lowered.iter().copied().map(Operand::Value).collect(),
+            span,
+            state,
+        ));
+    }
+    None
 }

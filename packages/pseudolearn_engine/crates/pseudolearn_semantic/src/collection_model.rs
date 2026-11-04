@@ -17,6 +17,11 @@ pub enum CollectionAction {
     Insert,
     Remove,
     Find,
+    Sort,
+    Reverse,
+    IndexOf,
+    Contains,
+    Keys,
 }
 
 #[derive(Clone, Debug, PartialEq)]

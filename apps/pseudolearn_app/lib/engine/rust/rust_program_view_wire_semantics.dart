@@ -11,6 +11,7 @@ extension _RustProgramViewSemanticValidator on _RustProgramViewWireValidator {
       'builtin_type',
       'capability_type',
       'effect_operation',
+      'collection_operation',
       'type_constructor',
     ]) {
       if (node.containsKey(key) && node[key] is! String) {

@@ -14,18 +14,18 @@ impl Machine<'_> {
             .iter()
             .map(|source| self.read_value(source.source))
             .collect::<Result<Vec<_>, _>>()?;
-        let cells = u64::from(operation.layout.scalar_words)
-            .checked_add(u64::from(operation.layout.reference_words))
-            .ok_or("resourceLimit")?
-            .saturating_add(2);
+        let cells = allocation_cells(operation.layout)?;
         let allocating = matches!(
             operation.command,
-            pseudolearn_runtime::CollectionCommand::New
+            pseudolearn_runtime::CollectionCommand::Clone
+                | pseudolearn_runtime::CollectionCommand::New
                 | pseudolearn_runtime::CollectionCommand::Store
                 | pseudolearn_runtime::CollectionCommand::Insert
                 | pseudolearn_runtime::CollectionCommand::Remove
         );
-        let roots = if allocating {
+        let roots = if operation.command == pseudolearn_runtime::CollectionCommand::Clone {
+            self.memory_roots()?
+        } else if allocating {
             self.collection_roots(cells)?
         } else {
             Vec::new()
@@ -44,4 +44,11 @@ impl Machine<'_> {
         }
         Ok(Flow::Continue)
     }
+}
+
+fn allocation_cells(layout: pseudolearn_runtime::VectorLayout) -> Result<u64, Fault> {
+    Ok(u64::from(layout.scalar_words)
+        .checked_add(u64::from(layout.reference_words))
+        .ok_or("resourceLimit")?
+        .saturating_add(2))
 }

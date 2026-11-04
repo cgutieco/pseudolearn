@@ -90,4 +90,5 @@ pub enum PropertyExecutor {
     ServiceTranslate,
     ServiceWorkspace,
     JsonTextRoundtrip,
+    MathOracle,
 }

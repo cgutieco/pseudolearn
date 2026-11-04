@@ -26,7 +26,7 @@ fn generate(options: &Arguments) -> Result<String, String> {
     )?)
     .map_err(|error| error.to_string())?;
     std::fs::create_dir_all(&output).map_err(|error| error.to_string())?;
-    for function in MATH_FUNCTIONS {
+    for function in selected(options)? {
         let lines = arguments(function, count, seed)
             .iter()
             .map(|entry| format_arguments(entry))
@@ -37,7 +37,7 @@ fn generate(options: &Arguments) -> Result<String, String> {
             &lines,
         )?;
     }
-    let manifest = json!({"seed": seed, "countPerFunction": count, "functions": MATH_FUNCTIONS.map(MathFunction::name)});
+    let manifest = json!({"seed": seed, "countPerFunction": count, "functions": selected(options)?.iter().map(|function| function.name()).collect::<Vec<_>>()});
     write(&output.join(MANIFEST), &manifest.to_string())?;
     Ok(format!(
         "Generated {count} arguments per function in {}",
@@ -50,14 +50,20 @@ fn check(options: &Arguments) -> Result<String, String> {
     let manifest: Value = crate::storage::read_json(&input.join(MANIFEST))?;
     let mut functions = serde_json::Map::new();
     let mut mismatched = 0_usize;
-    for function in MATH_FUNCTIONS {
+    for function in selected(options)? {
         let rows = rows(&input, function)?;
         let summary = crate::math_verdicts::compare(function, &rows)?;
         mismatched = mismatched.saturating_add(summary.mismatches.len());
+        eprintln!(
+            "Checked {}: {} samples, {} mismatches",
+            function.name(),
+            summary.checked,
+            summary.mismatches.len()
+        );
         functions.insert(function.name().to_owned(), summary.to_json());
     }
     let report = json!({
-        "contract": "LIB.CORE.MATH#R1, LANG.OPS.POWER, LANG.TYPES.REAL",
+        "contract": "LIB.CORE.MATH#R1/R2, LANG.OPS.POWER, LANG.TYPES.REAL",
         "oracle": "see_oracles rational enclosure with exact dyadic powers",
         "subject": "pseudolearn_library through pseudolearn_math_probe",
         "revision": crate::e10::revision(&options.root)?.trim(),
@@ -125,4 +131,20 @@ fn read(path: &Path) -> Result<String, String> {
 fn write(path: &Path, text: &str) -> Result<(), String> {
     std::fs::write(path, format!("{text}\n"))
         .map_err(|error| format!("{}: {error}", path.display()))
+}
+
+fn selected(options: &Arguments) -> Result<Vec<MathFunction>, String> {
+    let Some(names) = options.options.get("only") else {
+        return Ok(MATH_FUNCTIONS.to_vec());
+    };
+    names
+        .split(',')
+        .map(|name| {
+            MATH_FUNCTIONS
+                .iter()
+                .copied()
+                .find(|function| function.name() == name)
+                .ok_or_else(|| format!("Unknown math function: {name}"))
+        })
+        .collect()
 }

@@ -298,3 +298,11 @@ vacía el cuanto nunca cede (`ENG.TASK.AGENDA`). `snapshot.copy` se baja a `rt_a
 que `effect_call`. Las demás operaciones de tarea, de espera de efecto y de canal se declaran en `UNSUPPORTED_OPERATIONS` y
 terminan con `CodegenError::Unsupported`; el catálogo de instrucciones exige que cada operación esté bajada o declarada ahí.
 El soporte nativo de tareas es un pendiente declarado.
+
+## Ampliación numérica y de colecciones
+
+Las operaciones numéricas y de reordenamiento nuevas quedan en UNSUPPORTED_OPERATIONS hasta la paridad nativa de biblioteca. El compilador informa Unsupported en lugar de producir una aproximación.
+
+La detección de tareas examina exclusivamente operaciones no soportadas task.*, call.suspendible y effect.await. task.yield_check, que el sujeto nativo ya baja como sondeo, no activa ese rechazo.
+El inventario de operaciones no soportadas también contiene biblioteca nueva: usar ese inventario
+como detector de tareas produciría un diagnóstico de tareas para una función numérica o de colección.

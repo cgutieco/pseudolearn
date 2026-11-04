@@ -4269,3 +4269,364 @@
   "sin_ri": "El preludio resuelve símbolos antes de generar RI y no añade instrucciones."
 }
 ```
+
+```instruccion
+{
+  "id": "O108",
+  "nombre": "math.tan",
+  "firma": "math.tan %left: f64 -> f64",
+  "clases_de_valor": [
+    "escalar"
+  ],
+  "semantica": "Aplica la función numérica con dominio y redondeo normativos.",
+  "trampas": [
+    "nonFiniteRealResult"
+  ],
+  "efectos": [],
+  "observacion": []
+}
+```
+
+```instruccion
+{
+  "id": "O109",
+  "nombre": "math.asin",
+  "firma": "math.asin %left: f64 -> f64",
+  "clases_de_valor": [
+    "escalar"
+  ],
+  "semantica": "Aplica la función numérica con dominio y redondeo normativos.",
+  "trampas": [
+    "nonFiniteRealResult"
+  ],
+  "efectos": [],
+  "observacion": []
+}
+```
+
+```instruccion
+{
+  "id": "O110",
+  "nombre": "math.acos",
+  "firma": "math.acos %left: f64 -> f64",
+  "clases_de_valor": [
+    "escalar"
+  ],
+  "semantica": "Aplica la función numérica con dominio y redondeo normativos.",
+  "trampas": [
+    "nonFiniteRealResult"
+  ],
+  "efectos": [],
+  "observacion": []
+}
+```
+
+```instruccion
+{
+  "id": "O111",
+  "nombre": "math.atan2",
+  "firma": "math.atan2 %left: f64, %right: f64 -> f64",
+  "clases_de_valor": [
+    "escalar"
+  ],
+  "semantica": "Aplica la función numérica con dominio y redondeo normativos.",
+  "trampas": [
+    "nonFiniteRealResult"
+  ],
+  "efectos": [],
+  "observacion": []
+}
+```
+
+```instruccion
+{
+  "id": "O112",
+  "nombre": "math.log10",
+  "firma": "math.log10 %left: f64 -> f64",
+  "clases_de_valor": [
+    "escalar"
+  ],
+  "semantica": "Aplica la función numérica con dominio y redondeo normativos.",
+  "trampas": [
+    "nonFiniteRealResult"
+  ],
+  "efectos": [],
+  "observacion": []
+}
+```
+
+```instruccion
+{
+  "id": "O113",
+  "nombre": "math.log2",
+  "firma": "math.log2 %left: f64 -> f64",
+  "clases_de_valor": [
+    "escalar"
+  ],
+  "semantica": "Aplica la función numérica con dominio y redondeo normativos.",
+  "trampas": [
+    "nonFiniteRealResult"
+  ],
+  "efectos": [],
+  "observacion": []
+}
+```
+
+```instruccion
+{
+  "id": "O114",
+  "nombre": "real.floor",
+  "firma": "real.floor %left: f64 -> i64",
+  "clases_de_valor": [
+    "escalar"
+  ],
+  "semantica": "Aplica la función numérica con dominio y redondeo normativos.",
+  "trampas": [
+    "integerOverflow"
+  ],
+  "efectos": [],
+  "observacion": []
+}
+```
+
+```instruccion
+{
+  "id": "O115",
+  "nombre": "real.ceil",
+  "firma": "real.ceil %left: f64 -> i64",
+  "clases_de_valor": [
+    "escalar"
+  ],
+  "semantica": "Aplica la función numérica con dominio y redondeo normativos.",
+  "trampas": [
+    "integerOverflow"
+  ],
+  "efectos": [],
+  "observacion": []
+}
+```
+
+```instruccion
+{
+  "id": "O116",
+  "nombre": "int.min",
+  "firma": "int.min %left: i64, %right: i64 -> i64",
+  "clases_de_valor": [
+    "escalar"
+  ],
+  "semantica": "Aplica la función numérica con dominio y redondeo normativos.",
+  "trampas": [],
+  "efectos": [],
+  "observacion": []
+}
+```
+
+```instruccion
+{
+  "id": "O117",
+  "nombre": "int.max",
+  "firma": "int.max %left: i64, %right: i64 -> i64",
+  "clases_de_valor": [
+    "escalar"
+  ],
+  "semantica": "Aplica la función numérica con dominio y redondeo normativos.",
+  "trampas": [],
+  "efectos": [],
+  "observacion": []
+}
+```
+
+```instruccion
+{
+  "id": "O118",
+  "nombre": "real.min",
+  "firma": "real.min %left: f64, %right: f64 -> f64",
+  "clases_de_valor": [
+    "escalar"
+  ],
+  "semantica": "Aplica la función numérica con dominio y redondeo normativos.",
+  "trampas": [],
+  "efectos": [],
+  "observacion": []
+}
+```
+
+```instruccion
+{
+  "id": "O119",
+  "nombre": "real.max",
+  "firma": "real.max %left: f64, %right: f64 -> f64",
+  "clases_de_valor": [
+    "escalar"
+  ],
+  "semantica": "Aplica la función numérica con dominio y redondeo normativos.",
+  "trampas": [],
+  "efectos": [],
+  "observacion": []
+}
+```
+
+```instruccion
+{
+  "id": "O120",
+  "nombre": "collection.clone",
+  "firma": "collection.clone %vector -> tipo_vector",
+  "clases_de_valor": [
+    "escalar",
+    "referencia"
+  ],
+  "semantica": "Copia superficial del vector con celdas contabilizadas.",
+  "trampas": [
+    "cellLimitExceeded",
+    "collectionVersionExhausted",
+    "uninitializedVariableRead"
+  ],
+  "efectos": [
+    "lee_memoria",
+    "escribe_memoria",
+    "asigna"
+  ],
+  "observacion": []
+}
+```
+
+```instruccion
+{
+  "id": "O121",
+  "nombre": "collection.commit",
+  "firma": "collection.commit %vector, %copy -> unit",
+  "clases_de_valor": [
+    "escalar",
+    "referencia"
+  ],
+  "semantica": "Valida tipos y longitudes antes de copiar todas las hojas y aumentar la versión.",
+  "trampas": [
+    "cellLimitExceeded",
+    "collectionVersionExhausted",
+    "uninitializedVariableRead"
+  ],
+  "efectos": [
+    "lee_memoria",
+    "escribe_memoria"
+  ],
+  "observacion": []
+}
+```
+
+```instruccion
+{
+  "id": "O122",
+  "nombre": "collection.reverse",
+  "firma": "collection.reverse %vector -> unit",
+  "clases_de_valor": [
+    "escalar",
+    "referencia"
+  ],
+  "semantica": "Invierte las hojas completas y aumenta la versión estructural.",
+  "trampas": [
+    "cellLimitExceeded",
+    "collectionVersionExhausted",
+    "uninitializedVariableRead"
+  ],
+  "efectos": [
+    "lee_memoria",
+    "escribe_memoria"
+  ],
+  "observacion": []
+}
+```
+
+```cobertura
+{
+  "id": "V211",
+  "regla": "LIB.CORE.MATH#R2",
+  "instrucciones": [
+    "math.tan",
+    "math.asin",
+    "math.acos",
+    "math.atan2",
+    "math.log10",
+    "math.log2"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V212",
+  "regla": "LIB.CORE.MATH#R3",
+  "instrucciones": [
+    "int.min",
+    "int.max",
+    "real.min",
+    "real.max"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V213",
+  "regla": "LIB.CORE.ROUNDING#R2",
+  "instrucciones": [
+    "real.floor",
+    "real.ceil"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V214",
+  "regla": "LANG.TYPES.VECTOR#R4",
+  "instrucciones": [
+    "collection.clone",
+    "collection.commit",
+    "collection.reverse",
+    "call.indirect"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V215",
+  "regla": "LANG.TYPES.VECTOR#R5",
+  "instrucciones": [
+    "collection.load",
+    "call"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V216",
+  "regla": "LANG.TYPES.DICTIONARY#R4",
+  "instrucciones": [
+    "collection.new",
+    "collection.key",
+    "collection.next"
+  ]
+}
+```
+
+```instruccion
+{
+  "id": "O123",
+  "nombre": "collection.begin_sort",
+  "firma": "collection.begin_sort %vector -> unit",
+  "clases_de_valor": [
+    "referencia"
+  ],
+  "semantica": "Protege el receptor durante la ordenación; cualquier escritura por alias produce collectionModifiedDuringIteration. La confirmación final libera la protección.",
+  "trampas": [
+    "collectionModifiedDuringIteration"
+  ],
+  "efectos": [
+    "lee_memoria",
+    "escribe_memoria"
+  ],
+  "observacion": []
+}
+```

@@ -11,16 +11,28 @@ pub enum MathFunction {
     Sine,
     Cosine,
     Arctangent,
+    Tangent,
+    ArcSine,
+    ArcCosine,
+    Arctangent2,
+    Logarithm2,
+    Logarithm10,
     Power,
 }
 
-pub const MATH_FUNCTIONS: [MathFunction; 6] = [
+pub const MATH_FUNCTIONS: [MathFunction; 12] = [
     MathFunction::Exponential,
     MathFunction::Logarithm,
     MathFunction::Sine,
     MathFunction::Cosine,
     MathFunction::Arctangent,
     MathFunction::Power,
+    MathFunction::Tangent,
+    MathFunction::ArcSine,
+    MathFunction::ArcCosine,
+    MathFunction::Arctangent2,
+    MathFunction::Logarithm2,
+    MathFunction::Logarithm10,
 ];
 
 const TINY: f64 = f64::from_bits(1);
@@ -46,11 +58,21 @@ impl MathFunction {
             Self::Cosine => "cos",
             Self::Arctangent => "atan",
             Self::Power => "pow",
+            Self::Tangent => "tan",
+            Self::ArcSine => "asin",
+            Self::ArcCosine => "acos",
+            Self::Arctangent2 => "atan2",
+            Self::Logarithm2 => "log2",
+            Self::Logarithm10 => "log10",
         }
     }
 
     pub fn arity(self) -> usize {
-        if self == Self::Power { 2 } else { 1 }
+        if matches!(self, Self::Power | Self::Arctangent2) {
+            2
+        } else {
+            1
+        }
     }
 }
 
@@ -59,8 +81,14 @@ pub fn arguments(function: MathFunction, count: usize, seed: u64) -> Vec<Vec<f64
     (0..count)
         .map(|_| match function {
             MathFunction::Exponential => vec![exponential_argument(&mut sampler)],
-            MathFunction::Logarithm => vec![logarithm_argument(&mut sampler)],
-            MathFunction::Sine | MathFunction::Cosine => vec![trigonometric_argument(&mut sampler)],
+            MathFunction::ArcSine | MathFunction::ArcCosine => vec![sampler.uniform(-1.0, 1.0)],
+            MathFunction::Arctangent2 => vec![sampler.finite_bits(), sampler.finite_bits()],
+            MathFunction::Logarithm | MathFunction::Logarithm2 | MathFunction::Logarithm10 => {
+                vec![logarithm_argument(&mut sampler)]
+            }
+            MathFunction::Sine | MathFunction::Cosine | MathFunction::Tangent => {
+                vec![trigonometric_argument(&mut sampler)]
+            }
             MathFunction::Arctangent => vec![arctangent_argument(&mut sampler)],
             MathFunction::Power => crate::math_power_arguments::power_arguments(&mut sampler),
         })

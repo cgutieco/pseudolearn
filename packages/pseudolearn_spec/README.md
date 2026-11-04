@@ -486,3 +486,7 @@ es plena. Una denegación se deriva de una atenuación voluntaria o de un fallo 
 Los paths del doble admiten rutas de sistema portátiles, incluidos .., letras de unidad y UNC.
 El doble no se distribuye en los anfitriones de producto. Estados, identidades y versiones siguen
 congelados; los contratos oficiales se corrigen y reanclan juntos conservando su versión.
+
+## Ampliación numérica y de colecciones
+
+Los miembros contextuales de ordenación, inversión, búsqueda y claves y las diez funciones numéricas conservan identidades y versiones congeladas. La propiedad math_oracle contrasta muestras reproducibles con el oráculo independiente. Los vínculos nativos nuevos permanecen pendientes de paridad.

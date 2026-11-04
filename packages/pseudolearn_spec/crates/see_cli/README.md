@@ -76,3 +76,5 @@ El sistema especifica y contrasta el lenguaje vigente. Ninguna lógica del motor
 ## 8. Fuentes consultadas y genealogía conceptual
 
 Plan aprobado del sistema SEE. Las bibliotecas externas son infraestructura, nunca autoridad sobre el comportamiento de PseudoLearn.
+
+Las campañas matemáticas admiten --only con nombres separados por coma para generar y contrastar un subconjunto explícito. Se rechazan nombres desconocidos; los resultados crudos conservan patrones binarios completos y el manifiesto registra funciones, semilla y cantidad por función.

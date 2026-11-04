@@ -36,7 +36,7 @@ pub use format::{BooleanLexemes, PrimitiveValue, format_value};
 pub use json_local_views::{LocalJsonViewCall, local_json_view};
 pub use local_operations::{LocalOperationRequest, local_operation};
 pub use math::{absolute, square_root};
-pub use rounding::{round_real, truncate_real};
+pub use rounding::{ceiling_real, floor_real, round_real, truncate_real};
 pub use text_case::{to_lower_text, to_upper_text};
 pub use text_replace::{replace_all, trim_text};
 pub use text_search::{
@@ -64,4 +64,7 @@ mod text_replace_tests;
 mod text_search_tests;
 #[cfg(test)]
 mod text_split_tests;
-pub use transcendental::{arctangent, cosine, exponential, natural_logarithm, real_power, sine};
+pub use transcendental::{
+    arc_cosine, arc_sine, arc_tangent2, arctangent, cosine, exponential, logarithm2, logarithm10,
+    natural_logarithm, real_power, sine, tangent,
+};

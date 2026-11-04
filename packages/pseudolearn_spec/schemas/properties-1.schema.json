@@ -62,6 +62,7 @@
               "service_translate",
               "service_workspace",
               "json_text_roundtrip",
+              "math_oracle",
               "program_revision"
             ]
           },

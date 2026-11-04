@@ -118,7 +118,9 @@ fn check_integers(
         | Operation::IntMul
         | Operation::IntDiv
         | Operation::IntMod
-        | Operation::IntPow => {
+        | Operation::IntPow
+        | Operation::IntMin
+        | Operation::IntMax => {
             expect_two_typed(operands, &IrType::I64, get_type)?;
             Ok(Some(IrType::I64))
         }
@@ -148,7 +150,10 @@ fn check_reals_and_bools(
         | Operation::RealSub
         | Operation::RealMul
         | Operation::RealDiv
-        | Operation::RealPow => {
+        | Operation::RealPow
+        | Operation::RealMin
+        | Operation::RealMax
+        | Operation::MathAtan2 => {
             expect_two_typed(operands, &IrType::F64, get_type)?;
             Ok(Some(IrType::F64))
         }
@@ -159,10 +164,6 @@ fn check_reals_and_bools(
         Operation::RealCmp => {
             expect_predicate_and_two_typed(operands, &IrType::F64, get_type)?;
             Ok(Some(IrType::Bool))
-        }
-        Operation::RealTrunc | Operation::RealRound => {
-            expect_one_typed(operands, &IrType::F64, get_type)?;
-            Ok(Some(IrType::I64))
         }
         Operation::BoolNot => {
             expect_one_typed(operands, &IrType::Bool, get_type)?;

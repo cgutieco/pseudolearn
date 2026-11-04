@@ -16,7 +16,7 @@ mod text_effects;
 
 impl Machine<'_> {
     pub(super) fn trap_context(&self, fault: Fault, position: usize) -> VmTrap {
-        let mut trap = VmTrap::new(fault, self.current.span(position, self.probed));
+        let mut trap = VmTrap::new(fault, self.visible_span(position));
         if fault == "taskDeadlock" {
             trap.related.extend(
                 self.tasks

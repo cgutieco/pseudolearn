@@ -124,6 +124,7 @@ fn check_return_kind(entry: &Value) -> Result<(), String> {
         "string",
         "character",
         "sameAsFirstArgument",
+        "widestNumeric",
         "immutableOfFirstArgument",
         "optionalInteger",
         "boolean",

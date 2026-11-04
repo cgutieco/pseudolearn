@@ -292,3 +292,19 @@ esos registros. La selección compara metadatos prestados para respetar el sombr
 nombre sin reservar el conjunto completo de variables. Se acepta recorrer esos metadatos para
 contar; se descarta capturar todos los valores y cortar después. Los límites del consumidor acotan
 la cantidad de elementos devueltos, mientras la restauración conserva los límites de la ejecución.
+
+## Ampliación numérica y de colecciones
+
+Las operaciones numéricas se despachan por formas escalares generadas y conservan las trampas de cálculo. La copia de colección solicita raíces al recolector. La mezcla usa llamadas ordinarias al comparador y un fallo impide confirmar el reordenamiento.
+
+Las llamadas y retornos de los auxiliares de colección se omiten de los eventos y de la profundidad
+visible. Sus trampas se atribuyen al sitio de llamada del usuario. Las llamadas del comparador siguen
+siendo visibles. Clone siempre conserva las raíces completas: puede cruzar el umbral de recolección
+durante su trabajo aunque el costo de su cabecera por sí solo no lo alcance.
+
+La campaña de biblioteca encontró una regresión al expandir las doce operaciones numéricas nuevas
+por cada combinación registro/inmediato dentro del bucle caliente. Se conservan sus instrucciones
+de RI y su tipado, pero se decodifican en sitios de evaluación escalar con una única variante de
+despacho. Los sitios guardan operandos y evaluador comprobados; no son efectos ni operaciones de
+memoria. Las trascendentes siguen usando la misma biblioteca exacta. El objetivo es limitar el
+crecimiento del despachador cuando el programa no utiliza la ampliación numérica.

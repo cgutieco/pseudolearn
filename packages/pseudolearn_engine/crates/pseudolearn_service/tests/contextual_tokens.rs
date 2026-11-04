@@ -24,3 +24,15 @@ fn formatter_keeps_contextual_blocks_balanced_and_idempotent() {
         formatted
     );
 }
+
+#[test]
+fn collection_extensions_translate_without_renaming_homonymous_locals() -> Result<(), String> {
+    let source = "algorithm P\ndefine sort as integer <- 1;\ndefine values as vector<integer> <- vector();\nvalues.sort(); values.reverse();\nwrite values.contains(sort);\nendAlgorithm\n";
+    let translated =
+        translate_source(source, Profile::Spanish).map_err(|error| format!("{error:?}"))?;
+    assert!(translated.contains("Definir sort"));
+    assert!(translated.contains(".Ordenar()"));
+    assert!(translated.contains(".Invertir()"));
+    assert!(translated.contains(".Contiene(sort)"));
+    Ok(())
+}

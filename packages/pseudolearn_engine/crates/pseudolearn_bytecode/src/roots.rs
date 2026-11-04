@@ -62,6 +62,7 @@ pub(crate) fn safe_point(instruction: &Instruction) -> bool {
             | "text.format"
             | "text.quote"
             | "collection.new"
+            | "collection.clone"
             | "collection.store"
             | "collection.insert"
             | "collection.remove"

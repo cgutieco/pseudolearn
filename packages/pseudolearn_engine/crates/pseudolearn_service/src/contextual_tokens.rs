@@ -176,6 +176,11 @@ fn action_identity(action: CollectionAction) -> Option<&'static str> {
         CollectionAction::Append => "vectorAppend",
         CollectionAction::Insert => "vectorInsert",
         CollectionAction::Remove => "collectionRemove",
+        CollectionAction::Sort => "vectorSort",
+        CollectionAction::Reverse => "vectorReverse",
+        CollectionAction::IndexOf => "vectorIndexOf",
+        CollectionAction::Contains => "vectorContains",
+        CollectionAction::Keys => "dictionaryKeys",
         CollectionAction::Find => "dictionaryFind",
     })
 }

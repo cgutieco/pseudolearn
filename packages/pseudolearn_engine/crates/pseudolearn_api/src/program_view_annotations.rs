@@ -18,6 +18,7 @@ pub(crate) struct AnnotationContext<'tree> {
 pub(crate) struct CallNames {
     builtins: BTreeMap<(u32, u32), &'static str>,
     effects: BTreeMap<(u32, u32), &'static str>,
+    collections: BTreeMap<(u32, u32), &'static str>,
 }
 
 pub(crate) fn annotate(nodes: &mut [ViewNode], context: &AnnotationContext<'_>) {
@@ -70,6 +71,9 @@ fn postfix_attributes(node: &ViewNode, tree: &SyntaxTree, calls: &CallNames) -> 
     let span = (node.start_byte, node.end_byte);
     if let Some(builtin) = calls.builtins.get(&span) {
         attributes.push(("builtin", json!(builtin)));
+    }
+    if let Some(operation) = calls.collections.get(&span) {
+        attributes.push(("collection_operation", json!(operation)));
     }
     if let Some(operation) = calls.effects.get(&span) {
         attributes.push(("effect_operation", json!(operation)));
@@ -178,10 +182,23 @@ fn call_names(context: &AnnotationContext<'_>) -> CallNames {
     let mut calls = CallNames {
         builtins: BTreeMap::new(),
         effects: BTreeMap::new(),
+        collections: BTreeMap::new(),
     };
     for (kind, span) in expressions.kinds.iter().zip(&expressions.spans) {
         let key = (span.start, span.ending);
         match kind {
+            HirExpression::Collection(call) => {
+                use pseudolearn_semantic::collection_model::CollectionAction;
+                let identity = match call.action {
+                    CollectionAction::Sort => "vectorSort",
+                    CollectionAction::Reverse => "vectorReverse",
+                    CollectionAction::IndexOf => "vectorIndexOf",
+                    CollectionAction::Contains => "vectorContains",
+                    CollectionAction::Keys => "dictionaryKeys",
+                    _ => continue,
+                };
+                calls.collections.insert(key, identity);
+            }
             HirExpression::Builtin { function, .. } => {
                 calls.builtins.insert(key, function.as_str());
             }

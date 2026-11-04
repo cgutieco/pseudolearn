@@ -39,7 +39,7 @@
 # Modelo de funciones incorporadas
 
 ```definicion
- {
+{
   "id": "D1",
   "termino": "functions",
   "texto": "Identidad, nombres, alias y firma de cada función incorporada.",
@@ -486,10 +486,162 @@
         "anyClass"
       ],
       "retorno": "sameAsFirstArgument"
+    },
+    "minimum": {
+      "family": "numbers",
+      "lexemas": {
+        "es": "min",
+        "en": "min"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "numeric",
+        "numeric"
+      ],
+      "retorno": "widestNumeric"
+    },
+    "maximum": {
+      "family": "numbers",
+      "lexemas": {
+        "es": "max",
+        "en": "max"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "numeric",
+        "numeric"
+      ],
+      "retorno": "widestNumeric"
+    },
+    "floor": {
+      "family": "numbers",
+      "lexemas": {
+        "es": "piso",
+        "en": "floor"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "numeric"
+      ],
+      "retorno": "integer"
+    },
+    "ceiling": {
+      "family": "numbers",
+      "lexemas": {
+        "es": "techo",
+        "en": "ceil"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "numeric"
+      ],
+      "retorno": "integer"
+    },
+    "tangent": {
+      "family": "numbers",
+      "lexemas": {
+        "es": "tan",
+        "en": "tan"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "numeric"
+      ],
+      "retorno": "real"
+    },
+    "arcSine": {
+      "family": "numbers",
+      "lexemas": {
+        "es": "asen",
+        "en": "asin"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "numeric"
+      ],
+      "retorno": "real"
+    },
+    "arcCosine": {
+      "family": "numbers",
+      "lexemas": {
+        "es": "acos",
+        "en": "acos"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "numeric"
+      ],
+      "retorno": "real"
+    },
+    "arcTangent2": {
+      "family": "numbers",
+      "lexemas": {
+        "es": "atan2",
+        "en": "atan2"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "numeric",
+        "numeric"
+      ],
+      "retorno": "real"
+    },
+    "logarithm10": {
+      "family": "numbers",
+      "lexemas": {
+        "es": "log10",
+        "en": "log10"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "numeric"
+      ],
+      "retorno": "real"
+    },
+    "logarithm2": {
+      "family": "numbers",
+      "lexemas": {
+        "es": "log2",
+        "en": "log2"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "numeric"
+      ],
+      "retorno": "real"
     }
   }
 }
-
 ```
 
 ```regla
@@ -1299,7 +1451,9 @@
         "receiver": "http_request",
         "es": "ConLimiteRespuesta",
         "en": "withResponseLimit",
-        "parameters": ["integer"],
+        "parameters": [
+          "integer"
+        ],
         "result": "http_request",
         "effect": false,
         "fallible": false
@@ -1310,7 +1464,9 @@
         "receiver": "http_request",
         "es": "ConTiempoMaximo",
         "en": "withTimeout",
-        "parameters": ["integer"],
+        "parameters": [
+          "integer"
+        ],
         "result": "http_request",
         "effect": false,
         "fallible": false
@@ -1321,7 +1477,9 @@
         "receiver": "http_request",
         "es": "Redirigida",
         "en": "redirected",
-        "parameters": ["http_response"],
+        "parameters": [
+          "http_response"
+        ],
         "result": "http_request",
         "effect": false,
         "fallible": true

@@ -59,3 +59,9 @@ completo.
 
 El esquema de contraste masivo sigue a las campañas de validación de CORE-MATH (comparación bit a bit
 contra una referencia de precisión múltiple); aquí la referencia es el oráculo racional propio de SEE.
+
+## Ampliación numérica y de colecciones
+
+El intercambio incluye tan, asin, acos, atan2, log2 y log10. atan2 recibe dos patrones binarios por línea; las otras cinco funciones reciben uno. El sondeo evalúa sin decidir esperados.
+
+El sondeo admite un subconjunto no vacío de archivos de funciones conocidas, para campañas dirigidas. Rechaza un directorio inexistente o sin argumentos. SEE permite seleccionar las mismas funciones con --only y conserva la semilla y el conteo en el manifiesto.

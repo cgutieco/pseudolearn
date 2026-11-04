@@ -55,7 +55,7 @@ fn variant(
     state.context.module.variants.get(&record).cloned()
 }
 
-fn jump(
+pub(crate) fn jump(
     target: pseudolearn_ir::BlockId,
     arguments: Vec<ValueId>,
     state: &mut ExpressionState<'_, '_>,
@@ -70,7 +70,7 @@ fn jump(
     );
 }
 
-fn merge_values(
+pub(crate) fn merge_values(
     variant: &pseudolearn_semantic::variant_model::HirVariant,
     merge: pseudolearn_ir::BlockId,
     state: &mut ExpressionState<'_, '_>,

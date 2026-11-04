@@ -1,9 +1,11 @@
 #![forbid(unsafe_code)]
 
 mod character;
+mod extended_math;
 mod integer;
 mod logical;
 mod mathematics;
+pub(crate) use extended_math::*;
 mod real;
 
 use pseudolearn_runtime::ArithmeticError;

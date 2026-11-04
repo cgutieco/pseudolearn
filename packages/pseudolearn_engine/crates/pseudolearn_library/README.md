@@ -161,3 +161,7 @@ plazo externo.
 `Redirigida` también construye una petición inmutable, pero puede fallar por política de seguridad.
 El despacho pasa esa operación local y fallible al runtime para devolver `Resultado<PeticionHttp,
 ErrorES>` sin conceder autoridad de red ni enviar la petición.
+
+## Ampliación numérica y de colecciones
+
+tan, asin, acos, atan2, log2 y log10 usan intervalos arbitrarios y escalada de Ziv. Los dominios y resultados exactos se resuelven explícitamente; atan2 conserva cuadrantes y ceros con signo. Piso y techo devuelven i64 comprobado. La copia y confirmación de colecciones se delegan al runtime.

@@ -15412,6 +15412,1236 @@
             ]
           }
         }
+      },
+      {
+        "id": "help.pgs03.minimum",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pgs03_minimum"
+        },
+        "tokens": [
+          {
+            "identity": "minimum",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.CORE.MATH",
+            "version": "1.0.0",
+            "element": "R3"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "min",
+            "summary": "Devuelve el menor de dos números; conserva enteros si ambos lo son.",
+            "purpose": "Devuelve el menor de dos números; conserva enteros si ambos lo son.",
+            "parts": [
+              {
+                "identity": "minimum",
+                "text": "Devuelve el menor de dos números; conserva enteros si ambos lo son."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C11",
+                "kind": "executable",
+                "label": "min",
+                "profile": "es",
+                "specification": "LIB.CORE.MATH",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "min",
+            "summary": "Returns the smaller number, preserving integers when both arguments are integers.",
+            "purpose": "Returns the smaller number, preserving integers when both arguments are integers.",
+            "parts": [
+              {
+                "identity": "minimum",
+                "text": "Returns the smaller number, preserving integers when both arguments are integers."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C11",
+                "kind": "executable",
+                "label": "min",
+                "profile": "en",
+                "specification": "LIB.CORE.MATH",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pgs03.maximum",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pgs03_maximum"
+        },
+        "tokens": [
+          {
+            "identity": "maximum",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.CORE.MATH",
+            "version": "1.0.0",
+            "element": "R3"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "max",
+            "summary": "Devuelve el mayor de dos números; conserva enteros si ambos lo son.",
+            "purpose": "Devuelve el mayor de dos números; conserva enteros si ambos lo son.",
+            "parts": [
+              {
+                "identity": "maximum",
+                "text": "Devuelve el mayor de dos números; conserva enteros si ambos lo son."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C11",
+                "kind": "executable",
+                "label": "max",
+                "profile": "es",
+                "specification": "LIB.CORE.MATH",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "max",
+            "summary": "Returns the larger number, preserving integers when both arguments are integers.",
+            "purpose": "Returns the larger number, preserving integers when both arguments are integers.",
+            "parts": [
+              {
+                "identity": "maximum",
+                "text": "Returns the larger number, preserving integers when both arguments are integers."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C11",
+                "kind": "executable",
+                "label": "max",
+                "profile": "en",
+                "specification": "LIB.CORE.MATH",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pgs03.floor",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pgs03_floor"
+        },
+        "tokens": [
+          {
+            "identity": "floor",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.CORE.ROUNDING",
+            "version": "1.0.0",
+            "element": "R2"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "piso",
+            "summary": "Devuelve el entero más grande que no supera el número recibido.",
+            "purpose": "Devuelve el entero más grande que no supera el número recibido.",
+            "parts": [
+              {
+                "identity": "floor",
+                "text": "Devuelve el entero más grande que no supera el número recibido."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C4",
+                "kind": "executable",
+                "label": "piso",
+                "profile": "es",
+                "specification": "LIB.CORE.ROUNDING",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "floor",
+            "summary": "Returns the largest integer no greater than the argument.",
+            "purpose": "Returns the largest integer no greater than the argument.",
+            "parts": [
+              {
+                "identity": "floor",
+                "text": "Returns the largest integer no greater than the argument."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C4",
+                "kind": "executable",
+                "label": "floor",
+                "profile": "en",
+                "specification": "LIB.CORE.ROUNDING",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pgs03.ceiling",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pgs03_ceiling"
+        },
+        "tokens": [
+          {
+            "identity": "ceiling",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.CORE.ROUNDING",
+            "version": "1.0.0",
+            "element": "R2"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "techo",
+            "summary": "Devuelve el entero más pequeño que no es menor que el número recibido.",
+            "purpose": "Devuelve el entero más pequeño que no es menor que el número recibido.",
+            "parts": [
+              {
+                "identity": "ceiling",
+                "text": "Devuelve el entero más pequeño que no es menor que el número recibido."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C4",
+                "kind": "executable",
+                "label": "techo",
+                "profile": "es",
+                "specification": "LIB.CORE.ROUNDING",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "ceil",
+            "summary": "Returns the smallest integer no smaller than the argument.",
+            "purpose": "Returns the smallest integer no smaller than the argument.",
+            "parts": [
+              {
+                "identity": "ceiling",
+                "text": "Returns the smallest integer no smaller than the argument."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C4",
+                "kind": "executable",
+                "label": "ceil",
+                "profile": "en",
+                "specification": "LIB.CORE.ROUNDING",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pgs03.tangent",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pgs03_tangent"
+        },
+        "tokens": [
+          {
+            "identity": "tangent",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.CORE.MATH",
+            "version": "1.0.0",
+            "element": "R2"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "tan",
+            "summary": "Calcula la tangente de un ángulo expresado en radianes.",
+            "purpose": "Calcula la tangente de un ángulo expresado en radianes.",
+            "parts": [
+              {
+                "identity": "tangent",
+                "text": "Calcula la tangente de un ángulo expresado en radianes."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C6",
+                "kind": "executable",
+                "label": "tan",
+                "profile": "es",
+                "specification": "LIB.CORE.MATH",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "tan",
+            "summary": "Computes the tangent of an angle in radians.",
+            "purpose": "Computes the tangent of an angle in radians.",
+            "parts": [
+              {
+                "identity": "tangent",
+                "text": "Computes the tangent of an angle in radians."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C6",
+                "kind": "executable",
+                "label": "tan",
+                "profile": "en",
+                "specification": "LIB.CORE.MATH",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pgs03.arc_sine",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pgs03_arc_sine"
+        },
+        "tokens": [
+          {
+            "identity": "arcSine",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.CORE.MATH",
+            "version": "1.0.0",
+            "element": "R2"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "asen",
+            "summary": "Devuelve el arcoseno en radianes; el argumento debe estar entre menos uno y uno.",
+            "purpose": "Devuelve el arcoseno en radianes; el argumento debe estar entre menos uno y uno.",
+            "parts": [
+              {
+                "identity": "arcSine",
+                "text": "Devuelve el arcoseno en radianes; el argumento debe estar entre menos uno y uno."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C6",
+                "kind": "executable",
+                "label": "asen",
+                "profile": "es",
+                "specification": "LIB.CORE.MATH",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "asin",
+            "summary": "Returns the arcsine in radians; the argument must be between minus one and one.",
+            "purpose": "Returns the arcsine in radians; the argument must be between minus one and one.",
+            "parts": [
+              {
+                "identity": "arcSine",
+                "text": "Returns the arcsine in radians; the argument must be between minus one and one."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C6",
+                "kind": "executable",
+                "label": "asin",
+                "profile": "en",
+                "specification": "LIB.CORE.MATH",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pgs03.arc_cosine",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pgs03_arc_cosine"
+        },
+        "tokens": [
+          {
+            "identity": "arcCosine",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.CORE.MATH",
+            "version": "1.0.0",
+            "element": "R2"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "acos",
+            "summary": "Devuelve el arcocoseno en radianes; el argumento debe estar entre menos uno y uno.",
+            "purpose": "Devuelve el arcocoseno en radianes; el argumento debe estar entre menos uno y uno.",
+            "parts": [
+              {
+                "identity": "arcCosine",
+                "text": "Devuelve el arcocoseno en radianes; el argumento debe estar entre menos uno y uno."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C6",
+                "kind": "executable",
+                "label": "acos",
+                "profile": "es",
+                "specification": "LIB.CORE.MATH",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "acos",
+            "summary": "Returns the arccosine in radians; the argument must be between minus one and one.",
+            "purpose": "Returns the arccosine in radians; the argument must be between minus one and one.",
+            "parts": [
+              {
+                "identity": "arcCosine",
+                "text": "Returns the arccosine in radians; the argument must be between minus one and one."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C6",
+                "kind": "executable",
+                "label": "acos",
+                "profile": "en",
+                "specification": "LIB.CORE.MATH",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pgs03.arc_tangent2",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pgs03_arc_tangent2"
+        },
+        "tokens": [
+          {
+            "identity": "arcTangent2",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.CORE.MATH",
+            "version": "1.0.0",
+            "element": "R2"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "atan2",
+            "summary": "Devuelve el ángulo en radianes de la coordenada (x, y); recibe primero y y luego x.",
+            "purpose": "Devuelve el ángulo en radianes de la coordenada (x, y); recibe primero y y luego x.",
+            "parts": [
+              {
+                "identity": "arcTangent2",
+                "text": "Devuelve el ángulo en radianes de la coordenada (x, y); recibe primero y y luego x."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C6",
+                "kind": "executable",
+                "label": "atan2",
+                "profile": "es",
+                "specification": "LIB.CORE.MATH",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "atan2",
+            "summary": "Returns the angle in radians for the coordinate (x, y); takes y first, then x.",
+            "purpose": "Returns the angle in radians for the coordinate (x, y); takes y first, then x.",
+            "parts": [
+              {
+                "identity": "arcTangent2",
+                "text": "Returns the angle in radians for the coordinate (x, y); takes y first, then x."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C6",
+                "kind": "executable",
+                "label": "atan2",
+                "profile": "en",
+                "specification": "LIB.CORE.MATH",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pgs03.logarithm10",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pgs03_logarithm10"
+        },
+        "tokens": [
+          {
+            "identity": "logarithm10",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.CORE.MATH",
+            "version": "1.0.0",
+            "element": "R2"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "log10",
+            "summary": "Calcula el logaritmo en base diez de un número positivo.",
+            "purpose": "Calcula el logaritmo en base diez de un número positivo.",
+            "parts": [
+              {
+                "identity": "logarithm10",
+                "text": "Calcula el logaritmo en base diez de un número positivo."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C6",
+                "kind": "executable",
+                "label": "log10",
+                "profile": "es",
+                "specification": "LIB.CORE.MATH",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "log10",
+            "summary": "Computes the base-ten logarithm of a positive number.",
+            "purpose": "Computes the base-ten logarithm of a positive number.",
+            "parts": [
+              {
+                "identity": "logarithm10",
+                "text": "Computes the base-ten logarithm of a positive number."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C6",
+                "kind": "executable",
+                "label": "log10",
+                "profile": "en",
+                "specification": "LIB.CORE.MATH",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pgs03.logarithm2",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pgs03_logarithm2"
+        },
+        "tokens": [
+          {
+            "identity": "logarithm2",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.CORE.MATH",
+            "version": "1.0.0",
+            "element": "R2"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "log2",
+            "summary": "Calcula el logaritmo en base dos de un número positivo.",
+            "purpose": "Calcula el logaritmo en base dos de un número positivo.",
+            "parts": [
+              {
+                "identity": "logarithm2",
+                "text": "Calcula el logaritmo en base dos de un número positivo."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C6",
+                "kind": "executable",
+                "label": "log2",
+                "profile": "es",
+                "specification": "LIB.CORE.MATH",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "log2",
+            "summary": "Computes the base-two logarithm of a positive number.",
+            "purpose": "Computes the base-two logarithm of a positive number.",
+            "parts": [
+              {
+                "identity": "logarithm2",
+                "text": "Computes the base-two logarithm of a positive number."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C6",
+                "kind": "executable",
+                "label": "log2",
+                "profile": "en",
+                "specification": "LIB.CORE.MATH",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pgs02.vector_sort",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pgs02_vector_sort"
+        },
+        "tokens": [
+          {
+            "identity": "vectorSort",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LANG.TYPES.VECTOR",
+            "version": "1.0.0",
+            "element": "R4"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Ordenar",
+            "summary": "Ordena el vector de forma estable; acepta opcionalmente un comparador de dos elementos que devuelve un entero.",
+            "purpose": "Ordena el vector de forma estable; acepta opcionalmente un comparador de dos elementos que devuelve un entero.",
+            "parts": [
+              {
+                "identity": "vectorSort",
+                "text": "Ordena el vector de forma estable; acepta opcionalmente un comparador de dos elementos que devuelve un entero."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C12",
+                "kind": "executable",
+                "label": "Ordenar",
+                "profile": "es",
+                "specification": "LANG.TYPES.VECTOR",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "sort",
+            "summary": "Sorts the vector stably; optionally takes a comparator of two elements returning an integer.",
+            "purpose": "Sorts the vector stably; optionally takes a comparator of two elements returning an integer.",
+            "parts": [
+              {
+                "identity": "vectorSort",
+                "text": "Sorts the vector stably; optionally takes a comparator of two elements returning an integer."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C12",
+                "kind": "executable",
+                "label": "sort",
+                "profile": "en",
+                "specification": "LANG.TYPES.VECTOR",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pgs02.vector_reverse",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pgs02_vector_reverse"
+        },
+        "tokens": [
+          {
+            "identity": "vectorReverse",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LANG.TYPES.VECTOR",
+            "version": "1.0.0",
+            "element": "R4"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Invertir",
+            "summary": "Invierte el orden de los elementos del mismo vector.",
+            "purpose": "Invierte el orden de los elementos del mismo vector.",
+            "parts": [
+              {
+                "identity": "vectorReverse",
+                "text": "Invierte el orden de los elementos del mismo vector."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C12",
+                "kind": "executable",
+                "label": "Invertir",
+                "profile": "es",
+                "specification": "LANG.TYPES.VECTOR",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "reverse",
+            "summary": "Reverses the elements of the same vector.",
+            "purpose": "Reverses the elements of the same vector.",
+            "parts": [
+              {
+                "identity": "vectorReverse",
+                "text": "Reverses the elements of the same vector."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C12",
+                "kind": "executable",
+                "label": "reverse",
+                "profile": "en",
+                "specification": "LANG.TYPES.VECTOR",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pgs02.vector_index_of",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pgs02_vector_index_of"
+        },
+        "tokens": [
+          {
+            "identity": "vectorIndexOf",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LANG.TYPES.VECTOR",
+            "version": "1.0.0",
+            "element": "R5"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "PosicionDe",
+            "summary": "Devuelve la primera posición del elemento o Nada si no se encuentra.",
+            "purpose": "Devuelve la primera posición del elemento o Nada si no se encuentra.",
+            "parts": [
+              {
+                "identity": "vectorIndexOf",
+                "text": "Devuelve la primera posición del elemento o Nada si no se encuentra."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C15",
+                "kind": "executable",
+                "label": "PosicionDe",
+                "profile": "es",
+                "specification": "LANG.TYPES.VECTOR",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "indexOf",
+            "summary": "Returns the first position of the element, or none when it is absent.",
+            "purpose": "Returns the first position of the element, or none when it is absent.",
+            "parts": [
+              {
+                "identity": "vectorIndexOf",
+                "text": "Returns the first position of the element, or none when it is absent."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C15",
+                "kind": "executable",
+                "label": "indexOf",
+                "profile": "en",
+                "specification": "LANG.TYPES.VECTOR",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pgs02.vector_contains",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pgs02_vector_contains"
+        },
+        "tokens": [
+          {
+            "identity": "vectorContains",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LANG.TYPES.VECTOR",
+            "version": "1.0.0",
+            "element": "R5"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Contiene",
+            "summary": "Indica si el vector contiene un elemento con el mismo valor.",
+            "purpose": "Indica si el vector contiene un elemento con el mismo valor.",
+            "parts": [
+              {
+                "identity": "vectorContains",
+                "text": "Indica si el vector contiene un elemento con el mismo valor."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C15",
+                "kind": "executable",
+                "label": "Contiene",
+                "profile": "es",
+                "specification": "LANG.TYPES.VECTOR",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "contains",
+            "summary": "Reports whether the vector contains an element with the same value.",
+            "purpose": "Reports whether the vector contains an element with the same value.",
+            "parts": [
+              {
+                "identity": "vectorContains",
+                "text": "Reports whether the vector contains an element with the same value."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C15",
+                "kind": "executable",
+                "label": "contains",
+                "profile": "en",
+                "specification": "LANG.TYPES.VECTOR",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pgs02.dictionary_keys",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pgs02_dictionary_keys"
+        },
+        "tokens": [
+          {
+            "identity": "dictionaryKeys",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LANG.TYPES.DICTIONARY",
+            "version": "1.0.0",
+            "element": "R4"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Claves",
+            "summary": "Copia las claves a un vector nuevo en orden de inserción.",
+            "purpose": "Copia las claves a un vector nuevo en orden de inserción.",
+            "parts": [
+              {
+                "identity": "dictionaryKeys",
+                "text": "Copia las claves a un vector nuevo en orden de inserción."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C11",
+                "kind": "executable",
+                "label": "Claves",
+                "profile": "es",
+                "specification": "LANG.TYPES.DICTIONARY",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "keys",
+            "summary": "Copies the keys to a new vector in insertion order.",
+            "purpose": "Copies the keys to a new vector in insertion order.",
+            "parts": [
+              {
+                "identity": "dictionaryKeys",
+                "text": "Copies the keys to a new vector in insertion order."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C11",
+                "kind": "executable",
+                "label": "keys",
+                "profile": "en",
+                "specification": "LANG.TYPES.DICTIONARY",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
       }
     ],
     "exclusions": [],
@@ -17514,6 +18744,201 @@
           ],
           "tokens": [
             "text_to_lower"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pgs03_minimum"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "minimum"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pgs03_maximum"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "maximum"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pgs03_floor"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "floor"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pgs03_ceiling"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "ceiling"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pgs03_tangent"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "tangent"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pgs03_arc_sine"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "arcSine"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pgs03_arc_cosine"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "arcCosine"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pgs03_arc_tangent2"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "arcTangent2"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pgs03_logarithm10"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "logarithm10"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pgs03_logarithm2"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "logarithm2"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pgs02_vector_sort"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "vectorSort"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pgs02_vector_reverse"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "vectorReverse"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pgs02_vector_index_of"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "vectorIndexOf"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pgs02_vector_contains"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "vectorContains"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pgs02_dictionary_keys"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "dictionaryKeys"
           ]
         }
       ]

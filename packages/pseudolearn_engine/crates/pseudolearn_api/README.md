@@ -448,3 +448,11 @@ operación independiente que llegue mientras se está preparando una capacidad s
 cerrar esa preparación. La entrega queda serializada y grabada por el motor, sin repetir solicitudes.
 Los lotes públicos conservan receptor, límites efectivos y token de resultado; no son solicitudes
 incompletas reconstruidas por el consumidor.
+
+## Ampliación numérica y de colecciones
+
+La vista pública añade collection_operation para vectorSort, vectorReverse, vectorIndexOf, vectorContains y dictionaryKeys. Los consumidores leen esta identidad del análisis semántico y no la deducen del texto.
+
+## Contratos adicionales de verificación
+
+Las pruebas de ordenación contrastan estabilidad y multiconjunto con una semilla fija sobre entradas vacías, unitarias y con claves repetidas. La prueba de 100 000 elementos verifica cada posición, además de los extremos; las pruebas de error conservan el tramo de la llamada de usuario.

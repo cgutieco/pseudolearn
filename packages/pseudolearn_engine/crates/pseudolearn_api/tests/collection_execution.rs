@@ -1,4 +1,4 @@
-use pseudolearn_api::{ExecuteRequest, execute_program};
+use pseudolearn_api::{ExecuteRequest, ExecutionLimits, execute_program};
 use serde_json::Value;
 
 #[cfg(feature = "native")]
@@ -15,14 +15,23 @@ const SOURCES: &[&str] = &[
 ];
 
 fn cases() -> Result<Vec<Value>, String> {
-    SOURCES
-        .iter()
-        .flat_map(|source| source.split("```caso\n").skip(1))
-        .map(|block| {
-            serde_json::from_str(block.split("\n```").next().ok_or("missing case")?)
-                .map_err(|error| error.to_string())
-        })
-        .collect()
+    let mut cases = Vec::new();
+    for source in SOURCES {
+        let metadata: Value =
+            serde_json::from_str(source.split("---").nth(1).ok_or("missing metadata")?)
+                .map_err(|error| error.to_string())?;
+        for block in source.split("```caso\n").skip(1) {
+            let mut case: Value =
+                serde_json::from_str(block.split("\n```").next().ok_or("missing case")?)
+                    .map_err(|error| error.to_string())?;
+            case.as_object_mut().ok_or("invalid case")?.insert(
+                "specification".to_owned(),
+                metadata.get("id").cloned().ok_or("missing identity")?,
+            );
+            cases.push(case);
+        }
+    }
+    Ok(cases)
 }
 
 fn requests(case: &Value) -> Result<Vec<ExecuteRequest>, String> {
@@ -36,6 +45,10 @@ fn requests(case: &Value) -> Result<Vec<ExecuteRequest>, String> {
             program: program.as_str().ok_or("invalid program")?.to_owned(),
             profile: profile.clone(),
             host: case.get("anfitrion").cloned(),
+            limits: ExecutionLimits {
+                cells: case.pointer("/limites/celdas").and_then(Value::as_u64),
+                ..Default::default()
+            },
             ..Default::default()
         });
     }
@@ -115,10 +128,34 @@ fn native_collections_and_cleanup_match_vm() -> Result<(), String> {
             .pointer("/programas/es")
             .and_then(Value::as_str)
             .ok_or("missing program")?;
-        if program.contains("Tareas") {
+        if program.contains("Tareas") || native_pending(case)? {
             continue;
         }
         native_support::compare(program)?;
     }
     Ok(())
+}
+
+#[cfg(feature = "native")]
+fn native_pending(case: &Value) -> Result<bool, String> {
+    let bindings: Value = serde_json::from_str(include_str!("../../../conformance-aot.yaml"))
+        .map_err(|error| error.to_string())?;
+    let specification = case
+        .get("specification")
+        .and_then(Value::as_str)
+        .ok_or("missing identity")?;
+    let rule = case
+        .get("regla")
+        .and_then(Value::as_str)
+        .ok_or("missing rule")?;
+    let reference = format!("{specification}@1.0.0#{rule}");
+    Ok(bindings
+        .get("vinculos")
+        .and_then(Value::as_array)
+        .ok_or("missing bindings")?
+        .iter()
+        .any(|binding| {
+            binding.get("regla").and_then(Value::as_str) == Some(&reference)
+                && binding.get("estado").and_then(Value::as_str) == Some("pendiente")
+        }))
 }

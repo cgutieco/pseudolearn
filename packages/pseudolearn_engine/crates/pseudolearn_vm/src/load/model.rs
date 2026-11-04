@@ -141,6 +141,7 @@ pub(crate) struct LoadedFunction {
     pub roots: std::collections::BTreeMap<usize, Vec<(u16, bool)>>,
     pub probed_roots: std::collections::BTreeMap<usize, Vec<(u16, bool)>>,
     pub effect_sites: Vec<EffectSite>,
+    pub extended_scalars: Vec<super::extended_scalar::ScalarSite>,
 }
 
 impl LoadedFunction {

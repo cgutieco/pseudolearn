@@ -42,3 +42,38 @@ Las propiedades de ejecución contrastan resultados derivados por reglas. Ningú
 ## 8. Fuentes consultadas y genealogía conceptual
 
 [rust-num](https://github.com/rust-num/num-rational) aporta BigRational sobre BigInt bajo MIT/Apache-2.0. Se toma la aritmética racional exacta y se rechazan sus conversiones flotantes como criterio de redondeo del oráculo. Las bibliotecas externas son infraestructura, nunca autoridad sobre el comportamiento de PseudoLearn.
+
+## Ampliación numérica y de colecciones
+
+El oráculo incorpora tangente, arcoseno, arcocoseno, arcotangente de dos argumentos y logaritmos en bases dos y diez. Usa intervalos racionales independientes y resuelve resultados exactos antes del refinamiento. Los ceros con signo se tratan antes de convertir a racional.
+
+Para el contraste masivo, cada hilo conserva un único intervalo de pi/4 y su precisión, calculado
+por las mismas series racionales independientes. Solicitar una precisión mayor sustituye esa entrada; no hay
+un almacén que crezca con las muestras. Tras reducir un ángulo grande se acota su centro a la
+precisión de salida más 32 bits; el radio incorpora el ancho completo de esa nueva cota, además
+del radio de reducción. Mantener los bits del exponente original después de reducir no aumenta la
+certeza del resultado, pero encarece innecesariamente todas las series racionales posteriores.
+
+Las series de arcotangente, logaritmo, seno y coseno conservan intervalos racionales con extremos
+diádicos de precisión acotada después de cada suma y producto. Cada compresión redondea hacia
+afuera; el intervalo conserva esos errores además de la cota analítica del resto de la serie.
+Se reutiliza la misma infraestructura racional que ya acota la exponencial. Esto evita el crecimiento
+de numeradores y denominadores exactos de miles de bits por término; no comparte la representación
+ni los algoritmos de redondeo del motor. El refinamiento sigue decidiendo por coincidencia de ambos extremos.
+
+Los intervalos de ln(2) y ln(10) también conservan una única entrada por hilo y precisión;
+la memoria no depende del número de argumentos contrastados. La multiplicación de intervalos
+usa dos extremos cuando el signo determina los productos mínimo y máximo; conserva los cuatro
+productos cuando ambos intervalos cruzan cero. El escalado ordena sus dos extremos según el signo
+del factor. Los tests cubren todos los pares de signos y los intervalos degenerados.
+
+Para tangente y arcoseno con valor absoluto menor o igual a 1/4, el intervalo racional
+[x − 2|x|³, x + 2|x|³] contiene el resultado. En tangente, sen(t) ≤ t y cos(t) ≥ 1 − t²/2
+acotan tan(t) ≤ 2t; integrar tan²(t) acota la diferencia por 4|x|³/3. En arcoseno,
+1/raíz(1 − t²) − 1 ≤ t² en ese rango. El oráculo acepta esa cota solo cuando ambos
+extremos redondean al mismo patrón binario; en otro caso continúa el refinamiento.
+La primera cota de la serie alternante de atan usa x ± |x|³/3 antes de comprimir.
+Estas rutas evitan escalar precisión absoluta para subnormales ya decididos por cotas analíticas.
+El intervalo de pi/4 se calcula inicialmente con al menos 1280 bits, suficiente para reducir
+argumentos binario64 en la precisión inicial; una solicitud mayor lo sustituye. Al consumirlo
+se comprime hacia afuera a la precisión solicitada más 16 bits, conservando una sola entrada.

@@ -1,14 +1,18 @@
 #![forbid(unsafe_code)]
 
+mod bounded_series;
 pub mod cells;
 mod dyadic;
 mod exact_power;
+mod extended;
 pub mod integer_expression;
 pub mod interval;
 pub mod mathematics;
+pub use extended::atan2;
 mod rational;
 pub mod rounding;
 mod series;
+mod small_angle;
 mod transcendentals;
 
 pub fn integer_sum(left: i64, right: i64) -> Result<i64, String> {

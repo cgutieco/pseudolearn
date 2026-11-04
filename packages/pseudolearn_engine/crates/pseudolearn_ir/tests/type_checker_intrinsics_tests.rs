@@ -9,7 +9,9 @@ fn verify(source_text: &str) -> Result<(), &'static str> {
 
 #[test]
 fn infers_real_results_for_mathematical_intrinsics() {
-    for name in ["sqrt", "abs", "ln", "exp", "sin", "cos", "atan"] {
+    for name in [
+        "sqrt", "abs", "ln", "exp", "sin", "cos", "atan", "tan", "asin", "acos", "log2", "log10",
+    ] {
         let source = format!(
             "module P es\nfunc @main() -> f64 {{\nb0() mass 0:\n  %0 = const.f64 2.0\n  %1 = math.{name} %0 @1:1-1:2\n  %2 = real.add %1, %0 @1:1-1:2\n  return %2\n}}\n"
         );
@@ -32,5 +34,11 @@ fn rejects_an_integer_argument_to_a_mathematical_intrinsic() {
 #[test]
 fn rejects_a_real_argument_to_character_from_code() {
     let source = "module P es\nfunc @main() -> char {\nb0() mass 0:\n  %0 = const.f64 65.0\n  %1 = char.from_code %0 @1:1-1:2\n  return %1\n}\n";
+    assert_eq!(verify(source), Err("IR.WELL-FORMEDNESS#R3"));
+}
+
+#[test]
+fn binary_extrema_reject_mixed_ir_types() {
+    let source = "module P en\nfunc @main() -> i64 {\nb0() mass 0:\n%0 = const.i64 2\n%1 = const.f64 3.0\n%2 = int.min %0, %1 @1:1-1:2\nreturn %2\n}\n";
     assert_eq!(verify(source), Err("IR.WELL-FORMEDNESS#R3"));
 }

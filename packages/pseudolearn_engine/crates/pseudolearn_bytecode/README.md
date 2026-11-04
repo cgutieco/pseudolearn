@@ -114,3 +114,7 @@ el bytecode conserva esos destinos en ambos gemelos.
 `verify_task_types` reutiliza el comprobador de tipos de RI para rechazar operandos y bancos inválidos
 en las operaciones de tarea antes de cargarlas; los tests negativos alteran el comando, sus operandos
 y el banco de resultado. Así no se mantiene una segunda copia del contrato de tipos.
+
+## Contratos adicionales de verificación
+
+`collection.clone` es un punto de raíces: la copia temporal usada por la ordenación puede cruzar el umbral de recolección durante su reserva. Ambos gemelos conservan las referencias vivas del llamador y del comparador antes de iniciar esa copia.

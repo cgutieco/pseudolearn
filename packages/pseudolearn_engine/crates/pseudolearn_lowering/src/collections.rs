@@ -32,6 +32,11 @@ pub(crate) fn values(
         HirExpression::Element { array, indices } => element(array, &indices, span, state),
         HirExpression::Collection(call) => {
             let model = state.context.module.collections.get(&call.class)?.clone();
+            if call.action == CollectionAction::IndexOf {
+                return Some(crate::collection_extensions::index_optional(
+                    expression, &call, span, state,
+                ));
+            }
             if model.key.is_some()
                 && matches!(
                     call.action,
@@ -55,20 +60,17 @@ fn call_value(
     span: Option<IrSpan>,
     state: &mut ExpressionState<'_, '_>,
 ) -> ValueId {
+    if matches!(
+        call.action,
+        CollectionAction::Sort
+            | CollectionAction::Reverse
+            | CollectionAction::Contains
+            | CollectionAction::Keys
+    ) {
+        return crate::collection_extensions::lower(call, model, span, state);
+    }
     if call.action == CollectionAction::New {
-        let name = state
-            .context
-            .module
-            .classes
-            .get(usize::try_from(call.class.0).unwrap_or(usize::MAX))
-            .map(|class| class.name.clone())
-            .unwrap_or_default();
-        return emit(
-            Operation::CollectionNew,
-            vec![Operand::Type(pseudolearn_ir::IrType::Object(name))],
-            span,
-            state,
-        );
+        return construct(call, span, state);
     }
     let receiver = call
         .receiver
@@ -243,4 +245,24 @@ fn element(
         key
     };
     Some(load(&model, (receiver, position), span, state))
+}
+
+fn construct(
+    call: &CollectionExpression,
+    span: Option<IrSpan>,
+    state: &mut ExpressionState<'_, '_>,
+) -> ValueId {
+    let name = state
+        .context
+        .module
+        .classes
+        .get(usize::try_from(call.class.0).unwrap_or(usize::MAX))
+        .map(|class| class.name.clone())
+        .unwrap_or_default();
+    emit(
+        Operation::CollectionNew,
+        vec![Operand::Type(pseudolearn_ir::IrType::Object(name))],
+        span,
+        state,
+    )
 }

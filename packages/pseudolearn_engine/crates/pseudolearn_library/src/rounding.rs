@@ -30,6 +30,14 @@ pub fn round_real(value: f64) -> Result<i64, ArithmeticError> {
     signed_magnitude(rounded, negative)
 }
 
+pub fn floor_real(value: f64) -> Result<i64, ArithmeticError> {
+    truncate_real(value.floor())
+}
+
+pub fn ceiling_real(value: f64) -> Result<i64, ArithmeticError> {
+    truncate_real(value.ceil())
+}
+
 fn round_fraction(mantissa: u64, exponent: i32, magnitude: u64) -> u64 {
     if exponent >= 52 {
         return magnitude;

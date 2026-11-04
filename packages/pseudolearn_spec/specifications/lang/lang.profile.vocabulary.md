@@ -1665,6 +1665,36 @@
         "es": "ContenidoSobrante",
         "en": "TrailingContent"
       }
+    },
+    "vectorSort": {
+      "lexemas": {
+        "es": "Ordenar",
+        "en": "sort"
+      }
+    },
+    "vectorReverse": {
+      "lexemas": {
+        "es": "Invertir",
+        "en": "reverse"
+      }
+    },
+    "vectorIndexOf": {
+      "lexemas": {
+        "es": "PosicionDe",
+        "en": "indexOf"
+      }
+    },
+    "vectorContains": {
+      "lexemas": {
+        "es": "Contiene",
+        "en": "contains"
+      }
+    },
+    "dictionaryKeys": {
+      "lexemas": {
+        "es": "Claves",
+        "en": "keys"
+      }
     }
   }
 }

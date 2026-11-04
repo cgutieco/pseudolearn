@@ -12,6 +12,7 @@ mod checker;
 mod class_registry;
 mod cleanup_checker;
 mod collection_checker;
+mod collection_extensions;
 pub mod collection_model;
 mod collection_types;
 mod constant_arithmetic;

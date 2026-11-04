@@ -283,3 +283,9 @@ necesaria para enviar solicitudes desde tareas suspendibles.
 `inspection_expression` recibe el árbol de una expresión y un entorno explícito de nombres/tipos; reutiliza resolución léxica, operadores, campos e índices del analizador ordinario. Valida el subconjunto sin llamadas antes de comprobar tipos. Cada valor del marco es un parámetro inmutable; los literales de texto se convierten en capturas adicionales para que la ejecución temporal pueda conservar un heap aislado con identidades estables sin reinterpretar texto. No importa API, VM ni timeline.
 
 La inspección reconstruye vistas de registros aplanados desde las capturas léxicas explícitas; el acceso a campos usa el HIR y lowering de registros existentes. Un nombre de arreglo puede inspeccionarse como referencia sin materializar sus celdas. Las llamadas siguen rechazadas aunque sean puras o pertenezcan a una colección.
+
+## Ampliación numérica y de colecciones
+
+Los miembros nuevos se resuelven por identidad contextual del receptor. Ordenar acepta un comparador síncrono por valor de dos argumentos T y resultado Entero. La búsqueda admite primitivos; Claves registra un Vector del tipo de clave. min/max usan widestNumeric y amplían únicamente si participa un Real.
+
+Claves conserva el envoltorio Inmutable al consultar un diccionario inmutable, mediante el mismo contrato de lectura que el resto de los resultados referenciales no transferibles. Una copia nueva no elimina la garantía de tipos del receptor; la búsqueda de primitivos conserva resultados transferibles.

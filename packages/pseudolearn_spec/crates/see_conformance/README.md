@@ -74,3 +74,7 @@ Plan aprobado del sistema SEE. Las bibliotecas externas son infraestructura, nun
 ## Transcripciones DAP
 
 Los casos CLI de depuración entregan el framing completo por entrada estándar. La expectativa `dap` compara listas ordenadas `messages`, `responses` o `events` por campos explícitos, sin fijar secuencias de transporte que el caso no declara. El decodificador cuenta bytes UTF-8 y rechaza framing incompleto, longitud duplicada y límites excedidos. Esta comparación consume la capacidad CLI existente; no anuncia un sujeto DAP ni confunde pruebas de protocolo con otra implementación del lenguaje.
+
+## Contratos adicionales de verificación
+
+El ejecutor `math_oracle` genera programas con esperados calculados por el oráculo racional, incluidas las seis funciones trigonométricas y logarítmicas adicionales y `atan2` con dos argumentos. Conserva ceros con signo y usa literales decimales admitidos por la gramática. La campaña masiva admite seleccionar funciones para conservar argumentos y resultados crudos sin repetir funciones ajenas al cambio.

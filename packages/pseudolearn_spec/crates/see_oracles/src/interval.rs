@@ -1,4 +1,5 @@
 use crate::rational::{self, Rational, integer};
+use num_traits::Signed;
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Interval {
@@ -11,13 +12,6 @@ pub(crate) fn point(value: Rational) -> Interval {
         lower: value.clone(),
         upper: value,
     }
-}
-
-pub(crate) fn around(center: Rational, radius: Rational) -> Result<Interval, String> {
-    Ok(Interval {
-        lower: rational::subtract(&center, &radius)?,
-        upper: rational::add(&center, &radius)?,
-    })
 }
 
 pub(crate) fn add(left: &Interval, right: &Interval) -> Result<Interval, String> {
@@ -35,6 +29,15 @@ pub(crate) fn subtract(left: &Interval, right: &Interval) -> Result<Interval, St
 }
 
 pub(crate) fn multiply(left: &Interval, right: &Interval) -> Result<Interval, String> {
+    if left.lower >= integer(0) {
+        return positive_product(left, right);
+    }
+    if left.upper <= integer(0) {
+        return negative_product(left, right);
+    }
+    if right.lower >= integer(0) || right.upper <= integer(0) {
+        return multiply(right, left);
+    }
     let products = [
         rational::multiply(&left.lower, &right.lower)?,
         rational::multiply(&left.lower, &right.upper)?,
@@ -55,6 +58,40 @@ pub(crate) fn multiply(left: &Interval, right: &Interval) -> Result<Interval, St
     })
 }
 
+fn positive_product(left: &Interval, right: &Interval) -> Result<Interval, String> {
+    let lower = if right.lower >= integer(0) {
+        &left.lower
+    } else {
+        &left.upper
+    };
+    let upper = if right.upper <= integer(0) {
+        &left.lower
+    } else {
+        &left.upper
+    };
+    Ok(Interval {
+        lower: rational::multiply(lower, &right.lower)?,
+        upper: rational::multiply(upper, &right.upper)?,
+    })
+}
+
+fn negative_product(left: &Interval, right: &Interval) -> Result<Interval, String> {
+    let lower = if right.upper <= integer(0) {
+        &left.upper
+    } else {
+        &left.lower
+    };
+    let upper = if right.lower >= integer(0) {
+        &left.upper
+    } else {
+        &left.lower
+    };
+    Ok(Interval {
+        lower: rational::multiply(lower, &right.upper)?,
+        upper: rational::multiply(upper, &right.lower)?,
+    })
+}
+
 pub(crate) fn reciprocal(value: &Interval) -> Result<Interval, String> {
     if value.lower <= integer(0) && value.upper >= integer(0) {
         return Err("ORACLE-INTERVAL-CONTAINS-ZERO".to_owned());
@@ -66,7 +103,15 @@ pub(crate) fn reciprocal(value: &Interval) -> Result<Interval, String> {
 }
 
 pub(crate) fn scale(value: &Interval, factor: &Rational) -> Result<Interval, String> {
-    multiply(value, &point(factor.clone()))
+    let (lower, upper) = if factor.is_negative() {
+        (&value.upper, &value.lower)
+    } else {
+        (&value.lower, &value.upper)
+    };
+    Ok(Interval {
+        lower: rational::multiply(lower, factor)?,
+        upper: rational::multiply(upper, factor)?,
+    })
 }
 
 pub(crate) fn radius(value: &Interval) -> Result<Rational, String> {
@@ -79,3 +124,7 @@ pub(crate) fn radius(value: &Interval) -> Result<Rational, String> {
 pub(crate) fn center(value: &Interval) -> Result<Rational, String> {
     rational::divide(&rational::add(&value.upper, &value.lower)?, &integer(2))
 }
+
+#[cfg(test)]
+#[path = "interval_tests.rs"]
+mod tests;

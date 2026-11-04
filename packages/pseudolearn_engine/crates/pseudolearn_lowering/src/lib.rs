@@ -5,8 +5,13 @@ pub mod builder;
 mod class_density;
 pub mod classes;
 pub mod cleanup_edges;
+mod collection_builder;
+mod collection_extensions;
+mod collection_merge;
 mod collection_optional;
 mod collection_output;
+mod collection_queries;
+mod collection_sort;
 mod collections;
 mod constructor_flow;
 mod dispatch_targets;
@@ -103,6 +108,7 @@ fn lower_with<'sources>(
         crate::lexical_origins::annotate(&mut origins, start, semantic_module, source_text);
     }
 
+    crate::collection_extensions::append(semantic_module, &mut functions);
     crate::task_wrappers::append(semantic_module, &mut functions);
     crate::function_prototypes::append(semantic_module, &mut functions);
     Ok(Module {
@@ -144,3 +150,6 @@ mod yield_points;
 mod snapshot_values;
 
 mod continuation_blocks;
+
+#[cfg(test)]
+mod collection_sort_tests;

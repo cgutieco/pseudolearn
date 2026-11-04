@@ -11,6 +11,11 @@ pub enum Function {
     Sine,
     Cosine,
     Arctangent,
+    Tangent,
+    ArcSine,
+    ArcCosine,
+    Logarithm2,
+    Logarithm10,
 }
 
 pub fn rounded(function: Function, argument: f64) -> Result<f64, String> {
@@ -18,13 +23,26 @@ pub fn rounded(function: Function, argument: f64) -> Result<f64, String> {
     if argument == 0.0
         && matches!(
             function,
-            Function::SquareRoot | Function::Sine | Function::Arctangent
+            Function::SquareRoot
+                | Function::Sine
+                | Function::Arctangent
+                | Function::Tangent
+                | Function::ArcSine
         )
     {
         return Ok(argument);
     }
     if function == Function::Exponential && argument > 1024.0 {
         return Ok(f64::INFINITY);
+    }
+    if function == Function::ArcCosine && argument == 1.0 {
+        return Ok(0.0);
+    }
+    if let Some(exact) = exact_logarithm(function, argument, &exact)? {
+        return Ok(exact);
+    }
+    if let Some(exact) = crate::small_angle::rounded(function, &exact)? {
+        return Ok(exact);
     }
     refine(|precision| enclose(function, &exact, precision))
 }
@@ -82,10 +100,13 @@ pub fn enclose(
         Function::Sine => Ok(transcendentals::sine_cosine(argument, precision)?.0),
         Function::Cosine => Ok(transcendentals::sine_cosine(argument, precision)?.1),
         Function::Arctangent => transcendentals::arctangent(argument, precision),
+        _ => crate::extended::enclose(function, argument, precision),
     }
 }
 
-fn refine(mut enclosure: impl FnMut(i64) -> Result<Interval, String>) -> Result<f64, String> {
+pub(crate) fn refine(
+    mut enclosure: impl FnMut(i64) -> Result<Interval, String>,
+) -> Result<f64, String> {
     let mut precision = 96_i64;
     loop {
         let interval = match enclosure(precision) {
@@ -146,4 +167,39 @@ fn square_root(argument: &Rational, precision: i64) -> Result<Interval, String> 
     }
     let upper = rational::add(&lower, &rational::epsilon(precision)?)?;
     Ok(Interval { lower, upper })
+}
+
+fn exact_logarithm(
+    function: Function,
+    argument: f64,
+    exact: &Rational,
+) -> Result<Option<f64>, String> {
+    if !matches!(function, Function::Logarithm2 | Function::Logarithm10) {
+        return Ok(None);
+    }
+    if argument <= 0.0 {
+        return Err("ORACLE-DOMAIN".to_owned());
+    }
+    if argument == 1.0 {
+        return Ok(Some(0.0));
+    }
+    if function == Function::Logarithm2 {
+        return binary_exponent(exact);
+    }
+    Ok((1..=22)
+        .find(|exponent| integer(10).pow(*exponent) == *exact)
+        .map(f64::from))
+}
+
+fn binary_exponent(exact: &Rational) -> Result<Option<f64>, String> {
+    let numerator = exact.numer().magnitude();
+    let denominator = exact.denom().magnitude();
+    if numerator.count_ones() != 1 || denominator.count_ones() != 1 {
+        return Ok(None);
+    }
+    let left = i32::try_from(numerator.bits()).map_err(|_| arithmetic_error())?;
+    let right = i32::try_from(denominator.bits()).map_err(|_| arithmetic_error())?;
+    Ok(Some(f64::from(
+        left.checked_sub(right).ok_or_else(arithmetic_error)?,
+    )))
 }

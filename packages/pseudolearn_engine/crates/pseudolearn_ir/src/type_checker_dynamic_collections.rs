@@ -13,18 +13,11 @@ pub(crate) fn check(
     let Some(command) = collection_command(operation) else {
         return Ok(None);
     };
-    if command == CollectionCommand::ArrayLength {
-        return array_length(operands, get_type);
-    }
-    if command == CollectionCommand::New {
-        return match operands {
-            [Operand::Type(kind @ IrType::Object(name))]
-                if module.find_class(name).and_then(collection_type).is_some() =>
-            {
-                Ok(Some(kind.clone()))
-            }
-            _ => Err(TypeError),
-        };
+    if matches!(
+        command,
+        CollectionCommand::ArrayLength | CollectionCommand::New
+    ) {
+        return construct(command, operands, (get_type, module));
     }
     let receiver = operands
         .get(usize::from(command == CollectionCommand::Load))
@@ -36,6 +29,15 @@ pub(crate) fn check(
         .find_class(&name)
         .and_then(collection_type)
         .ok_or(TypeError)?;
+    if matches!(
+        command,
+        CollectionCommand::Clone
+            | CollectionCommand::Commit
+            | CollectionCommand::Reverse
+            | CollectionCommand::BeginSort
+    ) {
+        return reorder(command, operands, (&descriptor, name), get_type);
+    }
     signature(command, operands, &descriptor, (get_type, module)).map(Some)
 }
 
@@ -173,4 +175,53 @@ fn array_length(
         }
         _ => Err(TypeError),
     }
+}
+
+fn reorder(
+    command: CollectionCommand,
+    operands: &[Operand],
+    descriptor: (&CollectionType, String),
+    get_type: &impl Fn(ValueId) -> Option<IrType>,
+) -> Result<Option<IrType>, TypeError> {
+    if command == CollectionCommand::Clone && operands.len() == 1 && descriptor.0.key.is_none() {
+        return Ok(Some(IrType::Object(descriptor.1.clone())));
+    }
+    if matches!(
+        command,
+        CollectionCommand::Reverse | CollectionCommand::BeginSort
+    ) && operands.len() == 1
+        && descriptor.0.key.is_none()
+    {
+        return Ok(Some(IrType::Unit));
+    }
+    if command == CollectionCommand::Commit
+        && operands.len() == 2
+        && descriptor.0.key.is_none()
+        && operand_type(operands.get(1).ok_or(TypeError)?, get_type)?
+            == IrType::Object(descriptor.1.clone())
+    {
+        return Ok(Some(IrType::Unit));
+    }
+    Err(TypeError)
+}
+
+fn construct(
+    command: CollectionCommand,
+    operands: &[Operand],
+    (get_type, module): (&impl Fn(ValueId) -> Option<IrType>, &Module),
+) -> Result<Option<IrType>, TypeError> {
+    if command == CollectionCommand::ArrayLength {
+        return array_length(operands, get_type);
+    }
+    if command == CollectionCommand::New {
+        return match operands {
+            [Operand::Type(kind @ IrType::Object(name))]
+                if module.find_class(name).and_then(collection_type).is_some() =>
+            {
+                Ok(Some(kind.clone()))
+            }
+            _ => Err(TypeError),
+        };
+    }
+    Err(TypeError)
 }

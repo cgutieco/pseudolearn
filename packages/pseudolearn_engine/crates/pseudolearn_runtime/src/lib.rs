@@ -25,7 +25,8 @@ mod vector;
 pub use bytes_buffer::BytesBuffer;
 pub use collection::{
     CollectionWords, collection_check_version, collection_layout, collection_length,
-    collection_version, new_dictionary, new_vector,
+    collection_version, new_dictionary, new_vector, vector_begin_sort, vector_clone, vector_commit,
+    vector_reverse,
 };
 pub use collection::{collection_is_dictionary, collection_key, collection_load_word};
 pub use dictionary::{

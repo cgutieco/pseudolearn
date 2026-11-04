@@ -3157,3 +3157,7 @@ del vocabulario del perfil, sin lexemas propios en Dart. Los marcos sin receptor
 Los argumentos son una preferencia local por documento. Se guardan en su cabecera y
 se conservan al adoptar contenido remoto del mismo documento; no se amplía el protocolo del backend.
 La fila de configuración de ejecución solo aloja el campo de argumentos y el botón de reproducción; una clave retirada en un front matter antiguo se ignora porque el lector toma solo las claves conocidas.
+
+## Ampliación numérica y de colecciones
+
+La proyección transporta collection_operation desde el motor. Las llamadas nuevas conservan el nodo de llamada para diagramas y traza; la mezcla no introduce sentencias visibles. La exportación señala collection:<identidad> sin equivalente mientras no pueda conservar alias, atomicidad y fallos. Las seis trascendentes nuevas quedan sin equivalente en Rust/Python porque la libm del destino no garantiza el redondeo requerido.

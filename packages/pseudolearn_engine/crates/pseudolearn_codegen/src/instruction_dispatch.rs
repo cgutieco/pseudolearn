@@ -41,6 +41,22 @@ const FAMILIES: &[(&[Operation], Lower)] = &[
 ];
 
 pub(crate) const UNSUPPORTED_OPERATIONS: &[Operation] = &[
+    Operation::CollectionBeginSort,
+    Operation::CollectionClone,
+    Operation::CollectionCommit,
+    Operation::CollectionReverse,
+    Operation::MathTan,
+    Operation::MathAsin,
+    Operation::MathAcos,
+    Operation::MathAtan2,
+    Operation::MathLog10,
+    Operation::MathLog2,
+    Operation::RealFloor,
+    Operation::RealCeil,
+    Operation::RealMin,
+    Operation::RealMax,
+    Operation::IntMin,
+    Operation::IntMax,
     Operation::TaskScopeOpen,
     Operation::TaskSpawn,
     Operation::TaskAwait,

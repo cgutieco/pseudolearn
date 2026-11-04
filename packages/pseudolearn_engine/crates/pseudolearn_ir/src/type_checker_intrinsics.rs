@@ -18,7 +18,16 @@ pub fn check_intrinsics(
         | Operation::MathExp
         | Operation::MathSin
         | Operation::MathCos
-        | Operation::MathAtan => (IrType::F64, IrType::F64),
+        | Operation::MathAtan
+        | Operation::MathTan
+        | Operation::MathAsin
+        | Operation::MathAcos
+        | Operation::MathLog10
+        | Operation::MathLog2 => (IrType::F64, IrType::F64),
+        Operation::RealTrunc
+        | Operation::RealRound
+        | Operation::RealFloor
+        | Operation::RealCeil => (IrType::F64, IrType::I64),
         Operation::CharCode => (IrType::Char, IrType::I64),
         Operation::CharFromCode => (IrType::I64, IrType::Char),
         _ => return Ok(None),

@@ -10,16 +10,16 @@ fn produces_complete_2026_identity_role_matrix() -> Result<(), String> {
     let catalog = catalog_value(&corpus)?;
     let matrix = coverage_matrix(&catalog, &corpus)?;
     assert!(matrix.iter().all(|row| row.destination.is_some()));
-    assert_eq!(matrix.len(), 413);
-    assert_eq!(identities(&matrix, "keyword").len(), 129);
+    assert_eq!(matrix.len(), 451);
+    assert_eq!(identities(&matrix, "keyword").len(), 138);
     assert_eq!(identities(&matrix, "operator").len(), 17);
-    assert_eq!(identities(&matrix, "builtin").len(), 90);
+    assert_eq!(identities(&matrix, "builtin").len(), 102);
     assert_eq!(
         matrix
             .iter()
             .filter(|row| row.category == "keyword")
             .count(),
-        141
+        150
     );
     assert_eq!(
         matrix
@@ -33,7 +33,7 @@ fn produces_complete_2026_identity_role_matrix() -> Result<(), String> {
             .iter()
             .filter(|row| row.category == "builtin")
             .count(),
-        90
+        102
     );
     assert_eq!(
         matrix.iter().filter(|row| row.category == "token").count(),
@@ -41,7 +41,7 @@ fn produces_complete_2026_identity_role_matrix() -> Result<(), String> {
     );
     assert_eq!(
         matrix.iter().filter(|row| row.category == "role").count(),
-        147
+        164
     );
     Ok(())
 }

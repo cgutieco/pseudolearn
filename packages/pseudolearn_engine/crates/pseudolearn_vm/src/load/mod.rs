@@ -138,3 +138,5 @@ pub(crate) fn scratch_register(
 }
 
 pub(crate) use instructions::task_results::TaskSite;
+
+mod extended_scalar;

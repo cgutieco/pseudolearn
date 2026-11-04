@@ -122,6 +122,9 @@ fn decode_instruction(
     match dispatch_kind(instruction.opcode) {
         DispatchKind::Constant => values::decode_constant(context, instruction),
         DispatchKind::ValueState => values::decode_value_state(context, instruction),
+        DispatchKind::ExtendedScalar => {
+            super::extended_scalar::decode(context.function, loaded, instruction)
+        }
         DispatchKind::Scalar => decode_scalar(context.function, instruction),
         DispatchKind::Control => {
             control::decode(context, loaded, (program_counter, probed), instruction)

@@ -119,3 +119,7 @@ verificador valida ambas fronteras por separado para `JsonResult` y `OptionalJso
 Los resultados `OptionalBoolean`, `OptionalInteger` y `OptionalReal` guardan etiqueta y carga en celdas `i64`: los
 variantes del motor almacenan todo escalar como palabra (los reales como sus bits), y el verificador exige esa
 representación en ambas celdas.
+
+## Ampliación numérica y de colecciones
+
+Las funciones numéricas nuevas tienen operaciones tipadas explícitas; min/max separan variantes i64 y f64. collection.clone, collection.commit y collection.reverse preservan el tipo nominal del vector. Commit exige dos vectores del mismo tipo. Las enumeraciones se generan desde el corpus.

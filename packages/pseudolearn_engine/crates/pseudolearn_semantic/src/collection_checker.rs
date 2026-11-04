@@ -54,25 +54,24 @@ pub(crate) fn member(
     let model = crate::collection_types::get(session, &session.expression_type(receiver))?;
     let name_node = session.children(node).get(1).copied().unwrap_or(node);
     let identity = crate::collection_types::identity(session, &session.name(name_node));
-    let action = match identity {
-        Some("collectionLength") => CollectionAction::Length,
-        Some("vectorAppend") if model.key.is_none() => CollectionAction::Append,
-        Some("vectorInsert") if model.key.is_none() => CollectionAction::Insert,
-        Some("collectionRemove") => CollectionAction::Remove,
-        Some("dictionaryFind") if model.key.is_some() => CollectionAction::Find,
-        _ => {
-            session.named_report(
-                DiagnosticCode::UndefinedMember,
-                name_node,
-                &session.name(name_node),
-            );
-            return Some(crate::expression_checker::invalid(session, node));
-        }
+    let Some(action) = crate::collection_extensions::action(identity, model.key.is_some()) else {
+        session.named_report(
+            DiagnosticCode::UndefinedMember,
+            name_node,
+            &session.name(name_node),
+        );
+        return Some(crate::expression_checker::invalid(session, node));
     };
-    if matches!(session.expression_type(receiver), Type::Immutable(_))
-        && !matches!(action, CollectionAction::Length | CollectionAction::Find)
+    check_mutation(session, node, (receiver, action));
+    if let Some(expression) =
+        crate::collection_extensions::check(session, node, (&model, action), receiver)
     {
-        session.report(DiagnosticCode::ImmutableValueWrite, node);
+        let result = session
+            .module
+            .types
+            .intern(session.expression_type(expression));
+        crate::call_checker::check_result(session, result, (node, purpose));
+        return Some(expression);
     }
     let parameters = parameters(session, &model, action);
     let arguments = arguments(session, node, &parameters);
@@ -93,8 +92,14 @@ fn parameters(
 ) -> Vec<TypeId> {
     let integer = session.module.types.intern(Type::Integer);
     match action {
-        CollectionAction::New | CollectionAction::Length => Vec::new(),
-        CollectionAction::Append => vec![model.value],
+        CollectionAction::Sort
+        | CollectionAction::Reverse
+        | CollectionAction::Keys
+        | CollectionAction::New
+        | CollectionAction::Length => Vec::new(),
+        CollectionAction::IndexOf | CollectionAction::Contains | CollectionAction::Append => {
+            vec![model.value]
+        }
         CollectionAction::Insert => vec![integer, model.value],
         CollectionAction::Remove | CollectionAction::Find => vec![model.key.unwrap_or(integer)],
     }
@@ -205,4 +210,23 @@ fn emit(
         result,
         session.span(node),
     )
+}
+
+fn check_mutation(
+    session: &mut AnalysisSession<'_>,
+    node: usize,
+    (receiver, action): (ExpressionId, CollectionAction),
+) {
+    if matches!(session.expression_type(receiver), Type::Immutable(_))
+        && !matches!(
+            action,
+            CollectionAction::Length
+                | CollectionAction::Find
+                | CollectionAction::IndexOf
+                | CollectionAction::Contains
+                | CollectionAction::Keys
+        )
+    {
+        session.report(DiagnosticCode::ImmutableValueWrite, node);
+    }
 }

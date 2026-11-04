@@ -328,14 +328,14 @@ corrige los demás puntos. Puerta G2 de §10.
 
 ### PG-S.02 · Ordenar, invertir y buscar en colecciones
 
-- [ ] `PG-S.02.01` Leer `lang.types.{vector,dictionary,function,generic}.md`, `lang.profile.vocabulary.md` (sección de
+- [x] `PG-S.02.01` Leer `lang.types.{vector,dictionary,function,generic}.md`, `lang.profile.vocabulary.md` (sección de
   miembros de colección), README de `semantic` y `lowering`, y `ir.instructions.md` (operaciones `Collection*`). Resolver
   `PS-V-05`–`PS-V-08`. Si PG-L ya cerró, releer sus cambios a estos README.
-- [ ] `PG-S.02.02` **Experimento `PS-E02` (decisión DS-10)**: prototipo descartable en rama de trabajo única
+- [x] `PG-S.02.02` **Experimento `PS-E02` (decisión DS-10)**: prototipo descartable en rama de trabajo única
   (no se crean ramas, `GIT-SINGLE-BRANCH`: el prototipo vive como cambios sin commit) para comprobar que (A) una función
   de mezcla sintetizada llama al comparador, respeta combustible, no aparece en la traza y no crece sin cota. Resultado
   y decisión en §11 y, después, en el README de `lowering`. El prototipo se **revierte** antes de la especificación.
-- [ ] `PG-S.02.03` Especificación: en `LANG.TYPES.VECTOR` reglas nuevas para `Ordenar()`, `Ordenar(comparador)`,
+- [x] `PG-S.02.03` Especificación: en `LANG.TYPES.VECTOR` reglas nuevas para `Ordenar()`, `Ordenar(comparador)`,
   `Invertir()`, `PosicionDe(x)`, `Contiene(x)` y en `LANG.TYPES.DICTIONARY` para `Claves()` (DS-07–DS-11): efecto en
   la versión estructural, atomicidad, estabilidad, terminación con comparador inconsistente, error del comparador,
   comparador que modifica el vector, tipos admitidos, límite de celdas (copia de claves cuenta como vector nuevo),
@@ -344,30 +344,30 @@ corrige los demás puntos. Puerta G2 de §10.
   alias existentes y con `M2`). Diagnósticos nuevos en `DIAG.CATALOG` y `DIAG.MESSAGES` en ambos idiomas
   (**CANDIDATOS** `elementTypeNotOrderable`, `elementTypeNotComparable`) y, si se añaden operaciones de RI, en
   `IR.INSTRUCTIONS`.
-- [ ] `PG-S.02.04` Casos derivados: vector vacío; un elemento; ya ordenado; orden inverso; todos iguales (estabilidad con
+- [x] `PG-S.02.04` Casos derivados: vector vacío; un elemento; ya ordenado; orden inverso; todos iguales (estabilidad con
   comparador que solo mira una clave de registro… sin usar registros nuevos de PG-L: usar `Vector<Entero>` con
   comparador por módulo para observar la estabilidad); duplicados; negativos y `-0`/`0` en reales; cadenas con acentos
   y mayúsculas (orden por puntos de código); comparador que devuelve siempre 0; comparador inconsistente (siempre −1);
   comparador que falla a mitad (vector intacto); comparador que modifica el vector (error de modificación);
   `Para Cada` en curso sobre el vector ordenado (error); vector en el límite de celdas; `Claves()` de diccionario vacío,
   con borrados y reinserciones (orden de inserción); `PosicionDe` ausente → `Nada`; ambos perfiles.
-- [ ] `PG-S.02.05` Tests espejo: `pseudolearn_semantic/tests/` (tipos admitidos y rechazados), `pseudolearn_lowering/tests/`
+- [x] `PG-S.02.05` Tests espejo: `pseudolearn_semantic/tests/` (tipos admitidos y rechazados), `pseudolearn_lowering/tests/`
   (bajada y, si DS-10 = A, función sintetizada por tipo), `pseudolearn_library` (operación de montón), `pseudolearn_vm`
   y `pseudolearn_api/tests/` (ejecución, versión, atomicidad), propiedad de estabilidad y de permutación (misma
   multiconjunto) con generadores sembrados.
-- [ ] `PG-S.02.06` Código en las capas de `PS-H-09`: `semantic` (`collection_checker.rs`/`collection_model.rs` pueden
+- [x] `PG-S.02.06` Código en las capas de `PS-H-09`: `semantic` (`collection_checker.rs`/`collection_model.rs` pueden
   superar el límite de 300 líneas: crear archivos nuevos por responsabilidad), `lowering` (archivo nuevo para la
   bajada de ordenación), `abi` (`CollectionCommand` nuevo si DS-10 lo exige), `runtime` (`collection/`),
   `library/src/collections.rs` o archivo nuevo, `ir`/`bytecode`/`vm`/`vm_dispatch` si hay operaciones de RI nuevas.
-- [ ] `PG-S.02.07` Sujeto nativo: operaciones de RI nuevas → `UNSUPPORTED_OPERATIONS` en `codegen`; vínculos `pendiente`
+- [x] `PG-S.02.07` Sujeto nativo: operaciones de RI nuevas → `UNSUPPORTED_OPERATIONS` en `codegen`; vínculos `pendiente`
   `PG-N.08` (DS-24); el diagnóstico de `pseudo build` se prueba con un programa que usa `Ordenar`.
-- [ ] `PG-S.02.08` Fichas es/en para cada miembro nuevo (los miembros contextuales tienen ficha de rol, ver
+- [x] `PG-S.02.08` Fichas es/en para cada miembro nuevo (los miembros contextuales tienen ficha de rol, ver
   `cases/catalogs.json` para `Agregar`/`Eliminar`), cobertura de vistas de la app y diagramas/traza (`C09`): consultar la
   matriz de cobertura de sintaxis de la app; una operación de ordenación se presenta como **un paso** en la traza
   salvo que `PS-E02` decida otra cosa, y eso se documenta.
-- [ ] `PG-S.02.09` Consumidores: `service`, extensión (resaltado), app (proyección de miembros de colección y exportación
+- [x] `PG-S.02.09` Consumidores: `service`, extensión (resaltado), app (proyección de miembros de colección y exportación
   Rust/Python: `sort`, `reverse`, `iter().position`, `contains`, `keys`).
-- [ ] `PG-S.02.10` README (`semantic`, `lowering`, `library`, `runtime`, `vm`, `aot_rt`/`codegen` si cambian) con DS-07–DS-11
+- [x] `PG-S.02.10` README (`semantic`, `lowering`, `library`, `runtime`, `vm`, `aot_rt`/`codegen` si cambian) con DS-07–DS-11
   y el resultado de `PS-E02` (`DOC-NO-ORPHAN-DECISION`).
 - [ ] `PG-S.02.11` Verificación dirigida: `see validate/lock/export --check`, `see conform --subject engine` para las
   reglas editadas, `cargo test` de `semantic`, `lowering`, `library`, `runtime`, `vm`, `api`, `service`; E-PG-03
@@ -375,13 +375,13 @@ corrige los demás puntos. Puerta G2 de §10.
 
 ### PG-S.03 · Mínimo, máximo, piso, techo y funciones trigonométricas y logarítmicas faltantes
 
-- [ ] `PG-S.03.01` Leer `lib.core.math.md` y `lib.core.rounding.md` íntegros, `lib.model.md` D1 (filas `numbers`),
+- [x] `PG-S.03.01` Leer `lib.core.math.md` y `lib.core.rounding.md` íntegros, `lib.model.md` D1 (filas `numbers`),
   README de `pseudolearn_library` (sección de intervalos y Ziv) y `pseudolearn_math_probe`, `see_oracles` y
   `math_contrast.rs`. Resolver `PS-V-03` y `PS-V-05`.
-- [ ] `PG-S.03.02` **Oráculo primero** (`SPEC-INDEPENDENT-ORACLE`): ampliar `see_oracles` con `tan`, `asin`, `acos`,
+- [x] `PG-S.03.02` **Oráculo primero** (`SPEC-INDEPENDENT-ORACLE`): ampliar `see_oracles` con `tan`, `asin`, `acos`,
   `atan2`, `log10`, `log2` por el método independiente (racionales/intervalos del propio crate, sin reutilizar código del
   motor), con sus tests y su caso negativo (oráculo con un error deliberado debe ser detectado por el contraste).
-- [ ] `PG-S.03.03` Especificación: en `LIB.CORE.MATH` regla nueva `R2` para `tan`, `asen`, `acos`, `atan2`, `log10`,
+- [x] `PG-S.03.03` Especificación: en `LIB.CORE.MATH` regla nueva `R2` para `tan`, `asen`, `acos`, `atan2`, `log10`,
   `log2` (mismos criterios que `R1`: binario64 más cercano, empates al par, subnormales, ceros con signo, dominio
   inválido → `nonFiniteRealResult`, sin consultar entorno) con dominios explícitos y los casos exactos de DS-06;
   `atan2(y, x)` con cuadrantes y ceros con signo (DS-05). Regla de `piso`/`techo` en `LIB.CORE.ROUNDING` (DS-04) y de
@@ -389,7 +389,7 @@ corrige los demás puntos. Puerta G2 de §10.
   (**CANDIDATAS**: `min/min`, `max/max`, `piso/floor`, `techo/ceil`, `tan/tan`, `asen/asin`, `acos/acos`,
   `atan2/atan2`, `log10/log10`, `log2/log2`; alias solo si el corpus los pide) y, para `min`/`max`, la clase de retorno
   nueva. Comprobar `M2` y colisiones léxicas con los identificadores de usuario (los nombres no son reservados).
-- [ ] `PG-S.03.04` Casos derivados: valores notables (`tan(0)`, `asen(1)`, `acos(-1)`, `atan2(1,1)`), cuadrantes de
+- [x] `PG-S.03.04` Casos derivados: valores notables (`tan(0)`, `asen(1)`, `acos(-1)`, `atan2(1,1)`), cuadrantes de
   `atan2`, `atan2(±0, ±0)`, `log10(1000)=3`, `log2(0.5)=-1`, `log2` de subnormal, `log10(0)`/`log2(-1)` →
   `nonFiniteRealResult`, `asen(2)` → trampa, argumentos enteros ampliados, `piso(-0.5)`, `techo(-0.5)`, `piso` de
   `9.3e18` → `integerOverflow`, `min`/`max` con enteros, con reales, mezclados, con `-0`/`0`, con iguales; aridad y tipo
@@ -397,10 +397,10 @@ corrige los demás puntos. Puerta G2 de §10.
   comprobada con su propiedad**, criterio de salida del análisis): bloque `propiedad` en `LIB.CORE.MATH`, ejecutor en
   `see_conformance`, entrada en `property-conformance.json` y, si el ejecutor es nuevo, el enumerado de
   `schemas/properties-1.schema.json`.
-- [ ] `PG-S.03.05` Tests: `pseudolearn_library/tests/math_tests.rs` y `transcendental_tests.rs` ampliados o archivos
+- [x] `PG-S.03.05` Tests: `pseudolearn_library/tests/math_tests.rs` y `transcendental_tests.rs` ampliados o archivos
   espejo nuevos; `pseudolearn_semantic/tests/` (retorno ancho, ampliación); `pseudolearn_ir` (verificador de tipos);
   `pseudolearn_vm`/`api` (ejecución y trampa con su atribución de span).
-- [ ] `PG-S.03.06` Código en `pseudolearn_library/src/transcendental/` (un archivo por función o familia; sin superar
+- [x] `PG-S.03.06` Código en `pseudolearn_library/src/transcendental/` (un archivo por función o familia; sin superar
   300 líneas; `tan` como cociente de intervalos, `asin/acos` por `atan` y raíz de intervalos con tratamiento de |x|=1,
   `atan2` por cuadrantes sobre `atan`, `log10/log2` como `ln x / ln b` con los casos exactos resueltos antes de la
   escalada), `ir` (operaciones nuevas si DS-02 = a, con `type_checker_intrinsics.rs`), `lowering/expressions_builtins.rs`
@@ -409,11 +409,11 @@ corrige los demás puntos. Puerta G2 de §10.
   muestras, semilla, argumentos extremos (subnormales, ±`f64::MAX`, cercanos a múltiplos de π/2, |x| cerca de 1) y
   cero discrepancias. Procedencia completa (plataforma, hashes, semilla, muestras crudas) según `C10`; si no se ejecuta,
   se difiere con aprobación de la persona.
-- [ ] `PG-S.03.08` Sujeto nativo (DS-24): operaciones de RI nuevas a `UNSUPPORTED_OPERATIONS`; vínculos `pendiente`.
-- [ ] `PG-S.03.09` Fichas es/en (diez identidades), consumidores (`service`, extensión, app: proyección y exportación a
+- [x] `PG-S.03.08` Sujeto nativo (DS-24): operaciones de RI nuevas a `UNSUPPORTED_OPERATIONS`; vínculos `pendiente`.
+- [x] `PG-S.03.09` Fichas es/en (diez identidades), consumidores (`service`, extensión, app: proyección y exportación a
   Rust `f64::tan`… **ojo**: la exportación a Rust/Python usa la libm del destino y puede diferir en el último bit;
   rotular esa diferencia como límite conocido o declarar «sin equivalente», decisión registrada en el README de la app).
-- [ ] `PG-S.03.10` README de `library`, `ir`, `vm`, `semantic`, `lowering`, `pseudolearn_spec`, con DS-02–DS-06.
+- [x] `PG-S.03.10` README de `library`, `ir`, `vm`, `semantic`, `lowering`, `pseudolearn_spec`, con DS-02–DS-06.
 - [ ] `PG-S.03.11` Verificación dirigida (§7.4) + `PERF.SUITE.CORE` y `PERF.AOT.LEVEL` sin regresión (las funciones
   nuevas no cambian los benchmarks existentes).
 
@@ -813,17 +813,19 @@ destino).
 
 ## 11. Resumen de ejecución
 
-Estado de las tareas: §4.0 y PG-S.01 ejecutadas el 2026-11-04 sobre `2d6254aa`, por instrucción directa de la persona («implementa 4.0 y PG-S.01», eligiendo siempre la opción recomendada). Esa instrucción se toma como `PG-S.C01` parcial, como decisión de iniciar PG-S antes de cerrar PG-L (`PS-P-01`, DS-13) y como confirmación de las decisiones **Persona** de DS-12 (nombres `AMayusculas`/`toUpper`, `AMinusculas`/`toLower`). `PS-P-02` sigue sin resolver y no afecta a PG-S.01. PG-S.02–.09 siguen pendientes.
+Estado de las tareas: §4.0 y PG-S.01 ejecutadas el 2026-11-04 sobre `2d6254aa`, por instrucción directa de la persona («implementa 4.0 y PG-S.01», eligiendo siempre la opción recomendada). Esa instrucción se toma como `PG-S.C01` parcial, como decisión de iniciar PG-S antes de cerrar PG-L (`PS-P-01`, DS-13) y como confirmación de las decisiones **Persona** de DS-12 (nombres `AMayusculas`/`toUpper`, `AMinusculas`/`toLower`). `PS-P-02` sigue sin resolver y no afecta a PG-S.01. PG-S.02 y PG-S.03 tienen implementación preparada y 19 de sus 22 puntos completados. La persona pidió detener las pruebas y preparar el relevo el 2026-11-04: PG-S.02.11, PG-S.03.07 y PG-S.03.11 permanecen pendientes. Ninguna de ambas fases se declara cerrada. PG-S.04–.09 siguen pendientes.
 
 | Tarea | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
-| `PG-S.C01` | Parcial | Instrucción de la persona del 2026-11-04 | Cubre §4.0 y PG-S.01 únicamente |
+| `PG-S.C01` | Parcial | Instrucción de la persona del 2026-11-04 | Cubre §4.0, PG-S.01 y la iteración conjunta PG-S.02/PG-S.03 autorizada posteriormente |
 | `PG-S.C02` | Pendiente | Este documento | Requiere revisión de la persona |
 | `PG-S.C11.01`, `PG-S.C03.01`–`.03` | Cumplida | Línea base: `cargo test -p pseudolearn_library` en verde sobre `2d6254aa` antes de editar el código de S.01; `see validate` y `see export --check` en verde. Hipótesis en §11.1 | La suite completa del motor se ejecutó al cierre (`cargo xtask verify`) |
 | `PG-S.01.01`–`.10` | Cumplida | Corpus: `LIB.CORE.TEXT#T4`, casos C19–C30, D2 `text_to_upper`/`text_to_lower`, fichas `help.pgs01.*` en `tool.service.catalog.md`, cobertura IR V210, vínculos engine (`cumple`) y aot (`pendiente`, `PG-N.08`). Motor: `text_case.rs`, `text_case_tests.rs`, ramas en `local_operations.rs`. `see validate`, `lock --refresh` (IR.INSTRUCTIONS, LIB.MODEL, LIB.CORE.TEXT, TOOL.SERVICE.CATALOG), `export --check`, `conform --subject engine --operation properties` (31 propiedades) y `conform --subject engine` (2206 observaciones, 0 divergencias) | |
 | `PG-S.01.11` | Informe en §11.2 | | La parada de control G2 la decide la persona |
-| `PG-S.02.01`–`.11` | Pendiente | | |
-| `PG-S.03.01`–`.11` | Pendiente | | |
+| `PG-S.02.01`–`.10` | Cumplidas | [Informe y relevo](informe-pg-s-02-03.md) | Implementación, corpus, tests y consumidores preparados |
+| `PG-S.02.11` | Pendiente | Informe, sección de pendientes | Falta consolidar conformidad con el último hash de diccionario; no se cierra la fase |
+| `PG-S.03.01`–`.06`, `.08`–`.10` | Cumplidas | [Informe y relevo](informe-pg-s-02-03.md) | Código, oráculo, casos, propiedad y consumidores implementados |
+| `PG-S.03.07`, `.11` | Pendientes | Informe, sección de pendientes | Contraste completado para tan/asin/acos; faltan atan2/log2/log10 y consolidación final |
 | `PG-S.04.01`–`.10` | Pendiente | | |
 | `PG-S.05.01`–`.11` | Pendiente | | |
 | `PG-S.06.01`–`.08` | Pendiente | | |
@@ -854,3 +856,7 @@ Estado de las tareas: §4.0 y PG-S.01 ejecutadas el 2026-11-04 sobre `2d6254aa`,
 
 Revisión Git de cierre: · Verificadores ejecutados: · Suites omitidas y razón: · Pendientes justificados: · Decisiones de
 la persona: · Puntos de §4 cumplidos:
+
+### 11.3 Relevo de PG-S.02 y PG-S.03
+
+La persona solicitó detener las pruebas y resumir el trabajo. Se marcaron 19 puntos completados; tres permanecen sin marcar. El [informe de relevo](informe-pg-s-02-03.md) conserva implementación, decisiones, resultados, errores pendientes, comandos de continuación y ubicación de los crudos. No se hicieron commits ni push de esta iteración y no se cerró ninguna de las dos fases.

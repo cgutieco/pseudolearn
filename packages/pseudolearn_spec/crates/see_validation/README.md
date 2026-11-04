@@ -95,3 +95,7 @@ La clave `anfitrion.http` acepta guiones declarativos por método y URL con esta
 textuales o de bytes, fallos e incertidumbre. `alterar_cinta: alterar_solicitud` permite probar la
 divergencia HTTP durante reproducción. Se valida como dato cerrado; el validador no ejecuta el guion
 ni abre conexiones. Los nuevos discriminantes de fallo se prueban con positivos y negativos aislados.
+
+## Contratos adicionales de verificación
+
+La clase de retorno `widestNumeric` permite declarar mínimo y máximo sin perder enteros de 64 bits cuando ambos argumentos son enteros. La validación léxica reconoce la clase como dato del catálogo; la selección del tipo concreto pertenece al analizador semántico del sujeto.

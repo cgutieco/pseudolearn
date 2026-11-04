@@ -343,6 +343,14 @@
     "en": "abs",
     "es": "abs"
   },
+  "function:arcCosine": {
+    "en": "acos",
+    "es": "acos"
+  },
+  "function:arcSine": {
+    "en": "asin",
+    "es": "asen"
+  },
   "function:arcTangent": {
     "en": "atan",
     "es": "atan"
@@ -350,6 +358,14 @@
   "function:arcTangent.alias.es.0": {
     "en": "atan",
     "es": "arctan"
+  },
+  "function:arcTangent2": {
+    "en": "atan2",
+    "es": "atan2"
+  },
+  "function:ceiling": {
+    "en": "ceil",
+    "es": "techo"
   },
   "function:characterAt": {
     "en": "charAt",
@@ -379,6 +395,10 @@
     "en": "exp",
     "es": "exp"
   },
+  "function:floor": {
+    "en": "floor",
+    "es": "piso"
+  },
   "function:join": {
     "en": "join",
     "es": "Unir"
@@ -386,6 +406,22 @@
   "function:length": {
     "en": "length",
     "es": "Longitud"
+  },
+  "function:logarithm10": {
+    "en": "log10",
+    "es": "log10"
+  },
+  "function:logarithm2": {
+    "en": "log2",
+    "es": "log2"
+  },
+  "function:maximum": {
+    "en": "max",
+    "es": "max"
+  },
+  "function:minimum": {
+    "en": "min",
+    "es": "min"
   },
   "function:naturalLogarithm": {
     "en": "ln",
@@ -454,6 +490,10 @@
   "function:substring": {
     "en": "substring",
     "es": "Subcadena"
+  },
+  "function:tangent": {
+    "en": "tan",
+    "es": "tan"
   },
   "function:textToInteger": {
     "en": "toInteger",

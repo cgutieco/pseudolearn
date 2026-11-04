@@ -47,3 +47,7 @@ R1 autoriza solo el sistema de especificaciones. Ninguna lógica del motor vive 
 ## 8. Fuentes consultadas y genealogía conceptual
 
 Plan aprobado del sistema SEE. Las bibliotecas externas son infraestructura, nunca autoridad sobre el comportamiento de PseudoLearn.
+
+## Contratos adicionales de verificación
+
+`math_oracle` identifica el contraste matemático sembrado contra intervalos racionales independientes. El modelo solo conserva esa identidad; no incorpora cálculos ni depende del motor.

@@ -52,6 +52,10 @@ pub fn from_fields<'fields>(
 
 pub fn collection_command(operation: Operation) -> Option<CollectionCommand> {
     match operation {
+        Operation::CollectionBeginSort => Some(CollectionCommand::BeginSort),
+        Operation::CollectionClone => Some(CollectionCommand::Clone),
+        Operation::CollectionCommit => Some(CollectionCommand::Commit),
+        Operation::CollectionReverse => Some(CollectionCommand::Reverse),
         Operation::CollectionNew => Some(CollectionCommand::New),
         Operation::CollectionLength => Some(CollectionCommand::Length),
         Operation::CollectionVersion => Some(CollectionCommand::Version),

@@ -96,3 +96,7 @@ fn compare_slice(function: MathFunction, rows: &[Row]) -> Result<Summary, String
     }
     Ok(summary)
 }
+
+#[cfg(test)]
+#[path = "math_verdicts_tests.rs"]
+mod tests;

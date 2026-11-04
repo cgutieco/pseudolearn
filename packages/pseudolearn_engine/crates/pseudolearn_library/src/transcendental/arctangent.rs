@@ -45,7 +45,7 @@ fn attempt(argument: &Decomposed, precision: u64) -> Result<Option<f64>, Library
     Ok(round_interval(&angle, signed_precision(working)))
 }
 
-fn halved_arctangent(base: &Interval, precision: u64) -> Result<Interval, LibraryError> {
+pub(super) fn halved_arctangent(base: &Interval, precision: u64) -> Result<Interval, LibraryError> {
     let one = Interval::one(precision);
     let mut reduced = base.clone();
     for _ in 0..HALVINGS {

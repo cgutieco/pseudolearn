@@ -10,7 +10,7 @@ use crate::Fault;
 
 #[cold]
 #[inline(never)]
-fn library_fault(error: LibraryError) -> Fault {
+pub(super) fn library_fault(error: LibraryError) -> Fault {
     match error {
         LibraryError::Arithmetic(arithmetic) => arithmetic_fault(arithmetic),
         LibraryError::NegativeSquareRoot

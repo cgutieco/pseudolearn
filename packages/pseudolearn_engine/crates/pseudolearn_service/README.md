@@ -133,3 +133,12 @@ Las palabras contextuales de capacidades (`Consola`, `Argumentos`, `DirectorioCa
 La presentación de `Inmutable<T>` usa la grafía contextual generada del perfil y presenta recursivamente
 el tipo interior. La ayuda incorpora fichas bilingües de la instantánea y del tipo inmutable desde
 el catálogo normativo, sin otra tabla de nombres en el servicio.
+
+## Ampliación numérica y de colecciones
+
+Los miembros contextuales conservan resolución por receptor y fichas bilingües. Los homónimos de texto y vector mantienen identidades separadas.
+
+Los candidatos de miembros de colección se obtienen del tipo del receptor y sus nombres se leen del
+vocabulario contextual generado. Se evita presentar campos sintéticos del almacenamiento. La ayuda
+elige la ficha de rol declarada para el token cuando el catálogo tiene una ficha específica; el hover
+presenta widestNumeric como el tipo numérico del perfil, sin exponer el nombre interno de la firma.

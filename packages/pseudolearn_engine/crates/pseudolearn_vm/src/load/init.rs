@@ -74,6 +74,7 @@ fn create_skeleton(
     windows: (usize, usize),
 ) -> LoadedFunction {
     LoadedFunction {
+        extended_scalars: Vec::new(),
         visibility: function.visibility.clone(),
         name: function.name.clone(),
         declaration_span: function.declaration_span,

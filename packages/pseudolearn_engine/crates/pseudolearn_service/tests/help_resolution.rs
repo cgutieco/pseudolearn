@@ -272,3 +272,12 @@ fn boolean_words_resolve_to_their_lexical_identity_and_other_literals_do_not() -
     );
     Ok(())
 }
+
+#[test]
+fn collection_member_help_uses_the_exact_new_card() {
+    let source = "algorithm P\ndefine values as vector<integer> <- vector();\nvalues.so|rt();\nendAlgorithm\n";
+    assert_eq!(
+        card_id(source, Profile::English),
+        Some("help.pgs02.vector_sort".to_owned())
+    );
+}

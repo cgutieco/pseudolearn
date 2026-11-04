@@ -23,7 +23,11 @@ final class ExportCoverage {
     for (final node in _view.nodes) {
       for (final construct in _constructsOf(node, hasBoolean)) {
         blockers.add(
-          ExportBlocker(construct: construct, origin: node.id, range: node.range),
+          ExportBlocker(
+            construct: construct,
+            origin: node.id,
+            range: node.range,
+          ),
         );
       }
     }
@@ -45,6 +49,9 @@ final class ExportCoverage {
 
   Iterable<String> _semanticConstructs(RustViewNode node) sync* {
     final semantics = node.semantics;
+    if (semantics.collectionOperation case final String operation) {
+      yield 'collection:$operation';
+    }
     final builtin = semantics.builtin;
     if (builtin != null && !_support.builtins.contains(builtin)) {
       yield 'builtin:$builtin';
@@ -55,7 +62,8 @@ final class ExportCoverage {
       }
     }
     final literal = semantics.literal;
-    if (literal != null && _support.blockedLiteralTypes.contains(literal.type)) {
+    if (literal != null &&
+        _support.blockedLiteralTypes.contains(literal.type)) {
       yield 'literal:${literal.type}';
     }
     if (_support.blockedPrimitives.contains(semantics.primitive)) {

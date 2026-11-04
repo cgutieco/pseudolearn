@@ -2375,6 +2375,36 @@
       "verificacion": "ejecutor",
       "estado": "pendiente",
       "resuelve_en": "PG-6B"
+    },
+    {
+      "regla": "LIB.CORE.MATH@1.0.0#R2",
+      "verificacion": "crates/pseudolearn_api/tests/extended_math.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.CORE.MATH@1.0.0#R3",
+      "verificacion": "crates/pseudolearn_api/tests/extended_math.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.CORE.ROUNDING@1.0.0#R2",
+      "verificacion": "crates/pseudolearn_api/tests/extended_math.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TYPES.VECTOR@1.0.0#R4",
+      "verificacion": "crates/pseudolearn_api/tests/collection_execution.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TYPES.VECTOR@1.0.0#R5",
+      "verificacion": "crates/pseudolearn_api/tests/collection_execution.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TYPES.DICTIONARY@1.0.0#R4",
+      "verificacion": "crates/pseudolearn_api/tests/collection_execution.rs",
+      "estado": "cumple"
     }
   ]
 }
