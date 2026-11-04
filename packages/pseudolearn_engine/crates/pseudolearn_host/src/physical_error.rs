@@ -12,6 +12,7 @@ impl HostError {
     pub const ALREADY_EXISTS: Self = Self::certain("ya_existe");
     pub const INVALID_UTF8: Self = Self::certain("utf8_invalido");
     pub const INVALID_PATH: Self = Self::certain("ruta_invalida");
+    pub const INVALID_REQUEST: Self = Self::certain("peticion_invalida");
     pub const CLOSED: Self = Self::certain("capacidad_cerrada");
     pub const TIMED_OUT: Self = Self::certain("tiempo_agotado");
     pub const INTERRUPTED: Self = Self::certain("interrumpido");
@@ -37,6 +38,10 @@ impl HostError {
             std::io::ErrorKind::PermissionDenied => Self::PERMISSION_DENIED,
             std::io::ErrorKind::AlreadyExists => Self::ALREADY_EXISTS,
             std::io::ErrorKind::InvalidInput => Self::INVALID_PATH,
+            std::io::ErrorKind::DirectoryNotEmpty => Self::INVALID_REQUEST,
+            std::io::ErrorKind::NotADirectory | std::io::ErrorKind::IsADirectory => {
+                Self::INVALID_PATH
+            }
             _ => Self::INTERRUPTED,
         }
     }

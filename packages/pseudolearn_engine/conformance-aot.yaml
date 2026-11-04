@@ -1669,6 +1669,48 @@
       "estado": "cumple"
     },
     {
+      "regla": "LIB.IO@1.0.0#R5",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-N.08"
+    },
+    {
+      "regla": "LIB.IO@1.0.0#R6",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-N.08"
+    },
+    {
+      "regla": "LIB.IO@1.0.0#R7",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-N.08"
+    },
+    {
+      "regla": "LIB.IO@1.0.0#R8",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-N.08"
+    },
+    {
+      "regla": "LIB.IO@1.0.0#R9",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-N.08"
+    },
+    {
+      "regla": "LIB.IO@1.0.0#R10",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-N.08"
+    },
+    {
+      "regla": "LIB.IO@1.0.0#R11",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-N.08"
+    },
+    {
       "regla": "LIB.TIME@1.0.0#R1",
       "verificacion": "crates/pseudolearn_aot_rt/src/effect_runtime.rs",
       "estado": "cumple"

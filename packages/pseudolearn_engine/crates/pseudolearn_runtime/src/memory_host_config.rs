@@ -8,6 +8,7 @@ use std::collections::BTreeMap;
 #[serde(default, deny_unknown_fields)]
 struct Configuration {
     files: BTreeMap<String, Value>,
+    directories: Vec<String>,
     #[serde(rename = "args")]
     arguments: Vec<String>,
     clock: Vec<u64>,
@@ -77,6 +78,14 @@ pub(crate) fn parse(value: &Value) -> Result<MemoryHostProvider, IoError> {
         provider
             .write(path, bytes(&value)?)
             .map_err(IoError::from_kind)?;
+    }
+    for directory in config.directories {
+        if !crate::memory_host_files::valid_path(&directory) {
+            return Err(invalid());
+        }
+        provider
+            .directories
+            .insert(crate::host_paths::normalize(&directory)?);
     }
     for fault in config.faults {
         provider.faults.push(memory_fault(fault)?);

@@ -17,7 +17,17 @@ pub(crate) fn request_path(
         .resources
         .get(&token.slot)
         .ok_or_else(|| IoError::from_kind(IoErrorKind::ClosedCapability))?;
-    if matches!(request.operation.as_str(), "file_open" | "directory_derive") {
+    if matches!(
+        request.operation.as_str(),
+        "file_open"
+            | "directory_derive"
+            | "directory_exists"
+            | "directory_is_directory"
+            | "directory_list"
+            | "directory_delete"
+            | "directory_rename"
+            | "directory_create"
+    ) {
         let path = crate::memory_host::text(request, 0)?;
         let root = provider
             .directory_roots
@@ -60,8 +70,7 @@ fn derive_directory(
     request: &HostEffectRequest,
     path: String,
 ) -> Result<HostValue, IoError> {
-    let prefix = format!("{path}/");
-    if !provider.files.keys().any(|file| file.starts_with(&prefix)) {
+    if !crate::memory_host_directories::is_directory(provider, &path) {
         return Err(IoError::not_found());
     }
     register(provider, request, path)
@@ -74,12 +83,30 @@ fn read_text(provider: &MemoryHostProvider, path: &str) -> Result<HostValue, IoE
         .map_err(|_| IoError::from_kind(IoErrorKind::InvalidUtf8))
 }
 
+fn is_directory_operation(operation: &str) -> bool {
+    matches!(
+        operation,
+        "directory_exists"
+            | "directory_is_directory"
+            | "directory_list"
+            | "directory_delete"
+            | "directory_rename"
+            | "directory_create"
+    )
+}
+
 pub(crate) fn perform(
     provider: &mut MemoryHostProvider,
     request: &HostEffectRequest,
 ) -> Result<HostValue, IoError> {
+    if is_directory_operation(&request.operation) {
+        return crate::memory_host_directories::perform(provider, request);
+    }
     let path = request_path(provider, request)?;
     match request.operation.as_str() {
+        "file_append_bytes" | "file_append_text" => {
+            crate::memory_host_directories::append(provider, request, path)
+        }
         "file_open" => open(provider, request, path),
         "directory_derive" => derive_directory(provider, request, path),
         "file_read_bytes" => provider

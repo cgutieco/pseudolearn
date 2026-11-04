@@ -59,20 +59,7 @@ fn validate_receiver(
         return Err(IoError::permission_denied());
     }
     validate_network_receiver(authority, operation, token, arguments)?;
-    let rights = match operation.identity {
-        "file_open" | "directory_derive" => mode_rights(arguments.last())?,
-        "file_read_bytes" | "file_read_text" => RightsMask::READ_ONLY,
-        "file_write_bytes" | "file_write_text" => RightsMask {
-            read: false,
-            write: true,
-            execute: false,
-        },
-        _ => RightsMask {
-            read: false,
-            write: false,
-            execute: false,
-        },
-    };
+    let rights = required_rights(operation.identity, arguments)?;
     if !rights.is_subset_of(token.rights) {
         return Err(IoError::permission_denied());
     }
@@ -83,6 +70,28 @@ fn validate_receiver(
             token.rights
         },
     )
+}
+
+fn required_rights(identity: &str, arguments: &[HostValue]) -> Result<RightsMask, IoError> {
+    Ok(match identity {
+        "file_open" | "directory_derive" => mode_rights(arguments.last())?,
+        "file_read_bytes"
+        | "file_read_text"
+        | "directory_exists"
+        | "directory_is_directory"
+        | "directory_list" => RightsMask::READ_ONLY,
+        "file_write_bytes" | "file_write_text" | "file_append_bytes" | "file_append_text"
+        | "directory_delete" | "directory_rename" | "directory_create" => RightsMask {
+            read: false,
+            write: true,
+            execute: false,
+        },
+        _ => RightsMask {
+            read: false,
+            write: false,
+            execute: false,
+        },
+    })
 }
 
 pub(crate) fn mode_rights(value: Option<&HostValue>) -> Result<RightsMask, IoError> {

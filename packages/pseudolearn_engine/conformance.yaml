@@ -2131,6 +2131,41 @@
       "estado": "cumple"
     },
     {
+      "regla": "LIB.IO@1.0.0#R5",
+      "verificacion": "crates/pseudolearn_runtime/src/memory_host_directories.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.IO@1.0.0#R6",
+      "verificacion": "crates/pseudolearn_host/src/physical_directory_ops.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.IO@1.0.0#R7",
+      "verificacion": "crates/pseudolearn_host/src/physical_directory_ops.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.IO@1.0.0#R8",
+      "verificacion": "crates/pseudolearn_host/src/physical_directory_ops.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.IO@1.0.0#R9",
+      "verificacion": "crates/pseudolearn_host/src/physical_directory_ops.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.IO@1.0.0#R10",
+      "verificacion": "crates/pseudolearn_host/src/physical_file_append.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.IO@1.0.0#R11",
+      "verificacion": "crates/pseudolearn_runtime/src/effect_authority.rs",
+      "estado": "cumple"
+    },
+    {
       "regla": "LIB.TIME@1.0.0#R1",
       "verificacion": "crates/pseudolearn_vm/src/effect_dispatch.rs",
       "estado": "cumple"

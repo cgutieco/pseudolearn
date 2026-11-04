@@ -339,3 +339,16 @@ Las subcapacidades de archivos del host web rechazan enlaces simbólicos en el r
 no ofrece descriptores confinados. La raíz inicial conserva acceso pleno a los enlaces que soporte
 el proveedor. Las respuestas API de éxito con valor null se reconocen como confirmaciones; entrada
 y efectos validan las respuestas y mantienen la identidad completa de solicitud.
+
+Operaciones de directorio y de archivo: `browser_directory_ops.ts` implementa en el host web `Existe`, `EsDirectorio`, `Listar`, `Borrar`, `Renombrar`,
+`CrearDirectorio`, `AgregarTexto` y `AgregarBytes` con la semántica de `LIB.IO` R5–R11 sobre `vscode.workspace.fs`
+(`stat`, `readDirectory`, `delete`, `rename`, `createDirectory`, `readFile` y `writeFile`); `browser_file_support.ts` reúne las
+respuestas, los helpers de rutas y el mapeo de errores del proveedor. El adaptador no confía en los proveedores: `createDirectory`
+de VS Code crea niveles intermedios y no falla si el directorio existe, por lo que el adaptador comprueba antes existencia y
+padre, y `rename` se llama con `overwrite: false` tras comprobar el destino. `Listar` ordena por puntos de código con una
+comparación propia porque el orden de cadenas de JavaScript compara unidades UTF-16. Añadir lee y reescribe el archivo
+completo porque `workspace.fs` no ofrece escritura al final; está limitado al tope de 1 MiB y una interrupción se informa como
+incierta. Los errores tipados del proveedor (`FileNotFound`, `FileExists`, `FileNotADirectory`, `FileIsADirectory`,
+`NoPermissions`) se mapean a las variantes de `ErrorES`; cualquier otro fallo es `interrumpido`, incierto solo si la operación
+muta. El host web rastrea el derecho de lectura de cada capacidad derivada para rechazar consultas sin lectura. Las pruebas
+usan un sistema de archivos en memoria (`tests/adapters/memory_vscode.ts`).

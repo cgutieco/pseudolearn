@@ -1,7 +1,7 @@
 use crate::{HostEffectProvider, HostEffectRequest, HostReply, HostValue, IoError};
 use pseudolearn_abi::IoErrorKind;
 use serde_json::Value;
-use std::collections::{BTreeMap, VecDeque};
+use std::collections::{BTreeMap, BTreeSet, VecDeque};
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct MemoryFault {
@@ -19,6 +19,7 @@ pub(crate) struct HttpScript {
 #[derive(Clone, Debug, Default, Eq, PartialEq)]
 pub struct MemoryHostProvider {
     pub files: BTreeMap<String, Vec<u8>>,
+    pub directories: BTreeSet<String>,
     pub arguments: Vec<String>,
     pub time_nanos: u64,
     pub calls: u64,

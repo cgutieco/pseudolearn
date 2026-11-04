@@ -333,6 +333,13 @@ Los casos pueden restringir `sujetos` a un subconjunto explícito de los declara
   motor ya leía; antes el esquema los rechazaba. El validador de casos (`host_cases.rs`) usa ahora los identificadores
   reales de operación (`file_write_text`, `file_close`, …) para decidir qué fallos pueden ser inciertos; antes comparaba
   contra nombres que ningún proveedor emite.
+- Operaciones de directorio y de archivo: `LIB.IO` R5–R11 especifican las operaciones de directorio (`Existe`, `EsDirectorio`, `Listar`, `Borrar`, `Renombrar`,
+  `CrearDirectorio`) y de archivo (`AgregarTexto`, `AgregarBytes`); `LIB.MODEL` D2 las declara con familia `io`, efecto y falibilidad.
+  El esquema `see-1` acepta la directiva `directories` del anfitrión en memoria (directorios vacíos explícitos) y el validador
+  de casos admite incertidumbre en las nuevas operaciones que mutan. Los casos C22–C67 usan salidas idénticas en ambos perfiles
+  (los booleanos se imprimen como `1`/`0`) y se ejecutan con grabación y reproducción donde la regla lo permite. No hay caso
+  de incertidumbre en el corpus: la búsqueda por evento de la historia no soporta todavía un efecto fallido incierto (ocurre
+  también con `file_write_text`), de modo que la incertidumbre de `Renombrar` se cubre en `pseudolearn_api/tests/directory_effects.rs`.
 - Hallazgos registrados al reescribir los casos: la ortografía `Funcion`/`function` es un alias de `SubProceso`, de
   modo que la traducción automática de `perfil_base` a inglés convierte una función pura en subprograma; los casos de
   pureza declaran por eso ambos programas. El método `Escribir`/`write` de `Consola` coincide con una palabra reservada y

@@ -120,6 +120,13 @@ MemoryHostProvider implementa únicamente datos en memoria, reloj declarado y fa
 y comparte la frontera de solicitudes con los proveedores físicos. Los métodos de archivo operan
 sobre contenido completo; cada escritura sustituye el contenido y cada lectura devuelve el contenido.
 
+Operaciones de directorio y de archivo: `memory_host_directories.rs` implementa en memoria las operaciones de directorio y de añadir de `LIB.IO` R5–R11 con la
+misma semántica que el anfitrión físico. Los directorios existen de forma implícita por los archivos que contienen y de forma explícita
+por la directiva `directories` de la configuración, que permite directorios vacíos. `Listar` ordena por puntos de código, `Borrar` no
+es recursivo, `Renombrar` no sobrescribe y mueve los descendientes, y `CrearDirectorio` exige padre existente. `effect_authority.rs`
+exige derecho de lectura para consultar y de escritura para mutar o añadir, y `host_validation.rs` solo admite incertidumbre en las
+operaciones que mutan. `Subdirectorio` acepta ahora también un directorio explícito vacío.
+
 ### Pruebas de cinta y aislamiento del anfitrión
 
 `tests/effect_tape_tests.rs` cubre formato, estado de reproducibilidad y presupuesto; `tests/tape_replay_tests.rs` cubre cada código de `ReplayError` sobre `TapeReplayProvider`; `tests/tape_replay_host_isolation_tests.rs` ejerce `perform_host_effect` con un proveedor espía y comprueba que identidad, divergencia, fin prematuro, adulteración y cinta no reproducible se rechazan con el contador de llamadas en `0`. `ExecutionMode::as_str` y `TapeReplayProvider::cursor` se eliminaron por no tener consumidores.

@@ -419,17 +419,17 @@ corrige los demás puntos. Puerta G2 de §10.
 
 ### PG-S.04 · Archivos: listar, existir, borrar, renombrar, crear directorio y añadir
 
-- [ ] `PG-S.04.01` Leer `lib.io.md` íntegro (`R2`–`R4`), `rt.host.interface.md` (`R1`, `R2`, `R4`), `eng.effect.commit`
+- [x] `PG-S.04.01` Leer `lib.io.md` íntegro (`R2`–`R4`), `rt.host.interface.md` (`R1`, `R2`, `R4`), `eng.effect.commit`
   (`ENG.EXEC.EFFECT-COMMIT`), README de `pseudolearn_host` y `pseudolearn_runtime`, `physical_files.rs`, `physical_paths.rs`,
   `memory_host_files.rs`, `host_paths.rs`.
-- [ ] `PG-S.04.02` Especificación: reglas nuevas en `LIB.IO` para cada operación de DS-14/DS-15 (efecto, falibilidad,
+- [x] `PG-S.04.02` Especificación: reglas nuevas en `LIB.IO` para cada operación de DS-14/DS-15 (efecto, falibilidad,
   errores `ErrorES` por causa, confinamiento por `Subdirectorio`, orden y filtrado de `Listar`, no sobrescritura de
   `Renombrar`, `Borrar` no recursivo, `Agregar*` crea y escribe al final, UTF-8 estricto en `AgregarTexto`, incertidumbre
   cuando una mutación pudo confirmarse). Entradas D2 en `LIB.MODEL` (receptores `directory`/`file`, familia `io`,
   `effect: true`, `fallible: true`). Resultado de `Listar`: `Vector<Cadena>` (tipo `text_list` ya existe). `RT.HOST.INTERFACE`
   recibe la mención de operaciones de sistema de archivos del anfitrión. Sin cambio en el vocabulario de la cinta
   (`filesystem` ya existe).
-- [ ] `PG-S.04.03` Casos derivados con el anfitrión de memoria del corpus: directorio vacío, con archivos y
+- [x] `PG-S.04.03` Casos derivados con el anfitrión de memoria del corpus: directorio vacío, con archivos y
   subdirectorios (orden por puntos de código, `.` y `..` ausentes), nombre con Unicode; `Existe` de archivo, de
   directorio, de ausente; `Borrar` de archivo, de directorio vacío, de directorio no vacío (`PeticionInvalida`), de
   ausente (`NoEncontrado`); `Renombrar` a destino libre, a destino existente (`YaExiste`), de ausente, dentro de
@@ -437,26 +437,26 @@ corrige los demás puntos. Puerta G2 de §10.
   `CrearDirectorio` nuevo, existente (`YaExiste`), padre ausente; `AgregarTexto` a archivo inexistente, existente, dos
   veces seguidas, con UTF-8 inválido en bytes; capacidad cerrada (`CapacidadCerrada`); reproducción desde cinta de cada
   operación sin tocar el disco.
-- [ ] `PG-S.04.04` Tests: `pseudolearn_runtime` (doble de memoria), `pseudolearn_host/tests/` (carpetas temporales, nunca
+- [x] `PG-S.04.04` Tests: `pseudolearn_runtime` (doble de memoria), `pseudolearn_host/tests/` (carpetas temporales, nunca
   rutas del usuario), `pseudolearn_abi` (tabla de operaciones), `pseudolearn_api` (suspensión/commit de efecto),
   adversarios de rutas (E-PG-09 ampliado: 1000 rutas con `..`, enlaces simbólicos, nombres no UTF-8 en Unix, rutas con
   `:` y `\` en Windows, destino existente, carrera de creación) con cero escapes del confinamiento.
-- [ ] `PG-S.04.05` Código `pseudolearn_host`: archivos nuevos por responsabilidad (p. ej. `physical_directory_ops.rs`,
+- [x] `PG-S.04.05` Código `pseudolearn_host`: archivos nuevos por responsabilidad (p. ej. `physical_directory_ops.rs`,
   `physical_file_append.rs`; `physical_files.rs` ya tiene 172 líneas, no crece más de 300); ampliar `HostError::from_io`
   con los `ErrorKind` necesarios (`DirectoryNotEmpty`, `NotADirectory`, `IsADirectory`) según DS-15; ambas ramas
   (`Ambient` y `Confined`) con la misma semántica. Doble de memoria con la misma semántica. `abi` y `runtime`
   (`host_validation.rs` lista las operaciones válidas por nombre: añadir). `semantic`/`lowering` solo si el receptor o el
   resultado necesitan tipos nuevos (no: usan los existentes).
-- [ ] `PG-S.04.06` Anfitriones: extensión web (`browser_file_host.ts` con `vscode.workspace.fs`: `readDirectory`,
+- [x] `PG-S.04.06` Anfitriones: extensión web (`browser_file_host.ts` con `vscode.workspace.fs`: `readDirectory`,
   `stat`, `delete`, `rename`, `createDirectory`, lectura+escritura para añadir; semántica de DS-15 idéntica y errores
   tipados de plataforma si el proveedor del sistema de archivos virtual no soporta una operación), pruebas del adaptador
   (`apps/pseudolearn_vscode/tests/adapters/`), CLI (`editor_effects.rs`/`dap_effects.rs` si enumeran operaciones),
   puente de la app (`apps/pseudolearn_app/native/`).
-- [ ] `PG-S.04.07` Fichas es/en, consumidores (`service`, extensión, app: proyección de operaciones sobre capacidades;
+- [x] `PG-S.04.07` Fichas es/en, consumidores (`service`, extensión, app: proyección de operaciones sobre capacidades;
   exportación a Rust/Python: `std::fs` y `os`/`pathlib`, o «sin equivalente»).
-- [ ] `PG-S.04.08` Sujeto nativo: vínculos `pendiente` `PG-N.08` (nativo con `pseudolearn_host`: `PG-N.07`).
-- [ ] `PG-S.04.09` README (`host`, `runtime`, `abi`, `spec`, CLI, extensión, app) con DS-14/DS-15.
-- [ ] `PG-S.04.10` Verificación dirigida: `cargo test -p pseudolearn_host`, `-p pseudolearn_runtime`, `-p pseudolearn_api`;
+- [x] `PG-S.04.08` Sujeto nativo: vínculos `pendiente` `PG-N.08` (nativo con `pseudolearn_host`: `PG-N.07`).
+- [x] `PG-S.04.09` README (`host`, `runtime`, `abi`, `spec`, CLI, extensión, app) con DS-14/DS-15.
+- [x] `PG-S.04.10` Verificación dirigida: `cargo test -p pseudolearn_host`, `-p pseudolearn_runtime`, `-p pseudolearn_api`;
   `see conform --subject engine --only LIB.IO`; pruebas del adaptador web; prueba manual **registrada** en CLI con
   carpeta temporal (comandos y salida en §11).
 

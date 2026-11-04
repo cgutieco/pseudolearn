@@ -15414,6 +15414,662 @@
         }
       },
       {
+        "id": "help.pgs04.directory_exists",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pgs04_directory_exists"
+        },
+        "tokens": [
+          {
+            "identity": "directory_exists",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.IO",
+            "version": "1.0.0",
+            "element": "R5"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Existe",
+            "summary": "Existe consulta si una ruta existe mediante una capacidad.",
+            "purpose": "Permite trabajar con el sistema de archivos solo a través de una capacidad de directorio o de archivo.",
+            "parts": [
+              {
+                "identity": "directory_exists",
+                "text": "Existe consulta si una ruta existe mediante una capacidad."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C22",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Existe",
+                "profile": "es",
+                "specification": "LIB.IO",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "exists",
+            "summary": "exists checks whether a path exists through a capability.",
+            "purpose": "It lets a program work with the file system only through a directory or file capability.",
+            "parts": [
+              {
+                "identity": "directory_exists",
+                "text": "exists checks whether a path exists through a capability."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C22",
+                "kind": "executable",
+                "label": "Program that runs: exists",
+                "profile": "en",
+                "specification": "LIB.IO",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pgs04.directory_is_directory",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pgs04_directory_is_directory"
+        },
+        "tokens": [
+          {
+            "identity": "directory_is_directory",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.IO",
+            "version": "1.0.0",
+            "element": "R5"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "EsDirectorio",
+            "summary": "EsDirectorio consulta si una ruta es un directorio mediante una capacidad.",
+            "purpose": "Permite trabajar con el sistema de archivos solo a través de una capacidad de directorio o de archivo.",
+            "parts": [
+              {
+                "identity": "directory_is_directory",
+                "text": "EsDirectorio consulta si una ruta es un directorio mediante una capacidad."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C26",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: EsDirectorio",
+                "profile": "es",
+                "specification": "LIB.IO",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "isDirectory",
+            "summary": "isDirectory checks whether a path is a directory through a capability.",
+            "purpose": "It lets a program work with the file system only through a directory or file capability.",
+            "parts": [
+              {
+                "identity": "directory_is_directory",
+                "text": "isDirectory checks whether a path is a directory through a capability."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C26",
+                "kind": "executable",
+                "label": "Program that runs: isDirectory",
+                "profile": "en",
+                "specification": "LIB.IO",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pgs04.directory_list",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pgs04_directory_list"
+        },
+        "tokens": [
+          {
+            "identity": "directory_list",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.IO",
+            "version": "1.0.0",
+            "element": "R6"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Listar",
+            "summary": "Listar lista los nombres de un directorio ordenados por puntos de código mediante una capacidad.",
+            "purpose": "Permite trabajar con el sistema de archivos solo a través de una capacidad de directorio o de archivo.",
+            "parts": [
+              {
+                "identity": "directory_list",
+                "text": "Listar lista los nombres de un directorio ordenados por puntos de código mediante una capacidad."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C30",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Listar",
+                "profile": "es",
+                "specification": "LIB.IO",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "list",
+            "summary": "list lists the names in a directory ordered by code point through a capability.",
+            "purpose": "It lets a program work with the file system only through a directory or file capability.",
+            "parts": [
+              {
+                "identity": "directory_list",
+                "text": "list lists the names in a directory ordered by code point through a capability."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C30",
+                "kind": "executable",
+                "label": "Program that runs: list",
+                "profile": "en",
+                "specification": "LIB.IO",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pgs04.directory_delete",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pgs04_directory_delete"
+        },
+        "tokens": [
+          {
+            "identity": "directory_delete",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.IO",
+            "version": "1.0.0",
+            "element": "R7"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Borrar",
+            "summary": "Borrar borra un archivo o un directorio vacío mediante una capacidad.",
+            "purpose": "Permite trabajar con el sistema de archivos solo a través de una capacidad de directorio o de archivo.",
+            "parts": [
+              {
+                "identity": "directory_delete",
+                "text": "Borrar borra un archivo o un directorio vacío mediante una capacidad."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C37",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Borrar",
+                "profile": "es",
+                "specification": "LIB.IO",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "delete",
+            "summary": "delete deletes a file or an empty directory through a capability.",
+            "purpose": "It lets a program work with the file system only through a directory or file capability.",
+            "parts": [
+              {
+                "identity": "directory_delete",
+                "text": "delete deletes a file or an empty directory through a capability."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C37",
+                "kind": "executable",
+                "label": "Program that runs: delete",
+                "profile": "en",
+                "specification": "LIB.IO",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pgs04.directory_rename",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pgs04_directory_rename"
+        },
+        "tokens": [
+          {
+            "identity": "directory_rename",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.IO",
+            "version": "1.0.0",
+            "element": "R8"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Renombrar",
+            "summary": "Renombrar mueve un archivo o un directorio sin sobrescribir mediante una capacidad.",
+            "purpose": "Permite trabajar con el sistema de archivos solo a través de una capacidad de directorio o de archivo.",
+            "parts": [
+              {
+                "identity": "directory_rename",
+                "text": "Renombrar mueve un archivo o un directorio sin sobrescribir mediante una capacidad."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C42",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Renombrar",
+                "profile": "es",
+                "specification": "LIB.IO",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "rename",
+            "summary": "rename moves a file or directory without overwriting through a capability.",
+            "purpose": "It lets a program work with the file system only through a directory or file capability.",
+            "parts": [
+              {
+                "identity": "directory_rename",
+                "text": "rename moves a file or directory without overwriting through a capability."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C42",
+                "kind": "executable",
+                "label": "Program that runs: rename",
+                "profile": "en",
+                "specification": "LIB.IO",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pgs04.directory_create",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pgs04_directory_create"
+        },
+        "tokens": [
+          {
+            "identity": "directory_create",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.IO",
+            "version": "1.0.0",
+            "element": "R9"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "CrearDirectorio",
+            "summary": "CrearDirectorio crea un directorio de un solo nivel mediante una capacidad.",
+            "purpose": "Permite trabajar con el sistema de archivos solo a través de una capacidad de directorio o de archivo.",
+            "parts": [
+              {
+                "identity": "directory_create",
+                "text": "CrearDirectorio crea un directorio de un solo nivel mediante una capacidad."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C50",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: CrearDirectorio",
+                "profile": "es",
+                "specification": "LIB.IO",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "createDirectory",
+            "summary": "createDirectory creates a single-level directory through a capability.",
+            "purpose": "It lets a program work with the file system only through a directory or file capability.",
+            "parts": [
+              {
+                "identity": "directory_create",
+                "text": "createDirectory creates a single-level directory through a capability."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C50",
+                "kind": "executable",
+                "label": "Program that runs: createDirectory",
+                "profile": "en",
+                "specification": "LIB.IO",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pgs04.file_append_text",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pgs04_file_append_text"
+        },
+        "tokens": [
+          {
+            "identity": "file_append_text",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.IO",
+            "version": "1.0.0",
+            "element": "R10"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "AgregarTexto",
+            "summary": "AgregarTexto añade texto al final del archivo mediante una capacidad.",
+            "purpose": "Permite trabajar con el sistema de archivos solo a través de una capacidad de directorio o de archivo.",
+            "parts": [
+              {
+                "identity": "file_append_text",
+                "text": "AgregarTexto añade texto al final del archivo mediante una capacidad."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C55",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: AgregarTexto",
+                "profile": "es",
+                "specification": "LIB.IO",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "appendText",
+            "summary": "appendText appends text to the end of the file through a capability.",
+            "purpose": "It lets a program work with the file system only through a directory or file capability.",
+            "parts": [
+              {
+                "identity": "file_append_text",
+                "text": "appendText appends text to the end of the file through a capability."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C55",
+                "kind": "executable",
+                "label": "Program that runs: appendText",
+                "profile": "en",
+                "specification": "LIB.IO",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pgs04.file_append_bytes",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pgs04_file_append_bytes"
+        },
+        "tokens": [
+          {
+            "identity": "file_append_bytes",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.IO",
+            "version": "1.0.0",
+            "element": "R10"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "AgregarBytes",
+            "summary": "AgregarBytes añade bytes al final del archivo mediante una capacidad.",
+            "purpose": "Permite trabajar con el sistema de archivos solo a través de una capacidad de directorio o de archivo.",
+            "parts": [
+              {
+                "identity": "file_append_bytes",
+                "text": "AgregarBytes añade bytes al final del archivo mediante una capacidad."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C58",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: AgregarBytes",
+                "profile": "es",
+                "specification": "LIB.IO",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "appendBytes",
+            "summary": "appendBytes appends bytes to the end of the file through a capability.",
+            "purpose": "It lets a program work with the file system only through a directory or file capability.",
+            "parts": [
+              {
+                "identity": "file_append_bytes",
+                "text": "appendBytes appends bytes to the end of the file through a capability."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C58",
+                "kind": "executable",
+                "label": "Program that runs: appendBytes",
+                "profile": "en",
+                "specification": "LIB.IO",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
         "id": "help.pgs03.minimum",
         "identity": {
           "kind": "role",
@@ -18744,6 +19400,110 @@
           ],
           "tokens": [
             "text_to_lower"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pgs04_directory_exists"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "directory_exists"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pgs04_directory_is_directory"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "directory_is_directory"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pgs04_directory_list"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "directory_list"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pgs04_directory_delete"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "directory_delete"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pgs04_directory_rename"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "directory_rename"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pgs04_directory_create"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "directory_create"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pgs04_file_append_text"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "file_append_text"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pgs04_file_append_bytes"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "file_append_bytes"
           ]
         },
         {

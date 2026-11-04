@@ -4076,6 +4076,76 @@
 
 ```cobertura
 {
+  "id": "V217",
+  "regla": "LIB.IO#R5",
+  "instrucciones": [
+    "effect_call"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V218",
+  "regla": "LIB.IO#R6",
+  "instrucciones": [
+    "effect_call"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V219",
+  "regla": "LIB.IO#R7",
+  "instrucciones": [
+    "effect_call"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V220",
+  "regla": "LIB.IO#R8",
+  "instrucciones": [
+    "effect_call"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V221",
+  "regla": "LIB.IO#R9",
+  "instrucciones": [
+    "effect_call"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V222",
+  "regla": "LIB.IO#R10",
+  "instrucciones": [
+    "effect_call"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V223",
+  "regla": "LIB.IO#R11",
+  "instrucciones": [
+    "effect_call"
+  ]
+}
+```
+
+```cobertura
+{
   "id": "V188",
   "regla": "LIB.CORE.BYTES#B1",
   "instrucciones": [

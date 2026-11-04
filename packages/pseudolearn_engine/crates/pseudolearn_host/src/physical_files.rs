@@ -44,6 +44,13 @@ impl PhysicalHost {
                 .map(|bytes| committed("bytes", json!(bytes))),
             "file_read_text" => self.read_text(request),
             "file_write_bytes" | "file_write_text" => self.write_all(request),
+            "directory_exists"
+            | "directory_is_directory"
+            | "directory_list"
+            | "directory_delete"
+            | "directory_rename"
+            | "directory_create" => self.directory_operation(request),
+            "file_append_bytes" | "file_append_text" => self.append_all(request),
             "file_close" | "directory_close" => self.close(request),
             _ => Err(HostError::INTERRUPTED),
         }
@@ -70,7 +77,7 @@ impl PhysicalHost {
         ))
     }
 
-    fn entry(&mut self, request: &Request) -> Result<&mut Entry, HostError> {
+    pub(crate) fn entry(&mut self, request: &Request) -> Result<&mut Entry, HostError> {
         let receiver = request.receiver()?;
         self.entries
             .get_mut(&receiver.slot)
@@ -155,7 +162,7 @@ fn replace_content(file: &mut File, bytes: &[u8]) -> std::io::Result<()> {
     file.sync_all()
 }
 
-fn directory_of(
+pub(crate) fn directory_of(
     entry: &mut Entry,
 ) -> Result<(&crate::physical_paths::DirectoryResource, u8), HostError> {
     match &entry.resource {
@@ -164,7 +171,7 @@ fn directory_of(
     }
 }
 
-fn file_of(entry: &mut Entry) -> Result<(&mut File, u8), HostError> {
+pub(crate) fn file_of(entry: &mut Entry) -> Result<(&mut File, u8), HostError> {
     match &mut entry.resource {
         Resource::File(file) => Ok((file, entry.rights)),
         _ => Err(HostError::PERMISSION_DENIED),

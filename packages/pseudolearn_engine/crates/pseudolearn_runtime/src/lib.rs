@@ -136,6 +136,8 @@ mod memory_host;
 #[cfg(feature = "test-host")]
 mod memory_host_config;
 #[cfg(feature = "test-host")]
+mod memory_host_directories;
+#[cfg(feature = "test-host")]
 mod memory_host_files;
 mod network_headers;
 mod network_limits;

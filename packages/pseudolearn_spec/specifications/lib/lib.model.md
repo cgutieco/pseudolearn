@@ -1588,6 +1588,111 @@
         "result": "text",
         "effect": false,
         "fallible": false
+      },
+      {
+        "identity": "directory_exists",
+        "family": "io",
+        "receiver": "directory",
+        "es": "Existe",
+        "en": "exists",
+        "parameters": [
+          "text"
+        ],
+        "result": "boolean",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "directory_is_directory",
+        "family": "io",
+        "receiver": "directory",
+        "es": "EsDirectorio",
+        "en": "isDirectory",
+        "parameters": [
+          "text"
+        ],
+        "result": "boolean",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "directory_list",
+        "family": "io",
+        "receiver": "directory",
+        "es": "Listar",
+        "en": "list",
+        "parameters": [
+          "text"
+        ],
+        "result": "text_list",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "directory_delete",
+        "family": "io",
+        "receiver": "directory",
+        "es": "Borrar",
+        "en": "delete",
+        "parameters": [
+          "text"
+        ],
+        "result": "boolean",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "directory_rename",
+        "family": "io",
+        "receiver": "directory",
+        "es": "Renombrar",
+        "en": "rename",
+        "parameters": [
+          "text",
+          "text"
+        ],
+        "result": "boolean",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "directory_create",
+        "family": "io",
+        "receiver": "directory",
+        "es": "CrearDirectorio",
+        "en": "createDirectory",
+        "parameters": [
+          "text"
+        ],
+        "result": "boolean",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "file_append_bytes",
+        "family": "io",
+        "receiver": "file",
+        "es": "AgregarBytes",
+        "en": "appendBytes",
+        "parameters": [
+          "bytes"
+        ],
+        "result": "integer",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "file_append_text",
+        "family": "io",
+        "receiver": "file",
+        "es": "AgregarTexto",
+        "en": "appendText",
+        "parameters": [
+          "text"
+        ],
+        "result": "integer",
+        "effect": true,
+        "fallible": true
       }
     ]
   }
@@ -1611,6 +1716,8 @@ Codigo y Incierto (code y uncertain): el código es la variante portable, y la b
 incertidumbre de una operación con potencial de escritura.
 
 AMayusculas y AMinusculas son operaciones puras de texto sin receptor que devuelven una cadena nueva.
+
+Existe, EsDirectorio, Listar, Borrar, Renombrar y CrearDirectorio son operaciones de efecto del receptor directorio y AgregarTexto y AgregarBytes del receptor archivo; todas son falibles, usan la familia io y devuelven lógico, vector de cadenas o entero según LIB.IO#R5 a R11.
 
 Los parámetros text admiten Cadena o Caracter; un carácter se convierte sin pérdida a una cadena
 de un punto de código antes de emitir la solicitud. Esto conserva rutas de un solo carácter sin

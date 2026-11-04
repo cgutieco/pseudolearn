@@ -1,6 +1,8 @@
 #![forbid(unsafe_code)]
 
+mod physical_directory_ops;
 mod physical_error;
+mod physical_file_append;
 mod physical_files;
 mod physical_host;
 mod physical_network;

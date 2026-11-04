@@ -121,10 +121,15 @@ fn expected_blocks(block: &Block) -> Vec<&Value> {
     result
 }
 
-const MUTATING_OPERATIONS: [&str; 6] = [
+const MUTATING_OPERATIONS: [&str; 11] = [
     "file_open",
     "file_write_bytes",
     "file_write_text",
+    "file_append_bytes",
+    "file_append_text",
+    "directory_delete",
+    "directory_rename",
+    "directory_create",
     "file_close",
     "directory_close",
     "console_write",
