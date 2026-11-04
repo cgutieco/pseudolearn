@@ -456,3 +456,9 @@ La vista pública añade collection_operation para vectorSort, vectorReverse, ve
 ## Contratos adicionales de verificación
 
 Las pruebas de ordenación contrastan estabilidad y multiconjunto con una semilla fija sobre entradas vacías, unitarias y con claves repetidas. La prueba de 100 000 elementos verifica cada posición, además de los extremos; las pruebas de error conservan el tramo de la llamada de usuario.
+
+## Código de salida (`PG-S.07`)
+
+La respuesta de `advance` (y la instantánea de punta) añade el campo `exit_code` (entero 0–255, 0 por omisión). Es un
+campo aditivo: los consumidores que no lo conocen lo ignoran. `error_ranges` lista los tramos `[inicio, fin)` de bytes de `output` que escribió `Consola.EscribirError`; `output` conserva
+ambos flujos en orden, así que un consumidor que no lo conoce muestra todo sin pérdida.

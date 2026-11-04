@@ -295,3 +295,10 @@ Claves conserva el envoltorio Inmutable al consultar un diccionario inmutable, m
 `Entorno`/`Environment` se resuelve como nombre de capacidad (`capability_types.rs`) y `FechaHora`/`DateTime` como
 tipo opaco de efecto (`effect_types.rs`), con `Opcional<FechaHora>` construido por `json_types.rs` junto al resto de
 opcionales de efecto. Ninguna construcción de registros como resultado: el valor de calendario es opaco (DS-13).
+
+## Ampliación de argumentos de operaciones D2 (`PG-S.08`, `PS-V-03`)
+
+Hipótesis `PS-V-03` refutada: `assignable` aceptaba un entero para un parámetro real de una operación D2, pero el
+argumento llegaba al IR como `i64` y la verificación de tipos del IR rechazaba la llamada (`analysisFailed`).
+`effect_checker::check_argument` envuelve ahora el argumento entero en `HirExpression::Widen` cuando el parámetro es real,
+con el mismo `widen` que usan las asignaciones. `Decimales(7, 2)` produce `7.00`.

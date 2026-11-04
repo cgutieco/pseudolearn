@@ -33,6 +33,8 @@ export class BrowserEffectHost {
     if (operation === "environment_get") return failedEffect("permiso_denegado");
     if (operation === "timer_wait") return this.wait(effect);
     if (operation === "console_write") return committedEffect("integer", new TextEncoder().encode(text(object((effect.arguments as Projection[])[0]).value)).length);
+    if (operation === "console_write_error") return committedEffect("integer", new TextEncoder().encode(text(object((effect.arguments as Projection[])[0]).value)).length);
+    if (operation === "console_set_exit_code") return this.exitCode(effect);
     return this.files.perform(effect);
   }
 
@@ -40,6 +42,12 @@ export class BrowserEffectHost {
     this.abort.abort();
     this.files.clear();
     this.resolved.clear();
+  }
+
+  private exitCode(effect: Record<string, Projection>): unknown {
+    const code = Number(text(object((effect.arguments as Projection[])[0]).value));
+    if (!Number.isInteger(code) || code < 0 || code > 255) return failedEffect("peticion_invalida");
+    return committedEffect("integer", code);
   }
 
   private async wait(effect: Record<string, Projection>): Promise<unknown> {

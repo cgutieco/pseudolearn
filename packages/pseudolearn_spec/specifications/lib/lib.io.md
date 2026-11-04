@@ -2269,3 +2269,135 @@
   }
 }
 ```
+
+```regla
+{
+  "id": "R15",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Consola.EstablecerCodigoSalida(n) devuelve Resultado<Entero, ErrorES> con el código establecido. Establece el código de salida del proceso que se aplica cuando el programa termina con normalidad: no termina el programa, no altera el flujo, Diferir ni las tareas, y si se establece más de una vez conserva el último. Vale 0 por omisión. Un n fuera de 0–255 produce ErrorES.PeticionInvalida sin cambiar el código vigente. Un programa que termina por fallo de ejecución, límite alcanzado o entrada agotada conserva el código de ese final y no el establecido. Se graba en la cinta bajo capability_kind console y la reproducción devuelve el valor grabado sin duplicar el efecto.",
+  "verificacion": [
+    "C72",
+    "C73",
+    "C74"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C72",
+  "regla": "R15",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "3\n7\n0\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir con Como Consola <- Propagar SolicitarConsola();\nDefinir c3 Como Entero <- Propagar con.EstablecerCodigoSalida(3);\nDefinir c7 Como Entero <- Propagar con.EstablecerCodigoSalida(7);\nEscribir c3;\nEscribir c7;\nRetornar Exito(0);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<integer, IoError>\ndefine con as Console <- propagate requestConsole();\ndefine c3 as integer <- propagate con.setExitCode(3);\ndefine c7 as integer <- propagate con.setExitCode(7);\nwrite c3;\nwrite c7;\nreturn success(0);\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  }
+}
+```
+
+```caso
+{
+  "id": "C73",
+  "regla": "R15",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "0\n255\n0\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir con Como Consola <- Propagar SolicitarConsola();\nDefinir c0 Como Entero <- Propagar con.EstablecerCodigoSalida(0);\nDefinir c255 Como Entero <- Propagar con.EstablecerCodigoSalida(255);\nEscribir c0;\nEscribir c255;\nRetornar Exito(0);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<integer, IoError>\ndefine con as Console <- propagate requestConsole();\ndefine c0 as integer <- propagate con.setExitCode(0);\ndefine c255 as integer <- propagate con.setExitCode(255);\nwrite c0;\nwrite c255;\nreturn success(0);\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  }
+}
+```
+
+```caso
+{
+  "id": "C74",
+  "regla": "R15",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "peticion_invalida\npeticion_invalida\n0\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir con Como Consola <- Propagar SolicitarConsola();\nSegun con.EstablecerCodigoSalida(256) Hacer\nExito(value): Escribir \"ok\";\nError(problem): Escribir problem.Codigo;\nFinSegun\nSegun con.EstablecerCodigoSalida(-1) Hacer\nExito(value): Escribir \"ok\";\nError(problem): Escribir problem.Codigo;\nFinSegun\nRetornar Exito(0);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<integer, IoError>\ndefine con as Console <- propagate requestConsole();\nswitch con.setExitCode(256) do\nsuccess(value): write \"ok\";\nfailure(problem): write problem.code;\nendSwitch\nswitch con.setExitCode(-1) do\nsuccess(value): write \"ok\";\nfailure(problem): write problem.code;\nendSwitch\nreturn success(0);\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  }
+}
+```
+
+```regla
+{
+  "id": "R16",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Consola.EscribirError(texto) devuelve Resultado<Entero, ErrorES> con la cantidad de bytes UTF-8 del texto, que queda escrito en el flujo de error del programa. La salida combinada del programa conserva el texto de ambos flujos en el orden en que se escribieron, y la respuesta de la API informa en error_ranges los tramos de bytes de esa salida que pertenecen al flujo de error. La CLI escribe esos tramos en la salida de error estándar y el resto en la salida estándar; la sesión de depuración los informa con la categoría de salida de error; los demás consumidores pueden mostrar la salida combinada. El texto vacío escribe cero bytes. Se graba en la cinta bajo capability_kind console.",
+  "verificacion": [
+    "C75",
+    "C76"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C75",
+  "regla": "R16",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "a\nx\nb\n2\n0\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir con Como Consola <- Propagar SolicitarConsola();\nEscribir \"a\";\nDefinir n Como Entero <- Propagar con.EscribirError(\"x\\n\");\nEscribir \"b\";\nEscribir n;\nRetornar Exito(0);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<integer, IoError>\ndefine con as Console <- propagate requestConsole();\nwrite \"a\";\ndefine n as integer <- propagate con.writeError(\"x\\n\");\nwrite \"b\";\nwrite n;\nreturn success(0);\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  }
+}
+```
+
+```caso
+{
+  "id": "C76",
+  "regla": "R16",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "é0\n2\n0\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir con Como Consola <- Propagar SolicitarConsola();\nDefinir vacio Como Entero <- Propagar con.EscribirError(\"\");\nDefinir tilde Como Entero <- Propagar con.EscribirError(\"é\");\nEscribir vacio;\nEscribir tilde;\nRetornar Exito(0);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<integer, IoError>\ndefine con as Console <- propagate requestConsole();\ndefine vacio as integer <- propagate con.writeError(\"\");\ndefine tilde as integer <- propagate con.writeError(\"é\");\nwrite vacio;\nwrite tilde;\nreturn success(0);\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  }
+}
+```

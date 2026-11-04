@@ -24,7 +24,7 @@ fn text_operation(
         "trim" => Some(trim(arguments)?),
         "text_to_upper" => Some(to_upper(arguments)?),
         "text_to_lower" => Some(to_lower(arguments)?),
-        _ => None,
+        _ => crate::text_format_operations::text_format_operation(identity, arguments)?,
     };
     Ok(value)
 }

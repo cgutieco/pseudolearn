@@ -89,10 +89,14 @@ impl DapSession {
 
     fn present_output(&mut self, batch: &Value) {
         let output = batch.get("output").and_then(Value::as_str).unwrap_or("");
-        let fresh = output.get(self.output_bytes..).unwrap_or("");
-        if !fresh.is_empty() {
+        let errors = crate::output_streams::error_ranges(batch);
+        for (stream, text) in crate::output_streams::segments(output, self.output_bytes, &errors) {
+            let category = match stream {
+                crate::output_streams::Stream::Output => "stdout",
+                crate::output_streams::Stream::Error => "stderr",
+            };
             self.pending
-                .push(event("output", json!({"category":"stdout","output":fresh})));
+                .push(event("output", json!({"category":category,"output":text})));
         }
         self.output_bytes = self.output_bytes.max(output.len());
     }

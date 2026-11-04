@@ -1739,6 +1739,18 @@
       "resuelve_en": "PG-N.08"
     },
     {
+      "regla": "LIB.IO@1.0.0#R15",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-N.08"
+    },
+    {
+      "regla": "LIB.IO@1.0.0#R16",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-N.08"
+    },
+    {
       "regla": "LIB.TIME@1.0.0#R3",
       "verificacion": "ejecutor",
       "estado": "pendiente",
@@ -1827,6 +1839,18 @@
     },
     {
       "regla": "LIB.CORE.TEXT@1.0.0#T4",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-N.08"
+    },
+    {
+      "regla": "LIB.CORE.TEXT@1.0.0#T5",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-N.08"
+    },
+    {
+      "regla": "LIB.CORE.CONVERSION@1.0.0#R2",
       "verificacion": "ejecutor",
       "estado": "pendiente",
       "resuelve_en": "PG-N.08"

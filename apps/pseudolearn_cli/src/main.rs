@@ -1,6 +1,7 @@
 #![forbid(unsafe_code)]
 
 mod adapter;
+mod output_streams;
 mod adapter_ir;
 mod aot_adapter;
 mod build_command;

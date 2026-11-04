@@ -61,7 +61,8 @@ fn mutates(operation: &EffectOperation, request: &HostEffectRequest) -> bool {
     match operation.identity {
         "file_write_bytes" | "file_write_text" | "file_append_bytes" | "file_append_text"
         | "directory_delete" | "directory_rename" | "directory_create" | "file_close"
-        | "directory_close" | "console_write" => true,
+        | "directory_close" | "console_write" | "console_write_error"
+        | "console_set_exit_code" => true,
         "network_send" => request
             .arguments
             .first()

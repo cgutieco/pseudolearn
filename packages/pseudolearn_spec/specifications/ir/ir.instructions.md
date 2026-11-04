@@ -4066,8 +4066,48 @@
 
 ```cobertura
 {
+  "id": "V237",
+  "regla": "LIB.IO#R15",
+  "instrucciones": [
+    "effect_call"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V238",
+  "regla": "LIB.IO#R16",
+  "instrucciones": [
+    "effect_call"
+  ]
+}
+```
+
+```cobertura
+{
   "id": "V210",
   "regla": "LIB.CORE.TEXT#T4",
+  "instrucciones": [
+    "effect_call"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V235",
+  "regla": "LIB.CORE.TEXT#T5",
+  "instrucciones": [
+    "effect_call"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V236",
+  "regla": "LIB.CORE.CONVERSION#R2",
   "instrucciones": [
     "effect_call"
   ]

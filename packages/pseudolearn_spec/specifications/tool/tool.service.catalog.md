@@ -15528,6 +15528,438 @@
         }
       },
       {
+        "id": "help.pgs07.console_set_exit_code",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pgs07_console_set_exit_code"
+        },
+        "tokens": [
+          {
+            "identity": "console_set_exit_code",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.IO",
+            "version": "1.0.0",
+            "element": "R15"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "EstablecerCodigoSalida",
+            "summary": "EstablecerCodigoSalida fija el código de salida del proceso que se aplica cuando el programa termina con normalidad.",
+            "purpose": "Permite que un programa informe un resultado a la orden que lo invocó sin terminar de inmediato.",
+            "parts": [
+              {
+                "identity": "console_set_exit_code",
+                "text": "EstablecerCodigoSalida fija el código de salida del proceso que se aplica cuando el programa termina con normalidad."
+              }
+            ],
+            "constraints": [
+              "El código va de 0 a 255; fuera de ese rango se produce ErrorES.PeticionInvalida y el código vigente no cambia.",
+              "Un final por fallo conserva su propio código."
+            ],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C72",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: EstablecerCodigoSalida",
+                "profile": "es",
+                "specification": "LIB.IO",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "setExitCode",
+            "summary": "setExitCode sets the process exit code applied when the program ends normally.",
+            "purpose": "It lets a program report an outcome to the command that ran it without ending immediately.",
+            "parts": [
+              {
+                "identity": "console_set_exit_code",
+                "text": "setExitCode sets the process exit code applied when the program ends normally."
+              }
+            ],
+            "constraints": [
+              "The code goes from 0 to 255; outside that range ErrorES.PeticionInvalida is produced and the current code does not change.",
+              "A failure ending keeps its own code."
+            ],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C72",
+                "kind": "executable",
+                "label": "Program that runs: setExitCode",
+                "profile": "en",
+                "specification": "LIB.IO",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pgs07.console_write_error",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pgs07_console_write_error"
+        },
+        "tokens": [
+          {
+            "identity": "console_write_error",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.IO",
+            "version": "1.0.0",
+            "element": "R16"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "EscribirError",
+            "summary": "EscribirError escribe un texto en el flujo de error del anfitrión sin mezclarlo con la salida del programa.",
+            "purpose": "Permite separar los mensajes de error de los resultados del programa.",
+            "parts": [
+              {
+                "identity": "console_write_error",
+                "text": "EscribirError escribe un texto en el flujo de error del anfitrión sin mezclarlo con la salida del programa."
+              }
+            ],
+            "constraints": [
+              "La CLI lo escribe en la salida de error estándar; el navegador y la app producen un ErrorES tipado de plataforma."
+            ],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C75",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: EscribirError",
+                "profile": "es",
+                "specification": "LIB.IO",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "writeError",
+            "summary": "writeError writes a text to the host error stream without mixing it with the program output.",
+            "purpose": "It lets a program keep error messages apart from its results.",
+            "parts": [
+              {
+                "identity": "console_write_error",
+                "text": "writeError writes a text to the host error stream without mixing it with the program output."
+              }
+            ],
+            "constraints": [
+              "The CLI writes it to standard error; the browser and the app produce a platform-typed ErrorES."
+            ],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C75",
+                "kind": "executable",
+                "label": "Program that runs: writeError",
+                "profile": "en",
+                "specification": "LIB.IO",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pgs08.text_decimals",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pgs08_text_decimals"
+        },
+        "tokens": [
+          {
+            "identity": "text_decimals",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.CORE.CONVERSION",
+            "version": "1.0.0",
+            "element": "R2"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Decimales",
+            "summary": "Decimales devuelve el número como cadena con una cantidad fija de decimales, redondeando los empates alejándolos de cero.",
+            "purpose": "Permite mostrar importes y medidas con precisión fija sin depender de la configuración regional.",
+            "parts": [
+              {
+                "identity": "text_decimals",
+                "text": "Decimales devuelve el número como cadena con una cantidad fija de decimales, redondeando los empates alejándolos de cero."
+              }
+            ],
+            "constraints": [
+              "La cantidad de decimales va de 0 a 100; fuera de ese rango se produce decimalPlacesOutOfRange."
+            ],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C5",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Decimales",
+                "profile": "es",
+                "specification": "LIB.CORE.CONVERSION",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "decimals",
+            "summary": "decimals returns the number as a string with a fixed count of decimals, rounding ties away from zero.",
+            "purpose": "It lets a program show amounts and measurements with fixed precision, independent of locale.",
+            "parts": [
+              {
+                "identity": "text_decimals",
+                "text": "decimals returns the number as a string with a fixed count of decimals, rounding ties away from zero."
+              }
+            ],
+            "constraints": [
+              "The count of decimals goes from 0 to 100; outside that range decimalPlacesOutOfRange is produced."
+            ],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C5",
+                "kind": "executable",
+                "label": "Program that runs: decimals",
+                "profile": "en",
+                "specification": "LIB.CORE.CONVERSION",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pgs08.text_pad_left",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pgs08_text_pad_left"
+        },
+        "tokens": [
+          {
+            "identity": "text_pad_left",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.CORE.TEXT",
+            "version": "1.0.0",
+            "element": "T5"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "RellenarIzquierda",
+            "summary": "RellenarIzquierda antepone un relleno de un punto de código hasta alcanzar el ancho indicado.",
+            "purpose": "Permite alinear texto y números a la derecha sin recortar los valores largos.",
+            "parts": [
+              {
+                "identity": "text_pad_left",
+                "text": "RellenarIzquierda antepone un relleno de un punto de código hasta alcanzar el ancho indicado."
+              }
+            ],
+            "constraints": [
+              "El relleno debe tener exactamente un punto de código y el ancho no puede ser negativo."
+            ],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C31",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: RellenarIzquierda",
+                "profile": "es",
+                "specification": "LIB.CORE.TEXT",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "padLeft",
+            "summary": "padLeft prepends a one-code-point fill until the given width is reached.",
+            "purpose": "It lets a program right-align text and numbers without truncating long values.",
+            "parts": [
+              {
+                "identity": "text_pad_left",
+                "text": "padLeft prepends a one-code-point fill until the given width is reached."
+              }
+            ],
+            "constraints": [
+              "The fill must have exactly one code point and the width cannot be negative."
+            ],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C31",
+                "kind": "executable",
+                "label": "Program that runs: padLeft",
+                "profile": "en",
+                "specification": "LIB.CORE.TEXT",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pgs08.text_pad_right",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pgs08_text_pad_right"
+        },
+        "tokens": [
+          {
+            "identity": "text_pad_right",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.CORE.TEXT",
+            "version": "1.0.0",
+            "element": "T5"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "RellenarDerecha",
+            "summary": "RellenarDerecha agrega un relleno de un punto de código hasta alcanzar el ancho indicado.",
+            "purpose": "Permite alinear texto a la izquierda en columnas de ancho fijo sin recortar los valores largos.",
+            "parts": [
+              {
+                "identity": "text_pad_right",
+                "text": "RellenarDerecha agrega un relleno de un punto de código hasta alcanzar el ancho indicado."
+              }
+            ],
+            "constraints": [
+              "El relleno debe tener exactamente un punto de código y el ancho no puede ser negativo."
+            ],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C31",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: RellenarDerecha",
+                "profile": "es",
+                "specification": "LIB.CORE.TEXT",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "padRight",
+            "summary": "padRight appends a one-code-point fill until the given width is reached.",
+            "purpose": "It lets a program left-align text in fixed-width columns without truncating long values.",
+            "parts": [
+              {
+                "identity": "text_pad_right",
+                "text": "padRight appends a one-code-point fill until the given width is reached."
+              }
+            ],
+            "constraints": [
+              "The fill must have exactly one code point and the width cannot be negative."
+            ],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C31",
+                "kind": "executable",
+                "label": "Program that runs: padRight",
+                "profile": "en",
+                "specification": "LIB.CORE.TEXT",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
         "id": "help.pgs04.directory_exists",
         "identity": {
           "kind": "role",
@@ -21006,6 +21438,71 @@
           ],
           "tokens": [
             "text_to_lower"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pgs07_console_set_exit_code"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "console_set_exit_code"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pgs07_console_write_error"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "console_write_error"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pgs08_text_decimals"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "text_decimals"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pgs08_text_pad_left"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "text_pad_left"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pgs08_text_pad_right"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "text_pad_right"
           ]
         },
         {

@@ -144,9 +144,13 @@ mod memory_host_config;
 #[cfg(feature = "test-host")]
 mod memory_host_directories;
 #[cfg(feature = "test-host")]
+mod memory_host_console;
+#[cfg(feature = "test-host")]
 mod memory_host_environment;
 #[cfg(feature = "test-host")]
 mod memory_host_files;
+mod exit_code;
+pub use exit_code::exit_code_argument;
 mod network_headers;
 mod network_limits;
 #[cfg(test)]

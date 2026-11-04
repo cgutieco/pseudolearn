@@ -63,6 +63,8 @@ pub enum RunExit {
 pub struct RunResult {
     pub exit: RunExit,
     pub output: String,
+    pub exit_code: u8,
+    pub error_ranges: Vec<(usize, usize)>,
     pub consumed_statements: u64,
     pub consumed_probes: u64,
     pub memory_counts: Vec<MemoryCount>,

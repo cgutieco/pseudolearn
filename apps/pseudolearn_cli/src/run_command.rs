@@ -112,7 +112,17 @@ fn present_batch(
         return Ok(());
     }
     let output = response.get("output").and_then(Value::as_str).unwrap_or("");
-    print!("{}", output.get(*printed..).unwrap_or(""));
+    let errors = crate::output_streams::error_ranges(response);
+    for (stream, text) in crate::output_streams::segments(output, *printed, &errors) {
+        std::io::stdout().flush().map_err(operational)?;
+        match stream {
+            crate::output_streams::Stream::Output => print!("{text}"),
+            crate::output_streams::Stream::Error => {
+                eprint!("{text}");
+                std::io::stderr().flush().map_err(operational)?;
+            }
+        }
+    }
     *printed = output.len();
     std::io::stdout().flush().map_err(operational)?;
     if options.execution.trace {
@@ -148,12 +158,22 @@ fn finish(options: &CliOptions, path: &str, response: &Value) -> Result<i32, Cli
                 .map_err(operational)?;
         render_diagnostics(options, path, &diagnostics);
     }
-    Ok(i32::from(
-        response
-            .pointer("/termination/kind")
-            .and_then(Value::as_str)
-            != Some("completed"),
-    ))
+    Ok(process_exit_code(response))
+}
+
+fn process_exit_code(response: &Value) -> i32 {
+    let completed = response
+        .pointer("/termination/kind")
+        .and_then(Value::as_str)
+        == Some("completed");
+    if !completed {
+        return 1;
+    }
+    response
+        .get("exit_code")
+        .and_then(Value::as_u64)
+        .and_then(|code| i32::try_from(code).ok())
+        .unwrap_or(0)
 }
 
 fn render_rejected(

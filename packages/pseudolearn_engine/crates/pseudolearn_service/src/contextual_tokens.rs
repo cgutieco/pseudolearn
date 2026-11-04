@@ -152,25 +152,29 @@ const TYPE_IDENTITIES: [&str; 18] = [
 ];
 
 fn owns(kind: NodeKind, identity: &str) -> bool {
-    matches!(
-        (kind, identity),
-        (NodeKind::InterfaceUnit, "interfaceKeyword" | "endInterface")
-            | (NodeKind::Realization, "implementsKeyword")
-            | (NodeKind::ForEachLoop, "eachKeyword" | "inKeyword")
-            | (NodeKind::DeferStatement, "deferKeyword" | "endDefer")
-            | (NodeKind::BreakStatement, "breakKeyword")
-            | (NodeKind::Type, name) if TYPE_IDENTITIES.contains(&name)
-            | (
-                NodeKind::Postfix,
-                "httpMethodType"
-                    | "requestConsole"
-                    | "requestArguments"
-                    | "requestDirectory"
-                    | "requestClock"
-                    | "requestTimer"
-                    | "requestEnvironment"
-            )
-    )
+    owns_type_identity(kind, identity)
+        || matches!(
+            (kind, identity),
+            (NodeKind::InterfaceUnit, "interfaceKeyword" | "endInterface")
+                | (NodeKind::Realization, "implementsKeyword")
+                | (NodeKind::ForEachLoop, "eachKeyword" | "inKeyword")
+                | (NodeKind::DeferStatement, "deferKeyword" | "endDefer")
+                | (NodeKind::BreakStatement, "breakKeyword")
+                | (
+                    NodeKind::Postfix,
+                    "httpMethodType"
+                        | "requestConsole"
+                        | "requestArguments"
+                        | "requestDirectory"
+                        | "requestClock"
+                        | "requestTimer"
+                        | "requestEnvironment"
+                )
+        )
+}
+
+fn owns_type_identity(kind: NodeKind, identity: &str) -> bool {
+    matches!(kind, NodeKind::Type) && TYPE_IDENTITIES.contains(&identity)
 }
 
 fn action_identity(action: CollectionAction) -> Option<&'static str> {

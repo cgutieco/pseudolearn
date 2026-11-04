@@ -821,6 +821,11 @@
       "estado": "cumple"
     },
     {
+      "regla": "LIB.CORE.CONVERSION@1.0.0#R2",
+      "verificacion": "crates/pseudolearn_library/src/decimal_format_tests.rs",
+      "estado": "cumple"
+    },
+    {
       "regla": "LIB.CORE.COPY@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
@@ -2191,6 +2196,16 @@
       "estado": "cumple"
     },
     {
+      "regla": "LIB.IO@1.0.0#R15",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.IO@1.0.0#R16",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
       "regla": "LIB.TIME@1.0.0#R3",
       "verificacion": "crates/pseudolearn_library/src/date_time_operations.rs",
       "estado": "cumple"
@@ -2274,6 +2289,11 @@
     {
       "regla": "LIB.CORE.TEXT@1.0.0#T4",
       "verificacion": "crates/pseudolearn_library/src/text_case_tests.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.CORE.TEXT@1.0.0#T5",
+      "verificacion": "crates/pseudolearn_library/src/text_padding_tests.rs",
       "estado": "cumple"
     },
     {

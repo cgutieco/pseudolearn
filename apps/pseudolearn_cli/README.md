@@ -469,3 +469,11 @@ de dependencias mantiene el rechazo de duplicados y omite versiones exactas inev
 io-lifetimes y bindings Windows heredadas de cap-std. El puente también omite hashbrown 0.14.5
 (oslog de FRB) y miniz_oxide 0.8.9 (backtrace de FRB), manteniendo las versiones actuales usadas por
 indexmap y flate2. Estas excepciones son de compatibilidad de dependencias, sin cambiar validación TLS.
+
+## Código de salida y salida de error (`PG-S.07`)
+
+`pseudo ejecutar` termina con el campo `exit_code` de la respuesta final cuando la ejecución completó, y con 1 en
+cualquier otro final (`run_command.rs::process_exit_code`). El texto de `Consola.EscribirError` llega en `output` y sus
+tramos en `error_ranges`; `output_streams.rs` los reparte entre la salida estándar y la de error en el orden del
+programa, y la sesión DAP los informa con la categoría `stderr`. El protocolo de editor lleva `error_ranges` sin
+interpretarlo; la ejecución nativa (`--native`) y el AOT no lo implementan todavía (`PG-N.08`).

@@ -884,6 +884,32 @@
         "fallible": true
       },
       {
+        "identity": "console_write_error",
+        "family": "io",
+        "receiver": "console",
+        "es": "EscribirError",
+        "en": "writeError",
+        "parameters": [
+          "text"
+        ],
+        "result": "integer",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "console_set_exit_code",
+        "family": "io",
+        "receiver": "console",
+        "es": "EstablecerCodigoSalida",
+        "en": "setExitCode",
+        "parameters": [
+          "integer"
+        ],
+        "result": "integer",
+        "effect": true,
+        "fallible": true
+      },
+      {
         "identity": "arguments_values",
         "family": "io",
         "receiver": "arguments",
@@ -1590,6 +1616,50 @@
         "fallible": false
       },
       {
+        "identity": "text_decimals",
+        "family": "text",
+        "receiver": null,
+        "es": "Decimales",
+        "en": "decimals",
+        "parameters": [
+          "real",
+          "integer"
+        ],
+        "result": "text",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "text_pad_left",
+        "family": "text",
+        "receiver": null,
+        "es": "RellenarIzquierda",
+        "en": "padLeft",
+        "parameters": [
+          "text",
+          "integer",
+          "text"
+        ],
+        "result": "text",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "text_pad_right",
+        "family": "text",
+        "receiver": null,
+        "es": "RellenarDerecha",
+        "en": "padRight",
+        "parameters": [
+          "text",
+          "integer",
+          "text"
+        ],
+        "result": "text",
+        "effect": false,
+        "fallible": false
+      },
+      {
         "identity": "directory_exists",
         "family": "io",
         "receiver": "directory",
@@ -1929,6 +1999,8 @@ Codigo y Incierto (code y uncertain): el código es la variante portable, y la b
 incertidumbre de una operación con potencial de escritura.
 
 AMayusculas y AMinusculas son operaciones puras de texto sin receptor que devuelven una cadena nueva.
+
+Decimales, RellenarIzquierda y RellenarDerecha son operaciones puras de texto sin receptor que devuelven una cadena nueva. El primer parámetro de Decimales es real y admite un entero, que se amplía a real; sus trampas son decimalPlacesOutOfRange, invalidPaddingText, paddingWidthOutOfRange y cellLimitExceeded según LIB.CORE.CONVERSION#R2 y LIB.CORE.TEXT#T5.
 
 SolicitarEntorno crea la capacidad Entorno y Obtener lee una variable por nombre; ambas son operaciones de efecto falibles de la familia io, y Obtener devuelve Opcional<Cadena> según LIB.IO#R12 a R14.
 

@@ -26,6 +26,7 @@ pub struct MemoryHostProvider {
     pub time_nanos: u64,
     pub calls: u64,
     pub output: String,
+    pub error_output: String,
     pub(crate) clocks: VecDeque<u64>,
     pub(crate) faults: Vec<MemoryFault>,
     pub(crate) resources: BTreeMap<u32, String>,
@@ -120,6 +121,8 @@ impl MemoryHostProvider {
                     |_| IoError::from_kind(IoErrorKind::Interrupted),
                 )?))
             }
+            "console_write_error" => crate::memory_host_console::write_error(self, request),
+            "console_set_exit_code" => crate::memory_host_console::set_exit_code(request),
             "arguments_values" => Ok(HostValue::TextList(self.arguments.clone())),
             "environment_get" => crate::memory_host_environment::environment_get(self, request),
             "clock_local_now" => crate::memory_host_environment::local_now(self),

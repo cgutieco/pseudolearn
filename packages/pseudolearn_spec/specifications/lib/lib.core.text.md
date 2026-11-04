@@ -796,3 +796,331 @@
   }
 }
 ```
+
+```regla
+{
+  "id": "T5",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "RellenarIzquierda(texto, ancho, relleno) y RellenarDerecha(texto, ancho, relleno) devuelven el texto precedido o seguido de copias de relleno hasta que la cadena tenga ancho puntos de código. El relleno es textual: no trata el signo de forma especial. Un texto que ya alcanza o supera el ancho se devuelve sin recortar. El relleno, Cadena o Caracter, debe tener exactamente un punto de código; en otro caso se produce invalidPaddingText. Un ancho negativo produce paddingWidthOutOfRange y un ancho mayor que 16777216 produce cellLimitExceeded sin construir la cadena. El resultado cuenta celdas como T3. Un argumento de tipo distinto o una aridad distinta de tres se rechaza antes de la ejecución.",
+  "verificacion": [
+    "C31",
+    "C32",
+    "C33",
+    "C34",
+    "C35",
+    "C36",
+    "C37",
+    "C38",
+    "C39",
+    "C40",
+    "C41",
+    "C42",
+    "C43"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C31",
+  "regla": "T5",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir RellenarIzquierda(\"7\", 3, \"0\");\nEscribir RellenarDerecha(\"7\", 3, \".\");\nEscribir RellenarIzquierda(\"-5\", 4, \"0\");\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite padLeft(\"7\", 3, \"0\");\nwrite padRight(\"7\", 3, \".\");\nwrite padLeft(\"-5\", 4, \"0\");\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "007\n7..\n00-5\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C32",
+  "regla": "T5",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir RellenarIzquierda(\"abcd\", 2, \"0\");\nEscribir RellenarDerecha(\"\", 0, \"x\");\nEscribir RellenarIzquierda(\"\", 2, \"x\");\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite padLeft(\"abcd\", 2, \"0\");\nwrite padRight(\"\", 0, \"x\");\nwrite padLeft(\"\", 2, \"x\");\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "abcd\n\nxx\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C33",
+  "regla": "T5",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir RellenarIzquierda(\"é😀\", 4, \"-\");\nEscribir RellenarDerecha(\"a\", 2, \"😀\");\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite padLeft(\"é😀\", 4, \"-\");\nwrite padRight(\"a\", 2, \"😀\");\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "--é😀\na😀\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C34",
+  "regla": "T5",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir RellenarIzquierda(\"7\", 3, CaracterDesde(48));\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite padLeft(\"7\", 3, charFromCode(48));\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "007\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C35",
+  "regla": "T5",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir RellenarIzquierda(\"a\", 3, \"ab\");\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite padLeft(\"a\", 3, \"ab\");\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "",
+    "terminacion": "failed",
+    "fallo": {
+      "codigo": "invalidPaddingText"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C36",
+  "regla": "T5",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir RellenarDerecha(\"a\", 3, \"\");\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite padRight(\"a\", 3, \"\");\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "",
+    "terminacion": "failed",
+    "fallo": {
+      "codigo": "invalidPaddingText"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C37",
+  "regla": "T5",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir RellenarIzquierda(\"a\", -1, \"0\");\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite padLeft(\"a\", -1, \"0\");\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "",
+    "terminacion": "failed",
+    "fallo": {
+      "codigo": "paddingWidthOutOfRange"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C38",
+  "regla": "T5",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir RellenarDerecha(\"a\", 16777217, \"0\");\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite padRight(\"a\", 16777217, \"0\");\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "",
+    "terminacion": "failed",
+    "fallo": {
+      "codigo": "cellLimitExceeded"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C39",
+  "regla": "T5",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir RellenarIzquierda(\"a\", \"3\", \"0\");\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite padLeft(\"a\", \"3\", \"0\");\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "incompatibleArgumentType",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C40",
+  "regla": "T5",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir RellenarIzquierda(\"a\", 3);\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite padLeft(\"a\", 3);\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "argumentCountMismatch",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C41",
+  "regla": "T5",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir Mutable c Como Cadena <- \"\";\nc <- RellenarIzquierda(\"a\", 3, \"0\");\nEscribir c;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine mutable c as string <- \"\";\nc <- padLeft(\"a\", 3, \"0\");\nwrite c;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "00a\n",
+    "terminacion": "completed"
+  },
+  "limites": {
+    "celdas": 7
+  }
+}
+```
+
+```caso
+{
+  "id": "C42",
+  "regla": "T5",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir Mutable c Como Cadena <- \"\";\nc <- RellenarIzquierda(\"a\", 3, \"0\");\nEscribir c;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine mutable c as string <- \"\";\nc <- padLeft(\"a\", 3, \"0\");\nwrite c;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "",
+    "terminacion": "failed",
+    "fallo": {
+      "codigo": "cellLimitExceeded"
+    }
+  },
+  "limites": {
+    "celdas": 2
+  }
+}
+```
+
+```caso
+{
+  "id": "C43",
+  "regla": "T5",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir RellenarIzquierda(\"x\", 3, \"é\");\nEscribir RellenarDerecha(\"x\", 3, \"é\");\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite padLeft(\"x\", 3, \"é\");\nwrite padRight(\"x\", 3, \"é\");\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "ééx\nxéé\n",
+    "terminacion": "completed"
+  }
+}
+```

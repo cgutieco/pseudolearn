@@ -74,6 +74,8 @@ impl PhysicalHost {
     fn dispatch(&mut self, request: &Request) -> Result<Value, HostError> {
         match request.operation.as_str() {
             "console_write" => console_write(request),
+            "console_write_error" => crate::physical_console::write_error(request),
+            "console_set_exit_code" => crate::physical_console::set_exit_code(request),
             "arguments_values" => Ok(committed("text_list", json!(self.arguments))),
             "clock_now" => Ok(committed("integer", json!(real_nanos()?))),
             "clock_local_now" => crate::physical_local_zone::local_now(real_nanos()?),

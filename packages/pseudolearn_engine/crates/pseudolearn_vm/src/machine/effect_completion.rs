@@ -32,6 +32,15 @@ impl Machine<'_> {
         Ok(())
     }
 
+    fn echo_console_error(&mut self, site: &EffectSite) -> Result<(), Fault> {
+        let start = self.output.len();
+        self.echo_console_text(site)?;
+        if self.output.len() > start {
+            self.error_ranges.push((start, self.output.len()));
+        }
+        Ok(())
+    }
+
     pub(super) fn complete_effect(
         &mut self,
         site: &EffectSite,
@@ -61,9 +70,22 @@ impl Machine<'_> {
         if operation.identity == "console_write" && committed && !self.output_suppressed {
             self.echo_console_text(site)?;
         }
+        if operation.identity == "console_write_error" && committed && !self.output_suppressed {
+            self.echo_console_error(site)?;
+        }
+        if operation.identity == "console_set_exit_code" && committed {
+            self.store_requested_exit_code(site)?;
+        }
         if let Some(destination) = site.destination {
             self.set_scalar(destination.index, 0)?;
         }
+        Ok(())
+    }
+
+    fn store_requested_exit_code(&mut self, site: &EffectSite) -> Result<(), Fault> {
+        let register = site.arguments.first().ok_or(INVALID_BYTECODE)?;
+        let word = self.scalar(*register)?;
+        self.exit_code = u8::try_from(crate::evaluate::integer_of(word)).map_err(|_| INVALID_BYTECODE)?;
         Ok(())
     }
 }

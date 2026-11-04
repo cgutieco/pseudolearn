@@ -110,6 +110,20 @@ plataformas se apoya en que todas compilan con esa misma cadena. El resultado pu
 la entrada y cuenta celdas como cualquier cadena creada en ejecución. No se acredita todavía en el sujeto nativo:
 su vínculo queda pendiente hasta la paridad nativa de la biblioteca.
 
+`Decimales`, `RellenarIzquierda` y `RellenarDerecha` (`PG-S.08`, DS-23) son operaciones locales de familia `text` sin
+receptor, despachadas desde `text_format_operations.rs`. `decimal_format.rs` descompone el binario64 en significando y
+exponente, multiplica el significando por 10^cantidad con los naturales de precisión arbitraria de `precision/natural.rs`
+y desplaza por el exponente: el resultado es la expansión decimal exacta, no una aproximación de coma flotante. El
+redondeo es medio-alejado-de-cero y se decide con un solo bit (el primero descartado), porque un resto igual o mayor que
+la mitad sube y el empate exacto también. `format_value` no se reutiliza: es el formato de salida de dígitos mínimos, otro
+concepto. La cantidad válida va de 0 a 100 (`decimalPlacesOutOfRange`); con 100 decimales el mayor binario64 produce unos
+410 caracteres, muy por debajo de cualquier presupuesto. Un real no finito se escribe con su forma de salida habitual
+(`NaN`, `inf`) porque las operaciones del lenguaje no los producen salvo desde datos externos. `text_padding.rs` cuenta
+puntos de código (no bytes), exige un relleno de exactamente un punto de código (`invalidPaddingText`), rechaza un ancho
+negativo (`paddingWidthOutOfRange`) y trata como `cellLimitExceeded` un ancho mayor que 16 777 216 antes de construir la
+cadena, para que una petición enorme no agote la memoria del anfitrión antes de que el presupuesto de celdas la rechace.
+Sin configuración regional ni separadores de miles. Sin equivalente nativo todavía: vínculo `pendiente` (`PG-N.08`).
+
 La implementación permanece secuencial y determinista. La exportación del corpus es una dependencia
 de datos. Las técnicas que requieren medición se aceptan solo tras conservar resultados y criterios.
 

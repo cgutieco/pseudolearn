@@ -359,3 +359,9 @@ usan un sistema de archivos en memoria (`tests/adapters/memory_vscode.ts`).
 minutos enteros, sin precisión de segundos ni reglas históricas de la zona. El navegador no tiene entorno de proceso:
 `request_environment` concede la capacidad y `environment_get` responde `permiso_denegado`, el `ErrorES` de plataforma
 del corpus (nunca una denegación por política).
+
+## Consola: error y código de salida (`PG-S.07`)
+
+El anfitrión del navegador (`browser_effect_host.ts`) confirma `console_write_error`; la salida combinada de
+la API ya trae el texto en orden, así que el presentador lo muestra junto con el resto (sin estilo propio todavía). `console_set_exit_code` valida el rango y se
+confirma, pero el presentador no usa el código (una pestaña web no tiene código de proceso).

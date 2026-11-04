@@ -1,5 +1,7 @@
 use super::ExecutionResource;
-use pseudolearn_vm::{Machine, RunExit, machine_events, machine_output};
+use pseudolearn_vm::{Machine, RunExit, machine_error_ranges, machine_events, machine_exit_code,
+    machine_output,
+};
 use serde_json::{Value, json};
 
 pub(super) struct AdvanceResponseInput<'borrow, 'program> {
@@ -39,6 +41,8 @@ pub(super) fn advance_response(input: AdvanceResponseInput<'_, '_>) -> Value {
         ));
     }
     json!({"events":events,"output":machine_output(input.machine),"termination":termination,
+        "exit_code":machine_exit_code(input.machine),
+        "error_ranges":machine_error_ranges(input.machine),
         "inputs_consumed":input.machine.input_consumed_count(),"diagnostics":diagnostics})
 }
 

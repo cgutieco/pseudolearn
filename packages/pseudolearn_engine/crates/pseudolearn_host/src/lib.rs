@@ -1,5 +1,6 @@
 #![forbid(unsafe_code)]
 
+mod physical_console;
 mod physical_directory_ops;
 mod physical_environment;
 mod physical_error;
@@ -25,6 +26,8 @@ mod physical_paths;
 mod worker;
 pub use worker::HostWorker;
 
+#[cfg(test)]
+mod physical_console_tests;
 #[cfg(test)]
 mod physical_environment_tests;
 

@@ -103,5 +103,5 @@ fn check_argument(
             operation.identity,
         );
     }
-    value
+    crate::expression_checker::widen(session, value, &expected)
 }

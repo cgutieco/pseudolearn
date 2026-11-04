@@ -3508,6 +3508,39 @@
       "clase": "runtime",
       "tipos_argumentos": {}
     },
+    "decimalPlacesOutOfRange": {
+      "mensajes": {
+        "es": "La cantidad de decimales debe estar entre 0 y 100",
+        "en": "The number of decimal places must be between 0 and 100"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": "error",
+      "clase": "runtime",
+      "tipos_argumentos": {}
+    },
+    "invalidPaddingText": {
+      "mensajes": {
+        "es": "El relleno debe tener exactamente un punto de código",
+        "en": "The padding must have exactly one code point"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": "error",
+      "clase": "runtime",
+      "tipos_argumentos": {}
+    },
+    "paddingWidthOutOfRange": {
+      "mensajes": {
+        "es": "El ancho de relleno no puede ser negativo",
+        "en": "The padding width cannot be negative"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": "error",
+      "clase": "runtime",
+      "tipos_argumentos": {}
+    },
     "bytesRangeOutOfBounds": {
       "mensajes": {
         "es": "El segmento excede los límites de Bytes",

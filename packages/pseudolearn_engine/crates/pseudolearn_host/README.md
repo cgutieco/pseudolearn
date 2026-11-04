@@ -77,3 +77,8 @@ Plataformas: compila y pasa sus pruebas en macOS; la compilación para `aarch64-
 físico. En un sistema sin base de zonas o sin `/etc/localtime` legible, `jiff` informa UTC y el desplazamiento es cero;
 es un límite declarado. La extensión web usa `Date#getTimezoneOffset`, que no tiene precisión de segundos ni conoce las
 reglas históricas de la zona.
+
+## Consola: error y código de salida (`PG-S.07`)
+
+`physical_console.rs` confirma `console_write_error` con la cantidad de bytes UTF-8 (el texto lo separa el consumidor
+según `error_ranges`, no el anfitrión); valida `console_set_exit_code` (0–255, si no `peticion_invalida`). Un solo búfer de salida conserva el orden relativo entre ambos flujos.

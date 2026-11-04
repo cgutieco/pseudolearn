@@ -308,3 +308,12 @@ de RI y su tipado, pero se decodifican en sitios de evaluación escalar con una 
 despacho. Los sitios guardan operandos y evaluador comprobados; no son efectos ni operaciones de
 memoria. Las trascendentes siguen usando la misma biblioteca exacta. El objetivo es limitar el
 crecimiento del despachador cuando el programa no utiliza la ampliación numérica.
+
+## Código de salida (`PG-S.07`)
+
+`Machine.exit_code` empieza en 0 y lo fija `complete_effect` cuando `console_set_exit_code` se confirma, tanto en
+ejecución como en reproducción de cinta, porque ambas pasan por la misma finalización de efecto. Viaja en la imagen y en
+el delta (`ImageFlags`) para que retroceder en el tiempo restaure el código vigente. `RunResult.exit_code` lo entrega al
+final. `Machine.error_ranges` guarda los tramos de `output` escritos por `console_write_error` (el texto se repite en `output`
+como `console_write`); también viaja en imagen y delta.
+Un final que no es normal no lo consulta: quien lo presenta decide el código (la CLI usa 1).

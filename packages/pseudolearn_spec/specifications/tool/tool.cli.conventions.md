@@ -59,7 +59,9 @@
       "0": "éxito",
       "1": "el programa tiene errores o falló",
       "2": "uso incorrecto",
-      "3": "error operativo"
+      "3": "error operativo",
+      "7": "código establecido por el programa con Consola.EstablecerCodigoSalida (rango 0–255)",
+      "9": "código establecido por el programa con Consola.EstablecerCodigoSalida (rango 0–255)"
     },
     "aperturas": [
       "algorithm",

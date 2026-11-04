@@ -170,7 +170,7 @@
   "id": "R2",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "El código de salida es 0 si la ejecución termina con completed y 1 en cualquier otro caso. Un fallo escribe su diagnóstico; un límite alcanzado escribe statementBudgetExhausted; la entrada estándar agotada mientras Leer espera escribe inputExhausted.",
+  "texto": "El código de salida es el código establecido por el programa (0 por omisión) si la ejecución termina con completed, y 1 en cualquier otro caso. Un fallo escribe su diagnóstico; un límite alcanzado escribe statementBudgetExhausted; la entrada estándar agotada mientras Leer espera escribe inputExhausted.",
   "verificacion": [
     "C5",
     "C6",
@@ -776,6 +776,129 @@
       "p.pseudo": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nLeer x;\nEscribir x * 2;\nFinAlgoritmo\n"
     },
     "entrada": "{\"command\":\"cancel\"}\n"
+  }
+}
+```
+
+```regla
+{
+  "id": "R8",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Si la ejecución termina con completed, el código de salida es el que el programa estableció con Consola.EstablecerCodigoSalida (0 por omisión, el último si se estableció varias veces); en cualquier otro final es 1 aunque el programa haya establecido otro. Consola.EscribirError escribe su texto en la salida de error estándar sin mezclarlo con la salida estándar y en el orden del programa.",
+  "verificacion": [
+    "C23",
+    "C24",
+    "C25",
+    "C26"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C23",
+  "regla": "R8",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 7,
+    "salida": "7\n",
+    "salida_error": ""
+  },
+  "cli": {
+    "argumentos": [
+      "ejecutar",
+      "p.pseudo"
+    ],
+    "entorno": {},
+    "archivos": {
+      "p.pseudo": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir con Como Consola <- Propagar SolicitarConsola();\nDefinir a Como Entero <- Propagar con.EstablecerCodigoSalida(7);\nRetornar Exito(a);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C24",
+  "regla": "R8",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 1,
+    "salida": "",
+    "salida_error": "p.pseudo:8:12: error: División por cero [divisionByZero]\n    8 | Escribir 1 div cero;\n      |            ^\n"
+  },
+  "cli": {
+    "argumentos": [
+      "ejecutar",
+      "p.pseudo"
+    ],
+    "entorno": {},
+    "archivos": {
+      "p.pseudo": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir con Como Consola <- Propagar SolicitarConsola();\nDefinir a Como Entero <- Propagar con.EstablecerCodigoSalida(7);\nRetornar Exito(a);\nFinSubProceso\nAlgoritmo Main\nDefinir cero Como Entero <- 0;\nEscribir 1 div cero;\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C25",
+  "regla": "R8",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 9,
+    "salida": "11\n",
+    "salida_error": ""
+  },
+  "cli": {
+    "argumentos": [
+      "ejecutar",
+      "p.pseudo"
+    ],
+    "entorno": {},
+    "archivos": {
+      "p.pseudo": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir con Como Consola <- Propagar SolicitarConsola();\nDefinir a Como Entero <- Propagar con.EstablecerCodigoSalida(2);\nDefinir b Como Entero <- Propagar con.EstablecerCodigoSalida(9);\nRetornar Exito(a + b);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C26",
+  "regla": "R8",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 0,
+    "salida": "salida\nfin\n6\n",
+    "salida_error": "error\n"
+  },
+  "cli": {
+    "argumentos": [
+      "ejecutar",
+      "p.pseudo"
+    ],
+    "entorno": {},
+    "archivos": {
+      "p.pseudo": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir con Como Consola <- Propagar SolicitarConsola();\nEscribir \"salida\";\nDefinir n Como Entero <- Propagar con.EscribirError(\"error\\n\");\nEscribir \"fin\";\nRetornar Exito(n);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n"
+    }
   }
 }
 ```

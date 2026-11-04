@@ -121,6 +121,8 @@ pub struct Machine<'program> {
     pub(crate) polls_executed: u64,
     pub(crate) input_requested_emitted: bool,
     pub(crate) output_suppressed: bool,
+    pub(crate) exit_code: u8,
+    pub(crate) error_ranges: Vec<(usize, usize)>,
     pub(crate) frame_dirty_from: DirtyIndex<usize>,
     pub(crate) bank_delta_tracking: DirtyIndex<bool>,
     pub(crate) scalar_dirty_from: DirtyIndex<usize>,
@@ -160,6 +162,8 @@ fn trapped(trap: VmTrap) -> RunResult {
     RunResult {
         exit: RunExit::Trap(trap),
         output: String::new(),
+        exit_code: 0,
+        error_ranges: Vec::new(),
         consumed_statements: 0,
         consumed_probes: 0,
         memory_counts: Vec::new(),
@@ -274,6 +278,8 @@ impl<'program> Machine<'program> {
         RunResult {
             exit,
             output: self.output,
+            exit_code: self.exit_code,
+            error_ranges: self.error_ranges,
             consumed_statements: initial.statements.saturating_sub(self.remaining.statements),
             consumed_probes: initial.probes.saturating_sub(self.remaining.probes),
             memory_counts: self.memory_counts,
@@ -285,14 +291,9 @@ impl<'program> Machine<'program> {
 }
 
 mod lexical_names;
-
 mod snapshot_copy;
-
 mod task_spill;
-
 mod channel_buffers;
-
 mod task_storage;
-
 mod suspension_maps;
 mod suspension_storage;

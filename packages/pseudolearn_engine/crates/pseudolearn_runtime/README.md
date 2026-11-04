@@ -287,3 +287,17 @@ sensible aparecen en la cinta serializada.
 `FechaHora` viaja por el anfitrión como `{"nanos": i64, "offset_seconds": i32}` bajo el tipo `date_time`
 (`date_time_values.rs` lo codifica en el montón). La configuración `offset_seconds` fija el desplazamiento del doble de
 memoria; el instante sale de la cola `clock`, como en `Ahora`.
+
+## Trampas de formato (`PG-S.08`)
+
+`MemoryError` gana `DecimalPlacesOutOfRange`, `InvalidPaddingText` y `PaddingWidthOutOfRange`; la VM y el runtime AOT
+las traducen a `decimalPlacesOutOfRange`, `invalidPaddingText` y `paddingWidthOutOfRange` (catálogo `DIAG.CATALOG`,
+clase `runtime`).
+
+## Código de salida y flujo de error (`PG-S.07`)
+
+`console_set_exit_code` y `console_write_error` son operaciones D2 del receptor `Consola`. `exit_code.rs` valida el
+argumento (0–255; otro valor es `ErrorES.PeticionInvalida` y no cambia el código vigente) y lo comparten el doble de
+memoria y el anfitrión físico. El doble de memoria acumula el texto de error en `error_output`, separado de `output`.
+Ambas operaciones cuentan como mutación para la autoridad de efectos y se graban en la cinta como cualquier operación de
+consola.

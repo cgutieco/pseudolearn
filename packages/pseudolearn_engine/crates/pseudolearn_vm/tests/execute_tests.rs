@@ -13,6 +13,8 @@ fn execute_source(source_text: &str, fuel: Fuel) -> pseudolearn_vm::RunResult {
                 span: None,
             }),
             output: String::new(),
+            exit_code: 0,
+            error_ranges: Vec::new(),
             consumed_statements: 0,
             consumed_probes: 0,
             memory_counts: Vec::new(),

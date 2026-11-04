@@ -509,3 +509,21 @@ esperados de `LIB.TIME` salen de la definición del calendario, calculados con `
 independiente del motor; ningún valor se capturó de una ejecución. La propiedad de ida y vuelta ISO sobre instantes
 sembrados no tiene generador propio: queda cubierta por el caso `LIB.TIME#C15` (seis semillas fijas) y es un pendiente
 declarado.
+
+## Formato de números (`PG-S.08`)
+
+`LIB.CORE.CONVERSION#R2` (`Decimales`) y `LIB.CORE.TEXT#T5` (`RellenarIzquierda`, `RellenarDerecha`) con DS-23. Los
+valores esperados salen de la definición decimal (expansión exacta del binario64, empates alejados de cero), no de una
+ejecución. Los límites de celdas de `C14`/`C15` y `C41`/`C42` son medidas del contador del motor (la cadena de relleno y
+sus literales cuentan), no una fórmula de la regla. Pendiente declarado: la propiedad de ida y vuelta
+`AReal(Decimales(x, 17)) ≈ x` sobre reales sembrados no tiene generador propio; los casos fijos la cubren puntualmente.
+Exportación a otros lenguajes (`format!("{:.2}")`, `f"{x:.2f}"`): no existe exportador de operaciones D2, así que se
+declara «sin equivalente» y queda pendiente con el sujeto nativo (`PG-N.08`).
+
+## Código de salida y salida de error (`PG-S.07`)
+
+`LIB.IO#R15` (`EstablecerCodigoSalida`), `LIB.IO#R16` (`EscribirError`) y `TOOL.CLI.RUN#R8`. Los casos `TOOL.CLI.RUN`
+`C23`–`C26` ejecutan el binario real y comprueban código de proceso y salida de error. Para que el validador acepte los
+códigos 7 y 9, `TOOL.CLI.CONVENTIONS#D1` los declara como códigos establecidos por el programa (rango 0–255).
+`TOOL.CLI.RUN#R2` pasa de «0 si completed» a «el código establecido (0 por omisión) si completed». El contrato de salida es aditivo: `output` conserva ambos
+flujos en una sola cadena y `error_ranges` marca los tramos de error; los consumidores sin soporte muestran todo.

@@ -18,6 +18,7 @@ pub struct MachineDelta {
     defined: BlockDelta<bool>,
     heap: HeapDelta,
     output: TailDelta<String>,
+    error_ranges: TailDelta<Vec<(usize, usize)>>,
     literals: TailDelta<Vec<Handle>>,
     inputs: TailDelta<Vec<String>>,
     diagnostics: TailDelta<Vec<VmTrap>>,
@@ -31,6 +32,7 @@ struct ImageFlags {
     probed: bool,
     input_requested: bool,
     output_suppressed: bool,
+    exit_code: u8,
     events_dropped: usize,
 }
 
@@ -44,6 +46,7 @@ impl MachineDelta {
             .saturating_add(self.defined.copied_slots())
             .saturating_add(self.heap.copied_slots())
             .saturating_add(self.output.copied_slots())
+            .saturating_add(self.error_ranges.copied_slots())
             .saturating_add(self.literals.copied_slots())
             .saturating_add(self.inputs.copied_slots())
             .saturating_add(self.diagnostics.copied_slots())
@@ -82,6 +85,7 @@ pub fn advance_image(tip: &mut MachineImage, machine: &Machine<'_>) -> MachineDe
         ),
         heap: advance_heap(&mut tip.heap, &machine.heap),
         output: TailDelta::advance(&mut tip.output, &machine.output),
+        error_ranges: TailDelta::advance(&mut tip.error_ranges, &machine.error_ranges),
         literals: TailDelta::advance(&mut tip.literals, &machine.literals),
         inputs: TailDelta::advance(&mut tip.inputs, &machine.inputs),
         diagnostics: TailDelta::advance(&mut tip.diagnostics, &machine.diagnostics),
@@ -103,6 +107,7 @@ pub fn revert_image(image: &mut MachineImage, delta: &MachineDelta) -> Result<()
     delta.defined.revert(&mut image.state.defined)?;
     revert_heap(&mut image.heap, &delta.heap)?;
     delta.output.revert(&mut image.output);
+    delta.error_ranges.revert(&mut image.error_ranges);
     delta.literals.revert(&mut image.literals);
     delta.inputs.revert(&mut image.inputs);
     delta.diagnostics.revert(&mut image.diagnostics);
@@ -110,6 +115,7 @@ pub fn revert_image(image: &mut MachineImage, delta: &MachineDelta) -> Result<()
     image.probed = delta.flags.probed;
     image.input_requested = delta.flags.input_requested;
     image.output_suppressed = delta.flags.output_suppressed;
+    image.exit_code = delta.flags.exit_code;
     image.events_dropped = delta.flags.events_dropped;
     image.remaining = delta.remaining;
     replace_control(&mut image.state, &delta.control);
@@ -132,6 +138,7 @@ pub fn compose_machine_deltas(first_applied: &MachineDelta, older: &MachineDelta
         defined: BlockDelta::compose(&first_applied.defined, &older.defined),
         heap: compose_heap_deltas(&first_applied.heap, &older.heap),
         output: TailDelta::compose(&first_applied.output, &older.output),
+        error_ranges: TailDelta::compose(&first_applied.error_ranges, &older.error_ranges),
         literals: TailDelta::compose(&first_applied.literals, &older.literals),
         inputs: TailDelta::compose(&first_applied.inputs, &older.inputs),
         diagnostics: TailDelta::compose(&first_applied.diagnostics, &older.diagnostics),
@@ -169,6 +176,7 @@ fn advance_flags(tip: &mut MachineImage, machine: &Machine<'_>) -> ImageFlags {
             machine.input_requested_emitted,
         ),
         output_suppressed: std::mem::replace(&mut tip.output_suppressed, machine.output_suppressed),
+        exit_code: std::mem::replace(&mut tip.exit_code, machine.exit_code),
         events_dropped: std::mem::replace(
             &mut tip.events_dropped,
             machine.events_dropped.saturating_add(machine.events.len()),

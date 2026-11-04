@@ -12,6 +12,7 @@ mod date_time_format;
 mod date_time_operations;
 mod date_time_parse;
 mod decimal;
+mod decimal_format;
 mod error;
 mod format;
 mod http_operations;
@@ -28,6 +29,8 @@ mod math;
 mod precision;
 mod rounding;
 mod text_case;
+mod text_format_operations;
+mod text_padding;
 mod text_replace;
 mod text_search;
 mod text_split;
@@ -36,6 +39,7 @@ mod transcendental;
 pub use bytes_operations::{bytes_from_text, bytes_join, bytes_segment};
 pub use conversion::{integer_to_real, real_to_integer};
 pub use decimal::{DecimalError, parse_integer, parse_real};
+pub use decimal_format::{MAXIMUM_DECIMAL_PLACES, format_fixed_decimals};
 pub use error::LibraryError;
 pub use format::{BooleanLexemes, PrimitiveValue, format_value};
 pub use json_local_views::{LocalJsonViewCall, local_json_view};
@@ -43,6 +47,7 @@ pub use local_operations::{LocalOperationRequest, local_operation};
 pub use math::{absolute, square_root};
 pub use rounding::{ceiling_real, floor_real, round_real, truncate_real};
 pub use text_case::{to_lower_text, to_upper_text};
+pub use text_padding::{MAXIMUM_PADDING_WIDTH, pad_left, pad_right};
 pub use text_replace::{replace_all, trim_text};
 pub use text_search::{
     text_contains, text_ends_with, text_position, text_starts_with, text_substring,
@@ -56,6 +61,8 @@ mod civil_calendar_tests;
 #[cfg(test)]
 mod date_time_tests;
 #[cfg(test)]
+mod decimal_format_tests;
+#[cfg(test)]
 mod json_local_views_tests;
 #[cfg(test)]
 mod json_parse_tests;
@@ -67,6 +74,8 @@ mod json_source_tests;
 mod json_text_tests;
 #[cfg(test)]
 mod text_case_tests;
+#[cfg(test)]
+mod text_padding_tests;
 #[cfg(test)]
 mod text_replace_tests;
 #[cfg(test)]

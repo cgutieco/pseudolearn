@@ -536,62 +536,62 @@ corrige los demás puntos. Puerta G2 de §10.
 
 ### PG-S.07 · Código de salida y salida de error
 
-- [ ] `PG-S.07.01` Leer `api.execute.md`, `api.wire-format.md`, `api.model.md`, `tool.cli.run.md` (`R1`–`R7`),
+- [x] `PG-S.07.01` Leer `api.execute.md`, `api.wire-format.md`, `api.model.md`, `tool.cli.run.md` (`R1`–`R7`),
   `tool.dap.md`, `eng.input.md`, `eng.trace.events.md`, README de `api`, `timeline`, `vm` (`effect_completion.rs`),
   CLI (`editor_protocol.rs`, `dap_pump.rs`, `execution_options.rs`), extensión (`browser_run.ts`,
   `vscode_run_presenter.ts`), app (`app.exec.*`, su consola). Resolver `PS-V-09`.
-- [ ] `PG-S.07.02` **Verificar el alcance real del cambio de contrato** y presentarlo a la persona antes de la
+- [x] `PG-S.07.02` **Verificar el alcance real del cambio de contrato** y presentarlo a la persona antes de la
   especificación: lista de contratos (`API.EXECUTE`, `API.WIRE-FORMAT`, `API.PROGRAM.VIEW`, `TOOL.CLI.RUN`,
   `TOOL.DAP`, `APP.EXEC.*`, `ENG.TRACE.EVENTS`) con la regla afectada. Si el costo es mayor que el previsto, DS-22 admite
   el alcance reducido descrito allí.
-- [ ] `PG-S.07.03` Especificación: `Consola.EscribirError(texto)` y `Consola.EstablecerCodigoSalida(n)` (DS-21, DS-22):
+- [x] `PG-S.07.03` Especificación: `Consola.EscribirError(texto)` y `Consola.EstablecerCodigoSalida(n)` (DS-21, DS-22):
   orden relativo entre salida y error preservado; el error no se mezcla con la salida en la CLI (`stderr`), el
   protocolo de editor lleva un campo de flujo, el DAP usa la categoría de salida de error, la app lo muestra con estilo
   propio; un fallo de ejecución produce su código vigente; un código establecido más de una vez conserva el último; fuera de
   0–255 → `ErrorES::PeticionInvalida`; el código se aplica al final normal; `TOOL.CLI.RUN#R2` pasa de «0 si completed, 1
   en cualquier otro caso» a «el código establecido (0 por omisión) si completed, 1 en cualquier otro caso».
   Entradas D2 en `LIB.MODEL` (receptor `console`, familia `io`).
-- [ ] `PG-S.07.04` Casos derivados: error solo; salida y error intercalados (orden); código 0, 1, 7, 255; 256 y −1
+- [x] `PG-S.07.04` Casos derivados: error solo; salida y error intercalados (orden); código 0, 1, 7, 255; 256 y −1
   (error); dos establecimientos; código establecido seguido de fallo de ejecución (gana el fallo); código establecido
   y límite agotado; cancelación; reproducción desde cinta de ambos flujos y del código sin duplicarlos; programa sin
   `SolicitarConsola` (si la capacidad es obligatoria para estas dos operaciones; si `Escribir` no la exige, el corpus lo
   declara y los casos lo reflejan).
-- [ ] `PG-S.07.05` Tests: `vm` (finalización de efecto con flujo), `runtime` (cinta), `api` (resultado y eventos con
+- [x] `PG-S.07.05` _(sin pruebas de Flutter ni nativas; ver [informe](informe-pg-s-07-08.md))_ Tests: `vm` (finalización de efecto con flujo), `runtime` (cinta), `api` (resultado y eventos con
   flujo y código), `timeline` (instantáneas con ambos flujos), CLI (código de proceso real: pruebas del binario con
   `std::process::Command` sobre `pseudo ejecutar`), protocolo de editor, DAP, extensión (presentador y worker web), app
   (puerto de ejecución y vista de consola).
-- [ ] `PG-S.07.06` Código en las capas de `PS-V-09` tras su verificación: `abi`/`runtime`/`vm`/`timeline`/`api`/`wasm`
+- [x] `PG-S.07.06` _(sin vista de la app ni Wasm; ver [informe](informe-pg-s-07-08.md))_ Código en las capas de `PS-V-09` tras su verificación: `abi`/`runtime`/`vm`/`timeline`/`api`/`wasm`
   (frontera Wasm: formato versionado, `API.VERSIONING` si el contrato cambia), CLI, extensión, puente y vista de la app.
   El nuevo campo de flujo se añade de forma compatible con el protocolo versionado o se sube la versión del protocolo,
   según `API.VERSIONING` (leer antes).
-- [ ] `PG-S.07.07` Fichas es/en, consumidores, README de cada miembro afectado y de `pseudolearn_spec` si el validador cambia.
-- [ ] `PG-S.07.08` Sujeto nativo: pendiente `PG-N.08`; la reescritura de `RT.PROCESS` es `PG-N.01` (§9).
-- [ ] `PG-S.07.09` Verificación dirigida: `see conform --subject engine`, `--subject cli`, `--subject app` para las reglas
+- [x] `PG-S.07.07` Fichas es/en, consumidores, README de cada miembro afectado y de `pseudolearn_spec` si el validador cambia.
+- [x] `PG-S.07.08` Sujeto nativo: pendiente `PG-N.08`; la reescritura de `RT.PROCESS` es `PG-N.01` (§9).
+- [x] `PG-S.07.09` Verificación dirigida: `see conform --subject engine`, `--subject cli`, `--subject app` para las reglas
   editadas; pruebas de CLI con códigos de proceso; Flutter dirigido a la consola de la app.
 
 ### PG-S.08 · Formato de números en texto
 
-- [ ] `PG-S.08.01` Leer `lib.core.conversion.md`, `lang.io.value-format.md` (algoritmo de dígitos mínimos), `decimal.rs`,
+- [x] `PG-S.08.01` Leer `lib.core.conversion.md`, `lang.io.value-format.md` (algoritmo de dígitos mínimos), `decimal.rs`,
   `format.rs`, `rounding.rs` de `pseudolearn_library` y `lib.core.text.md#T3`. Resolver `PS-V-03`.
-- [ ] `PG-S.08.02` Especificación en `LIB.CORE.CONVERSION` (o regla nueva) para `Decimales` y en `LIB.CORE.TEXT` para
+- [x] `PG-S.08.02` Especificación en `LIB.CORE.CONVERSION` (o regla nueva) para `Decimales` y en `LIB.CORE.TEXT` para
   `RellenarIzquierda`/`RellenarDerecha` (DS-23): expansión decimal exacta, empates alejados de cero, rango de
   `cantidad`, `-0`, enteros ampliados, relleno de un punto de código (relleno vacío o de más de un punto → trampa con
   diagnóstico **CANDIDATO** `invalidPaddingText`), ancho negativo (trampa), texto más largo que el ancho (sin
   recorte), conteo de celdas del resultado, tope de `ancho` por el presupuesto de celdas. Entradas D2 en `LIB.MODEL`
   (familia `text`; `Decimales` con parámetro `numeric`; resultado `text`).
-- [ ] `PG-S.08.03` Casos derivados con esperado deducido de la definición decimal: `Decimales(2.5, 0)`=`3`,
+- [x] `PG-S.08.03` Casos derivados con esperado deducido de la definición decimal: `Decimales(2.5, 0)`=`3`,
   `Decimales(-2.5, 0)`=`-3`, `Decimales(0.125, 2)`=`0.13` (empate exacto), `Decimales(0.1, 20)` (muestra la expansión
   exacta de 0.1: `0.10000000000000000555`), `Decimales(1e22, 2)`, `Decimales(5e-324, 3)`=`0.000`, `Decimales(-0.0, 2)`=
   `-0.00`, `Decimales(7, 2)`=`7.00`, cantidad 0 sin punto decimal, cantidad en el tope, cantidad sobre el tope y
   negativa (trampa), relleno con `0` y con `.`, relleno multicarácter (trampa), texto vacío, texto con acentos y emoji
   (cuenta puntos de código), ancho 0. Propiedad: para reales sembrados, `AReal(Decimales(x, 17))` ≈ `x` dentro de la
   tolerancia que la regla fije, y la longitud de la parte decimal es `cantidad`.
-- [ ] `PG-S.08.04` Tests y código: nuevos archivos en `pseudolearn_library` (`decimal_format.rs`, `text_padding.rs`), sin
+- [x] `PG-S.08.04` Tests y código: nuevos archivos en `pseudolearn_library` (`decimal_format.rs`, `text_padding.rs`), sin
   reutilizar `format_value` (que es el formato de salida de dígitos mínimos); el cálculo del redondeo usa los naturales de
   precisión arbitraria de `precision/natural.rs`; ninguna conversión con pérdida (`QUALITY-NO-PANIC`).
-- [ ] `PG-S.08.05` Fichas es/en, consumidores, exportación (`format!("{:.2}")`, `f"{x:.2f}"`; ojo con el redondeo de
+- [x] `PG-S.08.05` Fichas es/en, consumidores, exportación (`format!("{:.2}")`, `f"{x:.2f}"`; ojo con el redondeo de
   empates del destino: documentar o declarar sin equivalente), README con DS-23, sujeto nativo pendiente.
-- [ ] `PG-S.08.06` Verificación dirigida.
+- [x] `PG-S.08.06` Verificación dirigida.
 
 ### PG-S.09 · Cada operación en VM, extensión web y app de las tres plataformas
 
@@ -829,8 +829,8 @@ Estado de las tareas: §4.0 y PG-S.01 ejecutadas el 2026-11-04 sobre `2d6254aa`,
 | `PG-S.04.01`–`.10` | Pendiente | | |
 | `PG-S.05.01`–`.11` | Pendiente | | |
 | `PG-S.06.01`–`.08` | Pendiente | | |
-| `PG-S.07.01`–`.09` | Pendiente | | |
-| `PG-S.08.01`–`.06` | Pendiente | | |
+| `PG-S.07.01`–`.09` | Completo salvo app y Wasm (contrato aditivo `error_ranges`) | [informe](informe-pg-s-07-08.md) | |
+| `PG-S.08.01`–`.06` | Completo | [informe](informe-pg-s-07-08.md) | |
 | `PG-S.09.01`–`.06` | Pendiente | | |
 | `PG-S.C03`–`C13` | Pendiente | | |
 
@@ -841,7 +841,8 @@ Estado de las tareas: §4.0 y PG-S.01 ejecutadas el 2026-11-04 sobre `2d6254aa`,
 | PS-V-01 | Confirmada | D1 = 28 y D2 = 62 antes de S.01 (64 después), por lectura de los bloques `definicion` de `lib.model.md` | Ninguna |
 | PS-V-02 | Confirmada | La operación D2 `receiver: null`, familia `text`, `effect: false` se resuelve como llamada libre y se despacha por `local_operation`; casos C19–C28 cumplen en es y en | DS-01 (a) se mantiene |
 | PS-V-04 | No consumida | Ninguna operación de S.01 falla en ejecución | Se verifica en S.08 |
-| PS-V-09 | Pendiente | Se consume en S.07 | |
+| PS-V-03 | Refutada | Un entero para un parámetro `real` de una operación D2 pasaba `assignable` pero llegaba al IR como `i64` y fallaba (`analysisFailed`) | `effect_checker::check_argument` ensancha con `Widen`; `Decimales(7, 2)` cumple (`LIB.CORE.CONVERSION#C5`) |
+| PS-V-09 | Confirmada, más ancho de lo previsto | La salida es una cadena única en `vm` (imagen y delta), `api`, `timeline`, `wasm`, CLI (`run`, editor, DAP, nativo), extensión y app: más de seis consumidores | `PS-K-01`: la persona aprobó ampliar el contrato con un campo aditivo `error_ranges`; `output` sigue siendo la salida combinada |
 | PS-V-11 | Parcial | Las tablas son las de la cadena `1.99.0` fijada en `rust-toolchain.toml` de cada miembro; no se ejecutó `PS-E04` (nativo frente a Wasm) | `PS-E04` queda pendiente; el README de `pseudolearn_library` declara el límite |
 | PS-V-12 | Confirmada por lectura | `apps/pseudolearn_app/lib/engine/rust/export/export_coverage.dart` marca como bloqueo `capability` toda `effectOperation`; no se ejecutó `flutter test` | Sin cambio en la app |
 | PS-V-13 | Confirmada por validación | `see validate` acepta un vínculo `pendiente` con `resuelve_en` para `LIB.CORE.TEXT#T4` en aot | Ninguna |
