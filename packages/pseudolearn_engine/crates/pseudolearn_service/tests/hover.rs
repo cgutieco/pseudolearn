@@ -15,7 +15,6 @@ fn reports_declared_type_in_the_profile_language() -> Result<(), String> {
     let outcome = hover_at(code, Profile::Spanish);
     let outcome = outcome.ok_or("expected hover")?;
     assert_eq!(outcome.type_name, "Entero");
-    assert!(!outcome.is_inferred);
     assert_eq!(outcome.category, HoverCategory::Variable);
 
     let english = "Algorithm Main\n  Define Mutable counter As Integer <- 0;\n  cou|nter <- 1;\nEndAlgorithm\n";
@@ -32,7 +31,6 @@ fn undeclared_names_report_an_unknown_type_instead_of_an_inferred_one() -> Resul
     let code = "Algoritmo Principal\n  x| <- 3.14\nFinAlgoritmo\n";
     let outcome = hover_at(code, Profile::Spanish).ok_or("expected hover")?;
     assert_eq!(outcome.type_name, "Desconocido");
-    assert!(!outcome.is_inferred);
     Ok(())
 }
 

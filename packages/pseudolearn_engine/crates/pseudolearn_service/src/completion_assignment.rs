@@ -214,11 +214,7 @@ fn confirmed_local<'analysis>(
             | Type::Character
             | Type::String
             | Type::Object(_)
-    ) || analysis
-        .symbols
-        .iter()
-        .any(|symbol| symbol.span == local.span && symbol.name == local.name && symbol.is_inferred)
-        || invalid_declaration(analysis, cursor, local)
+    ) || invalid_declaration(analysis, cursor, local)
     {
         return None;
     }

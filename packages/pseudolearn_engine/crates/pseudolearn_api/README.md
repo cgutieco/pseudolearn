@@ -142,7 +142,7 @@ La sustitución recorre la plantilla una sola vez y no reinterpreta llaves dentr
 
 `help_query` consulta el hover estructurado de la sesión de edición y no modifica el recurso. `summary`
 devuelve categoría e identificador y, cuando existe ficha, `card` con identidad, título y resumen; `full`
-añade tipo, inferencia, carácter intrínseco, firma, la descripción del token y el resto de la ficha
+añade tipo, carácter intrínseco, firma, la descripción del token y el resto de la ficha
 (propósito, partes, restricciones, errores comunes y referencias a ejemplos). `language` queda separado del
 perfil de sintaxis: selecciona la ficha editorial en `es` o `en`, mientras que lexemas, tipos y firmas
 describen el perfil de la sesión. La ficha se elige por la identidad léxica del token y, si varias la

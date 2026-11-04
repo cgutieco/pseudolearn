@@ -51,7 +51,6 @@ impl FlowBindings {
         session.constants.clone_from(&self.constants);
         session.declarations.clear();
         session.invalid.clone_from(&self.invalid);
-        session.inferred.clear();
         session.initialized = session
             .module
             .locals

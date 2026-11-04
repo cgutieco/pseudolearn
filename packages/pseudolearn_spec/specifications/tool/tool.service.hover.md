@@ -42,7 +42,8 @@
   ],
   "titulo_en": "Hover and signature help service",
   "revisado_por": [
-    "revision-independiente-automatizada-r9"
+    "revision-independiente-automatizada-r9",
+    "Cesar Antonio Gutierrez Contreras"
   ]
 }
 ---
@@ -54,7 +55,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Al posicionar el cursor sobre una variable, constante, parámetro, campo, clase o subproceso, el servicio devuelve su categoría, su tipo estático (indicando si fue declarado o inferido) y, para subprocesos/métodos, su firma canónica con modos de paso.",
+  "texto": "Al posicionar el cursor sobre una variable, constante, parámetro, campo, clase o subproceso, el servicio devuelve su categoría, su tipo estático declarado y, para subprocesos/métodos, su firma canónica con modos de paso.",
   "verificacion": [
     "C1",
     "C2"
@@ -116,16 +117,16 @@
     "es"
   ],
   "origen": "derivado",
+  "revisado_por": "Cesar Antonio Gutierrez Contreras",
   "operacion": "service",
   "espera": {
     "servicio": {
-      "tipo": "Entero",
-      "inferido": false
+      "tipo": "Entero"
     }
   },
   "servicio": {
     "suboperacion": "hover",
-    "documento": "Algoritmo Principal\n  Definir contador Como Entero <- 0;\n  contador <- 1;\nFinAlgoritmo\n",
+    "documento": "Algoritmo Principal\n  Definir Mutable contador Como Entero <- 0;\n  contador <- 1;\nFinAlgoritmo\n",
     "posicion": {
       "line": 3,
       "column": 5
@@ -143,11 +144,11 @@
     "es"
   ],
   "origen": "derivado",
+  "revisado_por": "Cesar Antonio Gutierrez Contreras",
   "operacion": "service",
   "espera": {
     "servicio": {
-      "tipo": "Real",
-      "inferido": false
+      "tipo": "Real"
     }
   },
   "servicio": {
@@ -196,6 +197,7 @@
     "es"
   ],
   "origen": "derivado",
+  "revisado_por": "Cesar Antonio Gutierrez Contreras",
   "operacion": "service",
   "espera": {
     "servicio": {
@@ -205,7 +207,7 @@
   },
   "servicio": {
     "suboperacion": "hover",
-    "documento": "Algoritmo Principal\n  Definir n Como Entero <- 0;\n  n <- Longitud(\"hola\");\nFinAlgoritmo\n",
+    "documento": "Algoritmo Principal\n  Definir Mutable n Como Entero <- 0;\n  n <- Longitud(\"hola\");\nFinAlgoritmo\n",
     "posicion": {
       "line": 3,
       "column": 10

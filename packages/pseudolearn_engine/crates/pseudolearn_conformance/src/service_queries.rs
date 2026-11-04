@@ -111,7 +111,7 @@ pub fn handle_hover(request: &ServiceRequest<'_>) -> Value {
         return json!({});
     };
     match request.text("proyeccion") {
-        "tipo" => json!({ "tipo": outcome.type_name, "inferido": outcome.is_inferred }),
+        "tipo" => json!({ "tipo": outcome.type_name }),
         "intrinseca" => {
             json!({ "es_intrinseca": outcome.is_intrinsic, "identificador": outcome.identifier })
         }

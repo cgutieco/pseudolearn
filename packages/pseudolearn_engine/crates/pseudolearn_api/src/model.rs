@@ -161,8 +161,6 @@ pub struct ApiHelpEntry {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub type_name: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub is_inferred: Option<bool>,
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub is_intrinsic: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub signature: Option<String>,

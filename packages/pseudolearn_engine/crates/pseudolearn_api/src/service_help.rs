@@ -106,7 +106,6 @@ fn entry(outcome: HoverOutcome, detail: ApiHelpDetail) -> ApiHelpEntry {
         category: category_name(outcome.category).to_owned(),
         identifier: outcome.identifier,
         type_name: complete.then_some(outcome.type_name),
-        is_inferred: complete.then_some(outcome.is_inferred),
         is_intrinsic: complete.then_some(outcome.is_intrinsic),
         signature: if complete { outcome.signature } else { None },
         description: if complete { outcome.description } else { None },

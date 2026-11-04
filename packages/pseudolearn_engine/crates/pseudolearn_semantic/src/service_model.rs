@@ -33,7 +33,6 @@ pub struct ServiceSymbol {
     pub category: ServiceSymbolCategory,
     pub type_id: TypeId,
     pub span: Span,
-    pub is_inferred: bool,
     pub owner_class: Option<ClassId>,
     pub parameter_types: Vec<(String, TypeId, crate::hir::Passing)>,
     pub return_type: Option<TypeId>,

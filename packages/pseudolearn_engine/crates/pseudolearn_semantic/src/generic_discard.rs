@@ -38,7 +38,6 @@ impl Snapshot {
         session.reads.retain(|found| below(found.0, locals));
         session.writes.retain(|found| below(found.0, locals));
         session.invalid.retain(|found| below(found.0, locals));
-        session.inferred.retain(|found| below(found.0, locals));
         session
             .module
             .record_locals

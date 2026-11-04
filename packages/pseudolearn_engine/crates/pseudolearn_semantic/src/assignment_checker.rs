@@ -34,9 +34,7 @@ pub(crate) fn assignment(session: &mut AnalysisSession<'_>, node: usize) -> Opti
     if let HirPlace::Local(local) = location {
         assign_local(session, local, value, node);
     }
-    if !session.inferred_place(&location)
-        && !crate::type_resolution::assignable(session, &expected, &actual)
-    {
+    if !crate::type_resolution::assignable(session, &expected, &actual) {
         session.report(DiagnosticCode::IncompatibleTypesInAssignment, node);
         crate::diagnostic_arguments::assignment_types(session, &expected, &actual);
     }
@@ -58,7 +56,6 @@ pub(crate) fn assign_local(
         return;
     }
     crate::result_obligations::assign(session, local, value, node);
-    infer_assignment(session, local, value, node);
     session.writes.insert(local);
     if let Some(initialized) = session.initialized.get_mut(index) {
         *initialized = true;
@@ -93,67 +90,6 @@ pub(crate) fn input(session: &mut AnalysisSession<'_>, node: usize) -> HirStatem
         destinations.push(location);
     }
     HirStatement::Read(destinations)
-}
-
-fn reject_inferred_record(
-    session: &mut AnalysisSession<'_>,
-    local: LocalId,
-    naming: (usize, &str),
-) {
-    session.named_report(DiagnosticCode::RecordNotInferable, naming.0, naming.1);
-    session.invalid.insert(local);
-}
-
-fn inference_code(
-    session: &AnalysisSession<'_>,
-    expected: &Type,
-    actual: &Type,
-) -> Option<DiagnosticCode> {
-    match (expected, actual) {
-        (Type::Unknown, _) => Some(DiagnosticCode::InferredVariableType),
-        (Type::Integer, Type::Real) => Some(DiagnosticCode::WidenedVariableType),
-        _ if !crate::type_resolution::assignable(session, expected, actual) => {
-            Some(DiagnosticCode::TypeConflictOnInferredVariable)
-        }
-        _ => None,
-    }
-}
-
-fn infer_assignment(
-    session: &mut AnalysisSession<'_>,
-    local: LocalId,
-    value: ExpressionId,
-    node: usize,
-) {
-    let index = usize::try_from(local.0).unwrap_or(usize::MAX);
-    let Some(declaration) = session.module.locals.get(index).cloned() else {
-        return;
-    };
-    let actual = session.expression_type(value);
-    let expected = session.module.types.get(declaration.type_id);
-    if matches!(actual, Type::Unknown | Type::Error) {
-        return;
-    }
-    if session.inferred.contains(&local) && matches!(actual, Type::Record(_)) {
-        reject_inferred_record(session, local, (node, &declaration.name));
-        return;
-    }
-    if session.inferred.contains(&local) {
-        let type_id = session.module.types.intern(actual.clone());
-        let code = inference_code(session, &expected, &actual);
-        if let Some(code) = code {
-            session.named_report(code, node, &declaration.name);
-            if code == DiagnosticCode::InferredVariableType {
-                crate::diagnostic_arguments::inferred_type(session, &actual);
-            }
-            if code == DiagnosticCode::TypeConflictOnInferredVariable {
-                return;
-            }
-            if let Some(local) = session.module.locals.get_mut(index) {
-                local.type_id = type_id;
-            }
-        }
-    }
 }
 
 fn assignment_value(

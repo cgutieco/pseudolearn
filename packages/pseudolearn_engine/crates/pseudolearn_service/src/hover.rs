@@ -7,7 +7,7 @@ use crate::symbol_queries::{callable_parts, callable_signature};
 use crate::type_names::{builtin_type_display, type_display};
 use pseudolearn_lexicon::{KeywordKind, find_builtin, signature_for_builtin};
 use pseudolearn_semantic::hir::FunctionKind;
-use pseudolearn_semantic::{FieldId, ServiceAnalysis, ServiceSymbolCategory, ServiceSymbolTarget};
+use pseudolearn_semantic::{FieldId, ServiceSymbolTarget};
 use pseudolearn_syntax::TokenKind;
 use serde::{Deserialize, Serialize};
 
@@ -28,7 +28,6 @@ pub enum HoverCategory {
 pub struct HoverOutcome {
     pub category: HoverCategory,
     pub type_name: String,
-    pub is_inferred: bool,
     pub is_intrinsic: bool,
     pub identifier: String,
     pub signature: Option<String>,
@@ -60,7 +59,6 @@ fn keyword_hover(context: &QueryContext<'_>, kind: KeywordKind) -> HoverOutcome 
     HoverOutcome {
         category: HoverCategory::Keyword,
         type_name: String::new(),
-        is_inferred: false,
         is_intrinsic: false,
         identifier: keyword_spelling(kind, context.profile),
         signature: None,
@@ -85,7 +83,6 @@ fn contextual_hover(context: &QueryContext<'_>, slot: usize) -> Option<HoverOutc
     Some(HoverOutcome {
         category: HoverCategory::Builtin,
         type_name: String::new(),
-        is_inferred: false,
         is_intrinsic: true,
         identifier: context.token_text(slot).to_owned(),
         signature: None,
@@ -111,7 +108,6 @@ fn identifier_hover(context: &QueryContext<'_>, slot: usize) -> Option<HoverOutc
     Some(HoverOutcome {
         category: HoverCategory::Builtin,
         type_name: result.clone(),
-        is_inferred: false,
         is_intrinsic: true,
         identifier: name.clone(),
         signature: Some(format!(
@@ -132,12 +128,7 @@ fn symbol_hover(context: &QueryContext<'_>, target: ServiceSymbolTarget) -> Opti
                 .module
                 .classes
                 .get(usize::try_from(id.0).ok()?)?;
-            Some(plain(
-                HoverCategory::Class,
-                &class.name,
-                class.name.clone(),
-                false,
-            ))
+            Some(plain(HoverCategory::Class, &class.name, class.name.clone()))
         }
         ServiceSymbolTarget::Field(id) => field_hover(context, id),
         ServiceSymbolTarget::Builtin(_) => None,
@@ -156,7 +147,6 @@ fn local_hover(context: &QueryContext<'_>, slot: usize) -> Option<HoverOutcome> 
         category,
         &local.name,
         type_display(analysis, local.type_id, context.profile),
-        inferred_flag(analysis, slot),
     ))
 }
 
@@ -172,7 +162,6 @@ fn function_hover(context: &QueryContext<'_>, slot: usize) -> Option<HoverOutcom
         category,
         &function.name,
         type_display(analysis, function.result, context.profile),
-        false,
     );
     outcome.signature = Some(callable_signature(analysis, slot, context.profile));
     Some(outcome)
@@ -190,31 +179,18 @@ fn field_hover(context: &QueryContext<'_>, id: FieldId) -> Option<HoverOutcome> 
         HoverCategory::Field,
         &field.name,
         type_display(analysis, field.type_id, context.profile),
-        false,
     ))
 }
 
-fn plain(category: HoverCategory, name: &str, type_name: String, inferred: bool) -> HoverOutcome {
+fn plain(category: HoverCategory, name: &str, type_name: String) -> HoverOutcome {
     HoverOutcome {
         category,
         type_name,
-        is_inferred: inferred,
         is_intrinsic: false,
         identifier: name.to_owned(),
         signature: None,
         description: None,
     }
-}
-
-fn inferred_flag(analysis: &ServiceAnalysis, slot: usize) -> bool {
-    analysis.symbols.get(slot).is_some_and(|symbol| {
-        symbol.identifier == slot
-            && matches!(
-                symbol.category,
-                ServiceSymbolCategory::Variable | ServiceSymbolCategory::Parameter
-            )
-            && symbol.is_inferred
-    })
 }
 
 pub fn signature_help_at_position(

@@ -333,7 +333,7 @@
   "id": "R4",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "help_query recibe resource, revision como cadena decimal u64, position con line y column desde uno y unit unicode_scalar o utf16, language es o en independiente del perfil de sintaxis, y detail summary o full. Devuelve revision, language, detail, position y help estructurada o null. summary incluye category e identifier; full puede añadir type_name, is_inferred, is_intrinsic y signature. La respuesta no contiene índices del CST. Las columnas UTF-16 entre los sustitutos de un punto fuera del plano básico y las posiciones fuera de los límites de la línea son errores de uso.",
+  "texto": "help_query recibe resource, revision como cadena decimal u64, position con line y column desde uno y unit unicode_scalar o utf16, language es o en independiente del perfil de sintaxis, y detail summary o full. Devuelve revision, language, detail, position y help estructurada o null. summary incluye category e identifier; full puede añadir type_name, is_intrinsic y signature. La respuesta no contiene índices del CST. Las columnas UTF-16 entre los sustitutos de un punto fuera del plano básico y las posiciones fuera de los límites de la línea son errores de uso.",
   "verificacion": [
     "C6",
     "C7",

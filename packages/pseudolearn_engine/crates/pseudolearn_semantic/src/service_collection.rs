@@ -6,7 +6,6 @@ use pseudolearn_source::Span;
 
 pub(crate) fn collect_symbols(
     module: &HirModule,
-    inferred: &std::collections::BTreeSet<LocalId>,
     symbols: &mut Vec<ServiceSymbol>,
     occurrences: &mut Vec<ServiceReference>,
 ) {
@@ -26,7 +25,6 @@ pub(crate) fn collect_symbols(
             category,
             type_id: local.type_id,
             span: local.span,
-            is_inferred: inferred.contains(&local_id),
             owner_class: None,
             parameter_types: Vec::new(),
             return_type: None,
@@ -69,7 +67,6 @@ fn collect_function_symbols(
             category,
             type_id: function.result,
             span: function.span,
-            is_inferred: false,
             owner_class: function.owner,
             parameter_types,
             return_type: Some(function.result),

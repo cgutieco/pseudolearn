@@ -10,7 +10,6 @@ fn symbol(identifier: usize, start: u32) -> ServiceSymbol {
         category: ServiceSymbolCategory::Variable,
         type_id: TypeId(0),
         span: Span::new(start, start.saturating_add(1)),
-        is_inferred: false,
         owner_class: None,
         parameter_types: Vec::new(),
         return_type: None,

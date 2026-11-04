@@ -52,7 +52,6 @@ pub(crate) struct AnalysisSession<'syntax> {
     pub pending_results: BTreeSet<LocalId>,
     pub writes: BTreeSet<LocalId>,
     pub invalid: BTreeSet<LocalId>,
-    pub inferred: BTreeSet<LocalId>,
     pub called: BTreeSet<FunctionId>,
     pub awaited_calls: Vec<usize>,
     pub current: FunctionId,
@@ -103,7 +102,6 @@ impl<'syntax> AnalysisSession<'syntax> {
             pending_results: BTreeSet::new(),
             writes: BTreeSet::new(),
             invalid: BTreeSet::new(),
-            inferred: BTreeSet::new(),
             called: BTreeSet::new(),
             awaited_calls: Vec::new(),
             current: FunctionId(0),
@@ -254,12 +252,6 @@ impl AnalysisSession<'_> {
                 .count(),
         )
         .unwrap_or(u32::MAX)
-    }
-}
-
-impl AnalysisSession<'_> {
-    pub(crate) fn inferred_place(&self, place: &crate::expression_model::HirPlace) -> bool {
-        matches!(place, crate::expression_model::HirPlace::Local(local) if self.inferred.contains(local))
     }
 }
 

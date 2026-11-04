@@ -95,13 +95,6 @@ pub(crate) fn lexeme(
     session.lexeme(node).to_owned()
 }
 
-pub(crate) fn inferred_type(session: &mut AnalysisSession<'_>, kind: &Type) {
-    let argument = type_argument(session, kind);
-    if let Some(diagnostic) = session.diagnostics.last_mut() {
-        diagnostic.arguments.insert("type".to_owned(), argument);
-    }
-}
-
 fn variant_name(session: &AnalysisSession<'_>, record: crate::identities::RecordId) -> String {
     let Some(variant) = session.module.variants.get(&record) else {
         return String::new();

@@ -149,12 +149,7 @@ pub fn analyze_for_service(
     crate::flow::bodies(&mut session);
     let mut symbols = Vec::new();
     let mut occurrences = Vec::new();
-    crate::service_collection::collect_symbols(
-        &session.module,
-        &session.inferred,
-        &mut symbols,
-        &mut occurrences,
-    );
+    crate::service_collection::collect_symbols(&session.module, &mut symbols, &mut occurrences);
     crate::service_collection::collect_expression_occurrences(&session.module, &mut occurrences);
     let expression_types = session
         .module
@@ -179,12 +174,7 @@ pub fn service_analysis_from_project(
 ) -> ServiceAnalysis {
     let mut symbols = Vec::new();
     let mut occurrences = Vec::new();
-    crate::service_collection::collect_symbols(
-        &module,
-        &std::collections::BTreeSet::new(),
-        &mut symbols,
-        &mut occurrences,
-    );
+    crate::service_collection::collect_symbols(&module, &mut symbols, &mut occurrences);
     crate::service_collection::collect_expression_occurrences(&module, &mut occurrences);
     let expression_types = module
         .expressions
