@@ -9,6 +9,7 @@ use std::collections::BTreeSet;
 pub struct IdentifierRoles {
     user_starts: BTreeSet<u32>,
     contextual: std::collections::BTreeMap<usize, &'static str>,
+    effects: crate::effect_tokens::EffectNames,
     global_names: BTreeSet<String>,
     profile: Profile,
 }
@@ -16,14 +17,23 @@ pub struct IdentifierRoles {
 impl IdentifierRoles {
     pub fn build(tree: &SyntaxTree, source: &SourceText, options: SemanticOptions) -> Self {
         let analysis = analyze_for_service(tree, source, options);
-        let user_starts = analysis
+        let user_starts: BTreeSet<u32> = analysis
             .occurrences
             .iter()
             .filter(|occurrence| !matches!(occurrence.target, ServiceSymbolTarget::Builtin(_)))
             .map(|occurrence| occurrence.span.start)
             .collect();
+        let mut contextual =
+            crate::contextual_tokens::collect(tree, source, &analysis, options.profile);
+        let local_user_starts = local_starts(&analysis);
+        contextual.retain(|token, _| {
+            tree.tokens
+                .span(*token)
+                .is_none_or(|span| !local_user_starts.contains(&span.start))
+        });
         Self {
-            contextual: crate::contextual_tokens::collect(tree, source, &analysis, options.profile),
+            contextual,
+            effects: crate::effect_tokens::collect(tree, &analysis),
             user_starts,
             global_names: global_names(&analysis, options.profile),
             profile: options.profile,
@@ -32,6 +42,13 @@ impl IdentifierRoles {
 
     pub(crate) fn contextual_identity(&self, token: usize) -> Option<&'static str> {
         self.contextual.get(&token).copied()
+    }
+
+    pub(crate) fn effect_operation(
+        &self,
+        token: usize,
+    ) -> Option<&'static pseudolearn_semantic::EffectOperation> {
+        self.effects.get(&token).copied()
     }
 
     pub fn is_user_name(&self, tree: &SyntaxTree, source: &SourceText, index: usize) -> bool {
@@ -47,6 +64,15 @@ impl IdentifierRoles {
         let text = tree.tokens.text(source.as_str(), index).unwrap_or("");
         self.global_names.contains(&self.profile.fold_word(text))
     }
+}
+
+fn local_starts(analysis: &ServiceAnalysis) -> BTreeSet<u32> {
+    analysis
+        .occurrences
+        .iter()
+        .filter(|occurrence| matches!(occurrence.target, ServiceSymbolTarget::Local(_)))
+        .map(|occurrence| occurrence.span.start)
+        .collect()
 }
 
 fn global_names(analysis: &ServiceAnalysis, profile: Profile) -> BTreeSet<String> {

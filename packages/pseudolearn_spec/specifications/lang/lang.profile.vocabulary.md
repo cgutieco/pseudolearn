@@ -1498,6 +1498,30 @@
         "en": "snapshot"
       }
     },
+    "networkCapabilityType": {
+      "lexemas": {
+        "es": "RedCap",
+        "en": "NetworkCap"
+      }
+    },
+    "httpRequestType": {
+      "lexemas": {
+        "es": "PeticionHttp",
+        "en": "HttpRequest"
+      }
+    },
+    "httpResponseType": {
+      "lexemas": {
+        "es": "RespuestaHttp",
+        "en": "HttpResponse"
+      }
+    },
+    "httpMethodType": {
+      "lexemas": {
+        "es": "MetodoHttp",
+        "en": "HttpMethod"
+      }
+    },
     "channelType": {
       "lexemas": {
         "es": "Canal",

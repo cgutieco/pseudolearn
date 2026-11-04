@@ -7522,6 +7522,38 @@
             }
           },
           {
+            "identity": "networkCapabilityType",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          },
+          {
+            "identity": "httpRequestType",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          },
+          {
+            "identity": "httpResponseType",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          },
+          {
+            "identity": "httpMethodType",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          },
+          {
             "identity": "requestConsole",
             "source": {
               "specification": "LANG.PROFILE.VOCABULARY",
@@ -7609,6 +7641,22 @@
                 "text": "Capacidad opaca para esperar una duración controlada."
               },
               {
+                "identity": "networkCapabilityType",
+                "text": "Capacidad opaca que autoriza enviar peticiones de red con límites controlados."
+              },
+              {
+                "identity": "httpRequestType",
+                "text": "Petición HTTP inmutable que se construye y se envía mediante una capacidad de red."
+              },
+              {
+                "identity": "httpResponseType",
+                "text": "Respuesta HTTP de solo lectura con estado, cabeceras y cuerpo."
+              },
+              {
+                "identity": "httpMethodType",
+                "text": "Enumeración de los métodos HTTP GET, HEAD, POST, PUT, PATCH y DELETE."
+              },
+              {
                 "identity": "requestConsole",
                 "text": "Obtiene la capacidad de consola del anfitrión sin concesiones previas."
               },
@@ -7670,6 +7718,22 @@
               {
                 "identity": "timerCapabilityType",
                 "text": "Opaque capability handle for waiting a controlled duration."
+              },
+              {
+                "identity": "networkCapabilityType",
+                "text": "Opaque capability handle that authorizes sending network requests under controlled limits."
+              },
+              {
+                "identity": "httpRequestType",
+                "text": "Immutable HTTP request built and sent through a network capability."
+              },
+              {
+                "identity": "httpResponseType",
+                "text": "Read-only HTTP response with status, headers and body."
+              },
+              {
+                "identity": "httpMethodType",
+                "text": "Enumeration of the HTTP methods GET, HEAD, POST, PUT, PATCH and DELETE."
               },
               {
                 "identity": "requestConsole",
@@ -16066,6 +16130,10 @@
             "fileCapabilityType",
             "clockCapabilityType",
             "timerCapabilityType",
+            "networkCapabilityType",
+            "httpRequestType",
+            "httpResponseType",
+            "httpMethodType",
             "requestConsole",
             "requestArguments",
             "requestDirectory",

@@ -100,6 +100,15 @@ impl TranslationPlan<'_> {
         original: &str,
         collected: &mut Collected,
     ) -> String {
+        if let Some(operation) = self.roles.effect_operation(index) {
+            let spelled = crate::effect_tokens::spelling(operation, self.target_profile);
+            if operation.receiver.is_none() {
+                collected
+                    .produced
+                    .insert(self.target_profile.fold_word(spelled));
+            }
+            return spelled.to_owned();
+        }
         if let Some(identity) = self.roles.contextual_identity(index) {
             return pseudolearn_syntax::contextual_spelling(identity, self.target_profile.as_str())
                 .unwrap_or(original)

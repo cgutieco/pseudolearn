@@ -150,11 +150,17 @@ fn owns(kind: NodeKind, identity: &str) -> bool {
                     | "fileCapabilityType"
                     | "clockCapabilityType"
                     | "timerCapabilityType"
+                    | "networkCapabilityType"
+                    | "httpRequestType"
+                    | "httpResponseType"
+                    | "httpMethodType"
+                    | "immutableType"
                     | "channelType"
             )
             | (
                 NodeKind::Postfix,
-                "requestConsole"
+                "httpMethodType"
+                    | "requestConsole"
                     | "requestArguments"
                     | "requestDirectory"
                     | "requestClock"

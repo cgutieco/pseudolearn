@@ -16,6 +16,7 @@ pub mod completion_symbols;
 pub mod completion_templates;
 pub mod completion_types;
 mod contextual_tokens;
+mod effect_tokens;
 pub mod cursor_context;
 pub mod document_session;
 pub mod edit_probe;
