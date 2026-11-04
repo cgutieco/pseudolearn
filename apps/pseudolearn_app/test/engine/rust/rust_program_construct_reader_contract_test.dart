@@ -5,10 +5,10 @@ import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 
 const _withLoopAndConditional = '''
 Algoritmo Conteo
-  Definir i Como Entero <- 0
+  Definir i Como Entero <- 0;
   Para i <- 1 Hasta 3 Con Paso 1 Hacer
     Si i > 1 Entonces
-      Escribir i
+      Escribir i;
     FinSi
   FinPara
 FinAlgoritmo
@@ -16,7 +16,7 @@ FinAlgoritmo
 
 const _withoutConstructs = '''
 Algoritmo Saludo
-  Escribir "hola"
+  Escribir "hola";
 FinAlgoritmo
 ''';
 

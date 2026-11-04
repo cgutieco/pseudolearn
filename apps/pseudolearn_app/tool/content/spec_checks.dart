@@ -2,7 +2,6 @@ import 'package:pseudolearn_app/domain/model/knowledge/content_block.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
 import 'content_engine.dart';
-import 'package:pseudolearn_app/engine/rust/rust_profile_name.dart';
 import 'loaded_content.dart';
 
 const Map<String, String> exemptSpecificationSections = {
@@ -151,26 +150,6 @@ Set<String> producedDiagnosticCodes({
     );
     for (final diagnostic in report.diagnostics) {
       codes.add(diagnostic.code);
-    }
-    final strict =
-        contentTransport.call('create_analysis', {
-              'program': program,
-              'profile': rustProfileName(profileId),
-              'locale': rustLocaleName(languageId),
-              'strictness': 'strict',
-            })
-            as Map<String, Object?>;
-    try {
-      final report =
-          contentTransport.call('analysis', {'resource': strict['resource']})
-              as Map<String, Object?>;
-      for (final diagnostic
-          in (report['diagnostics'] as List<Object?>)
-              .cast<Map<String, Object?>>()) {
-        codes.add(diagnostic['code'] as String);
-      }
-    } finally {
-      contentTransport.call('release', {'resource': strict['document']});
     }
   }
   return codes;

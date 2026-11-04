@@ -16,7 +16,6 @@ final class HelpExampleLink extends Equatable {
   final String version;
   final String caseId;
   final String profile;
-  final String strictness;
   final String kind;
   final String label;
 
@@ -25,7 +24,6 @@ final class HelpExampleLink extends Equatable {
     required this.version,
     required this.caseId,
     required this.profile,
-    required this.strictness,
     required this.kind,
     required this.label,
   });
@@ -36,7 +34,6 @@ final class HelpExampleLink extends Equatable {
     version,
     caseId,
     profile,
-    strictness,
     kind,
     label,
   ];

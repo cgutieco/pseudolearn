@@ -89,7 +89,10 @@ void main() {
     });
 
     test('names every declaration and assignment with its own text', () {
-      expect(_hasNodeSaying(scene, 'Definir Mutable n Como Entero <- 0'), isTrue);
+      expect(
+        _hasNodeSaying(scene, 'Definir Mutable n Como Entero <- 0'),
+        isTrue,
+      );
       expect(_hasNodeSaying(scene, 'n <- 5'), isTrue);
       expect(_hasNodeSaying(scene, 'f <- 1'), isTrue);
     });
@@ -210,7 +213,7 @@ void main() {
 
     test('a for loop carries no yes or no label on its preparation symbol', () {
       final scene = _sceneOf(
-        _program('Para i <- 1 Hasta 3 Hacer\na <- 1;\nFinPara'),
+        _program('Para i <- 1 Hasta 3 Con Paso 1 Hacer\na <- 1;\nFinPara'),
       );
       expect(_kinded(scene, DiagramEdgeKind.branchTrue).single.label, isNull);
       expect(_kinded(scene, DiagramEdgeKind.branchFalse).single.label, isNull);
@@ -251,7 +254,7 @@ FinProceso
   group('subprograms', () {
     test('a call uses the predefined process symbol', () {
       const source = '''
-SubProceso saludar(x)
+SubProceso saludar(x Como Entero)
     Escribir x;
 FinSubProceso
 
@@ -280,7 +283,7 @@ FinProceso
     test('deep nesting grows the scene instead of dropping statements', () {
       final scene = _sceneOf(
         _program(
-          'Para i <- 1 Hasta 3 Hacer\n'
+          'Para i <- 1 Hasta 3 Con Paso 1 Hacer\n'
           'Mientras 1 > 2 Hacer\n'
           'Si 3 > 4 Entonces\n'
           'a <- 1;\n'

@@ -31,11 +31,10 @@ la notación académica.
 
 {{ejemplo:example-esp-arreglos-indice-cero}}
 
-## El tamaño es una expresión, y a veces tiene que ser constante
+## El tamaño es una expresión entera
 
-Sintácticamente un tamaño es siempre una expresión. Bajo el perfil estricto tiene que ser además una
-**expresión constante**, y eso significa un literal o un operador aplicado a expresiones constantes.
-No incluye nombres de variable, porque el lenguaje no tiene constantes con nombre.
+Un tamaño es siempre una expresión entera que se evalúa al ejecutar la declaración: puede ser un
+literal, un operador aplicado a otras expresiones o incluir nombres de variable ya declarados.
 
 Un tamaño **cero es válido**: el arreglo no admite ningún índice, y recorrerlo con un bucle contado
 simplemente no itera. Un tamaño negativo es un fallo de ejecución, y un tamaño que no es entero es un

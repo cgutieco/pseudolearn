@@ -83,7 +83,6 @@ HelpExampleLink _example(Map<String, Object?> value) => HelpExampleLink(
   version: '${value['version']}',
   caseId: '${value['case']}',
   profile: '${value['profile']}',
-  strictness: '${value['strictness']}',
   kind: '${value['kind']}',
   label: '${value['label']}',
 );

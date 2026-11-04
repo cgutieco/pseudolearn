@@ -8,28 +8,28 @@ import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
 
 const _counted = '''
 Algoritmo Bucle
-  Definir Mutable total Como Entero <- 0
+  Definir Mutable total Como Entero <- 0;
   Para i <- 1 Hasta 3 Con Paso 1 Hacer
-    total <- total + i
+    total <- total + i;
   FinPara
-  Escribir total
+  Escribir total;
 FinAlgoritmo
 ''';
 
 const _preTest = '''
 Algoritmo PreTest
-  Definir Mutable i Como Entero <- 0
+  Definir Mutable i Como Entero <- 0;
   Mientras i < 2 Hacer
-    i <- i + 1
+    i <- i + 1;
   FinMientras
 FinAlgoritmo
 ''';
 
 const _postTest = '''
 Algoritmo PostTest
-  Definir Mutable i Como Entero <- 0
+  Definir Mutable i Como Entero <- 0;
   Repetir
-    i <- i + 1
+    i <- i + 1;
   Hasta Que i >= 2
 FinAlgoritmo
 ''';
@@ -38,7 +38,7 @@ const _nested = '''
 Algoritmo Anidado
   Para i <- 1 Hasta 2 Con Paso 1 Hacer
     Para j <- 1 Hasta 2 Con Paso 1 Hacer
-      Escribir j
+      Escribir j;
     FinPara
   FinPara
 FinAlgoritmo
@@ -48,15 +48,15 @@ const _returnsFromNesting = '''
 SubProceso Buscar(limite Como Entero) Como Entero
   Para k <- 1 Hasta limite Con Paso 1 Hacer
     Si k = 2 Entonces
-      Retornar k
+      Retornar k;
     FinSi
   FinPara
-  Retornar 0
+  Retornar 0;
 FinSubProceso
 
 Algoritmo ConRetorno
-  Definir r Como Entero <- Buscar(5)
-  Escribir r
+  Definir r Como Entero <- Buscar(5);
+  Escribir r;
 FinAlgoritmo
 ''';
 

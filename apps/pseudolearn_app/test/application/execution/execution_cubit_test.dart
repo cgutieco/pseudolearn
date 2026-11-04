@@ -18,43 +18,43 @@ import '../../fakes/fake_program_execution.dart';
 
 const _counted = '''
 Algoritmo Contado
-  Definir i Como Entero <- 0
+  Definir i Como Entero <- 0;
   Para i <- 1 Hasta 3 Con Paso 1 Hacer
-    Escribir i
+    Escribir i;
   FinPara
 FinAlgoritmo
 ''';
 
 const _immediate = '''
 Algoritmo Rapido
-  Escribir "Listo"
+  Escribir "Listo";
 FinAlgoritmo
 ''';
 
 const _broken = '''
 Algoritmo Roto
-  Definir Mutable x Como Entero <- 0
+  Definir Mutable x Como Entero <- 0;
   x <-
 FinAlgoritmo
 ''';
 
 const _loop = '''
 Algoritmo Bucle
-  Definir i Como Entero <- 0
-  Definir Mutable t Como Entero <- 0
-  t <- 0
+  Definir i Como Entero <- 0;
+  Definir Mutable t Como Entero <- 0;
+  t <- 0;
   Para i <- 1 Hasta 3 Con Paso 1 Hacer
-    t <- t + i
+    t <- t + i;
   FinPara
-  Escribir t
+  Escribir t;
 FinAlgoritmo
 ''';
 
 const _readsInput = '''
 Algoritmo Pide
-  Definir Mutable n Como Entero <- 0
-  Leer n
-  Escribir n
+  Definir Mutable n Como Entero <- 0;
+  Leer n;
+  Escribir n;
 FinAlgoritmo
 ''';
 
@@ -74,7 +74,7 @@ Algoritmo ConTareas
     Lanzar Work(1);
     Lanzar Work(2);
   FinTareas
-  Escribir "raiz"
+  Escribir "raiz";
 FinAlgoritmo
 ''';
 
@@ -300,7 +300,6 @@ void main() {
       addTearDown(local.close);
       const configuration = ExecutionConfiguration(
         documentId: 'doc',
-        strictness: 'strict',
         arguments: ['á b', ''],
       );
       await local.advance(

@@ -25,7 +25,7 @@ fn create_analysis(session: u64, program: &str) -> u64 {
     let response = send(
         session,
         "create_analysis",
-        json!({"program":program,"profile":"es","strictness":"strict"}),
+        json!({"program":program,"profile":"es"}),
     );
     resource_identifier(&response)
 }

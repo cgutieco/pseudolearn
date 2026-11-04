@@ -7,7 +7,8 @@ import 'package:pseudolearn_app/engine/rust/rust_transport.dart';
 
 import '../../fakes/fake_rust_transport.dart';
 
-const _source = 'Algoritmo P\n  Mientras 1 = 1 Hacer\n  FinMientras\nFinAlgoritmo\n';
+const _source =
+    'Algoritmo P\n  Mientras 1 = 1 Hacer\n  FinMientras\nFinAlgoritmo\n';
 
 Map<String, Object?> _range(int line, int start, int end) => {
   'start': {'line': line, 'column': start},
@@ -49,10 +50,7 @@ void main() {
   group('RustSyntaxHelpSource', () {
     test('sends UTF-16 line and column with the interface language', () {
       final queries = <Map<String, Object?>>[];
-      final transport = _transport(
-        (_) => _response(),
-        queries: queries,
-      );
+      final transport = _transport((_) => _response(), queries: queries);
       _ask(transport);
       expect(queries.single['position'], {
         'line': 2,
@@ -93,7 +91,6 @@ void main() {
                 'version': '1.0.0',
                 'case': 'C1',
                 'profile': 'en',
-                'strictness': 'estricto',
                 'kind': 'executable',
                 'label': 'Runs',
               },
@@ -112,20 +109,23 @@ void main() {
       expect(result.help?.headline, 'Mientras');
     });
 
-    test('service columns are Unicode scalars, converted to UTF-16 offsets', () {
-      final transport = _transport(
-        (_) => _response(
-          resolution: {
-            'identity': {'kind': 'keyword', 'id': 'x', 'role': 'keyword'},
-            'certainty': 'certain',
-            'lexical_range': _range(1, 5, 7),
-          },
-        ),
-      );
-      final result = _ask(transport, source: 'a"🧩" bc', cursor: 6);
-      expect(result.help?.range.start, 5);
-      expect(result.help?.range.end, 7);
-    });
+    test(
+      'service columns are Unicode scalars, converted to UTF-16 offsets',
+      () {
+        final transport = _transport(
+          (_) => _response(
+            resolution: {
+              'identity': {'kind': 'keyword', 'id': 'x', 'role': 'keyword'},
+              'certainty': 'certain',
+              'lexical_range': _range(1, 5, 7),
+            },
+          ),
+        );
+        final result = _ask(transport, source: 'a"🧩" bc', cursor: 6);
+        expect(result.help?.range.start, 5);
+        expect(result.help?.range.end, 7);
+      },
+    );
 
     test('reports partial certainty and user symbols distinctly', () {
       final transport = _transport(
@@ -135,7 +135,11 @@ void main() {
             'certainty': 'partial',
             'lexical_range': _range(2, 3, 4),
           },
-          help: {'category': 'variable', 'identifier': 'x', 'type_name': 'Entero'},
+          help: {
+            'category': 'variable',
+            'identifier': 'x',
+            'type_name': 'Entero',
+          },
         ),
       );
       final result = _ask(transport);

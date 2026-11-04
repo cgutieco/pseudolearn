@@ -63,9 +63,9 @@ not of the language.
 
 ## End of statement
 
-A statement ends at the end of the line. The explicit terminator {{lexema:semicolon}} is **always**
-accepted as a separator, which allows several statements to be written on one line; that it is also
-mandatory is a rigour flag of the profile, not a rule of the language.
+Every simple statement ends with the explicit terminator {{lexema:semicolon}}, which also allows
+several statements to be written on one line. Omitting it is an error that points to the exact place
+where it is missing, right after the last word of the statement.
 
 {{ejemplo:example-esp-lexico-fin-sentencia}}
 

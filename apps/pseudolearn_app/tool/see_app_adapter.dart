@@ -76,7 +76,6 @@ Map<String, Object?> _hello() => {
     'program_view',
   ],
   'profiles': ['es', 'en'],
-  'strictness': ['strict', 'flexible'],
 };
 
 Map<String, Object?> _analyze(
@@ -87,7 +86,6 @@ Map<String, Object?> _analyze(
     transport.call('create_analysis', {
       'program': request['program'],
       'profile': request['profile'],
-      'strictness': request['strictness'],
     }),
   );
   final document = created['document'] as int;

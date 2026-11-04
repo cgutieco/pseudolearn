@@ -40,14 +40,13 @@ language does not have.
 
 ## Parameters
 
-Each parameter is a name, optionally {{lexema:typeConnector}} with its type, and optionally a passing
+Each parameter is a name, {{lexema:typeConnector}} its type, and optionally a passing
 marker as suffix. An array parameter is marked with {{lexema:leftBracket}} and
 {{lexema:rightBracket}} and as many {{lexema:comma}} as dimensions minus one: **sizes do not appear**,
 because the array already exists when it arrives and the subroutine does not dimension it.
 
-The type is optional in the grammar and the mandatory declaration flag makes it required. There is no
-new flag: a parameter is the input variable of the subroutine, and the flag that already requires
-declaring every variable reaches it.
+The type is mandatory: a parameter is the input variable of the subroutine, and every variable
+declares its type.
 
 {{ejemplo:example-esp-subprogramas-parametros}}
 

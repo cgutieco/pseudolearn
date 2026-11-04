@@ -5,7 +5,6 @@ import '../../domain/model/knowledge/marker_resolution.dart';
 import '../../domain/model/profiles/syntax_profile_id.dart';
 import '../../domain/model/settings/ui_language_id.dart';
 import '../knowledge/marker_vocabulary.dart';
-import 'rust_profile_name.dart';
 import 'rust_reference_signatures.dart';
 import 'rust_reference_vocabulary.dart';
 import 'rust_transport.dart';
@@ -29,7 +28,10 @@ final class RustMarkerResolver {
         ContentMarkerKind.lexeme => _lexeme(data, marker.argument),
         ContentMarkerKind.signature => _signature(data, marker.argument),
         ContentMarkerKind.table => _table(data, marker.argument, languageId),
-        ContentMarkerKind.diagnostic => _diagnostic(marker.argument, languageId),
+        ContentMarkerKind.diagnostic => _diagnostic(
+          marker.argument,
+          languageId,
+        ),
         _ => null,
       };
     } on RustBridgeFailure {
@@ -88,7 +90,6 @@ final class RustMarkerResolver {
         _transport.call('diagnostic_template', {
               'code': code,
               'locale': languageId == UiLanguageId.english ? 'en' : 'es',
-              'strictness': rustStrictness,
             })
             as Map<String, Object?>;
     final template = response['template'] as String;

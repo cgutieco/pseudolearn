@@ -11,5 +11,3 @@ String? rustLocaleName(UiLanguageId languageId) => switch (languageId) {
   UiLanguageId.english => 'en',
   UiLanguageId.system => null,
 };
-
-const String rustStrictness = 'flexible';

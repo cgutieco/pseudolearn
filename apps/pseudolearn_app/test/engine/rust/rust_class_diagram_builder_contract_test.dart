@@ -5,28 +5,28 @@ import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 
 const String _vehicles = '''
 Clase Vehiculo
-    Publico Definir marca Como Cadena
-    Privado Definir velocidad Como Entero
+    Publico Definir marca Como Cadena;
+    Privado Definir velocidad Como Entero;
 
     Metodo Constructor(m Como Cadena)
-        Este.marca <- m
+        Este.marca <- m;
     FinMetodo
 
     Publico Metodo Acelerar(delta Como Entero)
-        Este.velocidad <- Este.velocidad + delta
+        Este.velocidad <- Este.velocidad + delta;
     FinMetodo
 FinClase
 
 Clase Motocicleta Hereda De Vehiculo
-    Publico Definir cilindrada Como Entero
+    Publico Definir cilindrada Como Entero;
 
     Metodo Describir()
-        Escribir Este.cilindrada
+        Escribir Este.cilindrada;
     FinMetodo
 FinClase
 
 Proceso Principal
-    Definir moto Como Motocicleta <- Nuevo Motocicleta("Honda")
+    Definir moto Como Motocicleta <- Nuevo Motocicleta("Honda");
 
 FinProceso
 ''';

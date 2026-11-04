@@ -11,9 +11,9 @@ void main() {
     test('exports clean algorithm to Python', () {
       const source = '''
 Algoritmo Test
-  Definir Mutable x Como Entero <- 0
-  x <- 42
-  Escribir x
+  Definir Mutable x Como Entero <- 0;
+  x <- 42;
+  Escribir x;
 FinAlgoritmo
 ''';
       final result = exporter.export(
@@ -37,9 +37,9 @@ FinAlgoritmo
     test('exports clean algorithm to Rust', () {
       const source = '''
 Algoritmo Test
-  Definir Mutable x Como Entero <- 0
-  x <- 42
-  Escribir x
+  Definir Mutable x Como Entero <- 0;
+  x <- 42;
+  Escribir x;
 FinAlgoritmo
 ''';
       final result = exporter.export(
@@ -76,8 +76,8 @@ FinAlgoritmo
       () {
         const semanticErrorSource = '''
 Algoritmo SemanticError
-  Definir Mutable x Como Entero <- 0
-  x <- "texto invalido"
+  Definir Mutable x Como Entero <- 0;
+  x <- "texto invalido";
 FinAlgoritmo
 ''';
         final result = exporter.export(
@@ -95,15 +95,15 @@ FinAlgoritmo
       () {
         const source = '''
 Algoritmo Factorial
-  Definir Mutable n Como Entero <- 0
-  Definir Mutable f Como Entero <- 0
-  Definir i Como Entero <- 0
-  n <- 5
-  f <- 1
+  Definir Mutable n Como Entero <- 0;
+  Definir Mutable f Como Entero <- 0;
+  Definir i Como Entero <- 0;
+  n <- 5;
+  f <- 1;
   Para i <- 1 Hasta n Con Paso 1 Hacer
-    f <- f * i
+    f <- f * i;
   FinPara
-  Escribir "Factorial: ", f
+  Escribir "Factorial: ", f;
 FinAlgoritmo
 ''';
         final pyResult = exporter.export(
@@ -145,12 +145,12 @@ FinAlgoritmo
     test('exports RepeatUntil loop to Python and Rust cleanly', () {
       const source = '''
 Algoritmo RepetirTest
-  Definir Mutable c Como Entero <- 0
-  c <- 0
+  Definir Mutable c Como Entero <- 0;
+  c <- 0;
   Repetir
-    c <- c + 1
+    c <- c + 1;
   Hasta Que c >= 5
-  Escribir c
+  Escribir c;
 FinAlgoritmo
 ''';
       final pyResult = exporter.export(
@@ -179,15 +179,15 @@ FinAlgoritmo
     test('exports Switch Segun to Rust and withholds Python', () {
       const source = '''
 Algoritmo SegunTest
-  Definir Mutable op Como Entero <- 0
-  op <- 2
+  Definir Mutable op Como Entero <- 0;
+  op <- 2;
   Segun op Hacer
     1:
-      Escribir "Uno"
+      Escribir "Uno";
     2:
-      Escribir "Dos"
+      Escribir "Dos";
     De Otro Modo:
-      Escribir "Otro"
+      Escribir "Otro";
   FinSegun
 FinAlgoritmo
 ''';
@@ -217,9 +217,9 @@ FinAlgoritmo
     test('withholds Dimension arrays from both targets', () {
       const source = '''
 Algoritmo ArrayTest
-  Dimension a[10] Como Entero
-  a[0] <- 42
-  Escribir a[0]
+  Dimension a[10] Como Entero;
+  a[0] <- 42;
+  Escribir a[0];
 FinAlgoritmo
 ''';
       final pyResult = exporter.export(

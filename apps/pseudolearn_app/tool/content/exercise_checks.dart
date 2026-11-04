@@ -116,7 +116,7 @@ String impostorProgramFor({
   ];
   final write = isEnglish ? 'write' : 'Escribir';
   for (final output in _visibleOutputs(visibleCases)) {
-    lines.add('  $write $output');
+    lines.add('  $write $output;');
   }
   lines.add(isEnglish ? 'endAlgorithm' : 'FinAlgoritmo');
   return lines.join('\n');

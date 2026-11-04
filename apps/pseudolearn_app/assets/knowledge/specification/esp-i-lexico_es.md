@@ -66,9 +66,9 @@ perfil, no del lenguaje.
 
 ## Fin de sentencia
 
-Una sentencia termina al final de la línea. El terminador explícito {{lexema:semicolon}} se acepta
-**siempre** como separador, lo que permite escribir varias sentencias en una misma línea; que además
-sea obligatorio es una bandera de rigor del perfil, no una regla del lenguaje.
+Toda sentencia simple termina con el terminador explícito {{lexema:semicolon}}, que además permite
+escribir varias sentencias en una misma línea. Omitirlo es un error que señala el sitio exacto donde
+falta, justo detrás de la última palabra de la sentencia.
 
 {{ejemplo:example-esp-lexico-fin-sentencia}}
 

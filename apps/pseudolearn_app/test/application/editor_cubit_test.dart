@@ -62,7 +62,7 @@ void main() {
       final doc = Document(
         id: 'doc-edit',
         title: 'Editor Test',
-        content: 'Algoritmo Test\n  Definir a Como Entero <- 0\nFinAlgoritmo',
+        content: 'Algoritmo Test\n  Definir a Como Entero <- 0;\nFinAlgoritmo',
         profileId: SyntaxProfileId.classicSpanish,
         revision: 1,
         createdAt: clock.now(),
@@ -83,7 +83,7 @@ void main() {
       expect(cubit.state.report.isExecutable, isTrue);
 
       cubit.updateSourceCode(
-        'Algoritmo Nuevo\n  Definir b Como Entero <- 0\nFinAlgoritmo',
+        'Algoritmo Nuevo\n  Definir b Como Entero <- 0;\nFinAlgoritmo',
       );
       expect(cubit.state.isDirty, isTrue);
 
@@ -251,7 +251,7 @@ void main() {
       () async {
         await cubit.loadDocument('doc-edit');
         cubit.updateSourceCode(
-          'Algoritmo AutoSaved\n  Escribir 42\nFinAlgoritmo',
+          'Algoritmo AutoSaved\n  Escribir 42;\nFinAlgoritmo',
         );
         expect(cubit.state.isDirty, isTrue);
 

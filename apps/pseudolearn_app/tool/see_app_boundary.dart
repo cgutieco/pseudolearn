@@ -208,7 +208,6 @@ int _createDocument(RustTransport transport, {String? source}) {
       transport.call('create_document', {
             'program': source ?? 'Algoritmo P\nFinAlgoritmo\n',
             'profile': 'es',
-            'strictness': 'strict',
           })
           as Map<String, Object?>;
   return result['resource'] as int;

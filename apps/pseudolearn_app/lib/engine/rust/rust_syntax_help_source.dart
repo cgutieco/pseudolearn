@@ -46,7 +46,6 @@ final class RustSyntaxHelpSource implements SyntaxHelpSource {
       _transport.call('open_edit_session', {
             'program': sourceCode,
             'profile': rustProfileName(profileId),
-            'strictness': rustStrictness,
           })
           as Map<String, Object?>;
 

@@ -134,7 +134,6 @@ final class RustEditAssistSource implements EditAssistSource {
           _transport.call('open_edit_session', {
                 'program': sourceCode,
                 'profile': rustProfileName(profileId),
-                'strictness': rustStrictness,
               })
               as Map<String, Object?>;
       _resource = opened['resource'] as int;

@@ -16,7 +16,6 @@ extension _RustExecutionStart on RustProgramExecution {
       sourceCode: sourceCode,
       profileId: profileId,
       languageId: languageId,
-      strictness: configuration.strictness,
     );
     if (opened == null) {
       _rejectUnopened(replayTape);

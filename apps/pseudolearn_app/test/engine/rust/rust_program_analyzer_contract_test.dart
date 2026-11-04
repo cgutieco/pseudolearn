@@ -11,9 +11,9 @@ void main() {
     test('analyzes valid program successfully', () {
       const source = '''
 Algoritmo Test
-  Definir Mutable x Como Entero <- 0
-  x <- 42
-  Escribir x
+  Definir Mutable x Como Entero <- 0;
+  x <- 42;
+  Escribir x;
 FinAlgoritmo
 ''';
       final report = analyzer.analyze(

@@ -21,21 +21,21 @@ import 'package:pseudolearn_app/presentation/theme/app_theme.dart';
 
 const String _vehicles = '''
 Clase Vehiculo
-    Publico Definir marca Como Cadena
-    Privado Definir velocidad Como Entero
+    Publico Definir marca Como Cadena;
+    Privado Definir velocidad Como Entero;
 
     Publico Metodo Acelerar(delta Como Entero)
-        Este.velocidad <- Este.velocidad + delta
+        Este.velocidad <- Este.velocidad + delta;
     FinMetodo
 FinClase
 
 Clase Motocicleta Hereda De Vehiculo
-    Publico Definir cilindrada Como Entero
+    Publico Definir cilindrada Como Entero;
 FinClase
 
 Proceso Principal
-    Definir Mutable moto Como Motocicleta <- Nuevo Motocicleta()
-    Escribir 1
+    Definir Mutable moto Como Motocicleta <- Nuevo Motocicleta();
+    Escribir 1;
 FinProceso
 ''';
 

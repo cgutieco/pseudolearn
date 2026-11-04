@@ -54,10 +54,7 @@ void main() {
     await _run(
       execution,
       _arguments,
-      const ExecutionConfiguration(
-        arguments: ['', 'two words', 'λ'],
-        strictness: 'strict',
-      ),
+      const ExecutionConfiguration(arguments: ['', 'two words', 'λ']),
     );
     expect(execution.outputLines.map((line) => line.text), [
       '[]',
@@ -75,11 +72,7 @@ void main() {
       addTearDown(transport.close);
       final execution = RustProgramExecution(transport);
       final clock = Stopwatch()..start();
-      await _run(
-        execution,
-        _time,
-        const ExecutionConfiguration(strictness: 'strict'),
-      );
+      await _run(execution, _time, const ExecutionConfiguration());
       expect(clock.elapsed, greaterThanOrEqualTo(const Duration(seconds: 1)));
       expect(execution.outputLines.map((line) => line.text), ['true']);
       expect(execution.recordedTape, isNotNull);

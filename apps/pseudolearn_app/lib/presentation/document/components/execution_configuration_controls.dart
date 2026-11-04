@@ -39,7 +39,6 @@ final class _Controls extends StatelessWidget {
         Wrap(
           crossAxisAlignment: WrapCrossAlignment.center,
           children: [
-            _Strictness(editor: editor, enabled: !execution.isInFlight),
             _Arguments(editor: editor, enabled: !execution.isInFlight),
             TextButton.icon(
               icon: const Icon(Icons.replay),
@@ -69,7 +68,6 @@ final class _Controls extends StatelessWidget {
       replay: true,
       configuration: ExecutionConfiguration(
         documentId: document?.id ?? 'untitled',
-        strictness: document?.strictness ?? 'flexible',
         arguments: document?.executionArguments ?? const [],
       ),
     );
@@ -109,50 +107,7 @@ final class _Arguments extends StatelessWidget {
       editor.sourceCode,
       executionConfiguration: ExecutionConfiguration(
         documentId: document.id,
-        strictness: document.strictness,
         arguments: arguments,
-      ),
-    );
-  }
-}
-
-final class _Strictness extends StatelessWidget {
-  final EditorState editor;
-  final bool enabled;
-  const _Strictness({required this.editor, required this.enabled});
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    return Semantics(
-      container: true,
-      explicitChildNodes: true,
-      label: l10n.executionStrictness,
-      child: DropdownButton<String>(
-        value: editor.document?.strictness ?? 'flexible',
-        hint: Text(l10n.executionStrictness),
-        items: [
-          DropdownMenuItem(value: 'strict', child: Text(l10n.executionStrict)),
-          DropdownMenuItem(
-            value: 'flexible',
-            child: Text(l10n.executionFlexible),
-          ),
-        ],
-        onChanged: !enabled
-            ? null
-            : (value) => _save(context, strictness: value),
-      ),
-    );
-  }
-
-  void _save(BuildContext context, {String? strictness}) {
-    final document = editor.document;
-    if (document == null) return;
-    context.read<EditorCubit>().updateSourceCode(
-      editor.sourceCode,
-      executionConfiguration: ExecutionConfiguration(
-        documentId: document.id,
-        strictness: strictness ?? document.strictness,
-        arguments: document.executionArguments,
       ),
     );
   }

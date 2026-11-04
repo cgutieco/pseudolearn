@@ -56,7 +56,6 @@ void main() {
         transport.calls.where((call) => call == 'open_edit_session').length,
         1,
       );
-      expect(requests['open']!['strictness'], 'flexible');
       final edits = requests['apply']!['edits'] as List<Object?>;
       expect(edits.single, {'start_utf8': '2', 'end_utf8': '2', 'text': 'c'});
       expect(requests['apply']!['revision'], '2');

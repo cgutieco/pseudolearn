@@ -74,7 +74,7 @@ final Map<String, ({String source, Set<TargetLanguageId> targets})> _cases = {
   ),
   'nested loops': (
     source: _procedure(
-      'Para i <- 1 Hasta 2 Hacer\nPara j <- 1 Hasta 2 Hacer\n'
+      'Para i <- 1 Hasta 2 Con Paso 1 Hacer\nPara j <- 1 Hasta 2 Con Paso 1 Hacer\n'
       'Escribir i * j;\nFinPara\nFinPara',
     ),
     targets: TargetLanguageId.values.toSet(),
@@ -125,7 +125,7 @@ final Map<String, ({String source, Set<TargetLanguageId> targets})> _cases = {
     source: _procedure(
       'Escribir Fact(5);',
       'Funcion Fact(n Como Entero) Como Entero\nSi n <= 1 Entonces\n'
-      'Retornar 1;\nFinSi\nRetornar n * Fact(n - 1);\nFinFuncion\n',
+          'Retornar 1;\nFinSi\nRetornar n * Fact(n - 1);\nFinFuncion\n',
     ),
     targets: {TargetLanguageId.python},
   ),

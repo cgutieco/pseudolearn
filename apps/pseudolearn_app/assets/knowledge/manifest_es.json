@@ -240,8 +240,8 @@
       "document": "esp-i",
       "anchor": "sistema-de-tipos",
       "order": 9,
-      "title": "Sistema de tipos y política de rigor",
-      "summary": "Qué es un error de tipos y qué cambia entre el perfil estricto y el flexible.",
+      "title": "Sistema de tipos y severidad de diagnósticos",
+      "summary": "Qué es un error de tipos y cómo se gradúa la severidad de cada diagnóstico.",
       "path": "specification/esp-i-sistema-de-tipos_es.md"
     },
     {
@@ -1543,7 +1543,7 @@
     {
       "id": "example-esp-arreglos-tamano-constante",
       "title": "Tamaño con expresión constante",
-      "summary": "Las dimensiones deben ser evaluables en tiempo de análisis.",
+      "summary": "El tamaño es una expresión entera evaluada al ejecutar.",
       "path": "examples/esp_arreglos_tamano_constante_es.pseudo",
       "profile": "classic_spanish"
     },
@@ -1613,7 +1613,7 @@
     {
       "id": "example-esp-tipos-relaciones",
       "title": "Compatibilidad de tipos",
-      "summary": "Asignación permitida de entero a real y comprobaciones estrictas.",
+      "summary": "Asignación permitida de entero a real y comprobaciones de tipo.",
       "path": "examples/esp_tipos_relaciones_es.pseudo",
       "profile": "classic_spanish"
     },
@@ -1626,8 +1626,8 @@
     },
     {
       "id": "example-esp-tipos-inferencia",
-      "title": "Inferencia de tipos en perfil flexible",
-      "summary": "Deducción automática del tipo de variables no declaradas.",
+      "title": "Declaración obligatoria del tipo",
+      "summary": "El valor inicial se comprueba contra el tipo declarado.",
       "path": "examples/esp_tipos_inferencia_es.pseudo",
       "profile": "classic_spanish"
     },

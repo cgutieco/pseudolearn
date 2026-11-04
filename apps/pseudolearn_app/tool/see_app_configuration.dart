@@ -16,10 +16,7 @@ Future<Map<String, Object?>> runConfigurationScenario(
     final profile = input['profile'] == 'en'
         ? SyntaxProfileId.english
         : SyntaxProfileId.classicSpanish;
-    final configuration = ExecutionConfiguration(
-      documentId: 'scenario',
-      strictness: input['strictness'] == 'strict' ? 'strict' : 'flexible',
-    );
+    const configuration = ExecutionConfiguration(documentId: 'scenario');
     await _advance(cubit, input['program'] as String, profile, configuration);
     final changed = input['replay_program'] as String?;
     if (input['replay'] != true) return _outcome(cubit.state);

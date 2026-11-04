@@ -54,7 +54,6 @@ Document? _buildDocumentFromHeader(String headerText, String bodyText) {
     createdAt: DateTime.tryParse(map['created_at'] ?? '') ?? DateTime.now(),
     updatedAt: DateTime.tryParse(map['updated_at'] ?? '') ?? DateTime.now(),
     exerciseId: map['exercise_id'],
-    strictness: map['strictness'] == 'strict' ? 'strict' : 'flexible',
     executionArguments: _readArguments(map['execution_arguments']),
   );
 }
@@ -77,7 +76,6 @@ String serializeDocumentFile(Document doc) {
   buffer.writeln('title: ${doc.title}');
   buffer.writeln('profile: ${doc.profileId.name}');
   buffer.writeln('revision: ${doc.revision}');
-  buffer.writeln('strictness: ${doc.strictness}');
   buffer.writeln('execution_arguments: ${jsonEncode(doc.executionArguments)}');
   buffer.writeln('created_at: ${doc.createdAt.toIso8601String()}');
   buffer.writeln('updated_at: ${doc.updatedAt.toIso8601String()}');

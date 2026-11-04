@@ -240,8 +240,8 @@
       "document": "esp-i",
       "anchor": "sistema-de-tipos",
       "order": 9,
-      "title": "Type system and rigour policy",
-      "summary": "What a type error is and what changes between the strict and the flexible profile.",
+      "title": "Type system and diagnostic severity",
+      "summary": "What a type error is and how the severity of each diagnostic is decided.",
       "path": "specification/esp-i-sistema-de-tipos_en.md"
     },
     {
@@ -1543,7 +1543,7 @@
     {
       "id": "example-esp-arreglos-tamano-constante",
       "title": "Constant expression size",
-      "summary": "Array dimensions must be statically evaluable at analysis time.",
+      "summary": "The size is an integer expression evaluated at run time.",
       "path": "examples/esp_arreglos_tamano_constante_en.pseudo",
       "profile": "english"
     },
@@ -1613,7 +1613,7 @@
     {
       "id": "example-esp-tipos-relaciones",
       "title": "Type compatibility",
-      "summary": "Allowed integer to real promotion and strict checks.",
+      "summary": "Allowed integer to real promotion and type checks.",
       "path": "examples/esp_tipos_relaciones_en.pseudo",
       "profile": "english"
     },
@@ -1626,8 +1626,8 @@
     },
     {
       "id": "example-esp-tipos-inferencia",
-      "title": "Type inference in flexible profile",
-      "summary": "Automatic type deduction for undeclared variables.",
+      "title": "Mandatory type declaration",
+      "summary": "The initial value is checked against the declared type.",
       "path": "examples/esp_tipos_inferencia_en.pseudo",
       "profile": "english"
     },

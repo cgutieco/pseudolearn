@@ -63,7 +63,6 @@ final class _DocumentPageState extends State<DocumentPage> {
       languageId: languageId,
       configuration: ExecutionConfiguration(
         documentId: widget.documentId,
-        strictness: currentEditor.document?.strictness ?? 'flexible',
         arguments: currentEditor.document?.executionArguments ?? const [],
       ),
     );

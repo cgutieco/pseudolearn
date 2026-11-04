@@ -8,75 +8,75 @@ import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 
 const String _countedLoop = '''
 Algoritmo Suma
-  Definir i Como Entero <- 0
-  Definir Mutable total Como Entero <- 0
-  total <- 0
+  Definir i Como Entero <- 0;
+  Definir Mutable total Como Entero <- 0;
+  total <- 0;
   Para i <- 1 Hasta 5 Con Paso 1 Hacer
-    total <- total + i
+    total <- total + i;
   FinPara
-  Escribir total
+  Escribir total;
 FinAlgoritmo
 ''';
 
 const String _conditionalLoop = '''
 Algoritmo Suma
-  Definir Mutable i Como Entero <- 0
-  Definir Mutable total Como Entero <- 0
-  total <- 0
-  i <- 1
+  Definir Mutable i Como Entero <- 0;
+  Definir Mutable total Como Entero <- 0;
+  total <- 0;
+  i <- 1;
   Mientras i <= 5 Hacer
-    total <- total + i
-    i <- i + 1
+    total <- total + i;
+    i <- i + 1;
   FinMientras
-  Escribir total
+  Escribir total;
 FinAlgoritmo
 ''';
 
 const String _withSubprogram = '''
 SubProceso Doble(n Como Entero) Como Entero
-  Retornar n * 2
+  Retornar n * 2;
 FinSubProceso
 
 Algoritmo Principal
-  Definir Mutable x Como Entero <- 0
-  x <- Doble(4)
-  Escribir x
+  Definir Mutable x Como Entero <- 0;
+  x <- Doble(4);
+  Escribir x;
 FinAlgoritmo
 ''';
 
 const String _withClass = '''
 Clase Cuenta
-  Privado Definir saldo Como Real
-  Publico Definir titular Como Cadena
+  Privado Definir saldo Como Real;
+  Publico Definir titular Como Cadena;
 
   Metodo Constructor()
-    Este.saldo <- 0
+    Este.saldo <- 0;
   FinMetodo
 
   Publico Metodo Depositar(monto Como Real)
-    Este.saldo <- Este.saldo + monto
+    Este.saldo <- Este.saldo + monto;
   FinMetodo
 FinClase
 
 Algoritmo Principal
-  Definir c Como Cuenta <- Nuevo Cuenta()
+  Definir c Como Cuenta <- Nuevo Cuenta();
 
-  c.Depositar(10)
+  c.Depositar(10);
 FinAlgoritmo
 ''';
 
 const String _threeConditionals = '''
 Algoritmo Tres
-  Definir Mutable n Como Entero <- 0
-  n <- 1
+  Definir Mutable n Como Entero <- 0;
+  n <- 1;
   Si n > 0 Entonces
-    Escribir 1
+    Escribir 1;
   FinSi
   Si n > 1 Entonces
-    Escribir 2
+    Escribir 2;
   FinSi
   Si n > 2 Entonces
-    Escribir 3
+    Escribir 3;
   FinSi
 FinAlgoritmo
 ''';
@@ -88,7 +88,7 @@ FinAlgoritmo
 
 const String _oneStatement = '''
 Algoritmo Uno
-  Escribir 1
+  Escribir 1;
 FinAlgoritmo
 ''';
 
@@ -259,13 +259,13 @@ void main() {
       () {
         const wrongTotal = '''
 Algoritmo Suma
-  Definir i Como Entero <- 0
-  Definir Mutable total Como Entero <- 0
-  total <- 0
+  Definir i Como Entero <- 0;
+  Definir Mutable total Como Entero <- 0;
+  total <- 0;
   Para i <- 1 Hasta 5 Con Paso 1 Hacer
-    total <- total - i
+    total <- total - i;
   FinPara
-  Escribir total
+  Escribir total;
 FinAlgoritmo
 ''';
 

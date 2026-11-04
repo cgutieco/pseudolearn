@@ -31,11 +31,10 @@ is therefore rejected.
 
 {{ejemplo:example-esp-arreglos-indice-cero}}
 
-## Size is an expression, and sometimes must be constant
+## Size is an integer expression
 
-Syntactically a size is always an expression. Under the strict profile it must also be a **constant
-expression**, meaning a literal or an operator applied to constant expressions. It does not include
-variable names, because the language has no named constants.
+A size is always an integer expression evaluated when the declaration runs: it can be a literal, an
+operator applied to other expressions, or include the names of variables already declared.
 
 A size of **zero is valid**: the array admits no index, and traversing it with a counted loop simply
 does not iterate. A negative size is a runtime failure, and a non-integer size is a meaning failure.

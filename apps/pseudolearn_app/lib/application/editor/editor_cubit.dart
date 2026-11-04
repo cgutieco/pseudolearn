@@ -88,16 +88,18 @@ final class EditorCubit extends Cubit<EditorState>
     final code = assist?.sourceCode ?? newCode;
     final changed = assist != null && assist.sourceCode != newCode;
     final revision = _nextCompletionRevision();
-    emit(_editedDocumentState(
-      code: code,
-      profileId: profileId,
-      languageId: languageId,
-      configuration: executionConfiguration,
-      assist: assist,
-      changed: changed,
-      cursor: cursor,
-      revision: revision,
-    ));
+    emit(
+      _editedDocumentState(
+        code: code,
+        profileId: profileId,
+        languageId: languageId,
+        configuration: executionConfiguration,
+        assist: assist,
+        changed: changed,
+        cursor: cursor,
+        revision: revision,
+      ),
+    );
     _scheduleAutosave();
   }
 
@@ -165,7 +167,6 @@ final class EditorCubit extends Cubit<EditorState>
         sourceCode: edit.sourceCode,
         profileId: profileId,
         languageId: languageId,
-        strictness: state.document?.strictness ?? 'flexible',
       ),
       contextualCompletions: _queryCompletions(
         sourceCode: edit.sourceCode,

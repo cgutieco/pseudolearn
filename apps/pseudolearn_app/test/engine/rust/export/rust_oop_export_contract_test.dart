@@ -6,54 +6,54 @@ import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 
 const String _referenceOOP = '''
 Clase Vehiculo
-    Publico Definir marca Como Cadena
-    Publico Definir velocidad Como Entero
+    Publico Definir marca Como Cadena;
+    Publico Definir velocidad Como Entero;
 
     Metodo Constructor(m Como Cadena)
-        Este.marca <- m
-        Este.velocidad <- 0
+        Este.marca <- m;
+        Este.velocidad <- 0;
     FinMetodo
 
     Metodo Acelerar(delta Como Entero)
-        Este.velocidad <- Este.velocidad + delta
+        Este.velocidad <- Este.velocidad + delta;
     FinMetodo
 
     Metodo Describir()
-        Escribir Este.marca, " a ", Este.velocidad, " km/h"
+        Escribir Este.marca, " a ", Este.velocidad, " km/h";
     FinMetodo
 FinClase
 
 Clase Motocicleta Hereda De Vehiculo
-    Publico Definir cilindrada Como Entero
+    Publico Definir cilindrada Como Entero;
 
     Metodo Constructor(m Como Cadena, cc Como Entero)
-        Super.Constructor(m)
-        Este.cilindrada <- cc
+        Super.Constructor(m);
+        Este.cilindrada <- cc;
     FinMetodo
 
     Metodo Describir()
-        Super.Describir()
-        Escribir "(", Este.cilindrada, "cc)"
+        Super.Describir();
+        Escribir "(", Este.cilindrada, "cc)";
     FinMetodo
 FinClase
 
 Proceso PruebaVehiculos
-    Definir moto Como Motocicleta <- Nuevo Motocicleta("Honda", 250)
+    Definir moto Como Motocicleta <- Nuevo Motocicleta("Honda", 250);
 
-    moto.Acelerar(75)
-    moto.Describir()
+    moto.Acelerar(75);
+    moto.Describir();
 FinProceso
 ''';
 
 const String _builtinsProgram = '''
 Proceso PruebaBuiltins
-    Definir Mutable r Como Real <- 0.0
-    Definir Mutable e Como Entero <- 0
-    Definir Mutable t Como Cadena <- ""
-    r <- rc(16)
-    e <- redon(r)
-    t <- ATexto(e)
-    Escribir r, e, t
+    Definir Mutable r Como Real <- 0.0;
+    Definir Mutable e Como Entero <- 0;
+    Definir Mutable t Como Cadena <- "";
+    r <- rc(16);
+    e <- redon(r);
+    t <- ATexto(e);
+    Escribir r, e, t;
 FinProceso
 ''';
 
@@ -116,11 +116,11 @@ void main() {
     test('exports the proven builtins in Python', () {
       const source = '''
 Proceso PruebaBuiltins
-    Definir Mutable r Como Real <- 0.0
-    Definir Mutable t Como Cadena <- ""
-    r <- rc(16)
-    t <- ATexto(3)
-    Escribir r, t
+    Definir Mutable r Como Real <- 0.0;
+    Definir Mutable t Como Cadena <- "";
+    r <- rc(16);
+    t <- ATexto(3);
+    Escribir r, t;
 FinProceso
 ''';
       final result = exporter.export(

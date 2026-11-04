@@ -33,27 +33,22 @@ void main() {
       }
     });
 
-    test(
-      'persists strictness and arguments including empty Unicode values',
-      () async {
-        final now = DateTime(2026, 11, 3);
-        final document = Document(
-          id: 'configuration',
-          title: 'Configuration',
-          content: '',
-          profileId: SyntaxProfileId.english,
-          revision: 1,
-          createdAt: now,
-          updatedAt: now,
-          strictness: 'strict',
-          executionArguments: const ['', 'two words', 'λ'],
-        );
-        await repo.saveDocument(document);
-        final loaded = await repo.loadDocument(document.id);
-        expect(loaded?.strictness, 'strict');
-        expect(loaded?.executionArguments, ['', 'two words', 'λ']);
-      },
-    );
+    test('persists arguments including empty Unicode values', () async {
+      final now = DateTime(2026, 11, 3);
+      final document = Document(
+        id: 'configuration',
+        title: 'Configuration',
+        content: '',
+        profileId: SyntaxProfileId.english,
+        revision: 1,
+        createdAt: now,
+        updatedAt: now,
+        executionArguments: const ['', 'two words', 'λ'],
+      );
+      await repo.saveDocument(document);
+      final loaded = await repo.loadDocument(document.id);
+      expect(loaded?.executionArguments, ['', 'two words', 'λ']);
+    });
 
     test(
       'saves and loads document correctly with and without exerciseId',

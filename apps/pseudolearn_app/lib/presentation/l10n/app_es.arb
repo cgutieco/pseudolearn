@@ -2195,9 +2195,6 @@
       }
     }
   },
-  "executionStrictness": "Rigor",
-  "executionStrict": "Estricto",
-  "executionFlexible": "Flexible",
   "executionArguments": "Argumentos",
   "executionArgumentsInvalid": "Revisa las comillas y los escapes de los argumentos.",
   "executionReplay": "Reproducir",

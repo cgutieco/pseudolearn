@@ -73,17 +73,11 @@ Future<(EditorCubit, ExecutionCubit, SettingsCubit)> _mount(
 }
 
 void main() {
-  testWidgets('strictness is accessible and saved with document arguments', (
+  testWidgets('execution arguments are saved with the document', (
     tester,
   ) async {
     final semantics = tester.ensureSemantics();
     final (editor, _, _) = await _mount(tester);
-    expect(find.bySemanticsLabel('Strictness'), findsOneWidget);
-    await tester.tap(find.byType(DropdownButton<String>));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Strict').last);
-    await tester.pumpAndSettle();
-    expect(editor.state.document?.strictness, 'strict');
     await tester.enterText(find.byType(TextFormField), '"two words" "" λ');
     await tester.pump();
     expect(editor.state.document?.executionArguments, ['two words', '', 'λ']);

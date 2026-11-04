@@ -127,7 +127,6 @@ final class DocumentSyncDrainer {
         createdAt: remote.updatedAt,
         updatedAt: remote.updatedAt,
         exerciseId: remote.exerciseId,
-        strictness: local?.strictness ?? 'flexible',
         executionArguments: local?.executionArguments ?? const [],
       );
       await _repository.saveDocument(adopted);

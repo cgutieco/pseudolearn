@@ -1,7 +1,7 @@
-# Type system and rigour policy
+# Type system and diagnostic severity
 
-This section states **what exactly a type error is** and **what changes between strict and flexible
-profiles**. The language is strongly typed and opens no exception: each silent conversion rejected here
+This section states **what exactly a type error is** and **how the severity of each diagnostic is
+decided**. The language is strongly typed and opens no exception: each silent conversion rejected here
 is a programmer error that, if admitted, would become a program that executes and yields a wrong result.
 
 ## The three relationships between types
@@ -100,7 +100,7 @@ return, and the same used to decide member visibility.
 
 ## The declaration fixes the type
 
-In both strictness levels every local binding is declared with its type and its initial value. The type
+Every local binding is declared with its type and its initial value. The type
 is never inferred from an assignment or a read: assigning to a name that was not declared is
 `undeclaredVariable` and does not create a variable. The initial value is checked against the declared
 type; the only implicit conversion between primitives, integer to real, applies there as in any other
@@ -135,9 +135,8 @@ EndAlgorithm
 ## Variable declared and unused, and assigned and unread
 
 **Using is reading the value. Assigning is not using.** From this come two distinct notices, both
-warnings in both policies: a variable declared and never used is dead code, and a variable assigned and
-never read catches misspelled names —and under the flexible profile it is the only remaining net,
-because no declaration gives it away.
+warnings: a variable declared and never used is dead code, and a variable assigned and
+never read catches misspelled names, because an assignment nobody reads leaves no other trace.
 
 Three cases count as use, documented because each would otherwise produce a false notice: a variable
 passed as a pass-by-reference argument, the control variable of a counted loop, and an attribute read
@@ -167,15 +166,13 @@ that, because therein lies the distinction between declared and actual type.
 
 {{ejemplo:example-esp-tipos-arreglos-objetos}}
 
-## Severity policy
+## Diagnostic severity
 
-**A diagnostic code never changes meaning between policies.** It changes severity, or changes nothing.
-If two policies required the same code to mean two things, two codes would be needed.
+**A diagnostic code has a single severity and a single meaning.** The catalog declares, for each code,
+its class and the severity that corresponds to it, and nothing in the program or in any configuration
+changes it.
 
-Each code belongs to a class, which is language data, and severity is a profile datum that can only move
-within what its class permits: **structural** is error in both policies; **flag-governed** is error in
-strict and warning in flexible; **hygiene** is warning in both; **informational** is info in both; and
-**recoverable execution** is warning in both and does not halt the program.
-
-Two invariants check themselves: the flexible policy is always equally or more permissive than the
-strict one, and no structural code drops below error in any policy.
+Classes are language data: **structural** is error; **hygiene** is warning; **informational** is info;
+and **recoverable execution** is warning and does not halt the program. Because severity depends only
+on the code, two people reading the same program see the same message with the same gravity, and no
+structural code drops below error.

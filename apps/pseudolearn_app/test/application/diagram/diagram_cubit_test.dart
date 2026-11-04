@@ -14,42 +14,42 @@ import '../../fakes/fake_diagram_builders.dart';
 
 const String _referenceOOP = '''
 Clase Vehiculo
-    Publico Definir marca Como Cadena
-    Publico Definir velocidad Como Entero
+    Publico Definir marca Como Cadena;
+    Publico Definir velocidad Como Entero;
 
     Metodo Constructor(m Como Cadena)
-        Este.marca <- m
-        Este.velocidad <- 0
+        Este.marca <- m;
+        Este.velocidad <- 0;
     FinMetodo
 
     Metodo Acelerar(delta Como Entero)
-        Este.velocidad <- Este.velocidad + delta
+        Este.velocidad <- Este.velocidad + delta;
     FinMetodo
 
     Metodo Describir()
-        Escribir Este.marca, " a ", Este.velocidad, " km/h"
+        Escribir Este.marca, " a ", Este.velocidad, " km/h";
     FinMetodo
 FinClase
 
 Clase Motocicleta Hereda De Vehiculo
-    Publico Definir cilindrada Como Entero
+    Publico Definir cilindrada Como Entero;
 
     Metodo Constructor(m Como Cadena, cc Como Entero)
-        Super.Constructor(m)
-        Este.cilindrada <- cc
+        Super.Constructor(m);
+        Este.cilindrada <- cc;
     FinMetodo
 
     Metodo Describir()
-        Super.Describir()
-        Escribir "(", Este.cilindrada, "cc)"
+        Super.Describir();
+        Escribir "(", Este.cilindrada, "cc)";
     FinMetodo
 FinClase
 
 Proceso PruebaVehiculos
-    Definir moto Como Motocicleta <- Nuevo Motocicleta("Honda", 250)
+    Definir moto Como Motocicleta <- Nuevo Motocicleta("Honda", 250);
 
-    moto.Acelerar(75)
-    moto.Describir()
+    moto.Acelerar(75);
+    moto.Describir();
 FinProceso
 ''';
 
@@ -72,8 +72,8 @@ void main() {
     test('updateDiagram with simple algorithm produces 1 unit', () {
       const source = '''
 Algoritmo DiagTest
-  Definir Mutable a Como Entero <- 0
-  a <- 1
+  Definir Mutable a Como Entero <- 0;
+  a <- 1;
 FinAlgoritmo
 ''';
       cubit.updateDiagram(

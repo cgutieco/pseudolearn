@@ -2,7 +2,7 @@
 {
   "formato": "see/1",
   "id": "APP.EXEC.CONFIGURATION",
-  "titulo": "Configuración de ejecución: rigor y reproducción",
+  "titulo": "Configuración de ejecución: argumentos y reproducción",
   "dominio": "app",
   "estado": "estable",
   "version": "1.0.0",
@@ -15,7 +15,7 @@
   "sujetos": [
     "app"
   ],
-  "resumen": "El rigor guardado en el documento gobierna análisis y ejecución, y la reproducción usa solo la cinta grabada.",
+  "resumen": "El análisis y la ejecución usan el único lenguaje, y la reproducción usa solo la cinta grabada.",
   "depende_de": [
     {
       "id": "API.EXECUTE",
@@ -33,18 +33,18 @@
       "tipo": "usa"
     }
   ],
-  "titulo_en": "Execution configuration: strictness and replay"
+  "titulo_en": "Execution configuration: arguments and replay"
 }
 ---
 
-# Configuración de ejecución: rigor y reproducción
+# Configuración de ejecución: argumentos y reproducción
 
 ```regla
 {
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "El rigor de un documento se guarda con el documento y se usa tanto para analizar como para ejecutar su programa. El mismo programa con terminador de sentencia omitido no se ejecuta en rigor estricto, porque su análisis tiene un error, y se ejecuta con su salida en rigor flexible. Cambiar el rigor no cambia el significado de un programa que ambos rigores aceptan.",
+  "texto": "La aplicación analiza y ejecuta un programa con el único lenguaje de la edición, sin ajuste de configuración que relaje sus reglas. Un programa con terminador de sentencia omitido, o con un Para sin Con Paso, no se ejecuta, porque su análisis tiene un error; el mismo programa con su terminador se ejecuta con su salida.",
   "verificacion": [
     "C1",
     "C2",
@@ -54,15 +54,15 @@
 ```
 
 ```caso
-{"id": "C1", "regla": "R1", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "configuration", "input": {"program": "Algoritmo P\nEscribir 1\nFinAlgoritmo\n", "strictness": "strict"}}, "espera": {"aplicacion": {"output": "", "termination": "failed"}}}
+{"id": "C1", "regla": "R1", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "configuration", "input": {"program": "Algoritmo P\nEscribir 1\nFinAlgoritmo\n"}}, "espera": {"aplicacion": {"output": "", "termination": "failed"}}}
 ```
 
 ```caso
-{"id": "C2", "regla": "R1", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "configuration", "input": {"program": "Algoritmo P\nEscribir 1\nFinAlgoritmo\n", "strictness": "flexible"}}, "espera": {"aplicacion": {"output": "1\n", "termination": "completed"}}}
+{"id": "C2", "regla": "R1", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "configuration", "input": {"program": "Algoritmo P\n  Para counter <- 1 Hasta 3 Hacer\n    Escribir counter Sin Saltar;\n  FinPara\n  Escribir \"\";\nFinAlgoritmo\n"}}, "espera": {"aplicacion": {"output": "", "termination": "failed"}}}
 ```
 
 ```caso
-{"id": "C3", "regla": "R1", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "configuration", "input": {"program": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n", "strictness": "strict"}}, "espera": {"aplicacion": {"output": "1\n", "termination": "completed"}}}
+{"id": "C3", "regla": "R1", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "configuration", "input": {"program": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n"}}, "espera": {"aplicacion": {"output": "1\n", "termination": "completed"}}}
 ```
 
 ```regla
@@ -79,10 +79,10 @@
 ```
 
 ```caso
-{"id": "C4", "regla": "R2", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "configuration", "input": {"program": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n", "strictness": "strict", "replay": true}}, "espera": {"aplicacion": {"output": "1\n", "termination": "completed"}}}
+{"id": "C4", "regla": "R2", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "configuration", "input": {"program": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n", "replay": true}}, "espera": {"aplicacion": {"output": "1\n", "termination": "completed"}}}
 ```
 
 ```caso
-{"id": "C5", "regla": "R2", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "configuration", "input": {"program": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n", "strictness": "strict", "replay": true, "replay_program": "Algoritmo P\nEscribir 2;\nFinAlgoritmo\n"}}, "espera": {"aplicacion": {"termination": "failed", "rejection": "identityMismatch"}}}
+{"id": "C5", "regla": "R2", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "configuration", "input": {"program": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n", "replay": true, "replay_program": "Algoritmo P\nEscribir 2;\nFinAlgoritmo\n"}}, "espera": {"aplicacion": {"termination": "failed", "rejection": "identityMismatch"}}}
 ```
 

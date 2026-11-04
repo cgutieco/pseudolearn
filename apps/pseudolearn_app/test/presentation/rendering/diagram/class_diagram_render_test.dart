@@ -16,63 +16,63 @@ import 'package:pseudolearn_app/presentation/theme/app_theme.dart';
 
 const String _hierarchy = '''
 Clase Vehiculo
-    Publico Definir marca Como Cadena
-    Privado Definir velocidad Como Entero
+    Publico Definir marca Como Cadena;
+    Privado Definir velocidad Como Entero;
 
     Metodo Constructor(m Como Cadena)
-        Este.marca <- m
+        Este.marca <- m;
     FinMetodo
 
     Publico Metodo Acelerar(delta Como Entero)
-        Este.velocidad <- Este.velocidad + delta
+        Este.velocidad <- Este.velocidad + delta;
     FinMetodo
 FinClase
 
 Clase Motocicleta Hereda De Vehiculo
-    Publico Definir cilindrada Como Entero
+    Publico Definir cilindrada Como Entero;
 
     Publico Metodo Describir()
-        Escribir Este.cilindrada
+        Escribir Este.cilindrada;
     FinMetodo
 FinClase
 
 Clase Coche Hereda De Vehiculo
-    Publico Definir puertas Como Entero
+    Publico Definir puertas Como Entero;
 FinClase
 
 Proceso Principal
-    Definir Mutable moto Como Motocicleta <- Nuevo Motocicleta()
-    Escribir 1
+    Definir Mutable moto Como Motocicleta <- Nuevo Motocicleta();
+    Escribir 1;
 FinProceso
 ''';
 
 const String _crowded = '''
 Clase Motor
-    Publico Definir potencia Como Entero
+    Publico Definir potencia Como Entero;
 FinClase
 
 Clase Inventario
     Publico Definir codigo Como Cadena
-    Publico Definir existencias Como Entero
-    Privado Definir margen Como Real
-    Publico Definir principal Como Motor
+    Publico Definir existencias Como Entero;
+    Privado Definir margen Como Real;
+    Publico Definir principal Como Motor;
 
     Publico Metodo Reponer(cantidad Como Entero)
-        Este.existencias <- Este.existencias + cantidad
+        Este.existencias <- Este.existencias + cantidad;
     FinMetodo
 
     Publico Metodo Valor() Como Real
-        Retornar Este.margen
+        Retornar Este.margen;
     FinMetodo
 
     Privado Metodo Auditar() Como Logico
-        Retornar Verdadero
+        Retornar Verdadero;
     FinMetodo
 FinClase
 
 Proceso Principal
-    Definir n Como Entero <- 0
-    Escribir 1
+    Definir n Como Entero <- 0;
+    Escribir 1;
 FinProceso
 ''';
 
@@ -81,8 +81,8 @@ Clase Vacia
 FinClase
 
 Proceso Principal
-    Definir n Como Entero <- 0
-    Escribir 1
+    Definir n Como Entero <- 0;
+    Escribir 1;
 FinProceso
 ''';
 

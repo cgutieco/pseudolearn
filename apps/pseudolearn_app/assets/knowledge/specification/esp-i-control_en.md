@@ -20,7 +20,7 @@ drawn as a gapless structogram.
 Its form is {{lexema:ifKeyword}} condition {{lexema:then}} body, with an optional else branch
 introduced by {{lexema:elseKeyword}}, and closes with {{lexema:endIf}}.
 
-The intermediate word {{lexema:then}} is **always mandatory**, with no rigour flag to relax it: it
+The intermediate word {{lexema:then}} is **always mandatory**, with no setting to relax it: it
 gives the parser a clean synchronization point and allows saying "missing intermediate word" instead of
 a generic error. The absent else branch is equivalent to an empty body.
 
@@ -80,7 +80,7 @@ nothing new.
 ## Counted loop
 
 Its form is {{lexema:forKeyword}} variable {{lexema:assignment}} initial value {{lexema:to}} final
-value, with an optional clause {{lexema:step}} step, followed by {{lexema:doKeyword}} and the body,
+value, with the mandatory clause {{lexema:step}} step, followed by {{lexema:doKeyword}} and the body,
 and closes with {{lexema:endFor}}.
 
 The control variable is an **identifier**, not an arbitrary designator: an array element as a control
@@ -92,8 +92,8 @@ variable has no educational reading and complicates diagnostics without buying a
 
 Each point is observable in the trace table, and is therefore fixed and not left to the engine:
 
-1. The initial value, final value, and step are evaluated **exactly once and in that order**. If the
-   step is omitted, it is one.
+1. The initial value, final value, and step are evaluated **exactly once and in that order**. Omitting
+   the step is an analysis error, so the loop never runs without it.
 2. If the step is **zero**, a runtime error is emitted and the loop does not execute.
 3. The initial value is assigned to the control variable.
 4. **The test goes before the body.** With positive step it iterates while the variable is less than or

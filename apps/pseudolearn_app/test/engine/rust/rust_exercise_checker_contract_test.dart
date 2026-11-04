@@ -14,31 +14,31 @@ import 'package:pseudolearn_app/engine/exercise/behaviour_checker.dart';
 
 const String _withCountedLoop = '''
 Algoritmo Suma
-  Definir Mutable n Como Entero <- 0
-  Definir i Como Entero <- 0
-  Definir Mutable total Como Entero <- 0
-  Leer n
-  total <- 0
+  Definir Mutable n Como Entero <- 0;
+  Definir i Como Entero <- 0;
+  Definir Mutable total Como Entero <- 0;
+  Leer n;
+  total <- 0;
   Para i <- 1 Hasta n Con Paso 1 Hacer
-    total <- total + i
+    total <- total + i;
   FinPara
-  Escribir total
+  Escribir total;
 FinAlgoritmo
 ''';
 
 const String _withConditionalLoop = '''
 Algoritmo Suma
-  Definir Mutable n Como Entero <- 0
-  Definir Mutable i Como Entero <- 0
-  Definir Mutable total Como Entero <- 0
-  Leer n
-  total <- 0
-  i <- 1
+  Definir Mutable n Como Entero <- 0;
+  Definir Mutable i Como Entero <- 0;
+  Definir Mutable total Como Entero <- 0;
+  Leer n;
+  total <- 0;
+  i <- 1;
   Mientras i <= n Hacer
-    total <- total + i
-    i <- i + 1
+    total <- total + i;
+    i <- i + 1;
   FinMientras
-  Escribir total
+  Escribir total;
 FinAlgoritmo
 ''';
 

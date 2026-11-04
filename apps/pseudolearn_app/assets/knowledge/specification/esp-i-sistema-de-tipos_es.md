@@ -1,7 +1,7 @@
-# Sistema de tipos y política de rigor
+# Sistema de tipos y severidad de diagnósticos
 
-Esta sección dice **qué es exactamente un error de tipos** y **qué cambia entre el perfil estricto y el
-flexible**. El lenguaje es fuertemente tipado y no abre ninguna excepción: cada conversión silenciosa
+Esta sección dice **qué es exactamente un error de tipos** y **cómo se gradúa la severidad de cada
+diagnóstico**. El lenguaje es fuertemente tipado y no abre ninguna excepción: cada conversión silenciosa
 que se rechaza aquí es un error de quien programa que, admitido, se convertiría en un programa que se
 ejecuta y da un resultado equivocado.
 
@@ -104,7 +104,7 @@ de una función retornan, y la misma con la que se decide la visibilidad de un m
 
 ## El tipo lo fija la declaración
 
-En los dos rigores cada vínculo local se declara con su tipo y su valor inicial. El tipo nunca se infiere
+Cada vínculo local se declara con su tipo y su valor inicial. El tipo nunca se infiere
 de una asignación ni de una lectura: asignar a un nombre que no se declaró es `undeclaredVariable` y no
 crea ninguna variable. El valor inicial se comprueba contra el tipo declarado; la única conversión
 implícita entre primitivos, de entero a real, se aplica ahí como en cualquier otra asignación.
@@ -137,10 +137,8 @@ FinAlgoritmo
 
 ## Variable declarada y no usada, y asignada y no leída
 
-**Usar es leer el valor. Asignar no es usar.** De ahí salen dos avisos distintos, los dos advertencia en
-las dos políticas: una variable declarada y nunca usada es código muerto, y una variable asignada y
-nunca leída es lo que caza un nombre mal escrito —y bajo el perfil flexible es la única red que queda,
-porque no hay declaración que lo delate.
+**Usar es leer el valor. Asignar no es usar.** De ahí salen dos avisos distintos, ambos advertencia: una variable declarada y nunca usada es código muerto, y una variable asignada y
+nunca leída es lo que caza un nombre mal escrito, porque una asignación que nadie lee no deja otra pista.
 
 Tres casos cuentan como uso, y están escritos porque cada uno produciría un aviso falso: una variable
 pasada como argumento por referencia, la variable de control de un bucle contado, y un atributo leído
@@ -171,17 +169,12 @@ el diagnóstico dice exactamente eso, porque ahí está la distinción entre tip
 
 {{ejemplo:example-esp-tipos-arreglos-objetos}}
 
-## La política de severidad
+## La severidad de cada diagnóstico
 
-**Un código de diagnóstico nunca cambia de significado entre políticas.** Cambia de severidad, o no
-cambia nada. Si dos políticas necesitaran que el mismo código quisiera decir dos cosas, harían falta
-dos códigos.
+**Un código de diagnóstico tiene una única severidad y un único significado.** El catálogo declara, para cada
+código, su clase y la severidad que le corresponde, y nada en el programa ni en la configuración la cambia.
 
-Cada código pertenece a una clase, que es un dato del lenguaje, y la severidad es un dato del perfil que
-solo puede moverse dentro de lo que su clase permite: lo **estructural** es error en las dos políticas;
-lo **gobernado por bandera** es error en la estricta y advertencia en la flexible; lo de **higiene** es
-advertencia en las dos; lo **informativo** es información en las dos; y lo de **ejecución recuperable**
-es advertencia en las dos y no detiene el programa.
-
-Dos invariantes se comprueban solos: la política flexible es siempre igual o más permisiva que la
-estricta, y ningún código estructural baja de error en ninguna política.
+Las clases son un dato del lenguaje: lo **estructural** es error; lo de **higiene** es advertencia; lo
+**informativo** es información; y lo de **ejecución recuperable** es advertencia y no detiene el programa.
+Que la severidad dependa solo del código hace que dos personas que lean el mismo programa vean el mismo
+mensaje con la misma gravedad, y que ningún código estructural baje de error en ningún caso.

@@ -43,7 +43,7 @@ void main() {
     await tester.pumpAndSettle();
 
     final editorCubit = tester.element(find.byType(Navigator).first).read<EditorCubit>();
-    editorCubit.updateSourceCode('Algoritmo Modificado\n  Escribir 10\nFinAlgoritmo');
+    editorCubit.updateSourceCode('Algoritmo Modificado\n  Escribir 10;\nFinAlgoritmo');
     await tester.pump();
     expect(editorCubit.state.isDirty, isTrue);
 
@@ -90,7 +90,7 @@ void main() {
     repo.documents['doc-ex'] = Document(
       id: 'doc-ex',
       title: 'Ejercicio Hola',
-      content: 'Algoritmo Saludo\n  Escribir "Hola"\nFinAlgoritmo\n',
+      content: 'Algoritmo Saludo\n  Escribir "Hola";\nFinAlgoritmo\n',
       profileId: SyntaxProfileId.classicSpanish,
       revision: 1,
       createdAt: now,
@@ -116,7 +116,7 @@ void main() {
     await tester.pumpAndSettle();
 
     final editorCubit = tester.element(find.byType(Navigator).first).read<EditorCubit>();
-    editorCubit.updateSourceCode('Algoritmo Saludo\n  Escribir "Hola"\nFinAlgoritmo\n');
+    editorCubit.updateSourceCode('Algoritmo Saludo\n  Escribir "Hola";\nFinAlgoritmo\n');
     await tester.pumpAndSettle();
 
     final sessionCubit = tester.element(find.byType(Navigator).first).read<ExerciseSessionCubit>();

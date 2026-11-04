@@ -104,7 +104,6 @@ del núcleo; la aplicación traduce, orquesta y renderiza los resultados.
 | Tramos de comentario para el resaltado del editor              | La API Rust de análisis expone tokens léxicos con tramos y el adaptador los proyecta a categorías del editor                              | Resuelto                                                                                              |
 | Adaptador remoto de Supabase                                   | Definición de credenciales de red y esquema de sincronización remota                                                                         | Resuelto (sincronización bidireccional y outbox en SQLite, ver decisiones de diseño de sincronización) |
 | Vocabulario localizado de receptor de objeto en tabla de traza | RustWatchRows proyecta receptor con thisObject del vocabulario público del perfil | Resuelto; `rust_receiver_localization_test` comprueba `this` y `Este` por el puente real, con programas de clase en cada perfil |
-| Selector del eje de rigor del perfil (estricto/flexible)       | `Document.strictness` se guarda por documento y `ExecutionConfigurationControls` lo edita; análisis y ejecución lo reciben. `rustStrictness` queda solo como valor de las consultas que no dependen del rigor (completado, ayuda gramatical, asistencia de edición y plantillas de diagnóstico) | Resuelto; `APP.EXEC.CONFIGURATION#R1` y prueba de widget accesible |
 | Purga local sin lápidas en «Cerrar sesión y borrar datos de este dispositivo» | `AccountCubit.signOut(deleteLocalData: true)` borra por `SyncingDocumentRepository`, que encola una lápida por documento; reutilizar `LocalAccountDataPurger` | Abierto |
 | Inicio de sesión en la nube desde el `.zip` portable de Windows | Registro de `pseudolearn://` en `HKCU` desde la propia app, o aviso en la página de descargas de que el portable solo sirve sin cuenta | Abierto |
 | Distribución en Microsoft Store y firma de binarios | Configuración de empaquetado MSIX (`CESARGUTIERREZ.PseudoLearn`, Store ID `9MXZB1XDWP9J`) y workflow `.github/workflows/push-production-windows-store.yml`; Microsoft Store firma el paquete oficial en certificación | Resuelto (pendiente revisión en Partner Center) |
@@ -691,7 +690,7 @@ La capa `host` comparte el anillo 2 con engine y data; solo importa model y port
 - **Problema:** Orquestar análisis y ejecución desde cada pantalla duplicaría reglas del lenguaje.
 - **Elección:** `engine/rust/` transforma respuestas de la API en los modelos de los puertos. El puente
   generado es la única frontera nativa. Los validadores de contenido usan las mismas operaciones para
-  comprobar diagnósticos, formas bilingües, rigor estricto y soluciones de ejercicios.
+  comprobar diagnósticos, formas bilingües, programas ejecutables y soluciones de ejercicios.
 - **Alternativas descartadas:** Un parser local, vocabularios copiados o un intérprete alternativo
   romperían la autoridad del corpus y permitirían comportamientos distintos entre consumidores.
 
@@ -2282,8 +2281,8 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
   `diagnostic_template`; la app solo conserva el orden de presentación. `buildRustEngineServices` ensambla todos los
   puertos mediante la API pública y `rust_composition_isolation_test.dart` recorre las importaciones alcanzables
   desde él para comprobarlo.
-- **Rigor del análisis:** los adaptadores de usuario piden el rigor `flexible` mediante `rustStrictness`, único valor compartido por análisis,
-  completado y severidades de los marcadores de diagnóstico.
+- **Lenguaje único:** el lenguaje es uno solo. Ni el documento, ni la configuración de ejecución, ni las solicitudes al
+  puente llevan un parámetro que cambie las reglas: análisis, completado, ayuda y severidades de los marcadores coinciden.
 - **Diferencias conocidas entre composiciones** (la suite de equivalencia exige que sean exactamente estas):
   Rust informa `unusedParameter` como advertencia (el corpus declara códigos propios para parámetros no usados) y no
   duplica diagnósticos que carecen de una causa independiente; los diagramas Rust rotulan con el texto fuente del usuario en
@@ -2422,9 +2421,8 @@ HostWorker conserva archivos y atiende HTTP y temporizadores en hilos independie
 liberar, detener o reiniciar cierra el anfitrión; reproducción no lo abre ni envía effect_result.
 La entrada de Leer conserva su identidad propia (recurso, tarea, solicitud).
 
-El documento persiste rigor y argumentos; la barra de ejecución permite editarlos y reproducir la
-última cinta. Los argumentos admiten comillas, vacíos, espacios y Unicode. El rigor se propaga al
-análisis y ejecución. La semilla viva usa entropía del SO y queda grabada; reproducción conserva la
+El documento persiste los argumentos; la barra de ejecución permite editarlos y reproducir la
+última cinta. Los argumentos admiten comillas, vacíos, espacios y Unicode. La semilla viva usa entropía del SO y queda grabada; reproducción conserva la
 semilla de la cinta. Los errores de reproducción se muestran y no inician una ejecución viva alternativa.
 
 La nueva capa se verifica con una importación prohibida deliberada. La puerta de contenido rechaza
@@ -2524,7 +2522,7 @@ ejecución podría diferir de la primera sin que nadie lo note. Decisión: la ap
 motor ya graba, se la devuelve en modo `replay_from_tape` y compara la ejecución reproducida con la grabada mediante
 una proyección canónica. La app no valida la cinta: el motor es el único dueño de identidad, secuencia y hashes.
 
-- **Entrada completa de una reproducción.** Fuentes, perfil, rigor, semilla y límites son la identidad que el
+- **Entrada completa de una reproducción.** Fuentes, perfil, semilla y límites son la identidad que el
   motor ata a la cinta; no se aporta un anfitrión al reproducir. Los datos del anfitrión (archivos,
   respuestas HTTP, reloj) no se vuelven a entregar: viven en la cinta. El orden de entrega queda registrado en la cinta
   y la reproducción lo sigue. La revisión y la selección de tarea, evento o página no forman parte de lo que se
@@ -3156,6 +3154,6 @@ un ancho semántico propio de componente para conservar espacio legible sin lite
 La fila de receptor se obtiene de `receptor` del marco público; su nombre procede de `thisObject`
 del vocabulario del perfil, sin lexemas propios en Dart. Los marcos sin receptor conservan sus variables.
 
-El rigor y los argumentos son preferencias locales por documento. Se guardan en su cabecera y
+Los argumentos son una preferencia local por documento. Se guardan en su cabecera y
 se conservan al adoptar contenido remoto del mismo documento; no se amplía el protocolo del backend.
-El selector de rigor tiene una etiqueta semántica localizada además de sus valores visibles.
+La fila de configuración de ejecución solo aloja el campo de argumentos y el botón de reproducción; una clave retirada en un front matter antiguo se ignora porque el lector toma solo las claves conocidas.

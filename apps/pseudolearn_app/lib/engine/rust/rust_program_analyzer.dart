@@ -18,14 +18,12 @@ final class RustProgramAnalyzer implements ProgramAnalyzer {
     required String sourceCode,
     required SyntaxProfileId profileId,
     required UiLanguageId languageId,
-    String strictness = 'flexible',
   }) {
     final profile = rustProfileName(profileId);
     final handle = _api.open(
       source: sourceCode,
       profile: profile,
       locale: rustLocaleName(languageId),
-      strictness: strictness,
     );
     try {
       final report = _api.report(handle);

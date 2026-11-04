@@ -77,7 +77,7 @@ Declarar sin valor inicial no esta permitido.
 
 ```pseudo
 Algoritmo Error
-  Definir n Como Entero
+  Definir n Como Entero;
 FinAlgoritmo
 ```
 
@@ -114,15 +114,15 @@ const String _exercise = '''
   "hiddenCases": [
     {"inputs": ["7"], "expectedOutputs": ["49"], "expected": "numerico"}
   ],
-  "referenceSolution": "Algoritmo Cuadrado\\n  Definir Mutable n Como Entero <- 0\\n  Leer n\\n  Escribir n * n\\nFinAlgoritmo\\n"
+  "referenceSolution": "Algoritmo Cuadrado\\n  Definir Mutable n Como Entero <- 0;\\n  Leer n;\\n  Escribir n * n;\\nFinAlgoritmo\\n"
 }
 ''';
 
 const String _example = '''
 Algoritmo Cuadrado
-  Definir Mutable n Como Entero <- 0
-  n <- 4
-  Escribir n * n
+  Definir Mutable n Como Entero <- 0;
+  n <- 4;
+  Escribir n * n;
 FinAlgoritmo
 ''';
 
@@ -301,7 +301,7 @@ void main() {
 
     test('fails when a level 1 exercise needs a construct beyond its module', () async {
       const withLoop =
-          '"referenceSolution": "Algoritmo Cuadrado\\n  Definir Mutable n Como Entero <- 0\\n  Definir i Como Entero <- 0\\n  Definir Mutable total Como Entero <- 0\\n  Leer n\\n  total <- 0\\n  Para i <- 1 Hasta n Con Paso 1 Hacer\\n    total <- total + n\\n  FinPara\\n  Escribir total\\nFinAlgoritmo\\n"';
+          '"referenceSolution": "Algoritmo Cuadrado\\n  Definir Mutable n Como Entero <- 0;\\n  Definir i Como Entero <- 0;\\n  Definir Mutable total Como Entero <- 0;\\n  Leer n;\\n  total <- 0;\\n  Para i <- 1 Hasta n Con Paso 1 Hacer\\n    total <- total + n;\\n  FinPara\\n  Escribir total;\\nFinAlgoritmo\\n"';
       final files = _goodContent;
       final start = files['exercises/CON-B1-E1_es.json']!.indexOf('"referenceSolution"');
       files['exercises/CON-B1-E1_es.json'] =
@@ -438,17 +438,17 @@ void main() {
     test('fails when a specification-only example exceeds twelve lines', () async {
       const longExample = '''
 Algoritmo Largo
-  Definir a Como Entero <- 0
-  Definir b Como Entero <- 0
-  Definir c Como Entero <- 0
-  Definir d Como Entero <- 0
-  Definir e Como Entero <- 0
-  Definir f Como Entero <- 0
-  Definir g Como Entero <- 0
-  Definir h Como Entero <- 0
-  Definir i Como Entero <- 0
-  Definir j Como Entero <- 0
-  Definir k Como Entero <- 0
+  Definir a Como Entero <- 0;
+  Definir b Como Entero <- 0;
+  Definir c Como Entero <- 0;
+  Definir d Como Entero <- 0;
+  Definir e Como Entero <- 0;
+  Definir f Como Entero <- 0;
+  Definir g Como Entero <- 0;
+  Definir h Como Entero <- 0;
+  Definir i Como Entero <- 0;
+  Definir j Como Entero <- 0;
+  Definir k Como Entero <- 0;
 FinAlgoritmo
 ''';
       final manifestWithLong = _manifest.replaceAll(

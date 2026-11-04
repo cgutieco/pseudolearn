@@ -16,9 +16,9 @@ import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
 
 const _counted = '''
 Algoritmo LoopTest
-  Definir i Como Entero <- 0
+  Definir i Como Entero <- 0;
   Para i <- 1 Hasta 10 Con Paso 1 Hacer
-    Escribir i
+    Escribir i;
   FinPara
 FinAlgoritmo
 ''';
@@ -39,7 +39,7 @@ Algoritmo ConTareas
     Lanzar Work(1);
     Lanzar Work(2);
   FinTareas
-  Escribir "raiz"
+  Escribir "raiz";
 FinAlgoritmo
 ''';
 

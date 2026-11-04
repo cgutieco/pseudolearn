@@ -9,7 +9,6 @@ final class Document {
   final DateTime createdAt;
   final DateTime updatedAt;
   final String? exerciseId;
-  final String strictness;
   final List<String> executionArguments;
 
   const Document({
@@ -21,7 +20,6 @@ final class Document {
     required this.createdAt,
     required this.updatedAt,
     this.exerciseId,
-    this.strictness = 'flexible',
     this.executionArguments = const [],
   });
 
@@ -44,7 +42,6 @@ final class Document {
     int? revision,
     DateTime? updatedAt,
     String? Function()? exerciseId,
-    String? strictness,
     List<String>? executionArguments,
   }) {
     return Document(
@@ -56,7 +53,6 @@ final class Document {
       createdAt: createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       exerciseId: exerciseId != null ? exerciseId() : this.exerciseId,
-      strictness: strictness ?? this.strictness,
       executionArguments: executionArguments ?? this.executionArguments,
     );
   }

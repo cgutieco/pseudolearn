@@ -41,14 +41,13 @@ con ámbitos anidados, y el lenguaje no los tiene.
 
 ## Parámetros
 
-Cada parámetro es un nombre, opcionalmente {{lexema:typeConnector}} con su tipo, y opcionalmente una
+Cada parámetro es un nombre, {{lexema:typeConnector}} su tipo, y opcionalmente una
 marca de paso en sufijo. Un parámetro de arreglo se marca con {{lexema:leftBracket}} y
 {{lexema:rightBracket}} y tantos {{lexema:comma}} como dimensiones tenga menos una: **los tamaños no
 aparecen**, porque el arreglo ya existe cuando llega y el subprograma no lo dimensiona.
 
-El tipo es opcional en la gramática y la bandera de declaración obligatoria lo hace exigible. No hay
-bandera nueva: un parámetro es la variable de entrada del subprograma, y la bandera que ya obliga a
-declarar toda variable lo alcanza.
+El tipo es obligatorio: un parámetro es la variable de entrada del subprograma, y toda variable
+declara su tipo.
 
 {{ejemplo:example-esp-subprogramas-parametros}}
 

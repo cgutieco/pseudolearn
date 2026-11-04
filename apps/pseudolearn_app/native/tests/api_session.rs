@@ -11,7 +11,7 @@ fn single_file_analysis(session: u64, program: &str) -> Result<(Value, u64), Str
     let created = send(
         session,
         "create_analysis",
-        json!({"program":program,"profile":"es","strictness":"strict"}),
+        json!({"program":program,"profile":"es"}),
     );
     let resource = created
         .pointer("/value/resource")
@@ -109,7 +109,6 @@ fn source_identity_crosses_the_native_json_boundary_exactly() {
         json!({
             "program":"Algoritmo P\nEscribir @;\nFinAlgoritmo\n",
             "profile":"es",
-            "strictness":"strict",
             "source":{"project_id":"18446744073709551615","revision_id":"9007199254740993","source_id":2}
         }),
     );

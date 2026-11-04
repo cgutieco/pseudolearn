@@ -68,7 +68,7 @@ void main() {
 
     test('exits and deferred cleanups are withheld in both targets', () {
       const source =
-          'Proceso P\n  Para i <- 1 Hasta 3 Hacer\n    Diferir\n'
+          'Proceso P\n  Para i <- 1 Hasta 3 Con Paso 1 Hacer\n    Diferir\n'
           '      Escribir i;\n    FinDiferir\n    Si i = 2 Entonces\n'
           '      Salir;\n    FinSi\n  FinPara\nFinProceso\n';
 

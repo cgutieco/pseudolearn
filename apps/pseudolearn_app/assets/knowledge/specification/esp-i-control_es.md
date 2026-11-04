@@ -21,7 +21,7 @@ escrito en esta notación se pueda dibujar como un estructograma sin huecos.
 Su forma es {{lexema:ifKeyword}} condición {{lexema:then}} cuerpo, con una rama contraria opcional
 introducida por {{lexema:elseKeyword}}, y cierra con {{lexema:endIf}}.
 
-La palabra intermedia {{lexema:then}} es **obligatoria siempre**, sin bandera de rigor que la relaje:
+La palabra intermedia {{lexema:then}} es **obligatoria siempre**, sin ajuste que la relaje:
 es lo que da al analizador un punto de sincronización limpio y permite decir «falta la palabra
 intermedia» en vez de un error genérico. La rama contraria, ausente, equivale a un cuerpo vacío.
 
@@ -81,7 +81,7 @@ nuevo.
 ## Bucle contado
 
 Su forma es {{lexema:forKeyword}} variable {{lexema:assignment}} valor inicial {{lexema:to}} valor
-final, con una cláusula opcional {{lexema:step}} paso, seguida de {{lexema:doKeyword}} y del cuerpo, y
+final, con la cláusula obligatoria {{lexema:step}} paso, seguida de {{lexema:doKeyword}} y del cuerpo, y
 cierra con {{lexema:endFor}}.
 
 La variable de control es un **identificador**, no un designador cualquiera: un elemento de arreglo
@@ -94,7 +94,7 @@ como variable de control no tiene lectura pedagógica y complica el diagnóstico
 Cada punto es observable en la tabla de prueba, y por eso está fijado y no se deja al motor:
 
 1. El valor inicial, el valor final y el paso se evalúan **exactamente una vez y en ese orden**.
-   Omitido el paso, vale uno.
+   Omitir el paso es un error de análisis, así que el bucle nunca llega a ejecutarse sin él.
 2. Si el paso es **cero**, se emite un fallo de ejecución y el bucle no se ejecuta.
 3. Se asigna el valor inicial a la variable de control.
 4. **La prueba va antes del cuerpo.** Con paso positivo se itera mientras la variable sea menor o igual

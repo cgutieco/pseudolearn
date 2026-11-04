@@ -2105,9 +2105,6 @@
       }
     }
   },
-  "executionStrictness": "Strictness",
-  "executionStrict": "Strict",
-  "executionFlexible": "Flexible",
   "executionArguments": "Arguments",
   "executionArgumentsInvalid": "Check argument quotes and escapes.",
   "executionReplay": "Replay",

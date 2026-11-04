@@ -27,12 +27,7 @@ void main() {
     );
 
     expect(result, isA<RustProgramViewReadSuccess>());
-    expect(received, {
-      'program': source,
-      'profile': 'en',
-      'strictness': 'flexible',
-      'locale': 'en',
-    });
+    expect(received, {'program': source, 'profile': 'en', 'locale': 'en'});
     expect(transport.calls, [
       'create_analysis',
       'analysis',

@@ -53,9 +53,9 @@ void main() {
 
     const sampleDemoCode = '''
 Proceso DemostracionGuiada
-  Definir Mutable mensaje Como Cadena <- ""
-  mensaje <- "Bienvenido"
-  Escribir mensaje
+  Definir Mutable mensaje Como Cadena <- "";
+  mensaje <- "Bienvenido";
+  Escribir mensaje;
 FinProceso
 ''';
 
@@ -70,10 +70,10 @@ FinProceso
           'examples/guided_demo_en.pseudo': sampleDemoCode,
           'examples/condicional_es.pseudo': '''
 Algoritmo EjemploCondicional
-  Definir Mutable n Como Entero <- 0
-  n <- 42
+  Definir Mutable n Como Entero <- 0;
+  n <- 42;
   Si n > 0 Entonces
-    Escribir "Positivo"
+    Escribir "Positivo";
   FinSi
 FinAlgoritmo
 ''',
@@ -132,9 +132,9 @@ FinAlgoritmo
 
         const interactiveProgram = '''
 Proceso Interactivo
-  Definir Mutable entrada Como Entero <- 0
-  Leer entrada
-  Escribir entrada
+  Definir Mutable entrada Como Entero <- 0;
+  Leer entrada;
+  Escribir entrada;
 FinProceso
 ''';
         editorCubit.updateSourceCode(interactiveProgram);
@@ -358,10 +358,10 @@ FinAlgoritmo
         final executionCubit = ExecutionCubit(execution: execution);
         const loopProgram = '''
 Algoritmo Bucle
-  Definir Mutable i Como Entero <- 0
-  i <- 1
-  i <- i + 1
-  i <- i + 1
+  Definir Mutable i Como Entero <- 0;
+  i <- 1;
+  i <- i + 1;
+  i <- i + 1;
 FinAlgoritmo
 ''';
         await executionCubit.advance(
@@ -464,9 +464,9 @@ FinAlgoritmo
       () {
         const spanishProfileCode = '''
 Algoritmo PerfilEspanol
-  Definir Mutable a Como Entero <- 0
-  a <- 10
-  Escribir a
+  Definir Mutable a Como Entero <- 0;
+  a <- 10;
+  Escribir a;
 FinAlgoritmo
 ''';
         final reportSpanish = analyzer.analyze(
@@ -512,10 +512,10 @@ FinAlgoritmo
       () async {
         const infiniteLoopCode = '''
 Algoritmo BucleInfinito
-  Definir Mutable contador Como Entero <- 0
-  contador <- 0
+  Definir Mutable contador Como Entero <- 0;
+  contador <- 0;
   Mientras Verdadero Hacer
-    contador <- contador + 1
+    contador <- contador + 1;
   FinMientras
 FinAlgoritmo
 ''';

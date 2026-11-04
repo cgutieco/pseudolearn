@@ -26,14 +26,17 @@ const _card = HelpCardSections(
       version: '1.0.0',
       caseId: 'C1',
       profile: 'es',
-      strictness: 'estricto',
       kind: 'executable',
       label: 'Programa mínimo',
     ),
   ],
 );
 
-Widget _host(HelpQueryResult result, {VoidCallback? onClose, double scale = 1}) {
+Widget _host(
+  HelpQueryResult result, {
+  VoidCallback? onClose,
+  double scale = 1,
+}) {
   return MaterialApp(
     theme: AppTheme.light(),
     locale: const Locale('es'),
@@ -177,7 +180,9 @@ void main() {
     );
     expect(find.text('<b>Titulo</b>'), findsOneWidget);
     expect(
-      find.text('[abrir](javascript:alert(1)) ![x](https://evil.invalid/a.png)'),
+      find.text(
+        '[abrir](javascript:alert(1)) ![x](https://evil.invalid/a.png)',
+      ),
       findsOneWidget,
     );
     expect(find.byType(Image), findsNothing);
