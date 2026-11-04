@@ -30,6 +30,9 @@ pub fn decode_host_value(
         EffectValueKind::HttpResponse => Ok(HostValue::HttpResponse(
             crate::http_values::decode_response(heap, handle(word)?)?,
         )),
+        EffectValueKind::DateTime => Ok(HostValue::DateTime(
+            crate::date_time_values::decode_date_time(heap, handle(word)?)?,
+        )),
         _ => Ok(HostValue::Capability(
             crate::capability_token(heap, handle(word)?)?.into(),
         )),
@@ -79,16 +82,20 @@ fn encode_variant(
 ) -> Result<Option<Vec<u64>>, MemoryError> {
     let (operation, roots) = allocation;
     let words = match value {
-        HostValue::OptionalBoolean(Some(value)) => vec![1, u64::from(*value)],
-        HostValue::OptionalBoolean(None) => vec![0, 0],
-        HostValue::OptionalInteger(Some(value)) => vec![1, u64::from_ne_bytes(value.to_ne_bytes())],
-        HostValue::OptionalInteger(None) => vec![0, 0],
-        HostValue::OptionalReal(Some(value)) => vec![1, *value],
-        HostValue::OptionalReal(None) => vec![0, 0],
+        HostValue::OptionalBoolean(_)
+        | HostValue::OptionalInteger(_)
+        | HostValue::OptionalReal(_) => scalar_optional_words(value),
         HostValue::OptionalText(Some(value)) => {
             vec![u64::from(crate::new_text(heap, value, false, roots)?.0)]
         }
-        HostValue::OptionalText(None) | HostValue::OptionalJsonValue(None) => vec![0],
+        HostValue::OptionalText(None)
+        | HostValue::OptionalJsonValue(None)
+        | HostValue::OptionalDateTime(None) => vec![0],
+        HostValue::OptionalDateTime(Some(value)) => {
+            vec![u64::from(
+                crate::date_time_values::new_date_time(heap, value, roots)?.0,
+            )]
+        }
         HostValue::OptionalJsonValue(Some(value)) => {
             vec![u64::from(
                 crate::json_document::new_json_document(heap, value, roots)?.0,
@@ -98,19 +105,54 @@ fn encode_variant(
             let document = crate::json_document::new_json_document(heap, value, roots)?;
             vec![0, 0, 0, 0, u64::from(document.0)]
         }
-        HostValue::JsonResult(JsonResultValue::Error(error)) => vec![
-            1,
-            u64::try_from(json_error_ordinal(&error.code)?).map_err(|_| MemoryError::Internal)?,
-            u64::try_from(error.line).map_err(|_| MemoryError::Internal)?,
-            u64::try_from(error.column).map_err(|_| MemoryError::Internal)?,
-            0,
-        ],
+        HostValue::JsonResult(JsonResultValue::Error(error)) => json_error_words(error)?,
         _ => return Ok(None),
     };
+    let words = wrap_fallible_reference(operation, value, words)?;
     if operation.result_cell_count() != words.len() {
         return Err(MemoryError::Internal);
     }
     Ok(Some(words))
+}
+
+fn scalar_optional_words(value: &HostValue) -> Vec<u64> {
+    match value {
+        HostValue::OptionalBoolean(Some(value)) => vec![1, u64::from(*value)],
+        HostValue::OptionalBoolean(None) => vec![0, 0],
+        HostValue::OptionalInteger(Some(value)) => vec![1, u64::from_ne_bytes(value.to_ne_bytes())],
+        HostValue::OptionalInteger(None) => vec![0, 0],
+        HostValue::OptionalReal(Some(value)) => vec![1, *value],
+        HostValue::OptionalReal(None) => vec![0, 0],
+        _ => vec![0, 0],
+    }
+}
+
+fn wrap_fallible_reference(
+    operation: &EffectOperation,
+    value: &HostValue,
+    words: Vec<u64>,
+) -> Result<Vec<u64>, MemoryError> {
+    let reference_variant = matches!(
+        value,
+        HostValue::OptionalText(_)
+            | HostValue::OptionalJsonValue(_)
+            | HostValue::OptionalDateTime(_)
+    );
+    if !operation.fallible || !reference_variant {
+        return Ok(words);
+    }
+    let reference = words.first().copied().ok_or(MemoryError::Internal)?;
+    Ok(vec![0, 0, reference])
+}
+
+fn json_error_words(error: &crate::JsonFailure) -> Result<Vec<u64>, MemoryError> {
+    Ok(vec![
+        1,
+        u64::try_from(json_error_ordinal(&error.code)?).map_err(|_| MemoryError::Internal)?,
+        u64::try_from(error.line).map_err(|_| MemoryError::Internal)?,
+        u64::try_from(error.column).map_err(|_| MemoryError::Internal)?,
+        0,
+    ])
 }
 
 fn json_error_ordinal(code: &str) -> Result<i64, MemoryError> {
@@ -148,13 +190,14 @@ fn encode_value(
             let bytes = crate::http_values::response_bytes(response)?;
             crate::new_bytes(heap, &bytes, roots)?
         }
-        HostValue::JsonResult(_) | HostValue::OptionalBoolean(_) => {
-            return Err(MemoryError::Internal);
-        }
-        HostValue::OptionalInteger(_)
+        HostValue::DateTime(value) => crate::date_time_values::new_date_time(heap, value, roots)?,
+        HostValue::JsonResult(_)
+        | HostValue::OptionalBoolean(_)
+        | HostValue::OptionalInteger(_)
         | HostValue::OptionalReal(_)
         | HostValue::OptionalText(_)
-        | HostValue::OptionalJsonValue(_) => return Err(MemoryError::Internal),
+        | HostValue::OptionalJsonValue(_)
+        | HostValue::OptionalDateTime(_) => return Err(MemoryError::Internal),
         HostValue::Capability(token) => crate::new_capability(
             heap,
             token.token().map_err(|_| MemoryError::Internal)?,

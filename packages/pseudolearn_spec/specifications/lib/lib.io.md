@@ -2060,3 +2060,212 @@
   }
 }
 ```
+
+```regla
+{
+  "id": "R12",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Entorno es una capacidad de solo lectura que se solicita con SolicitarEntorno y tiene autoridad plena por omisión, sin concesiones. Obtener(nombre) devuelve Resultado<Opcional<Cadena>, ErrorES>: una variable ausente da Nada, una variable presente da Algo con su valor exacto, incluida la cadena vacía y el texto Unicode, y dos lecturas del mismo nombre son dos efectos independientes. La capacidad no enumera las demás variables ni ofrece escritura. Cuando el anfitrión distingue mayúsculas de minúsculas en los nombres, que es el caso de Unix, el nombre debe coincidir exactamente; el anfitrión decide, y en Windows no las distingue.",
+  "verificacion": [
+    "C68"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C68",
+  "regla": "R12",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "none\n[hola]\n[]\n[ñandú ✓]\n[hola]\n0\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir env Como Entorno <- Propagar SolicitarEntorno();\nDefinir a Como Opcional<Cadena> <- Propagar env.Obtener(\"PL_MISSING\");\nSegun a Hacer\nNada: Escribir \"none\";\nAlgo(text): Escribir \"[\", text, \"]\";\nFinSegun\nDefinir b Como Opcional<Cadena> <- Propagar env.Obtener(\"PL_PRESENT\");\nSegun b Hacer\nNada: Escribir \"none\";\nAlgo(text): Escribir \"[\", text, \"]\";\nFinSegun\nDefinir c Como Opcional<Cadena> <- Propagar env.Obtener(\"PL_EMPTY\");\nSegun c Hacer\nNada: Escribir \"none\";\nAlgo(text): Escribir \"[\", text, \"]\";\nFinSegun\nDefinir d Como Opcional<Cadena> <- Propagar env.Obtener(\"PL_UNICODE\");\nSegun d Hacer\nNada: Escribir \"none\";\nAlgo(text): Escribir \"[\", text, \"]\";\nFinSegun\nDefinir e Como Opcional<Cadena> <- Propagar env.Obtener(\"PL_PRESENT\");\nSegun e Hacer\nNada: Escribir \"none\";\nAlgo(text): Escribir \"[\", text, \"]\";\nFinSegun\nRetornar Exito(0);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<integer, IoError>\ndefine env as Environment <- propagate requestEnvironment();\ndefine a as optional<string> <- propagate env.get(\"PL_MISSING\");\nswitch a do\nnone: write \"none\";\nsome(text): write \"[\", text, \"]\";\nendSwitch\ndefine b as optional<string> <- propagate env.get(\"PL_PRESENT\");\nswitch b do\nnone: write \"none\";\nsome(text): write \"[\", text, \"]\";\nendSwitch\ndefine c as optional<string> <- propagate env.get(\"PL_EMPTY\");\nswitch c do\nnone: write \"none\";\nsome(text): write \"[\", text, \"]\";\nendSwitch\ndefine d as optional<string> <- propagate env.get(\"PL_UNICODE\");\nswitch d do\nnone: write \"none\";\nsome(text): write \"[\", text, \"]\";\nendSwitch\ndefine e as optional<string> <- propagate env.get(\"PL_PRESENT\");\nswitch e do\nnone: write \"none\";\nsome(text): write \"[\", text, \"]\";\nendSwitch\nreturn success(0);\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "environment": {
+      "PL_PRESENT": "hola",
+      "PL_EMPTY": "",
+      "PL_UNICODE": "ñandú ✓"
+    }
+  }
+}
+```
+
+```regla
+{
+  "id": "R13",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Un nombre vacío o que contiene el carácter = o el carácter nulo produce ErrorES.PeticionInvalida sin consultar al sistema. Un valor que no sea UTF-8 válido produce ErrorES.Utf8Invalido. En el navegador, donde no existe un entorno de proceso, la capacidad se solicita y Obtener produce un ErrorES tipado de plataforma.",
+  "verificacion": [
+    "C69"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C69",
+  "regla": "R13",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "peticion_invalida\npeticion_invalida\nok\n0\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir env Como Entorno <- Propagar SolicitarEntorno();\nSegun env.Obtener(\"\") Hacer\nExito(value): Escribir \"ok\";\nError(problem): Escribir problem.Codigo;\nFinSegun\nSegun env.Obtener(\"A=B\") Hacer\nExito(value): Escribir \"ok\";\nError(problem): Escribir problem.Codigo;\nFinSegun\nSegun env.Obtener(\"PL_PRESENT\") Hacer\nExito(value): Escribir \"ok\";\nError(problem): Escribir problem.Codigo;\nFinSegun\nRetornar Exito(0);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<integer, IoError>\ndefine env as Environment <- propagate requestEnvironment();\nswitch env.get(\"\") do\nsuccess(value): write \"ok\";\nfailure(problem): write problem.code;\nendSwitch\nswitch env.get(\"A=B\") do\nsuccess(value): write \"ok\";\nfailure(problem): write problem.code;\nendSwitch\nswitch env.get(\"PL_PRESENT\") do\nsuccess(value): write \"ok\";\nfailure(problem): write problem.code;\nendSwitch\nreturn success(0);\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "environment": {
+      "PL_PRESENT": "hola",
+      "PL_EMPTY": "",
+      "PL_UNICODE": "ñandú ✓"
+    }
+  }
+}
+```
+
+```regla
+{
+  "id": "R14",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Cada solicitud y cada lectura de Entorno se graba en la cinta bajo capability_kind environment y la reproducción devuelve el valor grabado sin consultar al sistema. Una lectura cuyo nombre termina en token, key, secret o password, sin distinguir mayúsculas ASCII, se clasifica como secreta por su nombre: la entrada de la cinta lleva una referencia con key_id environment que solo depende del nombre, no se graba su valor, la cinta queda NonReproducibleRedacted y reproducirla se rechaza con replay_non_reproducible. Las lecturas con otros nombres no se redactan.",
+  "verificacion": [
+    "C70",
+    "C71"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C70",
+  "regla": "R14",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "[hola]\nnone\n0\n",
+    "terminacion": "completed",
+    "anfitrion_observado": {
+      "llamadas": 3,
+      "recursos_abiertos": 0,
+      "estado_cinta": "reproducible",
+      "efectos": [
+        {
+          "effect_seq": 1,
+          "capability_kind": "environment",
+          "operation": "request_environment",
+          "outcome": "committed"
+        },
+        {
+          "effect_seq": 2,
+          "capability_kind": "environment",
+          "operation": "environment_get",
+          "outcome": "committed"
+        },
+        {
+          "effect_seq": 4,
+          "capability_kind": "environment",
+          "operation": "environment_get",
+          "outcome": "committed"
+        }
+      ]
+    }
+  },
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir env Como Entorno <- Propagar SolicitarEntorno();\nDefinir a Como Opcional<Cadena> <- Propagar env.Obtener(\"PL_PRESENT\");\nSegun a Hacer\nNada: Escribir \"none\";\nAlgo(text): Escribir \"[\", text, \"]\";\nFinSegun\nDefinir b Como Opcional<Cadena> <- Propagar env.Obtener(\"PL_MISSING\");\nSegun b Hacer\nNada: Escribir \"none\";\nAlgo(text): Escribir \"[\", text, \"]\";\nFinSegun\nRetornar Exito(0);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<integer, IoError>\ndefine env as Environment <- propagate requestEnvironment();\ndefine a as optional<string> <- propagate env.get(\"PL_PRESENT\");\nswitch a do\nnone: write \"none\";\nsome(text): write \"[\", text, \"]\";\nendSwitch\ndefine b as optional<string> <- propagate env.get(\"PL_MISSING\");\nswitch b do\nnone: write \"none\";\nsome(text): write \"[\", text, \"]\";\nendSwitch\nreturn success(0);\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "environment": {
+      "PL_PRESENT": "hola",
+      "PL_EMPTY": "",
+      "PL_UNICODE": "ñandú ✓"
+    },
+    "grabar_y_reproducir": true
+  }
+}
+```
+
+```caso
+{
+  "id": "C71",
+  "regla": "R14",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "[s3cr3t]\n[p4ss]\n[hola]\n0\n",
+    "terminacion": "completed",
+    "anfitrion_observado": {
+      "llamadas": 4,
+      "recursos_abiertos": 0,
+      "estado_cinta": "non_reproducible_redacted",
+      "reproduccion_fallo": "replay_non_reproducible",
+      "efectos": [
+        {
+          "effect_seq": 1,
+          "capability_kind": "environment",
+          "operation": "request_environment",
+          "outcome": "committed"
+        },
+        {
+          "effect_seq": 2,
+          "capability_kind": "environment",
+          "operation": "environment_get",
+          "outcome": "committed",
+          "secret_key_id": "environment"
+        },
+        {
+          "effect_seq": 4,
+          "capability_kind": "environment",
+          "operation": "environment_get",
+          "outcome": "committed",
+          "secret_key_id": "environment"
+        },
+        {
+          "effect_seq": 6,
+          "capability_kind": "environment",
+          "operation": "environment_get",
+          "outcome": "committed"
+        }
+      ]
+    }
+  },
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir env Como Entorno <- Propagar SolicitarEntorno();\nDefinir a Como Opcional<Cadena> <- Propagar env.Obtener(\"API_KEY\");\nSegun a Hacer\nNada: Escribir \"none\";\nAlgo(text): Escribir \"[\", text, \"]\";\nFinSegun\nDefinir b Como Opcional<Cadena> <- Propagar env.Obtener(\"pl_Password\");\nSegun b Hacer\nNada: Escribir \"none\";\nAlgo(text): Escribir \"[\", text, \"]\";\nFinSegun\nDefinir c Como Opcional<Cadena> <- Propagar env.Obtener(\"PL_PRESENT\");\nSegun c Hacer\nNada: Escribir \"none\";\nAlgo(text): Escribir \"[\", text, \"]\";\nFinSegun\nRetornar Exito(0);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<integer, IoError>\ndefine env as Environment <- propagate requestEnvironment();\ndefine a as optional<string> <- propagate env.get(\"API_KEY\");\nswitch a do\nnone: write \"none\";\nsome(text): write \"[\", text, \"]\";\nendSwitch\ndefine b as optional<string> <- propagate env.get(\"pl_Password\");\nswitch b do\nnone: write \"none\";\nsome(text): write \"[\", text, \"]\";\nendSwitch\ndefine c as optional<string> <- propagate env.get(\"PL_PRESENT\");\nswitch c do\nnone: write \"none\";\nsome(text): write \"[\", text, \"]\";\nendSwitch\nreturn success(0);\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "environment": {
+      "API_KEY": "s3cr3t",
+      "pl_Password": "p4ss",
+      "PL_PRESENT": "hola"
+    }
+  }
+}
+```

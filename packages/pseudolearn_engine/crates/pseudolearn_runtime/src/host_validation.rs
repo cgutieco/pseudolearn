@@ -42,6 +42,8 @@ pub(crate) fn value_kind(value: &HostValue) -> EffectValueKind {
         HostValue::OptionalJsonValue(_) => EffectValueKind::OptionalJsonValue,
         HostValue::HttpRequest(_) => EffectValueKind::HttpRequest,
         HostValue::HttpResponse(_) => EffectValueKind::HttpResponse,
+        HostValue::DateTime(_) => EffectValueKind::DateTime,
+        HostValue::OptionalDateTime(_) => EffectValueKind::OptionalDateTime,
         HostValue::Capability(capability) => match capability.kind {
             0 => EffectValueKind::Console,
             1 => EffectValueKind::Arguments,
@@ -49,7 +51,8 @@ pub(crate) fn value_kind(value: &HostValue) -> EffectValueKind {
             3 => EffectValueKind::File,
             4 => EffectValueKind::Clock,
             5 => EffectValueKind::Timer,
-            _ => EffectValueKind::Network,
+            6 => EffectValueKind::Network,
+            _ => EffectValueKind::Environment,
         },
     }
 }

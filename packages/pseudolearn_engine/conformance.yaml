@@ -2176,6 +2176,51 @@
       "estado": "cumple"
     },
     {
+      "regla": "LIB.IO@1.0.0#R12",
+      "verificacion": "crates/pseudolearn_runtime/src/memory_host_environment.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.IO@1.0.0#R13",
+      "verificacion": "crates/pseudolearn_host/src/physical_environment.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.IO@1.0.0#R14",
+      "verificacion": "crates/pseudolearn_runtime/src/environment_secret_policy.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.TIME@1.0.0#R3",
+      "verificacion": "crates/pseudolearn_library/src/date_time_operations.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.TIME@1.0.0#R4",
+      "verificacion": "crates/pseudolearn_library/src/date_time_construction.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.TIME@1.0.0#R5",
+      "verificacion": "crates/pseudolearn_library/src/civil_calendar.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.TIME@1.0.0#R6",
+      "verificacion": "crates/pseudolearn_library/src/date_time_format.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.TIME@1.0.0#R7",
+      "verificacion": "crates/pseudolearn_library/src/date_time_parse.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.TIME@1.0.0#R8",
+      "verificacion": "crates/pseudolearn_host/src/physical_local_zone.rs",
+      "estado": "cumple"
+    },
+    {
       "regla": "ENG.LIMITS@1.0.0#R12",
       "verificacion": "crates/pseudolearn_library/src/json_parse_tests.rs",
       "estado": "pendiente",

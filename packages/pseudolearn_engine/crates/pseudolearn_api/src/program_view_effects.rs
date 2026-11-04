@@ -19,6 +19,7 @@ pub(crate) fn type_attributes(
         "PeticionHttp" | "HttpRequest" => Some(vec![("builtin_type", json!("http_request"))]),
         "RespuestaHttp" | "HttpResponse" => Some(vec![("builtin_type", json!("http_response"))]),
         "MetodoHttp" | "HttpMethod" => Some(vec![("builtin_type", json!("http_method"))]),
+        "FechaHora" | "DateTime" => Some(vec![("builtin_type", json!("date_time"))]),
         _ => None,
     }
 }
@@ -39,5 +40,6 @@ fn capability_identity(kind: CapabilityKind) -> &'static str {
         CapabilityKind::Clock => "clock",
         CapabilityKind::Timer => "timer",
         CapabilityKind::Network => "network",
+        CapabilityKind::Environment => "environment",
     }
 }

@@ -130,6 +130,27 @@ fn method_token(tree: &SyntaxTree, span: pseudolearn_source::Span, token: usize)
         })
 }
 
+const TYPE_IDENTITIES: [&str; 18] = [
+    "vectorType",
+    "dictionaryType",
+    "bytesType",
+    "ioErrorType",
+    "consoleCapabilityType",
+    "argumentsCapabilityType",
+    "directoryCapabilityType",
+    "fileCapabilityType",
+    "clockCapabilityType",
+    "timerCapabilityType",
+    "networkCapabilityType",
+    "environmentCapabilityType",
+    "dateTimeType",
+    "httpRequestType",
+    "httpResponseType",
+    "httpMethodType",
+    "immutableType",
+    "channelType",
+];
+
 fn owns(kind: NodeKind, identity: &str) -> bool {
     matches!(
         (kind, identity),
@@ -138,25 +159,7 @@ fn owns(kind: NodeKind, identity: &str) -> bool {
             | (NodeKind::ForEachLoop, "eachKeyword" | "inKeyword")
             | (NodeKind::DeferStatement, "deferKeyword" | "endDefer")
             | (NodeKind::BreakStatement, "breakKeyword")
-            | (
-                NodeKind::Type,
-                "vectorType"
-                    | "dictionaryType"
-                    | "bytesType"
-                    | "ioErrorType"
-                    | "consoleCapabilityType"
-                    | "argumentsCapabilityType"
-                    | "directoryCapabilityType"
-                    | "fileCapabilityType"
-                    | "clockCapabilityType"
-                    | "timerCapabilityType"
-                    | "networkCapabilityType"
-                    | "httpRequestType"
-                    | "httpResponseType"
-                    | "httpMethodType"
-                    | "immutableType"
-                    | "channelType"
-            )
+            | (NodeKind::Type, name) if TYPE_IDENTITIES.contains(&name)
             | (
                 NodeKind::Postfix,
                 "httpMethodType"
@@ -165,6 +168,7 @@ fn owns(kind: NodeKind, identity: &str) -> bool {
                     | "requestDirectory"
                     | "requestClock"
                     | "requestTimer"
+                    | "requestEnvironment"
             )
     )
 }

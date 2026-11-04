@@ -23,6 +23,15 @@ pub enum HostValue {
     HttpMethod(HttpMethod),
     HttpRequest(HttpRequestValue),
     HttpResponse(HttpResponseValue),
+    DateTime(DateTimeValue),
+    OptionalDateTime(Option<DateTimeValue>),
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct DateTimeValue {
+    pub nanos: i64,
+    pub offset_seconds: i32,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]

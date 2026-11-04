@@ -9,6 +9,7 @@ pub fn find_capability_kind(name: &str) -> Option<CapabilityKind> {
         "Reloj" | "Clock" => Some(CapabilityKind::Clock),
         "Temporizador" | "Timer" => Some(CapabilityKind::Timer),
         "RedCap" | "NetworkCap" => Some(CapabilityKind::Network),
+        "Entorno" | "Environment" => Some(CapabilityKind::Environment),
         _ => None,
     }
 }
@@ -29,6 +30,8 @@ pub fn capability_canonical_name(kind: CapabilityKind, spanish: bool) -> &'stati
         (CapabilityKind::Timer, false) => "Timer",
         (CapabilityKind::Network, true) => "RedCap",
         (CapabilityKind::Network, false) => "NetworkCap",
+        (CapabilityKind::Environment, true) => "Entorno",
+        (CapabilityKind::Environment, false) => "Environment",
     }
 }
 

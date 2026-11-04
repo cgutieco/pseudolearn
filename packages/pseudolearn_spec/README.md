@@ -497,3 +497,15 @@ congelados; los contratos oficiales se corrigen y reanclan juntos conservando su
 ## Ampliación numérica y de colecciones
 
 Los miembros contextuales de ordenación, inversión, búsqueda y claves y las diez funciones numéricas conservan identidades y versiones congeladas. La propiedad math_oracle contrasta muestras reproducibles con el oráculo independiente. Los vínculos nativos nuevos permanecen pendientes de paridad.
+
+## Entorno, fecha y hora (`PG-S.05`, `PG-S.06`)
+
+La configuración `anfitrion` de los casos admite `environment` (objeto de cadenas, que el doble de memoria sirve a
+`Obtener`) y `offset_seconds` (entero, el desplazamiento que `AhoraLocal` añade al instante de `clock`). La lista
+cerrada de tipos de `LIB.MODEL` D2 gana `environment`, `date_time` y `optional_date_time` (`capability_library.rs`).
+Las fichas de ayuda de las dieciocho operaciones nuevas viven en `tool.service.catalog.md` y los tres identificadores de
+vocabulario nuevos comparten una tarjeta propia porque la de capacidades ya está en el máximo de partes. Los valores
+esperados de `LIB.TIME` salen de la definición del calendario, calculados con `datetime` de Python como oráculo
+independiente del motor; ningún valor se capturó de una ejecución. La propiedad de ida y vuelta ISO sobre instantes
+sembrados no tiene generador propio: queda cubierta por el caso `LIB.TIME#C15` (seis semillas fijas) y es un pendiente
+declarado.

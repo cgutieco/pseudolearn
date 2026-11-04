@@ -1,11 +1,16 @@
 #![forbid(unsafe_code)]
 
+mod civil_calendar;
 mod collections;
 mod conversion;
 mod quoted_text;
 pub use collections::{CollectionRequest, collection_operation};
 pub use quoted_text::quote_text;
 mod bytes_operations;
+mod date_time_construction;
+mod date_time_format;
+mod date_time_operations;
+mod date_time_parse;
 mod decimal;
 mod error;
 mod format;
@@ -46,6 +51,10 @@ pub use text_split::{join_text, split_text};
 
 #[cfg(test)]
 mod bytes_operations_tests;
+#[cfg(test)]
+mod civil_calendar_tests;
+#[cfg(test)]
+mod date_time_tests;
 #[cfg(test)]
 mod json_local_views_tests;
 #[cfg(test)]

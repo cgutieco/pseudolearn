@@ -193,7 +193,9 @@ fn record_requested(
     }
     use sha2::Digest;
     let arguments = request_arguments(request)?;
-    let secret = session.secrets.reference(&arguments, &[]);
+    let secret = session
+        .secrets
+        .reference(&request.operation, (&arguments, &[]));
     let digest = secret
         .as_ref()
         .map(|secret| secret.value_hmac.clone())

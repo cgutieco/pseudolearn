@@ -117,7 +117,8 @@ fn root_rights(kind: EffectValueKind) -> Result<RightsMask, IoError> {
         | EffectValueKind::Arguments
         | EffectValueKind::Clock
         | EffectValueKind::Timer
-        | EffectValueKind::Network => Ok(RightsMask::EXECUTE_ONLY),
+        | EffectValueKind::Network
+        | EffectValueKind::Environment => Ok(RightsMask::EXECUTE_ONLY),
         _ => Err(IoError::permission_denied()),
     }
 }
@@ -131,6 +132,7 @@ pub fn capability_kind(kind: EffectValueKind) -> Option<CapabilityKind> {
         EffectValueKind::Clock => Some(CapabilityKind::Clock),
         EffectValueKind::Timer => Some(CapabilityKind::Timer),
         EffectValueKind::Network => Some(CapabilityKind::Network),
+        EffectValueKind::Environment => Some(CapabilityKind::Environment),
         _ => None,
     }
 }

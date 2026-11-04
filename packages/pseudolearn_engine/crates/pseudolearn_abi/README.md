@@ -122,3 +122,19 @@ instrucciones específicas en la representación intermedia.
 ## Ampliación numérica y de colecciones
 
 CollectionCommand conserva los códigos previos y añade Clone=12, Commit=13, Reverse=14 y BeginSort=15. Son operaciones internas sobre vectores con disposición estática compartida; no incorporan autoridad del anfitrión.
+
+## Entorno y fecha y hora (`PG-S.05`, `PG-S.06`)
+
+`CapabilityKind::Environment` ocupa la etiqueta 7 y se añadió al final de `ALL`, así que ninguna etiqueta existente
+cambia. `EffectValueKind` gana `Environment`, `DateTime` y `OptionalDateTime`; `build.rs` los lee de `date_time`,
+`optional_date_time` y `environment` en la tabla D2 de `LIB.MODEL`.
+
+`FechaHora` se guarda en el montón como un `Bytes` con prefijo `PLDT` (`date_time_layout.rs`), igual que las
+peticiones y respuestas HTTP: 4 bytes de prefijo, 8 del instante y 4 del desplazamiento, ambos little-endian. No
+necesita forma de objeto nueva ni cambios del recolector. `Opcional<FechaHora>` ocupa una celda de referencia con el
+manejador cero como `Nada`, como `Opcional<ValorJson>`.
+
+`result_cell_count` distingue ahora una operación falible de resultado opcional: `Obtener` devuelve
+`Resultado<Opcional<Cadena>, ErrorES>`, que usa las tres celdas de toda operación falible con la referencia opcional en
+la última, y no la celda única de un opcional no falible. La familia de capacidad de la cinta para un receptor
+`Environment` es `environment`.

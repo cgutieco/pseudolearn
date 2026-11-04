@@ -76,6 +76,8 @@ impl PhysicalHost {
             "console_write" => console_write(request),
             "arguments_values" => Ok(committed("text_list", json!(self.arguments))),
             "clock_now" => Ok(committed("integer", json!(real_nanos()?))),
+            "clock_local_now" => crate::physical_local_zone::local_now(real_nanos()?),
+            "environment_get" => crate::physical_environment::environment_get(request),
             "timer_wait" => self.timer_wait(request),
             "request_directory" => self.request_root(request),
             name if name.starts_with("request_") => self.register_plain(request),
@@ -112,7 +114,7 @@ pub fn entropy_seed() -> Result<i64, String> {
     Ok(i64::from_le_bytes(bytes))
 }
 
-fn real_nanos() -> Result<i64, HostError> {
+pub(crate) fn real_nanos() -> Result<i64, HostError> {
     let elapsed = std::time::SystemTime::now()
         .duration_since(std::time::UNIX_EPOCH)
         .map_err(|_| HostError::INTERRUPTED)?;

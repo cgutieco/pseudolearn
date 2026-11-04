@@ -14,10 +14,11 @@ pub enum CapabilityKind {
     Clock,
     Timer,
     Network,
+    Environment,
 }
 
 impl CapabilityKind {
-    pub const ALL: [Self; 7] = [
+    pub const ALL: [Self; 8] = [
         Self::Console,
         Self::Arguments,
         Self::Directory,
@@ -25,6 +26,7 @@ impl CapabilityKind {
         Self::Clock,
         Self::Timer,
         Self::Network,
+        Self::Environment,
     ];
 
     pub fn as_str(self) -> &'static str {
@@ -36,6 +38,7 @@ impl CapabilityKind {
             Self::Clock => "clock",
             Self::Timer => "timer",
             Self::Network => "network",
+            Self::Environment => "environment",
         }
     }
 
@@ -48,6 +51,7 @@ impl CapabilityKind {
             4 => Some(Self::Clock),
             5 => Some(Self::Timer),
             6 => Some(Self::Network),
+            7 => Some(Self::Environment),
             _ => None,
         }
     }
@@ -61,6 +65,7 @@ impl CapabilityKind {
             Self::Clock => 4,
             Self::Timer => 5,
             Self::Network => 6,
+            Self::Environment => 7,
         }
     }
 }

@@ -884,6 +884,219 @@
         ],
         "receiver": "file",
         "result": "integer"
+      },
+      {
+        "effect": true,
+        "en": "requestEnvironment",
+        "es": "SolicitarEntorno",
+        "fallible": true,
+        "family": "io",
+        "identity": "request_environment",
+        "parameters": [],
+        "receiver": null,
+        "result": "environment"
+      },
+      {
+        "effect": true,
+        "en": "get",
+        "es": "Obtener",
+        "fallible": true,
+        "family": "io",
+        "identity": "environment_get",
+        "parameters": [
+          "text"
+        ],
+        "receiver": "environment",
+        "result": "optional_text"
+      },
+      {
+        "effect": true,
+        "en": "localNow",
+        "es": "AhoraLocal",
+        "fallible": true,
+        "family": "time",
+        "identity": "clock_local_now",
+        "parameters": [],
+        "receiver": "clock",
+        "result": "date_time"
+      },
+      {
+        "effect": false,
+        "en": "dateTimeUtc",
+        "es": "FechaHoraUtc",
+        "fallible": false,
+        "family": "time",
+        "identity": "date_time_utc",
+        "parameters": [
+          "integer"
+        ],
+        "receiver": null,
+        "result": "date_time"
+      },
+      {
+        "effect": false,
+        "en": "dateTimeOf",
+        "es": "FechaHoraDe",
+        "fallible": false,
+        "family": "time",
+        "identity": "date_time_of",
+        "parameters": [
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer"
+        ],
+        "receiver": null,
+        "result": "optional_date_time"
+      },
+      {
+        "effect": false,
+        "en": "parseDateTime",
+        "es": "AnalizarFechaHora",
+        "fallible": false,
+        "family": "time",
+        "identity": "date_time_parse",
+        "parameters": [
+          "text"
+        ],
+        "receiver": null,
+        "result": "optional_date_time"
+      },
+      {
+        "effect": false,
+        "en": "year",
+        "es": "Anio",
+        "fallible": false,
+        "family": "time",
+        "identity": "date_time_year",
+        "parameters": [],
+        "receiver": "date_time",
+        "result": "integer"
+      },
+      {
+        "effect": false,
+        "en": "month",
+        "es": "Mes",
+        "fallible": false,
+        "family": "time",
+        "identity": "date_time_month",
+        "parameters": [],
+        "receiver": "date_time",
+        "result": "integer"
+      },
+      {
+        "effect": false,
+        "en": "day",
+        "es": "Dia",
+        "fallible": false,
+        "family": "time",
+        "identity": "date_time_day",
+        "parameters": [],
+        "receiver": "date_time",
+        "result": "integer"
+      },
+      {
+        "effect": false,
+        "en": "hour",
+        "es": "Hora",
+        "fallible": false,
+        "family": "time",
+        "identity": "date_time_hour",
+        "parameters": [],
+        "receiver": "date_time",
+        "result": "integer"
+      },
+      {
+        "effect": false,
+        "en": "minute",
+        "es": "Minuto",
+        "fallible": false,
+        "family": "time",
+        "identity": "date_time_minute",
+        "parameters": [],
+        "receiver": "date_time",
+        "result": "integer"
+      },
+      {
+        "effect": false,
+        "en": "second",
+        "es": "Segundo",
+        "fallible": false,
+        "family": "time",
+        "identity": "date_time_second",
+        "parameters": [],
+        "receiver": "date_time",
+        "result": "integer"
+      },
+      {
+        "effect": false,
+        "en": "nanosecond",
+        "es": "Nanosegundo",
+        "fallible": false,
+        "family": "time",
+        "identity": "date_time_nanosecond",
+        "parameters": [],
+        "receiver": "date_time",
+        "result": "integer"
+      },
+      {
+        "effect": false,
+        "en": "weekday",
+        "es": "DiaDeLaSemana",
+        "fallible": false,
+        "family": "time",
+        "identity": "date_time_weekday",
+        "parameters": [],
+        "receiver": "date_time",
+        "result": "integer"
+      },
+      {
+        "effect": false,
+        "en": "utcOffset",
+        "es": "DesplazamientoUtc",
+        "fallible": false,
+        "family": "time",
+        "identity": "date_time_utc_offset",
+        "parameters": [],
+        "receiver": "date_time",
+        "result": "integer"
+      },
+      {
+        "effect": false,
+        "en": "instant",
+        "es": "Instante",
+        "fallible": false,
+        "family": "time",
+        "identity": "date_time_instant",
+        "parameters": [],
+        "receiver": "date_time",
+        "result": "integer"
+      },
+      {
+        "effect": false,
+        "en": "isoFormat",
+        "es": "FormatoIso",
+        "fallible": false,
+        "family": "time",
+        "identity": "date_time_iso_format",
+        "parameters": [],
+        "receiver": "date_time",
+        "result": "text"
+      },
+      {
+        "effect": false,
+        "en": "isoFormatPrecise",
+        "es": "FormatoIsoPreciso",
+        "fallible": false,
+        "family": "time",
+        "identity": "date_time_iso_format_precise",
+        "parameters": [],
+        "receiver": "date_time",
+        "result": "text"
       }
     ]
   },
@@ -1451,6 +1664,12 @@
         "es": "Consola"
       }
     },
+    "dateTimeType": {
+      "lexemas": {
+        "en": "DateTime",
+        "es": "FechaHora"
+      }
+    },
     "deferKeyword": {
       "lexemas": {
         "en": "defer",
@@ -1497,6 +1716,12 @@
       "lexemas": {
         "en": "endInterface",
         "es": "FinInterfaz"
+      }
+    },
+    "environmentCapabilityType": {
+      "lexemas": {
+        "en": "Environment",
+        "es": "Entorno"
       }
     },
     "fileCapabilityType": {
@@ -1701,6 +1926,12 @@
       "lexemas": {
         "en": "requestDirectory",
         "es": "SolicitarDirectorio"
+      }
+    },
+    "requestEnvironment": {
+      "lexemas": {
+        "en": "requestEnvironment",
+        "es": "SolicitarEntorno"
       }
     },
     "requestTimer": {
@@ -13322,6 +13553,120 @@
         "anchors": [
           {
             "element": "R1",
+            "specification": "LANG.CAPABILITY.MODEL",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Explicit capability: Environment",
+                "profile": "en",
+                "specification": "LANG.CAPABILITY.MODEL",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "environmentCapabilityType",
+                "text": "Opaque capability handle that authorizes reading environment variables by name, read-only."
+              },
+              {
+                "identity": "dateTimeType",
+                "text": "Opaque immutable calendar date-time value: an instant plus a UTC offset."
+              },
+              {
+                "identity": "requestEnvironment",
+                "text": "Obtains the host environment capability without prior grants."
+              }
+            ],
+            "purpose": "It lets a program read the host environment by name and work with dates and times carrying a UTC offset.",
+            "summary": "Read-only environment variable capability and opaque calendar date-time value.",
+            "title": "Environment and date-time"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Capacidad explícita: Entorno",
+                "profile": "es",
+                "specification": "LANG.CAPABILITY.MODEL",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "environmentCapabilityType",
+                "text": "Capacidad opaca que autoriza leer variables de entorno por nombre, solo lectura."
+              },
+              {
+                "identity": "dateTimeType",
+                "text": "Valor opaco e inmutable de fecha y hora de calendario: un instante y un desplazamiento UTC."
+              },
+              {
+                "identity": "requestEnvironment",
+                "text": "Obtiene la capacidad de entorno del anfitrión sin concesiones previas."
+              }
+            ],
+            "purpose": "Permite leer el entorno del anfitrión por nombre y trabajar con fechas y horas con desplazamiento UTC.",
+            "summary": "Capacidad de variables de entorno de solo lectura y valor opaco de fecha y hora de calendario.",
+            "title": "Entorno y fecha y hora"
+          }
+        },
+        "id": "construction.environment_date_time",
+        "identity": {
+          "id": "environmentCapabilityType",
+          "kind": "construction",
+          "role": "construction"
+        },
+        "tokens": [
+          {
+            "identity": "environmentCapabilityType",
+            "source": {
+              "element": "D2",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "dateTimeType",
+            "source": {
+              "element": "D2",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "requestEnvironment",
+            "source": {
+              "element": "D2",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
             "specification": "LIB.IO",
             "version": "1.0.0"
           }
@@ -21537,6 +21882,1482 @@
       {
         "anchors": [
           {
+            "element": "R12",
+            "specification": "LIB.IO",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C68",
+                "kind": "executable",
+                "label": "Program that runs: requestEnvironment",
+                "profile": "en",
+                "specification": "LIB.IO",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "request_environment",
+                "text": "requestEnvironment obtains the read-only capability over the host environment variables."
+              }
+            ],
+            "purpose": "It lets a program leer el entorno solo mediante una capacidad solicitada.",
+            "summary": "requestEnvironment obtains the read-only capability over the host environment variables.",
+            "title": "requestEnvironment"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C68",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: SolicitarEntorno",
+                "profile": "es",
+                "specification": "LIB.IO",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "request_environment",
+                "text": "SolicitarEntorno obtiene la capacidad de solo lectura sobre las variables de entorno del anfitrión."
+              }
+            ],
+            "purpose": "Permite leer el entorno solo mediante una capacidad solicitada.",
+            "summary": "SolicitarEntorno obtiene la capacidad de solo lectura sobre las variables de entorno del anfitrión.",
+            "title": "SolicitarEntorno"
+          }
+        },
+        "id": "help.pgs06.request_environment",
+        "identity": {
+          "id": "primary",
+          "kind": "role",
+          "role": "pgs06_request_environment"
+        },
+        "tokens": [
+          {
+            "identity": "request_environment",
+            "source": {
+              "element": "D2",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R12",
+            "specification": "LIB.IO",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C68",
+                "kind": "executable",
+                "label": "Program that runs: get",
+                "profile": "en",
+                "specification": "LIB.IO",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "environment_get",
+                "text": "get reads an environment variable by name and returns none when it does not exist."
+              }
+            ],
+            "purpose": "It lets a program leer el entorno solo mediante una capacidad solicitada.",
+            "summary": "get reads an environment variable by name and returns none when it does not exist.",
+            "title": "get"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C68",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Obtener",
+                "profile": "es",
+                "specification": "LIB.IO",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "environment_get",
+                "text": "Obtener lee una variable de entorno por nombre y devuelve Nada si no existe."
+              }
+            ],
+            "purpose": "Permite leer el entorno solo mediante una capacidad solicitada.",
+            "summary": "Obtener lee una variable de entorno por nombre y devuelve Nada si no existe.",
+            "title": "Obtener"
+          }
+        },
+        "id": "help.pgs06.environment_get",
+        "identity": {
+          "id": "primary",
+          "kind": "role",
+          "role": "pgs06_environment_get"
+        },
+        "tokens": [
+          {
+            "identity": "environment_get",
+            "source": {
+              "element": "D2",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R8",
+            "specification": "LIB.TIME",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C16",
+                "kind": "executable",
+                "label": "Program that runs: localNow",
+                "profile": "en",
+                "specification": "LIB.TIME",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "clock_local_now",
+                "text": "localNow reads the clock and returns a DateTime with the UTC offset in force in the system time zone."
+              }
+            ],
+            "purpose": "It lets a program work with calendar dates and times under deterministic rules.",
+            "summary": "localNow reads the clock and returns a DateTime with the UTC offset in force in the system time zone.",
+            "title": "localNow"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C16",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: AhoraLocal",
+                "profile": "es",
+                "specification": "LIB.TIME",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "clock_local_now",
+                "text": "AhoraLocal lee el reloj y devuelve una FechaHora con el desplazamiento UTC vigente de la zona del sistema."
+              }
+            ],
+            "purpose": "Permite trabajar con fechas y horas de calendario con reglas deterministas.",
+            "summary": "AhoraLocal lee el reloj y devuelve una FechaHora con el desplazamiento UTC vigente de la zona del sistema.",
+            "title": "AhoraLocal"
+          }
+        },
+        "id": "help.pgs05.clock_local_now",
+        "identity": {
+          "id": "primary",
+          "kind": "role",
+          "role": "pgs05_clock_local_now"
+        },
+        "tokens": [
+          {
+            "identity": "clock_local_now",
+            "source": {
+              "element": "D2",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R3",
+            "specification": "LIB.TIME",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C6",
+                "kind": "executable",
+                "label": "Program that runs: dateTimeUtc",
+                "profile": "en",
+                "specification": "LIB.TIME",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "date_time_utc",
+                "text": "dateTimeUtc builds a UTC DateTime from an instant in nanoseconds since the Unix epoch."
+              }
+            ],
+            "purpose": "It lets a program work with calendar dates and times under deterministic rules.",
+            "summary": "dateTimeUtc builds a UTC DateTime from an instant in nanoseconds since the Unix epoch.",
+            "title": "dateTimeUtc"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C6",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: FechaHoraUtc",
+                "profile": "es",
+                "specification": "LIB.TIME",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "date_time_utc",
+                "text": "FechaHoraUtc construye una FechaHora en UTC a partir de un instante en nanosegundos desde la época Unix."
+              }
+            ],
+            "purpose": "Permite trabajar con fechas y horas de calendario con reglas deterministas.",
+            "summary": "FechaHoraUtc construye una FechaHora en UTC a partir de un instante en nanosegundos desde la época Unix.",
+            "title": "FechaHoraUtc"
+          }
+        },
+        "id": "help.pgs05.date_time_utc",
+        "identity": {
+          "id": "primary",
+          "kind": "role",
+          "role": "pgs05_date_time_utc"
+        },
+        "tokens": [
+          {
+            "identity": "date_time_utc",
+            "source": {
+              "element": "D2",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R4",
+            "specification": "LIB.TIME",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C7",
+                "kind": "executable",
+                "label": "Program that runs: dateTimeOf",
+                "profile": "en",
+                "specification": "LIB.TIME",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "date_time_of",
+                "text": "dateTimeOf builds a DateTime from its components and returns none when any of them is invalid."
+              }
+            ],
+            "purpose": "It lets a program work with calendar dates and times under deterministic rules.",
+            "summary": "dateTimeOf builds a DateTime from its components and returns none when any of them is invalid.",
+            "title": "dateTimeOf"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C7",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: FechaHoraDe",
+                "profile": "es",
+                "specification": "LIB.TIME",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "date_time_of",
+                "text": "FechaHoraDe construye una FechaHora desde sus componentes y devuelve Nada si alguno es inválido."
+              }
+            ],
+            "purpose": "Permite trabajar con fechas y horas de calendario con reglas deterministas.",
+            "summary": "FechaHoraDe construye una FechaHora desde sus componentes y devuelve Nada si alguno es inválido.",
+            "title": "FechaHoraDe"
+          }
+        },
+        "id": "help.pgs05.date_time_of",
+        "identity": {
+          "id": "primary",
+          "kind": "role",
+          "role": "pgs05_date_time_of"
+        },
+        "tokens": [
+          {
+            "identity": "date_time_of",
+            "source": {
+              "element": "D2",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R7",
+            "specification": "LIB.TIME",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C13",
+                "kind": "executable",
+                "label": "Program that runs: parseDateTime",
+                "profile": "en",
+                "specification": "LIB.TIME",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "date_time_parse",
+                "text": "parseDateTime parses ISO 8601 text and returns none for any invalid form."
+              }
+            ],
+            "purpose": "It lets a program work with calendar dates and times under deterministic rules.",
+            "summary": "parseDateTime parses ISO 8601 text and returns none for any invalid form.",
+            "title": "parseDateTime"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C13",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: AnalizarFechaHora",
+                "profile": "es",
+                "specification": "LIB.TIME",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "date_time_parse",
+                "text": "AnalizarFechaHora analiza texto ISO 8601 y devuelve Nada ante cualquier forma inválida."
+              }
+            ],
+            "purpose": "Permite trabajar con fechas y horas de calendario con reglas deterministas.",
+            "summary": "AnalizarFechaHora analiza texto ISO 8601 y devuelve Nada ante cualquier forma inválida.",
+            "title": "AnalizarFechaHora"
+          }
+        },
+        "id": "help.pgs05.date_time_parse",
+        "identity": {
+          "id": "primary",
+          "kind": "role",
+          "role": "pgs05_date_time_parse"
+        },
+        "tokens": [
+          {
+            "identity": "date_time_parse",
+            "source": {
+              "element": "D2",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R5",
+            "specification": "LIB.TIME",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C11",
+                "kind": "executable",
+                "label": "Program that runs: year",
+                "profile": "en",
+                "specification": "LIB.TIME",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "date_time_year",
+                "text": "year returns the local year of the DateTime."
+              }
+            ],
+            "purpose": "It lets a program work with calendar dates and times under deterministic rules.",
+            "summary": "year returns the local year of the DateTime.",
+            "title": "year"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C11",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Anio",
+                "profile": "es",
+                "specification": "LIB.TIME",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "date_time_year",
+                "text": "Anio devuelve el año local de la FechaHora."
+              }
+            ],
+            "purpose": "Permite trabajar con fechas y horas de calendario con reglas deterministas.",
+            "summary": "Anio devuelve el año local de la FechaHora.",
+            "title": "Anio"
+          }
+        },
+        "id": "help.pgs05.date_time_year",
+        "identity": {
+          "id": "primary",
+          "kind": "role",
+          "role": "pgs05_date_time_year"
+        },
+        "tokens": [
+          {
+            "identity": "date_time_year",
+            "source": {
+              "element": "D2",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R5",
+            "specification": "LIB.TIME",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C11",
+                "kind": "executable",
+                "label": "Program that runs: month",
+                "profile": "en",
+                "specification": "LIB.TIME",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "date_time_month",
+                "text": "month returns the local month of the DateTime."
+              }
+            ],
+            "purpose": "It lets a program work with calendar dates and times under deterministic rules.",
+            "summary": "month returns the local month of the DateTime.",
+            "title": "month"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C11",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Mes",
+                "profile": "es",
+                "specification": "LIB.TIME",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "date_time_month",
+                "text": "Mes devuelve el mes local de la FechaHora."
+              }
+            ],
+            "purpose": "Permite trabajar con fechas y horas de calendario con reglas deterministas.",
+            "summary": "Mes devuelve el mes local de la FechaHora.",
+            "title": "Mes"
+          }
+        },
+        "id": "help.pgs05.date_time_month",
+        "identity": {
+          "id": "primary",
+          "kind": "role",
+          "role": "pgs05_date_time_month"
+        },
+        "tokens": [
+          {
+            "identity": "date_time_month",
+            "source": {
+              "element": "D2",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R5",
+            "specification": "LIB.TIME",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C11",
+                "kind": "executable",
+                "label": "Program that runs: day",
+                "profile": "en",
+                "specification": "LIB.TIME",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "date_time_day",
+                "text": "day returns the local day of the month of the DateTime."
+              }
+            ],
+            "purpose": "It lets a program work with calendar dates and times under deterministic rules.",
+            "summary": "day returns the local day of the month of the DateTime.",
+            "title": "day"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C11",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Dia",
+                "profile": "es",
+                "specification": "LIB.TIME",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "date_time_day",
+                "text": "Dia devuelve el día del mes local de la FechaHora."
+              }
+            ],
+            "purpose": "Permite trabajar con fechas y horas de calendario con reglas deterministas.",
+            "summary": "Dia devuelve el día del mes local de la FechaHora.",
+            "title": "Dia"
+          }
+        },
+        "id": "help.pgs05.date_time_day",
+        "identity": {
+          "id": "primary",
+          "kind": "role",
+          "role": "pgs05_date_time_day"
+        },
+        "tokens": [
+          {
+            "identity": "date_time_day",
+            "source": {
+              "element": "D2",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R5",
+            "specification": "LIB.TIME",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C11",
+                "kind": "executable",
+                "label": "Program that runs: hour",
+                "profile": "en",
+                "specification": "LIB.TIME",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "date_time_hour",
+                "text": "hour returns the local hour of the DateTime."
+              }
+            ],
+            "purpose": "It lets a program work with calendar dates and times under deterministic rules.",
+            "summary": "hour returns the local hour of the DateTime.",
+            "title": "hour"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C11",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Hora",
+                "profile": "es",
+                "specification": "LIB.TIME",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "date_time_hour",
+                "text": "Hora devuelve la hora local de la FechaHora."
+              }
+            ],
+            "purpose": "Permite trabajar con fechas y horas de calendario con reglas deterministas.",
+            "summary": "Hora devuelve la hora local de la FechaHora.",
+            "title": "Hora"
+          }
+        },
+        "id": "help.pgs05.date_time_hour",
+        "identity": {
+          "id": "primary",
+          "kind": "role",
+          "role": "pgs05_date_time_hour"
+        },
+        "tokens": [
+          {
+            "identity": "date_time_hour",
+            "source": {
+              "element": "D2",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R5",
+            "specification": "LIB.TIME",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C11",
+                "kind": "executable",
+                "label": "Program that runs: minute",
+                "profile": "en",
+                "specification": "LIB.TIME",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "date_time_minute",
+                "text": "minute returns the local minute of the DateTime."
+              }
+            ],
+            "purpose": "It lets a program work with calendar dates and times under deterministic rules.",
+            "summary": "minute returns the local minute of the DateTime.",
+            "title": "minute"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C11",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Minuto",
+                "profile": "es",
+                "specification": "LIB.TIME",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "date_time_minute",
+                "text": "Minuto devuelve el minuto local de la FechaHora."
+              }
+            ],
+            "purpose": "Permite trabajar con fechas y horas de calendario con reglas deterministas.",
+            "summary": "Minuto devuelve el minuto local de la FechaHora.",
+            "title": "Minuto"
+          }
+        },
+        "id": "help.pgs05.date_time_minute",
+        "identity": {
+          "id": "primary",
+          "kind": "role",
+          "role": "pgs05_date_time_minute"
+        },
+        "tokens": [
+          {
+            "identity": "date_time_minute",
+            "source": {
+              "element": "D2",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R5",
+            "specification": "LIB.TIME",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C11",
+                "kind": "executable",
+                "label": "Program that runs: second",
+                "profile": "en",
+                "specification": "LIB.TIME",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "date_time_second",
+                "text": "second returns the local second of the DateTime."
+              }
+            ],
+            "purpose": "It lets a program work with calendar dates and times under deterministic rules.",
+            "summary": "second returns the local second of the DateTime.",
+            "title": "second"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C11",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Segundo",
+                "profile": "es",
+                "specification": "LIB.TIME",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "date_time_second",
+                "text": "Segundo devuelve el segundo local de la FechaHora."
+              }
+            ],
+            "purpose": "Permite trabajar con fechas y horas de calendario con reglas deterministas.",
+            "summary": "Segundo devuelve el segundo local de la FechaHora.",
+            "title": "Segundo"
+          }
+        },
+        "id": "help.pgs05.date_time_second",
+        "identity": {
+          "id": "primary",
+          "kind": "role",
+          "role": "pgs05_date_time_second"
+        },
+        "tokens": [
+          {
+            "identity": "date_time_second",
+            "source": {
+              "element": "D2",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R5",
+            "specification": "LIB.TIME",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C11",
+                "kind": "executable",
+                "label": "Program that runs: nanosecond",
+                "profile": "en",
+                "specification": "LIB.TIME",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "date_time_nanosecond",
+                "text": "nanosecond returns the nanoseconds of the fraction of a second of the DateTime."
+              }
+            ],
+            "purpose": "It lets a program work with calendar dates and times under deterministic rules.",
+            "summary": "nanosecond returns the nanoseconds of the fraction of a second of the DateTime.",
+            "title": "nanosecond"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C11",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Nanosegundo",
+                "profile": "es",
+                "specification": "LIB.TIME",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "date_time_nanosecond",
+                "text": "Nanosegundo devuelve los nanosegundos de la fracción de segundo de la FechaHora."
+              }
+            ],
+            "purpose": "Permite trabajar con fechas y horas de calendario con reglas deterministas.",
+            "summary": "Nanosegundo devuelve los nanosegundos de la fracción de segundo de la FechaHora.",
+            "title": "Nanosegundo"
+          }
+        },
+        "id": "help.pgs05.date_time_nanosecond",
+        "identity": {
+          "id": "primary",
+          "kind": "role",
+          "role": "pgs05_date_time_nanosecond"
+        },
+        "tokens": [
+          {
+            "identity": "date_time_nanosecond",
+            "source": {
+              "element": "D2",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R5",
+            "specification": "LIB.TIME",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C11",
+                "kind": "executable",
+                "label": "Program that runs: utcOffset",
+                "profile": "en",
+                "specification": "LIB.TIME",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "date_time_utc_offset",
+                "text": "utcOffset returns the UTC offset in seconds of the DateTime."
+              }
+            ],
+            "purpose": "It lets a program work with calendar dates and times under deterministic rules.",
+            "summary": "utcOffset returns the UTC offset in seconds of the DateTime.",
+            "title": "utcOffset"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C11",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: DesplazamientoUtc",
+                "profile": "es",
+                "specification": "LIB.TIME",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "date_time_utc_offset",
+                "text": "DesplazamientoUtc devuelve el desplazamiento UTC en segundos de la FechaHora."
+              }
+            ],
+            "purpose": "Permite trabajar con fechas y horas de calendario con reglas deterministas.",
+            "summary": "DesplazamientoUtc devuelve el desplazamiento UTC en segundos de la FechaHora.",
+            "title": "DesplazamientoUtc"
+          }
+        },
+        "id": "help.pgs05.date_time_utc_offset",
+        "identity": {
+          "id": "primary",
+          "kind": "role",
+          "role": "pgs05_date_time_utc_offset"
+        },
+        "tokens": [
+          {
+            "identity": "date_time_utc_offset",
+            "source": {
+              "element": "D2",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R5",
+            "specification": "LIB.TIME",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C11",
+                "kind": "executable",
+                "label": "Program that runs: instant",
+                "profile": "en",
+                "specification": "LIB.TIME",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "date_time_instant",
+                "text": "instant returns the instant in nanoseconds since the Unix epoch of the DateTime."
+              }
+            ],
+            "purpose": "It lets a program work with calendar dates and times under deterministic rules.",
+            "summary": "instant returns the instant in nanoseconds since the Unix epoch of the DateTime.",
+            "title": "instant"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C11",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Instante",
+                "profile": "es",
+                "specification": "LIB.TIME",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "date_time_instant",
+                "text": "Instante devuelve el instante en nanosegundos desde la época Unix de la FechaHora."
+              }
+            ],
+            "purpose": "Permite trabajar con fechas y horas de calendario con reglas deterministas.",
+            "summary": "Instante devuelve el instante en nanosegundos desde la época Unix de la FechaHora.",
+            "title": "Instante"
+          }
+        },
+        "id": "help.pgs05.date_time_instant",
+        "identity": {
+          "id": "primary",
+          "kind": "role",
+          "role": "pgs05_date_time_instant"
+        },
+        "tokens": [
+          {
+            "identity": "date_time_instant",
+            "source": {
+              "element": "D2",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R5",
+            "specification": "LIB.TIME",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C10",
+                "kind": "executable",
+                "label": "Program that runs: weekday",
+                "profile": "en",
+                "specification": "LIB.TIME",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "date_time_weekday",
+                "text": "weekday returns the local day of the week from 1 (Monday) to 7 (Sunday)."
+              }
+            ],
+            "purpose": "It lets a program work with calendar dates and times under deterministic rules.",
+            "summary": "weekday returns the local day of the week from 1 (Monday) to 7 (Sunday).",
+            "title": "weekday"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C10",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: DiaDeLaSemana",
+                "profile": "es",
+                "specification": "LIB.TIME",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "date_time_weekday",
+                "text": "DiaDeLaSemana devuelve el día de la semana local de 1 (lunes) a 7 (domingo)."
+              }
+            ],
+            "purpose": "Permite trabajar con fechas y horas de calendario con reglas deterministas.",
+            "summary": "DiaDeLaSemana devuelve el día de la semana local de 1 (lunes) a 7 (domingo).",
+            "title": "DiaDeLaSemana"
+          }
+        },
+        "id": "help.pgs05.date_time_weekday",
+        "identity": {
+          "id": "primary",
+          "kind": "role",
+          "role": "pgs05_date_time_weekday"
+        },
+        "tokens": [
+          {
+            "identity": "date_time_weekday",
+            "source": {
+              "element": "D2",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R6",
+            "specification": "LIB.TIME",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C12",
+                "kind": "executable",
+                "label": "Program that runs: isoFormat",
+                "profile": "en",
+                "specification": "LIB.TIME",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "date_time_iso_format",
+                "text": "isoFormat returns the local time in ISO 8601 without a fractional second."
+              }
+            ],
+            "purpose": "It lets a program work with calendar dates and times under deterministic rules.",
+            "summary": "isoFormat returns the local time in ISO 8601 without a fractional second.",
+            "title": "isoFormat"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C12",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: FormatoIso",
+                "profile": "es",
+                "specification": "LIB.TIME",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "date_time_iso_format",
+                "text": "FormatoIso devuelve la hora local en ISO 8601 sin fracción de segundo."
+              }
+            ],
+            "purpose": "Permite trabajar con fechas y horas de calendario con reglas deterministas.",
+            "summary": "FormatoIso devuelve la hora local en ISO 8601 sin fracción de segundo.",
+            "title": "FormatoIso"
+          }
+        },
+        "id": "help.pgs05.date_time_iso_format",
+        "identity": {
+          "id": "primary",
+          "kind": "role",
+          "role": "pgs05_date_time_iso_format"
+        },
+        "tokens": [
+          {
+            "identity": "date_time_iso_format",
+            "source": {
+              "element": "D2",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R6",
+            "specification": "LIB.TIME",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C12",
+                "kind": "executable",
+                "label": "Program that runs: isoFormatPrecise",
+                "profile": "en",
+                "specification": "LIB.TIME",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "date_time_iso_format_precise",
+                "text": "isoFormatPrecise returns the local time in ISO 8601 with nine fractional digits."
+              }
+            ],
+            "purpose": "It lets a program work with calendar dates and times under deterministic rules.",
+            "summary": "isoFormatPrecise returns the local time in ISO 8601 with nine fractional digits.",
+            "title": "isoFormatPrecise"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C12",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: FormatoIsoPreciso",
+                "profile": "es",
+                "specification": "LIB.TIME",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "date_time_iso_format_precise",
+                "text": "FormatoIsoPreciso devuelve la hora local en ISO 8601 con nueve dígitos de fracción."
+              }
+            ],
+            "purpose": "Permite trabajar con fechas y horas de calendario con reglas deterministas.",
+            "summary": "FormatoIsoPreciso devuelve la hora local en ISO 8601 con nueve dígitos de fracción.",
+            "title": "FormatoIsoPreciso"
+          }
+        },
+        "id": "help.pgs05.date_time_iso_format_precise",
+        "identity": {
+          "id": "primary",
+          "kind": "role",
+          "role": "pgs05_date_time_iso_format_precise"
+        },
+        "tokens": [
+          {
+            "identity": "date_time_iso_format_precise",
+            "source": {
+              "element": "D2",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
             "element": "R10",
             "specification": "LIB.IO",
             "version": "1.0.0"
@@ -23741,6 +25562,22 @@
         },
         {
           "identity": {
+            "id": "environmentCapabilityType",
+            "kind": "construction",
+            "role": "construction"
+          },
+          "productions": [
+            "type",
+            "postfix"
+          ],
+          "tokens": [
+            "environmentCapabilityType",
+            "dateTimeType",
+            "requestEnvironment"
+          ]
+        },
+        {
+          "identity": {
             "id": "bytesType",
             "kind": "construction",
             "role": "construction"
@@ -25039,6 +26876,240 @@
           ],
           "tokens": [
             "file_append_text"
+          ]
+        },
+        {
+          "identity": {
+            "id": "primary",
+            "kind": "role",
+            "role": "pgs06_request_environment"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "request_environment"
+          ]
+        },
+        {
+          "identity": {
+            "id": "primary",
+            "kind": "role",
+            "role": "pgs06_environment_get"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "environment_get"
+          ]
+        },
+        {
+          "identity": {
+            "id": "primary",
+            "kind": "role",
+            "role": "pgs05_clock_local_now"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "clock_local_now"
+          ]
+        },
+        {
+          "identity": {
+            "id": "primary",
+            "kind": "role",
+            "role": "pgs05_date_time_utc"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "date_time_utc"
+          ]
+        },
+        {
+          "identity": {
+            "id": "primary",
+            "kind": "role",
+            "role": "pgs05_date_time_of"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "date_time_of"
+          ]
+        },
+        {
+          "identity": {
+            "id": "primary",
+            "kind": "role",
+            "role": "pgs05_date_time_parse"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "date_time_parse"
+          ]
+        },
+        {
+          "identity": {
+            "id": "primary",
+            "kind": "role",
+            "role": "pgs05_date_time_year"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "date_time_year"
+          ]
+        },
+        {
+          "identity": {
+            "id": "primary",
+            "kind": "role",
+            "role": "pgs05_date_time_month"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "date_time_month"
+          ]
+        },
+        {
+          "identity": {
+            "id": "primary",
+            "kind": "role",
+            "role": "pgs05_date_time_day"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "date_time_day"
+          ]
+        },
+        {
+          "identity": {
+            "id": "primary",
+            "kind": "role",
+            "role": "pgs05_date_time_hour"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "date_time_hour"
+          ]
+        },
+        {
+          "identity": {
+            "id": "primary",
+            "kind": "role",
+            "role": "pgs05_date_time_minute"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "date_time_minute"
+          ]
+        },
+        {
+          "identity": {
+            "id": "primary",
+            "kind": "role",
+            "role": "pgs05_date_time_second"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "date_time_second"
+          ]
+        },
+        {
+          "identity": {
+            "id": "primary",
+            "kind": "role",
+            "role": "pgs05_date_time_nanosecond"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "date_time_nanosecond"
+          ]
+        },
+        {
+          "identity": {
+            "id": "primary",
+            "kind": "role",
+            "role": "pgs05_date_time_utc_offset"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "date_time_utc_offset"
+          ]
+        },
+        {
+          "identity": {
+            "id": "primary",
+            "kind": "role",
+            "role": "pgs05_date_time_instant"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "date_time_instant"
+          ]
+        },
+        {
+          "identity": {
+            "id": "primary",
+            "kind": "role",
+            "role": "pgs05_date_time_weekday"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "date_time_weekday"
+          ]
+        },
+        {
+          "identity": {
+            "id": "primary",
+            "kind": "role",
+            "role": "pgs05_date_time_iso_format"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "date_time_iso_format"
+          ]
+        },
+        {
+          "identity": {
+            "id": "primary",
+            "kind": "role",
+            "role": "pgs05_date_time_iso_format_precise"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "date_time_iso_format_precise"
           ]
         },
         {

@@ -462,14 +462,14 @@ corrige los demás puntos. Puerta G2 de §10.
 
 ### PG-S.05 · Fecha y hora de calendario con zona horaria e ISO 8601
 
-- [ ] `PG-S.05.01` Leer `lib.time.md` íntegro, `eng.effect.tape.md` (`R3`, `R6`), `ENG.EXEC.EFFECT-COMMIT`, README de
+- [x] `PG-S.05.01` Leer `lib.time.md` íntegro, `eng.effect.tape.md` (`R3`, `R6`), `ENG.EXEC.EFFECT-COMMIT`, README de
   `host`, `runtime`, `abi`, `api` (presentación de valores), `physical_host.rs::real_nanos`. Resolver `PS-V-10`.
-- [ ] `PG-S.05.02` **Experimento `PS-E01` (decisión DS-18)**: medir el candidato de zonas horarias del sistema en
+- [x] `PG-S.05.02` **Experimento `PS-E01` (decisión DS-18)**: medir el candidato de zonas horarias del sistema en
   `pseudolearn_host` (licencia con `cargo-deny`, tamaño de `pseudolearn_host` y del puente de la app frente a
   `PERF.ARTIFACT.SIZE`, comportamiento en macOS, Linux, iOS simulador y Windows —este último solo compila; no se afirma
   ejecución—). Entregable: tabla de alternativas con números. Si algo supera el presupuesto: **parar** (el puente de la
   app ya tiene una parada declarada en PG-B.22).
-- [ ] `PG-S.05.03` Especificación en `LIB.TIME`: tipo `FechaHora` (DS-16), operaciones puras (UTC desde instante,
+- [x] `PG-S.05.03` Especificación en `LIB.TIME`: tipo `FechaHora` (DS-16), operaciones puras (UTC desde instante,
   construcción desde componentes con validación de calendario, accesores `año, mes, día, hora, minuto, segundo,
   nanosegundo, díaDeLaSemana, desplazamientoUtc, instante`, formato ISO 8601 con y sin fracción, análisis ISO 8601
   que acepta `Z`, `±hh:mm`, fracción y fecha sola, y devuelve `Nada` ante cualquier forma inválida o fuera de rango)
@@ -479,7 +479,7 @@ corrige los demás puntos. Puerta G2 de §10.
   desplazamiento, el inverso no se ofrece en esta fase). Entradas D2 en `LIB.MODEL` (familia `time`), nuevo tipo de dato
   de efecto (`date_time`, `optional_date_time`, **CANDIDATOS**) y su registro en `value_kind` (`abi/build.rs`),
   `EffectValueKind`, `HostValue`, `host_words.rs`, `effect_types.rs`; facetas del nombre del tipo es/en en el vocabulario.
-- [ ] `PG-S.05.04` Casos derivados: época (`1970-01-01T00:00:00Z`), un nanosegundo, fecha negativa (1969), 29/02 de año
+- [x] `PG-S.05.04` Casos derivados: época (`1970-01-01T00:00:00Z`), un nanosegundo, fecha negativa (1969), 29/02 de año
   bisiesto y de uno que no lo es (rechazo), 31/12→01/01, 1900/2000/2100, límites del rango (primer y último instante),
   fuera de rango (`Nada`), desplazamientos `+14:00`/`-12:00`/`+05:30`/`Z`/sin zona, formatos inválidos
   (`2026-13-01`, `2026-02-30`, `T25:00`, vacío, espacios, minúsculas `t`/`z` según la regla), fracciones de 1 a 9
@@ -487,51 +487,51 @@ corrige los demás puntos. Puerta G2 de §10.
   zona del sistema grabada y reproducida (sin consultar al sistema), instante repetido en cambio de horario (la zona la
   fija el anfitrión: el caso del corpus usa el doble de memoria con un desplazamiento declarado en `anfitrion`).
   Propiedad: ida y vuelta ISO sobre instantes sembrados dentro del rango.
-- [ ] `PG-S.05.05` Tests: `pseudolearn_library` (calendario puro en un archivo propio; algoritmo de días civiles
+- [x] `PG-S.05.05` Tests: `pseudolearn_library` (calendario puro en un archivo propio; algoritmo de días civiles
   verificado contra un oráculo independiente de `see_oracles` o tabla derivada de la definición del calendario, no contra
   una biblioteca), `pseudolearn_runtime`, `pseudolearn_host` (zona del sistema con el `TZ` controlado **solo en la
   prueba**, nunca en producto), `pseudolearn_api` (presentación del valor opaco en el estado), adaptadores TS.
-- [ ] `PG-S.05.06` Código: calendario en un archivo propio de `pseudolearn_library` (sin dependencia de zonas); la
+- [x] `PG-S.05.06` Código: calendario en un archivo propio de `pseudolearn_library` (sin dependencia de zonas); la
   consulta a la zona del sistema solo en `pseudolearn_host` y en el adaptador web (`Date#getTimezoneOffset` del
   instante; límite: sin precisión de segundos para fechas históricas, documentado); doble de memoria con
   desplazamiento declarado por la configuración del caso.
-- [ ] `PG-S.05.07` Cinta: el resultado de la zona del sistema se graba con `capability_kind` `clock`; verificar con
+- [x] `PG-S.05.07` Cinta: el resultado de la zona del sistema se graba con `capability_kind` `clock`; verificar con
   `PS-E05` (E-PG-05 ampliado) que reproducir no consulta al sistema.
-- [ ] `PG-S.05.08` Fichas es/en (tipo, constructores, accesores, formato, análisis, zona del sistema); consumidores
+- [x] `PG-S.05.08` Fichas es/en (tipo, constructores, accesores, formato, análisis, zona del sistema); consumidores
   (`service`: identificación del tipo en hover/completado; extensión; app: presentación del valor en variables y estado;
   exportación a Rust/Python: `std::time`/`datetime` o «sin equivalente»).
-- [ ] `PG-S.05.09` Sujeto nativo: pendiente `PG-N.08`.
-- [ ] `PG-S.05.10` README (`library`, `host`, `abi`, `runtime`, `spec`, extensión, app) con DS-16–DS-18, límites (rango,
+- [x] `PG-S.05.09` Sujeto nativo: pendiente `PG-N.08`.
+- [x] `PG-S.05.10` README (`library`, `host`, `abi`, `runtime`, `spec`, extensión, app) con DS-16–DS-18, límites (rango,
   sin segundos intercalares, sin zonas con nombre) y el resultado de `PS-E01`.
-- [ ] `PG-S.05.11` Verificación dirigida y registro de la tabla de `PS-E01`.
+- [x] `PG-S.05.11` Verificación dirigida y registro de la tabla de `PS-E01`.
 
 ### PG-S.06 · Variables de entorno de solo lectura
 
-- [ ] `PG-S.06.01` Leer `lang.capability.model.md`, `lang.capability.purity.md`, `rt.host.interface.md`,
+- [x] `PG-S.06.01` Leer `lang.capability.model.md`, `lang.capability.purity.md`, `rt.host.interface.md`,
   `eng.effect.tape.md` (`R3`, `R5`), `secret_policy.rs`, `tape_privacy.rs`, `api.program.view.md` (menciones de tipos de
   capacidad). Resolver el reparto de familia (`io` frente a una familia nueva `environment`) y anotarlo.
-- [ ] `PG-S.06.02` Especificación (DS-19, DS-20): capacidad `Entorno` y su solicitud en `LANG.CAPABILITY.MODEL`;
+- [x] `PG-S.06.02` Especificación (DS-19, DS-20): capacidad `Entorno` y su solicitud en `LANG.CAPABILITY.MODEL`;
   `RT.HOST.INTERFACE#R1` añade las variables de entorno a la lista de autoridad plena; `ENG.EFFECT.TAPE#R3` añade
   `environment` al vocabulario cerrado y `#R5` la clasificación por nombre; operación `Obtener(nombre)` →
   `Opcional<Cadena>`: variable ausente → `Nada`; variable presente pero vacía → `Algo("")`; nombre vacío o con `=` o NUL →
   `ErrorES::PeticionInvalida`; valor no UTF-8 → `ErrorES::Utf8Invalido`; mayúsculas: sensible a mayúsculas en Unix,
   **insensible en Windows**, así que el corpus declara «el anfitrión decide» y el caso lo fija con el doble de memoria.
   En el navegador no hay entorno: la capacidad se solicita y `Obtener` devuelve un `ErrorES` tipado de plataforma (§B.3b).
-- [ ] `PG-S.06.03` Casos derivados: ausente, presente, presente vacío, nombre inválido, valor Unicode, nombre sensible
+- [x] `PG-S.06.03` Casos derivados: ausente, presente, presente vacío, nombre inválido, valor Unicode, nombre sensible
   (cinta con `SecretHandle`, valor ausente de la cinta serializada en forma textual, escapada, decimal y hexadecimal:
   `ENG.EFFECT.TAPE#R5`), reproducción de lectura no sensible sin consultar al sistema, reproducción de lectura sensible
   rechazada con `replay_non_reproducible` o resuelta con almacén, dos lecturas del mismo nombre (se graban ambas), perfil
   es/en, capacidad cerrada.
-- [ ] `PG-S.06.04` Tests en `abi` (`CapabilityKind`, `EffectValueKind::Environment`), `runtime` (`capability_table.rs`,
+- [x] `PG-S.06.04` Tests en `abi` (`CapabilityKind`, `EffectValueKind::Environment`), `runtime` (`capability_table.rs`,
   `host_validation.rs`, `secret_policy.rs` con la regla por nombre en un archivo propio), `semantic` (`capability_types.rs`,
   `effect_types.rs`), `host`, `api`.
-- [ ] `PG-S.06.05` Código: `pseudolearn_host` (lectura de `std::env::var_os`, sin heredar nada más), doble de memoria con un
+- [x] `PG-S.06.05` Código: `pseudolearn_host` (lectura de `std::env::var_os`, sin heredar nada más), doble de memoria con un
   entorno declarado por el caso, adaptador web con error tipado, puente de la app. La **configuración** del anfitrión
   no añade ninguna opción de permiso (RQ-1).
-- [ ] `PG-S.06.06` Fichas es/en, consumidores, README (`abi`, `runtime`, `host`, `semantic`, `spec`) con DS-19/DS-20 y la
+- [x] `PG-S.06.06` Fichas es/en, consumidores, README (`abi`, `runtime`, `host`, `semantic`, `spec`) con DS-19/DS-20 y la
   consecuencia de reproducibilidad.
-- [ ] `PG-S.06.07` Sujeto nativo: pendiente `PG-N.08`; recordar que `RT.PROCESS#R3` se reescribe en `PG-N.01` (§9).
-- [ ] `PG-S.06.08` Verificación dirigida, incluida una prueba de seguridad: ni el valor ni el nombre sensible aparecen en la
+- [x] `PG-S.06.07` Sujeto nativo: pendiente `PG-N.08`; recordar que `RT.PROCESS#R3` se reescribe en `PG-N.01` (§9).
+- [x] `PG-S.06.08` Verificación dirigida, incluida una prueba de seguridad: ni el valor ni el nombre sensible aparecen en la
   cinta, en el estado de la API, en la traza ni en la exportación.
 
 ### PG-S.07 · Código de salida y salida de error

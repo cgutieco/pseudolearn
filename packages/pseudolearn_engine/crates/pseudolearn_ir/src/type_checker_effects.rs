@@ -92,7 +92,9 @@ fn cell_matches(descriptor: &EffectOperation, index: usize, kind: &IrType) -> bo
         | EffectValueKind::OptionalInteger
         | EffectValueKind::OptionalReal => *kind == IrType::I64,
         EffectValueKind::OptionalText => *kind == IrType::Str,
-        EffectValueKind::OptionalJsonValue => *kind == IrType::Str,
+        EffectValueKind::OptionalJsonValue | EffectValueKind::OptionalDateTime => {
+            *kind == IrType::Str
+        }
         EffectValueKind::JsonResult => {
             if index == 4 {
                 *kind == IrType::Str
@@ -133,6 +135,9 @@ fn matches_kind(kind: EffectValueKind, actual: &IrType) -> bool {
         EffectValueKind::OptionalText => *actual == IrType::Str,
         EffectValueKind::OptionalJsonValue => {
             matches!(actual, IrType::Object(name) if name == "$effect:JsonValue")
+        }
+        EffectValueKind::OptionalDateTime => {
+            matches!(actual, IrType::Object(name) if name == "$effect:DateTime")
         }
         EffectValueKind::HttpMethod => *actual == IrType::I64,
         EffectValueKind::TextList => {

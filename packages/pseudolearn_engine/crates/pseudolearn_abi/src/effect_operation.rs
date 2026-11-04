@@ -21,6 +21,9 @@ pub enum EffectValueKind {
     Clock,
     Timer,
     Network,
+    Environment,
+    DateTime,
+    OptionalDateTime,
     HttpMethod,
     HttpRequest,
     HttpResponse,
@@ -63,9 +66,11 @@ impl EffectOperation {
             EffectValueKind::OptionalBoolean
             | EffectValueKind::OptionalInteger
             | EffectValueKind::OptionalReal => 2,
-            EffectValueKind::OptionalText | EffectValueKind::OptionalJsonValue => 1,
             EffectValueKind::JsonResult => 5,
             _ if self.fallible => 3,
+            EffectValueKind::OptionalText
+            | EffectValueKind::OptionalJsonValue
+            | EffectValueKind::OptionalDateTime => 1,
             _ => 1,
         }
     }
@@ -89,6 +94,7 @@ impl EffectOperation {
             Some(EffectValueKind::Arguments) => "arguments",
             Some(EffectValueKind::Timer) => "timer",
             Some(EffectValueKind::Network) => "network",
+            Some(EffectValueKind::Environment) => "environment",
             _ => match self.identity.strip_prefix("request_") {
                 Some("directory") => "filesystem",
                 Some(requested) => requested,

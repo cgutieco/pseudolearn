@@ -4681,6 +4681,96 @@
 }
 ```
 
+```cobertura
+{
+  "id": "V226",
+  "regla": "LIB.IO#R12",
+  "instrucciones": [
+    "effect_call"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V227",
+  "regla": "LIB.IO#R13",
+  "instrucciones": [
+    "effect_call"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V228",
+  "regla": "LIB.IO#R14",
+  "instrucciones": [
+    "effect_call"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V229",
+  "regla": "LIB.TIME#R3",
+  "instrucciones": [
+    "effect_call"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V230",
+  "regla": "LIB.TIME#R4",
+  "instrucciones": [
+    "effect_call"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V231",
+  "regla": "LIB.TIME#R5",
+  "instrucciones": [
+    "effect_call"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V232",
+  "regla": "LIB.TIME#R6",
+  "instrucciones": [
+    "effect_call"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V233",
+  "regla": "LIB.TIME#R7",
+  "instrucciones": [
+    "effect_call"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V234",
+  "regla": "LIB.TIME#R8",
+  "instrucciones": [
+    "effect_call"
+  ]
+}
+```
+
 ```instruccion
 {
   "id": "O123",

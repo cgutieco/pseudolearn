@@ -51,3 +51,29 @@ La medición ios-arm64 usa Release con opt-level z, LTO fat, una unidad y símbo
 Hyper se usa para protocolo HTTP/1 sobre conexiones explícitas, Tokio para esperas cancelables y
 Rustls con rustls-platform-verifier para validar contra el almacén del sistema, incluido iOS.
 Se descarta un cliente que siga redirecciones o herede proxies ambientales.
+
+## Entorno y zona horaria del sistema (`PG-S.05`, `PG-S.06`)
+
+`physical_environment.rs` lee con `std::env::var_os` solo el nombre pedido: no enumera ni hereda nada más. Un nombre
+vacío, con `=` o con NUL es `peticion_invalida` sin consultar al sistema (en Rust esas llamadas harían `panic`); un
+valor que no es UTF-8 es `utf8_invalido`. Unix distingue mayúsculas en los nombres y Windows no: el corpus declara que
+el anfitrión decide.
+
+`physical_local_zone.rs` implementa `AhoraLocal`: lee el reloj y pregunta a `jiff` el desplazamiento vigente en ese
+instante en la zona del sistema, que incluye el horario de verano, y lo trunca hacia cero a minutos enteros. Los
+tests inyectan la zona (`TimeZone::get("America/New_York")` en enero y julio, y zonas fijas); el producto nunca
+modifica `TZ`.
+
+### `PS-E01`: origen del desplazamiento (DS-18)
+
+| Alternativa | Resultado |
+|---|---|
+| (a) `jiff` 0.2.37 con `default-features = false` y `std`, `tz-system`, `tzdb-zoneinfo` | **Elegida.** Añade 2 cajas nativas (`jiff`, `jiff-core`) y `windows-link` solo en Windows; `cargo deny check licenses bans sources` en verde (licencia `Unlicense OR MIT`, sin duplicados nuevos) |
+| (b) `unsafe` o FFI propio | Descartada: este miembro declara `unsafe_allowed: false` |
+| (c) el consumidor inyecta el desplazamiento | No hace falta; duplicaría la lógica en CLI, app y web |
+
+Plataformas: compila y pasa sus pruebas en macOS; la compilación para `aarch64-apple-ios-sim`, `aarch64-apple-ios` y
+`x86_64-pc-windows-msvc` se comprueba con `cargo check --target`. No se afirma ejecución en Windows ni en un iPhone
+físico. En un sistema sin base de zonas o sin `/etc/localtime` legible, `jiff` informa UTC y el desplazamiento es cero;
+es un límite declarado. La extensión web usa `Date#getTimezoneOffset`, que no tiene precisión de segundos ni conoce las
+reglas históricas de la zona.

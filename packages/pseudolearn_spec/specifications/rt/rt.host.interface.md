@@ -41,7 +41,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La salida y la entrada se inyectan al iniciar. Archivos, red, reloj, temporizador y argumentos tienen autoridad plena por omisión, sin concesiones. Argumentos entrega los argumentos de ejecución en orden, sin el nombre del programa, conservando espacios, Unicode y argumentos vacíos. Los errores del sistema operativo o navegador son ErrorES tipados de plataforma.",
+  "texto": "La salida y la entrada se inyectan al iniciar. Archivos, red, reloj, temporizador, argumentos y variables de entorno tienen autoridad plena por omisión, sin concesiones. Argumentos entrega los argumentos de ejecución en orden, sin el nombre del programa, conservando espacios, Unicode y argumentos vacíos. Entorno entrega el valor de una variable por nombre, de solo lectura, sin enumerar las demás ni heredar nada más del proceso. Los errores del sistema operativo o navegador son ErrorES tipados de plataforma.",
   "verificacion": [
     "C1",
     "C11",

@@ -33,6 +33,11 @@ pub fn local_operation(
             arguments,
             maximum_json_depth,
         ),
+        "time" => crate::date_time_operations::time_operation(
+            receiver_value.as_ref(),
+            operation.identity,
+            arguments,
+        ),
         "network" => crate::http_operations::http_operation(
             receiver_value.as_ref(),
             operation.identity,

@@ -6,7 +6,7 @@ use pseudolearn_abi::{
 fn network_capability_uses_a_stable_new_tag() {
     assert_eq!(CapabilityKind::Network.to_tag(), 6);
     assert_eq!(CapabilityKind::from_tag(6), Some(CapabilityKind::Network));
-    assert_eq!(CapabilityKind::ALL.len(), 7);
+    assert_eq!(CapabilityKind::ALL.len(), 8);
 }
 
 #[test]

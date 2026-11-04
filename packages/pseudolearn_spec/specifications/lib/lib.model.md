@@ -1693,6 +1693,219 @@
         "result": "integer",
         "effect": true,
         "fallible": true
+      },
+      {
+        "identity": "request_environment",
+        "family": "io",
+        "receiver": null,
+        "es": "SolicitarEntorno",
+        "en": "requestEnvironment",
+        "parameters": [],
+        "result": "environment",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "environment_get",
+        "family": "io",
+        "receiver": "environment",
+        "es": "Obtener",
+        "en": "get",
+        "parameters": [
+          "text"
+        ],
+        "result": "optional_text",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "clock_local_now",
+        "family": "time",
+        "receiver": "clock",
+        "es": "AhoraLocal",
+        "en": "localNow",
+        "parameters": [],
+        "result": "date_time",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "date_time_utc",
+        "family": "time",
+        "receiver": null,
+        "es": "FechaHoraUtc",
+        "en": "dateTimeUtc",
+        "parameters": [
+          "integer"
+        ],
+        "result": "date_time",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "date_time_of",
+        "family": "time",
+        "receiver": null,
+        "es": "FechaHoraDe",
+        "en": "dateTimeOf",
+        "parameters": [
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer"
+        ],
+        "result": "optional_date_time",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "date_time_parse",
+        "family": "time",
+        "receiver": null,
+        "es": "AnalizarFechaHora",
+        "en": "parseDateTime",
+        "parameters": [
+          "text"
+        ],
+        "result": "optional_date_time",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "date_time_year",
+        "family": "time",
+        "receiver": "date_time",
+        "es": "Anio",
+        "en": "year",
+        "parameters": [],
+        "result": "integer",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "date_time_month",
+        "family": "time",
+        "receiver": "date_time",
+        "es": "Mes",
+        "en": "month",
+        "parameters": [],
+        "result": "integer",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "date_time_day",
+        "family": "time",
+        "receiver": "date_time",
+        "es": "Dia",
+        "en": "day",
+        "parameters": [],
+        "result": "integer",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "date_time_hour",
+        "family": "time",
+        "receiver": "date_time",
+        "es": "Hora",
+        "en": "hour",
+        "parameters": [],
+        "result": "integer",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "date_time_minute",
+        "family": "time",
+        "receiver": "date_time",
+        "es": "Minuto",
+        "en": "minute",
+        "parameters": [],
+        "result": "integer",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "date_time_second",
+        "family": "time",
+        "receiver": "date_time",
+        "es": "Segundo",
+        "en": "second",
+        "parameters": [],
+        "result": "integer",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "date_time_nanosecond",
+        "family": "time",
+        "receiver": "date_time",
+        "es": "Nanosegundo",
+        "en": "nanosecond",
+        "parameters": [],
+        "result": "integer",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "date_time_weekday",
+        "family": "time",
+        "receiver": "date_time",
+        "es": "DiaDeLaSemana",
+        "en": "weekday",
+        "parameters": [],
+        "result": "integer",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "date_time_utc_offset",
+        "family": "time",
+        "receiver": "date_time",
+        "es": "DesplazamientoUtc",
+        "en": "utcOffset",
+        "parameters": [],
+        "result": "integer",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "date_time_instant",
+        "family": "time",
+        "receiver": "date_time",
+        "es": "Instante",
+        "en": "instant",
+        "parameters": [],
+        "result": "integer",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "date_time_iso_format",
+        "family": "time",
+        "receiver": "date_time",
+        "es": "FormatoIso",
+        "en": "isoFormat",
+        "parameters": [],
+        "result": "text",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "date_time_iso_format_precise",
+        "family": "time",
+        "receiver": "date_time",
+        "es": "FormatoIsoPreciso",
+        "en": "isoFormatPrecise",
+        "parameters": [],
+        "result": "text",
+        "effect": false,
+        "fallible": false
       }
     ]
   }
@@ -1716,6 +1929,10 @@ Codigo y Incierto (code y uncertain): el código es la variante portable, y la b
 incertidumbre de una operación con potencial de escritura.
 
 AMayusculas y AMinusculas son operaciones puras de texto sin receptor que devuelven una cadena nueva.
+
+SolicitarEntorno crea la capacidad Entorno y Obtener lee una variable por nombre; ambas son operaciones de efecto falibles de la familia io, y Obtener devuelve Opcional<Cadena> según LIB.IO#R12 a R14.
+
+FechaHora es un valor opaco inmutable que combina un instante en nanosegundos desde la época Unix y un desplazamiento UTC en segundos; todas sus operaciones, salvo AhoraLocal, son puras, usan la familia time y se definen en LIB.TIME#R3 a R8. AhoraLocal es una operación de efecto falible del receptor reloj.
 
 Existe, EsDirectorio, Listar, Borrar, Renombrar y CrearDirectorio son operaciones de efecto del receptor directorio y AgregarTexto y AgregarBytes del receptor archivo; todas son falibles, usan la familia io y devuelven lógico, vector de cadenas o entero según LIB.IO#R5 a R11.
 

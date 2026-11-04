@@ -1420,6 +1420,18 @@
         "en": "Timer"
       }
     },
+    "environmentCapabilityType": {
+      "lexemas": {
+        "es": "Entorno",
+        "en": "Environment"
+      }
+    },
+    "dateTimeType": {
+      "lexemas": {
+        "es": "FechaHora",
+        "en": "DateTime"
+      }
+    },
     "bytesType": {
       "lexemas": {
         "es": "Bytes",
@@ -1454,6 +1466,12 @@
       "lexemas": {
         "es": "SolicitarReloj",
         "en": "requestClock"
+      }
+    },
+    "requestEnvironment": {
+      "lexemas": {
+        "es": "SolicitarEntorno",
+        "en": "requestEnvironment"
       }
     },
     "requestTimer": {

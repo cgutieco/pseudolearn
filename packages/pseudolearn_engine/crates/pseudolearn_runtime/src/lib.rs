@@ -109,17 +109,23 @@ pub use managed_bytes::{bytes_at, bytes_content, bytes_length, new_bytes};
 pub mod json_document;
 pub use managed_capability::{capability_token, new_capability};
 
+mod date_time_values;
 mod effect_authority;
+mod environment_name;
+#[cfg(test)]
+mod environment_name_tests;
+mod environment_secret_policy;
 mod host_effect;
 mod host_session;
 mod host_validation;
+pub use environment_name::{environment_name_is_sensitive, environment_name_is_valid};
 mod http_values;
 #[cfg(test)]
 mod http_values_tests;
 pub use effect_authority::capability_kind;
 pub use host_effect::{
-    HostCapability, HostEffectProvider, HostEffectRequest, HostFailure, HostReply, HostValue,
-    HttpMethod, HttpRequestValue, HttpResponseValue, JsonFailure, JsonResultValue,
+    DateTimeValue, HostCapability, HostEffectProvider, HostEffectRequest, HostFailure, HostReply,
+    HostValue, HttpMethod, HttpRequestValue, HttpResponseValue, JsonFailure, JsonResultValue,
 };
 pub use host_session::{
     begin_host_effect, configure_host_authority, configure_network_limits, pending_host_rejection,
@@ -137,6 +143,8 @@ mod memory_host;
 mod memory_host_config;
 #[cfg(feature = "test-host")]
 mod memory_host_directories;
+#[cfg(feature = "test-host")]
+mod memory_host_environment;
 #[cfg(feature = "test-host")]
 mod memory_host_files;
 mod network_headers;

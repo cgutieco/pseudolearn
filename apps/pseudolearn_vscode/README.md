@@ -352,3 +352,10 @@ incierta. Los errores tipados del proveedor (`FileNotFound`, `FileExists`, `File
 `NoPermissions`) se mapean a las variantes de `ErrorES`; cualquier otro fallo es `interrumpido`, incierto solo si la operación
 muta. El host web rastrea el derecho de lectura de cada capacidad derivada para rechazar consultas sin lectura. Las pruebas
 usan un sistema de archivos en memoria (`tests/adapters/memory_vscode.ts`).
+
+## Reloj local y entorno en el navegador (`PG-S.05`, `PG-S.06`)
+
+`BrowserEffectHost` atiende `clock_local_now` con `Date.now()` y `Date#getTimezoneOffset`: el desplazamiento llega en
+minutos enteros, sin precisión de segundos ni reglas históricas de la zona. El navegador no tiene entorno de proceso:
+`request_environment` concede la capacidad y `environment_get` responde `permiso_denegado`, el `ErrorES` de plataforma
+del corpus (nunca una denegación por política).

@@ -289,3 +289,9 @@ La inspección reconstruye vistas de registros aplanados desde las capturas léx
 Los miembros nuevos se resuelven por identidad contextual del receptor. Ordenar acepta un comparador síncrono por valor de dos argumentos T y resultado Entero. La búsqueda admite primitivos; Claves registra un Vector del tipo de clave. min/max usan widestNumeric y amplían únicamente si participa un Real.
 
 Claves conserva el envoltorio Inmutable al consultar un diccionario inmutable, mediante el mismo contrato de lectura que el resto de los resultados referenciales no transferibles. Una copia nueva no elimina la garantía de tipos del receptor; la búsqueda de primitivos conserva resultados transferibles.
+
+## Entorno y fecha y hora (`PG-S.05`, `PG-S.06`)
+
+`Entorno`/`Environment` se resuelve como nombre de capacidad (`capability_types.rs`) y `FechaHora`/`DateTime` como
+tipo opaco de efecto (`effect_types.rs`), con `Opcional<FechaHora>` construido por `json_types.rs` junto al resto de
+opcionales de efecto. Ninguna construcción de registros como resultado: el valor de calendario es opaco (DS-13).

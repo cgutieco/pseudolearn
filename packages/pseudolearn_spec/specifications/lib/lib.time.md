@@ -203,3 +203,370 @@
   }
 }
 ```
+
+```regla
+{
+  "id": "R3",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "FechaHora es un valor opaco, inmutable y comparable por sus componentes que combina un instante, en nanosegundos desde la época Unix 1970-01-01T00:00:00Z como entero de 64 bits, y un desplazamiento UTC en segundos. El calendario es el gregoriano proléptico sin segundos intercalares. Los instantes representables van de 1677-09-21T00:12:43.145224192Z a 2262-04-11T23:47:16.854775807Z. FechaHoraUtc(instante) construye el valor con desplazamiento cero, Instante devuelve el instante y DesplazamientoUtc el desplazamiento. Es una función pura: no consulta al anfitrión ni se graba en la cinta.",
+  "verificacion": [
+    "C6"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C6",
+  "regla": "R3",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "1970-01-01T00:00:00Z\n1970-01-01T00:00:00.000000001Z\n1969-12-31T23:59:59.999999999Z\n2262-04-11T23:47:16.854775807Z\n1677-09-21T00:12:43.145224192Z\n123 0\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "Algoritmo P\nEscribir FechaHoraUtc(0).FormatoIso();\nEscribir FechaHoraUtc(1).FormatoIsoPreciso();\nEscribir FechaHoraUtc(-1).FormatoIsoPreciso();\nEscribir FechaHoraUtc(9223372036854775807).FormatoIsoPreciso();\nEscribir FechaHoraUtc(-9223372036854775807 - 1).FormatoIsoPreciso();\nEscribir FechaHoraUtc(123).Instante(), \" \", FechaHoraUtc(123).DesplazamientoUtc();\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite dateTimeUtc(0).isoFormat();\nwrite dateTimeUtc(1).isoFormatPrecise();\nwrite dateTimeUtc(-1).isoFormatPrecise();\nwrite dateTimeUtc(9223372036854775807).isoFormatPrecise();\nwrite dateTimeUtc(-9223372036854775807 - 1).isoFormatPrecise();\nwrite dateTimeUtc(123).instant(), \" \", dateTimeUtc(123).utcOffset();\nendAlgorithm\n"
+  }
+}
+```
+
+```regla
+{
+  "id": "R4",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "FechaHoraDe(año, mes, día, hora, minuto, segundo, nanosegundo, desplazamiento) interpreta los componentes como hora local con el desplazamiento dado en segundos y devuelve Algo(FechaHora), o Nada ante cualquier componente inválido: mes fuera de 1 a 12, día fuera del mes según el calendario gregoriano proléptico (bisiesto si es divisible por 4 y no por 100, o si lo es por 400, de modo que 1900 y 2100 no lo son y 2000 sí), hora fuera de 0 a 23, minuto fuera de 0 a 59, segundo fuera de 0 a 59 (el segundo 60 se rechaza), nanosegundo fuera de 0 a 999999999, desplazamiento que no sea múltiplo de 60 o que quede fuera de -43200 a 50400 (de -12:00 a +14:00), o instante resultante fuera del rango de R3. Es una función pura y total: nunca falla ni se detiene.",
+  "verificacion": [
+    "C7",
+    "C8",
+    "C9"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C7",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "2024-02-29T12:30:45.123456789Z\nnone\nnone\n2000-02-29T00:00:00.000000000Z\nnone\nnone\nnone\nnone\nnone\nnone\nnone\nnone\nnone\nnone\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso Presentar(valor Como Opcional<FechaHora>)\nSegun valor Hacer\nNada: Escribir \"none\";\nAlgo(fecha): Escribir fecha.FormatoIsoPreciso();\nFinSegun\nFinSubProceso\nAlgoritmo P\nPresentar(FechaHoraDe(2024, 2, 29, 12, 30, 45, 123456789, 0));\nPresentar(FechaHoraDe(2023, 2, 29, 0, 0, 0, 0, 0));\nPresentar(FechaHoraDe(1900, 2, 29, 0, 0, 0, 0, 0));\nPresentar(FechaHoraDe(2000, 2, 29, 0, 0, 0, 0, 0));\nPresentar(FechaHoraDe(2100, 2, 29, 0, 0, 0, 0, 0));\nPresentar(FechaHoraDe(2026, 4, 31, 0, 0, 0, 0, 0));\nPresentar(FechaHoraDe(2026, 0, 10, 0, 0, 0, 0, 0));\nPresentar(FechaHoraDe(2026, 13, 10, 0, 0, 0, 0, 0));\nPresentar(FechaHoraDe(2026, 1, 0, 0, 0, 0, 0, 0));\nPresentar(FechaHoraDe(2026, 1, 1, 24, 0, 0, 0, 0));\nPresentar(FechaHoraDe(2026, 1, 1, 0, 60, 0, 0, 0));\nPresentar(FechaHoraDe(2026, 1, 1, 0, 0, 60, 0, 0));\nPresentar(FechaHoraDe(2026, 1, 1, 0, 0, 0, 1000000000, 0));\nPresentar(FechaHoraDe(2026, 1, 1, 0, 0, 0, -1, 0));\nFinAlgoritmo\n",
+    "en": "subroutine Show(value as optional<DateTime>)\nswitch value do\nnone: write \"none\";\nsome(moment): write moment.isoFormatPrecise();\nendSwitch\nendSubroutine\nalgorithm P\nShow(dateTimeOf(2024, 2, 29, 12, 30, 45, 123456789, 0));\nShow(dateTimeOf(2023, 2, 29, 0, 0, 0, 0, 0));\nShow(dateTimeOf(1900, 2, 29, 0, 0, 0, 0, 0));\nShow(dateTimeOf(2000, 2, 29, 0, 0, 0, 0, 0));\nShow(dateTimeOf(2100, 2, 29, 0, 0, 0, 0, 0));\nShow(dateTimeOf(2026, 4, 31, 0, 0, 0, 0, 0));\nShow(dateTimeOf(2026, 0, 10, 0, 0, 0, 0, 0));\nShow(dateTimeOf(2026, 13, 10, 0, 0, 0, 0, 0));\nShow(dateTimeOf(2026, 1, 0, 0, 0, 0, 0, 0));\nShow(dateTimeOf(2026, 1, 1, 24, 0, 0, 0, 0));\nShow(dateTimeOf(2026, 1, 1, 0, 60, 0, 0, 0));\nShow(dateTimeOf(2026, 1, 1, 0, 0, 60, 0, 0));\nShow(dateTimeOf(2026, 1, 1, 0, 0, 0, 1000000000, 0));\nShow(dateTimeOf(2026, 1, 1, 0, 0, 0, -1, 0));\nendAlgorithm\n"
+  }
+}
+```
+
+```caso
+{
+  "id": "C8",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "2025-12-31T23:59:59.999999999Z\n2026-01-01T00:00:00.000000000Z\n1677-09-21T00:12:43.145224192Z\nnone\n2262-04-11T23:47:16.854775807Z\nnone\nnone\nnone\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso Presentar(valor Como Opcional<FechaHora>)\nSegun valor Hacer\nNada: Escribir \"none\";\nAlgo(fecha): Escribir fecha.FormatoIsoPreciso();\nFinSegun\nFinSubProceso\nAlgoritmo P\nPresentar(FechaHoraDe(2025, 12, 31, 23, 59, 59, 999999999, 0));\nEscribir FechaHoraUtc(FechaHoraUtc(1767225599999999999).Instante() + 1).FormatoIsoPreciso();\nPresentar(FechaHoraDe(1677, 9, 21, 0, 12, 43, 145224192, 0));\nPresentar(FechaHoraDe(1677, 9, 21, 0, 12, 43, 145224191, 0));\nPresentar(FechaHoraDe(2262, 4, 11, 23, 47, 16, 854775807, 0));\nPresentar(FechaHoraDe(2262, 4, 11, 23, 47, 16, 854775808, 0));\nPresentar(FechaHoraDe(1600, 1, 1, 0, 0, 0, 0, 0));\nPresentar(FechaHoraDe(2300, 1, 1, 0, 0, 0, 0, 0));\nFinAlgoritmo\n",
+    "en": "subroutine Show(value as optional<DateTime>)\nswitch value do\nnone: write \"none\";\nsome(moment): write moment.isoFormatPrecise();\nendSwitch\nendSubroutine\nalgorithm P\nShow(dateTimeOf(2025, 12, 31, 23, 59, 59, 999999999, 0));\nwrite dateTimeUtc(dateTimeUtc(1767225599999999999).instant() + 1).isoFormatPrecise();\nShow(dateTimeOf(1677, 9, 21, 0, 12, 43, 145224192, 0));\nShow(dateTimeOf(1677, 9, 21, 0, 12, 43, 145224191, 0));\nShow(dateTimeOf(2262, 4, 11, 23, 47, 16, 854775807, 0));\nShow(dateTimeOf(2262, 4, 11, 23, 47, 16, 854775808, 0));\nShow(dateTimeOf(1600, 1, 1, 0, 0, 0, 0, 0));\nShow(dateTimeOf(2300, 1, 1, 0, 0, 0, 0, 0));\nendAlgorithm\n"
+  }
+}
+```
+
+```caso
+{
+  "id": "C9",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "2026-06-15T12:00:00.000000000+14:00\n2026-06-15T12:00:00.000000000-12:00\n2026-06-15T12:00:00.000000000+05:30\nnone\nnone\nnone\n2026-06-15T12:00:00.000000000Z\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso Presentar(valor Como Opcional<FechaHora>)\nSegun valor Hacer\nNada: Escribir \"none\";\nAlgo(fecha): Escribir fecha.FormatoIsoPreciso();\nFinSegun\nFinSubProceso\nAlgoritmo P\nPresentar(FechaHoraDe(2026, 6, 15, 12, 0, 0, 0, 50400));\nPresentar(FechaHoraDe(2026, 6, 15, 12, 0, 0, 0, -43200));\nPresentar(FechaHoraDe(2026, 6, 15, 12, 0, 0, 0, 19800));\nPresentar(FechaHoraDe(2026, 6, 15, 12, 0, 0, 0, 50460));\nPresentar(FechaHoraDe(2026, 6, 15, 12, 0, 0, 0, -43260));\nPresentar(FechaHoraDe(2026, 6, 15, 12, 0, 0, 0, 30));\nPresentar(FechaHoraDe(2026, 6, 15, 12, 0, 0, 0, 0));\nFinAlgoritmo\n",
+    "en": "subroutine Show(value as optional<DateTime>)\nswitch value do\nnone: write \"none\";\nsome(moment): write moment.isoFormatPrecise();\nendSwitch\nendSubroutine\nalgorithm P\nShow(dateTimeOf(2026, 6, 15, 12, 0, 0, 0, 50400));\nShow(dateTimeOf(2026, 6, 15, 12, 0, 0, 0, -43200));\nShow(dateTimeOf(2026, 6, 15, 12, 0, 0, 0, 19800));\nShow(dateTimeOf(2026, 6, 15, 12, 0, 0, 0, 50460));\nShow(dateTimeOf(2026, 6, 15, 12, 0, 0, 0, -43260));\nShow(dateTimeOf(2026, 6, 15, 12, 0, 0, 0, 30));\nShow(dateTimeOf(2026, 6, 15, 12, 0, 0, 0, 0));\nendAlgorithm\n"
+  }
+}
+```
+
+```regla
+{
+  "id": "R5",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Anio, Mes, Dia, Hora, Minuto, Segundo y Nanosegundo devuelven los componentes de la hora local, es decir, del instante desplazado por el desplazamiento UTC; DiaDeLaSemana devuelve el día de la semana local según ISO 8601, de 1 para lunes a 7 para domingo. Instante y DesplazamientoUtc devuelven los dos componentes almacenados, de modo que el instante no cambia con el desplazamiento. Son funciones puras y totales.",
+  "verificacion": [
+    "C10",
+    "C11"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C10",
+  "regla": "R5",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "1970 1 1 4\n6\n3\n4\n3\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "Algoritmo P\nDefinir fecha Como FechaHora <- FechaHoraUtc(0);\nEscribir fecha.Anio(), \" \", fecha.Mes(), \" \", fecha.Dia(), \" \", fecha.DiaDeLaSemana();\nEscribir FechaHoraUtc(946684800000000000).DiaDeLaSemana();\nEscribir FechaHoraUtc(-1).DiaDeLaSemana();\nEscribir FechaHoraUtc(1709208000000000000).DiaDeLaSemana();\nEscribir FechaHoraUtc(1793750400000000000).DiaDeLaSemana();\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine moment as DateTime <- dateTimeUtc(0);\nwrite moment.year(), \" \", moment.month(), \" \", moment.day(), \" \", moment.weekday();\nwrite dateTimeUtc(946684800000000000).weekday();\nwrite dateTimeUtc(-1).weekday();\nwrite dateTimeUtc(1709208000000000000).weekday();\nwrite dateTimeUtc(1793750400000000000).weekday();\nendAlgorithm\n"
+  }
+}
+```
+
+```caso
+{
+  "id": "C11",
+  "regla": "R5",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "2024 3 10 1 2 3 4 19800 1710012723000000004\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso Presentar(valor Como Opcional<FechaHora>)\nSegun valor Hacer\nNada: Escribir \"none\";\nAlgo(fecha): Escribir fecha.FormatoIsoPreciso();\nFinSegun\nFinSubProceso\nAlgoritmo P\nDefinir fecha Como Opcional<FechaHora> <- FechaHoraDe(2024, 3, 10, 1, 2, 3, 4, 19800);\nSegun fecha Hacer\nNada: Escribir \"none\";\nAlgo(valor): Escribir valor.Anio(), \" \", valor.Mes(), \" \", valor.Dia(), \" \", valor.Hora(), \" \", valor.Minuto(), \" \", valor.Segundo(), \" \", valor.Nanosegundo(), \" \", valor.DesplazamientoUtc(), \" \", valor.Instante();\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Show(value as optional<DateTime>)\nswitch value do\nnone: write \"none\";\nsome(moment): write moment.isoFormatPrecise();\nendSwitch\nendSubroutine\nalgorithm P\ndefine moment as optional<DateTime> <- dateTimeOf(2024, 3, 10, 1, 2, 3, 4, 19800);\nswitch moment do\nnone: write \"none\";\nsome(value): write value.year(), \" \", value.month(), \" \", value.day(), \" \", value.hour(), \" \", value.minute(), \" \", value.second(), \" \", value.nanosecond(), \" \", value.utcOffset(), \" \", value.instant();\nendSwitch\nendAlgorithm\n"
+  }
+}
+```
+
+```regla
+{
+  "id": "R6",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "FormatoIso devuelve la hora local en ISO 8601 extendido AAAA-MM-DDThh:mm:ss seguido del desplazamiento, Z cuando es cero y +hh:mm o -hh:mm en otro caso, sin fracción de segundo: descarta los nanosegundos. FormatoIsoPreciso añade siempre nueve dígitos de fracción tras el segundo. El año siempre usa cuatro dígitos, la T y la Z son mayúsculas y el resultado nunca depende de la configuración regional.",
+  "verificacion": [
+    "C12"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C12",
+  "regla": "R6",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "2026-06-15T12:30:45+05:30\n2026-06-15T12:30:45.120000000+05:30\n2026-06-15T12:30:45-12:00\n2026-06-15T12:30:45+14:00\n2026-06-15T12:30:45Z\n2026-06-15T12:30:45-09:30\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso Presentar(valor Como Opcional<FechaHora>)\nSegun valor Hacer\nNada: Escribir \"none\";\nAlgo(fecha): Escribir fecha.FormatoIsoPreciso();\nFinSegun\nFinSubProceso\nAlgoritmo P\nDefinir fecha Como Opcional<FechaHora> <- FechaHoraDe(2026, 6, 15, 12, 30, 45, 120000000, 19800);\nSegun fecha Hacer\nNada: Escribir \"none\";\nAlgo(valor): Escribir valor.FormatoIso();\nEscribir valor.FormatoIsoPreciso();\nFinSegun\nSegun FechaHoraDe(2026, 6, 15, 12, 30, 45, 0, -43200) Hacer\nNada: Escribir \"none\";\nAlgo(valor): Escribir valor.FormatoIso();\nFinSegun\nSegun FechaHoraDe(2026, 6, 15, 12, 30, 45, 0, 50400) Hacer\nNada: Escribir \"none\";\nAlgo(valor): Escribir valor.FormatoIso();\nFinSegun\nSegun FechaHoraDe(2026, 6, 15, 12, 30, 45, 0, 0) Hacer\nNada: Escribir \"none\";\nAlgo(valor): Escribir valor.FormatoIso();\nFinSegun\nSegun FechaHoraDe(2026, 6, 15, 12, 30, 45, 0, -34200) Hacer\nNada: Escribir \"none\";\nAlgo(valor): Escribir valor.FormatoIso();\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Show(value as optional<DateTime>)\nswitch value do\nnone: write \"none\";\nsome(moment): write moment.isoFormatPrecise();\nendSwitch\nendSubroutine\nalgorithm P\ndefine moment as optional<DateTime> <- dateTimeOf(2026, 6, 15, 12, 30, 45, 120000000, 19800);\nswitch moment do\nnone: write \"none\";\nsome(value): write value.isoFormat();\nwrite value.isoFormatPrecise();\nendSwitch\nswitch dateTimeOf(2026, 6, 15, 12, 30, 45, 0, -43200) do\nnone: write \"none\";\nsome(value): write value.isoFormat();\nendSwitch\nswitch dateTimeOf(2026, 6, 15, 12, 30, 45, 0, 50400) do\nnone: write \"none\";\nsome(value): write value.isoFormat();\nendSwitch\nswitch dateTimeOf(2026, 6, 15, 12, 30, 45, 0, 0) do\nnone: write \"none\";\nsome(value): write value.isoFormat();\nendSwitch\nswitch dateTimeOf(2026, 6, 15, 12, 30, 45, 0, -34200) do\nnone: write \"none\";\nsome(value): write value.isoFormat();\nendSwitch\nendAlgorithm\n"
+  }
+}
+```
+
+```regla
+{
+  "id": "R7",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "AnalizarFechaHora(texto) devuelve Algo(FechaHora) solo para las formas AAAA-MM-DD, que significa medianoche con desplazamiento cero, y AAAA-MM-DDThh:mm:ss con fracción opcional de uno a nueve dígitos tras el segundo y con desplazamiento opcional Z o ±hh:mm, que sin desplazamiento significa cero. Cualquier otra entrada devuelve Nada: vacía, con espacios, con T o Z en minúscula, sin segundos, con fracción sin dígitos o de más de nueve, con el segundo 60, con campos fuera del calendario gregoriano proléptico, con desplazamiento fuera de -12:00 a +14:00 o con minutos de desplazamiento mayores que 59, o con un instante fuera del rango de R3. Es una función pura y total.",
+  "verificacion": [
+    "C13",
+    "C14",
+    "C15"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C13",
+  "regla": "R7",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "2026-06-15T00:00:00.000000000Z\n2026-06-15T12:30:45.000000000Z\n2026-06-15T12:30:45.000000000Z\n2026-06-15T12:30:45.000000000+05:30\n2026-06-15T12:30:45.000000000-12:00\n2026-06-15T12:30:45.500000000Z\n2026-06-15T12:30:45.123456789+14:00\n2024-02-29T23:59:59.000000000Z\n1677-09-21T00:12:43.145224192Z\n2262-04-11T23:47:16.854775807Z\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso Presentar(valor Como Opcional<FechaHora>)\nSegun valor Hacer\nNada: Escribir \"none\";\nAlgo(fecha): Escribir fecha.FormatoIsoPreciso();\nFinSegun\nFinSubProceso\nAlgoritmo P\nPresentar(AnalizarFechaHora(\"2026-06-15\"));\nPresentar(AnalizarFechaHora(\"2026-06-15T12:30:45\"));\nPresentar(AnalizarFechaHora(\"2026-06-15T12:30:45Z\"));\nPresentar(AnalizarFechaHora(\"2026-06-15T12:30:45+05:30\"));\nPresentar(AnalizarFechaHora(\"2026-06-15T12:30:45-12:00\"));\nPresentar(AnalizarFechaHora(\"2026-06-15T12:30:45.5Z\"));\nPresentar(AnalizarFechaHora(\"2026-06-15T12:30:45.123456789+14:00\"));\nPresentar(AnalizarFechaHora(\"2024-02-29T23:59:59Z\"));\nPresentar(AnalizarFechaHora(\"1677-09-21T00:12:43.145224192Z\"));\nPresentar(AnalizarFechaHora(\"2262-04-11T23:47:16.854775807Z\"));\nFinAlgoritmo\n",
+    "en": "subroutine Show(value as optional<DateTime>)\nswitch value do\nnone: write \"none\";\nsome(moment): write moment.isoFormatPrecise();\nendSwitch\nendSubroutine\nalgorithm P\nShow(parseDateTime(\"2026-06-15\"));\nShow(parseDateTime(\"2026-06-15T12:30:45\"));\nShow(parseDateTime(\"2026-06-15T12:30:45Z\"));\nShow(parseDateTime(\"2026-06-15T12:30:45+05:30\"));\nShow(parseDateTime(\"2026-06-15T12:30:45-12:00\"));\nShow(parseDateTime(\"2026-06-15T12:30:45.5Z\"));\nShow(parseDateTime(\"2026-06-15T12:30:45.123456789+14:00\"));\nShow(parseDateTime(\"2024-02-29T23:59:59Z\"));\nShow(parseDateTime(\"1677-09-21T00:12:43.145224192Z\"));\nShow(parseDateTime(\"2262-04-11T23:47:16.854775807Z\"));\nendAlgorithm\n"
+  }
+}
+```
+
+```caso
+{
+  "id": "C14",
+  "regla": "R7",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "none\nnone\nnone\nnone\nnone\nnone\nnone\nnone\nnone\nnone\nnone\nnone\nnone\nnone\nnone\nnone\nnone\nnone\nnone\nnone\nnone\nnone\nnone\nnone\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso Presentar(valor Como Opcional<FechaHora>)\nSegun valor Hacer\nNada: Escribir \"none\";\nAlgo(fecha): Escribir fecha.FormatoIsoPreciso();\nFinSegun\nFinSubProceso\nAlgoritmo P\nPresentar(AnalizarFechaHora(\"2026-13-01\"));\nPresentar(AnalizarFechaHora(\"2026-02-30\"));\nPresentar(AnalizarFechaHora(\"2026-01-01T25:00:00\"));\nPresentar(AnalizarFechaHora(\"\"));\nPresentar(AnalizarFechaHora(\" 2026-01-01\"));\nPresentar(AnalizarFechaHora(\"2026-01-01 \"));\nPresentar(AnalizarFechaHora(\"2026-01-01t00:00:00\"));\nPresentar(AnalizarFechaHora(\"2026-01-01T00:00:00z\"));\nPresentar(AnalizarFechaHora(\"2026-01-01T00:00:60Z\"));\nPresentar(AnalizarFechaHora(\"2026-01-01T00:00:00+14:30\"));\nPresentar(AnalizarFechaHora(\"2026-01-01T00:00:00-12:30\"));\nPresentar(AnalizarFechaHora(\"2026-01-01T00:00:00.Z\"));\nPresentar(AnalizarFechaHora(\"2026-01-01T00:00:00.1234567890Z\"));\nPresentar(AnalizarFechaHora(\"1600-01-01\"));\nPresentar(AnalizarFechaHora(\"2300-01-01\"));\nPresentar(AnalizarFechaHora(\"2026-01-01T00:00Z\"));\nPresentar(AnalizarFechaHora(\"2026-1-1\"));\nPresentar(AnalizarFechaHora(\"2023-02-29\"));\nPresentar(AnalizarFechaHora(\"2026-01-01T00:00:00+05:60\"));\nPresentar(AnalizarFechaHora(\"2026-01-01T00:00:00+0530\"));\nPresentar(AnalizarFechaHora(\"20260101\"));\nPresentar(AnalizarFechaHora(\"2026-01-01T00:00:00 Z\"));\nPresentar(AnalizarFechaHora(\"+2026-01-01\"));\nPresentar(AnalizarFechaHora(\"2026-01-01T00:00:00+05:30:00\"));\nFinAlgoritmo\n",
+    "en": "subroutine Show(value as optional<DateTime>)\nswitch value do\nnone: write \"none\";\nsome(moment): write moment.isoFormatPrecise();\nendSwitch\nendSubroutine\nalgorithm P\nShow(parseDateTime(\"2026-13-01\"));\nShow(parseDateTime(\"2026-02-30\"));\nShow(parseDateTime(\"2026-01-01T25:00:00\"));\nShow(parseDateTime(\"\"));\nShow(parseDateTime(\" 2026-01-01\"));\nShow(parseDateTime(\"2026-01-01 \"));\nShow(parseDateTime(\"2026-01-01t00:00:00\"));\nShow(parseDateTime(\"2026-01-01T00:00:00z\"));\nShow(parseDateTime(\"2026-01-01T00:00:60Z\"));\nShow(parseDateTime(\"2026-01-01T00:00:00+14:30\"));\nShow(parseDateTime(\"2026-01-01T00:00:00-12:30\"));\nShow(parseDateTime(\"2026-01-01T00:00:00.Z\"));\nShow(parseDateTime(\"2026-01-01T00:00:00.1234567890Z\"));\nShow(parseDateTime(\"1600-01-01\"));\nShow(parseDateTime(\"2300-01-01\"));\nShow(parseDateTime(\"2026-01-01T00:00Z\"));\nShow(parseDateTime(\"2026-1-1\"));\nShow(parseDateTime(\"2023-02-29\"));\nShow(parseDateTime(\"2026-01-01T00:00:00+05:60\"));\nShow(parseDateTime(\"2026-01-01T00:00:00+0530\"));\nShow(parseDateTime(\"20260101\"));\nShow(parseDateTime(\"2026-01-01T00:00:00 Z\"));\nShow(parseDateTime(\"+2026-01-01\"));\nShow(parseDateTime(\"2026-01-01T00:00:00+05:30:00\"));\nendAlgorithm\n"
+  }
+}
+```
+
+```caso
+{
+  "id": "C15",
+  "regla": "R7",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "0\n0\n0\n0\n0\n0\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso Vuelta(semilla Como Entero)\nSegun AnalizarFechaHora(FechaHoraUtc(semilla).FormatoIsoPreciso()) Hacer\nNada: Escribir \"none\";\nAlgo(vuelta): Escribir vuelta.Instante() - semilla;\nFinSegun\nFinSubProceso\nAlgoritmo P\nVuelta(-9000000000000000000);\nVuelta(-1);\nVuelta(0);\nVuelta(1);\nVuelta(1234567890123456789);\nVuelta(9000000000000000000);\nFinAlgoritmo\n",
+    "en": "subroutine Back(seed as integer)\nswitch parseDateTime(dateTimeUtc(seed).isoFormatPrecise()) do\nnone: write \"none\";\nsome(back): write back.instant() - seed;\nendSwitch\nendSubroutine\nalgorithm P\nBack(-9000000000000000000);\nBack(-1);\nBack(0);\nBack(1);\nBack(1234567890123456789);\nBack(9000000000000000000);\nendAlgorithm\n"
+  }
+}
+```
+
+```regla
+{
+  "id": "R8",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "El receptor Reloj ofrece AhoraLocal(), una operación de efecto falible que lee el reloj del anfitrión como Ahora y devuelve una FechaHora cuyo instante es esa lectura y cuyo desplazamiento es el vigente en ese instante según la zona horaria del sistema del anfitrión, redondeado a minutos enteros hacia cero; incluye el horario de verano porque el instante determina el desplazamiento y no al revés. Se graba en la cinta bajo la capacidad clock; en reproducción se devuelve el valor grabado sin consultar ni al reloj ni a la zona del sistema. Los errores del anfitrión son ErrorES.",
+  "verificacion": [
+    "C16",
+    "C17"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C16",
+  "regla": "R8",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "2023-11-15T03:43:20.123456789+05:30\n19800\n100000000000\n",
+    "terminacion": "completed",
+    "anfitrion_observado": {
+      "llamadas": 3,
+      "recursos_abiertos": 0,
+      "estado_cinta": "reproducible",
+      "efectos": [
+        {
+          "effect_seq": 1,
+          "capability_kind": "clock",
+          "operation": "request_clock",
+          "outcome": "committed"
+        },
+        {
+          "effect_seq": 2,
+          "capability_kind": "clock",
+          "operation": "clock_local_now",
+          "outcome": "committed"
+        },
+        {
+          "effect_seq": 4,
+          "capability_kind": "clock",
+          "operation": "clock_local_now",
+          "outcome": "committed"
+        }
+      ]
+    }
+  },
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir clock Como Reloj <- Propagar SolicitarReloj();\nDefinir primera Como FechaHora <- Propagar clock.AhoraLocal();\nEscribir primera.FormatoIsoPreciso();\nDefinir segunda Como FechaHora <- Propagar clock.AhoraLocal();\nEscribir segunda.DesplazamientoUtc();\nRetornar Exito(segunda.Instante() - primera.Instante());\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<integer, IoError>\ndefine clock as Clock <- propagate requestClock();\ndefine first as DateTime <- propagate clock.localNow();\nwrite first.isoFormatPrecise();\ndefine second as DateTime <- propagate clock.localNow();\nwrite second.utcOffset();\nreturn success(second.instant() - first.instant());\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "clock": [
+      1700000000123456789,
+      1700000100123456789
+    ],
+    "offset_seconds": 19800,
+    "grabar_y_reproducir": true
+  }
+}
+```
+
+```caso
+{
+  "id": "C17",
+  "regla": "R8",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "fin_de_archivo\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir clock Como Reloj <- Propagar SolicitarReloj();\nDefinir primera Como FechaHora <- Propagar clock.AhoraLocal();\nEscribir primera.FormatoIsoPreciso();\nDefinir segunda Como FechaHora <- Propagar clock.AhoraLocal();\nEscribir segunda.DesplazamientoUtc();\nRetornar Exito(segunda.Instante() - primera.Instante());\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<integer, IoError>\ndefine clock as Clock <- propagate requestClock();\ndefine first as DateTime <- propagate clock.localNow();\nwrite first.isoFormatPrecise();\ndefine second as DateTime <- propagate clock.localNow();\nwrite second.utcOffset();\nreturn success(second.instant() - first.instant());\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "clock": [],
+    "offset_seconds": -18000
+  }
+}
+```

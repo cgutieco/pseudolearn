@@ -1,10 +1,12 @@
 #![forbid(unsafe_code)]
 
 mod physical_directory_ops;
+mod physical_environment;
 mod physical_error;
 mod physical_file_append;
 mod physical_files;
 mod physical_host;
+mod physical_local_zone;
 mod physical_network;
 mod physical_network_address;
 mod physical_network_body;
@@ -22,6 +24,12 @@ pub use physical_network_tls::TlsConfiguration;
 mod physical_paths;
 mod worker;
 pub use worker::HostWorker;
+
+#[cfg(test)]
+mod physical_environment_tests;
+
+#[cfg(test)]
+mod physical_local_zone_tests;
 
 #[cfg(test)]
 mod physical_network_body_tests;

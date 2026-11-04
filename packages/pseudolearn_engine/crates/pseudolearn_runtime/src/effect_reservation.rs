@@ -49,7 +49,9 @@ impl EffectSession {
         request: EffectRecord,
         (payload, outcome): (Vec<u8>, &str),
     ) -> Result<Vec<u8>, ReplayError> {
-        let secret = self.secrets.reference(&request.arguments, &payload);
+        let secret = self
+            .secrets
+            .reference(&request.operation, (&request.arguments, &payload));
         let request_digest = secret
             .as_ref()
             .map(|secret| secret.value_hmac.clone())

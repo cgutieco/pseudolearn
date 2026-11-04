@@ -263,3 +263,27 @@ El reordenamiento conserva identidad y alias. La copia superficial cuenta celdas
 Durante una ordenación, el bit cero de status_flags de la cabecera (bit 32 de su primera palabra) protege el vector receptor de todas las
 escrituras por alias, incluso reemplazos sin cambio estructural. Commit libera esa protección. Una
 trampa es terminal para esa ejecución; no se reanuda un vector parcialmente protegido después del fallo.
+
+## Entorno de solo lectura y secretos por nombre (`PG-S.06`)
+
+`Entorno` es una capacidad raíz de ejecución con autoridad plena, sin concesiones ni opción de permiso nueva en la
+configuración del anfitrión. `environment_name.rs` es la única fuente de la validez de un nombre (no vacío, sin `=` ni
+NUL) y de la sensibilidad por nombre; `memory_host_environment.rs` resuelve `Obtener` y `AhoraLocal` en el doble de
+memoria con las claves `environment` y `offset_seconds` de la configuración del caso (el nombre distingue mayúsculas).
+
+DS-20: una lectura cuyo nombre termina en `token`, `key`, `secret` o `password`, sin distinguir mayúsculas ASCII, se
+clasifica como secreta por su nombre (`environment_secret_policy.rs`). La entrada de la cinta lleva
+`secret:environment:<hmac>` y el contenido del efecto se descarta, de modo que la cinta queda `NonReproducibleRedacted`
+y reproducirla se rechaza con `replay_non_reproducible`. El HMAC usa el nombre como clave y un mensaje vacío: la
+referencia no depende del valor, por lo que no revela nada de él ni siquiera con un valor de baja entropía (a
+diferencia de los secretos configurados, cuya referencia sí depende de valor y clave). No hay generador de entropía en
+el runtime, que también compila a WebAssembly, así que se descartó una clave aleatoria por sesión.
+
+Consecuencia declarada de la reproducibilidad: un programa que lee `API_KEY` no se puede reproducir con la cinta; el
+valor sí está en las variables del propio programa y por tanto en el estado de la API y en la traza de esa ejecución
+en vivo, porque es un dato del programa y no un efecto. Lo que garantiza esta fase es que ni el nombre ni el valor
+sensible aparecen en la cinta serializada.
+
+`FechaHora` viaja por el anfitrión como `{"nanos": i64, "offset_seconds": i32}` bajo el tipo `date_time`
+(`date_time_values.rs` lo codifica en el montón). La configuración `offset_seconds` fija el desplazamiento del doble de
+memoria; el instante sale de la cola `clock`, como en `Ahora`.

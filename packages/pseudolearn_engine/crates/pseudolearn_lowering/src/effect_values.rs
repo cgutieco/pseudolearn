@@ -83,7 +83,23 @@ fn result_type(
             variant.payloads.get(position).copied().flatten()
         })
         .unwrap_or(kind);
+    let payload = optional_payload(payload, state).unwrap_or(payload);
     crate::types::lower_type(payload, state.context.module)
+}
+
+fn optional_payload(
+    kind: pseudolearn_semantic::TypeId,
+    state: &ExpressionState<'_, '_>,
+) -> Option<pseudolearn_semantic::TypeId> {
+    let module = state.context.module;
+    let pseudolearn_semantic::Type::Record(record) = module.types.representation(kind) else {
+        return None;
+    };
+    let variant = module.variants.get(&record)?;
+    if variant.family != pseudolearn_semantic::variant_model::VariantFamily::Optional {
+        return None;
+    }
+    variant.payloads.get(1).copied().flatten()
 }
 
 fn cell(kind: IrType, span: Option<IrSpan>, state: &mut ExpressionState<'_, '_>) -> ValueId {

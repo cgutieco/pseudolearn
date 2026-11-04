@@ -54,7 +54,7 @@ layers:
   - name: pseudolearn_host
     path: crates/pseudolearn_host
     may_import: []
-    external_dependencies: [serde, serde_json, cap-std, bytes, flate2, http, http-body-util, hyper, hyper-util, rustls, rustls-platform-verifier, tokio, tokio-rustls, getrandom]
+    external_dependencies: [serde, serde_json, cap-std, bytes, flate2, http, http-body-util, hyper, hyper-util, rustls, rustls-platform-verifier, tokio, tokio-rustls, getrandom, jiff]
     unsafe_allowed: false
   - name: pseudolearn_source
     path: crates/pseudolearn_source

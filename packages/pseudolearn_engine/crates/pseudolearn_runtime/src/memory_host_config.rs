@@ -12,6 +12,8 @@ struct Configuration {
     #[serde(rename = "args")]
     arguments: Vec<String>,
     clock: Vec<u64>,
+    environment: BTreeMap<String, String>,
+    offset_seconds: i32,
     faults: Vec<FaultConfiguration>,
     http: BTreeMap<String, HttpScriptConfiguration>,
     #[serde(rename = "secrets")]
@@ -70,6 +72,8 @@ pub(crate) fn parse(value: &Value) -> Result<MemoryHostProvider, IoError> {
     let http_scripts = parse_http_scripts(config.http)?;
     let mut provider = MemoryHostProvider {
         arguments: config.arguments,
+        environment: config.environment,
+        offset_seconds: config.offset_seconds,
         clocks: config.clock.into(),
         http_scripts,
         ..Default::default()

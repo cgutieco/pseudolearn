@@ -60,6 +60,10 @@ pub(crate) fn value_type(
             let value = crate::effect_types::opaque(session, node, EffectValueKind::JsonValue);
             optional_type(session, node, value)
         }
+        EffectValueKind::OptionalDateTime => {
+            let value = crate::effect_types::opaque(session, node, EffectValueKind::DateTime);
+            optional_type(session, node, value)
+        }
         _ => session.module.types.intern(Type::Error),
     }
 }

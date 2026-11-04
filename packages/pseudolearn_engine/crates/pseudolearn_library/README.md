@@ -165,3 +165,26 @@ ErrorES>` sin conceder autoridad de red ni enviar la petición.
 ## Ampliación numérica y de colecciones
 
 tan, asin, acos, atan2, log2 y log10 usan intervalos arbitrarios y escalada de Ziv. Los dominios y resultados exactos se resuelven explícitamente; atan2 conserva cuadrantes y ceros con signo. Piso y techo devuelven i64 comprobado. La copia y confirmación de colecciones se delegan al runtime.
+
+## Fecha y hora de calendario (`PG-S.05`)
+
+`FechaHora` es un valor opaco de dos componentes: un instante en nanosegundos desde la época Unix (`i64`, la misma
+escala que `Reloj.Ahora`) y un desplazamiento UTC en segundos (`i32`). Rango: de 1677-09-21T00:12:43.145224192Z a
+2262-04-11T23:47:16.854775807Z; lo que no cabe en el `i64` es `Nada`, nunca un error. Se descartó `i128`
+porque nada del lenguaje entrega nanosegundos fuera de ese rango y obligaría a un tipo de entero nuevo.
+
+Reparto por responsabilidad, todo puro y sin dependencia de zonas horarias: `civil_calendar.rs` (días civiles con el
+algoritmo de Hinnant, bisiestos y día de la semana ISO), `date_time_construction.rs` (validación de componentes y
+componentes locales), `date_time_format.rs` (ISO 8601 con y sin fracción), `date_time_parse.rs` (análisis estricto con
+cursor de bytes) y `date_time_operations.rs` (despacho de las operaciones de la familia `time`). El despacho local de
+`local_operation_dispatch.rs` solo reconoce las identidades `date_time_*`; `clock_now` y `clock_local_now` son
+operaciones de efecto y no pasan por aquí.
+
+Decisiones: la hora sin zona se interpreta como UTC; `T` y `Z` solo valen en mayúscula; los desplazamientos van de
+-12:00 a +14:00 en minutos enteros; el segundo 60 se rechaza (sin segundos intercalares); `FormatoIso` descarta los
+nanosegundos y `FormatoIsoPreciso` imprime siempre nueve dígitos, que es la forma que cumple `analizar(formato(x)) = x`.
+Los días civiles se verifican en `civil_calendar_tests.rs` contra constantes derivadas de la definición del calendario
+(1970-01-01 = día 0, 2000-01-01 = día 10 957) y recorriendo cuatro siglos de ida y vuelta; no contra otra biblioteca.
+Las operaciones aritméticas usan métodos saturantes porque el verificador de Clippy prohíbe el operador implícito.
+
+Límites declarados: sin zonas con nombre (solo desplazamientos fijos), sin segundos intercalares, año de cuatro dígitos.

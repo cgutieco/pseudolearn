@@ -21,6 +21,8 @@ pub struct MemoryHostProvider {
     pub files: BTreeMap<String, Vec<u8>>,
     pub directories: BTreeSet<String>,
     pub arguments: Vec<String>,
+    pub environment: BTreeMap<String, String>,
+    pub offset_seconds: i32,
     pub time_nanos: u64,
     pub calls: u64,
     pub output: String,
@@ -119,6 +121,8 @@ impl MemoryHostProvider {
                 )?))
             }
             "arguments_values" => Ok(HostValue::TextList(self.arguments.clone())),
+            "environment_get" => crate::memory_host_environment::environment_get(self, request),
+            "clock_local_now" => crate::memory_host_environment::local_now(self),
             "clock_now" => {
                 self.time_nanos = self.clocks.pop_front().ok_or_else(IoError::end_of_file)?;
                 integer_time(self.time_nanos)

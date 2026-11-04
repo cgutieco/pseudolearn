@@ -4,6 +4,7 @@ pub mod array_layout;
 pub mod bytes_layout;
 pub mod capability_layout;
 mod collection_command;
+pub mod date_time_layout;
 pub mod dictionary_layout;
 pub mod http_layout;
 pub mod io_error_layout;
@@ -14,6 +15,10 @@ pub use bytes_layout::{
 };
 pub use capability_layout::{CAPABILITY_HEADER_WORDS, CAPABILITY_SHAPE_TAG, CapabilityKind};
 pub use collection_command::CollectionCommand;
+pub use date_time_layout::{
+    DATE_TIME_INSTANT_BYTES, DATE_TIME_OFFSET_BYTES, DATE_TIME_PREFIX, DATE_TIME_PREFIX_BYTES,
+    DATE_TIME_TOTAL_BYTES,
+};
 pub use dictionary_layout::{DictionaryKeyKind, DictionaryLayout};
 pub use http_layout::{HTTP_REQUEST_PREFIX, HTTP_RESPONSE_PREFIX, HTTP_VALUE_PREFIX_BYTES};
 pub use io_error_layout::IoErrorKind;

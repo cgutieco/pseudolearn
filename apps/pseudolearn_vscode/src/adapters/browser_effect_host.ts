@@ -29,6 +29,8 @@ export class BrowserEffectHost {
     if (operation === "network_close") return committedEffect("boolean", true);
     if (operation === "arguments_values") return committedEffect("text_list", this.context.args ?? []);
     if (operation === "clock_now") return clock();
+    if (operation === "clock_local_now") return localClock();
+    if (operation === "environment_get") return failedEffect("permiso_denegado");
     if (operation === "timer_wait") return this.wait(effect);
     if (operation === "console_write") return committedEffect("integer", new TextEncoder().encode(text(object((effect.arguments as Projection[])[0]).value)).length);
     return this.files.perform(effect);
@@ -54,4 +56,13 @@ export class BrowserEffectHost {
 
 function clock(): unknown {
   return committedEffect("integer", numeric((BigInt(Date.now()) * 1_000_000n).toString()));
+}
+
+function localClock(): unknown {
+  const milliseconds = Date.now();
+  const offsetMinutes = Math.trunc(-new Date(milliseconds).getTimezoneOffset());
+  return committedEffect("date_time", {
+    nanos: numeric((BigInt(milliseconds) * 1_000_000n).toString()),
+    offset_seconds: offsetMinutes * 60 + 0,
+  });
 }

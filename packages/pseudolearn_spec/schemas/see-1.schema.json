@@ -2370,6 +2370,15 @@
             "minimum": 0
           }
         },
+        "environment": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "offset_seconds": {
+          "type": "integer"
+        },
         "http": {
           "type": "object",
           "additionalProperties": {

@@ -45,7 +45,14 @@ impl SecretPolicy {
         Ok(Self { rules })
     }
 
-    pub(crate) fn reference(&self, arguments: &[u8], payload: &[u8]) -> Option<SecretHandle> {
+    pub(crate) fn reference(
+        &self,
+        operation: &str,
+        (arguments, payload): (&[u8], &[u8]),
+    ) -> Option<SecretHandle> {
+        if let Some(handle) = crate::environment_secret_policy::reference(operation, arguments) {
+            return Some(handle);
+        }
         let rule = self
             .rules
             .iter()

@@ -153,3 +153,10 @@ SSA conservan sus definiciones y las unidades síncronas no adquieren instruccio
 ## Ampliación numérica y de colecciones
 
 La mezcla estable se sintetiza y reutiliza por tipo y firma de comparador. Los auxiliares no emiten stmt.enter ni decisiones visibles; el comparador conserva sus llamadas y observaciones. Dos copias contabilizadas en celdas aíslan el reordenamiento hasta comprobar la versión y confirmar las hojas completas. Los efectos propios del comparador no se revierten. La búsqueda y la copia de claves usan auxiliares tipados.
+
+## Resultado falible de un opcional (`PG-S.06`)
+
+`Obtener` es la primera operación de efecto cuyo resultado es `Resultado<Opcional<T>, ErrorES>`. El tipo de resultado
+de la llamada al efecto es el del valor interno del opcional (`str` en este caso): el verificador de RI exige la misma
+forma que para un opcional no falible, y la ausencia viaja como referencia nula en la última de las tres celdas. Sin
+esa reducción `effect_values.rs` bajaba el opcional anidado a `unit` y el verificador rechazaba el módulo.
