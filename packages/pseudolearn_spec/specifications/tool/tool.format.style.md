@@ -69,7 +69,7 @@
   "id": "R3",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La asignación <- y los operadores binarios van rodeados de un espacio; las comas van seguidas de un espacio; el punto y coma se añade o conserva al final de cada sentencia simple en perfiles eststrict y se omite en perfiles flexible.",
+  "texto": "La asignación <- y los operadores binarios van rodeados de un espacio; las comas van seguidas de un espacio; el punto y coma se añade o conserva al final de cada sentencia simple.",
   "verificacion": [
     "C1",
     "C2"
@@ -101,12 +101,12 @@
   "operacion": "service",
   "espera": {
     "servicio": {
-      "formateado": "Algoritmo Principal\n  Definir x Como Entero;\n  x <- 1 + 2;\n  Escribir x;\nFinAlgoritmo\n"
+      "formateado": "Algoritmo Principal\n  Definir x Como Entero <- 0;\n  x <- 1 + 2;\n  Escribir x;\nFinAlgoritmo\n"
     }
   },
   "servicio": {
     "suboperacion": "format",
-    "documento": "algoritmo Principal\ndefinir x como entero\nx<-1+2\nescribir x\nfinalgoritmo"
+    "documento": "algoritmo Principal\ndefinir x como entero<-0;\nx<-1+2;\nescribir x;\nfinalgoritmo"
   }
 }
 ```
@@ -122,12 +122,12 @@
   "operacion": "service",
   "espera": {
     "servicio": {
-      "formateado": "Algoritmo Flexible\n  x <- 1\n  w <- 2\nFinAlgoritmo\n"
+      "formateado": "Algoritmo Minimo\n  x <- 1;\n  w <- 2;\nFinAlgoritmo\n"
     }
   },
   "servicio": {
     "suboperacion": "format",
-    "documento": "Algoritmo Flexible\n  x := 1;\n  w <- 2;\nFinAlgoritmo\n"
+    "documento": "Algoritmo Minimo\n  x := 1;\n  w <- 2;\nFinAlgoritmo\n"
   }
 }
 ```
@@ -164,12 +164,12 @@
   "operacion": "service",
   "espera": {
     "servicio": {
-      "formateado": "Algorithm Main\n  Define x As Integer;\n  Write x;\nEndAlgorithm\n"
+      "formateado": "Algorithm Main\n  Define x As Integer <- 0;\n  Write x;\nEndAlgorithm\n"
     }
   },
   "servicio": {
     "suboperacion": "format",
-    "documento": "algorithm Main\ndefine x as integer;\nwrite x;\nendalgorithm"
+    "documento": "algorithm Main\ndefine x as integer <- 0;\nwrite x;\nendalgorithm"
   }
 }
 ```

@@ -51,9 +51,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "espera": {
     "eventos": [

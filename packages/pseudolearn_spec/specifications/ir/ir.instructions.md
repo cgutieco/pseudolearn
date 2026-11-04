@@ -1967,7 +1967,7 @@
 {
   "id": "V49",
   "regla": "LANG.PROFILE.STRICTNESS#R1",
-  "sin_ri": "El rigor solo afecta al análisis."
+  "sin_ri": "La política de la edición solo afecta al análisis."
 }
 ```
 

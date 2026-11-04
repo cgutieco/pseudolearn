@@ -13,7 +13,7 @@
     "engine",
     "app"
   ],
-  "resumen": "Texto, vocabulario y rigor producen tokens, diagnósticos ordenados y un esquema.",
+  "resumen": "Texto y vocabulario producen tokens, diagnósticos ordenados y un esquema.",
   "depende_de": [
     {
       "id": "API.MODEL",
@@ -46,7 +46,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Analizar recibe texto, vocabulario explícito y rigor, y devuelve los diagnósticos en el orden de DIAG.ORDERING, la presencia del árbol y todos los tokens léxicos en orden de fuente con su identidad y tramo. La respuesta conserva comentarios y caracteres Unicode sin normalizar, incluso si el análisis encuentra errores. El vocabulario no se deduce en la API.",
+  "texto": "Analizar recibe texto y vocabulario explícito, y devuelve los diagnósticos en el orden de DIAG.ORDERING, la presencia del árbol y todos los tokens léxicos en orden de fuente con su identidad y tramo. La respuesta conserva comentarios y caracteres Unicode sin normalizar, incluso si el análisis encuentra errores. El vocabulario no se deduce en la API.",
   "verificacion": [
     "C1",
     "C2",

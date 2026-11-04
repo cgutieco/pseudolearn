@@ -38,7 +38,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Real es IEEE 754 binario64 finito. Operaciones reales redondean a ese formato; infinitos y NaN producen nonFiniteRealResult. Los dos rigores e idiomas usan el mismo dominio. La salida usa notación posicional y al menos un decimal, sin exponente. El redondeo es al valor representable más cercano, con empates al significando par, incluidas las funciones matemáticas y la potencia real. Los subnormales y los ceros con signo pertenecen al dominio finito.",
+  "texto": "Real es IEEE 754 binario64 finito. Operaciones reales redondean a ese formato; infinitos y NaN producen nonFiniteRealResult. Los dos idiomas usan el mismo dominio. La salida usa notación posicional y al menos un decimal, sin exponente. El redondeo es al valor representable más cercano, con empates al significando par, incluidas las funciones matemáticas y la potencia real. Los subnormales y los ceros con signo pertenecen al dominio finito.",
   "verificacion": [
     "C1",
     "C2",

@@ -312,7 +312,7 @@
   "id": "R6",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Cada ficha disponible contiene al menos un ejemplo por idioma. Un ejemplo referencia un caso vigente del corpus por especificación, versión, identidad, perfil y rigor, usa el perfil de su idioma y declara su clase: ejecutable cuando el caso ejecuta el programa y termina sin fallo ni diagnósticos, aceptado cuando lo analiza sin diagnósticos y diagnóstico deliberado en cualquier otro caso. El validador deriva la clase del caso y rechaza una discrepancia, una referencia repetida en el mismo idioma y un ejemplo fuera de la disponibilidad de la ficha. El resultado esperado permanece en el caso y la consulta nunca ejecuta el ejemplo.",
+  "texto": "Cada ficha disponible contiene al menos un ejemplo por idioma. Un ejemplo referencia un caso vigente del corpus por especificación, versión, identidad y perfil, usa el perfil de su idioma y declara su clase: ejecutable cuando el caso ejecuta el programa y termina sin fallo ni diagnósticos, aceptado cuando lo analiza sin diagnósticos y diagnóstico deliberado en cualquier otro caso. El validador deriva la clase del caso y rechaza una discrepancia, una referencia repetida en el mismo idioma y un ejemplo fuera de la disponibilidad de la ficha. El resultado esperado permanece en el caso y la consulta nunca ejecuta el ejemplo.",
   "justificacion": "Los ejemplos son la única parte del catálogo que afirma comportamiento observable; derivarlos de casos con esperado independiente evita que la ayuda describa un resultado que el lenguaje no produce.",
   "verificacion": [
     "estructural"
@@ -482,7 +482,7 @@
   },
   "servicio": {
     "suboperacion": "hover",
-    "documento": "Algoritmo Principal\n  Definir contador Como Entero;\n  contador <- 1;\nFinAlgoritmo\n",
+    "documento": "Algoritmo Principal\n  Definir contador Como Entero <- 0;\n  contador <- 1;\nFinAlgoritmo\n",
     "posicion": {
       "line": 3,
       "column": 5
@@ -5013,8 +5013,8 @@
         "content": {
           "es": {
             "title": "Fin de sentencia simple",
-            "summary": "Delimita el final de una sentencia simple en rigor estricto.",
-            "purpose": "El salto de línea también puede terminar una sentencia según el rigor activo.",
+            "summary": "Delimita el final de una sentencia simple.",
+            "purpose": "Toda sentencia simple termina con punto y coma; omitirlo es un error.",
             "parts": [],
             "constraints": [],
             "common_errors": [],
@@ -5039,8 +5039,8 @@
           },
           "en": {
             "title": "Simple statement ending",
-            "summary": "Delimits the end of a simple statement in strict mode.",
-            "purpose": "A line ending may also terminate a statement under the active strictness.",
+            "summary": "Delimits the end of a simple statement.",
+            "purpose": "Every simple statement ends with a semicolon; omitting it is an error.",
             "parts": [],
             "constraints": [],
             "common_errors": [],
@@ -17264,9 +17264,9 @@
 }
 ```
 
-R1-R3 se verifican de forma estructural mediante el esquema del paquete, unicidad de identidades y comprobación de referencias. El esquema acepta solo la edición 2026 y los perfiles/rigores actuales. `content.es` y `content.en` son idiomas editoriales; `availability.profiles` describe por separado el vocabulario del programa. Las fichas y exclusiones identifican sus fuentes por claves estables; las formas canónicas y plantillas se generan desde vocabulario y gramática. Las traducciones editoriales son datos escritos en ambos idiomas, nunca una transformación en tiempo de ejecución.
+R1-R3 se verifican de forma estructural mediante el esquema del paquete, unicidad de identidades y comprobación de referencias. El esquema acepta solo la edición 2026 y los perfiles actuales. `content.es` y `content.en` son idiomas editoriales; `availability.profiles` describe por separado el vocabulario del programa. Las fichas y exclusiones identifican sus fuentes por claves estables; las formas canónicas y plantillas se generan desde vocabulario y gramática. Las traducciones editoriales son datos escritos en ambos idiomas, nunca una transformación en tiempo de ejecución.
 
-Una ancla contiene `specification`, `version` y `element`. Cada token contiene su identidad y un `source` con esos mismos tres campos; cuando la fuente es el recurso `vocabulary` o `functions`, la identidad debe existir como clave de ese recurso. Una referencia de ejemplo contiene además `case`, `profile`, `strictness` y una etiqueta localizada; el resultado independiente se lee del caso. La disponibilidad de un ejemplo debe ser subconjunto de la disponibilidad de su ficha y del caso referenciado.
+Una ancla contiene `specification`, `version` y `element`. Cada token contiene su identidad y un `source` con esos mismos tres campos; cuando la fuente es el recurso `vocabulary` o `functions`, la identidad debe existir como clave de ese recurso. Una referencia de ejemplo contiene además `case`, `profile` y una etiqueta localizada; el resultado independiente se lee del caso. La disponibilidad de un ejemplo debe ser subconjunto de la disponibilidad de su ficha y del caso referenciado.
 
 Una exclusión usa una identidad y alcance con el mismo esquema que una ficha, una razón de `alias_of`, `not_user_visible`, `outside_edition_scope` o `not_pedagogical`, y un anclaje. `alias_of` señala una ficha canónica cuyo alcance y conjunto de identidades léxicas coinciden; los otros motivos no admiten un destino de alias. Un rol incluido en el inventario pedagógico activo solo puede excluirse como alias. La cobertura del inventario se produce como una matriz identidad/rol → ficha o exclusión: operadores tomados de las producciones de expresión y asignación, palabras reservadas derivadas del vocabulario, funciones incorporadas derivadas de la biblioteca y roles pedagógicos declarados con su producción fuente. La EBNF no determina por sí sola qué producciones requieren una explicación pedagógica.
 

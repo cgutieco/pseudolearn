@@ -38,7 +38,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Definir nombre Como tipo <- expresión declara un vínculo local individual, inmutable y con inicializador obligatorio en ambos rigores. Definir Mutable permite reasignarlo. La inicialización comprueba el tipo y no permite leer el vínculo que declara. Los campos, parámetros y arreglos conservan sus contratos específicos; las declaraciones locales no crean ámbitos de bloque. Un nombre de un carácter es válido y duplicar el nombre es error. Reasignar un vínculo inmutable, usarlo como destino de Leer o pasarlo por referencia para modificarlo es immutableBindingAssignment. La mutación de un objeto no reasigna su vínculo; escribir un campo de registro por valor sí modifica el vínculo. Un mutable sin modificación recibe mutableBindingNeverModified.",
+  "texto": "Definir nombre Como tipo <- expresión declara un vínculo local individual, inmutable y con inicializador obligatorio. Definir Mutable permite reasignarlo. La inicialización comprueba el tipo y no permite leer el vínculo que declara. Los campos, parámetros y arreglos conservan sus contratos específicos; las declaraciones locales no crean ámbitos de bloque. Un nombre de un carácter es válido y duplicar el nombre es error. Reasignar un vínculo inmutable, usarlo como destino de Leer o pasarlo por referencia para modificarlo es immutableBindingAssignment. La mutación de un objeto no reasigna su vínculo; escribir un campo de registro por valor sí modifica el vínculo. Un mutable sin modificación recibe mutableBindingNeverModified.",
   "verificacion": [
     "C1",
     "C2",

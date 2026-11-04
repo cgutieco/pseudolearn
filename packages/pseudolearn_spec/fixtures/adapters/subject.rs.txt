@@ -14,7 +14,7 @@ fn main() {
                 "observe" => "[\"analyze\",\"execute\",\"observe\",\"ir\",\"cli\"]",
                 _ => "[\"analyze\",\"execute\"]",
             };
-            println!("{{\"kind\":\"hello\",\"protocol\":\"see-protocol/1\",\"subject\":\"fixture\",\"subject_version\":\"1.0.0\",\"capabilities\":{capabilities},\"profiles\":[\"es\",\"en\"],\"strictness\":[\"strict\",\"flexible\"]}}");
+            println!("{{\"kind\":\"hello\",\"protocol\":\"see-protocol/1\",\"subject\":\"fixture\",\"subject_version\":\"1.0.0\",\"capabilities\":{capabilities},\"profiles\":[\"es\",\"en\"]}}");
         } else if line.contains("shutdown") {
             eprintln!("fixture stderr");
             println!("{{\"kind\":\"shutdown\"}}");

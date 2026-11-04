@@ -39,7 +39,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La API expone recursos con identificador opaco, estable durante la sesión: documento (texto, vocabulario, rigor y versión), análisis (de una versión de un documento), ejecución (de un análisis sin errores) y sesión de edición (texto, perfil, rigor y revisión). Cada recurso se crea, se consulta y se libera; liberar un documento libera sus análisis y ejecuciones.",
+  "texto": "La API expone recursos con identificador opaco, estable durante la sesión: documento (texto, vocabulario y versión), análisis (de una versión de un documento), ejecución (de un análisis sin errores) y sesión de edición (texto, perfil y revisión). Cada recurso se crea, se consulta y se libera; liberar un documento libera sus análisis y ejecuciones.",
   "verificacion": [
     "P1"
   ]
@@ -94,7 +94,7 @@
   "id": "R3",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Una sesión de edición es un recurso identificado con texto, perfil, rigor y revisión u64. help_query consulta una posición de una sesión viva en su revisión vigente; la consulta no cambia texto, revisión ni estado de otras sesiones. Una revisión distinta de la vigente devuelve stale_revision con la revisión actual codificada como cadena decimal. Una sesión liberada, desconocida o de otra clase devuelve un error de uso.",
+  "texto": "Una sesión de edición es un recurso identificado con texto, perfil y revisión u64. help_query consulta una posición de una sesión viva en su revisión vigente; la consulta no cambia texto, revisión ni estado de otras sesiones. Una revisión distinta de la vigente devuelve stale_revision con la revisión actual codificada como cadena decimal. Una sesión liberada, desconocida o de otra clase devuelve un error de uso.",
   "verificacion": [
     "C3",
     "C4",
@@ -1090,7 +1090,7 @@
   "id": "R6",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Cuando la identidad resuelta tiene ficha en el catálogo, help_query devuelve card en el idioma solicitado, independiente del perfil de sintaxis: con detalle summary, id, title y summary; con detalle full, además purpose, parts, constraints, common_errors y examples, y help añade description. Cada ejemplo conserva su referencia a especificación, versión, caso, perfil, rigor y clase; la respuesta no contiene programas ni resultados esperados y la consulta no los ejecuta. Sin ficha o sin identidad card es null.",
+  "texto": "Cuando la identidad resuelta tiene ficha en el catálogo, help_query devuelve card en el idioma solicitado, independiente del perfil de sintaxis: con detalle summary, id, title y summary; con detalle full, además purpose, parts, constraints, common_errors y examples, y help añade description. Cada ejemplo conserva su referencia a especificación, versión, caso, perfil y clase; la respuesta no contiene programas ni resultados esperados y la consulta no los ejecuta. Sin ficha o sin identidad card es null.",
   "justificacion": "La ficha es la fuente editorial única; entregarla por la API evita que cada cliente reconozca el lenguaje o conserve su propia descripción.",
   "verificacion": [
     "C14",
@@ -1597,7 +1597,7 @@
   "id": "R8",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "translate recibe program, target_profile es o en y strictness opcional strict o flexible y devuelve text. Reutiliza el traductor del servicio sobre texto sin E/S; conserva los identificadores y literales, y rechaza el perfil inválido o una traducción imposible como error de uso. El transporte browser usa la misma operación sin interpretar sintaxis en TypeScript.",
+  "texto": "translate recibe program, target_profile es o en y devuelve text. Reutiliza el traductor del servicio sobre texto sin E/S; conserva los identificadores y literales, y rechaza el perfil inválido o una traducción imposible como error de uso. El transporte browser usa la misma operación sin interpretar sintaxis en TypeScript.",
   "verificacion": [
     "C20",
     "C21"

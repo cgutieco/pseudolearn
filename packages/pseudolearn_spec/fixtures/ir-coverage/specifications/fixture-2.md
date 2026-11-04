@@ -42,9 +42,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "espera": {
     "terminacion": "completed"

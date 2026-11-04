@@ -232,7 +232,7 @@
   },
   "servicio": {
     "suboperacion": "completion",
-    "documento": "Clase Punto\n  Definir x Como Entero;\n  Metodo Mover()\n  FinMetodo\nFinClase\n\nAlgoritmo Principal\n  Definir p Como Punto;\n  Definir total Como Entero;\n  p.\nFinAlgoritmo\n",
+    "documento": "Clase Punto\n  Definir x Como Entero;\n  Metodo Mover()\n  FinMetodo\nFinClase\n\nAlgoritmo Principal\n  Definir p Como Punto <- Punto();\n  Definir total Como Entero <- 0;\n  p.\nFinAlgoritmo\n",
     "posicion": {
       "line": 10,
       "column": 5
@@ -357,7 +357,7 @@
   "servicio": {
     "suboperacion": "completion",
     "proyeccion": "determinista",
-    "documento": "Algoritmo Principal\n  Definir a Como Entero;\n  Definir b Como Entero;\n  \nFinAlgoritmo\n",
+    "documento": "Algoritmo Principal\n  Definir a Como Entero <- 0;\n  Definir b Como Entero <- 0;\n  \nFinAlgoritmo\n",
     "posicion": {
       "line": 4,
       "column": 3
@@ -674,7 +674,7 @@
   "servicio": {
     "suboperacion": "completion",
     "proyeccion": "primer_candidato",
-    "documento": "Algoritmo Principal\n  Definir cantidad Como Entero;\n  Definir valido Como Logico;\n  Mientras \nFinAlgoritmo\n",
+    "documento": "Algoritmo Principal\n  Definir cantidad Como Entero <- 0;\n  Definir valido Como Logico <- Falso;\n  Mientras \nFinAlgoritmo\n",
     "posicion": {
       "line": 4,
       "column": 12
@@ -810,7 +810,7 @@
     "suboperacion": "completion",
     "proyeccion": "detalle",
     "candidato": "total",
-    "documento": "Algorithm Main\n  Define total As Integer;\n  tot\nEndAlgorithm\n",
+    "documento": "Algorithm Main\n  Define total As Integer <- 0;\n  tot\nEndAlgorithm\n",
     "posicion": {
       "line": 3,
       "column": 6
@@ -1000,7 +1000,7 @@
   },
   "servicio": {
     "suboperacion": "completion",
-    "documento": "Algoritmo P\n  Definir segundos Como Entero;\n  segundos\nFinAlgoritmo\n",
+    "documento": "Algoritmo P\n  Definir segundos Como Entero <- 0;\n  segundos\nFinAlgoritmo\n",
     "posicion": {
       "line": 3,
       "column": 11
@@ -1021,7 +1021,7 @@
   "operacion": "service",
   "espera": {
     "servicio": {
-      "texto": "Algoritmo P\n  Definir segundos Como Entero;\n  segundos <- \nFinAlgoritmo\n",
+      "texto": "Algoritmo P\n  Definir segundos Como Entero <- 0;\n  segundos <- \nFinAlgoritmo\n",
       "seleccion": {
         "inicio": {
           "line": 3,
@@ -1036,7 +1036,7 @@
   },
   "servicio": {
     "suboperacion": "completion_accept",
-    "documento": "Algoritmo P\n  Definir segundos Como Entero;\n  segundos\nFinAlgoritmo\n",
+    "documento": "Algoritmo P\n  Definir segundos Como Entero <- 0;\n  segundos\nFinAlgoritmo\n",
     "posicion": {
       "line": 3,
       "column": 11
@@ -1192,7 +1192,7 @@
   },
   "servicio": {
     "suboperacion": "completion",
-    "documento": "Algoritmo P\n  Definir x Como Real;\n  x\nFinAlgoritmo\n",
+    "documento": "Algoritmo P\n  Definir x Como Real <- 0.0;\n  x\nFinAlgoritmo\n",
     "posicion": {
       "line": 3,
       "column": 4
@@ -1213,7 +1213,7 @@
   "operacion": "service",
   "espera": {
     "servicio": {
-      "texto": "Algoritmo P\n  Definir segundos Como Entero;\n  segundos <- \nFinAlgoritmo\n",
+      "texto": "Algoritmo P\n  Definir segundos Como Entero <- 0;\n  segundos <- \nFinAlgoritmo\n",
       "seleccion": {
         "inicio": {
           "line": 3,
@@ -1228,7 +1228,7 @@
   },
   "servicio": {
     "suboperacion": "completion_accept",
-    "documento": "Algoritmo P\n  Definir segundos Como Entero;\n  segundos   \nFinAlgoritmo\n",
+    "documento": "Algoritmo P\n  Definir segundos Como Entero <- 0;\n  segundos   \nFinAlgoritmo\n",
     "posicion": {
       "line": 3,
       "column": 14
@@ -1254,7 +1254,7 @@
   },
   "servicio": {
     "suboperacion": "completion",
-    "documento": "Algoritmo P\n  Definir segundos Como Entero;\n  Escribir segundos\nFinAlgoritmo\n",
+    "documento": "Algoritmo P\n  Definir segundos Como Entero <- 0;\n  Escribir segundos\nFinAlgoritmo\n",
     "posicion": {
       "line": 3,
       "column": 20
@@ -1311,7 +1311,7 @@
   "operacion": "service",
   "espera": {
     "servicio": {
-      "texto": "Algorithm Main\n  Define value As Integer;\n  value <- \nEndAlgorithm\n",
+      "texto": "Algorithm Main\n  Define value As Integer <- 0;\n  value <- \nEndAlgorithm\n",
       "seleccion": {
         "inicio": {
           "line": 3,
@@ -1326,7 +1326,7 @@
   },
   "servicio": {
     "suboperacion": "completion_accept",
-    "documento": "Algorithm Main\n  Define value As Integer;\n  value\nEndAlgorithm\n",
+    "documento": "Algorithm Main\n  Define value As Integer <- 0;\n  value\nEndAlgorithm\n",
     "posicion": {
       "line": 3,
       "column": 8

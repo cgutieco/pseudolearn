@@ -3539,7 +3539,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "D1 declara códigos, clases, políticas, argumentos y plantillas bilingües. Cada código tiene ficha completa, iguales marcadores en español e inglés y severidad en ambos rigores. Identidades de código son independientes del idioma; la exportación es fuente del catálogo consumidor. Las situaciones adicionales normadas por reglas de lenguaje se registran con ficha propia, sin reutilizar códigos genéricos.",
+  "texto": "D1 declara códigos, clases, políticas, argumentos y plantillas bilingües. Cada código tiene ficha completa, iguales marcadores en español e inglés y una única severidad. Identidades de código son independientes del idioma; la exportación es fuente del catálogo consumidor. Las situaciones adicionales normadas por reglas de lenguaje se registran con ficha propia, sin reutilizar códigos genéricos.",
   "verificacion": [
     "C1",
     "C2"

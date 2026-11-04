@@ -157,9 +157,9 @@ Problema: las propiedades nativas necesitan un oráculo independiente y artefact
   se añaden de forma compatible, sin esquema nuevo. Los contratos `TOOL.SERVICE.COMPLETION`, `TOOL.LSP.CAPABILITIES` y
   `APP.EDITOR.COMPLETION` crecen dentro de `0.1.0` con reanclaje autorizado de su hash; lo que no tenía dueño nace como
   `TOOL.SERVICE.ON-TYPE@0.1.0`. Se descarta abrir `0.2.0`: las versiones están congeladas por decisión de la persona.
-- Problema: el rigor por documento y la reproducción de una ejecución en la app no tenían contrato propio; solo los
+- Problema: el análisis único y la reproducción de una ejecución en la app no tenían contrato propio; solo los
   cubría la prueba de widgets. Elección: `APP.EXEC.CONFIGURATION@1.0.0` con el escenario de app `configuration` (se añade
-  al enumerado de `schemas/see-1.schema.json`), que ejecuta por `ExecutionCubit` el mismo programa en ambos rigores y una
+  al enumerado de `schemas/see-1.schema.json`), que ejecuta por `ExecutionCubit` programas aceptados y rechazados por el análisis y una
   reproducción con cinta válida y con fuente cambiada. El esperado sale de `LANG.PROFILE.STRICTNESS` y de `ENG.EFFECT.TAPE`.
   Un programa que el análisis rechaza termina como `failed`, igual que en la ejecución directa del adaptador. Se descarta
   medir llamadas al anfitrión en el escenario: los programas del corpus no declaran efectos, y el espía de cero llamadas

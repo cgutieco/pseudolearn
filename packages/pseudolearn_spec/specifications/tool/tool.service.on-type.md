@@ -79,7 +79,7 @@
   "id": "R3",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "En rigor estricto, tras un salto de línea, si la línea anterior es una sentencia simple completa sin terminador, se inserta ; al final de esa línea. En rigor flexible no se inserta.",
+  "texto": "Tras un salto de línea, si la línea anterior es una sentencia simple completa sin terminador, se inserta ; al final de esa línea; si ya lo tiene, no se inserta otro.",
   "verificacion": [
     "C4",
     "C5"
@@ -258,7 +258,7 @@
   "operacion": "service",
   "espera": {
     "servicio": {
-      "texto": "Algoritmo Principal\n  Escribir 1\n  \nFinAlgoritmo\n",
+      "texto": "Algoritmo Principal\n  Escribir 1;\n  \nFinAlgoritmo\n",
       "cursor": {
         "line": 3,
         "column": 3
@@ -267,7 +267,7 @@
   },
   "servicio": {
     "suboperacion": "on_type",
-    "documento": "Algoritmo Principal\n  Escribir 1\n\nFinAlgoritmo\n",
+    "documento": "Algoritmo Principal\n  Escribir 1;\n\nFinAlgoritmo\n",
     "posicion": {
       "line": 3,
       "column": 1

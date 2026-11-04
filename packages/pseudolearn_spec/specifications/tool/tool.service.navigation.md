@@ -110,7 +110,7 @@
   },
   "servicio": {
     "suboperacion": "definition",
-    "documento": "Algoritmo Principal\n  Definir total Como Entero;\n  total <- 10;\n  Escribir total;\nFinAlgoritmo\n",
+    "documento": "Algoritmo Principal\n  Definir total Como Entero <- 0;\n  total <- 10;\n  Escribir total;\nFinAlgoritmo\n",
     "posicion": { "line": 4, "column": 13 }
   }
 }
@@ -141,7 +141,7 @@
   },
   "servicio": {
     "suboperacion": "references",
-    "documento": "SubProceso Uno()\n  Definir i Como Entero;\n  i <- 1;\nFinSubProceso\n\nSubProceso Dos()\n  Definir i Como Entero;\n  i <- 2;\nFinSubProceso\n",
+    "documento": "SubProceso Uno()\n  Definir i Como Entero <- 0;\n  i <- 1;\nFinSubProceso\n\nSubProceso Dos()\n  Definir i Como Entero <- 0;\n  i <- 2;\nFinSubProceso\n",
     "posicion": { "line": 3, "column": 3 }
   }
 }
@@ -166,7 +166,7 @@
   },
   "servicio": {
     "suboperacion": "definition",
-    "documento": "Clase Punto\n  Metodo Mover()\n  FinMetodo\nFinClase\n\nAlgoritmo Principal\n  Definir p Como Punto;\n  p.Mover();\nFinAlgoritmo\n",
+    "documento": "Clase Punto\n  Metodo Mover()\n  FinMetodo\nFinClase\n\nAlgoritmo Principal\n  Definir p Como Punto <- Punto();\n  p.Mover();\nFinAlgoritmo\n",
     "posicion": { "line": 8, "column": 6 }
   }
 }

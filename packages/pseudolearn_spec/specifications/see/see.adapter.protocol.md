@@ -27,7 +27,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Una sesión negocia see-protocol/1 y anuncia sujeto, versión, capacidades, perfiles y rigores; cada petición tiene una respuesta JSON por línea del mismo kind.",
+  "texto": "Una sesión negocia see-protocol/1 y anuncia sujeto, versión, capacidades y perfiles; cada petición tiene una respuesta JSON por línea del mismo kind.",
   "verificacion": [
     "estructural"
   ],

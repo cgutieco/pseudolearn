@@ -77,16 +77,7 @@ fn requests(
         return Err("No native property scenarios".to_owned());
     }
     if binding.executor == PropertyExecutor::NativeRoots {
-        return see_conformance::memory_fixtures::generate(binding.seed, end, vocabulary)?
-            .iter()
-            .skip(usize::try_from(first).map_err(|error| error.to_string())?)
-            .map(|fixture| {
-                Ok(
-                    json!({"kind":"execute","program":fixture["program"],"profile":"es",
-                "seed":binding.seed,"inputs":[],"gc_stress":false}),
-                )
-            })
-            .collect();
+        return root_requests(binding.seed, (vocabulary, first, end));
     }
     (first..end)
         .map(|sample| {
@@ -103,6 +94,20 @@ fn requests(
                 .and_then(|fixture| fixture.get("request"))
                 .cloned()
                 .ok_or("Missing native request".to_owned())
+        })
+        .collect()
+}
+
+fn root_requests(seed: u64, window: (&Vocabulary, u32, u32)) -> Result<Vec<Value>, String> {
+    let (vocabulary, first, end) = window;
+    see_conformance::memory_fixtures::generate(seed, end, vocabulary)?
+        .iter()
+        .skip(usize::try_from(first).map_err(|error| error.to_string())?)
+        .map(|fixture| {
+            Ok(
+                json!({"kind":"execute","program":fixture["program"],"profile":"es",
+                "seed":seed,"inputs":[],"gc_stress":false}),
+            )
         })
         .collect()
 }

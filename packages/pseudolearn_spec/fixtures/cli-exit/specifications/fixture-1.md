@@ -54,9 +54,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "espera": {
     "codigo_salida": 9

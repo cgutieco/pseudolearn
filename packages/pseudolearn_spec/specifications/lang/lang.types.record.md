@@ -88,7 +88,7 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
   "id": "R3",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Asignar, pasar como argumento y devolver un registro copia todos sus campos: las variables no comparten estado, pero un campo de clase copia la referencia y comparte el objeto. Un parámetro de tipo registro se pasa por valor y por referencia es recordPassedByReference. Leer un campo de un registro sin valor es uninitializedVariableRead. En el rigor flexible, una variable no declarada no puede guardar un registro (recordNotInferable).",
+  "texto": "Asignar, pasar como argumento y devolver un registro copia todos sus campos: las variables no comparten estado, pero un campo de clase copia la referencia y comparte el objeto. Un parámetro de tipo registro se pasa por valor y por referencia es recordPassedByReference. Leer un campo de un registro sin valor es uninitializedVariableRead. Una variable no declarada no puede guardar un registro (recordNotInferable).",
   "verificacion": [
     "C11",
     "C12",

@@ -157,4 +157,4 @@
 
 ## Perfil de los casos
 
-Los casos ir no dependen del vocabulario ni del rigor del programa fuente; declaran un perfil y un rigor únicos porque el texto de la RI ya fija el vocabulario en la cabecera del módulo.
+Los casos ir no dependen del vocabulario del programa fuente; declaran un perfil único porque el texto de la RI ya fija el vocabulario en la cabecera del módulo.

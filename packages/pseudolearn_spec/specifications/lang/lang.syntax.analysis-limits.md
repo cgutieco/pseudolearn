@@ -53,7 +53,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "sintactica",
-  "texto": "Se admiten hasta D1.nesting construcciones simultáneamente anidadas. Cada paréntesis de agrupación, operador unario, potencia cuyo operando derecho contiene otra potencia y sentencia compuesta abre un nivel; unidades y listas no añaden un nivel. El primer nivel que excede la cota produce analysisNestingLimitExceeded, clase syntax, severidad error en ambos rigores, argumento limit numérico y tramo del símbolo o apertura que lo excede. Se conserva el árbol recuperable, no se agregan cierres derivados del rechazo y ninguna profundidad agota la pila del anfitrión. El valor es un recurso del análisis, independiente de ENG.LIMITS.",
+  "texto": "Se admiten hasta D1.nesting construcciones simultáneamente anidadas. Cada paréntesis de agrupación, operador unario, potencia cuyo operando derecho contiene otra potencia y sentencia compuesta abre un nivel; unidades y listas no añaden un nivel. El primer nivel que excede la cota produce analysisNestingLimitExceeded, clase syntax, severidad error, argumento limit numérico y tramo del símbolo o apertura que lo excede. Se conserva el árbol recuperable, no se agregan cierres derivados del rechazo y ninguna profundidad agota la pila del anfitrión. El valor es un recurso del análisis, independiente de ENG.LIMITS.",
   "verificacion": [
     "C1",
     "C2",

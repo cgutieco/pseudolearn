@@ -38,7 +38,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Un nombre empieza por letra ASCII, letra española (ñ, vocal acentuada o ü) o guion bajo y continúa con esas letras, dígitos ASCII o guion bajo. Ambos rigores admiten el mismo alfabeto y ambos perfiles lo aplican. El alfabeto se comprueba sobre el nombre completo después de NFC; una forma descompuesta solo se admite si NFC la convierte a caracteres de este alfabeto. Un nombre de un carácter es válido. Los nombres se comparan exactamente después de NFC, con sensibilidad a caja y acentos; la política de palabras clave solo interviene para excluir nombres reservados.",
+  "texto": "Un nombre empieza por letra ASCII, letra española (ñ, vocal acentuada o ü) o guion bajo y continúa con esas letras, dígitos ASCII o guion bajo. Ambos perfiles aplican el mismo alfabeto. El alfabeto se comprueba sobre el nombre completo después de NFC; una forma descompuesta solo se admite si NFC la convierte a caracteres de este alfabeto. Un nombre de un carácter es válido. Los nombres se comparan exactamente después de NFC, con sensibilidad a caja y acentos; la política de palabras clave solo interviene para excluir nombres reservados.",
   "verificacion": [
     "C1",
     "C2",

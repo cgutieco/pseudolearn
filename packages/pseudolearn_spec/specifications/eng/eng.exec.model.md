@@ -166,7 +166,7 @@
   "id": "R2",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La ejecución es determinista: el mismo programa, perfil, rigor, semilla, configuración de límites y secuencia de entradas producen la misma salida, terminación, diagnósticos y traza en cualquier plataforma.",
+  "texto": "La ejecución es determinista: el mismo programa, perfil, semilla, configuración de límites y secuencia de entradas producen la misma salida, terminación, diagnósticos y traza en cualquier plataforma.",
   "verificacion": [
     "C6",
     "P1"

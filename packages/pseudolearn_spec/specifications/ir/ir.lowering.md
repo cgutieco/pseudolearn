@@ -56,7 +56,7 @@
   "id": "P1",
   "regla": "R1",
   "generador": {
-    "programas": "todos los programas válidos del corpus en los dos perfiles y rigores"
+    "programas": "todos los programas válidos del corpus en los dos perfiles"
   },
   "propiedad": "La RI traducida pasa el verificador.",
   "oraculo": "Verificador de IR.WELL-FORMEDNESS.",

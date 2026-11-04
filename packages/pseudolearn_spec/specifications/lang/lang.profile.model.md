@@ -38,7 +38,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Los vocabularios oficiales son español clásico e inglés. Cada uno cubre el mismo inventario de tokens y funciones. Vocabulario y rigor son ejes independientes: reimprimir cambia lexemas, y desactivar exigencias amplía validez sin cambiar el resultado de programas ya válidos. Precedencia, base cero, tipos y orden de evaluación son invariantes del lenguaje.",
+  "texto": "Los vocabularios oficiales son español clásico e inglés. Cada uno cubre el mismo inventario de tokens y funciones. Reimprimir en el otro vocabulario cambia lexemas y no cambia el resultado de programas ya válidos. Precedencia, base cero, tipos y orden de evaluación son invariantes del lenguaje.",
   "verificacion": [
     "C1",
     "C2"

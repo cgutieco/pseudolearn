@@ -85,7 +85,7 @@ lock registrado con el observado y devuelve `LockError` ordenados. Los códigos 
 Problema: el modelo de proyecto no puede depender del sistema de archivos ni de la sintaxis.
 Elección: el catálogo recibe rutas lógicas y textos ya leídos; la resolución de nombres vive en semantic,
 que consume el catálogo. Se rechaza un crate que parsee, porque cada petición de proyecto necesita el
-mismo perfil y rigor que el resto del análisis y esa política pertenece a la API.
+mismo perfil que el resto del análisis y esa política pertenece a la API.
 
 Problema: una ruta debe conservar significado al moverse entre sistemas de archivos. Elección: `logical_path`
 valida y normaliza segmentos portables, y su clave NFC en minúsculas Unicode decide equivalencia, colisiones,

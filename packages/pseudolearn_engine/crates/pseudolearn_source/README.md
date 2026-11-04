@@ -40,7 +40,7 @@ Problema: los consumidores usan unidades de coordenadas distintas. Elección: el
 
 Problema: NFC debe aplicarse después de consumir el nombre completo. Elección: el scanner consulta
 `IdentifierNormalizer::is_continuation` para conservar las marcas combinantes dentro del mismo token.
-La admisibilidad del alfabeto es idéntica en ambos rigores y perfiles, y se comprueba sobre el nombre
+La admisibilidad del alfabeto es idéntica en ambos perfiles, y se comprueba sobre el nombre
 normalizado. Una marca combinante se conserva dentro del token; solo se acepta si NFC produce un
 nombre compuesto por el alfabeto permitido. El texto fuente y los offsets originales nunca se
 normalizan. Se rechaza cortar el token ante una marca combinante, porque produciría un falso carácter

@@ -43,7 +43,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Dentro de un subprograma se admiten declaraciones, E/S y todos los bloques estructurados. Declaraciones son locales; retorno y llamada exigen terminador en estricto. Un retorno desde un bucle termina la llamada completa. La entrada suspende también llamadas profundas. Los arreglos conservan sus restricciones de valor y por referencia.",
+  "texto": "Dentro de un subprograma se admiten declaraciones, E/S y todos los bloques estructurados. Declaraciones son locales; retorno y llamada exigen terminador. Un retorno desde un bucle termina la llamada completa. La entrada suspende también llamadas profundas. Los arreglos conservan sus restricciones de valor y por referencia.",
   "verificacion": [
     "C1",
     "C2"

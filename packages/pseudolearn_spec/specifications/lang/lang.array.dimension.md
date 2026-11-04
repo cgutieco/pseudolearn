@@ -38,7 +38,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Dimension declara nombre, dimensiones y tipo en una sola sentencia. Las dimensiones son expresiones enteras; estricto exige expresiones constantes formadas por literales y operadores, sin identificadores. Flexible permite tamaños de ejecución. Tamaño cero es válido; negativo falla. No se admite lista vacía ni declaración duplicada. No se fija un máximo semántico de tamaño: recursos pertenecen al contrato del motor.",
+  "texto": "Dimension declara nombre, dimensiones y tipo en una sola sentencia. Las dimensiones son expresiones enteras que se evalúan al ejecutar. Tamaño cero es válido; negativo falla. No se admite lista vacía ni declaración duplicada. No se fija un máximo semántico de tamaño: recursos pertenecen al contrato del motor.",
   "verificacion": [
     "C1",
     "C2",

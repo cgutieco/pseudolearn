@@ -38,7 +38,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Variable declarada y nunca usada produce variableDeclaredNeverUsed; asignada y nunca leída produce variableAssignedNeverRead. Parámetros y subprogramas no usados tienen códigos propios. Todos son advertencias en los dos rigores; no impiden ejecutar programas correctos.",
+  "texto": "Variable declarada y nunca usada produce variableDeclaredNeverUsed; asignada y nunca leída produce variableAssignedNeverRead. Parámetros y subprogramas no usados tienen códigos propios. Todos son advertencias; no impiden ejecutar programas correctos.",
   "verificacion": [
     "C1",
     "C2",

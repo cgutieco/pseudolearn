@@ -106,7 +106,7 @@
   },
   "servicio": {
     "suboperacion": "incremental",
-    "documento": "Algoritmo Principal\n  Definir x Como Entero;\nFinAlgoritmo\n",
+    "documento": "Algoritmo Principal\n  Definir x Como Entero <- 0;\nFinAlgoritmo\n",
     "ediciones": [
       {
         "rango": {
@@ -219,7 +219,7 @@
   },
   "servicio": {
     "suboperacion": "incremental",
-    "documento": "Algoritmo Principal\n  Definir limite Como Entero;\n  limite <- 10;\n  Si limite > 0 Entonces\n",
+    "documento": "Algoritmo Principal\n  Definir limite Como Entero <- 0;\n  limite <- 10;\n  Si limite > 0 Entonces\n",
     "comprobacion": "estado_incompleto",
     "simbolos": [
       "limite"

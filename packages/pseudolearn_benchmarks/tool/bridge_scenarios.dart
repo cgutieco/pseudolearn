@@ -13,7 +13,6 @@ List<Map<String, Object?>> _setup(String source, List<String> inputs) => [
   _call('create_analysis', {
     'program': source,
     'profile': 'es',
-    'strictness': 'flexible',
   }, save: 'analysis'),
   _call('start', {
     'analysis': r'$analysis.resource',
@@ -64,7 +63,6 @@ List<Map<String, Object?>> minimalBridgeScenarios() => [
         _call('create_document', {
           'program': 'x' * bytes,
           'profile': 'es',
-          'strictness': 'flexible',
         }, save: 'document'),
       ],
       'timed': [
@@ -222,7 +220,6 @@ Map<String, Object?> _completionScenario() {
       _call('complete', {
         'program': source,
         'profile': 'es',
-        'strictness': 'flexible',
         'revision': '1',
         'cursor_utf8': '${utf8.encode(source).length}',
       }),

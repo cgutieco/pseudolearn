@@ -8,12 +8,11 @@ const annexWorkloads = <Workload>[
     operations: 1000,
     source: '''
 Proceso Suma
-  Definir indice, total Como Entero
-  total <- 0
-  Para indice <- 1 Hasta 1000 Hacer
-    total <- total + indice
+  Definir Mutable total Como Entero <- 0;
+  Para indice <- 1 Hasta 1000 Con Paso 1 Hacer
+    total <- total + indice;
   FinPara
-  Escribir total
+  Escribir total;
 FinProceso
 ''',
   ),
@@ -25,13 +24,13 @@ FinProceso
     source: '''
 SubProceso Fib(numero Como Entero) Como Entero
   Si numero < 2 Entonces
-    Retornar numero
+    Retornar numero;
   SiNo
-    Retornar Fib(numero - 1) + Fib(numero - 2)
+    Retornar Fib(numero - 1) + Fib(numero - 2);
   FinSi
 FinSubProceso
 Proceso Fibo
-  Escribir Fib(12)
+  Escribir Fib(12);
 FinProceso
 ''',
   ),
@@ -42,21 +41,21 @@ FinProceso
     operations: 435,
     source: '''
 Proceso Burbuja
-  Dimension valores[30] Como Entero
-  Definir indice, cursor, temporal Como Entero
-  Para indice <- 0 Hasta 29 Hacer
-    valores[indice] <- 30 - indice
+  Dimension valores[30] Como Entero;
+  Definir Mutable temporal Como Entero <- 0;
+  Para indice <- 0 Hasta 29 Con Paso 1 Hacer
+    valores[indice] <- 30 - indice;
   FinPara
-  Para indice <- 0 Hasta 28 Hacer
-    Para cursor <- 0 Hasta 28 - indice Hacer
+  Para indice <- 0 Hasta 28 Con Paso 1 Hacer
+    Para cursor <- 0 Hasta 28 - indice Con Paso 1 Hacer
       Si valores[cursor] > valores[cursor + 1] Entonces
-        temporal <- valores[cursor]
-        valores[cursor] <- valores[cursor + 1]
-        valores[cursor + 1] <- temporal
+        temporal <- valores[cursor];
+        valores[cursor] <- valores[cursor + 1];
+        valores[cursor + 1] <- temporal;
       FinSi
     FinPara
   FinPara
-  Escribir valores[0], " ", valores[29]
+  Escribir valores[0], " ", valores[29];
 FinProceso
 ''',
   ),
@@ -67,25 +66,23 @@ FinProceso
     operations: 100,
     source: '''
 Clase Contador
-  Privado Definir valor Como Entero
+  Privado Definir valor Como Entero;
   Metodo Constructor()
-    Este.valor <- 0
+    Este.valor <- 0;
   FinMetodo
   Metodo Sumar(delta Como Entero)
-    Este.valor <- Este.valor + delta
+    Este.valor <- Este.valor + delta;
   FinMetodo
   Metodo Valor() Como Entero
-    Retornar Este.valor
+    Retornar Este.valor;
   FinMetodo
 FinClase
 Proceso Objetos
-  Definir contador Como Contador
-  Definir indice Como Entero
-  contador <- Nuevo Contador()
-  Para indice <- 1 Hasta 100 Hacer
-    contador.Sumar(indice)
+  Definir contador Como Contador <- Nuevo Contador();
+  Para indice <- 1 Hasta 100 Con Paso 1 Hacer
+    contador.Sumar(indice);
   FinPara
-  Escribir contador.Valor()
+  Escribir contador.Valor();
 FinProceso
 ''',
   ),

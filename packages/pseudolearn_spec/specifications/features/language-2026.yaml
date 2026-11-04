@@ -92,7 +92,7 @@
   ],
   "criterio_de_terminado": [
     "Todos los contratos del lenguaje, diagnósticos y biblioteca en experimental.",
-    "Casos derivados bilingües con rigores declarados.",
+    "Casos derivados bilingües.",
     "Divergencias específicas clasificadas sin modificar reference.",
     "Gramática y recursos normativos completos y verificables."
   ]

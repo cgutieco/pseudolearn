@@ -2,7 +2,7 @@
 {
   "formato": "see/1",
   "id": "LANG.TYPES.INFERENCE",
-  "titulo": "Inferencia flexible",
+  "titulo": "Declaración obligatoria del tipo",
   "dominio": "lenguaje",
   "estado": "estable",
   "version": "1.0.0",
@@ -17,7 +17,7 @@
     "engine",
     "aot"
   ],
-  "resumen": "Inferencia flexible.",
+  "resumen": "Ningún vínculo infiere su tipo de una asignación.",
   "edicion": {
     "introducida_en": "2026"
   },
@@ -31,7 +31,7 @@
 }
 ---
 
-# Inferencia flexible
+# Declaración obligatoria del tipo
 
 ```regla
 {

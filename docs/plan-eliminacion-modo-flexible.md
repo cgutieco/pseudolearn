@@ -173,48 +173,48 @@ junto con su consumidor; el reanclaje ocurre en esa misma fase. La persona autor
 
 ### PF-4 · Marcador de línea (tamaño M)
 
-- [ ] PF-4.1 Tests que detectan la ausencia del marcador, con caso de punto y coma omitido y caso de línea larga.
-- [ ] PF-4.2 Especificación y casos CLI: fijar el formato oficial y esperados derivados (§2); implementarlo en la salida
+- [x] PF-4.1 Tests que detectan la ausencia del marcador, con caso de punto y coma omitido y caso de línea larga.
+- [x] PF-4.2 Especificación y casos CLI: fijar el formato oficial y esperados derivados (§2); implementarlo en la salida
       de texto tras `format_diagnostic_line` y en los cuatro puntos que la comparten (`check`, `format`, `ir`, reporte de
       proyecto).
-- [ ] PF-4.3 Revisar el resto de mensajes de error del lenguaje que más se encontrarán al aprender (terminador, tipo de
+- [x] PF-4.3 Revisar el resto de mensajes de error del lenguaje que más se encontrarán al aprender (terminador, tipo de
       parámetro, paso de `Para`) y confirmar que dicen qué falta y dónde.
 
 ### PF-5 · CLI y extensión de VS Code (tamaño M)
 
-- [ ] PF-5.1 CLI: eliminar `--rigor`/`--strictness`, `handle_strictness_option`, el valor por defecto `strict` y su
+- [x] PF-5.1 CLI: eliminar `--rigor`/`--strictness`, `handle_strictness_option`, el valor por defecto `strict` y su
       traducción en comandos y DAP; actualizar el README y el corpus `tool.cli.*`.
-- [ ] PF-5.2 VS Code: eliminar el ajuste de `package.json` (dos apariciones), `extension_configuration`,
+- [x] PF-5.2 VS Code: eliminar el ajuste de `package.json` (dos apariciones), `extension_configuration`,
       `configuration_resolver`, `configuration_message`, `debug_configuration`, `run_arguments` y los tests asociados.
-- [ ] PF-5.3 `pnpm` de la extensión y `cargo xtask verify` de la CLI en verde.
+- [x] PF-5.3 `pnpm` de la extensión y `cargo xtask verify` de la CLI en verde.
 
 ### PF-6 · App (tamaño M)
 
-- [ ] PF-6.1 Especificación `APP.EXEC.CONFIGURATION` y escenarios de conformidad: quitar `Document.strictness`, el campo
+- [x] PF-6.1 Especificación `APP.EXEC.CONFIGURATION` y escenarios de conformidad: quitar `Document.strictness`, el campo
       del archivo y de la sincronización (`file_document_repository`,
       `document_sync_drainer`), `ExecutionConfiguration.strictness` y los parámetros de `ProgramAnalyzer`,
       `rust_execution_opening`, `rust_program_analyzer` y los demás adaptadores del puente.
-- [ ] PF-6.2 Quitar el selector «Flexible» de `ExecutionConfigurationControls` y sus cadenas `.arb`; revisar el diseño de la
+- [x] PF-6.2 Quitar el selector «Flexible» de `ExecutionConfigurationControls` y sus cadenas `.arb`; revisar el diseño de la
       fila con el campo «Argumentos» y el botón «Reproducir» en pantalla de móvil (verificación visual en el simulador).
-- [ ] PF-6.3 Capítulos de conocimiento y manifiestos, incluido `esp-i-sistema-de-tipos`: regenerar o reescribir las
+- [x] PF-6.3 Capítulos de conocimiento y manifiestos, incluido `esp-i-sistema-de-tipos`: regenerar o reescribir las
       secciones que hablan de rigor, en español e inglés, desde el corpus y no a mano si existe generador
       (`GEN-NO-HAND-COPY`).
-- [ ] PF-6.4 Corregir los programas de onboarding y de la base de conocimiento que no pasen `comprobar` (D-09).
+- [x] PF-6.4 Corregir los programas de onboarding y de la base de conocimiento que no pasen `comprobar` (D-09).
       El subalcance que bloqueaba PF-3 se adelanta y se registra como ejecución parcial, no como cierre de PF-6.4.
-- [ ] PF-6.5 `flutter analyze`, tests y verificadores del paquete en verde; `see conform --subject app` sin regresiones
+- [x] PF-6.5 `flutter analyze`, tests y verificadores del paquete en verde; `see conform --subject app` sin regresiones
       frente a la línea base de PF-0.
 
 ### PF-7 · Documentación y barrido de rastros (tamaño S)
 
-- [ ] PF-7.1 READMEs de la raíz, motor, CLI, extensión y app: quitar la sección de rigor y la fila «Selector del eje de
+- [x] PF-7.1 READMEs de la raíz, motor, CLI, extensión y app: quitar la sección de rigor y la fila «Selector del eje de
       rigor» de los pendientes de la app; registrar la decisión de lenguaje único donde corresponda.
-- [ ] PF-7.2 Frontend: renombrar el título `spec.types` en `es.json` y `en.json` («Sistema de tipos y política de rigor»,
+- [x] PF-7.2 Frontend: renombrar el título `spec.types` en `es.json` y `en.json` («Sistema de tipos y política de rigor»,
       «Type system and strictness policy»). El título del capítulo de conocimiento se actualiza con PF-6.3.
-- [ ] PF-7.3 Benchmarks: quitar `'strictness': 'flexible'` de `bridge_scenarios.dart`.
-- [ ] PF-7.4 Comprobación manual de cierre: `git grep` de `strictness`, `strict`, `estricto`, `flexible`, `rigor` e
+- [x] PF-7.3 Benchmarks: quitar `'strictness': 'flexible'` de `bridge_scenarios.dart`.
+- [x] PF-7.4 Comprobación manual de cierre: `git grep` de `strictness`, `strict`, `estricto`, `flexible`, `rigor` e
       `is_strict` fuera de `docs/`; cada coincidencia restante se justifica una por una (por ejemplo `strict-casts`) y el
       resultado queda registrado en este plan.
-- [ ] PF-7.5 Repetir las puertas integrales de cierre: `cargo xtask verify` en motor, CLI y spec; `flutter analyze`,
+- [x] PF-7.5 Repetir las puertas integrales de cierre: `cargo xtask verify` en motor, CLI y spec; `flutter analyze`,
       tests y verificadores de la app; verificaciones completas de la extensión; `see validate` y `see conform` frente
       a la línea base de PF-0. Esta ejecución incluye la suite pesada del motor y sus tests de sockets locales.
 
@@ -244,10 +244,10 @@ junto con su consumidor; el reanclaje ocurre en esa misma fase. La persona autor
 | PF-1 | | Reordenamiento autorizado el 2026-11-03; entregables reasignados a PF-2–PF-6 por dependencia de verificación | No ejecutada como fase independiente | Ninguno; no se modificó corpus ni código para PF-1 |
 | PF-2 | `7e673d03cd6be3de62b4ebab9a904a17a21bf97e` | `cargo fmt --all --check`, Clippy estricto, `cargo test --workspace`, cargo-deny offline (advisories/bans/licenses/sources ok), `rust-checks all .`, `rust-checks toolchain ../..`, build release del adaptador engine, `see validate` (197), `see export --check`, conformidad de propiedades (31 ejecutadas, 0 pendientes), conformidad completa (4026 observaciones, 0 divergencias) | Completada; verificadores en verde. `cargo xtask verify` se detuvo al intentar bloquear `/Users/cgutieco/.cargo/advisory-dbs/db.lock`, de solo lectura; cargo-deny pasó con base local temporal | Ninguno |
 | PF-3 | `4f47a044605c412d877d6c9aac159eb81b994d2c` | PF-3.1–3.6 y la documentación del miembro implementadas. `cargo test -p pseudolearn_service --test corpus every_program -- --nocapture`: pasan `every_program_formats_without_loss_and_idempotently` y `every_program_survives_double_translation_in_canonical_form`. Los verificadores de la app (`check_content.dart`, `check_limits.dart`, `check_design_system.dart`, `check_syntax_coverage.dart`) pasan con Dart directo y el puente nativo local. Spec: `see validate` (197), `see export --check`, `see conform --subject engine` (2182 observaciones, 0 divergencias). La ejecución integral del motor alcanzó exportación y Clippy; en la pasada sandbox fallaron 12 tests de sockets locales con `Operation not permitted`; la repetición autorizada fuera del sandbox se canceló por instrucción de la persona durante la suite. La fase ya había ejecutado la suite del motor con estos dos tests de corpus excluidos, además de formato, Clippy, rust-checks y cargo-deny offline; en PF-7.5 se repetirá el `cargo xtask verify` integral. | PF-3 completado el 2026-11-04 con el subalcance necesario de PF-6.4 adelantado; sin cambios a identidades o versiones congeladas del corpus y sin iniciar PF-4. | PF-6.4 conserva el resto de sus activos. PF-7.5 debe ejecutar la suite integral del motor, incluida la de sockets locales, y las puertas completas de cierre. |
-| PF-4 | | | | |
-| PF-5 | | | | |
-| PF-6 | | | | |
-| PF-7 | | | | |
+| PF-4 | `a6c7e92b` | Marcador de línea en `diagnostic_excerpt.rs` con tests primero; regla R3 y casos C4–C6 en `tool.cli.messages`; 14 casos existentes con marcador; `cargo xtask verify` de la CLI en verde; `see conform --subject cli`: 113 observaciones, 0 divergencias | Completada. Los fallos en tiempo de ejecución de un ejecutable nativo imprimen solo la línea de plantilla porque el ejecutable no lleva la fuente | Ninguno |
+| PF-5 | `a6c7e92b` | Eliminados `--rigor`/`--strictness`, `strictness` de DAP y el ajuste de VS Code; vitest 165 tests, `check:types`, `check:architecture`, `check:comments`, `check:size`, `check:grammar` (regenerada), `check:package` en verde | Completada | Ninguno |
+| PF-6 | `a6c7e92b` | Eliminados `Document.strictness`, el selector, las cadenas `.arb` y los parámetros del puente; capítulos de conocimiento reescritos; programas y fixtures de tests corregidos; `SubProceso` de las plantillas del servicio con parámetro tipado; `flutter analyze`, verificadores de la app y `flutter test` en verde; `see conform --subject app`: 242 observaciones, 0 divergencias | Completada | Ninguno |
+| PF-7 | `a6c7e92b` | READMEs, títulos del frontend, benchmarks (programas de las cargas reescritos); `cargo xtask verify` de spec y motor en verde (conformidad engine 2182 observaciones, 0 divergencias); barrido de §7.4 abajo | Completada | El sujeto `service` conserva 15 divergencias sin relación con el eje de rigor (escenarios `workspace`, `lsp` y `rename`); el motor conserva el resto del mecanismo de inferencia (`is_inferred`) |
 
 ### Línea base de PF-0
 
@@ -285,3 +285,20 @@ junto con su consumidor; el reanclaje ocurre en esa misma fase. La persona autor
 - PF-0.4: el formato de texto existente continúa como primera línea; luego se imprime una línea de fuente con número y
   una línea de indicador con `^` en la columna inicial. Solo se presenta la primera línea de spans multilínea. JSON queda
   intacto. La expansión de tabuladores, recorte y ancho visual Unicode quedan descritos en §2.1 para PF-4.
+
+### Barrido de cierre (PF-7.4)
+
+`git grep` de `strictness`, `strict`, `estricto`, `flexible`, `rigor` e `is_strict` fuera de `docs/`. Restos justificados:
+
+- `LANG.PROFILE.STRICTNESS` (identidad congelada del archivo `lang.profile.strictness.md`) y sus vínculos en `conformance.yaml`: la identidad no cambia durante el congelamiento; el texto ya describe la edición única.
+- Pruebas negativas de los verificadores del spec (`rejects_removed_rigor_field`, `rejects_removed_strictness_fields`, `requests.rs`, `runtime_fixtures.rs`): comprueban que el campo retirado se rechaza.
+- `cases/migration.json`, `subjects/reference`, `differential-exemptions.json` y las filas `REF-*` del README del spec: registro histórico del sujeto `reference` retirado (D-10).
+- «Estricto/estricta» como adjetivo ajeno al eje (JSON estricto, TOML estricto, Clippy estricto, BEM estricto, `strict-casts`, `assertStrict*`, «estrictamente creciente»).
+- `Flexible(` de Flutter y «rigor» en la prosa legal del frontend.
+
+### Decisiones tomadas durante la ejecución
+
+- El tamaño de `Dimension` es una expresión entera evaluada al ejecutar: el motor nunca exigió constantes y ningún caso las pedía.
+- Los fallos de un ejecutable nativo en tiempo de ejecución no llevan marcador.
+- Las plantillas de `SubProceso` del servicio llevan un parámetro tipado.
+- Opciones retiradas (`--rigor`, `--strictness`, `strictness` de DAP) no tienen alias: la CLI las trata como opción desconocida y el lanzamiento DAP ignora la clave.

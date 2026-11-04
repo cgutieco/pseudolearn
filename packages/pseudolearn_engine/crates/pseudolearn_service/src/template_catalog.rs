@@ -114,6 +114,11 @@ fn callable_header(word: Word<'_>, marker: &Markers) -> Vec<Segment> {
     let mut segments = unit_header(word, marker, KeywordKind::Subroutine);
     segments.push(text("("));
     segments.push(stop(2, StopRole::NewIdentifier, marker.parameter));
+    segments.push(text(format!(
+        " {} {}",
+        word(KeywordKind::TypeConnector),
+        word(KeywordKind::IntegerType)
+    )));
     segments.push(text(")"));
     segments
 }

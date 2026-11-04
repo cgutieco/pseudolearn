@@ -102,7 +102,7 @@
           {"path": "geo/vectores", "source_id": 2, "text": "Publico SubProceso Doble(n Como Entero) Como Entero\nRetornar n * 2;\nFinSubProceso\n"}
         ]
       },
-      "options": {"profile": "es", "strictness": "strict"}
+      "options": {"profile": "es"}
     },
     "actions": [
       {"operation": "open", "path": "geo/vectores", "version": 1, "text": "Publico SubProceso Doble(n Como Entero) Como Entero\nRetornar n * 3;\nFinSubProceso\n"}
@@ -130,7 +130,7 @@
         "packages": [{"name": "app", "root": "app", "kind": "application", "entries": ["app/main"], "dependencies": {}}],
         "files": [{"path": "app/main", "source_id": 1, "text": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n"}]
       },
-      "options": {"profile": "es", "strictness": "strict"}
+      "options": {"profile": "es"}
     },
     "actions": [
       {"operation": "open", "path": "app/main", "version": 1, "text": "@"},
@@ -218,7 +218,7 @@
           {"path": "geo/vectores", "source_id": 2, "text": "Publico SubProceso Doble(n Como Entero) Como Entero\nRetornar n * 2;\nFinSubProceso\n"}
         ]
       },
-      "options": {"profile": "es", "strictness": "strict"}
+      "options": {"profile": "es"}
     },
     "actions": [
       {"operation": "open", "path": "geo/vectores", "version": 1, "text": "Publico SubProceso Doble(n Como Entero, factor Como Entero) Como Entero\nRetornar n * factor;\nFinSubProceso\n"}
@@ -246,7 +246,7 @@
         "packages": [{"name": "app", "root": "app", "kind": "application", "entries": ["app/main"], "dependencies": {}}],
         "files": [{"path": "app/main", "source_id": 1, "text": "Algoritmo P\nFinAlgoritmo\n"}]
       },
-      "options": {"profile": "es", "strictness": "strict"}
+      "options": {"profile": "es"}
     },
     "actions": [
       {"operation": "change", "path": "app/main", "version": 2, "text": "Algoritmo P\nFinAlgoritmo\n"}
@@ -274,7 +274,7 @@
         "packages": [{"name": "app", "root": "app", "kind": "application", "entries": ["app/main"], "dependencies": {}}],
         "files": []
       },
-      "options": {"profile": "es", "strictness": "strict"}
+      "options": {"profile": "es"}
     }
   }
 }
@@ -299,7 +299,7 @@
         "packages": [{"name": "app", "root": "app", "kind": "application", "entries": ["app/main"], "dependencies": {}}],
         "files": [{"path": "app/main", "source_id": 1, "text": "Algoritmo P\nFinAlgoritmo\n"}]
       },
-      "options": {"profile": "es", "strictness": "strict"}
+      "options": {"profile": "es"}
     },
     "actions": [
       {
@@ -311,7 +311,7 @@
             "packages": [{"name": "app", "root": "app", "kind": "application", "entries": ["app/main"], "dependencies": {}}],
             "files": [{"path": "app/main", "source_id": 1, "text": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n"}]
           },
-          "options": {"profile": "es", "strictness": "strict"}
+          "options": {"profile": "es"}
         }
       }
     ]
@@ -344,7 +344,7 @@
           {"path": "geo/vectores", "source_id": 2, "text": "Publico SubProceso Doble(n Como Entero) Como Entero\nRetornar n * 2;\nFinSubProceso\n"}
         ]
       },
-      "options": {"profile": "es", "strictness": "strict"}
+      "options": {"profile": "es"}
     },
     "actions": [
       {"operation": "open", "path": "app/main", "version": 1, "text": "Importar geo.vectores.Doble;\nAlgoritmo P\nEscribir Doble(21);\nFinAlgoritmo\n"}

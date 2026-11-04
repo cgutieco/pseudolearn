@@ -54,7 +54,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Al posicionar el cursor sobre una variable, constante, parámetro, campo, clase o subproceso, el servicio devuelve su categoría, su tipo estático (indicando si fue declarado o inferido en modo flexible) y, para subprocesos/métodos, su firma canónica con modos de paso.",
+  "texto": "Al posicionar el cursor sobre una variable, constante, parámetro, campo, clase o subproceso, el servicio devuelve su categoría, su tipo estático (indicando si fue declarado o inferido) y, para subprocesos/métodos, su firma canónica con modos de paso.",
   "verificacion": [
     "C1",
     "C2"
@@ -125,7 +125,7 @@
   },
   "servicio": {
     "suboperacion": "hover",
-    "documento": "Algoritmo Principal\n  Definir contador Como Entero;\n  contador <- 1;\nFinAlgoritmo\n",
+    "documento": "Algoritmo Principal\n  Definir contador Como Entero <- 0;\n  contador <- 1;\nFinAlgoritmo\n",
     "posicion": {
       "line": 3,
       "column": 5
@@ -147,15 +147,15 @@
   "espera": {
     "servicio": {
       "tipo": "Real",
-      "inferido": true
+      "inferido": false
     }
   },
   "servicio": {
     "suboperacion": "hover",
-    "documento": "Algoritmo Principal\n  x <- 3.14\nFinAlgoritmo\n",
+    "documento": "Algoritmo Principal\n  Definir x Como Real <- 3.14;\n  Escribir x;\nFinAlgoritmo\n",
     "posicion": {
-      "line": 2,
-      "column": 3
+      "line": 3,
+      "column": 12
     },
     "proyeccion": "tipo"
   }
@@ -205,7 +205,7 @@
   },
   "servicio": {
     "suboperacion": "hover",
-    "documento": "Algoritmo Principal\n  Definir n Como Entero;\n  n <- Longitud(\"hola\");\nFinAlgoritmo\n",
+    "documento": "Algoritmo Principal\n  Definir n Como Entero <- 0;\n  n <- Longitud(\"hola\");\nFinAlgoritmo\n",
     "posicion": {
       "line": 3,
       "column": 10

@@ -48,7 +48,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La edición vigente se identifica como 2026 en metadatos del corpus. La edición no es una sentencia ni una bandera del perfil. Ninguna construcción de ediciones futuras se admite por cambiar idioma o rigor.",
+  "texto": "La edición vigente se identifica como 2026 en metadatos del corpus. La edición no es una sentencia ni una bandera del perfil. Ninguna construcción de ediciones futuras se admite por cambiar idioma.",
   "verificacion": [
     "C1",
     "C2"

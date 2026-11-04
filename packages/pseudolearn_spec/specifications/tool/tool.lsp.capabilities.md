@@ -342,7 +342,7 @@
             "uri": "file:///prueba.pseudo",
             "languageId": "pseudolearn",
             "version": 1,
-            "text": "Algoritmo Principal\n  Definir x Como Entero;\n  x <- \"error\";\nFinAlgoritmo\n"
+            "text": "Algoritmo Principal\n  Definir x Como Entero <- 0;\n  x <- \"error\";\nFinAlgoritmo\n"
           }
         }
       },
@@ -410,7 +410,7 @@
             "uri": "file:///consultas.pseudo",
             "languageId": "pseudolearn",
             "version": 1,
-            "text": "Algoritmo Principal\n  Definir total Como Entero;\n  total <- 10;\n  Escribir total;\nFinAlgoritmo\n"
+            "text": "Algoritmo Principal\n  Definir total Como Entero <- 0;\n  total <- 10;\n  Escribir total;\nFinAlgoritmo\n"
           }
         }
       },

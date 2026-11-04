@@ -48,9 +48,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "flexible"
-  ],
   "operacion": "execute",
   "espera": {
     "salida": "1\n",
