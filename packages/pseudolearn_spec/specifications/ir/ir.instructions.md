@@ -4066,6 +4066,16 @@
 
 ```cobertura
 {
+  "id": "V210",
+  "regla": "LIB.CORE.TEXT#T4",
+  "instrucciones": [
+    "effect_call"
+  ]
+}
+```
+
+```cobertura
+{
   "id": "V188",
   "regla": "LIB.CORE.BYTES#B1",
   "instrucciones": [

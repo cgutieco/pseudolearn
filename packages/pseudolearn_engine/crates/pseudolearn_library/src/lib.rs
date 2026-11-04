@@ -22,6 +22,7 @@ mod local_operations;
 mod math;
 mod precision;
 mod rounding;
+mod text_case;
 mod text_replace;
 mod text_search;
 mod text_split;
@@ -36,6 +37,7 @@ pub use json_local_views::{LocalJsonViewCall, local_json_view};
 pub use local_operations::{LocalOperationRequest, local_operation};
 pub use math::{absolute, square_root};
 pub use rounding::{round_real, truncate_real};
+pub use text_case::{to_lower_text, to_upper_text};
 pub use text_replace::{replace_all, trim_text};
 pub use text_search::{
     text_contains, text_ends_with, text_position, text_starts_with, text_substring,
@@ -54,6 +56,8 @@ mod json_query_tests;
 mod json_source_tests;
 #[cfg(test)]
 mod json_text_tests;
+#[cfg(test)]
+mod text_case_tests;
 #[cfg(test)]
 mod text_replace_tests;
 #[cfg(test)]

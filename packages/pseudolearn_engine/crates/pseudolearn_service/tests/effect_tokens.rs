@@ -9,7 +9,10 @@ fn diagnostic_codes(text: &str, profile: Profile) -> Vec<String> {
     let (tree, mut codes) = parse_source(&source, profile);
     let analysis = analyze_for_service(&tree, &source, SemanticOptions { profile });
     codes.extend(analysis.diagnostics);
-    codes.iter().map(|code| format!("{:?}", code.code)).collect()
+    codes
+        .iter()
+        .map(|code| format!("{:?}", code.code))
+        .collect()
 }
 
 fn opposite(profile: Profile) -> Profile {
@@ -91,8 +94,8 @@ fn network_types_and_operations_translate() -> Result<(), String> {
 
 #[test]
 fn english_source_translates_to_spanish() -> Result<(), String> {
-    let english = translate_source(NETWORK, Profile::English)
-        .map_err(|error| format!("{error:?}"))?;
+    let english =
+        translate_source(NETWORK, Profile::English).map_err(|error| format!("{error:?}"))?;
     let spanish = translate_and_return(&english, Profile::English)?;
     assert_eq!(spanish, NETWORK);
     Ok(())

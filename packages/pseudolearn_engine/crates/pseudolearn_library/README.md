@@ -39,6 +39,7 @@ Funciones puras sobre representaciones del runtime, sin estado global.
 | `transcendental/{exponential,logarithm,trigonometric,arctangent,power}.rs` | Reducción de argumento y evaluación de cada función |
 | `transcendental/power_exact.rs` | Resultados exactos de la potencia antes de la escalada |
 | `text_search.rs`, `text_split.rs`, `text_replace.rs` | Búsqueda Unicode, segmentación, unión, reemplazo y recorte de texto |
+| `text_case.rs` | Conversión a mayúsculas y minúsculas con las tablas Unicode completas de la biblioteca estándar de Rust |
 | `bytes_operations.rs` | Conversión UTF-8, segmentos comprobados y unión binaria |
 | `json_parse.rs`, `json_parse_strings.rs` | Parsing JSON, duplicados, límite de profundidad y ubicación de errores; las posiciones empiezan en línea 1, columna 1, también para el texto vacío |
 | `json_text.rs`, `json_query.rs`, `json_build.rs` | Texto compacto, consultas, constructores y actualización inmutable |
@@ -99,6 +100,15 @@ del anfitrión.
   aritmética de tamaño fijo, que impondría un tope de precisión a la escalada. Display aporta dígitos mínimos posicionales y se añade .0 cuando hace falta; el cero negativo se conserva. Copiar conserva ausencia, comparte referencias y no ejecuta constructor.
 
 La raíz cuadrada normaliza el significando binario y calcula la raíz entera inferior de un radicando escalado. Compara el radicando con el cuadrado del punto medio entre significandos consecutivos para decidir el redondeo, sin consultar la libm ni perder el cero negativo. El valor absoluto real borra solo el bit de signo y conserva el payload de NaN.
+
+`AMayusculas` y `AMinusculas` son operaciones locales de familia `text` sin receptor, declaradas en `capabilityLibrary`
+y despachadas por `local_operation`, igual que `BytesDesdeTexto`: no añaden instrucciones de RI. Usan las
+correspondencias Unicode completas e independientes de la configuración regional de `str::to_uppercase` y
+`str::to_lowercase` (`ß` produce `SS`, U+0130 produce `i` más U+0307 y la sigma final se decide por contexto de palabra).
+Las tablas son las de la versión de Unicode de la cadena exacta de `rust-toolchain.toml`; la igualdad entre
+plataformas se apoya en que todas compilan con esa misma cadena. El resultado puede tener más puntos de código que
+la entrada y cuenta celdas como cualquier cadena creada en ejecución. No se acredita todavía en el sujeto nativo:
+su vínculo queda pendiente hasta la paridad nativa de la biblioteca.
 
 La implementación permanece secuencial y determinista. La exportación del corpus es una dependencia
 de datos. Las técnicas que requieren medición se aceptan solo tras conservar resultados y criterios.

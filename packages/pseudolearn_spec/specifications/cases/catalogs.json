@@ -753,6 +753,32 @@
         "parameters": [],
         "receiver": "http_response",
         "result": "text"
+      },
+      {
+        "effect": false,
+        "en": "toUpper",
+        "es": "AMayusculas",
+        "fallible": false,
+        "family": "text",
+        "identity": "text_to_upper",
+        "parameters": [
+          "text"
+        ],
+        "receiver": null,
+        "result": "text"
+      },
+      {
+        "effect": false,
+        "en": "toLower",
+        "es": "AMinusculas",
+        "fallible": false,
+        "family": "text",
+        "identity": "text_to_lower",
+        "parameters": [
+          "text"
+        ],
+        "receiver": null,
+        "result": "text"
       }
     ]
   },
@@ -20459,6 +20485,170 @@
             }
           }
         ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "T4",
+            "specification": "LIB.CORE.TEXT",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C19",
+                "kind": "executable",
+                "label": "Program that runs: toUpper",
+                "profile": "en",
+                "specification": "LIB.CORE.TEXT",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "text_to_upper",
+                "text": "toUpper returns the string in uppercase using the full Unicode tables, independent of locale."
+              }
+            ],
+            "purpose": "It lets a program change the case of a text without modifying the original.",
+            "summary": "toUpper returns the string in uppercase using the full Unicode tables, independent of locale.",
+            "title": "toUpper"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C19",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: AMayusculas",
+                "profile": "es",
+                "specification": "LIB.CORE.TEXT",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "text_to_upper",
+                "text": "AMayusculas devuelve la cadena en mayúsculas con las tablas Unicode completas, sin configuración regional."
+              }
+            ],
+            "purpose": "Permite normalizar el caso de un texto sin modificar el original.",
+            "summary": "AMayusculas devuelve la cadena en mayúsculas con las tablas Unicode completas, sin configuración regional.",
+            "title": "AMayusculas"
+          }
+        },
+        "id": "help.pgs01.text_to_upper",
+        "identity": {
+          "id": "primary",
+          "kind": "role",
+          "role": "pgs01_text_to_upper"
+        },
+        "tokens": [
+          {
+            "identity": "text_to_upper",
+            "source": {
+              "element": "D2",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "T4",
+            "specification": "LIB.CORE.TEXT",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C19",
+                "kind": "executable",
+                "label": "Program that runs: toLower",
+                "profile": "en",
+                "specification": "LIB.CORE.TEXT",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "text_to_lower",
+                "text": "toLower returns the string in lowercase using the full Unicode tables, independent of locale."
+              }
+            ],
+            "purpose": "It lets a program change the case of a text without modifying the original.",
+            "summary": "toLower returns the string in lowercase using the full Unicode tables, independent of locale.",
+            "title": "toLower"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C19",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: AMinusculas",
+                "profile": "es",
+                "specification": "LIB.CORE.TEXT",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "text_to_lower",
+                "text": "AMinusculas devuelve la cadena en minúsculas con las tablas Unicode completas, sin configuración regional."
+              }
+            ],
+            "purpose": "Permite normalizar el caso de un texto sin modificar el original.",
+            "summary": "AMinusculas devuelve la cadena en minúsculas con las tablas Unicode completas, sin configuración regional.",
+            "title": "AMinusculas"
+          }
+        },
+        "id": "help.pgs01.text_to_lower",
+        "identity": {
+          "id": "primary",
+          "kind": "role",
+          "role": "pgs01_text_to_lower"
+        },
+        "tokens": [
+          {
+            "identity": "text_to_lower",
+            "source": {
+              "element": "D2",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          }
+        ]
       }
     ],
     "exclusions": [],
@@ -22536,6 +22726,32 @@
           ],
           "tokens": [
             "http_redirected"
+          ]
+        },
+        {
+          "identity": {
+            "id": "primary",
+            "kind": "role",
+            "role": "pgs01_text_to_upper"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "text_to_upper"
+          ]
+        },
+        {
+          "identity": {
+            "id": "primary",
+            "kind": "role",
+            "role": "pgs01_text_to_lower"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "text_to_lower"
           ]
         }
       ]

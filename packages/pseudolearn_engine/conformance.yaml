@@ -2192,6 +2192,11 @@
       "estado": "cumple"
     },
     {
+      "regla": "LIB.CORE.TEXT@1.0.0#T4",
+      "verificacion": "crates/pseudolearn_library/src/text_case_tests.rs",
+      "estado": "cumple"
+    },
+    {
       "regla": "LIB.CORE.BYTES@1.0.0#B1",
       "verificacion": "crates/pseudolearn_library/src/bytes_operations_tests.rs",
       "estado": "cumple"

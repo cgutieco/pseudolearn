@@ -1,7 +1,7 @@
 #![forbid(unsafe_code)]
 
 use crate::{bytes_operations, json_build, json_parse, json_query, json_text};
-use crate::{text_replace, text_search, text_split};
+use crate::{text_case, text_replace, text_search, text_split};
 use pseudolearn_runtime::{HostValue, MemoryError};
 
 #[path = "local_operation_dispatch.rs"]
@@ -22,6 +22,8 @@ fn text_operation(
         "split" => Some(split(arguments)?),
         "join" => Some(join(arguments)?),
         "trim" => Some(trim(arguments)?),
+        "text_to_upper" => Some(to_upper(arguments)?),
+        "text_to_lower" => Some(to_lower(arguments)?),
         _ => None,
     };
     Ok(value)
@@ -222,6 +224,20 @@ fn trim(arguments: &[HostValue]) -> Result<HostValue, MemoryError> {
         return Err(MemoryError::Internal);
     };
     Ok(HostValue::Text(text_replace::trim_text(text)))
+}
+
+fn to_upper(arguments: &[HostValue]) -> Result<HostValue, MemoryError> {
+    let [HostValue::Text(text)] = arguments else {
+        return Err(MemoryError::Internal);
+    };
+    Ok(HostValue::Text(text_case::to_upper_text(text)))
+}
+
+fn to_lower(arguments: &[HostValue]) -> Result<HostValue, MemoryError> {
+    let [HostValue::Text(text)] = arguments else {
+        return Err(MemoryError::Internal);
+    };
+    Ok(HostValue::Text(text_case::to_lower_text(text)))
 }
 
 fn bytes_from_text(arguments: &[HostValue]) -> Result<HostValue, MemoryError> {

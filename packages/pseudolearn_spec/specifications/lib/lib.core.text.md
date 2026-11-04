@@ -503,3 +503,296 @@
   }
 }
 ```
+
+```regla
+{
+  "id": "T4",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "AMayusculas y AMinusculas convierten una cadena con las correspondencias Unicode completas de mayúsculas y minúsculas, independientes de la configuración regional y de la plataforma, en la versión de Unicode que el README del motor declara. Una letra puede producir varias (ß produce SS al pasar a mayúsculas), U+0130 produce i seguida de U+0307 al pasar a minúsculas y Σ produce ς al final de palabra y σ en el resto. No normalizan, dejan intactos los puntos de código sin correspondencia, no modifican su argumento y la cadena devuelta cuenta celdas como T3. Un argumento que no es cadena o una aridad distinta de uno se rechaza antes de la ejecución.",
+  "verificacion": [
+    "C19",
+    "C20",
+    "C21",
+    "C22",
+    "C23",
+    "C24",
+    "C25",
+    "C26",
+    "C27",
+    "C28",
+    "C29",
+    "C30"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C19",
+  "regla": "T4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir AMayusculas(\"Hola 42\");\nEscribir AMinusculas(\"Hola 42\");\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite toUpper(\"Hola 42\");\nwrite toLower(\"Hola 42\");\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "HOLA 42\nhola 42\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C20",
+  "regla": "T4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir AMayusculas(\"\");\nEscribir AMinusculas(\"\");\nEscribir AMayusculas(\"ABC\");\nEscribir AMinusculas(\"abc\");\nEscribir AMayusculas(\"a\");\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite toUpper(\"\");\nwrite toLower(\"\");\nwrite toUpper(\"ABC\");\nwrite toLower(\"abc\");\nwrite toUpper(\"a\");\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "\n\nABC\nabc\nA\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C21",
+  "regla": "T4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir AMayusculas(\"é\");\nEscribir AMinusculas(\"É\");\nEscribir AMayusculas(\"ǆ\");\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite toUpper(\"é\");\nwrite toLower(\"É\");\nwrite toUpper(\"ǆ\");\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "É\né\nǄ\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C22",
+  "regla": "T4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir AMayusculas(\"straße\");\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite toUpper(\"straße\");\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "STRASSE\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C23",
+  "regla": "T4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir AMinusculas(\"İ\");\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite toLower(\"İ\");\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "i̇\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C24",
+  "regla": "T4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir AMinusculas(\"ΑΣ\");\nEscribir AMinusculas(\"ΑΣΑ\");\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite toLower(\"ΑΣ\");\nwrite toLower(\"ΑΣΑ\");\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "ας\nασα\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C25",
+  "regla": "T4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir AMayusculas(\"é😀\");\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite toUpper(\"é😀\");\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "É😀\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C26",
+  "regla": "T4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir texto Como Cadena <- \"abc\";\nDefinir mayus Como Cadena <- AMayusculas(texto);\nEscribir texto, mayus;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine texto as string <- \"abc\";\ndefine mayus as string <- toUpper(texto);\nwrite texto, mayus;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "abcABC\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C27",
+  "regla": "T4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir AMayusculas(1);\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite toUpper(1);\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "incompatibleArgumentType",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C28",
+  "regla": "T4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir AMinusculas();\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite toLower();\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "argumentCountMismatch",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C29",
+  "regla": "T4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir Mutable c Como Cadena <- \"\";\nc <- AMayusculas(\"ab\");\nEscribir c;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine mutable c as string <- \"\";\nc <- toUpper(\"ab\");\nwrite c;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "AB\n",
+    "terminacion": "completed"
+  },
+  "limites": {
+    "celdas": 2
+  }
+}
+```
+
+```caso
+{
+  "id": "C30",
+  "regla": "T4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir Mutable c Como Cadena <- \"\";\nc <- AMayusculas(\"ab\");\nEscribir c;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine mutable c as string <- \"\";\nc <- toUpper(\"ab\");\nwrite c;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "",
+    "fallo": {
+      "codigo": "cellLimitExceeded"
+    }
+  },
+  "limites": {
+    "celdas": 1
+  }
+}
+```

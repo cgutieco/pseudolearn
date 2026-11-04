@@ -275,15 +275,15 @@ Los nombres entre «**CANDIDATA**» son propuestas (DS-xx): el texto oficial de 
 
 ### 4.0 Tareas transversales (preparación)
 
-- [ ] `PG-S.C11.01` Línea base: `git rev-parse HEAD`, árbol limpio, y ejecución registrada (comando, código de salida,
+- [x] `PG-S.C11.01` Línea base: `git rev-parse HEAD`, árbol limpio, y ejecución registrada (comando, código de salida,
   conteos) de las pruebas dirigidas de §7.4 sobre HEAD **antes** de cualquier edición. Si la base ya falla, se informa y
   no se arrastra como regresión de PG-S.
-- [ ] `PG-S.C03.01` Verificar las hipótesis `PS-V-01`–`PS-V-14` que no consumen su punto: `PS-V-01`, `PS-V-09`, `PS-V-11`,
+- [x] `PG-S.C03.01` Verificar las hipótesis `PS-V-01`–`PS-V-14` que no consumen su punto: `PS-V-01`, `PS-V-09`, `PS-V-11`,
   `PS-V-12`, `PS-V-14`. Registrar cada resultado en §11. Una hipótesis refutada se convierte en conflicto o en cambio de
   diseño **por escrito** antes de seguir.
-- [ ] `PG-S.C03.02` Confirmar con la persona las decisiones **Persona** de §3 (DS-05, DS-07, DS-11, DS-12, DS-14, DS-15,
+- [x] `PG-S.C03.02` Confirmar con la persona las decisiones **Persona** de §3 (DS-05, DS-07, DS-11, DS-12, DS-14, DS-15,
   DS-20, DS-21, DS-23) o registrar sus alternativas. Sin respuesta, el punto afectado no avanza.
-- [ ] `PG-S.C03.03` Plantilla de huella: sobre `git show --stat 62023207` y `f62a386b` (`PS-H-21`), elaborar la lista real
+- [x] `PG-S.C03.03` Plantilla de huella: sobre `git show --stat 62023207` y `f62a386b` (`PS-H-21`), elaborar la lista real
   de archivos que una operación D2 nueva toca y compararla con §5. Cualquier diferencia corrige §5 antes de editar.
 
 ### PG-S.01 · Mayúsculas y minúsculas de texto
@@ -291,36 +291,36 @@ Los nombres entre «**CANDIDATA**» son propuestas (DS-xx): el texto oficial de 
 Piloto de toda la tubería: lo que aquí se aprende (huella real, errores del validador, fichas, proyección de app)
 corrige los demás puntos. Puerta G2 de §10.
 
-- [ ] `PG-S.01.01` Leer `lib.core.text.md` íntegro, `lib.model.md` D2 y `M1`–`M4`, y `LIB.CORE.TEXT#T1`–`T3`. Resolver
+- [x] `PG-S.01.01` Leer `lib.core.text.md` íntegro, `lib.model.md` D2 y `M1`–`M4`, y `LIB.CORE.TEXT#T1`–`T3`. Resolver
   `PS-V-02`, `PS-V-04` y `PS-V-11` (sin código). Registrar.
-- [ ] `PG-S.01.02` Especificación: nueva regla `T4` en `LIB.CORE.TEXT` (o regla análoga): conversión a mayúsculas y a
+- [x] `PG-S.01.02` Especificación: nueva regla `T4` en `LIB.CORE.TEXT` (o regla análoga): conversión a mayúsculas y a
   minúsculas por la tabla Unicode completa independiente de la configuración regional; no normaliza; no modifica el
   argumento; el resultado cuenta celdas como cualquier cadena creada en ejecución (`T3`); la versión de Unicode aplicable
   se declara por referencia al README del motor, no por cita de documento. Añadir dos entradas D2 en `LIB.MODEL`
   (`text_to_upper`, `text_to_lower`; familia `text`; sin receptor; parámetro `text`; resultado `text`; `effect: false`;
   `fallible: false`) con facetas es y en y sin alias.
-- [ ] `PG-S.01.03` Casos derivados (esperado deducido de las tablas de Unicode, **no** de la salida del motor):
+- [x] `PG-S.01.03` Casos derivados (esperado deducido de las tablas de Unicode, **no** de la salida del motor):
   ASCII; vacío; ya en el caso pedido; acentos (`é`↔`É`); `ß` → `SS`; `ǆ`; `İ` (U+0130) en minúsculas = `i` + U+0307;
   sigma final (`ΑΣ` → `ας`, `ΑΣΑ` → `ασα`); un carácter; cadena con emoji (sin cambio); entrada con tilde combinante
   (no se normaliza); programas en es y en. Caso infeliz: argumento no cadena → `incompatibleArgumentType`; aridad →
   `argumentCountMismatch`. Cada regla con al menos un caso (`SPEC-NO-ORPHAN-RULE`).
-- [ ] `PG-S.01.04` Tests que fallan por ausencia: `pseudolearn_library/src/text_case_tests.rs` (**CANDIDATO**, espejo de
+- [x] `PG-S.01.04` Tests que fallan por ausencia: `pseudolearn_library/src/text_case_tests.rs` (**CANDIDATO**, espejo de
   `text_replace_tests.rs`), prueba de resolución semántica en `pseudolearn_semantic/tests/`, prueba de despacho en
   `pseudolearn_vm`/`pseudolearn_api/tests/` según el patrón de `bytes_operations_tests.rs`.
-- [ ] `PG-S.01.05` Código: archivo nuevo `pseudolearn_library/src/text_case.rs` (una responsabilidad); registro en
+- [x] `PG-S.01.05` Código: archivo nuevo `pseudolearn_library/src/text_case.rs` (una responsabilidad); registro en
   `lib.rs`; ramas nuevas en `local_operations.rs::text_operation` (si `PS-V-02` lo confirma). Regenerar con `cargo build`
   (nunca editar lo generado). Ajustar `abi/build.rs` **solo si** la operación nueva no entra por `capabilityLibrary`.
-- [ ] `PG-S.01.06` Fichas de ayuda es/en de ambas identidades en `cases/catalogs.json` (fuente), con anclas a `LIB.MODEL`
+- [x] `PG-S.01.06` Fichas de ayuda es/en de ambas identidades en `cases/catalogs.json` (fuente), con anclas a `LIB.MODEL`
   y al caso ejecutable; cobertura (`help_catalog/coverage*.rs`) y fixtures negativos si el validador exige uno nuevo.
-- [ ] `PG-S.01.07` Consumidores: vocabulario/`service` (completado, hover, resaltado: `pseudolearn_service` y
+- [x] `PG-S.01.07` Consumidores: vocabulario/`service` (completado, hover, resaltado: `pseudolearn_service` y
   `pseudolearn_syntax/codegen/contextual.rs` si el patrón de `f62a386b` lo exige); extensión (gramática TextMate y
   ejemplos si el validador de la extensión los exige); app (`export_support.dart`, reglas de Rust y Python: equivalente
   `to_uppercase`/`to_lowercase` o «sin equivalente» rotulado, `PS-V-12`).
-- [ ] `PG-S.01.08` Sujeto nativo: vínculos `pendiente`/`resuelve_en: "PG-N.08"` para las reglas nuevas en
+- [x] `PG-S.01.08` Sujeto nativo: vínculos `pendiente`/`resuelve_en: "PG-N.08"` para las reglas nuevas en
   `conformance-aot.yaml`; verificar `PS-V-13`.
-- [ ] `PG-S.01.09` README: `pseudolearn_library` (módulo `text_case`, versión de Unicode, límite de crecimiento),
+- [x] `PG-S.01.09` README: `pseudolearn_library` (módulo `text_case`, versión de Unicode, límite de crecimiento),
   `pseudolearn_abi`/`runtime`/`semantic` solo si cambiaron, y el README de `pseudolearn_spec` si el validador cambió.
-- [ ] `PG-S.01.10` Verificación: `see validate`, `see lock --refresh <IDs editados>`, `see export --check`,
+- [x] `PG-S.01.10` Verificación: `see validate`, `see lock --refresh <IDs editados>`, `see export --check`,
   `see conform --subject engine --only LIB.CORE.TEXT` y `--only LIB.MODEL`, `cargo test -p pseudolearn_library`,
   y los consumidores tocados. Registrar salida y código de salida.
 - [ ] `PG-S.01.11` Informe de piloto en §11: huella real de archivos, errores inesperados, ajustes a §5 y a los demás
@@ -813,14 +813,15 @@ destino).
 
 ## 11. Resumen de ejecución
 
-Estado de las tareas: todas pendientes. Este plan se crea el 2026-11-04 y no se ha ejecutado ninguna tarea.
+Estado de las tareas: §4.0 y PG-S.01 ejecutadas el 2026-11-04 sobre `2d6254aa`, por instrucción directa de la persona («implementa 4.0 y PG-S.01», eligiendo siempre la opción recomendada). Esa instrucción se toma como `PG-S.C01` parcial, como decisión de iniciar PG-S antes de cerrar PG-L (`PS-P-01`, DS-13) y como confirmación de las decisiones **Persona** de DS-12 (nombres `AMayusculas`/`toUpper`, `AMinusculas`/`toLower`). `PS-P-02` sigue sin resolver y no afecta a PG-S.01. PG-S.02–.09 siguen pendientes.
 
 | Tarea | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
-| `PG-S.C01` | Pendiente | | Requiere a la persona |
+| `PG-S.C01` | Parcial | Instrucción de la persona del 2026-11-04 | Cubre §4.0 y PG-S.01 únicamente |
 | `PG-S.C02` | Pendiente | Este documento | Requiere revisión de la persona |
-| `PG-S.C11.01`, `PG-S.C03.01`–`.03` | Pendiente | | |
-| `PG-S.01.01`–`.11` | Pendiente | | |
+| `PG-S.C11.01`, `PG-S.C03.01`–`.03` | Cumplida | Línea base: `cargo test -p pseudolearn_library` en verde sobre `2d6254aa` antes de editar el código de S.01; `see validate` y `see export --check` en verde. Hipótesis en §11.1 | La suite completa del motor se ejecutó al cierre (`cargo xtask verify`) |
+| `PG-S.01.01`–`.10` | Cumplida | Corpus: `LIB.CORE.TEXT#T4`, casos C19–C30, D2 `text_to_upper`/`text_to_lower`, fichas `help.pgs01.*` en `tool.service.catalog.md`, cobertura IR V210, vínculos engine (`cumple`) y aot (`pendiente`, `PG-N.08`). Motor: `text_case.rs`, `text_case_tests.rs`, ramas en `local_operations.rs`. `see validate`, `lock --refresh` (IR.INSTRUCTIONS, LIB.MODEL, LIB.CORE.TEXT, TOOL.SERVICE.CATALOG), `export --check`, `conform --subject engine --operation properties` (31 propiedades) y `conform --subject engine` (2206 observaciones, 0 divergencias) | |
+| `PG-S.01.11` | Informe en §11.2 | | La parada de control G2 la decide la persona |
 | `PG-S.02.01`–`.11` | Pendiente | | |
 | `PG-S.03.01`–`.11` | Pendiente | | |
 | `PG-S.04.01`–`.10` | Pendiente | | |
@@ -835,7 +836,21 @@ Estado de las tareas: todas pendientes. Este plan se crea el 2026-11-04 y no se 
 
 | ID | Resultado | Evidencia | Consecuencia |
 |---|---|---|---|
-| | | | |
+| PS-V-01 | Confirmada | D1 = 28 y D2 = 62 antes de S.01 (64 después), por lectura de los bloques `definicion` de `lib.model.md` | Ninguna |
+| PS-V-02 | Confirmada | La operación D2 `receiver: null`, familia `text`, `effect: false` se resuelve como llamada libre y se despacha por `local_operation`; casos C19–C28 cumplen en es y en | DS-01 (a) se mantiene |
+| PS-V-04 | No consumida | Ninguna operación de S.01 falla en ejecución | Se verifica en S.08 |
+| PS-V-09 | Pendiente | Se consume en S.07 | |
+| PS-V-11 | Parcial | Las tablas son las de la cadena `1.99.0` fijada en `rust-toolchain.toml` de cada miembro; no se ejecutó `PS-E04` (nativo frente a Wasm) | `PS-E04` queda pendiente; el README de `pseudolearn_library` declara el límite |
+| PS-V-12 | Confirmada por lectura | `apps/pseudolearn_app/lib/engine/rust/export/export_coverage.dart` marca como bloqueo `capability` toda `effectOperation`; no se ejecutó `flutter test` | Sin cambio en la app |
+| PS-V-13 | Confirmada por validación | `see validate` acepta un vínculo `pendiente` con `resuelve_en` para `LIB.CORE.TEXT#T4` en aot | Ninguna |
+| PS-V-14 | Pendiente | Se consume en S.09 | |
+
+### 11.2 Informe de piloto de PG-S.01
+
+- Huella real: corpus (`lib.model.md`, `lib.core.text.md`, `ir.instructions.md`, `tool.service.catalog.md`; `catalogs.json` y `export.json` se regeneran con `see export`), `conformance.yaml`, `conformance-aot.yaml`, y en `pseudolearn_library`: `text_case.rs`, `text_case_tests.rs`, `lib.rs`, `local_operations.rs`, README. No hubo cambios en `abi`, `lexicon`, `semantic`, `lowering`, `vm`, `host`, `service`, extensión ni app: el generador (`build.rs`) recoge las operaciones D2 nuevas sin edición.
+- Correcciones a §5 para los demás puntos: `catalogs.json` es artefacto generado, y la fuente de las fichas de ayuda es `tool.service.catalog.md` (cards e inventario de roles); los vínculos de conformidad del motor y la cobertura IR (`ir.instructions.md`) son obligatorios para cada regla estable nueva; la ejecución de `conform` exige antes `--operation properties` con el corpus actualizado.
+- Hallazgo: un literal de un solo carácter (`"x"`) en un parámetro `text` se trata como `Caracter` y su conversión a cadena cuesta celdas; los casos de límite de celdas usan literales de dos o más caracteres.
+- Una propiedad (`IR.LOWERING#R2`) falló en la primera ejecución de propiedades y pasó en la segunda sin cambios de código; no se investigó la causa.
 
 Revisión Git de cierre: · Verificadores ejecutados: · Suites omitidas y razón: · Pendientes justificados: · Decisiones de
 la persona: · Puntos de §4 cumplidos:

@@ -15248,6 +15248,170 @@
             ]
           }
         }
+      },
+      {
+        "id": "help.pgs01.text_to_upper",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pgs01_text_to_upper"
+        },
+        "tokens": [
+          {
+            "identity": "text_to_upper",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.CORE.TEXT",
+            "version": "1.0.0",
+            "element": "T4"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "AMayusculas",
+            "summary": "AMayusculas devuelve la cadena en mayúsculas con las tablas Unicode completas, sin configuración regional.",
+            "purpose": "Permite normalizar el caso de un texto sin modificar el original.",
+            "parts": [
+              {
+                "identity": "text_to_upper",
+                "text": "AMayusculas devuelve la cadena en mayúsculas con las tablas Unicode completas, sin configuración regional."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C19",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: AMayusculas",
+                "profile": "es",
+                "specification": "LIB.CORE.TEXT",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "toUpper",
+            "summary": "toUpper returns the string in uppercase using the full Unicode tables, independent of locale.",
+            "purpose": "It lets a program change the case of a text without modifying the original.",
+            "parts": [
+              {
+                "identity": "text_to_upper",
+                "text": "toUpper returns the string in uppercase using the full Unicode tables, independent of locale."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C19",
+                "kind": "executable",
+                "label": "Program that runs: toUpper",
+                "profile": "en",
+                "specification": "LIB.CORE.TEXT",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pgs01.text_to_lower",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "pgs01_text_to_lower"
+        },
+        "tokens": [
+          {
+            "identity": "text_to_lower",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D2"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.CORE.TEXT",
+            "version": "1.0.0",
+            "element": "T4"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "AMinusculas",
+            "summary": "AMinusculas devuelve la cadena en minúsculas con las tablas Unicode completas, sin configuración regional.",
+            "purpose": "Permite normalizar el caso de un texto sin modificar el original.",
+            "parts": [
+              {
+                "identity": "text_to_lower",
+                "text": "AMinusculas devuelve la cadena en minúsculas con las tablas Unicode completas, sin configuración regional."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C19",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: AMinusculas",
+                "profile": "es",
+                "specification": "LIB.CORE.TEXT",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "toLower",
+            "summary": "toLower returns the string in lowercase using the full Unicode tables, independent of locale.",
+            "purpose": "It lets a program change the case of a text without modifying the original.",
+            "parts": [
+              {
+                "identity": "text_to_lower",
+                "text": "toLower returns the string in lowercase using the full Unicode tables, independent of locale."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C19",
+                "kind": "executable",
+                "label": "Program that runs: toLower",
+                "profile": "en",
+                "specification": "LIB.CORE.TEXT",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
       }
     ],
     "exclusions": [],
@@ -17324,6 +17488,32 @@
           ],
           "tokens": [
             "http_redirected"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pgs01_text_to_upper"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "text_to_upper"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "pgs01_text_to_lower"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "text_to_lower"
           ]
         }
       ]

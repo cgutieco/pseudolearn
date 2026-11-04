@@ -1404,6 +1404,32 @@
         "result": "text",
         "effect": false,
         "fallible": false
+      },
+      {
+        "identity": "text_to_upper",
+        "family": "text",
+        "receiver": null,
+        "es": "AMayusculas",
+        "en": "toUpper",
+        "parameters": [
+          "text"
+        ],
+        "result": "text",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "text_to_lower",
+        "family": "text",
+        "receiver": null,
+        "es": "AMinusculas",
+        "en": "toLower",
+        "parameters": [
+          "text"
+        ],
+        "result": "text",
+        "effect": false,
+        "fallible": false
       }
     ]
   }
@@ -1425,6 +1451,8 @@ comprobado. BytesDesdeTexto codifica UTF-8, Segmento copia un intervalo de octet
 dos secuencias inmutables. TextoUtf8 devuelve Resultado<Cadena,ErrorES> y rechaza UTF-8 inválido. ErrorES contiene
 Codigo y Incierto (code y uncertain): el código es la variante portable, y la bandera informa
 incertidumbre de una operación con potencial de escritura.
+
+AMayusculas y AMinusculas son operaciones puras de texto sin receptor que devuelven una cadena nueva.
 
 Los parámetros text admiten Cadena o Caracter; un carácter se convierte sin pérdida a una cadena
 de un punto de código antes de emitir la solicitud. Esto conserva rutas de un solo carácter sin
