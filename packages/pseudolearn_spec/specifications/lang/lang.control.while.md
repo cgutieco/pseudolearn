@@ -64,11 +64,7 @@
   "espera": {
     "salida": "",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -89,11 +85,7 @@
   "espera": {
     "salida": "2\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -119,10 +111,6 @@
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```

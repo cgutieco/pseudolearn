@@ -54,15 +54,15 @@
 ```
 
 ```caso
-{"id": "C1", "regla": "R1", "perfiles": ["es"], "rigor": ["estricto", "flexible"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "configuration", "input": {"program": "Algoritmo P\nEscribir 1\nFinAlgoritmo\n", "strictness": "strict"}}, "espera": {"aplicacion": {"output": "", "termination": "failed"}}}
+{"id": "C1", "regla": "R1", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "configuration", "input": {"program": "Algoritmo P\nEscribir 1\nFinAlgoritmo\n", "strictness": "strict"}}, "espera": {"aplicacion": {"output": "", "termination": "failed"}}}
 ```
 
 ```caso
-{"id": "C2", "regla": "R1", "perfiles": ["es"], "rigor": ["estricto", "flexible"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "configuration", "input": {"program": "Algoritmo P\nEscribir 1\nFinAlgoritmo\n", "strictness": "flexible"}}, "espera": {"aplicacion": {"output": "1\n", "termination": "completed"}}}
+{"id": "C2", "regla": "R1", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "configuration", "input": {"program": "Algoritmo P\nEscribir 1\nFinAlgoritmo\n", "strictness": "flexible"}}, "espera": {"aplicacion": {"output": "1\n", "termination": "completed"}}}
 ```
 
 ```caso
-{"id": "C3", "regla": "R1", "perfiles": ["es"], "rigor": ["estricto", "flexible"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "configuration", "input": {"program": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n", "strictness": "strict"}}, "espera": {"aplicacion": {"output": "1\n", "termination": "completed"}}}
+{"id": "C3", "regla": "R1", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "configuration", "input": {"program": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n", "strictness": "strict"}}, "espera": {"aplicacion": {"output": "1\n", "termination": "completed"}}}
 ```
 
 ```regla
@@ -79,10 +79,10 @@
 ```
 
 ```caso
-{"id": "C4", "regla": "R2", "perfiles": ["es"], "rigor": ["estricto", "flexible"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "configuration", "input": {"program": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n", "strictness": "strict", "replay": true}}, "espera": {"aplicacion": {"output": "1\n", "termination": "completed"}}}
+{"id": "C4", "regla": "R2", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "configuration", "input": {"program": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n", "strictness": "strict", "replay": true}}, "espera": {"aplicacion": {"output": "1\n", "termination": "completed"}}}
 ```
 
 ```caso
-{"id": "C5", "regla": "R2", "perfiles": ["es"], "rigor": ["estricto", "flexible"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "configuration", "input": {"program": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n", "strictness": "strict", "replay": true, "replay_program": "Algoritmo P\nEscribir 2;\nFinAlgoritmo\n"}}, "espera": {"aplicacion": {"termination": "failed", "rejection": "identityMismatch"}}}
+{"id": "C5", "regla": "R2", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "configuration", "input": {"program": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n", "strictness": "strict", "replay": true, "replay_program": "Algoritmo P\nEscribir 2;\nFinAlgoritmo\n"}}, "espera": {"aplicacion": {"termination": "failed", "rejection": "identityMismatch"}}}
 ```
 

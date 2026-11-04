@@ -64,11 +64,7 @@
   "espera": {
     "salida": "",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -94,11 +90,7 @@
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -114,10 +106,6 @@
     "es": "Clase A\nFinClase\nClase B\nFinClase\nClase C Hereda De A, B\nFinClase\nAlgoritmo P\nFinAlgoritmo\n",
     "en": "class A\nendClass\nclass B\nendClass\nclass C inherits from A, B\nendClass\nalgorithm P\nendAlgorithm\n"
   },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "origen": "derivado",
   "operacion": "analyze",
   "espera": {

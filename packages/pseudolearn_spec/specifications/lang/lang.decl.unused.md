@@ -69,11 +69,7 @@
         "severidad": "warning"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -99,11 +95,7 @@
         "severidad": "warning"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -124,10 +116,6 @@
   "espera": {
     "arbol": "presente",
     "diagnosticos": []
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```

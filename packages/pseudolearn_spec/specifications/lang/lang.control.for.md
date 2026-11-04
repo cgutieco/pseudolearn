@@ -38,10 +38,9 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Inicial, final y paso se evalúan una sola vez antes de la primera prueba, en ese orden; el paso omitido vale uno en rigor flexible.",
+  "texto": "Inicial, final y paso se evalúan una sola vez antes de la primera prueba, en ese orden.",
   "verificacion": [
-    "C1",
-    "C2"
+    "C1"
   ]
 }
 ```
@@ -95,7 +94,7 @@
   "id": "R5",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Modificar la variable de control en el cuerpo se rechaza con controlVariableModified como error en ambos rigores.",
+  "texto": "Modificar la variable de control en el cuerpo se rechaza con controlVariableModified como error.",
   "verificacion": [
     "C8",
     "C9",
@@ -133,10 +132,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo P\n  Definir Mutable bound Como Entero <- 0;\n  bound <- 3;\n  Para counter <- 1 Hasta bound Con Paso 1 Hacer\n    bound <- 10;\n    Escribir counter Sin Saltar;\n  FinPara\n  Escribir \"\";\nFinAlgoritmo\n",
     "en": "algorithm P\n  define mutable bound as integer <- 0;\n  bound <- 3;\n  for counter <- 1 to bound step 1 do\n    bound <- 10;\n    write counter without newline;\n  endFor\n  write \"\";\nendAlgorithm\n"
@@ -157,13 +152,10 @@
 ```caso
 {
   "id": "C2",
-  "regla": "R1",
+  "regla": "R6",
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo P\n  Para counter <- 1 Hasta 3 Hacer\n    Escribir counter Sin Saltar;\n  FinPara\n  Escribir \"\";\nFinAlgoritmo\n",
@@ -171,9 +163,13 @@
   },
   "operacion": "execute",
   "espera": {
-    "salida": "123\n",
-    "terminacion": "completed",
-    "diagnosticos": []
+    "terminacion": "failed",
+    "diagnosticos": [
+      {
+        "codigo": "missingStepClause",
+        "severidad": "error"
+      }
+    ]
   },
   "origen": "derivado",
   "etiquetas": [
@@ -189,10 +185,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo P\n  Para counter <- 1 Hasta 3 Con Paso 0 Hacer\n    Escribir counter;\n  FinPara\nFinAlgoritmo\n",
@@ -229,10 +221,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo P\n  Para counter <- 1 Hasta 3 Con Paso 1 Hacer\n    Escribir counter Sin Saltar;\n  FinPara\n  Escribir \"\";\nFinAlgoritmo\n",
     "en": "algorithm P\n  for counter <- 1 to 3 step 1 do\n    write counter without newline;\n  endFor\n  write \"\";\nendAlgorithm\n"
@@ -260,10 +248,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo P\n  Para counter <- 10 Hasta 0 Con Paso 1 Hacer\n    Escribir counter;\n  FinPara\n  Escribir counter;\nFinAlgoritmo\n",
@@ -294,10 +278,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo P\n  Para counter <- 10 Hasta 0 Con Paso -4 Hacer\n    Escribir counter, \" \" Sin Saltar;\n  FinPara\n  Escribir \"/\", counter;\nFinAlgoritmo\n",
     "en": "algorithm P\n  for counter <- 10 to 0 step -4 do\n    write counter, \" \" without newline;\n  endFor\n  write \"/\", counter;\nendAlgorithm\n"
@@ -327,10 +307,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo P\n  Para counter <- 3 Hasta 3 Con Paso 1 Hacer\n    Escribir counter;\n  FinPara\n  Escribir counter;\nFinAlgoritmo\n",
     "en": "algorithm P\n  for counter <- 3 to 3 step 1 do\n    write counter;\n  endFor\n  write counter;\nendAlgorithm\n"
@@ -359,10 +335,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo P\n  Para counter <- 1 Hasta 3 Con Paso 1 Hacer\n    counter <- counter + 1;\n  FinPara\nFinAlgoritmo\n",
@@ -395,10 +367,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo P\n  Para counter <- 1 Hasta 3 Con Paso 1 Hacer\n    Escribir counter;\n  FinPara\nFinAlgoritmo\n",
     "en": "algorithm P\n  for counter <- 1 to 3 step 1 do\n    write counter;\n  endFor\nendAlgorithm\n"
@@ -422,8 +390,9 @@
   "id": "R6",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "El control es un identificador entero; límites y paso son enteros. Estricto exige paso explícito. El incremento usa aritmética entera comprobada, también tras la última iteración válida. El cuerpo vacío es admisible.",
+  "texto": "El control es un identificador entero; límites y paso son enteros, y la cláusula Con Paso es obligatoria. El incremento usa aritmética entera comprobada, también tras la última iteración válida. El cuerpo vacío es admisible.",
   "verificacion": [
+    "C2",
     "C10",
     "C11",
     "C12",
@@ -439,10 +408,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo P\nPara counter <- 1 Hasta 0 Con Paso 1 Hacer\nFinPara\nFinAlgoritmo\n",
@@ -464,9 +429,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "programas": {
     "es": "Algoritmo P\nPara counter <- 1 Hasta 2 Hacer\nFinPara\nFinAlgoritmo\n",
@@ -493,10 +455,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo P\nPara counter <- 1 Hasta 2.5 Con Paso 1 Hacer\nEscribir counter;\nFinPara\nFinAlgoritmo\n",
     "en": "algorithm P\nfor counter <- 1 to 2.5 step 1 do\nwrite counter;\nendFor\nendAlgorithm\n"
@@ -521,10 +479,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo P\nPara counter <- 9223372036854775807 Hasta 9223372036854775807 Con Paso 1 Hacer\nFinPara\nFinAlgoritmo\n",
@@ -562,11 +516,7 @@
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -592,11 +542,7 @@
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -617,11 +563,7 @@
   "espera": {
     "salida": "10\n6\n2\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -642,10 +584,6 @@
   "espera": {
     "salida": "3\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```

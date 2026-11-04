@@ -26,7 +26,6 @@ pub fn build_identity(request: &ExecuteRequest) -> ExecutionIdentity {
     let source_digest = format!("{:x}", hasher.finalize());
     let limits = identity_limits(request);
     ExecutionIdentity {
-        strictness: request.strictness.clone(),
         limits,
         package_graph_digest: package_graph_digest(request, &source_digest),
         source_digest,

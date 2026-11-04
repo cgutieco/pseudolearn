@@ -3,7 +3,7 @@ use crate::expression_model::{HirExpression, HirPlace};
 use crate::identities::{ExpressionId, FunctionId, LocalId};
 use crate::session::AnalysisSession;
 use crate::statement_model::HirStatement;
-use pseudolearn_diagnostics::{Diagnostic, DiagnosticCode};
+use pseudolearn_diagnostics::DiagnosticCode;
 use pseudolearn_source::Span;
 use std::collections::{BTreeMap, BTreeSet};
 
@@ -109,12 +109,7 @@ fn report_span_with_chain(
     (code, span): (DiagnosticCode, Span),
     chain: &[usize],
 ) {
-    let rigor = if session.options.strict {
-        "estricto"
-    } else {
-        "flexible"
-    };
-    let mut diagnostic = Diagnostic::new(code, span).with_severity(code.severity(rigor));
+    let mut diagnostic = pseudolearn_diagnostics::Diagnostic::new(code, span);
     diagnostic.related = chain
         .iter()
         .filter_map(|index| session.module.functions.get(*index))

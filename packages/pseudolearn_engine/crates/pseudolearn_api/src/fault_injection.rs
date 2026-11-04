@@ -24,13 +24,11 @@ pub(crate) fn inject(arguments: &Value) -> Result<Value, ApiError> {
     let analysis = AnalyzeRequest {
         program: request.program.clone(),
         profile: request.profile.clone(),
-        strictness: request.strictness.clone(),
         source: request.source,
     };
     let _ = crate::execute_analyze(&analysis);
     strike(stage, "analysis");
-    let module =
-        crate::compile_source_to_module(&request.program, &request.profile, &request.strictness);
+    let module = crate::compile_source_to_module(&request.program, &request.profile);
     strike(stage, "lowering");
     let bytecode = module
         .ok()

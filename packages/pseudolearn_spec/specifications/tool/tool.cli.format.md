@@ -83,9 +83,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "cli",
   "espera": {
@@ -112,9 +109,6 @@
   "regla": "R2",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "cli",
@@ -144,9 +138,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "cli",
   "espera": {
@@ -174,9 +165,6 @@
   "regla": "R3",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "cli",

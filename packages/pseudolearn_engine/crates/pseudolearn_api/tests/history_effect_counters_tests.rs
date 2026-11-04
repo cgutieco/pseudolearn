@@ -17,7 +17,7 @@ fn run_to_end(program: &str, host: Value) -> Result<Finished, String> {
     let started = session.call(
         "start",
         &json!({"analysis":analysis.pointer("/value/resource"),"program":program,
-            "profile":"es","strictness":"strict","seed":42,"host":host}),
+            "profile":"es","seed":42,"host":host}),
     );
     let resource = started
         .pointer("/value/resource")

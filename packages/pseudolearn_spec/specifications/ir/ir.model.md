@@ -54,9 +54,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "ir",
   "espera": {
@@ -86,9 +83,6 @@
   "regla": "R2",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "ir",
@@ -120,9 +114,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "ir",
   "espera": {
@@ -152,9 +143,6 @@
   "regla": "R4",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "ir",

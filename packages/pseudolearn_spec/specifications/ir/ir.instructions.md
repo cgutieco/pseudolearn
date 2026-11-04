@@ -64,9 +64,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "ir",
   "espera": {
@@ -99,10 +96,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
@@ -123,10 +116,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "origen": "derivado",
   "operacion": "execute",
@@ -159,10 +148,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "origen": "derivado",
   "operacion": "execute",

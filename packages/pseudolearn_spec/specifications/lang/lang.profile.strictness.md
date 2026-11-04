@@ -2,7 +2,7 @@
 {
   "formato": "see/1",
   "id": "LANG.PROFILE.STRICTNESS",
-  "titulo": "Políticas de rigor",
+  "titulo": "Reglas de la edición",
   "dominio": "lenguaje",
   "estado": "estable",
   "version": "1.0.0",
@@ -17,7 +17,7 @@
     "engine",
     "aot"
   ],
-  "resumen": "Políticas de rigor.",
+  "resumen": "Reglas comunes de la edición 2026.",
   "edicion": {
     "introducida_en": "2026"
   },
@@ -31,14 +31,14 @@
 }
 ---
 
-# Políticas de rigor
+# Reglas de la edición
 
 ```regla
 {
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Estricto exige terminador simple, paso explícito de Para, declaración y tipo de parámetros, inicialización estática, etiquetas enteras de selección y dimensiones constantes. Flexible relaja esas siete exigencias y amplía el alfabeto de nombres. La base de índices, sensibilidad de nombres y significado de operadores no son banderas. La severidad flexible nunca es más restrictiva que la estricta.",
+  "texto": "La edición 2026 aplica una sola gramática y una sola política semántica. Toda sentencia simple termina en punto y coma, cada bucle Para declara Con Paso, cada parámetro declara su tipo y las etiquetas de Según tienen tipo entero o enumerado. La base de índices, la sensibilidad de nombres y el significado de operadores son reglas comunes.",
   "verificacion": [
     "C1",
     "C2",
@@ -69,10 +69,7 @@
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto"
-  ]
+  }
 }
 ```
 
@@ -91,12 +88,14 @@
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
-    "salida": "1\n",
-    "terminacion": "completed"
-  },
-  "rigor": [
-    "flexible"
-  ]
+    "terminacion": "failed",
+    "diagnosticos": [
+      {
+        "codigo": "missingStatementTerminator",
+        "severidad": "error"
+      }
+    ]
+  }
 }
 ```
 
@@ -117,10 +116,6 @@
   "espera": {
     "salida": "1\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```

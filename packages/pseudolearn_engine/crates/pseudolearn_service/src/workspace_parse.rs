@@ -22,7 +22,6 @@ pub(crate) struct ParsedWorkspace {
 struct ParseContext<'context> {
     catalog: &'context ProjectCatalog,
     profiles: &'context BTreeMap<String, ResolvedUnitProfile>,
-    options: &'context crate::workspace_model::WorkspaceOptions,
     previous: Option<&'context WorkspaceIndex>,
 }
 
@@ -31,19 +30,16 @@ struct ParseReuseKey<'source> {
     source_id: u32,
     text: &'source str,
     profile: Profile,
-    strict: bool,
 }
 
 pub(crate) fn parse_catalog(
     catalog: &ProjectCatalog,
     profiles: &BTreeMap<String, ResolvedUnitProfile>,
-    options: &crate::workspace_model::WorkspaceOptions,
     previous: Option<&WorkspaceIndex>,
 ) -> ParsedWorkspace {
     let context = ParseContext {
         catalog,
         profiles,
-        options,
         previous,
     };
     let mut parsed = ParsedWorkspace {
@@ -77,12 +73,11 @@ fn append_catalog_module(
         source_id,
         text: source.as_str(),
         profile,
-        strict: context.options.strict,
     };
     let parsed = context
         .previous
         .and_then(|previous| reusable_parse(previous, key))
-        .unwrap_or_else(|| parse_unit(source, profile, context.options.strict));
+        .unwrap_or_else(|| parse_unit(source, profile));
     let mut syntax = parsed.diagnostics.clone();
     if let Some(mismatch) = resolved.and_then(|value| value.mismatch.clone()) {
         syntax.push(profile_mismatch(source, mismatch));
@@ -99,13 +94,11 @@ fn append_catalog_module(
     parsed_workspace.cache.insert(path, parsed);
 }
 
-fn parse_unit(source: &SourceText, profile: Profile, strict: bool) -> ParsedUnitCache {
-    let terminator = strict.then_some(DiagnosticCode::MissingStatementTerminator);
-    let (tree, diagnostics) = parse_module_source(source, profile, terminator);
+fn parse_unit(source: &SourceText, profile: Profile) -> ParsedUnitCache {
+    let (tree, diagnostics) = parse_module_source(source, profile);
     ParsedUnitCache {
         source_id: source_id(source).value(),
         profile,
-        strict,
         units: partition_units(&tree, source),
         tree: Arc::new(tree),
         diagnostics,
@@ -118,10 +111,7 @@ fn reusable_parse(previous: &WorkspaceIndex, key: ParseReuseKey<'_>) -> Option<P
         return None;
     }
     let parsed = previous.parsed_units.get(key.path)?;
-    (parsed.source_id == key.source_id
-        && parsed.profile == key.profile
-        && parsed.strict == key.strict)
-        .then(|| parsed.clone())
+    (parsed.source_id == key.source_id && parsed.profile == key.profile).then(|| parsed.clone())
 }
 
 fn profile_mismatch(source: &SourceText, lexeme: String) -> Diagnostic {

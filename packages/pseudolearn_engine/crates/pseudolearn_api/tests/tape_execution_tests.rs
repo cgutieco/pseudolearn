@@ -9,7 +9,7 @@ fn execute_record(program: &str) -> serde_json::Value {
         "request": {
             "program": program,
             "profile": "es",
-            "strictness": "strict",
+
             "seed": 42
         }
     });
@@ -108,7 +108,6 @@ fn replay_consumes_recorded_output() -> Result<(), String> {
 #[test]
 fn tape_value_round_trip_preserves_content() -> Result<(), String> {
     let identity = ExecutionIdentity {
-        strictness: "strict".to_owned(),
         limits: Default::default(),
         source_digest: "digest_123".to_owned(),
         package_graph_digest: "none".to_owned(),
@@ -186,7 +185,7 @@ fn replay_mode_rejects_identity_mismatch() {
         "analysis": analysis_id,
         "program": program,
         "profile": "es",
-        "strictness": "strict",
+
         "seed": 12345,
         "execution_mode": "replay_from_tape",
         "effect_tape": tape_to_value(&mismatched_tape)
@@ -224,7 +223,7 @@ fn replay_mode_rejects_non_reproducible_tape() {
         "analysis": analysis_id,
         "program": program,
         "profile": "es",
-        "strictness": "strict",
+
         "seed": 12345,
         "execution_mode": "replay_from_tape",
         "effect_tape": tape_to_value(&non_reproducible_tape)
@@ -265,7 +264,7 @@ fn recorded_input_reads_replay_from_the_tape_without_external_input() -> Result<
     let program = "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nLeer x;\nEscribir x * 2;\nFinAlgoritmo\n";
     let recording = ApiSession::default().call(
         "record",
-        &json!({"request":{"program":program,"profile":"es","strictness":"strict","seed":42,"inputs":["21"],"observe":"events"}}),
+        &json!({"request":{"program":program,"profile":"es","seed":42,"inputs":["21"],"observe":"events"}}),
     );
     let tape = recording
         .pointer("/value/effect_tape")
@@ -287,7 +286,7 @@ fn recorded_input_reads_replay_from_the_tape_without_external_input() -> Result<
         "start",
         &json!({
             "analysis":analysis.pointer("/value/resource"),"program":program,"profile":"es",
-            "strictness":"strict","seed":42,"execution_mode":"replay_from_tape","effect_tape":tape
+            "seed":42,"execution_mode":"replay_from_tape","effect_tape":tape
         }),
     );
     let response = session.call(

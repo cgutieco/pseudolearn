@@ -104,10 +104,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
@@ -146,9 +142,6 @@
   "regla": "R4",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "api",

@@ -13,7 +13,6 @@ fn preserves_counterexample_and_reproduction_without_running_it() -> Result<(), 
         counterexample: Some(Counterexample {
             sample: 2,
             profile: "es".to_owned(),
-            strictness: "strict".to_owned(),
             program: "program".to_owned(),
             expected: json!({"output": "1"}),
             actual: json!({"output": "2"}),

@@ -1,9 +1,9 @@
 use pseudolearn_abi::EffectValueKind;
-use pseudolearn_diagnostics::{DiagnosticCode, DiagnosticSeverity};
+use pseudolearn_diagnostics::DiagnosticSeverity;
 use pseudolearn_lexicon::Profile;
 use pseudolearn_semantic::{SemanticOptions, analyze_with_options};
 use pseudolearn_source::SourceText;
-use pseudolearn_syntax::parse_source_with_terminator;
+use pseudolearn_syntax::parse_source;
 
 #[test]
 fn resolves_network_and_http_types_in_both_profiles() -> Result<(), String> {
@@ -18,20 +18,10 @@ fn resolves_network_and_http_types_in_both_profiles() -> Result<(), String> {
         ),
     ] {
         let source = SourceText::new(program.to_owned());
-        let (tree, syntax) = parse_source_with_terminator(
-            &source,
-            profile,
-            Some(DiagnosticCode::MissingStatementTerminator),
-        );
+        let (tree, syntax) = parse_source(&source, profile);
         assert!(syntax.is_empty(), "{profile:?}: {syntax:?}");
-        let (module, diagnostics) = analyze_with_options(
-            &tree,
-            &source,
-            SemanticOptions {
-                profile,
-                strict: true,
-            },
-        );
+        let (module, diagnostics) =
+            analyze_with_options(&tree, &source, SemanticOptions { profile });
         let module = module.ok_or_else(|| format!("{profile:?}: {diagnostics:?}"))?;
         assert!(diagnostics.is_empty(), "{profile:?}: {diagnostics:?}");
         assert!(module.builtin_enums.contains_key("httpMethod"));
@@ -59,20 +49,10 @@ fn awaits_http_effect_with_transferable_values_in_both_profiles() -> Result<(), 
         ),
     ] {
         let source = SourceText::new(program.to_owned());
-        let (tree, syntax) = parse_source_with_terminator(
-            &source,
-            profile,
-            Some(DiagnosticCode::MissingStatementTerminator),
-        );
+        let (tree, syntax) = parse_source(&source, profile);
         assert!(syntax.is_empty(), "{profile:?}: {syntax:?}");
-        let (module, diagnostics) = analyze_with_options(
-            &tree,
-            &source,
-            SemanticOptions {
-                profile,
-                strict: true,
-            },
-        );
+        let (module, diagnostics) =
+            analyze_with_options(&tree, &source, SemanticOptions { profile });
         assert!(module.is_some(), "{profile:?}: {diagnostics:?}");
         assert!(diagnostics.is_empty(), "{profile:?}: {diagnostics:?}");
     }
@@ -96,20 +76,10 @@ fn analyzes_every_http_corpus_program_in_both_profiles() -> Result<(), String> {
                 .and_then(serde_json::Value::as_str)
                 .ok_or("missing HTTP program")?;
             let source = SourceText::new(program.to_owned());
-            let (tree, syntax) = parse_source_with_terminator(
-                &source,
-                profile,
-                Some(DiagnosticCode::MissingStatementTerminator),
-            );
+            let (tree, syntax) = parse_source(&source, profile);
             assert!(syntax.is_empty(), "{case_id} {name}: {syntax:?}");
-            let (module, diagnostics) = analyze_with_options(
-                &tree,
-                &source,
-                SemanticOptions {
-                    profile,
-                    strict: true,
-                },
-            );
+            let (module, diagnostics) =
+                analyze_with_options(&tree, &source, SemanticOptions { profile });
             let errors = diagnostics
                 .iter()
                 .filter(|diagnostic| diagnostic.severity == DiagnosticSeverity::Error)

@@ -28,7 +28,6 @@ pub fn generated(
     full_source.insert_str(position, &dead);
     let request = |source| {
         json!({"kind":"execute","program":source,"profile":profile,
-        "strictness":if sample & 2 == 0 {"strict"} else {"flexible"},
         "inputs":[program.input],"seed":seed,"observe":"events"})
     };
     Ok((request(full_source), request(program.source), expected))
@@ -70,5 +69,5 @@ fn format_request(profile: &str, bits: u64, vocabulary: &Vocabulary) -> Result<V
     );
     let source = see_translation::lexemes::resolve(&template, profile, vocabulary)?;
     Ok(json!({"kind":"execute","program":source,"profile":profile,
-        "strictness":"strict","inputs":[],"seed":42,"observe":"none"}))
+        "inputs":[],"seed":42,"observe":"none"}))
 }

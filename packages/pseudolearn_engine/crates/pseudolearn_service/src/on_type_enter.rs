@@ -100,9 +100,6 @@ fn closer_for(context: &TypingContext<'_>, current: usize, tail_blank: bool) -> 
 }
 
 fn terminator_change(context: &TypingContext<'_>, previous: usize) -> Option<TextChange> {
-    if !context.document.strict {
-        return None;
-    }
     let end = line_end(context.text(), previous);
     let tokens = line_code_tokens(&context.document.tree, previous, end);
     let (first, last) = (tokens.first()?, tokens.last()?);

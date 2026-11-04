@@ -69,11 +69,7 @@
   "espera": {
     "salida": "12\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -99,11 +95,7 @@
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -124,11 +116,7 @@
   "espera": {
     "arbol": "presente",
     "diagnosticos": []
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -154,11 +142,7 @@
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -179,11 +163,7 @@
   "espera": {
     "salida": "2\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -209,11 +189,7 @@
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -239,11 +215,7 @@
         "severidad": "warning"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -269,10 +241,6 @@
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```

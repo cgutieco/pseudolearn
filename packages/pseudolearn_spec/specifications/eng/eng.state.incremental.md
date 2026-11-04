@@ -100,10 +100,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "origen": "derivado",
   "operacion": "trace",
   "espera": {

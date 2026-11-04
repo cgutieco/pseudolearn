@@ -111,9 +111,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -122,8 +119,7 @@
         "operation": "open_edit_session",
         "arguments": {
           "program": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n",
-          "profile": "es",
-          "strictness": "strict"
+          "profile": "es"
         }
       },
       {
@@ -200,9 +196,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -211,8 +204,7 @@
         "operation": "open_edit_session",
         "arguments": {
           "program": "Algoritmo P\nFinAlgoritmo\n",
-          "profile": "es",
-          "strictness": "strict"
+          "profile": "es"
         }
       },
       {
@@ -279,9 +271,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -290,8 +279,7 @@
         "operation": "open_edit_session",
         "arguments": {
           "program": "Algoritmo P\nFinAlgoritmo\n",
-          "profile": "es",
-          "strictness": "strict"
+          "profile": "es"
         }
       },
       {
@@ -361,9 +349,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -372,8 +357,7 @@
         "operation": "open_edit_session",
         "arguments": {
           "program": "Algoritmo P\nEscribir \"🧩\"; Escribir 1;\nFinAlgoritmo\n",
-          "profile": "es",
-          "strictness": "strict"
+          "profile": "es"
         }
       },
       {
@@ -488,9 +472,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -499,8 +480,7 @@
         "operation": "open_edit_session",
         "arguments": {
           "program": "",
-          "profile": "es",
-          "strictness": "strict"
+          "profile": "es"
         }
       },
       {
@@ -548,9 +528,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -559,8 +536,7 @@
         "operation": "open_edit_session",
         "arguments": {
           "program": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n",
-          "profile": "es",
-          "strictness": "strict"
+          "profile": "es"
         }
       },
       {
@@ -703,9 +679,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -714,8 +687,7 @@
         "operation": "create_document",
         "arguments": {
           "program": "Algoritmo P\nFinAlgoritmo\n",
-          "profile": "es",
-          "strictness": "strict"
+          "profile": "es"
         }
       },
       {
@@ -776,9 +748,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -787,8 +756,7 @@
         "operation": "open_edit_session",
         "arguments": {
           "program": "Algoritmo P\nPara i <- 1 Hasta 2 Con Paso 1 Hacer\nFinPara\nFinAlgoritmo\n",
-          "profile": "es",
-          "strictness": "strict"
+          "profile": "es"
         }
       },
       {
@@ -866,9 +834,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -877,8 +842,7 @@
         "operation": "open_edit_session",
         "arguments": {
           "program": "Algoritmo P\nEscribir 1 + 2;\nFinAlgoritmo\n",
-          "profile": "es",
-          "strictness": "strict"
+          "profile": "es"
         }
       },
       {
@@ -954,9 +918,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -965,8 +926,7 @@
         "operation": "open_edit_session",
         "arguments": {
           "program": "Algoritmo P\nDefinir Longitud Como Entero;\nLongitud <- 2;\nEscribir Longitud;\nFinAlgoritmo\n",
-          "profile": "es",
-          "strictness": "strict"
+          "profile": "es"
         }
       },
       {
@@ -1035,9 +995,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -1046,8 +1003,7 @@
         "operation": "open_edit_session",
         "arguments": {
           "program": "Algoritmo P\r\nEscribir \"😀\"; // nota\r\nFinAlgoritmo\r\n",
-          "profile": "es",
-          "strictness": "strict"
+          "profile": "es"
         }
       },
       {
@@ -1151,9 +1107,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -1162,8 +1115,7 @@
         "operation": "open_edit_session",
         "arguments": {
           "program": "Algoritmo P\nMientras 1 = 1 Hacer\nFinMientras\nFinAlgoritmo\n",
-          "profile": "es",
-          "strictness": "strict"
+          "profile": "es"
         }
       },
       {
@@ -1245,9 +1197,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -1256,8 +1205,7 @@
         "operation": "open_edit_session",
         "arguments": {
           "program": "Algoritmo P\nMientras 1 = 1 Hacer\nFinMientras\nFinAlgoritmo\n",
-          "profile": "es",
-          "strictness": "strict"
+          "profile": "es"
         }
       },
       {
@@ -1293,7 +1241,6 @@
                   "version": "1.0.0",
                   "case": "C1",
                   "profile": "en",
-                  "strictness": "estricto",
                   "kind": "executable"
                 },
                 {
@@ -1301,7 +1248,6 @@
                   "version": "1.0.0",
                   "case": "C3",
                   "profile": "en",
-                  "strictness": "estricto",
                   "kind": "diagnostic"
                 }
               ]
@@ -1324,9 +1270,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -1335,8 +1278,7 @@
         "operation": "open_edit_session",
         "arguments": {
           "program": "Algoritmo P\nDefinir x Como Entero;\nx <- 1;\nFinAlgoritmo\n",
-          "profile": "es",
-          "strictness": "strict"
+          "profile": "es"
         }
       },
       {
@@ -1400,9 +1342,6 @@
   "regla": "R7",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "api",
@@ -1505,9 +1444,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -1585,9 +1521,6 @@
   "regla": "R7",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "api",
@@ -1679,9 +1612,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -1718,9 +1648,6 @@
   "regla": "R8",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "api",

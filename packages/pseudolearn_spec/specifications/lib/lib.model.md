@@ -577,11 +577,7 @@
   "espera": {
     "salida": "2\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -607,11 +603,7 @@
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -637,11 +629,7 @@
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -662,11 +650,7 @@
   "espera": {
     "salida": "0\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -1461,10 +1445,6 @@ alterar las reglas generales de asignación entre ambos tipos.
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo P\nDefinir stream Como Canal<Entero> <- Canal(1);\nstream.Cerrar();\nElegir\nRecibir first Desde stream:\nRecibir second Desde stream:\nFinElegir\nFinAlgoritmo\n",

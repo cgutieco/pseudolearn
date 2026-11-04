@@ -184,9 +184,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "ir",
   "espera": {
@@ -204,9 +201,6 @@
   "regla": "R1",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "ir",
@@ -227,9 +221,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "ir",
   "espera": {
@@ -248,9 +239,6 @@
   "regla": "R3",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "ir",
@@ -271,9 +259,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "ir",
   "espera": {
@@ -292,9 +277,6 @@
   "regla": "R5",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "ir",
@@ -315,9 +297,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "ir",
   "espera": {
@@ -336,9 +315,6 @@
   "regla": "R7",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "ir",
@@ -359,9 +335,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "ir",
   "espera": {
@@ -380,9 +353,6 @@
   "regla": "R10",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "ir",
@@ -403,9 +373,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "ir",
   "espera": {
@@ -425,9 +392,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "ir",
   "espera": {
@@ -446,9 +410,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "ir",
   "espera": {
@@ -466,9 +427,6 @@
   "regla": "R3",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "ir",
@@ -500,9 +458,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "ir",
   "programa_ri": "module P es\nfunc @worker() -> unit {\nb0() mass 0:\n  task.yield_check\n  return\n}\n",
@@ -520,9 +475,6 @@
   "regla": "R12",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "ir",

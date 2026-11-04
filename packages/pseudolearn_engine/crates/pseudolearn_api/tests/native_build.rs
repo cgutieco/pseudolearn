@@ -7,8 +7,7 @@ use pseudolearn_api::{
 fn request(program: &str) -> NativeBuildRequest {
     NativeBuildRequest {
         program: program.to_owned(),
-        profile: "es".to_owned(),
-        strictness: "strict".to_owned(),
+        profile: "es".to_owned().to_owned(),
         seed: 42,
         forced_collection: false,
         limits: ExecutionLimits::default(),
@@ -44,9 +43,8 @@ fn a_valid_program_becomes_an_object_that_calls_the_runtime_main() -> Check {
 }
 
 #[test]
-fn explicit_limits_and_flexible_strictness_are_accepted() -> Check {
-    let mut custom = request("Algoritmo P\nEscribir 1\nFinAlgoritmo\n");
-    custom.strictness = "flexible".to_owned();
+fn explicit_limits_are_accepted() -> Check {
+    let mut custom = request("Algoritmo P\nEscribir 1;\nFinAlgoritmo\n");
     custom.limits = ExecutionLimits {
         depth: Some(5),
         statements: Some(100),
@@ -107,12 +105,8 @@ fn inspection_preserves_bytes_and_benchmark_functions_match_product_functions() 
         assert!(!inspected.inspection.is_empty());
         let metadata = pseudolearn_aot_rt::decode_metadata(&measured.metadata)
             .ok_or("Invalid benchmark metadata")?;
-        let module = pseudolearn_api::compile_source_to_module(
-            &build.program,
-            &build.profile,
-            &build.strictness,
-        )
-        .map_err(failure)?;
+        let module = pseudolearn_api::compile_source_to_module(&build.program, &build.profile)
+            .map_err(failure)?;
         let product = pseudolearn_codegen::compile_module_to_executable_object(
             &module,
             &pseudolearn_codegen::TargetConfig::host().with_inspection(),

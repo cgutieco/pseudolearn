@@ -12,8 +12,7 @@ const MAIN: &str = "Importar geo.vectores.Doble;\nAlgoritmo P\nEscribir Doble(21
 fn request() -> NativeBuildRequest {
     NativeBuildRequest {
         program: String::new(),
-        profile: "es".to_owned(),
-        strictness: "strict".to_owned(),
+        profile: "es".to_owned().to_owned(),
         seed: 42,
         forced_collection: false,
         limits: ExecutionLimits::default(),

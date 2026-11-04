@@ -5,7 +5,7 @@ const PROGRAM: &str = "Algoritmo P\nDefinir Mutable i Como Entero <- 0;\ni <- 0;
 
 fn step(condition: &str, from_event: u64, target_line: u64) -> Value {
     let mut session = ApiSession::default();
-    let request = json!({"program":PROGRAM,"profile":"es","strictness":"strict","seed":1,"inputs":[],"observe":"events"});
+    let request = json!({"program":PROGRAM,"profile":"es","seed":1,"inputs":[],"observe":"events"});
     session.call(
         "step",
         &json!({"request":request,"from_event":from_event,"condition":condition,"target_line":target_line}),

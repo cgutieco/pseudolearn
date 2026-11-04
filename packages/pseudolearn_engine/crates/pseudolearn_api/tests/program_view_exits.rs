@@ -148,8 +148,7 @@ fn programs_without_exits_or_cleanups_carry_no_exit_attributes() -> Result<(), S
 fn invalid_view_nodes(program: &str) -> Result<Vec<Value>, String> {
     analysis_program_view(&AnalyzeRequest {
         program: program.to_owned(),
-        profile: "es".to_owned(),
-        strictness: "estricto".to_owned(),
+        profile: "es".to_owned().to_owned(),
         source: None,
     })
     .and_then(|view| view.get("nodes").and_then(Value::as_array).cloned())

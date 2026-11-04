@@ -179,10 +179,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "origen": "derivado",
   "operacion": "trace",
   "espera": {
@@ -232,10 +228,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "origen": "derivado",
   "operacion": "trace",
@@ -303,10 +295,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "origen": "derivado",
   "operacion": "trace",
   "espera": {
@@ -369,10 +357,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "origen": "derivado",
   "operacion": "trace",
   "espera": {
@@ -428,10 +412,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "origen": "derivado",
   "operacion": "trace",
   "espera": {
@@ -482,10 +462,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "origen": "derivado",
   "operacion": "trace",
@@ -554,10 +530,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "origen": "derivado",
   "operacion": "trace",
   "espera": {
@@ -609,10 +581,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "origen": "derivado",
   "operacion": "trace",
   "espera": {
@@ -663,10 +631,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "origen": "derivado",
   "operacion": "trace",
@@ -720,10 +684,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "origen": "derivado",
   "operacion": "trace",
   "espera": {
@@ -772,10 +732,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "origen": "derivado",
   "operacion": "trace",
@@ -834,10 +790,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "origen": "derivado",
   "operacion": "trace",
@@ -909,10 +861,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "origen": "derivado",
   "operacion": "trace",
   "espera": {
@@ -954,7 +902,6 @@
   "id": "C14",
   "regla": "R2",
   "perfiles": ["es"],
-  "rigor": ["estricto"],
   "origen": "derivado",
   "operacion": "trace",
   "espera": {
@@ -976,10 +923,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo P\nDefinir stream Como Canal<Entero> <- Canal(1);\nstream.Cerrar();\nElegir\nRecibir first Desde stream:\nRecibir second Desde stream:\nFinElegir\nFinAlgoritmo\n",
@@ -1075,10 +1018,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "SubProceso Suspendible Work()\nEscribir 1;\nFinSubProceso\nAlgoritmo P\nTareas\nLanzar Work();\nFinTareas\nFinAlgoritmo\n",
@@ -1203,10 +1142,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "SubProceso Suspendible Take(stream Como Canal<Entero>)\nSegun Aguardar stream.Recibir() Hacer\nAlgo(value): Escribir value;\nNada: Escribir 0;\nFinSegun\nFinSubProceso\nAlgoritmo P\nDefinir stream Como Canal<Entero> <- Canal(1);\nTareas\nLanzar Take(stream);\nAguardar stream.Enviar(7);\nFinTareas\nFinAlgoritmo\n",
@@ -1394,10 +1329,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "SubProceso Suspendible Idle(stream Como Canal<Entero>)\nSegun Aguardar stream.Recibir() Hacer\nAlgo(value): Escribir value;\nNada: Escribir 0;\nFinSegun\nFinSubProceso\nSubProceso Suspendible Fail() Como Resultado<Entero, Cadena>\nRetornar Error(\"problem\");\nFinSubProceso\nAlgoritmo P\nDefinir stream Como Canal<Entero> <- Canal(1);\nTareas problem\nLanzar Idle(stream);\nLanzar Fail();\nFinTareas\nDescartar problem;\nFinAlgoritmo\n",

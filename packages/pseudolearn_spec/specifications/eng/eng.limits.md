@@ -97,10 +97,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
@@ -124,10 +120,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "origen": "derivado",
   "operacion": "execute",
@@ -185,10 +177,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
@@ -210,10 +198,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "origen": "derivado",
   "operacion": "execute",
@@ -239,10 +223,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
@@ -265,10 +245,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
@@ -290,10 +266,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "origen": "derivado",
   "operacion": "execute",
@@ -319,10 +291,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
@@ -344,10 +312,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "origen": "derivado",
   "operacion": "execute",
@@ -386,10 +350,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
@@ -408,10 +368,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "origen": "derivado",
   "operacion": "execute",
@@ -445,10 +401,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
@@ -477,10 +429,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "origen": "derivado",
   "operacion": "execute",
@@ -517,10 +465,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "origen": "derivado",
   "operacion": "execute",
@@ -591,10 +535,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
@@ -615,10 +555,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "origen": "derivado",
   "operacion": "execute",
@@ -660,10 +596,6 @@ Este contrato cuantifica los recursos que LANG.SUBPROGRAM.RECURSION y LANG.ARRAY
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "origen": "derivado",
   "operacion": "execute",
   "programas": {
@@ -687,10 +619,6 @@ Este contrato cuantifica los recursos que LANG.SUBPROGRAM.RECURSION y LANG.ARRAY
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "origen": "derivado",
   "operacion": "execute",
@@ -730,10 +658,6 @@ Este contrato cuantifica los recursos que LANG.SUBPROGRAM.RECURSION y LANG.ARRAY
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "origen": "derivado",
   "operacion": "execute",
@@ -777,10 +701,6 @@ Vector y Diccionario derivan sus límites del presupuesto cells existente: como 
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo Main\nDefinir stream Como Canal<Entero> <- Canal(5);\nFinAlgoritmo\n",
     "en": "algorithm Main\ndefine stream as channel<integer> <- channel(5);\nendAlgorithm\n"
@@ -804,10 +724,6 @@ Vector y Diccionario derivan sus límites del presupuesto cells existente: como 
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo Main\nDefinir stream Como Canal<Entero> <- Canal(5);\nFinAlgoritmo\n",
@@ -835,10 +751,6 @@ Vector y Diccionario derivan sus límites del presupuesto cells existente: como 
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "SubProceso Suspendible Work()\nEscribir \"w\";\nFinSubProceso\nAlgoritmo Main\nTareas\nLanzar Work();\nLanzar Work();\nFinTareas\nFinAlgoritmo\n",
     "en": "subroutine suspendable Work()\nwrite \"w\";\nendSubroutine\nalgorithm Main\ntasks\nspawn Work();\nspawn Work();\nendTasks\nendAlgorithm\n"
@@ -862,10 +774,6 @@ Vector y Diccionario derivan sus límites del presupuesto cells existente: como 
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "SubProceso Suspendible Work()\nEscribir \"w\";\nFinSubProceso\nAlgoritmo Main\nTareas\nLanzar Work();\nLanzar Work();\nFinTareas\nFinAlgoritmo\n",
@@ -893,10 +801,6 @@ Vector y Diccionario derivan sus límites del presupuesto cells existente: como 
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "SubProceso Suspendible Work()\nEscribir \"w\";\nFinSubProceso\nAlgoritmo Main\nTareas\nLanzar Work();\nLanzar Work();\nLanzar Work();\nFinTareas\nEscribir \"end\";\nFinAlgoritmo\n",
     "en": "subroutine suspendable Work()\nwrite \"w\";\nendSubroutine\nalgorithm Main\ntasks\nspawn Work();\nspawn Work();\nspawn Work();\nendTasks\nwrite \"end\";\nendAlgorithm\n"
@@ -920,10 +824,6 @@ Vector y Diccionario derivan sus límites del presupuesto cells existente: como 
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "SubProceso Suspendible Work()\nEscribir \"w\";\nFinSubProceso\nAlgoritmo Main\nTareas\nLanzar Work();\nLanzar Work();\nLanzar Work();\nLanzar Work();\nFinTareas\nEscribir \"end\";\nFinAlgoritmo\n",
@@ -951,10 +851,6 @@ Vector y Diccionario derivan sus límites del presupuesto cells existente: como 
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "SubProceso Suspendible Work()\nEscribir \"w\";\nFinSubProceso\nAlgoritmo Main\nTareas\nLanzar Work();\nLanzar Work();\nFinTareas\nTareas\nLanzar Work();\nLanzar Work();\nFinTareas\nEscribir \"end\";\nFinAlgoritmo\n",
     "en": "subroutine suspendable Work()\nwrite \"w\";\nendSubroutine\nalgorithm Main\ntasks\nspawn Work();\nspawn Work();\nendTasks\ntasks\nspawn Work();\nspawn Work();\nendTasks\nwrite \"end\";\nendAlgorithm\n"
@@ -979,10 +875,6 @@ Vector y Diccionario derivan sus límites del presupuesto cells existente: como 
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo Main\nDefinir stream Como Canal<Entero> <- Canal(8);\nEscribir \"ok\";\nFinAlgoritmo\n",
     "en": "algorithm Main\ndefine stream as channel<integer> <- channel(8);\nwrite \"ok\";\nendAlgorithm\n"
@@ -1006,10 +898,6 @@ Vector y Diccionario derivan sus límites del presupuesto cells existente: como 
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo Main\nDefinir stream Como Canal<Entero> <- Canal(9);\nEscribir \"ok\";\nFinAlgoritmo\n",
@@ -1036,10 +924,6 @@ Vector y Diccionario derivan sus límites del presupuesto cells existente: como 
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo Main\nDefinir stream Como Canal<Entero> <- Canal(65536);\nEscribir \"ok\";\nFinAlgoritmo\n",
@@ -1072,7 +956,6 @@ Vector y Diccionario derivan sus límites del presupuesto cells existente: como 
   "id": "C35",
   "regla": "R12",
   "perfiles": ["es", "en"],
-  "rigor": ["estricto", "flexible"],
   "origen": "derivado",
   "operacion": "execute",
   "programas": {
@@ -1089,7 +972,6 @@ Vector y Diccionario derivan sus límites del presupuesto cells existente: como 
   "id": "C36",
   "regla": "R12",
   "perfiles": ["es", "en"],
-  "rigor": ["estricto", "flexible"],
   "origen": "derivado",
   "operacion": "execute",
   "programas": {
@@ -1118,10 +1000,6 @@ Vector y Diccionario derivan sus límites del presupuesto cells existente: como 
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "origen": "derivado",
   "operacion": "execute",

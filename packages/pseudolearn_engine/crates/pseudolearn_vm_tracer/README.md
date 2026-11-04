@@ -28,9 +28,10 @@ salto a partir de Mandelbrot y Fibonacci; el bucle entero queda reservado para v
 ## 4. Decisiones de diseño y fundamentos técnicos
 
 El worker mide una carga por proceso. Así, diez procesos independientes producen medias emparejables
-con los diez procesos de `reference`, mientras cada iteración construye una máquina nueva. Una guarda
-del propio programa detecta resultados incorrectos al fallar la terminación. Se descarta ejecutar la
-API pública, porque mediría análisis, adaptación o protocolo junto con la VM.
+con los diez procesos de `reference`, mientras cada iteración construye una máquina nueva. La carga se
+compila con su perfil de vocabulario y las reglas únicas del corpus. Una guarda del propio programa
+detecta resultados incorrectos al fallar la terminación. Se descarta ejecutar la API pública, porque
+mediría análisis, adaptación o protocolo junto con la VM.
 
 La compilación de la carga, su carga en forma de despacho y una ejecución de validación ocurren antes de
 iniciar las muestras. La medición vigente se hace sin PGO: el binario no depende de un perfil ni de

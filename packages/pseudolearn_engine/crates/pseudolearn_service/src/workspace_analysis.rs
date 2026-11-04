@@ -10,8 +10,8 @@ use pseudolearn_project::{
     BuildFailure, FileInput, ModuleId, ProjectCatalog, ProjectInput, select_entry,
 };
 use pseudolearn_semantic::{
-    ProjectUnit, ResolvedUnitProfile, SemanticOptions, analyze_project_detailed,
-    resolve_project_profiles, service_analysis_from_project,
+    ProjectUnit, ResolvedUnitProfile, analyze_project_detailed, resolve_project_profiles,
+    service_analysis_from_project,
 };
 use pseudolearn_syntax::SyntaxTree;
 use std::collections::BTreeMap;
@@ -114,27 +114,9 @@ fn analyze_catalog(
     project: ProjectInput,
     input: CatalogAnalysisInput,
 ) -> Result<(WorkspaceResult, WorkspaceIndex), WorkspaceError> {
-    let parsed = parse_catalog(
-        &input.catalog,
-        &input.profiles,
-        &request.snapshot.options,
-        request.previous,
-    );
+    let parsed = parse_catalog(&input.catalog, &input.profiles, request.previous);
     let units = project_units(&input.catalog, &parsed.trees, &parsed.profiles);
-    let profile = request
-        .snapshot
-        .options
-        .requested_profile
-        .unwrap_or_default();
-    let analysis = analyze_project_detailed(
-        &input.catalog,
-        &units,
-        input.entry,
-        SemanticOptions {
-            profile,
-            strict: request.snapshot.options.strict,
-        },
-    );
+    let analysis = analyze_project_detailed(&input.catalog, &units, input.entry);
     assemble_workspace_result(
         request,
         project,

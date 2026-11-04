@@ -63,11 +63,7 @@
   "espera": {
     "salida": "0:4:2\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -89,10 +85,6 @@
     "fallo": {
       "codigo": "stringPositionOutOfRange"
     }
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```

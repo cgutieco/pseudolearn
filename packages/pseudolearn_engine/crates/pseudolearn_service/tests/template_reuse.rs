@@ -3,7 +3,7 @@ use pseudolearn_service::{DocumentSession, Profile, apply_change, build_insertio
 
 fn accepted(marked: &str, label: &str) -> Result<String, String> {
     let (clean, position) = split_cursor(marked);
-    let session = DocumentSession::new(clean, Profile::Spanish, false);
+    let session = DocumentSession::new(clean, Profile::Spanish);
     let result = session.queries().complete_with_edit(position);
     let entry = result
         .entries
@@ -84,7 +84,7 @@ fn inline_closers_use_the_innermost_matching_opener() {
     ];
     for (program, expected) in programs {
         let (clean, position) = split_cursor(program);
-        let session = DocumentSession::new(clean, Profile::Spanish, false);
+        let session = DocumentSession::new(clean, Profile::Spanish);
         let result = session.queries().complete_with_edit(position);
         assert_eq!(
             result.entries.iter().any(|entry| entry.inline),

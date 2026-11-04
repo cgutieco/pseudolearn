@@ -190,11 +190,7 @@ La marca de suspensión es explícita en las unidades declaradas y contextual en
     "en": "subroutine suspendable Worker()\nwrite 1;\nendSubroutine\nalgorithm P\nawait Worker();\nendAlgorithm\n",
     "es": "SubProceso Suspendible Worker()\nEscribir 1;\nFinSubProceso\nAlgoritmo P\nAguardar Worker();\nFinAlgoritmo\n"
   },
-  "regla": "R1",
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  "regla": "R1"
 }
 ```
 
@@ -215,11 +211,7 @@ La marca de suspensión es explícita en las unidades declaradas y contextual en
     "en": "subroutine suspendable First()\nawait Second();\nendSubroutine\nsubroutine suspendable Second()\nawait Third();\nendSubroutine\nsubroutine suspendable Third()\nwrite 1;\nendSubroutine\nalgorithm P\nawait First();\nendAlgorithm\n",
     "es": "SubProceso Suspendible First()\nAguardar Second();\nFinSubProceso\nSubProceso Suspendible Second()\nAguardar Third();\nFinSubProceso\nSubProceso Suspendible Third()\nEscribir 1;\nFinSubProceso\nAlgoritmo P\nAguardar First();\nFinAlgoritmo\n"
   },
-  "regla": "R1",
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  "regla": "R1"
 }
 ```
 
@@ -240,11 +232,7 @@ La marca de suspensión es explícita en las unidades declaradas y contextual en
     "en": "subroutine suspendable SumClock() as result<integer, IoError>\ndefine clock as Clock <- propagate requestClock();\nreturn success((propagate await clock.now()) + (propagate await clock.now()));\nendSubroutine\nalgorithm P\nswitch await SumClock() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n",
     "es": "SubProceso Suspendible SumClock() Como Resultado<Entero, ErrorES>\nDefinir clock Como Reloj <- Propagar SolicitarReloj();\nRetornar Exito((Propagar Aguardar clock.Ahora()) + (Propagar Aguardar clock.Ahora()));\nFinSubProceso\nAlgoritmo P\nSegun Aguardar SumClock() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n"
   },
-  "regla": "R6",
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  "regla": "R6"
 }
 ```
 
@@ -265,11 +253,7 @@ La marca de suspensión es explícita en las unidades declaradas y contextual en
     "en": "function UseValue(value as integer) as integer\nreturn value;\nend function\nsubroutine suspendable ReadClockValue() as result<integer, IoError>\ndefine clock as Clock <- propagate requestClock();\nreturn success(UseValue(propagate await clock.now()));\nendSubroutine\nalgorithm P\nswitch await ReadClockValue() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n",
     "es": "Funcion UseValue(value Como Entero) Como Entero\nRetornar value;\nFinFuncion\nSubProceso Suspendible ReadClockValue() Como Resultado<Entero, ErrorES>\nDefinir clock Como Reloj <- Propagar SolicitarReloj();\nRetornar Exito(UseValue(Propagar Aguardar clock.Ahora()));\nFinSubProceso\nAlgoritmo P\nSegun Aguardar ReadClockValue() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n"
   },
-  "regla": "R6",
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  "regla": "R6"
 }
 ```
 
@@ -295,11 +279,7 @@ La marca de suspensión es explícita en las unidades declaradas y contextual en
     "en": "function suspendable Calculate() as integer\nreturn 1;\nend function\nalgorithm P\nwrite Calculate();\nendAlgorithm\n",
     "es": "Funcion Suspendible Calculate() Como Entero\nRetornar 1;\nFinFuncion\nAlgoritmo P\nEscribir Calculate();\nFinAlgoritmo\n"
   },
-  "regla": "R2",
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  "regla": "R2"
 }
 ```
 
@@ -325,11 +305,7 @@ La marca de suspensión es explícita en las unidades declaradas y contextual en
     "en": "subroutine suspendable Worker()\nendSubroutine\nalgorithm P\ndefine action as subroutine() <- Worker;\nwrite action;\nendAlgorithm\n",
     "es": "SubProceso Suspendible Worker()\nFinSubProceso\nAlgoritmo P\nDefinir action Como SubProceso() <- Worker;\nEscribir action;\nFinAlgoritmo\n"
   },
-  "regla": "R2",
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  "regla": "R2"
 }
 ```
 
@@ -355,11 +331,7 @@ La marca de suspensión es explícita en las unidades declaradas y contextual en
     "en": "subroutine suspendable Worker()\nwrite 1;\nendSubroutine\nsubroutine Caller()\nawait Worker();\nendSubroutine\nalgorithm P\nCaller();\nendAlgorithm\n",
     "es": "SubProceso Suspendible Worker()\nEscribir 1;\nFinSubProceso\nSubProceso Caller()\nAguardar Worker();\nFinSubProceso\nAlgoritmo P\nCaller();\nFinAlgoritmo\n"
   },
-  "regla": "R3",
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  "regla": "R3"
 }
 ```
 
@@ -385,11 +357,7 @@ La marca de suspensión es explícita en las unidades declaradas y contextual en
     "en": "subroutine suspendable Worker()\nwrite 1;\nendSubroutine\nsubroutine suspendable Caller()\ndefer\nawait Worker();\nendDefer\nendSubroutine\nalgorithm P\nawait Caller();\nendAlgorithm\n",
     "es": "SubProceso Suspendible Worker()\nEscribir 1;\nFinSubProceso\nSubProceso Suspendible Caller()\nDiferir\nAguardar Worker();\nFinDiferir\nFinSubProceso\nAlgoritmo P\nAguardar Caller();\nFinAlgoritmo\n"
   },
-  "regla": "R3",
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  "regla": "R3"
 }
 ```
 
@@ -415,11 +383,7 @@ La marca de suspensión es explícita en las unidades declaradas y contextual en
     "en": "algorithm P\nwrite await 1;\nendAlgorithm\n",
     "es": "Algoritmo P\nEscribir Aguardar 1;\nFinAlgoritmo\n"
   },
-  "regla": "R4",
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  "regla": "R4"
 }
 ```
 
@@ -445,11 +409,7 @@ La marca de suspensión es explícita en las unidades declaradas y contextual en
     "en": "subroutine suspendable Worker()\nendSubroutine\nalgorithm P\nWorker();\nendAlgorithm\n",
     "es": "SubProceso Suspendible Worker()\nFinSubProceso\nAlgoritmo P\nWorker();\nFinAlgoritmo\n"
   },
-  "regla": "R5",
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  "regla": "R5"
 }
 ```
 
@@ -470,11 +430,7 @@ La marca de suspensión es explícita en las unidades declaradas y contextual en
     "en": "subroutine suspendable Worker()\nwrite 1;\nendSubroutine\nalgorithm P\nawait Worker();\nendAlgorithm\n",
     "es": "SubProceso Suspendible Worker()\nEscribir 1;\nFinSubProceso\nAlgoritmo P\nAguardar Worker();\nFinAlgoritmo\n"
   },
-  "regla": "R1",
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  "regla": "R1"
 }
 ```
 
@@ -495,11 +451,7 @@ La marca de suspensión es explícita en las unidades declaradas y contextual en
     "en": "subroutine suspendable Recurse(level as integer)\nif level > 0 then\nawait Recurse(level - 1);\nendIf\nwrite 0;\nendSubroutine\nalgorithm P\nawait Recurse(3);\nendAlgorithm\n",
     "es": "SubProceso Suspendible Recurse(level Como Entero)\nSi level > 0 Entonces\nAguardar Recurse(level - 1);\nFinSi\nEscribir 0;\nFinSubProceso\nAlgoritmo P\nAguardar Recurse(3);\nFinAlgoritmo\n"
   },
-  "regla": "R7",
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  "regla": "R7"
 }
 ```
 
@@ -520,11 +472,7 @@ La marca de suspensión es explícita en las unidades declaradas y contextual en
     "en": "subroutine suspendable A()\nwrite 1;\nendSubroutine\nalgorithm P\nawait A();\nendAlgorithm\n",
     "es": "SubProceso Suspendible A()\nEscribir 1;\nFinSubProceso\nAlgoritmo P\nAguardar A();\nFinAlgoritmo\n"
   },
-  "regla": "R1",
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  "regla": "R1"
 }
 ```
 
@@ -552,11 +500,7 @@ La marca de suspensión es explícita en las unidades declaradas y contextual en
     "en": "algorithm Main\nswitch requestClock() do\nsuccess(clock):\nswitch await clock.now() do\nsuccess(value): write value;\nfailure(timeProblem): write timeProblem.code;\nendSwitch\nfailure(clockProblem): write clockProblem.code;\nendSwitch\nendAlgorithm\n",
     "es": "Algoritmo Main\nSegun SolicitarReloj() Hacer\nExito(clock):\nSegun Aguardar clock.Ahora() Hacer\nExito(value): Escribir value;\nError(timeProblem): Escribir timeProblem.Codigo;\nFinSegun\nError(clockProblem): Escribir clockProblem.Codigo;\nFinSegun\nFinAlgoritmo\n"
   },
-  "regla": "R8",
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  "regla": "R8"
 }
 ```
 
@@ -577,10 +521,6 @@ La marca de suspensión es explícita en las unidades declaradas y contextual en
     "en": "subroutine suspendable Worker()\nendSubroutine\nalgorithm P\ndefine suspendable as integer <- 1;\nwrite suspendable;\nawait Worker();\nendAlgorithm\n",
     "es": "SubProceso Suspendible Worker()\nFinSubProceso\nAlgoritmo P\nDefinir Suspendible Como Entero <- 1;\nEscribir Suspendible;\nAguardar Worker();\nFinAlgoritmo\n"
   },
-  "regla": "R1",
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  "regla": "R1"
 }
 ```

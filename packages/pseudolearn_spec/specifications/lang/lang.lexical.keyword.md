@@ -88,11 +88,7 @@
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -113,11 +109,7 @@
   "espera": {
     "salida": "4\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -138,11 +130,7 @@
   "espera": {
     "salida": "{{lexema:booleanTrue}}\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -153,10 +141,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo P\nDefinir Importar Como Entero <- 1;\nDefinir Mutable Exportar Como Entero <- 0;\nExportar <- 2;\nEscribir Importar, Exportar;\nFinAlgoritmo\n",
@@ -178,10 +162,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "origen": "derivado",
   "operacion": "analyze",
@@ -213,10 +193,6 @@
   "espera": {
     "salida": "{{lexema:booleanTrue}}\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```

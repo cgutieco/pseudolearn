@@ -5,7 +5,6 @@ use serde_json::Value;
 
 struct RequestedConfiguration {
     profile: Option<Profile>,
-    strict: Option<bool>,
 }
 
 impl LspServer {
@@ -19,11 +18,8 @@ impl LspServer {
         if let Some(profile) = requested.profile {
             self.profile = profile;
         }
-        if let Some(strict) = requested.strict {
-            self.strict = strict;
-        }
         if let Some(workspace) = self.workspace_session.as_mut() {
-            let _ = workspace.update_configuration(self.profile, self.strict);
+            let _ = workspace.update_configuration(self.profile);
         }
     }
 
@@ -49,10 +45,7 @@ impl LspServer {
             self.service.open_document(
                 uri.clone(),
                 text.clone(),
-                DocumentOptions {
-                    profile: *profile,
-                    strict: self.strict,
-                },
+                DocumentOptions { profile: *profile },
             );
         }
     }
@@ -78,13 +71,5 @@ fn requested_configuration(message: &Value) -> RequestedConfiguration {
         .and_then(|value| value.get("profile"))
         .and_then(Value::as_str)
         .and_then(Profile::from_name);
-    let strict = match settings
-        .and_then(|value| value.get("strictness"))
-        .and_then(Value::as_str)
-    {
-        Some("strict") => Some(true),
-        Some("flexible") => Some(false),
-        _ => None,
-    };
-    RequestedConfiguration { profile, strict }
+    RequestedConfiguration { profile }
 }

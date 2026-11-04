@@ -9,8 +9,8 @@ Orquesta archivos y procesos para new, validate, graph, lock, diff, impact, conf
 ## 2. Guía operativa y ciclo de vida
 
 `runtime-fixtures` emite JSON de peticiones de ejecución materializadas con el traductor vigente y
-escenarios de memoria derivados por el oráculo independiente. Usa semilla y muestras del vínculo de
-transparencia de recolección, conserva hashes del corpus y no ejecuta sujetos ni modifica conformidad.
+escenarios de memoria derivados por el oráculo independiente. Cada petición lleva el perfil del caso,
+la semilla y los límites; conserva hashes del corpus y no ejecuta sujetos ni modifica conformidad.
 
 `new` crea contratos en estado estable `1.0.0` y omite `cambio`. No inventa una revisión: `revisado_por`
 queda vacío hasta que una persona independiente la realice. Para contratos de lenguaje, la plantilla

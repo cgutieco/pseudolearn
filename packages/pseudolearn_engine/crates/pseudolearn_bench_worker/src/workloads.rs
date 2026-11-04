@@ -39,20 +39,18 @@ pub fn load() -> Result<Vec<Workload>, String> {
             .map_err(|error| error.to_string())?;
     let mut workloads = Vec::new();
     for profile in ["es", "en"] {
-        for strictness in ["strict", "flexible"] {
-            for configuration in [
-                (1000, false),
-                (1000, true),
-                (10000, false),
-                (10000, true),
-                (50000, false),
-                (50000, true),
-            ] {
-                workloads.push(generated(&corpus, profile, strictness, configuration)?);
-            }
-            workloads.push(corpus_workload(&corpus, profile, strictness)?);
-            workloads.push(unicode_identifier_workload(&corpus, profile, strictness)?);
+        for configuration in [
+            (1000, false),
+            (1000, true),
+            (10000, false),
+            (10000, true),
+            (50000, false),
+            (50000, true),
+        ] {
+            workloads.push(generated(&corpus, profile, configuration)?);
         }
+        workloads.push(corpus_workload(&corpus, profile)?);
+        workloads.push(unicode_identifier_workload(&corpus, profile)?);
     }
     Ok(workloads)
 }
@@ -60,7 +58,6 @@ pub fn load() -> Result<Vec<Workload>, String> {
 pub fn generated(
     corpus: &Value,
     profile: &str,
-    strictness: &str,
     configuration: (u32, bool),
 ) -> Result<Workload, String> {
     let (lines, incomplete) = configuration;
@@ -79,12 +76,11 @@ pub fn generated(
     let request = AnalyzeRequest {
         program,
         profile: profile.to_owned(),
-        strictness: strictness.to_owned(),
         source: None,
     };
     Ok(Workload {
         requests: vec![request],
-        name: format!("generated-{profile}-{strictness}-{lines}-{incomplete}"),
+        name: format!("generated-{profile}-{lines}-{incomplete}"),
         lines,
         bytes,
         incomplete,
@@ -118,7 +114,7 @@ fn keyword<'corpus>(
         .ok_or_else(|| format!("Missing vocabulary {identity}/{profile}"))
 }
 
-fn corpus_workload(corpus: &Value, profile: &str, strictness: &str) -> Result<Workload, String> {
+fn corpus_workload(corpus: &Value, profile: &str) -> Result<Workload, String> {
     let specifications = corpus
         .get("specifications")
         .and_then(Value::as_array)
@@ -130,7 +126,7 @@ fn corpus_workload(corpus: &Value, profile: &str, strictness: &str) -> Result<Wo
             .and_then(Value::as_array)
             .ok_or("Missing blocks")?;
         for block in blocks {
-            append_case(&mut requests, block, profile, strictness);
+            append_case(&mut requests, block, profile);
         }
     }
     if requests.is_empty() {
@@ -143,7 +139,7 @@ fn corpus_workload(corpus: &Value, profile: &str, strictness: &str) -> Result<Wo
     let bytes = requests.iter().map(|request| request.program.len()).sum();
     Ok(Workload {
         requests,
-        name: format!("corpus-{profile}-{strictness}"),
+        name: format!("corpus-{profile}"),
         lines,
         bytes,
         incomplete: false,
@@ -151,11 +147,7 @@ fn corpus_workload(corpus: &Value, profile: &str, strictness: &str) -> Result<Wo
     })
 }
 
-fn unicode_identifier_workload(
-    corpus: &Value,
-    profile: &str,
-    strictness: &str,
-) -> Result<Workload, String> {
+fn unicode_identifier_workload(corpus: &Value, profile: &str) -> Result<Workload, String> {
     let program = unicode_identifier_program(corpus, profile)?;
     let lines = u32::try_from(program.lines().count()).map_err(|error| error.to_string())?;
     let bytes = program.len();
@@ -163,10 +155,9 @@ fn unicode_identifier_workload(
         requests: vec![AnalyzeRequest {
             program,
             profile: profile.to_owned(),
-            strictness: strictness.to_owned(),
             source: None,
         }],
-        name: format!("unicode-identifiers-{profile}-{strictness}"),
+        name: format!("unicode-identifiers-{profile}"),
         lines,
         bytes,
         incomplete: false,
@@ -206,7 +197,7 @@ fn unicode_identifier_program(corpus: &Value, profile: &str) -> Result<String, S
     Ok(program)
 }
 
-fn append_case(requests: &mut Vec<AnalyzeRequest>, block: &Value, profile: &str, strictness: &str) {
+fn append_case(requests: &mut Vec<AnalyzeRequest>, block: &Value, profile: &str) {
     if block.get("kind").and_then(Value::as_str) != Some("caso") {
         return;
     }
@@ -236,7 +227,6 @@ fn append_case(requests: &mut Vec<AnalyzeRequest>, block: &Value, profile: &str,
         requests.push(AnalyzeRequest {
             program: program.to_owned(),
             profile: profile.to_owned(),
-            strictness: strictness.to_owned(),
             source: None,
         });
     }

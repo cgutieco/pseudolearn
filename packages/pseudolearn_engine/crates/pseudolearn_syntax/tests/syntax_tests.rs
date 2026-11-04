@@ -4,7 +4,7 @@ use pseudolearn_syntax::{parse_source, reprint_lossless};
 
 #[test]
 fn parses_basic_algorithm_in_spanish() {
-    let source_code = "Algoritmo Principal\n  Definir Mutable x Como Entero <- 0\n  x <- 42\n  Escribir x\nFinAlgoritmo\n";
+    let source_code = "Algoritmo Principal\n  Definir Mutable x Como Entero <- 0;\n  x <- 42;\n  Escribir x;\nFinAlgoritmo\n";
     let source = SourceText::new(source_code.to_owned());
     let (tree, diagnostics) = parse_source(&source, Profile::Spanish);
     assert!(diagnostics.is_empty());
@@ -13,8 +13,7 @@ fn parses_basic_algorithm_in_spanish() {
 
 #[test]
 fn parses_basic_algorithm_in_english() {
-    let source_code =
-        "algorithm Main\n  define mutable x as integer <- 0\n  x <- 42\n  write x\nend algorithm\n";
+    let source_code = "algorithm Main\n  define mutable x as integer <- 0;\n  x <- 42;\n  write x;\nend algorithm\n";
     let source = SourceText::new(source_code.to_owned());
     let (tree, diagnostics) = parse_source(&source, Profile::English);
     assert!(diagnostics.is_empty());

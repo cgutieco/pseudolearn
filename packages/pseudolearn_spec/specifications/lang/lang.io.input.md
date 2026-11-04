@@ -66,10 +66,6 @@
     "salida": "7\n",
     "terminacion": "completed"
   },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "entradas": [
     "7"
   ]
@@ -100,10 +96,6 @@
       }
     ]
   },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "entradas": [
     "oops",
     "7"
@@ -128,11 +120,7 @@
   "espera": {
     "terminacion": "awaiting_input",
     "salida": ""
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -158,10 +146,6 @@
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```

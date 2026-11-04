@@ -2,16 +2,15 @@ use crate::identities::ClassId;
 use crate::session::{AnalysisSession, SemanticOptions, UnitScope, UnitView};
 
 impl<'syntax> AnalysisSession<'syntax> {
-    pub(crate) fn for_units(
-        units: Vec<UnitView<'syntax>>,
-        options: SemanticOptions,
-    ) -> Option<Self> {
+    pub(crate) fn for_units(units: Vec<UnitView<'syntax>>) -> Option<Self> {
         let first = *units.first()?;
-        let options = SemanticOptions {
-            profile: first.profile,
-            ..options
-        };
-        let mut session = Self::new(first.tree, first.source, options);
+        let mut session = Self::new(
+            first.tree,
+            first.source,
+            SemanticOptions {
+                profile: first.profile,
+            },
+        );
         session.scopes = vec![UnitScope::default(); units.len()];
         session.units = units;
         Some(session)

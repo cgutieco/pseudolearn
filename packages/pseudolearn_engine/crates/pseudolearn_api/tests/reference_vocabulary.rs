@@ -90,11 +90,11 @@ fn unknown_profiles_are_rejected() {
 fn diagnostic_templates_are_localised_and_carry_their_severity() {
     let spanish = call(
         "diagnostic_template",
-        &json!({"code":"undeclaredVariable","locale":"es","strictness":"strict"}),
+        &json!({"code":"undeclaredVariable","locale":"es"}),
     );
     let english = call(
         "diagnostic_template",
-        &json!({"code":"undeclaredVariable","locale":"en","strictness":"strict"}),
+        &json!({"code":"undeclaredVariable","locale":"en"}),
     );
     let template = |response: &Value| {
         response
@@ -108,29 +108,18 @@ fn diagnostic_templates_are_localised_and_carry_their_severity() {
 }
 
 #[test]
-fn severity_follows_the_requested_strictness() {
-    let strict = call(
+fn severity_is_fixed_by_the_catalog() {
+    let error = call(
         "diagnostic_template",
-        &json!({"code":"incompatibleSwitchCaseType","locale":"es","strictness":"strict"}),
+        &json!({"code":"incompatibleSwitchCaseType","locale":"es"}),
     );
-    let flexible = call(
-        "diagnostic_template",
-        &json!({"code":"incompatibleSwitchCaseType","locale":"es","strictness":"flexible"}),
-    );
-    assert_eq!(strict.pointer("/value/severity"), Some(&json!("error")));
-    assert_eq!(flexible.pointer("/value/severity"), Some(&json!("warning")));
-    let invalid = call(
-        "diagnostic_template",
-        &json!({"code":"incompatibleSwitchCaseType","locale":"es","strictness":"lax"}),
-    );
+    assert_eq!(error.pointer("/value/severity"), Some(&json!("error")));
+    let invalid = call("diagnostic_template", &json!({"code":"nope","locale":"es"}));
     assert_eq!(invalid.pointer("/failure/family"), Some(&json!("usage")));
 }
 
 #[test]
 fn unknown_diagnostic_codes_are_rejected() {
-    let response = call(
-        "diagnostic_template",
-        &json!({"code":"nope","locale":"es","strictness":"strict"}),
-    );
+    let response = call("diagnostic_template", &json!({"code":"nope","locale":"es"}));
     assert_eq!(response.pointer("/failure/family"), Some(&json!("usage")));
 }

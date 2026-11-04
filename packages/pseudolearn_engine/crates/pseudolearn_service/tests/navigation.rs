@@ -4,10 +4,7 @@ use pseudolearn_service::{DocumentSession, HighlightKind, Position, Range, Symbo
 
 fn session_at(marked: &str) -> (DocumentSession, Position) {
     let (clean, position) = split_cursor(marked);
-    (
-        DocumentSession::new(clean, Profile::Spanish, true),
-        position,
-    )
+    (DocumentSession::new(clean, Profile::Spanish), position)
 }
 
 fn range(start: (u32, u32), end: (u32, u32)) -> Range {
@@ -119,7 +116,6 @@ fn lists_document_symbols_with_their_containers() {
         "Clase Punto\n  Definir x Como Entero;\n  Metodo Mover()\n  FinMetodo\nFinClase\nSubProceso Util()\nFinSubProceso\nAlgoritmo Principal\nFinAlgoritmo\n"
             .to_owned(),
         Profile::Spanish,
-        true,
     );
     let symbols = session.queries().symbols();
     let names: Vec<(&str, SymbolCategory)> = symbols

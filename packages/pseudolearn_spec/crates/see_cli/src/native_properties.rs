@@ -77,10 +77,16 @@ fn requests(
         return Err("No native property scenarios".to_owned());
     }
     if binding.executor == PropertyExecutor::NativeRoots {
-        return see_conformance::memory_fixtures::generate(binding.seed,end,vocabulary)?.iter().skip(usize::try_from(first).map_err(|error| error.to_string())?).map(|fixture| {
-            Ok(json!({"kind":"execute","program":fixture["program"],"profile":"es","strictness":"strict",
-                "seed":binding.seed,"inputs":[],"gc_stress":false}))
-        }).collect();
+        return see_conformance::memory_fixtures::generate(binding.seed, end, vocabulary)?
+            .iter()
+            .skip(usize::try_from(first).map_err(|error| error.to_string())?)
+            .map(|fixture| {
+                Ok(
+                    json!({"kind":"execute","program":fixture["program"],"profile":"es",
+                "seed":binding.seed,"inputs":[],"gc_stress":false}),
+                )
+            })
+            .collect();
     }
     (first..end)
         .map(|sample| {
@@ -118,7 +124,6 @@ fn counterexample(
         sample: u32::try_from(sample).map_err(|error| error.to_string())?,
         program: request["program"].as_str().unwrap_or("").to_owned(),
         profile: request["profile"].as_str().unwrap_or("").to_owned(),
-        strictness: request["strictness"].as_str().unwrap_or("").to_owned(),
         expected: values.0,
         actual: values.1,
         reproduction: vec![

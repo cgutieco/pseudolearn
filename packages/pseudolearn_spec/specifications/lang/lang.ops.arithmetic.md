@@ -70,11 +70,7 @@
   "espera": {
     "salida": "2:6:2.5\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -96,11 +92,7 @@
     "fallo": {
       "codigo": "integerOverflow"
     }
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -122,11 +114,7 @@
     "fallo": {
       "codigo": "integerOverflow"
     }
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -152,10 +140,6 @@
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```

@@ -5,7 +5,6 @@ use pseudolearn_runtime::{
 
 fn identity() -> ExecutionIdentity {
     ExecutionIdentity {
-        strictness: "strict".to_owned(),
         limits: Default::default(),
         source_digest: "abcd1234ef".to_owned(),
         package_graph_digest: "none".to_owned(),

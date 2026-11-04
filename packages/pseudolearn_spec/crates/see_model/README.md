@@ -20,7 +20,7 @@ Problema: responsabilidades independientes. Elección: crate por capa con contra
 Se descarta importar sujetos o capas superiores para preservar la dirección.
 
 La evidencia de propiedades conserva semilla, número de muestras solicitadas y completadas, veredicto y
-el primer contraejemplo con programa, perfil, rigor, esperado, observado y comando de reproducción.
+el primer contraejemplo con programa, perfil, esperado, observado y comando de reproducción.
 Un registro vacío o con capacidad ausente no equivale a cumplimiento. El campo `properties` es opcional
 al leer evidencia histórica y se omite al escribir una lista vacía para conservar compatibilidad JSON.
 

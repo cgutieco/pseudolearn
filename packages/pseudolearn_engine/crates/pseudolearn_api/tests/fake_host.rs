@@ -30,7 +30,7 @@ fn run_case(case: &Value, profile: &str, host: &Value) -> Result<(), String> {
         .get("programas")
         .and_then(|programs| programs.get(profile))
         .ok_or("missing program")?;
-    let request = json!({"program":program,"profile":profile,"strictness":"strict","host":host});
+    let request = json!({"program":program,"profile":profile,"host":host});
     let mut session = ApiSession::default();
     let record = session.call("record", &json!({"request":request,"options":{"capture_states":true,"seek_every_event":true,"batch_size":1000}}));
     let value = record

@@ -78,7 +78,6 @@
   "id": "C1",
   "regla": "R1",
   "perfiles": ["es"],
-  "rigor": ["estricto"],
   "origen": "derivado",
   "operacion": "service",
   "espera": {
@@ -117,7 +116,6 @@
   "id": "C2",
   "regla": "R2",
   "perfiles": ["es"],
-  "rigor": ["estricto"],
   "origen": "derivado",
   "operacion": "service",
   "espera": {
@@ -147,7 +145,6 @@
   "id": "C3",
   "regla": "R3",
   "perfiles": ["es"],
-  "rigor": ["estricto"],
   "origen": "derivado",
   "operacion": "service",
   "espera": {
@@ -168,7 +165,6 @@
       },
       "options": {
         "profile": "es",
-        "strictness": "strict",
         "dependency_inputs": {"app/pseudolearn.lock": "digest = \\\"aaaa\\\"\\n"}
       }
     },
@@ -184,7 +180,6 @@
           },
           "options": {
             "profile": "es",
-            "strictness": "strict",
             "dependency_inputs": {"app/pseudolearn.lock": "digest = \\\"bbbb\\\"\\n"}
           }
         }
@@ -199,7 +194,6 @@
   "id": "C4",
   "regla": "R4",
   "perfiles": ["es"],
-  "rigor": ["estricto"],
   "origen": "derivado",
   "operacion": "service",
   "espera": {
@@ -238,7 +232,6 @@
   "id": "C5",
   "regla": "R2",
   "perfiles": ["es"],
-  "rigor": ["estricto"],
   "origen": "derivado",
   "operacion": "service",
   "espera": {
@@ -267,7 +260,6 @@
   "id": "C6",
   "regla": "R1",
   "perfiles": ["es"],
-  "rigor": ["estricto"],
   "origen": "derivado",
   "operacion": "service",
   "espera": {
@@ -293,7 +285,6 @@
   "id": "C7",
   "regla": "R3",
   "perfiles": ["es"],
-  "rigor": ["estricto"],
   "origen": "derivado",
   "operacion": "service",
   "espera": {
@@ -333,7 +324,6 @@
   "id": "C8",
   "regla": "R2",
   "perfiles": ["es"],
-  "rigor": ["estricto"],
   "origen": "derivado",
   "operacion": "service",
   "espera": {

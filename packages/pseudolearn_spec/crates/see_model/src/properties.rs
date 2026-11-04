@@ -18,7 +18,6 @@ pub struct PropertyRun {
 pub struct Counterexample {
     pub sample: u32,
     pub profile: String,
-    pub strictness: String,
     pub program: String,
     pub expected: Value,
     pub actual: Value,

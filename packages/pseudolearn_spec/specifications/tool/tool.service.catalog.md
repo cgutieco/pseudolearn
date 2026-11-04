@@ -243,7 +243,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "El catálogo se representa como el recurso tipado helpCatalog dentro de valor de una definición see/1. Su formato help-catalog/1 contiene el inventario de operadores, roles pedagógicos explícitos de la gramática y fichas con identidad estable, identidades léxicas fuente, disponibilidad por edición, perfil y rigor, anclajes exactos y contenido editorial obligatorio en español e inglés.",
+  "texto": "El catálogo se representa como el recurso tipado helpCatalog dentro de valor de una definición see/1. Su formato help-catalog/1 contiene el inventario de operadores, roles pedagógicos explícitos de la gramática y fichas con identidad estable, identidades léxicas fuente, disponibilidad por edición y perfil, anclajes exactos y contenido editorial obligatorio en español e inglés.",
   "justificacion": "El recurso se guarda dentro de un bloque normativo serializado y exportable para que su contenido editorial participe en el hash del contrato. La prosa Markdown fuera de bloques no forma parte del modelo ni del anclaje.",
   "verificacion": [
     "estructural"
@@ -256,7 +256,7 @@
   "id": "R2",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Cada ficha identifica los lexemas mediante identidades del vocabulario o de la biblioteca y nunca copia sus formas canónicas, firmas ni tipos. Sus anclajes citan una identidad de especificación, versión y elemento vigentes. Cada ejemplo referencia un caso exacto, su versión, perfil y rigor; el resultado esperado permanece en el caso.",
+  "texto": "Cada ficha identifica los lexemas mediante identidades del vocabulario o de la biblioteca y nunca copia sus formas canónicas, firmas ni tipos. Sus anclajes citan una identidad de especificación, versión y elemento vigentes. Cada ejemplo referencia un caso exacto, su versión y perfil; el resultado esperado permanece en el caso.",
   "justificacion": "Las identidades lingüísticas y los ejemplos tienen como dueños el vocabulario, la biblioteca y sus casos. Copiar formas o esperados crearía fuentes paralelas susceptibles de divergir.",
   "verificacion": [
     "estructural"
@@ -269,7 +269,7 @@
   "id": "R3",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Cada exclusión declara identidad, alcance por edición, perfil y rigor, razón tipada y anclaje vigente. Si la razón es alias_of, identifica la ficha canónica y comparte exactamente su conjunto de identidades léxicas y alcance. Un rol pedagógico activo solo puede excluirse por alias_of; el inventario editorial cubre cada palabra reservada, operador, función incorporada y rol mediante una ficha bilingüe disponible o una exclusión así justificada. Una ficha genérica no cubre identidades que no figuran en su papel. El validador rechaza identidades duplicadas, alcances vacíos, condiciones incompatibles y una exclusión que se solapa con una ficha disponible.",
+  "texto": "Cada exclusión declara identidad, alcance por edición y perfil, razón tipada y anclaje vigente. Si la razón es alias_of, identifica la ficha canónica y comparte exactamente su conjunto de identidades léxicas y alcance. Un rol pedagógico activo solo puede excluirse por alias_of; el inventario editorial cubre cada palabra reservada, operador, función incorporada y rol mediante una ficha bilingüe disponible o una exclusión así justificada. Una ficha genérica no cubre identidades que no figuran en su papel. El validador rechaza identidades duplicadas, alcances vacíos, condiciones incompatibles y una exclusión que se solapa con una ficha disponible.",
   "justificacion": "Las exclusiones explican ausencias de cobertura y no sustituyen una ficha requerida por una identidad pedagógica activa.",
   "verificacion": [
     "estructural"
@@ -282,7 +282,7 @@
   "id": "R4",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La edición 2026 declara los operadores desde las producciones de expresión y asignación, deriva las palabras reservadas del vocabulario y toma las funciones incorporadas de la biblioteca. Los roles pedagógicos se declaran con sus producciones fuente y no se infieren de la EBNF. Cada identidad exigible y cada rol se asocia a una ficha con contenido específico es/en en todas las combinaciones activas de edición, perfil y rigor, o a una exclusión tipada vigente; una identidad repetida como alias conserva la identidad fuente y una ficha genérica no satisface cobertura.",
+  "texto": "La edición 2026 declara los operadores desde las producciones de expresión y asignación, deriva las palabras reservadas del vocabulario y toma las funciones incorporadas de la biblioteca. Los roles pedagógicos se declaran con sus producciones fuente y no se infieren de la EBNF. Cada identidad exigible y cada rol se asocia a una ficha con contenido específico es/en en todas las combinaciones activas de edición y perfil, o a una exclusión tipada vigente; una identidad repetida como alias conserva la identidad fuente y una ficha genérica no satisface cobertura.",
   "justificacion": "El inventario explícito permite comprobar su denominador y separar la clasificación pedagógica de la estructura gramatical. Las formas, alias y firmas siguen teniendo un único dueño normativo.",
   "verificacion": [
     "estructural"
@@ -369,9 +369,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "service",
   "espera": {
@@ -397,9 +394,6 @@
   "regla": "R5",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "service",
@@ -428,9 +422,6 @@
   "perfiles": [
     "en"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "service",
   "espera": {
@@ -458,9 +449,6 @@
   "perfiles": [
     "en"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "service",
   "espera": {
@@ -487,9 +475,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "service",
   "espera": {
@@ -513,9 +498,6 @@
   "regla": "R8",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "service",
@@ -543,9 +525,6 @@
   "regla": "R8",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "service",
@@ -599,10 +578,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -634,7 +609,6 @@
                 "label": "Instantánea aislada",
                 "profile": "es",
                 "specification": "LANG.TASK.ISOLATION",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -660,7 +634,6 @@
                 "label": "Isolated snapshot",
                 "profile": "en",
                 "specification": "LANG.TASK.ISOLATION",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -699,10 +672,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -738,7 +707,6 @@
                 "label": "Valor inmutable",
                 "profile": "es",
                 "specification": "LANG.TASK.ISOLATION",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -768,7 +736,6 @@
                 "label": "Immutable value",
                 "profile": "en",
                 "specification": "LANG.TASK.ISOLATION",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -807,10 +774,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -846,7 +809,6 @@
                 "label": "Programa válido: Estructura del algoritmo",
                 "profile": "es",
                 "specification": "LANG.PROGRAM.STRUCTURE",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -855,7 +817,6 @@
                 "label": "Diagnóstico deliberado: Estructura del algoritmo",
                 "profile": "es",
                 "specification": "LANG.PROGRAM.STRUCTURE",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -885,7 +846,6 @@
                 "label": "Valid program: Algorithm structure",
                 "profile": "en",
                 "specification": "LANG.PROGRAM.STRUCTURE",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -894,7 +854,6 @@
                 "label": "Deliberate diagnostic: Algorithm structure",
                 "profile": "en",
                 "specification": "LANG.PROGRAM.STRUCTURE",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -981,10 +940,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -1039,7 +994,7 @@
               }
             ],
             "constraints": [
-              "En ambos rigores se admiten letras ASCII, ñ, vocales españolas acentuadas y ü, con ambas cajas.",
+              "Se admiten letras ASCII, ñ, vocales españolas acentuadas y ü, con ambas cajas.",
               "Los nombres se comparan tras NFC; caja y acentos siguen siendo significativos."
             ],
             "common_errors": [],
@@ -1050,7 +1005,6 @@
                 "label": "Programa que se ejecuta: Declarar variables",
                 "profile": "es",
                 "specification": "LANG.DECL.VARIABLE",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -1059,7 +1013,6 @@
                 "label": "Diagnóstico deliberado: Declarar variables",
                 "profile": "es",
                 "specification": "LANG.DECL.VARIABLE",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -1103,7 +1056,7 @@
               }
             ],
             "constraints": [
-              "Both strictness modes accept ASCII letters, ñ, accented Spanish vowels, and ü in either case.",
+              "ASCII letters, ñ, accented Spanish vowels, and ü are accepted in either case.",
               "Names compare after NFC; letter case and accents remain significant."
             ],
             "common_errors": [],
@@ -1114,7 +1067,6 @@
                 "label": "Program that runs: Variable declaration",
                 "profile": "en",
                 "specification": "LANG.DECL.VARIABLE",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -1123,7 +1075,6 @@
                 "label": "Deliberate diagnostic: Variable declaration",
                 "profile": "en",
                 "specification": "LANG.DECL.VARIABLE",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -1178,10 +1129,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -1215,7 +1162,6 @@
                 "label": "Programa que se ejecuta: Declarar dimensiones",
                 "profile": "es",
                 "specification": "LANG.ARRAY.DIMENSION",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -1224,7 +1170,6 @@
                 "label": "Diagnóstico deliberado: Declarar dimensiones",
                 "profile": "es",
                 "specification": "LANG.ARRAY.DIMENSION",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -1252,7 +1197,6 @@
                 "label": "Program that runs: Declaring dimensions",
                 "profile": "en",
                 "specification": "LANG.ARRAY.DIMENSION",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -1261,7 +1205,6 @@
                 "label": "Deliberate diagnostic: Declaring dimensions",
                 "profile": "en",
                 "specification": "LANG.ARRAY.DIMENSION",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -1292,10 +1235,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -1325,7 +1264,6 @@
                 "label": "Programa que se ejecuta: Asignación",
                 "profile": "es",
                 "specification": "LANG.STMT.ASSIGNMENT",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -1334,7 +1272,6 @@
                 "label": "Diagnóstico deliberado: Asignación",
                 "profile": "es",
                 "specification": "LANG.STMT.ASSIGNMENT",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -1358,7 +1295,6 @@
                 "label": "Program that runs: Assignment",
                 "profile": "en",
                 "specification": "LANG.STMT.ASSIGNMENT",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -1367,7 +1303,6 @@
                 "label": "Deliberate diagnostic: Assignment",
                 "profile": "en",
                 "specification": "LANG.STMT.ASSIGNMENT",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -1398,10 +1333,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -1431,7 +1362,6 @@
                 "label": "Programa que se ejecuta: Lectura de entrada",
                 "profile": "es",
                 "specification": "LANG.IO.INPUT",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -1440,7 +1370,6 @@
                 "label": "Diagnóstico deliberado: Lectura de entrada",
                 "profile": "es",
                 "specification": "LANG.IO.INPUT",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -1464,7 +1393,6 @@
                 "label": "Program that runs: Input reading",
                 "profile": "en",
                 "specification": "LANG.IO.INPUT",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -1473,7 +1401,6 @@
                 "label": "Deliberate diagnostic: Input reading",
                 "profile": "en",
                 "specification": "LANG.IO.INPUT",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -1512,10 +1439,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -1549,7 +1472,6 @@
                 "label": "Programa que se ejecuta: Salida de expresiones",
                 "profile": "es",
                 "specification": "LANG.IO.OUTPUT",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -1558,7 +1480,6 @@
                 "label": "Diagnóstico deliberado: Salida de expresiones",
                 "profile": "es",
                 "specification": "LANG.IO.OUTPUT",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -1586,7 +1507,6 @@
                 "label": "Program that runs: Expression output",
                 "profile": "en",
                 "specification": "LANG.IO.OUTPUT",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -1595,7 +1515,6 @@
                 "label": "Deliberate diagnostic: Expression output",
                 "profile": "en",
                 "specification": "LANG.IO.OUTPUT",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -1650,10 +1569,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -1695,7 +1610,6 @@
                 "label": "Programa que se ejecuta: Selección condicional",
                 "profile": "es",
                 "specification": "LANG.CONTROL.IF",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -1704,7 +1618,6 @@
                 "label": "Diagnóstico deliberado: Selección condicional",
                 "profile": "es",
                 "specification": "LANG.CONTROL.IF",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -1740,7 +1653,6 @@
                 "label": "Program that runs: Conditional selection",
                 "profile": "en",
                 "specification": "LANG.CONTROL.IF",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -1749,7 +1661,6 @@
                 "label": "Deliberate diagnostic: Conditional selection",
                 "profile": "en",
                 "specification": "LANG.CONTROL.IF",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -1804,10 +1715,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -1847,7 +1754,6 @@
                 "label": "Programa que se ejecuta: Selección por casos",
                 "profile": "es",
                 "specification": "LANG.CONTROL.SWITCH",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -1856,7 +1762,6 @@
                 "label": "Diagnóstico deliberado: Selección por casos",
                 "profile": "es",
                 "specification": "LANG.CONTROL.SWITCH",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -1890,7 +1795,6 @@
                 "label": "Program that runs: Case selection",
                 "profile": "en",
                 "specification": "LANG.CONTROL.SWITCH",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -1899,7 +1803,6 @@
                 "label": "Deliberate diagnostic: Case selection",
                 "profile": "en",
                 "specification": "LANG.CONTROL.SWITCH",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -1946,10 +1849,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -1987,7 +1886,6 @@
                 "label": "Programa que se ejecuta: Bucle Mientras",
                 "profile": "es",
                 "specification": "LANG.CONTROL.WHILE",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -1996,7 +1894,6 @@
                 "label": "Diagnóstico deliberado: Bucle Mientras",
                 "profile": "es",
                 "specification": "LANG.CONTROL.WHILE",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -2028,7 +1925,6 @@
                 "label": "Program that runs: While loop",
                 "profile": "en",
                 "specification": "LANG.CONTROL.WHILE",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -2037,7 +1933,6 @@
                 "label": "Deliberate diagnostic: While loop",
                 "profile": "en",
                 "specification": "LANG.CONTROL.WHILE",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -2076,10 +1971,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -2113,7 +2004,6 @@
                 "label": "Programa que se ejecuta: Bucle Repetir",
                 "profile": "es",
                 "specification": "LANG.CONTROL.REPEAT",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -2122,7 +2012,6 @@
                 "label": "Diagnóstico deliberado: Bucle Repetir",
                 "profile": "es",
                 "specification": "LANG.CONTROL.REPEAT",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -2150,7 +2039,6 @@
                 "label": "Program that runs: Repeat loop",
                 "profile": "en",
                 "specification": "LANG.CONTROL.REPEAT",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -2159,7 +2047,6 @@
                 "label": "Deliberate diagnostic: Repeat loop",
                 "profile": "en",
                 "specification": "LANG.CONTROL.REPEAT",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -2230,10 +2117,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -2283,7 +2166,6 @@
                 "label": "Programa que se ejecuta: Bucle Para",
                 "profile": "es",
                 "specification": "LANG.CONTROL.FOR",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -2292,7 +2174,6 @@
                 "label": "Programa que se ejecuta: Bucle Para",
                 "profile": "es",
                 "specification": "LANG.CONTROL.FOR",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -2301,7 +2182,6 @@
                 "label": "Diagnóstico deliberado: Bucle Para",
                 "profile": "es",
                 "specification": "LANG.CONTROL.FOR",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -2345,7 +2225,6 @@
                 "label": "Program that runs: For loop",
                 "profile": "en",
                 "specification": "LANG.CONTROL.FOR",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -2354,7 +2233,6 @@
                 "label": "Program that runs: For loop",
                 "profile": "en",
                 "specification": "LANG.CONTROL.FOR",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -2363,7 +2241,6 @@
                 "label": "Deliberate diagnostic: For loop",
                 "profile": "en",
                 "specification": "LANG.CONTROL.FOR",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -2418,10 +2295,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -2478,7 +2351,6 @@
                 "label": "Programa que se ejecuta: Declaración de subprograma",
                 "profile": "es",
                 "specification": "LANG.SUBPROGRAM.DECLARATION",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -2487,7 +2359,6 @@
                 "label": "Diagnóstico deliberado: Declaración de subprograma",
                 "profile": "es",
                 "specification": "LANG.SUBPROGRAM.DECLARATION",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -2496,7 +2367,6 @@
                 "label": "Subprograma con restricción nominal",
                 "profile": "es",
                 "specification": "LANG.TYPES.INTERFACE",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -2532,7 +2402,6 @@
                 "label": "Program that runs: Subprogram declaration",
                 "profile": "en",
                 "specification": "LANG.SUBPROGRAM.DECLARATION",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -2541,7 +2410,6 @@
                 "label": "Deliberate diagnostic: Subprogram declaration",
                 "profile": "en",
                 "specification": "LANG.SUBPROGRAM.DECLARATION",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -2550,7 +2418,6 @@
                 "label": "Subprogram with a nominal constraint",
                 "profile": "en",
                 "specification": "LANG.TYPES.INTERFACE",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -2589,10 +2456,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -2630,7 +2493,6 @@
                 "label": "Clausura que conserva una captura",
                 "profile": "es",
                 "specification": "LANG.TYPES.FUNCTION",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -2662,7 +2524,6 @@
                 "label": "Closure that retains a capture",
                 "profile": "en",
                 "specification": "LANG.TYPES.FUNCTION",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -2805,10 +2666,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -2899,7 +2756,6 @@
                 "label": "Programa que ejecuta y une dos tareas",
                 "profile": "es",
                 "specification": "LANG.TASK.SCOPE",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -2908,7 +2764,6 @@
                 "label": "Diagnóstico deliberado: lanzamiento fuera del ámbito",
                 "profile": "es",
                 "specification": "LANG.TASK.SCOPE",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -2988,7 +2843,6 @@
                 "label": "Program that runs and joins two tasks",
                 "profile": "en",
                 "specification": "LANG.TASK.SCOPE",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -2997,7 +2851,6 @@
                 "label": "Deliberate diagnostic: spawn outside a scope",
                 "profile": "en",
                 "specification": "LANG.TASK.SCOPE",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -3036,10 +2889,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -3073,7 +2922,6 @@
                 "label": "Programa que se ejecuta: Modo del parámetro",
                 "profile": "es",
                 "specification": "LANG.SUBPROGRAM.PARAMETERS",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -3082,7 +2930,6 @@
                 "label": "Diagnóstico deliberado: Modo del parámetro",
                 "profile": "es",
                 "specification": "LANG.SUBPROGRAM.PARAMETERS",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -3110,7 +2957,6 @@
                 "label": "Program that runs: Parameter mode",
                 "profile": "en",
                 "specification": "LANG.SUBPROGRAM.PARAMETERS",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -3119,7 +2965,6 @@
                 "label": "Deliberate diagnostic: Parameter mode",
                 "profile": "en",
                 "specification": "LANG.SUBPROGRAM.PARAMETERS",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -3150,10 +2995,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -3183,7 +3024,6 @@
                 "label": "Programa que se ejecuta: Retorno",
                 "profile": "es",
                 "specification": "LANG.SUBPROGRAM.RETURN",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -3192,7 +3032,6 @@
                 "label": "Diagnóstico deliberado: Retorno",
                 "profile": "es",
                 "specification": "LANG.SUBPROGRAM.RETURN",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -3216,7 +3055,6 @@
                 "label": "Program that runs: Return",
                 "profile": "en",
                 "specification": "LANG.SUBPROGRAM.RETURN",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -3225,7 +3063,6 @@
                 "label": "Deliberate diagnostic: Return",
                 "profile": "en",
                 "specification": "LANG.SUBPROGRAM.RETURN",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -3264,10 +3101,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -3301,7 +3134,6 @@
                 "label": "Programa que se ejecuta: Declaración de clase",
                 "profile": "es",
                 "specification": "LANG.CLASS.DECLARATION",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -3310,7 +3142,6 @@
                 "label": "Diagnóstico deliberado: Declaración de clase",
                 "profile": "es",
                 "specification": "LANG.CLASS.DECLARATION",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -3338,7 +3169,6 @@
                 "label": "Program that runs: Class declaration",
                 "profile": "en",
                 "specification": "LANG.CLASS.DECLARATION",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -3347,7 +3177,6 @@
                 "label": "Deliberate diagnostic: Class declaration",
                 "profile": "en",
                 "specification": "LANG.CLASS.DECLARATION",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -3378,10 +3207,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -3411,7 +3236,6 @@
                 "label": "Programa que se ejecuta: Declaración de constante",
                 "profile": "es",
                 "specification": "LANG.DECL.CONSTANT",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -3420,7 +3244,6 @@
                 "label": "Diagnóstico deliberado: Declaración de constante",
                 "profile": "es",
                 "specification": "LANG.DECL.CONSTANT",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -3444,7 +3267,6 @@
                 "label": "Program that runs: Constant declaration",
                 "profile": "en",
                 "specification": "LANG.DECL.CONSTANT",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -3453,7 +3275,6 @@
                 "label": "Deliberate diagnostic: Constant declaration",
                 "profile": "en",
                 "specification": "LANG.DECL.CONSTANT",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -3492,10 +3313,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -3529,7 +3346,6 @@
                 "label": "Programa que se ejecuta: Declaración de enumerado",
                 "profile": "es",
                 "specification": "LANG.TYPES.ENUM",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -3538,7 +3354,6 @@
                 "label": "Diagnóstico deliberado: Declaración de enumerado",
                 "profile": "es",
                 "specification": "LANG.TYPES.ENUM",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -3566,7 +3381,6 @@
                 "label": "Program that runs: Enumeration declaration",
                 "profile": "en",
                 "specification": "LANG.TYPES.ENUM",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -3575,7 +3389,6 @@
                 "label": "Deliberate diagnostic: Enumeration declaration",
                 "profile": "en",
                 "specification": "LANG.TYPES.ENUM",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -3614,10 +3427,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -3651,7 +3460,6 @@
                 "label": "Programa que se ejecuta: Declaración de registro",
                 "profile": "es",
                 "specification": "LANG.TYPES.RECORD",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -3660,7 +3468,6 @@
                 "label": "Diagnóstico deliberado: Declaración de registro",
                 "profile": "es",
                 "specification": "LANG.TYPES.RECORD",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -3688,7 +3495,6 @@
                 "label": "Program that runs: Record declaration",
                 "profile": "en",
                 "specification": "LANG.TYPES.RECORD",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -3697,7 +3503,6 @@
                 "label": "Deliberate diagnostic: Record declaration",
                 "profile": "en",
                 "specification": "LANG.TYPES.RECORD",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -3736,10 +3541,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -3773,7 +3574,6 @@
                 "label": "Diagnóstico deliberado: Importación de módulo o símbolo",
                 "profile": "es",
                 "specification": "LANG.MODULE.MODEL",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -3801,7 +3601,6 @@
                 "label": "Deliberate diagnostic: Module or symbol import",
                 "profile": "en",
                 "specification": "LANG.MODULE.MODEL",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -3832,10 +3631,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -3865,7 +3660,6 @@
                 "label": "Diagnóstico deliberado: Reexportación de símbolo",
                 "profile": "es",
                 "specification": "LANG.MODULE.MODEL",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -3889,7 +3683,6 @@
                 "label": "Deliberate diagnostic: Symbol re-export",
                 "profile": "en",
                 "specification": "LANG.MODULE.MODEL",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -3928,10 +3721,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -3965,7 +3754,6 @@
                 "label": "Diagnóstico deliberado: Visibilidad de la unidad de módulo",
                 "profile": "es",
                 "specification": "LANG.MODULE.MODEL",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -3993,7 +3781,6 @@
                 "label": "Deliberate diagnostic: Module unit visibility",
                 "profile": "en",
                 "specification": "LANG.MODULE.MODEL",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -4032,10 +3819,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -4069,7 +3852,6 @@
                 "label": "Programa que se ejecuta: Visibilidad del miembro",
                 "profile": "es",
                 "specification": "LANG.CLASS.FIELDS",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -4078,7 +3860,6 @@
                 "label": "Diagnóstico deliberado: Visibilidad del miembro",
                 "profile": "es",
                 "specification": "LANG.CLASS.FIELDS",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -4106,7 +3887,6 @@
                 "label": "Program that runs: Member visibility",
                 "profile": "en",
                 "specification": "LANG.CLASS.FIELDS",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -4115,7 +3895,6 @@
                 "label": "Deliberate diagnostic: Member visibility",
                 "profile": "en",
                 "specification": "LANG.CLASS.FIELDS",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -4154,10 +3933,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -4191,7 +3966,6 @@
                 "label": "Programa que se ejecuta: Método de clase",
                 "profile": "es",
                 "specification": "LANG.CLASS.METHODS",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -4200,7 +3974,6 @@
                 "label": "Diagnóstico deliberado: Método de clase",
                 "profile": "es",
                 "specification": "LANG.CLASS.METHODS",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -4228,7 +4001,6 @@
                 "label": "Program that runs: Class method",
                 "profile": "en",
                 "specification": "LANG.CLASS.METHODS",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -4237,7 +4009,6 @@
                 "label": "Deliberate diagnostic: Class method",
                 "profile": "en",
                 "specification": "LANG.CLASS.METHODS",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -4284,10 +4055,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -4325,7 +4092,6 @@
                 "label": "Programa que se ejecuta: Constructor",
                 "profile": "es",
                 "specification": "LANG.CLASS.CONSTRUCTOR",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -4334,7 +4100,6 @@
                 "label": "Diagnóstico deliberado: Constructor",
                 "profile": "es",
                 "specification": "LANG.CLASS.CONSTRUCTOR",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -4366,7 +4131,6 @@
                 "label": "Program that runs: Constructor",
                 "profile": "en",
                 "specification": "LANG.CLASS.CONSTRUCTOR",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -4375,7 +4139,6 @@
                 "label": "Deliberate diagnostic: Constructor",
                 "profile": "en",
                 "specification": "LANG.CLASS.CONSTRUCTOR",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -4406,10 +4169,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -4439,7 +4198,6 @@
                 "label": "Programa que se ejecuta: Herencia",
                 "profile": "es",
                 "specification": "LANG.CLASS.INHERITANCE",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -4448,7 +4206,6 @@
                 "label": "Diagnóstico deliberado: Herencia",
                 "profile": "es",
                 "specification": "LANG.CLASS.INHERITANCE",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -4472,7 +4229,6 @@
                 "label": "Program that runs: Inheritance",
                 "profile": "en",
                 "specification": "LANG.CLASS.INHERITANCE",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -4481,7 +4237,6 @@
                 "label": "Deliberate diagnostic: Inheritance",
                 "profile": "en",
                 "specification": "LANG.CLASS.INHERITANCE",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -4512,10 +4267,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -4545,7 +4296,6 @@
                 "label": "Programa que se ejecuta: Crear una instancia",
                 "profile": "es",
                 "specification": "LANG.CLASS.INSTANTIATION",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -4554,7 +4304,6 @@
                 "label": "Diagnóstico deliberado: Crear una instancia",
                 "profile": "es",
                 "specification": "LANG.CLASS.INSTANTIATION",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -4578,7 +4327,6 @@
                 "label": "Program that runs: Creating an instance",
                 "profile": "en",
                 "specification": "LANG.CLASS.INSTANTIATION",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -4587,7 +4335,6 @@
                 "label": "Deliberate diagnostic: Creating an instance",
                 "profile": "en",
                 "specification": "LANG.CLASS.INSTANTIATION",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -4634,10 +4381,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -4671,7 +4414,6 @@
                 "label": "Programa que se ejecuta: Receptor de instancia o base",
                 "profile": "es",
                 "specification": "LANG.CLASS.SELF-AND-SUPER",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -4680,7 +4422,6 @@
                 "label": "Diagnóstico deliberado: Receptor de instancia o base",
                 "profile": "es",
                 "specification": "LANG.CLASS.SELF-AND-SUPER",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -4708,7 +4449,6 @@
                 "label": "Program that runs: Instance or base receiver",
                 "profile": "en",
                 "specification": "LANG.CLASS.SELF-AND-SUPER",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -4717,7 +4457,6 @@
                 "label": "Deliberate diagnostic: Instance or base receiver",
                 "profile": "en",
                 "specification": "LANG.CLASS.SELF-AND-SUPER",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -4748,10 +4487,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -4776,7 +4511,6 @@
                 "label": "Programa que se ejecuta: Acceso a miembro",
                 "profile": "es",
                 "specification": "LANG.CLASS.MEMBER-ACCESS",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -4785,7 +4519,6 @@
                 "label": "Diagnóstico deliberado: Acceso a miembro",
                 "profile": "es",
                 "specification": "LANG.CLASS.MEMBER-ACCESS",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -4804,7 +4537,6 @@
                 "label": "Program that runs: Member access",
                 "profile": "en",
                 "specification": "LANG.CLASS.MEMBER-ACCESS",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -4813,7 +4545,6 @@
                 "label": "Deliberate diagnostic: Member access",
                 "profile": "en",
                 "specification": "LANG.CLASS.MEMBER-ACCESS",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -4852,10 +4583,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -4880,7 +4607,6 @@
                 "label": "Programa que se ejecuta: Acceso indexado",
                 "profile": "es",
                 "specification": "LANG.ARRAY.ACCESS",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -4889,7 +4615,6 @@
                 "label": "Diagnóstico deliberado: Acceso indexado",
                 "profile": "es",
                 "specification": "LANG.ARRAY.ACCESS",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -4908,7 +4633,6 @@
                 "label": "Program that runs: Indexed access",
                 "profile": "en",
                 "specification": "LANG.ARRAY.ACCESS",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -4917,7 +4641,6 @@
                 "label": "Deliberate diagnostic: Indexed access",
                 "profile": "en",
                 "specification": "LANG.ARRAY.ACCESS",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -4964,10 +4687,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -5001,7 +4720,6 @@
                 "label": "Programa que se ejecuta: Valores literales",
                 "profile": "es",
                 "specification": "LANG.TYPES.BOOLEAN",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -5010,7 +4728,6 @@
                 "label": "Diagnóstico deliberado: Valores literales",
                 "profile": "es",
                 "specification": "LANG.TYPES.BOOLEAN",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -5038,7 +4755,6 @@
                 "label": "Program that runs: Literal values",
                 "profile": "en",
                 "specification": "LANG.TYPES.BOOLEAN",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -5047,7 +4763,6 @@
                 "label": "Deliberate diagnostic: Literal values",
                 "profile": "en",
                 "specification": "LANG.TYPES.BOOLEAN",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -5094,10 +4809,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -5122,7 +4833,6 @@
                 "label": "Programa que se ejecuta: Argumentos de llamada",
                 "profile": "es",
                 "specification": "LANG.SUBPROGRAM.CALL",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -5131,7 +4841,6 @@
                 "label": "Diagnóstico deliberado: Argumentos de llamada",
                 "profile": "es",
                 "specification": "LANG.SUBPROGRAM.CALL",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -5150,7 +4859,6 @@
                 "label": "Program that runs: Call arguments",
                 "profile": "en",
                 "specification": "LANG.SUBPROGRAM.CALL",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -5159,7 +4867,6 @@
                 "label": "Deliberate diagnostic: Call arguments",
                 "profile": "en",
                 "specification": "LANG.SUBPROGRAM.CALL",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -5206,10 +4913,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -5234,7 +4937,6 @@
                 "label": "Programa que se ejecuta: Llamada a subprograma",
                 "profile": "es",
                 "specification": "LANG.SUBPROGRAM.CALL",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -5243,7 +4945,6 @@
                 "label": "Diagnóstico deliberado: Llamada a subprograma",
                 "profile": "es",
                 "specification": "LANG.SUBPROGRAM.CALL",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -5262,7 +4963,6 @@
                 "label": "Program that runs: Subprogram call",
                 "profile": "en",
                 "specification": "LANG.SUBPROGRAM.CALL",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -5271,7 +4971,6 @@
                 "label": "Deliberate diagnostic: Subprogram call",
                 "profile": "en",
                 "specification": "LANG.SUBPROGRAM.CALL",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -5302,10 +5001,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -5330,7 +5025,6 @@
                 "label": "Programa que se ejecuta: Fin de sentencia simple",
                 "profile": "es",
                 "specification": "LANG.STMT.TERMINATION",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -5339,7 +5033,6 @@
                 "label": "Diagnóstico deliberado: Fin de sentencia simple",
                 "profile": "es",
                 "specification": "LANG.STMT.TERMINATION",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -5358,7 +5051,6 @@
                 "label": "Program that runs: Simple statement ending",
                 "profile": "en",
                 "specification": "LANG.STMT.TERMINATION",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -5367,7 +5059,6 @@
                 "label": "Deliberate diagnostic: Simple statement ending",
                 "profile": "en",
                 "specification": "LANG.STMT.TERMINATION",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -5438,10 +5129,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -5491,7 +5178,6 @@
                 "label": "Programa que se ejecuta: Operaciones aritméticas",
                 "profile": "es",
                 "specification": "LANG.OPS.ARITHMETIC",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -5500,7 +5186,6 @@
                 "label": "Diagnóstico deliberado: Operaciones aritméticas",
                 "profile": "es",
                 "specification": "LANG.OPS.ARITHMETIC",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -5544,7 +5229,6 @@
                 "label": "Program that runs: Arithmetic operations",
                 "profile": "en",
                 "specification": "LANG.OPS.ARITHMETIC",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -5553,7 +5237,6 @@
                 "label": "Deliberate diagnostic: Arithmetic operations",
                 "profile": "en",
                 "specification": "LANG.OPS.ARITHMETIC",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -5584,10 +5267,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -5617,7 +5296,6 @@
                 "label": "Programa que se ejecuta: Potencia",
                 "profile": "es",
                 "specification": "LANG.OPS.POWER",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -5626,7 +5304,6 @@
                 "label": "Diagnóstico deliberado: Potencia",
                 "profile": "es",
                 "specification": "LANG.OPS.POWER",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -5650,7 +5327,6 @@
                 "label": "Program that runs: Power",
                 "profile": "en",
                 "specification": "LANG.OPS.POWER",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -5659,7 +5335,6 @@
                 "label": "Deliberate diagnostic: Power",
                 "profile": "en",
                 "specification": "LANG.OPS.POWER",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -5730,10 +5405,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -5783,7 +5454,6 @@
                 "label": "Programa que se ejecuta: Comparaciones",
                 "profile": "es",
                 "specification": "LANG.OPS.COMPARISON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -5792,7 +5462,6 @@
                 "label": "Diagnóstico deliberado: Comparaciones",
                 "profile": "es",
                 "specification": "LANG.OPS.COMPARISON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -5836,7 +5505,6 @@
                 "label": "Program that runs: Comparisons",
                 "profile": "en",
                 "specification": "LANG.OPS.COMPARISON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -5845,7 +5513,6 @@
                 "label": "Deliberate diagnostic: Comparisons",
                 "profile": "en",
                 "specification": "LANG.OPS.COMPARISON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -5884,10 +5551,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -5921,7 +5584,6 @@
                 "label": "Programa que se ejecuta: Combinación lógica",
                 "profile": "es",
                 "specification": "LANG.OPS.LOGICAL",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -5930,7 +5592,6 @@
                 "label": "Diagnóstico deliberado: Combinación lógica",
                 "profile": "es",
                 "specification": "LANG.OPS.LOGICAL",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -5958,7 +5619,6 @@
                 "label": "Program that runs: Logical combination",
                 "profile": "en",
                 "specification": "LANG.OPS.LOGICAL",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -5967,7 +5627,6 @@
                 "label": "Deliberate diagnostic: Logical combination",
                 "profile": "en",
                 "specification": "LANG.OPS.LOGICAL",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -6022,10 +5681,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -6072,7 +5727,6 @@
                 "label": "Programa que se ejecuta: Operadores unarios",
                 "profile": "es",
                 "specification": "LANG.OPS.PRECEDENCE",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -6081,7 +5735,6 @@
                 "label": "Diagnóstico deliberado: Operadores unarios",
                 "profile": "es",
                 "specification": "LANG.OPS.PRECEDENCE",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -6117,7 +5770,6 @@
                 "label": "Program that runs: Unary operators",
                 "profile": "en",
                 "specification": "LANG.OPS.PRECEDENCE",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -6126,7 +5778,6 @@
                 "label": "Deliberate diagnostic: Unary operators",
                 "profile": "en",
                 "specification": "LANG.OPS.PRECEDENCE",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -6205,10 +5856,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -6262,7 +5909,6 @@
                 "label": "Programa que se ejecuta: Funciones matemáticas",
                 "profile": "es",
                 "specification": "LIB.CORE.MATH",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -6271,7 +5917,6 @@
                 "label": "Diagnóstico deliberado: Funciones matemáticas",
                 "profile": "es",
                 "specification": "LIB.CORE.MATH",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -6319,7 +5964,6 @@
                 "label": "Program that runs: Mathematical functions",
                 "profile": "en",
                 "specification": "LIB.CORE.MATH",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -6328,7 +5972,6 @@
                 "label": "Deliberate diagnostic: Mathematical functions",
                 "profile": "en",
                 "specification": "LIB.CORE.MATH",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -6367,10 +6010,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -6404,7 +6043,6 @@
                 "label": "Programa que se ejecuta: Redondeo a entero",
                 "profile": "es",
                 "specification": "LIB.CORE.ROUNDING",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -6413,7 +6051,6 @@
                 "label": "Diagnóstico deliberado: Redondeo a entero",
                 "profile": "es",
                 "specification": "LIB.CORE.ROUNDING",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -6441,7 +6078,6 @@
                 "label": "Program that runs: Integer rounding",
                 "profile": "en",
                 "specification": "LIB.CORE.ROUNDING",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -6450,7 +6086,6 @@
                 "label": "Deliberate diagnostic: Integer rounding",
                 "profile": "en",
                 "specification": "LIB.CORE.ROUNDING",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -6481,10 +6116,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -6514,7 +6145,6 @@
                 "label": "Programa que se ejecuta: Valor seudoaleatorio",
                 "profile": "es",
                 "specification": "LIB.CORE.RANDOM",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -6523,7 +6153,6 @@
                 "label": "Diagnóstico deliberado: Valor seudoaleatorio",
                 "profile": "es",
                 "specification": "LIB.CORE.RANDOM",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -6547,7 +6176,6 @@
                 "label": "Program that runs: Pseudorandom value",
                 "profile": "en",
                 "specification": "LIB.CORE.RANDOM",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -6556,7 +6184,6 @@
                 "label": "Deliberate diagnostic: Pseudorandom value",
                 "profile": "en",
                 "specification": "LIB.CORE.RANDOM",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -6603,10 +6230,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -6644,7 +6267,6 @@
                 "label": "Programa que se ejecuta: Conversiones de texto",
                 "profile": "es",
                 "specification": "LIB.CORE.CONVERSION",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -6653,7 +6275,6 @@
                 "label": "Diagnóstico deliberado: Conversiones de texto",
                 "profile": "es",
                 "specification": "LIB.CORE.CONVERSION",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -6685,7 +6306,6 @@
                 "label": "Program that runs: Text conversions",
                 "profile": "en",
                 "specification": "LIB.CORE.CONVERSION",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -6694,7 +6314,6 @@
                 "label": "Deliberate diagnostic: Text conversions",
                 "profile": "en",
                 "specification": "LIB.CORE.CONVERSION",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -6749,10 +6368,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -6794,7 +6409,6 @@
                 "label": "Programa que se ejecuta: Consulta de texto",
                 "profile": "es",
                 "specification": "LIB.CORE.TEXT",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -6803,7 +6417,6 @@
                 "label": "Diagnóstico deliberado: Consulta de texto",
                 "profile": "es",
                 "specification": "LIB.CORE.TEXT",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -6839,7 +6452,6 @@
                 "label": "Program that runs: Text inspection",
                 "profile": "en",
                 "specification": "LIB.CORE.TEXT",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -6848,7 +6460,6 @@
                 "label": "Deliberate diagnostic: Text inspection",
                 "profile": "en",
                 "specification": "LIB.CORE.TEXT",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -6879,10 +6490,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -6912,7 +6519,6 @@
                 "label": "Programa que se ejecuta: Copia superficial",
                 "profile": "es",
                 "specification": "LIB.CORE.COPY",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -6921,7 +6527,6 @@
                 "label": "Diagnóstico deliberado: Copia superficial",
                 "profile": "es",
                 "specification": "LIB.CORE.COPY",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -6945,7 +6550,6 @@
                 "label": "Program that runs: Shallow copy",
                 "profile": "en",
                 "specification": "LIB.CORE.COPY",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -6954,7 +6558,6 @@
                 "label": "Deliberate diagnostic: Shallow copy",
                 "profile": "en",
                 "specification": "LIB.CORE.COPY",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -7041,10 +6644,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -7121,7 +6720,6 @@
                 "label": "C3",
                 "profile": "es",
                 "specification": "LANG.TYPES.RELATIONS",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -7130,7 +6728,6 @@
                 "label": "C14",
                 "profile": "es",
                 "specification": "LANG.TYPES.RELATIONS",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -7186,7 +6783,6 @@
                 "label": "C3",
                 "profile": "en",
                 "specification": "LANG.TYPES.RELATIONS",
-                "strictness": "estricto",
                 "version": "1.0.0"
               },
               {
@@ -7195,7 +6791,6 @@
                 "label": "C14",
                 "profile": "en",
                 "specification": "LANG.TYPES.RELATIONS",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -7242,10 +6837,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -7283,7 +6874,6 @@
                 "label": "Interfaces nominales",
                 "profile": "es",
                 "specification": "LANG.TYPES.INTERFACE",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -7315,7 +6905,6 @@
                 "label": "Nominal interfaces",
                 "profile": "en",
                 "specification": "LANG.TYPES.INTERFACE",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -7378,10 +6967,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -7427,7 +7012,6 @@
                 "label": "Vector",
                 "profile": "es",
                 "specification": "LANG.TYPES.VECTOR",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -7467,7 +7051,6 @@
                 "label": "Vector",
                 "profile": "en",
                 "specification": "LANG.TYPES.VECTOR",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -7522,10 +7105,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -7567,7 +7146,6 @@
                 "label": "Diccionario",
                 "profile": "es",
                 "specification": "LANG.TYPES.DICTIONARY",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -7603,7 +7181,6 @@
                 "label": "Dictionary",
                 "profile": "en",
                 "specification": "LANG.TYPES.DICTIONARY",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -7642,10 +7219,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -7679,7 +7252,6 @@
                 "label": "Para Cada",
                 "profile": "es",
                 "specification": "LANG.CONTROL.FOR-EACH",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -7707,7 +7279,6 @@
                 "label": "For each",
                 "profile": "en",
                 "specification": "LANG.CONTROL.FOR-EACH",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -7738,10 +7309,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -7771,7 +7338,6 @@
                 "label": "Salida del bucle",
                 "profile": "es",
                 "specification": "LANG.CONTROL.EXIT",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -7795,7 +7361,6 @@
                 "label": "Loop exit",
                 "profile": "en",
                 "specification": "LANG.CONTROL.EXIT",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -7834,10 +7399,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -7871,7 +7432,6 @@
                 "label": "Limpieza diferida",
                 "profile": "es",
                 "specification": "LANG.CONTROL.CLEANUP",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -7899,7 +7459,6 @@
                 "label": "Deferred cleanup",
                 "profile": "en",
                 "specification": "LANG.CONTROL.CLEANUP",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -8010,10 +7569,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -8083,7 +7638,6 @@
                 "label": "Capacidades explícitas",
                 "profile": "es",
                 "specification": "LANG.CAPABILITY.MODEL",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -8147,7 +7701,6 @@
                 "label": "Explicit capabilities",
                 "profile": "en",
                 "specification": "LANG.CAPABILITY.MODEL",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -8186,10 +7739,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -8223,7 +7772,6 @@
                 "label": "Bytes y errores de entrada y salida",
                 "profile": "es",
                 "specification": "LIB.IO",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -8251,7 +7799,6 @@
                 "label": "Bytes and input-output errors",
                 "profile": "en",
                 "specification": "LIB.IO",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -8282,10 +7829,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -8315,7 +7858,6 @@
                 "label": "Programa que se ejecuta: Substring",
                 "profile": "es",
                 "specification": "LIB.CORE.TEXT",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -8339,7 +7881,6 @@
                 "label": "Program that runs: Substring",
                 "profile": "en",
                 "specification": "LIB.CORE.TEXT",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -8370,10 +7911,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -8403,7 +7940,6 @@
                 "label": "Programa que se ejecuta: Contains",
                 "profile": "es",
                 "specification": "LIB.CORE.TEXT",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -8427,7 +7963,6 @@
                 "label": "Program that runs: Contains",
                 "profile": "en",
                 "specification": "LIB.CORE.TEXT",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -8458,10 +7993,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -8491,7 +8022,6 @@
                 "label": "Programa que se ejecuta: Position Of",
                 "profile": "es",
                 "specification": "LIB.CORE.TEXT",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -8515,7 +8045,6 @@
                 "label": "Program that runs: Position Of",
                 "profile": "en",
                 "specification": "LIB.CORE.TEXT",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -8546,10 +8075,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -8579,7 +8104,6 @@
                 "label": "Programa que se ejecuta: Starts With",
                 "profile": "es",
                 "specification": "LIB.CORE.TEXT",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -8603,7 +8127,6 @@
                 "label": "Program that runs: Starts With",
                 "profile": "en",
                 "specification": "LIB.CORE.TEXT",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -8634,10 +8157,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -8667,7 +8186,6 @@
                 "label": "Programa que se ejecuta: Ends With",
                 "profile": "es",
                 "specification": "LIB.CORE.TEXT",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -8691,7 +8209,6 @@
                 "label": "Program that runs: Ends With",
                 "profile": "en",
                 "specification": "LIB.CORE.TEXT",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -8722,10 +8239,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -8755,7 +8268,6 @@
                 "label": "Programa que se ejecuta: Replace All",
                 "profile": "es",
                 "specification": "LIB.CORE.TEXT",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -8779,7 +8291,6 @@
                 "label": "Program that runs: Replace All",
                 "profile": "en",
                 "specification": "LIB.CORE.TEXT",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -8810,10 +8321,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -8843,7 +8350,6 @@
                 "label": "Programa que se ejecuta: Split",
                 "profile": "es",
                 "specification": "LIB.CORE.TEXT",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -8867,7 +8373,6 @@
                 "label": "Program that runs: Split",
                 "profile": "en",
                 "specification": "LIB.CORE.TEXT",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -8898,10 +8403,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -8931,7 +8432,6 @@
                 "label": "Programa que se ejecuta: Join",
                 "profile": "es",
                 "specification": "LIB.CORE.TEXT",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -8955,7 +8455,6 @@
                 "label": "Program that runs: Join",
                 "profile": "en",
                 "specification": "LIB.CORE.TEXT",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -8986,10 +8485,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -9019,7 +8514,6 @@
                 "label": "Programa que se ejecuta: Trim",
                 "profile": "es",
                 "specification": "LIB.CORE.TEXT",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -9043,7 +8537,6 @@
                 "label": "Program that runs: Trim",
                 "profile": "en",
                 "specification": "LIB.CORE.TEXT",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -9074,10 +8567,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -9107,7 +8596,6 @@
                 "label": "Programa que se ejecuta: Bytes from text",
                 "profile": "es",
                 "specification": "LIB.CORE.BYTES",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -9131,7 +8619,6 @@
                 "label": "Program that runs: Bytes from text",
                 "profile": "en",
                 "specification": "LIB.CORE.BYTES",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -9162,10 +8649,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -9195,7 +8678,6 @@
                 "label": "Programa que se ejecuta: Bytes segment",
                 "profile": "es",
                 "specification": "LIB.CORE.BYTES",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -9219,7 +8701,6 @@
                 "label": "Program that runs: Bytes segment",
                 "profile": "en",
                 "specification": "LIB.CORE.BYTES",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -9250,10 +8731,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -9283,7 +8760,6 @@
                 "label": "Programa que se ejecuta: Bytes join",
                 "profile": "es",
                 "specification": "LIB.CORE.BYTES",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -9307,7 +8783,6 @@
                 "label": "Program that runs: Bytes join",
                 "profile": "en",
                 "specification": "LIB.CORE.BYTES",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -9338,10 +8813,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -9371,7 +8842,6 @@
                 "label": "Programa que se ejecuta: Json parse",
                 "profile": "es",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -9395,7 +8865,6 @@
                 "label": "Program that runs: Json parse",
                 "profile": "en",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -9426,10 +8895,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -9459,7 +8924,6 @@
                 "label": "Programa que se ejecuta: Json text",
                 "profile": "es",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -9483,7 +8947,6 @@
                 "label": "Program that runs: Json text",
                 "profile": "en",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -9514,10 +8977,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -9547,7 +9006,6 @@
                 "label": "Programa que se ejecuta: Json null",
                 "profile": "es",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -9571,7 +9029,6 @@
                 "label": "Program that runs: Json null",
                 "profile": "en",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -9602,10 +9059,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -9635,7 +9088,6 @@
                 "label": "Programa que se ejecuta: Json boolean",
                 "profile": "es",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -9659,7 +9111,6 @@
                 "label": "Program that runs: Json boolean",
                 "profile": "en",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -9690,10 +9141,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -9723,7 +9170,6 @@
                 "label": "Programa que se ejecuta: Json integer",
                 "profile": "es",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -9747,7 +9193,6 @@
                 "label": "Program that runs: Json integer",
                 "profile": "en",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -9778,10 +9223,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -9811,7 +9252,6 @@
                 "label": "Programa que se ejecuta: Json real",
                 "profile": "es",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -9835,7 +9275,6 @@
                 "label": "Program that runs: Json real",
                 "profile": "en",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -9866,10 +9305,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -9899,7 +9334,6 @@
                 "label": "Programa que se ejecuta: Json string",
                 "profile": "es",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -9923,7 +9357,6 @@
                 "label": "Program that runs: Json string",
                 "profile": "en",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -9954,10 +9387,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -9987,7 +9416,6 @@
                 "label": "Programa que se ejecuta: Json array",
                 "profile": "es",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -10011,7 +9439,6 @@
                 "label": "Program that runs: Json array",
                 "profile": "en",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -10042,10 +9469,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -10075,7 +9498,6 @@
                 "label": "Programa que se ejecuta: Json object",
                 "profile": "es",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -10099,7 +9521,6 @@
                 "label": "Program that runs: Json object",
                 "profile": "en",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -10130,10 +9551,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -10163,7 +9580,6 @@
                 "label": "Programa que se ejecuta: Json kind",
                 "profile": "es",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -10187,7 +9603,6 @@
                 "label": "Program that runs: Json kind",
                 "profile": "en",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -10218,10 +9633,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -10251,7 +9662,6 @@
                 "label": "Programa que se ejecuta: Json as boolean",
                 "profile": "es",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -10275,7 +9685,6 @@
                 "label": "Program that runs: Json as boolean",
                 "profile": "en",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -10306,10 +9715,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -10339,7 +9744,6 @@
                 "label": "Programa que se ejecuta: Json as integer",
                 "profile": "es",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -10363,7 +9767,6 @@
                 "label": "Program that runs: Json as integer",
                 "profile": "en",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -10394,10 +9797,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -10427,7 +9826,6 @@
                 "label": "Programa que se ejecuta: Json as real",
                 "profile": "es",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -10451,7 +9849,6 @@
                 "label": "Program that runs: Json as real",
                 "profile": "en",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -10482,10 +9879,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -10515,7 +9908,6 @@
                 "label": "Programa que se ejecuta: Json as text",
                 "profile": "es",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -10539,7 +9931,6 @@
                 "label": "Program that runs: Json as text",
                 "profile": "en",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -10570,10 +9961,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -10603,7 +9990,6 @@
                 "label": "Programa que se ejecuta: Json length",
                 "profile": "es",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -10627,7 +10013,6 @@
                 "label": "Program that runs: Json length",
                 "profile": "en",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -10658,10 +10043,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -10691,7 +10072,6 @@
                 "label": "Programa que se ejecuta: Json element",
                 "profile": "es",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -10715,7 +10095,6 @@
                 "label": "Program that runs: Json element",
                 "profile": "en",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -10746,10 +10125,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -10779,7 +10154,6 @@
                 "label": "Programa que se ejecuta: Json field",
                 "profile": "es",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -10803,7 +10177,6 @@
                 "label": "Program that runs: Json field",
                 "profile": "en",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -10834,10 +10207,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -10867,7 +10236,6 @@
                 "label": "Programa que se ejecuta: Json keys",
                 "profile": "es",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -10891,7 +10259,6 @@
                 "label": "Program that runs: Json keys",
                 "profile": "en",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -10922,10 +10289,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -10955,7 +10318,6 @@
                 "label": "Programa que se ejecuta: Json with element",
                 "profile": "es",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -10979,7 +10341,6 @@
                 "label": "Program that runs: Json with element",
                 "profile": "en",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -11010,10 +10371,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -11043,7 +10400,6 @@
                 "label": "Programa que se ejecuta: Json with field",
                 "profile": "es",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -11067,7 +10423,6 @@
                 "label": "Program that runs: Json with field",
                 "profile": "en",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -11098,10 +10453,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -11131,7 +10482,6 @@
                 "label": "Programa que se ejecuta: Json Value Type",
                 "profile": "es",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -11155,7 +10505,6 @@
                 "label": "Program that runs: Json Value Type",
                 "profile": "en",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -11186,10 +10535,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -11219,7 +10564,6 @@
                 "label": "Programa que se ejecuta: Json Kind Type",
                 "profile": "es",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -11243,7 +10587,6 @@
                 "label": "Program that runs: Json Kind Type",
                 "profile": "en",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -11274,10 +10617,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -11307,7 +10646,6 @@
                 "label": "Programa que se ejecuta: Json Error Type",
                 "profile": "es",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -11331,7 +10669,6 @@
                 "label": "Program that runs: Json Error Type",
                 "profile": "en",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -11362,10 +10699,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -11395,7 +10728,6 @@
                 "label": "Programa que se ejecuta: Json Error Code Type",
                 "profile": "es",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -11419,7 +10751,6 @@
                 "label": "Program that runs: Json Error Code Type",
                 "profile": "en",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -11450,10 +10781,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -11483,7 +10810,6 @@
                 "label": "Programa que se ejecuta: Json Kind Null",
                 "profile": "es",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -11507,7 +10833,6 @@
                 "label": "Program that runs: Json Kind Null",
                 "profile": "en",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -11538,10 +10863,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -11571,7 +10892,6 @@
                 "label": "Programa que se ejecuta: Json Kind Boolean",
                 "profile": "es",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -11595,7 +10915,6 @@
                 "label": "Program that runs: Json Kind Boolean",
                 "profile": "en",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -11626,10 +10945,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -11659,7 +10974,6 @@
                 "label": "Programa que se ejecuta: Json Kind Number",
                 "profile": "es",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -11683,7 +10997,6 @@
                 "label": "Program that runs: Json Kind Number",
                 "profile": "en",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -11714,10 +11027,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -11747,7 +11056,6 @@
                 "label": "Programa que se ejecuta: Json Kind String",
                 "profile": "es",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -11771,7 +11079,6 @@
                 "label": "Program that runs: Json Kind String",
                 "profile": "en",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -11802,10 +11109,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -11835,7 +11138,6 @@
                 "label": "Programa que se ejecuta: Json Kind Array",
                 "profile": "es",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -11859,7 +11161,6 @@
                 "label": "Program that runs: Json Kind Array",
                 "profile": "en",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -11890,10 +11191,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -11923,7 +11220,6 @@
                 "label": "Programa que se ejecuta: Json Kind Object",
                 "profile": "es",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -11947,7 +11243,6 @@
                 "label": "Program that runs: Json Kind Object",
                 "profile": "en",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -11978,10 +11273,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -12011,7 +11302,6 @@
                 "label": "Programa que se ejecuta: Json Error Code Field",
                 "profile": "es",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -12035,7 +11325,6 @@
                 "label": "Program that runs: Json Error Code Field",
                 "profile": "en",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -12066,10 +11355,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -12099,7 +11384,6 @@
                 "label": "Programa que se ejecuta: Json Error Line Field",
                 "profile": "es",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -12123,7 +11407,6 @@
                 "label": "Program that runs: Json Error Line Field",
                 "profile": "en",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -12154,10 +11437,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -12187,7 +11466,6 @@
                 "label": "Programa que se ejecuta: Json Error Column Field",
                 "profile": "es",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -12211,7 +11489,6 @@
                 "label": "Program that runs: Json Error Column Field",
                 "profile": "en",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -12242,10 +11519,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -12275,7 +11548,6 @@
                 "label": "Programa que se ejecuta: Json Error Code Invalid Syntax",
                 "profile": "es",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -12299,7 +11571,6 @@
                 "label": "Program that runs: Json Error Code Invalid Syntax",
                 "profile": "en",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -12330,10 +11601,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -12363,7 +11630,6 @@
                 "label": "Programa que se ejecuta: Json Error Code Unexpected End",
                 "profile": "es",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -12387,7 +11653,6 @@
                 "label": "Program that runs: Json Error Code Unexpected End",
                 "profile": "en",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -12418,10 +11683,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -12451,7 +11712,6 @@
                 "label": "Programa que se ejecuta: Json Error Code Duplicate Key",
                 "profile": "es",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -12475,7 +11735,6 @@
                 "label": "Program that runs: Json Error Code Duplicate Key",
                 "profile": "en",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -12506,10 +11765,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -12539,7 +11794,6 @@
                 "label": "Programa que se ejecuta: Json Error Code Depth Exceeded",
                 "profile": "es",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -12563,7 +11817,6 @@
                 "label": "Program that runs: Json Error Code Depth Exceeded",
                 "profile": "en",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -12594,10 +11847,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -12627,7 +11876,6 @@
                 "label": "Programa que se ejecuta: Json Error Code Invalid Escape",
                 "profile": "es",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -12651,7 +11899,6 @@
                 "label": "Program that runs: Json Error Code Invalid Escape",
                 "profile": "en",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -12682,10 +11929,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -12715,7 +11958,6 @@
                 "label": "Programa que se ejecuta: Json Error Code Trailing Content",
                 "profile": "es",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -12739,7 +11981,6 @@
                 "label": "Program that runs: Json Error Code Trailing Content",
                 "profile": "en",
                 "specification": "LIB.JSON",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -12770,10 +12011,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -12803,7 +12040,6 @@
                 "label": "Programa que se ejecuta: Request console",
                 "profile": "es",
                 "specification": "LIB.IO",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -12827,7 +12063,6 @@
                 "label": "Program that runs: Request console",
                 "profile": "en",
                 "specification": "LIB.IO",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -12858,10 +12093,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -12891,7 +12122,6 @@
                 "label": "Programa que se ejecuta: Request arguments",
                 "profile": "es",
                 "specification": "LIB.IO",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -12915,7 +12145,6 @@
                 "label": "Program that runs: Request arguments",
                 "profile": "en",
                 "specification": "LIB.IO",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -12946,10 +12175,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -12979,7 +12204,6 @@
                 "label": "Programa que se ejecuta: Request directory",
                 "profile": "es",
                 "specification": "LIB.IO",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -13003,7 +12227,6 @@
                 "label": "Program that runs: Request directory",
                 "profile": "en",
                 "specification": "LIB.IO",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -13034,10 +12257,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -13067,7 +12286,6 @@
                 "label": "Programa que se ejecuta: Request clock",
                 "profile": "es",
                 "specification": "LIB.TIME",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -13091,7 +12309,6 @@
                 "label": "Program that runs: Request clock",
                 "profile": "en",
                 "specification": "LIB.TIME",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -13122,10 +12339,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -13155,7 +12368,6 @@
                 "label": "Programa que se ejecuta: Request timer",
                 "profile": "es",
                 "specification": "LIB.TIME",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -13179,7 +12391,6 @@
                 "label": "Program that runs: Request timer",
                 "profile": "en",
                 "specification": "LIB.TIME",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -13210,10 +12421,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -13243,7 +12450,6 @@
                 "label": "Programa que se ejecuta: Console write",
                 "profile": "es",
                 "specification": "LIB.IO",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -13267,7 +12473,6 @@
                 "label": "Program that runs: Console write",
                 "profile": "en",
                 "specification": "LIB.IO",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -13298,10 +12503,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -13331,7 +12532,6 @@
                 "label": "Programa que se ejecuta: Arguments values",
                 "profile": "es",
                 "specification": "LIB.IO",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -13355,7 +12555,6 @@
                 "label": "Program that runs: Arguments values",
                 "profile": "en",
                 "specification": "LIB.IO",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -13386,10 +12585,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -13419,7 +12614,6 @@
                 "label": "Programa que se ejecuta: Directory derive",
                 "profile": "es",
                 "specification": "LIB.IO",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -13443,7 +12637,6 @@
                 "label": "Program that runs: Directory derive",
                 "profile": "en",
                 "specification": "LIB.IO",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -13474,10 +12667,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -13507,7 +12696,6 @@
                 "label": "Programa que se ejecuta: File open",
                 "profile": "es",
                 "specification": "LIB.IO",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -13531,7 +12719,6 @@
                 "label": "Program that runs: File open",
                 "profile": "en",
                 "specification": "LIB.IO",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -13562,10 +12749,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -13595,7 +12778,6 @@
                 "label": "Programa que se ejecuta: Directory close",
                 "profile": "es",
                 "specification": "LIB.IO",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -13619,7 +12801,6 @@
                 "label": "Program that runs: Directory close",
                 "profile": "en",
                 "specification": "LIB.IO",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -13650,10 +12831,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -13683,7 +12860,6 @@
                 "label": "Programa que se ejecuta: File read bytes",
                 "profile": "es",
                 "specification": "LIB.IO",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -13707,7 +12883,6 @@
                 "label": "Program that runs: File read bytes",
                 "profile": "en",
                 "specification": "LIB.IO",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -13738,10 +12913,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -13771,7 +12942,6 @@
                 "label": "Programa que se ejecuta: File read text",
                 "profile": "es",
                 "specification": "LIB.IO",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -13795,7 +12965,6 @@
                 "label": "Program that runs: File read text",
                 "profile": "en",
                 "specification": "LIB.IO",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -13826,10 +12995,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -13859,7 +13024,6 @@
                 "label": "Programa que se ejecuta: File write bytes",
                 "profile": "es",
                 "specification": "LIB.IO",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -13883,7 +13047,6 @@
                 "label": "Program that runs: File write bytes",
                 "profile": "en",
                 "specification": "LIB.IO",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -13914,10 +13077,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -13947,7 +13106,6 @@
                 "label": "Programa que se ejecuta: File write text",
                 "profile": "es",
                 "specification": "LIB.IO",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -13971,7 +13129,6 @@
                 "label": "Program that runs: File write text",
                 "profile": "en",
                 "specification": "LIB.IO",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -14002,10 +13159,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -14035,7 +13188,6 @@
                 "label": "Programa que se ejecuta: File close",
                 "profile": "es",
                 "specification": "LIB.IO",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -14059,7 +13211,6 @@
                 "label": "Program that runs: File close",
                 "profile": "en",
                 "specification": "LIB.IO",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -14090,10 +13241,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -14123,7 +13270,6 @@
                 "label": "Programa que se ejecuta: Clock now",
                 "profile": "es",
                 "specification": "LIB.TIME",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -14147,7 +13293,6 @@
                 "label": "Program that runs: Clock now",
                 "profile": "en",
                 "specification": "LIB.TIME",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -14178,10 +13323,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -14211,7 +13352,6 @@
                 "label": "Programa que se ejecuta: Timer wait",
                 "profile": "es",
                 "specification": "LIB.TIME",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -14235,7 +13375,6 @@
                 "label": "Program that runs: Timer wait",
                 "profile": "en",
                 "specification": "LIB.TIME",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -14266,10 +13405,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -14299,7 +13434,6 @@
                 "label": "Programa que se ejecuta: Bytes new",
                 "profile": "es",
                 "specification": "LIB.CORE.BYTES",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -14323,7 +13457,6 @@
                 "label": "Program that runs: Bytes new",
                 "profile": "en",
                 "specification": "LIB.CORE.BYTES",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -14354,10 +13487,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -14387,7 +13516,6 @@
                 "label": "Programa que se ejecuta: Bytes length",
                 "profile": "es",
                 "specification": "LIB.CORE.BYTES",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -14411,7 +13539,6 @@
                 "label": "Program that runs: Bytes length",
                 "profile": "en",
                 "specification": "LIB.CORE.BYTES",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -14442,10 +13569,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -14475,7 +13598,6 @@
                 "label": "Programa que se ejecuta: Bytes at",
                 "profile": "es",
                 "specification": "LIB.CORE.BYTES",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -14499,7 +13621,6 @@
                 "label": "Program that runs: Bytes at",
                 "profile": "en",
                 "specification": "LIB.CORE.BYTES",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -14530,10 +13651,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -14563,7 +13680,6 @@
                 "label": "Programa que se ejecuta: Bytes utf8",
                 "profile": "es",
                 "specification": "LIB.CORE.BYTES",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -14587,7 +13703,6 @@
                 "label": "Program that runs: Bytes utf8",
                 "profile": "en",
                 "specification": "LIB.CORE.BYTES",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -14618,10 +13733,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -14651,7 +13762,6 @@
                 "label": "Uso de SolicitarRed",
                 "profile": "es",
                 "specification": "LIB.HTTP",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -14675,7 +13785,6 @@
                 "label": "Use of requestNetwork",
                 "profile": "en",
                 "specification": "LIB.HTTP",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -14706,10 +13815,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -14739,7 +13844,6 @@
                 "label": "Uso de Limitar",
                 "profile": "es",
                 "specification": "LIB.HTTP",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -14763,7 +13867,6 @@
                 "label": "Use of restrict",
                 "profile": "en",
                 "specification": "LIB.HTTP",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -14794,10 +13897,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -14827,7 +13926,6 @@
                 "label": "Uso de Enviar",
                 "profile": "es",
                 "specification": "LIB.HTTP",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -14851,7 +13949,6 @@
                 "label": "Use of send",
                 "profile": "en",
                 "specification": "LIB.HTTP",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -14882,10 +13979,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -14915,7 +14008,6 @@
                 "label": "Uso de Cerrar",
                 "profile": "es",
                 "specification": "LIB.HTTP",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -14939,7 +14031,6 @@
                 "label": "Use of close",
                 "profile": "en",
                 "specification": "LIB.HTTP",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -14970,10 +14061,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -15003,7 +14090,6 @@
                 "label": "Uso de PeticionHttp",
                 "profile": "es",
                 "specification": "LIB.HTTP",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -15027,7 +14113,6 @@
                 "label": "Use of HttpRequest",
                 "profile": "en",
                 "specification": "LIB.HTTP",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -15058,10 +14143,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -15091,7 +14172,6 @@
                 "label": "Uso de ConCabecera",
                 "profile": "es",
                 "specification": "LIB.HTTP",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -15115,7 +14195,6 @@
                 "label": "Use of withHeader",
                 "profile": "en",
                 "specification": "LIB.HTTP",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -15146,10 +14225,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -15179,7 +14254,6 @@
                 "label": "Uso de ConCuerpo",
                 "profile": "es",
                 "specification": "LIB.HTTP",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -15203,7 +14277,6 @@
                 "label": "Use of withBody",
                 "profile": "en",
                 "specification": "LIB.HTTP",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -15234,10 +14307,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -15267,7 +14336,6 @@
                 "label": "Uso de ConCuerpoTexto",
                 "profile": "es",
                 "specification": "LIB.HTTP",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -15291,7 +14359,6 @@
                 "label": "Use of withTextBody",
                 "profile": "en",
                 "specification": "LIB.HTTP",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -15322,10 +14389,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -15355,7 +14418,6 @@
                 "label": "Uso de ConLimiteRespuesta",
                 "profile": "es",
                 "specification": "LIB.HTTP",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -15379,7 +14441,6 @@
                 "label": "Use of withResponseLimit",
                 "profile": "en",
                 "specification": "LIB.HTTP",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -15410,10 +14471,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -15443,7 +14500,6 @@
                 "label": "Uso de ConTiempoMaximo",
                 "profile": "es",
                 "specification": "LIB.HTTP",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -15467,7 +14523,6 @@
                 "label": "Use of withTimeout",
                 "profile": "en",
                 "specification": "LIB.HTTP",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -15498,10 +14553,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -15531,7 +14582,6 @@
                 "label": "Uso de Estado",
                 "profile": "es",
                 "specification": "LIB.HTTP",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -15555,7 +14605,6 @@
                 "label": "Use of status",
                 "profile": "en",
                 "specification": "LIB.HTTP",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -15586,10 +14635,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -15619,7 +14664,6 @@
                 "label": "Uso de EsExito",
                 "profile": "es",
                 "specification": "LIB.HTTP",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -15643,7 +14687,6 @@
                 "label": "Use of isSuccess",
                 "profile": "en",
                 "specification": "LIB.HTTP",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -15674,10 +14717,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -15707,7 +14746,6 @@
                 "label": "Uso de Cabecera",
                 "profile": "es",
                 "specification": "LIB.HTTP",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -15731,7 +14769,6 @@
                 "label": "Use of header",
                 "profile": "en",
                 "specification": "LIB.HTTP",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -15762,10 +14799,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -15795,7 +14828,6 @@
                 "label": "Uso de NombresCabeceras",
                 "profile": "es",
                 "specification": "LIB.HTTP",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -15819,7 +14851,6 @@
                 "label": "Use of headerNames",
                 "profile": "en",
                 "specification": "LIB.HTTP",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -15850,10 +14881,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -15883,7 +14910,6 @@
                 "label": "Uso de Cuerpo",
                 "profile": "es",
                 "specification": "LIB.HTTP",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -15907,7 +14933,6 @@
                 "label": "Use of body",
                 "profile": "en",
                 "specification": "LIB.HTTP",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -15938,10 +14963,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -15971,7 +14992,6 @@
                 "label": "Uso de CuerpoTexto",
                 "profile": "es",
                 "specification": "LIB.HTTP",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -15995,7 +15015,6 @@
                 "label": "Use of textBody",
                 "profile": "en",
                 "specification": "LIB.HTTP",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -16026,10 +15045,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -16059,7 +15074,6 @@
                 "label": "Uso de Url",
                 "profile": "es",
                 "specification": "LIB.HTTP",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -16083,7 +15097,6 @@
                 "label": "Use of url",
                 "profile": "en",
                 "specification": "LIB.HTTP",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -16114,10 +15127,6 @@
           "profiles": [
             "es",
             "en"
-          ],
-          "strictness": [
-            "estricto",
-            "flexible"
           ]
         },
         "anchors": [
@@ -16147,7 +15156,6 @@
                 "label": "Cadena explícita de redirecciones",
                 "profile": "es",
                 "specification": "LIB.HTTP.POLICY",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]
@@ -16171,7 +15179,6 @@
                 "label": "Explicit redirect chain",
                 "profile": "en",
                 "specification": "LIB.HTTP.POLICY",
-                "strictness": "estricto",
                 "version": "1.0.0"
               }
             ]

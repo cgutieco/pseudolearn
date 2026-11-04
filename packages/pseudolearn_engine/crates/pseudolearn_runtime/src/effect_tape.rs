@@ -5,7 +5,6 @@ pub const TAPE_SCHEMA_V1: &str = "pseudolearn.tape/v1";
 #[derive(Clone, Debug, Eq, PartialEq, serde::Serialize, serde::Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct ExecutionIdentity {
-    pub strictness: String,
     pub limits: std::collections::BTreeMap<String, u64>,
     pub source_digest: String,
     pub package_graph_digest: String,
@@ -16,8 +15,7 @@ pub struct ExecutionIdentity {
 
 impl ExecutionIdentity {
     pub fn matches(&self, other: &Self) -> bool {
-        self.strictness == other.strictness
-            && self.limits == other.limits
+        self.limits == other.limits
             && self.source_digest == other.source_digest
             && self.package_graph_digest == other.package_graph_digest
             && self.profile == other.profile

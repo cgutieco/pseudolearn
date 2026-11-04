@@ -102,7 +102,6 @@ fn fail(evidence: &mut Evidence) {
         rule: "R1".to_owned(),
         case: "C1".to_owned(),
         profile: "es".to_owned(),
-        strictness: "flexible".to_owned(),
         verdict: "incumple".to_owned(),
         differences: vec!["Mismatch".to_owned()],
         expected: json!({}),

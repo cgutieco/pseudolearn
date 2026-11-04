@@ -188,16 +188,21 @@ fn malformed_requests_are_usage_failures() {
 }
 
 #[test]
-fn flexible_strictness_accepts_missing_terminators() -> Result<(), String> {
+fn project_execution_rejects_a_missing_terminator() -> Result<(), String> {
     let files = json!([
         {"path": "app/main", "source_id": 1, "text": "Algoritmo P\nEscribir 7\nFinAlgoritmo\n"},
         {"path": "geo/vectores", "source_id": 2, "text": LIBRARY}
     ]);
     let outcome = call(
         "execute_project",
-        json!({"project": project(files), "entry": "app/main", "strictness": "flexible"}),
+        json!({"project": project(files), "entry": "app/main"}),
     );
-    assert_eq!(value(&outcome)?.get("output"), Some(&json!("7\n")));
+    let result = value(&outcome)?;
+    assert!(result.get("output").is_none());
+    assert_eq!(
+        result.pointer("/diagnostics/0/code"),
+        Some(&json!("missingStatementTerminator"))
+    );
     Ok(())
 }
 

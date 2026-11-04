@@ -105,12 +105,7 @@ fn report_unused_local(
     } else {
         DiagnosticCode::VariableDeclaredNeverUsed
     };
-    let mut diagnostic = pseudolearn_diagnostics::Diagnostic::new(code, local.span)
+    let diagnostic = pseudolearn_diagnostics::Diagnostic::new(code, local.span)
         .with_argument("lexeme", &local.name);
-    diagnostic.severity = code.severity(if session.options.strict {
-        "estricto"
-    } else {
-        "flexible"
-    });
     session.diagnostics.push(diagnostic);
 }

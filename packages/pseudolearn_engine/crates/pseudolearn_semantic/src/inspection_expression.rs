@@ -29,14 +29,7 @@ pub fn check_inspection(
 ) -> Result<InspectionExpression, Vec<Diagnostic>> {
     validate(tree)?;
     let root = tree.node_count().checked_sub(1).ok_or_else(rejection)?;
-    let mut session = AnalysisSession::new(
-        tree,
-        source,
-        SemanticOptions {
-            profile,
-            strict: true,
-        },
-    );
+    let mut session = AnalysisSession::new(tree, source, SemanticOptions { profile });
     session.module = environment.module;
     let mut parameters = bind_environment(&mut session, environment.bindings)?;
     crate::inspection_records::register(&mut session)?;

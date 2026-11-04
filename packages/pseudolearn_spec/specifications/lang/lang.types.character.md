@@ -63,11 +63,7 @@
   "espera": {
     "salida": "128512A\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -89,10 +85,6 @@
     "fallo": {
       "codigo": "invalidCharacterCode"
     }
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```

@@ -92,9 +92,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "cli",
   "espera": {
@@ -117,9 +114,6 @@
   "regla": "R1",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "cli",
@@ -144,9 +138,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "cli",
   "espera": {
@@ -169,9 +160,6 @@
   "regla": "R1",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "cli",
@@ -209,9 +197,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "cli",
   "espera": {
@@ -235,9 +220,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "cli",
   "espera": {
@@ -260,9 +242,6 @@
   "regla": "R2",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "cli",
@@ -288,9 +267,6 @@
   "regla": "R2",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "cli",
@@ -332,9 +308,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "cli",
   "espera": {
@@ -362,9 +335,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "cli",
   "espera": {
@@ -391,9 +361,6 @@
   "regla": "R3",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "cli",
@@ -441,9 +408,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "cli",
   "espera": {
@@ -468,9 +432,6 @@
   "regla": "R4",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "cli",
@@ -497,9 +458,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "cli",
   "espera": {
@@ -524,9 +482,6 @@
   "regla": "R4",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "cli",
@@ -555,9 +510,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "cli",
   "espera": {
@@ -582,9 +534,6 @@
   "regla": "R4",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "cli",
@@ -611,9 +560,6 @@
   "regla": "R4",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "cli",
@@ -642,9 +588,6 @@
   "regla": "R4",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "cli",
@@ -683,9 +626,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "cli",
   "espera": {
@@ -723,9 +663,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "cli",
   "espera": {
@@ -762,9 +699,6 @@
   "regla": "R6",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "cli",
@@ -816,9 +750,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "cli",
   "espera": {
@@ -845,9 +776,6 @@
   "regla": "R7",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "cli",
@@ -893,9 +821,6 @@ Cada caso cli declara su entorno completo: el sujeto ejecuta pseudo con exactame
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "cli",
   "espera": {
@@ -927,9 +852,6 @@ Cada caso cli declara su entorno completo: el sujeto ejecuta pseudo con exactame
   "regla": "R8",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "cli",
@@ -979,9 +901,6 @@ Cada caso cli declara su entorno completo: el sujeto ejecuta pseudo con exactame
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "cli",
   "espera": {
@@ -1013,9 +932,6 @@ Cada caso cli declara su entorno completo: el sujeto ejecuta pseudo con exactame
   "regla": "R9",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "cli",
@@ -1050,9 +966,6 @@ Cada caso cli declara su entorno completo: el sujeto ejecuta pseudo con exactame
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "cli",
   "espera": {
@@ -1085,9 +998,6 @@ Cada caso cli declara su entorno completo: el sujeto ejecuta pseudo con exactame
   "regla": "R9",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "cli",
@@ -1134,9 +1044,6 @@ Cada caso cli declara su entorno completo: el sujeto ejecuta pseudo con exactame
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "cli",
   "espera": {
@@ -1170,9 +1077,6 @@ Cada caso cli declara su entorno completo: el sujeto ejecuta pseudo con exactame
   "regla": "R10",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "cli",

@@ -11,12 +11,12 @@ fn program(declarations: &str, body: &str) -> String {
 }
 
 fn analyze(text: &str) -> Result<HirModule, String> {
-    let (module, diagnostics) = support::analyze(text, true);
+    let (module, diagnostics) = support::analyze(text);
     module.ok_or_else(|| format!("{diagnostics:?}"))
 }
 
 fn codes(text: &str) -> Vec<DiagnosticCode> {
-    let (_, diagnostics) = support::analyze(text, true);
+    let (_, diagnostics) = support::analyze(text);
     diagnostics
         .iter()
         .map(|diagnostic| diagnostic.code)

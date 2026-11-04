@@ -11,7 +11,7 @@ fn start_replay(extra: Value) -> Value {
     let mut session = ApiSession::default();
     let analysis = session.call("create_analysis", &json!({"program":CLOCK}));
     let mut arguments = json!({"analysis":analysis.pointer("/value/resource"),"program":CLOCK,
-        "profile":"es","strictness":"strict","seed":42,"host":host(),
+        "profile":"es","seed":42,"host":host(),
         "execution_mode":"replay_from_tape"});
     if let (Some(fields), Some(more)) = (arguments.as_object_mut(), extra.as_object()) {
         fields.extend(more.clone());
@@ -25,7 +25,7 @@ fn live_tape() -> Result<Value, String> {
     let started = session.call(
         "start",
         &json!({"analysis":analysis.pointer("/value/resource"),"program":CLOCK,"profile":"es",
-            "strictness":"strict","seed":42,"host":host()}),
+            "seed":42,"host":host()}),
     );
     let resource = started.pointer("/value/resource").cloned();
     let waiting = session.call("advance", &json!({"resource":resource,"batch_size":64}));
@@ -81,7 +81,7 @@ fn advancing_while_an_effect_is_pending_repeats_the_same_request_without_events(
     let started = session.call(
         "start",
         &json!({"analysis":analysis.pointer("/value/resource"),"program":CLOCK,"profile":"es",
-            "strictness":"strict","seed":42,"host":host(),"observe":"events"}),
+            "seed":42,"host":host(),"observe":"events"}),
     );
     let resource = started.pointer("/value/resource").cloned();
     let first = session.call("advance", &json!({"resource":resource,"batch_size":64}));

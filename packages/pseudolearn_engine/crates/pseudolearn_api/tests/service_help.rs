@@ -6,8 +6,7 @@ fn open(session: &mut ApiSession, program: &str) -> Result<u64, String> {
         "open_edit_session",
         &json!({
             "program": program,
-            "profile": "es",
-            "strictness": "strict"
+            "profile": "es"
         }),
     );
     response
@@ -313,7 +312,7 @@ fn help_language_is_independent_of_the_english_document_profile() -> Result<(), 
     let mut session = ApiSession::default();
     let opened = session.call(
         "open_edit_session",
-        &json!({"program": "algorithm Main\nwhile true do\nendWhile\nendAlgorithm\n", "profile": "en", "strictness": "strict"}),
+        &json!({"program": "algorithm Main\nwhile true do\nendWhile\nendAlgorithm\n", "profile": "en"}),
     );
     let resource = opened
         .pointer("/value/resource")

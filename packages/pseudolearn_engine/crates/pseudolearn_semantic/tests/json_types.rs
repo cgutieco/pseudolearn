@@ -1,9 +1,8 @@
 use pseudolearn_abi::EffectValueKind;
-use pseudolearn_diagnostics::DiagnosticCode;
 use pseudolearn_lexicon::Profile;
 use pseudolearn_semantic::{SemanticOptions, analyze_with_options};
 use pseudolearn_source::SourceText;
-use pseudolearn_syntax::parse_source_with_terminator;
+use pseudolearn_syntax::parse_source;
 
 #[test]
 fn json_values_and_errors_are_typed_and_transferable_in_both_profiles() -> Result<(), String> {
@@ -19,20 +18,10 @@ fn json_values_and_errors_are_typed_and_transferable_in_both_profiles() -> Resul
     ];
     for (profile, program) in programs {
         let source = SourceText::new(program.to_owned());
-        let (tree, syntax) = parse_source_with_terminator(
-            &source,
-            profile,
-            Some(DiagnosticCode::MissingStatementTerminator),
-        );
+        let (tree, syntax) = parse_source(&source, profile);
         assert!(syntax.is_empty(), "{profile:?}: {syntax:?}");
-        let (module, diagnostics) = analyze_with_options(
-            &tree,
-            &source,
-            SemanticOptions {
-                profile,
-                strict: true,
-            },
-        );
+        let (module, diagnostics) =
+            analyze_with_options(&tree, &source, SemanticOptions { profile });
         let module = module.ok_or_else(|| format!("{profile:?}: {diagnostics:?}"))?;
         assert!(diagnostics.is_empty(), "{profile:?}: {diagnostics:?}");
         assert!(

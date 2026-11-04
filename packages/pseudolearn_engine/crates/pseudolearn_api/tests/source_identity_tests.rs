@@ -14,8 +14,7 @@ const IDENTITY: ApiSourceIdentity = ApiSourceIdentity {
 fn analysis_diagnostics_and_tokens_keep_their_source_identity() {
     let response = execute_analyze(&AnalyzeRequest {
         program: "algorithm P\nwrite @;\nendAlgorithm\n".to_owned(),
-        profile: "en".to_owned(),
-        strictness: "strict".to_owned(),
+        profile: "en".to_owned().to_owned(),
         source: Some(IDENTITY),
     });
     let diagnostic = response.diagnostics.first();
@@ -61,8 +60,7 @@ fn execution_faults_and_events_keep_the_same_source_identity() {
 fn legacy_analysis_keeps_its_previous_unqualified_span_shape() {
     let response = execute_analyze(&AnalyzeRequest {
         program: "Algoritmo P\nEscribir @;\nFinAlgoritmo\n".to_owned(),
-        profile: "es".to_owned(),
-        strictness: "strict".to_owned(),
+        profile: "es".to_owned().to_owned(),
         source: None,
     });
     assert!(
@@ -78,8 +76,7 @@ fn source_identity_survives_ir_lowering_and_canonical_reprint() {
     let response = execute_ir(&IrRequest {
         program_ir: String::new(),
         program: "Algoritmo P\nEscribir 1 div 0;\nFinAlgoritmo\n".to_owned(),
-        profile: "es".to_owned(),
-        strictness: "strict".to_owned(),
+        profile: "es".to_owned().to_owned(),
         source: Some(IDENTITY),
     });
     let reprint = response.ir.reprint.as_deref().unwrap_or_default();
@@ -104,7 +101,7 @@ fn wire_identity_preserves_unsigned_64_bit_values_as_decimal_strings() {
         &json!({
             "program":"Algoritmo P\nEscribir @;\nFinAlgoritmo\n",
             "profile":"es",
-            "strictness":"strict",
+
             "source":{"project_id":"18446744073709551615","revision_id":"9007199254740993","source_id":2}
         }),
     );

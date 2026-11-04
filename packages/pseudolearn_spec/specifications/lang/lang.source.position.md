@@ -70,10 +70,6 @@
       }
     ]
   },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "esperas": {
     "es": {
       "arbol": "presente",
@@ -142,11 +138,7 @@
   "espera": {
     "arbol": "presente",
     "diagnosticos": []
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -157,9 +149,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "analyze",

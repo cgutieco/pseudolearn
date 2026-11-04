@@ -20,7 +20,6 @@ fn request(
 ) -> Result<serde_json::Value, String> {
     let selection = Selection {
         profile: "es",
-        strictness: "estricto",
         expected: &expected,
     };
     build(&case(fields)?, &selection, &Default::default())
@@ -34,7 +33,7 @@ fn builds_observed_execution_with_limits_cancellation_and_state_query() -> Resul
     )?;
     assert_eq!(built.get("kind"), Some(&json!("execute")));
     assert_eq!(built.get("observe"), Some(&json!("events")));
-    assert_eq!(built.get("strictness"), Some(&json!("strict")));
+    assert!(built.get("strictness").is_none());
     assert_eq!(
         built.get("limits"),
         Some(&json!({"micro_steps": 100_000, "depth": 3, "cells": 9}))

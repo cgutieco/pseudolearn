@@ -67,21 +67,19 @@ fn handles_random_unicode_and_extreme_depth_in_isolated_processes() -> Result<()
         "endIf\n".repeat(10000)
     ));
     for profile in ["es", "en"] {
-        for strictness in ["strict", "flexible"] {
-            for source in &sources {
-                let input = format!(
-                    "{}\n",
-                    json!({"kind": "analyze", "program": source, "profile": profile, "strictness": strictness})
-                );
-                let responses = isolated(input.as_bytes())?;
-                assert_eq!(responses.len(), 1);
-                let response = responses.first().ok_or("Missing analysis")?;
-                assert_eq!(
-                    response.get("tree").and_then(serde_json::Value::as_bool),
-                    Some(true)
-                );
-                assert!(!response.to_string().contains("internalFault"));
-            }
+        for source in &sources {
+            let input = format!(
+                "{}\n",
+                json!({"kind": "analyze", "program": source, "profile": profile})
+            );
+            let responses = isolated(input.as_bytes())?;
+            assert_eq!(responses.len(), 1);
+            let response = responses.first().ok_or("Missing analysis")?;
+            assert_eq!(
+                response.get("tree").and_then(serde_json::Value::as_bool),
+                Some(true)
+            );
+            assert!(!response.to_string().contains("internalFault"));
         }
     }
     Ok(())
@@ -111,7 +109,7 @@ fn workspace_overlay_repairs_source_and_resolves_a_closed_import() -> Result<(),
                     {"path": "geo/vectores", "source_id": 2, "text": "Publico SubProceso Doble(n Como Entero) Como Entero\nRetornar n * 2;\nFinSubProceso\n"}
                 ]
             },
-            "options": {"profile": "es", "strictness": "strict"}
+            "options": {"profile": "es"}
         },
         "actions": [
             {"operation": "open", "path": "app/main", "version": 1, "text": "Importar geo.vectores.Doble;\nAlgoritmo P\nEscribir Doble(21);\nFinAlgoritmo\n"}

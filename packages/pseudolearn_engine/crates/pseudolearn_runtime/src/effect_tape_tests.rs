@@ -3,7 +3,6 @@ use std::collections::BTreeMap;
 
 fn identity() -> ExecutionIdentity {
     ExecutionIdentity {
-        strictness: "strict".to_owned(),
         limits: BTreeMap::new(),
         source_digest: String::new(),
         package_graph_digest: String::new(),

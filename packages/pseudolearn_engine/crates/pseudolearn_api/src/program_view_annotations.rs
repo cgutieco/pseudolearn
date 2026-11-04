@@ -13,7 +13,6 @@ pub(crate) struct AnnotationContext<'tree> {
     pub(crate) tree: &'tree SyntaxTree,
     pub(crate) source: &'tree SourceText,
     pub(crate) profile: Profile,
-    pub(crate) strict: bool,
 }
 
 pub(crate) struct CallNames {
@@ -173,7 +172,6 @@ fn without_newline_attribute(node: &ViewNode, tree: &SyntaxTree) -> Attributes {
 fn call_names(context: &AnnotationContext<'_>) -> CallNames {
     let options = SemanticOptions {
         profile: context.profile,
-        strict: context.strict,
     };
     let analysis = analyze_for_service(context.tree, context.source, options);
     let expressions = &analysis.module.expressions;

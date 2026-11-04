@@ -6,7 +6,8 @@ const PROGRAM: &str =
 
 fn record(options: Value) -> Value {
     let mut session = ApiSession::default();
-    let request = json!({"program":PROGRAM,"profile":"es","strictness":"strict","seed":7,"inputs":["21"],"observe":"events"});
+    let request =
+        json!({"program":PROGRAM,"profile":"es","seed":7,"inputs":["21"],"observe":"events"});
     session.call("record", &json!({"request":request,"options":options}))
 }
 
@@ -78,10 +79,13 @@ fn malformed_host_tape_is_a_usage_failure() {
 }
 
 fn summarized(program: &str, options: Value) -> Value {
-    ApiSession::default().call("record", &json!({
-        "request":{"program":program,"profile":"es","strictness":"strict","inputs":["21"],"observe":"events"},
-        "options":options
-    }))
+    ApiSession::default().call(
+        "record",
+        &json!({
+            "request":{"program":program,"profile":"es","inputs":["21"],"observe":"events"},
+            "options":options
+        }),
+    )
 }
 
 #[test]

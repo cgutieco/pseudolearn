@@ -71,6 +71,6 @@ formato, Clippy, auditoría de dependencias y pruebas diferenciales según los c
 
 SEE.ADAPTER.PROTOCOL define JSONL y negociación. Se rechaza importar internos del motor o declarar observe sin soportar eventos.
 
-La robustez se ejecuta en procesos aislados por entrada, con semilla 42 y ambos perfiles y rigores.
+La robustez se ejecuta en procesos aislados por entrada, con semilla 42 y ambos perfiles.
 Incluye texto vacío, trivia, NFD, Unicode arbitrario, UTF-8 inválido y anidaciones de hasta 100.000
 operadores o paréntesis. Se exige proceso exitoso, stderr vacío, árbol y ausencia de fallo interno.

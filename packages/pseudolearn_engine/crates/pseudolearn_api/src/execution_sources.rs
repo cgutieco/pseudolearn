@@ -34,7 +34,6 @@ impl ExecutionSources {
             let analysis = AnalyzeRequest {
                 program: file.text.clone(),
                 profile: profile.as_str().to_owned(),
-                strictness: if request.strict { "strict" } else { "flexible" }.to_owned(),
                 source: Some(crate::ApiSourceIdentity {
                     project_id: request.input.project_id,
                     revision_id: request.input.revision_id,

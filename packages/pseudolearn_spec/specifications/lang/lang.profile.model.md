@@ -80,11 +80,7 @@
   "espera": {
     "salida": "3\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -110,11 +106,7 @@
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -125,9 +117,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -136,7 +125,6 @@
         "operation": "execute_project",
         "arguments": {
           "profile": "es",
-          "strictness": "strict",
           "project": {
             "project_id": "1",
             "revision_id": "1",
@@ -209,9 +197,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -220,7 +205,6 @@
         "operation": "execute_project",
         "arguments": {
           "profile": "en",
-          "strictness": "strict",
           "project": {
             "project_id": "1",
             "revision_id": "1",
@@ -293,9 +277,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -304,7 +285,6 @@
         "operation": "execute_project",
         "arguments": {
           "profile": "es",
-          "strictness": "strict",
           "project": {
             "project_id": "1",
             "revision_id": "1",
@@ -361,9 +341,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -372,7 +349,6 @@
         "operation": "analyze_project",
         "arguments": {
           "profile": "es",
-          "strictness": "strict",
           "project": {
             "project_id": "1",
             "revision_id": "1",
@@ -445,9 +421,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -456,7 +429,6 @@
         "operation": "execute_project",
         "arguments": {
           "profile": "en",
-          "strictness": "strict",
           "project": {
             "project_id": "1",
             "revision_id": "1",
@@ -522,9 +494,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -533,7 +502,6 @@
         "operation": "analyze_project",
         "arguments": {
           "profile": "es",
-          "strictness": "strict",
           "project": {
             "project_id": "1",
             "revision_id": "1",

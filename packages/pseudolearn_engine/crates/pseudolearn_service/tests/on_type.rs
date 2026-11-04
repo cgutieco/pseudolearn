@@ -1,16 +1,16 @@
 use pseudolearn_lexicon::Profile;
 use pseudolearn_service::{DocumentSession, apply_changes, on_type};
 
-fn assist(marked: &str, typed: char, profile: Profile, strict: bool) -> (String, usize) {
+fn assist(marked: &str, typed: char, profile: Profile) -> (String, usize) {
     let cursor = marked.find('|').unwrap_or(marked.len());
     let clean = marked.replacen('|', "", 1);
-    let session = DocumentSession::new(clean.clone(), profile, strict);
+    let session = DocumentSession::new(clean.clone(), profile);
     let outcome = on_type(&session, cursor, typed);
     (apply_changes(&clean, &outcome.edits), outcome.cursor)
 }
 
 fn enter(marked: &str) -> (String, usize) {
-    assist(marked, '\n', Profile::Spanish, true)
+    assist(marked, '\n', Profile::Spanish)
 }
 
 #[test]
@@ -60,7 +60,6 @@ fn enter_in_english_uses_the_english_closer() {
         "Algorithm P\n  While 1 = 1 Do\n|\nEndAlgorithm\n",
         '\n',
         Profile::English,
-        true,
     );
     assert!(text.contains("\n  EndWhile\n"));
 }
@@ -99,13 +98,10 @@ fn enter_after_else_indents_one_more_unit() {
 }
 
 #[test]
-fn enter_terminates_simple_statements_only_in_strict_mode() {
+fn enter_terminates_simple_statements() {
     let code = "Algoritmo P\n  Escribir 1\n|\nFinAlgoritmo\n";
-    let (strict, _) = enter(code);
-    assert!(strict.contains("Escribir 1;\n"));
-    let (flexible, _) = assist(code, '\n', Profile::Spanish, false);
-    assert!(flexible.contains("Escribir 1\n"));
-    assert!(!flexible.contains(';'));
+    let (text, _) = enter(code);
+    assert!(text.contains("Escribir 1;\n"));
 }
 
 #[test]
@@ -132,7 +128,6 @@ fn boundary_realigns_closers_else_and_default_case() {
         "Algoritmo P\n  Si 1 = 1 Entonces\n      FinSi |\nFinAlgoritmo\n",
         ' ',
         Profile::Spanish,
-        true,
     );
     assert!(closer.contains("\n  FinSi \n"));
     assert_eq!(cursor, closer.find("FinSi ").unwrap_or(0) + 6);
@@ -140,14 +135,12 @@ fn boundary_realigns_closers_else_and_default_case() {
         "Algoritmo P\n  Si 1 = 1 Entonces\n  Escribir 1;\n      Sino |\n  FinSi\nFinAlgoritmo\n",
         ' ',
         Profile::Spanish,
-        true,
     );
     assert!(otherwise.contains("\n  Sino \n"));
     let (default, _) = assist(
         "Algoritmo P\n  Segun 1 Hacer\n      De Otro Modo: |\n  FinSegun\nFinAlgoritmo\n",
         ' ',
         Profile::Spanish,
-        true,
     );
     assert!(default.contains("\n    De Otro Modo:"), "{default}");
 }
@@ -155,7 +148,7 @@ fn boundary_realigns_closers_else_and_default_case() {
 #[test]
 fn boundary_ignores_words_that_are_not_complete_closers() {
     let code = "Algoritmo P\n  Si 1 = 1 Entonces\n      Escribir |\n  FinSi\nFinAlgoritmo\n";
-    let (text, _) = assist(code, ' ', Profile::Spanish, true);
+    let (text, _) = assist(code, ' ', Profile::Spanish);
     assert_eq!(text, code.replace('|', ""));
 }
 
@@ -165,29 +158,21 @@ fn pairs_are_inserted_outside_comments_and_literals() {
         "Algoritmo P\n  Escribir (|\nFinAlgoritmo\n",
         '(',
         Profile::Spanish,
-        true,
     );
     assert!(paren.contains("Escribir ()\n"));
     assert_eq!(cursor, paren.find('(').unwrap_or(0) + 1);
-    let (bracket, _) = assist(
-        "Algoritmo P\n  x[|\nFinAlgoritmo\n",
-        '[',
-        Profile::Spanish,
-        true,
-    );
+    let (bracket, _) = assist("Algoritmo P\n  x[|\nFinAlgoritmo\n", '[', Profile::Spanish);
     assert!(bracket.contains("x[]"));
     let (quote, _) = assist(
         "Algoritmo P\n  Escribir \"|\nFinAlgoritmo\n",
         '"',
         Profile::Spanish,
-        true,
     );
     assert!(quote.contains("\"\"\n"));
     let (character, _) = assist(
         "Algoritmo P\n  c <- '|\nFinAlgoritmo\n",
         '\'',
         Profile::Spanish,
-        true,
     );
     assert!(character.contains("''"));
 }
@@ -198,22 +183,15 @@ fn pairs_are_skipped_in_comments_literals_and_before_identifiers() {
         "Algoritmo P\n  // nota (|\nFinAlgoritmo\n",
         '(',
         Profile::Spanish,
-        true,
     );
     assert!(!comment.contains("()"));
     let (literal, _) = assist(
         "Algoritmo P\n  Escribir \"a (|\"\nFinAlgoritmo\n",
         '(',
         Profile::Spanish,
-        true,
     );
     assert!(literal.contains("\"a (\""));
-    let (glued, _) = assist(
-        "Algoritmo P\n  f(|x\nFinAlgoritmo\n",
-        '(',
-        Profile::Spanish,
-        true,
-    );
+    let (glued, _) = assist("Algoritmo P\n  f(|x\nFinAlgoritmo\n", '(', Profile::Spanish);
     assert!(glued.contains("f(x"));
 }
 
@@ -223,33 +201,25 @@ fn closers_overtype_the_character_that_follows_them() {
         "Algoritmo P\n  f(1)|)\nFinAlgoritmo\n",
         ')',
         Profile::Spanish,
-        true,
     );
     assert!(paren.contains("f(1)\n"));
     let (quote, _) = assist(
         "Algoritmo P\n  Escribir \"ab\"|\"\nFinAlgoritmo\n",
         '"',
         Profile::Spanish,
-        true,
     );
     assert!(quote.contains("\"ab\"\n"));
     let (lonely, _) = assist(
         "Algoritmo P\n  f(1)|\nFinAlgoritmo\n",
         ')',
         Profile::Spanish,
-        true,
     );
     assert!(lonely.contains("f(1)\n"));
 }
 
 #[test]
 fn unrelated_characters_produce_no_edits() {
-    let (text, cursor) = assist(
-        "Algoritmo P\n  xa|\nFinAlgoritmo\n",
-        'a',
-        Profile::Spanish,
-        true,
-    );
+    let (text, cursor) = assist("Algoritmo P\n  xa|\nFinAlgoritmo\n", 'a', Profile::Spanish);
     assert_eq!(text, "Algoritmo P\n  xa\nFinAlgoritmo\n");
     assert_eq!(cursor, 16);
 }

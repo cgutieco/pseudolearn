@@ -10,7 +10,7 @@ use pseudolearn_service::{
 
 fn accept(marked: &str, label: &str, profile: Profile) -> Result<(String, (usize, usize)), String> {
     let (clean, position) = split_cursor(marked);
-    let session = DocumentSession::new(clean.clone(), profile, true);
+    let session = DocumentSession::new(clean.clone(), profile);
     let result = session.queries().complete_with_edit(position);
     let entry = result
         .entries

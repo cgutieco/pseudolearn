@@ -64,11 +64,7 @@
   "espera": {
     "salida": "120\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -89,11 +85,7 @@
   "espera": {
     "salida": "1\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -115,10 +107,6 @@
     "fallo": {
       "codigo": "recursionDepthExceeded"
     }
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```

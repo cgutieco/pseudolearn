@@ -56,10 +56,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo Main\nDefinir values Como Diccionario<Cadena, Entero> <- Diccionario();\nvalues[\"aa\"] <- 2;\nvalues[\"aa\"] <- 7;\nEscribir values.Longitud(), values[\"aa\"];\nFinAlgoritmo\n",
     "en": "algorithm Main\ndefine values as dictionary<string, integer> <- dictionary();\nvalues[\"aa\"] <- 2;\nvalues[\"aa\"] <- 7;\nwrite values.length(), values[\"aa\"];\nendAlgorithm\n"
@@ -80,10 +76,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo Main\nDefinir values Como Diccionario<Cadena, Entero> <- Diccionario();\nEscribir values[\"absent\"];\nFinAlgoritmo\n",
@@ -107,10 +99,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo Main\nDefinir values Como Diccionario<Real, Entero> <- Diccionario();\nFinAlgoritmo\n",
@@ -137,10 +125,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo Main\nDefinir values Como Diccionario<Cadena, Entero> <- Diccionario();\nvalues[\"éx\"] <- 1;\nvalues[\"éx\"] <- 2;\nEscribir values.Longitud();\nFinAlgoritmo\n",
@@ -177,10 +161,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo Main\nDefinir values Como Diccionario<Cadena, Entero> <- Diccionario();\nvalues[\"aa\"] <- 1;\nvalues[\"bb\"] <- 2;\nDefinir removed Como Opcional<Entero> <- values.Eliminar(\"aa\");\nvalues[\"aa\"] <- 3;\nEscribir values;\nFinAlgoritmo\n",
     "en": "algorithm Main\ndefine values as dictionary<string, integer> <- dictionary();\nvalues[\"aa\"] <- 1;\nvalues[\"bb\"] <- 2;\ndefine removed as optional<integer> <- values.remove(\"aa\");\nvalues[\"aa\"] <- 3;\nwrite values;\nendAlgorithm\n"
@@ -202,10 +182,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo Main\nDefinir values Como Diccionario<Cadena, Entero> <- Diccionario();\nSegun values.Buscar(\"xx\") Hacer\nNada:\nEscribir 0;\nAlgo(value):\nEscribir value;\nFinSegun\nFinAlgoritmo\n",
     "en": "algorithm Main\ndefine values as dictionary<string, integer> <- dictionary();\nswitch values.find(\"xx\") do\nnone:\nwrite 0;\nsome(value):\nwrite value;\nendSwitch\nendAlgorithm\n"
@@ -226,10 +202,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo Main\nDefinir values Como Diccionario<Entero, Entero> <- Diccionario();\nDefinir absent Como Opcional<Entero> <- values.Eliminar(1);\nEscribir values.Longitud();\nFinAlgoritmo\n",
@@ -265,10 +237,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo Main\nDefinir values Como Diccionario<Entero, Entero> <- Diccionario();\nEscribir values;\nFinAlgoritmo\n",
     "en": "algorithm Main\ndefine values as dictionary<integer, integer> <- dictionary();\nwrite values;\nendAlgorithm\n"
@@ -290,10 +258,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo Main\nDefinir values Como Diccionario<Entero, Entero> <- Diccionario();\nvalues[2] <- 7;\nvalues[1] <- 8;\nEscribir values;\nFinAlgoritmo\n",
     "en": "algorithm Main\ndefine values as dictionary<integer, integer> <- dictionary();\nvalues[2] <- 7;\nvalues[1] <- 8;\nwrite values;\nendAlgorithm\n"
@@ -314,10 +278,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo Main\nDefinir values Como Diccionario<Entero, Entero> <- Diccionario();\nPara Cada key, value En values Hacer\nEscribir key, value;\nFinPara\nEscribir values;\nFinAlgoritmo\n",

@@ -16,24 +16,10 @@ fn fixture_generation_reuses_requests_and_resolved_expectations() -> Result<(), 
             .and_then(|fixture| fixture.pointer("/request/kind")),
         Some(&json!("execute"))
     );
-    assert_eq!(
+    assert!(
         fixtures
             .first()
-            .and_then(|fixture| fixture.pointer("/request/strictness")),
-        Some(&json!("flexible"))
-    );
-    specification
-        .blocks
-        .last_mut()
-        .ok_or("Missing case")?
-        .fields
-        .remove("rigor");
-    let fixtures = cases(&vec![specification.clone()], &Default::default())?;
-    assert_eq!(
-        fixtures
-            .first()
-            .and_then(|fixture| fixture.pointer("/request/strictness")),
-        Some(&json!("strict"))
+            .is_some_and(|fixture| fixture.pointer("/request/strictness").is_none())
     );
     let case = specification.blocks.last_mut().ok_or("Missing case")?;
     case.fields.remove("espera");

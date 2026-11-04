@@ -1,7 +1,7 @@
 use crate::property_scenarios::Scenario;
 use serde_json::json;
 
-pub(crate) fn scenario(seed: u64, sample: u32, profile: &str, strictness: &str) -> Scenario {
+pub(crate) fn scenario(seed: u64, sample: u32, profile: &str) -> Scenario {
     let number = seed.wrapping_add(u64::from(sample)) % 1_000_000;
     let source = format!("{{\"round\": {number}, \"label\": \"p\"}}");
     let canonical = format!("{{\"round\":{number},\"label\":\"p\"}}\n");
@@ -11,7 +11,6 @@ pub(crate) fn scenario(seed: u64, sample: u32, profile: &str, strictness: &str) 
             "kind": "execute",
             "program": program,
             "profile": profile,
-            "strictness": strictness,
             "limits": {"max_json_depth": 64}
         }),
         expected: Some(json!({"salida": canonical, "terminacion": "completed"})),

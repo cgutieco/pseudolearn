@@ -5,7 +5,7 @@ use pseudolearn_service::{FormatOptions, format_source, translate_source};
 fn translating_contextual_forms_preserves_homonymous_variables() -> Result<(), String> {
     let source = "algorithm Main\ndefine interface as integer <- 1;\ndefine values as vector<integer> <- vector();\nvalues.append(interface);\nfor each element in values do\ndefer\nwrite element;\nendDefer\nbreak;\nendFor\nendAlgorithm\n";
     let translated =
-        translate_source(source, Profile::Spanish, true).map_err(|error| format!("{error:?}"))?;
+        translate_source(source, Profile::Spanish).map_err(|error| format!("{error:?}"))?;
     assert!(translated.contains("Definir interface"));
     assert!(translated.contains("Vector<Entero>"));
     assert!(translated.contains(".Agregar(interface)"));

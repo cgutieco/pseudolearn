@@ -103,10 +103,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo P\n  Definir value Como Entero <- 0;\n  Escribir value;\nFinAlgoritmo\n",
     "en": "algorithm P\n  define value as integer <- 0;\n  write value;\nendAlgorithm\n"
@@ -134,10 +130,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo P\n  Definir value Como Entero <- 9223372036854775807;\n  Escribir value;\nFinAlgoritmo\n",
@@ -167,10 +159,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo P\n  Definir value Como Entero <- -9223372036854775807 - 1;\n  Escribir value;\nFinAlgoritmo\n",
     "en": "algorithm P\n  define value as integer <- -9223372036854775807 - 1;\n  write value;\nendAlgorithm\n"
@@ -198,10 +186,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo P\n  Escribir 9223372036854775807 + 1;\nFinAlgoritmo\n",
@@ -238,10 +222,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo P\n  Escribir (-9223372036854775807 - 1) + (-1);\nFinAlgoritmo\n",
     "en": "algorithm P\n  write (-9223372036854775807 - 1) + (-1);\nendAlgorithm\n"
@@ -277,10 +257,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo P\n  Escribir 9223372036854775807 + 0;\nFinAlgoritmo\n",
     "en": "algorithm P\n  write 9223372036854775807 + 0;\nendAlgorithm\n"
@@ -309,10 +285,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo P\n  Escribir -3 + 5;\nFinAlgoritmo\n",
     "en": "algorithm P\n  write -3 + 5;\nendAlgorithm\n"
@@ -337,10 +309,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo P\n  Escribir (-9223372036854775807 - 1) + 9223372036854775807;\nFinAlgoritmo\n",

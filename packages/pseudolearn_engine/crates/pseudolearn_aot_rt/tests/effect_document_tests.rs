@@ -2,7 +2,7 @@ use pseudolearn_aot_rt::{EffectChannel, EffectInput, EffectOutput};
 use serde_json::{Value, json};
 
 fn identity(seed: i64) -> Value {
-    json!({"strictness":"strict","limits":{},"source_digest":"abc","package_graph_digest":"none",
+    json!({"limits":{},"source_digest":"abc","package_graph_digest":"none",
         "profile":"es","seed":seed,"statement_limit":null,})
 }
 

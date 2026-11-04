@@ -122,7 +122,7 @@ entrada agotada) y `5` fallo interno (`internalFault`, clases inválidas, metada
 un fallo, la salida del programa ya está vaciada y el diagnóstico se escribe en la salida de error con la plantilla de
 línea que trae el metadato; la entrada agotada usa su propia plantilla. Los avisos del programa (por ejemplo, una lectura
 con tipo incorrecto que se recupera) se escriben antes que el fallo y también en ejecuciones que terminan con código `0`.
-Cada diagnóstico elige su plantilla por severidad (`error`, `warning` o `information`) y las plantillas admiten
+Cada diagnóstico elige su plantilla por la severidad fija de su código (`error`, `warning` o `information`) y las plantillas admiten
 `{path}`, `{line}`, `{column}`, `{end_line}`, `{end_column}`, `{message}`, `{code}` y `{arguments}` (objeto JSON con los
 argumentos del diagnóstico, y con `limit` numérico para `cellLimitExceeded`, `recursionDepthExceeded` y
 `statementBudgetExhausted`). `run_executable` es la misma lógica con flujos

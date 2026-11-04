@@ -44,7 +44,7 @@ fn open(document: &Document) -> Result<(ApiSession, u64), String> {
     let mut session = ApiSession::default();
     let opened = session.call(
         "open_edit_session",
-        &json!({"program": document.program, "profile": document.profile, "strictness": "strict"}),
+        &json!({"program": document.program, "profile": document.profile}),
     );
     let resource = opened
         .pointer("/value/resource")
@@ -98,7 +98,7 @@ fn hot_document(oracle: &Oracle, document: &Document) -> Result<Value, String> {
 }
 
 fn core_and_render(document: &Document, query: &Query) -> Result<(f64, f64), String> {
-    let service = DocumentSession::new(document.program.clone(), Profile::Spanish, true);
+    let service = DocumentSession::new(document.program.clone(), Profile::Spanish);
     let position = Position {
         line: query.line,
         column: query.column,

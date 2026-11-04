@@ -30,14 +30,14 @@
 }
 ---
 
-# Política de severidad
+# Severidad de diagnósticos
 
 ```regla
 {
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Clase A estructural y ejecución fatal es error en ambos rigores. B gobernada por exigencia es error estricto y advertencia flexible. C higiene es advertencia en ambos. D inferencia es información. E lectura inválida es advertencia y recuperable. Flexible nunca aumenta severidad; etiqueta real es A aunque etiquetas no enteras compatibles sean B. La severidad se inyecta como dato, no cambia el significado.",
+  "texto": "Los códigos A son errores estructurales o de ejecución fatal. Los códigos C son advertencias de higiene, los códigos D son información y los códigos E son advertencias recuperables de lectura inválida. La letra B permanece sin asignar. Cada código declara una única severidad como dato, independiente de su clase.",
   "verificacion": [
     "C1",
     "C2",
@@ -68,10 +68,7 @@
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto"
-  ]
+  }
 }
 ```
 
@@ -97,10 +94,7 @@
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -126,10 +120,6 @@
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```

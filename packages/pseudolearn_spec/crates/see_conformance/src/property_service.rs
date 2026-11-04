@@ -19,7 +19,6 @@ const TEMPLATE_CONSTRUCTIONS: [&str; 9] = [
 struct Program<'text> {
     text: &'text str,
     profile: &'text str,
-    strictness: &'text str,
 }
 
 pub(crate) fn check(
@@ -29,18 +28,16 @@ pub(crate) fn check(
 ) -> Difference {
     let text = text_of(&scenario.request, "program");
     let profile = text_of(&scenario.request, "profile");
-    let strictness = text_of(&scenario.request, "strictness");
     let program = Program {
         text: &text,
         profile: &profile,
-        strictness: &strictness,
     };
     match executor {
         PropertyExecutor::ServiceFormat => format_stability(&program, subject),
         PropertyExecutor::ServiceTranslate => translation_identity(&program, subject),
         PropertyExecutor::ServiceIncremental => random_probe(&program, "incremental_frio", subject),
         PropertyExecutor::ServiceNodeIdentity => random_probe(&program, "identidad_local", subject),
-        PropertyExecutor::ServiceCompletionTemplates => template_validity(&program, subject),
+        PropertyExecutor::ServiceCompletionTemplates => template_validity(subject),
         PropertyExecutor::ServiceWorkspace => workspace_equivalence(&program, subject),
         _ => Err("SEE-PROPERTY: invalid service executor".to_owned()),
     }
@@ -75,7 +72,7 @@ fn workspace_request(program: &Program<'_>, reverse_files: bool) -> Value {
                     ],
                     "files": files
                 },
-                "options": {"profile": program.profile, "strictness": program.strictness}
+                "options": {"profile": program.profile}
             },
             "actions": [{"operation": "open", "path": "app/main", "version": 1, "text": program.text}]
         }),
@@ -105,7 +102,6 @@ fn service_request_with(
         "suboperacion": operation,
         "documento": document,
         "profile": program.profile,
-        "strictness": program.strictness,
     });
     if let (Some(fields), Some(additions)) = (request.as_object_mut(), extra.as_object()) {
         fields.extend(additions.clone());
@@ -120,12 +116,11 @@ fn service_outcome(subject: &mut impl PropertySubject, request: &Value) -> Resul
 
 fn diagnostic_signature(
     subject: &mut impl PropertySubject,
-    program: &Program<'_>,
     text: &str,
     profile: &str,
 ) -> Result<Value, String> {
     let response = subject.exchange(&json!({
-        "kind": "analyze", "program": text, "profile": profile, "strictness": program.strictness
+        "kind": "analyze", "program": text, "profile": profile
     }))?;
     let codes: Vec<Value> = response
         .get("diagnostics")
@@ -159,8 +154,8 @@ fn format_stability(program: &Program<'_>, subject: &mut impl PropertySubject) -
     if first != second {
         return Ok(Some((json!(first), json!(second))));
     }
-    let before = diagnostic_signature(subject, program, program.text, program.profile)?;
-    let after = diagnostic_signature(subject, program, &first, program.profile)?;
+    let before = diagnostic_signature(subject, program.text, program.profile)?;
+    let after = diagnostic_signature(subject, &first, program.profile)?;
     Ok((before != after).then_some((before, after)))
 }
 
@@ -183,8 +178,8 @@ fn translation_identity(program: &Program<'_>, subject: &mut impl PropertySubjec
     if back != canonical {
         return Ok(Some((json!(canonical), json!(back))));
     }
-    let before = diagnostic_signature(subject, program, &canonical, program.profile)?;
-    let after = diagnostic_signature(subject, program, translated, destination)?;
+    let before = diagnostic_signature(subject, &canonical, program.profile)?;
+    let after = diagnostic_signature(subject, translated, destination)?;
     Ok((before != after).then_some((before, after)))
 }
 
@@ -211,13 +206,12 @@ fn random_probe(
     Ok((outcome.get(key) != Some(&json!(true))).then(|| (json!({ key: true }), outcome)))
 }
 
-fn template_validity(program: &Program<'_>, subject: &mut impl PropertySubject) -> Difference {
+fn template_validity(subject: &mut impl PropertySubject) -> Difference {
     for profile in ["es", "en"] {
         for construction in TEMPLATE_CONSTRUCTIONS {
             let request = json!({
                 "kind": "service", "suboperacion": "template_validity",
                 "construccion": construction, "profile": profile,
-                "strictness": program.strictness,
             });
             let outcome = service_outcome(subject, &request)?;
             if outcome.get("valida") != Some(&json!(true)) {

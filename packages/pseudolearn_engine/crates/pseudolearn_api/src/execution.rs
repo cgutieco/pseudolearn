@@ -45,7 +45,6 @@ pub fn prepare_program(
     let (module, warnings) = crate::ir_execution::compile_source_with_identity(
         &request.program,
         &request.profile,
-        &request.strictness,
         request.source,
     )?;
     let bytecode = pseudolearn_bytecode::compile_module(&module)
@@ -289,7 +288,6 @@ fn event_view(request: &ExecuteRequest) -> Option<crate::program_view::ProgramVi
     let analysis = crate::AnalyzeRequest {
         program: request.program.clone(),
         profile: request.profile.clone(),
-        strictness: request.strictness.clone(),
         source: request.source,
     };
     crate::program_view::ProgramView::build(&analysis, "rev0".to_owned()).ok()

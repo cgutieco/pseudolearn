@@ -115,9 +115,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "service",
   "espera": {
@@ -144,9 +141,6 @@
   "regla": "R1",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "flexible"
   ],
   "origen": "derivado",
   "operacion": "service",
@@ -175,9 +169,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "service",
   "espera": {
@@ -204,9 +195,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "service",
   "espera": {
@@ -232,7 +220,6 @@
   "id": "C5",
   "regla": "R4",
   "perfiles": ["es"],
-  "rigor": ["estricto", "flexible"],
   "origen": "derivado",
   "operacion": "service",
   "espera": {
@@ -257,7 +244,6 @@
   "id": "C6",
   "regla": "R4",
   "perfiles": ["es"],
-  "rigor": ["estricto", "flexible"],
   "origen": "derivado",
   "operacion": "service",
   "espera": {
@@ -282,7 +268,6 @@
   "id": "C7",
   "regla": "R4",
   "perfiles": ["es"],
-  "rigor": ["estricto", "flexible"],
   "origen": "derivado",
   "operacion": "service",
   "espera": {
@@ -307,7 +292,6 @@
   "id": "C8",
   "regla": "R4",
   "perfiles": ["es"],
-  "rigor": ["estricto", "flexible"],
   "origen": "derivado",
   "operacion": "service",
   "espera": {
@@ -332,7 +316,6 @@
   "id": "C9",
   "regla": "R4",
   "perfiles": ["es"],
-  "rigor": ["estricto", "flexible"],
   "origen": "derivado",
   "operacion": "service",
   "espera": {
@@ -357,7 +340,6 @@
   "id": "C10",
   "regla": "R4",
   "perfiles": ["es"],
-  "rigor": ["estricto", "flexible"],
   "origen": "derivado",
   "operacion": "service",
   "espera": {
@@ -382,7 +364,6 @@
   "id": "C11",
   "regla": "R4",
   "perfiles": ["es"],
-  "rigor": ["estricto", "flexible"],
   "origen": "derivado",
   "operacion": "service",
   "espera": {
@@ -407,7 +388,6 @@
   "id": "C12",
   "regla": "R4",
   "perfiles": ["es"],
-  "rigor": ["estricto", "flexible"],
   "origen": "derivado",
   "operacion": "service",
   "espera": {
@@ -432,7 +412,6 @@
   "id": "C13",
   "regla": "R4",
   "perfiles": ["es"],
-  "rigor": ["estricto", "flexible"],
   "origen": "derivado",
   "operacion": "service",
   "espera": {"servicio": {"resolucion": null}},
@@ -450,7 +429,6 @@
   "id": "C14",
   "regla": "R4",
   "perfiles": ["es"],
-  "rigor": ["estricto", "flexible"],
   "origen": "derivado",
   "operacion": "service",
   "espera": {
@@ -476,9 +454,6 @@
   "regla": "R4",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "service",

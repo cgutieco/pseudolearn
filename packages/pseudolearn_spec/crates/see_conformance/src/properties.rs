@@ -100,11 +100,6 @@ fn scenario(
             binding.seed,
             sample,
             if sample & 1 == 0 { "es" } else { "en" },
-            if sample & 2 == 0 {
-                "strict"
-            } else {
-                "flexible"
-            },
         ));
     }
     let index = usize::try_from(sample).map_err(|error| error.to_string())?;
@@ -117,11 +112,6 @@ fn scenario(
             sample,
         },
         if sample & 1 == 0 { "es" } else { "en" },
-        if sample & 2 == 0 {
-            "strict"
-        } else {
-            "flexible"
-        },
         context.vocabulary,
     )
 }

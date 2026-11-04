@@ -45,18 +45,11 @@ fn analyze(
 ) {
     let source = pseudolearn_source::SourceText::new(program.to_owned());
     let profile = pseudolearn_lexicon::Profile::Spanish;
-    let (tree, mut diagnostics) = pseudolearn_syntax::parse_source_with_terminator(
-        &source,
-        profile,
-        Some(DiagnosticCode::MissingStatementTerminator),
-    );
+    let (tree, mut diagnostics) = pseudolearn_syntax::parse_source(&source, profile);
     let (module, mut semantic) = pseudolearn_semantic::analyze_with_options(
         &tree,
         &source,
-        pseudolearn_semantic::SemanticOptions {
-            profile,
-            strict: true,
-        },
+        pseudolearn_semantic::SemanticOptions { profile },
     );
     diagnostics.append(&mut semantic);
     (module, diagnostics)

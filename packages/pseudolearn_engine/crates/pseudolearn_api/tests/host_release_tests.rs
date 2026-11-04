@@ -11,7 +11,7 @@ fn run(program: &str, extra: Value) -> Value {
     let mut request = json!({
         "program": program,
         "profile": "es",
-        "strictness": "strict",
+
         "host": {
 
 

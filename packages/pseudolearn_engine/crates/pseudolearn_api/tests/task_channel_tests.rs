@@ -4,8 +4,7 @@ use serde_json::json;
 fn execute(program: &str) -> pseudolearn_api::ExecuteResponse {
     execute_program(&ExecuteRequest {
         program: program.to_owned(),
-        profile: "es".to_owned(),
-        strictness: "strict".to_owned(),
+        profile: "es".to_owned().to_owned(),
         ..Default::default()
     })
 }
@@ -66,7 +65,7 @@ fn a_suspended_producer_resumes_after_a_consumer_releases_capacity() {
 fn select_emits_one_decision_without_extra_binding_statements() {
     let response = execute_program(&ExecuteRequest {
         program: "Algoritmo Main\nDefinir queue Como Canal<Entero> <- Canal(3);\nqueue.Cerrar();\nElegir\nRecibir first Desde queue:\nRecibir second Desde queue:\nFinElegir\nFinAlgoritmo\n".to_owned(),
-        profile: "es".to_owned(), strictness: "strict".to_owned(), observe: "events".to_owned(), ..Default::default()
+        profile: "es".to_owned().to_owned(), observe: "events".to_owned(), ..Default::default()
     });
     assert_eq!(
         response.termination.get("kind"),

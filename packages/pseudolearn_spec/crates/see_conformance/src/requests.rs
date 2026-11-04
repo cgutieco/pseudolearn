@@ -1,18 +1,9 @@
-use see_model::{Block, contract::Vocabulary, field, strings};
+use see_model::{Block, contract::Vocabulary, field};
 use serde_json::{Map, Value, json};
 
 pub struct Selection<'case> {
     pub profile: &'case str,
-    pub strictness: &'case str,
     pub expected: &'case Value,
-}
-
-pub fn strictnesses(case: &Block) -> Vec<&str> {
-    if case.fields.contains_key("rigor") {
-        strings(case.fields.get("rigor"))
-    } else {
-        vec!["estricto"]
-    }
 }
 
 pub fn build(
@@ -20,12 +11,7 @@ pub fn build(
     selection: &Selection<'_>,
     vocabulary: &Vocabulary,
 ) -> Result<Value, String> {
-    let strictness = if selection.strictness == "estricto" {
-        "strict"
-    } else {
-        "flexible"
-    };
-    let mut request = json!({"profile": selection.profile, "strictness": strictness});
+    let mut request = json!({"profile": selection.profile});
     let fields = request.as_object_mut().ok_or("Invalid request skeleton")?;
     match operation(case) {
         "ir" => ir(case, fields),

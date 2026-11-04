@@ -115,9 +115,7 @@ pub(crate) fn parameter_type(session: &mut AnalysisSession<'_>, parameter: usize
     if let Some(kind) = session.child(parameter, NodeKind::Type) {
         return crate::type_resolution::resolve(session, kind);
     }
-    if session.options.strict {
-        session.report(DiagnosticCode::ExpectedType, parameter);
-    }
+    session.report(DiagnosticCode::ExpectedType, parameter);
     session.module.types.intern(Type::Unknown)
 }
 

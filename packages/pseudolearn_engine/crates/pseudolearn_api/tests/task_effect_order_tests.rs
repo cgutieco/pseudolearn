@@ -15,7 +15,7 @@ fn record(request: Value) -> Value {
 }
 
 fn request(order: Value) -> Value {
-    json!({"program": THREE_TIMERS, "profile": "es", "strictness": "strict", "host": host(order)})
+    json!({"program": THREE_TIMERS, "profile": "es",  "host": host(order)})
 }
 
 fn replay(tape: &Value, mutate: impl FnOnce(&mut Value)) -> Value {
@@ -35,7 +35,7 @@ fn replay(tape: &Value, mutate: impl FnOnce(&mut Value)) -> Value {
 fn programs_without_concurrent_effects_record_no_delivery_sequence() {
     let recorded = record(json!({
         "program": "Algoritmo Main\nEscribir 1;\nEscribir 2;\nFinAlgoritmo\n",
-        "profile": "es", "strictness": "strict"
+        "profile": "es"
     }));
     let entries = recorded
         .pointer("/value/effect_tape/entries")
@@ -129,7 +129,7 @@ const ABANDONED: &str = "SubProceso Suspendible Wait()\nDescartar Aguardar Solic
 
 #[test]
 fn a_cancelled_task_leaves_an_abandoned_entry_that_replays() {
-    let base = json!({"program": ABANDONED, "profile": "es", "strictness": "strict", "host": host(json!([]))});
+    let base = json!({"program": ABANDONED, "profile": "es",  "host": host(json!([]))});
     let recorded = record(base.clone());
     assert_eq!(recorded.pointer("/value/output"), Some(&json!("done\n")));
     let tape = recorded
@@ -287,7 +287,7 @@ fn recorded_numbers_match_the_published_cases() {
             committed(3, 3, Some(5))
         ]
     );
-    let base = json!({"program": ABANDONED, "profile": "es", "strictness": "strict", "host": host(json!([]))});
+    let base = json!({"program": ABANDONED, "profile": "es",  "host": host(json!([]))});
     assert_eq!(
         timer_entries(&record(base)),
         vec![(1, 1, Some(2), "abandoned".to_owned())]

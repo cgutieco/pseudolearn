@@ -160,11 +160,7 @@ revisado_por:
   "espera": {
     "salida": "{\"null\":null,\"boolean\":true,\"integer\":-2,\"real\":1.5,\"string\":\"x\",\"array\":[1],\"object\":{\"k\":2}}\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -185,11 +181,7 @@ revisado_por:
   "espera": {
     "salida": "0:0\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -210,11 +202,7 @@ revisado_por:
   "espera": {
     "salida": "\"😀\"\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -235,11 +223,7 @@ revisado_por:
   "espera": {
     "salida": "-0:0\nnone\nnone\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -260,11 +244,7 @@ revisado_por:
   "espera": {
     "salida": "{{lexema:jsonErrorCodeDuplicateKey}}\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -285,11 +265,7 @@ revisado_por:
   "espera": {
     "salida": "{{lexema:jsonErrorCodeInvalidEscape}}\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -310,11 +286,7 @@ revisado_por:
   "espera": {
     "salida": "{{lexema:jsonErrorCodeInvalidSyntax}}\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -335,11 +307,7 @@ revisado_por:
   "espera": {
     "salida": "{{lexema:jsonErrorCodeInvalidSyntax}}\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -360,11 +328,7 @@ revisado_por:
   "espera": {
     "salida": "{{lexema:jsonErrorCodeTrailingContent}}\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -388,11 +352,7 @@ revisado_por:
   "espera": {
     "salida": "{{lexema:jsonKindArray}}\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -416,11 +376,7 @@ revisado_por:
   "espera": {
     "salida": "{{lexema:jsonErrorCodeDepthExceeded}}\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -441,11 +397,7 @@ revisado_por:
   "espera": {
     "salida": "3:5\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -466,11 +418,7 @@ revisado_por:
   "espera": {
     "salida": "{\"a\":1,\"b\":9,\"c\":3}\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -492,11 +440,7 @@ revisado_por:
     "fallo": {
       "codigo": "jsonKindMismatch"
     }
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -517,11 +461,7 @@ revisado_por:
   "espera": {
     "salida": "b:a:Nada:Nada\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -542,11 +482,7 @@ revisado_por:
   "espera": {
     "salida": "\"ok\"\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 

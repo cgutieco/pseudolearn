@@ -2,7 +2,6 @@ use pseudolearn_runtime::{EffectTape, ExecutionIdentity, TAPE_SCHEMA_V1, TapeEnt
 
 fn sample_identity() -> ExecutionIdentity {
     ExecutionIdentity {
-        strictness: "strict".to_owned(),
         limits: Default::default(),
         source_digest: "abcd1234ef".to_owned(),
         package_graph_digest: "none".to_owned(),

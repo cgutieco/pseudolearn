@@ -139,8 +139,8 @@ fn shape(source: &str) -> Result<Value, String> {
     let start = Instant::now();
     prepare(source)?;
     let compile_nanoseconds = start.elapsed().as_nanos();
-    let ir = compile_source_to_ir(source, "es", "strict")
-        .map_err(|diagnostics| format!("{diagnostics:?}"))?;
+    let ir =
+        compile_source_to_ir(source, "es").map_err(|diagnostics| format!("{diagnostics:?}"))?;
     let request = ExecuteRequest {
         program: source.to_owned(),
         ..Default::default()

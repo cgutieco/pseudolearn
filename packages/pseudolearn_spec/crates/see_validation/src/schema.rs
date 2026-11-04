@@ -78,7 +78,7 @@ pub fn fields(kind: &str) -> (&'static str, &'static str) {
         ),
         "caso" => (
             "id regla perfiles espera origen",
-            "rigor programa programas programa_ri cli servicio api aplicacion paginacion limites cancelacion cancelacion_prueba esperas entradas etiquetas revisado_por exclusiones perfil_base operacion produce evita semilla sujetos anfitrion",
+            "programa programas programa_ri cli servicio api aplicacion paginacion limites cancelacion cancelacion_prueba esperas entradas etiquetas revisado_por exclusiones perfil_base operacion produce evita semilla sujetos anfitrion",
         ),
         "definicion" => ("id termino texto", "valor"),
         "error" => ("id situacion clase codigo severidad", ""),
@@ -129,20 +129,6 @@ fn check_case(block: &Block, errors: &mut Vec<String>) {
             .any(|profile| !["es", "en"].contains(profile))
     {
         errors.push("SEE-PROFILE: invalid profiles".to_owned());
-    }
-    check_rigor(block, errors);
-}
-
-fn check_rigor(block: &Block, errors: &mut Vec<String>) {
-    let invalid_strictness = block.fields.get("rigor").is_some_and(|value| {
-        let strictness = strings(Some(value));
-        strictness.is_empty()
-            || strictness
-                .iter()
-                .any(|rigor| !["estricto", "flexible"].contains(rigor))
-    });
-    if invalid_strictness {
-        errors.push("SEE-SCHEMA: invalid strictness".to_owned());
     }
 }
 

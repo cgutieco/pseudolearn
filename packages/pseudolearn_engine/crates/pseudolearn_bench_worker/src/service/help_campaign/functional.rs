@@ -6,12 +6,7 @@ use crate::service::help_campaign::oracle::Oracle;
 use crate::service::help_campaign::transports::{Answer, ApiTransport, LspTransport};
 use serde_json::{Value, json};
 
-const COMBINATIONS: [(&str, &str); 4] = [
-    ("strict", "es"),
-    ("strict", "en"),
-    ("flexible", "es"),
-    ("flexible", "en"),
-];
+const LANGUAGES: [&str; 2] = ["es", "en"];
 
 #[derive(Default)]
 pub struct Tally {
@@ -73,7 +68,6 @@ impl Report {
 struct Combination<'combination> {
     label: String,
     profile: &'combination str,
-    strictness: &'combination str,
     language: &'combination str,
 }
 
@@ -118,11 +112,10 @@ fn run_variant(
         digest
             .feed(format!("{name}:{}:{}:{}\n", variant.name, query.line, query.column).as_bytes());
     }
-    for (strictness, language) in COMBINATIONS {
+    for language in LANGUAGES {
         let combination = Combination {
-            label: format!("{name} {} {strictness} {language}", variant.name),
+            label: format!("{name} {} {language}", variant.name),
             profile,
-            strictness,
             language,
         };
         run_combination(oracle, report, &combination, (variant, &set))?;
@@ -137,17 +130,8 @@ fn run_combination(
     input: (&Variant, &[Query]),
 ) -> Result<(), String> {
     let (variant, set) = input;
-    let mut api = ApiTransport::open(
-        &variant.program,
-        combination.profile,
-        combination.strictness,
-        combination.language,
-    )?;
-    let mut lsp = LspTransport::open(
-        &variant.program,
-        combination.language,
-        combination.strictness,
-    );
+    let mut api = ApiTransport::open(&variant.program, combination.profile, combination.language)?;
+    let mut lsp = LspTransport::open(&variant.program, combination.language);
     let context = Context {
         language: combination.language,
         partial: variant.partial,

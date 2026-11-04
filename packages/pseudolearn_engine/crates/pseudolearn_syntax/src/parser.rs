@@ -23,11 +23,6 @@ impl<'tokens> Parser<'tokens> {
         self
     }
 
-    pub fn with_terminator(mut self, diagnostic: Option<DiagnosticCode>) -> Self {
-        self.state.terminator_diagnostic = diagnostic;
-        self
-    }
-
     pub fn with_project_mode(mut self, enabled: bool) -> Self {
         self.state.project_mode = enabled;
         self

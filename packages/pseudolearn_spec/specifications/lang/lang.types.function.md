@@ -77,11 +77,7 @@
   "espera": {
     "salida": "5\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -102,11 +98,7 @@
   "espera": {
     "salida": "7\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -132,11 +124,7 @@
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -156,10 +144,6 @@
     "salida": "<subprograma>\n",
     "terminacion": "completed"
   },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "exclusiones": {
     "en": "El formato inglés se verifica por separado en C5."
   }
@@ -182,10 +166,6 @@
     "salida": "<subroutine>\n",
     "terminacion": "completed"
   },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "exclusiones": {
     "es": "El formato español se verifica por separado en C4."
   }
@@ -209,11 +189,7 @@
   "espera": {
     "salida": "7\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -234,11 +210,7 @@
   "espera": {
     "salida": "9\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -259,11 +231,7 @@
   "espera": {
     "salida": "7\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -284,11 +252,7 @@
   "espera": {
     "salida": "11\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -309,11 +273,7 @@
   "espera": {
     "salida": "720\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -334,11 +294,7 @@
   "espera": {
     "salida": "4\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -359,11 +315,7 @@
   "espera": {
     "salida": "7\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -389,11 +341,7 @@
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -414,11 +362,7 @@
   "espera": {
     "salida": "3\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -439,11 +383,7 @@
   "espera": {
     "salida": "13\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -469,11 +409,7 @@
       }
     ],
     "arbol": "presente"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -484,10 +420,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "SubProceso increment(value Como Entero) Como Entero\nRetornar value + 1;\nFinSubProceso\nAlgoritmo P\nDefinir callback Como SubProceso(Entero) Como Entero <- increment;\nEscribir callback(9223372036854775807);\nFinAlgoritmo\n",

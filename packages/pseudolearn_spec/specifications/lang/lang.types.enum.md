@@ -107,11 +107,7 @@ Un enumerado es un conjunto cerrado de nombres con un ordinal por miembro.
   "espera": {
     "salida": "Verde\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -132,11 +128,7 @@ Un enumerado es un conjunto cerrado de nombres con un ordinal por miembro.
   "espera": {
     "salida": "Unico\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -157,11 +149,7 @@ Un enumerado es un conjunto cerrado de nombres con un ordinal por miembro.
   "espera": {
     "salida": "zx\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -182,11 +170,7 @@ Un enumerado es un conjunto cerrado de nombres con un ordinal por miembro.
   "espera": {
     "salida": "Verde\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -207,11 +191,7 @@ Un enumerado es un conjunto cerrado de nombres con un ordinal por miembro.
   "espera": {
     "salida": "VerdeRojo\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -232,11 +212,7 @@ Un enumerado es un conjunto cerrado de nombres con un ordinal por miembro.
   "espera": {
     "salida": "{{lexema:booleanTrue}}{{lexema:booleanTrue}}{{lexema:booleanFalse}}\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -262,11 +238,7 @@ Un enumerado es un conjunto cerrado de nombres con un ordinal por miembro.
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -292,11 +264,7 @@ Un enumerado es un conjunto cerrado de nombres con un ordinal por miembro.
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -322,10 +290,7 @@ Un enumerado es un conjunto cerrado de nombres con un ordinal por miembro.
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -351,11 +316,7 @@ Un enumerado es un conjunto cerrado de nombres con un ordinal por miembro.
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -381,11 +342,7 @@ Un enumerado es un conjunto cerrado de nombres con un ordinal por miembro.
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -411,11 +368,7 @@ Un enumerado es un conjunto cerrado de nombres con un ordinal por miembro.
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -441,10 +394,6 @@ Un enumerado es un conjunto cerrado de nombres con un ordinal por miembro.
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```

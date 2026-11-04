@@ -67,10 +67,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "origen": "derivado",
   "operacion": "analyze",
   "espera": {
@@ -107,10 +103,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "origen": "derivado",
   "operacion": "analyze",
   "espera": {
@@ -128,9 +120,6 @@
   "regla": "R1",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "analyze",
@@ -210,9 +199,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "analyze",
   "espera": {
@@ -256,9 +242,6 @@
   "regla": "R1",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "analyze",
@@ -310,10 +293,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "origen": "derivado",
   "operacion": "analyze",
   "espera": {
@@ -340,10 +319,6 @@
   "regla": "R1",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "origen": "derivado",
   "operacion": "analyze",

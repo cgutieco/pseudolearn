@@ -22,7 +22,7 @@ fn example(identity: &str) -> Result<String, String> {
 }
 
 fn analyze(identity: &str) -> Result<HirModule, String> {
-    let (module, diagnostics) = support::analyze(&example(identity)?, true);
+    let (module, diagnostics) = support::analyze(&example(identity)?);
     module.ok_or_else(|| format!("{diagnostics:?}"))
 }
 
@@ -82,7 +82,7 @@ fn transitive_environments_preserve_capture_origins() -> Result<(), String> {
 
 #[test]
 fn mutable_capture_reports_both_use_and_declaration() -> Result<(), String> {
-    let (module, diagnostics) = support::analyze(&example("C3")?, true);
+    let (module, diagnostics) = support::analyze(&example("C3")?);
     assert!(module.is_none());
     let diagnostic = diagnostics
         .iter()

@@ -24,7 +24,6 @@ pub use probes::probe;
 pub use pseudolearn_project::{logical_path_key, normalize_logical_path};
 pub use versioning::{
     ENGINE_VERSION, PROTOCOL_VERSION, SUBJECT_NAME, supported_capabilities, supported_profiles,
-    supported_strictness,
 };
 pub use wire::{deserialize_from_str, serialize_to_string};
 

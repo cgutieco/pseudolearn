@@ -244,7 +244,7 @@ La cinta registra esas lecturas y la semilla inicial: reproducir consume la cint
 
 El runtime no consulta entropía: recibe la semilla efectiva en `ExecutionIdentity`. Obtenerla del sistema
 operativo o aceptar una explícita es responsabilidad del anfitrión físico; el valor por omisión 42 de
-`ExecuteRequest` existe solo para el doble de pruebas del corpus. La identidad de la cinta incluye la
-semilla, y reproducir con otra semilla se rechaza con `replay_identity_mismatch`. Las lecturas de reloj
+`ExecuteRequest` existe solo para el doble de pruebas del corpus. La identidad de la cinta incluye programa, grafo de paquetes, perfil, semilla y límites; reproducir con un valor
+distinto se rechaza con `replay_identity_mismatch`. Las lecturas de reloj
 y las duraciones de temporizador son entradas de cinta: la reproducción las entrega sin consultar al
 anfitrión (`live_time_tape_tests`).

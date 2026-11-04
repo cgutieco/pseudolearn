@@ -136,21 +136,11 @@
             "type": "string",
             "enum": ["es", "en"]
           }
-        },
-        "strictness": {
-          "type": "array",
-          "minItems": 1,
-          "uniqueItems": true,
-          "items": {
-            "type": "string",
-            "enum": ["estricto", "flexible"]
-          }
         }
       },
       "required": [
         "editions",
-        "profiles",
-        "strictness"
+        "profiles"
       ],
       "additionalProperties": false
     },
@@ -196,10 +186,6 @@
           "type": "string",
           "enum": ["es", "en"]
         },
-        "strictness": {
-          "type": "string",
-          "enum": ["estricto", "flexible"]
-        },
         "kind": {
           "type": "string",
           "enum": ["executable", "accepted", "diagnostic"]
@@ -214,7 +200,6 @@
         "version",
         "case",
         "profile",
-        "strictness",
         "kind",
         "label"
       ],

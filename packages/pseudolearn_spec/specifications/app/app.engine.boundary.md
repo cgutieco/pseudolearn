@@ -64,7 +64,6 @@
   "id": "C1",
   "regla": "R1",
   "perfiles": ["es"],
-  "rigor": ["estricto"],
   "origen": "derivado",
   "operacion": "app",
   "aplicacion": {
@@ -80,7 +79,6 @@
   "id": "C2",
   "regla": "R1",
   "perfiles": ["es"],
-  "rigor": ["estricto"],
   "origen": "derivado",
   "operacion": "app",
   "aplicacion": {
@@ -106,7 +104,6 @@
   "id": "C3",
   "regla": "R2",
   "perfiles": ["es"],
-  "rigor": ["estricto"],
   "origen": "derivado",
   "operacion": "app",
   "aplicacion": {
@@ -132,7 +129,6 @@
   "id": "C4",
   "regla": "R3",
   "perfiles": ["es"],
-  "rigor": ["estricto"],
   "origen": "derivado",
   "operacion": "app",
   "aplicacion": {
@@ -148,7 +144,6 @@
   "id": "C5",
   "regla": "R3",
   "perfiles": ["es"],
-  "rigor": ["estricto"],
   "origen": "derivado",
   "operacion": "app",
   "aplicacion": {
@@ -164,7 +159,6 @@
   "id": "C6",
   "regla": "R3",
   "perfiles": ["es"],
-  "rigor": ["estricto"],
   "origen": "derivado",
   "operacion": "app",
   "aplicacion": {

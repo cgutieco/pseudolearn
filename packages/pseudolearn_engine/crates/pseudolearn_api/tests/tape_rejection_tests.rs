@@ -16,7 +16,7 @@ fn identity_host() -> Value {
 fn recorded_tape() -> Result<Value, String> {
     let recording = ApiSession::default().call(
         "record",
-        &json!({"request":{"program":PROGRAM,"profile":"es","strictness":"strict","seed":42,"host":live_host()}}),
+        &json!({"request":{"program":PROGRAM,"profile":"es","seed":42,"host":live_host()}}),
     );
     recording
         .pointer("/value/effect_tape")
@@ -41,7 +41,7 @@ fn replay(mode: &str, program: &str, seed: i64, tape: &Value) -> Value {
     let started = session.call(
         "start",
         &json!({"analysis":analysis.pointer("/value/resource"),"program":program,"profile":"es",
-            "strictness":"strict","seed":seed,"host":identity_host(),
+            "seed":seed,"host":identity_host(),
             "execution_mode":mode,"effect_tape":tape}),
     );
     if started.get("failure").is_some() {
@@ -216,7 +216,7 @@ fn replay_rejects_external_input_without_consulting_anything() -> Result<(), Str
     let started = session.call(
         "start",
         &json!({"analysis":analysis.pointer("/value/resource"),"program":PROGRAM,"profile":"es",
-            "strictness":"strict","seed":42,"host":identity_host(),
+            "seed":42,"host":identity_host(),
             "execution_mode":"replay_from_tape","effect_tape":tape}),
     );
     let rejected = session.call(

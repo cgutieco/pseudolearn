@@ -7,7 +7,7 @@ pub struct CompiledCase {
 }
 
 pub fn compile_case(name: &str, source: &str, inputs: Vec<String>) -> Result<CompiledCase, String> {
-    let module = pseudolearn_api::compile_source_to_module(source, "es", "strict")
+    let module = pseudolearn_api::compile_source_to_module(source, "es")
         .map_err(|diagnostics| format!("{name}: {diagnostics:?}"))?;
     let bytecode = pseudolearn_bytecode::compile_module(&module)
         .map_err(|error| format!("{name}: {error:?}"))?;

@@ -31,9 +31,9 @@ pub struct EditSession {
 }
 
 impl EditSession {
-    pub fn new(text: String, profile: Profile, strict: bool) -> Self {
+    pub fn new(text: String, profile: Profile) -> Self {
         Self {
-            document: DocumentSession::new(text, profile, strict),
+            document: DocumentSession::new(text, profile),
             revision: 1,
             offer: None,
             template: None,

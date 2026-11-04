@@ -31,7 +31,6 @@ pub struct Observation {
     pub rule: String,
     pub case: String,
     pub profile: String,
-    pub strictness: String,
     pub verdict: String,
     pub differences: Vec<String>,
     pub expected: Value,

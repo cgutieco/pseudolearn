@@ -67,7 +67,7 @@ fn arguments_json(
 }
 
 fn template_for(code: DiagnosticCode, settings: &ExecutableSettings) -> &str {
-    match code.severity("estricto") {
+    match code.severity() {
         DiagnosticSeverity::Error => &settings.error_template,
         DiagnosticSeverity::Warning => &settings.warning_template,
         DiagnosticSeverity::Information => &settings.information_template,

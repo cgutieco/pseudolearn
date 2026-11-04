@@ -43,8 +43,8 @@ Elección: `Diagnostic { code, class, severity, span, related, arguments }`; `en
 Alternativas descartadas y fundamento: El corpus DIAG aporta el catálogo y las plantillas. Se rechaza traducir lexemas del usuario o mezclar idioma de interfaz con vocabulario.
 
 Problema: clase y severidad deben coincidir con la ficha del corpus. Elección: el generador valida
-las clases cerradas lexical, syntax, semantic, runtime e internal y genera las dos severidades.
-El modelo conserva códigos, tramos y argumentos; la selección de rigor consulta la tabla generada.
+las clases cerradas lexical, syntax, semantic, runtime e internal y genera una severidad fija por código.
+El modelo conserva códigos, tramos y argumentos; `DiagnosticCode::severity()` consulta la tabla generada.
 Se rechaza inferir clase por un prefijo del código o tratar una clase desconocida como fallo interno.
 
 Los argumentos conservan su clase: lexema, token, tipo, término o número. El catálogo genera la ficha

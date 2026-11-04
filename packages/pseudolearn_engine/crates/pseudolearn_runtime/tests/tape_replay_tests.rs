@@ -4,7 +4,6 @@ use pseudolearn_runtime::{
 
 fn sample_identity() -> ExecutionIdentity {
     ExecutionIdentity {
-        strictness: "strict".to_owned(),
         limits: Default::default(),
         source_digest: "digest_source".to_owned(),
         package_graph_digest: "none".to_owned(),

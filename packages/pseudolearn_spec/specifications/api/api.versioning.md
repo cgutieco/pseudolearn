@@ -78,9 +78,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -165,9 +162,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -229,7 +223,6 @@
   "id": "C5",
   "regla": "R3",
   "perfiles": ["es"],
-  "rigor": ["estricto"],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -276,7 +269,6 @@
   "id": "C6",
   "regla": "R3",
   "perfiles": ["es"],
-  "rigor": ["estricto"],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -323,7 +315,6 @@
   "id": "C7",
   "regla": "R3",
   "perfiles": ["es"],
-  "rigor": ["estricto"],
   "origen": "derivado",
   "operacion": "api",
   "api": {

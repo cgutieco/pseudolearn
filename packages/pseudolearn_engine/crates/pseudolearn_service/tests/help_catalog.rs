@@ -90,7 +90,7 @@ fn first_card_in_catalog_order_wins_for_shared_tokens() -> Result<(), String> {
 fn locale_is_independent_from_the_document_profile() -> Result<(), String> {
     let (source, position) =
         split_cursor("Algoritmo Principal\n  Mien|tras 1 = 1 Hacer\n  FinMientras\nFinAlgoritmo\n");
-    let document = DocumentSession::new(source, Profile::Spanish, true);
+    let document = DocumentSession::new(source, Profile::Spanish);
     let description = |locale| {
         resolve_help_with_locale(&document, position, locale)
             .and_then(|outcome| outcome.hover)
@@ -111,7 +111,7 @@ fn locale_is_independent_from_the_document_profile() -> Result<(), String> {
 fn default_locale_follows_the_profile() -> Result<(), String> {
     let (source, position) =
         split_cursor("Algorithm Main\n  Wh|ile 1 = 1 Do\n  EndWhile\nEndAlgorithm\n");
-    let document = DocumentSession::new(source, Profile::English, true);
+    let document = DocumentSession::new(source, Profile::English);
     let hover = document.queries().hover(position).ok_or("missing hover")?;
     assert_eq!(
         hover.description.as_deref(),

@@ -85,20 +85,14 @@ pub(super) fn card_token_set(card: &Value) -> Result<BTreeSet<String>, String> {
 }
 
 pub(super) fn complete_scope(value: &Value) -> bool {
-    [
-        ("editions", "2026"),
-        ("profiles", "es"),
-        ("profiles", "en"),
-        ("strictness", "estricto"),
-        ("strictness", "flexible"),
-    ]
-    .iter()
-    .all(|(dimension, expected)| {
-        value
-            .pointer(&format!("/availability/{dimension}"))
-            .and_then(Value::as_array)
-            .is_some_and(|values| values.iter().any(|entry| entry.as_str() == Some(expected)))
-    })
+    [("editions", "2026"), ("profiles", "es"), ("profiles", "en")]
+        .iter()
+        .all(|(dimension, expected)| {
+            value
+                .pointer(&format!("/availability/{dimension}"))
+                .and_then(Value::as_array)
+                .is_some_and(|values| values.iter().any(|entry| entry.as_str() == Some(expected)))
+        })
 }
 
 pub(super) fn coverage_destination(record: &Value, category: &str) -> Option<String> {

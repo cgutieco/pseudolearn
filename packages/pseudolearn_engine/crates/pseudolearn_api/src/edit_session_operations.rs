@@ -10,7 +10,7 @@ use serde_json::{Value, json};
 
 impl ApiSession {
     pub(crate) fn open_edit_session(&mut self, arguments: &Value) -> Result<Value, ApiError> {
-        for name in ["program", "profile", "strictness"] {
+        for name in ["program", "profile"] {
             if arguments.get(name).and_then(Value::as_str).is_none() {
                 return Err(usage(&format!("missing {name}")));
             }
@@ -18,11 +18,7 @@ impl ApiSession {
         let request = parse_analysis(arguments)?;
         let profile =
             Profile::from_name(&request.profile).ok_or_else(|| usage("invalid profile"))?;
-        if !matches!(request.strictness.as_str(), "strict" | "flexible") {
-            return Err(usage("invalid strictness"));
-        }
-        let strict = request.strictness == "strict";
-        let session = EditSession::new(request.program, profile, strict);
+        let session = EditSession::new(request.program, profile);
         let revision = session.revision;
         let resource = self.insert(Resource::Editing(Box::new(session)))?;
         Ok(json!({ "resource": resource, "revision": revision.to_string() }))

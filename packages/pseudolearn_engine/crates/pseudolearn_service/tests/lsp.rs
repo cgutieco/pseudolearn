@@ -387,7 +387,7 @@ fn answers_signature_help_and_document_symbols() {
 #[test]
 fn formatting_returns_one_full_document_edit_or_nothing() {
     let mut server =
-        ready_server("algoritmo Principal\ndefinir mutable x como entero <- 0\nfinalgoritmo");
+        ready_server("algoritmo Principal\ndefinir mutable x como entero <- 0;\nfinalgoritmo");
     let edits = request(
         &mut server,
         2,

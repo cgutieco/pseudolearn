@@ -98,9 +98,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "service",
   "espera": {
@@ -125,9 +122,6 @@
   "regla": "R2",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "service",
@@ -160,9 +154,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "service",
   "espera": {
@@ -187,9 +178,6 @@
   "regla": "R3",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "service",
@@ -228,7 +216,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": ["estricto"],
   "origen": "derivado",
   "operacion": "service",
   "espera": {
@@ -260,7 +247,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": ["estricto"],
   "origen": "derivado",
   "operacion": "service",
   "espera": {"servicio":{"rename_rejected":true}},
@@ -273,7 +259,6 @@
   "id": "C7",
   "regla": "R4",
   "perfiles": ["en"],
-  "rigor": ["estricto"],
   "origen": "derivado",
   "operacion": "service",
   "espera": {"servicio":{"prepare_range":{"start":{"line":1,"character":15},"end":{"line":1,"character":20}},"rename_edits":2}},
@@ -286,7 +271,6 @@
   "id": "C8",
   "regla": "R4",
   "perfiles": ["es"],
-  "rigor": ["estricto"],
   "origen": "derivado",
   "operacion": "service",
   "espera": {"servicio":{"rename_edits":2,"document_versions":{"file:///app/main.pseudo":3,"file:///geo/vector.pseudo":8}}},

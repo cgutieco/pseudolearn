@@ -36,9 +36,8 @@ fn fixtures() -> Result<Value, String> {
 pub(super) fn compile(
     source: &str,
     profile: &str,
-    strictness: &str,
 ) -> Result<pseudolearn_vm::LoadedProgram, String> {
-    let module = pseudolearn_api::compile_source_to_module(source, profile, strictness)
+    let module = pseudolearn_api::compile_source_to_module(source, profile)
         .map_err(|errors| format!("Compilation {errors:?}"))?;
     let bytecode = pseudolearn_bytecode::compile_module(&module)
         .map_err(|error| format!("Bytecode {error:?}"))?;

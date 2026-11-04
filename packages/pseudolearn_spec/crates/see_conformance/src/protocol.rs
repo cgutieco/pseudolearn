@@ -177,7 +177,7 @@ fn validate_hello(hello: &Value) -> Result<(), String> {
             return Err(format!("SEE-PROTOCOL: missing {name}"));
         }
     }
-    for name in ["capabilities", "profiles", "strictness"] {
+    for name in ["capabilities", "profiles"] {
         if !hello
             .get(name)
             .and_then(Value::as_array)

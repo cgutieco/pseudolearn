@@ -136,10 +136,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "origen": "derivado",
   "operacion": "execute",
   "programas": {
@@ -159,10 +155,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "origen": "derivado",
   "operacion": "analyze",
@@ -184,10 +176,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "origen": "derivado",
   "operacion": "analyze",
   "programas": {
@@ -207,10 +195,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "origen": "derivado",
   "operacion": "analyze",
@@ -237,10 +221,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "origen": "derivado",
   "operacion": "analyze",
   "programas": {
@@ -266,10 +246,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "origen": "derivado",
   "operacion": "analyze",
   "programas": {
@@ -294,10 +270,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "origen": "derivado",
   "operacion": "analyze",
@@ -373,10 +345,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "origen": "derivado",
   "operacion": "execute",
   "programas": {
@@ -396,10 +364,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "origen": "derivado",
   "operacion": "analyze",
@@ -426,10 +390,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "origen": "derivado",
   "operacion": "execute",
   "programas": {
@@ -449,10 +409,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "origen": "derivado",
   "operacion": "analyze",
@@ -479,10 +435,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "origen": "derivado",
   "operacion": "analyze",
   "programas": {
@@ -507,10 +459,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "origen": "derivado",
   "operacion": "analyze",
@@ -537,10 +485,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "origen": "derivado",
   "operacion": "analyze",
   "programas": {
@@ -565,10 +509,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "origen": "derivado",
   "operacion": "analyze",
@@ -595,10 +535,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "origen": "derivado",
   "operacion": "execute",
   "programas": {
@@ -619,10 +555,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "origen": "derivado",
   "operacion": "execute",
   "programas": {
@@ -642,10 +574,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "origen": "derivado",
   "operacion": "analyze",
@@ -672,10 +600,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "origen": "derivado",
   "operacion": "execute",
   "programas": {
@@ -698,10 +622,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "origen": "derivado",
   "operacion": "execute",
@@ -729,10 +649,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "origen": "derivado",
   "operacion": "analyze",
   "programas": {
@@ -758,10 +674,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "origen": "derivado",
   "operacion": "analyze",
@@ -789,10 +701,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "origen": "derivado",
   "operacion": "analyze",
   "programas": {
@@ -819,10 +727,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Clase Inner\nPublico Definir value Como Entero;\nFinClase\nClase Outer\nPublico Definir inner Como Inner;\nFinClase\nAlgoritmo Main\nDefinir shared Como Inner <- Nuevo Inner();\nshared.value <- 1;\nDefinir first Como Outer <- Nuevo Outer();\nfirst.inner <- shared;\nDefinir second Como Outer <- Copiar(first);\nshared.value <- 9;\nEscribir second.inner.value;\nFinAlgoritmo\n",
     "en": "class Inner\npublic define value as integer;\nendClass\nclass Outer\npublic define inner as Inner;\nendClass\nalgorithm Main\ndefine shared as Inner <- new Inner();\nshared.value <- 1;\ndefine first as Outer <- new Outer();\nfirst.inner <- shared;\ndefine second as Outer <- copy(first);\nshared.value <- 9;\nwrite second.inner.value;\nendAlgorithm\n"
@@ -843,10 +747,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo Main\nDefinir values Como Vector<Entero> <- Vector();\nvalues.Agregar(3);\nvalues.Agregar(4);\nDefinir frozen Como Inmutable<Vector<Entero>> <- Instantanea(values);\nPara Cada item En frozen Hacer\nEscribir item;\nFinPara\nFinAlgoritmo\n",

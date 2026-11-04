@@ -9,7 +9,7 @@ pub(crate) fn install_snapshot(
     server: &mut crate::lsp_session::LspServer,
     request_parameters: &Value,
 ) -> Result<(), String> {
-    let snapshot = parse_snapshot(request_parameters, server.profile, server.strict)?;
+    let snapshot = parse_snapshot(request_parameters, server.profile)?;
     let uris = parse_uris(request_parameters)?;
     let session = WorkspaceSession::new(snapshot).map_err(|error| format!("{error:?}"))?;
     server.workspace_session = Some(session);
@@ -24,13 +24,12 @@ pub(crate) fn install_snapshot(
 fn parse_snapshot(
     request_parameters: &Value,
     requested_profile: Profile,
-    strict: bool,
 ) -> Result<WorkspaceSnapshot, String> {
     let project = request_parameters.get("project").ok_or("missing project")?;
     let project_id = integer(project, "project_id")?;
     let revision_id = integer(project, "revision_id")?;
     let (packages, files) = parse_project_contents(project)?;
-    let options = parse_options(request_parameters.get("options"), requested_profile, strict)?;
+    let options = parse_options(request_parameters.get("options"), requested_profile)?;
     Ok(WorkspaceSnapshot {
         project: ProjectInput {
             project_id,
@@ -106,7 +105,6 @@ fn parse_file(value: &Value) -> Result<FileInput, String> {
 fn parse_options(
     value: Option<&Value>,
     requested_profile: Profile,
-    strict: bool,
 ) -> Result<WorkspaceOptions, String> {
     let empty = Value::Null;
     let options = value.unwrap_or(&empty);
@@ -115,17 +113,10 @@ fn parse_options(
             .ok_or("invalid workspace profile")?,
         None => requested_profile,
     };
-    let strict = match options.get("strictness").and_then(Value::as_str) {
-        Some("strict") => true,
-        Some("flexible") => false,
-        Some(_) => return Err("invalid workspace strictness".to_owned()),
-        None => strict,
-    };
     let (file_profiles, entry) = option_contents(options);
     Ok(WorkspaceOptions {
         requested_profile: Some(requested_profile),
         file_profiles,
-        strict,
         entry,
         configurations: Vec::new(),
         dependency_inputs: BTreeMap::new(),

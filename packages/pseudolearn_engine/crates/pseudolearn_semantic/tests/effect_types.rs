@@ -21,19 +21,12 @@ fn capability_library_cases_have_typed_effects() -> Result<(), String> {
                     .and_then(Value::as_str)
                     .ok_or("missing program")?;
                 let source = pseudolearn_source::SourceText::new(program.to_owned());
-                let (tree, syntax) = pseudolearn_syntax::parse_source_with_terminator(
-                    &source,
-                    profile,
-                    Some(pseudolearn_diagnostics::DiagnosticCode::MissingStatementTerminator),
-                );
+                let (tree, syntax) = pseudolearn_syntax::parse_source(&source, profile);
                 assert!(syntax.is_empty(), "{name}: {syntax:?}");
                 let (module, diagnostics) = pseudolearn_semantic::analyze_with_options(
                     &tree,
                     &source,
-                    pseudolearn_semantic::SemanticOptions {
-                        profile,
-                        strict: true,
-                    },
+                    pseudolearn_semantic::SemanticOptions { profile },
                 );
                 let module = module
                     .ok_or_else(|| format!("{:?} {name}: {diagnostics:?}", case.get("id")))?;

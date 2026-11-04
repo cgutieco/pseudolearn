@@ -66,7 +66,6 @@ pub(crate) fn prepare_program_and_warnings(
     let (module, warnings) = crate::ir_execution::compile_source_with_identity(
         &request.program,
         &request.profile,
-        &request.strictness,
         request.source,
     )
     .map_err(|_| usage("analysis has errors"))?;

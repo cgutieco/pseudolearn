@@ -38,12 +38,6 @@ pub(crate) fn counterexample(
             .and_then(Value::as_str)
             .unwrap_or("")
             .to_owned(),
-        strictness: scenario
-            .request
-            .get("strictness")
-            .and_then(Value::as_str)
-            .unwrap_or("")
-            .to_owned(),
         program: scenario
             .request
             .get("program")

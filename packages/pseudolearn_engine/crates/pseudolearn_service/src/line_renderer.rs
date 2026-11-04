@@ -10,7 +10,6 @@ pub struct RenderContext<'context> {
     pub source: &'context SourceText,
     pub profile: Profile,
     pub roles: &'context IdentifierRoles,
-    pub strict: bool,
 }
 
 #[derive(Clone, Debug)]
@@ -31,7 +30,7 @@ pub fn render_line(
         .map(|index| piece_for(context, *index))
         .collect();
     if terminated_statement {
-        adjust_terminator(&mut pieces, context.strict);
+        adjust_terminator(&mut pieces);
     }
     mark_unary_operators(&mut pieces);
     join_pieces(&pieces)
@@ -92,42 +91,25 @@ fn normalize_comment(original: &str) -> String {
     format!("// {rest}")
 }
 
-fn adjust_terminator(pieces: &mut Vec<Piece>, strict: bool) {
+fn adjust_terminator(pieces: &mut Vec<Piece>) {
     let last_code = pieces
         .iter()
         .rposition(|piece| piece.kind != TokenKind::Comment);
     let Some(position) = last_code else {
         return;
     };
-    if strict {
-        let ends_with_semicolon = pieces
-            .get(position)
-            .is_some_and(|piece| piece.kind == TokenKind::Semicolon);
-        if !ends_with_semicolon {
-            pieces.insert(
-                position.saturating_add(1),
-                Piece {
-                    text: ";".to_owned(),
-                    kind: TokenKind::Semicolon,
-                    unary: false,
-                },
-            );
-        }
-        return;
-    }
-    let mut cursor = position;
-    loop {
-        let is_semicolon = pieces
-            .get(cursor)
-            .is_some_and(|piece| piece.kind == TokenKind::Semicolon);
-        if !is_semicolon {
-            return;
-        }
-        pieces.remove(cursor);
-        if cursor == 0 {
-            return;
-        }
-        cursor = cursor.saturating_sub(1);
+    let ends_with_semicolon = pieces
+        .get(position)
+        .is_some_and(|piece| piece.kind == TokenKind::Semicolon);
+    if !ends_with_semicolon {
+        pieces.insert(
+            position.saturating_add(1),
+            Piece {
+                text: ";".to_owned(),
+                kind: TokenKind::Semicolon,
+                unary: false,
+            },
+        );
     }
 }
 

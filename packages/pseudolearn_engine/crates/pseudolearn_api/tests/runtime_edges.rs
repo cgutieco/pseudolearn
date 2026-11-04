@@ -2,7 +2,7 @@ use pseudolearn_runtime::CollectionPolicy;
 use pseudolearn_vm::{Fuel, RunExit, RunOptions, RunResult};
 
 fn execute(source: &str, options: RunOptions) -> Result<RunResult, String> {
-    let module = pseudolearn_api::compile_source_to_module(source, "es", "strict")
+    let module = pseudolearn_api::compile_source_to_module(source, "es")
         .map_err(|errors| format!("{errors:?}"))?;
     let bytecode =
         pseudolearn_bytecode::compile_module(&module).map_err(|error| format!("{error:?}"))?;

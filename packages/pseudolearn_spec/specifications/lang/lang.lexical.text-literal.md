@@ -77,11 +77,7 @@
   "espera": {
     "salida": "ab\né\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -107,10 +103,7 @@
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -136,10 +129,6 @@
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```

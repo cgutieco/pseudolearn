@@ -51,7 +51,6 @@ fn source_case(source: &Source, generator: &mut Generator) -> Outcome {
     let analysis = pseudolearn_api::execute_analyze(&AnalyzeRequest {
         program: mutated.clone(),
         profile: source.profile.clone(),
-        strictness: "strict".to_owned(),
         source: None,
     });
     let analysis_fault = analysis
@@ -77,8 +76,7 @@ fn source_case(source: &Source, generator: &mut Generator) -> Outcome {
 }
 
 fn ir_case(source: &Source, generator: &mut Generator) -> Outcome {
-    let Ok(canonical) =
-        pseudolearn_api::compile_source_to_ir(&source.program, &source.profile, "strict")
+    let Ok(canonical) = pseudolearn_api::compile_source_to_ir(&source.program, &source.profile)
     else {
         return Outcome::NotApplicable;
     };
@@ -87,7 +85,6 @@ fn ir_case(source: &Source, generator: &mut Generator) -> Outcome {
         program_ir: mutated.clone(),
         program: String::new(),
         profile: source.profile.clone(),
-        strictness: "strict".to_owned(),
         source: None,
     });
     if response.ir.accepted {

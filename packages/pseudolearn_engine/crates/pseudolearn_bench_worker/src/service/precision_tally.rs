@@ -88,7 +88,7 @@ fn query_rank(
     typed: usize,
 ) -> (Option<usize>, f64) {
     let (truncated, position) = truncated_query(&program.text, probe, typed);
-    let session = DocumentSession::new(truncated, program.profile, false);
+    let session = DocumentSession::new(truncated, program.profile);
     let started = Instant::now();
     let entries = session.queries().complete_with_edit(position).entries;
     let elapsed = started.elapsed().as_secs_f64() * 1000.0;

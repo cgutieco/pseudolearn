@@ -55,10 +55,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo Main\nDefinir values Como Vector<Entero> <- Vector();\nEscribir values.Longitud();\nFinAlgoritmo\n",
     "en": "algorithm Main\ndefine values as vector<integer> <- vector();\nwrite values.length();\nendAlgorithm\n"
@@ -80,10 +76,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo Main\nDefinir values Como Vector<Entero> <- Vector();\nvalues.Agregar(4);\nvalues[0] <- 8;\nEscribir values[0];\nFinAlgoritmo\n",
     "en": "algorithm Main\ndefine values as vector<integer> <- vector();\nvalues.append(4);\nvalues[0] <- 8;\nwrite values[0];\nendAlgorithm\n"
@@ -104,10 +96,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo Main\nDefinir values Como Vector<Entero> <- Vector();\nEscribir values[0];\nFinAlgoritmo\n",
@@ -131,10 +119,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Registro Box\nDefinir value Como Entero;\nFinRegistro\nAlgoritmo Main\nDefinir values Como Vector<Box> <- Vector();\nvalues.Agregar(Box(4));\nDefinir Mutable copy Como Box <- values[0];\ncopy.value <- 9;\nEscribir values[0].value;\nFinAlgoritmo\n",
@@ -171,10 +155,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo Main\nDefinir values Como Vector<Entero> <- Vector();\nvalues.Agregar(2);\nvalues.Insertar(0, 1);\nvalues.Agregar(3);\nvalues.Eliminar(1);\nEscribir values;\nFinAlgoritmo\n",
     "en": "algorithm Main\ndefine values as vector<integer> <- vector();\nvalues.append(2);\nvalues.insert(0, 1);\nvalues.append(3);\nvalues.remove(1);\nwrite values;\nendAlgorithm\n"
@@ -195,10 +175,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo Main\nDefinir values Como Vector<Entero> <- Vector();\nvalues.Insertar(1, 7);\nFinAlgoritmo\n",
@@ -222,10 +198,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo Main\nDefinir values Como Vector<Entero> <- Vector();\nDefinir alias Como Vector<Entero> <- values;\nalias.Agregar(5);\nEscribir values.Longitud();\nFinAlgoritmo\n",
@@ -263,10 +235,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo Main\nDefinir values Como Vector<Cadena> <- Vector();\nvalues.Agregar(\"ab\");\nEscribir values;\nFinAlgoritmo\n",
     "en": "algorithm Main\ndefine values as vector<string> <- vector();\nvalues.append(\"ab\");\nwrite values;\nendAlgorithm\n"
@@ -287,10 +255,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Registro Box\nDefinir value Como Entero;\nFinRegistro\nAlgoritmo Main\nDefinir values Como Vector<Box> <- Vector();\nEscribir values;\nFinAlgoritmo\n",
@@ -318,10 +282,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo Main\nDefinir values Como Vector<Entero> <- Vector();\nEscribir values;\nFinAlgoritmo\n",
     "en": "algorithm Main\ndefine values as vector<integer> <- vector();\nwrite values;\nendAlgorithm\n"
@@ -342,10 +302,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "SubProceso make(value Como Entero) Como SubProceso() Como Entero\nDefinir captured Como Entero <- value;\nRetornar SubProceso() Como Entero\nRetornar captured;\nFinSubProceso;\nFinSubProceso\nAlgoritmo Main\nDefinir callbacks Como Vector<SubProceso() Como Entero> <- Vector();\ncallbacks.Agregar(make(7));\nEscribir callbacks[0]();\nFinAlgoritmo\n",

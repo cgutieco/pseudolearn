@@ -117,25 +117,15 @@ impl LspServer {
             .as_ref()
             .and_then(|workspace| workspace.profile_for_path(&path))
             .unwrap_or_else(|| detect_document_profile(&text, self.locale_profile()));
-        let strict = self
-            .workspace_session
-            .as_ref()
-            .is_none_or(crate::workspace_session::WorkspaceSession::strict);
         self.service
-            .open_document(uri, text, DocumentOptions { profile, strict });
+            .open_document(uri, text, DocumentOptions { profile });
     }
 
     fn open_standalone_document(&mut self, uri: &str, text: &str, version: i64) -> Vec<Value> {
         self.versions.insert(uri.to_owned(), version);
         let profile = detect_document_profile(text, self.locale_profile());
-        self.service.open_document(
-            uri.to_owned(),
-            text.to_owned(),
-            DocumentOptions {
-                profile,
-                strict: self.strict,
-            },
-        );
+        self.service
+            .open_document(uri.to_owned(), text.to_owned(), DocumentOptions { profile });
         self.diagnostics_notification(uri).into_iter().collect()
     }
 

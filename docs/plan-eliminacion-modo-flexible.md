@@ -40,7 +40,7 @@
 | D-02 | Sin compatibilidad hacia atrás: no hay migración, no hay lectura tolerante de `flexible`, no hay alias de opciones antiguas. | El lenguaje no está en producción. Código de compatibilidad sería código muerto desde el primer día. |
 | D-03 | Lo que hoy es exclusivo del estricto pasa a ser regla del lenguaje: terminador `;` obligatorio, cláusula de paso obligatoria en `Para`, tipo obligatorio en los parámetros y etiquetas de `Según` solo de tipo entero o enumerado. | Son las bondades que se conservan como oficiales. |
 | D-04 | El catálogo de diagnósticos tiene una severidad por código. Desaparece el objeto `severidad` con dos columnas y la clase B «gobernada por exigencia». `IncompatibleSwitchCaseType` pasa a error fijo. | Con una sola política, la columna no aporta información. |
-| D-05 | Las clases de diagnóstico quedan: A estructural y ejecución fatal (error), C higiene (advertencia), D inferencia (información), E lectura inválida (advertencia, recuperable). La letra B no se reutiliza ni se renumera; si el corpus exige letras contiguas, se decide en PF-3 y se informa. | Evita reescribir identidades por estética; el corpus manda. |
+| D-05 | Las clases de diagnóstico quedan A, C, D y E con sus letras actuales. La B no se reutiliza ni se renumera: `see validate` y las reglas de `LANG.DIAGNOSTICS` no exigen clases contiguas. | Evita reescribir identidades por estética; el corpus manda. |
 | D-06 | El parámetro `strictness` y el parámetro `terminator` opcional del parser desaparecen de las firmas, de los modelos de la API, del puente y de los adaptadores. No queda ningún booleano `strict`. | Un parámetro con un solo valor posible es código muerto. |
 | D-07 | La app elimina `Document.strictness`, su persistencia en el front matter del archivo, su paso por la sincronización, el selector «Flexible» de `ExecutionConfigurationControls` y las cadenas `executionFlexible` y afines. `rustStrictness` desaparece. | Petición expresa; no hay valor que guardar. |
 | D-08 | La CLI elimina `--rigor` y `--strictness`; VS Code elimina `pseudolearn.strictness` de `package.json` y del resolutor de configuración. | Opciones sin efecto son superficie engañosa. |
@@ -151,18 +151,18 @@ junto con su consumidor; el reanclaje ocurre en esa misma fase. La persona autor
 
 ### PF-3 · Motor (tamaño L, mecánico)
 
-- [ ] PF-3.1 Tests que fallan antes del cambio: terminador, paso y tipo de parámetro obligatorios sin consultar ningún modo.
-- [ ] PF-3.2 Especificación, catálogo y `pseudolearn_diagnostics`: el generador de código del catálogo
+- [x] PF-3.1 Tests que fallan antes del cambio: terminador, paso y tipo de parámetro obligatorios sin consultar ningún modo.
+- [x] PF-3.2 Especificación, catálogo y `pseudolearn_diagnostics`: el generador de código del catálogo
       (`codegen/policy.rs`) emite una sola severidad por código y `DiagnosticCode::severity` pierde su argumento. Resolver
       aquí si la clasificación conserva las letras A, C, D, E sin renumerar B.
-- [ ] PF-3.3 `pseudolearn_syntax`: el terminador es siempre obligatorio; desaparece `with_terminator`,
+- [x] PF-3.3 `pseudolearn_syntax`: el terminador es siempre obligatorio; desaparece `with_terminator`,
       `parse_source_with_terminator` y `terminator_diagnostic`.
-- [ ] PF-3.4 `pseudolearn_semantic`: quitar `SemanticOptions.strict` y las seis ramas.
-- [ ] PF-3.5 Especificaciones API, recurso/esquema `helpCatalog/1` y `pseudolearn_service`, `pseudolearn_api`, `aot_rt`,
+- [x] PF-3.4 `pseudolearn_semantic`: quitar `SemanticOptions.strict` y las seis ramas.
+- [x] PF-3.5 Especificaciones API, recurso/esquema `helpCatalog/1` y `pseudolearn_service`, `pseudolearn_api`, `aot_rt`,
       `conformance` y `bench_worker`:
       quitar `strictness`, `strict` e `is_strict` de las firmas, modelos y operaciones; `execution_sources`, `ir_execution`,
       `native_build`, `diagnostic_template`, `edit_session_operations` y `program_view` incluidos.
-- [ ] PF-3.6 Reescribir los ~90 tests que pasan `strictness` o comparan modos; no duplicar casos del corpus como tests.
+- [x] PF-3.6 Reescribir los ~90 tests que pasan `strictness` o comparan modos; no duplicar casos del corpus como tests.
 - [ ] PF-3.7 README de cada crate tocado y `cargo xtask verify` en verde.
 
 ### PF-4 · Marcador de línea (tamaño M)
@@ -233,7 +233,7 @@ junto con su consumidor; el reanclaje ocurre en esa misma fase. La persona autor
 | PF-0 | `6fb7bd7fd7b6b55e3e212d13b5095453bcfa2db7` | Inventario y línea base en §7; verificadores locales en verde | PF-0 completado; detenida la ejecución por PHASE-STOP | PF-1 requiere autorización explícita nueva |
 | PF-1 | | Reordenamiento autorizado el 2026-11-03; entregables reasignados a PF-2–PF-6 por dependencia de verificación | No ejecutada como fase independiente | Ninguno; no se modificó corpus ni código para PF-1 |
 | PF-2 | `7e673d03cd6be3de62b4ebab9a904a17a21bf97e` | `cargo fmt --all --check`, Clippy estricto, `cargo test --workspace`, cargo-deny offline (advisories/bans/licenses/sources ok), `rust-checks all .`, `rust-checks toolchain ../..`, build release del adaptador engine, `see validate` (197), `see export --check`, conformidad de propiedades (31 ejecutadas, 0 pendientes), conformidad completa (4026 observaciones, 0 divergencias) | Completada; verificadores en verde. `cargo xtask verify` se detuvo al intentar bloquear `/Users/cgutieco/.cargo/advisory-dbs/db.lock`, de solo lectura; cargo-deny pasó con base local temporal | Ninguno |
-| PF-3 | | | | |
+| PF-3 | `653716989a56291a09befa8361aca7a697faa3b1` | Código, especificaciones, casos, README y tests de PF-3.1–3.6 implementados. `see validate` (197), `see export --check`, propiedades (31, 0 pendientes), conformidad completa (2182 observaciones, 0 divergencias), formato, Clippy, verificadores Rust y cargo-deny offline (advisories/bans/licenses/sources ok). La suite del motor pasó con las dos pruebas de corpus excluidas; `cargo xtask verify` de spec pasó sus tests y verificadores salvo el bloqueo de cargo-deny global, que pasó con la base temporal offline. | PF-3.7 pendiente; la suite íntegra del motor falla en dos pruebas de `service/tests/corpus.rs`: los 174 programas de ejemplo de la app se exigen formateables y traducibles. El plan reserva la corrección de esos activos para PF-6.4, en conflicto con el gate PF-3.7. Se pidió resolución de alcance; PF-3 no se cierra. | Definir si se adelanta PF-6.4 o se acepta que PF-3 permanezca abierto hasta corregir esos ejemplos. |
 | PF-4 | | | | |
 | PF-5 | | | | |
 | PF-6 | | | | |

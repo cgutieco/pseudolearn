@@ -56,10 +56,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo Main\nDefinir values Como Vector<Entero> <- Vector();\nvalues.Agregar(4);\nvalues.Agregar(7);\nPara Cada value En values Hacer\nEscribir value;\nFinPara\nFinAlgoritmo\n",
     "en": "algorithm Main\ndefine values as vector<integer> <- vector();\nvalues.append(4);\nvalues.append(7);\nfor each value in values do\nwrite value;\nendFor\nendAlgorithm\n"
@@ -80,10 +76,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo Main\nDefinir values Como Diccionario<Entero, Entero> <- Diccionario();\nvalues[2] <- 8;\nPara Cada key, value En values Hacer\nEscribir key, value;\nFinPara\nFinAlgoritmo\n",
@@ -106,10 +98,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo Main\nDefinir values Como Vector<Entero> <- Vector();\nPara Cada value En values Hacer\nEscribir value;\nFinPara\nFinAlgoritmo\n",
     "en": "algorithm Main\ndefine values as vector<integer> <- vector();\nfor each value in values do\nwrite value;\nendFor\nendAlgorithm\n"
@@ -130,10 +118,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo Main\nDimension values[1, 1] Como Entero;\nPara Cada value En values Hacer\nEscribir value;\nFinPara\nFinAlgoritmo\n",
@@ -176,10 +160,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo Main\nDefinir values Como Vector<Entero> <- Vector();\nvalues.Agregar(1);\nPara Cada value En values Hacer\nvalues.Agregar(value);\nFinPara\nFinAlgoritmo\n",
     "en": "algorithm Main\ndefine values as vector<integer> <- vector();\nvalues.append(1);\nfor each value in values do\nvalues.append(value);\nendFor\nendAlgorithm\n"
@@ -203,10 +183,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo Main\nDefinir values Como Vector<Entero> <- Vector();\nvalues.Agregar(1);\nPara Cada value En values Hacer\nvalues[0] <- 7;\nFinPara\nEscribir values[0];\nFinAlgoritmo\n",
     "en": "algorithm Main\ndefine values as vector<integer> <- vector();\nvalues.append(1);\nfor each value in values do\nvalues[0] <- 7;\nendFor\nwrite values[0];\nendAlgorithm\n"
@@ -228,10 +204,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo Main\nDefinir values Como Vector<Entero> <- Vector();\nPara Cada item En values Hacer\nEscribir item;\nFinPara\nFinAlgoritmo\n",
     "en": "algorithm Main\ndefine values as vector<integer> <- vector();\nfor each item in values do\nwrite item;\nendFor\nendAlgorithm\n"
@@ -252,10 +224,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo Main\nDefinir values Como Vector<Entero> <- Vector();\nvalues.Agregar(1);\nDefinir alias Como Vector<Entero> <- values;\nPara Cada item En values Hacer\nalias.Agregar(2);\nFinPara\nFinAlgoritmo\n",
@@ -279,10 +247,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo Main\nDefinir values Como Vector<Entero> <- Vector();\nvalues.Agregar(1);\nvalues.Agregar(2);\nPara Cada item En values Hacer\nvalues[1] <- 8;\nEscribir item;\nFinPara\nFinAlgoritmo\n",

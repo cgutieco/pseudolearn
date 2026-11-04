@@ -4,7 +4,7 @@ use pseudolearn_service::{
 };
 
 fn session(text: &str) -> EditSession {
-    EditSession::new(text.to_owned(), Profile::Spanish, true)
+    EditSession::new(text.to_owned(), Profile::Spanish)
 }
 
 fn offer_index(

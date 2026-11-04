@@ -35,7 +35,6 @@ pub struct HelpExample {
     pub version: &'static str,
     pub case: &'static str,
     pub profile: &'static str,
-    pub strictness: &'static str,
     pub kind: &'static str,
     pub label: &'static str,
 }

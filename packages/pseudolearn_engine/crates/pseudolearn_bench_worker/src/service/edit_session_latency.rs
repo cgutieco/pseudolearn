@@ -21,7 +21,7 @@ pub fn edit_session_latency() -> Result<Value, String> {
         .map_or(0, |found| found.saturating_add(5));
     let (mut applied, mut completed, mut typed) = (Vec::new(), Vec::new(), Vec::new());
     for _ in 0..ITERATIONS {
-        let mut session = EditSession::new(text.clone(), Profile::Spanish, true);
+        let mut session = EditSession::new(text.clone(), Profile::Spanish);
         let newline = TextChange {
             start_utf8: cursor,
             end_utf8: cursor,

@@ -80,7 +80,7 @@ pub(crate) fn diagnostic(
     let mut diagnostic = ApiDiagnostic {
         code: code.as_str().to_owned(),
         class: code.default_class().as_str().to_owned(),
-        severity: match code.severity("estricto") {
+        severity: match code.severity() {
             pseudolearn_diagnostics::DiagnosticSeverity::Error => "error",
             pseudolearn_diagnostics::DiagnosticSeverity::Warning => "warning",
             pseudolearn_diagnostics::DiagnosticSeverity::Information => "info",

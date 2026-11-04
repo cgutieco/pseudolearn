@@ -55,7 +55,7 @@ fn large_document_latency() -> Result<Value, String> {
         column: 6,
     };
     let started = Instant::now();
-    let session = DocumentSession::new(text, Profile::Spanish, true);
+    let session = DocumentSession::new(text, Profile::Spanish);
     let build_ms = started.elapsed().as_secs_f64() * 1000.0;
     let mut samples = Vec::new();
     for _ in 0..30 {

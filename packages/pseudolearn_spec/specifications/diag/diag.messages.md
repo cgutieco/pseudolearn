@@ -72,11 +72,7 @@
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -97,11 +93,7 @@
   "espera": {
     "arbol": "presente",
     "diagnosticos": []
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -127,11 +119,7 @@
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -142,10 +130,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo P\nDefinir stream Como Canal<Entero> <- Canal(1);\nSegun Aguardar stream.Recibir() Hacer\nNada: Escribir 0;\nAlgo(value): Escribir value;\nFinSegun\nFinAlgoritmo\n",
@@ -171,10 +155,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo P\nDefinir parts Como Vector<Cadena> <- Dividir(\"a\", \"\");\nFinAlgoritmo\n",
     "en": "algorithm P\ndefine parts as Vector<String> <- split(\"a\", \"\");\nendAlgorithm\n"
@@ -195,7 +175,6 @@
   "id": "C6",
   "regla": "R1",
   "perfiles": ["es", "en"],
-  "rigor": ["estricto", "flexible"],
   "programas": {
     "es": "Algoritmo P\nDefinir bytes Como Bytes <- BytesDesdeTexto(\"a\");\nbytes.Segmento(1, 1);\nFinAlgoritmo\n",
     "en": "algorithm P\ndefine bytes as Bytes <- bytesFromText(\"a\");\nbytes.segment(1, 1);\nendAlgorithm\n"
@@ -213,10 +192,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo P\nDefinir mapping Como ValorJson <- ObjetoJson();\nmapping.ConElemento(JsonNulo());\nFinAlgoritmo\n",

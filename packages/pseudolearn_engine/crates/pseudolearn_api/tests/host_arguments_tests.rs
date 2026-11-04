@@ -7,7 +7,7 @@ fn run(arguments: Value) -> Value {
     let program = PROGRAM.replace("Escribir list_size(value);", "Escribir value;");
     ApiSession::default().call(
         "record",
-        &json!({"request": {"program": program, "profile": "es", "strictness": "strict",
+        &json!({"request": {"program": program, "profile": "es",
             "host": {"args": arguments}},
             "options": {"capture_states": false, "batch_size": 1000}}),
     )

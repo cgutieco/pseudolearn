@@ -36,23 +36,20 @@ fn append(
     fixtures: &mut Vec<Value>,
 ) -> Result<(), String> {
     for profile in strings(case.fields.get("perfiles")) {
-        for strictness in requests::strictnesses(case) {
-            let expected = case
-                .fields
-                .get("esperas")
-                .and_then(|values| values.get(profile))
-                .or_else(|| case.fields.get("espera"))
-                .ok_or("Missing runtime expectation")?
-                .clone();
-            let expected = crate::execution::resolved_expected(expected, profile, vocabulary)?;
-            let selection = Selection {
-                profile,
-                strictness,
-                expected: &expected,
-            };
-            let request = requests::build(case, &selection, vocabulary)?;
-            fixtures.push(json!({"specification":identity,"case":case.fields.get("id"),"request":request,"expected":expected}));
-        }
+        let expected = case
+            .fields
+            .get("esperas")
+            .and_then(|values| values.get(profile))
+            .or_else(|| case.fields.get("espera"))
+            .ok_or("Missing runtime expectation")?
+            .clone();
+        let expected = crate::execution::resolved_expected(expected, profile, vocabulary)?;
+        let selection = Selection {
+            profile,
+            expected: &expected,
+        };
+        let request = requests::build(case, &selection, vocabulary)?;
+        fixtures.push(json!({"specification":identity,"case":case.fields.get("id"),"request":request,"expected":expected}));
     }
     Ok(())
 }

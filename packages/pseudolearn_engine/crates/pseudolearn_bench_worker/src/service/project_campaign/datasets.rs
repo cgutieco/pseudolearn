@@ -58,7 +58,7 @@ impl Dataset {
     }
 
     pub fn arguments(&self, revision: &str) -> Value {
-        json!({"project": self.project(revision), "entry": self.entry, "strictness": "strict"})
+        json!({"project": self.project(revision), "entry": self.entry})
     }
 
     pub fn line_count(&self) -> usize {

@@ -48,7 +48,6 @@ pub(crate) struct ProjectRequest {
     pub profile: Profile,
     pub requested_profile: Option<Profile>,
     pub file_profiles: BTreeMap<String, Profile>,
-    pub strict: bool,
     pub input: ProjectInput,
     pub entry: Option<String>,
     pub configurations: Vec<Configuration>,
@@ -70,7 +69,6 @@ impl ProjectRequest {
             None => None,
         };
         let profile = requested_profile.unwrap_or(Profile::Spanish);
-        let strict = arguments.get("strictness").and_then(Value::as_str) != Some("flexible");
         let entry = arguments
             .get("entry")
             .and_then(Value::as_str)
@@ -83,7 +81,6 @@ impl ProjectRequest {
             profile,
             requested_profile,
             file_profiles: file_profiles(&wire)?,
-            strict,
             input: input(&wire, source.packages)?,
             entry,
             configurations: source.configurations,

@@ -4,7 +4,7 @@ use serde_json::{Value, json};
 fn execution(session: &mut ApiSession) -> Result<u64, String> {
     let created = session.call("create_analysis", &json!({
         "program":"Algoritmo P\nDefinir Mutable amount Como Entero <- 7;\namount <- amount + 1;\nEscribir amount;\nFinAlgoritmo\n",
-        "profile":"es","strictness":"strict"
+        "profile":"es"
     }));
     let analysis = created
         .pointer("/value/resource")
@@ -90,7 +90,7 @@ fn inspect_saved_program(program: &str, expression: &str) -> Result<Value, Strin
     let mut session = ApiSession::default();
     let created = session.call(
         "create_analysis",
-        &json!({"program":program,"profile":"es","strictness":"strict"}),
+        &json!({"program":program,"profile":"es"}),
     );
     let analysis = created
         .pointer("/value/resource")

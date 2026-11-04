@@ -14,7 +14,6 @@ use std::collections::{BTreeMap, BTreeSet};
 #[derive(Clone, Copy, Debug)]
 pub struct SemanticOptions {
     pub profile: Profile,
-    pub strict: bool,
 }
 
 #[derive(Clone, Copy)]
@@ -156,13 +155,7 @@ impl<'syntax> AnalysisSession<'syntax> {
 
 impl AnalysisSession<'_> {
     pub(crate) fn report(&mut self, code: DiagnosticCode, index: usize) {
-        let rigor = if self.options.strict {
-            "estricto"
-        } else {
-            "flexible"
-        };
-        let mut diagnostic =
-            Diagnostic::new(code, self.span(index)).with_severity(code.severity(rigor));
+        let mut diagnostic = Diagnostic::new(code, self.span(index));
         if code.argument_kind("lexeme").is_some() {
             diagnostic = diagnostic.with_argument(
                 "lexeme",

@@ -57,10 +57,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo Main\nDiferir\nEscribir 1;\nFinDiferir\nDiferir\nEscribir 2;\nFinDiferir\nEscribir 3;\nFinAlgoritmo\n",
     "en": "algorithm Main\ndefer\nwrite 1;\nendDefer\ndefer\nwrite 2;\nendDefer\nwrite 3;\nendAlgorithm\n"
@@ -81,10 +77,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo Main\nDefinir Mutable value Como Entero <- 1;\nDiferir\nEscribir value;\nFinDiferir\nvalue <- 7;\nFinAlgoritmo\n",
@@ -107,10 +99,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo Main\nPara index <- 1 Hasta 2 Con Paso 1 Hacer\nDiferir\nEscribir index;\nFinDiferir\nFinPara\nFinAlgoritmo\n",
     "en": "algorithm Main\nfor index <- 1 to 2 step 1 do\ndefer\nwrite index;\nendDefer\nendFor\nendAlgorithm\n"
@@ -131,10 +119,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo Main\nSi Falso Entonces\nDiferir\nEscribir 9;\nFinDiferir\nFinSi\nFinAlgoritmo\n",
@@ -175,10 +159,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "SubProceso Suspendible Wait() Como Resultado<Entero, Cadena>\nSegun SolicitarTemporizador() Hacer\nExito(timer):\nDefinir limit Como Entero <- 100;\nDiferir\nEscribir \"cleanup\";\nFinDiferir\nSegun Aguardar timer.Esperar(limit) Hacer\nExito(value): Retornar Exito(value);\nError(problem): Retornar Error(\"timer\");\nFinSegun\nError(problem): Retornar Error(\"request\");\nFinSegun\nRetornar Error(\"unreachable\");\nFinSubProceso\nSubProceso Suspendible Fail() Como Resultado<Entero, Cadena>\nRetornar Error(\"failed\");\nFinSubProceso\nAlgoritmo P\nTareas failureReport\nDefinir waiting Como Tarea<Entero> <- Lanzar Wait();\nDefinir failed Como Tarea<Entero> <- Lanzar Fail();\nFinTareas\nSegun failureReport Hacer\nNada: Escribir \"ok\";\nAlgo(problem): Escribir problem.Primero;\nFinSegun\nFinAlgoritmo\n",
     "en": "subroutine suspendable Wait() as result<integer, string>\nswitch requestTimer() do\nsuccess(timer):\ndefine limit as integer <- 100;\ndefer\nwrite \"cleanup\";\nendDefer\nswitch await timer.wait(limit) do\nsuccess(value): return success(value);\nfailure(problem): return failure(\"timer\");\nendSwitch\nfailure(problem): return failure(\"request\");\nendSwitch\nreturn failure(\"unreachable\");\nendSubroutine\nsubroutine suspendable Fail() as result<integer, string>\nreturn failure(\"failed\");\nendSubroutine\nalgorithm P\ntasks failureReport\ndefine waiting as task<integer> <- spawn Wait();\ndefine failed as task<integer> <- spawn Fail();\nendTasks\nswitch failureReport do\nnone: write \"ok\";\nsome(problem): write problem.first;\nendSwitch\nendAlgorithm\n"
@@ -201,10 +181,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "SubProceso value() Como Entero\nDefinir Mutable answer Como Entero <- 2;\nDiferir\nanswer <- 9;\nFinDiferir\nRetornar answer;\nFinSubProceso\nAlgoritmo Main\nEscribir value();\nFinAlgoritmo\n",
     "en": "subroutine value() as integer\ndefine mutable answer as integer <- 2;\ndefer\nanswer <- 9;\nendDefer\nreturn answer;\nendSubroutine\nalgorithm Main\nwrite value();\nendAlgorithm\n"
@@ -225,10 +201,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "SubProceso value() Como Entero\nDiferir\nRetornar 1;\nFinDiferir\nRetornar 2;\nFinSubProceso\nAlgoritmo Main\n\nFinAlgoritmo\n",
@@ -256,10 +228,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo Main\nDiferir\nEscribir 1;\nFinDiferir\nEscribir 1 div 0;\nFinAlgoritmo\n",
     "en": "algorithm Main\ndefer\nwrite 1;\nendDefer\nwrite 1 div 0;\nendAlgorithm\n"
@@ -283,10 +251,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo Main\nPara index <- 1 Hasta 3 Con Paso 1 Hacer\nDiferir\nEscribir index;\nFinDiferir\nSi index = 2 Entonces\nSalir;\nFinSi\nFinPara\nEscribir 9;\nFinAlgoritmo\n",
     "en": "algorithm Main\nfor index <- 1 to 3 step 1 do\ndefer\nwrite index;\nendDefer\nif index = 2 then\nbreak;\nendIf\nendFor\nwrite 9;\nendAlgorithm\n"
@@ -308,10 +272,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo Main\nDiferir\nEscribir 1;\nFinDiferir\nSi Verdadero Entonces\nDiferir\nEscribir 2;\nFinDiferir\nDiferir\nEscribir 3;\nFinDiferir\nFinSi\nFinAlgoritmo\n",
     "en": "algorithm Main\ndefer\nwrite 1;\nendDefer\nif true then\ndefer\nwrite 2;\nendDefer\ndefer\nwrite 3;\nendDefer\nendIf\nendAlgorithm\n"
@@ -332,10 +292,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo Main\nDiferir\nDiferir\nEscribir 1;\nFinDiferir\nFinDiferir\nFinAlgoritmo\n",
@@ -363,10 +319,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "SubProceso absent() Como Opcional<Entero>\nRetornar Nada;\nFinSubProceso\nSubProceso wrapped() Como Opcional<Cadena>\nDiferir\nEscribir 1;\nFinDiferir\nSi Verdadero Entonces\nDiferir\nEscribir 2;\nFinDiferir\nDefinir value Como Entero <- Propagar absent();\nEscribir value;\nFinSi\nRetornar Algo(\"unused\");\nFinSubProceso\nAlgoritmo Main\nDefinir outcome Como Opcional<Cadena> <- wrapped();\nSegun outcome Hacer\nAlgo(value): Escribir value;\nNada: Escribir \"empty\";\nFinSegun\nFinAlgoritmo\n",
     "en": "subroutine absent() as optional<integer>\nreturn none;\nendSubroutine\nsubroutine wrapped() as optional<string>\ndefer\nwrite 1;\nendDefer\nif true then\ndefer\nwrite 2;\nendDefer\ndefine value as integer <- propagate absent();\nwrite value;\nendIf\nreturn some(\"unused\");\nendSubroutine\nalgorithm Main\ndefine outcome as optional<string> <- wrapped();\nswitch outcome do\nsome(value): write value;\nnone: write \"empty\";\nendSwitch\nendAlgorithm\n"
@@ -387,10 +339,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "SubProceso LeerConCierre() Como Resultado<Cadena, ErrorES>\nDefinir dir Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir f Como ArchivoCap <- Propagar dir.Abrir(\"malo.txt\", \"lectura\");\nDiferir\nDescartar f.Cerrar();\nDescartar dir.Cerrar();\nFinDiferir\nDefinir texto Como Cadena <- Propagar f.LeerTexto();\nRetornar Exito(texto);\nFinSubProceso\nAlgoritmo Main\nDefinir res Como Resultado<Cadena, ErrorES> <- LeerConCierre();\nSegun res Hacer\nExito(t): Escribir t;\nError(err): Escribir err.Codigo, \":\", err.Incierto;\nFinSegun\nFinAlgoritmo\n",

@@ -89,9 +89,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "app",
   "aplicacion": {
@@ -120,9 +117,6 @@
   "regla": "R1",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "cli",
@@ -182,9 +176,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -194,7 +185,6 @@
         "arguments": {
           "program": "Algoritmo P\nEscribir @;\nFinAlgoritmo\n",
           "profile": "es",
-          "strictness": "strict",
           "source": {
             "project_id": "7",
             "revision_id": "11",
@@ -212,7 +202,6 @@
         "arguments": {
           "program": "Algoritmo P\nEscribir @;\nFinAlgoritmo\n",
           "profile": "es",
-          "strictness": "strict",
           "source": {
             "project_id": "7",
             "revision_id": "11",
@@ -333,9 +322,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -345,7 +331,6 @@
         "arguments": {
           "program": "",
           "profile": "es",
-          "strictness": "strict",
           "source": {
             "project_id": "7",
             "revision_id": "0",
@@ -391,9 +376,6 @@
   "regla": "R3",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "app",
@@ -623,9 +605,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -702,9 +681,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -769,9 +745,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -815,9 +788,6 @@
   "regla": "R5",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "api",

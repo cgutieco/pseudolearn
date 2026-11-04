@@ -56,7 +56,6 @@ fn reports_pending_rules() -> Result<(), String> {
         rule: "R1".to_owned(),
         case: "C1".to_owned(),
         profile: "es".to_owned(),
-        strictness: "flexible".to_owned(),
         verdict: "pendiente".to_owned(),
         differences: vec![],
         expected: json!({}),

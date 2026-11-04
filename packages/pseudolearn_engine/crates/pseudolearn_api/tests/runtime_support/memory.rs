@@ -18,19 +18,17 @@ pub(super) fn verify(fixtures: &Value) -> Result<(), String> {
     }
     for scenario in scenarios {
         for (profile, field) in [("es", "program"), ("en", "english")] {
-            for strictness in ["strict", "flexible"] {
-                check(scenario, (profile, field, strictness))?;
-            }
+            check(scenario, (profile, field))?;
         }
     }
     println!(
-        "Memory oracle: {} generated programs, two profiles, two strictness modes, three collection policies",
+        "Memory oracle: {} generated programs, two profiles, three collection policies",
         scenarios.len()
     );
     Ok(())
 }
 
-fn check(scenario: &Value, (profile, field, strictness): (&str, &str, &str)) -> Result<(), String> {
+fn check(scenario: &Value, (profile, field): (&str, &str)) -> Result<(), String> {
     let source = scenario
         .get(field)
         .and_then(Value::as_str)
@@ -39,7 +37,7 @@ fn check(scenario: &Value, (profile, field, strictness): (&str, &str, &str)) -> 
         .get("expectedCells")
         .and_then(Value::as_u64)
         .ok_or("Missing cell expectation")?;
-    let loaded = super::compile(source, profile, strictness)?;
+    let loaded = super::compile(source, profile)?;
     let mut previous = None;
     for collection in [
         CollectionPolicy::Automatic,

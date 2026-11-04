@@ -3,8 +3,8 @@ use pseudolearn_diagnostics::DiagnosticCode;
 
 #[test]
 fn preserves_invalid_bindings_after_parameter_inference_repeats() {
-    let program = "subroutine Echo(value)\nwrite value;\nendSubroutine\nalgorithm Main\namount <- 1;\nwrite amount;\nEcho(2);\nendAlgorithm\n";
-    let (module, diagnostics) = support::analyze(program, false);
+    let program = "subroutine Echo(value as integer)\nwrite value;\nendSubroutine\nalgorithm Main\namount <- 1;\nwrite amount;\nEcho(2);\nendAlgorithm\n";
+    let (module, diagnostics) = support::analyze(program);
     assert!(module.is_none(), "{diagnostics:?}");
     assert_eq!(
         diagnostics
@@ -21,8 +21,8 @@ fn preserves_invalid_bindings_after_parameter_inference_repeats() {
 
 #[test]
 fn preserves_explicit_mutability_after_parameter_inference_repeats() {
-    let program = "subroutine Echo(value)\nwrite value;\nendSubroutine\nalgorithm Main\ndefine mutable amount as integer <- 1;\namount <- 2;\nEcho(amount);\nendAlgorithm\n";
-    let (module, diagnostics) = support::analyze(program, false);
+    let program = "subroutine Echo(value as integer)\nwrite value;\nendSubroutine\nalgorithm Main\ndefine mutable amount as integer <- 1;\namount <- 2;\nEcho(amount);\nendAlgorithm\n";
+    let (module, diagnostics) = support::analyze(program);
     assert!(diagnostics.is_empty(), "{diagnostics:?}");
     assert!(module.is_some());
     if let Some(module) = module {

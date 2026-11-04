@@ -6,8 +6,7 @@ const PRODUCER_CONSUMER: &str = "SubProceso Suspendible Consume(stream Como Cana
 fn observed(program: &str) -> Vec<Value> {
     execute_program(&ExecuteRequest {
         program: program.to_owned(),
-        profile: "spanish_events".to_owned(),
-        strictness: "strict".to_owned(),
+        profile: "spanish_events".to_owned().to_owned(),
         observe: "events".to_owned(),
         ..Default::default()
     })
@@ -145,8 +144,7 @@ fn state_after(program: &str, class: &str, occurrence: usize) -> Value {
         .unwrap_or(0);
     let response = execute_program(&ExecuteRequest {
         program: program.to_owned(),
-        profile: "spanish_events".to_owned(),
-        strictness: "strict".to_owned(),
+        profile: "spanish_events".to_owned().to_owned(),
         observe: "events".to_owned(),
         state_at: Some(position),
         ..Default::default()
@@ -196,8 +194,7 @@ fn compact(events: &[Value]) -> Vec<Value> {
 fn observed_in(program: &str, profile: &str) -> Vec<Value> {
     execute_program(&ExecuteRequest {
         program: program.to_owned(),
-        profile: profile.to_owned(),
-        strictness: "strict".to_owned(),
+        profile: profile.to_owned().to_owned(),
         observe: "events".to_owned(),
         ..Default::default()
     })

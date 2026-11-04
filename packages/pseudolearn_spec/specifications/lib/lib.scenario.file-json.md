@@ -48,10 +48,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
@@ -82,10 +78,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "SubProceso Run() Como Resultado<Entero, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir inputFile Como ArchivoCap <- Propagar directory.Abrir(\"entrada.json\", \"lectura\");\nDiferir\nDescartar inputFile.Cerrar();\nFinDiferir\nDefinir source Como Cadena <- Propagar inputFile.LeerTexto();\nDefinir parsed Como Resultado<ValorJson, ErrorJson> <- AnalizarJson(source);\nSegun parsed Hacer\nExito(document): Escribir \"inesperado\";\nError(problem): Escribir problem.Codigo, \":\", problem.JsonLinea, \":\", problem.JsonColumna;\nFinSegun\nRetornar Exito(0);\nFinSubProceso\nAlgoritmo Main\nSegun Run() Hacer\nExito(value):\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
     "en": "subroutine Run() as result<integer, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine inputFile as FileCap <- propagate directory.open(\"entrada.json\", \"read\");\ndefer\ndiscard inputFile.close();\nendDefer\ndefine source as string <- propagate inputFile.readText();\ndefine parsed as result<JsonValue, JsonError> <- parseJson(source);\nswitch parsed do\nsuccess(document): write \"unexpected\";\nfailure(problem): write problem.code, \":\", problem.jsonLine, \":\", problem.jsonColumn;\nendSwitch\nreturn success(0);\nendSubroutine\nalgorithm Main\nswitch Run() do\nsuccess(value):\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
@@ -115,10 +107,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "SubProceso Run() Como Resultado<Entero, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir inputFile Como ArchivoCap <- Propagar directory.Abrir(\"entrada.json\", \"lectura\");\nDiferir\nDescartar inputFile.Cerrar();\nFinDiferir\nDescartar inputFile.LeerTexto();\nSegun directory.Abrir(\"salida.json\", \"escritura\") Hacer\nExito(file): Escribir \"inesperado\";\nError(problem): Escribir problem.Codigo;\nFinSegun\nRetornar Exito(0);\nFinSubProceso\nAlgoritmo Main\nSegun Run() Hacer\nExito(value):\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
@@ -155,9 +143,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "api",
@@ -342,10 +327,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "SubProceso Run() Como Resultado<Entero, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"entrada.json\", \"lectura\");\nDefinir source Como Cadena <- Propagar file.LeerTexto();\nDefinir parsed Como Resultado<ValorJson, ErrorJson> <- AnalizarJson(source);\nSegun parsed Hacer\nExito(document): Escribir TextoJson(document);\nError(problem): Escribir problem.Codigo;\nFinSegun\nRetornar Exito(0);\nFinSubProceso\nAlgoritmo Main\nSegun Run() Hacer\nExito(value):\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",

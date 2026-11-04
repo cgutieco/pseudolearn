@@ -111,9 +111,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -122,7 +119,6 @@
         "operation": "execute_project",
         "arguments": {
           "profile": "es",
-          "strictness": "strict",
           "project": {
             "project_id": "1",
             "revision_id": "1",
@@ -198,9 +194,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -209,7 +202,6 @@
         "operation": "analyze_project",
         "arguments": {
           "profile": "es",
-          "strictness": "strict",
           "project": {
             "project_id": "1",
             "revision_id": "1",
@@ -251,9 +243,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -262,7 +251,6 @@
         "operation": "analyze_project",
         "arguments": {
           "profile": "es",
-          "strictness": "strict",
           "project": {
             "project_id": "1",
             "revision_id": "1",
@@ -322,9 +310,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -333,7 +318,6 @@
         "operation": "execute_project",
         "arguments": {
           "profile": "es",
-          "strictness": "strict",
           "project": {
             "project_id": "1",
             "revision_id": "1",
@@ -405,9 +389,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -416,7 +397,6 @@
         "operation": "analyze_project",
         "arguments": {
           "profile": "es",
-          "strictness": "strict",
           "project": {
             "project_id": "1",
             "revision_id": "1",
@@ -490,9 +470,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -501,7 +478,6 @@
         "operation": "analyze_project",
         "arguments": {
           "profile": "es",
-          "strictness": "strict",
           "project": {
             "project_id": "1",
             "revision_id": "1",
@@ -562,9 +538,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -573,7 +546,6 @@
         "operation": "analyze_project",
         "arguments": {
           "profile": "es",
-          "strictness": "strict",
           "project": {
             "project_id": "1",
             "revision_id": "1",
@@ -637,9 +609,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -648,7 +617,6 @@
         "operation": "analyze_project",
         "arguments": {
           "profile": "es",
-          "strictness": "strict",
           "project": {
             "project_id": "1",
             "revision_id": "1",
@@ -705,9 +673,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -716,7 +681,6 @@
         "operation": "analyze_project",
         "arguments": {
           "profile": "es",
-          "strictness": "strict",
           "project": {
             "project_id": "1",
             "revision_id": "1",
@@ -775,9 +739,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -786,7 +747,6 @@
         "operation": "analyze_project",
         "arguments": {
           "profile": "es",
-          "strictness": "strict",
           "project": {
             "project_id": "1",
             "revision_id": "1",
@@ -846,9 +806,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -857,7 +814,6 @@
         "operation": "analyze_project",
         "arguments": {
           "profile": "es",
-          "strictness": "strict",
           "project": {
             "project_id": "1",
             "revision_id": "1",
@@ -931,9 +887,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -942,7 +895,6 @@
         "operation": "analyze_project",
         "arguments": {
           "profile": "es",
-          "strictness": "strict",
           "project": {
             "project_id": "1",
             "revision_id": "1",
@@ -1016,11 +968,7 @@
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -1046,11 +994,7 @@
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -1061,10 +1005,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo P\nDefinir Importar Como Entero <- 1;\nDefinir Mutable Exportar Como Entero <- 0;\nDefinir Mutable import Como Entero <- 0;\nDefinir Mutable export Como Entero <- 0;\nExportar <- 2;\nimport <- 3;\nexport <- 4;\nEscribir Importar, Exportar, import, export;\nFinAlgoritmo\n",
@@ -1086,10 +1026,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "",
@@ -1123,10 +1059,6 @@
   },
   "origen": "derivado",
   "operacion": "analyze",
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "espera": {
     "arbol": "presente",
     "diagnosticos": [
@@ -1146,9 +1078,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -1157,7 +1086,6 @@
         "operation": "analyze_project",
         "arguments": {
           "profile": "es",
-          "strictness": "strict",
           "project": {
             "project_id": "1",
             "revision_id": "1",
@@ -1237,9 +1165,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -1248,7 +1173,6 @@
         "operation": "analyze_project",
         "arguments": {
           "profile": "es",
-          "strictness": "strict",
           "project": {
             "project_id": "1",
             "revision_id": "1",
@@ -1327,9 +1251,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -1338,7 +1259,6 @@
         "operation": "analyze_project",
         "arguments": {
           "profile": "es",
-          "strictness": "strict",
           "project": {
             "project_id": "1",
             "revision_id": "1",
@@ -1446,9 +1366,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -1457,7 +1374,6 @@
         "operation": "analyze_project",
         "arguments": {
           "profile": "es",
-          "strictness": "strict",
           "project": {
             "project_id": "1",
             "revision_id": "1",
@@ -1572,9 +1488,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -1583,7 +1496,6 @@
         "operation": "analyze_project",
         "arguments": {
           "profile": "es",
-          "strictness": "strict",
           "project": {
             "project_id": "1",
             "revision_id": "1",

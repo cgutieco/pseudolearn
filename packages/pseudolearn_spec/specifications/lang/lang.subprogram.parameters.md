@@ -38,7 +38,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Cada parámetro tiene nombre, dimensiones opcionales mediante [] [,] y tipo opcional sintácticamente, exigido en estricto. La marca Por Valor o Por Referencia va después del tipo y solo alcanza ese parámetro. Sin marca se pasa por valor; arreglo se pasa por referencia y marcarlo Por Valor es error semántico. Cero parámetros es válido. Nombre duplicado o marcas repetidas se rechazan.",
+  "texto": "Cada parámetro tiene nombre, tipo obligatorio y dimensiones opcionales mediante [] [,]. La marca Por Valor o Por Referencia va después del tipo y solo alcanza ese parámetro. Sin marca se pasa por valor; arreglo se pasa por referencia y marcarlo Por Valor es error semántico. Cero parámetros es válido. Nombre duplicado o marcas repetidas se rechazan.",
   "verificacion": [
     "C1",
     "C2",
@@ -64,11 +64,7 @@
   "espera": {
     "salida": "3\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -94,11 +90,7 @@
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -124,10 +116,6 @@
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```

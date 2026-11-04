@@ -33,7 +33,6 @@ fn snapshot(value: Option<&Value>) -> Option<WorkspaceSnapshot> {
     let project = project(value.get("project")?)?;
     let options = WorkspaceOptions {
         requested_profile: profile(value.pointer("/options/profile")),
-        strict: value.pointer("/options/strictness")?.as_str()? != "flexible",
         entry: value
             .pointer("/options/entry")
             .and_then(Value::as_str)

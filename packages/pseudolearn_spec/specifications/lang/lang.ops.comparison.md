@@ -64,11 +64,7 @@
   "espera": {
     "salida": "{{lexema:booleanTrue}}{{lexema:booleanTrue}}{{lexema:booleanTrue}}\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -94,11 +90,7 @@
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -124,10 +116,6 @@
         "severidad": "warning"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```

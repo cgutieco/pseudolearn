@@ -70,11 +70,7 @@
   "espera": {
     "salida": "2:😀:128512:😀\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -96,11 +92,7 @@
     "fallo": {
       "codigo": "stringPositionOutOfRange"
     }
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -122,11 +114,7 @@
     "fallo": {
       "codigo": "invalidCharacterCode"
     }
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -148,11 +136,7 @@
     "fallo": {
       "codigo": "invalidCharacterCode"
     }
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -233,11 +217,7 @@
   "espera": {
     "salida": "😀\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -258,11 +238,7 @@
   "espera": {
     "salida": "<>\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -284,11 +260,7 @@
     "fallo": {
       "codigo": "stringPositionOutOfRange"
     }
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -309,11 +281,7 @@
   "espera": {
     "salida": "{{lexema:booleanTrue}}:{{lexema:booleanTrue}}\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -334,11 +302,7 @@
   "espera": {
     "salida": "1\n0\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -359,11 +323,7 @@
   "espera": {
     "salida": "{{lexema:booleanTrue}}:{{lexema:booleanTrue}}\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -384,11 +344,7 @@
   "espera": {
     "salida": "xx:abc\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -409,11 +365,7 @@
   "espera": {
     "salida": "a||b\n1:\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -435,11 +387,7 @@
     "fallo": {
       "codigo": "emptySeparator"
     }
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -460,11 +408,7 @@
   "espera": {
     "salida": "<>\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -485,11 +429,7 @@
   "espera": {
     "salida": "x\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -510,11 +450,7 @@
   "espera": {
     "salida": " x \n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -536,10 +472,6 @@
     "salida": "x\n",
     "terminacion": "completed"
   },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "limites": {
     "celdas": 2
   }
@@ -566,10 +498,6 @@
       "codigo": "cellLimitExceeded"
     }
   },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "limites": {
     "celdas": 1
   }

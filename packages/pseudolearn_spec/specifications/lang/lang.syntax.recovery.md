@@ -62,12 +62,9 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "flexible"
-  ],
   "programas": {
-    "es": "Algoritmo P\n  Escribir 1 +\nFinAlgoritmo\n",
-    "en": "algorithm P\n  write 1 +\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Escribir 1 +;\nFinAlgoritmo\n",
+    "en": "algorithm P\n  write 1 +;\nendAlgorithm\n"
   },
   "operacion": "analyze",
   "espera": {
@@ -93,10 +90,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo P\n  Escribir 1;\nFinAlgoritmo\n",
     "en": "algorithm P\n  write 1;\nendAlgorithm\n"
@@ -120,10 +113,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programa": "",
   "operacion": "analyze",
@@ -151,10 +140,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo P\nFinAlgoritmo\n",
     "en": "algorithm P\nendAlgorithm\n"
@@ -179,12 +164,9 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "flexible"
-  ],
   "programas": {
-    "es": "Algoritmo P\n Escribir 1 +\nFinAlgoritmo\n",
-    "en": "algorithm P\n write 1 +\nendAlgorithm\n"
+    "es": "Algoritmo P\n Escribir 1 +;\nFinAlgoritmo\n",
+    "en": "algorithm P\n write 1 +;\nendAlgorithm\n"
   },
   "operacion": "analyze",
   "espera": {
@@ -242,10 +224,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo P\nEscribir 1 +;\nEscribir 7;\nFinAlgoritmo\n",
     "en": "algorithm P\nwrite 1 +;\nwrite 7;\nendAlgorithm\n"
@@ -265,10 +243,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo P\n",
@@ -296,10 +270,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo P\nSi Verdadero Entonces\nMientras Verdadero Hacer\n",
     "en": "algorithm P\nif true then\nwhile true do\n"
@@ -325,10 +295,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo P\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nFinAlgoritmo\n",

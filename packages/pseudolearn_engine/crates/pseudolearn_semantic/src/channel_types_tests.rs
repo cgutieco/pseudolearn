@@ -38,7 +38,6 @@ pub(super) fn analyze(program: &str) -> Vec<DiagnosticCode> {
         &source,
         crate::SemanticOptions {
             profile: Profile::Spanish,
-            strict: true,
         },
     );
     diagnostics

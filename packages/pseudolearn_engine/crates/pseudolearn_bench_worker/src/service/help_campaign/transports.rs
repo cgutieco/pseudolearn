@@ -30,16 +30,11 @@ pub struct ApiTransport {
 }
 
 impl ApiTransport {
-    pub fn open(
-        program: &str,
-        profile: &str,
-        strictness: &str,
-        language: &str,
-    ) -> Result<Self, String> {
+    pub fn open(program: &str, profile: &str, language: &str) -> Result<Self, String> {
         let mut session = ApiSession::default();
         let opened = session.call(
             "open_edit_session",
-            &json!({"program": program, "profile": profile, "strictness": strictness}),
+            &json!({"program": program, "profile": profile}),
         );
         let resource = opened
             .pointer("/value/resource")
@@ -106,11 +101,11 @@ pub struct LspTransport {
 }
 
 impl LspTransport {
-    pub fn open(program: &str, locale: &str, strictness: &str) -> Self {
+    pub fn open(program: &str, locale: &str) -> Self {
         let mut server = LspServer::new();
         server.handle_message(&json!({
             "jsonrpc": "2.0", "id": 1, "method": "initialize",
-            "params": {"locale": locale, "initializationOptions": {"strictness": strictness}}
+            "params": {"locale": locale}
         }));
         server.handle_message(&json!({
             "jsonrpc": "2.0", "method": "textDocument/didOpen",

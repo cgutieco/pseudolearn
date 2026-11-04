@@ -6,10 +6,6 @@ pub fn supported_profiles() -> Vec<&'static str> {
     vec!["es", "en"]
 }
 
-pub fn supported_strictness() -> Vec<&'static str> {
-    vec!["strict", "flexible"]
-}
-
 pub fn supported_capabilities() -> Vec<&'static str> {
     vec![
         "analyze",

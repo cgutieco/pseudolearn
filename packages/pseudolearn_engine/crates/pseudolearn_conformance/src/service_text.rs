@@ -10,7 +10,6 @@ pub fn handle_format(request: &ServiceRequest<'_>) -> Value {
         request.text("documento"),
         FormatOptions {
             profile: request.profile(),
-            strict: request.strict(),
             indent_size: 2,
         },
     );
@@ -25,11 +24,7 @@ fn destination(request: &ServiceRequest<'_>) -> Profile {
 }
 
 pub fn handle_translate(request: &ServiceRequest<'_>) -> Value {
-    match translate_source(
-        request.text("documento"),
-        destination(request),
-        request.strict(),
-    ) {
+    match translate_source(request.text("documento"), destination(request)) {
         Ok(translated) => json!({ "traducido": translated }),
         Err(TranslationError::Collision { diagnostic, .. }) => json!({ "colision": diagnostic }),
         Err(TranslationError::ParseFailure(code)) => json!({ "error_sintaxis": code }),
@@ -42,11 +37,9 @@ pub fn handle_translate_roundtrip(request: &ServiceRequest<'_>) -> Value {
         Profile::Spanish => Profile::English,
         Profile::English => Profile::Spanish,
     };
-    let strict = request.strict();
-    let outcome =
-        translate_source(request.text("documento"), target, strict).and_then(|translated| {
-            translate_source(&translated, origin, strict).map(|back| (translated, back))
-        });
+    let outcome = translate_source(request.text("documento"), target).and_then(|translated| {
+        translate_source(&translated, origin).map(|back| (translated, back))
+    });
     match outcome {
         Ok((translated, back)) => json!({ "traducido": translated, "vuelta": back }),
         Err(TranslationError::Collision { diagnostic, .. }) => json!({ "colision": diagnostic }),

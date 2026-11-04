@@ -49,10 +49,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "SubProceso Suspendible Fetch(net Como RedCap, url Como Cadena) Como Resultado<Entero, Cadena>\nSegun Aguardar net.Enviar(PeticionHttp(MetodoHttp.GET, url)) Hacer\nExito(response): Escribir response.Estado(); Retornar Exito(response.Estado());\nError(problem): Retornar Error(problem.Codigo);\nFinSegun\nFinSubProceso\nAlgoritmo Main\nSegun SolicitarRed() Hacer\nExito(net):\nTareas failureReport\nLanzar Fetch(net, \"https://fake.test/status-500\");\nLanzar Fetch(net, \"https://fake.test/offline\");\nLanzar Fetch(net, \"https://fake.test/status-200\");\nFinTareas\nSegun failureReport Hacer\nNada: Escribir \"sin_fallos\";\nAlgo(problem): Escribir problem.Primero; Escribir problem.Canceladas;\nFinSegun\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
     "en": "subroutine suspendable Fetch(net as NetworkCap, url as string) as result<integer, string>\nswitch await net.send(HttpRequest(HttpMethod.GET, url)) do\nsuccess(response): write response.status(); return success(response.status());\nfailure(problem): return failure(problem.code);\nendSwitch\nendSubroutine\nalgorithm Main\nswitch requestNetwork() do\nsuccess(net):\ntasks failureReport\nspawn Fetch(net, \"https://fake.test/status-500\");\nspawn Fetch(net, \"https://fake.test/offline\");\nspawn Fetch(net, \"https://fake.test/status-200\");\nendTasks\nswitch failureReport do\nnone: write \"sin_fallos\";\nsome(problem): write problem.first; write problem.cancelled;\nendSwitch\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
@@ -91,10 +87,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "SubProceso Suspendible Fetch(net Como RedCap, url Como Cadena)\nSegun Aguardar net.Enviar(PeticionHttp(MetodoHttp.GET, url)) Hacer\nExito(response): Escribir response.Estado();\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinSubProceso\nAlgoritmo Main\nSegun SolicitarRed() Hacer\nExito(net):\nTareas\nLanzar Fetch(net, \"https://fake.test/status-500\");\nLanzar Fetch(net, \"https://fake.test/status-200\");\nLanzar Fetch(net, \"https://fake.test/status-204\");\nFinTareas\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
@@ -135,10 +127,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo Main\nSegun SolicitarRed() Hacer\nExito(net):\nSegun net.Enviar(PeticionHttp(MetodoHttp.GET, \"https://fake.test/empty\")) Hacer\nExito(response): Escribir response.Cuerpo().Longitud();\nError(problem): Escribir problem.Codigo;\nFinSegun\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
     "en": "algorithm Main\nswitch requestNetwork() do\nsuccess(net):\nswitch net.send(HttpRequest(HttpMethod.GET, \"https://fake.test/empty\")) do\nsuccess(response): write response.body().length();\nfailure(problem): write problem.code;\nendSwitch\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
@@ -173,10 +161,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo Main\nSegun SolicitarRed() Hacer\nExito(net):\nSegun net.Enviar(PeticionHttp(MetodoHttp.GET, \"https://fake.test/denied\")) Hacer\nExito(response): Escribir response.Estado();\nError(problem): Escribir problem.Codigo;\nFinSegun\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
     "en": "algorithm Main\nswitch requestNetwork() do\nsuccess(net):\nswitch net.send(HttpRequest(HttpMethod.GET, \"https://fake.test/denied\")) do\nsuccess(response): write response.status();\nfailure(problem): write problem.code;\nendSwitch\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
@@ -209,10 +193,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "SubProceso Suspendible Fetch(net Como RedCap, url Como Cadena)\nSegun Aguardar net.Enviar(PeticionHttp(MetodoHttp.GET, url)) Hacer\nExito(response): Escribir response.Estado();\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinSubProceso\nAlgoritmo Main\nSegun SolicitarRed() Hacer\nExito(net):\nTareas\nLanzar Fetch(net, \"https://fake.test/first\");\nLanzar Fetch(net, \"https://fake.test/second\");\nFinTareas\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
@@ -251,9 +231,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "programas": {
     "es": "SubProceso Suspendible Wait(net Como RedCap)\nDescartar Aguardar net.Enviar(PeticionHttp(MetodoHttp.POST, \"https://fake.test/pending\"));\nFinSubProceso\nSubProceso Suspendible Fail() Como Resultado<Entero, Cadena>\nRetornar Error(\"fallo\");\nFinSubProceso\nAlgoritmo Main\nSegun SolicitarRed() Hacer\nExito(net):\nTareas failureReport\nLanzar Wait(net);\nLanzar Fail();\nFinTareas\nSegun failureReport Hacer\nNada: Escribir \"sin_fallos\";\nAlgo(problem): Escribir problem.Primero; Escribir problem.Canceladas;\nFinSegun\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
@@ -377,9 +354,6 @@
   "regla": "R1",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "trace",

@@ -172,10 +172,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "SubProceso Suspendible Produce(stream Como Canal<Entero>)\nDefinir firstAccepted Como Logico <- Aguardar stream.Enviar(1);\nSi firstAccepted Entonces\nFinSi\nDefinir secondAccepted Como Logico <- Aguardar stream.Enviar(2);\nSi secondAccepted Entonces\nFinSi\nstream.Cerrar();\nFinSubProceso\nSubProceso Suspendible Consume(stream Como Canal<Entero>)\nRepetir\nSegun Aguardar stream.Recibir() Hacer\nAlgo(receivedValue): Escribir receivedValue;\nNada: Salir;\nFinSegun\nHasta Que Falso\nFinSubProceso\nAlgoritmo P\nDefinir stream Como Canal<Entero> <- Canal(1);\nTareas\nLanzar Produce(stream);\nLanzar Consume(stream);\nFinTareas\nFinAlgoritmo\n",
     "en": "subroutine suspendable Produce(stream as channel<integer>)\ndefine firstAccepted as boolean <- await stream.send(1);\nif firstAccepted then\nendIf\ndefine secondAccepted as boolean <- await stream.send(2);\nif secondAccepted then\nendIf\nstream.close();\nendSubroutine\nsubroutine suspendable Consume(stream as channel<integer>)\nrepeat\nswitch await stream.receive() do\nsome(receivedValue): write receivedValue;\nnone: break;\nendSwitch\nuntil false\nendSubroutine\nalgorithm P\ndefine stream as channel<integer> <- channel(1);\ntasks\nspawn Produce(stream);\nspawn Consume(stream);\nendTasks\nendAlgorithm\n"
@@ -196,10 +192,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "SubProceso Suspendible Produce(stream Como Canal<Entero>)\nDefinir firstAccepted Como Logico <- Aguardar stream.Enviar(1);\nSi firstAccepted Entonces\nFinSi\nDefinir secondAccepted Como Logico <- Aguardar stream.Enviar(2);\nSi secondAccepted Entonces\nFinSi\nstream.Cerrar();\nFinSubProceso\nSubProceso Suspendible Consume(stream Como Canal<Entero>)\nRepetir\nSegun Aguardar stream.Recibir() Hacer\nAlgo(receivedValue): Escribir receivedValue;\nNada: Salir;\nFinSegun\nHasta Que Falso\nFinSubProceso\nAlgoritmo P\nDefinir stream Como Canal<Entero> <- Canal(4);\nTareas\nLanzar Produce(stream);\nLanzar Consume(stream);\nFinTareas\nFinAlgoritmo\n",
@@ -222,10 +214,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "SubProceso Suspendible Produce(stream Como Canal<Entero>)\nDefinir firstAccepted Como Logico <- Aguardar stream.Enviar(1);\nSi firstAccepted Entonces\nFinSi\nDefinir secondAccepted Como Logico <- Aguardar stream.Enviar(2);\nSi secondAccepted Entonces\nFinSi\nstream.Cerrar();\nFinSubProceso\nSubProceso Suspendible Consume(stream Como Canal<Entero>)\nRepetir\nSegun Aguardar stream.Recibir() Hacer\nAlgo(receivedValue): Escribir receivedValue;\nNada: Salir;\nFinSegun\nHasta Que Falso\nFinSubProceso\nAlgoritmo P\nDefinir stream Como Canal<Entero> <- Canal(1);\nTareas\nLanzar Produce(stream);\nLanzar Consume(stream);\nFinTareas\nFinAlgoritmo\n",
     "en": "subroutine suspendable Produce(stream as channel<integer>)\ndefine firstAccepted as boolean <- await stream.send(1);\nif firstAccepted then\nendIf\ndefine secondAccepted as boolean <- await stream.send(2);\nif secondAccepted then\nendIf\nstream.close();\nendSubroutine\nsubroutine suspendable Consume(stream as channel<integer>)\nrepeat\nswitch await stream.receive() do\nsome(receivedValue): write receivedValue;\nnone: break;\nendSwitch\nuntil false\nendSubroutine\nalgorithm P\ndefine stream as channel<integer> <- channel(1);\ntasks\nspawn Produce(stream);\nspawn Consume(stream);\nendTasks\nendAlgorithm\n"
@@ -246,10 +234,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "SubProceso Suspendible Produce(stream Como Canal<Entero>)\nDefinir firstAccepted Como Logico <- Aguardar stream.Enviar(1);\nSi firstAccepted Entonces\nFinSi\nDefinir secondAccepted Como Logico <- Aguardar stream.Enviar(2);\nSi secondAccepted Entonces\nFinSi\nstream.Cerrar();\nFinSubProceso\nAlgoritmo P\nDefinir stream Como Canal<Entero> <- Canal(1);\nTareas\nLanzar Produce(stream);\nSegun Aguardar stream.Recibir() Hacer\nAlgo(receivedValue): Escribir receivedValue;\nNada: Escribir 0;\nFinSegun\nSegun Aguardar stream.Recibir() Hacer\nAlgo(nextValue): Escribir nextValue;\nNada: Escribir 0;\nFinSegun\nFinTareas\nFinAlgoritmo\n",
@@ -272,10 +256,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo P\nDefinir stream Como Canal<Entero> <- Canal(1);\nDefinir accepted Como Logico <- Aguardar stream.Enviar(7);\nSi accepted Entonces\nFinSi\nstream.Cerrar();\nSegun Aguardar stream.Recibir() Hacer\nAlgo(receivedValue): Escribir receivedValue;\nNada: Escribir 0;\nFinSegun\nSegun Aguardar stream.Recibir() Hacer\nAlgo(lastValue): Escribir lastValue;\nNada: Escribir \"closed\";\nFinSegun\nFinAlgoritmo\n",
     "en": "algorithm P\ndefine stream as channel<integer> <- channel(1);\ndefine accepted as boolean <- await stream.send(7);\nif accepted then\nendIf\nstream.close();\nswitch await stream.receive() do\nsome(receivedValue): write receivedValue;\nnone: write 0;\nendSwitch\nswitch await stream.receive() do\nsome(lastValue): write lastValue;\nnone: write \"closed\";\nendSwitch\nendAlgorithm\n"
@@ -296,10 +276,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "SubProceso Suspendible Send(stream Como Canal<Entero>)\nDefinir accepted Como Logico <- Aguardar stream.Enviar(2);\nSi accepted Entonces\nEscribir \"sent\";\nSino\nEscribir \"closed\";\nFinSi\nFinSubProceso\nSubProceso Suspendible Close(stream Como Canal<Entero>)\nstream.Cerrar();\nFinSubProceso\nAlgoritmo P\nDefinir stream Como Canal<Entero> <- Canal(1);\nDefinir accepted Como Logico <- Aguardar stream.Enviar(1);\nSi accepted Entonces\nFinSi\nTareas\nLanzar Send(stream);\nLanzar Send(stream);\nLanzar Close(stream);\nFinTareas\nFinAlgoritmo\n",
@@ -322,10 +298,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "SubProceso Suspendible Receive(stream Como Canal<Entero>)\nSegun Aguardar stream.Recibir() Hacer\nAlgo(receivedValue): Escribir receivedValue;\nNada: Escribir \"closed\";\nFinSegun\nFinSubProceso\nSubProceso Suspendible Close(stream Como Canal<Entero>)\nstream.Cerrar();\nFinSubProceso\nAlgoritmo P\nDefinir stream Como Canal<Entero> <- Canal(1);\nTareas\nLanzar Receive(stream);\nLanzar Receive(stream);\nLanzar Close(stream);\nFinTareas\nFinAlgoritmo\n",
     "en": "subroutine suspendable Receive(stream as channel<integer>)\nswitch await stream.receive() do\nsome(receivedValue): write receivedValue;\nnone: write \"closed\";\nendSwitch\nendSubroutine\nsubroutine suspendable Close(stream as channel<integer>)\nstream.close();\nendSubroutine\nalgorithm P\ndefine stream as channel<integer> <- channel(1);\ntasks\nspawn Receive(stream);\nspawn Receive(stream);\nspawn Close(stream);\nendTasks\nendAlgorithm\n"
@@ -346,10 +318,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo P\nDefinir stream Como Canal<Entero> <- Canal(1);\nstream.Cerrar();\nstream.Cerrar();\nDefinir accepted Como Logico <- Aguardar stream.Enviar(1);\nSi accepted Entonces\nEscribir \"sent\";\nSino\nEscribir \"closed\";\nFinSi\nFinAlgoritmo\n",
@@ -372,10 +340,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo P\nDefinir stream Como Canal<Entero> <- Canal(1);\nDefinir other Como Canal<Entero> <- Canal(4);\nDefinir firstAccepted Como Logico <- Aguardar stream.Enviar(7);\nSi firstAccepted Entonces\nFinSi\nDefinir secondAccepted Como Logico <- Aguardar other.Enviar(8);\nSi secondAccepted Entonces\nFinSi\nElegir\nRecibir first Desde stream:\nSegun first Hacer\nAlgo(value): Escribir value;\nNada: Escribir 1;\nFinSegun\nRecibir second Desde other:\nSegun second Hacer\nAlgo(otherValue): Escribir otherValue;\nNada: Escribir 2;\nFinSegun\nFinElegir\nFinAlgoritmo\n",
     "en": "algorithm P\ndefine stream as channel<integer> <- channel(1);\ndefine other as channel<integer> <- channel(4);\ndefine firstAccepted as boolean <- await stream.send(7);\nif firstAccepted then\nendIf\ndefine secondAccepted as boolean <- await other.send(8);\nif secondAccepted then\nendIf\nselect\nreceive first from stream:\nswitch first do\nsome(value): write value;\nnone: write 1;\nendSwitch\nreceive second from other:\nswitch second do\nsome(otherValue): write otherValue;\nnone: write 2;\nendSwitch\nendSelect\nendAlgorithm\n"
@@ -396,10 +360,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo P\nDefinir stream Como Canal<Entero> <- Canal(1);\nstream.Cerrar();\nElegir\nRecibir first Desde stream:\nSegun first Hacer\nAlgo(value): Escribir value;\nNada: Escribir 1;\nFinSegun\nRecibir second Desde stream:\nSegun second Hacer\nAlgo(otherValue): Escribir otherValue;\nNada: Escribir 2;\nFinSegun\nFinElegir\nFinAlgoritmo\n",
@@ -422,10 +382,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "SubProceso Suspendible Close(stream Como Canal<Entero>)\nstream.Cerrar();\nFinSubProceso\nAlgoritmo P\nDefinir stream Como Canal<Entero> <- Canal(1);\nDefinir other Como Canal<Entero> <- Canal(4);\nTareas\nLanzar Close(other);\nElegir\nRecibir first Desde stream:\nSegun first Hacer\nAlgo(value): Escribir value;\nNada: Escribir 1;\nFinSegun\nRecibir second Desde other:\nSegun second Hacer\nAlgo(otherValue): Escribir otherValue;\nNada: Escribir 2;\nFinSegun\nFinElegir\nFinTareas\nFinAlgoritmo\n",
     "en": "subroutine suspendable Close(stream as channel<integer>)\nstream.close();\nendSubroutine\nalgorithm P\ndefine stream as channel<integer> <- channel(1);\ndefine other as channel<integer> <- channel(4);\ntasks\nspawn Close(other);\nselect\nreceive first from stream:\nswitch first do\nsome(value): write value;\nnone: write 1;\nendSwitch\nreceive second from other:\nswitch second do\nsome(otherValue): write otherValue;\nnone: write 2;\nendSwitch\nendSelect\nendTasks\nendAlgorithm\n"
@@ -446,10 +402,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo P\nDefinir stream Como Canal<Entero> <- Canal(1);\nElegir\nRecibir value Desde stream:\nFinElegir\nFinAlgoritmo\n",
@@ -477,10 +429,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo P\nDefinir stream Como Canal<Entero> <- Canal(65536);\nstream.Cerrar();\nFinAlgoritmo\n",
     "en": "algorithm P\ndefine stream as channel<integer> <- channel(65536);\nstream.close();\nendAlgorithm\n"
@@ -501,10 +449,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo P\nDefinir stream Como Canal<Entero> <- Canal(1);\nDefinir accepted Como Logico <- Aguardar stream.Enviar(1);\nSi accepted Entonces\nFinSi\nDefinir received Como Opcional<Entero> <- stream.Recibir();\nSegun received Hacer\nAlgo(value): Escribir value;\nNada: Escribir 0;\nFinSegun\nFinAlgoritmo\n",
@@ -532,10 +476,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo P\nDefinir stream Como Canal<Entero> <- Canal(1);\nDefinir accepted Como Logico <- stream.Enviar(1);\nEscribir accepted;\nFinAlgoritmo\n",
     "en": "algorithm P\ndefine stream as channel<integer> <- channel(1);\ndefine accepted as boolean <- stream.send(1);\nwrite accepted;\nendAlgorithm\n"
@@ -562,10 +502,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo P\nDefinir Mutable capacity Como Entero <- 0;\ncapacity <- capacity - 1;\nDefinir stream Como Canal<Entero> <- Canal(capacity);\nstream.Cerrar();\nFinAlgoritmo\n",
     "en": "algorithm P\ndefine mutable capacity as integer <- 0;\ncapacity <- capacity - 1;\ndefine stream as channel<integer> <- channel(capacity);\nstream.close();\nendAlgorithm\n"
@@ -589,10 +525,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo P\nDefinir stream Como Canal<Vector<Entero>> <- Canal(1);\nstream.Cerrar();\nFinAlgoritmo\n",
@@ -620,10 +552,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Funcion Close(stream Como Canal<Entero>)\nstream.Cerrar();\nFinFuncion\nAlgoritmo P\n\nFinAlgoritmo\n",
     "en": "function Close(stream as channel<integer>)\nstream.close();\nendSubroutine\nalgorithm P\n\nendAlgorithm\n"
@@ -650,10 +578,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo P\nDefinir stream Como Canal<Entero> <- Canal(65537);\nstream.Cerrar();\nFinAlgoritmo\n",
     "en": "algorithm P\ndefine stream as channel<integer> <- channel(65537);\nstream.close();\nendAlgorithm\n"
@@ -677,10 +601,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo P\nDefinir stream Como Canal<Entero> <- Canal(0);\nstream.Cerrar();\nFinAlgoritmo\n",
@@ -707,10 +627,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Clase Customer\nFinClase\nRegistro Request\nDefinir customer Como Customer;\nFinRegistro\nAlgoritmo P\nDefinir stream Como Canal<Request> <- Canal(1);\nstream.Cerrar();\nFinAlgoritmo\n",

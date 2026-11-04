@@ -7,7 +7,6 @@ use pseudolearn_codegen::{TargetConfig, compile_module_to_executable_object};
 pub struct NativeBuildRequest {
     pub program: String,
     pub profile: String,
-    pub strictness: String,
     pub seed: i64,
     pub forced_collection: bool,
     pub limits: ExecutionLimits,
@@ -48,7 +47,6 @@ fn build(request: &NativeBuildRequest) -> Result<NativeObject, NativeBuildFailur
     let (module, warnings) = crate::ir_execution::compile_source_with_identity(
         &request.program,
         &request.profile,
-        &request.strictness,
         request.source,
     )
     .map_err(NativeBuildFailure::Rejected)?;

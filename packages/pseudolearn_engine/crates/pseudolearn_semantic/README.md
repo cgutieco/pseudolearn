@@ -45,7 +45,7 @@ Alternativas descartadas y fundamento: Arenas con índices tipados evitan refere
 
 Problema: la traducción necesita identidades, tipos y designadores estables, sin resolver nombres otra vez.
 Elección: seis responsabilidades separadas: registro de unidades y firmas, jerarquía, resolución de
-variables por unidad, tipos y rigor, flujo y emisión. `HirModule` conserva funciones, clases, locales,
+variables por unidad, tipos, flujo y emisión. `HirModule` conserva funciones, clases, locales,
 columnas de expresiones y columnas de sentencias. Los identificadores de arena son tipos distintos.
 Cada expresión tiene tipo internado, clase escalar o referencia y tramo. `HirPlace` distingue ubicaciones
 asignables; `Widen` materializa la ampliación entero → real. Las incorporadas usan la firma generada.
@@ -55,7 +55,7 @@ Los bloques hermanos admiten nombres iguales, el sombreado se advierte con orige
 terminada se distingue de un nombre desconocido. No se reserva un mapa por bloque. El flujo de asignación sí se separa por
 rama y combina con intersección al salir de una condición. Una resolución inválida conserva la causa
 y evita diagnósticos derivados. Los campos se resuelven desde el tipo del receptor y su clase propietaria.
-La auditoría consume además fuentes regenerables de see_generators en ambos vocabularios y rigores,
+La auditoría consume además fuentes regenerables de see_generators en ambos vocabularios,
 sin importar el sistema de especificaciones como crate. La emisión del HIR se habilita solo sin errores; las advertencias no la bloquean.
 Alternativas descartadas: resolución global, copiar lexemas de tipos y volver a interpretar el texto en lowering.
 
@@ -146,7 +146,7 @@ métodos y constructores (diagnosticados, `recordArrayElementNotSupported`, `rec
 `recordMemberSignatureNotSupported`, con excepción de las variantes incorporadas que sí se transportan en firmas de métodos); paso por referencia de registros (`recordPassedByReference`); visibilidad `Publico`/`Privado` y exportación de constantes, enumerados y
 registros entre módulos de un proyecto, que hoy son privados del módulo.
 
-Los vínculos locales tienen mutabilidad explícita en `HirLocal`; su declaración emite una asignación inicial y no cuenta como modificación. `binding_checker` valida inicialización y destinos de reasignación, incluidos campos de registros por valor y argumentos por referencia. Los objetos pueden mutar a través de un vínculo inmutable. La asignación a un nombre no declarado es error en ambos rigores y no crea inferencia flexible. La inicialización obligatoria reemplaza la trampa de lectura sin valor para locales; campos y elementos conservan su contrato. La forma inicializada es la oficial de la edición: no hay migrador, selector de compatibilidad ni conservación de la sintaxis anterior.
+Los vínculos locales tienen mutabilidad explícita en `HirLocal`; su declaración emite una asignación inicial y no cuenta como modificación. `binding_checker` valida inicialización y destinos de reasignación, incluidos campos de registros por valor y argumentos por referencia. Los objetos pueden mutar a través de un vínculo inmutable. La asignación a un nombre no declarado es error y no crea una variable por inferencia. La inicialización obligatoria reemplaza la trampa de lectura sin valor para locales; campos y elementos conservan su contrato. La forma inicializada es la oficial de la edición: no hay migrador, selector de compatibilidad ni conservación de la sintaxis anterior.
 
 La exhaustividad de enumerados pertenece a `switch_coverage`: cubre ordinales en orden de declaración, permite enumerados vacíos y acepta De Otro Modo como cobertura total. Los errores de patrones se informan primero y suprimen diagnósticos derivados de cobertura. El analizador conserva ramas posteriores al comodín para informar su inalcanzabilidad.
 

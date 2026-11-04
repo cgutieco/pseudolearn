@@ -7,7 +7,7 @@ fn validates_bilingual_diagnostics_and_rejects_missing_or_mismatched_markers() -
     let mut specification = support::specification()?;
     let definition = see_model::Block {
         kind: "definicion".to_owned(),
-        fields: serde_json::from_value(json!({"id":"D1", "termino":"diagnostics", "texto":"Catálogo", "valor":{"sample":{"mensajes":{"es":"Error {name}","en":"Error {name}"},"argumentos":["name"],"tipos_argumentos":{"name":"lexema"},"politica":"A","severidad":{"estricto":"error","flexible":"error"}}}}))
+        fields: serde_json::from_value(json!({"id":"D1", "termino":"diagnostics", "texto":"Catálogo", "valor":{"sample":{"mensajes":{"es":"Error {name}","en":"Error {name}"},"argumentos":["name"],"tipos_argumentos":{"name":"lexema"},"politica":"A","severidad":"error"}}}))
             .map_err(|error| error.to_string())?,
     };
     specification.blocks.push(definition);
@@ -22,6 +22,7 @@ fn validates_bilingual_diagnostics_and_rejects_missing_or_mismatched_markers() -
             "severidad",
             json!({"estricto":"warning","flexible":"error"}),
         ),
+        ("politica", json!("B")),
     ] {
         let mut malformed = specification.clone();
         let definition = malformed.blocks.last_mut().ok_or("Missing definition")?;

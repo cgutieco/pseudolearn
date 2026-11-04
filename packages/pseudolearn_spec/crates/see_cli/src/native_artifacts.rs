@@ -60,8 +60,6 @@ fn compile(pseudo: &Path, directory: &Path, request: &Value) -> Result<Output, S
             "program",
             "--vocabulary",
             request["profile"].as_str().unwrap_or("es"),
-            "--strictness",
-            request["strictness"].as_str().unwrap_or("strict"),
         ])
         .output()
         .map_err(|error| error.to_string())

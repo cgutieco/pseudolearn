@@ -2,13 +2,9 @@ use pseudolearn_lexicon::Profile;
 use pseudolearn_service::marked_text::split_cursor;
 use pseudolearn_service::{DocumentSession, HoverCategory};
 
-fn hover_at(
-    marked: &str,
-    profile: Profile,
-    strict: bool,
-) -> Option<pseudolearn_service::HoverOutcome> {
+fn hover_at(marked: &str, profile: Profile) -> Option<pseudolearn_service::HoverOutcome> {
     let (clean, position) = split_cursor(marked);
-    DocumentSession::new(clean, profile, strict)
+    DocumentSession::new(clean, profile)
         .queries()
         .hover(position)
 }
@@ -16,14 +12,14 @@ fn hover_at(
 #[test]
 fn reports_declared_type_in_the_profile_language() -> Result<(), String> {
     let code = "Algoritmo Principal\n  Definir Mutable contador Como Entero <- 0;\n  con|tador <- 1;\nFinAlgoritmo\n";
-    let outcome = hover_at(code, Profile::Spanish, true);
+    let outcome = hover_at(code, Profile::Spanish);
     let outcome = outcome.ok_or("expected hover")?;
     assert_eq!(outcome.type_name, "Entero");
     assert!(!outcome.is_inferred);
     assert_eq!(outcome.category, HoverCategory::Variable);
 
     let english = "Algorithm Main\n  Define Mutable counter As Integer <- 0;\n  cou|nter <- 1;\nEndAlgorithm\n";
-    let outcome = hover_at(english, Profile::English, true);
+    let outcome = hover_at(english, Profile::English);
     assert_eq!(
         outcome.map(|entry| entry.type_name),
         Some(String::from("Integer"))
@@ -34,7 +30,7 @@ fn reports_declared_type_in_the_profile_language() -> Result<(), String> {
 #[test]
 fn undeclared_names_report_an_unknown_type_instead_of_an_inferred_one() -> Result<(), String> {
     let code = "Algoritmo Principal\n  x| <- 3.14\nFinAlgoritmo\n";
-    let outcome = hover_at(code, Profile::Spanish, false).ok_or("expected hover")?;
+    let outcome = hover_at(code, Profile::Spanish).ok_or("expected hover")?;
     assert_eq!(outcome.type_name, "Desconocido");
     assert!(!outcome.is_inferred);
     Ok(())
@@ -43,7 +39,7 @@ fn undeclared_names_report_an_unknown_type_instead_of_an_inferred_one() -> Resul
 #[test]
 fn describes_subroutines_with_passing_modes() -> Result<(), String> {
     let code = "SubProceso Intercambiar(a Por Referencia, b Por Valor)\nFinSubProceso\nAlgoritmo Principal\n  Intercam|biar(1, 2);\nFinAlgoritmo\n";
-    let outcome = hover_at(code, Profile::Spanish, true).ok_or("expected hover")?;
+    let outcome = hover_at(code, Profile::Spanish).ok_or("expected hover")?;
     assert_eq!(outcome.category, HoverCategory::Procedure);
     assert_eq!(
         outcome.signature.as_deref(),
@@ -55,7 +51,7 @@ fn describes_subroutines_with_passing_modes() -> Result<(), String> {
 #[test]
 fn describes_standard_functions_by_lexicon_signature() -> Result<(), String> {
     let code = "Algoritmo Principal\n  Definir Mutable n Como Entero <- 0;\n  n <- Long|itud(\"hola\");\nFinAlgoritmo\n";
-    let outcome = hover_at(code, Profile::Spanish, true).ok_or("expected hover")?;
+    let outcome = hover_at(code, Profile::Spanish).ok_or("expected hover")?;
     assert!(outcome.is_intrinsic);
     assert_eq!(outcome.identifier, "Longitud");
     assert_eq!(
@@ -68,7 +64,7 @@ fn describes_standard_functions_by_lexicon_signature() -> Result<(), String> {
 #[test]
 fn does_not_report_shadowed_standard_functions_as_intrinsic() -> Result<(), String> {
     let code = "Algoritmo Principal\n  Definir Mutable rc Como Real <- 0.0;\n  r|c <- 1.0;\nFinAlgoritmo\n";
-    let outcome = hover_at(code, Profile::Spanish, true).ok_or("expected hover")?;
+    let outcome = hover_at(code, Profile::Spanish).ok_or("expected hover")?;
     assert!(!outcome.is_intrinsic);
     assert_eq!(outcome.category, HoverCategory::Variable);
     Ok(())
@@ -77,7 +73,7 @@ fn does_not_report_shadowed_standard_functions_as_intrinsic() -> Result<(), Stri
 #[test]
 fn describes_keywords_in_the_profile_language() -> Result<(), String> {
     let code = "Algoritmo Principal\n  Mien|tras 1 = 1 Hacer\n  FinMientras\nFinAlgoritmo\n";
-    let outcome = hover_at(code, Profile::Spanish, true).ok_or("expected hover")?;
+    let outcome = hover_at(code, Profile::Spanish).ok_or("expected hover")?;
     assert_eq!(outcome.category, HoverCategory::Keyword);
     assert!(
         outcome
@@ -90,14 +86,14 @@ fn describes_keywords_in_the_profile_language() -> Result<(), String> {
 #[test]
 fn returns_nothing_over_literals_and_blank_space() {
     let code = "Algoritmo Principal\n  Escribir 4|2;\nFinAlgoritmo\n";
-    assert!(hover_at(code, Profile::Spanish, true).is_none());
+    assert!(hover_at(code, Profile::Spanish).is_none());
     let blank = "Algoritmo Principal\n |\nFinAlgoritmo\n";
-    assert!(hover_at(blank, Profile::Spanish, true).is_none());
+    assert!(hover_at(blank, Profile::Spanish).is_none());
 }
 
 fn help_at(marked: &str) -> Option<pseudolearn_service::SignatureHelp> {
     let (clean, position) = split_cursor(marked);
-    DocumentSession::new(clean, Profile::Spanish, true)
+    DocumentSession::new(clean, Profile::Spanish)
         .queries()
         .signature_help(position)
 }

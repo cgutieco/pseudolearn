@@ -18,22 +18,20 @@ fn marks_root_and_declared_subprogram_suspendible_in_both_profiles() {
         ),
     ];
     for (program, profile) in programs {
-        for strict in [true, false] {
-            let (model, diagnostics) = analyze(program, profile, strict);
-            assert!(diagnostics.is_empty(), "{diagnostics:?}");
-            assert!(model.is_some());
-            let Some(model) = model else {
-                continue;
-            };
-            assert_eq!(
-                model
-                    .functions
-                    .iter()
-                    .filter(|function| function.suspendible)
-                    .count(),
-                2
-            );
-        }
+        let (model, diagnostics) = analyze(program, profile);
+        assert!(diagnostics.is_empty(), "{diagnostics:?}");
+        assert!(model.is_some());
+        let Some(model) = model else {
+            continue;
+        };
+        assert_eq!(
+            model
+                .functions
+                .iter()
+                .filter(|function| function.suspendible)
+                .count(),
+            2
+        );
     }
 }
 
@@ -50,11 +48,9 @@ fn rejects_suspendible_function_and_function_value() {
         ),
     ];
     for (program, profile) in programs {
-        for strict in [true, false] {
-            let (_, diagnostics) = analyze(program, profile, strict);
-            assert!(diagnostics.contains(&DiagnosticCode::SuspendibleModifierNotAllowed));
-            assert!(diagnostics.contains(&DiagnosticCode::SuspendibleAsValue));
-        }
+        let (_, diagnostics) = analyze(program, profile);
+        assert!(diagnostics.contains(&DiagnosticCode::SuspendibleModifierNotAllowed));
+        assert!(diagnostics.contains(&DiagnosticCode::SuspendibleAsValue));
     }
 }
 
@@ -71,13 +67,11 @@ fn rejects_function_modifier_without_marking_function_suspendible() {
         ),
     ];
     for (program, profile) in programs {
-        for strict in [true, false] {
-            let (_, diagnostics) = analyze(program, profile, strict);
-            assert_eq!(
-                diagnostics,
-                vec![DiagnosticCode::SuspendibleModifierNotAllowed]
-            );
-        }
+        let (_, diagnostics) = analyze(program, profile);
+        assert_eq!(
+            diagnostics,
+            vec![DiagnosticCode::SuspendibleModifierNotAllowed]
+        );
     }
 }
 
@@ -94,29 +88,23 @@ fn rejects_suspendible_methods_constructors_and_closures() {
         ),
     ];
     for (program, profile) in programs {
-        for strict in [true, false] {
-            let (_, diagnostics) = analyze(program, profile, strict);
-            assert_eq!(
-                diagnostics
-                    .iter()
-                    .filter(|code| **code == DiagnosticCode::SuspendibleModifierNotAllowed)
-                    .count(),
-                3
-            );
-        }
+        let (_, diagnostics) = analyze(program, profile);
+        assert_eq!(
+            diagnostics
+                .iter()
+                .filter(|code| **code == DiagnosticCode::SuspendibleModifierNotAllowed)
+                .count(),
+            3
+        );
     }
 }
 
-fn analyze(
-    program: &str,
-    profile: Profile,
-    strict: bool,
-) -> (Option<HirModule>, Vec<DiagnosticCode>) {
+fn analyze(program: &str, profile: Profile) -> (Option<HirModule>, Vec<DiagnosticCode>) {
     let source = SourceText::new(program.to_owned());
     let (tree, syntax_diagnostics) = parse_source(&source, profile);
     assert!(syntax_diagnostics.is_empty());
     let (model, diagnostics) =
-        crate::analyze_with_options(&tree, &source, SemanticOptions { profile, strict });
+        crate::analyze_with_options(&tree, &source, SemanticOptions { profile });
     (
         model,
         diagnostics

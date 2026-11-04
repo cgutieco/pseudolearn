@@ -166,7 +166,6 @@ impl ApiSession {
             serde_json::from_value(arguments.clone()).map_err(serialization)?;
         execution_request.program = request.program.clone();
         execution_request.profile = request.profile.clone();
-        execution_request.strictness = request.strictness.clone();
         execution_request.source = request.source;
         let mut execution = Box::new(ExecutionResource::start(&execution_request)?);
         execution.attach_view(view);
@@ -262,7 +261,6 @@ pub(crate) fn parse_analysis(arguments: &Value) -> Result<AnalyzeRequest, ApiErr
     Ok(AnalyzeRequest {
         program: request.program,
         profile: request.profile,
-        strictness: request.strictness,
         source: request.source,
     })
 }

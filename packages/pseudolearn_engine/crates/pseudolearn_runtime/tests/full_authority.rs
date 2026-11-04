@@ -31,7 +31,6 @@ fn root_capabilities_require_no_grants() -> Result<(), String> {
 fn session() -> EffectSession {
     EffectSession::new(
         ExecutionIdentity {
-            strictness: "strict".to_owned(),
             limits: Default::default(),
             source_digest: "source".to_owned(),
             package_graph_digest: "none".to_owned(),

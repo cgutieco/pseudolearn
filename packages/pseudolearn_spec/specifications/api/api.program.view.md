@@ -75,9 +75,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "analyze",
   "espera": {
@@ -117,9 +114,6 @@
   "regla": "R1",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "analyze",
@@ -203,9 +197,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "analyze",
   "espera": {
@@ -243,9 +234,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "analyze",
   "espera": {
@@ -275,9 +263,6 @@
   "regla": "R2",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "analyze",
@@ -325,9 +310,6 @@
   "regla": "R2",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "analyze",
@@ -391,9 +373,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "app",
   "aplicacion": {
@@ -434,10 +413,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo Main\nDefinir Mutable outcome Como Resultado<Entero, Cadena> <- Exito(2);\nSegun outcome Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem;\nFinSegun\noutcome <- Error(\"bad\");\nDescartar outcome;\nFinAlgoritmo\n",
@@ -493,10 +468,6 @@ La vista pública incluye interface_unit, interface_signature, realization, type
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Enumerado Color\nRojo, Verde\nFinEnumerado\nRegistro Punto\nDefinir x, z Como Entero;\nFinRegistro\nAlgoritmo Main\nFinAlgoritmo\n",
     "en": "enum Color\nRojo, Verde\nendEnum\nrecord Punto\ndefine x, z as integer;\nendRecord\nalgorithm Main\nendAlgorithm\n"
@@ -533,10 +504,6 @@ La vista pública incluye interface_unit, interface_signature, realization, type
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "SubProceso make(value Como Entero) Como SubProceso() Como Entero\nDefinir captured Como Entero <- value;\nRetornar SubProceso() Como Entero\nRetornar captured;\nFinSubProceso;\nFinSubProceso\nAlgoritmo Main\nFinAlgoritmo\n",
     "en": "subroutine make(value as integer) as subroutine() as integer\ndefine captured as integer <- value;\nreturn subroutine() as integer\nreturn captured;\nendSubroutine;\nendSubroutine\nalgorithm Main\nendAlgorithm\n"
@@ -561,10 +528,6 @@ La vista pública incluye interface_unit, interface_signature, realization, type
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "SubProceso Probe() Como Resultado<Bytes, ErrorES>\nDefinir dir Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir file Como ArchivoCap <- Propagar dir.Abrir(\"a\", \"lectura\");\nDiferir\nDescartar file.Cerrar();\nFinDiferir\nDefinir empty Como Bytes <- Bytes();\nRetornar Exito(empty);\nFinSubProceso\nAlgoritmo Main\nFinAlgoritmo\n",
@@ -637,10 +600,6 @@ La vista pública incluye interface_unit, interface_signature, realization, type
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "SubProceso Suspendible Work(stream Como Canal<Entero>) Como Resultado<Entero, Cadena>\nSegun Aguardar stream.Recibir() Hacer\nAlgo(value): Escribir value;\nNada: Escribir 0;\nFinSegun\nRetornar Exito(1);\nFinSubProceso\nAlgoritmo Main\nDefinir stream Como Canal<Entero> <- Canal(1);\nTareas problem\nDefinir job Como Tarea<Entero> <- Lanzar Work(stream);\nLanzar Work(stream);\nFinTareas\nDescartar problem;\nElegir\nRecibir first Desde stream:\nEscribir 1;\nRecibir second Desde stream:\nEscribir 2;\nFinElegir\nFinAlgoritmo\n",
     "en": "subroutine suspendable Work(stream as channel<integer>) as result<integer, string>\nswitch await stream.receive() do\nsome(value): write value;\nnone: write 0;\nendSwitch\nreturn success(1);\nendSubroutine\nalgorithm Main\ndefine stream as channel<integer> <- channel(1);\ntasks problem\ndefine job as task<integer> <- spawn Work(stream);\nspawn Work(stream);\nendTasks\ndiscard problem;\nselect\nreceive first from stream:\nwrite 1;\nreceive second from stream:\nwrite 2;\nendSelect\nendAlgorithm\n"
@@ -701,10 +660,6 @@ La vista pública incluye interface_unit, interface_signature, realization, type
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo Main\nDefinir Mutable counter Como Entero <- 1;\nDefinir callback Como SubProceso() Como Entero <- SubProceso() Como Entero\nRetornar counter;\nFinSubProceso;\nFinAlgoritmo\n",
     "en": "algorithm Main\ndefine mutable counter as integer <- 1;\ndefine callback as subroutine() as integer <- subroutine() as integer\nreturn counter;\nendSubroutine;\nendAlgorithm\n"
@@ -732,10 +687,6 @@ La vista pública incluye interface_unit, interface_signature, realization, type
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Interfaz Readable\nMetodo readValue() Como Entero;\nFinInterfaz\nClase Reader Realiza Readable\nMetodo readValue() Como Entero\nRetornar 7;\nFinMetodo\nFinClase\nClase Writer Realiza Readable\nMetodo readValue() Como Entero\nRetornar 8;\nFinMetodo\nFinClase\nClase Child Hereda De Reader\nFinClase\nSubProceso readOnce<T: Readable>(value Como T) Como Entero\nRetornar value.readValue();\nFinSubProceso\nSubProceso make(value Como Entero) Como SubProceso() Como SubProceso() Como Entero\nDefinir captured Como Entero <- value;\nRetornar SubProceso() Como SubProceso() Como Entero\nRetornar SubProceso() Como Entero\nRetornar captured;\nFinSubProceso;\nFinSubProceso;\nFinSubProceso\nAlgoritmo Main\nDefinir values Como Vector<Entero> <- Vector();\nPara Cada value En values Hacer\nPara Cada nested En values Hacer\nEscribir nested;\nFinPara\nFinPara\nDefinir result Como Resultado<Entero, Cadena> <- Exito(1);\nSegun result Hacer\nExito(item): Escribir item;\nError(problem): Escribir problem;\nFinSegun\nFinAlgoritmo\n",
@@ -786,10 +737,6 @@ La vista pública incluye interface_unit, interface_signature, realization, type
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Interfaz Needed\nMetodo run() Como Entero;\nFinInterfaz\nClase Broken Realiza Needed\nFinClase\nClase Missing Realiza Absent\nFinClase\nSubProceso use<T: Absent>(item Como T)\nFinSubProceso\nAlgoritmo Main\nFinAlgoritmo\n",
     "en": "interface Needed\nmethod run() as integer;\nendInterface\nclass Broken implements Needed\nendClass\nclass Missing implements Absent\nendClass\nsubroutine use<T: Absent>(item as T)\nendSubroutine\nalgorithm Main\nendAlgorithm\n"
@@ -838,10 +785,6 @@ La vista pública incluye interface_unit, interface_signature, realization, type
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Interfaz Marker\nFinInterfaz\nClase Marked Realiza Marker\nFinClase\nAlgoritmo Main\nDefinir absent Como Opcional<Entero> <- Nada;\nDescartar absent;\nDefinir values Como Vector<Entero> <- Vector();\nPara Cada item En values Hacer\nEscribir item;\nFinPara\nFinAlgoritmo\n",
     "en": "interface Marker\nendInterface\nclass Marked implements Marker\nendClass\nalgorithm Main\ndefine absent as optional<integer> <- none;\ndiscard absent;\ndefine values as vector<integer> <- vector();\nfor each item in values do\nwrite item;\nendFor\nendAlgorithm\n"
@@ -875,7 +818,7 @@ La vista pública incluye interface_unit, interface_signature, realization, type
 ```
 
 ```caso
-{"id": "C17", "regla": "R6", "perfiles": ["en"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "class_diagram", "input": {"program": "interface Readable\nmethod readValue() as integer;\nendInterface\nalgorithm Main\nendAlgorithm\n", "profile": "en"}}, "espera": {"aplicacion": {"boxes": [{"name": "Readable", "stereotype": "«interface»", "rows": ["+ readValue(): integer"]}], "relations": []}}}
+{"id": "C17", "regla": "R6", "perfiles": ["en"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "class_diagram", "input": {"program": "interface Readable\nmethod readValue() as integer;\nendInterface\nalgorithm Main\nendAlgorithm\n", "profile": "en"}}, "espera": {"aplicacion": {"boxes": [{"name": "Readable", "stereotype": "«interface»", "rows": ["+ readValue(): integer"]}], "relations": []}}}
 ```
 
 ```regla
@@ -883,19 +826,19 @@ La vista pública incluye interface_unit, interface_signature, realization, type
 ```
 
 ```caso
-{"id": "C18", "regla": "R7", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "class_diagram", "input": {"program": "Interfaz Legible\nMetodo obtener() Como Entero;\nFinInterfaz\nClase Lector Realiza Legible\nMetodo obtener() Como Entero\nRetornar 1;\nFinMetodo\nFinClase\nAlgoritmo Principal\nFinAlgoritmo\n", "profile": "es"}}, "espera": {"aplicacion": {"boxes": [{"name": "Legible", "stereotype": "«interface»", "rows": ["+ obtener(): Entero"]}, {"name": "Lector", "rows": ["+ obtener(): Entero"]}], "relations": [{"kind": "realization", "from": "Lector", "to": "Legible", "valid": true, "diagnostics": []}]}}}
+{"id": "C18", "regla": "R7", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "class_diagram", "input": {"program": "Interfaz Legible\nMetodo obtener() Como Entero;\nFinInterfaz\nClase Lector Realiza Legible\nMetodo obtener() Como Entero\nRetornar 1;\nFinMetodo\nFinClase\nAlgoritmo Principal\nFinAlgoritmo\n", "profile": "es"}}, "espera": {"aplicacion": {"boxes": [{"name": "Legible", "stereotype": "«interface»", "rows": ["+ obtener(): Entero"]}, {"name": "Lector", "rows": ["+ obtener(): Entero"]}], "relations": [{"kind": "realization", "from": "Lector", "to": "Legible", "valid": true, "diagnostics": []}]}}}
 ```
 
 ```caso
-{"id": "C19", "regla": "R7", "perfiles": ["en"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "class_diagram", "input": {"program": "interface Readable\nmethod readValue() as integer;\nendInterface\nclass Reader implements Readable\nmethod readValue() as integer\nreturn 7;\nendMethod\nendClass\nclass Writer implements Readable\nmethod readValue() as integer\nreturn 8;\nendMethod\nendClass\nalgorithm Main\nendAlgorithm\n", "profile": "en"}}, "espera": {"aplicacion": {"relations": [{"kind": "realization", "from": "Reader", "to": "Readable", "valid": true}, {"kind": "realization", "from": "Writer", "to": "Readable", "valid": true}]}}}
+{"id": "C19", "regla": "R7", "perfiles": ["en"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "class_diagram", "input": {"program": "interface Readable\nmethod readValue() as integer;\nendInterface\nclass Reader implements Readable\nmethod readValue() as integer\nreturn 7;\nendMethod\nendClass\nclass Writer implements Readable\nmethod readValue() as integer\nreturn 8;\nendMethod\nendClass\nalgorithm Main\nendAlgorithm\n", "profile": "en"}}, "espera": {"aplicacion": {"relations": [{"kind": "realization", "from": "Reader", "to": "Readable", "valid": true}, {"kind": "realization", "from": "Writer", "to": "Readable", "valid": true}]}}}
 ```
 
 ```caso
-{"id": "C20", "regla": "R7", "perfiles": ["en"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "class_diagram", "input": {"program": "interface Readable\nmethod readValue() as integer;\nendInterface\nclass Reader implements Readable\nmethod readValue() as integer\nreturn 7;\nendMethod\nendClass\nclass Child extends Reader\nendClass\nalgorithm Main\nendAlgorithm\n", "profile": "en"}}, "espera": {"aplicacion": {"relations": [{"kind": "generalization", "from": "Child", "to": "Reader", "valid": true}, {"kind": "realization", "from": "Reader", "to": "Readable", "valid": true}]}}}
+{"id": "C20", "regla": "R7", "perfiles": ["en"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "class_diagram", "input": {"program": "interface Readable\nmethod readValue() as integer;\nendInterface\nclass Reader implements Readable\nmethod readValue() as integer\nreturn 7;\nendMethod\nendClass\nclass Child extends Reader\nendClass\nalgorithm Main\nendAlgorithm\n", "profile": "en"}}, "espera": {"aplicacion": {"relations": [{"kind": "generalization", "from": "Child", "to": "Reader", "valid": true}, {"kind": "realization", "from": "Reader", "to": "Readable", "valid": true}]}}}
 ```
 
 ```caso
-{"id": "C41", "regla": "R7", "perfiles": ["en"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "class_diagram", "input": {"program": "interface Readable\nmethod readValue() as integer;\nendInterface\nclass Base\nmethod readValue() as integer\nreturn 1;\nendMethod\nendClass\nclass Child extends Base implements Readable\nendClass\nalgorithm Main\nendAlgorithm\n", "profile": "en"}}, "espera": {"aplicacion": {"relations": [{"kind": "generalization", "from": "Child", "to": "Base", "valid": true}, {"kind": "realization", "from": "Child", "to": "Readable", "valid": true, "diagnostics": []}]}}}
+{"id": "C41", "regla": "R7", "perfiles": ["en"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "class_diagram", "input": {"program": "interface Readable\nmethod readValue() as integer;\nendInterface\nclass Base\nmethod readValue() as integer\nreturn 1;\nendMethod\nendClass\nclass Child extends Base implements Readable\nendClass\nalgorithm Main\nendAlgorithm\n", "profile": "en"}}, "espera": {"aplicacion": {"relations": [{"kind": "generalization", "from": "Child", "to": "Base", "valid": true}, {"kind": "realization", "from": "Child", "to": "Readable", "valid": true, "diagnostics": []}]}}}
 ```
 
 ```regla
@@ -903,35 +846,35 @@ La vista pública incluye interface_unit, interface_signature, realization, type
 ```
 
 ```caso
-{"id":"C21","regla":"R8","perfiles":["en"],"rigor":["estricto"],"origen":"derivado","operacion":"app","aplicacion":{"scenario":"class_diagram","input":{"program":"interface Needed\nmethod run() as integer;\nendInterface\nclass Broken implements Needed\nendClass\nalgorithm Main\nendAlgorithm\n","profile":"en"}},"espera":{"aplicacion":{"relations":[{"kind":"realization","from":"Broken","to":"Needed","valid":false,"diagnostics":["interfaceMethodMissing"],"has_origin":true}],"invalid_accessible_relations":[{"kind":"realization","from":"Broken","to":"Needed","diagnostics":["interfaceMethodMissing"],"has_source_range":true,"hit_target_width":24.0,"hit_target_height":24.0}]}}}
+{"id":"C21","regla":"R8","perfiles":["en"],"origen":"derivado","operacion":"app","aplicacion":{"scenario":"class_diagram","input":{"program":"interface Needed\nmethod run() as integer;\nendInterface\nclass Broken implements Needed\nendClass\nalgorithm Main\nendAlgorithm\n","profile":"en"}},"espera":{"aplicacion":{"relations":[{"kind":"realization","from":"Broken","to":"Needed","valid":false,"diagnostics":["interfaceMethodMissing"],"has_origin":true}],"invalid_accessible_relations":[{"kind":"realization","from":"Broken","to":"Needed","diagnostics":["interfaceMethodMissing"],"has_source_range":true,"hit_target_width":24.0,"hit_target_height":24.0}]}}}
 ```
 
 ```caso
-{"id": "C22", "regla": "R8", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "class_diagram", "input": {"program": "Clase Faltante Realiza Ausente\nFinClase\nAlgoritmo Principal\nFinAlgoritmo\n", "profile": "es"}}, "espera": {"aplicacion": {"boxes": [{"name": "Faltante", "rows": ["! Ausente (unknownInterface)"]}], "relations": []}}}
+{"id": "C22", "regla": "R8", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "class_diagram", "input": {"program": "Clase Faltante Realiza Ausente\nFinClase\nAlgoritmo Principal\nFinAlgoritmo\n", "profile": "es"}}, "espera": {"aplicacion": {"boxes": [{"name": "Faltante", "rows": ["! Ausente (unknownInterface)"]}], "relations": []}}}
 ```
 
 ```caso
-{"id":"C42","regla":"R8","perfiles":["es"],"rigor":["estricto"],"origen":"derivado","operacion":"app","aplicacion":{"scenario":"class_diagram","input":{"program":"Interfaz Legible\nMetodo obtener() Como Entero;\nFinInterfaz\nClase Lector Realiza Legible\nMetodo obtener(extra Como Entero) Como Entero\nRetornar extra;\nFinMetodo\nFinClase\nAlgoritmo Principal\nFinAlgoritmo\n","profile":"es"}},"espera":{"aplicacion":{"relations":[{"kind":"realization","from":"Lector","to":"Legible","valid":false,"diagnostics":["interfaceMethodSignatureMismatch"],"has_origin":true}],"invalid_accessible_relations":[{"kind":"realization","from":"Lector","to":"Legible","diagnostics":["interfaceMethodSignatureMismatch"],"has_source_range":true,"hit_target_width":24.0,"hit_target_height":24.0}]}}}
+{"id":"C42","regla":"R8","perfiles":["es"],"origen":"derivado","operacion":"app","aplicacion":{"scenario":"class_diagram","input":{"program":"Interfaz Legible\nMetodo obtener() Como Entero;\nFinInterfaz\nClase Lector Realiza Legible\nMetodo obtener(extra Como Entero) Como Entero\nRetornar extra;\nFinMetodo\nFinClase\nAlgoritmo Principal\nFinAlgoritmo\n","profile":"es"}},"espera":{"aplicacion":{"relations":[{"kind":"realization","from":"Lector","to":"Legible","valid":false,"diagnostics":["interfaceMethodSignatureMismatch"],"has_origin":true}],"invalid_accessible_relations":[{"kind":"realization","from":"Lector","to":"Legible","diagnostics":["interfaceMethodSignatureMismatch"],"has_source_range":true,"hit_target_width":24.0,"hit_target_height":24.0}]}}}
 ```
 
 ```caso
-{"id":"C43","regla":"R5","perfiles":["es","en"],"rigor":["estricto"],"programas":{"es":"Interfaz Readable\nMetodo readValue() Como Entero;\nFinInterfaz\nClase Reader Realiza Readable\nMetodo readValue() Como Entero\nRetornar 7;\nFinMetodo\nFinClase\nClase Child Hereda De Reader\nMetodo readValue(extra Como Entero) Como Entero\nRetornar extra;\nFinMetodo\nFinClase\nAlgoritmo Main\nFinAlgoritmo\n","en":"interface Readable\nmethod readValue() as integer;\nendInterface\nclass Reader implements Readable\nmethod readValue() as integer\nreturn 7;\nendMethod\nendClass\nclass Child extends Reader\nmethod readValue(extra as integer) as integer\nreturn extra;\nendMethod\nendClass\nalgorithm Main\nendAlgorithm\n"},"origen":"derivado","operacion":"analyze","espera":{"arbol":"presente","vista_programa":{"realizations_include":[{"origin":"inherited","status":"invalid","diagnostics":["incompatibleMethodOverride"]}],"nodes_include":[{"syntax_kind":"method_member","method_signature_span":{"start":{"line":10},"end":{"line":10}}}],"relations_same_revision_and_source":true}}}
+{"id":"C43","regla":"R5","perfiles":["es","en"],"programas":{"es":"Interfaz Readable\nMetodo readValue() Como Entero;\nFinInterfaz\nClase Reader Realiza Readable\nMetodo readValue() Como Entero\nRetornar 7;\nFinMetodo\nFinClase\nClase Child Hereda De Reader\nMetodo readValue(extra Como Entero) Como Entero\nRetornar extra;\nFinMetodo\nFinClase\nAlgoritmo Main\nFinAlgoritmo\n","en":"interface Readable\nmethod readValue() as integer;\nendInterface\nclass Reader implements Readable\nmethod readValue() as integer\nreturn 7;\nendMethod\nendClass\nclass Child extends Reader\nmethod readValue(extra as integer) as integer\nreturn extra;\nendMethod\nendClass\nalgorithm Main\nendAlgorithm\n"},"origen":"derivado","operacion":"analyze","espera":{"arbol":"presente","vista_programa":{"realizations_include":[{"origin":"inherited","status":"invalid","diagnostics":["incompatibleMethodOverride"]}],"nodes_include":[{"syntax_kind":"method_member","method_signature_span":{"start":{"line":10},"end":{"line":10}}}],"relations_same_revision_and_source":true}}}
 ```
 
 ```caso
-{"id":"C44","regla":"R8","perfiles":["es"],"rigor":["estricto"],"origen":"derivado","operacion":"app","aplicacion":{"scenario":"class_diagram","input":{"program":"Interfaz Readable\nMetodo readValue() Como Entero;\nFinInterfaz\nClase Reader Realiza Readable\nMetodo readValue() Como Entero\nRetornar 7;\nFinMetodo\nFinClase\nClase Child Hereda De Reader\nMetodo readValue(extra Como Entero) Como Entero\nRetornar extra;\nFinMetodo\nFinClase\nAlgoritmo Main\nFinAlgoritmo\n","profile":"es"}},"espera":{"aplicacion":{"relations":[{"kind":"generalization","from":"Child","to":"Reader","valid":true},{"kind":"realization","from":"Reader","to":"Readable","valid":true},{"kind":"realization","from":"Child","to":"Readable","valid":false,"diagnostics":["incompatibleMethodOverride"],"has_origin":true}],"invalid_accessible_relations":[{"kind":"realization","from":"Child","to":"Readable","diagnostics":["incompatibleMethodOverride"],"has_source_range":true,"hit_target_width":24.0,"hit_target_height":24.0}]}}}
+{"id":"C44","regla":"R8","perfiles":["es"],"origen":"derivado","operacion":"app","aplicacion":{"scenario":"class_diagram","input":{"program":"Interfaz Readable\nMetodo readValue() Como Entero;\nFinInterfaz\nClase Reader Realiza Readable\nMetodo readValue() Como Entero\nRetornar 7;\nFinMetodo\nFinClase\nClase Child Hereda De Reader\nMetodo readValue(extra Como Entero) Como Entero\nRetornar extra;\nFinMetodo\nFinClase\nAlgoritmo Main\nFinAlgoritmo\n","profile":"es"}},"espera":{"aplicacion":{"relations":[{"kind":"generalization","from":"Child","to":"Reader","valid":true},{"kind":"realization","from":"Reader","to":"Readable","valid":true},{"kind":"realization","from":"Child","to":"Readable","valid":false,"diagnostics":["incompatibleMethodOverride"],"has_origin":true}],"invalid_accessible_relations":[{"kind":"realization","from":"Child","to":"Readable","diagnostics":["incompatibleMethodOverride"],"has_source_range":true,"hit_target_width":24.0,"hit_target_height":24.0}]}}}
 ```
 
 ```caso
-{"id":"C45","regla":"R8","perfiles":["en"],"rigor":["estricto"],"origen":"derivado","operacion":"app","aplicacion":{"scenario":"class_diagram","input":{"program":"interface Readable\nmethod readValue() as integer;\nendInterface\nclass Reader implements Readable\nmethod readValue() as integer\nreturn 7;\nendMethod\nendClass\nclass Child extends Reader\nmethod readValue(extra as integer) as integer\nreturn extra;\nendMethod\nendClass\nalgorithm Main\nendAlgorithm\n","profile":"en"}},"espera":{"aplicacion":{"relations":[{"kind":"generalization","from":"Child","to":"Reader","valid":true},{"kind":"realization","from":"Reader","to":"Readable","valid":true},{"kind":"realization","from":"Child","to":"Readable","valid":false,"diagnostics":["incompatibleMethodOverride"],"has_origin":true}],"invalid_accessible_relations":[{"kind":"realization","from":"Child","to":"Readable","diagnostics":["incompatibleMethodOverride"],"has_source_range":true,"hit_target_width":24.0,"hit_target_height":24.0}]}}}
+{"id":"C45","regla":"R8","perfiles":["en"],"origen":"derivado","operacion":"app","aplicacion":{"scenario":"class_diagram","input":{"program":"interface Readable\nmethod readValue() as integer;\nendInterface\nclass Reader implements Readable\nmethod readValue() as integer\nreturn 7;\nendMethod\nendClass\nclass Child extends Reader\nmethod readValue(extra as integer) as integer\nreturn extra;\nendMethod\nendClass\nalgorithm Main\nendAlgorithm\n","profile":"en"}},"espera":{"aplicacion":{"relations":[{"kind":"generalization","from":"Child","to":"Reader","valid":true},{"kind":"realization","from":"Reader","to":"Readable","valid":true},{"kind":"realization","from":"Child","to":"Readable","valid":false,"diagnostics":["incompatibleMethodOverride"],"has_origin":true}],"invalid_accessible_relations":[{"kind":"realization","from":"Child","to":"Readable","diagnostics":["incompatibleMethodOverride"],"has_source_range":true,"hit_target_width":24.0,"hit_target_height":24.0}]}}}
 ```
 
 ```caso
-{"id":"C46","regla":"R7","perfiles":["en"],"rigor":["estricto"],"origen":"derivado","operacion":"app","aplicacion":{"scenario":"class_diagram","input":{"program":"interface Readable\nmethod readValue() as integer;\nendInterface\nclass Reader implements Readable\nmethod readValue() as integer\nreturn 7;\nendMethod\nendClass\nclass Child extends Reader\nmethod readValue() as integer\nreturn 8;\nendMethod\nendClass\nalgorithm Main\nendAlgorithm\n","profile":"en"}},"espera":{"aplicacion":{"relations":[{"kind":"generalization","from":"Child","to":"Reader","valid":true},{"kind":"realization","from":"Reader","to":"Readable","valid":true}]}}}
+{"id":"C46","regla":"R7","perfiles":["en"],"origen":"derivado","operacion":"app","aplicacion":{"scenario":"class_diagram","input":{"program":"interface Readable\nmethod readValue() as integer;\nendInterface\nclass Reader implements Readable\nmethod readValue() as integer\nreturn 7;\nendMethod\nendClass\nclass Child extends Reader\nmethod readValue() as integer\nreturn 8;\nendMethod\nendClass\nalgorithm Main\nendAlgorithm\n","profile":"en"}},"espera":{"aplicacion":{"relations":[{"kind":"generalization","from":"Child","to":"Reader","valid":true},{"kind":"realization","from":"Reader","to":"Readable","valid":true}]}}}
 ```
 
 ```caso
-{"id":"C47","regla":"R8","perfiles":["en"],"rigor":["estricto"],"origen":"derivado","operacion":"app","aplicacion":{"scenario":"class_diagram","input":{"program":"interface Readable\nmethod readValue() as integer;\nendInterface\nclass Reader implements Readable\nmethod readValue() as integer\nreturn 7;\nendMethod\nendClass\nclass Child extends Reader\nmethod readValue() as integer\nreturn 8;\nendMethod\nendClass\nclass Grandchild extends Child\nmethod readValue(extra as integer) as integer\nreturn extra;\nendMethod\nendClass\nalgorithm Main\nendAlgorithm\n","profile":"en"}},"espera":{"aplicacion":{"relations":[{"kind":"generalization","from":"Child","to":"Reader","valid":true},{"kind":"generalization","from":"Grandchild","to":"Child","valid":true},{"kind":"realization","from":"Reader","to":"Readable","valid":true},{"kind":"realization","from":"Grandchild","to":"Readable","valid":false,"diagnostics":["incompatibleMethodOverride"],"has_origin":true}],"invalid_accessible_relations":[{"kind":"realization","from":"Grandchild","to":"Readable","diagnostics":["incompatibleMethodOverride"],"has_source_range":true,"hit_target_width":24.0,"hit_target_height":24.0}]}}}
+{"id":"C47","regla":"R8","perfiles":["en"],"origen":"derivado","operacion":"app","aplicacion":{"scenario":"class_diagram","input":{"program":"interface Readable\nmethod readValue() as integer;\nendInterface\nclass Reader implements Readable\nmethod readValue() as integer\nreturn 7;\nendMethod\nendClass\nclass Child extends Reader\nmethod readValue() as integer\nreturn 8;\nendMethod\nendClass\nclass Grandchild extends Child\nmethod readValue(extra as integer) as integer\nreturn extra;\nendMethod\nendClass\nalgorithm Main\nendAlgorithm\n","profile":"en"}},"espera":{"aplicacion":{"relations":[{"kind":"generalization","from":"Child","to":"Reader","valid":true},{"kind":"generalization","from":"Grandchild","to":"Child","valid":true},{"kind":"realization","from":"Reader","to":"Readable","valid":true},{"kind":"realization","from":"Grandchild","to":"Readable","valid":false,"diagnostics":["incompatibleMethodOverride"],"has_origin":true}],"invalid_accessible_relations":[{"kind":"realization","from":"Grandchild","to":"Readable","diagnostics":["incompatibleMethodOverride"],"has_source_range":true,"hit_target_width":24.0,"hit_target_height":24.0}]}}}
 ```
 
 ```regla
@@ -939,7 +882,7 @@ La vista pública incluye interface_unit, interface_signature, realization, type
 ```
 
 ```caso
-{"id": "C23", "regla": "R9", "perfiles": ["en"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "class_diagram", "input": {"program": "interface Readable\nmethod readValue() as integer;\nendInterface\nsubroutine readOnce<T: Readable>(value as T) as integer\nreturn value.readValue();\nendSubroutine\nalgorithm Main\nendAlgorithm\n", "profile": "en"}}, "espera": {"aplicacion": {"boxes": [{"name": "Readable", "stereotype": "«interface»", "rows": ["+ readValue(): integer"]}, {"name": "readOnce", "stereotype": "«subprogram»", "rows": ["+ readOnce<T: Readable>(value: T): integer"]}], "relations": [{"kind": "usage", "from": "readOnce", "to": "Readable", "valid": true, "label": "T"}]}}}
+{"id": "C23", "regla": "R9", "perfiles": ["en"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "class_diagram", "input": {"program": "interface Readable\nmethod readValue() as integer;\nendInterface\nsubroutine readOnce<T: Readable>(value as T) as integer\nreturn value.readValue();\nendSubroutine\nalgorithm Main\nendAlgorithm\n", "profile": "en"}}, "espera": {"aplicacion": {"boxes": [{"name": "Readable", "stereotype": "«interface»", "rows": ["+ readValue(): integer"]}, {"name": "readOnce", "stereotype": "«subprogram»", "rows": ["+ readOnce<T: Readable>(value: T): integer"]}], "relations": [{"kind": "usage", "from": "readOnce", "to": "Readable", "valid": true, "label": "T"}]}}}
 ```
 
 ## Salidas, limpiezas y su representación en ordinograma y estructograma
@@ -949,11 +892,11 @@ La vista pública incluye interface_unit, interface_signature, realization, type
 ```
 
 ```caso
-{"id": "C24", "regla": "R10", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "control_flow", "input": {"program": "Algoritmo Main\nDefinir values Como Vector<Entero> <- Vector();\nDiferir\nEscribir 0;\nFinDiferir\nPara Cada value En values Hacer\nDiferir\nEscribir value;\nFinDiferir\nSi value = 2 Entonces\nSalir;\nFinSi\nFinPara\nFinAlgoritmo\n", "profile": "es", "notation": "flowchart", "unit": "Main"}}, "espera": {"aplicacion": {"exits": [{"kind": "break", "target": "for_each_loop", "cleanup_lines": [7]}], "normal_cleanups": [{"lines": [3]}, {"lines": [7]}]}}}
+{"id": "C24", "regla": "R10", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "control_flow", "input": {"program": "Algoritmo Main\nDefinir values Como Vector<Entero> <- Vector();\nDiferir\nEscribir 0;\nFinDiferir\nPara Cada value En values Hacer\nDiferir\nEscribir value;\nFinDiferir\nSi value = 2 Entonces\nSalir;\nFinSi\nFinPara\nFinAlgoritmo\n", "profile": "es", "notation": "flowchart", "unit": "Main"}}, "espera": {"aplicacion": {"exits": [{"kind": "break", "target": "for_each_loop", "cleanup_lines": [7]}], "normal_cleanups": [{"lines": [3]}, {"lines": [7]}]}}}
 ```
 
 ```caso
-{"id": "C25", "regla": "R10", "perfiles": ["en"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "control_flow", "input": {"program": "subroutine First() as optional<integer>\nreturn none;\nendSubroutine\nsubroutine Second() as optional<string>\ndefer\nwrite 0;\nendDefer\ndefine value as integer <- propagate First();\nreturn some(\"done\");\nendSubroutine\nalgorithm Main\nendAlgorithm\n", "profile": "en", "notation": "flowchart", "unit": "Second"}}, "espera": {"aplicacion": {"exits": [{"kind": "return", "target": "subroutine", "cleanup_lines": []}, {"kind": "propagation", "target": "subroutine", "cleanup_lines": [5]}, {"kind": "return", "target": "subroutine", "cleanup_lines": [5]}], "normal_cleanups": [{"lines": [5]}]}}}
+{"id": "C25", "regla": "R10", "perfiles": ["en"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "control_flow", "input": {"program": "subroutine First() as optional<integer>\nreturn none;\nendSubroutine\nsubroutine Second() as optional<string>\ndefer\nwrite 0;\nendDefer\ndefine value as integer <- propagate First();\nreturn some(\"done\");\nendSubroutine\nalgorithm Main\nendAlgorithm\n", "profile": "en", "notation": "flowchart", "unit": "Second"}}, "espera": {"aplicacion": {"exits": [{"kind": "return", "target": "subroutine", "cleanup_lines": []}, {"kind": "propagation", "target": "subroutine", "cleanup_lines": [5]}, {"kind": "return", "target": "subroutine", "cleanup_lines": [5]}], "normal_cleanups": [{"lines": [5]}]}}}
 ```
 
 ```regla
@@ -961,15 +904,15 @@ La vista pública incluye interface_unit, interface_signature, realization, type
 ```
 
 ```caso
-{"id": "C26", "regla": "R11", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "control_flow", "input": {"program": "Algoritmo Main\nDefinir values Como Vector<Entero> <- Vector();\nDiferir\nEscribir 0;\nFinDiferir\nPara Cada value En values Hacer\nDiferir\nEscribir value;\nFinDiferir\nSi value = 2 Entonces\nSalir;\nFinSi\nFinPara\nFinAlgoritmo\n", "profile": "es", "notation": "flowchart", "unit": "Main"}}, "espera": {"aplicacion": {"nodes": [{"shape": "startEnd", "text": "Inicio"}, {"shape": "process", "text": "Definir values Como Vector<Entero> <- Vector()"}, {"shape": "preparation", "text": "Diferir"}, {"shape": "inputOutput", "text": "Escribir 0"}, {"shape": "preparation", "text": "Para Cada value En values Hacer"}, {"shape": "preparation", "text": "Diferir"}, {"shape": "inputOutput", "text": "Escribir value"}, {"shape": "decision", "text": "¿value = 2?"}, {"shape": "process", "text": "Salir — limpiezas: línea 7"}, {"shape": "exitConnector", "text": "Fin del bucle (línea 6)"}, {"shape": "subprogram", "text": "Limpiezas al terminar: línea 7"}, {"shape": "exitConnector", "text": "Fin del bucle (línea 6)"}, {"shape": "subprogram", "text": "Limpiezas al terminar: línea 3"}, {"shape": "startEnd", "text": "Fin"}], "unsupported": [], "edges": [{"kind": "cleanupRegistration", "from": "Diferir", "to": "Escribir 0"}, {"kind": "cleanupRegistration", "from": "Diferir", "to": "Escribir value"}, {"kind": "breakExit", "from": "Salir — limpiezas: línea 7", "to": "Fin del bucle (línea 6)"}]}}}
+{"id": "C26", "regla": "R11", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "control_flow", "input": {"program": "Algoritmo Main\nDefinir values Como Vector<Entero> <- Vector();\nDiferir\nEscribir 0;\nFinDiferir\nPara Cada value En values Hacer\nDiferir\nEscribir value;\nFinDiferir\nSi value = 2 Entonces\nSalir;\nFinSi\nFinPara\nFinAlgoritmo\n", "profile": "es", "notation": "flowchart", "unit": "Main"}}, "espera": {"aplicacion": {"nodes": [{"shape": "startEnd", "text": "Inicio"}, {"shape": "process", "text": "Definir values Como Vector<Entero> <- Vector()"}, {"shape": "preparation", "text": "Diferir"}, {"shape": "inputOutput", "text": "Escribir 0"}, {"shape": "preparation", "text": "Para Cada value En values Hacer"}, {"shape": "preparation", "text": "Diferir"}, {"shape": "inputOutput", "text": "Escribir value"}, {"shape": "decision", "text": "¿value = 2?"}, {"shape": "process", "text": "Salir — limpiezas: línea 7"}, {"shape": "exitConnector", "text": "Fin del bucle (línea 6)"}, {"shape": "subprogram", "text": "Limpiezas al terminar: línea 7"}, {"shape": "exitConnector", "text": "Fin del bucle (línea 6)"}, {"shape": "subprogram", "text": "Limpiezas al terminar: línea 3"}, {"shape": "startEnd", "text": "Fin"}], "unsupported": [], "edges": [{"kind": "cleanupRegistration", "from": "Diferir", "to": "Escribir 0"}, {"kind": "cleanupRegistration", "from": "Diferir", "to": "Escribir value"}, {"kind": "breakExit", "from": "Salir — limpiezas: línea 7", "to": "Fin del bucle (línea 6)"}]}}}
 ```
 
 ```caso
-{"id": "C27", "regla": "R11", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "control_flow", "input": {"program": "SubProceso First() Como Opcional<Entero>\nRetornar Nada;\nFinSubProceso\nSubProceso Second() Como Opcional<Cadena>\nDiferir\nEscribir 0;\nFinDiferir\nDefinir v Como Entero <- Propagar First();\nRetornar Algo(\"listo\");\nFinSubProceso\nAlgoritmo Main\nFinAlgoritmo\n", "profile": "es", "notation": "flowchart", "unit": "Second"}}, "espera": {"aplicacion": {"nodes": [{"shape": "startEnd", "text": "Inicio"}, {"shape": "preparation", "text": "Diferir"}, {"shape": "inputOutput", "text": "Escribir 0"}, {"shape": "process", "text": "Definir v Como Entero <- Propagar First()"}, {"shape": "startEnd", "text": "Propaga el fallo — limpiezas: línea 5"}, {"shape": "startEnd", "text": "Retornar Algo(\"listo\") — limpiezas: línea 5"}, {"shape": "startEnd", "text": "Fin"}], "unsupported": [], "edges": [{"kind": "cleanupRegistration", "from": "Diferir", "to": "Escribir 0"}, {"kind": "propagationExit", "from": "Definir v Como Entero <- Propagar First()", "to": "Propaga el fallo — limpiezas: línea 5"}]}}}
+{"id": "C27", "regla": "R11", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "control_flow", "input": {"program": "SubProceso First() Como Opcional<Entero>\nRetornar Nada;\nFinSubProceso\nSubProceso Second() Como Opcional<Cadena>\nDiferir\nEscribir 0;\nFinDiferir\nDefinir v Como Entero <- Propagar First();\nRetornar Algo(\"listo\");\nFinSubProceso\nAlgoritmo Main\nFinAlgoritmo\n", "profile": "es", "notation": "flowchart", "unit": "Second"}}, "espera": {"aplicacion": {"nodes": [{"shape": "startEnd", "text": "Inicio"}, {"shape": "preparation", "text": "Diferir"}, {"shape": "inputOutput", "text": "Escribir 0"}, {"shape": "process", "text": "Definir v Como Entero <- Propagar First()"}, {"shape": "startEnd", "text": "Propaga el fallo — limpiezas: línea 5"}, {"shape": "startEnd", "text": "Retornar Algo(\"listo\") — limpiezas: línea 5"}, {"shape": "startEnd", "text": "Fin"}], "unsupported": [], "edges": [{"kind": "cleanupRegistration", "from": "Diferir", "to": "Escribir 0"}, {"kind": "propagationExit", "from": "Definir v Como Entero <- Propagar First()", "to": "Propaga el fallo — limpiezas: línea 5"}]}}}
 ```
 
 ```caso
-{"id": "C28", "regla": "R11", "perfiles": ["en"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "control_flow", "input": {"program": "algorithm Main\ndefine values as vector<integer> <- vector();\nfor each value in values do\ndefer\nwrite value;\nendDefer\nbreak;\nendFor\nendAlgorithm\n", "profile": "en", "notation": "structogram", "unit": "Main"}}, "espera": {"aplicacion": {"nodes": [{"shape": "cellProcess", "text": "define values as vector<integer> <- vector()"}, {"shape": "cellLoopHeader", "text": "for each value in values do"}, {"shape": "cellLoopHeader", "text": "defer"}, {"shape": "cellProcess", "text": "write value"}, {"shape": "cellExit", "text": "break — cleanups: line 4"}], "unsupported": []}}}
+{"id": "C28", "regla": "R11", "perfiles": ["en"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "control_flow", "input": {"program": "algorithm Main\ndefine values as vector<integer> <- vector();\nfor each value in values do\ndefer\nwrite value;\nendDefer\nbreak;\nendFor\nendAlgorithm\n", "profile": "en", "notation": "structogram", "unit": "Main"}}, "espera": {"aplicacion": {"nodes": [{"shape": "cellProcess", "text": "define values as vector<integer> <- vector()"}, {"shape": "cellLoopHeader", "text": "for each value in values do"}, {"shape": "cellLoopHeader", "text": "defer"}, {"shape": "cellProcess", "text": "write value"}, {"shape": "cellExit", "text": "break — cleanups: line 4"}], "unsupported": []}}}
 ```
 
 ## Registros, enumerados y parámetros de tipo en el diagrama de clases
@@ -979,11 +922,11 @@ La vista pública incluye interface_unit, interface_signature, realization, type
 ```
 
 ```caso
-{"id": "C29", "regla": "R12", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "class_diagram", "input": {"program": "Enumerado Color\nRojo, Verde\nFinEnumerado\nRegistro Punto\nDefinir x, z Como Entero;\nFinRegistro\nSubProceso identity<T>(value Como T) Como T\nRetornar value;\nFinSubProceso\nAlgoritmo Main\nFinAlgoritmo\n", "profile": "es"}}, "espera": {"aplicacion": {"boxes": [{"name": "Color", "stereotype": "«enumeration»", "rows": ["Rojo", "Verde"]}, {"name": "Punto", "stereotype": "«record»", "rows": ["+ x: Entero", "+ z: Entero"]}, {"name": "identity", "stereotype": "«subprogram»", "rows": ["+ identity<T>(value: T): T"]}], "relations": []}}}
+{"id": "C29", "regla": "R12", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "class_diagram", "input": {"program": "Enumerado Color\nRojo, Verde\nFinEnumerado\nRegistro Punto\nDefinir x, z Como Entero;\nFinRegistro\nSubProceso identity<T>(value Como T) Como T\nRetornar value;\nFinSubProceso\nAlgoritmo Main\nFinAlgoritmo\n", "profile": "es"}}, "espera": {"aplicacion": {"boxes": [{"name": "Color", "stereotype": "«enumeration»", "rows": ["Rojo", "Verde"]}, {"name": "Punto", "stereotype": "«record»", "rows": ["+ x: Entero", "+ z: Entero"]}, {"name": "identity", "stereotype": "«subprogram»", "rows": ["+ identity<T>(value: T): T"]}], "relations": []}}}
 ```
 
 ```caso
-{"id": "C30", "regla": "R12", "perfiles": ["en"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "class_diagram", "input": {"program": "record Pair\ndefine left as integer;\ndefine right as string;\nendRecord\nenum Level\nlow, high\nendEnum\nalgorithm Main\nendAlgorithm\n", "profile": "en"}}, "espera": {"aplicacion": {"boxes": [{"name": "Pair", "stereotype": "«record»", "rows": ["+ left: integer", "+ right: string"]}, {"name": "Level", "stereotype": "«enumeration»", "rows": ["low", "high"]}], "relations": []}}}
+{"id": "C30", "regla": "R12", "perfiles": ["en"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "class_diagram", "input": {"program": "record Pair\ndefine left as integer;\ndefine right as string;\nendRecord\nenum Level\nlow, high\nendEnum\nalgorithm Main\nendAlgorithm\n", "profile": "en"}}, "espera": {"aplicacion": {"boxes": [{"name": "Pair", "stereotype": "«record»", "rows": ["+ left: integer", "+ right: string"]}, {"name": "Level", "stereotype": "«enumeration»", "rows": ["low", "high"]}], "relations": []}}}
 ```
 
 ## Cobertura sintáctica de las vistas del consumidor
@@ -993,35 +936,35 @@ La vista pública incluye interface_unit, interface_signature, realization, type
 ```
 
 ```caso
-{"id": "C31", "regla": "R13", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "syntax_coverage", "input": {"mutation": "none"}}, "espera": {"aplicacion": {"codes": []}}}
+{"id": "C31", "regla": "R13", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "syntax_coverage", "input": {"mutation": "none"}}, "espera": {"aplicacion": {"codes": []}}}
 ```
 
 ```caso
-{"id": "C32", "regla": "R13", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "syntax_coverage", "input": {"mutation": "remove_row"}}, "espera": {"aplicacion": {"codes": ["COV-MISSING-ROW"]}}}
+{"id": "C32", "regla": "R13", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "syntax_coverage", "input": {"mutation": "remove_row"}}, "espera": {"aplicacion": {"codes": ["COV-MISSING-ROW"]}}}
 ```
 
 ```caso
-{"id": "C33", "regla": "R13", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "syntax_coverage", "input": {"mutation": "unknown_form"}}, "espera": {"aplicacion": {"codes": ["COV-STALE-ROW"]}}}
+{"id": "C33", "regla": "R13", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "syntax_coverage", "input": {"mutation": "unknown_form"}}, "espera": {"aplicacion": {"codes": ["COV-STALE-ROW"]}}}
 ```
 
 ```caso
-{"id": "C34", "regla": "R13", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "syntax_coverage", "input": {"mutation": "duplicate_row"}}, "espera": {"aplicacion": {"codes": ["COV-DUPLICATE"]}}}
+{"id": "C34", "regla": "R13", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "syntax_coverage", "input": {"mutation": "duplicate_row"}}, "espera": {"aplicacion": {"codes": ["COV-DUPLICATE"]}}}
 ```
 
 ```caso
-{"id": "C35", "regla": "R13", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "syntax_coverage", "input": {"mutation": "change_role"}}, "espera": {"aplicacion": {"codes": ["COV-ROLE"]}}}
+{"id": "C35", "regla": "R13", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "syntax_coverage", "input": {"mutation": "change_role"}}, "espera": {"aplicacion": {"codes": ["COV-ROLE"]}}}
 ```
 
 ```caso
-{"id": "C36", "regla": "R13", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "syntax_coverage", "input": {"mutation": "drop_reason"}}, "espera": {"aplicacion": {"codes": ["COV-NO-REASON"]}}}
+{"id": "C36", "regla": "R13", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "syntax_coverage", "input": {"mutation": "drop_reason"}}, "espera": {"aplicacion": {"codes": ["COV-NO-REASON"]}}}
 ```
 
 ```caso
-{"id": "C37", "regla": "R13", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "syntax_coverage", "input": {"mutation": "missing_help"}}, "espera": {"aplicacion": {"codes": ["COV-HELP"]}}}
+{"id": "C37", "regla": "R13", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "syntax_coverage", "input": {"mutation": "missing_help"}}, "espera": {"aplicacion": {"codes": ["COV-HELP"]}}}
 ```
 
 ```caso
-{"id": "C38", "regla": "R13", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "syntax_coverage", "input": {"mutation": "hide_control"}}, "espera": {"aplicacion": {"codes": ["COV-HIDDEN-CONTROL"]}}}
+{"id": "C38", "regla": "R13", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "syntax_coverage", "input": {"mutation": "hide_control"}}, "espera": {"aplicacion": {"codes": ["COV-HIDDEN-CONTROL"]}}}
 ```
 
 ```regla
@@ -1029,11 +972,11 @@ La vista pública incluye interface_unit, interface_signature, realization, type
 ```
 
 ```caso
-{"id": "C39", "regla": "R14", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "control_flow", "input": {"program": "SubProceso First() Como Opcional<Entero>\nRetornar Nada;\nFinSubProceso\nSubProceso Second() Como Opcional<Entero>\nSi Propagar First() > 0 Entonces\nEscribir 1;\nFinSi\nRetornar Algo(1);\nFinSubProceso\nAlgoritmo Main\nFinAlgoritmo\n", "profile": "es", "notation": "flowchart", "unit": "Second"}}, "espera": {"aplicacion": {"nodes": [], "unsupported": ["propagation"], "edges": []}}}
+{"id": "C39", "regla": "R14", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "control_flow", "input": {"program": "SubProceso First() Como Opcional<Entero>\nRetornar Nada;\nFinSubProceso\nSubProceso Second() Como Opcional<Entero>\nSi Propagar First() > 0 Entonces\nEscribir 1;\nFinSi\nRetornar Algo(1);\nFinSubProceso\nAlgoritmo Main\nFinAlgoritmo\n", "profile": "es", "notation": "flowchart", "unit": "Second"}}, "espera": {"aplicacion": {"nodes": [], "unsupported": ["propagation"], "edges": []}}}
 ```
 
 ```caso
-{"id": "C40", "regla": "R14", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "control_flow", "input": {"program": "SubProceso First() Como Opcional<Entero>\nRetornar Nada;\nFinSubProceso\nSubProceso Second() Como Opcional<Entero>\nSi Propagar First() > 0 Entonces\nEscribir 1;\nFinSi\nRetornar Algo(1);\nFinSubProceso\nAlgoritmo Main\nFinAlgoritmo\n", "profile": "es", "notation": "structogram", "unit": "Second"}}, "espera": {"aplicacion": {"nodes": [], "unsupported": ["propagation"]}}}
+{"id": "C40", "regla": "R14", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "control_flow", "input": {"program": "SubProceso First() Como Opcional<Entero>\nRetornar Nada;\nFinSubProceso\nSubProceso Second() Como Opcional<Entero>\nSi Propagar First() > 0 Entonces\nEscribir 1;\nFinSi\nRetornar Algo(1);\nFinSubProceso\nAlgoritmo Main\nFinAlgoritmo\n", "profile": "es", "notation": "structogram", "unit": "Second"}}, "espera": {"aplicacion": {"nodes": [], "unsupported": ["propagation"]}}}
 ```
 
 ```regla
@@ -1045,23 +988,23 @@ La vista pública incluye interface_unit, interface_signature, realization, type
 ```
 
 ```caso
-{"id": "C48", "regla": "R15", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "dependencies", "input": {"program": "Importar geo.Punto Como P;\nExportar geo.formas.Circulo;\nAlgoritmo Main\nEscribir 1;\nFinAlgoritmo\n", "profile": "es"}}, "espera": {"aplicacion": {"structure": true, "dependencies": [{"kind": "importation", "path": ["geo", "Punto"], "alias": "P", "status": "unlinked", "diagnostic": "moduleSyntaxOutsideProject", "text": "Importar geo.Punto Como P;"}, {"kind": "exportation", "path": ["geo", "formas", "Circulo"], "alias": null, "status": "unlinked", "diagnostic": "moduleSyntaxOutsideProject", "text": "Exportar geo.formas.Circulo;"}], "units": ["Main"], "execution_started": false, "export_available": false, "operations_beyond_static": []}}}
+{"id": "C48", "regla": "R15", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "dependencies", "input": {"program": "Importar geo.Punto Como P;\nExportar geo.formas.Circulo;\nAlgoritmo Main\nEscribir 1;\nFinAlgoritmo\n", "profile": "es"}}, "espera": {"aplicacion": {"structure": true, "dependencies": [{"kind": "importation", "path": ["geo", "Punto"], "alias": "P", "status": "unlinked", "diagnostic": "moduleSyntaxOutsideProject", "text": "Importar geo.Punto Como P;"}, {"kind": "exportation", "path": ["geo", "formas", "Circulo"], "alias": null, "status": "unlinked", "diagnostic": "moduleSyntaxOutsideProject", "text": "Exportar geo.formas.Circulo;"}], "units": ["Main"], "execution_started": false, "export_available": false, "operations_beyond_static": []}}}
 ```
 
 ```caso
-{"id": "C49", "regla": "R15", "perfiles": ["en"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "dependencies", "input": {"program": "import geo.Point as P;\nexport geo.shapes.Circle;\nalgorithm Main\nwrite 1;\nendAlgorithm\n", "profile": "en"}}, "espera": {"aplicacion": {"structure": true, "dependencies": [{"kind": "importation", "path": ["geo", "Point"], "alias": "P", "status": "unlinked", "diagnostic": "moduleSyntaxOutsideProject", "text": "import geo.Point as P;"}, {"kind": "exportation", "path": ["geo", "shapes", "Circle"], "alias": null, "status": "unlinked", "diagnostic": "moduleSyntaxOutsideProject", "text": "export geo.shapes.Circle;"}], "units": ["Main"], "execution_started": false, "export_available": false, "operations_beyond_static": []}}}
+{"id": "C49", "regla": "R15", "perfiles": ["en"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "dependencies", "input": {"program": "import geo.Point as P;\nexport geo.shapes.Circle;\nalgorithm Main\nwrite 1;\nendAlgorithm\n", "profile": "en"}}, "espera": {"aplicacion": {"structure": true, "dependencies": [{"kind": "importation", "path": ["geo", "Point"], "alias": "P", "status": "unlinked", "diagnostic": "moduleSyntaxOutsideProject", "text": "import geo.Point as P;"}, {"kind": "exportation", "path": ["geo", "shapes", "Circle"], "alias": null, "status": "unlinked", "diagnostic": "moduleSyntaxOutsideProject", "text": "export geo.shapes.Circle;"}], "units": ["Main"], "execution_started": false, "export_available": false, "operations_beyond_static": []}}}
 ```
 
 ```caso
-{"id": "C50", "regla": "R15", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "dependencies", "input": {"program": "Importar geo.;\nAlgoritmo Main\nFinAlgoritmo\n", "profile": "es"}}, "espera": {"aplicacion": {"structure": false, "dependencies": [], "units": [], "execution_started": false, "export_available": false, "operations_beyond_static": []}}}
+{"id": "C50", "regla": "R15", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "dependencies", "input": {"program": "Importar geo.;\nAlgoritmo Main\nFinAlgoritmo\n", "profile": "es"}}, "espera": {"aplicacion": {"structure": false, "dependencies": [], "units": [], "execution_started": false, "export_available": false, "operations_beyond_static": []}}}
 ```
 
 ```caso
-{"id": "C51", "regla": "R15", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "dependencies", "input": {"program": "Importar pseudolearn_app.lib.main;\nAlgoritmo Main\nFinAlgoritmo\n", "profile": "es"}}, "espera": {"aplicacion": {"structure": true, "dependencies": [{"kind": "importation", "path": ["pseudolearn_app", "lib", "main"], "alias": null, "status": "unlinked", "diagnostic": "moduleSyntaxOutsideProject", "text": "Importar pseudolearn_app.lib.main;"}], "units": ["Main"], "execution_started": false, "export_available": false, "operations_beyond_static": []}}}
+{"id": "C51", "regla": "R15", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "dependencies", "input": {"program": "Importar pseudolearn_app.lib.main;\nAlgoritmo Main\nFinAlgoritmo\n", "profile": "es"}}, "espera": {"aplicacion": {"structure": true, "dependencies": [{"kind": "importation", "path": ["pseudolearn_app", "lib", "main"], "alias": null, "status": "unlinked", "diagnostic": "moduleSyntaxOutsideProject", "text": "Importar pseudolearn_app.lib.main;"}], "units": ["Main"], "execution_started": false, "export_available": false, "operations_beyond_static": []}}}
 ```
 
 ```caso
-{"id": "C52", "regla": "R16", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "dependencies", "input": {"program": "Algoritmo Main\nEscribir 1;\nFinAlgoritmo\n", "profile": "es"}}, "espera": {"aplicacion": {"structure": true, "dependencies": [], "units": ["Main"], "execution_started": true, "export_available": true, "operations_beyond_static": []}}}
+{"id": "C52", "regla": "R16", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "dependencies", "input": {"program": "Algoritmo Main\nEscribir 1;\nFinAlgoritmo\n", "profile": "es"}}, "espera": {"aplicacion": {"structure": true, "dependencies": [], "units": ["Main"], "execution_started": true, "export_available": true, "operations_beyond_static": []}}}
 ```
 
 ```regla
@@ -1073,33 +1016,33 @@ La vista pública incluye interface_unit, interface_signature, realization, type
 ```
 
 ```caso
-{"id": "C53", "regla": "R17", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"program": "Proceso P\n  Definir Mutable x Como Entero <- 0;\n  Escribir \"antes\";\n  Leer x;\n  Escribir \"despues\";\nFinProceso\n", "target": "python", "profile": "es"}}, "espera": {"aplicacion": {"status": "unavailable", "constructs": ["input"], "first_line": 4, "code_visible": false, "focused_lines": 0, "ready": false}}}
+{"id": "C53", "regla": "R17", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"program": "Proceso P\n  Definir Mutable x Como Entero <- 0;\n  Escribir \"antes\";\n  Leer x;\n  Escribir \"despues\";\nFinProceso\n", "target": "python", "profile": "es"}}, "espera": {"aplicacion": {"status": "unavailable", "constructs": ["input"], "first_line": 4, "code_visible": false, "focused_lines": 0, "ready": false}}}
 ```
 
 ```caso
-{"id": "C54", "regla": "R17", "perfiles": ["en"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"program": "algorithm Main\n  define mutable x as integer <- 0;\n  read x;\nendAlgorithm\n", "target": "python", "profile": "en"}}, "espera": {"aplicacion": {"status": "unavailable", "constructs": ["input"], "first_line": 3, "code_visible": false, "focused_lines": 0, "ready": false}}}
+{"id": "C54", "regla": "R17", "perfiles": ["en"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"program": "algorithm Main\n  define mutable x as integer <- 0;\n  read x;\nendAlgorithm\n", "target": "python", "profile": "en"}}, "espera": {"aplicacion": {"status": "unavailable", "constructs": ["input"], "first_line": 3, "code_visible": false, "focused_lines": 0, "ready": false}}}
 ```
 
 ```caso
-{"id": "C55", "regla": "R17", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"program": "Funcion Doble(x Como Entero) Como Entero\n  Retornar x * 2;\nFinFuncion\nProceso P\n  Escribir Doble(2);\nFinProceso\n", "target": "rust", "profile": "es"}}, "espera": {"aplicacion": {"status": "unavailable", "constructs": ["value_return"], "first_line": 2, "code_visible": false, "focused_lines": 0, "ready": false}}}
+{"id": "C55", "regla": "R17", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"program": "Funcion Doble(x Como Entero) Como Entero\n  Retornar x * 2;\nFinFuncion\nProceso P\n  Escribir Doble(2);\nFinProceso\n", "target": "rust", "profile": "es"}}, "espera": {"aplicacion": {"status": "unavailable", "constructs": ["value_return"], "first_line": 2, "code_visible": false, "focused_lines": 0, "ready": false}}}
 ```
 
 ```caso
-{"id": "C56", "regla": "R17", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"program": "Proceso P\n  Segun 1 Hacer\n    1:\n      Escribir \"uno\";\n  FinSegun\nFinProceso\n", "target": "python", "profile": "es"}}, "espera": {"aplicacion": {"status": "unavailable", "constructs": ["labels", "switch"], "first_line": 2, "code_visible": false, "focused_lines": 0, "ready": false}}}
+{"id": "C56", "regla": "R17", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"program": "Proceso P\n  Segun 1 Hacer\n    1:\n      Escribir \"uno\";\n  FinSegun\nFinProceso\n", "target": "python", "profile": "es"}}, "espera": {"aplicacion": {"status": "unavailable", "constructs": ["labels", "switch"], "first_line": 2, "code_visible": false, "focused_lines": 0, "ready": false}}}
 ```
 
 ```caso
-{"id": "C57", "regla": "R17", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"program": "Funcion Doble(x Como Entero) Como Entero\n  Retornar x * 2;\nFinFuncion\nProceso P\n  Escribir Doble(2);\nFinProceso\n", "target": "python", "profile": "es"}}, "espera": {"aplicacion": {"status": "ready", "constructs": [], "first_line": null, "code_visible": true, "focused_lines": 0, "ready": true}}}
+{"id": "C57", "regla": "R17", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"program": "Funcion Doble(x Como Entero) Como Entero\n  Retornar x * 2;\nFinFuncion\nProceso P\n  Escribir Doble(2);\nFinProceso\n", "target": "python", "profile": "es"}}, "espera": {"aplicacion": {"status": "ready", "constructs": [], "first_line": null, "code_visible": true, "focused_lines": 0, "ready": true}}}
 ```
 
 ```caso
-{"id": "C58", "regla": "R18", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"previous": "Proceso P\n  Escribir 1;\nFinProceso\n", "program": "Proceso P\n  Definir Mutable x Como Entero <- 0;\n  Leer x;\nFinProceso\n", "target": "python", "profile": "es"}}, "espera": {"aplicacion": {"status": "unavailable", "constructs": ["input"], "first_line": 3, "code_visible": false, "focused_lines": 0, "ready": false}}}
+{"id": "C58", "regla": "R18", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"previous": "Proceso P\n  Escribir 1;\nFinProceso\n", "program": "Proceso P\n  Definir Mutable x Como Entero <- 0;\n  Leer x;\nFinProceso\n", "target": "python", "profile": "es"}}, "espera": {"aplicacion": {"status": "unavailable", "constructs": ["input"], "first_line": 3, "code_visible": false, "focused_lines": 0, "ready": false}}}
 ```
 
 ```caso
-{"id": "C59", "regla": "R18", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"previous": "Proceso P\n  Escribir 1;\nFinProceso\n", "program": "Proceso P\n  Escribir ;\n", "target": "python", "profile": "es"}}, "espera": {"aplicacion": {"status": "analysisError", "constructs": [], "first_line": null, "code_visible": false, "focused_lines": 0, "ready": false}}}
+{"id": "C59", "regla": "R18", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"previous": "Proceso P\n  Escribir 1;\nFinProceso\n", "program": "Proceso P\n  Escribir ;\n", "target": "python", "profile": "es"}}, "espera": {"aplicacion": {"status": "analysisError", "constructs": [], "first_line": null, "code_visible": false, "focused_lines": 0, "ready": false}}}
 ```
 
 ```caso
-{"id": "C60", "regla": "R17", "perfiles": ["es"], "rigor": ["estricto"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"program": "Proceso P\n  Escribir 3 > 2;\nFinProceso\n", "target": "python", "profile": "es"}}, "espera": {"aplicacion": {"status": "unavailable", "constructs": ["boolean_output"], "first_line": 2, "code_visible": false, "focused_lines": 0, "ready": false}}}
+{"id": "C60", "regla": "R17", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"program": "Proceso P\n  Escribir 3 > 2;\nFinProceso\n", "target": "python", "profile": "es"}}, "espera": {"aplicacion": {"status": "unavailable", "constructs": ["boolean_output"], "first_line": 2, "code_visible": false, "focused_lines": 0, "ready": false}}}
 ```

@@ -9,27 +9,13 @@ use pseudolearn_syntax::SyntaxTree;
 use std::collections::BTreeMap;
 use std::sync::Arc;
 
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Default, Eq, PartialEq)]
 pub struct WorkspaceOptions {
     pub requested_profile: Option<Profile>,
     pub file_profiles: BTreeMap<String, Profile>,
-    pub strict: bool,
     pub entry: Option<String>,
     pub configurations: Vec<Configuration>,
     pub dependency_inputs: BTreeMap<String, String>,
-}
-
-impl Default for WorkspaceOptions {
-    fn default() -> Self {
-        Self {
-            requested_profile: None,
-            file_profiles: BTreeMap::new(),
-            strict: true,
-            entry: None,
-            configurations: Vec::new(),
-            dependency_inputs: BTreeMap::new(),
-        }
-    }
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -87,7 +73,6 @@ pub(crate) struct WorkspaceOverlay {
 pub(crate) struct ParsedUnitCache {
     pub source_id: u32,
     pub profile: Profile,
-    pub strict: bool,
     pub tree: Arc<SyntaxTree>,
     pub diagnostics: Vec<Diagnostic>,
     pub units: Vec<UnitFingerprint>,

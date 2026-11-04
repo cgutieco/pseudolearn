@@ -57,10 +57,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Interfaz Readable\nMetodo readValue() Como Entero;\nFinInterfaz\nRegistro Point\nDefinir x Como Entero;\nFinRegistro\nEnumerado Color\nRed, Green\nFinEnumerado\nConstante Limit Como Entero <- 3;\nClase Reader Realiza Readable\nMetodo readValue() Como Entero\nRetornar Limit;\nFinMetodo\nFinClase\nSubProceso helper() Como Entero\nRetornar Limit;\nFinSubProceso\nAlgoritmo Main\nEscribir helper();\nFinAlgoritmo\n",
     "en": "interface Readable\nmethod readValue() as integer;\nendInterface\nrecord Point\ndefine x as integer;\nendRecord\nenum Color\nRed, Green\nendEnum\nconstant Limit as integer <- 3;\nclass Reader implements Readable\nmethod readValue() as integer\nreturn Limit;\nendMethod\nendClass\nsubroutine helper() as integer\nreturn Limit;\nendSubroutine\nalgorithm Main\nwrite helper();\nendAlgorithm\n"
@@ -91,11 +87,7 @@
   "espera": {
     "arbol": "presente",
     "diagnosticos": []
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -121,11 +113,7 @@
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -151,11 +139,7 @@
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -176,10 +160,6 @@
   "espera": {
     "arbol": "presente",
     "diagnosticos": []
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```

@@ -44,7 +44,7 @@ fn validate_bounds(
     bounds: &[Option<crate::identities::ExpressionId>],
     node: usize,
 ) {
-    if bounds.get(2).copied().flatten().is_none() && session.options.strict {
+    if bounds.get(2).copied().flatten().is_none() {
         session.report(DiagnosticCode::MissingStepClause, node);
     }
     for expression in bounds.iter().copied().flatten() {

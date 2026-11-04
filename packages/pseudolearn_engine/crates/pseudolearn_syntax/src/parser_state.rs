@@ -22,7 +22,6 @@ pub(crate) struct ParserState<'tokens> {
     pub unit_context: NodeKind,
     pub has_superclass: bool,
     pub inside_method: bool,
-    pub terminator_diagnostic: Option<DiagnosticCode>,
     pub project_mode: bool,
     pub profile: pseudolearn_lexicon::Profile,
 }
@@ -46,7 +45,6 @@ impl<'tokens> ParserState<'tokens> {
             unit_context: NodeKind::Program,
             has_superclass: false,
             inside_method: false,
-            terminator_diagnostic: None,
             project_mode: false,
             profile: pseudolearn_lexicon::Profile::Spanish,
         }

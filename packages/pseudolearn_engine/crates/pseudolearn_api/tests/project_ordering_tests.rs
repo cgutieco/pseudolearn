@@ -31,7 +31,7 @@ fn request(reverse: bool, locale: &str) -> Value {
     json!({
         "locale": locale,
         "profile": "es",
-        "strictness": "strict",
+
         "project": {
             "project_id": "1",
             "revision_id": "1",

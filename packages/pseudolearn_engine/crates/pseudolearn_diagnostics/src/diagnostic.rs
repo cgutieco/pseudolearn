@@ -58,7 +58,7 @@ impl Diagnostic {
         Self {
             code,
             class: code.default_class(),
-            severity: code.severity("estricto"),
+            severity: code.severity(),
             span,
             related: Vec::new(),
             arguments: BTreeMap::new(),

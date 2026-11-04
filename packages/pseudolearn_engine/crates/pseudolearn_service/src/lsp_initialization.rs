@@ -50,12 +50,6 @@ impl LspServer {
         if let Some(locale) = initialization_locale(message) {
             self.locale = locale;
         }
-        if let Some(strictness) = message
-            .pointer("/params/initializationOptions/strictness")
-            .and_then(Value::as_str)
-        {
-            self.strict = strictness != "flexible";
-        }
         if let Some(profile) = message
             .pointer("/params/initializationOptions/profile")
             .and_then(Value::as_str)

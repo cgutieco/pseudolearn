@@ -55,10 +55,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo Main\nDefinir values Como Vector<Entero> <- Vector();\nvalues.Agregar(1);\nvalues.Agregar(2);\nPara Cada value En values Hacer\nEscribir value;\nSalir;\nFinPara\nFinAlgoritmo\n",
     "en": "algorithm Main\ndefine values as vector<integer> <- vector();\nvalues.append(1);\nvalues.append(2);\nfor each value in values do\nwrite value;\nbreak;\nendFor\nendAlgorithm\n"
@@ -79,10 +75,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo Main\nSalir;\nFinAlgoritmo\n",
@@ -110,10 +102,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo Main\nRepetir\nSalir;\nHasta Que Falso\nEscribir 3;\nFinAlgoritmo\n",
     "en": "algorithm Main\nrepeat\nbreak;\nuntil false\nwrite 3;\nendAlgorithm\n"
@@ -134,10 +122,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo Main\nMientras Verdadero Hacer\nPara index <- 1 Hasta 2 Con Paso 1 Hacer\nSalir;\nFinPara\nEscribir 4;\nSalir;\nFinMientras\nFinAlgoritmo\n",

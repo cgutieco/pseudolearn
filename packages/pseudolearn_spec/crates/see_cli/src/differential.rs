@@ -6,7 +6,7 @@ use see_model::{
 use serde_json::{Value, json};
 use std::collections::BTreeMap;
 
-type Key = (String, String, String, String, String);
+type Key = (String, String, String, String);
 
 pub fn execute(arguments: &Arguments, corpus: &Corpus) -> Result<String, String> {
     let engine: Evidence = storage::read_json(&arguments.root.join("results/engine.json"))?;
@@ -85,7 +85,6 @@ fn index(evidence: &Evidence) -> BTreeMap<Key, &Observation> {
                     observation.rule.clone(),
                     observation.case.clone(),
                     observation.profile.clone(),
-                    observation.strictness.clone(),
                 ),
                 observation,
             )
@@ -214,8 +213,7 @@ impl Report {
     }
 
     fn entry(&self, key: &Key, verdicts: (&str, &str)) -> Value {
-        let mut entry = json!({"specification":key.0,"rule":key.1,"case":key.2,"profile":key.3,
-            "strictness":key.4});
+        let mut entry = json!({"specification":key.0,"rule":key.1,"case":key.2,"profile":key.3});
         if let Some(object) = entry.as_object_mut() {
             object.insert(format!("{}_verdict", self.labels.0), json!(verdicts.0));
             object.insert(format!("{}_verdict", self.labels.1), json!(verdicts.1));

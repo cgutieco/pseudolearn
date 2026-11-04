@@ -62,7 +62,6 @@
   "id": "C1",
   "regla": "R1",
   "perfiles": ["es"],
-  "rigor": ["estricto"],
   "origen": "derivado",
   "operacion": "app",
   "aplicacion": {"scenario": "completion", "input": {"document": "Algoritmo P\nDefinir total Como \nFinAlgoritmo\n", "cursor_utf16": 31, "profile": "es", "interface_language": "en"}},
@@ -75,7 +74,6 @@
   "id": "C2",
   "regla": "R1",
   "perfiles": ["en"],
-  "rigor": ["estricto"],
   "origen": "derivado",
   "operacion": "app",
   "aplicacion": {"scenario": "completion", "input": {"document": "algorithm P\nwrite \"🧩\";\nendAlgorithm\n", "cursor_utf16": 21, "profile": "en", "interface_language": "es"}},
@@ -101,7 +99,6 @@
   "id": "C3",
   "regla": "R2",
   "perfiles": ["es"],
-  "rigor": ["estricto"],
   "origen": "derivado",
   "operacion": "app",
   "aplicacion": {"scenario": "completion", "input": {"document": "Algoritmo P\nEscribir \"🧩\";\nFinAlgoritmo\n", "cursor_utf16": 24, "expected_boundary": "after_supplementary_scalar"}},
@@ -114,7 +111,6 @@
   "id": "C4",
   "regla": "R2",
   "perfiles": ["es"],
-  "rigor": ["estricto"],
   "origen": "derivado",
   "operacion": "app",
   "aplicacion": {"scenario": "completion", "input": {"document": "Algoritmo P\nEscribir \"🧩\";\nFinAlgoritmo\n", "cursor_utf16": 23, "invalid_reason": "inside_surrogate_pair"}},
@@ -139,7 +135,6 @@
   "id": "C5",
   "regla": "R3",
   "perfiles": ["es"],
-  "rigor": ["estricto"],
   "origen": "derivado",
   "operacion": "app",
   "aplicacion": {"scenario": "completion", "input": {"requests": [{"revision": 1, "document": "Algoritmo P\nDefinir x Como \nFinAlgoritmo\n"}, {"revision": 2, "document": "Algoritmo P\nDefinir x Como Real;\nFinAlgoritmo\n"}], "responses": [2, 1]}},
@@ -164,7 +159,6 @@
   "id": "C6",
   "regla": "R4",
   "perfiles": ["es", "en"],
-  "rigor": ["estricto"],
   "origen": "derivado",
   "operacion": "app",
   "aplicacion": {"scenario": "completion", "input": {"document": "Algoritmo P\nFinAlgoritmo\n", "profile": "es", "interface_languages": ["es", "en"], "query": "algorithm_header"}},
@@ -196,9 +190,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "app",
   "aplicacion": {
@@ -221,9 +212,6 @@
   "regla": "R5",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "app",
@@ -251,9 +239,6 @@
   "regla": "R5",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "app",
@@ -294,9 +279,6 @@
   "regla": "R6",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "app",
@@ -340,9 +322,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "app",
   "aplicacion": {
@@ -377,9 +356,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "app",
   "aplicacion": {
@@ -410,9 +386,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "app",
   "aplicacion": {
@@ -442,9 +415,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "app",
   "aplicacion": {
@@ -473,9 +443,6 @@
   "regla": "R5",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "app",
@@ -581,9 +548,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "app",
   "aplicacion": {
@@ -617,9 +581,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "app",
   "aplicacion": {
@@ -651,9 +612,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "app",
   "aplicacion": {
@@ -682,9 +640,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "app",
   "aplicacion": {
@@ -711,9 +666,6 @@
   "regla": "R10",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "app",
@@ -742,9 +694,6 @@
   "regla": "R11",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "app",
@@ -784,9 +733,6 @@
   "regla": "R11",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "app",
@@ -829,9 +775,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "app",
   "aplicacion": {
@@ -865,9 +808,6 @@
   "regla": "R13",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "app",

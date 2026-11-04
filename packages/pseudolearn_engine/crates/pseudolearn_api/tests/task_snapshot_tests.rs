@@ -4,8 +4,7 @@ use serde_json::json;
 fn execute(body: &str) -> pseudolearn_api::ExecuteResponse {
     execute_program(&ExecuteRequest {
         program: format!("Algoritmo Main\n{body}FinAlgoritmo\n"),
-        profile: "es".to_owned(),
-        strictness: "strict".to_owned(),
+        profile: "es".to_owned().to_owned(),
         ..Default::default()
     })
 }
@@ -54,8 +53,7 @@ fn rejects_mutation_through_a_borrowed_snapshot_element() {
     let program = "SubProceso Mutate(value Como Entero Por Referencia)\nvalue <- 9;\nFinSubProceso\nAlgoritmo Main\nDefinir values Como Vector<Entero> <- Vector();\nvalues.Agregar(7);\nDefinir frozen Como Inmutable<Vector<Entero>> <- Instantanea(values);\nMutate(frozen[0]);\nFinAlgoritmo\n";
     let response = execute_program(&ExecuteRequest {
         program: program.to_owned(),
-        profile: "es".to_owned(),
-        strictness: "strict".to_owned(),
+        profile: "es".to_owned().to_owned(),
         ..Default::default()
     });
     assert!(
@@ -108,8 +106,7 @@ fn failure_reports_do_not_expose_mutable_associated_errors() {
     let program = "SubProceso Suspendible Fail() Como Resultado<Entero, Cadena>\nRetornar Error(\"failed\");\nFinSubProceso\nAlgoritmo Main\nTareas failureReport\nLanzar Fail();\nFinTareas\nSegun failureReport Hacer\nNada: Escribir 0;\nAlgo(problem): problem.Asociados.Agregar(\"extra\");\nFinSegun\nFinAlgoritmo\n";
     let response = execute_program(&ExecuteRequest {
         program: program.to_owned(),
-        profile: "es".to_owned(),
-        strictness: "strict".to_owned(),
+        profile: "es".to_owned().to_owned(),
         ..Default::default()
     });
     assert!(
@@ -136,8 +133,7 @@ fn immutable_records_flatten_all_fields_inside_collections() {
     let program = "Registro Pair\nDefinir first Como Entero;\nDefinir second Como Entero;\nFinRegistro\nAlgoritmo Main\nDefinir pair Como Pair <- Pair(7, 9);\nDefinir frozen Como Inmutable<Pair> <- Instantanea(pair);\nDefinir values Como Vector<Inmutable<Pair>> <- Vector();\nvalues.Agregar(frozen);\nEscribir values[0].first;\nEscribir values[0].second;\nFinAlgoritmo\n";
     let response = execute_program(&ExecuteRequest {
         program: program.to_owned(),
-        profile: "es".to_owned(),
-        strictness: "strict".to_owned(),
+        profile: "es".to_owned().to_owned(),
         ..Default::default()
     });
     assert_eq!(
@@ -153,8 +149,7 @@ fn generic_units_infer_payloads_of_immutable_parameters() {
     let program = "SubProceso Work<T>(value Como Inmutable<T>)\nFinSubProceso\nAlgoritmo Main\nDefinir frozen Como Inmutable<Entero> <- Instantanea(7);\nWork(frozen);\nFinAlgoritmo\n";
     let response = execute_program(&ExecuteRequest {
         program: program.to_owned(),
-        profile: "es".to_owned(),
-        strictness: "strict".to_owned(),
+        profile: "es".to_owned().to_owned(),
         ..Default::default()
     });
     assert_eq!(
@@ -182,8 +177,7 @@ fn generic_tasks_transfer_immutable_arguments_and_return_them() {
     let program = "SubProceso Suspendible Echo<T>(value Como Inmutable<T>) Como Inmutable<T>\nRetornar value;\nFinSubProceso\nAlgoritmo Main\nDefinir frozen Como Inmutable<Entero> <- Instantanea(7);\nTareas\nDefinir handle Como Tarea<Inmutable<Entero>> <- Lanzar Echo(frozen);\nDefinir received Como Inmutable<Entero> <- Aguardar handle;\nEscribir received;\nFinTareas\nFinAlgoritmo\n";
     let response = execute_program(&ExecuteRequest {
         program: program.to_owned(),
-        profile: "es".to_owned(),
-        strictness: "strict".to_owned(),
+        profile: "es".to_owned().to_owned(),
         ..Default::default()
     });
     assert_eq!(

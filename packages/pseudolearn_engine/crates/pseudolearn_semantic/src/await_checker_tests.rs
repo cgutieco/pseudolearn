@@ -7,9 +7,7 @@ use pseudolearn_syntax::parse_source;
 #[test]
 fn accepts_an_awaited_suspendible_call() {
     for (program, profile) in programs("awaited_call") {
-        for strict in [true, false] {
-            assert!(analyze(program, profile, strict).is_empty());
-        }
+        assert!(analyze(program, profile).is_empty());
     }
 }
 
@@ -23,10 +21,8 @@ fn accepts_await_in_values_calls_and_recursive_procedures() {
         "recursive",
     ] {
         for (program, profile) in programs(kind) {
-            for strict in [true, false] {
-                let diagnostics = analyze(program, profile, strict);
-                assert!(diagnostics.is_empty(), "{kind}: {diagnostics:?}");
-            }
+            let diagnostics = analyze(program, profile);
+            assert!(diagnostics.is_empty(), "{kind}: {diagnostics:?}");
         }
     }
 }
@@ -34,51 +30,41 @@ fn accepts_await_in_values_calls_and_recursive_procedures() {
 #[test]
 fn reports_unawaited_calls_and_invalid_operands() {
     for (program, profile) in programs("unawaited_call") {
-        for strict in [true, false] {
-            assert_eq!(
-                analyze(program, profile, strict),
-                vec![DiagnosticCode::SuspendibleCallWithoutAwait]
-            );
-        }
+        assert_eq!(
+            analyze(program, profile),
+            vec![DiagnosticCode::SuspendibleCallWithoutAwait]
+        );
     }
     for (program, profile) in programs("invalid_operand") {
-        for strict in [true, false] {
-            assert_eq!(
-                analyze(program, profile, strict),
-                vec![DiagnosticCode::AwaitOperandInvalid]
-            );
-        }
+        assert_eq!(
+            analyze(program, profile),
+            vec![DiagnosticCode::AwaitOperandInvalid]
+        );
     }
 }
 
 #[test]
 fn reports_context_errors_with_specific_precedence() {
     for (program, profile) in programs("outside_suspendible") {
-        for strict in [true, false] {
-            assert_eq!(
-                analyze(program, profile, strict),
-                vec![DiagnosticCode::AwaitOutsideSuspendible]
-            );
-        }
+        assert_eq!(
+            analyze(program, profile),
+            vec![DiagnosticCode::AwaitOutsideSuspendible]
+        );
     }
     for (program, profile) in programs("inside_defer") {
-        for strict in [true, false] {
-            assert_eq!(
-                analyze(program, profile, strict),
-                vec![DiagnosticCode::AwaitInsideDefer]
-            );
-        }
+        assert_eq!(
+            analyze(program, profile),
+            vec![DiagnosticCode::AwaitInsideDefer]
+        );
     }
 }
 
 #[test]
 fn includes_suspension_in_pure_function_effect_analysis() {
     for (program, profile) in programs("pure_function") {
-        for strict in [true, false] {
-            let diagnostics = analyze(program, profile, strict);
-            assert!(diagnostics.contains(&DiagnosticCode::AwaitOutsideSuspendible));
-            assert!(diagnostics.contains(&DiagnosticCode::PureFunctionTransitiveSideEffect));
-        }
+        let diagnostics = analyze(program, profile);
+        assert!(diagnostics.contains(&DiagnosticCode::AwaitOutsideSuspendible));
+        assert!(diagnostics.contains(&DiagnosticCode::PureFunctionTransitiveSideEffect));
     }
 }
 
@@ -152,12 +138,11 @@ fn programs(kind: &str) -> Vec<(&'static str, Profile)> {
     vec![(spanish, Profile::Spanish), (english, Profile::English)]
 }
 
-fn analyze(program: &str, profile: Profile, strict: bool) -> Vec<DiagnosticCode> {
+fn analyze(program: &str, profile: Profile) -> Vec<DiagnosticCode> {
     let source = SourceText::new(program.to_owned());
     let (tree, syntax_diagnostics) = parse_source(&source, profile);
     assert!(syntax_diagnostics.is_empty());
-    let (_, diagnostics) =
-        crate::analyze_with_options(&tree, &source, SemanticOptions { profile, strict });
+    let (_, diagnostics) = crate::analyze_with_options(&tree, &source, SemanticOptions { profile });
     diagnostics
         .into_iter()
         .map(|diagnostic| diagnostic.code)

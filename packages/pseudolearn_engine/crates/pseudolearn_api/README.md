@@ -64,7 +64,7 @@ Cinta de efectos, modos de ejecución y errores de reproducción (`tape_wire`): 
 
 La creación de un documento admite `previous_document` cuando representa una revisión sucesora. Valida la fuente y el recurso previo antes de crear el nuevo; solo después libera la revisión anterior y sus recursos dependientes. Un destino previo inválido conserva todos los documentos. El identificador nuevo cambia las identidades de nodos aunque el texto sea idéntico; las vistas retenidas del anterior no se pueden consultar. Los documentos ajenos permanecen vivos.
 
-Las peticiones de análisis, RI, ejecución y construcción nativa admiten `source` opcional con `project_id` y `revision_id` como cadenas decimales u64 y `source_id` como u32 positivo. El ID cero permanece reservado al documento suelto. Diagnósticos, tokens y vistas devuelven esa identidad en cada tramo; una petición de documento suelto conserva las formas anteriores sin el campo. `AnalyzeRequest` de texto único sigue siendo la entrada pública: conserva su perfil, rigor, diagnóstico, tokens y tramos, sin requerir manifiesto, imports ni conversión a un proyecto. API y servicio comparten en semantic la precedencia de perfiles y manifiestos de los módulos de proyecto.
+Las peticiones de análisis, RI, ejecución y construcción nativa admiten `source` opcional con `project_id` y `revision_id` como cadenas decimales u64 y `source_id` como u32 positivo. El ID cero permanece reservado al documento suelto. Diagnósticos, tokens y vistas devuelven esa identidad en cada tramo; una petición de documento suelto conserva las formas anteriores sin el campo. `AnalyzeRequest` de texto único sigue siendo la entrada pública: conserva su perfil y diagnóstico, tokens y tramos, sin requerir manifiesto, imports ni conversión a un proyecto. API y servicio comparten en semantic la precedencia de perfiles y manifiestos de los módulos de proyecto.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
@@ -103,7 +103,7 @@ Problema: los emisores, diagramas y comprobaciones estructurales consumían árb
 
 Problema: posiciones públicas y unidades recuperadas deben describir el texto, no desplazamientos internos.
 Elección: la API convierte cada tramo UTF-8 a pares línea/columna y expone el esquema de unidades
-recuperadas en orden de fuente. El análisis pasa perfil y rigor al front-end; solo solicita HIR sin
+recuperadas en orden de fuente. El análisis pasa el perfil al front-end; solo solicita HIR sin
 errores léxicos o sintácticos. El idioma de presentación se resuelve al renderizar un diagnóstico
 mediante su código y argumentos, sin modificar códigos, tramos ni salida del programa.
 Se rechaza que la CLI tenga que reconstruir posiciones o traducir un mensaje ya presentado.
@@ -113,7 +113,7 @@ caracteres inválidos y fin de archivo. Cada token conserva su identidad públic
 línea/columna; el consumidor obtiene resaltado sin volver a analizar el texto y puede mantenerlo
 cuando el árbol incluye errores recuperables.
 
-Los nombres del alfabeto latino español se aceptan en ambos rigores y perfiles. La comparación usa NFC
+Los nombres del alfabeto latino español se aceptan en ambos perfiles. La comparación usa NFC
 sin alterar el texto ni los rangos que reciben y devuelven las peticiones de documento único.
 
 La vista pública del programa (`program_view`) se proyecta desde el árbol sintáctico del documento: unidades en
@@ -433,7 +433,7 @@ La API produce efectos pendientes por omisión y no distribuye el doble de memor
 activa ese doble solo para conformidad y pruebas. Sus pruebas propias lo habilitan mediante una
 dependencia de desarrollo sobre el mismo crate, declarada en la matriz. La configuración de proyecto
 rechaza requests.permissions y grants.permissions como campos desconocidos; límites voluntarios se
-conservan. La identidad de cinta incluye semilla, fuentes, perfil, rigor y límites, sin permisos.
+conservan. La identidad de cinta incluye semilla, fuentes, perfil y límites, sin permisos.
 El descriptor de red declara ssrf_policy none en nativo o browser en navegador; no concede autoridad.
 
 Cancelar una espera de Leer limpia la solicitud pendiente y devuelve cancelled en el siguiente

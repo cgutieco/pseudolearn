@@ -9,7 +9,7 @@ fn record(host: Value, seed: i64) -> Value {
         &json!({"request": {
             "program": TWO_READS,
             "profile": "es",
-            "strictness": "strict",
+
             "seed": seed,
             "host": host
         }, "options": {"capture_states": false}}),
@@ -22,7 +22,7 @@ fn replay(tape: &Value, seed: i64) -> Value {
     let started = session.call(
         "start",
         &json!({"analysis": analysis.pointer("/value/resource"), "program": TWO_READS,
-            "profile": "es", "strictness": "strict", "seed": seed, "host": {"detached": true},
+            "profile": "es",  "seed": seed, "host": {"detached": true},
             "execution_mode": "replay_from_tape", "effect_tape": tape}),
     );
     if started.pointer("/failure").is_some() {

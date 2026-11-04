@@ -121,11 +121,7 @@ Una constante fija un valor que no cambia y que el motor conoce antes de ejecuta
   "espera": {
     "salida": "27\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -146,11 +142,7 @@ Una constante fija un valor que no cambia y que el motor conoce antes de ejecuta
   "espera": {
     "salida": "0.300000000000000040.30000000000000004\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -171,11 +163,7 @@ Una constante fija un valor que no cambia y que el motor conoce antes de ejecuta
   "espera": {
     "salida": "abc{{lexema:booleanTrue}}2.0\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -201,11 +189,7 @@ Una constante fija un valor que no cambia y que el motor conoce antes de ejecuta
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -231,11 +215,7 @@ Una constante fija un valor que no cambia y que el motor conoce antes de ejecuta
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -261,11 +241,7 @@ Una constante fija un valor que no cambia y que el motor conoce antes de ejecuta
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -291,11 +267,7 @@ Una constante fija un valor que no cambia y que el motor conoce antes de ejecuta
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -321,11 +293,7 @@ Una constante fija un valor que no cambia y que el motor conoce antes de ejecuta
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -351,11 +319,7 @@ Una constante fija un valor que no cambia y que el motor conoce antes de ejecuta
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -381,11 +345,7 @@ Una constante fija un valor que no cambia y que el motor conoce antes de ejecuta
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -411,11 +371,7 @@ Una constante fija un valor que no cambia y que el motor conoce antes de ejecuta
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -441,11 +397,7 @@ Una constante fija un valor que no cambia y que el motor conoce antes de ejecuta
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -466,11 +418,7 @@ Una constante fija un valor que no cambia y que el motor conoce antes de ejecuta
   "espera": {
     "arbol": "presente",
     "diagnosticos": []
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -496,11 +444,7 @@ Una constante fija un valor que no cambia y que el motor conoce antes de ejecuta
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -526,11 +470,7 @@ Una constante fija un valor que no cambia y que el motor conoce antes de ejecuta
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -556,10 +496,6 @@ Una constante fija un valor que no cambia y que el motor conoce antes de ejecuta
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```

@@ -3,7 +3,7 @@ use std::collections::BTreeMap;
 
 pub fn generate(diagnostics: &Map<String, Value>) -> Result<String, String> {
     let mut classes = BTreeMap::<&str, Vec<String>>::new();
-    let mut severities = BTreeMap::<(&str, &str), Vec<String>>::new();
+    let mut severities = BTreeMap::<&str, Vec<String>>::new();
     for (name, entry) in diagnostics {
         let variant = format!("Self::{}", super::to_pascal_case(name));
         let class = class(
@@ -13,10 +13,9 @@ pub fn generate(diagnostics: &Map<String, Value>) -> Result<String, String> {
                 .ok_or("Missing class")?,
         )?;
         classes.entry(class).or_default().push(variant.clone());
-        let strict = severity(entry.pointer("/severidad/estricto").and_then(Value::as_str))?;
-        let flexible = severity(entry.pointer("/severidad/flexible").and_then(Value::as_str))?;
+        let diagnostic_severity = severity(entry.get("severidad").and_then(Value::as_str))?;
         severities
-            .entry((strict, flexible))
+            .entry(diagnostic_severity)
             .or_default()
             .push(variant);
     }
@@ -29,18 +28,12 @@ pub fn generate(diagnostics: &Map<String, Value>) -> Result<String, String> {
             variants.join(" | ")
         ));
     }
-    generated.push_str(
-        "} }\npub fn severity(&self, rigor: &str) -> DiagnosticSeverity { match self {\n",
-    );
-    for ((strict, flexible), variants) in severities {
-        let result = if strict == flexible {
-            format!("DiagnosticSeverity::{strict}")
-        } else {
-            format!(
-                "if rigor == \"flexible\" {{ DiagnosticSeverity::{flexible} }} else {{ DiagnosticSeverity::{strict} }}"
-            )
-        };
-        generated.push_str(&format!("{} => {result},\n", variants.join(" | ")));
+    generated.push_str("} }\npub fn severity(&self) -> DiagnosticSeverity { match self {\n");
+    for (diagnostic_severity, variants) in severities {
+        generated.push_str(&format!(
+            "{} => DiagnosticSeverity::{diagnostic_severity},\n",
+            variants.join(" | ")
+        ));
     }
     generated.push_str("} } }\n");
     Ok(generated)

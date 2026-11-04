@@ -25,10 +25,6 @@
             "profiles": [
               "es",
               "en"
-            ],
-            "strictness": [
-              "estricto",
-              "flexible"
             ]
           },
           "reason": "not_pedagogical",

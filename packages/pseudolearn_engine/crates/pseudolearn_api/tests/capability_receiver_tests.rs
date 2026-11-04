@@ -9,7 +9,7 @@ fn run(faults: Value) -> Value {
         &json!({"request": {
             "program": OPEN_FILE,
             "profile": "es",
-            "strictness": "flexible",
+
             "host": {"faults":faults, "files": {"a": [1]}}
         }, "options": {"capture_states": false}}),
     )
@@ -48,7 +48,7 @@ fn retired_authority_keys_in_the_host_are_usage_failures() {
             &json!({"request": {
                 "program": OPEN_FILE,
                 "profile": "es",
-                "strictness": "flexible",
+
                 "host": {key: [], "files": {"a": [1]}}
             }, "options": {"capture_states": false}}),
         );

@@ -5,7 +5,7 @@ use pseudolearn_semantic::Type;
 use support::analyze;
 
 fn codes(text: &str) -> Vec<DiagnosticCode> {
-    analyze(text, false)
+    analyze(text)
         .1
         .iter()
         .map(|diagnostic| diagnostic.code)
@@ -18,7 +18,6 @@ const POINT: &str = "record Point\ndefine x, z as integer;\nendRecord\n";
 fn registers_enum_members_in_declaration_order() {
     let (module, diagnostics) = analyze(
         "enum Color\nRojo, Verde, Azul\nendEnum\nalgorithm P\nwrite Color.Azul;\nendAlgorithm\n",
-        true,
     );
     assert!(diagnostics.is_empty());
     let enumeration = module.as_ref().and_then(|module| module.enums.first());
@@ -36,7 +35,6 @@ fn registers_enum_members_in_declaration_order() {
 fn accepts_empty_and_single_member_enumerations() {
     let (module, diagnostics) = analyze(
         "enum Empty\nendEnum\nenum One\nOnly\nendEnum\nalgorithm P\nwrite One.Only;\nendAlgorithm\n",
-        true,
     );
     assert!(diagnostics.is_empty());
     let sizes: Vec<usize> = module
@@ -73,7 +71,6 @@ fn rejects_duplicate_members_and_duplicate_type_names() {
 fn allows_equal_member_names_in_different_enumerations() {
     let (module, diagnostics) = analyze(
         "enum A\nx\nendEnum\nenum B\nx\nendEnum\nalgorithm P\nwrite A.x, B.x;\nendAlgorithm\n",
-        true,
     );
     assert!(diagnostics.is_empty());
     assert!(module.is_some());
@@ -84,7 +81,7 @@ fn flattens_nested_records_into_leaves_with_offsets() {
     let source = format!(
         "{POINT}record Line\ndefine a, b as Point;\nendRecord\nalgorithm P\ndefine l as Line <- Line(Point(1, 2), Point(3, 4));\nwrite l.b.z;\nendAlgorithm\n"
     );
-    let (module, diagnostics) = analyze(&source, true);
+    let (module, diagnostics) = analyze(&source);
     assert!(diagnostics.is_empty());
     let line = module.as_ref().and_then(|module| module.records.get(1));
     assert_eq!(
@@ -140,7 +137,7 @@ fn rejects_recursive_containment_directly_and_indirectly() {
 #[test]
 fn accepts_records_that_reference_classes_without_recursion() {
     let source = "class Box\ndefine v as integer;\nendClass\nrecord Pair\ndefine c as Box;\nendRecord\nalgorithm P\nendAlgorithm\n";
-    let (module, diagnostics) = analyze(source, true);
+    let (module, diagnostics) = analyze(source);
     assert!(diagnostics.is_empty());
     let leaf = module.as_ref().and_then(|module| {
         module

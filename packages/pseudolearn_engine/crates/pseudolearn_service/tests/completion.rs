@@ -7,7 +7,7 @@ use pseudolearn_service::{
 
 fn complete_marked(marked: &str, profile: Profile) -> Vec<CompletionEntry> {
     let (clean, position) = split_cursor(marked);
-    DocumentSession::new(clean, profile, true)
+    DocumentSession::new(clean, profile)
         .queries()
         .complete_with_edit(position)
         .entries

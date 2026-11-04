@@ -1,7 +1,7 @@
 use pseudolearn_lexicon::Profile;
 use pseudolearn_semantic::{SemanticOptions, Type, analyze_with_options};
 use pseudolearn_source::SourceText;
-use pseudolearn_syntax::parse_source_with_terminator;
+use pseudolearn_syntax::parse_source;
 use serde_json::Value;
 
 #[test]
@@ -34,13 +34,10 @@ fn audits_types_and_spans_of_every_successfully_analyzed_corpus_program() -> Res
     Ok(())
 }
 
-fn audit(program: &str, profile: Profile, strict: bool, require_valid: bool) -> Option<String> {
+fn audit(program: &str, profile: Profile, require_valid: bool) -> Option<String> {
     let source = SourceText::new(program.to_owned());
-    let terminator =
-        strict.then_some(pseudolearn_diagnostics::DiagnosticCode::MissingStatementTerminator);
-    let (tree, mut diagnostics) = parse_source_with_terminator(&source, profile, terminator);
-    let (module, mut semantic) =
-        analyze_with_options(&tree, &source, SemanticOptions { profile, strict });
+    let (tree, mut diagnostics) = parse_source(&source, profile);
+    let (module, mut semantic) = analyze_with_options(&tree, &source, SemanticOptions { profile });
     diagnostics.append(&mut semantic);
     if let Some(diagnostic) = diagnostics
         .iter()
@@ -130,23 +127,21 @@ fn audit_case(specification: &Value, fields: &Value) -> Vec<String> {
         let Some(program) = program else {
             continue;
         };
-        for strict in [false, true] {
-            if let Some(failure) = audit(program, profile, strict, false) {
-                failures.push(format!(
-                    "{} {} {profile:?} strict={strict}: {failure}",
-                    specification
-                        .pointer("/metadata/id")
-                        .unwrap_or(&Value::Null),
-                    fields.get("id").unwrap_or(&Value::Null)
-                ));
-            }
+        if let Some(failure) = audit(program, profile, false) {
+            failures.push(format!(
+                "{} {} {profile:?}: {failure}",
+                specification
+                    .pointer("/metadata/id")
+                    .unwrap_or(&Value::Null),
+                fields.get("id").unwrap_or(&Value::Null)
+            ));
         }
     }
     failures
 }
 
 #[test]
-fn audits_typed_hir_of_generated_programs_in_both_strictness_modes() -> Result<(), String> {
+fn audits_typed_hir_of_generated_programs() -> Result<(), String> {
     let cases = [
         (
             "Proceso Generated\nDefinir Mutable total Como Entero <- 0;\ntotal <- 42;\nEscribir total;\nFinProceso",
@@ -158,13 +153,7 @@ fn audits_typed_hir_of_generated_programs_in_both_strictness_modes() -> Result<(
         ),
     ];
     for (program, profile) in cases {
-        for strict in [false, true] {
-            assert_eq!(
-                audit(program, profile, strict, true),
-                None,
-                "{profile:?} strict={strict}"
-            );
-        }
+        assert_eq!(audit(program, profile, true), None, "{profile:?}");
     }
     Ok(())
 }

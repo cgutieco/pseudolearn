@@ -48,7 +48,6 @@
   "id": "C1",
   "regla": "R1",
   "perfiles": ["es", "en"],
-  "rigor": ["estricto"],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -57,7 +56,6 @@
         "operation": "execute_project",
         "arguments": {
           "profile": "es",
-          "strictness": "strict",
           "project": {
             "project_id": "1",
             "revision_id": "1",
@@ -77,7 +75,6 @@
         "operation": "execute_project",
         "arguments": {
           "profile": "en",
-          "strictness": "strict",
           "project": {
             "project_id": "1",
             "revision_id": "2",
@@ -111,7 +108,6 @@
   "id": "C2",
   "regla": "R1",
   "perfiles": ["es"],
-  "rigor": ["estricto"],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -120,7 +116,6 @@
         "operation": "execute_project",
         "arguments": {
           "profile": "es",
-          "strictness": "strict",
           "project": {
             "project_id": "1",
             "revision_id": "3",
@@ -156,10 +151,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "SubProceso Run() Como Resultado<Entero, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nSegun directory.Abrir(\"entrada.txt\", \"lectura\") Hacer\nExito(file): Escribir \"inesperado\";\nError(problem): Escribir problem.Codigo;\nFinSegun\nRetornar Exito(0);\nFinSubProceso\nAlgoritmo Main\nSegun Run() Hacer\nExito(value):\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
     "en": "subroutine Run() as result<integer, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\nswitch directory.open(\"entrada.txt\", \"read\") do\nsuccess(file): write \"unexpected\";\nfailure(problem): write problem.code;\nendSwitch\nreturn success(0);\nendSubroutine\nalgorithm Main\nswitch Run() do\nsuccess(value):\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
@@ -190,7 +181,6 @@
   "id": "C4",
   "regla": "R1",
   "perfiles": ["es", "en"],
-  "rigor": ["estricto", "flexible"],
   "programas": {
     "es": "Algoritmo Main\nDimension valores[4] Como Entero;\nFinAlgoritmo\n",
     "en": "algorithm Main\ndimension values[4] as integer;\nendAlgorithm\n"
@@ -211,7 +201,6 @@
   "id": "C5",
   "regla": "R1",
   "perfiles": ["es", "en"],
-  "rigor": ["estricto", "flexible"],
   "programas": {
     "es": "Algoritmo Main\nEscribir \"cancelacion_pendiente\";\nFinAlgoritmo\n",
     "en": "algorithm Main\nwrite \"cancelation_pending\";\nendAlgorithm\n"

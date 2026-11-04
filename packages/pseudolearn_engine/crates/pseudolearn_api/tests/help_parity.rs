@@ -40,7 +40,7 @@ fn api_answer(case: &Case, language: &str) -> Result<Value, String> {
     let mut session = ApiSession::default();
     let opened = session.call(
         "open_edit_session",
-        &json!({"program": case.program, "profile": "es", "strictness": "strict"}),
+        &json!({"program": case.program, "profile": "es"}),
     );
     let resource = opened
         .pointer("/value/resource")

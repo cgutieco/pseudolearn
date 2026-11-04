@@ -101,9 +101,7 @@ fn labels_for(
     for label in session.children(node) {
         let expression = crate::expression_checker::check(session, label);
         let kind = session.expression_type(expression);
-        if kind == Type::Real
-            || session.options.strict
-                && !matches!(kind, Type::Integer | Type::Enum(_) | Type::Error)
+        if !matches!(kind, Type::Integer | Type::Enum(_) | Type::Error)
             || !crate::type_resolution::assignable(session, expected, &kind)
         {
             session.report(DiagnosticCode::IncompatibleSwitchCaseType, label);

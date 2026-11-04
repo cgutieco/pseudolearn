@@ -32,26 +32,23 @@ fn append_case(
     scenarios: &mut Vec<Scenario>,
 ) -> Result<(), String> {
     for profile in strings(case.fields.get("perfiles")) {
-        for strictness in requests::strictnesses(case) {
-            let expected = case
-                .fields
-                .get("esperas")
-                .and_then(|values| values.get(profile))
-                .or_else(|| case.fields.get("espera"))
-                .ok_or("Missing property expectation")?
-                .clone();
-            let expected = crate::execution::resolved_expected(expected, profile, vocabulary)?;
-            let selection = Selection {
-                profile,
-                strictness,
-                expected: &expected,
-            };
-            scenarios.push(Scenario {
-                request: requests::build(case, &selection, vocabulary)?,
-                expected: Some(expected),
-                traced: false,
-            });
-        }
+        let expected = case
+            .fields
+            .get("esperas")
+            .and_then(|values| values.get(profile))
+            .or_else(|| case.fields.get("espera"))
+            .ok_or("Missing property expectation")?
+            .clone();
+        let expected = crate::execution::resolved_expected(expected, profile, vocabulary)?;
+        let selection = Selection {
+            profile,
+            expected: &expected,
+        };
+        scenarios.push(Scenario {
+            request: requests::build(case, &selection, vocabulary)?,
+            expected: Some(expected),
+            traced: false,
+        });
     }
     Ok(())
 }
@@ -60,9 +57,7 @@ fn mark_traced(case: &see_model::Block, scenarios: &mut [Scenario]) {
     if requests::operation(case) != "trace" {
         return;
     }
-    let appended = strings(case.fields.get("perfiles"))
-        .len()
-        .saturating_mul(requests::strictnesses(case).len());
+    let appended = strings(case.fields.get("perfiles")).len();
     let start = scenarios.len().saturating_sub(appended);
     for scenario in scenarios.iter_mut().skip(start) {
         scenario.traced = true;
@@ -93,14 +88,13 @@ const DOUBLE_SUBJECT: &str = "engine";
 pub(crate) fn generated(
     seed: GenerationSeed,
     profile: &str,
-    strictness: &str,
     vocabulary: &Vocabulary,
 ) -> Result<Scenario, String> {
     let program = generate(seed, profile, vocabulary)?;
     Ok(Scenario {
         request: json!({
             "kind":"execute", "program":program.source, "profile":profile,
-            "strictness":strictness, "inputs":[program.input], "seed":seed.seed,
+            "inputs":[program.input], "seed":seed.seed,
             "observe":"events", "limits":{"micro_steps":100_000},
         }),
         expected: Some(generated_expectation(&program)?),

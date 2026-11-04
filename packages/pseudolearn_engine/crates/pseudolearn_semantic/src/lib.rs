@@ -133,14 +133,12 @@ pub use types::{Type, TypeInterner, ValueClass};
 pub fn analyze_semantics(
     tree: &pseudolearn_syntax::SyntaxTree,
     source: &pseudolearn_source::SourceText,
-    strict: bool,
 ) -> (Option<HirModule>, Vec<pseudolearn_diagnostics::Diagnostic>) {
     analyze_with_options(
         tree,
         source,
         SemanticOptions {
             profile: pseudolearn_lexicon::Profile::Spanish,
-            strict,
         },
     )
 }

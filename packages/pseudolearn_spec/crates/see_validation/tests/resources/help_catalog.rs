@@ -1,13 +1,11 @@
 use see_validation::resources::check_references;
-use see_validation::resources::help_catalog::{check, references};
+use see_validation::resources::help_catalog::check;
 use serde_json::{Value, json};
 
 #[path = "help_catalog/coverage.rs"]
 mod coverage;
 #[path = "help_catalog/fixtures.rs"]
 mod fixtures;
-#[path = "../support/mod.rs"]
-mod support;
 
 #[test]
 fn accepts_complete_and_minimal_catalog_cards() {
@@ -58,14 +56,16 @@ fn rejects_duplicate_source_roles_and_incompatible_availability() {
     );
     assert!(check(&duplicate).is_err());
 
-    for (path, invalid) in [
-        ("/cards/0/availability/editions/0", json!("2027")),
-        ("/cards/0/availability/strictness/0", json!("unrestricted")),
-    ] {
-        let mut incompatible = sample_catalog();
-        assert!(set(&mut incompatible, path, invalid).is_ok());
-        assert!(check(&incompatible).is_err());
-    }
+    let mut incompatible = sample_catalog();
+    assert!(
+        set(
+            &mut incompatible,
+            "/cards/0/availability/editions/0",
+            json!("2027")
+        )
+        .is_ok()
+    );
+    assert!(check(&incompatible).is_err());
 }
 
 #[test]
@@ -118,46 +118,21 @@ fn rejects_exclusion_that_overlaps_an_available_card() -> Result<(), String> {
 }
 
 #[test]
-fn checks_legacy_case_rigor_when_present() -> Result<(), String> {
-    let corpus = vec![support::specification()?, vocabulary_specification()?];
+fn rejects_removed_strictness_fields() -> Result<(), String> {
     let mut catalog = sample_catalog();
-    assert!(
-        references(&catalog, &corpus)
-            .iter()
-            .any(|error| error.contains("stale example"))
-    );
-    for locale in ["es", "en"] {
-        set(
-            &mut catalog,
-            &format!("/cards/0/content/{locale}/examples/0/strictness"),
-            json!("flexible"),
-        )?;
-    }
-    assert!(
-        references(&catalog, &corpus)
-            .iter()
-            .all(|error| !error.contains("stale example"))
-    );
-    Ok(())
-}
-
-#[test]
-fn accepts_help_examples_when_the_case_omits_legacy_rigor() -> Result<(), String> {
-    let mut specification = support::specification()?;
-    specification
-        .blocks
-        .iter_mut()
-        .find(|block| block.kind == "caso")
-        .ok_or("Missing case")?
-        .fields
-        .remove("rigor");
-    let corpus = vec![specification, vocabulary_specification()?];
-    let catalog = sample_catalog();
-    assert!(
-        references(&catalog, &corpus)
-            .iter()
-            .all(|error| !error.contains("stale example"))
-    );
+    let availability = catalog
+        .pointer_mut("/cards/0/availability")
+        .and_then(Value::as_object_mut)
+        .ok_or("Missing availability")?;
+    availability.insert("strictness".to_owned(), json!(["flexible"]));
+    assert!(check(&catalog).is_err());
+    let mut example = sample_catalog();
+    let example_entry = example
+        .pointer_mut("/cards/0/content/es/examples/0")
+        .and_then(Value::as_object_mut)
+        .ok_or("Missing example")?;
+    example_entry.insert("strictness".to_owned(), json!("flexible"));
+    assert!(check(&example).is_err());
     Ok(())
 }
 
@@ -213,13 +188,6 @@ fn rejects_references_to_retired_specifications() -> Result<(), String> {
     assert!(errors.iter().any(|error| error.contains("stale anchor")));
     assert!(errors.iter().any(|error| error.contains("stale example")));
     Ok(())
-}
-
-fn vocabulary_specification() -> Result<see_model::Specification, String> {
-    see_format::parsing::parse(
-        "lang.profile.vocabulary.md",
-        include_str!("../../../../specifications/lang/lang.profile.vocabulary.md"),
-    )
 }
 
 fn reference_corpus() -> Result<see_model::Corpus, String> {
@@ -305,11 +273,11 @@ fn sample_catalog() -> Value {
             "id":"construct.sample",
             "identity":{"kind":"construction","id":"sample","role":"body"},
             "tokens":[{"identity":"algorithm","source":{"specification":"LANG.PROFILE.VOCABULARY","version":"1.0.0","element":"D1"}}],
-            "availability":{"editions":["2026"],"profiles":["es","en"],"strictness":["estricto","flexible"]},
+            "availability":{"editions":["2026"],"profiles":["es","en"]},
             "anchors":[{"specification":"LANG.TEST.SAMPLE","version":"1.0.0","element":"R1"}],
             "content":{
-                "es":{"title":"Tema","summary":"Resumen","purpose":"Uso","parts":[{"identity":"algorithm","text":"Identifica el punto de entrada."}],"constraints":[],"common_errors":[],"examples":[{"specification":"LANG.TEST.SAMPLE","version":"1.0.0","case":"C1","profile":"es","strictness":"estricto","kind":"executable","label":"Ejemplo"}]},
-                "en":{"title":"Topic","summary":"Summary","purpose":"Use","parts":[{"identity":"algorithm","text":"Names the entry point."}],"constraints":[],"common_errors":[],"examples":[{"specification":"LANG.TEST.SAMPLE","version":"1.0.0","case":"C1","profile":"en","strictness":"estricto","kind":"executable","label":"Example"}]}
+                "es":{"title":"Tema","summary":"Resumen","purpose":"Uso","parts":[{"identity":"algorithm","text":"Identifica el punto de entrada."}],"constraints":[],"common_errors":[],"examples":[{"specification":"LANG.TEST.SAMPLE","version":"1.0.0","case":"C1","profile":"es","kind":"executable","label":"Ejemplo"}]},
+                "en":{"title":"Topic","summary":"Summary","purpose":"Use","parts":[{"identity":"algorithm","text":"Names the entry point."}],"constraints":[],"common_errors":[],"examples":[{"specification":"LANG.TEST.SAMPLE","version":"1.0.0","case":"C1","profile":"en","kind":"executable","label":"Example"}]}
             }
         }],
         "exclusions":[]

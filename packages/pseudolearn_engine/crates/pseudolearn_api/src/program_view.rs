@@ -64,9 +64,8 @@ impl ProgramView {
         mode: ParseMode,
     ) -> Result<Self, ApiError> {
         let profile = Profile::from_name(&request.profile).unwrap_or(Profile::Spanish);
-        let strict = request.strictness != "flexible";
-        let (source, tree) = parse_view_source(request, strict, profile, mode)?;
-        let (nodes, realizations) = annotated_nodes(&tree, &source, (profile, strict), &revision);
+        let (source, tree) = parse_view_source(request, profile, mode)?;
+        let (nodes, realizations) = annotated_nodes(&tree, &source, profile, &revision);
         let schema = crate::diagnostic_conversion::schema(&tree, &source);
         let source_identity = crate::source_identity::api_identity(&source);
         let (inheritance, methods, members) = relations(&tree, &source, (&nodes, &revision));
@@ -204,24 +203,20 @@ fn relations(
 fn annotated_nodes(
     tree: &pseudolearn_syntax::SyntaxTree,
     source: &pseudolearn_source::SourceText,
-    mode: (Profile, bool),
+    profile: Profile,
     revision: &str,
 ) -> (Vec<ViewNode>, Value) {
     let mut nodes = crate::program_view_tree::collect_nodes(tree, source);
     let context = AnnotationContext {
         tree,
         source,
-        profile: mode.0,
-        strict: mode.1,
+        profile,
     };
     crate::program_view_annotations::annotate(&mut nodes, &context);
     let analysis = pseudolearn_semantic::analyze_for_service(
         tree,
         source,
-        pseudolearn_semantic::SemanticOptions {
-            profile: mode.0,
-            strict: mode.1,
-        },
+        pseudolearn_semantic::SemanticOptions { profile },
     );
     let realizations =
         crate::program_view_nominal::annotate(&mut nodes, &context, revision, &analysis);

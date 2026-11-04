@@ -77,9 +77,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -122,9 +119,6 @@
   "regla": "R2",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "api",
@@ -218,9 +212,6 @@
   "regla": "R3",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "api",
@@ -355,9 +346,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -440,9 +428,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -490,9 +475,6 @@
   "regla": "R1",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "api",
@@ -542,9 +524,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -592,9 +571,6 @@
   "regla": "R1",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "api",
@@ -644,9 +620,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -694,9 +667,6 @@
   "regla": "R2",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "api",
@@ -752,9 +722,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -802,9 +769,6 @@
   "regla": "R2",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "api",
@@ -854,9 +818,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -905,9 +866,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -955,9 +913,6 @@
   "regla": "R2",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "api",
@@ -1013,9 +968,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -1064,9 +1016,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -1114,9 +1063,6 @@
   "regla": "R4",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "api",
@@ -1206,9 +1152,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -1262,9 +1205,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -1273,7 +1213,6 @@
         "operation": "execute_project",
         "arguments": {
           "profile": "es",
-          "strictness": "strict",
           "project": {
             "project_id": "1",
             "revision_id": "1",
@@ -1335,9 +1274,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -1346,7 +1282,6 @@
         "operation": "analyze_project",
         "arguments": {
           "profile": "es",
-          "strictness": "strict",
           "project": {
             "project_id": "1",
             "revision_id": "1",
@@ -1380,7 +1315,6 @@
         "operation": "analyze_project",
         "arguments": {
           "profile": "es",
-          "strictness": "strict",
           "project": {
             "project_id": "1",
             "revision_id": "1",
@@ -1433,9 +1367,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -1444,7 +1375,6 @@
         "operation": "execute_project",
         "arguments": {
           "profile": "es",
-          "strictness": "strict",
           "project": {
             "project_id": "1",
             "revision_id": "1",
@@ -1474,7 +1404,6 @@
         "operation": "execute_project",
         "arguments": {
           "profile": "es",
-          "strictness": "strict",
           "project": {
             "project_id": "1",
             "revision_id": "1",
@@ -1540,9 +1469,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -1583,9 +1509,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -1594,7 +1517,6 @@
         "operation": "analyze_project",
         "arguments": {
           "profile": "es",
-          "strictness": "strict",
           "project": {
             "project_id": "1",
             "revision_id": "1",
@@ -1664,9 +1586,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -1675,7 +1594,6 @@
         "operation": "analyze_project",
         "arguments": {
           "profile": "es",
-          "strictness": "strict",
           "project": {
             "project_id": "1",
             "revision_id": "1",
@@ -1750,9 +1668,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -1761,7 +1676,6 @@
         "operation": "analyze_project",
         "arguments": {
           "profile": "es",
-          "strictness": "strict",
           "project": {
             "project_id": "1",
             "revision_id": "1",
@@ -1805,9 +1719,6 @@
   "regla": "R1",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "api",

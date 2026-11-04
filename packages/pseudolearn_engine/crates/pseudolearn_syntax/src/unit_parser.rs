@@ -123,7 +123,7 @@ fn class_member(state: &mut ParserState<'_>, class_name: u32) -> Result<(), ()> 
             return Err(());
         }
     }
-    if !state.eat(TokenKind::Semicolon) && state.terminator_diagnostic.is_some() {
+    if !state.eat(TokenKind::Semicolon) {
         let span = state.span();
         state.report(DiagnosticCode::MissingStatementTerminator, span);
     }

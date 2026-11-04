@@ -32,22 +32,18 @@ fn rejects_wrong_case_origin_and_empty_profiles() -> Result<(), String> {
 }
 
 #[test]
-fn accepts_cases_without_legacy_rigor_and_rejects_invalid_rigor_values() -> Result<(), String> {
+fn rejects_removed_rigor_field() -> Result<(), String> {
     let mut specification = support::specification()?;
-    let case = specification.blocks.last_mut().ok_or("Missing case")?;
-    case.fields.remove("rigor");
-    assert!(see_validation::schema::check(&specification).is_empty());
-
     specification
         .blocks
         .last_mut()
         .ok_or("Missing case")?
         .fields
-        .insert("rigor".to_owned(), serde_json::json!(["unknown"]));
+        .insert("rigor".to_owned(), serde_json::json!(["estricto"]));
     assert!(
         see_validation::schema::check(&specification)
             .iter()
-            .any(|error| error.contains("invalid strictness"))
+            .any(|error| error.contains("unknown rigor in caso"))
     );
     Ok(())
 }

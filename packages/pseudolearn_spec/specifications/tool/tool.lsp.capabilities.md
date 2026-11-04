@@ -155,9 +155,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "service",
   "espera": {
@@ -201,9 +198,6 @@
   "regla": "R4",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "service",
@@ -274,9 +268,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "service",
   "espera": {
@@ -323,9 +314,6 @@
   "regla": "R2",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "service",
@@ -395,9 +383,6 @@
   "regla": "R3",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "service",
@@ -543,9 +528,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "service",
   "espera": {
@@ -618,9 +600,6 @@
   "regla": "R5",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "service",
@@ -700,9 +679,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "service",
   "espera": {
@@ -763,9 +739,6 @@
   "regla": "R5",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "service",
@@ -828,9 +801,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "service",
   "espera": {
@@ -863,9 +833,6 @@
   "regla": "R5",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "service",
@@ -926,7 +893,6 @@
   "id": "C12",
   "regla": "R6",
   "perfiles": ["es", "en"],
-  "rigor": ["estricto"],
   "origen": "derivado",
   "operacion": "service",
   "espera": {"servicio": {"workspace_folders": true, "prepare_rename": true, "semantic_tokens_full": true}},
@@ -939,7 +905,6 @@
   "id": "C13",
   "regla": "R7",
   "perfiles": ["es", "en"],
-  "rigor": ["estricto"],
   "origen": "derivado",
   "operacion": "service",
   "espera": {"servicio": {"definicion_uri": "file:///geo/vectores.pseudo", "referencias": 2}},
@@ -952,7 +917,6 @@
   "id": "C14",
   "regla": "R8",
   "perfiles": ["es"],
-  "rigor": ["estricto"],
   "origen": "derivado",
   "operacion": "service",
   "espera": {"servicio": {"prepare_range":{"start":{"line":1,"character":16},"end":{"line":1,"character":21}},"rename_edits":2}},
@@ -965,7 +929,6 @@
   "id": "C15",
   "regla": "R9",
   "perfiles": ["en"],
-  "rigor": ["flexible"],
   "origen": "derivado",
   "operacion": "service",
   "espera": {"servicio": {"semantic_token_count":5,"token_encoding":"relative-utf16"}},
@@ -978,7 +941,6 @@
   "id": "C16",
   "regla": "R10",
   "perfiles": ["es"],
-  "rigor": ["estricto"],
   "origen": "derivado",
   "operacion": "service",
   "espera": {"servicio": {"cancelacion_silenciosa": true}},

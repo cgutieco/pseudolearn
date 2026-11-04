@@ -4,7 +4,7 @@ use serde_json::{Value, json};
 const PROGRAM: &str = "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n";
 
 fn request() -> serde_json::Value {
-    json!({"program":PROGRAM,"profile":"es","strictness":"strict","seed":1,"inputs":[],"observe":"events"})
+    json!({"program":PROGRAM,"profile":"es","seed":1,"inputs":[],"observe":"events"})
 }
 
 fn json_at(value: &Value, path: &str) -> Value {

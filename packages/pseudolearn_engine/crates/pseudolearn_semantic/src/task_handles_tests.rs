@@ -29,14 +29,7 @@ fn analyze(program: &str, profile: Profile) -> Vec<DiagnosticCode> {
     let source = SourceText::new(program.to_owned());
     let (tree, syntax) = parse_source(&source, profile);
     assert!(syntax.is_empty(), "{syntax:?}");
-    let (_, diagnostics) = crate::analyze_with_options(
-        &tree,
-        &source,
-        SemanticOptions {
-            profile,
-            strict: true,
-        },
-    );
+    let (_, diagnostics) = crate::analyze_with_options(&tree, &source, SemanticOptions { profile });
     diagnostics
         .into_iter()
         .map(|diagnostic| diagnostic.code)

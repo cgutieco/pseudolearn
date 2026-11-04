@@ -38,7 +38,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Las sentencias simples terminan con punto y coma o fin de línea; estricto exige punto y coma incluso antes del cierre del bloque. Aperturas y cierres de bloques no lo exigen. Llamadas y retornos son simples. Líneas vacías no producen sentencias. Se admiten varias sentencias en una línea separadas por punto y coma.",
+  "texto": "Las sentencias simples terminan obligatoriamente con punto y coma, incluso antes del cierre del bloque. Aperturas y cierres de bloques no lo exigen. Llamadas y retornos son simples. Líneas vacías no producen sentencias. Se admiten varias sentencias en una línea separadas por punto y coma.",
   "verificacion": [
     "C1",
     "C2",
@@ -64,11 +64,7 @@
   "espera": {
     "salida": "1\n2\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -94,10 +90,7 @@
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto"
-  ]
+  }
 }
 ```
 
@@ -116,11 +109,13 @@
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
-    "salida": "1\n",
-    "terminacion": "completed"
-  },
-  "rigor": [
-    "flexible"
-  ]
+    "terminacion": "failed",
+    "diagnosticos": [
+      {
+        "codigo": "missingStatementTerminator",
+        "severidad": "error"
+      }
+    ]
+  }
 }
 ```

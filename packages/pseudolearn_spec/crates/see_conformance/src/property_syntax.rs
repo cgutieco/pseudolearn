@@ -5,7 +5,6 @@ use serde_json::{Value, json};
 struct Source<'text> {
     program: &'text str,
     profile: &'text str,
-    strictness: &'text str,
 }
 
 type Difference = Result<Option<(Value, Value)>, String>;
@@ -17,11 +16,9 @@ pub(crate) fn check(
 ) -> Difference {
     let program = text(&scenario.request, "program");
     let profile = text(&scenario.request, "profile");
-    let strictness = text(&scenario.request, "strictness");
     let source = Source {
         program: &program,
         profile: &profile,
-        strictness: &strictness,
     };
     match executor {
         PropertyExecutor::LosslessReprint => reprint_variants(&program, &profile, subject),
@@ -87,9 +84,8 @@ fn recovery_texts(program: &str, profile: &str, subject: &mut impl PropertySubje
         if let Some(difference) = reprint_difference(&candidate, profile, subject)? {
             return Ok(Some(difference));
         }
-        let analysis = subject.exchange(
-            &json!({"kind":"analyze","program":candidate,"profile":profile,"strictness":"strict"}),
-        )?;
+        let analysis =
+            subject.exchange(&json!({"kind":"analyze","program":candidate,"profile":profile}))?;
         if analysis.get("tree") != Some(&json!(true)) {
             return Ok(Some((json!({"tree":true}), analysis)));
         }
@@ -114,8 +110,8 @@ fn recovery_candidates(program: &str) -> Vec<String> {
 }
 
 fn lowering_validity(source: &Source<'_>, subject: &mut impl PropertySubject) -> Difference {
-    let (program, profile, strictness) = (source.program, source.profile, source.strictness);
-    let request = json!({"kind":"ir","program":program,"profile":profile,"strictness":strictness});
+    let (program, profile) = (source.program, source.profile);
+    let request = json!({"kind":"ir","program":program,"profile":profile});
     let response = subject.exchange(&request)?;
     let Some(outcome) = response.get("ir") else {
         return Ok(Some((json!({"ir":"present"}), response)));
@@ -127,9 +123,8 @@ fn lowering_validity(source: &Source<'_>, subject: &mut impl PropertySubject) ->
         .get("reprint")
         .and_then(Value::as_str)
         .unwrap_or_default();
-    let reloaded = subject.exchange(
-        &json!({"kind":"ir","program_ir":reprint,"profile":profile,"strictness":strictness}),
-    )?;
+    let reloaded =
+        subject.exchange(&json!({"kind":"ir","program_ir":reprint,"profile":profile}))?;
     let accepted = reloaded.pointer("/ir/accepted") == Some(&json!(true));
     Ok((!accepted).then(|| (json!({"ir":{"accepted":true}}), reloaded)))
 }
@@ -139,10 +134,9 @@ fn rejected_is_invalid(
     subject: &mut impl PropertySubject,
     response: Value,
 ) -> Difference {
-    let (program, profile, strictness) = (source.program, source.profile, source.strictness);
-    let analysis = subject.exchange(
-        &json!({"kind":"analyze","program":program,"profile":profile,"strictness":strictness}),
-    )?;
+    let (program, profile) = (source.program, source.profile);
+    let analysis =
+        subject.exchange(&json!({"kind":"analyze","program":program,"profile":profile}))?;
     let has_error = analysis
         .get("diagnostics")
         .and_then(Value::as_array)
@@ -155,12 +149,12 @@ fn rejected_is_invalid(
 }
 
 fn statement_mass(source: &Source<'_>, subject: &mut impl PropertySubject) -> Difference {
-    let (program, profile, strictness) = (source.program, source.profile, source.strictness);
+    let (program, profile) = (source.program, source.profile);
     if propagates_errors(program) {
         return Ok(None);
     }
     let response = subject.exchange(&json!({"kind":"probe","operation":"statement_mass",
-        "program":program,"profile":profile,"strictness":strictness}))?;
+        "program":program,"profile":profile}))?;
     if response.get("compiled") != Some(&json!(true)) {
         return Ok(None);
     }
@@ -182,10 +176,9 @@ fn propagates_errors(program: &str) -> bool {
 }
 
 fn analysis_schema(source: &Source<'_>, subject: &mut impl PropertySubject) -> Difference {
-    let (program, profile, strictness) = (source.program, source.profile, source.strictness);
-    let response = subject.exchange(
-        &json!({"kind":"analyze","program":program,"profile":profile,"strictness":strictness}),
-    )?;
+    let (program, profile) = (source.program, source.profile);
+    let response =
+        subject.exchange(&json!({"kind":"analyze","program":program,"profile":profile}))?;
     let units = response
         .get("schema")
         .and_then(Value::as_array)

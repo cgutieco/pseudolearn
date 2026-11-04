@@ -36,9 +36,7 @@ pub(super) fn verify(fixtures: &Value) -> Result<(), String> {
     if checked < 100 {
         return Err("Insufficient runtime corpus coverage".to_owned());
     }
-    println!(
-        "Runtime corpus: {checked} profile/strictness configurations, three collection policies"
-    );
+    println!("Runtime corpus: {checked} profile cases, three collection policies");
     if !failures.is_empty() {
         return Err(format!(
             "{} runtime failures:\n{}",
@@ -80,11 +78,7 @@ fn check(case: &Value) -> Result<(), String> {
         .get("profile")
         .and_then(Value::as_str)
         .ok_or("Missing profile")?;
-    let strictness = request
-        .get("strictness")
-        .and_then(Value::as_str)
-        .ok_or("Missing strictness")?;
-    let loaded = super::compile(source, profile, strictness)?;
+    let loaded = super::compile(source, profile)?;
     let defaults = RunOptions::default();
     for collection in [
         CollectionPolicy::Automatic,

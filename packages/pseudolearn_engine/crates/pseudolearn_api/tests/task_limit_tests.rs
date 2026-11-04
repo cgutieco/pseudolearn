@@ -17,8 +17,7 @@ fn channel(capacity: usize) -> String {
 fn limited(program: String, limits: ExecutionLimits) -> pseudolearn_api::ExecuteResponse {
     execute_program(&ExecuteRequest {
         program,
-        profile: "es".to_owned(),
-        strictness: "strict".to_owned(),
+        profile: "es".to_owned().to_owned(),
         limits,
         ..Default::default()
     })

@@ -205,7 +205,6 @@ impl LspServer {
                     session.text(),
                     FormatOptions {
                         profile: session.profile,
-                        strict: session.strict,
                         indent_size: 2,
                     },
                 )?;

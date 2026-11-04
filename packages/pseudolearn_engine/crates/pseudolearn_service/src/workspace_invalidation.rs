@@ -76,9 +76,8 @@ fn compare_package_options(
         || options.entry != next_options.entry;
     let resolution_changed = options.dependency_inputs != next_options.dependency_inputs;
     let structure_changed = structure_changed || resolution_changed;
-    let analysis_changed = structure_changed
-        || options.strict != next_options.strict
-        || options.requested_profile != next_options.requested_profile;
+    let analysis_changed =
+        structure_changed || options.requested_profile != next_options.requested_profile;
     if !analysis_changed {
         return;
     }

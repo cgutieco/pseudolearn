@@ -3,7 +3,7 @@ mod support;
 #[test]
 fn reference_parameters_require_locations_and_exact_types() {
     let source = "subroutine update(target as integer byReference)\ntarget <- 8;\nendSubroutine\nalgorithm Entry\nupdate(4);\nendAlgorithm\n";
-    let (module, diagnostics) = support::analyze(source, true);
+    let (module, diagnostics) = support::analyze(source);
     assert!(module.is_none());
     assert!(
         diagnostics
@@ -19,10 +19,8 @@ fn reference_parameters_require_locations_and_exact_types() {
 
 #[test]
 fn invalid_names_suppress_initialization_cascades() {
-    let (module, diagnostics) = support::analyze(
-        "algorithm Unresolved\nwrite absent, absent;\nendAlgorithm\n",
-        true,
-    );
+    let (module, diagnostics) =
+        support::analyze("algorithm Unresolved\nwrite absent, absent;\nendAlgorithm\n");
     assert!(module.is_none());
     assert_eq!(
         diagnostics

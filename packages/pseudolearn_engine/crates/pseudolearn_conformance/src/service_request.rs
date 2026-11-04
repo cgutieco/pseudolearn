@@ -25,16 +25,8 @@ impl<'raw> ServiceRequest<'raw> {
         }
     }
 
-    pub fn strict(&self) -> bool {
-        self.text("strictness") != "flexible"
-    }
-
     pub fn session(&self) -> DocumentSession {
-        DocumentSession::new(
-            self.text("documento").to_owned(),
-            self.profile(),
-            self.strict(),
-        )
+        DocumentSession::new(self.text("documento").to_owned(), self.profile())
     }
 }
 

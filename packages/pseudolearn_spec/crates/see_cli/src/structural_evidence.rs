@@ -58,7 +58,6 @@ fn structural_observation(
         rule: rule.to_owned(),
         case: "estructural".to_owned(),
         profile: "independent".to_owned(),
-        strictness: "independent".to_owned(),
         verdict: "cumple".to_owned(),
         differences: Vec::new(),
         expected: proof.clone(),

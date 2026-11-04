@@ -53,17 +53,15 @@ fn execute_case(
 ) -> Result<Vec<Observation>, String> {
     let mut observations = Vec::new();
     for profile in strings(case.fields.get("perfiles")) {
-        for strictness in requests::strictnesses(case) {
-            observations.push(observe(
-                specification,
-                case,
-                (profile, strictness),
-                &mut Context {
-                    vocabulary,
-                    session,
-                },
-            )?);
-        }
+        observations.push(observe(
+            specification,
+            case,
+            profile,
+            &mut Context {
+                vocabulary,
+                session,
+            },
+        )?);
     }
     Ok(observations)
 }
@@ -82,8 +80,7 @@ pub fn support(session: &Session, case: &Block, request: &Value) -> Support {
             .and_then(Value::as_array)
             .is_some_and(|values| value.is_some_and(|value| values.contains(value)))
     };
-    let profile = announced("profiles", request.get("profile"))
-        && announced("strictness", request.get("strictness"));
+    let profile = announced("profiles", request.get("profile"));
     let capabilities = requests::required_capabilities(case);
     let missing: Vec<_> = capabilities
         .iter()
@@ -104,10 +101,9 @@ struct Context<'session> {
 fn observe(
     specification: &Specification,
     case: &Block,
-    parameters: (&str, &str),
+    profile: &str,
     context: &mut Context<'_>,
 ) -> Result<Observation, String> {
-    let (profile, strictness) = parameters;
     let expected = case
         .fields
         .get("esperas")
@@ -118,7 +114,6 @@ fn observe(
     let expected = resolved_expected(expected, profile, context.vocabulary)?;
     let selection = Selection {
         profile,
-        strictness,
         expected: &expected,
     };
     let request = requests::build(case, &selection, context.vocabulary)?;
@@ -132,7 +127,6 @@ fn observe(
         rule: field(case, "regla").to_owned(),
         case: field(case, "id").to_owned(),
         profile: profile.to_owned(),
-        strictness: strictness.to_owned(),
         verdict: verdict.to_owned(),
         differences,
         expected,
@@ -171,7 +165,7 @@ fn pending(reason: &str) -> Outcome {
 fn unavailable() -> Outcome {
     (
         "no aplicable",
-        vec!["Capability, profile or strictness unavailable".to_owned()],
+        vec!["Capability or profile unavailable".to_owned()],
         Value::Null,
     )
 }

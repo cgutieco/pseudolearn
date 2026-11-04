@@ -70,11 +70,7 @@
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -95,11 +91,7 @@
   "espera": {
     "salida": "2\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -182,10 +174,6 @@
     "es": "Algoritmo P\nFinAlgoritmo\nInterfaz Figura\n",
     "en": "algorithm P\nendAlgorithm\ninterface Shape\n"
   },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "origen": "derivado",
   "operacion": "analyze",
   "espera": {
@@ -212,10 +200,6 @@
     "es": "Clase C\nEstatico Definir total Como Entero;\nFinClase\nAlgoritmo P\nFinAlgoritmo\n",
     "en": "class C\nstatic define total as integer;\nendClass\nalgorithm P\nendAlgorithm\n"
   },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "origen": "derivado",
   "operacion": "analyze",
   "espera": {

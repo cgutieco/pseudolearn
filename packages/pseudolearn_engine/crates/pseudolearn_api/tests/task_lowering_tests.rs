@@ -11,7 +11,6 @@ fn verifies_channel_suspension_edges() -> Result<(), Box<dyn std::error::Error>>
         &source,
         pseudolearn_semantic::SemanticOptions {
             profile: Profile::Spanish,
-            strict: true,
         },
     );
     assert!(diagnostics.is_empty(), "{diagnostics:?}");

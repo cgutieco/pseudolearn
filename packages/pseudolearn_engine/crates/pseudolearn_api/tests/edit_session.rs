@@ -4,7 +4,7 @@ use serde_json::{Value, json};
 fn open(session: &mut ApiSession, program: &str) -> Result<u64, String> {
     let response = session.call(
         "open_edit_session",
-        &json!({"program": program, "profile": "es", "strictness": "strict"}),
+        &json!({"program": program, "profile": "es"}),
     );
     response
         .pointer("/value/resource")
@@ -21,16 +21,14 @@ fn opening_a_session_reports_the_first_revision_and_validates_arguments() -> Res
     let mut session = ApiSession::default();
     let response = session.call(
         "open_edit_session",
-        &json!({"program": "Algoritmo P\nFinAlgoritmo\n", "profile": "es", "strictness": "strict"}),
+        &json!({"program": "Algoritmo P\nFinAlgoritmo\n", "profile": "es"}),
     );
     assert_eq!(response.pointer("/value/revision"), Some(&json!("1")));
     open(&mut session, "")?;
     for arguments in [
-        json!({"program": "", "profile": "xx", "strictness": "strict"}),
-        json!({"program": "", "profile": "es", "strictness": "loose"}),
-        json!({"profile": "es", "strictness": "strict"}),
-        json!({"program": "", "strictness": "strict"}),
-        json!({"program": "", "profile": "es"}),
+        json!({"program": "", "profile": "xx"}),
+        json!({"profile": "es"}),
+        json!({"program": ""}),
         json!({"resource": u64::MAX, "invalid": true}),
     ] {
         let failed = session.call("open_edit_session", &arguments);

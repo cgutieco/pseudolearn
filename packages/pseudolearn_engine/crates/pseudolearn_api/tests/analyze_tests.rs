@@ -4,8 +4,7 @@ use pseudolearn_api::{AnalyzeRequest, execute_analyze, render_diagnostic};
 fn suppresses_semantics_after_syntax_errors() {
     let request = AnalyzeRequest {
         program: "algorithm Entry\ndefine as integer;\nwrite absent;\nendAlgorithm\n".to_owned(),
-        profile: "en".to_owned(),
-        strictness: "strict".to_owned(),
+        profile: "en".to_owned().to_owned(),
         source: None,
     };
     let response = execute_analyze(&request);
@@ -28,8 +27,7 @@ fn suppresses_semantics_after_syntax_errors() {
 fn exposes_positions_with_independent_presentation_language() -> Result<(), String> {
     let response = execute_analyze(&AnalyzeRequest {
         program: "algorithm Entry\nwrite @;\nendAlgorithm\n".to_owned(),
-        profile: "en".to_owned(),
-        strictness: "strict".to_owned(),
+        profile: "en".to_owned().to_owned(),
         source: None,
     });
     let diagnostic = response.diagnostics.first().ok_or("Missing diagnostic")?;
@@ -48,8 +46,7 @@ fn exposes_positions_with_independent_presentation_language() -> Result<(), Stri
 fn exposes_lexical_tokens_in_source_order_with_unicode_positions() -> Result<(), String> {
     let response = execute_analyze(&AnalyzeRequest {
         program: "Algoritmo P\n// ñ\nFinAlgoritmo\n".to_owned(),
-        profile: "es".to_owned(),
-        strictness: "strict".to_owned(),
+        profile: "es".to_owned().to_owned(),
         source: None,
     });
     let comment = response
@@ -75,8 +72,7 @@ fn exposes_lexical_tokens_in_source_order_with_unicode_positions() -> Result<(),
 fn retains_lexical_tokens_after_syntax_errors() {
     let response = execute_analyze(&AnalyzeRequest {
         program: "Algoritmo P\n@\nFinAlgoritmo\n".to_owned(),
-        profile: "es".to_owned(),
-        strictness: "strict".to_owned(),
+        profile: "es".to_owned().to_owned(),
         source: None,
     });
     assert!(!response.diagnostics.is_empty());

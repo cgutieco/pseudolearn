@@ -29,7 +29,7 @@ fn files(main: &str, library: &str, profiles: [Option<&str>; 2]) -> Value {
 }
 
 fn run(operation: &str, project: Value, profile: Option<&str>) -> Value {
-    let mut arguments = json!({"project": project, "entry": "app/main", "strictness": "strict"});
+    let mut arguments = json!({"project": project, "entry": "app/main"});
     if let (Some(name), Some(object)) = (profile, arguments.as_object_mut()) {
         object.insert("profile".to_owned(), json!(name));
     }

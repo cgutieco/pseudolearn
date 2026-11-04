@@ -132,11 +132,7 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
   "espera": {
     "salida": "5\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -157,11 +153,7 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
   "espera": {
     "salida": "19\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -187,11 +179,7 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -217,11 +205,7 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -247,11 +231,7 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -277,11 +257,7 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -307,11 +283,7 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -337,11 +309,7 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -362,11 +330,7 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
   "espera": {
     "salida": "2.0\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -392,11 +356,7 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -417,11 +377,7 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
   "espera": {
     "salida": "110\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -442,11 +398,7 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
   "espera": {
     "salida": "12\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -467,11 +419,7 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
   "espera": {
     "salida": "5\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -497,11 +445,7 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -527,10 +471,7 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -551,11 +492,7 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
   "espera": {
     "salida": "{{lexema:booleanTrue}}{{lexema:booleanTrue}}\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -576,11 +513,7 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
   "espera": {
     "salida": "{{lexema:booleanTrue}}\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -606,11 +539,7 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -636,11 +565,7 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -666,11 +591,7 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -696,10 +617,7 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -710,10 +628,6 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Registro Punto\nDefinir x Como Entero;\nFinRegistro\nAlgoritmo P\nDefinir Mutable p Como Punto <- Punto(9223372036854775807);\np.x <- p.x + 1;\nFinAlgoritmo\n",

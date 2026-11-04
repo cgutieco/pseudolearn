@@ -6,7 +6,7 @@ const WRITER: &str = "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefini
 const READER: &str = "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\nDefinir first Como Cadena <- Propagar file.LeerTexto();\nDefinir second Como Cadena <- Propagar file.LeerTexto();\nDefinir third Como Cadena <- Propagar file.LeerTexto();\nRetornar Exito(3);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n";
 
 fn record(program: &str, host: Value) -> Value {
-    let request = json!({"kind":"execute","program":program,"profile":"es","strictness":"strict",
+    let request = json!({"kind":"execute","program":program,"profile":"es",
         "inputs":[],"seed":42,"observe":"none","host":host});
     let response = ApiSession::default().call(
         "record",
@@ -36,7 +36,7 @@ fn replay_rejection(program: &str, tape: &Value) -> Option<String> {
     let started = session.call(
         "start",
         &json!({"analysis":analysis.pointer("/value/resource"),"program":program,"profile":"es",
-            "strictness":"strict","seed":42,"host":identity_host,
+            "seed":42,"host":identity_host,
             "execution_mode":"replay_from_tape","effect_tape":tape}),
     );
     started
@@ -220,7 +220,7 @@ fn console_output_containing_the_secret_is_redacted() {
 #[test]
 fn input_read_containing_the_secret_is_redacted() {
     let program = "Algoritmo Main\nDefinir Mutable word Como Cadena <- \"\";\nLeer word;\nEscribir 1;\nFinAlgoritmo\n";
-    let request = json!({"kind":"execute","program":program,"profile":"es","strictness":"strict",
+    let request = json!({"kind":"execute","program":program,"profile":"es",
         "inputs":["s3cr3t"],"seed":42,"observe":"none","host":secret_host("s3cr3t", "clave-privada")});
     let response = ApiSession::default().call(
         "record",

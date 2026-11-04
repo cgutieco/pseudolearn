@@ -81,23 +81,12 @@ impl WorkspaceSession {
         self.index.profiles.get(&key).map(|profile| profile.profile)
     }
 
-    pub(crate) fn strict(&self) -> bool {
-        self.index.options.strict
-    }
-
-    pub(crate) fn update_configuration(
-        &mut self,
-        profile: Profile,
-        strict: bool,
-    ) -> Result<(), WorkspaceError> {
-        if self.index.options.requested_profile == Some(profile)
-            && self.index.options.strict == strict
-        {
+    pub(crate) fn update_configuration(&mut self, profile: Profile) -> Result<(), WorkspaceError> {
+        if self.index.options.requested_profile == Some(profile) {
             return Ok(());
         }
         let mut snapshot = self.snapshot.clone();
         snapshot.options.requested_profile = Some(profile);
-        snapshot.options.strict = strict;
         self.commit_candidate(snapshot, self.overlays.clone(), self.next_revision()?)
     }
 

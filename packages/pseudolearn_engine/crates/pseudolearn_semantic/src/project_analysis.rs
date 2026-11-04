@@ -3,7 +3,7 @@ use crate::identities::{ClassId, FunctionId};
 use crate::module_exports::{ExportResolver, is_function};
 use crate::module_imports::{UnitBindings, bind};
 use crate::module_symbols::{SymbolKind, UnitDeclarations, collect};
-use crate::session::{AnalysisSession, SemanticOptions, UnitView};
+use crate::session::{AnalysisSession, UnitView};
 use pseudolearn_diagnostics::{Diagnostic, DiagnosticSeverity};
 use pseudolearn_lexicon::Profile;
 use pseudolearn_project::{ImportEdge, ModuleId, ProjectCatalog};
@@ -31,9 +31,8 @@ pub fn analyze_project(
     catalog: &ProjectCatalog,
     units: &[ProjectUnit<'_>],
     entry: Option<ModuleId>,
-    options: SemanticOptions,
 ) -> (Option<HirModule>, Vec<Diagnostic>) {
-    let result = analyze_project_detailed(catalog, units, entry, options);
+    let result = analyze_project_detailed(catalog, units, entry);
     (result.hir, result.diagnostics)
 }
 
@@ -41,12 +40,11 @@ pub fn analyze_project_detailed(
     catalog: &ProjectCatalog,
     units: &[ProjectUnit<'_>],
     entry: Option<ModuleId>,
-    options: SemanticOptions,
 ) -> ProjectAnalysis {
     if units.iter().any(|unit| unit.tree.has_errors) {
         return failed_project_analysis();
     }
-    analyze_valid_project(catalog, units, entry, options)
+    analyze_valid_project(catalog, units, entry)
 }
 
 fn failed_project_analysis() -> ProjectAnalysis {
@@ -61,7 +59,6 @@ fn analyze_valid_project(
     catalog: &ProjectCatalog,
     units: &[ProjectUnit<'_>],
     entry: Option<ModuleId>,
-    options: SemanticOptions,
 ) -> ProjectAnalysis {
     let views = units
         .iter()
@@ -71,7 +68,7 @@ fn analyze_valid_project(
             profile: unit.profile,
         })
         .collect();
-    let Some(mut session) = AnalysisSession::for_units(views, options) else {
+    let Some(mut session) = AnalysisSession::for_units(views) else {
         return ProjectAnalysis {
             hir: Some(HirModule::default()),
             diagnostics: Vec::new(),

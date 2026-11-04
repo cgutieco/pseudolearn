@@ -6,7 +6,6 @@ use pseudolearn_runtime::{
 #[test]
 fn effect_protocol_requires_one_matching_resolution() -> Result<(), String> {
     let identity = ExecutionIdentity {
-        strictness: "strict".to_owned(),
         limits: Default::default(),
         source_digest: "source".to_owned(),
         package_graph_digest: "none".to_owned(),

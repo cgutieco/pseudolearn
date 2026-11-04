@@ -79,13 +79,12 @@ pub fn random_edit(text: &str, random: &mut SeededRandom) -> TextEdit {
 #[derive(Clone, Copy, Debug)]
 pub struct IncrementalProbe {
     pub profile: Profile,
-    pub strict: bool,
     pub seed: u64,
     pub steps: usize,
 }
 
 pub fn incremental_matches_cold(text: &str, probe: IncrementalProbe) -> bool {
-    let mut session = DocumentSession::new(text.to_owned(), probe.profile, probe.strict);
+    let mut session = DocumentSession::new(text.to_owned(), probe.profile);
     let mut random = SeededRandom::new(probe.seed);
     for _ in 0..probe.steps {
         let edit = random_edit(session.text(), &mut random);
@@ -161,7 +160,7 @@ pub fn identity_stable(
     let (tree, _) = parse_source(&source, profile);
     let before = compute_node_identities(&tree, &source);
     let edit_start = u32::try_from(offset_at(text, edit.range.start)).unwrap_or(u32::MAX);
-    let mut session = DocumentSession::new(text.to_owned(), profile, true);
+    let mut session = DocumentSession::new(text.to_owned(), profile);
     session.apply_text_edits(std::slice::from_ref(edit));
     let after: Vec<SyntaxNodeId> = compute_node_identities(&session.tree, &session.source)
         .into_iter()

@@ -38,7 +38,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Segun evalúa el selector una sola vez. Etiquetas son literales, admiten listas y no se repiten; entero con signo es literal. No hay caída entre ramas. De Otro Modo es opcional, única y última; cada rama exige dos puntos. Estricto admite etiquetas enteras; flexible añade carácter, cadena y lógico. Real se rechaza en ambos. Selector y etiquetas deben ser compatibles. Cero ramas y ninguna coincidencia son válidos.",
+  "texto": "Según evalúa el selector una sola vez. Sus etiquetas son literales enteros o enumerados, admiten listas y no se repiten; entero con signo es literal. No hay caída entre ramas. De Otro Modo es opcional, única y última; cada rama exige dos puntos. Los valores reales, de carácter, de texto y lógicos se rechazan. Selector y etiquetas deben ser compatibles. Cero ramas y ninguna coincidencia son válidos.",
   "verificacion": [
     "C1",
     "C2",
@@ -64,11 +64,7 @@
   "espera": {
     "salida": "1\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -89,11 +85,7 @@
   "espera": {
     "salida": "",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -119,11 +111,7 @@
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -169,11 +157,7 @@
   "espera": {
     "salida": "2\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -194,11 +178,7 @@
   "espera": {
     "salida": "0\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -224,11 +204,7 @@
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -254,10 +230,7 @@
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto"
-  ]
+  }
 }
 ```
 
@@ -268,10 +241,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "origen": "derivado",
   "operacion": "analyze",
@@ -302,10 +271,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "origen": "derivado",
   "operacion": "analyze",
   "programas": {
@@ -332,10 +297,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "origen": "derivado",
   "operacion": "execute",
   "programas": {
@@ -357,10 +318,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Enumerado Color\nRed, Green, Blue, White, Black\nFinEnumerado\nAlgoritmo Main\nDefinir Mutable value Como Entero <- 0;\nSegun Color.White Hacer\nColor.Red: value <- 1;\nColor.Green: value <- 2;\nColor.Blue: value <- 3;\nColor.White: value <- 4;\nColor.Black: value <- 5;\nFinSegun\nEscribir value;\nFinAlgoritmo\n",
     "en": "enum Color\nRed, Green, Blue, White, Black\nendEnum\nalgorithm Main\ndefine mutable value as integer <- 0;\nswitch Color.White do\nColor.Red: value <- 1;\nColor.Green: value <- 2;\nColor.Blue: value <- 3;\nColor.White: value <- 4;\nColor.Black: value <- 5;\nendSwitch\nwrite value;\nendAlgorithm\n"
@@ -380,10 +337,6 @@
   "regla": "R2",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo Main\nDefinir outcome Como Resultado<Entero, Cadena> <- Exito(2);\nSegun outcome Hacer\nExito(value): Escribir value;\nFinSegun\nFinAlgoritmo\n"
@@ -416,10 +369,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo Main\nDefinir value Como Opcional<Entero> <- Nada;\nSegun value Hacer\nNada: Escribir 0;\nNada: Escribir 1;\nAlgo(found): Escribir found;\nFinSegun\nFinAlgoritmo\n",
     "en": "algorithm Main\ndefine value as optional<integer> <- none;\nswitch value do\nnone: write 0;\nnone: write 1;\nsome(found): write found;\nendSwitch\nendAlgorithm\n"
@@ -445,10 +394,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo Main\nSegun Algo(2) Hacer\nAlgo(value): Escribir 1;\nNada: Escribir 0;\nFinSegun\nFinAlgoritmo\n",
@@ -476,10 +421,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Enumerado Empty\nFinEnumerado\nSubProceso Inspect(value Como Empty)\nSegun value Hacer\nFinSegun\nFinSubProceso\nAlgoritmo Main\n\nFinAlgoritmo\n",
     "en": "enum Empty\nendEnum\nsubroutine Inspect(value as Empty)\nswitch value do\nendSwitch\nendSubroutine\nalgorithm Main\n\nendAlgorithm\n"
@@ -506,10 +447,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Enumerado Only\nMember\nFinEnumerado\nAlgoritmo Main\nSegun Only.Member Hacer\nOnly.Member: Escribir 1;\nFinSegun\nFinAlgoritmo\n",
     "en": "enum Only\nMember\nendEnum\nalgorithm Main\nswitch Only.Member do\nOnly.Member: write 1;\nendSwitch\nendAlgorithm\n"
@@ -529,10 +466,6 @@
   "regla": "R2",
   "perfiles": [
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "en": "algorithm Main\ndefine outcome as result<integer, string> <- success(2);\nswitch outcome do\nsuccess(value): write value;\nendSwitch\nendAlgorithm\n"

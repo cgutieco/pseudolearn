@@ -4,8 +4,7 @@ use super::sources::Source;
 use pseudolearn_bytecode::{BytecodeModule, BytecodeOperand, Register, verify_bytecode};
 
 pub fn bytecode_case(source: &Source, generator: &mut Generator) -> Outcome {
-    let Ok(module) =
-        pseudolearn_api::compile_source_to_module(&source.program, &source.profile, "strict")
+    let Ok(module) = pseudolearn_api::compile_source_to_module(&source.program, &source.profile)
     else {
         return Outcome::NotApplicable;
     };

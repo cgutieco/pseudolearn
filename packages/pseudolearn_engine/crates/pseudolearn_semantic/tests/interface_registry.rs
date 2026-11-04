@@ -17,14 +17,8 @@ fn nominal_interface_cases_follow_the_normative_rules() -> Result<(), String> {
                 .ok_or("missing program")?;
             let source = SourceText::new(text.to_owned());
             let (tree, mut diagnostics) = pseudolearn_syntax::parse_source(&source, profile);
-            let (module, semantic) = analyze_with_options(
-                &tree,
-                &source,
-                SemanticOptions {
-                    profile,
-                    strict: true,
-                },
-            );
+            let (module, semantic) =
+                analyze_with_options(&tree, &source, SemanticOptions { profile });
             diagnostics.extend(semantic);
             let expected = case
                 .pointer("/espera/diagnosticos/0/codigo")

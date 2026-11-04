@@ -217,10 +217,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "SubProceso Suspendible EmitValue(value Como Entero)\nEscribir value;\nFinSubProceso\nAlgoritmo P\nTareas\nLanzar EmitValue(1);\nLanzar EmitValue(2);\nFinTareas\nFinAlgoritmo\n",
     "en": "subroutine suspendable EmitValue(value as integer)\nwrite value;\nendSubroutine\nalgorithm P\ntasks\nspawn EmitValue(1);\nspawn EmitValue(2);\nendTasks\nendAlgorithm\n"
@@ -241,10 +237,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "SubProceso Suspendible Crash()\nDiferir\nEscribir \"cleanup\";\nFinDiferir\nDefinir value Como Entero <- 1 / 0;\nFinSubProceso\nAlgoritmo P\nTareas\nLanzar Crash();\nFinTareas\nFinAlgoritmo\n",
@@ -267,10 +259,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "SubProceso Suspendible Work()\nEscribir 1;\nFinSubProceso\nAlgoritmo P\nTareas\nLanzar Work();\nFinTareas\nFinAlgoritmo\n",
     "en": "subroutine suspendable Work()\nwrite 1;\nendSubroutine\nalgorithm P\ntasks\nspawn Work();\nendTasks\nendAlgorithm\n"
@@ -291,10 +279,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "SubProceso Suspendible Work()\nEscribir 1;\nFinSubProceso\nAlgoritmo P\nTareas\nTareas\nTareas\nLanzar Work();\nFinTareas\nFinTareas\nFinTareas\nFinAlgoritmo\n",
@@ -317,10 +301,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo P\nTareas\nFinTareas\nFinAlgoritmo\n",
     "en": "algorithm P\ntasks\nendTasks\nendAlgorithm\n"
@@ -341,10 +321,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "SubProceso Suspendible Work()\nFinSubProceso\nAlgoritmo P\nLanzar Work();\nFinAlgoritmo\n",
@@ -372,10 +348,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "SubProceso Suspendible Work()\nFinSubProceso\nAlgoritmo P\nDiferir\nTareas\nLanzar Work();\nFinTareas\nFinDiferir\nFinAlgoritmo\n",
     "en": "subroutine suspendable Work()\nendSubroutine\nalgorithm P\ndefer\ntasks\nspawn Work();\nendTasks\nendDefer\nendAlgorithm\n"
@@ -401,10 +373,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "SubProceso Suspendible Work()\nFinSubProceso\nAlgoritmo P\nTareas\nDiferir\nLanzar Work();\nFinDiferir\nFinTareas\nFinAlgoritmo\n",
@@ -432,10 +400,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "SubProceso Suspendible Work()\nFinSubProceso\nAlgoritmo P\nTareas\nDefinir operation Como SubProceso() <- SubProceso()\nLanzar Work();\nFinSubProceso;\nFinTareas\nFinAlgoritmo\n",
     "en": "subroutine suspendable Work()\nendSubroutine\nalgorithm P\ntasks\ndefine operation as subroutine() <- subroutine()\nspawn Work();\nendSubroutine;\nendTasks\nendAlgorithm\n"
@@ -461,10 +425,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "SubProceso Suspendible Use(items Como Vector<Entero>)\nFinSubProceso\nAlgoritmo P\nDefinir items Como Vector<Entero> <- Vector();\nTareas\nLanzar Use(items);\nFinTareas\nFinAlgoritmo\n",
@@ -492,10 +452,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "SubProceso Suspendible Use(value Como Entero Por Referencia)\nFinSubProceso\nAlgoritmo P\nDefinir Mutable value Como Entero <- 1;\nTareas\nLanzar Use(value);\nFinTareas\nFinAlgoritmo\n",
     "en": "subroutine suspendable Use(value as integer by reference)\nendSubroutine\nalgorithm P\ndefine mutable value as integer <- 1;\ntasks\nspawn Use(value);\nendTasks\nendAlgorithm\n"
@@ -521,10 +477,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "SubProceso Work()\nFinSubProceso\nAlgoritmo P\nTareas\nLanzar Work();\nFinTareas\nFinAlgoritmo\n",
@@ -552,10 +504,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "SubProceso Suspendible Work() Como Entero\nRetornar 1;\nFinSubProceso\nAlgoritmo P\nTareas\nDefinir Mutable t Como Tarea<Entero> <- Lanzar Work();\nDefinir other Como Tarea<Entero> <- Lanzar Work();\nt <- other;\nFinTareas\nFinAlgoritmo\n",
     "en": "subroutine suspendable Work() as integer\nreturn 1;\nendSubroutine\nalgorithm P\ntasks\ndefine mutable t as task<integer> <- spawn Work();\ndefine other as task<integer> <- spawn Work();\nt <- other;\nendTasks\nendAlgorithm\n"
@@ -581,10 +529,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "SubProceso Suspendible Work() Como Entero\nRetornar 1;\nFinSubProceso\nSubProceso Leak() Como Tarea<Entero>\nTareas\nDefinir t Como Tarea<Entero> <- Lanzar Work();\nRetornar t;\nFinTareas\nFinSubProceso\nAlgoritmo P\nTareas\nLanzar Work();\nFinTareas\nFinAlgoritmo\n",
@@ -612,10 +556,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "SubProceso Suspendible Work() Como Entero\nRetornar 1;\nFinSubProceso\nAlgoritmo P\nTareas\nDefinir t Como Tarea<Entero> <- Lanzar Work();\nDefinir closure Como SubProceso() <- SubProceso()\nDefinir captured Como Tarea<Entero> <- t;\nFinSubProceso;\nFinTareas\nFinAlgoritmo\n",
     "en": "subroutine suspendable Work() as integer\nreturn 1;\nendSubroutine\nalgorithm P\ntasks\ndefine t as task<integer> <- spawn Work();\ndefine closure as subroutine() <- subroutine()\ndefine captured as task<integer> <- t;\nendSubroutine;\nendTasks\nendAlgorithm\n"
@@ -641,10 +581,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "SubProceso Suspendible Work() Como Entero\nRetornar 1;\nFinSubProceso\nSubProceso Consume(t Como Tarea<Entero>)\nFinSubProceso\nAlgoritmo P\nTareas\nDefinir t Como Tarea<Entero> <- Lanzar Work();\nConsume(t);\nFinTareas\nFinAlgoritmo\n",
@@ -672,10 +608,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "SubProceso Suspendible Wait() Como Resultado<Entero, Cadena>\nDiferir\nEscribir \"cleanup-first\";\nFinDiferir\nDiferir\nEscribir \"cleanup-second\";\nFinDiferir\nSegun SolicitarTemporizador() Hacer\nExito(timer):\nDefinir limit Como Entero <- 100;\nSegun Aguardar timer.Esperar(limit) Hacer\nExito(value): Retornar Exito(value);\nError(problem): Retornar Error(\"timer\");\nFinSegun\nError(problem): Retornar Error(\"request\");\nFinSegun\nFinSubProceso\nSubProceso Suspendible Fail() Como Resultado<Entero, Cadena>\nRetornar Error(\"failed\");\nFinSubProceso\nAlgoritmo P\nTareas report\nDefinir waiting Como Tarea<Entero> <- Lanzar Wait();\nDefinir failed Como Tarea<Entero> <- Lanzar Fail();\nFinTareas\nSegun report Hacer\nNada: Escribir \"ok\";\nAlgo(problem): Escribir problem.Primero;\nFinSegun\nFinAlgoritmo\n",
     "en": "subroutine suspendable Wait() as result<integer, string>\ndefer\nwrite \"cleanup-first\";\nendDefer\ndefer\nwrite \"cleanup-second\";\nendDefer\nswitch requestTimer() do\nsuccess(timer):\ndefine limit as integer <- 100;\nswitch await timer.wait(limit) do\nsuccess(value): return success(value);\nfailure(problem): return failure(\"timer\");\nendSwitch\nfailure(problem): return failure(\"request\");\nendSwitch\nendSubroutine\nsubroutine suspendable Fail() as result<integer, string>\nreturn failure(\"failed\");\nendSubroutine\nalgorithm P\ntasks report\ndefine waiting as task<integer> <- spawn Wait();\ndefine failed as task<integer> <- spawn Fail();\nendTasks\nswitch report do\nnone: write \"ok\";\nsome(problem): write problem.first;\nendSwitch\nendAlgorithm\n"
@@ -699,10 +631,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "SubProceso Suspendible Wait(stream Como Canal<Entero>) Como Resultado<Entero, Cadena>\nDiferir\nEscribir \"grandchild\";\nFinDiferir\nDefinir accepted Como Logico <- Aguardar stream.Enviar(1);\nSi accepted Entonces\nSino\nRetornar Error(\"closed\");\nFinSi\nSegun SolicitarTemporizador() Hacer\nExito(timer):\nDefinir limit Como Entero <- 100;\nSegun Aguardar timer.Esperar(limit) Hacer\nExito(value): Retornar Exito(value);\nError(problem): Retornar Error(\"timer\");\nFinSegun\nError(problem): Retornar Error(\"request\");\nFinSegun\nFinSubProceso\nSubProceso Suspendible Child(stream Como Canal<Entero>)\nDiferir\nEscribir \"child\";\nFinDiferir\nTareas childReport\nLanzar Wait(stream);\nFinTareas\nDescartar childReport;\nFinSubProceso\nSubProceso Suspendible Fail(stream Como Canal<Entero>) Como Resultado<Entero, Cadena>\nSegun Aguardar stream.Recibir() Hacer\nAlgo(signal): Retornar Error(\"failed\");\nNada: Retornar Error(\"closed\");\nFinSegun\nFinSubProceso\nAlgoritmo P\nDefinir stream Como Canal<Entero> <- Canal(1);\nTareas report\nLanzar Child(stream);\nLanzar Fail(stream);\nFinTareas\nSegun report Hacer\nNada: Escribir \"ok\";\nAlgo(problem): Escribir problem.Primero;\nFinSegun\nFinAlgoritmo\n",
@@ -728,10 +656,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "SubProceso Suspendible Answer() Como Entero\nRetornar 7;\nFinSubProceso\nAlgoritmo P\nTareas\nDefinir answer Como Tarea<Entero> <- Lanzar Answer();\nEscribir Aguardar answer;\nEscribir Aguardar answer;\nFinTareas\nFinAlgoritmo\n",
     "en": "subroutine suspendable Answer() as integer\nreturn 7;\nendSubroutine\nalgorithm P\ntasks\ndefine answer as task<integer> <- spawn Answer();\nwrite await answer;\nwrite await answer;\nendTasks\nendAlgorithm\n"
@@ -753,10 +677,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "SubProceso Suspendible Answer() Como Entero\nRetornar 7;\nFinSubProceso\nAlgoritmo P\nTareas\nDefinir answer Como Tarea<Entero> <- Lanzar Answer();\nEscribir Aguardar answer;\nFinTareas\nFinAlgoritmo\n",
     "en": "subroutine suspendable Answer() as integer\nreturn 7;\nendSubroutine\nalgorithm P\ntasks\ndefine answer as task<integer> <- spawn Answer();\nwrite await answer;\nendTasks\nendAlgorithm\n"
@@ -777,10 +697,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "SubProceso Suspendible Wait() Como Resultado<Entero, Cadena>\nSegun SolicitarTemporizador() Hacer\nExito(timer):\nDefinir limit Como Entero <- 100;\nSegun Aguardar timer.Esperar(limit) Hacer\nExito(value): Retornar Exito(value);\nError(problem): Retornar Error(\"timer\");\nFinSegun\nError(problem): Retornar Error(\"request\");\nFinSegun\nRetornar Error(\"unreachable\");\nFinSubProceso\nSubProceso Suspendible Fail() Como Resultado<Entero, Cadena>\nRetornar Error(\"failed\");\nFinSubProceso\nAlgoritmo P\nTareas failureReport\nLanzar Wait();\nLanzar Fail();\nFinTareas\nDescartar failureReport;\nFinAlgoritmo\n",
@@ -821,10 +737,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "SubProceso Suspendible Wait() Como Resultado<Entero, Cadena>\nDiferir\nEscribir \"cleanup\";\nFinDiferir\nSegun SolicitarTemporizador() Hacer\nExito(timer):\nDefinir limit Como Entero <- 100;\nSegun Aguardar timer.Esperar(limit) Hacer\nExito(value): Retornar Exito(value);\nError(problem): Retornar Error(\"timer\");\nFinSegun\nError(problem): Retornar Error(\"request\");\nFinSegun\nFinSubProceso\nAlgoritmo P\nTareas failureReport\nLanzar Wait();\nFinTareas\nDescartar failureReport;\nFinAlgoritmo\n",
@@ -933,10 +845,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "SubProceso Suspendible Work() Como Resultado<Entero, Cadena>\nRetornar Exito(1);\nFinSubProceso\nAlgoritmo P\nTareas failureReport\nLanzar Work();\nFinTareas\nSegun failureReport Hacer\nNada: Escribir \"ok\";\nAlgo(problem): Escribir problem.Primero;\nFinSegun\nFinAlgoritmo\n",
     "en": "subroutine suspendable Work() as result<integer, string>\nreturn success(1);\nendSubroutine\nalgorithm P\ntasks failureReport\nspawn Work();\nendTasks\nswitch failureReport do\nnone: write \"ok\";\nsome(problem): write problem.first;\nendSwitch\nendAlgorithm\n"
@@ -957,10 +865,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "SubProceso Suspendible Work() Como Resultado<Entero, Cadena>\nRetornar Error(\"failed\");\nFinSubProceso\nAlgoritmo P\nTareas failureReport\nLanzar Work();\nFinTareas\nSegun failureReport Hacer\nNada: Escribir \"ok\";\nAlgo(problem): Escribir problem.Primero, problem.Asociados.Longitud, problem.Canceladas;\nFinSegun\nFinAlgoritmo\n",
@@ -983,10 +887,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "SubProceso Suspendible Receive(stream Como Canal<Entero>)\nSegun Aguardar stream.Recibir() Hacer\nAlgo(receivedValue): Escribir receivedValue;\nNada: Escribir 0;\nFinSegun\nFinSubProceso\nSubProceso Suspendible Fail() Como Resultado<Entero, Cadena>\nRetornar Error(\"failed\");\nFinSubProceso\nAlgoritmo P\nDefinir stream Como Canal<Entero> <- Canal(1);\nTareas failureReport\nLanzar Receive(stream);\nLanzar Fail();\nFinTareas\nSegun failureReport Hacer\nNada: Escribir 0;\nAlgo(problem): Escribir problem.Primero, problem.Canceladas;\nFinSegun\nFinAlgoritmo\n",
     "en": "subroutine suspendable Receive(stream as channel<integer>)\nswitch await stream.receive() do\nsome(receivedValue): write receivedValue;\nnone: write 0;\nendSwitch\nendSubroutine\nsubroutine suspendable Fail() as result<integer, string>\nreturn failure(\"failed\");\nendSubroutine\nalgorithm P\ndefine stream as channel<integer> <- channel(1);\ntasks failureReport\nspawn Receive(stream);\nspawn Fail();\nendTasks\nswitch failureReport do\nnone: write 0;\nsome(problem): write problem.first, problem.cancelled;\nendSwitch\nendAlgorithm\n"
@@ -1008,10 +908,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "SubProceso Suspendible Work() Como Resultado<Entero, Cadena>\nRetornar Error(\"failed\");\nFinSubProceso\nAlgoritmo P\nTareas failureReport\nDefinir child Como Tarea<Entero> <- Lanzar Work();\nEscribir Aguardar child;\nFinTareas\nSegun failureReport Hacer\nNada: Escribir \"ok\";\nAlgo(problem): Escribir problem.Primero;\nFinSegun\nFinAlgoritmo\n",
     "en": "subroutine suspendable Work() as result<integer, string>\nreturn failure(\"failed\");\nendSubroutine\nalgorithm P\ntasks failureReport\ndefine child as task<integer> <- spawn Work();\nwrite await child;\nendTasks\nswitch failureReport do\nnone: write \"ok\";\nsome(problem): write problem.first;\nendSwitch\nendAlgorithm\n"
@@ -1032,10 +928,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "SubProceso Suspendible First() Como Resultado<Entero, Cadena>\nRetornar Error(\"failure\");\nFinSubProceso\nSubProceso Suspendible Second() Como Resultado<Entero, Entero>\nRetornar Error(1);\nFinSubProceso\nAlgoritmo P\nTareas failureReport\nLanzar First();\nLanzar Second();\nFinTareas\nDescartar failureReport;\nFinAlgoritmo\n",
@@ -1063,10 +955,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "SubProceso Suspendible Work() Como Resultado<Entero, Vector<Entero>>\nRetornar Error(Vector());\nFinSubProceso\nAlgoritmo P\nTareas failureReport\nLanzar Work();\nFinTareas\nDescartar failureReport;\nFinAlgoritmo\n",
     "en": "subroutine suspendable Work() as result<integer, vector<integer>>\nreturn failure(vector());\nendSubroutine\nalgorithm P\ntasks failureReport\nspawn Work();\nendTasks\ndiscard failureReport;\nendAlgorithm\n"
@@ -1092,10 +980,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "SubProceso Suspendible Work() Como Resultado<Entero, Cadena>\nRetornar Exito(1);\nFinSubProceso\nAlgoritmo P\nTareas\nLanzar Work();\nFinTareas\nFinAlgoritmo\n",
@@ -1123,10 +1007,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo P\nTareas failureReport\nFinTareas\nFinAlgoritmo\n",
     "en": "algorithm P\ntasks failureReport\nendTasks\nendAlgorithm\n"
@@ -1152,10 +1032,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "SubProceso Suspendible Fail() Como Resultado<Entero, Cadena>\nRetornar Error(\"failed\");\nFinSubProceso\nAlgoritmo P\nTareas failureReport\nLanzar Fail();\nFinTareas\nFinAlgoritmo\n",
@@ -1183,10 +1059,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "origen": "derivado",
   "operacion": "analyze",
   "programas": {
@@ -1212,10 +1084,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "SubProceso Suspendible Hold(stream Como Canal<Entero>)\nDiferir\nEscribir \"cleanup-first\";\nFinDiferir\nDiferir\nEscribir \"cleanup-second\";\nFinDiferir\nSegun Aguardar stream.Recibir() Hacer\nAlgo(value): Escribir value;\nNada: Escribir \"closed\";\nFinSegun\nFinSubProceso\nSubProceso Suspendible Fail() Como Resultado<Entero, Cadena>\nRetornar Error(\"failed\");\nFinSubProceso\nAlgoritmo P\nDefinir stream Como Canal<Entero> <- Canal(1);\nTareas problem\nLanzar Hold(stream);\nLanzar Fail();\nFinTareas\nSegun problem Hacer\nNada: Escribir \"ok\";\nAlgo(report): Escribir report.Primero;\nFinSegun\nFinAlgoritmo\n",

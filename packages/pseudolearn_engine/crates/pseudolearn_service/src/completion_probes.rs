@@ -25,14 +25,7 @@ pub struct CompletionProbe {
 pub fn completion_probes(text: &str, profile: Profile) -> Vec<CompletionProbe> {
     let source = SourceText::new(text.to_owned());
     let (tree, _) = parse_source(&source, profile);
-    let analysis = analyze_for_service(
-        &tree,
-        &source,
-        SemanticOptions {
-            profile,
-            strict: false,
-        },
-    );
+    let analysis = analyze_for_service(&tree, &source, SemanticOptions { profile });
     let index = SymbolIndex::build(&tree, &analysis);
     (0..tree.tokens.token_count())
         .filter_map(|slot| probe_for_token(&tree, &index, (text, profile), slot))

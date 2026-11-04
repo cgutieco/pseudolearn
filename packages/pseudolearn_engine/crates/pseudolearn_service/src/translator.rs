@@ -18,11 +18,7 @@ pub enum TranslationError {
     ParseFailure(String),
 }
 
-pub fn translate_source(
-    text: &str,
-    target_profile: Profile,
-    strict: bool,
-) -> Result<String, TranslationError> {
+pub fn translate_source(text: &str, target_profile: Profile) -> Result<String, TranslationError> {
     let source_profile = opposite(target_profile);
     let source = SourceText::new(text.to_owned());
     let (tree, diagnostics) = parse_source(&source, source_profile);
@@ -34,7 +30,6 @@ pub fn translate_source(
         &source,
         SemanticOptions {
             profile: source_profile,
-            strict,
         },
     );
     let plan = TranslationPlan {

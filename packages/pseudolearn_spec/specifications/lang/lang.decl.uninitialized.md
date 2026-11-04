@@ -70,10 +70,7 @@
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto"
-  ]
+  }
 }
 ```
 
@@ -99,10 +96,7 @@
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -123,11 +117,7 @@
   "espera": {
     "salida": "0\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -138,10 +128,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "en": "algorithm Main\nwhile false do\ndefine x as integer <- 1;\nendWhile\nwrite x;\nendAlgorithm\n",

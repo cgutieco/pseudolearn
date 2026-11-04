@@ -16,9 +16,8 @@ pub struct BenchmarkObject {
 pub fn build_benchmark_object(
     request: &NativeBuildRequest,
 ) -> Result<BenchmarkObject, NativeBuildFailure> {
-    let (module, _warnings) =
-        compile_source_with_warnings(&request.program, &request.profile, &request.strictness)
-            .map_err(NativeBuildFailure::Rejected)?;
+    let (module, _warnings) = compile_source_with_warnings(&request.program, &request.profile)
+        .map_err(NativeBuildFailure::Rejected)?;
     emit_benchmark_object(&PreparedNativeBenchmark {
         module,
         request: request.clone(),
@@ -33,9 +32,8 @@ pub struct PreparedNativeBenchmark {
 pub fn prepare_native_benchmark(
     request: &NativeBuildRequest,
 ) -> Result<PreparedNativeBenchmark, NativeBuildFailure> {
-    let (module, _warnings) =
-        compile_source_with_warnings(&request.program, &request.profile, &request.strictness)
-            .map_err(NativeBuildFailure::Rejected)?;
+    let (module, _warnings) = compile_source_with_warnings(&request.program, &request.profile)
+        .map_err(NativeBuildFailure::Rejected)?;
     Ok(PreparedNativeBenchmark {
         module,
         request: request.clone(),

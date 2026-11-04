@@ -24,7 +24,7 @@ impl PropertySubject for Subject {
 fn requires_successful_emission_verified_identical_reprint_and_valid_domain() -> Result<(), String>
 {
     let scenario = Scenario {
-        request: json!({"program":"source","profile":"es","strictness":"strict"}),
+        request: json!({"program":"source","profile":"es"}),
         expected: None,
         traced: false,
     };

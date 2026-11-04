@@ -59,7 +59,6 @@ fn every_identity_component_changes_the_identity() {
         changed(|request| request.seed = request.seed.wrapping_add(1)),
         changed(|request| request.limits.statements = Some(10)),
         changed(|request| request.limits.micro_steps = Some(10)),
-        changed(|request| request.strictness = "flexible".to_owned()),
         changed(|request| request.profile = "en".to_owned()),
         changed(|request| request.program.push('\n')),
     ];

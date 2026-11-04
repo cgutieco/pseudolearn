@@ -43,10 +43,10 @@ fn enter_never_adds_syntax_errors_and_settles_after_one_application() -> Result<
             let mut text = original.clone();
             text.insert(newline, '\n');
             let cursor = newline.saturating_add(1);
-            let before = DocumentSession::new(text.clone(), profile, true);
+            let before = DocumentSession::new(text.clone(), profile);
             let outcome = on_type(&before, cursor, '\n');
             let result = apply_changes(&text, &outcome.edits);
-            let after = DocumentSession::new(result.clone(), profile, true);
+            let after = DocumentSession::new(result.clone(), profile);
             if after.syntax_diagnostics.len() > before.syntax_diagnostics.len() {
                 failures.push(format!("{name}@{newline}: diagnostics increased"));
             }
@@ -72,10 +72,10 @@ fn pairs_never_add_syntax_errors_at_any_line_end() -> Result<(), String> {
                 let mut text = original.clone();
                 text.insert(newline, typed);
                 let cursor = newline.saturating_add(typed.len_utf8());
-                let before = DocumentSession::new(text.clone(), profile, true);
+                let before = DocumentSession::new(text.clone(), profile);
                 let outcome = on_type(&before, cursor, typed);
                 let result = apply_changes(&text, &outcome.edits);
-                let after = DocumentSession::new(result, profile, true);
+                let after = DocumentSession::new(result, profile);
                 if after.syntax_diagnostics.len() > before.syntax_diagnostics.len() {
                     failures.push(format!("{name}@{newline}{typed}: diagnostics increased"));
                 }

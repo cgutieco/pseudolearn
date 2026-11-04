@@ -3,7 +3,7 @@ use pseudolearn_lexicon::Profile;
 use pseudolearn_project::{
     FileInput, PackageInput, PackageKind, ProjectCatalog, ProjectInput, select_entry,
 };
-use pseudolearn_semantic::{ProjectUnit, SemanticOptions, analyze_project};
+use pseudolearn_semantic::{ProjectUnit, analyze_project};
 use pseudolearn_syntax::parse_module_source;
 use std::collections::BTreeMap;
 
@@ -40,7 +40,7 @@ fn codes(files: &[(&str, &str, Profile)]) -> Result<Vec<DiagnosticCode>, String>
     let mut trees = Vec::new();
     for (module, (_, _, profile)) in catalog.modules().iter().zip(ordered(files)) {
         let source = catalog.source(module.id).ok_or("missing source")?;
-        let (tree, parsed) = parse_module_source(source, profile, None);
+        let (tree, parsed) = parse_module_source(source, profile);
         if !parsed.is_empty() {
             return Err(format!("parse diagnostics: {parsed:?}"));
         }
@@ -60,11 +60,7 @@ fn codes(files: &[(&str, &str, Profile)]) -> Result<Vec<DiagnosticCode>, String>
     }
     let entry =
         select_entry(&catalog, Some("app/main"), false).map_err(|error| format!("{error:?}"))?;
-    let options = SemanticOptions {
-        profile: Profile::Spanish,
-        strict: false,
-    };
-    let (_, diagnostics) = analyze_project(&catalog, &units, entry, options);
+    let (_, diagnostics) = analyze_project(&catalog, &units, entry);
     Ok(diagnostics
         .iter()
         .map(|diagnostic| diagnostic.code)

@@ -47,7 +47,6 @@ describe('pseudolearn_wasm browser package', () => {
           argumentsJson: JSON.stringify({
             program: completionProgram,
             profile: 'es',
-            strictness: 'strict',
             revision: '17',
             cursor_utf8: String(completionCursor),
           }),

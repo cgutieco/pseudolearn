@@ -68,11 +68,7 @@
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -98,11 +94,7 @@
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -123,11 +115,7 @@
   "espera": {
     "arbol": "presente",
     "diagnosticos": []
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -151,9 +139,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "programas": {
     "es": "SubProceso f() Como Entero\nRetornar missing;\nFinSubProceso\nAlgoritmo P\nEscribir f();\nFinAlgoritmo\n",
@@ -180,10 +165,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "SubProceso f(x Como Entero, x Como Entero)\nEscribir x;\nFinSubProceso\nAlgoritmo P\nf(1, 2);\nFinAlgoritmo\n",

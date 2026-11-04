@@ -9,7 +9,7 @@ fn complete(session: &mut ApiSession, program: &str, cursor: usize) -> Value {
         &json!({
             "program": program,
             "profile": "es",
-            "strictness": "strict",
+
             "revision": "17",
             "cursor_utf8": cursor.to_string()
         }),
@@ -60,7 +60,7 @@ fn completion_rejects_outdated_profiles_and_revision_values() {
     let valid = json!({
         "program": "Algoritmo P\nFinAlgoritmo\n",
         "profile": "unknown",
-        "strictness": "strict",
+
         "revision": "1",
         "cursor_utf8": "0"
     });
@@ -71,7 +71,7 @@ fn completion_rejects_outdated_profiles_and_revision_values() {
     let invalid_revision = json!({
         "program": "Algoritmo P\nFinAlgoritmo\n",
         "profile": "es",
-        "strictness": "strict",
+
         "revision": "revision-one",
         "cursor_utf8": "0"
     });

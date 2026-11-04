@@ -46,7 +46,6 @@ fn examples() -> Result<Vec<Example>, String> {
 fn options(profile: Profile) -> FormatOptions {
     FormatOptions {
         profile,
-        strict: true,
         indent_size: 2,
     }
 }
@@ -125,8 +124,8 @@ fn every_program_survives_double_translation_in_canonical_form() -> Result<(), S
         } else {
             Profile::Spanish
         };
-        match translate_source(&canonical, other, true) {
-            Ok(translated) => match translate_source(&translated, example.profile, true) {
+        match translate_source(&canonical, other) {
+            Ok(translated) => match translate_source(&translated, example.profile) {
                 Ok(back) if back == canonical => {}
                 Ok(_) => failures.push(format!("{}: round trip differs", example.name)),
                 Err(error) => failures.push(format!("{}: {error:?}", example.name)),
@@ -147,7 +146,7 @@ fn formatting_is_stable_on_randomly_damaged_programs() -> Result<(), String> {
     let mut random = SeededRandom::new(7);
     let mut checked = 0usize;
     for example in examples()?.into_iter().step_by(6) {
-        let mut session = DocumentSession::new(example.text.clone(), example.profile, true);
+        let mut session = DocumentSession::new(example.text.clone(), example.profile);
         for _ in 0..6 {
             let edit = random_edit(session.text(), &mut random);
             session.apply_text_edits(&[edit]);
@@ -165,12 +164,12 @@ fn formatting_is_stable_on_randomly_damaged_programs() -> Result<(), String> {
 fn translation_never_panics_on_randomly_damaged_programs() -> Result<(), String> {
     let mut random = SeededRandom::new(11);
     for example in examples()?.into_iter().step_by(6) {
-        let mut session = DocumentSession::new(example.text.clone(), example.profile, true);
+        let mut session = DocumentSession::new(example.text.clone(), example.profile);
         for _ in 0..6 {
             let edit = random_edit(session.text(), &mut random);
             session.apply_text_edits(&[edit]);
-            let _ = translate_source(session.text(), Profile::English, true);
-            let _ = translate_source(session.text(), Profile::Spanish, true);
+            let _ = translate_source(session.text(), Profile::English);
+            let _ = translate_source(session.text(), Profile::Spanish);
         }
     }
     Ok(())

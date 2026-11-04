@@ -7,7 +7,7 @@ use crate::{ApiError, ExecuteRequest};
 use pseudolearn_diagnostics::{Diagnostic, DiagnosticCode, DiagnosticSeverity};
 use pseudolearn_lexicon::Profile;
 use pseudolearn_project::{BuildFailure, ModuleId, ProjectCatalog, ProjectError, select_entry};
-use pseudolearn_semantic::{HirModule, ProjectUnit, SemanticOptions, analyze_project};
+use pseudolearn_semantic::{HirModule, ProjectUnit, analyze_project};
 use pseudolearn_source::{SourceId, Span};
 use pseudolearn_syntax::{SyntaxTree, parse_module_source};
 use serde_json::{Value, json};
@@ -91,11 +91,7 @@ pub(crate) fn run_analysis(
 ) -> Analysis {
     let (trees, profiles, mut diagnostics) = parse_modules(catalog, request);
     let units = project_units(catalog, &trees, &profiles);
-    let options = SemanticOptions {
-        profile: request.profile,
-        strict: request.strict,
-    };
-    let (hir, mut semantic) = analyze_project(catalog, &units, entry, options);
+    let (hir, mut semantic) = analyze_project(catalog, &units, entry);
     diagnostics.append(&mut semantic);
     Analysis {
         trees,
@@ -109,9 +105,6 @@ pub(crate) fn run_analysis(
 type Parsed = (Vec<SyntaxTree>, Vec<Profile>, Vec<Diagnostic>);
 
 fn parse_modules(catalog: &ProjectCatalog, request: &ProjectRequest) -> Parsed {
-    let terminator = request
-        .strict
-        .then_some(DiagnosticCode::MissingStatementTerminator);
     let mut trees = Vec::new();
     let mut profiles = Vec::new();
     let mut diagnostics = Vec::new();
@@ -123,7 +116,7 @@ fn parse_modules(catalog: &ProjectCatalog, request: &ProjectRequest) -> Parsed {
         let unit = pseudolearn_project::logical_path_key(&module.path)
             .and_then(|path| resolved.get(&path));
         let profile = unit.map_or(request.profile, |found| found.profile);
-        let (tree, mut parsed) = parse_module_source(source, profile, terminator);
+        let (tree, mut parsed) = parse_module_source(source, profile);
         diagnostics.append(&mut parsed);
         if let Some(lexeme) = unit.and_then(|found| found.mismatch.as_deref()) {
             diagnostics.push(mismatch(module.source_id, lexeme));
@@ -182,12 +175,6 @@ pub(crate) fn execution_request(compiled: &Compiled) -> ExecuteRequest {
         )
         .to_string(),
         profile: compiled.request.profile.as_str().to_owned(),
-        strictness: if compiled.request.strict {
-            "strict"
-        } else {
-            "flexible"
-        }
-        .to_owned(),
         limits: compiled.limits.clone(),
         source: Some(crate::ApiSourceIdentity {
             project_id: compiled.request.input.project_id,

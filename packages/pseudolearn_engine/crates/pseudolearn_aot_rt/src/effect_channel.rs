@@ -32,7 +32,6 @@ impl EffectChannel {
 
     pub fn standalone() -> Self {
         let identity = ExecutionIdentity {
-            strictness: "strict".to_owned(),
             limits: BTreeMap::new(),
             source_digest: String::new(),
             package_graph_digest: String::new(),

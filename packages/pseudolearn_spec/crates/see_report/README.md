@@ -2,7 +2,7 @@
 
 ## 1. Qué es y qué no es
 
-Cruza vínculos con resultados observados por regla y sujeto. Distingue exención de incumplimiento medido y ausencia de evidencia; agrega estados de manifiestos sin inventar una versión.
+Cruza vínculos con observaciones identificadas por especificación, regla, caso y perfil. Distingue exención de incumplimiento medido y ausencia de evidencia; agrega estados de manifiestos sin inventar una versión.
 
 ## 2. Guía operativa y ciclo de vida
 

@@ -55,6 +55,9 @@ inválido como trivia de error y la semántica no corre cuando léxico o sintaxi
 Alternativas descartadas: enum manual, árboles enlazados, recorridos que reconstruyen hijos en cada visita
 y constantes de límites duplicadas.
 
+El punto y coma termina toda sentencia en cualquier perfil. El parser no tiene un ajuste para omitirlo;
+si falta, emite `missingStatementTerminator` y se recupera en el siguiente límite de sentencia.
+
 El reconocimiento estructural de construcciones excluidas se aplica también fuera de unidades y en miembros de clase. Una lista de superclases produce el diagnóstico específico en la coma, sin aceptar herencia múltiple ni reservar nombres nuevos.
 
 Problema: un archivo de proyecto es un módulo y no exige un algoritmo, mientras que el texto suelto conserva

@@ -3,7 +3,7 @@ mod support;
 #[test]
 fn registers_forward_calls_with_isolated_parameter_scopes() -> Result<(), String> {
     let source = "subroutine outer(amount as integer) as integer\nreturn inner(amount);\nendSubroutine\nsubroutine inner(amount as integer) as integer\nreturn amount * 2;\nendSubroutine\nalgorithm Entry\nwrite outer(9);\nendAlgorithm\n";
-    let (module, diagnostics) = support::analyze(source, true);
+    let (module, diagnostics) = support::analyze(source);
     assert!(diagnostics.is_empty(), "{diagnostics:?}");
     let module = module.ok_or("Missing HIR")?;
     assert_eq!(module.functions.len(), 3);
@@ -18,7 +18,7 @@ fn registers_forward_calls_with_isolated_parameter_scopes() -> Result<(), String
 #[test]
 fn a_duplicate_signature_does_not_change_call_arity() {
     let source = "subroutine repeated(left as integer, left as integer)\nwrite left;\nendSubroutine\nalgorithm Entry\nrepeated(2, 3);\nendAlgorithm\n";
-    let (module, diagnostics) = support::analyze(source, true);
+    let (module, diagnostics) = support::analyze(source);
     assert!(module.is_none());
     assert!(
         diagnostics

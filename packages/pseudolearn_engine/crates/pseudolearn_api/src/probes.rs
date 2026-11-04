@@ -37,7 +37,7 @@ pub fn probe(request: &Value) -> Value {
     let outcome =
         std::panic::catch_unwind(|| match request.get("operation").and_then(Value::as_str) {
             Some("reprint") => reprinted(text, profile),
-            Some("statement_mass") => statement_mass(text, request, profile),
+            Some("statement_mass") => statement_mass(text, profile),
             _ => json!({"failure":"unsupported probe"}),
         });
     outcome.unwrap_or_else(|_| json!({"failure":"internalFault"}))
@@ -49,14 +49,10 @@ fn reprinted(text: &str, profile: Profile) -> Value {
     json!({"kind":"probe","reprint":reprint(&source, &tree)})
 }
 
-fn statement_mass(text: &str, request: &Value, profile: Profile) -> Value {
-    let strictness = request
-        .get("strictness")
-        .and_then(Value::as_str)
-        .unwrap_or("strict");
+fn statement_mass(text: &str, profile: Profile) -> Value {
     let source = SourceText::new(text.to_owned());
     let (tree, _) = parse_source(&source, profile);
-    let Ok(module) = crate::compile_source_to_module(text, profile.as_str(), strictness) else {
+    let Ok(module) = crate::compile_source_to_module(text, profile.as_str()) else {
         return json!({"kind":"probe","compiled":false});
     };
     let (enters, exits, mass) = observation_counts(&module);

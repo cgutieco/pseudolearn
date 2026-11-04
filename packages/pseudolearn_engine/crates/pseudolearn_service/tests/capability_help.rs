@@ -4,7 +4,7 @@ use pseudolearn_service::{DocumentSession, HelpQueryOutcome, resolve_help_at_pos
 
 fn resolve(marked: &str, profile: Profile) -> Option<HelpQueryOutcome> {
     let (source, position) = split_cursor(marked);
-    let document = DocumentSession::new(source, profile, true);
+    let document = DocumentSession::new(source, profile);
     resolve_help_at_position(&document, position)
 }
 

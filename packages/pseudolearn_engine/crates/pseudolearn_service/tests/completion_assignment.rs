@@ -3,7 +3,7 @@ use pseudolearn_service::{DocumentSession, Profile, apply_change, build_insertio
 
 fn insertion_for(marked: &str, profile: Profile) -> Option<(String, usize)> {
     let (clean, position) = split_cursor(marked);
-    let session = DocumentSession::new(clean, profile, false);
+    let session = DocumentSession::new(clean, profile);
     let result = session.queries().complete_with_edit(position);
     let entry = result.entries.iter().find(|entry| entry.inline)?;
     let insertion = build_insertion(entry, &result.text_edit, session.text(), profile);

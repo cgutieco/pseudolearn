@@ -98,10 +98,10 @@ redactan en ambos idiomas desde sus reglas ancladas; antes de mantener el invent
 texto, identidades, disponibilidad, anclajes y la matriz completa. Cada elemento activo debe llegar
 a una ficha específica o a una exclusión tipada; una ficha genérica no cubre elementos sin asociar.
 
-El texto suelto de la edición 2026 tiene una sola entrada algorítmica y no requiere manifiesto. `LANG.PROGRAM.STRUCTURE` admite como declaraciones hermanas los tipos nominales, subprogramas y constantes de módulo; `LANG.MODULE.MODEL` conserva los diagnósticos de importación y exportación fuera de proyecto. El preludio fijo usa exclusivamente el catálogo exportado de `LIB.MODEL` y los tipos intrínsecos del lenguaje. Los contratos dueños determinan disponibilidad y colisiones; el preludio no concede capacidades ni lee el entorno. Los casos vigentes de estructura, edición, módulo, codificación, posiciones y capacidades cubren idioma, rigor, entrada vacía, colisiones, símbolos ausentes, BOM y efectos denegados.
+El texto suelto de la edición 2026 tiene una sola entrada algorítmica y no requiere manifiesto. `LANG.PROGRAM.STRUCTURE` admite como declaraciones hermanas los tipos nominales, subprogramas y constantes de módulo; `LANG.MODULE.MODEL` conserva los diagnósticos de importación y exportación fuera de proyecto. El preludio fijo usa exclusivamente el catálogo exportado de `LIB.MODEL` y los tipos intrínsecos del lenguaje. Los contratos dueños determinan disponibilidad y colisiones; el preludio no concede capacidades ni lee el entorno. Los casos vigentes de estructura, edición, módulo, codificación, posiciones y capacidades cubren ambos perfiles, entrada vacía, colisiones, símbolos ausentes, BOM y efectos denegados.
 
 Los ejemplos de una ficha no contienen programas ni resultados: referencian casos vigentes del corpus por
-especificación, versión, identidad, perfil y rigor. Cada ficha lleva al menos uno por idioma, con el perfil
+especificación, versión, identidad y perfil. Cada ficha lleva al menos uno por idioma, con el perfil
 de su idioma, y declara su clase: `executable` (el caso ejecuta el programa y termina sin fallo ni
 diagnósticos), `accepted` (se analiza sin diagnósticos) o `diagnostic` (diagnóstico o fallo deliberado). El
 validador deriva la clase de la operación y del esperado del caso y rechaza la discrepancia, así que una
@@ -112,10 +112,8 @@ sobre ese caso; la ayuda nunca lo ejecuta. Una referencia repetida en un idioma 
 traducciones no pueden apuntar a casos distintos por colisión de etiqueta: la etiqueta es prosa y no
 identifica el ejemplo.
 
-El validador acepta temporalmente casos con o sin `rigor` para permitir una migración atómica del corpus.
-Los casos existentes conservan los valores declarados; los casos nuevos sin ese campo se ejecutan con el
-rigor estricto. Las referencias de `helpCatalog/1` mantienen su propio rigor y, cuando el caso no lo declara,
-se comprueba su perfil sin inferir un rigor desde el caso.
+Cada caso declara los perfiles para los que se ejecuta y valida una sola semántica por perfil. Las referencias de `helpCatalog/1`
+se validan dentro de la disponibilidad del perfil del caso.
 
 Las peticiones de ejecución del corpus fijan explícitamente 1 000 marcos cuando el caso no declara profundidad, para comparar los sujetos bajo el mismo límite. Un límite declarado prevalece. La propiedad `limites` admite topes positivos de JSON y red y se reenvía al anfitrión simulado. Los valores por omisión de cada producto se verifican en sus pruebas de anfitrión; no se infieren de esta configuración experimental.
 
@@ -124,7 +122,7 @@ Problema: una regla estructural no produce un caso de ejecución. Elección: los
 Problema: las propiedades nativas necesitan un oráculo independiente y artefactos de proceso. Elección: `native_equivalence`, `native_diagnostics` y `native_roots` contrastan engine con aot sobre casos del corpus y grafos de memoria sembrados, con GC forzado para raíces; conserva códigos, argumentos y tramos de errores. Los ejecutores nativos de enlace, limpieza, permisos, códigos de salida y entorno compilan casos RT del corpus, borran la fuente y verifica dependencias, limpieza, permisos y ejecución desde otro directorio con entorno vacío. Se descarta declarar conformidad a partir del nombre de un test o de una exención del ejecutor.
 
 - El corpus y sus recursos son autosustentables. La investigación transitoria de la raíz no es una dependencia; una puerta local comprueba referencias externas y tiene casos negativos.
-- La migración cubre la edición 2026, español e inglés y rigores estricto/flexible. Las palabras reservadas y restricciones de identificadores son las vigentes. NFC se aplica a nombres y reconocimiento léxico; literales, comentarios y posiciones originales se conservan.
+- El corpus cubre una sola edición en español e inglés. Las palabras reservadas y restricciones de identificadores son las vigentes. NFC se aplica a nombres y reconocimiento léxico; literales, comentarios y posiciones originales se conservan.
 - El índice documental del núcleo conserva la proyección educativa y una tabla completa de secciones hacia contratos existentes; la comprobación rechaza huecos, duplicados y destinos inexistentes.
 - Los recursos de vocabulario, funciones y diagnósticos se extraen del corpus y se verifican contra la exportación. Ningún consumidor mantiene una copia manual. `LIB.MODEL` también valida facetas es/en, familias y fichas de ayuda de sus funciones y operaciones: las identidades y firmas no se duplican, las formas no colisionan dentro del perfil y cada símbolo tiene contenido bilingüe. Cada regla del validador tiene un fixture negativo.
 - La prosa y los mensajes en español mostrados a personas (diagnósticos, mensajes de CLI y tarjetas de ayuda) se redactan en español neutro, sin voseo ni modismos regionales; `see_validation` verifica mecánicamente su neutralidad mediante `SEE-SPANISH-NEUTRALITY` y cuenta con un fixture negativo con violación deliberada.

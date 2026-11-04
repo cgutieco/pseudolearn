@@ -351,7 +351,7 @@ fn mutable_closure_capture_is_rejected_by_static_analysis() -> Result<(), String
     let mut session = ApiSession::default();
     let analysis = session.call(
         "create_analysis",
-        &json!({"program":program,"profile":"es","strictness":"strict"}),
+        &json!({"program":program,"profile":"es"}),
     );
     let resource = analysis
         .pointer("/value/resource")

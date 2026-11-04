@@ -54,8 +54,7 @@ fn translate(arguments: &Value) -> Result<Value, ApiError> {
         .and_then(Value::as_str)
         .and_then(crate::service::Profile::from_name)
         .ok_or_else(|| usage("invalid target profile"))?;
-    let strict = arguments.get("strictness").and_then(Value::as_str) != Some("flexible");
-    let translated = crate::service::translate_source(program, target, strict)
+    let translated = crate::service::translate_source(program, target)
         .map_err(|error| usage(&format!("translation rejected: {error:?}")))?;
     Ok(json!({"text":translated}))
 }

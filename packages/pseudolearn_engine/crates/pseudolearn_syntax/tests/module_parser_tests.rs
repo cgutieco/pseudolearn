@@ -5,7 +5,7 @@ use pseudolearn_syntax::{NodeKind, SyntaxTree, parse_module_source, parse_source
 
 fn module(text: &str) -> (SyntaxTree, Vec<DiagnosticCode>) {
     let source = SourceText::new(text.to_owned());
-    let (tree, diagnostics) = parse_module_source(&source, Profile::Spanish, None);
+    let (tree, diagnostics) = parse_module_source(&source, Profile::Spanish);
     (
         tree,
         diagnostics
@@ -64,7 +64,7 @@ fn export_declaration_builds_a_path() {
 fn english_keywords_are_recognised() {
     let source =
         SourceText::new("import a.b as c;\npublic subroutine f()\nendSubroutine\n".to_owned());
-    let (_, diagnostics) = parse_module_source(&source, Profile::English, None);
+    let (_, diagnostics) = parse_module_source(&source, Profile::English);
     assert!(diagnostics.is_empty());
 }
 
@@ -144,7 +144,7 @@ fn module_mode_still_rejects_two_algorithms() {
 
 fn english_module(text: &str) -> Vec<DiagnosticCode> {
     let source = SourceText::new(text.to_owned());
-    let (_, diagnostics) = parse_module_source(&source, Profile::English, None);
+    let (_, diagnostics) = parse_module_source(&source, Profile::English);
     diagnostics
         .iter()
         .map(|diagnostic| diagnostic.code)

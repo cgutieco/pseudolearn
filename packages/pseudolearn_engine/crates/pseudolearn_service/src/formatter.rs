@@ -10,7 +10,6 @@ use pseudolearn_syntax::{SyntaxTree, TokenKind, parse_source};
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct FormatOptions {
     pub profile: Profile,
-    pub strict: bool,
     pub indent_size: usize,
 }
 
@@ -18,7 +17,6 @@ impl Default for FormatOptions {
     fn default() -> Self {
         Self {
             profile: Profile::Spanish,
-            strict: true,
             indent_size: 2,
         }
     }
@@ -42,7 +40,6 @@ pub fn format_checked(text: &str, options: FormatOptions) -> Option<String> {
         &source,
         SemanticOptions {
             profile: options.profile,
-            strict: options.strict,
         },
     );
     let context = RenderContext {
@@ -50,7 +47,6 @@ pub fn format_checked(text: &str, options: FormatOptions) -> Option<String> {
         source: &source,
         profile: options.profile,
         roles: &roles,
-        strict: options.strict,
     };
     Some(layout_lines(&context, options.indent_size))
 }

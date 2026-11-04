@@ -32,15 +32,12 @@ fn requests(case: &Value) -> Result<Vec<ExecuteRequest>, String> {
         .ok_or("missing programs")?;
     let mut requests = Vec::new();
     for (profile, program) in programs {
-        for strictness in ["estricto", "flexible"] {
-            requests.push(ExecuteRequest {
-                program: program.as_str().ok_or("invalid program")?.to_owned(),
-                profile: profile.clone(),
-                strictness: strictness.to_owned(),
-                host: case.get("anfitrion").cloned(),
-                ..Default::default()
-            });
-        }
+        requests.push(ExecuteRequest {
+            program: program.as_str().ok_or("invalid program")?.to_owned(),
+            profile: profile.clone(),
+            host: case.get("anfitrion").cloned(),
+            ..Default::default()
+        });
     }
     Ok(requests)
 }
@@ -94,15 +91,9 @@ fn collections_and_cleanup_match_the_corpus_with_both_twins_and_forced_collectio
                 request.gc_stress = true;
                 let forced = execute_program(&request);
                 assert_eq!(
-                    forced.output,
-                    normal.output,
-                    "{} {} {} {}: {:?} {:?}",
-                    case["id"],
-                    request.profile,
-                    request.strictness,
-                    observe,
-                    forced.termination,
-                    forced.diagnostics
+                    forced.output, normal.output,
+                    "{} {} {}: {:?} {:?}",
+                    case["id"], request.profile, observe, forced.termination, forced.diagnostics
                 );
                 assert_eq!(forced.termination, normal.termination, "{}", case["id"]);
                 assert_eq!(forced.diagnostics, normal.diagnostics, "{}", case["id"]);

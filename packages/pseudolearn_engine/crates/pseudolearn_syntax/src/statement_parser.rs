@@ -186,12 +186,9 @@ pub(crate) fn terminator(state: &mut ParserState<'_>) -> Result<(), ()> {
         if state.lexical_gap {
             return Ok(());
         }
-        if let Some(code) = state.terminator_diagnostic {
-            let span = state.span();
-            state.report(code, span);
-            return Err(());
-        }
-        return Ok(());
+        let span = state.span();
+        state.report(DiagnosticCode::MissingStatementTerminator, span);
+        return Err(());
     }
     let span = state.span();
     state.report(DiagnosticCode::MissingStatementTerminator, span);

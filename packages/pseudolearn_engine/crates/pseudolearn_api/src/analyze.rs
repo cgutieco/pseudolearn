@@ -1,9 +1,9 @@
 use crate::model::{AnalyzeRequest, AnalyzeResponse};
-use pseudolearn_diagnostics::{DiagnosticCode, sort_diagnostics};
+use pseudolearn_diagnostics::sort_diagnostics;
 use pseudolearn_lexicon::Profile;
 use pseudolearn_semantic::{SemanticOptions, analyze_with_options};
 use pseudolearn_source::SourceText;
-use pseudolearn_syntax::parse_source_with_terminator;
+use pseudolearn_syntax::parse_source;
 
 pub fn execute_analyze(request: &AnalyzeRequest) -> AnalyzeResponse {
     std::panic::catch_unwind(|| perform_analysis(request))
@@ -12,13 +12,10 @@ pub fn execute_analyze(request: &AnalyzeRequest) -> AnalyzeResponse {
 
 fn perform_analysis(request: &AnalyzeRequest) -> AnalyzeResponse {
     let profile = Profile::from_name(&request.profile).unwrap_or(Profile::Spanish);
-    let strict = request.strictness != "flexible";
     let source = crate::source_identity::source_text(request.program.clone(), request.source);
-    let terminator = strict.then_some(DiagnosticCode::MissingStatementTerminator);
-    let (tree, mut diagnostics) = parse_source_with_terminator(&source, profile, terminator);
+    let (tree, mut diagnostics) = parse_source(&source, profile);
     if !tree.has_errors {
-        let (_, mut semantic) =
-            analyze_with_options(&tree, &source, SemanticOptions { profile, strict });
+        let (_, mut semantic) = analyze_with_options(&tree, &source, SemanticOptions { profile });
         diagnostics.append(&mut semantic);
     }
     sort_diagnostics(&mut diagnostics);

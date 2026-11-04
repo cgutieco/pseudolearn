@@ -9,14 +9,13 @@ use serde_json::{Value, json};
 struct CompletionRequest<'source> {
     program: &'source str,
     profile: Profile,
-    strict: bool,
     revision: u64,
     position: Position,
 }
 
 pub(crate) fn complete(arguments: &Value) -> Result<Value, ApiError> {
     let request = completion_request(arguments)?;
-    let session = DocumentSession::new(request.program.to_owned(), request.profile, request.strict);
+    let session = DocumentSession::new(request.program.to_owned(), request.profile);
     let result = session.queries().complete_with_edit(request.position);
     let candidates = serde_json::to_value(result.entries).map_err(serialization)?;
     Ok(json!({
@@ -39,13 +38,6 @@ fn completion_request(arguments: &Value) -> Result<CompletionRequest<'_>, ApiErr
         .and_then(Value::as_str)
         .ok_or_else(|| usage("missing profile"))?;
     let profile = Profile::from_name(profile_name).ok_or_else(|| usage("invalid profile"))?;
-    let strictness = arguments
-        .get("strictness")
-        .and_then(Value::as_str)
-        .ok_or_else(|| usage("missing strictness"))?;
-    if !matches!(strictness, "strict" | "flexible") {
-        return Err(usage("invalid strictness"));
-    }
     let revision = arguments
         .get("revision")
         .and_then(Value::as_str)
@@ -55,7 +47,6 @@ fn completion_request(arguments: &Value) -> Result<CompletionRequest<'_>, ApiErr
     Ok(CompletionRequest {
         program,
         profile,
-        strict: strictness == "strict",
         revision,
         position,
     })

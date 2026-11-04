@@ -45,35 +45,20 @@ use pseudolearn_lexicon::Profile;
 use pseudolearn_source::SourceText;
 
 pub fn parse_source(source: &SourceText, profile: Profile) -> (SyntaxTree, Vec<Diagnostic>) {
-    parse_source_with_terminator(source, profile, None)
-}
-
-pub fn parse_source_with_terminator(
-    source: &SourceText,
-    profile: Profile,
-    terminator: Option<pseudolearn_diagnostics::DiagnosticCode>,
-) -> (SyntaxTree, Vec<Diagnostic>) {
     let lexer = Lexer::new(source, profile);
     let (tokens, mut diagnostics) = lexer.scan();
-    let parser = Parser::new(&tokens, source.as_str())
-        .with_profile(profile)
-        .with_terminator(terminator);
+    let parser = Parser::new(&tokens, source.as_str()).with_profile(profile);
     let (mut tree, mut parser_diagnostics) = parser.parse();
     diagnostics.append(&mut parser_diagnostics);
     tree.has_errors = !diagnostics.is_empty();
     (tree, diagnostics)
 }
 
-pub fn parse_module_source(
-    source: &SourceText,
-    profile: Profile,
-    terminator: Option<pseudolearn_diagnostics::DiagnosticCode>,
-) -> (SyntaxTree, Vec<Diagnostic>) {
+pub fn parse_module_source(source: &SourceText, profile: Profile) -> (SyntaxTree, Vec<Diagnostic>) {
     let lexer = Lexer::new_for_project(source, profile);
     let (tokens, mut diagnostics) = lexer.scan();
     let parser = Parser::new(&tokens, source.as_str())
         .with_profile(profile)
-        .with_terminator(terminator)
         .with_project_mode(true);
     let (mut tree, mut parser_diagnostics) = parser.parse();
     diagnostics.append(&mut parser_diagnostics);

@@ -4,8 +4,7 @@ use serde_json::json;
 fn check(program: &str, expected: &str) {
     let response = execute_program(&ExecuteRequest {
         program: program.to_owned(),
-        profile: "es".to_owned(),
-        strictness: "strict".to_owned(),
+        profile: "es".to_owned().to_owned(),
         ..Default::default()
     });
     assert_eq!(

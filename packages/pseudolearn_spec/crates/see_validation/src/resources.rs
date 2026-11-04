@@ -164,31 +164,22 @@ pub(crate) fn placeholders(pattern: &str) -> Result<std::collections::BTreeSet<&
 }
 
 fn severity(entry: &Value) -> Result<(), String> {
-    let levels = entry.get("severidad").ok_or("Missing severity")?;
-    let strict = rank(levels.get("estricto"))?;
-    let flexible = rank(levels.get("flexible"))?;
+    let actual = entry
+        .get("severidad")
+        .and_then(Value::as_str)
+        .ok_or("Missing severity")?;
     let policy = entry
         .get("politica")
         .and_then(Value::as_str)
         .ok_or("Missing policy")?;
-    let valid = match policy {
-        "A" => strict == 2 && flexible == 2,
-        "B" => strict == 2 && flexible == 1,
-        "C" | "E" => strict == 1 && flexible == 1,
-        "D" => strict == 0 && flexible == 0,
-        _ => false,
+    let expected = match policy {
+        "A" => "error",
+        "C" | "E" => "warning",
+        "D" => "info",
+        _ => return Err("Invalid severity policy".to_owned()),
     };
-    if !valid {
+    if actual != expected {
         return Err("Invalid severity policy".to_owned());
     }
     Ok(())
-}
-
-fn rank(level: Option<&Value>) -> Result<u8, String> {
-    match level.and_then(Value::as_str) {
-        Some("info") => Ok(0),
-        Some("warning") => Ok(1),
-        Some("error") => Ok(2),
-        _ => Err("Unknown severity".to_owned()),
-    }
 }

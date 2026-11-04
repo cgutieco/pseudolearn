@@ -21,7 +21,6 @@ use std::collections::BTreeMap;
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct DocumentOptions {
     pub profile: Profile,
-    pub strict: bool,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -38,14 +37,13 @@ pub struct DocumentSession {
     pub index: SymbolIndex,
     pub units: Vec<UnitFingerprint>,
     pub profile: Profile,
-    pub strict: bool,
 }
 
 impl DocumentSession {
-    pub fn new(text: String, profile: Profile, strict: bool) -> Self {
+    pub fn new(text: String, profile: Profile) -> Self {
         let source = SourceText::new(text);
         let (tree, syntax_diagnostics) = parse_source(&source, profile);
-        let analysis = analyze_for_service(&tree, &source, SemanticOptions { profile, strict });
+        let analysis = analyze_for_service(&tree, &source, SemanticOptions { profile });
         let index = SymbolIndex::build(&tree, &analysis);
         let units = partition_units(&tree, &source);
         Self {
@@ -56,7 +54,6 @@ impl DocumentSession {
             index,
             units,
             profile,
-            strict,
         }
     }
 
@@ -73,7 +70,7 @@ impl DocumentSession {
                 affected_count: 0,
             };
         }
-        let fresh = Self::new(new_text, self.profile, self.strict);
+        let fresh = Self::new(new_text, self.profile);
         let report = compare_partitions(&self.units, &fresh.units);
         *self = fresh;
         report
@@ -92,7 +89,7 @@ impl DocumentSession {
     }
 
     pub fn matches_cold_analysis(&self) -> bool {
-        let cold = Self::new(self.source.as_str().to_owned(), self.profile, self.strict);
+        let cold = Self::new(self.source.as_str().to_owned(), self.profile);
         self.tree == cold.tree
             && self.syntax_diagnostics == cold.syntax_diagnostics
             && self.analysis == cold.analysis
@@ -191,7 +188,7 @@ impl LanguageService {
     }
 
     pub fn open_document(&mut self, uri: String, text: String, options: DocumentOptions) {
-        let session = DocumentSession::new(text, options.profile, options.strict);
+        let session = DocumentSession::new(text, options.profile);
         self.sessions.insert(uri, session);
     }
 

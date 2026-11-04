@@ -39,7 +39,6 @@ fn examples(content: &HelpContent) -> Vec<ApiHelpExample> {
             version: example.version.to_owned(),
             case: example.case.to_owned(),
             profile: example.profile.to_owned(),
-            strictness: example.strictness.to_owned(),
             kind: example.kind.to_owned(),
             label: example.label.to_owned(),
         })

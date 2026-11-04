@@ -4,8 +4,7 @@ use serde_json::json;
 fn execute(program: &str) -> pseudolearn_api::ExecuteResponse {
     execute_program(&ExecuteRequest {
         program: program.to_owned(),
-        profile: "es".to_owned(),
-        strictness: "strict".to_owned(),
+        profile: "es".to_owned().to_owned(),
         ..Default::default()
     })
 }
@@ -109,7 +108,7 @@ fn composite_success_payload_can_be_awaited_more_than_once() {
 fn english_profile_exposes_failure_fields_with_english_names() {
     let response = execute_program(&ExecuteRequest {
         program: "subroutine suspendable Fail() as result<integer, string>\nreturn failure(\"problem\");\nendSubroutine\nalgorithm Main\ntasks report\nspawn Fail();\nendTasks\nswitch report do\nnone: write 0;\nsome(problem): write problem.first, problem.cancelled;\nendSwitch\nendAlgorithm\n".to_owned(),
-        profile: "en".to_owned(), strictness: "strict".to_owned(), ..Default::default()
+        profile: "en".to_owned().to_owned(), ..Default::default()
     });
     assert_eq!(
         response.termination.get("kind"),

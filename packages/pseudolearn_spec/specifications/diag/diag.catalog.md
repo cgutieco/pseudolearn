@@ -50,10 +50,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -64,10 +61,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -78,10 +72,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -92,10 +83,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -106,10 +94,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -120,10 +105,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -134,10 +116,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -148,10 +127,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -162,10 +138,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -176,10 +149,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -190,10 +160,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -206,10 +173,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -222,10 +186,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -236,10 +197,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -250,10 +208,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -264,10 +219,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -278,10 +230,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -292,10 +241,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -308,10 +254,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -324,10 +267,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -338,10 +278,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -352,10 +289,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -366,10 +300,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -380,10 +311,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -394,10 +322,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -408,10 +333,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -422,10 +344,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -436,10 +355,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -450,10 +366,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -466,10 +379,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -484,10 +394,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -502,10 +409,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -520,10 +424,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -536,10 +437,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -550,10 +448,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -564,10 +459,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -578,10 +470,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -592,10 +481,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -606,10 +492,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -620,10 +503,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -634,10 +514,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -648,10 +525,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -662,10 +536,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -676,10 +547,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -690,10 +558,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -704,10 +569,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -718,10 +580,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -732,10 +591,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -746,10 +602,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -762,10 +615,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -778,10 +628,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "runtime",
       "tipos_argumentos": {}
     },
@@ -792,10 +639,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "runtime",
       "tipos_argumentos": {}
     },
@@ -806,10 +650,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "runtime",
       "tipos_argumentos": {}
     },
@@ -822,10 +663,7 @@
         "exponent"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "runtime",
       "tipos_argumentos": {
         "exponent": "entero"
@@ -841,10 +679,7 @@
         "size"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "runtime",
       "tipos_argumentos": {
         "index": "numero",
@@ -860,10 +695,7 @@
         "size"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "runtime",
       "tipos_argumentos": {
         "size": "numero"
@@ -876,10 +708,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "runtime",
       "tipos_argumentos": {}
     },
@@ -892,10 +721,7 @@
         "limit"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "runtime",
       "tipos_argumentos": {
         "limit": "numero"
@@ -910,10 +736,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "runtime",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -928,10 +751,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "runtime",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -947,10 +767,7 @@
         "position"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "runtime",
       "tipos_argumentos": {
         "length": "numero",
@@ -966,10 +783,7 @@
         "code"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "runtime",
       "tipos_argumentos": {
         "code": "numero"
@@ -984,10 +798,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "runtime",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -1003,10 +814,7 @@
         "found"
       ],
       "politica": "E",
-      "severidad": {
-        "estricto": "warning",
-        "flexible": "warning"
-      },
+      "severidad": "warning",
       "clase": "runtime",
       "tipos_argumentos": {
         "expected": "tipo",
@@ -1023,10 +831,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {
         "className": "lexema",
@@ -1040,10 +845,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -1054,10 +856,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -1068,10 +867,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -1084,10 +880,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -1100,10 +893,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -1114,10 +904,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -1131,10 +918,7 @@
         "token"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {
         "lexeme": "lexema",
@@ -1148,10 +932,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -1162,10 +943,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -1176,10 +954,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -1190,10 +965,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -1204,10 +976,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -1218,10 +987,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -1232,10 +998,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -1246,10 +1009,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -1260,10 +1020,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -1274,10 +1031,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -1288,10 +1042,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -1302,10 +1053,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -1316,10 +1064,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -1330,10 +1075,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -1344,10 +1086,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -1358,10 +1097,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -1372,10 +1108,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -1386,10 +1119,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -1400,10 +1130,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -1414,10 +1141,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -1428,10 +1152,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -1442,10 +1163,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -1456,10 +1174,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -1470,10 +1185,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -1484,10 +1196,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -1500,10 +1209,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -1518,10 +1224,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -1534,10 +1237,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -1548,10 +1248,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -1562,10 +1259,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -1578,10 +1272,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -1596,10 +1287,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -1614,10 +1302,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -1630,10 +1315,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -1644,10 +1326,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -1660,10 +1339,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -1678,10 +1354,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -1696,10 +1369,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -1714,10 +1384,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -1732,10 +1399,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -1750,10 +1414,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -1768,10 +1429,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -1786,10 +1444,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -1804,10 +1459,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -1820,10 +1472,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -1834,10 +1483,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -1850,10 +1496,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -1868,10 +1511,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -1886,10 +1526,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -1904,10 +1541,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -1922,10 +1556,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -1940,10 +1571,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -1958,10 +1586,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -1976,10 +1601,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -1994,10 +1616,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -2012,10 +1631,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -2028,10 +1644,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -2042,10 +1655,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -2056,10 +1666,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -2072,10 +1679,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -2090,10 +1694,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -2108,10 +1709,7 @@
         "lexeme"
       ],
       "politica": "C",
-      "severidad": {
-        "estricto": "warning",
-        "flexible": "warning"
-      },
+      "severidad": "warning",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -2126,10 +1724,7 @@
         "lexeme"
       ],
       "politica": "C",
-      "severidad": {
-        "estricto": "warning",
-        "flexible": "warning"
-      },
+      "severidad": "warning",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -2144,10 +1739,7 @@
         "lexeme"
       ],
       "politica": "C",
-      "severidad": {
-        "estricto": "warning",
-        "flexible": "warning"
-      },
+      "severidad": "warning",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -2162,10 +1754,7 @@
         "lexeme"
       ],
       "politica": "C",
-      "severidad": {
-        "estricto": "warning",
-        "flexible": "warning"
-      },
+      "severidad": "warning",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -2180,10 +1769,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "lexical",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -2196,10 +1782,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "lexical",
       "tipos_argumentos": {}
     },
@@ -2212,10 +1795,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "lexical",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -2228,10 +1808,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -2244,10 +1821,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -2260,10 +1834,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -2274,10 +1845,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -2288,10 +1856,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -2302,10 +1867,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -2316,10 +1878,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -2330,10 +1889,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -2344,10 +1900,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -2361,10 +1914,7 @@
         "found"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "expected": "tipo|lexema",
@@ -2380,10 +1930,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -2396,10 +1943,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -2410,10 +1954,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -2424,10 +1965,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -2438,10 +1976,7 @@
       },
       "argumentos": [],
       "politica": "C",
-      "severidad": {
-        "estricto": "warning",
-        "flexible": "warning"
-      },
+      "severidad": "warning",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -2455,10 +1990,7 @@
         "found"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "expected": "numero",
@@ -2474,10 +2006,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -2490,10 +2019,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -2506,10 +2032,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -2522,10 +2045,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -2536,10 +2056,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -2550,10 +2067,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -2566,10 +2080,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -2584,10 +2095,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -2602,10 +2110,7 @@
         "lexeme"
       ],
       "politica": "C",
-      "severidad": {
-        "estricto": "warning",
-        "flexible": "warning"
-      },
+      "severidad": "warning",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -2618,10 +2123,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -2632,10 +2134,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -2646,10 +2145,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -2662,10 +2158,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -2678,10 +2171,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -2692,10 +2182,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -2705,11 +2192,8 @@
         "en": "Case label type is not compatible with switch selector"
       },
       "argumentos": [],
-      "politica": "B",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "warning"
-      },
+      "politica": "A",
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -2723,10 +2207,7 @@
         "type"
       ],
       "politica": "D",
-      "severidad": {
-        "estricto": "info",
-        "flexible": "info"
-      },
+      "severidad": "info",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema",
@@ -2742,10 +2223,7 @@
         "lexeme"
       ],
       "politica": "D",
-      "severidad": {
-        "estricto": "info",
-        "flexible": "info"
-      },
+      "severidad": "info",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -2760,10 +2238,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -2778,10 +2253,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -2800,10 +2272,7 @@
       },
       "clase": "semantic",
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      }
+      "severidad": "error"
     },
     "cellLimitExceeded": {
       "mensajes": {
@@ -2814,10 +2283,7 @@
         "limit"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "runtime",
       "tipos_argumentos": {
         "limit": "numero"
@@ -2832,10 +2298,7 @@
         "limit"
       ],
       "politica": "D",
-      "severidad": {
-        "estricto": "info",
-        "flexible": "info"
-      },
+      "severidad": "info",
       "clase": "runtime",
       "tipos_argumentos": {
         "limit": "numero"
@@ -2851,10 +2314,7 @@
       ],
       "clase": "syntax",
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "tipos_argumentos": {
         "limit": "numero"
       }
@@ -2868,10 +2328,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -2886,10 +2343,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -2904,10 +2358,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -2922,10 +2373,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -2940,10 +2388,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -2958,10 +2403,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -2976,10 +2418,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -2994,10 +2433,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -3012,10 +2448,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -3030,10 +2463,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -3046,10 +2476,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -3062,10 +2489,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -3078,10 +2502,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -3094,10 +2515,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -3112,10 +2530,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -3128,10 +2543,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -3142,10 +2554,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -3156,10 +2565,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -3170,10 +2576,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -3184,10 +2587,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -3198,10 +2598,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -3212,10 +2609,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -3226,10 +2620,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -3240,10 +2631,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -3256,10 +2644,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -3273,10 +2658,7 @@
       "argumentos": [],
       "clase": "internal",
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "tipos_argumentos": {}
     },
     "missingBindingInitializer": {
@@ -3286,10 +2668,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -3300,10 +2679,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -3314,10 +2690,7 @@
       },
       "argumentos": [],
       "politica": "C",
-      "severidad": {
-        "estricto": "warning",
-        "flexible": "warning"
-      },
+      "severidad": "warning",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -3328,10 +2701,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -3344,10 +2714,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -3360,10 +2727,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -3374,10 +2738,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -3388,10 +2749,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -3402,10 +2760,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -3418,10 +2773,7 @@
         "type"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "type": "tipo"
@@ -3434,10 +2786,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -3448,10 +2797,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -3462,10 +2808,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -3478,10 +2821,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -3496,10 +2836,7 @@
         "lexeme"
       ],
       "politica": "C",
-      "severidad": {
-        "estricto": "warning",
-        "flexible": "warning"
-      },
+      "severidad": "warning",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -3515,10 +2852,7 @@
         "type"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema",
@@ -3532,10 +2866,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "runtime",
       "tipos_argumentos": {}
     },
@@ -3546,10 +2877,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -3564,10 +2892,7 @@
         "found"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema",
@@ -3584,10 +2909,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -3603,10 +2925,7 @@
         "limit"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema",
@@ -3620,10 +2939,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -3634,10 +2950,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -3648,10 +2961,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -3662,10 +2972,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -3678,10 +2985,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -3696,10 +3000,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -3714,10 +3015,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -3732,10 +3030,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -3750,10 +3045,7 @@
         "lexeme"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -3766,10 +3058,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -3780,10 +3069,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "runtime",
       "tipos_argumentos": {}
     },
@@ -3794,10 +3080,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "runtime",
       "tipos_argumentos": {}
     },
@@ -3808,10 +3091,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "runtime",
       "tipos_argumentos": {}
     },
@@ -3822,10 +3102,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "runtime",
       "tipos_argumentos": {}
     },
@@ -3836,10 +3113,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -3850,10 +3124,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -3864,10 +3135,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -3878,10 +3146,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -3892,10 +3157,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -3906,10 +3168,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "syntax",
       "tipos_argumentos": {}
     },
@@ -3920,10 +3179,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -3934,10 +3190,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -3948,10 +3201,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -3962,10 +3212,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -3976,10 +3223,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -3990,10 +3234,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -4004,10 +3245,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -4018,10 +3256,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -4035,10 +3270,7 @@
         "path"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "type": "tipo",
@@ -4052,10 +3284,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -4069,10 +3298,7 @@
         "path"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "type": "tipo",
@@ -4086,10 +3312,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -4100,10 +3323,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -4117,10 +3337,7 @@
         "path"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "type": "tipo",
@@ -4134,10 +3351,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -4148,10 +3362,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -4165,10 +3376,7 @@
         "path"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
         "type": "tipo",
@@ -4182,10 +3390,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -4196,10 +3401,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -4210,10 +3412,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -4224,10 +3423,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "runtime",
       "tipos_argumentos": {}
     },
@@ -4238,10 +3434,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -4252,10 +3445,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -4266,10 +3456,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "runtime",
       "tipos_argumentos": {}
     },
@@ -4280,10 +3467,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -4296,10 +3480,7 @@
         "limit"
       ],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "runtime",
       "tipos_argumentos": {
         "limit": "numero"
@@ -4312,10 +3493,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -4326,10 +3504,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "runtime",
       "tipos_argumentos": {}
     },
@@ -4340,10 +3515,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "runtime",
       "tipos_argumentos": {}
     },
@@ -4354,10 +3526,7 @@
       },
       "argumentos": [],
       "politica": "A",
-      "severidad": {
-        "estricto": "error",
-        "flexible": "error"
-      },
+      "severidad": "error",
       "clase": "runtime",
       "tipos_argumentos": {}
     }
@@ -4396,11 +3565,7 @@
     "fallo": {
       "codigo": "divisionByZero"
     }
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -4421,10 +3586,6 @@
   "espera": {
     "arbol": "presente",
     "diagnosticos": []
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```

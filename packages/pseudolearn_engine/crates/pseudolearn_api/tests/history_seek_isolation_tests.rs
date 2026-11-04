@@ -9,7 +9,7 @@ fn finished_session() -> Result<(ApiSession, Value, Value), String> {
     let started = session.call(
         "start",
         &json!({"analysis":analysis.pointer("/value/resource"),"program":PROGRAM,"profile":"es",
-            "strictness":"strict","seed":42,
+            "seed":42,
             "host":{"files":{"a":"hola","b":"mundo"}}}),
     );
     let resource = started

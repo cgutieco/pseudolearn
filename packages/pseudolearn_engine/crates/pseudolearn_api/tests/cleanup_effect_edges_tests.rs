@@ -3,7 +3,7 @@ const PROGRAM: &str = "SubProceso Leer1(directory Como DirectorioCap) Como Resul
 const NO_CLEANUP: &str = "SubProceso Leer1(directory Como DirectorioCap) Como Resultado<Cadena, ErrorES>\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\nRetornar file.LeerTexto();\nFinSubProceso\nAlgoritmo Main\nFinAlgoritmo\n";
 
 fn blocks(source: &str) -> Result<Vec<Vec<String>>, String> {
-    let text = pseudolearn_api::compile_source_to_ir(source, "es", "strict")
+    let text = pseudolearn_api::compile_source_to_ir(source, "es")
         .map_err(|errors| format!("{errors:?}"))?;
     let mut blocks: Vec<Vec<String>> = Vec::new();
     let mut functions = 0_u32;

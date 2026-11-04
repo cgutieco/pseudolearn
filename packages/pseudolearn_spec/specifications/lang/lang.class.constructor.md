@@ -65,11 +65,7 @@
   "espera": {
     "salida": "8\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -90,11 +86,7 @@
   "espera": {
     "salida": "",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -120,11 +112,7 @@
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -140,10 +128,6 @@
     "es": "Clase A\nMetodo Constructor(value Como Entero)\nFinMetodo\nFinClase\nClase B Hereda De A\nMetodo Constructor(value Como Entero)\nEscribir value;\nFinMetodo\nFinClase\nAlgoritmo P\nFinAlgoritmo\n",
     "en": "class A\nmethod constructor(value as integer)\nendMethod\nendClass\nclass B inherits from A\nmethod constructor(value as integer)\nwrite value;\nendMethod\nendClass\nalgorithm P\nendAlgorithm\n"
   },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "origen": "derivado",
   "operacion": "analyze",
   "espera": {

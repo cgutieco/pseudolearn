@@ -110,7 +110,7 @@ fn incompatible_override_diagnostic_keeps_contract_related_span() -> Result<(), 
     let mut session = ApiSession::default();
     let analysis = session.call(
         "create_analysis",
-        &json!({"program":INVALID_OVERRIDE,"profile":"en","strictness":"strict"}),
+        &json!({"program":INVALID_OVERRIDE,"profile":"en"}),
     );
     let resource = analysis
         .pointer("/value/resource")

@@ -55,10 +55,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Interfaz Empty\nFinInterfaz\nAlgoritmo Main\n\nFinAlgoritmo\n",
     "en": "interface Empty\nendInterface\nalgorithm Main\n\nendAlgorithm\n"
@@ -79,10 +75,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Interfaz Readable\nMetodo readValue() Como Entero;\nFinInterfaz\nAlgoritmo Main\nDefinir value Como Readable <- 1;\nFinAlgoritmo\n",
@@ -110,10 +102,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo Main\nInterfaz Local\nFinInterfaz\nFinAlgoritmo\n",
     "en": "algorithm Main\ninterface Local\nendInterface\nendAlgorithm\n"
@@ -139,10 +127,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Interfaz Incomplete\nAlgoritmo Main\n\nFinAlgoritmo\n",
@@ -186,10 +170,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Interfaz Readable\nMetodo readValue() Como Entero;\nFinInterfaz\nClase Reader Realiza Readable\nMetodo readValue() Como Entero\nRetornar 7;\nFinMetodo\nFinClase\nAlgoritmo Main\nDefinir value Como Reader <- Nuevo Reader();\nEscribir value.readValue();\nFinAlgoritmo\n",
     "en": "interface Readable\nmethod readValue() as integer;\nendInterface\nclass Reader implements Readable\nmethod readValue() as integer\nreturn 7;\nendMethod\nendClass\nalgorithm Main\ndefine value as Reader <- new Reader();\nwrite value.readValue();\nendAlgorithm\n"
@@ -210,10 +190,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Interfaz Readable\nMetodo readValue() Como Entero;\nFinInterfaz\nClase Reader Realiza Readable\nFinClase\nAlgoritmo Main\n\nFinAlgoritmo\n",
@@ -241,10 +217,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Interfaz Readable\nMetodo readValue() Como Entero;\nFinInterfaz\nClase Reader Realiza Readable\nMetodo readValue() Como Cadena\nRetornar \"wrong\";\nFinMetodo\nFinClase\nAlgoritmo Main\n\nFinAlgoritmo\n",
     "en": "interface Readable\nmethod readValue() as integer;\nendInterface\nclass Reader implements Readable\nmethod readValue() as string\nreturn \"wrong\";\nendMethod\nendClass\nalgorithm Main\n\nendAlgorithm\n"
@@ -270,10 +242,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Interfaz First\nFinInterfaz\nInterfaz Second\nFinInterfaz\nClase Both Realiza First, Second\nFinClase\nAlgoritmo Main\nDefinir value Como Both <- Nuevo Both();\nFinAlgoritmo\n",
@@ -313,10 +281,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Interfaz Readable\nMetodo readValue() Como Entero;\nFinInterfaz\nClase Reader Realiza Readable\nMetodo readValue() Como Entero\nRetornar 7;\nFinMetodo\nFinClase\nSubProceso readOnce<T: Readable>(value Como T) Como Entero\nRetornar value.readValue();\nFinSubProceso\nAlgoritmo Main\nEscribir readOnce(Nuevo Reader());\nFinAlgoritmo\n",
     "en": "interface Readable\nmethod readValue() as integer;\nendInterface\nclass Reader implements Readable\nmethod readValue() as integer\nreturn 7;\nendMethod\nendClass\nsubroutine readOnce<T: Readable>(value as T) as integer\nreturn value.readValue();\nendSubroutine\nalgorithm Main\nwrite readOnce(new Reader());\nendAlgorithm\n"
@@ -337,10 +301,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Interfaz Readable\nMetodo readValue() Como Entero;\nFinInterfaz\nSubProceso readOnce<T: Readable>(value Como T) Como Entero\nRetornar value.readValue();\nFinSubProceso\nAlgoritmo Main\nEscribir readOnce(3);\nFinAlgoritmo\n",
@@ -368,10 +328,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Interfaz Readable\nMetodo readValue() Como Entero;\nFinInterfaz\nClase Reader Realiza Readable\nMetodo readValue() Como Entero\nRetornar 7;\nFinMetodo\nFinClase\nClase Child Hereda De Reader\nMetodo readValue() Como Entero\nRetornar 9;\nFinMetodo\nFinClase\nSubProceso readOnce<T: Readable>(value Como T) Como Entero\nRetornar value.readValue();\nFinSubProceso\nAlgoritmo Main\nDefinir value Como Reader <- Nuevo Child();\nEscribir readOnce(value);\nFinAlgoritmo\n",
     "en": "interface Readable\nmethod readValue() as integer;\nendInterface\nclass Reader implements Readable\nmethod readValue() as integer\nreturn 7;\nendMethod\nendClass\nclass Child inherits from Reader\nmethod readValue() as integer\nreturn 9;\nendMethod\nendClass\nsubroutine readOnce<T: Readable>(value as T) as integer\nreturn value.readValue();\nendSubroutine\nalgorithm Main\ndefine value as Reader <- new Child();\nwrite readOnce(value);\nendAlgorithm\n"
@@ -392,10 +348,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Interfaz Readable\nMetodo readValue() Como Entero;\nFinInterfaz\nSubProceso readOnce<T: Readable>(value Como T) Como Entero\nRetornar value.absent();\nFinSubProceso\nAlgoritmo Main\n\nFinAlgoritmo\n",
@@ -423,10 +375,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Interfaz Readable\nMetodo readValue() Como Entero;\nFinInterfaz\nClase Reader\nMetodo readValue() Como Entero\nRetornar 7;\nFinMetodo\nFinClase\nSubProceso readOnce<T: Readable>(value Como T) Como Entero\nRetornar value.readValue();\nFinSubProceso\nAlgoritmo Main\nEscribir readOnce(Nuevo Reader());\nFinAlgoritmo\n",
     "en": "interface Readable\nmethod readValue() as integer;\nendInterface\nclass Reader\nmethod readValue() as integer\nreturn 7;\nendMethod\nendClass\nsubroutine readOnce<T: Readable>(value as T) as integer\nreturn value.readValue();\nendSubroutine\nalgorithm Main\nwrite readOnce(new Reader());\nendAlgorithm\n"
@@ -453,10 +401,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Interfaz Readable\nMetodo readValue() Como Entero;\nFinInterfaz\nClase Reader Realiza Readable\nMetodo readValue() Como Entero\nRetornar 7;\nFinMetodo\nFinClase\nRegistro Holder<T: Readable>\nDefinir value Como T;\nFinRegistro\nAlgoritmo Main\nDefinir boxed Como Holder<Reader> <- Holder(Nuevo Reader());\nEscribir boxed.value.readValue();\nFinAlgoritmo\n",
     "en": "interface Readable\nmethod readValue() as integer;\nendInterface\nclass Reader implements Readable\nmethod readValue() as integer\nreturn 7;\nendMethod\nendClass\nrecord Holder<T: Readable>\ndefine value as T;\nendRecord\nalgorithm Main\ndefine boxed as Holder<Reader> <- Holder(new Reader());\nwrite boxed.value.readValue();\nendAlgorithm\n"
@@ -477,10 +421,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Interfaz Readable\nMetodo readValue() Como Entero;\nFinInterfaz\nClase Reader Realiza Readable\nPrivado Metodo readValue() Como Entero\nRetornar 7;\nFinMetodo\nFinClase\nAlgoritmo Main\nDefinir value Como Reader <- Nuevo Reader();\nFinAlgoritmo\n",

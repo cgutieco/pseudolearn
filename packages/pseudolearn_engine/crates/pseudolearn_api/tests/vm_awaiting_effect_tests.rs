@@ -6,7 +6,7 @@ const READ: &str =
     "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nLeer x;\nEscribir x;\nFinAlgoritmo\n";
 
 fn exit_of(source: &str) -> Result<RunExit, String> {
-    let module = pseudolearn_api::compile_source_to_module(source, "es", "strict")
+    let module = pseudolearn_api::compile_source_to_module(source, "es")
         .map_err(|errors| format!("{errors:?}"))?;
     let bytecode =
         pseudolearn_bytecode::compile_module(&module).map_err(|error| format!("{error:?}"))?;

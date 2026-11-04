@@ -23,7 +23,6 @@ pub struct ExecutionLimits {
 pub struct ExecuteRequest {
     pub program: String,
     pub profile: String,
-    pub strictness: String,
     pub seed: i64,
     pub inputs: Vec<String>,
     pub observe: String,
@@ -45,7 +44,6 @@ impl Default for ExecuteRequest {
         Self {
             program: String::new(),
             profile: "es".to_owned(),
-            strictness: "strict".to_owned(),
             seed: 42,
             inputs: Vec::new(),
             observe: "none".to_owned(),

@@ -77,10 +77,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo P\nEscribir Longitud(\"ab\");\nFinAlgoritmo\n",
     "en": "algorithm P\nwrite length(\"ab\");\nendAlgorithm\n"
@@ -101,10 +97,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "SubProceso Longitud() Como Entero\nRetornar 9;\nFinSubProceso\nAlgoritmo P\nEscribir Longitud();\nFinAlgoritmo\n",
@@ -136,11 +128,7 @@
   "espera": {
     "salida": "2026\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -166,10 +154,6 @@
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```

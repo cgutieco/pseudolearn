@@ -6,7 +6,7 @@ const PROGRAM: &str = "Algoritmo P\nDefinir Mutable amount Como Entero <- 7;\nam
 fn start(session: &mut ApiSession) -> Result<Value, String> {
     let analysis = session.call(
         "create_analysis",
-        &json!({"program":PROGRAM,"profile":"es","strictness":"strict"}),
+        &json!({"program":PROGRAM,"profile":"es"}),
     );
     let started = session.call(
         "start",

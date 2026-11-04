@@ -38,7 +38,7 @@ fn measure(workload_name: &str) -> Result<(Value, f64), String> {
         .first()
         .map(|request| request.program.clone())
         .ok_or("Empty workload")?;
-    let mut session = DocumentSession::new(program, Profile::Spanish, true);
+    let mut session = DocumentSession::new(program, Profile::Spanish);
     let (forward, backward) = edit_at(
         10,
         "accumulator <- accumulator + 1;",

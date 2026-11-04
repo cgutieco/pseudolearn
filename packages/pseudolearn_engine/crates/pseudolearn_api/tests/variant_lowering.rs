@@ -14,7 +14,6 @@ fn propagation_edges_preserve_typed_ssa_values() -> Result<(), String> {
         &source,
         SemanticOptions {
             profile: Profile::English,
-            strict: true,
         },
     );
     assert!(diagnostics.is_empty(), "{diagnostics:?}");
@@ -34,7 +33,7 @@ fn loop_body_bindings_do_not_create_undefined_header_arguments() -> Result<(), S
         "define mutable counter as integer <- 0;\nrepeat\ndefine value as integer <- counter;\ncounter <- counter + 1;\nwrite value;\nuntil counter = 2",
     ] {
         let program = format!("algorithm Main\n{body}\nendAlgorithm\n");
-        let module = pseudolearn_api::compile_source_to_module(&program, "en", "strict")
+        let module = pseudolearn_api::compile_source_to_module(&program, "en")
             .map_err(|errors| format!("{errors:?}\n{program}"))?;
         verify_module(&module).map_err(|error| format!("{error:?}"))?;
     }

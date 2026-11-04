@@ -5,7 +5,6 @@ use std::collections::BTreeMap;
 pub struct AnalyzeRequest {
     pub program: String,
     pub profile: String,
-    pub strictness: String,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub source: Option<ApiSourceIdentity>,
 }
@@ -112,7 +111,6 @@ pub struct ApiHelpExample {
     pub version: String,
     pub case: String,
     pub profile: String,
-    pub strictness: String,
     pub kind: String,
     pub label: String,
 }
@@ -252,7 +250,6 @@ pub struct IrRequest {
     #[serde(default)]
     pub program: String,
     pub profile: String,
-    pub strictness: String,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub source: Option<ApiSourceIdentity>,
 }

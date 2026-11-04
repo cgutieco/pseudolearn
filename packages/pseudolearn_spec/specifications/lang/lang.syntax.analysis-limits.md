@@ -85,10 +85,6 @@
     "arbol": "presente",
     "diagnosticos": []
   },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "etiquetas": [
     "limite",
     "parentheses"
@@ -123,10 +119,6 @@
       }
     ]
   },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "etiquetas": [
     "limite",
     "parentheses"
@@ -152,10 +144,6 @@
     "arbol": "presente",
     "diagnosticos": []
   },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "etiquetas": [
     "limite",
     "unary"
@@ -190,10 +178,6 @@
       }
     ]
   },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "etiquetas": [
     "limite",
     "unary"
@@ -219,10 +203,6 @@
     "arbol": "presente",
     "diagnosticos": []
   },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "etiquetas": [
     "limite",
     "power"
@@ -257,10 +237,6 @@
       }
     ]
   },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "etiquetas": [
     "limite",
     "power"
@@ -286,10 +262,6 @@
     "arbol": "presente",
     "diagnosticos": []
   },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "etiquetas": [
     "limite",
     "blocks"
@@ -324,10 +296,6 @@
       }
     ]
   },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "etiquetas": [
     "limite",
     "blocks"

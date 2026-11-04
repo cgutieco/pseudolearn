@@ -54,10 +54,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "origen": "derivado",
   "operacion": "trace",
   "espera": {
@@ -121,10 +117,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "origen": "derivado",
   "operacion": "trace",
@@ -204,9 +196,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "trace",
   "espera": {
@@ -245,9 +234,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "trace",
   "espera": {
@@ -284,9 +270,6 @@
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "trace",
   "espera": {
@@ -322,9 +305,6 @@
   "regla": "R4",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "trace",
@@ -374,9 +354,6 @@
   "regla": "R5",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "trace",
@@ -435,9 +412,6 @@ Una colección se conserva como referencia con identidad compartida. Su entrada 
   "regla": "R6",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "trace",
@@ -499,9 +473,6 @@ Una colección se conserva como referencia con identidad compartida. Su entrada 
   "regla": "R7",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "api",
@@ -572,9 +543,6 @@ Una colección se conserva como referencia con identidad compartida. Su entrada 
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -634,9 +602,6 @@ Una colección se conserva como referencia con identidad compartida. Su entrada 
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -695,9 +660,6 @@ Una colección se conserva como referencia con identidad compartida. Su entrada 
   "regla": "R7",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "api",
@@ -773,9 +735,6 @@ Una colección se conserva como referencia con identidad compartida. Su entrada 
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -846,9 +805,6 @@ Una colección se conserva como referencia con identidad compartida. Su entrada 
   "regla": "R8",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "api",
@@ -946,9 +902,6 @@ Una colección se conserva como referencia con identidad compartida. Su entrada 
   "regla": "R8",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "api",
@@ -1048,9 +1001,6 @@ Una colección se conserva como referencia con identidad compartida. Su entrada 
   "perfiles": [
     "es"
   ],
-  "rigor": [
-    "estricto"
-  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -1103,9 +1053,6 @@ Una colección se conserva como referencia con identidad compartida. Su entrada 
   "regla": "R2",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "api",
@@ -1207,9 +1154,6 @@ Una colección se conserva como referencia con identidad compartida. Su entrada 
   "regla": "R5",
   "perfiles": [
     "es"
-  ],
-  "rigor": [
-    "estricto"
   ],
   "origen": "derivado",
   "operacion": "api",

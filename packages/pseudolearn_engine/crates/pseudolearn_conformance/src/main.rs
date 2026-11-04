@@ -2,7 +2,7 @@
 
 use pseudolearn_api::{
     AnalyzeRequest, ENGINE_VERSION, IrRequest, PROTOCOL_VERSION, SUBJECT_NAME, execute_analyze,
-    execute_ir, supported_capabilities, supported_profiles, supported_strictness,
+    execute_ir, supported_capabilities, supported_profiles,
 };
 use serde_json::{Map, Value, json};
 use std::io::{BufRead, Write};
@@ -86,7 +86,6 @@ fn respond_hello_service() {
         "subject_version": ENGINE_VERSION,
         "capabilities": ["service"],
         "profiles": supported_profiles(),
-        "strictness": supported_strictness(),
     });
     send_response(&response);
 }
@@ -99,7 +98,6 @@ fn respond_hello() {
         "subject_version": ENGINE_VERSION,
         "capabilities": supported_capabilities(),
         "profiles": supported_profiles(),
-        "strictness": supported_strictness(),
     });
     send_response(&response);
 }
@@ -143,16 +141,9 @@ fn analyze_request(request_value: &Value) -> AnalyzeRequest {
         .and_then(Value::as_str)
         .unwrap_or("es")
         .to_owned();
-    let strictness = request_value
-        .get("strictness")
-        .and_then(Value::as_str)
-        .unwrap_or("strict")
-        .to_owned();
-
     AnalyzeRequest {
         program,
         profile,
-        strictness,
         source: None,
     }
 }
@@ -173,17 +164,10 @@ fn respond_ir(request_value: &Value) {
         .and_then(Value::as_str)
         .unwrap_or("es")
         .to_owned();
-    let strictness = request_value
-        .get("strictness")
-        .and_then(Value::as_str)
-        .unwrap_or("strict")
-        .to_owned();
-
     let request = IrRequest {
         program_ir,
         program,
         profile,
-        strictness,
         source: None,
     };
     let response = execute_ir(&request);
@@ -289,7 +273,7 @@ fn inject_pending_input_identity(results: &[Value], arguments: &mut Map<String, 
 }
 
 fn inject_case_analysis_defaults(request: &Value, arguments: &mut Map<String, Value>) {
-    for field in ["program", "profile", "strictness"] {
+    for field in ["program", "profile"] {
         if let Some(value) = request.get(field) {
             arguments.insert(field.to_owned(), value.clone());
         }

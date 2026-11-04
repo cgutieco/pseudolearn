@@ -2,7 +2,7 @@ use crate::program_view::{SpanKey, ViewNode};
 use crate::{AnalyzeRequest, ApiError};
 use pseudolearn_diagnostics::DiagnosticCode;
 use pseudolearn_lexicon::Profile;
-use pseudolearn_syntax::parse_source_with_terminator;
+use pseudolearn_syntax::parse_source;
 use std::collections::BTreeMap;
 
 #[derive(Clone, Copy, Eq, PartialEq)]
@@ -19,18 +19,14 @@ type ParsedSource = (
 
 pub(crate) fn parse_view_source(
     request: &AnalyzeRequest,
-    strict: bool,
     profile: Profile,
     mode: ParseMode,
 ) -> Result<ParsedSource, ApiError> {
     let source = crate::source_identity::source_text(request.program.clone(), request.source);
-    let terminator = strict.then_some(DiagnosticCode::MissingStatementTerminator);
     let tree = match mode {
-        ParseMode::Standalone => parse_source_with_terminator(&source, profile, terminator).0,
-        ParseMode::Project => {
-            pseudolearn_syntax::parse_module_source(&source, profile, terminator).0
-        }
-        ParseMode::PendingLinks => pending_links_tree(&source, profile, terminator),
+        ParseMode::Standalone => parse_source(&source, profile).0,
+        ParseMode::Project => pseudolearn_syntax::parse_module_source(&source, profile).0,
+        ParseMode::PendingLinks => pending_links_tree(&source, profile),
     };
     if tree.has_errors {
         return Err(crate::execution_resource::usage("analysis has errors"));
@@ -41,16 +37,15 @@ pub(crate) fn parse_view_source(
 fn pending_links_tree(
     source: &pseudolearn_source::SourceText,
     profile: Profile,
-    terminator: Option<DiagnosticCode>,
 ) -> pseudolearn_syntax::SyntaxTree {
-    let (tree, diagnostics) = parse_source_with_terminator(source, profile, terminator);
+    let (tree, diagnostics) = parse_source(source, profile);
     let only_pending = diagnostics
         .iter()
         .all(|diagnostic| diagnostic.code == DiagnosticCode::ModuleSyntaxOutsideProject);
     if !tree.has_errors || !only_pending {
         return tree;
     }
-    pseudolearn_syntax::parse_module_source(source, profile, terminator).0
+    pseudolearn_syntax::parse_module_source(source, profile).0
 }
 
 pub(crate) fn index_by_span(nodes: &[ViewNode]) -> BTreeMap<SpanKey, Vec<usize>> {

@@ -68,11 +68,7 @@
   "espera": {
     "salida": "2.0\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -98,11 +94,7 @@
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -177,10 +169,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo Main\nDefinir value Como Opcional<Entero> <- Algo(7);\nSegun value Hacer\nAlgo(value): Escribir value;\nNada: Escribir 0;\nFinSegun\nFinAlgoritmo\n",
     "en": "algorithm Main\ndefine value as optional<integer> <- some(7);\nswitch value do\nsome(value): write value;\nnone: write 0;\nendSwitch\nendAlgorithm\n"
@@ -202,10 +190,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo Main\nDefinir value Como Opcional<Opcional<Entero>> <- Algo(Nada);\nSegun value Hacer\nAlgo(inner): Segun inner Hacer\nAlgo(value): Escribir value;\nNada: Escribir 2;\nFinSegun\nNada: Escribir 1;\nFinSegun\nFinAlgoritmo\n",
     "en": "algorithm Main\ndefine value as optional<optional<integer>> <- some(none);\nswitch value do\nsome(inner): switch inner do\nsome(value): write value;\nnone: write 2;\nendSwitch\nnone: write 1;\nendSwitch\nendAlgorithm\n"
@@ -226,10 +210,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo Main\nDefinir value Como Opcional<Entero> <- Error(1);\nSegun value Hacer\nAlgo(payload): Escribir payload;\nNada: Escribir 0;\nFinSegun\nFinAlgoritmo\n",
@@ -257,10 +237,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Clase Holder\nDefinir amount Como Entero;\nFinClase\nAlgoritmo Main\nDefinir holder Como Holder <- Nuevo Holder();\nholder.amount <- 9;\nDefinir value Como Opcional<Holder> <- Algo(holder);\nSegun value Hacer\nAlgo(found): Escribir found.amount;\nNada: Escribir 0;\nFinSegun\nFinAlgoritmo\n",
     "en": "class Holder\ndefine amount as integer;\nendClass\nalgorithm Main\ndefine holder as Holder <- new Holder();\nholder.amount <- 9;\ndefine value as optional<Holder> <- some(holder);\nswitch value do\nsome(found): write found.amount;\nnone: write 0;\nendSwitch\nendAlgorithm\n"
@@ -281,10 +257,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo Main\nDefinir outcome Como Resultado<Entero, Cadena> <- Exito(4);\nSegun outcome Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem;\nFinSegun\nFinAlgoritmo\n",
@@ -307,10 +279,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo Main\nDefinir outcome Como Resultado<Entero, Cadena> <- Error(\"bad\");\nSegun outcome Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem;\nFinSegun\nFinAlgoritmo\n",
     "en": "algorithm Main\ndefine outcome as result<integer, string> <- failure(\"bad\");\nswitch outcome do\nsuccess(value): write value;\nfailure(problem): write problem;\nendSwitch\nendAlgorithm\n"
@@ -331,10 +299,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo Main\nDefinir outcome Como Resultado<Entero, Cadena> <- Exito(\"bad\");\nDescartar outcome;\nFinAlgoritmo\n",
@@ -362,10 +326,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "SubProceso First() Como Resultado<Entero, Cadena>\nRetornar Error(\"failed\");\nFinSubProceso\nSubProceso Second() Como Resultado<Entero, Cadena>\nDefinir value Como Entero <- Propagar First();\nRetornar Exito(value + 1);\nFinSubProceso\nSubProceso Third() Como Resultado<Cadena, Cadena>\nDefinir value Como Entero <- Propagar Second();\nEscribir value;\nRetornar Exito(\"done\");\nFinSubProceso\nAlgoritmo Main\nDefinir outcome Como Resultado<Cadena, Cadena> <- Third();\nSegun outcome Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem;\nFinSegun\nFinAlgoritmo\n",
     "en": "subroutine First() as result<integer, string>\nreturn failure(\"failed\");\nendSubroutine\nsubroutine Second() as result<integer, string>\ndefine value as integer <- propagate First();\nreturn success(value + 1);\nendSubroutine\nsubroutine Third() as result<string, string>\ndefine value as integer <- propagate Second();\nwrite value;\nreturn success(\"done\");\nendSubroutine\nalgorithm Main\ndefine outcome as result<string, string> <- Third();\nswitch outcome do\nsuccess(value): write value;\nfailure(problem): write problem;\nendSwitch\nendAlgorithm\n"
@@ -387,10 +347,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "SubProceso First() Como Opcional<Entero>\nRetornar Nada;\nFinSubProceso\nSubProceso Second() Como Opcional<Cadena>\nDefinir value Como Entero <- Propagar First();\nEscribir value;\nRetornar Algo(\"done\");\nFinSubProceso\nAlgoritmo Main\nDefinir outcome Como Opcional<Cadena> <- Second();\nSegun outcome Hacer\nAlgo(value): Escribir value;\nNada: Escribir \"empty\";\nFinSegun\nFinAlgoritmo\n",
     "en": "subroutine First() as optional<integer>\nreturn none;\nendSubroutine\nsubroutine Second() as optional<string>\ndefine value as integer <- propagate First();\nwrite value;\nreturn some(\"done\");\nendSubroutine\nalgorithm Main\ndefine outcome as optional<string> <- Second();\nswitch outcome do\nsome(value): write value;\nnone: write \"empty\";\nendSwitch\nendAlgorithm\n"
@@ -411,10 +367,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "SubProceso First() Como Resultado<Entero, Entero>\nRetornar Error(4);\nFinSubProceso\nSubProceso Second() Como Resultado<Entero, Cadena>\nDefinir value Como Entero <- Propagar First();\nRetornar Exito(value);\nFinSubProceso\nAlgoritmo Main\nDescartar Second();\nFinAlgoritmo\n",
@@ -442,10 +394,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "SubProceso First() Como Resultado<Entero, Cadena>\nRetornar Exito(3);\nFinSubProceso\nSubProceso Second() Como Resultado<Entero, Cadena>\nDefinir value Como Entero <- Propagar First();\nRetornar Exito(value + 1);\nFinSubProceso\nSubProceso Third() Como Resultado<Cadena, Cadena>\nDefinir value Como Entero <- Propagar Second();\nEscribir value;\nRetornar Exito(\"done\");\nFinSubProceso\nAlgoritmo Main\nDescartar Third();\nFinAlgoritmo\n",
     "en": "subroutine First() as result<integer, string>\nreturn success(3);\nendSubroutine\nsubroutine Second() as result<integer, string>\ndefine value as integer <- propagate First();\nreturn success(value + 1);\nendSubroutine\nsubroutine Third() as result<string, string>\ndefine value as integer <- propagate Second();\nwrite value;\nreturn success(\"done\");\nendSubroutine\nalgorithm Main\ndiscard Third();\nendAlgorithm\n"
@@ -466,10 +414,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "SubProceso Produce() Como Resultado<Entero, Cadena>\nRetornar Exito(1);\nFinSubProceso\nAlgoritmo Main\nProduce();\nFinAlgoritmo\n",
@@ -497,10 +441,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "SubProceso Produce() Como Resultado<Entero, Cadena>\nRetornar Exito(1);\nFinSubProceso\nAlgoritmo Main\nDefinir outcome Como Resultado<Entero, Cadena> <- Produce();\nFinAlgoritmo\n",
     "en": "subroutine Produce() as result<integer, string>\nreturn success(1);\nendSubroutine\nalgorithm Main\ndefine outcome as result<integer, string> <- Produce();\nendAlgorithm\n"
@@ -527,10 +467,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "SubProceso Produce() Como Resultado<Entero, Cadena>\nRetornar Exito(1);\nFinSubProceso\nAlgoritmo Main\nDescartar Produce();\nFinAlgoritmo\n",
     "en": "subroutine Produce() as result<integer, string>\nreturn success(1);\nendSubroutine\nalgorithm Main\ndiscard Produce();\nendAlgorithm\n"
@@ -551,10 +487,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo Main\nDescartar 1;\nFinAlgoritmo\n",
@@ -582,10 +514,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo Main\nDefinir outcome Como Resultado<Real, Cadena> <- Exito(2.5);\nSegun outcome Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem;\nFinSegun\nFinAlgoritmo\n",
     "en": "algorithm Main\ndefine outcome as result<real, string> <- success(2.5);\nswitch outcome do\nsuccess(value): write value;\nfailure(problem): write problem;\nendSwitch\nendAlgorithm\n"
@@ -606,10 +534,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Algoritmo Main\nDefinir outcome Como Resultado<Entero, Cadena> <- Exito((-9223372036854775807 - 1));\nSegun outcome Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem;\nFinSegun\nFinAlgoritmo\n",
@@ -632,10 +556,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo Main\nDefinir outcome Como Resultado<Logico, Cadena> <- Exito(Falso);\nSegun outcome Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem;\nFinSegun\nFinAlgoritmo\n",
     "en": "algorithm Main\ndefine outcome as result<boolean, string> <- success(false);\nswitch outcome do\nsuccess(value): write value;\nfailure(problem): write problem;\nendSwitch\nendAlgorithm\n"
@@ -656,10 +576,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "Clase Holder\nDefinir amount Como Entero;\nFinClase\nAlgoritmo Main\nDefinir value Como Opcional<Holder> <- Nada;\nSegun value Hacer\nAlgo(found): Escribir found.amount;\nNada: Escribir 0;\nFinSegun\nFinAlgoritmo\n",

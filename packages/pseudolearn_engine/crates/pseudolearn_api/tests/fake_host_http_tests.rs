@@ -110,10 +110,10 @@ fn records_and_replays_http_error_responses_without_the_host() -> Result<(), Str
     let request = json!({
         "program": program,
         "profile": "es",
-        "strictness": "strict",
+
         "host": host
     });
-    compile_source_to_ir(program, "es", "strict")
+    compile_source_to_ir(program, "es")
         .map_err(|diagnostics| format!("HTTP lowering failed: {diagnostics:?}"))?;
     let mut api = ApiSession::default();
     let recording = api.call(
@@ -172,7 +172,7 @@ fn replays_concurrent_http_deliveries_with_an_identity_only_host() -> Result<(),
     let mut api = ApiSession::default();
     let recording = api.call(
         "record",
-        &json!({"request": {"program": program, "profile": "es", "strictness": "strict", "host": host},
+        &json!({"request": {"program": program, "profile": "es",  "host": host},
             "options": {"capture_states": false}}),
     );
     let value = recording
@@ -181,7 +181,7 @@ fn replays_concurrent_http_deliveries_with_an_identity_only_host() -> Result<(),
     let identity_host = json!({});
     let replay = api.call(
         "record",
-        &json!({"request": {"program": program, "profile": "es", "strictness": "strict",
+        &json!({"request": {"program": program, "profile": "es",
             "host": identity_host, "execution_mode": "replay_from_tape",
             "effect_tape": value.get("effect_tape").cloned().ok_or("missing HTTP effect tape")?},
             "options": {"capture_states": false}}),
@@ -252,7 +252,7 @@ fn execute_http_case(case: &Value, case_id: &str, profile: &str) -> Result<Value
         .pointer(&format!("/programas/{profile}"))
         .and_then(Value::as_str)
         .ok_or("missing HTTP program")?;
-    compile_source_to_ir(program, profile, "strict")
+    compile_source_to_ir(program, profile)
         .map_err(|diagnostics| format!("case {case_id} lowering failed: {diagnostics:?}"))?;
     let host = case.get("anfitrion").cloned().ok_or("missing HTTP host")?;
     let mut api = ApiSession::default();
@@ -262,7 +262,7 @@ fn execute_http_case(case: &Value, case_id: &str, profile: &str) -> Result<Value
             "request": {
                 "program": program,
                 "profile": profile,
-                "strictness": "strict",
+
                 "limits": case.get("limites").cloned().unwrap_or_else(|| json!({})),
                 "host": host
             },
@@ -342,12 +342,12 @@ fn rejects_http_request_digest_divergence_with_no_scripted_response() -> Result<
 
         "http": {"GET https://fake.test/a": {"estado": 200}}
     });
-    compile_source_to_ir(program, "es", "strict")
+    compile_source_to_ir(program, "es")
         .map_err(|diagnostics| format!("HTTP lowering failed: {diagnostics:?}"))?;
     let mut api = ApiSession::default();
     let recording = api.call(
         "record",
-        &json!({"request":{"program":program,"profile":"es","strictness":"strict","host":host},"options":{"capture_states":false}}),
+        &json!({"request":{"program":program,"profile":"es","host":host},"options":{"capture_states":false}}),
     );
     let tape_value = recording
         .pointer("/value/effect_tape")
@@ -371,7 +371,7 @@ fn replay_http_tape(
     let started = api.call(
         "start",
         &json!({"analysis":analysis.pointer("/value/resource"),"program":program,"profile":"es",
-            "strictness":"strict","seed":42,"host":host,"execution_mode":"replay_from_tape",
+            "seed":42,"host":host,"execution_mode":"replay_from_tape",
             "effect_tape":effect_tape}),
     );
     if started.get("failure").is_some() {

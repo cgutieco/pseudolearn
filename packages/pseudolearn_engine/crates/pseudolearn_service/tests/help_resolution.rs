@@ -5,9 +5,9 @@ use pseudolearn_service::{
     HoverCategory, help_content, resolve_help_at_position,
 };
 
-fn resolve(marked: &str, profile: Profile, strict: bool) -> Option<HelpQueryOutcome> {
+fn resolve(marked: &str, profile: Profile) -> Option<HelpQueryOutcome> {
     let (source, position) = split_cursor(marked);
-    let document = DocumentSession::new(source, profile, strict);
+    let document = DocumentSession::new(source, profile);
     resolve_help_at_position(&document, position)
 }
 
@@ -19,7 +19,7 @@ fn identity(resolution: &HelpResolution) -> Option<(&HelpIdentityKind, &str, &st
 }
 
 fn card_id(marked: &str, profile: Profile) -> Option<String> {
-    let result = resolve(marked, profile, true)?;
+    let result = resolve(marked, profile)?;
     help_content(&result, HelpLocale::English).map(|content| content.card_id.to_owned())
 }
 
@@ -28,7 +28,7 @@ fn compound_selection_preserves_the_full_lexeme_and_source_range() -> Result<(),
     let program = "Algoritmo P\nPara i <- 1 Hasta 2 Con\tPaso 1 Hacer\nFinPara\nFinAlgoritmo\n";
     for marked in ["Con|\tPaso", "Con\t|Paso", "Con\tPas|o"] {
         let source = program.replace("Con\tPaso", marked);
-        let result = resolve(&source, Profile::Spanish, true).ok_or("missing resolution")?;
+        let result = resolve(&source, Profile::Spanish).ok_or("missing resolution")?;
         assert_eq!(
             identity(&result.resolution),
             Some((&HelpIdentityKind::Construction, "for", "step_clause"))
@@ -43,13 +43,13 @@ fn compound_selection_preserves_the_full_lexeme_and_source_range() -> Result<(),
 #[test]
 fn until_and_for_boundaries_resolve_to_different_roles() -> Result<(), String> {
     let for_loop = "Algoritmo P\nPara i <- 1 Has|ta 2 Hacer\nFinPara\nFinAlgoritmo\n";
-    let upper_bound = resolve(for_loop, Profile::Spanish, true).ok_or("missing resolution")?;
+    let upper_bound = resolve(for_loop, Profile::Spanish).ok_or("missing resolution")?;
     assert_eq!(
         identity(&upper_bound.resolution),
         Some((&HelpIdentityKind::Construction, "for", "range_limit"))
     );
     let repeat = "Algoritmo P\nRepetir\nHas|ta Que Verdadero\nFinAlgoritmo\n";
-    let condition = resolve(repeat, Profile::Spanish, true).ok_or("missing resolution")?;
+    let condition = resolve(repeat, Profile::Spanish).ok_or("missing resolution")?;
     assert_eq!(
         identity(&condition.resolution),
         Some((&HelpIdentityKind::Construction, "repeat", "condition_start"))
@@ -76,7 +76,7 @@ fn body_markers_resolve_in_for_while_and_switch() -> Result<(), String> {
         ),
     ];
     for (program, construction) in examples {
-        let result = resolve(program, Profile::Spanish, true).ok_or("missing resolution")?;
+        let result = resolve(program, Profile::Spanish).ok_or("missing resolution")?;
         assert_eq!(
             identity(&result.resolution),
             Some((&HelpIdentityKind::Construction, construction, "body_start"))
@@ -88,13 +88,13 @@ fn body_markers_resolve_in_for_while_and_switch() -> Result<(), String> {
 #[test]
 fn parameter_passing_and_keyword_aliases_keep_stable_identity() -> Result<(), String> {
     let parameter = "SubProceso cambiar(valor Como Entero Por\tRef|erencia)\nFinSubProceso\nAlgoritmo P\nFinAlgoritmo\n";
-    let reference = resolve(parameter, Profile::Spanish, true).ok_or("missing resolution")?;
+    let reference = resolve(parameter, Profile::Spanish).ok_or("missing resolution")?;
     assert_eq!(
         identity(&reference.resolution),
         Some((&HelpIdentityKind::Role, "parameter", "pass_by_reference"))
     );
     let alias = "Algoritmo P\nSi Verdadero Entonces\nEscribir 1;\nSi|No\nEscribir 2;\nFinSi\nFinAlgoritmo\n";
-    let else_keyword = resolve(alias, Profile::Spanish, true).ok_or("missing resolution")?;
+    let else_keyword = resolve(alias, Profile::Spanish).ok_or("missing resolution")?;
     assert_eq!(
         identity(&else_keyword.resolution),
         Some((&HelpIdentityKind::Keyword, "elseKeyword", "keyword"))
@@ -105,7 +105,7 @@ fn parameter_passing_and_keyword_aliases_keep_stable_identity() -> Result<(), St
 #[test]
 fn symbols_take_precedence_over_builtins_and_operators_are_resolved() -> Result<(), String> {
     let shadow = "Algoritmo P\nDefinir Longitud Como Entero;\nLongitud <- 2;\nEscribir Longi|tud;\nFinAlgoritmo\n";
-    let user_symbol = resolve(shadow, Profile::Spanish, true).ok_or("missing resolution")?;
+    let user_symbol = resolve(shadow, Profile::Spanish).ok_or("missing resolution")?;
     assert_eq!(user_symbol.resolution.identity, None);
     assert_eq!(
         user_symbol
@@ -120,13 +120,13 @@ fn symbols_take_precedence_over_builtins_and_operators_are_resolved() -> Result<
         Some(HoverCategory::Variable)
     );
     let builtin = "Algoritmo P\nEscribir Longi|tud(\"hola\");\nFinAlgoritmo\n";
-    let intrinsic = resolve(builtin, Profile::Spanish, true).ok_or("missing resolution")?;
+    let intrinsic = resolve(builtin, Profile::Spanish).ok_or("missing resolution")?;
     assert_eq!(
         identity(&intrinsic.resolution),
         Some((&HelpIdentityKind::Builtin, "length", "call"))
     );
     let operator = "Algoritmo P\nEscribir 1 +| 2;\nFinAlgoritmo\n";
-    let addition = resolve(operator, Profile::Spanish, true).ok_or("missing resolution")?;
+    let addition = resolve(operator, Profile::Spanish).ok_or("missing resolution")?;
     assert_eq!(
         identity(&addition.resolution),
         Some((&HelpIdentityKind::Operator, "plus", "binary"))
@@ -141,12 +141,8 @@ fn contextual_constructions_select_cards_by_their_resolved_identity() -> Result<
     let export = "Exportar geo.Punto;\nAlgoritmo Main\nFinAlgoritmo\n";
     let iteration = "Algoritmo Main\nPara Cada value En values Hacer\nFinPara\nFinAlgoritmo\n";
     let variants = "Algoritmo Main\nDefinir value Como Opcional<Entero>;\nFinAlgoritmo\n";
-    let import = resolve(
-        &imports.replace("Importar", "Im|portar"),
-        Profile::Spanish,
-        true,
-    )
-    .ok_or("missing standalone import resolution")?;
+    let import = resolve(&imports.replace("Importar", "Im|portar"), Profile::Spanish)
+        .ok_or("missing standalone import resolution")?;
     assert_eq!(import.token_identity.as_deref(), Some("importKeyword"));
     assert_eq!(
         identity(&import.resolution),
@@ -202,14 +198,14 @@ fn no_help_is_inferred_from_trivia_literals_comments_or_nearby_text() {
         "Algoritmo P\n| \nFinAlgoritmo\n",
         "",
     ] {
-        assert!(resolve(marked, Profile::Spanish, true).is_none());
+        assert!(resolve(marked, Profile::Spanish).is_none());
     }
 }
 
 #[test]
 fn truncated_context_keeps_only_partial_lexical_certainty() -> Result<(), String> {
-    let result = resolve("Algoritmo P\nMient|ras", Profile::Spanish, true)
-        .ok_or("missing lexical resolution")?;
+    let result =
+        resolve("Algoritmo P\nMient|ras", Profile::Spanish).ok_or("missing lexical resolution")?;
     assert_eq!(
         identity(&result.resolution),
         Some((&HelpIdentityKind::Keyword, "whileKeyword", "keyword"))
@@ -220,7 +216,7 @@ fn truncated_context_keeps_only_partial_lexical_certainty() -> Result<(), String
 }
 
 #[test]
-fn profile_and_strictness_matrix_keeps_construction_identity() -> Result<(), String> {
+fn profiles_keep_construction_identity() -> Result<(), String> {
     let programs = [
         (
             Profile::Spanish,
@@ -237,14 +233,12 @@ fn profile_and_strictness_matrix_keeps_construction_identity() -> Result<(), Str
     ];
     for (profile, program, phrase, marker) in programs {
         let marked = program.replacen(phrase, marker, 1);
-        for strict in [true, false] {
-            let result = resolve(&marked, profile, strict).ok_or("missing resolution")?;
-            assert_eq!(
-                identity(&result.resolution),
-                Some((&HelpIdentityKind::Construction, "for", "step_clause"))
-            );
-            assert_eq!(result.resolution.certainty, HelpCertainty::Certain);
-        }
+        let result = resolve(&marked, profile).ok_or("missing resolution")?;
+        assert_eq!(
+            identity(&result.resolution),
+            Some((&HelpIdentityKind::Construction, "for", "step_clause"))
+        );
+        assert_eq!(result.resolution.certainty, HelpCertainty::Certain);
     }
     Ok(())
 }
@@ -253,7 +247,7 @@ fn profile_and_strictness_matrix_keeps_construction_identity() -> Result<(), Str
 fn boolean_words_resolve_to_their_lexical_identity_and_other_literals_do_not() -> Result<(), String>
 {
     let program = "Algoritmo P\nEscribir Verd|adero;\nEscribir Falso;\nEscribir 4;\nFinAlgoritmo\n";
-    let result = resolve(program, Profile::Spanish, true).ok_or("missing resolution")?;
+    let result = resolve(program, Profile::Spanish).ok_or("missing resolution")?;
     assert_eq!(
         identity(&result.resolution),
         Some((&HelpIdentityKind::Keyword, "booleanTrue", "literal"))
@@ -263,7 +257,6 @@ fn boolean_words_resolve_to_their_lexical_identity_and_other_literals_do_not() -
     let falsy = resolve(
         "Algoritmo P\nEscribir Fal|so;\nFinAlgoritmo\n",
         Profile::Spanish,
-        true,
     )
     .ok_or("missing resolution")?;
     assert_eq!(
@@ -273,8 +266,7 @@ fn boolean_words_resolve_to_their_lexical_identity_and_other_literals_do_not() -
     assert!(
         resolve(
             "Algoritmo P\nEscribir |4;\nFinAlgoritmo\n",
-            Profile::Spanish,
-            true
+            Profile::Spanish
         )
         .is_none()
     );

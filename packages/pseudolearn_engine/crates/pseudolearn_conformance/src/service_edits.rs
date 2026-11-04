@@ -53,7 +53,6 @@ pub fn handle_random_probe(request: &ServiceRequest<'_>) -> Value {
                 program,
                 IncrementalProbe {
                     profile: request.profile(),
-                    strict: request.strict(),
                     seed: seed_of(request),
                     steps: 8,
                 })

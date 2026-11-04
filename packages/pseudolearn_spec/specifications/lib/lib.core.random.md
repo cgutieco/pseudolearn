@@ -65,10 +65,6 @@
     "salida": "{{lexema:booleanTrue}}\n",
     "terminacion": "completed"
   },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "semilla": 42
 }
 ```
@@ -91,10 +87,6 @@
     "salida": "{{lexema:booleanTrue}}\n",
     "terminacion": "completed"
   },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "semilla": 0
 }
 ```
@@ -121,10 +113,6 @@
         "severidad": "error"
       }
     ]
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```

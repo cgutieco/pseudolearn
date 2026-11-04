@@ -173,10 +173,7 @@ fn execution_is_blocked_while_a_link_is_pending() -> Result<(), String> {
         .cloned();
     let blocked = match analysis {
         Some(resource) => session.call("start", &json!({"resource":resource})),
-        None => session.call(
-            "execute",
-            &json!({"program":program,"profile":"es","strictness":"strict"}),
-        ),
+        None => session.call("execute", &json!({"program":program,"profile":"es"})),
     };
     assert!(blocked.get("failure").is_some(), "{blocked}");
     Ok(())

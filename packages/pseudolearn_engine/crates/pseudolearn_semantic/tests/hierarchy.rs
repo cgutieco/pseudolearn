@@ -10,7 +10,7 @@ fn checks_deep_inheritance_without_host_recursion() -> Result<(), String> {
         ));
     }
     source.push_str("algorithm Entry\nendAlgorithm\n");
-    let (module, diagnostics) = support::analyze(&source, true);
+    let (module, diagnostics) = support::analyze(&source);
     assert!(diagnostics.is_empty(), "{diagnostics:?}");
     assert_eq!(module.ok_or("Missing HIR")?.classes.len(), 1500);
     Ok(())
@@ -20,7 +20,6 @@ fn checks_deep_inheritance_without_host_recursion() -> Result<(), String> {
 fn reports_a_self_cycle_once() {
     let (module, diagnostics) = support::analyze(
         "class Recursive inheritsFrom Recursive\nendClass\nalgorithm Entry\nendAlgorithm\n",
-        true,
     );
     assert!(module.is_none());
     assert_eq!(

@@ -38,7 +38,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Espacio y tabulación separan tokens; indentación no tiene significado. El salto de línea termina sentencias simples cuando el rigor admite omitir el terminador. Un lexema multipalabra no cruza un salto de línea.",
+  "texto": "Espacio, tabulación y salto de línea separan tokens; la indentación no tiene significado y el salto de línea no sustituye el punto y coma obligatorio. Un lexema multipalabra no cruza un salto de línea.",
   "verificacion": [
     "C1",
     "C2",
@@ -64,11 +64,7 @@
   "espera": {
     "salida": "1\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -87,12 +83,18 @@
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
-    "salida": "1\n2\n",
-    "terminacion": "completed"
-  },
-  "rigor": [
-    "flexible"
-  ]
+    "terminacion": "failed",
+    "diagnosticos": [
+      {
+        "codigo": "missingStatementTerminator",
+        "severidad": "error"
+      },
+      {
+        "codigo": "missingStatementTerminator",
+        "severidad": "error"
+      }
+    ]
+  }
 }
 ```
 
@@ -114,10 +116,6 @@
     "fallo": {
       "codigo": "analysisFailed"
     }
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```

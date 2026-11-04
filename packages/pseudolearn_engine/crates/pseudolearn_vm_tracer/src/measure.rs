@@ -26,7 +26,7 @@ pub fn prepare_workload_with_superinstructions(
     workload: &Workload,
     selected: &[SuperInstruction],
 ) -> Result<VerifiedBytecode, String> {
-    let ir_text = compile_source_to_ir(&workload.source, "es", "flexible")
+    let ir_text = compile_source_to_ir(&workload.source, "es")
         .map_err(|diagnostics| format!("source compilation failed: {diagnostics:?}"))?;
     let compiled = if selected.is_empty() {
         compile_text(&ir_text)

@@ -13,7 +13,6 @@ fn diagnostics_with(text: &str, limits: ConstantLimits) -> Vec<DiagnosticCode> {
         &source,
         SemanticOptions {
             profile: Profile::English,
-            strict: false,
         },
     );
     session.constant_limits = limits;

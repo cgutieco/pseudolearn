@@ -72,11 +72,7 @@ revisado_por:
   "espera": {
     "salida": "0:0\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -97,11 +93,7 @@ revisado_por:
   "espera": {
     "salida": "2:97:98\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -123,11 +115,7 @@ revisado_por:
     "fallo": {
       "codigo": "bytesRangeOutOfBounds"
     }
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -148,11 +136,7 @@ revisado_por:
   "espera": {
     "salida": "2:97:98\n2:97:98\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```
 
@@ -173,10 +157,6 @@ revisado_por:
   "espera": {
     "salida": "4:240:159:152:128\n",
     "terminacion": "completed"
-  },
-  "rigor": [
-    "estricto",
-    "flexible"
-  ]
+  }
 }
 ```

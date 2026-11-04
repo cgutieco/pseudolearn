@@ -61,10 +61,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "Algoritmo P\nDefinir stream Como Canal<Entero> <- Canal(1);\nSegun Aguardar stream.Recibir() Hacer\nAlgo(receivedValue): Escribir receivedValue;\nNada: Escribir 0;\nFinSegun\nFinAlgoritmo\n",
     "en": "algorithm P\ndefine stream as channel<integer> <- channel(1);\nswitch await stream.receive() do\nsome(receivedValue): write receivedValue;\nnone: write 0;\nendSwitch\nendAlgorithm\n"
@@ -88,10 +84,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "SubProceso Suspendible Receive(stream Como Canal<Entero>)\nSegun Aguardar stream.Recibir() Hacer\nAlgo(receivedValue): Escribir receivedValue;\nNada: Escribir 0;\nFinSegun\nFinSubProceso\nAlgoritmo P\nDefinir stream Como Canal<Entero> <- Canal(1);\nTareas\nLanzar Receive(stream);\nFinTareas\nFinAlgoritmo\n",
@@ -117,10 +109,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "SubProceso Suspendible Receive(first Como Canal<Entero>, second Como Canal<Entero>)\nSegun Aguardar first.Recibir() Hacer\nAlgo(receivedValue): Escribir receivedValue;\nNada: Escribir 0;\nFinSegun\nDefinir accepted Como Logico <- Aguardar second.Enviar(1);\nSi accepted Entonces\nFinSi\nFinSubProceso\nAlgoritmo P\nDefinir stream Como Canal<Entero> <- Canal(1);\nDefinir other Como Canal<Entero> <- Canal(1);\nTareas\nLanzar Receive(stream, other);\nLanzar Receive(other, stream);\nFinTareas\nFinAlgoritmo\n",
     "en": "subroutine suspendable Receive(first as channel<integer>, second as channel<integer>)\nswitch await first.receive() do\nsome(receivedValue): write receivedValue;\nnone: write 0;\nendSwitch\ndefine accepted as boolean <- await second.send(1);\nif accepted then\nendIf\nendSubroutine\nalgorithm P\ndefine stream as channel<integer> <- channel(1);\ndefine other as channel<integer> <- channel(1);\ntasks\nspawn Receive(stream, other);\nspawn Receive(other, stream);\nendTasks\nendAlgorithm\n"
@@ -144,10 +132,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "SubProceso Suspendible Wait()\nDescartar Aguardar SolicitarTemporizador();\nFinSubProceso\nAlgoritmo P\nDefinir stream Como Canal<Entero> <- Canal(1);\nTareas\nLanzar Wait();\nSegun Aguardar stream.Recibir() Hacer\nAlgo(receivedValue): Escribir receivedValue;\nNada: Escribir 0;\nFinSegun\nFinTareas\nFinAlgoritmo\n",
@@ -177,10 +161,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "SubProceso Suspendible Wait()\nDescartar Aguardar SolicitarTemporizador();\nFinSubProceso\nSubProceso Suspendible Fail() Como Resultado<Entero, Cadena>\nRetornar Error(\"failed\");\nFinSubProceso\nAlgoritmo P\nDefinir stream Como Canal<Entero> <- Canal(1);\nTareas failureReport\nLanzar Wait();\nLanzar Fail();\nFinTareas\nDescartar failureReport;\nSegun Aguardar stream.Recibir() Hacer\nAlgo(receivedValue): Escribir receivedValue;\nNada: Escribir 0;\nFinSegun\nFinAlgoritmo\n",
@@ -278,10 +258,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "SubProceso Suspendible Say(name Como Cadena)\nEscribir name;\nFinSubProceso\nAlgoritmo Main\nTareas\nLanzar Say(\"alpha\");\nLanzar Say(\"beta\");\nLanzar Say(\"gamma\");\nEscribir \"parent\";\nFinTareas\nEscribir \"joined\";\nFinAlgoritmo\n",
     "en": "subroutine suspendable Say(name as string)\nwrite name;\nendSubroutine\nalgorithm Main\ntasks\nspawn Say(\"alpha\");\nspawn Say(\"beta\");\nspawn Say(\"gamma\");\nwrite \"parent\";\nendTasks\nwrite \"joined\";\nendAlgorithm\n"
@@ -302,10 +278,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "SubProceso Suspendible Waiter(name Como Cadena, stream Como Canal<Entero>)\nSegun Aguardar stream.Recibir() Hacer\nAlgo(value): Escribir name;\nNada: Escribir name;\nFinSegun\nFinSubProceso\nSubProceso Suspendible Closer(stream Como Canal<Entero>)\nEscribir \"closing\";\nstream.Cerrar();\nFinSubProceso\nAlgoritmo Main\nDefinir stream Como Canal<Entero> <- Canal(1);\nTareas\nLanzar Waiter(\"alpha\", stream);\nLanzar Waiter(\"beta\", stream);\nLanzar Waiter(\"gamma\", stream);\nLanzar Closer(stream);\nFinTareas\nFinAlgoritmo\n",
@@ -328,10 +300,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "SubProceso Suspendible Work(marker Como Entero)\nDefinir Mutable counter Como Entero <- 0;\nMientras counter < 1024 Hacer\nEscribir marker;\ncounter <- counter + 1;\nFinMientras\nFinSubProceso\nAlgoritmo Main\nTareas\nLanzar Work(1);\nLanzar Work(2);\nFinTareas\nFinAlgoritmo\n",
     "en": "subroutine suspendable Work(marker as integer)\ndefine mutable counter as integer <- 0;\nwhile counter < 1024 do\nwrite marker;\ncounter <- counter + 1;\nendWhile\nendSubroutine\nalgorithm Main\ntasks\nspawn Work(1);\nspawn Work(2);\nendTasks\nendAlgorithm\n"
@@ -352,10 +320,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "SubProceso Suspendible Work(marker Como Entero)\nDefinir Mutable counter Como Entero <- 0;\nMientras counter < 10 Hacer\nEscribir marker;\ncounter <- counter + 1;\nFinMientras\nFinSubProceso\nAlgoritmo Main\nTareas\nLanzar Work(1);\nLanzar Work(2);\nFinTareas\nFinAlgoritmo\n",
@@ -378,10 +342,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "SubProceso Suspendible Work(marker Como Entero)\nDefinir Mutable counter Como Entero <- 0;\nMientras counter < 1024 Hacer\nEscribir marker;\ncounter <- counter + 1;\nFinMientras\nFinSubProceso\nAlgoritmo Main\nTareas\nLanzar Work(1);\nFinTareas\nFinAlgoritmo\n",
     "en": "subroutine suspendable Work(marker as integer)\ndefine mutable counter as integer <- 0;\nwhile counter < 1024 do\nwrite marker;\ncounter <- counter + 1;\nendWhile\nendSubroutine\nalgorithm Main\ntasks\nspawn Work(1);\nendTasks\nendAlgorithm\n"
@@ -402,10 +362,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "SubProceso Suspendible Wait()\nDescartar Aguardar SolicitarTemporizador();\nEscribir \"late\";\nFinSubProceso\nSubProceso Suspendible Say()\nEscribir \"early\";\nFinSubProceso\nAlgoritmo Main\nTareas\nLanzar Wait();\nLanzar Say();\nFinTareas\nFinAlgoritmo\n",
@@ -429,10 +385,6 @@
     "es",
     "en"
   ],
-  "rigor": [
-    "estricto",
-    "flexible"
-  ],
   "programas": {
     "es": "SubProceso Suspendible Work(marker Como Entero)\nDefinir Mutable counter Como Entero <- 0;\nMientras counter < 5 Hacer\nEscribir marker;\ncounter <- counter + 1;\nFinMientras\nFinSubProceso\nAlgoritmo Main\nTareas\nLanzar Work(1);\nLanzar Work(2);\nLanzar Work(3);\nFinTareas\nFinAlgoritmo\n",
     "en": "subroutine suspendable Work(marker as integer)\ndefine mutable counter as integer <- 0;\nwhile counter < 5 do\nwrite marker;\ncounter <- counter + 1;\nendWhile\nendSubroutine\nalgorithm Main\ntasks\nspawn Work(1);\nspawn Work(2);\nspawn Work(3);\nendTasks\nendAlgorithm\n"
@@ -453,10 +405,6 @@
   "perfiles": [
     "es",
     "en"
-  ],
-  "rigor": [
-    "estricto",
-    "flexible"
   ],
   "programas": {
     "es": "SubProceso Suspendible Say(name Como Cadena)\nEscribir name;\nFinSubProceso\nAlgoritmo Main\nTareas\nLanzar Say(\"child\");\nEscribir \"first\";\nEscribir \"second\";\nFinTareas\nFinAlgoritmo\n",

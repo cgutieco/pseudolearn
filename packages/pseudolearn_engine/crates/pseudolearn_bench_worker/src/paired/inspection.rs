@@ -14,8 +14,7 @@ pub fn save(case: &CorpusCase, directory: &Path, object: &Path) -> Result<Value,
     });
     let prepared = prepare_native_benchmark(&request).map_err(|error| format!("{error:?}"))?;
     let inspected = inspect_benchmark_object(&prepared).map_err(|error| format!("{error:?}"))?;
-    let ir =
-        compile_source_to_ir(&case.source, "es", "strict").map_err(|error| format!("{error:?}"))?;
+    let ir = compile_source_to_ir(&case.source, "es").map_err(|error| format!("{error:?}"))?;
     let root = directory.join(&case.name);
     std::fs::create_dir_all(&root).map_err(|error| error.to_string())?;
     std::fs::write(root.join("program.ir"), &ir).map_err(|error| error.to_string())?;

@@ -7,7 +7,6 @@ use serde_json::{Value, json};
 
 fn identity() -> ExecutionIdentity {
     ExecutionIdentity {
-        strictness: "strict".to_owned(),
         limits: Default::default(),
         source_digest: "source".to_owned(),
         package_graph_digest: "graph".to_owned(),

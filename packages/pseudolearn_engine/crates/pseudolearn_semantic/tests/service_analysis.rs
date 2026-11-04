@@ -12,7 +12,6 @@ fn locates_symbols_and_references_for_service_analysis() {
     let (tree, _) = parse_source(&source, Profile::Spanish);
     let options = SemanticOptions {
         profile: Profile::Spanish,
-        strict: true,
     };
     let analysis = analyze_for_service(&tree, &source, options);
     assert!(analysis.diagnostics.is_empty());
@@ -32,7 +31,6 @@ fn returns_none_when_querying_unknown_byte_offsets() {
     let (tree, _) = parse_source(&source, Profile::Spanish);
     let options = SemanticOptions {
         profile: Profile::Spanish,
-        strict: true,
     };
     let analysis = analyze_for_service(&tree, &source, options);
     assert!(analysis.symbol_at_byte_offset(9999).is_none());
@@ -52,7 +50,6 @@ fn locates_method_call_definition() {
     let (tree, _) = parse_source(&source, Profile::Spanish);
     let options = SemanticOptions {
         profile: Profile::Spanish,
-        strict: true,
     };
     let analysis = analyze_for_service(&tree, &source, options);
     let offset = 124;

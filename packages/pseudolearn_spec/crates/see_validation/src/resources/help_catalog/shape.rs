@@ -106,8 +106,7 @@ fn check_locale_examples(card: &Value, locale: &str) -> Result<(), String> {
     let mut references = BTreeSet::new();
     for example in array(content, "examples")? {
         let profile = required_text(example, "profile")?;
-        let strictness = required_text(example, "strictness")?;
-        if !available(card, "profiles", profile) || !available(card, "strictness", strictness) {
+        if !available(card, "profiles", profile) {
             return Err("SEE-HELP-CATALOG: example exceeds card availability".to_owned());
         }
         if profile != locale {
@@ -117,7 +116,6 @@ fn check_locale_examples(card: &Value, locale: &str) -> Result<(), String> {
             required_text(example, "specification")?,
             required_text(example, "version")?,
             required_text(example, "case")?,
-            strictness,
         );
         if !references.insert(key) {
             return Err("SEE-HELP-CATALOG: duplicate example reference".to_owned());
@@ -215,21 +213,19 @@ fn card_tokens(card: &Value) -> Result<BTreeSet<String>, String> {
 }
 
 fn scope_contains(container: &Value, contained: &Value) -> bool {
-    ["editions", "profiles", "strictness"]
-        .iter()
-        .all(|dimension| {
-            let available = container
-                .pointer(&format!("/availability/{dimension}"))
-                .and_then(Value::as_array);
-            let requested = contained
-                .pointer(&format!("/availability/{dimension}"))
-                .and_then(Value::as_array);
-            available
-                .zip(requested)
-                .is_some_and(|(available, requested)| {
-                    requested.iter().all(|value| available.contains(value))
-                })
-        })
+    ["editions", "profiles"].iter().all(|dimension| {
+        let available = container
+            .pointer(&format!("/availability/{dimension}"))
+            .and_then(Value::as_array);
+        let requested = contained
+            .pointer(&format!("/availability/{dimension}"))
+            .and_then(Value::as_array);
+        available
+            .zip(requested)
+            .is_some_and(|(available, requested)| {
+                requested.iter().all(|value| available.contains(value))
+            })
+    })
 }
 
 fn identity_key(value: &Value) -> Result<(String, String, String), String> {
@@ -272,7 +268,7 @@ fn available(card: &Value, dimension: &str, value: &str) -> bool {
 }
 
 fn scopes_overlap(left: &Value, right: &Value) -> bool {
-    ["editions", "profiles", "strictness"]
+    ["editions", "profiles"]
         .iter()
         .all(|dimension| intersects(left, right, dimension))
 }

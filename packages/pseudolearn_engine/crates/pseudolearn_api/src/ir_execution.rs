@@ -1,14 +1,13 @@
 use crate::model::{ApiDiagnostic, IrRequest, IrResponse};
-use pseudolearn_diagnostics::{Diagnostic, DiagnosticCode, DiagnosticSeverity, sort_diagnostics};
+use pseudolearn_diagnostics::{Diagnostic, DiagnosticSeverity, sort_diagnostics};
 use pseudolearn_ir::Module;
 use pseudolearn_lexicon::Profile;
 use pseudolearn_semantic::{HirModule, SemanticOptions, analyze_with_options};
 use pseudolearn_source::SourceText;
-use pseudolearn_syntax::{ModuleSchema, SyntaxTree, UnitKind, parse_source_with_terminator};
+use pseudolearn_syntax::{ModuleSchema, SyntaxTree, UnitKind, parse_source};
 
 struct CompilationMode {
     profile: Profile,
-    is_strict: bool,
 }
 
 struct ParsedCompilation {
@@ -25,7 +24,6 @@ pub fn execute_ir(request: &IrRequest) -> IrResponse {
         return match compile_source_to_ir_with_identity(
             &request.program,
             &request.profile,
-            &request.strictness,
             request.source,
         ) {
             Ok(canonical_reprint) => IrResponse::accepted(canonical_reprint),
@@ -50,55 +48,44 @@ fn parse_ir_and_respond(program_ir: &str) -> IrResponse {
 pub fn compile_source_to_ir(
     source_content: &str,
     profile_name: &str,
-    strictness_mode: &str,
 ) -> Result<String, Vec<ApiDiagnostic>> {
-    compile_source_to_module(source_content, profile_name, strictness_mode)
+    compile_source_to_module(source_content, profile_name)
         .map(|module| pseudolearn_ir::print_canonical(&module))
 }
 
 fn compile_source_to_ir_with_identity(
     source_content: &str,
     profile_name: &str,
-    strictness_mode: &str,
     identity: Option<crate::ApiSourceIdentity>,
 ) -> Result<String, Vec<ApiDiagnostic>> {
-    compile_source_with_identity(source_content, profile_name, strictness_mode, identity)
+    compile_source_with_identity(source_content, profile_name, identity)
         .map(|(module, _)| pseudolearn_ir::print_canonical(&module))
 }
 
 pub fn compile_source_to_module(
     source_content: &str,
     profile_name: &str,
-    strictness_mode: &str,
 ) -> Result<Module, Vec<ApiDiagnostic>> {
-    compile_source_with_warnings(source_content, profile_name, strictness_mode)
-        .map(|(module, _)| module)
+    compile_source_with_warnings(source_content, profile_name).map(|(module, _)| module)
 }
 
 pub(crate) fn compile_source_with_warnings(
     source_content: &str,
     profile_name: &str,
-    strictness_mode: &str,
 ) -> Result<(Module, Vec<ApiDiagnostic>), Vec<ApiDiagnostic>> {
-    compile_source_with_identity(source_content, profile_name, strictness_mode, None)
+    compile_source_with_identity(source_content, profile_name, None)
 }
 
 pub(crate) fn compile_source_with_identity(
     source_content: &str,
     profile_name: &str,
-    strictness_mode: &str,
     identity: Option<crate::ApiSourceIdentity>,
 ) -> Result<(Module, Vec<ApiDiagnostic>), Vec<ApiDiagnostic>> {
     let mode = CompilationMode {
         profile: Profile::from_name(profile_name).unwrap_or(Profile::Spanish),
-        is_strict: strictness_mode != "flexible",
     };
     let source_text = crate::source_identity::source_text(source_content.to_owned(), identity);
-    let terminator = mode
-        .is_strict
-        .then_some(DiagnosticCode::MissingStatementTerminator);
-    let (syntax_tree, diagnostics) =
-        parse_source_with_terminator(&source_text, mode.profile, terminator);
+    let (syntax_tree, diagnostics) = parse_source(&source_text, mode.profile);
     compile_parsed_source(
         ParsedCompilation {
             syntax_tree,
@@ -126,7 +113,6 @@ fn compile_parsed_source(
         &source_text,
         SemanticOptions {
             profile: mode.profile,
-            strict: mode.is_strict,
         },
     );
     diagnostics.append(&mut semantic_diagnostics);
