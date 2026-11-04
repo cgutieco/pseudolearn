@@ -9,7 +9,7 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const wasmDirectory = resolve(root, ".artifacts/web-extension/dist/web/wasm");
 const executable = resolve(root, "bin/darwin-arm64/pseudo");
 const fixture = resolve(root, "tests/fixtures/web/project");
-const options = { profile: "es", strictness: "strict", locale: "es" };
+const options = { profile: "es", locale: "es" };
 const files = [["app/main.pseudo", "app/main"], ["geo/escalas.pseudo", "geo/escalas"], ["geo/vectores.pseudo", "geo/vectores"]];
 const manifests = ["app", "geo"];
 

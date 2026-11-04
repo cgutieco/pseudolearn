@@ -12,7 +12,7 @@ import type {
   SchedulerPort,
 } from "../../src/contracts/editor_run";
 
-const settings: RunSettings = { executable: "pseudo", language: "es", profile: "es", strictness: "strict" };
+const settings: RunSettings = { executable: "pseudo", language: "es", profile: "es" };
 const target = { kind: "file", path: "p.pseudo" } as const;
 
 class FakeProcess implements RunProcessPort {

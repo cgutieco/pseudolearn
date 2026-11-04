@@ -5,7 +5,6 @@ export interface ConfigurationInspection {
 
 export interface ExtensionConfigurationPort {
   profile: ConfigurationInspection;
-  strictness: ConfigurationInspection;
   interfaceLanguage: ConfigurationInspection;
   serverPath: ConfigurationInspection;
   workspaceTrusted: boolean;
@@ -15,19 +14,16 @@ export interface ExtensionConfigurationPort {
 }
 
 export type Profile = "es" | "en";
-export type Strictness = "strict" | "flexible";
 export type InterfaceLanguage = "es" | "en";
 
 export interface ResolvedExtensionConfiguration {
   profile: Profile;
-  strictness: Strictness;
   interfaceLanguage: InterfaceLanguage;
   serverPath: string;
 }
 
 export type ConfigurationFailure =
   | "invalidProfile"
-  | "invalidStrictness"
   | "invalidInterfaceLanguage"
   | "workspaceInterfaceLanguage"
   | "workspaceServerPath"

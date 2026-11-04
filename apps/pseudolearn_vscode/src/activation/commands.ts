@@ -18,7 +18,6 @@ function toSettings(configuration: ResolvedExtensionConfiguration): RunSettings 
     executable: configuration.serverPath,
     language: configuration.interfaceLanguage,
     profile: configuration.profile,
-    strictness: configuration.strictness,
   };
 }
 
@@ -51,7 +50,6 @@ export function registerCommands(
   };
   const client = new ClientLifecycle(new VscodeLanguageClientFactory({
       profile: settings.profile,
-      strictness: settings.strictness,
       locale: settings.language,
     }), settings.executable);
   extension.subscriptions.push(

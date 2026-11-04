@@ -37,14 +37,10 @@ function options(configuration: Record<string, unknown>, value: DebugLaunch): De
   if (configuration.profile !== undefined && !["es", "en"].includes(String(configuration.profile))) {
     return { ok: false, reason: "options" };
   }
-  if (configuration.strictness !== undefined && !["strict", "flexible"].includes(String(configuration.strictness))) {
-    return { ok: false, reason: "options" };
-  }
   if (Array.isArray(configuration.args)) value.args = configuration.args as string[];
   if (text(configuration.cwd)) value.cwd = text(configuration.cwd);
   if (seed !== undefined) value.seed = seed;
   if (configuration.profile !== undefined) value.profile = configuration.profile as "es" | "en";
-  if (configuration.strictness !== undefined) value.strictness = configuration.strictness as "strict" | "flexible";
   if (text(configuration.workspaceRoot)) value.workspaceRoot = text(configuration.workspaceRoot);
   return { ok: true, value };
 }

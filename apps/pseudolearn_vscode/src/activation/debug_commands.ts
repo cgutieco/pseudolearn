@@ -38,13 +38,12 @@ function resolve(
   if (hasUnsavedChanges(new VscodeDocuments(), target)) return refuse(configuration.interfaceLanguage);
   return { type: "pseudolearn", request: "launch", name: requested.name || "PseudoLearn", ...launch.value,
     workspaceRoot: folder?.uri.fsPath ?? path.dirname(launch.value.program ?? launch.value.project ?? ""),
-    profile: launch.value.profile ?? configuration.profile, strictness: launch.value.strictness ?? configuration.strictness };
+    profile: launch.value.profile ?? configuration.profile };
 }
 
 function descriptor(extension: vscode.ExtensionContext, session: vscode.DebugSession, configuration: ResolvedExtensionConfiguration): vscode.DebugAdapterDescriptor {
   const adapter = new NodeDebugAdapter(configuration.serverPath,
-    ["dap", "--language", configuration.interfaceLanguage, "--profile", configuration.profile,
-      "--strictness", configuration.strictness], session.configuration.workspaceRoot as string | undefined);
+    ["dap", "--language", configuration.interfaceLanguage, "--profile", configuration.profile], session.configuration.workspaceRoot as string | undefined);
   extension.subscriptions.push(adapter);
   return new vscode.DebugAdapterInlineImplementation(adapter);
 }

@@ -20,7 +20,7 @@ function worker(context: vscode.ExtensionContext, channel: "language" | "executi
 export async function activate(context: vscode.ExtensionContext): Promise<void> {
   if (!vscode.workspace.isTrusted) return;
   const configuration = vscode.workspace.getConfiguration("pseudolearn");
-  const options = { profile: configuration.get("profile", "es"), strictness: configuration.get("strictness", "strict"),
+  const options = { profile: configuration.get("profile", "es"),
     locale: configuration.get("interfaceLanguage", "es") };
   const languageApi = worker(context, "language");
   const runApi = worker(context, "execution");

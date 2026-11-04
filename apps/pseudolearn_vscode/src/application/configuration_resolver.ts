@@ -4,7 +4,6 @@ import {
   type ExtensionConfigurationPort,
   type InterfaceLanguage,
   type Profile,
-  type Strictness,
 } from "../contracts/extension_configuration";
 
 export function resolveConfiguration(
@@ -21,28 +20,19 @@ export function resolveConfiguration(
   if (!profile) {
     return failure("invalidProfile", language);
   }
-  const strictness = resolveStrictness(input);
-  if (!strictness) {
-    return failure("invalidStrictness", language);
-  }
   const serverPath = resolveServerPath(input);
   if (!serverPath.ok) {
     return { ...serverPath, language };
   }
   return {
     ok: true,
-    value: { profile, strictness, interfaceLanguage: language, serverPath: serverPath.value },
+    value: { profile, interfaceLanguage: language, serverPath: serverPath.value },
   };
 }
 
 function resolveProfile(input: ExtensionConfigurationPort): Profile | undefined {
   const value = input.profile.workspaceValue ?? input.profile.globalValue ?? "es";
   return value === "es" || value === "en" ? value : undefined;
-}
-
-function resolveStrictness(input: ExtensionConfigurationPort): Strictness | undefined {
-  const value = input.strictness.workspaceValue ?? input.strictness.globalValue ?? "strict";
-  return value === "strict" || value === "flexible" ? value : undefined;
 }
 
 function resolveInterfaceLanguage(input: ExtensionConfigurationPort): InterfaceLanguage | undefined {

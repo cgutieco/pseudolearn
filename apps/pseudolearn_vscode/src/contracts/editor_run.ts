@@ -80,5 +80,4 @@ export interface RunSettings {
   args?: readonly string[];
   language: InterfaceLanguage;
   profile: "es" | "en";
-  strictness: "strict" | "flexible";
 }

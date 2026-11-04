@@ -282,7 +282,7 @@
   "spec.control": "Estructuras de control",
   "spec.arrays": "Arreglos",
   "spec.subprograms": "Subprocesos y funciones",
-  "spec.types": "Sistema de tipos y política de rigor",
+  "spec.types": "Sistema de tipos y severidad de diagnósticos",
   "spec.builtins": "Funciones incorporadas",
   "spec.objects": "Notación orientada a objetos",
   "versions.seoTitle": "Versiones · PseudoLearn",

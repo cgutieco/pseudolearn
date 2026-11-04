@@ -4,7 +4,6 @@ export interface DebugLaunch {
   entry?: string;
   stopOnEntry: boolean;
   profile?: "es" | "en";
-  strictness?: "strict" | "flexible";
   seed?: string;
   workspaceRoot?: string;
   args?: string[];

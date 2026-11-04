@@ -30,7 +30,7 @@ export function openStack(answers: Answer[]): Stack {
   return { run, api, output, prompts: () => prompts, close: () => run.close() };
 }
 
-export const optionsFor = (profile: "es" | "en") => ({ profile, strictness: "strict", locale: profile });
+export const optionsFor = (profile: "es" | "en") => ({ profile, locale: profile });
 
 export async function projectRequest(stack: Stack, root: string, profile: "es" | "en") {
   const snapshot = await new BrowserWorkspace(stack.api, vscode.Uri.parse(root)).read();

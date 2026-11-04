@@ -5,7 +5,7 @@ import { translateDocument } from "../../src/application/translate_document";
 import type { CommandRunnerPort, TranslationEditPort } from "../../src/contracts/editor_documents";
 import type { RunSettings } from "../../src/contracts/editor_run";
 
-const settings: RunSettings = { executable: "pseudo", language: "es", profile: "es", strictness: "strict" };
+const settings: RunSettings = { executable: "pseudo", language: "es", profile: "es" };
 
 describe("hasUnsavedChanges", () => {
   it("detects unsaved files inside the project directory only", () => {

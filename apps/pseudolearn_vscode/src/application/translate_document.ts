@@ -32,8 +32,6 @@ export async function translateDocument(
     request.targetProfile,
     "--language",
     request.settings.language,
-    "--strictness",
-    request.settings.strictness,
     request.path,
   ];
   const result = await ports.runner.run(request.settings.executable, args, ".");

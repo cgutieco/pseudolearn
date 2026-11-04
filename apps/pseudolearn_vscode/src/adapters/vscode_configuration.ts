@@ -10,7 +10,6 @@ export function readVscodeConfiguration(
   const executable = process.platform === "win32" ? "pseudo.exe" : "pseudo";
   return {
     profile: configuration.inspect("profile") ?? {},
-    strictness: configuration.inspect("strictness") ?? {},
     interfaceLanguage: configuration.inspect("interfaceLanguage") ?? {},
     serverPath: configuration.inspect("server.path") ?? {},
     workspaceTrusted: vscode.workspace.isTrusted,

@@ -282,7 +282,7 @@
   "spec.control": "Control structures",
   "spec.arrays": "Arrays",
   "spec.subprograms": "Procedures and functions",
-  "spec.types": "Type system and strictness policy",
+  "spec.types": "Type system and diagnostic severity",
   "spec.builtins": "Built-in functions",
   "spec.objects": "Object-oriented notation",
   "versions.seoTitle": "Versions · PseudoLearn",

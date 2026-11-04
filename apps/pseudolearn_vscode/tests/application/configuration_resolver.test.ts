@@ -5,7 +5,6 @@ import type { ExtensionConfigurationPort } from "../../src/contracts/extension_c
 function configuration(): ExtensionConfigurationPort {
   return {
     profile: { globalValue: "es", workspaceValue: "en" },
-    strictness: { globalValue: "strict", workspaceValue: "flexible" },
     interfaceLanguage: { globalValue: "en" },
     serverPath: {},
     workspaceTrusted: true,
@@ -21,26 +20,18 @@ it("resolves workspace options and personal interface language", () => {
       ok: true,
       value: {
         profile: "en",
-        strictness: "flexible",
         interfaceLanguage: "en",
         serverPath: "/extension/bin/pseudo",
       },
     });
 });
 
-it("rejects unsupported profile and strictness values", () => {
+it("rejects unsupported profile values", () => {
     const invalidProfile = configuration();
     invalidProfile.profile.workspaceValue = "fr";
     expect(resolveConfiguration(invalidProfile)).toMatchObject({
       ok: false,
       failure: "invalidProfile",
-    });
-
-    const invalidStrictness = configuration();
-    invalidStrictness.strictness.workspaceValue = "loose";
-    expect(resolveConfiguration(invalidStrictness)).toMatchObject({
-      ok: false,
-      failure: "invalidStrictness",
     });
 });
 

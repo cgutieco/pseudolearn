@@ -15,7 +15,7 @@ export interface BrowserCommands {
   run: BrowserRun;
   output: vscode.OutputChannel;
   host: BrowserHostContext;
-  options: { profile: string; strictness: string; locale: string };
+  options: { profile: string; locale: string };
 }
 
 function register(name: string, action: () => Promise<unknown>): vscode.Disposable {
@@ -70,8 +70,7 @@ async function translate(context: BrowserCommands): Promise<void> {
   const version = document.version;
   const target = await vscode.window.showQuickPick(["es", "en"], { title: "PseudoLearn vocabulary / vocabulario" });
   if (!target) return;
-  const result = answerValue(await context.api.call("translate", encodeArguments({ program: document.getText(), target_profile: target,
-    strictness: context.options.strictness })));
+  const result = answerValue(await context.api.call("translate", encodeArguments({ program: document.getText(), target_profile: target })));
   if (document.version !== version) throw new Error("Document changed; repeat translation");
   const edit = new vscode.WorkspaceEdit();
   edit.replace(document.uri, new vscode.Range(document.positionAt(0), document.positionAt(document.getText().length)), String(result.text));

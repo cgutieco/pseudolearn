@@ -98,7 +98,7 @@ async function edit(api: ApiPort, options: Options): Promise<Record<string, unkn
   const resource = text(answerValue(await api.call("create_lsp", "{}")).resource);
   const uri = "file:" + "///edit.pseudo";
   await lspRound(api, resource, { jsonrpc: "2.0", id: 1, method: "initialize", params: { processId: null, rootUri: null, capabilities: {},
-    initializationOptions: { profile: "es", strictness: "strict", locale: "es" } } });
+    initializationOptions: { profile: "es", locale: "es" } } });
   await lspRound(api, resource, { jsonrpc: "2.0", method: "initialized", params: {} });
   await lspRound(api, resource, { jsonrpc: "2.0", method: "textDocument/didOpen",
     params: { textDocument: { uri, languageId: "pseudolearn", version: 1, text: options.workload.source } } });

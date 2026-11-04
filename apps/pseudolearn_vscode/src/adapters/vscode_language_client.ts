@@ -15,7 +15,6 @@ interface ExplainResult {
 
 export interface LanguageServerOptions {
   profile: "es" | "en";
-  strictness: "strict" | "flexible";
   locale: "es" | "en";
 }
 

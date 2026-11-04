@@ -25,7 +25,7 @@ export class BrowserLanguageService {
   private queue = Promise.resolve();
   private pending = 0;
 
-  constructor(private readonly api: ApiPort, options: { profile: string; strictness: string; locale: string }) {
+  constructor(private readonly api: ApiPort, options: { profile: string; locale: string }) {
     const channel = new MessageChannel();
     channel.port2.onmessage = (event) => this.enqueue(event.data, channel.port2);
     this.client = new LanguageClient("pseudolearn", "PseudoLearn", async () => {

@@ -117,16 +117,6 @@
           "scope": "window",
           "description": "Fallback vocabulary profile for workspace analyses."
         },
-        "pseudolearn.strictness": {
-          "type": "string",
-          "enum": [
-            "strict",
-            "flexible"
-          ],
-          "default": "strict",
-          "scope": "window",
-          "description": "Analysis strictness for this workspace."
-        },
         "pseudolearn.interfaceLanguage": {
           "type": "string",
           "enum": [
@@ -179,12 +169,6 @@
                 "enum": [
                   "es",
                   "en"
-                ]
-              },
-              "strictness": {
-                "enum": [
-                  "strict",
-                  "flexible"
                 ]
               },
               "seed": {

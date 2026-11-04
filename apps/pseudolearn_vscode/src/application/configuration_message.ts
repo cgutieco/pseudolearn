@@ -8,10 +8,6 @@ const messages: Record<ConfigurationFailure, Record<InterfaceLanguage, string>> 
     es: "El perfil de PseudoLearn debe ser es o en.",
     en: "PseudoLearn profile must be es or en.",
   },
-  invalidStrictness: {
-    es: "El rigor de PseudoLearn debe ser strict o flexible.",
-    en: "PseudoLearn strictness must be strict or flexible.",
-  },
   invalidInterfaceLanguage: {
     es: "El idioma de interfaz de PseudoLearn debe ser es o en.",
     en: "PseudoLearn interface language must be es or en.",

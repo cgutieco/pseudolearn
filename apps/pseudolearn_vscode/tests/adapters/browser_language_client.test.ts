@@ -28,7 +28,7 @@ function lspAnswer(...messages: Message[]): WireAnswer {
 
 async function started(call: (operation: string, argumentsJson: string) => Promise<WireAnswer>) {
   const api = { call: vi.fn(call), close: vi.fn() };
-  const service = new BrowserLanguageService(api, { profile: "es", strictness: "strict", locale: "es" });
+  const service = new BrowserLanguageService(api, { profile: "es", locale: "es" });
   await (service.client as unknown as { connect(): Promise<unknown> }).connect();
   const port = captured.ports[captured.ports.length - 1];
   const received: Message[] = [];
