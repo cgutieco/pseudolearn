@@ -42,7 +42,8 @@
   ],
   "titulo_en": "LSP server capabilities",
   "revisado_por": [
-    "revision-independiente-automatizada-r9"
+    "revision-independiente-automatizada-r9",
+    "Cesar Antonio Gutierrez Contreras"
   ]
 }
 ---
@@ -316,6 +317,7 @@
     "es"
   ],
   "origen": "derivado",
+  "revisado_por": "Cesar Antonio Gutierrez Contreras",
   "operacion": "service",
   "espera": {
     "servicio": {
@@ -342,7 +344,7 @@
             "uri": "file:///prueba.pseudo",
             "languageId": "pseudolearn",
             "version": 1,
-            "text": "Algoritmo Principal\n  Definir x Como Entero <- 0;\n  x <- \"error\";\nFinAlgoritmo\n"
+            "text": "Algoritmo Principal\n  Definir Mutable x Como Entero <- 0;\n  x <- \"error\";\nFinAlgoritmo\n"
           }
         }
       },
@@ -906,9 +908,10 @@
   "regla": "R7",
   "perfiles": ["es", "en"],
   "origen": "derivado",
+  "revisado_por": "Cesar Antonio Gutierrez Contreras",
   "operacion": "service",
   "espera": {"servicio": {"definicion_uri": "file:///geo/vectores.pseudo", "referencias": 2}},
-  "servicio": {"suboperacion":"lsp","mensajes":[{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"locale":"es","capabilities":{}}},{"jsonrpc":"2.0","method":"pseudolearn/workspaceSnapshot","params":{"project":{"project_id":1,"revision_id":1,"packages":[{"name":"app","root":"app","kind":"application","entries":["app/main"],"dependencies":{"geo":"geo"}},{"name":"geo","root":"geo","kind":"library","entries":[],"dependencies":{}}],"files":[{"path":"app/main","source_id":1,"text":"Importar geo.vectores.Doble;\\nAlgoritmo P\\nEscribir Doble(1);\\nFinAlgoritmo\\n"},{"path":"geo/vectores","source_id":2,"text":"Publico SubProceso Doble()\\nFinSubProceso\\n"}]},"uris":{"app/main":"file:///app/main.pseudo","geo/vectores":"file:///geo/vectores.pseudo"}}},{"jsonrpc":"2.0","id":2,"method":"textDocument/definition","params":{"textDocument":{"uri":"file:///app/main.pseudo"},"position":{"line":2,"character":9} }},{"jsonrpc":"2.0","id":3,"method":"textDocument/references","params":{"textDocument":{"uri":"file:///app/main.pseudo"},"position":{"line":2,"character":9},"context":{"includeDeclaration":true}}}],"proyeccion":"navegacion_proyecto"}
+  "servicio": {"suboperacion":"lsp","mensajes":[{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"locale":"es","capabilities":{}}},{"jsonrpc":"2.0","method":"pseudolearn/workspaceSnapshot","params":{"project":{"project_id":1,"revision_id":1,"packages":[{"name":"app","root":"app","kind":"application","entries":["app/main"],"dependencies":{"geo":"geo"}},{"name":"geo","root":"geo","kind":"library","entries":[],"dependencies":{}}],"files":[{"path":"app/main","source_id":1,"text":"Importar geo.vectores.Doble;\nAlgoritmo P\nEscribir Doble(1);\nFinAlgoritmo\n"},{"path":"geo/vectores","source_id":2,"text":"Publico SubProceso Doble(n Como Entero) Como Entero\nRetornar n * 2;\nFinSubProceso\n"}]},"uris":{"app/main":"file:///app/main.pseudo","geo/vectores":"file:///geo/vectores.pseudo"}}},{"jsonrpc":"2.0","id":2,"method":"textDocument/definition","params":{"textDocument":{"uri":"file:///app/main.pseudo"},"position":{"line":2,"character":9} }},{"jsonrpc":"2.0","id":3,"method":"textDocument/references","params":{"textDocument":{"uri":"file:///app/main.pseudo"},"position":{"line":2,"character":9},"context":{"includeDeclaration":true}}}],"proyeccion":"navegacion_proyecto"}
 }
 ```
 
@@ -918,9 +921,10 @@
   "regla": "R8",
   "perfiles": ["es"],
   "origen": "derivado",
+  "revisado_por": "Cesar Antonio Gutierrez Contreras",
   "operacion": "service",
   "espera": {"servicio": {"prepare_range":{"start":{"line":1,"character":16},"end":{"line":1,"character":21}},"rename_edits":2}},
-  "servicio": {"suboperacion":"lsp","mensajes":[{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"locale":"es","capabilities":{"workspace":{"workspaceEdit":{"documentChanges":true,"failureHandling":"transactional"}}}}},{"jsonrpc":"2.0","method":"textDocument/didOpen","params":{"textDocument":{"uri":"file:///rename.pseudo","languageId":"pseudolearn","version":1,"text":"Algoritmo Total\\nDefinir Mutable total Como Entero <- 0;\\nEscribir total;\\nFinAlgoritmo\\n"}}},{"jsonrpc":"2.0","id":2,"method":"textDocument/prepareRename","params":{"textDocument":{"uri":"file:///rename.pseudo"},"position":{"line":1,"character":16}}},{"jsonrpc":"2.0","id":3,"method":"textDocument/rename","params":{"textDocument":{"uri":"file:///rename.pseudo"},"position":{"line":1,"character":16},"newName":"suma"}}],"proyeccion":"rename"}
+  "servicio": {"suboperacion":"lsp","mensajes":[{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"locale":"es","capabilities":{"workspace":{"workspaceEdit":{"documentChanges":true,"failureHandling":"transactional"}}}}},{"jsonrpc":"2.0","method":"textDocument/didOpen","params":{"textDocument":{"uri":"file:///rename.pseudo","languageId":"pseudolearn","version":1,"text":"Algoritmo Total\nDefinir Mutable total Como Entero <- 0;\nEscribir total;\nFinAlgoritmo\n"}}},{"jsonrpc":"2.0","id":2,"method":"textDocument/prepareRename","params":{"textDocument":{"uri":"file:///rename.pseudo"},"position":{"line":1,"character":16}}},{"jsonrpc":"2.0","id":3,"method":"textDocument/rename","params":{"textDocument":{"uri":"file:///rename.pseudo"},"position":{"line":1,"character":16},"newName":"suma"}}],"proyeccion":"rename"}
 }
 ```
 
@@ -930,9 +934,10 @@
   "regla": "R9",
   "perfiles": ["en"],
   "origen": "derivado",
+  "revisado_por": "Cesar Antonio Gutierrez Contreras",
   "operacion": "service",
   "espera": {"servicio": {"semantic_token_count":5,"token_encoding":"relative-utf16"}},
-  "servicio": {"suboperacion":"lsp","mensajes":[{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"locale":"en","capabilities":{"textDocument":{"semanticTokens":{}}}}},{"jsonrpc":"2.0","method":"textDocument/didOpen","params":{"textDocument":{"uri":"file:///tokens.pseudo","languageId":"pseudolearn","version":1,"text":"algorithm Main\\nwrite 1;\\nendAlgorithm\\n"}}},{"jsonrpc":"2.0","id":2,"method":"textDocument/semanticTokens/full","params":{"textDocument":{"uri":"file:///tokens.pseudo"}}}],"proyeccion":"semantic_tokens"}
+  "servicio": {"suboperacion":"lsp","mensajes":[{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"locale":"en","capabilities":{"textDocument":{"semanticTokens":{}}}}},{"jsonrpc":"2.0","method":"textDocument/didOpen","params":{"textDocument":{"uri":"file:///tokens.pseudo","languageId":"pseudolearn","version":1,"text":"algorithm Main\nwrite 1;\nendAlgorithm\n"}}},{"jsonrpc":"2.0","id":2,"method":"textDocument/semanticTokens/full","params":{"textDocument":{"uri":"file:///tokens.pseudo"}}}],"proyeccion":"semantic_tokens"}
 }
 ```
 

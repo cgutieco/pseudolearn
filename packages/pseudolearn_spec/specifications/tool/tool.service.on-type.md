@@ -225,6 +225,7 @@
     "es"
   ],
   "origen": "derivado",
+  "revisado_por": "Cesar Antonio Gutierrez Contreras",
   "operacion": "service",
   "espera": {
     "servicio": {
@@ -255,6 +256,7 @@
     "es"
   ],
   "origen": "derivado",
+  "revisado_por": "Cesar Antonio Gutierrez Contreras",
   "operacion": "service",
   "espera": {
     "servicio": {

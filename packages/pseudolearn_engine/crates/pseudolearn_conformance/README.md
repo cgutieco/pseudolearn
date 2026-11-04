@@ -45,7 +45,7 @@ proyectan por su código.
 
 La proyección `resolucion` de las consultas de servicio expone identidad o símbolo y certeza para comprobar la resolución por posición; los casos de API verifican además rangos léxicos y contextuales.
 
-La operación `workspace` recibe snapshots completos y acciones de overlays como JSON. Proyecta diagnósticos, errores de proyecto e invalidación, y compara el estado con una sesión nueva sobre los mismos datos; no realiza E/S. Importa `pseudolearn_service` para ejercitar el contrato público separado de las sesiones de documento.
+La operación `workspace` recibe snapshots completos y acciones de overlays como JSON. Proyecta diagnósticos, errores de proyecto e invalidación, y compara el estado con una sesión nueva sobre los mismos datos; no realiza E/S. El campo opcional `campos` restringe la respuesta a las claves nombradas, porque cada caso del corpus afirma solo el subconjunto que su regla gobierna; sin él devuelve todas. La proyección LSP `transactional_rename_with_materialized_sources` informa el número de ediciones del renombrado y la versión de cada documento editado, para comprobar que los fuentes materializados por el snapshot conservan la versión del overlay abierto. Importa `pseudolearn_service` para ejercitar el contrato público separado de las sesiones de documento.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

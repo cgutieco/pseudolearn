@@ -302,3 +302,23 @@ junto con su consumidor; el reanclaje ocurre en esa misma fase. La persona autor
 - Los fallos de un ejecutable nativo en tiempo de ejecución no llevan marcador.
 - Las plantillas de `SubProceso` del servicio llevan un parámetro tipado.
 - Opciones retiradas (`--rigor`, `--strictness`, `strictness` de DAP) no tienen alias: la CLI las trata como opción desconocida y el lanzamiento DAP ignora la clave.
+
+### Revisión posterior de pendientes (2026-11-04)
+
+Revisión de los pendientes que quedaron abiertos al cerrar PF-7, con el criterio de qué es defecto real y qué no.
+
+| Pendiente | Veredicto | Origen y resolución |
+|---|---|---|
+| Sujeto `service` con 15 divergencias | Deriva previa del corpus y de la forma de salida del adaptador; ninguna es regresión de PF-4–PF-7 | La última corrida verde de `service` (29-oct) tenía 11 observaciones; los escenarios `workspace` y `lsp` se añadieron el 30-oct y nunca pasaron. Seis casos LSP y de navegación llevaban `\\n` literal en el texto de los documentos (un carácter no reconocido en lugar de un salto de línea; la corrección de `LSP.CAPABILITIES` C13/C14/C15 y `NAVIGATION` C5/C7/C8 está en el corpus); `LSP.CAPABILITIES` C13 usaba un subproceso sin parámetros ni retorno llamado con un argumento; `LSP.CAPABILITIES` C2 reasignaba un vínculo inmutable y emitía un diagnóstico extra; `WORKSPACE` C6 declaraba un paquete y esperaba `emptyWorkspace`, que significa «proyecto sin paquetes» (`LANG.MODULE.MODEL` R1). Los escenarios `workspace` esperaban un subconjunto de la respuesta y el adaptador devolvía todo: el caso declara ahora `campos`. Faltaba la proyección `transactional_rename_with_materialized_sources` del adaptador |
+| Propiedad de RI de la CLI «pending» | No es defecto: estado habitual | `API.WIRE-FORMAT#P1` queda `pendiente` desde antes de PF-4 (ya figuraba así en las evidencias de PG-5) porque el sujeto `cli` no anuncia la capacidad `wire_roundtrip`; `TOOL.CLI.IR#P1` cumple |
+| `is_inferred` / `inferred_place` en el motor | Código muerto: nada insertaba en `AnalysisSession::inferred` | Eliminados el estado de sesión, `inferred_place`, la inferencia por asignación (`infer_assignment`, `reject_inferred_record`, `inference_code`), `ServiceSymbol::is_inferred`, `HoverOutcome::is_inferred`, `ApiHelpEntry::is_inferred` y la proyección `inferido` del adaptador. El texto de `API.MODEL` R4 (`help_query`) y `TOOL.SERVICE.HOVER` R1 y sus casos se reescriben sin inferencia |
+| Casos reescritos sin revisar | Revisados contra su regla; programas con un reasignado inmutable corregidos con `Mutable` | `TOOL.FORMAT.STYLE` R3 pasa a describir lo que la regla garantiza (el `;` obligatorio se conserva; el alias `:=` se reescribe a `<-`); con `;` obligatorio, «añadir» el terminador ya no existe |
+| Verificaciones no ejecutadas | Ejecutadas | Ver resultados abajo |
+
+Hallazgos del barrido que sí eran defectos del motor y se corrigieron: el formateador y el traductor capitalizaban como palabra clave de sentencia el nombre de miembro que coincide con una palabra clave (`problem.code` → `problem.Code`, miembro indefinido), y el traductor no traducía `Canal<T>`, `Canal(n)`, `Enviar`, `Recibir` ni `Cerrar`.
+
+Pendientes declarados que siguen abiertos:
+
+- `TOOL.TRANSLATE.ROUND-TRIP#P1` (sujeto `service`) incumple: el traductor no conoce el vocabulario de bytes, capacidades de entorno y red/HTTP. Es anterior a este cambio y no depende del eje de rigor; cubrirlo exige añadir esas identidades contextuales (ver README de `pseudolearn_service`).
+- Los códigos `inferredVariableType`, `widenedVariableType` y `typeConflictOnInferredVariable` siguen en el catálogo de diagnósticos sin emisor. Retirarlos cambia el catálogo público y su generación; queda como decisión de catálogo.
+- El completado en línea ofrece `<-` tras un vínculo inmutable; la regla `TOOL.SERVICE.COMPLETION` R13 no distingue mutabilidad y no se tocó.

@@ -37,7 +37,8 @@
   ],
   "titulo_en": "Bilingual round-trip translation",
   "revisado_por": [
-    "revision-independiente-automatizada-r9"
+    "revision-independiente-automatizada-r9",
+    "Cesar Antonio Gutierrez Contreras"
   ]
 }
 ---
@@ -102,16 +103,17 @@
     "es"
   ],
   "origen": "derivado",
+  "revisado_por": "Cesar Antonio Gutierrez Contreras",
   "operacion": "service",
   "espera": {
     "servicio": {
-      "traducido": "Algorithm Principal\n  Define x As Real <- 0.0;\n  x <- sqrt(4.0);\n  Write x;\nEndAlgorithm\n",
-      "vuelta": "Algoritmo Principal\n  Definir x Como Real <- 0.0;\n  x <- rc(4.0);\n  Escribir x;\nFinAlgoritmo\n"
+      "traducido": "Algorithm Principal\n  Define Mutable x As Real <- 0.0;\n  x <- sqrt(4.0);\n  Write x;\nEndAlgorithm\n",
+      "vuelta": "Algoritmo Principal\n  Definir Mutable x Como Real <- 0.0;\n  x <- rc(4.0);\n  Escribir x;\nFinAlgoritmo\n"
     }
   },
   "servicio": {
     "suboperacion": "translate_roundtrip",
-    "documento": "Algoritmo Principal\n  Definir x Como Real <- 0.0;\n  x <- rc(4.0);\n  Escribir x;\nFinAlgoritmo\n",
+    "documento": "Algoritmo Principal\n  Definir Mutable x Como Real <- 0.0;\n  x <- rc(4.0);\n  Escribir x;\nFinAlgoritmo\n",
     "hacia": "en"
   }
 }
@@ -125,15 +127,16 @@
     "es"
   ],
   "origen": "derivado",
+  "revisado_por": "Cesar Antonio Gutierrez Contreras",
   "operacion": "service",
   "espera": {
     "servicio": {
-      "traducido": "Algorithm Sombras\n  Define rc As Real <- 0.0;\n  rc <- 5.0;\n  Define total As Integer <- 0;\n  total <- round(rc);\nEndAlgorithm\n"
+      "traducido": "Algorithm Sombras\n  Define Mutable rc As Real <- 0.0;\n  rc <- 5.0;\n  Define Mutable total As Integer <- 0;\n  total <- round(rc);\nEndAlgorithm\n"
     }
   },
   "servicio": {
     "suboperacion": "translate",
-    "documento": "Algoritmo Sombras\n  Definir rc Como Real <- 0.0;\n  rc <- 5.0;\n  Definir total Como Entero <- 0;\n  total <- redon(rc);\nFinAlgoritmo\n",
+    "documento": "Algoritmo Sombras\n  Definir Mutable rc Como Real <- 0.0;\n  rc <- 5.0;\n  Definir Mutable total Como Entero <- 0;\n  total <- redon(rc);\nFinAlgoritmo\n",
     "hacia": "en"
   }
 }
@@ -147,6 +150,7 @@
     "en"
   ],
   "origen": "derivado",
+  "revisado_por": "Cesar Antonio Gutierrez Contreras",
   "operacion": "service",
   "espera": {
     "servicio": {

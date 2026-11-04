@@ -32,7 +32,8 @@
   ],
   "titulo_en": "Canonical formatter style",
   "revisado_por": [
-    "revision-independiente-automatizada-r9"
+    "revision-independiente-automatizada-r9",
+    "Cesar Antonio Gutierrez Contreras"
   ]
 }
 ---
@@ -69,7 +70,7 @@
   "id": "R3",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La asignación <- y los operadores binarios van rodeados de un espacio; las comas van seguidas de un espacio; el punto y coma se añade o conserva al final de cada sentencia simple.",
+  "texto": "La asignación se escribe siempre <- (su alias := se reescribe a la forma canónica) y, igual que los operadores binarios, va rodeada de un espacio; las comas van seguidas de un espacio; el punto y coma obligatorio se conserva al final de cada sentencia simple.",
   "verificacion": [
     "C1",
     "C2"
@@ -98,15 +99,16 @@
     "es"
   ],
   "origen": "derivado",
+  "revisado_por": "Cesar Antonio Gutierrez Contreras",
   "operacion": "service",
   "espera": {
     "servicio": {
-      "formateado": "Algoritmo Principal\n  Definir x Como Entero <- 0;\n  x <- 1 + 2;\n  Escribir x;\nFinAlgoritmo\n"
+      "formateado": "Algoritmo Principal\n  Definir Mutable x Como Entero <- 0;\n  x <- 1 + 2;\n  Escribir x;\nFinAlgoritmo\n"
     }
   },
   "servicio": {
     "suboperacion": "format",
-    "documento": "algoritmo Principal\ndefinir x como entero<-0;\nx<-1+2;\nescribir x;\nfinalgoritmo"
+    "documento": "algoritmo Principal\ndefinir mutable x como entero<-0;\nx<-1+2;\nescribir x;\nfinalgoritmo"
   }
 }
 ```
@@ -119,6 +121,7 @@
     "es"
   ],
   "origen": "derivado",
+  "revisado_por": "Cesar Antonio Gutierrez Contreras",
   "operacion": "service",
   "espera": {
     "servicio": {
@@ -161,6 +164,7 @@
     "en"
   ],
   "origen": "derivado",
+  "revisado_por": "Cesar Antonio Gutierrez Contreras",
   "operacion": "service",
   "espera": {
     "servicio": {

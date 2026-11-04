@@ -62,6 +62,7 @@ fn projection(request: &Value, transcript: &Transcript, exit_code: Option<i32>) 
         "capacidades_proyecto" => transcript.project_capabilities(),
         "navegacion_proyecto" => transcript.project_navigation(),
         "rename" => transcript.rename_projection(),
+        "transactional_rename_with_materialized_sources" => transcript.materialized_rename(),
         "rename_rejected" => transcript.rename_rejected(),
         "semantic_tokens" => transcript.semantic_tokens_projection(),
         "cancelacion" => json!({
@@ -130,6 +131,32 @@ impl Transcript {
             "prepare_range": range,
             "rename_edits": edit_count,
         })
+    }
+
+    fn materialized_rename(&self) -> Value {
+        let documents = self
+            .responses_to("textDocument/rename")
+            .first()
+            .and_then(|reply| reply.pointer("/result/documentChanges"))
+            .and_then(Value::as_array)
+            .cloned()
+            .unwrap_or_default();
+        let versions: serde_json::Map<String, Value> = documents
+            .iter()
+            .filter_map(|document| {
+                let uri = document.pointer("/textDocument/uri")?.as_str()?;
+                Some((
+                    uri.to_owned(),
+                    document.pointer("/textDocument/version")?.clone(),
+                ))
+            })
+            .collect();
+        let edits: usize = documents
+            .iter()
+            .filter_map(|document| document.get("edits").and_then(Value::as_array))
+            .map(Vec::len)
+            .sum();
+        json!({ "rename_edits": edits, "document_versions": versions })
     }
 
     fn rename_rejected(&self) -> Value {

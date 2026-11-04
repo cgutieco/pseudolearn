@@ -26,7 +26,8 @@
     }
   ],
   "revisado_por": [
-    "cesar-antonio-gutierrez-contreras"
+    "cesar-antonio-gutierrez-contreras",
+    "Cesar Antonio Gutierrez Contreras"
   ]
 }
 ---
@@ -79,6 +80,7 @@
   "regla": "R1",
   "perfiles": ["es"],
   "origen": "derivado",
+  "revisado_por": "Cesar Antonio Gutierrez Contreras",
   "operacion": "service",
   "espera": {
     "servicio": {
@@ -89,6 +91,7 @@
   },
   "servicio": {
     "suboperacion": "workspace",
+    "campos": ["coincide_con_frio", "changed", "signature_changed"],
     "workspace": {
       "project": {
         "project_id": "1",
@@ -117,12 +120,14 @@
   "regla": "R2",
   "perfiles": ["es"],
   "origen": "derivado",
+  "revisado_por": "Cesar Antonio Gutierrez Contreras",
   "operacion": "service",
   "espera": {
     "servicio": {"coincide_con_frio": true, "diagnostics": [], "errores": []}
   },
   "servicio": {
     "suboperacion": "workspace",
+    "campos": ["coincide_con_frio", "diagnostics", "errores"],
     "workspace": {
       "project": {
         "project_id": "1",
@@ -146,6 +151,7 @@
   "regla": "R3",
   "perfiles": ["es"],
   "origen": "derivado",
+  "revisado_por": "Cesar Antonio Gutierrez Contreras",
   "operacion": "service",
   "espera": {
     "servicio": {
@@ -156,6 +162,7 @@
   },
   "servicio": {
     "suboperacion": "workspace",
+    "campos": ["coincide_con_frio", "changed", "signature_changed"],
     "workspace": {
       "project": {
         "project_id": "1",
@@ -195,6 +202,7 @@
   "regla": "R4",
   "perfiles": ["es"],
   "origen": "derivado",
+  "revisado_por": "Cesar Antonio Gutierrez Contreras",
   "operacion": "service",
   "espera": {
     "servicio": {
@@ -205,6 +213,7 @@
   },
   "servicio": {
     "suboperacion": "workspace",
+    "campos": ["coincide_con_frio", "signature_changed", "invalidated"],
     "workspace": {
       "project": {
         "project_id": "1",
@@ -233,12 +242,14 @@
   "regla": "R2",
   "perfiles": ["es"],
   "origen": "derivado",
+  "revisado_por": "Cesar Antonio Gutierrez Contreras",
   "operacion": "service",
   "espera": {
     "servicio": {"coincide_con_frio": true, "errores": ["DocumentNotOpen"]}
   },
   "servicio": {
     "suboperacion": "workspace",
+    "campos": ["coincide_con_frio", "errores"],
     "workspace": {
       "project": {
         "project_id": "1",
@@ -261,17 +272,19 @@
   "regla": "R1",
   "perfiles": ["es"],
   "origen": "derivado",
+  "revisado_por": "Cesar Antonio Gutierrez Contreras",
   "operacion": "service",
   "espera": {
     "servicio": {"coincide_con_frio": true, "project_errors": ["emptyWorkspace"]}
   },
   "servicio": {
     "suboperacion": "workspace",
+    "campos": ["coincide_con_frio", "project_errors"],
     "workspace": {
       "project": {
         "project_id": "1",
         "revision_id": "1",
-        "packages": [{"name": "app", "root": "app", "kind": "application", "entries": ["app/main"], "dependencies": {}}],
+        "packages": [],
         "files": []
       },
       "options": {"profile": "es"}
@@ -286,12 +299,14 @@
   "regla": "R3",
   "perfiles": ["es"],
   "origen": "derivado",
+  "revisado_por": "Cesar Antonio Gutierrez Contreras",
   "operacion": "service",
   "espera": {
     "servicio": {"coincide_con_frio": true, "errores": ["ProjectIdentityChanged"]}
   },
   "servicio": {
     "suboperacion": "workspace",
+    "campos": ["coincide_con_frio", "errores"],
     "workspace": {
       "project": {
         "project_id": "1",
@@ -325,12 +340,14 @@
   "regla": "R2",
   "perfiles": ["es"],
   "origen": "derivado",
+  "revisado_por": "Cesar Antonio Gutierrez Contreras",
   "operacion": "service",
   "espera": {
     "servicio": {"coincide_con_frio": true, "diagnostics": [], "errores": []}
   },
   "servicio": {
     "suboperacion": "workspace",
+    "campos": ["coincide_con_frio", "diagnostics", "errores"],
     "workspace": {
       "project": {
         "project_id": "1",

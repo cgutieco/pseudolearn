@@ -25,7 +25,22 @@ pub fn handle(request: &ServiceRequest<'_>) -> Value {
             errors.push(error);
         }
     }
-    outcome(&session, errors)
+    select_fields(outcome(&session, errors), request.raw().get("campos"))
+}
+
+fn select_fields(full: Value, fields: Option<&Value>) -> Value {
+    let wanted = string_array(fields);
+    if wanted.is_empty() {
+        return full;
+    }
+    let kept: Map<String, Value> = full
+        .as_object()
+        .into_iter()
+        .flat_map(Map::iter)
+        .filter(|(key, _)| wanted.contains(key))
+        .map(|(key, value)| (key.clone(), value.clone()))
+        .collect();
+    Value::Object(kept)
 }
 
 fn snapshot(value: Option<&Value>) -> Option<WorkspaceSnapshot> {

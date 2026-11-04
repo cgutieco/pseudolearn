@@ -37,7 +37,8 @@
   ],
   "titulo_en": "Code navigation service",
   "revisado_por": [
-    "revision-independiente-automatizada-r9"
+    "revision-independiente-automatizada-r9",
+    "Cesar Antonio Gutierrez Contreras"
   ]
 }
 ---
@@ -99,18 +100,19 @@
     "es"
   ],
   "origen": "derivado",
+  "revisado_por": "Cesar Antonio Gutierrez Contreras",
   "operacion": "service",
   "espera": {
     "servicio": {
       "definicion": {
-        "start": { "line": 2, "column": 11 },
-        "end": { "line": 2, "column": 16 }
+        "start": { "line": 2, "column": 19 },
+        "end": { "line": 2, "column": 24 }
       }
     }
   },
   "servicio": {
     "suboperacion": "definition",
-    "documento": "Algoritmo Principal\n  Definir total Como Entero <- 0;\n  total <- 10;\n  Escribir total;\nFinAlgoritmo\n",
+    "documento": "Algoritmo Principal\n  Definir Mutable total Como Entero <- 0;\n  total <- 10;\n  Escribir total;\nFinAlgoritmo\n",
     "posicion": { "line": 4, "column": 13 }
   }
 }
@@ -124,13 +126,14 @@
     "es"
   ],
   "origen": "derivado",
+  "revisado_por": "Cesar Antonio Gutierrez Contreras",
   "operacion": "service",
   "espera": {
     "servicio": {
       "referencias": [
         {
-          "start": { "line": 2, "column": 11 },
-          "end": { "line": 2, "column": 12 }
+          "start": { "line": 2, "column": 19 },
+          "end": { "line": 2, "column": 20 }
         },
         {
           "start": { "line": 3, "column": 3 },
@@ -141,7 +144,7 @@
   },
   "servicio": {
     "suboperacion": "references",
-    "documento": "SubProceso Uno()\n  Definir i Como Entero <- 0;\n  i <- 1;\nFinSubProceso\n\nSubProceso Dos()\n  Definir i Como Entero <- 0;\n  i <- 2;\nFinSubProceso\n",
+    "documento": "SubProceso Uno()\n  Definir Mutable i Como Entero <- 0;\n  i <- 1;\nFinSubProceso\n\nSubProceso Dos()\n  Definir Mutable i Como Entero <- 0;\n  i <- 2;\nFinSubProceso\n",
     "posicion": { "line": 3, "column": 3 }
   }
 }
@@ -155,6 +158,7 @@
     "es"
   ],
   "origen": "derivado",
+  "revisado_por": "Cesar Antonio Gutierrez Contreras",
   "operacion": "service",
   "espera": {
     "servicio": {
@@ -217,6 +221,7 @@
     "es"
   ],
   "origen": "derivado",
+  "revisado_por": "Cesar Antonio Gutierrez Contreras",
   "operacion": "service",
   "espera": {
     "servicio": {
@@ -231,7 +236,7 @@
     "suboperacion": "lsp",
     "mensajes": [
       {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"locale":"es","capabilities":{"workspace":{"workspaceEdit":{"documentChanges":true,"failureHandling":"transactional"}}}}},
-      {"jsonrpc":"2.0","method":"textDocument/didOpen","params":{"textDocument":{"uri":"file:///rename-es.pseudo","languageId":"pseudolearn","version":1,"text":"Algoritmo Principal\\nDefinir Mutable total Como Entero <- 0;\\nEscribir total;\\nFinAlgoritmo\\n"}}},
+      {"jsonrpc":"2.0","method":"textDocument/didOpen","params":{"textDocument":{"uri":"file:///rename-es.pseudo","languageId":"pseudolearn","version":1,"text":"Algoritmo Principal\nDefinir Mutable total Como Entero <- 0;\nEscribir total;\nFinAlgoritmo\n"}}},
       {"jsonrpc":"2.0","id":2,"method":"textDocument/prepareRename","params":{"textDocument":{"uri":"file:///rename-es.pseudo"},"position":{"line":1,"character":16}}},
       {"jsonrpc":"2.0","id":3,"method":"textDocument/rename","params":{"textDocument":{"uri":"file:///rename-es.pseudo"},"position":{"line":1,"character":16},"newName":"suma"}}
     ],
@@ -250,7 +255,7 @@
   "origen": "derivado",
   "operacion": "service",
   "espera": {"servicio":{"rename_rejected":true}},
-  "servicio": {"suboperacion":"lsp","mensajes":[{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"locale":"es","capabilities":{"workspace":{"workspaceEdit":{"documentChanges":true,"failureHandling":"transactional"}}}}},{"jsonrpc":"2.0","method":"textDocument/didOpen","params":{"textDocument":{"uri":"file:///rename-es.pseudo","languageId":"pseudolearn","version":1,"text":"Algoritmo Principal\\nDefinir Mutable total Como Entero <- 0;\\nEscribir total;\\nFinAlgoritmo\\n"}}},{"jsonrpc":"2.0","id":2,"method":"textDocument/rename","params":{"textDocument":{"uri":"file:///rename-es.pseudo"},"position":{"line":1,"character":16},"newName":"Mientras"}}],"proyeccion":"rename_rejected"}
+  "servicio": {"suboperacion":"lsp","mensajes":[{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"locale":"es","capabilities":{"workspace":{"workspaceEdit":{"documentChanges":true,"failureHandling":"transactional"}}}}},{"jsonrpc":"2.0","method":"textDocument/didOpen","params":{"textDocument":{"uri":"file:///rename-es.pseudo","languageId":"pseudolearn","version":1,"text":"Algoritmo Principal\nDefinir Mutable total Como Entero <- 0;\nEscribir total;\nFinAlgoritmo\n"}}},{"jsonrpc":"2.0","id":2,"method":"textDocument/rename","params":{"textDocument":{"uri":"file:///rename-es.pseudo"},"position":{"line":1,"character":16},"newName":"Mientras"}}],"proyeccion":"rename_rejected"}
 }
 ```
 
@@ -260,9 +265,10 @@
   "regla": "R4",
   "perfiles": ["en"],
   "origen": "derivado",
+  "revisado_por": "Cesar Antonio Gutierrez Contreras",
   "operacion": "service",
   "espera": {"servicio":{"prepare_range":{"start":{"line":1,"character":15},"end":{"line":1,"character":20}},"rename_edits":2}},
-  "servicio": {"suboperacion":"lsp","mensajes":[{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"locale":"en","capabilities":{"workspace":{"workspaceEdit":{"documentChanges":true,"failureHandling":"transactional"}}}}},{"jsonrpc":"2.0","method":"textDocument/didOpen","params":{"textDocument":{"uri":"file:///rename-en.pseudo","languageId":"pseudolearn","version":1,"text":"algorithm Main\\ndefine mutable total as integer <- 0;\\nwrite total;\\nendAlgorithm\\n"}}},{"jsonrpc":"2.0","id":2,"method":"textDocument/prepareRename","params":{"textDocument":{"uri":"file:///rename-en.pseudo"},"position":{"line":1,"character":15}}},{"jsonrpc":"2.0","id":3,"method":"textDocument/rename","params":{"textDocument":{"uri":"file:///rename-en.pseudo"},"position":{"line":1,"character":15},"newName":"sum"}}],"proyeccion":"rename"}
+  "servicio": {"suboperacion":"lsp","mensajes":[{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"locale":"en","capabilities":{"workspace":{"workspaceEdit":{"documentChanges":true,"failureHandling":"transactional"}}}}},{"jsonrpc":"2.0","method":"textDocument/didOpen","params":{"textDocument":{"uri":"file:///rename-en.pseudo","languageId":"pseudolearn","version":1,"text":"algorithm Main\ndefine mutable total as integer <- 0;\nwrite total;\nendAlgorithm\n"}}},{"jsonrpc":"2.0","id":2,"method":"textDocument/prepareRename","params":{"textDocument":{"uri":"file:///rename-en.pseudo"},"position":{"line":1,"character":15}}},{"jsonrpc":"2.0","id":3,"method":"textDocument/rename","params":{"textDocument":{"uri":"file:///rename-en.pseudo"},"position":{"line":1,"character":15},"newName":"sum"}}],"proyeccion":"rename"}
 }
 ```
 
@@ -272,8 +278,9 @@
   "regla": "R4",
   "perfiles": ["es"],
   "origen": "derivado",
+  "revisado_por": "Cesar Antonio Gutierrez Contreras",
   "operacion": "service",
   "espera": {"servicio":{"rename_edits":2,"document_versions":{"file:///app/main.pseudo":3,"file:///geo/vector.pseudo":8}}},
-  "servicio": {"suboperacion":"lsp","mensajes":[{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"locale":"es","capabilities":{"workspace":{"workspaceEdit":{"documentChanges":true,"failureHandling":"transactional"}}}}},{"jsonrpc":"2.0","method":"pseudolearn/workspaceSnapshot","params":{"project":{"project_id":7,"revision_id":1,"packages":[{"name":"app","root":"app","kind":"application","entries":["app/main"],"dependencies":{"geo":"geo"}},{"name":"geo","root":"geo","kind":"library","entries":[],"dependencies":{}}],"files":[{"path":"app/main","source_id":1,"text":"Importar geo.vector.Double;\\nAlgoritmo Main\\nEscribir Double(2);\\nFinAlgoritmo\\n"},{"path":"geo/vector","source_id":2,"text":"Publico SubProceso Double(value Como Entero) Como Entero\\nRetornar value * 2;\\nFinSubProceso\\n"}]},"uris":{"app/main":"file:///app/main.pseudo","geo/vector":"file:///geo/vector.pseudo"}}},{"jsonrpc":"2.0","method":"textDocument/didOpen","params":{"textDocument":{"uri":"file:///app/main.pseudo","languageId":"pseudolearn","version":3,"text":"Importar geo.vector.Double;\\nAlgoritmo Main\\nEscribir Double(2);\\nFinAlgoritmo\\n"}}},{"jsonrpc":"2.0","id":2,"method":"textDocument/references","params":{"textDocument":{"uri":"file:///app/main.pseudo"},"position":{"line":2,"character":9},"context":{"includeDeclaration":true}}},{"jsonrpc":"2.0","method":"textDocument/didOpen","params":{"textDocument":{"uri":"file:///geo/vector.pseudo","languageId":"pseudolearn","version":8,"text":"Publico SubProceso Double(value Como Entero) Como Entero\\nRetornar value * 2;\\nFinSubProceso\\n"}}},{"jsonrpc":"2.0","id":3,"method":"textDocument/prepareRename","params":{"textDocument":{"uri":"file:///app/main.pseudo"},"position":{"line":2,"character":9}}},{"jsonrpc":"2.0","id":4,"method":"textDocument/references","params":{"textDocument":{"uri":"file:///app/main.pseudo"},"position":{"line":2,"character":9},"context":{"includeDeclaration":true}}},{"jsonrpc":"2.0","id":5,"method":"textDocument/rename","params":{"textDocument":{"uri":"file:///app/main.pseudo"},"position":{"line":2,"character":9},"newName":"Twice"}}],"proyeccion":"transactional_rename_with_materialized_sources"}
+  "servicio": {"suboperacion":"lsp","mensajes":[{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"locale":"es","capabilities":{"workspace":{"workspaceEdit":{"documentChanges":true,"failureHandling":"transactional"}}}}},{"jsonrpc":"2.0","method":"pseudolearn/workspaceSnapshot","params":{"project":{"project_id":7,"revision_id":1,"packages":[{"name":"app","root":"app","kind":"application","entries":["app/main"],"dependencies":{"geo":"geo"}},{"name":"geo","root":"geo","kind":"library","entries":[],"dependencies":{}}],"files":[{"path":"app/main","source_id":1,"text":"Importar geo.vector.Double;\nAlgoritmo Main\nEscribir Double(2);\nFinAlgoritmo\n"},{"path":"geo/vector","source_id":2,"text":"Publico SubProceso Double(value Como Entero) Como Entero\nRetornar value * 2;\nFinSubProceso\n"}]},"uris":{"app/main":"file:///app/main.pseudo","geo/vector":"file:///geo/vector.pseudo"}}},{"jsonrpc":"2.0","method":"textDocument/didOpen","params":{"textDocument":{"uri":"file:///app/main.pseudo","languageId":"pseudolearn","version":3,"text":"Importar geo.vector.Double;\nAlgoritmo Main\nEscribir Double(2);\nFinAlgoritmo\n"}}},{"jsonrpc":"2.0","id":2,"method":"textDocument/references","params":{"textDocument":{"uri":"file:///app/main.pseudo"},"position":{"line":2,"character":9},"context":{"includeDeclaration":true}}},{"jsonrpc":"2.0","method":"textDocument/didOpen","params":{"textDocument":{"uri":"file:///geo/vector.pseudo","languageId":"pseudolearn","version":8,"text":"Publico SubProceso Double(value Como Entero) Como Entero\nRetornar value * 2;\nFinSubProceso\n"}}},{"jsonrpc":"2.0","id":3,"method":"textDocument/prepareRename","params":{"textDocument":{"uri":"file:///app/main.pseudo"},"position":{"line":2,"character":9}}},{"jsonrpc":"2.0","id":4,"method":"textDocument/references","params":{"textDocument":{"uri":"file:///app/main.pseudo"},"position":{"line":2,"character":9},"context":{"includeDeclaration":true}}},{"jsonrpc":"2.0","id":5,"method":"textDocument/rename","params":{"textDocument":{"uri":"file:///app/main.pseudo"},"position":{"line":2,"character":9},"newName":"Twice"}}],"proyeccion":"transactional_rename_with_materialized_sources"}
 }
 ```
