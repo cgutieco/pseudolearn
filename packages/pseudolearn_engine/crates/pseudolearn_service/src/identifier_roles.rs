@@ -63,7 +63,7 @@ fn global_names(analysis: &ServiceAnalysis, profile: Profile) -> BTreeSet<String
     names
 }
 
-fn is_member_access(tree: &SyntaxTree, index: usize) -> bool {
+pub(crate) fn is_member_access(tree: &SyntaxTree, index: usize) -> bool {
     let mut cursor = index;
     while cursor > 0 {
         cursor = cursor.saturating_sub(1);

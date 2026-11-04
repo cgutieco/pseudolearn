@@ -1,4 +1,5 @@
 use pseudolearn_lexicon::Profile;
+use pseudolearn_semantic::channel_model::ChannelAction;
 use pseudolearn_semantic::collection_model::CollectionAction;
 use pseudolearn_semantic::{HirExpression, ServiceAnalysis};
 use pseudolearn_source::SourceText;
@@ -56,25 +57,58 @@ fn collection_calls(
         .iter()
         .zip(&analysis.module.expressions.spans)
     {
-        let HirExpression::Collection(expression) = kind else {
+        let call = match kind {
+            HirExpression::Collection(expression) => Call {
+                span: *span,
+                constructor: expression.action == CollectionAction::New,
+                constructor_identities: &["vectorType", "dictionaryType"],
+                method_identity: action_identity(expression.action),
+            },
+            HirExpression::Channel(expression) => Call {
+                span: *span,
+                constructor: expression.action == ChannelAction::New,
+                constructor_identities: &["channelType"],
+                method_identity: channel_identity(expression.action),
+            },
+            _ => continue,
+        };
+        register_call_tokens(tree, &call, candidates, output);
+    }
+}
+
+fn register_call_tokens(tree: &SyntaxTree, call: &Call, candidates: &Tokens, output: &mut Tokens) {
+    let span = call.span;
+    for (token, identity) in candidates {
+        let Some(position) = tree.tokens.span(*token) else {
             continue;
         };
-        for (token, identity) in candidates {
-            let Some(position) = tree.tokens.span(*token) else {
-                continue;
-            };
-            if position.start < span.start || position.ending > span.ending {
-                continue;
-            }
-            let constructor =
-                expression.action == CollectionAction::New && position.start == span.start;
-            if (constructor && matches!(*identity, "vectorType" | "dictionaryType"))
-                || (action_identity(expression.action) == Some(identity)
-                    && method_token(tree, *span, *token))
-            {
-                output.insert(*token, *identity);
-            }
+        if position.start < span.start || position.ending > span.ending {
+            continue;
         }
+        let constructor = call.constructor
+            && position.start == span.start
+            && call.constructor_identities.contains(identity);
+        if constructor
+            || (call.method_identity == Some(identity) && method_token(tree, span, *token))
+        {
+            output.insert(*token, *identity);
+        }
+    }
+}
+
+struct Call {
+    span: pseudolearn_source::Span,
+    constructor: bool,
+    constructor_identities: &'static [&'static str],
+    method_identity: Option<&'static str>,
+}
+
+fn channel_identity(action: ChannelAction) -> Option<&'static str> {
+    match action {
+        ChannelAction::Send => Some("channelSend"),
+        ChannelAction::Receive => Some("channelReceive"),
+        ChannelAction::Close => Some("channelClose"),
+        ChannelAction::New | ChannelAction::Selected => None,
     }
 }
 
@@ -116,6 +150,7 @@ fn owns(kind: NodeKind, identity: &str) -> bool {
                     | "fileCapabilityType"
                     | "clockCapabilityType"
                     | "timerCapabilityType"
+                    | "channelType"
             )
             | (
                 NodeKind::Postfix,

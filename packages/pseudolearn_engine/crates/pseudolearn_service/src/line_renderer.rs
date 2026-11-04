@@ -1,6 +1,6 @@
 use crate::identifier_roles::IdentifierRoles;
 use crate::source_lines::SourceLine;
-use crate::spelling::{boolean_spelling, builtin_spelling, keyword_spelling};
+use crate::spelling::{boolean_spelling, builtin_spelling, positioned_keyword_spelling};
 use pseudolearn_lexicon::{KeywordKind, Profile, find_builtin};
 use pseudolearn_source::SourceText;
 use pseudolearn_syntax::{SyntaxTree, TokenKind};
@@ -48,7 +48,9 @@ fn piece_for(context: &RenderContext<'_>, index: usize) -> Piece {
         .text(context.source.as_str(), index)
         .unwrap_or("");
     let text = match kind {
-        TokenKind::Keyword(keyword) => keyword_spelling(keyword, context.profile),
+        TokenKind::Keyword(keyword) => {
+            positioned_keyword_spelling(context.tree, index, keyword, context.profile)
+        }
         TokenKind::BooleanLiteral(value) => boolean_spelling(value, context.profile),
         TokenKind::Identifier => identifier_text(context, index, original),
         TokenKind::Assignment => "<-".to_owned(),

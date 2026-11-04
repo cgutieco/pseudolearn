@@ -1,5 +1,5 @@
 use crate::identifier_roles::IdentifierRoles;
-use crate::spelling::{boolean_spelling, builtin_spelling, keyword_spelling};
+use crate::spelling::{boolean_spelling, builtin_spelling, positioned_keyword_spelling};
 use pseudolearn_lexicon::{Profile, find_builtin, find_keyword, is_compound_prefix};
 use pseudolearn_semantic::SemanticOptions;
 use pseudolearn_source::{SourceText, Span};
@@ -85,7 +85,9 @@ impl TranslationPlan<'_> {
             .unwrap_or("");
         match self.tree.tokens.kind(index) {
             Some(TokenKind::EndOfFile) | None => String::new(),
-            Some(TokenKind::Keyword(keyword)) => keyword_spelling(keyword, self.target_profile),
+            Some(TokenKind::Keyword(keyword)) => {
+                positioned_keyword_spelling(self.tree, index, keyword, self.target_profile)
+            }
             Some(TokenKind::BooleanLiteral(value)) => boolean_spelling(value, self.target_profile),
             Some(TokenKind::Identifier) => self.translate_identifier(index, original, collected),
             Some(_) => original.to_owned(),

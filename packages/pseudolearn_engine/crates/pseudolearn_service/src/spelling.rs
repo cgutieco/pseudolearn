@@ -1,4 +1,5 @@
 use pseudolearn_lexicon::{BuiltinKind, KeywordKind, Profile};
+use pseudolearn_syntax::SyntaxTree;
 
 pub fn keyword_spelling(kind: KeywordKind, profile: Profile) -> String {
     if let Some(preferred) = preferred_spelling(kind, profile) {
@@ -6,6 +7,18 @@ pub fn keyword_spelling(kind: KeywordKind, profile: Profile) -> String {
     }
     let lexeme = kind.lexeme(profile).unwrap_or("");
     capitalize_words(lexeme)
+}
+
+pub(crate) fn positioned_keyword_spelling(
+    tree: &SyntaxTree,
+    index: usize,
+    kind: KeywordKind,
+    profile: Profile,
+) -> String {
+    match kind.lexeme(profile) {
+        Some(lexeme) if crate::identifier_roles::is_member_access(tree, index) => lexeme.to_owned(),
+        _ => keyword_spelling(kind, profile),
+    }
 }
 
 pub fn boolean_spelling(value: bool, profile: Profile) -> String {

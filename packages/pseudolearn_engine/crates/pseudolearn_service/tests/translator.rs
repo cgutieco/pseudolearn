@@ -147,3 +147,32 @@ fn translates_nested_variant_types_and_explicit_consumption() -> Result<(), Stri
     );
     Ok(())
 }
+
+#[test]
+fn translates_channel_type_constructor_and_methods() -> Result<(), String> {
+    let source = "Algoritmo P\nDefinir stream Como Canal<Entero> <- Canal(1);\nAguardar stream.Enviar(1);\nstream.Cerrar();\nFinAlgoritmo\n";
+    let english =
+        translate_source(source, Profile::English).map_err(|error| format!("{error:?}"))?;
+    assert!(
+        english.contains("channel<Integer> <- channel(1)"),
+        "{english}"
+    );
+    assert!(
+        english.contains("stream.send(1)") && english.contains("stream.close()"),
+        "{english}"
+    );
+    assert_eq!(
+        translate_source(&english, Profile::Spanish),
+        Ok(source.to_owned())
+    );
+    Ok(())
+}
+
+#[test]
+fn keeps_user_methods_named_like_channel_operations() -> Result<(), String> {
+    let source = "Clase Buzon\n  Metodo Enviar()\n  FinMetodo\nFinClase\nAlgoritmo P\n  Definir box Como Buzon <- Buzon();\n  box.Enviar();\nFinAlgoritmo\n";
+    let english =
+        translate_source(source, Profile::English).map_err(|error| format!("{error:?}"))?;
+    assert!(english.contains("box.Enviar()"), "{english}");
+    Ok(())
+}

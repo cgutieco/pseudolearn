@@ -199,3 +199,29 @@ fn formats_english_control_flow() {
         "Algorithm A\n  If 1 < 2 Then\n    Write 1;\n  Else\n    Write 2;\n  EndIf\nEndAlgorithm\n"
     );
 }
+
+#[test]
+fn keeps_member_keywords_in_their_canonical_lexeme() {
+    let english = "algorithm P\ndefine r as result<JsonValue, JsonError> <- parseJson('1');\nswitch r do\nsuccess(document): write 1;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n";
+    let formatted = format_source(
+        english,
+        FormatOptions {
+            profile: Profile::English,
+            indent_size: 2,
+        },
+    );
+    assert!(formatted.contains("problem.code;"), "{formatted}");
+}
+
+#[test]
+fn capitalizes_keyword_at_statement_start_not_after_a_dot() {
+    let source = "algorithm P\nwrite 1;\nendAlgorithm\n";
+    let formatted = format_source(
+        source,
+        FormatOptions {
+            profile: Profile::English,
+            indent_size: 2,
+        },
+    );
+    assert!(formatted.contains("Write 1;"), "{formatted}");
+}
