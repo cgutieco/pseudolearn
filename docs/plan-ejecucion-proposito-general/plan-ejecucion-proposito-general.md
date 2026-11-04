@@ -990,7 +990,8 @@ Origen: [análisis del 2026-11-02](analisis-lenguaje-completo-sin-simulacion.md)
 - [ ] `PG-S.08` Formato de números en texto.
 - [ ] `PG-S.09` Cada operación en VM, extensión web y app de las tres plataformas.
 
-Plan detallado: `fase-pg-s-plan-ejecucion.md`, pendiente de crear al iniciar la fase.
+Plan detallado: [fase-pg-s-plan-ejecucion.md](fase-pg-s-plan-ejecucion.md), redactado el 2026-11-04 y pendiente de
+revisión de la persona (`PG-S.C02`); no autoriza ejecutar la fase.
 
 Cierre común (definiciones en §4.0):
 
@@ -1220,6 +1221,6 @@ La IA a cargo actualiza esta tabla al cerrar cada fase.
 | PG-A | Cerrada por decisión expresa · PG-A.01–.09 y cierre común | Sí | 2026-11-02 · cierre expreso y push ordinario en rama única | `PHASE-GREEN` no declarado; SEE/Rust pendientes, suite completa no repetida al cierre y estudio humano E-PG-12 diferido |
 | PG-B | Reformulada el 2026-11-02 · PG-B.01–.03, .05–.09 ejecutados; .04 retirado; .10–.30 sin iniciar | Sí, reescrito; C02 pendiente | | C01/C02; parada en PG-B.22.01 si el puente supera `PERF.ARTIFACT.SIZE` |
 | PG-L | Sin iniciar | No | | |
-| PG-S | Sin iniciar | No | | |
+| PG-S | Sin iniciar | Sí, redactado el 2026-11-04; C02 pendiente de revisión | | C01 sin autorizar; depende de PG-L (sin iniciar) |
 | PG-N | Sin iniciar | No | | |
 | PG-7 | Sin iniciar · reformulada el 2026-11-02 | No | | |
