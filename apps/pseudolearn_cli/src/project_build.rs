@@ -55,7 +55,6 @@ fn build_request(options: &CliOptions) -> NativeBuildRequest {
             .vocabulary
             .clone()
             .unwrap_or_else(|| "es".to_owned()),
-        strictness: options.strictness.clone().unwrap_or("strict".to_owned()),
         seed: options.execution.seed.unwrap_or(42),
         forced_collection: false,
         limits: options.execution.limits(),

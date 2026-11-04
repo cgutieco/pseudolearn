@@ -21,6 +21,7 @@ mod dap_session;
 mod dap_sources;
 mod dap_transport;
 mod dap_variables;
+mod diagnostic_excerpt;
 mod editor_command;
 mod editor_effects;
 mod editor_protocol;

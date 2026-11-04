@@ -58,8 +58,8 @@
     },
     "helpOptions": {
       "mensajes": {
-        "es": "Opciones: --ayuda (--help), --idioma (--language), --rigor (--strictness), --vocabulario (--vocabulary), --traza (--trace), --semilla (--seed), --profundidad (--depth), --sentencias (--statements), --celdas (--cells), --json",
-        "en": "Options: --help (--ayuda), --language (--idioma), --strictness (--rigor), --vocabulary (--vocabulario), --trace (--traza), --seed (--semilla), --depth (--profundidad), --statements (--sentencias), --cells (--celdas), --json"
+        "es": "Opciones: --ayuda (--help), --idioma (--language), --vocabulario (--vocabulary), --traza (--trace), --semilla (--seed), --profundidad (--depth), --sentencias (--statements), --celdas (--cells), --json",
+        "en": "Options: --help (--ayuda), --language (--idioma), --vocabulary (--vocabulario), --trace (--traza), --seed (--semilla), --depth (--profundidad), --statements (--sentencias), --cells (--celdas), --json"
       },
       "argumentos": [],
       "tipos_argumentos": {}
@@ -550,7 +550,7 @@
   "operacion": "cli",
   "espera": {
     "codigo_salida": 0,
-    "salida": "Usage: pseudo <command> [options] <file>...\nCommands: check (comprobar), run (ejecutar), ir (ri), preferences (preferencias)\nOptions: --help (--ayuda), --language (--idioma), --strictness (--rigor), --vocabulary (--vocabulario), --trace (--traza), --seed (--semilla), --depth (--profundidad), --statements (--sentencias), --cells (--celdas), --json\n",
+    "salida": "Usage: pseudo <command> [options] <file>...\nCommands: check (comprobar), run (ejecutar), ir (ri), preferences (preferencias)\nOptions: --help (--ayuda), --language (--idioma), --vocabulary (--vocabulario), --trace (--traza), --seed (--semilla), --depth (--profundidad), --statements (--sentencias), --cells (--celdas), --json\n",
     "salida_error": ""
   },
   "cli": {
@@ -626,6 +626,101 @@
     "entorno": {},
     "archivos": {
       "p.pseudo": "Algoritmo P\nEscribir Verdadero;\nFinAlgoritmo\n"
+    }
+  }
+}
+```
+
+```regla
+{
+  "id": "R3",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Cada diagnóstico de texto de la CLI se escribe como su línea de plantilla seguida de un marcador de dos líneas, que no se traduce: «    {n} | {fuente}» y «{5 + dígitos(n) espacios}| {k espacios}^». n es el número decimal, sin relleno, de la línea donde empieza el tramo; fuente es el texto de esa línea sin su fin de línea y solo se muestra esa línea aunque el tramo cruce varias; k es la columna de inicio menos uno medida sobre la fuente con cada tabulador expandido a cuatro espacios. Si la línea expandida supera 80 columnas se muestra una ventana de 80 columnas centrada en la marca cuando es posible, y cada extremo recortado sustituye su última columna visible por «…». Si el diagnóstico no pertenece a ninguna línea de la fuente, o la fuente no está disponible, solo se escribe la línea de plantilla. La salida --json no cambia.",
+  "verificacion": [
+    "C4",
+    "C5",
+    "C6"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C4",
+  "regla": "R3",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 1,
+    "salida": "p.pseudo:2:11: error: Se esperaba un punto y coma al final de la sentencia [missingStatementTerminator]\n    2 | Escribir 1\n      |           ^\n",
+    "salida_error": ""
+  },
+  "cli": {
+    "argumentos": [
+      "comprobar",
+      "p.pseudo"
+    ],
+    "entorno": {},
+    "archivos": {
+      "p.pseudo": "Algoritmo P\nEscribir 1\nFinAlgoritmo\n"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C5",
+  "regla": "R3",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 1,
+    "salida": "p.pseudo:2:12: error: Se esperaba un punto y coma al final de la sentencia [missingStatementTerminator]\n    2 |     Escribir 1\n      |               ^\n",
+    "salida_error": ""
+  },
+  "cli": {
+    "argumentos": [
+      "comprobar",
+      "p.pseudo"
+    ],
+    "entorno": {},
+    "archivos": {
+      "p.pseudo": "Algoritmo P\n\tEscribir 1\nFinAlgoritmo\n"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C6",
+  "regla": "R3",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 1,
+    "salida": "p.pseudo:2:112: error: Se esperaba un punto y coma al final de la sentencia [missingStatementTerminator]\n    2 | …aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"\n      |                                                                                 ^\n",
+    "salida_error": ""
+  },
+  "cli": {
+    "argumentos": [
+      "comprobar",
+      "p.pseudo"
+    ],
+    "entorno": {},
+    "archivos": {
+      "p.pseudo": "Algoritmo P\nEscribir \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"\nFinAlgoritmo\n"
     }
   }
 }

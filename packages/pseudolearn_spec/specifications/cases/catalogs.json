@@ -853,8 +853,8 @@
     "helpOptions": {
       "argumentos": [],
       "mensajes": {
-        "en": "Options: --help (--ayuda), --language (--idioma), --strictness (--rigor), --vocabulary (--vocabulario), --trace (--traza), --seed (--semilla), --depth (--profundidad), --statements (--sentencias), --cells (--celdas), --json",
-        "es": "Opciones: --ayuda (--help), --idioma (--language), --rigor (--strictness), --vocabulario (--vocabulary), --traza (--trace), --semilla (--seed), --profundidad (--depth), --sentencias (--statements), --celdas (--cells), --json"
+        "en": "Options: --help (--ayuda), --language (--idioma), --vocabulary (--vocabulario), --trace (--traza), --seed (--semilla), --depth (--profundidad), --statements (--sentencias), --cells (--celdas), --json",
+        "es": "Opciones: --ayuda (--help), --idioma (--language), --vocabulario (--vocabulary), --traza (--trace), --semilla (--seed), --profundidad (--depth), --sentencias (--statements), --celdas (--cells), --json"
       },
       "tipos_argumentos": {}
     },
@@ -10204,8 +10204,8 @@
               }
             ],
             "parts": [],
-            "purpose": "A line ending may also terminate a statement under the active strictness.",
-            "summary": "Delimits the end of a simple statement in strict mode.",
+            "purpose": "Every simple statement ends with a semicolon; omitting it is an error.",
+            "summary": "Delimits the end of a simple statement.",
             "title": "Simple statement ending"
           },
           "es": {
@@ -10230,8 +10230,8 @@
               }
             ],
             "parts": [],
-            "purpose": "El salto de línea también puede terminar una sentencia según el rigor activo.",
-            "summary": "Delimita el final de una sentencia simple en rigor estricto.",
+            "purpose": "Toda sentencia simple termina con punto y coma; omitirlo es un error.",
+            "summary": "Delimita el final de una sentencia simple.",
             "title": "Fin de sentencia simple"
           }
         },

@@ -7,7 +7,7 @@ fn launch_options_keep_i64_values_exact_and_observe_events() -> Result<(), Strin
     let mut options = parse_cli_options(&[]).ok().ok_or("missing options")?;
     configure(
         &mut options,
-        &json!({"seed":"9223372036854775807","profile":"en","strictness":"flexible"}),
+        &json!({"seed":"9223372036854775807","profile":"en"}),
     )?;
     assert_eq!(options.execution.seed, Some(i64::MAX));
     assert_eq!(options.vocabulary.as_deref(), Some("en"));
@@ -24,7 +24,6 @@ fn malformed_or_noncanonical_launch_configuration_is_rejected() -> Result<(), St
         json!({"seed":"-0"}),
         json!({"backend":"native"}),
         json!({"profile":1}),
-        json!({"strictness":false}),
         json!({"stopOnEntry":"false"}),
         json!({"workspaceRoot":1}),
     ] {

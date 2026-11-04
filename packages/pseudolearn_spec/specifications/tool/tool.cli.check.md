@@ -44,7 +44,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "pseudo comprobar analiza cada archivo indicado y cada archivo .pseudo de los directorios indicados, recursivamente y en orden de segmentos relativos a la raíz con clave portable NFC en minúsculas Unicode; conserva la grafía de la ruta para presentarla. Escribe en la salida estándar una línea por diagnóstico, en el orden de DIAG.ORDERING, con la plantilla de su severidad y el mensaje de DIAG.MESSAGES en el idioma de interfaz. Reordenar los argumentos o cambiar el idioma de interfaz no altera el orden. Sin diagnósticos no escribe nada.",
+  "texto": "pseudo comprobar analiza cada archivo indicado y cada archivo .pseudo de los directorios indicados, recursivamente y en orden de segmentos relativos a la raíz con clave portable NFC en minúsculas Unicode; conserva la grafía de la ruta para presentarla. Escribe en la salida estándar cada diagnóstico, en el orden de DIAG.ORDERING, con la plantilla de su severidad, el mensaje de DIAG.MESSAGES en el idioma de interfaz y el marcador de línea de TOOL.CLI.MESSAGES. Reordenar los argumentos o cambiar el idioma de interfaz no altera el orden. Sin diagnósticos no escribe nada.",
   "verificacion": [
     "C1",
     "C2",
@@ -121,7 +121,7 @@
   "operacion": "cli",
   "espera": {
     "codigo_salida": 1,
-    "salida": "p.pseudo:2:10: error: Variable no declarada: total [undeclaredVariable]\n",
+    "salida": "p.pseudo:2:10: error: Variable no declarada: total [undeclaredVariable]\n    2 | Escribir total;\n      |          ^\n",
     "salida_error": ""
   },
   "cli": {
@@ -148,7 +148,7 @@
   "operacion": "cli",
   "espera": {
     "codigo_salida": 1,
-    "salida": "p.pseudo:2:10: error: Undeclared variable: total [undeclaredVariable]\n",
+    "salida": "p.pseudo:2:10: error: Undeclared variable: total [undeclaredVariable]\n    2 | Escribir total;\n      |          ^\n",
     "salida_error": ""
   },
   "cli": {
@@ -177,7 +177,7 @@
   "operacion": "cli",
   "espera": {
     "codigo_salida": 1,
-    "salida": "src/b.pseudo:2:10: error: Variable no declarada: total [undeclaredVariable]\n",
+    "salida": "src/b.pseudo:2:10: error: Variable no declarada: total [undeclaredVariable]\n    2 | Escribir total;\n      |          ^\n",
     "salida_error": ""
   },
   "cli": {
@@ -206,7 +206,7 @@
   "operacion": "cli",
   "espera": {
     "codigo_salida": 1,
-    "salida": "src/alpha.pseudo:2:10: error: Carácter no reconocido: $ [unrecognizedCharacter]\nsrc/zeta.pseudo:2:10: error: Carácter no reconocido: @ [unrecognizedCharacter]\n",
+    "salida": "src/alpha.pseudo:2:10: error: Carácter no reconocido: $ [unrecognizedCharacter]\n    2 | Escribir $;\n      |          ^\nsrc/zeta.pseudo:2:10: error: Carácter no reconocido: @ [unrecognizedCharacter]\n    2 | Escribir @;\n      |          ^\n",
     "salida_error": ""
   },
   "cli": {
@@ -278,7 +278,7 @@
   "operacion": "cli",
   "espera": {
     "codigo_salida": 0,
-    "salida": "p.pseudo:2:9: advertencia: Variable declarada y nunca usada: x [variableDeclaredNeverUsed]\n",
+    "salida": "p.pseudo:2:9: advertencia: Variable declarada y nunca usada: x [variableDeclaredNeverUsed]\n    2 | Definir x Como Entero <- 0;\n      |         ^\n",
     "salida_error": ""
   },
   "cli": {
@@ -352,14 +352,14 @@
   "operacion": "cli",
   "espera": {
     "codigo_salida": 1,
-    "salida": "p.pseudo:2:10: error: Variable no declarada: total [undeclaredVariable]\n",
+    "salida": "p.pseudo:2:10: error: Variable no declarada: total [undeclaredVariable]\n    2 | Escribir total;\n      |          ^\n",
     "salida_error": ""
   },
   "cli": {
     "argumentos": [
       "comprobar",
-      "--rigor",
-      "flexible",
+      "--vocabulario",
+      "es",
       "p.pseudo"
     ],
     "entorno": {},
@@ -395,7 +395,7 @@
   "operacion": "cli",
   "espera": {
     "codigo_salida": 1,
-    "salida": "proyecto/geo/vectores.pseudo:2:10: error: Variable no declarada: total [undeclaredVariable]\n",
+    "salida": "proyecto/geo/vectores.pseudo:2:10: error: Variable no declarada: total [undeclaredVariable]\n    2 | Retornar total;\n      |          ^\n",
     "salida_error": ""
   },
   "cli": {

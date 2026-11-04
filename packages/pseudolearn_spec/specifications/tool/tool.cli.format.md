@@ -97,7 +97,7 @@
     ],
     "entorno": {},
     "archivos": {
-      "p.pseudo": "algoritmo Principal\ndefinir x como entero <- 0\nfinalgoritmo\n"
+      "p.pseudo": "algoritmo Principal\ndefinir x como entero <- 0;\nfinalgoritmo\n"
     }
   }
 }
@@ -153,7 +153,7 @@
     ],
     "entorno": {},
     "archivos": {
-      "p.pseudo": "algoritmo Principal\ndefinir x como entero <- 0\nfinalgoritmo\n"
+      "p.pseudo": "algoritmo Principal\ndefinir x como entero <- 0;\nfinalgoritmo\n"
     }
   }
 }

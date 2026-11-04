@@ -42,7 +42,7 @@ La CLI conserva la lectura confinada de archivos y manifiestos y entrega los tex
 sin añadir un comando CLI ni mover la responsabilidad de E/S fuera del adaptador.
 `ejecutar/run` admite `--grabar-cinta <RUTA>` / `--record-tape <PATH>` para persistir la cinta de efectos canónica (`pseudolearn.tape/v1`) y `--reproducir-cinta <RUTA>` / `--replay-tape <PATH>` para reproducir ejecuciones deterministas en aislamiento absoluto del anfitrión (`ENG.EFFECT.TAPE`).
 
-El adaptador de conformidad CLI anuncia `cli` e `ir`. La propiedad de RI obtiene primero la salida de un proceso real `pseudo ri`, y la entrega al verificador público de la API para exigir aceptación y reimpresión idéntica. El verificador también delimita los programas válidos del corpus; las fuentes no compilables no pertenecen al dominio de esa propiedad. Se recorren casos de análisis, ejecución y traza, además de las muestras generadas, en ambos perfiles y rigores. No se declara pendiente una propiedad que el sujeto ya puede ejecutar.
+El adaptador de conformidad CLI anuncia `cli` e `ir`. La propiedad de RI obtiene primero la salida de un proceso real `pseudo ri`, y la entrega al verificador público de la API para exigir aceptación y reimpresión idéntica. El verificador también delimita los programas válidos del corpus; las fuentes no compilables no pertenecen al dominio de esa propiedad. Se recorren casos de análisis, ejecución y traza, además de las muestras generadas, en ambos perfiles. No se declara pendiente una propiedad que el sujeto ya puede ejecutar.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
@@ -54,12 +54,19 @@ La grafía de la orden, el archivo y su vocabulario nunca deciden el idioma de i
 Alternativas descartadas: comentarios mágicos, configuración ejecutable y manifiesto de proyecto para una preferencia personal.
 El manifiesto de paquete (datos, sin idioma de interfaz ni edición) lo define la API pública; la CLI solo le entregará sus textos y las concesiones del anfitrión, que nunca provienen del contenido del proyecto.
 Los alias ingleses siempre se aceptan y conservan idénticos efectos y salida.
-Opciones: --rigor/--strictness, --traza/--trace, --json. La ayuda muestra forma del idioma de interfaz y la otra como alias.
+Opciones: --traza/--trace, --json. La ayuda muestra forma del idioma de interfaz y la otra como alias.
 
 `build.rs` genera el catálogo de mensajes desde la exportación de `TOOL.CLI.MESSAGES`.
 La sustitución de argumentos recorre la plantilla una sola vez, preservando llaves en lexemas del usuario.
 Los tramos públicos ya contienen línea y columna; la CLI los presenta sin convertir offsets.
 La prosa de diagnóstico se renderiza por código y argumentos en el idioma de interfaz.
+El marcador de línea (`diagnostic_excerpt.rs`) añade bajo cada diagnóstico de texto la línea de fuente con su número y una
+marca `^` bajo la columna de inicio, para que un `;` olvidado se vea sin abrir el editor. Solo se muestra la primera línea
+del tramo, los tabuladores se expanden a cuatro columnas y una línea de más de 80 columnas se recorta a una ventana de 80
+centrada en la marca con `…` en cada extremo recortado. Es estructura sin prosa, así que no vive en el catálogo de
+mensajes; `--json` no cambia porque ya lleva línea, columna y tramo. Si la fuente no está disponible (un diagnóstico sin archivo, o un fallo
+en tiempo de ejecución de un ejecutable nativo, que no lleva la fuente) solo se escribe la línea de plantilla. El lenguaje es único: la CLI no tiene opciones que cambien sus
+reglas, y cualquier opción de ese tipo es una opción desconocida.
 
 formatear/format: aplica el estilo canónico al programa mediante el servicio de lenguaje de la API. Con `--verificar` (`--check`) no emite código ni modifica el disco: retorna 0 si el archivo ya está en forma canónica y 1 con mensaje en stderr si requiere formateo. Con `--escribir` (`--write`, `-w`) actualiza el archivo en disco e informa su ruta. Si el archivo contiene errores sintácticos o no existe, retorna código 1 o 2 respectivamente sin tocar el disco.
 
@@ -76,7 +83,7 @@ la biblioteca del runtime incrustada en `pseudo` (`include_bytes!`) usando el dr
 elimina siempre. El resultado se copia junto al destino con un nombre provisional y se renombra, de modo que un fallo
 nunca crea ni sobrescribe la salida. Informa `buildSucceeded` con la ruta tal como se pidió. Sin `-o`/`--salida`/`--output`
 la salida es el nombre del archivo sin `.pseudo` (más `.exe` en Windows) en el directorio actual; si eso coincidiera con la
-fuente se usa `.out` para no sobrescribirla. `--semilla`, `--profundidad`, `--sentencias`, `--celdas`, `--tareas`, `--rigor`,
+fuente se usa `.out` para no sobrescribirla. `--semilla`, `--profundidad`, `--sentencias`, `--celdas`, `--tareas`,
 `--vocabulario` e `--idioma` se fijan en el ejecutable al compilar: el idioma de interfaz elige el idioma de los
 diagnósticos del ejecutable y sus plantillas de línea. Errores del programa: diagnósticos y código 1; fuente ausente: 2;
 ilegible, enlazador ausente o fallido: 3. El código del ejecutable es 0, 3, 4 o 5 según su propio protocolo.
@@ -88,7 +95,7 @@ Adaptador `aot`: ejecuta programas compilados de verdad, con efectos de capacida
 enlazador que `compilar` y lanza el ejecutable con entorno vacío y desde otro directorio, con las entradas en la entrada
 estándar; `pseudolearn_api` convierte código de salida, salida y salida de error en la respuesta del protocolo. Una caché
 en memoria, con tope de 32 ejecutables en un directorio temporal propio, reutiliza el ejecutable de un objeto idéntico
-(perfil y rigor distintos producen el mismo objeto); la clave es el contenido completo del objeto, no un resumen, de modo
+(perfiles distintos producen el mismo objeto); la clave es el contenido completo del objeto, no un resumen, de modo
 que una colisión no puede devolver un ejecutable ajeno. El directorio se elimina al terminar, también si el protocolo se
 cierra sin `shutdown`. Anuncia `execute` y `gc_stress`; no anuncia `observe`, `analyze`, `ir` ni `api`, porque el
 sujeto está exento de observación y solo ejecuta.
@@ -99,7 +106,7 @@ la salida del programa se conserva literalmente. ri/ir imprime la RI canónica d
 de la primera violación. No se introduce semántica propia ni se accede a capas internas. Los casos cli
 verifican ambos idiomas, opciones equivalentes, códigos de salida y errores operativos.
 
-`ejecutar`/`run` conserva la entrada pública de archivo suelto con perfil y rigor existentes. No exige
+`ejecutar`/`run` conserva la entrada pública de archivo suelto con el perfil existente. No exige
 manifiesto ni imports para abrir un programa; las directivas de módulo siguen reservadas a la forma
 contextual de unidad superior y sus grafías se pueden usar como nombres dentro de un programa suelto. La CLI entrega el texto leído y la configuración seleccionada sin transformarlos a `AnalyzeRequest`; la ejecución no consulta manifiestos, directorio de trabajo ni entorno para determinar edición o símbolos. La auditoría confirmó que no hace falta una opción nueva. Un archivo suelto que pega `Importar` o `Exportar` conserva el diagnóstico `moduleSyntaxOutsideProject` y no se ejecuta: la CLI no resuelve esas rutas contra el directorio de trabajo ni crea un manifiesto implícito. La proyección de dependencias sin enlazar (`API.PROGRAM.VIEW#R15`) pertenece a la API y no cambió la superficie de la CLI.
 
@@ -323,7 +330,7 @@ los del motor. Se descartó un crate DAP separado porque este transporte no tien
 Continuar y pasar usan el recurso vivo; la operación histórica `step`, que recompila, no se utiliza.
 
 La secuencia es `initialize`, `launch`, evento `initialized`, breakpoints y `configurationDone`.
-`launch` acepta `program` o `project` con `entry`, `workspaceRoot`, `profile`, `strictness`, semilla
+`launch` acepta `program` o `project` con `entry`, `workspaceRoot`, `profile`, semilla
 decimal i64 y `stopOnEntry` (por omisión verdadero). Solo se admite backend `vm`. La configuración
 no recibe entorno ni ejecutables; acepta `args` (lista de cadenas) y `cwd` (carpeta existente, por omisión la del
 workspace o la del archivo). No existen claves de permiso ni opciones de concesión. La extensión exige

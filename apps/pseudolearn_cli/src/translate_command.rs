@@ -1,7 +1,7 @@
 #![forbid(unsafe_code)]
 
 use crate::error::CliError;
-use crate::messages::{format_diagnostic_line, missing_input, unreadable_input};
+use crate::messages::{format_diagnostic_report, missing_input, unreadable_input};
 use crate::options::{CliOptions, FormatAction};
 use pseudolearn_api::service::{Profile, TranslationError, translate_source};
 use pseudolearn_api::{
@@ -28,9 +28,8 @@ pub fn execute_translate(options: &CliOptions) -> Result<i32, CliError> {
     } else {
         Profile::Spanish
     };
-    let strictness_flag = options.strictness.as_deref().unwrap_or("strict") == "strict";
 
-    match translate_source(&source_content, target_profile, strictness_flag) {
+    match translate_source(&source_content, target_profile) {
         Ok(translated_content) => {
             write_translation_output(options, target_path, &translated_content)?;
             Ok(0)
@@ -39,8 +38,7 @@ pub fn execute_translate(options: &CliOptions) -> Result<i32, CliError> {
             identifier, span, ..
         }) => {
             let offset = usize::try_from(span.start).unwrap_or(0);
-            let coordinates = line_and_column(&source_content, offset);
-            emit_collision_diagnostic(options, target_path, coordinates, &identifier);
+            report_collision(options, target_path, &source_content, (&identifier, offset));
             Ok(1)
         }
         Err(TranslationError::ParseFailure(_)) => {
@@ -48,6 +46,21 @@ pub fn execute_translate(options: &CliOptions) -> Result<i32, CliError> {
             Ok(1)
         }
     }
+}
+
+fn report_collision(
+    options: &CliOptions,
+    target_path: &str,
+    source_content: &str,
+    (identifier, offset): (&str, usize),
+) {
+    let coordinates = line_and_column(source_content, offset);
+    emit_collision_diagnostic(
+        options,
+        target_path,
+        (source_content, coordinates),
+        identifier,
+    );
 }
 
 fn collision_diagnostic(coordinates: (u32, u32), identifier: &str) -> ApiDiagnostic {
@@ -79,14 +92,14 @@ fn collision_diagnostic(coordinates: (u32, u32), identifier: &str) -> ApiDiagnos
 fn emit_collision_diagnostic(
     options: &CliOptions,
     target_path: &str,
-    coordinates: (u32, u32),
+    (source_content, coordinates): (&str, (u32, u32)),
     identifier: &str,
 ) {
     let diagnostic = collision_diagnostic(coordinates, identifier);
-    let rendered_line = format_diagnostic_line(
+    let rendered_line = format_diagnostic_report(
         &options.interface_language,
         target_path,
-        coordinates,
+        Some(source_content),
         &diagnostic,
     );
     eprint!("{rendered_line}");
@@ -140,18 +153,13 @@ fn emit_parse_diagnostics(options: &CliOptions, target_path: &str, source_conten
         source: None,
         program: source_content.to_owned(),
         profile: vocabulary_name,
-        strictness: String::from("strict"),
     };
     let analysis_outcome = execute_analyze(&analysis_request);
     for diagnostic_entry in &analysis_outcome.diagnostics {
-        let coordinate = (
-            diagnostic_entry.span.start.line,
-            diagnostic_entry.span.start.column,
-        );
-        let rendered_line = format_diagnostic_line(
+        let rendered_line = format_diagnostic_report(
             &options.interface_language,
             target_path,
-            coordinate,
+            Some(source_content),
             diagnostic_entry,
         );
         eprint!("{rendered_line}");

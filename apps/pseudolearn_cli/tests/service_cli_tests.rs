@@ -10,7 +10,7 @@ fn format_prints_canonical_source_to_stdout() -> Result<(), Box<dyn std::error::
     let target_file = working_directory.join("unformatted.pseudo");
     std::fs::write(
         &target_file,
-        "algoritmo Principal\ndefinir x como entero <- 0\nfinalgoritmo\n",
+        "algoritmo Principal\ndefinir x como entero <- 0;\nfinalgoritmo\n",
     )?;
 
     let process_output = Command::new(env!("CARGO_BIN_EXE_pseudo"))
@@ -33,7 +33,7 @@ fn format_check_returns_one_when_not_canonical() -> Result<(), Box<dyn std::erro
     let target_file = working_directory.join("check_needed.pseudo");
     std::fs::write(
         &target_file,
-        "algoritmo Principal\ndefinir x como entero <- 0\nfinalgoritmo\n",
+        "algoritmo Principal\ndefinir x como entero <- 0;\nfinalgoritmo\n",
     )?;
 
     let process_output = Command::new(env!("CARGO_BIN_EXE_pseudo"))
@@ -82,7 +82,7 @@ fn format_write_updates_file_in_place() -> Result<(), Box<dyn std::error::Error>
     let target_file = working_directory.join("in_place.pseudo");
     std::fs::write(
         &target_file,
-        "algoritmo Principal\ndefinir x como entero <- 0\nfinalgoritmo\n",
+        "algoritmo Principal\ndefinir x como entero <- 0;\nfinalgoritmo\n",
     )?;
 
     let process_output = Command::new(env!("CARGO_BIN_EXE_pseudo"))

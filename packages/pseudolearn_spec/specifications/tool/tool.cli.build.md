@@ -162,7 +162,7 @@
   "espera": {
     "codigo_salida": 1,
     "salida": "",
-    "salida_error": "p.pseudo:2:10: error: Variable no declarada: total [undeclaredVariable]\n"
+    "salida_error": "p.pseudo:2:10: error: Variable no declarada: total [undeclaredVariable]\n    2 | Escribir total;\n      |          ^\n"
   },
   "cli": {
     "argumentos": [
@@ -344,7 +344,7 @@
   "espera": {
     "codigo_salida": 1,
     "salida": "",
-    "salida_error": "proyecto/geo/vectores.pseudo:2:10: error: Variable no declarada: total [undeclaredVariable]\n"
+    "salida_error": "proyecto/geo/vectores.pseudo:2:10: error: Variable no declarada: total [undeclaredVariable]\n    2 | Retornar total;\n      |          ^\n"
   },
   "cli": {
     "argumentos": [

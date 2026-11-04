@@ -150,7 +150,7 @@
   "espera": {
     "codigo_salida": 1,
     "salida": "",
-    "salida_error": "p.pseudo:2:10: error: Variable no declarada: total [undeclaredVariable]\n"
+    "salida_error": "p.pseudo:2:10: error: Variable no declarada: total [undeclaredVariable]\n    2 | Escribir total;\n      |          ^\n"
   },
   "cli": {
     "argumentos": [
@@ -191,7 +191,7 @@
   "espera": {
     "codigo_salida": 1,
     "salida": "",
-    "salida_error": "p.pseudo:4:12: error: División por cero [divisionByZero]\n"
+    "salida_error": "p.pseudo:4:12: error: División por cero [divisionByZero]\n    4 | Escribir 1 div x;\n      |            ^\n"
   },
   "cli": {
     "argumentos": [
@@ -245,7 +245,7 @@
   "espera": {
     "codigo_salida": 1,
     "salida": "1\n2\n",
-    "salida_error": "p.pseudo:4:1: información: Se agotó el presupuesto de sentencias: 2 [statementBudgetExhausted]\n"
+    "salida_error": "p.pseudo:4:1: información: Se agotó el presupuesto de sentencias: 2 [statementBudgetExhausted]\n    4 | Escribir 3;\n      | ^\n"
   },
   "cli": {
     "argumentos": [
@@ -486,7 +486,7 @@
   "espera": {
     "codigo_salida": 1,
     "salida": "",
-    "salida_error": "proyecto/geo/vectores.pseudo:2:12: error: División por cero [divisionByZero]\n"
+    "salida_error": "proyecto/geo/vectores.pseudo:2:12: error: División por cero [divisionByZero]\n    2 | Retornar n / 0;\n      |            ^\n"
   },
   "cli": {
     "argumentos": [

@@ -2,7 +2,7 @@
 
 use crate::confined_sources;
 use crate::error::CliError;
-use crate::messages::{format_diagnostic_line, missing_input};
+use crate::messages::{format_diagnostic_report, missing_input};
 use crate::options::CliOptions;
 use pseudolearn_api::{
     AnalyzeRequest, AnalyzeResponse, ApiDiagnostic, detect_vocabulary_profile, execute_analyze,
@@ -45,12 +45,10 @@ fn check_source(
     content: &str,
 ) -> (bool, Option<serde_json::Value>) {
     let vocabulary = determine_vocabulary(options, content);
-    let strictness = options.strictness.as_deref().unwrap_or("strict");
     let request = AnalyzeRequest {
         source: None,
         program: content.to_owned(),
         profile: vocabulary,
-        strictness: strictness.to_owned(),
     };
     let response = execute_analyze(&request);
     let has_error = response
@@ -62,7 +60,7 @@ fn check_source(
         let json_representation = build_json_file(file_path, &response.diagnostics);
         (has_error, Some(json_representation))
     } else {
-        render_diagnostics(file_path, &response, &options.interface_language);
+        render_diagnostics(file_path, content, &response, &options.interface_language);
         (has_error, None)
     }
 }
@@ -76,11 +74,15 @@ fn determine_vocabulary(options: &CliOptions, content: &str) -> String {
         .to_owned()
 }
 
-fn render_diagnostics(file_path: &str, response: &AnalyzeResponse, interface_language: &str) {
+fn render_diagnostics(
+    file_path: &str,
+    content: &str,
+    response: &AnalyzeResponse,
+    interface_language: &str,
+) {
     for diagnostic in &response.diagnostics {
-        let (line, column) = (diagnostic.span.start.line, diagnostic.span.start.column);
         let formatted =
-            format_diagnostic_line(interface_language, file_path, (line, column), diagnostic);
+            format_diagnostic_report(interface_language, file_path, Some(content), diagnostic);
         print!("{formatted}");
     }
 }

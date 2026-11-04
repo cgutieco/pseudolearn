@@ -76,6 +76,11 @@
       "estado": "cumple"
     },
     {
+      "regla": "TOOL.CLI.MESSAGES@1.0.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
       "regla": "TOOL.CLI.RUN@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"

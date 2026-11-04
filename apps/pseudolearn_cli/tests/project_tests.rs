@@ -133,8 +133,9 @@ fn a_fault_in_an_imported_module_names_its_logical_source() -> std::io::Result<(
         None,
     )?;
     assert_eq!(run.status.code(), Some(1));
-    let expected =
-        format!("{project}/geo/vectores.pseudo:2:12: error: División por cero [divisionByZero]\n");
+    let expected = format!(
+        "{project}/geo/vectores.pseudo:2:12: error: División por cero [divisionByZero]\n    2 | Retornar n / 0;\n      |            ^\n"
+    );
     assert_eq!(text(&run.stderr), expected);
     let output = directory(&sandbox.root.join("elsewhere").join("salida"));
     let arguments = [
@@ -149,7 +150,10 @@ fn a_fault_in_an_imported_module_names_its_logical_source() -> std::io::Result<(
     assert_eq!(sandbox.pseudo(&arguments, None)?.status.code(), Some(0));
     let native = Command::new(&output).env_clear().output()?;
     assert_eq!(native.status.code(), Some(3));
-    assert_eq!(text(&native.stderr), expected);
+    let native_line =
+        "{project}/geo/vectores.pseudo:2:12: error: División por cero [divisionByZero]\n"
+            .replace("{project}", &project);
+    assert_eq!(text(&native.stderr), native_line);
     Ok(())
 }
 

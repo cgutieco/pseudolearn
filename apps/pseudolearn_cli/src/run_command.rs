@@ -171,14 +171,14 @@ fn render_rejected(
 }
 
 pub(crate) fn render_diagnostics(options: &CliOptions, path: &str, diagnostics: &[ApiDiagnostic]) {
+    let source = std::fs::read_to_string(path).ok();
     for diagnostic in diagnostics {
-        let position = (diagnostic.span.start.line, diagnostic.span.start.column);
         eprint!(
             "{}",
-            messages::format_diagnostic_line(
+            messages::format_diagnostic_report(
                 &options.interface_language,
                 path,
-                position,
+                source.as_deref(),
                 diagnostic
             )
         );
@@ -218,7 +218,6 @@ pub(crate) fn build_request(
     Ok(ExecuteRequest {
         program: source,
         profile,
-        strictness: options.strictness.clone().unwrap_or("strict".to_owned()),
         seed: execution_seed(options, effect_tape.as_ref())?,
         observe: if options.execution.trace {
             "events"

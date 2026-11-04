@@ -90,3 +90,21 @@ pub fn format_diagnostic_line(
         ],
     )
 }
+
+pub fn format_diagnostic_report(
+    locale: &str,
+    target: &str,
+    source: Option<&str>,
+    diagnostic: &pseudolearn_api::ApiDiagnostic,
+) -> String {
+    let start = &diagnostic.span.start;
+    let mut report = format_diagnostic_line(locale, target, (start.line, start.column), diagnostic);
+    if let Some(text) = source {
+        report.push_str(&crate::diagnostic_excerpt::excerpt(
+            text,
+            start.line,
+            start.column,
+        ));
+    }
+    report
+}

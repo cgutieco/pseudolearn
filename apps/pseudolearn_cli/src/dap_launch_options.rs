@@ -17,13 +17,6 @@ pub(crate) fn configure(options: &mut CliOptions, arguments: &Value) -> Result<(
         }
         options.vocabulary = Some(profile.to_owned());
     }
-    if let Some(strictness) = arguments.get("strictness") {
-        let strictness = strictness.as_str().ok_or("invalid strictness")?;
-        if !["strict", "flexible"].contains(&strictness) {
-            return Err("invalid strictness".to_owned());
-        }
-        options.strictness = Some(strictness.to_owned());
-    }
     if let Some(seed) = arguments.get("seed") {
         options.execution.seed = Some(parse_seed(seed)?);
     }

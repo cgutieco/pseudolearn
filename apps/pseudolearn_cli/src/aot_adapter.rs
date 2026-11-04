@@ -6,7 +6,6 @@ use pseudolearn_api::{
     ENGINE_VERSION, ExecuteRequest, ExecuteResponse, NativeBuildFailure, NativeRunReport,
     build_native_object, conformance_build_request, native_effect_input, native_execute_response,
     protocol_rejected_native_response, rejected_native_response, supported_profiles,
-    supported_strictness,
 };
 use serde_json::{Value, json};
 use std::io::{BufRead, Write};
@@ -42,8 +41,7 @@ fn hello() -> Value {
         "subject": "aot",
         "subject_version": ENGINE_VERSION,
         "capabilities": ["execute", "gc_stress"],
-        "profiles": supported_profiles(),
-        "strictness": supported_strictness()
+        "profiles": supported_profiles()
     })
 }
 

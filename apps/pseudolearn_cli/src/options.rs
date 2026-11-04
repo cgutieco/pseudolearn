@@ -17,7 +17,6 @@ pub struct CliOptions {
     pub interface_language: String,
     pub command: Option<String>,
     pub positional_arguments: Vec<String>,
-    pub strictness: Option<String>,
     pub vocabulary: Option<String>,
     pub output: Option<String>,
     pub json_output: bool,
@@ -32,7 +31,6 @@ pub struct CliOptions {
 struct ParsedArguments {
     command: Option<String>,
     positional_arguments: Vec<String>,
-    strictness: Option<String>,
     vocabulary: Option<String>,
     output: Option<String>,
     json_output: bool,
@@ -71,7 +69,6 @@ pub fn parse_cli_options(raw_arguments: &[String]) -> Result<CliOptions, CliErro
         interface_language,
         command: parsed.command,
         positional_arguments: parsed.positional_arguments,
-        strictness: parsed.strictness,
         vocabulary: parsed.vocabulary,
         output: parsed.output,
         json_output: parsed.json_output,
@@ -120,9 +117,6 @@ fn handle_valued_option(
     let current = raw_arguments.get(*current_index).map_or("", String::as_str);
     match current {
         "--idioma" | "--language" => handle_language_option(raw_arguments, current_index, locale),
-        "--rigor" | "--strictness" => {
-            handle_strictness_option(raw_arguments, current_index, locale, &mut parsed.strictness)
-        }
         "--vocabulario" | "--vocabulary" | "--perfil" | "--profile" => {
             handle_vocabulary_option(raw_arguments, current_index, locale, &mut parsed.vocabulary)
         }
@@ -205,25 +199,6 @@ fn handle_language_option(
     if choice != "es" && choice != "en" {
         return Err(CliError::Usage(invalid_option_value(locale, flag, choice)));
     }
-    *current_index = current_index.saturating_add(1);
-    Ok(())
-}
-
-fn handle_strictness_option(
-    raw_arguments: &[String],
-    current_index: &mut usize,
-    locale: &str,
-    target: &mut Option<String>,
-) -> Result<(), CliError> {
-    let flag = raw_arguments.get(*current_index).map_or("", String::as_str);
-    *current_index = current_index.saturating_add(1);
-    let choice = raw_arguments.get(*current_index).map_or("", String::as_str);
-    let validated = match choice {
-        "estricto" | "strict" => "strict",
-        "flexible" => "flexible",
-        _ => return Err(CliError::Usage(invalid_option_value(locale, flag, choice))),
-    };
-    *target = Some(validated.to_owned());
     *current_index = current_index.saturating_add(1);
     Ok(())
 }

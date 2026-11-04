@@ -28,7 +28,6 @@ fn api_diagnostic_order() -> Result<Vec<OrderedDiagnostic>, String> {
     let source_text = "Algoritmo P\nEscribir @;\nFinAlgoritmo\n";
     let request = serde_json::json!({
         "profile": "es",
-        "strictness": "strict",
         "project": {
             "project_id": "1",
             "revision_id": "1",

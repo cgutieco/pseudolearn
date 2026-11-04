@@ -1,7 +1,7 @@
 #![forbid(unsafe_code)]
 
 use crate::error::CliError;
-use crate::messages::{format_diagnostic_line, missing_input, unreadable_input};
+use crate::messages::{format_diagnostic_report, missing_input, unreadable_input};
 use crate::options::{CliOptions, FormatAction};
 use pseudolearn_api::service::{FormatOptions, Profile, format_source};
 use pseudolearn_api::{AnalyzeRequest, detect_vocabulary_profile, execute_analyze};
@@ -67,12 +67,10 @@ fn check_syntax(options: &CliOptions, target_path: &str, source_content: &str) -
         .vocabulary
         .clone()
         .unwrap_or_else(|| determine_vocabulary(source_content));
-    let strictness_mode = options.strictness.as_deref().unwrap_or("flexible");
     let analysis_request = AnalyzeRequest {
         source: None,
         program: source_content.to_owned(),
         profile: vocabulary_name,
-        strictness: strictness_mode.to_owned(),
     };
     let analysis_outcome = execute_analyze(&analysis_request);
     let has_fatal_errors = analysis_outcome
@@ -82,14 +80,10 @@ fn check_syntax(options: &CliOptions, target_path: &str, source_content: &str) -
 
     if has_fatal_errors {
         for diagnostic_entry in &analysis_outcome.diagnostics {
-            let coordinate = (
-                diagnostic_entry.span.start.line,
-                diagnostic_entry.span.start.column,
-            );
-            let rendered_line = format_diagnostic_line(
+            let rendered_line = format_diagnostic_report(
                 &options.interface_language,
                 target_path,
-                coordinate,
+                Some(source_content),
                 diagnostic_entry,
             );
             eprint!("{rendered_line}");
@@ -116,10 +110,8 @@ fn produce_formatted_source(options: &CliOptions, source_content: &str) -> Strin
     } else {
         Profile::Spanish
     };
-    let strictness_flag = options.strictness.as_deref().unwrap_or("strict") == "strict";
     let formatting_options = FormatOptions {
         profile: active_profile,
-        strict: strictness_flag,
         indent_size: 2,
     };
     format_source(source_content, formatting_options)

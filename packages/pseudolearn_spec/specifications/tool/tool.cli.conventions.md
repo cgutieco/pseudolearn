@@ -180,7 +180,7 @@
   "id": "R2",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Las opciones son --ayuda (--help), --idioma (--language) con es o en, --rigor (--strictness) con estricto o flexible y alias strict o flexible, --vocabulario (--vocabulary) con es o en, --traza (--trace), --semilla (--seed), --profundidad (--depth), --sentencias (--statements), --celdas (--cells), --salida (--output, -o) y --json. Los alias se aceptan siempre. El rigor por omisión es estricto. Una opción desconocida o un valor no válido es un uso incorrecto.",
+  "texto": "Las opciones son --ayuda (--help), --idioma (--language) con es o en, --vocabulario (--vocabulary) con es o en, --traza (--trace), --semilla (--seed), --profundidad (--depth), --sentencias (--statements), --celdas (--cells), --salida (--output, -o) y --json. Los alias se aceptan siempre. Una opción desconocida o un valor no válido es un uso incorrecto.",
   "verificacion": [
     "C5",
     "C6",
@@ -201,7 +201,7 @@
   "operacion": "cli",
   "espera": {
     "codigo_salida": 0,
-    "salida": "Uso: pseudo <orden> [opciones] <archivo>...\nÓrdenes: comprobar (check), ejecutar (run), ri (ir), preferencias (preferences)\nOpciones: --ayuda (--help), --idioma (--language), --rigor (--strictness), --vocabulario (--vocabulary), --traza (--trace), --semilla (--seed), --profundidad (--depth), --sentencias (--statements), --celdas (--cells), --json\n",
+    "salida": "Uso: pseudo <orden> [opciones] <archivo>...\nÓrdenes: comprobar (check), ejecutar (run), ri (ir), preferencias (preferences)\nOpciones: --ayuda (--help), --idioma (--language), --vocabulario (--vocabulary), --traza (--trace), --semilla (--seed), --profundidad (--depth), --sentencias (--statements), --celdas (--cells), --json\n",
     "salida_error": ""
   },
   "cli": {
@@ -224,7 +224,7 @@
   "operacion": "cli",
   "espera": {
     "codigo_salida": 0,
-    "salida": "Uso: pseudo <orden> [opciones] <archivo>...\nÓrdenes: comprobar (check), ejecutar (run), ri (ir), preferencias (preferences)\nOpciones: --ayuda (--help), --idioma (--language), --rigor (--strictness), --vocabulario (--vocabulary), --traza (--trace), --semilla (--seed), --profundidad (--depth), --sentencias (--statements), --celdas (--cells), --json\n",
+    "salida": "Uso: pseudo <orden> [opciones] <archivo>...\nÓrdenes: comprobar (check), ejecutar (run), ri (ir), preferencias (preferences)\nOpciones: --ayuda (--help), --idioma (--language), --vocabulario (--vocabulary), --traza (--trace), --semilla (--seed), --profundidad (--depth), --sentencias (--statements), --celdas (--cells), --json\n",
     "salida_error": ""
   },
   "cli": {
@@ -273,12 +273,12 @@
   "espera": {
     "codigo_salida": 2,
     "salida": "",
-    "salida_error": "pseudo: valor no válido «medio» para --rigor\n"
+    "salida_error": "pseudo: valor no válido «medio» para --vocabulario\n"
   },
   "cli": {
     "argumentos": [
       "comprobar",
-      "--rigor",
+      "--vocabulario",
       "medio",
       "p.pseudo"
     ],
@@ -312,7 +312,7 @@
   "operacion": "cli",
   "espera": {
     "codigo_salida": 1,
-    "salida": "p.pseudo:2:7: error: Variable no declarada: total [undeclaredVariable]\n",
+    "salida": "p.pseudo:2:7: error: Variable no declarada: total [undeclaredVariable]\n    2 | write total;\n      |       ^\n",
     "salida_error": ""
   },
   "cli": {
@@ -366,7 +366,7 @@
   "operacion": "cli",
   "espera": {
     "codigo_salida": 1,
-    "salida": "vacio.pseudo:1:1: error: Se esperaba el inicio del algoritmo [expectedAlgorithmStart]\n",
+    "salida": "vacio.pseudo:1:1: error: Se esperaba el inicio del algoritmo [expectedAlgorithmStart]\n    1 | \n      | ^\n",
     "salida_error": ""
   },
   "cli": {
@@ -593,7 +593,7 @@
   "operacion": "cli",
   "espera": {
     "codigo_salida": 0,
-    "salida": "Usage: pseudo <command> [options] <file>...\nCommands: check (comprobar), run (ejecutar), ir (ri), preferences (preferencias)\nOptions: --help (--ayuda), --language (--idioma), --strictness (--rigor), --vocabulary (--vocabulario), --trace (--traza), --seed (--semilla), --depth (--profundidad), --statements (--sentencias), --cells (--celdas), --json\n",
+    "salida": "Usage: pseudo <command> [options] <file>...\nCommands: check (comprobar), run (ejecutar), ir (ri), preferences (preferencias)\nOptions: --help (--ayuda), --language (--idioma), --vocabulary (--vocabulario), --trace (--traza), --seed (--semilla), --depth (--profundidad), --statements (--sentencias), --cells (--celdas), --json\n",
     "salida_error": ""
   },
   "cli": {

@@ -39,7 +39,6 @@ pub(crate) fn prepare(options: &CliOptions, entry_required: bool) -> Result<Prep
 
 fn arguments(options: &CliOptions, snapshot: &ProjectSnapshot) -> Value {
     let mut arguments = json!({
-        "strictness": options.strictness.as_deref().unwrap_or("strict"),
         "project": project_value(snapshot),
     });
     if let Some(fields) = arguments.as_object_mut() {

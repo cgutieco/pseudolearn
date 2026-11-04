@@ -1,7 +1,7 @@
 #![forbid(unsafe_code)]
 
 use crate::error::CliError;
-use crate::messages::{format_diagnostic_line, missing_input, unreadable_input};
+use crate::messages::{format_diagnostic_report, missing_input, unreadable_input};
 use crate::options::CliOptions;
 use pseudolearn_api::{compile_source_to_ir, detect_vocabulary_profile};
 
@@ -15,15 +15,19 @@ pub fn execute_ir(options: &CliOptions, paths: &[String]) -> Result<i32, CliErro
         CliError::Operational(unreadable_input(&options.interface_language, file_path))
     })?;
     let vocabulary = determine_vocabulary(options, &content);
-    let strictness = options.strictness.as_deref().unwrap_or("strict");
 
-    match compile_source_to_ir(&content, &vocabulary, strictness) {
+    match compile_source_to_ir(&content, &vocabulary) {
         Ok(canonical_ir) => {
             print!("{canonical_ir}");
             Ok(0)
         }
         Err(diagnostics) => {
-            render_error_diagnostics(file_path, &diagnostics, &options.interface_language);
+            render_error_diagnostics(
+                file_path,
+                &content,
+                &diagnostics,
+                &options.interface_language,
+            );
             Ok(1)
         }
     }
@@ -40,18 +44,13 @@ fn determine_vocabulary(options: &CliOptions, content: &str) -> String {
 
 fn render_error_diagnostics(
     file_path: &str,
+    content: &str,
     diagnostics: &[pseudolearn_api::ApiDiagnostic],
     interface_language: &str,
 ) {
     for diagnostic in diagnostics {
-        let (line_number, column_number) =
-            (diagnostic.span.start.line, diagnostic.span.start.column);
-        let formatted = format_diagnostic_line(
-            interface_language,
-            file_path,
-            (line_number, column_number),
-            diagnostic,
-        );
+        let formatted =
+            format_diagnostic_report(interface_language, file_path, Some(content), diagnostic);
         eprint!("{formatted}");
     }
 }

@@ -41,8 +41,7 @@ fn respond_hello() {
         "subject": "cli",
         "subject_version": "0.1.0",
         "capabilities": ["cli", "ir"],
-        "profiles": ["es", "en"],
-        "strictness": ["strict", "flexible"]
+        "profiles": ["es", "en"]
     });
     send_response(&response);
 }

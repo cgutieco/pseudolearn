@@ -52,16 +52,21 @@ pub(crate) fn render(
         emit(stream, &project_line(locale, snapshot, failure));
     }
     let names = names(snapshot);
+    let texts = texts(snapshot);
     for diagnostic in diagnostics(value) {
         let path = diagnostic
             .span
             .source
             .and_then(|source| names.get(&source.source_id))
             .map_or(snapshot.label.as_str(), String::as_str);
-        let position = (diagnostic.span.start.line, diagnostic.span.start.column);
+        let text = diagnostic
+            .span
+            .source
+            .and_then(|source| texts.get(&source.source_id))
+            .map(String::as_str);
         emit(
             stream,
-            &messages::format_diagnostic_line(locale, path, position, &diagnostic),
+            &messages::format_diagnostic_report(locale, path, text, &diagnostic),
         );
     }
 }
@@ -78,6 +83,14 @@ fn names(snapshot: &ProjectSnapshot) -> BTreeMap<u32, String> {
         .sources
         .iter()
         .map(|source| (source.source_id, source.display.clone()))
+        .collect()
+}
+
+fn texts(snapshot: &ProjectSnapshot) -> BTreeMap<u32, String> {
+    snapshot
+        .sources
+        .iter()
+        .map(|source| (source.source_id, source.text.clone()))
         .collect()
 }
 

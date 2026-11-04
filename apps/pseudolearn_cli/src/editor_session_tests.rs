@@ -14,7 +14,7 @@ const FAILING: &str =
 
 fn start(program: &str) -> (ApiSession, Value) {
     let mut session = ApiSession::default();
-    let request = json!({"program": program, "profile": "es", "strictness": "strict"});
+    let request = json!({"program": program, "profile": "es"});
     let analysis = session.call("create_analysis", &request);
     let mut arguments = request;
     arguments["analysis"] = analysis["value"]["resource"].clone();

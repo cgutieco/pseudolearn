@@ -156,7 +156,7 @@
     ],
     "entorno": {},
     "archivos": {
-      "colision.pseudo": "Algorithm Colision\n  Define fin As Integer;\nEndAlgorithm\n"
+      "colision.pseudo": "Algorithm Colision\n  Define fin As Integer <- 0;\nEndAlgorithm\n"
     }
   }
 }
