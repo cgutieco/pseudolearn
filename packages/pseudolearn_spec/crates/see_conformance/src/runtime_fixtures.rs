@@ -36,7 +36,7 @@ fn append(
     fixtures: &mut Vec<Value>,
 ) -> Result<(), String> {
     for profile in strings(case.fields.get("perfiles")) {
-        for strictness in strings(case.fields.get("rigor")) {
+        for strictness in requests::strictnesses(case) {
             let expected = case
                 .fields
                 .get("esperas")

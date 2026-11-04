@@ -53,7 +53,7 @@ fn execute_case(
 ) -> Result<Vec<Observation>, String> {
     let mut observations = Vec::new();
     for profile in strings(case.fields.get("perfiles")) {
-        for strictness in strings(case.fields.get("rigor")) {
+        for strictness in requests::strictnesses(case) {
             observations.push(observe(
                 specification,
                 case,

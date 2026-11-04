@@ -8,7 +8,6 @@ fn fixture_generation_reuses_requests_and_resolved_expectations() -> Result<(), 
     let case = specification.blocks.last_mut().ok_or("Missing case")?;
     case.fields.insert("operacion".to_owned(), json!("execute"));
     case.fields.insert("perfiles".to_owned(), json!(["es"]));
-    case.fields.insert("rigor".to_owned(), json!(["estricto"]));
     let fixtures = cases(&vec![specification.clone()], &Default::default())?;
     assert_eq!(fixtures.len(), 1);
     assert_eq!(
@@ -16,6 +15,25 @@ fn fixture_generation_reuses_requests_and_resolved_expectations() -> Result<(), 
             .first()
             .and_then(|fixture| fixture.pointer("/request/kind")),
         Some(&json!("execute"))
+    );
+    assert_eq!(
+        fixtures
+            .first()
+            .and_then(|fixture| fixture.pointer("/request/strictness")),
+        Some(&json!("flexible"))
+    );
+    specification
+        .blocks
+        .last_mut()
+        .ok_or("Missing case")?
+        .fields
+        .remove("rigor");
+    let fixtures = cases(&vec![specification.clone()], &Default::default())?;
+    assert_eq!(
+        fixtures
+            .first()
+            .and_then(|fixture| fixture.pointer("/request/strictness")),
+        Some(&json!("strict"))
     );
     let case = specification.blocks.last_mut().ok_or("Missing case")?;
     case.fields.remove("espera");

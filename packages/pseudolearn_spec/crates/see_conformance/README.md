@@ -2,7 +2,7 @@
 
 ## 1. Qué es y qué no es
 
-Negocia JSONL por proceso con capacidades explícitas, ejecuta casos en perfiles y rigores declarados y compara observables. La escritura y lectura tienen timeout; el cierre conserva stderr. No deduplica diagnósticos ni completa árboles.
+Negocia JSONL por proceso con capacidades explícitas, ejecuta casos en perfiles y rigores declarados y compara observables. Durante la transición, los casos que conservan el campo `rigor` se ejecutan en sus valores declarados; si falta, se usa el rigor estricto. La escritura y lectura tienen timeout; el cierre conserva stderr. No deduplica diagnósticos ni completa árboles.
 
 ## 2. Guía operativa y ciclo de vida
 

@@ -1,10 +1,18 @@
-use see_model::{Block, contract::Vocabulary, field};
+use see_model::{Block, contract::Vocabulary, field, strings};
 use serde_json::{Map, Value, json};
 
 pub struct Selection<'case> {
     pub profile: &'case str,
     pub strictness: &'case str,
     pub expected: &'case Value,
+}
+
+pub fn strictnesses(case: &Block) -> Vec<&str> {
+    if case.fields.contains_key("rigor") {
+        strings(case.fields.get("rigor"))
+    } else {
+        vec!["estricto"]
+    }
 }
 
 pub fn build(

@@ -117,7 +117,9 @@ fn example_is_available(corpus: &Corpus, example: &Value) -> bool {
     let profile = example.get("profile").and_then(Value::as_str);
     let strictness = example.get("strictness").and_then(Value::as_str);
     profile.is_some_and(|value| strings(case.fields.get("perfiles")).contains(&value))
-        && strictness.is_some_and(|value| strings(case.fields.get("rigor")).contains(&value))
+        && case.fields.get("rigor").is_none_or(|_| {
+            strictness.is_some_and(|value| strings(case.fields.get("rigor")).contains(&value))
+        })
 }
 
 pub(crate) fn example_case<'corpus>(

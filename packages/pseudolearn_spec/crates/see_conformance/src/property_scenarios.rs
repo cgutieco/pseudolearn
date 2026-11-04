@@ -32,7 +32,7 @@ fn append_case(
     scenarios: &mut Vec<Scenario>,
 ) -> Result<(), String> {
     for profile in strings(case.fields.get("perfiles")) {
-        for strictness in strings(case.fields.get("rigor")) {
+        for strictness in requests::strictnesses(case) {
             let expected = case
                 .fields
                 .get("esperas")
@@ -62,7 +62,7 @@ fn mark_traced(case: &see_model::Block, scenarios: &mut [Scenario]) {
     }
     let appended = strings(case.fields.get("perfiles"))
         .len()
-        .saturating_mul(strings(case.fields.get("rigor")).len());
+        .saturating_mul(requests::strictnesses(case).len());
     let start = scenarios.len().saturating_sub(appended);
     for scenario in scenarios.iter_mut().skip(start) {
         scenario.traced = true;

@@ -118,7 +118,7 @@ fn rejects_exclusion_that_overlaps_an_available_card() -> Result<(), String> {
 }
 
 #[test]
-fn rejects_examples_outside_the_referenced_case_rigor() -> Result<(), String> {
+fn checks_legacy_case_rigor_when_present() -> Result<(), String> {
     let corpus = vec![support::specification()?, vocabulary_specification()?];
     let mut catalog = sample_catalog();
     assert!(
@@ -133,6 +133,26 @@ fn rejects_examples_outside_the_referenced_case_rigor() -> Result<(), String> {
             json!("flexible"),
         )?;
     }
+    assert!(
+        references(&catalog, &corpus)
+            .iter()
+            .all(|error| !error.contains("stale example"))
+    );
+    Ok(())
+}
+
+#[test]
+fn accepts_help_examples_when_the_case_omits_legacy_rigor() -> Result<(), String> {
+    let mut specification = support::specification()?;
+    specification
+        .blocks
+        .iter_mut()
+        .find(|block| block.kind == "caso")
+        .ok_or("Missing case")?
+        .fields
+        .remove("rigor");
+    let corpus = vec![specification, vocabulary_specification()?];
+    let catalog = sample_catalog();
     assert!(
         references(&catalog, &corpus)
             .iter()

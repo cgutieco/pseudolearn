@@ -8,9 +8,12 @@
   exige el modo estricto pase a ser el lenguaje oficial; quitar también el selector de rigor de la app; asegurar que los
   errores sean claros, incluido un marcador de línea. El lenguaje no ha salido a producción, así que los cambios de ruptura
   se hacen ahora y no queda rastro de funciones obsoletas ni de código muerto.
-- Estado: PF-0 ejecutado y detenido por `PHASE-STOP`; esperar autorización explícita antes de PF-1. La línea base está
-  registrada en §7. Los conteos históricos de `grep` de §3 son orientativos e incluyen falsos positivos (por ejemplo
-  «BEM estricto» en el frontend o `strict-casts` en el análisis de Dart).
+- Estado: PF-0 ejecutado y detenido por `PHASE-STOP`; la persona autorizó PF-1 el 2026-11-03. Antes de editar se comprobó
+  que PF-1 no puede cerrar en verde de forma independiente: PF-1.3–1.4 rompen validación y conformidad antes de PF-2,
+  PF-1.5–1.7 cambian contratos cuyos consumidores solo se actualizan en PF-3, PF-4 y PF-6. La persona instruyó conservar
+  PF-2 como fase separada y reubicar los cambios incompatibles en fases atómicas. PF-1 queda reprogramada y no ejecutada;
+  sus entregables se reasignan en §4. La línea base está registrada en §7. Los conteos históricos de `grep` de §3 son
+  orientativos e incluyen falsos positivos (por ejemplo «BEM estricto» en el frontend o `strict-casts` en el análisis de Dart).
 - Documento transitorio: ninguna especificación, README ni código fuera de `docs/` puede citarlo (`DOC-NO-TRANSIENT-REFS`).
   Cada decisión se traslada a su dueño en el mismo cambio (`DOC-README-TRUTH`, `DOC-NO-ORPHAN-DECISION`).
 
@@ -37,7 +40,7 @@
 | D-02 | Sin compatibilidad hacia atrás: no hay migración, no hay lectura tolerante de `flexible`, no hay alias de opciones antiguas. | El lenguaje no está en producción. Código de compatibilidad sería código muerto desde el primer día. |
 | D-03 | Lo que hoy es exclusivo del estricto pasa a ser regla del lenguaje: terminador `;` obligatorio, cláusula de paso obligatoria en `Para`, tipo obligatorio en los parámetros y etiquetas de `Según` solo de tipo entero o enumerado. | Son las bondades que se conservan como oficiales. |
 | D-04 | El catálogo de diagnósticos tiene una severidad por código. Desaparece el objeto `severidad` con dos columnas y la clase B «gobernada por exigencia». `IncompatibleSwitchCaseType` pasa a error fijo. | Con una sola política, la columna no aporta información. |
-| D-05 | Las clases de diagnóstico quedan: A estructural y ejecución fatal (error), C higiene (advertencia), D inferencia (información), E lectura inválida (advertencia, recuperable). La letra B no se reutiliza ni se renumera; si el corpus exige letras contiguas, se decide en PF-1 y se informa. | Evita reescribir identidades por estética; el corpus manda. |
+| D-05 | Las clases de diagnóstico quedan: A estructural y ejecución fatal (error), C higiene (advertencia), D inferencia (información), E lectura inválida (advertencia, recuperable). La letra B no se reutiliza ni se renumera; si el corpus exige letras contiguas, se decide en PF-3 y se informa. | Evita reescribir identidades por estética; el corpus manda. |
 | D-06 | El parámetro `strictness` y el parámetro `terminator` opcional del parser desaparecen de las firmas, de los modelos de la API, del puente y de los adaptadores. No queda ningún booleano `strict`. | Un parámetro con un solo valor posible es código muerto. |
 | D-07 | La app elimina `Document.strictness`, su persistencia en el front matter del archivo, su paso por la sincronización, el selector «Flexible» de `ExecutionConfigurationControls` y las cadenas `executionFlexible` y afines. `rustStrictness` desaparece. | Petición expresa; no hay valor que guardar. |
 | D-08 | La CLI elimina `--rigor` y `--strictness`; VS Code elimina `pseudolearn.strictness` de `package.json` y del resolutor de configuración. | Opciones sin efecto son superficie engañosa. |
@@ -111,48 +114,63 @@ del parámetro y datos del corpus.
       benchmarks y fixtures, y registrar cuántos fallan. Es la medida real del riesgo de D-09.
 - [x] PF-0.4 Leer `tool.cli.messages` y `tool.cli.check` y fijar el formato exacto del marcador (§2.1).
 
-### PF-1 · Especificación (tamaño L)
+### PF-1 · Especificación (tamaño L) — reprogramada
 
-- [ ] PF-1.1 Reescribir el capítulo del sistema de tipos (`esp-i-sistema-de-tipos`, español e inglés): quitar «perfil
-      estricto/flexible», la política de severidad por política y la invariante «flexible es siempre igual o más permisiva».
-- [ ] PF-1.2 Reescribir `diag.severity.policy` (clases A, C, D, E; sin B) y las reglas de `diag.classes` que mencionen rigor.
-- [ ] PF-1.3 Colapsar `severidad` a un valor por código en `catalogs.json` y en `see-1.schema.json`; retirar `rigor` y
-      `strictness` del esquema.
-- [ ] PF-1.4 Quitar `"rigor"` de las 1537 líneas de casos y `"strictness"` de sus entradas, con edición textual dirigida.
-      Borrar el único caso exclusivo de flexible y los casos que solo comparaban ambos modos; reescribir la regla afectada.
-- [ ] PF-1.5 Reescribir `app.exec.configuration`: la regla R1 deja de hablar de rigor y queda «un programa con el
-      terminador omitido no se ejecuta porque su análisis tiene un error»; renombrar el contrato a configuración de
-      reproducción; C2 se borra y C3 se reduce a un solo caso.
-- [ ] PF-1.6 Reescribir el texto de `api.analyze`, `api.execute`, `api.model` y `api.errors` sin el argumento de rigor.
-- [ ] PF-1.7 Texto oficial del marcador de línea en `tool.cli.*` y casos con esperado derivado (§2).
-- [ ] PF-1.8 Reanclar con `lock --refresh` listando todos los IDs modificados.
+PF-1 no se ejecuta como fase independiente: actualizar solo las reglas y casos produciría divergencias observables en
+los sujetos activos, y quitar campos antes de sus validadores deja `cargo xtask verify` en rojo. Cada contrato se cambia
+junto con su consumidor; el reanclaje ocurre en esa misma fase. La persona autorizó esta reordenación para mantener
+`PHASE-GREEN` y conservar PF-2 separada.
+
+- PF-1.1 → PF-6.3: el capítulo español e inglés y su manifiesto pertenecen a los activos pedagógicos de la app; se
+  actualizan junto con el resto del material cuando el comportamiento de la app adopte el lenguaje único.
+- PF-1.2 y la severidad de PF-1.3 → PF-3.2: política, catálogo, esquema de severidad y generador de diagnósticos se
+  actualizan en una sola fase. La decisión sobre conservar el hueco de la clase B se toma allí, tras comprobar si existe
+  una regla de contigüidad en el corpus y sus verificadores.
+- La disponibilidad `strictness` de `helpCatalog/1` de PF-1.3 → PF-3.5 y PF-6.3: esquema, recurso y consumidores del
+  motor y de la app cambian juntos; el formato del recurso se conserva hasta entonces.
+- El eje `rigor` de los casos y la evidencia de conformidad en PF-1.3–1.4 → PF-3.1–3.6: se quitan junto con el
+  comportamiento flexible del motor y su verificador. Los campos `strictness` que forman parte de solicitudes API/app
+  se retiran junto con esos consumidores en PF-3.5 y PF-6.1.
+- PF-1.4, cambios de esperados por comportamiento → PF-3, PF-4 o PF-6, con el consumidor correspondiente. Los casos
+  no se reescriben antes de que el sujeto activo pueda satisfacer su nueva regla.
+- PF-1.5 → PF-6.1: contrato y escenarios de configuración se actualizan junto con la app.
+- PF-1.6 → PF-3.5: textos, casos API y firmas cambian junto con las fronteras públicas del motor.
+- PF-1.7 → PF-4.2: regla, casos CLI e implementación del marcador se actualizan en una sola fase.
+- PF-1.8 → cada fase que edite especificaciones: su comando `lock --refresh` enumera allí todos los IDs reanclados.
 
 ### PF-2 · Verificadores del corpus (tamaño M)
 
-- [ ] PF-2.1 Adaptar `see_validation`, `see_conformance` y `see_report` y sus fixtures: eliminar el campo `rigor` y la
-      validación de combinaciones.
-- [ ] PF-2.2 Ajustar los casos negativos de los verificadores para que sigan cubriendo violaciones deliberadas.
-- [ ] PF-2.3 `cargo xtask verify` del paquete en verde.
+- [x] PF-2.1 Preparar una transición compatible: el esquema y `see_validation` aceptan `rigor` opcional; `see_conformance`
+      conserva los valores declarados en casos existentes y usa estricto si falta el campo. Las referencias de
+      `helpCatalog/1` se comprueban por perfil cuando el caso no declara rigor. La evidencia conserva ambos modos hasta
+      que PF-3 retire el comportamiento flexible del motor.
+- [x] PF-2.2 Probar ambas formas de caso y conservar los negativos de los verificadores con sus violaciones deliberadas.
+- [x] PF-2.3 Completar en verde todos los controles de `cargo xtask verify`. El comando integral no pudo adquirir el
+      bloqueo de cargo-deny en la ruta global de solo lectura; el control se repitió en modo offline con una copia
+      temporal de la misma base y pasó sus cuatro comprobaciones.
 
 ### PF-3 · Motor (tamaño L, mecánico)
 
 - [ ] PF-3.1 Tests que fallan antes del cambio: terminador, paso y tipo de parámetro obligatorios sin consultar ningún modo.
-- [ ] PF-3.2 `pseudolearn_diagnostics`: el generador de código del catálogo (`codegen/policy.rs`) emite una sola severidad y
-      `DiagnosticCode::severity` pierde su argumento.
+- [ ] PF-3.2 Especificación, catálogo y `pseudolearn_diagnostics`: el generador de código del catálogo
+      (`codegen/policy.rs`) emite una sola severidad por código y `DiagnosticCode::severity` pierde su argumento. Resolver
+      aquí si la clasificación conserva las letras A, C, D, E sin renumerar B.
 - [ ] PF-3.3 `pseudolearn_syntax`: el terminador es siempre obligatorio; desaparece `with_terminator`,
       `parse_source_with_terminator` y `terminator_diagnostic`.
 - [ ] PF-3.4 `pseudolearn_semantic`: quitar `SemanticOptions.strict` y las seis ramas.
-- [ ] PF-3.5 `pseudolearn_service`, `pseudolearn_api`, `aot_rt`, `conformance` y `bench_worker`: quitar `strictness`,
-      `strict` e `is_strict` de las firmas, modelos y operaciones; `execution_sources`, `ir_execution`, `native_build`,
-      `diagnostic_template`, `edit_session_operations` y `program_view` incluidos.
+- [ ] PF-3.5 Especificaciones API, recurso/esquema `helpCatalog/1` y `pseudolearn_service`, `pseudolearn_api`, `aot_rt`,
+      `conformance` y `bench_worker`:
+      quitar `strictness`, `strict` e `is_strict` de las firmas, modelos y operaciones; `execution_sources`, `ir_execution`,
+      `native_build`, `diagnostic_template`, `edit_session_operations` y `program_view` incluidos.
 - [ ] PF-3.6 Reescribir los ~90 tests que pasan `strictness` o comparan modos; no duplicar casos del corpus como tests.
 - [ ] PF-3.7 README de cada crate tocado y `cargo xtask verify` en verde.
 
 ### PF-4 · Marcador de línea (tamaño M)
 
 - [ ] PF-4.1 Tests que detectan la ausencia del marcador, con caso de punto y coma omitido y caso de línea larga.
-- [ ] PF-4.2 Implementar el marcador en la salida de texto de la CLI, tras `format_diagnostic_line`, y en los cuatro
-      puntos que la comparten (`check`, `format`, `ir`, reporte de proyecto).
+- [ ] PF-4.2 Especificación y casos CLI: fijar el formato oficial y esperados derivados (§2); implementarlo en la salida
+      de texto tras `format_diagnostic_line` y en los cuatro puntos que la comparten (`check`, `format`, `ir`, reporte de
+      proyecto).
 - [ ] PF-4.3 Revisar el resto de mensajes de error del lenguaje que más se encontrarán al aprender (terminador, tipo de
       parámetro, paso de `Para`) y confirmar que dicen qué falta y dónde.
 
@@ -166,13 +184,15 @@ del parámetro y datos del corpus.
 
 ### PF-6 · App (tamaño M)
 
-- [ ] PF-6.1 Quitar `Document.strictness`, el campo del archivo y de la sincronización (`file_document_repository`,
+- [ ] PF-6.1 Especificación `APP.EXEC.CONFIGURATION` y escenarios de conformidad: quitar `Document.strictness`, el campo
+      del archivo y de la sincronización (`file_document_repository`,
       `document_sync_drainer`), `ExecutionConfiguration.strictness` y los parámetros de `ProgramAnalyzer`,
       `rust_execution_opening`, `rust_program_analyzer` y los demás adaptadores del puente.
 - [ ] PF-6.2 Quitar el selector «Flexible» de `ExecutionConfigurationControls` y sus cadenas `.arb`; revisar el diseño de la
       fila con el campo «Argumentos» y el botón «Reproducir» en pantalla de móvil (verificación visual en el simulador).
-- [ ] PF-6.3 Capítulos de conocimiento y manifiestos: regenerar o reescribir las secciones que hablan de rigor, en
-      español e inglés, desde el corpus y no a mano si existe generador (`GEN-NO-HAND-COPY`).
+- [ ] PF-6.3 Capítulos de conocimiento y manifiestos, incluido `esp-i-sistema-de-tipos`: regenerar o reescribir las
+      secciones que hablan de rigor, en español e inglés, desde el corpus y no a mano si existe generador
+      (`GEN-NO-HAND-COPY`).
 - [ ] PF-6.4 Corregir los programas de onboarding y de la base de conocimiento que no pasen `comprobar` (D-09).
 - [ ] PF-6.5 `flutter analyze`, tests y verificadores del paquete en verde; `see conform --subject app` sin regresiones
       frente a la línea base de PF-0.
@@ -182,7 +202,7 @@ del parámetro y datos del corpus.
 - [ ] PF-7.1 READMEs de la raíz, motor, CLI, extensión y app: quitar la sección de rigor y la fila «Selector del eje de
       rigor» de los pendientes de la app; registrar la decisión de lenguaje único donde corresponda.
 - [ ] PF-7.2 Frontend: renombrar el título `spec.types` en `es.json` y `en.json` («Sistema de tipos y política de rigor»,
-      «Type system and strictness policy»).
+      «Type system and strictness policy»). El título del capítulo de conocimiento se actualiza con PF-6.3.
 - [ ] PF-7.3 Benchmarks: quitar `'strictness': 'flexible'` de `bridge_scenarios.dart`.
 - [ ] PF-7.4 Comprobación manual de cierre: `git grep` de `strictness`, `strict`, `estricto`, `flexible`, `rigor` e
       `is_strict` fuera de `docs/`; cada coincidencia restante se justifica una por una (por ejemplo `strict-casts`) y el
@@ -196,7 +216,7 @@ del parámetro y datos del corpus.
 | R-02 | Existe comportamiento exclusivo de flexible en datos del corpus que mi revisión de ramas no vio | PF-0.2 lo busca de forma explícita y se reporta antes de PF-1 |
 | R-03 | Edición masiva del corpus a mano introduce errores | Edición textual dirigida, revisión del diff por archivo y `see validate` tras cada bloque |
 | R-04 | Reescribir el capítulo del sistema de tipos desalinea español e inglés y los activos de la app | PF-6.3 regenera desde el corpus; el verificador de paridad del paquete debe seguir en verde |
-| R-05 | El marcador cambia la forma de la salida de la CLI y rompe casos de conformidad que comparan texto | PF-1.7 los reescribe con esperado derivado; `--json` queda intacto |
+| R-05 | El marcador cambia la forma de la salida de la CLI y rompe casos de conformidad que comparan texto | PF-4.2 implementa el formato y actualiza esos casos con esperado derivado; `--json` queda intacto |
 | R-06 | Quitar `Document.strictness` deja archivos locales de desarrollo con una clave sin uso | Aceptado por D-02; si el lector del front matter la ignora, no hay código nuevo; se confirma en PF-6.1 |
 
 ## 6. Puertas de cierre
@@ -211,8 +231,8 @@ del parámetro y datos del corpus.
 | Fase | HEAD inicial | Comandos y salida | Resultado | Pendientes |
 |---|---|---|---|---|
 | PF-0 | `6fb7bd7fd7b6b55e3e212d13b5095453bcfa2db7` | Inventario y línea base en §7; verificadores locales en verde | PF-0 completado; detenida la ejecución por PHASE-STOP | PF-1 requiere autorización explícita nueva |
-| PF-1 | | | | |
-| PF-2 | | | | |
+| PF-1 | | Reordenamiento autorizado el 2026-11-03; entregables reasignados a PF-2–PF-6 por dependencia de verificación | No ejecutada como fase independiente | Ninguno; no se modificó corpus ni código para PF-1 |
+| PF-2 | `7e673d03cd6be3de62b4ebab9a904a17a21bf97e` | `cargo fmt --all --check`, Clippy estricto, `cargo test --workspace`, cargo-deny offline (advisories/bans/licenses/sources ok), `rust-checks all .`, `rust-checks toolchain ../..`, build release del adaptador engine, `see validate` (197), `see export --check`, conformidad de propiedades (31 ejecutadas, 0 pendientes), conformidad completa (4026 observaciones, 0 divergencias) | Completada; verificadores en verde. `cargo xtask verify` se detuvo al intentar bloquear `/Users/cgutieco/.cargo/advisory-dbs/db.lock`, de solo lectura; cargo-deny pasó con base local temporal | Ninguno |
 | PF-3 | | | | |
 | PF-4 | | | | |
 | PF-5 | | | | |
