@@ -1,7 +1,10 @@
 #![forbid(unsafe_code)]
 
 use crate::hir::HirModule;
-use crate::identities::{ClassId, FieldId, FunctionId, LocalId, TypeId};
+use crate::identities::{
+    ClassId, ConstantId, EnumId, FieldId, FunctionId, LocalId, RecordId, TypeId,
+};
+use crate::interface_model::InterfaceId;
 use pseudolearn_diagnostics::Diagnostic;
 use pseudolearn_lexicon::BuiltinKind;
 use pseudolearn_source::Span;
@@ -12,6 +15,10 @@ pub enum ServiceSymbolTarget {
     Function(FunctionId),
     Class(ClassId),
     Field(FieldId),
+    Record(RecordId),
+    Enum(EnumId),
+    Interface(InterfaceId),
+    Constant(ConstantId),
     Builtin(BuiltinKind),
 }
 

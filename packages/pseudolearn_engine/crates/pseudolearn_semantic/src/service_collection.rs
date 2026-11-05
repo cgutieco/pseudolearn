@@ -38,6 +38,7 @@ pub(crate) fn collect_symbols(
     }
     collect_function_symbols(module, symbols, occurrences);
     collect_class_symbols(module, occurrences);
+    collect_named_symbols(module, occurrences);
 }
 
 fn collect_function_symbols(
@@ -76,6 +77,19 @@ fn collect_function_symbols(
             target: ServiceSymbolTarget::Function(function_id),
             is_write: false,
             is_declaration: true,
+        });
+    }
+}
+
+fn collect_named_symbols(module: &HirModule, occurrences: &mut Vec<ServiceReference>) {
+    let declarations = module.name_declarations.iter().map(|entry| (entry, true));
+    let uses = module.name_uses.iter().map(|entry| (entry, false));
+    for ((span, target), is_declaration) in declarations.chain(uses) {
+        occurrences.push(ServiceReference {
+            span: *span,
+            target: *target,
+            is_write: false,
+            is_declaration,
         });
     }
 }

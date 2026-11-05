@@ -1,7 +1,8 @@
-use crate::identities::{EnumId, RecordId};
+use crate::identities::{ConstantId, EnumId, RecordId};
 use crate::interface_model::InterfaceId;
 use crate::module_imports::UnitBindings;
 use crate::module_symbols::{Origin, SymbolKind};
+use crate::service_model::ServiceSymbolTarget;
 use crate::session::AnalysisSession;
 use crate::type_scope::TypeScope;
 
@@ -46,6 +47,20 @@ fn link(session: &mut AnalysisSession<'_>, bindings: &[UnitBindings]) {
             }
         }
     }
+}
+
+pub(crate) fn target(
+    session: &AnalysisSession<'_>,
+    origin: &Origin,
+) -> Option<ServiceSymbolTarget> {
+    Some(match resolve(session, origin)? {
+        Linked::Record(id) => ServiceSymbolTarget::Record(id),
+        Linked::Enum(id) => ServiceSymbolTarget::Enum(id),
+        Linked::Constant(index) => {
+            ServiceSymbolTarget::Constant(ConstantId(u32::try_from(index).ok()?))
+        }
+        Linked::Interface(id) => ServiceSymbolTarget::Interface(id),
+    })
 }
 
 fn scope_of<'session>(

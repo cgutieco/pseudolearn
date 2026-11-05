@@ -942,7 +942,7 @@ Objetivo: que toda construcción de la edición 2026 se combine con las demás s
 Origen: [análisis del 2026-11-02](analisis-lenguaje-completo-sin-simulacion.md), §A.8.1 y §B.3a.
 
 - [x] `PG-L.01` Registros como elemento de arreglo y vector, campo de clase, parámetro y resultado de métodos y constructores, y por referencia.
-- [ ] `PG-L.02` Visibilidad y exportación de constantes, enumerados y registros entre módulos.
+- [x] `PG-L.02` Visibilidad y exportación de constantes, enumerados y registros entre módulos.
 - [ ] `PG-L.03` Genéricos exportables entre módulos.
 - [ ] `PG-L.04` Clases genéricas y variantes genéricas de usuario.
 - [ ] `PG-L.05` Comprobación de plantillas genéricas sin instanciar y símbolo de plantilla en el servicio.
@@ -1221,7 +1221,7 @@ La IA a cargo actualiza esta tabla al cerrar cada fase.
 | PG-6B | En implementación integrada · PG-6B.01–.09 | Sí, petición directa de implementación revisa y autoriza C02 | Sin cierre | Desarrollo continuo y campaña final única autorizados el 2026-10-31; físicos/revisión SEE y decisiones diferidas conservados |
 | PG-A | Cerrada por decisión expresa · PG-A.01–.09 y cierre común | Sí | 2026-11-02 · cierre expreso y push ordinario en rama única | `PHASE-GREEN` no declarado; SEE/Rust pendientes, suite completa no repetida al cierre y estudio humano E-PG-12 diferido |
 | PG-B | Reformulada el 2026-11-02 · PG-B.01–.03, .05–.09 ejecutados; .04 retirado; .10–.30 sin iniciar | Sí, reescrito; C02 pendiente | | C01/C02; parada en PG-B.22.01 si el puente supera `PERF.ARTIFACT.SIZE` |
-| PG-L | En curso (parcial) | Sí | | Implementados PG-L.01 (registros en arreglos, campos, firmas y por referencia), PG-L.02 (exportación de tipos, constantes e interfaces) y PG-L.06 (regla de liberación por ámbito); pendientes PG-L.03, .04, .05, .07, parte del bloque F y el push. Detalle en §11 de `fase-pg-l-plan-ejecucion.md` |
+| PG-L | En curso (parcial) | Sí | | Implementados PG-L.01 (registros en arreglos, campos, firmas y por referencia), PG-L.02 (visibilidad, exportación y coherencia de firmas de tipos, constantes e interfaces, con navegación en el servicio) y PG-L.06 (regla de liberación por ámbito); pendientes PG-L.03, .04, .05, .07, parte del bloque F y el push. Detalle en §11 de `fase-pg-l-plan-ejecucion.md` |
 | PG-S | Implementada, sin cierre formal · PG-S.01–.09 y C01–C09 | Sí | | C10–C13 pendientes: PS-E04, suite completa, commit/push de cierre, parada; se ejecutó antes de cerrar PG-L por decisión expresa de la persona |
 | PG-N | Sin iniciar | No | | |
 | PG-7 | Sin iniciar · reformulada el 2026-11-02 | No | | |

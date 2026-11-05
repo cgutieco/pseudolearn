@@ -83,7 +83,11 @@
     "C13",
     "C20",
     "C21",
-    "C22"
+    "C22",
+    "C23",
+    "C24",
+    "C25",
+    "C26"
   ]
 }
 ```
@@ -1583,5 +1587,109 @@
   "sujetos": [
     "engine"
   ]
+}
+```
+
+```caso
+{
+  "id": "C23",
+  "regla": "R3",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Publico Registro P\nDefinir x Como Entero;\nFinRegistro\nAlgoritmo A\nFinAlgoritmo\n",
+    "en": "public record P\ndefine x as integer;\nendRecord\nalgorithm A\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "moduleSyntaxOutsideProject",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C24",
+  "regla": "R3",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Publico Enumerado Color\nRojo, Verde\nFinEnumerado\nAlgoritmo A\nFinAlgoritmo\n",
+    "en": "public enum Color\nRojo, Verde\nendEnum\nalgorithm A\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "moduleSyntaxOutsideProject",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C25",
+  "regla": "R3",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Publico Constante K Como Entero <- 1;\nAlgoritmo A\nFinAlgoritmo\n",
+    "en": "public constant K as integer <- 1;\nalgorithm A\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "moduleSyntaxOutsideProject",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C26",
+  "regla": "R3",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Publico Interfaz I\nMetodo M() Como Entero;\nFinInterfaz\nAlgoritmo A\nFinAlgoritmo\n",
+    "en": "public interface I\nmethod M() as integer;\nendInterface\nalgorithm A\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "moduleSyntaxOutsideProject",
+        "severidad": "error"
+      }
+    ]
+  }
 }
 ```

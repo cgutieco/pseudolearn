@@ -122,6 +122,9 @@ fn identifier_token_type(session: &DocumentSession, span: Span) -> Option<u32> {
         ServiceSymbolTarget::Function(_) => 6,
         ServiceSymbolTarget::Class(_) => 7,
         ServiceSymbolTarget::Field(_) => 8,
-        ServiceSymbolTarget::Builtin(_) => 5,
+        ServiceSymbolTarget::Record(_)
+        | ServiceSymbolTarget::Enum(_)
+        | ServiceSymbolTarget::Interface(_) => 10,
+        ServiceSymbolTarget::Constant(_) | ServiceSymbolTarget::Builtin(_) => 5,
     })
 }

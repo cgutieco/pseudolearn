@@ -84,6 +84,12 @@ fn target_name(
             .flat_map(|candidate| &candidate.fields)
             .find(|candidate| candidate.id == field)
             .map(|candidate| candidate.name.clone()),
+        ServiceSymbolTarget::Record(_)
+        | ServiceSymbolTarget::Enum(_)
+        | ServiceSymbolTarget::Interface(_)
+        | ServiceSymbolTarget::Constant(_) => {
+            crate::declared_names::declared_name(analysis, target)
+        }
         ServiceSymbolTarget::Builtin(_) => None,
     }
 }
@@ -116,6 +122,13 @@ fn identifier_at(text: &str, offset: usize) -> Option<&str> {
             .saturating_add(glyph.len_utf8());
     }
     text.get(start..ending).filter(|value| !value.is_empty())
+}
+
+pub(super) fn whole_identifier(text: &str, span: (usize, usize)) -> Option<(usize, usize)> {
+    let spelled = text.get(span.0..span.1)?;
+    let mut glyphs = spelled.chars();
+    let starts = glyphs.next().is_some_and(identifier_start);
+    (starts && glyphs.all(identifier_continue)).then_some(span)
 }
 
 pub(super) fn identifier_range(

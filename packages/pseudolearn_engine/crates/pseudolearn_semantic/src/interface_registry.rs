@@ -61,6 +61,8 @@ fn declare(session: &mut AnalysisSession<'_>, node: usize) {
         session.named_report(DiagnosticCode::DuplicateTypeDeclaration, name_node, &name);
         return;
     }
+    let identifier =
+        InterfaceId(u32::try_from(session.module.interfaces.len()).unwrap_or(u32::MAX));
     session.module.interfaces.push(HirInterface {
         name,
         unit: session.unit,
@@ -68,9 +70,14 @@ fn declare(session: &mut AnalysisSession<'_>, node: usize) {
         span: session.span(node),
         methods: Vec::new(),
     });
+    session.note_declaration(
+        node,
+        crate::service_model::ServiceSymbolTarget::Interface(identifier),
+    );
 }
 
 pub(crate) fn signatures(session: &mut AnalysisSession<'_>) {
+    crate::interface_uses::constraints(session);
     for index in 0..session.module.interfaces.len() {
         let Some(model) = session.module.interfaces.get(index) else {
             continue;
@@ -117,6 +124,10 @@ pub(crate) fn realizations(session: &mut AnalysisSession<'_>) {
         for name_node in session.children(node) {
             let name = session.name(name_node);
             if let Some(interface) = find(session, &name) {
+                session.note_use(
+                    name_node,
+                    crate::service_model::ServiceSymbolTarget::Interface(interface),
+                );
                 let realizations = session.module.realizations.entry(class).or_default();
                 realizations.extend(std::iter::once(interface));
                 realizations.sort();

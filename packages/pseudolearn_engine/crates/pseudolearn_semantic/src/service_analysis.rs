@@ -134,6 +134,14 @@ fn find_definition_span(module: &HirModule, target: ServiceSymbolTarget) -> Opti
             None
         }
         ServiceSymbolTarget::Builtin(_) => None,
+        ServiceSymbolTarget::Record(_)
+        | ServiceSymbolTarget::Enum(_)
+        | ServiceSymbolTarget::Interface(_)
+        | ServiceSymbolTarget::Constant(_) => module
+            .name_declarations
+            .iter()
+            .find(|(_, declared)| *declared == target)
+            .map(|(span, _)| *span),
     }
 }
 

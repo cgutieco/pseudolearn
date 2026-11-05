@@ -59,7 +59,9 @@ mod http_types;
 pub mod identities;
 pub mod inspection_expression;
 mod inspection_records;
+mod import_uses;
 mod interface_constraints;
+mod interface_uses;
 pub mod interface_model;
 mod interface_realizations;
 mod interface_registry;
@@ -74,6 +76,7 @@ mod module_structure;
 mod module_type_links;
 mod module_symbols;
 mod name_resolution;
+mod name_uses;
 mod operator_diagnostics;
 mod operator_tokens;
 mod operator_types;
@@ -82,6 +85,7 @@ mod postfix_checker;
 pub mod project_analysis;
 mod project_analysis_nodes;
 pub mod project_profile;
+mod public_signatures;
 mod record_access;
 mod record_cycles;
 mod record_locals;
@@ -119,7 +123,7 @@ pub use hir::{
     HirRecordField, Passing, SemanticModel, UnitTable,
 };
 pub use identities::{
-    ClassId, EnumId, ExpressionId, FieldId, FunctionId, LocalId, RecordId, StatementId, TypeId,
+    ClassId, ConstantId, EnumId, ExpressionId, FieldId, FunctionId, LocalId, RecordId, StatementId, TypeId,
 };
 pub use project_analysis::{
     ProjectAnalysis, ProjectUnit, analyze_project, analyze_project_detailed,

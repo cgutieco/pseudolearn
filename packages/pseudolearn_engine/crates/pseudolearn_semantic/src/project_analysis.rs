@@ -24,8 +24,8 @@ pub struct ProjectAnalysis {
     pub imports: Vec<ImportEdge>,
 }
 
-type ClassTable = BTreeMap<(usize, String), ClassId>;
-type FunctionTable = BTreeMap<(usize, String), FunctionId>;
+pub(crate) type ClassTable = BTreeMap<(usize, String), ClassId>;
+pub(crate) type FunctionTable = BTreeMap<(usize, String), FunctionId>;
 
 pub fn analyze_project(
     catalog: &ProjectCatalog,
@@ -104,6 +104,7 @@ fn analyze_registered_project(
         };
     }
     register(session, &mut resolver, &bindings);
+    crate::public_signatures::check(session, &resolver);
     crate::module_structure::check(session, catalog, units);
     select_entry(session, units, entry);
     check_bodies(session);
@@ -187,6 +188,7 @@ fn register(
     }
     link_functions(session, resolver, bindings, &functions);
     mark_exports(session, resolver, &functions);
+    crate::import_uses::record(session, resolver, (&classes, &functions));
 }
 
 fn link_classes(session: &mut AnalysisSession<'_>, bindings: &[UnitBindings], table: &ClassTable) {

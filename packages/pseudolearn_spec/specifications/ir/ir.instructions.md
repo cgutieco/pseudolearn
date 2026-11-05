@@ -2450,6 +2450,14 @@
 
 ```cobertura
 {
+  "id": "V240",
+  "regla": "LANG.MODULE.IMPORT#R8",
+  "sin_ri": "La coherencia de las firmas públicas se comprueba al enlazar los módulos, antes de la RI: un tipo privado en una firma pública no llega a producir programa."
+}
+```
+
+```cobertura
+{
   "id": "V99",
   "regla": "LANG.PROFILE.MODEL#R2",
   "sin_ri": "El perfil de cada archivo se resuelve antes de la RI; la tabla de perfiles por fuente solo fija la representación lógica de text.format y out.write."

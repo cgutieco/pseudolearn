@@ -1,5 +1,6 @@
 use crate::expression_model::ExpressionColumns;
 use crate::identities::{ClassId, EnumId, FieldId, FunctionId, LocalId, StatementId, TypeId};
+use crate::service_model::ServiceSymbolTarget;
 use crate::statement_model::StatementColumns;
 use crate::types::TypeInterner;
 use pseudolearn_source::Span;
@@ -150,6 +151,9 @@ pub struct HirModule {
     pub classes: Vec<HirClass>,
     pub class_record_fields: Vec<HirClassRecordField>,
     pub enums: Vec<HirEnum>,
+    pub constant_names: Vec<String>,
+    pub name_declarations: BTreeSet<(Span, ServiceSymbolTarget)>,
+    pub name_uses: BTreeSet<(Span, ServiceSymbolTarget)>,
     pub records: Vec<HirRecord>,
     pub variants: BTreeMap<crate::identities::RecordId, crate::variant_model::HirVariant>,
     pub record_locals: BTreeMap<LocalId, Vec<LocalId>>,

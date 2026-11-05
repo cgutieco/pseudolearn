@@ -1730,6 +1730,11 @@
       "estado": "cumple"
     },
     {
+      "regla": "LANG.MODULE.IMPORT@1.0.0#R8",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
       "regla": "LANG.PROFILE.MODEL@1.0.0#R2",
       "verificacion": "ejecutor",
       "estado": "cumple"

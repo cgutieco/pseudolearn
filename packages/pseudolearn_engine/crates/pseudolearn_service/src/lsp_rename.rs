@@ -153,6 +153,12 @@ fn symbol_name(session: &DocumentSession, target: ServiceSymbolTarget) -> Option
             .flat_map(|candidate| &candidate.fields)
             .find(|candidate| candidate.id == identifier)
             .map(|candidate| candidate.name.clone()),
+        ServiceSymbolTarget::Record(_)
+        | ServiceSymbolTarget::Enum(_)
+        | ServiceSymbolTarget::Interface(_)
+        | ServiceSymbolTarget::Constant(_) => {
+            crate::declared_names::declared_name(&session.analysis, target)
+        }
         ServiceSymbolTarget::Builtin(_) => None,
     }
 }
@@ -169,6 +175,12 @@ fn document_collision(
         }
         ServiceSymbolTarget::Class(identifier) => class_collision(session, identifier, new_name),
         ServiceSymbolTarget::Field(identifier) => field_collision(session, identifier, new_name),
+        ServiceSymbolTarget::Record(_)
+        | ServiceSymbolTarget::Enum(_)
+        | ServiceSymbolTarget::Interface(_)
+        | ServiceSymbolTarget::Constant(_) => {
+            crate::declared_names::name_collides(&session.analysis, occurrence.target, new_name)
+        }
         ServiceSymbolTarget::Builtin(_) => true,
     }
 }

@@ -45,6 +45,10 @@ fn register_enum(session: &mut AnalysisSession<'_>, node: usize) {
         span: session.span(node),
     });
     session.declared.enums.insert(name, identifier);
+    session.note_declaration(
+        node,
+        crate::service_model::ServiceSymbolTarget::Enum(identifier),
+    );
 }
 
 fn members(session: &mut AnalysisSession<'_>, node: usize) -> Vec<String> {

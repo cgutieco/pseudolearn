@@ -177,9 +177,31 @@ interfaces y diseños. Una constante importada se evalúa en su unidad dueña (`
 y se pliega como literal. Se descartó el acceso por alias de módulo (`m.Constante`, `m.Color.Rojo`) por ampliar la resolución de
 alias de módulo, hoy limitada a llamadas.
 
-Pendientes declarados: diagnóstico de tipo privado en una firma pública (`privateTypeInPublicSignature`, aceptado como decisión
-pero no implementado); el servicio de lenguaje no modela registros, enumerados, constantes ni interfaces como símbolos (sin
-navegación, referencias ni renombrado sobre ellos); registro por referencia a través de valores función (no verificado).
+**Coherencia de las firmas públicas (PG-L.02).** Problema: una biblioteca puede exportar un subprograma, un registro, una
+interfaz o una clase cuya firma menciona un tipo que el módulo no exporta, y el consumidor no podría nombrar ese tipo ni
+construirlo. Elección: `public_signatures` recorre, después de enlazar los módulos, las unidades públicas de cada módulo y recoge
+los nodos de tipo de sus firmas (parámetros y resultado de subprogramas; campos de registros; campos, métodos y constructores no
+marcados `Privado` de clases; métodos de interfaces), incluidos los argumentos de tipo anidados, y produce
+`privateTypeInPublicSignature` en cada aparición de una clase, interfaz, enumerado o registro del mismo módulo sin `Publico`. La
+comprobación es sintáctica sobre las declaraciones del módulo (`UnitDeclarations`) para que no dependa del orden de resolución ni
+de la importación: un tipo importado es público en su origen y nunca se marca. Los cuerpos y las firmas de unidades privadas no
+se comprueban porque ningún consumidor las ve. Se descartó rechazar también `Hereda De` y `Realiza` con tipos privados (no son
+firmas) y emitir un solo diagnóstico por unidad (oculta apariciones distintas).
+
+**Símbolos de tipos y constantes para el servicio (PG-L.02).** Problema: el servicio de lenguaje solo conocía locales, funciones,
+clases y campos, de modo que navegar o renombrar un registro, un enumerado, una constante o una interfaz no tenía identidad
+semántica. Elección: `ServiceSymbolTarget` añade `Record`, `Enum`, `Interface` y `Constant`. Las declaraciones se anotan al
+declararlas (`HirModule.name_declarations`, con el tramo de la unidad completa como las clases) y los usos al resolverlos
+(`HirModule.name_uses`, con el tramo exacto del identificador): tipo en posición de tipo, nombre de enumerado antes del miembro,
+construcción de registro, referencia a constante, `Realiza` y restricción de parámetro de tipo. Una constante carece de entrada
+en el HIR, por lo que `constant_names` conserva su nombre y su identidad es el índice del registro de constantes. Como el
+conjunto es ordenado y sin repetidos, resolver varias veces el mismo cuerpo no duplica referencias. La ruta de cada `Importar` y
+`Exportar` que resuelve a un símbolo es un uso más (`import_uses`, tras enlazar funciones y clases): sin él, renombrar un
+símbolo dejaba la declaración de importación apuntando a un nombre inexistente, y eso valía también para funciones y clases. Un
+uso por alias conserva su tramo propio y su grafía; el renombrado solo edita ocurrencias con la grafía del símbolo.
+
+Pendientes declarados: registro por referencia a través de valores función (no verificado); acceso a miembros por alias de
+módulo (`m.Constante`, `m.Color.Rojo`), descartado hasta que la resolución de alias de módulo deje de limitarse a llamadas.
 
 Los vínculos locales tienen mutabilidad explícita en `HirLocal`; su declaración emite una asignación inicial y no cuenta como modificación. `binding_checker` valida inicialización y destinos de reasignación, incluidos campos de registros por valor y argumentos por referencia. Los objetos pueden mutar a través de un vínculo inmutable. La asignación a un nombre no declarado es error y no crea una variable por inferencia. La inicialización obligatoria reemplaza la trampa de lectura sin valor para locales; campos y elementos conservan su contrato. La forma inicializada es la oficial de la edición: no hay migrador, selector de compatibilidad ni conservación de la sintaxis anterior.
 

@@ -3733,7 +3733,7 @@
         "content": {
           "es": {
             "title": "Visibilidad de la unidad de módulo",
-            "summary": "Controla si otro módulo puede importar un subprograma o una clase.",
+            "summary": "Controla si otro módulo puede importar un subprograma, una clase, una interfaz, un enumerado, un registro o una constante.",
             "purpose": "Sin prefijo la unidad es privada; Publico la exporta.",
             "parts": [
               {
@@ -3760,7 +3760,7 @@
           },
           "en": {
             "title": "Module unit visibility",
-            "summary": "Controls whether another module can import a subroutine or a class.",
+            "summary": "Controls whether another module can import a subroutine, a class, an interface, an enum, a record or a constant.",
             "purpose": "Without a prefix the unit is private; public exports it.",
             "parts": [
               {
@@ -19712,6 +19712,300 @@
             ]
           }
         }
+      },
+      {
+        "id": "help.pgl02.type_visibility",
+        "identity": {
+          "kind": "role",
+          "id": "moduleUnit",
+          "role": "pgl02_type_visibility"
+        },
+        "tokens": [
+          {
+            "identity": "publicVisibility",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          },
+          {
+            "identity": "privateVisibility",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LANG.MODULE.IMPORT",
+            "version": "1.0.0",
+            "element": "R2"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Visibilidad de tipos y constantes",
+            "summary": "Un enumerado, un registro, una interfaz o una constante de nivel superior es privado salvo que lleve Publico.",
+            "purpose": "Publico permite que otro módulo importe el tipo o la constante por su nombre; sin prefijo, o con Privado, solo existe dentro de su módulo.",
+            "parts": [
+              {
+                "identity": "publicVisibility",
+                "text": "Permite importar y reexportar el tipo o la constante desde otros módulos."
+              },
+              {
+                "identity": "privateVisibility",
+                "text": "Mantiene el tipo o la constante dentro de su módulo."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C57",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Visibilidad de tipos y constantes",
+                "profile": "es",
+                "specification": "LANG.MODULE.IMPORT",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C23",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Visibilidad de tipos y constantes",
+                "profile": "es",
+                "specification": "LANG.MODULE.MODEL",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Visibility of types and constants",
+            "summary": "A top-level enum, record, interface or constant is private unless it carries public.",
+            "purpose": "Public lets another module import the type or the constant by name; without a prefix, or with private, it exists only inside its module.",
+            "parts": [
+              {
+                "identity": "publicVisibility",
+                "text": "Allows the type or the constant to be imported and re-exported from other modules."
+              },
+              {
+                "identity": "privateVisibility",
+                "text": "Keeps the type or the constant inside its module."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C58",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Visibility of types and constants",
+                "profile": "en",
+                "specification": "LANG.MODULE.IMPORT",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C23",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Visibility of types and constants",
+                "profile": "en",
+                "specification": "LANG.MODULE.MODEL",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pgl02.type_import",
+        "identity": {
+          "kind": "role",
+          "id": "importDeclaration",
+          "role": "pgl02_type_import"
+        },
+        "tokens": [
+          {
+            "identity": "importKeyword",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          },
+          {
+            "identity": "typeConnector",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LANG.MODULE.IMPORT",
+            "version": "1.0.0",
+            "element": "R1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Importación de tipos y constantes",
+            "summary": "Importar nombra por ruta un enumerado, un registro, una interfaz o una constante público de otro módulo.",
+            "purpose": "El nombre importado se usa como uno propio, un enumerado conserva sus miembros y Como cambia solo el nombre local.",
+            "parts": [
+              {
+                "identity": "importKeyword",
+                "text": "Importa el símbolo público que nombra la ruta."
+              },
+              {
+                "identity": "typeConnector",
+                "text": "Introduce el nombre local con el que se usa el símbolo importado."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C59",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Importación de tipos y constantes",
+                "profile": "es",
+                "specification": "LANG.MODULE.IMPORT",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Importing types and constants",
+            "summary": "Import names by path a public enum, record, interface or constant from another module.",
+            "purpose": "The imported name is used like an own one, an enum keeps its members and as changes only the local name.",
+            "parts": [
+              {
+                "identity": "importKeyword",
+                "text": "Imports the public symbol that the path names."
+              },
+              {
+                "identity": "typeConnector",
+                "text": "Introduces the local name that the imported symbol uses."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C60",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Importing types and constants",
+                "profile": "en",
+                "specification": "LANG.MODULE.IMPORT",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.pgl02.public_signature",
+        "identity": {
+          "kind": "role",
+          "id": "moduleUnit",
+          "role": "pgl02_public_signature"
+        },
+        "tokens": [
+          {
+            "identity": "publicVisibility",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LANG.MODULE.IMPORT",
+            "version": "1.0.0",
+            "element": "R8"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Firma pública con tipos públicos",
+            "summary": "Una firma pública solo nombra tipos que el módulo también exporta.",
+            "purpose": "Un subprograma, un registro, una interfaz o un miembro de clase públicos no pueden mencionar un tipo privado de su módulo.",
+            "parts": [
+              {
+                "identity": "publicVisibility",
+                "text": "Marca la unidad cuya firma debe usar únicamente tipos públicos."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C71",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Firma pública con tipos públicos",
+                "profile": "es",
+                "specification": "LANG.MODULE.IMPORT",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Public signature with public types",
+            "summary": "A public signature names only types that the module also exports.",
+            "purpose": "A public subroutine, record, interface or class member cannot mention a private type of its module.",
+            "parts": [
+              {
+                "identity": "publicVisibility",
+                "text": "Marks the unit whose signature must use only public types."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C72",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Public signature with public types",
+                "profile": "en",
+                "specification": "LANG.MODULE.IMPORT",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
       }
     ],
     "exclusions": [],
@@ -22482,6 +22776,49 @@
           ],
           "tokens": [
             "byReference"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "moduleUnit",
+            "role": "pgl02_type_visibility"
+          },
+          "productions": [
+            "moduleUnit",
+            "moduleDirective"
+          ],
+          "tokens": [
+            "publicVisibility",
+            "privateVisibility"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "importDeclaration",
+            "role": "pgl02_type_import"
+          },
+          "productions": [
+            "importDeclaration",
+            "modulePath"
+          ],
+          "tokens": [
+            "importKeyword",
+            "typeConnector"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "moduleUnit",
+            "role": "pgl02_public_signature"
+          },
+          "productions": [
+            "moduleUnit"
+          ],
+          "tokens": [
+            "publicVisibility"
           ]
         }
       ]

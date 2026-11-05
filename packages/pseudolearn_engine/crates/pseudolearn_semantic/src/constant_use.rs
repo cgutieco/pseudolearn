@@ -14,6 +14,12 @@ pub(crate) fn reference(
     let Some(entry) = session.constants.get(index).cloned() else {
         return invalid(session, node);
     };
+    session.note_use(
+        node,
+        crate::service_model::ServiceSymbolTarget::Constant(crate::identities::ConstantId(
+            u32::try_from(index).unwrap_or(u32::MAX),
+        )),
+    );
     if purpose == ExpressionPurpose::Destination {
         session.named_report(DiagnosticCode::ConstantReassigned, node, &entry.name);
         return invalid(session, node);

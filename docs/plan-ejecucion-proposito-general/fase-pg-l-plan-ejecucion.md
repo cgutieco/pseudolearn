@@ -407,7 +407,7 @@ Orden interno: firmas de miembros (lo más barato) → campos de clase → por r
 
 - [x] `PG-L.02.01` Leer íntegros `lang.module.import.md`, `lang.module.model.md`, `lang.types.enum.md`,
   `lang.decl.constant.md`, `lang.types.interface.md`, `api.project.md`; resolver `PL-V-07` y `PL-V-08`.
-- [ ] `PG-L.02.02` Especificación: `LANG.MODULE.IMPORT#R2` («Toda unidad de nivel superior de un módulo —subprograma,
+- [x] `PG-L.02.02` Especificación: `LANG.MODULE.IMPORT#R2` («Toda unidad de nivel superior de un módulo —subprograma,
   clase, interfaz, enumerado, registro o constante— es privada salvo `Publico`…»); `#R1` (importación por símbolo de
   tipos y constantes; miembros de enumerado cualificados por el nombre local del tipo; alias de tipo con `Como`);
   `#R3`/`#R4` sin cambio de fondo pero con las nuevas clases de símbolo en colisión y reexportación;
@@ -416,7 +416,7 @@ Orden interno: firmas de miembros (lo más barato) → campos de clase → por r
   (subprograma, método público de clase pública, campo público) que nombra un tipo privado del módulo produce un
   diagnóstico nuevo **CANDIDATO** `privateTypeInPublicSignature` — **Persona** si se prefiere permitirlo (decisión
   incluida en DL-06 al revisar `C02`).
-- [ ] `PG-L.02.03` Casos de proyecto (sujeto `engine`, operación de proyecto vigente): importar y usar una constante
+- [x] `PG-L.02.03` Casos de proyecto (sujeto `engine`, operación de proyecto vigente): importar y usar una constante
   (en expresión y en el inicializador de otra constante del consumidor), un enumerado (`Segun` exhaustivo sobre un
   enumerado importado; `Escribir` del miembro), un registro (construcción, campos, igualdad, como parámetro de
   subprograma público), una interfaz (clase del consumidor que la realiza); con alias; reexportación encadenada;
@@ -425,7 +425,7 @@ Orden interno: firmas de miembros (lo más barato) → campos de clase → por r
   constantes entre módulos (`circularConstantDefinition` con un solo diagnóstico) y de importaciones (`importCycle`).
   Mismos programas en perfil `en`. Un caso de `LANG.MODULE.MODEL#R3`: el prefijo de visibilidad delante de un
   registro en un texto suelto sigue siendo `moduleSyntaxOutsideProject`.
-- [ ] `PG-L.02.04` Tests dirigidos: `semantic/tests/project_analysis_tests.rs` (o archivo espejo nuevo
+- [x] `PG-L.02.04` Tests dirigidos: `semantic/tests/project_analysis_tests.rs` (o archivo espejo nuevo
   **CANDIDATO** `module_type_exports_tests.rs`) feliz/infeliz/límite; `module_cycles_tests.rs` si cambian las aristas.
 - [x] `PG-L.02.05` Código: `module_symbols.rs` (nuevas variantes de `SymbolKind` para tipos, constantes e interfaces;
   recoger `EnumUnit`, `RecordUnit`, `ConstantDeclaration` de nivel superior e `InterfaceUnit` —nombres de nodo exactos
@@ -433,9 +433,9 @@ Orden interno: firmas de miembros (lo más barato) → campos de clase → por r
   `type_scope.rs`/`session_units.rs` para que la resolución de tipos y constantes consulte símbolos importados con
   identidad de la unidad dueña; `constant_*` para plegar una constante importada; `type_resolution.rs`.
   Diagnóstico de DL-06 si se confirma.
-- [ ] `PG-L.02.06` Servicio: navegación, referencias y renombrado entre archivos para los símbolos nuevos (prueba en
+- [x] `PG-L.02.06` Servicio: navegación, referencias y renombrado entre archivos para los símbolos nuevos (prueba en
   `service`); completado de tipos importados si `completion_types.rs` filtra por clase de símbolo.
-- [ ] `PG-L.02.07` Fichas `help.pgl02.*` (visibilidad de tipos y constantes, importación de tipos).
+- [x] `PG-L.02.07` Fichas `help.pgl02.*` (visibilidad de tipos y constantes, importación de tipos).
 - [x] `PG-L.02.08` README de `semantic` (retirar pendiente de exportación; documentar DL-06/DL-07) y de `service` si
   cambió. Nivel D: tests dirigidos de `semantic` y `service`; `see validate`. Commit local.
 
@@ -840,8 +840,7 @@ por plataforma → F.10 criterio de salida. Push solo después de F.10 en verde 
 ## 11. Resumen de ejecución
 
 Estado: ejecución parcial el 2026-11-05 en una sola sesión sobre `d9d84bc7`. **La fase no está cerrada**: se cumplieron
-PG-L.01, PG-L.02 (salvo diagnóstico de firma pública, servicio y casos
-secundarios) y PG-L.06 (regla y pruebas; la VM ya cumplía). No se iniciaron PG-L.03, PG-L.04, PG-L.05 ni PG-L.07; el
+PG-L.01, PG-L.02 (completo, cerrado después en una iteración propia) y PG-L.06 (regla y pruebas; la VM ya cumplía). No se iniciaron PG-L.03, PG-L.04, PG-L.05 ni PG-L.07; el
 bloque F se ejecutó para lo implementado. Las casillas sin marcar son tareas **no realizadas**, no omitidas por descuido;
 cada una consta en la tabla siguiente con su motivo. Commits locales: `9acfbe96` (PG-L.01), `98b00836` (PG-L.06),
 `c61c2f63` (PG-L.02) y el commit de cierre; **no se hizo push** porque `PG-L.F.10` no está en verde y el plan exige
@@ -856,10 +855,11 @@ aceptar pendientes por escrito antes de publicar (`PHASE-GREEN`, §10.2).
 | `PG-L.01.06` | Cumplida | `pseudolearn_api/tests/record_state.rs`: variable `q.x`, campo de clase `p.x` dentro del objeto, arreglo como una referencia por hoja (`a.x`) con celdas sin valor para hojas sin definir | Se conserva el formato por hoja, el vigente para variables registro; `timeline` y `wasm` no necesitaron cambios (ningún test de nivel D los exige) |
 | `PG-L.01.07` | Cumplida | `help.pgl01.record_array_element`, `record_class_field`, `record_member_signature` y `record_by_reference` en `tool.service.catalog.md` (más sus roles y la copia de `catalogs.json`), con anclas a `LANG.TYPES.RECORD#R5`/`#R3` y casos ejecutables y de diagnóstico | |
 | `PG-L.02.01`, `.05`, `.08` | Cumplida | `c61c2f63`; `lang.module.import.md` R1, R2, C35–C42; conformidad engine de `LANG.MODULE.IMPORT`, `LANG.TYPES.ENUM` y `LANG.DECL.CONSTANT` en verde | El analizador sintáctico rechazaba `Publico` ante enumerados, registros, constantes e interfaces (PL-V-07 desmentida en parte) |
-| `PG-L.02.02` | No cumplida | | Falta la regla y el diagnóstico `privateTypeInPublicSignature` |
-| `PG-L.02.03` | No cumplida | | Faltan casos de `Segun` sobre enumerado importado, reexportación encadenada, `privateReexport`, `ambiguousReexport` y límites |
-| `PG-L.02.04` | No cumplida | | Las pruebas viven en `pseudolearn_api/tests/module_type_exports.rs`; no hay archivo espejo en `semantic` |
-| `PG-L.02.06`, `.07` | No cumplida | | El servicio no modela registros, enumerados, constantes ni interfaces como símbolos; no se implementó |
+| `PG-L.02.02` | Cumplida | `LANG.MODULE.IMPORT#R8`, diagnóstico `privateTypeInPublicSignature` en `DIAG.CATALOG`, `semantic/src/public_signatures.rs`; `see validate`, `lock --check` y `export --check` en verde | Cubre subprogramas, registros, interfaces y miembros no `Privado` de clases públicas, incluidos argumentos de tipo anidados. Vínculos: `engine` cumple; `aot` pendiente en `PG-1.12`, como el resto del contrato |
+| `PG-L.02.03` | Cumplida | `lang.module.import.md` C43–C81 (pares es/en salvo C81) y `lang.module.model.md` C23–C26; `see conform --subject engine` de `LANG.MODULE.IMPORT` (81 observaciones) y `LANG.MODULE.MODEL` (35): 0 divergencias | Constante en expresión e inicializador, `Segun` exhaustivo y no exhaustivo, registro como parámetro de subprograma público, alias, reexportación encadenada, `privateImport` de enumerado e interfaz, `privateReexport`, `ambiguousReexport`, `importNameCollision` con clase local, enumerado vacío, constante de 65 536 bytes (solo es: la carga no depende del perfil), ciclo de constantes (un solo diagnóstico) y de importaciones, y prefijo de visibilidad en texto suelto. Un ciclo de constantes entre módulos es imposible sin un ciclo de importaciones; el caso ejerce el ciclo dentro de la biblioteca importada |
+| `PG-L.02.04` | Cumplida | `semantic/tests/module_type_exports_tests.rs` (14 pruebas: identidad compartida, privados, colisión, reexportación, límites, firmas públicas) además de `api/tests/module_type_exports.rs` | |
+| `PG-L.02.06` | Cumplida | `service/tests/lsp_project_type_queries.rs` y `navigation_types.rs`; `TOOL.SERVICE.NAVIGATION` R1, R2, R4 y casos C9–C16 | Definición, referencias y renombrado entre archivos y en documento para registros, enumerados, constantes e interfaces. Hallazgo heredado corregido: la ruta de `Importar`/`Exportar` no era un uso, así que renombrar una función, clase o tipo dejaba la importación apuntando a un nombre inexistente; el caso C8 pasa de 2 a 3 ediciones. Completado de tipos: `completion_types.rs` no filtra por clase de símbolo y el completado usa el análisis de un solo documento, por lo que no aplica |
+| `PG-L.02.07` | Cumplida | `help.pgl02.type_visibility`, `type_import` y `public_signature` en `tool.service.catalog.md` con roles y ejemplos diagnósticos; `help.module-unit` ya no limita la visibilidad a subprogramas y clases | Como en `PG-L.01.07`, la elección de ficha por rol en el editor queda para `PG-L.07` |
 | `PG-L.04.*`, `PG-L.05.*`, `PG-L.03.*`, `PG-L.07.*` | No cumplida | | No iniciadas por alcance de la sesión (gramática de clases genéricas, variantes de usuario, símbolo de plantilla, genéricos entre módulos, app y extensión). Solo se retiró `unsupportedInterfaceConstruct` (DL-11) |
 | `PG-L.06.01` | No cumplida | | PL-V-12 confirmada con experimento; PL-V-13 y PL-V-14 sin verificar |
 | `PG-L.06.02`, `.03`, `.05`, `.06` | Cumplida | `98b00836`; `MEM.MANAGED.UNOBSERVABLE#R3`, C2–C6; conformidad engine en verde | La VM ya liberaba por ámbito; no hubo cambio de código. Vínculo `aot` declarado `cumple` sin ejecutar la conformidad nativa (evidencia obsoleta) |
@@ -913,7 +913,7 @@ Suites omitidas: `flutter test`, extensión, `PERF.*`, experimentos `PL-E01`–`
 | ID | Texto | Respuesta de la persona (cita y fecha) | Efecto |
 |---|---|---|---|
 | DL-03 | Definición por hoja en arreglos y campos | «Sí, recomendadas», 2026-11-05 | Aplicada: cada hoja conserva su estado de definición |
-| DL-06 | Exportación de constantes, enumerados y registros; tipo privado en firma pública | «Sí, recomendadas», 2026-11-05 | Importación por símbolo aplicada; `privateTypeInPublicSignature` **no implementado** |
+| DL-06 | Exportación de constantes, enumerados y registros; tipo privado en firma pública | «Sí, recomendadas», 2026-11-05 | Aplicada: importación por símbolo y diagnóstico `privateTypeInPublicSignature` (`LANG.MODULE.IMPORT#R8`) |
 | DL-07 | Interfaces exportables | «Sí, recomendadas», 2026-11-05 | Aplicada |
 | DL-09, DL-10 | Clases genéricas y variantes de usuario | «Sí, recomendadas», 2026-11-05 | Aprobadas pero **no implementadas** en esta sesión |
 | DL-11 | Retiro de `Generico` y de `unsupportedInterfaceConstruct` | «Sí, recomendadas», 2026-11-05 | `unsupportedInterfaceConstruct` retirado; `unsupportedGenericsConstruct` permanece hasta PG-L.04 |

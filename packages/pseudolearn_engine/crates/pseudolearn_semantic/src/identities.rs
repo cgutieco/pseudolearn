@@ -16,3 +16,5 @@ pub struct ExpressionId(pub u32);
 pub struct StatementId(pub u32);
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct TypeId(pub u32);
+#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+pub struct ConstantId(pub u32);

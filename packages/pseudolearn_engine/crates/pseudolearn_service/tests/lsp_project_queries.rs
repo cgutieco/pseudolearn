@@ -89,7 +89,7 @@ fn project_definition_and_references_include_closed_source_files() {
         .next()
         .unwrap_or(Value::Null);
     let locations = references.pointer("/result").and_then(Value::as_array);
-    assert_eq!(locations.map(Vec::len), Some(2));
+    assert_eq!(locations.map(Vec::len), Some(3));
     assert!(locations.is_some_and(|items| {
         items
             .iter()

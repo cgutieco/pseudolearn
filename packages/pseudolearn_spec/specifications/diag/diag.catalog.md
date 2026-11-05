@@ -1379,6 +1379,21 @@
         "lexeme": "lexema"
       }
     },
+    "privateTypeInPublicSignature": {
+      "mensajes": {
+        "es": "El tipo privado {lexeme} aparece en una firma pública",
+        "en": "The private type {lexeme} appears in a public signature"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": "error",
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
     "ambiguousReexport": {
       "mensajes": {
         "es": "El nombre exportado {lexeme} es ambiguo",

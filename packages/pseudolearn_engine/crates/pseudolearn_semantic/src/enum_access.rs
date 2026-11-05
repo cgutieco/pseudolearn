@@ -21,6 +21,10 @@ pub(crate) fn lookup(
         .copied()
         .or_else(|| crate::json_types::builtin_enum(session, &name))
         .or_else(|| crate::http_types::builtin_enum(session, &name))?;
+    session.note_use(
+        name_node,
+        crate::service_model::ServiceSymbolTarget::Enum(enumeration),
+    );
     let wanted = session.name(member);
     let ordinal = usize::try_from(enumeration.0)
         .ok()

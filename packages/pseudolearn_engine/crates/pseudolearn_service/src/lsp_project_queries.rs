@@ -1,4 +1,6 @@
-use crate::lsp_project_selection::{SelectedSymbol, identifier_range, lsp_range, to_index, to_u32};
+use crate::lsp_project_selection::{
+    SelectedSymbol, identifier_range, lsp_range, to_index, to_u32, whole_identifier,
+};
 use crate::lsp_protocol::failure;
 use crate::lsp_session::LspServer;
 use crate::workspace_session::WorkspaceSession;
@@ -90,15 +92,17 @@ fn project_reference_location(
     let (path, text) = context
         .workspace
         .file_by_source_id(reference.span.source_id.value())?;
+    let span = (
+        to_index(reference.span.start),
+        to_index(reference.span.ending),
+    );
     let (start, ending) = identifier_range(
         text,
-        (
-            to_index(reference.span.start),
-            to_index(reference.span.ending),
-        ),
+        span,
         &context.selected.name,
         !reference.is_declaration,
-    )?;
+    )
+    .or_else(|| whole_identifier(text, span))?;
     if !context.include_declaration && definition_contains(definition, reference, start, ending) {
         return None;
     }

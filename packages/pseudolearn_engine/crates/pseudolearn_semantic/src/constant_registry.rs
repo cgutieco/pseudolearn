@@ -84,6 +84,7 @@ fn add(session: &mut AnalysisSession<'_>, node: usize, scope: Option<FunctionId>
         .map(|kind| crate::type_resolution::resolve(session, kind))
         .unwrap_or_else(|| session.module.types.intern(Type::Error));
     let index = session.constants.len();
+    session.note_constant(node, &name);
     session.constants.push(ConstantEntry {
         unit: session.unit,
         scope,

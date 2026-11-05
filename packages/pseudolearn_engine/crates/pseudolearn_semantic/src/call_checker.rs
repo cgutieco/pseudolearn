@@ -1,6 +1,7 @@
 use crate::expression_checker::{ExpressionPurpose, check_for};
 use crate::expression_model::HirExpression;
 use crate::identities::{ClassId, ExpressionId, FunctionId};
+use crate::service_model::ServiceSymbolTarget;
 use crate::session::AnalysisSession;
 use crate::types::Type;
 use pseudolearn_diagnostics::DiagnosticCode;
@@ -30,6 +31,7 @@ pub(crate) fn call(
         return crate::function_calls::call(session, node, (callee, purpose));
     }
     if let Some(record) = session.declared.records.get(&name).copied() {
+        session.note_use(target, ServiceSymbolTarget::Record(record));
         return crate::record_access::construct(session, node, record);
     }
     if let Some(template) = session.generics.records.get(&name).cloned() {

@@ -843,6 +843,12 @@
       "resuelve_en": "PG-1.12"
     },
     {
+      "regla": "LANG.MODULE.IMPORT@1.0.0#R8",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-1.12"
+    },
+    {
       "regla": "LANG.PROFILE.MODEL@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "exento",

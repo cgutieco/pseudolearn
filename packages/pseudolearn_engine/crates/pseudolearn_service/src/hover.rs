@@ -131,7 +131,11 @@ fn symbol_hover(context: &QueryContext<'_>, target: ServiceSymbolTarget) -> Opti
             Some(plain(HoverCategory::Class, &class.name, class.name.clone()))
         }
         ServiceSymbolTarget::Field(id) => field_hover(context, id),
-        ServiceSymbolTarget::Builtin(_) => None,
+        ServiceSymbolTarget::Record(_)
+        | ServiceSymbolTarget::Enum(_)
+        | ServiceSymbolTarget::Interface(_)
+        | ServiceSymbolTarget::Constant(_)
+        | ServiceSymbolTarget::Builtin(_) => None,
     }
 }
 

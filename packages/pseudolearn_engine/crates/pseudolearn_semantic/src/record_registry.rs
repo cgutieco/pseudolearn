@@ -50,6 +50,10 @@ fn declare(session: &mut AnalysisSession<'_>, node: usize) -> Option<RecordId> {
         syntax: node,
     });
     session.declared.records.insert(name, identifier);
+    session.note_declaration(
+        node,
+        crate::service_model::ServiceSymbolTarget::Record(identifier),
+    );
     Some(identifier)
 }
 

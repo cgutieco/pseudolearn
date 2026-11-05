@@ -1,7 +1,7 @@
 use pseudolearn_semantic::hir::FunctionKind;
 use pseudolearn_semantic::{ServiceAnalysis, ServiceReference, ServiceSymbolTarget};
 use pseudolearn_source::Span;
-use pseudolearn_syntax::{SyntaxTree, TokenKind};
+use pseudolearn_syntax::{NodeKind, SyntaxTree, TokenKind};
 use std::collections::BTreeSet;
 
 #[derive(Clone, Debug, PartialEq)]
@@ -86,8 +86,40 @@ fn locate_name(
             declaration_name(tree, analysis, function.0, span)
         }
         ServiceSymbolTarget::Function(_) => callee_before_parenthesis(tree, span),
+        ServiceSymbolTarget::Interface(interface) if is_declaration => {
+            interface_name(tree, analysis, interface.0)
+        }
+        ServiceSymbolTarget::Record(_)
+        | ServiceSymbolTarget::Enum(_)
+        | ServiceSymbolTarget::Interface(_)
+        | ServiceSymbolTarget::Constant(_) => {
+            if is_declaration {
+                first_identifier_from(tree, span)
+            } else {
+                single_identifier(tree, span)
+            }
+        }
         ServiceSymbolTarget::Builtin(_) => None,
     }
+}
+
+fn interface_name(tree: &SyntaxTree, analysis: &ServiceAnalysis, interface: u32) -> Option<Span> {
+    let model = analysis
+        .module
+        .interfaces
+        .get(usize::try_from(interface).ok()?)?;
+    if tree.span_for_node(model.syntax) != Some(model.span) {
+        return None;
+    }
+    let name_node = tree
+        .child_indices(model.syntax)
+        .iter()
+        .copied()
+        .find(|child| {
+            tree.node(*child)
+                .is_some_and(|node| node.kind == NodeKind::Identifier)
+        })?;
+    tree.span_for_node(name_node)
 }
 
 fn declaration_name(
