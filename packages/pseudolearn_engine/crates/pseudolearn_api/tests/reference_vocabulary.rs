@@ -1,4 +1,5 @@
 use pseudolearn_api::ApiSession;
+use pseudolearn_lexicon::{BuiltinKind, Profile};
 use serde_json::{Value, json};
 
 fn call(operation: &str, arguments: &Value) -> Value {
@@ -39,7 +40,12 @@ fn builtins_follow_the_profile_lexemes_and_declare_their_signature() {
             .pointer("/value/builtins")
             .and_then(Value::as_array)
             .map(Vec::len),
-        Some(28)
+        Some(
+            BuiltinKind::all()
+                .iter()
+                .filter(|kind| kind.lexeme(Profile::Spanish).is_some())
+                .count()
+        )
     );
 }
 

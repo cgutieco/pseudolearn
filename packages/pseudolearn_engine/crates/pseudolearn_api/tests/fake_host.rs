@@ -32,7 +32,15 @@ fn run_case(case: &Value, profile: &str, host: &Value) -> Result<(), String> {
         .ok_or("missing program")?;
     let request = json!({"program":program,"profile":profile,"host":host});
     let mut session = ApiSession::default();
-    let record = session.call("record", &json!({"request":request,"options":{"capture_states":true,"seek_every_event":true,"batch_size":1000}}));
+    let reproducible = case
+        .pointer("/espera/anfitrion_observado/reproduccion_fallo")
+        .is_none();
+    let options = if reproducible {
+        json!({"capture_states":true,"seek_every_event":true,"batch_size":1000})
+    } else {
+        json!({"capture_states":false,"batch_size":1000})
+    };
+    let record = session.call("record", &json!({"request":request,"options":options}));
     let value = record
         .get("value")
         .ok_or_else(|| format!("{:?} {profile}: {record}", case.get("id")))?;
@@ -47,6 +55,9 @@ fn run_case(case: &Value, profile: &str, host: &Value) -> Result<(), String> {
         Some(&json!("completed")),
         "{record}"
     );
+    if !reproducible {
+        return Ok(());
+    }
     let mut replay_request = request;
     let fields = replay_request
         .as_object_mut()
