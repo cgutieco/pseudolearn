@@ -90,7 +90,7 @@ Lua inspira registros, JVM verificación y Self cambio de código. Ertl y Gregg 
 
 ### Funciones como valores y ámbitos de ejecución
 
-Cada función conserva el tipo de retorno y los intervalos léxicos de sus registros nombrados. La firma de una llamada indirecta incluye tipos de parámetros y retorno; el registro de identidad ocupa el banco escalar. La generación de raíces elimina vínculos cerrados que tampoco siguen vivos por flujo. Ambos gemelos conservan las mismas disposiciones, puntos de retorno y tamaño fijo de instrucción.
+Cada función conserva el tipo de retorno y los intervalos léxicos de sus registros nombrados. La firma de una llamada indirecta incluye tipos de parámetros y retorno; el registro de identidad ocupa el banco escalar. La generación de raíces elimina vínculos cerrados que tampoco siguen vivos por flujo. Esa poda es la que hace observable la liberación por ámbito de `MEM.MANAGED.UNOBSERVABLE#R3`: `tests/lexical_roots.rs` comprueba el mapa de raíces sin el registro de un vínculo cerrado en ambos gemelos y, como caso negativo, que el mismo módulo sin intervalo léxico conserva la raíz tras el cierre, que es lo que ocurriría si `roots::expire` no se aplicara. La pila de raíces nativa no usa intervalos léxicos sino vivacidad por flujo, de modo que puede liberar antes que la VM un vínculo todavía en ámbito que ya no se usa; los casos del corpus solo fijan el límite de celdas con valores de bloque ya cerrados, que ambos sujetos liberan. Ambos gemelos conservan las mismas disposiciones, puntos de retorno y tamaño fijo de instrucción.
 
 ## Colecciones, interfaces e iteración con limpieza
 

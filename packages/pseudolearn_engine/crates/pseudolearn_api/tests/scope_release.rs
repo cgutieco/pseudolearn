@@ -1,4 +1,7 @@
-use pseudolearn_api::{ExecuteRequest, ExecuteResponse, ExecutionLimits, execute_program};
+use pseudolearn_api::{
+    ApiSession, ExecuteRequest, ExecuteResponse, ExecutionLimits, execute_program,
+};
+use serde_json::{Value, json};
 
 fn run(program: &str, cells: u64, gc_stress: bool) -> ExecuteResponse {
     execute_program(&ExecuteRequest {
@@ -54,4 +57,50 @@ fn bindings_still_in_scope_keep_counting() {
         kind(&run(flat, 12, false)),
         Some(&serde_json::json!("completed"))
     );
+}
+
+fn final_variables(program: &str) -> Result<Value, String> {
+    let mut session = ApiSession::default();
+    let analysis = session
+        .call(
+            "create_analysis",
+            &json!({"program":program,"profile":"en"}),
+        )
+        .pointer("/value/resource")
+        .cloned()
+        .ok_or("missing analysis")?;
+    let execution = session
+        .call("start", &json!({"analysis":analysis}))
+        .pointer("/value/resource")
+        .cloned()
+        .ok_or("missing execution")?;
+    session.call("advance", &json!({"resource":execution,"batch_size":4096}));
+    let last = session
+        .call("horizon", &json!({"resource":execution}))
+        .pointer("/value/last")
+        .and_then(Value::as_u64)
+        .ok_or("missing horizon")?;
+    session
+        .call("query_state", &json!({"resource":execution,"event":last}))
+        .pointer("/value/marcos/0/variables")
+        .cloned()
+        .ok_or_else(|| "missing variables".to_owned())
+}
+
+#[test]
+fn the_state_after_a_block_no_longer_lists_its_bindings() -> Result<(), String> {
+    let program = "class Box\npublic define value as integer;\nendClass\nalgorithm P\ndefine mutable total as integer <- 0;\nfor i <- 1 to 3 step 1 do\ndefine b as Box <- new Box();\nb.value <- i;\ntotal <- total + b.value;\nendFor\nwrite total;\nendAlgorithm\n";
+    let variables = final_variables(program)?;
+    assert_eq!(variables.pointer("/total/valor"), Some(&json!("6")));
+    assert_eq!(variables.get("b"), None);
+    Ok(())
+}
+
+#[test]
+fn a_binding_of_an_enclosing_scope_is_still_listed() -> Result<(), String> {
+    let program = "algorithm P\ndefine kept as integer <- 4;\nif kept > 1 then\ndefine inner as integer <- kept;\nwrite inner;\nendIf\nwrite kept;\nendAlgorithm\n";
+    let variables = final_variables(program)?;
+    assert_eq!(variables.pointer("/kept/valor"), Some(&json!("4")));
+    assert_eq!(variables.get("inner"), None);
+    Ok(())
 }
