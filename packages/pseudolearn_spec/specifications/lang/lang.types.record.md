@@ -1139,6 +1139,9 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
   },
   "origen": "derivado",
   "operacion": "analyze",
+  "sujetos": [
+    "engine"
+  ],
   "espera": {
     "arbol": "presente",
     "diagnosticos": [
@@ -1165,6 +1168,9 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
   },
   "origen": "derivado",
   "operacion": "analyze",
+  "sujetos": [
+    "engine"
+  ],
   "espera": {
     "arbol": "presente",
     "diagnosticos": [

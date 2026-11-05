@@ -910,7 +910,7 @@
   "origen": "derivado",
   "revisado_por": "Cesar Antonio Gutierrez Contreras",
   "operacion": "service",
-  "espera": {"servicio": {"definicion_uri": "file:///geo/vectores.pseudo", "referencias": 2}},
+  "espera": {"servicio": {"definicion_uri": "file:///geo/vectores.pseudo", "referencias": 3}},
   "servicio": {"suboperacion":"lsp","mensajes":[{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"locale":"es","capabilities":{}}},{"jsonrpc":"2.0","method":"pseudolearn/workspaceSnapshot","params":{"project":{"project_id":1,"revision_id":1,"packages":[{"name":"app","root":"app","kind":"application","entries":["app/main"],"dependencies":{"geo":"geo"}},{"name":"geo","root":"geo","kind":"library","entries":[],"dependencies":{}}],"files":[{"path":"app/main","source_id":1,"text":"Importar geo.vectores.Doble;\nAlgoritmo P\nEscribir Doble(1);\nFinAlgoritmo\n"},{"path":"geo/vectores","source_id":2,"text":"Publico SubProceso Doble(n Como Entero) Como Entero\nRetornar n * 2;\nFinSubProceso\n"}]},"uris":{"app/main":"file:///app/main.pseudo","geo/vectores":"file:///geo/vectores.pseudo"}}},{"jsonrpc":"2.0","id":2,"method":"textDocument/definition","params":{"textDocument":{"uri":"file:///app/main.pseudo"},"position":{"line":2,"character":9} }},{"jsonrpc":"2.0","id":3,"method":"textDocument/references","params":{"textDocument":{"uri":"file:///app/main.pseudo"},"position":{"line":2,"character":9},"context":{"includeDeclaration":true}}}],"proyeccion":"navegacion_proyecto"}
 }
 ```

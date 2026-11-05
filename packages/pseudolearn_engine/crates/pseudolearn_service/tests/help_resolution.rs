@@ -282,7 +282,7 @@ fn collection_member_help_uses_the_exact_new_card() {
     );
 }
 
-const LANGUAGE_FORMS: &str = "Publico Registro Punto\nDefinir x Como Entero;\nFinRegistro\nInterfaz Medida<T>\nMetodo medir() Como T;\nFinInterfaz\nClase Caja<T>\nDefinir p Como Punto;\nMetodo mover(q Como Punto, n Como Entero)\nFinMetodo\nFinClase\nVariante Forma\nAlternativa Circulo(radio Como Entero)\nFinVariante\nSubProceso mover(p Por Referencia Como Punto, k Por Referencia Como Entero)\nFinSubProceso\nPublico SubProceso doble(v Como Entero) Como Entero\nRetornar v * 2;\nFinSubProceso\nAlgoritmo P\nEscribir 1 < 2;\nFinAlgoritmo\n";
+const LANGUAGE_FORMS: &str = "Publico Registro Punto\nDefinir x Como Entero;\nFinRegistro\nInterfaz Medida<T>\nMetodo medir() Como T;\nFinInterfaz\nClase Caja<T>\nDefinir p Como Punto;\nMetodo mover(q Como Punto, n Como Entero)\nFinMetodo\nFinClase\nVariante Forma\nAlternativa Circulo(radio Como Entero)\nFinVariante\nSubProceso mover(p Como Punto Por Referencia, k Como Entero Por Referencia)\nFinSubProceso\nPublico SubProceso doble(v Como Entero) Como Entero\nRetornar v * 2;\nFinSubProceso\nAlgoritmo P\nEscribir 1 < 2;\nFinAlgoritmo\n";
 
 fn card_after(needle: &str, shift: usize) -> Option<String> {
     let index = LANGUAGE_FORMS.find(needle)?.checked_add(shift)?;
@@ -330,11 +330,11 @@ fn variant_words_select_the_variant_and_alternative_cards() {
 #[test]
 fn record_parameters_and_type_visibility_select_their_role_cards() {
     assert_eq!(
-        card_after("p Por Referencia", 3).as_deref(),
+        card_after("Punto Por Referencia", 9).as_deref(),
         Some("help.pgl01.record_by_reference")
     );
     assert_eq!(
-        card_after("k Por Referencia", 3).as_deref(),
+        card_after("Entero Por Referencia", 10).as_deref(),
         Some("help.parameter-mode")
     );
     assert_eq!(

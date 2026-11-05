@@ -143,7 +143,10 @@ fn compute(session: &mut AnalysisSession<'_>, record: RecordId) {
         });
         offset = offset.saturating_add(width);
     }
-    if leaf_types.len() > RECORD_MAXIMUM_LEAVES && !oversized {
+    if leaf_types.len() > RECORD_MAXIMUM_LEAVES
+        && !oversized
+        && session.kind(model.syntax) != pseudolearn_syntax::NodeKind::VariantAlternative
+    {
         report_layout_limit(session, model.span);
     }
     if let Some(target) = session.module.records.get_mut(slot(record)) {

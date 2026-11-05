@@ -30,22 +30,26 @@ fn role(id: &str, name: &str) -> HelpIdentity {
 
 fn record_parameter(context: &QueryContext<'_>, slot: usize) -> Option<Span> {
     let (_, span) = smallest_node(context, slot, |kind| kind == NodeKind::Parameter)?;
-    let type_name = (slot.checked_add(1)?..context.tree.tokens.token_count())
-        .take_while(|index| {
-            !matches!(
-                context.tree.tokens.kind(*index),
-                Some(TokenKind::Comma | TokenKind::RightParenthesis) | None
-            )
+    let names_record = (0..context.tree.tokens.token_count())
+        .filter(|index| context.tree.tokens.kind(*index) == Some(TokenKind::Identifier))
+        .filter(|index| {
+            context
+                .tree
+                .tokens
+                .span(*index)
+                .is_some_and(|token| token.start >= span.start && token.ending <= span.ending)
         })
-        .find(|index| context.tree.tokens.kind(*index) == Some(TokenKind::Identifier))
-        .map(|index| context.token_text(index))?;
-    context
-        .analysis
-        .module
-        .records
-        .iter()
-        .any(|record| record.name == type_name)
-        .then_some(span)
+        .skip(1)
+        .any(|index| {
+            let name = context.token_text(index);
+            context
+                .analysis
+                .module
+                .records
+                .iter()
+                .any(|record| record.name == name)
+        });
+    names_record.then_some(span)
 }
 
 fn member_signature(context: &QueryContext<'_>, slot: usize) -> bool {
