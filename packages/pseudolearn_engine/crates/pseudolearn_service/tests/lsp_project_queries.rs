@@ -264,3 +264,53 @@ fn semantic_tokens_use_utf16_lengths_and_require_negotiation() {
             .is_none()
     );
 }
+
+fn absolute_tokens(text: &str) -> Vec<(u64, u64, u64, u64)> {
+    let mut server =
+        initialized_server(json!({"textDocument":{"semanticTokens":{"requests":{"full":true}}}}));
+    server.handle_message(&json!({
+        "jsonrpc":"2.0","method":"textDocument/didOpen",
+        "params":{"textDocument":{"uri":"file:///variant.pseudo","languageId":"pseudolearn","version":1,"text":text}}
+    }));
+    let answer = server.handle_message(&json!({
+        "jsonrpc":"2.0","id":2,"method":"textDocument/semanticTokens/full",
+        "params":{"textDocument":{"uri":"file:///variant.pseudo"}}
+    }));
+    let encoded = answer
+        .first()
+        .and_then(|candidate| candidate.pointer("/result/data"))
+        .and_then(Value::as_array)
+        .cloned()
+        .unwrap_or_default();
+    let mut line = 0;
+    let mut character = 0;
+    let mut decoded = Vec::new();
+    for token in encoded.chunks(5) {
+        let field = |slot: usize| token.get(slot).and_then(Value::as_u64).unwrap_or(0);
+        if field(0) > 0 {
+            line += field(0);
+            character = field(1);
+        } else {
+            character += field(1);
+        }
+        decoded.push((line, character, field(2), field(3)));
+    }
+    decoded
+}
+
+#[test]
+fn contextual_variant_words_are_keywords_only_in_their_structural_position() {
+    let text = "variant Shape\ncase Dot\nendVariant\nalgorithm P\ndefine variant as integer <- 1;\nwrite variant;\nendAlgorithm\n";
+    let tokens = absolute_tokens(text);
+    let type_at = |line: u64, character: u64| {
+        tokens
+            .iter()
+            .find(|token| token.0 == line && token.1 == character)
+            .map(|token| token.3)
+    };
+    assert_eq!(type_at(0, 0), Some(0));
+    assert_eq!(type_at(1, 0), Some(0));
+    assert_eq!(type_at(2, 0), Some(0));
+    assert_eq!(type_at(4, 7), Some(5));
+    assert_eq!(type_at(5, 6), Some(5));
+}

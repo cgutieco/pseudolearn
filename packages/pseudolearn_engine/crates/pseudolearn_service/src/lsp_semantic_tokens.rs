@@ -57,6 +57,12 @@ fn encode_semantic_tokens(
     cancellation: Option<&crate::request_cancellation::RequestCancellation>,
 ) -> Vec<u32> {
     let mut encoder = SemanticTokenEncoder::default();
+    let contextual = crate::contextual_tokens::collect(
+        &session.tree,
+        &session.source,
+        &session.analysis,
+        session.profile,
+    );
     for index in 0..session.tree.tokens.token_count() {
         if cancellation.is_some_and(crate::request_cancellation::RequestCancellation::is_cancelled)
         {
@@ -64,6 +70,11 @@ fn encode_semantic_tokens(
         }
         let Some((span, token_type)) = encoded_token(session, index) else {
             continue;
+        };
+        let token_type = if contextual.contains_key(&index) {
+            0
+        } else {
+            token_type
         };
         encoder.append(session.text(), span, token_type);
     }

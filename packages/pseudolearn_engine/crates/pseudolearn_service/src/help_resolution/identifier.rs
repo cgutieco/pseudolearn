@@ -47,14 +47,14 @@ fn contextual_identifier_target(
     slot: usize,
     span: Span,
 ) -> Option<ResolutionTarget> {
-    let generic = super::context::generic_constraint(context, slot).map(|(identity, enclosing)| {
-        ResolutionTarget {
+    let generic = super::context::generic_constraint(context, slot)
+        .or_else(|| super::generic_roles::type_parameter_name(context, slot))
+        .map(|(identity, enclosing)| ResolutionTarget {
             identity: Some(identity),
             symbol: None,
             certainty: contextual_certainty(context),
             enclosing: Some(enclosing),
-        }
-    });
+        });
     generic.or_else(|| super::context::contextual_target(context, slot, span))
 }
 

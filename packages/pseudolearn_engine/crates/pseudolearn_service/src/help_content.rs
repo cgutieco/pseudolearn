@@ -40,7 +40,13 @@ fn select_card(identity: &HelpIdentity, token: Option<&str>) -> Option<&'static 
     let preferred = candidates
         .iter()
         .copied()
-        .find(|card| fits_context(card, identity));
+        .find(|card| card.identity == identity.id && card.role == identity.role)
+        .or_else(|| {
+            candidates
+                .iter()
+                .copied()
+                .find(|card| fits_context(card, identity))
+        });
     if matches!(
         identity.kind,
         HelpIdentityKind::Construction | HelpIdentityKind::Role

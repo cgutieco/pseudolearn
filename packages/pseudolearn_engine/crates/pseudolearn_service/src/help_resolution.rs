@@ -1,7 +1,9 @@
 mod context;
+mod generic_roles;
 mod identifier;
 mod module_directive;
 mod operator;
+mod record_roles;
 mod selection;
 
 use crate::document_session::DocumentSession;
@@ -152,7 +154,9 @@ fn keyword_target(
             enclosing,
         };
     }
-    if let Some((identity, enclosing)) = context::contextual_keyword(context, slot, keyword) {
+    if let Some((identity, enclosing)) = record_roles::record_keyword(context, slot, keyword)
+        .or_else(|| context::contextual_keyword(context, slot, keyword))
+    {
         return ResolutionTarget {
             identity: Some(identity),
             symbol: None,
@@ -179,6 +183,14 @@ fn keyword_target(
 }
 
 fn operator_target(context: &QueryContext<'_>, slot: usize, id: &str) -> ResolutionTarget {
+    if let Some((identity, enclosing)) = generic_roles::generic_bracket(context, slot, id) {
+        return ResolutionTarget {
+            identity: Some(identity),
+            symbol: None,
+            certainty: contextual_certainty(context),
+            enclosing: Some(enclosing),
+        };
+    }
     let (role, enclosing) = operator::operator_context(context, slot, id);
     ResolutionTarget {
         identity: Some(identity(HelpIdentityKind::Operator, id, role)),

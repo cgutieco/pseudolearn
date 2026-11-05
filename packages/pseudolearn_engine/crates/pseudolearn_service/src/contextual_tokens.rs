@@ -156,6 +156,8 @@ fn owns(kind: NodeKind, identity: &str) -> bool {
         || matches!(
             (kind, identity),
             (NodeKind::InterfaceUnit, "interfaceKeyword" | "endInterface")
+                | (NodeKind::VariantUnit, "variantKeyword" | "endVariant")
+                | (NodeKind::VariantAlternative, "alternativeKeyword")
                 | (NodeKind::Realization, "implementsKeyword")
                 | (NodeKind::ForEachLoop, "eachKeyword" | "inKeyword")
                 | (NodeKind::DeferStatement, "deferKeyword" | "endDefer")
@@ -207,7 +209,7 @@ fn structural_token(tree: &SyntaxTree, node: usize, token: usize, identity: &str
         return false;
     }
     match identity {
-        "endInterface" | "endDefer" => token == last,
+        "endInterface" | "endDefer" | "endVariant" => token == last,
         "eachKeyword" => {
             (first..token)
                 .filter_map(|slot| tree.tokens.kind(slot))
@@ -252,6 +254,7 @@ pub(crate) fn construction(
         "importKeyword" => "importDeclaration",
         "exportKeyword" => "exportDeclaration",
         "inKeyword" => "eachKeyword",
+        "endVariant" => "variantKeyword",
         _ => identity,
     };
     for (kind, location) in analysis

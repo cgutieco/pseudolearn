@@ -281,3 +281,76 @@ fn collection_member_help_uses_the_exact_new_card() {
         Some("help.pgs02.vector_sort".to_owned())
     );
 }
+
+const LANGUAGE_FORMS: &str = "Publico Registro Punto\nDefinir x Como Entero;\nFinRegistro\nInterfaz Medida<T>\nMetodo medir() Como T;\nFinInterfaz\nClase Caja<T>\nDefinir p Como Punto;\nMetodo mover(q Como Punto, n Como Entero)\nFinMetodo\nFinClase\nVariante Forma\nAlternativa Circulo(radio Como Entero)\nFinVariante\nSubProceso mover(p Por Referencia Como Punto, k Por Referencia Como Entero)\nFinSubProceso\nPublico SubProceso doble(v Como Entero) Como Entero\nRetornar v * 2;\nFinSubProceso\nAlgoritmo P\nEscribir 1 < 2;\nFinAlgoritmo\n";
+
+fn card_after(needle: &str, shift: usize) -> Option<String> {
+    let index = LANGUAGE_FORMS.find(needle)?.checked_add(shift)?;
+    let marked = format!(
+        "{}|{}",
+        LANGUAGE_FORMS.get(..index)?,
+        LANGUAGE_FORMS.get(index..)?
+    );
+    card_id(&marked, Profile::Spanish)
+}
+
+#[test]
+fn generic_headers_and_type_parameters_select_their_own_cards() {
+    assert_eq!(
+        card_after("Caja<T>", 4).as_deref(),
+        Some("help.pgl04.generic_class")
+    );
+    assert_eq!(
+        card_after("Caja<T>", 5).as_deref(),
+        Some("help.pgl04.type_parameter")
+    );
+    assert_eq!(
+        card_after("Medida<T>", 6).as_deref(),
+        Some("help.pgl04.generic_interface")
+    );
+    assert_eq!(card_after("1 < 2", 2).as_deref(), Some("help.comparison"));
+}
+
+#[test]
+fn variant_words_select_the_variant_and_alternative_cards() {
+    assert_eq!(
+        card_after("Variante Forma", 2).as_deref(),
+        Some("help.pgl04.variant")
+    );
+    assert_eq!(
+        card_after("FinVariante", 3).as_deref(),
+        Some("help.pgl04.variant")
+    );
+    assert_eq!(
+        card_after("Alternativa Circulo", 2).as_deref(),
+        Some("help.pgl04.variant_alternative")
+    );
+}
+
+#[test]
+fn record_parameters_and_type_visibility_select_their_role_cards() {
+    assert_eq!(
+        card_after("p Por Referencia", 3).as_deref(),
+        Some("help.pgl01.record_by_reference")
+    );
+    assert_eq!(
+        card_after("k Por Referencia", 3).as_deref(),
+        Some("help.parameter-mode")
+    );
+    assert_eq!(
+        card_after("q Como Punto", 3).as_deref(),
+        Some("help.pgl01.record_member_signature")
+    );
+    assert_ne!(
+        card_after("n Como Entero", 3).as_deref(),
+        Some("help.pgl01.record_member_signature")
+    );
+    assert_eq!(
+        card_after("Publico Registro", 2).as_deref(),
+        Some("help.pgl02.type_visibility")
+    );
+    assert_ne!(
+        card_after("Publico SubProceso", 2).as_deref(),
+        Some("help.pgl02.type_visibility")
+    );
+}
