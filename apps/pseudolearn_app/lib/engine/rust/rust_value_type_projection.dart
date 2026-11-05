@@ -1,6 +1,7 @@
 import '../../domain/model/analysis/program_node_id.dart';
 import '../../domain/model/diagram/class_model.dart';
 import 'rust_program_view.dart';
+import 'rust_type_parameter_text.dart';
 
 final class RustValueTypeProjection {
   final RustProgramView _view;
@@ -21,7 +22,9 @@ final class RustValueTypeProjection {
       if (node.syntaxKind == 'enum_unit')
         _box(node, ClassBoxKind.enumeration, _members(node))
       else if (node.syntaxKind == 'record_unit')
-        _box(node, ClassBoxKind.record, _fields(node)),
+        _box(node, ClassBoxKind.record, _fields(node))
+      else if (node.syntaxKind == 'variant_unit')
+        _box(node, ClassBoxKind.variant, _alternatives(node)),
   ];
 
   ClassBox _box(
@@ -35,6 +38,7 @@ final class RustValueTypeProjection {
     nodeId: node.id,
     sourceLine: node.range.startLine,
     kind: kind,
+    typeParameters: RustTypeParameterText(_view).of(node),
   );
 
   List<ClassMemberRow> _members(RustViewNode node) => [
@@ -42,6 +46,21 @@ final class RustValueTypeProjection {
       for (final member in rustChildrenForRole(_view, members, 'member'))
         _row(member, member.text, ClassRowRole.enumMember),
   ];
+
+  List<ClassMemberRow> _alternatives(RustViewNode node) => [
+    for (final alternative in rustChildrenForRole(_view, node, 'alternative'))
+      _row(alternative, _alternativeText(alternative), ClassRowRole.enumMember),
+  ];
+
+  String _alternativeText(RustViewNode alternative) {
+    final name = _view.childForRole(alternative, 'name')?.text.trim() ?? '';
+    final fields = [
+      for (final field in rustChildrenForRole(_view, alternative, 'field'))
+        '${_view.childForRole(field, 'name')?.text.trim() ?? ''}: '
+            '${_view.childForRole(field, 'type')?.text.trim() ?? ''}',
+    ];
+    return fields.isEmpty ? name : '$name(${fields.join(', ')})';
+  }
 
   List<ClassMemberRow> _fields(RustViewNode node) => [
     for (final field in rustChildrenForRole(_view, node, 'field'))

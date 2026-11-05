@@ -44,6 +44,7 @@ final class ClassBoxSizing {
         ClassBoxKind.genericSubprogram => '«subprogram»',
         ClassBoxKind.record => '«record»',
         ClassBoxKind.enumeration => '«enumeration»',
+        ClassBoxKind.variant => '«variant»',
       };
 
   static double compartmentHeightOf(int rowCount) => rowCount == 0
@@ -52,7 +53,7 @@ final class ClassBoxSizing {
           ClassDiagramMetrics.boxPadding;
 
   double _widthOf(ClassBox box) {
-    var widest = _headerWidthOf(box.name);
+    var widest = _headerWidthOf(box.title);
     final stereotype = stereotypeOf(box.kind);
     if (stereotype != null) {
       widest = math.max(widest, _headerWidthOf(stereotype));

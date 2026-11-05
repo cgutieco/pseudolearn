@@ -982,10 +982,12 @@ La vista pública incluye interface_unit, interface_signature, realization, type
   "id": "R12",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "El diagrama de clases representa cada registro como una caja «record» con una fila «nombre: tipo» por campo declarado, cada enumerado como una caja «enumeration» con una fila por miembro en orden de fuente, y cada subprograma con parámetros de tipo como una caja «subprogram» con su firma, aunque sus parámetros no tengan restricción. Registros y enumerados se listan en orden de fuente después de clases e interfaces. Cada fila conserva el nodo de su declaración para navegar al rango exacto. No se crean relaciones, instancias ni pasos ejecutables para estas declaraciones.",
+  "texto": "El diagrama de clases representa cada registro como una caja «record» con una fila «nombre: tipo» por campo declarado, cada enumerado como una caja «enumeration» con una fila por miembro en orden de fuente, cada variante declarada como una caja «variant» con una fila por alternativa en orden de fuente, escrita nombre o nombre(campo: tipo, …), y cada subprograma con parámetros de tipo como una caja «subprogram» con su firma, aunque sus parámetros no tengan restricción. La cabecera de una clase, interfaz, registro o variante con parámetros de tipo añade al nombre la lista escrita entre < y >, con cada restricción como parámetro: contrato. Un campo de clase de tipo registro es una fila «nombre: tipo» sin relación de asociación. La herencia de una base genérica y la realización de una interfaz genérica se rotulan con los argumentos de tipo escritos. Registros, enumerados y variantes se listan en orden de fuente después de clases e interfaces. Cada fila conserva el nodo de su declaración para navegar al rango exacto. No se crean relaciones, instancias ni pasos ejecutables para registros, enumerados ni variantes.",
   "verificacion": [
     "C29",
-    "C30"
+    "C30",
+    "C61",
+    "C62"
   ]
 }
 ```
@@ -996,6 +998,14 @@ La vista pública incluye interface_unit, interface_signature, realization, type
 
 ```caso
 {"id": "C30", "regla": "R12", "perfiles": ["en"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "class_diagram", "input": {"program": "record Pair\ndefine left as integer;\ndefine right as string;\nendRecord\nenum Level\nlow, high\nendEnum\nalgorithm Main\nendAlgorithm\n", "profile": "en"}}, "espera": {"aplicacion": {"boxes": [{"name": "Pair", "stereotype": "«record»", "rows": ["+ left: integer", "+ right: string"]}, {"name": "Level", "stereotype": "«enumeration»", "rows": ["low", "high"]}], "relations": []}}}
+```
+
+```caso
+{"id": "C61", "regla": "R12", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "class_diagram", "input": {"program": "Registro Punto\nDefinir x Como Entero;\nFinRegistro\nClase Base<T>\nDefinir dato Como T;\nDefinir origen Como Punto;\nFinClase\nClase Hija<T> Hereda De Base<T>\nMetodo obtener() Como T\nRetornar Este.dato;\nFinMetodo\nFinClase\nVariante Forma\nAlternativa Circulo(radio Como Entero)\nAlternativa Vacia\nFinVariante\nAlgoritmo Main\nFinAlgoritmo\n", "profile": "es"}}, "espera": {"aplicacion": {"boxes": [{"name": "Base<T>", "stereotype": null, "rows": ["+ dato: T", "+ origen: Punto"]}, {"name": "Punto", "stereotype": "«record»", "rows": ["+ x: Entero"]}, {"name": "Forma", "stereotype": "«variant»", "rows": ["Circulo(radio: Entero)", "Vacia"]}, {"name": "Hija<T>", "stereotype": null, "rows": ["+ obtener(): T"]}], "relations": [{"kind": "generalization", "from": "Hija<T>", "to": "Base<T>", "valid": true, "label": "<T>"}]}}}
+```
+
+```caso
+{"id": "C62", "regla": "R12", "perfiles": ["en"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "class_diagram", "input": {"program": "interface Printable\nmethod show() as string;\nendInterface\ninterface Measurable<T>\nmethod measure() as T;\nendInterface\nclass Fixed<T: Printable> implements Measurable<T>\ndefine datum as T;\nmethod measure() as T\nreturn this.datum;\nendMethod\nendClass\nalgorithm Main\nendAlgorithm\n", "profile": "en"}}, "espera": {"aplicacion": {"boxes": [{"name": "Printable", "stereotype": "«interface»", "rows": ["+ show(): string"]}, {"name": "Measurable<T>", "stereotype": "«interface»", "rows": ["+ measure(): T"]}, {"name": "Fixed<T: Printable>", "stereotype": null, "rows": ["+ datum: T", "+ measure(): T"]}], "relations": [{"kind": "realization", "from": "Fixed<T: Printable>", "to": "Measurable<T>", "valid": true, "label": "<T>"}]}}}
 ```
 
 ## Cobertura sintáctica de las vistas del consumidor

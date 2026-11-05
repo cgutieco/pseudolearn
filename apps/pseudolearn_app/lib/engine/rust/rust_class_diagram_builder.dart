@@ -7,6 +7,7 @@ import 'rust_program_view.dart';
 import 'rust_member_signature.dart';
 import 'rust_program_view_source.dart';
 import 'rust_type_contract_projection.dart';
+import 'rust_type_parameter_text.dart';
 import 'rust_transport.dart';
 
 final class RustClassDiagramBuilder implements ClassDiagramBuilder {
@@ -75,17 +76,8 @@ final class RustClassDiagramBuilder implements ClassDiagramBuilder {
     for (final member in view.members.where(
       (item) => item.className == unit.name,
     )) {
-      final memberNodeId = member.nodeId;
-      if (memberNodeId == null) continue;
-      final memberNode = view.nodeById(memberNodeId);
-      final row = ClassMemberRow(
-        text: member.kind == 'field'
-            ? _attributeSignature(member)
-            : RustMemberSignature(view).of(member.name, memberNode),
-        visibility: _visibility(member.visibility),
-        nodeId: memberNodeId,
-        sourceLine: memberNode?.range.startLine ?? unit.range.startLine,
-      );
+      final row = _memberRow(view, unit, member);
+      if (row == null) continue;
       if (member.kind == 'field') {
         attributes.add(row);
       } else {
@@ -102,6 +94,25 @@ final class RustClassDiagramBuilder implements ClassDiagramBuilder {
       methods: methods,
       nodeId: node?.id ?? unit.nodeId,
       sourceLine: node?.range.startLine ?? unit.range.startLine,
+      typeParameters: RustTypeParameterText(view).of(node),
+    );
+  }
+
+  ClassMemberRow? _memberRow(
+    RustProgramView view,
+    RustViewUnit unit,
+    RustViewMember member,
+  ) {
+    final memberNodeId = member.nodeId;
+    if (memberNodeId == null) return null;
+    final memberNode = view.nodeById(memberNodeId);
+    return ClassMemberRow(
+      text: member.kind == 'field'
+          ? _attributeSignature(member)
+          : RustMemberSignature(view).of(member.name, memberNode),
+      visibility: _visibility(member.visibility),
+      nodeId: memberNodeId,
+      sourceLine: memberNode?.range.startLine ?? unit.range.startLine,
     );
   }
 
@@ -114,11 +125,15 @@ final class RustClassDiagramBuilder implements ClassDiagramBuilder {
     for (final unit in classes) {
       final superclass = view.superclasses[unit.name];
       if (superclass != null && classNames.contains(superclass)) {
+        final arguments = RustTypeParameterText(
+          view,
+        ).argumentsAfter(view.nodeById(unit.nodeId), superclass);
         relations.add(
           ClassRelation(
             fromClassName: unit.name,
             toClassName: superclass,
             kind: ClassRelationKind.generalization,
+            label: arguments.isEmpty ? null : arguments,
           ),
         );
       }

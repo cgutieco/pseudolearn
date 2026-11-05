@@ -230,6 +230,40 @@ void main() {
     });
   });
 
+  group('constructions added by the language have no equivalent yet', () {
+    const genericClass =
+        'Clase Caja<T>\nDefinir dato Como T;\nMetodo Constructor(d Como T)\n'
+        'Este.dato <- d;\nFinMetodo\nFinClase\nAlgoritmo P\n'
+        'Definir c Como Caja<Entero> <- Nuevo Caja<Entero>(1);\n'
+        'Escribir c.dato;\nFinAlgoritmo\n';
+    const variant =
+        'Variante Forma\nAlternativa Circulo(radio Como Entero)\n'
+        'Alternativa Punto\nFinVariante\nAlgoritmo P\n'
+        'Definir f Como Forma <- Forma.Punto;\nSegun f Hacer\n'
+        'Forma.Circulo(r): Escribir r;\nForma.Punto: Escribir 0;\n'
+        'FinSegun\nFinAlgoritmo\n';
+    const recordArray =
+        'Registro Punto\nDefinir x Como Entero;\nFinRegistro\nAlgoritmo P\n'
+        'Dimension a[2] Como Punto;\na[0] <- Punto(1);\nEscribir a[0].x;\n'
+        'FinAlgoritmo\n';
+
+    for (final (name, source, construct) in [
+      ('a generic class', genericClass, 'type_parameters'),
+      ('a declared variant', variant, 'variant_unit'),
+      ('an array of records', recordArray, 'record_unit'),
+    ]) {
+      test('$name is withheld for every target and named', () {
+        for (final target in TargetLanguageId.values) {
+          expect(
+            _blockersOf(source, target).map((blocker) => blocker.construct),
+            contains(construct),
+            reason: '$name / $target',
+          );
+        }
+      });
+    }
+  });
+
   test('analysis errors stay analysis errors, never unavailable', () {
     for (final target in TargetLanguageId.values) {
       expect(

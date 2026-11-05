@@ -19,6 +19,12 @@ pub(crate) fn child_role(
         (NodeKind::InterfaceSignature, NodeKind::Parameters) => "parameters",
         (NodeKind::InterfaceSignature, _) => "signature",
         (NodeKind::EnumMembers, _) => "member",
+        (NodeKind::VariantUnit, NodeKind::VariantAlternative) => "alternative",
+        (NodeKind::VariantUnit, NodeKind::TypeParameters) => "type_parameters",
+        (NodeKind::VariantAlternative, NodeKind::AlternativeField) => "field",
+        (NodeKind::VariantUnit | NodeKind::VariantAlternative, _) => "name",
+        (NodeKind::AlternativeField, NodeKind::Type) => "type",
+        (NodeKind::AlternativeField, _) => "name",
         (NodeKind::RecordUnit, _) => "field",
         _ => return None,
     })

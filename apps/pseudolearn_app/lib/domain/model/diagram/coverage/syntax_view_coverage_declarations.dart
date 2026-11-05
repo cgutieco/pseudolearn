@@ -125,7 +125,7 @@ const List<SyntaxViewCoverageRow> syntaxViewCoverageDeclarations = [
       'a type parameter has no execution',
     ),
     structure: _exact,
-    help: CoverageCell.help('construction.interface'),
+    help: CoverageCell.help('help.pgl04.type_parameter'),
     evidence: _valueTypeTests,
   ),
   SyntaxViewCoverageRow(
@@ -158,6 +158,22 @@ const List<SyntaxViewCoverageRow> syntaxViewCoverageDeclarations = [
     ),
     structure: _exact,
     help: CoverageCell.help('help.enum'),
+    evidence: _valueTypeTests,
+  ),
+  SyntaxViewCoverageRow(
+    construct: 'value.variant',
+    role: CoveragePublicRole.declaration,
+    family: CoverageFamily.valueDeclaration,
+    syntaxKinds: ['variant_unit', 'variant_alternative', 'alternative_field'],
+    rule: 'LANG.TYPES.VARIANT@1.0.0#R1',
+    flowchart: CoverageCell.notApplicable(
+      'a variant declaration has no execution',
+    ),
+    structogram: CoverageCell.notApplicable(
+      'a variant declaration has no execution',
+    ),
+    structure: _exact,
+    help: CoverageCell.help('help.pgl04.variant'),
     evidence: _valueTypeTests,
   ),
   SyntaxViewCoverageRow(

@@ -148,7 +148,10 @@ fn expression_name(kind: NodeKind) -> Option<&'static str> {
 fn names_declaration(owner: NodeKind) -> bool {
     matches!(
         owner,
-        NodeKind::InterfaceUnit
+        NodeKind::VariantUnit
+            | NodeKind::VariantAlternative
+            | NodeKind::AlternativeField
+            | NodeKind::InterfaceUnit
             | NodeKind::InterfaceSignature
             | NodeKind::TypeParameters
             | NodeKind::TypeParameter
@@ -208,7 +211,10 @@ fn is_expression(kind: NodeKind) -> bool {
 fn is_declaration(kind: NodeKind) -> bool {
     matches!(
         kind,
-        NodeKind::InterfaceUnit
+        NodeKind::VariantUnit
+            | NodeKind::VariantAlternative
+            | NodeKind::AlternativeField
+            | NodeKind::InterfaceUnit
             | NodeKind::InterfaceSignature
             | NodeKind::TypeParameters
             | NodeKind::TypeParameter
@@ -237,6 +243,9 @@ fn is_declaration(kind: NodeKind) -> bool {
 
 fn nominal_name(kind: NodeKind) -> Option<&'static str> {
     Some(match kind {
+        NodeKind::VariantUnit => "variant_unit",
+        NodeKind::VariantAlternative => "variant_alternative",
+        NodeKind::AlternativeField => "alternative_field",
         NodeKind::InterfaceUnit => "interface_unit",
         NodeKind::InterfaceSignature => "interface_signature",
         NodeKind::Realization => "realization",

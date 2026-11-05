@@ -15,6 +15,8 @@ use std::collections::BTreeMap;
 mod details;
 #[path = "program_view_static_inherited.rs"]
 mod inherited;
+#[path = "program_view_static_templates.rs"]
+mod templates;
 
 pub(crate) struct StaticProjection<'view> {
     pub(crate) nodes: &'view mut [ViewNode],
@@ -52,6 +54,7 @@ impl StaticProjection<'_> {
             );
             self.append_inherited(class_id, class_node_id, &mut rows);
         }
+        self.append_template_realizations(&mut rows);
         rows
     }
 

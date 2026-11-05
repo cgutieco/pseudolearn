@@ -4,6 +4,7 @@ import '../../domain/model/diagram/class_model.dart';
 import 'rust_generic_subprogram_boxes.dart';
 import 'rust_member_signature.dart';
 import 'rust_program_view.dart';
+import 'rust_type_parameter_text.dart';
 import 'rust_value_type_projection.dart';
 
 final class RustTypeContractProjection {
@@ -56,6 +57,7 @@ final class RustTypeContractProjection {
     sourceLine: box.sourceLine,
     kind: box.kind,
     contractNames: _contracts[box.nodeId.value] ?? const [],
+    typeParameters: box.typeParameters,
   );
 
   List<ClassBox> _interfaceBoxes() => [
@@ -81,6 +83,7 @@ final class RustTypeContractProjection {
       nodeId: node.id,
       sourceLine: node.range.startLine,
       kind: ClassBoxKind.interfaceContract,
+      typeParameters: RustTypeParameterText(_view).of(node),
     );
   }
 
@@ -127,8 +130,28 @@ final class RustTypeContractProjection {
           realization.status,
           realization.diagnostics,
         ),
+        label: _realizationArguments(
+          realization.classNodeId,
+          realization.targetNodeId,
+        ),
       );
     }
+  }
+
+  String? _realizationArguments(ProgramNodeId owner, ProgramNodeId? target) {
+    final targetNode = target == null ? null : _view.nodeById(target);
+    final ownerNode = _view.nodeById(owner);
+    if (targetNode == null || ownerNode == null) return null;
+    final texts = RustTypeParameterText(_view);
+    for (final realization in rustChildrenOf(_view, ownerNode)) {
+      if (realization.syntaxKind != 'realization') continue;
+      final arguments = texts.argumentsAfter(
+        realization,
+        targetNode.text.trim(),
+      );
+      if (arguments.isNotEmpty) return arguments;
+    }
+    return null;
   }
 
   void _projectConstraints(Map<int, ClassBox> subprograms) {

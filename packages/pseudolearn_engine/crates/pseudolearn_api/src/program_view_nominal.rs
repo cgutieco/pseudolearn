@@ -83,7 +83,10 @@ fn nominal_role(
         | NodeKind::EnumMembers
         | NodeKind::RecordUnit
         | NodeKind::ForEachLoop
-        | NodeKind::InterfaceSignature => {
+        | NodeKind::InterfaceSignature
+        | NodeKind::VariantUnit
+        | NodeKind::VariantAlternative
+        | NodeKind::AlternativeField => {
             return crate::program_view_values::child_role(parent_node.kind, child_node.kind);
         }
         _ => return None,

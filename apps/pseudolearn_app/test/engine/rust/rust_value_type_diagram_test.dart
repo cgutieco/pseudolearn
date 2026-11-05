@@ -28,6 +28,16 @@ algorithm Main
 endAlgorithm
 ''';
 
+const String _variant = '''
+Variante Forma<T>
+Alternativa Circulo(radio Como T)
+Alternativa Rectangulo(ancho Como Entero, alto Como Entero)
+Alternativa Vacia
+FinVariante
+Algoritmo Main
+FinAlgoritmo
+''';
+
 const String _plainSubprogram = '''
 subroutine twice(value as integer) as integer
 return value * 2;
@@ -97,6 +107,18 @@ void main() {
         _rowsOf(scene, _header(scene, 'identity')).single.lines.single,
         '+ identity<T>(value: T): T',
       );
+    });
+
+    test('a variant is a box with one row per alternative', () {
+      final scene = _sceneOf(_variant);
+      final header = _header(scene, 'Forma<T>');
+
+      expect(header.lines, ['«variant»', 'Forma<T>']);
+      expect(
+        [for (final row in _rowsOf(scene, header)) row.lines.single],
+        ['Circulo(radio: T)', 'Rectangulo(ancho: Entero, alto: Entero)', 'Vacia'],
+      );
+      expect(scene.edges, isEmpty);
     });
 
     test('a document with only an enumeration still has a diagram', () {

@@ -10,6 +10,7 @@ enum ClassBoxKind {
   genericSubprogram,
   record,
   enumeration,
+  variant,
 }
 
 enum ClassRowRole { member, contractIssue, enumMember }
@@ -39,6 +40,7 @@ final class ClassBox {
   final int sourceLine;
   final ClassBoxKind kind;
   final List<String> contractNames;
+  final String typeParameters;
 
   const ClassBox({
     required this.name,
@@ -49,7 +51,10 @@ final class ClassBox {
     required this.sourceLine,
     this.kind = ClassBoxKind.classType,
     this.contractNames = const [],
+    this.typeParameters = '',
   });
+
+  String get title => '$name$typeParameters';
 }
 
 final class ClassRelation {

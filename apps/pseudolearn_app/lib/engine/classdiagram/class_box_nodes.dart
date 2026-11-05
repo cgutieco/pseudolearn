@@ -60,7 +60,7 @@ final class ClassBoxNodes {
         shape: DiagramShape.classHeader,
         lines: [
           ?ClassBoxSizing.stereotypeOf(placed.box.kind),
-          placed.box.name,
+          placed.box.title,
         ],
         x: placed.left,
         y: placed.top,

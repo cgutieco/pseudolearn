@@ -84,6 +84,20 @@ algorithm Main
 endAlgorithm
 ''';
 
+const String _variantSwitch = '''
+variant Shape
+case Circle(radius as integer)
+case Dot
+endVariant
+algorithm Main
+define shape as Shape <- Shape.Circle(2);
+switch shape do
+Shape.Circle(r): write r;
+Shape.Dot: write 0;
+endSwitch
+endAlgorithm
+''';
+
 DiagramProgram _flowchart(String source) =>
     nativeTestEngine.flowchartBuilder.buildDiagram(
       sourceCode: source,
@@ -217,6 +231,21 @@ void main() {
 
         expect(row.flowchart.representation, CoverageRepresentation.exact);
         expect(row.structogram.representation, CoverageRepresentation.exact);
+      }
+    });
+
+    test('a switch over a declared variant shows its qualified patterns', () {
+      for (final builder in [_flowchart, _structogram]) {
+        final program = builder(_variantSwitch);
+        final scene = program.sceneFor(program.defaultUnit?.id);
+        final text = [
+          ...scene.nodes.expand((node) => node.lines),
+          ...scene.edges.map((edge) => edge.label ?? ''),
+        ].join(' ');
+
+        expect(program.isUnsupported, isFalse);
+        expect(text, contains('Shape.Circle(r)'));
+        expect(text, contains('Shape.Dot'));
       }
     });
 

@@ -16,6 +16,17 @@ void main() {
     expect(transport.queries.map((query) => query['task_id']), everyElement(7));
   });
 
+  test('record leaves are listed one row per leaf with their own value', () {
+    final result = RustWatchRows(
+      RustStateApi(_LeafTransport()),
+    ).at(execution: 1, event: 2, taskId: 0, depth: 1);
+    final rows = (result as RustEnvironmentValue).environment.rows;
+
+    expect(rows.map((row) => row.name), ['q.x', 'q.y', 'total']);
+    expect(rows.map((row) => row.formattedValue), ['3', '-', '6']);
+    expect(rows.map((row) => row.isAbsent), [false, true, false]);
+  });
+
   test('a rejected task query becomes a state failure', () {
     final result = RustWatchRows(
       RustStateApi(_CollectionTransport(frameFailure: 'usage')),
@@ -24,6 +35,25 @@ void main() {
     expect(result, isA<RustEnvironmentFailure>());
     expect((result as RustEnvironmentFailure).reason, 'task_state_unavailable');
   });
+}
+
+final class _LeafTransport implements RustTransport {
+  @override
+  Object? call(String operation, Map<String, Object?> arguments) =>
+      switch (operation) {
+        'query_frame' => {
+          'unidad': 'P',
+          'variables': {
+            'q.x': {'valor': '3', 'tipo': 'entero'},
+            'q.y': <String, Object?>{},
+            'total': {'valor': '6', 'tipo': 'entero'},
+          },
+        },
+        _ => throw StateError(operation),
+      };
+
+  @override
+  void close() {}
 }
 
 final class _CollectionTransport implements RustTransport {
