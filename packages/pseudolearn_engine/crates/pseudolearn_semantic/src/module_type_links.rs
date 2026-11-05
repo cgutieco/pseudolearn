@@ -48,7 +48,10 @@ fn link(session: &mut AnalysisSession<'_>, bindings: &[UnitBindings]) {
     }
 }
 
-fn scope_of<'session>(session: &'session AnalysisSession<'_>, unit: usize) -> Option<&'session TypeScope> {
+fn scope_of<'session>(
+    session: &'session AnalysisSession<'_>,
+    unit: usize,
+) -> Option<&'session TypeScope> {
     if unit == session.unit {
         Some(&session.declared)
     } else {

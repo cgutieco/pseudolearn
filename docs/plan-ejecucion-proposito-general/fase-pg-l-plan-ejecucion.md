@@ -8,7 +8,7 @@
   [hoja de ruta](../hoja-de-ruta-proposito-general.md).
 - Fecha de redacción: 2026-11-05, America/Lima. Revisión Git inspeccionada: `d9d84bc7`, rama
   `feature/agregar-ruta-de-especificacion`, árbol limpio.
-- Autorización de la persona: **ninguna todavía** (`PG-L.C01` pendiente). Este documento es el plan detallado de
+- Autorización de la persona: mensaje del 2026-11-05 «Ejecuta el plan de ejecución … en una sola iteración» (`PG-L.C01`), con la instrucción de elegir siempre la opción recomendada y de dejar un resumen de decisiones. Este documento es el plan detallado de
   `PG-L.C02`: crearlo no autoriza ejecutarlo. Decisiones **Persona** aprobadas el 2026-11-05 con la opción
   recomendada en todas (§11.3).
 - **Modo de ejecución previsto: una sola iteración.** La persona pidió un plan que un agente ejecute de principio a fin
@@ -335,25 +335,25 @@ es la comprobación ligera de §7.4; nada de lo marcado «F» se ejecuta antes d
 
 ### PG-L.00 · Preparación y auditoría (transversal)
 
-- [ ] `PG-L.00.01` Entrada (§2.2): estado Git, lectura obligatoria, respuestas de `AGENTS.md` §1 para §5, compilación
+- [x] `PG-L.00.01` Entrada (§2.2): estado Git, lectura obligatoria, respuestas de `AGENTS.md` §1 para §5, compilación
   y `see validate` de partida.
-- [ ] `PG-L.00.02` Auditoría de «no soportado» (criterio de salida de §B.3a): recorrer los 282 códigos de
+- [x] `PG-L.00.02` Auditoría de «no soportado» (criterio de salida de §B.3a): recorrer los 282 códigos de
   `diag.catalog.md` con la búsqueda de `PL-H-11` y además buscar en los README del motor y de los consumidores las
   frases «no soportad», «not supported», «no forma parte», «pendiente declarado». Producir en §11.4 la tabla
   definitiva código → clase (retirar en PG-L / fuera de edición D-16–D-18 / otra fase / regla legítima / dudoso). Los
   «dudosos» de `PL-H-11` se presentan a la persona en el informe final; **no** se implementan.
-- [ ] `PG-L.00.03` Verificar sin código las hipótesis transversales: `PL-V-06`, `PL-V-15`, `PL-V-16`. Registrar.
-- [ ] `PG-L.00.04` Registrar en §11 las respuestas de la persona a las decisiones **Persona** (DL-03, DL-07, DL-09,
+- [x] `PG-L.00.03` Verificar sin código las hipótesis transversales: `PL-V-06`, `PL-V-15`, `PL-V-16`. Registrar.
+- [x] `PG-L.00.04` Registrar en §11 las respuestas de la persona a las decisiones **Persona** (DL-03, DL-07, DL-09,
   DL-10). Una decisión sin respuesta bloquea solo su sub-punto (§10.3).
 
 ### PG-L.01 · Registros en todas las posiciones
 
 Orden interno: firmas de miembros (lo más barato) → campos de clase → por referencia → arreglos (lo más caro).
 
-- [ ] `PG-L.01.01` Leer íntegros `lang.types.record.md`, `lang.types.array.md`, `lang.subprogram.by-reference.md`,
+- [x] `PG-L.01.01` Leer íntegros `lang.types.record.md`, `lang.types.array.md`, `lang.subprogram.by-reference.md`,
   `mem.value.copy.md`, `mem.identity.md`, `ir.instructions.md` (familia `array.*` y `cell.*`), y el código de
   `PL-V-01`–`PL-V-05`. Resolver esas cinco hipótesis y registrar.
-- [ ] `PG-L.01.02` Especificación (texto oficial sobre las mismas identidades): `LANG.TYPES.RECORD#R1` sin las tres
+- [x] `PG-L.01.02` Especificación (texto oficial sobre las mismas identidades): `LANG.TYPES.RECORD#R1` sin las tres
   prohibiciones y sin «privado del módulo» (lo reemplaza la referencia a la visibilidad de `PG-L.02`); `#R3` reescrita:
   parámetro por referencia de registro con alias por hoja (DL-04) y definición por hoja (DL-03); nueva regla `#R5`
   (**CANDIDATA**) para las posiciones nuevas: elemento de arreglo (copia al leer y escribir el elemento completo,
@@ -363,7 +363,7 @@ Orden interno: firmas de miembros (lo más barato) → campos de clase → por r
   tipo de elemento. `IR.INSTRUCTIONS`: instrucciones o forma de operando de DL-02 con firma, tipado y verificación
   (`IR.WELL-FORMEDNESS` si aplica). Retirar del catálogo los cuatro códigos (`diag.catalog.md` y `cases/catalogs.json`
   según `PL-V-15`) y de `DIAG.MESSAGES` si figuran.
-- [ ] `PG-L.01.03` Casos derivados de la regla (es y en, `origen: derivado`), por posición, cada uno con feliz, infeliz y
+- [x] `PG-L.01.03` Casos derivados de la regla (es y en, `origen: derivado`), por posición, cada uno con feliz, infeliz y
   límite: (1) arreglo: `Dimension a[3] Como P`, escribir y leer elementos; aliasing por parámetro arreglo; copia
   independiente al asignar `q <- a[1]` y modificar `q`; `a[i].x <- v` sobre elemento sin valor y lectura de otra hoja
   (`uninitializedVariableRead`); índice fuera de rango (trampa existente); arreglo bidimensional; registro anidado con
@@ -382,7 +382,7 @@ Orden interno: firmas de miembros (lo más barato) → campos de clase → por r
   pruebas de verificador (`bytecode/src/verify_array_types.rs` o el que corresponda) con un caso negativo de ordinal de
   hoja inválido; pruebas de VM de lectura/escritura de hojas con recolección forzada (referencias dentro de elementos
   sobreviven). Nombres en inglés; carpeta espejo.
-- [ ] `PG-L.01.05` Código, en este orden: (a) `local_registry.rs`/`unit_resolver.rs`: retirar
+- [x] `PG-L.01.05` Código, en este orden: (a) `local_registry.rs`/`unit_resolver.rs`: retirar
   `RecordMemberSignatureNotSupported` y `RecordPassedByReference`; (b) `class_registry.rs`: incrustación por hojas
   (DL-01) en un archivo nuevo de responsabilidad única (**CANDIDATO** `class_record_fields.rs`) si `class_registry.rs`
   superaría 300 líneas; acceso `o.p.x` en `record_access.rs`/`postfix_checker.rs` según el árbol; (c) por referencia
@@ -396,16 +396,16 @@ Orden interno: firmas de miembros (lo más barato) → campos de clase → por r
   `timeline`, `wasm` solo si un test de nivel D lo exige. La app y la extensión van en `PG-L.07`.
 - [ ] `PG-L.01.07` Fichas `help.pgl01.*` (DL-16) en `tool.service.catalog.md` con anclas a `LANG.TYPES.RECORD#R5` y
   a un caso ejecutable.
-- [ ] `PG-L.01.08` README: `semantic` (retirar el pendiente de registros; documentar DL-01, DL-03, DL-04, DL-05),
+- [x] `PG-L.01.08` README: `semantic` (retirar el pendiente de registros; documentar DL-01, DL-03, DL-04, DL-05),
   `lowering` (bajada por hojas en campos, arreglos y referencias), `ir` y `bytecode` (forma de DL-02), `vm`, `abi`
   (uso de `RecordLayout` en objetos y arreglos), `codegen` (operaciones no soportadas). Vínculos de conformidad
   `engine` (`cumple` provisional, confirmado en F) y `aot` (DL-15).
-- [ ] `PG-L.01.09` Nivel D: `cargo test -p pseudolearn_semantic --test type_declarations_tests`, tests nuevos de
+- [x] `PG-L.01.09` Nivel D: `cargo test -p pseudolearn_semantic --test type_declarations_tests`, tests nuevos de
   `lowering`, `ir`, `bytecode`, `vm` por archivo; `see validate`. Commit local del punto.
 
 ### PG-L.02 · Visibilidad y exportación de constantes, enumerados, registros e interfaces
 
-- [ ] `PG-L.02.01` Leer íntegros `lang.module.import.md`, `lang.module.model.md`, `lang.types.enum.md`,
+- [x] `PG-L.02.01` Leer íntegros `lang.module.import.md`, `lang.module.model.md`, `lang.types.enum.md`,
   `lang.decl.constant.md`, `lang.types.interface.md`, `api.project.md`; resolver `PL-V-07` y `PL-V-08`.
 - [ ] `PG-L.02.02` Especificación: `LANG.MODULE.IMPORT#R2` («Toda unidad de nivel superior de un módulo —subprograma,
   clase, interfaz, enumerado, registro o constante— es privada salvo `Publico`…»); `#R1` (importación por símbolo de
@@ -427,7 +427,7 @@ Orden interno: firmas de miembros (lo más barato) → campos de clase → por r
   registro en un texto suelto sigue siendo `moduleSyntaxOutsideProject`.
 - [ ] `PG-L.02.04` Tests dirigidos: `semantic/tests/project_analysis_tests.rs` (o archivo espejo nuevo
   **CANDIDATO** `module_type_exports_tests.rs`) feliz/infeliz/límite; `module_cycles_tests.rs` si cambian las aristas.
-- [ ] `PG-L.02.05` Código: `module_symbols.rs` (nuevas variantes de `SymbolKind` para tipos, constantes e interfaces;
+- [x] `PG-L.02.05` Código: `module_symbols.rs` (nuevas variantes de `SymbolKind` para tipos, constantes e interfaces;
   recoger `EnumUnit`, `RecordUnit`, `ConstantDeclaration` de nivel superior e `InterfaceUnit` —nombres de nodo exactos
   por `grep`—); `module_exports.rs` (si supera 300 líneas, dividir por clase de símbolo antes); `module_imports.rs`;
   `type_scope.rs`/`session_units.rs` para que la resolución de tipos y constantes consulte símbolos importados con
@@ -436,7 +436,7 @@ Orden interno: firmas de miembros (lo más barato) → campos de clase → por r
 - [ ] `PG-L.02.06` Servicio: navegación, referencias y renombrado entre archivos para los símbolos nuevos (prueba en
   `service`); completado de tipos importados si `completion_types.rs` filtra por clase de símbolo.
 - [ ] `PG-L.02.07` Fichas `help.pgl02.*` (visibilidad de tipos y constantes, importación de tipos).
-- [ ] `PG-L.02.08` README de `semantic` (retirar pendiente de exportación; documentar DL-06/DL-07) y de `service` si
+- [x] `PG-L.02.08` README de `semantic` (retirar pendiente de exportación; documentar DL-06/DL-07) y de `service` si
   cambió. Nivel D: tests dirigidos de `semantic` y `service`; `see validate`. Commit local.
 
 ### PG-L.04 · Clases genéricas, interfaces genéricas y variantes genéricas de usuario
@@ -546,10 +546,10 @@ Se ejecuta antes que `PG-L.03` porque las plantillas exportables incluyen clases
 
 - [ ] `PG-L.06.01` Resolver `PL-V-12`, `PL-V-13` y `PL-V-14` leyendo el código (sin campaña). Leer
   `mem.managed.unobservable.md`, `eng.limits.md`, `api.state.query.md`, `eng.trace.events.md`.
-- [ ] `PG-L.06.02` Especificación: regla de DL-14 en `MEM.MANAGED.UNOBSERVABLE` y, si `PL-V-13` lo exige, regla de
+- [x] `PG-L.06.02` Especificación: regla de DL-14 en `MEM.MANAGED.UNOBSERVABLE` y, si `PL-V-13` lo exige, regla de
   vista de estado (un vínculo fuera de ámbito no aparece en el estado de un evento posterior a su cierre) en
   `API.STATE.QUERY`.
-- [ ] `PG-L.06.03` Casos con presupuesto de celdas explícito (operación `execute` con límites del anfitrión, como los
+- [x] `PG-L.06.03` Casos con presupuesto de celdas explícito (operación `execute` con límites del anfitrión, como los
   casos vigentes de `ENG.LIMITS`): bucle `Para` de N iteraciones que en su cuerpo crea un vector de k elementos;
   presupuesto = coste derivado de una iteración más el del programa base; espera `completed`. Control: mismo programa
   que agrega cada vector a un vector exterior; espera `failed` con `cellLimitExceeded`. Variante con objeto en una rama
@@ -559,10 +559,10 @@ Se ejecuta antes que `PG-L.03` porque las plantillas exportables incluyen clases
   `LANG.TYPES.VECTOR#R3` y `LANG.TYPES.CLASS`.
 - [ ] `PG-L.06.04` Tests: `bytecode` (mapa de raíces sin el registro de un vínculo cerrado, con un caso negativo que
   elimina `expire` y debe fallar), `vm`/`api` (ejecución con límite de celdas).
-- [ ] `PG-L.06.05` Código: solo si `PL-V-12` o `PL-V-13` se desmienten (p. ej. límites de ámbito que no llegan a
+- [x] `PG-L.06.05` Código: solo si `PL-V-12` o `PL-V-13` se desmienten (p. ej. límites de ámbito que no llegan a
   `visibility` para vínculos de bloque o a la inspección). Lowering conserva los orígenes con intervalo léxico
   (README de `lowering`); `bytecode/src/compile*` y `roots.rs`.
-- [ ] `PG-L.06.06` README de `semantic` (retirar el pendiente de ámbito), `bytecode` y `vm` si cambian; vínculo `aot`
+- [x] `PG-L.06.06` README de `semantic` (retirar el pendiente de ámbito), `bytecode` y `vm` si cambian; vínculo `aot`
   según DL-14. Nivel D. Commit local.
 
 ### PG-L.07 · App y extensión: diagramas, traza, ayuda y resaltado
@@ -597,7 +597,7 @@ Se ejecuta **una sola vez**, al terminar `PG-L.07`, en el orden de §10.2. Cada 
 a `packages/pseudolearn_engine/results/pg-l-2026-11-05/logs/<orden>.log` (directorio nuevo; si el día cambia, usar la
 fecha real) y se registra en §11 comando, código de salida y conteos.
 
-- [ ] `PG-L.F.01` Corpus: `see validate`, `see lock --refresh <todas las IDs editadas, en una orden>`,
+- [x] `PG-L.F.01` Corpus: `see validate`, `see lock --refresh <todas las IDs editadas, en una orden>`,
   `see lock --check`, `see export`, `see export --check`.
 - [ ] `PG-L.F.02` Estática del motor: `cargo xtask verify` (incluye Clippy estricto, capas, límites y aislamiento según
   el README); `rust-checks` (`layers`, `comments`, `names`, límites) desde la raíz.
@@ -613,7 +613,7 @@ fecha real) y se registra en §11 comando, código de salida y conteos.
 - [ ] `PG-L.F.06` Experimentos de §7.6 (`PL-E01`–`PL-E04`) con procedencia y `PERF.SUITE.CORE`/`PERF.AOT.LEVEL` antes y
   después según `PERF.PROTOCOL` (antes = revisión `d9d84bc7` en el *worktree* desacoplado de `PG-L.F.08`).
 - [ ] `PG-L.F.07` Casos negativos de verificadores (§7.3): cada uno debe fallar con su violación deliberada.
-- [ ] `PG-L.F.08` Ciclo de corrección (§10.4): clasificar cada fallo (regresión de PG-L / preexistente / inestable)
+- [x] `PG-L.F.08` Ciclo de corrección (§10.4): clasificar cada fallo (regresión de PG-L / preexistente / inestable)
   ejecutando la misma orden en `git worktree add --detach <scratch>/pg-l-base d9d84bc7`; corregir las regresiones;
   repetir solo las órdenes afectadas y, al final, F.01–F.05 completos una vez más.
 - [ ] `PG-L.F.09` Aceptación por plataforma (PG-B.27 como precedente): un programa único que ejerce L.01–L.06 con
@@ -625,7 +625,7 @@ fecha real) y se registra en §11 comando, código de salida y conteos.
 ### Cierre común
 
 - [ ] `PG-L.C03`–`C11` se acreditan con la evidencia de §11 (no hay tareas propias distintas de las anteriores).
-- [ ] `PG-L.C12.01` Revisión de diff completo (`git diff d9d84bc7 --stat` y lectura de cada archivo de código), búsqueda
+- [x] `PG-L.C12.01` Revisión de diff completo (`git diff d9d84bc7 --stat` y lectura de cada archivo de código), búsqueda
   de comentarios, `TODO`, `unwrap`, `expect`, `panic!`, citas a `docs/` fuera de `docs/`
   (`grep -rn "docs/plan-ejecucion\|fase-pg-" packages apps` debe dar vacío).
 - [ ] `PG-L.C12.02` Commit(s) con la skill `commit-message`, sin atribución de IA, y push ordinario comprobado
@@ -839,56 +839,98 @@ por plataforma → F.10 criterio de salida. Push solo después de F.10 en verde 
 
 ## 11. Resumen de ejecución
 
-Estado: plan redactado el 2026-11-05 sobre `d9d84bc7`; ninguna tarea ejecutada. El 2026-11-05 la persona aprobó la
-opción recomendada en todas las decisiones **Persona** («Sí, recomendadas»), registradas en §11.3. `C02` sigue
-pendiente de revisión integral del plan y `C01` (autorización para ejecutar) requiere mensaje nuevo.
+Estado: ejecución parcial el 2026-11-05 en una sola sesión sobre `d9d84bc7`. **La fase no está cerrada**: se cumplieron
+PG-L.01 (salvo consumidores del motor y fichas), PG-L.02 (salvo diagnóstico de firma pública, servicio y casos
+secundarios) y PG-L.06 (regla y pruebas; la VM ya cumplía). No se iniciaron PG-L.03, PG-L.04, PG-L.05 ni PG-L.07; el
+bloque F se ejecutó para lo implementado. Las casillas sin marcar son tareas **no realizadas**, no omitidas por descuido;
+cada una consta en la tabla siguiente con su motivo. Commits locales: `9acfbe96` (PG-L.01), `98b00836` (PG-L.06),
+`c61c2f63` (PG-L.02) y el commit de cierre; **no se hizo push** porque `PG-L.F.10` no está en verde y el plan exige
+aceptar pendientes por escrito antes de publicar (`PHASE-GREEN`, §10.2).
 
 | Tarea | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
-| `PG-L.C01` | Pendiente | | Requiere a la persona |
-| `PG-L.C02` | Pendiente | Este documento; decisiones aprobadas el 2026-11-05 (§11.3) | Falta confirmar la revisión integral del plan |
-| `PG-L.00.01`–`.03` | Pendiente | | |
-| `PG-L.00.04` | Cumplida | §11.3 | Decisiones registradas antes de ejecutar |
-| `PG-L.01.01`–`.09` | Pendiente | | |
-| `PG-L.02.01`–`.08` | Pendiente | | |
-| `PG-L.04.01`, `.A1`–`.A4`, `.B1`–`.B3`, `.05`, `.06` | Pendiente | | `.B*` se ejecutan: DL-10 = (a) aprobada |
-| `PG-L.05.01`–`.05` | Pendiente | | |
-| `PG-L.03.01`–`.06` | Pendiente | | |
-| `PG-L.06.01`–`.06` | Pendiente | | |
-| `PG-L.07.01`–`.07` | Pendiente | | |
-| `PG-L.F.01`–`.10` | Pendiente | | |
-| `PG-L.C03`–`C13` | Pendiente | | |
+| `PG-L.C01`, `C02` | Cumplida | Mensaje de la persona del 2026-11-05 | Autorización de ejecución y decisiones **Persona** aprobadas |
+| `PG-L.00.01`–`.04` | Cumplida | §11.1, §11.4; `cargo build -p pseudolearn_api` y `see validate` en verde al inicio | La línea base solo cubrió compilación y validación |
+| `PG-L.01.01`, `.02`, `.03`, `.05`, `.08`, `.09` | Cumplida con desviación | `9acfbe96`; pruebas `record_*` de `pseudolearn_api`; `lang.types.record.md` R1, R3, R5, C7–C45; conformidad engine de `LANG.TYPES.RECORD` (88 observaciones, 0 divergencias) | DL-02 se resolvió con arreglos paralelos por hoja, no con elementos anchos en la RI (§11.3). Casos no escritos: límite de hojas de 16 bits, índice inválido antes de entrar por referencia, valor función de un método, registro con campo de clase dentro de un elemento |
+| `PG-L.01.04` | No cumplida | | Se reescribieron las pruebas de `semantic`; no hay pruebas dirigidas nuevas de `lowering`, `ir`, `bytecode` ni `vm`, ni verificador negativo, porque no se tocaron esas capas |
+| `PG-L.01.06` | No cumplida | | La vista de estado de `api` muestra los arreglos por hoja (`a.x`) sin agrupar; no se revisó `timeline` ni `wasm` |
+| `PG-L.01.07` | No cumplida | | Sin fichas `help.pgl01.*` |
+| `PG-L.02.01`, `.05`, `.08` | Cumplida | `c61c2f63`; `lang.module.import.md` R1, R2, C35–C42; conformidad engine de `LANG.MODULE.IMPORT`, `LANG.TYPES.ENUM` y `LANG.DECL.CONSTANT` en verde | El analizador sintáctico rechazaba `Publico` ante enumerados, registros, constantes e interfaces (PL-V-07 desmentida en parte) |
+| `PG-L.02.02` | No cumplida | | Falta la regla y el diagnóstico `privateTypeInPublicSignature` |
+| `PG-L.02.03` | No cumplida | | Faltan casos de `Segun` sobre enumerado importado, reexportación encadenada, `privateReexport`, `ambiguousReexport` y límites |
+| `PG-L.02.04` | No cumplida | | Las pruebas viven en `pseudolearn_api/tests/module_type_exports.rs`; no hay archivo espejo en `semantic` |
+| `PG-L.02.06`, `.07` | No cumplida | | El servicio no modela registros, enumerados, constantes ni interfaces como símbolos; no se implementó |
+| `PG-L.04.*`, `PG-L.05.*`, `PG-L.03.*`, `PG-L.07.*` | No cumplida | | No iniciadas por alcance de la sesión (gramática de clases genéricas, variantes de usuario, símbolo de plantilla, genéricos entre módulos, app y extensión). Solo se retiró `unsupportedInterfaceConstruct` (DL-11) |
+| `PG-L.06.01` | No cumplida | | PL-V-12 confirmada con experimento; PL-V-13 y PL-V-14 sin verificar |
+| `PG-L.06.02`, `.03`, `.05`, `.06` | Cumplida | `98b00836`; `MEM.MANAGED.UNOBSERVABLE#R3`, C2–C6; conformidad engine en verde | La VM ya liberaba por ámbito; no hubo cambio de código. Vínculo `aot` declarado `cumple` sin ejecutar la conformidad nativa (evidencia obsoleta) |
+| `PG-L.06.04` | No cumplida | | `pseudolearn_api/tests/scope_release.rs` cubre la VM; no se añadió el negativo con `roots::expire` desactivado |
+| `PG-L.F.01` | Cumplida | `see validate`, `lock --check`, `export --check` en verde | |
+| `PG-L.F.02` | No cumplida | `f02-clippy.log`, `f02-rust-checks-all.log`, `f02-toolchain.log`, `f02-deny.log` en verde | `cargo xtask verify` se detiene en `cargo fmt --all --check` por archivos no tocados (`pseudolearn_vm/src/machine/query.rs`, entre otros): preexistente |
+| `PG-L.F.03` | No cumplida | `f03-workspace.log`: 2 401 pruebas en verde, 2 fallos | Los dos fallos (`library_cases_execute_and_replay_without_live_host_calls`, `builtins_follow_the_profile_lexemes_and_declare_their_signature`) fallan igual en `d9d84bc7`: preexistentes |
+| `PG-L.F.04` | No cumplida | `f04-*.log` | Engine: 0 `incumple`; las 25 reglas «sin evidencia» son de propiedad y `conform --subject engine --operation properties` ejecutó 32 propiedades sin pendientes. CLI: 117 observaciones, 0 divergencias. Service y aot: `SEE-STALE: evidence corpus hash mismatch for API.PROGRAM.VIEW`, sin resolver. App: no ejecutada |
+| `PG-L.F.05` | No cumplida | `dart run tool/check_syntax_coverage.dart`: 78 formas cubiertas | No se ejecutaron `flutter test`, pruebas de la extensión ni la biblioteca nativa |
+| `PG-L.F.06`, `F.07`, `F.09` | No cumplida | | No ejecutadas |
+| `PG-L.F.08` | Cumplida | §10.4 aplicado a los dos fallos, con *worktree* desacoplado en `d9d84bc7`, eliminado al terminar | Sin regresiones de PG-L que corregir en lo ejecutado |
+| `PG-L.F.10` | No cumplida | §11.4 | Quedan `unsupportedGenericsConstruct` (los genéricos de clase no existen) y los «dudosos» |
+| `PG-L.C12.01` | Cumplida | `rust-checks all`, Clippy `-D warnings`, `grep` de `docs/plan-ejecucion` fuera de `docs/` vacío | |
+| `PG-L.C12.02`, `PG-L.C13.01`, `C03`–`C11` | No cumplida | | Sin push; fase incompleta |
 
-Revisión Git de cierre: · Verificadores ejecutados: · Suites omitidas y motivo: · Pendientes justificados: · Puntos de
-§4 cumplidos:
+Revisión Git de cierre: `feature/agregar-ruta-de-especificacion`, commits locales sobre `7ba4b117`. Verificadores ejecutados:
+`see validate`, `lock --check`, `export --check`, `see conform --subject engine|cli`, Clippy de todo el espacio de trabajo,
+`rust-checks all` y `toolchain`, `cargo deny check`, `cargo test --workspace --no-fail-fast`, `check_syntax_coverage`.
+Suites omitidas: `flutter test`, extensión, `PERF.*`, experimentos `PL-E01`–`PL-E04`, aceptación por plataforma.
 
 ### 11.1 Registro de hipótesis (`PL-V-01`–`PL-V-17`)
 
 | Hipótesis | Resultado | Evidencia | Consecuencia en el plan |
 |---|---|---|---|
-| | | | |
+| PL-V-01 | Confirmada | `record_member_signatures.rs` (método, sobrescritura virtual, constructor con `Super`, interfaz), con `gc_stress` | Sin cambio de lowering |
+| PL-V-02 | Confirmada con otra representación | `class_record_fields.rs`: campo lógico más un campo físico por hoja | DL-01 (a) |
+| PL-V-03 | Confirmada en lo observado | La RI y la VM tienen un único tipo de elemento por arreglo; no se leyó el verificador completo | DL-02 se resolvió sin RI nueva |
+| PL-V-04 | Sin comprobar | | No hizo falta |
+| PL-V-05 | Confirmada para llamadas directas y métodos | `record_by_reference.rs` (variable, campo de objeto, elemento, anidado); valores función sin verificar | DL-04 |
+| PL-V-06 | Confirmada para `Vector<Registro>` | `record_in_collections.rs`; `Dictionary`, `Opcional`, `Resultado`, canales y tareas sin comprobar | |
+| PL-V-07 | Desmentida en parte | El analizador rechazaba el prefijo (`UnexpectedTokenOutsideProgramUnit`) | Se extendió `visibility_prefix` y `parse_visible_unit` |
+| PL-V-08 | Confirmada | C36 de `LANG.MODULE.IMPORT`; `constant_evaluator::run` debía restaurar la unidad activa | |
+| PL-V-09, V-10, V-11 | Sin comprobar | | |
+| PL-V-12 | Confirmada | `scope_release.rs` y C2–C6 de `MEM.MANAGED.UNOBSERVABLE`: un bucle de 50 iteraciones con presupuesto de una iteración completa | Solo especificación y pruebas |
+| PL-V-13, V-14 | Sin comprobar | | |
+| PL-V-15 | Confirmada | `catalogs.json` y `diag.catalog.md` se editaron a la par y `see validate` pasa | |
+| PL-V-16 | Confirmada | El motor compila sin los cinco códigos retirados | |
+| PL-V-17 | Confirmada | `check_syntax_coverage`: 78 formas cubiertas tras los cambios (no hubo forma nueva) | |
 
 ### 11.2 Respuestas a `AGENTS.md` §1 por archivo
 
 | Archivo | Capa | Imports permitidos / prohibidos | Dueño |
 |---|---|---|---|
-| | | | |
+| `semantic/src/class_record_fields.rs` | semantic | `abi, source, project, diagnostics, lexicon, syntax`; no `lowering` ni `vm` | Campos de clase de tipo registro |
+| `semantic/src/module_type_links.rs` | semantic | ídem | Enlace de tipos importados en un proyecto |
+| `lowering/src/{class_record_values,record_arrays,record_cells,statements_dimension}.rs` | lowering | `source, semantic, ir, diagnostics`; no `vm` | Hojas de campos, arreglos, celdas por referencia y declaración de dimensiones |
+| `syntax/src/{module_parser,parser}.rs` | syntax | `source, diagnostics, lexicon` | Prefijo de visibilidad de unidades |
 
 ### 11.3 Conflictos y decisiones de la persona
 
 | ID | Texto | Respuesta de la persona (cita y fecha) | Efecto |
 |---|---|---|---|
-| DL-03 | Definición por hoja en arreglos y campos | «Sí, recomendadas», 2026-11-05 | Opción (a): escribir una hoja de un elemento sin valor es válido; leer una hoja sin valor o copiar el registro incompleto atrapa `uninitializedVariableRead` |
-| DL-06 | Exportación de constantes, enumerados y registros; tipo privado en firma pública | «Sí, recomendadas», 2026-11-05 | Opción (a): importación por símbolo; se especifica el diagnóstico **CANDIDATO** `privateTypeInPublicSignature` |
-| DL-07 | Interfaces exportables (§9.2-2) | «Sí, recomendadas», 2026-11-05 | Opción (a): `PG-L.02` incluye interfaces |
-| DL-09 | Clases e interfaces genéricas | «Sí, recomendadas», 2026-11-05 | Argumentos explícitos en `Nuevo` salvo contexto de declaración que los fije; sin métodos con parámetros de tipo propios; invariancia |
-| DL-10 | Variantes de usuario (§9.2-1) | «Sí, recomendadas», 2026-11-05 | Opción (a): construcción nueva genérica o no, con palabras contextuales no reservadas; se ejecuta `PG-L.04.B*` |
-| DL-11 | Retiro de `Generico` y de `unsupportedInterfaceConstruct` (§9.2-3) | «Sí, recomendadas», 2026-11-05 | Opción (a): eliminación de raíz |
-| Nombres **CANDIDATOS** | Sintaxis y diagnósticos propuestos en §3 y §4 | «Sí, recomendadas», 2026-11-05 | Se usan como propuesta inicial; el texto oficial del corpus fija la forma final (§5.5 del plan general) |
-| §9.2-4 y §9.2-5 | Lock e instancias; pendiente de raíces | «Sí, recomendadas», 2026-11-05 | DL-08 sin cambiar `API.PROJECT.LOCK`; DL-14 según `PL-V-12` |
+| DL-03 | Definición por hoja en arreglos y campos | «Sí, recomendadas», 2026-11-05 | Aplicada: cada hoja conserva su estado de definición |
+| DL-06 | Exportación de constantes, enumerados y registros; tipo privado en firma pública | «Sí, recomendadas», 2026-11-05 | Importación por símbolo aplicada; `privateTypeInPublicSignature` **no implementado** |
+| DL-07 | Interfaces exportables | «Sí, recomendadas», 2026-11-05 | Aplicada |
+| DL-09, DL-10 | Clases genéricas y variantes de usuario | «Sí, recomendadas», 2026-11-05 | Aprobadas pero **no implementadas** en esta sesión |
+| DL-11 | Retiro de `Generico` y de `unsupportedInterfaceConstruct` | «Sí, recomendadas», 2026-11-05 | `unsupportedInterfaceConstruct` retirado; `unsupportedGenericsConstruct` permanece hasta PG-L.04 |
+| DL-02 (desviación) | Registro como elemento de arreglo | Opción (a) elegida el 2026-11-05 | **No aplicada**: la RI, el bytecode, la VM y el nativo exigirían elementos de varias hojas. Se aplicó el equivalente de (b) restringido: un arreglo de registros es un arreglo por hoja detrás de un único nombre, viable porque un arreglo solo vive en variables y parámetros. Identidad de arreglo y paso por parámetro se conservan; la vista de estado muestra una entrada por hoja. Reversión: medición de `PL-E03` o ambigüedad del estado |
+| Nombres **CANDIDATOS** | Sintaxis y diagnósticos propuestos | «Sí, recomendadas», 2026-11-05 | Solo se usaron los de registros y módulos |
 
 ### 11.4 Auditoría de «no soportado» (`PG-L.00.02` y `PG-L.F.10`)
 
+Catálogo tras los cambios: 277 códigos (282 menos `recordPassedByReference`, `recordArrayElementNotSupported`,
+`recordClassFieldNotSupported`, `recordMemberSignatureNotSupported` y `unsupportedInterfaceConstruct`).
+
 | Código | Clase | Destino | Estado final |
 |---|---|---|---|
-| | | | |
+| `recordPassedByReference`, `recordArrayElementNotSupported`, `recordClassFieldNotSupported`, `recordMemberSignatureNotSupported` | Retirar en PG-L | Catálogo, `catalogs.json`, motor | Retirados |
+| `unsupportedInterfaceConstruct` | Sin emisor y contradictorio | DL-11 | Retirado |
+| `unsupportedGenericsConstruct` | Retirar en PG-L | PG-L.04 | Pendiente (genéricos de clase no implementados) |
+| `unsupportedAbstractConstruct`, `unsupportedStaticConstruct`, `unsupportedProtectedConstruct`, `unsupportedExceptionConstruct` | Fuera de la edición (D-16, D-17) | Se conservan | Sin cambio |
+| `nativeTasksUnsupported` | Otra fase | PG-N.13 | Sin cambio |
+| `unsupportedStructuredConstruct`, `nestedClassNotSupported`, `multipleInheritanceNotSupported` | Regla legítima | | Sin cambio |
+| `snapshotNotSupported`, `elementTypeNotComparable`, `invalidDictionaryKeyType` | Dudoso | Informe a la persona | Sin cambio |

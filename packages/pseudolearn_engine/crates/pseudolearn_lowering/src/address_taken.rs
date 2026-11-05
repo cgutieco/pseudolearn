@@ -73,7 +73,9 @@ fn addressed_locals(
                     .and_then(|index| module.expressions.types.get(index))
                     .copied();
                 return match type_id {
-                    Some(type_id) => crate::records::slice_targets(*local, (total, type_id), module),
+                    Some(type_id) => {
+                        crate::records::slice_targets(*local, (total, type_id), module)
+                    }
                     None => vec![*local],
                 };
             }

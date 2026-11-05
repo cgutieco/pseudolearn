@@ -97,7 +97,10 @@ pub(crate) fn destination(
             field,
             offset,
             type_id,
-        } => Some((*receiver, range_leaves(module, (*field, *offset, *type_id))?)),
+        } => Some((
+            *receiver,
+            range_leaves(module, (*field, *offset, *type_id))?,
+        )),
         _ => None,
     }
 }

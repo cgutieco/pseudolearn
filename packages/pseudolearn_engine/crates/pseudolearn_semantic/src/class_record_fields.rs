@@ -24,10 +24,13 @@ pub(crate) fn add(
         private,
         span,
     };
-    session.module.class_record_fields.push(HirClassRecordField {
-        field: logical,
-        leaves: Vec::new(),
-    });
+    session
+        .module
+        .class_record_fields
+        .push(HirClassRecordField {
+            field: logical,
+            leaves: Vec::new(),
+        });
     let leaves = leaf_fields(session, record, (class, &name, private, span));
     if let Some(entry) = session.module.class_record_fields.last_mut() {
         entry.leaves = leaves.iter().map(|leaf| leaf.id).collect();

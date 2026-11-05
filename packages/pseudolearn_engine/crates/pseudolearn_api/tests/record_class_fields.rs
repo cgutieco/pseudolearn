@@ -31,7 +31,11 @@ fn assigning_a_record_copies_it_by_value() {
         "{POINT}class Holder\npublic define p as Point;\nmethod constructor()\nthis.p <- Point(1, 2);\nendMethod\nendClass\nalgorithm P\ndefine h as Holder <- new Holder();\ndefine mutable q as Point <- h.p;\nq.x <- 50;\nwrite h.p.x;\nh.p <- q;\nq.x <- 60;\nwrite h.p.x;\nwrite h.p = q;\nendAlgorithm\n"
     );
     let response = run(program);
-    assert_eq!(response.output, "1\n50\nfalse\n", "{:?}", response.diagnostics);
+    assert_eq!(
+        response.output, "1\n50\nfalse\n",
+        "{:?}",
+        response.diagnostics
+    );
 }
 
 #[test]

@@ -1134,17 +1134,6 @@
       "clase": "syntax",
       "tipos_argumentos": {}
     },
-    "unsupportedInterfaceConstruct": {
-      "mensajes": {
-        "es": "Las interfaces no forman parte de PseudoLearn",
-        "en": "Interfaces are not supported in PseudoLearn"
-      },
-      "argumentos": [],
-      "politica": "A",
-      "severidad": "error",
-      "clase": "syntax",
-      "tipos_argumentos": {}
-    },
     "unsupportedAbstractConstruct": {
       "mensajes": {
         "es": "Las clases y métodos abstractos no forman parte de PseudoLearn",

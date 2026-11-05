@@ -15,14 +15,12 @@ pub(crate) fn lower_range(
     let slot = usize::try_from(expression.0).unwrap_or(usize::MAX);
     let kind = state.context.module.expressions.kinds.get(slot).cloned();
     match kind {
-        Some(HirExpression::Local(local)) => {
-            crate::records::targets(local, state.context.module)
-                .into_iter()
-                .skip(offset)
-                .take(count)
-                .map(|leaf| crate::expressions_complex::lower_local_cell(leaf, span, state))
-                .collect()
-        }
+        Some(HirExpression::Local(local)) => crate::records::targets(local, state.context.module)
+            .into_iter()
+            .skip(offset)
+            .take(count)
+            .map(|leaf| crate::expressions_complex::lower_local_cell(leaf, span, state))
+            .collect(),
         Some(HirExpression::RecordField {
             record,
             offset: inner,

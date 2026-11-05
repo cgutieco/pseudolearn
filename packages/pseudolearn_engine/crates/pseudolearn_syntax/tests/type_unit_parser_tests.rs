@@ -123,7 +123,10 @@ fn visibility_prefix_on_type_units_is_a_project_only_construct() {
     ] {
         let text = format!("{unit}Algoritmo P\nFinAlgoritmo\n");
         let (_, diagnostics) = parse(&text, Profile::Spanish);
-        assert!(has(&diagnostics, DiagnosticCode::ModuleSyntaxOutsideProject));
+        assert!(has(
+            &diagnostics,
+            DiagnosticCode::ModuleSyntaxOutsideProject
+        ));
         assert!(!has(
             &diagnostics,
             DiagnosticCode::UnexpectedTokenOutsideProgramUnit

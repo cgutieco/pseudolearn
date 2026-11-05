@@ -69,7 +69,12 @@ fn store_value(
             ..
         } => {
             let range = (usize::try_from(*offset).unwrap_or(usize::MAX), 1);
-            crate::record_arrays::store_range((*array, indices), range, (vec![value], span), context);
+            crate::record_arrays::store_range(
+                (*array, indices),
+                range,
+                (vec![value], span),
+                context,
+            );
         }
     }
 }
@@ -227,7 +232,6 @@ pub(crate) fn resolve_field_name(field_number: u32, context: &StatementContext<'
         .map(|candidate_field| candidate_field.name.clone())
         .unwrap_or_else(|| "field".to_owned())
 }
-
 
 fn initialize_addressed_local(
     local: LocalId,

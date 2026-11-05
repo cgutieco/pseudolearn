@@ -19,10 +19,7 @@ fn selected(leaves: Vec<LocalId>, range: (usize, usize)) -> Vec<LocalId> {
     leaves.into_iter().skip(range.0).take(range.1).collect()
 }
 
-fn lower_indices(
-    indices: &[ExpressionId],
-    state: &mut ExpressionState<'_, '_>,
-) -> Vec<Operand> {
+fn lower_indices(indices: &[ExpressionId], state: &mut ExpressionState<'_, '_>) -> Vec<Operand> {
     indices
         .iter()
         .map(|index| Operand::Value(lower_expression_with_state(*index, state)))

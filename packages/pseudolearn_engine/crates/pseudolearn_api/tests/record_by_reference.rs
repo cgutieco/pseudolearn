@@ -70,5 +70,11 @@ fn a_method_receives_a_record_by_reference() {
         "{POINT}class Mover\npublic method Push(p as Point by reference)\np.x <- p.x * 2;\nendMethod\nendClass\nalgorithm P\ndefine m as Mover <- new Mover();\ndefine mutable q as Point <- Point(4, 5);\nm.Push(q);\nwrite q.x;\nwrite q.y;\nendAlgorithm\n"
     );
     let response = run(program);
-    assert_eq!(response.output, "8\n5\n", "{:?} {:?}", codes(&response), response.termination);
+    assert_eq!(
+        response.output,
+        "8\n5\n",
+        "{:?} {:?}",
+        codes(&response),
+        response.termination
+    );
 }

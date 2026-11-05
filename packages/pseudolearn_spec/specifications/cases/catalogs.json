@@ -5391,17 +5391,6 @@
       "severidad": "error",
       "tipos_argumentos": {}
     },
-    "unsupportedInterfaceConstruct": {
-      "argumentos": [],
-      "clase": "syntax",
-      "mensajes": {
-        "en": "Interfaces are not supported in PseudoLearn",
-        "es": "Las interfaces no forman parte de PseudoLearn"
-      },
-      "politica": "A",
-      "severidad": "error",
-      "tipos_argumentos": {}
-    },
     "unsupportedProtectedConstruct": {
       "argumentos": [],
       "clase": "syntax",

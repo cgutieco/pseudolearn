@@ -134,7 +134,11 @@ fn field_place(
         .class_record_fields
         .iter()
         .find(|entry| entry.field.id == field)
-        .and_then(|entry| entry.leaves.get(usize::try_from(offset).unwrap_or(usize::MAX)))
+        .and_then(|entry| {
+            entry
+                .leaves
+                .get(usize::try_from(offset).unwrap_or(usize::MAX))
+        })
         .copied();
     match leaf {
         Some(leaf) if !is_record(session, type_id) => HirPlace::Field {

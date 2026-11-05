@@ -15,12 +15,21 @@ fn a_record_class_field_expands_into_one_physical_field_per_leaf() {
     let entry = module
         .as_ref()
         .and_then(|module| module.class_record_fields.first());
-    assert_eq!(entry.map(|entry| entry.field.name.clone()), Some("p".to_owned()));
+    assert_eq!(
+        entry.map(|entry| entry.field.name.clone()),
+        Some("p".to_owned())
+    );
     assert_eq!(entry.map(|entry| entry.leaves.len()), Some(2));
     let names: Vec<_> = module
         .as_ref()
         .and_then(|module| module.classes.first())
-        .map(|class| class.fields.iter().map(|field| field.name.clone()).collect())
+        .map(|class| {
+            class
+                .fields
+                .iter()
+                .map(|field| field.name.clone())
+                .collect()
+        })
         .unwrap_or_default();
     assert_eq!(names, vec!["p.x".to_owned(), "p.z".to_owned()]);
 }
