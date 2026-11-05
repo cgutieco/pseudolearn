@@ -93,3 +93,133 @@
   "justificacion": "La ejecuta el sujeto engine en R5."
 }
 ```
+
+```regla
+{
+  "id": "R3",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Un valor alcanzable solo desde vínculos cuyo ámbito léxico terminó, como los declarados en el cuerpo de un bucle o en una rama, deja de contar para el límite de celdas al terminar ese ámbito: un bucle que crea los mismos valores en cada iteración necesita las celdas de una sola iteración. Los valores alcanzables desde un vínculo todavía en ámbito siguen contando aunque el programa no vuelva a usarlos.",
+  "verificacion": [
+    "C2",
+    "C3",
+    "C4",
+    "C5",
+    "C6"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C2",
+  "regla": "R3",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "1\n",
+    "terminacion": "completed"
+  },
+  "programa": "Algoritmo P\nPara i <- 1 Hasta 5 Con Paso 1 Hacer\nDimension a[3] Como Entero;\na[0] <- i;\nFinPara\nEscribir 1;\nFinAlgoritmo\n",
+  "perfil_base": "es",
+  "limites": {
+    "celdas": 4
+  }
+}
+```
+
+```caso
+{
+  "id": "C3",
+  "regla": "R3",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "",
+    "fallo": {
+      "codigo": "cellLimitExceeded"
+    }
+  },
+  "programa": "Algoritmo P\nPara i <- 1 Hasta 5 Con Paso 1 Hacer\nDimension a[3] Como Entero;\na[0] <- i;\nFinPara\nEscribir 1;\nFinAlgoritmo\n",
+  "perfil_base": "es",
+  "limites": {
+    "celdas": 3
+  }
+}
+```
+
+```caso
+{
+  "id": "C4",
+  "regla": "R3",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "1\n",
+    "terminacion": "completed"
+  },
+  "programa": "Algoritmo P\nSi Verdadero Entonces\nDimension a[3] Como Entero;\na[0] <- 1;\nFinSi\nDimension b[3] Como Entero;\nb[0] <- 1;\nEscribir 1;\nFinAlgoritmo\n",
+  "perfil_base": "es",
+  "limites": {
+    "celdas": 4
+  }
+}
+```
+
+```caso
+{
+  "id": "C5",
+  "regla": "R3",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "",
+    "fallo": {
+      "codigo": "cellLimitExceeded"
+    }
+  },
+  "programa": "Algoritmo P\nDimension a[3] Como Entero;\na[0] <- 1;\nDimension b[3] Como Entero;\nb[0] <- 1;\nDimension c[3] Como Entero;\nc[0] <- 1;\nEscribir 1;\nFinAlgoritmo\n",
+  "perfil_base": "es",
+  "limites": {
+    "celdas": 11
+  }
+}
+```
+
+```caso
+{
+  "id": "C6",
+  "regla": "R3",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "1\n",
+    "terminacion": "completed"
+  },
+  "programa": "Algoritmo P\nDimension a[3] Como Entero;\na[0] <- 1;\nDimension b[3] Como Entero;\nb[0] <- 1;\nDimension c[3] Como Entero;\nc[0] <- 1;\nEscribir 1;\nFinAlgoritmo\n",
+  "perfil_base": "es",
+  "limites": {
+    "celdas": 12
+  }
+}
+```

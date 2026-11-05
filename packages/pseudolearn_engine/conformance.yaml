@@ -1420,6 +1420,11 @@
       "estado": "cumple"
     },
     {
+      "regla": "MEM.MANAGED.UNOBSERVABLE@1.0.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
       "regla": "MEM.MANAGED.UNOBSERVABLE@1.0.0#R2",
       "verificacion": "ejecutor",
       "estado": "cumple"

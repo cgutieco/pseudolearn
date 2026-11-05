@@ -177,8 +177,12 @@ completado excluye declaraciones posteriores, ámbitos terminados y archivos dis
 exteriores tras el sombreado. La repetición de inferencia restaura también las constantes y elimina declaraciones
 y tramos producidos por la pasada anterior.
 
-Pendientes declarados: transportar los límites de ámbito a los mapas de estado y raíces de ejecución. El registro léxico
-no acredita esa capacidad ni la liberación de raíces al salir de un bloque.
+Liberación por ámbito (PG-L). Los límites de ámbito sí llegan a los mapas de estado y raíces: `roots::expire` de `bytecode`
+retira de cada mapa los registros nombrados cuyo intervalo de visibilidad no contiene la instrucción y que no siguen vivos
+por flujo, y la inspección filtra por el intervalo léxico actual. La regla `MEM.MANAGED.UNOBSERVABLE#R3` la acredita con
+casos de presupuesto de celdas (bucle, rama y control sin ámbito cerrado) que se cumplen sin cambios de semantic. El
+sujeto nativo usa vivacidad por flujo y puede liberar antes que el ámbito léxico; los casos de control que esperan
+`cellLimitExceeded` con un vínculo en ámbito pero sin usos futuros quedan para su paridad en `PG-N.05`.
 
 ### Genéricos de primer orden y monomorfización acotada
 
