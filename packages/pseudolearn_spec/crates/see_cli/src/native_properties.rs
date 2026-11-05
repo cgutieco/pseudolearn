@@ -16,7 +16,11 @@ pub fn run(
 ) -> Result<PropertyRun, String> {
     let vocabulary: Vocabulary =
         storage::read_json(&arguments.root.join("specifications/cases/vocabulary.json"))?;
-    let cases = see_conformance::runtime_fixtures::cases(corpus, &vocabulary)?;
+    let status = crate::rule_status::RuleStatus::load(&arguments.root, "aot")?;
+    let cases: Vec<Value> = see_conformance::runtime_fixtures::cases(corpus, &vocabulary)?
+        .into_iter()
+        .filter(|fixture| !status.case_is_pending(corpus, fixture))
+        .collect();
     let (mut command, _) =
         crate::subject_adapters::subject_configuration(arguments, corpus, "engine")?;
     let mut oracle = Session::start(&mut command, Duration::from_secs(30))?;
@@ -158,7 +162,7 @@ fn eligible(binding: &PropertyBinding, fixture: &Value) -> bool {
         .pointer("/expected/terminacion")
         .and_then(Value::as_str);
     if crate::native_artifacts::supports(binding.executor) {
-        return specification == "RT.PROCESS";
+        return specification == "RT.PROCESS" && simulates_no_host(fixture);
     }
     if binding.executor == PropertyExecutor::NativeDiagnostics {
         return termination == Some("failed");
@@ -166,6 +170,16 @@ fn eligible(binding: &PropertyBinding, fixture: &Value) -> bool {
     specification.starts_with("LANG.")
         || specification.starts_with("MEM.")
         || specification.starts_with("RT.")
+}
+
+pub(crate) fn simulates_no_host(fixture: &Value) -> bool {
+    fixture.pointer("/request/host").is_none_or(Value::is_null)
+}
+
+pub(crate) fn pending_report(binding: &PropertyBinding) -> Result<PropertyRun, String> {
+    let mut report = initial_report(binding)?;
+    report.verdict = "pendiente".to_owned();
+    Ok(report)
 }
 
 fn initial_report(binding: &PropertyBinding) -> Result<PropertyRun, String> {

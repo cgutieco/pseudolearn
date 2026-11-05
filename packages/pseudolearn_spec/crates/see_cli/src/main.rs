@@ -15,6 +15,7 @@ mod property_execution;
 mod property_registry;
 mod property_selection;
 mod resources;
+mod rule_status;
 mod runtime_fixtures;
 mod storage;
 mod structural_evidence;
@@ -38,6 +39,9 @@ fn main() -> std::process::ExitCode {
 
 #[cfg(test)]
 mod native_properties_tests;
+
+#[cfg(test)]
+mod rule_status_tests;
 
 #[cfg(test)]
 mod structural_evidence_tests;

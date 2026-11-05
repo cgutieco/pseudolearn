@@ -176,3 +176,45 @@ fn closing_the_input_without_a_shutdown_also_cleans_up() -> std::io::Result<()> 
     assert_eq!(temporary.leftovers()?, 0);
     Ok(())
 }
+
+const CLOCK: &str = "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir clock Como Reloj <- Propagar SolicitarReloj();\nRetornar clock.Ahora();\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n";
+
+fn with_host(host: &Value) -> Value {
+    let mut request = execute(CLOCK, &[]);
+    request["host"] = host.clone();
+    request
+}
+
+#[cfg(feature = "test-host")]
+#[test]
+fn a_simulated_clock_reaches_the_native_executable() -> std::io::Result<()> {
+    let temporary = Temporary::new()?;
+    let replies = converse(&temporary, &[with_host(&json!({"clock":[100,200]}))], true)?;
+    assert_eq!(replies[0]["output"], json!("100\n"));
+    assert_eq!(replies[0]["termination"], json!({"kind":"completed"}));
+    assert_eq!(replies[0]["host_observation"]["calls"], json!(2));
+    Ok(())
+}
+
+#[cfg(feature = "test-host")]
+#[test]
+fn an_exhausted_simulated_clock_fails_inside_the_program() -> std::io::Result<()> {
+    let temporary = Temporary::new()?;
+    let replies = converse(&temporary, &[with_host(&json!({"clock":[]}))], true)?;
+    assert_eq!(replies[0]["termination"]["kind"], json!("completed"));
+    assert_ne!(replies[0]["output"], json!("100\n"));
+    Ok(())
+}
+
+#[cfg(not(feature = "test-host"))]
+#[test]
+fn the_distributed_runtime_rejects_a_simulated_host() -> std::io::Result<()> {
+    let temporary = Temporary::new()?;
+    let replies = converse(&temporary, &[with_host(&json!({"clock":[100,200]}))], true)?;
+    assert_eq!(
+        replies[0]["termination"],
+        json!({"kind":"failed","code":"peticion_invalida"})
+    );
+    assert_eq!(replies[0]["host_observation"]["calls"], json!(0));
+    Ok(())
+}

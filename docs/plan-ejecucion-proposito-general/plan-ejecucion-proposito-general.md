@@ -38,6 +38,19 @@ se conservan como rastro de análisis, no como instrucciones vigentes.
   se implementa en su propia fase. Lo que un lenguaje de propósito general necesita y hoy falta o está a medias entra en
   fases; no se publica nada que se sienta como prueba de concepto.
 
+- El 2026-11-05 la persona decidió que un programa de pseudocódigo clásico debe copiarse, pegarse y ejecutarse sin
+  retoques, y que las palabras reservadas propias amplían el pseudocódigo clásico sin sustituirlo. Aceptó las
+  recomendaciones de la [propuesta del 2026-11-05](propuesta-pseudocodigo-clasico.md) con dos excepciones: el `;`
+  obligatorio se conserva (D-C6 = b: identidad del lenguaje y diagnóstico ya claro) y los índices siguen en base 0
+  (D-C10 = a: su explicación corresponde a la especificación y a la ruta de aprendizaje). Consecuencias: desaparece
+  `Mutable` y la constancia se infiere, vuelve `Definir a, b Como T;` sin inicializador obligatorio, la seguridad de
+  inicialización pasa a la asignación definitiva estática y se crea la fase PG-C antes de PG-N. Esta decisión **revierte
+  D-PG2-01 (opción A, 2026-10-24)** y la parte de PG-2.05 que exigía vínculos inmutables por defecto e inicialización en
+  la declaración; las casillas de PG-2 no se desmarcan. Sin retrocompatibilidad, sin alias de `Mutable` y sin migrador.
+  Para ganar velocidad, PG-C solo ejecuta comprobaciones acotadas durante la implementación y concentra las pruebas
+  pesadas en su bloque final; liberar espacio en disco (limpiar `target/`, cachés y registros generados) está autorizado
+  cuando haga falta.
+
 El detalle operativo está en [el plan de PG-0](fase-pg-0-plan-ejecucion.md).
 La petición directa de implementar PG-0 revisó y autorizó el plan. PG-0 quedó cerrada el 2026-10-22 con
 verificaciones en verde, tras autorizar la persona el reanclaje de seis identidades y la ejecución fuera del
@@ -121,11 +134,14 @@ fases son técnicamente independientes, pero no autoriza ejecutarlas en paralelo
 | PG-B | Lenguaje completo con anfitriones reales y app con tareas observables | PG-A, PG-3, PG-4, PG-5, PG-6B | `fase-pg-b-plan-ejecucion.md` |
 | PG-L | Lenguaje sin restricciones de construcción | PG-B (bloque de corpus) | `fase-pg-l-plan-ejecucion.md` |
 | PG-S | Biblioteca estándar de producción | PG-B, PG-L | `fase-pg-s-plan-ejecucion.md` |
-| PG-N | Compilador nativo completo | PG-B, PG-L, PG-S | `fase-pg-n-plan-ejecucion.md` |
-| PG-7 | Erradicación, calificación y distribución del lenguaje completo | PG-B, PG-L, PG-S, PG-N | `fase-pg-7-plan-ejecucion.md` |
+| PG-C | Pseudocódigo clásico ejecutable | PG-B, PG-L, PG-S | `fase-pg-c-plan-ejecucion.md` |
+| PG-N | Compilador nativo completo | PG-B, PG-L, PG-S, PG-C | `fase-pg-n-plan-ejecucion.md` |
+| PG-7 | Erradicación, calificación y distribución del lenguaje completo | PG-B, PG-L, PG-S, PG-C, PG-N | `fase-pg-7-plan-ejecucion.md` |
 
-ENT-1 se considera entregado únicamente cuando PG-7 está completada. Las secciones §4.13–§4.15 (PG-L, PG-S, PG-N) se
-numeran después de PG-7 para no renumerar referencias existentes; el orden de ejecución es el de esta tabla.
+ENT-1 se considera entregado únicamente cuando PG-7 está completada. Las secciones §4.13–§4.16 (PG-L, PG-S, PG-N, PG-C)
+se numeran después de PG-7 para no renumerar referencias existentes; el orden de ejecución es el de esta tabla. PG-C va
+antes de PG-N porque cambia programas de todo el corpus y la biblioteca: hacerlo después obligaría a repetir la paridad
+nativa de PG-N.08 y el diferencial de PG-N.11.
 
 ## 4. Fases y puntos de cierre
 
@@ -1063,9 +1079,51 @@ Cierre común (definiciones en §4.0):
 
 | Punto | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
-| PG-L.01–PG-L.07 | Cumplido | §11 del plan detallado; commits de `9acfbe96` a `fc75e14b` | DL-02 con arreglos paralelos por hoja (desviación aceptada) |
-| Bloque F | Cumplido con pendientes ajenos | `packages/pseudolearn_engine/results/pg-l-2026-11-05/logs/` (local, ignorado) | Fallos nativos de efectos, tareas y `tan` del sujeto aot: preexistentes en `d9d84bc7`, de PG-N |
-| Pendientes | Fuera de PG-L | | Paridad nativa de PG-L (PG-N.08), repetir PG-S.02.01, Windows sin verificar, cuatro fichas `pgl01`/`pgl02` sin selección por posición |
+
+Revisión Git de cierre: · Verificadores ejecutados: · Pendientes justificados: · Decisiones de la persona:
+
+### 4.16 PG-C · Pseudocódigo clásico ejecutable
+
+Objetivo: que un programa de pseudocódigo clásico escrito con `;` y con índices base 0 se pegue y se ejecute sin
+retoques, conservando la seguridad de inicialización, el aislamiento de clausuras y tareas y el rendimiento actuales.
+Origen: decisión de la persona del 2026-11-05 y [propuesta del 2026-11-05](propuesta-pseudocodigo-clasico.md).
+
+- [ ] `PG-C.01` `Definir` de uno o varios nombres con inicializador opcional (solo con un nombre); sin `Mutable` en ningún perfil; ámbitos de bloque coherentes en todo el corpus.
+- [ ] `PG-C.02` Asignación definitiva estática: leer un local sin valor en algún camino es error que nombra el camino; `Leer` asigna; sin valores por defecto.
+- [ ] `PG-C.03` Parámetros por referencia de salida inferidos en llamadas directas; las llamadas indirectas exigen argumento asignado.
+- [ ] `PG-C.04` Constancia inferida: los locales se reasignan libremente y las clausuras solo capturan locales efectivamente constantes, con diagnóstico que señala la modificación.
+- [ ] `PG-C.05` `Con Paso` opcional con paso 1.
+- [ ] `PG-C.06` Conversión implícita de `Caracter` a `Cadena`.
+- [ ] `PG-C.07` `Dimension nombre[…];` sobre un nombre ya definido toma su tipo.
+- [ ] `PG-C.08` `Funcion r <- nombre(parámetros)` con variable de retorno definitivamente asignada.
+- [ ] `PG-C.09` Biblioteca clásica con un nombre y una semántica: `Azar(n)`, `Aleatorio(a, b)`, `Subcadena(c, desde, hasta)`, `Mayusculas`, `Minusculas`, `Concatenar`, `ConvertirANumero`.
+- [ ] `PG-C.10` Programas, contenidos, ejemplos, fixtures, generadores y cargas del monorepo en la forma nueva; servicio, extensión, CLI y app sin rastro de `Mutable`.
+- [ ] `PG-C.11` Suite de aceptación clásica en el corpus, ejecutada sin modificaciones en `engine`, `cli` y `service`.
+- [ ] `PG-C.12` Bloque final único de pruebas pesadas, conformidad y corrección.
+
+Plan detallado: [fase-pg-c-plan-ejecucion.md](fase-pg-c-plan-ejecucion.md), redactado el 2026-11-05; requiere revisión y
+autorización de la persona.
+
+Cierre común (definiciones en §4.0):
+
+- [ ] `PG-C.C01` Autorización de la persona para iniciar la fase, en mensaje nuevo.
+- [ ] `PG-C.C02` Plan detallado creado según §5 y revisado por la persona.
+- [ ] `PG-C.C03` SPEC-FIRST y congelamiento respetados.
+- [ ] `PG-C.C04` Reglas nuevas con casos o propiedades y vínculos como datos.
+- [ ] `PG-C.C05` Tests feliz, infeliz y límite en carpetas espejo.
+- [ ] `PG-C.C06` Capas declaradas, imports permitidos y límites de tamaño.
+- [ ] `PG-C.C07` Sin comentarios ni TODO; código en inglés; Rust sin pánicos ni `unsafe` no declarado.
+- [ ] `PG-C.C08` README y reglas de los miembros afectados actualizados, sin citar `docs/`.
+- [ ] `PG-C.C09` Fichas de ayuda y datos de proyección de la sintaxis nueva, o justificación.
+- [ ] `PG-C.C10` Riesgos revisados y experimentos con procedencia o diferidos por la persona.
+- [ ] `PG-C.C11` Tests y verificadores de los miembros afectados en verde.
+- [ ] `PG-C.C12` Commit sin atribución de IA y push ordinario comprobado a la rama única.
+- [ ] `PG-C.C13` Resumen completo, informe a la persona y parada.
+
+#### Resumen de PG-C
+
+| Punto | Estado | Evidencia | Motivo o comentario |
+|---|---|---|---|
 
 Revisión Git de cierre: · Verificadores ejecutados: · Pendientes justificados: · Decisiones de la persona:
 
@@ -1074,7 +1132,7 @@ Revisión Git de cierre: · Verificadores ejecutados: · Pendientes justificados
 ### 5.1 Nombre, lugar y momento
 
 - Ruta: esta misma carpeta. Nombre exacto: `fase-<id>-plan-ejecucion.md`, con `<id>` en minúsculas tomado de la tabla
-  de §3 (`pg-0`, `pg-h`, `pg-1` … `pg-6a`, `pg-6b`, `pg-a`, `pg-b`, `pg-l`, `pg-s`, `pg-n`, `pg-7`).
+  de §3 (`pg-0`, `pg-h`, `pg-1` … `pg-6a`, `pg-6b`, `pg-a`, `pg-b`, `pg-l`, `pg-s`, `pg-c`, `pg-n`, `pg-7`).
 - Nunca empieza por dígitos y nunca se llama `README.md`: la puerta de referencias transitorias identifica los documentos
   de `docs/` por su nombre y por su prefijo numérico.
 - Se crea al iniciar la fase, después de la autorización de la persona y antes de cualquier especificación o código.
@@ -1229,5 +1287,6 @@ La IA a cargo actualiza esta tabla al cerrar cada fase.
 | PG-B | Reformulada el 2026-11-02 · PG-B.01–.03, .05–.09 ejecutados; .04 retirado; .10–.30 sin iniciar | Sí, reescrito; C02 pendiente | | C01/C02; parada en PG-B.22.01 si el puente supera `PERF.ARTIFACT.SIZE` |
 | PG-L | Implementada, pendiente de push y cierre | Sí | | PG-L.01–PG-L.07 y bloque F cumplidos (`cargo xtask verify`, conformidad engine/service/CLI/app sin divergencias, `flutter test`, extensión de escritorio y web, aceptación en CLI, VS Code, Chromium, WebKit, macOS e iOS simulador). Pendientes ajenos: fallos nativos preexistentes (PG-N), PG-S.02.01. Detalle en §11 de `fase-pg-l-plan-ejecucion.md` |
 | PG-S | Implementada, sin cierre formal · PG-S.01–.09 y C01–C09 | Sí | | C10–C13 pendientes: PS-E04, suite completa, commit/push de cierre, parada; se ejecutó antes de cerrar PG-L por decisión expresa de la persona |
+| PG-C | Sin iniciar · creada el 2026-11-05 | Sí, redactado; C01/C02 pendientes | | |
 | PG-N | Sin iniciar | No | | |
 | PG-7 | Sin iniciar · reformulada el 2026-11-02 | No | | |

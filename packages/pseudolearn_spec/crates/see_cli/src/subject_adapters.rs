@@ -33,6 +33,8 @@ const APP_ARGUMENTS: &[&str] = &["run", "tool/see_app_adapter.dart"];
 const AOT_ARGUMENTS: &[&str] = &[
     "run",
     "--locked",
+    "--features",
+    "test-host",
     "--bin",
     "pseudo",
     "--quiet",

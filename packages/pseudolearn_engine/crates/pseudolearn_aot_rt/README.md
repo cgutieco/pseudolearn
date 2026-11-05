@@ -236,7 +236,11 @@ cinta y, para reproducir, la cinta; el de salida devuelve la cinta, las llamadas
 reproducción. Sin esas banderas el proceso se comporta como antes. Una entrada ilegible o con identidad distinta se rechaza
 antes de ejecutar y el proceso termina con el código 6. Se descarta una variable de entorno (el lanzador usa entorno
 vacío) y se descarta la entrada estándar (ya transporta las entradas del programa). El adaptador solo ofrece
-`execute`; `history_seek` se rechaza en la API antes de lanzar.
+`execute`; `history_seek` se rechaza en la API antes de lanzar. El proveedor de efectos es `ExecutionHostProvider` del
+runtime: con la feature `test-host` es el anfitrión de memoria, que interpreta el anfitrión simulado del archivo de
+entrada; sin ella es el anfitrión desprendido, que rechaza un anfitrión simulado con `peticion_invalida` y responde
+`interrumpido` a cada efecto. Quien compila la biblioteca estática decide la feature: la CLI solo la activa para la
+conformidad, nunca en distribución.
 
 Las operaciones puras de texto, bytes y JSON se resuelven localmente en `pseudolearn_library`. Para
 `json_element` y `json_field`, AOT entrega las palabras de los argumentos a `local_json_view` y escribe

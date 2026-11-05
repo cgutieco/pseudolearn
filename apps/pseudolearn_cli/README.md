@@ -32,6 +32,10 @@ plataformas por analogía.
 
 `cargo build` construye antes, desde `build.rs`, la biblioteca estática del runtime (`cargo rustc --release --crate-type staticlib -p pseudolearn_aot_rt` sobre el motor, con su propio directorio de destino bajo `OUT_DIR`) y la depura con `strip`. Requiere `cargo` y `strip`. Compilar un programa requiere además el driver `cc` del sistema en el `PATH`.
 
+La feature `test-host` de la CLI, apagada por omisión, solo cambia esa biblioteca: `build.rs` la compila con `--features test-host` y el runtime nativo usa el anfitrión de memoria con el que la conformidad simula reloj, archivos y red (`anfitrion` de cada caso). Sin ella el runtime usa el anfitrión desprendido: rechaza un anfitrión simulado con `peticion_invalida` y responde `interrumpido` a cada efecto de capacidad. `see` lanza el sujeto `aot` con `cargo run --features test-host`; `cargo xtask verify` ejecuta `aot_adapter_tests` y `aot_effect_parity` con y sin la feature. La clave `isolation` prohíbe `pseudolearn_cli/test-host` en los grafos de distribución, de modo que un binario distribuido nunca embebe dobles de prueba. Se descartó enlazar los dos runtimes en el mismo binario y elegir en ejecución, porque distribuiría los dobles, y delegar los efectos del ejecutable al proceso padre, porque el anfitrión físico nativo vivirá dentro del propio ejecutable y ese canal quedaría sin uso.
+
+Pendiente declarado: el runtime nativo de distribución no enlaza el anfitrión físico. Un programa compilado con `compilar` o ejecutado con `run --native` que usa reloj, archivos, temporizador, red, argumentos o entorno recibe `interrumpido` en cada efecto. Se resolverá enlazando `pseudolearn_host` en el runtime nativo, con aislamiento y tamaño medidos, y entonces `run --native` dejará de diferir de `run` en esos efectos.
+
 ## 3. Arquitectura y modelo del sistema
 
 Adaptador de borde → API pública de pseudolearn_engine con la feature `native` explícita. Prohibido importar sus crates internos.
@@ -205,8 +209,8 @@ amplificables, enlaces simbólicos salientes rechazados dentro de esa subcapacid
 tabla y su uso posterior devuelve `capacidad_cerrada`; escribir reemplaza el contenido y un fallo tras mutar se informa
 como `Uncertain`. La reproducción (`--reproducir-cinta`) no abre anfitrión ni toca disco. El reloj es el del sistema en
 cada lectura y el temporizador espera tiempo real de forma cancelable. `--test-root` carga raíces PEM adicionales sin
-retirar las del sistema y existe solo para las pruebas TLS locales. `--native` con red falla como error de uso (código 2):
-el runtime AOT no abre sockets. El anfitrión nativo declara sus garantías mediante `negotiate`. La API entrega la lista
+retirar las del sistema y existe solo para las pruebas TLS locales. `--native` no ofrece anfitrión físico (pendiente
+declarado en la sección 2). El anfitrión nativo declara sus garantías mediante `negotiate`. La API entrega la lista
 completa de efectos de red pendientes; el anfitrión ejecuta hasta ocho solicitudes en paralelo y devuelve sus resultados
 según finalizan. La VM pausa y reanuda la tarea asociada a cada secuencia, y la cinta registra ese orden de entrega.
 

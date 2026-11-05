@@ -43,7 +43,11 @@ fn pure_library_program_prints_the_values_derived_from_the_rules() -> std::io::R
 #[test]
 fn files_program_leaves_the_working_directory_empty() -> std::io::Result<()> {
     let (output, leftovers) = run_in_fresh_directory("files.es.pseudo")?;
-    assert_eq!(standard_output(&output), "1:b.txt:3:4\n1\n0\n0\n", "{output:?}");
+    assert_eq!(
+        standard_output(&output),
+        "1:b.txt:3:4\n1\n0\n0\n",
+        "{output:?}"
+    );
     assert_eq!(output.status.code(), Some(0));
     assert!(leftovers.is_empty(), "{leftovers:?}");
     Ok(())
@@ -52,7 +56,11 @@ fn files_program_leaves_the_working_directory_empty() -> std::io::Result<()> {
 #[test]
 fn console_program_separates_the_error_stream_and_applies_the_exit_code() -> std::io::Result<()> {
     let (output, _) = run_in_fresh_directory("console-environment.es.pseudo")?;
-    assert_eq!(standard_output(&output), "none\n0\n11\n7\n0\n", "{output:?}");
+    assert_eq!(
+        standard_output(&output),
+        "none\n0\n11\n7\n0\n",
+        "{output:?}"
+    );
     assert_eq!(String::from_utf8_lossy(&output.stderr), "diagnostic\n");
     assert_eq!(output.status.code(), Some(7));
     Ok(())

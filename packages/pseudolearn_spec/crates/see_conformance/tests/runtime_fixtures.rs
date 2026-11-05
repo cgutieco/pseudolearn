@@ -21,6 +21,10 @@ fn fixture_generation_reuses_requests_and_resolved_expectations() -> Result<(), 
             .first()
             .is_some_and(|fixture| fixture.pointer("/request/strictness").is_none())
     );
+    assert_eq!(
+        fixtures.first().and_then(|fixture| fixture.get("rule")),
+        Some(&json!("R1"))
+    );
     let case = specification.blocks.last_mut().ok_or("Missing case")?;
     case.fields.remove("espera");
     case.fields.remove("esperas");

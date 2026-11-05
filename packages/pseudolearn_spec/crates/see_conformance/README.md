@@ -10,7 +10,8 @@ Negocia JSONL por proceso con capacidades explícitas, construye una petición p
 
 ## 3. Arquitectura y modelo del sistema
 
-`runtime_fixtures` materializa casos con el mismo constructor de peticiones de conformidad; sus
+`runtime_fixtures` materializa casos con el mismo constructor de peticiones de conformidad y conserva la regla de
+cada caso, para que quien selecciona muestras pueda consultar su vínculo; sus
 programas generados de grafos conservan el resultado independiente de `see_oracles::cells`. Esta
 preparación de datos no anuncia capacidades de ningún sujeto ni produce un veredicto de conformidad.
 Los escenarios de memoria B4 usan un arreglo de referencias como raíz de objetos y texto durante una

@@ -108,7 +108,18 @@
     "C12",
     "C13",
     "C14",
-    "C15"
+    "C15",
+    "C20",
+    "C21",
+    "C22",
+    "C23",
+    "C24",
+    "C25",
+    "C26",
+    "C27",
+    "C28",
+    "C29",
+    "C30"
   ]
 }
 ```
@@ -596,6 +607,523 @@
       "column": 24
     },
     "proyeccion": "tipo"
+  }
+}
+```
+
+```caso
+{
+  "id": "C20",
+  "regla": "R4",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "resolucion": {
+        "identity": {
+          "kind": "role",
+          "id": "postfix",
+          "role": "pgl01_record_class_field"
+        },
+        "certainty": "certain"
+      }
+    }
+  },
+  "servicio": {
+    "suboperacion": "hover",
+    "documento": "Registro Punto\nDefinir x Como Entero;\nFinRegistro\nClase Caja\nDefinir p Como Punto;\nFinClase\nAlgoritmo P\nDefinir c Como Caja <- Nuevo Caja();\nc.p.x <- 1;\nFinAlgoritmo\n",
+    "posicion": {
+      "line": 9,
+      "column": 2
+    },
+    "proyeccion": "resolucion"
+  }
+}
+```
+
+```caso
+{
+  "id": "C21",
+  "regla": "R4",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "resolucion": {
+        "identity": {
+          "kind": "role",
+          "id": "postfix",
+          "role": "pgl01_record_class_field"
+        },
+        "certainty": "certain"
+      }
+    }
+  },
+  "servicio": {
+    "suboperacion": "hover",
+    "documento": "Registro Punto\nDefinir x Como Entero;\nFinRegistro\nClase Caja\nDefinir p Como Punto;\nFinClase\nAlgoritmo P\nDefinir c Como Caja <- Nuevo Caja();\nc.p.x <- 1;\nFinAlgoritmo\n",
+    "posicion": {
+      "line": 9,
+      "column": 4
+    },
+    "proyeccion": "resolucion"
+  }
+}
+```
+
+```caso
+{
+  "id": "C22",
+  "regla": "R4",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "resolucion": null
+    }
+  },
+  "servicio": {
+    "suboperacion": "hover",
+    "documento": "Registro Punto\nDefinir x Como Entero;\nFinRegistro\nAlgoritmo P\nDefinir Mutable r Como Punto <- Punto(1);\nr.x <- 2;\nFinAlgoritmo\n",
+    "posicion": {
+      "line": 6,
+      "column": 2
+    },
+    "proyeccion": "resolucion"
+  }
+}
+```
+
+```caso
+{
+  "id": "C23",
+  "regla": "R4",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "resolucion": {
+        "identity": {
+          "kind": "role",
+          "id": "postfix",
+          "role": "pgl01_record_array_element"
+        },
+        "certainty": "certain"
+      }
+    }
+  },
+  "servicio": {
+    "suboperacion": "hover",
+    "documento": "Registro Punto\nDefinir x Como Entero;\nFinRegistro\nAlgoritmo P\nDimension a[2] Como Punto;\na[1].x <- 2;\nFinAlgoritmo\n",
+    "posicion": {
+      "line": 6,
+      "column": 2
+    },
+    "proyeccion": "resolucion"
+  }
+}
+```
+
+```caso
+{
+  "id": "C24",
+  "regla": "R4",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "resolucion": {
+        "identity": {
+          "kind": "role",
+          "id": "postfix",
+          "role": "pgl01_record_array_element"
+        },
+        "certainty": "certain"
+      }
+    }
+  },
+  "servicio": {
+    "suboperacion": "hover",
+    "documento": "Registro Punto\nDefinir x Como Entero;\nFinRegistro\nAlgoritmo P\nDimension a[2] Como Punto;\na[1].x <- 2;\nFinAlgoritmo\n",
+    "posicion": {
+      "line": 6,
+      "column": 4
+    },
+    "proyeccion": "resolucion"
+  }
+}
+```
+
+```caso
+{
+  "id": "C25",
+  "regla": "R4",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "resolucion": null
+    }
+  },
+  "servicio": {
+    "suboperacion": "hover",
+    "documento": "Algoritmo P\nDimension n[2] Como Entero;\nn[1] <- 2;\nFinAlgoritmo\n",
+    "posicion": {
+      "line": 3,
+      "column": 2
+    },
+    "proyeccion": "resolucion"
+  }
+}
+```
+
+```caso
+{
+  "id": "C26",
+  "regla": "R4",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "resolucion": {
+        "identity": {
+          "kind": "role",
+          "id": "moduleUnit",
+          "role": "pgl02_public_signature"
+        },
+        "certainty": "partial"
+      }
+    }
+  },
+  "servicio": {
+    "suboperacion": "hover",
+    "documento": "Registro Punto\nDefinir x Como Entero;\nFinRegistro\nPublico SubProceso Mover(p Como Punto) Como Entero\nRetornar p.x;\nFinSubProceso\n",
+    "posicion": {
+      "line": 4,
+      "column": 3
+    },
+    "proyeccion": "resolucion"
+  }
+}
+```
+
+```caso
+{
+  "id": "C27",
+  "regla": "R4",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "resolucion": {
+        "identity": {
+          "kind": "role",
+          "id": "moduleUnit",
+          "role": "pgl02_public_signature"
+        },
+        "certainty": "partial"
+      }
+    }
+  },
+  "servicio": {
+    "suboperacion": "hover",
+    "documento": "Registro Punto\nDefinir x Como Entero;\nFinRegistro\nPublico Clase Caja\nDefinir p Como Punto;\nFinClase\n",
+    "posicion": {
+      "line": 4,
+      "column": 3
+    },
+    "proyeccion": "resolucion"
+  }
+}
+```
+
+```caso
+{
+  "id": "C28",
+  "regla": "R4",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "resolucion": {
+        "identity": {
+          "kind": "keyword",
+          "id": "publicVisibility",
+          "role": "keyword"
+        },
+        "certainty": "partial"
+      }
+    }
+  },
+  "servicio": {
+    "suboperacion": "hover",
+    "documento": "Publico SubProceso Doble(v Como Entero) Como Entero\nRetornar v * 2;\nFinSubProceso\n",
+    "posicion": {
+      "line": 1,
+      "column": 3
+    },
+    "proyeccion": "resolucion"
+  }
+}
+```
+
+```caso
+{
+  "id": "C29",
+  "regla": "R4",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "formato": "markdown",
+      "contenido_completo": true,
+      "rango": {
+        "start": {
+          "line": 0,
+          "character": 0
+        },
+        "end": {
+          "line": 0,
+          "character": 8
+        }
+      }
+    }
+  },
+  "servicio": {
+    "suboperacion": "lsp",
+    "mensajes": [
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": "initialize",
+        "params": {
+          "locale": "es"
+        }
+      },
+      {
+        "jsonrpc": "2.0",
+        "method": "pseudolearn/workspaceSnapshot",
+        "params": {
+          "project": {
+            "project_id": 7,
+            "revision_id": 1,
+            "packages": [
+              {
+                "name": "app",
+                "root": "app",
+                "kind": "application",
+                "entries": [
+                  "app/main"
+                ],
+                "dependencies": {
+                  "geo": "geo"
+                }
+              },
+              {
+                "name": "geo",
+                "root": "geo",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {}
+              }
+            ],
+            "files": [
+              {
+                "path": "app/main",
+                "source_id": 1,
+                "text": "Importar geo.formas.Punto;\nAlgoritmo Main\nDefinir p Como Punto <- Punto(1);\nEscribir p.x;\nFinAlgoritmo\n"
+              },
+              {
+                "path": "geo/formas",
+                "source_id": 2,
+                "text": "Publico Registro Punto\nDefinir x Como Entero;\nFinRegistro\nPublico SubProceso Doble(v Como Entero) Como Entero\nRetornar v * 2;\nFinSubProceso\n"
+              }
+            ]
+          },
+          "uris": {
+            "app/main": "file:///app/main.pseudo",
+            "geo/formas": "file:///geo/formas.pseudo"
+          }
+        }
+      },
+      {
+        "jsonrpc": "2.0",
+        "method": "textDocument/didOpen",
+        "params": {
+          "textDocument": {
+            "uri": "file:///app/main.pseudo",
+            "languageId": "pseudolearn",
+            "version": 1,
+            "text": "Importar geo.formas.Punto;\nAlgoritmo Main\nDefinir p Como Punto <- Punto(1);\nEscribir p.x;\nFinAlgoritmo\n"
+          }
+        }
+      },
+      {
+        "jsonrpc": "2.0",
+        "id": 2,
+        "method": "textDocument/hover",
+        "params": {
+          "textDocument": {
+            "uri": "file:///app/main.pseudo"
+          },
+          "position": {
+            "line": 0,
+            "character": 3
+          }
+        }
+      }
+    ],
+    "proyeccion": "ayuda",
+    "contiene": [
+      "Importación de tipos y constantes"
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C30",
+  "regla": "R4",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "formato": "markdown",
+      "contenido_completo": true,
+      "rango": {
+        "start": {
+          "line": 0,
+          "character": 0
+        },
+        "end": {
+          "line": 0,
+          "character": 8
+        }
+      }
+    }
+  },
+  "servicio": {
+    "suboperacion": "lsp",
+    "mensajes": [
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": "initialize",
+        "params": {
+          "locale": "es"
+        }
+      },
+      {
+        "jsonrpc": "2.0",
+        "method": "pseudolearn/workspaceSnapshot",
+        "params": {
+          "project": {
+            "project_id": 7,
+            "revision_id": 1,
+            "packages": [
+              {
+                "name": "app",
+                "root": "app",
+                "kind": "application",
+                "entries": [
+                  "app/main"
+                ],
+                "dependencies": {
+                  "geo": "geo"
+                }
+              },
+              {
+                "name": "geo",
+                "root": "geo",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {}
+              }
+            ],
+            "files": [
+              {
+                "path": "app/main",
+                "source_id": 1,
+                "text": "Importar geo.formas.Doble;\nAlgoritmo Main\nEscribir Doble(2);\nFinAlgoritmo\n"
+              },
+              {
+                "path": "geo/formas",
+                "source_id": 2,
+                "text": "Publico Registro Punto\nDefinir x Como Entero;\nFinRegistro\nPublico SubProceso Doble(v Como Entero) Como Entero\nRetornar v * 2;\nFinSubProceso\n"
+              }
+            ]
+          },
+          "uris": {
+            "app/main": "file:///app/main.pseudo",
+            "geo/formas": "file:///geo/formas.pseudo"
+          }
+        }
+      },
+      {
+        "jsonrpc": "2.0",
+        "method": "textDocument/didOpen",
+        "params": {
+          "textDocument": {
+            "uri": "file:///app/main.pseudo",
+            "languageId": "pseudolearn",
+            "version": 1,
+            "text": "Importar geo.formas.Doble;\nAlgoritmo Main\nEscribir Doble(2);\nFinAlgoritmo\n"
+          }
+        }
+      },
+      {
+        "jsonrpc": "2.0",
+        "id": 2,
+        "method": "textDocument/hover",
+        "params": {
+          "textDocument": {
+            "uri": "file:///app/main.pseudo"
+          },
+          "position": {
+            "line": 0,
+            "character": 3
+          }
+        }
+      }
+    ],
+    "proyeccion": "ayuda",
+    "contiene": [
+      "Importación de módulo o símbolo"
+    ]
   }
 }
 ```

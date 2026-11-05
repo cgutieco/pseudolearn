@@ -27,7 +27,8 @@ pub fn execute(arguments: &Arguments, corpus: &Corpus) -> Result<String, String>
         exhaustive: !arguments.options.contains_key("sample"),
     };
     let bindings = selected(arguments, corpus, registry.entries)?;
-    let reports = run_bindings(&bindings, &context, (&mut session, arguments))?;
+    let status = crate::rule_status::RuleStatus::load(&arguments.root, subject)?;
+    let reports = run_bindings(&bindings, &context, (&mut session, arguments), &status)?;
     let evidence = Evidence {
         protocol: "see-protocol/1".to_owned(),
         subject: subject.clone(),
@@ -90,11 +91,14 @@ fn run_bindings(
     bindings: &[see_model::properties::PropertyBinding],
     context: &PropertyContext<'_>,
     input: (&mut Session, &Arguments),
+    status: &crate::rule_status::RuleStatus,
 ) -> Result<Vec<see_model::properties::PropertyRun>, String> {
     let (session, arguments) = input;
     let mut reports = Vec::new();
     for binding in bindings {
-        if crate::native_properties::supports(binding.executor) {
+        if status.property_is_pending(context.corpus, &binding.reference) {
+            reports.push(crate::native_properties::pending_report(binding)?);
+        } else if crate::native_properties::supports(binding.executor) {
             reports.push(crate::native_properties::run(
                 binding,
                 arguments,

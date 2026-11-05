@@ -3,7 +3,7 @@ use crate::help_content::help_content;
 use crate::help_rendering::{
     HelpFormat, HelpRenderError, escape_markdown, inert_text, omitted_notice, render_help,
 };
-use crate::help_resolution::{HelpQueryOutcome, resolve_help_with_locale};
+use crate::help_resolution::{HelpQueryOutcome, resolve_help_with_imports};
 use crate::lsp_protocol::{
     CONTENT_MODIFIED, INVALID_PARAMS, failure, lsp_range, position_from_request, success,
     text_document_uri,
@@ -51,7 +51,8 @@ impl LspServer {
         let session = self.service.session(uri)?;
         let position = position_from_request(session.text(), request);
         let locale = self.help_locale();
-        let outcome = resolve_help_with_locale(session, position, locale)?;
+        let imported_types = self.imported_type_ranges(uri, session.text());
+        let outcome = resolve_help_with_imports(session, position, locale, &imported_types)?;
         let value = hover_text(&outcome, locale, format)?;
         let kind = match format {
             HelpFormat::Markdown => "markdown",

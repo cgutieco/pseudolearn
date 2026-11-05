@@ -1,7 +1,6 @@
 #![forbid(unsafe_code)]
 
 mod adapter;
-mod output_streams;
 mod adapter_ir;
 mod aot_adapter;
 mod build_command;
@@ -43,6 +42,7 @@ mod native_linker;
 mod native_run;
 mod native_run_command;
 mod options;
+mod output_streams;
 mod physical_host;
 mod physical_session;
 mod preferences_command;

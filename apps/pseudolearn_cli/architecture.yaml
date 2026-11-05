@@ -3,7 +3,7 @@ generated_sources: [generated]
 isolation:
   - package: pseudolearn_cli
     targets: [aarch64-apple-darwin, x86_64-pc-windows-msvc]
-    forbidden: [pseudolearn_runtime/test-host, pseudolearn_api/test-host]
+    forbidden: [pseudolearn_runtime/test-host, pseudolearn_api/test-host, pseudolearn_cli/test-host]
 layers:
   - name: pseudolearn_cli
     path: .

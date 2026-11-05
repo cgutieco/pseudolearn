@@ -12,6 +12,7 @@ pub struct QueryContext<'query> {
     pub analysis: &'query ServiceAnalysis,
     pub index: &'query SymbolIndex,
     pub syntax_diagnostics: &'query [Diagnostic],
+    pub imported_types: &'query [(u32, u32)],
     pub profile: Profile,
     pub locale: HelpLocale,
 }

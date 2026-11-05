@@ -8,6 +8,10 @@ publish = false
 name = "pseudo"
 path = "src/main.rs"
 
+[features]
+default = []
+test-host = []
+
 [dependencies]
 pseudolearn_host = { path = "../../packages/pseudolearn_engine/crates/pseudolearn_host", version = "=0.1.0" }
 pseudolearn_api = { path = "../../packages/pseudolearn_engine/crates/pseudolearn_api", version = "=0.1.0", features = ["native"] }

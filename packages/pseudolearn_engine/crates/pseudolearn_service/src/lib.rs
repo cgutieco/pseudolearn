@@ -40,6 +40,7 @@ pub mod lsp_documents;
 pub mod lsp_help;
 mod lsp_initialization;
 mod lsp_project_collisions;
+mod lsp_project_help;
 mod lsp_project_queries;
 mod lsp_project_rename;
 mod lsp_project_selection;
@@ -104,7 +105,7 @@ pub use help_content::{HelpContent, help_content};
 pub use help_rendering::{HelpFormat, HelpRenderError, render_help};
 pub use help_resolution::{
     HelpCertainty, HelpIdentity, HelpIdentityKind, HelpQueryOutcome, HelpResolution, HelpSymbol,
-    resolve_help_at_position, resolve_help_with_locale,
+    resolve_help_at_position, resolve_help_with_imports, resolve_help_with_locale,
 };
 pub use hover::{HoverCategory, HoverOutcome, SignatureHelp};
 pub use insertion::{Insertion, StopRange, TextChange, apply_change, build_insertion};

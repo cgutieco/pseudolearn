@@ -46,6 +46,7 @@ fn compile_static_library(
         .args(["rustc", "--release", "--locked", "--jobs", "1"])
         .args(["-p", "pseudolearn_aot_rt", "--lib"])
         .args(["--crate-type", "staticlib"])
+        .args(runtime_features())
         .status()?;
     if !status.success() {
         return Err("cargo rustc failed for pseudolearn_aot_rt".into());
@@ -53,6 +54,14 @@ fn compile_static_library(
     Ok(target_directory
         .join("release")
         .join("libpseudolearn_aot_rt.a"))
+}
+
+fn runtime_features() -> &'static [&'static str] {
+    if std::env::var_os("CARGO_FEATURE_TEST_HOST").is_some() {
+        &["--features", "test-host"]
+    } else {
+        &[]
+    }
 }
 
 fn strip_debug_information(archive: &Path) {

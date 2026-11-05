@@ -119,6 +119,7 @@ impl DocumentSession {
             analysis: &self.analysis,
             index: &self.index,
             syntax_diagnostics: &self.syntax_diagnostics,
+            imported_types: &[],
             profile: self.profile,
             locale,
         }

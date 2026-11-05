@@ -49,7 +49,7 @@ fn append(
             expected: &expected,
         };
         let request = requests::build(case, &selection, vocabulary)?;
-        fixtures.push(json!({"specification":identity,"case":case.fields.get("id"),"request":request,"expected":expected}));
+        fixtures.push(json!({"specification":identity,"case":case.fields.get("id"),"rule":case.fields.get("regla"),"request":request,"expected":expected}));
     }
     Ok(())
 }

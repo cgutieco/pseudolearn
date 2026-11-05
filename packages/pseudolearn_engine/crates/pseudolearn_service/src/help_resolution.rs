@@ -2,7 +2,9 @@ mod context;
 mod generic_roles;
 mod identifier;
 mod module_directive;
+mod module_roles;
 mod operator;
+mod record_access_roles;
 mod record_roles;
 mod selection;
 
@@ -86,6 +88,17 @@ pub fn resolve_help_with_locale(
     resolve_help_in_context(&document.localized_query_context(locale), position)
 }
 
+pub fn resolve_help_with_imports(
+    document: &DocumentSession,
+    position: Position,
+    locale: HelpLocale,
+    imported_types: &[(u32, u32)],
+) -> Option<HelpQueryOutcome> {
+    let mut context = document.localized_query_context(locale);
+    context.imported_types = imported_types;
+    resolve_help_in_context(&context, position)
+}
+
 pub(crate) fn resolve_help_in_context(
     context: &QueryContext<'_>,
     position: Position,
@@ -99,6 +112,13 @@ pub(crate) fn resolve_help_in_context(
     let kind = context.tree.tokens.kind(slot)?;
     let span = context.tree.tokens.span(slot)?;
     let target = match kind {
+        _ if let Some(role) = module_roles::type_import(context, slot) => {
+            role_target(context, role)
+        }
+        TokenKind::Dot | TokenKind::LeftBracket | TokenKind::RightBracket => role_target(
+            context,
+            record_access_roles::record_access(context, slot, kind)?,
+        ),
         TokenKind::Identifier => identifier::target(context, slot, span)?,
         TokenKind::Keyword(keyword) => keyword_target(context, slot, keyword),
         operator if let Some(id) = operator::operator_identity(operator) => {
@@ -155,6 +175,7 @@ fn keyword_target(
         };
     }
     if let Some((identity, enclosing)) = record_roles::record_keyword(context, slot, keyword)
+        .or_else(|| public_signature(context, slot, keyword))
         .or_else(|| context::contextual_keyword(context, slot, keyword))
     {
         return ResolutionTarget {
@@ -174,6 +195,25 @@ fn keyword_target(
         symbol: None,
         certainty: contextual_certainty(context),
         enclosing: None,
+    }
+}
+
+fn public_signature(
+    context: &QueryContext<'_>,
+    slot: usize,
+    keyword: KeywordKind,
+) -> Option<(HelpIdentity, Span)> {
+    (keyword == KeywordKind::PublicVisibility)
+        .then(|| module_roles::public_signature(context, slot))
+        .flatten()
+}
+
+fn role_target(context: &QueryContext<'_>, role: (HelpIdentity, Span)) -> ResolutionTarget {
+    ResolutionTarget {
+        identity: Some(role.0),
+        symbol: None,
+        certainty: contextual_certainty(context),
+        enclosing: Some(role.1),
     }
 }
 

@@ -40,7 +40,11 @@ fn imported_types_constants_and_templates_run_as_a_project() -> std::io::Result<
         "--entry",
         "app/main",
     ])?;
-    assert_eq!(standard_output(&output), "8:Verde:8:14\n4:hola\n", "{output:?}");
+    assert_eq!(
+        standard_output(&output),
+        "8:Verde:8:14\n4:hola\n",
+        "{output:?}"
+    );
     assert_eq!(output.status.code(), Some(0));
     Ok(())
 }

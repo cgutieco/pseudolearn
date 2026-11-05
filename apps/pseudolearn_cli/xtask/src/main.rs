@@ -71,6 +71,15 @@ fn commands() -> Vec<Vec<&'static str>> {
         ],
         vec!["test", "--workspace"],
         vec![
+            "test",
+            "--features",
+            "test-host",
+            "--test",
+            "aot_adapter_tests",
+            "--test",
+            "aot_effect_parity",
+        ],
+        vec![
             "run",
             "--manifest-path",
             "../../packages/pseudolearn_rust_checks/Cargo.toml",
