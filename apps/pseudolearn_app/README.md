@@ -3170,3 +3170,12 @@ respuesta del motor. `RustExecutionEventEffects` lleva el desplazamiento acumula
 `error`. Cada `EscribirError` produce un evento completo dentro de un tramo, así que un evento nunca queda a medias. Límites: el código de salida se
 lee pero la app no lo muestra, el estilo propio no existe en la extensión web ni en la frontera Wasm, y no hay
 proyección específica de las operaciones nuevas más allá de la que ya da el catálogo exportado.
+
+### Aceptación de la biblioteca de propósito general
+
+`integration_test/general_purpose_acceptance_test.dart` ejecuta con el motor nativo real el programa de operaciones puras
+(texto, números, formato, colecciones y calendario) y exige las once líneas derivadas de las reglas. Se ejecuta con
+`flutter test integration_test/general_purpose_acceptance_test.dart -d macos` y, en simulador,
+`flutter test --no-pub --device-id <UDID> integration_test/general_purpose_acceptance_test.dart`. Pasó en macOS (debug) y
+en el simulador iPhone 18 Pro (iOS 27.0). No cubre archivos, entorno ni consola con efectos físicos, y Windows no se
+ejecutó.

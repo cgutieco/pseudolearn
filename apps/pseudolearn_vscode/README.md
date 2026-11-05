@@ -375,3 +375,5 @@ navegador no tiene entorno). `tests/adapters/browser_operation_coverage.test.ts`
 la biblioteca ya no exporta; incluye un caso negativo con una operación retirada. La extensión de escritorio ejecuta por
 `pseudo ejecutar --editor`, así que cualquier operación del anfitrión físico la alcanza sin código propio. No se
 verificaron Firefox, WebKit ni Windows en esta fase.
+
+`tests/web/general_purpose_scenario.ts` ejecuta en el host web los programas de `tests/fixtures/web-scenarios/es/proposito-general/` y exige la salida de las operaciones puras de la biblioteca y el error tipado `permiso_denegado` de `Entorno`. Pasó en Chromium y WebKit; Firefox no se ejecutó. Antes hay que reconstruir con `pnpm build:wasm`, `pnpm generate:grammar` y `pnpm build:web`.

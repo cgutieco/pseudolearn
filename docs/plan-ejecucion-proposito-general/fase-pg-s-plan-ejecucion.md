@@ -323,7 +323,7 @@ corrige los demás puntos. Puerta G2 de §10.
 - [x] `PG-S.01.10` Verificación: `see validate`, `see lock --refresh <IDs editados>`, `see export --check`,
   `see conform --subject engine --only LIB.CORE.TEXT` y `--only LIB.MODEL`, `cargo test -p pseudolearn_library`,
   y los consumidores tocados. Registrar salida y código de salida.
-- [ ] `PG-S.01.11` Informe de piloto en §11: huella real de archivos, errores inesperados, ajustes a §5 y a los demás
+- [x] `PG-S.01.11` Informe de piloto en §11: huella real de archivos, errores inesperados, ajustes a §5 y a los demás
   puntos. **Parada de control G2.**
 
 ### PG-S.02 · Ordenar, invertir y buscar en colecciones
@@ -602,14 +602,14 @@ operaciones nuevas.
   Plataformas: VM (API), CLI, extensión de escritorio, extensión web (Chromium y WebKit), app macOS, app iOS simulador,
   app Windows. Cada celda: `cumple`, `error tipado de plataforma esperado` (con el `ErrorES` que lo documenta) o
   `no verificado` (Windows, sin ejecución real, rotulado como en PG-B.27).
-- [ ] `PG-S.09.02` Programa de aceptación por plataforma: **un archivo único** por área que ejerce todas las operaciones
+- [x] `PG-S.09.02` Programa de aceptación por plataforma: **un archivo único** por área que ejerce todas las operaciones
   nuevas del área con salida determinista (no depende de la hora, del entorno ni del disco del usuario salvo las
   variables que el propio programa fija o la carpeta temporal que crea y borra). Se ejecuta en cada plataforma real
   disponible en el equipo (CLI, extensión web, app macOS, app iOS en simulador) siguiendo el patrón de PG-B.27.
 - [x] `PG-S.09.03` Extensión web: para cada operación, el adaptador responde con valor real o con `ErrorES` tipado de
   plataforma (entorno, quizá `Renombrar` según el proveedor); ninguna operación queda sin rama (prueba de exhaustividad
   contra `EFFECT_OPERATIONS`, **tarea que debe fallar si se añade una operación nueva sin adaptador**).
-- [ ] `PG-S.09.04` App: puente (`native/`), puerto, consola con estilo para error y código de salida, diagramas/traza y
+- [x] `PG-S.09.04` App: puente (`native/`), puerto, consola con estilo para error y código de salida, diagramas/traza y
   ayuda (`C09`), selector de ejemplos si la app los tiene, exportación Rust/Python con equivalente o rótulo explícito
   (`PS-V-12`), matriz de cobertura sin celdas nuevas en «no soportado». Resultado de la suite Flutter dirigida.
 - [x] `PG-S.09.05` Extensión de escritorio: confirmar `PS-V-14` y ejecutar el programa de aceptación; DAP: la salida de
@@ -821,7 +821,7 @@ Estado de las tareas: §4.0 y PG-S.01 ejecutadas el 2026-11-04 sobre `2d6254aa`,
 | `PG-S.C02` | Pendiente | Este documento | Requiere revisión de la persona |
 | `PG-S.C11.01`, `PG-S.C03.01`–`.03` | Cumplida | Línea base: `cargo test -p pseudolearn_library` en verde sobre `2d6254aa` antes de editar el código de S.01; `see validate` y `see export --check` en verde. Hipótesis en §11.1 | La suite completa del motor se ejecutó al cierre (`cargo xtask verify`) |
 | `PG-S.01.01`–`.10` | Cumplida | Corpus: `LIB.CORE.TEXT#T4`, casos C19–C30, D2 `text_to_upper`/`text_to_lower`, fichas `help.pgs01.*` en `tool.service.catalog.md`, cobertura IR V210, vínculos engine (`cumple`) y aot (`pendiente`, `PG-N.08`). Motor: `text_case.rs`, `text_case_tests.rs`, ramas en `local_operations.rs`. `see validate`, `lock --refresh` (IR.INSTRUCTIONS, LIB.MODEL, LIB.CORE.TEXT, TOOL.SERVICE.CATALOG), `export --check`, `conform --subject engine --operation properties` (31 propiedades) y `conform --subject engine` (2206 observaciones, 0 divergencias) | |
-| `PG-S.01.11` | Informe en §11.2 | | La parada de control G2 la decide la persona |
+| `PG-S.01.11` | Cumplida | Informe en §11.2; la persona confirmó el 2026-11-05 los casos de mayúsculas y minúsculas y los nombres `AMayusculas`/`toUpper` y `AMinusculas`/`toLower` | Parada de control G2 superada |
 | `PG-S.02.01`–`.10` | Cumplidas | [Informe y relevo](informe-pg-s-02-03.md) | Implementación, corpus, tests y consumidores preparados |
 | `PG-S.02.11` | Cumplida | `see validate/lock/export --check`; `conform --subject engine` en `LANG.TYPES.VECTOR`/`DICTIONARY` (0 divergencias); tests de `library`, `semantic`, `lowering`, `vm`, `runtime`, `service` en verde; E-PG-03 en el informe (74/740/7 400 instrucciones) | `PERF.*` sin regresión significativa |
 | `PG-S.03.01`–`.06`, `.08`–`.10` | Cumplidas | [Informe y relevo](informe-pg-s-02-03.md) | Código, oráculo, casos, propiedad y consumidores implementados |
@@ -833,7 +833,8 @@ Estado de las tareas: §4.0 y PG-S.01 ejecutadas el 2026-11-04 sobre `2d6254aa`,
 | `PG-S.07.01`–`.09` | Completo salvo app y Wasm (contrato aditivo `error_ranges`) | [informe](informe-pg-s-07-08.md) | |
 | `PG-S.08.01`–`.06` | Completo | [informe](informe-pg-s-07-08.md) | |
 | `PG-S.09.01`, `.03`, `.05`, `.06` | Cumplidas | [Informe](informe-pg-s-09.md) | CLI/VM y adaptador web verificados; el resto `no verificado` |
-| `PG-S.09.02`, `.04` | Pendientes | [Informe](informe-pg-s-09.md) | `.02`: solo CLI (faltan web real, app macOS e iOS simulador); `.04`: puente, vista de consola con estilo de error, exportación y suite Flutter sin tocar |
+| `PG-S.09.04` | Cumplida con salvedad | [Informe](informe-pg-s-09.md) | Estilo de error y lectura de `error_ranges`; sin visualización del código de salida |
+| `PG-S.09.02` | Cumplida con alcance acotado | [Informe](informe-pg-s-09.md) | CLI (los tres programas), Chromium y WebKit (puro y entorno), app macOS e iOS simulador (solo el programa puro). Windows y Firefox no ejecutados |
 | `PG-S.C03`–`C13` | Pendiente | | |
 
 ### 11.1 Registro de hipótesis (`PS-V-01`–`PS-V-14`)

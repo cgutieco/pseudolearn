@@ -26,6 +26,21 @@ Estado: implementado con el alcance que el equipo permite. No se hizo commit ni 
 | S.07 error y salida | cumple | cumple (stderr, código 7) | idem | confirma conteo, sin estilo propio | sin vista de error | no verificado | no verificado |
 | S.08 formato | cumple | cumple | idem | no verificado | no verificado | no verificado | no verificado |
 
+## Ejecución web real (S.09.02)
+
+Se reconstruyó el Wasm (`pnpm build:wasm`), se regeneró la gramática TextMate (`pnpm generate:grammar`, artefacto
+generado) y se ejecutó `tests/web/run-web.mjs` con el escenario nuevo `general_purpose_scenario.ts` (programas de
+`tests/fixtures/web-scenarios/es/proposito-general/`, copias de los de la CLI): Chromium y WebKit en verde. El escenario
+exige la salida de las operaciones puras derivada de las reglas y el error tipado `permiso_denegado` de `Entorno`.
+Firefox no se ejecutó. La columna «Ext. web» de las áreas puras (S.01, S.02, S.03, S.08, S.05 puro) y S.06 pasa a
+`cumple` en Chromium y WebKit; S.04 y S.07 siguen como estaban.
+
+## Ejecución en la app (S.09.02)
+
+`apps/pseudolearn_app/integration_test/general_purpose_acceptance_test.dart` ejecuta el programa puro por el servicio de
+ejecución con el puente nativo real: app macOS (debug) y simulador iPhone 18 Pro (iOS 27.0), ambos en verde, con las once
+líneas esperadas. Los programas de archivos y de consola con efectos físicos no se ejecutaron en la app.
+
 ## No verificado físicamente
 
 Windows, dispositivos físicos, Firefox, WebKit y Chromium reales, suite Flutter, iOS simulador y la vista de consola de
@@ -34,5 +49,5 @@ de editor real en esta fase.
 
 ## Pendientes
 
-1. `PG-S.09.02`: ejecutar los programas en extensión web (Chromium/WebKit), app macOS y app iOS simulador.
-2. `PG-S.09.04`: la app no interpreta `error_ranges` ni `exit_code`; falta el estilo propio de la consola, la proyección de operaciones nuevas, la matriz de cobertura y la suite Flutter dirigida.
+1. `PG-S.09.02`: en la app solo se ejecutó el programa puro (no archivos ni consola con efectos); sin Windows ni Firefox.
+2. `PG-S.09.04`: hecho el estilo de error y la lectura de `error_ranges`/`exit_code` (834 pruebas Flutter dirigidas en verde); la app no muestra el código de salida y no se verificó el color en ambos temas.
