@@ -4335,6 +4335,17 @@
       "severidad": "warning",
       "tipos_argumentos": {}
     },
+    "recordArrayTooWide": {
+      "argumentos": [],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "A record with more than 1024 leaves cannot be an array element",
+        "es": "Un registro con más de 1024 hojas no puede ser elemento de un arreglo"
+      },
+      "politica": "A",
+      "severidad": "error",
+      "tipos_argumentos": {}
+    },
     "recordCannotBeWritten": {
       "argumentos": [],
       "clase": "semantic",
@@ -25140,6 +25151,398 @@
             }
           }
         ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R5",
+            "specification": "LANG.TYPES.RECORD",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C23",
+                "kind": "executable",
+                "label": "Program that runs: Record as an array element",
+                "profile": "en",
+                "specification": "LANG.TYPES.RECORD",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C45",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Record as an array element",
+                "profile": "en",
+                "specification": "LANG.TYPES.RECORD",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "leftBracket",
+                "text": "Opens the index of the array element."
+              },
+              {
+                "identity": "rightBracket",
+                "text": "Closes the index of the array element."
+              }
+            ],
+            "purpose": "It keeps several records under one array and updates a single field of an element by its index.",
+            "summary": "An array can hold records as elements and each element is copied when read or written.",
+            "title": "Record as an array element"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C23",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Registro como elemento de arreglo",
+                "profile": "es",
+                "specification": "LANG.TYPES.RECORD",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C45",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Registro como elemento de arreglo",
+                "profile": "es",
+                "specification": "LANG.TYPES.RECORD",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "leftBracket",
+                "text": "Abre el índice del elemento del arreglo."
+              },
+              {
+                "identity": "rightBracket",
+                "text": "Cierra el índice del elemento del arreglo."
+              }
+            ],
+            "purpose": "Permite guardar varios registros bajo un solo arreglo y actualizar un solo campo de un elemento por su índice.",
+            "summary": "Un arreglo puede tener registros como elementos y cada elemento se copia al leerse o escribirse.",
+            "title": "Registro como elemento de arreglo"
+          }
+        },
+        "id": "help.pgl01.record_array_element",
+        "identity": {
+          "id": "postfix",
+          "kind": "role",
+          "role": "pgl01_record_array_element"
+        },
+        "tokens": [
+          {
+            "identity": "leftBracket",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "rightBracket",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R5",
+            "specification": "LANG.TYPES.RECORD",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C28",
+                "kind": "executable",
+                "label": "Program that runs: Record as a class field",
+                "profile": "en",
+                "specification": "LANG.TYPES.RECORD",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C44",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Record as a class field",
+                "profile": "en",
+                "specification": "LANG.TYPES.RECORD",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "dot",
+                "text": "Selects a field or subfield of the record stored in the object."
+              }
+            ],
+            "purpose": "It lets a program read and assign object.field.subfield without sharing the record between objects.",
+            "summary": "A class field of record type stores the record by value inside the object.",
+            "title": "Record as a class field"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C28",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Registro como campo de clase",
+                "profile": "es",
+                "specification": "LANG.TYPES.RECORD",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C44",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Registro como campo de clase",
+                "profile": "es",
+                "specification": "LANG.TYPES.RECORD",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "dot",
+                "text": "Selecciona un campo o subcampo del registro guardado en el objeto."
+              }
+            ],
+            "purpose": "Permite leer y asignar objeto.campo.subcampo sin compartir el registro entre objetos.",
+            "summary": "Un campo de clase de tipo registro guarda el registro por valor dentro del objeto.",
+            "title": "Registro como campo de clase"
+          }
+        },
+        "id": "help.pgl01.record_class_field",
+        "identity": {
+          "id": "postfix",
+          "kind": "role",
+          "role": "pgl01_record_class_field"
+        },
+        "tokens": [
+          {
+            "identity": "dot",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R5",
+            "specification": "LANG.TYPES.RECORD",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C31",
+                "kind": "executable",
+                "label": "Program that runs: Record in a member signature",
+                "profile": "en",
+                "specification": "LANG.TYPES.RECORD",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "typeConnector",
+                "text": "Declares the record type of a parameter or of the result."
+              }
+            ],
+            "purpose": "An override keeps the same record signature and every call copies the record.",
+            "summary": "A method, constructor or interface can receive and return records.",
+            "title": "Record in a member signature"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C31",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Registro en la firma de un método",
+                "profile": "es",
+                "specification": "LANG.TYPES.RECORD",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "typeConnector",
+                "text": "Declara el tipo registro de un parámetro o del resultado."
+              }
+            ],
+            "purpose": "La sobrescritura conserva la misma firma con registros y cada llamada copia el registro.",
+            "summary": "Un método, un constructor o una interfaz pueden recibir y devolver registros.",
+            "title": "Registro en la firma de un método"
+          }
+        },
+        "id": "help.pgl01.record_member_signature",
+        "identity": {
+          "id": "parameter",
+          "kind": "role",
+          "role": "pgl01_record_member_signature"
+        },
+        "tokens": [
+          {
+            "identity": "typeConnector",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R3",
+            "specification": "LANG.TYPES.RECORD",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C35",
+                "kind": "executable",
+                "label": "Program that runs: Record by reference",
+                "profile": "en",
+                "specification": "LANG.TYPES.RECORD",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C36",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Record by reference",
+                "profile": "en",
+                "specification": "LANG.TYPES.RECORD",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "byReference",
+                "text": "Marks the record parameter as an alias of the argument."
+              }
+            ],
+            "purpose": "It lets a subroutine update a variable, an object field or an array element.",
+            "summary": "A record parameter passed by reference is an alias of its target and each field is the target's field.",
+            "title": "Record by reference"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C35",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Registro por referencia",
+                "profile": "es",
+                "specification": "LANG.TYPES.RECORD",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C36",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Registro por referencia",
+                "profile": "es",
+                "specification": "LANG.TYPES.RECORD",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "byReference",
+                "text": "Marca el parámetro de registro como alias del argumento."
+              }
+            ],
+            "purpose": "Permite que un subprograma actualice una variable, un campo de objeto o un elemento de arreglo.",
+            "summary": "Un parámetro de registro por referencia es un alias del destino y cada campo es el campo del destino.",
+            "title": "Registro por referencia"
+          }
+        },
+        "id": "help.pgl01.record_by_reference",
+        "identity": {
+          "id": "parameter",
+          "kind": "role",
+          "role": "pgl01_record_by_reference"
+        },
+        "tokens": [
+          {
+            "identity": "byReference",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
       }
     ],
     "exclusions": [],
@@ -27857,6 +28260,60 @@
           ],
           "tokens": [
             "dictionaryKeys"
+          ]
+        },
+        {
+          "identity": {
+            "id": "postfix",
+            "kind": "role",
+            "role": "pgl01_record_array_element"
+          },
+          "productions": [
+            "postfix",
+            "dimensioned"
+          ],
+          "tokens": [
+            "leftBracket",
+            "rightBracket"
+          ]
+        },
+        {
+          "identity": {
+            "id": "postfix",
+            "kind": "role",
+            "role": "pgl01_record_class_field"
+          },
+          "productions": [
+            "postfix"
+          ],
+          "tokens": [
+            "dot"
+          ]
+        },
+        {
+          "identity": {
+            "id": "parameter",
+            "kind": "role",
+            "role": "pgl01_record_member_signature"
+          },
+          "productions": [
+            "parameter"
+          ],
+          "tokens": [
+            "typeConnector"
+          ]
+        },
+        {
+          "identity": {
+            "id": "parameter",
+            "kind": "role",
+            "role": "pgl01_record_by_reference"
+          },
+          "productions": [
+            "parameter"
+          ],
+          "tokens": [
+            "byReference"
           ]
         }
       ]

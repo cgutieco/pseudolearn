@@ -941,7 +941,7 @@ Revisión Git de cierre: · Verificadores ejecutados: · Pendientes justificados
 Objetivo: que toda construcción de la edición 2026 se combine con las demás sin diagnósticos de «no soportado».
 Origen: [análisis del 2026-11-02](analisis-lenguaje-completo-sin-simulacion.md), §A.8.1 y §B.3a.
 
-- [ ] `PG-L.01` Registros como elemento de arreglo y vector, campo de clase, parámetro y resultado de métodos y constructores, y por referencia.
+- [x] `PG-L.01` Registros como elemento de arreglo y vector, campo de clase, parámetro y resultado de métodos y constructores, y por referencia.
 - [ ] `PG-L.02` Visibilidad y exportación de constantes, enumerados y registros entre módulos.
 - [ ] `PG-L.03` Genéricos exportables entre módulos.
 - [ ] `PG-L.04` Clases genéricas y variantes genéricas de usuario.

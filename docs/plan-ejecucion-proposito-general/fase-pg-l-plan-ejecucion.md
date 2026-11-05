@@ -376,7 +376,7 @@ Orden interno: firmas de miembros (lo más barato) → campos de clase → por r
   índice inválido falla antes de entrar (`LANG.SUBPROGRAM.BY-REFERENCE#R1`). Igualdad `=`/`<>` de elementos y campos.
   Límite de hojas: registro con el máximo de hojas que admite el operando de 16 bits (o el límite vigente que diga la
   regla) como arreglo y como campo. Cada regla nueva o reescrita con al menos un caso (`SPEC-NO-ORPHAN-RULE`).
-- [ ] `PG-L.01.04` Tests dirigidos que fallan por ausencia: reescribir las aserciones de
+- [x] `PG-L.01.04` Tests dirigidos que fallan por ausencia: reescribir las aserciones de
   `semantic/tests/type_declarations_tests.rs` 161–180 (ya no se espera el diagnóstico; se espera HIR válido); pruebas
   de semantic para campos sintéticos y parámetros; pruebas de lowering/RI para la forma de DL-02 y celdas por hoja;
   pruebas de verificador (`bytecode/src/verify_array_types.rs` o el que corresponda) con un caso negativo de ordinal de
@@ -391,10 +391,10 @@ Orden interno: firmas de miembros (lo más barato) → campos de clase → por r
   `record_arrays.rs`), RI (`operation.rs`, tipado y verificador), bytecode (compilación, verificación, mapas de raíces
   y de definición), VM (ejecución y recolección), abi (disposición si hace falta). `codegen`: añadir las operaciones
   nuevas a `UNSUPPORTED_OPERATIONS` (DL-15). Regenerar con `cargo build`.
-- [ ] `PG-L.01.06` Consumidores mínimos del motor: `api` (vista de estado e inspección de elementos y campos registro:
+- [x] `PG-L.01.06` Consumidores mínimos del motor: `api` (vista de estado e inspección de elementos y campos registro:
   presentación por hojas con nombres `campo.hoja` o anidada, según el formato vigente de `API.STATE.QUERY` —leerlo—),
   `timeline`, `wasm` solo si un test de nivel D lo exige. La app y la extensión van en `PG-L.07`.
-- [ ] `PG-L.01.07` Fichas `help.pgl01.*` (DL-16) en `tool.service.catalog.md` con anclas a `LANG.TYPES.RECORD#R5` y
+- [x] `PG-L.01.07` Fichas `help.pgl01.*` (DL-16) en `tool.service.catalog.md` con anclas a `LANG.TYPES.RECORD#R5` y
   a un caso ejecutable.
 - [x] `PG-L.01.08` README: `semantic` (retirar el pendiente de registros; documentar DL-01, DL-03, DL-04, DL-05),
   `lowering` (bajada por hojas en campos, arreglos y referencias), `ir` y `bytecode` (forma de DL-02), `vm`, `abi`
@@ -840,7 +840,7 @@ por plataforma → F.10 criterio de salida. Push solo después de F.10 en verde 
 ## 11. Resumen de ejecución
 
 Estado: ejecución parcial el 2026-11-05 en una sola sesión sobre `d9d84bc7`. **La fase no está cerrada**: se cumplieron
-PG-L.01 (salvo consumidores del motor y fichas), PG-L.02 (salvo diagnóstico de firma pública, servicio y casos
+PG-L.01, PG-L.02 (salvo diagnóstico de firma pública, servicio y casos
 secundarios) y PG-L.06 (regla y pruebas; la VM ya cumplía). No se iniciaron PG-L.03, PG-L.04, PG-L.05 ni PG-L.07; el
 bloque F se ejecutó para lo implementado. Las casillas sin marcar son tareas **no realizadas**, no omitidas por descuido;
 cada una consta en la tabla siguiente con su motivo. Commits locales: `9acfbe96` (PG-L.01), `98b00836` (PG-L.06),
@@ -851,10 +851,10 @@ aceptar pendientes por escrito antes de publicar (`PHASE-GREEN`, §10.2).
 |---|---|---|---|
 | `PG-L.C01`, `C02` | Cumplida | Mensaje de la persona del 2026-11-05 | Autorización de ejecución y decisiones **Persona** aprobadas |
 | `PG-L.00.01`–`.04` | Cumplida | §11.1, §11.4; `cargo build -p pseudolearn_api` y `see validate` en verde al inicio | La línea base solo cubrió compilación y validación |
-| `PG-L.01.01`, `.02`, `.03`, `.05`, `.08`, `.09` | Cumplida con desviación | `9acfbe96`; pruebas `record_*` de `pseudolearn_api`; `lang.types.record.md` R1, R3, R5, C7–C45; conformidad engine de `LANG.TYPES.RECORD` (88 observaciones, 0 divergencias) | DL-02 se resolvió con arreglos paralelos por hoja, no con elementos anchos en la RI (§11.3). Casos no escritos: límite de hojas de 16 bits, índice inválido antes de entrar por referencia, valor función de un método, registro con campo de clase dentro de un elemento |
-| `PG-L.01.04` | No cumplida | | Se reescribieron las pruebas de `semantic`; no hay pruebas dirigidas nuevas de `lowering`, `ir`, `bytecode` ni `vm`, ni verificador negativo, porque no se tocaron esas capas |
-| `PG-L.01.06` | No cumplida | | La vista de estado de `api` muestra los arreglos por hoja (`a.x`) sin agrupar; no se revisó `timeline` ni `wasm` |
-| `PG-L.01.07` | No cumplida | | Sin fichas `help.pgl01.*` |
+| `PG-L.01.01`, `.02`, `.03`, `.05`, `.08`, `.09` | Cumplida con desviación | `9acfbe96`; pruebas `record_*` de `pseudolearn_api`; `lang.types.record.md` R1, R3, R5, C7–C45; conformidad engine de `LANG.TYPES.RECORD` (88 observaciones, 0 divergencias) | DL-02 se resolvió con arreglos paralelos por hoja, no con elementos anchos en la RI (§11.3). Casos añadidos después: `C45`–`C47` (límite de hojas en arreglos, `recordArrayTooWide`, y índice inválido por referencia); valor función de un método (clausura sobre el objeto) y objeto dentro de un elemento cubiertos solo por tests de `api` |
+| `PG-L.01.04` | Cumplida con desviación | `pseudolearn_api/tests/record_leaf_lowering.rs` (bajada a un `array.new` por hoja, `array.load`/`store` por hoja, bytecode verificado, negativo del verificador de la RI con `array.load` sobre un no arreglo), `record_position_limits.rs` (con `gc_stress`) y `semantic/tests/type_declarations_tests.rs` | Sin instrucciones de hoja por ordinal (DL-02 se resolvió con arreglos paralelos), no existe el negativo de «ordinal de hoja inválido»; lo sustituye el negativo de tipo del verificador de la RI |
+| `PG-L.01.06` | Cumplida | `pseudolearn_api/tests/record_state.rs`: variable `q.x`, campo de clase `p.x` dentro del objeto, arreglo como una referencia por hoja (`a.x`) con celdas sin valor para hojas sin definir | Se conserva el formato por hoja, el vigente para variables registro; `timeline` y `wasm` no necesitaron cambios (ningún test de nivel D los exige) |
+| `PG-L.01.07` | Cumplida | `help.pgl01.record_array_element`, `record_class_field`, `record_member_signature` y `record_by_reference` en `tool.service.catalog.md` (más sus roles y la copia de `catalogs.json`), con anclas a `LANG.TYPES.RECORD#R5`/`#R3` y casos ejecutables y de diagnóstico | |
 | `PG-L.02.01`, `.05`, `.08` | Cumplida | `c61c2f63`; `lang.module.import.md` R1, R2, C35–C42; conformidad engine de `LANG.MODULE.IMPORT`, `LANG.TYPES.ENUM` y `LANG.DECL.CONSTANT` en verde | El analizador sintáctico rechazaba `Publico` ante enumerados, registros, constantes e interfaces (PL-V-07 desmentida en parte) |
 | `PG-L.02.02` | No cumplida | | Falta la regla y el diagnóstico `privateTypeInPublicSignature` |
 | `PG-L.02.03` | No cumplida | | Faltan casos de `Segun` sobre enumerado importado, reexportación encadenada, `privateReexport`, `ambiguousReexport` y límites |
@@ -917,6 +917,7 @@ Suites omitidas: `flutter test`, extensión, `PERF.*`, experimentos `PL-E01`–`
 | DL-07 | Interfaces exportables | «Sí, recomendadas», 2026-11-05 | Aplicada |
 | DL-09, DL-10 | Clases genéricas y variantes de usuario | «Sí, recomendadas», 2026-11-05 | Aprobadas pero **no implementadas** en esta sesión |
 | DL-11 | Retiro de `Generico` y de `unsupportedInterfaceConstruct` | «Sí, recomendadas», 2026-11-05 | `unsupportedInterfaceConstruct` retirado; `unsupportedGenericsConstruct` permanece hasta PG-L.04 |
+| DL-02 (límite) | Hojas de un registro como elemento de arreglo | Hallazgo de `PG-L.01.04` | Un arreglo de 65 535 hojas agotaba la memoria por los mapas de raíces cuadráticos de `array.new`; se fijó `RECORD_ARRAY_MAXIMUM_LEAVES` = 1 024 y el diagnóstico `recordArrayTooWide` (`LANG.TYPES.RECORD#R5`). Como variable o campo de clase se admiten las 65 535 hojas |
 | DL-02 (desviación) | Registro como elemento de arreglo | Opción (a) elegida el 2026-11-05 | **No aplicada**: la RI, el bytecode, la VM y el nativo exigirían elementos de varias hojas. Se aplicó el equivalente de (b) restringido: un arreglo de registros es un arreglo por hoja detrás de un único nombre, viable porque un arreglo solo vive en variables y parámetros. Identidad de arreglo y paso por parámetro se conservan; la vista de estado muestra una entrada por hoja. Reversión: medición de `PL-E03` o ambigüedad del estado |
 | Nombres **CANDIDATOS** | Sintaxis y diagnósticos propuestos | «Sí, recomendadas», 2026-11-05 | Solo se usaron los de registros y módulos |
 

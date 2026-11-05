@@ -142,15 +142,30 @@ fn register(session: &mut AnalysisSession<'_>, declaration: LocalDeclaration) ->
     if session.module.types.representation(declaration.type_id) == Type::Error {
         session.invalid.insert(identifier);
     }
-    register_components(session, identifier, declaration.type_id);
+    register_components(
+        session,
+        identifier,
+        (declaration.type_id, declaration.name_node),
+    );
     identifier
 }
 
-fn register_components(session: &mut AnalysisSession<'_>, local: LocalId, type_id: TypeId) {
+fn register_components(
+    session: &mut AnalysisSession<'_>,
+    local: LocalId,
+    (type_id, name_node): (TypeId, usize),
+) {
     match session.module.types.representation(type_id) {
         Type::Record(record) => crate::record_locals::components(session, local, record),
         Type::Array { element, rank } => {
             if let Type::Record(record) = session.module.types.representation(element) {
+                if crate::record_locals::leaf_count(session, record)
+                    > pseudolearn_abi::RECORD_ARRAY_MAXIMUM_LEAVES
+                {
+                    session.report(DiagnosticCode::RecordArrayTooWide, name_node);
+                    session.invalid.insert(local);
+                    return;
+                }
                 crate::record_locals::array_components(session, local, (record, rank));
             }
         }

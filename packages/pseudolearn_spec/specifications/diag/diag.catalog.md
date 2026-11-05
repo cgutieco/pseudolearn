@@ -2458,6 +2458,17 @@
         "lexeme": "lexema"
       }
     },
+    "recordArrayTooWide": {
+      "mensajes": {
+        "es": "Un registro con más de 1024 hojas no puede ser elemento de un arreglo",
+        "en": "A record with more than 1024 leaves cannot be an array element"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": "error",
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
     "recordCannotBeWritten": {
       "mensajes": {
         "es": "Un registro no se puede escribir directamente",

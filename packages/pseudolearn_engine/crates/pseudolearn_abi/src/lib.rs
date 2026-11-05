@@ -51,7 +51,8 @@ pub use object_layout::{
     object_fields_start_offset,
 };
 pub use record_layout::{
-    RECORD_MAXIMUM_LEAVES, RecordBank, RecordLayout, RecordLayoutError, RecordLeaf,
+    RECORD_ARRAY_MAXIMUM_LEAVES, RECORD_MAXIMUM_LEAVES, RecordBank, RecordLayout,
+    RecordLayoutError, RecordLeaf,
 };
 pub use sentinel::{
     BOOLEAN_ABSENT_BITS, CHARACTER_ABSENT_BITS, REAL_ABSENT_BITS, boolean_absent_word,

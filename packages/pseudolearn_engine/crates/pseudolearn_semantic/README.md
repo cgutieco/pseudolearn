@@ -159,6 +159,13 @@ presión de registros o copia dominante.
   arreglo se expande a un arreglo por hoja igual que el registro, y `HirPlace::ElementRange` direcciona una hoja de un
   elemento. Cada hoja conserva su estado de definición (DL-03). Condición de reversión: una medición que muestre coste de
   `PL-E03` dominado por los arreglos paralelos, o que el estado de inspección no pueda agrupar las hojas sin ambigüedad.
+  Límite: un registro de más de `RECORD_ARRAY_MAXIMUM_LEAVES` (1 024) hojas no es elemento de arreglo
+  (`recordArrayTooWide`). Cada `array.new` es un punto seguro cuyo mapa de raíces lista todos los arreglos vivos, así que `n`
+  hojas producen `n²` entradas: con 65 535 hojas el proceso agotaba la memoria (medido: 2 000 hojas tardan 5 s en
+  depuración y 8 000 tardan 77 s). Como variable o campo de clase el registro admite las 65 535 hojas de
+  `RECORD_MAXIMUM_LEAVES` (coste lineal). La vista de estado muestra una variable `q.x` por hoja y, para un arreglo, una
+  referencia por hoja (`a.x`) a un arreglo con sus celdas; un campo de clase se lista como `p.x` dentro del objeto. Se
+  conserva ese formato por hoja en lugar de agrupar los elementos porque ya es el de las variables registro.
 
 **Exportación de tipos y constantes (PG-L).** Subprogramas, clases, interfaces, enumerados, registros y constantes de nivel
 superior son privados salvo `Publico` y se importan y reexportan por símbolo con la misma resolución que subprogramas y clases

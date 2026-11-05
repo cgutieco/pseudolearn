@@ -3,6 +3,14 @@ use crate::identities::{LocalId, RecordId};
 use crate::record_registry::slot;
 use crate::session::AnalysisSession;
 
+pub(crate) fn leaf_count(session: &AnalysisSession<'_>, record: RecordId) -> usize {
+    session
+        .module
+        .records
+        .get(slot(record))
+        .map_or(0, |model| model.leaf_types.len())
+}
+
 pub(crate) fn components(session: &mut AnalysisSession<'_>, local: LocalId, record: RecordId) {
     let Some(parent) = usize::try_from(local.0)
         .ok()

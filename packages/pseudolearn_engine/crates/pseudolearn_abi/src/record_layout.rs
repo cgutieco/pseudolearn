@@ -1,6 +1,7 @@
 #![forbid(unsafe_code)]
 
 pub const RECORD_MAXIMUM_LEAVES: usize = 65_535;
+pub const RECORD_ARRAY_MAXIMUM_LEAVES: usize = 1_024;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum RecordBank {

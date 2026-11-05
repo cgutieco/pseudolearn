@@ -44,7 +44,7 @@ de datos. Las técnicas que requieren medición se aceptan solo tras conservar r
 `RecordLayout` describe un registro como lista de hojas con su banco (escalar o de referencias) y su desplazamiento
 dentro de ese banco; las áreas escalar y de referencias son independientes, como el marco bicameral, de modo que el
 mapa de raíces de un registro es estático por tipo. Un registro anidado se aplana con `from_parts` y el máximo de
-hojas es el de un operando de 16 bits. Hoy lowering aplana los registros en valores y no consulta desplazamientos en
+hojas es el de un operando de 16 bits (`RECORD_MAXIMUM_LEAVES`); como elemento de arreglo el máximo es `RECORD_ARRAY_MAXIMUM_LEAVES` (1 024) porque cada hoja es un arreglo y los mapas de raíces crecen con el cuadrado de las hojas. Hoy lowering aplana los registros en valores y no consulta desplazamientos en
 memoria: esta disposición es el dato compartido que usarán la incrustación en objetos y vectores
 sin recalcular desplazamientos en cada motor. Semantic ya consume estas hojas para construir la unión por banco de las variantes.
 
