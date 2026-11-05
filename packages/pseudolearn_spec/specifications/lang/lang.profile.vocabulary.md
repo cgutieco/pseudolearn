@@ -1014,16 +1014,6 @@
         "en": []
       }
     },
-    "mutableKeyword": {
-      "lexemas": {
-        "es": "Mutable",
-        "en": "mutable"
-      },
-      "alias": {
-        "es": [],
-        "en": []
-      }
-    },
     "optionalType": {
       "lexemas": {
         "es": "Opcional",

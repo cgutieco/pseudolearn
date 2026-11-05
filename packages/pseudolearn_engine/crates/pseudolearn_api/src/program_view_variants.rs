@@ -54,10 +54,7 @@ fn binding(node: &ViewNode, tree: &SyntaxTree) -> Attributes {
     if !initialized {
         return Vec::new();
     }
-    let mutable = (first..=last).any(|index| {
-        tree.tokens.kind(index) == Some(TokenKind::Keyword(KeywordKind::MutableKeyword))
-    });
-    vec![("mutable", json!(mutable)), ("initialized", json!(true))]
+    vec![("initialized", json!(true))]
 }
 
 pub(crate) fn child_role(tree: &SyntaxTree, parent: usize, child: usize) -> &'static str {

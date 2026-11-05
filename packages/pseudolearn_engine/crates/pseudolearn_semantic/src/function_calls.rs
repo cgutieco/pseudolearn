@@ -51,6 +51,11 @@ pub(crate) fn argument(
     let expected = session.module.types.get(kind);
     let actual = session.expression_type(value);
     if passing == Passing::Reference {
+        crate::output_parameters::reference_argument(
+            session,
+            value,
+            (None, crate::output_parameters::Dispatch::Dynamic),
+        );
         if crate::snapshot_types::reject_write(session, value, node) {
             return value;
         }

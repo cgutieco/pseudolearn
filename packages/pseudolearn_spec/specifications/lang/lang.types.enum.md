@@ -286,7 +286,7 @@ Un enumerado es un conjunto cerrado de nombres con un ordinal por miembro.
     "arbol": "presente",
     "diagnosticos": [
       {
-        "codigo": "missingBindingInitializer",
+        "codigo": "variableUsedUninitialized",
         "severidad": "error"
       }
     ]

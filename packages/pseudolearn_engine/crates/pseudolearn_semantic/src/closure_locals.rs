@@ -22,7 +22,7 @@ pub(crate) fn create(
         span,
         scope: session.current,
         parameter,
-        mutable: false,
+        reassignable: false,
     });
     session
         .initialized

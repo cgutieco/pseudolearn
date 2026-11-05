@@ -61,9 +61,16 @@ fn fallback(
             source: typed(context, instruction.operands.get(1))?,
         },
         Opcode::CellField => field_cell(context, instruction)?,
-        Opcode::HostRandom => MemoryOp::Random {
-            destination: destination(instruction)?.index,
-        },
+        Opcode::HostRandom | Opcode::HostRandomBelow | Opcode::HostRandomBetween => {
+            MemoryOp::Random {
+                destination: destination(instruction)?.index,
+                bounds: instruction
+                    .operands
+                    .iter()
+                    .map(|operand| typed(context, Some(operand)))
+                    .collect::<Result<_, _>>()?,
+            }
+        }
         Opcode::OutWrite => output(context, instruction)?,
         _ => text(context, instruction)?,
     })

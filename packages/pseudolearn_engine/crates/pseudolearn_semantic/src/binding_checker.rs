@@ -3,17 +3,29 @@ use crate::identities::LocalId;
 use crate::session::AnalysisSession;
 use crate::statement_model::HirStatement;
 use pseudolearn_diagnostics::DiagnosticCode;
+use pseudolearn_syntax::NodeKind;
 
 pub(crate) fn initialize(session: &mut AnalysisSession<'_>, node: usize) -> Option<HirStatement> {
-    let local = session.declarations.get(&node)?.first().copied()?;
+    let locals = session.declarations.get(&node)?.clone();
+    let type_node = session.child(node, NodeKind::Type);
+    let Some(value_node) = session
+        .children(node)
+        .last()
+        .copied()
+        .filter(|last| Some(*last) != type_node)
+    else {
+        return Some(HirStatement::Declare(locals));
+    };
+    let local = locals.first().copied()?;
     let declaration = session
         .module
         .locals
         .get(usize::try_from(local.0).ok()?)?
         .clone();
-    let value_node = session.children(node).last().copied()?;
     let before = session.diagnostics.len();
+    let mark = session.assignment.pending_arguments.len();
     let value = crate::expression_checker::check_expected(session, value_node, declaration.type_id);
+    crate::definite_assignment_report::flush(session, mark);
     crate::result_obligations::assign(session, local, value, node);
     replace_self_read(session, before, &declaration.name);
     let expected = session.module.types.get(declaration.type_id);
@@ -27,6 +39,7 @@ pub(crate) fn initialize(session: &mut AnalysisSession<'_>, node: usize) -> Opti
     }
     let value = crate::expression_checker::widen(session, value, &expected);
     mark_initialized(session, local);
+    crate::definite_assignment_state::initialize(session, local);
     Some(HirStatement::Assign {
         destination: HirPlace::Local(local),
         value,
@@ -70,7 +83,7 @@ pub(crate) fn check_destination(session: &mut AnalysisSession<'_>, place: &HirPl
     if usize::try_from(local.0)
         .ok()
         .and_then(|index| session.module.locals.get(index))
-        .is_some_and(|local| !local.mutable)
+        .is_some_and(|local| !local.reassignable)
     {
         session.report(DiagnosticCode::ImmutableBindingAssignment, node);
     }

@@ -14,6 +14,9 @@ pub(crate) fn check(session: &mut AnalysisSession<'_>, node: usize) -> Option<St
         .collect();
     let mut declarations = Vec::new();
     for (local, dimensioned) in locals.into_iter().zip(dimensioned) {
+        if local == crate::dimension_adoption::MISSING {
+            continue;
+        }
         let dimensions: Vec<_> = session
             .children(dimensioned)
             .into_iter()

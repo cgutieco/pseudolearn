@@ -123,6 +123,9 @@ pub(crate) fn register_function(
 }
 
 fn resolve_result(session: &mut AnalysisSession<'_>, node: usize) -> crate::identities::TypeId {
+    if let Some(kind) = crate::return_variable::result(session, node) {
+        return kind;
+    }
     session
         .child(node, NodeKind::Type)
         .map(|type_node| crate::type_resolution::resolve(session, type_node))

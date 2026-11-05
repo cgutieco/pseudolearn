@@ -38,9 +38,12 @@ impl Machine<'_> {
                 right,
                 equal,
             } => self.compare_references(*destination, (*left, *right), *equal)?,
-            MemoryOp::Random { destination } => {
-                let value = self.random.next_real();
-                self.set_scalar(*destination, value.to_bits())?;
+            MemoryOp::Random {
+                destination,
+                bounds,
+            } => {
+                let word = self.random_word(bounds)?;
+                self.set_scalar(*destination, word)?;
             }
             MemoryOp::Text { .. } | MemoryOp::Output { .. } => return self.memory_text(operation),
             _ => return self.memory_cell(operation),
@@ -156,6 +159,27 @@ impl Machine<'_> {
                 u32::try_from(word).map_err(|_| INVALID_BYTECODE)?,
             ),
         }
+    }
+
+    fn random_word(&mut self, bounds: &[crate::load::memory::TypedSource]) -> Result<u64, Fault> {
+        let integers = bounds
+            .iter()
+            .map(|bound| self.read_value(bound.source).map(integer_of))
+            .collect::<Result<Vec<_>, _>>()?;
+        let value = match integers.as_slice() {
+            [] => return Ok(self.random.next_real().to_bits()),
+            [bound] => u64::try_from(*bound)
+                .ok()
+                .and_then(|bound| self.random.next_below(bound))
+                .and_then(|value| i64::try_from(value).ok())
+                .ok_or("invalidRandomBound")?,
+            [low, high] => self
+                .random
+                .next_between(*low, *high)
+                .ok_or("invalidRandomRange")?,
+            _ => return Err(INVALID_BYTECODE),
+        };
+        Ok(u64::from_ne_bytes(value.to_ne_bytes()))
     }
 
     pub(super) fn read_value(

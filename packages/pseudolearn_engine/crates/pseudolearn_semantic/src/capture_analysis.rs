@@ -14,7 +14,7 @@ pub(crate) fn resolve(session: &mut AnalysisSession<'_>, local: LocalId, node: u
     if declaration.scope == session.current || session.closure_stack.is_empty() {
         return local;
     }
-    if declaration.mutable || declaration.passing == Passing::Reference {
+    if declaration.passing == Passing::Reference {
         let kind = session.module.types.get(declaration.type_id);
         let argument = crate::diagnostic_arguments::type_argument(session, &kind);
         session.named_report(
@@ -29,6 +29,13 @@ pub(crate) fn resolve(session: &mut AnalysisSession<'_>, local: LocalId, node: u
         return local;
     }
     session.reads.insert(local);
+    if first_capture(session, local) {
+        let span = session.span(node);
+        if !session.initialized.get(usize::try_from(local.0).unwrap_or(usize::MAX)).copied().unwrap_or(false) {
+            crate::definite_assignment_report::unassigned_read(session, local, span);
+        }
+        crate::capture_validation::record(session, local, span);
+    }
     let frames = session.closure_stack.clone();
     let start = frames
         .iter()
@@ -72,4 +79,14 @@ fn capture(session: &mut AnalysisSession<'_>, function: FunctionId, original: Lo
         closure.captures.push((original, proxy));
     }
     proxy
+}
+
+fn first_capture(session: &AnalysisSession<'_>, original: LocalId) -> bool {
+    session.closure_stack.last().is_none_or(|frame| {
+        session
+            .module
+            .closures
+            .get(&frame.function)
+            .is_none_or(|closure| !closure.captures.iter().any(|(source, _)| *source == original))
+    })
 }

@@ -73,10 +73,22 @@ pub(crate) fn lower_widen(
     span: Option<IrSpan>,
     state: &mut ExpressionState<'_, '_>,
 ) -> ValueId {
+    let character = usize::try_from(inner.0)
+        .ok()
+        .and_then(|index| state.context.module.expressions.types.get(index))
+        .is_some_and(|kind| {
+            state.context.module.types.representation(*kind)
+                == pseudolearn_semantic::types::Type::Character
+        });
+    let operation = if character {
+        Operation::TextFormat
+    } else {
+        Operation::IntToReal
+    };
     let inner_value = lower_expression_with_state(inner, state);
     let result = state.builder.next_value();
     state.builder.emit_with_target(
-        Operation::IntToReal,
+        operation,
         vec![Operand::Value(inner_value)],
         (Some(result), span),
     );

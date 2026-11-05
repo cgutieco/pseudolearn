@@ -199,7 +199,11 @@ fn emit_method(
     function: FunctionId,
     mut arguments: Vec<ExpressionId>,
 ) -> ExpressionId {
-    crate::argument_checker::check(session, function, &mut arguments, invocation.node);
+    if session.kind(invocation.target) == NodeKind::SuperClass {
+        crate::argument_checker::check(session, function, &mut arguments, invocation.node);
+    } else {
+        crate::argument_checker::check_dynamic(session, function, &mut arguments, invocation.node);
+    }
     let Some(signature) = crate::hierarchy::function(session, function).cloned() else {
         return crate::expression_checker::invalid(session, invocation.node);
     };

@@ -90,5 +90,6 @@ pub(crate) enum MemoryOp {
     },
     Random {
         destination: u16,
+        bounds: Vec<TypedSource>,
     },
 }

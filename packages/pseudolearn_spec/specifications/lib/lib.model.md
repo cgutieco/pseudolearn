@@ -194,12 +194,41 @@
         "en": "random"
       },
       "alias": {
-        "es": [
-          "aleatorio"
-        ],
+        "es": [],
         "en": [
           "rand"
         ]
+      },
+      "parametros": [
+        "integer"
+      ],
+      "retorno": "integer"
+    },
+    "randomBetween": {
+      "family": "numbers",
+      "lexemas": {
+        "es": "Aleatorio",
+        "en": "randomBetween"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "integer",
+        "integer"
+      ],
+      "retorno": "integer"
+    },
+    "randomUnit": {
+      "family": "numbers",
+      "lexemas": {
+        "es": "AzarReal",
+        "en": "randomReal"
+      },
+      "alias": {
+        "es": [],
+        "en": []
       },
       "parametros": [],
       "retorno": "real"
@@ -243,7 +272,9 @@
         "en": "toReal"
       },
       "alias": {
-        "es": [],
+        "es": [
+          "ConvertirANumero"
+        ],
         "en": []
       },
       "parametros": [
@@ -341,6 +372,22 @@
         "string",
         "integer",
         "integer"
+      ],
+      "retorno": "string"
+    },
+    "concatenate": {
+      "family": "text",
+      "lexemas": {
+        "es": "Concatenar",
+        "en": "concat"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "string",
+        "string"
       ],
       "retorno": "string"
     },
@@ -649,7 +696,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "D1 declara las veintiocho funciones incorporadas con lexemas canónicos, alias bilingües, firmas y familia; D2 declara las operaciones de capacidad y de biblioteca con su identidad, familia, receptor, formas, parámetros, retorno y efecto. D3 declara el constructor contextual y Enviar, Recibir y Cerrar con sus tipos y necesidad de Aguardar; no son operaciones del anfitrión. Los nombres no son palabras reservadas; un subprograma homónimo oculta la función libre. La cantidad y los tipos de argumentos se comprueban estáticamente antes de la ejecución.",
+  "texto": "D1 declara las cuarenta y una funciones incorporadas con lexemas canónicos, alias bilingües, firmas y familia; D2 declara las operaciones de capacidad y de biblioteca con su identidad, familia, receptor, formas, alias bilingües opcionales, parámetros, retorno y efecto. Un nombre tiene una sola semántica: una forma clásica conocida solo existe con el significado clásico, y un alias nombra la misma identidad con la misma firma. D3 declara el constructor contextual y Enviar, Recibir y Cerrar con sus tipos y necesidad de Aguardar; no son operaciones del anfitrión. Los nombres no son palabras reservadas; un subprograma homónimo oculta la función libre. La cantidad y los tipos de argumentos se comprueban estáticamente antes de la ejecución.",
   "verificacion": [
     "C1",
     "C2",
@@ -1600,7 +1647,13 @@
         ],
         "result": "text",
         "effect": false,
-        "fallible": false
+        "fallible": false,
+        "alias": {
+          "es": [
+            "Mayusculas"
+          ],
+          "en": []
+        }
       },
       {
         "identity": "text_to_lower",
@@ -1613,7 +1666,13 @@
         ],
         "result": "text",
         "effect": false,
-        "fallible": false
+        "fallible": false,
+        "alias": {
+          "es": [
+            "Minusculas"
+          ],
+          "en": []
+        }
       },
       {
         "identity": "text_decimals",

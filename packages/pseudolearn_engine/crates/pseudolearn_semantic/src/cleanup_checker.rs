@@ -44,6 +44,8 @@ pub(crate) fn break_statement(session: &mut AnalysisSession<'_>, node: usize) ->
     } else if session.control.loops == 0 {
         session.report(DiagnosticCode::BreakOutsideLoop, node);
     }
+    let span = session.span(node);
+    crate::definite_assignment_state::exit_loop(session, span);
     HirStatement::Break
 }
 

@@ -145,7 +145,7 @@
   "id": "T1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Subcadena, Contiene, PosicionDe, EmpiezaCon, TerminaCon, Reemplazar, Dividir, Unir y Recortar son funciones puras sobre Cadena. Operan por puntos de código, no normalizan ni dependen de configuración regional y no modifican sus argumentos.",
+  "texto": "Subcadena, Concatenar, Contiene, PosicionDe, EmpiezaCon, TerminaCon, Reemplazar, Dividir, Unir y Recortar son funciones puras sobre Cadena. Operan por puntos de código, no normalizan ni dependen de configuración regional y no modifican sus argumentos.",
   "verificacion": [
     "C5",
     "C8",
@@ -154,7 +154,8 @@
     "C11",
     "C12",
     "C15",
-    "C16"
+    "C16",
+    "C44"
   ]
 }
 ```
@@ -164,7 +165,7 @@
   "id": "T2",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Subcadena usa inicio desde cero y cantidad; un intervalo fuera de rango produce stringPositionOutOfRange. Contiene de la cadena vacía devuelve Verdadero; PosicionDe devuelve la primera coincidencia y Algo(0) para la parte vacía. EmpiezaCon y TerminaCon aceptan una parte vacía. Reemplazar sustituye todas las coincidencias sin solaparse y deja la cadena intacta si se busca la cadena vacía. Dividir con separador vacío produce emptySeparator y dividir la cadena vacía devuelve un vector con una cadena vacía. Unir un vector vacío devuelve la cadena vacía. Recortar solo quita U+0020, U+0009, U+000A y U+000D de los extremos.",
+  "texto": "Subcadena(c, desde, hasta) usa posiciones desde cero e incluye ambas: es válida si 0 ≤ desde ≤ hasta + 1 ≤ Longitud(c), desde igual a hasta + 1 da la cadena vacía y en otro caso produce stringPositionOutOfRange. Concatenar(a, b) devuelve los puntos de código de a seguidos de los de b, igual que a + b. Contiene de la cadena vacía devuelve Verdadero; PosicionDe devuelve la primera coincidencia y Algo(0) para la parte vacía. EmpiezaCon y TerminaCon aceptan una parte vacía. Reemplazar sustituye todas las coincidencias sin solaparse y deja la cadena intacta si se busca la cadena vacía. Dividir con separador vacío produce emptySeparator y dividir la cadena vacía devuelve un vector con una cadena vacía. Unir un vector vacío devuelve la cadena vacía. Recortar solo quita U+0020, U+0009, U+000A y U+000D de los extremos.",
   "verificacion": [
     "C6",
     "C7",
@@ -176,7 +177,14 @@
     "C13",
     "C14",
     "C15",
-    "C16"
+    "C16",
+    "C44",
+    "C45",
+    "C46",
+    "C47",
+    "C48",
+    "C49",
+    "C50"
   ]
 }
 ```
@@ -230,8 +238,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nEscribir \"<\", Subcadena(\"ab\", 2, 0), \">\";\nFinAlgoritmo\n",
-    "en": "algorithm P\nwrite \"<\", substring(\"ab\", 2, 0), \">\";\nendAlgorithm\n"
+    "es": "Algoritmo P\nEscribir \"<\", Subcadena(\"ab\", 2, 1), \">\";\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite \"<\", substring(\"ab\", 2, 1), \">\";\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -251,8 +259,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nEscribir Subcadena(\"abc\", 2, 2);\nFinAlgoritmo\n",
-    "en": "algorithm P\nwrite substring(\"abc\", 2, 2);\nendAlgorithm\n"
+    "es": "Algoritmo P\nEscribir Subcadena(\"abc\", 2, 3);\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite substring(\"abc\", 2, 3);\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -509,7 +517,7 @@
   "id": "T4",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "AMayusculas y AMinusculas convierten una cadena con las correspondencias Unicode completas de mayúsculas y minúsculas, independientes de la configuración regional y de la plataforma, en la versión de Unicode que el README del motor declara. Una letra puede producir varias (ß produce SS al pasar a mayúsculas), U+0130 produce i seguida de U+0307 al pasar a minúsculas y Σ produce ς al final de palabra y σ en el resto. No normalizan, dejan intactos los puntos de código sin correspondencia, no modifican su argumento y la cadena devuelta cuenta celdas como T3. Un argumento que no es cadena o una aridad distinta de uno se rechaza antes de la ejecución.",
+  "texto": "AMayusculas y AMinusculas convierten una cadena con las correspondencias Unicode completas de mayúsculas y minúsculas, independientes de la configuración regional y de la plataforma, en la versión de Unicode que el README del motor declara. Una letra puede producir varias (ß produce SS al pasar a mayúsculas), U+0130 produce i seguida de U+0307 al pasar a minúsculas y Σ produce ς al final de palabra y σ en el resto. No normalizan, dejan intactos los puntos de código sin correspondencia, no modifican su argumento y la cadena devuelta cuenta celdas como T3. Un argumento que no es cadena o una aridad distinta de uno se rechaza antes de la ejecución. Mayusculas y Minusculas son alias en español de AMayusculas y AMinusculas con la misma identidad y semántica.",
   "verificacion": [
     "C19",
     "C20",
@@ -522,7 +530,8 @@
     "C27",
     "C28",
     "C29",
-    "C30"
+    "C30",
+    "C51"
   ]
 }
 ```
@@ -1120,6 +1129,191 @@
   "operacion": "execute",
   "espera": {
     "salida": "ééx\nxéé\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C44",
+  "regla": "T2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir Concatenar(\"a\", \"\"), Concatenar(\"\", \"b\"), Concatenar(\"ho\", \"la\");\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite concat(\"a\", \"\"), concat(\"\", \"b\"), concat(\"ho\", \"la\");\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "abhola\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C45",
+  "regla": "T2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir Subcadena(\"hola\", 0, 1);\nEscribir \"<\", Subcadena(\"hola\", 2, 1), \">\";\nEscribir \"<\", Subcadena(\"\", 0, -1), \">\";\nEscribir Subcadena(\"hola\", 3, 3);\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite substring(\"hola\", 0, 1);\nwrite \"<\", substring(\"hola\", 2, 1), \">\";\nwrite \"<\", substring(\"\", 0, -1), \">\";\nwrite substring(\"hola\", 3, 3);\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "ho\n<>\n<>\na\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C46",
+  "regla": "T2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir Subcadena(\"hola\", 0, 4);\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite substring(\"hola\", 0, 4);\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "",
+    "terminacion": "failed",
+    "fallo": {
+      "codigo": "stringPositionOutOfRange"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C47",
+  "regla": "T2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir Subcadena(\"hola\", -1, 0);\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite substring(\"hola\", -1, 0);\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "",
+    "terminacion": "failed",
+    "fallo": {
+      "codigo": "stringPositionOutOfRange"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C48",
+  "regla": "T2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir Subcadena(\"hola\", 3, 1);\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite substring(\"hola\", 3, 1);\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "",
+    "terminacion": "failed",
+    "fallo": {
+      "codigo": "stringPositionOutOfRange"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C49",
+  "regla": "T2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir Concatenar(\"a\");\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite concat(\"a\");\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "argumentCountMismatch",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C50",
+  "regla": "T2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir Concatenar(\"a\", 1);\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite concat(\"a\", 1);\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "incompatibleArgumentType",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C51",
+  "regla": "T4",
+  "perfiles": [
+    "es"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir Mayusculas(\"ñandú\");\nEscribir Minusculas(\"ÑANDÚ\");\nFinAlgoritmo\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "ÑANDÚ\nñandú\n",
     "terminacion": "completed"
   }
 }

@@ -31,6 +31,9 @@ pub(crate) fn check(
         if real && matches!(*expected, "numeric" | "real") {
             *argument = crate::expression_checker::widen(session, *argument, &Type::Real);
         }
+        if *expected == "string" {
+            *argument = crate::expression_checker::widen(session, *argument, &Type::String);
+        }
     }
     let result = result_type(session, signature.return_type, &arguments, (widest, real));
     let result = session.module.types.intern(result);
@@ -50,6 +53,7 @@ fn compatible(expected: &str, actual: &Type) -> bool {
     }
     match expected {
         "numeric" | "real" => matches!(actual, Type::Integer | Type::Real),
+        "string" => matches!(actual, Type::String | Type::Character),
         "anyClass" => matches!(actual, Type::Object(_)),
         "anyPrimitive" => matches!(
             actual,

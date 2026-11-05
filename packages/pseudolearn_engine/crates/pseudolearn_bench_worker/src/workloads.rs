@@ -91,10 +91,9 @@ pub fn generated(
 fn benchmark_program_header(corpus: &Value, profile: &str) -> Result<String, String> {
     let word = |identity| keyword(corpus, profile, identity);
     Ok(format!(
-        "{} Benchmark\n{} {} accumulator {} {} <- 0;\n",
+        "{} Benchmark\n{} accumulator {} {} <- 0;\n",
         word("algorithm")?,
         word("declare")?,
-        word("mutableKeyword")?,
         word("typeConnector")?,
         word("integerType")?
     ))
@@ -169,12 +168,11 @@ fn unicode_identifier_program(corpus: &Value, profile: &str) -> Result<String, S
     let names = SPANISH_UNICODE_IDENTIFIERS;
     let mut program = format!("{} Unicode\n", keyword(corpus, profile, "algorithm")?);
     let declaration = keyword(corpus, profile, "declare")?;
-    let mutable = keyword(corpus, profile, "mutableKeyword")?;
     let type_connector = keyword(corpus, profile, "typeConnector")?;
     let integer_type = keyword(corpus, profile, "integerType")?;
     for name in names {
         program.push_str(&format!(
-            "{declaration} {mutable} {name} {type_connector} {integer_type} <- 0;\n"
+            "{declaration} {name} {type_connector} {integer_type} <- 0;\n"
         ));
     }
     for (index, name) in names.iter().enumerate() {

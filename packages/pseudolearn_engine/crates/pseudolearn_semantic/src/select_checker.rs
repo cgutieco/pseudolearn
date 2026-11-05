@@ -18,7 +18,10 @@ pub(crate) fn check(session: &mut AnalysisSession<'_>, node: usize) -> Option<Hi
     let selector = session.emit(HirExpression::Local(storage), integer, session.span(node));
     let mut channels = Vec::new();
     let mut cases = Vec::new();
+    let initial = crate::definite_assignment_state::capture(session);
+    let mut paths = Vec::new();
     for (index, branch) in branches.into_iter().enumerate() {
+        crate::definite_assignment_state::restore(session, &initial);
         let children = session.children(branch);
         let channel_node = *children.get(1)?;
         let channel = crate::expression_checker::check(session, channel_node);
@@ -35,6 +38,16 @@ pub(crate) fn check(session: &mut AnalysisSession<'_>, node: usize) -> Option<Hi
             labels: vec![label],
             body,
         });
+        paths.push(crate::definite_assignment_state::path(
+            crate::definite_assignment_state::capture(session),
+            crate::definite_assignment_state::AssignmentCause::BranchWithoutAssignment,
+            session.span(branch),
+        ));
+    }
+    if paths.is_empty() {
+        crate::definite_assignment_state::restore(session, &initial);
+    } else {
+        crate::definite_assignment_state::merge(session, &paths);
     }
     Some(HirStatement::Select(Box::new(
         crate::channel_model::HirSelect {

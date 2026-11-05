@@ -32,7 +32,6 @@ fn unused_locals(session: &mut AnalysisSession<'_>) {
         {
             continue;
         }
-        mutable_warning(session, identifier, &local);
         if session.invalid.contains(&identifier)
             || session.reads.contains(&identifier)
             || (local.parameter
@@ -68,28 +67,6 @@ fn unused_functions(session: &mut AnalysisSession<'_>) {
             function.syntax,
             &function.name,
         );
-    }
-}
-
-fn mutable_warning(
-    session: &mut AnalysisSession<'_>,
-    identifier: LocalId,
-    local: &crate::hir::HirLocal,
-) {
-    if local.mutable
-        && !local.parameter
-        && !session.writes.contains(&identifier)
-        && !matches!(
-            session.module.types.get(local.type_id),
-            crate::types::Type::Array { .. }
-        )
-    {
-        session
-            .diagnostics
-            .push(pseudolearn_diagnostics::Diagnostic::new(
-                DiagnosticCode::MutableBindingNeverModified,
-                local.span,
-            ));
     }
 }
 

@@ -15,4 +15,5 @@ pub(crate) struct ControlContext {
     pub task_errors: Vec<Vec<crate::identities::TypeId>>,
     pub awaiting_task_handle: bool,
     pub deferred: Vec<Vec<DeferredEffects>>,
+    pub return_variable: Option<crate::return_variable::ReturnVariable>,
 }

@@ -23,7 +23,6 @@ extension _RustProgramViewSemanticValidator on _RustProgramViewWireValidator {
       'super_constructor',
       'suspendable',
       'initialized',
-      'mutable',
       'propagates',
       'discard',
     ]) {

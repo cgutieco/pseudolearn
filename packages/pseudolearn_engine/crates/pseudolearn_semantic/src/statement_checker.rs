@@ -44,7 +44,11 @@ fn check_kind(session: &mut AnalysisSession<'_>, node: usize) -> Option<Statemen
             return None;
         }
         NodeKind::DimensionDeclaration => {
-            crate::local_registry::declaration(session, node);
+            if session.child(node, NodeKind::Type).is_some() {
+                crate::local_registry::declaration(session, node);
+            } else {
+                crate::dimension_adoption::adopt(session, node);
+            }
             return crate::dimension_checker::check(session, node);
         }
         NodeKind::AssignmentStatement => crate::assignment_checker::assignment(session, node)?,
@@ -86,6 +90,9 @@ fn returned(session: &mut AnalysisSession<'_>, node: usize) -> HirStatement {
     if session.control.cleaning {
         session.report(DiagnosticCode::ControlTransferInsideCleanup, node);
     }
+    if session.control.return_variable.is_some() {
+        return returned_variable(session, node);
+    }
     let mut value = crate::variant_statements::returned_value(session, node);
     let Some(function) = crate::hierarchy::function(session, session.current).cloned() else {
         return HirStatement::Return(value);
@@ -110,6 +117,23 @@ fn returned(session: &mut AnalysisSession<'_>, node: usize) -> HirStatement {
     crate::result_obligations::finish(session);
     session.pending_results.clear();
     session.returned = true;
+    crate::output_parameters::leave(session);
+    crate::definite_assignment_state::terminate(session);
+    HirStatement::Return(value)
+}
+
+fn returned_variable(session: &mut AnalysisSession<'_>, node: usize) -> HirStatement {
+    if crate::variant_statements::returned_value(session, node).is_some() {
+        session.report(DiagnosticCode::ReturnValueInReturnVariableFunction, node);
+    }
+    let span = session.span(node);
+    let value = crate::return_variable::returned_value(session, span);
+    crate::cleanup_checker::exit(session);
+    crate::result_obligations::finish(session);
+    session.pending_results.clear();
+    session.returned = true;
+    crate::output_parameters::leave(session);
+    crate::definite_assignment_state::terminate(session);
     HirStatement::Return(value)
 }
 
@@ -122,10 +146,13 @@ pub(crate) fn check(session: &mut AnalysisSession<'_>, node: usize) -> Option<St
             .copied()
             .and_then(|child| check(session, child));
     }
-    if let Some(kind) = crate::cleanup_checker::statement(session, node) {
-        return Some(session.statement(kind, session.span(node)));
-    }
-    check_kind(session, node)
+    let mark = session.assignment.pending_arguments.len();
+    let statement = match crate::cleanup_checker::statement(session, node) {
+        Some(kind) => Some(session.statement(kind, session.span(node))),
+        None => check_kind(session, node),
+    };
+    crate::definite_assignment_report::flush(session, mark);
+    statement
 }
 
 fn return_form(

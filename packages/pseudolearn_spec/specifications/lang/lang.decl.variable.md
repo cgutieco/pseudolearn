@@ -38,7 +38,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Definir nombre Como tipo <- expresión declara un vínculo local individual, inmutable y con inicializador obligatorio. Definir Mutable permite reasignarlo. La inicialización comprueba el tipo y no permite leer el vínculo que declara. Los campos, parámetros y arreglos conservan sus contratos específicos; las declaraciones locales no crean ámbitos de bloque. Un nombre de un carácter es válido y duplicar el nombre es error. Reasignar un vínculo inmutable, usarlo como destino de Leer o pasarlo por referencia para modificarlo es immutableBindingAssignment. La mutación de un objeto no reasigna su vínculo; escribir un campo de registro por valor sí modifica el vínculo. Un mutable sin modificación recibe mutableBindingNeverModified.",
+  "texto": "Definir n₁, …, nₖ Como tipo declara k variables locales sin valor, en el orden escrito. Con un único nombre se admite un valor inicial <- expresión, que comprueba el tipo y no puede leer la variable que declara (bindingReadsOwnInitializer); con varios nombres el valor inicial es initializerWithMultipleNames, error. Toda variable declarada con Definir y todo parámetro por valor se puede reasignar, usar como destino de Leer y pasar por referencia; no hay forma de declararla constante con Definir. Siguen sin poder reasignarse la variable de control de Para (controlVariableModified) y los vínculos que introducen Para Cada, los patrones de variante y las tareas (immutableBindingAssignment). Mutable no es palabra reservada: es un identificador ordinario. Los campos, parámetros y arreglos conservan sus contratos específicos. Un nombre de un carácter es válido; repetir un nombre en la lista o en el mismo ámbito es duplicateVariableDeclaration. La mutación de un objeto no reasigna su vínculo; escribir un campo de registro por valor modifica la variable.",
   "verificacion": [
     "C1",
     "C2",
@@ -47,7 +47,11 @@
     "C5",
     "C6",
     "C7",
-    "C8"
+    "C8",
+    "C9",
+    "C10",
+    "C11",
+    "C12"
   ]
 }
 ```
@@ -133,15 +137,10 @@
     "en": "algorithm P\ndefine x as integer <- 1;\nx <- 2;\nwrite x;\nendAlgorithm\n"
   },
   "origen": "derivado",
-  "operacion": "analyze",
+  "operacion": "execute",
   "espera": {
-    "arbol": "presente",
-    "diagnosticos": [
-      {
-        "codigo": "immutableBindingAssignment",
-        "severidad": "error"
-      }
-    ]
+    "salida": "2\n",
+    "terminacion": "completed"
   }
 }
 ```
@@ -155,14 +154,19 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir Mutable x Como Entero <- 1;\nx <- 2;\nEscribir x;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine mutable x as integer <- 1;\nx <- 2;\nwrite x;\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir Mutable x Como Entero <- 1;\nEscribir x;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine mutable x as integer <- 1;\nwrite x;\nendAlgorithm\n"
   },
   "origen": "derivado",
-  "operacion": "execute",
+  "operacion": "analyze",
   "espera": {
-    "salida": "2\n",
-    "terminacion": "completed"
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "expectedTypeConnector",
+        "severidad": "error"
+      }
+    ]
   }
 }
 ```
@@ -202,19 +206,14 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir Mutable x Como Entero <- 1;\nEscribir x;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine mutable x as integer <- 1;\nwrite x;\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir Mutable Como Entero <- 1;\nEscribir Mutable;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine mutable as integer <- 1;\nwrite mutable;\nendAlgorithm\n"
   },
   "origen": "derivado",
-  "operacion": "analyze",
+  "operacion": "execute",
   "espera": {
-    "arbol": "presente",
-    "diagnosticos": [
-      {
-        "codigo": "mutableBindingNeverModified",
-        "severidad": "warning"
-      }
-    ]
+    "salida": "1\n",
+    "terminacion": "completed"
   }
 }
 ```
@@ -232,13 +231,116 @@
     "en": "algorithm P\ndefine x as integer <- 1;\nread x;\nwrite x;\nendAlgorithm\n"
   },
   "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "7\n",
+    "terminacion": "completed"
+  },
+  "entradas": [
+    "7"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C9",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir a, b, c Como Entero;\na <- 1;\nb <- 2;\nc <- a + b;\nEscribir a, b, c;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine a, b, c as integer;\na <- 1;\nb <- 2;\nc <- a + b;\nwrite a, b, c;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "123\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C10",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir a, b Como Entero <- 1;\nEscribir a;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine a, b as integer <- 1;\nwrite a;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
   "operacion": "analyze",
   "espera": {
     "arbol": "presente",
     "diagnosticos": [
       {
-        "codigo": "immutableBindingAssignment",
+        "codigo": "initializerWithMultipleNames",
         "severidad": "error"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C11",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir a, a Como Entero;\na <- 1;\nEscribir a;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine a, a as integer;\na <- 1;\nwrite a;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "duplicateVariableDeclaration",
+        "severidad": "error",
+        "argumentos": {
+          "lexeme": "a"
+        }
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C12",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir n Como Entero <- 1;\nDefinir n Como Entero;\nEscribir n;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine n as integer <- 1;\ndefine n as integer;\nwrite n;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "duplicateVariableDeclaration",
+        "severidad": "error",
+        "argumentos": {
+          "lexeme": "n"
+        }
       }
     ]
   }

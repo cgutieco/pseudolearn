@@ -923,14 +923,6 @@
               "version": "1.0.0",
               "element": "D1"
             }
-          },
-          {
-            "identity": "mutableKeyword",
-            "source": {
-              "specification": "LANG.PROFILE.VOCABULARY",
-              "version": "1.0.0",
-              "element": "D1"
-            }
           }
         ],
         "availability": {
@@ -958,11 +950,11 @@
           "es": {
             "title": "Declarar variables",
             "summary": "Asocia nombres con un tipo declarado.",
-            "purpose": "Declara un vínculo individual con tipo e inicializador obligatorio.",
+            "purpose": "Declara una o varias variables de un tipo; con un único nombre admite un valor inicial.",
             "parts": [
               {
                 "identity": "declare",
-                "text": "Inicia un vínculo local inmutable."
+                "text": "Inicia la declaración de variables locales que se pueden reasignar."
               },
               {
                 "identity": "typeConnector",
@@ -987,13 +979,10 @@
               {
                 "identity": "stringType",
                 "text": "Representa una secuencia de caracteres."
-              },
-              {
-                "identity": "mutableKeyword",
-                "text": "Permite reasignar el vínculo."
               }
             ],
             "constraints": [
+              "Leer una variable antes de asignarle un valor en todos los caminos es un error.",
               "Se admiten letras ASCII, ñ, vocales españolas acentuadas y ü, con ambas cajas.",
               "Los nombres se comparan tras NFC; caja y acentos siguen siendo significativos."
             ],
@@ -1020,11 +1009,11 @@
           "en": {
             "title": "Variable declaration",
             "summary": "Associates names with a declared type.",
-            "purpose": "Declares one binding with an explicit type and a required initializer.",
+            "purpose": "Declares one or more variables of a type; a single name accepts an initial value.",
             "parts": [
               {
                 "identity": "declare",
-                "text": "Starts an immutable local binding."
+                "text": "Starts the declaration of local variables that can be reassigned."
               },
               {
                 "identity": "typeConnector",
@@ -1049,13 +1038,10 @@
               {
                 "identity": "stringType",
                 "text": "Represents a sequence of characters."
-              },
-              {
-                "identity": "mutableKeyword",
-                "text": "Allows the binding to be reassigned."
               }
             ],
             "constraints": [
+              "Reading a variable before every path assigns it a value is an error.",
               "ASCII letters, ñ, accented Spanish vowels, and ü are accepted in either case.",
               "Names compare after NFC; letter case and accents remain significant."
             ],
@@ -2468,7 +2454,7 @@
         "content": {
           "es": {
             "title": "Literal de función y captura",
-            "summary": "Una función literal crea una clausura con los vínculos inmutables que utiliza.",
+            "summary": "Una función literal crea una clausura con copias de las variables que utiliza.",
             "purpose": "La clausura conserva su entorno mientras siga alcanzable, incluso después de que termine el marco que la creó.",
             "parts": [
               {
@@ -2481,10 +2467,10 @@
               }
             ],
             "constraints": [
-              "No se pueden capturar vínculos mutables ni prestados."
+              "Solo se capturan variables que nunca se reasignan y que tienen valor al crear la clausura; los parámetros por referencia no se capturan."
             ],
             "common_errors": [
-              "mutableClosureCapture aparece cuando una clausura usa un vínculo mutable."
+              "mutableClosureCapture aparece cuando una clausura usa una variable que se reasigna; señala la reasignación."
             ],
             "examples": [
               {
@@ -2499,7 +2485,7 @@
           },
           "en": {
             "title": "Function literal and capture",
-            "summary": "A function literal creates a closure with the immutable bindings it uses.",
+            "summary": "A function literal creates a closure with copies of the variables it uses.",
             "purpose": "The closure keeps its environment reachable after the frame that created it returns.",
             "parts": [
               {
@@ -2512,10 +2498,10 @@
               }
             ],
             "constraints": [
-              "Mutable and borrowed bindings cannot be captured."
+              "Only variables that are never reassigned and have a value when the closure is created can be captured; by-reference parameters cannot."
             ],
             "common_errors": [
-              "mutableClosureCapture is reported when a closure uses a mutable binding."
+              "mutableClosureCapture is reported when a closure uses a variable that is reassigned; it points at the reassignment."
             ],
             "examples": [
               {
@@ -6107,6 +6093,22 @@
               "version": "1.0.0",
               "element": "D1"
             }
+          },
+          {
+            "identity": "randomBetween",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          },
+          {
+            "identity": "randomUnit",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D1"
+            }
           }
         ],
         "availability": {
@@ -6128,15 +6130,25 @@
         "content": {
           "es": {
             "title": "Valor seudoaleatorio",
-            "summary": "Solicita una muestra al generador seudoaleatorio del proceso.",
-            "purpose": "La función no recibe argumentos.",
+            "summary": "Toma enteros o reales uniformes del generador seudoaleatorio del proceso.",
+            "purpose": "Azar(n) da un entero entre 0 y n - 1, Aleatorio(a, b) un entero entre a y b y AzarReal() un real entre 0 y 1, sin llegar a 1.",
             "parts": [
               {
                 "identity": "random",
-                "text": "Obtiene un valor seudoaleatorio según el generador del proceso."
+                "text": "Azar(n) devuelve un entero uniforme entre 0 y n - 1."
+              },
+              {
+                "identity": "randomBetween",
+                "text": "Aleatorio(a, b) devuelve un entero uniforme entre a y b, ambos incluidos."
+              },
+              {
+                "identity": "randomUnit",
+                "text": "AzarReal() devuelve un real uniforme mayor o igual que 0 y menor que 1."
               }
             ],
-            "constraints": [],
+            "constraints": [
+              "Azar con un límite menor o igual que cero y Aleatorio con un inicio mayor que el final terminan con un fallo."
+            ],
             "common_errors": [],
             "examples": [
               {
@@ -6159,15 +6171,25 @@
           },
           "en": {
             "title": "Pseudorandom value",
-            "summary": "Requests a sample from the process pseudorandom generator.",
-            "purpose": "The function takes no arguments.",
+            "summary": "Takes uniform integers or reals from the process pseudorandom generator.",
+            "purpose": "random(n) gives an integer between 0 and n - 1, randomBetween(a, b) an integer between a and b, and randomReal() a real between 0 and 1, never 1.",
             "parts": [
               {
                 "identity": "random",
-                "text": "Obtains a pseudorandom value from the process generator."
+                "text": "random(n) returns a uniform integer between 0 and n - 1."
+              },
+              {
+                "identity": "randomBetween",
+                "text": "randomBetween(a, b) returns a uniform integer between a and b, both included."
+              },
+              {
+                "identity": "randomUnit",
+                "text": "randomReal() returns a uniform real greater than or equal to 0 and less than 1."
               }
             ],
-            "constraints": [],
+            "constraints": [
+              "random with a bound less than or equal to zero and randomBetween with a start greater than its end fail."
+            ],
             "common_errors": [],
             "examples": [
               {
@@ -7977,6 +7999,104 @@
                 "label": "Bytes and input-output errors",
                 "profile": "en",
                 "specification": "LIB.IO",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.builtin-concatenate",
+        "identity": {
+          "kind": "role",
+          "id": "primary",
+          "role": "text_concatenation_builtin"
+        },
+        "tokens": [
+          {
+            "identity": "concatenate",
+            "source": {
+              "specification": "LIB.MODEL",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LIB.CORE.TEXT",
+            "version": "1.0.0",
+            "element": "T1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Concatenar cadenas",
+            "summary": "Concatenar(a, b) devuelve una cadena nueva con los caracteres de a seguidos de los de b.",
+            "purpose": "Equivale a unir dos cadenas con el operador de concatenación.",
+            "parts": [
+              {
+                "identity": "concatenate",
+                "text": "Une dos cadenas en el orden de sus argumentos."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C44",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Concatenar cadenas",
+                "profile": "es",
+                "specification": "LIB.CORE.TEXT",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C49",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Concatenar cadenas",
+                "profile": "es",
+                "specification": "LIB.CORE.TEXT",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Concatenate strings",
+            "summary": "concat(a, b) returns a new string with the characters of a followed by those of b.",
+            "purpose": "It is equivalent to joining two strings with the concatenation operator.",
+            "parts": [
+              {
+                "identity": "concatenate",
+                "text": "Joins two strings in the order of its arguments."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C44",
+                "kind": "executable",
+                "label": "Program that runs: Concatenate strings",
+                "profile": "en",
+                "specification": "LIB.CORE.TEXT",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C49",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Concatenate strings",
+                "profile": "en",
+                "specification": "LIB.CORE.TEXT",
                 "version": "1.0.0"
               }
             ]
@@ -20725,8 +20845,7 @@
             "realType",
             "booleanType",
             "characterType",
-            "stringType",
-            "mutableKeyword"
+            "stringType"
           ]
         },
         {
@@ -21346,7 +21465,9 @@
             "primary"
           ],
           "tokens": [
-            "random"
+            "random",
+            "randomBetween",
+            "randomUnit"
           ]
         },
         {
@@ -21575,6 +21696,19 @@
           ],
           "tokens": [
             "substring"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "role",
+            "id": "primary",
+            "role": "text_concatenation_builtin"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "concatenate"
           ]
         },
         {

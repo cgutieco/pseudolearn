@@ -40,7 +40,10 @@ fn builtin_operation(builtin: BuiltinKind) -> Operation {
         BuiltinKind::ToText => Operation::TextFormat,
         BuiltinKind::Snapshot => Operation::SnapshotCopy,
         BuiltinKind::ShallowCopy => Operation::ObjectCopy,
-        BuiltinKind::Random => Operation::HostRandom,
+        BuiltinKind::Random => Operation::HostRandomBelow,
+        BuiltinKind::RandomBetween => Operation::HostRandomBetween,
+        BuiltinKind::RandomUnit => Operation::HostRandom,
+        BuiltinKind::Concatenate => Operation::TextConcat,
         BuiltinKind::Contains
         | BuiltinKind::EndsWith
         | BuiltinKind::Join

@@ -44,9 +44,6 @@ fn validate_bounds(
     bounds: &[Option<crate::identities::ExpressionId>],
     node: usize,
 ) {
-    if bounds.get(2).copied().flatten().is_none() {
-        session.report(DiagnosticCode::MissingStepClause, node);
-    }
     for expression in bounds.iter().copied().flatten() {
         if !matches!(
             session.expression_type(expression),
@@ -75,16 +72,16 @@ fn check_body(
 ) -> Option<Vec<crate::identities::StatementId>> {
     session.controls.push(control);
     let body_node = session.child(node, NodeKind::Body)?;
-    let initialized_before = session.initialized.clone();
+    let before = crate::definite_assignment_state::capture(session);
     let pending_before = session.pending_results.clone();
     session.control.loops = session.control.loops.saturating_add(1);
+    crate::definite_assignment_state::enter_loop(session);
     let body = crate::statement_checker::body(session, body_node);
+    crate::definite_assignment_state::leave_loop(session);
     session.control.loops = session.control.loops.saturating_sub(1);
     session.pending_results.extend(pending_before);
-    session.initialized = initialized_before;
-    session
-        .initialized
-        .resize(session.module.locals.len(), false);
+    let span = session.span(node);
+    crate::definite_assignment_state::after_loop(session, before, span);
     session.controls.pop();
     Some(body)
 }

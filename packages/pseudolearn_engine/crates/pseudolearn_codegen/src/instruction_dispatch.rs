@@ -41,6 +41,8 @@ const FAMILIES: &[(&[Operation], Lower)] = &[
 ];
 
 pub(crate) const UNSUPPORTED_OPERATIONS: &[Operation] = &[
+    Operation::HostRandomBelow,
+    Operation::HostRandomBetween,
     Operation::CollectionBeginSort,
     Operation::CollectionClone,
     Operation::CollectionCommit,

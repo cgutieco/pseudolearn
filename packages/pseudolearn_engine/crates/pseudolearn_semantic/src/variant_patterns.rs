@@ -31,10 +31,11 @@ pub(crate) fn check(
         missing(session, (&variant, &branches.seen), (node, source));
     }
     session.pending_results = branches.pending_after;
-    session.initialized = branches.initialized;
-    session
-        .initialized
-        .resize(session.module.locals.len(), false);
+    if branches.paths.is_empty() {
+        crate::definite_assignment_state::restore(session, &branches.initial);
+    } else {
+        crate::definite_assignment_state::merge(session, &branches.paths);
+    }
     Some(HirStatement::VariantMatch(Box::new(matching)))
 }
 
@@ -171,7 +172,8 @@ struct BranchState {
     has_default: bool,
     pending_before: BTreeSet<crate::identities::LocalId>,
     pending_after: BTreeSet<crate::identities::LocalId>,
-    initialized: Vec<bool>,
+    initial: crate::definite_assignment_state::FlowPoint,
+    paths: Vec<crate::definite_assignment_state::FlowPath>,
 }
 
 impl BranchState {
@@ -181,7 +183,8 @@ impl BranchState {
             has_default: false,
             pending_before: session.pending_results.clone(),
             pending_after: BTreeSet::new(),
-            initialized: session.initialized.clone(),
+            initial: crate::definite_assignment_state::capture(session),
+            paths: Vec::new(),
         }
     }
 }
@@ -193,10 +196,7 @@ fn check_branch(
     state: &mut BranchState,
 ) {
     session.pending_results.clone_from(&state.pending_before);
-    session.initialized.clone_from(&state.initialized);
-    session
-        .initialized
-        .resize(session.module.locals.len(), false);
+    crate::definite_assignment_state::restore(session, &state.initial);
     if state.has_default {
         session.report(DiagnosticCode::UnreachableSwitchPattern, branch);
     }
@@ -216,6 +216,11 @@ fn check_branch(
     state
         .pending_after
         .extend(session.pending_results.iter().copied());
+    state.paths.push(crate::definite_assignment_state::path(
+        crate::definite_assignment_state::capture(session),
+        crate::definite_assignment_state::AssignmentCause::BranchWithoutAssignment,
+        session.span(branch),
+    ));
 }
 
 fn payload_source(session: &AnalysisSession<'_>, selector: ExpressionId) -> ExpressionId {

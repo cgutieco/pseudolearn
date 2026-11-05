@@ -495,7 +495,7 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
     "arbol": "presente",
     "diagnosticos": [
       {
-        "codigo": "missingBindingInitializer",
+        "codigo": "variableUsedUninitialized",
         "severidad": "error"
       }
     ]

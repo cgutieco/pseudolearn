@@ -2322,7 +2322,9 @@
   "id": "V84",
   "regla": "LIB.CORE.RANDOM#R1",
   "instrucciones": [
-    "host.random"
+    "host.random",
+    "host.random_below",
+    "host.random_between"
   ]
 }
 ```
@@ -4882,6 +4884,44 @@
   "instrucciones": [
     "effect_call"
   ]
+}
+```
+
+```instruccion
+{
+  "id": "O124",
+  "nombre": "host.random_below",
+  "firma": "host.random_below %n: i64 -> i64",
+  "clases_de_valor": [
+    "escalar"
+  ],
+  "semantica": "Toma de la fuente aleatoria inyectada un entero uniforme en [0, n): descarta las palabras que caen en el resto final del rango de 64 bits y reduce las demás por módulo, de modo que ningún valor tiene más probabilidad que otro. Un límite n menor o igual que cero produce la trampa.",
+  "trampas": [
+    "invalidRandomBound"
+  ],
+  "efectos": [
+    "azar"
+  ],
+  "observacion": []
+}
+```
+
+```instruccion
+{
+  "id": "O125",
+  "nombre": "host.random_between",
+  "firma": "host.random_between %a: i64, %b: i64 -> i64",
+  "clases_de_valor": [
+    "escalar"
+  ],
+  "semantica": "Toma de la fuente aleatoria inyectada un entero uniforme en [a, b] con el mismo rechazo que host.random_below sobre la amplitud b - a + 1; la amplitud completa de 64 bits usa la palabra sin reducir. Un inicio mayor que el final produce la trampa.",
+  "trampas": [
+    "invalidRandomRange"
+  ],
+  "efectos": [
+    "azar"
+  ],
+  "observacion": []
 }
 ```
 

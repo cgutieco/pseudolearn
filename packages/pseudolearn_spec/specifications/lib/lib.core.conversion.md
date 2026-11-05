@@ -43,12 +43,14 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "ATexto acepta cualquier primitivo y usa exactamente formato de salida. AEntero y AReal aceptan cadena decimal y producen entero en rango o real finito. Texto inválido produce stringToNumberConversionFailed; no devuelve cero. No convierte implícitamente objetos/arreglos, ni modifica la cadena original.",
+  "texto": "ATexto acepta cualquier primitivo y usa exactamente formato de salida. AEntero y AReal aceptan cadena decimal y producen entero en rango o real finito. Texto inválido produce stringToNumberConversionFailed; no devuelve cero. No convierte implícitamente objetos/arreglos, ni modifica la cadena original. ConvertirANumero es un alias en español de AReal con la misma identidad y semántica; no existe con otro significado.",
   "verificacion": [
     "C1",
     "C2",
     "C3",
-    "C4"
+    "C4",
+    "C16",
+    "C17"
   ]
 }
 ```
@@ -423,6 +425,47 @@
   },
   "limites": {
     "celdas": 1
+  }
+}
+```
+
+```caso
+{
+  "id": "C16",
+  "regla": "R1",
+  "perfiles": [
+    "es"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir ConvertirANumero(\"3.5\") + 1;\nFinAlgoritmo\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "4.5\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C17",
+  "regla": "R1",
+  "perfiles": [
+    "es"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir ConvertirANumero(\"3,5\");\nFinAlgoritmo\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "",
+    "terminacion": "failed",
+    "fallo": {
+      "codigo": "stringToNumberConversionFailed"
+    }
   }
 }
 ```

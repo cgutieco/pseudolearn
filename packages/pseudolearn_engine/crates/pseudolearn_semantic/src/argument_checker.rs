@@ -1,4 +1,5 @@
 use crate::hir::{HirLocal, Passing};
+use crate::output_parameters::Dispatch;
 use crate::identities::{ExpressionId, FunctionId, LocalId};
 use crate::session::AnalysisSession;
 use crate::types::Type;
@@ -10,6 +11,25 @@ pub(crate) fn check(
     arguments: &mut [ExpressionId],
     node: usize,
 ) {
+    check_with(session, (function, Dispatch::Direct), arguments, node);
+}
+
+pub(crate) fn check_dynamic(
+    session: &mut AnalysisSession<'_>,
+    function: FunctionId,
+    arguments: &mut [ExpressionId],
+    node: usize,
+) {
+    check_with(session, (function, Dispatch::Dynamic), arguments, node);
+}
+
+fn check_with(
+    session: &mut AnalysisSession<'_>,
+    (function, dispatch): (FunctionId, Dispatch),
+    arguments: &mut [ExpressionId],
+    node: usize,
+) {
+    crate::output_parameters::call(session, function);
     let parameters = crate::hierarchy::function(session, function)
         .map(|function| function.parameters.clone())
         .unwrap_or_default();
@@ -18,13 +38,13 @@ pub(crate) fn check(
         return;
     }
     for (parameter, argument) in parameters.iter().zip(arguments) {
-        check_argument(session, *parameter, argument, node);
+        check_argument(session, (*parameter, dispatch), argument, node);
     }
 }
 
 fn check_argument(
     session: &mut AnalysisSession<'_>,
-    parameter: LocalId,
+    (parameter, dispatch): (LocalId, Dispatch),
     argument: &mut ExpressionId,
     node: usize,
 ) {
@@ -49,7 +69,7 @@ fn check_argument(
         return;
     }
     if local.passing == Passing::Reference {
-        check_reference(session, &local, *argument, node);
+        check_reference(session, (parameter, &local, dispatch), *argument, node);
         return;
     }
     if !crate::type_resolution::assignable(session, &expected, &actual) {
@@ -73,10 +93,11 @@ fn infer_parameter(session: &mut AnalysisSession<'_>, parameter: LocalId, kind: 
 
 fn check_reference(
     session: &mut AnalysisSession<'_>,
-    local: &HirLocal,
+    (parameter, local, dispatch): (LocalId, &HirLocal, Dispatch),
     argument: ExpressionId,
     node: usize,
 ) {
+    crate::output_parameters::reference_argument(session, argument, (Some(parameter), dispatch));
     if crate::snapshot_types::reject_write(session, argument, node) {
         return;
     }

@@ -379,6 +379,10 @@
     "en": "charFromCode",
     "es": "CaracterDesde"
   },
+  "function:concatenate": {
+    "en": "concat",
+    "es": "Concatenar"
+  },
   "function:contains": {
     "en": "contains",
     "es": "Contiene"
@@ -443,9 +447,13 @@
     "en": "rand",
     "es": "azar"
   },
-  "function:random.alias.es.0": {
-    "en": "random",
-    "es": "aleatorio"
+  "function:randomBetween": {
+    "en": "randomBetween",
+    "es": "Aleatorio"
+  },
+  "function:randomUnit": {
+    "en": "randomReal",
+    "es": "AzarReal"
   },
   "function:replaceAll": {
     "en": "replace",
@@ -502,6 +510,10 @@
   "function:textToReal": {
     "en": "toReal",
     "es": "AReal"
+  },
+  "function:textToReal.alias.es.0": {
+    "en": "toReal",
+    "es": "ConvertirANumero"
   },
   "function:toText": {
     "en": "toText",
@@ -682,10 +694,6 @@
   "multiply": {
     "en": "*",
     "es": "*"
-  },
-  "mutableKeyword": {
-    "en": "mutable",
-    "es": "Mutable"
   },
   "newInstance": {
     "en": "new",

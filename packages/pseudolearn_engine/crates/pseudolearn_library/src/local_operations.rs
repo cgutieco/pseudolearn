@@ -163,8 +163,8 @@ fn json_value(receiver: Option<&HostValue>) -> Result<&str, MemoryError> {
 }
 
 fn substring(arguments: &[HostValue]) -> Result<HostValue, MemoryError> {
-    let (text, start, count) = text_integer_pair(arguments)?;
-    text_search::text_substring(text, start, count).map(HostValue::Text)
+    let (text, from, to) = text_integer_pair(arguments)?;
+    text_search::text_substring(text, from, to).map(HostValue::Text)
 }
 
 fn contains(arguments: &[HostValue]) -> Result<HostValue, MemoryError> {

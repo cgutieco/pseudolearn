@@ -28,24 +28,48 @@ pub(crate) fn condition(session: &mut AnalysisSession<'_>, node: usize) -> Expre
 }
 
 fn conditional(session: &mut AnalysisSession<'_>, node: usize) -> Option<HirStatement> {
+    use crate::definite_assignment_state::{AssignmentCause, capture, merge, path, restore};
     let children = session.children(node);
     let condition = condition(session, *children.first()?);
-    let before = session.initialized.clone();
+    let before = capture(session);
     let before_results = session.pending_results.clone();
-    let affirmative = crate::statement_checker::scoped_body(session, *children.get(1)?);
-    let affirmative_state = session.initialized.clone();
+    let affirmative_node = *children.get(1)?;
+    let affirmative = crate::statement_checker::scoped_body(session, affirmative_node);
+    let affirmative_state = capture(session);
     let affirmative_results = std::mem::replace(&mut session.pending_results, before_results);
-    session.initialized.clone_from(&before);
-    session
-        .initialized
-        .resize(session.module.locals.len(), false);
+    restore(session, &before);
     let negative = children
         .get(2)
         .map(|body| crate::statement_checker::scoped_body(session, *body))
         .unwrap_or_default();
-    for (index, assigned) in session.initialized.iter_mut().enumerate() {
-        *assigned &= affirmative_state.get(index).copied().unwrap_or(false);
-    }
+    let negative_state = capture(session);
+    let paths = match children.get(2) {
+        Some(negative_node) => [
+            path(
+                affirmative_state,
+                AssignmentCause::BranchWithoutAssignment,
+                session.span(affirmative_node),
+            ),
+            path(
+                negative_state,
+                AssignmentCause::BranchWithoutAssignment,
+                session.span(*negative_node),
+            ),
+        ],
+        None => [
+            path(
+                affirmative_state,
+                AssignmentCause::BranchWithoutElse,
+                session.span(node),
+            ),
+            path(
+                negative_state,
+                AssignmentCause::BranchWithoutElse,
+                session.span(node),
+            ),
+        ],
+    };
+    merge(session, &paths);
     session.pending_results.extend(affirmative_results);
     Some(HirStatement::Conditional {
         condition,
@@ -57,16 +81,16 @@ fn conditional(session: &mut AnalysisSession<'_>, node: usize) -> Option<HirStat
 fn while_loop(session: &mut AnalysisSession<'_>, node: usize) -> Option<HirStatement> {
     let children = session.children(node);
     let condition = condition(session, *children.first()?);
-    let before = session.initialized.clone();
+    let before = crate::definite_assignment_state::capture(session);
     let pending_before = session.pending_results.clone();
     session.control.loops = session.control.loops.saturating_add(1);
+    crate::definite_assignment_state::enter_loop(session);
     let body = crate::statement_checker::scoped_body(session, *children.get(1)?);
+    crate::definite_assignment_state::leave_loop(session);
     session.control.loops = session.control.loops.saturating_sub(1);
     session.pending_results.extend(pending_before);
-    session.initialized = before;
-    session
-        .initialized
-        .resize(session.module.locals.len(), false);
+    let span = session.span(node);
+    crate::definite_assignment_state::after_loop(session, before, span);
     Some(HirStatement::While { condition, body })
 }
 
@@ -75,9 +99,13 @@ fn repeat_loop(session: &mut AnalysisSession<'_>, node: usize) -> Option<HirStat
     session.bindings.enter();
     let start = session.module.locals.len();
     session.control.loops = session.control.loops.saturating_add(1);
+    crate::definite_assignment_state::enter_loop(session);
     let body = crate::statement_checker::open_body(session, *children.first()?);
+    let exits = crate::definite_assignment_state::leave_loop(session);
     session.control.loops = session.control.loops.saturating_sub(1);
     let condition = condition(session, *children.get(1)?);
+    let span = session.span(node);
+    crate::definite_assignment_state::after_repeat(session, exits, span);
     crate::cleanup_checker::finish_scope(session);
     crate::scope_bindings::visibility(session, start, node);
     for index in start..session.module.locals.len() {

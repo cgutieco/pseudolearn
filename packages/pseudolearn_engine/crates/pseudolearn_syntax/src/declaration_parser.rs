@@ -106,19 +106,25 @@ pub(crate) fn declaration(state: &mut ParserState<'_>) -> Result<usize, ()> {
     let start = state.token();
     let marker = state.nodes.len();
     state.advance();
-    state.keyword(KeywordKind::MutableKeyword);
     name(state, DiagnosticCode::ExpectedIdentifierInDeclaration)?;
+    let mut names = 1_usize;
+    while state.eat(TokenKind::Comma) {
+        name(state, DiagnosticCode::ExpectedIdentifierInDeclaration)?;
+        names = names.saturating_add(1);
+    }
     state.require(
         TokenKind::Keyword(KeywordKind::TypeConnector),
         DiagnosticCode::ExpectedTypeConnector,
     )?;
     parse_type(state)?;
-    if state.eat(TokenKind::Assignment) {
+    if state.kind() == TokenKind::Assignment {
+        if names > 1 {
+            let span = state.span();
+            state.report(DiagnosticCode::InitializerWithMultipleNames, span);
+            return Err(());
+        }
+        state.advance();
         crate::expression_parser::parse_expression(state, 0)?;
-    } else {
-        let span = state.span();
-        state.report(DiagnosticCode::MissingBindingInitializer, span);
-        return Err(());
     }
     Ok(state.finish(NodeKind::Declaration, start, marker))
 }
@@ -141,6 +147,20 @@ pub(crate) fn field(state: &mut ParserState<'_>) -> Result<usize, ()> {
 }
 
 pub(crate) fn dimension(state: &mut ParserState<'_>) -> Result<usize, ()> {
+    dimension_with(state, DimensionType::Optional)
+}
+
+pub(crate) fn field_dimension(state: &mut ParserState<'_>) -> Result<usize, ()> {
+    dimension_with(state, DimensionType::Required)
+}
+
+#[derive(Clone, Copy, PartialEq, Eq)]
+enum DimensionType {
+    Optional,
+    Required,
+}
+
+fn dimension_with(state: &mut ParserState<'_>, typing: DimensionType) -> Result<usize, ()> {
     let start = state.token();
     let marker = state.nodes.len();
     state.advance();
@@ -148,11 +168,15 @@ pub(crate) fn dimension(state: &mut ParserState<'_>) -> Result<usize, ()> {
     while state.eat(TokenKind::Comma) {
         dimensioned(state)?;
     }
-    state.require(
-        TokenKind::Keyword(KeywordKind::TypeConnector),
-        DiagnosticCode::ExpectedTypeConnector,
-    )?;
-    parse_type(state)?;
+    if typing == DimensionType::Required
+        || state.kind() == TokenKind::Keyword(KeywordKind::TypeConnector)
+    {
+        state.require(
+            TokenKind::Keyword(KeywordKind::TypeConnector),
+            DiagnosticCode::ExpectedTypeConnector,
+        )?;
+        parse_type(state)?;
+    }
     reject_initializer(state)?;
     Ok(state.finish(NodeKind::DimensionDeclaration, start, marker))
 }

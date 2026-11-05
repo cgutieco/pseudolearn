@@ -81,7 +81,8 @@ fn check_operation_fields(operation: &Value) -> Result<(), String> {
     let fields = operation
         .as_object()
         .ok_or("Invalid capability operation")?;
-    if fields.len() != 9
+    let required = fields.len() - usize::from(fields.contains_key("alias"));
+    if required != 9
         || fields.keys().any(|key| {
             ![
                 "identity",
@@ -93,13 +94,36 @@ fn check_operation_fields(operation: &Value) -> Result<(), String> {
                 "result",
                 "effect",
                 "fallible",
+                "alias",
             ]
             .contains(&key.as_str())
         })
     {
         return Err("Invalid capability operation fields".to_owned());
     }
-    Ok(())
+    fields.get("alias").map_or(Ok(()), check_alias)
+}
+
+fn check_alias(alias: &Value) -> Result<(), String> {
+    let profiles = alias
+        .as_object()
+        .ok_or("Invalid capability operation alias")?;
+    let valid = profiles.len() == 2
+        && ["es", "en"].iter().all(|profile| {
+            profiles
+                .get(*profile)
+                .and_then(Value::as_array)
+                .is_some_and(|names| {
+                    names
+                        .iter()
+                        .all(|name| name.as_str().is_some_and(|name| !name.is_empty()))
+                })
+        });
+    if valid {
+        Ok(())
+    } else {
+        Err("Invalid capability operation alias".to_owned())
+    }
 }
 
 fn check_operation_signature(operation: &Value) -> Result<(), String> {

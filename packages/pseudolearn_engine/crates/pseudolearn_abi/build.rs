@@ -102,14 +102,16 @@ fn entry(index: usize, operation: &Value) -> Result<String, String> {
     let receiver = receiver_source(operation)?;
     let parameters = parameters_source(operation)?;
     Ok(format!(
-        "EffectOperation {{ id: {index}, identity: {:?}, family: {:?}, receiver: {receiver}, spanish: {:?}, english: {:?}, parameters: &[{parameters}], result: EffectValueKind::{}, effect: {}, fallible: {} }},\n",
+        "EffectOperation {{ id: {index}, identity: {:?}, family: {:?}, receiver: {receiver}, spanish: {:?}, english: {:?}, parameters: &[{parameters}], result: EffectValueKind::{}, effect: {}, fallible: {}, spanish_aliases: &[{}], english_aliases: &[{}] }},\n",
         text_field(operation, "identity")?,
         text_field(operation, "family")?,
         text_field(operation, "es")?,
         text_field(operation, "en")?,
         value_kind(text_field(operation, "result")?)?,
         flag_field(operation, "effect")?,
-        flag_field(operation, "fallible")?
+        flag_field(operation, "fallible")?,
+        aliases_source(operation, "es"),
+        aliases_source(operation, "en")
     ))
 }
 
@@ -127,12 +129,30 @@ fn function_entry(index: usize, identity: &str, function: &Value) -> Result<Stri
         .join(",");
     let names = function.get("lexemas").ok_or("missing function facets")?;
     Ok(format!(
-        "EffectOperation {{ id: {index}, identity: {identity:?}, family: {:?}, receiver: None, spanish: {:?}, english: {:?}, parameters: &[{parameters}], result: EffectValueKind::{}, effect: false, fallible: false }},\n",
+        "EffectOperation {{ id: {index}, identity: {identity:?}, family: {:?}, receiver: None, spanish: {:?}, english: {:?}, parameters: &[{parameters}], result: EffectValueKind::{}, effect: false, fallible: false, spanish_aliases: &[{}], english_aliases: &[{}] }},\n",
         text_field(function, "family")?,
         text_field(names, "es")?,
         text_field(names, "en")?,
-        value_kind(text_field(function, "retorno")?)?
+        value_kind(text_field(function, "retorno")?)?,
+        aliases_source(function, "es"),
+        aliases_source(function, "en")
     ))
+}
+
+fn aliases_source(entry: &Value, profile: &str) -> String {
+    entry
+        .get("alias")
+        .and_then(|aliases| aliases.get(profile))
+        .and_then(Value::as_array)
+        .map(|aliases| {
+            aliases
+                .iter()
+                .filter_map(Value::as_str)
+                .map(|alias| format!("{alias:?}"))
+                .collect::<Vec<_>>()
+                .join(",")
+        })
+        .unwrap_or_default()
 }
 
 fn value_kind(name: &str) -> Result<&'static str, String> {

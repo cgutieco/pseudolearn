@@ -124,10 +124,10 @@ pub(crate) fn widen(
     expression: ExpressionId,
     target: &Type,
 ) -> ExpressionId {
-    if *target != Type::Real || session.expression_type(expression) != Type::Integer {
+    if !crate::type_resolution::widens(target, &session.expression_type(expression)) {
         return expression;
     }
-    let kind = session.module.types.intern(Type::Real);
+    let kind = session.module.types.intern(target.clone());
     let span = usize::try_from(expression.0)
         .ok()
         .and_then(|index| session.module.expressions.spans.get(index))

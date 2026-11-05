@@ -57,6 +57,8 @@ pub(crate) fn assign_local(
     }
     crate::result_obligations::assign(session, local, value, node);
     session.writes.insert(local);
+    let span = session.span(node);
+    crate::definite_assignment_state::assign(session, local, span);
     if let Some(initialized) = session.initialized.get_mut(index) {
         *initialized = true;
     }
@@ -80,6 +82,8 @@ pub(crate) fn input(session: &mut AnalysisSession<'_>, node: usize) -> HirStatem
         crate::binding_checker::check_destination(session, &location, target);
         if let HirPlace::Local(local) = location {
             session.writes.insert(local);
+            let span = session.span(target);
+            crate::definite_assignment_state::assign(session, local, span);
             if let Some(initialized) = usize::try_from(local.0)
                 .ok()
                 .and_then(|index| session.initialized.get_mut(index))

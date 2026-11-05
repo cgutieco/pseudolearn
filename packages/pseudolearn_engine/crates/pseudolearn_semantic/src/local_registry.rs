@@ -11,7 +11,6 @@ struct LocalDeclaration {
     type_id: TypeId,
     passing: Passing,
     parameter: bool,
-    mutable: bool,
 }
 
 pub(crate) fn parameters(session: &mut AnalysisSession<'_>, function: usize) {
@@ -40,7 +39,6 @@ fn register_parameter(session: &mut AnalysisSession<'_>, parameter: usize, name:
             type_id,
             passing,
             parameter: true,
-            mutable: true,
         },
     );
     if session
@@ -99,7 +97,6 @@ pub(crate) fn declaration(session: &mut AnalysisSession<'_>, node: usize) {
                 type_id,
                 passing: Passing::Value,
                 parameter: false,
-                mutable: mutable_declaration(session, node),
             },
         );
         if pure_type && type_id == base {
@@ -136,9 +133,10 @@ fn register(session: &mut AnalysisSession<'_>, declaration: LocalDeclaration) ->
         span: session.span(declaration.name_node),
         scope: session.current,
         parameter: declaration.parameter,
-        mutable: declaration.mutable,
+        reassignable: true,
     });
     session.initialized.push(declaration.parameter);
+    crate::definite_assignment_state::declare(session, identifier);
     if session.module.types.representation(declaration.type_id) == Type::Error {
         session.invalid.insert(identifier);
     }
@@ -150,7 +148,7 @@ fn register(session: &mut AnalysisSession<'_>, declaration: LocalDeclaration) ->
     identifier
 }
 
-fn register_components(
+pub(crate) fn register_components(
     session: &mut AnalysisSession<'_>,
     local: LocalId,
     (type_id, name_node): (TypeId, usize),
@@ -216,11 +214,6 @@ fn passing(session: &AnalysisSession<'_>, type_id: TypeId, explicit_reference: b
     } else {
         Passing::Value
     }
-}
-
-fn mutable_declaration(session: &AnalysisSession<'_>, node: usize) -> bool {
-    session.has_token(node, TokenKind::Keyword(KeywordKind::MutableKeyword))
-        || session.kind(node) == NodeKind::DimensionDeclaration
 }
 
 fn declared_name(

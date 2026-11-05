@@ -11,18 +11,20 @@ fn searches_and_slices_by_unicode_scalar() {
 }
 
 #[test]
-fn rejects_negative_and_overflowing_ranges() {
-    assert_eq!(
-        text_substring("abc", -1, 1),
-        Err(MemoryError::StringPositionOutOfRange)
-    );
-    assert_eq!(
-        text_substring("abc", i64::MAX, 1),
-        Err(MemoryError::StringPositionOutOfRange)
-    );
+fn rejects_negative_inverted_and_overflowing_ranges() {
+    for (from, to) in [(-1, 0), (i64::MAX, 1), (0, i64::MAX), (3, 1), (0, 3)] {
+        assert_eq!(
+            text_substring("abc", from, to),
+            Err(MemoryError::StringPositionOutOfRange)
+        );
+    }
 }
 
 #[test]
-fn accepts_zero_width_suffix() {
-    assert_eq!(text_substring("abc", 3, 0), Ok(String::new()));
+fn includes_both_positions_and_accepts_empty_ranges() {
+    assert_eq!(text_substring("hola", 0, 1), Ok("ho".to_owned()));
+    assert_eq!(text_substring("hola", 3, 3), Ok("a".to_owned()));
+    assert_eq!(text_substring("hola", 2, 1), Ok(String::new()));
+    assert_eq!(text_substring("abc", 3, 2), Ok(String::new()));
+    assert_eq!(text_substring("", 0, -1), Ok(String::new()));
 }

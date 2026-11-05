@@ -16,6 +16,7 @@ pub(crate) fn bodies(session: &mut AnalysisSession<'_>) {
         session.reads.clear();
         session.writes.clear();
         session.called.clear();
+        session.assignment = crate::definite_assignment_state::AssignmentState::default();
         session.signature_changed = false;
         for index in 0..session.module.functions.len() {
             function(session, index);
@@ -26,6 +27,8 @@ pub(crate) fn bodies(session: &mut AnalysisSession<'_>) {
         }
     }
     session.generic.checking_bodies = false;
+    crate::output_parameters::finish(session);
+    crate::capture_validation::finish(session);
 }
 
 pub(crate) fn function(session: &mut AnalysisSession<'_>, index: usize) {
@@ -39,10 +42,12 @@ pub(crate) fn function(session: &mut AnalysisSession<'_>, index: usize) {
         .and_then(|class| crate::generic_classes::environment(session, class))
         .map(|environment| std::mem::replace(&mut session.generic.environment, environment));
     prepare_function(session, &function);
-    let body = session
+    let mut body = session
         .child(function.syntax, NodeKind::Body)
         .map(|body| crate::statement_checker::body(session, body))
         .unwrap_or_default();
+    crate::return_variable::finish(session, function.closing_span, &mut body);
+    crate::output_parameters::leave(session);
     if session.module.types.get(function.result) != Type::Unit && !session.returned {
         session.named_report(
             DiagnosticCode::SubroutineWithoutReturn,
@@ -83,4 +88,10 @@ fn prepare_function(session: &mut AnalysisSession<'_>, function: &crate::hir::Hi
     session.control = crate::control_context::ControlContext::default();
     session.pending_results.clear();
     crate::result_obligations::parameters(session, &function.parameters);
+    session
+        .assignment
+        .possibly
+        .extend(function.parameters.iter().copied());
+    crate::output_parameters::prepare(session, &function.parameters);
+    crate::return_variable::prepare(session, function.syntax);
 }

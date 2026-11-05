@@ -13,6 +13,7 @@ pub(crate) fn check(session: &mut AnalysisSession<'_>, node: usize) -> Expressio
     let pending = std::mem::take(&mut session.pending_results);
     let controls = std::mem::take(&mut session.controls);
     let control = std::mem::take(&mut session.control);
+    let flow = crate::definite_assignment_state::capture(session);
     let function = register(session, node);
     session.closure_stack.push(ClosureFrame { function });
     session.bindings.enter();
@@ -30,6 +31,7 @@ pub(crate) fn check(session: &mut AnalysisSession<'_>, node: usize) -> Expressio
     crate::scope_bindings::leave(session);
     session.closure_stack.pop();
     session.current = parent;
+    crate::definite_assignment_state::restore(session, &flow);
     session.returned = returned;
     session.pending_results = pending;
     session.controls = controls;

@@ -16,6 +16,9 @@ pub(crate) fn check(
         Operation::TextToReal => convert_text(operands, get_type, IrType::F64),
         Operation::HostRandom if operands.is_empty() => Ok(Some(IrType::F64)),
         Operation::HostRandom => Err(TypeError),
+        Operation::HostRandomBelow | Operation::HostRandomBetween => {
+            random_bounds(operation, operands, get_type)
+        }
         Operation::TextFormat => format_text(operands, get_type),
         Operation::ObjectCopy => match operands {
             [Operand::Value(value)] => match get_type(*value) {
@@ -169,5 +172,25 @@ fn compare_references(
             Ok(Some(IrType::Bool))
         }
         _ => Err(TypeError),
+    }
+}
+
+fn random_bounds(
+    operation: Operation,
+    operands: &[Operand],
+    get_type: &impl Fn(ValueId) -> Option<IrType>,
+) -> Result<Option<IrType>, TypeError> {
+    let expected = if operation == Operation::HostRandomBelow {
+        1
+    } else {
+        2
+    };
+    let integers = operands.iter().all(|operand| {
+        matches!(operand, Operand::Value(value) if get_type(*value) == Some(IrType::I64))
+    });
+    if operands.len() == expected && integers {
+        Ok(Some(IrType::I64))
+    } else {
+        Err(TypeError)
     }
 }

@@ -36,14 +36,20 @@ pub(crate) fn local(
         session.named_report(DiagnosticCode::VariableUsedBeforeDeclaration, node, &name);
         session.invalid.insert(local);
     }
-    if purpose != ExpressionPurpose::Destination {
-        check_read(session, local, node, purpose);
-    }
-    session.emit(
+    let unassigned = purpose != ExpressionPurpose::Destination
+        && check_read(session, local, node, purpose);
+    let expression = session.emit(
         HirExpression::Local(local),
         declaration.type_id,
         session.span(node),
-    )
+    );
+    if unassigned && purpose == ExpressionPurpose::Argument {
+        crate::definite_assignment_report::defer_argument(session, expression, local);
+    } else if unassigned {
+        let span = session.span(node);
+        crate::definite_assignment_report::unassigned_read(session, local, span);
+    }
+    expression
 }
 
 fn check_read(
@@ -51,11 +57,11 @@ fn check_read(
     local: LocalId,
     node: usize,
     purpose: ExpressionPurpose,
-) {
+) -> bool {
     session.reads.insert(local);
     let index = usize::try_from(local.0).unwrap_or(usize::MAX);
     let Some(declaration) = session.module.locals.get(index) else {
-        return;
+        return false;
     };
     let name = declaration.name.clone();
     let kind = session.module.types.get(declaration.type_id);
@@ -64,13 +70,9 @@ fn check_read(
     }
     if matches!(kind, Type::Array { .. }) && purpose == ExpressionPurpose::Value {
         session.named_report(DiagnosticCode::ArrayCannotBeUsedAsValue, node, &name);
-        return;
+        return false;
     }
-    if !session.initialized.get(index).copied().unwrap_or(false)
-        && !session.invalid.contains(&local)
-    {
-        session.named_report(DiagnosticCode::VariableUsedUninitialized, node, &name);
-    }
+    !session.initialized.get(index).copied().unwrap_or(false) && !session.invalid.contains(&local)
 }
 
 fn implicit(
@@ -97,7 +99,7 @@ fn implicit(
         span: session.span(node),
         scope: session.current,
         parameter: false,
-        mutable: false,
+        reassignable: false,
     });
     session.initialized.push(false);
     session.bindings.insert(

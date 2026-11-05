@@ -63,6 +63,18 @@ impl<'tokens> ParserState<'tokens> {
             .unwrap_or(TokenKind::EndOfFile)
     }
 
+    pub(crate) fn following_kind(&mut self) -> TokenKind {
+        self.kind();
+        let mut index = self.cursor.saturating_add(1);
+        while matches!(
+            self.tokens.kind(index),
+            Some(TokenKind::Whitespace | TokenKind::Comment)
+        ) {
+            index = index.saturating_add(1);
+        }
+        self.tokens.kind(index).unwrap_or(TokenKind::EndOfFile)
+    }
+
     pub(crate) fn span(&mut self) -> Span {
         self.kind();
         self.tokens.span(self.cursor).unwrap_or(Span::new(0, 0))

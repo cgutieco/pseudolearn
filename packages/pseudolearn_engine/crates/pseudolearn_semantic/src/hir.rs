@@ -23,7 +23,7 @@ pub struct HirLocal {
     pub span: Span,
     pub scope: FunctionId,
     pub parameter: bool,
-    pub mutable: bool,
+    pub reassignable: bool,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]

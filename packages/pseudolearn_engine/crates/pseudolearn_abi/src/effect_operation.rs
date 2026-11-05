@@ -41,6 +41,8 @@ pub struct EffectOperation {
     pub result: EffectValueKind,
     pub effect: bool,
     pub fallible: bool,
+    pub spanish_aliases: &'static [&'static str],
+    pub english_aliases: &'static [&'static str],
 }
 
 include!(concat!(env!("OUT_DIR"), "/effect_operations.rs"));
@@ -51,12 +53,15 @@ pub fn find_effect_operation(
     receiver: Option<EffectValueKind>,
 ) -> Option<&'static EffectOperation> {
     EFFECT_OPERATIONS.iter().find(|operation| {
+        let (canonical, aliases) = if spanish {
+            (operation.spanish, operation.spanish_aliases)
+        } else {
+            (operation.english, operation.english_aliases)
+        };
         operation.receiver == receiver
-            && name.eq_ignore_ascii_case(if spanish {
-                operation.spanish
-            } else {
-                operation.english
-            })
+            && std::iter::once(canonical)
+                .chain(aliases.iter().copied())
+                .any(|form| name.eq_ignore_ascii_case(form))
     })
 }
 

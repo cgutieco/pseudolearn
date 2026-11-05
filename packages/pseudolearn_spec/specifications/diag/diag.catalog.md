@@ -348,17 +348,6 @@
       "clase": "syntax",
       "tipos_argumentos": {}
     },
-    "missingStepClause": {
-      "mensajes": {
-        "es": "Se requiere especificar el paso del bucle contado",
-        "en": "Step clause is required in counted loop"
-      },
-      "argumentos": [],
-      "politica": "A",
-      "severidad": "error",
-      "clase": "syntax",
-      "tipos_argumentos": {}
-    },
     "unclosedForStatement": {
       "mensajes": {
         "es": "Bucle contado sin cerrar",
@@ -2239,16 +2228,18 @@
     },
     "variableUsedUninitialized": {
       "mensajes": {
-        "es": "La variable {lexeme} se usa sin haber sido inicializada",
-        "en": "Variable {lexeme} is used without being initialized"
+        "es": "La variable {lexeme} puede no tener valor en este punto (causa: {cause})",
+        "en": "Variable {lexeme} may have no value at this point (cause: {cause})"
       },
       "argumentos": [
+        "cause",
         "lexeme"
       ],
       "politica": "A",
       "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {
+        "cause": "termino",
         "lexeme": "lexema"
       }
     },
@@ -2639,10 +2630,10 @@
       "severidad": "error",
       "tipos_argumentos": {}
     },
-    "missingBindingInitializer": {
+    "initializerWithMultipleNames": {
       "mensajes": {
-        "es": "El vínculo necesita un inicializador; añade <- expresión",
-        "en": "Binding requires an initializer; add <- expression"
+        "es": "Un valor inicial solo se admite al declarar un único nombre",
+        "en": "An initial value is only allowed when declaring a single name"
       },
       "argumentos": [],
       "politica": "A",
@@ -2650,10 +2641,40 @@
       "clase": "syntax",
       "tipos_argumentos": {}
     },
-    "immutableBindingAssignment": {
+    "dimensionWithoutType": {
       "mensajes": {
-        "es": "El vínculo es inmutable; usa Definir Mutable para reasignarlo",
-        "en": "Binding is immutable; use define mutable to reassign it"
+        "es": "Dimension sin tipo exige que {lexeme} esté declarada con Definir en este ámbito, sin valor y sin usos previos",
+        "en": "Dimension without a type requires {lexeme} to be declared with define in this scope, without a value and unused"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": "error",
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "returnVariableNotDeclared": {
+      "mensajes": {
+        "es": "La variable de retorno {lexeme} debe declararse con Definir en el cuerpo de la función",
+        "en": "Return variable {lexeme} must be declared with define in the function body"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": "error",
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "returnValueInReturnVariableFunction": {
+      "mensajes": {
+        "es": "Una función con variable de retorno termina con Retornar sin expresión",
+        "en": "A function with a return variable ends with return and no expression"
       },
       "argumentos": [],
       "politica": "A",
@@ -2661,14 +2682,36 @@
       "clase": "semantic",
       "tipos_argumentos": {}
     },
-    "mutableBindingNeverModified": {
+    "invalidRandomBound": {
       "mensajes": {
-        "es": "El vínculo mutable nunca se modifica",
-        "en": "Mutable binding is never modified"
+        "es": "El límite de Azar debe ser mayor que cero",
+        "en": "The random bound must be greater than zero"
       },
       "argumentos": [],
-      "politica": "C",
-      "severidad": "warning",
+      "politica": "A",
+      "severidad": "error",
+      "clase": "runtime",
+      "tipos_argumentos": {}
+    },
+    "invalidRandomRange": {
+      "mensajes": {
+        "es": "El intervalo de Aleatorio necesita un inicio menor o igual que el final",
+        "en": "The randomBetween interval needs a start less than or equal to its end"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": "error",
+      "clase": "runtime",
+      "tipos_argumentos": {}
+    },
+    "immutableBindingAssignment": {
+      "mensajes": {
+        "es": "Este vínculo no se puede reasignar",
+        "en": "This binding cannot be reassigned"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": "error",
       "clase": "semantic",
       "tipos_argumentos": {}
     },
@@ -2822,8 +2865,8 @@
     },
     "mutableClosureCapture": {
       "mensajes": {
-        "es": "No se puede capturar el vínculo mutable o prestado {lexeme} de tipo {type}",
-        "en": "Cannot capture mutable or borrowed binding {lexeme} of type {type}"
+        "es": "No se puede capturar {lexeme} de tipo {type}: se reasigna o es un parámetro por referencia",
+        "en": "Cannot capture {lexeme} of type {type}: it is reassigned or is a by-reference parameter"
       },
       "argumentos": [
         "lexeme",

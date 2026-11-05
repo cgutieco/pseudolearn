@@ -27,15 +27,15 @@ pub(crate) fn check(session: &mut AnalysisSession<'_>, node: usize) -> Option<Hi
             binding(session, node, kind, body_node)
         })
         .collect();
-    let before = session.initialized.clone();
+    let before = crate::definite_assignment_state::capture(session);
     let pending = session.pending_results.clone();
     session.control.loops = session.control.loops.saturating_add(1);
+    crate::definite_assignment_state::enter_loop(session);
     let body = crate::statement_checker::body(session, body_node);
+    crate::definite_assignment_state::leave_loop(session);
     session.control.loops = session.control.loops.saturating_sub(1);
-    session.initialized = before;
-    session
-        .initialized
-        .resize(session.module.locals.len(), false);
+    let span = session.span(node);
+    crate::definite_assignment_state::after_loop(session, before, span);
     session.pending_results.extend(pending);
     crate::scope_bindings::leave(session);
     Some(HirStatement::ForEach {

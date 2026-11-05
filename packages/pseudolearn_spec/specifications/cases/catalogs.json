@@ -781,6 +781,12 @@
         "result": "text"
       },
       {
+        "alias": {
+          "en": [],
+          "es": [
+            "Mayusculas"
+          ]
+        },
         "effect": false,
         "en": "toUpper",
         "es": "AMayusculas",
@@ -794,6 +800,12 @@
         "result": "text"
       },
       {
+        "alias": {
+          "en": [],
+          "es": [
+            "Minusculas"
+          ]
+        },
         "effect": false,
         "en": "toLower",
         "es": "AMinusculas",
@@ -2734,6 +2746,21 @@
       "severidad": "error",
       "tipos_argumentos": {}
     },
+    "dimensionWithoutType": {
+      "argumentos": [
+        "lexeme"
+      ],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Dimension without a type requires {lexeme} to be declared with define in this scope, without a value and unused",
+        "es": "Dimension sin tipo exige que {lexeme} esté declarada con Definir en este ámbito, sin valor y sin usos previos"
+      },
+      "politica": "A",
+      "severidad": "error",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
     "discardRequiresResult": {
       "argumentos": [],
       "clase": "semantic",
@@ -3426,8 +3453,8 @@
       "argumentos": [],
       "clase": "semantic",
       "mensajes": {
-        "en": "Binding is immutable; use define mutable to reassign it",
-        "es": "El vínculo es inmutable; usa Definir Mutable para reasignarlo"
+        "en": "This binding cannot be reassigned",
+        "es": "Este vínculo no se puede reasignar"
       },
       "politica": "A",
       "severidad": "error",
@@ -3618,6 +3645,17 @@
       "mensajes": {
         "en": "Variable declaration does not support initial value assignment",
         "es": "La declaración de variables no admite asignación de valor inicial"
+      },
+      "politica": "A",
+      "severidad": "error",
+      "tipos_argumentos": {}
+    },
+    "initializerWithMultipleNames": {
+      "argumentos": [],
+      "clase": "syntax",
+      "mensajes": {
+        "en": "An initial value is only allowed when declaring a single name",
+        "es": "Un valor inicial solo se admite al declarar un único nombre"
       },
       "politica": "A",
       "severidad": "error",
@@ -3845,6 +3883,28 @@
       "severidad": "error",
       "tipos_argumentos": {}
     },
+    "invalidRandomBound": {
+      "argumentos": [],
+      "clase": "runtime",
+      "mensajes": {
+        "en": "The random bound must be greater than zero",
+        "es": "El límite de Azar debe ser mayor que cero"
+      },
+      "politica": "A",
+      "severidad": "error",
+      "tipos_argumentos": {}
+    },
+    "invalidRandomRange": {
+      "argumentos": [],
+      "clase": "runtime",
+      "mensajes": {
+        "en": "The randomBetween interval needs a start less than or equal to its end",
+        "es": "El intervalo de Aleatorio necesita un inicio menor o igual que el final"
+      },
+      "politica": "A",
+      "severidad": "error",
+      "tipos_argumentos": {}
+    },
     "invalidReadTarget": {
       "argumentos": [],
       "clase": "syntax",
@@ -3926,17 +3986,6 @@
         "lexeme": "lexema"
       }
     },
-    "missingBindingInitializer": {
-      "argumentos": [],
-      "clase": "syntax",
-      "mensajes": {
-        "en": "Binding requires an initializer; add <- expression",
-        "es": "El vínculo necesita un inicializador; añade <- expresión"
-      },
-      "politica": "A",
-      "severidad": "error",
-      "tipos_argumentos": {}
-    },
     "missingDictionaryKey": {
       "argumentos": [],
       "clase": "runtime",
@@ -3976,17 +4025,6 @@
       "mensajes": {
         "en": "Expected a semicolon at the end of the statement",
         "es": "Se esperaba un punto y coma al final de la sentencia"
-      },
-      "politica": "A",
-      "severidad": "error",
-      "tipos_argumentos": {}
-    },
-    "missingStepClause": {
-      "argumentos": [],
-      "clase": "syntax",
-      "mensajes": {
-        "en": "Step clause is required in counted loop",
-        "es": "Se requiere especificar el paso del bucle contado"
       },
       "politica": "A",
       "severidad": "error",
@@ -4036,17 +4074,6 @@
       "severidad": "error",
       "tipos_argumentos": {}
     },
-    "mutableBindingNeverModified": {
-      "argumentos": [],
-      "clase": "semantic",
-      "mensajes": {
-        "en": "Mutable binding is never modified",
-        "es": "El vínculo mutable nunca se modifica"
-      },
-      "politica": "C",
-      "severidad": "warning",
-      "tipos_argumentos": {}
-    },
     "mutableClosureCapture": {
       "argumentos": [
         "lexeme",
@@ -4054,8 +4081,8 @@
       ],
       "clase": "semantic",
       "mensajes": {
-        "en": "Cannot capture mutable or borrowed binding {lexeme} of type {type}",
-        "es": "No se puede capturar el vínculo mutable o prestado {lexeme} de tipo {type}"
+        "en": "Cannot capture {lexeme} of type {type}: it is reassigned or is a by-reference parameter",
+        "es": "No se puede capturar {lexeme} de tipo {type}: se reasigna o es un parámetro por referencia"
       },
       "politica": "A",
       "severidad": "error",
@@ -4540,6 +4567,32 @@
       "politica": "A",
       "severidad": "error",
       "tipos_argumentos": {}
+    },
+    "returnValueInReturnVariableFunction": {
+      "argumentos": [],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "A function with a return variable ends with return and no expression",
+        "es": "Una función con variable de retorno termina con Retornar sin expresión"
+      },
+      "politica": "A",
+      "severidad": "error",
+      "tipos_argumentos": {}
+    },
+    "returnVariableNotDeclared": {
+      "argumentos": [
+        "lexeme"
+      ],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Return variable {lexeme} must be declared with define in the function body",
+        "es": "La variable de retorno {lexeme} debe declararse con Definir en el cuerpo de la función"
+      },
+      "politica": "A",
+      "severidad": "error",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
     },
     "returnWithValueInConstructor": {
       "argumentos": [],
@@ -5582,16 +5635,18 @@
     },
     "variableUsedUninitialized": {
       "argumentos": [
+        "cause",
         "lexeme"
       ],
       "clase": "semantic",
       "mensajes": {
-        "en": "Variable {lexeme} is used without being initialized",
-        "es": "La variable {lexeme} se usa sin haber sido inicializada"
+        "en": "Variable {lexeme} may have no value at this point (cause: {cause})",
+        "es": "La variable {lexeme} puede no tener valor en este punto (causa: {cause})"
       },
       "politica": "A",
       "severidad": "error",
       "tipos_argumentos": {
+        "cause": "termino",
         "lexeme": "lexema"
       }
     },
@@ -5798,6 +5853,22 @@
         "integer"
       ],
       "retorno": "character"
+    },
+    "concatenate": {
+      "alias": {
+        "en": [],
+        "es": []
+      },
+      "family": "text",
+      "lexemas": {
+        "en": "concat",
+        "es": "Concatenar"
+      },
+      "parametros": [
+        "string",
+        "string"
+      ],
+      "retorno": "string"
     },
     "contains": {
       "alias": {
@@ -6007,14 +6078,43 @@
         "en": [
           "rand"
         ],
-        "es": [
-          "aleatorio"
-        ]
+        "es": []
       },
       "family": "numbers",
       "lexemas": {
         "en": "random",
         "es": "azar"
+      },
+      "parametros": [
+        "integer"
+      ],
+      "retorno": "integer"
+    },
+    "randomBetween": {
+      "alias": {
+        "en": [],
+        "es": []
+      },
+      "family": "numbers",
+      "lexemas": {
+        "en": "randomBetween",
+        "es": "Aleatorio"
+      },
+      "parametros": [
+        "integer",
+        "integer"
+      ],
+      "retorno": "integer"
+    },
+    "randomUnit": {
+      "alias": {
+        "en": [],
+        "es": []
+      },
+      "family": "numbers",
+      "lexemas": {
+        "en": "randomReal",
+        "es": "AzarReal"
       },
       "parametros": [],
       "retorno": "real"
@@ -6197,7 +6297,9 @@
     "textToReal": {
       "alias": {
         "en": [],
-        "es": []
+        "es": [
+          "ConvertirANumero"
+        ]
       },
       "family": "numbers",
       "lexemas": {
@@ -6274,10 +6376,10 @@
       "conjunction": "equality, { @and, equality }",
       "constantDeclaration": "@constantKeyword, identifier, @typeConnector, type, @assignment, expression",
       "constructorMember": "@method, @constructor, [ @suspendibleModifier ], parameters, line, body, @endMethod, line",
-      "declaration": "@declare, [ @mutableKeyword ], identifier, @typeConnector, type, @assignment, expression",
+      "declaration": "@declare, names, @typeConnector, type, [ @assignment, expression ]",
       "deferStatement": "identifier, line, body, identifier, line",
       "designator": "identifier, { @leftBracket, expressions, @rightBracket | @dot, identifier }",
-      "dimensionDeclaration": "@dimension, dimensioned, { @comma, dimensioned }, @typeConnector, type",
+      "dimensionDeclaration": "@dimension, dimensioned, { @comma, dimensioned }, [ @typeConnector, type ]",
       "dimensioned": "identifier, @leftBracket, expressions, @rightBracket",
       "discardStatement": "@discardKeyword, expression",
       "disjunction": "conjunction, { @or, conjunction }",
@@ -6325,12 +6427,13 @@
       "recordUnit": "@recordKeyword, identifier, [ typeParameters ], line, { recordField }, @endRecord, line",
       "repeatLoop": "@repeat, line, body, @until, expression, line",
       "returnStatement": "@returnKeyword, [ expression ]",
+      "returnVariable": "identifier, @assignment",
       "selectStatement": "@selectKeyword, receiveBranch, receiveBranch, { receiveBranch }, @endSelect",
       "signedInteger": "[ @plus | @minus ], integerLiteral",
       "spawnExpression": "@spawnKeyword, identifier, arguments",
       "spawnStatement": "spawnExpression",
       "statement": "selectStatement | ( declaration | constantDeclaration | dimensionDeclaration | assignmentStatement | output | input | callStatement | returnStatement | discardStatement | breakStatement | spawnStatement ), terminator",
-      "subprogram": "@subroutine, [ @suspendibleModifier ], identifier, [ typeParameters ], parameters, [ @typeConnector, type ], line, body, @endSubroutine, line",
+      "subprogram": "@subroutine, [ @suspendibleModifier ], ( returnVariable, identifier, [ typeParameters ], parameters | identifier, [ typeParameters ], parameters, [ @typeConnector, type ] ), line, body, @endSubroutine, line",
       "switch": "@switchKeyword, expression, @doKeyword, line, { labels, @branchSeparator, body }, [ @defaultCase, @branchSeparator, body ], @endSwitch, line",
       "taskScope": "@tasksKeyword, [ identifier ], line, body, @endTasks, line",
       "terminator": "@semicolon | endOfLine",
@@ -6437,7 +6540,6 @@
       "whitespace",
       "withoutNewline",
       "write",
-      "mutableKeyword",
       "optionalType",
       "resultType",
       "someVariant",
@@ -6790,6 +6892,7 @@
           "en": {
             "common_errors": [],
             "constraints": [
+              "Reading a variable before every path assigns it a value is an error.",
               "ASCII letters, ñ, accented Spanish vowels, and ü are accepted in either case.",
               "Names compare after NFC; letter case and accents remain significant."
             ],
@@ -6814,7 +6917,7 @@
             "parts": [
               {
                 "identity": "declare",
-                "text": "Starts an immutable local binding."
+                "text": "Starts the declaration of local variables that can be reassigned."
               },
               {
                 "identity": "typeConnector",
@@ -6839,19 +6942,16 @@
               {
                 "identity": "stringType",
                 "text": "Represents a sequence of characters."
-              },
-              {
-                "identity": "mutableKeyword",
-                "text": "Allows the binding to be reassigned."
               }
             ],
-            "purpose": "Declares one binding with an explicit type and a required initializer.",
+            "purpose": "Declares one or more variables of a type; a single name accepts an initial value.",
             "summary": "Associates names with a declared type.",
             "title": "Variable declaration"
           },
           "es": {
             "common_errors": [],
             "constraints": [
+              "Leer una variable antes de asignarle un valor en todos los caminos es un error.",
               "Se admiten letras ASCII, ñ, vocales españolas acentuadas y ü, con ambas cajas.",
               "Los nombres se comparan tras NFC; caja y acentos siguen siendo significativos."
             ],
@@ -6876,7 +6976,7 @@
             "parts": [
               {
                 "identity": "declare",
-                "text": "Inicia un vínculo local inmutable."
+                "text": "Inicia la declaración de variables locales que se pueden reasignar."
               },
               {
                 "identity": "typeConnector",
@@ -6901,13 +7001,9 @@
               {
                 "identity": "stringType",
                 "text": "Representa una secuencia de caracteres."
-              },
-              {
-                "identity": "mutableKeyword",
-                "text": "Permite reasignar el vínculo."
               }
             ],
-            "purpose": "Declara un vínculo individual con tipo e inicializador obligatorio.",
+            "purpose": "Declara una o varias variables de un tipo; con un único nombre admite un valor inicial.",
             "summary": "Asocia nombres con un tipo declarado.",
             "title": "Declarar variables"
           }
@@ -6969,14 +7065,6 @@
           },
           {
             "identity": "stringType",
-            "source": {
-              "element": "D1",
-              "specification": "LANG.PROFILE.VOCABULARY",
-              "version": "1.0.0"
-            }
-          },
-          {
-            "identity": "mutableKeyword",
             "source": {
               "element": "D1",
               "specification": "LANG.PROFILE.VOCABULARY",
@@ -8348,10 +8436,10 @@
         "content": {
           "en": {
             "common_errors": [
-              "mutableClosureCapture is reported when a closure uses a mutable binding."
+              "mutableClosureCapture is reported when a closure uses a variable that is reassigned; it points at the reassignment."
             ],
             "constraints": [
-              "Mutable and borrowed bindings cannot be captured."
+              "Only variables that are never reassigned and have a value when the closure is created can be captured; by-reference parameters cannot."
             ],
             "examples": [
               {
@@ -8374,15 +8462,15 @@
               }
             ],
             "purpose": "The closure keeps its environment reachable after the frame that created it returns.",
-            "summary": "A function literal creates a closure with the immutable bindings it uses.",
+            "summary": "A function literal creates a closure with copies of the variables it uses.",
             "title": "Function literal and capture"
           },
           "es": {
             "common_errors": [
-              "mutableClosureCapture aparece cuando una clausura usa un vínculo mutable."
+              "mutableClosureCapture aparece cuando una clausura usa una variable que se reasigna; señala la reasignación."
             ],
             "constraints": [
-              "No se pueden capturar vínculos mutables ni prestados."
+              "Solo se capturan variables que nunca se reasignan y que tienen valor al crear la clausura; los parámetros por referencia no se capturan."
             ],
             "examples": [
               {
@@ -8405,7 +8493,7 @@
               }
             ],
             "purpose": "La clausura conserva su entorno mientras siga alcanzable, incluso después de que termine el marco que la creó.",
-            "summary": "Una función literal crea una clausura con los vínculos inmutables que utiliza.",
+            "summary": "Una función literal crea una clausura con copias de las variables que utiliza.",
             "title": "Literal de función y captura"
           }
         },
@@ -12016,7 +12104,9 @@
         "content": {
           "en": {
             "common_errors": [],
-            "constraints": [],
+            "constraints": [
+              "random with a bound less than or equal to zero and randomBetween with a start greater than its end fail."
+            ],
             "examples": [
               {
                 "case": "C1",
@@ -12038,16 +12128,26 @@
             "parts": [
               {
                 "identity": "random",
-                "text": "Obtains a pseudorandom value from the process generator."
+                "text": "random(n) returns a uniform integer between 0 and n - 1."
+              },
+              {
+                "identity": "randomBetween",
+                "text": "randomBetween(a, b) returns a uniform integer between a and b, both included."
+              },
+              {
+                "identity": "randomUnit",
+                "text": "randomReal() returns a uniform real greater than or equal to 0 and less than 1."
               }
             ],
-            "purpose": "The function takes no arguments.",
-            "summary": "Requests a sample from the process pseudorandom generator.",
+            "purpose": "random(n) gives an integer between 0 and n - 1, randomBetween(a, b) an integer between a and b, and randomReal() a real between 0 and 1, never 1.",
+            "summary": "Takes uniform integers or reals from the process pseudorandom generator.",
             "title": "Pseudorandom value"
           },
           "es": {
             "common_errors": [],
-            "constraints": [],
+            "constraints": [
+              "Azar con un límite menor o igual que cero y Aleatorio con un inicio mayor que el final terminan con un fallo."
+            ],
             "examples": [
               {
                 "case": "C1",
@@ -12069,11 +12169,19 @@
             "parts": [
               {
                 "identity": "random",
-                "text": "Obtiene un valor seudoaleatorio según el generador del proceso."
+                "text": "Azar(n) devuelve un entero uniforme entre 0 y n - 1."
+              },
+              {
+                "identity": "randomBetween",
+                "text": "Aleatorio(a, b) devuelve un entero uniforme entre a y b, ambos incluidos."
+              },
+              {
+                "identity": "randomUnit",
+                "text": "AzarReal() devuelve un real uniforme mayor o igual que 0 y menor que 1."
               }
             ],
-            "purpose": "La función no recibe argumentos.",
-            "summary": "Solicita una muestra al generador seudoaleatorio del proceso.",
+            "purpose": "Azar(n) da un entero entre 0 y n - 1, Aleatorio(a, b) un entero entre a y b y AzarReal() un real entre 0 y 1, sin llegar a 1.",
+            "summary": "Toma enteros o reales uniformes del generador seudoaleatorio del proceso.",
             "title": "Valor seudoaleatorio"
           }
         },
@@ -12086,6 +12194,22 @@
         "tokens": [
           {
             "identity": "random",
+            "source": {
+              "element": "D1",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "randomBetween",
+            "source": {
+              "element": "D1",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "randomUnit",
             "source": {
               "element": "D1",
               "specification": "LIB.MODEL",
@@ -13882,6 +14006,104 @@
             "source": {
               "element": "D2",
               "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "T1",
+            "specification": "LIB.CORE.TEXT",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C44",
+                "kind": "executable",
+                "label": "Program that runs: Concatenate strings",
+                "profile": "en",
+                "specification": "LIB.CORE.TEXT",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C49",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Concatenate strings",
+                "profile": "en",
+                "specification": "LIB.CORE.TEXT",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "concatenate",
+                "text": "Joins two strings in the order of its arguments."
+              }
+            ],
+            "purpose": "It is equivalent to joining two strings with the concatenation operator.",
+            "summary": "concat(a, b) returns a new string with the characters of a followed by those of b.",
+            "title": "Concatenate strings"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C44",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Concatenar cadenas",
+                "profile": "es",
+                "specification": "LIB.CORE.TEXT",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C49",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Concatenar cadenas",
+                "profile": "es",
+                "specification": "LIB.CORE.TEXT",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "concatenate",
+                "text": "Une dos cadenas en el orden de sus argumentos."
+              }
+            ],
+            "purpose": "Equivale a unir dos cadenas con el operador de concatenación.",
+            "summary": "Concatenar(a, b) devuelve una cadena nueva con los caracteres de a seguidos de los de b.",
+            "title": "Concatenar cadenas"
+          }
+        },
+        "id": "help.builtin-concatenate",
+        "identity": {
+          "id": "primary",
+          "kind": "role",
+          "role": "text_concatenation_builtin"
+        },
+        "tokens": [
+          {
+            "identity": "concatenate",
+            "source": {
+              "element": "D1",
+              "specification": "LIB.MODEL",
               "version": "1.0.0"
             }
           }
@@ -26630,8 +26852,7 @@
             "realType",
             "booleanType",
             "characterType",
-            "stringType",
-            "mutableKeyword"
+            "stringType"
           ]
         },
         {
@@ -27251,7 +27472,9 @@
             "primary"
           ],
           "tokens": [
-            "random"
+            "random",
+            "randomBetween",
+            "randomUnit"
           ]
         },
         {
@@ -27480,6 +27703,19 @@
           ],
           "tokens": [
             "substring"
+          ]
+        },
+        {
+          "identity": {
+            "id": "primary",
+            "kind": "role",
+            "role": "text_concatenation_builtin"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "concatenate"
           ]
         },
         {
@@ -30415,16 +30651,6 @@
       "lexemas": {
         "en": "*",
         "es": "*"
-      }
-    },
-    "mutableKeyword": {
-      "alias": {
-        "en": [],
-        "es": []
-      },
-      "lexemas": {
-        "en": "mutable",
-        "es": "Mutable"
       }
     },
     "newInstance": {

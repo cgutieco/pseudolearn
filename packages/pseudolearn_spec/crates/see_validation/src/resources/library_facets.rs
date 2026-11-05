@@ -116,6 +116,12 @@ fn check_operation(operation: &Value, registries: Registries<'_>, errors: &mut V
             continue;
         };
         check_form(identity, (profile, receiver, name), registries.1, errors);
+        let aliases = operation
+            .get("alias")
+            .and_then(|value| value.get(field_name));
+        for alias in see_model::strings(aliases) {
+            check_form(identity, (profile, receiver, alias), registries.1, errors);
+        }
     }
 }
 

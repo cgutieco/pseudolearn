@@ -1,4 +1,4 @@
-use crate::declaration_parser::{dimension, name, parse_type};
+use crate::declaration_parser::{name, parse_type};
 use crate::parameter_parser::parameters;
 use crate::parser_state::ParserState;
 use crate::statement_parser::{parse_statement_block, recover};
@@ -35,10 +35,11 @@ pub(crate) fn subprogram(state: &mut ParserState<'_>) -> Result<usize, ()> {
         state.advance();
         state.finish(NodeKind::SuspendibleModifier, modifier, modifier_marker);
     }
+    let returning = return_variable(state)?;
     name(state, DiagnosticCode::ExpectedSubroutineName)?;
     crate::generic_parser::optional_parameters(state)?;
     parameters(state)?;
-    if state.keyword(KeywordKind::TypeConnector) {
+    if !returning && state.keyword(KeywordKind::TypeConnector) {
         parse_type(state)?;
     }
     parse_statement_block(state);
@@ -48,6 +49,18 @@ pub(crate) fn subprogram(state: &mut ParserState<'_>) -> Result<usize, ()> {
         start,
     );
     Ok(state.finish(NodeKind::Subprogram, start, marker))
+}
+
+fn return_variable(state: &mut ParserState<'_>) -> Result<bool, ()> {
+    if state.kind() != TokenKind::Identifier || state.following_kind() != TokenKind::Assignment {
+        return Ok(false);
+    }
+    let start = state.token();
+    let marker = state.nodes.len();
+    name(state, DiagnosticCode::ExpectedSubroutineName)?;
+    state.eat(TokenKind::Assignment);
+    state.finish(NodeKind::ReturnVariable, start, marker);
+    Ok(true)
 }
 
 pub(crate) fn class(state: &mut ParserState<'_>) -> Result<usize, ()> {
@@ -110,7 +123,7 @@ fn class_member(state: &mut ParserState<'_>, class_name: u32) -> Result<(), ()> 
             crate::declaration_parser::field(state)?;
         }
         TokenKind::Keyword(KeywordKind::Dimension) => {
-            dimension(state)?;
+            crate::declaration_parser::field_dimension(state)?;
         }
         TokenKind::Keyword(KeywordKind::Method) => {
             method(state, class_name, modifier)?;

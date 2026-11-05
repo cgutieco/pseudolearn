@@ -136,7 +136,7 @@ pub(super) fn bind(
         span: Span::default(),
         scope: FunctionId(0),
         parameter: true,
-        mutable: false,
+        reassignable: false,
     });
     session.initialized.push(true);
     Ok(local)

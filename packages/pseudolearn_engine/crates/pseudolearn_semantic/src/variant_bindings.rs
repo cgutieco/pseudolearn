@@ -32,7 +32,7 @@ fn create(session: &mut AnalysisSession<'_>, naming: (String, usize), kind: Type
         span: session.span(naming.1),
         scope: session.current,
         parameter: false,
-        mutable: false,
+        reassignable: false,
     });
     session.initialized.push(true);
     if let Type::Record(record) = session.module.types.representation(kind) {

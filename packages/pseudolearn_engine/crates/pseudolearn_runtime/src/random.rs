@@ -28,6 +28,32 @@ impl RandomState {
         result
     }
 
+    pub fn next_below(&mut self, bound: u64) -> Option<u64> {
+        let remainder = u64::MAX
+            .checked_rem(bound)?
+            .wrapping_add(1)
+            .checked_rem(bound)?;
+        let accepted = 0_u64.wrapping_sub(remainder);
+        loop {
+            let word = self.next_word();
+            if remainder == 0 || word < accepted {
+                return word.checked_rem(bound);
+            }
+        }
+    }
+
+    pub fn next_between(&mut self, low: i64, high: i64) -> Option<i64> {
+        if low > high {
+            return None;
+        }
+        let width = high.abs_diff(low);
+        let offset = match width.checked_add(1) {
+            Some(span) => self.next_below(span)?,
+            None => self.next_word(),
+        };
+        Some(low.wrapping_add_unsigned(offset))
+    }
+
     pub fn next_real(&mut self) -> f64 {
         let integer = self.next_word().wrapping_shr(11);
         let high = u32::try_from(integer.wrapping_shr(32)).unwrap_or(0);

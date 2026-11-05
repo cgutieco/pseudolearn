@@ -219,3 +219,19 @@ pub(super) fn verify_host_random(
     }
     require_destination(instruction, function, &ValueType::F64)
 }
+
+pub(super) fn verify_host_random_integer(
+    function: &BytecodeFunction,
+    instruction: &Instruction,
+    expected: usize,
+) -> Result<(), BytecodeError> {
+    if instruction.operands.len() != expected
+        || instruction
+            .operands
+            .iter()
+            .any(|operand| operand_type(function, operand) != Some(ValueType::I64))
+    {
+        return Err(TYPE_ERROR);
+    }
+    require_destination(instruction, function, &ValueType::I64)
+}

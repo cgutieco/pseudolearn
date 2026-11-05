@@ -101,7 +101,7 @@ pub(crate) fn assignable(session: &AnalysisSession<'_>, target: &Type, source: &
     {
         return true;
     }
-    if *target == Type::Real && *source == Type::Integer {
+    if widens(target, source) {
         return true;
     }
     if let (Type::Object(superclass), Type::Object(subclass)) = (target, source) {
@@ -147,4 +147,11 @@ fn variant_type(session: &mut AnalysisSession<'_>, node: usize) -> TypeId {
         payloads.insert(0, None);
     }
     crate::variant_types::register(session, family, payloads, node)
+}
+
+pub(crate) fn widens(target: &Type, source: &Type) -> bool {
+    matches!(
+        (target, source),
+        (Type::Real, Type::Integer) | (Type::String, Type::Character)
+    )
 }

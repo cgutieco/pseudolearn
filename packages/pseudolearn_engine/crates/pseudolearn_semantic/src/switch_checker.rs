@@ -26,7 +26,8 @@ pub(crate) fn check(session: &mut AnalysisSession<'_>, node: usize) -> Option<Hi
 }
 
 struct SwitchState {
-    initialized: Vec<bool>,
+    initial: crate::definite_assignment_state::FlowPoint,
+    paths: Vec<crate::definite_assignment_state::FlowPath>,
     before: BTreeSet<crate::identities::LocalId>,
     after: BTreeSet<crate::identities::LocalId>,
     cases: Vec<HirCase>,
@@ -39,7 +40,8 @@ struct SwitchState {
 impl SwitchState {
     fn new(session: &AnalysisSession<'_>) -> Self {
         Self {
-            initialized: session.initialized.clone(),
+            initial: crate::definite_assignment_state::capture(session),
+            paths: Vec::new(),
             before: session.pending_results.clone(),
             after: BTreeSet::new(),
             cases: Vec::new(),
@@ -51,10 +53,7 @@ impl SwitchState {
     }
 
     fn branch(&mut self, session: &mut AnalysisSession<'_>, branch: usize, expected: &Type) {
-        session.initialized.clone_from(&self.initialized);
-        session
-            .initialized
-            .resize(session.module.locals.len(), false);
+        crate::definite_assignment_state::restore(session, &self.initial);
         session.pending_results.clone_from(&self.before);
         if self.has_default {
             session.report(DiagnosticCode::UnreachableSwitchPattern, branch);
@@ -67,6 +66,11 @@ impl SwitchState {
             self.cases.push(HirCase { labels, body });
         }
         self.after.extend(session.pending_results.iter().copied());
+        self.paths.push(crate::definite_assignment_state::path(
+            crate::definite_assignment_state::capture(session),
+            crate::definite_assignment_state::AssignmentCause::BranchWithoutAssignment,
+            session.span(branch),
+        ));
     }
 
     fn finish(&mut self, session: &mut AnalysisSession<'_>, selector: (&Type, usize)) {
@@ -79,15 +83,18 @@ impl SwitchState {
         }
         if !self.has_default && !matches!(selector.0, Type::Enum(_)) {
             self.after.extend(self.before.iter().copied());
+            self.paths.push(crate::definite_assignment_state::path(
+                self.initial.clone(),
+                crate::definite_assignment_state::AssignmentCause::SwitchWithoutDefault,
+                session.span(selector.1),
+            ));
         }
         session.pending_results.clone_from(&self.after);
-        session.initialized.clone_from(&self.initialized);
-        session
-            .initialized
-            .resize(session.module.locals.len(), false);
-        session
-            .initialized
-            .resize(session.module.locals.len(), false);
+        if self.paths.is_empty() {
+            crate::definite_assignment_state::restore(session, &self.initial);
+        } else {
+            crate::definite_assignment_state::merge(session, &self.paths);
+        }
     }
 }
 

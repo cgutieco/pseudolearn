@@ -2,17 +2,20 @@
 
 use pseudolearn_runtime::MemoryError;
 
-pub fn text_substring(text: &str, start: i64, count: i64) -> Result<String, MemoryError> {
-    let start = usize::try_from(start).map_err(|_| MemoryError::StringPositionOutOfRange)?;
-    let count = usize::try_from(count).map_err(|_| MemoryError::StringPositionOutOfRange)?;
-    let end = start
-        .checked_add(count)
+pub fn text_substring(text: &str, from: i64, to: i64) -> Result<String, MemoryError> {
+    let start = usize::try_from(from).map_err(|_| MemoryError::StringPositionOutOfRange)?;
+    let end = to
+        .checked_add(1)
+        .and_then(|end| usize::try_from(end).ok())
         .ok_or(MemoryError::StringPositionOutOfRange)?;
-    let length = text.chars().count();
-    if end > length {
+    if end < start || end > text.chars().count() {
         return Err(MemoryError::StringPositionOutOfRange);
     }
-    Ok(text.chars().skip(start).take(count).collect())
+    Ok(text
+        .chars()
+        .skip(start)
+        .take(end.saturating_sub(start))
+        .collect())
 }
 
 pub fn text_contains(text: &str, part: &str) -> bool {

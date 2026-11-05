@@ -24,7 +24,7 @@ pub(crate) fn declare(
         span: session.span(node),
         scope: session.current,
         parameter: false,
-        mutable: false,
+        reassignable: false,
     });
     session.initialized.push(true);
     initialize_components(session, local, type_id);
