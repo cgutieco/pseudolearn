@@ -290,10 +290,10 @@ impl<'program> Machine<'program> {
     }
 }
 
+mod channel_buffers;
 mod lexical_names;
 mod snapshot_copy;
-mod task_spill;
-mod channel_buffers;
-mod task_storage;
 mod suspension_maps;
 mod suspension_storage;
+mod task_spill;
+mod task_storage;

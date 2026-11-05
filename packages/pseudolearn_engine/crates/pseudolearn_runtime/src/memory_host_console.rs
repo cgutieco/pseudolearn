@@ -7,7 +7,8 @@ pub(crate) fn write_error(
 ) -> Result<HostValue, IoError> {
     let text = crate::memory_host::text(request, 0)?;
     provider.error_output.push_str(text);
-    let length = i64::try_from(text.len()).map_err(|_| IoError::from_kind(IoErrorKind::Interrupted))?;
+    let length =
+        i64::try_from(text.len()).map_err(|_| IoError::from_kind(IoErrorKind::Interrupted))?;
     Ok(HostValue::Integer(length))
 }
 

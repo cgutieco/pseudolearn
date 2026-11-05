@@ -85,7 +85,8 @@ impl Machine<'_> {
     fn store_requested_exit_code(&mut self, site: &EffectSite) -> Result<(), Fault> {
         let register = site.arguments.first().ok_or(INVALID_BYTECODE)?;
         let word = self.scalar(*register)?;
-        self.exit_code = u8::try_from(crate::evaluate::integer_of(word)).map_err(|_| INVALID_BYTECODE)?;
+        self.exit_code =
+            u8::try_from(crate::evaluate::integer_of(word)).map_err(|_| INVALID_BYTECODE)?;
         Ok(())
     }
 }

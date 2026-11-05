@@ -164,15 +164,10 @@ fn keyword_target(
             enclosing: Some(enclosing),
         };
     }
-    let kind = if is_type_keyword(keyword) {
-        HelpIdentityKind::Type
+    let (kind, role) = if is_type_keyword(keyword) {
+        (HelpIdentityKind::Type, "type")
     } else {
-        HelpIdentityKind::Keyword
-    };
-    let role = if kind == HelpIdentityKind::Type {
-        "type"
-    } else {
-        "keyword"
+        (HelpIdentityKind::Keyword, "keyword")
     };
     ResolutionTarget {
         identity: Some(identity(kind, keyword.as_str(), role)),

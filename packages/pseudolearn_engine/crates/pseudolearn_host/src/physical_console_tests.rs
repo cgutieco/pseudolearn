@@ -44,7 +44,10 @@ fn rejects_a_non_text_argument() {
 #[test]
 fn accepts_exit_codes_from_zero_to_255() {
     for code in [0, 1, 7, 255] {
-        let reply = set_exit_code(&request("console_set_exit_code", vec![Argument::Integer(code)]));
+        let reply = set_exit_code(&request(
+            "console_set_exit_code",
+            vec![Argument::Integer(code)],
+        ));
         assert!(reply.is_ok(), "{code}");
     }
 }
@@ -52,7 +55,10 @@ fn accepts_exit_codes_from_zero_to_255() {
 #[test]
 fn rejects_exit_codes_outside_the_range() {
     for code in [-1, 256, i64::MAX, i64::MIN] {
-        let reply = set_exit_code(&request("console_set_exit_code", vec![Argument::Integer(code)]));
+        let reply = set_exit_code(&request(
+            "console_set_exit_code",
+            vec![Argument::Integer(code)],
+        ));
         assert!(reply.is_err(), "{code}");
     }
 }

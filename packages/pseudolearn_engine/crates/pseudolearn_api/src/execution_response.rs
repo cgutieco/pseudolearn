@@ -1,6 +1,6 @@
 use super::ExecutionResource;
-use pseudolearn_vm::{Machine, RunExit, machine_error_ranges, machine_events, machine_exit_code,
-    machine_output,
+use pseudolearn_vm::{
+    Machine, RunExit, machine_error_ranges, machine_events, machine_exit_code, machine_output,
 };
 use serde_json::{Value, json};
 

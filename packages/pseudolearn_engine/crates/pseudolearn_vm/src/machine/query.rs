@@ -27,7 +27,9 @@ pub fn machine_event_count(machine: &Machine<'_>) -> usize {
     machine.events_dropped.saturating_add(machine.events.len())
 }
 
-pub fn machine_error_ranges<'machine>(machine: &'machine Machine<'_>) -> &'machine [(usize, usize)] {
+pub fn machine_error_ranges<'machine>(
+    machine: &'machine Machine<'_>,
+) -> &'machine [(usize, usize)] {
     &machine.error_ranges
 }
 

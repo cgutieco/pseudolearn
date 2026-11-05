@@ -178,12 +178,10 @@ fn keeps_user_methods_named_like_channel_operations() -> Result<(), String> {
 }
 
 #[test]
-fn translates_declared_variants_and_keeps_homonymous_names() {
+fn translates_declared_variants_and_keeps_homonymous_names() -> Result<(), String> {
     let spanish = "Variante Forma\nAlternativa Circulo(radio Como Entero)\nAlternativa Vacia\nFinVariante\nAlgoritmo Principal\nDefinir Variante Como Entero <- 1;\nEscribir Variante;\nFinAlgoritmo\n";
     let english = translate_source(spanish, Profile::English);
-    let Ok(english_text) = english else {
-        panic!("translation failed: {english:?}");
-    };
+    let english_text = english.map_err(|error| format!("{error:?}"))?;
     assert_eq!(
         english_text,
         "variant Forma\ncase Circulo(radio As Integer)\ncase Vacia\nendVariant\nAlgorithm Principal\nDefine Variante As Integer <- 1;\nWrite Variante;\nEndAlgorithm\n"
@@ -194,4 +192,5 @@ fn translates_declared_variants_and_keeps_homonymous_names() {
             .as_deref(),
         Some(spanish)
     );
+    Ok(())
 }

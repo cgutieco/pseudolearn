@@ -79,17 +79,7 @@ fn nominal_role(
         NodeKind::TypeArguments => "type_argument",
         NodeKind::IterationBindings => "binding",
         NodeKind::DeferStatement => "cleanup_body",
-        NodeKind::EnumUnit
-        | NodeKind::EnumMembers
-        | NodeKind::RecordUnit
-        | NodeKind::ForEachLoop
-        | NodeKind::InterfaceSignature
-        | NodeKind::VariantUnit
-        | NodeKind::VariantAlternative
-        | NodeKind::AlternativeField => {
-            return crate::program_view_values::child_role(parent_node.kind, child_node.kind);
-        }
-        _ => return None,
+        _ => return crate::program_view_values::child_role(parent_node.kind, child_node.kind),
     })
 }
 

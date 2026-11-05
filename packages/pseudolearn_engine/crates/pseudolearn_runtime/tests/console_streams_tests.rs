@@ -80,7 +80,11 @@ fn empty_error_text_writes_zero_bytes() -> Result<(), String> {
 fn exit_codes_inside_the_range_are_committed() -> Result<(), String> {
     for code in [0_i64, 1, 7, 255] {
         let mut provider = MemoryHostProvider::new();
-        let reply = call("console_set_exit_code", HostValue::Integer(code), &mut provider)?;
+        let reply = call(
+            "console_set_exit_code",
+            HostValue::Integer(code),
+            &mut provider,
+        )?;
         assert!(
             matches!(reply, HostReply::Committed(HostValue::Integer(value)) if value == code),
             "{code}"
@@ -93,7 +97,11 @@ fn exit_codes_inside_the_range_are_committed() -> Result<(), String> {
 fn exit_codes_outside_the_range_are_rejected() -> Result<(), String> {
     for code in [-1_i64, 256, i64::MAX, i64::MIN] {
         let mut provider = MemoryHostProvider::new();
-        let reply = call("console_set_exit_code", HostValue::Integer(code), &mut provider)?;
+        let reply = call(
+            "console_set_exit_code",
+            HostValue::Integer(code),
+            &mut provider,
+        )?;
         assert!(matches!(reply, HostReply::Failed(_)), "{code}: {reply:?}");
     }
     Ok(())

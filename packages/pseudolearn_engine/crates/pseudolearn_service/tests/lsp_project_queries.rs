@@ -282,16 +282,16 @@ fn absolute_tokens(text: &str) -> Vec<(u64, u64, u64, u64)> {
         .and_then(Value::as_array)
         .cloned()
         .unwrap_or_default();
-    let mut line = 0;
-    let mut character = 0;
+    let mut line: u64 = 0;
+    let mut character: u64 = 0;
     let mut decoded = Vec::new();
     for token in encoded.chunks(5) {
         let field = |slot: usize| token.get(slot).and_then(Value::as_u64).unwrap_or(0);
         if field(0) > 0 {
-            line += field(0);
+            line = line.saturating_add(field(0));
             character = field(1);
         } else {
-            character += field(1);
+            character = character.saturating_add(field(1));
         }
         decoded.push((line, character, field(2), field(3)));
     }
