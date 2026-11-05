@@ -1687,8 +1687,9 @@
     },
     {
       "regla": "LANG.TASK.SCOPE@1.0.0#R9",
-      "verificacion": "crates/pseudolearn_aot_rt/src/effect_runtime.rs",
-      "estado": "cumple"
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-N.13"
     },
     {
       "regla": "LANG.TASK.SCOPE@1.0.0#R10",

@@ -19,10 +19,10 @@ fn corpus() -> Result<Corpus, String> {
 }
 
 fn status(state: &str) -> RuleStatus {
-    RuleStatus::from_states(BTreeMap::from([(
-        "LANG.TEST.SAMPLE@1.0.0#R1".to_owned(),
-        state.to_owned(),
-    )]))
+    RuleStatus::from_states(
+        "aot",
+        BTreeMap::from([("LANG.TEST.SAMPLE@1.0.0#R1".to_owned(), state.to_owned())]),
+    )
 }
 
 fn fixture(rule: &str) -> serde_json::Value {
@@ -30,28 +30,34 @@ fn fixture(rule: &str) -> serde_json::Value {
 }
 
 #[test]
-fn a_case_of_a_pending_rule_is_recognised_as_pending() -> Result<(), String> {
+fn a_case_of_a_measured_or_unbound_rule_is_measured() -> Result<(), String> {
     let corpus = corpus()?;
-    assert!(status("pendiente").case_is_pending(&corpus, &fixture("R1")));
+    assert!(status("cumple").case_is_measured(&corpus, &fixture("R1")));
+    assert!(status("cumple").case_is_measured(&corpus, &fixture("R2")));
+    assert!(
+        RuleStatus::from_states("aot", BTreeMap::new()).case_is_measured(&corpus, &fixture("R1"))
+    );
     Ok(())
 }
 
 #[test]
-fn cases_of_measured_or_exempt_rules_are_not_pending() -> Result<(), String> {
+fn cases_of_pending_or_exempt_rules_are_not_measured() -> Result<(), String> {
     let corpus = corpus()?;
-    assert!(!status("cumple").case_is_pending(&corpus, &fixture("R1")));
-    assert!(!status("exento").case_is_pending(&corpus, &fixture("R1")));
+    assert!(!status("pendiente").case_is_measured(&corpus, &fixture("R1")));
+    assert!(!status("exento").case_is_measured(&corpus, &fixture("R1")));
     Ok(())
 }
 
 #[test]
-fn unbound_rules_unknown_specifications_and_missing_rules_are_not_pending() -> Result<(), String> {
+fn cases_of_unknown_specifications_or_of_other_subjects_are_not_measured() -> Result<(), String> {
     let corpus = corpus()?;
-    let pending = status("pendiente");
-    assert!(!pending.case_is_pending(&corpus, &fixture("R2")));
-    assert!(!pending.case_is_pending(&corpus, &json!({"specification":"LANG.ABSENT","rule":"R1"})));
-    assert!(!pending.case_is_pending(&corpus, &json!({"specification":"LANG.TEST.SAMPLE"})));
-    assert!(!RuleStatus::from_states(BTreeMap::new()).case_is_pending(&corpus, &fixture("R1")));
+    let foreign = RuleStatus::from_states("service", BTreeMap::new());
+    assert!(!foreign.case_is_measured(&corpus, &fixture("R1")));
+    assert!(
+        !status("cumple")
+            .case_is_measured(&corpus, &json!({"specification":"LANG.ABSENT","rule":"R1"}))
+    );
+    assert!(!status("cumple").case_is_measured(&corpus, &json!({})));
     Ok(())
 }
 

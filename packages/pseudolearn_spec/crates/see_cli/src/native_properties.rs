@@ -19,7 +19,7 @@ pub fn run(
     let status = crate::rule_status::RuleStatus::load(&arguments.root, "aot")?;
     let cases: Vec<Value> = see_conformance::runtime_fixtures::cases(corpus, &vocabulary)?
         .into_iter()
-        .filter(|fixture| !status.case_is_pending(corpus, fixture))
+        .filter(|fixture| status.case_is_measured(corpus, fixture))
         .collect();
     let (mut command, _) =
         crate::subject_adapters::subject_configuration(arguments, corpus, "engine")?;
