@@ -365,3 +365,13 @@ del corpus (nunca una denegación por política).
 El anfitrión del navegador (`browser_effect_host.ts`) confirma `console_write_error`; la salida combinada de
 la API ya trae el texto en orden, así que el presentador lo muestra junto con el resto (sin estilo propio todavía). `console_set_exit_code` valida el rango y se
 confirma, pero el presentador no usa el código (una pestaña web no tiene código de proceso).
+
+### Cobertura de operaciones de efecto en la extensión web
+
+`src/adapters/browser_operation_support.ts` declara, para cada operación de efecto de la biblioteca, si el adaptador
+web responde con un valor o con un `ErrorES` tipado de plataforma (`environment_get` responde `permiso_denegado`: el
+navegador no tiene entorno). `tests/adapters/browser_operation_coverage.test.ts` compara esa tabla con
+`resources.capabilityLibrary` de `export.json` y falla si se añade una operación sin rama o si la tabla conserva una que
+la biblioteca ya no exporta; incluye un caso negativo con una operación retirada. La extensión de escritorio ejecuta por
+`pseudo ejecutar --editor`, así que cualquier operación del anfitrión físico la alcanza sin código propio. No se
+verificaron Firefox, WebKit ni Windows en esta fase.

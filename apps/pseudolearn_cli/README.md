@@ -477,3 +477,12 @@ cualquier otro final (`run_command.rs::process_exit_code`). El texto de `Consola
 tramos en `error_ranges`; `output_streams.rs` los reparte entre la salida estándar y la de error en el orden del
 programa, y la sesión DAP los informa con la categoría `stderr`. El protocolo de editor lleva `error_ranges` sin
 interpretarlo; la ejecución nativa (`--native`) y el AOT no lo implementan todavía (`PG-N.08`).
+
+### Aceptación de la biblioteca de propósito general
+
+`examples/general-purpose/acceptance/` contiene un programa por área, con salida determinista: `pure-library.es.pseudo`
+(texto, números, formato, colecciones y calendario puro), `files.es.pseudo` (crea y borra su propio subdirectorio de la
+carpeta de trabajo) y `console-environment.es.pseudo` (entorno, zona del sistema, flujo de error y código de salida).
+`tests/general_purpose_acceptance.rs` los ejecuta con el binario real en una carpeta temporal y exige salida estándar,
+salida de error, código de proceso y carpeta de trabajo vacía al terminar. Verificado solo en macOS arm64; Windows y
+Linux no se ejecutaron.

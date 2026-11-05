@@ -405,7 +405,7 @@ corrige los demás puntos. Puerta G2 de §10.
   `atan2` por cuadrantes sobre `atan`, `log10/log2` como `ln x / ln b` con los casos exactos resueltos antes de la
   escalada), `ir` (operaciones nuevas si DS-02 = a, con `type_checker_intrinsics.rs`), `lowering/expressions_builtins.rs`
   (dividir si supera el límite), `bytecode`, `vm`, `vm_dispatch`, `semantic/builtin_checker.rs`.
-- [ ] `PG-S.03.07` Contraste masivo con `pseudolearn_math_probe` contra el oráculo para las seis trascendentes: número de
+- [x] `PG-S.03.07` Contraste masivo con `pseudolearn_math_probe` contra el oráculo para las seis trascendentes: número de
   muestras, semilla, argumentos extremos (subnormales, ±`f64::MAX`, cercanos a múltiplos de π/2, |x| cerca de 1) y
   cero discrepancias. Procedencia completa (plataforma, hashes, semilla, muestras crudas) según `C10`; si no se ejecuta,
   se difiere con aprobación de la persona.
@@ -598,7 +598,7 @@ corrige los demás puntos. Puerta G2 de §10.
 Este punto integra y acredita; el trabajo por anfitrión de cada operación ya se hizo en su punto. No introduce
 operaciones nuevas.
 
-- [ ] `PG-S.09.01` Matriz de aceptación (§7.2): operación × plataforma, con el resultado esperado derivado del corpus.
+- [x] `PG-S.09.01` Matriz de aceptación (§7.2): operación × plataforma, con el resultado esperado derivado del corpus.
   Plataformas: VM (API), CLI, extensión de escritorio, extensión web (Chromium y WebKit), app macOS, app iOS simulador,
   app Windows. Cada celda: `cumple`, `error tipado de plataforma esperado` (con el `ErrorES` que lo documenta) o
   `no verificado` (Windows, sin ejecución real, rotulado como en PG-B.27).
@@ -606,15 +606,15 @@ operaciones nuevas.
   nuevas del área con salida determinista (no depende de la hora, del entorno ni del disco del usuario salvo las
   variables que el propio programa fija o la carpeta temporal que crea y borra). Se ejecuta en cada plataforma real
   disponible en el equipo (CLI, extensión web, app macOS, app iOS en simulador) siguiendo el patrón de PG-B.27.
-- [ ] `PG-S.09.03` Extensión web: para cada operación, el adaptador responde con valor real o con `ErrorES` tipado de
+- [x] `PG-S.09.03` Extensión web: para cada operación, el adaptador responde con valor real o con `ErrorES` tipado de
   plataforma (entorno, quizá `Renombrar` según el proveedor); ninguna operación queda sin rama (prueba de exhaustividad
   contra `EFFECT_OPERATIONS`, **tarea que debe fallar si se añade una operación nueva sin adaptador**).
 - [ ] `PG-S.09.04` App: puente (`native/`), puerto, consola con estilo para error y código de salida, diagramas/traza y
   ayuda (`C09`), selector de ejemplos si la app los tiene, exportación Rust/Python con equivalente o rótulo explícito
   (`PS-V-12`), matriz de cobertura sin celdas nuevas en «no soportado». Resultado de la suite Flutter dirigida.
-- [ ] `PG-S.09.05` Extensión de escritorio: confirmar `PS-V-14` y ejecutar el programa de aceptación; DAP: la salida de
+- [x] `PG-S.09.05` Extensión de escritorio: confirmar `PS-V-14` y ejecutar el programa de aceptación; DAP: la salida de
   error aparece con su categoría.
-- [ ] `PG-S.09.06` Declarar en el README de cada miembro y en §11 lo que no se pudo verificar físicamente (Windows,
+- [x] `PG-S.09.06` Declarar en el README de cada miembro y en §11 lo que no se pudo verificar físicamente (Windows,
   dispositivos físicos, Firefox), sin afirmar cobertura que no existe.
 
 ## 5. Capas y archivos
@@ -825,13 +825,15 @@ Estado de las tareas: §4.0 y PG-S.01 ejecutadas el 2026-11-04 sobre `2d6254aa`,
 | `PG-S.02.01`–`.10` | Cumplidas | [Informe y relevo](informe-pg-s-02-03.md) | Implementación, corpus, tests y consumidores preparados |
 | `PG-S.02.11` | Pendiente | Informe, sección de pendientes | Falta consolidar conformidad con el último hash de diccionario; no se cierra la fase |
 | `PG-S.03.01`–`.06`, `.08`–`.10` | Cumplidas | [Informe y relevo](informe-pg-s-02-03.md) | Código, oráculo, casos, propiedad y consumidores implementados |
-| `PG-S.03.07`, `.11` | Pendientes | Informe, sección de pendientes | Contraste completado para tan/asin/acos; faltan atan2/log2/log10 y consolidación final |
+| `PG-S.03.07` | Cumplida | `results/pg-s-02-03-2026-11-04/logs/math-remaining.log` | atan2, log2 y log10: 1 000 000 de muestras cada una, 0 discrepancias; con tan/asin/acos, seis funciones sin discrepancias |
+| `PG-S.03.11` | Pendiente | Informe, sección de pendientes | Falta certificar `PERF.*` (objetivo AOT y estacionariedad ya fallaban en la base) |
 | `PG-S.04.01`–`.10` | Pendiente | | |
 | `PG-S.05.01`–`.11` | Pendiente | | |
 | `PG-S.06.01`–`.08` | Pendiente | | |
 | `PG-S.07.01`–`.09` | Completo salvo app y Wasm (contrato aditivo `error_ranges`) | [informe](informe-pg-s-07-08.md) | |
 | `PG-S.08.01`–`.06` | Completo | [informe](informe-pg-s-07-08.md) | |
-| `PG-S.09.01`–`.06` | Pendiente | | |
+| `PG-S.09.01`, `.03`, `.05`, `.06` | Cumplidas | [Informe](informe-pg-s-09.md) | CLI/VM y adaptador web verificados; el resto `no verificado` |
+| `PG-S.09.02`, `.04` | Pendientes | [Informe](informe-pg-s-09.md) | `.02`: solo CLI (faltan web real, app macOS e iOS simulador); `.04`: puente, vista de consola con estilo de error, exportación y suite Flutter sin tocar |
 | `PG-S.C03`–`C13` | Pendiente | | |
 
 ### 11.1 Registro de hipótesis (`PS-V-01`–`PS-V-14`)
