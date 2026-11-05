@@ -146,6 +146,8 @@ final class RustBatch {
   final List<PendingEffectRequest> pendingEffects;
   final List<Map<String, Object?>> pendingRequests;
   final Map<String, Object?>? effectTape;
+  final List<(int, int)> errorRanges;
+  final int? exitCode;
 
   const RustBatch({
     required this.events,
@@ -158,6 +160,8 @@ final class RustBatch {
     this.pendingEffects = const [],
     this.pendingRequests = const [],
     this.effectTape,
+    this.errorRanges = const [],
+    this.exitCode,
   });
 
   factory RustBatch.fromJson(Map<String, Object?> json) {
@@ -177,6 +181,8 @@ final class RustBatch {
     }
     return RustBatch(
       effectTape: _tapeOf(json['effect_tape']),
+      errorRanges: _rangesOf(json['error_ranges']),
+      exitCode: json['exit_code'] as int?,
       events: (json['events'] as List<Object?>)
           .cast<Map<String, Object?>>()
           .map(RustEvent.fromJson)
@@ -209,6 +215,21 @@ final class RustBatch {
             effect,
         ];
 
+  static List<(int, int)> _rangesOf(Object? ranges) {
+    if (ranges == null) return const [];
+    if (ranges is! List<Object?>) throw const FormatException('Invalid error ranges');
+    return [
+      for (final range in ranges)
+        if (range is List<Object?> &&
+            range.length == 2 &&
+            range[0] is int &&
+            range[1] is int)
+          (range[0] as int, range[1] as int)
+        else
+          throw const FormatException('Invalid error range'),
+    ];
+  }
+
   static Map<String, Object?>? _tapeOf(Object? tape) {
     if (tape != null && tape is! Map<String, Object?>) {
       throw const FormatException('Invalid effect tape');
@@ -220,6 +241,8 @@ final class RustBatch {
     events: events,
     termination: RustTerminationKind.running,
     effectTape: effectTape,
+    errorRanges: errorRanges,
+    exitCode: exitCode,
   );
 
   static RustTerminationKind _kindOf(String name) => switch (name) {

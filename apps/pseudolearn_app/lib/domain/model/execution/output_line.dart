@@ -1,6 +1,7 @@
 enum OutputLineKind {
   programOutput,
   userInputEcho,
+  programError,
 }
 
 final class OutputLine {

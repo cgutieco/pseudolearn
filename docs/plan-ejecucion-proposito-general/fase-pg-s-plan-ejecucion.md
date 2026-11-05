@@ -369,7 +369,7 @@ corrige los demás puntos. Puerta G2 de §10.
   Rust/Python: `sort`, `reverse`, `iter().position`, `contains`, `keys`).
 - [x] `PG-S.02.10` README (`semantic`, `lowering`, `library`, `runtime`, `vm`, `aot_rt`/`codegen` si cambian) con DS-07–DS-11
   y el resultado de `PS-E02` (`DOC-NO-ORPHAN-DECISION`).
-- [ ] `PG-S.02.11` Verificación dirigida: `see validate/lock/export --check`, `see conform --subject engine` para las
+- [x] `PG-S.02.11` Verificación dirigida: `see validate/lock/export --check`, `see conform --subject engine` para las
   reglas editadas, `cargo test` de `semantic`, `lowering`, `library`, `runtime`, `vm`, `api`, `service`; E-PG-03
   (crecimiento por instancia) si DS-10 = A; `PERF.SUITE.CORE` sin regresión (§6).
 
@@ -414,7 +414,7 @@ corrige los demás puntos. Puerta G2 de §10.
   Rust `f64::tan`… **ojo**: la exportación a Rust/Python usa la libm del destino y puede diferir en el último bit;
   rotular esa diferencia como límite conocido o declarar «sin equivalente», decisión registrada en el README de la app).
 - [x] `PG-S.03.10` README de `library`, `ir`, `vm`, `semantic`, `lowering`, `pseudolearn_spec`, con DS-02–DS-06.
-- [ ] `PG-S.03.11` Verificación dirigida (§7.4) + `PERF.SUITE.CORE` y `PERF.AOT.LEVEL` sin regresión (las funciones
+- [x] `PG-S.03.11` Verificación dirigida (§7.4) + `PERF.SUITE.CORE` y `PERF.AOT.LEVEL` sin regresión (las funciones
   nuevas no cambian los benchmarks existentes).
 
 ### PG-S.04 · Archivos: listar, existir, borrar, renombrar, crear directorio y añadir
@@ -823,10 +823,10 @@ Estado de las tareas: §4.0 y PG-S.01 ejecutadas el 2026-11-04 sobre `2d6254aa`,
 | `PG-S.01.01`–`.10` | Cumplida | Corpus: `LIB.CORE.TEXT#T4`, casos C19–C30, D2 `text_to_upper`/`text_to_lower`, fichas `help.pgs01.*` en `tool.service.catalog.md`, cobertura IR V210, vínculos engine (`cumple`) y aot (`pendiente`, `PG-N.08`). Motor: `text_case.rs`, `text_case_tests.rs`, ramas en `local_operations.rs`. `see validate`, `lock --refresh` (IR.INSTRUCTIONS, LIB.MODEL, LIB.CORE.TEXT, TOOL.SERVICE.CATALOG), `export --check`, `conform --subject engine --operation properties` (31 propiedades) y `conform --subject engine` (2206 observaciones, 0 divergencias) | |
 | `PG-S.01.11` | Informe en §11.2 | | La parada de control G2 la decide la persona |
 | `PG-S.02.01`–`.10` | Cumplidas | [Informe y relevo](informe-pg-s-02-03.md) | Implementación, corpus, tests y consumidores preparados |
-| `PG-S.02.11` | Pendiente | Informe, sección de pendientes | Falta consolidar conformidad con el último hash de diccionario; no se cierra la fase |
+| `PG-S.02.11` | Cumplida | `see validate/lock/export --check`; `conform --subject engine` en `LANG.TYPES.VECTOR`/`DICTIONARY` (0 divergencias); tests de `library`, `semantic`, `lowering`, `vm`, `runtime`, `service` en verde; E-PG-03 en el informe (74/740/7 400 instrucciones) | `PERF.*` sin regresión significativa |
 | `PG-S.03.01`–`.06`, `.08`–`.10` | Cumplidas | [Informe y relevo](informe-pg-s-02-03.md) | Código, oráculo, casos, propiedad y consumidores implementados |
 | `PG-S.03.07` | Cumplida | `results/pg-s-02-03-2026-11-04/logs/math-remaining.log` | atan2, log2 y log10: 1 000 000 de muestras cada una, 0 discrepancias; con tan/asin/acos, seis funciones sin discrepancias |
-| `PG-S.03.11` | Pendiente | Informe, sección de pendientes | Falta certificar `PERF.*` (objetivo AOT y estacionariedad ya fallaban en la base) |
+| `PG-S.03.11` | Cumplida con salvedad | Informe de PG-S.02/03, `perf-current-readonly-final` | Sin regresión significativa. El objetivo absoluto de `PERF.AOT.LEVEL#R1` (≤ 1,70) y la estacionariedad **no** quedan certificados y ya fallaban en la base |
 | `PG-S.04.01`–`.10` | Pendiente | | |
 | `PG-S.05.01`–`.11` | Pendiente | | |
 | `PG-S.06.01`–`.08` | Pendiente | | |

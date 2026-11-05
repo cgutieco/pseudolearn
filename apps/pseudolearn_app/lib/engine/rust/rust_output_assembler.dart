@@ -4,11 +4,14 @@ final class RustOutputAssembler {
   final List<OutputLine> lines = [];
   bool _hasOpenLine = false;
 
-  void append(String text) {
+  void append(
+    String text, {
+    OutputLineKind kind = OutputLineKind.programOutput,
+  }) {
     if (text.isEmpty) return;
     final parts = text.split('\n');
     for (var index = 0; index < parts.length; index++) {
-      _appendPart(parts[index], index == parts.length - 1, index > 0);
+      _appendPart(parts[index], index == parts.length - 1, index > 0, kind);
     }
   }
 
@@ -17,20 +20,25 @@ final class RustOutputAssembler {
     lines.add(OutputLine(text: rawText, kind: OutputLineKind.userInputEcho));
   }
 
-  void _appendPart(String part, bool isLastPart, bool isAfterNewline) {
+  void _appendPart(
+    String part,
+    bool isLastPart,
+    bool isAfterNewline,
+    OutputLineKind kind,
+  ) {
     if (isAfterNewline) _hasOpenLine = false;
     if (part.isEmpty && isLastPart) return;
     final canJoin =
         _hasOpenLine &&
         lines.isNotEmpty &&
-        lines.last.kind == OutputLineKind.programOutput;
+        lines.last.kind == kind;
     if (canJoin) {
       lines[lines.length - 1] = OutputLine(
         text: lines.last.text + part,
-        kind: OutputLineKind.programOutput,
+        kind: kind,
       );
     } else {
-      lines.add(OutputLine(text: part, kind: OutputLineKind.programOutput));
+      lines.add(OutputLine(text: part, kind: kind));
     }
     _hasOpenLine = isLastPart;
   }

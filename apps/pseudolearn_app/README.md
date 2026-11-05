@@ -3161,3 +3161,12 @@ La fila de configuración de ejecución solo aloja el campo de argumentos y el b
 ## Ampliación numérica y de colecciones
 
 La proyección transporta collection_operation desde el motor. Las llamadas nuevas conservan el nodo de llamada para diagramas y traza; la mezcla no introduce sentencias visibles. La exportación señala collection:<identidad> sin equivalente mientras no pueda conservar alias, atomicidad y fallos. Las seis trascendentes nuevas quedan sin equivalente en Rust/Python porque la libm del destino no garantiza el redondeo requerido.
+
+### Salida de error en la consola
+
+`RustBatch` lee `error_ranges` (tramos `[inicio, fin)` en bytes UTF-8 de la salida combinada) y `exit_code` de cada
+respuesta del motor. `RustExecutionEventEffects` lleva el desplazamiento acumulado de los eventos `output` y marca como
+`OutputLineKind.programError` los que caen dentro de un tramo; `output_panel.dart` los pinta con el color de severidad
+`error`. Cada `EscribirError` produce un evento completo dentro de un tramo, así que un evento nunca queda a medias. Límites: el código de salida se
+lee pero la app no lo muestra, el estilo propio no existe en la extensión web ni en la frontera Wasm, y no hay
+proyección específica de las operaciones nuevas más allá de la que ya da el catálogo exportado.

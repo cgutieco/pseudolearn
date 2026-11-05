@@ -38,13 +38,14 @@ final class RustExecutionEventConsumer {
     required RustProgramView view,
     required SourceOffsetIndex offsets,
     required RustFocusTracker tracker,
+    List<(int, int)> errorRanges = const [],
   }) {
     try {
       if (!tracker.apply(event, eventIndex)) return 'invalid_event_sequence';
     } on Object {
       return 'invalid_event';
     }
-    _effects.record(event, view, offsets);
+    _effects.record(event, view, offsets, errorRanges: errorRanges);
     if (!rustEventRequiresEnvironment(event.eventClass)) return null;
     final result = _watch.at(
       execution: execution,

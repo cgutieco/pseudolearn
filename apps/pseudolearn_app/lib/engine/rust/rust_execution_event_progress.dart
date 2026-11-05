@@ -67,6 +67,7 @@ final class RustExecutionEventProgress {
       view: view,
       offsets: offsets,
       tracker: tracker,
+      errorRanges: last?.errorRanges ?? const [],
     );
     if (failure != null) {
       onFailure(failure);

@@ -183,6 +183,7 @@ final class _OutputLineRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = AppThemeExtension.of(context);
     final isInput = line.kind == OutputLineKind.userInputEcho;
+    final isError = line.kind == OutputLineKind.programError;
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: SpacingTokens.spaceHalf),
@@ -198,7 +199,9 @@ final class _OutputLineRow extends StatelessWidget {
             child: AppText(
               line.text,
               variant: AppTextVariant.codeEditor,
-              color: isInput
+              color: isError
+                  ? theme.colors.severities.error.fg
+                  : isInput
                   ? theme.colors.text.secondary
                   : theme.colors.text.primary,
             ),
