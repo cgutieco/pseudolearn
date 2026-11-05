@@ -980,30 +980,29 @@ Revisión Git de cierre: · Verificadores ejecutados: · Pendientes justificados
 Objetivo: cubrir lo que cualquier lenguaje de propósito general trae, con identidad única, facetas es/en y fichas.
 Origen: [análisis del 2026-11-02](analisis-lenguaje-completo-sin-simulacion.md), §A.8.2 y §B.3b.
 
-- [ ] `PG-S.01` Mayúsculas y minúsculas de texto.
-- [ ] `PG-S.02` Ordenar, invertir y buscar en colecciones.
-- [ ] `PG-S.03` Mínimo, máximo, piso, techo y funciones trigonométricas y logarítmicas faltantes.
-- [ ] `PG-S.04` Archivos: listar, existir, borrar, renombrar, crear directorio y añadir.
-- [ ] `PG-S.05` Fecha y hora de calendario con zona horaria e ISO 8601.
-- [ ] `PG-S.06` Variables de entorno de solo lectura.
-- [ ] `PG-S.07` Código de salida y salida de error.
-- [ ] `PG-S.08` Formato de números en texto.
-- [ ] `PG-S.09` Cada operación en VM, extensión web y app de las tres plataformas.
+- [x] `PG-S.01` Mayúsculas y minúsculas de texto.
+- [x] `PG-S.02` Ordenar, invertir y buscar en colecciones.
+- [x] `PG-S.03` Mínimo, máximo, piso, techo y funciones trigonométricas y logarítmicas faltantes.
+- [x] `PG-S.04` Archivos: listar, existir, borrar, renombrar, crear directorio y añadir.
+- [x] `PG-S.05` Fecha y hora de calendario con zona horaria e ISO 8601.
+- [x] `PG-S.06` Variables de entorno de solo lectura.
+- [x] `PG-S.07` Código de salida y salida de error.
+- [x] `PG-S.08` Formato de números en texto.
+- [x] `PG-S.09` Cada operación en VM, extensión web y app de las tres plataformas.
 
-Plan detallado: [fase-pg-s-plan-ejecucion.md](fase-pg-s-plan-ejecucion.md), redactado el 2026-11-04 y pendiente de
-revisión de la persona (`PG-S.C02`); no autoriza ejecutar la fase.
+Plan detallado: [fase-pg-s-plan-ejecucion.md](fase-pg-s-plan-ejecucion.md), redactado el 2026-11-04; la persona ordenó su ejecución completa y confirmó los casos de PG-S.01 (G2) el 2026-11-05.
 
 Cierre común (definiciones en §4.0):
 
-- [ ] `PG-S.C01` Autorización de la persona para iniciar la fase, en mensaje nuevo.
-- [ ] `PG-S.C02` Plan detallado creado según §5 y revisado por la persona.
-- [ ] `PG-S.C03` SPEC-FIRST y congelamiento respetados.
-- [ ] `PG-S.C04` Reglas nuevas con casos o propiedades y vínculos como datos.
-- [ ] `PG-S.C05` Tests feliz, infeliz y límite en carpetas espejo.
-- [ ] `PG-S.C06` Capas declaradas, imports permitidos y límites de tamaño.
-- [ ] `PG-S.C07` Sin comentarios ni TODO; código en inglés; Rust sin pánicos ni `unsafe` no declarado.
-- [ ] `PG-S.C08` README y reglas de los miembros afectados actualizados, sin citar `docs/`.
-- [ ] `PG-S.C09` Fichas de ayuda y datos de proyección de la sintaxis nueva, o justificación.
+- [x] `PG-S.C01` Autorización de la persona para iniciar la fase, en mensaje nuevo.
+- [x] `PG-S.C02` Plan detallado creado según §5 y revisado por la persona.
+- [x] `PG-S.C03` SPEC-FIRST y congelamiento respetados.
+- [x] `PG-S.C04` Reglas nuevas con casos o propiedades y vínculos como datos.
+- [x] `PG-S.C05` Tests feliz, infeliz y límite en carpetas espejo.
+- [x] `PG-S.C06` Capas declaradas, imports permitidos y límites de tamaño.
+- [x] `PG-S.C07` Sin comentarios ni TODO; código en inglés; Rust sin pánicos ni `unsafe` no declarado.
+- [x] `PG-S.C08` README y reglas de los miembros afectados actualizados, sin citar `docs/`.
+- [x] `PG-S.C09` Fichas de ayuda y datos de proyección de la sintaxis nueva, o justificación.
 - [ ] `PG-S.C10` Riesgos revisados y experimentos con procedencia o diferidos por la persona.
 - [ ] `PG-S.C11` Tests y verificadores de los miembros afectados en verde.
 - [ ] `PG-S.C12` Commit sin atribución de IA y push ordinario comprobado a la rama única.
@@ -1013,9 +1012,11 @@ Cierre común (definiciones en §4.0):
 
 | Punto | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
-| | | | |
+| PG-S.01–.08 | Cumplidos | [Plan detallado](fase-pg-s-plan-ejecucion.md), §11 e informes `informe-pg-s-*.md` | `PERF.AOT.LEVEL#R1` absoluto y estacionariedad no certificados (ya fallaban en la base); `error_ranges` sin interpretar en el protocolo de editor ni en la frontera Wasm |
+| PG-S.09 | Cumplido con alcance acotado | [Informe](informe-pg-s-09.md) | Ejecutado en CLI, Chromium, WebKit, app macOS y simulador iOS (en la app solo el programa puro); Windows, Firefox y dispositivos físicos no verificados; la app no muestra el código de salida |
+| Sujeto nativo | Pendiente | `conformance-aot.yaml` | Vínculos `pendiente` con `resuelve_en` `PG-N.08` |
 
-Revisión Git de cierre: · Verificadores ejecutados: · Pendientes justificados: · Decisiones de la persona:
+Revisión Git de cierre: aún sin commit de cierre ni push comprobado · Verificadores ejecutados: `see validate/lock/export --check`, conformidad del motor por regla, pruebas dirigidas de motor, CLI, extensión y app, Chromium y WebKit · Pendientes justificados: PS-E04 (igualdad de tablas Unicode nativo/Wasm), PG-N.08, Windows/Firefox, suite completa del monorepo y `cargo xtask verify` · Decisiones de la persona: nombres de S.01 confirmados el 2026-11-05; presupuesto `PERF.AOT.LEVEL` sin cambios.
 
 ### 4.15 PG-N · Compilador nativo completo
 
@@ -1221,6 +1222,6 @@ La IA a cargo actualiza esta tabla al cerrar cada fase.
 | PG-A | Cerrada por decisión expresa · PG-A.01–.09 y cierre común | Sí | 2026-11-02 · cierre expreso y push ordinario en rama única | `PHASE-GREEN` no declarado; SEE/Rust pendientes, suite completa no repetida al cierre y estudio humano E-PG-12 diferido |
 | PG-B | Reformulada el 2026-11-02 · PG-B.01–.03, .05–.09 ejecutados; .04 retirado; .10–.30 sin iniciar | Sí, reescrito; C02 pendiente | | C01/C02; parada en PG-B.22.01 si el puente supera `PERF.ARTIFACT.SIZE` |
 | PG-L | Sin iniciar | No | | |
-| PG-S | Sin iniciar | Sí, redactado el 2026-11-04; C02 pendiente de revisión | | C01 sin autorizar; depende de PG-L (sin iniciar) |
+| PG-S | Implementada, sin cierre formal · PG-S.01–.09 y C01–C09 | Sí | | C10–C13 pendientes: PS-E04, suite completa, commit/push de cierre, parada; se ejecutó antes de cerrar PG-L por decisión expresa de la persona |
 | PG-N | Sin iniciar | No | | |
 | PG-7 | Sin iniciar · reformulada el 2026-11-02 | No | | |
