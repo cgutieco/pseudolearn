@@ -544,7 +544,7 @@ Se ejecuta antes que `PG-L.03` porque las plantillas exportables incluyen clases
 
 ### PG-L.06 · Liberación de memoria por ámbito de bloque
 
-- [ ] `PG-L.06.01` Resolver `PL-V-12`, `PL-V-13` y `PL-V-14` leyendo el código (sin campaña). Leer
+- [x] `PG-L.06.01` Resolver `PL-V-12`, `PL-V-13` y `PL-V-14` leyendo el código (sin campaña). Leer
   `mem.managed.unobservable.md`, `eng.limits.md`, `api.state.query.md`, `eng.trace.events.md`.
 - [x] `PG-L.06.02` Especificación: regla de DL-14 en `MEM.MANAGED.UNOBSERVABLE` y, si `PL-V-13` lo exige, regla de
   vista de estado (un vínculo fuera de ámbito no aparece en el estado de un evento posterior a su cierre) en
@@ -557,7 +557,7 @@ Se ejecuta antes que `PG-L.03` porque las plantillas exportables incluyen clases
   idéntica (`MEM.MANAGED.UNOBSERVABLE#R2`). Límite: presupuesto exacto (cabe) y presupuesto menos una celda (falla).
   El recuento de celdas de cada caso se escribe en el campo de justificación del caso, derivado de `ENG.LIMITS#R2`,
   `LANG.TYPES.VECTOR#R3` y `LANG.TYPES.CLASS`.
-- [ ] `PG-L.06.04` Tests: `bytecode` (mapa de raíces sin el registro de un vínculo cerrado, con un caso negativo que
+- [x] `PG-L.06.04` Tests: `bytecode` (mapa de raíces sin el registro de un vínculo cerrado, con un caso negativo que
   elimina `expire` y debe fallar), `vm`/`api` (ejecución con límite de celdas).
 - [x] `PG-L.06.05` Código: solo si `PL-V-12` o `PL-V-13` se desmienten (p. ej. límites de ámbito que no llegan a
   `visibility` para vínculos de bloque o a la inspección). Lowering conserva los orígenes con intervalo léxico
@@ -567,27 +567,27 @@ Se ejecuta antes que `PG-L.03` porque las plantillas exportables incluyen clases
 
 ### PG-L.07 · App y extensión: diagramas, traza, ayuda y resaltado
 
-- [ ] `PG-L.07.01` Leer el README de la app (secciones de vista pública, diagrama de clases, matriz de cobertura,
+- [x] `PG-L.07.01` Leer el README de la app (secciones de vista pública, diagrama de clases, matriz de cobertura,
   traza/estado, exportación Rust/Python), `architecture.yaml` de la app, `api.program.view.md` (R5–R14) y el README de
   la extensión (gramática, LSP, tokens semánticos). Resolver `PL-V-17`.
-- [ ] `PG-L.07.02` Motor/API de vista pública: nuevas formas en `program_view_kind.rs` (parámetros de tipo en clases e
+- [x] `PG-L.07.02` Motor/API de vista pública: nuevas formas en `program_view_kind.rs` (parámetros de tipo en clases e
   interfaces, variante de usuario, alternativa, patrón cualificado, visibilidad de tipos) con su papel; atributos de la
   vista para campos registro de clase y elementos registro (`API.PROGRAM.VIEW` edición oficial si cambia el contrato).
-- [ ] `PG-L.07.03` App, diagrama de clases: caja de clase genérica con `<T: I>` en la cabecera; relación de herencia
+- [x] `PG-L.07.03` App, diagrama de clases: caja de clase genérica con `<T: I>` en la cabecera; relación de herencia
   hacia `Base<T>` rotulada con los argumentos; realización de interfaz genérica; filas de campo registro
   `nombre: Registro`; caja «variant» con una fila por alternativa (si DL-10 = a); retirar la frase «Parámetros genéricos
   de tipo en clases (el lenguaje no los admite)» del README. Pruebas en los archivos espejo citados en `PL-H-26`.
-- [ ] `PG-L.07.04` App, ordinograma/estructograma/estructura: `Segun` sobre variante de usuario con patrones
+- [x] `PG-L.07.04` App, ordinograma/estructograma/estructura: `Segun` sobre variante de usuario con patrones
   cualificados; filas nuevas de la matriz de cobertura con celdas `exact` y ficha `CoverageCell.help` existente;
   `check_syntax_coverage` sin `COV-*`; ninguna celda nueva en «no soportado».
-- [ ] `PG-L.07.05` App, traza y estado: tabla de traza y vista de estado muestran elementos y campos registro por
+- [x] `PG-L.07.05` App, traza y estado: tabla de traza y vista de estado muestran elementos y campos registro por
   hojas con el formato que fije `API.STATE.QUERY`; variables de bloque desaparecen tras el cierre del ámbito
   (`PG-L.06`). Exportación Rust/Python: equivalente o «sin equivalente» rotulado para clases genéricas, variantes de
   usuario y arreglos de registros (K-19, precedente PS-K-05).
-- [ ] `PG-L.07.06` Extensión: regenerar la gramática TextMate desde el vocabulario exportado (palabras contextuales
+- [x] `PG-L.07.06` Extensión: regenerar la gramática TextMate desde el vocabulario exportado (palabras contextuales
   nuevas, si las hay) con la orden del README; tokens semánticos de parámetro de tipo vía LSP del motor; ejemplos de la
   extensión solo si su validador lo exige. Prohibido editar `media/pseudolearn.tmLanguage.json` a mano.
-- [ ] `PG-L.07.07` Fichas: confirmar que toda forma nueva de la matriz tiene ficha (`C09`). README de la app y de la
+- [x] `PG-L.07.07` Fichas: confirmar que toda forma nueva de la matriz tiene ficha (`C09`). README de la app y de la
   extensión. Nivel D: `flutter analyze` sobre los archivos tocados, tests espejo tocados con `flutter test <archivos>`,
   `dart run tool/check_syntax_coverage.dart`, `pnpm` de gramática según el README de la extensión. Commit local.
 
@@ -599,9 +599,9 @@ fecha real) y se registra en §11 comando, código de salida y conteos.
 
 - [x] `PG-L.F.01` Corpus: `see validate`, `see lock --refresh <todas las IDs editadas, en una orden>`,
   `see lock --check`, `see export`, `see export --check`.
-- [ ] `PG-L.F.02` Estática del motor: `cargo xtask verify` (incluye Clippy estricto, capas, límites y aislamiento según
+- [x] `PG-L.F.02` Estática del motor: `cargo xtask verify` (incluye Clippy estricto, capas, límites y aislamiento según
   el README); `rust-checks` (`layers`, `comments`, `names`, límites) desde la raíz.
-- [ ] `PG-L.F.03` Pruebas del motor: `cargo test -p` de `semantic`, `syntax`, `lexicon`, `lowering`, `ir`, `bytecode`,
+- [x] `PG-L.F.03` Pruebas del motor: `cargo test -p` de `semantic`, `syntax`, `lexicon`, `lowering`, `ir`, `bytecode`,
   `vm`, `service`, `api`, `timeline`, `wasm`; después `cargo test --workspace`.
 - [ ] `PG-L.F.04` Conformidad: `see conform --subject engine` completo; `--subject service`; `--subject cli`;
   `--subject aot` (vínculos `pendiente` informados, cero `incumple` en reglas tocadas); `--operation properties`;
@@ -881,11 +881,11 @@ aceptar pendientes por escrito antes de publicar (`PHASE-GREEN`, §10.2).
 | `PG-L.03.04` | Cumplida | `semantic/tests/module_generic_exports_tests.rs` (9); `service/tests/workspace_templates.rs` y `TOOL.SERVICE.WORKSPACE#R4` C9–C10 | Editar el cuerpo de una plantilla invalida a los importadores que la nombran y no a los demás |
 | `PG-L.03.05` | Cumplida | `generic_home`, `module_generic_links`, `generic_*` (clave con la unidad de la plantilla), `generic_inference` (unificación en la unidad de la plantilla), `interface_constraints`, `module_calls`, `service/workspace_templates` | |
 | `PG-L.03.06` | Cumplida | `help.pgl02.type_import` ampliada con plantillas; README de `semantic` y `service` | |
-| `PG-L.07.*` | No cumplida | | No iniciada por alcance de la sesión (app y extensión) |
+| `PG-L.07.01`–`.07` | Cumplida | `aecbaac3`, `0e70e00d`; `API.PROGRAM.VIEW#R12` reescrita con C61–C62 (conformidad app: 244 observaciones, 0 divergencias); `check_syntax_coverage` 81 formas; pruebas `rust_type_parameter_text_test.dart`, `rust_value_type_diagram_test.dart`, `rust_syntax_coverage_behavior_test.dart`, `rust_watch_rows_test.dart`, `rust_program_exporter_availability_test.dart`; servicio `help_resolution.rs`, `lsp_project_queries.rs`, `translator.rs` | Vista: nodos `variant_unit`/`variant_alternative`/`alternative_field` (antes huérfanos) y realizaciones de plantillas de clase por identidad. Diagrama: cabecera `Caja<T: I>`, herencia y realización rotuladas `<T>`, campo registro sin asociación, caja «variant». `Segun` sobre variante: los patrones cualificados son etiquetas, sin forma nueva. Exportación Rust/Python: no disponible con bloqueador nombrado. Hallazgos heredados corregidos: `Variante`/`Alternativa`/`FinVariante` no eran vocabulario contextual reclamado (el traductor no los traducía, la ayuda no hallaba ficha y los tokens semánticos los pintaban como variables); las fichas de papel `help.pgl0N.*` nunca se elegían. Pendiente declarado en el README del servicio: selección por posición de `pgl01_record_class_field`, `pgl01_record_array_element`, `pgl02_type_import` y `pgl02_public_signature` |
 | Verificación de PG-L.05 y PG-L.03 | Cumplida | `see validate`, `lock --check`, `export --check`; conformidad engine de `LANG.TYPES.GENERIC` y `LANG.TYPES.RECORD` y service de `TOOL.SERVICE.{NAVIGATION,HOVER,WORKSPACE,CATALOG}` con 0 divergencias tras regenerar la evidencia de propiedades (engine 32, service 8); Clippy `-D warnings` del espacio de trabajo; `rust-checks all`; `cargo test --workspace --no-fail-fast`: 2 499 pruebas en verde y los 2 fallos preexistentes, corregidos después | Los dos fallos que `PG-L.F.03` había clasificado como preexistentes se resolvieron: `reference_vocabulary` fijaba 28 funciones incorporadas y PG-S llevó el catálogo a 38 (ahora deriva el número del léxico); `fake_host` reproducía y buscaba evento por evento todo caso con anfitrión, incluido `LIB.IO` C71, cuya cinta se declara no reproducible por redactar secretos (ahora respeta `reproduccion_fallo`, que la conformidad ya verifica) |
-| `PG-L.06.01` | No cumplida | | PL-V-12 confirmada con experimento; PL-V-13 y PL-V-14 sin verificar |
+| `PG-L.06.01` | Cumplida | `scope_release.rs` (estado tras el bloque); README de `codegen` y `bytecode`; conformidad aot de `MEM.MANAGED.UNOBSERVABLE` R1–R3: cumple | PL-V-13 confirmada: la consulta de estado ya filtra por intervalo léxico. PL-V-14 confirmada en la lectura (la pila nativa usa vivacidad por flujo y puede liberar antes un vínculo en ámbito sin usos), sin divergencia observable en los casos del corpus |
 | `PG-L.06.02`, `.03`, `.05`, `.06` | Cumplida | `98b00836`; `MEM.MANAGED.UNOBSERVABLE#R3`, C2–C6; conformidad engine en verde | La VM ya liberaba por ámbito; no hubo cambio de código. Vínculo `aot` declarado `cumple` sin ejecutar la conformidad nativa (evidencia obsoleta) |
-| `PG-L.06.04` | No cumplida | | `pseudolearn_api/tests/scope_release.rs` cubre la VM; no se añadió el negativo con `roots::expire` desactivado |
+| `PG-L.06.04` | Cumplida | `f1e76423`; `bytecode/tests/lexical_roots.rs` (negativo: sin intervalo léxico la raíz sobrevive al cierre), `api/tests/scope_release.rs` | El negativo se expresa quitando el intervalo que consume `expire`, sin código de prueba en producción |
 | `PG-L.F.01` | Cumplida | `see validate`, `lock --check`, `export --check` en verde | |
 | `PG-L.F.02` | No cumplida | `f02-clippy.log`, `f02-rust-checks-all.log`, `f02-toolchain.log`, `f02-deny.log` en verde | `cargo xtask verify` se detiene en `cargo fmt --all --check` por archivos no tocados (`pseudolearn_vm/src/machine/query.rs`, entre otros): preexistente |
 | `PG-L.F.03` | No cumplida | `f03-workspace.log`: 2 401 pruebas en verde, 2 fallos | Los dos fallos (`library_cases_execute_and_replay_without_live_host_calls`, `builtins_follow_the_profile_lexemes_and_declare_their_signature`) fallan igual en `d9d84bc7`: preexistentes |
