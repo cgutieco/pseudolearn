@@ -91,8 +91,14 @@ pub(crate) fn visibility_prefix(state: &mut ParserState<'_>) -> Result<Option<u3
     state.advance();
     let allowed = matches!(
         state.kind(),
-        TokenKind::Keyword(KeywordKind::Subroutine | KeywordKind::ClassKeyword)
-    );
+        TokenKind::Keyword(
+            KeywordKind::Subroutine
+                | KeywordKind::ClassKeyword
+                | KeywordKind::EnumKeyword
+                | KeywordKind::RecordKeyword
+                | KeywordKind::ConstantKeyword
+        )
+    ) || crate::interface_parser::starts(state);
     if allowed {
         return Ok(Some(token));
     }

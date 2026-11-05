@@ -160,8 +160,19 @@ presión de registros o copia dominante.
   elemento. Cada hoja conserva su estado de definición (DL-03). Condición de reversión: una medición que muestre coste de
   `PL-E03` dominado por los arreglos paralelos, o que el estado de inspección no pueda agrupar las hojas sin ambigüedad.
 
-Pendientes declarados de esta entrega: visibilidad `Publico`/`Privado` y exportación de constantes, enumerados y registros entre
-módulos de un proyecto, que hoy son privados del módulo; registro por referencia a través de valores función (no verificado).
+**Exportación de tipos y constantes (PG-L).** Subprogramas, clases, interfaces, enumerados, registros y constantes de nivel
+superior son privados salvo `Publico` y se importan y reexportan por símbolo con la misma resolución que subprogramas y clases
+(`module_symbols` añade las clases de símbolo; `module_exports` y `module_imports` no distinguen la clase). `module_type_links`
+ordena el registro de un proyecto en tres pasos: declarar nombres de tipos y constantes de todas las unidades, enlazar los
+símbolos importados en el `TypeScope` de cada unidad (`declared.records/enums/constants/interfaces` apuntan a la identidad de la
+unidad dueña, de modo que un alias solo cambia el nombre local) y recién entonces resolver campos de registros, realizaciones de
+interfaces y diseños. Una constante importada se evalúa en su unidad dueña (`constant_evaluator::run` restaura la unidad activa)
+y se pliega como literal. Se descartó el acceso por alias de módulo (`m.Constante`, `m.Color.Rojo`) por ampliar la resolución de
+alias de módulo, hoy limitada a llamadas.
+
+Pendientes declarados: diagnóstico de tipo privado en una firma pública (`privateTypeInPublicSignature`, aceptado como decisión
+pero no implementado); el servicio de lenguaje no modela registros, enumerados, constantes ni interfaces como símbolos (sin
+navegación, referencias ni renombrado sobre ellos); registro por referencia a través de valores función (no verificado).
 
 Los vínculos locales tienen mutabilidad explícita en `HirLocal`; su declaración emite una asignación inicial y no cuenta como modificación. `binding_checker` valida inicialización y destinos de reasignación, incluidos campos de registros por valor y argumentos por referencia. Los objetos pueden mutar a través de un vínculo inmutable. La asignación a un nombre no declarado es error y no crea una variable por inferencia. La inicialización obligatoria reemplaza la trampa de lectura sin valor para locales; campos y elementos conservan su contrato. La forma inicializada es la oficial de la edición: no hay migrador, selector de compatibilidad ni conservación de la sintaxis anterior.
 

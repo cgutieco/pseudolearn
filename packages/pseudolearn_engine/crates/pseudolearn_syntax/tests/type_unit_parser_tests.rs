@@ -114,9 +114,27 @@ fn parses_qualified_member_labels_in_switch() {
 }
 
 #[test]
-fn rejects_visibility_prefix_on_new_units() {
+fn visibility_prefix_on_type_units_is_a_project_only_construct() {
+    for unit in [
+        "Publico Enumerado Color\nRojo\nFinEnumerado\n",
+        "Publico Registro Punto\nDefinir x Como Entero;\nFinRegistro\n",
+        "Publico Constante Limite Como Entero <- 1;\n",
+        "Publico Interfaz Medible\nMetodo Medida() Como Entero;\nFinInterfaz\n",
+    ] {
+        let text = format!("{unit}Algoritmo P\nFinAlgoritmo\n");
+        let (_, diagnostics) = parse(&text, Profile::Spanish);
+        assert!(has(&diagnostics, DiagnosticCode::ModuleSyntaxOutsideProject));
+        assert!(!has(
+            &diagnostics,
+            DiagnosticCode::UnexpectedTokenOutsideProgramUnit
+        ));
+    }
+}
+
+#[test]
+fn visibility_prefix_before_an_expression_keyword_is_still_rejected() {
     let (_, diagnostics) = parse(
-        "Publico Enumerado Color\nRojo\nFinEnumerado\nAlgoritmo P\nFinAlgoritmo\n",
+        "Publico Escribir 1;\nAlgoritmo P\nFinAlgoritmo\n",
         Profile::Spanish,
     );
     assert!(has(

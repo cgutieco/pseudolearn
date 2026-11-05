@@ -6,6 +6,18 @@ use pseudolearn_diagnostics::DiagnosticCode;
 use pseudolearn_syntax::NodeKind;
 
 pub(crate) fn register(session: &mut AnalysisSession<'_>) {
+    let records = declare_all(session);
+    resolve_fields(session, &records);
+    crate::record_cycles::layout(session, &records);
+}
+
+pub(crate) fn resolve_fields(session: &mut AnalysisSession<'_>, records: &[RecordId]) {
+    for record in records {
+        fields(session, *record);
+    }
+}
+
+pub(crate) fn declare_all(session: &mut AnalysisSession<'_>) -> Vec<RecordId> {
     let nodes: Vec<_> = session
         .tree
         .nodes
@@ -15,14 +27,10 @@ pub(crate) fn register(session: &mut AnalysisSession<'_>) {
         .map(|(index, _)| index)
         .filter(|node| !crate::generic_registry::is_generic(session, *node))
         .collect();
-    let records: Vec<RecordId> = nodes
+    nodes
         .into_iter()
         .filter_map(|node| declare(session, node))
-        .collect();
-    for record in &records {
-        fields(session, *record);
-    }
-    crate::record_cycles::layout(session, &records);
+        .collect()
 }
 
 fn declare(session: &mut AnalysisSession<'_>, node: usize) -> Option<RecordId> {

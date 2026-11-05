@@ -7,6 +7,10 @@ use std::collections::BTreeMap;
 pub(crate) enum SymbolKind {
     Function,
     Class,
+    Record,
+    Enum,
+    Constant,
+    Interface,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -38,9 +42,18 @@ pub(crate) struct UnitDeclarations {
 
 pub(crate) fn collect(session: &AnalysisSession<'_>) -> UnitDeclarations {
     let mut declarations = UnitDeclarations::default();
+    let top_level = top_level_nodes(session);
     for (index, node) in session.tree.nodes.iter().enumerate() {
         match node.kind {
             NodeKind::ClassUnit => declare(session, index, SymbolKind::Class, &mut declarations),
+            NodeKind::RecordUnit => declare(session, index, SymbolKind::Record, &mut declarations),
+            NodeKind::EnumUnit => declare(session, index, SymbolKind::Enum, &mut declarations),
+            NodeKind::InterfaceUnit => {
+                declare(session, index, SymbolKind::Interface, &mut declarations);
+            }
+            NodeKind::ConstantDeclaration if top_level.contains(&index) => {
+                declare(session, index, SymbolKind::Constant, &mut declarations);
+            }
             NodeKind::Subprogram => {
                 declare(session, index, SymbolKind::Function, &mut declarations);
             }
@@ -53,6 +66,16 @@ pub(crate) fn collect(session: &AnalysisSession<'_>) -> UnitDeclarations {
         }
     }
     declarations
+}
+
+fn top_level_nodes(session: &AnalysisSession<'_>) -> Vec<usize> {
+    session
+        .tree
+        .nodes
+        .len()
+        .checked_sub(1)
+        .map(|root| session.children(root))
+        .unwrap_or_default()
 }
 
 fn declare(

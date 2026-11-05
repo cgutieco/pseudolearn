@@ -85,7 +85,7 @@ enlazar (`pseudolearn_semantic`), no al analizar la sintaxis.
 unidades superiores (la constante también es sentencia). Cada una tiene su analizador (`constant_parser`,
 `enum_parser`, `record_parser`) para no crecer `unit_parser`, y la recuperación reconoce sus cierres. Un enumerado lleva
 una sola línea de miembros; un registro solo admite declaraciones `Definir`, y cualquier otra forma, incluida
-`Dimension`, es `expectedRecordField`. Los prefijos `Publico` y `Privado` siguen limitados a subprogramas y clases. Una
+`Dimension`, es `expectedRecordField`. Los prefijos `Publico` y `Privado` preceden a subprogramas, clases, interfaces, enumerados, registros y constantes de nivel superior. Una
 etiqueta de `Segun` que empieza por identificador (`Color.Rojo:`) cierra el cuerpo anterior igual que un literal. Las
 construcciones de registro y el acceso a miembros de enumerado no tienen sintaxis propia: son llamada y punto, que
 resuelve semantic. Las palabras nuevas son reservadas y se registran como aperturas de perfil.

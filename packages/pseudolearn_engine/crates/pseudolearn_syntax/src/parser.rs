@@ -124,10 +124,21 @@ impl<'tokens> Parser<'tokens> {
     fn parse_visible_unit(&mut self) -> Result<usize, ()> {
         let prefix = crate::module_parser::visibility_prefix(&mut self.state)?;
         let opening = self.state.kind();
+        if crate::interface_parser::starts(&mut self.state) {
+            let unit = crate::interface_parser::interface(&mut self.state)?;
+            return Ok(self.attach_visibility(unit, prefix));
+        }
         let unit = match opening {
             TokenKind::Keyword(KeywordKind::ClassKeyword) => {
                 crate::unit_parser::class(&mut self.state)
             }
+            TokenKind::Keyword(KeywordKind::EnumKeyword) => {
+                crate::enum_parser::enumeration(&mut self.state)
+            }
+            TokenKind::Keyword(KeywordKind::RecordKeyword) => {
+                crate::record_parser::record(&mut self.state)
+            }
+            TokenKind::Keyword(KeywordKind::ConstantKeyword) => self.parse_constant_unit(),
             TokenKind::Keyword(KeywordKind::Subroutine) => {
                 crate::unit_parser::subprogram(&mut self.state)
             }
@@ -138,10 +149,14 @@ impl<'tokens> Parser<'tokens> {
                 Err(())
             }
         }?;
+        Ok(self.attach_visibility(unit, prefix))
+    }
+
+    fn attach_visibility(&mut self, unit: usize, prefix: Option<u32>) -> usize {
         if let (Some(token), Some(node)) = (prefix, self.state.nodes.get_mut(unit)) {
             node.first_token = token;
         }
-        Ok(unit)
+        unit
     }
 }
 

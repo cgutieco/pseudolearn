@@ -48,7 +48,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La declaración Importar nombra por ruta calificada un módulo o un símbolo. El primer segmento es el nombre del propio paquete o el alias de una dependencia declarada del paquete. Si la ruta completa nombra un módulo, importa el módulo y su nombre local es el alias de Como o, sin él, el último segmento; sus subprogramas públicos se invocan como nombre-local.Nombre(argumentos) y sus clases se importan por símbolo. Si todos los segmentos salvo el último nombran un módulo, importa el símbolo público de ese módulo con ese nombre, o con el alias de Como. Un alias solo cambia el nombre local, nunca la identidad del símbolo. Un primer segmento desconocido o un módulo inexistente produce unresolvedModule; un símbolo inexistente, unresolvedImport.",
+  "texto": "La declaración Importar nombra por ruta calificada un módulo o un símbolo. El primer segmento es el nombre del propio paquete o el alias de una dependencia declarada del paquete. Si la ruta completa nombra un módulo, importa el módulo y su nombre local es el alias de Como o, sin él, el último segmento; sus subprogramas públicos se invocan como nombre-local.Nombre(argumentos) y sus demás unidades públicas (clases, interfaces, enumerados, registros y constantes) se importan por símbolo. Si todos los segmentos salvo el último nombran un módulo, importa el símbolo público de ese módulo con ese nombre, o con el alias de Como; un enumerado importado conserva sus miembros, que se escriben con el nombre local del tipo, y una constante importada se usa como una propia. Un alias solo cambia el nombre local, nunca la identidad del símbolo. Un primer segmento desconocido o un módulo inexistente produce unresolvedModule; un símbolo inexistente, unresolvedImport.",
   "verificacion": [
     "C1",
     "C2",
@@ -56,7 +56,12 @@
     "C4",
     "C5",
     "C6",
-    "C7"
+    "C7",
+    "C35",
+    "C36",
+    "C37",
+    "C38",
+    "C39"
   ]
 }
 ```
@@ -66,11 +71,13 @@
   "id": "R2",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Toda unidad de nivel superior de un módulo (subprograma o clase) es privada salvo que lleve el prefijo Publico; el prefijo Privado explícito equivale a la ausencia de prefijo. Importar o reexportar un símbolo privado produce privateImport o privateReexport. La visibilidad de los miembros de una clase conserva su contrato propio.",
+  "texto": "Toda unidad de nivel superior de un módulo (subprograma, clase, interfaz, enumerado, registro o constante) es privada salvo que lleve el prefijo Publico; el prefijo Privado explícito equivale a la ausencia de prefijo. Importar o reexportar un símbolo privado produce privateImport o privateReexport. La visibilidad de los miembros de una clase conserva su contrato propio.",
   "verificacion": [
     "C8",
     "C9",
-    "C10"
+    "C10",
+    "C40",
+    "C41"
   ]
 }
 ```
@@ -84,7 +91,8 @@
   "verificacion": [
     "C11",
     "C12",
-    "C13"
+    "C13",
+    "C42"
   ]
 }
 ```
@@ -3137,6 +3145,639 @@
                 "arguments": {
                   "lexeme": "Mientras"
                 }
+              }
+            ],
+            "project_errors": []
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C35",
+  "regla": "R1",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "execute_project",
+        "arguments": {
+          "profile": "es",
+          "project": {
+            "project_id": "1",
+            "revision_id": "1",
+            "packages": [
+              {
+                "name": "app",
+                "root": "app",
+                "kind": "application",
+                "entries": [
+                  "app/main"
+                ],
+                "dependencies": {
+                  "geo": "geo"
+                }
+              },
+              {
+                "name": "geo",
+                "root": "geo",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {}
+              }
+            ],
+            "files": [
+              {
+                "path": "app/main",
+                "source_id": 1,
+                "text": "Importar geo.tipos.Limite;\nAlgoritmo P\nEscribir Limite + 1;\nFinAlgoritmo\n"
+              },
+              {
+                "path": "geo/tipos",
+                "source_id": 2,
+                "text": "Publico Constante Limite Como Entero <- 7;\nPublico Enumerado Color\nRojo, Verde\nFinEnumerado\nPublico Registro Punto\nDefinir x, z Como Entero;\nFinRegistro\nPublico Interfaz Medible\nMetodo Medida() Como Entero;\nFinInterfaz\n"
+              }
+            ]
+          },
+          "entry": "app/main"
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "en": "La petición de proyecto fija un único perfil; la forma en inglés de Importar y Exportar se verifica en los casos de texto suelto y en la ficha bilingüe de ayuda."
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "output": "8\n",
+            "diagnostics": [],
+            "project_errors": []
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C36",
+  "regla": "R1",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "execute_project",
+        "arguments": {
+          "profile": "es",
+          "project": {
+            "project_id": "1",
+            "revision_id": "1",
+            "packages": [
+              {
+                "name": "app",
+                "root": "app",
+                "kind": "application",
+                "entries": [
+                  "app/main"
+                ],
+                "dependencies": {
+                  "geo": "geo"
+                }
+              },
+              {
+                "name": "geo",
+                "root": "geo",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {}
+              }
+            ],
+            "files": [
+              {
+                "path": "app/main",
+                "source_id": 1,
+                "text": "Importar geo.tipos.Limite;\nConstante Doble Como Entero <- Limite * 2;\nAlgoritmo P\nEscribir Doble;\nFinAlgoritmo\n"
+              },
+              {
+                "path": "geo/tipos",
+                "source_id": 2,
+                "text": "Publico Constante Limite Como Entero <- 7;\nPublico Enumerado Color\nRojo, Verde\nFinEnumerado\nPublico Registro Punto\nDefinir x, z Como Entero;\nFinRegistro\nPublico Interfaz Medible\nMetodo Medida() Como Entero;\nFinInterfaz\n"
+              }
+            ]
+          },
+          "entry": "app/main"
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "en": "La petición de proyecto fija un único perfil; la forma en inglés de Importar y Exportar se verifica en los casos de texto suelto y en la ficha bilingüe de ayuda."
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "output": "14\n",
+            "diagnostics": [],
+            "project_errors": []
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C37",
+  "regla": "R1",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "execute_project",
+        "arguments": {
+          "profile": "es",
+          "project": {
+            "project_id": "1",
+            "revision_id": "1",
+            "packages": [
+              {
+                "name": "app",
+                "root": "app",
+                "kind": "application",
+                "entries": [
+                  "app/main"
+                ],
+                "dependencies": {
+                  "geo": "geo"
+                }
+              },
+              {
+                "name": "geo",
+                "root": "geo",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {}
+              }
+            ],
+            "files": [
+              {
+                "path": "app/main",
+                "source_id": 1,
+                "text": "Importar geo.tipos.Color;\nAlgoritmo P\nDefinir c Como Color <- Color.Verde;\nEscribir c;\nFinAlgoritmo\n"
+              },
+              {
+                "path": "geo/tipos",
+                "source_id": 2,
+                "text": "Publico Constante Limite Como Entero <- 7;\nPublico Enumerado Color\nRojo, Verde\nFinEnumerado\nPublico Registro Punto\nDefinir x, z Como Entero;\nFinRegistro\nPublico Interfaz Medible\nMetodo Medida() Como Entero;\nFinInterfaz\n"
+              }
+            ]
+          },
+          "entry": "app/main"
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "en": "La petición de proyecto fija un único perfil; la forma en inglés de Importar y Exportar se verifica en los casos de texto suelto y en la ficha bilingüe de ayuda."
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "output": "Verde\n",
+            "diagnostics": [],
+            "project_errors": []
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C38",
+  "regla": "R1",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "execute_project",
+        "arguments": {
+          "profile": "es",
+          "project": {
+            "project_id": "1",
+            "revision_id": "1",
+            "packages": [
+              {
+                "name": "app",
+                "root": "app",
+                "kind": "application",
+                "entries": [
+                  "app/main"
+                ],
+                "dependencies": {
+                  "geo": "geo"
+                }
+              },
+              {
+                "name": "geo",
+                "root": "geo",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {}
+              }
+            ],
+            "files": [
+              {
+                "path": "app/main",
+                "source_id": 1,
+                "text": "Importar geo.tipos.Punto Como P;\nAlgoritmo A\nDefinir q Como P <- P(3, 4);\nEscribir q.x + q.z, q = P(3, 4);\nFinAlgoritmo\n"
+              },
+              {
+                "path": "geo/tipos",
+                "source_id": 2,
+                "text": "Publico Constante Limite Como Entero <- 7;\nPublico Enumerado Color\nRojo, Verde\nFinEnumerado\nPublico Registro Punto\nDefinir x, z Como Entero;\nFinRegistro\nPublico Interfaz Medible\nMetodo Medida() Como Entero;\nFinInterfaz\n"
+              }
+            ]
+          },
+          "entry": "app/main"
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "en": "La petición de proyecto fija un único perfil; la forma en inglés de Importar y Exportar se verifica en los casos de texto suelto y en la ficha bilingüe de ayuda."
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "output": "7Verdadero\n",
+            "diagnostics": [],
+            "project_errors": []
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C39",
+  "regla": "R1",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "execute_project",
+        "arguments": {
+          "profile": "es",
+          "project": {
+            "project_id": "1",
+            "revision_id": "1",
+            "packages": [
+              {
+                "name": "app",
+                "root": "app",
+                "kind": "application",
+                "entries": [
+                  "app/main"
+                ],
+                "dependencies": {
+                  "geo": "geo"
+                }
+              },
+              {
+                "name": "geo",
+                "root": "geo",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {}
+              }
+            ],
+            "files": [
+              {
+                "path": "app/main",
+                "source_id": 1,
+                "text": "Importar geo.tipos.Medible;\nClase Caja Realiza Medible\nMetodo Medida() Como Entero\nRetornar 5;\nFinMetodo\nFinClase\nAlgoritmo P\nDefinir c Como Caja <- Nuevo Caja();\nEscribir c.Medida();\nFinAlgoritmo\n"
+              },
+              {
+                "path": "geo/tipos",
+                "source_id": 2,
+                "text": "Publico Constante Limite Como Entero <- 7;\nPublico Enumerado Color\nRojo, Verde\nFinEnumerado\nPublico Registro Punto\nDefinir x, z Como Entero;\nFinRegistro\nPublico Interfaz Medible\nMetodo Medida() Como Entero;\nFinInterfaz\n"
+              }
+            ]
+          },
+          "entry": "app/main"
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "en": "La petición de proyecto fija un único perfil; la forma en inglés de Importar y Exportar se verifica en los casos de texto suelto y en la ficha bilingüe de ayuda."
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "output": "5\n",
+            "diagnostics": [],
+            "project_errors": []
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C40",
+  "regla": "R2",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "execute_project",
+        "arguments": {
+          "profile": "es",
+          "project": {
+            "project_id": "1",
+            "revision_id": "1",
+            "packages": [
+              {
+                "name": "app",
+                "root": "app",
+                "kind": "application",
+                "entries": [
+                  "app/main"
+                ],
+                "dependencies": {
+                  "geo": "geo"
+                }
+              },
+              {
+                "name": "geo",
+                "root": "geo",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {}
+              }
+            ],
+            "files": [
+              {
+                "path": "app/main",
+                "source_id": 1,
+                "text": "Importar geo.tipos.Oculto;\nAlgoritmo P\nFinAlgoritmo\n"
+              },
+              {
+                "path": "geo/tipos",
+                "source_id": 2,
+                "text": "Registro Oculto\nDefinir x Como Entero;\nFinRegistro\n"
+              }
+            ]
+          },
+          "entry": "app/main"
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "en": "La petición de proyecto fija un único perfil; la forma en inglés de Importar y Exportar se verifica en los casos de texto suelto y en la ficha bilingüe de ayuda."
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "diagnostics": [
+              {
+                "code": "privateImport"
+              }
+            ],
+            "project_errors": []
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C41",
+  "regla": "R2",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "execute_project",
+        "arguments": {
+          "profile": "es",
+          "project": {
+            "project_id": "1",
+            "revision_id": "1",
+            "packages": [
+              {
+                "name": "app",
+                "root": "app",
+                "kind": "application",
+                "entries": [
+                  "app/main"
+                ],
+                "dependencies": {
+                  "geo": "geo"
+                }
+              },
+              {
+                "name": "geo",
+                "root": "geo",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {}
+              }
+            ],
+            "files": [
+              {
+                "path": "app/main",
+                "source_id": 1,
+                "text": "Importar geo.tipos.Interna;\nAlgoritmo P\nFinAlgoritmo\n"
+              },
+              {
+                "path": "geo/tipos",
+                "source_id": 2,
+                "text": "Constante Interna Como Entero <- 1;\n"
+              }
+            ]
+          },
+          "entry": "app/main"
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "en": "La petición de proyecto fija un único perfil; la forma en inglés de Importar y Exportar se verifica en los casos de texto suelto y en la ficha bilingüe de ayuda."
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "diagnostics": [
+              {
+                "code": "privateImport"
+              }
+            ],
+            "project_errors": []
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C42",
+  "regla": "R3",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "execute_project",
+        "arguments": {
+          "profile": "es",
+          "project": {
+            "project_id": "1",
+            "revision_id": "1",
+            "packages": [
+              {
+                "name": "app",
+                "root": "app",
+                "kind": "application",
+                "entries": [
+                  "app/main"
+                ],
+                "dependencies": {
+                  "geo": "geo"
+                }
+              },
+              {
+                "name": "geo",
+                "root": "geo",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {}
+              }
+            ],
+            "files": [
+              {
+                "path": "app/main",
+                "source_id": 1,
+                "text": "Importar geo.tipos.Punto;\nRegistro Punto\nDefinir x Como Entero;\nFinRegistro\nAlgoritmo P\nFinAlgoritmo\n"
+              },
+              {
+                "path": "geo/tipos",
+                "source_id": 2,
+                "text": "Publico Constante Limite Como Entero <- 7;\nPublico Enumerado Color\nRojo, Verde\nFinEnumerado\nPublico Registro Punto\nDefinir x, z Como Entero;\nFinRegistro\nPublico Interfaz Medible\nMetodo Medida() Como Entero;\nFinInterfaz\n"
+              }
+            ]
+          },
+          "entry": "app/main"
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "en": "La petición de proyecto fija un único perfil; la forma en inglés de Importar y Exportar se verifica en los casos de texto suelto y en la ficha bilingüe de ayuda."
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "diagnostics": [
+              {
+                "code": "importNameCollision"
               }
             ],
             "project_errors": []

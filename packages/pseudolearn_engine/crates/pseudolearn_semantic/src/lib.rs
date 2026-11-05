@@ -71,6 +71,7 @@ mod module_cycles;
 mod module_exports;
 mod module_imports;
 mod module_structure;
+mod module_type_links;
 mod module_symbols;
 mod name_resolution;
 mod operator_diagnostics;

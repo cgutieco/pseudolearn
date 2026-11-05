@@ -49,6 +49,17 @@ fn set_state(session: &mut AnalysisSession<'_>, index: usize, state: ConstantSta
 }
 
 fn run(session: &mut AnalysisSession<'_>, index: usize, depth: usize) -> Result<Value, Failure> {
+    let previous = session.unit;
+    let result = run_in_owner_unit(session, index, depth);
+    session.switch_unit(previous);
+    result
+}
+
+fn run_in_owner_unit(
+    session: &mut AnalysisSession<'_>,
+    index: usize,
+    depth: usize,
+) -> Result<Value, Failure> {
     let Some(entry) = session.constants.get(index).cloned() else {
         return Err(Failure::Silent);
     };

@@ -176,12 +176,7 @@ fn register(
         }
     }
     link_classes(session, bindings, &classes);
-    for unit in 0..count {
-        session.switch_unit(unit);
-        crate::interface_registry::register(session);
-        crate::type_declarations::register(session);
-        crate::interface_registry::signatures(session);
-    }
+    crate::module_type_links::register(session, bindings);
     let mut functions = FunctionTable::new();
     for unit in 0..count {
         session.switch_unit(unit);

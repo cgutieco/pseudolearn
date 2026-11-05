@@ -49,7 +49,7 @@ Un enumerado es un conjunto cerrado de nombres con un ordinal por miembro.
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Enumerado nombre, una línea de miembros separados por comas y FinEnumerado declaran un tipo nuevo en el módulo. Los miembros se escriben nombre.miembro, no se repiten dentro del enumerado y pueden repetirse en otro enumerado. Cada miembro tiene un ordinal entero sin signo de 32 bits desde cero en orden de declaración. El enumerado vacío y el de un solo miembro son válidos. El tipo es privado del módulo y comparte espacio de nombres con clases y registros.",
+  "texto": "Enumerado nombre, una línea de miembros separados por comas y FinEnumerado declaran un tipo nuevo en el módulo. Los miembros se escriben nombre.miembro, no se repiten dentro del enumerado y pueden repetirse en otro enumerado. Cada miembro tiene un ordinal entero sin signo de 32 bits desde cero en orden de declaración. El enumerado vacío y el de un solo miembro son válidos. El tipo es una unidad de módulo, privada salvo que lleve el prefijo Publico (LANG.MODULE.IMPORT#R2), y comparte espacio de nombres con clases y registros.",
   "verificacion": [
     "C1",
     "C2",

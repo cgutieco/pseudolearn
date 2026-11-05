@@ -4,6 +4,11 @@ use pseudolearn_diagnostics::DiagnosticCode;
 use pseudolearn_syntax::NodeKind;
 
 pub(crate) fn register(session: &mut AnalysisSession<'_>) {
+    declare_all(session);
+    realizations(session);
+}
+
+pub(crate) fn declare_all(session: &mut AnalysisSession<'_>) {
     let nodes: Vec<_> = session
         .tree
         .nodes
@@ -15,10 +20,26 @@ pub(crate) fn register(session: &mut AnalysisSession<'_>) {
     for node in nodes {
         declare(session, node);
     }
-    realizations(session);
+}
+
+pub(crate) fn find_in_unit(
+    session: &AnalysisSession<'_>,
+    unit: usize,
+    name: &str,
+) -> Option<InterfaceId> {
+    session
+        .module
+        .interfaces
+        .iter()
+        .position(|interface| interface.unit == unit && interface.name == name)
+        .and_then(|index| u32::try_from(index).ok())
+        .map(InterfaceId)
 }
 
 pub(crate) fn find(session: &AnalysisSession<'_>, name: &str) -> Option<InterfaceId> {
+    if let Some(imported) = session.declared.interfaces.get(name) {
+        return Some(*imported);
+    }
     session
         .module
         .interfaces
@@ -81,7 +102,7 @@ pub(crate) fn signatures(session: &mut AnalysisSession<'_>) {
     }
 }
 
-fn realizations(session: &mut AnalysisSession<'_>) {
+pub(crate) fn realizations(session: &mut AnalysisSession<'_>) {
     for index in 0..session.module.classes.len() {
         let class = crate::identities::ClassId(u32::try_from(index).unwrap_or(u32::MAX));
         if session.module.units.class_unit(class) != session.unit {
