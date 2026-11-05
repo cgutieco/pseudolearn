@@ -603,34 +603,34 @@ fecha real) y se registra en §11 comando, código de salida y conteos.
   el README); `rust-checks` (`layers`, `comments`, `names`, límites) desde la raíz.
 - [x] `PG-L.F.03` Pruebas del motor: `cargo test -p` de `semantic`, `syntax`, `lexicon`, `lowering`, `ir`, `bytecode`,
   `vm`, `service`, `api`, `timeline`, `wasm`; después `cargo test --workspace`.
-- [ ] `PG-L.F.04` Conformidad: `see conform --subject engine` completo; `--subject service`; `--subject cli`;
+- [x] `PG-L.F.04` Conformidad: `see conform --subject engine` completo; `--subject service`; `--subject cli`;
   `--subject aot` (vínculos `pendiente` informados, cero `incumple` en reglas tocadas); `--operation properties`;
   `--subject app` con los escenarios de la app.
-- [ ] `PG-L.F.05` Consumidores: pruebas de la CLI según su README; extensión (`pnpm` test y comprobación de gramática
+- [x] `PG-L.F.05` Consumidores: pruebas de la CLI según su README; extensión (`pnpm` test y comprobación de gramática
   vigente; web Chromium y WebKit si el README los incluye en la verificación ordinaria); app: `flutter analyze`,
   `dart run tool/check_syntax_coverage.dart`, biblioteca nativa (`cargo build --release --locked --lib
   --manifest-path native/Cargo.toml`) y **suite completa** `flutter test`.
-- [ ] `PG-L.F.06` Experimentos de §7.6 (`PL-E01`–`PL-E04`) con procedencia y `PERF.SUITE.CORE`/`PERF.AOT.LEVEL` antes y
+- [x] `PG-L.F.06` Experimentos de §7.6 (`PL-E01`–`PL-E04`) con procedencia y `PERF.SUITE.CORE`/`PERF.AOT.LEVEL` antes y
   después según `PERF.PROTOCOL` (antes = revisión `d9d84bc7` en el *worktree* desacoplado de `PG-L.F.08`).
-- [ ] `PG-L.F.07` Casos negativos de verificadores (§7.3): cada uno debe fallar con su violación deliberada.
+- [x] `PG-L.F.07` Casos negativos de verificadores (§7.3): cada uno debe fallar con su violación deliberada.
 - [x] `PG-L.F.08` Ciclo de corrección (§10.4): clasificar cada fallo (regresión de PG-L / preexistente / inestable)
   ejecutando la misma orden en `git worktree add --detach <scratch>/pg-l-base d9d84bc7`; corregir las regresiones;
   repetir solo las órdenes afectadas y, al final, F.01–F.05 completos una vez más.
-- [ ] `PG-L.F.09` Aceptación por plataforma (PG-B.27 como precedente): un programa único que ejerce L.01–L.06 con
+- [x] `PG-L.F.09` Aceptación por plataforma (PG-B.27 como precedente): un programa único que ejerce L.01–L.06 con
   salida determinista, ejecutado en CLI, extensión de escritorio, extensión web (Chromium y WebKit), app macOS y app
   iOS en simulador; Windows rotulado «no verificado». Cada celda con resultado esperado derivado del corpus.
-- [ ] `PG-L.F.10` Criterio de salida de §B.3a: repetir la búsqueda de `PG-L.00.02` sobre el catálogo regenerado y
+- [x] `PG-L.F.10` Criterio de salida de §B.3a: repetir la búsqueda de `PG-L.00.02` sobre el catálogo regenerado y
   confirmar cero códigos de restricción de construcción de la edición; registrar la tabla final en §11.4.
 
 ### Cierre común
 
-- [ ] `PG-L.C03`–`C11` se acreditan con la evidencia de §11 (no hay tareas propias distintas de las anteriores).
+- [x] `PG-L.C03`–`C11` se acreditan con la evidencia de §11 (no hay tareas propias distintas de las anteriores).
 - [x] `PG-L.C12.01` Revisión de diff completo (`git diff d9d84bc7 --stat` y lectura de cada archivo de código), búsqueda
   de comentarios, `TODO`, `unwrap`, `expect`, `panic!`, citas a `docs/` fuera de `docs/`
   (`grep -rn "docs/plan-ejecucion\|fase-pg-" packages apps` debe dar vacío).
 - [ ] `PG-L.C12.02` Commit(s) con la skill `commit-message`, sin atribución de IA, y push ordinario comprobado
   (`git branch --show-current`, `git push`, `git status -sb` sin divergencia).
-- [ ] `PG-L.C13.01` Completar §11 de este plan, la sección §4.13 y la fila de §6 del plan general; informe a la persona
+- [x] `PG-L.C13.01` Completar §11 de este plan, la sección §4.13 y la fila de §6 del plan general; informe a la persona
   con: puntos cumplidos, decisiones aplicadas, hallazgos dudosos de `PG-L.00.02`, pendientes (PG-N.08, PG-S.02.01,
   Windows/físicos) y **parada**.
 
@@ -839,12 +839,12 @@ por plataforma → F.10 criterio de salida. Push solo después de F.10 en verde 
 
 ## 11. Resumen de ejecución
 
-Estado: ejecución parcial el 2026-11-05 en una sola sesión sobre `d9d84bc7`. **La fase no está cerrada**: se cumplieron
-PG-L.01, PG-L.02 (completo, cerrado después en una iteración propia), PG-L.06 (regla y pruebas; la VM ya cumplía), PG-L.04 (clases, interfaces y variantes genéricas de usuario, en una iteración propia del 2026-11-05) y PG-L.05 y PG-L.03 (comprobación de plantillas, símbolo de plantilla en el servicio y genéricos exportables entre módulos, en otra iteración propia del 2026-11-05). No se inició PG-L.07; el
-bloque F se ejecutó para lo implementado. Las casillas sin marcar son tareas **no realizadas**, no omitidas por descuido;
-cada una consta en la tabla siguiente con su motivo. Commits locales: `9acfbe96` (PG-L.01), `98b00836` (PG-L.06),
-`c61c2f63` (PG-L.02) y el commit de cierre; **no se hizo push** porque `PG-L.F.10` no está en verde y el plan exige
-aceptar pendientes por escrito antes de publicar (`PHASE-GREEN`, §10.2).
+Estado: PG-L.01–PG-L.07 y el bloque F cumplidos el 2026-11-05 en varias iteraciones sobre `d9d84bc7`; la última
+iteración (mensaje de la persona del 2026-11-05: «Implementa todos los puntos restantes de `PG-L.06` … `PG-L.07` … y
+`PG-L.F` … en una sola iteración», con permiso para liberar disco) cerró L.06.01/.04, L.07 completo y F.01–F.10.
+Disco: se liberaron ≈ 17 GB (binarios de prueba duplicados y caché incremental del motor, `target` de la CLI). Las
+casillas sin marcar son tareas no realizadas, cada una con su motivo en la tabla. Pendientes ajenos a PG-L: los fallos
+del sujeto `aot` en efectos nativos, tareas y `tan`, preexistentes en `d9d84bc7` (PG-N); `PG-S.02.01` debe repetirse.
 
 | Tarea | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
@@ -886,16 +886,20 @@ aceptar pendientes por escrito antes de publicar (`PHASE-GREEN`, §10.2).
 | `PG-L.06.01` | Cumplida | `scope_release.rs` (estado tras el bloque); README de `codegen` y `bytecode`; conformidad aot de `MEM.MANAGED.UNOBSERVABLE` R1–R3: cumple | PL-V-13 confirmada: la consulta de estado ya filtra por intervalo léxico. PL-V-14 confirmada en la lectura (la pila nativa usa vivacidad por flujo y puede liberar antes un vínculo en ámbito sin usos), sin divergencia observable en los casos del corpus |
 | `PG-L.06.02`, `.03`, `.05`, `.06` | Cumplida | `98b00836`; `MEM.MANAGED.UNOBSERVABLE#R3`, C2–C6; conformidad engine en verde | La VM ya liberaba por ámbito; no hubo cambio de código. Vínculo `aot` declarado `cumple` sin ejecutar la conformidad nativa (evidencia obsoleta) |
 | `PG-L.06.04` | Cumplida | `f1e76423`; `bytecode/tests/lexical_roots.rs` (negativo: sin intervalo léxico la raíz sobrevive al cierre), `api/tests/scope_release.rs` | El negativo se expresa quitando el intervalo que consume `expire`, sin código de prueba en producción |
-| `PG-L.F.01` | Cumplida | `see validate`, `lock --check`, `export --check` en verde | |
-| `PG-L.F.02` | No cumplida | `f02-clippy.log`, `f02-rust-checks-all.log`, `f02-toolchain.log`, `f02-deny.log` en verde | `cargo xtask verify` se detiene en `cargo fmt --all --check` por archivos no tocados (`pseudolearn_vm/src/machine/query.rs`, entre otros): preexistente |
-| `PG-L.F.03` | No cumplida | `f03-workspace.log`: 2 401 pruebas en verde, 2 fallos | Los dos fallos (`library_cases_execute_and_replay_without_live_host_calls`, `builtins_follow_the_profile_lexemes_and_declare_their_signature`) fallan igual en `d9d84bc7`: preexistentes |
-| `PG-L.F.04` | No cumplida | `f04-*.log` | Engine: 0 `incumple`; las 25 reglas «sin evidencia» son de propiedad y `conform --subject engine --operation properties` ejecutó 32 propiedades sin pendientes. CLI: 117 observaciones, 0 divergencias. Service y aot: `SEE-STALE: evidence corpus hash mismatch for API.PROGRAM.VIEW`, sin resolver. App: no ejecutada |
-| `PG-L.F.05` | No cumplida | `dart run tool/check_syntax_coverage.dart`: 78 formas cubiertas | No se ejecutaron `flutter test`, pruebas de la extensión ni la biblioteca nativa |
-| `PG-L.F.06`, `F.07`, `F.09` | No cumplida | | No ejecutadas |
-| `PG-L.F.08` | Cumplida | §10.4 aplicado a los dos fallos, con *worktree* desacoplado en `d9d84bc7`, eliminado al terminar | Sin regresiones de PG-L que corregir en lo ejecutado |
-| `PG-L.F.10` | No cumplida | §11.4 | Quedan `unsupportedGenericsConstruct` (los genéricos de clase no existen) y los «dudosos» |
+| `PG-L.F.01` | Cumplida | `f01-*.log`: `see validate` (198 especificaciones), `lock --check`, `export`, `export --check`; lock reanclado para `API.PROGRAM.VIEW`, `TOOL.LSP.CAPABILITIES` y `LANG.TYPES.RECORD` | Toda edición del corpus cambia el hash de la exportación: la gramática TextMate se regenera después (`pnpm generate:grammar`) |
+| `PG-L.F.02` | Cumplida | `f02-xtask-verify.log`: `cargo xtask verify` en verde (fmt, Clippy `-D warnings`, `cargo test --workspace`, `rust-checks all` y `toolchain`, `cargo deny`) | Fallo heredado corregido: `cargo fmt --check` se detenía en 12 archivos ajenos a PG-L, formateados uno a uno con `rustfmt`. Las pruebas y ayudantes nuevos rompían Clippy estricto y `SIZE-FUNCTION`; corregidos |
+| `PG-L.F.03` | Cumplida | `f02-xtask-verify.log`: 2 509 pruebas del motor, 0 fallos; `f03-spec-workspace.log`: 290 pruebas del corpus, 0 fallos | `cargo test --workspace` cubre cada crate de la lista. Fallo heredado corregido en el corpus: `help_catalog::coverage` fijaba 451 filas de la matriz identidad–papel, anteriores a las fichas de PG-S y PG-L (553) |
+| `PG-L.F.04` | Cumplida con pendientes ajenos | `f04-*.log`: engine 2 693 observaciones y 32 propiedades, service 145 y 8, CLI 117, app 244 y 3: 0 divergencias; aot: `LANG.TYPES.RECORD` 94 y `LANG.TYPES.VARIANT` 54 observaciones sin divergencias, `MEM.MANAGED.UNOBSERVABLE` R1–R3 cumple | Regresiones de iteraciones previas de PG-L corregidas: `recordLayoutLimit` duplicaba `variantLayoutLimit` en `LANG.TYPES.VARIANT` C12; `TOOL.LSP.CAPABILITIES` C13 contaba 2 referencias y la ruta de `Importar` es un uso desde PG-L.02.06 (esperado re-derivado: 3); los casos de análisis C44–C45 de `LANG.TYPES.RECORD#R5` se limitaron a `engine`. Preexistentes ajenos a PG-L (misma cuenta en `d9d84bc7`, `f08-base-aot-*.log`): efectos nativos de `RT.PROCESS` (2), `LIB.TIME` (14), `ENG.EFFECT.TAPE` (30) y `LIB.IO` (152) terminan `peticion_invalida`/`interrumpido`; 9/18 propiedades aot fallan por tareas nativas (`nativeTasksUnsupported`, PG-N.13), `Reloj` y `tan` (`internalFault`). Ninguna regla tocada por PG-L tiene `incumple` |
+| `PG-L.F.05` | Cumplida | CLI `cargo test`: 211 pruebas; extensión: `check:types`, `check:architecture`, `check:comments`, `check:size`, `check:package`, `check:grammar`, `pnpm test` (191 pruebas), `pnpm package`, `build:wasm`, `build:web`; app: `flutter analyze`, `check_limits`, `check_content`, `check_design_system`, `check_syntax_coverage`, `test_bridge.sh`, biblioteca nativa y `flutter test` (2 690 pruebas) | Fallos heredados corregidos: `check_limits` y `flutter analyze` de la app en rojo por archivos ajenos a PG-L (`099eab31`); `marker_resolver_test` fijaba 28 funciones incorporadas y ahora deriva el número de la exportación |
+| `PG-L.F.06` | Cumplida | `f06-experiments.log` (fuente en `f06-experiments-source.rs`, revisión `f979c7cc`, macOS arm64), `f06-perf-core-{before,after}.jsonl`, `aot-{before,after}/` | PL-E01: 1/10/64 combinaciones (64 es el límite de instancias): RI e instrucciones de bytecode idénticas al control no genérico y crecimiento lineal. PL-E02: con 64 celdas, N = 10/1 000/100 000 objetos de bloque terminan `completed` (también con `gc_stress` hasta 1 000) y el control que los retiene falla desde 1 000. PL-E03: 10⁵ registros de tres hojas 17,8 ms frente a 17,2 ms de tres arreglos paralelos (+3 %): sin reversión. PL-E04: 20 consumidores de una biblioteca genérica, frío 0,49 ms y edición 0,45 ms (mediana de 5, informativo). `PERF.SUITE.CORE`: media geométrica +0,9 % frente a `d9d84bc7` (máximo +2,6 % en `list`). `PERF.AOT.LEVEL` (`paired`, V1F, umbral 1,70): razones por familia sin cambio (arrays 2,092 → 2,095, numeric 1,615 → 1,616, objects 1,690 → 1,689); el objetivo no alcanzado en arrays es preexistente (H-17, PG-7.02) |
+| `PG-L.F.07` | Cumplida | (1) negativo de tipo del verificador de RI de PG-L.01.04 (DL-02 sin ordinal de hoja); (2) gemelos `gc_stress` de `record_position_limits.rs`; (3) `lexical_roots.rs` sin intervalo léxico conserva la raíz; (4) y (5) `API.PROGRAM.VIEW` C32 `COV-MISSING-ROW` y C37 `COV-HELP` en la conformidad app; (6) `see_validation/tests/bindings.rs` rechaza `pendiente` sin `resuelve_en` (caso nuevo) | |
+| `PG-L.F.09` | Cumplida | `language_constructs_acceptance.rs` (CLI), `f09-ext-desktop.log` (24/24 pasos), `f09-ext-web.log` (Chromium y WebKit), `f09-app-macos.log`, `f09-app-ios.log` (iPhone 18 Pro, iOS 27.0) | Programa único `constructs.es.pseudo` (L.01, L.04 y objetos de bloque de L.06) con salida `3:15/7/4:6/12:0/5050`, proyecto L.02/L.03 con `8:Verde:8:14/4:hola` (CLI y web) y límite de celdas solo en la CLI, el único anfitrión que lo expone. Windows no verificado; Firefox no instalado en Playwright y fuera de la matriz |
+| `PG-L.F.08` | Cumplida | §10.4 con *worktree* desacoplado en `d9d84bc7` (`f08-base-aot-*.log`), eliminado al terminar | Regresiones de PG-L corregidas (C12 de variantes, C13 de LSP, R5 de registros en aot, límites de tamaño); preexistentes clasificados con la misma orden en la base: fallos nativos de efectos del sujeto aot |
+| `PG-L.F.10` | Cumplida | §11.4 sobre la exportación regenerada (282 códigos) | Cero códigos de restricción de construcción de la edición: quedan los de D-16/D-17, `nativeTasksUnsupported` (PG-N.13) y reglas legítimas |
 | `PG-L.C12.01` | Cumplida | `rust-checks all`, Clippy `-D warnings`, `grep` de `docs/plan-ejecucion` fuera de `docs/` vacío | |
-| `PG-L.C12.02`, `PG-L.C13.01`, `C03`–`C11` | No cumplida | | Sin push; fase incompleta |
+| `PG-L.C03`–`C11` | Cumplida | Filas anteriores y `f08-final-*.log`: vuelta final de F.01–F.05 tras la última corrección (`cargo xtask verify` 2 509 pruebas, corpus 290, conformidad engine 2 693 / service 145 / CLI 117 sin divergencias, `flutter test` 2 690) | |
+| `PG-L.C12.02` | No cumplida | Commits locales en `feature/agregar-ruta-de-especificacion` | Push pendiente de confirmación de la persona |
+| `PG-L.C13.01` | Cumplida | Este §11, §4.13 y §6 del plan general | Informe y parada |
 
 Revisión Git de cierre: `feature/agregar-ruta-de-especificacion`, commits locales sobre `7ba4b117`. Verificadores ejecutados:
 `see validate`, `lock --check`, `export --check`, `see conform --subject engine|cli`, Clippy de todo el espacio de trabajo,
@@ -918,10 +922,11 @@ Suites omitidas: `flutter test`, extensión, `PERF.*`, experimentos `PL-E01`–`
 | PL-V-10 | Desmentida | La clave usaba `session.unit` del consumidor | Clave e instanciación con la unidad de la plantilla (`generic_home`) |
 | PL-V-11 | Sin comprobar | | |
 | PL-V-12 | Confirmada | `scope_release.rs` y C2–C6 de `MEM.MANAGED.UNOBSERVABLE`: un bucle de 50 iteraciones con presupuesto de una iteración completa | Solo especificación y pruebas |
-| PL-V-13, V-14 | Sin comprobar | | |
+| PL-V-13 | Confirmada | `api/tests/scope_release.rs`: el estado tras un bloque no lista sus vínculos | Sin regla nueva en `API.STATE.QUERY` |
+| PL-V-14 | Confirmada en la lectura | README de `codegen` (`liveness`) y `bytecode`; conformidad aot de `MEM.MANAGED.UNOBSERVABLE` R1–R3 cumple | La diferencia solo es observable con un vínculo en ámbito sin usos, que ningún caso fija; vínculo aot `cumple` |
 | PL-V-15 | Confirmada | `catalogs.json` y `diag.catalog.md` se editaron a la par y `see validate` pasa | |
 | PL-V-16 | Confirmada | El motor compila sin los cinco códigos retirados | |
-| PL-V-17 | Confirmada | `check_syntax_coverage`: 78 formas cubiertas tras los cambios (no hubo forma nueva) | |
+| PL-V-17 | Confirmada | `check_syntax_coverage`: 78 formas hasta PG-L.07; las variantes no eran nodos de la vista; al proyectarlas, 81 formas con la fila `value.variant` | |
 
 ### 11.2 Respuestas a `AGENTS.md` §1 por archivo
 

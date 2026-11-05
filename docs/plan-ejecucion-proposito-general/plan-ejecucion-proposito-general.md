@@ -932,7 +932,9 @@ Cierre común (definiciones en §4.0):
 
 | Punto | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
-| | | | |
+| PG-L.01–PG-L.07 | Cumplido | §11 del plan detallado; commits de `9acfbe96` a `fc75e14b` | DL-02 con arreglos paralelos por hoja (desviación aceptada) |
+| Bloque F | Cumplido con pendientes ajenos | `packages/pseudolearn_engine/results/pg-l-2026-11-05/logs/` (local, ignorado) | Fallos nativos de efectos, tareas y `tan` del sujeto aot: preexistentes en `d9d84bc7`, de PG-N |
+| Pendientes | Fuera de PG-L | | Paridad nativa de PG-L (PG-N.08), repetir PG-S.02.01, Windows sin verificar, cuatro fichas `pgl01`/`pgl02` sin selección por posición |
 
 Revisión Git de cierre: · Verificadores ejecutados: · Pendientes justificados: · Decisiones de la persona:
 
@@ -943,27 +945,27 @@ Origen: [análisis del 2026-11-02](analisis-lenguaje-completo-sin-simulacion.md)
 
 - [x] `PG-L.01` Registros como elemento de arreglo y vector, campo de clase, parámetro y resultado de métodos y constructores, y por referencia.
 - [x] `PG-L.02` Visibilidad y exportación de constantes, enumerados y registros entre módulos.
-- [ ] `PG-L.03` Genéricos exportables entre módulos.
+- [x] `PG-L.03` Genéricos exportables entre módulos.
 - [x] `PG-L.04` Clases genéricas y variantes genéricas de usuario.
-- [ ] `PG-L.05` Comprobación de plantillas genéricas sin instanciar y símbolo de plantilla en el servicio.
-- [ ] `PG-L.06` Liberación de memoria por ámbito de bloque.
-- [ ] `PG-L.07` App y extensión con diagramas, traza, ayuda y resaltado para todo lo anterior.
+- [x] `PG-L.05` Comprobación de plantillas genéricas sin instanciar y símbolo de plantilla en el servicio.
+- [x] `PG-L.06` Liberación de memoria por ámbito de bloque.
+- [x] `PG-L.07` App y extensión con diagramas, traza, ayuda y resaltado para todo lo anterior.
 
-Plan detallado: [fase-pg-l-plan-ejecucion.md](fase-pg-l-plan-ejecucion.md), redactado el 2026-11-05 para ejecución en una sola iteración; pendiente de revisión (`C02`) y de autorización (`C01`).
+Plan detallado: [fase-pg-l-plan-ejecucion.md](fase-pg-l-plan-ejecucion.md), redactado, autorizado y ejecutado el 2026-11-05 en varias iteraciones; evidencia en su §11.
 
 Cierre común (definiciones en §4.0):
 
-- [ ] `PG-L.C01` Autorización de la persona para iniciar la fase, en mensaje nuevo.
-- [ ] `PG-L.C02` Plan detallado creado según §5 y revisado por la persona.
-- [ ] `PG-L.C03` SPEC-FIRST y congelamiento respetados.
-- [ ] `PG-L.C04` Reglas nuevas con casos o propiedades y vínculos como datos.
-- [ ] `PG-L.C05` Tests feliz, infeliz y límite en carpetas espejo.
-- [ ] `PG-L.C06` Capas declaradas, imports permitidos y límites de tamaño.
-- [ ] `PG-L.C07` Sin comentarios ni TODO; código en inglés; Rust sin pánicos ni `unsafe` no declarado.
-- [ ] `PG-L.C08` README y reglas de los miembros afectados actualizados, sin citar `docs/`.
-- [ ] `PG-L.C09` Fichas de ayuda y datos de proyección de la sintaxis nueva, o justificación.
-- [ ] `PG-L.C10` Riesgos revisados y experimentos con procedencia o diferidos por la persona.
-- [ ] `PG-L.C11` Tests y verificadores de los miembros afectados en verde.
+- [x] `PG-L.C01` Autorización de la persona para iniciar la fase, en mensaje nuevo.
+- [x] `PG-L.C02` Plan detallado creado según §5 y revisado por la persona.
+- [x] `PG-L.C03` SPEC-FIRST y congelamiento respetados.
+- [x] `PG-L.C04` Reglas nuevas con casos o propiedades y vínculos como datos.
+- [x] `PG-L.C05` Tests feliz, infeliz y límite en carpetas espejo.
+- [x] `PG-L.C06` Capas declaradas, imports permitidos y límites de tamaño.
+- [x] `PG-L.C07` Sin comentarios ni TODO; código en inglés; Rust sin pánicos ni `unsafe` no declarado.
+- [x] `PG-L.C08` README y reglas de los miembros afectados actualizados, sin citar `docs/`.
+- [x] `PG-L.C09` Fichas de ayuda y datos de proyección de la sintaxis nueva, o justificación.
+- [x] `PG-L.C10` Riesgos revisados y experimentos con procedencia o diferidos por la persona.
+- [x] `PG-L.C11` Tests y verificadores de los miembros afectados en verde.
 - [ ] `PG-L.C12` Commit sin atribución de IA y push ordinario comprobado a la rama única.
 - [ ] `PG-L.C13` Resumen completo, informe a la persona y parada.
 
@@ -971,7 +973,9 @@ Cierre común (definiciones en §4.0):
 
 | Punto | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
-| | | | |
+| PG-L.01–PG-L.07 | Cumplido | §11 del plan detallado; commits de `9acfbe96` a `fc75e14b` | DL-02 con arreglos paralelos por hoja (desviación aceptada) |
+| Bloque F | Cumplido con pendientes ajenos | `packages/pseudolearn_engine/results/pg-l-2026-11-05/logs/` (local, ignorado) | Fallos nativos de efectos, tareas y `tan` del sujeto aot: preexistentes en `d9d84bc7`, de PG-N |
+| Pendientes | Fuera de PG-L | | Paridad nativa de PG-L (PG-N.08), repetir PG-S.02.01, Windows sin verificar, cuatro fichas `pgl01`/`pgl02` sin selección por posición |
 
 Revisión Git de cierre: · Verificadores ejecutados: · Pendientes justificados: · Decisiones de la persona:
 
@@ -1059,7 +1063,9 @@ Cierre común (definiciones en §4.0):
 
 | Punto | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
-| | | | |
+| PG-L.01–PG-L.07 | Cumplido | §11 del plan detallado; commits de `9acfbe96` a `fc75e14b` | DL-02 con arreglos paralelos por hoja (desviación aceptada) |
+| Bloque F | Cumplido con pendientes ajenos | `packages/pseudolearn_engine/results/pg-l-2026-11-05/logs/` (local, ignorado) | Fallos nativos de efectos, tareas y `tan` del sujeto aot: preexistentes en `d9d84bc7`, de PG-N |
+| Pendientes | Fuera de PG-L | | Paridad nativa de PG-L (PG-N.08), repetir PG-S.02.01, Windows sin verificar, cuatro fichas `pgl01`/`pgl02` sin selección por posición |
 
 Revisión Git de cierre: · Verificadores ejecutados: · Pendientes justificados: · Decisiones de la persona:
 
@@ -1221,7 +1227,7 @@ La IA a cargo actualiza esta tabla al cerrar cada fase.
 | PG-6B | En implementación integrada · PG-6B.01–.09 | Sí, petición directa de implementación revisa y autoriza C02 | Sin cierre | Desarrollo continuo y campaña final única autorizados el 2026-10-31; físicos/revisión SEE y decisiones diferidas conservados |
 | PG-A | Cerrada por decisión expresa · PG-A.01–.09 y cierre común | Sí | 2026-11-02 · cierre expreso y push ordinario en rama única | `PHASE-GREEN` no declarado; SEE/Rust pendientes, suite completa no repetida al cierre y estudio humano E-PG-12 diferido |
 | PG-B | Reformulada el 2026-11-02 · PG-B.01–.03, .05–.09 ejecutados; .04 retirado; .10–.30 sin iniciar | Sí, reescrito; C02 pendiente | | C01/C02; parada en PG-B.22.01 si el puente supera `PERF.ARTIFACT.SIZE` |
-| PG-L | En curso (parcial) | Sí | | Implementados PG-L.01 (registros en arreglos, campos, firmas y por referencia), PG-L.02 (visibilidad, exportación y coherencia de firmas de tipos, constantes e interfaces, con navegación en el servicio) , PG-L.06 (regla de liberación por ámbito) y PG-L.04 (clases, interfaces y variantes genéricas de usuario); pendientes PG-L.03, .05, .07, parte del bloque F y el push. Detalle en §11 de `fase-pg-l-plan-ejecucion.md` |
+| PG-L | Implementada, pendiente de push y cierre | Sí | | PG-L.01–PG-L.07 y bloque F cumplidos (`cargo xtask verify`, conformidad engine/service/CLI/app sin divergencias, `flutter test`, extensión de escritorio y web, aceptación en CLI, VS Code, Chromium, WebKit, macOS e iOS simulador). Pendientes ajenos: fallos nativos preexistentes (PG-N), PG-S.02.01. Detalle en §11 de `fase-pg-l-plan-ejecucion.md` |
 | PG-S | Implementada, sin cierre formal · PG-S.01–.09 y C01–C09 | Sí | | C10–C13 pendientes: PS-E04, suite completa, commit/push de cierre, parada; se ejecutó antes de cerrar PG-L por decisión expresa de la persona |
 | PG-N | Sin iniciar | No | | |
 | PG-7 | Sin iniciar · reformulada el 2026-11-02 | No | | |

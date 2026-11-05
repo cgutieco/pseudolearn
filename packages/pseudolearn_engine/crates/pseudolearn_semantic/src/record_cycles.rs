@@ -143,11 +143,8 @@ fn compute(session: &mut AnalysisSession<'_>, record: RecordId) {
         });
         offset = offset.saturating_add(width);
     }
-    if leaf_types.len() > RECORD_MAXIMUM_LEAVES
-        && !oversized
-        && session.kind(model.syntax) != pseudolearn_syntax::NodeKind::VariantAlternative
-    {
-        report_layout_limit(session, model.span);
+    if leaf_types.len() > RECORD_MAXIMUM_LEAVES && !oversized {
+        report_layout_limit(session, model.syntax, model.span);
     }
     if let Some(target) = session.module.records.get_mut(slot(record)) {
         target.fields = fields;
@@ -156,7 +153,14 @@ fn compute(session: &mut AnalysisSession<'_>, record: RecordId) {
     }
 }
 
-fn report_layout_limit(session: &mut AnalysisSession<'_>, span: pseudolearn_source::Span) {
+fn report_layout_limit(
+    session: &mut AnalysisSession<'_>,
+    syntax: usize,
+    span: pseudolearn_source::Span,
+) {
+    if session.kind(syntax) == pseudolearn_syntax::NodeKind::VariantAlternative {
+        return;
+    }
     let diagnostic =
         pseudolearn_diagnostics::Diagnostic::new(DiagnosticCode::RecordLayoutLimit, span);
     session.diagnostics.push(diagnostic);
