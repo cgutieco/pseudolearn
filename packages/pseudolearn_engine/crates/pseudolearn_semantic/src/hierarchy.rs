@@ -138,6 +138,15 @@ pub(crate) fn find_field(
         if let Some(field) = model.fields.iter().find(|field| field.name == name) {
             return Some(field.clone());
         }
+        let owner = current?;
+        if let Some(entry) = session
+            .module
+            .class_record_fields
+            .iter()
+            .find(|entry| entry.field.owner == owner && entry.field.name == name)
+        {
+            return Some(entry.field.clone());
+        }
         current = model.superclass;
     }
     None

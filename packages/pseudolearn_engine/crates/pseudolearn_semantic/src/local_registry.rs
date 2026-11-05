@@ -1,4 +1,4 @@
-use crate::hir::{FunctionKind, HirLocal, Passing};
+use crate::hir::{HirLocal, Passing};
 use crate::identities::{LocalId, TypeId};
 use crate::session::AnalysisSession;
 use crate::types::Type;
@@ -29,15 +29,10 @@ pub(crate) fn parameters(session: &mut AnalysisSession<'_>, function: usize) {
 fn register_parameter(session: &mut AnalysisSession<'_>, parameter: usize, name: usize) {
     let mut type_id = parameter_type(session, parameter);
     let by_reference = session.has_token(parameter, TokenKind::Keyword(KeywordKind::ByReference));
-    check_record_parameter(session, (name, parameter), type_id, by_reference);
     if session.has_token(parameter, TokenKind::LeftBracket) {
         type_id = array_parameter_type(session, parameter, type_id);
     }
-    let passing = passing(
-        session,
-        type_id,
-        by_reference && !is_record(session, type_id),
-    );
+    let passing = passing(session, type_id, by_reference);
     let local = register(
         session,
         LocalDeclaration {
@@ -71,44 +66,6 @@ pub(crate) fn array_parameter_type(
         .count_token(parameter, TokenKind::Comma)
         .saturating_add(1);
     session.module.types.intern(Type::Array { element, rank })
-}
-
-fn is_record(session: &AnalysisSession<'_>, type_id: TypeId) -> bool {
-    matches!(
-        session.module.types.representation(type_id),
-        Type::Record(_)
-    )
-}
-
-fn check_record_parameter(
-    session: &mut AnalysisSession<'_>,
-    nodes: (usize, usize),
-    type_id: TypeId,
-    by_reference: bool,
-) {
-    if !is_record(session, type_id) {
-        return;
-    }
-    let (name_node, parameter) = nodes;
-    let name = session.name(name_node);
-    if by_reference {
-        session.named_report(DiagnosticCode::RecordPassedByReference, name_node, &name);
-    }
-    if session.has_token(parameter, TokenKind::LeftBracket) {
-        session.report(DiagnosticCode::RecordArrayElementNotSupported, name_node);
-    }
-    let member = usize::try_from(session.current.0)
-        .ok()
-        .and_then(|index| session.module.functions.get(index))
-        .is_some_and(|function| {
-            matches!(
-                function.kind,
-                FunctionKind::Method | FunctionKind::Constructor
-            )
-        });
-    if member && crate::variant_types::get(session, &session.module.types.get(type_id)).is_none() {
-        session.report(DiagnosticCode::RecordMemberSignatureNotSupported, name_node);
-    }
 }
 
 pub(crate) fn parameter_type(session: &mut AnalysisSession<'_>, parameter: usize) -> TypeId {
@@ -185,10 +142,20 @@ fn register(session: &mut AnalysisSession<'_>, declaration: LocalDeclaration) ->
     if session.module.types.representation(declaration.type_id) == Type::Error {
         session.invalid.insert(identifier);
     }
-    if let Type::Record(record) = session.module.types.representation(declaration.type_id) {
-        crate::record_locals::components(session, identifier, record);
-    }
+    register_components(session, identifier, declaration.type_id);
     identifier
+}
+
+fn register_components(session: &mut AnalysisSession<'_>, local: LocalId, type_id: TypeId) {
+    match session.module.types.representation(type_id) {
+        Type::Record(record) => crate::record_locals::components(session, local, record),
+        Type::Array { element, rank } => {
+            if let Type::Record(record) = session.module.types.representation(element) {
+                crate::record_locals::array_components(session, local, (record, rank));
+            }
+        }
+        _ => (),
+    }
 }
 
 fn conflicting_declaration(
@@ -252,9 +219,6 @@ fn declared_name(
             let name = session.child(child, NodeKind::Identifier)?;
             let rank = u32::try_from(session.tree.child_indices(child).len().saturating_sub(1))
                 .unwrap_or(0);
-            if is_record(session, base) {
-                session.report(DiagnosticCode::RecordArrayElementNotSupported, name);
-            }
             Some((
                 name,
                 session.module.types.intern(Type::Array {

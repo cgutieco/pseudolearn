@@ -29,13 +29,15 @@ pub(crate) fn binding_values(
             iteration.span,
             &mut state,
         ));
-    } else {
+    } else if iteration.leaf_arrays.is_empty() {
         values.push(vec![scalar(
             Operation::ArrayLoad,
             iteration,
             position,
             &mut state,
         )]);
+    } else {
+        values.push(leaf_loads(iteration, position, &mut state));
     }
     values
 }
@@ -55,4 +57,23 @@ fn scalar(
         iteration.span,
         state,
     )
+}
+
+fn leaf_loads(
+    iteration: &Iteration,
+    position: ValueId,
+    state: &mut ExpressionState<'_, '_>,
+) -> Vec<ValueId> {
+    iteration
+        .leaf_arrays
+        .iter()
+        .map(|leaf| {
+            crate::collections::emit(
+                Operation::ArrayLoad,
+                vec![Operand::Value(*leaf), Operand::Value(position)],
+                iteration.span,
+                state,
+            )
+        })
+        .collect()
 }

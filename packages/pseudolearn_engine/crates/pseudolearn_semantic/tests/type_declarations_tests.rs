@@ -149,35 +149,27 @@ fn accepts_records_that_reference_classes_without_recursion() {
 }
 
 #[test]
-fn rejects_empty_records_and_unsupported_placements() {
+fn rejects_empty_records() {
     assert!(
         codes("record E\nendRecord\nalgorithm P\nendAlgorithm\n")
             .contains(&DiagnosticCode::RecordWithoutFields)
     );
-    assert!(
-        codes(&format!(
-            "{POINT}class K\ndefine p as Point;\nendClass\nalgorithm P\nendAlgorithm\n"
-        ))
-        .contains(&DiagnosticCode::RecordClassFieldNotSupported)
-    );
-    assert!(
-        codes(&format!(
-            "{POINT}algorithm P\ndimension a[2] as Point;\nendAlgorithm\n"
-        ))
-        .contains(&DiagnosticCode::RecordArrayElementNotSupported)
-    );
 }
 
 #[test]
-fn rejects_by_reference_record_parameters_and_record_members() {
-    assert!(codes(&format!(
-        "{POINT}subroutine f(p as Point by reference)\nwrite p.x;\nendSubroutine\nalgorithm P\ndefine q as Point <- Point(1, 2);\nf(q);\nendAlgorithm\n"
-    ))
-    .contains(&DiagnosticCode::RecordPassedByReference));
-    assert!(codes(&format!(
-        "{POINT}class K\nmethod m(p as Point)\nwrite p.x;\nendMethod\nendClass\nalgorithm P\nendAlgorithm\n"
-    ))
-    .contains(&DiagnosticCode::RecordMemberSignatureNotSupported));
+fn accepts_records_as_class_fields_array_elements_and_member_signatures() {
+    let program = format!(
+        "{POINT}class K\ndefine p as Point;\nmethod m(q as Point) as Point\nreturn q;\nendMethod\nendClass\nalgorithm P\ndimension a[2] as Point;\na[0] <- Point(1, 2);\nwrite a[0].x;\ndefine k as K <- new K();\nwrite k.m(a[0]).x;\nwrite k.p.x;\nendAlgorithm\n"
+    );
+    assert!(codes(&program).is_empty(), "{:?}", codes(&program));
+}
+
+#[test]
+fn accepts_by_reference_record_parameters() {
+    let program = format!(
+        "{POINT}subroutine f(p as Point by reference)\nwrite p.x;\nendSubroutine\nalgorithm P\ndefine mutable q as Point <- Point(1, 2);\nf(q);\nendAlgorithm\n"
+    );
+    assert!(codes(&program).is_empty(), "{:?}", codes(&program));
 }
 
 #[test]

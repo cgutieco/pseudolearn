@@ -141,10 +141,27 @@ terminación, de modo que los registros anidados ya están listos. Se descarta r
 montón con copia: asignaría memoria en cada copia; su condición de reversión es una medición con cargas de registros que muestre
 presión de registros o copia dominante.
 
-Pendientes declarados de esta entrega: registros como elemento de arreglo, campo de clase, y parámetro o resultado de
-métodos y constructores (diagnosticados, `recordArrayElementNotSupported`, `recordClassFieldNotSupported`,
-`recordMemberSignatureNotSupported`, con excepción de las variantes incorporadas que sí se transportan en firmas de métodos); paso por referencia de registros (`recordPassedByReference`); visibilidad `Publico`/`Privado` y exportación de constantes, enumerados y
-registros entre módulos de un proyecto, que hoy son privados del módulo.
+**Registros en todas las posiciones (PG-L).** Ninguna posición de registro se rechaza ya por construcción. Decisiones:
+
+- *Firmas de miembros.* Un registro viaja como parámetro y resultado de métodos y constructores con el mismo transporte que
+  las variantes incorporadas (un argumento por hoja, una celda de resultado por hoja): no hay comprobación especial.
+- *Campo de clase de tipo registro (incrustado).* `class_record_fields` registra el campo lógico (`HirClassRecordField.field`,
+  que resuelve `objeto.campo` con tipo registro) y un campo físico por hoja (`campo.hoja`, no nombrable por el programa) en
+  `HirClass.fields`, de modo que el mapa de referencias por clase, la copia de objetos y la densidad no cambian y no se asigna
+  memoria por copia ni se crea una identidad nueva. `record_access::place` traduce `objeto.campo.sub` a `HirPlace::Field` sobre
+  la hoja, o a `HirPlace::FieldRange` cuando el destino es un subregistro. Se descarta la caja oculta porque cada copia crearía
+  un objeto observable (`MEM.IDENTITY`).
+- *Registro por referencia.* El parámetro conserva una hoja sintética por campo y todas heredan `Passing::Reference`; el
+  llamador entrega una celda por hoja (variable, campo incrustado o elemento). El tipo debe coincidir exactamente.
+- *Arreglo de registros (desviación de DL-02).* Se descartó extender la RI, el bytecode, la VM y el sujeto nativo con elementos
+  de varias hojas: los arreglos de la RI tienen un único `ValueKind` por elemento. Como un arreglo solo vive en variables y
+  parámetros (no puede ser campo ni resultado), `array_components` crea un arreglo sintético por hoja (`a.x`), el parámetro
+  arreglo se expande a un arreglo por hoja igual que el registro, y `HirPlace::ElementRange` direcciona una hoja de un
+  elemento. Cada hoja conserva su estado de definición (DL-03). Condición de reversión: una medición que muestre coste de
+  `PL-E03` dominado por los arreglos paralelos, o que el estado de inspección no pueda agrupar las hojas sin ambigüedad.
+
+Pendientes declarados de esta entrega: visibilidad `Publico`/`Privado` y exportación de constantes, enumerados y registros entre
+módulos de un proyecto, que hoy son privados del módulo; registro por referencia a través de valores función (no verificado).
 
 Los vínculos locales tienen mutabilidad explícita en `HirLocal`; su declaración emite una asignación inicial y no cuenta como modificación. `binding_checker` valida inicialización y destinos de reasignación, incluidos campos de registros por valor y argumentos por referencia. Los objetos pueden mutar a través de un vínculo inmutable. La asignación a un nombre no declarado es error y no crea una variable por inferencia. La inicialización obligatoria reemplaza la trampa de lectura sin valor para locales; campos y elementos conservan su contrato. La forma inicializada es la oficial de la edición: no hay migrador, selector de compatibilidad ni conservación de la sintaxis anterior.
 

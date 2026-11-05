@@ -9,6 +9,7 @@ mod builtin_checker;
 mod call_checker;
 pub mod capability_types;
 mod checker;
+mod class_record_fields;
 mod class_registry;
 mod cleanup_checker;
 mod collection_checker;
@@ -113,7 +114,7 @@ pub use expression_model::{
     BinaryOperator, BuiltinKind, ExpressionColumns, HirExpression, HirPlace, Literal, UnaryOperator,
 };
 pub use hir::{
-    FunctionKind, HirClass, HirEnum, HirField, HirFunction, HirLocal, HirModule, HirRecord,
+    FunctionKind, HirClass, HirClassRecordField, HirEnum, HirField, HirFunction, HirLocal, HirModule, HirRecord,
     HirRecordField, Passing, SemanticModel, UnitTable,
 };
 pub use identities::{

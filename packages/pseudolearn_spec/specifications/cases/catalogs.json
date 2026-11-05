@@ -4335,49 +4335,12 @@
       "severidad": "warning",
       "tipos_argumentos": {}
     },
-    "recordArrayElementNotSupported": {
-      "argumentos": [],
-      "clase": "semantic",
-      "mensajes": {
-        "en": "An array cannot have records as elements",
-        "es": "Un arreglo no puede tener registros como elementos"
-      },
-      "politica": "A",
-      "severidad": "error",
-      "tipos_argumentos": {}
-    },
     "recordCannotBeWritten": {
       "argumentos": [],
       "clase": "semantic",
       "mensajes": {
         "en": "A record cannot be written directly",
         "es": "Un registro no se puede escribir directamente"
-      },
-      "politica": "A",
-      "severidad": "error",
-      "tipos_argumentos": {}
-    },
-    "recordClassFieldNotSupported": {
-      "argumentos": [
-        "lexeme"
-      ],
-      "clase": "semantic",
-      "mensajes": {
-        "en": "Field {lexeme} of a class cannot be a record",
-        "es": "El campo {lexeme} de una clase no puede ser un registro"
-      },
-      "politica": "A",
-      "severidad": "error",
-      "tipos_argumentos": {
-        "lexeme": "lexema"
-      }
-    },
-    "recordMemberSignatureNotSupported": {
-      "argumentos": [],
-      "clase": "semantic",
-      "mensajes": {
-        "en": "A method or constructor cannot receive or return records",
-        "es": "Un método o constructor no puede recibir ni devolver registros"
       },
       "politica": "A",
       "severidad": "error",
@@ -4391,21 +4354,6 @@
       "mensajes": {
         "en": "Variable {lexeme} must be declared with its type to hold a record",
         "es": "La variable {lexeme} debe declararse con su tipo para guardar un registro"
-      },
-      "politica": "A",
-      "severidad": "error",
-      "tipos_argumentos": {
-        "lexeme": "lexema"
-      }
-    },
-    "recordPassedByReference": {
-      "argumentos": [
-        "lexeme"
-      ],
-      "clase": "semantic",
-      "mensajes": {
-        "en": "Record {lexeme} cannot be passed by reference",
-        "es": "El registro {lexeme} no se puede pasar por referencia"
       },
       "politica": "A",
       "severidad": "error",

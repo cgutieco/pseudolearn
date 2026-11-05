@@ -7,7 +7,6 @@ use crate::statement_context::StatementContext;
 use pseudolearn_ir::{IrSpan, Operand, Operation, OriginEntry, ValueId, VariableId};
 use pseudolearn_semantic::expression_model::HirPlace;
 use pseudolearn_semantic::identities::{ExpressionId, LocalId};
-use pseudolearn_semantic::statement_model::HirDimension;
 use pseudolearn_source::Span;
 
 pub fn lower_assign(
@@ -61,6 +60,16 @@ fn store_value(
             for local_id in crate::records::destination_targets(destination, module) {
                 lower_assign_local(local_id, value, span, context);
             }
+        }
+        HirPlace::FieldRange { .. } => {}
+        HirPlace::ElementRange {
+            array,
+            indices,
+            offset,
+            ..
+        } => {
+            let range = (usize::try_from(*offset).unwrap_or(usize::MAX), 1);
+            crate::record_arrays::store_range((*array, indices), range, (vec![value], span), context);
         }
     }
 }
@@ -184,46 +193,6 @@ fn lower_assign_whole_array(
 }
 pub use crate::statements_read::lower_read;
 
-pub fn lower_dimension(
-    dimensions: &[HirDimension],
-    statement_span: Span,
-    context: &mut StatementContext<'_, '_>,
-) {
-    let span = resolve_span(statement_span, context.expression_context.source);
-    context
-        .builder
-        .emit_void(Operation::StmtEnter, vec![], span);
-    for dimension in dimensions {
-        lower_single_dimension(dimension, span, context);
-    }
-    context.builder.emit_void(Operation::StmtExit, vec![], span);
-}
-
-fn lower_single_dimension(
-    dimension: &HirDimension,
-    span: Option<IrSpan>,
-    context: &mut StatementContext<'_, '_>,
-) {
-    let mut operands = Vec::new();
-    let element_type = get_local_ir_type(dimension.local, context.expression_context.module);
-    operands.push(Operand::Type(element_type));
-    for &dimension_expression in &dimension.dimensions {
-        operands.push(Operand::Value(lower_expression(
-            dimension_expression,
-            context.expression_context,
-            context.environment,
-            context.builder,
-        )));
-    }
-    let array_value = context.builder.next_value();
-    context
-        .builder
-        .emit_with_target(Operation::ArrayNew, operands, (Some(array_value), span));
-    let origin = bind_dimension(dimension.local, array_value, (span, context));
-    context.environment.mark_assigned(dimension.local);
-    record_origin_entry(dimension.local, origin, context);
-}
-
 pub(crate) fn record_origin_entry(
     local_id: LocalId,
     value: ValueId,
@@ -259,31 +228,6 @@ pub(crate) fn resolve_field_name(field_number: u32, context: &StatementContext<'
         .unwrap_or_else(|| "field".to_owned())
 }
 
-fn bind_dimension(
-    local: LocalId,
-    array_value: ValueId,
-    (span, context): (Option<IrSpan>, &mut StatementContext<'_, '_>),
-) -> ValueId {
-    if crate::address_taken::contains(local, context.expression_context.module) {
-        let cell = context.builder.next_value();
-        let kind = get_local_ir_type(local, context.expression_context.module);
-        context.builder.emit_with_target(
-            Operation::CellLocal,
-            vec![Operand::Type(kind)],
-            (Some(cell), span),
-        );
-        context.builder.emit_void(
-            Operation::CellStore,
-            vec![Operand::Value(cell), Operand::Value(array_value)],
-            span,
-        );
-        context.environment.bind_cell(local, cell);
-        cell
-    } else {
-        context.environment.bind_value(local, array_value);
-        array_value
-    }
-}
 
 fn initialize_addressed_local(
     local: LocalId,

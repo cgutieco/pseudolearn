@@ -28,13 +28,39 @@ pub(crate) fn check(session: &mut AnalysisSession<'_>, node: usize) -> Option<St
                 session.report(DiagnosticCode::NonIntegerArrayIndex, dimensioned);
             }
         }
-        if let Some(initialized) = usize::try_from(local.0)
+        let leaves = expand_leaves(session, local, &dimensions);
+        declarations.extend(leaves);
+        if !session.module.record_locals.contains_key(&local) {
+            declarations.push(HirDimension { local, dimensions });
+        }
+    }
+    Some(session.statement(HirStatement::Dimension(declarations), session.span(node)))
+}
+
+fn expand_leaves(
+    session: &mut AnalysisSession<'_>,
+    local: crate::identities::LocalId,
+    dimensions: &[crate::identities::ExpressionId],
+) -> Vec<HirDimension> {
+    let leaves = session
+        .module
+        .record_locals
+        .get(&local)
+        .cloned()
+        .unwrap_or_default();
+    for target in std::iter::once(local).chain(leaves.iter().copied()) {
+        if let Some(initialized) = usize::try_from(target.0)
             .ok()
             .and_then(|index| session.initialized.get_mut(index))
         {
             *initialized = true;
         }
-        declarations.push(HirDimension { local, dimensions });
     }
-    Some(session.statement(HirStatement::Dimension(declarations), session.span(node)))
+    leaves
+        .into_iter()
+        .map(|leaf| HirDimension {
+            local: leaf,
+            dimensions: dimensions.to_vec(),
+        })
+        .collect()
 }

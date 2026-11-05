@@ -10,6 +10,7 @@ pub(crate) struct Iteration {
     pub(crate) collection: ValueId,
     pub(crate) version: Option<ValueId>,
     pub(crate) length: Option<ValueId>,
+    pub(crate) leaf_arrays: Vec<ValueId>,
     pub(crate) descriptor: Option<HirCollection>,
     pub(crate) span: Option<IrSpan>,
 }
@@ -61,12 +62,16 @@ fn prepare(
     context: &mut StatementContext<'_, '_>,
 ) -> Iteration {
     let descriptor = crate::collections::model(expression, context.expression_context.module);
-    let collection = lower_expression(
-        expression,
-        context.expression_context,
-        context.environment,
-        context.builder,
-    );
+    let leaf_arrays = leaf_array_values(expression, context);
+    let collection = match leaf_arrays.first() {
+        Some(first) => *first,
+        None => lower_expression(
+            expression,
+            context.expression_context,
+            context.environment,
+            context.builder,
+        ),
+    };
     let mut state = ExpressionState {
         context: context.expression_context,
         environment: context.environment,
@@ -85,9 +90,22 @@ fn prepare(
         collection,
         version,
         length,
+        leaf_arrays,
         descriptor,
         span,
     }
+}
+
+fn leaf_array_values(
+    expression: ExpressionId,
+    context: &mut StatementContext<'_, '_>,
+) -> Vec<ValueId> {
+    let mut state = ExpressionState {
+        context: context.expression_context,
+        environment: &mut *context.environment,
+        builder: &mut *context.builder,
+    };
+    crate::record_arrays::array_values(expression, &mut state).unwrap_or_default()
 }
 
 fn start(header: BlockId, locals: &[LocalId], context: &mut StatementContext<'_, '_>) -> ValueId {

@@ -43,10 +43,10 @@ fn fields(session: &mut AnalysisSession<'_>, class: ClassId, node: usize) {
         return;
     };
     let type_id = crate::type_resolution::resolve(session, kind);
-    let record_field = matches!(
-        session.module.types.representation(type_id),
-        crate::types::Type::Record(_)
-    );
+    let record = match session.module.types.representation(type_id) {
+        crate::types::Type::Record(record) => Some(record),
+        _ => None,
+    };
     let private =
         session.token_kind(node) == Some(TokenKind::Keyword(KeywordKind::PrivateVisibility));
     for name_node in session.children(declaration) {
@@ -54,11 +54,12 @@ fn fields(session: &mut AnalysisSession<'_>, class: ClassId, node: usize) {
             continue;
         }
         let name = session.name(name_node);
-        if record_field {
-            session.named_report(
-                DiagnosticCode::RecordClassFieldNotSupported,
-                name_node,
-                &name,
+        if let Some(record) = record {
+            crate::class_record_fields::add(
+                session,
+                class,
+                (name_node, name),
+                (record, type_id, private),
             );
             continue;
         }
@@ -126,12 +127,13 @@ fn method(session: &mut AnalysisSession<'_>, class: ClassId, node: usize) {
     }
 }
 
-fn next_field_id(session: &AnalysisSession<'_>) -> FieldId {
+pub(crate) fn next_field_id(session: &AnalysisSession<'_>) -> FieldId {
     let count = session
         .module
         .classes
         .iter()
         .map(|model| model.fields.len())
-        .sum::<usize>();
+        .sum::<usize>()
+        .saturating_add(session.module.class_record_fields.len());
     FieldId(u32::try_from(count).unwrap_or(u32::MAX))
 }

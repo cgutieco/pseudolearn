@@ -159,4 +159,16 @@ pub enum HirPlace {
         offset: u32,
         type_id: TypeId,
     },
+    ElementRange {
+        array: ExpressionId,
+        indices: Vec<ExpressionId>,
+        offset: u32,
+        type_id: TypeId,
+    },
+    FieldRange {
+        receiver: ExpressionId,
+        field: FieldId,
+        offset: u32,
+        type_id: TypeId,
+    },
 }

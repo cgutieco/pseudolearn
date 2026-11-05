@@ -106,14 +106,20 @@ fn is_reference_parameter(
         .is_some_and(|local| crate::parameter_passing::requires_cell(local, state.context.module))
 }
 
-fn lower_call_argument(
+pub(crate) fn lower_call_argument(
     argument: ExpressionId,
     passing: (bool, Option<IrSpan>),
     state: &mut ExpressionState<'_, '_>,
 ) -> Vec<ValueId> {
     let (is_reference, span) = passing;
     if is_reference {
+        if let Some(width) = crate::records::expression_width(argument, state.context.module) {
+            return crate::record_cells::lower_range(argument, (0, width), span, state);
+        }
         return vec![lower_cell_argument(argument, span, state)];
+    }
+    if let Some(values) = crate::record_arrays::array_values(argument, state) {
+        return values;
     }
     match crate::records::expression_width(argument, state.context.module) {
         Some(width) => crate::record_values::lower_range(argument, (0, width), state),
@@ -182,28 +188,36 @@ pub(crate) fn lower_cell_argument(
     let index = usize::try_from(argument_id.0).unwrap_or(0);
     if let Some(HirExpression::Local(local_id)) = state.context.module.expressions.kinds.get(index)
     {
-        if let Some(cell) = state.environment.get_cell(*local_id) {
-            return cell;
-        }
-        let local_type = crate::environment::get_local_ir_type(*local_id, state.context.module);
-        let cell = state.builder.next_value();
-        state.builder.emit_with_target(
-            Operation::CellLocal,
-            vec![Operand::Type(local_type)],
-            (Some(cell), span),
-        );
-        if let Some(value) = state.environment.get_value(*local_id) {
-            state.builder.emit_void(
-                Operation::CellStore,
-                vec![Operand::Value(cell), Operand::Value(value)],
-                span,
-            );
-        }
-        state.environment.bind_cell(*local_id, cell);
-        cell
+        lower_local_cell(*local_id, span, state)
     } else {
         crate::places::lower_cell(argument_id, span, state)
     }
+}
+
+pub(crate) fn lower_local_cell(
+    local_id: pseudolearn_semantic::identities::LocalId,
+    span: Option<IrSpan>,
+    state: &mut ExpressionState<'_, '_>,
+) -> ValueId {
+    if let Some(cell) = state.environment.get_cell(local_id) {
+        return cell;
+    }
+    let local_type = crate::environment::get_local_ir_type(local_id, state.context.module);
+    let cell = state.builder.next_value();
+    state.builder.emit_with_target(
+        Operation::CellLocal,
+        vec![Operand::Type(local_type)],
+        (Some(cell), span),
+    );
+    if let Some(value) = state.environment.get_value(local_id) {
+        state.builder.emit_void(
+            Operation::CellStore,
+            vec![Operand::Value(cell), Operand::Value(value)],
+            span,
+        );
+    }
+    state.environment.bind_cell(local_id, cell);
+    cell
 }
 
 pub use crate::expressions_builtins::lower_builtin;

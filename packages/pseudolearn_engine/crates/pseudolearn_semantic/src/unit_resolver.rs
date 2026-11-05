@@ -86,7 +86,6 @@ pub(crate) fn register_function(
     let name_node = session.child(node, NodeKind::Identifier).unwrap_or(node);
     let name = session.name(name_node);
     let result = resolve_result(session, node);
-    check_member_result(session, node, (owner, result));
     let kind = function_kind(session, node, result);
     let suspendible =
         kind == FunctionKind::Main || crate::suspension_checker::declared(session, node);
@@ -130,20 +129,6 @@ fn register_top_level_name(
 ) {
     if top_level {
         register_name(session, name, name_node, identifier);
-    }
-}
-
-fn check_member_result(
-    session: &mut AnalysisSession<'_>,
-    node: usize,
-    signature: (Option<ClassId>, crate::identities::TypeId),
-) {
-    let (owner, result) = signature;
-    if owner.is_some()
-        && matches!(session.module.types.get(result), Type::Record(_))
-        && crate::variant_types::get(session, &session.module.types.get(result)).is_none()
-    {
-        session.report(DiagnosticCode::RecordMemberSignatureNotSupported, node);
     }
 }
 

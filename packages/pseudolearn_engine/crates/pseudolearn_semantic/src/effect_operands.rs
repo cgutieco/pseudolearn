@@ -115,8 +115,8 @@ fn simple_statement(statement: &HirStatement) -> Vec<ExpressionId> {
 
 fn place(place: &HirPlace) -> Vec<ExpressionId> {
     match place {
-        HirPlace::Field { receiver, .. } => vec![*receiver],
-        HirPlace::Element { array, indices } => std::iter::once(*array)
+        HirPlace::Field { receiver, .. } | HirPlace::FieldRange { receiver, .. } => vec![*receiver],
+        HirPlace::Element { array, indices } | HirPlace::ElementRange { array, indices, .. } => std::iter::once(*array)
             .chain(indices.iter().copied())
             .collect(),
         HirPlace::Local(_) | HirPlace::WholeArray(_) | HirPlace::RecordField { .. } => Vec::new(),

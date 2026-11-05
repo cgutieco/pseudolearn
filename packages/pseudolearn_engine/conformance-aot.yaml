@@ -673,6 +673,11 @@
       "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
     },
     {
+      "regla": "LANG.TYPES.RECORD@1.0.0#R5",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
       "regla": "LANG.CONTROL.SWITCH@1.0.0#R2",
       "verificacion": "ejecutor",
       "estado": "exento",

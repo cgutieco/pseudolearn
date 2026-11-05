@@ -69,9 +69,13 @@ fn lower_arguments(
                     .ok()
                     .and_then(|index| state.context.module.expressions.spans.get(index))
                     .and_then(|span| crate::spans::resolve_span(*span, state.context.source));
-                vec![crate::expressions_complex::lower_cell_argument(
-                    *argument, span, state,
-                )]
+                crate::expressions_complex::lower_call_argument(
+                    *argument,
+                    (true, span),
+                    state,
+                )
+            } else if let Some(values) = crate::record_arrays::array_values(*argument, state) {
+                values
             } else {
                 crate::variant_values::values(*argument, state)
             }

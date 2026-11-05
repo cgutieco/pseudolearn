@@ -541,6 +541,11 @@
       "estado": "cumple"
     },
     {
+      "regla": "LANG.TYPES.RECORD@1.0.0#R5",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
       "regla": "LANG.CONTROL.SWITCH@1.0.0#R2",
       "verificacion": "ejecutor",
       "estado": "cumple"

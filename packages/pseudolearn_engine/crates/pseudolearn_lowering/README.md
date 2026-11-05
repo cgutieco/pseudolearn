@@ -71,6 +71,15 @@ miembro con una cadena de comparaciones de ordinal y bloques que unen un texto (
 la tabla de saltos del terminador `switch` llega con la exhaustividad de `Segun`. Un enumerado es un entero de RI, por lo que
 `class_density` lo trata como entero para no omitir la máscara de definidos de un campo sin asignar.
 
+**Posiciones de registro (PG-L).** Los consumidores de hojas leen tres orígenes nuevos sin instrucción de RI nueva.
+`class_record_values` carga y almacena las hojas incrustadas de un campo de clase con `object.load`/`object.store`
+evaluando el receptor una sola vez, y entrega una `cell.field` por hoja para el paso por referencia. `record_arrays`
+direcciona los arreglos sintéticos por hoja que semantic creó para un arreglo de registros: evalúa los índices una sola vez y
+emite `array.load`, `array.store` o `cell.element` sobre cada hoja; la expansión de un parámetro arreglo entrega un arreglo
+por hoja. `record_cells` entrega una celda por hoja de una variable, un campo incrustado o un elemento cuando el parámetro es
+`Por Referencia`; el prototipo no cambia porque el llamado ya recibe una celda por hoja. `Dimension` sobre un arreglo de
+registros evalúa cada dimensión una sola vez aunque emita un `array.new` por hoja.
+
 Las declaraciones locales inicializadas llegan como asignaciones tipadas; los vínculos inmutables se conservan como valores SSA. Semantic rechaza su paso por referencia y no requieren celdas. Los campos y elementos sin valor conservan los centinelas y las comprobaciones existentes.
 
 Las variantes conservan la disposición de abi como agregado SSA de palabras enteras y referencias: `value.reinterpret` empaqueta y extrae bits del mismo banco sin conversión numérica. Al construir se ponen en cero todas las referencias inactivas. Los resultados agregados usan celdas locales de transporte y `cell.load_raw`, que permite copiar un centinela inactivo sin confundirlo con una lectura del lenguaje. La evaluación de la carga activa ya comprueba su existencia; por ello la asignación no repite value.require al almacenar. Cuando una asignación copia un valor SSA que ya tiene origen en otra variable de la misma función, `lower_assign_local` emite `value.reinterpret` al tipo del destino para que cada variable reciba un `ValueId` propio y la asignación de registros del bytecode no unifique ambas variables en la misma ranura ni corrompa el valor previo al reasignar la variable origen. Propagar evalúa una vez y retorna por una arista explícita; su camino normal solo extrae la carga de éxito. No se implementa limpieza de usuario antes de la construcción que la introduzca. Switch une los entornos de todas las ramas que continúan, incluidos los registros aplanados. Desde cuatro etiquetas enteras distintas, con intervalo no mayor al doble de su cantidad, emite switch; los demás casos usan cadenas del tipo correcto. El umbral reduce despachos y tamaño de la RI sin introducir una campaña de optimización ajena a la fase.

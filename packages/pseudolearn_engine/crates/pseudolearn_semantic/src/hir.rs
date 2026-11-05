@@ -57,6 +57,12 @@ pub struct HirField {
 }
 
 #[derive(Clone, Debug, PartialEq, Eq)]
+pub struct HirClassRecordField {
+    pub field: HirField,
+    pub leaves: Vec<FieldId>,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub struct HirClass {
     pub name: String,
     pub superclass: Option<ClassId>,
@@ -142,6 +148,7 @@ pub struct HirModule {
     pub units: UnitTable,
     pub functions: Vec<HirFunction>,
     pub classes: Vec<HirClass>,
+    pub class_record_fields: Vec<HirClassRecordField>,
     pub enums: Vec<HirEnum>,
     pub records: Vec<HirRecord>,
     pub variants: BTreeMap<crate::identities::RecordId, crate::variant_model::HirVariant>,

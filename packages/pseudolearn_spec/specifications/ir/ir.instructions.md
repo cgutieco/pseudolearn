@@ -2581,6 +2581,21 @@
 }
 ```
 
+```cobertura
+{
+  "id": "V239",
+  "regla": "LANG.TYPES.RECORD#R5",
+  "instrucciones": [
+    "array.load",
+    "array.store",
+    "cell.element",
+    "cell.field",
+    "object.load",
+    "object.store"
+  ]
+}
+```
+
 ```instruccion
 {
   "id": "O75",

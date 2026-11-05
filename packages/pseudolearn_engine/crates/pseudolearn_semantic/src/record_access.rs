@@ -99,6 +99,17 @@ pub(crate) fn place(session: &AnalysisSession<'_>, expression: ExpressionId) -> 
                 total = total.checked_add(*offset)?;
                 current = *record;
             }
+            HirExpression::Element { array, indices } => {
+                return Some(HirPlace::ElementRange {
+                    array: *array,
+                    indices: indices.clone(),
+                    offset: total,
+                    type_id,
+                });
+            }
+            HirExpression::Field { receiver, field } => {
+                return Some(field_place(session, (*receiver, *field), (total, type_id)));
+            }
             HirExpression::Local(local) => {
                 return Some(HirPlace::RecordField {
                     local: *local,
@@ -109,6 +120,41 @@ pub(crate) fn place(session: &AnalysisSession<'_>, expression: ExpressionId) -> 
             _ => return None,
         }
     }
+}
+
+fn field_place(
+    session: &AnalysisSession<'_>,
+    owner: (ExpressionId, crate::identities::FieldId),
+    range: (u32, crate::identities::TypeId),
+) -> HirPlace {
+    let (receiver, field) = owner;
+    let (offset, type_id) = range;
+    let leaf = session
+        .module
+        .class_record_fields
+        .iter()
+        .find(|entry| entry.field.id == field)
+        .and_then(|entry| entry.leaves.get(usize::try_from(offset).unwrap_or(usize::MAX)))
+        .copied();
+    match leaf {
+        Some(leaf) if !is_record(session, type_id) => HirPlace::Field {
+            receiver,
+            field: leaf,
+        },
+        _ => HirPlace::FieldRange {
+            receiver,
+            field,
+            offset,
+            type_id,
+        },
+    }
+}
+
+fn is_record(session: &AnalysisSession<'_>, type_id: crate::identities::TypeId) -> bool {
+    matches!(
+        session.module.types.representation(type_id),
+        Type::Record(_)
+    )
 }
 
 pub(crate) fn is_field(session: &AnalysisSession<'_>, expression: ExpressionId) -> bool {

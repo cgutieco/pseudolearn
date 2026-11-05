@@ -61,6 +61,25 @@ pub(crate) fn destination_targets(destination: &HirPlace, module: &HirModule) ->
     }
 }
 
+pub(crate) fn array_destination(
+    destination: &HirPlace,
+) -> Option<(ExpressionId, Vec<ExpressionId>, usize)> {
+    match destination {
+        HirPlace::Element { array, indices } => Some((*array, indices.clone(), 0)),
+        HirPlace::ElementRange {
+            array,
+            indices,
+            offset,
+            ..
+        } => Some((
+            *array,
+            indices.clone(),
+            usize::try_from(*offset).unwrap_or(usize::MAX),
+        )),
+        _ => None,
+    }
+}
+
 pub(crate) fn lower_record_assignment(
     destination: &HirPlace,
     value: ExpressionId,
@@ -75,6 +94,20 @@ pub(crate) fn lower_record_assignment(
         builder: &mut *context.builder,
     };
     let values = lower_range(value, (0, width), &mut state);
+    if let Some((array, indices, offset)) = array_destination(destination) {
+        crate::record_arrays::store_range(
+            (array, &indices),
+            (offset, width),
+            (values, span),
+            context,
+        );
+        return;
+    }
+    if let Some((receiver, selected)) = crate::class_record_values::destination(destination, module)
+    {
+        crate::class_record_values::store((receiver, &selected), values, span, context);
+        return;
+    }
     for (local, component_value) in destination_targets(destination, module)
         .into_iter()
         .zip(values)

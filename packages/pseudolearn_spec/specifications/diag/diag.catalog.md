@@ -2480,47 +2480,6 @@
       "clase": "semantic",
       "tipos_argumentos": {}
     },
-    "recordPassedByReference": {
-      "mensajes": {
-        "es": "El registro {lexeme} no se puede pasar por referencia",
-        "en": "Record {lexeme} cannot be passed by reference"
-      },
-      "argumentos": [
-        "lexeme"
-      ],
-      "politica": "A",
-      "severidad": "error",
-      "clase": "semantic",
-      "tipos_argumentos": {
-        "lexeme": "lexema"
-      }
-    },
-    "recordArrayElementNotSupported": {
-      "mensajes": {
-        "es": "Un arreglo no puede tener registros como elementos",
-        "en": "An array cannot have records as elements"
-      },
-      "argumentos": [],
-      "politica": "A",
-      "severidad": "error",
-      "clase": "semantic",
-      "tipos_argumentos": {}
-    },
-    "recordClassFieldNotSupported": {
-      "mensajes": {
-        "es": "El campo {lexeme} de una clase no puede ser un registro",
-        "en": "Field {lexeme} of a class cannot be a record"
-      },
-      "argumentos": [
-        "lexeme"
-      ],
-      "politica": "A",
-      "severidad": "error",
-      "clase": "semantic",
-      "tipos_argumentos": {
-        "lexeme": "lexema"
-      }
-    },
     "recordWithoutFields": {
       "mensajes": {
         "es": "El registro {lexeme} debe tener al menos un campo",
@@ -2622,17 +2581,6 @@
       "politica": "A",
       "severidad": "error",
       "clase": "syntax",
-      "tipos_argumentos": {}
-    },
-    "recordMemberSignatureNotSupported": {
-      "mensajes": {
-        "es": "Un método o constructor no puede recibir ni devolver registros",
-        "en": "A method or constructor cannot receive or return records"
-      },
-      "argumentos": [],
-      "politica": "A",
-      "severidad": "error",
-      "clase": "semantic",
       "tipos_argumentos": {}
     },
     "recordNotInferable": {

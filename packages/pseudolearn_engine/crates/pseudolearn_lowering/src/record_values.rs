@@ -34,6 +34,14 @@ pub(crate) fn lower_range(
             let shifted = offset.saturating_add(usize::try_from(inner).unwrap_or(usize::MAX));
             lower_range(record, (shifted, count), state)
         }
+        Some(HirExpression::Element { array, indices }) => {
+            crate::record_arrays::load_range((array, &indices), range, span, state)
+                .unwrap_or_default()
+        }
+        Some(HirExpression::Field { receiver, field }) => {
+            crate::class_record_values::load_range((receiver, field), range, span, state)
+                .unwrap_or_default()
+        }
         Some(HirExpression::RecordNew { fields, .. }) => {
             slice(lower_construction(&fields, state), range)
         }

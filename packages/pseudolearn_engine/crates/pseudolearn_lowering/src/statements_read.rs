@@ -30,7 +30,8 @@ pub fn lower_read(
             HirPlace::Element { array, indices } => {
                 lower_read_element(*array, indices, span, context);
             }
-            HirPlace::WholeArray(_) => {}
+            HirPlace::WholeArray(_) | HirPlace::FieldRange { .. } => {}
+            HirPlace::ElementRange { .. } => lower_read_leaf_element(place, span, context),
             HirPlace::RecordField { .. } => {
                 let module = context.expression_context.module;
                 for local_id in crate::records::destination_targets(place, module) {
@@ -180,4 +181,41 @@ fn element_type(array: ExpressionId, context: &StatementContext<'_, '_>) -> IrTy
             }
         })
         .unwrap_or(IrType::Unit)
+}
+
+fn lower_read_leaf_element(
+    place: &HirPlace,
+    span: Option<IrSpan>,
+    context: &mut StatementContext<'_, '_>,
+) {
+    let HirPlace::ElementRange {
+        array,
+        indices,
+        offset,
+        type_id,
+    } = place
+    else {
+        return;
+    };
+    let range = (usize::try_from(*offset).unwrap_or(usize::MAX), 1);
+    let mut state = crate::expressions::ExpressionState {
+        context: context.expression_context,
+        environment: &mut *context.environment,
+        builder: &mut *context.builder,
+    };
+    let cells = crate::record_arrays::cell_range((*array, indices), range, span, &mut state);
+    let target_type = crate::types::lower_type(*type_id, context.expression_context.module);
+    for cell in cells.unwrap_or_default() {
+        let read_value = context.builder.next_value();
+        context.builder.emit_with_target(
+            Operation::InRead,
+            vec![Operand::Type(target_type.clone())],
+            (Some(read_value), span),
+        );
+        context.builder.emit_void(
+            Operation::CellStore,
+            vec![Operand::Value(cell), Operand::Value(read_value)],
+            span,
+        );
+    }
 }
