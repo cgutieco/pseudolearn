@@ -22,6 +22,7 @@ fn parameter(state: &mut ParserState<'_>) -> Result<usize, ()> {
     name(state, DiagnosticCode::ExpectedIdentifierInDeclaration)?;
     if state.eat(TokenKind::Colon) {
         name(state, DiagnosticCode::ExpectedClassName)?;
+        optional_arguments(state)?;
     }
     Ok(state.finish(NodeKind::TypeParameter, start, marker))
 }
@@ -43,6 +44,13 @@ fn argument(state: &mut ParserState<'_>) -> Result<usize, ()> {
     let parsed = parse_type(state);
     state.leave();
     parsed
+}
+
+pub(crate) fn optional_arguments(state: &mut ParserState<'_>) -> Result<(), ()> {
+    if state.kind() == TokenKind::Less {
+        type_arguments(state)?;
+    }
+    Ok(())
 }
 
 pub(crate) fn optional_parameters(state: &mut ParserState<'_>) -> Result<(), ()> {

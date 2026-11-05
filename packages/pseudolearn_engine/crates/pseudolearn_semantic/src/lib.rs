@@ -43,29 +43,34 @@ mod flow_bindings;
 mod for_checker;
 mod for_each_checker;
 mod generic_calls;
+mod generic_class_cycles;
+mod generic_classes;
 mod generic_discard;
 mod generic_functions;
 mod generic_inference;
+mod generic_instantiation;
+mod generic_interfaces;
 mod generic_labels;
 mod generic_names;
 mod generic_opaque;
 mod generic_records;
 mod generic_registry;
 mod generic_state;
+mod generic_variants;
 mod hierarchy;
 pub mod hir;
 mod hir_finalization;
 mod http_types;
 pub mod identities;
+mod import_uses;
 pub mod inspection_expression;
 mod inspection_records;
-mod import_uses;
 mod interface_constraints;
-mod interface_uses;
 pub mod interface_model;
 mod interface_realizations;
 mod interface_registry;
 mod interface_signatures;
+mod interface_uses;
 mod json_types;
 mod local_registry;
 mod module_calls;
@@ -73,8 +78,8 @@ mod module_cycles;
 mod module_exports;
 mod module_imports;
 mod module_structure;
-mod module_type_links;
 mod module_symbols;
+mod module_type_links;
 mod name_resolution;
 mod name_uses;
 mod operator_diagnostics;
@@ -119,11 +124,12 @@ pub use expression_model::{
     BinaryOperator, BuiltinKind, ExpressionColumns, HirExpression, HirPlace, Literal, UnaryOperator,
 };
 pub use hir::{
-    FunctionKind, HirClass, HirClassRecordField, HirEnum, HirField, HirFunction, HirLocal, HirModule, HirRecord,
-    HirRecordField, Passing, SemanticModel, UnitTable,
+    FunctionKind, HirClass, HirClassRecordField, HirEnum, HirField, HirFunction, HirLocal,
+    HirModule, HirRecord, HirRecordField, Passing, SemanticModel, UnitTable,
 };
 pub use identities::{
-    ClassId, ConstantId, EnumId, ExpressionId, FieldId, FunctionId, LocalId, RecordId, StatementId, TypeId,
+    ClassId, ConstantId, EnumId, ExpressionId, FieldId, FunctionId, LocalId, RecordId, StatementId,
+    TypeId,
 };
 pub use project_analysis::{
     ProjectAnalysis, ProjectUnit, analyze_project, analyze_project_detailed,
@@ -168,6 +174,11 @@ mod variant_types;
 mod variant_statements;
 
 mod variant_patterns;
+
+mod user_variant_layout;
+mod user_variant_patterns;
+mod user_variant_values;
+mod user_variants;
 
 pub mod function_model;
 mod function_types;

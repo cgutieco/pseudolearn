@@ -9,13 +9,23 @@ pub(crate) fn collect(session: &mut AnalysisSession<'_>) {
         .nodes
         .iter()
         .enumerate()
-        .filter(|(_, node)| matches!(node.kind, NodeKind::RecordUnit | NodeKind::Subprogram))
+        .filter(|(_, node)| {
+            matches!(
+                node.kind,
+                NodeKind::RecordUnit
+                    | NodeKind::Subprogram
+                    | NodeKind::ClassUnit
+                    | NodeKind::InterfaceUnit
+                    | NodeKind::VariantUnit
+            )
+        })
         .map(|(index, _)| index)
         .filter(|node| is_generic(session, *node))
         .collect();
     for node in nodes {
         declare(session, node);
     }
+    crate::generic_class_cycles::detect(session);
 }
 
 pub(crate) fn is_generic(session: &AnalysisSession<'_>, node: usize) -> bool {
@@ -27,34 +37,37 @@ fn declare(session: &mut AnalysisSession<'_>, node: usize) {
         return;
     };
     let name = session.name(name_node);
-    let (parameters, constraints) = parameters(session, node);
+    let (parameters, constraints, constraint_nodes) = parameters(session, node);
     let template = GenericTemplate {
         node,
         parameters,
         constraints,
+        constraint_nodes,
     };
-    let record = session.kind(node) == NodeKind::RecordUnit;
-    let taken = session.generics.records.contains_key(&name)
-        || session.generics.functions.contains_key(&name);
-    if taken {
+    if session.generics.declares(&name) {
         session.named_report(DiagnosticCode::DuplicateTypeDeclaration, name_node, &name);
         return;
     }
-    if record {
-        session.generics.records.insert(name, template);
-    } else {
-        session.generics.functions.insert(name, template);
-    }
+    let scope = &mut session.generics;
+    let table = match session.tree.node(node).map(|syntax| syntax.kind) {
+        Some(NodeKind::RecordUnit) => &mut scope.records,
+        Some(NodeKind::ClassUnit) => &mut scope.classes,
+        Some(NodeKind::InterfaceUnit) => &mut scope.interfaces,
+        Some(NodeKind::VariantUnit) => &mut scope.variants,
+        _ => &mut scope.functions,
+    };
+    table.insert(name, template);
 }
 
 fn parameters(
     session: &mut AnalysisSession<'_>,
     node: usize,
-) -> (Vec<String>, Vec<Option<String>>) {
+) -> (Vec<String>, Vec<Option<String>>, Vec<usize>) {
     let mut names: Vec<String> = Vec::new();
     let mut constraints = Vec::new();
+    let mut nodes = Vec::new();
     let Some(parameters) = session.child(node, NodeKind::TypeParameters) else {
-        return (names, constraints);
+        return (names, constraints, nodes);
     };
     for child in session.children(parameters) {
         let parts = session.children(child);
@@ -68,6 +81,7 @@ fn parameters(
         }
         names.push(name);
         constraints.push(parts.get(1).map(|node| session.name(*node)));
+        nodes.push(child);
     }
-    (names, constraints)
+    (names, constraints, nodes)
 }

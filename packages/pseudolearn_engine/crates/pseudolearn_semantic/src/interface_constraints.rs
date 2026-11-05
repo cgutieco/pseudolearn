@@ -12,33 +12,45 @@ pub(crate) fn check(
     origin: usize,
 ) -> bool {
     let mut valid = true;
-    for (index, constraint) in template.constraints.iter().enumerate() {
-        let Some(name) = constraint else {
-            continue;
-        };
-        let Some(interface) = crate::interface_registry::find(session, name) else {
-            session.named_report(DiagnosticCode::UnknownInterface, template.node, name);
-            valid = false;
-            continue;
-        };
-        if !arguments
-            .get(index)
-            .is_some_and(|argument| satisfies(session, *argument, interface))
-        {
-            session.named_report(DiagnosticCode::GenericConstraintNotSatisfied, origin, name);
-            if let Some(diagnostic) = session.diagnostics.last_mut() {
-                diagnostic.related.push(
-                    session
-                        .tree
-                        .span_for_node(template.node)
-                        .unwrap_or_default(),
-                );
-            }
-            valid = false;
-        }
-        record(session, template, index, interface);
+    for index in 0..template.constraints.len() {
+        valid &= check_one(session, template, (index, arguments), origin);
     }
     valid
+}
+
+fn check_one(
+    session: &mut AnalysisSession<'_>,
+    template: &GenericTemplate,
+    (index, arguments): (usize, &[TypeId]),
+    origin: usize,
+) -> bool {
+    let Some(Some(name)) = template.constraints.get(index).cloned() else {
+        return true;
+    };
+    let interface = match crate::generic_interfaces::constraint(session, template, index, arguments)
+    {
+        crate::generic_interfaces::InterfaceLookup::Found(interface) => interface,
+        crate::generic_interfaces::InterfaceLookup::Reported => return false,
+        crate::generic_interfaces::InterfaceLookup::Missing => {
+            session.named_report(DiagnosticCode::UnknownInterface, template.node, &name);
+            return false;
+        }
+    };
+    let satisfied = arguments
+        .get(index)
+        .is_some_and(|argument| satisfies(session, *argument, interface));
+    if !satisfied {
+        session.named_report(DiagnosticCode::GenericConstraintNotSatisfied, origin, &name);
+        let related = session
+            .tree
+            .span_for_node(template.node)
+            .unwrap_or_default();
+        if let Some(diagnostic) = session.diagnostics.last_mut() {
+            diagnostic.related.push(related);
+        }
+    }
+    record(session, template, index, interface);
+    satisfied
 }
 
 pub(crate) fn record(

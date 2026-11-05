@@ -189,7 +189,9 @@ fn print_instruction(
             if index > 0 {
                 buffer.push_str(", ");
             }
-            print_operand(buffer, operand, context);
+            if !crate::class_operand::print(buffer, operation, operand) {
+                print_operand(buffer, operand, context);
+            }
         }
     }
     if let Some(span) = context.columns.span(instruction_identifier) {

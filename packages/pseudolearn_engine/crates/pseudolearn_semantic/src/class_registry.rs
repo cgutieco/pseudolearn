@@ -16,15 +16,11 @@ pub(crate) fn members(session: &mut AnalysisSession<'_>, class: ClassId) {
         .into_iter()
         .filter(|node| session.kind(*node) == NodeKind::Identifier)
         .collect();
-    if let Some(superclass) = identifiers.get(1).copied() {
-        let name = session.name(superclass);
-        if let Some(identifier) = session.classes.get(&name).copied() {
-            if let Some(model) = session.module.classes.get_mut(index) {
-                model.superclass = Some(identifier);
-            }
-        } else {
-            session.named_report(DiagnosticCode::UndeclaredSuperclass, superclass, &name);
-        }
+    if let Some(superclass) = identifiers.get(1).copied()
+        && let Some(identifier) = superclass_of(session, syntax, superclass)
+        && let Some(model) = session.module.classes.get_mut(index)
+    {
+        model.superclass = Some(identifier);
     }
     for child in session.children(syntax) {
         match session.kind(child) {
@@ -33,6 +29,27 @@ pub(crate) fn members(session: &mut AnalysisSession<'_>, class: ClassId) {
             _ => (),
         }
     }
+}
+
+fn superclass_of(session: &mut AnalysisSession<'_>, syntax: usize, node: usize) -> Option<ClassId> {
+    if crate::generic_class_cycles::is_cyclic(session, syntax) {
+        return None;
+    }
+    let name = session.name(node);
+    let arguments = session.child(syntax, NodeKind::TypeArguments);
+    if let Some(found) = crate::generic_classes::resolve(session, (&name, arguments), node) {
+        return found;
+    }
+    let Some(identifier) = session.classes.get(&name).copied() else {
+        session.named_report(DiagnosticCode::UndeclaredSuperclass, node, &name);
+        return None;
+    };
+    if let Some(arguments) = arguments {
+        let found = session.children(arguments).len();
+        crate::generic_names::count_mismatch(session, node, (&name, 0, found));
+        return None;
+    }
+    Some(identifier)
 }
 
 fn fields(session: &mut AnalysisSession<'_>, class: ClassId, node: usize) {

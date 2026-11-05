@@ -243,7 +243,7 @@ impl Parser {
         ) {
             Vec::new()
         } else {
-            self.parse_instruction_operands()?
+            crate::class_operand::restore(operation, self.parse_instruction_operands()?)
         };
         let span = if let TokenKind::Span(span) = self.peek() {
             let captured = *span;

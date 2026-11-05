@@ -102,6 +102,14 @@ fn variant_name(session: &AnalysisSession<'_>, record: crate::identities::Record
     let keyword = match variant.family {
         crate::variant_model::VariantFamily::Optional => KeywordKind::OptionalType,
         crate::variant_model::VariantFamily::Result => KeywordKind::ResultType,
+        crate::variant_model::VariantFamily::User => {
+            return session
+                .module
+                .user_variants
+                .get(&record)
+                .map(|model| model.name.clone())
+                .unwrap_or_default();
+        }
     };
     let arguments: Vec<_> = variant
         .payloads

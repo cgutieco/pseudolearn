@@ -76,10 +76,7 @@ fn result_type(
 ) -> IrType {
     let payload = crate::variant_values::model(expression, state.context.module)
         .and_then(|variant| {
-            let position = match variant.family {
-                pseudolearn_semantic::variant_model::VariantFamily::Optional => 1,
-                pseudolearn_semantic::variant_model::VariantFamily::Result => 0,
-            };
+            let position = variant.success_alternative();
             variant.payloads.get(position).copied().flatten()
         })
         .unwrap_or(kind);

@@ -139,6 +139,7 @@ fn instance(state: &mut ParserState<'_>) -> Result<usize, ()> {
     let marker = state.nodes.len();
     state.advance();
     crate::declaration_parser::name(state, DiagnosticCode::ExpectedClassName)?;
+    crate::generic_parser::optional_arguments(state)?;
     if state.kind() != TokenKind::LeftParenthesis {
         let span = state.span();
         state.report(DiagnosticCode::MissingInstantiationParentheses, span);

@@ -444,10 +444,10 @@ Orden interno: firmas de miembros (lo más barato) → campos de clase → por r
 Se ejecuta antes que `PG-L.03` porque las plantillas exportables incluyen clases, interfaces y variantes. Se divide en
 `A` (clases e interfaces genéricas) y `B` (variantes de usuario, solo si DL-10 = a).
 
-- [ ] `PG-L.04.01` Leer `lang.syntax.grammar.md` (producciones de unidades, tipos, patrones y vocabulario),
+- [x] `PG-L.04.01` Leer `lang.syntax.grammar.md` (producciones de unidades, tipos, patrones y vocabulario),
   `lang.profile.vocabulary.md`, `lang.lexical.keyword.md`, `lang.class.*.md`, `lang.control.switch.md`,
   `lang.types.relations.md` íntegros, README de `syntax` y `lexicon`. Resolver `PL-V-11`.
-- [ ] `PG-L.04.A1` Especificación: `LANG.SYNTAX.GRAMMAR` (`classUnit` e `interfaceUnit` con `[ typeParameters ]`;
+- [x] `PG-L.04.A1` Especificación: `LANG.SYNTAX.GRAMMAR` (`classUnit` e `interfaceUnit` con `[ typeParameters ]`;
   `type` ya admite `identifier, [ typeArguments ]`; `instantiation` con argumentos de tipo según DL-09);
   `LANG.TYPES.GENERIC#R1` reescrita: parámetros de tipo en registros, subprogramas, clases e interfaces (y variantes si
   DL-10 = a); instanciación de clases; herencia de una base genérica con argumentos (`Hereda De Base<T>`); realización
@@ -457,7 +457,7 @@ Se ejecuta antes que `PG-L.03` porque las plantillas exportables incluyen clases
   (variantes) como identidades nuevas dentro de la misma especificación. `LANG.CLASS.OUT-OF-SCOPE#R1` sin «genéricos de
   clases» y sin la entrada `generic` de `D1` (DL-11); `LANG.TYPES.INTERFACE#R1`/`R3` (interfaces genéricas y
   restricción `T: I<U>`). Catálogo: retirar `unsupportedGenericsConstruct` y `unsupportedInterfaceConstruct`.
-- [ ] `PG-L.04.A2` Casos: clase genérica con campo `T`, constructor y métodos que usan `T`; dos instancias
+- [x] `PG-L.04.A2` Casos: clase genérica con campo `T`, constructor y métodos que usan `T`; dos instancias
   (`Caja<Entero>`, `Caja<Cadena>`) independientes; subclase genérica de base genérica; subclase concreta de
   `Base<Entero>`; despacho virtual entre instancias; interfaz genérica realizada por una clase concreta y por una
   genérica; restricción `T: Comparable<T>` (si DL-09 la admite); clase genérica con campo registro genérico (cruza con
@@ -467,16 +467,16 @@ Se ejecuta antes que `PG-L.03` porque las plantillas exportables incluyen clases
   argumentos; límite: 64 instancias exactas válidas y la 65.ª con `genericInstanceLimitExceeded`; recursión
   polimórfica expansiva en una clase. El caso C de `LANG.CLASS.OUT-OF-SCOPE` que usa `Generico` se reescribe como
   identificador ordinario.
-- [ ] `PG-L.04.A3` Tests dirigidos: sintaxis (árbol con `TypeParameters` en clases e interfaces; recuperación ante
+- [x] `PG-L.04.A3` Tests dirigidos: sintaxis (árbol con `TypeParameters` en clases e interfaces; recuperación ante
   `<` sin cerrar), semantic (`generic_instances.rs` ampliado o archivo espejo nuevo **CANDIDATO**
   `generic_classes_tests.rs`), lowering (una clase por instancia, nombres `Caja<Entero>`).
-- [ ] `PG-L.04.A4` Código: `syntax` (gramática generada o parser manual según el README de `syntax`; regenerar);
+- [x] `PG-L.04.A4` Código: `syntax` (gramática generada o parser manual según el README de `syntax`; regenerar);
   `semantic`: `generic_registry.rs` (recoger `ClassUnit` e `InterfaceUnit`), archivo nuevo **CANDIDATO**
   `generic_classes.rs` (instanciación de clase: campos, métodos, constructor, jerarquía y slots por instancia),
   `hierarchy.rs`, `interface_*` para interfaces genéricas, `generic_labels.rs`, `type_resolution.rs`,
   `expressions_objects`/instanciación. `syntax/build.rs` sin la entrada `generic`. Lowering sin cambios si `PL-H-15`
   se mantiene («los genéricos no llegan a lowering»).
-- [ ] `PG-L.04.B1` (solo DL-10 = a) Especificación de la variante de usuario: identidad nueva **CANDIDATA**
+- [x] `PG-L.04.B1` (solo DL-10 = a) Especificación de la variante de usuario: identidad nueva **CANDIDATA**
   `LANG.TYPES.VARIANT` en `lang/lang.types.variant.md`, estable 1.0.0, sujetos `engine` y `aot`: declaración (al menos
   una alternativa, nombres únicos, cargas con nombre y tipo, genérica con `<T>`), construcción cualificada, patrones en
   `Segun` con exhaustividad y `De Otro Modo`, copia por valor, igualdad (decidir: misma alternativa y cargas iguales,
@@ -486,17 +486,17 @@ Se ejecuta antes que `PG-L.03` porque las plantillas exportables incluyen clases
   demuestre que un identificador `Variante` sigue siendo válido (K-02). `LANG.TYPES.RELATIONS#R3` sin la exclusión de
   tipos genéricos de usuario. Diagnósticos nuevos solo si ningún código vigente sirve (buscar antes en el catálogo:
   `nonExhaustiveSwitch`, `duplicateSwitchCaseLabel`, `incompatibleVariantConstructor`, `variantRequiresPattern`).
-- [ ] `PG-L.04.B2` Casos: variante no genérica y genérica; exhaustividad completa e incompleta (`nonExhaustiveSwitch`
+- [x] `PG-L.04.B2` Casos: variante no genérica y genérica; exhaustividad completa e incompleta (`nonExhaustiveSwitch`
   con alternativas faltantes en orden); patrón con vínculo inmutable; variante como campo de clase, elemento de
   arreglo y de vector, parámetro y resultado de método (cruza con L.01); variante exportada (cruza con L.02/L.03);
   variante vacía (decidir: inválida con diagnóstico, como `recordWithoutFields`); alternativa sin carga; límite de
   disposición; perfiles es/en.
-- [ ] `PG-L.04.B3` Tests y código: `syntax`, `lexicon` (vocabulario contextual generado), `semantic` (registro de
+- [x] `PG-L.04.B3` Tests y código: `syntax`, `lexicon` (vocabulario contextual generado), `semantic` (registro de
   variantes de usuario reutilizando `variant_model.rs`, `variant_types.rs`, `variant_patterns.rs`,
   `switch_coverage.rs`), `lowering` (`variant_values.rs`, `statements_variant_match.rs`): reutilizar la disposición de
   abi existente; ninguna instrucción de RI nueva salvo que `PL-H-15` se desmienta.
-- [ ] `PG-L.04.05` Fichas `help.pgl04.*` (clase genérica, interfaz genérica, parámetro de tipo, variante y alternativa).
-- [ ] `PG-L.04.06` README: `semantic` (retirar el límite asumido; documentar DL-09/DL-10/DL-11), `syntax`, `lexicon`,
+- [x] `PG-L.04.05` Fichas `help.pgl04.*` (clase genérica, interfaz genérica, parámetro de tipo, variante y alternativa).
+- [x] `PG-L.04.06` README: `semantic` (retirar el límite asumido; documentar DL-09/DL-10/DL-11), `syntax`, `lexicon`,
   `lowering` si cambió. Nivel D: tests dirigidos de `syntax`, `semantic`, `lowering`; `see validate`. Commit local.
 
 ### PG-L.05 · Comprobación de plantillas sin instanciar y símbolo de plantilla en el servicio
@@ -840,7 +840,7 @@ por plataforma → F.10 criterio de salida. Push solo después de F.10 en verde 
 ## 11. Resumen de ejecución
 
 Estado: ejecución parcial el 2026-11-05 en una sola sesión sobre `d9d84bc7`. **La fase no está cerrada**: se cumplieron
-PG-L.01, PG-L.02 (completo, cerrado después en una iteración propia) y PG-L.06 (regla y pruebas; la VM ya cumplía). No se iniciaron PG-L.03, PG-L.04, PG-L.05 ni PG-L.07; el
+PG-L.01, PG-L.02 (completo, cerrado después en una iteración propia), PG-L.06 (regla y pruebas; la VM ya cumplía) y PG-L.04 (clases, interfaces y variantes genéricas de usuario, en una iteración propia del 2026-11-05). No se iniciaron PG-L.03, PG-L.05 ni PG-L.07; el
 bloque F se ejecutó para lo implementado. Las casillas sin marcar son tareas **no realizadas**, no omitidas por descuido;
 cada una consta en la tabla siguiente con su motivo. Commits locales: `9acfbe96` (PG-L.01), `98b00836` (PG-L.06),
 `c61c2f63` (PG-L.02) y el commit de cierre; **no se hizo push** porque `PG-L.F.10` no está en verde y el plan exige
@@ -860,7 +860,17 @@ aceptar pendientes por escrito antes de publicar (`PHASE-GREEN`, §10.2).
 | `PG-L.02.04` | Cumplida | `semantic/tests/module_type_exports_tests.rs` (14 pruebas: identidad compartida, privados, colisión, reexportación, límites, firmas públicas) además de `api/tests/module_type_exports.rs` | |
 | `PG-L.02.06` | Cumplida | `service/tests/lsp_project_type_queries.rs` y `navigation_types.rs`; `TOOL.SERVICE.NAVIGATION` R1, R2, R4 y casos C9–C16 | Definición, referencias y renombrado entre archivos y en documento para registros, enumerados, constantes e interfaces. Hallazgo heredado corregido: la ruta de `Importar`/`Exportar` no era un uso, así que renombrar una función, clase o tipo dejaba la importación apuntando a un nombre inexistente; el caso C8 pasa de 2 a 3 ediciones. Completado de tipos: `completion_types.rs` no filtra por clase de símbolo y el completado usa el análisis de un solo documento, por lo que no aplica |
 | `PG-L.02.07` | Cumplida | `help.pgl02.type_visibility`, `type_import` y `public_signature` en `tool.service.catalog.md` con roles y ejemplos diagnósticos; `help.module-unit` ya no limita la visibilidad a subprogramas y clases | Como en `PG-L.01.07`, la elección de ficha por rol en el editor queda para `PG-L.07` |
-| `PG-L.04.*`, `PG-L.05.*`, `PG-L.03.*`, `PG-L.07.*` | No cumplida | | No iniciadas por alcance de la sesión (gramática de clases genéricas, variantes de usuario, símbolo de plantilla, genéricos entre módulos, app y extensión). Solo se retiró `unsupportedInterfaceConstruct` (DL-11) |
+| `PG-L.04.01` | Cumplida | Lectura de gramática, vocabulario, `LANG.CLASS.*`, `LANG.CONTROL.SWITCH`, `LANG.TYPES.RELATIONS` y README de `syntax`/`lexicon` | PL-V-11 confirmada: el parser trataba `<` tras el nombre de clase como miembro inesperado (`unexpectedStatement`); la prueba `class_headers_do_not_accept_type_parameters` lo fijaba y se reescribió con el comportamiento nuevo |
+| `PG-L.04.A1` | Cumplida | `LANG.SYNTAX.GRAMMAR` (`classUnit`, `interfaceUnit`, `instantiation`, `typeParameter`, `realization`, `pattern`, `variantUnit`); `LANG.TYPES.GENERIC#R1` reescrita y `#R2` nueva; `LANG.TYPES.INTERFACE#R1`/`R2`/`R3`, `LANG.CLASS.INSTANTIATION#R1`, `LANG.CLASS.OUT-OF-SCOPE#R1`/`D1` sin `generic`; cobertura `V241` | `unsupportedGenericsConstruct` retirado del catálogo. Las variantes genéricas se especificaron en `LANG.TYPES.VARIANT#R3` en vez de `LANG.TYPES.GENERIC#R3` |
+| `PG-L.04.A2` | Cumplida | `LANG.TYPES.GENERIC` C21–C41 (pares es/en; C39–C40 de proyecto) y `LANG.CLASS.OUT-OF-SCOPE` C5 | Herencia cíclica a través de argumentos: un único `circularInheritance` en la plantilla que inicia el recorrido (C34). 64 instancias válidas y la 65.ª con `genericInstanceLimitExceeded` usando solo `Nuevo` para no duplicar el diagnóstico en el tipo (C36–C37) |
+| `PG-L.04.A3` | Cumplida | `syntax/tests/generic_parser.rs`, `syntax/tests/user_variant_parser.rs`, `semantic/tests/generic_classes.rs`, `semantic/tests/user_variants.rs`, `api/tests/generic_execution.rs` (gemelos con recolección forzada sobre los casos ejecutables de genéricos y variantes, y RI de una clase por instancia que reimprime igual), `ir/tests/text_format_tests.rs` | Sin binarios de prueba nuevos en `pseudolearn_api` (§11.5) |
+| `PG-L.04.A4` | Cumplida | `generic_registry`, `generic_classes`, `generic_class_cycles`, `generic_instantiation`, `generic_interfaces`, `generic_names`, `generic_opaque`, `generic_inference`, `class_registry`, `hierarchy`, `interface_registry`, `interface_constraints`, `flow`, `flow_bindings`, `generic_discard` | Hallazgo durante el desarrollo: la RI textual imprimía sin comillas el operando de clase de `object.new` y no reimprimía `Caja<integer>` (propiedad `IR.LOWERING#P1`); se corrigió en `pseudolearn_ir` (`class_operand`). Hallazgo heredado corregido: el análisis de proyecto no recogía plantillas de ninguna unidad, así que un genérico de cualquier forma no existía dentro de un proyecto |
+| `PG-L.04.B1` | Cumplida | `LANG.TYPES.VARIANT` (R1–R3, estable 1.0.0, sujetos engine y aot), vocabulario contextual `variantKeyword`/`endVariant`/`alternativeKeyword` (`Variante`/`FinVariante`/`Alternativa`, `variant`/`endVariant`/`case`), `LANG.TYPES.RELATIONS#R3` y `LANG.CONTROL.SWITCH#R2`; diagnósticos nuevos `variantWithoutAlternatives`, `unclosedVariant`, `expectedVariantAlternative`; mensaje de `ambiguousVariantType` generalizado | Igualdad decidida como en las variantes incorporadas: comparar o escribir es `variantRequiresPattern` |
+| `PG-L.04.B2` | Cumplida | `LANG.TYPES.VARIANT` C1–C29 | Campo de clase, arreglo, vector, parámetro y resultado de método (C10), carga compartida por referencia (C11), límite de disposición (C12), variante exportada entre paquetes (C27–C28), vínculo inmutable (C29), palabras como nombres (C4) |
+| `PG-L.04.B3` | Cumplida | `syntax/user_variant_parser.rs`; `semantic/user_variants.rs`, `user_variant_layout.rs`, `user_variant_values.rs`, `user_variant_patterns.rs`, `generic_variants.rs`, `variant_patterns.rs`, `module_symbols.rs`, `module_type_links.rs`; `lowering/effect_values.rs` y `service/type_names.rs` solo para la familia nueva | Ninguna instrucción de RI nueva: la variante declarada usa `VariantLayout` y la bajada de las incorporadas |
+| `PG-L.04.05` | Cumplida | `help.pgl04.generic_class`, `generic_interface`, `type_parameter`, `variant`, `variant_alternative` en `tool.service.catalog.md` con roles | |
+| `PG-L.04.06` | Cumplida | README de `syntax`, `semantic` e `ir`; nivel D: `cargo test --workspace --no-fail-fast` (2 469 pruebas, 4 fallos: 2 preexistentes de `fake_host`/`reference_vocabulary` y 2 pruebas nuevas mal escritas, corregidas y repetidas), Clippy `-D warnings`, `rust-checks all`, `see validate`, `lock`, `export`, conformidad engine | `lexicon` y `lowering` sin cambio de decisión; el README de la app conserva la frase sobre genéricos de clase hasta `PG-L.07` |
+| `PG-L.05.*`, `PG-L.03.*`, `PG-L.07.*` | No cumplida | | No iniciadas por alcance de la sesión (símbolo de plantilla, genéricos entre módulos, app y extensión) |
 | `PG-L.06.01` | No cumplida | | PL-V-12 confirmada con experimento; PL-V-13 y PL-V-14 sin verificar |
 | `PG-L.06.02`, `.03`, `.05`, `.06` | Cumplida | `98b00836`; `MEM.MANAGED.UNOBSERVABLE#R3`, C2–C6; conformidad engine en verde | La VM ya liberaba por ámbito; no hubo cambio de código. Vínculo `aot` declarado `cumple` sin ejecutar la conformidad nativa (evidencia obsoleta) |
 | `PG-L.06.04` | No cumplida | | `pseudolearn_api/tests/scope_release.rs` cubre la VM; no se añadió el negativo con `roots::expire` desactivado |
@@ -915,7 +925,8 @@ Suites omitidas: `flutter test`, extensión, `PERF.*`, experimentos `PL-E01`–`
 | DL-03 | Definición por hoja en arreglos y campos | «Sí, recomendadas», 2026-11-05 | Aplicada: cada hoja conserva su estado de definición |
 | DL-06 | Exportación de constantes, enumerados y registros; tipo privado en firma pública | «Sí, recomendadas», 2026-11-05 | Aplicada: importación por símbolo y diagnóstico `privateTypeInPublicSignature` (`LANG.MODULE.IMPORT#R8`) |
 | DL-07 | Interfaces exportables | «Sí, recomendadas», 2026-11-05 | Aplicada |
-| DL-09, DL-10 | Clases genéricas y variantes de usuario | «Sí, recomendadas», 2026-11-05 | Aprobadas pero **no implementadas** en esta sesión |
+| DL-09, DL-10 | Clases genéricas y variantes de usuario | «Sí, recomendadas», 2026-11-05 | Aplicadas en PG-L.04: argumentos explícitos en `Nuevo` salvo tipo esperado de la misma plantilla, sin métodos con parámetros propios, invariancia; variante de usuario con palabras contextuales |
+| Disco lleno (PG-L.04) | Espacio de los artefactos de prueba | «ok, libera el espacio, pero deja anotado…», 2026-11-05 | Se ejecutó `cargo clean` del motor y se registró el análisis en §11.5 |
 | DL-11 | Retiro de `Generico` y de `unsupportedInterfaceConstruct` | «Sí, recomendadas», 2026-11-05 | `unsupportedInterfaceConstruct` retirado; `unsupportedGenericsConstruct` permanece hasta PG-L.04 |
 | DL-02 (límite) | Hojas de un registro como elemento de arreglo | Hallazgo de `PG-L.01.04` | Un arreglo de 65 535 hojas agotaba la memoria por los mapas de raíces cuadráticos de `array.new`; se fijó `RECORD_ARRAY_MAXIMUM_LEAVES` = 1 024 y el diagnóstico `recordArrayTooWide` (`LANG.TYPES.RECORD#R5`). Como variable o campo de clase se admiten las 65 535 hojas |
 | DL-02 (desviación) | Registro como elemento de arreglo | Opción (a) elegida el 2026-11-05 | **No aplicada**: la RI, el bytecode, la VM y el nativo exigirían elementos de varias hojas. Se aplicó el equivalente de (b) restringido: un arreglo de registros es un arreglo por hoja detrás de un único nombre, viable porque un arreglo solo vive en variables y parámetros. Identidad de arreglo y paso por parámetro se conservan; la vista de estado muestra una entrada por hoja. Reversión: medición de `PL-E03` o ambigüedad del estado |
@@ -930,8 +941,33 @@ Catálogo tras los cambios: 277 códigos (282 menos `recordPassedByReference`, `
 |---|---|---|---|
 | `recordPassedByReference`, `recordArrayElementNotSupported`, `recordClassFieldNotSupported`, `recordMemberSignatureNotSupported` | Retirar en PG-L | Catálogo, `catalogs.json`, motor | Retirados |
 | `unsupportedInterfaceConstruct` | Sin emisor y contradictorio | DL-11 | Retirado |
-| `unsupportedGenericsConstruct` | Retirar en PG-L | PG-L.04 | Pendiente (genéricos de clase no implementados) |
+| `unsupportedGenericsConstruct` | Retirar en PG-L | PG-L.04 | Retirado (clases, interfaces y variantes genéricas implementadas; `Generico` es un nombre ordinario, `LANG.CLASS.OUT-OF-SCOPE` C5) |
 | `unsupportedAbstractConstruct`, `unsupportedStaticConstruct`, `unsupportedProtectedConstruct`, `unsupportedExceptionConstruct` | Fuera de la edición (D-16, D-17) | Se conservan | Sin cambio |
 | `nativeTasksUnsupported` | Otra fase | PG-N.13 | Sin cambio |
 | `unsupportedStructuredConstruct`, `nestedClassNotSupported`, `multipleInheritanceNotSupported` | Regla legítima | | Sin cambio |
 | `snapshotNotSupported`, `elementTypeNotComparable`, `invalidDictionaryKeyType` | Dudoso | Informe a la persona | Sin cambio |
+
+### 11.5 Motivo de análisis: peso y duración de la suite de pruebas del motor (registrado el 2026-11-05)
+
+Pedido de la persona durante `PG-L.04` (mensaje del 2026-11-05): «deja anotado el hecho de revisar el porque se debe tener
+archivos regenerables o lo que escupe los test con tan grande magnitud de espacio […] la compilación completa de la suite
+debería durar menos de 5 min, no más de media hora». No es una tarea de PG-L; se registra como problema documentado para
+analizar y decidir.
+
+Hechos observados (Comprobado, 2026-11-05):
+
+- El disco del equipo quedó lleno dos veces durante `cargo test --workspace` (`ld: write() failed, errno=28`). La primera
+  vez se liberaron 5,9 GB borrando `packages/pseudolearn_engine/target/debug/incremental`; la segunda, con autorización
+  de la persona, `cargo clean` del motor eliminó 147 502 archivos y 34,4 GiB.
+- Antes de limpiar, `target/debug/deps` ocupaba ≈ 24 GB con 136 465 archivos, de ellos 132 503 objetos `*.rcgu.o`
+  sueltos (restos de enlaces fallidos o de compilaciones anteriores que Cargo no recoge).
+- `pseudolearn_api/tests` tiene 111 archivos de prueba de integración y cada uno es un binario propio que enlaza el motor
+  completo (Cranelift, VM, servicio, nativo): un binario típico pesa ≈ 35 MB, por lo que solo la API produce ≈ 4 GB por
+  compilación. Le siguen `service` (36), `semantic` (35), `runtime` (32), `project` (21) y `syntax` (20).
+
+Hipótesis por verificar: (1) agrupar las pruebas de integración de cada crate en un único binario con módulos espejo
+(`tests/<crate>/main.rs` + `mod`) reduciría el enlace y el disco en un orden de magnitud pero choca con la letra de `TEST-MIRROR`
+(«nada de un all_tests común»), por lo que requiere decisión explícita (`CONFLICT-REPORT`); (2) parte de las pruebas comprueba existencia o presentación en vez de
+comportamiento y puede retirarse o moverse a la conformidad del corpus; (3) la duración de la suite completa debe medirse
+con `cargo test --workspace` en limpio y con caché, y fijarse como presupuesto (< 5 min con caché, < 30 min en limpio).
+Decisión pendiente de la persona.

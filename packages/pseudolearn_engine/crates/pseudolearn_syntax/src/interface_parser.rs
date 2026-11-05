@@ -14,6 +14,7 @@ pub(crate) fn interface(state: &mut ParserState<'_>) -> Result<usize, ()> {
     let marker = state.nodes.len();
     state.advance();
     name(state, DiagnosticCode::ExpectedClassName)?;
+    crate::generic_parser::optional_parameters(state)?;
     loop {
         state.separators();
         if crate::contextual::matches(state, "endInterface") || unit_boundary(state.kind()) {
@@ -94,8 +95,10 @@ pub(crate) fn realization(state: &mut ParserState<'_>) -> Result<(), ()> {
     let marker = state.nodes.len();
     state.advance();
     name(state, DiagnosticCode::ExpectedClassName)?;
+    crate::generic_parser::optional_arguments(state)?;
     while state.eat(TokenKind::Comma) {
         name(state, DiagnosticCode::ExpectedClassName)?;
+        crate::generic_parser::optional_arguments(state)?;
     }
     state.finish(NodeKind::Realization, start, marker);
     Ok(())

@@ -171,6 +171,7 @@ fn register(
     let mut classes = ClassTable::new();
     for unit in 0..count {
         session.switch_unit(unit);
+        crate::generic_registry::collect(session);
         crate::unit_resolver::register_classes(session);
         for (name, id) in &session.classes {
             classes.insert((unit, name.clone()), *id);

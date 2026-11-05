@@ -108,6 +108,10 @@ fn leaves_of(
 }
 
 fn compute(session: &mut AnalysisSession<'_>, record: RecordId) {
+    if session.module.user_variants.contains_key(&record) {
+        crate::user_variant_layout::compute(session, record);
+        return;
+    }
     if session.module.function_types.contains_key(&record)
         || session.module.variants.contains_key(&record)
         || session.module.channels.contains_key(&record)

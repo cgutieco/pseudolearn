@@ -38,7 +38,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Nuevo seguido de nombre de clase y paréntesis es expresión primaria. No se crea objeto al declarar una variable. Constructor recibe argumentos según su firma. No hay nulo escribible. Acceder a una referencia no instanciada falla en ejecución. Se admite acceso encadenado sobre el resultado de Nuevo.",
+  "texto": "Nuevo seguido de nombre de clase, argumentos de tipo opcionales entre ángulos para una plantilla de clase (LANG.TYPES.GENERIC#R2) y paréntesis es expresión primaria. No se crea objeto al declarar una variable. Constructor recibe argumentos según su firma. No hay nulo escribible. Acceder a una referencia no instanciada falla en ejecución. Se admite acceso encadenado sobre el resultado de Nuevo.",
   "verificacion": [
     "C1",
     "C2",

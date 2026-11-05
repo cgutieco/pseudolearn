@@ -1,6 +1,7 @@
 #![forbid(unsafe_code)]
 
 mod assignability;
+mod class_operand;
 pub mod collection_types;
 pub mod columns;
 pub mod dominance;

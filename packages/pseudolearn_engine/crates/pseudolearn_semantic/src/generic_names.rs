@@ -8,6 +8,13 @@ pub(crate) fn resolve(session: &mut AnalysisSession<'_>, node: usize, name: &str
     let Some(arguments) = arguments else {
         return plain(session, node, name);
     };
+    if let Some(class) = crate::generic_classes::resolve(session, (name, Some(arguments)), node) {
+        return Some(class.map_or(Type::Error, Type::Object));
+    }
+    if let Some(variant) = crate::generic_variants::resolve(session, (name, Some(arguments)), node)
+    {
+        return Some(variant.map_or(Type::Error, Type::Record));
+    }
     let nodes = session.children(arguments);
     let Some(template) = session.generics.records.get(name).cloned() else {
         count_mismatch(session, node, (name, 0, nodes.len()));
@@ -35,7 +42,12 @@ fn plain(session: &mut AnalysisSession<'_>, node: usize, name: &str) -> Option<T
     if let Some(kind) = session.generic.lookup(name) {
         return Some(session.module.types.get(kind));
     }
-    let template = session.generics.records.get(name)?;
+    let scope = &session.generics;
+    let template = scope
+        .records
+        .get(name)
+        .or_else(|| scope.classes.get(name))
+        .or_else(|| scope.variants.get(name))?;
     let expected = template.parameters.len();
     count_mismatch(session, node, (name, expected, 0));
     Some(Type::Error)

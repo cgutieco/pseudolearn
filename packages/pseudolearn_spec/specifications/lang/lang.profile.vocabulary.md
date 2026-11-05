@@ -1306,6 +1306,24 @@
         "en": "implements"
       }
     },
+    "variantKeyword": {
+      "lexemas": {
+        "es": "Variante",
+        "en": "variant"
+      }
+    },
+    "endVariant": {
+      "lexemas": {
+        "es": "FinVariante",
+        "en": "endVariant"
+      }
+    },
+    "alternativeKeyword": {
+      "lexemas": {
+        "es": "Alternativa",
+        "en": "case"
+      }
+    },
     "eachKeyword": {
       "lexemas": {
         "es": "Cada",

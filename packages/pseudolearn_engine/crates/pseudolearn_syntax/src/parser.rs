@@ -60,6 +60,9 @@ impl<'tokens> Parser<'tokens> {
         if crate::interface_parser::starts(&mut self.state) {
             return Some(crate::interface_parser::interface(&mut self.state));
         }
+        if crate::user_variant_parser::starts(&mut self.state) {
+            return Some(crate::user_variant_parser::variant(&mut self.state));
+        }
         if crate::module_parser::is_standalone_directive(&mut self.state, self.profile) {
             let span = self.state.span();
             self.state
@@ -126,6 +129,10 @@ impl<'tokens> Parser<'tokens> {
         let opening = self.state.kind();
         if crate::interface_parser::starts(&mut self.state) {
             let unit = crate::interface_parser::interface(&mut self.state)?;
+            return Ok(self.attach_visibility(unit, prefix));
+        }
+        if crate::user_variant_parser::starts(&mut self.state) {
+            let unit = crate::user_variant_parser::variant(&mut self.state)?;
             return Ok(self.attach_visibility(unit, prefix));
         }
         let unit = match opening {

@@ -5,7 +5,7 @@ use crate::session::AnalysisSession;
 use crate::types::Type;
 use pseudolearn_syntax::NodeKind;
 
-struct SavedState {
+pub(crate) struct SavedState {
     bindings: crate::block_scopes::BlockScopes,
     current: FunctionId,
     returned: bool,
@@ -19,7 +19,7 @@ struct SavedState {
 }
 
 impl SavedState {
-    fn take(session: &mut AnalysisSession<'_>) -> Self {
+    pub(crate) fn take(session: &mut AnalysisSession<'_>) -> Self {
         Self {
             bindings: std::mem::take(&mut session.bindings),
             current: session.current,
@@ -34,7 +34,7 @@ impl SavedState {
         }
     }
 
-    fn restore(self, session: &mut AnalysisSession<'_>) {
+    pub(crate) fn restore(self, session: &mut AnalysisSession<'_>) {
         session.bindings = self.bindings;
         session.current = self.current;
         session.returned = self.returned;

@@ -2749,6 +2749,49 @@
 }
 ```
 
+```cobertura
+{
+  "id": "V241",
+  "regla": "LANG.TYPES.GENERIC#R2",
+  "sin_ri": "Cada instancia de una plantilla de clase o de interfaz se resuelve antes de la RI como una clase o una interfaz concreta; la RI recibe sus objetos, campos y despacho ordinarios."
+}
+```
+
+```cobertura
+{
+  "id": "V242",
+  "regla": "LANG.TYPES.VARIANT#R1",
+  "instrucciones": [
+    "value.reinterpret",
+    "cell.load_raw",
+    "branch",
+    "return"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V243",
+  "regla": "LANG.TYPES.VARIANT#R2",
+  "instrucciones": [
+    "int.cmp",
+    "branch",
+    "decide.case",
+    "decide.default",
+    "decide.none"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V244",
+  "regla": "LANG.TYPES.VARIANT#R3",
+  "sin_ri": "Los argumentos de tipo de una variante genérica se resuelven antes de la RI, que recibe una variante concreta por instancia."
+}
+```
+
 ```instruccion
 {
   "id": "O79",

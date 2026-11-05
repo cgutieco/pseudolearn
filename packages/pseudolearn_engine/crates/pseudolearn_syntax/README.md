@@ -44,7 +44,8 @@ la cota del análisis, sin una segunda constante escrita a mano.
 Las dos consultas de `contextualVocabulary` usan tablas ordenadas generadas y búsqueda binaria para
 mantener pequeño el cuerpo de consulta cuando crece el vocabulario.
 El recurso `unsupportedConstructs` genera las formas pedagógicas no reservadas; se reconocen solo
-en cabeceras estructurales, nunca al asignar o llamar un identificador homónimo.
+en cabeceras estructurales, nunca al asignar o llamar un identificador homónimo. Desde que existen las clases
+genéricas el recurso ya no incluye la forma `Generico`: tras `Clase` es un nombre ordinario.
 El árbol postorden mantiene `SyntaxNode { kind, first_token, subtree_size }`; las columnas laterales
 conservan el último token, el token de operador y los intervalos de hijos directos. El recorrido de
 hijos conserva el orden de fuente sin reservar memoria por recorrido. El nodo es un dato sin métodos.
@@ -85,7 +86,7 @@ enlazar (`pseudolearn_semantic`), no al analizar la sintaxis.
 unidades superiores (la constante también es sentencia). Cada una tiene su analizador (`constant_parser`,
 `enum_parser`, `record_parser`) para no crecer `unit_parser`, y la recuperación reconoce sus cierres. Un enumerado lleva
 una sola línea de miembros; un registro solo admite declaraciones `Definir`, y cualquier otra forma, incluida
-`Dimension`, es `expectedRecordField`. Los prefijos `Publico` y `Privado` preceden a subprogramas, clases, interfaces, enumerados, registros y constantes de nivel superior. Una
+`Dimension`, es `expectedRecordField`. Los prefijos `Publico` y `Privado` preceden a subprogramas, clases, interfaces, variantes, enumerados, registros y constantes de nivel superior. Una
 etiqueta de `Segun` que empieza por identificador (`Color.Rojo:`) cierra el cuerpo anterior igual que un literal. Las
 construcciones de registro y el acceso a miembros de enumerado no tienen sintaxis propia: son llamada y punto, que
 resuelve semantic. Las palabras nuevas son reservadas y se registran como aperturas de perfil.
@@ -97,7 +98,11 @@ Los vínculos locales usan un analizador distinto de los campos: `Definir [Mutab
 
 Los tipos incorporados aceptan argumentos concretos entre ángulos con la misma cota de anidación del parser. `variant_parser` reconoce construcciones, patrones de carga útil, propagación y descarte; los genéricos de usuario no reservan palabras nuevas. La construcción y el patrón tienen nodos distintos: el patrón solo declara un nombre y no evalúa una llamada. Una rama de variante contiene un patrón; De Otro Modo es el comodín.
 
-Los parámetros de tipo (`<T, U>`) solo se aceptan tras el nombre de un registro o de un subprograma, y los argumentos de tipo (`<Entero, T>`) tras un nombre de tipo. `generic_parser` produce los nodos `TypeParameters` y `TypeArguments`; un tipo con argumentos conserva el nodo `Type` de su nombre como padre. No hay ambigüedad con la comparación porque los tipos solo se leen en posición de tipo: tras `Como`, en parámetros, retornos y argumentos de otro tipo. Las listas vacías, sin cierre o con coma final recuperan sin pánico. Las clases siguen rechazando `<` tras su nombre.
+Los parámetros de tipo (`<T, U>`) se aceptan tras el nombre de un registro, un subprograma, una clase, una interfaz o una variante, y los argumentos de tipo (`<Entero, T>`) tras un nombre de tipo, tras la superclase de `Hereda De`, tras cada interfaz de `Realiza`, tras la interfaz de una restricción `T: I<U>` y tras el nombre de clase de `Nuevo`. `generic_parser` produce los nodos `TypeParameters` y `TypeArguments`; un tipo con argumentos conserva el nodo `Type` de su nombre como padre, y en la cabecera de clase, en `Realization`, en `TypeParameter` y en `Instantiation` el nodo `TypeArguments` es hermano inmediato del nombre al que acompaña, de modo que los consumidores que filtran identificadores no cambian. No hay ambigüedad con la comparación porque los argumentos solo se leen en posición de tipo o inmediatamente tras el nombre que sigue a `Nuevo`. Las listas vacías, sin cierre o con coma final recuperan sin pánico. Un método no declara parámetros de tipo propios: `Metodo f<T>(…)` es un error sintáctico de parámetros, porque los métodos usan los parámetros de su clase.
+
+### Variantes declaradas
+
+`user_variant_parser` reconoce `Variante Nombre [<T>] … FinVariante` con líneas `Alternativa Nombre [(campo Como Tipo, …)]`. Las tres palabras son contextuales (`variantKeyword`, `endVariant`, `alternativeKeyword` del vocabulario generado): la apertura solo se reconoce en posición de unidad y seguida de un identificador, como `Interfaz`, por lo que `Variante` y `Alternativa` siguen siendo nombres en el resto del programa. Los nodos `VariantUnit`, `VariantAlternative` y `AlternativeField` proceden de la gramática. Una línea que no empieza por la palabra de alternativa produce `expectedVariantAlternative` y se recupera en la línea siguiente; la falta de cierre produce `unclosedVariant` con la apertura relacionada y se detiene ante la siguiente unidad. La construcción `Tipo.Alternativa(…)` y el patrón `Tipo.Alternativa(v)` no tienen sintaxis propia: son el postfijo de punto con argumentos que ya produce el parser de expresiones, y semantic los interpreta según el tipo nombrado. Se descartó un nodo de patrón dedicado porque obligaría a distinguir en el parser un patrón de una llamada a método con la misma forma.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

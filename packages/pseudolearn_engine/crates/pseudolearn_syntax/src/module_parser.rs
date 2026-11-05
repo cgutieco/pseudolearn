@@ -98,7 +98,8 @@ pub(crate) fn visibility_prefix(state: &mut ParserState<'_>) -> Result<Option<u3
                 | KeywordKind::RecordKeyword
                 | KeywordKind::ConstantKeyword
         )
-    ) || crate::interface_parser::starts(state);
+    ) || crate::interface_parser::starts(state)
+        || crate::user_variant_parser::starts(state);
     if allowed {
         return Ok(Some(token));
     }

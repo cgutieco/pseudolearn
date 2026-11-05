@@ -45,6 +45,7 @@ fn private_types(declarations: &UnitDeclarations) -> BTreeSet<String> {
                     declaration.kind,
                     SymbolKind::Class
                         | SymbolKind::Record
+                        | SymbolKind::Variant
                         | SymbolKind::Enum
                         | SymbolKind::Interface
                 )

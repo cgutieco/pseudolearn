@@ -11,6 +11,7 @@ pub(crate) enum SymbolKind {
     Enum,
     Constant,
     Interface,
+    Variant,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -48,6 +49,9 @@ pub(crate) fn collect(session: &AnalysisSession<'_>) -> UnitDeclarations {
             NodeKind::ClassUnit => declare(session, index, SymbolKind::Class, &mut declarations),
             NodeKind::RecordUnit => declare(session, index, SymbolKind::Record, &mut declarations),
             NodeKind::EnumUnit => declare(session, index, SymbolKind::Enum, &mut declarations),
+            NodeKind::VariantUnit => {
+                declare(session, index, SymbolKind::Variant, &mut declarations);
+            }
             NodeKind::InterfaceUnit => {
                 declare(session, index, SymbolKind::Interface, &mut declarations);
             }

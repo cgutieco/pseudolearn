@@ -82,7 +82,7 @@ Las instrucciones collection.* mantienen la identidad de tipo de la colección y
 
 Los tests de estas capacidades se ejecutaron en selecciones acotadas, incluida la comparación de gemelos con recolección forzada. La conformidad del corpus sigue pendiente de la revisión editorial independiente de los contratos nuevos, y la medición de tamaño excede el presupuesto de Wasm.
 
-La RI textual delimita con comillas las identidades internas de tipos de colección y sus hojas cuando no pertenecen al alfabeto de nombres simples. Parser, tipos y printer comparten esa representación reversible; el contenido de una cadena literal de programa permanece distinto de un nombre dentro de la declaración o del tipo.
+La RI textual delimita con comillas las identidades internas de tipos de colección y sus hojas cuando no pertenecen al alfabeto de nombres simples. Parser, tipos y printer comparten esa representación reversible; el contenido de una cadena literal de programa permanece distinto de un nombre dentro de la declaración o del tipo. El operando de clase de `object.new` sigue la misma regla: el nombre de una instancia de clase genérica (`Caja<integer>`) se imprime entre comillas porque `<`, `>` y `,` no pertenecen al alfabeto de palabras, y al leerlo el parser restituye el identificador (`class_operand`); como `object.new` no admite cadenas literales, la lectura no es ambigua. Los nombres simples, incluidos los sintéticos con `$`, se imprimen sin comillas como antes.
 
 
 effect_call conserva receptor, identidad normativa de operación y argumentos evaluados de izquierda

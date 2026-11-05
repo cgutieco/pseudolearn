@@ -140,6 +140,7 @@
     "PERF.ARTIFACT.SIZE",
     "LANG.TYPES.FUNCTION",
     "LANG.TYPES.GENERIC",
+    "LANG.TYPES.VARIANT",
     "LANG.TYPES.INTERFACE",
     "LANG.TYPES.VECTOR",
     "LANG.TYPES.DICTIONARY",
@@ -1791,6 +1792,26 @@
     },
     {
       "regla": "LANG.TYPES.GENERIC@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TYPES.GENERIC@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TYPES.VARIANT@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TYPES.VARIANT@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TYPES.VARIANT@1.0.0#R3",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },

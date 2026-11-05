@@ -37,7 +37,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Interfaz nombre y FinInterfaz declaran en el módulo un conjunto nominal de firmas Metodo sin cuerpo. Las formas son contextuales por perfil: un identificador homónimo usado al declarar, asignar o llamar permanece ordinario. Una interfaz vacía es válida; firmas y nombres duplicados se rechazan. Una interfaz no es un tipo de valor, no tiene campos ni implementación heredada y no puede declararse dentro del cuerpo de una unidad.",
+  "texto": "Interfaz nombre y FinInterfaz declaran en el módulo un conjunto nominal de firmas Metodo sin cuerpo. Las formas son contextuales por perfil: un identificador homónimo usado al declarar, asignar o llamar permanece ordinario. Interfaz nombre<T> declara una plantilla cuyas firmas pueden usar sus parámetros de tipo, y cada nombre<argumentos> es una interfaz nominal distinta (LANG.TYPES.GENERIC#R2). Una interfaz vacía es válida; firmas y nombres duplicados se rechazan. Una interfaz no es un tipo de valor, no tiene campos ni implementación heredada y no puede declararse dentro del cuerpo de una unidad.",
   "verificacion": [
     "C1",
     "C2",
@@ -151,7 +151,7 @@
   "id": "R2",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Clase C Realiza I, J declara realizaciones explícitas. Los métodos públicos propios o heredados deben coincidir exactamente en nombre, tipos, modos de paso y retorno. Una subclase hereda la realización nominal y sus sobrescrituras deben conservarla. Firmas coincidentes sin realización explícita en la cadena no satisfacen la interfaz. No existe herencia múltiple de implementación.",
+  "texto": "Clase C Realiza I, J declara realizaciones explícitas; una interfaz genérica se realiza con argumentos, Realiza I<argumentos>. Los métodos públicos propios o heredados deben coincidir exactamente en nombre, tipos, modos de paso y retorno. Una subclase hereda la realización nominal y sus sobrescrituras deben conservarla. Firmas coincidentes sin realización explícita en la cadena no satisfacen la interfaz. No existe herencia múltiple de implementación.",
   "verificacion": [
     "C5",
     "C6",
@@ -261,7 +261,7 @@
   "id": "R3",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Un parámetro genérico T: I exige una realización nominal de I. La definición solo puede utilizar las firmas de I; el argumento concreto se comprueba antes de instanciar. La restricción se transmite entre parámetros opacos por identidad nominal. Tras monomorfizar se reutiliza el despacho ordinario: llamada directa cuando la jerarquía lo permite y virtual existente para conservar el método de la clase real. No hay valores ni tablas dinámicas de interfaz.",
+  "texto": "Un parámetro genérico T: I exige una realización nominal de I; T: I<argumentos> exige la realización de esa instancia concreta, cuyos argumentos pueden nombrar parámetros de la misma plantilla. La definición solo puede utilizar las firmas de I; el argumento concreto se comprueba antes de instanciar. La restricción se transmite entre parámetros opacos por identidad nominal. Tras monomorfizar se reutiliza el despacho ordinario: llamada directa cuando la jerarquía lo permite y virtual existente para conservar el método de la clase real. No hay valores ni tablas dinámicas de interfaz.",
   "verificacion": [
     "C9",
     "C10",

@@ -122,24 +122,34 @@ fn bind_record(
         }
         return Ok(());
     }
-    let Type::Record(record) = session.module.types.get(actual) else {
+    let Some(kinds) = instance_arguments(session, name, actual) else {
         return Ok(());
     };
-    let Some((_, node, kinds)) = session.generic.origins.get(&record) else {
-        return Ok(());
-    };
-    let expected = session
-        .generics
-        .records
-        .get(name)
-        .map(|template| template.node);
-    if expected != Some(*node) {
-        return Ok(());
-    }
     for (child, kind) in session.children(arguments).into_iter().zip(kinds) {
-        bind(session, child, *kind, binder)?;
+        bind(session, child, kind, binder)?;
     }
     Ok(())
+}
+
+fn instance_arguments(
+    session: &AnalysisSession<'_>,
+    name: &str,
+    actual: TypeId,
+) -> Option<Vec<TypeId>> {
+    let scope = &session.generics;
+    let (origin, expected) = match session.module.types.get(actual) {
+        Type::Record(record) => (
+            session.generic.origins.get(&record),
+            scope.records.get(name).or_else(|| scope.variants.get(name)),
+        ),
+        Type::Object(class) => (
+            session.generic.class_origins.get(&class),
+            scope.classes.get(name),
+        ),
+        _ => return None,
+    };
+    let (_, node, kinds) = origin?;
+    (expected?.node == *node).then(|| kinds.clone())
 }
 
 fn bind_function(

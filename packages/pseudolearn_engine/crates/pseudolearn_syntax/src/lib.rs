@@ -31,6 +31,7 @@ pub mod tokens;
 pub mod tree;
 pub(crate) mod unit_parser;
 pub(crate) mod unsupported;
+mod user_variant_parser;
 
 pub use lexer::Lexer;
 pub use literal_scanner::{ScannedLiteral, scan_literal};

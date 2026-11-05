@@ -8,8 +8,9 @@ use pseudolearn_syntax::NodeKind;
 pub(crate) fn register(session: &mut AnalysisSession<'_>) {
     crate::generic_registry::collect(session);
     register_classes(session);
-    crate::interface_registry::register(session);
+    crate::interface_registry::declare_all(session);
     crate::type_declarations::register(session);
+    crate::interface_registry::realizations(session);
     crate::interface_registry::signatures(session);
     crate::generic_discard::check_records(session);
     register_functions(session);
@@ -25,6 +26,7 @@ pub(crate) fn register_classes(session: &mut AnalysisSession<'_>) {
         .enumerate()
         .filter(|(_, node)| node.kind == NodeKind::ClassUnit)
         .map(|(index, _)| index)
+        .filter(|node| !crate::generic_registry::is_generic(session, *node))
         .collect();
     for node in classes {
         register_class(session, node);
@@ -48,6 +50,10 @@ pub(crate) fn register_functions(session: &mut AnalysisSession<'_>) {
 
 pub(crate) fn register_members(session: &mut AnalysisSession<'_>) {
     for class in 0..session.module.classes.len() {
+        let identifier = ClassId(u32::try_from(class).unwrap_or(u32::MAX));
+        if session.generic.class_origins.contains_key(&identifier) {
+            continue;
+        }
         session.enter_class(class);
         crate::class_registry::members(session, ClassId(u32::try_from(class).unwrap_or(u32::MAX)));
     }
@@ -59,7 +65,7 @@ fn register_class(session: &mut AnalysisSession<'_>, node: usize) {
     };
     let name = session.name(name_node);
     let identifier = ClassId(u32::try_from(session.module.classes.len()).unwrap_or(u32::MAX));
-    if session.classes.contains_key(&name) {
+    if session.classes.contains_key(&name) || session.generics.classes.contains_key(&name) {
         session.named_report(DiagnosticCode::DuplicateClass, name_node, &name);
         return;
     }

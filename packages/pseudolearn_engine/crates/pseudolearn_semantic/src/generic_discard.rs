@@ -2,6 +2,7 @@ use crate::session::AnalysisSession;
 use pseudolearn_diagnostics::Diagnostic;
 
 pub(crate) struct Snapshot {
+    classes: usize,
     functions: usize,
     locals: usize,
     expressions: usize,
@@ -11,6 +12,7 @@ pub(crate) struct Snapshot {
 impl Snapshot {
     pub(crate) fn capture(session: &AnalysisSession<'_>) -> Self {
         Self {
+            classes: session.module.classes.len(),
             functions: session.module.functions.len(),
             locals: session.module.locals.len(),
             expressions: session.module.expressions.kinds.len(),
@@ -20,6 +22,7 @@ impl Snapshot {
 
     pub(crate) fn discard(&self, session: &mut AnalysisSession<'_>) {
         self.truncate_columns(session);
+        crate::generic_classes::truncate(session, self.classes);
         let (functions, locals) = (self.functions, self.locals);
         session.module.units.functions.truncate(functions);
         session
@@ -84,12 +87,28 @@ pub(crate) fn dedupe(diagnostics: &mut Vec<Diagnostic>, from: usize) {
 }
 
 pub(crate) fn check_functions(session: &mut AnalysisSession<'_>) {
+    for unit in 0..session.units.len() {
+        session.switch_unit(unit);
+        check_unit_templates(session);
+    }
+}
+
+fn check_unit_templates(session: &mut AnalysisSession<'_>) {
     let templates: Vec<_> = session.generics.functions.values().cloned().collect();
     for template in templates {
         let snapshot = Snapshot::capture(session);
         session.generic.begin_definition();
         let arguments = crate::generic_opaque::arguments(session, &template);
         crate::generic_functions::instantiate(session, &template, (arguments, template.node));
+        session.generic.defining = false;
+        snapshot.discard(session);
+    }
+    let classes: Vec<_> = session.generics.classes.values().cloned().collect();
+    for template in classes {
+        let snapshot = Snapshot::capture(session);
+        session.generic.begin_definition();
+        let arguments = crate::generic_opaque::arguments(session, &template);
+        crate::generic_classes::instantiate(session, &template, arguments, template.node);
         session.generic.defining = false;
         snapshot.discard(session);
     }
@@ -101,6 +120,13 @@ pub(crate) fn check_records(session: &mut AnalysisSession<'_>) {
         session.generic.begin_definition();
         let arguments = crate::generic_opaque::arguments(session, &template);
         crate::generic_records::instantiate(session, &template, arguments, template.node);
+        session.generic.defining = false;
+    }
+    let variants: Vec<_> = session.generics.variants.values().cloned().collect();
+    for template in variants {
+        session.generic.begin_definition();
+        let arguments = crate::generic_opaque::arguments(session, &template);
+        crate::generic_variants::instantiate(session, &template, arguments, template.node);
         session.generic.defining = false;
     }
 }

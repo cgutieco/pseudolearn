@@ -42,6 +42,26 @@ fn break_cycle(session: &mut AnalysisSession<'_>, class: ClassId) {
     }
 }
 
+pub(crate) fn check_class(session: &mut AnalysisSession<'_>, class: ClassId) {
+    let mut current = class_model(session, class).and_then(|model| model.superclass);
+    for _ in 0..session.module.classes.len() {
+        let Some(parent) = current else {
+            break;
+        };
+        if parent == class {
+            if let Some(model) = usize::try_from(class.0)
+                .ok()
+                .and_then(|index| session.module.classes.get_mut(index))
+            {
+                model.superclass = None;
+            }
+            break;
+        }
+        current = class_model(session, parent).and_then(|model| model.superclass);
+    }
+    check_members(session, class);
+}
+
 fn check_members(session: &mut AnalysisSession<'_>, class: ClassId) {
     let Some(model) = class_model(session, class).cloned() else {
         return;

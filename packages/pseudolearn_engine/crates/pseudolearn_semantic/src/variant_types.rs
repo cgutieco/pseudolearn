@@ -57,20 +57,12 @@ fn insert(
 ) -> TypeId {
     let (family, payloads) = identity;
     let (layout, offsets) = storage;
-    let integer = session.module.types.intern(Type::Integer);
-    let reference = session.module.types.intern(Type::String);
-    let mut leaf_types = vec![integer; usize::try_from(layout.scalar_words()).unwrap_or(0)];
-    leaf_types.extend(vec![
-        reference;
-        usize::try_from(layout.reference_words()).unwrap_or(0)
-    ]);
+    let (leaf_types, leaf_names) = slots(session, &layout);
     let record = RecordId(u32::try_from(session.module.records.len()).unwrap_or(u32::MAX));
     session.module.records.push(HirRecord {
         name: format!("{family:?}{payloads:?}"),
         fields: Vec::new(),
-        leaf_names: (0..leaf_types.len())
-            .map(|index| format!("slot{index}"))
-            .collect(),
+        leaf_names,
         leaf_types,
         span: session.span(node),
         syntax: node,
@@ -87,7 +79,24 @@ fn insert(
     session.module.types.intern(Type::Record(record))
 }
 
-fn layout(
+pub(crate) fn slots(
+    session: &mut AnalysisSession<'_>,
+    layout: &VariantLayout,
+) -> (Vec<TypeId>, Vec<String>) {
+    let integer = session.module.types.intern(Type::Integer);
+    let reference = session.module.types.intern(Type::String);
+    let mut leaf_types = vec![integer; usize::try_from(layout.scalar_words()).unwrap_or(0)];
+    leaf_types.extend(vec![
+        reference;
+        usize::try_from(layout.reference_words()).unwrap_or(0)
+    ]);
+    let leaf_names = (0..leaf_types.len())
+        .map(|index| format!("slot{index}"))
+        .collect();
+    (leaf_types, leaf_names)
+}
+
+pub(crate) fn layout(
     session: &AnalysisSession<'_>,
     family: VariantFamily,
     payloads: &[Option<TypeId>],
@@ -117,7 +126,7 @@ fn layout(
     }
 }
 
-fn offsets(layout: &VariantLayout, payloads: &[Option<TypeId>]) -> Vec<Vec<u32>> {
+pub(crate) fn offsets(layout: &VariantLayout, payloads: &[Option<TypeId>]) -> Vec<Vec<u32>> {
     payloads
         .iter()
         .enumerate()

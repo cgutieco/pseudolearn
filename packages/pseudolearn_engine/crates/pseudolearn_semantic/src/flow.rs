@@ -7,6 +7,7 @@ use pseudolearn_syntax::NodeKind;
 pub(crate) fn bodies(session: &mut AnalysisSession<'_>) {
     let registry_diagnostics = session.diagnostics.len();
     let bindings = crate::flow_bindings::FlowBindings::capture(session);
+    session.generic.checking_bodies = true;
     for _ in 0..=session.module.functions.len() {
         session.diagnostics.truncate(registry_diagnostics);
         bindings.restore(session);
@@ -24,6 +25,7 @@ pub(crate) fn bodies(session: &mut AnalysisSession<'_>) {
             break;
         }
     }
+    session.generic.checking_bodies = false;
 }
 
 pub(crate) fn function(session: &mut AnalysisSession<'_>, index: usize) {
@@ -32,6 +34,10 @@ pub(crate) fn function(session: &mut AnalysisSession<'_>, index: usize) {
         return;
     };
     session.current = FunctionId(u32::try_from(index).unwrap_or(u32::MAX));
+    let environment = function
+        .owner
+        .and_then(|class| crate::generic_classes::environment(session, class))
+        .map(|environment| std::mem::replace(&mut session.generic.environment, environment));
     prepare_function(session, &function);
     let body = session
         .child(function.syntax, NodeKind::Body)
@@ -45,6 +51,9 @@ pub(crate) fn function(session: &mut AnalysisSession<'_>, index: usize) {
         );
     }
     crate::result_obligations::finish(session);
+    if let Some(environment) = environment {
+        session.generic.environment = environment;
+    }
     if let Some(function) = session.module.functions.get_mut(index) {
         function.body = body;
     }

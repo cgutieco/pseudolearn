@@ -109,6 +109,15 @@ fn record_display(
     let keyword = match variant.family {
         pseudolearn_semantic::variant_model::VariantFamily::Optional => KeywordKind::OptionalType,
         pseudolearn_semantic::variant_model::VariantFamily::Result => KeywordKind::ResultType,
+        pseudolearn_semantic::variant_model::VariantFamily::User => {
+            return declared_name(
+                analysis
+                    .module
+                    .records
+                    .get(slot(record.0))
+                    .map(|model| &model.name),
+            );
+        }
     };
     let arguments: Vec<_> = variant
         .payloads

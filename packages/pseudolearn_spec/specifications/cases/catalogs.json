@@ -1670,6 +1670,12 @@
     }
   },
   "contextualVocabulary": {
+    "alternativeKeyword": {
+      "lexemas": {
+        "en": "case",
+        "es": "Alternativa"
+      }
+    },
     "argumentsCapabilityType": {
       "lexemas": {
         "en": "Arguments",
@@ -1788,6 +1794,12 @@
       "lexemas": {
         "en": "endInterface",
         "es": "FinInterfaz"
+      }
+    },
+    "endVariant": {
+      "lexemas": {
+        "en": "endVariant",
+        "es": "FinVariante"
       }
     },
     "environmentCapabilityType": {
@@ -2054,6 +2066,12 @@
         "es": "Temporizador"
       }
     },
+    "variantKeyword": {
+      "lexemas": {
+        "en": "variant",
+        "es": "Variante"
+      }
+    },
     "vectorAppend": {
       "lexemas": {
         "en": "append",
@@ -2128,8 +2146,8 @@
       "argumentos": [],
       "clase": "semantic",
       "mensajes": {
-        "en": "Variant requires an explicit optional or result type in its context",
-        "es": "La variante necesita un tipo Opcional o Resultado explícito en su contexto"
+        "en": "Variant requires an explicit variant type in its context",
+        "es": "La variante necesita un tipo de variante explícito en su contexto"
       },
       "politica": "A",
       "severidad": "error",
@@ -3341,6 +3359,17 @@
       "mensajes": {
         "en": "Expected type connector",
         "es": "Se esperaba la palabra de tipo"
+      },
+      "politica": "A",
+      "severidad": "error",
+      "tipos_argumentos": {}
+    },
+    "expectedVariantAlternative": {
+      "argumentos": [],
+      "clase": "syntax",
+      "mensajes": {
+        "en": "Expected a variant case",
+        "es": "Se esperaba una alternativa de la variante"
       },
       "politica": "A",
       "severidad": "error",
@@ -5100,6 +5129,17 @@
       "severidad": "error",
       "tipos_argumentos": {}
     },
+    "unclosedVariant": {
+      "argumentos": [],
+      "clase": "syntax",
+      "mensajes": {
+        "en": "Unclosed variant",
+        "es": "Variante sin cerrar"
+      },
+      "politica": "A",
+      "severidad": "error",
+      "tipos_argumentos": {}
+    },
     "unclosedWhileStatement": {
       "argumentos": [],
       "clase": "syntax",
@@ -5406,17 +5446,6 @@
       "severidad": "error",
       "tipos_argumentos": {}
     },
-    "unsupportedGenericsConstruct": {
-      "argumentos": [],
-      "clase": "syntax",
-      "mensajes": {
-        "en": "Generic types are not supported in PseudoLearn",
-        "es": "Los tipos genéricos no forman parte de PseudoLearn"
-      },
-      "politica": "A",
-      "severidad": "error",
-      "tipos_argumentos": {}
-    },
     "unsupportedProtectedConstruct": {
       "argumentos": [],
       "clase": "syntax",
@@ -5576,6 +5605,21 @@
       "politica": "A",
       "severidad": "error",
       "tipos_argumentos": {}
+    },
+    "variantWithoutAlternatives": {
+      "argumentos": [
+        "lexeme"
+      ],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Variant {lexeme} must have at least one alternative",
+        "es": "La variante {lexeme} debe tener al menos una alternativa"
+      },
+      "politica": "A",
+      "severidad": "error",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
     },
     "widenedVariableType": {
       "argumentos": [
@@ -6207,13 +6251,14 @@
     "producciones": {
       "addition": "multiplication, { ( @plus | @minus ), multiplication }",
       "algorithmUnit": "@algorithm, identifier, line, body, @endAlgorithm, line",
+      "alternativeField": "identifier, @typeConnector, type",
       "arguments": "@leftParenthesis, [ expressions ], @rightParenthesis",
       "assignmentStatement": "designator, @assignment, expression",
       "awaitExpression": "@awaitKeyword, unary",
       "body": "{ trivia | statement | conditional | switch | whileLoop | repeatLoop | forLoop | forEachLoop | deferStatement | taskScope }",
       "breakStatement": "identifier",
       "callStatement": "identifier, arguments | postfix, @dot, identifier, arguments | @superClass, @dot, ( identifier | @constructor ), arguments | awaitExpression",
-      "classUnit": "@classKeyword, identifier, [ @inheritsFrom, identifier ], [ realization ], line, { fieldDeclaration | methodMember | constructorMember }, @endClass, line",
+      "classUnit": "@classKeyword, identifier, [ typeParameters ], [ @inheritsFrom, identifier, [ typeArguments ] ], [ realization ], line, { fieldDeclaration | methodMember | constructorMember }, @endClass, line",
       "conditional": "@ifKeyword, expression, @then, line, body, [ @elseKeyword, line, body ], @endIf, line",
       "conjunction": "equality, { @and, equality }",
       "constantDeclaration": "@constantKeyword, identifier, @typeConnector, type, @assignment, expression",
@@ -6240,9 +6285,9 @@
       "functionType": "@subroutine, @leftParenthesis, [ functionParameterType, { @comma, functionParameterType } ], @rightParenthesis, [ @typeConnector, type ]",
       "importDeclaration": "@importKeyword, modulePath, [ @typeConnector, identifier ], terminator",
       "input": "@read, designator, { @comma, designator }",
-      "instantiation": "@newInstance, identifier, arguments",
+      "instantiation": "@newInstance, identifier, [ typeArguments ], arguments",
       "interfaceSignature": "@method, identifier, parameters, [ @typeConnector, type ], terminator",
-      "interfaceUnit": "identifier, identifier, line, { interfaceSignature }, identifier, line",
+      "interfaceUnit": "identifier, identifier, [ typeParameters ], line, { interfaceSignature }, identifier, line",
       "iterationBindings": "identifier, [ @comma, identifier ]",
       "labels": "pattern, { @comma, pattern }",
       "line": "endOfLine | endOfFile",
@@ -6250,20 +6295,20 @@
       "methodMember": "[ visibility ], @method, [ @suspendibleModifier ], identifier, parameters, [ @typeConnector, type ], line, body, @endMethod, line",
       "moduleDirective": "importDeclaration | exportDeclaration",
       "modulePath": "identifier, { @dot, identifier }",
-      "moduleUnit": "[ visibility ], ( subprogram | classUnit | interfaceUnit | enumUnit | recordUnit | constantDeclaration, terminator )",
+      "moduleUnit": "[ visibility ], ( subprogram | classUnit | interfaceUnit | variantUnit | enumUnit | recordUnit | constantDeclaration, terminator )",
       "multiplication": "powerExpression, { ( @multiply | @divide | @integerDivide | @modulo ), powerExpression }",
       "names": "identifier, { @comma, identifier }",
       "ordering": "addition, { ( @lessThan | @lessThanOrEqual | @greaterThan | @greaterThanOrEqual ), addition }",
       "output": "@write, [ expressions ], [ @withoutNewline ]",
       "parameter": "identifier, [ @leftBracket, { @comma }, @rightBracket ], [ @typeConnector, type ], [ @byValue | @byReference ]",
       "parameters": "@leftParenthesis, [ parameter, { @comma, parameter } ], @rightParenthesis",
-      "pattern": "literal | signedInteger | identifier, @dot, identifier | variantPattern",
+      "pattern": "literal | signedInteger | identifier, @dot, identifier, [ @leftParenthesis, [ identifier, { @comma, identifier } ], @rightParenthesis ] | variantPattern",
       "postfix": "primary, { @dot, identifier, [ arguments ] | @leftBracket, expressions, @rightBracket }",
       "powerExpression": "unary, [ @power, powerExpression ]",
       "primary": "literal | identifier, [ arguments ] | @leftParenthesis, expression, @rightParenthesis | instantiation | @thisObject, @dot, identifier, [ arguments ] | @superClass, @dot, ( identifier | @constructor ), arguments | variantConstruction | functionLiteral | spawnExpression",
       "program": "trivia, { moduleDirective }, { moduleUnit }, [ algorithmUnit, { moduleUnit } ], trivia, endOfFile",
       "propagation": "@propagateKeyword, unary",
-      "realization": "identifier, identifier, { @comma, identifier }",
+      "realization": "identifier, identifier, [ typeArguments ], { @comma, identifier, [ typeArguments ] }",
       "receiveBranch": "identifier, identifier, identifier, expression, @branchSeparator, { statement }",
       "recordField": "fieldBinding, terminator",
       "recordUnit": "@recordKeyword, identifier, [ typeParameters ], line, { recordField }, @endRecord, line",
@@ -6281,11 +6326,13 @@
       "trivia": "whitespace | comment | endOfLine",
       "type": "@integerType | @realType | @booleanType | @characterType | @stringType | @taskType, @lessThan, type, @greaterThan | identifier, [ typeArguments ] | @optionalType, @lessThan, type, @greaterThan | @resultType, @lessThan, type, @comma, type, @greaterThan | functionType",
       "typeArguments": "@lessThan, type, { @comma, type }, @greaterThan",
-      "typeParameter": "identifier, [ @branchSeparator, identifier ]",
+      "typeParameter": "identifier, [ @branchSeparator, identifier, [ typeArguments ] ]",
       "typeParameters": "@lessThan, typeParameter, { @comma, typeParameter }, @greaterThan",
       "unary": "( @plus | @minus | @not ), unary | awaitExpression | postfix | propagation",
+      "variantAlternative": "identifier, identifier, [ @leftParenthesis, [ alternativeField, { @comma, alternativeField } ], @rightParenthesis ], line",
       "variantConstruction": "@noneVariant | ( @someVariant | @successVariant | @errorVariant ), @leftParenthesis, expression, @rightParenthesis",
       "variantPattern": "@noneVariant | ( @someVariant | @successVariant | @errorVariant ), @leftParenthesis, identifier, @rightParenthesis",
+      "variantUnit": "identifier, identifier, [ typeParameters ], line, { variantAlternative }, identifier, line",
       "visibility": "@publicVisibility | @privateVisibility",
       "whileLoop": "@whileKeyword, expression, @doKeyword, line, body, @endWhile, line"
     },
@@ -25852,6 +25899,640 @@
             }
           }
         ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R2",
+            "specification": "LANG.TYPES.GENERIC",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C21",
+                "kind": "executable",
+                "label": "Generic class",
+                "profile": "en",
+                "specification": "LANG.TYPES.GENERIC",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C23",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Generic class",
+                "profile": "en",
+                "specification": "LANG.TYPES.GENERIC",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "lessThan",
+                "text": "Opens the list of type parameters or type arguments."
+              },
+              {
+                "identity": "greaterThan",
+                "text": "Closes the list of type parameters or type arguments."
+              }
+            ],
+            "purpose": "Each combination of arguments creates a concrete class with its own fields, constructor and methods; new states the arguments unless the expected type already fixes them.",
+            "summary": "A class declares type parameters between angle brackets after its name.",
+            "title": "Generic class"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C21",
+                "kind": "executable",
+                "label": "Clase genérica",
+                "profile": "es",
+                "specification": "LANG.TYPES.GENERIC",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C23",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Clase genérica",
+                "profile": "es",
+                "specification": "LANG.TYPES.GENERIC",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "lessThan",
+                "text": "Abre la lista de parámetros o de argumentos de tipo."
+              },
+              {
+                "identity": "greaterThan",
+                "text": "Cierra la lista de parámetros o de argumentos de tipo."
+              }
+            ],
+            "purpose": "Cada combinación de argumentos crea una clase concreta con sus propios campos, constructor y métodos; Nuevo indica los argumentos salvo que el tipo esperado ya los fije.",
+            "summary": "Una clase declara parámetros de tipo entre ángulos tras su nombre.",
+            "title": "Clase genérica"
+          }
+        },
+        "id": "help.pgl04.generic_class",
+        "identity": {
+          "id": "classUnit",
+          "kind": "role",
+          "role": "pgl04_generic_class"
+        },
+        "tokens": [
+          {
+            "identity": "lessThan",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "greaterThan",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R2",
+            "specification": "LANG.TYPES.GENERIC",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C29",
+                "kind": "executable",
+                "label": "Generic interface",
+                "profile": "en",
+                "specification": "LANG.TYPES.GENERIC",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C31",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Generic interface",
+                "profile": "en",
+                "specification": "LANG.TYPES.GENERIC",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "interfaceKeyword",
+                "text": "Starts the contract template."
+              },
+              {
+                "identity": "endInterface",
+                "text": "Closes the template and its signatures."
+              },
+              {
+                "identity": "implementsKeyword",
+                "text": "Declares that a class implements a concrete instance of the contract."
+              },
+              {
+                "identity": "lessThan",
+                "text": "Opens the type parameters or arguments."
+              },
+              {
+                "identity": "greaterThan",
+                "text": "Closes the type parameters or arguments."
+              }
+            ],
+            "purpose": "Each interface with arguments is a distinct contract: a class implements it by giving its type arguments after implements and a constraint requires it with the same arguments.",
+            "summary": "An interface declares type parameters that its signatures can use.",
+            "title": "Generic interface"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C29",
+                "kind": "executable",
+                "label": "Interfaz genérica",
+                "profile": "es",
+                "specification": "LANG.TYPES.GENERIC",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C31",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Interfaz genérica",
+                "profile": "es",
+                "specification": "LANG.TYPES.GENERIC",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "interfaceKeyword",
+                "text": "Inicia la plantilla del contrato."
+              },
+              {
+                "identity": "endInterface",
+                "text": "Cierra la plantilla y sus firmas."
+              },
+              {
+                "identity": "implementsKeyword",
+                "text": "Declara que una clase realiza una instancia concreta del contrato."
+              },
+              {
+                "identity": "lessThan",
+                "text": "Abre los parámetros o argumentos de tipo."
+              },
+              {
+                "identity": "greaterThan",
+                "text": "Cierra los parámetros o argumentos de tipo."
+              }
+            ],
+            "purpose": "Cada interfaz con argumentos es un contrato distinto: una clase la realiza indicando sus argumentos de tipo tras Realiza y una restricción la exige con los mismos argumentos.",
+            "summary": "Una interfaz declara parámetros de tipo que sus firmas pueden usar.",
+            "title": "Interfaz genérica"
+          }
+        },
+        "id": "help.pgl04.generic_interface",
+        "identity": {
+          "id": "interfaceUnit",
+          "kind": "role",
+          "role": "pgl04_generic_interface"
+        },
+        "tokens": [
+          {
+            "identity": "interfaceKeyword",
+            "source": {
+              "element": "D2",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "endInterface",
+            "source": {
+              "element": "D2",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "implementsKeyword",
+            "source": {
+              "element": "D2",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "lessThan",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "greaterThan",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LANG.TYPES.GENERIC",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C29",
+                "kind": "executable",
+                "label": "Type parameter",
+                "profile": "en",
+                "specification": "LANG.TYPES.GENERIC",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C33",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Type parameter",
+                "profile": "en",
+                "specification": "LANG.TYPES.GENERIC",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "branchSeparator",
+                "text": "Introduces the interface that constrains the parameter."
+              },
+              {
+                "identity": "lessThan",
+                "text": "Opens the parameter list."
+              },
+              {
+                "identity": "greaterThan",
+                "text": "Closes the parameter list."
+              }
+            ],
+            "purpose": "Inside the template the parameter is opaque: it is only copied, passed, returned or stored, unless a constraint after a colon allows the signatures of an interface.",
+            "summary": "A name between angle brackets stands for a type that each instance fixes.",
+            "title": "Type parameter"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C29",
+                "kind": "executable",
+                "label": "Parámetro de tipo",
+                "profile": "es",
+                "specification": "LANG.TYPES.GENERIC",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C33",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Parámetro de tipo",
+                "profile": "es",
+                "specification": "LANG.TYPES.GENERIC",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "branchSeparator",
+                "text": "Introduce la interfaz que restringe el parámetro."
+              },
+              {
+                "identity": "lessThan",
+                "text": "Abre la lista de parámetros."
+              },
+              {
+                "identity": "greaterThan",
+                "text": "Cierra la lista de parámetros."
+              }
+            ],
+            "purpose": "Dentro de la plantilla el parámetro es opaco: solo se copia, se pasa, se retorna o se guarda, salvo que una restricción con dos puntos permita las firmas de una interfaz.",
+            "summary": "Un nombre entre ángulos representa un tipo que cada instancia fija.",
+            "title": "Parámetro de tipo"
+          }
+        },
+        "id": "help.pgl04.type_parameter",
+        "identity": {
+          "id": "typeParameter",
+          "kind": "role",
+          "role": "pgl04_type_parameter"
+        },
+        "tokens": [
+          {
+            "identity": "branchSeparator",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "lessThan",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "greaterThan",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LANG.TYPES.VARIANT",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Variant",
+                "profile": "en",
+                "specification": "LANG.TYPES.VARIANT",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C13",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Variant",
+                "profile": "en",
+                "specification": "LANG.TYPES.VARIANT",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "variantKeyword",
+                "text": "Starts the variant type declaration."
+              },
+              {
+                "identity": "endVariant",
+                "text": "Closes the declaration."
+              },
+              {
+                "identity": "alternativeKeyword",
+                "text": "Declares a case and its fields."
+              }
+            ],
+            "purpose": "A value is built with Type.Case(arguments) and inspected with switch and patterns that must cover every case.",
+            "summary": "A variant type groups named cases, each with its own fields.",
+            "title": "Variant"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Variante",
+                "profile": "es",
+                "specification": "LANG.TYPES.VARIANT",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C13",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Variante",
+                "profile": "es",
+                "specification": "LANG.TYPES.VARIANT",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "variantKeyword",
+                "text": "Inicia la declaración del tipo variante."
+              },
+              {
+                "identity": "endVariant",
+                "text": "Cierra la declaración."
+              },
+              {
+                "identity": "alternativeKeyword",
+                "text": "Declara una alternativa y sus campos."
+              }
+            ],
+            "purpose": "Un valor se construye con Tipo.Alternativa(argumentos) y se consulta con Segun y patrones que deben cubrir todas las alternativas.",
+            "summary": "Un tipo variante reúne alternativas nombradas, cada una con sus campos.",
+            "title": "Variante"
+          }
+        },
+        "id": "help.pgl04.variant",
+        "identity": {
+          "id": "variantKeyword",
+          "kind": "construction",
+          "role": "construction"
+        },
+        "tokens": [
+          {
+            "identity": "variantKeyword",
+            "source": {
+              "element": "D2",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "endVariant",
+            "source": {
+              "element": "D2",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "alternativeKeyword",
+            "source": {
+              "element": "D2",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R2",
+            "specification": "LANG.TYPES.VARIANT",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Variant case",
+                "profile": "en",
+                "specification": "LANG.TYPES.VARIANT",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C16",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Variant case",
+                "profile": "en",
+                "specification": "LANG.TYPES.VARIANT",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "alternativeKeyword",
+                "text": "Declares the case inside the variant."
+              }
+            ],
+            "purpose": "The pattern Type.Case(names) binds one immutable name per field, visible only in its branch.",
+            "summary": "A case names one shape of the variant and declares its fields between parentheses.",
+            "title": "Variant case"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Alternativa de variante",
+                "profile": "es",
+                "specification": "LANG.TYPES.VARIANT",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C16",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Alternativa de variante",
+                "profile": "es",
+                "specification": "LANG.TYPES.VARIANT",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "alternativeKeyword",
+                "text": "Declara la alternativa dentro de la variante."
+              }
+            ],
+            "purpose": "El patrón Tipo.Alternativa(nombres) vincula un nombre inmutable por campo, visible solo en su rama.",
+            "summary": "Una alternativa nombra un caso de la variante y declara sus campos entre paréntesis.",
+            "title": "Alternativa de variante"
+          }
+        },
+        "id": "help.pgl04.variant_alternative",
+        "identity": {
+          "id": "variantAlternative",
+          "kind": "role",
+          "role": "pgl04_variant_alternative"
+        },
+        "tokens": [
+          {
+            "identity": "alternativeKeyword",
+            "source": {
+              "element": "D2",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
       }
     ],
     "exclusions": [],
@@ -28667,6 +29348,87 @@
           "tokens": [
             "publicVisibility"
           ]
+        },
+        {
+          "identity": {
+            "id": "classUnit",
+            "kind": "role",
+            "role": "pgl04_generic_class"
+          },
+          "productions": [
+            "classUnit",
+            "typeParameters",
+            "typeArguments",
+            "instantiation"
+          ],
+          "tokens": [
+            "lessThan",
+            "greaterThan"
+          ]
+        },
+        {
+          "identity": {
+            "id": "interfaceUnit",
+            "kind": "role",
+            "role": "pgl04_generic_interface"
+          },
+          "productions": [
+            "interfaceUnit",
+            "realization",
+            "typeParameters"
+          ],
+          "tokens": [
+            "interfaceKeyword",
+            "endInterface",
+            "implementsKeyword",
+            "lessThan",
+            "greaterThan"
+          ]
+        },
+        {
+          "identity": {
+            "id": "typeParameter",
+            "kind": "role",
+            "role": "pgl04_type_parameter"
+          },
+          "productions": [
+            "typeParameter",
+            "typeParameters"
+          ],
+          "tokens": [
+            "branchSeparator",
+            "lessThan",
+            "greaterThan"
+          ]
+        },
+        {
+          "identity": {
+            "id": "variantKeyword",
+            "kind": "construction",
+            "role": "construction"
+          },
+          "productions": [
+            "variantUnit"
+          ],
+          "tokens": [
+            "variantKeyword",
+            "endVariant",
+            "alternativeKeyword"
+          ]
+        },
+        {
+          "identity": {
+            "id": "variantAlternative",
+            "kind": "role",
+            "role": "pgl04_variant_alternative"
+          },
+          "productions": [
+            "variantAlternative",
+            "alternativeField"
+          ],
+          "tokens": [
+            "alternativeKeyword"
+          ]
         }
       ]
     }
@@ -28871,16 +29633,6 @@
       "openings": [
         "Intentar",
         "try"
-      ]
-    },
-    "generic": {
-      "allow_line": false,
-      "closings": [],
-      "code": "unsupportedGenericsConstruct",
-      "openings": [
-        "Generico",
-        "Genérico",
-        "generic"
       ]
     },
     "protected": {

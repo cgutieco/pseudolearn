@@ -6,14 +6,24 @@ use pseudolearn_diagnostics::DiagnosticCode;
 use pseudolearn_syntax::NodeKind;
 
 pub(crate) fn register(session: &mut AnalysisSession<'_>) {
-    let records = declare_all(session);
+    let mut records = declare_all(session);
+    records.extend(crate::user_variants::declare_all(session));
     resolve_fields(session, &records);
     crate::record_cycles::layout(session, &records);
 }
 
 pub(crate) fn resolve_fields(session: &mut AnalysisSession<'_>, records: &[RecordId]) {
     for record in records {
-        fields(session, *record);
+        if session
+            .module
+            .records
+            .get(slot(*record))
+            .is_some_and(|model| session.kind(model.syntax) == NodeKind::VariantUnit)
+        {
+            crate::user_variants::alternatives(session, *record);
+        } else {
+            fields(session, *record);
+        }
     }
 }
 

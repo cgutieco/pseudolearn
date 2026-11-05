@@ -62,13 +62,20 @@ fn class_type(session: &mut AnalysisSession<'_>, node: usize) -> Type {
     if let Some(kind) = crate::collection_types::resolve(session, node, &name) {
         return kind;
     }
-    if crate::interface_registry::find(session, &name).is_some() {
+    if crate::interface_registry::find(session, &name).is_some()
+        || session.generics.interfaces.contains_key(&name)
+    {
         session.report(DiagnosticCode::InterfaceCannotBeValue, node);
         return Type::Error;
     }
     if let Some(kind) = crate::generic_names::resolve(session, node, &name) {
         return kind;
     }
+    declared_type(session, node, &name)
+}
+
+fn declared_type(session: &mut AnalysisSession<'_>, node: usize, name: &str) -> Type {
+    let name = name.to_owned();
     if let Some(class) = session.classes.get(&name) {
         return Type::Object(*class);
     }
@@ -79,6 +86,9 @@ fn class_type(session: &mut AnalysisSession<'_>, node: usize) -> Type {
     if let Some(record) = session.declared.records.get(&name).copied() {
         session.note_use(node, ServiceSymbolTarget::Record(record));
         return Type::Record(record);
+    }
+    if let Some(variant) = session.declared.variants.get(&name).copied() {
+        return Type::Record(variant);
     }
     session.named_report(DiagnosticCode::UndeclaredClass, node, &name);
     Type::Error

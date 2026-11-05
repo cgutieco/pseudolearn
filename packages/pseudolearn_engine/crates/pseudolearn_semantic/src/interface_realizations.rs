@@ -41,11 +41,15 @@ pub(crate) fn check(session: &mut AnalysisSession<'_>) {
     for index in 0..session.module.classes.len() {
         let class = ClassId(u32::try_from(index).unwrap_or(u32::MAX));
         session.enter_class_id(class);
-        for interface_index in 0..session.module.interfaces.len() {
-            let interface = InterfaceId(u32::try_from(interface_index).unwrap_or(u32::MAX));
-            if satisfies(session, class, interface) {
-                check_methods(session, class, interface);
-            }
+        check_class(session, class);
+    }
+}
+
+pub(crate) fn check_class(session: &mut AnalysisSession<'_>, class: ClassId) {
+    for interface_index in 0..session.module.interfaces.len() {
+        let interface = InterfaceId(u32::try_from(interface_index).unwrap_or(u32::MAX));
+        if satisfies(session, class, interface) {
+            check_methods(session, class, interface);
         }
     }
 }

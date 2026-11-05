@@ -29,7 +29,7 @@ impl FlowBindings {
         session.module.units.functions.truncate(self.functions);
         session.generic.functions.clear();
         session.generic.environment.clear();
-        session.module.classes.truncate(self.classes);
+        crate::generic_classes::truncate(session, self.classes);
         session.module.closures.clear();
         session.module.function_values.clear();
         session.closure_stack.clear();

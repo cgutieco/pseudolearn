@@ -38,12 +38,13 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "D1 define las formas reconocibles y sus cierres; el reconocimiento solo actúa ante otra palabra de una cabecera o, cuando allow_line lo permite, una apertura sola en su línea. Una asignación o llamada que usa el nombre permanece ordinaria. Clases abstractas, miembros estáticos, visibilidad protegida, genéricos de clases y manejo de excepciones no son construcciones de la edición vigente. En posición estructural inequívoca sus formas reconocibles producen diagnóstico pedagógico específico. Estas palabras no se añaden al vocabulario reservado y pueden ser nombres en posiciones ordinarias.",
+  "texto": "D1 define las formas reconocibles y sus cierres; el reconocimiento solo actúa ante otra palabra de una cabecera o, cuando allow_line lo permite, una apertura sola en su línea. Una asignación o llamada que usa el nombre permanece ordinaria. Clases abstractas, miembros estáticos, visibilidad protegida y manejo de excepciones no son construcciones de la edición vigente; las clases genéricas sí lo son, con parámetros de tipo entre ángulos, y una palabra como Generico es un nombre ordinario también tras Clase. En posición estructural inequívoca sus formas reconocibles producen diagnóstico pedagógico específico. Estas palabras no se añaden al vocabulario reservado y pueden ser nombres en posiciones ordinarias.",
   "verificacion": [
     "C1",
     "C2",
     "C3",
-    "C4"
+    "C4",
+    "C5"
   ]
 }
 ```
@@ -136,16 +137,6 @@
       "closings": [],
       "allow_line": false
     },
-    "generic": {
-      "code": "unsupportedGenericsConstruct",
-      "openings": [
-        "Generico",
-        "Genérico",
-        "generic"
-      ],
-      "closings": [],
-      "allow_line": false
-    },
     "exception": {
       "code": "unsupportedExceptionConstruct",
       "openings": [
@@ -210,6 +201,27 @@
         "severidad": "error"
       }
     ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C5",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Clase Generico\nMetodo valor() Como Entero\nRetornar 5;\nFinMetodo\nFinClase\nAlgoritmo P\nDefinir g Como Generico <- Nuevo Generico();\nEscribir g.valor();\nFinAlgoritmo\n",
+    "en": "class generic\nmethod value() as integer\nreturn 5;\nendMethod\nendClass\nalgorithm P\ndefine g as generic <- new generic();\nwrite g.value();\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "5\n",
+    "terminacion": "completed"
   }
 }
 ```

@@ -5,6 +5,21 @@ use pseudolearn_abi::VariantLayout;
 pub enum VariantFamily {
     Optional,
     Result,
+    User,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct HirUserAlternative {
+    pub name: String,
+    pub spelling: String,
+    pub payload: Option<crate::identities::RecordId>,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct HirUserVariant {
+    pub name: String,
+    pub alternatives: Vec<HirUserAlternative>,
+    pub syntax: usize,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -19,7 +34,7 @@ impl HirVariant {
     pub fn success_alternative(&self) -> usize {
         match self.family {
             VariantFamily::Optional => 1,
-            VariantFamily::Result => 0,
+            VariantFamily::Result | VariantFamily::User => 0,
         }
     }
 }

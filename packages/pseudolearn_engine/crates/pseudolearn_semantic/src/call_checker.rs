@@ -91,12 +91,13 @@ pub(crate) fn emit_call(
     )
 }
 
-pub(crate) fn instantiate(session: &mut AnalysisSession<'_>, node: usize) -> ExpressionId {
-    let name_node = session.child(node, NodeKind::Identifier).unwrap_or(node);
-    let name = session.name(name_node);
+pub(crate) fn instantiate(
+    session: &mut AnalysisSession<'_>,
+    node: usize,
+    expected: Option<crate::identities::TypeId>,
+) -> ExpressionId {
     let arguments = session.child(node, NodeKind::Arguments).unwrap_or(node);
-    let Some(class) = session.classes.get(&name).copied() else {
-        session.named_report(DiagnosticCode::UndeclaredClass, name_node, &name);
+    let Some(class) = crate::generic_instantiation::class(session, node, expected) else {
         return crate::expression_checker::invalid(session, node);
     };
     let constructor =

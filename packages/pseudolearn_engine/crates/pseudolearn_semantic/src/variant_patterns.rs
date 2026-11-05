@@ -27,7 +27,8 @@ pub(crate) fn check(
             .skip(start)
             .any(|diagnostic| diagnostic.severity == DiagnosticSeverity::Error)
     {
-        missing(session, (&variant, &branches.seen), node);
+        let source = payload_source(session, matching.selector);
+        missing(session, (&variant, &branches.seen), (node, source));
     }
     session.pending_results = branches.pending_after;
     session.initialized = branches.initialized;
@@ -51,16 +52,16 @@ fn branch_case(
         return None;
     }
     let pattern = *patterns.first()?;
-    let Some(alternative) =
-        crate::variant_checker::alternative(variant.family, session.token_kind(pattern))
-    else {
-        session.report(DiagnosticCode::IncompatibleSwitchCaseType, pattern);
-        return None;
-    };
+    let (alternative, user) = matched_alternative(session, (pattern, value), variant)?;
     if !seen.insert(alternative) {
         session.report(DiagnosticCode::DuplicateSwitchCaseLabel, pattern);
     }
-    let statements = branch_statements(session, (branch, pattern), (value, variant), alternative);
+    let statements = branch_statements(
+        session,
+        (branch, pattern),
+        (value, variant),
+        (alternative, user.as_ref()),
+    );
     let integer = session.module.types.intern(Type::Integer);
     let label = session.emit(
         HirExpression::Literal(Literal::Integer(i64::try_from(alternative).unwrap_or(0))),
@@ -71,6 +72,24 @@ fn branch_case(
         labels: vec![label],
         body: statements,
     })
+}
+
+fn matched_alternative(
+    session: &mut AnalysisSession<'_>,
+    (pattern, value): (usize, ExpressionId),
+    variant: &HirVariant,
+) -> Option<(usize, Option<crate::user_variant_patterns::UserPattern>)> {
+    if variant.family == VariantFamily::User {
+        let matched = crate::user_variant_patterns::alternative(session, pattern, value)?;
+        return Some((matched.alternative, Some(matched)));
+    }
+    let Some(alternative) =
+        crate::variant_checker::alternative(variant.family, session.token_kind(pattern))
+    else {
+        session.report(DiagnosticCode::IncompatibleSwitchCaseType, pattern);
+        return None;
+    };
+    Some((alternative, None))
 }
 
 fn payload_binding(
@@ -112,10 +131,25 @@ fn body(session: &mut AnalysisSession<'_>, branch: usize) -> Vec<StatementId> {
         .unwrap_or_default()
 }
 
-fn missing(session: &mut AnalysisSession<'_>, model: (&HirVariant, &BTreeSet<usize>), node: usize) {
+fn missing(
+    session: &mut AnalysisSession<'_>,
+    model: (&HirVariant, &BTreeSet<usize>),
+    (node, source): (usize, ExpressionId),
+) {
     let keywords = match model.0.family {
         VariantFamily::Optional => [KeywordKind::NoneVariant, KeywordKind::SomeVariant],
         VariantFamily::Result => [KeywordKind::SuccessVariant, KeywordKind::ErrorVariant],
+        VariantFamily::User => {
+            let missing = crate::user_variant_patterns::missing(session, source, model.1);
+            if !missing.is_empty() {
+                session.named_report(
+                    DiagnosticCode::NonExhaustiveSwitch,
+                    node,
+                    &missing.join(", "),
+                );
+            }
+            return;
+        }
     };
     let missing: Vec<_> = keywords
         .iter()
@@ -198,12 +232,16 @@ fn branch_statements(
     session: &mut AnalysisSession<'_>,
     syntax: (usize, usize),
     selection: (ExpressionId, &HirVariant),
-    alternative: usize,
+    (alternative, user): (usize, Option<&crate::user_variant_patterns::UserPattern>),
 ) -> Vec<StatementId> {
     session.bindings.enter();
     let start = session.module.locals.len();
-    let mut statements =
-        payload_binding(session, (syntax.1, selection.0), (selection.1, alternative));
+    let mut statements = match user {
+        Some(matched) => {
+            crate::user_variant_patterns::bind(session, (syntax.1, selection.0), matched)
+        }
+        None => payload_binding(session, (syntax.1, selection.0), (selection.1, alternative)),
+    };
     statements.extend(body(session, syntax.0));
     crate::scope_bindings::visibility(session, start, syntax.0);
     crate::scope_bindings::leave(session);

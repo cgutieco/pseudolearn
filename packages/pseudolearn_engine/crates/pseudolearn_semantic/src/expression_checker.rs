@@ -44,7 +44,7 @@ pub(crate) fn check_for(
             .copied()
             .map(|child| check_for(session, child, purpose))
             .unwrap_or_else(|| invalid(session, node)),
-        NodeKind::Instantiation => crate::call_checker::instantiate(session, node),
+        NodeKind::Instantiation => crate::call_checker::instantiate(session, node, None),
         NodeKind::Postfix => crate::postfix_checker::check(session, node, purpose),
         NodeKind::ThisObject | NodeKind::SuperClass => receiver(session, node),
         _ => invalid(session, node),
@@ -156,8 +156,13 @@ pub(crate) fn check_expected_for(
     if let Some(value) = crate::collection_checker::construct(session, node, expected) {
         return value;
     }
+    if let Some(value) = crate::user_variant_values::construct(session, node, Some(expected)) {
+        return value;
+    }
     if crate::variant_checker::is_construction(session, node) {
         crate::variant_checker::check(session, node, Some(expected))
+    } else if session.kind(node) == NodeKind::Instantiation {
+        crate::call_checker::instantiate(session, node, Some(expected))
     } else if session.kind(node) == NodeKind::Primary {
         session
             .children(node)

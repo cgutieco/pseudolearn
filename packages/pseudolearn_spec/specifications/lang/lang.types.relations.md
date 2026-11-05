@@ -119,7 +119,7 @@
   "id": "R3",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Resultado<T,E> es una variante incorporada con alternativas Exito(valor) y Error(error). Sus argumentos son concretos y cada carga útil debe ser asignable al tipo declarado de su alternativa. La identidad depende de ambos argumentos, no de su disposición; tipos genéricos definidos por la persona quedan fuera de alcance. Los constructores necesitan un contexto que determine ambos argumentos. El valor no admite escritura, comparación, acceso a campos ni paso por referencia; se consulta mediante patrones.",
+  "texto": "Resultado<T,E> es una variante incorporada con alternativas Exito(valor) y Error(error). Sus argumentos son concretos y cada carga útil debe ser asignable al tipo declarado de su alternativa. La identidad depende de ambos argumentos, no de su disposición; las variantes declaradas por la persona siguen LANG.TYPES.VARIANT. Los constructores necesitan un contexto que determine ambos argumentos. El valor no admite escritura, comparación, acceso a campos ni paso por referencia; se consulta mediante patrones.",
   "verificacion": [
     "C7",
     "C8",

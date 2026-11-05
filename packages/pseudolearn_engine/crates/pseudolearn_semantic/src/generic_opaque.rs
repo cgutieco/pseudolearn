@@ -1,3 +1,4 @@
+use crate::generic_interfaces::InterfaceLookup;
 use crate::generic_state::GenericTemplate;
 use crate::hir::HirRecord;
 use crate::identities::{RecordId, TypeId};
@@ -8,19 +9,26 @@ pub(crate) fn arguments(
     session: &mut AnalysisSession<'_>,
     template: &GenericTemplate,
 ) -> Vec<TypeId> {
-    (0..template.parameters.len())
+    let fresh: Vec<(TypeId, bool)> = (0..template.parameters.len())
         .map(|index| parameter(session, template, index))
-        .collect()
+        .collect();
+    let kinds: Vec<TypeId> = fresh.iter().map(|(kind, _)| *kind).collect();
+    for (index, (kind, created)) in fresh.into_iter().enumerate() {
+        if created {
+            constrain(session, template, (index, kind), &kinds);
+        }
+    }
+    kinds
 }
 
 fn parameter(
     session: &mut AnalysisSession<'_>,
     template: &GenericTemplate,
     index: usize,
-) -> TypeId {
+) -> (TypeId, bool) {
     let key = (session.unit, template.node, index);
     if let Some(existing) = session.generic.opaque.get(&key) {
-        return *existing;
+        return (*existing, false);
     }
     let identifier = RecordId(u32::try_from(session.module.records.len()).unwrap_or(u32::MAX));
     let name = template.parameters.get(index).cloned().unwrap_or_default();
@@ -33,19 +41,35 @@ fn parameter(
         syntax: template.node,
     });
     session.generic.opaque_records.insert(identifier);
-    if let Some(Some(name)) = template.constraints.get(index) {
-        if let Some(interface) = crate::interface_registry::find(session, name) {
+    let kind = session.module.types.intern(Type::Record(identifier));
+    session.generic.opaque.insert(key, kind);
+    (kind, true)
+}
+
+fn constrain(
+    session: &mut AnalysisSession<'_>,
+    template: &GenericTemplate,
+    (index, kind): (usize, TypeId),
+    kinds: &[TypeId],
+) {
+    let Some(Some(name)) = template.constraints.get(index).cloned() else {
+        return;
+    };
+    let Type::Record(identifier) = session.module.types.get(kind) else {
+        return;
+    };
+    match crate::generic_interfaces::constraint(session, template, index, kinds) {
+        InterfaceLookup::Found(interface) => {
             session.generic.constraints.insert(identifier, interface);
             crate::interface_constraints::record(session, template, index, interface);
-        } else {
+        }
+        InterfaceLookup::Reported => {}
+        InterfaceLookup::Missing => {
             session.named_report(
                 pseudolearn_diagnostics::DiagnosticCode::UnknownInterface,
                 template.node,
-                name,
+                &name,
             );
         }
     }
-    let kind = session.module.types.intern(Type::Record(identifier));
-    session.generic.opaque.insert(key, kind);
-    kind
 }

@@ -32,6 +32,9 @@ fn dotted(
     node: usize,
     purpose: ExpressionPurpose,
 ) -> ExpressionId {
+    if let Some(value) = crate::user_variant_values::construct(session, node, None) {
+        return value;
+    }
     if let Some(member) = crate::enum_access::expression(session, node) {
         return member;
     }

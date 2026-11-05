@@ -8,7 +8,8 @@ pub(crate) fn register(session: &mut AnalysisSession<'_>) {
 
 pub(crate) fn declare(session: &mut AnalysisSession<'_>) -> Vec<crate::identities::RecordId> {
     crate::enum_registry::register(session);
-    let records = crate::record_registry::declare_all(session);
+    let mut records = crate::record_registry::declare_all(session);
+    records.extend(crate::user_variants::declare_all(session));
     crate::constant_registry::collect_module(session);
     records
 }

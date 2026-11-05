@@ -8,6 +8,7 @@ use crate::type_scope::TypeScope;
 
 enum Linked {
     Record(RecordId),
+    Variant(RecordId),
     Enum(EnumId),
     Constant(usize),
     Interface(InterfaceId),
@@ -32,6 +33,7 @@ pub(crate) fn register(session: &mut AnalysisSession<'_>, bindings: &[UnitBindin
     for unit in 0..count {
         session.switch_unit(unit);
         crate::interface_registry::signatures(session);
+        crate::generic_discard::check_records(session);
     }
 }
 
@@ -54,7 +56,7 @@ pub(crate) fn target(
     origin: &Origin,
 ) -> Option<ServiceSymbolTarget> {
     Some(match resolve(session, origin)? {
-        Linked::Record(id) => ServiceSymbolTarget::Record(id),
+        Linked::Record(id) | Linked::Variant(id) => ServiceSymbolTarget::Record(id),
         Linked::Enum(id) => ServiceSymbolTarget::Enum(id),
         Linked::Constant(index) => {
             ServiceSymbolTarget::Constant(ConstantId(u32::try_from(index).ok()?))
@@ -78,6 +80,11 @@ fn resolve(session: &AnalysisSession<'_>, origin: &Origin) -> Option<Linked> {
     let scope = scope_of(session, origin.unit)?;
     match origin.kind {
         SymbolKind::Record => scope.records.get(&origin.name).copied().map(Linked::Record),
+        SymbolKind::Variant => scope
+            .variants
+            .get(&origin.name)
+            .copied()
+            .map(Linked::Variant),
         SymbolKind::Enum => scope.enums.get(&origin.name).copied().map(Linked::Enum),
         SymbolKind::Constant => scope
             .constants
@@ -97,6 +104,9 @@ fn insert(scope: &mut TypeScope, local: &str, linked: Linked) {
     match linked {
         Linked::Record(id) => {
             scope.records.insert(name, id);
+        }
+        Linked::Variant(id) => {
+            scope.variants.insert(name, id);
         }
         Linked::Enum(id) => {
             scope.enums.insert(name, id);

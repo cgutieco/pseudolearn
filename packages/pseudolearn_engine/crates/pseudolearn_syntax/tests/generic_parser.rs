@@ -65,8 +65,50 @@ fn malformed_parameter_and_argument_lists_recover_without_panicking() {
     }
 }
 
+fn parent_of(tree: &SyntaxTree, child: NodeKind) -> Vec<NodeKind> {
+    tree.nodes
+        .iter()
+        .enumerate()
+        .filter(|(index, _)| {
+            tree.child_indices(*index).iter().any(|inner| {
+                tree.nodes
+                    .get(*inner)
+                    .is_some_and(|node| node.kind == child)
+            })
+        })
+        .map(|(_, node)| node.kind)
+        .collect()
+}
+
 #[test]
-fn class_headers_do_not_accept_type_parameters() {
-    let (_, _, errors) = parse("class C<T>\nendClass\nalgorithm P\nendAlgorithm\n");
-    assert!(errors > 0);
+fn class_and_interface_headers_declare_type_parameters() {
+    let text = "interface Measure<T>\nmethod measure() as T;\nendInterface\nclass Base<T> implements Measure<T>\ndefine datum as T;\nmethod measure() as T\nreturn this.datum;\nendMethod\nendClass\nclass Child<T: Measure<T>> inherits from Base<T>\nendClass\nalgorithm P\ndefine c as Base<integer> <- new Base<integer>();\nendAlgorithm\n";
+    let (tree, source, errors) = parse(text);
+    assert_eq!(errors, 0);
+    let owners = parent_of(&tree, NodeKind::TypeParameters);
+    assert!(owners.contains(&NodeKind::ClassUnit));
+    assert!(owners.contains(&NodeKind::InterfaceUnit));
+    let arguments = parent_of(&tree, NodeKind::TypeArguments);
+    for owner in [
+        NodeKind::Realization,
+        NodeKind::ClassUnit,
+        NodeKind::TypeParameter,
+        NodeKind::Instantiation,
+    ] {
+        assert!(arguments.contains(&owner), "{owner:?}");
+    }
+    assert_eq!(reprint_lossless(&source, &tree.tokens), text);
+}
+
+#[test]
+fn unclosed_class_parameters_and_method_parameters_recover() {
+    for text in [
+        "class C<T\nendClass\nalgorithm P\nendAlgorithm\n",
+        "class C\nmethod f<T>(x as T)\nendMethod\nendClass\nalgorithm P\nendAlgorithm\n",
+        "algorithm P\ndefine c as C <- new C<integer(1);\nendAlgorithm\n",
+    ] {
+        let (tree, source, errors) = parse(text);
+        assert!(errors > 0, "{text}");
+        assert_eq!(reprint_lossless(&source, &tree.tokens), text);
+    }
 }

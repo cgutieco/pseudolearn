@@ -113,6 +113,18 @@ fn round_trips_synthetic_class_names_that_start_with_a_dollar_sign() {
 }
 
 #[test]
+fn round_trips_generic_instance_class_names_quoted_in_object_creation() {
+    let source = "module P es\nclass \"Box<integer>\" { content: i64 }\nfunc @main() -> unit {\nb0() mass 0:\n  %0 = object.new \"Box<integer>\" @6:6-6:17\n  return\n}\n";
+    let module = parse_module(source).map_err(|error| error.to_string());
+    assert!(module.is_ok(), "{module:?}");
+    if let Ok(module) = module {
+        assert!(pseudolearn_ir::verify_module(&module).is_ok());
+        assert_eq!(print_canonical(&module), source);
+    }
+    assert!(parse_module(&source.replace("\"Box<integer>\" @", "Box<integer> @")).is_err());
+}
+
+#[test]
 fn rejects_an_object_creation_whose_synthetic_class_is_not_declared() {
     let source = "module P es\nfunc @main() -> unit {\nb0() mass 0:\n  %0 = object.new $environment9 @6:6-6:17\n  return\n}\n";
     let verified = parse_module(source)

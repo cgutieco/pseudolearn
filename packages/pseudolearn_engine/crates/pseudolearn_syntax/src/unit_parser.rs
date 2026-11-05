@@ -59,17 +59,7 @@ pub(crate) fn class(state: &mut ParserState<'_>) -> Result<usize, ()> {
         return Err(());
     }
     let class_name = state.token();
-    name(state, DiagnosticCode::ExpectedClassName)?;
-    state.has_superclass = state.keyword(KeywordKind::InheritsFrom);
-    if state.has_superclass {
-        name(state, DiagnosticCode::ExpectedClassName)?;
-        if state.kind() == TokenKind::Comma {
-            let span = state.span();
-            state.report(DiagnosticCode::MultipleInheritanceNotSupported, span);
-            return Err(());
-        }
-    }
-    crate::interface_parser::realization(state)?;
+    class_header(state)?;
     loop {
         state.separators();
         if matches!(
@@ -89,6 +79,22 @@ pub(crate) fn class(state: &mut ParserState<'_>) -> Result<usize, ()> {
     state.close(KeywordKind::EndClass, DiagnosticCode::UnclosedClass, start);
     state.has_superclass = false;
     Ok(state.finish(NodeKind::ClassUnit, start, marker))
+}
+
+fn class_header(state: &mut ParserState<'_>) -> Result<(), ()> {
+    name(state, DiagnosticCode::ExpectedClassName)?;
+    crate::generic_parser::optional_parameters(state)?;
+    state.has_superclass = state.keyword(KeywordKind::InheritsFrom);
+    if state.has_superclass {
+        name(state, DiagnosticCode::ExpectedClassName)?;
+        crate::generic_parser::optional_arguments(state)?;
+        if state.kind() == TokenKind::Comma {
+            let span = state.span();
+            state.report(DiagnosticCode::MultipleInheritanceNotSupported, span);
+            return Err(());
+        }
+    }
+    crate::interface_parser::realization(state)
 }
 
 fn class_member(state: &mut ParserState<'_>, class_name: u32) -> Result<(), ()> {

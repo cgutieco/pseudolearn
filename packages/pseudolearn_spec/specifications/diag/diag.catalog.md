@@ -1167,17 +1167,6 @@
       "clase": "syntax",
       "tipos_argumentos": {}
     },
-    "unsupportedGenericsConstruct": {
-      "mensajes": {
-        "es": "Los tipos genéricos no forman parte de PseudoLearn",
-        "en": "Generic types are not supported in PseudoLearn"
-      },
-      "argumentos": [],
-      "politica": "A",
-      "severidad": "error",
-      "clase": "syntax",
-      "tipos_argumentos": {}
-    },
     "unsupportedExceptionConstruct": {
       "mensajes": {
         "es": "El manejo de excepciones estructurado no forma parte de PseudoLearn",
@@ -2495,6 +2484,21 @@
       "clase": "semantic",
       "tipos_argumentos": {}
     },
+    "variantWithoutAlternatives": {
+      "mensajes": {
+        "es": "La variante {lexeme} debe tener al menos una alternativa",
+        "en": "Variant {lexeme} must have at least one alternative"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": "error",
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
     "recordWithoutFields": {
       "mensajes": {
         "es": "El registro {lexeme} debe tener al menos un campo",
@@ -2696,8 +2700,8 @@
     },
     "ambiguousVariantType": {
       "mensajes": {
-        "es": "La variante necesita un tipo Opcional o Resultado explícito en su contexto",
-        "en": "Variant requires an explicit optional or result type in its context"
+        "es": "La variante necesita un tipo de variante explícito en su contexto",
+        "en": "Variant requires an explicit variant type in its context"
       },
       "argumentos": [],
       "politica": "A",
@@ -2910,6 +2914,28 @@
       "mensajes": {
         "es": "Interfaz sin cerrar",
         "en": "Unclosed interface"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": "error",
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "unclosedVariant": {
+      "mensajes": {
+        "es": "Variante sin cerrar",
+        "en": "Unclosed variant"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": "error",
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "expectedVariantAlternative": {
+      "mensajes": {
+        "es": "Se esperaba una alternativa de la variante",
+        "en": "Expected a variant case"
       },
       "argumentos": [],
       "politica": "A",
