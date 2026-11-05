@@ -26,6 +26,9 @@ fn exemptions_need_reason_and_pending_needs_open_phase() -> Result<(), String> {
     assert!(see_validation::bindings::check(&corpus, &conformance).is_empty());
     let binding = conformance.vinculos.first_mut().ok_or("Missing binding")?;
     binding.estado = "pendiente".to_owned();
+    binding.resuelve_en = None;
+    assert!(!see_validation::bindings::check(&corpus, &conformance).is_empty());
+    let binding = conformance.vinculos.first_mut().ok_or("Missing binding")?;
     binding.resuelve_en = Some("R1".to_owned());
     assert!(!see_validation::bindings::check(&corpus, &conformance).is_empty());
     conformance
