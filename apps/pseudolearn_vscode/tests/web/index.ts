@@ -6,6 +6,7 @@ import { runProgramScenarios } from "./program_scenarios";
 import { runHostChecks } from "./host_checks";
 import { runAcceptanceScenario } from "./acceptance_scenario";
 import { runGeneralPurposeScenarios } from "./general_purpose_scenario";
+import { runLanguageConstructScenarios } from "./language_constructs_scenario";
 
 declare const __FIXTURE__: Fixture;
 
@@ -19,6 +20,7 @@ export async function run(): Promise<void> {
     await runFileScenarios(recorder, provider);
     await runProgramScenarios(recorder, provider, tls === "accepted" ? __FIXTURE__.https : __FIXTURE__.http);
     await runGeneralPurposeScenarios(recorder);
+    await runLanguageConstructScenarios(recorder);
     await runAcceptanceScenario(recorder);
     console.log(JSON.stringify({ schema: 2, target: "vscode-web-host", result: "passed", tls, durablePersistence: false,
       steps: recorder.steps }));

@@ -19,6 +19,7 @@ const resultPath = join(base, "result.json");
 cpSync(join(extensionRoot, "tests/host/fixtures/project"), workspace, { recursive: true });
 cpSync(join(extensionRoot, "examples/file/saludo.pseudo"), join(base, "saludo.pseudo"));
 cpSync(join(extensionRoot, "../pseudolearn_cli/examples/general-purpose/character.es.pseudo"), join(base, "character.pseudo"));
+cpSync(join(extensionRoot, "../pseudolearn_cli/examples/language-constructs/acceptance/constructs.es.pseudo"), join(base, "constructs.pseudo"));
 mkdirSync(developmentPath, { recursive: true });
 writeFileSync(join(developmentPath, "package.json"), JSON.stringify({ name: "host-tests", publisher: "local", version: "0.0.0", engines: { vscode: "^1.144.0" } }));
 

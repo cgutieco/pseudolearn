@@ -43,6 +43,22 @@ async function runChecks(main) {
 
 async function acceptanceChecks() {
   if (!process.env.PSEUDOLEARN_HOST_RUN_OUTPUT) return;
+  await step("language constructs program prints the values derived from the rules", async () => {
+    await open("../constructs.pseudo");
+    await vscode.commands.executeCommand("pseudolearn.runFile");
+    const captured = () => {
+      const path = process.env.PSEUDOLEARN_HOST_RUN_OUTPUT;
+      return require("node:fs").existsSync(path) ? require("node:fs").readFileSync(path, "utf8") : "";
+    };
+    await until("constructs output", () => captured().includes("5050"), 30000);
+    await until("program finished", () => programs().length === 0, 30000);
+    const output = captured();
+    const written = output.split("\n").filter((line) => line.includes('"event":"output"')).join(" ");
+    for (const line of ["3:15", "4:6", "12:0", "5050"]) {
+      if (!written.includes(line)) throw new Error(`missing ${line}: ${output.slice(-600)}`);
+    }
+    return written;
+  });
   await step("acceptance program reaches the real API without configuration", async () => {
     await open("../character.pseudo");
     await vscode.commands.executeCommand("pseudolearn.runFile");

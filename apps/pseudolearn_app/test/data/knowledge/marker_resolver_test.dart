@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import '../../fakes/native_test_engine.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/data/knowledge/content_assets.dart';
@@ -41,6 +44,16 @@ List<ContentBlock> _resolved(
     examples: examples,
   );
   return (result as ContentLoaded<List<ContentBlock>>).value;
+}
+
+int _catalogedFunctions() {
+  final export = jsonDecode(
+    File(
+      '../../packages/pseudolearn_spec/specifications/export.json',
+    ).readAsStringSync(),
+  ) as Map<String, Object?>;
+  final resources = export['resources'] as Map<String, Object?>;
+  return (resources['functions'] as Map<String, Object?>).length;
 }
 
 void main() {
@@ -132,7 +145,7 @@ void main() {
           ParagraphBlock(text: '{{tabla:builtinFunctions}}'),
         ]);
 
-        expect((blocks.single as TableBlock).rows.length, 28);
+        expect((blocks.single as TableBlock).rows.length, _catalogedFunctions());
       },
     );
 

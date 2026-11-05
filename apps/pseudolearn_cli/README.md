@@ -486,3 +486,13 @@ carpeta de trabajo) y `console-environment.es.pseudo` (entorno, zona del sistema
 `tests/general_purpose_acceptance.rs` los ejecuta con el binario real en una carpeta temporal y exige salida estándar,
 salida de error, código de proceso y carpeta de trabajo vacía al terminar. Verificado solo en macOS arm64; Windows y
 Linux no se ejecutaron.
+
+### Aceptación de las construcciones del lenguaje
+
+`examples/language-constructs/acceptance/` reúne el programa único de aceptación de registros, genéricos, variantes y
+liberación por ámbito: `constructs.es.pseudo` (arreglo de registros, registro por referencia, campo y firma de método
+de tipo registro, clase e interfaz genéricas, variante declarada con `Segun` y objetos de bloque en un bucle),
+`scope.es.pseudo` (objetos de bloque bajo `--celdas`) y `project/` (constante, enumerado, registro, interfaz,
+subprograma y clase genéricos importados de otro paquete). `tests/language_constructs_acceptance.rs` ejecuta el binario
+real y exige la salida derivada de las reglas; la extensión de escritorio, la extensión web y la app reutilizan los
+mismos programas. La ejecución nativa no se incluye porque la paridad nativa de estas construcciones es de `PG-N.08`.

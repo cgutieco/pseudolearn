@@ -1,0 +1,22 @@
+Publico Constante Limite Como Entero <- 7;
+Publico Enumerado Color
+Rojo, Verde
+FinEnumerado
+Publico Registro Punto
+Definir x, z Como Entero;
+FinRegistro
+Publico Interfaz Medible
+Metodo medida() Como Entero;
+FinInterfaz
+Publico SubProceso primero<T>(a Como T, b Como T) Como T
+Retornar a;
+FinSubProceso
+Publico Clase Par<T>
+Definir izquierda Como T;
+Metodo Constructor(valor Como T)
+Este.izquierda <- valor;
+FinMetodo
+Metodo obtener() Como T
+Retornar Este.izquierda;
+FinMetodo
+FinClase
