@@ -54,7 +54,7 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Registro nombre, una declaración Definir por línea y FinRegistro declaran un tipo agregado por valor en el módulo. Cada campo tiene un tipo entero, real, lógico, carácter, cadena, enumerado, clase u otro registro; un registro necesita al menos un campo (recordWithoutFields) y solo contiene declaraciones de campo (expectedRecordField). Un registro no puede contenerse a sí mismo por valor, directa ni indirectamente (recursiveRecordContainment); contener una clase que lo referencia sí es válido. Un registro es una unidad de módulo: es privado salvo que lleve el prefijo Publico y se importa por símbolo (LANG.MODULE.IMPORT#R2). Puede usarse como tipo de variable, parámetro, resultado, elemento de arreglo y campo de clase (R5).",
+  "texto": "Registro nombre, una declaración Definir por línea y FinRegistro declaran un tipo agregado por valor en el módulo. Cada campo tiene un tipo entero, real, lógico, carácter, cadena, enumerado, clase u otro registro; un registro necesita al menos un campo (recordWithoutFields) y solo contiene declaraciones de campo (expectedRecordField). Un registro no puede contenerse a sí mismo por valor, directa ni indirectamente (recursiveRecordContainment); contener una clase que lo referencia sí es válido. Un registro tiene como máximo 65535 hojas, contadas como los campos que no son registros, incluidos los de sus registros anidados; el primer registro que supera ese máximo produce recordLayoutLimit, una sola vez aunque otros registros lo contengan. Un registro es una unidad de módulo: es privado salvo que lleve el prefijo Publico y se importa por símbolo (LANG.MODULE.IMPORT#R2). Puede usarse como tipo de variable, parámetro, resultado, elemento de arreglo y campo de clase (R5).",
   "verificacion": [
     "C1",
     "C2",
@@ -63,7 +63,9 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
     "C5",
     "C6",
     "C7",
-    "C20"
+    "C20",
+    "C48",
+    "C49"
   ]
 }
 ```
@@ -1215,6 +1217,53 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
     "fallo": {
       "codigo": "arrayIndexOutOfRange"
     }
+  }
+}
+```
+
+```caso
+{
+  "id": "C48",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Registro R0\nDefinir a, b Como Entero;\nFinRegistro\nRegistro R1\nDefinir a, b Como R0;\nFinRegistro\nRegistro R2\nDefinir a, b Como R1;\nFinRegistro\nRegistro R3\nDefinir a, b Como R2;\nFinRegistro\nRegistro R4\nDefinir a, b Como R3;\nFinRegistro\nRegistro R5\nDefinir a, b Como R4;\nFinRegistro\nRegistro R6\nDefinir a, b Como R5;\nFinRegistro\nRegistro R7\nDefinir a, b Como R6;\nFinRegistro\nRegistro R8\nDefinir a, b Como R7;\nFinRegistro\nRegistro R9\nDefinir a, b Como R8;\nFinRegistro\nRegistro R10\nDefinir a, b Como R9;\nFinRegistro\nRegistro R11\nDefinir a, b Como R10;\nFinRegistro\nRegistro R12\nDefinir a, b Como R11;\nFinRegistro\nRegistro R13\nDefinir a, b Como R12;\nFinRegistro\nRegistro R14\nDefinir a, b Como R13;\nFinRegistro\nRegistro R15\nDefinir a, b Como R14;\nFinRegistro\nRegistro R16\nDefinir a, b Como R15;\nFinRegistro\nAlgoritmo P\nEscribir \"listo\";\nFinAlgoritmo\n",
+    "en": "record R0\ndefine a, b as integer;\nendRecord\nrecord R1\ndefine a, b as R0;\nendRecord\nrecord R2\ndefine a, b as R1;\nendRecord\nrecord R3\ndefine a, b as R2;\nendRecord\nrecord R4\ndefine a, b as R3;\nendRecord\nrecord R5\ndefine a, b as R4;\nendRecord\nrecord R6\ndefine a, b as R5;\nendRecord\nrecord R7\ndefine a, b as R6;\nendRecord\nrecord R8\ndefine a, b as R7;\nendRecord\nrecord R9\ndefine a, b as R8;\nendRecord\nrecord R10\ndefine a, b as R9;\nendRecord\nrecord R11\ndefine a, b as R10;\nendRecord\nrecord R12\ndefine a, b as R11;\nendRecord\nrecord R13\ndefine a, b as R12;\nendRecord\nrecord R14\ndefine a, b as R13;\nendRecord\nrecord R15\ndefine a, b as R14;\nendRecord\nrecord R16\ndefine a, b as R15;\nendRecord\nalgorithm P\nwrite \"listo\";\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "recordLayoutLimit",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C49",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Registro R0\nDefinir a, b Como Entero;\nFinRegistro\nRegistro R1\nDefinir a, b Como R0;\nFinRegistro\nRegistro R2\nDefinir a, b Como R1;\nFinRegistro\nRegistro R3\nDefinir a, b Como R2;\nFinRegistro\nRegistro R4\nDefinir a, b Como R3;\nFinRegistro\nRegistro R5\nDefinir a, b Como R4;\nFinRegistro\nRegistro R6\nDefinir a, b Como R5;\nFinRegistro\nRegistro R7\nDefinir a, b Como R6;\nFinRegistro\nRegistro R8\nDefinir a, b Como R7;\nFinRegistro\nRegistro R9\nDefinir a, b Como R8;\nFinRegistro\nRegistro R10\nDefinir a, b Como R9;\nFinRegistro\nRegistro R11\nDefinir a, b Como R10;\nFinRegistro\nRegistro R12\nDefinir a, b Como R11;\nFinRegistro\nRegistro R13\nDefinir a, b Como R12;\nFinRegistro\nRegistro R14\nDefinir a, b Como R13;\nFinRegistro\nAlgoritmo P\nEscribir \"listo\";\nFinAlgoritmo\n",
+    "en": "record R0\ndefine a, b as integer;\nendRecord\nrecord R1\ndefine a, b as R0;\nendRecord\nrecord R2\ndefine a, b as R1;\nendRecord\nrecord R3\ndefine a, b as R2;\nendRecord\nrecord R4\ndefine a, b as R3;\nendRecord\nrecord R5\ndefine a, b as R4;\nendRecord\nrecord R6\ndefine a, b as R5;\nendRecord\nrecord R7\ndefine a, b as R6;\nendRecord\nrecord R8\ndefine a, b as R7;\nendRecord\nrecord R9\ndefine a, b as R8;\nendRecord\nrecord R10\ndefine a, b as R9;\nendRecord\nrecord R11\ndefine a, b as R10;\nendRecord\nrecord R12\ndefine a, b as R11;\nendRecord\nrecord R13\ndefine a, b as R12;\nendRecord\nrecord R14\ndefine a, b as R13;\nendRecord\nalgorithm P\nwrite \"listo\";\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "listo\n",
+    "terminacion": "completed"
   }
 }
 ```

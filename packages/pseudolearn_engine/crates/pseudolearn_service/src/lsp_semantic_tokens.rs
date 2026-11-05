@@ -2,6 +2,7 @@ use crate::document_session::DocumentSession;
 use crate::lsp_protocol::{success, text_document_uri};
 use crate::lsp_session::LspServer;
 use crate::positions::lsp_position_at;
+use pseudolearn_semantic::template_model::TemplateKind;
 use pseudolearn_semantic::{ServiceSymbolCategory, ServiceSymbolTarget};
 use pseudolearn_source::Span;
 use pseudolearn_syntax::TokenKind;
@@ -126,5 +127,22 @@ fn identifier_token_type(session: &DocumentSession, span: Span) -> Option<u32> {
         | ServiceSymbolTarget::Enum(_)
         | ServiceSymbolTarget::Interface(_) => 10,
         ServiceSymbolTarget::Constant(_) | ServiceSymbolTarget::Builtin(_) => 5,
+        ServiceSymbolTarget::Template(identifier) => template_token_type(session, identifier),
+        ServiceSymbolTarget::TypeParameter(_, _) => 11,
     })
+}
+
+fn template_token_type(
+    session: &DocumentSession,
+    identifier: pseudolearn_semantic::template_model::TemplateId,
+) -> u32 {
+    let kind = usize::try_from(identifier.0)
+        .ok()
+        .and_then(|slot| session.analysis.module.templates.get(slot))
+        .map(|template| template.kind);
+    match kind {
+        Some(TemplateKind::Subprogram) => 6,
+        Some(TemplateKind::Class) => 7,
+        _ => 10,
+    }
 }

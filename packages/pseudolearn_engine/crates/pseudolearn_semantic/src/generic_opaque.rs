@@ -26,7 +26,7 @@ fn parameter(
     template: &GenericTemplate,
     index: usize,
 ) -> (TypeId, bool) {
-    let key = (session.unit, template.node, index);
+    let key = (template.unit, template.node, index);
     if let Some(existing) = session.generic.opaque.get(&key) {
         return (*existing, false);
     }

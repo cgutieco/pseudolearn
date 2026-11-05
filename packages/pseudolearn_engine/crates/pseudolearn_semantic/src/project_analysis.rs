@@ -177,6 +177,7 @@ fn register(
             classes.insert((unit, name.clone()), *id);
         }
     }
+    crate::module_generic_links::link(session, bindings);
     link_classes(session, bindings, &classes);
     crate::module_type_links::register(session, bindings);
     let mut functions = FunctionTable::new();
@@ -188,6 +189,7 @@ fn register(
         }
     }
     link_functions(session, resolver, bindings, &functions);
+    crate::module_generic_links::link_modules(session, resolver, bindings);
     mark_exports(session, resolver, &functions);
     crate::import_uses::record(session, resolver, (&classes, &functions));
 }

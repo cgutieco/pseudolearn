@@ -13,27 +13,24 @@ pub(crate) fn instantiate(
     if !crate::interface_constraints::check(session, template, &arguments, origin) {
         return None;
     }
-    let key = (session.unit, template.node, arguments.clone());
+    let key = (template.unit, template.node, arguments.clone());
     if let Some(existing) = session.generic.records.get(&key) {
         return Some(*existing);
     }
-    let name = record_name(session, template)?;
+    let name = crate::generic_home::template_name(session, template)?;
     if session.generic.instance_count() >= INSTANCE_LIMIT {
         report_limit(session, origin, &name);
         return None;
     }
     session.generic.instantiated = true;
     session.generic.count_record();
-    let identifier = declare(session, template, &name, &arguments);
-    session.generic.records.insert(key.clone(), identifier);
-    session.generic.origins.insert(identifier, key);
-    fill(session, template, (identifier, arguments));
-    Some(identifier)
-}
-
-fn record_name(session: &AnalysisSession<'_>, template: &GenericTemplate) -> Option<String> {
-    let name_node = session.child(template.node, pseudolearn_syntax::NodeKind::Identifier)?;
-    Some(session.name(name_node))
+    Some(crate::generic_home::at_home(session, template, |session| {
+        let identifier = declare(session, template, &name, &arguments);
+        session.generic.records.insert(key.clone(), identifier);
+        session.generic.origins.insert(identifier, key);
+        fill(session, template, (identifier, arguments));
+        identifier
+    }))
 }
 
 fn declare(

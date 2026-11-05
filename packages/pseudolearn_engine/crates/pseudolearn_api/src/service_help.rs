@@ -166,6 +166,8 @@ fn category_name(category: HoverCategory) -> &'static str {
         HoverCategory::Procedure => "procedure",
         HoverCategory::Method => "method",
         HoverCategory::Class => "class",
+        HoverCategory::Template => "template",
+        HoverCategory::TypeParameter => "type_parameter",
         HoverCategory::Builtin => "builtin",
         HoverCategory::Keyword => "keyword",
     }

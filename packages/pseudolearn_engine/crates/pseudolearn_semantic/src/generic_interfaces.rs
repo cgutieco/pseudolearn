@@ -70,28 +70,47 @@ pub(crate) fn constraint(
     found
 }
 
+pub(crate) fn define(
+    session: &mut AnalysisSession<'_>,
+    template: &GenericTemplate,
+    arguments: Vec<TypeId>,
+) {
+    instantiate(session, template, arguments, template.node);
+}
+
 fn instantiate(
     session: &mut AnalysisSession<'_>,
     template: &GenericTemplate,
     arguments: Vec<TypeId>,
     origin: usize,
 ) -> Option<InterfaceId> {
-    let key = (session.unit, template.node, arguments.clone());
+    let key = (template.unit, template.node, arguments.clone());
     if let Some(existing) = session.generic.interfaces.get(&key) {
         return Some(*existing);
     }
-    let name_node = session.child(template.node, NodeKind::Identifier)?;
-    let name = session.name(name_node);
+    let name = crate::generic_home::template_name(session, template)?;
     if session.generic.instance_count() >= INSTANCE_LIMIT {
         crate::generic_records::report_limit(session, origin, &name);
         return None;
     }
     session.generic.instantiated = true;
     session.generic.count_record();
+    Some(crate::generic_home::at_home(session, template, |session| {
+        declare(session, template, (key, &name), arguments)
+    }))
+}
+
+fn declare(
+    session: &mut AnalysisSession<'_>,
+    template: &GenericTemplate,
+    (key, name): (crate::generic_state::InstanceKey, &str),
+    arguments: Vec<TypeId>,
+) -> InterfaceId {
     let identifier =
         InterfaceId(u32::try_from(session.module.interfaces.len()).unwrap_or(u32::MAX));
+    let label = crate::generic_labels::instance_name(session, name, &arguments);
     session.module.interfaces.push(HirInterface {
-        name: crate::generic_labels::instance_name(session, &name, &arguments),
+        name: label,
         unit: session.unit,
         syntax: template.node,
         span: session.span(template.node),
@@ -106,7 +125,7 @@ fn instantiate(
     if session.generic.signatures_ready {
         fill(session, identifier);
     }
-    Some(identifier)
+    identifier
 }
 
 pub(crate) fn fill(session: &mut AnalysisSession<'_>, interface: InterfaceId) {

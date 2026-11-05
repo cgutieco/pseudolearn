@@ -8,6 +8,7 @@ pub(crate) fn resolve(session: &mut AnalysisSession<'_>, node: usize, name: &str
     let Some(arguments) = arguments else {
         return plain(session, node, name);
     };
+    crate::generic_symbols::note_named_use(session, node, name);
     if let Some(class) = crate::generic_classes::resolve(session, (name, Some(arguments)), node) {
         return Some(class.map_or(Type::Error, Type::Object));
     }

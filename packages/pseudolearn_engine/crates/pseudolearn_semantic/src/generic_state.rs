@@ -1,5 +1,6 @@
 use crate::identities::{ClassId, FunctionId, RecordId, TypeId};
 use crate::interface_model::InterfaceId;
+use crate::template_model::TemplateId;
 use std::collections::{BTreeMap, BTreeSet};
 
 pub(crate) const INSTANCE_LIMIT: usize = 64;
@@ -8,6 +9,8 @@ pub(crate) type InstanceKey = (usize, usize, Vec<TypeId>);
 
 #[derive(Clone, Debug, Default)]
 pub(crate) struct GenericTemplate {
+    pub unit: usize,
+    pub identity: TemplateId,
     pub node: usize,
     pub parameters: Vec<String>,
     pub constraints: Vec<Option<String>>,
@@ -21,6 +24,7 @@ pub(crate) struct GenericScope {
     pub classes: BTreeMap<String, GenericTemplate>,
     pub interfaces: BTreeMap<String, GenericTemplate>,
     pub variants: BTreeMap<String, GenericTemplate>,
+    pub modules: BTreeMap<String, BTreeMap<String, GenericTemplate>>,
 }
 
 impl GenericScope {

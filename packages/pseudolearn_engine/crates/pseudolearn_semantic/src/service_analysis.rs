@@ -80,6 +80,16 @@ impl ServiceAnalysis {
     }
 }
 
+pub fn instance_at_span(analysis: &ServiceAnalysis, span: Span) -> Option<ServiceSymbolTarget> {
+    analysis
+        .instance_uses
+        .iter()
+        .filter(|(candidate, _)| candidate.source_id == span.source_id)
+        .filter(|(candidate, _)| candidate.start <= span.start && span.ending <= candidate.ending)
+        .min_by_key(|(candidate, _)| candidate.length())
+        .map(|(_, target)| *target)
+}
+
 pub fn references_at_byte_offset(
     analysis: &ServiceAnalysis,
     offset: usize,
@@ -137,7 +147,9 @@ fn find_definition_span(module: &HirModule, target: ServiceSymbolTarget) -> Opti
         ServiceSymbolTarget::Record(_)
         | ServiceSymbolTarget::Enum(_)
         | ServiceSymbolTarget::Interface(_)
-        | ServiceSymbolTarget::Constant(_) => module
+        | ServiceSymbolTarget::Constant(_)
+        | ServiceSymbolTarget::Template(_)
+        | ServiceSymbolTarget::TypeParameter(_, _) => module
             .name_declarations
             .iter()
             .find(|(_, declared)| *declared == target)
@@ -159,6 +171,7 @@ pub fn analyze_for_service(
     let mut occurrences = Vec::new();
     crate::service_collection::collect_symbols(&session.module, &mut symbols, &mut occurrences);
     crate::service_collection::collect_expression_occurrences(&session.module, &mut occurrences);
+    let instance_uses = crate::service_templates::canonicalize(&session.module, &mut occurrences);
     let expression_types = session
         .module
         .expressions
@@ -173,6 +186,7 @@ pub fn analyze_for_service(
         symbols,
         occurrences,
         expression_types,
+        instance_uses,
     }
 }
 
@@ -184,6 +198,7 @@ pub fn service_analysis_from_project(
     let mut occurrences = Vec::new();
     crate::service_collection::collect_symbols(&module, &mut symbols, &mut occurrences);
     crate::service_collection::collect_expression_occurrences(&module, &mut occurrences);
+    let instance_uses = crate::service_templates::canonicalize(&module, &mut occurrences);
     let expression_types = module
         .expressions
         .spans
@@ -197,5 +212,6 @@ pub fn service_analysis_from_project(
         symbols,
         occurrences,
         expression_types,
+        instance_uses,
     }
 }

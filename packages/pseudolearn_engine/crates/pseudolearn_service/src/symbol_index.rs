@@ -89,10 +89,13 @@ fn locate_name(
         ServiceSymbolTarget::Interface(interface) if is_declaration => {
             interface_name(tree, analysis, interface.0)
         }
+        ServiceSymbolTarget::Template(_) if is_declaration => template_name(tree, span),
         ServiceSymbolTarget::Record(_)
         | ServiceSymbolTarget::Enum(_)
         | ServiceSymbolTarget::Interface(_)
-        | ServiceSymbolTarget::Constant(_) => {
+        | ServiceSymbolTarget::Constant(_)
+        | ServiceSymbolTarget::Template(_)
+        | ServiceSymbolTarget::TypeParameter(_, _) => {
             if is_declaration {
                 first_identifier_from(tree, span)
             } else {
@@ -101,6 +104,11 @@ fn locate_name(
         }
         ServiceSymbolTarget::Builtin(_) => None,
     }
+}
+
+fn template_name(tree: &SyntaxTree, span: Span) -> Option<Span> {
+    first_token_of_kind(tree, span, |kind| kind == TokenKind::Identifier)
+        .filter(|found| found.source_id == span.source_id)
 }
 
 fn interface_name(tree: &SyntaxTree, analysis: &ServiceAnalysis, interface: u32) -> Option<Span> {

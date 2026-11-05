@@ -25,6 +25,16 @@ pub(crate) fn declared_name(
             .constant_names
             .get(usize::try_from(id.0).ok()?)
             .cloned(),
+        ServiceSymbolTarget::Template(id) => module
+            .templates
+            .get(usize::try_from(id.0).ok()?)
+            .map(|template| template.name.clone()),
+        ServiceSymbolTarget::TypeParameter(id, ordinal) => module
+            .templates
+            .get(usize::try_from(id.0).ok()?)?
+            .parameters
+            .get(usize::try_from(ordinal).ok()?)
+            .map(|parameter| parameter.name.clone()),
         _ => None,
     }
 }
@@ -34,6 +44,11 @@ pub(crate) fn name_collides(
     target: ServiceSymbolTarget,
     new_name: &str,
 ) -> bool {
+    if let ServiceSymbolTarget::TypeParameter(template, ordinal) = target
+        && sibling_parameter_collides(analysis, (template, ordinal), new_name)
+    {
+        return true;
+    }
     let sources: BTreeSet<SourceId> = analysis
         .references_for_target(target)
         .iter()
@@ -61,6 +76,7 @@ fn top_level_names(
         .name_declarations
         .iter()
         .filter(|(span, target)| span.source_id == source && *target != except)
+        .filter(|(_, target)| !matches!(target, ServiceSymbolTarget::TypeParameter(_, _)))
         .filter_map(|(_, target)| declared_name(analysis, *target));
     let classes = module
         .classes
@@ -83,4 +99,24 @@ fn top_level_names(
         .chain(functions)
         .chain(locals)
         .collect()
+}
+
+fn sibling_parameter_collides(
+    analysis: &ServiceAnalysis,
+    (template, ordinal): (pseudolearn_semantic::template_model::TemplateId, u32),
+    new_name: &str,
+) -> bool {
+    let wanted = usize::try_from(ordinal).unwrap_or(usize::MAX);
+    usize::try_from(template.0)
+        .ok()
+        .and_then(|slot| analysis.module.templates.get(slot))
+        .is_some_and(|model| {
+            model
+                .parameters
+                .iter()
+                .enumerate()
+                .any(|(index, parameter)| {
+                    index != wanted && IdentifierNormalizer::equals(&parameter.name, new_name)
+                })
+        })
 }

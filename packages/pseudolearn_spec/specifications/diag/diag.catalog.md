@@ -2473,6 +2473,17 @@
       "clase": "semantic",
       "tipos_argumentos": {}
     },
+    "recordLayoutLimit": {
+      "mensajes": {
+        "es": "Un registro con más de 65535 hojas supera el límite de disposición",
+        "en": "A record with more than 65535 leaves exceeds the layout limit"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": "error",
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
     "recordCannotBeWritten": {
       "mensajes": {
         "es": "Un registro no se puede escribir directamente",

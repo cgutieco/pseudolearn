@@ -27,30 +27,46 @@ fn check_one(
     let Some(Some(name)) = template.constraints.get(index).cloned() else {
         return true;
     };
-    let interface = match crate::generic_interfaces::constraint(session, template, index, arguments)
-    {
-        crate::generic_interfaces::InterfaceLookup::Found(interface) => interface,
-        crate::generic_interfaces::InterfaceLookup::Reported => return false,
-        crate::generic_interfaces::InterfaceLookup::Missing => {
-            session.named_report(DiagnosticCode::UnknownInterface, template.node, &name);
-            return false;
-        }
+    let Some(interface) = crate::generic_home::at_home(session, template, |session| {
+        constraint_at_home(session, template, (index, arguments), &name)
+    }) else {
+        return false;
     };
     let satisfied = arguments
         .get(index)
         .is_some_and(|argument| satisfies(session, *argument, interface));
     if !satisfied {
+        let related = crate::generic_home::at_home(session, template, |session| {
+            session
+                .tree
+                .span_for_node(template.node)
+                .unwrap_or_default()
+        });
         session.named_report(DiagnosticCode::GenericConstraintNotSatisfied, origin, &name);
-        let related = session
-            .tree
-            .span_for_node(template.node)
-            .unwrap_or_default();
         if let Some(diagnostic) = session.diagnostics.last_mut() {
             diagnostic.related.push(related);
         }
     }
-    record(session, template, index, interface);
     satisfied
+}
+
+fn constraint_at_home(
+    session: &mut AnalysisSession<'_>,
+    template: &GenericTemplate,
+    (index, arguments): (usize, &[TypeId]),
+    name: &str,
+) -> Option<InterfaceId> {
+    let interface = match crate::generic_interfaces::constraint(session, template, index, arguments)
+    {
+        crate::generic_interfaces::InterfaceLookup::Found(interface) => interface,
+        crate::generic_interfaces::InterfaceLookup::Reported => return None,
+        crate::generic_interfaces::InterfaceLookup::Missing => {
+            session.named_report(DiagnosticCode::UnknownInterface, template.node, name);
+            return None;
+        }
+    };
+    record(session, template, index, interface);
+    Some(interface)
 }
 
 pub(crate) fn record(

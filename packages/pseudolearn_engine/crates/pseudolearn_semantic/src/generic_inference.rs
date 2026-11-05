@@ -11,32 +11,85 @@ struct Binder<'template> {
     bound: Vec<Option<TypeId>>,
 }
 
+enum Failure {
+    Arity(usize),
+    Unbound(Option<String>),
+}
+
+#[derive(Clone, Copy)]
+enum Shape {
+    Parameters,
+    Fields,
+}
+
 pub(crate) fn infer(
     session: &mut AnalysisSession<'_>,
     template: &GenericTemplate,
     (actual, node): (&[TypeId], usize),
 ) -> Option<Vec<TypeId>> {
-    let parameters = parameter_nodes(session, template.node);
-    if parameters.len() != actual.len() {
-        crate::argument_checker::arity(session, (parameters.len(), actual.len()), node);
-        return None;
+    resolve(session, template, (actual, node), Shape::Parameters)
+}
+
+pub(crate) fn infer_record(
+    session: &mut AnalysisSession<'_>,
+    template: &GenericTemplate,
+    (actual, node): (&[TypeId], usize),
+) -> Option<Vec<TypeId>> {
+    resolve(session, template, (actual, node), Shape::Fields)
+}
+
+fn resolve(
+    session: &mut AnalysisSession<'_>,
+    template: &GenericTemplate,
+    (actual, node): (&[TypeId], usize),
+    shape: Shape,
+) -> Option<Vec<TypeId>> {
+    let outcome = crate::generic_home::at_home(session, template, |session| {
+        unify(session, template, actual, shape)
+    });
+    match outcome {
+        Ok(bound) => Some(bound),
+        Err(Failure::Arity(expected)) => {
+            crate::argument_checker::arity(session, (expected, actual.len()), node);
+            None
+        }
+        Err(Failure::Unbound(name)) => {
+            report(session, node, name.as_ref());
+            None
+        }
+    }
+}
+
+fn unify(
+    session: &AnalysisSession<'_>,
+    template: &GenericTemplate,
+    actual: &[TypeId],
+    shape: Shape,
+) -> Result<Vec<TypeId>, Failure> {
+    let nodes = match shape {
+        Shape::Parameters => parameter_nodes(session, template.node),
+        Shape::Fields => field_type_nodes(session, template.node),
+    };
+    if nodes.len() != actual.len() {
+        return Err(Failure::Arity(nodes.len()));
     }
     let mut binder = Binder {
         names: &template.parameters,
         bound: vec![None; template.parameters.len()],
     };
-    for (parameter, kind) in parameters.into_iter().zip(actual) {
-        if let Err(conflict) = bind_parameter(session, parameter, *kind, &mut binder) {
-            report(session, node, binder.names.get(conflict));
-            return None;
+    for (node, kind) in nodes.into_iter().zip(actual) {
+        let bound = match shape {
+            Shape::Parameters => bind_parameter(session, node, *kind, &mut binder),
+            Shape::Fields => bind(session, node, *kind, &mut binder),
+        };
+        if let Err(conflict) = bound {
+            return Err(Failure::Unbound(binder.names.get(conflict).cloned()));
         }
     }
-    let unbound = binder.bound.iter().position(Option::is_none);
-    if let Some(index) = unbound {
-        report(session, node, binder.names.get(index));
-        return None;
+    if let Some(index) = binder.bound.iter().position(Option::is_none) {
+        return Err(Failure::Unbound(binder.names.get(index).cloned()));
     }
-    Some(binder.bound.into_iter().flatten().collect())
+    Ok(binder.bound.into_iter().flatten().collect())
 }
 
 fn report(session: &mut AnalysisSession<'_>, node: usize, name: Option<&String>) {
@@ -148,8 +201,9 @@ fn instance_arguments(
         ),
         _ => return None,
     };
-    let (_, node, kinds) = origin?;
-    (expected?.node == *node).then(|| kinds.clone())
+    let (unit, node, kinds) = origin?;
+    let expected = expected?;
+    (expected.unit == *unit && expected.node == *node).then(|| kinds.clone())
 }
 
 fn bind_function(
@@ -176,33 +230,6 @@ fn bind_function(
         }
     }
     Ok(())
-}
-
-pub(crate) fn infer_record(
-    session: &mut AnalysisSession<'_>,
-    template: &GenericTemplate,
-    (actual, node): (&[TypeId], usize),
-) -> Option<Vec<TypeId>> {
-    let fields = field_type_nodes(session, template.node);
-    if fields.len() != actual.len() {
-        crate::argument_checker::arity(session, (fields.len(), actual.len()), node);
-        return None;
-    }
-    let mut binder = Binder {
-        names: &template.parameters,
-        bound: vec![None; template.parameters.len()],
-    };
-    for (field, kind) in fields.into_iter().zip(actual) {
-        if let Err(conflict) = bind(session, field, *kind, &mut binder) {
-            report(session, node, binder.names.get(conflict));
-            return None;
-        }
-    }
-    if let Some(index) = binder.bound.iter().position(Option::is_none) {
-        report(session, node, binder.names.get(index));
-        return None;
-    }
-    Some(binder.bound.into_iter().flatten().collect())
 }
 
 fn field_type_nodes(session: &AnalysisSession<'_>, template: usize) -> Vec<usize> {

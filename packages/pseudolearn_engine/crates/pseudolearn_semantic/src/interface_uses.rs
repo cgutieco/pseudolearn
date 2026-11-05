@@ -3,11 +3,16 @@ use crate::session::AnalysisSession;
 use pseudolearn_syntax::NodeKind;
 
 pub(crate) fn constraints(session: &mut AnalysisSession<'_>) {
-    let templates: Vec<usize> = session
-        .generics
+    let unit = session.unit;
+    let scope = &session.generics;
+    let templates: Vec<usize> = scope
         .records
         .values()
-        .chain(session.generics.functions.values())
+        .chain(scope.functions.values())
+        .chain(scope.classes.values())
+        .chain(scope.interfaces.values())
+        .chain(scope.variants.values())
+        .filter(|template| template.unit == unit)
         .map(|template| template.node)
         .collect();
     for template in templates {
@@ -27,5 +32,7 @@ fn note_constraint(session: &mut AnalysisSession<'_>, parameter: usize) {
     let name = session.name(constraint);
     if let Some(interface) = crate::interface_registry::find(session, &name) {
         session.note_use(constraint, ServiceSymbolTarget::Interface(interface));
+    } else {
+        crate::generic_symbols::note_named_use(session, constraint, &name);
     }
 }

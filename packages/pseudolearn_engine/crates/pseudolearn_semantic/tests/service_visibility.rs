@@ -30,6 +30,7 @@ fn analysis() -> ServiceAnalysis {
         symbols: vec![symbol(0, 10), symbol(1, 25)],
         occurrences: Vec::new(),
         expression_types: Vec::new(),
+        instance_uses: Vec::new(),
     }
 }
 

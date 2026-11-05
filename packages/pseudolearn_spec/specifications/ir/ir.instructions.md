@@ -2759,6 +2759,14 @@
 
 ```cobertura
 {
+  "id": "V245",
+  "regla": "LANG.TYPES.GENERIC#R3",
+  "sin_ri": "La importación de plantillas y su instanciación con la identidad del módulo que las declara se resuelven antes de la RI; la RI recibe una función, un registro, una clase o una variante concretos por instancia, con nombre calificado por módulo."
+}
+```
+
+```cobertura
+{
   "id": "V242",
   "regla": "LANG.TYPES.VARIANT#R1",
   "instrucciones": [

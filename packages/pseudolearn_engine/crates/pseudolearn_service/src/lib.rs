@@ -31,6 +31,7 @@ pub mod help_content;
 pub mod help_rendering;
 mod help_resolution;
 pub mod hover;
+mod template_hover;
 pub mod identifier_roles;
 pub mod insertion;
 pub mod line_renderer;
@@ -85,6 +86,7 @@ pub mod workspace_model;
 mod workspace_parse;
 pub mod workspace_session;
 mod workspace_snapshot;
+mod workspace_templates;
 
 pub use completion::{
     CompletionAction, CompletionEntry, CompletionKind, CompletionQuery, CompletionResult,

@@ -115,6 +115,12 @@ pub fn handle_hover(request: &ServiceRequest<'_>) -> Value {
         "intrinseca" => {
             json!({ "es_intrinseca": outcome.is_intrinsic, "identificador": outcome.identifier })
         }
+        "simbolo" => json!({
+            "categoria": format!("{:?}", outcome.category),
+            "identificador": outcome.identifier,
+            "firma": outcome.signature,
+            "plantilla": outcome.template
+        }),
         other => json!({ "error": format!("unsupported projection: {other}") }),
     }
 }

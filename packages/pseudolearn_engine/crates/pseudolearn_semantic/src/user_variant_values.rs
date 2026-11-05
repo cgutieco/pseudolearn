@@ -69,6 +69,7 @@ pub(crate) fn construct(
         return Some(build(session, (node, shape), variant, None));
     }
     let template = session.generics.variants.get(&name).cloned()?;
+    crate::generic_symbols::note_named_use(session, shape.qualifier, &name);
     if let Some(variant) = crate::generic_variants::from_context(session, &template, expected) {
         return Some(build(session, (node, shape), variant, None));
     }
@@ -170,7 +171,10 @@ fn infer(
                 .copied()
         })
         .collect();
-    let bound = bind(session, template, shape.member, &types);
+    let wanted = session.name(shape.member);
+    let bound = crate::generic_home::at_home(session, template, |session| {
+        bind(session, template, &wanted, &types)
+    });
     let Some(kinds) = bound else {
         session.report(DiagnosticCode::AmbiguousVariantType, node);
         return invalid(session, node);
@@ -184,10 +188,9 @@ fn infer(
 fn bind(
     session: &AnalysisSession<'_>,
     template: &GenericTemplate,
-    member: usize,
+    wanted: &str,
     types: &[TypeId],
 ) -> Option<Vec<TypeId>> {
-    let wanted = session.name(member);
     let alternative = session.children(template.node).into_iter().find(|child| {
         session.kind(*child) == NodeKind::VariantAlternative
             && session

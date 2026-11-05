@@ -4401,6 +4401,17 @@
       "severidad": "error",
       "tipos_argumentos": {}
     },
+    "recordLayoutLimit": {
+      "argumentos": [],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "A record with more than 65535 leaves exceeds the layout limit",
+        "es": "Un registro con más de 65535 hojas supera el límite de disposición"
+      },
+      "politica": "A",
+      "severidad": "error",
+      "tipos_argumentos": {}
+    },
     "recordNotInferable": {
       "argumentos": [
         "lexeme"
@@ -25761,8 +25772,8 @@
                 "text": "Introduces the local name that the imported symbol uses."
               }
             ],
-            "purpose": "The imported name is used like an own one, an enum keeps its members and as changes only the local name.",
-            "summary": "Import names by path a public enum, record, interface or constant from another module.",
+            "purpose": "The imported name is used like an own one, an enum keeps its members, a template is instantiated with the identity of its declaring module and as changes only the local name.",
+            "summary": "Import names by path a public enum, record, interface, constant or generic template from another module.",
             "title": "Importing types and constants"
           },
           "es": {
@@ -25788,8 +25799,8 @@
                 "text": "Introduce el nombre local con el que se usa el símbolo importado."
               }
             ],
-            "purpose": "El nombre importado se usa como uno propio, un enumerado conserva sus miembros y Como cambia solo el nombre local.",
-            "summary": "Importar nombra por ruta un enumerado, un registro, una interfaz o una constante público de otro módulo.",
+            "purpose": "El nombre importado se usa como uno propio, un enumerado conserva sus miembros, una plantilla se instancia con la identidad del módulo que la declara y Como cambia solo el nombre local.",
+            "summary": "Importar nombra por ruta un enumerado, un registro, una interfaz, una constante o una plantilla genérica público de otro módulo.",
             "title": "Importación de tipos y constantes"
           }
         },

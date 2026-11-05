@@ -20,6 +20,8 @@ pub enum HoverCategory {
     Procedure,
     Method,
     Class,
+    Template,
+    TypeParameter,
     Builtin,
     Keyword,
 }
@@ -32,6 +34,7 @@ pub struct HoverOutcome {
     pub identifier: String,
     pub signature: Option<String>,
     pub description: Option<String>,
+    pub template: Option<String>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -63,6 +66,7 @@ fn keyword_hover(context: &QueryContext<'_>, kind: KeywordKind) -> HoverOutcome 
         identifier: keyword_spelling(kind, context.profile),
         signature: None,
         description: token_description(kind.as_str(), context.locale).map(str::to_owned),
+        template: None,
     }
 }
 
@@ -87,12 +91,16 @@ fn contextual_hover(context: &QueryContext<'_>, slot: usize) -> Option<HoverOutc
         identifier: context.token_text(slot).to_owned(),
         signature: None,
         description: Some(description.to_owned()),
+        template: None,
     })
 }
 
 fn identifier_hover(context: &QueryContext<'_>, slot: usize) -> Option<HoverOutcome> {
     let span = context.tree.tokens.span(slot)?;
     if let Some(found) = context.index.at_token_span(span) {
+        if let ServiceSymbolTarget::Template(template) = found.target {
+            return crate::template_hover::template_hover(context, span, template);
+        }
         return symbol_hover(context, found.target);
     }
     let builtin = find_builtin(context.token_text(slot), context.profile)?;
@@ -115,10 +123,14 @@ fn identifier_hover(context: &QueryContext<'_>, slot: usize) -> Option<HoverOutc
             parameters.join(", ")
         )),
         description: None,
+        template: None,
     })
 }
 
-fn symbol_hover(context: &QueryContext<'_>, target: ServiceSymbolTarget) -> Option<HoverOutcome> {
+pub(crate) fn symbol_hover(
+    context: &QueryContext<'_>,
+    target: ServiceSymbolTarget,
+) -> Option<HoverOutcome> {
     match target {
         ServiceSymbolTarget::Local(id) => local_hover(context, usize::try_from(id.0).ok()?),
         ServiceSymbolTarget::Function(id) => function_hover(context, usize::try_from(id.0).ok()?),
@@ -135,7 +147,11 @@ fn symbol_hover(context: &QueryContext<'_>, target: ServiceSymbolTarget) -> Opti
         | ServiceSymbolTarget::Enum(_)
         | ServiceSymbolTarget::Interface(_)
         | ServiceSymbolTarget::Constant(_)
+        | ServiceSymbolTarget::Template(_)
         | ServiceSymbolTarget::Builtin(_) => None,
+        ServiceSymbolTarget::TypeParameter(template, ordinal) => {
+            crate::template_hover::type_parameter_hover(context, template, ordinal)
+        }
     }
 }
 
@@ -186,7 +202,7 @@ fn field_hover(context: &QueryContext<'_>, id: FieldId) -> Option<HoverOutcome> 
     ))
 }
 
-fn plain(category: HoverCategory, name: &str, type_name: String) -> HoverOutcome {
+pub(crate) fn plain(category: HoverCategory, name: &str, type_name: String) -> HoverOutcome {
     HoverOutcome {
         category,
         type_name,
@@ -194,6 +210,7 @@ fn plain(category: HoverCategory, name: &str, type_name: String) -> HoverOutcome
         identifier: name.to_owned(),
         signature: None,
         description: None,
+        template: None,
     }
 }
 

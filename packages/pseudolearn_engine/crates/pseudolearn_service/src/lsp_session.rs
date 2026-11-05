@@ -5,7 +5,7 @@ use pseudolearn_lexicon::Profile;
 use serde_json::Value;
 use std::collections::BTreeMap;
 
-pub const SEMANTIC_TOKEN_TYPES: [&str; 11] = [
+pub const SEMANTIC_TOKEN_TYPES: [&str; 12] = [
     "keyword",
     "operator",
     "number",
@@ -17,6 +17,7 @@ pub const SEMANTIC_TOKEN_TYPES: [&str; 11] = [
     "property",
     "parameter",
     "type",
+    "typeParameter",
 ];
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]

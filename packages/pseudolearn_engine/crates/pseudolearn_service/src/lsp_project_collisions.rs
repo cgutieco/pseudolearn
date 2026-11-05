@@ -17,7 +17,9 @@ pub(crate) fn target_collides(
         ServiceSymbolTarget::Record(_)
         | ServiceSymbolTarget::Enum(_)
         | ServiceSymbolTarget::Interface(_)
-        | ServiceSymbolTarget::Constant(_) => {
+        | ServiceSymbolTarget::Constant(_)
+        | ServiceSymbolTarget::Template(_)
+        | ServiceSymbolTarget::TypeParameter(_, _) => {
             crate::declared_names::name_collides(analysis, target, new_name)
         }
         ServiceSymbolTarget::Builtin(_) => true,

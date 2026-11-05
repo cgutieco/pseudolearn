@@ -19871,8 +19871,8 @@
         "content": {
           "es": {
             "title": "Importación de tipos y constantes",
-            "summary": "Importar nombra por ruta un enumerado, un registro, una interfaz o una constante público de otro módulo.",
-            "purpose": "El nombre importado se usa como uno propio, un enumerado conserva sus miembros y Como cambia solo el nombre local.",
+            "summary": "Importar nombra por ruta un enumerado, un registro, una interfaz, una constante o una plantilla genérica público de otro módulo.",
+            "purpose": "El nombre importado se usa como uno propio, un enumerado conserva sus miembros, una plantilla se instancia con la identidad del módulo que la declara y Como cambia solo el nombre local.",
             "parts": [
               {
                 "identity": "importKeyword",
@@ -19898,8 +19898,8 @@
           },
           "en": {
             "title": "Importing types and constants",
-            "summary": "Import names by path a public enum, record, interface or constant from another module.",
-            "purpose": "The imported name is used like an own one, an enum keeps its members and as changes only the local name.",
+            "summary": "Import names by path a public enum, record, interface, constant or generic template from another module.",
+            "purpose": "The imported name is used like an own one, an enum keeps its members, a template is instantiated with the identity of its declaring module and as changes only the local name.",
             "parts": [
               {
                 "identity": "importKeyword",

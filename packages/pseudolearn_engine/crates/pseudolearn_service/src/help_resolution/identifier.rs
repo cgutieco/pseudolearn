@@ -72,6 +72,8 @@ fn symbol_category(category: crate::hover::HoverCategory) -> &'static str {
         crate::hover::HoverCategory::Procedure => "procedure",
         crate::hover::HoverCategory::Method => "method",
         crate::hover::HoverCategory::Class => "class",
+        crate::hover::HoverCategory::Template => "template",
+        crate::hover::HoverCategory::TypeParameter => "type_parameter",
         crate::hover::HoverCategory::Builtin => "builtin",
         crate::hover::HoverCategory::Keyword => "keyword",
     }

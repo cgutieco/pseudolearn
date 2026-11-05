@@ -56,11 +56,11 @@ pub(crate) fn instantiate(
     if !crate::interface_constraints::check(session, template, &arguments, origin) {
         return None;
     }
-    let key = (session.unit, template.node, arguments.clone());
+    let key = (template.unit, template.node, arguments.clone());
     if let Some(existing) = session.generic.functions.get(&key) {
         return Some(*existing);
     }
-    let name = template_name(session, template)?;
+    let name = crate::generic_home::template_name(session, template)?;
     if session.generic.instance_count() >= INSTANCE_LIMIT {
         crate::generic_records::report_limit(session, origin, &name);
         return None;
@@ -68,19 +68,17 @@ pub(crate) fn instantiate(
     session.generic.instantiated = true;
     let diagnostics = session.diagnostics.len();
     let saved = SavedState::take(session);
-    let function = register(session, template, (&name, &arguments));
-    session.generic.functions.insert(key, function);
-    let index = usize::try_from(function.0).unwrap_or(usize::MAX);
-    crate::flow::function(session, index);
+    let function = crate::generic_home::at_home(session, template, |session| {
+        let function = register(session, template, (&name, &arguments));
+        session.generic.functions.insert(key, function);
+        let index = usize::try_from(function.0).unwrap_or(usize::MAX);
+        crate::flow::function(session, index);
+        function
+    });
     session.called.insert(function);
     saved.restore(session);
     crate::generic_discard::dedupe(&mut session.diagnostics, diagnostics);
     Some(function)
-}
-
-fn template_name(session: &AnalysisSession<'_>, template: &GenericTemplate) -> Option<String> {
-    let name_node = session.child(template.node, NodeKind::Identifier)?;
-    Some(session.name(name_node))
 }
 
 fn register(

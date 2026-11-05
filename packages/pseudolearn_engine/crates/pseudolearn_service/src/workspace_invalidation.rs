@@ -15,7 +15,13 @@ pub(crate) fn compare_workspace(
     let mut signatures = BTreeSet::new();
     compare_files(previous, current, &mut changed, &mut signatures);
     compare_package_options(previous, current, &mut changed, &mut signatures);
-    let invalidated = dependent_closure(previous, current, &signatures, changed.clone());
+    let mut invalidated = dependent_closure(previous, current, &signatures, changed.clone());
+    let reverse = reverse_dependencies(previous, current);
+    invalidated.extend(crate::workspace_templates::template_consumers(
+        (previous, current),
+        &changed,
+        &reverse,
+    ));
     invalidation(changed, signatures, invalidated)
 }
 

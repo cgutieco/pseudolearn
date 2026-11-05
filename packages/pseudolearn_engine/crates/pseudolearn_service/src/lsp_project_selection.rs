@@ -87,7 +87,9 @@ fn target_name(
         ServiceSymbolTarget::Record(_)
         | ServiceSymbolTarget::Enum(_)
         | ServiceSymbolTarget::Interface(_)
-        | ServiceSymbolTarget::Constant(_) => {
+        | ServiceSymbolTarget::Constant(_)
+        | ServiceSymbolTarget::Template(_)
+        | ServiceSymbolTarget::TypeParameter(_, _) => {
             crate::declared_names::declared_name(analysis, target)
         }
         ServiceSymbolTarget::Builtin(_) => None,

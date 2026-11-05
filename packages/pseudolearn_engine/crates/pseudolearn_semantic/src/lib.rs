@@ -56,6 +56,8 @@ mod generic_opaque;
 mod generic_records;
 mod generic_registry;
 mod generic_state;
+mod generic_home;
+mod generic_symbols;
 mod generic_variants;
 mod hierarchy;
 pub mod hir;
@@ -76,6 +78,7 @@ mod local_registry;
 mod module_calls;
 mod module_cycles;
 mod module_exports;
+mod module_generic_links;
 mod module_imports;
 mod module_structure;
 mod module_symbols;
@@ -98,10 +101,12 @@ mod record_registry;
 pub mod service_analysis;
 pub mod service_collection;
 pub mod service_model;
+mod service_templates;
 mod session;
 mod session_units;
 mod statement_checker;
 pub mod statement_model;
+pub mod template_model;
 mod suspension_checker;
 #[cfg(test)]
 mod suspension_checker_tests;
@@ -137,7 +142,7 @@ pub use project_analysis::{
 pub use project_profile::{ResolvedUnitProfile, resolve_project_profiles};
 pub use service_analysis::{
     ServiceAnalysis, ServiceReference, ServiceSymbol, ServiceSymbolCategory, ServiceSymbolTarget,
-    analyze_for_service, service_analysis_from_project,
+    analyze_for_service, instance_at_span, service_analysis_from_project,
 };
 pub use session::SemanticOptions;
 pub use statement_model::{HirCase, HirDimension, HirStatement, StatementColumns};

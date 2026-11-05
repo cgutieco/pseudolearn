@@ -501,45 +501,45 @@ Se ejecuta antes que `PG-L.03` porque las plantillas exportables incluyen clases
 
 ### PG-L.05 · Comprobación de plantillas sin instanciar y símbolo de plantilla en el servicio
 
-- [ ] `PG-L.05.01` Resolver `PL-V-09`. Leer `tool.service.hover.md`, `tool.service.navigation.md`,
+- [x] `PG-L.05.01` Resolver `PL-V-09`. Leer `tool.service.hover.md`, `tool.service.navigation.md`,
   `tool.lsp.capabilities.md` y los archivos de servicio de `PL-H-23`.
-- [ ] `PG-L.05.02` Especificación: `LANG.TYPES.GENERIC` (comprobación de definición explícita para toda plantilla,
+- [x] `PG-L.05.02` Especificación: `LANG.TYPES.GENERIC` (comprobación de definición explícita para toda plantilla,
   incluidas clases, interfaces, variantes y plantillas públicas no usadas por su módulo); `TOOL.SERVICE.HOVER#R1` y
   `TOOL.SERVICE.NAVIGATION#R1`/`R2`/`R4` con la categoría «parámetro de tipo» y la regla de DL-13 (usos de instancias
   se atribuyen a la plantilla).
-- [ ] `PG-L.05.03` Casos: plantilla de función, registro y clase sin ningún uso con error en la definición
+- [x] `PG-L.05.03` Casos: plantilla de función, registro y clase sin ningún uso con error en la definición
   (diagnóstico presente, ninguna instancia generada); servicio: hover sobre la plantilla, sobre un uso instanciado
   (muestra instancia y plantilla), sobre `T`; referencias desde la plantilla devuelven usos en dos módulos; renombrar la
   plantilla edita todos los módulos; renombrar `T` no toca un homónimo fuera de la plantilla (K-17); resaltado de
   documento lectura/escritura.
-- [ ] `PG-L.05.04` Tests y código: `service` (`symbol_index.rs`, `symbol_queries.rs`, `hover.rs`, `navigation.rs`,
+- [x] `PG-L.05.04` Tests y código: `service` (`symbol_index.rs`, `symbol_queries.rs`, `hover.rs`, `navigation.rs`,
   `lsp_rename.rs`, `lsp_project_rename.rs`, `lsp_semantic_tokens.rs` para tipo de token de parámetro de tipo);
   `semantic` (`service_collection.rs`/`service_model.rs`: ocurrencias de instancias apuntan al símbolo de plantilla;
   ocurrencias de parámetros de tipo).
-- [ ] `PG-L.05.05` README de `service` y `semantic` (retirar el pendiente). Nivel D: tests dirigidos de `service`;
+- [x] `PG-L.05.05` README de `service` y `semantic` (retirar el pendiente). Nivel D: tests dirigidos de `service`;
   `see validate`. Commit local.
 
 ### PG-L.03 · Genéricos exportables entre módulos
 
-- [ ] `PG-L.03.01` Resolver `PL-V-10`. Leer `api.project.lock.md`, `tool.service.incremental.md`,
+- [x] `PG-L.03.01` Resolver `PL-V-10`. Leer `api.project.lock.md`, `tool.service.incremental.md`,
   `tool.service.workspace.md`, `eng.state.incremental.md`.
-- [ ] `PG-L.03.02` Especificación: `LANG.TYPES.GENERIC` (plantillas públicas exportables; instanciación en el
+- [x] `PG-L.03.02` Especificación: `LANG.TYPES.GENERIC` (plantillas públicas exportables; instanciación en el
   consumidor con identidad de la plantilla; nombre de instancia calificado; límite por programa) y
   `LANG.MODULE.IMPORT#R1`/`R4` (importar y reexportar plantillas). Caso de lock según DL-08: la salida no cambia al
   reordenar archivos ni al reconstruir el lock.
-- [ ] `PG-L.03.03` Casos de proyecto: biblioteca que exporta función, registro, clase, interfaz (y variante) genéricos;
+- [x] `PG-L.03.03` Casos de proyecto: biblioteca que exporta función, registro, clase, interfaz (y variante) genéricos;
   dos módulos consumidores instancian `Par<Entero>` y comparten instancia (observable: igualdad de registros entre
   valores producidos por ambos módulos y una sola entrada en la lista de instancias si la API la expone); restricción
   con interfaz exportada; infeliz: plantilla privada importada (`privateImport`), argumento que no cumple una
   restricción definida en otro paquete, límite de 64 instancias sumando módulos; límite: plantilla reexportada dos
   veces, homónimos genéricos en paquetes distintos bajo alias.
-- [ ] `PG-L.03.04` Tests: semantic (proyecto), service (invalidación incremental: editar el cuerpo de la plantilla
+- [x] `PG-L.03.04` Tests: semantic (proyecto), service (invalidación incremental: editar el cuerpo de la plantilla
   marca afectados a los consumidores que la instancian y no a los demás, `TOOL.SERVICE.INCREMENTAL#R2`).
-- [ ] `PG-L.03.05` Código: `generic_registry.rs` (plantillas en exportaciones), `module_exports.rs`/`module_imports.rs`
+- [x] `PG-L.03.05` Código: `generic_registry.rs` (plantillas en exportaciones), `module_exports.rs`/`module_imports.rs`
   (clase de símbolo plantilla), `generic_functions.rs`/`generic_records.rs`/`generic_classes.rs` (instanciar con
   la unidad de la plantilla y cambiar de unidad con `switch_unit` mientras se comprueba el cuerpo), `generic_labels.rs`
   (calificación), servicio (`workspace_invalidation.rs`).
-- [ ] `PG-L.03.06` Fichas (ampliar `help.pgl02.*`/`help.pgl04.*` con importación de plantillas). README de `semantic`
+- [x] `PG-L.03.06` Fichas (ampliar `help.pgl02.*`/`help.pgl04.*` con importación de plantillas). README de `semantic`
   (retirar «los genéricos no cruzan módulos») y `service`. Nivel D. Commit local.
 
 ### PG-L.06 · Liberación de memoria por ámbito de bloque
@@ -840,7 +840,7 @@ por plataforma → F.10 criterio de salida. Push solo después de F.10 en verde 
 ## 11. Resumen de ejecución
 
 Estado: ejecución parcial el 2026-11-05 en una sola sesión sobre `d9d84bc7`. **La fase no está cerrada**: se cumplieron
-PG-L.01, PG-L.02 (completo, cerrado después en una iteración propia), PG-L.06 (regla y pruebas; la VM ya cumplía) y PG-L.04 (clases, interfaces y variantes genéricas de usuario, en una iteración propia del 2026-11-05). No se iniciaron PG-L.03, PG-L.05 ni PG-L.07; el
+PG-L.01, PG-L.02 (completo, cerrado después en una iteración propia), PG-L.06 (regla y pruebas; la VM ya cumplía), PG-L.04 (clases, interfaces y variantes genéricas de usuario, en una iteración propia del 2026-11-05) y PG-L.05 y PG-L.03 (comprobación de plantillas, símbolo de plantilla en el servicio y genéricos exportables entre módulos, en otra iteración propia del 2026-11-05). No se inició PG-L.07; el
 bloque F se ejecutó para lo implementado. Las casillas sin marcar son tareas **no realizadas**, no omitidas por descuido;
 cada una consta en la tabla siguiente con su motivo. Commits locales: `9acfbe96` (PG-L.01), `98b00836` (PG-L.06),
 `c61c2f63` (PG-L.02) y el commit de cierre; **no se hizo push** porque `PG-L.F.10` no está en verde y el plan exige
@@ -870,7 +870,19 @@ aceptar pendientes por escrito antes de publicar (`PHASE-GREEN`, §10.2).
 | `PG-L.04.B3` | Cumplida | `syntax/user_variant_parser.rs`; `semantic/user_variants.rs`, `user_variant_layout.rs`, `user_variant_values.rs`, `user_variant_patterns.rs`, `generic_variants.rs`, `variant_patterns.rs`, `module_symbols.rs`, `module_type_links.rs`; `lowering/effect_values.rs` y `service/type_names.rs` solo para la familia nueva | Ninguna instrucción de RI nueva: la variante declarada usa `VariantLayout` y la bajada de las incorporadas |
 | `PG-L.04.05` | Cumplida | `help.pgl04.generic_class`, `generic_interface`, `type_parameter`, `variant`, `variant_alternative` en `tool.service.catalog.md` con roles | |
 | `PG-L.04.06` | Cumplida | README de `syntax`, `semantic` e `ir`; nivel D: `cargo test --workspace --no-fail-fast` (2 469 pruebas, 4 fallos: 2 preexistentes de `fake_host`/`reference_vocabulary` y 2 pruebas nuevas mal escritas, corregidas y repetidas), Clippy `-D warnings`, `rust-checks all`, `see validate`, `lock`, `export`, conformidad engine | `lexicon` y `lowering` sin cambio de decisión; el README de la app conserva la frase sobre genéricos de clase hasta `PG-L.07` |
-| `PG-L.05.*`, `PG-L.03.*`, `PG-L.07.*` | No cumplida | | No iniciadas por alcance de la sesión (símbolo de plantilla, genéricos entre módulos, app y extensión) |
+| `PG-L.05.01` | Cumplida | Lectura de `TOOL.SERVICE.HOVER`, `TOOL.SERVICE.NAVIGATION`, `TOOL.LSP.CAPABILITIES` y de los archivos de servicio de `PL-H-23` | PL-V-09 confirmada para subprogramas y clases (C12, C33); desmentida para interfaces genéricas, cuya instancia de definición no existía: una firma errónea en una interfaz genérica sin uso no se diagnosticaba |
+| `PG-L.05.02` | Cumplida | `LANG.TYPES.GENERIC#R1` (comprobación de toda plantilla en su módulo, pública o no, con o sin instancias; error notificado una vez), `TOOL.SERVICE.HOVER#R1` y `TOOL.SERVICE.NAVIGATION#R1`–`R4` (plantilla y parámetro de tipo como símbolos; usos de instancias atribuidos a la plantilla) | |
+| `PG-L.05.03` | Cumplida | `LANG.TYPES.GENERIC` C53–C56; `TOOL.SERVICE.HOVER` C16–C19 (proyección nueva `simbolo` en la conformidad del servicio); `TOOL.SERVICE.NAVIGATION` C17–C23 | Referencias desde la plantilla en dos módulos y renombrado de todos los módulos se cubren con `service/tests/lsp_project_template_queries.rs` porque el sujeto `service` no ejecuta proyectos LSP por caso |
+| `PG-L.05.04` | Cumplida | `semantic`: `template_model`, `generic_symbols`, `service_templates`; `service`: `template_hover`, `symbol_index`, `hover`, `declared_names`, `lsp_rename`, `lsp_project_*`, `lsp_semantic_tokens` (tipo `typeParameter`); pruebas `service/tests/template_hover.rs` (10) y `lsp_project_template_queries.rs` (3) | |
+| `PG-L.05.05` | Cumplida | README de `semantic` y `service` | Límite asumido: miembros y variables de una plantilla sin instancias no tienen símbolo (la plantilla y sus parámetros sí) |
+| `PG-L.03.01` | Cumplida | Lectura de `API.PROJECT.LOCK`, `TOOL.SERVICE.INCREMENTAL`, `TOOL.SERVICE.WORKSPACE`, `ENG.STATE.INCREMENTAL` | PL-V-10 desmentida: la clave usaba la unidad que instancia y el cuerpo se resolvía con el árbol del consumidor; además una plantilla importada no se enlazaba (el import se aceptaba sin efecto) |
+| `PG-L.03.02` | Cumplida | `LANG.TYPES.GENERIC#R3` (nueva, estable 1.0.0), cobertura `V245`, vínculos engine `cumple` y aot `pendiente` (`PG-N.08`) | El lock no cambia (DL-08); la independencia del orden de archivos se acredita con C44. `LANG.MODULE.IMPORT` no se editó: su R1/R2 ya cubren toda unidad pública y la llamada por alias la fija `LANG.TYPES.GENERIC#R3` |
+| `PG-L.03.03` | Cumplida | `LANG.TYPES.GENERIC` C42–C52 | Función, registro, clase, interfaz y variante exportados; instancia compartida entre dos módulos (igualdad de registros); restricción de otro paquete; `privateImport`; límite de 64 sumando módulos (exacto y 65.ª); reexportación doble; homónimos con alias; llamada por alias de módulo |
+| `PG-L.03.04` | Cumplida | `semantic/tests/module_generic_exports_tests.rs` (9); `service/tests/workspace_templates.rs` y `TOOL.SERVICE.WORKSPACE#R4` C9–C10 | Editar el cuerpo de una plantilla invalida a los importadores que la nombran y no a los demás |
+| `PG-L.03.05` | Cumplida | `generic_home`, `module_generic_links`, `generic_*` (clave con la unidad de la plantilla), `generic_inference` (unificación en la unidad de la plantilla), `interface_constraints`, `module_calls`, `service/workspace_templates` | |
+| `PG-L.03.06` | Cumplida | `help.pgl02.type_import` ampliada con plantillas; README de `semantic` y `service` | |
+| `PG-L.07.*` | No cumplida | | No iniciada por alcance de la sesión (app y extensión) |
+| Verificación de PG-L.05 y PG-L.03 | Cumplida | `see validate`, `lock --check`, `export --check`; conformidad engine de `LANG.TYPES.GENERIC` y `LANG.TYPES.RECORD` y service de `TOOL.SERVICE.{NAVIGATION,HOVER,WORKSPACE,CATALOG}` con 0 divergencias tras regenerar la evidencia de propiedades (engine 32, service 8); Clippy `-D warnings` del espacio de trabajo; `rust-checks all`; `cargo test --workspace --no-fail-fast`: 2 499 pruebas en verde y los 2 fallos preexistentes, corregidos después | Los dos fallos que `PG-L.F.03` había clasificado como preexistentes se resolvieron: `reference_vocabulary` fijaba 28 funciones incorporadas y PG-S llevó el catálogo a 38 (ahora deriva el número del léxico); `fake_host` reproducía y buscaba evento por evento todo caso con anfitrión, incluido `LIB.IO` C71, cuya cinta se declara no reproducible por redactar secretos (ahora respeta `reproduccion_fallo`, que la conformidad ya verifica) |
 | `PG-L.06.01` | No cumplida | | PL-V-12 confirmada con experimento; PL-V-13 y PL-V-14 sin verificar |
 | `PG-L.06.02`, `.03`, `.05`, `.06` | Cumplida | `98b00836`; `MEM.MANAGED.UNOBSERVABLE#R3`, C2–C6; conformidad engine en verde | La VM ya liberaba por ámbito; no hubo cambio de código. Vínculo `aot` declarado `cumple` sin ejecutar la conformidad nativa (evidencia obsoleta) |
 | `PG-L.06.04` | No cumplida | | `pseudolearn_api/tests/scope_release.rs` cubre la VM; no se añadió el negativo con `roots::expire` desactivado |
@@ -902,7 +914,9 @@ Suites omitidas: `flutter test`, extensión, `PERF.*`, experimentos `PL-E01`–`
 | PL-V-06 | Confirmada para `Vector<Registro>` | `record_in_collections.rs`; `Dictionary`, `Opcional`, `Resultado`, canales y tareas sin comprobar | |
 | PL-V-07 | Desmentida en parte | El analizador rechazaba el prefijo (`UnexpectedTokenOutsideProgramUnit`) | Se extendió `visibility_prefix` y `parse_visible_unit` |
 | PL-V-08 | Confirmada | C36 de `LANG.MODULE.IMPORT`; `constant_evaluator::run` debía restaurar la unidad activa | |
-| PL-V-09, V-10, V-11 | Sin comprobar | | |
+| PL-V-09 | Confirmada en parte | C12, C33; interfaces genéricas sin instancia de definición | `generic_interfaces::define` en la comprobación de definición |
+| PL-V-10 | Desmentida | La clave usaba `session.unit` del consumidor | Clave e instanciación con la unidad de la plantilla (`generic_home`) |
+| PL-V-11 | Sin comprobar | | |
 | PL-V-12 | Confirmada | `scope_release.rs` y C2–C6 de `MEM.MANAGED.UNOBSERVABLE`: un bucle de 50 iteraciones con presupuesto de una iteración completa | Solo especificación y pruebas |
 | PL-V-13, V-14 | Sin comprobar | | |
 | PL-V-15 | Confirmada | `catalogs.json` y `diag.catalog.md` se editaron a la par y `see validate` pasa | |
@@ -917,6 +931,9 @@ Suites omitidas: `flutter test`, extensión, `PERF.*`, experimentos `PL-E01`–`
 | `semantic/src/module_type_links.rs` | semantic | ídem | Enlace de tipos importados en un proyecto |
 | `lowering/src/{class_record_values,record_arrays,record_cells,statements_dimension}.rs` | lowering | `source, semantic, ir, diagnostics`; no `vm` | Hojas de campos, arreglos, celdas por referencia y declaración de dimensiones |
 | `syntax/src/{module_parser,parser}.rs` | syntax | `source, diagnostics, lexicon` | Prefijo de visibilidad de unidades |
+| `semantic/src/{generic_home,module_generic_links}.rs` | semantic | `abi, source, project, diagnostics, lexicon, syntax`; no `lowering` ni `vm` | Instanciación en la unidad de la plantilla; enlace de plantillas importadas |
+| `semantic/src/{template_model,generic_symbols,service_templates}.rs` | semantic | ídem | Modelo de plantilla del HIR; símbolos de plantilla y de parámetro de tipo; atribución de usos de instancias a la plantilla |
+| `service/src/{template_hover,workspace_templates}.rs` | service | `source, diagnostics, lexicon, syntax, semantic, project`; no `vm` | Hover de plantillas y parámetros; invalidación por plantillas en el workspace |
 
 ### 11.3 Conflictos y decisiones de la persona
 
@@ -931,6 +948,8 @@ Suites omitidas: `flutter test`, extensión, `PERF.*`, experimentos `PL-E01`–`
 | DL-02 (límite) | Hojas de un registro como elemento de arreglo | Hallazgo de `PG-L.01.04` | Un arreglo de 65 535 hojas agotaba la memoria por los mapas de raíces cuadráticos de `array.new`; se fijó `RECORD_ARRAY_MAXIMUM_LEAVES` = 1 024 y el diagnóstico `recordArrayTooWide` (`LANG.TYPES.RECORD#R5`). Como variable o campo de clase se admiten las 65 535 hojas |
 | DL-02 (desviación) | Registro como elemento de arreglo | Opción (a) elegida el 2026-11-05 | **No aplicada**: la RI, el bytecode, la VM y el nativo exigirían elementos de varias hojas. Se aplicó el equivalente de (b) restringido: un arreglo de registros es un arreglo por hoja detrás de un único nombre, viable porque un arreglo solo vive en variables y parámetros. Identidad de arreglo y paso por parámetro se conservan; la vista de estado muestra una entrada por hoja. Reversión: medición de `PL-E03` o ambigüedad del estado |
 | Nombres **CANDIDATOS** | Sintaxis y diagnósticos propuestos | «Sí, recomendadas», 2026-11-05 | Solo se usaron los de registros y módulos |
+| DL-08, DL-12, DL-13 | Genéricos entre módulos, comprobación de plantillas y símbolo de plantilla | Mensaje de la persona del 2026-11-05: «Implementa todos los puntos de `PG-L.05` … y `PG-L.03` … en una sola iteración. Si surgen problemas heredados … se debe investigar y resolver» | Aplicadas como se propusieron; la llamada `alias.plantilla(…)` se añadió para no crear una restricción nueva |
+| Hallazgo heredado (`recordLayoutLimit`) | Un registro con más de 65 535 hojas no tenía diagnóstico semántico y `Par<Par<…>>` anidado hacía el análisis exponencial (un caso de 32 niveles no terminaba) | Misma autorización | Diagnóstico nuevo `recordLayoutLimit` en `DIAG.CATALOG` y `LANG.TYPES.RECORD#R1` (C48–C49); hojas truncadas en el máximo más una |
 
 ### 11.4 Auditoría de «no soportado» (`PG-L.00.02` y `PG-L.F.10`)
 

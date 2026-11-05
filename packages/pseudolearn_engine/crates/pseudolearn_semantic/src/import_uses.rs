@@ -39,6 +39,9 @@ fn target_of(
     origin: &Origin,
     tables: (&ClassTable, &FunctionTable),
 ) -> Option<ServiceSymbolTarget> {
+    if let Some(template) = crate::module_generic_links::target(session, origin) {
+        return Some(template);
+    }
     let key = (origin.unit, origin.name.clone());
     match origin.kind {
         SymbolKind::Function => tables

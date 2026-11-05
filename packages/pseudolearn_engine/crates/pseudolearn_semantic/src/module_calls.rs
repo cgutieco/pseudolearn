@@ -22,11 +22,15 @@ pub(crate) fn call(
     }
     let members = session.modules.get(&alias)?.clone();
     let name = session.name(name_node);
-    let mut arguments = crate::call_checker::arguments_for(session, arguments_node);
     let Some(function) = members.get(&name).copied() else {
-        session.named_report(DiagnosticCode::UnresolvedImport, name_node, &name);
-        return Some(crate::expression_checker::invalid(session, node));
+        return Some(template_call(
+            session,
+            (node, name_node),
+            (&alias, &name),
+            purpose,
+        ));
     };
+    let mut arguments = crate::call_checker::arguments_for(session, arguments_node);
     crate::argument_checker::check(session, function, &mut arguments, node);
     Some(crate::call_checker::emit_call(
         session,
@@ -48,4 +52,32 @@ fn alias_name(session: &AnalysisSession<'_>, target: usize) -> Option<String> {
         }
         _ => None,
     }
+}
+
+fn module_template(
+    session: &AnalysisSession<'_>,
+    alias: &str,
+    name: &str,
+) -> Option<crate::generic_state::GenericTemplate> {
+    session.generics.modules.get(alias)?.get(name).cloned()
+}
+
+fn template_call(
+    session: &mut AnalysisSession<'_>,
+    (node, name_node): (usize, usize),
+    (alias, name): (&str, &str),
+    purpose: ExpressionPurpose,
+) -> ExpressionId {
+    let Some(template) = module_template(session, alias, name) else {
+        if let Some(arguments) = session.child(node, NodeKind::Arguments) {
+            crate::call_checker::arguments_for(session, arguments);
+        }
+        session.named_report(DiagnosticCode::UnresolvedImport, name_node, name);
+        return crate::expression_checker::invalid(session, node);
+    };
+    session.note_use(
+        name_node,
+        crate::service_model::ServiceSymbolTarget::Template(template.identity),
+    );
+    crate::generic_calls::call(session, node, (template, purpose))
 }

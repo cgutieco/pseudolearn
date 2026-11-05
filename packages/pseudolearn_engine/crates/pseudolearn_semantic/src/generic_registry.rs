@@ -38,22 +38,26 @@ fn declare(session: &mut AnalysisSession<'_>, node: usize) {
     };
     let name = session.name(name_node);
     let (parameters, constraints, constraint_nodes) = parameters(session, node);
+    if session.generics.declares(&name) {
+        session.named_report(DiagnosticCode::DuplicateTypeDeclaration, name_node, &name);
+        return;
+    }
+    let kind = session.kind(node);
+    let identity = crate::generic_symbols::declare(session, (node, &name, kind), &constraint_nodes);
     let template = GenericTemplate {
+        unit: session.unit,
+        identity,
         node,
         parameters,
         constraints,
         constraint_nodes,
     };
-    if session.generics.declares(&name) {
-        session.named_report(DiagnosticCode::DuplicateTypeDeclaration, name_node, &name);
-        return;
-    }
     let scope = &mut session.generics;
-    let table = match session.tree.node(node).map(|syntax| syntax.kind) {
-        Some(NodeKind::RecordUnit) => &mut scope.records,
-        Some(NodeKind::ClassUnit) => &mut scope.classes,
-        Some(NodeKind::InterfaceUnit) => &mut scope.interfaces,
-        Some(NodeKind::VariantUnit) => &mut scope.variants,
+    let table = match kind {
+        NodeKind::RecordUnit => &mut scope.records,
+        NodeKind::ClassUnit => &mut scope.classes,
+        NodeKind::InterfaceUnit => &mut scope.interfaces,
+        NodeKind::VariantUnit => &mut scope.variants,
         _ => &mut scope.functions,
     };
     table.insert(name, template);

@@ -11,6 +11,7 @@ pub(crate) fn class(
     let name_node = session.child(node, NodeKind::Identifier).unwrap_or(node);
     let name = session.name(name_node);
     let arguments = session.child(node, NodeKind::TypeArguments);
+    crate::generic_symbols::note_named_use(session, name_node, &name);
     if arguments.is_none()
         && let Some(class) = crate::generic_classes::from_context(session, &name, expected)
     {

@@ -28,7 +28,7 @@ pub(crate) fn alternative(
         session.report(DiagnosticCode::IncompatibleSwitchCaseType, pattern);
         return None;
     };
-    let qualifier = session.name(shape.qualifier);
+    let qualifier = noted_qualifier(session, shape.qualifier);
     if !crate::generic_variants::belongs(session, &qualifier, record) {
         session.report(DiagnosticCode::IncompatibleSwitchCaseType, pattern);
         return None;
@@ -144,4 +144,10 @@ pub(crate) fn missing(
                 .collect()
         })
         .unwrap_or_default()
+}
+
+fn noted_qualifier(session: &mut AnalysisSession<'_>, node: usize) -> String {
+    let qualifier = session.name(node);
+    crate::generic_symbols::note_named_use(session, node, &qualifier);
+    qualifier
 }

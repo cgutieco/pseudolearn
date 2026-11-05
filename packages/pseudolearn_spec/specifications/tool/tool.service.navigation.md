@@ -50,7 +50,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Dada una posición de cursor sobre un uso o declaración de variable, constante, parámetro, subproceso, función, clase, registro, enumerado, interfaz, campo o método, el servicio devuelve el rango exacto de su declaración en el alcance correspondiente. En un proyecto, la identidad atraviesa archivos y respeta módulos, visibilidad, alias y reexportaciones; la ruta de un Importar o Exportar que nombra el símbolo es un uso más de él.",
+  "texto": "Dada una posición de cursor sobre un uso o declaración de variable, constante, parámetro, subproceso, función, clase, registro, enumerado, interfaz, campo o método, el servicio devuelve el rango exacto de su declaración en el alcance correspondiente. En un proyecto, la identidad atraviesa archivos y respeta módulos, visibilidad, alias y reexportaciones; la ruta de un Importar o Exportar que nombra el símbolo es un uso más de él. Una plantilla genérica (subproceso, registro, clase, interfaz o variante) y cada uno de sus parámetros de tipo son símbolos propios: los usos de cualquier instancia de la plantilla, incluidos los de otros módulos, se atribuyen a la plantilla, y los de los métodos, campos y variables de una instancia, al miembro o a la variable que declara la plantilla.",
   "verificacion": [
     "C1",
     "C3",
@@ -58,7 +58,9 @@
     "C10",
     "C11",
     "C12",
-    "C13"
+    "C13",
+    "C18",
+    "C20"
   ]
 }
 ```
@@ -68,10 +70,11 @@
   "id": "R2",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Dada una posición sobre un símbolo, devuelve en orden de aparición todos los rangos de los documentos del proyecto que referencian ese mismo símbolo semántico, sin confundirlo con símbolos homónimos de otros alcances. Incluye archivos cerrados del snapshot y nunca expone referencias a miembros privados no visibles.",
+  "texto": "Dada una posición sobre un símbolo, devuelve en orden de aparición todos los rangos de los documentos del proyecto que referencian ese mismo símbolo semántico, sin confundirlo con símbolos homónimos de otros alcances. Incluye archivos cerrados del snapshot y nunca expone referencias a miembros privados no visibles. Las referencias de un parámetro de tipo son solo las de su plantilla, sin confundirlo con parámetros homónimos de otras plantillas.",
   "verificacion": [
     "C2",
-    "C14"
+    "C14",
+    "C17"
   ]
 }
 ```
@@ -81,9 +84,10 @@
   "id": "R3",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "El resaltado de documento devuelve las ocurrencias del símbolo bajo el cursor clasificando cada una como lectura o escritura/declaración.",
+  "texto": "El resaltado de documento devuelve las ocurrencias del símbolo bajo el cursor clasificando cada una como lectura o escritura/declaración. La declaración de una plantilla o de un parámetro de tipo se clasifica como escritura/declaración y sus usos como lectura.",
   "verificacion": [
-    "C4"
+    "C4",
+    "C19"
   ]
 }
 ```
@@ -93,8 +97,8 @@
   "id": "R4",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "prepareRename identifica solo el lexema del símbolo y devuelve su rango exacto y placeholder. Antes de rename, el cliente materializa cada fuente cerrada que vaya a editar con su contenido y versión vigentes, y vuelve a calcular prepareRename y referencias sobre esas revisiones sincronizadas. rename acepta únicamente identificadores válidos y no reservados en los perfiles de los archivos afectados, comprueba colisiones semánticas en todos los alcances afectados y compara las revisiones antes de crear ediciones. Una propuesta aceptada contiene exclusivamente textDocument/documentChanges versionados para todos los documentos afectados; una colisión, versión antigua, modificación concurrente o garantía transaccional ausente rechaza la propuesta completa sin mutar fuentes.",
-  "verificacion": ["C5", "C6", "C8", "C15", "C16"]
+  "texto": "prepareRename identifica solo el lexema del símbolo y devuelve su rango exacto y placeholder. Antes de rename, el cliente materializa cada fuente cerrada que vaya a editar con su contenido y versión vigentes, y vuelve a calcular prepareRename y referencias sobre esas revisiones sincronizadas. rename acepta únicamente identificadores válidos y no reservados en los perfiles de los archivos afectados, comprueba colisiones semánticas en todos los alcances afectados y compara las revisiones antes de crear ediciones. Una propuesta aceptada contiene exclusivamente textDocument/documentChanges versionados para todos los documentos afectados; una colisión, versión antigua, modificación concurrente o garantía transaccional ausente rechaza la propuesta completa sin mutar fuentes. Renombrar una plantilla edita su declaración y todos sus usos en los documentos del proyecto; renombrar un parámetro de tipo edita solo las ocurrencias dentro de su plantilla, y un nombre igual al de otro parámetro de la misma plantilla es una colisión.",
+  "verificacion": ["C5", "C6", "C8", "C15", "C16", "C21", "C22", "C23"]
 }
 ```
 
@@ -756,6 +760,455 @@
       }
     ],
     "proyeccion": "rename_rejected"
+  }
+}
+```
+
+```caso
+{
+  "id": "C17",
+  "regla": "R2",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "referencias": [
+        {
+          "start": {
+            "line": 1,
+            "column": 12
+          },
+          "end": {
+            "line": 1,
+            "column": 21
+          }
+        },
+        {
+          "start": {
+            "line": 5,
+            "column": 10
+          },
+          "end": {
+            "line": 5,
+            "column": 19
+          }
+        },
+        {
+          "start": {
+            "line": 5,
+            "column": 24
+          },
+          "end": {
+            "line": 5,
+            "column": 33
+          }
+        }
+      ]
+    }
+  },
+  "servicio": {
+    "suboperacion": "references",
+    "documento": "SubProceso identidad<T>(valor Como T) Como T\nRetornar valor;\nFinSubProceso\nAlgoritmo P\nEscribir identidad(4), identidad(2.5);\nFinAlgoritmo\n",
+    "posicion": {
+      "line": 5,
+      "column": 10
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C18",
+  "regla": "R1",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "definicion": {
+        "start": {
+          "line": 1,
+          "column": 12
+        },
+        "end": {
+          "line": 1,
+          "column": 21
+        }
+      }
+    }
+  },
+  "servicio": {
+    "suboperacion": "definition",
+    "documento": "SubProceso identidad<T>(valor Como T) Como T\nRetornar valor;\nFinSubProceso\nAlgoritmo P\nEscribir identidad(4), identidad(2.5);\nFinAlgoritmo\n",
+    "posicion": {
+      "line": 5,
+      "column": 25
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C19",
+  "regla": "R3",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "destacados": [
+        {
+          "rango": {
+            "start": {
+              "line": 1,
+              "column": 22
+            },
+            "end": {
+              "line": 1,
+              "column": 23
+            }
+          },
+          "tipo": "write"
+        },
+        {
+          "rango": {
+            "start": {
+              "line": 1,
+              "column": 36
+            },
+            "end": {
+              "line": 1,
+              "column": 37
+            }
+          },
+          "tipo": "read"
+        },
+        {
+          "rango": {
+            "start": {
+              "line": 1,
+              "column": 44
+            },
+            "end": {
+              "line": 1,
+              "column": 45
+            }
+          },
+          "tipo": "read"
+        }
+      ]
+    }
+  },
+  "servicio": {
+    "suboperacion": "highlight",
+    "documento": "SubProceso identidad<T>(valor Como T) Como T\nRetornar valor;\nFinSubProceso\nAlgoritmo P\nEscribir identidad(4), identidad(2.5);\nFinAlgoritmo\n",
+    "posicion": {
+      "line": 1,
+      "column": 22
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C20",
+  "regla": "R1",
+  "perfiles": [
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "definicion": {
+        "start": {
+          "line": 1,
+          "column": 12
+        },
+        "end": {
+          "line": 1,
+          "column": 20
+        }
+      }
+    }
+  },
+  "servicio": {
+    "suboperacion": "definition",
+    "documento": "subroutine identity<T>(value as T) as T\nreturn value;\nendSubroutine\nalgorithm P\nwrite identity(4), identity(2.5);\nendAlgorithm\n",
+    "posicion": {
+      "line": 5,
+      "column": 22
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C21",
+  "regla": "R4",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "prepare_range": {
+        "start": {
+          "line": 0,
+          "character": 21
+        },
+        "end": {
+          "line": 0,
+          "character": 22
+        }
+      },
+      "rename_edits": 3
+    }
+  },
+  "servicio": {
+    "suboperacion": "lsp",
+    "mensajes": [
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": "initialize",
+        "params": {
+          "locale": "es",
+          "capabilities": {
+            "workspace": {
+              "workspaceEdit": {
+                "documentChanges": true,
+                "failureHandling": "transactional"
+              }
+            }
+          }
+        }
+      },
+      {
+        "jsonrpc": "2.0",
+        "method": "textDocument/didOpen",
+        "params": {
+          "textDocument": {
+            "uri": "file:///plantilla-es.pseudo",
+            "languageId": "pseudolearn",
+            "version": 1,
+            "text": "SubProceso identidad<T>(valor Como T) Como T\nRetornar valor;\nFinSubProceso\nSubProceso otro<T>(x Como T)\nEscribir 1;\nFinSubProceso\nAlgoritmo P\nEscribir identidad(4);\notro(1);\nFinAlgoritmo\n"
+          }
+        }
+      },
+      {
+        "jsonrpc": "2.0",
+        "id": 2,
+        "method": "textDocument/prepareRename",
+        "params": {
+          "textDocument": {
+            "uri": "file:///plantilla-es.pseudo"
+          },
+          "position": {
+            "line": 0,
+            "character": 21
+          }
+        }
+      },
+      {
+        "jsonrpc": "2.0",
+        "id": 3,
+        "method": "textDocument/rename",
+        "params": {
+          "textDocument": {
+            "uri": "file:///plantilla-es.pseudo"
+          },
+          "position": {
+            "line": 0,
+            "character": 21
+          },
+          "newName": "Elemento"
+        }
+      }
+    ],
+    "proyeccion": "rename"
+  }
+}
+```
+
+```caso
+{
+  "id": "C22",
+  "regla": "R4",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "rename_rejected": true
+    }
+  },
+  "servicio": {
+    "suboperacion": "lsp",
+    "mensajes": [
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": "initialize",
+        "params": {
+          "locale": "es",
+          "capabilities": {
+            "workspace": {
+              "workspaceEdit": {
+                "documentChanges": true,
+                "failureHandling": "transactional"
+              }
+            }
+          }
+        }
+      },
+      {
+        "jsonrpc": "2.0",
+        "method": "textDocument/didOpen",
+        "params": {
+          "textDocument": {
+            "uri": "file:///plantilla-es.pseudo",
+            "languageId": "pseudolearn",
+            "version": 1,
+            "text": "SubProceso identidad<T, U>(valor Como T, extra Como U) Como T\nRetornar valor;\nFinSubProceso\nSubProceso otro<T>(x Como T)\nEscribir 1;\nFinSubProceso\nAlgoritmo P\nEscribir identidad(4, 5);\notro(1);\nFinAlgoritmo\n"
+          }
+        }
+      },
+      {
+        "jsonrpc": "2.0",
+        "id": 2,
+        "method": "textDocument/prepareRename",
+        "params": {
+          "textDocument": {
+            "uri": "file:///plantilla-es.pseudo"
+          },
+          "position": {
+            "line": 0,
+            "character": 21
+          }
+        }
+      },
+      {
+        "jsonrpc": "2.0",
+        "id": 3,
+        "method": "textDocument/rename",
+        "params": {
+          "textDocument": {
+            "uri": "file:///plantilla-es.pseudo"
+          },
+          "position": {
+            "line": 0,
+            "character": 21
+          },
+          "newName": "U"
+        }
+      }
+    ],
+    "proyeccion": "rename_rejected"
+  }
+}
+```
+
+```caso
+{
+  "id": "C23",
+  "regla": "R4",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "prepare_range": {
+        "start": {
+          "line": 0,
+          "character": 11
+        },
+        "end": {
+          "line": 0,
+          "character": 20
+        }
+      },
+      "rename_edits": 2
+    }
+  },
+  "servicio": {
+    "suboperacion": "lsp",
+    "mensajes": [
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": "initialize",
+        "params": {
+          "locale": "es",
+          "capabilities": {
+            "workspace": {
+              "workspaceEdit": {
+                "documentChanges": true,
+                "failureHandling": "transactional"
+              }
+            }
+          }
+        }
+      },
+      {
+        "jsonrpc": "2.0",
+        "method": "textDocument/didOpen",
+        "params": {
+          "textDocument": {
+            "uri": "file:///plantilla-es.pseudo",
+            "languageId": "pseudolearn",
+            "version": 1,
+            "text": "SubProceso identidad<T>(valor Como T) Como T\nRetornar valor;\nFinSubProceso\nSubProceso otro<T>(x Como T)\nEscribir 1;\nFinSubProceso\nAlgoritmo P\nEscribir identidad(4);\notro(1);\nFinAlgoritmo\n"
+          }
+        }
+      },
+      {
+        "jsonrpc": "2.0",
+        "id": 2,
+        "method": "textDocument/prepareRename",
+        "params": {
+          "textDocument": {
+            "uri": "file:///plantilla-es.pseudo"
+          },
+          "position": {
+            "line": 7,
+            "character": 9
+          }
+        }
+      },
+      {
+        "jsonrpc": "2.0",
+        "id": 3,
+        "method": "textDocument/rename",
+        "params": {
+          "textDocument": {
+            "uri": "file:///plantilla-es.pseudo"
+          },
+          "position": {
+            "line": 7,
+            "character": 9
+          },
+          "newName": "mismo"
+        }
+      }
+    ],
+    "proyeccion": "rename"
   }
 }
 ```

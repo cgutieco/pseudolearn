@@ -55,10 +55,14 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Al posicionar el cursor sobre una variable, constante, parámetro, campo, clase o subproceso, el servicio devuelve su categoría, su tipo estático declarado y, para subprocesos/métodos, su firma canónica con modos de paso.",
+  "texto": "Al posicionar el cursor sobre una variable, constante, parámetro, campo, clase o subproceso, el servicio devuelve su categoría, su tipo estático declarado y, para subprocesos/métodos, su firma canónica con modos de paso. Sobre la declaración de una plantilla genérica devuelve la categoría plantilla y su cabecera declarada; sobre un uso de una instancia devuelve la categoría, el tipo y la firma de esa instancia junto con la cabecera de la plantilla; sobre un parámetro de tipo devuelve la categoría parámetro de tipo, su restricción y la cabecera de su plantilla.",
   "verificacion": [
     "C1",
-    "C2"
+    "C2",
+    "C16",
+    "C17",
+    "C18",
+    "C19"
   ]
 }
 ```
@@ -479,6 +483,119 @@
       "column": 10
     },
     "proyeccion": "resolucion"
+  }
+}
+```
+
+```caso
+{
+  "id": "C16",
+  "regla": "R1",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "categoria": "Template",
+      "identificador": "identidad",
+      "firma": "SubProceso identidad<T>(valor Como T) Como T",
+      "plantilla": "SubProceso identidad<T>(valor Como T) Como T"
+    }
+  },
+  "servicio": {
+    "suboperacion": "hover",
+    "documento": "SubProceso identidad<T>(valor Como T) Como T\nRetornar valor;\nFinSubProceso\nAlgoritmo P\nEscribir identidad(4), identidad(2.5);\nFinAlgoritmo\n",
+    "posicion": {
+      "line": 1,
+      "column": 12
+    },
+    "proyeccion": "simbolo"
+  }
+}
+```
+
+```caso
+{
+  "id": "C17",
+  "regla": "R1",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "categoria": "Function",
+      "identificador": "identidad<integer>",
+      "firma": "identidad<integer>(valor Por Valor) Como Entero",
+      "plantilla": "SubProceso identidad<T>(valor Como T) Como T"
+    }
+  },
+  "servicio": {
+    "suboperacion": "hover",
+    "documento": "SubProceso identidad<T>(valor Como T) Como T\nRetornar valor;\nFinSubProceso\nAlgoritmo P\nEscribir identidad(4), identidad(2.5);\nFinAlgoritmo\n",
+    "posicion": {
+      "line": 5,
+      "column": 10
+    },
+    "proyeccion": "simbolo"
+  }
+}
+```
+
+```caso
+{
+  "id": "C18",
+  "regla": "R1",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "categoria": "TypeParameter",
+      "identificador": "T",
+      "firma": null,
+      "plantilla": "SubProceso identidad<T>(valor Como T) Como T"
+    }
+  },
+  "servicio": {
+    "suboperacion": "hover",
+    "documento": "SubProceso identidad<T>(valor Como T) Como T\nRetornar valor;\nFinSubProceso\nAlgoritmo P\nEscribir identidad(4), identidad(2.5);\nFinAlgoritmo\n",
+    "posicion": {
+      "line": 1,
+      "column": 36
+    },
+    "proyeccion": "simbolo"
+  }
+}
+```
+
+```caso
+{
+  "id": "C19",
+  "regla": "R1",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "tipo": "Real"
+    }
+  },
+  "servicio": {
+    "suboperacion": "hover",
+    "documento": "SubProceso identidad<T>(valor Como T) Como T\nRetornar valor;\nFinSubProceso\nAlgoritmo P\nEscribir identidad(4), identidad(2.5);\nFinAlgoritmo\n",
+    "posicion": {
+      "line": 5,
+      "column": 24
+    },
+    "proyeccion": "tipo"
   }
 }
 ```

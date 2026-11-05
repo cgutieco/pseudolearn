@@ -69,8 +69,8 @@
   "id": "R4",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "El servicio compara las huellas de las unidades del proyecto. Un cambio de cuerpo no invalida las firmas ni los módulos que importan esa unidad. Un cambio de firma invalida los importadores transitivos; cambios de paquetes, configuraciones, manifiestos o lock invalidan los módulos afectados por la resolución del proyecto.",
-  "verificacion": ["C1", "C3", "C4"]
+  "texto": "El servicio compara las huellas de las unidades del proyecto. Un cambio de cuerpo no invalida las firmas ni los módulos que importan esa unidad, salvo que la unidad sea una plantilla genérica: cambiar el texto de una plantilla invalida además los módulos importadores, directos o a través de reexportaciones, que nombran la plantilla, y no a los que no la nombran. Un cambio de firma invalida los importadores transitivos; cambios de paquetes, configuraciones, manifiestos o lock invalidan los módulos afectados por la resolución del proyecto.",
+  "verificacion": ["C1", "C3", "C4", "C9", "C10"]
 }
 ```
 
@@ -380,5 +380,172 @@
   "propiedad": "El resultado tras cada acción equivale al análisis frío del snapshot efectivo y no depende del orden de entrada.",
   "oraculo": "Comparación independiente de HIR, imports, diagnósticos y errores de proyecto con una sesión nueva sobre el mismo contenido.",
   "justificacion": "La igualdad con el análisis frío es el contrato observable de sincronización persistente."
+}
+```
+
+```caso
+{
+  "id": "C9",
+  "regla": "R4",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "coincide_con_frio": true,
+      "signature_changed": [],
+      "invalidated": [
+        "app/main",
+        "geo/vectores"
+      ]
+    }
+  },
+  "servicio": {
+    "suboperacion": "workspace",
+    "campos": [
+      "coincide_con_frio",
+      "signature_changed",
+      "invalidated"
+    ],
+    "workspace": {
+      "project": {
+        "project_id": "1",
+        "revision_id": "1",
+        "packages": [
+          {
+            "name": "app",
+            "root": "app",
+            "kind": "application",
+            "entries": [
+              "app/main"
+            ],
+            "dependencies": {
+              "geo": "geo"
+            }
+          },
+          {
+            "name": "geo",
+            "root": "geo",
+            "kind": "library",
+            "entries": [],
+            "dependencies": {}
+          }
+        ],
+        "files": [
+          {
+            "path": "app/main",
+            "source_id": 1,
+            "text": "Importar geo.vectores.identidad;\nAlgoritmo P\nEscribir identidad(21);\nFinAlgoritmo\n"
+          },
+          {
+            "path": "geo/vectores",
+            "source_id": 2,
+            "text": "Publico SubProceso identidad<T>(valor Como T) Como T\nRetornar valor;\nFinSubProceso\nPublico SubProceso Doble(n Como Entero) Como Entero\nRetornar n * 2;\nFinSubProceso\n"
+          },
+          {
+            "path": "app/otro",
+            "source_id": 3,
+            "text": "Importar geo.vectores.Doble;\nPublico SubProceso usar() Como Entero\nRetornar Doble(2);\nFinSubProceso\n"
+          }
+        ]
+      },
+      "options": {
+        "profile": "es"
+      }
+    },
+    "actions": [
+      {
+        "operation": "open",
+        "path": "geo/vectores",
+        "version": 1,
+        "text": "Publico SubProceso identidad<T>(valor Como T) Como T\nEscribir 1;\nRetornar valor;\nFinSubProceso\nPublico SubProceso Doble(n Como Entero) Como Entero\nRetornar n * 2;\nFinSubProceso\n"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C10",
+  "regla": "R4",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "coincide_con_frio": true,
+      "signature_changed": [],
+      "invalidated": [
+        "geo/vectores"
+      ]
+    }
+  },
+  "servicio": {
+    "suboperacion": "workspace",
+    "campos": [
+      "coincide_con_frio",
+      "signature_changed",
+      "invalidated"
+    ],
+    "workspace": {
+      "project": {
+        "project_id": "1",
+        "revision_id": "1",
+        "packages": [
+          {
+            "name": "app",
+            "root": "app",
+            "kind": "application",
+            "entries": [
+              "app/main"
+            ],
+            "dependencies": {
+              "geo": "geo"
+            }
+          },
+          {
+            "name": "geo",
+            "root": "geo",
+            "kind": "library",
+            "entries": [],
+            "dependencies": {}
+          }
+        ],
+        "files": [
+          {
+            "path": "app/main",
+            "source_id": 1,
+            "text": "Importar geo.vectores.identidad;\nAlgoritmo P\nEscribir identidad(21);\nFinAlgoritmo\n"
+          },
+          {
+            "path": "geo/vectores",
+            "source_id": 2,
+            "text": "Publico SubProceso identidad<T>(valor Como T) Como T\nRetornar valor;\nFinSubProceso\nPublico SubProceso Doble(n Como Entero) Como Entero\nRetornar n * 2;\nFinSubProceso\n"
+          },
+          {
+            "path": "app/otro",
+            "source_id": 3,
+            "text": "Importar geo.vectores.Doble;\nPublico SubProceso usar() Como Entero\nRetornar Doble(2);\nFinSubProceso\n"
+          }
+        ]
+      },
+      "options": {
+        "profile": "es"
+      }
+    },
+    "actions": [
+      {
+        "operation": "open",
+        "path": "geo/vectores",
+        "version": 1,
+        "text": "Publico SubProceso identidad<T>(valor Como T) Como T\nRetornar valor;\nFinSubProceso\nPublico SubProceso Doble(n Como Entero) Como Entero\nRetornar n * 3;\nFinSubProceso\n"
+      }
+    ]
+  }
 }
 ```

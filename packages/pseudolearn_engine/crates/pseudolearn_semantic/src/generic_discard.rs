@@ -94,7 +94,7 @@ pub(crate) fn check_functions(session: &mut AnalysisSession<'_>) {
 }
 
 fn check_unit_templates(session: &mut AnalysisSession<'_>) {
-    let templates: Vec<_> = session.generics.functions.values().cloned().collect();
+    let templates = own_templates(session, |scope| &scope.functions);
     for template in templates {
         let snapshot = Snapshot::capture(session);
         session.generic.begin_definition();
@@ -103,7 +103,7 @@ fn check_unit_templates(session: &mut AnalysisSession<'_>) {
         session.generic.defining = false;
         snapshot.discard(session);
     }
-    let classes: Vec<_> = session.generics.classes.values().cloned().collect();
+    let classes = own_templates(session, |scope| &scope.classes);
     for template in classes {
         let snapshot = Snapshot::capture(session);
         session.generic.begin_definition();
@@ -112,21 +112,40 @@ fn check_unit_templates(session: &mut AnalysisSession<'_>) {
         session.generic.defining = false;
         snapshot.discard(session);
     }
+    for template in own_templates(session, |scope| &scope.interfaces) {
+        session.generic.begin_definition();
+        let arguments = crate::generic_opaque::arguments(session, &template);
+        crate::generic_interfaces::define(session, &template, arguments);
+        session.generic.defining = false;
+    }
 }
 
 pub(crate) fn check_records(session: &mut AnalysisSession<'_>) {
-    let templates: Vec<_> = session.generics.records.values().cloned().collect();
+    let templates = own_templates(session, |scope| &scope.records);
     for template in templates {
         session.generic.begin_definition();
         let arguments = crate::generic_opaque::arguments(session, &template);
         crate::generic_records::instantiate(session, &template, arguments, template.node);
         session.generic.defining = false;
     }
-    let variants: Vec<_> = session.generics.variants.values().cloned().collect();
+    let variants = own_templates(session, |scope| &scope.variants);
     for template in variants {
         session.generic.begin_definition();
         let arguments = crate::generic_opaque::arguments(session, &template);
         crate::generic_variants::instantiate(session, &template, arguments, template.node);
         session.generic.defining = false;
     }
+}
+
+fn own_templates(
+    session: &AnalysisSession<'_>,
+    table: impl Fn(
+        &crate::generic_state::GenericScope,
+    ) -> &std::collections::BTreeMap<String, crate::generic_state::GenericTemplate>,
+) -> Vec<crate::generic_state::GenericTemplate> {
+    table(&session.generics)
+        .values()
+        .filter(|template| template.unit == session.unit)
+        .cloned()
+        .collect()
 }

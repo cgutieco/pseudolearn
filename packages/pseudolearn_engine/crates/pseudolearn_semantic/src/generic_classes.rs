@@ -3,7 +3,6 @@ use crate::generic_state::{GenericTemplate, INSTANCE_LIMIT};
 use crate::hir::HirClass;
 use crate::identities::{ClassId, TypeId};
 use crate::session::AnalysisSession;
-use pseudolearn_syntax::NodeKind;
 
 pub(crate) fn instantiate(
     session: &mut AnalysisSession<'_>,
@@ -14,29 +13,31 @@ pub(crate) fn instantiate(
     if !crate::interface_constraints::check(session, template, &arguments, origin) {
         return None;
     }
-    let key = (session.unit, template.node, arguments.clone());
+    let key = (template.unit, template.node, arguments.clone());
     if let Some(existing) = session.generic.classes.get(&key) {
         return Some(*existing);
     }
-    let name_node = session.child(template.node, NodeKind::Identifier)?;
-    let name = session.name(name_node);
+    let name = crate::generic_home::template_name(session, template)?;
     if session.generic.instance_count() >= INSTANCE_LIMIT {
         crate::generic_records::report_limit(session, origin, &name);
         return None;
     }
     session.generic.instantiated = true;
     let saved = SavedState::take(session);
-    let class = declare(session, template, (&name, &arguments));
-    session.generic.classes.insert(key.clone(), class);
-    session.generic.class_origins.insert(class, key);
-    let environment: Vec<(String, TypeId)> =
-        template.parameters.iter().cloned().zip(arguments).collect();
-    session
-        .generic
-        .class_environments
-        .insert(class, environment.clone());
-    session.generic.environment = environment;
-    complete(session, class);
+    let class = crate::generic_home::at_home(session, template, |session| {
+        let class = declare(session, template, (&name, &arguments));
+        session.generic.classes.insert(key.clone(), class);
+        session.generic.class_origins.insert(class, key);
+        let environment: Vec<(String, TypeId)> =
+            template.parameters.iter().cloned().zip(arguments).collect();
+        session
+            .generic
+            .class_environments
+            .insert(class, environment.clone());
+        session.generic.environment = environment;
+        complete(session, class);
+        class
+    });
     saved.restore(session);
     Some(class)
 }
@@ -126,7 +127,7 @@ pub(crate) fn from_context(
         return None;
     };
     let (unit, node, _) = session.generic.class_origins.get(&class)?;
-    (*unit == session.unit && *node == template.node).then_some(class)
+    (*unit == template.unit && *node == template.node).then_some(class)
 }
 
 pub(crate) fn truncate(session: &mut AnalysisSession<'_>, count: usize) {

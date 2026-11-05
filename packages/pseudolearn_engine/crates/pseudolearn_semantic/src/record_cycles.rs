@@ -3,12 +3,14 @@ use crate::identities::RecordId;
 use crate::record_registry::{field_kind, record_syntax, slot};
 use crate::session::AnalysisSession;
 use crate::types::Type;
+use pseudolearn_abi::RECORD_MAXIMUM_LEAVES;
 use pseudolearn_diagnostics::DiagnosticCode;
 use pseudolearn_syntax::NodeKind;
 
 const UNVISITED: u8 = 0;
 const ACTIVE: u8 = 1;
 const DONE: u8 = 2;
+const LEAF_CAP: usize = RECORD_MAXIMUM_LEAVES.saturating_add(1);
 
 pub(crate) fn layout(session: &mut AnalysisSession<'_>, records: &[RecordId]) {
     let mut states = vec![UNVISITED; session.module.records.len()];
@@ -95,6 +97,9 @@ fn leaves_of(
         _ => None,
     };
     match nested {
+        Some(inner) if inner.leaf_types.len() > RECORD_MAXIMUM_LEAVES => {
+            (inner.leaf_types.clone(), Vec::new())
+        }
         Some(inner) => (
             inner.leaf_types.clone(),
             inner
@@ -112,11 +117,7 @@ fn compute(session: &mut AnalysisSession<'_>, record: RecordId) {
         crate::user_variant_layout::compute(session, record);
         return;
     }
-    if session.module.function_types.contains_key(&record)
-        || session.module.variants.contains_key(&record)
-        || session.module.channels.contains_key(&record)
-        || session.module.task_failures.contains_key(&record)
-    {
+    if has_own_layout(session, record) {
         return;
     }
     let Some(model) = session.module.records.get(slot(record)).cloned() else {
@@ -126,11 +127,15 @@ fn compute(session: &mut AnalysisSession<'_>, record: RecordId) {
     let mut leaf_types = Vec::new();
     let mut leaf_names = Vec::new();
     let mut offset = 0_u32;
+    let mut oversized = false;
     for field in model.fields {
         let (types, names) = leaves_of(session, &field);
+        oversized |= types.len() > RECORD_MAXIMUM_LEAVES;
         let width = u32::try_from(types.len()).unwrap_or(u32::MAX);
         leaf_types.extend(types);
         leaf_names.extend(names);
+        leaf_types.truncate(LEAF_CAP);
+        leaf_names.truncate(LEAF_CAP);
         fields.push(HirRecordField {
             offset,
             width,
@@ -138,9 +143,25 @@ fn compute(session: &mut AnalysisSession<'_>, record: RecordId) {
         });
         offset = offset.saturating_add(width);
     }
+    if leaf_types.len() > RECORD_MAXIMUM_LEAVES && !oversized {
+        report_layout_limit(session, model.span);
+    }
     if let Some(target) = session.module.records.get_mut(slot(record)) {
         target.fields = fields;
         target.leaf_types = leaf_types;
         target.leaf_names = leaf_names;
     }
+}
+
+fn report_layout_limit(session: &mut AnalysisSession<'_>, span: pseudolearn_source::Span) {
+    let diagnostic =
+        pseudolearn_diagnostics::Diagnostic::new(DiagnosticCode::RecordLayoutLimit, span);
+    session.diagnostics.push(diagnostic);
+}
+
+fn has_own_layout(session: &AnalysisSession<'_>, record: RecordId) -> bool {
+    session.module.function_types.contains_key(&record)
+        || session.module.variants.contains_key(&record)
+        || session.module.channels.contains_key(&record)
+        || session.module.task_failures.contains_key(&record)
 }

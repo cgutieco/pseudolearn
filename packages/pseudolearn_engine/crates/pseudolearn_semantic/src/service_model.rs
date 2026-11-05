@@ -5,6 +5,7 @@ use crate::identities::{
     ClassId, ConstantId, EnumId, FieldId, FunctionId, LocalId, RecordId, TypeId,
 };
 use crate::interface_model::InterfaceId;
+use crate::template_model::TemplateId;
 use pseudolearn_diagnostics::Diagnostic;
 use pseudolearn_lexicon::BuiltinKind;
 use pseudolearn_source::Span;
@@ -20,6 +21,8 @@ pub enum ServiceSymbolTarget {
     Interface(InterfaceId),
     Constant(ConstantId),
     Builtin(BuiltinKind),
+    Template(TemplateId),
+    TypeParameter(TemplateId, u32),
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -60,4 +63,5 @@ pub struct ServiceAnalysis {
     pub symbols: Vec<ServiceSymbol>,
     pub occurrences: Vec<ServiceReference>,
     pub expression_types: Vec<(Span, TypeId)>,
+    pub instance_uses: Vec<(Span, ServiceSymbolTarget)>,
 }

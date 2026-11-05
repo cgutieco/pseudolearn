@@ -42,7 +42,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Un registro, un subprograma, una clase, una interfaz o una variante declara parámetros de tipo con <T, U> tras su nombre; un tipo genérico se escribe nombre<argumentos de tipo> con exactamente tantos argumentos como parámetros (typeArgumentCountMismatch). Cada plantilla se comprueba una sola vez con cada parámetro opaco: un valor opaco solo puede copiarse, pasarse, retornarse, almacenarse en campos y construir registros y variantes genéricos; operarlo, compararlo o escribirlo es error en la definición, haya o no instancias. Una llamada infiere cada argumento de tipo unificando estructuralmente los tipos de los parámetros con los de los argumentos (parámetro directo, registro, clase o variante genéricos, arreglo o tipo función); construir un registro genérico infiere desde sus campos; no hay instanciación explícita en llamadas. Un parámetro de tipo sin determinar o con dos valores distintos produce cannotInferTypeArgument. Cada combinación de plantilla y argumentos de tipo canónicos es una instancia única con función, registro, clase, interfaz o variante propios, nombrada nombre<tipos>; las instancias alcanzables se recogen de forma cerrada y una plantilla sin instanciar no genera ninguna. El programa admite como máximo 64 instancias entre todas las formas; superar el límite, incluida la recursión polimórfica expansiva, produce genericInstanceLimitExceeded. Los parámetros de tipo admiten una restricción nominal T: I o T: I<argumentos>, cuyos argumentos pueden nombrar parámetros de la misma plantilla, comprobada en la definición y en cada argumento concreto; los genéricos son privados del módulo.",
+  "texto": "Un registro, un subprograma, una clase, una interfaz o una variante declara parámetros de tipo con <T, U> tras su nombre; un tipo genérico se escribe nombre<argumentos de tipo> con exactamente tantos argumentos como parámetros (typeArgumentCountMismatch). Cada plantilla (subprograma, registro, clase, interfaz o variante), tenga o no instancias y sea o no pública, se comprueba una sola vez en su propio módulo con cada parámetro opaco: un valor opaco solo puede copiarse, pasarse, retornarse, almacenarse en campos y construir registros y variantes genéricos; operarlo, compararlo o escribirlo es error en la definición, haya o no instancias. Una llamada infiere cada argumento de tipo unificando estructuralmente los tipos de los parámetros con los de los argumentos (parámetro directo, registro, clase o variante genéricos, arreglo o tipo función); construir un registro genérico infiere desde sus campos; no hay instanciación explícita en llamadas. Un parámetro de tipo sin determinar o con dos valores distintos produce cannotInferTypeArgument. Cada combinación de plantilla y argumentos de tipo canónicos es una instancia única con función, registro, clase, interfaz o variante propios, nombrada nombre<tipos>; las instancias alcanzables se recogen de forma cerrada y una plantilla sin instanciar no genera ninguna. El programa admite como máximo 64 instancias entre todas las formas; superar el límite, incluida la recursión polimórfica expansiva, produce genericInstanceLimitExceeded. Los parámetros de tipo admiten una restricción nominal T: I o T: I<argumentos>, cuyos argumentos pueden nombrar parámetros de la misma plantilla, comprobada en la definición y en cada argumento concreto. Un error de la definición se notifica una sola vez en la plantilla aunque varias instancias o varios módulos la usen.",
   "verificacion": [
     "C1",
     "C2",
@@ -64,7 +64,11 @@
     "C18",
     "C19",
     "C20",
-    "C41"
+    "C41",
+    "C53",
+    "C54",
+    "C55",
+    "C56"
   ]
 }
 ```
@@ -96,6 +100,28 @@
     "C38",
     "C39",
     "C40"
+  ]
+}
+```
+
+```regla
+{
+  "id": "R3",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Una plantilla de nivel superior sigue la visibilidad de las demás unidades del módulo: con Publico se importa por símbolo, con o sin alias, se reexporta con Exportar y, si es un subprograma, también se invoca como nombre-local.plantilla(argumentos) a través de un módulo importado; sin Publico, importarla o reexportarla produce privateImport o privateReexport. Una plantilla importada conserva la identidad de su declaración: su cuerpo, sus firmas y sus restricciones se resuelven en el módulo que la declara y nunca en el que la usa, y cada combinación de plantilla y argumentos de tipo canónicos es una única instancia en todo el programa, compartida por todos los módulos que la nombran. En un proyecto, el nombre de una instancia se califica con el módulo de la plantilla (paquete.modulo.nombre<tipos>). Dos plantillas homónimas de módulos distintos, importadas con alias distintos, producen instancias distintas e incompatibles entre sí. Las restricciones se comprueban con cada argumento concreto del módulo que instancia y el diagnóstico genericConstraintNotSatisfied se ubica en ese uso. El límite de 64 instancias cuenta las instancias de todos los módulos del programa. El conjunto de instancias y la salida de un proyecto no dependen del orden de sus archivos.",
+  "verificacion": [
+    "C42",
+    "C43",
+    "C44",
+    "C45",
+    "C46",
+    "C47",
+    "C48",
+    "C49",
+    "C50",
+    "C51",
+    "C52"
   ]
 }
 ```
@@ -1150,6 +1176,1087 @@
   "espera": {
     "salida": "3\n9\n",
     "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C42",
+  "regla": "R3",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "execute_project",
+        "arguments": {
+          "profile": "es",
+          "project": {
+            "project_id": "1",
+            "revision_id": "1",
+            "packages": [
+              {
+                "name": "app",
+                "root": "app",
+                "kind": "application",
+                "entries": [
+                  "app/main"
+                ],
+                "dependencies": {
+                  "geo": "geo"
+                }
+              },
+              {
+                "name": "geo",
+                "root": "geo",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {}
+              }
+            ],
+            "files": [
+              {
+                "path": "app/main",
+                "source_id": 1,
+                "text": "Importar geo.genericos.identidad;\nImportar geo.genericos.Par;\nImportar geo.genericos.Medible;\nImportar geo.genericos.Caja;\nImportar geo.genericos.Talvez;\nImportar app.otro.crear;\nClase Metro Realiza Medible<Entero>\nMetodo medir() Como Entero\nRetornar 3;\nFinMetodo\nFinClase\nAlgoritmo P\nDefinir p Como Par<Entero> <- Par(1, 2);\nSi p = crear() Entonces\nEscribir \"misma instancia\";\nFinSi\nDefinir c Como Caja<Cadena> <- Nuevo Caja<Cadena>(\"hola\");\nDefinir t Como Talvez<Entero> <- Talvez.Uno(identidad(p.segundo));\nSegun t Hacer\nTalvez.Uno(n): Escribir n, \" \", c.actual();\nTalvez.Ninguno: Escribir 0;\nFinSegun\nEscribir Nuevo Metro().medir();\nFinAlgoritmo\n"
+              },
+              {
+                "path": "app/otro",
+                "source_id": 2,
+                "text": "Importar geo.genericos.Par;\nPublico SubProceso crear() Como Par<Entero>\nRetornar Par(1, 2);\nFinSubProceso\n"
+              },
+              {
+                "path": "geo/genericos",
+                "source_id": 3,
+                "text": "Publico SubProceso identidad<T>(valor Como T) Como T\nRetornar valor;\nFinSubProceso\nPublico Registro Par<T>\nDefinir primero, segundo Como T;\nFinRegistro\nPublico Interfaz Medible<T>\nMetodo medir() Como T;\nFinInterfaz\nPublico Clase Caja<T>\nDefinir valor Como T;\nMetodo Constructor(inicial Como T)\nEste.valor <- inicial;\nFinMetodo\nMetodo actual() Como T\nRetornar Este.valor;\nFinMetodo\nFinClase\nPublico Variante Talvez<T>\nAlternativa Uno(v Como T)\nAlternativa Ninguno\nFinVariante\n"
+              }
+            ]
+          },
+          "entry": "app/main"
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "en": "El caso C43 ejerce el mismo proyecto en inglés."
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "output": "misma instancia\n2 hola\n3\n",
+            "diagnostics": [],
+            "project_errors": []
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C43",
+  "regla": "R3",
+  "perfiles": [
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "execute_project",
+        "arguments": {
+          "profile": "en",
+          "project": {
+            "project_id": "1",
+            "revision_id": "1",
+            "packages": [
+              {
+                "name": "app",
+                "root": "app",
+                "kind": "application",
+                "entries": [
+                  "app/main"
+                ],
+                "dependencies": {
+                  "geo": "geo"
+                }
+              },
+              {
+                "name": "geo",
+                "root": "geo",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {}
+              }
+            ],
+            "files": [
+              {
+                "path": "app/main",
+                "source_id": 1,
+                "text": "import geo.generics.identity;\nimport geo.generics.Pair;\nimport geo.generics.Measurable;\nimport geo.generics.Box;\nimport geo.generics.Maybe;\nimport app.other.build;\nclass Meter implements Measurable<integer>\nmethod measure() as integer\nreturn 3;\nendMethod\nendClass\nalgorithm P\ndefine p as Pair<integer> <- Pair(1, 2);\nif p = build() then\nwrite \"same instance\";\nendIf\ndefine c as Box<string> <- new Box<string>(\"hello\");\ndefine t as Maybe<integer> <- Maybe.One(identity(p.second));\nswitch t do\nMaybe.One(n): write n, \" \", c.current();\nMaybe.Nothing: write 0;\nendSwitch\nwrite new Meter().measure();\nendAlgorithm\n"
+              },
+              {
+                "path": "app/other",
+                "source_id": 2,
+                "text": "import geo.generics.Pair;\npublic subroutine build() as Pair<integer>\nreturn Pair(1, 2);\nendSubroutine\n"
+              },
+              {
+                "path": "geo/generics",
+                "source_id": 3,
+                "text": "public subroutine identity<T>(value as T) as T\nreturn value;\nendSubroutine\npublic record Pair<T>\ndefine first, second as T;\nendRecord\npublic interface Measurable<T>\nmethod measure() as T;\nendInterface\npublic class Box<T>\ndefine content as T;\nmethod constructor(initial as T)\nthis.content <- initial;\nendMethod\nmethod current() as T\nreturn this.content;\nendMethod\nendClass\npublic variant Maybe<T>\ncase One(v as T)\ncase Nothing\nendVariant\n"
+              }
+            ]
+          },
+          "entry": "app/main"
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "es": "El caso C42 ejerce el mismo proyecto en español."
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "output": "same instance\n2 hello\n3\n",
+            "diagnostics": [],
+            "project_errors": []
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C44",
+  "regla": "R3",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "execute_project",
+        "arguments": {
+          "profile": "es",
+          "project": {
+            "project_id": "1",
+            "revision_id": "1",
+            "packages": [
+              {
+                "name": "app",
+                "root": "app",
+                "kind": "application",
+                "entries": [
+                  "app/main"
+                ],
+                "dependencies": {
+                  "geo": "geo"
+                }
+              },
+              {
+                "name": "geo",
+                "root": "geo",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {}
+              }
+            ],
+            "files": [
+              {
+                "path": "geo/genericos",
+                "source_id": 1,
+                "text": "Publico SubProceso identidad<T>(valor Como T) Como T\nRetornar valor;\nFinSubProceso\nPublico Registro Par<T>\nDefinir primero, segundo Como T;\nFinRegistro\nPublico Interfaz Medible<T>\nMetodo medir() Como T;\nFinInterfaz\nPublico Clase Caja<T>\nDefinir valor Como T;\nMetodo Constructor(inicial Como T)\nEste.valor <- inicial;\nFinMetodo\nMetodo actual() Como T\nRetornar Este.valor;\nFinMetodo\nFinClase\nPublico Variante Talvez<T>\nAlternativa Uno(v Como T)\nAlternativa Ninguno\nFinVariante\n"
+              },
+              {
+                "path": "app/otro",
+                "source_id": 2,
+                "text": "Importar geo.genericos.Par;\nPublico SubProceso crear() Como Par<Entero>\nRetornar Par(1, 2);\nFinSubProceso\n"
+              },
+              {
+                "path": "app/main",
+                "source_id": 3,
+                "text": "Importar geo.genericos.identidad;\nImportar geo.genericos.Par;\nImportar geo.genericos.Medible;\nImportar geo.genericos.Caja;\nImportar geo.genericos.Talvez;\nImportar app.otro.crear;\nClase Metro Realiza Medible<Entero>\nMetodo medir() Como Entero\nRetornar 3;\nFinMetodo\nFinClase\nAlgoritmo P\nDefinir p Como Par<Entero> <- Par(1, 2);\nSi p = crear() Entonces\nEscribir \"misma instancia\";\nFinSi\nDefinir c Como Caja<Cadena> <- Nuevo Caja<Cadena>(\"hola\");\nDefinir t Como Talvez<Entero> <- Talvez.Uno(identidad(p.segundo));\nSegun t Hacer\nTalvez.Uno(n): Escribir n, \" \", c.actual();\nTalvez.Ninguno: Escribir 0;\nFinSegun\nEscribir Nuevo Metro().medir();\nFinAlgoritmo\n"
+              }
+            ]
+          },
+          "entry": "app/main"
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "en": "El caso C43 ejerce el mismo proyecto en inglés; el orden de archivos no depende del perfil."
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "output": "misma instancia\n2 hola\n3\n",
+            "diagnostics": [],
+            "project_errors": []
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C45",
+  "regla": "R3",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "analyze_project",
+        "arguments": {
+          "profile": "es",
+          "project": {
+            "project_id": "1",
+            "revision_id": "1",
+            "packages": [
+              {
+                "name": "app",
+                "root": "app",
+                "kind": "application",
+                "entries": [
+                  "app/main"
+                ],
+                "dependencies": {
+                  "geo": "geo"
+                }
+              },
+              {
+                "name": "geo",
+                "root": "geo",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {}
+              }
+            ],
+            "files": [
+              {
+                "path": "app/main",
+                "source_id": 1,
+                "text": "Importar geo.privados.oculta;\nImportar geo.privados.Celda;\nAlgoritmo P\nEscribir 1;\nFinAlgoritmo\n"
+              },
+              {
+                "path": "geo/privados",
+                "source_id": 2,
+                "text": "SubProceso oculta<T>(x Como T) Como T\nRetornar x;\nFinSubProceso\nRegistro Celda<T>\nDefinir v Como T;\nFinRegistro\n"
+              }
+            ]
+          },
+          "entry": "app/main"
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "en": "La visibilidad de plantillas no depende del perfil; la forma inglesa de Importar se verifica en C43."
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "diagnostics": [
+              {
+                "code": "privateImport"
+              },
+              {
+                "code": "privateImport"
+              }
+            ],
+            "project_errors": []
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C46",
+  "regla": "R3",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "analyze_project",
+        "arguments": {
+          "profile": "es",
+          "project": {
+            "project_id": "1",
+            "revision_id": "1",
+            "packages": [
+              {
+                "name": "app",
+                "root": "app",
+                "kind": "application",
+                "entries": [
+                  "app/main"
+                ],
+                "dependencies": {
+                  "geo": "geo"
+                }
+              },
+              {
+                "name": "geo",
+                "root": "geo",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {}
+              }
+            ],
+            "files": [
+              {
+                "path": "app/main",
+                "source_id": 1,
+                "text": "Importar geo.conteo.contar;\nImportar geo.conteo.Contable;\nAlgoritmo P\nEscribir contar(5);\nFinAlgoritmo\n"
+              },
+              {
+                "path": "geo/conteo",
+                "source_id": 2,
+                "text": "Publico Interfaz Contable\nMetodo cuenta() Como Entero;\nFinInterfaz\nPublico SubProceso contar<T: Contable>(x Como T) Como Entero\nRetornar x.cuenta();\nFinSubProceso\n"
+              }
+            ]
+          },
+          "entry": "app/main"
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "en": "La restricción se comprueba igual en ambos perfiles; C43 cubre el perfil inglés del proyecto."
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "diagnostics": [
+              {
+                "code": "genericConstraintNotSatisfied"
+              }
+            ],
+            "project_errors": []
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C47",
+  "regla": "R3",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "execute_project",
+        "arguments": {
+          "profile": "es",
+          "project": {
+            "project_id": "1",
+            "revision_id": "1",
+            "packages": [
+              {
+                "name": "app",
+                "root": "app",
+                "kind": "application",
+                "entries": [
+                  "app/main"
+                ],
+                "dependencies": {
+                  "geo": "geo"
+                }
+              },
+              {
+                "name": "geo",
+                "root": "geo",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {}
+              }
+            ],
+            "files": [
+              {
+                "path": "app/main",
+                "source_id": 1,
+                "text": "Importar geo.conteo.contar;\nImportar geo.conteo.Contable;\nClase Uno Realiza Contable\nMetodo cuenta() Como Entero\nRetornar 7;\nFinMetodo\nFinClase\nAlgoritmo P\nEscribir contar(Nuevo Uno());\nFinAlgoritmo\n"
+              },
+              {
+                "path": "geo/conteo",
+                "source_id": 2,
+                "text": "Publico Interfaz Contable\nMetodo cuenta() Como Entero;\nFinInterfaz\nPublico SubProceso contar<T: Contable>(x Como T) Como Entero\nRetornar x.cuenta();\nFinSubProceso\n"
+              }
+            ]
+          },
+          "entry": "app/main"
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "en": "La restricción se comprueba igual en ambos perfiles; C43 cubre el perfil inglés del proyecto."
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "output": "7\n",
+            "diagnostics": [],
+            "project_errors": []
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C48",
+  "regla": "R3",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "analyze_project",
+        "arguments": {
+          "profile": "es",
+          "project": {
+            "project_id": "1",
+            "revision_id": "1",
+            "packages": [
+              {
+                "name": "app",
+                "root": "app",
+                "kind": "application",
+                "entries": [
+                  "app/main"
+                ],
+                "dependencies": {
+                  "geo": "geo"
+                }
+              },
+              {
+                "name": "geo",
+                "root": "geo",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {}
+              }
+            ],
+            "files": [
+              {
+                "path": "app/main",
+                "source_id": 1,
+                "text": "Importar geo.celdas.Celda;\nImportar app.otro.uno;\nSubProceso dos(p Como Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Cadena>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>) Como Entero\nRetornar 2;\nFinSubProceso\nAlgoritmo P\nEscribir \"listo\";\nFinAlgoritmo\n"
+              },
+              {
+                "path": "app/otro",
+                "source_id": 2,
+                "text": "Importar geo.celdas.Celda;\nPublico SubProceso uno(p Como Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Entero>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>) Como Entero\nRetornar 1;\nFinSubProceso\n"
+              },
+              {
+                "path": "geo/celdas",
+                "source_id": 3,
+                "text": "Publico Registro Celda<T>\nDefinir v Como T;\nFinRegistro\n"
+              }
+            ]
+          },
+          "entry": "app/main"
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "en": "El recuento de instancias no depende del perfil."
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "diagnostics": [
+              {
+                "code": "unusedSubroutine"
+              },
+              {
+                "code": "unusedParameter"
+              },
+              {
+                "code": "unusedParameter"
+              }
+            ],
+            "project_errors": []
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C49",
+  "regla": "R3",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "analyze_project",
+        "arguments": {
+          "profile": "es",
+          "project": {
+            "project_id": "1",
+            "revision_id": "1",
+            "packages": [
+              {
+                "name": "app",
+                "root": "app",
+                "kind": "application",
+                "entries": [
+                  "app/main"
+                ],
+                "dependencies": {
+                  "geo": "geo"
+                }
+              },
+              {
+                "name": "geo",
+                "root": "geo",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {}
+              }
+            ],
+            "files": [
+              {
+                "path": "app/main",
+                "source_id": 1,
+                "text": "Importar geo.celdas.Celda;\nImportar app.otro.uno;\nSubProceso dos(p Como Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Cadena>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>) Como Entero\nRetornar 2;\nFinSubProceso\nAlgoritmo P\nEscribir \"listo\";\nFinAlgoritmo\n"
+              },
+              {
+                "path": "app/otro",
+                "source_id": 2,
+                "text": "Importar geo.celdas.Celda;\nPublico SubProceso uno(p Como Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Celda<Entero>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>) Como Entero\nRetornar 1;\nFinSubProceso\n"
+              },
+              {
+                "path": "geo/celdas",
+                "source_id": 3,
+                "text": "Publico Registro Celda<T>\nDefinir v Como T;\nFinRegistro\n"
+              }
+            ]
+          },
+          "entry": "app/main"
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "en": "El recuento de instancias no depende del perfil."
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "diagnostics": [
+              {
+                "code": "genericInstanceLimitExceeded"
+              }
+            ],
+            "project_errors": []
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C50",
+  "regla": "R3",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "execute_project",
+        "arguments": {
+          "profile": "es",
+          "project": {
+            "project_id": "1",
+            "revision_id": "1",
+            "packages": [
+              {
+                "name": "app",
+                "root": "app",
+                "kind": "application",
+                "entries": [
+                  "app/main"
+                ],
+                "dependencies": {
+                  "geo": "geo"
+                }
+              },
+              {
+                "name": "geo",
+                "root": "geo",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {}
+              }
+            ],
+            "files": [
+              {
+                "path": "app/main",
+                "source_id": 1,
+                "text": "Importar geo.fachada.Par;\nImportar geo.otra.Par Como Doble;\nAlgoritmo P\nDefinir a Como Par<Entero> <- Par(4, 5);\nDefinir b Como Doble<Entero> <- a;\nEscribir b.segundo;\nFinAlgoritmo\n"
+              },
+              {
+                "path": "geo/fachada",
+                "source_id": 2,
+                "text": "Exportar geo.genericos.Par;\n"
+              },
+              {
+                "path": "geo/otra",
+                "source_id": 3,
+                "text": "Exportar geo.fachada.Par;\n"
+              },
+              {
+                "path": "geo/genericos",
+                "source_id": 4,
+                "text": "Publico SubProceso identidad<T>(valor Como T) Como T\nRetornar valor;\nFinSubProceso\nPublico Registro Par<T>\nDefinir primero, segundo Como T;\nFinRegistro\nPublico Interfaz Medible<T>\nMetodo medir() Como T;\nFinInterfaz\nPublico Clase Caja<T>\nDefinir valor Como T;\nMetodo Constructor(inicial Como T)\nEste.valor <- inicial;\nFinMetodo\nMetodo actual() Como T\nRetornar Este.valor;\nFinMetodo\nFinClase\nPublico Variante Talvez<T>\nAlternativa Uno(v Como T)\nAlternativa Ninguno\nFinVariante\n"
+              }
+            ]
+          },
+          "entry": "app/main"
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "en": "La reexportación no depende del perfil; C43 cubre el perfil inglés."
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "output": "5\n",
+            "diagnostics": [],
+            "project_errors": []
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C51",
+  "regla": "R3",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "analyze_project",
+        "arguments": {
+          "profile": "es",
+          "project": {
+            "project_id": "1",
+            "revision_id": "1",
+            "packages": [
+              {
+                "name": "app",
+                "root": "app",
+                "kind": "application",
+                "entries": [
+                  "app/main"
+                ],
+                "dependencies": {
+                  "geo": "geo"
+                }
+              },
+              {
+                "name": "geo",
+                "root": "geo",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {}
+              }
+            ],
+            "files": [
+              {
+                "path": "app/main",
+                "source_id": 1,
+                "text": "Importar geo.a.Par Como ParX;\nImportar geo.b.Par Como ParY;\nAlgoritmo P\nDefinir a Como ParX<Entero> <- ParX(1);\nDefinir b Como ParY<Entero> <- a;\nFinAlgoritmo\n"
+              },
+              {
+                "path": "geo/a",
+                "source_id": 2,
+                "text": "Publico Registro Par<T>\nDefinir v Como T;\nFinRegistro\n"
+              },
+              {
+                "path": "geo/b",
+                "source_id": 3,
+                "text": "Publico Registro Par<T>\nDefinir v Como T;\nFinRegistro\n"
+              }
+            ]
+          },
+          "entry": "app/main"
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "en": "La identidad de homónimos no depende del perfil; C43 cubre el perfil inglés."
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "diagnostics": [
+              {
+                "code": "incompatibleTypesInAssignment"
+              }
+            ],
+            "project_errors": []
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C52",
+  "regla": "R3",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "execute_project",
+        "arguments": {
+          "profile": "es",
+          "project": {
+            "project_id": "1",
+            "revision_id": "1",
+            "packages": [
+              {
+                "name": "app",
+                "root": "app",
+                "kind": "application",
+                "entries": [
+                  "app/main"
+                ],
+                "dependencies": {
+                  "geo": "geo"
+                }
+              },
+              {
+                "name": "geo",
+                "root": "geo",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {}
+              }
+            ],
+            "files": [
+              {
+                "path": "app/main",
+                "source_id": 1,
+                "text": "Importar geo.genericos Como G;\nAlgoritmo P\nEscribir G.identidad(4), \" \", G.identidad(\"ab\");\nFinAlgoritmo\n"
+              },
+              {
+                "path": "geo/genericos",
+                "source_id": 2,
+                "text": "Publico SubProceso identidad<T>(valor Como T) Como T\nRetornar valor;\nFinSubProceso\nPublico Registro Par<T>\nDefinir primero, segundo Como T;\nFinRegistro\nPublico Interfaz Medible<T>\nMetodo medir() Como T;\nFinInterfaz\nPublico Clase Caja<T>\nDefinir valor Como T;\nMetodo Constructor(inicial Como T)\nEste.valor <- inicial;\nFinMetodo\nMetodo actual() Como T\nRetornar Este.valor;\nFinMetodo\nFinClase\nPublico Variante Talvez<T>\nAlternativa Uno(v Como T)\nAlternativa Ninguno\nFinVariante\n"
+              }
+            ]
+          },
+          "entry": "app/main"
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "en": "La llamada por alias de módulo no depende del perfil; C43 cubre el perfil inglés."
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "output": "4 ab\n",
+            "diagnostics": [],
+            "project_errors": []
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C53",
+  "regla": "R1",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "analyze_project",
+        "arguments": {
+          "profile": "es",
+          "project": {
+            "project_id": "1",
+            "revision_id": "1",
+            "packages": [
+              {
+                "name": "app",
+                "root": "app",
+                "kind": "application",
+                "entries": [
+                  "app/main"
+                ],
+                "dependencies": {
+                  "geo": "geo"
+                }
+              },
+              {
+                "name": "geo",
+                "root": "geo",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {}
+              }
+            ],
+            "files": [
+              {
+                "path": "app/main",
+                "source_id": 1,
+                "text": "Algoritmo P\nEscribir \"listo\";\nFinAlgoritmo\n"
+              },
+              {
+                "path": "geo/sumas",
+                "source_id": 2,
+                "text": "Publico SubProceso sumar<T>(a Como T, b Como T) Como T\nRetornar a + b;\nFinSubProceso\n"
+              }
+            ]
+          },
+          "entry": "app/main"
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "en": "La comprobación de definición no depende del perfil; C12 la ejerce en ambos perfiles."
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "diagnostics": [
+              {
+                "code": "incompatibleOperandTypes"
+              }
+            ],
+            "project_errors": []
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C54",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Registro Caja<T>\nDefinir v Como Ausente;\nFinRegistro\nAlgoritmo P\nEscribir \"listo\";\nFinAlgoritmo\n",
+    "en": "record Box<T>\ndefine v as Missing;\nendRecord\nalgorithm P\nwrite \"done\";\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "undeclaredClass",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C55",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Interfaz Medible<T>\nMetodo medir() Como Ausente;\nFinInterfaz\nAlgoritmo P\nEscribir \"listo\";\nFinAlgoritmo\n",
+    "en": "interface Measurable<T>\nmethod measure() as Missing;\nendInterface\nalgorithm P\nwrite \"done\";\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "undeclaredClass",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C56",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Variante Talvez<T>\nAlternativa Uno(v Como Ausente)\nAlternativa Ninguno\nFinVariante\nAlgoritmo P\nEscribir \"listo\";\nFinAlgoritmo\n",
+    "en": "variant Maybe<T>\ncase One(v as Missing)\ncase Nothing\nendVariant\nalgorithm P\nwrite \"done\";\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "undeclaredClass",
+        "severidad": "error"
+      }
+    ]
   }
 }
 ```

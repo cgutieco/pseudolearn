@@ -35,9 +35,11 @@ pub(crate) fn call(
         return crate::record_access::construct(session, node, record);
     }
     if let Some(template) = session.generics.records.get(&name).cloned() {
+        crate::generic_symbols::note_named_use(session, target, &name);
         return crate::generic_calls::construct(session, node, template);
     }
     if let Some(template) = session.generics.functions.get(&name).cloned() {
+        crate::generic_symbols::note_named_use(session, target, &name);
         return crate::generic_calls::call(session, node, (template, purpose));
     }
     let arguments = session.child(node, NodeKind::Arguments).unwrap_or(node);

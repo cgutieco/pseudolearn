@@ -155,6 +155,7 @@ pub struct HirModule {
     pub name_declarations: BTreeSet<(Span, ServiceSymbolTarget)>,
     pub name_uses: BTreeSet<(Span, ServiceSymbolTarget)>,
     pub records: Vec<HirRecord>,
+    pub templates: Vec<crate::template_model::HirTemplate>,
     pub variants: BTreeMap<crate::identities::RecordId, crate::variant_model::HirVariant>,
     pub user_variants: BTreeMap<crate::identities::RecordId, crate::variant_model::HirUserVariant>,
     pub record_locals: BTreeMap<LocalId, Vec<LocalId>>,
