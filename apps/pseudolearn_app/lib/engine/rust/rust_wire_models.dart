@@ -1,6 +1,8 @@
 import 'rust_event_classes.dart';
+import 'rust_pending_effect_request.dart';
 import 'rust_pending_input_request.dart';
 
+export 'rust_pending_effect_request.dart';
 export 'rust_pending_input_request.dart';
 
 final class RustEventSourceIdentity {
@@ -107,34 +109,6 @@ enum RustTerminationKind {
   limitReached,
 }
 
-final class PendingEffectRequest {
-  final int effectSeq;
-  final String capabilityKind;
-  final String operation;
-  final String argumentsSummary;
-  final int? sourceNodeId;
-  final int taskId;
-
-  const PendingEffectRequest({
-    required this.effectSeq,
-    required this.capabilityKind,
-    required this.operation,
-    required this.argumentsSummary,
-    this.sourceNodeId,
-    this.taskId = 0,
-  });
-
-  factory PendingEffectRequest.fromJson(Map<String, Object?> json) =>
-      PendingEffectRequest(
-        effectSeq: (json['effect_seq'] as num?)?.toInt() ?? 0,
-        capabilityKind: (json['capability_kind'] as String?) ?? '',
-        operation: (json['operation'] as String?) ?? '',
-        argumentsSummary: (json['arguments_summary'] as String?) ?? '',
-        sourceNodeId: (json['source_node_id'] as num?)?.toInt(),
-        taskId: (json['task_id'] as num?)?.toInt() ?? 0,
-      );
-}
-
 final class RustBatch {
   final List<RustEvent> events;
   final RustTerminationKind termination;
@@ -169,16 +143,7 @@ final class RustBatch {
     final diagnostics = (json['diagnostics'] as List<Object?>? ?? const [])
         .cast<Map<String, Object?>>();
     final kind = _kindOf(termination['kind'] as String);
-    final input = json['pending_input'];
-    if (input != null && input is! Map<String, Object?>) {
-      throw const FormatException('Invalid input request');
-    }
-    final pendingInput = input == null
-        ? null
-        : PendingInputRequest.fromJson(input as Map<String, Object?>);
-    if (kind == RustTerminationKind.awaitingInput && pendingInput == null) {
-      throw const FormatException('Missing input request identity');
-    }
+    final pendingInput = _pendingInputOf(json['pending_input'], kind);
     return RustBatch(
       effectTape: _tapeOf(json['effect_tape']),
       errorRanges: _rangesOf(json['error_ranges']),
@@ -205,6 +170,22 @@ final class RustBatch {
           PendingEffectRequest.fromJson(pending),
       ],
     );
+  }
+
+  static PendingInputRequest? _pendingInputOf(
+    Object? input,
+    RustTerminationKind kind,
+  ) {
+    if (input != null && input is! Map<String, Object?>) {
+      throw const FormatException('Invalid input request');
+    }
+    final pendingInput = input == null
+        ? null
+        : PendingInputRequest.fromJson(input as Map<String, Object?>);
+    if (kind == RustTerminationKind.awaitingInput && pendingInput == null) {
+      throw const FormatException('Missing input request identity');
+    }
+    return pendingInput;
   }
 
   static List<Map<String, Object?>> _requestsOf(Map<String, Object?> json) =>

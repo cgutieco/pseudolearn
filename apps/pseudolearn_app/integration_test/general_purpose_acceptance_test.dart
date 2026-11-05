@@ -2,7 +2,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:pseudolearn_app/composition/rust_engine_services.dart';
-import 'package:pseudolearn_app/domain/model/execution/execution_step.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
 import 'package:pseudolearn_app/engine/rust/native_rust_transport.dart';

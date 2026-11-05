@@ -11,7 +11,12 @@ final class RustOutputAssembler {
     if (text.isEmpty) return;
     final parts = text.split('\n');
     for (var index = 0; index < parts.length; index++) {
-      _appendPart(parts[index], index == parts.length - 1, index > 0, kind);
+      _appendPart(
+        parts[index],
+        index == parts.length - 1,
+        index > 0,
+        kind: kind,
+      );
     }
   }
 
@@ -23,9 +28,9 @@ final class RustOutputAssembler {
   void _appendPart(
     String part,
     bool isLastPart,
-    bool isAfterNewline,
-    OutputLineKind kind,
-  ) {
+    bool isAfterNewline, {
+    required OutputLineKind kind,
+  }) {
     if (isAfterNewline) _hasOpenLine = false;
     if (part.isEmpty && isLastPart) return;
     final canJoin =

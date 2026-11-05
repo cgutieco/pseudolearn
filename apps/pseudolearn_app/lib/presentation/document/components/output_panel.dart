@@ -184,7 +184,6 @@ final class _OutputLineRow extends StatelessWidget {
     final theme = AppThemeExtension.of(context);
     final isInput = line.kind == OutputLineKind.userInputEcho;
     final isError = line.kind == OutputLineKind.programError;
-
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: SpacingTokens.spaceHalf),
       child: Row(
@@ -199,15 +198,21 @@ final class _OutputLineRow extends StatelessWidget {
             child: AppText(
               line.text,
               variant: AppTextVariant.codeEditor,
-              color: isError
-                  ? theme.colors.severities.error.fg
-                  : isInput
-                  ? theme.colors.text.secondary
-                  : theme.colors.text.primary,
+              color: _colorOf(theme, isError: isError, isInput: isInput),
             ),
           ),
         ],
       ),
     );
+  }
+
+  Color _colorOf(
+    AppThemeExtension theme, {
+    required bool isError,
+    required bool isInput,
+  }) {
+    if (isError) return theme.colors.severities.error.fg;
+    if (isInput) return theme.colors.text.secondary;
+    return theme.colors.text.primary;
   }
 }
