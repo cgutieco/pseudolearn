@@ -25,7 +25,7 @@ function instructions() {
 
 function sources() {
   mkdirSync(resolve(output, "file"), { recursive: true });
-  const initial = "Algoritmo Probe\nDefinir Mutable number Como Entero <- 0;\nLeer number;\nEscribir number;\nFinAlgoritmo\n";
+  const initial = "Algoritmo Probe\nDefinir number Como Entero <- 0;\nLeer number;\nEscribir number;\nFinAlgoritmo\n";
   const final = initial.replace("Escribir number;", "Escribir number * 2;");
   writeFileSync(resolve(output, "file/initial.pseudo"), initial);
   writeFileSync(resolve(output, "file/final.pseudo"), final);

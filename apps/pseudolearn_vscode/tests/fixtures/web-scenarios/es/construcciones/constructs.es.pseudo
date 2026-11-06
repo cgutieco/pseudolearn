@@ -26,7 +26,7 @@ SubProceso mover(p Como Punto Por Referencia)
 p.x <- p.x + 10;
 FinSubProceso
 SubProceso area(f Como Forma) Como Entero
-Definir Mutable total Como Entero <- 0;
+Definir total Como Entero <- 0;
 Segun f Hacer
 Forma.Circulo(r): total <- 3 * r * r;
 Forma.Vacia: total <- 0;
@@ -44,7 +44,7 @@ Escribir c.medir();
 Definir q Como Punto <- c.desplazar(puntos[0]);
 Escribir q.x, ":", q.z;
 Escribir area(Forma.Circulo(2)), ":", area(Forma.Vacia);
-Definir Mutable suma Como Entero <- 0;
+Definir suma Como Entero <- 0;
 Para i <- 1 Hasta 100 Con Paso 1 Hacer
 Definir b Como Caja<Entero> <- Nuevo Caja<Entero>(i);
 suma <- suma + b.medir();

@@ -1,5 +1,5 @@
 algorithm Greeting
-define mutable name as string <- "";
+define name as string <- "";
 write "What is your name? ñandú 🌍";
 read name;
 write "Hello " + name;

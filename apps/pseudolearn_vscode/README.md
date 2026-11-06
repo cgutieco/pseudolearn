@@ -83,8 +83,8 @@ Los campos JSON de cada diagnóstico van solo a `PseudoLearn (technical)`, con u
 32 KiB por evento. Un archivo borrado, binario, ilegible o mayor a 1 MiB conserva línea y columna, pero no el fragmento.
 
 Las posiciones `line` y `column` del evento son base 1 y cuentan escalares Unicode, como define `LANG.SOURCE.POSITION`.
-La comprobación con `pseudo run --editor` y `missingBindingInitializer` en `    Definir nombre Como Cadena;` informó línea 2,
-columna 31, sobre el punto y coma. El marco separa CRLF, expande tabuladores según `editor.tabSize`
+La comprobación con `pseudo run --editor` y `variableUsedUninitialized` en `    Escribir nombre;`, tras
+`    Definir nombre Como Cadena;`, informó línea 3, columna 14, sobre el nombre, con la declaración como origen relacionado. El marco separa CRLF, expande tabuladores según `editor.tabSize`
 y adapta escalares suplementarios a unidades UTF-16 al publicar rangos en VS Code.
 
 El resumen usa el evento `finished`: con errores informa que el programa no se ejecutó; solo `completed` sin errores dice

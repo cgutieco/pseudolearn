@@ -41,7 +41,7 @@ Segun Probe() Hacer
 Exito(value): Escribir value;
 Error(problem): Escribir problem.Codigo;
 FinSegun
-Definir Mutable anchor Como Entero <- 7;
+Definir anchor Como Entero <- 7;
 Escribir anchor;
 anchor <- anchor + 1;
 Descartar Probe();
