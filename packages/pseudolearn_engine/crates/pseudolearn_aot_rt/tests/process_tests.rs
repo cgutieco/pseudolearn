@@ -208,3 +208,46 @@ fn forced_collection_does_not_change_the_observable_run() -> Result<(), String> 
     assert_eq!(outcome.output, "42\n");
     Ok(())
 }
+
+fn tape_status(metadata: ExecutableMetadata, entry: EntryFunction) -> (i32, String) {
+    let (code, channel) = run_executable_with_effects(
+        metadata,
+        entry,
+        ProcessStreams {
+            input: Box::new(Cursor::new(Vec::new())),
+            output: Box::new(Sink::default()),
+            errors: Box::new(Sink::default()),
+        },
+        EffectChannel::standalone(),
+    );
+    (code, channel.session().tape().status.as_str().to_owned())
+}
+
+#[test]
+fn a_program_fault_keeps_the_tape_reproducible() -> Result<(), String> {
+    let status = tape_status(metadata(named("divisionByZero")?), write_then_fault);
+    assert_eq!(status, (EXIT_FAILED, "reproducible".to_owned()));
+    Ok(())
+}
+
+#[test]
+fn a_budget_fault_seals_the_tape_incomplete() -> Result<(), String> {
+    let status = tape_status(
+        metadata(named("statementBudgetExhausted")?),
+        write_then_fault,
+    );
+    assert_eq!(status, (EXIT_LIMIT, "incomplete".to_owned()));
+    Ok(())
+}
+
+#[test]
+fn an_internal_fault_seals_the_tape_incomplete() {
+    let status = tape_status(metadata(DiagnosticCode::InternalFault), write_then_fault);
+    assert_eq!(status, (EXIT_INTERNAL, "incomplete".to_owned()));
+}
+
+#[test]
+fn exhausted_input_seals_the_tape_incomplete() {
+    let status = tape_status(metadata(DiagnosticCode::InternalFault), read_integer);
+    assert_eq!(status, (EXIT_LIMIT, "incomplete".to_owned()));
+}

@@ -121,7 +121,8 @@ impl EffectSession {
         &self.tape
     }
 
-    pub fn finish(&self) -> Result<(), ReplayError> {
+    pub fn finish(&mut self) -> Result<(), ReplayError> {
+        self.release();
         if self
             .replay
             .as_ref()
@@ -134,6 +135,10 @@ impl EffectSession {
 
     pub fn abort(&mut self) {
         self.tape.mark_incomplete();
+        self.release();
+    }
+
+    fn release(&mut self) {
         self.authority.table.close_all();
         self.pending = None;
     }

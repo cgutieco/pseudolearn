@@ -106,6 +106,12 @@ campos de cada entrada con la identidad inicial; ningún adaptador puede omitir 
 El presupuesto cuenta la representación serializada completa. Agotarlo detiene el almacenamiento,
 marca la cinta como no reproducible y permite continuar la ejecución viva sin crecimiento ilimitado.
 
+`EffectSession::finish` y `EffectSession::abort` cierran ambos la tabla de capacidades y descartan el efecto pendiente;
+solo `abort` sella la cinta `incomplete`, y solo `finish` comprueba que una reproducción consumió toda la cinta. Así una
+trampa del programa, que se cierra con `finish`, libera las capacidades igual que un corte del anfitrión y conserva una
+cinta reproducible: la trampa es determinista y el corte no. Se descartó un tercer método público de liberación porque
+cerrar la tabla también al completar es inocuo y la superficie pública de la sesión ya está en su límite.
+
 
 La autenticación de secretos usa HMAC-SHA-256 de RustCrypto hmac 0.12 y sha2 0.10, según su API de
 Mac (https://docs.rs/hmac/0.12.1/hmac/). Se toma la construcción y verificación en tiempo constante;

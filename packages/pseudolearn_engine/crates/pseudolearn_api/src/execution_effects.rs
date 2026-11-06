@@ -55,15 +55,13 @@ impl ExecutionResource {
         } else {
             self.pending_input = None;
         }
-        if matches!(exit, RunExit::Completed(_)) {
+        if matches!(exit, RunExit::Completed(_) | RunExit::Trap(_)) {
             self.seal_abandoned_effects()?;
             self.effects
                 .finish()
                 .map_err(crate::tape_wire::replay_error_to_api)?;
-        } else if matches!(
-            exit,
-            RunExit::Cancelled | RunExit::LimitReached { .. } | RunExit::Trap(_)
-        ) {
+        }
+        if matches!(exit, RunExit::Cancelled | RunExit::LimitReached { .. }) {
             self.effects.abort();
         }
         pseudolearn_runtime::HostEffectProvider::close_all(&mut self.host);

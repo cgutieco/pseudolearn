@@ -64,7 +64,7 @@ fn host_cancellation_releases_the_open_capability_without_running_deferred_effec
 }
 
 #[test]
-fn program_trap_releases_the_open_capability() {
+fn program_trap_releases_the_open_capability_and_keeps_the_tape_reproducible() {
     let response = run(OPEN_THEN_TRAP, json!({}));
     assert_eq!(
         observed(&response, "/value/termination/kind"),
@@ -78,7 +78,7 @@ fn program_trap_releases_the_open_capability() {
     );
     assert_eq!(
         observed(&response, "/value/effect_tape/status"),
-        Some(json!("incomplete")),
+        Some(json!("reproducible")),
         "{response}"
     );
 }

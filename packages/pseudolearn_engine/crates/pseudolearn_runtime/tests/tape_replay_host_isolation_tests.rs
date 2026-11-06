@@ -132,7 +132,7 @@ fn exhausted_tape_is_rejected_without_the_host() -> Result<(), String> {
 #[test]
 fn unconsumed_entries_reject_the_end_of_the_replay() -> Result<(), String> {
     let tape = recorded_tape()?;
-    let session = replay_session(tape).map_err(|error| format!("{error:?}"))?;
+    let mut session = replay_session(tape).map_err(|error| format!("{error:?}"))?;
     assert_eq!(session.finish(), Err(ReplayError::Divergence));
     Ok(())
 }

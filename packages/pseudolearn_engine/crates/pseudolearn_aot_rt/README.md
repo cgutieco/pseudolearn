@@ -245,6 +245,14 @@ entrada; sin ella es el anfitrión desprendido, que rechaza un anfitrión simula
 `interrumpido` a cada efecto. Quien compila la biblioteca estática decide la feature: la CLI solo la activa para la
 conformidad, nunca en distribución.
 
+Al terminar, `take_effects` cierra la cinta igual que la VM. Si el proceso completó o terminó por una trampa del
+programa (`EXIT_FAILED` con código de diagnóstico; lo decide `ends_reproducibly`), llama a `EffectChannel::finish`, que
+también cierra la tabla de capacidades, y la cinta conserva su estado; en cualquier otro final llama a `EffectChannel::abort` y la
+sella `incomplete`. Quedan fuera de la trampa del programa el fallo interno (`EXIT_INTERNAL`, que incluye el rechazo de
+una reproducción), el agotamiento de presupuesto y la entrada agotada (`EXIT_LIMIT`), y la cancelación inyectada, que se
+presenta como entrada agotada y ya selló la cinta al ocurrir. La entrada agotada no se graba en la cinta, de modo que
+reproducirla no sería determinista. `tests/process_tests.rs` comprueba los cuatro finales.
+
 Las operaciones puras de texto, bytes y JSON se resuelven localmente en `pseudolearn_library`. Para
 `json_element` y `json_field`, AOT entrega las palabras de los argumentos a `local_json_view` y escribe
 directamente la asa de la vista devuelta en la celda opcional. VM usa la misma función; ambos conservan
