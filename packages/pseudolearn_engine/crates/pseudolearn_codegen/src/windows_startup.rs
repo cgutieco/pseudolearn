@@ -19,7 +19,7 @@ struct MarkerData {
 
 const TLS_START: MarkerData = MarkerData {
     symbol: "_tls_start",
-    section: ".tls$AAA",
+    section: ".tls",
 };
 const TLS_END: MarkerData = MarkerData {
     symbol: "_tls_end",

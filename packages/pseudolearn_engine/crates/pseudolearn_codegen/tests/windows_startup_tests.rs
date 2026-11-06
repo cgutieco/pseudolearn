@@ -77,7 +77,7 @@ fn a_windows_executable_object_defines_its_entry_and_tls_directory() -> Result<(
         .ok_or("missing TLS directory section")?;
     assert_eq!(directory.size(), 40);
     assert_eq!(directory.relocations().count(), 4);
-    for marker in [".tls$AAA", ".tls$ZZZ", ".CRT$XLA", ".CRT$XLZ"] {
+    for marker in [".tls", ".tls$ZZZ", ".CRT$XLA", ".CRT$XLZ"] {
         assert!(
             file.sections().any(|section| section.name() == Ok(marker)),
             "{marker}"
