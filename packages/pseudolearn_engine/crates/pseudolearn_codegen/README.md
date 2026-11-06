@@ -48,7 +48,7 @@ de `pseudolearn_aot_rt` recibe tal cual y la lista `function_symbols` (nombre en
 Cada `FaultSite` conserva el `source_id` de su `IrSpan`; el bloque frío compartido sigue seleccionando el sitio por índice y no busca por nombre de archivo.
 
 Modo ejecutable: `compile_module_to_executable_object(&Module, &TargetConfig, &ExecutableSettings)` emite además un
-`main` de C que llama a `pseudolearn_aot_main(@main, __pl_metadata, longitud)` y devuelve su resultado, y guarda como dato
+`main` de C que llama a `pseudolearn_aot_main(@main, __pl_metadata, longitud, despachador)` y devuelve su resultado, y guarda como dato
 local los metadatos que `pseudolearn_aot_rt::encode_metadata` produce con los ajustes, la tabla de sitios y los diseños de
 clase. La función de entrada es la de nombre `main` de la RI; un módulo sin ella es un `InvalidModule`. El objeto sigue
 sin resolver únicamente `rt_aot_*` y `pseudolearn_aot_main`. El modo objeto (`compile_module_to_object`) no define `main`,
@@ -68,6 +68,7 @@ campos heredados primero; el índice de la clase es el que `rt_aot_object_new` r
 | `lowering` | Estado de una función, sitios de trampa fríos, propagación de fallo y retorno de cero |
 | `instruction_dispatch` | Tabla de familias: asigna cada `Operation` a su bajada; un test exige cobertura de las 74 y que ninguna tenga dos dueños |
 | `lower_scalars`, `lower_arithmetic`, `lower_real`, `lower_math`, `lower_extended_math`, `lower_control` | Bajada de escalares, aritmética, matemática y control |
+| `lower_tasks`, `lower_channels`, `task_unwinding`, `task_dispatch` | Agenda nativa: entradas `rt_aot_task_*`, aterrizajes de cancelación y despachador de tareas |
 | `lower_text`, `lower_io`, `lower_effects` | Literales, texto, entrada, salida, azar y efectos por las entradas del runtime; `lower_effects` entrega al runtime la operación por índice, el nodo fuente, la clase de resultado, los argumentos y las celdas de resultado en un único búfer |
 | `dominators`, `dominated_facts` | Árbol de dominadores de la RI y hechos heredados por dominancia: resultados de aritmética comprobada y posiciones de arreglo de rango uno ya verificadas |
 | `lower_arrays`, `lower_objects`, `lower_cells` | Memoria: arreglos y objetos con camino rápido en línea y camino lento por el runtime; lectura de celdas locales en línea con camino lento por el runtime |
@@ -293,11 +294,40 @@ Los tests de estas capacidades se ejecutaron en selecciones acotadas, incluida l
 
 ## Operaciones de tarea
 
-`task.yield_check` se baja como operación vacía: el sujeto nativo ejecuta un solo hilo lógico sin agenda, de modo que con cola
-vacía el cuanto nunca cede (`ENG.TASK.AGENDA`). `snapshot.copy` se baja a `rt_aot_snapshot_copy` con el mismo búfer de palabras
-que `effect_call`. Las demás operaciones de tarea, de espera de efecto y de canal se declaran en `UNSUPPORTED_OPERATIONS` y
-terminan con `CodegenError::Unsupported`; el catálogo de instrucciones exige que cada operación esté bajada o declarada ahí.
-El soporte nativo de tareas es un pendiente declarado.
+`lower_tasks` y `lower_channels` bajan cada operación de tarea y de canal a una entrada `rt_aot_task_*` con un paquete de
+palabras `[cantidad, clases..., palabras...]` (clase 1 para referencias); `effect.await` usa `rt_aot_effect_await` con el
+mismo búfer que `effect_call`, y `call.suspendible` es una llamada directa. Los puntos de suspensión (`task.await`,
+`task.scope_join`, `task.yield_check`, `task.channel`, `effect.await`, `call.suspendible`, `task.scope_result`) son puntos
+seguros de raíces: mientras otra tarea ejecuta, el recolector ve los valores vivos de la tarea suspendida en su pila de
+raíces. Un módulo que usa la agenda descuenta la masa de cada bloque en `quantum_mass` del contexto, y `task.yield_check`
+solo llama al runtime cuando alcanza el cuanto 1024; sin agenda no emite nada.
+
+Decisión de suspensión: el runtime ejecuta cada tarea en su propio hilo con un testigo único, de modo que el código
+generado no cambia en las funciones suspendibles; la alternativa de máquina de estados (guardar los vivos en ranuras de la
+continuación de `pseudolearn_abi` y reentrar por estado) se descartó porque duplicaba la bajada en cada punto de
+suspensión, y la de pilas propias con cambio de contexto en ensamblador, porque exigía `unsafe`. Reversión: si el número
+de hilos vivos llegara a ser un límite real, volver a la máquina de estados, cuyas disposiciones siguen definidas.
+
+Desenrollado: una función con `task.cancel_point` o `task.scope_boundary` (`task_unwinding`) se baja en modo de variables de
+Cranelift, porque la RI considera las aristas de aterrizaje como salidas de todo el bloque y sus valores no dominan en
+CLIF; las variables no definidas en un camino valen cero, como un registro de la VM. Cada aterrizaje recibe un índice; el
+bloque de propagación comprueba si el estado es 3 y si `unwind_depth` coincide con la profundidad del marco, llama a
+`rt_aot_task_land` (que restaura profundidad, raíces y celdas) y salta por `Switch` al bloque de la arista. Todo `return`
+de esas funciones llama antes a `rt_aot_task_return`, que reanuda la limpieza LIFO de una tarea cancelada. `block_order`
+cuenta esas aristas como sucesoras. `task_dispatch` emite `__pl_task_dispatch`, que recibe el índice del destino de
+`task.spawn` y las palabras de sus argumentos; el `main` de C lo pasa a `pseudolearn_aot_main` (nulo sin agenda).
+
+## Destinos
+
+`TargetConfig::for_triple` emite objeto para los cuatro destinos de publicación; Cranelift se compila con los backends
+x86_64 y AArch64. Un destino sin backend devuelve `CodegenError::Target`.
+
+| Destino | Formato | Emisión | Ejecución |
+|---|---|---|---|
+| `aarch64-apple-darwin` | Mach-O | probada | verificada |
+| `x86_64-apple-darwin` | Mach-O | probada | no verificada: el equipo de referencia no tiene Rosetta 2 |
+| `x86_64-unknown-linux-musl` | ELF | probada | no verificada: sin medio de ejecución Linux |
+| `x86_64-pc-windows-msvc` | COFF | probada | no verificada |
 
 ## Ampliación numérica y de colecciones
 

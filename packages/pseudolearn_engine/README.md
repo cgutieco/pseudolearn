@@ -611,16 +611,15 @@ permutaciones de entrega y la tarea que falla.
 
 ## Sujeto nativo y tareas
 
-El código nativo no ofrece tareas ni canales todavía. La agenda, los canales y la instantánea
-comparten implementación en `pseudolearn_runtime`, pero generar funciones reanudables con volcado de
-valores vivos, el trampolín de la agenda y la espera de efectos concurrentes en `pseudolearn_codegen`
-y `pseudolearn_aot_rt` exige una disposición de continuaciones nativa que no existe; sin ella la
-comparación VM/AOT no puede dar cero diferencias, y el contrato exige no anunciar tareas nativas
-sin pasarla. Por eso el generador reconoce las operaciones de tarea (`UNSUPPORTED_OPERATIONS`) antes
-de emitir código y `build_native_object` devuelve el diagnóstico `nativeTasksUnsupported` con
-`NativeBuildFailure::Rejected`; la CLI lo muestra con salida 1 tanto en `build` como en
-`run --native`. Las reglas de tareas siguen `pendiente` en `conformance-aot.yaml` con su punto de
-resolución. Un programa sin tareas, aunque su raíz sea suspendible, se compila como siempre.
+El código nativo ejecuta tareas, canales y esperas de efecto con la misma agenda que la VM. Cada tarea corre en un hilo
+del sistema operativo con su propia pila nativa y su propia pila de raíces, y un testigo único (`task_baton`) garantiza
+que solo una ejecuta código del programa; la semántica (agenda, canales, fallos, cancelación, reservas de cinta y orden de
+entrega) la ponen las piezas compartidas de `pseudolearn_runtime`, que `pseudolearn_aot_rt` conduce desde sus entradas
+`rt_aot_task_*`. La cancelación y el aborto de un ámbito desenrollan por propagación del estado 3 hasta el marco que
+registró el punto de cancelación o la frontera (`RT.ABI#R5`). Se eligió así frente a transformar las funciones
+suspendibles en máquinas de estados (la opción del plan original), porque el desenrollado por estado ya existía para los
+fallos, no exige `unsafe` nuevo ni duplicar la bajada, y deja intacto el código de las funciones sin tareas. El detalle vive
+en los README de `pseudolearn_codegen` y `pseudolearn_aot_rt`. Ya no existe el diagnóstico de rechazo de tareas nativas.
 
 ### Cliente HTTP/HTTPS del motor
 

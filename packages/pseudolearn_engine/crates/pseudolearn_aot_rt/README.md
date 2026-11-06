@@ -116,7 +116,7 @@ partir de un `ClassDescriptor` (códigos de tipo por campo y densidad), que es l
 
 Códigos de tipo: `KIND_INTEGER` 0, `KIND_REAL` 1, `KIND_BOOLEAN` 2, `KIND_CHARACTER` 3, `KIND_REFERENCE` 4.
 
-Proceso del ejecutable: `pseudolearn_aot_main(entrada, metadatos, longitud) -> i32` es el único símbolo que enlaza el
+Proceso del ejecutable: `pseudolearn_aot_main(entrada, metadatos, longitud, despachador) -> i32` es el único símbolo que enlaza el
 `main` generado. Decodifica los metadatos (`decode_metadata`), crea la `AotSession` con entrada estándar con búfer, salida
 estándar con búfer y los límites y la semilla fijados al compilar, registra las clases, llama a la función de entrada,
 vacía la salida y proyecta el estado: `0` completado, `3` fallo del programa, `4` límite (`statementBudgetExhausted` o
@@ -270,6 +270,41 @@ con `stringPositionOutOfRange` sin los argumentos `length` y `position` que la V
 de puntos de código del primer argumento y `position` es la suma del segundo y el tercero, o el segundo si falta el
 tercero o la suma desborda. Así el diagnóstico nativo coincide con el de engine (`RT.FAULT.REPORTING#R2`). Se descartó
 calcular otra posición en el sujeto nativo, porque la propiedad compara contra la VM.
+
+### Agenda nativa de tareas
+
+`AotTasks` (en `AotEngine.tasks`, solo si el ejecutable recibe el despachador de tareas) conduce `TaskAgenda`,
+`TaskChannels`, `TaskFailures` y las reservas de cinta de `pseudolearn_runtime` con la misma secuencia que la máquina
+virtual: `schedule_next` atiende primero la limpieza de tareas canceladas, luego la cola de listas y, si no hay ninguna, la
+espera de efectos con menor rango en el orden de entrega (`orden_entrega` del anfitrión o el de la cinta al reproducir), y si
+tampoco la hay produce `taskDeadlock` con las ubicaciones de suspensión de las tareas bloqueadas.
+
+Cada tarea corre en un hilo propio de 64 MiB de pila que nace la primera vez que la agenda la elige; `task_baton` (mutex y
+variable de condición) entrega el turno a una sola tarea. Al ceder, la tarea guarda en `SuspendedFrames` su pila de raíces,
+su tabla de celdas y su presupuesto, y la que reanuda los instala en el motor y en su propio contexto: ningún hilo escribe el
+contexto de otro, y ninguna referencia al motor sobrevive a una espera. Las direcciones cruzan entre hilos como direcciones
+expuestas (`expose_provenance`), así que no hay `unsafe` nuevo. El recolector recorre la pila y las celdas de la tarea en
+ejecución, las de cada tarea suspendida y los valores de resultados, mensajes, respuestas de canal, argumentos de tareas no
+iniciadas y almacenes de tarea (`task_roots`). Un fallo en una tarea secundaria entrega el turno a la raíz con
+`Terminate`, que lo devuelve al código nativo como estado de fallo; una tarea descartada por cancelación sin punto de
+limpieza recibe `Exit` y desenrolla sin tocar el motor.
+
+`effect.await` registra la solicitud con su secuencia de la VM, reserva su secuencia de cinta y suspende; al entregarla, la
+misma tarea realiza el efecto. Las solicitudes abandonadas se sellan al final (`seal_abandoned`) y las de red que superan
+`max_pending_network` se rechazan con `limite_excedido`. Divergencia conocida respecto de `ENG.TASK.MEMORY#R1`: la pila de una
+tarea suspendida vive en su hilo y no en una continuación del montón, de modo que su coste en celdas no se descuenta.
+
+### Proceso, semilla y anfitrión físico
+
+`ProcessOptions` analiza `--semilla N`/`--seed N`, `--effects-in` y `--effects-out`; los argumentos del programa empiezan tras
+`--` o en el primer argumento que no es una opción del runtime. Sin `--semilla` la semilla sale de `entropy_seed` del
+anfitrión; los metadatos `PLM6` ya no la llevan, y sí los límites de tareas y de capacidad de canal. Sin la feature
+`test-host` el proveedor de efectos es `PhysicalProvider`, que traduce cada `HostEffectRequest` al formato JSON de
+`pseudolearn_host::PhysicalHost` con el directorio de trabajo y los argumentos del proceso; con ella sigue el anfitrión de
+memoria. La salida de `Escribir` se registra en la cinta una vez por sentencia (`STATEMENT_END_FLAG`). El texto de la consola de
+error va a la salida de error, salvo cuando un documento de efectos dirige la ejecución, en que se une a la salida como en la
+respuesta del motor. El código pedido con la operación de consola correspondiente es el código de salida de un programa
+terminado que se ejecuta sin `--effects-out`.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

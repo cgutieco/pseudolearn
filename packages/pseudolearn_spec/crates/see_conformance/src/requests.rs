@@ -48,6 +48,7 @@ pub fn required_capabilities(case: &Block) -> Vec<&'static str> {
         "ir" => vec!["ir"],
         "cli" => vec!["cli"],
         "service" => vec!["service"],
+        "api" if project_only(case) => vec!["project_api"],
         "api" => vec!["api"],
         "app" => vec!["app"],
         _ => vec!["execute"],
@@ -77,6 +78,23 @@ pub fn required_capabilities(case: &Block) -> Vec<&'static str> {
         capabilities.push("state_pages");
     }
     capabilities
+}
+
+const PROJECT_OPERATIONS: &[&str] = &["execute_project", "analyze_project"];
+
+fn project_only(case: &Block) -> bool {
+    case.fields
+        .get("api")
+        .and_then(|value| value.get("calls"))
+        .and_then(Value::as_array)
+        .is_some_and(|calls| {
+            !calls.is_empty()
+                && calls.iter().all(|call| {
+                    call.get("operation")
+                        .and_then(Value::as_str)
+                        .is_some_and(|operation| PROJECT_OPERATIONS.contains(&operation))
+                })
+        })
 }
 
 fn requires_service_help(case: &Block) -> bool {

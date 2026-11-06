@@ -271,7 +271,7 @@ Cada sujeto lee su manifiesto de vínculos en una ruta fija (`bindings::manifest
 datos (`subject_adapters`): `reference` como archivo histórico sin lanzador, `engine` con el adaptador del motor, `cli` y `aot` con el binario `pseudo`
 (`--see-adapter` y `--see-adapter aot`), y `app` con `dart run tool/see_app_adapter.dart` desde la raíz de
 `apps/pseudolearn_app`. El adaptador app inicializa el transporte FRB generado y ejecuta análisis, ejecución,
-consulta de estado, completado y llamadas de propiedades API por esa frontera. `aot` ejecuta los casos `execute` y los casos `api` de `execute_project` contra ejecutables reales; los casos de análisis,
+consulta de estado, completado y llamadas de propiedades API por esa frontera. `aot` ejecuta los casos `execute` y los casos `api` de `execute_project` contra ejecutables reales; un caso `api` cuyas llamadas son solo `execute_project` y `analyze_project` exige la capacidad `project_api`, que también satisface un sujeto que anuncia `api` completa, de modo que un sujeto puede ofrecer proyectos sin ofrecer la sesión de ejecución observable; los casos de análisis,
 representación intermedia y traza quedan `no aplicable` o `pendiente` por capacidad. Las propiedades se ejecutan con
 `conform --subject <sujeto> --operation properties`; una propiedad cuya capacidad el sujeto no anuncia queda `pendiente` y no
 cuenta como fallo, y un escenario que exige observación (cancelación, consulta de estado o eventos) no se envía a un

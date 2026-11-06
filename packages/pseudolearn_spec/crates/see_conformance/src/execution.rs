@@ -84,7 +84,11 @@ pub fn support(session: &Session, case: &Block, request: &Value) -> Support {
     let capabilities = requests::required_capabilities(case);
     let missing: Vec<_> = capabilities
         .iter()
-        .filter(|capability| !announced("capabilities", Some(&Value::from(**capability))))
+        .filter(|capability| {
+            !announced("capabilities", Some(&Value::from(**capability)))
+                && !(**capability == "project_api"
+                    && announced("capabilities", Some(&Value::from("api"))))
+        })
         .collect();
     match (profile, missing.as_slice()) {
         (true, []) => Support::Available,

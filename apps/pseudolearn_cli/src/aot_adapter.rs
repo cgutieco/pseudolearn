@@ -41,7 +41,7 @@ fn hello() -> Value {
         "protocol": "see-protocol/1",
         "subject": "aot",
         "subject_version": ENGINE_VERSION,
-        "capabilities": ["execute", "gc_stress", "api"],
+        "capabilities": ["execute", "gc_stress", "project_api"],
         "profiles": supported_profiles()
     })
 }
