@@ -57,4 +57,8 @@ construction.
 This is not an implementation detail: without it, an exercise with test cases and a random function
 would be incompatible, and step-by-step execution could not repeat identically twice.
 
+{{firma:random}} gives an integer between 0 and n - 1, {{firma:randomBetween}} an integer between a and
+b, both included, and {{firma:randomUnit}} a real between 0 and 1, never reaching 1. Each name has a
+single meaning: no other function shares the name and does something else.
+
 {{ejemplo:example-esp-funciones-aleatorio}}

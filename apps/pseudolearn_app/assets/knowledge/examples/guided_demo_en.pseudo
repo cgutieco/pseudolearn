@@ -1,6 +1,6 @@
 algorithm GuidedDemo
-    define mutable temperature as integer <- 30;
-    define mutable readings as integer <- 0;
+    define temperature as integer <- 30;
+    define readings as integer <- 0;
     while temperature > 24 do
         temperature <- temperature - 3;
         readings <- readings + 1;

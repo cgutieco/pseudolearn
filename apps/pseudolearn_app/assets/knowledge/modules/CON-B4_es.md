@@ -80,7 +80,7 @@ termina el cuerpo del bucle y dónde sigue el resto del algoritmo.
 
 ```pseudo
 Algoritmo BucleSinCierre
-    Definir Mutable i Como Entero <- 3;
+    Definir i Como Entero <- 3;
     Mientras i > 0 Hacer
         Escribir i;
         i <- i - 1;
@@ -96,7 +96,7 @@ el bloque. Sin ella, el bucle queda abierto igual que si le faltara cualquier ot
 
 ```pseudo
 Algoritmo RepetirSinCierre
-    Definir Mutable n Como Entero <- 0;
+    Definir n Como Entero <- 0;
     Repetir
         Leer n;
         Escribir n;

@@ -47,9 +47,9 @@ FinProceso
 
 const String _builtinsProgram = '''
 Proceso PruebaBuiltins
-    Definir Mutable r Como Real <- 0.0;
-    Definir Mutable e Como Entero <- 0;
-    Definir Mutable t Como Cadena <- "";
+    Definir r Como Real <- 0.0;
+    Definir e Como Entero <- 0;
+    Definir t Como Cadena <- "";
     r <- rc(16);
     e <- redon(r);
     t <- ATexto(e);
@@ -116,8 +116,8 @@ void main() {
     test('exports the proven builtins in Python', () {
       const source = '''
 Proceso PruebaBuiltins
-    Definir Mutable r Como Real <- 0.0;
-    Definir Mutable t Como Cadena <- "";
+    Definir r Como Real <- 0.0;
+    Definir t Como Cadena <- "";
     r <- rc(16);
     t <- ATexto(3);
     Escribir r, t;

@@ -1,5 +1,5 @@
 Algoritmo BucleMientras
-  Definir Mutable n Como Entero <- 0;
+  Definir n Como Entero <- 0;
   Mientras n > 0 Hacer
     Escribir n;
     n <- n - 1;

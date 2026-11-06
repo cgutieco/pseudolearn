@@ -22,8 +22,8 @@ SubProceso CrearIncrementador(base Como Entero) Como SubProceso(Entero) Como Ent
 FinSubProceso
 
 Algoritmo Main
-    Definir Mutable lector Como Lector <- Nuevo Lector();
-    Definir Mutable escritor Como Escritor <- Nuevo Escritor();
+    Definir lector Como Lector <- Nuevo Lector();
+    Definir escritor Como Escritor <- Nuevo Escritor();
     Definir lectura Como Resultado<Entero, Cadena> <- lector.Obtener(4);
     Segun lectura Hacer
         Exito(valor): Escribir valor;

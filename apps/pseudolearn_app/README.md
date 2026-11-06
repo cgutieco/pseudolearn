@@ -1223,7 +1223,8 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
       programáticos (`MemoryBoxesIllustration`), garantizando soporte vectorial sin imágenes rasterizadas.
     - **Programas completos y diagnósticos demostrativos:** Los programas de `examples/` y las cercas que ilustran
       diagnósticos conservan la gramática única del motor: cada sentencia termina en `;`, cada bucle `Para`/`For`
-      declara `Con Paso`/`Step` y cada parámetro tiene tipo explícito. Una cerca que enseña un error semántico deja
+      puede omitir `Con Paso`/`Step` (paso 1) y cada parámetro tiene tipo explícito. Los ejemplos declaran sin
+      valor inicial la variable que reciben de `Leer` en la línea siguiente, en vez de inventar un valor de partida. Una cerca que enseña un error semántico deja
       inválida solo la construcción que explica; el resto de su sintaxis debe ser válida para que aparezca el
       diagnóstico previsto. `tool/check_content.dart` analiza los ejemplos declarados y contrasta los diagnósticos
       citados por subsección.
@@ -2667,9 +2668,9 @@ entregas, pero no los pares `task_resumed`/`task_suspended` especulativos que el
 tarea cuyo resultado aún no había llegado. Por eso para `live_http` y `live_order` la comparación de reproducción es de
 resultado y no de traza evento a evento.
 
-Los casos de completado `APP.EDITOR.COMPLETION#R5/R6/R10` usaban programas con `Definir x Como Entero;` sin inicializador,
-que `LANG.DECL.UNINITIALIZED` rechaza (`missingBindingInitializer`) y que por eso no producen símbolo ni candidato; se
-reescribieron como `Definir Mutable x Como Entero <- 0;` con las posiciones recalculadas. Las propiedades de conformidad que
+Los casos de completado `APP.EDITOR.COMPLETION#R5/R6/R10` usan programas con `Definir x Como Entero <- 0;`: se
+reescribieron así cuando la declaración sin valor era un error, y conservan el valor inicial aunque ya no sea
+obligatorio para no mover sus posiciones. Las propiedades de conformidad que
 parten de casos con bloque `anfitrion` solo las ejecuta el sujeto que distribuye el doble de prueba (`engine`): el puente
 de la app no lo trae y devolvía `peticion_invalida`. La vista de instantánea buscaba la referencia del arreglo solo en marcos
 con variables visibles y un programa que solo declara el arreglo no emite ningún evento posterior; el escenario `snapshot`
@@ -3186,3 +3187,10 @@ proyección específica de las operaciones nuevas más allá de la que ya da el 
 `flutter test --no-pub --device-id <UDID> integration_test/general_purpose_acceptance_test.dart`. Pasó en macOS (debug) y
 en el simulador iPhone 18 Pro (iOS 27.0). No cubre archivos, entorno ni consola con efectos físicos, y Windows no se
 ejecutó.
+
+## Exportación de la biblioteca clásica
+
+El emisor Python traduce `Azar(n)` a `random.randrange(n)`, `Aleatorio(a, b)` a `random.randint(a, b)`, `AzarReal()` a
+`random.random()` y `Concatenar(a, b)` a `(a + b)`, e importa `random` cuando aparece cualquiera de las tres funciones de
+azar. El emisor Rust no tiene generador sin dependencias: conserva un valor fijo del tipo correcto (el inicio del
+intervalo en `Aleatorio`) como antes hacía con `azar()`. La vista del programa ya no trae el atributo `mutable`.

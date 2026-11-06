@@ -34,7 +34,7 @@ Clase Motocicleta Hereda De Vehiculo
 FinClase
 
 Proceso Principal
-    Definir Mutable moto Como Motocicleta <- Nuevo Motocicleta();
+    Definir moto Como Motocicleta <- Nuevo Motocicleta();
     Escribir 1;
 FinProceso
 ''';

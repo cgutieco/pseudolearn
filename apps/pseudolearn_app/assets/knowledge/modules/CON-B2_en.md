@@ -57,7 +57,7 @@ A computation has nowhere to be stored.
 
 ```pseudo
 algorithm InvalidRead
-    define mutable n as integer <- 0;
+    define n as integer <- 0;
     read n + 1;
 endAlgorithm
 ```

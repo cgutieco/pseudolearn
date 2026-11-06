@@ -40,7 +40,7 @@ SubProceso Suspendible Crash()
 Diferir
 Escribir "cleanup";
 FinDiferir
-Definir Mutable denominator Como Entero <- 1;
+Definir denominator Como Entero <- 1;
 denominator <- denominator - 1;
 Escribir 1 div denominator;
 FinSubProceso

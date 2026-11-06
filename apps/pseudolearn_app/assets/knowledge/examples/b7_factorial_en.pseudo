@@ -7,7 +7,7 @@ subroutine Factorial(n as integer) as integer
 endSubroutine
 
 algorithm ComputeFactorial
-    define mutable n as integer <- 0;
+    define n as integer;
     read n;
     write Factorial(n);
 endAlgorithm

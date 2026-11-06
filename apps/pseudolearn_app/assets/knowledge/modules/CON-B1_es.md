@@ -70,18 +70,21 @@ no coincide, acabas de encontrar exactamente dónde no funcionaba, que vale much
 
 :::parte errores-frecuentes
 
-## Declarar sin valor inicial
+## Leer una variable que todavía no tiene valor
 
-Toda declaración lleva su valor inicial después de la flecha: un nombre sin valor no existe. Si el
-valor llegará más tarde, se declara con `Mutable` y un valor de partida, y se asigna después.
+Declarar una variable sin valor inicial está permitido: el valor puede llegar después con una
+asignación o con `Leer`. Lo que no se puede es leerla antes. Si en algún camino del programa la
+variable llega sin valor al punto donde se usa, el programa no se ejecuta y el aviso dice por qué
+camino le falta el valor.
 
 ```pseudo
 Algoritmo SinValorInicial
   Definir n Como Entero;
+  Escribir n;
 FinAlgoritmo
 ```
 
-{{diagnostico:missingBindingInitializer}}
+{{diagnostico:variableUsedUninitialized}}
 
 ## Asignar a algo que no es una casilla
 

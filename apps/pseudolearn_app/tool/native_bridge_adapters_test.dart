@@ -18,9 +18,9 @@ import 'package:pseudolearn_app/engine/rust/rust_syntax_help_source.dart';
 import 'package:pseudolearn_app/engine/rust/rust_transport.dart';
 
 const String fibonacci =
-    'Algoritmo P\nDefinir Mutable a Como Entero <- 0;\n'
-    'Definir Mutable b Como Entero <- 1;\n'
-    'Definir Mutable c Como Entero <- 0;\n'
+    'Algoritmo P\nDefinir a Como Entero <- 0;\n'
+    'Definir b Como Entero <- 1;\n'
+    'Definir c Como Entero <- 0;\n'
     'Para i <- 1 Hasta 20 Con Paso 1 Hacer\nc <- a + b;\na <- b;\nb <- c;\n'
     'FinPara\nEscribir a;\nFinAlgoritmo\n';
 
@@ -237,7 +237,7 @@ void main() {
     final execution = RustProgramExecution(transport);
     execution.startExecution(
       sourceCode:
-          'Algoritmo P\nDefinir Mutable x Como Entero <- 0;\n'
+          'Algoritmo P\nDefinir x Como Entero <- 0;\n'
           'Leer x;\nEscribir x;\nFinAlgoritmo\n',
       profileId: SyntaxProfileId.classicSpanish,
       languageId: UiLanguageId.spanish,

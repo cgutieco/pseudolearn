@@ -15,7 +15,7 @@ Clase Escritor Realiza Legible
 FinClase
 
 Algoritmo CompararContratos
-    Definir Mutable valor Como Entero <- 0;
+    Definir valor Como Entero;
     Leer valor;
     Definir lector Como Lector <- Nuevo Lector();
     Definir escritor Como Escritor <- Nuevo Escritor();

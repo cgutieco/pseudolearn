@@ -9,7 +9,7 @@ import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
 const _loop = '''
 Algoritmo Bucle
   Definir i Como Entero <- 0;
-  Definir Mutable total Como Entero <- 0;
+  Definir total Como Entero <- 0;
   total <- 0;
   Para i <- 1 Hasta 3 Con Paso 1 Hacer
     total <- total + i;
@@ -24,7 +24,7 @@ SubProceso Factorial(n Como Entero) Como Entero
 FinSubProceso
 
 Algoritmo ConLlamada
-  Definir Mutable a Como Entero <- 0;
+  Definir a Como Entero <- 0;
   a <- Factorial(4);
   Escribir a;
 FinAlgoritmo

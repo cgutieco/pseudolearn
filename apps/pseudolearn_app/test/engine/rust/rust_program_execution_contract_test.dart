@@ -50,7 +50,7 @@ void main() {
       final execution = nativeTestEngine.createProgramExecution();
       const source = '''
 Algoritmo Test
-  Definir Mutable x Como Entero <- 0;
+  Definir x Como Entero <- 0;
   x <- 5;
   Escribir x;
 FinAlgoritmo

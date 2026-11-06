@@ -1,5 +1,6 @@
 Algorithm RandomFunction
-  Define r1 As Real <- random();
-  Define r2 As Real <- random();
-  Write r1, r2;
+  Define die As Integer <- randomBetween(1, 6);
+  Define slot As Integer <- random(10);
+  Define fraction As Real <- randomReal();
+  Write die, " ", slot, " ", fraction < 1.0;
 EndAlgorithm

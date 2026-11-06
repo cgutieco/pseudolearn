@@ -34,7 +34,7 @@ final class PythonShapeEmitter {
 
   void _imports(Set<String> builtins, TargetCodeBuilder buffer) {
     if (builtins.any(mathBuiltins.contains)) buffer.writeln('import math');
-    if (builtins.contains('random')) buffer.writeln('import random');
+    if (builtins.any(_randomBuiltins.contains)) buffer.writeln('import random');
   }
 
   void _class(
@@ -68,3 +68,5 @@ final class PythonShapeEmitter {
     buffer.writeln('    main()');
   }
 }
+
+const _randomBuiltins = {'random', 'randomBetween', 'randomUnit'};

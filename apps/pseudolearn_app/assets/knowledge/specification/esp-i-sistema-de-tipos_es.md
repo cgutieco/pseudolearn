@@ -121,19 +121,20 @@ FinAlgoritmo
 
 ## Sin valores por omisión
 
-No hay valores por omisión. Una declaración exige su valor inicial, así que un vínculo nunca existe sin
-valor: un cero por omisión convertiría un olvido en un programa que se ejecuta y da un resultado
-equivocado, y exigir el valor lo convierte en un error al escribir. Solo los campos y los elementos de
-un arreglo pueden carecer de valor, y leerlos antes de escribirlos es un fallo al ejecutar.
+No hay valores por omisión. Una variable se puede declarar sin valor, pero leerla antes de que todos
+los caminos le hayan dado uno es un error al escribir el programa: un cero por omisión convertiría un
+olvido en un programa que se ejecuta y da un resultado equivocado. Solo los campos de objetos y los
+elementos de un arreglo pueden carecer de valor al ejecutar, y leerlos antes de escribirlos es un fallo
+al ejecutar.
 
 ```pseudo
 Algoritmo SinInicializar
-  Definir x Como Entero
-  Escribir x
+  Definir x Como Entero;
+  Escribir x;
 FinAlgoritmo
 ```
 
-{{diagnostico:missingBindingInitializer}}
+{{diagnostico:variableUsedUninitialized}}
 
 ## Variable declarada y no usada, y asignada y no leída
 

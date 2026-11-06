@@ -1,44 +1,45 @@
 # Declaración y asignación
 
-Una declaración introduce un nombre, le fija un tipo y le da su valor inicial. Una asignación guarda un
-valor nuevo en un nombre que se declaró como mutable.
+Una declaración introduce uno o varios nombres y les fija un tipo; con un único nombre puede darle
+además su valor inicial. Una asignación guarda un valor nuevo en una variable ya declarada.
 
-## Un nombre por declaración
+## Varios nombres en una declaración
 
-Cada declaración introduce un solo nombre con su tipo y su valor. Para tener varias variables se
-escribe una declaración por cada una.
+Una declaración puede introducir varios nombres del mismo tipo, separados por comas. El valor inicial
+después de la flecha solo se admite cuando la declaración tiene un único nombre.
 
 {{ejemplo:example-esp-declaracion-multiple}}
 
-## Toda declaración lleva su valor inicial
+## Sin valor no se puede leer
 
-Un nombre declarado sin valor no existe: el lenguaje no inventa un cero ni una cadena vacía, y un valor
-que nadie escribió no es un valor. Por eso la declaración exige el valor inicial después de la flecha, y
-un nombre nunca se puede leer antes de tenerlo.
+Una variable declarada sin valor inicial existe, pero todavía no tiene valor: el lenguaje no inventa un
+cero ni una cadena vacía, y un valor que nadie escribió no es un valor. Leerla antes de que todos los
+caminos que llegan a ese punto le hayan dado uno es un error que se detecta antes de ejecutar.
 
 ```pseudo
 Algoritmo SinInicializar
-  Definir x Como Entero
-  Escribir x
+  Definir x Como Entero;
+  Escribir x;
 FinAlgoritmo
 ```
 
-{{diagnostico:missingBindingInitializer}}
+{{diagnostico:variableUsedUninitialized}}
 
-## Inmutable por omisión, mutable por elección
+## Reasignar una variable
 
-`Definir` crea un vínculo que no se puede reasignar. Si el programa necesita cambiar el valor, lo dice en
-la declaración con `Mutable`. Un vínculo mutable que nunca se modifica es una advertencia, porque la
-palabra no se estaría usando.
+`Definir` crea variables que se pueden reasignar tantas veces como haga falta. No se pueden reasignar la
+variable de control de `Para`, que pertenece al bucle, ni los nombres que introducen `Para Cada`, los
+patrones de `Segun` sobre variantes y las tareas.
 
 ```pseudo
-Algoritmo ReasignarInmutable
-  Definir x Como Entero <- 5;
-  x <- 6;
+Algoritmo ReasignarControl
+  Para i <- 1 Hasta 3 Hacer
+    i <- 5;
+  FinPara
 FinAlgoritmo
 ```
 
-{{diagnostico:immutableBindingAssignment}}
+{{diagnostico:controlVariableModified}}
 
 ## El destino de una asignación
 

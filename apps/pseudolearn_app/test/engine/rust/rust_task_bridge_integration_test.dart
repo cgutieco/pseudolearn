@@ -29,7 +29,7 @@ Tareas
 Lanzar Wait();
 Lanzar Work(7);
 FinTareas
-Definir Mutable pending Como Entero <- 0;
+Definir pending Como Entero <- 0;
 Leer pending;
 Escribir pending;
 FinAlgoritmo
@@ -49,7 +49,7 @@ tasks
 spawn Wait();
 spawn Work(7);
 endTasks
-define Mutable pending as integer <- 0;
+define pending as integer <- 0;
 read pending;
 write pending;
 endAlgorithm

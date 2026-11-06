@@ -1,6 +1,6 @@
 algorithm Accumulator
-    define mutable total as integer <- 0;
-    define mutable n as integer <- 5;
+    define total as integer <- 0;
+    define n as integer <- 5;
     total <- total + n;
     n <- 3;
     total <- total + n;

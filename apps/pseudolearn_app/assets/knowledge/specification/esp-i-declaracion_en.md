@@ -1,44 +1,45 @@
 # Declaration and assignment
 
-A declaration introduces a name, fixes a type for it and gives it its initial value. An assignment
-stores a new value into a name that was declared mutable.
+A declaration introduces one or more names and fixes their type; with a single name it can also give
+it its initial value. An assignment stores a new value into a variable that is already declared.
 
-## One name per declaration
+## Several names in one declaration
 
-Each declaration introduces a single name with its type and its value. To have several variables, write
-one declaration for each.
+A declaration can introduce several names of the same type, separated by commas. The initial value after
+the arrow is only allowed when the declaration has a single name.
 
 {{ejemplo:example-esp-declaracion-multiple}}
 
-## Every declaration carries its initial value
+## No value, no reading
 
-A name declared without a value does not exist: the language does not invent a zero or an empty string,
-and a value nobody wrote is not a value. That is why the declaration requires the initial value after
-the arrow, and a name can never be read before it has one.
+A variable declared without an initial value exists but has no value yet: the language does not invent
+a zero or an empty string, and a value nobody wrote is not a value. Reading it before every path that
+reaches that point has given it one is an error detected before the program runs.
 
 ```pseudo
 Algorithm Uninitialized
-  Define x As Integer
-  Write x
+  Define x As Integer;
+  Write x;
 EndAlgorithm
 ```
 
-{{diagnostico:missingBindingInitializer}}
+{{diagnostico:variableUsedUninitialized}}
 
-## Immutable by default, mutable by choice
+## Reassigning a variable
 
-`Define` creates a binding that cannot be reassigned. If the program needs to change the value, it says
-so in the declaration with `Mutable`. A mutable binding that is never modified is a warning, because
-the word would not be doing anything.
+`Define` creates variables that can be reassigned as many times as needed. What cannot be reassigned is
+the control variable of `For`, which belongs to the loop, and the names introduced by `For Each`, by
+patterns of `Switch` over variants and by tasks.
 
 ```pseudo
-Algorithm ReassignImmutable
-  Define x As Integer <- 5;
-  x <- 6;
+Algorithm ReassignControl
+  For i <- 1 To 3 Do
+    i <- 5;
+  EndFor
 EndAlgorithm
 ```
 
-{{diagnostico:immutableBindingAssignment}}
+{{diagnostico:controlVariableModified}}
 
 ## The target of an assignment
 

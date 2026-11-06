@@ -46,21 +46,21 @@ final Map<String, ({String source, Set<TargetLanguageId> targets})> _cases = {
   ),
   'selection': (
     source: _procedure(
-      'Definir Mutable x Como Entero <- 5;\nSi x > 3 Entonces\n'
+      'Definir x Como Entero <- 5;\nSi x > 3 Entonces\n'
       'Escribir "g";\nSiNo\nEscribir "p";\nFinSi',
     ),
     targets: TargetLanguageId.values.toSet(),
   ),
   'while loop': (
     source: _procedure(
-      'Definir Mutable i Como Entero <- 0;\nMientras i < 3 Hacer\n'
+      'Definir i Como Entero <- 0;\nMientras i < 3 Hacer\n'
       'Escribir i;\ni <- i + 1;\nFinMientras',
     ),
     targets: TargetLanguageId.values.toSet(),
   ),
   'repeat loop': (
     source: _procedure(
-      'Definir Mutable i Como Entero <- 0;\nRepetir\ni <- i + 1;\n'
+      'Definir i Como Entero <- 0;\nRepetir\ni <- i + 1;\n'
       'Hasta Que i >= 3;\nEscribir i;',
     ),
     targets: TargetLanguageId.values.toSet(),
@@ -105,7 +105,7 @@ final Map<String, ({String source, Set<TargetLanguageId> targets})> _cases = {
   ),
   'real arithmetic': (
     source: _procedure(
-      'Definir Mutable r Como Real <- 1.5;\nr <- r * 2 + 1;\nEscribir r;',
+      'Definir r Como Real <- 1.5;\nr <- r * 2 + 1;\nEscribir r;',
     ),
     targets: {TargetLanguageId.python},
   ),

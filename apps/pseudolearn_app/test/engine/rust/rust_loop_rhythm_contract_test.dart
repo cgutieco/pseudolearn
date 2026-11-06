@@ -8,7 +8,7 @@ import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
 
 const _counted = '''
 Algoritmo Bucle
-  Definir Mutable total Como Entero <- 0;
+  Definir total Como Entero <- 0;
   Para i <- 1 Hasta 3 Con Paso 1 Hacer
     total <- total + i;
   FinPara
@@ -18,7 +18,7 @@ FinAlgoritmo
 
 const _preTest = '''
 Algoritmo PreTest
-  Definir Mutable i Como Entero <- 0;
+  Definir i Como Entero <- 0;
   Mientras i < 2 Hacer
     i <- i + 1;
   FinMientras
@@ -27,7 +27,7 @@ FinAlgoritmo
 
 const _postTest = '''
 Algoritmo PostTest
-  Definir Mutable i Como Entero <- 0;
+  Definir i Como Entero <- 0;
   Repetir
     i <- i + 1;
   Hasta Que i >= 2

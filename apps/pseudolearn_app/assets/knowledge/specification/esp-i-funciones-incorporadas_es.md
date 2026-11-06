@@ -58,4 +58,8 @@ ejecución sea reproducible por construcción.
 No es un detalle de implementación: sin él, un ejercicio con casos de prueba y una función aleatoria
 serían incompatibles, y la ejecución paso a paso no podría repetirse dos veces igual.
 
+{{firma:random}} da un entero entre 0 y n - 1, {{firma:randomBetween}} un entero entre a y b, ambos
+incluidos, y {{firma:randomUnit}} un real entre 0 y 1, sin llegar a 1. Cada nombre tiene un único
+significado: no hay otra función con el mismo nombre que haga algo distinto.
+
 {{ejemplo:example-esp-funciones-aleatorio}}

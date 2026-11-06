@@ -76,10 +76,10 @@ final class PythonExpressionRules implements ViewExpressionRules {
       'arcTangent' => 'math.atan($joined)',
       'truncate' => 'math.trunc($joined)',
       'round' => 'round($joined)',
-      'random' =>
-        arguments.isEmpty
-            ? 'random.random()'
-            : 'random.randint(0, ${arguments.first} - 1)',
+      'random' => 'random.randrange($joined)',
+      'randomBetween' => 'random.randint($joined)',
+      'randomUnit' => 'random.random()',
+      'concatenate' => '(${arguments.join(' + ')})',
       'toText' => 'str($joined)',
       'textToInteger' => 'int($joined)',
       'textToReal' => 'float($joined)',

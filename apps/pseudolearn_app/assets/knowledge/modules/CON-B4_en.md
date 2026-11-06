@@ -80,7 +80,7 @@ the loop body ends and the rest of the algorithm continues.
 
 ```pseudo
 algorithm UnclosedLoop
-    define mutable i as integer <- 3;
+    define i as integer <- 3;
     while i > 0 do
         write i;
         i <- i - 1;
@@ -96,7 +96,7 @@ block. Without it, the loop is left open just as if it were missing any other cl
 
 ```pseudo
 algorithm UnclosedRepeat
-    define mutable n as integer <- 0;
+    define n as integer <- 0;
     repeat
         read n;
         write n;

@@ -33,7 +33,7 @@ FinProceso
 
 const String _noClasses = '''
 Proceso Principal
-    Definir Mutable n Como Entero <- 0
+    Definir n Como Entero <- 0
     n <- 1
     Escribir n
 FinProceso

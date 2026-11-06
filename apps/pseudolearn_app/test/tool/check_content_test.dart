@@ -73,15 +73,16 @@ Una variable es un nombre para un valor.
 Que valor tiene n en el paso 4.
 
 :::parte errores-frecuentes
-Declarar sin valor inicial no esta permitido.
+Leer una variable sin valor no esta permitido.
 
 ```pseudo
-Algoritmo Error
+Algoritmo SinValor
   Definir n Como Entero;
+  Escribir n;
 FinAlgoritmo
 ```
 
-{{diagnostico:missingBindingInitializer}}
+{{diagnostico:variableUsedUninitialized}}
 
 :::parte especificacion
 - esp-i-datos Tipos y operadores
@@ -114,13 +115,13 @@ const String _exercise = '''
   "hiddenCases": [
     {"inputs": ["7"], "expectedOutputs": ["49"], "expected": "numerico"}
   ],
-  "referenceSolution": "Algoritmo Cuadrado\\n  Definir Mutable n Como Entero <- 0;\\n  Leer n;\\n  Escribir n * n;\\nFinAlgoritmo\\n"
+  "referenceSolution": "Algoritmo Cuadrado\\n  Definir n Como Entero <- 0;\\n  Leer n;\\n  Escribir n * n;\\nFinAlgoritmo\\n"
 }
 ''';
 
 const String _example = '''
 Algoritmo Cuadrado
-  Definir Mutable n Como Entero <- 0;
+  Definir n Como Entero <- 0;
   n <- 4;
   Escribir n * n;
 FinAlgoritmo
@@ -221,7 +222,7 @@ void main() {
       expect(
         await _errorsOf(
           'dirty_example',
-          _withReplacement('examples/cuadrado_es.pseudo', 'Definir Mutable n Como Entero', 'Definir Mutable Como Entero'),
+          _withReplacement('examples/cuadrado_es.pseudo', 'Definir n Como Entero', 'Definir Como Entero'),
         ),
         contains(contains('does not analyse cleanly')),
       );
@@ -301,7 +302,7 @@ void main() {
 
     test('fails when a level 1 exercise needs a construct beyond its module', () async {
       const withLoop =
-          '"referenceSolution": "Algoritmo Cuadrado\\n  Definir Mutable n Como Entero <- 0;\\n  Definir i Como Entero <- 0;\\n  Definir Mutable total Como Entero <- 0;\\n  Leer n;\\n  total <- 0;\\n  Para i <- 1 Hasta n Con Paso 1 Hacer\\n    total <- total + n;\\n  FinPara\\n  Escribir total;\\nFinAlgoritmo\\n"';
+          '"referenceSolution": "Algoritmo Cuadrado\\n  Definir n Como Entero <- 0;\\n  Definir i Como Entero <- 0;\\n  Definir total Como Entero <- 0;\\n  Leer n;\\n  total <- 0;\\n  Para i <- 1 Hasta n Con Paso 1 Hacer\\n    total <- total + n;\\n  FinPara\\n  Escribir total;\\nFinAlgoritmo\\n"';
       final files = _goodContent;
       final start = files['exercises/CON-B1-E1_es.json']!.indexOf('"referenceSolution"');
       files['exercises/CON-B1-E1_es.json'] =
@@ -317,7 +318,7 @@ void main() {
       expect(
         await _errorsOf(
           'unreal_diagnostic',
-          _withReplacement('modules/CON-B1_es.md', '{{diagnostico:missingBindingInitializer}}', '{{diagnostico:divisionByZero}}'),
+          _withReplacement('modules/CON-B1_es.md', '{{diagnostico:variableUsedUninitialized}}', '{{diagnostico:divisionByZero}}'),
         ),
         contains(contains('but no program in its common errors part produces it')),
       );

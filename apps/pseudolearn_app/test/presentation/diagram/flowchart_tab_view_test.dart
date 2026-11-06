@@ -21,8 +21,8 @@ import 'package:pseudolearn_app/presentation/theme/tokens/component_metrics.dart
 
 const String _wideProgram = '''
 Proceso Ancho
-    Definir Mutable a Como Entero <- 0;
-    Definir Mutable b Como Entero <- 0;
+    Definir a Como Entero <- 0;
+    Definir b Como Entero <- 0;
     Leer a, b;
     Si a = b Entonces
         Escribir "los dos valores recibidos son exactamente iguales";
@@ -38,8 +38,8 @@ FinProceso
 
 const String _tallProgram = '''
 Proceso Termostato
-    Definir Mutable temperatura Como Entero <- 0;
-    Definir Mutable lecturas Como Entero <- 0;
+    Definir temperatura Como Entero <- 0;
+    Definir lecturas Como Entero <- 0;
     temperatura <- 30;
     lecturas <- 0;
     Mientras temperatura > 24 Hacer

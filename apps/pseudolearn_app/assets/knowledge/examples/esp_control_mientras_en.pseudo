@@ -1,5 +1,5 @@
 Algorithm WhileLoop
-  Define Mutable n As Integer <- 0;
+  Define n As Integer <- 0;
   While n > 0 Do
     Write n;
     n <- n - 1;

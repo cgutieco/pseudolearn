@@ -5,8 +5,8 @@ subroutine Swap(a as integer by reference, b as integer by reference)
 endSubroutine
 
 algorithm TrySwap
-    define mutable x as integer <- 0;
-    define mutable y as integer <- 0;
+    define x as integer <- 0;
+    define y as integer <- 0;
     read x;
     read y;
     Swap(x, y);

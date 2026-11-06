@@ -14,9 +14,9 @@ import 'package:pseudolearn_app/engine/exercise/behaviour_checker.dart';
 
 const String _withCountedLoop = '''
 Algoritmo Suma
-  Definir Mutable n Como Entero <- 0;
+  Definir n Como Entero <- 0;
   Definir i Como Entero <- 0;
-  Definir Mutable total Como Entero <- 0;
+  Definir total Como Entero <- 0;
   Leer n;
   total <- 0;
   Para i <- 1 Hasta n Con Paso 1 Hacer
@@ -28,9 +28,9 @@ FinAlgoritmo
 
 const String _withConditionalLoop = '''
 Algoritmo Suma
-  Definir Mutable n Como Entero <- 0;
-  Definir Mutable i Como Entero <- 0;
-  Definir Mutable total Como Entero <- 0;
+  Definir n Como Entero <- 0;
+  Definir i Como Entero <- 0;
+  Definir total Como Entero <- 0;
   Leer n;
   total <- 0;
   i <- 1;

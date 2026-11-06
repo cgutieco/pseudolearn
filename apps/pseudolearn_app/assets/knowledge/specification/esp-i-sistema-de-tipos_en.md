@@ -118,19 +118,19 @@ EndAlgorithm
 
 ## No default values
 
-There are no default values. A declaration requires its initial value, so a binding never exists
-without a value: a default zero would turn an oversight into a program that runs and gives a wrong
-result, and requiring the value turns it into an error at write time. Only fields and array elements
-can lack a value, and reading them before writing them is a failure at run time.
+There are no default values. A variable can be declared without a value, but reading it before every
+path has given it one is an error at write time: a default zero would turn an oversight into a program
+that runs and gives a wrong result. Only object fields and array elements can lack a value at run time,
+and reading them before writing them is a failure at run time.
 
 ```pseudo
 Algorithm Uninitialized
-  Define x As Integer
-  Write x
+  Define x As Integer;
+  Write x;
 EndAlgorithm
 ```
 
-{{diagnostico:missingBindingInitializer}}
+{{diagnostico:variableUsedUninitialized}}
 
 ## Variable declared and unused, and assigned and unread
 

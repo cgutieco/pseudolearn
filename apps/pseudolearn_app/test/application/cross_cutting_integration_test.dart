@@ -53,7 +53,7 @@ void main() {
 
     const sampleDemoCode = '''
 Proceso DemostracionGuiada
-  Definir Mutable mensaje Como Cadena <- "";
+  Definir mensaje Como Cadena <- "";
   mensaje <- "Bienvenido";
   Escribir mensaje;
 FinProceso
@@ -70,7 +70,7 @@ FinProceso
           'examples/guided_demo_en.pseudo': sampleDemoCode,
           'examples/condicional_es.pseudo': '''
 Algoritmo EjemploCondicional
-  Definir Mutable n Como Entero <- 0;
+  Definir n Como Entero <- 0;
   n <- 42;
   Si n > 0 Entonces
     Escribir "Positivo";
@@ -132,7 +132,7 @@ FinAlgoritmo
 
         const interactiveProgram = '''
 Proceso Interactivo
-  Definir Mutable entrada Como Entero <- 0;
+  Definir entrada Como Entero <- 0;
   Leer entrada;
   Escribir entrada;
 FinProceso
@@ -358,7 +358,7 @@ FinAlgoritmo
         final executionCubit = ExecutionCubit(execution: execution);
         const loopProgram = '''
 Algoritmo Bucle
-  Definir Mutable i Como Entero <- 0;
+  Definir i Como Entero <- 0;
   i <- 1;
   i <- i + 1;
   i <- i + 1;
@@ -464,7 +464,7 @@ FinAlgoritmo
       () {
         const spanishProfileCode = '''
 Algoritmo PerfilEspanol
-  Definir Mutable a Como Entero <- 0;
+  Definir a Como Entero <- 0;
   a <- 10;
   Escribir a;
 FinAlgoritmo
@@ -512,7 +512,7 @@ FinAlgoritmo
       () async {
         const infiniteLoopCode = '''
 Algoritmo BucleInfinito
-  Definir Mutable contador Como Entero <- 0;
+  Definir contador Como Entero <- 0;
   contador <- 0;
   Mientras Verdadero Hacer
     contador <- contador + 1;

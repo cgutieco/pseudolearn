@@ -7,7 +7,7 @@ SubProceso SumaHasta(n Como Entero) Como Entero
 FinSubProceso
 
 Proceso CalcularSuma
-    Definir Mutable n Como Entero <- 0;
+    Definir n Como Entero;
     Leer n;
     Escribir SumaHasta(n);
 FinProceso

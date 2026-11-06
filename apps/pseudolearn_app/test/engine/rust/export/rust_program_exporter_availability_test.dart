@@ -54,7 +54,7 @@ void main() {
   group('a program with a construct no emitter proves is withheld whole', () {
     test('a known valid unit does not rescue a mixed program', () {
       const source =
-          'Proceso P\n  Definir Mutable x Como Entero <- 0;\n  Escribir "antes";\n'
+          'Proceso P\n  Definir x Como Entero <- 0;\n  Escribir "antes";\n'
           '  Leer x;\n  Escribir "despues";\nFinProceso\n';
 
       final blockers = _blockersOf(source, TargetLanguageId.python);
@@ -203,10 +203,10 @@ void main() {
   group('English documents are classified like Spanish ones', () {
     test('withholds the same constructs and exports the same subset', () {
       const withheld =
-          'algorithm Main\n  define mutable x as integer <- 0;\n  read x;\n'
+          'algorithm Main\n  define x as integer <- 0;\n  read x;\n'
           'endAlgorithm\n';
       const proven =
-          'algorithm Main\n  define mutable a as integer <- 1;\n  write a, a;\n'
+          'algorithm Main\n  define a as integer <- 1;\n  write a, a;\n'
           'endAlgorithm\n';
 
       expect(

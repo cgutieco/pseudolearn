@@ -1,6 +1,6 @@
 algorithm SumInOneRead
-    define mutable a as integer <- 0;
-    define mutable b as integer <- 0;
+    define a as integer <- 0;
+    define b as integer <- 0;
     read a, b;
     write a + b;
 endAlgorithm

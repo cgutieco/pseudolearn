@@ -59,6 +59,6 @@
       "expected": "numerico"
     }
   ],
-  "referenceSolution": "Proceso Diferencia\n    Definir Mutable a Como Entero <- 0;\n    Definir Mutable b Como Entero <- 0;\n    Leer a;\n    Leer b;\n    Definir resultadoFinal Como Entero <- a - b;\n    Escribir resultadoFinal;\nFinProceso\n",
-  "starterCode": "Proceso Suma\n    Definir Mutable a Como Entero <- 0;\n    Definir Mutable b Como Entero <- 0;\n    Definir Mutable resultadoFinal Como Entero <- 0;\n    Leer a;\n    Leer b;\n    resultadoFinal <- a + b;\n    Escribir resultadoFinal;\nFinProceso\n"
+  "referenceSolution": "Proceso Diferencia\n    Definir a Como Entero <- 0;\n    Definir b Como Entero <- 0;\n    Leer a;\n    Leer b;\n    Definir resultadoFinal Como Entero <- a - b;\n    Escribir resultadoFinal;\nFinProceso\n",
+  "starterCode": "Proceso Suma\n    Definir a Como Entero <- 0;\n    Definir b Como Entero <- 0;\n    Definir resultadoFinal Como Entero <- 0;\n    Leer a;\n    Leer b;\n    resultadoFinal <- a + b;\n    Escribir resultadoFinal;\nFinProceso\n"
 }

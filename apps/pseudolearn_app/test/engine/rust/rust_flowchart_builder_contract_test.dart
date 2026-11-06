@@ -9,8 +9,8 @@ final FlowchartBuilder _layout = nativeTestEngine.flowchartBuilder;
 
 const String _factorial = '''
 Proceso Factorial
-    Definir Mutable n Como Entero <- 0;
-    Definir Mutable f Como Entero <- 0;
+    Definir n Como Entero <- 0;
+    Definir f Como Entero <- 0;
     Definir i Como Entero <- 0;
     n <- 5;
     f <- 1;
@@ -90,7 +90,7 @@ void main() {
 
     test('names every declaration and assignment with its own text', () {
       expect(
-        _hasNodeSaying(scene, 'Definir Mutable n Como Entero <- 0'),
+        _hasNodeSaying(scene, 'Definir n Como Entero <- 0'),
         isTrue,
       );
       expect(_hasNodeSaying(scene, 'n <- 5'), isTrue);
@@ -223,7 +223,7 @@ void main() {
   group('selection', () {
     const source = '''
 Proceso P
-    Definir Mutable opcion Como Entero <- 0;
+    Definir opcion Como Entero <- 0;
     opcion <- 1;
     Segun opcion Hacer
         1:

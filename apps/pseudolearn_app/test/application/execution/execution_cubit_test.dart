@@ -33,7 +33,7 @@ FinAlgoritmo
 
 const _broken = '''
 Algoritmo Roto
-  Definir Mutable x Como Entero <- 0;
+  Definir x Como Entero <- 0;
   x <-
 FinAlgoritmo
 ''';
@@ -41,7 +41,7 @@ FinAlgoritmo
 const _loop = '''
 Algoritmo Bucle
   Definir i Como Entero <- 0;
-  Definir Mutable t Como Entero <- 0;
+  Definir t Como Entero <- 0;
   t <- 0;
   Para i <- 1 Hasta 3 Con Paso 1 Hacer
     t <- t + i;
@@ -52,7 +52,7 @@ FinAlgoritmo
 
 const _readsInput = '''
 Algoritmo Pide
-  Definir Mutable n Como Entero <- 0;
+  Definir n Como Entero <- 0;
   Leer n;
   Escribir n;
 FinAlgoritmo

@@ -1,6 +1,6 @@
 Algorithm ReadDesignators
-  Define Mutable a As Integer <- 0;
-  Define Mutable b As Integer <- 0;
+  Define a As Integer <- 0;
+  Define b As Integer <- 0;
   Read a, b;
   Write a + b;
 EndAlgorithm

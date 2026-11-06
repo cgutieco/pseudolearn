@@ -1,5 +1,5 @@
 algorithm DayOfWeek
-    define mutable day as integer <- 0;
+    define day as integer;
     read day;
     switch day do
         1, 7:

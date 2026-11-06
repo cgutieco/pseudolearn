@@ -70,18 +70,21 @@ does not, you have just found exactly where it did not work, which is worth far 
 
 :::parte errores-frecuentes
 
-## Declaring without an initial value
+## Reading a variable that has no value yet
 
-Every declaration carries its initial value after the arrow: a name without a value does not exist. If
-the value will arrive later, declare it with `mutable` and a starting value, and assign it afterwards.
+Declaring a variable without an initial value is allowed: the value can arrive later through an
+assignment or `read`. What is not allowed is reading it before that. If on some path of the program the
+variable reaches the place where it is used without a value, the program does not run, and the message
+says along which path the value is missing.
 
 ```pseudo
 algorithm NoInitialValue
   define n as integer;
+  write n;
 endAlgorithm
 ```
 
-{{diagnostico:missingBindingInitializer}}
+{{diagnostico:variableUsedUninitialized}}
 
 ## Assigning to something that is not a box
 

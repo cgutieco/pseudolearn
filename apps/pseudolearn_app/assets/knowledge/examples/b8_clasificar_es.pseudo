@@ -1,8 +1,8 @@
 Proceso ContarAprobados
-    Definir Mutable cantidad Como Entero <- 0;
-    Definir Mutable nota Como Entero <- 0;
+    Definir cantidad Como Entero <- 0;
+    Definir nota Como Entero <- 0;
     Leer cantidad;
-    Definir Mutable aprobados Como Entero <- 0;
+    Definir aprobados Como Entero <- 0;
     Para i <- 1 Hasta cantidad Con Paso 1 Hacer
         Leer nota;
         Si nota >= 5 Entonces

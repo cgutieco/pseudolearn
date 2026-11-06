@@ -129,7 +129,7 @@ fn source_identity_crosses_the_native_json_boundary_exactly() {
 #[test]
 fn loose_unicode_source_round_trips_through_native_json_analysis() -> Result<(), String> {
     let session = session_identifier();
-    let program = "Algoritmo P\nDefinir Mutable año Como Entero <- 0;\nDefinir Mutable Importar Como Entero <- 0;\nDefinir Mutable Exportar Como Entero <- 0;\nDefinir Mutable import Como Entero <- 0;\nDefinir Mutable export Como Entero <- 0;\nan\u{0303}o <- 5;\nImportar <- 1;\nExportar <- 2;\nimport <- 3;\nexport <- 4;\nEscribir año, Importar, Exportar, import, export;\nFinAlgoritmo\n";
+    let program = "Algoritmo P\nDefinir año Como Entero <- 0;\nDefinir Importar Como Entero <- 0;\nDefinir Exportar Como Entero <- 0;\nDefinir import Como Entero <- 0;\nDefinir export Como Entero <- 0;\nan\u{0303}o <- 5;\nImportar <- 1;\nExportar <- 2;\nimport <- 3;\nexport <- 4;\nEscribir año, Importar, Exportar, import, export;\nFinAlgoritmo\n";
     let (analysis, document) = single_file_analysis(session, program)?;
     assert_eq!(analysis.pointer("/value/diagnostics"), Some(&json!([])));
     assert_eq!(stored_program(session, document)?, program);

@@ -15,7 +15,7 @@ class Writer implements Readable
 endClass
 
 algorithm CompareContracts
-    define mutable value as integer <- 0;
+    define value as integer;
     read value;
     define reader as Reader <- new Reader();
     define writer as Writer <- new Writer();

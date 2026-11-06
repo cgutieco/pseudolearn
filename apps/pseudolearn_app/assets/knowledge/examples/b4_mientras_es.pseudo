@@ -1,5 +1,5 @@
 Proceso CuentaRegresiva
-    Definir Mutable i Como Entero <- 0;
+    Definir i Como Entero;
     Leer i;
     Mientras i > 0 Hacer
         Escribir i;

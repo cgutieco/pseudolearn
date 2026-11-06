@@ -1,6 +1,6 @@
 algorithm SumUntilZero
-    define mutable n as integer <- 0;
-    define mutable total as integer <- 0;
+    define n as integer <- 0;
+    define total as integer <- 0;
     repeat
         read n;
         total <- total + n;

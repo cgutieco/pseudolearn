@@ -1,5 +1,5 @@
 Proceso Aprobado
-    Definir Mutable nota Como Entero <- 0;
+    Definir nota Como Entero;
     Leer nota;
     Si nota >= 5 Entonces
         Escribir "Aprobado";

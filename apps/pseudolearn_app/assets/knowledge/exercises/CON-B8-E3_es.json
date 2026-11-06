@@ -69,5 +69,5 @@
       "expected": "numerico"
     }
   ],
-  "referenceSolution": "Proceso MayorDeUnaSerie\n    Definir Mutable cantidad Como Entero <- 0;\n    Definir Mutable valor Como Entero <- 0;\n    Definir Mutable mayor Como Entero <- 0;\n    Leer cantidad;\n    Leer mayor;\n    Para i <- 2 Hasta cantidad Con Paso 1 Hacer\n        Leer valor;\n        Si valor > mayor Entonces\n            mayor <- valor;\n        FinSi\n    FinPara\n    Escribir mayor;\nFinProceso\n"
+  "referenceSolution": "Proceso MayorDeUnaSerie\n    Definir cantidad Como Entero <- 0;\n    Definir valor Como Entero <- 0;\n    Definir mayor Como Entero <- 0;\n    Leer cantidad;\n    Leer mayor;\n    Para i <- 2 Hasta cantidad Con Paso 1 Hacer\n        Leer valor;\n        Si valor > mayor Entonces\n            mayor <- valor;\n        FinSi\n    FinPara\n    Escribir mayor;\nFinProceso\n"
 }

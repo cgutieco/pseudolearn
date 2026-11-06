@@ -72,7 +72,7 @@ void main() {
     test('updateDiagram with simple algorithm produces 1 unit', () {
       const source = '''
 Algoritmo DiagTest
-  Definir Mutable a Como Entero <- 0;
+  Definir a Como Entero <- 0;
   a <- 1;
 FinAlgoritmo
 ''';

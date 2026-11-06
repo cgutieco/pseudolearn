@@ -21,8 +21,8 @@ class Person
 endClass
 
 algorithm TryPerson
-    define mutable name as string <- "";
-    define mutable age as integer <- 0;
+    define name as string <- "";
+    define age as integer <- 0;
     read name;
     read age;
     define person as Person <- new Person(name, age);

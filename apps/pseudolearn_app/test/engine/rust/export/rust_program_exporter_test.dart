@@ -17,7 +17,7 @@ const String _rich =
     '  FinMetodo\nFinClase\n'
     'Funcion Cuadrado(x Como Entero) Como Entero\n  Retornar x * x;\nFinFuncion\n'
     'Proceso P\n  Definir h Como Hija <- Nuevo Hija(4);\n'
-    '  Definir Mutable r Como Real <- 0.0;\n'
+    '  Definir r Como Real <- 0.0;\n'
     '  r <- Raiz(Cuadrado(3) + 1.5);\n'
     '  Para i <- 3 Hasta 1 Con Paso -1 Hacer\n'
     '    Escribir i, "x" Sin Saltar;\n  FinPara\n'
@@ -26,7 +26,7 @@ const String _rich =
 
 const String _procedural =
     'SubProceso Informar(n Como Entero)\n  Escribir "n=", n;\nFinSubProceso\n'
-    'Proceso P\n  Definir Mutable s Como Entero <- 0;\n'
+    'Proceso P\n  Definir s Como Entero <- 0;\n'
     '  Para i <- 3 Hasta 1 Con Paso -1 Hacer\n'
     '    s <- s + i;\n    Escribir i, "x" Sin Saltar;\n  FinPara\n'
     '  Segun s Hacer\n    1, 2:\n      Informar(s);\n'
@@ -135,7 +135,7 @@ void main() {
 
   test('exports English programs with the same structure', () {
     const source =
-        'algorithm Sum\n  define mutable a as integer <- 0;\n  a <- 1;\n  write a;\nendAlgorithm\n';
+        'algorithm Sum\n  define a as integer <- 0;\n  a <- 1;\n  write a;\nendAlgorithm\n';
 
     final code =
         (export(source, TargetLanguageId.python, profile: SyntaxProfileId.english)

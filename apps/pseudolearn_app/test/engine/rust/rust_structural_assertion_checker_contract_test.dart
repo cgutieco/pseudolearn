@@ -9,7 +9,7 @@ import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 const String _countedLoop = '''
 Algoritmo Suma
   Definir i Como Entero <- 0;
-  Definir Mutable total Como Entero <- 0;
+  Definir total Como Entero <- 0;
   total <- 0;
   Para i <- 1 Hasta 5 Con Paso 1 Hacer
     total <- total + i;
@@ -20,8 +20,8 @@ FinAlgoritmo
 
 const String _conditionalLoop = '''
 Algoritmo Suma
-  Definir Mutable i Como Entero <- 0;
-  Definir Mutable total Como Entero <- 0;
+  Definir i Como Entero <- 0;
+  Definir total Como Entero <- 0;
   total <- 0;
   i <- 1;
   Mientras i <= 5 Hacer
@@ -38,7 +38,7 @@ SubProceso Doble(n Como Entero) Como Entero
 FinSubProceso
 
 Algoritmo Principal
-  Definir Mutable x Como Entero <- 0;
+  Definir x Como Entero <- 0;
   x <- Doble(4);
   Escribir x;
 FinAlgoritmo
@@ -67,7 +67,7 @@ FinAlgoritmo
 
 const String _threeConditionals = '''
 Algoritmo Tres
-  Definir Mutable n Como Entero <- 0;
+  Definir n Como Entero <- 0;
   n <- 1;
   Si n > 0 Entonces
     Escribir 1;
@@ -260,7 +260,7 @@ void main() {
         const wrongTotal = '''
 Algoritmo Suma
   Definir i Como Entero <- 0;
-  Definir Mutable total Como Entero <- 0;
+  Definir total Como Entero <- 0;
   total <- 0;
   Para i <- 1 Hasta 5 Con Paso 1 Hacer
     total <- total - i;

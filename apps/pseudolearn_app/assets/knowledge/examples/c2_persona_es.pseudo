@@ -21,8 +21,8 @@ Clase Persona
 FinClase
 
 Proceso ProbarPersona
-    Definir Mutable nombre Como Cadena <- "";
-    Definir Mutable edad Como Entero <- 0;
+    Definir nombre Como Cadena <- "";
+    Definir edad Como Entero <- 0;
     Leer nombre;
     Leer edad;
     Definir persona Como Persona <- Nuevo Persona(nombre, edad);

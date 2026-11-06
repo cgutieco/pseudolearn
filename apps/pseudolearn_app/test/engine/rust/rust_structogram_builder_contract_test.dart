@@ -9,8 +9,8 @@ final StructogramBuilder _layout = nativeTestEngine.structogramBuilder;
 
 const String _factorial = '''
 Proceso Factorial
-    Definir Mutable n Como Entero <- 0;
-    Definir Mutable f Como Entero <- 0;
+    Definir n Como Entero <- 0;
+    Definir f Como Entero <- 0;
     Definir i Como Entero <- 0;
     n <- 5;
     f <- 1;
@@ -81,7 +81,7 @@ void main() {
 
     test('prints every statement with the lexemes of its profile', () {
       expect(_saying(scene, 'n <- 5'), isNotNull);
-      expect(_saying(scene, 'Definir Mutable n Como Entero <- 0'), isNotNull);
+      expect(_saying(scene, 'Definir n Como Entero <- 0'), isNotNull);
       expect(_saying(scene, 'Escribir'), isNotNull);
     });
 
@@ -209,7 +209,7 @@ void main() {
     test('a test-first while puts its header band above its body', () {
       final scene = _sceneOf(
         _program('''
-      Definir Mutable k Como Entero <- 0;
+      Definir k Como Entero <- 0;
       Mientras k < 10 Hacer
           k <- k + 1;
       FinMientras'''),
@@ -234,7 +234,7 @@ void main() {
     test('a test-last loop puts its condition below its body', () {
       final scene = _sceneOf(
         _program('''
-      Definir Mutable k Como Entero <- 0;
+      Definir k Como Entero <- 0;
       Repetir
           k <- k - 1;
       Hasta Que k = 0'''),
@@ -284,7 +284,7 @@ FinSubProceso
     final scene = _sceneOf(
       _program('''
     Definir i Como Entero <- 0;
-    Definir Mutable j Como Entero <- 0;
+    Definir j Como Entero <- 0;
     Si i > 0 Entonces
         Mientras j < 10 Hacer
             Segun j Hacer
@@ -419,7 +419,7 @@ FinProceso
 
     test('never translate the code inside a cell', () {
       final english = _sceneOf(_factorial, language: UiLanguageId.english);
-      expect(_saying(english, 'Definir Mutable n Como Entero <- 0'), isNotNull);
+      expect(_saying(english, 'Definir n Como Entero <- 0'), isNotNull);
     });
   });
 }

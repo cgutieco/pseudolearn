@@ -22,8 +22,8 @@ subroutine createIncrementer(base as integer) as subroutine(integer) as integer
 endSubroutine
 
 algorithm Main
-    define mutable reader as Reader <- new Reader();
-    define mutable writer as Writer <- new Writer();
+    define reader as Reader <- new Reader();
+    define writer as Writer <- new Writer();
     define reading as result<integer, string> <- reader.getValue(4);
     switch reading do
         success(value): write value;
