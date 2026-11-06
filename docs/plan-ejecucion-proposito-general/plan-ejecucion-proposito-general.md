@@ -1058,7 +1058,7 @@ que la VM en macOS, Linux y Windows, sin exigir herramientas al usuario. Origen:
 - [ ] `PG-N.12` `PERF.AOT.LEVEL` mantenido con tareas presentes.
 - [ ] `PG-N.13` Eliminación de `nativeTasksUnsupported` y de todo pendiente declarado de tareas nativas.
 
-Plan detallado: `fase-pg-n-plan-ejecucion.md`, pendiente de crear al iniciar la fase.
+Plan detallado: [fase-pg-n-plan-ejecucion.md](fase-pg-n-plan-ejecucion.md), redactado el 2026-11-06 a petición de la persona, con bloques rápidos de implementación y un único bloque final de pruebas pesadas; pendiente de revisión (`C02`) y autorización (`C01`).
 
 Cierre común (definiciones en §4.0):
 
@@ -1291,5 +1291,5 @@ La IA a cargo actualiza esta tabla al cerrar cada fase.
 | PG-L | Implementada, pendiente de push y cierre | Sí | | PG-L.01–PG-L.07 y bloque F cumplidos (`cargo xtask verify`, conformidad engine/service/CLI/app sin divergencias, `flutter test`, extensión de escritorio y web, aceptación en CLI, VS Code, Chromium, WebKit, macOS e iOS simulador). Pendientes ajenos: fallos nativos preexistentes (PG-N), PG-S.02.01. Detalle en §11 de `fase-pg-l-plan-ejecucion.md` |
 | PG-S | Implementada, sin cierre formal · PG-S.01–.09 y C01–C09 | Sí | | C10–C13 pendientes: PS-E04, suite completa, commit/push de cierre, parada; se ejecutó antes de cerrar PG-L por decisión expresa de la persona |
 | PG-C | Cerrada · PG-C.01–.12 y C01–C13 | Sí, autorizado el 2026-11-05 | 2026-11-06 · push ordinario a la rama única | Pendientes heredados: `aot` sin azar entero ni argumentos de fallos nativos (PG-N.08); Firefox, Windows y VS Code de escritorio con interfaz no verificados; hallazgos en §11.4 del plan detallado |
-| PG-N | Sin iniciar | No | | |
+| PG-N | Sin iniciar · plan redactado | Sí, C02 pendiente | | C01/C02; decisiones P-01–P-03 del plan detallado (inicio sin cierre formal de PG-L/PG-S, distribución de `rust-lld`, medio para Linux) |
 | PG-7 | Sin iniciar · reformulada el 2026-11-02 | No | | |
