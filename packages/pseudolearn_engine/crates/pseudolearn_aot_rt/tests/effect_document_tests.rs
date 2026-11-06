@@ -17,7 +17,7 @@ fn live_input() -> Vec<u8> {
 fn live_input_builds_a_channel_with_configured_host() -> Result<(), String> {
     let channel = EffectInput::parse(&live_input())
         .ok_or("input rejected")?
-        .into_channel()?;
+        .into_channel(Vec::new())?;
     assert_eq!(channel.host_observation().0, 0);
     assert!(channel.failure().is_none());
     Ok(())
@@ -40,7 +40,7 @@ fn replay_with_another_identity_is_rejected_before_running() -> Result<(), Strin
     .to_string();
     let parsed = EffectInput::parse(input.as_bytes()).ok_or("input rejected")?;
     assert_eq!(
-        parsed.into_channel().err().as_deref(),
+        parsed.into_channel(Vec::new()).err().as_deref(),
         Some("replay_identity_mismatch")
     );
     Ok(())
@@ -66,6 +66,6 @@ fn retired_host_authority_configuration_is_rejected() -> Result<(), String> {
         "max_tape_bytes":null,"tape":null})
     .to_string();
     let parsed = EffectInput::parse(input.as_bytes()).ok_or("input rejected")?;
-    assert!(parsed.into_channel().is_err());
+    assert!(parsed.into_channel(Vec::new()).is_err());
     Ok(())
 }

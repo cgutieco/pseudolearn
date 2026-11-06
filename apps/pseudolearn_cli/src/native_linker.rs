@@ -65,7 +65,14 @@ fn run_linker(inputs: &[&Path], output: &Path) -> Result<()> {
 
 fn platform_arguments() -> &'static [&'static str] {
     if cfg!(target_os = "macos") {
-        &["-Wl,-dead_strip", "-lm"]
+        &[
+            "-Wl,-dead_strip",
+            "-lm",
+            "-framework",
+            "Security",
+            "-framework",
+            "CoreFoundation",
+        ]
     } else if cfg!(target_os = "linux") {
         &["-Wl,--gc-sections", "-lpthread", "-ldl", "-lm", "-lgcc_s"]
     } else {

@@ -5,7 +5,6 @@ fn sample() -> ExecutableMetadata {
         settings: ExecutableSettings {
             source_name: "p.pseudo".to_owned(),
             locale: "es".to_owned(),
-            seed: -7,
             forced_collection: true,
             limits: AotLimits {
                 frames: 12,

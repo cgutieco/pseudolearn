@@ -1009,6 +1009,7 @@ version = "0.1.0"
 dependencies = [
  "pseudolearn_abi",
  "pseudolearn_diagnostics",
+ "pseudolearn_host",
  "pseudolearn_library",
  "pseudolearn_runtime",
  "pseudolearn_source",

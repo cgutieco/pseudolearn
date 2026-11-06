@@ -9,6 +9,7 @@ mod class_layout;
 mod config;
 mod context;
 mod effect_channel;
+mod effect_console;
 mod effect_document;
 mod effect_text_faults;
 #[cfg(test)]
@@ -27,7 +28,10 @@ mod memory;
 mod metadata;
 mod metadata_codec;
 mod output;
+#[cfg(not(feature = "test-host"))]
+mod physical_provider;
 mod process;
+mod process_options;
 mod process_report;
 mod quoted_text;
 mod random;
@@ -86,7 +90,7 @@ pub use context::{
     CONTEXT_ROOT_CAPACITY_OFFSET, CONTEXT_ROOT_TOP_OFFSET, CONTEXT_ROOTS_OFFSET,
     CONTEXT_UNWIND_DEPTH_OFFSET, STATUS_CONTINUE, STATUS_FAILED, STATUS_LIMIT, STATUS_UNWIND,
 };
-pub use effect_channel::EffectChannel;
+pub use effect_channel::{AotHostProvider, EffectChannel};
 pub use effect_document::{EffectInput, EffectOutput};
 pub use effects::{effect_operation_cells, effect_operation_index, rt_aot_effect_call};
 pub use engine::AotEngine;
@@ -113,8 +117,10 @@ pub use metadata_codec::{decode_metadata, encode_metadata};
 pub use output::rt_aot_write;
 pub use process::{
     EXIT_COMPLETED, EXIT_FAILED, EXIT_INTERNAL, EXIT_LIMIT, EXIT_REPLAY, EntryFunction,
-    ProcessStreams, run_executable, run_executable_with_effects, run_executable_with_tasks,
+    ProcessLaunch, ProcessStreams, run_executable, run_executable_with_effects,
+    run_executable_with_tasks,
 };
+pub use process_options::{ProcessOptions, ProcessOptionsError};
 pub use pseudolearn_diagnostics::DiagnosticCode;
 pub use random::{rt_aot_random_below, rt_aot_random_between, rt_aot_random_real};
 pub use session::{AotSession, settle_session};

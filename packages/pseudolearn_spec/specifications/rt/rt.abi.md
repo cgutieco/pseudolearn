@@ -129,6 +129,26 @@
   "perfil_base": "es"
 }
 ```
+```caso
+{
+  "id": "C3",
+  "regla": "R5",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "msg-1\nmsg-2\nmsg-3\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso Suspendible Produce(stream Como Canal<Cadena>, base Como Cadena)\nAguardar stream.Enviar(base + \"-1\");\nAguardar stream.Enviar(base + \"-2\");\nAguardar stream.Enviar(base + \"-3\");\nstream.Cerrar();\nFinSubProceso\nSubProceso Suspendible Consume(stream Como Canal<Cadena>)\nRepetir\nSegun Aguardar stream.Recibir() Hacer\nAlgo(text): Escribir text;\nNada: Salir;\nFinSegun\nHasta Que Falso\nFinSubProceso\nAlgoritmo Main\nDefinir stream Como Canal<Cadena> <- Canal(1);\nTareas\nLanzar Produce(stream, \"msg\");\nLanzar Consume(stream);\nFinTareas\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Produce(stream as channel<string>, base as string)\nawait stream.send(base + \"-1\");\nawait stream.send(base + \"-2\");\nawait stream.send(base + \"-3\");\nstream.close();\nendSubroutine\nsubroutine suspendable Consume(stream as channel<string>)\nrepeat\nswitch await stream.receive() do\nsome(text): write text;\nnone: break;\nendSwitch\nuntil false\nendSubroutine\nalgorithm Main\ndefine stream as channel<string> <- channel(1);\ntasks\nspawn Produce(stream, \"msg\");\nspawn Consume(stream);\nendTasks\nendAlgorithm\n"
+  }
+}
+```
 
 ```propiedad
 {
@@ -151,6 +171,17 @@
   "texto": "Todo asa viva que deba sobrevivir a una llamada al runtime capaz de recolectar se registra en la pila de raíces del marco antes de la llamada y se libera al salir del marco. El recolector solo examina las raíces registradas, de modo que ningún objeto alcanzable se pierde ni se conserva un objeto inalcanzable.",
   "verificacion": [
     "P3"
+  ]
+}
+```
+```regla
+{
+  "id": "R5",
+  "fuerza": "DEBE",
+  "clase": "ejecucion",
+  "texto": "El código nativo de un programa con tareas conserva la convención de R1: cada tarea ejecuta su propia pila nativa y un testigo único garantiza que solo una tarea ejecuta código del programa a la vez. Un punto de suspensión es una entrada del runtime que devuelve el control solo cuando la agenda reanuda la tarea; el estado 3 indica desenrollar los marcos hasta el punto de cancelación o la frontera de ámbito registrados, cuya profundidad fija el runtime. Las raíces y las celdas de cada tarea suspendida permanecen en su propia pila de raíces y el recolector las recorre junto con las de la tarea en ejecución.",
+  "verificacion": [
+    "C3"
   ]
 }
 ```

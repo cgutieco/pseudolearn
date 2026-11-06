@@ -65,12 +65,16 @@ fn compile(pseudo: &Path, directory: &Path, request: &Value) -> Result<Output, S
         .map_err(|error| error.to_string())
 }
 
+const DEFAULT_SEED: i64 = 42;
+
 fn run(executable: &Path, request: &Value, isolated: bool) -> Result<Output, String> {
     let mut command = Command::new(executable);
     if isolated {
         command.env_clear().current_dir(std::env::temp_dir());
     }
+    let seed = request["seed"].as_i64().unwrap_or(DEFAULT_SEED);
     let mut child = command
+        .args(["--semilla", &seed.to_string()])
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())

@@ -1,22 +1,26 @@
 use crate::trap::Trap;
-use pseudolearn_runtime::{
-    EffectSession, ExecutionHostProvider, ExecutionIdentity, ReplayError, console_record,
-};
+use pseudolearn_runtime::{EffectSession, ExecutionIdentity, ReplayError, console_record};
+
+#[cfg(not(feature = "test-host"))]
+pub type AotHostProvider = crate::physical_provider::PhysicalProvider;
+#[cfg(feature = "test-host")]
+pub type AotHostProvider = pseudolearn_runtime::ExecutionHostProvider;
 use std::collections::BTreeMap;
 
 pub struct EffectChannel {
     pub(crate) session: EffectSession,
-    pub(crate) provider: ExecutionHostProvider,
+    pub(crate) provider: AotHostProvider,
     pub(crate) cancel_on_effect: Option<u64>,
     pub(crate) cancelled: bool,
     pub(crate) delivery_order: Vec<u64>,
     pub(crate) pending_network: u64,
     pub(crate) merged_errors: bool,
+    pub(crate) requested_exit: u8,
     failure: Option<ReplayError>,
 }
 
 impl EffectChannel {
-    pub fn new(session: EffectSession, provider: ExecutionHostProvider) -> Self {
+    pub fn new(session: EffectSession, provider: AotHostProvider) -> Self {
         Self {
             session,
             provider,
@@ -25,6 +29,7 @@ impl EffectChannel {
             delivery_order: Vec::new(),
             pending_network: pseudolearn_runtime::NetworkLimits::default().pending,
             merged_errors: false,
+            requested_exit: 0,
             failure: None,
         }
     }
@@ -37,6 +42,10 @@ impl EffectChannel {
     }
 
     pub fn standalone() -> Self {
+        Self::with_arguments(Vec::new())
+    }
+
+    pub(crate) fn with_arguments(arguments: Vec<String>) -> Self {
         let identity = ExecutionIdentity {
             limits: BTreeMap::new(),
             source_digest: String::new(),
@@ -50,8 +59,12 @@ impl EffectChannel {
                 identity,
                 pseudolearn_runtime::tape_privacy::DEFAULT_MAX_TAPE_BYTES,
             ),
-            ExecutionHostProvider::new(),
+            program_host(arguments),
         )
+    }
+
+    pub(crate) fn requested_exit(&self) -> u8 {
+        self.requested_exit
     }
 
     pub fn session(&self) -> &EffectSession {
@@ -118,4 +131,14 @@ impl EffectChannel {
         }
         Err(self.reject(ReplayError::Divergence))
     }
+}
+
+#[cfg(not(feature = "test-host"))]
+pub(crate) fn program_host(arguments: Vec<String>) -> AotHostProvider {
+    AotHostProvider::with_arguments(arguments)
+}
+
+#[cfg(feature = "test-host")]
+pub(crate) fn program_host(_arguments: Vec<String>) -> AotHostProvider {
+    AotHostProvider::new()
 }

@@ -1,7 +1,7 @@
 use crate::effect_channel::EffectChannel;
 use pseudolearn_runtime::{
-    EffectSession, EffectTape, ExecutionHostProvider, ExecutionIdentity, NetworkLimits,
-    configure_host_authority, configure_network_limits,
+    EffectSession, EffectTape, ExecutionIdentity, NetworkLimits, configure_host_authority,
+    configure_network_limits,
 };
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
@@ -20,7 +20,7 @@ impl EffectInput {
         serde_json::from_slice(bytes).ok()
     }
 
-    pub fn into_channel(self) -> Result<EffectChannel, String> {
+    pub fn into_channel(self, arguments: Vec<String>) -> Result<EffectChannel, String> {
         let Self {
             host,
             identity,
@@ -45,10 +45,9 @@ impl EffectInput {
             .and_then(|host| host.get("cancel_on_awaiting_effect"))
             .and_then(Value::as_u64);
         let provider = match host.as_ref().filter(|_| !replaying) {
-            Some(host) => {
-                ExecutionHostProvider::from_value(host).map_err(|error| error.code().to_owned())?
-            }
-            None => ExecutionHostProvider::new(),
+            Some(host) => crate::effect_channel::AotHostProvider::from_value(host)
+                .map_err(|error| error.code().to_owned())?,
+            None => crate::effect_channel::program_host(arguments),
         };
         let delivery_order = delivery_order_of(&session, host.as_ref(), replaying);
         let mut channel = EffectChannel::new(session, provider);

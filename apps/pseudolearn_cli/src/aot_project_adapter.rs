@@ -1,7 +1,7 @@
 #![forbid(unsafe_code)]
 
 use crate::native_cache::ExecutableCache;
-use crate::native_run::run_executable;
+use crate::native_run::{NativeLaunch, run_executable};
 use pseudolearn_api::{
     ApiSession, NativeProjectPlan, native_effect_input, native_execute_response,
 };
@@ -59,6 +59,10 @@ fn execute_project(arguments: &Value, cache: &mut ExecutableCache) -> Value {
                 &executable,
                 cache.directory(),
                 (&run.execution.inputs, &effects),
+                &NativeLaunch {
+                    seed: run.execution.seed,
+                    ..NativeLaunch::default()
+                },
             )
             .ok()
         })

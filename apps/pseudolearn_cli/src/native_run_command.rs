@@ -21,7 +21,16 @@ pub(crate) fn execute_native(
     }
     request.inputs = read_input_lines()?;
     let mut cache = ExecutableCache::create().map_err(operational)?;
-    let response = crate::aot_adapter::execute_natively(&request, &mut cache);
+    let directory = match &options.execution.working_directory {
+        Some(directory) => std::path::PathBuf::from(directory),
+        None => std::env::current_dir().map_err(operational)?,
+    };
+    let launch = crate::native_run::NativeLaunch {
+        seed: request.seed,
+        program_arguments: options.execution.program_arguments.clone(),
+        program_directory: Some(directory),
+    };
+    let response = crate::aot_adapter::execute_natively(&request, &mut cache, &launch);
     let document = serde_json::to_value(&response).map_err(operational)?;
     present(options, path, &response.output, &document)?;
     if let Some(target) = &options.execution.record_tape {

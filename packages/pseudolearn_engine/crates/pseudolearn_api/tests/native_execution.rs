@@ -116,12 +116,8 @@ fn a_rejected_program_is_reported_as_an_analysis_failure() {
 
 #[test]
 fn the_conformance_build_request_carries_the_machine_readable_templates() {
-    let request = ExecuteRequest {
-        seed: 7,
-        ..ExecuteRequest::default()
-    };
+    let request = ExecuteRequest::default();
     let build = conformance_build_request(&request);
-    assert_eq!(build.seed, 7);
     assert!(build.error_template.starts_with("E\t{code}\t{source_id}"));
     assert_eq!(build.exhausted_template, "X\n");
 }

@@ -7,7 +7,6 @@ use pseudolearn_codegen::{TargetConfig, compile_module_to_executable_object};
 pub struct NativeBuildRequest {
     pub program: String,
     pub profile: String,
-    pub seed: i64,
     pub forced_collection: bool,
     pub limits: ExecutionLimits,
     pub source_name: String,
@@ -71,7 +70,6 @@ pub(crate) fn settings_of(
     ExecutableSettings {
         source_name: request.source_name.clone(),
         locale: request.locale.clone(),
-        seed: request.seed,
         forced_collection: request.forced_collection,
         limits: AotLimits {
             frames: request

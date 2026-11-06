@@ -10,7 +10,6 @@ fn configuration() -> Configuration {
     let settings = ExecutableSettings {
         source_name: String::new(),
         locale: "en".to_owned(),
-        seed: 42,
         forced_collection: false,
         limits: AotLimits::default(),
         boolean_words: BooleanWords {

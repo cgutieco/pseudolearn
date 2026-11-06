@@ -44,7 +44,14 @@ pub fn prepare(
 
 fn platform_arguments() -> &'static [&'static str] {
     if cfg!(target_os = "macos") {
-        &["-Wl,-dead_strip", "-lm"]
+        &[
+            "-Wl,-dead_strip",
+            "-lm",
+            "-framework",
+            "Security",
+            "-framework",
+            "CoreFoundation",
+        ]
     } else {
         &["-Wl,--gc-sections", "-lpthread", "-ldl", "-lm", "-lgcc_s"]
     }

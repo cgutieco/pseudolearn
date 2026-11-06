@@ -1,7 +1,7 @@
 #![forbid(unsafe_code)]
 
 use crate::native_cache::ExecutableCache;
-use crate::native_run::run_executable;
+use crate::native_run::{NativeLaunch, run_executable};
 use pseudolearn_api::{
     ENGINE_VERSION, ExecuteRequest, ExecuteResponse, NativeBuildFailure, NativeRunReport,
     build_native_object, conformance_build_request, native_effect_input, native_execute_response,
@@ -50,13 +50,14 @@ fn execute(request_value: &Value, cache: &mut ExecutableCache) -> Value {
     let Ok(request) = serde_json::from_value::<ExecuteRequest>(request_value.clone()) else {
         return json!({"kind":"error","message":"Unsupported operation"});
     };
-    let response = execute_natively(&request, cache);
+    let response = execute_natively(&request, cache, &NativeLaunch::default());
     serde_json::to_value(response).unwrap_or(Value::Null)
 }
 
 pub(crate) fn execute_natively(
     request: &ExecuteRequest,
     cache: &mut ExecutableCache,
+    launch: &NativeLaunch,
 ) -> ExecuteResponse {
     let object = match build_native_object(&conformance_build_request(request)) {
         Ok(object) => object,
@@ -74,10 +75,15 @@ pub(crate) fn execute_natively(
         Ok(bytes) => bytes,
         Err(error) => return protocol_rejected_native_response(&error),
     };
+    let launch = NativeLaunch {
+        seed: request.seed,
+        ..launch.clone()
+    };
     match run_executable(
         &executable,
         cache.directory(),
         (&request.inputs, &effect_input),
+        &launch,
     ) {
         Ok(report) => native_execute_response(request, object.warnings, &report),
         Err(_) => internal_fault(request),

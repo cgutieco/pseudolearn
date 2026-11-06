@@ -22,7 +22,6 @@ fn metadata(code: DiagnosticCode) -> ExecutableMetadata {
         settings: ExecutableSettings {
             source_name: "p.pseudo".to_owned(),
             locale: "en".to_owned(),
-            seed: 1,
             forced_collection: false,
             limits: AotLimits::default(),
             boolean_words: BooleanWords {

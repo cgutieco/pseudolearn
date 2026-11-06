@@ -6,7 +6,6 @@ use crate::fault::FaultSite;
 pub struct ExecutableSettings {
     pub source_name: String,
     pub locale: String,
-    pub seed: i64,
     pub forced_collection: bool,
     pub limits: AotLimits,
     pub boolean_words: BooleanWords,

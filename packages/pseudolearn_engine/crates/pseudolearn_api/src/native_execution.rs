@@ -33,7 +33,6 @@ pub fn conformance_build_request(request: &ExecuteRequest) -> NativeBuildRequest
     NativeBuildRequest {
         program: request.program.clone(),
         profile: request.profile.clone(),
-        seed: request.seed,
         forced_collection: request.gc_stress,
         limits: request.limits.clone(),
         source_name: SOURCE_NAME.to_owned(),

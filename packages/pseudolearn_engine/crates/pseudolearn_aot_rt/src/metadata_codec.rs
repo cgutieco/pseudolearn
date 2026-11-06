@@ -20,10 +20,6 @@ impl Writer {
         self.bytes.extend_from_slice(&value.to_le_bytes());
     }
 
-    fn signed64(&mut self, value: i64) {
-        self.bytes.extend_from_slice(&value.to_le_bytes());
-    }
-
     fn count(&mut self, value: usize) {
         self.unsigned32(u32::try_from(value).unwrap_or(u32::MAX));
     }
@@ -52,7 +48,6 @@ pub fn encode_metadata(metadata: &ExecutableMetadata) -> Vec<u8> {
 fn write_settings(writer: &mut Writer, settings: &ExecutableSettings) {
     writer.text(&settings.source_name);
     writer.text(&settings.locale);
-    writer.signed64(settings.seed);
     writer.unsigned32(u32::from(settings.forced_collection));
     writer.unsigned32(settings.limits.frames);
     writer.unsigned64(settings.limits.instruction_units.unwrap_or(0));
@@ -116,10 +111,6 @@ impl<'bytes> Reader<'bytes> {
         Some(u64::from_le_bytes(self.take(8)?.try_into().ok()?))
     }
 
-    fn signed64(&mut self) -> Option<i64> {
-        Some(i64::from_le_bytes(self.take(8)?.try_into().ok()?))
-    }
-
     fn count(&mut self) -> Option<usize> {
         usize::try_from(self.unsigned32()?).ok()
     }
@@ -154,7 +145,6 @@ pub fn decode_metadata(bytes: &[u8]) -> Option<ExecutableMetadata> {
 fn read_settings(reader: &mut Reader<'_>) -> Option<ExecutableSettings> {
     let source_name = reader.text()?;
     let locale = reader.text()?;
-    let seed = reader.signed64()?;
     let forced_collection = reader.unsigned32()? != 0;
     let frames = reader.unsigned32()?;
     let units = reader.unsigned64()?;
@@ -171,7 +161,6 @@ fn read_settings(reader: &mut Reader<'_>) -> Option<ExecutableSettings> {
     Some(ExecutableSettings {
         source_name,
         locale,
-        seed,
         forced_collection,
         limits: AotLimits {
             frames,

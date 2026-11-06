@@ -118,7 +118,7 @@ layers:
     unsafe_allowed: false
   - name: pseudolearn_aot_rt
     path: crates/pseudolearn_aot_rt
-    may_import: [pseudolearn_source, pseudolearn_abi, pseudolearn_diagnostics, pseudolearn_runtime, pseudolearn_library]
+    may_import: [pseudolearn_source, pseudolearn_abi, pseudolearn_diagnostics, pseudolearn_runtime, pseudolearn_library, pseudolearn_host]
     external_dependencies: [serde, serde_json]
     unsafe_allowed: true
   - name: pseudolearn_codegen

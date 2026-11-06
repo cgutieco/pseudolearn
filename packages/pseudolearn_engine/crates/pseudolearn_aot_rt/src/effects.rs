@@ -4,9 +4,8 @@ use crate::effect_channel::EffectChannel;
 use crate::guard::{Entry, borrow_slice, run_entry};
 use crate::trap::Trap;
 use pseudolearn_runtime::{
-    EFFECT_OPERATIONS, EffectOperation, EffectValueKind, Handle, HostReply, HostValue,
+    EFFECT_OPERATIONS, EffectOperation, Handle, HostReply, HostValue,
 };
-use std::io::Write;
 
 pub(crate) const HEADER_WORDS: usize = 3;
 
@@ -113,7 +112,8 @@ pub(crate) fn perform_effect(
     let arguments = decode_arguments(entry, operation, frame.arguments)?;
     let reply = request_reply(entry, operation, frame, arguments)?;
     store_reply(entry, operation, frame, &reply)?;
-    echo_console(entry, operation, &reply, frame.arguments)?;
+    crate::effect_console::remember_exit_code(entry, operation, &reply);
+    crate::effect_console::echo_console(entry, operation, &reply, frame.arguments)?;
     Ok(0)
 }
 
@@ -264,35 +264,4 @@ fn configured_json_depth(effects: &EffectChannel) -> usize {
         .get("max_json_depth")
         .and_then(|depth| usize::try_from(*depth).ok())
         .unwrap_or(pseudolearn_runtime::DEFAULT_JSON_DEPTH)
-}
-
-fn echo_console(
-    entry: &mut Entry<'_>,
-    operation: &EffectOperation,
-    reply: &HostReply,
-    words: &[u64],
-) -> Result<(), Trap> {
-    let error_stream = operation.identity == "console_write_error";
-    if !(operation.identity == "console_write" || error_stream)
-        || !matches!(reply, HostReply::Committed(_))
-    {
-        return Ok(());
-    }
-    let (Some(EffectValueKind::Text), Some(word)) = (operation.parameters.first(), words.first())
-    else {
-        return Err(internal());
-    };
-    let handle = Handle(u32::try_from(*word).map_err(|_| internal())?);
-    let text = pseudolearn_runtime::text_content(&entry.engine.heap, handle)?.to_owned();
-    if error_stream && !entry.engine.effects.merged_errors {
-        return std::io::stderr()
-            .write_all(text.as_bytes())
-            .map_err(|_| Trap::named("resourceLimit"));
-    }
-    entry
-        .engine
-        .streams
-        .output
-        .write_all(text.as_bytes())
-        .map_err(|_| Trap::named("resourceLimit"))
 }

@@ -83,11 +83,13 @@ fn telemetry(_session: &AotSession) -> Option<serde_json::Value> {
     None
 }
 
+const MEASUREMENT_SEED: i64 = 42;
+
 fn prepare(configuration: &Configuration) -> Result<(AotSession, Output), String> {
     let metadata = decode_metadata(&configuration.metadata).ok_or("Invalid metadata")?;
     let config = AotConfig {
         limits: metadata.settings.limits,
-        seed: metadata.settings.seed,
+        seed: MEASUREMENT_SEED,
         boolean_words: metadata.settings.boolean_words,
     };
     let output = Output::default();

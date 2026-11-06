@@ -13,7 +13,6 @@ fn request() -> NativeBuildRequest {
     NativeBuildRequest {
         program: String::new(),
         profile: "es".to_owned().to_owned(),
-        seed: 42,
         forced_collection: false,
         limits: ExecutionLimits::default(),
         source_name: "project".to_owned(),

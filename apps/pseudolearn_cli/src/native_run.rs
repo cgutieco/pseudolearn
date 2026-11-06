@@ -6,22 +6,37 @@ use std::process::{Command, Stdio};
 const EFFECTS_IN_FILE: &str = "effects_in.json";
 const EFFECTS_OUT_FILE: &str = "effects_out.json";
 
+#[derive(Clone, Debug, Default)]
+pub struct NativeLaunch {
+    pub seed: i64,
+    pub program_arguments: Vec<String>,
+    pub program_directory: Option<std::path::PathBuf>,
+}
+
 pub fn run_executable(
     executable: &Path,
     working_directory: &Path,
     (inputs, effect_input): (&[String], &[u8]),
+    launch: &NativeLaunch,
 ) -> Result<NativeRunReport> {
     let effects_in = working_directory.join(EFFECTS_IN_FILE);
     let effects_out = working_directory.join(EFFECTS_OUT_FILE);
     std::fs::write(&effects_in, effect_input)?;
     let _stale = std::fs::remove_file(&effects_out);
-    let mut child = Command::new(executable)
-        .current_dir(working_directory)
-        .env_clear()
+    let mut command = Command::new(executable);
+    match &launch.program_directory {
+        Some(directory) => command.current_dir(directory),
+        None => command.current_dir(working_directory).env_clear(),
+    };
+    let mut child = command
         .arg("--effects-in")
         .arg(&effects_in)
         .arg("--effects-out")
         .arg(&effects_out)
+        .arg("--semilla")
+        .arg(launch.seed.to_string())
+        .arg("--")
+        .args(&launch.program_arguments)
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())

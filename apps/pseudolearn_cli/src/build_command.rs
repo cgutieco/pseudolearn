@@ -74,7 +74,6 @@ fn build_request(options: &CliOptions, path: &str, source: String) -> NativeBuil
         source: None,
         program: source,
         profile,
-        seed: options.execution.seed.unwrap_or(42),
         forced_collection: false,
         limits: options.execution.limits(),
         source_name: path.to_owned(),

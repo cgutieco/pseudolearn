@@ -3,13 +3,12 @@ use crate::effect_document::{EffectInput, EffectOutput};
 use crate::guard::borrow_slice;
 use crate::metadata_codec::decode_metadata;
 use crate::process::{
-    EXIT_INTERNAL, EXIT_REPLAY, EntryFunction, ProcessStreams, run_executable_with_tasks,
+    EXIT_INTERNAL, EXIT_REPLAY, EntryFunction, ProcessLaunch, ProcessStreams,
+    run_executable_with_tasks,
 };
+use crate::process_options::ProcessOptions;
 use crate::task_state::TaskDispatcher;
 use std::io::{BufReader, BufWriter};
-
-const EFFECTS_IN_FLAG: &str = "--effects-in";
-const EFFECTS_OUT_FLAG: &str = "--effects-out";
 
 #[unsafe(no_mangle)]
 pub extern "C" fn pseudolearn_aot_main(
@@ -24,17 +23,19 @@ pub extern "C" fn pseudolearn_aot_main(
     let Some(decoded) = decode_metadata(bytes) else {
         return EXIT_INTERNAL;
     };
-    let arguments: Vec<String> = std::env::args().collect();
-    let channel = match open_channel(&arguments) {
-        Ok(channel) => channel,
-        Err(code) => {
-            let _written = write_output(&arguments, &EffectOutput::rejected(code));
-            return EXIT_REPLAY;
-        }
+    let arguments: Vec<String> = std::env::args().skip(1).collect();
+    let (options, seed, channel) = match prepare(&arguments) {
+        Ok(prepared) => prepared,
+        Err(code) => return code,
+    };
+    let launch = ProcessLaunch {
+        entry,
+        dispatcher,
+        seed,
     };
     let (code, channel) = run_executable_with_tasks(
         decoded,
-        (entry, dispatcher),
+        launch,
         ProcessStreams {
             input: Box::new(BufReader::new(std::io::stdin())),
             output: Box::new(BufWriter::new(std::io::stdout())),
@@ -42,33 +43,47 @@ pub extern "C" fn pseudolearn_aot_main(
         },
         channel,
     );
-    if !write_output(&arguments, &EffectOutput::from_channel(&channel)) {
+    if !write_output(&options, &EffectOutput::from_channel(&channel)) {
         return EXIT_INTERNAL;
+    }
+    if code == crate::process::EXIT_COMPLETED && options.effects_out.is_none() {
+        return i32::from(channel.requested_exit());
     }
     code
 }
 
-fn flag_value<'arguments>(arguments: &'arguments [String], flag: &str) -> Option<&'arguments str> {
-    arguments
-        .iter()
-        .position(|argument| argument == flag)
-        .and_then(|index| index.checked_add(1))
-        .and_then(|index| arguments.get(index))
-        .map(String::as_str)
+fn prepare(arguments: &[String]) -> Result<(ProcessOptions, i64, EffectChannel), i32> {
+    let options = ProcessOptions::parse(arguments).map_err(|error| {
+        eprintln!("{error:?}");
+        EXIT_INTERNAL
+    })?;
+    let seed = options
+        .seed
+        .or_else(|| pseudolearn_host::entropy_seed().ok())
+        .ok_or(EXIT_INTERNAL)?;
+    match open_channel(&options) {
+        Ok(channel) => Ok((options, seed, channel)),
+        Err(code) => {
+            let _written = write_output(&options, &EffectOutput::rejected(code));
+            Err(EXIT_REPLAY)
+        }
+    }
 }
 
-fn open_channel(arguments: &[String]) -> Result<EffectChannel, String> {
-    let Some(path) = flag_value(arguments, EFFECTS_IN_FLAG) else {
-        return Ok(EffectChannel::standalone());
+fn open_channel(options: &ProcessOptions) -> Result<EffectChannel, String> {
+    let Some(path) = options.effects_in.as_deref() else {
+        return Ok(EffectChannel::with_arguments(
+            options.program_arguments.clone(),
+        ));
     };
     let bytes = std::fs::read(path).map_err(|_| "effects_unreadable".to_owned())?;
     EffectInput::parse(&bytes)
         .ok_or_else(|| "effects_malformed".to_owned())?
-        .into_channel()
+        .into_channel(options.program_arguments.clone())
 }
 
-fn write_output(arguments: &[String], output: &EffectOutput) -> bool {
-    let Some(path) = flag_value(arguments, EFFECTS_OUT_FLAG) else {
+fn write_output(options: &ProcessOptions, output: &EffectOutput) -> bool {
+    let Some(path) = options.effects_out.as_deref() else {
         return true;
     };
     output

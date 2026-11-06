@@ -8,7 +8,6 @@ fn request(program: &str) -> NativeBuildRequest {
     NativeBuildRequest {
         program: program.to_owned(),
         profile: "es".to_owned().to_owned(),
-        seed: 42,
         forced_collection: false,
         limits: ExecutionLimits::default(),
         source_name: "p.pseudo".to_owned(),

@@ -30,6 +30,7 @@ pub fn build(
         .arg(&executable)
         .args([&source_path, &object_path, &paths.1.to_path_buf()])
         .arg("-lm")
+        .args(platform_frameworks())
         .output()
         .map_err(|error| error.to_string())?;
     if !output.status.success() {
@@ -94,4 +95,12 @@ pub fn verify(launcher: &Launcher) -> Result<(), String> {
         return Err("Invalid verification response".to_owned());
     }
     Ok(())
+}
+
+fn platform_frameworks() -> &'static [&'static str] {
+    if cfg!(target_os = "macos") {
+        &["-framework", "Security", "-framework", "CoreFoundation"]
+    } else {
+        &[]
+    }
 }

@@ -16,6 +16,12 @@ pub const EXIT_REPLAY: i32 = 6;
 
 pub type EntryFunction = extern "C" fn(*mut AotRuntimeContext);
 
+pub struct ProcessLaunch {
+    pub entry: EntryFunction,
+    pub dispatcher: Option<crate::task_state::TaskDispatcher>,
+    pub seed: i64,
+}
+
 pub struct ProcessStreams {
     pub input: Box<dyn BufRead>,
     pub output: Box<dyn Write>,
@@ -36,12 +42,17 @@ pub fn run_executable_with_effects(
     streams: ProcessStreams,
     effects: EffectChannel,
 ) -> (i32, EffectChannel) {
-    run_executable_with_tasks(metadata, (entry, None), streams, effects)
+    let launch = ProcessLaunch {
+        entry,
+        dispatcher: None,
+        seed: 0,
+    };
+    run_executable_with_tasks(metadata, launch, streams, effects)
 }
 
 pub fn run_executable_with_tasks(
     metadata: ExecutableMetadata,
-    (entry, dispatcher): (EntryFunction, Option<crate::task_state::TaskDispatcher>),
+    launch: ProcessLaunch,
     streams: ProcessStreams,
     effects: EffectChannel,
 ) -> (i32, EffectChannel) {
@@ -51,15 +62,19 @@ pub fn run_executable_with_tasks(
         classes,
     } = metadata;
     let mut errors = streams.errors;
-    let mut session = open_session(&settings, sites, (streams.input, streams.output));
+    let mut session = open_session(
+        (&settings, launch.seed),
+        sites,
+        (streams.input, streams.output),
+    );
     session.engine_mut().use_effects(effects);
-    if let Some(dispatcher) = dispatcher {
+    if let Some(dispatcher) = launch.dispatcher {
         session.engine_mut().use_tasks(dispatcher, settings.limits);
     }
     if !register_classes(&mut session, &classes) {
         return (EXIT_INTERNAL, take_effects(&mut session, false));
     }
-    entry(session.context_pointer());
+    (launch.entry)(session.context_pointer());
     session.engine_mut().seal_abandoned_effects();
     if !crate::session::settle_session(&mut session) {
         return (EXIT_INTERNAL, take_effects(&mut session, false));
@@ -77,13 +92,13 @@ pub fn run_executable_with_tasks(
 }
 
 fn open_session(
-    settings: &ExecutableSettings,
+    (settings, seed): (&ExecutableSettings, i64),
     sites: Vec<crate::fault::FaultSite>,
     (input, output): (Box<dyn BufRead>, Box<dyn Write>),
 ) -> AotSession {
     let config = AotConfig {
         limits: settings.limits,
-        seed: settings.seed,
+        seed,
         boolean_words: settings.boolean_words.clone(),
     };
     let mut session = AotSession::new(config, sites, AotStreams { input, output });
