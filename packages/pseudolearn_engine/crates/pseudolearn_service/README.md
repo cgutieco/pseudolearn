@@ -162,3 +162,7 @@ Los candidatos de miembros de colección se obtienen del tipo del receptor y sus
 vocabulario contextual generado. Se evita presentar campos sintéticos del almacenamiento. La ayuda
 elige la ficha de rol declarada para el token cuando el catálogo tiene una ficha específica; el hover
 presenta widestNumeric como el tipo numérico del perfil, sin exponer el nombre interno de la firma.
+
+## Alias de operaciones en el formato canónico
+
+El formateador escribe con su forma canónica tanto los alias de funciones incorporadas de D1 (`ConvertirANumero` → `AReal`) como los de operaciones sin receptor de D2 (`Mayusculas` → `AMayusculas`), salvo que el nombre sea de la persona. Así la traducción de ida y vuelta, que reescribe la identidad y no la grafía, coincide con el formato canónico del original.

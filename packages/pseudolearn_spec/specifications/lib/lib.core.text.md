@@ -182,9 +182,7 @@
     "C45",
     "C46",
     "C47",
-    "C48",
-    "C49",
-    "C50"
+    "C48"
   ]
 }
 ```
@@ -1250,58 +1248,6 @@
 
 ```caso
 {
-  "id": "C49",
-  "regla": "T2",
-  "perfiles": [
-    "es",
-    "en"
-  ],
-  "programas": {
-    "es": "Algoritmo P\nEscribir Concatenar(\"a\");\nFinAlgoritmo\n",
-    "en": "algorithm P\nwrite concat(\"a\");\nendAlgorithm\n"
-  },
-  "origen": "derivado",
-  "operacion": "analyze",
-  "espera": {
-    "arbol": "presente",
-    "diagnosticos": [
-      {
-        "codigo": "argumentCountMismatch",
-        "severidad": "error"
-      }
-    ]
-  }
-}
-```
-
-```caso
-{
-  "id": "C50",
-  "regla": "T2",
-  "perfiles": [
-    "es",
-    "en"
-  ],
-  "programas": {
-    "es": "Algoritmo P\nEscribir Concatenar(\"a\", 1);\nFinAlgoritmo\n",
-    "en": "algorithm P\nwrite concat(\"a\", 1);\nendAlgorithm\n"
-  },
-  "origen": "derivado",
-  "operacion": "analyze",
-  "espera": {
-    "arbol": "presente",
-    "diagnosticos": [
-      {
-        "codigo": "incompatibleArgumentType",
-        "severidad": "error"
-      }
-    ]
-  }
-}
-```
-
-```caso
-{
   "id": "C51",
   "regla": "T4",
   "perfiles": [
@@ -1316,5 +1262,19 @@
     "salida": "ÑANDÚ\nñandú\n",
     "terminacion": "completed"
   }
+}
+```
+
+```lapida
+{
+  "id": "C49",
+  "justificacion": "Comprobación estática de aridad y tipos; vive en LIB.MODEL#C6 porque esta regla se verifica también por ejecución."
+}
+```
+
+```lapida
+{
+  "id": "C50",
+  "justificacion": "Comprobación estática de aridad y tipos; vive en LIB.MODEL#C7 porque esta regla se verifica también por ejecución."
 }
 ```

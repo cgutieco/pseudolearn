@@ -226,3 +226,18 @@ fn capitalizes_keyword_at_statement_start_not_after_a_dot() {
     );
     assert!(formatted.contains("Write 1;"), "{formatted}");
 }
+
+#[test]
+fn spells_function_and_operation_aliases_canonically() {
+    let unformatted = "Algoritmo P\nEscribir Mayusculas(\"a\"), ConvertirANumero(\"1\");\nFinAlgoritmo\n";
+    assert_eq!(
+        format_source(unformatted, spanish()),
+        "Algoritmo P\n  Escribir AMayusculas(\"a\"), AReal(\"1\");\nFinAlgoritmo\n"
+    );
+}
+
+#[test]
+fn keeps_a_user_subprogram_named_like_an_operation_alias() {
+    let unformatted = "SubProceso Minusculas()\nFinSubProceso\nAlgoritmo P\nMinusculas();\nFinAlgoritmo\n";
+    assert!(format_source(unformatted, spanish()).contains("\n  Minusculas();\n"));
+}

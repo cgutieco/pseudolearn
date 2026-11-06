@@ -44,7 +44,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La aplicación analiza y ejecuta un programa con el único lenguaje de la edición, sin ajuste de configuración que relaje sus reglas. Un programa con terminador de sentencia omitido, o con un Para sin Con Paso, no se ejecuta, porque su análisis tiene un error; el mismo programa con su terminador se ejecuta con su salida.",
+  "texto": "La aplicación analiza y ejecuta un programa con el único lenguaje de la edición, sin ajuste de configuración que relaje sus reglas. Un programa con terminador de sentencia omitido no se ejecuta, porque su análisis tiene un error; el mismo programa con su terminador se ejecuta con su salida. Un Para sin Con Paso se ejecuta con paso 1, igual que en el motor.",
   "verificacion": [
     "C1",
     "C2",
@@ -58,7 +58,7 @@
 ```
 
 ```caso
-{"id": "C2", "regla": "R1", "perfiles": ["es"], "origen": "derivado", "revisado_por": "Cesar Antonio Gutierrez Contreras", "operacion": "app", "aplicacion": {"scenario": "configuration", "input": {"program": "Algoritmo P\n  Para counter <- 1 Hasta 3 Hacer\n    Escribir counter Sin Saltar;\n  FinPara\n  Escribir \"\";\nFinAlgoritmo\n"}}, "espera": {"aplicacion": {"output": "", "termination": "failed"}}}
+{"id": "C2", "regla": "R1", "perfiles": ["es"], "origen": "derivado", "revisado_por": "Cesar Antonio Gutierrez Contreras", "operacion": "app", "aplicacion": {"scenario": "configuration", "input": {"program": "Algoritmo P\n  Para counter <- 1 Hasta 3 Hacer\n    Escribir counter Sin Saltar;\n  FinPara\n  Escribir \"\";\nFinAlgoritmo\n"}}, "espera": {"aplicacion": {"output": "123\n", "termination": "completed"}}}
 ```
 
 ```caso

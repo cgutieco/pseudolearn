@@ -919,12 +919,90 @@
 {
   "id": "C14",
   "regla": "R8",
-  "perfiles": ["es"],
+  "perfiles": [
+    "es"
+  ],
   "origen": "derivado",
   "revisado_por": "Cesar Antonio Gutierrez Contreras",
   "operacion": "service",
-  "espera": {"servicio": {"prepare_range":{"start":{"line":1,"character":16},"end":{"line":1,"character":21}},"rename_edits":2}},
-  "servicio": {"suboperacion":"lsp","mensajes":[{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"locale":"es","capabilities":{"workspace":{"workspaceEdit":{"documentChanges":true,"failureHandling":"transactional"}}}}},{"jsonrpc":"2.0","method":"textDocument/didOpen","params":{"textDocument":{"uri":"file:///rename.pseudo","languageId":"pseudolearn","version":1,"text":"Algoritmo Total\nDefinir total Como Entero <- 0;\nEscribir total;\nFinAlgoritmo\n"}}},{"jsonrpc":"2.0","id":2,"method":"textDocument/prepareRename","params":{"textDocument":{"uri":"file:///rename.pseudo"},"position":{"line":1,"character":16}}},{"jsonrpc":"2.0","id":3,"method":"textDocument/rename","params":{"textDocument":{"uri":"file:///rename.pseudo"},"position":{"line":1,"character":16},"newName":"suma"}}],"proyeccion":"rename"}
+  "espera": {
+    "servicio": {
+      "prepare_range": {
+        "end": {
+          "character": 13,
+          "line": 1
+        },
+        "start": {
+          "character": 8,
+          "line": 1
+        }
+      },
+      "rename_edits": 2
+    }
+  },
+  "servicio": {
+    "suboperacion": "lsp",
+    "mensajes": [
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": "initialize",
+        "params": {
+          "locale": "es",
+          "capabilities": {
+            "workspace": {
+              "workspaceEdit": {
+                "documentChanges": true,
+                "failureHandling": "transactional"
+              }
+            }
+          }
+        }
+      },
+      {
+        "jsonrpc": "2.0",
+        "method": "textDocument/didOpen",
+        "params": {
+          "textDocument": {
+            "uri": "file:///rename.pseudo",
+            "languageId": "pseudolearn",
+            "version": 1,
+            "text": "Algoritmo Total\nDefinir total Como Entero <- 0;\nEscribir total;\nFinAlgoritmo\n"
+          }
+        }
+      },
+      {
+        "jsonrpc": "2.0",
+        "id": 2,
+        "method": "textDocument/prepareRename",
+        "params": {
+          "textDocument": {
+            "uri": "file:///rename.pseudo"
+          },
+          "position": {
+            "line": 1,
+            "character": 8
+          }
+        }
+      },
+      {
+        "jsonrpc": "2.0",
+        "id": 3,
+        "method": "textDocument/rename",
+        "params": {
+          "textDocument": {
+            "uri": "file:///rename.pseudo"
+          },
+          "position": {
+            "line": 1,
+            "character": 8
+          },
+          "newName": "suma"
+        }
+      }
+    ],
+    "proyeccion": "rename"
+  }
 }
 ```
 

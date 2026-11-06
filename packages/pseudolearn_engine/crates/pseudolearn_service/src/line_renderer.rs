@@ -78,8 +78,30 @@ fn identifier_text(context: &RenderContext<'_>, index: usize, original: &str) ->
     }
     match find_builtin(original, context.profile) {
         Some(builtin) => builtin_spelling(builtin, context.profile),
-        None => original.to_owned(),
+        None => operation_alias_spelling(original, context.profile)
+            .unwrap_or(original)
+            .to_owned(),
     }
+}
+
+fn operation_alias_spelling(original: &str, profile: Profile) -> Option<&'static str> {
+    let spanish = profile == Profile::Spanish;
+    let operation = pseudolearn_semantic::EFFECT_OPERATIONS
+        .iter()
+        .filter(|operation| operation.receiver.is_none())
+        .find(|operation| {
+            let aliases = if spanish {
+                operation.spanish_aliases
+            } else {
+                operation.english_aliases
+            };
+            aliases.iter().any(|alias| alias.eq_ignore_ascii_case(original))
+        })?;
+    Some(if spanish {
+        operation.spanish
+    } else {
+        operation.english
+    })
 }
 
 fn normalize_comment(original: &str) -> String {

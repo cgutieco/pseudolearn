@@ -8061,11 +8061,11 @@
                 "version": "1.0.0"
               },
               {
-                "case": "C49",
+                "case": "C6",
                 "kind": "diagnostic",
                 "label": "Diagnóstico deliberado: Concatenar cadenas",
                 "profile": "es",
-                "specification": "LIB.CORE.TEXT",
+                "specification": "LIB.MODEL",
                 "version": "1.0.0"
               }
             ]
@@ -8092,11 +8092,11 @@
                 "version": "1.0.0"
               },
               {
-                "case": "C49",
+                "case": "C6",
                 "kind": "diagnostic",
                 "label": "Deliberate diagnostic: Concatenate strings",
                 "profile": "en",
-                "specification": "LIB.CORE.TEXT",
+                "specification": "LIB.MODEL",
                 "version": "1.0.0"
               }
             ]

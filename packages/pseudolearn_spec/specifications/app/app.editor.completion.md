@@ -362,7 +362,7 @@
     "scenario": "accept_candidate",
     "input": {
       "document": "Algoritmo P\n  Definir segundos Como Entero <- 0;\n  segundos\nFinAlgoritmo\n",
-      "cursor_utf16": 67,
+      "cursor_utf16": 59,
       "profile": "es",
       "candidate": "segundos"
     }
@@ -371,8 +371,8 @@
     "aplicacion": {
       "document_after": "Algoritmo P\n  Definir segundos Como Entero <- 0;\n  segundos <- \nFinAlgoritmo\n",
       "selection_utf16": [
-        71,
-        71
+        63,
+        63
       ]
     }
   }
@@ -393,7 +393,7 @@
     "input": {
       "query": "presentation",
       "document": "Algoritmo P\n  Definir area Como Real <- 1.5;\n  area\nFinAlgoritmo\n",
-      "cursor_utf16": 59,
+      "cursor_utf16": 51,
       "onscreen_capable": true,
       "keyboard_visible": true
     }
@@ -422,7 +422,7 @@
     "input": {
       "query": "presentation",
       "document": "Algoritmo P\n  Definir area Como Real <- 1.5;\n  area\nFinAlgoritmo\n",
-      "cursor_utf16": 59,
+      "cursor_utf16": 51,
       "onscreen_capable": true,
       "keyboard_visible": false
     }
@@ -451,7 +451,7 @@
     "input": {
       "query": "presentation",
       "document": "Algoritmo P\n  Definir area Como Real <- 1.5;\n  area\nFinAlgoritmo\n",
-      "cursor_utf16": 59,
+      "cursor_utf16": 51,
       "onscreen_capable": false,
       "keyboard_visible": true
     }
@@ -673,7 +673,7 @@
     "scenario": "help",
     "input": {
       "document": "Algoritmo P\n  Definir x Como Entero <- 0;\n  x <- 1;\nFinAlgoritmo\n",
-      "cursor_utf16": 52,
+      "cursor_utf16": 44,
       "profile": "es",
       "interface_language": "es"
     }

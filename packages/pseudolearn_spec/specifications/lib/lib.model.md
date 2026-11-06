@@ -702,7 +702,9 @@
     "C2",
     "C3",
     "C4",
-    "C5"
+    "C5",
+    "C6",
+    "C7"
   ]
 }
 ```
@@ -2096,6 +2098,58 @@ alterar las reglas generales de asignación entre ambos tipos.
   "espera": {
     "salida": "",
     "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C6",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir Concatenar(\"a\");\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite concat(\"a\");\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "argumentCountMismatch",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C7",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir Concatenar(\"a\", 1);\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite concat(\"a\", 1);\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "incompatibleArgumentType",
+        "severidad": "error"
+      }
+    ]
   }
 }
 ```
