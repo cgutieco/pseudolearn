@@ -11,7 +11,7 @@ workspace = true
 pseudolearn_ir = { path = "../pseudolearn_ir", version = "=0.1.0" }
 pseudolearn_diagnostics = { path = "../pseudolearn_diagnostics", version = "=0.1.0" }
 pseudolearn_aot_rt = { path = "../pseudolearn_aot_rt", version = "=0.1.0" }
-cranelift-codegen = "0.136.3"
+cranelift-codegen = { version = "0.136.3", features = ["x86", "arm64"] }
 cranelift-frontend = "0.136.3"
 cranelift-module = "0.136.3"
 cranelift-object = "0.136.3"
