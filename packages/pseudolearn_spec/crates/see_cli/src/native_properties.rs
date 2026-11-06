@@ -164,12 +164,21 @@ fn eligible(binding: &PropertyBinding, fixture: &Value) -> bool {
     if crate::native_artifacts::supports(binding.executor) {
         return specification == "RT.PROCESS" && simulates_no_host(fixture);
     }
+    if requests_external_cancellation(fixture) {
+        return false;
+    }
     if binding.executor == PropertyExecutor::NativeDiagnostics {
         return termination == Some("failed");
     }
     specification.starts_with("LANG.")
         || specification.starts_with("MEM.")
         || specification.starts_with("RT.")
+}
+
+fn requests_external_cancellation(fixture: &Value) -> bool {
+    ["cancel_at_statement", "cancel_at_poll"]
+        .iter()
+        .any(|field| fixture.pointer(&format!("/request/{field}")).is_some())
 }
 
 pub(crate) fn simulates_no_host(fixture: &Value) -> bool {

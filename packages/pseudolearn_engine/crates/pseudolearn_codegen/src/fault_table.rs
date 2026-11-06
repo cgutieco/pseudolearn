@@ -8,6 +8,7 @@ use pseudolearn_ir::IrSpan;
 #[derive(Debug, Default)]
 pub(crate) struct FaultTable {
     sites: Vec<FaultSite>,
+    synthesized: bool,
 }
 
 impl FaultTable {
@@ -24,9 +25,17 @@ impl FaultTable {
         self.sites.push(FaultSite {
             lexeme,
             code,
-            range: range_of(span),
+            range: if self.synthesized {
+                SourceRange::default()
+            } else {
+                range_of(span)
+            },
         });
         Ok(identifier)
+    }
+
+    pub(crate) fn set_synthesized(&mut self, synthesized: bool) {
+        self.synthesized = synthesized;
     }
 
     pub(crate) fn into_sites(self) -> Vec<FaultSite> {

@@ -156,6 +156,7 @@ fn define_functions(
             index,
             identifier,
         };
+        faults.set_synthesized(crate::lower_calls::is_synthesized(&function.name));
         if let Some(text) = define_function(object, declarations, &unit, &mut faults)? {
             inspection.push(text);
         }

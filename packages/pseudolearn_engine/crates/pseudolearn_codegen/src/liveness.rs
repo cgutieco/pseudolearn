@@ -29,6 +29,7 @@ pub(crate) const SAFE_POINTS: &[Operation] = &[
     Operation::EffectCall,
     Operation::EffectAwait,
     Operation::CallSuspendible,
+    Operation::TaskSpawn,
     Operation::TaskAwait,
     Operation::TaskScopeJoin,
     Operation::TaskYieldCheck,

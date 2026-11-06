@@ -103,6 +103,15 @@ impl Entry<'_> {
         Ok(handles)
     }
 
+    fn visible_range(&self) -> crate::fault::SourceRange {
+        let range = self.engine.site_range(self.site);
+        let caller = self.context.caller_site;
+        if range.start_line == 0 && caller != crate::context::NO_CALLER_SITE {
+            return self.engine.site_range(caller);
+        }
+        range
+    }
+
     pub(crate) fn fail(&mut self, mut trap: Trap) -> u32 {
         if matches!(
             trap.code.map(|code| code.as_str()),
@@ -118,7 +127,7 @@ impl Entry<'_> {
         self.engine.record_fault(FaultRecord {
             site: self.site,
             code: trap.code,
-            range: self.engine.site_range(self.site),
+            range: self.visible_range(),
             arguments: trap.arguments,
             related: trap.related,
         });

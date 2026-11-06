@@ -103,6 +103,7 @@ fn new_context(start: &TaskStart, roots: *mut u32) -> AotRuntimeContext {
         quantum_mass: 0,
         unwind_depth: 0,
         task_identity: u32::try_from(start.task.0).unwrap_or(u32::MAX),
+        caller_site: crate::context::NO_CALLER_SITE,
     }
 }
 

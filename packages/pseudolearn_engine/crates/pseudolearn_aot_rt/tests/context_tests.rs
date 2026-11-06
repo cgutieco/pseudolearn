@@ -49,7 +49,8 @@ fn layout_offsets_are_the_contract_the_generated_code_reads() {
     assert_eq!(CONTEXT_PENDING_CAPACITY_OFFSET, 144);
     assert_eq!(CONTEXT_QUANTUM_MASS_OFFSET, 152);
     assert_eq!(CONTEXT_UNWIND_DEPTH_OFFSET, 160);
-    assert_eq!(std::mem::size_of::<AotRuntimeContext>(), 168);
+    assert_eq!(CONTEXT_CALLER_SITE_OFFSET, 168);
+    assert_eq!(std::mem::size_of::<AotRuntimeContext>(), 176);
     assert_eq!(CELL_SLOT_WORD_OFFSET, 0);
     assert_eq!(CELL_SLOT_READABLE_OFFSET, 8);
     assert_eq!(CELL_SLOT_LOCAL_OFFSET, 16);

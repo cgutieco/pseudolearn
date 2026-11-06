@@ -33,6 +33,7 @@ pub struct AotRuntimeContext {
     pub quantum_mass: i64,
     pub unwind_depth: u32,
     pub task_identity: u32,
+    pub caller_site: u32,
 }
 
 pub const CONTEXT_HEAP_WORDS_OFFSET: usize = offset_of!(AotRuntimeContext, heap_words_pointer);
@@ -59,3 +60,5 @@ pub const CONTEXT_PENDING_LENGTH_OFFSET: usize = offset_of!(AotRuntimeContext, p
 pub const CONTEXT_PENDING_CAPACITY_OFFSET: usize = offset_of!(AotRuntimeContext, pending_capacity);
 pub const CONTEXT_QUANTUM_MASS_OFFSET: usize = offset_of!(AotRuntimeContext, quantum_mass);
 pub const CONTEXT_UNWIND_DEPTH_OFFSET: usize = offset_of!(AotRuntimeContext, unwind_depth);
+pub const CONTEXT_CALLER_SITE_OFFSET: usize = offset_of!(AotRuntimeContext, caller_site);
+pub const NO_CALLER_SITE: u32 = u32::MAX;

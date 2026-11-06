@@ -3,9 +3,7 @@ use crate::context::AotRuntimeContext;
 use crate::effect_channel::EffectChannel;
 use crate::guard::{Entry, borrow_slice, run_entry};
 use crate::trap::Trap;
-use pseudolearn_runtime::{
-    EFFECT_OPERATIONS, EffectOperation, Handle, HostReply, HostValue,
-};
+use pseudolearn_runtime::{EFFECT_OPERATIONS, EffectOperation, Handle, HostReply, HostValue};
 
 pub(crate) const HEADER_WORDS: usize = 3;
 

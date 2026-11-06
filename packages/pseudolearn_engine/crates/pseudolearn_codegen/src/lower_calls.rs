@@ -39,12 +39,54 @@ pub(crate) fn lower_call(
     let index = function_index(lowering, target.function_name)?;
     let callee = callee_reference(lowering, index)?;
     let frame = push_roots(lowering, instruction)?;
+    let visible = enter_synthesized(lowering, (instruction, target.function_name))?;
     let produced = invoke(lowering, instruction, (callee, target.arguments))?;
+    leave_synthesized(lowering, visible);
     pop_roots(lowering, frame);
     if let Some(value) = produced {
         bind_result(lowering, instruction, value);
     }
     Ok(())
+}
+
+pub(crate) fn is_synthesized(name: &str) -> bool {
+    name.starts_with("@__collection.")
+}
+
+fn enter_synthesized(
+    lowering: &mut Lowering<'_, '_>,
+    (instruction, callee): (&Instruction<'_>, &str),
+) -> Result<Option<Value>, CodegenError> {
+    if !is_synthesized(callee) || is_synthesized(&lowering.function.name) {
+        return Ok(None);
+    }
+    let site = lowering
+        .faults
+        .register("internalFault", instruction.span, String::new())?;
+    let offset = lowering.environment.layout.caller_site;
+    let flags = cranelift_codegen::ir::MemFlagsData::trusted();
+    let previous = lowering
+        .builder
+        .ins()
+        .load(types::I32, flags, lowering.context, offset);
+    let current = lowering.builder.ins().iconst(types::I32, i64::from(site));
+    lowering
+        .builder
+        .ins()
+        .store(flags, current, lowering.context, offset);
+    Ok(Some(previous))
+}
+
+fn leave_synthesized(lowering: &mut Lowering<'_, '_>, previous: Option<Value>) {
+    if let Some(previous) = previous {
+        let offset = lowering.environment.layout.caller_site;
+        lowering.builder.ins().store(
+            cranelift_codegen::ir::MemFlagsData::trusted(),
+            previous,
+            lowering.context,
+            offset,
+        );
+    }
 }
 
 pub(crate) fn invoke(

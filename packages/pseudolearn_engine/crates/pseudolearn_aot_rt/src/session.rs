@@ -41,6 +41,7 @@ impl AotSession {
             quantum_mass: 0,
             unwind_depth: 0,
             task_identity: 0,
+            caller_site: crate::context::NO_CALLER_SITE,
         });
         let mut session = Self { engine, context };
         session.engine.publish_inline(&mut session.context);

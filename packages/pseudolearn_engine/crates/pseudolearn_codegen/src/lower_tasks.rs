@@ -145,7 +145,9 @@ fn lower_spawn(
         .ok_or(CodegenError::InvalidModule("spawn target without dispatch"))?;
     crate::lower_calls::require_arguments_defined(lowering, instruction, arguments)?;
     let buffer = packet(lowering, arguments, &[i64::from(index)])?;
-    simple(lowering, instruction, Entry::TaskSpawn, &[scope, buffer])
+    let word = rooted(lowering, instruction, Entry::TaskSpawn, &[scope, buffer])?;
+    bind_result(lowering, instruction, word);
+    Ok(())
 }
 
 fn result_type(lowering: &Lowering<'_, '_>, instruction: &Instruction<'_>) -> Option<IrType> {
