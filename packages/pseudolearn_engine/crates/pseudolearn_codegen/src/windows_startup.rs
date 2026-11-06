@@ -12,24 +12,24 @@ pub const WINDOWS_ENTRY_SYMBOL: &str = "mainCRTStartup";
 pub const RUNTIME_EXIT_SYMBOL: &str = "pseudolearn_aot_exit";
 pub const TLS_DIRECTORY_SYMBOL: &str = "_tls_used";
 
-struct MarkerData {
+struct SectionMarker {
     symbol: &'static str,
     section: &'static str,
 }
 
-const TLS_START: MarkerData = MarkerData {
+const TLS_START: SectionMarker = SectionMarker {
     symbol: "_tls_start",
     section: ".tls",
 };
-const TLS_END: MarkerData = MarkerData {
+const TLS_END: SectionMarker = SectionMarker {
     symbol: "_tls_end",
     section: ".tls$ZZZ",
 };
-const CALLBACKS_START: MarkerData = MarkerData {
+const CALLBACKS_START: SectionMarker = SectionMarker {
     symbol: "__xl_a",
     section: ".CRT$XLA",
 };
-const CALLBACKS_END: MarkerData = MarkerData {
+const CALLBACKS_END: SectionMarker = SectionMarker {
     symbol: "__xl_z",
     section: ".CRT$XLZ",
 };
@@ -51,17 +51,17 @@ pub(crate) fn define_for_windows(
     define_process_entry(object, main)?;
     define_tls_directory(object)?;
     define_word(object, FLOAT_MARKER_SYMBOL, FLOAT_MARKER_VALUE)?;
-    define_type_info_table(object)
+    define_exception_type_table(object)
 }
 
-fn define_type_info_table(object: &mut ObjectModule) -> Result<(), CodegenError> {
-    let data = object
+fn define_exception_type_table(object: &mut ObjectModule) -> Result<(), CodegenError> {
+    let table = object
         .declare_data(TYPE_INFO_TABLE_SYMBOL, Linkage::Export, false, false)
         .map_err(CodegenError::backend)?;
     let mut description = DataDescription::new();
     description.define(vec![0; POINTER_BYTES].into_boxed_slice());
     object
-        .define_data(data, &description)
+        .define_data(table, &description)
         .map_err(CodegenError::backend)
 }
 
@@ -130,17 +130,20 @@ fn define_tls_directory(object: &mut ObjectModule) -> Result<(), CodegenError> {
         .map_err(CodegenError::backend)
 }
 
-fn define_marker(object: &mut ObjectModule, marker: &MarkerData) -> Result<DataId, CodegenError> {
-    let data = object
+fn define_marker(
+    object: &mut ObjectModule,
+    marker: &SectionMarker,
+) -> Result<DataId, CodegenError> {
+    let marker_symbol = object
         .declare_data(marker.symbol, Linkage::Local, true, false)
         .map_err(CodegenError::backend)?;
     let mut description = DataDescription::new();
     description.define(vec![0; POINTER_BYTES].into_boxed_slice());
     description.set_custom_section(marker.section);
     object
-        .define_data(data, &description)
+        .define_data(marker_symbol, &description)
         .map_err(CodegenError::backend)?;
-    Ok(data)
+    Ok(marker_symbol)
 }
 
 fn define_word(
@@ -148,13 +151,13 @@ fn define_word(
     symbol: &str,
     value: u32,
 ) -> Result<DataId, CodegenError> {
-    let data = object
+    let word = object
         .declare_data(symbol, Linkage::Export, true, false)
         .map_err(CodegenError::backend)?;
     let mut description = DataDescription::new();
     description.define(value.to_le_bytes().to_vec().into_boxed_slice());
     object
-        .define_data(data, &description)
+        .define_data(word, &description)
         .map_err(CodegenError::backend)?;
-    Ok(data)
+    Ok(word)
 }

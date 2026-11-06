@@ -427,8 +427,8 @@ Destinos (lista cerrada, `native_link_targets.rs`; `--destino` fuera de ella es 
 |---|---|---|---|
 | `aarch64-apple-darwin` | `-flavor darwin -arch arm64 -platform_version macos 11.0 11.0 -dead_strip` | *stubs* `.tbd` de libSystem, CoreFoundation y Security desde los símbolos indefinidos (`native_link_stubs.rs`) | macOS arm64 local y workflow |
 | `x86_64-apple-darwin` | ídem con `-arch x86_64` | ídem | macOS x86_64 con Rosetta en local y workflow |
-| `x86_64-unknown-linux-musl` | `-flavor gnu -m elf_x86_64 -static --gc-sections`, `crt1.o crti.o crtbegin.o` antes y `libunwind.a libc.a` en grupo y `crtend.o crtn.o` después | objetos musl autocontenidos del toolchain de Rust, incrustados con el runtime | workflow |
-| `x86_64-pc-windows-msvc` | `-flavor link /subsystem:console /entry:mainCRTStartup /nodefaultlib /opt:ref /machine:x64` | bibliotecas de importación generadas al enlazar con `lld -flavor link /lib /def:` a partir de la tabla símbolo→DLL | workflow |
+| `x86_64-unknown-linux-musl` | `-flavor gnu -m elf_x86_64 -static --gc-sections`, `crt1.o crti.o crtbegin.o` antes y `libunwind.a libc.a` en grupo y `crtend.o crtn.o` después | objetos musl autocontenidos del toolchain de Rust, incrustados con el runtime | workflow (ejecutable estático, `ldd`: «not a dynamic executable») |
+| `x86_64-pc-windows-msvc` | `-flavor link /subsystem:console /entry:mainCRTStartup /nodefaultlib /opt:ref /machine:x64` | bibliotecas de importación generadas al enlazar con `lld -flavor link /lib /def:` a partir de la tabla símbolo→DLL | workflow (Windows Server 2025; importa solo DLL de System32) |
 
 Windows no usa el CRT de MSVC: el objeto del programa trae su propio `mainCRTStartup` y el directorio TLS (ver README de
 `pseudolearn_codegen`), y las importaciones salen de una tabla `dll\tsímbolo` que `build_windows_imports.rs` calcula al

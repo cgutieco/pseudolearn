@@ -340,8 +340,8 @@ x86_64 y AArch64. Un destino sin backend devuelve `CodegenError::Target`.
 |---|---|---|---|
 | `aarch64-apple-darwin` | Mach-O | probada | verificada (local y workflow manual) |
 | `x86_64-apple-darwin` | Mach-O | probada | verificada con Rosetta 2 (local) y en el workflow manual |
-| `x86_64-unknown-linux-musl` | ELF | probada | según el último run del workflow manual (README de la CLI) |
-| `x86_64-pc-windows-msvc` | COFF | probada | según el último run del workflow manual (README de la CLI) |
+| `x86_64-unknown-linux-musl` | ELF | probada | verificada en el workflow manual (ejecutable estático) |
+| `x86_64-pc-windows-msvc` | COFF | probada | verificada en el workflow manual (Windows Server 2025) |
 
 Arranque de Windows (`windows_startup.rs`). El ejecutable COFF se enlaza sin el CRT de MSVC (`/nodefaultlib`), así que
 el objeto ejecutable de un destino COFF trae lo que el CRT aportaría: `mainCRTStartup`, que llama al `main` generado con
