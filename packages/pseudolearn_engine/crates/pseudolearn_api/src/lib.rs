@@ -110,8 +110,6 @@ mod event_task_codec;
 #[cfg(feature = "native")]
 mod native_build;
 #[cfg(feature = "native")]
-mod native_tasks;
-#[cfg(feature = "native")]
 pub use native_build::{NativeBuildFailure, NativeBuildRequest, NativeObject, build_native_object};
 
 #[cfg(feature = "native")]

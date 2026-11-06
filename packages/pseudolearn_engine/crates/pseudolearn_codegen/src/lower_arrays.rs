@@ -38,7 +38,7 @@ pub(crate) fn lower(
 }
 
 pub(crate) fn operand_values(
-    lowering: &Lowering<'_, '_>,
+    lowering: &mut Lowering<'_, '_>,
     instruction: &Instruction<'_>,
     range: std::ops::Range<usize>,
 ) -> Result<Vec<Value>, CodegenError> {

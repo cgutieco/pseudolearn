@@ -211,3 +211,24 @@ fn receiver_name(
     };
     Ok(name.clone())
 }
+
+pub(crate) fn vector_layout_words(
+    lowering: &Lowering<'_, '_>,
+    name: &str,
+) -> Result<Vec<i64>, CodegenError> {
+    let (index, class) = lowering
+        .environment
+        .module
+        .classes
+        .iter()
+        .enumerate()
+        .find(|(_, class)| class.name == name)
+        .ok_or(CodegenError::InvalidModule(
+            "collection declaration missing",
+        ))?;
+    let descriptor = collection_type(class).ok_or(CodegenError::InvalidModule(
+        "invalid collection declaration",
+    ))?;
+    let words = layout_words(Some((index, descriptor)))?;
+    Ok(words.into_iter().take(3).collect())
+}

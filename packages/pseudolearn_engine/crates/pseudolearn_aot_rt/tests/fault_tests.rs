@@ -7,6 +7,7 @@ fn record(code: Option<DiagnosticCode>) -> FaultRecord {
         code,
         range: SourceRange::default(),
         arguments: Vec::new(),
+        related: Vec::new(),
     }
 }
 

@@ -147,12 +147,12 @@ pub(crate) fn require_arguments_defined(
     Ok(())
 }
 
-pub(crate) fn call_arguments(lowering: &Lowering<'_, '_>, arguments: &[ValueId]) -> Vec<Value> {
+pub(crate) fn call_arguments(lowering: &mut Lowering<'_, '_>, arguments: &[ValueId]) -> Vec<Value> {
     let mut values = vec![lowering.context];
-    values.extend(
-        arguments
-            .iter()
-            .filter_map(|identifier| lowering.values.get(identifier).copied()),
-    );
+    for identifier in arguments {
+        if let Some(value) = crate::lowering::value_of(lowering, *identifier) {
+            values.push(value);
+        }
+    }
     values
 }

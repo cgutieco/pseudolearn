@@ -751,7 +751,10 @@
   "espera": {
     "salida": "",
     "terminacion": "cancelled"
-  }
+  },
+  "sujetos": [
+    "engine"
+  ]
 }
 ```
 

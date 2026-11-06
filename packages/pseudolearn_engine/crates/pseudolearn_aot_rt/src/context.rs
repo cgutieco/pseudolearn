@@ -4,6 +4,7 @@ use std::mem::offset_of;
 pub const STATUS_CONTINUE: u32 = 0;
 pub const STATUS_FAILED: u32 = 1;
 pub const STATUS_LIMIT: u32 = 2;
+pub const STATUS_UNWIND: u32 = 3;
 
 #[repr(C)]
 pub struct AotRuntimeContext {
@@ -29,6 +30,9 @@ pub struct AotRuntimeContext {
     pub pending_pointer: *mut u64,
     pub pending_length: u64,
     pub pending_capacity: u64,
+    pub quantum_mass: i64,
+    pub unwind_depth: u32,
+    pub task_identity: u32,
 }
 
 pub const CONTEXT_HEAP_WORDS_OFFSET: usize = offset_of!(AotRuntimeContext, heap_words_pointer);
@@ -53,3 +57,5 @@ pub const CONTEXT_FREE_SIZE_MASK_OFFSET: usize = offset_of!(AotRuntimeContext, f
 pub const CONTEXT_PENDING_POINTER_OFFSET: usize = offset_of!(AotRuntimeContext, pending_pointer);
 pub const CONTEXT_PENDING_LENGTH_OFFSET: usize = offset_of!(AotRuntimeContext, pending_length);
 pub const CONTEXT_PENDING_CAPACITY_OFFSET: usize = offset_of!(AotRuntimeContext, pending_capacity);
+pub const CONTEXT_QUANTUM_MASS_OFFSET: usize = offset_of!(AotRuntimeContext, quantum_mass);
+pub const CONTEXT_UNWIND_DEPTH_OFFSET: usize = offset_of!(AotRuntimeContext, unwind_depth);

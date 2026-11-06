@@ -17,11 +17,33 @@ pub(crate) fn charge_block_mass(
     lowering: &mut Lowering<'_, '_>,
     block: &Block,
 ) -> Result<(), CodegenError> {
+    charge_quantum(lowering, block.mass);
     if lowering.environment.charging != StatementCharging::PerBlock {
         return Ok(());
     }
     let span = first_statement_span(lowering, block);
     charge_units(lowering, block.mass, span)
+}
+
+fn charge_quantum(lowering: &mut Lowering<'_, '_>, mass: u32) {
+    if !lowering.environment.task_runtime || mass == 0 {
+        return;
+    }
+    let offset = lowering.environment.layout.quantum_mass;
+    let context = lowering.context;
+    let flags = MemFlagsData::trusted();
+    let accumulated = lowering
+        .builder
+        .ins()
+        .load(types::I64, flags, context, offset);
+    let updated = lowering
+        .builder
+        .ins()
+        .iadd_imm_s(accumulated, i64::from(mass));
+    lowering
+        .builder
+        .ins()
+        .store(flags, updated, context, offset);
 }
 
 pub(crate) fn charge_statement(

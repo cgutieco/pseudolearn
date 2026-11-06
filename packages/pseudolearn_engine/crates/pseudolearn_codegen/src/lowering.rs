@@ -10,7 +10,7 @@ use crate::fault_table::FaultTable;
 use crate::type_mapping::{clif_type, zero_value};
 use cranelift_codegen::ir::{Block, FuncRef, GlobalValue, InstBuilder, Value, types};
 use cranelift_codegen::isa::TargetFrontendConfig;
-use cranelift_frontend::FunctionBuilder;
+use cranelift_frontend::{FunctionBuilder, Variable};
 use pseudolearn_ir::{
     BlockId, Function, InstructionId, IrSpan, IrType, Module, Operand, Operation, ValueId,
 };
@@ -28,6 +28,7 @@ pub(crate) struct FunctionEnvironment<'program> {
     pub(crate) classes: &'program ClassTable,
     pub(crate) charging: StatementCharging,
     pub(crate) parameter_roots: crate::target::ParameterRoots,
+    pub(crate) task_runtime: bool,
 }
 
 pub(crate) struct Instruction<'program> {
@@ -55,20 +56,46 @@ pub(crate) struct Lowering<'func, 'program> {
     pub(crate) definitions: HashMap<ValueId, Definition>,
     pub(crate) live_roots: HashMap<InstructionId, Vec<ValueId>>,
     pub(crate) scope: crate::dominated_facts::Scope,
+    pub(crate) variables: Option<HashMap<ValueId, Variable>>,
+    pub(crate) flag_variables: HashMap<ValueId, Variable>,
+    pub(crate) cell_frame_variable: Option<Variable>,
+    pub(crate) unwinding: Option<crate::task_unwinding::Unwinding>,
 }
 
 pub(crate) fn operand_value(
-    lowering: &Lowering<'_, '_>,
+    lowering: &mut Lowering<'_, '_>,
     instruction: &Instruction<'_>,
     position: usize,
 ) -> Result<Value, CodegenError> {
     match instruction.operands.get(position) {
-        Some(Operand::Value(identifier)) => lowering
-            .values
-            .get(identifier)
-            .copied()
+        Some(Operand::Value(identifier)) => value_of(lowering, *identifier)
             .ok_or(CodegenError::InvalidModule("operand value is not defined")),
         _ => Err(CodegenError::InvalidModule("operand is not a value")),
+    }
+}
+
+pub(crate) fn value_of(lowering: &mut Lowering<'_, '_>, identifier: ValueId) -> Option<Value> {
+    if !lowering.values.contains_key(&identifier) {
+        return None;
+    }
+    match lowering
+        .variables
+        .as_ref()
+        .and_then(|variables| variables.get(&identifier))
+    {
+        Some(variable) => Some(lowering.builder.use_var(*variable)),
+        None => lowering.values.get(&identifier).copied(),
+    }
+}
+
+pub(crate) fn bind_value(lowering: &mut Lowering<'_, '_>, identifier: ValueId, value: Value) {
+    lowering.values.insert(identifier, value);
+    if let Some(variable) = lowering
+        .variables
+        .as_ref()
+        .and_then(|variables| variables.get(&identifier))
+    {
+        lowering.builder.def_var(*variable, value);
     }
 }
 
@@ -78,7 +105,7 @@ pub(crate) fn bind_result(
     value: Value,
 ) {
     if let Some(identifier) = instruction.result {
-        lowering.values.insert(identifier, value);
+        bind_value(lowering, identifier, value);
     }
 }
 
@@ -190,6 +217,7 @@ pub(crate) fn finish_cold_blocks(lowering: &mut Lowering<'_, '_>) -> Result<(), 
     jump_to_propagation(lowering);
     if let Some(block) = lowering.propagate_block {
         lowering.builder.switch_to_block(block);
+        crate::task_unwinding::emit_landing_check(lowering)?;
         emit_return_zero(lowering);
     }
     Ok(())

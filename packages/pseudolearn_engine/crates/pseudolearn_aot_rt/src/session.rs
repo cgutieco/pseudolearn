@@ -38,6 +38,9 @@ impl AotSession {
             pending_pointer: std::ptr::null_mut(),
             pending_length: 0,
             pending_capacity: 0,
+            quantum_mass: 0,
+            unwind_depth: 0,
+            task_identity: 0,
         });
         let mut session = Self { engine, context };
         session.engine.publish_inline(&mut session.context);

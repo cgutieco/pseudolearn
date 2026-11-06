@@ -25,6 +25,7 @@ pub struct FaultRecord {
     pub code: Option<DiagnosticCode>,
     pub range: SourceRange,
     pub arguments: Vec<(String, String)>,
+    pub related: Vec<SourceRange>,
 }
 
 pub fn render_fault(record: &FaultRecord, locale: &str) -> Option<String> {

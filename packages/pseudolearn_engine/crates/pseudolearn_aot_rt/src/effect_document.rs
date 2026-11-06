@@ -38,6 +38,7 @@ impl EffectInput {
         configure_host_authority(&mut session, host.as_ref())
             .map_err(|error| error.code().to_owned())?;
         let limits = network_limits(&session);
+        let pending_network = limits.pending;
         configure_network_limits(&mut session, limits);
         let cancel_on_effect = host
             .as_ref()
@@ -49,10 +50,23 @@ impl EffectInput {
             }
             None => ExecutionHostProvider::new(),
         };
+        let delivery_order = delivery_order_of(&session, host.as_ref(), replaying);
         let mut channel = EffectChannel::new(session, provider);
         channel.cancel_on_effect = cancel_on_effect;
+        channel.delivery_order = delivery_order;
+        channel.pending_network = pending_network;
         Ok(channel)
     }
+}
+
+fn delivery_order_of(session: &EffectSession, host: Option<&Value>, replaying: bool) -> Vec<u64> {
+    if replaying {
+        return pseudolearn_runtime::delivery_order(session.tape());
+    }
+    host.and_then(|host| host.get("orden_entrega"))
+        .and_then(Value::as_array)
+        .map(|order| order.iter().filter_map(Value::as_u64).collect())
+        .unwrap_or_default()
 }
 
 fn network_limits(session: &EffectSession) -> NetworkLimits {

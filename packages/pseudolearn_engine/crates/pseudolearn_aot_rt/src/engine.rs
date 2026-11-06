@@ -22,6 +22,7 @@ pub struct AotEngine {
     pub(crate) site_boolean_words: Vec<BooleanWords>,
     pub(crate) streams: AotStreams,
     pub(crate) effects: crate::effect_channel::EffectChannel,
+    pub(crate) tasks: Option<Box<crate::task_state::AotTasks>>,
     fault: Option<FaultRecord>,
     notices: Vec<FaultRecord>,
 }
@@ -51,6 +52,7 @@ impl AotEngine {
             site_boolean_words: Vec::new(),
             streams,
             effects: crate::effect_channel::EffectChannel::standalone(),
+            tasks: None,
             fault: None,
             notices: Vec::new(),
         }
@@ -127,6 +129,32 @@ impl AotEngine {
         if self.fault.is_none() {
             self.fault = Some(record);
         }
+    }
+
+    pub(crate) fn use_tasks(
+        &mut self,
+        dispatcher: crate::task_state::TaskDispatcher,
+        limits: crate::config::AotLimits,
+    ) {
+        let capacity = usize::try_from(limits.channel_capacity).unwrap_or(usize::MAX);
+        let mut tasks = crate::task_state::AotTasks::new(dispatcher, limits.tasks, capacity);
+        tasks.delivery_order = self.effects.delivery_order.clone();
+        tasks.pending_network = self.effects.pending_network;
+        self.tasks = Some(Box::new(tasks));
+    }
+
+    pub(crate) fn seal_abandoned_effects(&mut self) {
+        if let Some(tasks) = self.tasks.as_deref()
+            && crate::task_effects::seal_abandoned(tasks, &mut self.effects).is_err()
+        {
+            self.effects.abort();
+        }
+    }
+
+    pub(crate) fn tasks_mut(&mut self) -> Result<&mut crate::task_state::AotTasks, Trap> {
+        self.tasks
+            .as_deref_mut()
+            .ok_or_else(|| Trap::named("internalFault"))
     }
 
     pub(crate) fn record_notice(&mut self, record: FaultRecord) {

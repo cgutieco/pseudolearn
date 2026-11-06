@@ -119,39 +119,17 @@ fn inspection_preserves_bytes_and_benchmark_functions_match_product_functions() 
 }
 
 #[test]
-fn a_program_with_tasks_is_rejected_with_an_explicit_native_diagnostic() -> Check {
+fn a_program_with_tasks_compiles_natively() -> Check {
     let program = "SubProceso Suspendible Work()\nEscribir 1;\nFinSubProceso\nAlgoritmo P\nTareas\nLanzar Work();\nFinTareas\nFinAlgoritmo\n";
-    match build_native_object(&request(program)) {
-        Err(NativeBuildFailure::Rejected(diagnostics)) => {
-            let codes: Vec<&str> = diagnostics
-                .iter()
-                .map(|diagnostic| diagnostic.code.as_str())
-                .collect();
-            assert_eq!(codes, ["nativeTasksUnsupported"]);
-            assert!(
-                diagnostics
-                    .iter()
-                    .all(|diagnostic| !diagnostic.message.is_empty())
-            );
-            Ok(())
-        }
-        other => Err(failure(other.map(|object| object.bytes.len()))),
-    }
+    build_native_object(&request(program))
+        .map(|_| ())
+        .map_err(failure)
 }
 
 #[test]
-fn a_program_with_channels_but_no_task_scope_is_rejected_too() -> Check {
+fn a_program_with_channels_but_no_task_scope_compiles_natively() -> Check {
     let program = "Algoritmo P\nDefinir stream Como Canal<Entero> <- Canal(1);\nFinAlgoritmo\n";
-    match build_native_object(&request(program)) {
-        Err(NativeBuildFailure::Rejected(diagnostics)) => {
-            assert_eq!(
-                diagnostics
-                    .first()
-                    .map(|diagnostic| diagnostic.code.as_str()),
-                Some("nativeTasksUnsupported")
-            );
-            Ok(())
-        }
-        other => Err(failure(other.map(|object| object.bytes.len()))),
-    }
+    build_native_object(&request(program))
+        .map(|_| ())
+        .map_err(failure)
 }

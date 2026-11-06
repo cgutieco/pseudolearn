@@ -100,6 +100,7 @@ fn record_mismatch(entry: &mut Entry<'_>, kind: u32, found: &str) {
             ("expected".to_owned(), expected.to_owned()),
             ("found".to_owned(), found.to_owned()),
         ],
+        related: Vec::new(),
     };
     entry.engine.record_notice(record);
 }

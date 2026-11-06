@@ -47,6 +47,7 @@ fn start_function<'func, 'program>(
         .first()
         .ok_or(CodegenError::InvalidModule("function without context"))?;
     let mut lowering = initial_state(builder, function, environment, (faults, context, types));
+    crate::task_unwinding::prepare(&mut lowering);
     bind_parameters(&mut lowering, entry_values.get(1..).unwrap_or(&[]));
     declare_blocks(&mut lowering);
     enter_frame(&mut lowering);
@@ -63,7 +64,7 @@ fn bind_parameters(lowering: &mut Lowering<'_, '_>, entry_values: &[cranelift_co
         .iter()
         .filter(|(_, parameter_type)| clif_type(parameter_type).is_some());
     for ((identifier, _), value) in mapped.zip(entry_values) {
-        lowering.values.insert(*identifier, *value);
+        crate::lowering::bind_value(lowering, *identifier, *value);
     }
 }
 
@@ -100,6 +101,9 @@ fn enter_frame(lowering: &mut Lowering<'_, '_>) {
         .builder
         .ins()
         .store(MemFlagsData::trusted(), acquired, context, offset);
+    if let Some(unwinding) = lowering.unwinding.as_mut() {
+        unwinding.depth = Some(acquired);
+    }
 }
 
 fn lower_block(lowering: &mut Lowering<'_, '_>, identifier: BlockId) -> Result<(), CodegenError> {
@@ -112,6 +116,7 @@ fn lower_block(lowering: &mut Lowering<'_, '_>, identifier: BlockId) -> Result<(
         .get(&identifier)
         .ok_or(CodegenError::InvalidModule("undeclared block"))?;
     lowering.builder.switch_to_block(created);
+    crate::task_unwinding::define_block_parameters(lowering, block);
     crate::dominated_facts::enter_block(lowering, identifier);
     charge_block_mass(lowering, block)?;
     for instruction_id in &block.instructions {
@@ -173,5 +178,9 @@ fn initial_state<'func, 'program>(
             &environment.module.origins.entries,
         ),
         scope: crate::dominated_facts::Scope::for_function(function),
+        variables: None,
+        flag_variables: HashMap::new(),
+        cell_frame_variable: None,
+        unwinding: None,
     }
 }

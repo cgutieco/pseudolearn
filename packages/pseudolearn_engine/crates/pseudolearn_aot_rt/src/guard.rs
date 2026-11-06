@@ -34,6 +34,16 @@ pub(crate) fn borrow_slice<'span, Element>(
     }
 }
 
+pub(crate) fn with_entry<Outcome>(
+    context: *mut AotRuntimeContext,
+    site: u32,
+    operation: impl FnOnce(&mut Entry<'_>) -> Outcome,
+) -> Option<Outcome> {
+    let mut entry = open_entry(context, site)?;
+    entry.engine.settle_inline(entry.context).ok()?;
+    Some(operation(&mut entry))
+}
+
 pub(crate) fn run_entry(
     context: *mut AotRuntimeContext,
     site: u32,
@@ -87,10 +97,13 @@ impl Entry<'_> {
             .ok_or_else(|| Trap::named("internalFault"))?;
         let mut handles: Vec<Handle> = words.iter().copied().map(Handle).collect();
         handles.extend(rooted_handles(&self.engine.cells));
+        if let Some(tasks) = self.engine.tasks.as_deref() {
+            crate::task_roots::extend_roots(tasks, &mut handles);
+        }
         Ok(handles)
     }
 
-    fn fail(&mut self, mut trap: Trap) -> u32 {
+    pub(crate) fn fail(&mut self, mut trap: Trap) -> u32 {
         if matches!(
             trap.code.map(|code| code.as_str()),
             Some("uninitializedVariableRead" | "subroutineEndedWithoutReturn")
@@ -107,6 +120,7 @@ impl Entry<'_> {
             code: trap.code,
             range: self.engine.site_range(self.site),
             arguments: trap.arguments,
+            related: trap.related,
         });
         self.context.fault_site = self.site;
         self.context.fault_status = status;

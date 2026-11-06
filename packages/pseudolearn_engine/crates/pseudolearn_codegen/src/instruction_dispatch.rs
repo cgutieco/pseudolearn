@@ -42,28 +42,19 @@ const FAMILIES: &[(&[Operation], Lower)] = &[
         crate::lower_snapshot::OPERATIONS,
         crate::lower_snapshot::lower,
     ),
+    (crate::lower_tasks::OPERATIONS, crate::lower_tasks::lower),
 ];
 
-pub(crate) const UNSUPPORTED_OPERATIONS: &[Operation] = &[
-    Operation::TaskScopeOpen,
-    Operation::TaskSpawn,
-    Operation::TaskAwait,
-    Operation::TaskScopeJoin,
-    Operation::CallSuspendible,
-    Operation::EffectAwait,
-    Operation::TaskChannel,
-    Operation::TaskValueLoad,
-    Operation::TaskOutcome,
-    Operation::TaskScopeResult,
-    Operation::TaskCancelPoint,
-    Operation::TaskScopeBoundary,
-];
+pub(crate) const UNSUPPORTED_OPERATIONS: &[Operation] = &[];
 
 #[cfg(test)]
 pub(crate) fn is_accounted_for(operation: Operation) -> bool {
     matches!(
         operation,
-        Operation::Call | Operation::CallVirtual | Operation::CallIndirect
+        Operation::Call
+            | Operation::CallSuspendible
+            | Operation::CallVirtual
+            | Operation::CallIndirect
     ) || FAMILIES
         .iter()
         .any(|(operations, _)| operations.contains(&operation))
@@ -77,7 +68,9 @@ pub(crate) fn lower_instruction(
     let operation = instruction.operation;
     match operation {
         Operation::CallIndirect => crate::lower_indirect::lower(lowering, instruction),
-        Operation::Call => lower_calls::lower_call(lowering, instruction),
+        Operation::Call | Operation::CallSuspendible => {
+            lower_calls::lower_call(lowering, instruction)
+        }
         Operation::CallVirtual => lower_virtual::lower_virtual_call(lowering, instruction),
         _ => match FAMILIES
             .iter()

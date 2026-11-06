@@ -73,6 +73,7 @@ pub(crate) fn emit_module(
         charging: charging_of(mode),
         inspect: target.inspect,
         parameter_roots: target.parameter_roots,
+        task_runtime: crate::task_dispatch::uses_task_runtime(module),
     };
     let (faults, inspection) = define_functions(&mut object, module, &declarations)?;
     let fault_sites = faults.into_sites();
@@ -126,11 +127,13 @@ fn attach_entry_point(
         .get(entry_index(module)?)
         .ok_or(CodegenError::InvalidModule("undeclared entry function"))?;
     let encoded = encode_metadata(metadata);
+    let dispatcher = crate::task_dispatch::define_dispatcher(object, module, identifiers)?;
     define_entry_point(
         object,
         &EntryPoint {
             function,
             metadata: &encoded,
+            dispatcher,
         },
     )
 }
@@ -185,6 +188,7 @@ struct Declarations<'program> {
     charging: StatementCharging,
     inspect: bool,
     parameter_roots: crate::target::ParameterRoots,
+    task_runtime: bool,
 }
 
 fn define_function(
@@ -287,5 +291,6 @@ fn function_environment<'program>(
             .collect::<HashMap<_, _>>(),
         classes: declarations.classes,
         charging: declarations.charging,
+        task_runtime: declarations.task_runtime,
     })
 }

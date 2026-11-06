@@ -11,7 +11,7 @@ use crate::word_conversion::to_word;
 use cranelift_codegen::ir::{InstBuilder, Value, types};
 use pseudolearn_ir::{IrType, Operand, Operation};
 
-pub(crate) const OPERATIONS: &[Operation] = &[Operation::EffectCall];
+pub(crate) const OPERATIONS: &[Operation] = &[Operation::EffectCall, Operation::EffectAwait];
 
 const FIRST_ARGUMENT: usize = 4;
 
@@ -42,7 +42,11 @@ pub(crate) fn lower(
         .ins()
         .iconst(types::I32, i64::from(operation));
     let call = RuntimeCall {
-        target: Entry::EffectCall,
+        target: if instruction.operation == Operation::EffectAwait {
+            Entry::EffectAwait
+        } else {
+            Entry::EffectCall
+        },
         code_name: "internalFault",
         span: instruction.span,
         operands: &[descriptor, buffer],

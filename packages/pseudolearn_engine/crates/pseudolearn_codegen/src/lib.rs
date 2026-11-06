@@ -53,7 +53,10 @@ mod object_fast_path;
 mod runtime_calls;
 mod shadow_stack;
 mod target;
-mod task_support;
+mod task_dispatch;
+mod task_unwinding;
+mod lower_channels;
+mod lower_tasks;
 mod type_mapping;
 mod value_types;
 mod word_conversion;
@@ -65,7 +68,6 @@ pub use entry_point::{MAIN_SYMBOL, METADATA_SYMBOL, RUNTIME_MAIN_SYMBOL};
 pub use error::CodegenError;
 pub use object_emitter::{CompiledObject, FunctionSymbol, function_symbol};
 pub use target::{ParameterRoots, TargetConfig};
-pub use task_support::module_uses_tasks;
 
 pub fn compile_module_to_object(
     module: &pseudolearn_ir::Module,

@@ -8,7 +8,7 @@ use pseudolearn_runtime::{
 };
 use std::io::Write;
 
-const HEADER_WORDS: usize = 3;
+pub(crate) const HEADER_WORDS: usize = 3;
 
 #[unsafe(no_mangle)]
 pub extern "C" fn rt_aot_effect_call(
@@ -27,16 +27,16 @@ pub extern "C" fn rt_aot_effect_call(
     })
 }
 
-struct EffectFrame<'words> {
-    capability: u64,
-    source_node: u32,
+pub(crate) struct EffectFrame<'words> {
+    pub(crate) capability: u64,
+    pub(crate) source_node: u32,
     result_class: u32,
-    arguments: &'words [u64],
+    pub(crate) arguments: &'words [u64],
     cells: &'words [u64],
 }
 
 impl<'words> EffectFrame<'words> {
-    fn split(operation: &EffectOperation, words: &'words [u64]) -> Result<Self, Trap> {
+    pub(crate) fn split(operation: &EffectOperation, words: &'words [u64]) -> Result<Self, Trap> {
         let [capability, source_node, result_class, rest @ ..] = words else {
             return Err(internal());
         };
@@ -57,7 +57,7 @@ fn internal() -> Trap {
     Trap::named("internalFault")
 }
 
-fn operation_at(descriptor: u32) -> Result<&'static EffectOperation, Trap> {
+pub(crate) fn operation_at(descriptor: u32) -> Result<&'static EffectOperation, Trap> {
     usize::try_from(descriptor)
         .ok()
         .and_then(|index| EFFECT_OPERATIONS.get(index))
@@ -78,11 +78,11 @@ pub fn effect_operation_cells(identity: &str) -> Option<(usize, usize)> {
         .map(|operation| (operation.parameters.len(), result_cell_count(operation)))
 }
 
-fn result_cell_count(operation: &EffectOperation) -> usize {
+pub(crate) fn result_cell_count(operation: &EffectOperation) -> usize {
     operation.result_cell_count()
 }
 
-fn perform_effect(
+pub(crate) fn perform_effect(
     entry: &mut Entry<'_>,
     operation: &EffectOperation,
     frame: &EffectFrame<'_>,
@@ -148,7 +148,7 @@ fn store_reply(
     Ok(())
 }
 
-fn decode_arguments(
+pub(crate) fn decode_arguments(
     entry: &Entry<'_>,
     operation: &EffectOperation,
     words: &[u64],
@@ -180,13 +180,30 @@ fn request_reply(
         }
         None => None,
     };
+    let rejected = prepare_task_delivery(entry)?;
     let channel = &mut entry.engine.effects;
+    let invocation = (receiver, arguments, frame.source_node);
+    if rejected {
+        return crate::task_effect_await::reject_for_limit(channel, operation, invocation);
+    }
+    host_reply(channel, operation, invocation)
+}
+
+fn host_reply(
+    channel: &mut EffectChannel,
+    operation: &EffectOperation,
+    (receiver, arguments, source): (
+        Option<pseudolearn_runtime::HostCapability>,
+        Vec<HostValue>,
+        u32,
+    ),
+) -> Result<HostReply, Trap> {
     if channel.cancels_next_effect() {
         let _ = pseudolearn_runtime::begin_host_effect(
             &mut channel.session,
             operation,
             (receiver, arguments),
-            frame.source_node,
+            source,
         );
         channel.cancelled = true;
         channel.abort();
@@ -196,9 +213,17 @@ fn request_reply(
         &mut channel.session,
         &mut channel.provider,
         operation,
-        (receiver, arguments, frame.source_node),
+        (receiver, arguments, source),
     )
     .map_err(|error| channel.reject(error))
+}
+
+fn prepare_task_delivery(entry: &mut Entry<'_>) -> Result<bool, Trap> {
+    match entry.engine.tasks.as_deref_mut() {
+        Some(tasks) => crate::task_effects::prepare_delivery(tasks, &mut entry.engine.effects)
+            .map_err(|_| internal()),
+        None => Ok(false),
+    }
 }
 
 fn local_effect_reply(

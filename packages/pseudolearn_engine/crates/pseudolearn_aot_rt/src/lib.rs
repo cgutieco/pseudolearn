@@ -35,7 +35,38 @@ mod session;
 mod snapshot;
 mod text;
 pub use quoted_text::rt_aot_text_quote;
+mod task_baton;
+mod task_blocking;
+mod task_channels;
+mod task_completion;
+mod task_deadlock;
+mod task_effect_await;
+mod task_effects;
+mod task_entries;
+mod task_landing;
+mod task_results;
+mod task_roots;
+mod task_scheduler;
+mod task_state;
+mod task_switch;
+mod task_threads;
+mod task_values;
 mod trap;
+pub use pseudolearn_runtime::TASK_QUANTUM;
+pub use task_channels::{
+    CHANNEL_CLOSE, CHANNEL_NEW, CHANNEL_RECEIVE, CHANNEL_SELECT, CHANNEL_SELECTED_PRESENT,
+    CHANNEL_SEND, rt_aot_task_channel,
+};
+pub use task_effect_await::rt_aot_effect_await;
+pub use task_entries::{
+    rt_aot_task_await, rt_aot_task_scope_join, rt_aot_task_scope_open, rt_aot_task_spawn,
+    rt_aot_task_yield,
+};
+pub use task_landing::{
+    rt_aot_task_cancel_point, rt_aot_task_land, rt_aot_task_return, rt_aot_task_scope_boundary,
+};
+pub use task_results::{rt_aot_task_outcome, rt_aot_task_scope_result, rt_aot_task_value_load};
+pub use task_state::TaskDispatcher;
 
 pub use access::{rt_aot_array_load, rt_aot_array_store, rt_aot_object_load, rt_aot_object_store};
 pub use cells::{
@@ -50,9 +81,10 @@ pub use context::{
     CONTEXT_FRAME_LIMIT_OFFSET, CONTEXT_FREE_SIZE_MASK_OFFSET, CONTEXT_HEAP_LIMIT_OFFSET,
     CONTEXT_HEAP_ORDINAL_OFFSET, CONTEXT_HEAP_USED_OFFSET, CONTEXT_HEAP_WORDS_OFFSET,
     CONTEXT_INSTRUCTION_REMAINING_OFFSET, CONTEXT_PENDING_CAPACITY_OFFSET,
-    CONTEXT_PENDING_LENGTH_OFFSET, CONTEXT_PENDING_POINTER_OFFSET, CONTEXT_RESULT_WORD_OFFSET,
-    CONTEXT_ROOM_CELLS_OFFSET, CONTEXT_ROOM_THRESHOLD_OFFSET, CONTEXT_ROOT_CAPACITY_OFFSET,
-    CONTEXT_ROOT_TOP_OFFSET, CONTEXT_ROOTS_OFFSET, STATUS_CONTINUE, STATUS_FAILED, STATUS_LIMIT,
+    CONTEXT_PENDING_LENGTH_OFFSET, CONTEXT_PENDING_POINTER_OFFSET, CONTEXT_QUANTUM_MASS_OFFSET,
+    CONTEXT_RESULT_WORD_OFFSET, CONTEXT_ROOM_CELLS_OFFSET, CONTEXT_ROOM_THRESHOLD_OFFSET,
+    CONTEXT_ROOT_CAPACITY_OFFSET, CONTEXT_ROOT_TOP_OFFSET, CONTEXT_ROOTS_OFFSET,
+    CONTEXT_UNWIND_DEPTH_OFFSET, STATUS_CONTINUE, STATUS_FAILED, STATUS_LIMIT, STATUS_UNWIND,
 };
 pub use effect_channel::EffectChannel;
 pub use effect_document::{EffectInput, EffectOutput};
@@ -81,7 +113,7 @@ pub use metadata_codec::{decode_metadata, encode_metadata};
 pub use output::rt_aot_write;
 pub use process::{
     EXIT_COMPLETED, EXIT_FAILED, EXIT_INTERNAL, EXIT_LIMIT, EXIT_REPLAY, EntryFunction,
-    ProcessStreams, run_executable, run_executable_with_effects,
+    ProcessStreams, run_executable, run_executable_with_effects, run_executable_with_tasks,
 };
 pub use pseudolearn_diagnostics::DiagnosticCode;
 pub use random::{rt_aot_random_below, rt_aot_random_between, rt_aot_random_real};

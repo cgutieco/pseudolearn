@@ -12,6 +12,8 @@ fn sample() -> ExecutableMetadata {
                 instruction_units: Some(99),
                 cells: 5,
                 root_capacity: 8,
+                tasks: 3,
+                channel_capacity: 4,
             },
             boolean_words: BooleanWords {
                 truth: "Verdadero".to_owned(),
@@ -104,12 +106,12 @@ fn unknown_diagnostic_names_are_rejected() -> Result<(), String> {
 fn the_exported_main_rejects_missing_metadata() -> Result<(), String> {
     extern "C" fn nothing(_context: *mut AotRuntimeContext) {}
     assert_eq!(
-        pseudolearn_aot_main(nothing, std::ptr::null(), 4),
+        pseudolearn_aot_main(nothing, std::ptr::null(), 4, None),
         EXIT_INTERNAL
     );
     let garbage = [1u8, 2, 3];
     assert_eq!(
-        pseudolearn_aot_main(nothing, garbage.as_ptr(), garbage.len()),
+        pseudolearn_aot_main(nothing, garbage.as_ptr(), garbage.len(), None),
         EXIT_INTERNAL
     );
     Ok(())

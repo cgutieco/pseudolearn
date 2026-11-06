@@ -21,7 +21,6 @@ pub(crate) const OPERATIONS: &[Operation] = &[
     Operation::Return,
     Operation::TrapMissingReturn,
     Operation::Unreachable,
-    Operation::TaskYieldCheck,
 ];
 
 pub(crate) fn lower(
@@ -77,8 +76,8 @@ fn block_arguments(
     let function = lowering.function;
     let mut passed: Vec<BlockArg> = arguments
         .iter()
-        .filter_map(|identifier| lowering.values.get(identifier))
-        .map(|value| BlockArg::Value(*value))
+        .filter_map(|identifier| crate::lowering::value_of(lowering, *identifier))
+        .map(BlockArg::Value)
         .collect();
     let parameters = function
         .block(target)
@@ -122,6 +121,7 @@ fn lower_return(
     lowering: &mut Lowering<'_, '_>,
     instruction: &Instruction<'_>,
 ) -> Result<(), CodegenError> {
+    crate::task_unwinding::check_cleanup_return(lowering)?;
     crate::cell_frames::leave(lowering)?;
     let offset = lowering.environment.layout.frame_depth;
     let context = lowering.context;

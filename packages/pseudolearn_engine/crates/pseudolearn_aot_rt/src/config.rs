@@ -6,6 +6,8 @@ pub struct AotLimits {
     pub instruction_units: Option<u64>,
     pub cells: u64,
     pub root_capacity: u32,
+    pub tasks: u64,
+    pub channel_capacity: u64,
 }
 
 impl Default for AotLimits {
@@ -15,6 +17,8 @@ impl Default for AotLimits {
             instruction_units: None,
             cells: 1 << 22,
             root_capacity: 1 << 16,
+            tasks: pseudolearn_runtime::DEFAULT_TASK_LIMIT,
+            channel_capacity: 65_536,
         }
     }
 }

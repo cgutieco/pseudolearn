@@ -9,6 +9,8 @@ pub struct EffectChannel {
     pub(crate) provider: ExecutionHostProvider,
     pub(crate) cancel_on_effect: Option<u64>,
     pub(crate) cancelled: bool,
+    pub(crate) delivery_order: Vec<u64>,
+    pub(crate) pending_network: u64,
     failure: Option<ReplayError>,
 }
 
@@ -19,6 +21,8 @@ impl EffectChannel {
             provider,
             cancel_on_effect: None,
             cancelled: false,
+            delivery_order: Vec::new(),
+            pending_network: pseudolearn_runtime::NetworkLimits::default().pending,
             failure: None,
         }
     }

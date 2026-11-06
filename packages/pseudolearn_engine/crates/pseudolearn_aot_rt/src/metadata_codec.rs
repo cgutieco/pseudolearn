@@ -4,7 +4,7 @@ use crate::fault::{FaultSite, SourceRange};
 use crate::metadata::{ExecutableMetadata, ExecutableSettings};
 use pseudolearn_diagnostics::DiagnosticCode;
 
-const MAGIC: &[u8; 4] = b"PLM5";
+const MAGIC: &[u8; 4] = b"PLM6";
 
 #[derive(Default)]
 struct Writer {
@@ -59,6 +59,8 @@ fn write_settings(writer: &mut Writer, settings: &ExecutableSettings) {
     writer.unsigned32(u32::from(settings.limits.instruction_units.is_some()));
     writer.unsigned64(settings.limits.cells);
     writer.unsigned32(settings.limits.root_capacity);
+    writer.unsigned64(settings.limits.tasks);
+    writer.unsigned64(settings.limits.channel_capacity);
     writer.text(&settings.boolean_words.truth);
     writer.text(&settings.boolean_words.falsity);
     writer.count(settings.site_boolean_words.len());
@@ -159,6 +161,8 @@ fn read_settings(reader: &mut Reader<'_>) -> Option<ExecutableSettings> {
     let has_units = reader.unsigned32()? != 0;
     let cells = reader.unsigned64()?;
     let root_capacity = reader.unsigned32()?;
+    let tasks = reader.unsigned64()?;
+    let channel_capacity = reader.unsigned64()?;
     let boolean_words = read_words(reader)?;
     let mut site_boolean_words = Vec::new();
     for _ in 0..reader.count()? {
@@ -174,6 +178,8 @@ fn read_settings(reader: &mut Reader<'_>) -> Option<ExecutableSettings> {
             instruction_units: has_units.then_some(units),
             cells,
             root_capacity,
+            tasks,
+            channel_capacity,
         },
         boolean_words,
         site_boolean_words,

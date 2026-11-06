@@ -7,6 +7,7 @@ use pseudolearn_runtime::{ArithmeticError, MemoryError};
 pub(crate) struct Trap {
     pub(crate) code: Option<DiagnosticCode>,
     pub(crate) arguments: Vec<(String, String)>,
+    pub(crate) related: Vec<crate::fault::SourceRange>,
 }
 
 impl Trap {
@@ -18,6 +19,7 @@ impl Trap {
         Self {
             code: Some(code),
             arguments: Vec::new(),
+            related: Vec::new(),
         }
     }
 
@@ -30,6 +32,7 @@ impl Trap {
         Self {
             code: None,
             arguments: Vec::new(),
+            related: Vec::new(),
         }
     }
 }

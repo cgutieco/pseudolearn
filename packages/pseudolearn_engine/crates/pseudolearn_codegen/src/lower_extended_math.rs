@@ -113,7 +113,8 @@ fn lower_real_binary(
         .builder
         .ins()
         .iconst(types::I32, i64::from(selector));
-    let operands = [selector_value, left_bits, right_bits];
+    let buffer = crate::inline_memory::spill_words(lowering, &[left_bits, right_bits])?;
+    let operands = [selector_value, buffer];
     let bits = call_runtime(
         lowering,
         &RuntimeCall {

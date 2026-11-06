@@ -50,11 +50,6 @@ fn build(request: &NativeBuildRequest) -> Result<NativeObject, NativeBuildFailur
         request.source,
     )
     .map_err(NativeBuildFailure::Rejected)?;
-    if pseudolearn_codegen::module_uses_tasks(&module) {
-        return Err(NativeBuildFailure::Rejected(vec![
-            crate::native_tasks::unsupported(&request.locale, request.source),
-        ]));
-    }
     let compiled = compile_module_to_executable_object(
         &module,
         &TargetConfig::host(),
@@ -87,6 +82,11 @@ pub(crate) fn settings_of(
             instruction_units: request.limits.statements,
             cells: request.limits.cells.unwrap_or(defaults.cells),
             root_capacity: defaults.root_capacity,
+            tasks: request.limits.tasks.unwrap_or(defaults.tasks),
+            channel_capacity: request
+                .limits
+                .channel_capacity
+                .unwrap_or(defaults.channel_capacity),
         },
         boolean_words: BooleanWords {
             truth: truth.to_owned(),

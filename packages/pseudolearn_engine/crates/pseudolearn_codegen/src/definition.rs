@@ -11,7 +11,10 @@ pub(crate) enum Definition {
     Flag(Value),
 }
 
-pub(crate) fn definition_of(lowering: &Lowering<'_, '_>, value: ValueId) -> Definition {
+pub(crate) fn definition_of(lowering: &mut Lowering<'_, '_>, value: ValueId) -> Definition {
+    if let Some(variable) = lowering.flag_variables.get(&value).copied() {
+        return Definition::Flag(lowering.builder.use_var(variable));
+    }
     lowering
         .definitions
         .get(&value)

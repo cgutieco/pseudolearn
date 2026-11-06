@@ -1,6 +1,6 @@
 #![forbid(unsafe_code)]
 
-use pseudolearn_ir::{BlockId, Function, Operand};
+use pseudolearn_ir::{BlockId, Function, Operand, Operation};
 use std::collections::HashSet;
 
 pub(crate) fn reverse_postorder(function: &Function) -> Vec<BlockId> {
@@ -26,16 +26,21 @@ pub(crate) fn reverse_postorder(function: &Function) -> Vec<BlockId> {
 }
 
 pub(crate) fn successors(function: &Function, identifier: BlockId) -> Vec<BlockId> {
-    let Some(last) = function
-        .block(identifier)
-        .and_then(|block| block.instructions.last())
-    else {
+    let Some(block) = function.block(identifier) else {
         return Vec::new();
     };
-    let mut targets: Vec<BlockId> = function
-        .columns
-        .operands(*last)
-        .iter()
+    let Some(last) = block.instructions.last() else {
+        return Vec::new();
+    };
+    let landings = block.instructions.iter().filter(|instruction| {
+        matches!(
+            function.columns.operation(**instruction),
+            Some(Operation::TaskCancelPoint | Operation::TaskScopeBoundary)
+        )
+    });
+    let mut targets: Vec<BlockId> = std::iter::once(last)
+        .chain(landings)
+        .flat_map(|instruction| function.columns.operands(*instruction))
         .filter_map(|operand| match operand {
             Operand::BlockTarget { target_block, .. } => Some(*target_block),
             _ => None,

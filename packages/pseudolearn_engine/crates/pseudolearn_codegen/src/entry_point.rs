@@ -18,6 +18,7 @@ pub const METADATA_SYMBOL: &str = "__pl_metadata";
 pub(crate) struct EntryPoint<'program> {
     pub(crate) function: FuncId,
     pub(crate) metadata: &'program [u8],
+    pub(crate) dispatcher: Option<FuncId>,
 }
 
 pub(crate) fn define_entry_point(
@@ -39,6 +40,9 @@ pub(crate) fn define_entry_point(
         entry: object.declare_func_in_func(entry.function, &mut clif),
         runtime: object.declare_func_in_func(runtime_main, &mut clif),
         metadata: object.declare_data_in_func(metadata, &mut clif),
+        dispatcher: entry
+            .dispatcher
+            .map(|dispatcher| object.declare_func_in_func(dispatcher, &mut clif)),
         count: i64::try_from(entry.metadata.len())
             .map_err(|_| CodegenError::InvalidModule("metadata too large"))?,
     };
@@ -58,6 +62,7 @@ struct References {
     entry: FuncRef,
     runtime: FuncRef,
     metadata: GlobalValue,
+    dispatcher: Option<FuncRef>,
     count: i64,
 }
 
@@ -75,9 +80,13 @@ fn build_main(
     let entry_address = builder.ins().func_addr(pointer, references.entry);
     let metadata_address = builder.ins().symbol_value(pointer, references.metadata);
     let count = builder.ins().iconst(pointer, references.count);
+    let dispatcher = match references.dispatcher {
+        Some(dispatcher) => builder.ins().func_addr(pointer, dispatcher),
+        None => builder.ins().iconst(pointer, 0),
+    };
     let call = builder.ins().call(
         references.runtime,
-        &[entry_address, metadata_address, count],
+        &[entry_address, metadata_address, count, dispatcher],
     );
     let status = builder
         .inst_results(call)
@@ -92,7 +101,7 @@ fn build_main(
 
 fn declare_runtime_main(object: &mut ObjectModule, pointer: Type) -> Result<FuncId, CodegenError> {
     let mut signature = object.make_signature();
-    for _ in 0..3 {
+    for _ in 0..4 {
         signature.params.push(AbiParam::new(pointer));
     }
     signature.returns.push(AbiParam::new(types::I32));

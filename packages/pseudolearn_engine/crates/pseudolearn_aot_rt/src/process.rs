@@ -36,6 +36,15 @@ pub fn run_executable_with_effects(
     streams: ProcessStreams,
     effects: EffectChannel,
 ) -> (i32, EffectChannel) {
+    run_executable_with_tasks(metadata, (entry, None), streams, effects)
+}
+
+pub fn run_executable_with_tasks(
+    metadata: ExecutableMetadata,
+    (entry, dispatcher): (EntryFunction, Option<crate::task_state::TaskDispatcher>),
+    streams: ProcessStreams,
+    effects: EffectChannel,
+) -> (i32, EffectChannel) {
     let ExecutableMetadata {
         settings,
         sites,
@@ -44,10 +53,14 @@ pub fn run_executable_with_effects(
     let mut errors = streams.errors;
     let mut session = open_session(&settings, sites, (streams.input, streams.output));
     session.engine_mut().use_effects(effects);
+    if let Some(dispatcher) = dispatcher {
+        session.engine_mut().use_tasks(dispatcher, settings.limits);
+    }
     if !register_classes(&mut session, &classes) {
         return (EXIT_INTERNAL, take_effects(&mut session, false));
     }
     entry(session.context_pointer());
+    session.engine_mut().seal_abandoned_effects();
     if !crate::session::settle_session(&mut session) {
         return (EXIT_INTERNAL, take_effects(&mut session, false));
     }

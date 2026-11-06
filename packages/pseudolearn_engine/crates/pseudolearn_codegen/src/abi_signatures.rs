@@ -46,7 +46,21 @@ pub(crate) enum Entry {
     CellStore,
     Collection,
     EffectCall,
+    EffectAwait,
     SnapshotCopy,
+    TaskScopeOpen,
+    TaskSpawn,
+    TaskAwait,
+    TaskScopeJoin,
+    TaskYield,
+    TaskOutcome,
+    TaskScopeResult,
+    TaskValueLoad,
+    TaskCancelPoint,
+    TaskScopeBoundary,
+    TaskLand,
+    TaskReturn,
+    TaskChannel,
 }
 
 #[derive(Clone, Copy)]
@@ -75,7 +89,7 @@ const TABLE: &[(Entry, &str, &[Slot])] = &[
     (
         Entry::MathBinary,
         "rt_aot_math_binary",
-        &[Slot::Word32, Slot::Word64, Slot::Word64],
+        &[Slot::Word32, Slot::Address],
     ),
     (Entry::RealPower, REAL_POWER_SYMBOL, TWO_WORD64),
     (Entry::IntegerPower, INTEGER_POWER_SYMBOL, TWO_WORD64),
@@ -155,8 +169,62 @@ const TABLE: &[(Entry, &str, &[Slot])] = &[
         &[Slot::Word32, Slot::Address],
     ),
     (
+        Entry::EffectAwait,
+        "rt_aot_effect_await",
+        &[Slot::Word32, Slot::Address],
+    ),
+    (
         Entry::SnapshotCopy,
         "rt_aot_snapshot_copy",
+        &[Slot::Word32, Slot::Address],
+    ),
+    (Entry::TaskScopeOpen, "rt_aot_task_scope_open", NO_OPERANDS),
+    (
+        Entry::TaskSpawn,
+        "rt_aot_task_spawn",
+        &[Slot::Word64, Slot::Address],
+    ),
+    (
+        Entry::TaskAwait,
+        "rt_aot_task_await",
+        &[Slot::Word64, Slot::Word32],
+    ),
+    (
+        Entry::TaskScopeJoin,
+        "rt_aot_task_scope_join",
+        &[Slot::Word64],
+    ),
+    (Entry::TaskYield, "rt_aot_task_yield", NO_OPERANDS),
+    (
+        Entry::TaskOutcome,
+        "rt_aot_task_outcome",
+        &[Slot::Word32, Slot::Address],
+    ),
+    (
+        Entry::TaskScopeResult,
+        "rt_aot_task_scope_result",
+        &[Slot::Word64, Slot::Address],
+    ),
+    (
+        Entry::TaskValueLoad,
+        "rt_aot_task_value_load",
+        &[Slot::Word64],
+    ),
+    (
+        Entry::TaskCancelPoint,
+        "rt_aot_task_cancel_point",
+        ONE_WORD32,
+    ),
+    (
+        Entry::TaskScopeBoundary,
+        "rt_aot_task_scope_boundary",
+        &[Slot::Word64, Slot::Word32],
+    ),
+    (Entry::TaskLand, "rt_aot_task_land", NO_OPERANDS),
+    (Entry::TaskReturn, "rt_aot_task_return", ONE_WORD32),
+    (
+        Entry::TaskChannel,
+        "rt_aot_task_channel",
         &[Slot::Word32, Slot::Address],
     ),
 ];

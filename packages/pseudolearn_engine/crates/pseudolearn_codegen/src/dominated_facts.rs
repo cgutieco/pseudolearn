@@ -38,6 +38,14 @@ pub(crate) struct Scope {
 }
 
 impl Scope {
+    pub(crate) fn isolated() -> Self {
+        Self {
+            dominators: HashMap::new(),
+            facts: Facts::default(),
+            facts_at_end: HashMap::new(),
+        }
+    }
+
     pub(crate) fn for_function(function: &Function) -> Self {
         Self {
             dominators: crate::dominators::immediate_dominators(function),

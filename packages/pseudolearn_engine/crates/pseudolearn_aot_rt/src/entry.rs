@@ -3,8 +3,9 @@ use crate::effect_document::{EffectInput, EffectOutput};
 use crate::guard::borrow_slice;
 use crate::metadata_codec::decode_metadata;
 use crate::process::{
-    EXIT_INTERNAL, EXIT_REPLAY, EntryFunction, ProcessStreams, run_executable_with_effects,
+    EXIT_INTERNAL, EXIT_REPLAY, EntryFunction, ProcessStreams, run_executable_with_tasks,
 };
+use crate::task_state::TaskDispatcher;
 use std::io::{BufReader, BufWriter};
 
 const EFFECTS_IN_FLAG: &str = "--effects-in";
@@ -15,6 +16,7 @@ pub extern "C" fn pseudolearn_aot_main(
     entry: EntryFunction,
     metadata: *const u8,
     count: usize,
+    dispatcher: Option<TaskDispatcher>,
 ) -> i32 {
     let Some(bytes) = borrow_slice(metadata, count) else {
         return EXIT_INTERNAL;
@@ -30,9 +32,9 @@ pub extern "C" fn pseudolearn_aot_main(
             return EXIT_REPLAY;
         }
     };
-    let (code, channel) = run_executable_with_effects(
+    let (code, channel) = run_executable_with_tasks(
         decoded,
-        entry,
+        (entry, dispatcher),
         ProcessStreams {
             input: Box::new(BufReader::new(std::io::stdin())),
             output: Box::new(BufWriter::new(std::io::stdout())),

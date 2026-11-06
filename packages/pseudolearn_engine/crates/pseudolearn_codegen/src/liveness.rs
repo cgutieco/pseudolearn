@@ -27,6 +27,13 @@ pub(crate) const SAFE_POINTS: &[Operation] = &[
     Operation::InRead,
     Operation::ConstStr,
     Operation::EffectCall,
+    Operation::EffectAwait,
+    Operation::CallSuspendible,
+    Operation::TaskAwait,
+    Operation::TaskScopeJoin,
+    Operation::TaskYieldCheck,
+    Operation::TaskScopeResult,
+    Operation::TaskChannel,
 ];
 
 struct Analysis<'program> {

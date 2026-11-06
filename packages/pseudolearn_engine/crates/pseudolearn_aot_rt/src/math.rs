@@ -41,10 +41,13 @@ pub extern "C" fn rt_aot_math_binary(
     context: *mut AotRuntimeContext,
     site: u32,
     operation: u32,
-    left: u64,
-    right: u64,
+    operands: *const u64,
 ) -> u32 {
-    run_entry(context, site, |_| binary(operation, left, right))
+    let pair = crate::guard::borrow_slice(operands, 2).map(<[u64]>::to_vec);
+    run_entry(context, site, |_| match pair.as_deref() {
+        Some([left, right]) => binary(operation, *left, *right),
+        _ => Err(Trap::named("internalFault")),
+    })
 }
 
 #[unsafe(no_mangle)]

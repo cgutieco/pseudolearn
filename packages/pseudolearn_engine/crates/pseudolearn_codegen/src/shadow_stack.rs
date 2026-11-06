@@ -9,20 +9,27 @@ pub(crate) struct RootFrame {
     previous_top: Value,
 }
 
-fn live_handles(lowering: &Lowering<'_, '_>, instruction: &Instruction<'_>) -> Vec<Value> {
+fn live_handles(lowering: &mut Lowering<'_, '_>, instruction: &Instruction<'_>) -> Vec<Value> {
+    let live = lowering
+        .live_roots
+        .get(&instruction.identifier)
+        .cloned()
+        .unwrap_or_default();
+    live.into_iter()
+        .filter_map(|value| crate::lowering::value_of(lowering, value))
+        .collect()
+}
+
+pub(crate) fn live_count(lowering: &Lowering<'_, '_>, instruction: &Instruction<'_>) -> usize {
     lowering
         .live_roots
         .get(&instruction.identifier)
         .map(|live| {
             live.iter()
-                .filter_map(|value| lowering.values.get(value).copied())
-                .collect()
+                .filter(|value| lowering.values.contains_key(value))
+                .count()
         })
         .unwrap_or_default()
-}
-
-pub(crate) fn live_count(lowering: &Lowering<'_, '_>, instruction: &Instruction<'_>) -> usize {
-    live_handles(lowering, instruction).len()
 }
 
 pub(crate) fn push_roots(

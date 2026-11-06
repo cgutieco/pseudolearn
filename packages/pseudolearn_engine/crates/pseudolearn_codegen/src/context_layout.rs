@@ -7,8 +7,9 @@ use pseudolearn_aot_rt::{
     CONTEXT_HEAP_LIMIT_OFFSET, CONTEXT_HEAP_ORDINAL_OFFSET, CONTEXT_HEAP_USED_OFFSET,
     CONTEXT_HEAP_WORDS_OFFSET, CONTEXT_INSTRUCTION_REMAINING_OFFSET,
     CONTEXT_PENDING_CAPACITY_OFFSET, CONTEXT_PENDING_LENGTH_OFFSET, CONTEXT_PENDING_POINTER_OFFSET,
-    CONTEXT_RESULT_WORD_OFFSET, CONTEXT_ROOM_CELLS_OFFSET, CONTEXT_ROOM_THRESHOLD_OFFSET,
-    CONTEXT_ROOT_CAPACITY_OFFSET, CONTEXT_ROOT_TOP_OFFSET, CONTEXT_ROOTS_OFFSET,
+    CONTEXT_QUANTUM_MASS_OFFSET, CONTEXT_RESULT_WORD_OFFSET, CONTEXT_ROOM_CELLS_OFFSET,
+    CONTEXT_ROOM_THRESHOLD_OFFSET, CONTEXT_ROOT_CAPACITY_OFFSET, CONTEXT_ROOT_TOP_OFFSET,
+    CONTEXT_ROOTS_OFFSET, CONTEXT_UNWIND_DEPTH_OFFSET,
 };
 
 #[derive(Clone, Copy, Debug)]
@@ -38,6 +39,8 @@ pub(crate) struct ContextLayout {
     pub(crate) roots_pointer: i32,
     pub(crate) cells_pointer: i32,
     pub(crate) cells_length: i32,
+    pub(crate) quantum_mass: i32,
+    pub(crate) unwind_depth: i32,
 }
 
 impl ContextLayout {
@@ -65,6 +68,8 @@ impl ContextLayout {
             roots_pointer: offset(CONTEXT_ROOTS_OFFSET)?,
             cells_pointer: offset(CONTEXT_CELLS_POINTER_OFFSET)?,
             cells_length: offset(CONTEXT_CELLS_LENGTH_OFFSET)?,
+            quantum_mass: offset(CONTEXT_QUANTUM_MASS_OFFSET)?,
+            unwind_depth: offset(CONTEXT_UNWIND_DEPTH_OFFSET)?,
         })
     }
 }
