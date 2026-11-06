@@ -111,7 +111,7 @@ pub(crate) fn resolve_help_in_context(
     let slot = selection::selected_token(context, offset)?;
     let kind = context.tree.tokens.kind(slot)?;
     let span = context.tree.tokens.span(slot)?;
-    let target = token_target(context, slot, (kind, span))?;
+    let target = token_target(context, slot, kind, span)?;
     Some(HelpQueryOutcome {
         resolution: HelpResolution {
             identity: target.identity,
@@ -130,25 +130,25 @@ pub(crate) fn resolve_help_in_context(
 fn token_target(
     context: &QueryContext<'_>,
     slot: usize,
-    (kind, span): (TokenKind, Span),
+    kind: TokenKind,
+    span: Span,
 ) -> Option<ResolutionTarget> {
-    let target = match kind {
+    match kind {
         _ if let Some(role) = module_roles::type_import(context, slot) => {
-            role_target(context, role)
+            Some(role_target(context, role))
         }
-        TokenKind::Dot | TokenKind::LeftBracket | TokenKind::RightBracket => role_target(
+        TokenKind::Dot | TokenKind::LeftBracket | TokenKind::RightBracket => Some(role_target(
             context,
             record_access_roles::record_access(context, slot, kind)?,
-        ),
-        TokenKind::Identifier => identifier::target(context, slot, span)?,
-        TokenKind::Keyword(keyword) => keyword_target(context, slot, keyword),
+        )),
+        TokenKind::Identifier => identifier::target(context, slot, span),
+        TokenKind::Keyword(keyword) => Some(keyword_target(context, slot, keyword)),
         operator if let Some(id) = operator::operator_identity(operator) => {
-            operator_target(context, slot, id)
+            Some(operator_target(context, slot, id))
         }
-        TokenKind::BooleanLiteral(value) => boolean_target(context, value),
-        _ => return None,
-    };
-    Some(target)
+        TokenKind::BooleanLiteral(value) => Some(boolean_target(context, value)),
+        _ => None,
+    }
 }
 
 pub(crate) fn module_directive_context(

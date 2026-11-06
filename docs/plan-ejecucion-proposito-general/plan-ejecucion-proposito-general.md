@@ -991,7 +991,8 @@ Cierre común (definiciones en §4.0):
 |---|---|---|---|
 | PG-L.01–PG-L.07 | Cumplido | §11 del plan detallado; commits de `9acfbe96` a `fc75e14b` | DL-02 con arreglos paralelos por hoja (desviación aceptada) |
 | Bloque F | Cumplido con pendientes ajenos | `packages/pseudolearn_engine/results/pg-l-2026-11-05/logs/` (local, ignorado) | Fallos nativos de efectos, tareas y `tan` del sujeto aot: preexistentes en `d9d84bc7`, de PG-N |
-| Pendientes | Fuera de PG-L | | Paridad nativa de PG-L (PG-N.08), repetir PG-S.02.01, Windows sin verificar, cuatro fichas `pgl01`/`pgl02` sin selección por posición |
+| Pendientes resueltos tras PG-L | Cumplido | `packages/pseudolearn_engine/results/pg-l-pending-2026-11-05/logs/` (local, ignorado) | Anfitrión simulado del sujeto aot (feature `test-host` de la CLI), selección de propiedades nativas por vínculo y sujeto, vínculo de `LANG.TASK.SCOPE#R9` a `pendiente`, cuatro fichas `pgl01`/`pgl02` con selección por posición |
+| Pendientes | Fuera de PG-L | | Paridad nativa de PG-L (PG-N.08), anfitrión físico nativo (PG-N.07), repetir PG-S.02.01, Windows sin verificar |
 
 Revisión Git de cierre: · Verificadores ejecutados: · Pendientes justificados: · Decisiones de la persona:
 
