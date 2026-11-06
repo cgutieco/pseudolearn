@@ -944,6 +944,14 @@ La capa `host` comparte el anillo 2 con engine y data; solo importa model y port
     llamadas, salida y `Longitud`, `ConvertirATexto` y `Trunc`. No disponible: clases e instanciación (`self`
     inexistente en constructores), subprogramas con valor de retorno, valores reales, `/`, `^`, concatenación de
     textos, `Raiz`, arreglos, `Leer` y lo mismo que Python no admite.
+  - **Azar en Rust.** `Azar`, `Aleatorio` y `AzarReal` no son exportables a Rust: la biblioteca estándar de Rust no
+    trae generador y el código exportado no añade dependencias, así que no existe una traducción que reproduzca la
+    secuencia sembrada del motor. Como no están entre las incorporadas de `rustExportSupport`, `ExportCoverage` las
+    nombra como `builtin:random`, `builtin:randomBetween` y `builtin:randomUnit` con su nodo y rango, igual que una
+    capacidad. Se retiraron de `RustExpressionRules` las traducciones a valores fijos (`0`, el límite inferior y
+    `0.0`), que no eran equivalentes y solo habrían aparecido si alguien ampliaba la lista de incorporadas
+    (`rust_program_exporter_availability_test.dart`). Se descartó emitir una dependencia de azar en el código
+    exportado.
   - **Construcciones de PG-L.** Clases genéricas (`type_parameters`), variantes declaradas (`variant_unit`) y arreglos de registros (`record_unit` con `dimension_declaration`) no están en el subconjunto comprobado de ningún destino: la exportación devuelve `ExportUnavailable` y nombra la construcción, sin traducción parcial (`rust_program_exporter_availability_test.dart`).
   - **Arreglo conjunto de emisores.** La salida con varios argumentos añadía un espacio que el motor no escribe;
     Python emite `sep=""` y Rust une los marcadores sin separador.

@@ -51,6 +51,33 @@ void main() {
     }
   });
 
+  test('random builtins are not exportable to Rust', () {
+    const source =
+        'Proceso P\n  Escribir Azar(3);\n  Escribir Aleatorio(1, 2);\n'
+        '  Escribir AzarReal();\nFinProceso\n';
+    final blockers = _blockersOf(source, TargetLanguageId.rust);
+    expect(
+      blockers.map((blocker) => blocker.construct),
+      containsAll([
+        'builtin:random',
+        'builtin:randomBetween',
+        'builtin:randomUnit',
+      ]),
+    );
+    expect(_textOf(source, _blocker(blockers, 'builtin:random')), 'Azar(3)');
+    expect(_blocker(blockers, 'builtin:randomBetween').range.startLine, 3);
+    expect(_blocker(blockers, 'builtin:randomUnit').range.startLine, 4);
+  });
+
+  test('a program without random builtins is not blocked by them', () {
+    final result = nativeTestEngine.programExporter.export(
+      sourceCode: 'Proceso P\n  Escribir Longitud("ab");\nFinProceso\n',
+      targetLanguage: TargetLanguageId.rust,
+      profileId: SyntaxProfileId.classicSpanish,
+    );
+    expect(result, isA<ExportSuccess>());
+  });
+
   group('a program with a construct no emitter proves is withheld whole', () {
     test('a known valid unit does not rescue a mixed program', () {
       const source =
