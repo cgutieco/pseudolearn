@@ -39,6 +39,8 @@ mod lsp_transport_state;
 mod lsp_workspace_loader;
 mod messages;
 mod native_cache;
+mod native_link_stubs;
+mod native_link_targets;
 mod native_linker;
 mod native_run;
 mod native_run_command;

@@ -1056,6 +1056,7 @@ name = "pseudolearn_cli"
 version = "0.1.0"
 dependencies = [
  "cap-std",
+ "object",
  "pseudolearn_api",
  "pseudolearn_host",
  "serde",

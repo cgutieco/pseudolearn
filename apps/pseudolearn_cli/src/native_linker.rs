@@ -42,8 +42,48 @@ pub fn link_executable(object: &[u8], output: &Path) -> Result<()> {
     let linked_path = workspace.directory.join("program");
     std::fs::write(&object_path, object)?;
     std::fs::write(&archive_path, RUNTIME_ARCHIVE)?;
-    run_linker(&[&object_path, &archive_path], &linked_path)?;
+    match (bundled_linker(), crate::native_link_targets::host_target()) {
+        (Some(linker), Some(target)) => {
+            let stubs = crate::native_link_stubs::write_stubs(
+                (object, RUNTIME_ARCHIVE),
+                target.architecture,
+                &workspace.directory,
+            )?;
+            let mut inputs: Vec<&Path> = vec![&object_path, &archive_path];
+            inputs.extend(stubs.iter().map(PathBuf::as_path));
+            run_bundled(&linker, target, (&inputs, &linked_path))?;
+        }
+        _ => run_linker(&[&object_path, &archive_path], &linked_path)?,
+    }
     place_output(&linked_path, output)
+}
+
+fn bundled_linker() -> Option<PathBuf> {
+    let executable = std::env::current_exe().ok()?;
+    let linker = executable
+        .parent()?
+        .join(format!("rust-lld{}", std::env::consts::EXE_SUFFIX));
+    linker.is_file().then_some(linker)
+}
+
+fn run_bundled(
+    linker: &Path,
+    target: &crate::native_link_targets::LinkTarget,
+    (inputs, output): (&[&Path], &Path),
+) -> Result<()> {
+    let status = Command::new(linker)
+        .args(crate::native_link_targets::lld_arguments(
+            target, inputs, output,
+        ))
+        .stdin(Stdio::null())
+        .stdout(Stdio::null())
+        .stderr(Stdio::null())
+        .status()?;
+    if status.success() {
+        Ok(())
+    } else {
+        Err(Error::other("linker failed"))
+    }
 }
 
 fn run_linker(inputs: &[&Path], output: &Path) -> Result<()> {
