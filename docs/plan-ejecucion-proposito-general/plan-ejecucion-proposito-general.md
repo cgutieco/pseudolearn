@@ -1044,34 +1044,34 @@ Revisión Git de cierre: aún sin commit de cierre ni push comprobado · Verific
 Objetivo: que `pseudo build` y `pseudo run --nativo` ejecuten todo programa válido con la misma salida, efectos y cinta
 que la VM en macOS, Linux y Windows, sin exigir herramientas al usuario. Origen: [análisis del 2026-11-02](analisis-lenguaje-completo-sin-simulacion.md), §B.3c.
 
-- [ ] `PG-N.01` `RT.PROCESS` y `RT.ABI` reescritas para autoridad plena, semilla de entropía, código de salida y salida de error.
-- [ ] `PG-N.02` Contrato de continuación nativa y raíces de recolección.
-- [ ] `PG-N.03` Funciones suspendibles, ámbitos de tareas, unión, cancelación y limpieza en código nativo.
-- [ ] `PG-N.04` Agenda nativa y canales con la misma semántica que la VM.
-- [ ] `PG-N.05` Recolector sobre marcos suspendidos, continuaciones, mensajes y canales.
-- [ ] `PG-N.06` Efectos concurrentes y cinta con el mismo orden de entrega que la VM.
-- [ ] `PG-N.07` Runtime nativo enlazado con `pseudolearn_host`: archivos, red, reloj, temporizador, argumentos y entorno reales.
-- [ ] `PG-N.08` Biblioteca de PG-S y construcciones de PG-L en código nativo; vínculos de módulos, perfil y JSON acreditados.
+- [x] `PG-N.01` `RT.PROCESS` y `RT.ABI` reescritas para autoridad plena, semilla de entropía, código de salida y salida de error.
+- [x] `PG-N.02` Contrato de continuación nativa y raíces de recolección.
+- [x] `PG-N.03` Funciones suspendibles, ámbitos de tareas, unión, cancelación y limpieza en código nativo.
+- [x] `PG-N.04` Agenda nativa y canales con la misma semántica que la VM.
+- [x] `PG-N.05` Recolector sobre marcos suspendidos, continuaciones, mensajes y canales.
+- [x] `PG-N.06` Efectos concurrentes y cinta con el mismo orden de entrega que la VM.
+- [x] `PG-N.07` Runtime nativo enlazado con `pseudolearn_host`: archivos, red, reloj, temporizador, argumentos y entorno reales.
+- [x] `PG-N.08` Biblioteca de PG-S y construcciones de PG-L en código nativo; vínculos de módulos, perfil y JSON acreditados.
 - [ ] `PG-N.09` Enlazador incluido: `pseudo build` sin compilador de C instalado; `.exe` en Windows.
 - [ ] `PG-N.10` Destinos macOS arm64/x86_64, Linux x64 y Windows x64; Windows «no verificado» sin ejecución real.
 - [ ] `PG-N.11` Diferencial VM/AOT con cero diferencias, incluidas las 10 000 agendas de E-PG-06.
 - [ ] `PG-N.12` `PERF.AOT.LEVEL` mantenido con tareas presentes.
-- [ ] `PG-N.13` Eliminación de `nativeTasksUnsupported` y de todo pendiente declarado de tareas nativas.
+- [x] `PG-N.13` Eliminación de `nativeTasksUnsupported` y de todo pendiente declarado de tareas nativas.
 
-Plan detallado: [fase-pg-n-plan-ejecucion.md](fase-pg-n-plan-ejecucion.md), redactado el 2026-11-06 a petición de la persona, con bloques rápidos de implementación y un único bloque final de pruebas pesadas; pendiente de revisión (`C02`) y autorización (`C01`).
+Plan detallado: [fase-pg-n-plan-ejecucion.md](fase-pg-n-plan-ejecucion.md), redactado y ejecutado el 2026-11-06 por instrucción directa de la persona. Resultado en su §11: tareas, canales, esperas de efecto, anfitrión físico, biblioteca y proyectos en código nativo con la conformidad `aot` sin `incumple` ni `pendiente`; enlazador incluido solo en macOS y sin empaquetar (`PG-N.09`), destinos sin verificar fuera de macOS arm64 (`PG-N.10`), E-PG-06 nativo (`PG-N.11`) y rendimiento (`PG-N.12`) pendientes.
 
 Cierre común (definiciones en §4.0):
 
-- [ ] `PG-N.C01` Autorización de la persona para iniciar la fase, en mensaje nuevo.
+- [x] `PG-N.C01` Autorización de la persona para iniciar la fase, en mensaje nuevo.
 - [ ] `PG-N.C02` Plan detallado creado según §5 y revisado por la persona.
-- [ ] `PG-N.C03` SPEC-FIRST y congelamiento respetados.
-- [ ] `PG-N.C04` Reglas nuevas con casos o propiedades y vínculos como datos.
+- [x] `PG-N.C03` SPEC-FIRST y congelamiento respetados.
+- [x] `PG-N.C04` Reglas nuevas con casos o propiedades y vínculos como datos.
 - [ ] `PG-N.C05` Tests feliz, infeliz y límite en carpetas espejo.
-- [ ] `PG-N.C06` Capas declaradas, imports permitidos y límites de tamaño.
-- [ ] `PG-N.C07` Sin comentarios ni TODO; código en inglés; Rust sin pánicos ni `unsafe` no declarado.
-- [ ] `PG-N.C08` README y reglas de los miembros afectados actualizados, sin citar `docs/`.
-- [ ] `PG-N.C09` Fichas de ayuda y datos de proyección de la sintaxis nueva, o justificación.
-- [ ] `PG-N.C10` Riesgos revisados y experimentos con procedencia o diferidos por la persona.
+- [x] `PG-N.C06` Capas declaradas, imports permitidos y límites de tamaño.
+- [x] `PG-N.C07` Sin comentarios ni TODO; código en inglés; Rust sin pánicos ni `unsafe` no declarado.
+- [x] `PG-N.C08` README y reglas de los miembros afectados actualizados, sin citar `docs/`.
+- [x] `PG-N.C09` Fichas de ayuda y datos de proyección de la sintaxis nueva, o justificación.
+- [x] `PG-N.C10` Riesgos revisados y experimentos con procedencia o diferidos por la persona.
 - [ ] `PG-N.C11` Tests y verificadores de los miembros afectados en verde.
 - [ ] `PG-N.C12` Commit sin atribución de IA y push ordinario comprobado a la rama única.
 - [ ] `PG-N.C13` Resumen completo, informe a la persona y parada.
@@ -1291,5 +1291,5 @@ La IA a cargo actualiza esta tabla al cerrar cada fase.
 | PG-L | Implementada, pendiente de push y cierre | Sí | | PG-L.01–PG-L.07 y bloque F cumplidos (`cargo xtask verify`, conformidad engine/service/CLI/app sin divergencias, `flutter test`, extensión de escritorio y web, aceptación en CLI, VS Code, Chromium, WebKit, macOS e iOS simulador). Pendientes ajenos: fallos nativos preexistentes (PG-N), PG-S.02.01. Detalle en §11 de `fase-pg-l-plan-ejecucion.md` |
 | PG-S | Implementada, sin cierre formal · PG-S.01–.09 y C01–C09 | Sí | | C10–C13 pendientes: PS-E04, suite completa, commit/push de cierre, parada; se ejecutó antes de cerrar PG-L por decisión expresa de la persona |
 | PG-C | Cerrada · PG-C.01–.12 y C01–C13 | Sí, autorizado el 2026-11-05 | 2026-11-06 · push ordinario a la rama única | Pendientes heredados: `aot` sin azar entero ni argumentos de fallos nativos (PG-N.08); Firefox, Windows y VS Code de escritorio con interfaz no verificados; hallazgos en §11.4 del plan detallado |
-| PG-N | Sin iniciar · plan redactado | Sí, C02 pendiente | | C01/C02; decisiones P-01–P-03 del plan detallado (inicio sin cierre formal de PG-L/PG-S, distribución de `rust-lld`, medio para Linux) |
+| PG-N | En curso · ejecutada en una iteración con pendientes | Sí, C02 pendiente | `fase-pg-n-plan-ejecucion.md` §11 | P-02 (distribución de `rust-lld` con `libLLVM`), P-03 (medio Linux); PG-N.09–.12 parciales |
 | PG-7 | Sin iniciar · reformulada el 2026-11-02 | No | | |
