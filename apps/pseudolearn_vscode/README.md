@@ -134,6 +134,13 @@ de la que se dispone para ensayo real; ninguna otra tiene soporte declarado.
 - **Salida.** `.artifacts/pseudolearn-0.1.0-darwin-arm64.vsix`, más `<nombre>.vsix.json` (ruta, bytes, SHA-256 del VSIX, del
   binario, de la gramática y del bundle, revisión, versiones de `rustc`, `cargo` y `node`) y `<nombre>.vsix.sha256`. Esos archivos
   no se versionan. Un hash detecta una diferencia respecto del registro local; no es una firma ni prueba la autenticidad.
+- **Enlazador de `compilar`.** El VSIX no contiene ningún enlazador: el `pseudo` empaquetado descarga LLD la primera vez que
+  compila a nativo, lo verifica con la suma SHA-256 que trae fijada y lo guarda en la caché del usuario
+  (`~/Library/Caches/pseudolearn/linker/` en macOS), igual que la CLI instalada aparte (README de `apps/pseudolearn_cli`).
+  Por eso el contrato no declara archivos nuevos y `bin/darwin-arm64/` sigue conteniendo solo `pseudo`; distribuir LLD
+  dentro del VSIX añadiría 146 MB a cada instalación aunque nunca se compile a nativo. La extensión ejecuta programas con
+  `pseudo run --editor` (VM); no tiene una orden de ejecución nativa, y `run --nativo` y `compilar` se verifican con el
+  binario empaquetado.
 - **Ejemplos mínimos reproducibles**, fuera del VSIX, en `examples/`: `file/saludo.pseudo` (entrada y salida),
   `file/con-error.pseudo`, `project/` (paquetes `app` y `geo`, importado, `Leer` y `Escribir`) y `project-con-error/` (error en el
   módulo importado).
