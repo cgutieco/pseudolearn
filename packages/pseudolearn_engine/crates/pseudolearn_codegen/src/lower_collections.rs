@@ -22,6 +22,10 @@ pub(crate) const OPERATIONS: &[Operation] = &[
     Operation::CollectionNext,
     Operation::CollectionKey,
     Operation::ArrayLength,
+    Operation::CollectionBeginSort,
+    Operation::CollectionClone,
+    Operation::CollectionCommit,
+    Operation::CollectionReverse,
 ];
 
 pub(crate) fn lower(

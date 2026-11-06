@@ -9,6 +9,7 @@ mod control_tests;
 mod definition_tests;
 mod dominated_facts_tests;
 mod executable_tests;
+mod extended_math_tests;
 mod integer_tests;
 mod io_tests;
 mod math_tests;

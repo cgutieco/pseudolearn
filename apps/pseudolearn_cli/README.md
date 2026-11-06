@@ -16,7 +16,7 @@ Comandos de compilación y verificación:
 - Compilación de producción: `cargo build --release` (salida en `target/release/pseudo`).
 - Pruebas unitarias y funcionales: `cargo test`.
 - Conformidad desde `packages/pseudolearn_spec`: `cargo run -p see_cli --bin see -- conform --subject cli --operation cli`.
-- Adaptador del protocolo SEE para pruebas automatizadas: `pseudo --see-adapter`; con `pseudo --see-adapter aot` el mismo binario responde como el sujeto `aot` (conformidad: `see conform --subject aot` desde `packages/pseudolearn_spec`).
+- Adaptador del protocolo SEE para pruebas automatizadas: `pseudo --see-adapter`; con `pseudo --see-adapter aot` el mismo binario responde como el sujeto `aot` (conformidad: `see conform --subject aot` desde `packages/pseudolearn_spec`). El sujeto `aot` anuncia `execute`, `gc_stress` y `api`: en `api`, `execute_project` compila el proyecto completo a un ejecutable real (`prepare_native_project`) y lo ejecuta; `analyze_project` usa el mismo analizador de proyectos que alimenta a `pseudo build`; cualquier otra operación de sesión (las de ejecución observable paso a paso) responde un fallo de uso, porque el sujeto nativo no ofrece observación.
 Distribución nativa en macOS, Linux y Windows. Sin secretos.
 
 `comprobar/check` abre cada raíz solicitada con una capacidad de directorio de `cap-std` y lee sus

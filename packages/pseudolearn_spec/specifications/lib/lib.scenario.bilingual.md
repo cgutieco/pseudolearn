@@ -7,7 +7,7 @@
   "estado": "estable",
   "version": "1.0.0",
   "duenos": ["responsable-lenguaje"],
-  "sujetos": ["engine"],
+  "sujetos": ["engine", "aot"],
   "resumen": "Consumo desde español e inglés de una biblioteca inglesa con JSON y texto.",
   "titulo_en": "Bilingual cross-module scenario",
   "depende_de": [
@@ -208,6 +208,9 @@
   "origen": "derivado",
   "operacion": "execute",
   "espera": {"salida": "", "terminacion": "cancelled"},
-  "cancelacion": 1
+  "cancelacion": 1,
+  "sujetos": [
+    "engine"
+  ]
 }
 ```

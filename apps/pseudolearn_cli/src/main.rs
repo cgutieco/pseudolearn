@@ -3,6 +3,7 @@
 mod adapter;
 mod adapter_ir;
 mod aot_adapter;
+mod aot_project_adapter;
 mod build_command;
 mod check_command;
 mod confined_sources;

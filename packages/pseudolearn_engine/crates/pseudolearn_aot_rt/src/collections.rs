@@ -49,7 +49,9 @@ fn execute(
             | CollectionCommand::Insert
             | CollectionCommand::Remove
     );
-    let roots = if allocating {
+    let roots = if request.command == CollectionCommand::Clone {
+        entry.roots()?
+    } else if allocating {
         entry.allocation_roots(cells)?
     } else {
         Vec::new()

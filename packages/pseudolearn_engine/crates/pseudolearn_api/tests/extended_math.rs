@@ -2,20 +2,20 @@ use pseudolearn_api::{ExecuteRequest, execute_program};
 
 #[cfg(feature = "native")]
 #[test]
-fn native_build_rejects_each_new_numeric_operation_explicitly() {
-    for (expression, operation) in [
-        ("tan(1.0)", "math.tan"),
-        ("asin(0.5)", "math.asin"),
-        ("acos(0.5)", "math.acos"),
-        ("atan2(1.0,2.0)", "math.atan2"),
-        ("log2(3.0)", "math.log2"),
-        ("log10(3.0)", "math.log10"),
-        ("floor(1.5)", "real.floor"),
-        ("ceil(1.5)", "real.ceil"),
-        ("min(1.0,2.0)", "real.min"),
-        ("max(1.0,2.0)", "real.max"),
-        ("min(1,2)", "int.min"),
-        ("max(1,2)", "int.max"),
+fn native_build_compiles_each_new_numeric_operation() {
+    for expression in [
+        "tan(1.0)",
+        "asin(0.5)",
+        "acos(0.5)",
+        "atan2(1.0,2.0)",
+        "log2(3.0)",
+        "log10(3.0)",
+        "floor(1.5)",
+        "ceil(1.5)",
+        "min(1.0,2.0)",
+        "max(1.0,2.0)",
+        "min(1,2)",
+        "max(1,2)",
     ] {
         let request = pseudolearn_api::conformance_build_request(&ExecuteRequest {
             program: format!("algorithm P\nwrite {expression};\nendAlgorithm\n"),
@@ -23,10 +23,7 @@ fn native_build_rejects_each_new_numeric_operation_explicitly() {
             ..Default::default()
         });
         let result = pseudolearn_api::build_native_object(&request);
-        assert!(
-            matches!(&result, Err(pseudolearn_api::NativeBuildFailure::Backend(message)) if message.contains(operation)),
-            "{expression}: {result:?}"
-        );
+        assert!(result.is_ok(), "{expression}: {result:?}");
     }
 }
 

@@ -162,6 +162,11 @@ textos. `project_compile` es el paso común de análisis, enlace y bajada a un R
 (VM) y `build_native_project_object` (feature `native`), de modo que ambos ejecutan el mismo módulo. Un rechazo del
 proyecto (errores de proyecto, de manifiesto o diagnósticos) se devuelve como `NativeBuildFailure::ProjectRejected` con el
 mismo JSON que `execute_project`, sin objeto. Los límites del manifiesto se aplican salvo que la petición nativa los fije.
+`prepare_native_project` (feature `native`) prepara la ejecución nativa de `execute_project` para el sujeto `aot`: compila el
+objeto con la tabla de nombres de los archivos del proyecto y devuelve la petición de ejecución equivalente; un rechazo del
+proyecto vuelve como el mismo valor que `execute_project`. `NativeProjectRun::complete` añade `project_errors` y, si hubo
+manifiestos, `manifest_errors`, de modo que la respuesta nativa tiene la forma de la del motor. Se descartó reconstruir esa
+forma en la CLI, porque duplicaría el contrato del recurso de proyecto.
 `start_project` recibe los mismos argumentos que `execute_project` y, si el proyecto compila sin errores, devuelve un
 recurso de ejecución con el contrato de `start` de archivo suelto: `advance`, `input`, `cancel` y `release` conservan un único
 dueño. Comparte con `execute_project` el paso `project_compile` y la carga a la VM (`execution_request` y `load_compiled` en

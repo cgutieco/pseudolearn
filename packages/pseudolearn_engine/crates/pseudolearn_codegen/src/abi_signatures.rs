@@ -15,6 +15,7 @@ pub const INTEGER_POWER_SYMBOL: &str = "rt_aot_integer_power";
 pub(crate) enum Entry {
     Fault,
     MathUnary,
+    MathBinary,
     RealPower,
     IntegerPower,
     TextLiteral,
@@ -70,6 +71,11 @@ const TABLE: &[(Entry, &str, &[Slot])] = &[
         Entry::MathUnary,
         MATH_UNARY_SYMBOL,
         &[Slot::Word32, Slot::Word64],
+    ),
+    (
+        Entry::MathBinary,
+        "rt_aot_math_binary",
+        &[Slot::Word32, Slot::Word64, Slot::Word64],
     ),
     (Entry::RealPower, REAL_POWER_SYMBOL, TWO_WORD64),
     (Entry::IntegerPower, INTEGER_POWER_SYMBOL, TWO_WORD64),

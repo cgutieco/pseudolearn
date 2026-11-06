@@ -70,8 +70,10 @@ pub use kinds::{
     NEWLINE_FLAG, PROFILE_SHIFT, RANK_SHIFT,
 };
 pub use math::{
-    MATH_ARCTANGENT, MATH_COSINE, MATH_EXPONENTIAL, MATH_LOGARITHM, MATH_ROUND, MATH_SINE,
-    MATH_TRUNCATE, rt_aot_integer_power, rt_aot_math_unary, rt_aot_real_power,
+    MATH_ARC_COSINE, MATH_ARC_SINE, MATH_ARC_TANGENT2, MATH_ARCTANGENT, MATH_CEILING, MATH_COSINE,
+    MATH_EXPONENTIAL, MATH_FLOOR, MATH_LOGARITHM, MATH_LOGARITHM2, MATH_LOGARITHM10,
+    MATH_REAL_MAXIMUM, MATH_REAL_MINIMUM, MATH_ROUND, MATH_SINE, MATH_TANGENT, MATH_TRUNCATE,
+    rt_aot_integer_power, rt_aot_math_binary, rt_aot_math_unary, rt_aot_real_power,
 };
 pub use memory::{rt_aot_array_new, rt_aot_object_copy, rt_aot_object_new};
 pub use metadata::{ExecutableMetadata, ExecutableSettings};

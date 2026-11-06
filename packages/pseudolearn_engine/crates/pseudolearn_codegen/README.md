@@ -67,7 +67,7 @@ campos heredados primero; el índice de la clase es el que `rt_aot_object_new` r
 | `block_accounting` | Descuenta unidades de `instruction_remaining`: la masa del bloque en su cabecera o una unidad en cada `stmt.enter` |
 | `lowering` | Estado de una función, sitios de trampa fríos, propagación de fallo y retorno de cero |
 | `instruction_dispatch` | Tabla de familias: asigna cada `Operation` a su bajada; un test exige cobertura de las 74 y que ninguna tenga dos dueños |
-| `lower_scalars`, `lower_arithmetic`, `lower_real`, `lower_math`, `lower_control` | Bajada de escalares, aritmética, matemática y control |
+| `lower_scalars`, `lower_arithmetic`, `lower_real`, `lower_math`, `lower_extended_math`, `lower_control` | Bajada de escalares, aritmética, matemática y control |
 | `lower_text`, `lower_io`, `lower_effects` | Literales, texto, entrada, salida, azar y efectos por las entradas del runtime; `lower_effects` entrega al runtime la operación por índice, el nodo fuente, la clase de resultado, los argumentos y las celdas de resultado en un único búfer |
 | `dominators`, `dominated_facts` | Árbol de dominadores de la RI y hechos heredados por dominancia: resultados de aritmética comprobada y posiciones de arreglo de rango uno ya verificadas |
 | `lower_arrays`, `lower_objects`, `lower_cells` | Memoria: arreglos y objetos con camino rápido en línea y camino lento por el runtime; lectura de celdas locales en línea con camino lento por el runtime |
@@ -301,12 +301,17 @@ El soporte nativo de tareas es un pendiente declarado.
 
 ## Ampliación numérica y de colecciones
 
-Las operaciones numéricas y de reordenamiento nuevas quedan en UNSUPPORTED_OPERATIONS hasta la paridad nativa de biblioteca. El compilador informa Unsupported en lugar de producir una aproximación.
+`lower_extended_math` baja `math.tan`, `math.asin`, `math.acos`, `math.log2`, `math.log10`, `real.floor` y `real.ceil` a
+`rt_aot_math_unary` con selectores nuevos, y `math.atan2`, `real.min` y `real.max` a `rt_aot_math_binary`. El runtime usa
+las mismas funciones de `pseudolearn_library` que la VM, de modo que la precisión, el cero con signo y los fallos
+(`nonFiniteRealResult`, `integerOverflow`) coinciden por construcción; `real.min` y `real.max` reproducen el orden de los
+ceros con signo de la VM. `int.min` e `int.max` se bajan en línea con `smin` y `smax`, que no pueden fallar. Se descartó
+emitir en línea las funciones reales con instrucciones de Cranelift, porque `fmin`/`fmax` propagan NaN y la VM no.
 
-La detección de tareas examina exclusivamente operaciones no soportadas task.*, call.suspendible y effect.await. task.yield_check, que el sujeto nativo ya baja como sondeo, no activa ese rechazo.
-El inventario de operaciones no soportadas también contiene biblioteca nueva: usar ese inventario
-como detector de tareas produciría un diagnóstico de tareas para una función numérica o de colección.
+`collection.begin_sort`, `collection.clone`, `collection.commit` y `collection.reverse` usan el mismo paquete de
+`rt_aot_collection` que el resto de la familia; el runtime delega en `collection_operation` de la biblioteca, igual que
+la VM. `collection.clone` es punto seguro de raíces y su entrada recolecta con todas las raíces, como la VM.
 
-## Azar entero pendiente en código nativo
+## Azar entero en código nativo
 
 `host.random_below` y `host.random_between` se bajan en `lower_io` a llamadas a `rt_aot_random_below` y `rt_aot_random_between` con sus operandos `i64`; el sitio de fallo se registra con `invalidRandomBound` o `invalidRandomRange`. El runtime nativo usa el mismo `RandomState` sembrado que la VM, con el mismo rechazo sin sesgo de `next_below` y `next_between`, así que `Azar(n)` y `Aleatorio(a, b)` producen la misma secuencia y las mismas trampas en ambos sujetos. Se descartó componerlos con `host.random` y aritmética real, que no es uniforme ni coincide con la VM.

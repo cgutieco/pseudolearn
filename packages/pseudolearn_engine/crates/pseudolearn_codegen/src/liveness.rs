@@ -23,6 +23,7 @@ pub(crate) const SAFE_POINTS: &[Operation] = &[
     Operation::CollectionStore,
     Operation::CollectionInsert,
     Operation::CollectionRemove,
+    Operation::CollectionClone,
     Operation::InRead,
     Operation::ConstStr,
     Operation::EffectCall,

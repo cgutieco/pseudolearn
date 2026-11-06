@@ -25,6 +25,10 @@ const FAMILIES: &[(&[Operation], Lower)] = &[
     (lower_real::OPERATIONS, lower_real::lower),
     (lower_control::OPERATIONS, lower_control::lower),
     (lower_math::OPERATIONS, lower_math::lower),
+    (
+        crate::lower_extended_math::OPERATIONS,
+        crate::lower_extended_math::lower,
+    ),
     (lower_text::OPERATIONS, lower_text::lower),
     (lower_arrays::OPERATIONS, lower_arrays::lower),
     (lower_objects::OPERATIONS, lower_objects::lower),
@@ -41,22 +45,6 @@ const FAMILIES: &[(&[Operation], Lower)] = &[
 ];
 
 pub(crate) const UNSUPPORTED_OPERATIONS: &[Operation] = &[
-    Operation::CollectionBeginSort,
-    Operation::CollectionClone,
-    Operation::CollectionCommit,
-    Operation::CollectionReverse,
-    Operation::MathTan,
-    Operation::MathAsin,
-    Operation::MathAcos,
-    Operation::MathAtan2,
-    Operation::MathLog10,
-    Operation::MathLog2,
-    Operation::RealFloor,
-    Operation::RealCeil,
-    Operation::RealMin,
-    Operation::RealMax,
-    Operation::IntMin,
-    Operation::IntMax,
     Operation::TaskScopeOpen,
     Operation::TaskSpawn,
     Operation::TaskAwait,

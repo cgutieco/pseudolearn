@@ -30,3 +30,33 @@ fn no_operation_is_claimed_by_two_families() {
         );
     }
 }
+
+#[test]
+fn library_operations_are_lowered_and_only_task_operations_remain_unsupported() {
+    for operation in super::UNSUPPORTED_OPERATIONS {
+        let name = operation.as_str();
+        assert!(
+            name.starts_with("task.")
+                || matches!(
+                    operation,
+                    Operation::CallSuspendible | Operation::EffectAwait
+                ),
+            "{name} is not a task operation"
+        );
+    }
+    for operation in [
+        Operation::MathTan,
+        Operation::RealFloor,
+        Operation::IntMax,
+        Operation::CollectionBeginSort,
+        Operation::CollectionReverse,
+    ] {
+        assert!(
+            super::FAMILIES
+                .iter()
+                .any(|(operations, _)| operations.contains(&operation)),
+            "{} is not lowered",
+            operation.as_str()
+        );
+    }
+}

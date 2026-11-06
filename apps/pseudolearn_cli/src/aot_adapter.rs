@@ -28,6 +28,7 @@ pub fn run_aot_adapter() -> ExitCode {
                 break;
             }
             "execute" => send_response(&execute(&parsed, &mut cache)),
+            "api" => send_response(&crate::aot_project_adapter::respond(&parsed, &mut cache)),
             _ => send_response(&json!({"kind":"error","message":"Unsupported operation"})),
         }
     }
@@ -40,7 +41,7 @@ fn hello() -> Value {
         "protocol": "see-protocol/1",
         "subject": "aot",
         "subject_version": ENGINE_VERSION,
-        "capabilities": ["execute", "gc_stress"],
+        "capabilities": ["execute", "gc_stress", "api"],
         "profiles": supported_profiles()
     })
 }

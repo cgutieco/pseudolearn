@@ -75,7 +75,7 @@ fn the_adapter_announces_the_aot_subject_and_only_the_capabilities_it_implements
     let replies = converse(&temporary, &[json!({"kind":"hello"})], true)?;
     let hello = replies.first().cloned().unwrap_or(Value::Null);
     assert_eq!(hello["subject"], json!("aot"));
-    assert_eq!(hello["capabilities"], json!(["execute", "gc_stress"]));
+    assert_eq!(hello["capabilities"], json!(["execute", "gc_stress", "api"]));
     assert_eq!(replies.get(1), Some(&json!({"kind":"shutdown"})));
     Ok(())
 }

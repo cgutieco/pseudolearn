@@ -88,15 +88,12 @@ fn sorting_is_one_visible_statement_and_keeps_the_caller_span() {
 
 #[cfg(feature = "native")]
 #[test]
-fn native_build_rejects_the_new_collection_instruction() {
+fn native_build_compiles_the_sort_instructions() {
     let request = pseudolearn_api::conformance_build_request(&ExecuteRequest {
         program: "algorithm P\ndefine values as vector<integer> <- vector();\nvalues.sort();\nendAlgorithm\n".to_owned(), profile: "en".to_owned(), ..Default::default()
     });
     let result = pseudolearn_api::build_native_object(&request);
-    assert!(
-        matches!(&result, Err(pseudolearn_api::NativeBuildFailure::Backend(message)) if message.contains("collection.begin_sort")),
-        "{result:?}"
-    );
+    assert!(result.is_ok(), "{result:?}");
 }
 
 #[test]

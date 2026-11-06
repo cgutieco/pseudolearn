@@ -118,6 +118,10 @@ pub use native_build::{NativeBuildFailure, NativeBuildRequest, NativeObject, bui
 mod native_project_build;
 #[cfg(feature = "native")]
 pub use native_project_build::build_native_project_object;
+#[cfg(feature = "native")]
+mod native_project_execution;
+#[cfg(feature = "native")]
+pub use native_project_execution::{NativeProjectPlan, NativeProjectRun, prepare_native_project};
 
 #[cfg(feature = "native")]
 mod native_benchmark;

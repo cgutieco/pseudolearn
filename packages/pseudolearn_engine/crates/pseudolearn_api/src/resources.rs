@@ -276,7 +276,7 @@ fn serialization(error: serde_json::Error) -> ApiError {
     ApiError::InvalidProtocol(error.to_string())
 }
 
-fn failure(error: &ApiError) -> Value {
+pub(crate) fn failure(error: &ApiError) -> Value {
     let family = match error {
         ApiError::InternalFault(_) => "internal",
         ApiError::UnsupportedVersion(_) => "version",
