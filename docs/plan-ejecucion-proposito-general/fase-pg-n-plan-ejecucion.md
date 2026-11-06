@@ -414,9 +414,9 @@ segundo plano con la salida en `packages/pseudolearn_engine/results/pg-n-<fecha>
 orden, código de salida y conteos.
 
 - [x] `BF.01` Corpus: `see validate`, `see lock --check`, `see export --check`.
-- [ ] `BF.02` Estática: `cargo xtask verify` del motor (Clippy `-D warnings`, capas, límites, `rust-checks all`, incluido
+- [x] `BF.02` Estática: `cargo xtask verify` del motor (Clippy `-D warnings`, capas, límites, `rust-checks all`, incluido
   `unsafe` con su tabla), `cargo deny`; lo mismo en `packages/pseudolearn_spec` y `apps/pseudolearn_cli`.
-- [ ] `BF.03` Pruebas: `cargo test --workspace` del motor, de SEE y de la CLI (con y sin `test-host`).
+- [x] `BF.03` Pruebas: `cargo test --workspace` del motor, de SEE y de la CLI (con y sin `test-host`).
 - [x] `BF.04` Conformidad completa: `see conform` de `engine`, `aot`, `service`, `cli`, `app` y
   `--operation properties`. Criterio: `aot` con **0 `pendiente`** y 0 `incumple`; los demás sin divergencias nuevas
   respecto a la línea base. Aplicar entonces `PG-N.13.04`.
@@ -437,12 +437,12 @@ orden, código de salida y conteos.
 
 - [ ] `PG-N.C03`–`C11` se acreditan con la evidencia de §11. `C09`: PG-N no añade sintaxis; las opciones nuevas
   (`--semilla` del ejecutable, `--destino`) llevan mensajes es/en en el corpus de la CLI.
-- [ ] `PG-N.C12.01` Revisión del diff completo (`git diff <HEAD inicial> --stat` y lectura de cada archivo de código):
+- [x] `PG-N.C12.01` Revisión del diff completo (`git diff <HEAD inicial> --stat` y lectura de cada archivo de código):
   comentarios, `TODO`, `unwrap`, `expect`, `panic!`, `unsafe` fuera de la tabla y citas a `docs/` fuera de `docs/`
   (`git grep -n "docs/plan-ejecucion\|fase-pg-" -- packages apps` vacío).
-- [ ] `PG-N.C12.02` Commits por bloque con la skill `commit-message`, sin atribución de IA, solo rutas de PG-N; push
+- [x] `PG-N.C12.02` Commits por bloque con la skill `commit-message`, sin atribución de IA, solo rutas de PG-N; push
   ordinario comprobado (`git branch --show-current`, `git push`, `git status -sb`).
-- [ ] `PG-N.C13.01` Completar §11, §4.15 y la fila de §6 del plan general; informe a la persona y **parada**.
+- [x] `PG-N.C13.01` Completar §11, §4.15 y la fila de §6 del plan general; informe a la persona y **parada**.
 
 ## 5. Capas y archivos
 
@@ -687,10 +687,9 @@ los fallos dentro de auxiliares sintetizados (preexistente). `BF.10`: `pseudo bu
 | H-02 | Entrega concurrente real de efectos físicos en nativo (la entrega es secuencial por rango) | Fase de rendimiento |
 | H-03 | `pseudo run --nativo` no propaga el código de salida pedido por el programa (el ejecutable sí) | PG-7 |
 
-Revisión Git de cierre: ver `git log` de la rama tras el push · Verificadores ejecutados: Clippy `-D warnings` y
-`rust-checks all` del motor, Clippy de la CLI y de SEE, tests dirigidos de `aot_rt`, `codegen`, `api`, CLI y SEE, conformidad
-y propiedades `aot` y `engine`, diferencial · Suites omitidas y motivo: `cargo xtask verify` completo, `cargo deny`,
-consumidores (extensión, app, benchmarks), `PERF.*` y E-PG-06 nativo, por coste dentro de la iteración · Pendientes
+Revisión Git de cierre: ver `git log` de la rama tras el push · Verificadores ejecutados: `cargo xtask verify` completo del motor
+(formato, Clippy, `test --workspace`, `rust-checks`, `cargo deny`), de la CLI y de SEE en verde; Clippy y `rust-checks all` del motor, Clippy de la CLI y de SEE, tests dirigidos de `aot_rt`, `codegen`, `api`, CLI y SEE, conformidad
+y propiedades `aot` y `engine`, diferencial · Suites omitidas y motivo: consumidores (extensión, app, benchmarks), `PERF.*` y E-PG-06 nativo, por coste dentro de la iteración · Pendientes
 justificados: `PG-N.09.01/.02/.05`, `PG-N.10.01/.03`, `PG-N.11.02/.03` (E-PG-06), `PG-N.12`, tests unitarios de
-`.03.02`, `.04.02`, `.05.02`, `.06.02`, `.07.03`, `BF.02/.03/.05/.07/.08/.10` parciales · Puntos de §4 cumplidos: `.00`,
+`.03.02`, `.04.02`, `.05.02`, `.06.02`, `.07.03`, `BF.05/.07/.08/.10` parciales · Puntos de §4 cumplidos: `.00`,
 `.01`, `.02`, `.03`, `.04`, `.05`, `.06`, `.07`, `.08`, `.13`; parciales `.09`, `.10`, `.11`; no cumplido `.12`.
