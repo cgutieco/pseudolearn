@@ -79,30 +79,23 @@ fn commands() -> Vec<Vec<&'static str>> {
             "--test",
             "aot_effect_parity",
         ],
-        vec![
-            "run",
-            "--manifest-path",
-            "../../packages/pseudolearn_rust_checks/Cargo.toml",
-            "-p",
-            "pseudolearn_check_command",
-            "--bin",
-            "rust-checks",
-            "--",
-            "all",
-            ".",
-        ],
-        vec![
-            "run",
-            "--manifest-path",
-            "../../packages/pseudolearn_rust_checks/Cargo.toml",
-            "-p",
-            "pseudolearn_check_command",
-            "--bin",
-            "rust-checks",
-            "--",
-            "toolchain",
-            "../..",
-        ],
+        rust_checks("all", "."),
+        rust_checks("toolchain", "../.."),
         vec!["deny", "check"],
+    ]
+}
+
+fn rust_checks(check: &'static str, root: &'static str) -> Vec<&'static str> {
+    vec![
+        "run",
+        "--manifest-path",
+        "../../packages/pseudolearn_rust_checks/Cargo.toml",
+        "-p",
+        "pseudolearn_check_command",
+        "--bin",
+        "rust-checks",
+        "--",
+        check,
+        root,
     ]
 }

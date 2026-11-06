@@ -5,7 +5,8 @@ use serde_json::{Value, json};
 use std::io::Write;
 use std::process::{Command, Stdio};
 
-const INPUT_PROGRAM: &str = "Algoritmo Main\nDefinir value Como Entero <- 0;\nLeer value;\nEscribir value;\nFinAlgoritmo\n";
+const INPUT_PROGRAM: &str =
+    "Algoritmo Main\nDefinir value Como Entero <- 0;\nLeer value;\nEscribir value;\nFinAlgoritmo\n";
 
 fn host() -> Value {
     Value::Null

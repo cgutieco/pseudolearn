@@ -24,7 +24,19 @@
     {
       "regla": "LANG.PROGRAM.CLASSIC@1.0.0#R1",
       "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto cli no expone las operaciones execute ni analyze del adaptador; R1 la verifica el sujeto engine y R2 los mismos programas con pseudo ejecutar."
+    },
+    {
+      "regla": "LANG.PROGRAM.CLASSIC@1.0.0#R2",
+      "verificacion": "ejecutor",
       "estado": "cumple"
+    },
+    {
+      "regla": "LANG.PROGRAM.CLASSIC@1.0.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto cli no es el servicio de lenguaje; R3 la verifica el sujeto service."
     },
     {
       "regla": "TOOL.CLI.CHECK@1.0.0#R2",

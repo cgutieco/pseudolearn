@@ -112,7 +112,8 @@ fn native_run_rejects_observation() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-const READER: &str = "Algoritmo Main\nDefinir name Como Cadena <- \"\";\nLeer name;\nEscribir name;\nFinAlgoritmo\n";
+const READER: &str =
+    "Algoritmo Main\nDefinir name Como Cadena <- \"\";\nLeer name;\nEscribir name;\nFinAlgoritmo\n";
 
 #[test]
 fn replay_reads_input_from_the_tape_without_standard_input()
