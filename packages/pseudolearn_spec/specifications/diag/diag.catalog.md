@@ -11,7 +11,8 @@
   ],
   "sujetos": [
     "reference",
-    "engine"
+    "engine",
+    "cli"
   ],
   "resumen": "Catálogo bilingüe de diagnósticos.",
   "edicion": {
@@ -3632,6 +3633,40 @@
 }
 ```
 
+```definicion
+{
+  "id": "D2",
+  "termino": "diagnosticTerms",
+  "texto": "Textos de presentación de los argumentos de clase término, por código, argumento y término.",
+  "valor": {
+    "variableUsedUninitialized": {
+      "cause": {
+        "noAssignment": {
+          "es": "ningún camino anterior le asigna un valor",
+          "en": "no earlier path assigns it a value"
+        },
+        "branchWithoutElse": {
+          "es": "una condición sin rama alternativa puede dejarla sin valor",
+          "en": "a condition without an alternative branch may leave it without a value"
+        },
+        "branchWithoutAssignment": {
+          "es": "una de las ramas no le asigna un valor",
+          "en": "one of the branches does not assign it a value"
+        },
+        "loopMayNotRun": {
+          "es": "el bucle que le asigna un valor puede no ejecutarse",
+          "en": "the loop that assigns it a value may not run"
+        },
+        "switchWithoutDefault": {
+          "es": "una selección sin caso por omisión puede dejarla sin valor",
+          "en": "a selection without a default case may leave it without a value"
+        }
+      }
+    }
+  }
+}
+```
+
 ```regla
 {
   "id": "R1",
@@ -3641,6 +3676,23 @@
   "verificacion": [
     "C1",
     "C2"
+  ]
+}
+```
+
+```regla
+{
+  "id": "R2",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "D2 asigna a algunos términos de argumentos de clase término un texto en español y en inglés. Al presentar el mensaje de un diagnóstico en un idioma, un argumento de clase término cuyo código, nombre y valor figuran en D2 se sustituye por el texto de ese idioma; cualquier otro término se presenta tal cual. El código y el valor del argumento no cambian: la sustitución solo afecta al mensaje presentado.",
+  "verificacion": [
+    "C3",
+    "C4",
+    "C5",
+    "C6",
+    "C7",
+    "C8"
   ]
 }
 ```
@@ -3684,6 +3736,170 @@
   "espera": {
     "arbol": "presente",
     "diagnosticos": []
+  }
+}
+```
+
+```caso
+{
+  "id": "C3",
+  "regla": "R2",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 1,
+    "salida": "p.pseudo:3:10: error: La variable x puede no tener valor en este punto (causa: ningún camino anterior le asigna un valor) [variableUsedUninitialized]\n    3 | Escribir x;\n      |          ^\n",
+    "salida_error": ""
+  },
+  "cli": {
+    "argumentos": [
+      "comprobar",
+      "p.pseudo"
+    ],
+    "entorno": {},
+    "archivos": {
+      "p.pseudo": "Algoritmo P\nDefinir x Como Entero;\nEscribir x;\nFinAlgoritmo\n"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C4",
+  "regla": "R2",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 1,
+    "salida": "p.pseudo:6:10: error: La variable x puede no tener valor en este punto (causa: una condición sin rama alternativa puede dejarla sin valor) [variableUsedUninitialized]\n    6 | Escribir x;\n      |          ^\n",
+    "salida_error": ""
+  },
+  "cli": {
+    "argumentos": [
+      "comprobar",
+      "p.pseudo"
+    ],
+    "entorno": {},
+    "archivos": {
+      "p.pseudo": "Algoritmo P\nDefinir x Como Entero;\nSi Verdadero Entonces\nx <- 1;\nFinSi\nEscribir x;\nFinAlgoritmo\n"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C5",
+  "regla": "R2",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 1,
+    "salida": "p.pseudo:8:10: error: La variable x puede no tener valor en este punto (causa: una de las ramas no le asigna un valor) [variableUsedUninitialized]\n    8 | Escribir x;\n      |          ^\n",
+    "salida_error": ""
+  },
+  "cli": {
+    "argumentos": [
+      "comprobar",
+      "p.pseudo"
+    ],
+    "entorno": {},
+    "archivos": {
+      "p.pseudo": "Algoritmo P\nDefinir x Como Entero;\nSi Verdadero Entonces\nx <- 1;\nSiNo\nEscribir 0;\nFinSi\nEscribir x;\nFinAlgoritmo\n"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C6",
+  "regla": "R2",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 1,
+    "salida": "p.pseudo:8:10: error: La variable x puede no tener valor en este punto (causa: el bucle que le asigna un valor puede no ejecutarse) [variableUsedUninitialized]\n    8 | Escribir x;\n      |          ^\n",
+    "salida_error": ""
+  },
+  "cli": {
+    "argumentos": [
+      "comprobar",
+      "p.pseudo"
+    ],
+    "entorno": {},
+    "archivos": {
+      "p.pseudo": "Algoritmo P\nDefinir x, n Como Entero;\nn <- 0;\nMientras n > 0 Hacer\nx <- 1;\nn <- n - 1;\nFinMientras\nEscribir x;\nFinAlgoritmo\n"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C7",
+  "regla": "R2",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 1,
+    "salida": "p.pseudo:7:10: error: La variable x puede no tener valor en este punto (causa: una selección sin caso por omisión puede dejarla sin valor) [variableUsedUninitialized]\n    7 | Escribir x;\n      |          ^\n",
+    "salida_error": ""
+  },
+  "cli": {
+    "argumentos": [
+      "comprobar",
+      "p.pseudo"
+    ],
+    "entorno": {},
+    "archivos": {
+      "p.pseudo": "Algoritmo P\nDefinir x, n Como Entero;\nn <- 1;\nSegun n Hacer\n1: x <- 1;\nFinSegun\nEscribir x;\nFinAlgoritmo\n"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C8",
+  "regla": "R2",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 1,
+    "salida": "p.pseudo:6:10: error: Variable x may have no value at this point (cause: a condition without an alternative branch may leave it without a value) [variableUsedUninitialized]\n    6 | Escribir x;\n      |          ^\n",
+    "salida_error": ""
+  },
+  "cli": {
+    "argumentos": [
+      "comprobar",
+      "--idioma",
+      "en",
+      "p.pseudo"
+    ],
+    "entorno": {},
+    "archivos": {
+      "p.pseudo": "Algoritmo P\nDefinir x Como Entero;\nSi Verdadero Entonces\nx <- 1;\nFinSi\nEscribir x;\nFinAlgoritmo\n"
+    }
   }
 }
 ```

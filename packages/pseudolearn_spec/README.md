@@ -259,6 +259,14 @@ Elección: `analysisLimits` contiene un único campo `nesting`, entero positivo 
 La exportación conserva el recurso y los generadores lo consumen. Se rechaza fijarlo otra vez en el parser
 y se rechazan campos desconocidos o valores cero, negativos, fraccionarios y fuera de rango.
 
+Problema: algunos argumentos de clase término, como la causa de `variableUsedUninitialized`, son identidades técnicas
+que no se deben mostrar tal cual en un mensaje. Elección: `diagnosticTerms` (D2 de `DIAG.CATALOG`) asocia código,
+argumento y término a un texto `es` y otro `en`; `diagnostic_terms` exige que el código exista en el recurso
+`diagnostics` de la misma especificación, que el argumento sea de clase término, que haya exactamente los dos idiomas,
+sin llaves de plantilla y con español neutro. El recurso viaja en la exportación y en `cases/catalogs.json`; el
+argumento conserva el término y solo el borde que presenta el mensaje lo sustituye. Se rechaza cambiar el valor del
+argumento, porque los casos y los consumidores lo comparan como identidad.
+
 Cada sujeto lee su manifiesto de vínculos en una ruta fija (`bindings::manifest_path`) y se lanza con una descripción de
 datos (`subject_adapters`): `reference` como archivo histórico sin lanzador, `engine` con el adaptador del motor, `cli` y `aot` con el binario `pseudo`
 (`--see-adapter` y `--see-adapter aot`), y `app` con `dart run tool/see_app_adapter.dart` desde la raíz de

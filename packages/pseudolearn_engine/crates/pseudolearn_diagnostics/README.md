@@ -52,6 +52,14 @@ de argumentos requeridos; el borde valida que no falten claves ni se sustituyan 
 Los tokens y tipos primitivos se resuelven con el vocabulario del programa antes de presentar prosa.
 La sustitución recorre la plantilla una sola vez y no reinterpreta llaves dentro de un lexema del usuario.
 
+Problema: la causa de `variableUsedUninitialized` es un término técnico (`branchWithoutElse`) que el mensaje mostraba
+tal cual. Elección: `build.rs` genera `DiagnosticCode::term_text` desde el recurso `diagnosticTerms` de la
+exportación, con una entrada por código, argumento y término; `render` sustituye un argumento de clase término por el
+texto del idioma pedido cuando la tabla lo contiene y, si no, lo presenta tal cual. Los lexemas nunca se sustituyen,
+aunque coincidan con un término. El argumento del diagnóstico conserva el término, de modo que la API, los casos y la
+ordenación no cambian. Alternativas descartadas: cambiar el valor del argumento por prosa, que rompería la comparación
+por identidad, y una tabla escrita a mano en el código, que duplicaría el catálogo.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código en inglés, cero comentarios, sin atributos doc/allow/expect ni unsafe.

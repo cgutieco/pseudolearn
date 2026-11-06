@@ -1,3 +1,5 @@
+#[path = "resources/diagnostic_terms.rs"]
+mod diagnostic_terms;
 #[path = "resources/grammar.rs"]
 mod grammar;
 #[path = "resources/help_catalog.rs"]

@@ -1,6 +1,7 @@
 use crate::arguments::{DiagnosticArgument, TypeName};
 use crate::diagnostic::{Diagnostic, DiagnosticClass, DiagnosticSeverity};
 use pseudolearn_source::SourceId;
+use std::borrow::Cow;
 use std::collections::BTreeMap;
 
 pub fn render(diagnostic: &Diagnostic, locale: &str) -> String {
@@ -16,12 +17,25 @@ pub fn render(diagnostic: &Diagnostic, locale: &str) -> String {
         };
         let name = suffix.get(..closing).unwrap_or("");
         if let Some(value) = diagnostic.arguments.get(name) {
-            rendered.push_str(&value.text());
+            rendered.push_str(&presented(diagnostic, (name, value), locale));
         }
         remaining = suffix.get(closing.saturating_add(1)..).unwrap_or("");
     }
     rendered.push_str(remaining);
     rendered
+}
+
+fn presented<'value>(
+    diagnostic: &Diagnostic,
+    (name, value): (&str, &'value DiagnosticArgument),
+    locale: &str,
+) -> Cow<'value, str> {
+    if let DiagnosticArgument::Term(term) = value
+        && let Some(text) = diagnostic.code.term_text(name, term, locale)
+    {
+        return Cow::Borrowed(text);
+    }
+    value.text()
 }
 
 pub fn sort_diagnostics(diagnostics: &mut [Diagnostic]) {

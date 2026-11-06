@@ -2,6 +2,8 @@
 mod arguments;
 #[path = "codegen/policy.rs"]
 mod policy;
+#[path = "codegen/terms.rs"]
+mod terms;
 use std::path::Path;
 
 fn main() {
@@ -23,6 +25,11 @@ fn generate() -> Result<(), Box<dyn std::error::Error>> {
         .and_then(|resource_tree| resource_tree.get("diagnostics"))
         .and_then(serde_json::Value::as_object)
         .ok_or("Missing diagnostics in export.json")?;
+    let diagnostic_terms = parsed
+        .get("resources")
+        .and_then(|resource_tree| resource_tree.get("diagnosticTerms"))
+        .and_then(serde_json::Value::as_object)
+        .ok_or("Missing diagnostic terms in export.json")?;
 
     let out_dir = std::env::var("OUT_DIR")?;
     let destination = Path::new(&out_dir).join("generated_diagnostics.rs");
@@ -33,6 +40,7 @@ fn generate() -> Result<(), Box<dyn std::error::Error>> {
     code.push_str(&generate_template_methods(diagnostics));
     code.push_str(&policy::generate(diagnostics)?);
     code.push_str(&arguments::generate(diagnostics)?);
+    code.push_str(&terms::generate(diagnostic_terms)?);
 
     std::fs::write(destination, code)?;
     Ok(())

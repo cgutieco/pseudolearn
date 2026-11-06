@@ -348,6 +348,12 @@
       "estado": "cumple"
     },
     {
+      "regla": "DIAG.CATALOG@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto engine conserva el término en el argumento, que verifica LANG.DECL.UNINITIALIZED; el mensaje presentado lo verifica el sujeto cli con pseudo comprobar."
+    },
+    {
       "regla": "DIAG.CLASSES@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
@@ -740,16 +746,16 @@
       "estado": "cumple"
     },
     {
+      "regla": "LANG.PROFILE.VOCABULARY@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
       "regla": "LANG.PROGRAM.STRUCTURE@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-    {
-      "regla": "LANG.PROFILE.VOCABULARY@1.0.0#R2",
-      "verificacion": "ejecutor",
-      "estado": "cumple"
-    },
       "regla": "LANG.SOURCE.ENCODING@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"

@@ -5,6 +5,7 @@ pub mod analysis_limits;
 mod capability_library;
 #[cfg(test)]
 mod capability_library_tests;
+pub mod diagnostic_terms;
 pub mod grammar;
 pub mod help_catalog;
 pub mod lexicon;
@@ -23,23 +24,7 @@ pub fn check(specification: &Specification) -> Vec<String> {
             errors.extend(crate::messages::check(value));
             continue;
         }
-        let result = match field(definition, "termino") {
-            "vocabulary" | "contextualVocabulary" | "functions" => lexicon::check(value),
-            "capabilityLibrary" => capability_library::check(value),
-            "diagnostics" => diagnostics(value),
-            "grammar" => grammar::check(value),
-            "helpCatalog" => help_catalog::check(value),
-            "analysisLimits" => analysis_limits::check(value),
-            "textmateIdentifier"
-            | "textmateNumber"
-            | "textmateComment"
-            | "textmateTextLiteral"
-            | "textmateAccentFold" => textmate_grammar::check(field(definition, "termino"), value),
-            "unsupportedConstructs" => structural::check(value),
-            crate::trace::ALPHABET_TERM => crate::trace::catalog(value),
-            crate::cli::CONVENTIONS_TERM => crate::cli::conventions(value),
-            name => Err(format!("Unknown normative resource {name}")),
-        };
+        let result = resource(specification, field(definition, "termino"), value);
         if let Err(error) = result {
             if error.starts_with("SEE-") {
                 errors.push(error);
@@ -52,6 +37,27 @@ pub fn check(specification: &Specification) -> Vec<String> {
         }
     }
     errors
+}
+
+fn resource(specification: &Specification, term: &str, value: &Value) -> Result<(), String> {
+    match term {
+        "vocabulary" | "contextualVocabulary" | "functions" => lexicon::check(value),
+        "capabilityLibrary" => capability_library::check(value),
+        "diagnostics" => diagnostics(value),
+        "diagnosticTerms" => diagnostic_terms::check(value, catalog(specification)),
+        "grammar" => grammar::check(value),
+        "helpCatalog" => help_catalog::check(value),
+        "analysisLimits" => analysis_limits::check(value),
+        "textmateIdentifier"
+        | "textmateNumber"
+        | "textmateComment"
+        | "textmateTextLiteral"
+        | "textmateAccentFold" => textmate_grammar::check(term, value),
+        "unsupportedConstructs" => structural::check(value),
+        crate::trace::ALPHABET_TERM => crate::trace::catalog(value),
+        crate::cli::CONVENTIONS_TERM => crate::cli::conventions(value),
+        name => Err(format!("Unknown normative resource {name}")),
+    }
 }
 
 pub fn check_references(corpus: &see_model::Corpus) -> Vec<String> {
@@ -74,6 +80,14 @@ pub fn check_references(corpus: &see_model::Corpus) -> Vec<String> {
         }
     }
     errors
+}
+
+fn catalog(specification: &Specification) -> Option<&Value> {
+    specification
+        .blocks
+        .iter()
+        .find(|block| field(block, "termino") == "diagnostics")
+        .and_then(|block| block.fields.get("valor"))
 }
 
 fn diagnostics(value: &Value) -> Result<(), String> {
