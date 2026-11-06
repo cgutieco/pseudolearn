@@ -19,7 +19,7 @@ La comprobación disponible usa, desde la raíz del monorepo,
 
 Construcción nativa: `build_native_object(&NativeBuildRequest)` analiza y baja el programa con el mismo camino que la
 ejecución, genera el objeto ejecutable con `pseudolearn_codegen` y devuelve sus bytes con los avisos del análisis, o
-`Rejected` con los diagnósticos si hay errores y `Backend` si el generador falla. Fija en los metadatos del ejecutable
+`Rejected` con los diagnósticos si hay errores y `Backend` si el generador falla. `NativeBuildRequest.target` (`None` = anfitrión) lleva el triplete del destino; un triplete que `target-lexicon` no reconoce es `Backend`, y la lista cerrada de destinos la valida la CLI antes de llamar. Fija en los metadatos del ejecutable
 la semilla y los límites de ejecución; `ExecutionIdentity` conserva `max_json_depth` y los límites HTTP para el canal
 de efectos. También fija el idioma, el nombre de la fuente, las plantillas de línea
 de diagnóstico y de entrada agotada que la CLI entrega, y las palabras lógicas del perfil que

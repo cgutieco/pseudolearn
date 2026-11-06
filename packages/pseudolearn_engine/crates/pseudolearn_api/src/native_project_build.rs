@@ -1,8 +1,8 @@
-use crate::native_build::settings_of;
+use crate::native_build::{settings_of, target_config};
 use crate::project_compile::{Outcome, compile};
 use crate::{ExecutionLimits, NativeBuildFailure, NativeBuildRequest, NativeObject};
 use pseudolearn_aot_rt::ExecutableSettings;
-use pseudolearn_codegen::{TargetConfig, compile_module_to_executable_object};
+use pseudolearn_codegen::compile_module_to_executable_object;
 use serde_json::Value;
 
 pub fn build_native_project_object(
@@ -32,7 +32,7 @@ fn build(
     effective.limits = merged(&request.limits, &compiled.limits);
     let object = compile_module_to_executable_object(
         &compiled.module,
-        &TargetConfig::host(),
+        &target_config(request)?,
         &ExecutableSettings {
             source_names: source_names.to_vec(),
             ..settings_of(&effective, &compiled.module)

@@ -17,6 +17,7 @@ fn request(program: &str) -> NativeBuildRequest {
         warning_template: "{path}:{line}:{column}: warning: {message} [{code}]\n".to_owned(),
         information_template: "{path}:{line}:{column}: info: {message} [{code}]\n".to_owned(),
         exhausted_template: "{path}\n".to_owned(),
+        target: None,
     }
 }
 
@@ -131,4 +132,36 @@ fn a_program_with_channels_but_no_task_scope_compiles_natively() -> Check {
     build_native_object(&request(program))
         .map(|_| ())
         .map_err(failure)
+}
+
+#[test]
+fn a_windows_target_object_carries_its_own_process_entry() -> Check {
+    let mut windows = request("Algoritmo P\nEscribir 1;\nFinAlgoritmo\n");
+    windows.target = Some("x86_64-pc-windows-msvc".to_owned());
+    let object = build_native_object(&windows).map_err(failure)?;
+    assert!(object.bytes.starts_with(&[0x64, 0x86]));
+    assert!(contains(&object.bytes, b"mainCRTStartup"));
+    assert!(contains(&object.bytes, b"_tls_used"));
+    Ok(())
+}
+
+#[test]
+fn a_host_object_has_no_windows_process_entry() -> Check {
+    let object = build_native_object(&request("Algoritmo P\nEscribir 1;\nFinAlgoritmo\n"))
+        .map_err(failure)?;
+    assert_eq!(
+        contains(&object.bytes, b"mainCRTStartup"),
+        cfg!(target_os = "windows")
+    );
+    Ok(())
+}
+
+#[test]
+fn an_unparsable_target_is_a_backend_failure() {
+    let mut unknown = request("Algoritmo P\nEscribir 1;\nFinAlgoritmo\n");
+    unknown.target = Some("not a triple".to_owned());
+    assert!(matches!(
+        build_native_object(&unknown),
+        Err(NativeBuildFailure::Backend(_))
+    ));
 }

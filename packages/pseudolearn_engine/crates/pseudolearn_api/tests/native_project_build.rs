@@ -22,6 +22,7 @@ fn request() -> NativeBuildRequest {
         warning_template: "{path}\n".to_owned(),
         information_template: "{path}\n".to_owned(),
         exhausted_template: "{path}\n".to_owned(),
+        target: None,
     }
 }
 

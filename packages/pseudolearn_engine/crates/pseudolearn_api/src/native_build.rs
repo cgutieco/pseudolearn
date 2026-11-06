@@ -16,6 +16,7 @@ pub struct NativeBuildRequest {
     pub warning_template: String,
     pub information_template: String,
     pub exhausted_template: String,
+    pub target: Option<String>,
 }
 
 #[derive(Debug)]
@@ -51,7 +52,7 @@ fn build(request: &NativeBuildRequest) -> Result<NativeObject, NativeBuildFailur
     .map_err(NativeBuildFailure::Rejected)?;
     let compiled = compile_module_to_executable_object(
         &module,
-        &TargetConfig::host(),
+        &target_config(request)?,
         &settings_of(request, &module),
     )
     .map_err(|error| NativeBuildFailure::Backend(error.to_string()))?;
@@ -59,6 +60,18 @@ fn build(request: &NativeBuildRequest) -> Result<NativeObject, NativeBuildFailur
         bytes: compiled.bytes,
         warnings,
     })
+}
+
+pub(crate) fn target_config(
+    request: &NativeBuildRequest,
+) -> Result<TargetConfig, NativeBuildFailure> {
+    match &request.target {
+        None => Ok(TargetConfig::host()),
+        Some(triple) => triple
+            .parse()
+            .map(TargetConfig::for_triple)
+            .map_err(|_| NativeBuildFailure::Backend(format!("unknown target {triple}"))),
+    }
 }
 
 pub(crate) fn settings_of(

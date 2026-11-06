@@ -42,6 +42,7 @@ pub fn conformance_build_request(request: &ExecuteRequest) -> NativeBuildRequest
         warning_template: WARNING_TEMPLATE.to_owned(),
         information_template: INFORMATION_TEMPLATE.to_owned(),
         exhausted_template: EXHAUSTED_TEMPLATE.to_owned(),
+        target: None,
     }
 }
 
