@@ -19,18 +19,27 @@ fn cause(diagnostic: &Diagnostic) -> Option<String> {
 }
 
 fn program(body: &str) -> String {
-    format!("algorithm Main\ndefine x as integer;\ndefine c as boolean <- true;\n{body}\nendAlgorithm\n")
+    format!(
+        "algorithm Main\ndefine x as integer;\ndefine c as boolean <- true;\n{body}\nendAlgorithm\n"
+    )
 }
 
 #[test]
 fn a_join_keeps_only_what_every_path_assigns() {
-    assert!(causes(&program("if c then\nx <- 1;\nelse\nx <- 2;\nendIf\nwrite x;")).is_empty());
+    assert!(
+        causes(&program(
+            "if c then\nx <- 1;\nelse\nx <- 2;\nendIf\nwrite x;"
+        ))
+        .is_empty()
+    );
     assert_eq!(
         causes(&program("if c then\nx <- 1;\nendIf\nwrite x;")),
         ["branchWithoutElse"]
     );
     assert_eq!(
-        causes(&program("if c then\nx <- 1;\nelse\nwrite 0;\nendIf\nwrite x;")),
+        causes(&program(
+            "if c then\nx <- 1;\nelse\nwrite 0;\nendIf\nwrite x;"
+        )),
         ["branchWithoutAssignment"]
     );
 }
@@ -38,7 +47,9 @@ fn a_join_keeps_only_what_every_path_assigns() {
 #[test]
 fn loops_that_may_not_run_drop_their_assignments() {
     assert_eq!(
-        causes(&program("while c do\nx <- 1;\nc <- false;\nendWhile\nwrite x;")),
+        causes(&program(
+            "while c do\nx <- 1;\nc <- false;\nendWhile\nwrite x;"
+        )),
         ["loopMayNotRun"]
     );
     assert_eq!(

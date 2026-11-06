@@ -31,8 +31,7 @@ fn entered_nodes(events: &[Value]) -> Vec<Value> {
 
 #[test]
 fn statements_sharing_a_line_have_distinct_node_identities() -> Result<(), String> {
-    let events =
-        run("Algoritmo P\nDefinir x Como Entero <- 0;\nx <- 1; x <- 2;\nFinAlgoritmo\n")?;
+    let events = run("Algoritmo P\nDefinir x Como Entero <- 0;\nx <- 1; x <- 2;\nFinAlgoritmo\n")?;
     let nodes = entered_nodes(&events);
     assert_eq!(nodes.len(), 3);
     assert_ne!(nodes.get(1), nodes.get(2));

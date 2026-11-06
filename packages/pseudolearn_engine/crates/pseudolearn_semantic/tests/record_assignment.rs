@@ -20,8 +20,14 @@ fn fields_are_tracked_one_by_one() {
 
 #[test]
 fn the_whole_record_has_a_value_once_every_field_does() {
-    assert_eq!(unassigned("p.x <- 1;\np.z <- 2;\ndefine q as Point <- p;\nwrite q.z;"), 0);
-    assert_eq!(unassigned("p.x <- 1;\ndefine q as Point <- p;\nwrite q.x;"), 1);
+    assert_eq!(
+        unassigned("p.x <- 1;\np.z <- 2;\ndefine q as Point <- p;\nwrite q.z;"),
+        0
+    );
+    assert_eq!(
+        unassigned("p.x <- 1;\ndefine q as Point <- p;\nwrite q.x;"),
+        1
+    );
 }
 
 #[test]

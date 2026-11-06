@@ -7,16 +7,21 @@ fn names_the_variable_its_declaration_and_the_construct_that_left_it_empty() {
     let program = "algorithm Main\ndefine x as integer;\ndefine c as boolean <- true;\nif c then\nx <- 1;\nendIf\nwrite x;\nendAlgorithm\n";
     let (module, diagnostics) = support::analyze(program);
     assert!(module.is_none());
-    let [diagnostic] = diagnostics.as_slice() else {
-        panic!("{diagnostics:?}");
-    };
-    assert_eq!(diagnostic.code, DiagnosticCode::VariableUsedUninitialized);
-    assert_eq!(
-        diagnostic.arguments.get("lexeme"),
-        Some(&DiagnosticArgument::Lexeme("x".to_owned()))
-    );
-    assert_eq!(diagnostic.related.len(), 2);
-    assert!(diagnostic.related.iter().all(|span| span.start < diagnostic.span.start));
+    assert_eq!(diagnostics.len(), 1, "{diagnostics:?}");
+    for diagnostic in &diagnostics {
+        assert_eq!(diagnostic.code, DiagnosticCode::VariableUsedUninitialized);
+        assert_eq!(
+            diagnostic.arguments.get("lexeme"),
+            Some(&DiagnosticArgument::Lexeme("x".to_owned()))
+        );
+        assert_eq!(diagnostic.related.len(), 2);
+        assert!(
+            diagnostic
+                .related
+                .iter()
+                .all(|span| span.start < diagnostic.span.start)
+        );
+    }
 }
 
 #[test]

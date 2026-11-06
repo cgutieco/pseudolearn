@@ -185,9 +185,9 @@ fn random_bounds(
     } else {
         2
     };
-    let integers = operands.iter().all(|operand| {
-        matches!(operand, Operand::Value(value) if get_type(*value) == Some(IrType::I64))
-    });
+    let integers = operands.iter().all(
+        |operand| matches!(operand, Operand::Value(value) if get_type(*value) == Some(IrType::I64)),
+    );
     if operands.len() == expected && integers {
         Ok(Some(IrType::I64))
     } else {

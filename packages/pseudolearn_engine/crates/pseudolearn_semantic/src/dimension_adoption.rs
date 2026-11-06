@@ -19,7 +19,8 @@ pub(crate) fn adopt(session: &mut AnalysisSession<'_>, node: usize) {
             locals.push(MISSING);
             continue;
         };
-        let rank = u32::try_from(session.children(dimensioned).len().saturating_sub(1)).unwrap_or(0);
+        let rank =
+            u32::try_from(session.children(dimensioned).len().saturating_sub(1)).unwrap_or(0);
         match candidate(session, name_node) {
             Some(local) => {
                 retype(session, local, (rank, name_node));

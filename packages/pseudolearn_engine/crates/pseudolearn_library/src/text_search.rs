@@ -2,9 +2,9 @@
 
 use pseudolearn_runtime::MemoryError;
 
-pub fn text_substring(text: &str, from: i64, to: i64) -> Result<String, MemoryError> {
-    let start = usize::try_from(from).map_err(|_| MemoryError::StringPositionOutOfRange)?;
-    let end = to
+pub fn text_substring(text: &str, first: i64, last: i64) -> Result<String, MemoryError> {
+    let start = usize::try_from(first).map_err(|_| MemoryError::StringPositionOutOfRange)?;
+    let end = last
         .checked_add(1)
         .and_then(|end| usize::try_from(end).ok())
         .ok_or(MemoryError::StringPositionOutOfRange)?;

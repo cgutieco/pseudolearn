@@ -26,8 +26,7 @@ fn execution_checkpoints_retain_small_deltas_and_live_machine() {
 #[test]
 fn analysis_warnings_are_part_of_the_observed_execution_diagnostics() {
     let request = ExecuteRequest {
-        program: "Algoritmo P\nDefinir x Como Entero <- 0;\nx <- 1;\nFinAlgoritmo\n"
-            .to_owned(),
+        program: "Algoritmo P\nDefinir x Como Entero <- 0;\nx <- 1;\nFinAlgoritmo\n".to_owned(),
         ..ExecuteRequest::default()
     };
     let execution = ExecutionResource::start(&request);

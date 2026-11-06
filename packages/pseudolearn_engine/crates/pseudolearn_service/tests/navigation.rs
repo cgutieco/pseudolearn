@@ -27,7 +27,7 @@ fn locates_the_exact_name_of_a_variable_declaration() {
     );
     assert_eq!(
         session.queries().definition(position),
-        Some(range((2, 19), (2, 24)))
+        Some(range((2, 11), (2, 16)))
     );
 }
 
@@ -60,7 +60,7 @@ fn separates_homonymous_locals_of_different_subroutines() {
     );
     assert_eq!(
         session.queries().references(position),
-        vec![range((2, 19), (2, 20)), range((3, 3), (3, 4))]
+        vec![range((2, 11), (2, 12)), range((3, 3), (3, 4))]
     );
 }
 
@@ -105,7 +105,7 @@ fn counts_columns_in_characters_for_accented_identifiers() {
     );
     assert_eq!(
         session.queries().definition(position),
-        Some(range((2, 19), (2, 22)))
+        Some(range((2, 11), (2, 14)))
     );
     assert_eq!(session.queries().references(position).len(), 3);
 }

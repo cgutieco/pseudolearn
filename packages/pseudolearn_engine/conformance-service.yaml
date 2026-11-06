@@ -27,6 +27,18 @@
     {
       "regla": "LANG.PROGRAM.CLASSIC@1.0.0#R1",
       "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto service no ejecuta programas; R1 la verifica el sujeto engine y R3 los mismos programas en el servicio."
+    },
+    {
+      "regla": "LANG.PROGRAM.CLASSIC@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto service no es la CLI; R2 la verifica el sujeto cli."
+    },
+    {
+      "regla": "LANG.PROGRAM.CLASSIC@1.0.0#R3",
+      "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {

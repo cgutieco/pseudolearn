@@ -9,7 +9,11 @@ fn run(program: &str, state_at: Option<usize>) -> (String, Option<serde_json::Va
         ..Default::default()
     };
     let response = execute_program(&request);
-    assert!(response.diagnostics.is_empty(), "{:?}", response.diagnostics);
+    assert!(
+        response.diagnostics.is_empty(),
+        "{:?}",
+        response.diagnostics
+    );
     (response.output, response.termination.get("kind").cloned())
 }
 

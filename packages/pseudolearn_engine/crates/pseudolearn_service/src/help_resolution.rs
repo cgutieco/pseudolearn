@@ -111,6 +111,27 @@ pub(crate) fn resolve_help_in_context(
     let slot = selection::selected_token(context, offset)?;
     let kind = context.tree.tokens.kind(slot)?;
     let span = context.tree.tokens.span(slot)?;
+    let target = token_target(context, slot, (kind, span))?;
+    Some(HelpQueryOutcome {
+        resolution: HelpResolution {
+            identity: target.identity,
+            symbol: target.symbol,
+            certainty: target.certainty,
+            lexical_range: span_to_range(context.source, span),
+            enclosing_range: target
+                .enclosing
+                .map(|value| span_to_range(context.source, value)),
+        },
+        hover: hover_for_token(context, slot),
+        token_identity: selection::token_identity(context, slot, kind),
+    })
+}
+
+fn token_target(
+    context: &QueryContext<'_>,
+    slot: usize,
+    (kind, span): (TokenKind, Span),
+) -> Option<ResolutionTarget> {
     let target = match kind {
         _ if let Some(role) = module_roles::type_import(context, slot) => {
             role_target(context, role)
@@ -125,22 +146,9 @@ pub(crate) fn resolve_help_in_context(
             operator_target(context, slot, id)
         }
         TokenKind::BooleanLiteral(value) => boolean_target(context, value),
-        literal if literal.is_literal() => return None,
         _ => return None,
     };
-    Some(HelpQueryOutcome {
-        resolution: HelpResolution {
-            identity: target.identity,
-            symbol: target.symbol,
-            certainty: target.certainty,
-            lexical_range: span_to_range(context.source, span),
-            enclosing_range: target
-                .enclosing
-                .map(|value| span_to_range(context.source, value)),
-        },
-        hover: hover_for_token(context, slot),
-        token_identity: selection::token_identity(context, slot, kind),
-    })
+    Some(target)
 }
 
 pub(crate) fn module_directive_context(

@@ -23,7 +23,12 @@ fn bounded_integers_stay_inside_their_interval() {
             assert!(state.next_below(bound).is_some_and(|value| value < bound));
         }
     }
-    for (low, high) in [(5, 5), (-2, 2), (i64::MIN, i64::MAX), (i64::MAX - 1, i64::MAX)] {
+    for (low, high) in [
+        (5, 5),
+        (-2, 2),
+        (i64::MIN, i64::MAX),
+        (i64::MAX - 1, i64::MAX),
+    ] {
         for _ in 0..500 {
             assert!(
                 state

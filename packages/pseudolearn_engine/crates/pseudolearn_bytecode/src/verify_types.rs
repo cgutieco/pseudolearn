@@ -40,9 +40,7 @@ pub(crate) fn verify(
         Opcode::ObjectCopy => references::verify_object_copy(function, instruction),
         Opcode::RefCmp => references::verify_reference_compare(function, instruction),
         Opcode::HostRandom => references::verify_host_random(function, instruction),
-        Opcode::HostRandomBelow => {
-            references::verify_host_random_integer(function, instruction, 1)
-        }
+        Opcode::HostRandomBelow => references::verify_host_random_integer(function, instruction, 1),
         Opcode::HostRandomBetween => {
             references::verify_host_random_integer(function, instruction, 2)
         }

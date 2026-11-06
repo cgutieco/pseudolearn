@@ -44,8 +44,7 @@ fn a_base_typed_variable_accepts_a_copy_of_a_derived_instance() {
 
 #[test]
 fn an_unrelated_class_is_still_rejected_before_execution() {
-    let body =
-        "define item as Base <- new Base();\nitem <- new Other();\nwrite item.Value();\n";
+    let body = "define item as Base <- new Base();\nitem <- new Other();\nwrite item.Value();\n";
     let response = run(body, "none");
     assert_eq!(response.output, "");
     assert!(
@@ -60,7 +59,8 @@ fn an_unrelated_class_is_still_rejected_before_execution() {
 
 #[test]
 fn a_base_instance_cannot_be_stored_where_a_derived_one_is_declared() {
-    let body = "define item as Derived <- new Derived();\nitem <- new Base();\nwrite item.Value();\n";
+    let body =
+        "define item as Derived <- new Derived();\nitem <- new Base();\nwrite item.Value();\n";
     let response = run(body, "none");
     assert!(
         response

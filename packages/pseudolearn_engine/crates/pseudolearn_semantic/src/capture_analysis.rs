@@ -15,26 +15,12 @@ pub(crate) fn resolve(session: &mut AnalysisSession<'_>, local: LocalId, node: u
         return local;
     }
     if declaration.passing == Passing::Reference {
-        let kind = session.module.types.get(declaration.type_id);
-        let argument = crate::diagnostic_arguments::type_argument(session, &kind);
-        session.named_report(
-            DiagnosticCode::MutableClosureCapture,
-            node,
-            &declaration.name,
-        );
-        if let Some(diagnostic) = session.diagnostics.last_mut() {
-            diagnostic.related.push(declaration.span);
-            diagnostic.arguments.insert("type".to_owned(), argument);
-        }
+        reject_reference(session, &declaration, node);
         return local;
     }
     session.reads.insert(local);
     if first_capture(session, local) {
-        let span = session.span(node);
-        if !session.initialized.get(usize::try_from(local.0).unwrap_or(usize::MAX)).copied().unwrap_or(false) {
-            crate::definite_assignment_report::unassigned_read(session, local, span);
-        }
-        crate::capture_validation::record(session, local, span);
+        record_capture(session, local, node);
     }
     let frames = session.closure_stack.clone();
     let start = frames
@@ -87,6 +73,42 @@ fn first_capture(session: &AnalysisSession<'_>, original: LocalId) -> bool {
             .module
             .closures
             .get(&frame.function)
-            .is_none_or(|closure| !closure.captures.iter().any(|(source, _)| *source == original))
+            .is_none_or(|closure| {
+                !closure
+                    .captures
+                    .iter()
+                    .any(|(source, _)| *source == original)
+            })
     })
+}
+
+fn reject_reference(
+    session: &mut AnalysisSession<'_>,
+    declaration: &crate::hir::HirLocal,
+    node: usize,
+) {
+    let kind = session.module.types.get(declaration.type_id);
+    let argument = crate::diagnostic_arguments::type_argument(session, &kind);
+    session.named_report(
+        DiagnosticCode::MutableClosureCapture,
+        node,
+        &declaration.name,
+    );
+    if let Some(diagnostic) = session.diagnostics.last_mut() {
+        diagnostic.related.push(declaration.span);
+        diagnostic.arguments.insert("type".to_owned(), argument);
+    }
+}
+
+fn record_capture(session: &mut AnalysisSession<'_>, local: LocalId, node: usize) {
+    let span = session.span(node);
+    let assigned = usize::try_from(local.0)
+        .ok()
+        .and_then(|index| session.initialized.get(index))
+        .copied()
+        .unwrap_or(false);
+    if !assigned {
+        crate::definite_assignment_report::unassigned_read(session, local, span);
+    }
+    crate::capture_validation::record(session, local, span);
 }

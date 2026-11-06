@@ -62,7 +62,10 @@ fn function_header(session: &AnalysisSession<'_>, function: usize) -> usize {
         .unwrap_or(function)
 }
 
-pub(crate) fn returned_value(session: &mut AnalysisSession<'_>, span: Span) -> Option<ExpressionId> {
+pub(crate) fn returned_value(
+    session: &mut AnalysisSession<'_>,
+    span: Span,
+) -> Option<ExpressionId> {
     let variable = session.control.return_variable.clone()?;
     let local = session.local(&variable.name)?;
     let declaration = usize::try_from(local.0)

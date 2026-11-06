@@ -12,9 +12,9 @@ fn searches_and_slices_by_unicode_scalar() {
 
 #[test]
 fn rejects_negative_inverted_and_overflowing_ranges() {
-    for (from, to) in [(-1, 0), (i64::MAX, 1), (0, i64::MAX), (3, 1), (0, 3)] {
+    for (first, last) in [(-1, 0), (i64::MAX, 1), (0, i64::MAX), (3, 1), (0, 3)] {
         assert_eq!(
-            text_substring("abc", from, to),
+            text_substring("abc", first, last),
             Err(MemoryError::StringPositionOutOfRange)
         );
     }

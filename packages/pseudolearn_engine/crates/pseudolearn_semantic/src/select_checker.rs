@@ -22,39 +22,48 @@ pub(crate) fn check(session: &mut AnalysisSession<'_>, node: usize) -> Option<Hi
     let mut paths = Vec::new();
     for (index, branch) in branches.into_iter().enumerate() {
         crate::definite_assignment_state::restore(session, &initial);
-        let children = session.children(branch);
-        let channel_node = *children.get(1)?;
-        let channel = crate::expression_checker::check(session, channel_node);
-        let Some(element) =
-            crate::channel_types::element(session, &session.expression_type(channel))
-        else {
-            session.report(DiagnosticCode::AwaitOperandInvalid, channel_node);
+        let Some((channel, case)) = receive(session, (index, branch), integer).ok()? else {
             continue;
         };
         channels.push(channel);
-        let body = branch_body(session, branch, element)?;
-        let label = label(session, (index, integer), branch);
-        cases.push(HirCase {
-            labels: vec![label],
-            body,
-        });
+        cases.push(case);
         paths.push(crate::definite_assignment_state::path(
             crate::definite_assignment_state::capture(session),
             crate::definite_assignment_state::AssignmentCause::BranchWithoutAssignment,
             session.span(branch),
         ));
     }
-    if paths.is_empty() {
-        crate::definite_assignment_state::restore(session, &initial);
-    } else {
-        crate::definite_assignment_state::merge(session, &paths);
-    }
+    crate::definite_assignment_state::join_branches(session, &initial, &paths);
     Some(HirStatement::Select(Box::new(
         crate::channel_model::HirSelect {
             channels,
             storage,
             selector,
             cases,
+        },
+    )))
+}
+
+fn receive(
+    session: &mut AnalysisSession<'_>,
+    (index, branch): (usize, usize),
+    integer: TypeId,
+) -> Result<Option<(crate::identities::ExpressionId, HirCase)>, ()> {
+    let children = session.children(branch);
+    let channel_node = *children.get(1).ok_or(())?;
+    let channel = crate::expression_checker::check(session, channel_node);
+    let Some(element) = crate::channel_types::element(session, &session.expression_type(channel))
+    else {
+        session.report(DiagnosticCode::AwaitOperandInvalid, channel_node);
+        return Ok(None);
+    };
+    let body = branch_body(session, branch, element).ok_or(())?;
+    let label = label(session, (index, integer), branch);
+    Ok(Some((
+        channel,
+        HirCase {
+            labels: vec![label],
+            body,
         },
     )))
 }

@@ -12,17 +12,8 @@ pub(crate) fn local(
     purpose: ExpressionPurpose,
 ) -> ExpressionId {
     let name = session.name(node);
-    if session.local(&name).is_none()
-        && purpose != ExpressionPurpose::Destination
-        && let Some(function) = session.functions.get(&name).copied()
-    {
-        return crate::function_values::reference(session, function, node);
-    }
-    if session.local(&name).is_none()
-        && let Some(index) =
-            crate::constant_registry::find_in(session, Some(session.current), &name)
-    {
-        return crate::constant_use::reference(session, index, node, purpose);
+    if let Some(reference) = named_reference(session, (node, &name), purpose) {
+        return reference;
     }
     let local = session
         .local(&name)
@@ -36,20 +27,49 @@ pub(crate) fn local(
         session.named_report(DiagnosticCode::VariableUsedBeforeDeclaration, node, &name);
         session.invalid.insert(local);
     }
-    let unassigned = purpose != ExpressionPurpose::Destination
-        && check_read(session, local, node, purpose);
+    let unassigned =
+        purpose != ExpressionPurpose::Destination && check_read(session, local, node, purpose);
     let expression = session.emit(
         HirExpression::Local(local),
         declaration.type_id,
         session.span(node),
     );
-    if unassigned && purpose == ExpressionPurpose::Argument {
+    if unassigned {
+        report_unassigned(session, (expression, local), (node, purpose));
+    }
+    expression
+}
+
+fn named_reference(
+    session: &mut AnalysisSession<'_>,
+    (node, name): (usize, &str),
+    purpose: ExpressionPurpose,
+) -> Option<ExpressionId> {
+    if session.local(name).is_some() {
+        return None;
+    }
+    if purpose != ExpressionPurpose::Destination
+        && let Some(function) = session.functions.get(name).copied()
+    {
+        return Some(crate::function_values::reference(session, function, node));
+    }
+    let index = crate::constant_registry::find_in(session, Some(session.current), name)?;
+    Some(crate::constant_use::reference(
+        session, index, node, purpose,
+    ))
+}
+
+fn report_unassigned(
+    session: &mut AnalysisSession<'_>,
+    (expression, local): (ExpressionId, LocalId),
+    (node, purpose): (usize, ExpressionPurpose),
+) {
+    if purpose == ExpressionPurpose::Argument {
         crate::definite_assignment_report::defer_argument(session, expression, local);
-    } else if unassigned {
+    } else {
         let span = session.span(node);
         crate::definite_assignment_report::unassigned_read(session, local, span);
     }
-    expression
 }
 
 fn check_read(
@@ -69,7 +89,10 @@ fn check_read(
         session.report(DiagnosticCode::TaskHandleEscape, node);
     }
     if matches!(kind, Type::Array { .. })
-        && matches!(purpose, ExpressionPurpose::Value | ExpressionPurpose::Receiver)
+        && matches!(
+            purpose,
+            ExpressionPurpose::Value | ExpressionPurpose::Receiver
+        )
     {
         session.named_report(DiagnosticCode::ArrayCannotBeUsedAsValue, node, &name);
         return false;

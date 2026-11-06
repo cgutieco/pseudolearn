@@ -188,7 +188,8 @@ fn invalid_json_rpc_shapes_return_invalid_request_errors() {
 
 #[test]
 fn publishes_localized_diagnostics_with_zero_based_ranges() {
-    let wrong = "Algoritmo Principal\n  Definir x Como Entero <- 0;\n  x <- \"error\";\nFinAlgoritmo\n";
+    let wrong =
+        "Algoritmo Principal\n  Definir x Como Entero <- 0;\n  x <- \"error\";\nFinAlgoritmo\n";
     let mut server = LspServer::new();
     initialize(&mut server, "es");
     let published = open(&mut server, wrong);
@@ -312,7 +313,7 @@ fn answers_completion_hover_definition_references_and_highlights() {
     let definition = request(&mut server, 4, "textDocument/definition", cursor_at(3, 12));
     assert_eq!(
         definition.pointer("/result/range/start"),
-        Some(&json!({"line": 1, "character": 18}))
+        Some(&json!({"line": 1, "character": 10}))
     );
     let references = request(
         &mut server,
@@ -386,8 +387,7 @@ fn answers_signature_help_and_document_symbols() {
 
 #[test]
 fn formatting_returns_one_full_document_edit_or_nothing() {
-    let mut server =
-        ready_server("algoritmo Principal\ndefinir x como entero <- 0;\nfinalgoritmo");
+    let mut server = ready_server("algoritmo Principal\ndefinir x como entero <- 0;\nfinalgoritmo");
     let edits = request(
         &mut server,
         2,

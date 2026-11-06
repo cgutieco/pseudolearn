@@ -613,6 +613,18 @@
       "estado": "cumple"
     },
     {
+      "regla": "LANG.PROGRAM.CLASSIC@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "La regla se verifica con pseudo ejecutar en el sujeto cli; el sujeto engine verifica los mismos programas en R1."
+    },
+    {
+      "regla": "LANG.PROGRAM.CLASSIC@1.0.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "La regla se verifica con el servicio de lenguaje en el sujeto service; el sujeto engine verifica el análisis en R1."
+    },
+    {
       "regla": "LANG.EDITION.MODEL@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"

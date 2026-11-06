@@ -38,7 +38,19 @@ pub(crate) fn read_field(
     }
 }
 
-pub(crate) fn write_field(
+pub(crate) fn write_place(session: &mut AnalysisSession<'_>, place: &HirPlace, span: Span) {
+    if let HirPlace::RecordField {
+        local,
+        offset,
+        type_id,
+    } = *place
+    {
+        session.writes.insert(local);
+        write_field(session, (local, offset, type_id), span);
+    }
+}
+
+fn write_field(
     session: &mut AnalysisSession<'_>,
     (local, offset, type_id): (LocalId, u32, TypeId),
     span: Span,
@@ -58,7 +70,11 @@ pub(crate) fn write_field(
     }
 }
 
-fn leaves(session: &AnalysisSession<'_>, local: LocalId, (offset, type_id): (u32, TypeId)) -> Vec<LocalId> {
+fn leaves(
+    session: &AnalysisSession<'_>,
+    local: LocalId,
+    (offset, type_id): (u32, TypeId),
+) -> Vec<LocalId> {
     let width = match session.module.types.representation(type_id) {
         Type::Record(record) => crate::record_locals::leaf_count(session, record),
         _ => 1,

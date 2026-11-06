@@ -20,12 +20,12 @@ fn analyzes_original_unicode_identifiers_in_every_profile() -> Result<(), String
         (
             "es",
             "Algoritmo P\nDefinir año Como Entero <- 0;\nan\u{0303}o <- 5;\nEscribir año;\nFinAlgoritmo\n",
-            17,
+            9,
         ),
         (
             "en",
             "algorithm P\ndefine año as integer <- 0;\nan\u{0303}o <- 5;\nwrite año;\nendAlgorithm\n",
-            16,
+            8,
         ),
     ] {
         let response = execute_analyze(&AnalyzeRequest {

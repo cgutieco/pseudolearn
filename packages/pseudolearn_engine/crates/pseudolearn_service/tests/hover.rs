@@ -17,7 +17,8 @@ fn reports_declared_type_in_the_profile_language() -> Result<(), String> {
     assert_eq!(outcome.type_name, "Entero");
     assert_eq!(outcome.category, HoverCategory::Variable);
 
-    let english = "Algorithm Main\n  Define counter As Integer <- 0;\n  cou|nter <- 1;\nEndAlgorithm\n";
+    let english =
+        "Algorithm Main\n  Define counter As Integer <- 0;\n  cou|nter <- 1;\nEndAlgorithm\n";
     let outcome = hover_at(english, Profile::English);
     assert_eq!(
         outcome.map(|entry| entry.type_name),

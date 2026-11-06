@@ -30,7 +30,9 @@ fn examples() -> Result<Vec<Example>, String> {
     for block in source.split("```caso\n").skip(1) {
         let json = block.split("\n```").next().ok_or("missing case")?;
         let case: Value = serde_json::from_str(json).map_err(|error| error.to_string())?;
-        if case.get("operacion").and_then(Value::as_str) != Some("execute") {
+        if case.get("operacion").and_then(Value::as_str) != Some("execute")
+            || case.get("entradas").is_some()
+        {
             continue;
         }
         let programs = case

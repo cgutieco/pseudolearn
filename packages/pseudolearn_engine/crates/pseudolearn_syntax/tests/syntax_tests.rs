@@ -13,7 +13,8 @@ fn parses_basic_algorithm_in_spanish() {
 
 #[test]
 fn parses_basic_algorithm_in_english() {
-    let source_code = "algorithm Main\n  define x as integer <- 0;\n  x <- 42;\n  write x;\nend algorithm\n";
+    let source_code =
+        "algorithm Main\n  define x as integer <- 0;\n  x <- 42;\n  write x;\nend algorithm\n";
     let source = SourceText::new(source_code.to_owned());
     let (tree, diagnostics) = parse_source(&source, Profile::English);
     assert!(diagnostics.is_empty());

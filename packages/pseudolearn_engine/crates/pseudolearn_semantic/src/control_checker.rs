@@ -43,32 +43,20 @@ fn conditional(session: &mut AnalysisSession<'_>, node: usize) -> Option<HirStat
         .map(|body| crate::statement_checker::scoped_body(session, *body))
         .unwrap_or_default();
     let negative_state = capture(session);
-    let paths = match children.get(2) {
-        Some(negative_node) => [
-            path(
-                affirmative_state,
-                AssignmentCause::BranchWithoutAssignment,
-                session.span(affirmative_node),
-            ),
-            path(
-                negative_state,
-                AssignmentCause::BranchWithoutAssignment,
-                session.span(*negative_node),
-            ),
-        ],
-        None => [
-            path(
-                affirmative_state,
-                AssignmentCause::BranchWithoutElse,
-                session.span(node),
-            ),
-            path(
-                negative_state,
-                AssignmentCause::BranchWithoutElse,
-                session.span(node),
-            ),
-        ],
+    let (cause, origins) = match children.get(2) {
+        Some(negative_node) => (
+            AssignmentCause::BranchWithoutAssignment,
+            (session.span(affirmative_node), session.span(*negative_node)),
+        ),
+        None => (
+            AssignmentCause::BranchWithoutElse,
+            (session.span(node), session.span(node)),
+        ),
     };
+    let paths = [
+        path(affirmative_state, cause, origins.0),
+        path(negative_state, cause, origins.1),
+    ];
     merge(session, &paths);
     session.pending_results.extend(affirmative_results);
     Some(HirStatement::Conditional {

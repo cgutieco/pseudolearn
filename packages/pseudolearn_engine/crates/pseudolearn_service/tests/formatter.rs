@@ -3,7 +3,8 @@ use pseudolearn_service::{FormatOptions, format_checked, format_source};
 
 #[test]
 fn formats_canonical_spanish() {
-    let unformatted = "algoritmo Principal\ndefinir x como entero<-0;\nx<-1+2;\nescribir x;\nfinalgoritmo";
+    let unformatted =
+        "algoritmo Principal\ndefinir x como entero<-0;\nx<-1+2;\nescribir x;\nfinalgoritmo";
     let options = FormatOptions {
         profile: Profile::Spanish,
         indent_size: 2,

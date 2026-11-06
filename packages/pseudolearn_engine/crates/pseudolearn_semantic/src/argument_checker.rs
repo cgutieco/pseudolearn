@@ -1,6 +1,6 @@
 use crate::hir::{HirLocal, Passing};
-use crate::output_parameters::Dispatch;
 use crate::identities::{ExpressionId, FunctionId, LocalId};
+use crate::output_parameters::Dispatch;
 use crate::session::AnalysisSession;
 use crate::types::Type;
 use pseudolearn_diagnostics::DiagnosticCode;

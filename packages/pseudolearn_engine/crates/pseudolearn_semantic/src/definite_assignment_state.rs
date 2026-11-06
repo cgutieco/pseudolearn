@@ -225,3 +225,15 @@ pub(crate) fn after_repeat(
     );
     merge(session, &paths);
 }
+
+pub(crate) fn join_branches(
+    session: &mut AnalysisSession<'_>,
+    initial: &FlowPoint,
+    paths: &[FlowPath],
+) {
+    if paths.is_empty() {
+        restore(session, initial);
+    } else {
+        merge(session, paths);
+    }
+}

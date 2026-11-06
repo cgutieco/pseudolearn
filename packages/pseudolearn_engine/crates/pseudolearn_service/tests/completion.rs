@@ -58,12 +58,10 @@ fn closes_every_block_kind_in_both_profiles() {
 
 #[test]
 fn filters_by_prefix_and_ranks_locals_before_keywords() {
-    let code =
-        "Algoritmo Principal\n  Definir total Como Entero <- 0;\n  Esc|\nFinAlgoritmo\n";
+    let code = "Algoritmo Principal\n  Definir total Como Entero <- 0;\n  Esc|\nFinAlgoritmo\n";
     let candidates = complete_marked(code, Profile::Spanish);
     assert_eq!(labels(&candidates).first(), Some(&"Escribir"));
-    let code =
-        "Algoritmo Principal\n  Definir total Como Entero <- 0;\n  to|\nFinAlgoritmo\n";
+    let code = "Algoritmo Principal\n  Definir total Como Entero <- 0;\n  to|\nFinAlgoritmo\n";
     let candidates = complete_marked(code, Profile::Spanish);
     assert_eq!(labels(&candidates).first(), Some(&"total"));
 }

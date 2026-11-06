@@ -52,11 +52,10 @@ fn parses_a_function_with_a_return_variable() {
     let (tree, diagnostics) =
         pseudolearn_syntax::parse_source(&source, pseudolearn_lexicon::Profile::Spanish);
     assert!(diagnostics.is_empty(), "{diagnostics:?}");
-    assert!(
-        (0..tree.node_count()).any(|index| tree
-            .node(index)
-            .is_some_and(|node| node.kind == pseudolearn_syntax::NodeKind::ReturnVariable))
-    );
+    assert!((0..tree.node_count()).any(|index| {
+        tree.node(index)
+            .is_some_and(|node| node.kind == pseudolearn_syntax::NodeKind::ReturnVariable)
+    }));
 }
 
 #[test]

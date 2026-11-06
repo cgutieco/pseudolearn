@@ -24,16 +24,7 @@ pub(crate) fn check(
             .iter()
             .any(|argument| session.expression_type(*argument) == Type::Real);
     for (expected, argument) in signature.parameter_types.iter().zip(&mut arguments) {
-        let actual = crate::snapshot_types::builtin_argument(session, function, *argument);
-        if !compatible(expected, &actual) {
-            session.report(DiagnosticCode::IncompatibleArgumentType, node);
-        }
-        if real && matches!(*expected, "numeric" | "real") {
-            *argument = crate::expression_checker::widen(session, *argument, &Type::Real);
-        }
-        if *expected == "string" {
-            *argument = crate::expression_checker::widen(session, *argument, &Type::String);
-        }
+        *argument = check_argument(session, (function, expected), *argument, (node, real));
     }
     let result = result_type(session, signature.return_type, &arguments, (widest, real));
     let result = session.module.types.intern(result);
@@ -45,6 +36,25 @@ pub(crate) fn check(
         result,
         session.span(node),
     )
+}
+
+fn check_argument(
+    session: &mut AnalysisSession<'_>,
+    (function, expected): (BuiltinKind, &str),
+    argument: ExpressionId,
+    (node, real): (usize, bool),
+) -> ExpressionId {
+    let actual = crate::snapshot_types::builtin_argument(session, function, argument);
+    if !compatible(expected, &actual) {
+        session.report(DiagnosticCode::IncompatibleArgumentType, node);
+    }
+    if real && matches!(expected, "numeric" | "real") {
+        return crate::expression_checker::widen(session, argument, &Type::Real);
+    }
+    if expected == "string" {
+        return crate::expression_checker::widen(session, argument, &Type::String);
+    }
+    argument
 }
 
 fn compatible(expected: &str, actual: &Type) -> bool {

@@ -22,16 +22,8 @@ pub(crate) fn assignment(session: &mut AnalysisSession<'_>, node: usize) -> Opti
         return None;
     };
     crate::binding_checker::check_destination(session, &location, target);
-    if let HirPlace::RecordField {
-        local,
-        offset,
-        type_id,
-    } = location
-    {
-        session.writes.insert(local);
-        let span = session.span(node);
-        crate::record_assignment::write_field(session, (local, offset, type_id), span);
-    }
+    let span = session.span(node);
+    crate::record_assignment::write_place(session, &location, span);
     if matches!(location, HirPlace::WholeArray(_)) {
         session.report(DiagnosticCode::ArrayCannotBeUsedAsValue, target);
         return None;
@@ -85,26 +77,12 @@ pub(crate) fn input(session: &mut AnalysisSession<'_>, node: usize) -> HirStatem
             continue;
         }
         crate::binding_checker::check_destination(session, &location, target);
-        if let HirPlace::RecordField {
-            local,
-            offset,
-            type_id,
-        } = location
-        {
-            session.writes.insert(local);
-            let span = session.span(target);
-            crate::record_assignment::write_field(session, (local, offset, type_id), span);
-        }
+        let span = session.span(target);
+        crate::record_assignment::write_place(session, &location, span);
         if let HirPlace::Local(local) = location {
             session.writes.insert(local);
-            let span = session.span(target);
             crate::definite_assignment_state::assign(session, local, span);
-            if let Some(initialized) = usize::try_from(local.0)
-                .ok()
-                .and_then(|index| session.initialized.get_mut(index))
-            {
-                *initialized = true;
-            }
+            crate::binding_checker::mark_initialized(session, local);
         }
         destinations.push(location);
     }

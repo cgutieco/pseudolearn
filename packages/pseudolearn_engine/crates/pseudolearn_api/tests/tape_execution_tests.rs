@@ -261,7 +261,8 @@ fn two_identical_recordings_serialize_to_identical_tapes() -> Result<(), String>
 
 #[test]
 fn recorded_input_reads_replay_from_the_tape_without_external_input() -> Result<(), String> {
-    let program = "Algoritmo P\nDefinir x Como Entero <- 0;\nLeer x;\nEscribir x * 2;\nFinAlgoritmo\n";
+    let program =
+        "Algoritmo P\nDefinir x Como Entero <- 0;\nLeer x;\nEscribir x * 2;\nFinAlgoritmo\n";
     let recording = ApiSession::default().call(
         "record",
         &json!({"request":{"program":program,"profile":"es","seed":42,"inputs":["21"],"observe":"events"}}),

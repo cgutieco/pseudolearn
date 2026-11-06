@@ -10,12 +10,14 @@ fn captures(program: &str) -> Vec<pseudolearn_diagnostics::Diagnostic> {
         .collect()
 }
 
-const LITERAL: &str = "define f as subroutine() as integer <- subroutine() as integer\nreturn x;\nendSubroutine;\n";
+const LITERAL: &str =
+    "define f as subroutine() as integer <- subroutine() as integer\nreturn x;\nendSubroutine;\n";
 
 #[test]
 fn a_variable_assigned_once_can_be_captured() {
-    let program =
-        format!("algorithm Main\ndefine x as integer;\nx <- 1;\n{LITERAL}write f();\nendAlgorithm\n");
+    let program = format!(
+        "algorithm Main\ndefine x as integer;\nx <- 1;\n{LITERAL}write f();\nendAlgorithm\n"
+    );
     assert!(captures(&program).is_empty());
 }
 
@@ -25,11 +27,16 @@ fn a_later_reassignment_is_the_related_origin() {
         "algorithm Main\ndefine x as integer;\nx <- 1;\n{LITERAL}x <- 2;\nwrite f();\nendAlgorithm\n"
     );
     let found = captures(&program);
-    let [diagnostic] = found.as_slice() else {
-        panic!("{found:?}");
-    };
-    assert_eq!(diagnostic.related.len(), 1);
-    assert!(diagnostic.related.iter().all(|span| span.start > diagnostic.span.start));
+    assert_eq!(found.len(), 1, "{found:?}");
+    for diagnostic in &found {
+        assert_eq!(diagnostic.related.len(), 1);
+        assert!(
+            diagnostic
+                .related
+                .iter()
+                .all(|span| span.start > diagnostic.span.start)
+        );
+    }
 }
 
 #[test]

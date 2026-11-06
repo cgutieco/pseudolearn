@@ -4,7 +4,10 @@ use pseudolearn_diagnostics::DiagnosticCode;
 
 fn codes(program: &str) -> Vec<DiagnosticCode> {
     let (_, diagnostics) = support::analyze(program);
-    diagnostics.iter().map(|diagnostic| diagnostic.code).collect()
+    diagnostics
+        .iter()
+        .map(|diagnostic| diagnostic.code)
+        .collect()
 }
 
 #[test]
