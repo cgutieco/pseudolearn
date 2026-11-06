@@ -136,7 +136,18 @@
     "C17",
     "C18",
     "C19",
-    "C20",
+    "C20"
+  ]
+}
+```
+
+```regla
+{
+  "id": "R2",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "pseudo ejecutar ejecuta cada programa de R1 sin cambios, recibe sus entradas por la entrada estándar y escribe exactamente la salida que deriva R1, con código de salida 0 y sin salida de error.",
+  "verificacion": [
     "C21",
     "C22",
     "C23",
@@ -146,7 +157,18 @@
     "C27",
     "C28",
     "C29",
-    "C30",
+    "C30"
+  ]
+}
+```
+
+```regla
+{
+  "id": "R3",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "El servicio de lenguaje analiza cada programa de R1 sin cambios como único archivo de un proyecto y no publica diagnósticos ni errores de proyecto.",
+  "verificacion": [
     "C31",
     "C32",
     "C33",
@@ -652,7 +674,7 @@
 ```caso
 {
   "id": "C21",
-  "regla": "R1",
+  "regla": "R2",
   "perfiles": [
     "es"
   ],
@@ -683,7 +705,7 @@
 ```caso
 {
   "id": "C22",
-  "regla": "R1",
+  "regla": "R2",
   "perfiles": [
     "es"
   ],
@@ -714,7 +736,7 @@
 ```caso
 {
   "id": "C23",
-  "regla": "R1",
+  "regla": "R2",
   "perfiles": [
     "es"
   ],
@@ -745,7 +767,7 @@
 ```caso
 {
   "id": "C24",
-  "regla": "R1",
+  "regla": "R2",
   "perfiles": [
     "es"
   ],
@@ -776,7 +798,7 @@
 ```caso
 {
   "id": "C25",
-  "regla": "R1",
+  "regla": "R2",
   "perfiles": [
     "es"
   ],
@@ -807,7 +829,7 @@
 ```caso
 {
   "id": "C26",
-  "regla": "R1",
+  "regla": "R2",
   "perfiles": [
     "es"
   ],
@@ -838,7 +860,7 @@
 ```caso
 {
   "id": "C27",
-  "regla": "R1",
+  "regla": "R2",
   "perfiles": [
     "es"
   ],
@@ -869,7 +891,7 @@
 ```caso
 {
   "id": "C28",
-  "regla": "R1",
+  "regla": "R2",
   "perfiles": [
     "es"
   ],
@@ -900,7 +922,7 @@
 ```caso
 {
   "id": "C29",
-  "regla": "R1",
+  "regla": "R2",
   "perfiles": [
     "es"
   ],
@@ -931,7 +953,7 @@
 ```caso
 {
   "id": "C30",
-  "regla": "R1",
+  "regla": "R2",
   "perfiles": [
     "es"
   ],
@@ -962,7 +984,7 @@
 ```caso
 {
   "id": "C31",
-  "regla": "R1",
+  "regla": "R3",
   "perfiles": [
     "es"
   ],
@@ -1027,7 +1049,7 @@
 ```caso
 {
   "id": "C32",
-  "regla": "R1",
+  "regla": "R3",
   "perfiles": [
     "es"
   ],
@@ -1092,7 +1114,7 @@
 ```caso
 {
   "id": "C33",
-  "regla": "R1",
+  "regla": "R3",
   "perfiles": [
     "es"
   ],
@@ -1157,7 +1179,7 @@
 ```caso
 {
   "id": "C34",
-  "regla": "R1",
+  "regla": "R3",
   "perfiles": [
     "es"
   ],
@@ -1222,7 +1244,7 @@
 ```caso
 {
   "id": "C35",
-  "regla": "R1",
+  "regla": "R3",
   "perfiles": [
     "es"
   ],
@@ -1287,7 +1309,7 @@
 ```caso
 {
   "id": "C36",
-  "regla": "R1",
+  "regla": "R3",
   "perfiles": [
     "es"
   ],
@@ -1352,7 +1374,7 @@
 ```caso
 {
   "id": "C37",
-  "regla": "R1",
+  "regla": "R3",
   "perfiles": [
     "es"
   ],
@@ -1417,7 +1439,7 @@
 ```caso
 {
   "id": "C38",
-  "regla": "R1",
+  "regla": "R3",
   "perfiles": [
     "es"
   ],
@@ -1482,7 +1504,7 @@
 ```caso
 {
   "id": "C39",
-  "regla": "R1",
+  "regla": "R3",
   "perfiles": [
     "es"
   ],
@@ -1547,7 +1569,7 @@
 ```caso
 {
   "id": "C40",
-  "regla": "R1",
+  "regla": "R3",
   "perfiles": [
     "es"
   ],

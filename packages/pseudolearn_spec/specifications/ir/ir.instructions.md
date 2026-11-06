@@ -1780,6 +1780,22 @@
 
 ```cobertura
 {
+  "id": "V252",
+  "regla": "LANG.PROGRAM.CLASSIC#R2",
+  "sin_ri": "La CLI ejecuta la RI que cubre R1."
+}
+```
+
+```cobertura
+{
+  "id": "V253",
+  "regla": "LANG.PROGRAM.CLASSIC#R3",
+  "sin_ri": "El servicio solo analiza; no emite RI."
+}
+```
+
+```cobertura
+{
   "id": "V26",
   "regla": "LANG.DECL.UNUSED#R1",
   "sin_ri": "Advertencias del análisis estático."
