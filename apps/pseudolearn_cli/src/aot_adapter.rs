@@ -59,21 +59,29 @@ pub(crate) fn execute_natively(
     cache: &mut ExecutableCache,
     launch: &NativeLaunch,
 ) -> ExecuteResponse {
+    execute_natively_with_exit(request, cache, launch).0
+}
+
+pub(crate) fn execute_natively_with_exit(
+    request: &ExecuteRequest,
+    cache: &mut ExecutableCache,
+    launch: &NativeLaunch,
+) -> (ExecuteResponse, u8) {
     let object = match build_native_object(&conformance_build_request(request)) {
         Ok(object) => object,
         Err(NativeBuildFailure::Rejected(diagnostics)) => {
-            return rejected_native_response(diagnostics);
+            return (rejected_native_response(diagnostics), 0);
         }
         Err(NativeBuildFailure::Backend(_) | NativeBuildFailure::ProjectRejected(_)) => {
-            return internal_fault(request);
+            return (internal_fault(request), 0);
         }
     };
     let Ok(executable) = cache.executable_for(&object.bytes) else {
-        return internal_fault(request);
+        return (internal_fault(request), 0);
     };
     let effect_input = match native_effect_input(request) {
         Ok(bytes) => bytes,
-        Err(error) => return protocol_rejected_native_response(&error),
+        Err(error) => return (protocol_rejected_native_response(&error), 0),
     };
     let launch = NativeLaunch {
         seed: request.seed,
@@ -85,8 +93,11 @@ pub(crate) fn execute_natively(
         (&request.inputs, &effect_input),
         &launch,
     ) {
-        Ok(report) => native_execute_response(request, object.warnings, &report),
-        Err(_) => internal_fault(request),
+        Ok(report) => (
+            native_execute_response(request, object.warnings, &report),
+            crate::native_run::requested_exit(&report),
+        ),
+        Err(_) => (internal_fault(request), 0),
     }
 }
 

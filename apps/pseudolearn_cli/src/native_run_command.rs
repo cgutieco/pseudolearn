@@ -30,18 +30,26 @@ pub(crate) fn execute_native(
         program_arguments: options.execution.program_arguments.clone(),
         program_directory: Some(directory),
     };
-    let response = crate::aot_adapter::execute_natively(&request, &mut cache, &launch);
+    let (response, requested_exit) =
+        crate::aot_adapter::execute_natively_with_exit(&request, &mut cache, &launch);
     let document = serde_json::to_value(&response).map_err(operational)?;
     present(options, path, &response.output, &document)?;
     if let Some(target) = &options.execution.record_tape {
         crate::tape_files::persist(target, &document)?;
     }
-    Ok(i32::from(
-        document
-            .pointer("/termination/kind")
-            .and_then(Value::as_str)
-            != Some("completed"),
-    ))
+    Ok(process_exit_code(&document, requested_exit))
+}
+
+pub(crate) fn process_exit_code(document: &Value, requested_exit: u8) -> i32 {
+    let completed = document
+        .pointer("/termination/kind")
+        .and_then(Value::as_str)
+        == Some("completed");
+    if completed {
+        i32::from(requested_exit)
+    } else {
+        1
+    }
 }
 
 fn present(

@@ -74,3 +74,21 @@ pub fn run_executable(
         effects,
     })
 }
+
+pub fn requested_exit(report: &NativeRunReport) -> u8 {
+    report
+        .effects
+        .as_deref()
+        .and_then(|bytes| serde_json::from_slice::<serde_json::Value>(bytes).ok())
+        .and_then(|document| {
+            document
+                .get("exit_code")
+                .and_then(serde_json::Value::as_u64)
+        })
+        .and_then(|code| u8::try_from(code).ok())
+        .unwrap_or(0)
+}
+
+#[cfg(test)]
+#[path = "native_run_tests.rs"]
+mod native_run_tests;
