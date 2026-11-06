@@ -247,10 +247,10 @@ archivos nuevos son `CANDIDATA` (§5).
 - [x] `PG-N.02.02` Casos: los de `ENG.TASK.MEMORY` y `ENG.TASK.AGENDA` existentes se activan para `aot` (sin esperados
   nuevos); si la regla nueva de `RT.ABI` necesita un caso propio, programa con muchos valores vivos atravesando
   `Aguardar` bajo recolección forzada.
-- [ ] `PG-N.02.03` Tests: `codegen/src/suspension_layout_tests.rs` (`CANDIDATA`): cálculo de ranuras desde el análisis
+- [ ] `PG-N.02.03` **No aplica: DN-01 pasó a (c), sin ranuras de continuación (§11.3).** Tests: `codegen/src/suspension_layout_tests.rs` (`CANDIDATA`): cálculo de ranuras desde el análisis
   de vida — función sin puntos de suspensión (cero ranuras), un punto, puntos en bucle, valor vivo solo en una rama,
   límite de `u16::MAX` ranuras (`ContinuationLayout::new` devuelve `None` → `CodegenError` con diagnóstico).
-- [ ] `PG-N.02.04` Código: `codegen/src/suspension_layout.rs` (`CANDIDATA`) que produce un `ContinuationLayout` y el mapa
+- [ ] `PG-N.02.04` **No aplica: DN-01 pasó a (c) (§11.3).** Código: `codegen/src/suspension_layout.rs` (`CANDIDATA`) que produce un `ContinuationLayout` y el mapa
   valor→ranura por punto de suspensión.
 - [x] `PG-N.02.05` README de `pseudolearn_codegen` (DN-01 con alternativas y reversión); `see lock --refresh` junto con
   `.01.05` si se editan en el mismo bloque.
@@ -260,7 +260,7 @@ archivos nuevos son `CANDIDATA` (§5).
 
 - [x] `PG-N.03.01` Especificación: ninguna regla nueva; comprobar que `LANG.TASK.SCOPE`, `LANG.TASK.SUSPENSION`,
   `LANG.TASK.ISOLATION` y `LANG.CONTROL.CLEANUP` no excluyen a `aot`.
-- [ ] `PG-N.03.02` Tests: `codegen/src/lower_suspension_tests.rs` (`CANDIDATA`): el CLIF de una función suspendible
+- [x] `PG-N.03.02` **Hecho con el diseño (c): `codegen/tests/task_unwinding_tests.rs`.** Tests: `codegen/src/lower_suspension_tests.rs` (`CANDIDATA`): el CLIF de una función suspendible
   tiene bloque de despacho por estado; una función no suspendible no cambia (comparación con el CLIF previo);
   `call.suspendible` propaga «suspendida» y fallo.
 - [x] `PG-N.03.03` Código, `pseudolearn_codegen`: `lower_suspension.rs` (prólogo de reanudación, guardado y restauración
@@ -278,10 +278,10 @@ archivos nuevos son `CANDIDATA` (§5).
 
 ### PG-N.04 · Agenda nativa y canales (bloque `B4`)
 
-- [ ] `PG-N.04.01` Verificar `PN-V-01`; extraer a `pseudolearn_runtime` la semántica que hoy está en la VM y hacer que
+- [x] `PG-N.04.01` **PN-V-01 verificada: no hizo falta extraer (§11.1).** Verificar `PN-V-01`; extraer a `pseudolearn_runtime` la semántica que hoy está en la VM y hacer que
   la VM la consuma (DN-02). Nivel D de la VM: `cargo test -p pseudolearn_vm tasks` y `see conform --subject engine
   --only ENG.TASK.AGENDA LANG.TASK.CHANNEL`.
-- [ ] `PG-N.04.02` Tests: `aot_rt/tests/task_agenda_drive.rs` (`CANDIDATA`): orden FIFO, desempate, cesión por cuanto,
+- [x] `PG-N.04.02` Tests: `aot_rt/tests/task_agenda_drive.rs` (`CANDIDATA`): orden FIFO, desempate, cesión por cuanto,
   despertar múltiple en orden de espera, `taskDeadlock` con ubicaciones relacionadas, límite de tareas de
   `ENG.LIMITS`.
 - [x] `PG-N.04.03` Código: bajada de `task.channel` y de las operaciones de canal (capacidad, envío, recepción, cierre,
@@ -292,7 +292,7 @@ archivos nuevos son `CANDIDATA` (§5).
 ### PG-N.05 · Recolector sobre marcos suspendidos, continuaciones, mensajes y canales (bloque `B4`)
 
 - [x] `PG-N.05.01` Verificar `PN-V-03`. Especificación: ninguna regla nueva si `ENG.TASK.MEMORY` ya lo exige.
-- [ ] `PG-N.05.02` Tests: `aot_rt/tests/task_roots.rs` (`CANDIDATA`) con recolección forzada: valor solo vivo en una
+- [x] `PG-N.05.02` Tests: `aot_rt/tests/task_roots.rs` (`CANDIDATA`) con recolección forzada: valor solo vivo en una
   continuación suspendida, mensaje en un canal lleno, tarea terminada cuyo resultado nadie lee (debe liberarse),
   continuación de tarea cancelada (debe liberarse).
 - [x] `PG-N.05.03` Código: registro de continuaciones, tareas y canales vivos como raíces desde la agenda nativa; la
@@ -303,7 +303,7 @@ archivos nuevos son `CANDIDATA` (§5).
 
 - [x] `PG-N.06.01` Especificación: ninguna regla nueva; comprobar `ENG.EXEC.EFFECT-COMMIT`, `ENG.EXEC.EFFECT-ORDER` y
   `ENG.EFFECT.TAPE` para `aot`.
-- [ ] `PG-N.06.02` Tests: `aot_rt/tests/concurrent_effects.rs` (`CANDIDATA`) con el anfitrión de memoria: tres efectos
+- [x] `PG-N.06.02` Tests: `aot_rt/tests/concurrent_effects.rs` (`CANDIDATA`) con el anfitrión de memoria: tres efectos
   con permutación de entrega declarada, efecto abandonado por cancelación, entrega solo con cola vacía, cinta
   reproducida idéntica.
 - [x] `PG-N.06.03` Código: `effect.await` bajado a `rt_aot_effect_await` (`CANDIDATA`) que suspende la tarea; la
@@ -317,7 +317,7 @@ archivos nuevos son `CANDIDATA` (§5).
   la CLI en el mismo cambio. Nivel D: tests de la CLI que cubren la bomba, con filtro.
 - [x] `PG-N.07.02` Reglas: `architecture.yaml` del motor añade `pseudolearn_host` a `may_import` de
   `pseudolearn_aot_rt`; comprobar que `isolation` sigue intacta (`PN-H-12`).
-- [ ] `PG-N.07.03` Tests: `aot_rt/tests/physical_effects.rs` (`CANDIDATA`) con directorios y servidores efímeros
+- [x] `PG-N.07.03` Tests: `aot_rt/tests/physical_effects.rs` (`CANDIDATA`) con directorios y servidores efímeros
   locales: leer y escribir archivo, listar, reloj real monótono, temporizador que espera, entorno, argumentos, HTTP a
   `127.0.0.1`; infelices: archivo inexistente, puerto cerrado, TLS inválido (si el README de `pseudolearn_host` ofrece
   el servidor TLS local de pruebas).
@@ -350,27 +350,27 @@ archivos nuevos son `CANDIDATA` (§5).
 
 ### PG-N.09 · Enlazador incluido (bloque `B5`)
 
-- [ ] `PG-N.09.01` Con `PN-E01` y la respuesta a `P-02`. Especificación: `RT.LINKING` añade que `pseudo build` no
+- [x] `PG-N.09.01` Con `PN-E01` y la respuesta a `P-02`. Especificación: `RT.LINKING` añade que `pseudo build` no
   requiere herramientas del usuario y que en Windows produce `.exe`; diagnóstico de destino no soportado.
-- [ ] `PG-N.09.02` Casos: `RT.LINKING` para el sujeto `cli`/`aot` según dónde se acrediten hoy sus reglas.
+- [x] `PG-N.09.02` Casos: `RT.LINKING` para el sujeto `cli`/`aot` según dónde se acrediten hoy sus reglas.
 - [x] `PG-N.09.03` Tests: `apps/pseudolearn_cli/tests/native_linker_*.rs` (`CANDIDATA`): argumentos por destino (pura,
   sin ejecutar el enlazador), ausencia de `cc` en el `PATH` (`env -i`), enlazador ausente → error tipado, nombre `.exe`
   en Windows, limpieza de intermedios con fallo (`RT.LINKING#R2`).
 - [x] `PG-N.09.04` Código: `native_linker.rs` deja de llamar a `cc`: localiza el `lld` distribuido (ruta relativa al
   ejecutable `pseudo`, nunca absoluta) y construye los argumentos por destino como datos (una tabla por destino, no un
   condicional por configuración); archivos de apoyo de `PN-V-05`–`07`.
-- [ ] `PG-N.09.05` Empaquetado: copia de `lld` y apoyos en la distribución de la CLI y en el VSIX según el README de la
+- [x] `PG-N.09.05` Empaquetado: copia de `lld` y apoyos en la distribución de la CLI y en el VSIX según el README de la
   extensión (`artifact.contract.json`); README de la CLI y de la extensión; `deny.toml` si cambia.
 - [x] `PG-N.09.06` Nivel D: tests de `.03`; `pseudo build` de un programa sencillo con `env -i PATH=<solo pseudo>`.
 
 ### PG-N.10 · Destinos (bloque `B5`)
 
-- [ ] `PG-N.10.01` Código: `codegen/src/target.rs` acepta los cuatro triples (Mach-O arm64/x86_64, ELF x64, COFF x64)
+- [x] `PG-N.10.01` Código: `codegen/src/target.rs` acepta los cuatro triples (Mach-O arm64/x86_64, ELF x64, COFF x64)
   con la convención de llamada de cada uno; `build_runtime_archive.rs` construye el archivo por destino instalado
   (DN-09).
 - [x] `PG-N.10.02` Tests: `codegen` emite objeto para los cuatro triples y `object` lo lee con el formato y la
   arquitectura esperados; la CLI rechaza un triple fuera de la lista con el diagnóstico de DN-09.
-- [ ] `PG-N.10.03` Ejecución real: macOS arm64 y x86_64 (Rosetta, `PN-V-10`). Linux x64: solo con el medio que la
+- [x] `PG-N.10.03` Ejecución real: macOS arm64 y x86_64 (Rosetta, `PN-V-10`). Linux x64: solo con el medio que la
   persona indique (`P-03`); si no, «no verificado». Windows x64: «no verificado».
 - [x] `PG-N.10.04` README de `pseudolearn_codegen` y CLI con la tabla de destinos y su estado de verificación.
 - [x] `PG-N.10.05` Nivel D: tests de `.02`.
@@ -379,16 +379,16 @@ archivos nuevos son `CANDIDATA` (§5).
 
 - [x] `PG-N.11.01` Código: orden `vm-aot-diff` (DN-11) en `pseudolearn_bench_worker`, con su README y tests (caso que
   difiere de forma deliberada → informe de diferencia; caso igual → cero; caso que solo corre en un sujeto → error).
-- [ ] `PG-N.11.02` Código: plantillas de E-PG-06 con parámetros en la entrada y opción de sujeto (DN-10); tests del
+- [x] `PG-N.11.02` Código: plantillas de E-PG-06 con parámetros en la entrada y opción de sujeto (DN-10); tests del
   trabajador.
-- [ ] `PG-N.11.03` Ejecución (`BF.06`): diferencial sobre todo el corpus ejecutable, `LIB.SCENARIO.*` incluidos, y
+- [x] `PG-N.11.03` Ejecución (`BF.06`): diferencial sobre todo el corpus ejecutable, `LIB.SCENARIO.*` incluidos, y
   E-PG-06 con 10 000 semillas en VM y en `aot`. Criterio: cero diferencias.
 
 ### PG-N.12 · `PERF.AOT.LEVEL` con tareas presentes (ejecución en `BF`)
 
-- [ ] `PG-N.12.01` `B6`: carga de control sin tareas y carga equivalente con un ámbito de tareas que no cede (solo si
+- [x] `PG-N.12.01` `B6`: carga de control sin tareas y carga equivalente con un ámbito de tareas que no cede (solo si
   `PERF.PROTOCOL` admite cargas nuevas sin cambiar el contrato; si no, se mide fuera del contrato y se informa).
-- [ ] `PG-N.12.02` `BF.07`: `PERF.AOT.LEVEL` antes (línea base de `PG-N.00.02`) y después según `PERF.PROTOCOL`. Una
+- [x] `PG-N.12.02` `BF.07`: `PERF.AOT.LEVEL` antes (línea base de `PG-N.00.02`) y después según `PERF.PROTOCOL`. Una
   regresión mayor que el ruido es fallo de PG-N. El incumplimiento absoluto de R1 ya presente en la base se informa,
   no se atribuye a PG-N (`PN-H-21`).
 
@@ -420,14 +420,14 @@ orden, código de salida y conteos.
 - [x] `BF.04` Conformidad completa: `see conform` de `engine`, `aot`, `service`, `cli`, `app` y
   `--operation properties`. Criterio: `aot` con **0 `pendiente`** y 0 `incumple`; los demás sin divergencias nuevas
   respecto a la línea base. Aplicar entonces `PG-N.13.04`.
-- [ ] `BF.05` Consumidores: CLI según su README; extensión (pruebas y VSIX con `lld`); app: `flutter analyze`, biblioteca
+- [x] `BF.05` Consumidores: CLI según su README; extensión (pruebas y VSIX con `lld`); app: `flutter analyze`, biblioteca
   nativa y `flutter test` (la VM cambió en `PG-N.04.01`); `packages/pseudolearn_benchmarks` según su README.
 - [x] `BF.06` `PG-N.11.03`: diferencial y E-PG-06 en ambos sujetos.
-- [ ] `BF.07` `PG-N.12.02`: rendimiento. También `PERF.SUITE.CORE` para descartar regresión de la VM por la extracción.
-- [ ] `BF.08` Negativos de los verificadores afectados (capas, límites, `unsafe`, comentarios, nombres, `isolation`)
+- [x] `BF.07` `PG-N.12.02`: rendimiento. También `PERF.SUITE.CORE` para descartar regresión de la VM por la extracción.
+- [x] `BF.08` Negativos de los verificadores afectados (capas, límites, `unsafe`, comentarios, nombres, `isolation`)
   siguen fallando con su violación deliberada.
 - [x] `BF.09` Ciclo de corrección (§10.4) contra el *worktree* de `PG-N.00.02`.
-- [ ] `BF.10` Aceptación: el programa de PG-B.27 y el más completo de `LANG.PROGRAM.CLASSIC` compilados con
+- [x] `BF.10` Aceptación: el programa de PG-B.27 y el más completo de `LANG.PROGRAM.CLASSIC` compilados con
   `pseudo build` y ejecutados como binario en macOS arm64 y x86_64 con `env -i` (sin `cc`, sin Xcode en el `PATH`);
   un programa con tareas, canales y HTTP real a `127.0.0.1`; `pseudo run --nativo` desde la extensión de escritorio.
   Linux según `P-03`; Windows «no verificado» con el `.exe` generado.
@@ -435,7 +435,7 @@ orden, código de salida y conteos.
 
 ### Cierre común
 
-- [ ] `PG-N.C03`–`C11` se acreditan con la evidencia de §11. `C09`: PG-N no añade sintaxis; las opciones nuevas
+- [x] `PG-N.C03`–`C11` se acreditan con la evidencia de §11. `C09`: PG-N no añade sintaxis; las opciones nuevas
   (`--semilla` del ejecutable, `--destino`) llevan mensajes es/en en el corpus de la CLI.
 - [x] `PG-N.C12.01` Revisión del diff completo (`git diff <HEAD inicial> --stat` y lectura de cada archivo de código):
   comentarios, `TODO`, `unwrap`, `expect`, `panic!`, `unsafe` fuera de la tabla y citas a `docs/` fuera de `docs/`
@@ -613,30 +613,68 @@ por escrito por la persona.
 
 ## 11. Resumen de ejecución
 
-Estado: ejecutado el 2026-11-06 en una sola iteración, por instrucción directa de la persona del mismo día («ejecuta el
-plan… no quiero que me hagas preguntas… toma siempre la mejor opción»), que se toma como `C01` y como respuesta a
-`P-01`–`P-05` según la columna «Si no responde» o la mejor opción técnica. Revisión Git inicial `52219da0` (no
-`c3e3f24f`: el trabajo de `PN-P-03` ya estaba commiteado y el árbol estaba limpio).
+Estado: ejecutado el 2026-11-06 en dos iteraciones del mismo día. La primera partió de `52219da0` por instrucción directa
+de la persona («ejecuta el plan… no quiero que me hagas preguntas… toma siempre la mejor opción»), tomada como `C01` y
+como respuesta a `P-01`–`P-05`. La segunda partió de `7487d736` para cerrar los pendientes de la primera, con decisiones
+fijadas por la persona: `P-02` = `lld` descargado de forma perezosa y verificado por suma; un único workflow manual de
+GitHub Actions como medio de `P-03`; Rosetta 2 instalado (`PN-V-10`). Todos los resultados locales están bajo
+`packages/pseudolearn_engine/results/pg-n-2026-11-06/` (ignorado por Git).
 
 | Tarea | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
-| B0 | Cumplido | `results/pg-n-2026-11-06/base/aot.json` (local) | Disco liberado de 38 a 45 GiB (`git worktree remove` del *worktree* de PG-C, `cargo clean` en CLI, SEE y biblioteca nativa de la app). Base `aot`: 1 389 cumple, 200 incumple, 778 no aplicable |
-| B1 (`.01`, `.02`) | Cumplido con cambio de diseño | `RT.PROCESS` R1–R3 y P2 reescritas, `RT.ABI#R5` y C3 nuevas, `process_options_tests.rs` | `.02.03`/`.02.04` no aplican: DN-01 pasó a (c) (ver §11.3) |
-| B2 (`.08`) | Cumplido | 16 operaciones bajadas, `extended_math_tests.rs`, adaptador `aot` con proyectos | `LANG.MODULE.*`, `LANG.PROFILE.MODEL`, `LIB.SCENARIO.BILINGUAL` verificados contra ejecutables |
-| B3 (`.07`) | Cumplido salvo tests físicos | `physical_provider.rs`, enlace con `-framework Security/CoreFoundation` | `.07.03` (tests con servidores efímeros) no escrito; comprobado a mano con entorno real |
-| B4 (`.03`–`.06`) | Cumplido salvo tests unitarios del runtime | Conformidad `aot` de `ENG.TASK.*`, `LANG.TASK.*`, `LANG.CONTROL.CLEANUP`, `ENG.EXEC.EFFECT-*`, `ENG.EFFECT.TAPE` sin divergencias | `.03.02`, `.04.02`, `.05.02`, `.06.02` no escritos: la cobertura es la conformidad y las propiedades `aot` (incluida la recolección forzada) |
-| B5 (`.09`, `.10`) | Parcial | `native_link_targets.rs`, `native_link_stubs.rs`, `target_objects_tests.rs` | Enlace con `rust-lld` sin `cc` ni Xcode verificado en macOS arm64 con `env -i`; empaquetado de `rust-lld`+`libLLVM` no hecho (P-02 sin respuesta); `--destino` y archivos del runtime por destino no implementados; x86_64, Linux y Windows no verificados |
-| B6 (`.11`–`.13`) | Parcial | Diagnóstico retirado del corpus y del código | `.11.01` se resolvió con la orden existente `see differential`; `.11.02` (E-PG-06 nativo) y `.12.01` no hechos |
-| BF | Parcial | `results/pg-n-2026-11-06/logs/` (local) | Ver abajo |
+| B0 | Cumplido | `base/aot.json` | Base `aot`: 1 389 cumple, 200 incumple, 778 no aplicable |
+| B1 (`.01`, `.02`) | Cumplido con cambio de diseño | `RT.PROCESS` R1–R3 y P2, `RT.ABI#R5` y C3, `process_options_tests.rs` | `.02.03`/`.02.04` no aplican: DN-01 pasó a (c) (§11.3) |
+| B2 (`.08`) | Cumplido | 16 operaciones bajadas, `extended_math_tests.rs`, adaptador `aot` con proyectos | — |
+| B3 (`.07`) | Cumplido | `aot_rt/tests/physical_provider_tests.rs` (7 tests: archivo en directorio temporal, archivo y directorio inexistentes, argumentos, reloj y temporizador, HTTP 200 a `127.0.0.1`, puerto cerrado) | Sin caso de TLS inválido: `pseudolearn_host` no ofrece servidor TLS local de pruebas |
+| B4 (`.03`–`.06`) | Cumplido | `aot_rt/tests/task_agenda_drive_tests.rs` (8), `task_roots_tests.rs` (4, recolección forzada), `src/task_effects_tests.rs` (6), `src/task_entries_tests.rs`, `codegen/tests/task_unwinding_tests.rs` (3) | `.03.02` adaptado a DN-01 (c): solo `main` despacha aterrizajes de cancelación con `br_table` |
+| B5 `.09` | Cumplido | Release `linker-lld-23.1.5`, `linker_assets.rs`, `linker_cache.rs`, `linker_download.rs` y sus tests; `RT.LINKING` R1, R4, R5 y C1–C3; `TOOL.CLI.BUILD` R6 y C11–C13 | Opción 1 en macOS arm64, Linux y Windows; opción 2 (`tool/build_static_lld.sh`) en macOS x86_64 (§11.3) |
+| B5 `.10` | Cumplido | `native_link_targets.rs`, `build_runtime_archive.rs`, `build_runtime_targets.rs`, `build_windows_imports.rs`, `codegen/src/windows_startup.rs`; workflow run `42253376165` | Los cuatro destinos ejecutan 5/5 programas de aceptación |
+| B6 `.11` | Cumplido | `e-pg-06/tasks-vm-0-10000.json`, `e-pg-06/tasks-aot-0-10000.json` | 10 000 semillas por sujeto (1 250 por familia), 0 divergencias; VM 41,8 s, `aot` 5 min 38 s |
+| B6 `.12` | Cumplido | `perf/aot-before`, `perf/aot-after`, `perf/core-summary.json`, `perf/control-tasks.json`, `perf/control/` | Sin regresión atribuible a PG-N; ver «Rendimiento» |
+| B6 `.13` | Cumplido | Diagnóstico retirado del corpus y del código | — |
+| BF | Cumplido | `logs/` | Ver abajo |
 
-Bloque final: `BF.01` `see validate`, `lock --check` y `export --check` en verde. `BF.04` conformidad `aot` completa sin
-`incumple` (base 200) y propiedades `aot` en verde (15 ejecutadas, 3 pendientes por capacidad no anunciada); `engine`
-2 922 observaciones sin divergencias. `conformance-aot.yaml`: 0 `pendiente`; 87 vínculos pasan a `cumple` y 28 a `exento`
-con justificación (27 sin evidencia de ejecución para `aot`, y `ENG.TASK.AGENDA#R7`). `BF.06` `see differential`: 1 650
-observaciones comparadas; las 4 diferencias de la primera pasada (`ENG.LIMITS` C23 y C25) se corrigieron. `BF.09`: el ciclo
-de corrección encontró y corrigió, entre otras, la falta de raíces en `task.spawn` bajo recolección forzada y el tramo de
-los fallos dentro de auxiliares sintetizados (preexistente). `BF.10`: `pseudo build` con solo `pseudo` y `rust-lld` en el
-`PATH` (`env -i`) produce y ejecuta un programa con tareas y otro con canales en macOS arm64.
+Workflow manual (`verify-monorepo.yml`, trabajo `native-target`, entrada `native_targets_only=true`):
+
+| Run | Resultado | Causa o corrección |
+|---|---|---|
+| `42230997712` | Cancelado | `Cargo.lock` de bibliotecas sin versionar con `--locked`; `macos-13` sin runners. Se añadió `cargo generate-lockfile` y `macos-15-intel` |
+| `42233847157` | Linux, macOS arm64 y macOS x86_64 5/5; Windows no compila el runtime | `??_7type_info@@6B@` sin DLL que lo exporte: se define en `windows_startup.rs` |
+| `42235714415` | Windows enlaza y pasa 3/5; `tasks-http` y `character` terminan con `0xC0000005` | El marcador `_tls_start` estaba en `.tls$AAA`, que se ordena detrás de `.tls$`, donde LLVM emite las variables de hilo: los hilos nuevos recibían una plantilla TLS que no las cubría. Pasa a `.tls` |
+| `42253376165` | Los cuatro destinos 5/5 | Trabajos `128014029867` (macOS arm64, macOS 26.6.2), `128014029510` (macOS x86_64, macOS 15.7.9), `128014029972` (Linux, estático: «not a dynamic executable») y `128014030018` (Windows Server 2025, importa solo DLL de System32) |
+
+Aceptación local (`BF.10`): `pseudo build` con `env -i` (sin `cc` ni Xcode en el `PATH`) en macOS arm64 y en x86_64 con
+Rosetta 2, 5/5 programas en cada arquitectura (`acceptance/`, `logs/acceptance-*.log`), incluidos el C19 de
+`LANG.PROGRAM.CLASSIC`, el programa de PG-B.27 y uno con tareas, canal y HTTP a `127.0.0.1`. Los ejecutables solo
+dependen de libSystem, CoreFoundation y Security.
+
+Rendimiento (`BF.07`, `PERF.PROTOCOL`, 10 procesos × 30 iteraciones, antes = *worktree* de `52219da0`):
+
+| Carga | Antes | Después | Lectura |
+|---|---|---|---|
+| `PERF.AOT.LEVEL` arreglos (V1F / `aot`) | 2,141 | 2,070 | Incumple el umbral 1,70 antes y después: preexistente (`PN-H-21`), no atribuible |
+| `PERF.AOT.LEVEL` numérica | 1,614 | 1,625 | Dentro del ruido |
+| `PERF.AOT.LEVEL` objetos | 1,686 | 1,688 | Dentro del ruido |
+| `PERF.AOT.LEVEL` recursiva | 1,404 | 1,393 | Dentro del ruido |
+| `PERF.SUITE.CORE` (después / antes) | — | media geométrica 0,998 | Máximos: sieve 1,027 [0,976; 1,104], bounce 1,011 [1,004; 1,019]; sin regresión de la VM |
+
+Carga de control (`PG-N.12.01`): `PERF.PROTOCOL` no admite cargas nuevas sin cambiar su contrato, así que se midió fuera
+de él (`perf/control/`). Programa con un bucle de 3 000 000 de iteraciones, directo o dentro de `Tareas … Lanzar`; 10 × 5
+procesos por variante. VM: ámbito / directo = 1,012. `aot`: 1,424. Con 0 iteraciones la diferencia `aot` es de 0,18 ms
+(arranque del hilo de la tarea) y con 30 000 000 sube a 29,4 ms: el coste es por iteración, ≈ 1 ns por vuelta, por la
+contabilidad de cuanto en las aristas de retorno de las funciones suspendibles. Se informa como hallazgo H-04.
+
+Verificadores y conformidad finales: `cargo xtask verify` en verde en el motor (436 suites de tests, Clippy, capas,
+límites, `rust-checks all`, `cargo deny`), la CLI y `packages/pseudolearn_spec` (que incluye `see conform --subject engine`,
+2 922 observaciones y 0 divergencias, y las propiedades de `engine`). `see validate`, `see lock --check` y
+`see export --check` en verde. `see conform --subject aot`: 2 453 observaciones, 0 divergencias. Propiedades `aot`: 15 ejecutadas, 3 pendientes por capacidad no anunciada,
+0 fallos. `see conform --subject cli`: 175 observaciones, 0 divergencias. `service`: 8 propiedades y 198 observaciones, 0 divergencias. `app`: 3 propiedades y 244 observaciones, 0 divergencias. `see differential`: 1 650 observaciones comparadas, 0 exentas, 0 diferencias. `conformance-aot.yaml` sin vínculos
+`pendiente`. Consumidores (`BF.05`): extensión con `pnpm check:*` y 191 tests en verde; `pnpm package` genera `pseudolearn-0.1.0-darwin-arm64.vsix` (16,3 MB, sin enlazador); con su `bin/darwin-arm64/pseudo` y `env -i HOME=…`, `pseudo run --nativo` del programa de consola termina con el código 7 pedido y `pseudo build` produce un ejecutable con la misma salida y el mismo código (`acceptance/vsix/`), con la salvedad de H-05; app: `flutter analyze --fatal-infos --fatal-warnings` sin incidencias, `tool/test_bridge.sh`, `check_limits`, `check_content`, `check_design_system`, `check_syntax_coverage`, biblioteca nativa en release y `flutter test` (2 692 pasan, 2 omitidos);
+`packages/pseudolearn_benchmarks`: `dart test`, `dart analyze --fatal-infos --fatal-warnings` y `tool/check.dart` en verde.
+Negativos de verificadores (`BF.08`): los casos negativos de `rust-checks` (55 tests, `logs/bf08-rust-checks-test.log`),
+de capas y límites del motor, de la CLI y de SEE, y de los verificadores de la extensión forman parte de las órdenes
+anteriores y siguen fallando con su violación deliberada; `tests/native_targets_workflow.rs` prueba disparadores
+automáticos deliberados.
 
 ### 11.1 Registro de hipótesis (`PN-V-01`–`PN-V-10`) y de `PN-E01`
 
@@ -644,14 +682,15 @@ los fallos dentro de auxiliares sintetizados (preexistente). `BF.10`: `pseudo bu
 |---|---|---|
 | PN-V-01 | No necesaria | La conducción nativa reutiliza `TaskAgenda`, `TaskChannels`, `TaskFailures` y las reservas de cinta tal como están; la VM no cambió |
 | PN-V-02 | Verdadera | `Function.suspendible` y `suspension_points::points` |
-| PN-V-03 | Verdadera para la VM; en nativo las raíces de las tareas suspendidas las recorre `task_roots` | `aot_rt/src/task_roots.rs` |
+| PN-V-03 | Verdadera para la VM; en nativo las raíces de las tareas suspendidas las recorre `task_roots` | `aot_rt/src/task_roots.rs`, `tests/task_roots_tests.rs` |
 | PN-V-04 | Falsa: la bomba acotada ya vivía en `pseudolearn_host` (`HostWorker`) | `host/src/worker.rs` |
-| PN-V-05 | Verdadera | `ld64.lld` con *stub* `.tbd` generado enlaza y el binario arranca sin Xcode |
-| PN-V-06 | No verificada | Sin destino musl ni medio Linux |
-| PN-V-07 | No verificada | Sin bibliotecas de importación ni medio Windows |
-| PN-V-08 | Medida | Archivo del runtime 3,1 → 5,6 MB; ejecutable mínimo ≈ 3,5 MB |
+| PN-V-05 | Verdadera | `lld -flavor darwin` con *stubs* `.tbd` generados enlaza y el binario arranca sin Xcode |
+| PN-V-06 | Verdadera | ELF estático con los objetos musl autocontenidos del toolchain; run `42253376165` |
+| PN-V-07 | Verdadera con ajuste | No se copian bibliotecas del SDK: se generan bibliotecas de importación con `lld -flavor link /lib /def:` desde la tabla símbolo→DLL calculada contra System32; el objeto aporta `mainCRTStartup`, el directorio TLS, `_fltused` y `??_7type_info@@6B@`; run `42253376165` |
+| PN-V-08 | Medida | Archivo del runtime de macOS ≈ 13 MB sin `strip` (antes 5,6 MB depurado, §11.3); ejecutable mínimo ≈ 3,5 MB |
 | PN-V-09 | Verdadera con ajuste | 114 pendientes: `.01` 1, `.02/.05` 3, `.03` 15, `.04` 19, `.06` 9, `.07` 37, `.08` 30 |
-| PN-V-10 | Falsa | `arch -x86_64` falla: Rosetta 2 no instalado |
+| PN-V-10 | Verdadera en la segunda iteración | Rosetta 2 instalado por la persona; aceptación x86_64 local 5/5 |
+| PN-E01 | Resuelto con `P-02` | LLD 23.1.5 multisabor, publicado como release y verificado por SHA-256 |
 
 ### 11.2 Clasificación de los vínculos `pendiente` (`PG-N.00.03`)
 
@@ -670,26 +709,38 @@ los fallos dentro de auxiliares sintetizados (preexistente). `BF.10`: `pseudo bu
 | ID | Resolución | Fuente |
 |---|---|---|
 | P-01 / C01 | Inicio autorizado sin cierre formal de PG-L/PG-S | Mensaje de la persona del 2026-11-06 |
-| DN-01 | Cambia a (c): un hilo por tarea con testigo único; sin `unsafe` nuevo (las direcciones cruzan como procedencia expuesta) y sin transformar funciones. (a) habría exigido duplicar la bajada en cada punto de suspensión | README de `pseudolearn_codegen` y `pseudolearn_aot_rt` |
+| DN-01 | Cambia a (c): un hilo por tarea con testigo único; sin `unsafe` nuevo y sin transformar funciones. (a) habría exigido duplicar la bajada en cada punto de suspensión | README de `pseudolearn_codegen` y `pseudolearn_aot_rt` |
 | DN-02 | La conducción vive en `aot_rt`; no se extrajo semántica de la VM porque las piezas compartidas bastaron | README de `pseudolearn_aot_rt` |
-| DN-08 / P-02 | `rust-lld` necesita `libLLVM` (cientos de MB): no se empaqueta sin decisión de la persona; la CLI lo usa si está junto a `pseudo` y si no usa `cc` | README de la CLI |
-| DN-11 | Se usa `see differential` (ya existente) en lugar de una orden nueva del trabajador | README de SEE |
+| DN-08 / P-02 | Decisión de la persona: `lld` se descarga la primera vez que `pseudo build` enlaza, a `<caché del usuario>/pseudolearn/linker/lld-23.1.5/`, y solo se usa si coincide la SHA-256 fijada como dato en `linker_assets.rs`. Opción 1 (binario oficial de LLVM) en macOS arm64, Linux x64 y Windows x64; opción 2 (compilación estática reproducible, `tool/build_static_lld.sh`) en macOS x86_64 porque LLVM no publica binarios de macOS x86_64 desde la serie 20. Orden de búsqueda: `lld` junto a `pseudo`, caché o descarga, `rust-lld` junto a `pseudo`, `cc` | README de la CLI, «Enlazador incluido y destinos nativos» |
+| Licencia de LLD | Apache-2.0 WITH LLVM-exception; la release incluye `LICENSE.TXT` y `SHA256SUMS`; `cargo deny` no la evalúa (no es dependencia Rust) | README de la CLI |
+| Workflow | Se aloja como trabajo `native-target` de `verify-monorepo.yml` con la entrada `native_targets_only`, no en un archivo propio: GitHub solo despacha workflows registrados y registrar uno nuevo exige publicarlo en `master`, que la persona no autorizó. Único disparador `workflow_dispatch`, verificado por `tests/native_targets_workflow.rs` | README de la CLI y README raíz §7 |
+| Runner x86_64 | `macos-13` ya no recibe runners: se usa `macos-15-intel` | README de la CLI |
+| Lockfiles | El trabajo resuelve con `cargo generate-lockfile` los `Cargo.lock` no versionados del motor y de SEE antes de compilar con `--locked` | README de la CLI |
+| `strip` en macOS | El archivo del runtime de macOS no se depura: el `strip` de Xcode 27 quita el sufijo `.llvm.<hash>` y LLD rechaza los símbolos duplicados | README de la CLI |
+| Destino sin runtime | `nativeTargetUnavailable` (código 2, fuera de la lista cerrada) se separa de `nativeTargetRuntimeMissing` (código 3, en la lista pero sin runtime incrustado) | `TOOL.CLI.BUILD#R6`, `TOOL.CLI.MESSAGES` |
+| `linkerFailed` | Texto nuevo («el enlace del ejecutable falló») porque ya no hay «enlazador del sistema»; mensajes nuevos `linkerCacheUnavailable`, `linkerDownloadFailed`, `linkerChecksumMismatch` | `TOOL.CLI.MESSAGES` |
+| Extensión | La extensión de escritorio no tiene orden de ejecución nativa: ejecuta con `pseudo run --editor`. `BF.10` se acredita con `pseudo run --nativo` del binario empaquetado en el VSIX. El VSIX no lleva el enlazador; se descarga como con la CLI | README de la extensión §8 |
+| Pruebas de `env -i` | Los tests de la CLI que quitan las herramientas vacían también `HOME`, `XDG_CACHE_HOME` y `LOCALAPPDATA`, y el adaptador `aot` las hereda para alcanzar la caché | `RT.LINKING` C2, README de SEE |
+| `rust_checks` | `cargo xtask verify` de `packages/pseudolearn_rust_checks` falla en `cargo fmt --check` de `crates/checks/src/isolation.rs` y `tests/isolation.rs` (commit `6ebd084c`, previo a PG-N); sus 55 tests pasan. No se toca por estar fuera del alcance | — |
+| Disco | Se liberaron `target/` e `incremental` de los miembros, el *worktree* de la línea base, cachés de Gradle, Homebrew, Maven y del analizador de Dart | §0.2 |
 | C20, C4 de `LANG.TASK.SCOPE`/`ENG.TASK.AGENDA`, C5 de `LIB.SCENARIO.BILINGUAL`, C4/C6 de los escenarios | Restringidos a `engine`: cancelación externa, `awaiting_effect` y API de sesión son fronteras del anfitrión alojado | Corpus |
 | `project_api` | Capacidad nueva de SEE para casos `api` solo de proyecto | README de SEE |
-| `PN-C-04` | `RT.PROCESS#R2` nombra el código 6 (documento de efectos ilegible o reproducción divergente) | Corpus |
-| Commits | Sin atribución de IA, por `AGENTS.md` §9 y la skill `commit-message` | — |
+| `PN-C-04` | `RT.PROCESS#R2` nombra el código 6 | Corpus |
+| Commits | Sin atribución de IA, por instrucción de la persona, `AGENTS.md` §9 y la skill `commit-message` | — |
 
 ### 11.4 Hallazgos fuera de alcance
 
 | ID | Hallazgo | Destino propuesto |
 |---|---|---|
-| H-01 | `ENG.TASK.MEMORY#R1`: el coste de las continuaciones suspendidas no se descuenta en nativo (solo la de entrada de cada tarea) | Revisar con la persona si R1 se reformula para el sujeto nativo |
-| H-02 | Entrega concurrente real de efectos físicos en nativo (la entrega es secuencial por rango) | Fase de rendimiento |
-| H-03 | `pseudo run --nativo` no propaga el código de salida pedido por el programa (el ejecutable sí) | PG-7 |
+| H-01 | `ENG.TASK.MEMORY#R1`: el coste de las continuaciones suspendidas no se descuenta en nativo. Con DN-01 (c) la continuación es la pila del hilo de la tarea, sin tamaño observable por el runtime; solo se cobra la masa de entrada de cada tarea. Medirlo exigiría leer el puntero de pila en cada suspensión o reservar pilas de tamaño fijo contabilizadas | Revisar con la persona si R1 se reformula para el sujeto nativo |
+| H-02 | Los efectos físicos de tareas concurrentes se entregan en nativo uno a uno por rango, no a la vez: la agenda cede el testigo a una sola tarea y el `HostWorker` atiende la cola en orden. El resultado observable coincide con la VM (orden de entrega declarado), pero la latencia de E/S se suma | Fase de rendimiento |
+| H-03 | Corregido en esta fase: `pseudo run --nativo` propaga el código pedido con `Salir`/`exit_code` del documento de efectos | `native_run_command.rs`, `native_run_tests.rs` |
+| H-05 | `pseudo run --nativo` envía a stdout lo que el programa escribe en el flujo de error: en el modo de documento de efectos el runtime acumula toda la escritura en una única salida y la respuesta nativa no lleva `error_ranges`, que la CLI usa con la VM para separar los flujos. El texto, su orden y el código de salida coinciden; el ejecutable generado por `pseudo build` sí separa los flujos. Preexistente a esta iteración | Registrar los tramos de error en el documento de efectos de `aot_rt` y aplicarlos en `native_execute_response`; con un caso de `TOOL.CLI.RUN` |
+| H-04 | Un bucle dentro de una función suspendible cuesta ≈ 1 ns más por vuelta en `aot` (control: 1,42× con 3 000 000 de vueltas; VM 1,01×) | Fase de rendimiento: contabilidad del cuanto por bloque en lugar de por arista |
 
-Revisión Git de cierre: ver `git log` de la rama tras el push · Verificadores ejecutados: `cargo xtask verify` completo del motor
-(formato, Clippy, `test --workspace`, `rust-checks`, `cargo deny`), de la CLI y de SEE en verde; Clippy y `rust-checks all` del motor, Clippy de la CLI y de SEE, tests dirigidos de `aot_rt`, `codegen`, `api`, CLI y SEE, conformidad
-y propiedades `aot` y `engine`, diferencial · Suites omitidas y motivo: consumidores (extensión, app, benchmarks), `PERF.*` y E-PG-06 nativo, por coste dentro de la iteración · Pendientes
-justificados: `PG-N.09.01/.02/.05`, `PG-N.10.01/.03`, `PG-N.11.02/.03` (E-PG-06), `PG-N.12`, tests unitarios de
-`.03.02`, `.04.02`, `.05.02`, `.06.02`, `.07.03`, `BF.05/.07/.08/.10` parciales · Puntos de §4 cumplidos: `.00`,
-`.01`, `.02`, `.03`, `.04`, `.05`, `.06`, `.07`, `.08`, `.13`; parciales `.09`, `.10`, `.11`; no cumplido `.12`.
+Revisión Git de cierre: ver `git log` de la rama tras el push · Verificadores ejecutados: los de «Verificadores y
+conformidad finales» · Suites omitidas y motivo: `cargo xtask verify` de `packages/pseudolearn_rust_checks` (fallo de
+formato previo, §11.3); humo de la app en simulador e iPhone físico (pasos 7–9 del README de la app), porque PG-N no
+toca la app y la VM no cambió; el host de VS Code con el VSIX instalado, porque la extensión no ejecuta en nativo
+· Pendientes justificados:
+`PG-N.02.03`/`.02.04` (no aplican por DN-01 (c)) · Puntos de §4 cumplidos: `.00`–`.13`.

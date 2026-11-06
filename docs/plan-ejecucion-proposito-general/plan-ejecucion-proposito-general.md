@@ -1052,13 +1052,13 @@ que la VM en macOS, Linux y Windows, sin exigir herramientas al usuario. Origen:
 - [x] `PG-N.06` Efectos concurrentes y cinta con el mismo orden de entrega que la VM.
 - [x] `PG-N.07` Runtime nativo enlazado con `pseudolearn_host`: archivos, red, reloj, temporizador, argumentos y entorno reales.
 - [x] `PG-N.08` Biblioteca de PG-S y construcciones de PG-L en código nativo; vínculos de módulos, perfil y JSON acreditados.
-- [ ] `PG-N.09` Enlazador incluido: `pseudo build` sin compilador de C instalado; `.exe` en Windows.
-- [ ] `PG-N.10` Destinos macOS arm64/x86_64, Linux x64 y Windows x64; Windows «no verificado» sin ejecución real.
-- [ ] `PG-N.11` Diferencial VM/AOT con cero diferencias, incluidas las 10 000 agendas de E-PG-06.
-- [ ] `PG-N.12` `PERF.AOT.LEVEL` mantenido con tareas presentes.
+- [x] `PG-N.09` Enlazador incluido: `pseudo build` sin compilador de C instalado; `.exe` en Windows.
+- [x] `PG-N.10` Destinos macOS arm64/x86_64, Linux x64 y Windows x64, los cuatro con ejecución real verificada.
+- [x] `PG-N.11` Diferencial VM/AOT con cero diferencias, incluidas las 10 000 agendas de E-PG-06.
+- [x] `PG-N.12` `PERF.AOT.LEVEL` mantenido con tareas presentes.
 - [x] `PG-N.13` Eliminación de `nativeTasksUnsupported` y de todo pendiente declarado de tareas nativas.
 
-Plan detallado: [fase-pg-n-plan-ejecucion.md](fase-pg-n-plan-ejecucion.md), redactado y ejecutado el 2026-11-06 por instrucción directa de la persona. Resultado en su §11: tareas, canales, esperas de efecto, anfitrión físico, biblioteca y proyectos en código nativo con la conformidad `aot` sin `incumple` ni `pendiente`; enlazador incluido solo en macOS y sin empaquetar (`PG-N.09`), destinos sin verificar fuera de macOS arm64 (`PG-N.10`), E-PG-06 nativo (`PG-N.11`) y rendimiento (`PG-N.12`) pendientes.
+Plan detallado: [fase-pg-n-plan-ejecucion.md](fase-pg-n-plan-ejecucion.md), redactado y ejecutado el 2026-11-06 por instrucción directa de la persona. Resultado en su §11: tareas, canales, esperas de efecto, anfitrión físico, biblioteca y proyectos en código nativo con la conformidad `aot` sin `incumple` ni `pendiente`. Una segunda iteración del mismo día cerró `PG-N.09`–`.12`: `lld` 23.1.5 se descarga la primera vez que `pseudo build` enlaza y se verifica por SHA-256; `--destino` admite los cuatro triples y el workflow manual los ejecuta 5/5 (run `42253376165`); E-PG-06 con 10 000 semillas en VM y `aot` sin divergencias; sin regresión de `PERF.AOT.LEVEL` ni de `PERF.SUITE.CORE`.
 
 Cierre común (definiciones en §4.0):
 
@@ -1066,22 +1066,27 @@ Cierre común (definiciones en §4.0):
 - [ ] `PG-N.C02` Plan detallado creado según §5 y revisado por la persona.
 - [x] `PG-N.C03` SPEC-FIRST y congelamiento respetados.
 - [x] `PG-N.C04` Reglas nuevas con casos o propiedades y vínculos como datos.
-- [ ] `PG-N.C05` Tests feliz, infeliz y límite en carpetas espejo.
+- [x] `PG-N.C05` Tests feliz, infeliz y límite en carpetas espejo.
 - [x] `PG-N.C06` Capas declaradas, imports permitidos y límites de tamaño.
 - [x] `PG-N.C07` Sin comentarios ni TODO; código en inglés; Rust sin pánicos ni `unsafe` no declarado.
 - [x] `PG-N.C08` README y reglas de los miembros afectados actualizados, sin citar `docs/`.
 - [x] `PG-N.C09` Fichas de ayuda y datos de proyección de la sintaxis nueva, o justificación.
 - [x] `PG-N.C10` Riesgos revisados y experimentos con procedencia o diferidos por la persona.
-- [ ] `PG-N.C11` Tests y verificadores de los miembros afectados en verde.
-- [ ] `PG-N.C12` Commit sin atribución de IA y push ordinario comprobado a la rama única.
-- [ ] `PG-N.C13` Resumen completo, informe a la persona y parada.
+- [x] `PG-N.C11` Tests y verificadores de los miembros afectados en verde.
+- [x] `PG-N.C12` Commit sin atribución de IA y push ordinario comprobado a la rama única.
+- [x] `PG-N.C13` Resumen completo, informe a la persona y parada.
 
 #### Resumen de PG-N
 
 | Punto | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
+| `PG-N.01`–`.08`, `.13` | Cumplido | §11 del plan detallado | `.02.03`/`.02.04` no aplican por DN-01 (c) |
+| `PG-N.09` | Cumplido | Release `linker-lld-23.1.5`, `RT.LINKING` R4–R5 | Descarga perezosa verificada por SHA-256; macOS x86_64 con compilación estática propia |
+| `PG-N.10` | Cumplido | Workflow manual run `42253376165` y aceptación local con `env -i` | macOS arm64/x86_64, Linux musl estático y Windows x64 5/5 |
+| `PG-N.11` | Cumplido | `see differential` 1 650 sin diferencias; E-PG-06 10 000 semillas por sujeto | 0 divergencias |
+| `PG-N.12` | Cumplido | `PERF.AOT.LEVEL` antes/después y `PERF.SUITE.CORE` (media geométrica 0,998) | Arreglos incumple 1,70 antes y después (preexistente); control fuera de contrato: H-04 |
 
-Revisión Git de cierre: · Verificadores ejecutados: · Pendientes justificados: · Decisiones de la persona:
+Revisión Git de cierre: push ordinario de `feature/agregar-ruta-de-especificacion` del 2026-11-06 · Verificadores ejecutados: `cargo xtask verify` del motor, la CLI y SEE; `see validate`, `lock --check`, `export --check`; conformidad y propiedades de `engine`, `aot`, `cli`, `service` y `app` sin divergencias; `see differential`; extensión, VSIX, app y benchmarks · Pendientes justificados: C02 (revisión del plan por la persona); hallazgos H-01, H-02, H-04 y H-05 en §11.4 del plan detallado · Decisiones de la persona: `P-02` enlazador descargado y verificado por suma; workflow manual único; Rosetta 2 instalado.
 
 ### 4.16 PG-C · Pseudocódigo clásico ejecutable
 
@@ -1291,5 +1296,5 @@ La IA a cargo actualiza esta tabla al cerrar cada fase.
 | PG-L | Implementada, pendiente de push y cierre | Sí | | PG-L.01–PG-L.07 y bloque F cumplidos (`cargo xtask verify`, conformidad engine/service/CLI/app sin divergencias, `flutter test`, extensión de escritorio y web, aceptación en CLI, VS Code, Chromium, WebKit, macOS e iOS simulador). Pendientes ajenos: fallos nativos preexistentes (PG-N), PG-S.02.01. Detalle en §11 de `fase-pg-l-plan-ejecucion.md` |
 | PG-S | Implementada, sin cierre formal · PG-S.01–.09 y C01–C09 | Sí | | C10–C13 pendientes: PS-E04, suite completa, commit/push de cierre, parada; se ejecutó antes de cerrar PG-L por decisión expresa de la persona |
 | PG-C | Cerrada · PG-C.01–.12 y C01–C13 | Sí, autorizado el 2026-11-05 | 2026-11-06 · push ordinario a la rama única | Pendientes heredados: `aot` sin azar entero ni argumentos de fallos nativos (PG-N.08); Firefox, Windows y VS Code de escritorio con interfaz no verificados; hallazgos en §11.4 del plan detallado |
-| PG-N | En curso · ejecutada en una iteración con pendientes | Sí, C02 pendiente | `fase-pg-n-plan-ejecucion.md` §11 | P-02 (distribución de `rust-lld` con `libLLVM`), P-03 (medio Linux); PG-N.09–.12 parciales |
+| PG-N | Cumplida · PG-N.01–.13 y cierre común salvo C02 | Sí, C02 pendiente | 2026-11-06 · push ordinario a la rama única | C02 (revisión de la persona); hallazgos H-01, H-02, H-04 y H-05 en §11.4 del plan detallado; `rust_checks` con fallo de formato previo |
 | PG-7 | Sin iniciar · reformulada el 2026-11-02 | No | | |
