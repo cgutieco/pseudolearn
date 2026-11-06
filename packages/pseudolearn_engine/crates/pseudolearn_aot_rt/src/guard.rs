@@ -44,6 +44,10 @@ pub(crate) fn with_entry<Outcome>(
     Some(operation(&mut entry))
 }
 
+pub fn entry_result(context: *mut AotRuntimeContext) -> Option<u64> {
+    with_entry(context, 0, |entry| entry.context.result_word)
+}
+
 pub(crate) fn run_entry(
     context: *mut AotRuntimeContext,
     site: u32,

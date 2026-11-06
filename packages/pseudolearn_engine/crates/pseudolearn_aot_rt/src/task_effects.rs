@@ -116,3 +116,7 @@ pub(crate) fn seal_abandoned(
         .collect();
     channel.session.seal_abandoned(abandoned)
 }
+
+#[cfg(test)]
+#[path = "task_effects_tests.rs"]
+mod task_effects_tests;

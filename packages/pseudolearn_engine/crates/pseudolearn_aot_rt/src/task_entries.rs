@@ -182,15 +182,23 @@ pub extern "C" fn rt_aot_task_yield(context: *mut AotRuntimeContext, site: u32) 
     blocking_entry(context, site, yield_step)
 }
 
+pub(crate) fn quantum_spent(mass: i64) -> bool {
+    u64::try_from(mass).is_ok_and(|spent| spent >= pseudolearn_runtime::TASK_QUANTUM)
+}
+
+pub(crate) fn cedes_turn(mass: i64, others_ready: bool) -> bool {
+    quantum_spent(mass) && others_ready
+}
+
 fn yield_step(entry: &mut Entry<'_>) -> Result<Step, Trap> {
-    let mass = u64::try_from(entry.context.quantum_mass).unwrap_or(0);
-    if mass < pseudolearn_runtime::TASK_QUANTUM {
+    if !quantum_spent(entry.context.quantum_mass) {
         return Ok(Step::Done(0));
     }
+    let mass = entry.context.quantum_mass;
     entry.context.quantum_mass = 0;
     let tasks = entry.engine.tasks_mut()?;
     let current = tasks.current;
-    if !tasks.agenda.has_ready() {
+    if !cedes_turn(mass, tasks.agenda.has_ready()) {
         return Ok(Step::Done(0));
     }
     tasks
@@ -200,3 +208,7 @@ fn yield_step(entry: &mut Entry<'_>) -> Result<Step, Trap> {
         .map_err(task_fault)?;
     Ok(Step::BlockThenDone(0))
 }
+
+#[cfg(test)]
+#[path = "task_entries_tests.rs"]
+mod task_entries_tests;

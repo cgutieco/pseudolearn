@@ -346,6 +346,25 @@ inválidas, plantillas, avisos en ejecuciones completadas, límites numéricos, 
 posiciones fuera de rango, dominios matemáticos, flujo de salida cerrado, lecturas con tipo incorrecto, entrada
 agotada, sitios inexistentes, conservación del primer fallo y renderizado por idioma.
 
+Tareas, efectos y anfitrión físico: `tests/task_agenda_drive_tests.rs` conduce `run_executable_with_tasks` con funciones
+Rust que hacen de código generado (entrada y despachador) y comprueba el orden FIFO de arranque y la unión del ámbito, el
+despertar de varias tareas en el orden en que empezaron a esperar, `taskDeadlock` entre dos tareas que se esperan,
+`taskLimitExceeded` al superar `AotLimits.tasks` y su caso límite que cabe, la comprobación de cesión sin masa, el ámbito
+vacío y la unión de un ámbito inexistente; los identificadores de ámbito y tarea son los deterministas de `TaskAgenda`
+(primer ámbito 0, primera tarea 1). La decisión de ceder por cuanto (`quantum_spent`, `cedes_turn`) se prueba en
+`src/task_entries_tests.rs`, porque la masa la acumula el código generado en el contexto y un test de caja negra no puede
+escribirla sin `unsafe`. `tests/task_roots_tests.rs`, con recolección forzada, prueba que sobreviven un texto que solo
+sostienen los argumentos de una tarea pendiente y un mensaje que espera en un canal lleno, que la ejecución sigue tras
+recolectar con una tarea terminada, y como caso infeliz que un texto que nadie sostiene sí se reclama (los literales son
+inmortales, así que los textos de prueba se crean por concatenación). `entry_result` expone, sin `unsafe` nuevo (usa
+`with_entry`), la palabra de resultado de la última entrada para que estos tests lean asas de canales y textos.
+`src/task_effects_tests.rs` prueba la entrega de efectos concurrentes: permutación declarada, orden por secuencia sin
+permutación, secuencias fuera de la permutación al final, ninguna entrega mientras otra tarea puede correr, marca de
+rechazo de red por encima de `max_pending_network` y sellado de un efecto abandonado. `tests/physical_provider_tests.rs`
+(solo sin `test-host`) ejercita el anfitrión físico con una carpeta temporal real (escribir y releer un archivo, abrir uno
+inexistente, pedir un directorio que no existe), argumentos, reloj y temporizador reales y HTTP a un servidor en
+`127.0.0.1` y a un puerto cerrado.
+
 Los casos del corpus no se duplican aquí; la equivalencia con `engine` se contrasta en la conformidad del sujeto
 `aot`. Aceptación de un cambio: `cargo xtask verify` desde la raíz del motor, incluido `rust-checks unsafe`.
 

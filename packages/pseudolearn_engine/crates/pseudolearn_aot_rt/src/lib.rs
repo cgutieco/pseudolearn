@@ -97,6 +97,7 @@ pub use effects::{effect_operation_cells, effect_operation_index, rt_aot_effect_
 pub use engine::AotEngine;
 pub use entry::{pseudolearn_aot_exit, pseudolearn_aot_main};
 pub use fault::{FaultRecord, FaultSite, SourceRange, render_fault};
+pub use guard::entry_result;
 pub use inline_allocation::{
     INLINE_MAXIMUM_PHYSICAL, INLINE_PHYSICAL_SHIFT, INLINE_RECORD_WORDS, InlineObjectImage,
     class_payload_offset, inline_object_image,
