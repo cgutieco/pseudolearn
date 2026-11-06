@@ -25,6 +25,8 @@ pub(crate) enum Entry {
     TextCharacter,
     TextCompare,
     RandomReal,
+    RandomBelow,
+    RandomBetween,
     Write,
     Read,
     ArrayNew,
@@ -91,6 +93,8 @@ const TABLE: &[(Entry, &str, &[Slot])] = &[
     (Entry::TextCharacter, "rt_aot_text_character", TWO_WORD64),
     (Entry::TextCompare, "rt_aot_text_compare", TWO_WORD64),
     (Entry::RandomReal, "rt_aot_random_real", NO_OPERANDS),
+    (Entry::RandomBelow, "rt_aot_random_below", &[Slot::Word64]),
+    (Entry::RandomBetween, "rt_aot_random_between", TWO_WORD64),
     (Entry::Write, "rt_aot_write", &[Slot::Word64, Slot::Word32]),
     (Entry::Read, "rt_aot_read", ONE_WORD32),
     (

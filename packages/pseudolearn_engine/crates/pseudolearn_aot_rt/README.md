@@ -99,6 +99,8 @@ a través de ninguna llamada.
 | `rt_aot_real_power` | base, exponente | binario64 |
 | `rt_aot_integer_power` | base, exponente (`i64`) | entero con signo; traps `negativeIntegerExponent` o `integerOverflow` |
 | `rt_aot_random_real` | — | binario64 en `[0, 1)` |
+| `rt_aot_random_below` | límite `i64` | entero en `[0, límite)`; trap `invalidRandomBound` si el límite es menor que 1 |
+| `rt_aot_random_between` | inferior y superior `i64` | entero en `[inferior, superior]`; trap `invalidRandomRange` si el inferior supera al superior |
 | `rt_aot_write` | palabra, `tipo \| NEWLINE_FLAG` | 0 |
 | `rt_aot_read` | tipo | palabra leída |
 | `rt_aot_effect_call` | descriptor de operación, búfer de palabras `[capacidad, nodo fuente, clase de resultado, argumentos…, celdas de resultado…]` | 0; las respuestas se escriben en las celdas |
@@ -261,6 +263,13 @@ El documento de salida del canal añade `open_resources` junto a `host_calls`; a
 los casos de conformidad. Tras terminar, el proveedor en memoria ya cerró sus recursos, de modo que
 `open_resources` mide fugas posteriores al cierre final y `calls` demuestra qué operaciones llegaron al anfitrión
 (por ejemplo, que un uso tras cierre nunca lo alcanza).
+
+Problema: las operaciones locales de texto (`Subcadena` y las demás que llegan por `rt_aot_effect_call`) fallaban
+con `stringPositionOutOfRange` sin los argumentos `length` y `position` que la VM añade. Elección:
+`effect_text_faults::with_text_position` completa la trampa con la misma fórmula que la VM: `length` es la cantidad
+de puntos de código del primer argumento y `position` es la suma del segundo y el tercero, o el segundo si falta el
+tercero o la suma desborda. Así el diagnóstico nativo coincide con el de engine (`RT.FAULT.REPORTING#R2`). Se descartó
+calcular otra posición en el sujeto nativo, porque la propiedad compara contra la VM.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

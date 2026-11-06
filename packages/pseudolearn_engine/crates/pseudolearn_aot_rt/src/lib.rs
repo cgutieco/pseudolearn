@@ -10,6 +10,9 @@ mod config;
 mod context;
 mod effect_channel;
 mod effect_document;
+mod effect_text_faults;
+#[cfg(test)]
+mod effect_text_faults_tests;
 mod effects;
 mod engine;
 mod entry;
@@ -79,7 +82,7 @@ pub use process::{
     ProcessStreams, run_executable, run_executable_with_effects,
 };
 pub use pseudolearn_diagnostics::DiagnosticCode;
-pub use random::rt_aot_random_real;
+pub use random::{rt_aot_random_below, rt_aot_random_between, rt_aot_random_real};
 pub use session::{AotSession, settle_session};
 pub use snapshot::rt_aot_snapshot_copy;
 pub use text::{

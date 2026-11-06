@@ -214,6 +214,7 @@ fn local_effect_reply(
         arguments,
         maximum_json_depth: configured_json_depth(&entry.engine.effects),
     })
+    .map_err(|trap| crate::effect_text_faults::with_text_position(trap, arguments))
 }
 
 fn local_reply(request: pseudolearn_library::LocalOperationRequest<'_>) -> Result<HostReply, Trap> {

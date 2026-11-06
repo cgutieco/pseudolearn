@@ -16,6 +16,8 @@ pub(crate) const OPERATIONS: &[Operation] = &[
     Operation::OutWrite,
     Operation::InRead,
     Operation::HostRandom,
+    Operation::HostRandomBelow,
+    Operation::HostRandomBetween,
 ];
 
 pub(crate) fn lower(
@@ -25,6 +27,16 @@ pub(crate) fn lower(
     match instruction.operation {
         Operation::OutWrite => lower_write(lowering, instruction),
         Operation::InRead => lower_read(lowering, instruction),
+        Operation::HostRandomBelow => lower_random_integer(
+            lowering,
+            instruction,
+            (Entry::RandomBelow, "invalidRandomBound", 1),
+        ),
+        Operation::HostRandomBetween => lower_random_integer(
+            lowering,
+            instruction,
+            (Entry::RandomBetween, "invalidRandomRange", 2),
+        ),
         _ => lower_random(lowering, instruction),
     }
 }
@@ -108,5 +120,24 @@ fn lower_random(
         .ins()
         .bitcast(types::F64, MemFlagsData::new(), bits);
     bind_result(lowering, instruction, real);
+    Ok(())
+}
+
+fn lower_random_integer(
+    lowering: &mut Lowering<'_, '_>,
+    instruction: &Instruction<'_>,
+    (target, code_name, count): (Entry, &'static str, usize),
+) -> Result<(), CodegenError> {
+    let operands = (0..count)
+        .map(|position| operand_value(lowering, instruction, position))
+        .collect::<Result<Vec<_>, _>>()?;
+    let call = RuntimeCall {
+        target,
+        code_name,
+        span: instruction.span,
+        operands: &operands,
+    };
+    let value = call_runtime(lowering, &call)?;
+    bind_result(lowering, instruction, value);
     Ok(())
 }

@@ -309,4 +309,4 @@ como detector de tareas produciría un diagnóstico de tareas para una función 
 
 ## Azar entero pendiente en código nativo
 
-`host.random_below` y `host.random_between` figuran en `UNSUPPORTED_OPERATIONS`: el sujeto `aot` rechaza con `unsupported operation` los programas que usan `Azar(n)` o `Aleatorio(a, b)` en vez de producir un valor distinto del de la VM. Su paridad nativa pertenece a la fase del compilador nativo completo; hasta entonces los vínculos AOT de esas reglas quedan pendientes.
+`host.random_below` y `host.random_between` se bajan en `lower_io` a llamadas a `rt_aot_random_below` y `rt_aot_random_between` con sus operandos `i64`; el sitio de fallo se registra con `invalidRandomBound` o `invalidRandomRange`. El runtime nativo usa el mismo `RandomState` sembrado que la VM, con el mismo rechazo sin sesgo de `next_below` y `next_between`, así que `Azar(n)` y `Aleatorio(a, b)` producen la misma secuencia y las mismas trampas en ambos sujetos. Se descartó componerlos con `host.random` y aritmética real, que no es uniforme ni coincide con la VM.
