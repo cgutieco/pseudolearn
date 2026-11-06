@@ -44,3 +44,28 @@ fn effect_families_declare_a_delivery_permutation_and_gc_family_forces_collectio
     assert!(generate(7).gc_stress);
     assert!(generate(0).host.is_none());
 }
+
+#[test]
+fn each_family_reuses_one_template_and_varies_only_its_inputs() {
+    for family in 0..FAMILY_COUNT {
+        let first = generate(family);
+        let later = generate(family.saturating_add(FAMILY_COUNT.saturating_mul(5)));
+        assert_eq!(first.program, later.program);
+        assert!(!first.inputs.is_empty());
+        assert!(
+            first
+                .inputs
+                .iter()
+                .all(|value| value.parse::<u64>().is_ok())
+        );
+    }
+}
+
+#[test]
+fn the_templates_are_eight_distinct_programs_that_read_their_parameters() {
+    let programs: std::collections::BTreeSet<String> = (0..FAMILY_COUNT)
+        .map(|seed| generate(seed).program)
+        .collect();
+    assert_eq!(programs.len(), 8);
+    assert!(programs.iter().all(|program| program.contains("Leer ")));
+}

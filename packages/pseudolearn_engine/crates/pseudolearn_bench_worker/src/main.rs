@@ -24,7 +24,9 @@ mod tasks_agendas;
 mod tasks_campaign;
 mod tasks_compare;
 mod tasks_families;
+mod tasks_subject;
 mod tasks_summary;
+mod tasks_templates;
 mod workloads;
 
 fn main() -> std::process::ExitCode {
@@ -107,6 +109,8 @@ mod tasks_agendas_tests;
 mod tasks_campaign_tests;
 #[cfg(test)]
 mod tasks_compare_tests;
+#[cfg(test)]
+mod tasks_subject_tests;
 #[cfg(test)]
 mod tasks_summary_tests;
 #[cfg(test)]

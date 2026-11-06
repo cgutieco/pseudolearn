@@ -14,6 +14,7 @@ pub struct Agenda {
     pub seed: u64,
     pub family: u64,
     pub program: String,
+    pub inputs: Vec<String>,
     pub host: Option<Value>,
     pub gc_stress: bool,
     pub expected: Expected,

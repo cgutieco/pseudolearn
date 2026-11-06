@@ -114,8 +114,8 @@ Corpus de rendimiento del monorepo. Se conserva la separación entre procesos in
 
 ### E-PG-06: agendas de tareas (`pg-tasks`, `PG-4.10`)
 
-`pseudolearn_bench_worker pg-tasks <directorio-nuevo> <primera-semilla> <última-semilla>` recorre las
-semillas `[primera, última)`. Cada semilla elige la familia `semilla mod 8` y sus parámetros con un
+`pseudolearn_bench_worker pg-tasks <directorio-nuevo> <primera-semilla> <última-semilla> [vm | aot <pseudo>]`
+recorre las semillas `[primera, última)` con el sujeto indicado (por omisión la máquina virtual). Cada semilla elige la familia `semilla mod 8` y sus parámetros con un
 SplitMix64 implementado en el trabajador, nunca en el motor:
 
 | Familia | Qué genera | Resultado esperado derivado |
@@ -131,11 +131,18 @@ SplitMix64 implementado en el trabajador, nunca en el motor:
 
 Por semilla se ejecuta el programa en vivo, se repite, y si termina se reproduce desde su cinta; la
 salida, la terminación y la cinta deben coincidir y la salida y la terminación deben ser las derivadas
-de la regla. La plantilla de cada familia lleva sus parámetros en el texto del programa (un programa
-por semilla) porque la ejecución nativa de tareas aún no existe y no hay ocho binarios que compilar;
-cuando el sujeto nativo ofrezca tareas la campaña pasará a parametrizar ocho plantillas por
-`Argumentos`. El resumen JSON (`tasks-<primera>-<última>.json`) no se sobrescribe y lista las semillas
-divergentes. Los datos crudos no se versionan. La campaña de 10 000 semillas se ejecuta en segundo
+de la regla. Cada familia tiene una sola plantilla (`tasks_templates.rs`, ocho programas) que lee sus
+parámetros con `Leer`; la semilla solo decide la entrada estándar (`Agenda.inputs`), el anfitrión de la
+familia 6 y la recolección forzada de la 7, y las extracciones de SplitMix64 conservan el orden de antes,
+de modo que cada semilla tiene los mismos parámetros y esperados que cuando el parámetro iba en el texto.
+Así el sujeto nativo compila ocho programas y ejecuta diez mil procesos. Sujetos (`tasks_subject.rs`):
+`vm` llama a `execute_program`; `aot` lanza `pseudo --see-adapter aot` (un binario de la CLI compilado con
+`--features test-host`, porque la familia 6 declara `orden_entrega` en el anfitrión de memoria) y le envía
+cada petición `execute` por el protocolo de líneas JSON de SEE; el adaptador compila con
+`build_native_object` y reutiliza el ejecutable de un objeto idéntico, así que solo enlaza una vez por
+plantilla. Un adaptador que no arranca o una respuesta ilegible es error de la campaña, no una
+divergencia. El resumen JSON (`tasks-<sujeto>-<primera>-<última>.json`, con el campo `subject`) no se
+sobrescribe y lista las semillas divergentes. Los datos crudos no se versionan. La campaña de 10 000 semillas se ejecuta en segundo
 plano, con notificación, y se parte por rangos si dura más de una hora; solo las pruebas unitarias del
 generador, del comparador y del resumen forman parte de la comprobación ligera.
 
