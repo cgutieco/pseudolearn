@@ -271,6 +271,13 @@ símbolos, el determinismo, el módulo vacío y los literales como símbolos loc
 
 Aceptación de un cambio: `cargo xtask verify` desde la raíz del motor.
 
+`tests/task_unwinding_tests.rs` compila a ELF un módulo de RI escrito a mano con una función suspendible con aterrizajes
+de cancelación (`task.cancel_point` y `task.scope_boundary`), una suspendible sin aterrizajes, su envoltorio de tarea y
+una función ordinaria: solo la primera registra (`rt_aot_task_cancel_point`, `rt_aot_task_scope_boundary`) y despacha
+(`rt_aot_task_land` y `br_table` en su CLIF) sus aterrizajes; las demás no llaman a ninguna de esas entradas. Las
+llamadas se identifican por las reubicaciones del objeto hacia cada símbolo del runtime, no por índices de CLIF.
+`tests/windows_startup_tests.rs` comprueba el arranque de Windows del objeto COFF (ver «Destinos»).
+
 ## 8. Fuentes consultadas y genealogía conceptual
 
 Cranelift (`cranelift-codegen`, `cranelift-frontend`, `cranelift-module`, `cranelift-object`): se toman el modelo de
