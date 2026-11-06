@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../domain/model/knowledge/exercise_check_result.dart';
 import '../../../domain/model/knowledge/exercise_kind.dart';
 import '../../../domain/model/knowledge/exercise_level.dart';
 import '../../components/typography/app_text.dart';
@@ -6,6 +7,7 @@ import '../../l10n/generated/app_localizations.dart';
 import '../../theme/app_theme.dart';
 import '../../theme/tokens/radii.dart';
 import '../../theme/tokens/spacing.dart';
+import 'exercise_strip_feedback.dart';
 
 final class StripLevelBadge extends StatelessWidget {
   final ExerciseLevel level;
@@ -128,6 +130,41 @@ final class NotFoundWarning extends StatelessWidget {
           l10n.exerciseNotFoundInCatalog(exerciseId),
           variant: AppTextVariant.caption,
           color: warningSev.fg,
+        ),
+      ),
+    );
+  }
+}
+
+final class StripResultBadge extends StatelessWidget {
+  final ExerciseCheckResult result;
+
+  const StripResultBadge({super.key, required this.result});
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = AppThemeExtension.of(context);
+    final tone = result.isSolved
+        ? theme.colors.severities.success
+        : theme.colors.severities.warning;
+    return Semantics(
+      label: summaryText(result, l10n),
+      excludeSemantics: true,
+      child: Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: SpacingTokens.space1,
+          vertical: SpacingTokens.spaceHalf,
+        ),
+        decoration: BoxDecoration(
+          color: tone.surface,
+          borderRadius: BorderRadius.circular(RadiusTokens.radiusXs),
+          border: Border.all(color: tone.border),
+        ),
+        child: AppText(
+          l10n.exerciseCasesRatio(result.passedCases, result.totalCases),
+          variant: AppTextVariant.codeCaption,
+          color: tone.fg,
         ),
       ),
     );

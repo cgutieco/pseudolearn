@@ -23,12 +23,11 @@ final class DocumentColumn extends StatelessWidget {
   final bool isAccompanying;
   final bool showsCompanionLabel;
   final Axis companionDirection;
-  final bool isExerciseStripExpanded;
+  final bool? exerciseStripExpansion;
   final ValueChanged<DocumentTabKind> onTabSelected;
   final VoidCallback onToggleCompanion;
-  final VoidCallback onToggleExerciseStrip;
+  final ValueChanged<bool> onToggleExerciseStrip;
   final void Function(EditorState, StepPace) onPace;
-  final ValueChanged<EditorState> onCheckExercise;
 
   const DocumentColumn({
     super.key,
@@ -38,12 +37,11 @@ final class DocumentColumn extends StatelessWidget {
     required this.isAccompanying,
     required this.showsCompanionLabel,
     required this.companionDirection,
-    required this.isExerciseStripExpanded,
+    required this.exerciseStripExpansion,
     required this.onTabSelected,
     required this.onToggleCompanion,
     required this.onToggleExerciseStrip,
     required this.onPace,
-    required this.onCheckExercise,
   });
 
   @override
@@ -56,12 +54,11 @@ final class DocumentColumn extends StatelessWidget {
         isAccompanying: isAccompanying,
         showsCompanionLabel: showsCompanionLabel,
         companionDirection: companionDirection,
-        isExerciseStripExpanded: isExerciseStripExpanded,
+        exerciseStripExpansion: exerciseStripExpansion,
         onTabSelected: onTabSelected,
         onToggleCompanion: onToggleCompanion,
         onToggleExerciseStrip: onToggleExerciseStrip,
         onPace: onPace,
-        onCheckExercise: onCheckExercise,
         editorState: editorState,
       ),
     );
@@ -75,12 +72,11 @@ final class _DocumentColumnContent extends StatelessWidget {
   final bool isAccompanying;
   final bool showsCompanionLabel;
   final Axis companionDirection;
-  final bool isExerciseStripExpanded;
+  final bool? exerciseStripExpansion;
   final ValueChanged<DocumentTabKind> onTabSelected;
   final VoidCallback onToggleCompanion;
-  final VoidCallback onToggleExerciseStrip;
+  final ValueChanged<bool> onToggleExerciseStrip;
   final void Function(EditorState, StepPace) onPace;
-  final ValueChanged<EditorState> onCheckExercise;
   final EditorState editorState;
 
   const _DocumentColumnContent({
@@ -90,12 +86,11 @@ final class _DocumentColumnContent extends StatelessWidget {
     required this.isAccompanying,
     required this.showsCompanionLabel,
     required this.companionDirection,
-    required this.isExerciseStripExpanded,
+    required this.exerciseStripExpansion,
     required this.onTabSelected,
     required this.onToggleCompanion,
     required this.onToggleExerciseStrip,
     required this.onPace,
-    required this.onCheckExercise,
     required this.editorState,
   });
 
@@ -119,9 +114,8 @@ final class _DocumentColumnContent extends StatelessWidget {
         if (exerciseId != null)
           _ExerciseStripConnector(
             exerciseId: exerciseId,
-            isExpanded: isExerciseStripExpanded,
+            expansion: exerciseStripExpansion,
             onToggleExpand: onToggleExerciseStrip,
-            onCheck: () => onCheckExercise(editorState),
           ),
         ws,
         _Footer(onPace: onPace),
@@ -198,27 +192,28 @@ final class _WorkspaceSection extends StatelessWidget {
 
 final class _ExerciseStripConnector extends StatelessWidget {
   final String exerciseId;
-  final bool isExpanded;
-  final VoidCallback onToggleExpand;
-  final VoidCallback onCheck;
+  final bool? expansion;
+  final ValueChanged<bool> onToggleExpand;
 
   const _ExerciseStripConnector({
     required this.exerciseId,
-    required this.isExpanded,
+    required this.expansion,
     required this.onToggleExpand,
-    required this.onCheck,
   });
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ExerciseSessionCubit, ExerciseSessionState>(
-      builder: (context, sessionState) => ExerciseStrip(
-        exerciseId: exerciseId,
-        sessionState: sessionState,
-        isExpanded: isExpanded,
-        onToggleExpand: onToggleExpand,
-        onCheck: onCheck,
-      ),
+      builder: (context, sessionState) {
+        final isExpanded =
+            expansion ?? !(sessionState.isCompleted || sessionState.isSolved);
+        return ExerciseStrip(
+          exerciseId: exerciseId,
+          sessionState: sessionState,
+          isExpanded: isExpanded,
+          onToggleExpand: () => onToggleExpand(!isExpanded),
+        );
+      },
     );
   }
 }

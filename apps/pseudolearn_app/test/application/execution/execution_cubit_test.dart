@@ -387,44 +387,6 @@ void main() {
       expect(cubit.state.userCollapsedOutput, isTrue);
     });
 
-    test('dismissing the status banner records the choice once', () async {
-      await cubit.runToEnd(_immediate);
-      expect(cubit.state.isStatusBannerDismissed, isFalse);
-
-      cubit.applyViewAction(ExecutionViewAction.dismissStatusBanner);
-      final dismissed = cubit.state;
-      cubit.applyViewAction(ExecutionViewAction.dismissStatusBanner);
-
-      expect(dismissed.isStatusBannerDismissed, isTrue);
-      expect(cubit.state, same(dismissed));
-    });
-
-    test('dismissing with nothing to dismiss leaves the state untouched', () {
-      final before = cubit.state;
-      cubit.applyViewAction(ExecutionViewAction.dismissStatusBanner);
-
-      expect(cubit.state.isStatusBannerDismissed, isTrue);
-      expect(cubit.state.status, before.status);
-    });
-
-    test('a new run brings the dismissed banner back', () async {
-      await cubit.runToEnd(_immediate);
-      cubit.applyViewAction(ExecutionViewAction.dismissStatusBanner);
-      expect(cubit.state.isStatusBannerDismissed, isTrue);
-
-      await cubit.runToEnd(_immediate);
-
-      expect(cubit.state.status, ExecutionStatus.finishedSuccess);
-      expect(cubit.state.isStatusBannerDismissed, isFalse);
-    });
-
-    test('stopping keeps the dismissal of the run it belonged to', () async {
-      await cubit.step();
-      cubit.applyViewAction(ExecutionViewAction.dismissStatusBanner);
-      cubit.stop();
-
-      expect(cubit.state.isStatusBannerDismissed, isTrue);
-    });
   });
 
   group('ExecutionCubit paces', () {

@@ -37,7 +37,10 @@ final class ComponentMetricsTokens {
   static const double outputPanelBodyHeight = 120.0;
   static const double diagnosticsListHeight = 140.0;
   static const double diagnosticsEmptyHeight = 100.0;
-  static const double executionArgumentsWidth = 240.0;
+  static const double runResultPillHeight = 24.0;
+  static const double runOptionsBadgeDotSize = 8.0;
+  static const double keywordHelpChipSize = 28.0;
+  static const double keywordHelpChipGap = 2.0;
   static const double inlineTitleFieldWidth = 240.0;
   static const double inlineTitleFieldHeight = 36.0;
   static const double codeGutterWidth = 24.0;

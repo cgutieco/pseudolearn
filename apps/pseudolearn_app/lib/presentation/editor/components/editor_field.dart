@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import '../../../application/editor/editor_state.dart';
 import '../../../application/execution/execution_state.dart';
+import '../../../domain/model/analysis/source_range.dart';
 import '../../../domain/model/editor/editor_key.dart';
 import '../code_field.dart';
 import '../highlight_controller.dart';
 import 'editor_assist_layer.dart';
 import 'editor_key_shortcuts.dart';
+import 'keyword_help_layer.dart';
 
 final class EditorField extends StatelessWidget {
   final HighlightController controller;
@@ -17,6 +19,8 @@ final class EditorField extends StatelessWidget {
   final bool assistanceEnabled;
   final bool usesSuggestionBar;
   final VoidCallback? onHelpRequested;
+  final SourceRange? helpKeyword;
+  final ValueChanged<SourceRange> onExplainKeyword;
 
   const EditorField({
     super.key,
@@ -29,6 +33,8 @@ final class EditorField extends StatelessWidget {
     this.assistanceEnabled = false,
     this.usesSuggestionBar = false,
     this.onHelpRequested,
+    this.helpKeyword,
+    required this.onExplainKeyword,
   });
 
   @override
@@ -45,18 +51,35 @@ final class EditorField extends StatelessWidget {
         assistanceEnabled: assistanceEnabled,
         usesSuggestionBar: usesSuggestionBar,
         onKeyPressed: onKeyPressed,
-        child: CodeField(
+        child: KeywordHelpLayer(
           controller: controller,
           focusNode: focusNode,
-          highlightSpans: editorState.report.highlightSpans,
-          focus: executionState.isInFlight
-              ? executionState.currentStep.focus
-              : null,
-          isReadOnly: executionState.isInFlight,
-          onChanged: onCodeChanged,
-          onExplain: onHelpRequested,
+          sourceCode: editorState.sourceCode,
+          keyword: executionState.isInFlight ? null : helpKeyword,
+          onExplain: onExplainKeyword,
+          child: _FieldCode(field: this),
         ),
       ),
+    );
+  }
+}
+
+final class _FieldCode extends StatelessWidget {
+  final EditorField field;
+
+  const _FieldCode({required this.field});
+
+  @override
+  Widget build(BuildContext context) {
+    final execution = field.executionState;
+    return CodeField(
+      controller: field.controller,
+      focusNode: field.focusNode,
+      highlightSpans: field.editorState.report.highlightSpans,
+      focus: execution.isInFlight ? execution.currentStep.focus : null,
+      isReadOnly: execution.isInFlight,
+      onChanged: field.onCodeChanged,
+      onExplain: field.onHelpRequested,
     );
   }
 }

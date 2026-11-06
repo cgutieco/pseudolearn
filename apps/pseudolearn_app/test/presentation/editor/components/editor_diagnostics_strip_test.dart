@@ -68,6 +68,14 @@ void main() {
       expect(find.byType(KeyboardExitActions), findsOneWidget);
     });
 
+    testWidgets('with no problems the exit actions stand alone, unlabelled', (tester) async {
+      await tester.pumpWidget(_strip(offersExitActions: true));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Sin problemas'), findsNothing);
+      expect(find.byType(KeyboardExitActions), findsOneWidget);
+    });
+
     testWidgets('without exit actions it neither runs nor swallows the tap', (tester) async {
       var hides = 0;
 
@@ -77,7 +85,10 @@ void main() {
       ));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.text('Sin problemas'));
+      await tester.tapAt(
+        tester.getTopLeft(find.byType(EditorDiagnosticsStrip)) +
+            const Offset(24, 12),
+      );
       await tester.pumpAndSettle();
 
       expect(find.byType(KeyboardExitActions), findsNothing);
@@ -93,7 +104,10 @@ void main() {
       ));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.text('Sin problemas'));
+      await tester.tapAt(
+        tester.getTopLeft(find.byType(EditorDiagnosticsStrip)) +
+            const Offset(24, 12),
+      );
       await tester.pumpAndSettle();
 
       expect(hides, 1);

@@ -6,6 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/application/editor/editor_state.dart';
 import 'package:pseudolearn_app/application/execution/execution_state.dart';
 import 'package:pseudolearn_app/domain/model/analysis/analysis_report.dart';
+import 'package:pseudolearn_app/domain/model/analysis/app_diagnostic.dart';
 import 'package:pseudolearn_app/domain/model/analysis/program_node_id.dart';
 import 'package:pseudolearn_app/domain/model/analysis/source_range.dart';
 import 'package:pseudolearn_app/domain/model/completion/completion_item.dart';
@@ -40,22 +41,37 @@ const _completions = [
   ),
 ];
 
+const _diagnostic = AppDiagnostic(
+  code: 'variableNotDeclared',
+  message: 'La variable x no está declarada',
+  severity: AppSeverity.error,
+  primaryRange: SourceRange(
+    startOffset: 0,
+    endOffset: 7,
+    startLine: 1,
+    startColumn: 1,
+    endLine: 1,
+    endColumn: 8,
+  ),
+);
+
 EditorState _state({
   required String sourceCode,
   SourceEdit? pendingEdit,
   bool showsKeyBar = true,
   bool hasKeys = true,
   bool isExecutable = true,
+  List<AppDiagnostic> diagnostics = const [],
 }) {
   return EditorState(
     document: null,
     sourceCode: sourceCode,
-    report: isExecutable
+    report: isExecutable && diagnostics.isEmpty
         ? const AnalysisReport.empty()
-        : const AnalysisReport(
-            isExecutable: false,
-            diagnostics: [],
-            highlightSpans: [],
+        : AnalysisReport(
+            isExecutable: isExecutable,
+            diagnostics: diagnostics,
+            highlightSpans: const [],
           ),
     completions: _completions,
     keys: hasKeys ? _keys : const [],
@@ -437,6 +453,23 @@ void main() {
     testWidgets('keeps its toggle when the keyboard is down', (tester) async {
       await tester.pumpWidget(
         _surface(
+          editorState: _state(
+            sourceCode: 'Proceso P',
+            diagnostics: const [_diagnostic],
+          ),
+          onKeyPressed: (_, _) {},
+          keyboardInset: 0,
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('1 problema'), findsOneWidget);
+      expect(find.byTooltip('Expandir'), findsOneWidget);
+    });
+
+    testWidgets('disappears when there is nothing to report', (tester) async {
+      await tester.pumpWidget(
+        _surface(
           editorState: _state(sourceCode: 'Proceso P'),
           onKeyPressed: (_, _) {},
           keyboardInset: 0,
@@ -444,7 +477,8 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.byTooltip('Expandir'), findsOneWidget);
+      expect(find.text('Sin problemas'), findsNothing);
+      expect(find.byTooltip('Expandir'), findsNothing);
     });
   });
 
@@ -603,7 +637,10 @@ void main() {
       await tester.pumpAndSettle();
       expect(_fieldHasFocus(tester), isTrue);
 
-      await tester.tap(find.text('Sin problemas'));
+      await tester.tapAt(
+        tester.getTopLeft(find.byType(KeyboardExitActions)) -
+            const Offset(48, -12),
+      );
       await tester.pumpAndSettle();
 
       expect(_fieldHasFocus(tester), isFalse);

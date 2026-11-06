@@ -7,7 +7,6 @@ import 'step_settlement.dart';
 final class StepBatchRunner {
   static const int defaultBatchSize = 25;
   static const int maxUiAdvances = 10000;
-  static const int warningUiAdvanceThreshold = 9000;
 
   final int batchSize;
   final int maxSteps;

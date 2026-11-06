@@ -3,8 +3,7 @@ import '../../application/editor/editor_state.dart';
 import '../../application/execution/execution_state.dart';
 import '../../domain/model/analysis/app_diagnostic.dart';
 import '../../domain/model/editor/caret_range.dart';
-import '../l10n/generated/app_localizations.dart';
-import '../components/status_banner.dart';
+import '../../domain/model/analysis/source_range.dart';
 import 'editor_surface.dart';
 
 final class EditorTabView extends StatelessWidget {
@@ -14,12 +13,11 @@ final class EditorTabView extends StatelessWidget {
   final ValueChanged<int>? onCursorMoved;
   final EditorKeyPressed onKeyPressed;
   final ValueChanged<AppDiagnostic> onDiagnosticSelected;
-  final VoidCallback onDismissStatusBanner;
   final VoidCallback onRun;
   final bool keepsKeyBar;
   final bool assistanceEnabled;
   final ValueChanged<CaretRange>? onHelpRequested;
-  final Widget? helpPanel;
+  final SourceRange? helpKeyword;
 
   const EditorTabView({
     super.key,
@@ -29,12 +27,11 @@ final class EditorTabView extends StatelessWidget {
     this.onCursorMoved,
     required this.onKeyPressed,
     required this.onDiagnosticSelected,
-    required this.onDismissStatusBanner,
     required this.onRun,
     this.keepsKeyBar = true,
     this.assistanceEnabled = false,
     this.onHelpRequested,
-    this.helpPanel,
+    this.helpKeyword,
   });
 
   @override
@@ -47,91 +44,17 @@ final class _EditorTabContent extends StatelessWidget {
   const _EditorTabContent({required this.view});
 
   @override
-  Widget build(BuildContext context) => Column(
-    children: [
-      if (!view.executionState.isStatusBannerDismissed)
-        _EditorExecutionStatusBanner(
-          status: view.executionState.status,
-          haltMessage: view.executionState.haltMessage,
-          onDismiss: view.onDismissStatusBanner,
-        ),
-      Expanded(
-        child: EditorSurface(
-          editorState: view.editorState,
-          executionState: view.executionState,
-          onCodeChanged: view.onCodeChanged,
-          onCursorMoved: view.onCursorMoved,
-          onDiagnosticSelected: view.onDiagnosticSelected,
-          onKeyPressed: view.onKeyPressed,
-          onRun: view.onRun,
-          keepsKeyBar: view.keepsKeyBar,
-          assistanceEnabled: view.assistanceEnabled,
-          onHelpRequested: view.onHelpRequested,
-          helpPanel: view.helpPanel,
-        ),
-      ),
-    ],
+  Widget build(BuildContext context) => EditorSurface(
+    editorState: view.editorState,
+    executionState: view.executionState,
+    onCodeChanged: view.onCodeChanged,
+    onCursorMoved: view.onCursorMoved,
+    onDiagnosticSelected: view.onDiagnosticSelected,
+    onKeyPressed: view.onKeyPressed,
+    onRun: view.onRun,
+    keepsKeyBar: view.keepsKeyBar,
+    assistanceEnabled: view.assistanceEnabled,
+    onHelpRequested: view.onHelpRequested,
+    helpKeyword: view.helpKeyword,
   );
 }
-
-final class _EditorExecutionStatusBanner extends StatelessWidget {
-  final ExecutionStatus status;
-  final String? haltMessage;
-  final VoidCallback onDismiss;
-
-  const _EditorExecutionStatusBanner({
-    required this.status,
-    required this.haltMessage,
-    required this.onDismiss,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final content = _executionBannerContent(
-      status,
-      AppLocalizations.of(context)!,
-      haltMessage,
-    );
-    if (content == null) return const SizedBox.shrink();
-    return StatusBanner(
-      severity: content.severity,
-      title: content.title,
-      message: content.message,
-      onDismiss: onDismiss,
-    );
-  }
-}
-
-({AppSeverity severity, String title, String? message})?
-_executionBannerContent(
-  ExecutionStatus status,
-  AppLocalizations l10n,
-  String? haltMessage,
-) => switch (status) {
-  ExecutionStatus.stepLimitReached => (
-    severity: AppSeverity.warning,
-    title: l10n.bannerStepLimitTitle,
-    message: l10n.bannerStepLimitBody,
-  ),
-  ExecutionStatus.uiSafetyLimitReached => (
-    severity: AppSeverity.warning,
-    title: l10n.bannerUiSafetyLimitTitle,
-    message: l10n.bannerUiSafetyLimitBody,
-  ),
-  ExecutionStatus.cancelledByHost => (
-    severity: AppSeverity.warning,
-    title: l10n.bannerCancelledTitle,
-    message: l10n.bannerCancelledBody,
-  ),
-  ExecutionStatus.haltedWithError => (
-    severity: AppSeverity.error,
-    title: l10n.bannerErrorTitle,
-    message: haltMessage ?? l10n.executionRuntimeError,
-  ),
-  ExecutionStatus.finishedSuccess => (
-    severity: AppSeverity.success,
-    title: l10n.bannerSuccessTitle,
-    message: null,
-  ),
-  _ => null,
-};

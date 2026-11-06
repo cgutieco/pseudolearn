@@ -14,7 +14,7 @@ import '../../../domain/model/editor/editor_key.dart';
 import '../../../domain/model/profiles/syntax_profile_id.dart';
 import '../../../domain/model/settings/ui_language_id.dart';
 import '../../editor/editor_tab_view.dart';
-import '../../editor/help/syntax_help_panel.dart';
+import '../../editor/help/syntax_help_sheet.dart';
 
 final class EditorTabItem extends StatelessWidget {
   final EditorState editorState;
@@ -41,17 +41,13 @@ final class EditorTabItem extends StatelessWidget {
           (cubit) => cubit.state.editorAssistance,
         ),
         onCodeChanged: (code, cursor) => _propagate(context, code, cursor),
-        onCursorMoved: (cursor) =>
-            context.read<EditorCubit>().updateCompletionCursor(cursor),
+        onCursorMoved: (cursor) => _moveCaret(context, cursor),
         onKeyPressed: (key, caret) => _applyKey(context, key, caret),
         onDiagnosticSelected: (d) =>
             context.read<EditorCubit>().selectDiagnostic(d),
-        onDismissStatusBanner: () => context
-            .read<ExecutionCubit>()
-            .applyViewAction(ExecutionViewAction.dismissStatusBanner),
         onRun: onRun,
         onHelpRequested: (caret) => _requestHelp(context, caret),
-        helpPanel: _HelpPanelSlot(state: helpState),
+        helpKeyword: helpState.restingKeyword,
       ),
     );
   }
@@ -68,6 +64,17 @@ final class EditorTabItem extends StatelessWidget {
       languageId: code == 'en' ? UiLanguageId.english : UiLanguageId.spanish,
       cursorUtf16: caret.lower,
       revision: editorState.completionRevision,
+    );
+    showSyntaxHelpSheet(context);
+  }
+
+  void _moveCaret(BuildContext context, int cursor) {
+    final editor = context.read<EditorCubit>();
+    editor.updateCompletionCursor(cursor);
+    context.read<SyntaxHelpCubit>().caretMoved(
+      spans: editor.state.report.highlightSpans,
+      cursorUtf16: cursor,
+      revision: editor.state.completionRevision,
     );
   }
 
@@ -112,22 +119,6 @@ final class EditorTabItem extends StatelessWidget {
     context.read<ExportCubit>().updateSource(
       sourceCode: code,
       profileId: profileId,
-    );
-  }
-}
-
-final class _HelpPanelSlot extends StatelessWidget {
-  final SyntaxHelpState state;
-
-  const _HelpPanelSlot({required this.state});
-
-  @override
-  Widget build(BuildContext context) {
-    final result = state.visibleResult;
-    if (result == null) return const SizedBox.shrink();
-    return SyntaxHelpPanel(
-      result: result,
-      onClose: context.read<SyntaxHelpCubit>().dismiss,
     );
   }
 }

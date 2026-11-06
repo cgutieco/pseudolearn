@@ -471,48 +471,12 @@
       }
     }
   },
-  "executionStatusIdle": "Not running",
-  "@executionStatusIdle": {
-    "description": "Footer status when no execution is in progress"
-  },
-  "executionStatusPaused": "Paused on line {line}",
-  "@executionStatusPaused": {
-    "description": "Footer status when execution is paused on a line",
-    "placeholders": {
-      "line": {
-        "type": "int",
-        "example": "8"
-      }
-    }
-  },
   "@executionStatusRunning": {
     "description": "Footer status while execution advances without pausing"
-  },
-  "executionStatusAwaitingInput": "Waiting for input",
-  "@executionStatusAwaitingInput": {
-    "description": "Footer status when execution waits for input"
-  },
-  "executionStatusAwaitingEffect": "Waiting for an effect",
-  "@executionStatusAwaitingEffect": {
-    "description": "Footer status when execution waits for an effect response"
-  },
-  "executionStatusFinished": "Execution finished",
-  "@executionStatusFinished": {
-    "description": "Footer status when the program finished successfully"
   },
   "traceRowOpen": "In progress",
   "@traceRowOpen": {
     "description": "Marker for the table row whose statement has not finished yet"
-  },
-  "statementCounter": "Statement {current}",
-  "@statementCounter": {
-    "description": "Counter of statements executed while stepping",
-    "placeholders": {
-      "current": {
-        "type": "int",
-        "example": "12"
-      }
-    }
   },
   "trackingStripEmpty": "No change in this step",
   "@trackingStripEmpty": {
@@ -529,36 +493,6 @@
   "tabEquivalentCode": "Equivalent code",
   "@tabEquivalentCode": {
     "description": "Label of the tab showing the program in Python or Rust"
-  },
-  "bannerStepLimitTitle": "Execution limit reported by the engine",
-  "@bannerStepLimitTitle": {
-    "description": "Warning title when step limit reached"
-  },
-  "bannerStepLimitBody": "The engine reported that this execution reached a configured limit.",
-  "@bannerStepLimitBody": {
-    "description": "Warning body when step limit reached"
-  },
-  "bannerUiSafetyLimitTitle": "Local UI safety cap reached",
-  "@bannerUiSafetyLimitTitle": {
-    "description": "Title when the interface stops pumping for safety"
-  },
-  "bannerUiSafetyLimitBody": "The interface stopped pumping after 10,000 advances to stay responsive. This local cap is not a language limit.",
-  "bannerCancelledTitle": "Execution cancelled",
-  "bannerCancelledBody": "The host stopped the execution. Task cleanups did not run.",
-  "@bannerUiSafetyLimitBody": {
-    "description": "Explains that the local advance cap belongs to the interface"
-  },
-  "executionStatusUiSafetyLimit": "Local UI safety cap",
-  "@executionStatusUiSafetyLimit": {
-    "description": "Footer status when the interface stopped pumping for safety"
-  },
-  "bannerSuccessTitle": "Execution finished successfully",
-  "@bannerSuccessTitle": {
-    "description": "Success banner title when program finishes"
-  },
-  "bannerErrorTitle": "Execution halted",
-  "@bannerErrorTitle": {
-    "description": "Error banner title when execution halts"
   },
   "bannerDismiss": "Dismiss notice",
   "@bannerDismiss": {
@@ -1030,14 +964,6 @@
   "exerciseStripExpand": "Expand exercise strip",
   "@exerciseStripExpand": {
     "description": "Semantic label to expand exercise strip"
-  },
-  "exerciseActionCheck": "Check",
-  "@exerciseActionCheck": {
-    "description": "Button label to check exercise solution"
-  },
-  "exerciseChecking": "Checking...",
-  "@exerciseChecking": {
-    "description": "Text displayed while solution is being checked"
   },
   "exercisePassedCount": "Meets {passed} of {total} cases",
   "@exercisePassedCount": {
@@ -2107,13 +2033,100 @@
   },
   "executionArguments": "Arguments",
   "executionArgumentsInvalid": "Check argument quotes and escapes.",
-  "executionReplay": "Replay",
-  "executionReplayRejected": "The tape cannot be replayed with this source and configuration.",
-  "executionWorkingDirectory": "Working directory: {path}",
-  "@executionWorkingDirectory": {
+  "executionReplay": "Repeat last run",
+  "executionReplayRejectedChanged": "Cannot repeat because the code changed since the last run. Press Run to try the current version.",
+  "@executionReplayRejectedChanged": {
+    "description": "Reason repeating was rejected when the code changed since the recorded run"
+  },
+  "executionReplayRejectedUnfinished": "Cannot repeat because the last run stopped before finishing or could not record all its data. Press Run to start it again.",
+  "@executionReplayRejectedUnfinished": {
+    "description": "Reason repeating was rejected when the recorded run is not reproducible"
+  },
+  "executionReplayRejectedInvalid": "Cannot repeat because the recording of the last run is not valid. Press Run to start it again.",
+  "@executionReplayRejectedInvalid": {
+    "description": "Reason repeating was rejected when the recording is damaged or incompatible"
+  },
+  "runResultReplayRejected": "Could not repeat",
+  "@runResultReplayRejected": {
+    "description": "Pill label when repeating the last run was rejected"
+  },
+  "runResultFinished": "Finished",
+  "@runResultFinished": {
+    "description": "Pill label when the program finished successfully"
+  },
+  "runResultError": "Error",
+  "@runResultError": {
+    "description": "Pill label when the program halted with an error at no known line"
+  },
+  "runResultErrorAt": "Error · line {line}",
+  "@runResultErrorAt": {
+    "description": "Pill label when the program halted with an error at a line",
     "placeholders": {
-      "path": {
-        "type": "String"
+      "line": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "runResultStepLimit": "Limit reached",
+  "@runResultStepLimit": {
+    "description": "Pill label when the engine reported an execution limit"
+  },
+  "runResultUiSafetyLimit": "Interface cap",
+  "@runResultUiSafetyLimit": {
+    "description": "Pill label when the interface stopped pumping for safety"
+  },
+  "runResultCancelled": "Cancelled",
+  "@runResultCancelled": {
+    "description": "Pill label when the host cancelled the execution"
+  },
+  "runNoteStepLimit": "The engine reported that this execution reached a configured limit.",
+  "@runNoteStepLimit": {
+    "description": "Closing output line explaining the execution limit"
+  },
+  "runNoteUiSafetyLimit": "The interface stopped pumping after 10,000 advances to stay responsive. This local cap is not a language limit.",
+  "@runNoteUiSafetyLimit": {
+    "description": "Closing output line explaining the local interface cap"
+  },
+  "runNoteCancelled": "The host stopped the execution. Task cleanups did not run.",
+  "@runNoteCancelled": {
+    "description": "Closing output line explaining the host cancellation"
+  },
+  "runOptionsTitle": "Run options",
+  "@runOptionsTitle": {
+    "description": "Title of the run options sheet"
+  },
+  "runOptionsOpen": "Run options",
+  "@runOptionsOpen": {
+    "description": "Accessible label of the button that opens the run options"
+  },
+  "runOptionsOpenWithArguments": "Run options, with arguments set",
+  "@runOptionsOpenWithArguments": {
+    "description": "Accessible label of the options button when arguments are set"
+  },
+  "executionArgumentsHelp": "Values your program receives as arguments. Separate them with spaces and use quotes to include spaces.",
+  "@executionArgumentsHelp": {
+    "description": "Helper text under the run arguments field"
+  },
+  "executionReplayHelp": "Runs the program again with the same data the last run recorded: what you typed, files and arguments. Use it to see an error again; it only works if you did not change the code.",
+  "@executionReplayHelp": {
+    "description": "Explains what repeating the last run does"
+  },
+  "executionWorkingDirectoryHelp": "Files your program creates or reads are kept in this algorithm's folder.",
+  "@executionWorkingDirectoryHelp": {
+    "description": "Explains where the program's files are kept"
+  },
+  "exerciseCasesRatio": "{passed}/{total}",
+  "@exerciseCasesRatio": {
+    "description": "Compact ratio of passed cases in the exercise strip",
+    "placeholders": {
+      "passed": {
+        "type": "int",
+        "example": "5"
+      },
+      "total": {
+        "type": "int",
+        "example": "5"
       }
     }
   }

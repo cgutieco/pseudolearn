@@ -12,24 +12,22 @@ final class DocumentScaffoldBody extends StatelessWidget {
   final String documentId;
   final DocumentTabKind activeTab;
   final bool isAccompanying;
-  final bool isExerciseStripExpanded;
+  final bool? exerciseStripExpansion;
   final ValueChanged<DocumentTabKind> onTabSelected;
   final VoidCallback onToggleCompanion;
-  final VoidCallback onToggleExerciseStrip;
+  final ValueChanged<bool> onToggleExerciseStrip;
   final void Function(EditorState, StepPace) onPace;
-  final ValueChanged<EditorState> onCheckExercise;
 
   const DocumentScaffoldBody({
     super.key,
     required this.documentId,
     required this.activeTab,
     required this.isAccompanying,
-    required this.isExerciseStripExpanded,
+    required this.exerciseStripExpansion,
     required this.onTabSelected,
     required this.onToggleCompanion,
     required this.onToggleExerciseStrip,
     required this.onPace,
-    required this.onCheckExercise,
   });
 
   @override
@@ -52,12 +50,11 @@ final class DocumentScaffoldBody extends StatelessWidget {
           companionDirection: CompanionLayout.forDeviceClass(
             canvas.deviceClass,
           ).direction,
-          isExerciseStripExpanded: isExerciseStripExpanded,
+          exerciseStripExpansion: exerciseStripExpansion,
           onTabSelected: onTabSelected,
           onToggleCompanion: onToggleCompanion,
           onToggleExerciseStrip: onToggleExerciseStrip,
           onPace: onPace,
-          onCheckExercise: onCheckExercise,
         ),
       ),
     );

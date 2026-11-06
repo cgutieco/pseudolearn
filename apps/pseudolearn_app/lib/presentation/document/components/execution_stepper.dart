@@ -3,7 +3,6 @@ import '../../../application/execution/execution_state.dart';
 import '../../../application/execution/step_pace.dart';
 import '../../components/button/app_button.dart';
 import '../../components/button/app_icon_button.dart';
-import '../../components/typography/app_text.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../shell/design_canvas.dart';
 import '../../shell/device_class.dart';
@@ -11,6 +10,7 @@ import '../../theme/app_theme.dart';
 import '../../theme/tokens/spacing.dart';
 import 'debug_controls.dart';
 import 'idle_controls.dart';
+import 'run_options_button.dart';
 
 final class ExecutionStepper extends StatelessWidget {
   final ExecutionState state;
@@ -18,6 +18,8 @@ final class ExecutionStepper extends StatelessWidget {
   final void Function(StepPace) onPace;
   final void Function(int) onTaskStep;
   final VoidCallback onStop;
+  final bool hasArguments;
+  final VoidCallback onOpenOptions;
 
   const ExecutionStepper({
     super.key,
@@ -26,6 +28,8 @@ final class ExecutionStepper extends StatelessWidget {
     required this.onPace,
     required this.onTaskStep,
     required this.onStop,
+    this.hasArguments = false,
+    required this.onOpenOptions,
   });
 
   @override
@@ -42,22 +46,34 @@ final class ExecutionStepper extends StatelessWidget {
         color: theme.colors.surfaces.raised,
         boxShadow: theme.elevation.level2,
       ),
-      child: Row(
-        children: [
-          _PaceControls(
-            state: state,
-            isExecutable: isExecutable,
-            onPace: onPace,
-            onTaskStep: onTaskStep,
-          ),
-          const SizedBox(width: SpacingTokens.space2),
-          _StopControl(isActive: state.isInFlight, onStop: onStop),
-          const SizedBox(width: SpacingTokens.space2),
-          Expanded(child: _StatusReadout(state: state)),
-        ],
-      ),
+      child: _StepperRow(stepper: this),
     );
   }
+}
+
+final class _StepperRow extends StatelessWidget {
+  final ExecutionStepper stepper;
+
+  const _StepperRow({required this.stepper});
+
+  @override
+  Widget build(BuildContext context) => Row(
+    children: [
+      _PaceControls(
+        state: stepper.state,
+        isExecutable: stepper.isExecutable,
+        onPace: stepper.onPace,
+        onTaskStep: stepper.onTaskStep,
+      ),
+      const SizedBox(width: SpacingTokens.space2),
+      _StopControl(isActive: stepper.state.isInFlight, onStop: stepper.onStop),
+      const Spacer(),
+      RunOptionsButton(
+        hasArguments: stepper.hasArguments,
+        onPressed: stepper.onOpenOptions,
+      ),
+    ],
+  );
 }
 
 final class _PaceControls extends StatelessWidget {
@@ -121,75 +137,4 @@ final class _StopControl extends StatelessWidget {
       onPressed: isActive ? onStop : null,
     );
   }
-}
-
-final class _StatusReadout extends StatelessWidget {
-  final ExecutionState state;
-
-  const _StatusReadout({required this.state});
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    final theme = AppThemeExtension.of(context);
-    final color = state.isNearStepLimit
-        ? theme.colors.severities.warning.fg
-        : theme.colors.text.secondary;
-
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Flexible(
-          child: AppText(
-            _statusLabel(state, l10n),
-            variant: AppTextVariant.caption,
-            color: theme.colors.text.tertiary,
-            textAlign: TextAlign.end,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-        const SizedBox(width: SpacingTokens.space3),
-        _StatementCounter(number: state.statementNumber, color: color),
-      ],
-    );
-  }
-}
-
-final class _StatementCounter extends StatelessWidget {
-  final int number;
-  final Color color;
-
-  const _StatementCounter({required this.number, required this.color});
-
-  @override
-  Widget build(BuildContext context) {
-    return AppText(
-      AppLocalizations.of(context)!.statementCounter(number),
-      variant: AppTextVariant.codeCaption,
-      color: color,
-      textAlign: TextAlign.end,
-      maxLines: 1,
-      overflow: TextOverflow.ellipsis,
-    );
-  }
-}
-
-String _statusLabel(ExecutionState state, AppLocalizations l10n) {
-  final line = state.currentStep.currentLine;
-  return switch (state.status) {
-    ExecutionStatus.idle => l10n.executionStatusIdle,
-    ExecutionStatus.running => l10n.executionStatusRunning,
-    ExecutionStatus.pausedAwaitingInput => l10n.executionStatusAwaitingInput,
-    ExecutionStatus.pausedAwaitingEffect => l10n.executionStatusAwaitingEffect,
-    ExecutionStatus.finishedSuccess => l10n.executionStatusFinished,
-    ExecutionStatus.haltedWithError => l10n.executionStatusFinished,
-    ExecutionStatus.cancelledByHost => l10n.executionStatusCancelledByHost,
-    ExecutionStatus.stepLimitReached => l10n.executionStatusFinished,
-    ExecutionStatus.uiSafetyLimitReached => l10n.executionStatusUiSafetyLimit,
-    ExecutionStatus.pausedAtStatement =>
-      line == null
-          ? l10n.executionStatusRunning
-          : l10n.executionStatusPaused(line),
-  };
 }

@@ -76,6 +76,8 @@ Future<void> _pumpStepper(
   required ExecutionState state,
   void Function(StepPace)? onPace,
   void Function(int)? onTaskStep,
+  bool hasArguments = false,
+  VoidCallback? onOpenOptions,
 }) async {
   tester.view.physicalSize = const Size(1280, 900);
   tester.view.devicePixelRatio = 1.0;
@@ -90,6 +92,8 @@ Future<void> _pumpStepper(
         onPace: onPace ?? (_) {},
         onTaskStep: onTaskStep ?? (_) {},
         onStop: () {},
+        hasArguments: hasArguments,
+        onOpenOptions: onOpenOptions ?? () {},
       ),
     ),
   );
@@ -113,7 +117,7 @@ void main() {
       expect(find.text('Paso a paso'), findsOneWidget);
       expect(find.text('Ejecutar'), findsOneWidget);
       expect(find.text('Saltar bloque'), findsNothing);
-      expect(find.text('Sin ejecución'), findsOneWidget);
+      expect(find.text('Sin ejecución'), findsNothing);
     });
 
     testWidgets(
@@ -130,8 +134,8 @@ void main() {
         expect(find.text('Saltar bloque'), findsOneWidget);
         expect(find.text('Salir del bloque'), findsOneWidget);
         expect(find.text('Continuar'), findsOneWidget);
-        expect(find.text('Pausado en la línea 8'), findsOneWidget);
-        expect(find.text('Sentencia 12'), findsOneWidget);
+        expect(find.text('Pausado en la línea 8'), findsNothing);
+        expect(find.text('Sentencia 12'), findsNothing);
       },
     );
 
@@ -225,6 +229,50 @@ void main() {
       await tester.tap(find.text('Avanzar en tarea 2'));
 
       expect(targets, [2]);
+    });
+
+    testWidgets('the options button opens the run options', (tester) async {
+      var opened = 0;
+      await _pumpStepper(
+        tester,
+        state: const ExecutionState.initial(),
+        onOpenOptions: () => opened++,
+      );
+
+      await tester.tap(find.byTooltip('Opciones de ejecución'));
+
+      expect(opened, 1);
+    });
+
+    testWidgets('defined arguments are announced on the options button', (
+      tester,
+    ) async {
+      await _pumpStepper(
+        tester,
+        state: const ExecutionState.initial(),
+        hasArguments: true,
+      );
+
+      expect(
+        find.byTooltip('Opciones de ejecución, con argumentos definidos'),
+        findsOneWidget,
+      );
+      expect(find.byTooltip('Opciones de ejecución'), findsNothing);
+    });
+
+    testWidgets('options stay available while a session is paused', (
+      tester,
+    ) async {
+      var opened = 0;
+      await _pumpStepper(
+        tester,
+        state: _paused(kind: ExecutionFocusKind.statement),
+        onOpenOptions: () => opened++,
+      );
+
+      await tester.tap(find.byTooltip('Opciones de ejecución'));
+
+      expect(opened, 1);
     });
   });
 }

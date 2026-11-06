@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import '../../application/editor/editor_state.dart';
 import '../../application/execution/execution_state.dart';
 import '../../domain/model/analysis/app_diagnostic.dart';
+import '../../domain/model/analysis/source_range.dart';
 import '../../domain/model/editor/caret_range.dart';
 import '../../domain/model/editor/editor_key.dart';
 import '../shell/design_canvas.dart';
 import '../shell/device_class.dart';
 import 'components/editor_diagnostics_strip.dart';
 import 'components/editor_field.dart';
-import 'components/editor_help_action.dart';
 import 'editor_key_bar.dart';
 import 'highlight_controller.dart';
 
@@ -26,7 +26,7 @@ final class EditorSurface extends StatefulWidget {
   final bool keepsKeyBar;
   final bool assistanceEnabled;
   final ValueChanged<CaretRange>? onHelpRequested;
-  final Widget? helpPanel;
+  final SourceRange? helpKeyword;
 
   const EditorSurface({
     super.key,
@@ -40,7 +40,7 @@ final class EditorSurface extends StatefulWidget {
     this.keepsKeyBar = true,
     this.assistanceEnabled = false,
     this.onHelpRequested,
-    this.helpPanel,
+    this.helpKeyword,
   });
 
   @override
@@ -128,6 +128,10 @@ final class _EditorSurfaceState extends State<EditorSurface> {
 
   void _requestHelp() => widget.onHelpRequested?.call(_caret());
 
+  void _explainKeyword(SourceRange keyword) => widget.onHelpRequested?.call(
+    CaretRange.collapsed(keyword.startOffset),
+  );
+
   void _run() {
     _focusNode.unfocus();
     widget.onRun();
@@ -139,9 +143,11 @@ final class _EditorSurfaceState extends State<EditorSurface> {
   VoidCallback? get _help =>
       widget.onHelpRequested == null ? null : _requestHelp;
 
+  SourceRange? get _helpKeyword =>
+      widget.onHelpRequested == null ? null : widget.helpKeyword;
+
   @override
-  Widget build(BuildContext context) {
-    return Column(
+  Widget build(BuildContext context) => Column(
       children: [
         Expanded(
           child: EditorField(
@@ -154,6 +160,8 @@ final class _EditorSurfaceState extends State<EditorSurface> {
             assistanceEnabled: widget.assistanceEnabled,
             usesSuggestionBar: _usesSuggestionBar,
             onHelpRequested: _help,
+            helpKeyword: _helpKeyword,
+            onExplainKeyword: _explainKeyword,
           ),
         ),
         _UnderFieldBars(
@@ -164,11 +172,9 @@ final class _EditorSurfaceState extends State<EditorSurface> {
           assistanceEnabled: widget.assistanceEnabled,
           onRun: _canRun ? _run : null,
           onHideKeyboard: _focusNode.unfocus,
-          help: EditorHelpDock(onPressed: _help, panel: widget.helpPanel),
         ),
       ],
     );
-  }
 
   bool get _usesSuggestionBar => widget.editorState.usesSuggestionBar(
     keyboardVisible: DesignCanvasScope.of(context).isKeyboardVisible,
@@ -185,7 +191,6 @@ final class _UnderFieldBars extends StatelessWidget {
   final ValueChanged<EditorKey> onKeyPressed;
   final VoidCallback? onRun;
   final VoidCallback onHideKeyboard;
-  final Widget help;
 
   const _UnderFieldBars({
     required this.editorState,
@@ -195,26 +200,24 @@ final class _UnderFieldBars extends StatelessWidget {
     required this.onKeyPressed,
     required this.onRun,
     required this.onHideKeyboard,
-    required this.help,
   });
 
   @override
   Widget build(BuildContext context) {
-    final canvas = DesignCanvasScope.of(context);
+    final diagnostics = editorState.report.diagnostics;
+    final offersExitActions = _isTypingOnCompact(context);
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        help,
-        EditorDiagnosticsStrip(
-          diagnostics: editorState.report.diagnostics,
-          onDiagnosticTap: onDiagnosticTap,
-          offersExitActions:
-              canvas.deviceClass == DeviceClass.compact &&
-              canvas.isKeyboardVisible,
-          canRun: onRun != null,
-          onRun: onRun ?? onHideKeyboard,
-          onHideKeyboard: onHideKeyboard,
-        ),
+        if (diagnostics.isNotEmpty || offersExitActions)
+          EditorDiagnosticsStrip(
+            diagnostics: diagnostics,
+            onDiagnosticTap: onDiagnosticTap,
+            offersExitActions: offersExitActions,
+            canRun: onRun != null,
+            onRun: onRun ?? onHideKeyboard,
+            onHideKeyboard: onHideKeyboard,
+          ),
         if (offersKeyBar)
           EditorKeyBar(
             keys: editorState.keys,
@@ -228,4 +231,9 @@ final class _UnderFieldBars extends StatelessWidget {
       ],
     );
   }
+}
+
+bool _isTypingOnCompact(BuildContext context) {
+  final canvas = DesignCanvasScope.of(context);
+  return canvas.deviceClass == DeviceClass.compact && canvas.isKeyboardVisible;
 }

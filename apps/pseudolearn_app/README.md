@@ -1009,11 +1009,15 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
   sugeridos mediante diálogo modal y eliminación/renombrado seguro.
 - **Documento (`DocumentPage`) · Armazón de cuatro pestañas:**
     - Cabecera con título, perfil de sintaxis y estado de sincronización.
-    - Franja plegable de ejercicio (`ExerciseStrip`) si el documento procede de la base de conocimiento.
+    - Franja plegable de ejercicio (`ExerciseStrip`) si el documento procede de la base de conocimiento. Su cabecera
+      es una sola línea (título, nivel y píldora de casos `n/m` o «Superado»); el cuerpo (tipo, enunciado, casos
+      visibles y, si falló, el detalle del fallo) arranca plegado cuando el ejercicio ya está superado (§4.61).
     - Cuatro pestañas conmutables: Editor (`EditorPage`), Diagramas (`FlowchartTabView`), Tabla de prueba de
       escritorio (`TraceTablePage`) y
       Código equivalente (`ExportPage`).
-    - Pie de ejecución interactivo con control de avance didáctico en cuatro ritmos.
+    - Pie de ejecución interactivo con control de avance didáctico en cuatro ritmos, salida del programa con píldora
+      de resultado y un único acceso `⋯` a las opciones de ejecución (argumentos, repetir la última ejecución y
+      carpeta de archivos). El pie no narra estado ni cuenta sentencias (§4.61).
     - Disposición acompañante (`CompanionLayout`): muestra el editor junto al diagrama o tabla en modo vertical (
       `below`, 3:2) en `compact`/`medium`, y horizontal (`beside`, 1:1) en `expanded`.
 - **Introducción interactiva (`OnboardingPage`):** Flujo de cuatro pasos (Bienvenida, Laboratorio en vivo de solo
@@ -1113,8 +1117,14 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
     - `KeyboardExitActions`: Las dos salidas del modo escritura, ejecutar hasta el final y ocultar teclado.
     - `EditorKeyShortcuts`: `Tab`, `Mayús`+`Tab` y `Esc` sobre el editor en escritorio, contra el mismo puerto que usan
       las teclas dibujadas.
-    - `StatusBanner`: Avisos de estado de ejecución (éxito, aviso, límite de pasos) descartables mediante acción
-      explícita.
+    - `StatusBanner`: Avisos descartables de sincronización (`SyncBanner`). El editor ya no lo usa: el resultado de
+      una ejecución lo dice `RunResultPill` (§4.61).
+    - `RunResultPill` y `RunOutcomeNote`: Píldora de resultado en la cabecera de la salida y línea final explicativa
+      en el cuerpo de la salida; ambos leen el único mapeo `runOutcomeOf` de estado de ejecución a presentación.
+    - `RunOptionsButton` y `ExecutionOptionsSheet`: Botón `⋯` del pie, con marca cuando hay argumentos definidos, y
+      hoja inferior con argumentos, repetición de la última cinta y carpeta de archivos del documento.
+    - `KeywordHelpChip` y `SyntaxHelpSheet`: Chip `?` sobre la palabra clave en la que reposa el cursor y hoja
+      inferior con la ficha de ayuda (§4.53).
     - `DiagramNotationSwitch`: Conmutador adaptativo al ancho del panel (`>= 760 dp` botonera segmentada; `< 760 dp`
       menú
       desplegable).
@@ -1795,8 +1805,9 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
   más la tecla de plantillas deja unos 49 dp de paso por tecla; añadir ejecutar y ocultar en el mismo eje lo baja a unos
   39 dp y encoge la cara de cada tecla de 41 a 30 dp, con `TAB` y `>=` al borde del recorte. La franja de diagnósticos,
   en cambio, ya existe, ya ocupa el ancho completo, ya aparece exactamente cuando el teclado está levantado y tiene
-  vacío todo su lado derecho. El emparejamiento además es honesto de leer: *«Sin problemas»* junto a un botón de
-  ejecutar activo, *«2 problemas»* junto al mismo botón apagado. El estado y su acción viven en la misma línea.
+  vacío todo su lado derecho. El emparejamiento además es honesto de leer: *«2 problemas»* junto a un botón de
+  ejecutar apagado; sin problemas, la franja calla su recuento y deja solo las dos salidas. Con el teclado bajado y
+  sin problemas la franja no se monta (§4.61).
 - **Cómo se compone sin mezclar responsabilidades:** `DiagnosticsPanel` no sabe qué es ejecutar; recibe un hueco
   `trailing` en su cabecera. `EditorDiagnosticsStrip` es quien decide llenarlo con `KeyboardExitActions` y quien
   envuelve
@@ -2409,11 +2420,11 @@ La posición se convierte a línea y columna en unidades UTF-16 (`Utf16LineIndex
 
 Vigencia: cada consulta pertenece a la revisión del documento con que se pidió (la revisión de completado del editor, monótona). Cuando el documento cambia, la ayuda visible se descarta; una consulta de una revisión anterior a la vigente se ignora. El resultado distingue ayuda de ficha, símbolo del usuario, posición sin ayuda, posición no válida y fallo del servicio; un fallo nunca se presenta como ausencia de ayuda.
 
-Presentación: el panel muestra solo texto, con encabezados semánticos, región activa y desplazamiento propio con un máximo de altura, de modo que el escalado de texto no desborda. Hay tres entradas: la acción visible «Explicar», F1 y la opción del menú contextual del campo (pulsación mantenida). Con teclado en pantalla en un dispositivo `compact` la fila de la acción se oculta para no desbordar la altura disponible, y F1 y el menú contextual siguen disponibles; el panel ya abierto se conserva. La consulta explícita funciona con la asistencia automática desactivada, no modifica el documento y no cambia selección ni foco, porque no emite ninguna edición pendiente. Las etiquetas de interfaz (acción, encabezados de sección, mensajes de ausencia) viven en los recursos localizados; título, resumen, descripción y secciones son los de la ficha devuelta. El idioma de interfaz se resuelve en presentación y es independiente del perfil del documento.
+Presentación: la ficha se abre en una hoja inferior modal (`SyntaxHelpSheet`) que solo muestra texto, con encabezados semánticos y desplazamiento propio; al cerrarse, la ayuda se descarta (`dismiss`). Ya no hay fila «Explicar» bajo el editor (§4.61). Hay tres entradas: el chip `?` (`KeywordHelpChip`), F1 y la opción «Explicar» del menú contextual del campo (pulsación mantenida). El chip aparece sobre una palabra clave o un nombre de tipo cuando el cursor reposa en ella **sin haber escrito**: `EditorSurface` solo informa movimientos de cursor que no acompañan a una edición, `SyntaxHelpCubit.caretMoved` busca entre los `highlightSpans` del informe vigente el rango explicable que contiene el cursor (bordes incluidos) y lo guarda como `restingKeyword`; cualquier edición (`documentChanged`) o la apertura de la ayuda lo retiran. Así tocar para editar nunca se convierte en abrir ayuda: el toque coloca el cursor como siempre y el chip es una oferta que se ignora escribiendo. No hay temporizador de reposo; la regla es determinista. El chip se coloca centrado sobre el token con la geometría del `RenderEditable` (`keyword_help_geometry.dart`), cae debajo si no cabe encima, se acota a los bordes y se declara región de toque del campo (`TextFieldTapRegion`) para no robarle el foco; no se ofrece durante una ejecución. La consulta explícita funciona con la asistencia automática desactivada, no modifica el documento y no cambia selección ni foco, porque no emite ninguna edición pendiente. Las etiquetas de interfaz (acción, encabezados de sección, mensajes de ausencia) viven en los recursos localizados; título, resumen, descripción y secciones son los de la ficha devuelta. El idioma de interfaz se resuelve en presentación y es independiente del perfil del documento.
 
 Verificación: los casos `APP.EDITOR.COMPLETION` R8–R13 los ejecuta el sujeto `app` por el transporte generado; las pruebas de widgets no sustituyen el puente, y `tool/native_bridge_adapters_test.dart` ejercita la consulta contra la biblioteca nativa real. La cobertura en dispositivo físico no se ha medido.
 
-Render: el panel dibuja siempre texto, sin Markdown, enlaces, imágenes ni reconocedores de gestos; un texto con etiquetas, enlaces o esquemas se ve literal, y el único elemento pulsable del panel es su botón de cierre. Lo comprueba una prueba de widgets con una ficha hostil. El servicio rechaza ese contenido en el origen y lo escapa en sus propias proyecciones; el panel no depende de ello.
+Render: la hoja dibuja siempre texto, sin Markdown, enlaces, imágenes ni reconocedores de gestos; un texto con etiquetas, enlaces o esquemas se ve literal, y el único elemento pulsable de la hoja es su botón de cierre. Lo comprueba una prueba de widgets con una ficha hostil. El servicio rechaza ese contenido en el origen y lo escapa en sus propias proyecciones; el panel no depende de ello.
 
 Frontera entre currículo, interfaz y catálogo: la base de conocimiento conserva su narrativa pedagógica; la interfaz, sus etiquetas y mensajes localizados; la semántica normativa del lenguaje (qué hace una palabra, sus partes, restricciones y ejemplos) solo llega de la ficha que devuelve la consulta. Ningún archivo de `lib/` ni recurso localizado puede repetir prosa de una ficha: lo comprueba una prueba del motor que recorre esta aplicación, con una violación deliberada que demuestra que falla. Una modificación de una ficha llega a la API, al servidor LSP y a esta consulta por generación, sin cambios de código.
 
@@ -2431,8 +2442,10 @@ HostWorker conserva archivos y atiende HTTP y temporizadores en hilos independie
 liberar, detener o reiniciar cierra el anfitrión; reproducción no lo abre ni envía effect_result.
 La entrada de Leer conserva su identidad propia (recurso, tarea, solicitud).
 
-El documento persiste los argumentos; la barra de ejecución permite editarlos y reproducir la
-última cinta. Los argumentos admiten comillas, vacíos, espacios y Unicode. La semilla viva usa entropía del SO y queda grabada; reproducción conserva la
+El documento persiste los argumentos; la hoja «Opciones de ejecución», abierta desde el botón `⋯` del pie,
+permite editarlos y repetir la última cinta. La misma hoja explica que los archivos del programa viven en la carpeta
+del algoritmo y, tras la primera ejecución, muestra su ruta seleccionable; la ruta ya no ocupa una franja del
+editor porque es estable por documento y no cambia entre ejecuciones. Los argumentos admiten comillas, vacíos, espacios y Unicode. La semilla viva usa entropía del SO y queda grabada; reproducción conserva la
 semilla de la cinta. Los errores de reproducción se muestran y no inician una ejecución viva alternativa.
 
 La nueva capa se verifica con una importación prohibida deliberada. La puerta de contenido rechaza
@@ -2578,13 +2591,27 @@ una proyección canónica. La app no valida la cinta: el motor es el único due�
   contra el motor real, «reproduction through the real engine» en `tool/native_bridge_adapters_test.dart` (equivalencia
   con espía de transporte, cinta de otro programa, cinta truncada y cinta adulterada).
 
-**Control «Reproducir».** `ExecutionConfigurationControls` habilita el botón mientras `ExecutionState.recordedTape` no sea
-nulo y no haya una ejecución en curso. Al pulsarlo lee la fuente y el documento vigentes del `EditorCubit` en ese instante,
+**Control «Repetir última ejecución».** `ExecutionReplaySection`, dentro de `ExecutionOptionsSheet`, solo se monta
+mientras `ExecutionState.recordedTape` no sea nulo y habilita el botón cuando no hay una ejecución en curso; bajo él,
+una frase explica qué hace o, si la última repetición fue rechazada, el motivo. Al pulsarlo lee la fuente y el documento vigentes del `EditorCubit` en ese instante,
 no los capturados en la última construcción del widget, porque una edición posterior a esa construcción reproduciría
 con la fuente anterior y ocultaría el rechazo. El cubit conserva la cinta durante la reproducción (`_startNew` la
-mantiene), de modo que una reproducción rechazada o aceptada permite otra. El rechazo se muestra localizado
-(`executionReplayRejected`). `APP.EXEC.CONFIGURATION#R2` cubre cinta válida y fuente cambiada por el puente real; la
-prueba de widgets verifica el botón deshabilitado sin cinta. El estado de canales y cola no es consultable por API,
+mantiene), de modo que una reproducción rechazada o aceptada permite otra. El rechazo se muestra localizado y con
+su causa, porque una frase única («la cinta no se puede reproducir») no le decía a la persona qué hacer.
+`replayRejectionText` agrupa los ocho `ReplayRejection` en tres motivos accionables: código cambiado
+(`identityMismatch`, `executionReplayRejectedChanged`), ejecución no reproducible (`nonReproducible` y `missingTape`,
+`executionReplayRejectedUnfinished`) y grabación inválida (el resto, `executionReplayRejectedInvalid`); los tres
+terminan pidiendo pulsar «Ejecutar». El agrupamiento sigue lo que la persona puede hacer, no el código del motor, y el
+`switch` exhaustivo obliga a clasificar cualquier rechazo nuevo. El mismo texto aparece en la hoja y en la salida:
+`runOutcomeOf` trata `haltedWithError` con `replayRejection` presente como aviso «No se pudo repetir» y no como error
+del programa, porque la repetición rechazada termina en `haltedWithError` sin mensaje ni línea, y el respaldo genérico
+«Error en tiempo de ejecución» hacía creer que el programa había fallado. La ayuda del botón declara qué datos repite
+(lo leído con `Leer`, archivos y argumentos), que sirve para volver a ver un error y que exige que el código no haya
+cambiado. Una trampa del programa deja la cinta reproducible en el motor, de modo que repetirla vuelve a mostrar el
+mismo mensaje y la misma línea; solo un corte (detener, límite) o una cinta truncada, redactada o incierta la vuelven
+no reproducible, y eso es lo que nombra `executionReplayRejectedUnfinished`. Los argumentos actuales del documento no
+participan en la identidad, de modo que la repetición usa los grabados aunque el campo haya cambiado. `APP.EXEC.CONFIGURATION#R2` cubre cinta válida y fuente cambiada por el puente real; la
+prueba de widgets verifica el botón deshabilitado durante una ejecución y la sección ausente sin cinta. El estado de canales y cola no es consultable por API,
 por lo que no se compara.
 
 ### 4.58 Resultados de tareas y terminaciones: error recuperable, trampa y corte del anfitrión
@@ -2728,6 +2755,54 @@ Cambiar el sufijo para cada proceso. La memoria es RSS del proceso Flutter compl
 inferior del pico y no se atribuye a una etapa. La evidencia humana (tareas de espera, unión, canal, cancelación frente a
 error y preguntas sobre simultaneidad) la conducen personas con consentimiento gestionado fuera del repositorio; este
 proyecto no simula participantes ni resultados. Mientras no existan, ese resultado se registra como diferido.
+
+### 4.61 Editor en modo flujo: código, salida y una sola barra de control
+
+- **Problema:** La pantalla de documento apilaba hasta nueve franjas entre la cabecera y la navegación: tira de
+  ejercicio con su botón «Comprobar» y su recuadro de resultado, pestañas, banner «Ejecución finalizada con éxito»,
+  editor, fila «Explicar», panel «Sin problemas», campo «Argumentos» con «Reproducir», ruta de la carpeta de trabajo,
+  salida y un pie que narraba «Ejecución terminada · Sentencia 6». En un teléfono grabado en vertical el código quedaba
+  en tres líneas visibles. La pantalla existe para escribir, ejecutar y depurar; todo lo que no sirve a eso en ese
+  instante compite con el código.
+- **Elección:** Cada pieza aparece solo cuando tiene algo que decir, y lo dice en el lugar donde ya se mira.
+    1. **Sin banner de resultado.** El resultado de una ejecución terminada se dice en una píldora en la cabecera de la
+       salida (`RunResultPill`): «Terminado», «Error · línea N» —que al tocarla selecciona la sentencia del fallo con
+       `EditorCubit.revealSource`—, «Límite alcanzado», «Tope de interfaz» o «Cancelada». El mensaje largo (el error
+       del motor o la explicación del límite) se añade como última línea de la salida (`RunOutcomeNote`), como lo
+       haría una terminal. El mapeo de estado a presentación vive en un solo sitio, `runOutcomeOf`; antes estaba
+       repetido en el banner y en el texto del pie. El tono se inyecta como selector de `SeverityColors`, no con otro
+       `switch` sobre `AppSeverity`.
+    2. **Pie sin narración.** El texto de estado y el contador de sentencias desaparecen: el estado ya lo dicen los
+       controles (inactivos, depuración o detener) y la línea resaltada en el editor, y el contador contaba cambios de
+       foco de la interfaz, no algo que la persona necesite. A la derecha del pie queda solo `⋯`.
+    3. **Opciones de ejecución en hoja.** Argumentos y repetición de la última cinta son útiles pero raros: solo
+       importan a programas que leen argumentos o usan el anfitrión. Pasan a `ExecutionOptionsSheet`, con frases que
+       explican qué hace cada uno y la nota de la carpeta de archivos. El botón `⋯` lleva un punto de marca cuando hay
+       argumentos, para que una configuración activa no quede invisible. El campo usa `AppTextField`, y la hoja se
+       separa del teclado con `DesignCanvasData.keyboardInset`, porque `MediaQuery` solo se lee en el armazón.
+    4. **Diagnósticos solo cuando hay problemas.** Con cero diagnósticos y el teclado bajado la franja no se monta; con
+       el teclado levantado en `compact` sigue alojando las salidas de §4.34, sin rótulo «Sin problemas».
+    5. **Ayuda sin fila propia.** «Explicar» deja de ocupar una fila: el chip `?` aparece sobre la palabra clave en la
+       que reposa el cursor y la ficha se abre en hoja inferior (§4.53).
+    6. **Ejercicio en una línea.** «Ejecutar» ya comprueba el ejercicio en el mismo gesto, así que el botón
+       «Comprobar» era un segundo camino a lo mismo y se retira. La cabecera muestra la proporción `n/m` con tono de
+       éxito o aviso (y la frase completa como etiqueta accesible); el recuadro de resultado solo se muestra plegado
+       dentro del cuerpo cuando la comprobación falló, porque entonces aporta el caso oculto. La franja arranca plegada
+       si el ejercicio está superado y se pliega sola al superarlo, salvo que la persona la haya abierto o cerrado a
+       mano (`DocumentPage._exerciseStripExpansion` es `null` hasta que la toca).
+- **Qué se retiró del modelo:** `ExecutionViewAction.dismissStatusBanner`, `ExecutionState.isStatusBannerDismissed`,
+  `ExecutionState.isNearStepLimit` y `StepBatchRunner.warningUiAdvanceThreshold`, que solo existían para el banner y
+  para colorear el contador. `ExecutionState.statementNumber` se conserva porque lo consumen los guiones de escena
+  de `tool/product/`.
+- **Alternativas descartadas y por qué:**
+    - *Toast o `SnackBar` al terminar:* Descartada. Es otra superficie temporal que tapa el pie justo cuando se quiere
+      leer la salida, y en un vídeo es ruido que entra y sale.
+    - *Ayuda al tocar directamente la palabra:* Descartada. El toque es de quien edita; convertirlo en ayuda obligaría
+      a distinguir intención por tiempo de pulsación y castigaría a quien solo quería colocar el cursor.
+    - *Mover la ruta de trabajo a Ajustes:* Descartada. La carpeta es por documento, no global; en Ajustes solo podría
+      describirse en abstracto. La hoja de opciones la explica junto a lo que la usa.
+    - *Eliminar argumentos y repetición:* Descartada. Funcionan y tienen casos de conformidad
+      (`APP.EXEC.CONFIGURATION`); el problema era su peso visual, no su existencia.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

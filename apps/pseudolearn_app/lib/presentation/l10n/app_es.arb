@@ -471,48 +471,12 @@
       }
     }
   },
-  "executionStatusIdle": "Sin ejecución",
-  "@executionStatusIdle": {
-    "description": "Estado del pie cuando no hay ninguna ejecución en curso"
-  },
-  "executionStatusPaused": "Pausado en la línea {line}",
-  "@executionStatusPaused": {
-    "description": "Estado del pie cuando la ejecución está pausada sobre una línea",
-    "placeholders": {
-      "line": {
-        "type": "int",
-        "example": "8"
-      }
-    }
-  },
   "@executionStatusRunning": {
     "description": "Estado del pie mientras la ejecución avanza sin pausas"
-  },
-  "executionStatusAwaitingInput": "Esperando un dato",
-  "@executionStatusAwaitingInput": {
-    "description": "Estado del pie cuando la ejecución espera una entrada"
-  },
-  "executionStatusAwaitingEffect": "Esperando un efecto",
-  "@executionStatusAwaitingEffect": {
-    "description": "Estado del pie cuando la ejecución espera la respuesta de un efecto"
-  },
-  "executionStatusFinished": "Ejecución terminada",
-  "@executionStatusFinished": {
-    "description": "Estado del pie cuando el programa terminó correctamente"
   },
   "traceRowOpen": "En curso",
   "@traceRowOpen": {
     "description": "Marca de la fila de la tabla cuya sentencia todavía no terminó"
-  },
-  "statementCounter": "Sentencia {current}",
-  "@statementCounter": {
-    "description": "Contador de sentencias ejecutadas en el paso a paso",
-    "placeholders": {
-      "current": {
-        "type": "int",
-        "example": "12"
-      }
-    }
   },
   "trackingStripEmpty": "Sin cambios en este paso",
   "@trackingStripEmpty": {
@@ -529,36 +493,6 @@
   "tabEquivalentCode": "Código equivalente",
   "@tabEquivalentCode": {
     "description": "Rótulo de la pestaña que muestra el programa en Python o Rust"
-  },
-  "bannerStepLimitTitle": "Límite de ejecución informado por el motor",
-  "@bannerStepLimitTitle": {
-    "description": "Título del banner de advertencia cuando se alcanza el límite de pasos"
-  },
-  "bannerStepLimitBody": "El motor informó que esta ejecución alcanzó un límite configurado.",
-  "@bannerStepLimitBody": {
-    "description": "Cuerpo del banner de advertencia de límite de pasos"
-  },
-  "bannerUiSafetyLimitTitle": "Tope local de interfaz alcanzado",
-  "@bannerUiSafetyLimitTitle": {
-    "description": "Título del aviso cuando la interfaz detuvo el bombeo por seguridad"
-  },
-  "bannerUiSafetyLimitBody": "La interfaz detuvo el bombeo tras 10 000 avances para seguir respondiendo. Este tope local no es un límite del lenguaje.",
-  "bannerCancelledTitle": "Ejecución cancelada",
-  "bannerCancelledBody": "El anfitrión detuvo la ejecución. No se ejecutaron limpiezas de las tareas.",
-  "@bannerUiSafetyLimitBody": {
-    "description": "Explica que el tope local de avance pertenece a la interfaz"
-  },
-  "executionStatusUiSafetyLimit": "Tope local de interfaz",
-  "@executionStatusUiSafetyLimit": {
-    "description": "Estado del pie cuando la interfaz detuvo el bombeo por seguridad"
-  },
-  "bannerSuccessTitle": "Ejecución finalizada con éxito",
-  "@bannerSuccessTitle": {
-    "description": "Título del banner de éxito al concluir el programa"
-  },
-  "bannerErrorTitle": "Ejecución detenida",
-  "@bannerErrorTitle": {
-    "description": "Título del banner de error durante la ejecución"
   },
   "bannerDismiss": "Descartar aviso",
   "@bannerDismiss": {
@@ -1030,14 +964,6 @@
   "exerciseStripExpand": "Expandir franja de ejercicio",
   "@exerciseStripExpand": {
     "description": "Etiqueta semántica para expandir la franja de ejercicio"
-  },
-  "exerciseActionCheck": "Comprobar",
-  "@exerciseActionCheck": {
-    "description": "Etiqueta del botón para comprobar la solución del ejercicio"
-  },
-  "exerciseChecking": "Comprobando...",
-  "@exerciseChecking": {
-    "description": "Texto mostrado mientras se comprueba la solución"
   },
   "exercisePassedCount": "Cumple {passed} de {total} casos",
   "@exercisePassedCount": {
@@ -2197,13 +2123,100 @@
   },
   "executionArguments": "Argumentos",
   "executionArgumentsInvalid": "Revisa las comillas y los escapes de los argumentos.",
-  "executionReplay": "Reproducir",
-  "executionReplayRejected": "La cinta no se puede reproducir con esta fuente y configuración.",
-  "executionWorkingDirectory": "Carpeta de trabajo: {path}",
-  "@executionWorkingDirectory": {
+  "executionReplay": "Repetir última ejecución",
+  "executionReplayRejectedChanged": "No se puede repetir porque el código cambió desde la última ejecución. Pulsa Ejecutar para probar la versión actual.",
+  "@executionReplayRejectedChanged": {
+    "description": "Motivo del rechazo de repetir cuando el código cambió desde la ejecución grabada"
+  },
+  "executionReplayRejectedUnfinished": "No se puede repetir porque la última ejecución se detuvo antes de acabar o no pudo grabar todos sus datos. Pulsa Ejecutar para lanzarla de nuevo.",
+  "@executionReplayRejectedUnfinished": {
+    "description": "Motivo del rechazo de repetir cuando la ejecución grabada no es reproducible"
+  },
+  "executionReplayRejectedInvalid": "No se puede repetir porque la grabación de la última ejecución no es válida. Pulsa Ejecutar para lanzarla de nuevo.",
+  "@executionReplayRejectedInvalid": {
+    "description": "Motivo del rechazo de repetir cuando la grabación está dañada o es incompatible"
+  },
+  "runResultReplayRejected": "No se pudo repetir",
+  "@runResultReplayRejected": {
+    "description": "Rótulo de la píldora cuando se rechazó repetir la última ejecución"
+  },
+  "runResultFinished": "Terminado",
+  "@runResultFinished": {
+    "description": "Rótulo de la píldora cuando el programa terminó correctamente"
+  },
+  "runResultError": "Error",
+  "@runResultError": {
+    "description": "Rótulo de la píldora cuando el programa se detuvo por un error sin línea conocida"
+  },
+  "runResultErrorAt": "Error · línea {line}",
+  "@runResultErrorAt": {
+    "description": "Rótulo de la píldora cuando el programa se detuvo por un error en una línea",
     "placeholders": {
-      "path": {
-        "type": "String"
+      "line": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "runResultStepLimit": "Límite alcanzado",
+  "@runResultStepLimit": {
+    "description": "Rótulo de la píldora cuando el motor informó un límite de ejecución"
+  },
+  "runResultUiSafetyLimit": "Tope de interfaz",
+  "@runResultUiSafetyLimit": {
+    "description": "Rótulo de la píldora cuando la interfaz detuvo el bombeo por seguridad"
+  },
+  "runResultCancelled": "Cancelada",
+  "@runResultCancelled": {
+    "description": "Rótulo de la píldora cuando el anfitrión canceló la ejecución"
+  },
+  "runNoteStepLimit": "El motor informó que esta ejecución alcanzó un límite configurado.",
+  "@runNoteStepLimit": {
+    "description": "Línea final de la salida que explica el límite de ejecución"
+  },
+  "runNoteUiSafetyLimit": "La interfaz detuvo el bombeo tras 10 000 avances para seguir respondiendo. Este tope local no es un límite del lenguaje.",
+  "@runNoteUiSafetyLimit": {
+    "description": "Línea final de la salida que explica el tope local de interfaz"
+  },
+  "runNoteCancelled": "El anfitrión detuvo la ejecución. No se ejecutaron limpiezas de las tareas.",
+  "@runNoteCancelled": {
+    "description": "Línea final de la salida que explica la cancelación del anfitrión"
+  },
+  "runOptionsTitle": "Opciones de ejecución",
+  "@runOptionsTitle": {
+    "description": "Título de la hoja de opciones de ejecución"
+  },
+  "runOptionsOpen": "Opciones de ejecución",
+  "@runOptionsOpen": {
+    "description": "Rótulo accesible del botón que abre las opciones de ejecución"
+  },
+  "runOptionsOpenWithArguments": "Opciones de ejecución, con argumentos definidos",
+  "@runOptionsOpenWithArguments": {
+    "description": "Rótulo accesible del botón de opciones cuando hay argumentos definidos"
+  },
+  "executionArgumentsHelp": "Valores que tu programa recibe como argumentos. Sepáralos con espacios y usa comillas para incluir espacios.",
+  "@executionArgumentsHelp": {
+    "description": "Ayuda bajo el campo de argumentos de ejecución"
+  },
+  "executionReplayHelp": "Vuelve a ejecutar el programa con los mismos datos que registró la última ejecución: lo que escribiste, los archivos y los argumentos. Sirve para volver a ver un error; solo funciona si no cambiaste el código.",
+  "@executionReplayHelp": {
+    "description": "Explicación de qué hace repetir la última ejecución"
+  },
+  "executionWorkingDirectoryHelp": "Los archivos que tu programa crea o lee se guardan en la carpeta de este algoritmo.",
+  "@executionWorkingDirectoryHelp": {
+    "description": "Explicación de dónde quedan los archivos que usa el programa"
+  },
+  "exerciseCasesRatio": "{passed}/{total}",
+  "@exerciseCasesRatio": {
+    "description": "Proporción compacta de casos cumplidos en la tira del ejercicio",
+    "placeholders": {
+      "passed": {
+        "type": "int",
+        "example": "5"
+      },
+      "total": {
+        "type": "int",
+        "example": "5"
       }
     }
   }

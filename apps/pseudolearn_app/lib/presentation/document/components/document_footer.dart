@@ -7,12 +7,14 @@ import '../../../application/execution/execution_state.dart';
 import '../../../application/execution/step_pace.dart';
 import '../../../application/trace/trace_cubit.dart';
 import '../../../application/trace/trace_state.dart';
+import '../../l10n/generated/app_localizations.dart';
 import '../../shell/design_canvas.dart';
 import '../../shell/device_class.dart';
 import 'execution_stepper.dart';
 import 'output_panel.dart';
 import 'tracking_strip.dart';
-import 'execution_configuration_controls.dart';
+import 'execution_options_sheet.dart';
+import 'run_outcome.dart';
 
 final class DocumentFooter extends StatelessWidget {
   final void Function(EditorState, StepPace) onPace;
@@ -79,7 +81,6 @@ final class _FooterBody extends StatelessWidget {
             return Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const ExecutionConfigurationControls(),
                 _CompactTrackingStrip(isVisible: execState.isInFlight),
                 _FooterCommands(
                   editorState: editorState,
@@ -121,6 +122,8 @@ final class _FooterCommands extends StatelessWidget {
         isExpanded: executionState.isOutputPanelExpanded,
         isStale: executionState.isOutputStale,
         onToggle: onToggleOutput,
+        outcome: runOutcomeOf(executionState, AppLocalizations.of(context)!),
+        onOutcomeTap: _revealHaltSite(context),
       ),
       ExecutionStepper(
         state: executionState,
@@ -129,9 +132,21 @@ final class _FooterCommands extends StatelessWidget {
         onTaskStep: (taskId) =>
             context.read<ExecutionCubit>().advanceTask(taskId: taskId),
         onStop: onStop,
+        hasArguments:
+            editorState.document?.executionArguments.isNotEmpty ?? false,
+        onOpenOptions: () => showExecutionOptionsSheet(context),
       ),
     ],
   );
+
+  VoidCallback? _revealHaltSite(BuildContext context) {
+    final range = executionState.currentStep.focus?.range;
+    if (executionState.status != ExecutionStatus.haltedWithError ||
+        range == null) {
+      return null;
+    }
+    return () => context.read<EditorCubit>().revealSource(range);
+  }
 }
 
 final class _CompactTrackingStrip extends StatelessWidget {

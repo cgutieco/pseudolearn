@@ -2,47 +2,12 @@ import 'package:flutter/material.dart';
 import '../../../domain/model/knowledge/exercise_case_failure.dart';
 import '../../../domain/model/knowledge/exercise_check_outcome.dart';
 import '../../../domain/model/knowledge/exercise_check_result.dart';
-import '../../components/button/app_button.dart';
 import '../../components/typography/app_text.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../theme/app_theme.dart';
 import '../../theme/tokens/color_semantic_severity.dart';
 import '../../theme/tokens/radii.dart';
 import '../../theme/tokens/spacing.dart';
-
-final class CheckActionBar extends StatelessWidget {
-  final bool isChecking;
-  final ExerciseCheckResult? lastResult;
-  final ExerciseCaseFailure? revealedHiddenFailure;
-  final VoidCallback onCheck;
-
-  const CheckActionBar({
-    super.key,
-    required this.isChecking,
-    required this.lastResult,
-    required this.revealedHiddenFailure,
-    required this.onCheck,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    final theme = AppThemeExtension.of(context);
-    final label = isChecking ? l10n.exerciseChecking : l10n.exerciseActionCheck;
-    final btn = AppButton(label: label, icon: Icons.play_arrow_rounded, variant: AppButtonVariant.primary, onPressed: isChecking ? () {} : onCheck);
-    final feedback = lastResult != null
-        ? CheckResultFeedback(result: lastResult!, revealedHiddenFailure: revealedHiddenFailure, l10n: l10n, theme: theme)
-        : null;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(children: [btn]),
-        if (feedback != null) ...[const SizedBox(height: SpacingTokens.space2), feedback],
-      ],
-    );
-  }
-}
 
 final class CheckResultFeedback extends StatelessWidget {
   final ExerciseCheckResult result;

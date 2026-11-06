@@ -72,6 +72,8 @@ Future<void> _pump(
               onPace: (_) {},
               onTaskStep: (_) {},
               onStop: () {},
+              hasArguments: true,
+              onOpenOptions: () {},
             ),
           ),
         ),

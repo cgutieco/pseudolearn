@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/application/editor/editor_state.dart';
 import 'package:pseudolearn_app/application/execution/execution_state.dart';
+import 'package:pseudolearn_app/domain/model/analysis/source_range.dart';
 import 'package:pseudolearn_app/domain/model/editor/caret_range.dart';
 import 'package:pseudolearn_app/presentation/editor/editor_surface.dart';
 import 'package:pseudolearn_app/presentation/l10n/generated/app_localizations.dart';
@@ -12,9 +13,20 @@ import 'package:pseudolearn_app/presentation/theme/app_theme.dart';
 
 const _source = 'Algoritmo P\n  Mientras 1 = 1 Hacer\nFinAlgoritmo\n';
 
+const _whileKeyword = SourceRange(
+  startOffset: 14,
+  endOffset: 22,
+  startLine: 2,
+  startColumn: 3,
+  endLine: 2,
+  endColumn: 11,
+);
+
+const _chipLabel = 'Explicar el elemento bajo el cursor';
+
 Widget _surface({
   ValueChanged<CaretRange>? onHelpRequested,
-  Widget? helpPanel,
+  SourceRange? helpKeyword,
   Size size = const Size(1024, 768),
   double keyboardInset = 0,
 }) {
@@ -45,7 +57,7 @@ Widget _surface({
             onKeyPressed: (_, _) {},
             onRun: () {},
             onHelpRequested: onHelpRequested,
-            helpPanel: helpPanel,
+            helpKeyword: helpKeyword,
           ),
         ),
       ),
@@ -53,12 +65,98 @@ Widget _surface({
   );
 }
 
+Future<void> _placeCaret(WidgetTester tester, int offset) async {
+  await tester.tap(find.byType(TextField));
+  await tester.pump();
+  tester.widget<EditableText>(find.byType(EditableText)).controller.selection =
+      TextSelection.collapsed(offset: offset);
+  await tester.pump();
+  await tester.pump();
+}
+
 void main() {
-  testWidgets('without a help callback no explain action is offered', (
+  testWidgets('without a help callback no explain affordance is offered', (
     tester,
   ) async {
-    await tester.pumpWidget(_surface());
+    await tester.pumpWidget(_surface(helpKeyword: _whileKeyword));
+    await _placeCaret(tester, 16);
     expect(find.text('Explicar'), findsNothing);
+    expect(find.bySemanticsLabel(_chipLabel), findsNothing);
+  });
+
+  testWidgets('the editor no longer reserves a row for an explain button', (
+    tester,
+  ) async {
+    await tester.pumpWidget(_surface(onHelpRequested: (_) {}));
+    expect(find.text('Explicar'), findsNothing);
+  });
+
+  testWidgets('a caret resting on a keyword offers the help chip', (
+    tester,
+  ) async {
+    CaretRange? requested;
+    await tester.pumpWidget(
+      _surface(
+        onHelpRequested: (caret) => requested = caret,
+        helpKeyword: _whileKeyword,
+      ),
+    );
+    await _placeCaret(tester, 16);
+
+    expect(find.bySemanticsLabel(_chipLabel), findsOneWidget);
+    await tester.tap(find.bySemanticsLabel(_chipLabel));
+    await tester.pump();
+    expect(requested?.lower, 14);
+    expect(requested?.isCollapsed, isTrue);
+  });
+
+  testWidgets('a caret outside the keyword hides the help chip', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      _surface(onHelpRequested: (_) {}, helpKeyword: _whileKeyword),
+    );
+    await _placeCaret(tester, 30);
+
+    expect(find.bySemanticsLabel(_chipLabel), findsNothing);
+  });
+
+  testWidgets('a selection spanning the keyword hides the help chip', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      _surface(onHelpRequested: (_) {}, helpKeyword: _whileKeyword),
+    );
+    await tester.tap(find.byType(TextField));
+    await tester.pump();
+    tester.widget<EditableText>(find.byType(EditableText)).controller.selection =
+        const TextSelection(baseOffset: 14, extentOffset: 22);
+    await tester.pump();
+    await tester.pump();
+
+    expect(find.bySemanticsLabel(_chipLabel), findsNothing);
+  });
+
+  testWidgets('a keyword at the very start of the program keeps the chip on screen', (
+    tester,
+  ) async {
+    const first = SourceRange(
+      startOffset: 0,
+      endOffset: 9,
+      startLine: 1,
+      startColumn: 1,
+      endLine: 1,
+      endColumn: 10,
+    );
+    await tester.pumpWidget(
+      _surface(onHelpRequested: (_) {}, helpKeyword: first),
+    );
+    await _placeCaret(tester, 0);
+
+    final chip = tester.getRect(find.bySemanticsLabel(_chipLabel));
+    expect(chip.top, greaterThanOrEqualTo(0));
+    expect(chip.left, greaterThanOrEqualTo(0));
+    expect(tester.takeException(), isNull);
   });
 
   testWidgets('a cramped compact screen with keyboard keeps F1, not the row', (
@@ -80,15 +178,6 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('the explain button reports the current selection', (
-    tester,
-  ) async {
-    CaretRange? requested;
-    await tester.pumpWidget(_surface(onHelpRequested: (c) => requested = c));
-    await tester.tap(find.text('Explicar'));
-    expect(requested, isNotNull);
-  });
-
   testWidgets('F1 requests help from the focused field', (tester) async {
     var requests = 0;
     await tester.pumpWidget(_surface(onHelpRequested: (_) => requests++));
@@ -96,33 +185,6 @@ void main() {
     await tester.pump();
     await tester.sendKeyEvent(LogicalKeyboardKey.f1);
     expect(requests, 1);
-  });
-
-  testWidgets('the explain button is exposed as a labelled semantic button', (
-    tester,
-  ) async {
-    final handle = tester.ensureSemantics();
-    await tester.pumpWidget(_surface(onHelpRequested: (_) {}));
-    expect(
-      tester.getSemantics(find.bySemanticsLabel('Explicar el elemento bajo el cursor')),
-      matchesSemantics(
-        label: 'Explicar el elemento bajo el cursor',
-        isButton: true,
-        hasTapAction: true,
-        hasEnabledState: false,
-      ),
-    );
-    handle.dispose();
-  });
-
-  testWidgets('the panel slot renders below the field', (tester) async {
-    await tester.pumpWidget(
-      _surface(
-        onHelpRequested: (_) {},
-        helpPanel: const Text('panel-visible'),
-      ),
-    );
-    expect(find.text('panel-visible'), findsOneWidget);
   });
 
   testWidgets('the context menu offers explain next to the standard actions', (

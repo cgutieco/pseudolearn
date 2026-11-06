@@ -4,7 +4,6 @@ import 'package:equatable/equatable.dart';
 import '../../domain/model/execution/execution_step.dart';
 import '../../domain/model/execution/output_line.dart';
 import '../../domain/model/execution/execution_configuration.dart';
-import 'step_batch_runner.dart';
 
 enum ExecutionStatus {
   idle,
@@ -19,7 +18,7 @@ enum ExecutionStatus {
   finishedSuccess,
 }
 
-enum ExecutionViewAction { toggleOutputPanel, dismissStatusBanner }
+enum ExecutionViewAction { toggleOutputPanel }
 
 final class ExecutionState extends Equatable {
   final ExecutionStatus status;
@@ -30,7 +29,6 @@ final class ExecutionState extends Equatable {
   final bool isOutputStale;
   final bool isOutputPanelExpanded;
   final bool userCollapsedOutput;
-  final bool isStatusBannerDismissed;
   final String? haltMessage;
   final String? workingDirectory;
   final EffectTape? recordedTape;
@@ -46,7 +44,6 @@ final class ExecutionState extends Equatable {
     this.isOutputStale = false,
     this.isOutputPanelExpanded = false,
     this.userCollapsedOutput = false,
-    this.isStatusBannerDismissed = false,
     this.haltMessage,
     this.workingDirectory,
     this.recordedTape,
@@ -67,15 +64,11 @@ final class ExecutionState extends Equatable {
       isOutputStale = false,
       isOutputPanelExpanded = false,
       userCollapsedOutput = false,
-      isStatusBannerDismissed = false,
       haltMessage = null,
       workingDirectory = null,
       recordedTape = null,
       replayRejection = null,
       configuration = const ExecutionConfiguration();
-
-  bool get isNearStepLimit =>
-      currentStep.stepNumber >= StepBatchRunner.warningUiAdvanceThreshold;
 
   bool get canStart =>
       status != ExecutionStatus.running &&
@@ -104,10 +97,6 @@ final class ExecutionState extends Equatable {
           isOutputPanelExpanded: expanded,
           userCollapsedOutput: !expanded,
         );
-      case ExecutionViewAction.dismissStatusBanner:
-        return isStatusBannerDismissed
-            ? this
-            : copyWith(isStatusBannerDismissed: true);
     }
   }
 
@@ -120,7 +109,6 @@ final class ExecutionState extends Equatable {
     bool? isOutputStale,
     bool? isOutputPanelExpanded,
     bool? userCollapsedOutput,
-    bool? isStatusBannerDismissed,
     String? haltMessage,
     String? workingDirectory,
     EffectTape? recordedTape,
@@ -137,8 +125,6 @@ final class ExecutionState extends Equatable {
       isOutputPanelExpanded:
           isOutputPanelExpanded ?? this.isOutputPanelExpanded,
       userCollapsedOutput: userCollapsedOutput ?? this.userCollapsedOutput,
-      isStatusBannerDismissed:
-          isStatusBannerDismissed ?? this.isStatusBannerDismissed,
       haltMessage: haltMessage,
       workingDirectory: workingDirectory ?? this.workingDirectory,
       recordedTape: recordedTape ?? this.recordedTape,
@@ -157,7 +143,6 @@ final class ExecutionState extends Equatable {
     isOutputStale,
     isOutputPanelExpanded,
     userCollapsedOutput,
-    isStatusBannerDismissed,
     haltMessage,
     workingDirectory,
     recordedTape,

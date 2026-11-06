@@ -40,7 +40,7 @@ final class DocumentPage extends StatefulWidget {
 final class _DocumentPageState extends State<DocumentPage> {
   DocumentTabKind _activeTab = DocumentTabKind.editor;
   bool _isAccompanying = false;
-  bool _isExerciseStripExpanded = true;
+  bool? _exerciseStripExpansion;
 
   @override
   void initState() {
@@ -141,14 +141,13 @@ final class _DocumentPageState extends State<DocumentPage> {
       documentId: widget.documentId,
       activeTab: _activeTab,
       isAccompanying: _isAccompanying,
-      isExerciseStripExpanded: _isExerciseStripExpanded,
+      exerciseStripExpansion: _exerciseStripExpansion,
       onTabSelected: (tab) => setState(() => _activeTab = tab),
       onToggleCompanion: () =>
           setState(() => _isAccompanying = !_isAccompanying),
-      onToggleExerciseStrip: () =>
-          setState(() => _isExerciseStripExpanded = !_isExerciseStripExpanded),
+      onToggleExerciseStrip: (expanded) =>
+          setState(() => _exerciseStripExpansion = expanded),
       onPace: (state, pace) => _onPace(context, state, pace),
-      onCheckExercise: (state) => _onCheckExercise(context, state),
     );
 
     return PopScope(

@@ -92,7 +92,6 @@ Future<void> _pumpExerciseStrip(
             sessionState: state,
             isExpanded: isExpanded,
             onToggleExpand: () {},
-            onCheck: () {},
           ),
         ),
       ),

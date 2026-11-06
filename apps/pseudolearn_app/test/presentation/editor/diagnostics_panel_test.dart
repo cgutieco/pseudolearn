@@ -62,7 +62,7 @@ void main() {
     ));
     await tester.pumpAndSettle();
 
-    expect(find.text('Sin problemas'), findsOneWidget);
+    expect(find.text('Sin problemas'), findsNothing);
     expect(find.byType(IconButton), findsNothing);
     expect(find.byIcon(Icons.play_arrow), findsOneWidget);
   });

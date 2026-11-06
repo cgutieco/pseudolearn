@@ -92,10 +92,12 @@ final class _DiagnosticsHeader extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            child: _DiagnosticsCountLabel(
-              text: l10n.diagnosticsCount(count),
-              color: countColor,
-            ),
+            child: count == 0
+                ? const SizedBox.shrink()
+                : _DiagnosticsCountLabel(
+                    text: l10n.diagnosticsCount(count),
+                    color: countColor,
+                  ),
           ),
           if (offersToggle)
             _HeaderToggle(isExpanded: isExpanded, onToggle: onToggle),
