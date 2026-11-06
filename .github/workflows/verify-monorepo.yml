@@ -7,6 +7,10 @@ on:
         description: Medir el motor Rust en macOS, Linux y Windows
         type: boolean
         default: false
+      native_targets_only:
+        description: Verificar solo los destinos nativos de pseudo compilar
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -17,6 +21,7 @@ concurrency:
 
 jobs:
   app:
+    if: ${{ !inputs.native_targets_only }}
     runs-on: xcode-27
     steps:
       - uses: actions/checkout@v7
@@ -36,6 +41,7 @@ jobs:
       - run: flutter test && flutter analyze --fatal-infos --fatal-warnings && dart run tool/check_limits.dart && dart run tool/check_content.dart && dart run tool/check_design_system.dart
         working-directory: apps/pseudolearn_app
   brand:
+    if: ${{ !inputs.native_targets_only }}
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
@@ -46,6 +52,7 @@ jobs:
       - run: python3 -m pseudolearn_brand check && python3 tool/check_limits.py && python3 -m unittest discover -s test -t .
         working-directory: packages/pseudolearn_brand
   backend:
+    if: ${{ !inputs.native_targets_only }}
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
@@ -55,6 +62,7 @@ jobs:
       - run: deno task verify
         working-directory: apps/pseudolearn_backend
   web:
+    if: ${{ !inputs.native_targets_only }}
     runs-on: macos-26
     steps:
       - uses: actions/checkout@v7
@@ -103,6 +111,7 @@ jobs:
           name: browser-failures
           path: apps/fe-pseudolearn/test-results
   rust:
+    if: ${{ !inputs.native_targets_only }}
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
@@ -128,6 +137,7 @@ jobs:
             fi
           done < <(git ls-files '*rust-toolchain.toml')
   benchmarks:
+    if: ${{ !inputs.native_targets_only }}
     strategy:
       fail-fast: false
       matrix:
@@ -161,3 +171,75 @@ jobs:
           name: rust-frontend-${{ matrix.os }}
           path: packages/pseudolearn_benchmarks/results/e08r
           if-no-files-found: error
+
+  native-target:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-latest
+            target: x86_64-unknown-linux-musl
+          - runner: macos-13
+            target: x86_64-apple-darwin
+          - runner: macos-latest
+            target: aarch64-apple-darwin
+          - runner: windows-latest
+            target: x86_64-pc-windows-msvc
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 120
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install musl tools
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y musl-tools
+
+      - name: Install the pinned Rust toolchain and target
+        run: |
+          rustup toolchain install 1.99.0 --profile minimal --target "${{ matrix.target }}"
+          rustup show
+
+      - name: Cache Cargo
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            packages/pseudolearn_spec/target
+            apps/pseudolearn_cli/target
+          key: native-target-${{ matrix.target }}-${{ hashFiles('packages/pseudolearn_engine/Cargo.lock', 'packages/pseudolearn_spec/Cargo.lock', 'apps/pseudolearn_cli/Cargo.lock') }}
+          restore-keys: native-target-${{ matrix.target }}-
+
+      - name: Generate the corpus export
+        working-directory: packages/pseudolearn_spec
+        run: cargo run --locked -p see_cli --bin see -- export --root .
+
+      - name: Build pseudo
+        working-directory: apps/pseudolearn_cli
+        run: |
+          mkdir -p "${{ runner.temp }}/native-target-logs"
+          cargo build --release --locked 2>&1 | tee "${{ runner.temp }}/native-target-logs/build-pseudo.log"
+          exit "${PIPESTATUS[0]}"
+
+      - name: Build and run the acceptance programs
+        working-directory: apps/pseudolearn_cli
+        run: python -I tool/verify_native_target.py "target/release/pseudo" "${{ matrix.target }}" "${{ runner.temp }}/native-target-logs"
+
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: native-target-${{ matrix.target }}
+          path: ${{ runner.temp }}/native-target-logs
+          if-no-files-found: warn

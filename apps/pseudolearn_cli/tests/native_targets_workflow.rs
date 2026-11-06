@@ -1,6 +1,6 @@
 use std::path::PathBuf;
 
-const WORKFLOW: &str = "../../.github/workflows/verify-native-targets.yml";
+const WORKFLOW: &str = "../../.github/workflows/verify-monorepo.yml";
 
 fn triggers(workflow: &str) -> Result<Vec<String>, String> {
     let mut lines = workflow.lines().skip_while(|line| !line.starts_with("on:"));
@@ -27,9 +27,10 @@ fn manual_only(workflow: &str) -> Result<(), String> {
 }
 
 #[test]
-fn the_native_targets_workflow_only_runs_when_dispatched_by_hand() -> Result<(), String> {
+fn the_workflow_with_the_native_targets_only_runs_when_dispatched_by_hand() -> Result<(), String> {
     let path = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join(WORKFLOW);
     let workflow = std::fs::read_to_string(&path).map_err(|error| error.to_string())?;
+    assert!(workflow.contains("\n  native-target:\n"));
     manual_only(&workflow)
 }
 

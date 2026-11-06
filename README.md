@@ -106,7 +106,8 @@ que describan como vigentes componentes retirados.
 ## 7. Verificación, testing y aseguramiento de calidad
 
 La verificación habitual es local. `verify-monorepo.yml` se ejecuta únicamente mediante despacho manual;
-los pushes no lo disparan. Los workflows productivos conservan sus disparadores y canales propios.
+los pushes no lo disparan. Su trabajo `native-target` compila y ejecuta los programas de aceptación de `pseudo compilar` en Linux x64,
+macOS x86_64, macOS arm64 y Windows x64; con la entrada `native_targets_only` se ejecuta solo ese trabajo. Los workflows productivos conservan sus disparadores y canales propios.
 Los resultados de un sistema operativo no certifican otro.
 
 SEE verifica corpus, anclajes, exportaciones, conformidad, propiedades y referencias documentales.

@@ -444,9 +444,11 @@ El archivo del runtime ya no se depura con `strip` en macOS: el `strip` de Xcode
 usa `strip --strip-debug` de GNU, que no renombra. Coste: cada runtime de macOS ocupa unos 13 MB incrustados en `pseudo`
 (antes 5,6 MB depurado). Descartado: depurar con `llvm-strip`, que no forma parte del perfil mínimo del toolchain.
 
-Verificación remota: `.github/workflows/verify-native-targets.yml` se ejecuta solo a mano (`workflow_dispatch`;
-`tests/native_targets_workflow.rs` falla si declara otro disparador y prueba ese verificador con disparadores
-automáticos deliberados). Matriz: `ubuntu-latest` (musl), `macos-13` (x86_64), `macos-latest` (arm64) y `windows-latest`.
+Verificación remota: el trabajo `native-target` de `.github/workflows/verify-monorepo.yml`, que se ejecuta solo a mano
+(`workflow_dispatch`; `tests/native_targets_workflow.rs` falla si el workflow declara otro disparador o pierde ese trabajo, y
+prueba el verificador con disparadores automáticos deliberados). Se aloja en ese workflow y no en uno propio porque GitHub
+solo despacha workflows ya registrados en el repositorio y registrar uno nuevo exige publicarlo en `master`; la entrada
+`native_targets_only` omite los demás trabajos. Matriz: `ubuntu-latest` (musl), `macos-13` (x86_64), `macos-latest` (arm64) y `windows-latest`.
 Cada runner compila `pseudo`, obtiene el enlazador por el mismo camino que el usuario y ejecuta
 `tool/verify_native_target.py`, que compila con `pseudo build --target` los programas de
 `examples/native-acceptance/manifest.json` (el caso C19 de `LANG.PROGRAM.CLASSIC` leído de `export.json`, las aceptaciones de
