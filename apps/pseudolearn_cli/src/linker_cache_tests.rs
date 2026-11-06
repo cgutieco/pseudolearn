@@ -47,7 +47,7 @@ fn linux_falls_back_to_the_dot_cache_of_home() {
 }
 
 #[test]
-fn windows_uses_local_app_data() {
+fn windows_uses_the_local_application_folder() {
     let lookup = lookup_from(&[("LOCALAPPDATA", "C:/Users/user/AppData/Local")]);
     assert_eq!(
         linker_directory_for("windows", "v1", &lookup),

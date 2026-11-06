@@ -17,6 +17,7 @@ const BROKEN: &str =
 const APP_MANIFEST: &str = "schema = 1\n[package]\nname = \"app\"\nkind = \"application\"\nentries = [\"app/main\"]\n[dependencies]\ngeo = { package = \"geo\" }\n[profiles]\n\"app/informe\" = \"en\"\n";
 const GEO_MANIFEST: &str = "schema = 1\n[package]\nname = \"geo\"\nkind = \"library\"\n";
 const RUN_OUTPUT: &str = "42\n7\n";
+const CACHE_VARIABLES: [&str; 3] = ["HOME", "XDG_CACHE_HOME", "LOCALAPPDATA"];
 
 struct Sandbox {
     root: PathBuf,
@@ -61,6 +62,13 @@ impl Sandbox {
                 "PATH",
                 path.unwrap_or(&std::env::var("PATH").unwrap_or_default()),
             );
+        if path.is_none() {
+            for variable in CACHE_VARIABLES {
+                if let Some(value) = std::env::var_os(variable) {
+                    command.env(variable, value);
+                }
+            }
+        }
         command.output()
     }
 

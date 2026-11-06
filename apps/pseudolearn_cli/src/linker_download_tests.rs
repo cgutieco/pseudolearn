@@ -2,7 +2,7 @@ use super::{AssetFetcher, LinkerUnavailable, installed_linker, sha256_hex};
 use crate::linker_assets::LinkerAsset;
 use sha2::{Digest, Sha256};
 use std::cell::Cell;
-use std::fmt::Write as _;
+use std::fmt::Write as TextWrite;
 use std::io::Write;
 use std::path::{Path, PathBuf};
 

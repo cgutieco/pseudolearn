@@ -11,6 +11,7 @@ const DOUBLE: &str =
     "Algoritmo P\nDefinir x Como Entero <- 0;\nLeer x;\nEscribir x * 2;\nFinAlgoritmo\n";
 const DIVIDE: &str = "Algoritmo P\nEscribir 1;\nEscribir 1 div 0;\nFinAlgoritmo\n";
 const INVALID: &str = "Algoritmo P\nEscribir total;\nFinAlgoritmo\n";
+const TOOL_VARIABLES: [&str; 4] = ["PATH", "HOME", "XDG_CACHE_HOME", "LOCALAPPDATA"];
 
 struct Sandbox {
     root: PathBuf,
@@ -34,14 +35,16 @@ impl Sandbox {
         std::fs::write(self.work().join(name), content)
     }
 
-    fn pseudo(&self, arguments: &[&str], path: Option<&str>) -> std::io::Result<Output> {
+    fn pseudo(&self, arguments: &[&str], without_tools: bool) -> std::io::Result<Output> {
         let mut command = Command::new(env!("CARGO_BIN_EXE_pseudo"));
         command
             .args(arguments)
             .current_dir(self.work())
             .env("TMPDIR", self.root.join("tmp"));
-        if let Some(path) = path {
-            command.env("PATH", path);
+        if without_tools {
+            for variable in TOOL_VARIABLES {
+                command.env(variable, "");
+            }
         }
         command.output()
     }
@@ -93,7 +96,7 @@ fn text(bytes: &[u8]) -> String {
 fn builds_and_runs_an_executable_that_reads_standard_input() -> std::io::Result<()> {
     let sandbox = Sandbox::new()?;
     sandbox.write("p.pseudo", DOUBLE)?;
-    let build = sandbox.pseudo(&["compilar", "-o", "salida", "p.pseudo"], None)?;
+    let build = sandbox.pseudo(&["compilar", "-o", "salida", "p.pseudo"], false)?;
     assert_eq!(build.status.code(), Some(0));
     assert_eq!(text(&build.stdout), "pseudo: ejecutable generado: salida\n");
     assert_eq!(sandbox.leftovers()?, 0);
@@ -109,7 +112,7 @@ fn builds_and_runs_an_executable_that_reads_standard_input() -> std::io::Result<
 fn the_default_output_drops_the_source_extension() -> std::io::Result<()> {
     let sandbox = Sandbox::new()?;
     sandbox.write("p.pseudo", PRINT)?;
-    let build = sandbox.pseudo(&["build", "p.pseudo"], None)?;
+    let build = sandbox.pseudo(&["build", "p.pseudo"], false)?;
     assert_eq!(text(&build.stdout), "pseudo: ejecutable generado: p\n");
     assert_eq!(sandbox.work_files()?, ["p", "p.pseudo"]);
     Ok(())
@@ -119,7 +122,7 @@ fn the_default_output_drops_the_source_extension() -> std::io::Result<()> {
 fn a_source_without_extension_never_overwrites_itself() -> std::io::Result<()> {
     let sandbox = Sandbox::new()?;
     sandbox.write("programa", PRINT)?;
-    let build = sandbox.pseudo(&["compilar", "programa"], None)?;
+    let build = sandbox.pseudo(&["compilar", "programa"], false)?;
     assert_eq!(build.status.code(), Some(0));
     assert_eq!(
         std::fs::read_to_string(sandbox.work().join("programa"))?,
@@ -135,7 +138,7 @@ fn the_output_is_executable_by_its_owner() -> std::io::Result<()> {
     use std::os::unix::fs::PermissionsExt;
     let sandbox = Sandbox::new()?;
     sandbox.write("p.pseudo", PRINT)?;
-    sandbox.pseudo(&["compilar", "p.pseudo"], None)?;
+    sandbox.pseudo(&["compilar", "p.pseudo"], false)?;
     let mode = std::fs::metadata(sandbox.work().join("p"))?
         .permissions()
         .mode();
@@ -147,7 +150,7 @@ fn the_output_is_executable_by_its_owner() -> std::io::Result<()> {
 fn a_runtime_fault_in_the_executable_exits_three_after_its_output() -> std::io::Result<()> {
     let sandbox = Sandbox::new()?;
     sandbox.write("p.pseudo", DIVIDE)?;
-    sandbox.pseudo(&["compilar", "-o", "salida", "p.pseudo"], None)?;
+    sandbox.pseudo(&["compilar", "-o", "salida", "p.pseudo"], false)?;
     let run = sandbox.run_isolated("salida", "")?;
     assert_eq!(run.status.code(), Some(3));
     assert_eq!(text(&run.stdout), "1\n");
@@ -160,7 +163,7 @@ fn a_runtime_fault_in_the_executable_exits_three_after_its_output() -> std::io::
 fn an_invalid_program_reports_diagnostics_and_creates_nothing() -> std::io::Result<()> {
     let sandbox = Sandbox::new()?;
     sandbox.write("p.pseudo", INVALID)?;
-    let build = sandbox.pseudo(&["compilar", "-o", "salida", "p.pseudo"], None)?;
+    let build = sandbox.pseudo(&["compilar", "-o", "salida", "p.pseudo"], false)?;
     assert_eq!(build.status.code(), Some(1));
     assert_eq!(text(&build.stdout), "");
     assert!(text(&build.stderr).contains("[undeclaredVariable]"));
@@ -171,9 +174,9 @@ fn an_invalid_program_reports_diagnostics_and_creates_nothing() -> std::io::Resu
 #[test]
 fn a_missing_input_is_a_usage_error_and_an_unreadable_one_is_operational() -> std::io::Result<()> {
     let sandbox = Sandbox::new()?;
-    let missing = sandbox.pseudo(&["compilar"], None)?;
+    let missing = sandbox.pseudo(&["compilar"], false)?;
     assert_eq!(missing.status.code(), Some(2));
-    let unreadable = sandbox.pseudo(&["compilar", "falta.pseudo"], None)?;
+    let unreadable = sandbox.pseudo(&["compilar", "falta.pseudo"], false)?;
     assert_eq!(unreadable.status.code(), Some(3));
     assert_eq!(
         text(&unreadable.stderr),
@@ -186,7 +189,7 @@ fn a_missing_input_is_a_usage_error_and_an_unreadable_one_is_operational() -> st
 fn an_output_option_without_a_value_is_a_usage_error() -> std::io::Result<()> {
     let sandbox = Sandbox::new()?;
     sandbox.write("p.pseudo", PRINT)?;
-    let build = sandbox.pseudo(&["compilar", "p.pseudo", "-o"], None)?;
+    let build = sandbox.pseudo(&["compilar", "p.pseudo", "-o"], false)?;
     assert_eq!(build.status.code(), Some(2));
     assert_eq!(sandbox.work_files()?, ["p.pseudo"]);
     Ok(())
@@ -196,11 +199,11 @@ fn an_output_option_without_a_value_is_a_usage_error() -> std::io::Result<()> {
 fn a_missing_linker_fails_without_output_or_leftovers() -> std::io::Result<()> {
     let sandbox = Sandbox::new()?;
     sandbox.write("p.pseudo", PRINT)?;
-    let build = sandbox.pseudo(&["compilar", "-o", "salida", "p.pseudo"], Some(""))?;
+    let build = sandbox.pseudo(&["compilar", "-o", "salida", "p.pseudo"], true)?;
     assert_eq!(build.status.code(), Some(3));
     assert_eq!(
         text(&build.stderr),
-        "pseudo: el enlazador del sistema no está disponible o falló\n"
+        "pseudo: no se puede obtener el enlazador incluido: no hay carpeta de caché del usuario\n"
     );
     assert_eq!(sandbox.work_files()?, ["p.pseudo"]);
     assert_eq!(sandbox.leftovers()?, 0);
@@ -212,7 +215,7 @@ fn a_failed_build_does_not_replace_an_existing_output() -> std::io::Result<()> {
     let sandbox = Sandbox::new()?;
     sandbox.write("p.pseudo", PRINT)?;
     sandbox.write("salida", "previous")?;
-    let build = sandbox.pseudo(&["compilar", "-o", "salida", "p.pseudo"], Some(""))?;
+    let build = sandbox.pseudo(&["compilar", "-o", "salida", "p.pseudo"], true)?;
     assert_eq!(build.status.code(), Some(3));
     assert_eq!(
         std::fs::read_to_string(sandbox.work().join("salida"))?,
