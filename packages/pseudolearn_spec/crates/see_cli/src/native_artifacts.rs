@@ -132,6 +132,9 @@ fn cleanup_failure(pseudo: &Path, directory: &Path, request: &Value) -> Result<b
         .current_dir(directory)
         .env("TMPDIR", directory.join("temporary"))
         .env("PATH", "")
+        .env_remove("HOME")
+        .env_remove("XDG_CACHE_HOME")
+        .env_remove("LOCALAPPDATA")
         .args(["build", "program.pseudo", "-o", "program"])
         .output()
         .map_err(|error| error.to_string())?;

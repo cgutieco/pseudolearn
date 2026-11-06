@@ -132,11 +132,69 @@
     },
     "linkerFailed": {
       "mensajes": {
-        "es": "pseudo: el enlazador del sistema no está disponible o falló",
-        "en": "pseudo: the system linker is unavailable or failed"
+        "es": "pseudo: el enlace del ejecutable falló",
+        "en": "pseudo: linking the executable failed"
       },
       "argumentos": [],
       "tipos_argumentos": {}
+    },
+    "linkerCacheUnavailable": {
+      "mensajes": {
+        "es": "pseudo: no se puede obtener el enlazador incluido: no hay carpeta de caché del usuario",
+        "en": "pseudo: cannot obtain the bundled linker: no user cache directory"
+      },
+      "argumentos": [],
+      "tipos_argumentos": {}
+    },
+    "linkerDownloadFailed": {
+      "mensajes": {
+        "es": "pseudo: no se puede obtener el enlazador incluido: falló la descarga de {url}",
+        "en": "pseudo: cannot obtain the bundled linker: the download of {url} failed"
+      },
+      "argumentos": [
+        "url"
+      ],
+      "tipos_argumentos": {
+        "url": "lexema"
+      }
+    },
+    "linkerChecksumMismatch": {
+      "mensajes": {
+        "es": "pseudo: no se puede obtener el enlazador incluido: la suma SHA-256 de {url} no coincide",
+        "en": "pseudo: cannot obtain the bundled linker: the SHA-256 checksum of {url} does not match"
+      },
+      "argumentos": [
+        "url"
+      ],
+      "tipos_argumentos": {
+        "url": "lexema"
+      }
+    },
+    "nativeTargetUnavailable": {
+      "mensajes": {
+        "es": "pseudo: el destino nativo {target} no está disponible; destinos admitidos: {targets}",
+        "en": "pseudo: native target {target} is unavailable; supported targets: {targets}"
+      },
+      "argumentos": [
+        "target",
+        "targets"
+      ],
+      "tipos_argumentos": {
+        "target": "lexema",
+        "targets": "lexema"
+      }
+    },
+    "nativeTargetRuntimeMissing": {
+      "mensajes": {
+        "es": "pseudo: este binario pseudo no incluye el runtime del destino {target}",
+        "en": "pseudo: this pseudo binary does not include the runtime for target {target}"
+      },
+      "argumentos": [
+        "target"
+      ],
+      "tipos_argumentos": {
+        "target": "lexema"
+      }
     },
     "unreadableInput": {
       "mensajes": {

@@ -5,6 +5,7 @@
     "API.WIRE-FORMAT",
     "DIAG.CATALOG",
     "LANG.PROGRAM.CLASSIC",
+    "RT.LINKING",
     "TOOL.CLI.BUILD",
     "TOOL.CLI.CHECK",
     "TOOL.CLI.CONVENTIONS",
@@ -182,6 +183,39 @@
     },
     {
       "regla": "TOOL.CLI.BUILD@1.0.0#R5",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.CLI.BUILD@1.0.0#R6",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "RT.LINKING@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "R1 la verifica el sujeto aot con la propiedad P1 sobre ejecutables compilados."
+    },
+    {
+      "regla": "RT.LINKING@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "R2 la verifica el sujeto aot con la propiedad P2."
+    },
+    {
+      "regla": "RT.LINKING@1.0.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "R3 la verifica el sujeto aot con la propiedad P3."
+    },
+    {
+      "regla": "RT.LINKING@1.0.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "RT.LINKING@1.0.0#R5",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },

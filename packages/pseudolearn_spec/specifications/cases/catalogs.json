@@ -1312,11 +1312,43 @@
         "value": "lexema"
       }
     },
+    "linkerCacheUnavailable": {
+      "argumentos": [],
+      "mensajes": {
+        "en": "pseudo: cannot obtain the bundled linker: no user cache directory",
+        "es": "pseudo: no se puede obtener el enlazador incluido: no hay carpeta de caché del usuario"
+      },
+      "tipos_argumentos": {}
+    },
+    "linkerChecksumMismatch": {
+      "argumentos": [
+        "url"
+      ],
+      "mensajes": {
+        "en": "pseudo: cannot obtain the bundled linker: the SHA-256 checksum of {url} does not match",
+        "es": "pseudo: no se puede obtener el enlazador incluido: la suma SHA-256 de {url} no coincide"
+      },
+      "tipos_argumentos": {
+        "url": "lexema"
+      }
+    },
+    "linkerDownloadFailed": {
+      "argumentos": [
+        "url"
+      ],
+      "mensajes": {
+        "en": "pseudo: cannot obtain the bundled linker: the download of {url} failed",
+        "es": "pseudo: no se puede obtener el enlazador incluido: falló la descarga de {url}"
+      },
+      "tipos_argumentos": {
+        "url": "lexema"
+      }
+    },
     "linkerFailed": {
       "argumentos": [],
       "mensajes": {
-        "en": "pseudo: the system linker is unavailable or failed",
-        "es": "pseudo: el enlazador del sistema no está disponible o falló"
+        "en": "pseudo: linking the executable failed",
+        "es": "pseudo: el enlace del ejecutable falló"
       },
       "tipos_argumentos": {}
     },
@@ -1387,6 +1419,32 @@
         "es": "pseudo: falta el archivo de entrada"
       },
       "tipos_argumentos": {}
+    },
+    "nativeTargetRuntimeMissing": {
+      "argumentos": [
+        "target"
+      ],
+      "mensajes": {
+        "en": "pseudo: this pseudo binary does not include the runtime for target {target}",
+        "es": "pseudo: este binario pseudo no incluye el runtime del destino {target}"
+      },
+      "tipos_argumentos": {
+        "target": "lexema"
+      }
+    },
+    "nativeTargetUnavailable": {
+      "argumentos": [
+        "target",
+        "targets"
+      ],
+      "mensajes": {
+        "en": "pseudo: native target {target} is unavailable; supported targets: {targets}",
+        "es": "pseudo: el destino nativo {target} no está disponible; destinos admitidos: {targets}"
+      },
+      "tipos_argumentos": {
+        "target": "lexema",
+        "targets": "lexema"
+      }
     },
     "preferenceSaved": {
       "argumentos": [

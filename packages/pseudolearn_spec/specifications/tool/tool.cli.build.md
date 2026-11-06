@@ -44,7 +44,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "pseudo compilar <archivo> (alias build) analiza el programa y, si no hay errores, genera un ejecutable nativo en la ruta de salida e informa su ruta. La opción -o (alias --salida y --output) fija la ruta; si se omite, se usa el nombre del archivo sin la extensión .pseudo en el directorio actual, con .exe en Windows.",
+  "texto": "pseudo compilar <archivo> (alias build) analiza el programa y, si no hay errores, genera un ejecutable nativo en la ruta de salida e informa su ruta. La opción -o (alias --salida y --output) fija la ruta; si se omite, se usa el nombre del archivo sin la extensión .pseudo en el directorio actual, con .exe cuando el destino es Windows.",
   "verificacion": [
     "C1",
     "C2",
@@ -244,7 +244,7 @@
   "id": "R4",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Si el enlazador del sistema no está disponible o falla, la orden informa el fallo operativo con el código de salida 3 y no crea ni sobrescribe el archivo de salida.",
+  "texto": "Si el enlazador incluido no se puede obtener o el enlace falla (RT.LINKING), la orden informa el fallo operativo con el código de salida 3 y el mensaje de su causa, y no crea ni sobrescribe el archivo de salida.",
   "verificacion": [
     "C7"
   ]
@@ -263,7 +263,7 @@
   "espera": {
     "codigo_salida": 3,
     "salida": "",
-    "salida_error": "pseudo: el enlazador del sistema no está disponible o falló\n"
+    "salida_error": "pseudo: no se puede obtener el enlazador incluido: no hay carpeta de caché del usuario\n"
   },
   "cli": {
     "argumentos": [
@@ -273,7 +273,10 @@
       "p.pseudo"
     ],
     "entorno": {
-      "PATH": ""
+      "PATH": "",
+      "HOME": "",
+      "XDG_CACHE_HOME": "",
+      "LOCALAPPDATA": ""
     },
     "archivos": {
       "p.pseudo": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n"
@@ -380,7 +383,7 @@
   "espera": {
     "codigo_salida": 3,
     "salida": "",
-    "salida_error": "pseudo: el enlazador del sistema no está disponible o falló\n"
+    "salida_error": "pseudo: no se puede obtener el enlazador incluido: no hay carpeta de caché del usuario\n"
   },
   "cli": {
     "argumentos": [
@@ -393,7 +396,10 @@
       "salida"
     ],
     "entorno": {
-      "PATH": ""
+      "PATH": "",
+      "HOME": "",
+      "XDG_CACHE_HOME": "",
+      "LOCALAPPDATA": ""
     },
     "archivos": {
       "proyecto/app/pseudolearn.toml": "schema = 1\n[package]\nname = \"app\"\nkind = \"application\"\nentries = [\"app/main\"]\n[dependencies]\ngeo = { package = \"geo\" }\n[profiles]\n\"app/informe\" = \"en\"\n",
@@ -401,6 +407,110 @@
       "proyecto/app/main.pseudo": "Importar app.informe.Informe;\nImportar geo.vectores.Doble;\nAlgoritmo Principal\nEscribir Doble(21);\nInforme();\nFinAlgoritmo\n",
       "proyecto/app/informe.pseudo": "public subroutine Informe()\nwrite 7;\nendSubroutine\n",
       "proyecto/geo/vectores.pseudo": "Publico SubProceso Doble(n Como Entero) Como Entero\nRetornar n * 2;\nFinSubProceso\n"
+    }
+  }
+}
+```
+
+```regla
+{
+  "id": "R6",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "La opción --destino <triplete> (alias --target) elige el destino de compilación entre aarch64-apple-darwin, x86_64-apple-darwin, x86_64-unknown-linux-musl y x86_64-pc-windows-msvc; sin ella el destino es el del sistema anfitrión. Un triplete fuera de esa lista es un uso incorrecto (código 2) con el mensaje nativeTargetUnavailable, que nombra el triplete pedido y la lista completa; un destino de la lista cuyo runtime no incluye el binario pseudo es un error operativo (código 3) con el mensaje nativeTargetRuntimeMissing. La opción sin valor es un uso incorrecto con invalidOptionValue. En ningún caso se crea ni se sobrescribe el archivo de salida.",
+  "verificacion": [
+    "C11",
+    "C12",
+    "C13"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C11",
+  "regla": "R6",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 2,
+    "salida": "",
+    "salida_error": "pseudo: el destino nativo riscv64gc-unknown-linux-gnu no está disponible; destinos admitidos: aarch64-apple-darwin, x86_64-apple-darwin, x86_64-unknown-linux-musl, x86_64-pc-windows-msvc\n"
+  },
+  "cli": {
+    "argumentos": [
+      "compilar",
+      "--destino",
+      "riscv64gc-unknown-linux-gnu",
+      "-o",
+      "salida",
+      "p.pseudo"
+    ],
+    "entorno": {},
+    "archivos": {
+      "p.pseudo": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C12",
+  "regla": "R6",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 2,
+    "salida": "",
+    "salida_error": "pseudo: native target x86_64-unknown-linux-gnu is unavailable; supported targets: aarch64-apple-darwin, x86_64-apple-darwin, x86_64-unknown-linux-musl, x86_64-pc-windows-msvc\n"
+  },
+  "cli": {
+    "argumentos": [
+      "build",
+      "--language",
+      "en",
+      "--target",
+      "x86_64-unknown-linux-gnu",
+      "p.pseudo"
+    ],
+    "entorno": {},
+    "archivos": {
+      "p.pseudo": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C13",
+  "regla": "R6",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 2,
+    "salida": "",
+    "salida_error": "pseudo: valor no válido «» para --destino\n"
+  },
+  "cli": {
+    "argumentos": [
+      "compilar",
+      "p.pseudo",
+      "--destino"
+    ],
+    "entorno": {},
+    "archivos": {
+      "p.pseudo": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n"
     }
   }
 }
