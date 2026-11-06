@@ -81,7 +81,9 @@ fn check_operation_fields(operation: &Value) -> Result<(), String> {
     let fields = operation
         .as_object()
         .ok_or("Invalid capability operation")?;
-    let required = fields.len() - usize::from(fields.contains_key("alias"));
+    let required = fields
+        .len()
+        .saturating_sub(usize::from(fields.contains_key("alias")));
     if required != 9
         || fields.keys().any(|key| {
             ![
