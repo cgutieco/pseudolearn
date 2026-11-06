@@ -166,8 +166,9 @@ Future<String> rustCompilerVersion(Directory root) async {
   final channel = RegExp(r'channel\s*=\s*"([^"]+)"')
       .firstMatch(configuration)
       ?.group(1);
-  if (channel == null)
+  if (channel == null) {
     throw const FormatException('Missing bridge Rust toolchain');
+  }
   return commandText('rustc', ['+$channel', '--version']);
 }
 
