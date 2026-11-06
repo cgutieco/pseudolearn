@@ -527,3 +527,15 @@ declara «sin equivalente» y queda pendiente con el sujeto nativo (`PG-N.08`).
 códigos 7 y 9, `TOOL.CLI.CONVENTIONS#D1` los declara como códigos establecidos por el programa (rango 0–255).
 `TOOL.CLI.RUN#R2` pasa de «0 si completed» a «el código establecido (0 por omisión) si completed». El contrato de salida es aditivo: `output` conserva ambos
 flujos en una sola cadena y `error_ranges` marca los tramos de error; los consumidores sin soporte muestran todo.
+
+## Alias de operaciones de biblioteca y suite clásica
+
+Problema: los nombres clásicos `Mayusculas` y `Minusculas` debían nombrar las operaciones de texto ya confirmadas sin
+crear identidades nuevas. Elección: una fila de D2 admite un campo opcional `alias` con listas `es` y `en`, con la misma
+semántica que en D1; el validador acepta el campo solo con ambas listas y nombres no vacíos, y comprueba cada alias como
+una forma más del registro de unicidad (M2). Alternativas descartadas: duplicar la fila, que rompe la identidad única
+(M1). `LANG.PROGRAM.CLASSIC` reúne programas de pseudocódigo clásico que se pegan sin retoques y se verifican en
+`engine` (ejecución y análisis), `cli` (`pseudo ejecutar` con entrada estándar) y `service` (diagnósticos de un proyecto
+de un archivo); su perfil `en` se excluye con justificación porque ese pseudocódigo está escrito en español y cada
+construcción se verifica en inglés en su propia regla. `aot` queda pendiente hasta que el código nativo implemente el azar
+entero.
