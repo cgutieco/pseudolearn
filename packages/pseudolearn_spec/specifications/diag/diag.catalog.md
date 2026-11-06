@@ -3504,17 +3504,6 @@
       "clase": "runtime",
       "tipos_argumentos": {}
     },
-    "nativeTasksUnsupported": {
-      "mensajes": {
-        "es": "La compilación nativa todavía no ofrece tareas ni canales; ejecute el programa con el motor virtual",
-        "en": "Native compilation does not offer tasks or channels yet; run the program with the virtual engine"
-      },
-      "argumentos": [],
-      "politica": "A",
-      "severidad": "error",
-      "clase": "semantic",
-      "tipos_argumentos": {}
-    },
     "taskLimitExceeded": {
       "mensajes": {
         "es": "Se alcanzó el límite de tareas vivas: {limit}",

@@ -4117,17 +4117,6 @@
         "type": "tipo"
       }
     },
-    "nativeTasksUnsupported": {
-      "argumentos": [],
-      "clase": "semantic",
-      "mensajes": {
-        "en": "Native compilation does not offer tasks or channels yet; run the program with the virtual engine",
-        "es": "La compilación nativa todavía no ofrece tareas ni canales; ejecute el programa con el motor virtual"
-      },
-      "politica": "A",
-      "severidad": "error",
-      "tipos_argumentos": {}
-    },
     "negativeArraySize": {
       "argumentos": [
         "size"
