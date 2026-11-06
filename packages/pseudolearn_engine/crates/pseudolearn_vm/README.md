@@ -317,3 +317,7 @@ el delta (`ImageFlags`) para que retroceder en el tiempo restaure el código vig
 final. `Machine.error_ranges` guarda los tramos de `output` escritos por `console_write_error` (el texto se repite en `output`
 como `console_write`); también viaja en imagen y delta.
 Un final que no es normal no lo consulta: quien lo presenta decide el código (la CLI usa 1).
+
+## Azar entero
+
+`host.random`, `host.random_below` y `host.random_between` cargan como una única operación de memoria `Random` con cero, uno o dos límites tipados; el número de límites decide la forma, y los fallos `invalidRandomBound` e `invalidRandomRange` salen como trampas del programa.

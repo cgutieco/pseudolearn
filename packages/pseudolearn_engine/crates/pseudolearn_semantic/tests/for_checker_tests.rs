@@ -1,6 +1,5 @@
 mod support;
 
-use pseudolearn_diagnostics::DiagnosticCode;
 use support::analyze;
 
 #[test]

@@ -202,3 +202,7 @@ Los días civiles se verifican en `civil_calendar_tests.rs` contra constantes de
 Las operaciones aritméticas usan métodos saturantes porque el verificador de Clippy prohíbe el operador implícito.
 
 Límites declarados: sin zonas con nombre (solo desplazamientos fijos), sin segundos intercalares, año de cuatro dígitos.
+
+## Biblioteca clásica: un nombre, una semántica
+
+Problema: el pseudocódigo clásico usa `Azar(n)`, `Aleatorio(a, b)`, `Subcadena(c, desde, hasta)`, `Concatenar`, `Mayusculas`, `Minusculas` y `ConvertirANumero`, y una forma conocida no puede existir con otro significado. Elección: cada nombre clásico designa una sola identidad con su semántica clásica. `Subcadena` usa posiciones desde cero incluidas en ambos extremos (válida si `0 ≤ desde ≤ hasta + 1 ≤ Longitud(c)`, vacía cuando `desde = hasta + 1`); `Concatenar` es la concatenación de dos cadenas; `ConvertirANumero` es alias de `AReal` y `Mayusculas`/`Minusculas` de `AMayusculas`/`AMinusculas`. Los enteros aleatorios salen de la fuente sembrada del runtime (`RandomState::next_below`, `next_between`): se descartan las palabras de 64 bits que caen en el resto final del rango y las demás se reducen por módulo, de modo que ningún entero tiene más probabilidad; `AzarReal()` conserva el real en `[0, 1)`. Alternativas descartadas: reducir `AzarReal() * n`, que introduce sesgo, y conservar `Subcadena` con cantidad junto a una forma clásica con otro nombre.

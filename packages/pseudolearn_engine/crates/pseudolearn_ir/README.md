@@ -123,3 +123,7 @@ representación en ambas celdas.
 ## Ampliación numérica y de colecciones
 
 Las funciones numéricas nuevas tienen operaciones tipadas explícitas; min/max separan variantes i64 y f64. collection.clone, collection.commit y collection.reverse preservan el tipo nominal del vector. Commit exige dos vectores del mismo tipo. Las enumeraciones se generan desde el corpus.
+
+## Instrucciones de azar entero
+
+`host.random_below %n: i64 -> i64` y `host.random_between %a: i64, %b: i64 -> i64` (O124 y O125) toman enteros uniformes de la fuente inyectada con rechazo y atrapan `invalidRandomBound` e `invalidRandomRange`. Se añadieron en vez de componer `host.random` con aritmética real porque la reducción de un real no es uniforme.

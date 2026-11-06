@@ -46,3 +46,30 @@ fn distinguishes_builtins_from_keywords() {
     assert_eq!(signature.arity(), 1);
     assert_eq!(signature.return_type, "integer");
 }
+
+#[test]
+fn resolves_the_classic_library_names() {
+    use pseudolearn_lexicon::{BuiltinKind, find_builtin};
+    assert_eq!(find_builtin("Azar", Profile::Spanish), Some(BuiltinKind::Random));
+    assert_eq!(
+        find_builtin("Aleatorio", Profile::Spanish),
+        Some(BuiltinKind::RandomBetween)
+    );
+    assert_eq!(
+        find_builtin("AzarReal", Profile::Spanish),
+        Some(BuiltinKind::RandomUnit)
+    );
+    assert_eq!(
+        find_builtin("Concatenar", Profile::Spanish),
+        Some(BuiltinKind::Concatenate)
+    );
+    assert_eq!(
+        find_builtin("ConvertirANumero", Profile::Spanish),
+        Some(BuiltinKind::TextToReal)
+    );
+    assert_eq!(
+        find_builtin("randomBetween", Profile::English),
+        Some(BuiltinKind::RandomBetween)
+    );
+    assert_eq!(find_builtin("Aleatorio", Profile::English), None);
+}

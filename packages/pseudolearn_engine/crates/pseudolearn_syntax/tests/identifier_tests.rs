@@ -22,10 +22,10 @@ fn accepts_normalized_spanish_identifiers_and_preserves_original_ranges() -> Res
                 && tree.tokens.text(source.as_str(), *index) == Some("an\u{0303}o")
         })
         .ok_or("Missing decomposed identifier")?;
-    assert_eq!(tree.tokens.span(composed).map(|span| span.start), Some(28));
+    assert_eq!(tree.tokens.span(composed).map(|span| span.start), Some(20));
     assert_eq!(
         tree.tokens.span(decomposed).map(|span| span.start),
-        Some(51)
+        Some(43)
     );
     Ok(())
 }

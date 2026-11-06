@@ -118,3 +118,5 @@ y el banco de resultado. Así no se mantiene una segunda copia del contrato de t
 ## Contratos adicionales de verificación
 
 `collection.clone` es un punto de raíces: la copia temporal usada por la ordenación puede cruzar el umbral de recolección durante su reserva. Ambos gemelos conservan las referencias vivas del llamador y del comparador antes de iniciar esa copia.
+
+`verify_host_random_integer` exige que `host.random_below` reciba un operando `i64` y `host.random_between` dos, y que el destino sea `i64`.

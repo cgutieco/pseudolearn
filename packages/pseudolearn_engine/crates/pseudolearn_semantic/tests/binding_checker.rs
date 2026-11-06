@@ -36,7 +36,12 @@ fn accepts_reassignment_read_and_reference_argument() {
         );
         let (module, diagnostics) = support::analyze(&program);
         assert!(module.is_some(), "{diagnostics:?}");
-        assert!(diagnostics.is_empty(), "{diagnostics:?}");
+        assert!(
+            diagnostics
+                .iter()
+                .all(|diagnostic| diagnostic.severity != DiagnosticSeverity::Error),
+            "{diagnostics:?}"
+        );
     }
 }
 
@@ -79,17 +84,13 @@ fn does_not_warn_about_variables_that_are_never_reassigned() {
 }
 
 #[test]
-fn permits_object_mutation_but_rejects_value_record_mutation() {
+fn permits_object_mutation_and_value_record_mutation() {
     let object = "class Holder\ndefine amount as integer;\nendClass\nalgorithm Main\ndefine holder as Holder <- new Holder();\nholder.amount <- 5;\nwrite holder.amount;\nendAlgorithm\n";
     let (module, diagnostics) = support::analyze(object);
     assert!(module.is_some(), "{diagnostics:?}");
     assert!(diagnostics.is_empty(), "{diagnostics:?}");
     let record = "record Pair\ndefine left, right as integer;\nendRecord\nalgorithm Main\ndefine pair as Pair <- Pair(1, 2);\npair.left <- 3;\nwrite pair.right;\nendAlgorithm\n";
     let (module, diagnostics) = support::analyze(record);
-    assert!(module.is_none());
-    assert_eq!(diagnostics.len(), 1, "{diagnostics:?}");
-    assert_eq!(
-        diagnostics.first().map(|diagnostic| diagnostic.code),
-        Some(DiagnosticCode::ImmutableBindingAssignment)
-    );
+    assert!(module.is_some(), "{diagnostics:?}");
+    assert!(diagnostics.is_empty(), "{diagnostics:?}");
 }

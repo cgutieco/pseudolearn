@@ -138,3 +138,7 @@ manejador cero como `Nada`, como `Opcional<ValorJson>`.
 `Resultado<Opcional<Cadena>, ErrorES>`, que usa las tres celdas de toda operación falible con la referencia opcional en
 la última, y no la celda única de un opcional no falible. La familia de capacidad de la cinta para un receptor
 `Environment` es `environment`.
+
+## Alias de operaciones de biblioteca
+
+`EffectOperation` lleva `spanish_aliases` y `english_aliases` generados desde el campo opcional `alias` de D2 y de las funciones de texto de D1; `find_effect_operation` acepta la forma canónica y cualquier alias sin distinguir mayúsculas. Un alias nombra la misma identidad y el mismo `id`, así que el servicio y la RI no distinguen la forma escrita.

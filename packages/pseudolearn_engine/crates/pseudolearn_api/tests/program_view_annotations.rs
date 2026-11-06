@@ -170,7 +170,7 @@ fn variants_expose_context_and_binding_attributes() -> Result<(), String> {
     for expected in [
         json!({"type_constructor":"result"}),
         json!({"variant":"success"}),
-        json!({"initialized":true,"mutable":false}),
+        json!({"initialized":true}),
         json!({"discard":true}),
     ] {
         let object = expected.as_object().ok_or("expected attributes")?;

@@ -464,3 +464,7 @@ Las pruebas de ordenación contrastan estabilidad y multiconjunto con una semill
 La respuesta de `advance` (y la instantánea de punta) añade el campo `exit_code` (entero 0–255, 0 por omisión). Es un
 campo aditivo: los consumidores que no lo conocen lo ignoran. `error_ranges` lista los tramos `[inicio, fin)` de bytes de `output` que escribió `Consola.EscribirError`; `output` conserva
 ambos flujos en orden, así que un consumidor que no lo conoce muestra todo sin pérdida.
+
+## Vista del programa sin mutabilidad
+
+Las declaraciones locales con valor inicial exponen `initialized` verdadero; el atributo `mutable` desapareció con la palabra `Mutable`, porque toda variable de `Definir` se puede reasignar.

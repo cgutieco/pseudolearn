@@ -306,3 +306,7 @@ Las operaciones numéricas y de reordenamiento nuevas quedan en UNSUPPORTED_OPER
 La detección de tareas examina exclusivamente operaciones no soportadas task.*, call.suspendible y effect.await. task.yield_check, que el sujeto nativo ya baja como sondeo, no activa ese rechazo.
 El inventario de operaciones no soportadas también contiene biblioteca nueva: usar ese inventario
 como detector de tareas produciría un diagnóstico de tareas para una función numérica o de colección.
+
+## Azar entero pendiente en código nativo
+
+`host.random_below` y `host.random_between` figuran en `UNSUPPORTED_OPERATIONS`: el sujeto `aot` rechaza con `unsupported operation` los programas que usan `Azar(n)` o `Aleatorio(a, b)` en vez de producir un valor distinto del de la VM. Su paridad nativa pertenece a la fase del compilador nativo completo; hasta entonces los vínculos AOT de esas reglas quedan pendientes.

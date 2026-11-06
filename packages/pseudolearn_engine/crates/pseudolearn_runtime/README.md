@@ -301,3 +301,7 @@ argumento (0–255; otro valor es `ErrorES.PeticionInvalida` y no cambia el cód
 memoria y el anfitrión físico. El doble de memoria acumula el texto de error en `error_output`, separado de `output`.
 Ambas operaciones cuentan como mutación para la autoridad de efectos y se graban en la cinta como cualquier operación de
 consola.
+
+## Enteros aleatorios sin sesgo
+
+`RandomState::next_below(n)` devuelve un entero uniforme en `[0, n)`: calcula `r = 2⁶⁴ mod n`, descarta las palabras mayores o iguales que `2⁶⁴ − r` y reduce las demás por módulo; `n = 0` devuelve `None`. `next_between(a, b)` aplica lo mismo a la amplitud `b − a + 1` y usa la palabra completa cuando la amplitud es `2⁶⁴`; `a > b` devuelve `None`. La VM traduce `None` a `invalidRandomBound` o `invalidRandomRange`. Se descartó reducir un real, porque los enteros grandes no serían alcanzables por igual.

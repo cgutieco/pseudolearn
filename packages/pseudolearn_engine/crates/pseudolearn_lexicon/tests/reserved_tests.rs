@@ -20,3 +20,11 @@ fn ordinary_names_and_empty_text_are_not_reserved() {
     assert!(!is_reserved("total", Profile::English));
     assert!(!is_reserved("", Profile::Spanish));
 }
+
+#[test]
+fn mutable_is_an_ordinary_name_in_both_profiles() {
+    for word in ["Mutable", "mutable", "MUTABLE"] {
+        assert!(!is_reserved(word, Profile::Spanish), "{word}");
+        assert!(!is_reserved(word, Profile::English), "{word}");
+    }
+}
