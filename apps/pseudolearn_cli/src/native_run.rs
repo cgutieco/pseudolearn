@@ -13,6 +13,32 @@ pub struct NativeLaunch {
     pub program_directory: Option<std::path::PathBuf>,
 }
 
+fn spawn(
+    executable: &Path,
+    working_directory: &Path,
+    (effects_in, effects_out): (&Path, &Path),
+    launch: &NativeLaunch,
+) -> Result<std::process::Child> {
+    let mut command = Command::new(executable);
+    match &launch.program_directory {
+        Some(directory) => command.current_dir(directory),
+        None => command.current_dir(working_directory).env_clear(),
+    };
+    command
+        .arg("--effects-in")
+        .arg(effects_in)
+        .arg("--effects-out")
+        .arg(effects_out)
+        .arg("--semilla")
+        .arg(launch.seed.to_string())
+        .arg("--")
+        .args(&launch.program_arguments)
+        .stdin(Stdio::piped())
+        .stdout(Stdio::piped())
+        .stderr(Stdio::piped())
+        .spawn()
+}
+
 pub fn run_executable(
     executable: &Path,
     working_directory: &Path,
@@ -23,24 +49,12 @@ pub fn run_executable(
     let effects_out = working_directory.join(EFFECTS_OUT_FILE);
     std::fs::write(&effects_in, effect_input)?;
     let _stale = std::fs::remove_file(&effects_out);
-    let mut command = Command::new(executable);
-    match &launch.program_directory {
-        Some(directory) => command.current_dir(directory),
-        None => command.current_dir(working_directory).env_clear(),
-    };
-    let mut child = command
-        .arg("--effects-in")
-        .arg(&effects_in)
-        .arg("--effects-out")
-        .arg(&effects_out)
-        .arg("--semilla")
-        .arg(launch.seed.to_string())
-        .arg("--")
-        .args(&launch.program_arguments)
-        .stdin(Stdio::piped())
-        .stdout(Stdio::piped())
-        .stderr(Stdio::piped())
-        .spawn()?;
+    let mut child = spawn(
+        executable,
+        working_directory,
+        (&effects_in, &effects_out),
+        launch,
+    )?;
     if let Some(mut pipe) = child.stdin.take() {
         let text = inputs.iter().fold(String::new(), |mut accumulated, line| {
             accumulated.push_str(line);

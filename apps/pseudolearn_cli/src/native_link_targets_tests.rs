@@ -2,7 +2,7 @@ use super::{TARGETS, host_target, lld_arguments};
 use std::path::Path;
 
 #[test]
-fn each_target_builds_its_arguments_as_data() {
+fn each_target_builds_its_own_lld_arguments() {
     for target in TARGETS {
         let arguments = lld_arguments(
             target,
