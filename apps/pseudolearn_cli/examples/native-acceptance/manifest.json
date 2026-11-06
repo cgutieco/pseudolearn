@@ -1,0 +1,33 @@
+[
+  {
+    "name": "classic",
+    "corpus": {"specification": "LANG.PROGRAM.CLASSIC", "case": "C19", "profile": "es"},
+    "exit_code": 0
+  },
+  {
+    "name": "pure-library",
+    "program": "examples/general-purpose/acceptance/pure-library.es.pseudo",
+    "expected": "examples/native-acceptance/pure-library.es.expected",
+    "exit_code": 0
+  },
+  {
+    "name": "console-environment",
+    "program": "examples/general-purpose/acceptance/console-environment.es.pseudo",
+    "expected": "examples/native-acceptance/console-environment.es.expected",
+    "expected_errors": "diagnostic\n",
+    "exit_code": 7
+  },
+  {
+    "name": "tasks-http",
+    "program": "examples/native-acceptance/tasks-http.es.pseudo",
+    "expected": "examples/native-acceptance/tasks-http.es.expected",
+    "input_from_server": true,
+    "exit_code": 0
+  },
+  {
+    "name": "character",
+    "program": "examples/general-purpose/character.es.pseudo",
+    "expected": "examples/native-acceptance/character.es.expected",
+    "exit_code": 0
+  }
+]
