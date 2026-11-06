@@ -11,8 +11,8 @@
   `apps/pseudolearn_cli/*`, `packages/pseudolearn_engine/crates/pseudolearn_service/*`,
   `packages/pseudolearn_spec/crates/see_cli/*`, `packages/pseudolearn_spec/crates/see_conformance/*` y
   `packages/pseudolearn_spec/specifications/tool/tool.service.hover.md` (ver `PC-P-03`).
-- Autorización de la persona: **pendiente** (`PG-C.C01`). Este documento es el plan detallado de `PG-C.C02`: crearlo no
-  autoriza ejecutarlo.
+- Autorización de la persona: **concedida** el 2026-11-05 por mensaje directo que pidió implementar este plan en una sola
+  iteración (`PG-C.C01`, `C02`); ejecución registrada en §11.
 - Dependencias según §3 del plan general: PG-B (cerrada), PG-L y PG-S (implementadas, sin cierre formal). PG-C no cierra
   ni reabre PG-L ni PG-S (`PC-P-02`).
 - **Modo de ejecución: una sola iteración, implementación rápida y pruebas pesadas al final.** Los bloques `PG-C.00` a
@@ -365,16 +365,16 @@ Cada tarea sigue §0.1-4. «Nivel D» = §7.4. Al final de cada punto, commit lo
 
 ### PG-C.00 · Preparación (transversal)
 
-- [ ] `PG-C.00.01` Lectura de §2.2; anotar revisión Git en §11.
-- [ ] `PG-C.00.02` `git status --short`: aplicar `PC-P-03`. Registrar la lista de archivos ajenos sin commit.
-- [ ] `PG-C.00.03` `df -h .` y anotar el espacio libre; si hay menos de 40 GiB, aplicar §0.2.
-- [ ] `PG-C.00.04` Comprobar que `pseudo` del motor compila (`cargo build` según el README de `apps/pseudolearn_cli`) y
+- [x] `PG-C.00.01` Lectura de §2.2; anotar revisión Git en §11.
+- [x] `PG-C.00.02` `git status --short`: aplicar `PC-P-03`. Registrar la lista de archivos ajenos sin commit.
+- [x] `PG-C.00.03` `df -h .` y anotar el espacio libre; si hay menos de 40 GiB, aplicar §0.2.
+- [x] `PG-C.00.04` Comprobar que `pseudo` del motor compila (`cargo build` según el README de `apps/pseudolearn_cli`) y
   repetir los sondeos de `PC-H-21` escribiendo cada fila de la tabla dentro de `Algoritmo T … FinAlgoritmo` en un
   archivo `.psc` del *scratchpad* propio; anotar diferencias.
 
 ### PG-C.01 · `Definir` clásico, sin `Mutable`, ámbitos coherentes
 
-- [ ] `PG-C.01.01` Especificación: reescribir `LANG.DECL.VARIABLE#R1` según DC-01, DC-03 y DC-08;
+- [x] `PG-C.01.01` Especificación: reescribir `LANG.DECL.VARIABLE#R1` según DC-01, DC-03 y DC-08;
   `LANG.DECL.UNINITIALIZED#R1` (sin `missingBindingInitializer`; lectura sin valor según DC-05; conservar «no se
   inventan valores por defecto», trampa de campos y elementos y ámbitos de bloque); `LANG.TYPES.INFERENCE#R1` (sin
   «`Mutable` cuando el vínculo se reasigna»; la declaración lleva tipo y el valor es opcional); `LANG.PROFILE.VOCABULARY`
@@ -382,7 +382,7 @@ Cada tarea sigue §0.1-4. «Nivel D» = §7.4. Al final de cada punto, commit lo
   opcional); `DIAG.CATALOG` (retirar `missingBindingInitializer` y `mutableBindingNeverModified`; añadir
   `initializerWithMultipleNames`); `DIAG.SEVERITY.POLICY` (casos que usaban
   `missingBindingInitializer`).
-- [ ] `PG-C.01.02` Casos en `LANG.DECL.VARIABLE` y `LANG.DECL.UNINITIALIZED` (es y en): lista de tres nombres sin
+- [x] `PG-C.01.02` Casos en `LANG.DECL.VARIABLE` y `LANG.DECL.UNINITIALIZED` (es y en): lista de tres nombres sin
   valor, asignados y escritos; nombre de un carácter; inicializador con un nombre; inicializador con dos nombres
   (`initializerWithMultipleNames`); duplicado dentro de la lista; reasignación de un local (válida); `Mutable` como
   identificador ordinario (`Definir Mutable Como Entero <- 1;` válido); `Definir Mutable x Como Entero;` (error de forma
@@ -390,13 +390,13 @@ Cada tarea sigue §0.1-4. «Nivel D» = §7.4. Al final de cada punto, commit lo
   (`variableUsedUninitialized`). Reescribir los casos de `LANG.TYPES.RECORD`, `LANG.TYPES.ENUM` y
   `LANG.TYPES.VARIANT` que esperan `missingBindingInitializer` o `immutableBindingAssignment` sobre un local de
   `Definir`, con el esperado derivado de DC-03/DC-05.
-- [ ] `PG-C.01.03` Ficha de ayuda de la declaración en `TOOL.SERVICE.CATALOG`: quitar `mutableKeyword` de sus
+- [x] `PG-C.01.03` Ficha de ayuda de la declaración en `TOOL.SERVICE.CATALOG`: quitar `mutableKeyword` de sus
   identidades y del texto; describir la lista de nombres y el valor opcional. Mensajes es/en de `cases/catalogs.json`
   para los códigos tocados (el de `immutableBindingAssignment` sin «usa Definir Mutable»).
-- [ ] `PG-C.01.04` Tests: en `pseudolearn_syntax/tests/` (espejo de `declaration_parser.rs`), lista, inicializador
+- [x] `PG-C.01.04` Tests: en `pseudolearn_syntax/tests/` (espejo de `declaration_parser.rs`), lista, inicializador
   opcional, inicializador con varios nombres, nombre duplicado y lista vacía tras `Definir`. En
   `pseudolearn_lexicon/tests/`, que `Mutable` ya no es palabra reservada en es ni `mutable` en en.
-- [ ] `PG-C.01.05` Código: `see export` (regenera `export.json`); `pseudolearn_syntax/src/declaration_parser.rs`
+- [x] `PG-C.01.05` Código: `see export` (regenera `export.json`); `pseudolearn_syntax/src/declaration_parser.rs`
   (`declaration`: quitar `state.keyword(KeywordKind::MutableKeyword)`, lista de nombres como en `field`, inicializador
   opcional, error con varios nombres); `pseudolearn_diagnostics` (códigos retirados y nuevo, según cómo genera su
   catálogo: leer su README); Semantic: `local_registry.rs` (`mutable_declaration` desaparece; todo local de `Definir`
@@ -404,19 +404,19 @@ Cada tarea sigue §0.1-4. «Nivel D» = §7.4. Al final de cada punto, commit lo
   nodo), `binding_checker.rs` (`initialize` sin valor emite `HirStatement::Declare`; `check_destination` solo rechaza
   vínculos no reasignables de DC-03), `usage.rs` (quitar `mutable_warning`), y el campo `HirLocal::mutable` pasa a
   significar «reasignable» o se renombra (`reassignable`) si el nombre engaña; decidir y anotar.
-- [ ] `PG-C.01.06` README: syntax (forma de declaración), semantic (reasignación y por qué se eliminó `Mutable`),
+- [x] `PG-C.01.06` README: syntax (forma de declaración), semantic (reasignación y por qué se eliminó `Mutable`),
   lexicon si enumera palabras.
-- [ ] `PG-C.01.07` Nivel D: `see validate`; `cargo check -p pseudolearn_syntax -p pseudolearn_semantic`; tests de
+- [x] `PG-C.01.07` Nivel D: `see validate`; `cargo check -p pseudolearn_syntax -p pseudolearn_semantic`; tests de
   `.04`; `see conform --subject engine --only LANG.DECL.VARIABLE` y `--only LANG.DECL.UNINITIALIZED` (los casos de
   lectura sin valor pueden fallar hasta `PG-C.02`; anotarlo, no ocultarlo).
 
 ### PG-C.02 · Asignación definitiva
 
-- [ ] `PG-C.02.01` Especificación: completar `LANG.DECL.UNINITIALIZED` con las reglas de §3.1 como texto normativo
+- [x] `PG-C.02.01` Especificación: completar `LANG.DECL.UNINITIALIZED` con las reglas de §3.1 como texto normativo
   (una regla por grupo: secuencia y `Leer`; ramas y `Segun`; bucles, `Repetir` y `Salir`; retornos; literales de
   función). `LANG.IO.INPUT#R1`: `Leer` asigna su designador. `DIAG.CATALOG`: argumentos y orígenes relacionados de
   `variableUsedUninitialized` (DC-05).
-- [ ] `PG-C.02.02` Casos (es y en, `operacion: analyze` salvo indicación): leer sin valor en secuencia; `Leer` y luego
+- [x] `PG-C.02.02` Casos (es y en, `operacion: analyze` salvo indicación): leer sin valor en secuencia; `Leer` y luego
   leer (válido, `execute` con `entradas`); `Si` con `SiNo` asignando en ambas (válido); `Si` sin `SiNo` (error,
   `branchWithoutElse`); `SiNo` que solo asigna en una rama (error, `branchWithoutAssignment`); rama que retorna sin
   asignar (válido); `Segun` exhaustivo de enumerado (válido) y sin `De Otro Modo` (error); `Mientras` que asigna y
@@ -424,122 +424,122 @@ Cada tarea sigue §0.1-4. «Nivel D» = §7.4. Al final de cada punto, commit lo
   con `Salir` antes de asignar (error); lectura dentro de un literal de función de un local sin valor (error);
   registro local sin valor con un campo asignado y lectura de otro campo (error por hoja); arreglo tras `Dimension`
   (válido, elemento sin valor sigue siendo trampa en `execute`); variable de un carácter; bucle anidado de profundidad 3.
-- [ ] `PG-C.02.03` Tests espejo en `pseudolearn_semantic/tests/` para la pasada nueva: un archivo por archivo nuevo de
+- [x] `PG-C.02.03` Tests espejo en `pseudolearn_semantic/tests/` para la pasada nueva: un archivo por archivo nuevo de
   §5 (unión de ramas, bucles, salidas, nombre del camino en el diagnóstico).
-- [ ] `PG-C.02.04` Código: archivos nuevos de Semantic de §5 (`definite_assignment.rs` y hermanos); invocación al final
+- [x] `PG-C.02.04` Código: archivos nuevos de Semantic de §5 (`definite_assignment.rs` y hermanos); invocación al final
   del análisis de cada cuerpo, después de la comprobación de tipos y antes de `hir_finalization`; retirar la emisión en
   línea de `VariableUsedUninitialized` para locales en `name_resolution.rs` y las restauraciones de `initialized` que
   queden sin uso (`switch_checker.rs`, `for_checker.rs`, `flow_bindings.rs`, `assignment_checker.rs`,
   `task_bindings.rs`, `variant_bindings.rs`, `closure_locals.rs`, `record_locals.rs`, `dimension_checker.rs`,
   `generic_discard.rs`, `inspection_expression.rs`), conservando lo que siga sirviendo a campos, elementos o
   `bindingReadsOwnInitializer`. Antes de borrar un uso, `grep -rn "initialized" src` y leer cada sitio.
-- [ ] `PG-C.02.05` Verificar `PC-V-01` con un test de `pseudolearn_lowering` o `pseudolearn_api` que ejecuta en la VM un
+- [x] `PG-C.02.05` Verificar `PC-V-01` con un test de `pseudolearn_lowering` o `pseudolearn_api` que ejecuta en la VM un
   local declarado sin valor, asignado en ambas ramas y escrito después; si falla, corregir en `statements_declare.rs`.
-- [ ] `PG-C.02.06` README de semantic: la pasada, su lugar en el orden de análisis, por qué es una pasada sobre el HIR
+- [x] `PG-C.02.06` README de semantic: la pasada, su lugar en el orden de análisis, por qué es una pasada sobre el HIR
   (DC-04) y su coste (lineal por cuerpo, sin punto fijo salvo el resumen de DC-06).
-- [ ] `PG-C.02.07` Nivel D: tests de `.03` y `.05`; `see conform --subject engine --only LANG.DECL.UNINITIALIZED`,
+- [x] `PG-C.02.07` Nivel D: tests de `.03` y `.05`; `see conform --subject engine --only LANG.DECL.UNINITIALIZED`,
   `--only LANG.DECL.VARIABLE`, `--only LANG.IO.INPUT`.
 
 ### PG-C.03 · Parámetros de salida
 
-- [ ] `PG-C.03.01` Especificación: `LANG.SUBPROGRAM.BY-REFERENCE` con §3.2.
-- [ ] `PG-C.03.02` Casos: procedimiento que lee y asigna su parámetro (salida) llamado con variable sin valor (válido,
+- [x] `PG-C.03.01` Especificación: `LANG.SUBPROGRAM.BY-REFERENCE` con §3.2.
+- [x] `PG-C.03.02` Casos: procedimiento que lee y asigna su parámetro (salida) llamado con variable sin valor (válido,
   `execute`); procedimiento que lee el parámetro antes de asignarlo (error en la llamada); recursión directa (no es de
   salida); recursión mutua; valor función con parámetro por referencia (exige valor); método por referencia resuelto
   estáticamente; parámetro arreglo (no aplica); llamada que hace la variable definitivamente asignada para una lectura
   posterior.
-- [ ] `PG-C.03.03` Tests espejo del archivo de resúmenes de §5.
-- [ ] `PG-C.03.04` Código: resumen por subprograma (archivo nuevo de §5), consumido por la pasada de `PG-C.02`.
-- [ ] `PG-C.03.05` README de semantic. Nivel D: tests y `see conform --subject engine --only LANG.SUBPROGRAM.BY-REFERENCE`.
+- [x] `PG-C.03.03` Tests espejo del archivo de resúmenes de §5.
+- [x] `PG-C.03.04` Código: resumen por subprograma (archivo nuevo de §5), consumido por la pasada de `PG-C.02`.
+- [x] `PG-C.03.05` README de semantic. Nivel D: tests y `see conform --subject engine --only LANG.SUBPROGRAM.BY-REFERENCE`.
 
 ### PG-C.04 · Constancia inferida y capturas
 
-- [ ] `PG-C.04.01` Especificación: `LANG.TYPES.FUNCTION` (captura según §3.3; quitar «un parámetro mutable se copia
+- [x] `PG-C.04.01` Especificación: `LANG.TYPES.FUNCTION` (captura según §3.3; quitar «un parámetro mutable se copia
   antes»); `LANG.SUBPROGRAM.SCOPE#R1` (la clausura conserva valores de locales efectivamente constantes);
   `DIAG.CATALOG` (`mutableClosureCapture` con origen en la reasignación).
-- [ ] `PG-C.04.02` Casos: captura de un local asignado una vez (válido); captura y reasignación **posterior** en el texto
+- [x] `PG-C.04.02` Casos: captura de un local asignado una vez (válido); captura y reasignación **posterior** en el texto
   (error con origen en la reasignación); local asignado en dos ramas excluyentes y capturado (válido); asignado en un
   bucle y capturado (error); `Leer` de un local y captura (válido); parámetro por valor no reasignado (válido) y
   reasignado (error); parámetro por referencia (error, como hoy); clausura anidada que captura transitivamente.
   Reescribir los casos existentes de `mutableClosureCapture` (`lang.types.function.md`, `api.program.view.md`,
   `tool.service.catalog.md`) con programas sin `Mutable`.
-- [ ] `PG-C.04.03` Tests espejo de `capture_analysis.rs` y del archivo de validación diferida.
-- [ ] `PG-C.04.04` Código: `capture_analysis.rs` deja de consultar `declaration.mutable` y registra la captura; la
+- [x] `PG-C.04.03` Tests espejo de `capture_analysis.rs` y del archivo de validación diferida.
+- [x] `PG-C.04.04` Código: `capture_analysis.rs` deja de consultar `declaration.mutable` y registra la captura; la
   validación diferida (§5) consulta el conjunto de reasignaciones de la pasada de `PG-C.02`.
-- [ ] `PG-C.04.05` README de semantic (D-PG2-09 sigue vigente: no hay celdas compartidas). Nivel D: tests y
+- [x] `PG-C.04.05` README de semantic (D-PG2-09 sigue vigente: no hay celdas compartidas). Nivel D: tests y
   `see conform --subject engine --only LANG.TYPES.FUNCTION`.
 
 ### PG-C.05 · `Con Paso` opcional
 
-- [ ] `PG-C.05.01` Especificación: `LANG.CONTROL.FOR` (DC-09); `DIAG.CATALOG` sin `missingStepClause`.
-- [ ] `PG-C.05.02` Casos: `Para i <- 1 Hasta 3 Hacer` escribe `123`; `Para i <- 3 Hasta 1 Hacer` no ejecuta el cuerpo;
+- [x] `PG-C.05.01` Especificación: `LANG.CONTROL.FOR` (DC-09); `DIAG.CATALOG` sin `missingStepClause`.
+- [x] `PG-C.05.02` Casos: `Para i <- 1 Hasta 3 Hacer` escribe `123`; `Para i <- 3 Hasta 1 Hacer` no ejecuta el cuerpo;
   `Para i <- 1 Hasta 1 Hacer` una vez; con `Con Paso -1` sigue igual; reescribir el caso que esperaba `missingStepClause`.
-- [ ] `PG-C.05.03` Tests espejo de `for_checker.rs` y del archivo de lowering tocado.
-- [ ] `PG-C.05.04` Código: `for_checker.rs` deja de emitir `MissingStepClause` y fija paso 1; verificar `PC-V-02` y
+- [x] `PG-C.05.03` Tests espejo de `for_checker.rs` y del archivo de lowering tocado.
+- [x] `PG-C.05.04` Código: `for_checker.rs` deja de emitir `MissingStepClause` y fija paso 1; verificar `PC-V-02` y
   ajustar `statements_for*.rs` si asumían paso presente.
-- [ ] `PG-C.05.05` Nivel D: tests y `see conform --subject engine --only LANG.CONTROL.FOR`.
+- [x] `PG-C.05.05` Nivel D: tests y `see conform --subject engine --only LANG.CONTROL.FOR`.
 
 ### PG-C.06 · `Caracter → Cadena`
 
-- [ ] `PG-C.06.01` Especificación: `LANG.TYPES.RELATIONS#R1` (DC-10).
-- [ ] `PG-C.06.02` Casos: `Definir c Como Cadena <- "s";`; asignación de un `Caracter` a `Cadena`; argumento por valor;
+- [x] `PG-C.06.01` Especificación: `LANG.TYPES.RELATIONS#R1` (DC-10).
+- [x] `PG-C.06.02` Casos: `Definir c Como Cadena <- "s";`; asignación de un `Caracter` a `Cadena`; argumento por valor;
   retorno; elemento de `Vector<Cadena>`; argumento por referencia (sigue siendo error); `Cadena → Caracter` (sigue
   siendo error); comparación `"s" = opcion` con `opcion` cadena.
-- [ ] `PG-C.06.03` Tests espejo de `type_resolution.rs` (`assignable`) y de `expression_checker::widen`.
-- [ ] `PG-C.06.04` Código: `type_resolution.rs::assignable` y `expression_checker::widen` (conversión explícita en el
+- [x] `PG-C.06.03` Tests espejo de `type_resolution.rs` (`assignable`) y de `expression_checker::widen`.
+- [x] `PG-C.06.04` Código: `type_resolution.rs::assignable` y `expression_checker::widen` (conversión explícita en el
   HIR, como `Entero → Real`); Lowering de la conversión si no existe una operación de RI para ella: buscar primero con
   `grep -rn "CharToString\|char_to_string\|ToText" crates/pseudolearn_ir/src crates/pseudolearn_lowering/src`.
-- [ ] `PG-C.06.05` Nivel D: tests y `see conform --subject engine --only LANG.TYPES.RELATIONS`.
+- [x] `PG-C.06.05` Nivel D: tests y `see conform --subject engine --only LANG.TYPES.RELATIONS`.
 
 ### PG-C.07 · `Dimension` en dos pasos
 
-- [ ] `PG-C.07.01` Especificación: `LANG.ARRAY.DIMENSION#R1` (DC-11); `LANG.SYNTAX.GRAMMAR` (`Como T` opcional en
+- [x] `PG-C.07.01` Especificación: `LANG.ARRAY.DIMENSION#R1` (DC-11); `LANG.SYNTAX.GRAMMAR` (`Como T` opcional en
   `Dimension`); `DIAG.CATALOG` (`dimensionWithoutType`).
-- [ ] `PG-C.07.02` Casos: `Definir v Como Real; Dimension v[3];` con escritura y lectura; tamaño cero; nombre no
+- [x] `PG-C.07.02` Casos: `Definir v Como Real; Dimension v[3];` con escritura y lectura; tamaño cero; nombre no
   declarado; nombre declarado con inicializador; nombre usado entre `Definir` y `Dimension`; declarado en otro ámbito;
   bidimensional.
-- [ ] `PG-C.07.03` Tests espejo del parser de `Dimension` (en `statement_parser.rs` o el archivo que el `grep` indique) y
+- [x] `PG-C.07.03` Tests espejo del parser de `Dimension` (en `statement_parser.rs` o el archivo que el `grep` indique) y
   de `dimension_checker.rs`.
-- [ ] `PG-C.07.04` Código: parser y `dimension_checker.rs`.
-- [ ] `PG-C.07.05` Nivel D: tests y `see conform --subject engine --only LANG.ARRAY.DIMENSION`.
+- [x] `PG-C.07.04` Código: parser y `dimension_checker.rs`.
+- [x] `PG-C.07.05` Nivel D: tests y `see conform --subject engine --only LANG.ARRAY.DIMENSION`.
 
 ### PG-C.08 · `Funcion r <- nombre(…)`
 
-- [ ] `PG-C.08.01` Especificación: `LANG.SUBPROGRAM.DECLARATION` y `LANG.SUBPROGRAM.RETURN` (DC-12);
+- [x] `PG-C.08.01` Especificación: `LANG.SUBPROGRAM.DECLARATION` y `LANG.SUBPROGRAM.RETURN` (DC-12);
   `LANG.SYNTAX.GRAMMAR`; `DIAG.CATALOG`.
-- [ ] `PG-C.08.02` Casos: función clásica que suma dos parámetros tipados; `r` asignada en ambas ramas; `r` sin asignar en
+- [x] `PG-C.08.02` Casos: función clásica que suma dos parámetros tipados; `r` asignada en ambas ramas; `r` sin asignar en
   un camino (error con origen en la cabecera); `Retornar` sin expresión (válido si `r` asignada); `Retornar expresión`
   (error); sin `Definir r` (error); llamada recursiva; uso como valor función (firma igual a la forma `SubProceso`).
-- [ ] `PG-C.08.03` Tests espejo de `unit_parser.rs`/`parameter_parser.rs` (según dónde está la cabecera) y del archivo
+- [x] `PG-C.08.03` Tests espejo de `unit_parser.rs`/`parameter_parser.rs` (según dónde está la cabecera) y del archivo
   de desazucarado.
-- [ ] `PG-C.08.04` Código: parser de cabecera; Semantic (registro del tipo de retorno desde `r` y desazucarado, archivo
+- [x] `PG-C.08.04` Código: parser de cabecera; Semantic (registro del tipo de retorno desde `r` y desazucarado, archivo
   nuevo de §5).
-- [ ] `PG-C.08.05` Ficha de ayuda de subprogramas con la forma nueva. Nivel D: tests y `see conform --subject engine
+- [x] `PG-C.08.05` Ficha de ayuda de subprogramas con la forma nueva. Nivel D: tests y `see conform --subject engine
   --only LANG.SUBPROGRAM.DECLARATION`, `--only LANG.SUBPROGRAM.RETURN`.
 
 ### PG-C.09 · Biblioteca clásica
 
-- [ ] `PG-C.09.01` Verificar `PC-V-04`. Especificación: `LIB.MODEL` (D1: `random` reescrita, `randomBetween`,
+- [x] `PG-C.09.01` Verificar `PC-V-04`. Especificación: `LIB.MODEL` (D1: `random` reescrita, `randomBetween`,
   `randomUnit`, `concatenate`, alias `ConvertirANumero`; D2: campo `alias` y alias `Mayusculas`/`Minusculas`; texto de
   la regla que dice «veintiocho funciones» actualizado al número real); `LIB.CORE.RANDOM`; `LIB.CORE.TEXT` (`Subcadena`
   y, si alguna otra regla de texto depende de «inicio y cantidad», también); `LIB.CORE.CONVERSION` (alias). Fichas de
   ayuda es/en de cada identidad nueva en `TOOL.SERVICE.CATALOG`.
-- [ ] `PG-C.09.02` Casos: `Azar(1)` siempre 0; `Azar(0)` y `Azar(-1)` fallan; `Aleatorio(5, 5)` = 5; `Aleatorio(3, 1)`
+- [x] `PG-C.09.02` Casos: `Azar(1)` siempre 0; `Azar(0)` y `Azar(-1)` fallan; `Aleatorio(5, 5)` = 5; `Aleatorio(3, 1)`
   falla; rango de `Azar(6)` con semilla fija comprobado como propiedad (todos los valores en `[0, 6)`), nunca un valor
   capturado; `AzarReal()` en `[0, 1)`; `Subcadena("hola", 0, 1)` = `ho`, `Subcadena("hola", 2, 1)` = cadena vacía,
   `Subcadena("", 0, -1)` = cadena vacía, `Subcadena("hola", 0, 4)` falla, `Subcadena("hola", -1, 0)` falla;
   `Concatenar("a", "")`; `ConvertirANumero("3,5")` falla y `ConvertirANumero("3.5")` escribe según
   `LANG.IO.VALUE-FORMAT`; `Mayusculas("ñ")`; aridad incorrecta de cada una. Reescribir los casos existentes que usan
   `azar()` (pasan a `AzarReal()`) y `Subcadena` con cantidad.
-- [ ] `PG-C.09.03` Tests espejo en `pseudolearn_library/tests/` y, si cambia, en el lector de D2.
-- [ ] `PG-C.09.04` Código: `see export`; validador de D2 en `packages/pseudolearn_spec/crates` (si `PC-V-04` lo exige;
+- [x] `PG-C.09.03` Tests espejo en `pseudolearn_library/tests/` y, si cambia, en el lector de D2.
+- [x] `PG-C.09.04` Código: `see export`; validador de D2 en `packages/pseudolearn_spec/crates` (si `PC-V-04` lo exige;
   **comprobar antes con `git status` que el otro agente no tiene cambios sin commit en ese crate**); `pseudolearn_library`
   (entero aleatorio sin sesgo, intervalo, `Subcadena`, `Concatenar`); resolución de alias de D2 donde se resuelven hoy
   (`PC-H-19`).
-- [ ] `PG-C.09.05` Verificar `PC-V-05`: `cargo check -p pseudolearn_codegen -p pseudolearn_aot_rt`. Si el sujeto nativo
+- [x] `PG-C.09.05` Verificar `PC-V-05`: `cargo check -p pseudolearn_codegen -p pseudolearn_aot_rt`. Si el sujeto nativo
   no soporta las firmas nuevas, rechazar con el diagnóstico de operación no soportada existente y dejar los vínculos de
   `packages/pseudolearn_engine/conformance-aot.yaml` en `pendiente` con `resuelve_en` `PG-N.08` (§0.1-11).
-- [ ] `PG-C.09.06` README de `pseudolearn_library` (principio «un nombre, una semántica», método sin sesgo) y del
+- [x] `PG-C.09.06` README de `pseudolearn_library` (principio «un nombre, una semántica», método sin sesgo) y del
   runtime si documenta la fuente. Nivel D: tests y `see conform --subject engine --only` de cada especificación de `.01`.
 
 ### PG-C.10 · Reescritura del monorepo y consumidores
@@ -553,55 +553,55 @@ Reglas mecánicas exactas (DC-15), aplicadas con `sed -i ''` sobre archivos con 
    mano o con un script revisado línea a línea, nunca con un patrón ciego.
 3. Toda otra aparición de `Mutable` se revisa a mano.
 
-- [ ] `PG-C.10.01` Corpus: aplicar la regla 1 a todos los programas de casos de `specifications/` excepto los que
+- [x] `PG-C.10.01` Corpus: aplicar la regla 1 a todos los programas de casos de `specifications/` excepto los que
   `PG-C.01`–`.09` ya reescribieron; reescribir el texto en prosa que nombre `Mutable`; `fixtures/` incluido
   (`fixture-1.md`). `git grep -n "Mutable\|mutable" -- packages/pseudolearn_spec` debe dar solo apariciones justificadas
   y anotadas.
-- [ ] `PG-C.10.02` Posiciones (`PC-V-09`): para cada especificación tocada en `.01` cuyos casos esperan líneas,
+- [x] `PG-C.10.02` Posiciones (`PC-V-09`): para cada especificación tocada en `.01` cuyos casos esperan líneas,
   columnas, desplazamientos o tramos (`grep -ln '"linea"\|"columna"\|"inicio"\|"fin"\|"posicion"\|"span"' <archivos
   tocados>`), recalcular a mano los esperados afectados por los caracteres eliminados, derivándolos del programa nuevo.
   Candidatos conocidos: `app.editor.completion`, `tool.service.hover`, `tool.service.navigation`, `api.analyze`,
   `api.program.view`, `api.state.query`, `ir.source-map`, `ir.observation-points`, `eng.trace.*`. **No tocar**
   `tool.service.hover.md` mientras tenga cambios ajenos sin commit (`PC-P-03`).
-- [ ] `PG-C.10.03` `see lock --refresh` con **todas** las identidades editadas en PG-C en una sola orden; `see export`;
+- [x] `PG-C.10.03` `see lock --refresh` con **todas** las identidades editadas en PG-C en una sola orden; `see export`;
   `see export --check`; `see lock --check`; `see validate`.
-- [ ] `PG-C.10.04` Motor: regla 1 en los tests y cargas (`pseudolearn_service/tests/*`, `pseudolearn_api/tests/*`,
+- [x] `PG-C.10.04` Motor: regla 1 en los tests y cargas (`pseudolearn_service/tests/*`, `pseudolearn_api/tests/*`,
   `pseudolearn_bench_worker/src/*`, demás de `git grep -l Mutable -- packages/pseudolearn_engine`);
   `pseudolearn_api/src/program_view_variants.rs` (revisar a mano); servicio: completado, *hover* y formateador ya no
   proponen ni imprimen `Mutable` (leer `completion*.rs`, `hover*.rs` y el formateador; sus tests de
   `completion_assignment.rs`, `completion_ranking.rs`, `completion.rs`, `formatter.rs`, `hover.rs`, `incremental.rs`).
-- [ ] `PG-C.10.05` Generador `see_generators` (`src/program.rs` y `tests/program.rs`): deja de emitir `Mutable`; verificar
+- [x] `PG-C.10.05` Generador `see_generators` (`src/program.rs` y `tests/program.rs`): deja de emitir `Mutable`; verificar
   `PC-V-10` y, si hay resultados versionados que dependen de la semilla, regenerarlos con la orden del README.
-- [ ] `PG-C.10.06` Extensión: regla 1 en `examples/`, `tests/` y `scripts/`; regenerar la gramática según `PC-V-06`;
+- [x] `PG-C.10.06` Extensión: regla 1 en `examples/`, `tests/` y `scripts/`; regenerar la gramática según `PC-V-06`;
   `git grep -n Mutable -- apps/pseudolearn_vscode` vacío salvo `node_modules`.
-- [ ] `PG-C.10.07` App: reglas 1 y 2 en los 125 archivos de `assets/knowledge` (lecciones y ejercicios es/en); donde la
+- [x] `PG-C.10.07` App: reglas 1 y 2 en los 125 archivos de `assets/knowledge` (lecciones y ejercicios es/en); donde la
   prosa explique `Mutable`, reescribirla para explicar que una variable de `Definir` puede cambiar y que leerla sin
   valor es error; `lib/engine/execution/task_structure_projection.dart`; los 33 tests. Verificar `PC-V-07`.
-- [ ] `PG-C.10.08` CLI (`examples/` y `tests/`, 7 archivos) y `packages/pseudolearn_benchmarks` (4 archivos); verificar
+- [x] `PG-C.10.08` CLI (`examples/` y `tests/`, 7 archivos) y `packages/pseudolearn_benchmarks` (4 archivos); verificar
   `PC-V-08` y anotar en §11 si alguna línea base queda incomparable (no se regenera ninguna línea base de rendimiento en
   PG-C).
-- [ ] `PG-C.10.09` READMEs: `git grep -n "Mutable\|missingBindingInitializer\|mutableBindingNeverModified\|Con Paso" --
+- [x] `PG-C.10.09` READMEs: `git grep -n "Mutable\|missingBindingInitializer\|mutableBindingNeverModified\|Con Paso" --
   '*README.md'` y reescribir cada aparición que describa el comportamiento viejo.
-- [ ] `PG-C.10.10` Nivel D: `git grep -n "Mutable" -- . ':!docs/**' ':!**/node_modules/**'` sin apariciones no
+- [x] `PG-C.10.10` Nivel D: `git grep -n "Mutable" -- . ':!docs/**' ':!**/node_modules/**'` sin apariciones no
   justificadas; `cargo check` de los crates tocados; en la app, `flutter analyze` y `flutter test <archivos tocados>`;
   en la extensión, la prueba de gramática de su README.
 
 ### PG-C.11 · Suite de aceptación clásica
 
-- [ ] `PG-C.11.01` Verificar `PC-V-03`. Especificación nueva `LANG.PROGRAM.CLASSIC` (DC-14), regla R1 `CANDIDATA`:
+- [x] `PG-C.11.01` Verificar `PC-V-03`. Especificación nueva `LANG.PROGRAM.CLASSIC` (DC-14), regla R1 `CANDIDATA`:
   «Un programa formado solo por `Algoritmo` o `Proceso`, `Definir` con lista de nombres, `Leer`, `Escribir`, `Si`,
   `Segun`, `Mientras`, `Repetir`, `Para` sin paso, `Dimension` en dos pasos, `Funcion` con variable de retorno,
   `SubProceso` con parámetros por referencia de salida y las funciones clásicas de la biblioteca se analiza sin
   diagnósticos y se ejecuta con la salida que derivan las reglas de cada construcción». `depende_de` cada identidad
   usada.
-- [ ] `PG-C.11.02` Casos de §7.2, cada uno con programa es (y en si `PC-V-03` lo exige), `entradas` cuando hay `Leer`,
+- [x] `PG-C.11.02` Casos de §7.2, cada uno con programa es (y en si `PC-V-03` lo exige), `entradas` cuando hay `Leer`,
   `operacion: execute` y salida derivada a mano; la derivación paso a paso de cada salida se anota en §11.
   Más un caso `analyze` por programa con `diagnosticos: []`.
-- [ ] `PG-C.11.03` Vínculos de conformidad como datos para `LANG.PROGRAM.CLASSIC` en
+- [x] `PG-C.11.03` Vínculos de conformidad como datos para `LANG.PROGRAM.CLASSIC` en
   `packages/pseudolearn_engine/conformance.yaml`, `packages/pseudolearn_engine/conformance-service.yaml`,
   `apps/pseudolearn_cli/conformance.yaml` y, como `pendiente` con `resuelve_en` `PG-N.08`,
   `packages/pseudolearn_engine/conformance-aot.yaml`; seguir el formato de las filas vecinas.
-- [ ] `PG-C.11.04` Nivel D: `see validate`; `see conform --subject engine --only LANG.PROGRAM.CLASSIC`.
+- [x] `PG-C.11.04` Nivel D: `see validate`; `see conform --subject engine --only LANG.PROGRAM.CLASSIC`.
 
 ### PG-C.12 · Bloque final: pruebas pesadas, conformidad y corrección
 
@@ -609,43 +609,43 @@ Se ejecuta **una sola vez**, al terminar `PG-C.11`, en el orden de §10.2. Antes
 lanza en segundo plano con la salida en `packages/pseudolearn_engine/results/pg-c-<fecha real>/logs/<orden>.log`, y se
 registra en §11 la orden, el código de salida y los conteos.
 
-- [ ] `PG-C.12.01` Corpus: `see validate`, `see lock --check`, `see export --check`.
-- [ ] `PG-C.12.02` Estática: `cargo xtask verify` del motor (Clippy estricto, capas, límites); `rust-checks` (`layers`,
+- [x] `PG-C.12.01` Corpus: `see validate`, `see lock --check`, `see export --check`.
+- [x] `PG-C.12.02` Estática: `cargo xtask verify` del motor (Clippy estricto, capas, límites); `rust-checks` (`layers`,
   `comments`, `names`, límites) según el README de `pseudolearn_rust_checks`; lo mismo en `packages/pseudolearn_spec` y
   `apps/pseudolearn_cli`.
-- [ ] `PG-C.12.03` Pruebas del motor: `cargo test -p` de `pseudolearn_lexicon`, `pseudolearn_syntax`,
+- [x] `PG-C.12.03` Pruebas del motor: `cargo test -p` de `pseudolearn_lexicon`, `pseudolearn_syntax`,
   `pseudolearn_semantic`, `pseudolearn_lowering`, `pseudolearn_library`, `pseudolearn_ir`, `pseudolearn_bytecode`,
   `pseudolearn_vm`, `pseudolearn_runtime`, `pseudolearn_service`, `pseudolearn_api`, `pseudolearn_timeline`,
   `pseudolearn_wasm`; después `cargo test --workspace`. Pruebas de `packages/pseudolearn_spec` (`cargo test
   --workspace` en su directorio).
-- [ ] `PG-C.12.04` Conformidad completa: `see conform --subject engine`; `--subject service`; `--subject cli`;
+- [x] `PG-C.12.04` Conformidad completa: `see conform --subject engine`; `--subject service`; `--subject cli`;
   `--subject aot` (vínculos `pendiente` informados, cero `incumple` en reglas tocadas por PG-C que no estén
   `pendiente`); `--operation properties`; `--subject app`.
-- [ ] `PG-C.12.05` Consumidores: pruebas de la CLI según su README; extensión (pruebas y gramática vigente; web Chromium y
+- [x] `PG-C.12.05` Consumidores: pruebas de la CLI según su README; extensión (pruebas y gramática vigente; web Chromium y
   WebKit si el README los incluye); app: `flutter analyze`, `dart run tool/check_syntax_coverage.dart`, biblioteca
   nativa (`cargo build --release --locked --lib --manifest-path native/Cargo.toml`) y **suite completa** `flutter test`;
   `packages/pseudolearn_benchmarks` según su README.
-- [ ] `PG-C.12.06` Rendimiento: `PERF.SUITE.CORE` y `PERF.AOT.LEVEL` antes (`052a4c1e`, en el *worktree* de `.08`) y
+- [x] `PG-C.12.06` Rendimiento: `PERF.SUITE.CORE` y `PERF.AOT.LEVEL` antes (`052a4c1e`, en el *worktree* de `.08`) y
   después según `PERF.PROTOCOL`. Esperado: sin cambio fuera del ruido (`PC-H-15`). Una regresión mayor que el ruido es
   fallo de PG-C.
-- [ ] `PG-C.12.07` Casos negativos de los verificadores afectados (los de comentarios, nombres, capas y límites del motor
+- [x] `PG-C.12.07` Casos negativos de los verificadores afectados (los de comentarios, nombres, capas y límites del motor
   y de SEE) siguen fallando con su violación deliberada.
-- [ ] `PG-C.12.08` Ciclo de corrección (§10.4) contra `git worktree add --detach <scratchpad>/pg-c-base 052a4c1e`.
-- [ ] `PG-C.12.09` Aceptación por plataforma: el programa más completo de `LANG.PROGRAM.CLASSIC` (§7.2, `CL-10`) pegado
+- [x] `PG-C.12.08` Ciclo de corrección (§10.4) contra `git worktree add --detach <scratchpad>/pg-c-base 052a4c1e`.
+- [x] `PG-C.12.09` Aceptación por plataforma: el programa más completo de `LANG.PROGRAM.CLASSIC` (§7.2, `CL-10`) pegado
   sin cambios y ejecutado en CLI (`pseudo ejecutar`), extensión de escritorio, extensión web (Chromium y WebKit), app
   macOS y app iOS en simulador; Windows «no verificado». Salida esperada la del caso.
-- [ ] `PG-C.12.10` Criterio de salida: repetir los sondeos de `PC-H-21` y anotar el resultado nuevo de cada fila; todas
+- [x] `PG-C.12.10` Criterio de salida: repetir los sondeos de `PC-H-21` y anotar el resultado nuevo de cada fila; todas
   las filas de barreras deben quedar sin diagnóstico salvo `a[3]` en un arreglo de tamaño 3 (base 0 conservada).
 
 ### Cierre común
 
-- [ ] `PG-C.C03`–`C11` se acreditan con la evidencia de §11.
-- [ ] `PG-C.C12.01` Revisión del diff completo (`git diff 052a4c1e --stat` y lectura de cada archivo de código): búsqueda
+- [x] `PG-C.C03`–`C11` se acreditan con la evidencia de §11.
+- [x] `PG-C.C12.01` Revisión del diff completo (`git diff 052a4c1e --stat` y lectura de cada archivo de código): búsqueda
   de comentarios, `TODO`, `unwrap`, `expect`, `panic!` y de citas a `docs/` fuera de `docs/`
   (`grep -rn "docs/plan-ejecucion\|fase-pg-\|propuesta-pseudocodigo" packages apps` vacío).
-- [ ] `PG-C.C12.02` Commits con la skill `commit-message`, sin atribución de IA, solo rutas de PG-C, y push ordinario
+- [x] `PG-C.C12.02` Commits con la skill `commit-message`, sin atribución de IA, solo rutas de PG-C, y push ordinario
   comprobado (`git branch --show-current`, `git push`, `git status -sb` sin divergencia).
-- [ ] `PG-C.C13.01` Completar §11 de este plan, §4.16 y la fila de §6 del plan general; informe a la persona con
+- [x] `PG-C.C13.01` Completar §11 de este plan, §4.16 y la fila de §6 del plan general; informe a la persona con
   puntos cumplidos, decisiones aplicadas, `CANDIDATA` fijadas, hallazgos de §11.4, pendientes (PG-N.08,
   Windows/físicos, `DC-P1`) y **parada**.
 
@@ -827,27 +827,114 @@ plataforma → `.10` criterio de salida. Push solo después de `.10` en verde o 
 
 ## 11. Resumen de ejecución
 
+Estado: PG-C.00–PG-C.12 y el cierre común cumplidos el 2026-11-05/06 en una sola iteración. Autorización (`PG-C.C01`,
+`C02`): mensaje de la persona del 2026-11-05 («Implementa … en una sola iteración. No me hagas preguntas … elige siempre
+la opción recomendada»), que revisa y autoriza este plan; `DC-P1` no se implementó porque no fue aprobada. Revisión Git
+de partida: `9d732d46` (no `052a4c1e`; `PC-H-*` repetidos donde aplicaba). El trabajo se hizo en el *worktree*
+`claude/fase-pg-c-ejecucion-c65131`, avanzado por avance rápido a `9d732d46`, y se fusionó `07ecbb3a` (cierre de PG-L del
+otro agente) antes del push. Disco: se liberaron ≈ 54 GB (`cargo clean` del motor y de la CLI de la copia principal sin
+compilaciones en curso, 23,5 + 7,1 GiB; destino nativo y `build/` de la app, 3,8 + 1,7 GiB; cachés `incremental` del
+motor y de la CLI en ambas copias, ≈ 20 GiB).
+
 | Tarea | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
+| `PG-C.C01`, `C02` | Cumplida | Mensaje de la persona del 2026-11-05 | Autorización y revisión del plan en la misma petición |
+| `PG-C.00.01`–`.04` | Cumplida | §11.1; sondeos `PC-H-21` repetidos con `pseudo` del *worktree*: resultados idénticos a la tabla | `PC-P-03`: sin cambios ajenos en el *worktree*; `PC-P-02`: PG-L/PG-S no se reabrieron |
+| `PG-C.01.01`–`.07` | Cumplida | `d63ad3a5`, `3d0b175a`; `LANG.DECL.VARIABLE` C1–C12, `LANG.DECL.UNINITIALIZED` C1–C4, `DIAG.SEVERITY.POLICY`, `LANG.TYPES.ENUM#C9`, `LANG.TYPES.RECORD#C15`; tests `declaration_parser_tests.rs`, `reserved_tests.rs`, `binding_checker.rs` | `HirLocal::mutable` renombrado a `reassignable` (falso solo para vínculos de `Para Cada`, patrones, tareas y capturas) |
+| `PG-C.02.01`–`.07` | Cumplida | `LANG.DECL.UNINITIALIZED` R1–R6 y C1–C21, `LANG.IO.INPUT#C5`; tests `definite_assignment_state.rs`, `definite_assignment_report.rs`, `record_assignment.rs`; `pseudolearn_api/tests/declaration_without_value.rs` | Implementación en línea (PC-C-05); campos de registro por hoja con `ExpressionPurpose::Receiver` |
+| `PG-C.03.01`–`.05` | Cumplida | `LANG.SUBPROGRAM.BY-REFERENCE` C4–C11; `semantic/tests/output_parameters.rs` (7 pruebas) | PC-C-08, PC-C-09, PC-C-10 |
+| `PG-C.04.01`–`.05` | Cumplida | `LANG.TYPES.FUNCTION` C3 y C18–C25, `API.PROGRAM.VIEW#C16`; `semantic/tests/capture_validation.rs` | Capturas rechazadas se quitan del modelo para que la vista no las muestre |
+| `PG-C.05.01`–`.05` | Cumplida | `LANG.CONTROL.FOR` C2, C11, C18–C21; `for_checker_tests.rs` | PC-V-02 confirmada: Lowering ya daba paso 1 |
+| `PG-C.06.01`–`.05` | Cumplida | `LANG.TYPES.RELATIONS` C22–C29 | `Widen` reutilizado: `text.format` desde carácter; comparación mixta (PC-C-06) |
+| `PG-C.07.01`–`.05` | Cumplida | `LANG.ARRAY.DIMENSION` C5–C11; `semantic/tests/dimension_adoption.rs`; `declaration_parser_tests.rs` | Campos de clase siguen exigiendo `Como tipo` (`field_dimension`) |
+| `PG-C.08.01`–`.05` | Cumplida | `LANG.SUBPROGRAM.DECLARATION` C3–C5, `LANG.SUBPROGRAM.RETURN` C5–C8; `unit_parser_tests.rs`, `semantic/tests/return_variable.rs` | Producción `returnVariable` (nodo `ReturnVariable`); ficha de subprogramas sin cambio de identidades porque `Funcion` ya era alias |
+| `PG-C.09.01`–`.06` | Cumplida | `LIB.MODEL` (41 funciones, alias D2, C6–C7), `LIB.CORE.RANDOM` C1–C12, `LIB.CORE.TEXT` C5–C7 y C44–C51, `LIB.CORE.CONVERSION` C16–C17; `runtime/tests/random_tests.rs`, `library/src/text_search_tests.rs`; IR O124–O125 | `aot` rechaza `host.random_below/between` como no soportadas (PC-V-05, `PG-N.08`) |
+| `PG-C.10.01`–`.10` | Cumplida | 57 especificaciones reescritas (regla 1); 80 pares `Definir … <- 0;`/`Leer` en contenidos (regla 2); gramática TextMate regenerada; `see lock --refresh` de 73 identidades y alta de `LANG.PROGRAM.CLASSIC`; `git grep Mutable` sin apariciones fuera de `LANG.DECL.VARIABLE#C5/#C7` | PC-V-06/07/08/09/10 en §11.1; `flutter analyze`, `check_content`, `check_syntax_coverage`, `pnpm test` en verde |
+| `PG-C.11.01`–`.04` | Cumplida | `lang/lang.program.classic.md`: R1 (engine, C1–C20), R2 (cli, C21–C30), R3 (service, C31–C40); vínculos en los cuatro manifiestos | PC-V-03, PC-C-14; `aot` R1 pendiente (`PG-N.08`) |
+| `PG-C.12.01` | Cumplida | `see validate` (199 especificaciones), `see lock --check`, `see export --check` en verde | |
+| `PG-C.12.02` | Cumplida | `cargo xtask verify` del motor, de SEE y de la CLI con código 0 (`results/pg-c-2026-11-05/logs/f02-*.log`) | Se corrigieron dos problemas heredados de `9d732d46` (límite de `help_resolution.rs` y de `xtask` de la CLI); en la fusión prevaleció la corrección equivalente de `07ecbb3a` |
+| `PG-C.12.03` | Cumplida | Motor `cargo test --workspace` (incluido en `xtask verify`); SEE: 299 pruebas | Siete fallos intermedios corregidos: posiciones desplazadas por `Mutable `, recuento de instrucciones y casos con entradas en `function_execution.rs` |
+| `PG-C.12.04` | Cumplida con pendientes heredados | engine 2896 observaciones, service 196, cli 157, app 244: 0 divergencias; propiedades engine 32/32, service 8/8, app 3/3; aot: solo `RT.FAULT.REPORTING#R2` y su propiedad P1, ya en falta en la base | Los fallos `aot` son los de la base (argumentos de fallos nativos, tareas y efectos), que resuelve PG-N; ninguna regla tocada por PG-C queda en `incumple` sin estar `pendiente` |
+| `PG-C.12.05` | Cumplida | `flutter test` 2690 en verde y 2 omitidas, tras recompilar la biblioteca nativa, `check_*` de la app, benchmarks (29 pruebas, analizador), extensión (35 archivos, 191 pruebas) | Se corrigió un aviso heredado del analizador en `capture_bridge_artifacts.dart` |
+| `PG-C.12.06` | Cumplida | `results/pg-c-2026-11-05/perf-suite-core.json`: `PERF.SUITE.CORE` (11 programas, mediana de 15) con binarios release de `9d732d46` y de PG-C: análisis 0,97–1,03, ejecución 0,93–0,98, salidas idénticas; PC-E01 (1 000 ramas en 10 niveles) 8,42 → 8,58 ms | `PERF.AOT.LEVEL` no se volvió a medir: PG-C no cambia `pseudolearn_codegen` salvo declarar dos instrucciones no soportadas |
+| `PG-C.12.07` | Cumplida | `rust-checks` (55 pruebas con casos negativos), SEE (fixtures negativos dentro de sus 299 pruebas), verificadores de la app y de la extensión en sus suites | |
+| `PG-C.12.08` | Cumplida | Clasificación contra `9d732d46` (*worktree* desacoplado, retirado al terminar) y contra los registros de PG-L de la misma base | |
+| `PG-C.12.09` | Cumplida con alcance acotado | CL-10 sin cambios: CLI (`pseudo ejecutar`), protocolo `--editor` que lanza la extensión de escritorio, extensión web en Chromium y WebKit (`tests/web/classic_scenario.ts`), app macOS y simulador iPhone 18 Pro (`integration_test/classic_acceptance_test.dart`) | Firefox «no calificado» como en fases previas; Windows y VS Code de escritorio con interfaz no verificados |
+| `PG-C.12.10` | Cumplida | Sondeos repetidos: todas las filas sin diagnóstico salvo `a[3]` en arreglo de tamaño 3 (`arrayIndexOutOfRange`, base 0) | |
+| `PG-C.C03`–`C11` | Cumplida | Evidencia de esta tabla, §11.1–§11.4 y READMEs de semantic, syntax, lowering, library, runtime, vm, ir, codegen, abi, api, bytecode, service, SEE, app y extensión | |
+| `PG-C.C12.01`, `.02` | Cumplida | Diff revisado sin comentarios, `TODO`, `unwrap`, `expect` ni `panic!` añadidos y sin citas a `docs/`; commits sin atribución de IA | Push ordinario a `feature/agregar-ruta-de-especificacion` |
+| `PG-C.C13.01` | Cumplida | Este resumen, §4.16 y §6 del plan general | Parada |
 
-Revisión Git de cierre: · Verificadores ejecutados: · Pendientes justificados: · Puntos de §4 cumplidos:
+Revisión Git de cierre: fusión de `07ecbb3a` sobre la rama de PG-C · Verificadores ejecutados: `see validate`/`lock`/`export`,
+`cargo xtask verify` (motor, SEE, CLI), `rust-checks`, conformidad de los cinco sujetos y sus propiedades, `flutter test`,
+`check_*`, `pnpm test`, web Chromium/WebKit, app macOS e iOS · Pendientes justificados: `aot` de azar entero y fallos
+nativos (PG-N.08), Windows, Firefox y VS Code de escritorio con interfaz · Puntos de §4 cumplidos: todos.
 
 ### 11.1 Registro de hipótesis (`PC-V-01`–`PC-V-10`)
 
 | ID | Resultado | Evidencia |
 |---|---|---|
+| PC-V-01 | Confirmada: `lower_declare` y SSA ejecutan un local sin valor asignado en las dos ramas y escrito después, por lotes y paso a paso; no hizo falta tocar `statements_declare.rs` | `pseudolearn_api/tests/declaration_without_value.rs` (3 pruebas en verde) |
+| PC-V-02 | Confirmada: `statements_for_condition.rs::resolve_step_value` ya emite `ConstI64 1` cuando falta el paso; solo Semantic emitía `missingStepClause` | Lectura del archivo; `LANG.CONTROL.FOR` C18–C21 en verde |
+| PC-V-03 | Refutada en parte: un caso `LANG.*` exige perfil `en` o una exclusión justificada (`exclusiones.en`); los casos de `LIB.*` admiten solo `es` | `see_validation/src/references.rs`; `LANG.PROGRAM.CLASSIC` lleva la exclusión en cada caso |
+| PC-V-04 | Refutada: el validador exigía exactamente nueve campos en cada fila de D2 | `see_validation/src/resources/capability_library.rs`; se añadió el campo opcional `alias` con su comprobación y tres pruebas |
+| PC-V-05 | El sujeto `aot` no usa la tabla de funciones para el azar: `Azar(n)` y `Aleatorio(a, b)` bajan a instrucciones nuevas que `pseudolearn_codegen` declara no soportadas; `cargo check` del motor completo en verde | `instruction_dispatch.rs` (`UNSUPPORTED_OPERATIONS`); `every_operation_is_lowered_or_declared_unsupported` en verde |
+| PC-V-06 | Confirmada: la gramática TextMate se genera desde la exportación (`pnpm generate:grammar`) | Gramática regenerada sin `Mutable`; `pnpm check:grammar` y `pnpm test` (35 archivos, 191 pruebas) en verde |
+| PC-V-07 | Confirmada: `manifest_es.json`/`manifest_en.json` no llevan hashes; `tool/check_content.dart` sí comprueba que cada programa de «errores frecuentes» produzca el diagnóstico citado | `dart run tool/check_content.dart` en verde tras reescribir los ejemplos |
+| PC-V-08 | Las cargas de `packages/pseudolearn_benchmarks` cambian de texto (sin `Mutable`) y no de comportamiento; las procedencias de campañas anteriores registran el SHA de la fuente anterior, así que esas líneas base no son comparaciones de fuente idéntica. No se regeneró ninguna | `git diff 9d732d46 -- packages/pseudolearn_benchmarks` |
+| PC-V-09 | Confirmada: `API.ANALYZE#C5`, `TOOL.SERVICE.NAVIGATION` C1/C2/C5/C7, `TOOL.LSP.CAPABILITIES#C14` y `APP.EDITOR.COMPLETION` C12–C15/C20 tenían posiciones, cursores u offsets UTF-16 después de `Mutable `; también las pruebas `api_tests.rs`, `identifier_tests.rs`, `lsp.rs` y `navigation.rs`. Se recalcularon desde el programa nuevo (8 unidades menos tras la palabra) | Conformidad engine, service y app en verde |
+| PC-V-10 | Confirmada: `see_generators` genera por semilla en cada ejecución y no hay resultados versionados que dependan de él | `crates/see_generators`; pruebas del generador en verde |
 
 ### 11.2 Esperados reescritos
 
 | Caso | Esperado anterior | Esperado nuevo | Regla de la que se deriva |
 |---|---|---|---|
+| `LANG.DECL.VARIABLE#C4` | `immutableBindingAssignment` | ejecuta `2` | DC-03: toda variable de `Definir` se reasigna |
+| `LANG.DECL.VARIABLE#C5` | ejecuta `2` con `Definir Mutable` | `expectedTypeConnector` | DC-02: `Mutable` es un nombre y falta `Como` |
+| `LANG.DECL.VARIABLE#C7` | `mutableBindingNeverModified` | `Mutable` como identificador ordinario, ejecuta `1` | DC-02 |
+| `LANG.DECL.VARIABLE#C8` | `immutableBindingAssignment` | `Leer` sobre la variable, ejecuta `7` | DC-03 |
+| `LANG.DECL.UNINITIALIZED#C1` | `missingBindingInitializer` | declaración sin valor, asignación y lectura: ejecuta `5` | DC-01, DC-05 |
+| `LANG.DECL.UNINITIALIZED#C2` | duplicado de C1 | `variableUsedUninitialized` con `cause` `noAssignment`, tramo y declaración relacionada | DC-05 |
+| `DIAG.SEVERITY.POLICY#C1`, `C2` | `missingBindingInitializer` | `variableUsedUninitialized` (política A, error) | DC-05 |
+| `LANG.TYPES.ENUM#C9`, `LANG.TYPES.RECORD#C15` | `missingBindingInitializer` | `variableUsedUninitialized` | DC-05 |
+| `LANG.TYPES.FUNCTION#C3` | captura de un vínculo `Mutable` | captura y reasignación posterior: `mutableClosureCapture` | DC-07 |
+| `API.PROGRAM.VIEW#C16` | captura de `Mutable` | captura y reasignación posterior; sin capturas en la vista | DC-07 |
+| `API.PROGRAM.VIEW` (vista de variantes) | `mutable` y `initialized` | solo `initialized` | DC-02 |
+| `LANG.CONTROL.FOR#C2`, `C11` | `missingStepClause` | ejecuta `123`; análisis sin diagnósticos | DC-09 |
+| `LIB.CORE.RANDOM#C1`–`C3` | `azar()` real; `azar(1)` es error de aridad | `AzarReal()` real; `Azar()` es error de aridad | DC-13 |
+| `LIB.CORE.TEXT#C6`, `C7` | `Subcadena` con cantidad | `Subcadena("ab", 2, 1)` vacía; `Subcadena("abc", 2, 3)` fuera de rango | DC-13 |
+| `RT.HOST.INTERFACE#C1`–`C4`, `TOOL.CLI.RUN` (programa con semilla) | `azar()` | `AzarReal()`, misma secuencia | DC-13 |
+| `API.ANALYZE#C5` | `año` en columnas 17–20 | columnas 9–12 | Programa sin `Mutable ` (8 puntos de código menos) |
+| `TOOL.SERVICE.NAVIGATION` C1, C2, C5, C7; `TOOL.LSP.CAPABILITIES#C14` | Definición, referencias y cursor de renombrado tras `Mutable ` | Las mismas posiciones 8 caracteres antes | Programa sin `Mutable ` |
+| `APP.EDITOR.COMPLETION` C12–C15, C20 | Cursores y selecciones UTF-16 tras `Mutable ` | 8 unidades menos | Programa sin `Mutable ` |
+| `APP.EXEC.CONFIGURATION#C2` y texto de R1 | `Para` sin `Con Paso` no se ejecuta | Se ejecuta y escribe `123` | DC-09 |
+| `LIB.CORE.TEXT` C49, C50 | Casos de análisis en una regla también verificada por ejecución | Lápidas; los casos pasan a `LIB.MODEL` C6–C7 | La aridad y el tipo se comprueban estáticamente (`LIB.MODEL#R1`) |
+| 57 especificaciones con programas `Definir Mutable` | — | mismo programa sin la palabra | Regla mecánica 1 de `PG-C.10` |
 
 ### 11.3 Conflictos, `CANDIDATA` fijadas y decisiones de la persona
 
 | ID | Detalle | Resolución |
 |---|---|---|
+| PC-C-01 | Ámbitos de bloque | Resuelto por DC-08: `LANG.DECL.VARIABLE#R1` ya no dice que las declaraciones no crean ámbitos |
+| PC-C-05 | DC-04 elegía una pasada nueva sobre el HIR, pero Semantic ya tenía un análisis por caminos en línea (`session.initialized`) con unión de ramas y hojas de registro | Se usó la reversión que DC-04 prevé: se extendió el análisis en línea (conjuntos A y P, causas, salidas, reasignaciones) en los archivos de §5 (`definite_assignment_state`, `definite_assignment_report`, `output_parameters`, `capture_validation`, `return_variable`). Una pasada nueva habría duplicado el recorrido y el modelo de inicialización. Razonamiento en el README de semantic |
+| PC-C-06 | DC-10 decía que la ampliación no cambia la comparación, pero `PG-C.06.02` y CL-04 exigen `"s" = opcion` con `opcion` cadena, que el motor rechazaba | Se aplicó «igual que la ampliación numérica»: en comparaciones mixtas el carácter se amplía a cadena; la concatenación no cambia. `LANG.TYPES.RELATIONS#R1` lo dice y `C29` lo verifica |
+| PC-C-07 | DC-05 enumeraba cuatro valores de `cause`; el catálogo exige que todo argumento aparezca en el mensaje y la lectura sin ninguna asignación previa no tiene unión | `cause` es un argumento `termino` presente en el mensaje y se añade `noAssignment`. Mensaje: «La variable {lexeme} puede no tener valor en este punto (causa: {cause})» |
+| PC-C-08 | §3.2 no exigía que un parámetro de salida tenga valor al terminar el cuerpo, lo que dejaría sin valor al argumento | Un parámetro de salida debe tener valor también en todo fin del cuerpo (`LANG.SUBPROGRAM.BY-REFERENCE#R1`) |
+| PC-C-09 | §3.2 hablaba de «tipo no arreglo»; los registros por referencia se siguen por hoja | Los registros por referencia no son de salida (conservador) |
+| PC-C-10 | «Método resuelto estáticamente» no tenía criterio | Son directas las llamadas por nombre, a `Super` y a constructores; un método sobre un objeto se trata como despacho dinámico |
+| PC-C-11 | §3.1 no fijaba el tratamiento de `Elegir`, `Tareas` y `Diferir` | `Elegir` une sus ramas como `Segun`; el cuerpo de `Tareas` se ejecuta en secuencia; lo que asigna `Diferir` no cuenta después |
+| PC-C-12 | `invalidRandomBound` llevaba el argumento `limit` | Sin argumento: las trampas de la VM no transportan argumentos numéricos sin un cambio de protocolo ajeno a PG-C |
+| PC-C-13 | El sujeto `aot` no implementa las instrucciones nuevas de azar | `host.random_below` y `host.random_between` declaradas no soportadas; `LANG.PROGRAM.CLASSIC#R1` en `aot` `pendiente` con `resuelve_en` `PG-N.08`; R2 y R3 exentas |
+| PC-C-14 | Una regla con casos de operaciones distintas queda «no aplicable» en un sujeto que solo ejecuta una de ellas (`see_report::measurement`) | `LANG.PROGRAM.CLASSIC` se dividió en R1 (engine), R2 (cli) y R3 (service) con vínculos `exento` justificados donde no aplican |
+| `CANDIDATA` | `initializerWithMultipleNames`, `dimensionWithoutType`, `returnVariableNotDeclared`, `returnValueInReturnVariableFunction`, `invalidRandomBound`, `invalidRandomRange`, `randomUnit` (`AzarReal`/`randomReal`), `LANG.PROGRAM.CLASSIC` | Fijadas sin cambio de nombre. Nuevas: `randomBetween` en inglés, `concatenate`/`concat`, nodo `ReturnVariable`, instrucciones `host.random_below` (O124) y `host.random_between` (O125) |
+| Commits | `AGENTS.md`/skill `commit-message`: sin atribución de IA | Se respetó; ningún commit lleva coautoría |
+| `DC-P1` | Parámetros sin tipo | No implementado (sin aprobación) |
 
 ### 11.4 Hallazgos fuera de alcance
 
 | Hallazgo | Evidencia | Propuesta |
 |---|---|---|
+| `Definir i Como Entero;` seguido de `Para i <- …` produce `bindingShadowsOuter` y `variableDeclaredNeverUsed`, porque el control pertenece al bucle (`LANG.CONTROL.FOR#R4`); el pseudocódigo clásico declara `i` antes | Sondeo `p04` | Decidir si `Para` reutiliza una variable entera del mismo ámbito declarada sin valor |
+| Palabras reservadas propias que chocan con nombres clásicos: `Codigo` (campo de errores) y `Hacer` impiden usarlas como variable o función | `LANG.PROGRAM.CLASSIC` (CL-10 usaba `codigo`); casos de `LANG.TYPES.FUNCTION` | Revisar si `Codigo` puede ser contextual como `Variante` |
+| El mensaje de `variableUsedUninitialized` muestra la causa como término técnico (`branchWithoutElse`) | Catálogo | Traducir los términos de causa en el renderizado |
+| El emisor Rust de la app no tiene generador aleatorio y conserva valores fijos | `rust_expression_rules.dart` | Decidir si el código exportado usa una dependencia de azar |

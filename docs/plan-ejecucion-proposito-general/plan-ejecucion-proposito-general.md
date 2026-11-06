@@ -1089,44 +1089,46 @@ Objetivo: que un programa de pseudocódigo clásico escrito con `;` y con índic
 retoques, conservando la seguridad de inicialización, el aislamiento de clausuras y tareas y el rendimiento actuales.
 Origen: decisión de la persona del 2026-11-05 y [propuesta del 2026-11-05](propuesta-pseudocodigo-clasico.md).
 
-- [ ] `PG-C.01` `Definir` de uno o varios nombres con inicializador opcional (solo con un nombre); sin `Mutable` en ningún perfil; ámbitos de bloque coherentes en todo el corpus.
-- [ ] `PG-C.02` Asignación definitiva estática: leer un local sin valor en algún camino es error que nombra el camino; `Leer` asigna; sin valores por defecto.
-- [ ] `PG-C.03` Parámetros por referencia de salida inferidos en llamadas directas; las llamadas indirectas exigen argumento asignado.
-- [ ] `PG-C.04` Constancia inferida: los locales se reasignan libremente y las clausuras solo capturan locales efectivamente constantes, con diagnóstico que señala la modificación.
-- [ ] `PG-C.05` `Con Paso` opcional con paso 1.
-- [ ] `PG-C.06` Conversión implícita de `Caracter` a `Cadena`.
-- [ ] `PG-C.07` `Dimension nombre[…];` sobre un nombre ya definido toma su tipo.
-- [ ] `PG-C.08` `Funcion r <- nombre(parámetros)` con variable de retorno definitivamente asignada.
-- [ ] `PG-C.09` Biblioteca clásica con un nombre y una semántica: `Azar(n)`, `Aleatorio(a, b)`, `Subcadena(c, desde, hasta)`, `Mayusculas`, `Minusculas`, `Concatenar`, `ConvertirANumero`.
-- [ ] `PG-C.10` Programas, contenidos, ejemplos, fixtures, generadores y cargas del monorepo en la forma nueva; servicio, extensión, CLI y app sin rastro de `Mutable`.
-- [ ] `PG-C.11` Suite de aceptación clásica en el corpus, ejecutada sin modificaciones en `engine`, `cli` y `service`.
-- [ ] `PG-C.12` Bloque final único de pruebas pesadas, conformidad y corrección.
+- [x] `PG-C.01` `Definir` de uno o varios nombres con inicializador opcional (solo con un nombre); sin `Mutable` en ningún perfil; ámbitos de bloque coherentes en todo el corpus.
+- [x] `PG-C.02` Asignación definitiva estática: leer un local sin valor en algún camino es error que nombra el camino; `Leer` asigna; sin valores por defecto.
+- [x] `PG-C.03` Parámetros por referencia de salida inferidos en llamadas directas; las llamadas indirectas exigen argumento asignado.
+- [x] `PG-C.04` Constancia inferida: los locales se reasignan libremente y las clausuras solo capturan locales efectivamente constantes, con diagnóstico que señala la modificación.
+- [x] `PG-C.05` `Con Paso` opcional con paso 1.
+- [x] `PG-C.06` Conversión implícita de `Caracter` a `Cadena`.
+- [x] `PG-C.07` `Dimension nombre[…];` sobre un nombre ya definido toma su tipo.
+- [x] `PG-C.08` `Funcion r <- nombre(parámetros)` con variable de retorno definitivamente asignada.
+- [x] `PG-C.09` Biblioteca clásica con un nombre y una semántica: `Azar(n)`, `Aleatorio(a, b)`, `Subcadena(c, desde, hasta)`, `Mayusculas`, `Minusculas`, `Concatenar`, `ConvertirANumero`.
+- [x] `PG-C.10` Programas, contenidos, ejemplos, fixtures, generadores y cargas del monorepo en la forma nueva; servicio, extensión, CLI y app sin rastro de `Mutable`.
+- [x] `PG-C.11` Suite de aceptación clásica en el corpus, ejecutada sin modificaciones en `engine`, `cli` y `service`.
+- [x] `PG-C.12` Bloque final único de pruebas pesadas, conformidad y corrección.
 
-Plan detallado: [fase-pg-c-plan-ejecucion.md](fase-pg-c-plan-ejecucion.md), redactado el 2026-11-05; requiere revisión y
-autorización de la persona.
+Plan detallado: [fase-pg-c-plan-ejecucion.md](fase-pg-c-plan-ejecucion.md), redactado el 2026-11-05 y autorizado ese día por
+mensaje directo de la persona que pidió implementarlo en una sola iteración; ejecución en su §11.
 
 Cierre común (definiciones en §4.0):
 
-- [ ] `PG-C.C01` Autorización de la persona para iniciar la fase, en mensaje nuevo.
-- [ ] `PG-C.C02` Plan detallado creado según §5 y revisado por la persona.
-- [ ] `PG-C.C03` SPEC-FIRST y congelamiento respetados.
-- [ ] `PG-C.C04` Reglas nuevas con casos o propiedades y vínculos como datos.
-- [ ] `PG-C.C05` Tests feliz, infeliz y límite en carpetas espejo.
-- [ ] `PG-C.C06` Capas declaradas, imports permitidos y límites de tamaño.
-- [ ] `PG-C.C07` Sin comentarios ni TODO; código en inglés; Rust sin pánicos ni `unsafe` no declarado.
-- [ ] `PG-C.C08` README y reglas de los miembros afectados actualizados, sin citar `docs/`.
-- [ ] `PG-C.C09` Fichas de ayuda y datos de proyección de la sintaxis nueva, o justificación.
-- [ ] `PG-C.C10` Riesgos revisados y experimentos con procedencia o diferidos por la persona.
-- [ ] `PG-C.C11` Tests y verificadores de los miembros afectados en verde.
-- [ ] `PG-C.C12` Commit sin atribución de IA y push ordinario comprobado a la rama única.
-- [ ] `PG-C.C13` Resumen completo, informe a la persona y parada.
+- [x] `PG-C.C01` Autorización de la persona para iniciar la fase, en mensaje nuevo.
+- [x] `PG-C.C02` Plan detallado creado según §5 y revisado por la persona.
+- [x] `PG-C.C03` SPEC-FIRST y congelamiento respetados.
+- [x] `PG-C.C04` Reglas nuevas con casos o propiedades y vínculos como datos.
+- [x] `PG-C.C05` Tests feliz, infeliz y límite en carpetas espejo.
+- [x] `PG-C.C06` Capas declaradas, imports permitidos y límites de tamaño.
+- [x] `PG-C.C07` Sin comentarios ni TODO; código en inglés; Rust sin pánicos ni `unsafe` no declarado.
+- [x] `PG-C.C08` README y reglas de los miembros afectados actualizados, sin citar `docs/`.
+- [x] `PG-C.C09` Fichas de ayuda y datos de proyección de la sintaxis nueva, o justificación.
+- [x] `PG-C.C10` Riesgos revisados y experimentos con procedencia o diferidos por la persona.
+- [x] `PG-C.C11` Tests y verificadores de los miembros afectados en verde.
+- [x] `PG-C.C12` Commit sin atribución de IA y push ordinario comprobado a la rama única.
+- [x] `PG-C.C13` Resumen completo, informe a la persona y parada.
 
 #### Resumen de PG-C
 
 | Punto | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
+| PG-C.01–PG-C.11 | Cumplido | §11 del plan detallado; commits de `d63ad3a5` a la fusión con `07ecbb3a` | Asignación definitiva en línea (reversión prevista en DC-04); `cause` con valor `noAssignment`; comparación carácter–cadena por ampliación |
+| PG-C.12 | Cumplido con pendientes heredados | `cargo xtask verify` del motor, SEE y CLI; conformidad engine 2896, service 196, cli 157, app 244 sin divergencias; `flutter test` 2690; web Chromium/WebKit, app macOS e iOS simulador | `aot`: azar entero no soportado y argumentos de fallos nativos (PG-N.08); Firefox, Windows y VS Code de escritorio con interfaz no verificados |
 
-Revisión Git de cierre: · Verificadores ejecutados: · Pendientes justificados: · Decisiones de la persona:
+Revisión Git de cierre: fusión de `07ecbb3a` sobre la rama de PG-C · Verificadores ejecutados: ver §11 del plan detallado · Pendientes justificados: `aot` (PG-N.08), Firefox, Windows · Decisiones de la persona: autorización del 2026-11-05; `DC-P1` no aprobada ni implementada
 
 ## 5. Reglas para crear cada `fase-<id>-plan-ejecucion.md`
 
@@ -1288,6 +1290,6 @@ La IA a cargo actualiza esta tabla al cerrar cada fase.
 | PG-B | Reformulada el 2026-11-02 · PG-B.01–.03, .05–.09 ejecutados; .04 retirado; .10–.30 sin iniciar | Sí, reescrito; C02 pendiente | | C01/C02; parada en PG-B.22.01 si el puente supera `PERF.ARTIFACT.SIZE` |
 | PG-L | Implementada, pendiente de push y cierre | Sí | | PG-L.01–PG-L.07 y bloque F cumplidos (`cargo xtask verify`, conformidad engine/service/CLI/app sin divergencias, `flutter test`, extensión de escritorio y web, aceptación en CLI, VS Code, Chromium, WebKit, macOS e iOS simulador). Pendientes ajenos: fallos nativos preexistentes (PG-N), PG-S.02.01. Detalle en §11 de `fase-pg-l-plan-ejecucion.md` |
 | PG-S | Implementada, sin cierre formal · PG-S.01–.09 y C01–C09 | Sí | | C10–C13 pendientes: PS-E04, suite completa, commit/push de cierre, parada; se ejecutó antes de cerrar PG-L por decisión expresa de la persona |
-| PG-C | Sin iniciar · creada el 2026-11-05 | Sí, redactado; C01/C02 pendientes | | |
+| PG-C | Cerrada · PG-C.01–.12 y C01–C13 | Sí, autorizado el 2026-11-05 | 2026-11-06 · push ordinario a la rama única | Pendientes heredados: `aot` sin azar entero ni argumentos de fallos nativos (PG-N.08); Firefox, Windows y VS Code de escritorio con interfaz no verificados; hallazgos en §11.4 del plan detallado |
 | PG-N | Sin iniciar | No | | |
 | PG-7 | Sin iniciar · reformulada el 2026-11-02 | No | | |

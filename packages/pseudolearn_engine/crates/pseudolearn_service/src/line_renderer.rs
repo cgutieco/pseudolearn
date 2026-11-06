@@ -95,7 +95,9 @@ fn operation_alias_spelling(original: &str, profile: Profile) -> Option<&'static
             } else {
                 operation.english_aliases
             };
-            aliases.iter().any(|alias| alias.eq_ignore_ascii_case(original))
+            aliases
+                .iter()
+                .any(|alias| alias.eq_ignore_ascii_case(original))
         })?;
     Some(if spanish {
         operation.spanish
