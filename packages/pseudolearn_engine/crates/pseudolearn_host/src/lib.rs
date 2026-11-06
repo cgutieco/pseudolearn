@@ -2,6 +2,7 @@
 
 mod physical_console;
 mod physical_directory_ops;
+mod physical_download;
 mod physical_environment;
 mod physical_error;
 mod physical_file_append;
@@ -18,6 +19,7 @@ mod physical_network_transport;
 mod physical_network_transport_support;
 mod physical_request;
 
+pub use physical_download::{DownloadError, DownloadRequest, download_to_file};
 pub use physical_error::HostError;
 pub use physical_host::{PhysicalHost, entropy_seed};
 pub use physical_network::NetworkPolicy;
@@ -28,6 +30,8 @@ pub use worker::HostWorker;
 
 #[cfg(test)]
 mod physical_console_tests;
+#[cfg(test)]
+mod physical_download_tests;
 #[cfg(test)]
 mod physical_environment_tests;
 

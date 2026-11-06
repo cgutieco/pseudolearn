@@ -82,3 +82,16 @@ reglas históricas de la zona.
 
 `physical_console.rs` confirma `console_write_error` con la cantidad de bytes UTF-8 (el texto lo separa el consumidor
 según `error_ranges`, no el anfitrión); valida `console_set_exit_code` (0–255, si no `peticion_invalida`). Un solo búfer de salida conserva el orden relativo entre ambos flujos.
+
+## Descarga verificable para herramientas (`physical_download.rs`)
+
+`download_to_file(DownloadRequest, destino, TlsConfiguration)` descarga una URL HTTP/HTTPS a un archivo en flujo, sin
+cargarla en memoria: la CLI la usa para obtener el enlazador incluido. A diferencia de las peticiones del programa (que
+reciben las redirecciones para decidir), sigue hasta `redirect_limit` redirecciones, porque las publicaciones de GitHub
+redirigen a su almacén; nunca pasa de HTTPS a HTTP. Usa el mismo resolutor, la misma validación de anfitrión y el mismo
+verificador TLS de plataforma que la red del programa, envía `User-Agent` y `Connection: close`, y corta con
+`TooLarge` al superar `byte_limit` y con `TimedOut` al agotar `timeout`. Los errores son valores de `DownloadError`
+(`InvalidAddress`, `Unreachable`, `Status`, `TooLarge`, `TooManyRedirects`, `TimedOut`, `Storage`); la integridad (suma
+SHA-256) la comprueba quien llama. `physical_download_tests.rs` cubre, con un servidor en `127.0.0.1`, respuesta
+completa, redirección relativa, 404, límite de tamaño, cadena de redirecciones excesiva, puerto cerrado y esquema no HTTP.
+Descartado: un cliente HTTP en la CLI, que duplicaría el transporte que este crate ya posee.
