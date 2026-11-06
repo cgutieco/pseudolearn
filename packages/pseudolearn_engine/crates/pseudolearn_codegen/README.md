@@ -317,6 +317,13 @@ de esas funciones llama antes a `rt_aot_task_return`, que reanuda la limpieza LI
 cuenta esas aristas como sucesoras. `task_dispatch` emite `__pl_task_dispatch`, que recibe el índice del destino de
 `task.spawn` y las palabras de sus argumentos; el `main` de C lo pasa a `pseudolearn_aot_main` (nulo sin agenda).
 
+## Fallos dentro de auxiliares sintetizados
+
+Las funciones `@__collection.*` que la bajada sintetiza (ordenar, claves) registran sus sitios de fallo sin tramo, y la
+llamada visible que entra en ellas guarda su propio sitio en `caller_site` del contexto (y lo restaura al volver). El runtime
+informa un sitio sin tramo con el tramo de esa llamada visible, que es lo que la VM muestra porque oculta esos marcos. Se
+descartó copiar el tramo del llamador en tiempo de compilación, porque un auxiliar tiene muchos llamadores.
+
 ## Destinos
 
 `TargetConfig::for_triple` emite objeto para los cuatro destinos de publicación; Cranelift se compila con los backends
