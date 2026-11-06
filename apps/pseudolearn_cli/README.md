@@ -448,7 +448,7 @@ Verificación remota: el trabajo `native-target` de `.github/workflows/verify-mo
 (`workflow_dispatch`; `tests/native_targets_workflow.rs` falla si el workflow declara otro disparador o pierde ese trabajo, y
 prueba el verificador con disparadores automáticos deliberados). Se aloja en ese workflow y no en uno propio porque GitHub
 solo despacha workflows ya registrados en el repositorio y registrar uno nuevo exige publicarlo en `master`; la entrada
-`native_targets_only` omite los demás trabajos. Matriz: `ubuntu-latest` (musl), `macos-13` (x86_64), `macos-latest` (arm64) y `windows-latest`.
+`native_targets_only` omite los demás trabajos. Matriz: `ubuntu-latest` (musl), `macos-15-intel` (x86_64; la imagen `macos-13` ya no recibe runners), `macos-latest` (arm64) y `windows-latest`. Como `packages/pseudolearn_engine` y `packages/pseudolearn_spec` no versionan su `Cargo.lock`, el trabajo los resuelve con `cargo generate-lockfile` antes de compilar con `--locked`.
 Cada runner compila `pseudo`, obtiene el enlazador por el mismo camino que el usuario y ejecuta
 `tool/verify_native_target.py`, que compila con `pseudo build --target` los programas de
 `examples/native-acceptance/manifest.json` (el caso C19 de `LANG.PROGRAM.CLASSIC` leído de `export.json`, las aceptaciones de
