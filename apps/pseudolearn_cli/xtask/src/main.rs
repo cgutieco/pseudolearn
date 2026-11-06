@@ -59,6 +59,12 @@ fn export() -> Result<(), String> {
 }
 
 fn commands() -> Vec<Vec<&'static str>> {
+    let mut commands = test_commands();
+    commands.extend(check_commands());
+    commands
+}
+
+fn test_commands() -> Vec<Vec<&'static str>> {
     vec![
         vec!["fmt", "--all", "--check"],
         vec![
@@ -79,6 +85,11 @@ fn commands() -> Vec<Vec<&'static str>> {
             "--test",
             "aot_effect_parity",
         ],
+    ]
+}
+
+fn check_commands() -> Vec<Vec<&'static str>> {
+    vec![
         vec![
             "run",
             "--manifest-path",
