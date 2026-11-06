@@ -30,11 +30,11 @@ de prefijo sobre rutas absolutas, que no cierran carreras entre validación y ap
 proyecto se carga con `--proyecto` (sección 4). El recorrido confinado se verificó en macOS; no se certifican otras
 plataformas por analogía.
 
-`cargo build` construye antes, desde `build.rs`, la biblioteca estática del runtime (`cargo rustc --release --crate-type staticlib -p pseudolearn_aot_rt` sobre el motor, con su propio directorio de destino bajo `OUT_DIR`) y la depura con `strip`. Requiere `cargo` y `strip`. Para enlazar, `pseudo` busca `rust-lld` junto a su propio ejecutable (ruta relativa al binario, nunca absoluta); en macOS lo invoca con la tabla de argumentos por destino de `native_link_targets` y con *stubs* `.tbd` que `native_link_stubs` genera desde los símbolos indefinidos del objeto y del runtime (libSystem, CoreFoundation y Security), de modo que no hace falta Xcode ni un compilador C. Sin ese enlazador incluido se usa el driver `cc` del sistema en el `PATH`, que añade `-framework Security -framework CoreFoundation` porque el runtime valida TLS con el verificador de la plataforma. Distribuir `rust-lld` exige también `libLLVM`, que es una decisión de empaquetado aún no tomada: hoy la distribución no lo incluye.
+`cargo build` construye antes, desde `build.rs`, la biblioteca estática del runtime de cada destino nativo (`cargo rustc --release --crate-type staticlib --target <triplete> -p pseudolearn_aot_rt` sobre el motor, con su propio directorio de destino bajo `OUT_DIR`) y genera `runtime_archives.rs`, la tabla que `runtime_archive.rs` incrusta con `include_bytes!`. Requiere `cargo`; en Linux, el destino `x86_64-unknown-linux-musl` instalado y `musl-gcc` (paquete `musl-tools`). El enlace usa el enlazador incluido (sección «Enlazador incluido y destinos nativos»): no hace falta Xcode, un compilador C ni un SDK en la máquina que ejecuta `pseudo compilar`.
 
 La feature `test-host` de la CLI, apagada por omisión, solo cambia esa biblioteca: `build.rs` la compila con `--features test-host` y el runtime nativo usa el anfitrión de memoria con el que la conformidad simula reloj, archivos y red (`anfitrion` de cada caso). Sin ella el runtime usa el anfitrión físico de `pseudolearn_host` con autoridad plena: archivos, red, reloj, temporizador, argumentos y entorno reales; un documento de anfitrión simulado se rechaza con `peticion_invalida`. `see` lanza el sujeto `aot` con `cargo run --features test-host`; `cargo xtask verify` ejecuta `aot_adapter_tests` y `aot_effect_parity` con y sin la feature. La clave `isolation` prohíbe `pseudolearn_cli/test-host` en los grafos de distribución, de modo que un binario distribuido nunca embebe dobles de prueba. Se descartó enlazar los dos runtimes en el mismo binario y elegir en ejecución, porque distribuiría los dobles, y delegar los efectos del ejecutable al proceso padre, porque el anfitrión físico vive dentro del propio ejecutable.
 
-`run --native` lanza el ejecutable desde el directorio de trabajo con el entorno heredado, `--semilla` con la semilla de la ejecución (la indicada o una de entropía) y, tras `--`, los argumentos del programa; la conformidad lo lanza con entorno vacío desde su caché. El archivo estático del runtime pasa de unos 3,1 MB a 5,6 MB con el anfitrión físico y un ejecutable mínimo ocupa unos 3,5 MB.
+`run --native` lanza el ejecutable desde el directorio de trabajo con el entorno heredado, `--semilla` con la semilla de la ejecución (la indicada o una de entropía) y, tras `--`, los argumentos del programa; la conformidad lo lanza con entorno vacío desde su caché. Como `pseudo ejecutar` en la VM, termina con el código que el programa pidió con la operación de consola si la ejecución se completó, y con 1 si no: el ejecutable lo escribe como `exit_code` en su documento de efectos (que el lanzador siempre pide) y `native_run::requested_exit` lo lee. El archivo estático del runtime pasa de unos 3,1 MB a 5,6 MB depurado con el anfitrión físico y un ejecutable mínimo ocupa unos 3,5 MB.
 
 ## 3. Arquitectura y modelo del sistema
 
@@ -82,16 +82,20 @@ lsp: ejecuta el servidor JSON-RPC 2.0 sobre stdio y reserva stdout para respuest
 El servidor atiende sincronización incremental, diagnósticos, compleción, información emergente, ayuda de firma, navegación, resaltado, símbolos de documento/workspace, `prepareRename`, `rename`, `semanticTokens/full`, formato y ayuda. Las capacidades de workspace, rename transaccional, diagnósticos relacionados y tokens semánticos se anuncian solo según la negociación del cliente. Antes de pedir rename, el cliente materializa documentos cerrados encontrados por referencias, los sincroniza con sus versiones vigentes y recalcula `prepareRename` y referencias; las ediciones llevan esas versiones y el servidor rechaza la propuesta completa si falta una fuente sincronizada. Termina con código 0 tras `shutdown` y `exit`, y con 1 si la entrada se cierra antes de completar el ciclo de vida.
 Las respuestas a cancelación, consultas en cola y el worker serializan escrituras mediante el mismo bloqueo de salida para que los bytes del protocolo no se mezclen. El cliente LSP no recibe logs por stdout; los errores de framing y E/S terminan el proceso y se informan por stderr del anfitrión.
 
-compilar/build: lee y analiza la fuente con la API (`build_native_object`), y solo si no hay errores enlaza el objeto con
-la biblioteca del runtime incrustada en `pseudo` (`include_bytes!`) usando el driver `cc`, en un directorio temporal que se
-elimina siempre. El resultado se copia junto al destino con un nombre provisional y se renombra, de modo que un fallo
-nunca crea ni sobrescribe la salida. Informa `buildSucceeded` con la ruta tal como se pidió. Sin `-o`/`--salida`/`--output`
-la salida es el nombre del archivo sin `.pseudo` (más `.exe` en Windows) en el directorio actual; si eso coincidiera con la
-fuente se usa `.out` para no sobrescribirla. `--semilla`, `--profundidad`, `--sentencias`, `--celdas`, `--tareas`,
-`--vocabulario` e `--idioma` se fijan en el ejecutable al compilar: el idioma de interfaz elige el idioma de los
-diagnósticos del ejecutable y sus plantillas de línea. Errores del programa: diagnósticos y código 1; fuente ausente: 2;
-ilegible, enlazador ausente o fallido: 3. El código del ejecutable es 0, 3, 4 o 5 según su propio protocolo.
-Los fallos del generador de código (sin diagnóstico de usuario) se informan con `linkerFailed`, porque
+compilar/build: valida `--destino`/`--target` antes de analizar, lee y analiza la fuente con la API (`build_native_object`,
+que recibe el triplete en `NativeBuildRequest.target`), y solo si no hay errores enlaza el objeto con la biblioteca del
+runtime de ese destino incrustada en `pseudo`, con el enlazador incluido, en un directorio temporal que se elimina siempre.
+El resultado se copia junto al destino con un nombre provisional y se renombra, de modo que un fallo nunca crea ni
+sobrescribe la salida. Informa `buildSucceeded` con la ruta tal como se pidió. Sin `-o`/`--salida`/`--output` la salida
+es el nombre del archivo sin `.pseudo` (más `.exe` si el destino es Windows, en cualquier anfitrión) en el directorio
+actual; si eso coincidiera con la fuente se usa `.out` para no sobrescribirla. `--profundidad`, `--sentencias`,
+`--celdas`, `--tareas`, `--vocabulario` e `--idioma` se fijan en el ejecutable al compilar: el idioma de interfaz elige el
+idioma de los diagnósticos del ejecutable y sus plantillas de línea. Errores del programa: diagnósticos y código 1; fuente
+ausente o destino fuera de la lista cerrada: 2; ilegible, destino sin runtime incluido, enlazador no obtenible o enlace
+fallido: 3, cada causa con su mensaje (`nativeTargetUnavailable`, `nativeTargetRuntimeMissing`, `linkerCacheUnavailable`,
+`linkerDownloadFailed`, `linkerChecksumMismatch`, `linkerFailed`). Tras `linkerFailed` se copia la salida del enlazador,
+porque es la única pista para diagnosticar un enlace roto. El código del ejecutable es 0, 3, 4 o 5 según su propio
+protocolo. Los fallos del generador de código (sin diagnóstico de usuario) se informan con `linkerFailed`, porque
 `TOOL.CLI.MESSAGES` no define un mensaje propio.
 
 Adaptador `aot`: ejecuta programas compilados de verdad, con efectos de capacidad: escribe en el directorio de la caché el archivo de entrada de efectos (anfitrión, identidad, cinta para reproducir), lanza el ejecutable con `--effects-in` y `--effects-out`, y lo devuelve a la API para proyectar `effect_tape` y `host_observation`. Por cada petición `execute` compila con `build_native_object`
@@ -369,10 +373,93 @@ Se toman framing, nombres de mensajes, negociación de coordenadas y lifecycle; 
 ajenas de pasos, tareas, efectos ni lenguaje. No se anuncian attach, modificación de variables,
 condiciones, reverseContinue, reinicio, memoria ni depuración AOT.
 
+### Enlazador incluido y destinos nativos
+
+`pseudo compilar` enlaza con LLD 23.1.5, un único binario multisabor (`-flavor darwin`, `gnu` o `link`) que enlaza
+Mach-O, ELF y COFF desde cualquier anfitrión. No se distribuye dentro de `pseudo` ni del VSIX: `pseudo` lo descarga la
+primera vez que compila a nativo y lo guarda en la caché del usuario; `pseudo ejecutar` sin `--nativo` nunca lo necesita.
+
+Orden de búsqueda (`native_linker.rs`): un `lld` junto al propio `pseudo` (ruta relativa al binario, para distribuciones
+que lo traigan), después la caché (`linker_cache.rs`) y, si falta, la descarga (`linker_download.rs`). Un anfitrión sin
+recurso publicado conserva el comportamiento anterior como respaldo: `rust-lld` junto a `pseudo` y, si no está, el driver
+`cc` del `PATH` (que exige compilador C y, en macOS, Xcode). Los cuatro anfitriones admitidos tienen recurso, así que el
+respaldo solo alcanza a otros sistemas.
+
+| Anfitrión | Caché (variable de entorno, sin rutas absolutas en el código) |
+|---|---|
+| macOS | `$HOME/Library/Caches/pseudolearn/linker/lld-23.1.5/` |
+| Linux | `$XDG_CACHE_HOME/pseudolearn/linker/lld-23.1.5/` o `$HOME/.cache/...` |
+| Windows | `%LOCALAPPDATA%\pseudolearn\linker\lld-23.1.5\` |
+
+Sin ninguna de esas variables (o vacías) el enlazador no se puede obtener: `linkerCacheUnavailable`, código 3. El adaptador
+de conformidad `cli` hereda `PATH`, `HOME`, `XDG_CACHE_HOME` y `LOCALAPPDATA` salvo que el caso las fije, de modo que los
+casos que vacían esas variables (`RT.LINKING#R5`, `TOOL.CLI.BUILD#R4`) prueban la causa sin depender del equipo.
+
+Descarga: `pseudolearn_host::download_to_file` (GET con `User-Agent`, hasta cinco redirecciones HTTPS, sin bajar de HTTPS a
+HTTP, límite de 512 MiB y 15 minutos) a un nombre provisional dentro de la carpeta de caché; `linker_assets.rs` fija como
+datos, por anfitrión, la URL de la publicación `linker-lld-23.1.5` del repositorio, la suma SHA-256 del `.gz` y el tamaño
+del binario. Solo si la suma coincide se descomprime (`flate2`), se comprueba el tamaño, se marca ejecutable y se renombra;
+cualquier fallo borra los provisionales y no deja nada en la caché. Errores tipados: `DownloadFailed` (sin red, estado HTTP,
+límite) → `linkerDownloadFailed`; `ChecksumMismatch` (suma o tamaño) → `linkerChecksumMismatch`. Un binario en caché con el
+tamaño fijado se reutiliza sin volver a descargar ni a calcular la suma; uno de otro tamaño se reemplaza. Descartado:
+verificar la suma completa en cada compilación, que añade medio segundo por proceso a cada enlace de la conformidad.
+
+Origen de cada recurso (decisión de la persona: primero publicaciones oficiales de LLVM, y solo si faltan, compilación
+estática reproducible):
+
+| Recurso | Origen | Tamaño (binario / `.gz`) | Dependencias dinámicas comprobadas |
+|---|---|---|---|
+| `aarch64-apple-darwin` | `bin/lld` de `LLVM-23.1.5-macOS-ARM64.tar.zst` (oficial) | 146,2 MB / 45,3 MB | `otool -L`: libSystem, libc++, libz, libxml2 de `/usr/lib` |
+| `x86_64-unknown-linux-gnu` | `bin/lld` de `LLVM-23.1.5-Linux-X64.tar.zst` (oficial) | 213,1 MB / 60,1 MB | `NEEDED`: libz, libm, libstdc++, libgcc_s, libc (glibc ≥ 2.29) |
+| `x86_64-pc-windows-msvc` | `bin/lld.exe` de `clang+llvm-23.1.5-x86_64-pc-windows-msvc.tar.zst` (oficial) | 76,3 MB / 28,8 MB | importa KERNEL32, ADVAPI32, ntdll, OLEAUT32 |
+| `x86_64-apple-darwin` | `tool/build_static_lld.sh` (LLVM no publica macOS x86_64) | 65,0 MB / 25,2 MB | `otool -L`: libSystem y libc++ de `/usr/lib` |
+
+Ninguno depende de bibliotecas dinámicas de LLVM. `tool/build_static_lld.sh` descarga `llvm-project-23.1.5.src.tar.xz`,
+lo verifica con su SHA-256 fijada y configura un LLVM sin bibliotecas compartidas, sin zlib, zstd ni libxml2 y con los
+destinos X86 y AArch64, compila solo `lld` para la arquitectura pedida (`CMAKE_OSX_ARCHITECTURES`, objetivo macOS 11.0) y
+lo depura con `strip -x`; el procedimiento es reproducible, aunque el binario depende del Xcode usado. Licencia de LLD:
+Apache-2.0 WITH LLVM-exception; la publicación incluye `LICENSE.TXT` y `SHA256SUMS`. `cargo deny` no la evalúa porque LLD no
+es una dependencia Rust.
+
+Destinos (lista cerrada, `native_link_targets.rs`; `--destino` fuera de ella es `nativeTargetUnavailable`, código 2):
+
+| Destino | Enlace (argumentos como datos) | Apoyos generados | Ejecución verificada |
+|---|---|---|---|
+| `aarch64-apple-darwin` | `-flavor darwin -arch arm64 -platform_version macos 11.0 11.0 -dead_strip` | *stubs* `.tbd` de libSystem, CoreFoundation y Security desde los símbolos indefinidos (`native_link_stubs.rs`) | macOS arm64 local y workflow |
+| `x86_64-apple-darwin` | ídem con `-arch x86_64` | ídem | macOS x86_64 con Rosetta en local y workflow |
+| `x86_64-unknown-linux-musl` | `-flavor gnu -m elf_x86_64 -static --gc-sections`, `crt1.o crti.o crtbegin.o` antes y `libunwind.a libc.a` en grupo y `crtend.o crtn.o` después | objetos musl autocontenidos del toolchain de Rust, incrustados con el runtime | workflow |
+| `x86_64-pc-windows-msvc` | `-flavor link /subsystem:console /entry:mainCRTStartup /nodefaultlib /opt:ref /machine:x64` | bibliotecas de importación generadas al enlazar con `lld -flavor link /lib /def:` a partir de la tabla símbolo→DLL | workflow |
+
+Windows no usa el CRT de MSVC: el objeto del programa trae su propio `mainCRTStartup` y el directorio TLS (ver README de
+`pseudolearn_codegen`), y las importaciones salen de una tabla `dll\tsímbolo` que `build_windows_imports.rs` calcula al
+compilar el runtime en un anfitrión Windows: toma los símbolos indefinidos del runtime y los resuelve contra las tablas de
+exportación de las DLL de `%SystemRoot%\System32` en un orden fijo (kernel32, kernelbase, ntdll, … msvcrt, ucrtbase).
+No se copia ninguna biblioteca del SDK de Windows; un símbolo sin DLL hace fallar la compilación de ese runtime. Por eso el
+runtime de Windows solo se construye en Windows, y el de musl donde hay `musl-gcc` (ring compila C): `build.rs` construye
+siempre el del anfitrión (obligatorio) y, sin la feature `test-host`, los demás destinos instalados en el toolchain; un
+destino opcional que falla queda fuera con un aviso de Cargo y `--destino` lo rechaza con `nativeTargetRuntimeMissing`.
+
+El archivo del runtime ya no se depura con `strip` en macOS: el `strip` de Xcode 27 (también con `-S`) quita el sufijo
+`.llvm.<hash>` de los símbolos que ThinLTO promueve a `private extern`, y LLD 23 los rechaza como duplicados. En Linux se
+usa `strip --strip-debug` de GNU, que no renombra. Coste: cada runtime de macOS ocupa unos 13 MB incrustados en `pseudo`
+(antes 5,6 MB depurado). Descartado: depurar con `llvm-strip`, que no forma parte del perfil mínimo del toolchain.
+
+Verificación remota: `.github/workflows/verify-native-targets.yml` se ejecuta solo a mano (`workflow_dispatch`;
+`tests/native_targets_workflow.rs` falla si declara otro disparador y prueba ese verificador con disparadores
+automáticos deliberados). Matriz: `ubuntu-latest` (musl), `macos-13` (x86_64), `macos-latest` (arm64) y `windows-latest`.
+Cada runner compila `pseudo`, obtiene el enlazador por el mismo camino que el usuario y ejecuta
+`tool/verify_native_target.py`, que compila con `pseudo build --target` los programas de
+`examples/native-acceptance/manifest.json` (el caso C19 de `LANG.PROGRAM.CLASSIC` leído de `export.json`, las aceptaciones de
+biblioteca y consola, un programa con tareas, canal y HTTP a un servidor en `127.0.0.1`, y el de la API de Rick y Morty),
+los ejecuta desde otro directorio con entorno vacío (en Windows solo `SystemRoot`/`windir`) y compara salida, salida de
+error y código de salida con los esperados derivados de las reglas; registra las dependencias de cada ejecutable y del
+enlazador descargado y sube los registros como artefacto.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
-Problema: la CLI debe producir ejecutables autónomos sin que el usuario instale el runtime. Elección: incrustar la biblioteca
-estática depurada (~1,2 MiB) en `pseudo`, que queda en 7,2 MiB en `release` frente al objetivo de 8 MiB. Descartado: buscar
+Problema: la CLI debe producir ejecutables autónomos sin que el usuario instale el runtime. Elección: incrustar en `pseudo`
+la biblioteca estática del runtime de cada destino construido (unos 13 MB por destino de macOS sin depurar; ver
+«Enlazador incluido y destinos nativos»). Descartado: buscar
 la biblioteca junto al binario o en una variable de entorno, que rompe la distribución de un solo archivo; invocar
 `rustc` o `clang` sobre código fuente generado, que exige un compilador completo en la máquina de la persona.
 

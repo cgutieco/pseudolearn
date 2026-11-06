@@ -3,6 +3,8 @@ use std::fmt::Write;
 use std::path::Path;
 
 mod build_runtime_archive;
+mod build_runtime_targets;
+mod build_windows_imports;
 
 fn main() {
     println!("cargo:rerun-if-changed=../../packages/pseudolearn_spec/specifications/export.json");

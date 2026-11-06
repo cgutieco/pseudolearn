@@ -25,6 +25,7 @@ pub struct CliOptions {
     pub format_action: FormatAction,
     pub target_profile: Option<String>,
     pub project: crate::project_options::ProjectArguments,
+    pub native_target: Option<String>,
 }
 
 #[derive(Default)]
@@ -39,6 +40,7 @@ struct ParsedArguments {
     format_action: FormatAction,
     target_profile: Option<String>,
     project: crate::project_options::ProjectArguments,
+    native_target: Option<String>,
 }
 
 pub fn parse_cli_options(raw_arguments: &[String]) -> Result<CliOptions, CliError> {
@@ -77,6 +79,7 @@ pub fn parse_cli_options(raw_arguments: &[String]) -> Result<CliOptions, CliErro
         format_action: parsed.format_action,
         target_profile: parsed.target_profile,
         project: parsed.project,
+        native_target: parsed.native_target,
     })
 }
 
@@ -129,6 +132,12 @@ fn handle_valued_option(
         "-o" | "--salida" | "--output" => {
             handle_output_option(raw_arguments, current_index, locale, &mut parsed.output)
         }
+        "--destino" | "--target" => handle_output_option(
+            raw_arguments,
+            current_index,
+            locale,
+            &mut parsed.native_target,
+        ),
         "--semilla" | "--seed" | "--profundidad" | "--depth" | "--sentencias" | "--statements"
         | "--celdas" | "--cells" | "--tareas" | "--tasks" | "--grabar-cinta" | "--record-tape"
         | "--reproducir-cinta" | "--replay-tape" | "--conceder" | "--grant" | "--archivos"

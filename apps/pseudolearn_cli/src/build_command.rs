@@ -1,6 +1,5 @@
 use crate::error::CliError;
 use crate::messages;
-use crate::native_linker::link_executable;
 use crate::options::CliOptions;
 use crate::run_command::render_diagnostics;
 use pseudolearn_api::{
@@ -18,10 +17,11 @@ pub fn execute_build(options: &CliOptions) -> Result<i32, CliError> {
         .ok_or_else(|| CliError::Usage(messages::missing_input(locale).to_owned()))?;
     let source = std::fs::read_to_string(path)
         .map_err(|_| CliError::Operational(messages::unreadable_input(locale, path)))?;
-    let output = options
-        .output
-        .clone()
-        .unwrap_or_else(|| default_output(path));
+    let target =
+        crate::native_build_target::requested_target(options.native_target.as_deref(), locale)?;
+    let output = options.output.clone().unwrap_or_else(|| {
+        default_output(path, crate::native_build_target::executable_suffix(target))
+    });
     let request = build_request(options, path, source);
     let object = match build_native_object(&request) {
         Ok(object) => object,
@@ -34,7 +34,8 @@ pub fn execute_build(options: &CliOptions) -> Result<i32, CliError> {
         }
     };
     render_diagnostics(options, path, &object.warnings);
-    link_executable(&object.bytes, Path::new(&output)).map_err(|_| linker_failure(locale))?;
+    crate::native_linker::link_for_target(target, &object.bytes, Path::new(&output))
+        .map_err(|failure| crate::native_build_target::link_failure(locale, &failure))?;
     print!(
         "{}",
         messages::render("buildSucceeded", locale, &[("path", &output)])
@@ -46,13 +47,12 @@ fn linker_failure(locale: &str) -> CliError {
     CliError::Operational(messages::render("linkerFailed", locale, &[]))
 }
 
-fn default_output(input: &str) -> String {
+fn default_output(input: &str, suffix: &str) -> String {
     let path = Path::new(input);
     let stem = path
         .file_stem()
         .and_then(|stem| stem.to_str())
         .unwrap_or("a");
-    let suffix = std::env::consts::EXE_SUFFIX;
     let candidate = format!("{stem}{suffix}");
     let has_source_extension =
         path.extension().and_then(|extension| extension.to_str()) == Some(SOURCE_EXTENSION);
@@ -82,5 +82,6 @@ fn build_request(options: &CliOptions, path: &str, source: String) -> NativeBuil
         warning_template: messages::template("diagnosticWarning", locale).to_owned(),
         information_template: messages::template("diagnosticInfo", locale).to_owned(),
         exhausted_template: messages::template("inputExhausted", locale).to_owned(),
+        target: options.native_target.clone(),
     }
 }

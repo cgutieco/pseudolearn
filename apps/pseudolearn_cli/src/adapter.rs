@@ -152,6 +152,8 @@ fn execute_in_sandbox(
     collect_process_outcome(child, arguments)
 }
 
+const INHERITED_VARIABLES: &[&str] = &["PATH", "HOME", "XDG_CACHE_HOME", "LOCALAPPDATA"];
+
 fn spawn_sandbox_process(
     sandbox_path: &Path,
     arguments: &[String],
@@ -165,10 +167,12 @@ fn spawn_sandbox_process(
     for (name, variable_value) in environment {
         command.env(name, variable_value);
     }
-    if !environment.contains_key("PATH")
-        && let Ok(system_path) = std::env::var("PATH")
-    {
-        command.env("PATH", system_path);
+    for inherited in INHERITED_VARIABLES {
+        if !environment.contains_key(*inherited)
+            && let Some(value) = std::env::var_os(inherited)
+        {
+            command.env(inherited, value);
+        }
     }
     command.stdin(Stdio::piped());
     command.stdout(Stdio::piped());

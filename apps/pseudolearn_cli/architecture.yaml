@@ -9,7 +9,7 @@ layers:
     path: .
     may_import: []
     permitted_path_dependencies: [pseudolearn_api, pseudolearn_host]
-    external_dependencies: [serde, serde_json, cap-std, object, pseudolearn_api, pseudolearn_host, bytes, flate2, http, http-body-util, hyper, hyper-util, rustls, rustls-native-certs, tokio, tokio-rustls]
+    external_dependencies: [serde, serde_json, cap-std, object, pseudolearn_api, pseudolearn_host, bytes, flate2, sha2, http, http-body-util, hyper, hyper-util, rustls, rustls-native-certs, tokio, tokio-rustls]
     unsafe_allowed: false
   - name: xtask
     path: xtask

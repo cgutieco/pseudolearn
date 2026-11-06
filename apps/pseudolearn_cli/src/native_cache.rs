@@ -44,7 +44,8 @@ impl ExecutableCache {
         }
         self.counter = self.counter.saturating_add(1);
         let path = self.directory.join(format!("program_{}", self.counter));
-        link_executable(object, &path)?;
+        link_executable(object, &path)
+            .map_err(|failure| std::io::Error::other(format!("{failure:?}")))?;
         self.entries.push(CachedExecutable {
             object: object.to_vec(),
             path: path.clone(),

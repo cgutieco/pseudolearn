@@ -1056,11 +1056,13 @@ name = "pseudolearn_cli"
 version = "0.1.0"
 dependencies = [
  "cap-std",
+ "flate2",
  "object",
  "pseudolearn_api",
  "pseudolearn_host",
  "serde",
  "serde_json",
+ "sha2",
 ]
 
 [[package]]
