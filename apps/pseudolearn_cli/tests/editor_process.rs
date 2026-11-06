@@ -7,13 +7,13 @@ use std::process::{Command, Stdio};
 
 const APP_MANIFEST: &str = "schema = 1\n[package]\nname = \"app\"\nkind = \"application\"\nentries = [\"app/main\"]\n[dependencies]\ngeo = { package = \"geo\" }\n";
 const GEO_MANIFEST: &str = "schema = 1\n[package]\nname = \"geo\"\nkind = \"library\"\n";
-const MAIN: &str = "Importar geo.vectores.Doble;\nAlgoritmo Principal\nDefinir Mutable valor Como Entero <- 0;\nLeer valor;\nEscribir Doble(valor);\nFinAlgoritmo\n";
+const MAIN: &str = "Importar geo.vectores.Doble;\nAlgoritmo Principal\nDefinir valor Como Entero <- 0;\nLeer valor;\nEscribir Doble(valor);\nFinAlgoritmo\n";
 const LIBRARY: &str =
     "Publico SubProceso Doble(n Como Entero) Como Entero\nRetornar n * 2;\nFinSubProceso\n";
 const BROKEN_LIBRARY: &str =
     "Publico SubProceso Doble(n Como Entero) Como Entero\nRetornar total;\nFinSubProceso\n";
 const FILE_PROGRAM: &str =
-    "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nLeer x;\nEscribir x + 1;\nFinAlgoritmo\n";
+    "Algoritmo P\nDefinir x Como Entero <- 0;\nLeer x;\nEscribir x + 1;\nFinAlgoritmo\n";
 
 fn sandbox(name: &str, library: &str) -> std::io::Result<PathBuf> {
     let base = Path::new(env!("CARGO_TARGET_TMPDIR"))

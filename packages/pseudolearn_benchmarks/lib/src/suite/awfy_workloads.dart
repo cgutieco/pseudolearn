@@ -9,8 +9,8 @@ const awfyWorkloads = <Workload>[
     source: '''
 Proceso Criba
   Dimension marcas[5001] Como Logico;
-  Definir Mutable multiplo Como Entero <- 0;
-  Definir Mutable cantidad Como Entero <- 0;
+  Definir multiplo Como Entero <- 0;
+  Definir cantidad Como Entero <- 0;
   Para indice <- 0 Hasta 5000 Con Paso 1 Hacer
     marcas[indice] <- Verdadero;
   FinPara
@@ -35,8 +35,8 @@ FinProceso
     operations: 8660,
     source: '''
 SubProceso Permutar(valores[] Como Entero Por Referencia, numero Como Entero) Como Entero
-  Definir Mutable contador Como Entero <- 1;
-  Definir Mutable temporal Como Entero <- 0;
+  Definir contador Como Entero <- 1;
+  Definir temporal Como Entero <- 0;
   Si numero <> 0 Entonces
     contador <- contador + Permutar(valores, numero - 1);
     Para indice <- numero - 1 Hasta 0 Con Paso -1 Hacer

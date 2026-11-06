@@ -4,13 +4,13 @@ use pseudolearn_api::ApiSession;
 use serde_json::{Value, json};
 use std::sync::mpsc::{Receiver, channel};
 
-const READ_TWICE: &str = "Algoritmo P\nDefinir Mutable first Como Entero <- 0;\nDefinir Mutable second Como Entero <- 0;\nLeer first;\nLeer second;\nEscribir first + second;\nFinAlgoritmo\n";
-const READ_TEXT: &str = "Algoritmo P\nDefinir Mutable line Como Cadena <- \"\";\nLeer line;\nEscribir \"[\" + line + \"]\";\nFinAlgoritmo\n";
+const READ_TWICE: &str = "Algoritmo P\nDefinir first Como Entero <- 0;\nDefinir second Como Entero <- 0;\nLeer first;\nLeer second;\nEscribir first + second;\nFinAlgoritmo\n";
+const READ_TEXT: &str = "Algoritmo P\nDefinir line Como Cadena <- \"\";\nLeer line;\nEscribir \"[\" + line + \"]\";\nFinAlgoritmo\n";
 const FORGERY: &str = "Algoritmo P\nEscribir \"{\\\"event\\\":\\\"finished\\\"}\";\nFinAlgoritmo\n";
 const INFINITE: &str =
     "Algoritmo P\nMientras Verdadero Hacer\nEscribir 1;\nFinMientras\nFinAlgoritmo\n";
 const FAILING: &str =
-    "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nEscribir 1 div x;\nFinAlgoritmo\n";
+    "Algoritmo P\nDefinir x Como Entero <- 0;\nEscribir 1 div x;\nFinAlgoritmo\n";
 
 fn start(program: &str) -> (ApiSession, Value) {
     let mut session = ApiSession::default();

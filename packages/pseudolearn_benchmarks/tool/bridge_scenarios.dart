@@ -160,7 +160,7 @@ Map<String, Object?> _retainedScenario() => {
   'id': 'retained-event',
   'setup': [
     ..._setup(
-      'Algoritmo P\nDefinir Mutable valor Como Entero <- 0;\nvalor <- 7;\nFinAlgoritmo\n',
+      'Algoritmo P\nDefinir valor Como Entero <- 0;\nvalor <- 7;\nFinAlgoritmo\n',
       [],
     ),
     _drain(),
@@ -179,7 +179,7 @@ Map<String, Object?> _inputScenario() => {
   'id': 'suspended-input',
   'setup': [
     ..._setup(
-      'Algoritmo P\nDefinir Mutable valor Como Entero <- 0;\nLeer valor;\nEscribir valor;\nFinAlgoritmo\n',
+      'Algoritmo P\nDefinir valor Como Entero <- 0;\nLeer valor;\nEscribir valor;\nFinAlgoritmo\n',
       [],
     ),
     _advance(256),

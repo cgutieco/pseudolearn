@@ -8,7 +8,7 @@ const annexWorkloads = <Workload>[
     operations: 1000,
     source: '''
 Proceso Suma
-  Definir Mutable total Como Entero <- 0;
+  Definir total Como Entero <- 0;
   Para indice <- 1 Hasta 1000 Con Paso 1 Hacer
     total <- total + indice;
   FinPara
@@ -42,7 +42,7 @@ FinProceso
     source: '''
 Proceso Burbuja
   Dimension valores[30] Como Entero;
-  Definir Mutable temporal Como Entero <- 0;
+  Definir temporal Como Entero <- 0;
   Para indice <- 0 Hasta 29 Con Paso 1 Hacer
     valores[indice] <- 30 - indice;
   FinPara
