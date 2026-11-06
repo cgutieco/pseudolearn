@@ -143,8 +143,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir Importar Como Entero <- 1;\nDefinir Mutable Exportar Como Entero <- 0;\nExportar <- 2;\nEscribir Importar, Exportar;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine import as integer <- 1;\ndefine mutable export as integer <- 0;\nexport <- 2;\nwrite import, export;\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir Importar Como Entero <- 1;\nDefinir Exportar Como Entero <- 0;\nExportar <- 2;\nEscribir Importar, Exportar;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine import as integer <- 1;\ndefine export as integer <- 0;\nexport <- 2;\nwrite import, export;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",

@@ -38,7 +38,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "En cualquier perfil de idioma cada vínculo local se declara con tipo e inicializador. La asignación a un nombre no declarado es undeclaredVariable, error, y no declara ni infiere un vínculo; un símbolo inválido evita diagnósticos derivados. No existe declaración implícita ni migrador: la forma oficial usa Definir con tipo e inicializador y Mutable cuando el vínculo se reasigna.",
+  "texto": "En cualquier perfil de idioma cada variable local se declara con Definir y un tipo explícito; el valor inicial es opcional y nunca determina el tipo. La asignación a un nombre no declarado es undeclaredVariable, error, y no declara ni infiere una variable; un símbolo inválido evita diagnósticos derivados. No existe declaración implícita ni migrador.",
   "verificacion": [
     "C1",
     "C2",

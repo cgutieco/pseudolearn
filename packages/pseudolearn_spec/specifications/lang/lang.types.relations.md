@@ -43,10 +43,18 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Igualdad de tipos, asignabilidad y ampliación numérica son relaciones diferentes. Se admite entero a real por ampliación y subclase a superclase por nominalidad. No se convierten implícitamente real a entero, lógico a número, cadena a carácter ni primitivos a texto. Parámetros por referencia exigen coincidencia exacta de tipo.",
+  "texto": "Igualdad de tipos, asignabilidad y ampliación numérica son relaciones diferentes. Se admite entero a real y carácter a cadena por ampliación, y subclase a superclase por nominalidad. Las dos ampliaciones se aplican en la inicialización, la asignación, el argumento por valor, el retorno y el elemento de una colección con tipo de contexto; igual que un entero frente a un real, un carácter que se compara con una cadena se amplía a cadena antes de comparar. La concatenación no cambia: ya admite carácter y cadena. No se convierten implícitamente real a entero, lógico a número, cadena a carácter ni otros primitivos a texto. Parámetros por referencia exigen coincidencia exacta de tipo.",
   "verificacion": [
     "C1",
-    "C2"
+    "C2",
+    "C22",
+    "C23",
+    "C24",
+    "C25",
+    "C26",
+    "C27",
+    "C28",
+    "C29"
   ]
 }
 ```
@@ -585,6 +593,184 @@
   "operacion": "execute",
   "espera": {
     "salida": "0\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C22",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir c Como Cadena <- \"s\";\nEscribir c, Longitud(c);\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine c as string <- \"s\";\nwrite c, length(c);\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "s1\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C23",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir letra Como Caracter <- \"z\";\nDefinir c Como Cadena;\nc <- letra;\nEscribir c;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine letter as character <- \"z\";\ndefine c as string;\nc <- letter;\nwrite c;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "z\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C24",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "SubProceso Eco(t Como Cadena) Como Cadena\nRetornar t + t;\nFinSubProceso\nAlgoritmo P\nEscribir Eco(\"a\");\nFinAlgoritmo\n",
+    "en": "subroutine Eco(t as string) as string\nreturn t + t;\nendSubroutine\nalgorithm P\nwrite Eco(\"a\");\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "aa\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C25",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "SubProceso Letra() Como Cadena\nRetornar \"q\";\nFinSubProceso\nAlgoritmo P\nEscribir Longitud(Letra());\nFinAlgoritmo\n",
+    "en": "subroutine Letra() as string\nreturn \"q\";\nendSubroutine\nalgorithm P\nwrite length(Letra());\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "1\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C26",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir v Como Vector<Cadena> <- Vector();\nv.Agregar(\"x\");\nEscribir v[0], v.Longitud();\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine v as vector<string> <- vector();\nv.append(\"x\");\nwrite v[0], v.length();\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "x1\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C27",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "SubProceso Poner(t Como Cadena Por Referencia)\nt <- \"b\";\nFinSubProceso\nAlgoritmo P\nDefinir letra Como Caracter <- \"a\";\nPoner(letra);\nEscribir letra;\nFinAlgoritmo\n",
+    "en": "subroutine Poner(t as string by reference)\nt <- \"b\";\nendSubroutine\nalgorithm P\ndefine letter as character <- \"a\";\nPoner(letter);\nwrite letter;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "byReferenceArgumentTypeMismatch",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C28",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir c Como Cadena <- \"ab\";\nDefinir letra Como Caracter;\nletra <- c;\nEscribir letra;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine c as string <- \"ab\";\ndefine letter as character;\nletter <- c;\nwrite letter;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "incompatibleTypesInAssignment",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C29",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir opcion Como Cadena <- \"s\";\nEscribir \"s\" = opcion;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine option as string <- \"s\";\nwrite \"s\" = option;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "{{lexema:booleanTrue}}\n",
     "terminacion": "completed"
   }
 }

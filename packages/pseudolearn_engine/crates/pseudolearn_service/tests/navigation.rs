@@ -23,7 +23,7 @@ fn range(start: (u32, u32), end: (u32, u32)) -> Range {
 #[test]
 fn locates_the_exact_name_of_a_variable_declaration() {
     let (session, position) = session_at(
-        "Algoritmo Principal\n  Definir Mutable total Como Entero <- 0;\n  total <- 10;\n  Escribir to|tal;\nFinAlgoritmo\n",
+        "Algoritmo Principal\n  Definir total Como Entero <- 0;\n  total <- 10;\n  Escribir to|tal;\nFinAlgoritmo\n",
     );
     assert_eq!(
         session.queries().definition(position),
@@ -34,7 +34,7 @@ fn locates_the_exact_name_of_a_variable_declaration() {
 #[test]
 fn locates_the_name_of_methods_called_through_an_instance() {
     let (session, position) = session_at(
-        "Clase Punto\n  Metodo Mover()\n  FinMetodo\nFinClase\n\nAlgoritmo Principal\n  Definir Mutable p Como Punto <- Nuevo Punto();\n  p.Mo|ver();\nFinAlgoritmo\n",
+        "Clase Punto\n  Metodo Mover()\n  FinMetodo\nFinClase\n\nAlgoritmo Principal\n  Definir p Como Punto <- Nuevo Punto();\n  p.Mo|ver();\nFinAlgoritmo\n",
     );
     assert_eq!(
         session.queries().definition(position),
@@ -56,7 +56,7 @@ fn locates_the_name_of_subroutines_from_their_calls() {
 #[test]
 fn separates_homonymous_locals_of_different_subroutines() {
     let (session, position) = session_at(
-        "SubProceso Uno()\n  Definir Mutable i Como Entero <- 0;\n  |i <- 1;\nFinSubProceso\n\nSubProceso Dos()\n  Definir Mutable i Como Entero <- 0;\n  i <- 2;\nFinSubProceso\n",
+        "SubProceso Uno()\n  Definir i Como Entero <- 0;\n  |i <- 1;\nFinSubProceso\n\nSubProceso Dos()\n  Definir i Como Entero <- 0;\n  i <- 2;\nFinSubProceso\n",
     );
     assert_eq!(
         session.queries().references(position),
@@ -101,7 +101,7 @@ fn returns_nothing_away_from_symbols() {
 #[test]
 fn counts_columns_in_characters_for_accented_identifiers() {
     let (session, position) = session_at(
-        "Algoritmo Principal\n  Definir Mutable año Como Entero <- 0;\n  año <- 1;\n  Escribir a|ño;\nFinAlgoritmo\n",
+        "Algoritmo Principal\n  Definir año Como Entero <- 0;\n  año <- 1;\n  Escribir a|ño;\nFinAlgoritmo\n",
     );
     assert_eq!(
         session.queries().definition(position),

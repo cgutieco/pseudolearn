@@ -254,11 +254,11 @@
         "span": {
           "start": {
             "line": 2,
-            "column": 17
+            "column": 9
           },
           "end": {
             "line": 2,
-            "column": 20
+            "column": 12
           }
         }
       },
@@ -277,7 +277,7 @@
       }
     ]
   },
-  "programa": "Algoritmo P\nDefinir Mutable año Como Entero <- 0;\naño <- 5;\nEscribir año;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir año Como Entero <- 0;\naño <- 5;\nEscribir año;\nFinAlgoritmo\n",
   "perfil_base": "es",
   "sujetos": [
     "engine",

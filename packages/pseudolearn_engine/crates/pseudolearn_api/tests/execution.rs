@@ -4,7 +4,7 @@ use serde_json::json;
 fn warning_request(state_at: Option<usize>) -> ExecuteRequest {
     ExecuteRequest {
         program:
-            "algorithm P\ndefine mutable x as integer <- 0;\nx <- 1;\nwrite 1;\nendAlgorithm\n"
+            "algorithm P\ndefine x as integer <- 0;\nx <- 1;\nwrite 1;\nendAlgorithm\n"
                 .to_owned(),
         profile: "en".to_owned().to_owned(),
         state_at,
@@ -60,7 +60,7 @@ fn execution_rejects_programs_with_analysis_errors() {
 
 #[test]
 fn cell_backed_accumulators_survive_loop_joins() {
-    let program = "SubProceso Change(value Como Entero Por Referencia)\nvalue <- value + 7;\nFinSubProceso\nAlgoritmo Cells\nDefinir Mutable index Como Entero <- 0;\nDefinir Mutable sum Como Entero <- 0;\nPara index <- 1 Hasta 4 Con Paso 1 Hacer\nsum <- sum + index;\nFinPara\nChange(sum);\nEscribir sum;\nFinAlgoritmo\n";
+    let program = "SubProceso Change(value Como Entero Por Referencia)\nvalue <- value + 7;\nFinSubProceso\nAlgoritmo Cells\nDefinir index Como Entero <- 0;\nDefinir sum Como Entero <- 0;\nPara index <- 1 Hasta 4 Con Paso 1 Hacer\nsum <- sum + index;\nFinPara\nChange(sum);\nEscribir sum;\nFinAlgoritmo\n";
     let response = execute_program(&ExecuteRequest {
         program: program.to_owned(),
         ..Default::default()

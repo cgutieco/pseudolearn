@@ -319,8 +319,8 @@
     "en"
   ],
   "programas": {
-    "es": "Enumerado Color\nRed, Green, Blue, White, Black\nFinEnumerado\nAlgoritmo Main\nDefinir Mutable value Como Entero <- 0;\nSegun Color.White Hacer\nColor.Red: value <- 1;\nColor.Green: value <- 2;\nColor.Blue: value <- 3;\nColor.White: value <- 4;\nColor.Black: value <- 5;\nFinSegun\nEscribir value;\nFinAlgoritmo\n",
-    "en": "enum Color\nRed, Green, Blue, White, Black\nendEnum\nalgorithm Main\ndefine mutable value as integer <- 0;\nswitch Color.White do\nColor.Red: value <- 1;\nColor.Green: value <- 2;\nColor.Blue: value <- 3;\nColor.White: value <- 4;\nColor.Black: value <- 5;\nendSwitch\nwrite value;\nendAlgorithm\n"
+    "es": "Enumerado Color\nRed, Green, Blue, White, Black\nFinEnumerado\nAlgoritmo Main\nDefinir value Como Entero <- 0;\nSegun Color.White Hacer\nColor.Red: value <- 1;\nColor.Green: value <- 2;\nColor.Blue: value <- 3;\nColor.White: value <- 4;\nColor.Black: value <- 5;\nFinSegun\nEscribir value;\nFinAlgoritmo\n",
+    "en": "enum Color\nRed, Green, Blue, White, Black\nendEnum\nalgorithm Main\ndefine value as integer <- 0;\nswitch Color.White do\nColor.Red: value <- 1;\nColor.Green: value <- 2;\nColor.Blue: value <- 3;\nColor.White: value <- 4;\nColor.Black: value <- 5;\nendSwitch\nwrite value;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",

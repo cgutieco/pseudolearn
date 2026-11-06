@@ -81,7 +81,7 @@ fn transitive_environments_preserve_capture_origins() -> Result<(), String> {
 }
 
 #[test]
-fn mutable_capture_reports_both_use_and_declaration() -> Result<(), String> {
+fn reassigned_capture_reports_use_and_first_reassignment() -> Result<(), String> {
     let (module, diagnostics) = support::analyze(&example("C3")?);
     assert!(module.is_none());
     let diagnostic = diagnostics

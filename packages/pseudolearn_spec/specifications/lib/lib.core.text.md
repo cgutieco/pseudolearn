@@ -471,8 +471,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir Mutable c Como Cadena <- \"\";\nc <- Recortar(\" x \");\nEscribir c;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine mutable c as string <- \"\";\nc <- trim(\" x \");\nwrite c;\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir c Como Cadena <- \"\";\nc <- Recortar(\" x \");\nEscribir c;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine c as string <- \"\";\nc <- trim(\" x \");\nwrite c;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -495,8 +495,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir Mutable c Como Cadena <- \"\";\nc <- Recortar(\" x \");\nEscribir c;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine mutable c as string <- \"\";\nc <- trim(\" x \");\nwrite c;\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir c Como Cadena <- \"\";\nc <- Recortar(\" x \");\nEscribir c;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine c as string <- \"\";\nc <- trim(\" x \");\nwrite c;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -765,8 +765,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir Mutable c Como Cadena <- \"\";\nc <- AMayusculas(\"ab\");\nEscribir c;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine mutable c as string <- \"\";\nc <- toUpper(\"ab\");\nwrite c;\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir c Como Cadena <- \"\";\nc <- AMayusculas(\"ab\");\nEscribir c;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine c as string <- \"\";\nc <- toUpper(\"ab\");\nwrite c;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -789,8 +789,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir Mutable c Como Cadena <- \"\";\nc <- AMayusculas(\"ab\");\nEscribir c;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine mutable c as string <- \"\";\nc <- toUpper(\"ab\");\nwrite c;\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir c Como Cadena <- \"\";\nc <- AMayusculas(\"ab\");\nEscribir c;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine c as string <- \"\";\nc <- toUpper(\"ab\");\nwrite c;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -1071,8 +1071,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir Mutable c Como Cadena <- \"\";\nc <- RellenarIzquierda(\"a\", 3, \"0\");\nEscribir c;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine mutable c as string <- \"\";\nc <- padLeft(\"a\", 3, \"0\");\nwrite c;\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir c Como Cadena <- \"\";\nc <- RellenarIzquierda(\"a\", 3, \"0\");\nEscribir c;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine c as string <- \"\";\nc <- padLeft(\"a\", 3, \"0\");\nwrite c;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -1095,8 +1095,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir Mutable c Como Cadena <- \"\";\nc <- RellenarIzquierda(\"a\", 3, \"0\");\nEscribir c;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine mutable c as string <- \"\";\nc <- padLeft(\"a\", 3, \"0\");\nwrite c;\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir c Como Cadena <- \"\";\nc <- RellenarIzquierda(\"a\", 3, \"0\");\nEscribir c;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine c as string <- \"\";\nc <- padLeft(\"a\", 3, \"0\");\nwrite c;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",

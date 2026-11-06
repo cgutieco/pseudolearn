@@ -4,7 +4,7 @@ use see_validation::resources::spanish_neutrality::check;
 fn accepts_standard_spanish_without_voseo_or_regionalisms() {
     let phrases = [
         "El vínculo necesita un inicializador; añade <- expresión",
-        "El vínculo es inmutable; usa Definir Mutable para reasignarlo",
+        "El vínculo no se puede reasignar; usa otra variable",
         "Resultado de tipo Entero sin tratar: manéjalo con Segun, propágalo o descártalo",
         "Falta una rama: cubre las alternativas indicadas o añade De Otro Modo",
         "El documento cambió; repite la consulta",
@@ -18,7 +18,7 @@ fn accepts_standard_spanish_without_voseo_or_regionalisms() {
 #[test]
 fn rejects_voseo_and_regional_expressions() {
     let violations = [
-        ("El vínculo es inmutable; usá Definir Mutable", "usá"),
+        ("El vínculo no se puede reasignar; usá otra variable", "usá"),
         (
             "El vínculo necesita un inicializador; añadí <- expresión",
             "añadí",

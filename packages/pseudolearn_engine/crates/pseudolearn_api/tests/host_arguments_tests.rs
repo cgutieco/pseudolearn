@@ -1,7 +1,7 @@
 use pseudolearn_api::ApiSession;
 use serde_json::{Value, json};
 
-const PROGRAM: &str = "SubProceso Probe() Como Resultado<Cadena, ErrorES>\nDefinir values Como Argumentos <- Propagar SolicitarArgumentos();\nDefinir list Como Vector<Cadena> <- Propagar values.Valores();\nDefinir Mutable joined Como Cadena <- \"\";\nDefinir Mutable index Como Entero <- 0;\nMientras index < list.Longitud() Hacer\njoined <- joined + \"[\" + list[index] + \"]\";\nindex <- index + 1;\nFinMientras\nRetornar Exito(joined);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir list_size(value);\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n";
+const PROGRAM: &str = "SubProceso Probe() Como Resultado<Cadena, ErrorES>\nDefinir values Como Argumentos <- Propagar SolicitarArgumentos();\nDefinir list Como Vector<Cadena> <- Propagar values.Valores();\nDefinir joined Como Cadena <- \"\";\nDefinir index Como Entero <- 0;\nMientras index < list.Longitud() Hacer\njoined <- joined + \"[\" + list[index] + \"]\";\nindex <- index + 1;\nFinMientras\nRetornar Exito(joined);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir list_size(value);\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n";
 
 fn run(arguments: Value) -> Value {
     let program = PROGRAM.replace("Escribir list_size(value);", "Escribir value;");

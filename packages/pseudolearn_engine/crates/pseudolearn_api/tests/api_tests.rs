@@ -19,12 +19,12 @@ fn analyzes_original_unicode_identifiers_in_every_profile() -> Result<(), String
     for (profile, program, declaration_column) in [
         (
             "es",
-            "Algoritmo P\nDefinir Mutable año Como Entero <- 0;\nan\u{0303}o <- 5;\nEscribir año;\nFinAlgoritmo\n",
+            "Algoritmo P\nDefinir año Como Entero <- 0;\nan\u{0303}o <- 5;\nEscribir año;\nFinAlgoritmo\n",
             17,
         ),
         (
             "en",
-            "algorithm P\ndefine mutable año as integer <- 0;\nan\u{0303}o <- 5;\nwrite año;\nendAlgorithm\n",
+            "algorithm P\ndefine año as integer <- 0;\nan\u{0303}o <- 5;\nwrite año;\nendAlgorithm\n",
             16,
         ),
     ] {

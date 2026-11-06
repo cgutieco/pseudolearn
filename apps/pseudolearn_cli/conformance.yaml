@@ -3,6 +3,7 @@
   "paquete": "apps/pseudolearn_cli",
   "activadas": [
     "API.WIRE-FORMAT",
+    "LANG.PROGRAM.CLASSIC",
     "TOOL.CLI.BUILD",
     "TOOL.CLI.CHECK",
     "TOOL.CLI.CONVENTIONS",
@@ -17,6 +18,11 @@
   "vinculos": [
     {
       "regla": "TOOL.CLI.CHECK@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.PROGRAM.CLASSIC@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },

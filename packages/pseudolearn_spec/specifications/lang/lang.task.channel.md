@@ -503,8 +503,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir Mutable capacity Como Entero <- 0;\ncapacity <- capacity - 1;\nDefinir stream Como Canal<Entero> <- Canal(capacity);\nstream.Cerrar();\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine mutable capacity as integer <- 0;\ncapacity <- capacity - 1;\ndefine stream as channel<integer> <- channel(capacity);\nstream.close();\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir capacity Como Entero <- 0;\ncapacity <- capacity - 1;\nDefinir stream Como Canal<Entero> <- Canal(capacity);\nstream.Cerrar();\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine capacity as integer <- 0;\ncapacity <- capacity - 1;\ndefine stream as channel<integer> <- channel(capacity);\nstream.close();\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",

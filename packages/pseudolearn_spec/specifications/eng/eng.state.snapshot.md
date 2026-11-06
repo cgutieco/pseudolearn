@@ -89,7 +89,7 @@
       }
     }
   },
-  "programa": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nx <- 3;\nEscribir x;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir x Como Entero <- 0;\nx <- 3;\nEscribir x;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```
@@ -322,7 +322,7 @@
       }
     }
   },
-  "programa": "SubProceso inc(v Como Entero Por Referencia)\nv <- v + 1;\nFinSubProceso\nAlgoritmo P\nDefinir Mutable x Como Entero <- 0;\nx <- 1;\ninc(x);\nFinAlgoritmo\n",
+  "programa": "SubProceso inc(v Como Entero Por Referencia)\nv <- v + 1;\nFinSubProceso\nAlgoritmo P\nDefinir x Como Entero <- 0;\nx <- 1;\ninc(x);\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```

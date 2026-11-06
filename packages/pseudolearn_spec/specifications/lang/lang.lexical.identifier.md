@@ -164,8 +164,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir value Como Entero <- 1;\nDefinir Mutable Value Como Entero <- 0;\nValue <- 2;\nEscribir value, Value;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine value as integer <- 1;\ndefine mutable Value as integer <- 0;\nValue <- 2;\nwrite value, Value;\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir value Como Entero <- 1;\nDefinir Value Como Entero <- 0;\nValue <- 2;\nEscribir value, Value;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine value as integer <- 1;\ndefine Value as integer <- 0;\nValue <- 2;\nwrite value, Value;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -185,8 +185,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir ñ Como Entero <- 1;\nDefinir Mutable Ñ Como Entero <- 0;\nDefinir Mutable áx Como Entero <- 0;\nDefinir Mutable Áx Como Entero <- 0;\nDefinir Mutable éx Como Entero <- 0;\nDefinir Mutable Éx Como Entero <- 0;\nDefinir Mutable íx Como Entero <- 0;\nDefinir Mutable Íx Como Entero <- 0;\nDefinir Mutable óx Como Entero <- 0;\nDefinir Mutable Óx Como Entero <- 0;\nDefinir Mutable úx Como Entero <- 0;\nDefinir Mutable Úx Como Entero <- 0;\nDefinir Mutable üx Como Entero <- 0;\nDefinir Mutable Üx Como Entero <- 0;\nDefinir Mutable ano Como Entero <- 0;\nDefinir Mutable año Como Entero <- 0;\nDefinir Mutable ax Como Entero <- 0;\nDefinir Mutable Ax Como Entero <- 0;\nÑ <- 2;\náx <- 3;\nÁx <- 4;\néx <- 5;\nÉx <- 6;\níx <- 7;\nÍx <- 8;\nóx <- 9;\nÓx <- 10;\núx <- 11;\nÚx <- 12;\nüx <- 13;\nÜx <- 14;\nano <- 15;\naño <- 16;\nax <- 17;\nAx <- 18;\nEscribir ñ, Ñ, áx, Áx, éx, Éx, íx, Íx, óx, Óx, úx, Úx, üx, Üx, ano, año, ax, Ax;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine ñ as integer <- 1;\ndefine mutable Ñ as integer <- 0;\ndefine mutable áx as integer <- 0;\ndefine mutable Áx as integer <- 0;\ndefine mutable éx as integer <- 0;\ndefine mutable Éx as integer <- 0;\ndefine mutable íx as integer <- 0;\ndefine mutable Íx as integer <- 0;\ndefine mutable óx as integer <- 0;\ndefine mutable Óx as integer <- 0;\ndefine mutable úx as integer <- 0;\ndefine mutable Úx as integer <- 0;\ndefine mutable üx as integer <- 0;\ndefine mutable Üx as integer <- 0;\ndefine mutable ano as integer <- 0;\ndefine mutable año as integer <- 0;\ndefine mutable ax as integer <- 0;\ndefine mutable Ax as integer <- 0;\nÑ <- 2;\náx <- 3;\nÁx <- 4;\néx <- 5;\nÉx <- 6;\níx <- 7;\nÍx <- 8;\nóx <- 9;\nÓx <- 10;\núx <- 11;\nÚx <- 12;\nüx <- 13;\nÜx <- 14;\nano <- 15;\naño <- 16;\nax <- 17;\nAx <- 18;\nwrite ñ, Ñ, áx, Áx, éx, Éx, íx, Íx, óx, Óx, úx, Úx, üx, Üx, ano, año, ax, Ax;\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir ñ Como Entero <- 1;\nDefinir Ñ Como Entero <- 0;\nDefinir áx Como Entero <- 0;\nDefinir Áx Como Entero <- 0;\nDefinir éx Como Entero <- 0;\nDefinir Éx Como Entero <- 0;\nDefinir íx Como Entero <- 0;\nDefinir Íx Como Entero <- 0;\nDefinir óx Como Entero <- 0;\nDefinir Óx Como Entero <- 0;\nDefinir úx Como Entero <- 0;\nDefinir Úx Como Entero <- 0;\nDefinir üx Como Entero <- 0;\nDefinir Üx Como Entero <- 0;\nDefinir ano Como Entero <- 0;\nDefinir año Como Entero <- 0;\nDefinir ax Como Entero <- 0;\nDefinir Ax Como Entero <- 0;\nÑ <- 2;\náx <- 3;\nÁx <- 4;\néx <- 5;\nÉx <- 6;\níx <- 7;\nÍx <- 8;\nóx <- 9;\nÓx <- 10;\núx <- 11;\nÚx <- 12;\nüx <- 13;\nÜx <- 14;\nano <- 15;\naño <- 16;\nax <- 17;\nAx <- 18;\nEscribir ñ, Ñ, áx, Áx, éx, Éx, íx, Íx, óx, Óx, úx, Úx, üx, Üx, ano, año, ax, Ax;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine ñ as integer <- 1;\ndefine Ñ as integer <- 0;\ndefine áx as integer <- 0;\ndefine Áx as integer <- 0;\ndefine éx as integer <- 0;\ndefine Éx as integer <- 0;\ndefine íx as integer <- 0;\ndefine Íx as integer <- 0;\ndefine óx as integer <- 0;\ndefine Óx as integer <- 0;\ndefine úx as integer <- 0;\ndefine Úx as integer <- 0;\ndefine üx as integer <- 0;\ndefine Üx as integer <- 0;\ndefine ano as integer <- 0;\ndefine año as integer <- 0;\ndefine ax as integer <- 0;\ndefine Ax as integer <- 0;\nÑ <- 2;\náx <- 3;\nÁx <- 4;\néx <- 5;\nÉx <- 6;\níx <- 7;\nÍx <- 8;\nóx <- 9;\nÓx <- 10;\núx <- 11;\nÚx <- 12;\nüx <- 13;\nÜx <- 14;\nano <- 15;\naño <- 16;\nax <- 17;\nAx <- 18;\nwrite ñ, Ñ, áx, Áx, éx, Éx, íx, Íx, óx, Óx, úx, Úx, üx, Üx, ano, año, ax, Ax;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -206,8 +206,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir Mutable año Como Entero <- 0;\naño <- 7;\nEscribir año;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine mutable año as integer <- 0;\naño <- 7;\nwrite año;\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir año Como Entero <- 0;\naño <- 7;\nEscribir año;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine año as integer <- 0;\naño <- 7;\nwrite año;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",

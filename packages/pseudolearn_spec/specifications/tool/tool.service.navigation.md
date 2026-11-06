@@ -122,7 +122,7 @@
   },
   "servicio": {
     "suboperacion": "definition",
-    "documento": "Algoritmo Principal\n  Definir Mutable total Como Entero <- 0;\n  total <- 10;\n  Escribir total;\nFinAlgoritmo\n",
+    "documento": "Algoritmo Principal\n  Definir total Como Entero <- 0;\n  total <- 10;\n  Escribir total;\nFinAlgoritmo\n",
     "posicion": { "line": 4, "column": 13 }
   }
 }
@@ -154,7 +154,7 @@
   },
   "servicio": {
     "suboperacion": "references",
-    "documento": "SubProceso Uno()\n  Definir Mutable i Como Entero <- 0;\n  i <- 1;\nFinSubProceso\n\nSubProceso Dos()\n  Definir Mutable i Como Entero <- 0;\n  i <- 2;\nFinSubProceso\n",
+    "documento": "SubProceso Uno()\n  Definir i Como Entero <- 0;\n  i <- 1;\nFinSubProceso\n\nSubProceso Dos()\n  Definir i Como Entero <- 0;\n  i <- 2;\nFinSubProceso\n",
     "posicion": { "line": 3, "column": 3 }
   }
 }
@@ -246,7 +246,7 @@
     "suboperacion": "lsp",
     "mensajes": [
       {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"locale":"es","capabilities":{"workspace":{"workspaceEdit":{"documentChanges":true,"failureHandling":"transactional"}}}}},
-      {"jsonrpc":"2.0","method":"textDocument/didOpen","params":{"textDocument":{"uri":"file:///rename-es.pseudo","languageId":"pseudolearn","version":1,"text":"Algoritmo Principal\nDefinir Mutable total Como Entero <- 0;\nEscribir total;\nFinAlgoritmo\n"}}},
+      {"jsonrpc":"2.0","method":"textDocument/didOpen","params":{"textDocument":{"uri":"file:///rename-es.pseudo","languageId":"pseudolearn","version":1,"text":"Algoritmo Principal\nDefinir total Como Entero <- 0;\nEscribir total;\nFinAlgoritmo\n"}}},
       {"jsonrpc":"2.0","id":2,"method":"textDocument/prepareRename","params":{"textDocument":{"uri":"file:///rename-es.pseudo"},"position":{"line":1,"character":16}}},
       {"jsonrpc":"2.0","id":3,"method":"textDocument/rename","params":{"textDocument":{"uri":"file:///rename-es.pseudo"},"position":{"line":1,"character":16},"newName":"suma"}}
     ],
@@ -265,7 +265,7 @@
   "origen": "derivado",
   "operacion": "service",
   "espera": {"servicio":{"rename_rejected":true}},
-  "servicio": {"suboperacion":"lsp","mensajes":[{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"locale":"es","capabilities":{"workspace":{"workspaceEdit":{"documentChanges":true,"failureHandling":"transactional"}}}}},{"jsonrpc":"2.0","method":"textDocument/didOpen","params":{"textDocument":{"uri":"file:///rename-es.pseudo","languageId":"pseudolearn","version":1,"text":"Algoritmo Principal\nDefinir Mutable total Como Entero <- 0;\nEscribir total;\nFinAlgoritmo\n"}}},{"jsonrpc":"2.0","id":2,"method":"textDocument/rename","params":{"textDocument":{"uri":"file:///rename-es.pseudo"},"position":{"line":1,"character":16},"newName":"Mientras"}}],"proyeccion":"rename_rejected"}
+  "servicio": {"suboperacion":"lsp","mensajes":[{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"locale":"es","capabilities":{"workspace":{"workspaceEdit":{"documentChanges":true,"failureHandling":"transactional"}}}}},{"jsonrpc":"2.0","method":"textDocument/didOpen","params":{"textDocument":{"uri":"file:///rename-es.pseudo","languageId":"pseudolearn","version":1,"text":"Algoritmo Principal\nDefinir total Como Entero <- 0;\nEscribir total;\nFinAlgoritmo\n"}}},{"jsonrpc":"2.0","id":2,"method":"textDocument/rename","params":{"textDocument":{"uri":"file:///rename-es.pseudo"},"position":{"line":1,"character":16},"newName":"Mientras"}}],"proyeccion":"rename_rejected"}
 }
 ```
 
@@ -278,7 +278,7 @@
   "revisado_por": "Cesar Antonio Gutierrez Contreras",
   "operacion": "service",
   "espera": {"servicio":{"prepare_range":{"start":{"line":1,"character":15},"end":{"line":1,"character":20}},"rename_edits":2}},
-  "servicio": {"suboperacion":"lsp","mensajes":[{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"locale":"en","capabilities":{"workspace":{"workspaceEdit":{"documentChanges":true,"failureHandling":"transactional"}}}}},{"jsonrpc":"2.0","method":"textDocument/didOpen","params":{"textDocument":{"uri":"file:///rename-en.pseudo","languageId":"pseudolearn","version":1,"text":"algorithm Main\ndefine mutable total as integer <- 0;\nwrite total;\nendAlgorithm\n"}}},{"jsonrpc":"2.0","id":2,"method":"textDocument/prepareRename","params":{"textDocument":{"uri":"file:///rename-en.pseudo"},"position":{"line":1,"character":15}}},{"jsonrpc":"2.0","id":3,"method":"textDocument/rename","params":{"textDocument":{"uri":"file:///rename-en.pseudo"},"position":{"line":1,"character":15},"newName":"sum"}}],"proyeccion":"rename"}
+  "servicio": {"suboperacion":"lsp","mensajes":[{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"locale":"en","capabilities":{"workspace":{"workspaceEdit":{"documentChanges":true,"failureHandling":"transactional"}}}}},{"jsonrpc":"2.0","method":"textDocument/didOpen","params":{"textDocument":{"uri":"file:///rename-en.pseudo","languageId":"pseudolearn","version":1,"text":"algorithm Main\ndefine total as integer <- 0;\nwrite total;\nendAlgorithm\n"}}},{"jsonrpc":"2.0","id":2,"method":"textDocument/prepareRename","params":{"textDocument":{"uri":"file:///rename-en.pseudo"},"position":{"line":1,"character":15}}},{"jsonrpc":"2.0","id":3,"method":"textDocument/rename","params":{"textDocument":{"uri":"file:///rename-en.pseudo"},"position":{"line":1,"character":15},"newName":"sum"}}],"proyeccion":"rename"}
 }
 ```
 

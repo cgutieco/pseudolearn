@@ -4,14 +4,11 @@ use pseudolearn_diagnostics::DiagnosticCode;
 use support::analyze;
 
 #[test]
-fn requires_a_step_clause() {
-    let (_, diagnostics) =
+fn accepts_a_missing_step_clause() {
+    let (module, diagnostics) =
         analyze("algorithm Main\nfor index <- 1 to 3 do\nwrite index;\nendFor\nendAlgorithm\n");
-    assert!(
-        diagnostics
-            .iter()
-            .any(|diagnostic| { diagnostic.code == DiagnosticCode::MissingStepClause })
-    );
+    assert!(module.is_some());
+    assert!(diagnostics.is_empty(), "{diagnostics:?}");
 }
 
 #[test]

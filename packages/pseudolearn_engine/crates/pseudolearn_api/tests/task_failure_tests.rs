@@ -77,7 +77,7 @@ fn an_outer_scope_failure_unwinds_an_inner_scope_without_leaving_live_children()
 #[test]
 fn a_child_trap_ends_all_tasks_without_running_pending_cleanups() {
     let response = execute(
-        "SubProceso Suspendible Crash()\nDiferir\nEscribir \"unexpected\";\nFinDiferir\nDefinir Mutable denominator Como Entero <- 1;\ndenominator <- denominator - 1;\nEscribir 1 div denominator;\nFinSubProceso\nAlgoritmo Main\nTareas\nLanzar Crash();\nFinTareas\nFinAlgoritmo\n",
+        "SubProceso Suspendible Crash()\nDiferir\nEscribir \"unexpected\";\nFinDiferir\nDefinir denominator Como Entero <- 1;\ndenominator <- denominator - 1;\nEscribir 1 div denominator;\nFinSubProceso\nAlgoritmo Main\nTareas\nLanzar Crash();\nFinTareas\nFinAlgoritmo\n",
     );
     assert_eq!(
         response.termination.get("kind"),

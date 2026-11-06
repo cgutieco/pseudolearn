@@ -4,7 +4,7 @@ use serde_json::{Value, json};
 const LIBRARY: &str =
     "Publico SubProceso Doble(n Como Entero) Como Entero\nRetornar n * 2;\nFinSubProceso\n";
 const MAIN: &str = "Importar geo.vectores.Doble;\nAlgoritmo P\nEscribir Doble(21);\nFinAlgoritmo\n";
-const READING_MAIN: &str = "Importar geo.vectores.Doble;\nAlgoritmo P\nDefinir Mutable pending Como Entero <- 0;\nLeer pending;\nEscribir pending;\nEscribir Doble(2);\nFinAlgoritmo\n";
+const READING_MAIN: &str = "Importar geo.vectores.Doble;\nAlgoritmo P\nDefinir pending Como Entero <- 0;\nLeer pending;\nEscribir pending;\nEscribir Doble(2);\nFinAlgoritmo\n";
 const BROKEN_MAIN: &str = "Algoritmo P\nEscribir Desconocida(1);\nFinAlgoritmo\n";
 
 fn arguments(main: &str) -> Value {

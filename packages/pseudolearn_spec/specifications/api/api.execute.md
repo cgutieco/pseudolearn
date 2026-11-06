@@ -70,7 +70,7 @@
     "salida": "42\n",
     "terminacion": "completed"
   },
-  "programa": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nLeer x;\nEscribir x * 2;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir x Como Entero <- 0;\nLeer x;\nEscribir x * 2;\nFinAlgoritmo\n",
   "perfil_base": "es",
   "entradas": [
     "21"
@@ -264,8 +264,8 @@
   "origen": "derivado",
   "operacion": "api",
   "programas": {
-    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir clock Como Reloj <- Propagar SolicitarReloj();\nRetornar clock.Ahora();\nFinSubProceso\nAlgoritmo Main\nDefinir Mutable offset Como Entero <- 0;\nLeer offset;\nSegun Probe() Hacer\nExito(value): Escribir value + offset;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
-    "en": "subroutine Probe() as result<integer, IoError>\ndefine clock as Clock <- propagate requestClock();\nreturn clock.now();\nendSubroutine\nalgorithm Main\ndefine mutable offset as integer <- 0;\nread offset;\nswitch Probe() do\nsuccess(value): write value + offset;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir clock Como Reloj <- Propagar SolicitarReloj();\nRetornar clock.Ahora();\nFinSubProceso\nAlgoritmo Main\nDefinir offset Como Entero <- 0;\nLeer offset;\nSegun Probe() Hacer\nExito(value): Escribir value + offset;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<integer, IoError>\ndefine clock as Clock <- propagate requestClock();\nreturn clock.now();\nendSubroutine\nalgorithm Main\ndefine offset as integer <- 0;\nread offset;\nswitch Probe() do\nsuccess(value): write value + offset;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "api": {
     "calls": [
@@ -590,8 +590,8 @@
   "origen": "derivado",
   "operacion": "api",
   "programas": {
-    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir clock Como Reloj <- Propagar SolicitarReloj();\nRetornar clock.Ahora();\nFinSubProceso\nAlgoritmo Main\nDefinir Mutable pending Como Entero <- 0;\nLeer pending;\nSegun Probe() Hacer\nExito(value): Escribir value + pending;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
-    "en": "subroutine Probe() as result<integer, IoError>\ndefine clock as Clock <- propagate requestClock();\nreturn clock.now();\nendSubroutine\nalgorithm Main\ndefine mutable pending as integer <- 0;\nread pending;\nswitch Probe() do\nsuccess(value): write value + pending;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir clock Como Reloj <- Propagar SolicitarReloj();\nRetornar clock.Ahora();\nFinSubProceso\nAlgoritmo Main\nDefinir pending Como Entero <- 0;\nLeer pending;\nSegun Probe() Hacer\nExito(value): Escribir value + pending;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<integer, IoError>\ndefine clock as Clock <- propagate requestClock();\nreturn clock.now();\nendSubroutine\nalgorithm Main\ndefine pending as integer <- 0;\nread pending;\nswitch Probe() do\nsuccess(value): write value + pending;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "api": {
     "calls": [
@@ -801,7 +801,7 @@
   "sujetos": [
     "engine"
   ],
-  "programa": "Algoritmo P\nDefinir Mutable total Como Entero <- 20;\ntotal <- total + 22;\nEscribir total;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir total Como Entero <- 20;\ntotal <- total + 22;\nEscribir total;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```
@@ -883,7 +883,7 @@
   "sujetos": [
     "engine"
   ],
-  "programa": "Algoritmo P\nDefinir Mutable total Como Entero <- 20;\ntotal <- total + 22;\nEscribir total;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir total Como Entero <- 20;\ntotal <- total + 22;\nEscribir total;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```
@@ -1052,7 +1052,7 @@
   "sujetos": [
     "engine"
   ],
-  "programa": "Algoritmo P\nDefinir Mutable total Como Entero <- 20;\ntotal <- total + 22;\nEscribir total;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir total Como Entero <- 20;\ntotal <- total + 22;\nEscribir total;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```

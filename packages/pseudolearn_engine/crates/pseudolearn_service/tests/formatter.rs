@@ -3,7 +3,7 @@ use pseudolearn_service::{FormatOptions, format_checked, format_source};
 
 #[test]
 fn formats_canonical_spanish() {
-    let unformatted = "algoritmo Principal\ndefinir mutable x como entero<-0;\nx<-1+2;\nescribir x;\nfinalgoritmo";
+    let unformatted = "algoritmo Principal\ndefinir x como entero<-0;\nx<-1+2;\nescribir x;\nfinalgoritmo";
     let options = FormatOptions {
         profile: Profile::Spanish,
         indent_size: 2,
@@ -11,7 +11,7 @@ fn formats_canonical_spanish() {
     let formatted = format_source(unformatted, options);
     assert_eq!(
         formatted,
-        "Algoritmo Principal\n  Definir Mutable x Como Entero <- 0;\n  x <- 1 + 2;\n  Escribir x;\nFinAlgoritmo\n"
+        "Algoritmo Principal\n  Definir x Como Entero <- 0;\n  x <- 1 + 2;\n  Escribir x;\nFinAlgoritmo\n"
     );
 }
 
@@ -59,7 +59,7 @@ fn formats_english() {
 
 #[test]
 fn is_idempotent_on_formatted_source() {
-    let source = "Algoritmo Idempotente\n  Definir Mutable valor Como Entero <- 0;\n  valor <- 10;\n  Escribir valor;\nFinAlgoritmo\n";
+    let source = "Algoritmo Idempotente\n  Definir valor Como Entero <- 0;\n  valor <- 10;\n  Escribir valor;\nFinAlgoritmo\n";
     let options = FormatOptions {
         profile: Profile::Spanish,
         indent_size: 2,
@@ -86,7 +86,7 @@ fn english() -> FormatOptions {
 #[test]
 fn indents_conditionals_loops_and_switch_cases() {
     let source = "Algoritmo Estructuras
-Definir Mutable n Como Entero<-0;
+Definir n Como Entero<-0;
 n<-3;
 Si n>2 Entonces
 Escribir n;
@@ -103,7 +103,7 @@ Escribir 2;
 FinSegun
 FinAlgoritmo
 ";
-    let expected = "Algoritmo Estructuras\n  Definir Mutable n Como Entero <- 0;\n  n <- 3;\n  Si n > 2 Entonces\n    Escribir n;\n  Sino\n    Escribir 0;\n  FinSi\n  Mientras n > 0 Hacer\n    n <- n - 1;\n  FinMientras\n  Segun n Hacer\n    1: Escribir 1;\n    De Otro Modo:\n      Escribir 2;\n  FinSegun\nFinAlgoritmo\n";
+    let expected = "Algoritmo Estructuras\n  Definir n Como Entero <- 0;\n  n <- 3;\n  Si n > 2 Entonces\n    Escribir n;\n  Sino\n    Escribir 0;\n  FinSi\n  Mientras n > 0 Hacer\n    n <- n - 1;\n  FinMientras\n  Segun n Hacer\n    1: Escribir 1;\n    De Otro Modo:\n      Escribir 2;\n  FinSegun\nFinAlgoritmo\n";
     assert_eq!(format_source(source, spanish()), expected);
 }
 
@@ -123,10 +123,10 @@ fn separates_top_level_units_with_one_blank_line() {
 
 #[test]
 fn spaces_unary_minus_calls_and_indexing_consistently() {
-    let source = "Algoritmo Operadores\nDefinir Mutable a Como Entero<-0;\na<- -3 +  2*( 4-1 );\nEscribir  Longitud ( \"hola\" ) ,a;\nFinAlgoritmo\n";
+    let source = "Algoritmo Operadores\nDefinir a Como Entero<-0;\na<- -3 +  2*( 4-1 );\nEscribir  Longitud ( \"hola\" ) ,a;\nFinAlgoritmo\n";
     assert_eq!(
         format_source(source, spanish()),
-        "Algoritmo Operadores\n  Definir Mutable a Como Entero <- 0;\n  a <- -3 + 2 * (4 - 1);\n  Escribir Longitud(\"hola\"), a;\nFinAlgoritmo\n"
+        "Algoritmo Operadores\n  Definir a Como Entero <- 0;\n  a <- -3 + 2 * (4 - 1);\n  Escribir Longitud(\"hola\"), a;\nFinAlgoritmo\n"
     );
 }
 
@@ -141,15 +141,15 @@ fn keeps_block_comments_and_multiline_block_comment_bodies() {
 
 #[test]
 fn canonicalizes_unshadowed_builtins_but_keeps_shadowed_names() {
-    let source = "Algoritmo A\nDefinir Mutable r Como Real<-0.0;\nr <- RAIZ(4.0);\nFinAlgoritmo\n";
+    let source = "Algoritmo A\nDefinir r Como Real<-0.0;\nr <- RAIZ(4.0);\nFinAlgoritmo\n";
     assert_eq!(
         format_source(source, spanish()),
-        "Algoritmo A\n  Definir Mutable r Como Real <- 0.0;\n  r <- rc(4.0);\nFinAlgoritmo\n"
+        "Algoritmo A\n  Definir r Como Real <- 0.0;\n  r <- rc(4.0);\nFinAlgoritmo\n"
     );
-    let shadowed = "Algoritmo A\nDefinir Mutable rc Como Real<-0.0;\nrc <- 1.0;\nFinAlgoritmo\n";
+    let shadowed = "Algoritmo A\nDefinir rc Como Real<-0.0;\nrc <- 1.0;\nFinAlgoritmo\n";
     assert_eq!(
         format_source(shadowed, spanish()),
-        "Algoritmo A\n  Definir Mutable rc Como Real <- 0.0;\n  rc <- 1.0;\nFinAlgoritmo\n"
+        "Algoritmo A\n  Definir rc Como Real <- 0.0;\n  rc <- 1.0;\nFinAlgoritmo\n"
     );
 }
 

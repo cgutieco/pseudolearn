@@ -38,12 +38,13 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Leer requiere uno o más designadores y solicita valores de uno en uno, en orden. La conversión depende del tipo esperado. Una entrada inválida emite readValueTypeMismatch como advertencia y vuelve a pedir la misma posición sin modificarla. Sin entrada disponible la ejecución espera; un índice inválido del destino falla antes de pedir valor.",
+  "texto": "Leer requiere uno o más designadores y solicita valores de uno en uno, en orden. La conversión depende del tipo esperado. Una entrada inválida emite readValueTypeMismatch como advertencia y vuelve a pedir la misma posición sin modificarla. Sin entrada disponible la ejecución espera; un índice inválido del destino falla antes de pedir valor. Leer da valor a cada designador que completa: desde ese punto la variable tiene valor aunque se haya declarado sin él (LANG.DECL.UNINITIALIZED).",
   "verificacion": [
     "C1",
     "C2",
     "C3",
-    "C4"
+    "C4",
+    "C5"
   ]
 }
 ```
@@ -57,8 +58,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nLeer x;\nEscribir x;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine mutable x as integer <- 0;\nread x;\nwrite x;\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir x Como Entero <- 0;\nLeer x;\nEscribir x;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine x as integer <- 0;\nread x;\nwrite x;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -81,8 +82,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nLeer x;\nEscribir x;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine mutable x as integer <- 0;\nread x;\nwrite x;\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir x Como Entero <- 0;\nLeer x;\nEscribir x;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine x as integer <- 0;\nread x;\nwrite x;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -112,8 +113,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nLeer x;\nEscribir x;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine mutable x as integer <- 0;\nread x;\nwrite x;\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir x Como Entero <- 0;\nLeer x;\nEscribir x;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine x as integer <- 0;\nread x;\nwrite x;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -147,5 +148,30 @@
       }
     ]
   }
+}
+```
+
+```caso
+{
+  "id": "C5",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir n Como Entero;\nDefinir t Como Cadena;\nLeer n, t;\nEscribir t, n + 1;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine n as integer;\ndefine t as string;\nread n, t;\nwrite t, n + 1;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "ab8\n",
+    "terminacion": "completed"
+  },
+  "entradas": [
+    "7",
+    "ab"
+  ]
 }
 ```

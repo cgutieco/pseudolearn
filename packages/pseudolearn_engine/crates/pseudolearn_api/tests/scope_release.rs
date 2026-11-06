@@ -89,7 +89,7 @@ fn final_variables(program: &str) -> Result<Value, String> {
 
 #[test]
 fn the_state_after_a_block_no_longer_lists_its_bindings() -> Result<(), String> {
-    let program = "class Box\npublic define value as integer;\nendClass\nalgorithm P\ndefine mutable total as integer <- 0;\nfor i <- 1 to 3 step 1 do\ndefine b as Box <- new Box();\nb.value <- i;\ntotal <- total + b.value;\nendFor\nwrite total;\nendAlgorithm\n";
+    let program = "class Box\npublic define value as integer;\nendClass\nalgorithm P\ndefine total as integer <- 0;\nfor i <- 1 to 3 step 1 do\ndefine b as Box <- new Box();\nb.value <- i;\ntotal <- total + b.value;\nendFor\nwrite total;\nendAlgorithm\n";
     let variables = final_variables(program)?;
     assert_eq!(variables.pointer("/total/valor"), Some(&json!("6")));
     assert_eq!(variables.get("b"), None);

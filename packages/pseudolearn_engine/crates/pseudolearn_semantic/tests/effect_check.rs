@@ -79,13 +79,13 @@ fn semantic(program: &str) -> Vec<Diagnostic> {
 
 #[test]
 fn read_inside_a_function_is_a_direct_effect() {
-    let program = "Funcion F() Como Entero\nDefinir Mutable x Como Entero <- 0;\nLeer x;\nRetornar x;\nFinFuncion\nAlgoritmo P\nEscribir F();\nFinAlgoritmo\n";
+    let program = "Funcion F() Como Entero\nDefinir x Como Entero <- 0;\nLeer x;\nRetornar x;\nFinFuncion\nAlgoritmo P\nEscribir F();\nFinAlgoritmo\n";
     assert_eq!(codes(program), vec![DiagnosticCode::PureFunctionSideEffect]);
 }
 
 #[test]
 fn subprogram_with_the_same_effects_is_accepted() {
-    let program = "SubProceso F() Como Entero\nDefinir Mutable x Como Entero <- 0;\nLeer x;\nEscribir x;\nRetornar x;\nFinSubProceso\nAlgoritmo P\nEscribir F();\nFinAlgoritmo\n";
+    let program = "SubProceso F() Como Entero\nDefinir x Como Entero <- 0;\nLeer x;\nEscribir x;\nRetornar x;\nFinSubProceso\nAlgoritmo P\nEscribir F();\nFinAlgoritmo\n";
     assert_eq!(codes(program), Vec::<DiagnosticCode>::new());
 }
 
@@ -171,7 +171,7 @@ const CALCULABLE: &str = "Interfaz Calculable\nFuncion Calcular() Como Entero;\n
 #[test]
 fn interface_realization_reading_input_is_rejected() {
     let program = format!(
-        "{CALCULABLE}Clase Demo Realiza Calculable\nMetodo Calcular() Como Entero\nDefinir Mutable x Como Entero <- 0;\nLeer x;\nRetornar x;\nFinMetodo\nFinClase\nAlgoritmo P\nFinAlgoritmo\n"
+        "{CALCULABLE}Clase Demo Realiza Calculable\nMetodo Calcular() Como Entero\nDefinir x Como Entero <- 0;\nLeer x;\nRetornar x;\nFinMetodo\nFinClase\nAlgoritmo P\nFinAlgoritmo\n"
     );
     assert_eq!(
         codes(&program),

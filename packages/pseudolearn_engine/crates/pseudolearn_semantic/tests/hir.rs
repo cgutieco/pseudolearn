@@ -144,11 +144,11 @@ fn audit_case(specification: &Value, fields: &Value) -> Vec<String> {
 fn audits_typed_hir_of_generated_programs() -> Result<(), String> {
     let cases = [
         (
-            "Proceso Generated\nDefinir Mutable total Como Entero <- 0;\ntotal <- 42;\nEscribir total;\nFinProceso",
+            "Proceso Generated\nDefinir total Como Entero <- 0;\ntotal <- 42;\nEscribir total;\nFinProceso",
             Profile::Spanish,
         ),
         (
-            "algorithm Generated\ndefine mutable total as integer <- 0;\ntotal <- 42;\nwrite total;\nendAlgorithm",
+            "algorithm Generated\ndefine total as integer <- 0;\ntotal <- 42;\nwrite total;\nendAlgorithm",
             Profile::English,
         ),
     ];

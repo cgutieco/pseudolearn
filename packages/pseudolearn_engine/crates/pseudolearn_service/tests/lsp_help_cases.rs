@@ -2,7 +2,7 @@ use pseudolearn_service::LspServer;
 use serde_json::{Value, json};
 
 const URI: &str = "file:///cases.pseudo";
-const PROGRAM: &str = "Algoritmo P\n// nota\nDefinir texto Como Cadena <- \"hola\";\nDefinir Mutable x Como Entero <- 0;\nEscribir trunc(2.5), x, \"\u{1F600}\", x;\nSi x > 1 Entonces\nSino\nFinSi\nFinAlgoritmo\n";
+const PROGRAM: &str = "Algoritmo P\n// nota\nDefinir texto Como Cadena <- \"hola\";\nDefinir x Como Entero <- 0;\nEscribir trunc(2.5), x, \"\u{1F600}\", x;\nSi x > 1 Entonces\nSino\nFinSi\nFinAlgoritmo\n";
 
 fn open(program: &str, locale: &str) -> LspServer {
     let mut server = LspServer::new();

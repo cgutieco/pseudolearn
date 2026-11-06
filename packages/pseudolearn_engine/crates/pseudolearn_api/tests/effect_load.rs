@@ -4,13 +4,13 @@ use std::time::Instant;
 
 fn clock_program(count: usize) -> String {
     format!(
-        "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir clock Como Reloj <- Propagar SolicitarReloj();\nDefinir Mutable total Como Entero <- 0;\nDefinir Mutable index Como Entero <- 0;\nMientras index < {count} Hacer\nDefinir instant Como Entero <- Propagar clock.Ahora();\ntotal <- total + instant;\nindex <- index + 1;\nFinMientras\nRetornar Exito(total);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n"
+        "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir clock Como Reloj <- Propagar SolicitarReloj();\nDefinir total Como Entero <- 0;\nDefinir index Como Entero <- 0;\nMientras index < {count} Hacer\nDefinir instant Como Entero <- Propagar clock.Ahora();\ntotal <- total + instant;\nindex <- index + 1;\nFinMientras\nRetornar Exito(total);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n"
     )
 }
 
 fn file_program(count: usize) -> String {
     format!(
-        "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\nDefinir Mutable total Como Entero <- 0;\nDefinir Mutable index Como Entero <- 0;\nMientras index < {count} Hacer\nDefinir content Como Bytes <- Propagar file.LeerBytes();\ntotal <- total + content.Longitud();\nindex <- index + 1;\nFinMientras\nRetornar Exito(total);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n"
+        "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\nDefinir total Como Entero <- 0;\nDefinir index Como Entero <- 0;\nMientras index < {count} Hacer\nDefinir content Como Bytes <- Propagar file.LeerBytes();\ntotal <- total + content.Longitud();\nindex <- index + 1;\nFinMientras\nRetornar Exito(total);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n"
     )
 }
 

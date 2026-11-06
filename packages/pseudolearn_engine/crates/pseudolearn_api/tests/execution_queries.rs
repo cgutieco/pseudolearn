@@ -158,7 +158,7 @@ fn old_event_state_is_stable_after_execution_advances() -> Result<(), String> {
     let mut session = ApiSession::default();
     let execution = start(
         &mut session,
-        "Algoritmo Main\nDefinir Mutable value Como Entero <- 1;\nvalue <- 2;\nFinAlgoritmo\n",
+        "Algoritmo Main\nDefinir value Como Entero <- 1;\nvalue <- 2;\nFinAlgoritmo\n",
     )?;
     advance(&mut session, &execution, 1);
     let request = json!({

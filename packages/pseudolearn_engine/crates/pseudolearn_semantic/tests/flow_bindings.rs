@@ -20,8 +20,8 @@ fn preserves_invalid_bindings_after_parameter_inference_repeats() {
 }
 
 #[test]
-fn preserves_explicit_mutability_after_parameter_inference_repeats() {
-    let program = "subroutine Echo(value as integer)\nwrite value;\nendSubroutine\nalgorithm Main\ndefine mutable amount as integer <- 1;\namount <- 2;\nEcho(amount);\nendAlgorithm\n";
+fn preserves_reassignability_after_parameter_inference_repeats() {
+    let program = "subroutine Echo(value as integer)\nwrite value;\nendSubroutine\nalgorithm Main\ndefine amount as integer <- 1;\namount <- 2;\nEcho(amount);\nendAlgorithm\n";
     let (module, diagnostics) = support::analyze(program);
     assert!(diagnostics.is_empty(), "{diagnostics:?}");
     assert!(module.is_some());
@@ -30,7 +30,7 @@ fn preserves_explicit_mutability_after_parameter_inference_repeats() {
             module
                 .locals
                 .iter()
-                .any(|local| local.name == "amount" && local.mutable)
+                .any(|local| local.name == "amount" && local.reassignable)
         );
         assert!(
             module

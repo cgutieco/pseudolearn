@@ -51,7 +51,7 @@ fn producer_consumer(seed: u64, random: &mut SplitMix64) -> Agenda {
         .unwrap_or(1);
     let items = random.between(1, 200);
     let program = format!(
-        "SubProceso Suspendible Produce(stream Como Canal<Entero>)\nDefinir Mutable index Como Entero <- 0;\nPara index <- 1 Hasta {items} Con Paso 1 Hacer\nAguardar stream.Enviar(index);\nFinPara\nstream.Cerrar();\nFinSubProceso\nSubProceso Suspendible Consume(stream Como Canal<Entero>)\nDefinir Mutable total Como Entero <- 0;\nRepetir\nSegun Aguardar stream.Recibir() Hacer\nAlgo(value): total <- total + value;\nNada: Salir;\nFinSegun\nHasta Que Falso\nEscribir total;\nFinSubProceso\nAlgoritmo Main\nDefinir stream Como Canal<Entero> <- Canal({capacity});\nTareas\nLanzar Produce(stream);\nLanzar Consume(stream);\nFinTareas\nFinAlgoritmo\n"
+        "SubProceso Suspendible Produce(stream Como Canal<Entero>)\nDefinir index Como Entero <- 0;\nPara index <- 1 Hasta {items} Con Paso 1 Hacer\nAguardar stream.Enviar(index);\nFinPara\nstream.Cerrar();\nFinSubProceso\nSubProceso Suspendible Consume(stream Como Canal<Entero>)\nDefinir total Como Entero <- 0;\nRepetir\nSegun Aguardar stream.Recibir() Hacer\nAlgo(value): total <- total + value;\nNada: Salir;\nFinSegun\nHasta Que Falso\nEscribir total;\nFinSubProceso\nAlgoritmo Main\nDefinir stream Como Canal<Entero> <- Canal({capacity});\nTareas\nLanzar Produce(stream);\nLanzar Consume(stream);\nFinTareas\nFinAlgoritmo\n"
     );
     let total: u64 = (1..=items).sum();
     agenda(seed, 1, program, completed(format!("{total}\n")))
@@ -70,7 +70,7 @@ fn sibling_failure(seed: u64, random: &mut SplitMix64) -> Agenda {
         })
         .collect();
     let program = format!(
-        "SubProceso Suspendible Idle(stream Como Canal<Entero>)\nDefinir Mutable total Como Entero <- 0;\nSegun Aguardar stream.Recibir() Hacer\nAlgo(value): total <- total + value;\nNada: total <- 0;\nFinSegun\nFinSubProceso\nSubProceso Suspendible Fail(code Como Cadena) Como Resultado<Entero, Cadena>\nRetornar Error(code);\nFinSubProceso\nAlgoritmo Main\nDefinir stream Como Canal<Entero> <- Canal(1);\nTareas problem\n{spawns}FinTareas\nSegun problem Hacer\nNada: Escribir \"ok\";\nAlgo(report): Escribir report.Primero;\nEscribir report.Canceladas;\nFinSegun\nFinAlgoritmo\n"
+        "SubProceso Suspendible Idle(stream Como Canal<Entero>)\nDefinir total Como Entero <- 0;\nSegun Aguardar stream.Recibir() Hacer\nAlgo(value): total <- total + value;\nNada: total <- 0;\nFinSegun\nFinSubProceso\nSubProceso Suspendible Fail(code Como Cadena) Como Resultado<Entero, Cadena>\nRetornar Error(code);\nFinSubProceso\nAlgoritmo Main\nDefinir stream Como Canal<Entero> <- Canal(1);\nTareas problem\n{spawns}FinTareas\nSegun problem Hacer\nNada: Escribir \"ok\";\nAlgo(report): Escribir report.Primero;\nEscribir report.Canceladas;\nFinSegun\nFinAlgoritmo\n"
     );
     let cancelled = tasks.saturating_sub(1);
     agenda(
@@ -84,7 +84,7 @@ fn sibling_failure(seed: u64, random: &mut SplitMix64) -> Agenda {
 fn starvation(seed: u64, random: &mut SplitMix64) -> Agenda {
     let rounds = random.between(1500, 4500);
     let program = format!(
-        "SubProceso Suspendible Spin(marker Como Cadena, stream Como Canal<Entero>)\nDefinir Mutable counter Como Entero <- 0;\nMientras counter < {rounds} Hacer\ncounter <- counter + 1;\nFinMientras\nEscribir marker;\nAguardar stream.Enviar(1);\nFinSubProceso\nSubProceso Suspendible Waiter(stream Como Canal<Entero>)\nDefinir Mutable total Como Entero <- 0;\nSegun Aguardar stream.Recibir() Hacer\nAlgo(value): total <- total + value;\nNada: total <- 0;\nFinSegun\nSegun Aguardar stream.Recibir() Hacer\nAlgo(value): total <- total + value;\nNada: total <- 0;\nFinSegun\nFinSubProceso\nAlgoritmo Main\nDefinir stream Como Canal<Entero> <- Canal(2);\nTareas\nLanzar Waiter(stream);\nLanzar Spin(\"alpha\", stream);\nLanzar Spin(\"beta\", stream);\nFinTareas\nFinAlgoritmo\n"
+        "SubProceso Suspendible Spin(marker Como Cadena, stream Como Canal<Entero>)\nDefinir counter Como Entero <- 0;\nMientras counter < {rounds} Hacer\ncounter <- counter + 1;\nFinMientras\nEscribir marker;\nAguardar stream.Enviar(1);\nFinSubProceso\nSubProceso Suspendible Waiter(stream Como Canal<Entero>)\nDefinir total Como Entero <- 0;\nSegun Aguardar stream.Recibir() Hacer\nAlgo(value): total <- total + value;\nNada: total <- 0;\nFinSegun\nSegun Aguardar stream.Recibir() Hacer\nAlgo(value): total <- total + value;\nNada: total <- 0;\nFinSegun\nFinSubProceso\nAlgoritmo Main\nDefinir stream Como Canal<Entero> <- Canal(2);\nTareas\nLanzar Waiter(stream);\nLanzar Spin(\"alpha\", stream);\nLanzar Spin(\"beta\", stream);\nFinTareas\nFinAlgoritmo\n"
     );
     agenda(seed, 3, program, completed("alpha\nbeta\n".to_owned()))
 }
@@ -113,7 +113,7 @@ fn injected_deadlock(seed: u64, random: &mut SplitMix64) -> Agenda {
     let tasks = random.between(1, 5);
     let spawns = "Lanzar Stuck(stream);\n".repeat(usize::try_from(tasks).unwrap_or(1));
     let program = format!(
-        "SubProceso Suspendible Stuck(stream Como Canal<Entero>)\nDefinir Mutable total Como Entero <- 0;\nSegun Aguardar stream.Recibir() Hacer\nAlgo(value): total <- total + value;\nNada: total <- 0;\nFinSegun\nFinSubProceso\nAlgoritmo Main\nDefinir stream Como Canal<Entero> <- Canal(1);\nTareas\n{spawns}FinTareas\nFinAlgoritmo\n"
+        "SubProceso Suspendible Stuck(stream Como Canal<Entero>)\nDefinir total Como Entero <- 0;\nSegun Aguardar stream.Recibir() Hacer\nAlgo(value): total <- total + value;\nNada: total <- 0;\nFinSegun\nFinSubProceso\nAlgoritmo Main\nDefinir stream Como Canal<Entero> <- Canal(1);\nTareas\n{spawns}FinTareas\nFinAlgoritmo\n"
     );
     agenda(
         seed,
@@ -146,7 +146,7 @@ fn concurrent_effects(seed: u64, random: &mut SplitMix64) -> Agenda {
 fn snapshot_under_collection(seed: u64, random: &mut SplitMix64) -> Agenda {
     let base = random.between(1, 100);
     let program = format!(
-        "SubProceso Suspendible Reader(stream Como Canal<Inmutable<Vector<Vector<Entero>>>>)\nSegun Aguardar stream.Recibir() Hacer\nAlgo(frozen): Definir Mutable total Como Entero <- 0;\nPara Cada row En frozen Hacer\ntotal <- total + row[0];\nFinPara\nEscribir total;\nNada: Escribir 0;\nFinSegun\nFinSubProceso\nAlgoritmo Main\nDefinir inner Como Vector<Entero> <- Vector();\ninner.Agregar({base});\nDefinir outer Como Vector<Vector<Entero>> <- Vector();\nouter.Agregar(inner);\nouter.Agregar(inner);\nDefinir frozen Como Inmutable<Vector<Vector<Entero>>> <- Instantanea(outer);\ninner[0] <- 0;\nDefinir stream Como Canal<Inmutable<Vector<Vector<Entero>>>> <- Canal(1);\nTareas\nLanzar Reader(stream);\nAguardar stream.Enviar(frozen);\nFinTareas\nFinAlgoritmo\n"
+        "SubProceso Suspendible Reader(stream Como Canal<Inmutable<Vector<Vector<Entero>>>>)\nSegun Aguardar stream.Recibir() Hacer\nAlgo(frozen): Definir total Como Entero <- 0;\nPara Cada row En frozen Hacer\ntotal <- total + row[0];\nFinPara\nEscribir total;\nNada: Escribir 0;\nFinSegun\nFinSubProceso\nAlgoritmo Main\nDefinir inner Como Vector<Entero> <- Vector();\ninner.Agregar({base});\nDefinir outer Como Vector<Vector<Entero>> <- Vector();\nouter.Agregar(inner);\nouter.Agregar(inner);\nDefinir frozen Como Inmutable<Vector<Vector<Entero>>> <- Instantanea(outer);\ninner[0] <- 0;\nDefinir stream Como Canal<Inmutable<Vector<Vector<Entero>>>> <- Canal(1);\nTareas\nLanzar Reader(stream);\nAguardar stream.Enviar(frozen);\nFinTareas\nFinAlgoritmo\n"
     );
     let doubled = base.saturating_mul(2);
     Agenda {

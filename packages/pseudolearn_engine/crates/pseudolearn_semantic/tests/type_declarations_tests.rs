@@ -167,7 +167,7 @@ fn accepts_records_as_class_fields_array_elements_and_member_signatures() {
 #[test]
 fn accepts_by_reference_record_parameters() {
     let program = format!(
-        "{POINT}subroutine f(p as Point by reference)\nwrite p.x;\nendSubroutine\nalgorithm P\ndefine mutable q as Point <- Point(1, 2);\nf(q);\nendAlgorithm\n"
+        "{POINT}subroutine f(p as Point by reference)\nwrite p.x;\nendSubroutine\nalgorithm P\ndefine q as Point <- Point(1, 2);\nf(q);\nendAlgorithm\n"
     );
     assert!(codes(&program).is_empty(), "{:?}", codes(&program));
 }

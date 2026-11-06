@@ -100,6 +100,7 @@ mod project_analysis_nodes;
 pub mod project_profile;
 mod public_signatures;
 mod record_access;
+mod record_assignment;
 mod return_variable;
 mod record_cycles;
 mod record_locals;

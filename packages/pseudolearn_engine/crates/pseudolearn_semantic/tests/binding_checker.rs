@@ -3,8 +3,8 @@ mod support;
 use pseudolearn_diagnostics::{DiagnosticCode, DiagnosticSeverity};
 
 #[test]
-fn initialized_bindings_preserve_mutability_and_leaf_initialization() {
-    let program = "record Pair\ndefine left, right as integer;\nendRecord\nalgorithm Main\ndefine pair as Pair <- Pair(1, 2);\ndefine mutable total as integer <- pair.left;\ntotal <- total + pair.right;\nwrite total;\nendAlgorithm\n";
+fn every_declared_variable_is_reassignable_and_leaves_are_initialized() {
+    let program = "record Pair\ndefine left, right as integer;\nendRecord\nalgorithm Main\ndefine pair as Pair <- Pair(1, 2);\ndefine total as integer <- pair.left;\ntotal <- total + pair.right;\nwrite total;\nendAlgorithm\n";
     let (module, diagnostics) = support::analyze(program);
     assert!(diagnostics.is_empty(), "{diagnostics:?}");
     assert!(module.is_some());
@@ -13,19 +13,19 @@ fn initialized_bindings_preserve_mutability_and_leaf_initialization() {
             module
                 .locals
                 .iter()
-                .any(|local| local.name == "pair" && !local.mutable)
+                .any(|local| local.name == "pair" && local.reassignable)
         );
         assert!(
             module
                 .locals
                 .iter()
-                .any(|local| local.name == "total" && local.mutable)
+                .any(|local| local.name == "total" && local.reassignable)
         );
     }
 }
 
 #[test]
-fn rejects_rebinding_record_field_and_reference_argument() {
+fn accepts_reassignment_read_and_reference_argument() {
     for body in [
         "define number as integer <- 1;\nnumber <- 2;\nwrite number;",
         "define number as integer <- 1;\nread number;\nwrite number;",
@@ -35,14 +35,22 @@ fn rejects_rebinding_record_field_and_reference_argument() {
             "subroutine Update(number as integer byReference)\nnumber <- 2;\nendSubroutine\nalgorithm Main\n{body}\nendAlgorithm\n"
         );
         let (module, diagnostics) = support::analyze(&program);
-        assert!(module.is_none());
-        assert!(
-            diagnostics
-                .iter()
-                .any(|diagnostic| diagnostic.code == DiagnosticCode::ImmutableBindingAssignment),
-            "{diagnostics:?}"
-        );
+        assert!(module.is_some(), "{diagnostics:?}");
+        assert!(diagnostics.is_empty(), "{diagnostics:?}");
     }
+}
+
+#[test]
+fn keeps_pattern_bindings_out_of_reach_of_assignment() {
+    let program = "algorithm Main\ndefine maybe as optional<integer> <- some(1);\nswitch maybe do\nsome(value): value <- 2;\nnone: write 0;\nendSwitch\nendAlgorithm\n";
+    let (module, diagnostics) = support::analyze(program);
+    assert!(module.is_none());
+    assert!(
+        diagnostics
+            .iter()
+            .any(|diagnostic| diagnostic.code == DiagnosticCode::ImmutableBindingAssignment),
+        "{diagnostics:?}"
+    );
 }
 
 #[test]
@@ -62,15 +70,12 @@ fn rejects_implicit_declaration() {
 }
 
 #[test]
-fn warns_only_when_mutability_is_unnecessary() {
-    let (_, diagnostics) = support::analyze(
-        "algorithm Main\ndefine mutable number as integer <- 1;\nwrite number;\nendAlgorithm\n",
+fn does_not_warn_about_variables_that_are_never_reassigned() {
+    let (module, diagnostics) = support::analyze(
+        "algorithm Main\ndefine number as integer <- 1;\nwrite number;\nendAlgorithm\n",
     );
-    assert_eq!(diagnostics.len(), 1, "{diagnostics:?}");
-    assert_eq!(
-        diagnostics.first().map(|diagnostic| diagnostic.code),
-        Some(DiagnosticCode::MutableBindingNeverModified)
-    );
+    assert!(module.is_some());
+    assert!(diagnostics.is_empty(), "{diagnostics:?}");
 }
 
 #[test]

@@ -55,8 +55,8 @@
     "en"
   ],
   "programas": {
-    "es": "Clase C\nFinClase\nAlgoritmo P\nDefinir a Como C <- Nuevo C();\nDefinir Mutable b Como C <- Nuevo C();\nb <- a;\nEscribir a = b;\nFinAlgoritmo\n",
-    "en": "class C\nendClass\nalgorithm P\ndefine a as C <- new C();\ndefine mutable b as C <- new C();\nb <- a;\nwrite a = b;\nendAlgorithm\n"
+    "es": "Clase C\nFinClase\nAlgoritmo P\nDefinir a Como C <- Nuevo C();\nDefinir b Como C <- Nuevo C();\nb <- a;\nEscribir a = b;\nFinAlgoritmo\n",
+    "en": "class C\nendClass\nalgorithm P\ndefine a as C <- new C();\ndefine b as C <- new C();\nb <- a;\nwrite a = b;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",

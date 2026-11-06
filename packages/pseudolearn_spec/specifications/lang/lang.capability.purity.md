@@ -364,8 +364,8 @@
     ]
   },
   "programas": {
-    "es": "SubProceso Effect() Como Entero\nEscribir 1;\nRetornar 1;\nFinSubProceso\nFuncion F() Como Entero\nDefinir Mutable x Como Entero <- 0;\nx <- Effect();\nRetornar x;\nFinFuncion\nAlgoritmo Main\nEscribir F();\nFinAlgoritmo\n",
-    "en": "subroutine Effect() as integer\nwrite 1;\nreturn 1;\nendSubroutine\nfunction F() as integer\ndefine mutable x as integer <- 0;\nx <- Effect();\nreturn x;\nend function\nalgorithm Main\nwrite F();\nendAlgorithm\n"
+    "es": "SubProceso Effect() Como Entero\nEscribir 1;\nRetornar 1;\nFinSubProceso\nFuncion F() Como Entero\nDefinir x Como Entero <- 0;\nx <- Effect();\nRetornar x;\nFinFuncion\nAlgoritmo Main\nEscribir F();\nFinAlgoritmo\n",
+    "en": "subroutine Effect() as integer\nwrite 1;\nreturn 1;\nendSubroutine\nfunction F() as integer\ndefine x as integer <- 0;\nx <- Effect();\nreturn x;\nend function\nalgorithm Main\nwrite F();\nendAlgorithm\n"
   }
 }
 ```
@@ -390,8 +390,8 @@
     ]
   },
   "programas": {
-    "es": "SubProceso Effect() Como Entero\nEscribir 1;\nRetornar 1;\nFinSubProceso\nFuncion F() Como Entero\nDefinir Mutable i Como Entero <- 0;\nMientras i < Effect() Hacer\ni <- i + 1;\nFinMientras\nRetornar i;\nFinFuncion\nAlgoritmo Main\nEscribir F();\nFinAlgoritmo\n",
-    "en": "subroutine Effect() as integer\nwrite 1;\nreturn 1;\nendSubroutine\nfunction F() as integer\ndefine mutable i as integer <- 0;\nwhile i < Effect() do\ni <- i + 1;\nendWhile\nreturn i;\nend function\nalgorithm Main\nwrite F();\nendAlgorithm\n"
+    "es": "SubProceso Effect() Como Entero\nEscribir 1;\nRetornar 1;\nFinSubProceso\nFuncion F() Como Entero\nDefinir i Como Entero <- 0;\nMientras i < Effect() Hacer\ni <- i + 1;\nFinMientras\nRetornar i;\nFinFuncion\nAlgoritmo Main\nEscribir F();\nFinAlgoritmo\n",
+    "en": "subroutine Effect() as integer\nwrite 1;\nreturn 1;\nendSubroutine\nfunction F() as integer\ndefine i as integer <- 0;\nwhile i < Effect() do\ni <- i + 1;\nendWhile\nreturn i;\nend function\nalgorithm Main\nwrite F();\nendAlgorithm\n"
   }
 }
 ```
@@ -416,8 +416,8 @@
     ]
   },
   "programas": {
-    "es": "SubProceso Effect() Como Entero\nEscribir 1;\nRetornar 1;\nFinSubProceso\nFuncion F() Como Entero\nDefinir Mutable total Como Entero <- 0;\nPara i <- 1 Hasta Effect() Con Paso 1 Hacer\ntotal <- total + i;\nFinPara\nRetornar total;\nFinFuncion\nAlgoritmo Main\nEscribir F();\nFinAlgoritmo\n",
-    "en": "subroutine Effect() as integer\nwrite 1;\nreturn 1;\nendSubroutine\nfunction F() as integer\ndefine mutable total as integer <- 0;\nfor i <- 1 to Effect() with step 1 do\ntotal <- total + i;\nendFor\nreturn total;\nend function\nalgorithm Main\nwrite F();\nendAlgorithm\n"
+    "es": "SubProceso Effect() Como Entero\nEscribir 1;\nRetornar 1;\nFinSubProceso\nFuncion F() Como Entero\nDefinir total Como Entero <- 0;\nPara i <- 1 Hasta Effect() Con Paso 1 Hacer\ntotal <- total + i;\nFinPara\nRetornar total;\nFinFuncion\nAlgoritmo Main\nEscribir F();\nFinAlgoritmo\n",
+    "en": "subroutine Effect() as integer\nwrite 1;\nreturn 1;\nendSubroutine\nfunction F() as integer\ndefine total as integer <- 0;\nfor i <- 1 to Effect() with step 1 do\ntotal <- total + i;\nendFor\nreturn total;\nend function\nalgorithm Main\nwrite F();\nendAlgorithm\n"
   }
 }
 ```
@@ -606,8 +606,8 @@
     ]
   },
   "programas": {
-    "es": "Funcion F() Como Entero\nDefinir Mutable x Como Entero <- 0;\nLeer x;\nRetornar x;\nFinFuncion\nAlgoritmo P\nEscribir F();\nFinAlgoritmo\n",
-    "en": "function F() as integer\ndefine mutable x as integer <- 0;\nread x;\nreturn x;\nend function\nalgorithm P\nwrite F();\nendAlgorithm\n"
+    "es": "Funcion F() Como Entero\nDefinir x Como Entero <- 0;\nLeer x;\nRetornar x;\nFinFuncion\nAlgoritmo P\nEscribir F();\nFinAlgoritmo\n",
+    "en": "function F() as integer\ndefine x as integer <- 0;\nread x;\nreturn x;\nend function\nalgorithm P\nwrite F();\nendAlgorithm\n"
   },
   "esperas": {
     "es": {
@@ -860,8 +860,8 @@
     "diagnosticos": []
   },
   "programas": {
-    "es": "SubProceso F() Como Entero\nDefinir Mutable x Como Entero <- 0;\nLeer x;\nEscribir x;\nRetornar x;\nFinSubProceso\nAlgoritmo P\nEscribir F();\nFinAlgoritmo\n",
-    "en": "subroutine F() as integer\ndefine mutable x as integer <- 0;\nread x;\nwrite x;\nreturn x;\nendSubroutine\nalgorithm P\nwrite F();\nendAlgorithm\n"
+    "es": "SubProceso F() Como Entero\nDefinir x Como Entero <- 0;\nLeer x;\nEscribir x;\nRetornar x;\nFinSubProceso\nAlgoritmo P\nEscribir F();\nFinAlgoritmo\n",
+    "en": "subroutine F() as integer\ndefine x as integer <- 0;\nread x;\nwrite x;\nreturn x;\nendSubroutine\nalgorithm P\nwrite F();\nendAlgorithm\n"
   },
   "sujetos": [
     "engine"

@@ -1011,8 +1011,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir Importar Como Entero <- 1;\nDefinir Mutable Exportar Como Entero <- 0;\nDefinir Mutable import Como Entero <- 0;\nDefinir Mutable export Como Entero <- 0;\nExportar <- 2;\nimport <- 3;\nexport <- 4;\nEscribir Importar, Exportar, import, export;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine Importar as integer <- 1;\ndefine mutable Exportar as integer <- 0;\ndefine mutable import as integer <- 0;\ndefine mutable export as integer <- 0;\nExportar <- 2;\nimport <- 3;\nexport <- 4;\nwrite Importar, Exportar, import, export;\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir Importar Como Entero <- 1;\nDefinir Exportar Como Entero <- 0;\nDefinir import Como Entero <- 0;\nDefinir export Como Entero <- 0;\nExportar <- 2;\nimport <- 3;\nexport <- 4;\nEscribir Importar, Exportar, import, export;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine Importar as integer <- 1;\ndefine Exportar as integer <- 0;\ndefine import as integer <- 0;\ndefine export as integer <- 0;\nExportar <- 2;\nimport <- 3;\nexport <- 4;\nwrite Importar, Exportar, import, export;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",

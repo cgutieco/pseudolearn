@@ -504,7 +504,7 @@
     "entorno": {},
     "entrada": "Content-Length: 64\r\n\r\n{\"seq\":1,\"type\":\"request\",\"command\":\"initialize\",\"arguments\":{}}Content-Length: 100\r\n\r\n{\"seq\":2,\"type\":\"request\",\"command\":\"launch\",\"arguments\":{\"program\":\"p.pseudo\",\"stopOnEntry\":false}}Content-Length: 123\r\n\r\n{\"seq\":3,\"type\":\"request\",\"command\":\"setBreakpoints\",\"arguments\":{\"source\":{\"path\":\"p.pseudo\"},\"breakpoints\":[{\"line\":3}]}}Content-Length: 71\r\n\r\n{\"seq\":4,\"type\":\"request\",\"command\":\"configurationDone\",\"arguments\":{}}Content-Length: 76\r\n\r\n{\"seq\":5,\"type\":\"request\",\"command\":\"stackTrace\",\"arguments\":{\"threadId\":1}}Content-Length: 116\r\n\r\n{\"seq\":6,\"type\":\"request\",\"command\":\"evaluate\",\"arguments\":{\"expression\":\"total + 1\",\"frameId\":1,\"context\":\"watch\"}}Content-Length: 116\r\n\r\n{\"seq\":7,\"type\":\"request\",\"command\":\"evaluate\",\"arguments\":{\"expression\":\"total <- 9\",\"frameId\":1,\"context\":\"repl\"}}Content-Length: 64\r\n\r\n{\"seq\":8,\"type\":\"request\",\"command\":\"disconnect\",\"arguments\":{}}",
     "archivos": {
-      "p.pseudo": "Algoritmo P\nDefinir Mutable total Como Entero <- 1;\ntotal <- total + 1;\nEscribir total;\nFinAlgoritmo\n"
+      "p.pseudo": "Algoritmo P\nDefinir total Como Entero <- 1;\ntotal <- total + 1;\nEscribir total;\nFinAlgoritmo\n"
     }
   },
   "espera": {
@@ -600,7 +600,7 @@
     "entorno": {},
     "entrada": "Content-Length: 64\r\n\r\n{\"seq\":1,\"type\":\"request\",\"command\":\"initialize\",\"arguments\":{}}Content-Length: 115\r\n\r\n{\"seq\":2,\"type\":\"request\",\"command\":\"launch\",\"arguments\":{\"program\":\"p.pseudo\",\"profile\":\"en\",\"stopOnEntry\":false}}Content-Length: 134\r\n\r\n{\"seq\":3,\"type\":\"request\",\"command\":\"setBreakpoints\",\"arguments\":{\"source\":{\"path\":\"p.pseudo\"},\"breakpoints\":[{\"line\":3},{\"line\":3}]}}Content-Length: 71\r\n\r\n{\"seq\":4,\"type\":\"request\",\"command\":\"configurationDone\",\"arguments\":{}}Content-Length: 76\r\n\r\n{\"seq\":5,\"type\":\"request\",\"command\":\"stackTrace\",\"arguments\":{\"threadId\":1}}Content-Length: 116\r\n\r\n{\"seq\":6,\"type\":\"request\",\"command\":\"evaluate\",\"arguments\":{\"expression\":\"total * 5\",\"frameId\":1,\"context\":\"hover\"}}Content-Length: 74\r\n\r\n{\"seq\":7,\"type\":\"request\",\"command\":\"continue\",\"arguments\":{\"threadId\":1}}Content-Length: 64\r\n\r\n{\"seq\":8,\"type\":\"request\",\"command\":\"disconnect\",\"arguments\":{}}",
     "archivos": {
-      "p.pseudo": "algorithm P\ndefine mutable total as integer <- 1;\ntotal <- total + 1;\nwrite total;\nendAlgorithm\n"
+      "p.pseudo": "algorithm P\ndefine total as integer <- 1;\ntotal <- total + 1;\nwrite total;\nendAlgorithm\n"
     }
   },
   "espera": {
@@ -855,7 +855,7 @@
     "entorno": {},
     "entrada": "Content-Length: 64\r\n\r\n{\"seq\":1,\"type\":\"request\",\"command\":\"initialize\",\"arguments\":{}}Content-Length: 100\r\n\r\n{\"seq\":2,\"type\":\"request\",\"command\":\"launch\",\"arguments\":{\"program\":\"p.pseudo\",\"stopOnEntry\":false}}Content-Length: 145\r\n\r\n{\"seq\":3,\"type\":\"request\",\"command\":\"setBreakpoints\",\"arguments\":{\"source\":{\"path\":\"p.pseudo\"},\"breakpoints\":[{\"line\":3}],\"sourceModified\":true}}Content-Length: 135\r\n\r\n{\"seq\":4,\"type\":\"request\",\"command\":\"setBreakpoints\",\"arguments\":{\"source\":{\"path\":\"p.pseudo\"},\"breakpoints\":[{\"line\":99},{\"line\":5}]}}Content-Length: 71\r\n\r\n{\"seq\":5,\"type\":\"request\",\"command\":\"configurationDone\",\"arguments\":{}}Content-Length: 87\r\n\r\n{\"seq\":6,\"type\":\"request\",\"command\":\"variables\",\"arguments\":{\"variablesReference\":999}}",
     "archivos": {
-      "p.pseudo": "Algoritmo P\nDefinir Mutable total Como Entero <- 1;\ntotal <- total + 1;\nEscribir total;\nFinAlgoritmo\n"
+      "p.pseudo": "Algoritmo P\nDefinir total Como Entero <- 1;\ntotal <- total + 1;\nEscribir total;\nFinAlgoritmo\n"
     }
   },
   "espera": {

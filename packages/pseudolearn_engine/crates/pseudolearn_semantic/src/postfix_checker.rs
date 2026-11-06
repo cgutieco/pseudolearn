@@ -89,7 +89,7 @@ fn member(
 ) -> ExpressionId {
     let children = session.children(node);
     let target = children.first().copied().unwrap_or(node);
-    let receiver = crate::expression_checker::check(session, target);
+    let receiver = check_for(session, target, ExpressionPurpose::Receiver);
     if let Some(value) = crate::channel_checker::member(session, node, receiver) {
         return value;
     }
@@ -106,6 +106,7 @@ fn member(
                 return call;
             }
             let field = crate::record_access::field(session, node, (receiver, record, name_node));
+            crate::record_assignment::read_field(session, field, purpose);
             if session.child(node, NodeKind::Arguments).is_some() {
                 crate::function_calls::call(session, node, (field, purpose))
             } else {

@@ -415,8 +415,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo Main\nDefinir Mutable outcome Como Resultado<Entero, Cadena> <- Exito(2);\nSegun outcome Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem;\nFinSegun\noutcome <- Error(\"bad\");\nDescartar outcome;\nFinAlgoritmo\n",
-    "en": "algorithm Main\ndefine mutable outcome as result<integer, string> <- success(2);\nswitch outcome do\nsuccess(value): write value;\nfailure(problem): write problem;\nendSwitch\noutcome <- failure(\"bad\");\ndiscard outcome;\nendAlgorithm\n"
+    "es": "Algoritmo Main\nDefinir outcome Como Resultado<Entero, Cadena> <- Exito(2);\nSegun outcome Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem;\nFinSegun\noutcome <- Error(\"bad\");\nDescartar outcome;\nFinAlgoritmo\n",
+    "en": "algorithm Main\ndefine outcome as result<integer, string> <- success(2);\nswitch outcome do\nsuccess(value): write value;\nfailure(problem): write problem;\nendSwitch\noutcome <- failure(\"bad\");\ndiscard outcome;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -660,8 +660,8 @@ La vista pública incluye interface_unit, interface_signature, realization, type
     "en"
   ],
   "programas": {
-    "es": "Algoritmo Main\nDefinir Mutable counter Como Entero <- 1;\nDefinir callback Como SubProceso() Como Entero <- SubProceso() Como Entero\nRetornar counter;\nFinSubProceso;\nFinAlgoritmo\n",
-    "en": "algorithm Main\ndefine mutable counter as integer <- 1;\ndefine callback as subroutine() as integer <- subroutine() as integer\nreturn counter;\nendSubroutine;\nendAlgorithm\n"
+    "es": "Algoritmo Main\nDefinir counter Como Entero <- 1;\nDefinir callback Como SubProceso() Como Entero <- SubProceso() Como Entero\nRetornar counter;\nFinSubProceso;\ncounter <- 2;\nFinAlgoritmo\n",
+    "en": "algorithm Main\ndefine counter as integer <- 1;\ndefine callback as subroutine() as integer <- subroutine() as integer\nreturn counter;\nendSubroutine;\ncounter <- 2;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -1161,11 +1161,11 @@ La vista pública incluye interface_unit, interface_signature, realization, type
 ```
 
 ```caso
-{"id": "C53", "regla": "R17", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"program": "Proceso P\n  Definir Mutable x Como Entero <- 0;\n  Escribir \"antes\";\n  Leer x;\n  Escribir \"despues\";\nFinProceso\n", "target": "python", "profile": "es"}}, "espera": {"aplicacion": {"status": "unavailable", "constructs": ["input"], "first_line": 4, "code_visible": false, "focused_lines": 0, "ready": false}}}
+{"id": "C53", "regla": "R17", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"program": "Proceso P\n  Definir x Como Entero <- 0;\n  Escribir \"antes\";\n  Leer x;\n  Escribir \"despues\";\nFinProceso\n", "target": "python", "profile": "es"}}, "espera": {"aplicacion": {"status": "unavailable", "constructs": ["input"], "first_line": 4, "code_visible": false, "focused_lines": 0, "ready": false}}}
 ```
 
 ```caso
-{"id": "C54", "regla": "R17", "perfiles": ["en"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"program": "algorithm Main\n  define mutable x as integer <- 0;\n  read x;\nendAlgorithm\n", "target": "python", "profile": "en"}}, "espera": {"aplicacion": {"status": "unavailable", "constructs": ["input"], "first_line": 3, "code_visible": false, "focused_lines": 0, "ready": false}}}
+{"id": "C54", "regla": "R17", "perfiles": ["en"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"program": "algorithm Main\n  define x as integer <- 0;\n  read x;\nendAlgorithm\n", "target": "python", "profile": "en"}}, "espera": {"aplicacion": {"status": "unavailable", "constructs": ["input"], "first_line": 3, "code_visible": false, "focused_lines": 0, "ready": false}}}
 ```
 
 ```caso
@@ -1181,7 +1181,7 @@ La vista pública incluye interface_unit, interface_signature, realization, type
 ```
 
 ```caso
-{"id": "C58", "regla": "R18", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"previous": "Proceso P\n  Escribir 1;\nFinProceso\n", "program": "Proceso P\n  Definir Mutable x Como Entero <- 0;\n  Leer x;\nFinProceso\n", "target": "python", "profile": "es"}}, "espera": {"aplicacion": {"status": "unavailable", "constructs": ["input"], "first_line": 3, "code_visible": false, "focused_lines": 0, "ready": false}}}
+{"id": "C58", "regla": "R18", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"previous": "Proceso P\n  Escribir 1;\nFinProceso\n", "program": "Proceso P\n  Definir x Como Entero <- 0;\n  Leer x;\nFinProceso\n", "target": "python", "profile": "es"}}, "espera": {"aplicacion": {"status": "unavailable", "constructs": ["input"], "first_line": 3, "code_visible": false, "focused_lines": 0, "ready": false}}}
 ```
 
 ```caso

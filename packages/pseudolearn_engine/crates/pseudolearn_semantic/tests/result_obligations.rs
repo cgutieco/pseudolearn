@@ -7,7 +7,7 @@ const PRODUCE: &str =
 #[test]
 fn overwriting_a_pending_result_reports_the_discard_site() {
     let source = format!(
-        "{PRODUCE}algorithm Main\ndefine mutable outcome as result<integer, string> <- Produce();\noutcome <- Produce();\ndiscard outcome;\nendAlgorithm\n"
+        "{PRODUCE}algorithm Main\ndefine outcome as result<integer, string> <- Produce();\noutcome <- Produce();\ndiscard outcome;\nendAlgorithm\n"
     );
     let (module, diagnostics) = support::analyze(&source);
     assert!(module.is_none());
@@ -57,7 +57,7 @@ fn every_unhandled_result_report_carries_its_type_argument() {
             "{PRODUCE}algorithm Main\ndefine outcome as result<integer, string> <- Produce();\nendAlgorithm\n"
         ),
         format!(
-            "{PRODUCE}algorithm Main\ndefine mutable outcome as result<integer, string> <- Produce();\noutcome <- Produce();\ndiscard outcome;\nendAlgorithm\n"
+            "{PRODUCE}algorithm Main\ndefine outcome as result<integer, string> <- Produce();\noutcome <- Produce();\ndiscard outcome;\nendAlgorithm\n"
         ),
     ];
     for source in programs {

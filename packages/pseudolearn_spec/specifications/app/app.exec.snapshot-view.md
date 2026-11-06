@@ -100,7 +100,7 @@
   "perfiles": ["es"],
   "origen": "derivado",
   "operacion": "app",
-  "aplicacion": {"scenario": "snapshot", "input": {"program": "Clase Nodo\nPublico Definir siguiente Como Nodo;\nFinClase\nAlgoritmo P\nDefinir Mutable a Como Nodo <- Nuevo Nodo();\nDefinir Mutable alias Como Nodo <- a;\na.siguiente <- a;\nFinAlgoritmo\n", "query": "object_graph"}},
+  "aplicacion": {"scenario": "snapshot", "input": {"program": "Clase Nodo\nPublico Definir siguiente Como Nodo;\nFinClase\nAlgoritmo P\nDefinir a Como Nodo <- Nuevo Nodo();\nDefinir alias Como Nodo <- a;\na.siguiente <- a;\nFinAlgoritmo\n", "query": "object_graph"}},
   "espera": {"aplicacion": {"references": {"a": "1", "alias": "1"}, "objects": {"1": {"class": "Nodo", "fields": {"siguiente": {"ref": "1"}}}}}}
 }
 ```

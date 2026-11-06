@@ -24,7 +24,7 @@ fn console_load(count: u32) -> EffectLoad {
         name: "console",
         count,
         source: format!(
-            "Algoritmo P\nDefinir Mutable i Como Entero <- 0;\nMientras i < {count} Hacer\nEscribir i;\ni <- i + 1;\nFinMientras\nFinAlgoritmo\n"
+            "Algoritmo P\nDefinir i Como Entero <- 0;\nMientras i < {count} Hacer\nEscribir i;\ni <- i + 1;\nFinMientras\nFinAlgoritmo\n"
         ),
         host: json!({"max_tape_bytes": TAPE_CEILING}),
     }
@@ -36,7 +36,7 @@ fn clock_load(count: u32) -> EffectLoad {
         name: "clock",
         count,
         source: format!(
-            "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir clock Como Reloj <- Propagar SolicitarReloj();\nDefinir Mutable i Como Entero <- 0;\nMientras i < {count} Hacer\nDescartar clock.Ahora();\ni <- i + 1;\nFinMientras\nRetornar Exito(i);\nFinSubProceso\nAlgoritmo P\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n"
+            "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir clock Como Reloj <- Propagar SolicitarReloj();\nDefinir i Como Entero <- 0;\nMientras i < {count} Hacer\nDescartar clock.Ahora();\ni <- i + 1;\nFinMientras\nRetornar Exito(i);\nFinSubProceso\nAlgoritmo P\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n"
         ),
         host: json!({
 
@@ -52,7 +52,7 @@ fn file_load(count: u32) -> EffectLoad {
         name: "file",
         count,
         source: format!(
-            "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\nDefinir Mutable i Como Entero <- 0;\nMientras i < {count} Hacer\nDescartar file.LeerTexto();\ni <- i + 1;\nFinMientras\nRetornar Exito(i);\nFinSubProceso\nAlgoritmo P\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n"
+            "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\nDefinir i Como Entero <- 0;\nMientras i < {count} Hacer\nDescartar file.LeerTexto();\ni <- i + 1;\nFinMientras\nRetornar Exito(i);\nFinSubProceso\nAlgoritmo P\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n"
         ),
         host: json!({
 

@@ -1392,7 +1392,7 @@
               {
                 "path": "app/main",
                 "source_id": 1,
-                "text": "Importar geo.vectores.Doble;\nAlgoritmo P\nDefinir Mutable x Como Entero <- 0;\nLeer x;\nEscribir Doble(x);\nFinAlgoritmo\n"
+                "text": "Importar geo.vectores.Doble;\nAlgoritmo P\nDefinir x Como Entero <- 0;\nLeer x;\nEscribir Doble(x);\nFinAlgoritmo\n"
               },
               {
                 "path": "geo/vectores",

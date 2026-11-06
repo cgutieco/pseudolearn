@@ -122,11 +122,11 @@ fn module_directives_remain_identifiers_inside_standalone_programs() {
     for (profile, source_text) in [
         (
             Profile::Spanish,
-            "Algoritmo P\nDefinir Mutable Importar Como Entero <- 0;\nDefinir Mutable Exportar Como Entero <- 0;\nImportar <- 2;\nExportar <- Importar + 3;\nEscribir Exportar;\nFinAlgoritmo\n",
+            "Algoritmo P\nDefinir Importar Como Entero <- 0;\nDefinir Exportar Como Entero <- 0;\nImportar <- 2;\nExportar <- Importar + 3;\nEscribir Exportar;\nFinAlgoritmo\n",
         ),
         (
             Profile::English,
-            "algorithm P\ndefine mutable import as integer <- 0;\ndefine mutable export as integer <- 0;\nimport <- 2;\nexport <- import + 3;\nwrite export;\nendAlgorithm\n",
+            "algorithm P\ndefine import as integer <- 0;\ndefine export as integer <- 0;\nimport <- 2;\nexport <- import + 3;\nwrite export;\nendAlgorithm\n",
         ),
     ] {
         let source = SourceText::new(source_text.to_owned());

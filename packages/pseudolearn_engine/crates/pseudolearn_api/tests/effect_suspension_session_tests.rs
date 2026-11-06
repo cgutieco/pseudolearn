@@ -1,7 +1,7 @@
 use pseudolearn_api::ApiSession;
 use serde_json::{Value, json};
 
-const CLOCK_THEN_READ: &str = "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir clock Como Reloj <- Propagar SolicitarReloj();\nRetornar clock.Ahora();\nFinSubProceso\nAlgoritmo Main\nDefinir Mutable pending Como Entero <- 0;\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nLeer pending;\nEscribir pending;\nFinAlgoritmo\n";
+const CLOCK_THEN_READ: &str = "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir clock Como Reloj <- Propagar SolicitarReloj();\nRetornar clock.Ahora();\nFinSubProceso\nAlgoritmo Main\nDefinir pending Como Entero <- 0;\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nLeer pending;\nEscribir pending;\nFinAlgoritmo\n";
 
 struct Run {
     session: ApiSession,

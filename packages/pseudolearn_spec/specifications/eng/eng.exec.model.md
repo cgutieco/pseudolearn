@@ -94,7 +94,7 @@
       "codigo": "divisionByZero"
     }
   },
-  "programa": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nx <- 0;\nEscribir 1 div x;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir x Como Entero <- 0;\nx <- 0;\nEscribir 1 div x;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```
@@ -113,7 +113,7 @@
     "salida": "",
     "terminacion": "awaiting_input"
   },
-  "programa": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nLeer x;\nEscribir x;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir x Como Entero <- 0;\nLeer x;\nEscribir x;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```
@@ -188,7 +188,7 @@
     "salida": "42\n",
     "terminacion": "completed"
   },
-  "programa": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nLeer x;\nEscribir x * 2;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir x Como Entero <- 0;\nLeer x;\nEscribir x * 2;\nFinAlgoritmo\n",
   "perfil_base": "es",
   "entradas": [
     "21"
@@ -415,8 +415,8 @@ El campo cancelacion de un caso indica la entrada a sentencia, contada desde uno
     }
   },
   "programas": {
-    "es": "SubProceso Probe(directory Como DirectorioCap) Como Resultado<Entero, ErrorES>\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\nDiferir\nDescartar file.Cerrar();\nFinDiferir\nDefinir Mutable n Como Entero <- 0;\nMientras Verdadero Hacer\nn <- n + 1;\nFinMientras\nRetornar Exito(n);\nFinSubProceso\nAlgoritmo Main\nDefinir opened Como Resultado<DirectorioCap, ErrorES> <- SolicitarDirectorio(\"root\");\nSegun opened Hacer\nExito(root): Segun Probe(root) Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
-    "en": "subroutine Probe(directory as DirCap) as result<integer, IoError>\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\ndefer\ndiscard file.close();\nendDefer\ndefine mutable n as integer <- 0;\nwhile true do\nn <- n + 1;\nendWhile\nreturn success(n);\nendSubroutine\nalgorithm Main\ndefine opened as result<DirCap, IoError> <- requestDirectory(\"root\");\nswitch opened do\nsuccess(root): switch Probe(root) do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+    "es": "SubProceso Probe(directory Como DirectorioCap) Como Resultado<Entero, ErrorES>\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\nDiferir\nDescartar file.Cerrar();\nFinDiferir\nDefinir n Como Entero <- 0;\nMientras Verdadero Hacer\nn <- n + 1;\nFinMientras\nRetornar Exito(n);\nFinSubProceso\nAlgoritmo Main\nDefinir opened Como Resultado<DirectorioCap, ErrorES> <- SolicitarDirectorio(\"root\");\nSegun opened Hacer\nExito(root): Segun Probe(root) Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe(directory as DirCap) as result<integer, IoError>\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\ndefer\ndiscard file.close();\nendDefer\ndefine n as integer <- 0;\nwhile true do\nn <- n + 1;\nendWhile\nreturn success(n);\nendSubroutine\nalgorithm Main\ndefine opened as result<DirCap, IoError> <- requestDirectory(\"root\");\nswitch opened do\nsuccess(root): switch Probe(root) do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
     "files": {
@@ -463,8 +463,8 @@ El campo cancelacion de un caso indica la entrada a sentencia, contada desde uno
     }
   },
   "programas": {
-    "es": "SubProceso Probe(directory Como DirectorioCap) Como Resultado<Entero, ErrorES>\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\nDiferir\nDescartar file.Cerrar();\nFinDiferir\nDefinir Mutable n Como Entero <- 0;\nMientras Verdadero Hacer\nn <- n + 1;\nFinMientras\nRetornar Exito(n);\nFinSubProceso\nAlgoritmo Main\nDefinir opened Como Resultado<DirectorioCap, ErrorES> <- SolicitarDirectorio(\"root\");\nSegun opened Hacer\nExito(root): Segun Probe(root) Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
-    "en": "subroutine Probe(directory as DirCap) as result<integer, IoError>\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\ndefer\ndiscard file.close();\nendDefer\ndefine mutable n as integer <- 0;\nwhile true do\nn <- n + 1;\nendWhile\nreturn success(n);\nendSubroutine\nalgorithm Main\ndefine opened as result<DirCap, IoError> <- requestDirectory(\"root\");\nswitch opened do\nsuccess(root): switch Probe(root) do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+    "es": "SubProceso Probe(directory Como DirectorioCap) Como Resultado<Entero, ErrorES>\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\nDiferir\nDescartar file.Cerrar();\nFinDiferir\nDefinir n Como Entero <- 0;\nMientras Verdadero Hacer\nn <- n + 1;\nFinMientras\nRetornar Exito(n);\nFinSubProceso\nAlgoritmo Main\nDefinir opened Como Resultado<DirectorioCap, ErrorES> <- SolicitarDirectorio(\"root\");\nSegun opened Hacer\nExito(root): Segun Probe(root) Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe(directory as DirCap) as result<integer, IoError>\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\ndefer\ndiscard file.close();\nendDefer\ndefine n as integer <- 0;\nwhile true do\nn <- n + 1;\nendWhile\nreturn success(n);\nendSubroutine\nalgorithm Main\ndefine opened as result<DirCap, IoError> <- requestDirectory(\"root\");\nswitch opened do\nsuccess(root): switch Probe(root) do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
     "files": {

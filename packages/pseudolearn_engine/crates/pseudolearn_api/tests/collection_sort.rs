@@ -102,7 +102,7 @@ fn native_build_rejects_the_new_collection_instruction() {
 #[test]
 fn comparator_budget_exhaustion_remains_a_user_failure() {
     let request = ExecuteRequest {
-        program: "algorithm P\ndefine values as vector<integer> <- vector();\nvalues.append(2); values.append(1);\nvalues.sort(subroutine(left as integer, right as integer) as integer\ndefine mutable total as integer <- 0;\nfor cursor <- 1 to 100 step 1 do\ntotal <- total + cursor;\nendFor\nreturn left - right;\nendSubroutine);\nendAlgorithm\n".to_owned(),
+        program: "algorithm P\ndefine values as vector<integer> <- vector();\nvalues.append(2); values.append(1);\nvalues.sort(subroutine(left as integer, right as integer) as integer\ndefine total as integer <- 0;\nfor cursor <- 1 to 100 step 1 do\ntotal <- total + cursor;\nendFor\nreturn left - right;\nendSubroutine);\nendAlgorithm\n".to_owned(),
         profile: "en".to_owned(),
         limits: ExecutionLimits { statements: Some(15), ..Default::default() },
         ..Default::default()

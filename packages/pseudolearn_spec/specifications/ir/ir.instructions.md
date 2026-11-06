@@ -104,7 +104,7 @@
       "codigo": "integerOverflow"
     }
   },
-  "programa": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nx <- 9223372036854775807;\nx <- x * 2;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir x Como Entero <- 0;\nx <- 9223372036854775807;\nx <- x * 2;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```
@@ -123,7 +123,7 @@
     "salida": "-1:0\n",
     "terminacion": "completed"
   },
-  "programa": "Algoritmo P\nDefinir Mutable a Como Entero <- 0;\nDefinir Mutable b Como Entero <- 0;\na <- -9223372036854775807 - 1;\nb <- -1;\nEscribir -7 mod 2 + 0, \":\", a mod b;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir a Como Entero <- 0;\nDefinir b Como Entero <- 0;\na <- -9223372036854775807 - 1;\nb <- -1;\nEscribir -7 mod 2 + 0, \":\", a mod b;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```
@@ -157,7 +157,7 @@
       "codigo": "negativeIntegerExponent"
     }
   },
-  "programa": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nDefinir Mutable z Como Entero <- 0;\nx <- -1;\nEscribir 1;\nz <- (2 ^ x) + (1 div 0);\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir x Como Entero <- 0;\nDefinir z Como Entero <- 0;\nx <- -1;\nEscribir 1;\nz <- (2 ^ x) + (1 div 0);\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```
@@ -1727,6 +1727,54 @@
     "value.require",
     "cell.load"
   ]
+}
+```
+
+```cobertura
+{
+  "id": "V246",
+  "regla": "LANG.DECL.UNINITIALIZED#R2",
+  "sin_ri": "La asignación definitiva de secuencias y Leer se comprueba antes de la RI."
+}
+```
+
+```cobertura
+{
+  "id": "V247",
+  "regla": "LANG.DECL.UNINITIALIZED#R3",
+  "sin_ri": "La unión de ramas se comprueba antes de la RI."
+}
+```
+
+```cobertura
+{
+  "id": "V248",
+  "regla": "LANG.DECL.UNINITIALIZED#R4",
+  "sin_ri": "La unión de bucles y Salir se comprueba antes de la RI."
+}
+```
+
+```cobertura
+{
+  "id": "V249",
+  "regla": "LANG.DECL.UNINITIALIZED#R5",
+  "sin_ri": "Los caminos terminados se tienen en cuenta antes de la RI."
+}
+```
+
+```cobertura
+{
+  "id": "V250",
+  "regla": "LANG.DECL.UNINITIALIZED#R6",
+  "sin_ri": "Las capturas sin valor se rechazan antes de la RI."
+}
+```
+
+```cobertura
+{
+  "id": "V251",
+  "regla": "LANG.PROGRAM.CLASSIC#R1",
+  "sin_ri": "Integra construcciones cuya cobertura de RI declaran sus propias identidades."
 }
 ```
 

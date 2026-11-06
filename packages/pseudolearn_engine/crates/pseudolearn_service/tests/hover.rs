@@ -11,13 +11,13 @@ fn hover_at(marked: &str, profile: Profile) -> Option<pseudolearn_service::Hover
 
 #[test]
 fn reports_declared_type_in_the_profile_language() -> Result<(), String> {
-    let code = "Algoritmo Principal\n  Definir Mutable contador Como Entero <- 0;\n  con|tador <- 1;\nFinAlgoritmo\n";
+    let code = "Algoritmo Principal\n  Definir contador Como Entero <- 0;\n  con|tador <- 1;\nFinAlgoritmo\n";
     let outcome = hover_at(code, Profile::Spanish);
     let outcome = outcome.ok_or("expected hover")?;
     assert_eq!(outcome.type_name, "Entero");
     assert_eq!(outcome.category, HoverCategory::Variable);
 
-    let english = "Algorithm Main\n  Define Mutable counter As Integer <- 0;\n  cou|nter <- 1;\nEndAlgorithm\n";
+    let english = "Algorithm Main\n  Define counter As Integer <- 0;\n  cou|nter <- 1;\nEndAlgorithm\n";
     let outcome = hover_at(english, Profile::English);
     assert_eq!(
         outcome.map(|entry| entry.type_name),
@@ -48,7 +48,7 @@ fn describes_subroutines_with_passing_modes() -> Result<(), String> {
 
 #[test]
 fn describes_standard_functions_by_lexicon_signature() -> Result<(), String> {
-    let code = "Algoritmo Principal\n  Definir Mutable n Como Entero <- 0;\n  n <- Long|itud(\"hola\");\nFinAlgoritmo\n";
+    let code = "Algoritmo Principal\n  Definir n Como Entero <- 0;\n  n <- Long|itud(\"hola\");\nFinAlgoritmo\n";
     let outcome = hover_at(code, Profile::Spanish).ok_or("expected hover")?;
     assert!(outcome.is_intrinsic);
     assert_eq!(outcome.identifier, "Longitud");
@@ -61,7 +61,7 @@ fn describes_standard_functions_by_lexicon_signature() -> Result<(), String> {
 
 #[test]
 fn does_not_report_shadowed_standard_functions_as_intrinsic() -> Result<(), String> {
-    let code = "Algoritmo Principal\n  Definir Mutable rc Como Real <- 0.0;\n  r|c <- 1.0;\nFinAlgoritmo\n";
+    let code = "Algoritmo Principal\n  Definir rc Como Real <- 0.0;\n  r|c <- 1.0;\nFinAlgoritmo\n";
     let outcome = hover_at(code, Profile::Spanish).ok_or("expected hover")?;
     assert!(!outcome.is_intrinsic);
     assert_eq!(outcome.category, HoverCategory::Variable);
@@ -98,7 +98,7 @@ fn help_at(marked: &str) -> Option<pseudolearn_service::SignatureHelp> {
 
 #[test]
 fn tracks_the_active_parameter_of_a_call() -> Result<(), String> {
-    let code = "SubProceso Intercambiar(a Por Referencia, b Por Valor)\nFinSubProceso\n\nAlgoritmo Principal\n  Definir Mutable x Como Entero <- 0;\n  Definir Mutable z Como Entero <- 0;\n  Intercambiar(x, |);\nFinAlgoritmo\n";
+    let code = "SubProceso Intercambiar(a Por Referencia, b Por Valor)\nFinSubProceso\n\nAlgoritmo Principal\n  Definir x Como Entero <- 0;\n  Definir z Como Entero <- 0;\n  Intercambiar(x, |);\nFinAlgoritmo\n";
     let help = help_at(code).ok_or("expected help")?;
     assert_eq!(help.active_parameter, 1);
     assert_eq!(

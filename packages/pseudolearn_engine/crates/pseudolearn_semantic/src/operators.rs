@@ -107,10 +107,22 @@ fn binary_operands(
     operands: (ExpressionId, ExpressionId),
 ) -> (ExpressionId, ExpressionId) {
     let (left, right) = operands;
+    let mixed_text = matches!(
+        (
+            session.expression_type(left),
+            session.expression_type(right)
+        ),
+        (Type::Character, Type::String) | (Type::String, Type::Character)
+    );
     if operator == crate::expression_model::BinaryOperator::Divide {
         (
             crate::expression_checker::widen(session, left, &Type::Real),
             crate::expression_checker::widen(session, right, &Type::Real),
+        )
+    } else if mixed_text && crate::operator_types::comparison(operator) {
+        (
+            crate::expression_checker::widen(session, left, &Type::String),
+            crate::expression_checker::widen(session, right, &Type::String),
         )
     } else {
         widen_operands(session, (left, right))

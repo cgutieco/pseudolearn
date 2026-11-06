@@ -133,8 +133,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\n  Definir Mutable bound Como Entero <- 0;\n  bound <- 3;\n  Para counter <- 1 Hasta bound Con Paso 1 Hacer\n    bound <- 10;\n    Escribir counter Sin Saltar;\n  FinPara\n  Escribir \"\";\nFinAlgoritmo\n",
-    "en": "algorithm P\n  define mutable bound as integer <- 0;\n  bound <- 3;\n  for counter <- 1 to bound step 1 do\n    bound <- 10;\n    write counter without newline;\n  endFor\n  write \"\";\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Definir bound Como Entero <- 0;\n  bound <- 3;\n  Para counter <- 1 Hasta bound Con Paso 1 Hacer\n    bound <- 10;\n    Escribir counter Sin Saltar;\n  FinPara\n  Escribir \"\";\nFinAlgoritmo\n",
+    "en": "algorithm P\n  define bound as integer <- 0;\n  bound <- 3;\n  for counter <- 1 to bound step 1 do\n    bound <- 10;\n    write counter without newline;\n  endFor\n  write \"\";\nendAlgorithm\n"
   },
   "operacion": "execute",
   "espera": {
@@ -163,13 +163,8 @@
   },
   "operacion": "execute",
   "espera": {
-    "terminacion": "failed",
-    "diagnosticos": [
-      {
-        "codigo": "missingStepClause",
-        "severidad": "error"
-      }
-    ]
+    "salida": "123\n",
+    "terminacion": "completed"
   },
   "origen": "derivado",
   "etiquetas": [
@@ -390,13 +385,17 @@
   "id": "R6",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "El control es un identificador entero; límites y paso son enteros, y la cláusula Con Paso es obligatoria. El incremento usa aritmética entera comprobada, también tras la última iteración válida. El cuerpo vacío es admisible.",
+  "texto": "El control es un identificador entero; límites y paso son enteros. La cláusula Con Paso es opcional: su ausencia equivale a Con Paso 1, también cuando el valor inicial supera al final, en cuyo caso el cuerpo no se ejecuta. El incremento usa aritmética entera comprobada, también tras la última iteración válida. El cuerpo vacío es admisible.",
   "verificacion": [
     "C2",
     "C10",
     "C11",
     "C12",
-    "C13"
+    "C13",
+    "C18",
+    "C19",
+    "C20",
+    "C21"
   ]
 }
 ```
@@ -436,12 +435,8 @@
   },
   "operacion": "analyze",
   "espera": {
-    "diagnosticos": [
-      {
-        "codigo": "missingStepClause",
-        "severidad": "error"
-      }
-    ]
+    "arbol": "presente",
+    "diagnosticos": []
   },
   "origen": "derivado"
 }
@@ -583,6 +578,90 @@
   "operacion": "execute",
   "espera": {
     "salida": "3\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C18",
+  "regla": "R6",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nPara i <- 1 Hasta 3 Hacer\nEscribir i Sin Saltar;\nFinPara\nEscribir \"\";\nFinAlgoritmo\n",
+    "en": "algorithm P\nfor i <- 1 to 3 do\nwrite i without newline;\nendFor\nwrite \"\";\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "123\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C19",
+  "regla": "R6",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nPara i <- 3 Hasta 1 Hacer\nEscribir i;\nFinPara\nEscribir \"fin\";\nFinAlgoritmo\n",
+    "en": "algorithm P\nfor i <- 3 to 1 do\nwrite i;\nendFor\nwrite \"fin\";\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "fin\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C20",
+  "regla": "R6",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nPara i <- 1 Hasta 1 Hacer\nEscribir i;\nFinPara\nFinAlgoritmo\n",
+    "en": "algorithm P\nfor i <- 1 to 1 do\nwrite i;\nendFor\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "1\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C21",
+  "regla": "R6",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nPara i <- 3 Hasta 1 Con Paso -1 Hacer\nEscribir i Sin Saltar;\nFinPara\nEscribir \"\";\nFinAlgoritmo\n",
+    "en": "algorithm P\nfor i <- 3 to 1 step -1 do\nwrite i without newline;\nendFor\nwrite \"\";\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "321\n",
     "terminacion": "completed"
   }
 }

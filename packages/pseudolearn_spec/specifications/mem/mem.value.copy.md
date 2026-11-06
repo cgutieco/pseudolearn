@@ -67,7 +67,7 @@
     "salida": "1:ab\n",
     "terminacion": "completed"
   },
-  "programa": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nDefinir Mutable z Como Entero <- 0;\nDefinir Mutable s Como Cadena <- \"\";\nDefinir Mutable t Como Cadena <- \"\";\nz <- 1;\nx <- z;\nz <- 2;\nt <- \"ab\";\ns <- t;\nt <- t + \"c\";\nEscribir x, \":\", s;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir x Como Entero <- 0;\nDefinir z Como Entero <- 0;\nDefinir s Como Cadena <- \"\";\nDefinir t Como Cadena <- \"\";\nz <- 1;\nx <- z;\nz <- 2;\nt <- \"ab\";\ns <- t;\nt <- t + \"c\";\nEscribir x, \":\", s;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```
@@ -160,7 +160,7 @@
     "salida": "1\n",
     "terminacion": "completed"
   },
-  "programa": "SubProceso dos(a Como Entero Por Referencia, b Como Entero Por Referencia)\na <- 1;\nEscribir b;\nFinSubProceso\nAlgoritmo P\nDefinir Mutable x Como Entero <- 0;\nx <- 0;\ndos(x, x);\nFinAlgoritmo\n",
+  "programa": "SubProceso dos(a Como Entero Por Referencia, b Como Entero Por Referencia)\na <- 1;\nEscribir b;\nFinSubProceso\nAlgoritmo P\nDefinir x Como Entero <- 0;\nx <- 0;\ndos(x, x);\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```

@@ -15,7 +15,7 @@ fn lowers_typed_capture_without_parsing_a_second_program() -> Result<(), String>
         span: Span::default(),
         scope: FunctionId(0),
         parameter: true,
-        mutable: false,
+        reassignable: false,
     });
     module
         .expressions

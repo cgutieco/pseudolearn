@@ -3,7 +3,7 @@ use pseudolearn_vm::{Fuel, RunExit, RunOptions};
 const CLOCK: &str = "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir clock Como Reloj <- Propagar SolicitarReloj();\nRetornar clock.Ahora();\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n";
 
 const READ: &str =
-    "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nLeer x;\nEscribir x;\nFinAlgoritmo\n";
+    "Algoritmo P\nDefinir x Como Entero <- 0;\nLeer x;\nEscribir x;\nFinAlgoritmo\n";
 
 fn exit_of(source: &str) -> Result<RunExit, String> {
     let module = pseudolearn_api::compile_source_to_module(source, "es")

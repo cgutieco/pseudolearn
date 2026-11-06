@@ -387,8 +387,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir Mutable c Como Cadena <- \"\";\nc <- Decimales(1.5, 1);\nEscribir c;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine mutable c as string <- \"\";\nc <- decimals(1.5, 1);\nwrite c;\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir c Como Cadena <- \"\";\nc <- Decimales(1.5, 1);\nEscribir c;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine c as string <- \"\";\nc <- decimals(1.5, 1);\nwrite c;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -411,8 +411,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir Mutable c Como Cadena <- \"\";\nc <- Decimales(1.5, 1);\nEscribir c;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine mutable c as string <- \"\";\nc <- decimals(1.5, 1);\nwrite c;\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir c Como Cadena <- \"\";\nc <- Decimales(1.5, 1);\nEscribir c;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine c as string <- \"\";\nc <- decimals(1.5, 1);\nwrite c;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",

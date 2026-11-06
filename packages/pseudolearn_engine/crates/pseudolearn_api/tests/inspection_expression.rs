@@ -3,7 +3,7 @@ use serde_json::{Value, json};
 
 fn execution(session: &mut ApiSession) -> Result<u64, String> {
     let created = session.call("create_analysis", &json!({
-        "program":"Algoritmo P\nDefinir Mutable amount Como Entero <- 7;\namount <- amount + 1;\nEscribir amount;\nFinAlgoritmo\n",
+        "program":"Algoritmo P\nDefinir amount Como Entero <- 7;\namount <- amount + 1;\nEscribir amount;\nFinAlgoritmo\n",
         "profile":"es"
     }));
     let analysis = created

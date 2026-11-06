@@ -297,7 +297,7 @@
     "salida": "abcd\n",
     "terminacion": "completed"
   },
-  "programa": "Algoritmo P\nDefinir Mutable c Como Cadena <- \"\";\nc <- \"ab\" + \"cd\";\nEscribir c;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir c Como Cadena <- \"\";\nc <- \"ab\" + \"cd\";\nEscribir c;\nFinAlgoritmo\n",
   "perfil_base": "es",
   "limites": {
     "celdas": 2
@@ -321,7 +321,7 @@
       "codigo": "cellLimitExceeded"
     }
   },
-  "programa": "Algoritmo P\nDefinir Mutable c Como Cadena <- \"\";\nc <- \"ab\" + \"cd\";\nEscribir c;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir c Como Cadena <- \"\";\nc <- \"ab\" + \"cd\";\nEscribir c;\nFinAlgoritmo\n",
   "perfil_base": "es",
   "limites": {
     "celdas": 1
@@ -599,8 +599,8 @@ Este contrato cuantifica los recursos que LANG.SUBPROGRAM.RECURSION y LANG.ARRAY
   "origen": "derivado",
   "operacion": "execute",
   "programas": {
-    "es": "Algoritmo P\nDefinir Mutable first Como Cadena <- \"\";\nDefinir Mutable second Como Cadena <- \"\";\nfirst <- \"a\" + \"b\";\nsecond <- first;\nfirst <- first + \"c\";\nEscribir first, \":\", second;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine mutable first as string <- \"\";\ndefine mutable second as string <- \"\";\nfirst <- \"a\" + \"b\";\nsecond <- first;\nfirst <- first + \"c\";\nwrite first, \":\", second;\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir first Como Cadena <- \"\";\nDefinir second Como Cadena <- \"\";\nfirst <- \"a\" + \"b\";\nsecond <- first;\nfirst <- first + \"c\";\nEscribir first, \":\", second;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine first as string <- \"\";\ndefine second as string <- \"\";\nfirst <- \"a\" + \"b\";\nsecond <- first;\nfirst <- first + \"c\";\nwrite first, \":\", second;\nendAlgorithm\n"
   },
   "espera": {
     "salida": "abc:ab\n",
@@ -623,8 +623,8 @@ Este contrato cuantifica los recursos que LANG.SUBPROGRAM.RECURSION y LANG.ARRAY
   "origen": "derivado",
   "operacion": "execute",
   "programas": {
-    "es": "Algoritmo P\nDefinir Mutable first Como Cadena <- \"\";\nDefinir Mutable second Como Cadena <- \"\";\nfirst <- \"a\" + \"b\";\nsecond <- first;\nfirst <- first + \"c\";\nEscribir first, \":\", second;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine mutable first as string <- \"\";\ndefine mutable second as string <- \"\";\nfirst <- \"a\" + \"b\";\nsecond <- first;\nfirst <- first + \"c\";\nwrite first, \":\", second;\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir first Como Cadena <- \"\";\nDefinir second Como Cadena <- \"\";\nfirst <- \"a\" + \"b\";\nsecond <- first;\nfirst <- first + \"c\";\nEscribir first, \":\", second;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine first as string <- \"\";\ndefine second as string <- \"\";\nfirst <- \"a\" + \"b\";\nsecond <- first;\nfirst <- first + \"c\";\nwrite first, \":\", second;\nendAlgorithm\n"
   },
   "espera": {
     "salida": "",

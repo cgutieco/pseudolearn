@@ -10,6 +10,7 @@ pub(crate) enum ExpressionPurpose {
     Destination,
     Argument,
     Statement,
+    Receiver,
 }
 
 pub(crate) fn check(session: &mut AnalysisSession<'_>, node: usize) -> ExpressionId {

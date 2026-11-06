@@ -5,7 +5,7 @@ use serde_json::Value;
 
 fn waiting_execution(resource_id: u64) -> Result<ExecutionResource, String> {
     let request = ExecuteRequest {
-        program: "Algoritmo Main\nDefinir Mutable count Como Entero <- 0;\nLeer count;\nEscribir count;\nFinAlgoritmo\n".to_owned(),
+        program: "Algoritmo Main\nDefinir count Como Entero <- 0;\nLeer count;\nEscribir count;\nFinAlgoritmo\n".to_owned(),
         ..ExecuteRequest::default()
     };
     let mut execution = ExecutionResource::start(&request)

@@ -380,7 +380,7 @@
       }
     }
   },
-  "programa": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir clock Como Reloj <- Propagar SolicitarReloj();\nRetornar clock.Ahora();\nFinSubProceso\nAlgoritmo Main\nDefinir Mutable total Como Entero <- 0;\nSegun Probe() Hacer\nExito(value): total <- value;\nError(problem): total <- 0 - 1;\nFinSegun\nFinAlgoritmo\n",
+  "programa": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir clock Como Reloj <- Propagar SolicitarReloj();\nRetornar clock.Ahora();\nFinSubProceso\nAlgoritmo Main\nDefinir total Como Entero <- 0;\nSegun Probe() Hacer\nExito(value): total <- value;\nError(problem): total <- 0 - 1;\nFinSegun\nFinAlgoritmo\n",
   "perfil_base": "es",
   "anfitrion": {
     "clock": [
@@ -531,7 +531,7 @@ Una colección se conserva como referencia con identidad compartida. Su entrada 
   "sujetos": [
     "engine"
   ],
-  "programa": "Algoritmo P\nDefinir Mutable total Como Entero <- 20;\ntotal <- total + 22;\nEscribir total;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir total Como Entero <- 20;\ntotal <- total + 22;\nEscribir total;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```
@@ -590,7 +590,7 @@ Una colección se conserva como referencia con identidad compartida. Su entrada 
   "sujetos": [
     "engine"
   ],
-  "programa": "Algoritmo P\nDefinir Mutable total Como Entero <- 20;\ntotal <- total + 22;\nEscribir total;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir total Como Entero <- 20;\ntotal <- total + 22;\nEscribir total;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```
@@ -649,7 +649,7 @@ Una colección se conserva como referencia con identidad compartida. Su entrada 
   "sujetos": [
     "engine"
   ],
-  "programa": "Algoritmo P\nDefinir Mutable total Como Entero <- 20;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir total Como Entero <- 20;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```
@@ -708,7 +708,7 @@ Una colección se conserva como referencia con identidad compartida. Su entrada 
   "sujetos": [
     "engine"
   ],
-  "programa": "Algoritmo P\nDefinir Mutable total Como Entero <- 20;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir total Como Entero <- 20;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```
@@ -794,7 +794,7 @@ Una colección se conserva como referencia con identidad compartida. Su entrada 
   "sujetos": [
     "engine"
   ],
-  "programa": "Algoritmo P\nDefinir Mutable total Como Entero <- 20;\ntotal <- total + 22;\nEscribir total;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir total Como Entero <- 20;\ntotal <- total + 22;\nEscribir total;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```
@@ -891,7 +891,7 @@ Una colección se conserva como referencia con identidad compartida. Su entrada 
   "sujetos": [
     "engine"
   ],
-  "programa": "Algoritmo P\nDefinir Mutable total Como Entero <- 20;\ntotal <- total + 22;\nEscribir total;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir total Como Entero <- 20;\ntotal <- total + 22;\nEscribir total;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```
@@ -989,7 +989,7 @@ Una colección se conserva como referencia con identidad compartida. Su entrada 
   "sujetos": [
     "engine"
   ],
-  "programa": "Algoritmo P\nDefinir Mutable total Como Entero <- 20;\ntotal <- total + 22;\nEscribir total;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir total Como Entero <- 20;\ntotal <- total + 22;\nEscribir total;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```
@@ -1143,7 +1143,7 @@ Una colección se conserva como referencia con identidad compartida. Su entrada 
   "sujetos": [
     "engine"
   ],
-  "programa": "Algoritmo P\nDefinir Mutable total Como Entero <- 1;\ntotal <- total + 1;\nEscribir total;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir total Como Entero <- 1;\ntotal <- total + 1;\nEscribir total;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```
@@ -1232,7 +1232,7 @@ Una colección se conserva como referencia con identidad compartida. Su entrada 
   "sujetos": [
     "engine"
   ],
-  "programa": "Algoritmo P\nDefinir Mutable total Como Entero <- 1;\ntotal <- total + 1;\nEscribir total;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir total Como Entero <- 1;\ntotal <- total + 1;\nEscribir total;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```

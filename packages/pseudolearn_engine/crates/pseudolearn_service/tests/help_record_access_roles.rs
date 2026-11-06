@@ -2,7 +2,7 @@ use pseudolearn_lexicon::Profile;
 use pseudolearn_service::marked_text::split_cursor;
 use pseudolearn_service::{DocumentSession, HelpLocale, help_content, resolve_help_at_position};
 
-const CLASS_FIELD: &str = "Registro Punto\nDefinir x Como Entero;\nFinRegistro\nClase Caja\nDefinir p Como Punto;\nDefinir n Como Entero;\nFinClase\nAlgoritmo P\nDefinir c Como Caja <- Nuevo Caja();\nDefinir Mutable r Como Punto <- Punto(1);\nDimension a[2] Como Punto;\nDimension m[2, 2] Como Punto;\nDimension e[2] Como Entero;\nc.p.x <- 1;\nc.n <- 2;\nr.x <- 3;\na[1].x <- 4;\nm[1, 2].x <- 5;\ne[1] <- 6;\nEscribir a[e[1]].x;\nFinAlgoritmo\n";
+const CLASS_FIELD: &str = "Registro Punto\nDefinir x Como Entero;\nFinRegistro\nClase Caja\nDefinir p Como Punto;\nDefinir n Como Entero;\nFinClase\nAlgoritmo P\nDefinir c Como Caja <- Nuevo Caja();\nDefinir r Como Punto <- Punto(1);\nDimension a[2] Como Punto;\nDimension m[2, 2] Como Punto;\nDimension e[2] Como Entero;\nc.p.x <- 1;\nc.n <- 2;\nr.x <- 3;\na[1].x <- 4;\nm[1, 2].x <- 5;\ne[1] <- 6;\nEscribir a[e[1]].x;\nFinAlgoritmo\n";
 
 fn card_after(needle: &str, shift: usize) -> Option<String> {
     let index = CLASS_FIELD.find(needle)?.checked_add(shift)?;

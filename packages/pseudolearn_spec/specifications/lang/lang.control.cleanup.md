@@ -79,8 +79,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo Main\nDefinir Mutable value Como Entero <- 1;\nDiferir\nEscribir value;\nFinDiferir\nvalue <- 7;\nFinAlgoritmo\n",
-    "en": "algorithm Main\ndefine mutable value as integer <- 1;\ndefer\nwrite value;\nendDefer\nvalue <- 7;\nendAlgorithm\n"
+    "es": "Algoritmo Main\nDefinir value Como Entero <- 1;\nDiferir\nEscribir value;\nFinDiferir\nvalue <- 7;\nFinAlgoritmo\n",
+    "en": "algorithm Main\ndefine value as integer <- 1;\ndefer\nwrite value;\nendDefer\nvalue <- 7;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -182,8 +182,8 @@
     "en"
   ],
   "programas": {
-    "es": "SubProceso value() Como Entero\nDefinir Mutable answer Como Entero <- 2;\nDiferir\nanswer <- 9;\nFinDiferir\nRetornar answer;\nFinSubProceso\nAlgoritmo Main\nEscribir value();\nFinAlgoritmo\n",
-    "en": "subroutine value() as integer\ndefine mutable answer as integer <- 2;\ndefer\nanswer <- 9;\nendDefer\nreturn answer;\nendSubroutine\nalgorithm Main\nwrite value();\nendAlgorithm\n"
+    "es": "SubProceso value() Como Entero\nDefinir answer Como Entero <- 2;\nDiferir\nanswer <- 9;\nFinDiferir\nRetornar answer;\nFinSubProceso\nAlgoritmo Main\nEscribir value();\nFinAlgoritmo\n",
+    "en": "subroutine value() as integer\ndefine answer as integer <- 2;\ndefer\nanswer <- 9;\nendDefer\nreturn answer;\nendSubroutine\nalgorithm Main\nwrite value();\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",

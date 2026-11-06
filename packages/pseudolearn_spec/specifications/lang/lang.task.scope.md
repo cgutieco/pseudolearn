@@ -453,8 +453,8 @@
     "en"
   ],
   "programas": {
-    "es": "SubProceso Suspendible Use(value Como Entero Por Referencia)\nFinSubProceso\nAlgoritmo P\nDefinir Mutable value Como Entero <- 1;\nTareas\nLanzar Use(value);\nFinTareas\nFinAlgoritmo\n",
-    "en": "subroutine suspendable Use(value as integer by reference)\nendSubroutine\nalgorithm P\ndefine mutable value as integer <- 1;\ntasks\nspawn Use(value);\nendTasks\nendAlgorithm\n"
+    "es": "SubProceso Suspendible Use(value Como Entero Por Referencia)\nFinSubProceso\nAlgoritmo P\nDefinir value Como Entero <- 1;\nTareas\nLanzar Use(value);\nFinTareas\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Use(value as integer by reference)\nendSubroutine\nalgorithm P\ndefine value as integer <- 1;\ntasks\nspawn Use(value);\nendTasks\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -505,8 +505,8 @@
     "en"
   ],
   "programas": {
-    "es": "SubProceso Suspendible Work() Como Entero\nRetornar 1;\nFinSubProceso\nAlgoritmo P\nTareas\nDefinir Mutable t Como Tarea<Entero> <- Lanzar Work();\nDefinir other Como Tarea<Entero> <- Lanzar Work();\nt <- other;\nFinTareas\nFinAlgoritmo\n",
-    "en": "subroutine suspendable Work() as integer\nreturn 1;\nendSubroutine\nalgorithm P\ntasks\ndefine mutable t as task<integer> <- spawn Work();\ndefine other as task<integer> <- spawn Work();\nt <- other;\nendTasks\nendAlgorithm\n"
+    "es": "SubProceso Suspendible Work() Como Entero\nRetornar 1;\nFinSubProceso\nAlgoritmo P\nTareas\nDefinir t Como Tarea<Entero> <- Lanzar Work();\nDefinir other Como Tarea<Entero> <- Lanzar Work();\nt <- other;\nFinTareas\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Work() as integer\nreturn 1;\nendSubroutine\nalgorithm P\ntasks\ndefine t as task<integer> <- spawn Work();\ndefine other as task<integer> <- spawn Work();\nt <- other;\nendTasks\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",

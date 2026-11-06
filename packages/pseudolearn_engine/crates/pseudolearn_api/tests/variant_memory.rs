@@ -4,7 +4,7 @@ use pseudolearn_vm::{Fuel, RunExit, RunOptions, TwinMode};
 #[test]
 fn switching_away_from_reference_payloads_clears_inactive_roots_in_both_twins() -> Result<(), String>
 {
-    let program = "class Holder\ndefine amount as integer;\nendClass\nsubroutine Fetch() as result<integer, Holder>\nreturn failure(new Holder());\nendSubroutine\nalgorithm Main\ndefine mutable outcome as result<integer, Holder> <- Fetch();\ndiscard outcome;\noutcome <- success(9);\ndefine keeper as Holder <- new Holder();\nkeeper.amount <- 7;\nswitch outcome do\nsuccess(number): write number;\nfailure(problem): write problem.amount;\nendSwitch\nwrite keeper.amount;\nendAlgorithm\n";
+    let program = "class Holder\ndefine amount as integer;\nendClass\nsubroutine Fetch() as result<integer, Holder>\nreturn failure(new Holder());\nendSubroutine\nalgorithm Main\ndefine outcome as result<integer, Holder> <- Fetch();\ndiscard outcome;\noutcome <- success(9);\ndefine keeper as Holder <- new Holder();\nkeeper.amount <- 7;\nswitch outcome do\nsuccess(number): write number;\nfailure(problem): write problem.amount;\nendSwitch\nwrite keeper.amount;\nendAlgorithm\n";
     let module = pseudolearn_api::compile_source_to_module(program, "en")
         .map_err(|errors| format!("{errors:?}"))?;
     let bytecode =

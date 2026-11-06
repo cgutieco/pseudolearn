@@ -64,7 +64,7 @@ impl Fixture {
             span: Span::new(1, 2),
             scope: FunctionId(0),
             parameter,
-            mutable: true,
+            reassignable: true,
         });
         identifier
     }

@@ -141,7 +141,7 @@
   },
   "servicio": {
     "suboperacion": "hover",
-    "documento": "Algoritmo Principal\n  Definir Mutable contador Como Entero <- 0;\n  contador <- 1;\nFinAlgoritmo\n",
+    "documento": "Algoritmo Principal\n  Definir contador Como Entero <- 0;\n  contador <- 1;\nFinAlgoritmo\n",
     "posicion": {
       "line": 3,
       "column": 5
@@ -222,7 +222,7 @@
   },
   "servicio": {
     "suboperacion": "hover",
-    "documento": "Algoritmo Principal\n  Definir Mutable n Como Entero <- 0;\n  n <- Longitud(\"hola\");\nFinAlgoritmo\n",
+    "documento": "Algoritmo Principal\n  Definir n Como Entero <- 0;\n  n <- Longitud(\"hola\");\nFinAlgoritmo\n",
     "posicion": {
       "line": 3,
       "column": 10
@@ -693,7 +693,7 @@
   },
   "servicio": {
     "suboperacion": "hover",
-    "documento": "Registro Punto\nDefinir x Como Entero;\nFinRegistro\nAlgoritmo P\nDefinir Mutable r Como Punto <- Punto(1);\nr.x <- 2;\nFinAlgoritmo\n",
+    "documento": "Registro Punto\nDefinir x Como Entero;\nFinRegistro\nAlgoritmo P\nDefinir r Como Punto <- Punto(1);\nr.x <- 2;\nFinAlgoritmo\n",
     "posicion": {
       "line": 6,
       "column": 2

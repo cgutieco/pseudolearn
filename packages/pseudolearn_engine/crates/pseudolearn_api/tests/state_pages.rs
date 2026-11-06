@@ -228,7 +228,7 @@ fn frame_queries_tag_scalar_values_with_their_type() -> Result<(), String> {
     let mut session = ApiSession::default();
     let started = execution(
         &mut session,
-        "Algoritmo P\nDefinir Mutable n Como Entero <- 0;\nDefinir Mutable t Como Cadena <- \"\";\nn <- 4;\nt <- \"hola\";\nFinAlgoritmo\n",
+        "Algoritmo P\nDefinir n Como Entero <- 0;\nDefinir t Como Cadena <- \"\";\nn <- 4;\nt <- \"hola\";\nFinAlgoritmo\n",
     )?;
     let frame = session.call(
         "query_frame",

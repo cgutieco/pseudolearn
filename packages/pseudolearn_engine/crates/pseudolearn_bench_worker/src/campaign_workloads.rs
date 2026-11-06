@@ -22,7 +22,7 @@ pub fn inactive_effects() -> Vec<Workload> {
 
 fn pure_algorithmic_loop() -> Workload {
     let source = format!(
-        "Funcion calcular(n Como Entero) Como Entero\nDefinir Mutable acc Como Entero <- 0;\nDefinir Mutable i Como Entero <- 0;\nMientras i < n Hacer\nacc <- acc + (i * 2);\ni <- i + 1;\nFinMientras\nRetornar acc;\nFinFuncion\nAlgoritmo Principal\nDefinir res Como Entero <- calcular({ROUNDS});\nEscribir res;\nFinAlgoritmo\n"
+        "Funcion calcular(n Como Entero) Como Entero\nDefinir acc Como Entero <- 0;\nDefinir i Como Entero <- 0;\nMientras i < n Hacer\nacc <- acc + (i * 2);\ni <- i + 1;\nFinMientras\nRetornar acc;\nFinFuncion\nAlgoritmo Principal\nDefinir res Como Entero <- calcular({ROUNDS});\nEscribir res;\nFinAlgoritmo\n"
     );
     Workload {
         name: "inactive-overhead".to_owned(),
@@ -55,7 +55,7 @@ fn loop_body(count: u32, call: impl Fn(u32) -> String) -> String {
 
 fn main_program(count: u32, call: impl Fn(u32) -> String) -> String {
     format!(
-        "Algoritmo P\nDefinir Mutable total Como Entero <- 0;\nDefinir Mutable i Como Entero <- 0;\nMientras i < {ROUNDS} Hacer\n{}i <- i + 1;\nFinMientras\nEscribir total;\nFinAlgoritmo\n",
+        "Algoritmo P\nDefinir total Como Entero <- 0;\nDefinir i Como Entero <- 0;\nMientras i < {ROUNDS} Hacer\n{}i <- i + 1;\nFinMientras\nEscribir total;\nFinAlgoritmo\n",
         loop_body(count, call)
     )
 }
@@ -85,10 +85,10 @@ fn generic(count: u32) -> Workload {
 
 fn closure_call() -> Workload {
     let candidate = format!(
-        "SubProceso fabricar(base Como Entero) Como SubProceso() Como Entero\nDefinir captured Como Entero <- base;\nRetornar SubProceso() Como Entero\nRetornar captured;\nFinSubProceso;\nFinSubProceso\nAlgoritmo P\nDefinir callback Como SubProceso() Como Entero <- fabricar(3);\nDefinir Mutable total Como Entero <- 0;\nDefinir Mutable i Como Entero <- 0;\nMientras i < {ROUNDS} Hacer\ntotal <- total + callback();\ni <- i + 1;\nFinMientras\nEscribir total;\nFinAlgoritmo\n"
+        "SubProceso fabricar(base Como Entero) Como SubProceso() Como Entero\nDefinir captured Como Entero <- base;\nRetornar SubProceso() Como Entero\nRetornar captured;\nFinSubProceso;\nFinSubProceso\nAlgoritmo P\nDefinir callback Como SubProceso() Como Entero <- fabricar(3);\nDefinir total Como Entero <- 0;\nDefinir i Como Entero <- 0;\nMientras i < {ROUNDS} Hacer\ntotal <- total + callback();\ni <- i + 1;\nFinMientras\nEscribir total;\nFinAlgoritmo\n"
     );
     let control = format!(
-        "SubProceso directo(captured Como Entero) Como Entero\nRetornar captured;\nFinSubProceso\nAlgoritmo P\nDefinir Mutable total Como Entero <- 0;\nDefinir Mutable i Como Entero <- 0;\nMientras i < {ROUNDS} Hacer\ntotal <- total + directo(3);\ni <- i + 1;\nFinMientras\nEscribir total;\nFinAlgoritmo\n"
+        "SubProceso directo(captured Como Entero) Como Entero\nRetornar captured;\nFinSubProceso\nAlgoritmo P\nDefinir total Como Entero <- 0;\nDefinir i Como Entero <- 0;\nMientras i < {ROUNDS} Hacer\ntotal <- total + directo(3);\ni <- i + 1;\nFinMientras\nEscribir total;\nFinAlgoritmo\n"
     );
     Workload {
         name: "closure-call".to_owned(),
@@ -99,10 +99,10 @@ fn closure_call() -> Workload {
 
 fn closure_create() -> Workload {
     let candidate = format!(
-        "SubProceso fabricar(base Como Entero) Como SubProceso() Como Entero\nDefinir captured Como Entero <- base;\nRetornar SubProceso() Como Entero\nRetornar captured;\nFinSubProceso;\nFinSubProceso\nAlgoritmo P\nDefinir Mutable total Como Entero <- 0;\nDefinir Mutable i Como Entero <- 0;\nMientras i < {ROUNDS} Hacer\nDefinir callback Como SubProceso() Como Entero <- fabricar(i);\ntotal <- total + callback();\ni <- i + 1;\nFinMientras\nEscribir total;\nFinAlgoritmo\n"
+        "SubProceso fabricar(base Como Entero) Como SubProceso() Como Entero\nDefinir captured Como Entero <- base;\nRetornar SubProceso() Como Entero\nRetornar captured;\nFinSubProceso;\nFinSubProceso\nAlgoritmo P\nDefinir total Como Entero <- 0;\nDefinir i Como Entero <- 0;\nMientras i < {ROUNDS} Hacer\nDefinir callback Como SubProceso() Como Entero <- fabricar(i);\ntotal <- total + callback();\ni <- i + 1;\nFinMientras\nEscribir total;\nFinAlgoritmo\n"
     );
     let control = format!(
-        "SubProceso directo(captured Como Entero) Como Entero\nRetornar captured;\nFinSubProceso\nAlgoritmo P\nDefinir Mutable total Como Entero <- 0;\nDefinir Mutable i Como Entero <- 0;\nMientras i < {ROUNDS} Hacer\ntotal <- total + directo(i);\ni <- i + 1;\nFinMientras\nEscribir total;\nFinAlgoritmo\n"
+        "SubProceso directo(captured Como Entero) Como Entero\nRetornar captured;\nFinSubProceso\nAlgoritmo P\nDefinir total Como Entero <- 0;\nDefinir i Como Entero <- 0;\nMientras i < {ROUNDS} Hacer\ntotal <- total + directo(i);\ni <- i + 1;\nFinMientras\nEscribir total;\nFinAlgoritmo\n"
     );
     Workload {
         name: "closure-create".to_owned(),

@@ -21,7 +21,7 @@ fn module(addressed: bool) -> HirModule {
         span: Span::new(0, 1),
         scope: FunctionId(0),
         parameter: false,
-        mutable: addressed,
+        reassignable: addressed,
     });
     module
         .expressions
@@ -37,7 +37,7 @@ fn module(addressed: bool) -> HirModule {
             span: Span::new(0, 1),
             scope: FunctionId(0),
             parameter: true,
-            mutable: true,
+            reassignable: true,
         });
         module.functions.push(HirFunction {
             kind: FunctionKind::Procedure,
@@ -128,7 +128,7 @@ fn assigning_one_local_to_another_produces_distinct_origin_values() {
         span: Span::new(0, 1),
         scope: FunctionId(0),
         parameter: false,
-        mutable: false,
+        reassignable: false,
     });
     hir.expressions.kinds.push(HirExpression::Local(LocalId(0)));
     hir.expressions.types.push(integer);

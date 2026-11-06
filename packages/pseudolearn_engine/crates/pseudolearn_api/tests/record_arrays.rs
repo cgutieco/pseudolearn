@@ -28,7 +28,7 @@ fn elements_are_written_and_read_as_whole_records_and_by_leaf() {
 #[test]
 fn reading_an_element_copies_it_independently() {
     let program = format!(
-        "{POINT}algorithm P\ndimension a[2] as Point;\na[0] <- Point(1, 2);\ndefine mutable q as Point <- a[0];\nq.x <- 99;\nwrite a[0].x;\na[1] <- q;\nq.y <- 77;\nwrite a[1].y;\nendAlgorithm\n"
+        "{POINT}algorithm P\ndimension a[2] as Point;\na[0] <- Point(1, 2);\ndefine q as Point <- a[0];\nq.x <- 99;\nwrite a[0].x;\na[1] <- q;\nq.y <- 77;\nwrite a[1].y;\nendAlgorithm\n"
     );
     let response = run(program);
     assert_eq!(response.output, "1\n2\n", "{}", report(&response));

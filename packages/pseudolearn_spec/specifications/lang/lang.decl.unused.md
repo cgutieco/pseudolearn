@@ -82,8 +82,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nx <- 1;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine mutable x as integer <- 0;\nx <- 1;\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir x Como Entero <- 0;\nx <- 1;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine x as integer <- 0;\nx <- 1;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -108,8 +108,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nx <- 1;\nEscribir x;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine mutable x as integer <- 0;\nx <- 1;\nwrite x;\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir x Como Entero <- 0;\nx <- 1;\nEscribir x;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine x as integer <- 0;\nx <- 1;\nwrite x;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",

@@ -14,7 +14,7 @@ fn undeclared_reads_are_errors_and_produce_no_hir() {
 #[test]
 fn declared_real_binding_keeps_its_type_across_integer_writes() -> Result<(), String> {
     let (module, diagnostics) = support::analyze(
-        "algorithm Main\ndefine mutable amount as real <- 1;\nwrite amount;\namount <- 2;\nwrite amount;\nendAlgorithm\n",
+        "algorithm Main\ndefine amount as real <- 1;\nwrite amount;\namount <- 2;\nwrite amount;\nendAlgorithm\n",
     );
     assert!(diagnostics.iter().all(
         |diagnostic| diagnostic.severity != pseudolearn_diagnostics::DiagnosticSeverity::Error

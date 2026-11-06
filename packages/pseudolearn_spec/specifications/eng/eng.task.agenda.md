@@ -301,8 +301,8 @@
     "en"
   ],
   "programas": {
-    "es": "SubProceso Suspendible Work(marker Como Entero)\nDefinir Mutable counter Como Entero <- 0;\nMientras counter < 1024 Hacer\nEscribir marker;\ncounter <- counter + 1;\nFinMientras\nFinSubProceso\nAlgoritmo Main\nTareas\nLanzar Work(1);\nLanzar Work(2);\nFinTareas\nFinAlgoritmo\n",
-    "en": "subroutine suspendable Work(marker as integer)\ndefine mutable counter as integer <- 0;\nwhile counter < 1024 do\nwrite marker;\ncounter <- counter + 1;\nendWhile\nendSubroutine\nalgorithm Main\ntasks\nspawn Work(1);\nspawn Work(2);\nendTasks\nendAlgorithm\n"
+    "es": "SubProceso Suspendible Work(marker Como Entero)\nDefinir counter Como Entero <- 0;\nMientras counter < 1024 Hacer\nEscribir marker;\ncounter <- counter + 1;\nFinMientras\nFinSubProceso\nAlgoritmo Main\nTareas\nLanzar Work(1);\nLanzar Work(2);\nFinTareas\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Work(marker as integer)\ndefine counter as integer <- 0;\nwhile counter < 1024 do\nwrite marker;\ncounter <- counter + 1;\nendWhile\nendSubroutine\nalgorithm Main\ntasks\nspawn Work(1);\nspawn Work(2);\nendTasks\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -322,8 +322,8 @@
     "en"
   ],
   "programas": {
-    "es": "SubProceso Suspendible Work(marker Como Entero)\nDefinir Mutable counter Como Entero <- 0;\nMientras counter < 10 Hacer\nEscribir marker;\ncounter <- counter + 1;\nFinMientras\nFinSubProceso\nAlgoritmo Main\nTareas\nLanzar Work(1);\nLanzar Work(2);\nFinTareas\nFinAlgoritmo\n",
-    "en": "subroutine suspendable Work(marker as integer)\ndefine mutable counter as integer <- 0;\nwhile counter < 10 do\nwrite marker;\ncounter <- counter + 1;\nendWhile\nendSubroutine\nalgorithm Main\ntasks\nspawn Work(1);\nspawn Work(2);\nendTasks\nendAlgorithm\n"
+    "es": "SubProceso Suspendible Work(marker Como Entero)\nDefinir counter Como Entero <- 0;\nMientras counter < 10 Hacer\nEscribir marker;\ncounter <- counter + 1;\nFinMientras\nFinSubProceso\nAlgoritmo Main\nTareas\nLanzar Work(1);\nLanzar Work(2);\nFinTareas\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Work(marker as integer)\ndefine counter as integer <- 0;\nwhile counter < 10 do\nwrite marker;\ncounter <- counter + 1;\nendWhile\nendSubroutine\nalgorithm Main\ntasks\nspawn Work(1);\nspawn Work(2);\nendTasks\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -343,8 +343,8 @@
     "en"
   ],
   "programas": {
-    "es": "SubProceso Suspendible Work(marker Como Entero)\nDefinir Mutable counter Como Entero <- 0;\nMientras counter < 1024 Hacer\nEscribir marker;\ncounter <- counter + 1;\nFinMientras\nFinSubProceso\nAlgoritmo Main\nTareas\nLanzar Work(1);\nFinTareas\nFinAlgoritmo\n",
-    "en": "subroutine suspendable Work(marker as integer)\ndefine mutable counter as integer <- 0;\nwhile counter < 1024 do\nwrite marker;\ncounter <- counter + 1;\nendWhile\nendSubroutine\nalgorithm Main\ntasks\nspawn Work(1);\nendTasks\nendAlgorithm\n"
+    "es": "SubProceso Suspendible Work(marker Como Entero)\nDefinir counter Como Entero <- 0;\nMientras counter < 1024 Hacer\nEscribir marker;\ncounter <- counter + 1;\nFinMientras\nFinSubProceso\nAlgoritmo Main\nTareas\nLanzar Work(1);\nFinTareas\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Work(marker as integer)\ndefine counter as integer <- 0;\nwhile counter < 1024 do\nwrite marker;\ncounter <- counter + 1;\nendWhile\nendSubroutine\nalgorithm Main\ntasks\nspawn Work(1);\nendTasks\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -386,8 +386,8 @@
     "en"
   ],
   "programas": {
-    "es": "SubProceso Suspendible Work(marker Como Entero)\nDefinir Mutable counter Como Entero <- 0;\nMientras counter < 5 Hacer\nEscribir marker;\ncounter <- counter + 1;\nFinMientras\nFinSubProceso\nAlgoritmo Main\nTareas\nLanzar Work(1);\nLanzar Work(2);\nLanzar Work(3);\nFinTareas\nFinAlgoritmo\n",
-    "en": "subroutine suspendable Work(marker as integer)\ndefine mutable counter as integer <- 0;\nwhile counter < 5 do\nwrite marker;\ncounter <- counter + 1;\nendWhile\nendSubroutine\nalgorithm Main\ntasks\nspawn Work(1);\nspawn Work(2);\nspawn Work(3);\nendTasks\nendAlgorithm\n"
+    "es": "SubProceso Suspendible Work(marker Como Entero)\nDefinir counter Como Entero <- 0;\nMientras counter < 5 Hacer\nEscribir marker;\ncounter <- counter + 1;\nFinMientras\nFinSubProceso\nAlgoritmo Main\nTareas\nLanzar Work(1);\nLanzar Work(2);\nLanzar Work(3);\nFinTareas\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Work(marker as integer)\ndefine counter as integer <- 0;\nwhile counter < 5 do\nwrite marker;\ncounter <- counter + 1;\nendWhile\nendSubroutine\nalgorithm Main\ntasks\nspawn Work(1);\nspawn Work(2);\nspawn Work(3);\nendTasks\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",

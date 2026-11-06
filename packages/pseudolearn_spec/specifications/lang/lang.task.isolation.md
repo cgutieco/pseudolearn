@@ -488,8 +488,8 @@
   "origen": "derivado",
   "operacion": "analyze",
   "programas": {
-    "es": "SubProceso Suspendible Work(value Como Entero Por Referencia)\nFinSubProceso\nAlgoritmo Main\nDefinir Mutable value Como Entero <- 1;\nTareas\nLanzar Work(value);\nFinTareas\nFinAlgoritmo\n",
-    "en": "subroutine suspendable Work(value as integer by reference)\nendSubroutine\nalgorithm Main\ndefine mutable value as integer <- 1;\ntasks\nspawn Work(value);\nendTasks\nendAlgorithm\n"
+    "es": "SubProceso Suspendible Work(value Como Entero Por Referencia)\nFinSubProceso\nAlgoritmo Main\nDefinir value Como Entero <- 1;\nTareas\nLanzar Work(value);\nFinTareas\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Work(value as integer by reference)\nendSubroutine\nalgorithm Main\ndefine value as integer <- 1;\ntasks\nspawn Work(value);\nendTasks\nendAlgorithm\n"
   },
   "espera": {
     "arbol": "presente",

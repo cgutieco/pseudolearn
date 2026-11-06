@@ -347,7 +347,7 @@ fn variants_without_payload_do_not_invent_payload_nodes() -> Result<(), String> 
 
 #[test]
 fn mutable_closure_capture_is_rejected_by_static_analysis() -> Result<(), String> {
-    let program = "SubProceso make() Como SubProceso() Como Entero\nDefinir Mutable counter Como Entero <- 1;\nRetornar SubProceso() Como Entero\nRetornar counter;\nFinSubProceso;\nFinSubProceso\nAlgoritmo Main\nFinAlgoritmo\n";
+    let program = "SubProceso make() Como SubProceso() Como Entero\nDefinir counter Como Entero <- 1;\nRetornar SubProceso() Como Entero\nRetornar counter;\nFinSubProceso;\nFinSubProceso\nAlgoritmo Main\nFinAlgoritmo\n";
     let mut session = ApiSession::default();
     let analysis = session.call(
         "create_analysis",

@@ -103,12 +103,12 @@
   "operacion": "service",
   "espera": {
     "servicio": {
-      "formateado": "Algoritmo Principal\n  Definir Mutable x Como Entero <- 0;\n  x <- 1 + 2;\n  Escribir x;\nFinAlgoritmo\n"
+      "formateado": "Algoritmo Principal\n  Definir x Como Entero <- 0;\n  x <- 1 + 2;\n  Escribir x;\nFinAlgoritmo\n"
     }
   },
   "servicio": {
     "suboperacion": "format",
-    "documento": "algoritmo Principal\ndefinir mutable x como entero<-0;\nx<-1+2;\nescribir x;\nfinalgoritmo"
+    "documento": "algoritmo Principal\ndefinir x como entero<-0;\nx<-1+2;\nescribir x;\nfinalgoritmo"
   }
 }
 ```

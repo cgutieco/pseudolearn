@@ -121,8 +121,8 @@
     "en"
   ],
   "programas": {
-    "es": "Registro Box\nDefinir value Como Entero;\nFinRegistro\nAlgoritmo Main\nDefinir values Como Vector<Box> <- Vector();\nvalues.Agregar(Box(4));\nDefinir Mutable copy Como Box <- values[0];\ncopy.value <- 9;\nEscribir values[0].value;\nFinAlgoritmo\n",
-    "en": "record Box\ndefine value as integer;\nendRecord\nalgorithm Main\ndefine values as vector<Box> <- vector();\nvalues.append(Box(4));\ndefine mutable copy as Box <- values[0];\ncopy.value <- 9;\nwrite values[0].value;\nendAlgorithm\n"
+    "es": "Registro Box\nDefinir value Como Entero;\nFinRegistro\nAlgoritmo Main\nDefinir values Como Vector<Box> <- Vector();\nvalues.Agregar(Box(4));\nDefinir copy Como Box <- values[0];\ncopy.value <- 9;\nEscribir values[0].value;\nFinAlgoritmo\n",
+    "en": "record Box\ndefine value as integer;\nendRecord\nalgorithm Main\ndefine values as vector<Box> <- vector();\nvalues.append(Box(4));\ndefine copy as Box <- values[0];\ncopy.value <- 9;\nwrite values[0].value;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",

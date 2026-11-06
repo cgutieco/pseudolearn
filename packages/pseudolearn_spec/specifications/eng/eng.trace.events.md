@@ -279,7 +279,7 @@
       }
     ]
   },
-  "programa": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nLeer x;\nEscribir x;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir x Como Entero <- 0;\nLeer x;\nEscribir x;\nFinAlgoritmo\n",
   "perfil_base": "es",
   "entradas": [
     "4"
@@ -332,7 +332,7 @@
       }
     ]
   },
-  "programa": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nx <- 0;\nEscribir 1 div x;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir x Como Entero <- 0;\nx <- 0;\nEscribir 1 div x;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```
@@ -381,7 +381,7 @@
       }
     ]
   },
-  "programa": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nLeer x;\nEscribir x;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir x Como Entero <- 0;\nLeer x;\nEscribir x;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```
@@ -517,7 +517,7 @@
       }
     ]
   },
-  "programa": "Algoritmo P\nDefinir Mutable i Como Entero <- 0;\ni <- 0;\nMientras i < 1 Hacer\ni <- i + 1;\nFinMientras\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir i Como Entero <- 0;\ni <- 0;\nMientras i < 1 Hacer\ni <- i + 1;\nFinMientras\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```
@@ -568,7 +568,7 @@
       }
     ]
   },
-  "programa": "Algoritmo P\nDefinir Mutable i Como Entero <- 0;\nPara i <- 1 Hasta 1 Con Paso 1 Hacer\nFinPara\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir i Como Entero <- 0;\nPara i <- 1 Hasta 1 Con Paso 1 Hacer\nFinPara\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```

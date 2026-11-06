@@ -64,10 +64,23 @@ fn relation_type(operator: BinaryOperator, left: &Type, right: &Type) -> Type {
     }
     if left == right
         || numeric(left) && numeric(right)
+        || textual(left) && textual(right)
         || matches!((left, right), (Type::Object(_), Type::Object(_)))
     {
         Type::Boolean
     } else {
         Type::Error
     }
+}
+
+fn textual(kind: &Type) -> bool {
+    matches!(kind, Type::String | Type::Character)
+}
+
+pub(crate) fn comparison(operator: BinaryOperator) -> bool {
+    use BinaryOperator::*;
+    matches!(
+        operator,
+        Equal | NotEqual | Less | LessEqual | Greater | GreaterEqual
+    )
 }

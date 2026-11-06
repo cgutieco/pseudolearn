@@ -131,7 +131,7 @@
     ],
     "entorno": {},
     "archivos": {
-      "p.pseudo": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nLeer x;\nEscribir x * 2;\nFinAlgoritmo\n"
+      "p.pseudo": "Algoritmo P\nDefinir x Como Entero <- 0;\nLeer x;\nEscribir x * 2;\nFinAlgoritmo\n"
     },
     "entrada": "21\n"
   }
@@ -200,7 +200,7 @@
     ],
     "entorno": {},
     "archivos": {
-      "p.pseudo": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nx <- 0;\nEscribir 1 div x;\nFinAlgoritmo\n"
+      "p.pseudo": "Algoritmo P\nDefinir x Como Entero <- 0;\nx <- 0;\nEscribir 1 div x;\nFinAlgoritmo\n"
     }
   }
 }
@@ -227,7 +227,7 @@
     ],
     "entorno": {},
     "archivos": {
-      "p.pseudo": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nLeer x;\nEscribir x;\nFinAlgoritmo\n"
+      "p.pseudo": "Algoritmo P\nDefinir x Como Entero <- 0;\nLeer x;\nEscribir x;\nFinAlgoritmo\n"
     }
   }
 }
@@ -298,7 +298,7 @@
     ],
     "entorno": {},
     "archivos": {
-      "p.pseudo": "Algoritmo P\nEscribir trunc(azar() * 9007199254740992.0);\nFinAlgoritmo\n"
+      "p.pseudo": "Algoritmo P\nEscribir trunc(AzarReal() * 9007199254740992.0);\nFinAlgoritmo\n"
     }
   }
 }
@@ -715,7 +715,7 @@
     ],
     "entorno": {},
     "archivos": {
-      "p.pseudo": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nLeer x;\nEscribir x * 2;\nFinAlgoritmo\n"
+      "p.pseudo": "Algoritmo P\nDefinir x Como Entero <- 0;\nLeer x;\nEscribir x * 2;\nFinAlgoritmo\n"
     },
     "entrada": "{\"command\":\"input\",\"text\":\"21\"}\n"
   }
@@ -744,7 +744,7 @@
     ],
     "entorno": {},
     "archivos": {
-      "p.pseudo": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nLeer x;\nEscribir x * 2;\nFinAlgoritmo\n"
+      "p.pseudo": "Algoritmo P\nDefinir x Como Entero <- 0;\nLeer x;\nEscribir x * 2;\nFinAlgoritmo\n"
     },
     "entrada": ""
   }
@@ -773,7 +773,7 @@
     ],
     "entorno": {},
     "archivos": {
-      "p.pseudo": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nLeer x;\nEscribir x * 2;\nFinAlgoritmo\n"
+      "p.pseudo": "Algoritmo P\nDefinir x Como Entero <- 0;\nLeer x;\nEscribir x * 2;\nFinAlgoritmo\n"
     },
     "entrada": "{\"command\":\"cancel\"}\n"
   }

@@ -99,7 +99,7 @@ fn has_document_version(changes: &[Value], uri: &str, version: i64) -> bool {
 
 #[test]
 fn project_rename_rejects_collisions_reserved_names_and_closed_dependents() {
-    let main = "Algoritmo Main\nDefinir Mutable total Como Entero <- 0;\nDefinir Mutable other Como Entero <- 1;\nDefinir Mutable súma Como Entero <- 2;\nFinAlgoritmo\n";
+    let main = "Algoritmo Main\nDefinir total Como Entero <- 0;\nDefinir other Como Entero <- 1;\nDefinir súma Como Entero <- 2;\nFinAlgoritmo\n";
     let mut server = initialized_server(rename_capabilities());
     server.handle_message(&workspace_message(main, LIBRARY));
     open_document(&mut server, APP_URI, 4, main);

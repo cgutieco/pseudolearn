@@ -66,7 +66,7 @@
     "salida": "1\n2\n",
     "terminacion": "completed"
   },
-  "programa": "SubProceso f(n Como Entero) Como Entero\nEscribir n;\nRetornar n;\nFinSubProceso\nAlgoritmo P\nDefinir Mutable x Como Entero <- 0;\nx <- f(1) + f(2);\nFinAlgoritmo\n",
+  "programa": "SubProceso f(n Como Entero) Como Entero\nEscribir n;\nRetornar n;\nFinSubProceso\nAlgoritmo P\nDefinir x Como Entero <- 0;\nx <- f(1) + f(2);\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```
@@ -116,7 +116,7 @@
       }
     ]
   },
-  "programa": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nDefinir Mutable z Como Entero <- 0;\nx <- 0;\nEscribir 1;\nz <- (1 div x) + (2 ^ (0 - 1));\nEscribir z;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir x Como Entero <- 0;\nDefinir z Como Entero <- 0;\nx <- 0;\nEscribir 1;\nz <- (1 div x) + (2 ^ (0 - 1));\nEscribir z;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```
@@ -137,7 +137,7 @@
       "codigo": "divisionByZero"
     }
   },
-  "programa": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nx <- 0;\nEscribir \"a\", 1 div x;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir x Como Entero <- 0;\nx <- 0;\nEscribir \"a\", 1 div x;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```
@@ -171,7 +171,7 @@
       "codigo": "integerOverflow"
     }
   },
-  "programa": "Algoritmo P\nDefinir Mutable a Como Entero <- 0;\nDefinir Mutable b Como Entero <- 0;\na <- 9223372036854775807;\nb <- 0;\nb <- (a + 1) * (b div b);\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir a Como Entero <- 0;\nDefinir b Como Entero <- 0;\na <- 9223372036854775807;\nb <- 0;\nb <- (a + 1) * (b div b);\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```
@@ -219,7 +219,7 @@
       "codigo": "divisionByZero"
     }
   },
-  "programa": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nEscribir 10 div x;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir x Como Entero <- 0;\nEscribir 10 div x;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```
@@ -246,8 +246,8 @@
     }
   },
   "programas": {
-    "es": "SubProceso Probe(x Como Entero) Como Resultado<Cadena, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(ATexto(10 div x));\nRetornar Exito(\"listo\");\nFinSubProceso\nAlgoritmo Main\nDefinir Mutable zero Como Entero <- 0;\nSegun Probe(zero) Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
-    "en": "subroutine Probe(x as integer) as result<string, IoError>\ndefine directory as DirCap <- propagate requestDirectory(toText(10 div x));\nreturn success(\"listo\");\nendSubroutine\nalgorithm Main\ndefine mutable zero as integer <- 0;\nswitch Probe(zero) do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+    "es": "SubProceso Probe(x Como Entero) Como Resultado<Cadena, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(ATexto(10 div x));\nRetornar Exito(\"listo\");\nFinSubProceso\nAlgoritmo Main\nDefinir zero Como Entero <- 0;\nSegun Probe(zero) Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe(x as integer) as result<string, IoError>\ndefine directory as DirCap <- propagate requestDirectory(toText(10 div x));\nreturn success(\"listo\");\nendSubroutine\nalgorithm Main\ndefine zero as integer <- 0;\nswitch Probe(zero) do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {}
 }

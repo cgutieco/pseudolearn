@@ -344,7 +344,7 @@
             "uri": "file:///prueba.pseudo",
             "languageId": "pseudolearn",
             "version": 1,
-            "text": "Algoritmo Principal\n  Definir Mutable x Como Entero <- 0;\n  x <- \"error\";\nFinAlgoritmo\n"
+            "text": "Algoritmo Principal\n  Definir x Como Entero <- 0;\n  x <- \"error\";\nFinAlgoritmo\n"
           }
         }
       },
@@ -924,7 +924,7 @@
   "revisado_por": "Cesar Antonio Gutierrez Contreras",
   "operacion": "service",
   "espera": {"servicio": {"prepare_range":{"start":{"line":1,"character":16},"end":{"line":1,"character":21}},"rename_edits":2}},
-  "servicio": {"suboperacion":"lsp","mensajes":[{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"locale":"es","capabilities":{"workspace":{"workspaceEdit":{"documentChanges":true,"failureHandling":"transactional"}}}}},{"jsonrpc":"2.0","method":"textDocument/didOpen","params":{"textDocument":{"uri":"file:///rename.pseudo","languageId":"pseudolearn","version":1,"text":"Algoritmo Total\nDefinir Mutable total Como Entero <- 0;\nEscribir total;\nFinAlgoritmo\n"}}},{"jsonrpc":"2.0","id":2,"method":"textDocument/prepareRename","params":{"textDocument":{"uri":"file:///rename.pseudo"},"position":{"line":1,"character":16}}},{"jsonrpc":"2.0","id":3,"method":"textDocument/rename","params":{"textDocument":{"uri":"file:///rename.pseudo"},"position":{"line":1,"character":16},"newName":"suma"}}],"proyeccion":"rename"}
+  "servicio": {"suboperacion":"lsp","mensajes":[{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"locale":"es","capabilities":{"workspace":{"workspaceEdit":{"documentChanges":true,"failureHandling":"transactional"}}}}},{"jsonrpc":"2.0","method":"textDocument/didOpen","params":{"textDocument":{"uri":"file:///rename.pseudo","languageId":"pseudolearn","version":1,"text":"Algoritmo Total\nDefinir total Como Entero <- 0;\nEscribir total;\nFinAlgoritmo\n"}}},{"jsonrpc":"2.0","id":2,"method":"textDocument/prepareRename","params":{"textDocument":{"uri":"file:///rename.pseudo"},"position":{"line":1,"character":16}}},{"jsonrpc":"2.0","id":3,"method":"textDocument/rename","params":{"textDocument":{"uri":"file:///rename.pseudo"},"position":{"line":1,"character":16},"newName":"suma"}}],"proyeccion":"rename"}
 }
 ```
 

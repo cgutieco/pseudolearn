@@ -219,7 +219,7 @@ fn console_output_containing_the_secret_is_redacted() {
 
 #[test]
 fn input_read_containing_the_secret_is_redacted() {
-    let program = "Algoritmo Main\nDefinir Mutable word Como Cadena <- \"\";\nLeer word;\nEscribir 1;\nFinAlgoritmo\n";
+    let program = "Algoritmo Main\nDefinir word Como Cadena <- \"\";\nLeer word;\nEscribir 1;\nFinAlgoritmo\n";
     let request = json!({"kind":"execute","program":program,"profile":"es",
         "inputs":["s3cr3t"],"seed":42,"observe":"none","host":secret_host("s3cr3t", "clave-privada")});
     let response = ApiSession::default().call(

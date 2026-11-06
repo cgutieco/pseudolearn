@@ -68,8 +68,13 @@ fn check_read(
     if matches!(kind, Type::Task(_)) && !session.control.awaiting_task_handle {
         session.report(DiagnosticCode::TaskHandleEscape, node);
     }
-    if matches!(kind, Type::Array { .. }) && purpose == ExpressionPurpose::Value {
+    if matches!(kind, Type::Array { .. })
+        && matches!(purpose, ExpressionPurpose::Value | ExpressionPurpose::Receiver)
+    {
         session.named_report(DiagnosticCode::ArrayCannotBeUsedAsValue, node, &name);
+        return false;
+    }
+    if purpose == ExpressionPurpose::Receiver && matches!(kind, Type::Record(_)) {
         return false;
     }
     !session.initialized.get(index).copied().unwrap_or(false) && !session.invalid.contains(&local)

@@ -183,8 +183,8 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
     "en"
   ],
   "programas": {
-    "es": "Registro Punto\nDefinir x, z Como Entero;\nFinRegistro\nRegistro Linea\nDefinir a, b Como Punto;\nFinRegistro\nAlgoritmo P\nDefinir Mutable l Como Linea <- Linea(Punto(1, 2), Punto(3, 4));\nl.b.z <- 9;\nEscribir l.a.x, l.b.z;\nFinAlgoritmo\n",
-    "en": "record Punto\ndefine x, z as integer;\nendRecord\nrecord Linea\ndefine a, b as Punto;\nendRecord\nalgorithm P\ndefine mutable l as Linea <- Linea(Punto(1, 2), Punto(3, 4));\nl.b.z <- 9;\nwrite l.a.x, l.b.z;\nendAlgorithm\n"
+    "es": "Registro Punto\nDefinir x, z Como Entero;\nFinRegistro\nRegistro Linea\nDefinir a, b Como Punto;\nFinRegistro\nAlgoritmo P\nDefinir l Como Linea <- Linea(Punto(1, 2), Punto(3, 4));\nl.b.z <- 9;\nEscribir l.a.x, l.b.z;\nFinAlgoritmo\n",
+    "en": "record Punto\ndefine x, z as integer;\nendRecord\nrecord Linea\ndefine a, b as Punto;\nendRecord\nalgorithm P\ndefine l as Linea <- Linea(Punto(1, 2), Punto(3, 4));\nl.b.z <- 9;\nwrite l.a.x, l.b.z;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -402,8 +402,8 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
     "en"
   ],
   "programas": {
-    "es": "Registro Punto\nDefinir x, z Como Entero;\nFinRegistro\nAlgoritmo P\nDefinir p Como Punto <- Punto(1, 2);\nDefinir Mutable q Como Punto <- Punto(0, 0);\nq <- p;\nq.x <- 10;\nEscribir p.x, q.x;\nFinAlgoritmo\n",
-    "en": "record Punto\ndefine x, z as integer;\nendRecord\nalgorithm P\ndefine p as Punto <- Punto(1, 2);\ndefine mutable q as Punto <- Punto(0, 0);\nq <- p;\nq.x <- 10;\nwrite p.x, q.x;\nendAlgorithm\n"
+    "es": "Registro Punto\nDefinir x, z Como Entero;\nFinRegistro\nAlgoritmo P\nDefinir p Como Punto <- Punto(1, 2);\nDefinir q Como Punto <- Punto(0, 0);\nq <- p;\nq.x <- 10;\nEscribir p.x, q.x;\nFinAlgoritmo\n",
+    "en": "record Punto\ndefine x, z as integer;\nendRecord\nalgorithm P\ndefine p as Punto <- Punto(1, 2);\ndefine q as Punto <- Punto(0, 0);\nq <- p;\nq.x <- 10;\nwrite p.x, q.x;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -423,8 +423,8 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
     "en"
   ],
   "programas": {
-    "es": "Registro Punto\nDefinir x, z Como Entero;\nFinRegistro\nSubProceso mover(p Como Punto) Como Punto\np.x <- p.x + 1;\nRetornar p;\nFinSubProceso\nAlgoritmo P\nDefinir a Como Punto <- Punto(1, 2);\nDefinir Mutable b Como Punto <- Punto(0, 0);\nb <- mover(a);\nEscribir a.x, b.x;\nFinAlgoritmo\n",
-    "en": "record Punto\ndefine x, z as integer;\nendRecord\nsubroutine mover(p as Punto) as Punto\np.x <- p.x + 1;\nreturn p;\nendSubroutine\nalgorithm P\ndefine a as Punto <- Punto(1, 2);\ndefine mutable b as Punto <- Punto(0, 0);\nb <- mover(a);\nwrite a.x, b.x;\nendAlgorithm\n"
+    "es": "Registro Punto\nDefinir x, z Como Entero;\nFinRegistro\nSubProceso mover(p Como Punto) Como Punto\np.x <- p.x + 1;\nRetornar p;\nFinSubProceso\nAlgoritmo P\nDefinir a Como Punto <- Punto(1, 2);\nDefinir b Como Punto <- Punto(0, 0);\nb <- mover(a);\nEscribir a.x, b.x;\nFinAlgoritmo\n",
+    "en": "record Punto\ndefine x, z as integer;\nendRecord\nsubroutine mover(p as Punto) as Punto\np.x <- p.x + 1;\nreturn p;\nendSubroutine\nalgorithm P\ndefine a as Punto <- Punto(1, 2);\ndefine b as Punto <- Punto(0, 0);\nb <- mover(a);\nwrite a.x, b.x;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -465,8 +465,8 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
     "en"
   ],
   "programas": {
-    "es": "Registro Punto\nDefinir x, z Como Entero;\nFinRegistro\nSubProceso mover(p Como Punto Por Referencia)\np.x <- p.x + 10;\nFinSubProceso\nAlgoritmo P\nDefinir Mutable a Como Punto <- Punto(1, 2);\nmover(a);\nEscribir a.x, a.z;\nFinAlgoritmo\n",
-    "en": "record Punto\ndefine x, z as integer;\nendRecord\nsubroutine mover(p as Punto by reference)\np.x <- p.x + 10;\nendSubroutine\nalgorithm P\ndefine mutable a as Punto <- Punto(1, 2);\nmover(a);\nwrite a.x, a.z;\nendAlgorithm\n"
+    "es": "Registro Punto\nDefinir x, z Como Entero;\nFinRegistro\nSubProceso mover(p Como Punto Por Referencia)\np.x <- p.x + 10;\nFinSubProceso\nAlgoritmo P\nDefinir a Como Punto <- Punto(1, 2);\nmover(a);\nEscribir a.x, a.z;\nFinAlgoritmo\n",
+    "en": "record Punto\ndefine x, z as integer;\nendRecord\nsubroutine mover(p as Punto by reference)\np.x <- p.x + 10;\nendSubroutine\nalgorithm P\ndefine a as Punto <- Punto(1, 2);\nmover(a);\nwrite a.x, a.z;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -533,8 +533,8 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
     "en"
   ],
   "programas": {
-    "es": "Registro Medida\nDefinir v Como Real;\nFinRegistro\nAlgoritmo P\nDefinir a Como Medida <- Medida(0.0);\nDefinir Mutable b Como Medida <- Medida(0.0);\nb <- Medida(-0.0);\nEscribir a = b;\nFinAlgoritmo\n",
-    "en": "record Medida\ndefine v as real;\nendRecord\nalgorithm P\ndefine a as Medida <- Medida(0.0);\ndefine mutable b as Medida <- Medida(0.0);\nb <- Medida(-0.0);\nwrite a = b;\nendAlgorithm\n"
+    "es": "Registro Medida\nDefinir v Como Real;\nFinRegistro\nAlgoritmo P\nDefinir a Como Medida <- Medida(0.0);\nDefinir b Como Medida <- Medida(0.0);\nb <- Medida(-0.0);\nEscribir a = b;\nFinAlgoritmo\n",
+    "en": "record Medida\ndefine v as real;\nendRecord\nalgorithm P\ndefine a as Medida <- Medida(0.0);\ndefine b as Medida <- Medida(0.0);\nb <- Medida(-0.0);\nwrite a = b;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -653,8 +653,8 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
     "en"
   ],
   "programas": {
-    "es": "Registro Punto\nDefinir x Como Entero;\nFinRegistro\nAlgoritmo P\nDefinir Mutable p Como Punto <- Punto(9223372036854775807);\np.x <- p.x + 1;\nFinAlgoritmo\n",
-    "en": "record Punto\ndefine x as integer;\nendRecord\nalgorithm P\ndefine mutable p as Punto <- Punto(9223372036854775807);\np.x <- p.x + 1;\nendAlgorithm\n"
+    "es": "Registro Punto\nDefinir x Como Entero;\nFinRegistro\nAlgoritmo P\nDefinir p Como Punto <- Punto(9223372036854775807);\np.x <- p.x + 1;\nFinAlgoritmo\n",
+    "en": "record Punto\ndefine x as integer;\nendRecord\nalgorithm P\ndefine p as Punto <- Punto(9223372036854775807);\np.x <- p.x + 1;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -697,8 +697,8 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
     "en"
   ],
   "programas": {
-    "es": "Registro Punto\nDefinir x, z Como Entero;\nFinRegistro\nAlgoritmo P\nDimension a[1] Como Punto;\na[0] <- Punto(1, 2);\nDefinir Mutable q Como Punto <- a[0];\nq.x <- 9;\nEscribir a[0].x;\nFinAlgoritmo\n",
-    "en": "record Punto\ndefine x, z as integer;\nendRecord\nalgorithm P\ndimension a[1] as Punto;\na[0] <- Punto(1, 2);\ndefine mutable q as Punto <- a[0];\nq.x <- 9;\nwrite a[0].x;\nendAlgorithm\n"
+    "es": "Registro Punto\nDefinir x, z Como Entero;\nFinRegistro\nAlgoritmo P\nDimension a[1] Como Punto;\na[0] <- Punto(1, 2);\nDefinir q Como Punto <- a[0];\nq.x <- 9;\nEscribir a[0].x;\nFinAlgoritmo\n",
+    "en": "record Punto\ndefine x, z as integer;\nendRecord\nalgorithm P\ndimension a[1] as Punto;\na[0] <- Punto(1, 2);\ndefine q as Punto <- a[0];\nq.x <- 9;\nwrite a[0].x;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -806,8 +806,8 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
     "en"
   ],
   "programas": {
-    "es": "Registro Punto\nDefinir x, z Como Entero;\nFinRegistro\nClase Caja\nDefinir p Como Punto;\nMetodo Constructor()\nEste.p <- Punto(1, 2);\nFinMetodo\nFinClase\nAlgoritmo P\nDefinir c Como Caja <- Nuevo Caja();\nDefinir Mutable q Como Punto <- c.p;\nq.x <- 9;\nEscribir c.p.x;\nFinAlgoritmo\n",
-    "en": "record Punto\ndefine x, z as integer;\nendRecord\nclass Caja\ndefine p as Punto;\nmethod constructor()\nthis.p <- Punto(1, 2);\nendMethod\nendClass\nalgorithm P\ndefine c as Caja <- new Caja();\ndefine mutable q as Punto <- c.p;\nq.x <- 9;\nwrite c.p.x;\nendAlgorithm\n"
+    "es": "Registro Punto\nDefinir x, z Como Entero;\nFinRegistro\nClase Caja\nDefinir p Como Punto;\nMetodo Constructor()\nEste.p <- Punto(1, 2);\nFinMetodo\nFinClase\nAlgoritmo P\nDefinir c Como Caja <- Nuevo Caja();\nDefinir q Como Punto <- c.p;\nq.x <- 9;\nEscribir c.p.x;\nFinAlgoritmo\n",
+    "en": "record Punto\ndefine x, z as integer;\nendRecord\nclass Caja\ndefine p as Punto;\nmethod constructor()\nthis.p <- Punto(1, 2);\nendMethod\nendClass\nalgorithm P\ndefine c as Caja <- new Caja();\ndefine q as Punto <- c.p;\nq.x <- 9;\nwrite c.p.x;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -953,8 +953,8 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
     "en"
   ],
   "programas": {
-    "es": "Registro Punto\nDefinir x, z Como Entero;\nFinRegistro\nRegistro Gemelo\nDefinir x, z Como Entero;\nFinRegistro\nSubProceso mover(p Como Punto Por Referencia)\np.x <- 1;\nFinSubProceso\nAlgoritmo P\nDefinir Mutable g Como Gemelo <- Gemelo(1, 2);\nmover(g);\nFinAlgoritmo\n",
-    "en": "record Punto\ndefine x, z as integer;\nendRecord\nrecord Gemelo\ndefine x, z as integer;\nendRecord\nsubroutine mover(p as Punto by reference)\np.x <- 1;\nendSubroutine\nalgorithm P\ndefine mutable g as Gemelo <- Gemelo(1, 2);\nmover(g);\nendAlgorithm\n"
+    "es": "Registro Punto\nDefinir x, z Como Entero;\nFinRegistro\nRegistro Gemelo\nDefinir x, z Como Entero;\nFinRegistro\nSubProceso mover(p Como Punto Por Referencia)\np.x <- 1;\nFinSubProceso\nAlgoritmo P\nDefinir g Como Gemelo <- Gemelo(1, 2);\nmover(g);\nFinAlgoritmo\n",
+    "en": "record Punto\ndefine x, z as integer;\nendRecord\nrecord Gemelo\ndefine x, z as integer;\nendRecord\nsubroutine mover(p as Punto by reference)\np.x <- 1;\nendSubroutine\nalgorithm P\ndefine g as Gemelo <- Gemelo(1, 2);\nmover(g);\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -1005,8 +1005,8 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
     "en"
   ],
   "programas": {
-    "es": "Registro Punto\nDefinir x, z Como Entero;\nFinRegistro\nSubProceso fijar(a Como Punto Por Referencia, b Como Punto Por Referencia)\na.x <- 5;\nEscribir b.x;\nFinSubProceso\nAlgoritmo P\nDefinir Mutable q Como Punto <- Punto(1, 2);\nfijar(q, q);\nFinAlgoritmo\n",
-    "en": "record Punto\ndefine x, z as integer;\nendRecord\nsubroutine fijar(a as Punto by reference, b as Punto by reference)\na.x <- 5;\nwrite b.x;\nendSubroutine\nalgorithm P\ndefine mutable q as Punto <- Punto(1, 2);\nfijar(q, q);\nendAlgorithm\n"
+    "es": "Registro Punto\nDefinir x, z Como Entero;\nFinRegistro\nSubProceso fijar(a Como Punto Por Referencia, b Como Punto Por Referencia)\na.x <- 5;\nEscribir b.x;\nFinSubProceso\nAlgoritmo P\nDefinir q Como Punto <- Punto(1, 2);\nfijar(q, q);\nFinAlgoritmo\n",
+    "en": "record Punto\ndefine x, z as integer;\nendRecord\nsubroutine fijar(a as Punto by reference, b as Punto by reference)\na.x <- 5;\nwrite b.x;\nendSubroutine\nalgorithm P\ndefine q as Punto <- Punto(1, 2);\nfijar(q, q);\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",

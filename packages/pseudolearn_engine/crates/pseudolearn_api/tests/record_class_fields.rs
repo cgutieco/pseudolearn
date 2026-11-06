@@ -28,7 +28,7 @@ fn a_class_field_holds_a_record_and_exposes_its_leaves() {
 #[test]
 fn assigning_a_record_copies_it_by_value() {
     let program = format!(
-        "{POINT}class Holder\npublic define p as Point;\nmethod constructor()\nthis.p <- Point(1, 2);\nendMethod\nendClass\nalgorithm P\ndefine h as Holder <- new Holder();\ndefine mutable q as Point <- h.p;\nq.x <- 50;\nwrite h.p.x;\nh.p <- q;\nq.x <- 60;\nwrite h.p.x;\nwrite h.p = q;\nendAlgorithm\n"
+        "{POINT}class Holder\npublic define p as Point;\nmethod constructor()\nthis.p <- Point(1, 2);\nendMethod\nendClass\nalgorithm P\ndefine h as Holder <- new Holder();\ndefine q as Point <- h.p;\nq.x <- 50;\nwrite h.p.x;\nh.p <- q;\nq.x <- 60;\nwrite h.p.x;\nwrite h.p = q;\nendAlgorithm\n"
     );
     let response = run(program);
     assert_eq!(

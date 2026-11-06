@@ -27,8 +27,8 @@
   "valor": {
     "sample": {
       "mensajes": {
-        "es": "El vínculo es inmutable; usá Definir Mutable.",
-        "en": "Binding is immutable; use define mutable."
+        "es": "El vínculo no se puede reasignar; usá otra variable.",
+        "en": "This binding cannot be reassigned; use another variable."
       },
       "argumentos": [],
       "tipos_argumentos": {}

@@ -65,7 +65,7 @@
     "salida": "{{lexema:booleanTrue}}\n",
     "terminacion": "completed"
   },
-  "programa": "Algoritmo P\nEscribir azar() < 1.0;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nEscribir AzarReal() < 1.0;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```
@@ -179,7 +179,7 @@
   "id": "R3",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La fuente aleatoria es xoshiro256** cuyo estado inicial son las cuatro primeras salidas de SplitMix64 a partir de la semilla, un entero con signo de 64 bits reinterpretado en complemento a dos. Cada llamada a azar toma la siguiente salida s de 64 bits y devuelve (s desplazado 11 bits a la derecha) × 2⁻⁵³. En vivo, si no se declara una semilla, el anfitrión obtiene entropía del sistema operativo; la semilla efectiva queda en la identidad de la cinta. Una semilla explícita prevalece. La reproducción usa la semilla grabada sin consultar entropía.",
+  "texto": "La fuente aleatoria es xoshiro256** cuyo estado inicial son las cuatro primeras salidas de SplitMix64 a partir de la semilla, un entero con signo de 64 bits reinterpretado en complemento a dos. Cada llamada a AzarReal toma la siguiente salida s de 64 bits y devuelve (s desplazado 11 bits a la derecha) × 2⁻⁵³; Azar y Aleatorio toman salidas enteras de la misma fuente con el rechazo que fija LIB.CORE.RANDOM. En vivo, si no se declara una semilla, el anfitrión obtiene entropía del sistema operativo; la semilla efectiva queda en la identidad de la cinta. Una semilla explícita prevalece. La reproducción usa la semilla grabada sin consultar entropía.",
   "verificacion": [
     "C2",
     "C3",
@@ -202,7 +202,7 @@
     "salida": "5415695640260286\n6735350249106120\n927921571702396\n3752300831360421\n6602248042049669\n",
     "terminacion": "completed"
   },
-  "programa": "Algoritmo P\nEscribir trunc(azar() * 9007199254740992.0);\nEscribir trunc(azar() * 9007199254740992.0);\nEscribir trunc(azar() * 9007199254740992.0);\nEscribir trunc(azar() * 9007199254740992.0);\nEscribir trunc(azar() * 9007199254740992.0);\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nEscribir trunc(AzarReal() * 9007199254740992.0);\nEscribir trunc(AzarReal() * 9007199254740992.0);\nEscribir trunc(AzarReal() * 9007199254740992.0);\nEscribir trunc(AzarReal() * 9007199254740992.0);\nEscribir trunc(AzarReal() * 9007199254740992.0);\nFinAlgoritmo\n",
   "perfil_base": "es",
   "semilla": 0
 }
@@ -222,7 +222,7 @@
     "salida": "755370490430936\n3413550631330343\n6125286505004179\n8328893607999084\n8933375477570955\n",
     "terminacion": "completed"
   },
-  "programa": "Algoritmo P\nEscribir trunc(azar() * 9007199254740992.0);\nEscribir trunc(azar() * 9007199254740992.0);\nEscribir trunc(azar() * 9007199254740992.0);\nEscribir trunc(azar() * 9007199254740992.0);\nEscribir trunc(azar() * 9007199254740992.0);\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nEscribir trunc(AzarReal() * 9007199254740992.0);\nEscribir trunc(AzarReal() * 9007199254740992.0);\nEscribir trunc(AzarReal() * 9007199254740992.0);\nEscribir trunc(AzarReal() * 9007199254740992.0);\nEscribir trunc(AzarReal() * 9007199254740992.0);\nFinAlgoritmo\n",
   "perfil_base": "es",
   "semilla": 42
 }
@@ -242,7 +242,7 @@
     "salida": "5043065146658773\n6912440677258288\n4569322158181384\n6734172366359527\n5109097669343124\n",
     "terminacion": "completed"
   },
-  "programa": "Algoritmo P\nEscribir trunc(azar() * 9007199254740992.0);\nEscribir trunc(azar() * 9007199254740992.0);\nEscribir trunc(azar() * 9007199254740992.0);\nEscribir trunc(azar() * 9007199254740992.0);\nEscribir trunc(azar() * 9007199254740992.0);\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nEscribir trunc(AzarReal() * 9007199254740992.0);\nEscribir trunc(AzarReal() * 9007199254740992.0);\nEscribir trunc(AzarReal() * 9007199254740992.0);\nEscribir trunc(AzarReal() * 9007199254740992.0);\nEscribir trunc(AzarReal() * 9007199254740992.0);\nFinAlgoritmo\n",
   "perfil_base": "es",
   "semilla": -1
 }
@@ -304,8 +304,8 @@ Los valores esperados de R3 se calculan con el oráculo independiente de see_ora
     }
   },
   "programas": {
-    "es": "SubProceso Probe(directory Como DirectorioCap) Como Resultado<Entero, ErrorES>\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\nDiferir\nDescartar file.Cerrar();\nFinDiferir\nDefinir Mutable zero Como Entero <- 0;\nRetornar Exito(10 div zero);\nFinSubProceso\nAlgoritmo Main\nDefinir opened Como Resultado<DirectorioCap, ErrorES> <- SolicitarDirectorio(\"root\");\nSegun opened Hacer\nExito(root): Segun Probe(root) Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
-    "en": "subroutine Probe(directory as DirCap) as result<integer, IoError>\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\ndefer\ndiscard file.close();\nendDefer\ndefine mutable zero as integer <- 0;\nreturn success(10 div zero);\nendSubroutine\nalgorithm Main\ndefine opened as result<DirCap, IoError> <- requestDirectory(\"root\");\nswitch opened do\nsuccess(root): switch Probe(root) do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+    "es": "SubProceso Probe(directory Como DirectorioCap) Como Resultado<Entero, ErrorES>\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\nDiferir\nDescartar file.Cerrar();\nFinDiferir\nDefinir zero Como Entero <- 0;\nRetornar Exito(10 div zero);\nFinSubProceso\nAlgoritmo Main\nDefinir opened Como Resultado<DirectorioCap, ErrorES> <- SolicitarDirectorio(\"root\");\nSegun opened Hacer\nExito(root): Segun Probe(root) Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe(directory as DirCap) as result<integer, IoError>\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\ndefer\ndiscard file.close();\nendDefer\ndefine zero as integer <- 0;\nreturn success(10 div zero);\nendSubroutine\nalgorithm Main\ndefine opened as result<DirCap, IoError> <- requestDirectory(\"root\");\nswitch opened do\nsuccess(root): switch Probe(root) do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
     "files": {
@@ -349,8 +349,8 @@ Los valores esperados de R3 se calculan con el oráculo independiente de see_ora
     }
   },
   "programas": {
-    "es": "SubProceso Probe(directory Como DirectorioCap) Como Resultado<Entero, ErrorES>\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\nDiferir\nDescartar file.Cerrar();\nFinDiferir\nDefinir Mutable n Como Entero <- 0;\nMientras Verdadero Hacer\nn <- n + 1;\nFinMientras\nRetornar Exito(n);\nFinSubProceso\nAlgoritmo Main\nDefinir opened Como Resultado<DirectorioCap, ErrorES> <- SolicitarDirectorio(\"root\");\nSegun opened Hacer\nExito(root): Segun Probe(root) Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
-    "en": "subroutine Probe(directory as DirCap) as result<integer, IoError>\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\ndefer\ndiscard file.close();\nendDefer\ndefine mutable n as integer <- 0;\nwhile true do\nn <- n + 1;\nendWhile\nreturn success(n);\nendSubroutine\nalgorithm Main\ndefine opened as result<DirCap, IoError> <- requestDirectory(\"root\");\nswitch opened do\nsuccess(root): switch Probe(root) do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+    "es": "SubProceso Probe(directory Como DirectorioCap) Como Resultado<Entero, ErrorES>\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\nDiferir\nDescartar file.Cerrar();\nFinDiferir\nDefinir n Como Entero <- 0;\nMientras Verdadero Hacer\nn <- n + 1;\nFinMientras\nRetornar Exito(n);\nFinSubProceso\nAlgoritmo Main\nDefinir opened Como Resultado<DirectorioCap, ErrorES> <- SolicitarDirectorio(\"root\");\nSegun opened Hacer\nExito(root): Segun Probe(root) Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe(directory as DirCap) as result<integer, IoError>\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\ndefer\ndiscard file.close();\nendDefer\ndefine n as integer <- 0;\nwhile true do\nn <- n + 1;\nendWhile\nreturn success(n);\nendSubroutine\nalgorithm Main\ndefine opened as result<DirCap, IoError> <- requestDirectory(\"root\");\nswitch opened do\nsuccess(root): switch Probe(root) do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
     "files": {

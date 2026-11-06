@@ -37,7 +37,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "SubProceso(tipos de parámetro) Como retorno denota un tipo función estructural con tipos, orden, modos de paso y retorno exactos; sin Como retorno es vacío. SubProceso(parámetros nombrados) Como retorno seguido de cuerpo y FinSubProceso es un literal de función. Un nombre de subprograma es un valor de su firma. Se permite llamar cualquier expresión de tipo función, pasarla, almacenarla y retornarla. Una llamada al nombre conocido sigue siendo directa. La clausura copia solo los vínculos inmutables que utiliza, incluidos los usados transitivamente por clausuras interiores; copiar un registro copia sus campos y copiar un objeto conserva su identidad. El entorno sobrevive al marco mientras sea alcanzable y participa en las raíces precisas del recolector. Capturar un vínculo mutable o prestado se rechaza con mutableClosureCapture, su tipo y origen relacionado; un parámetro mutable se copia antes a un vínculo inmutable para capturarlo. El entorno admite como máximo 65 535 palabras; exceder el límite produce closureEnvironmentTooLarge antes de emitir código. Las funciones, incluidos los registros que las contienen, no admiten igualdad ni orden. Escribir muestra <subprograma> en es y <subroutine> en en, sin direcciones ni identidades internas.",
+  "texto": "SubProceso(tipos de parámetro) Como retorno denota un tipo función estructural con tipos, orden, modos de paso y retorno exactos; sin Como retorno es vacío. SubProceso(parámetros nombrados) Como retorno seguido de cuerpo y FinSubProceso es un literal de función. Un nombre de subprograma es un valor de su firma. Se permite llamar cualquier expresión de tipo función, pasarla, almacenarla y retornarla. Una llamada al nombre conocido sigue siendo directa. La clausura copia las variables que utiliza, incluidas las usadas transitivamente por clausuras interiores; copiar un registro copia sus campos y copiar un objeto conserva su identidad. El entorno sobrevive al marco mientras sea alcanzable y participa en las raíces precisas del recolector. Una variable o parámetro por valor solo se puede capturar si es efectivamente constante: nunca se reasigna, es decir, no recibe un valor cuando ya podía tenerlo, no se asigna dentro de un bucle que la declaró fuera y no se pasa a un parámetro por referencia. Capturar uno que se reasigna, en cualquier punto de su ámbito, antes o después del literal, se rechaza con mutableClosureCapture, su tipo y como origen relacionado la primera reasignación; capturar un parámetro por referencia se rechaza igual con origen en su declaración. El entorno admite como máximo 65 535 palabras; exceder el límite produce closureEnvironmentTooLarge antes de emitir código. Las funciones, incluidos los registros que las contienen, no admiten igualdad ni orden. Escribir muestra <subprograma> en es y <subroutine> en en, sin direcciones ni identidades internas.",
   "verificacion": [
     "C1",
     "C2",
@@ -55,7 +55,15 @@
     "C14",
     "C15",
     "C16",
-    "C17"
+    "C17",
+    "C18",
+    "C19",
+    "C20",
+    "C21",
+    "C22",
+    "C23",
+    "C24",
+    "C25"
   ]
 }
 ```
@@ -111,8 +119,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir Mutable captured Como Entero <- 1;\nDefinir callback Como SubProceso() Como Entero <- SubProceso() Como Entero\nRetornar captured;\nFinSubProceso;\nEscribir callback();\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine mutable captured as integer <- 1;\ndefine callback as subroutine() as integer <- subroutine() as integer\nreturn captured;\nendSubroutine;\nwrite callback();\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir captured Como Entero <- 1;\nDefinir callback Como SubProceso() Como Entero <- SubProceso() Como Entero\nRetornar captured;\nFinSubProceso;\ncaptured <- 2;\nEscribir callback();\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine captured as integer <- 1;\ndefine callback as subroutine() as integer <- subroutine() as integer\nreturn captured;\nendSubroutine;\ncaptured <- 2;\nwrite callback();\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -181,8 +189,8 @@
     "en"
   ],
   "programas": {
-    "es": "Proceso P\nDefinir Mutable unused Como Entero <- 1;\nDefinir callback Como SubProceso() Como Entero <- SubProceso() Como Entero\nRetornar 7;\nFinSubProceso;\nEscribir callback();\nFinProceso\n",
-    "en": "algorithm P\ndefine mutable unused as integer <- 1;\ndefine callback as subroutine() as integer <- subroutine() as integer\nreturn 7;\nendSubroutine;\nwrite callback();\nendAlgorithm\n"
+    "es": "Proceso P\nDefinir unused Como Entero <- 1;\nDefinir callback Como SubProceso() Como Entero <- SubProceso() Como Entero\nRetornar 7;\nFinSubProceso;\nEscribir callback();\nFinProceso\n",
+    "en": "algorithm P\ndefine unused as integer <- 1;\ndefine callback as subroutine() as integer <- subroutine() as integer\nreturn 7;\nendSubroutine;\nwrite callback();\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -265,8 +273,8 @@
     "en"
   ],
   "programas": {
-    "es": "Registro Pair\nDefinir first Como Entero;\nDefinir second Como Entero;\nFinRegistro\nProceso P\nDefinir captured Como Pair <- Pair(3, 4);\nDefinir Mutable copy Como Pair <- captured;\nDefinir callback Como SubProceso() Como Entero <- SubProceso() Como Entero\nRetornar captured.first + captured.second;\nFinSubProceso;\ncopy.first <- 20;\nEscribir callback(), copy.first;\nFinProceso\n",
-    "en": "record Pair\ndefine first as integer;\ndefine second as integer;\nendRecord\nalgorithm P\ndefine captured as Pair <- Pair(3, 4);\ndefine mutable copy as Pair <- captured;\ndefine callback as subroutine() as integer <- subroutine() as integer\nreturn captured.first + captured.second;\nendSubroutine;\ncopy.first <- 20;\nwrite callback(), copy.first;\nendAlgorithm\n"
+    "es": "Registro Pair\nDefinir first Como Entero;\nDefinir second Como Entero;\nFinRegistro\nProceso P\nDefinir captured Como Pair <- Pair(3, 4);\nDefinir copy Como Pair <- captured;\nDefinir callback Como SubProceso() Como Entero <- SubProceso() Como Entero\nRetornar captured.first + captured.second;\nFinSubProceso;\ncopy.first <- 20;\nEscribir callback(), copy.first;\nFinProceso\n",
+    "en": "record Pair\ndefine first as integer;\ndefine second as integer;\nendRecord\nalgorithm P\ndefine captured as Pair <- Pair(3, 4);\ndefine copy as Pair <- captured;\ndefine callback as subroutine() as integer <- subroutine() as integer\nreturn captured.first + captured.second;\nendSubroutine;\ncopy.first <- 20;\nwrite callback(), copy.first;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -432,6 +440,256 @@
     "fallo": {
       "codigo": "integerOverflow"
     }
+  }
+}
+```
+
+```caso
+{
+  "id": "C18",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir x Como Entero;\nx <- 5;\nDefinir f Como SubProceso() Como Entero <- SubProceso() Como Entero\nRetornar x;\nFinSubProceso;\nEscribir f();\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine x as integer;\nx <- 5;\ndefine f as subroutine() as integer <- subroutine() as integer\nreturn x;\nendSubroutine;\nwrite f();\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "5\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C19",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir x Como Entero;\nx <- 5;\nDefinir f Como SubProceso() Como Entero <- SubProceso() Como Entero\nRetornar x;\nFinSubProceso;\nx <- 6;\nEscribir f();\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine x as integer;\nx <- 5;\ndefine f as subroutine() as integer <- subroutine() as integer\nreturn x;\nendSubroutine;\nx <- 6;\nwrite f();\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "mutableClosureCapture",
+        "severidad": "error"
+      }
+    ]
+  },
+  "esperas": {
+    "es": {
+      "arbol": "presente",
+      "diagnosticos": [
+        {
+          "codigo": "mutableClosureCapture",
+          "severidad": "error",
+          "tramo": {
+            "start": {
+              "line": 5,
+              "column": 10
+            },
+            "end": {
+              "line": 5,
+              "column": 11
+            }
+          },
+          "relacionados": [
+            {
+              "start": {
+                "line": 7,
+                "column": 1
+              },
+              "end": {
+                "line": 7,
+                "column": 7
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "en": {
+      "arbol": "presente",
+      "diagnosticos": [
+        {
+          "codigo": "mutableClosureCapture",
+          "severidad": "error",
+          "tramo": {
+            "start": {
+              "line": 5,
+              "column": 8
+            },
+            "end": {
+              "line": 5,
+              "column": 9
+            }
+          },
+          "relacionados": [
+            {
+              "start": {
+                "line": 7,
+                "column": 1
+              },
+              "end": {
+                "line": 7,
+                "column": 7
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C20",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir x Como Entero;\nDefinir c Como Logico <- Falso;\nSi c Entonces\nx <- 1;\nSiNo\nx <- 2;\nFinSi\nDefinir f Como SubProceso() Como Entero <- SubProceso() Como Entero\nRetornar x;\nFinSubProceso;\nEscribir f();\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine x as integer;\ndefine c as boolean <- false;\nif c then\nx <- 1;\nelse\nx <- 2;\nendIf\ndefine f as subroutine() as integer <- subroutine() as integer\nreturn x;\nendSubroutine;\nwrite f();\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "2\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C21",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir x Como Entero;\nPara i <- 1 Hasta 2 Hacer\nx <- i;\nFinPara\nx <- 0;\nDefinir f Como SubProceso() Como Entero <- SubProceso() Como Entero\nRetornar x;\nFinSubProceso;\nEscribir f();\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine x as integer;\nfor i <- 1 to 2 do\nx <- i;\nendFor\nx <- 0;\ndefine f as subroutine() as integer <- subroutine() as integer\nreturn x;\nendSubroutine;\nwrite f();\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "mutableClosureCapture",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C22",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir x Como Entero;\nLeer x;\nDefinir f Como SubProceso() Como Entero <- SubProceso() Como Entero\nRetornar x;\nFinSubProceso;\nEscribir f();\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine x as integer;\nread x;\ndefine f as subroutine() as integer <- subroutine() as integer\nreturn x;\nendSubroutine;\nwrite f();\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "9\n",
+    "terminacion": "completed"
+  },
+  "entradas": [
+    "9"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C23",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "SubProceso Envolver(v Como Entero) Como Entero\nDefinir f Como SubProceso() Como Entero <- SubProceso() Como Entero\nRetornar v;\nFinSubProceso;\nRetornar f();\nFinSubProceso\nAlgoritmo P\nEscribir Envolver(3);\nFinAlgoritmo\n",
+    "en": "subroutine Wrap(v as integer) as integer\ndefine f as subroutine() as integer <- subroutine() as integer\nreturn v;\nendSubroutine;\nreturn f();\nendSubroutine\nalgorithm P\nwrite Wrap(3);\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "3\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C24",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "SubProceso Envolver(v Como Entero) Como Entero\nv <- v + 1;\nDefinir f Como SubProceso() Como Entero <- SubProceso() Como Entero\nRetornar v;\nFinSubProceso;\nRetornar f();\nFinSubProceso\nAlgoritmo P\nEscribir Envolver(3);\nFinAlgoritmo\n",
+    "en": "subroutine Wrap(v as integer) as integer\nv <- v + 1;\ndefine f as subroutine() as integer <- subroutine() as integer\nreturn v;\nendSubroutine;\nreturn f();\nendSubroutine\nalgorithm P\nwrite Wrap(3);\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "mutableClosureCapture",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C25",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir x Como Entero <- 2;\nDefinir externa Como SubProceso() Como Entero <- SubProceso() Como Entero\nDefinir interna Como SubProceso() Como Entero <- SubProceso() Como Entero\nRetornar x * 10;\nFinSubProceso;\nRetornar interna();\nFinSubProceso;\nEscribir externa();\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine x as integer <- 2;\ndefine outer as subroutine() as integer <- subroutine() as integer\ndefine inner as subroutine() as integer <- subroutine() as integer\nreturn x * 10;\nendSubroutine;\nreturn inner();\nendSubroutine;\nwrite outer();\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "20\n",
+    "terminacion": "completed"
   }
 }
 ```

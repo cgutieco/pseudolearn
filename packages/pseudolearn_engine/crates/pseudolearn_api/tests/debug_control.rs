@@ -73,7 +73,7 @@ fn pause_preserves_input_and_rejects_unknown_commands() -> Result<(), String> {
     let mut session = ApiSession::default();
     let resource = execution(
         &mut session,
-        "Algoritmo Probe\nDefinir Mutable value Como Cadena <- \"\";\nLeer value;\nEscribir value;\nFinAlgoritmo\n",
+        "Algoritmo Probe\nDefinir value Como Cadena <- \"\";\nLeer value;\nEscribir value;\nFinAlgoritmo\n",
     )?;
     session.call(
         "debug_configure",

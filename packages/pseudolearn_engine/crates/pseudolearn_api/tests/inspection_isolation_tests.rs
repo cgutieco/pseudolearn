@@ -1,7 +1,7 @@
 use pseudolearn_api::ApiSession;
 use serde_json::{Value, json};
 
-const PROGRAM: &str = "Algoritmo P\nDefinir Mutable amount Como Entero <- 7;\namount <- amount + 1;\nEscribir amount;\nEscribir amount * 2;\nFinAlgoritmo\n";
+const PROGRAM: &str = "Algoritmo P\nDefinir amount Como Entero <- 7;\namount <- amount + 1;\nEscribir amount;\nEscribir amount * 2;\nFinAlgoritmo\n";
 
 fn start(session: &mut ApiSession) -> Result<Value, String> {
     let analysis = session.call(

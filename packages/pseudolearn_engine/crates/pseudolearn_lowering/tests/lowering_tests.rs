@@ -75,7 +75,7 @@ fn lowers_conditional_and_while_loop() {
         span: Span::new(1, 5),
         scope: pseudolearn_semantic::identities::FunctionId(0),
         parameter: false,
-        mutable: true,
+        reassignable: true,
     };
     module.locals.push(local_variable);
     let local_id = LocalId(0);
@@ -140,7 +140,7 @@ fn lowers_for_loop_and_switch_statement() {
         span: Span::new(1, 5),
         scope: pseudolearn_semantic::identities::FunctionId(0),
         parameter: false,
-        mutable: true,
+        reassignable: true,
     };
     module.locals.push(local_variable);
     let local_id = LocalId(0);

@@ -19,6 +19,9 @@ pub(crate) fn finish(session: &mut AnalysisSession<'_>) {
             continue;
         }
         report(session, local, span, reassignment);
+        for closure in session.module.closures.values_mut() {
+            closure.captures.retain(|(source, _)| *source != local);
+        }
     }
 }
 
