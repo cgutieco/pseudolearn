@@ -108,6 +108,12 @@ pub struct EffectOutput {
     replay_error: Option<String>,
     #[serde(skip_serializing_if = "std::ops::Not::not")]
     cancelled: bool,
+    #[serde(skip_serializing_if = "is_success")]
+    exit_code: u8,
+}
+
+fn is_success(code: &u8) -> bool {
+    *code == 0
 }
 
 impl EffectOutput {
@@ -118,6 +124,7 @@ impl EffectOutput {
             open_resources: 0,
             replay_error: Some(code),
             cancelled: false,
+            exit_code: 0,
         }
     }
 
@@ -129,6 +136,7 @@ impl EffectOutput {
             open_resources,
             replay_error: channel.failure().map(|error| error.code().to_owned()),
             cancelled: channel.cancelled,
+            exit_code: channel.requested_exit(),
         }
     }
 

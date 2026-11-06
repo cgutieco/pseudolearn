@@ -57,6 +57,7 @@ fn rejected_output_carries_the_failure_code() -> Result<(), String> {
         Some(&json!("replay_divergence"))
     );
     assert_eq!(document.get("host_calls"), Some(&json!(0)));
+    assert_eq!(document.get("exit_code"), None);
     Ok(())
 }
 

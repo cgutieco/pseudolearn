@@ -117,7 +117,8 @@ partir de un `ClassDescriptor` (códigos de tipo por campo y densidad), que es l
 Códigos de tipo: `KIND_INTEGER` 0, `KIND_REAL` 1, `KIND_BOOLEAN` 2, `KIND_CHARACTER` 3, `KIND_REFERENCE` 4.
 
 Proceso del ejecutable: `pseudolearn_aot_main(entrada, metadatos, longitud, despachador) -> i32` es el único símbolo que enlaza el
-`main` generado. Decodifica los metadatos (`decode_metadata`), crea la `AotSession` con entrada estándar con búfer, salida
+`main` generado; en Windows, donde no hay CRT que llame a `main` y termine el proceso, el `mainCRTStartup` generado llama a
+`main` y después a `pseudolearn_aot_exit(código)`, que termina con `std::process::exit`. Decodifica los metadatos (`decode_metadata`), crea la `AotSession` con entrada estándar con búfer, salida
 estándar con búfer y los límites y la semilla fijados al compilar, registra las clases, llama a la función de entrada,
 vacía la salida y proyecta el estado: `0` completado, `3` fallo del programa, `4` límite (`statementBudgetExhausted` o
 entrada agotada) y `5` fallo interno (`internalFault`, clases inválidas, metadatos corruptos o fallo sin registro). Ante
@@ -304,7 +305,8 @@ anfitrión; los metadatos `PLM6` ya no la llevan, y sí los límites de tareas y
 memoria. La salida de `Escribir` se registra en la cinta una vez por sentencia (`STATEMENT_END_FLAG`). El texto de la consola de
 error va a la salida de error, salvo cuando un documento de efectos dirige la ejecución, en que se une a la salida como en la
 respuesta del motor. El código pedido con la operación de consola correspondiente es el código de salida de un programa
-terminado que se ejecuta sin `--effects-out`.
+terminado que se ejecuta sin `--effects-out`; con `--effects-out`, el proceso termina con 0 y el documento de efectos lleva
+ese código en `exit_code` (omitido si es 0), que es lo que `pseudo run --nativo` propaga.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
