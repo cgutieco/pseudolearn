@@ -2053,6 +2053,14 @@
 
 ```cobertura
 {
+  "id": "V254",
+  "regla": "LANG.PROFILE.VOCABULARY#R2",
+  "sin_ri": "El reconocimiento contextual de formas que no reservan identificadores ocurre en el análisis sintáctico y semántico, antes de la RI."
+}
+```
+
+```cobertura
+{
   "id": "V52",
   "regla": "LANG.PROGRAM.STRUCTURE#R1",
   "sin_ri": "La estructura determina las funciones del módulo de IR.MODEL."

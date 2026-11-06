@@ -923,6 +923,12 @@
       "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
     },
     {
+      "regla": "LANG.PROFILE.VOCABULARY@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "La regla combina casos de ejecución y de análisis y el sujeto aot no analiza programas; sus casos de ejecución se ejecutan en aot sin divergencias, y el de análisis lo verifica el sujeto engine."
+    },
+    {
       "regla": "LANG.SOURCE.ENCODING@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "exento",

@@ -1154,12 +1154,6 @@
         "en": "Object"
       }
     },
-    "jsonErrorCodeField": {
-      "lexemas": {
-        "es": "Codigo",
-        "en": "code"
-      }
-    },
     "jsonErrorLineField": {
       "lexemas": {
         "es": "JsonLinea",
@@ -1269,6 +1263,20 @@
       }
     ]
   }
+}
+```
+
+```regla
+{
+  "id": "R2",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Las formas de D2 que no figuran en D1 no reservan identificadores: un nombre de variable, subprograma o campo escrito con una de ellas es un identificador ordinario fuera de la posición contextual de la forma. Dentro de esa posición la forma conserva su identidad; en particular, el campo de código de un error de biblioteca se nombra tras un punto con el lexema jsonErrorCodeField del perfil. Las formas de D1 siguen reservadas en toda posición.",
+  "verificacion": [
+    "C3",
+    "C4",
+    "C5"
+  ]
 }
 ```
 
@@ -1722,6 +1730,76 @@
         "en": "keys"
       }
     }
+  }
+}
+```
+
+```caso
+{
+  "id": "C3",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "SubProceso Codigo(valor Como Entero)\nEscribir valor;\nFinSubProceso\nAlgoritmo P\nDefinir codigo Como Entero;\ncodigo <- 7;\nCodigo(codigo);\nFinAlgoritmo\n",
+    "en": "subroutine code(value as integer)\nwrite value;\nendSubroutine\nalgorithm P\ndefine codeValue as integer;\ncodeValue <- 7;\ncode(codeValue);\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "7\n",
+    "terminacion": "completed",
+    "diagnosticos": []
+  }
+}
+```
+
+```caso
+{
+  "id": "C4",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir parsed Como Resultado<ValorJson, ErrorJson> <- AnalizarJson(\"{\");\nDefinir codigo Como Cadena;\nSegun parsed Hacer\nExito(document): codigo <- \"ninguno\";\nEscribir document.Tipo;\nError(problem): codigo <- \"error\";\nEscribir problem.Codigo;\nFinSegun\nEscribir codigo;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine parsed as result<JsonValue, JsonError> <- parseJson(\"{\");\ndefine code as string;\nswitch parsed do\nsuccess(document): code <- \"none\";\nwrite document.kind;\nfailure(problem): code <- \"error\";\nwrite problem.code;\nendSwitch\nwrite code;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "{{lexema:jsonErrorCodeUnexpectedEnd}}\nerror\n",
+    "terminacion": "completed",
+    "diagnosticos": []
+  }
+}
+```
+
+```caso
+{
+  "id": "C5",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir Hacer Como Entero <- 0;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine do as integer <- 0;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "reservedLexemeUsedAsName",
+        "severidad": "error"
+      }
+    ]
   }
 }
 ```

@@ -745,6 +745,11 @@
       "estado": "cumple"
     },
     {
+    {
+      "regla": "LANG.PROFILE.VOCABULARY@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
       "regla": "LANG.SOURCE.ENCODING@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"

@@ -87,7 +87,6 @@ fn member(state: &mut ParserState<'_>) -> Result<(), ()> {
         state.kind(),
         TokenKind::Keyword(
             KeywordKind::Constructor
-                | KeywordKind::JsonErrorCodeField
                 | KeywordKind::JsonErrorLineField
                 | KeywordKind::JsonErrorColumnField
         )

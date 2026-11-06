@@ -130,15 +130,20 @@ fn ensure_error_record(session: &mut AnalysisSession<'_>, node: usize) -> Record
 }
 
 fn error_fields(profile: Profile, code: TypeId, integer: TypeId) -> Vec<HirRecordField> {
+    let lexeme = |keyword: KeywordKind| keyword.lexeme(profile).unwrap_or_default();
     [
-        (KeywordKind::JsonErrorCodeField, code),
-        (KeywordKind::JsonErrorLineField, integer),
-        (KeywordKind::JsonErrorColumnField, integer),
+        (
+            pseudolearn_syntax::contextual_spelling("jsonErrorCodeField", profile.as_str())
+                .unwrap_or_default(),
+            code,
+        ),
+        (lexeme(KeywordKind::JsonErrorLineField), integer),
+        (lexeme(KeywordKind::JsonErrorColumnField), integer),
     ]
     .into_iter()
     .enumerate()
-    .map(|(index, (keyword, type_id))| HirRecordField {
-        name: keyword.lexeme(profile).unwrap_or_default().to_owned(),
+    .map(|(index, (name, type_id))| HirRecordField {
+        name: name.to_owned(),
         type_id,
         offset: u32::try_from(index).unwrap_or(u32::MAX),
         width: 1,

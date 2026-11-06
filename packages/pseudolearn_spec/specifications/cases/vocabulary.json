@@ -583,10 +583,6 @@
     "en": "DuplicateKey",
     "es": "ClaveDuplicada"
   },
-  "jsonErrorCodeField": {
-    "en": "code",
-    "es": "Codigo"
-  },
   "jsonErrorCodeInvalidEscape": {
     "en": "InvalidEscape",
     "es": "EscapeInvalido"

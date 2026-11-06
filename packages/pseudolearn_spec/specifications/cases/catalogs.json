@@ -30466,12 +30466,6 @@
         "es": "ClaveDuplicada"
       }
     },
-    "jsonErrorCodeField": {
-      "lexemas": {
-        "en": "code",
-        "es": "Codigo"
-      }
-    },
     "jsonErrorCodeInvalidEscape": {
       "lexemas": {
         "en": "InvalidEscape",
