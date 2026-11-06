@@ -46,6 +46,7 @@ fn limit_of(code: DiagnosticCode, settings: &ExecutableSettings) -> Option<u64> 
         "cellLimitExceeded" => Some(settings.limits.cells),
         "recursionDepthExceeded" => Some(u64::from(settings.limits.frames)),
         "statementBudgetExhausted" => settings.limits.instruction_units,
+        "taskLimitExceeded" => Some(settings.limits.tasks),
         _ => None,
     }
 }

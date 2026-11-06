@@ -64,8 +64,8 @@
     {
       "regla": "LANG.TASK.ISOLATION@1.0.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-4.12"
+      "estado": "exento",
+      "justificacion": "La regla se comprueba durante el análisis semántico, que el adaptador AOT no anuncia; sus casos para este sujeto no son de ejecución."
     },
     {
       "regla": "LANG.TASK.ISOLATION@1.0.0#R2",
@@ -76,8 +76,8 @@
     {
       "regla": "LANG.TASK.ISOLATION@1.0.0#R3",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-4.12"
+      "estado": "exento",
+      "justificacion": "La regla se comprueba durante el análisis semántico, que el adaptador AOT no anuncia; sus casos para este sujeto no son de ejecución."
     },
     {
       "regla": "LANG.TASK.ISOLATION@1.0.0#R4",
@@ -104,56 +104,47 @@
     {
       "regla": "ENG.TASK.MEMORY@1.0.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-4.12"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.TASK.MEMORY@1.0.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-4.12"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.TASK.MEMORY@1.0.0#R3",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-4.12"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.TASK.AGENDA@1.0.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-4.12"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.TASK.AGENDA@1.0.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-4.12"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.TASK.AGENDA@1.0.0#R3",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-4.12"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.TASK.AGENDA@1.0.0#R4",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-4.12"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.TASK.AGENDA@1.0.0#R5",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-4.12"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.TASK.AGENDA@1.0.0#R6",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-4.12"
+      "estado": "cumple"
     },
     {
       "regla": "IR.WELL-FORMEDNESS@1.0.0#R12",
@@ -164,92 +155,86 @@
     {
       "regla": "LANG.TASK.SCOPE@1.0.0#R11",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-4"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.TASK.SCOPE@1.0.0#R12",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-4"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.TASK.SCOPE@1.0.0#R13",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-4"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.TASK.SCOPE@1.0.0#R14",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-4"
+      "estado": "exento",
+      "justificacion": "La regla se comprueba durante el análisis semántico, que el adaptador AOT no anuncia; sus casos para este sujeto no son de ejecución."
     },
     {
       "regla": "LANG.TASK.SCOPE@1.0.0#R15",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-4"
+      "estado": "exento",
+      "justificacion": "La regla se comprueba durante el análisis semántico, que el adaptador AOT no anuncia; sus casos para este sujeto no son de ejecución."
     },
     {
       "regla": "LANG.TASK.SCOPE@1.0.0#R16",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-4"
+      "estado": "exento",
+      "justificacion": "La regla no tiene casos ni propiedades de ejecución para el sujeto aot; se verifica con casos de análisis o de representación intermedia en el sujeto engine."
     },
     {
       "regla": "LANG.TASK.CHANNEL@1.0.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-4"
+      "estado": "exento",
+      "justificacion": "La regla se comprueba durante el análisis semántico, que el adaptador AOT no anuncia; sus casos para este sujeto no son de ejecución."
     },
     {
       "regla": "LANG.TASK.CHANNEL@1.0.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-4"
+      "estado": "exento",
+      "justificacion": "La regla se comprueba durante el análisis semántico, que el adaptador AOT no anuncia; sus casos para este sujeto no son de ejecución."
     },
     {
       "regla": "LANG.TASK.CHANNEL@1.0.0#R3",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-4"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.TASK.CHANNEL@1.0.0#R4",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-4"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.TASK.CHANNEL@1.0.0#R5",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-4"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.TASK.CHANNEL@1.0.0#R6",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-4"
+      "estado": "exento",
+      "justificacion": "La regla se comprueba durante el análisis semántico, que el adaptador AOT no anuncia; sus casos para este sujeto no son de ejecución."
     },
     {
       "regla": "LANG.TASK.CHANNEL@1.0.0#R7",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-4"
+      "estado": "exento",
+      "justificacion": "La regla se comprueba durante el análisis semántico, que el adaptador AOT no anuncia; sus casos para este sujeto no son de ejecución."
     },
     {
       "regla": "LANG.TASK.CHANNEL@1.0.0#R8",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-4"
+      "estado": "exento",
+      "justificacion": "La regla no tiene casos ni propiedades de ejecución para el sujeto aot; se verifica con casos de análisis o de representación intermedia en el sujeto engine."
     },
     {
       "regla": "ENG.TASK.AGENDA@1.0.0#R7",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-4.12"
+      "estado": "exento",
+      "justificacion": "awaiting_effect es un estado del protocolo de ejecución alojada; el ejecutable nativo realiza cada efecto con su propio anfitrión y nunca devuelve el control a un anfitrión externo con un efecto pendiente."
     },
     {
       "regla": "ENG.EXEC.EFFECT-ORDER@1.0.0#R1",
@@ -331,14 +316,12 @@
     {
       "regla": "ENG.LIMITS@1.0.0#R10",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-4.12"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.LIMITS@1.0.0#R11",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-4.12"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.LIMITS@1.0.0#R8",
@@ -883,20 +866,17 @@
     {
       "regla": "LANG.PROFILE.MODEL@1.0.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-1.12"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.MODULE.IMPORT@1.0.0#R7",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-1.12"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.MODULE.IMPORT@1.0.0#R8",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-1.12"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.PROFILE.MODEL@1.0.0#R1",
@@ -1208,8 +1188,7 @@
     {
       "regla": "RT.ABI@1.0.0#R5",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-N.01"
+      "estado": "cumple"
     },
     {
       "regla": "RT.ABI@1.0.0#R4",
@@ -1287,62 +1266,54 @@
     {
       "regla": "LANG.MODULE.IMPORT@1.0.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-1.12"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.MODULE.IMPORT@1.0.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-1.12"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.MODULE.IMPORT@1.0.0#R3",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-1.12"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.MODULE.IMPORT@1.0.0#R4",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-1.12"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.MODULE.IMPORT@1.0.0#R5",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-1.12"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.MODULE.MODEL@1.0.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-1.12"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.MODULE.MODEL@1.0.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-1.12"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.MODULE.MODEL@1.0.0#R3",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-1.12"
+      "estado": "exento",
+      "justificacion": "La regla se comprueba durante el análisis semántico, que el adaptador AOT no anuncia; sus casos para este sujeto no son de ejecución."
     },
     {
       "regla": "LANG.MODULE.IMPORT@1.0.0#R6",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-1.12"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.MODULE.MODEL@1.0.0#R4",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-1.12"
+      "estado": "exento",
+      "justificacion": "La regla no tiene casos ni propiedades de ejecución para el sujeto aot; se verifica con casos de análisis o de representación intermedia en el sujeto engine."
     },
     {
       "regla": "LANG.TYPES.RELATIONS@1.0.0#R2",
@@ -1383,32 +1354,31 @@
     {
       "regla": "LANG.TYPES.GENERIC@1.0.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-N.08"
+      "estado": "exento",
+      "justificacion": "La regla se comprueba durante el análisis semántico, que el adaptador AOT no anuncia; sus casos para este sujeto no son de ejecución."
     },
     {
       "regla": "LANG.TYPES.GENERIC@1.0.0#R3",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-N.08"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.TYPES.VARIANT@1.0.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-N.08"
+      "estado": "exento",
+      "justificacion": "La regla se comprueba durante el análisis semántico, que el adaptador AOT no anuncia; sus casos para este sujeto no son de ejecución."
     },
     {
       "regla": "LANG.TYPES.VARIANT@1.0.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-N.08"
+      "estado": "exento",
+      "justificacion": "La regla se comprueba durante el análisis semántico, que el adaptador AOT no anuncia; sus casos para este sujeto no son de ejecución."
     },
     {
       "regla": "LANG.TYPES.VARIANT@1.0.0#R3",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-N.08"
+      "estado": "exento",
+      "justificacion": "La regla se comprueba durante el análisis semántico, que el adaptador AOT no anuncia; sus casos para este sujeto no son de ejecución."
     },
     {
       "regla": "LANG.TYPES.INTERFACE@1.0.0#R1",
@@ -1485,104 +1455,88 @@
     {
       "regla": "LANG.CONTROL.CLEANUP@1.0.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-4.07"
+      "estado": "exento",
+      "justificacion": "La regla se comprueba durante el análisis semántico, que el adaptador AOT no anuncia; sus casos para este sujeto no son de ejecución."
     },
     {
       "regla": "ENG.EXEC.EFFECT-COMMIT@1.0.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-3.12"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.EXEC.EFFECT-COMMIT@1.0.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-3.12"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.EXEC.EFFECT-COMMIT@1.0.0#R3",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-3.12"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.EXEC.EFFECT-COMMIT@1.0.0#R4",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-3.12"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.EXEC.EFFECT-COMMIT@1.0.0#R5",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "P6"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.EXEC.EFFECT-ORDER@1.0.0#R5",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-4.12"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.EXEC.EFFECT-ORDER@1.0.0#R4",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-3.12"
+      "estado": "cumple"
     },
     {
       "regla": "RT.HOST.INTERFACE@1.0.0#R5",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-4.12"
+      "estado": "cumple"
     },
     {
       "regla": "RT.HOST.INTERFACE@1.0.0#R6",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "P6"
+      "estado": "cumple"
     },
     {
       "regla": "RT.HOST.INTERFACE@1.0.0#R7",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "P6"
+      "estado": "cumple"
     },
     {
       "regla": "RT.HOST.INTERFACE@1.0.0#R4",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-3.12"
+      "estado": "cumple"
     },
     {
       "regla": "RT.PROCESS@1.0.0#R4",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-3.12"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.CAPABILITY.MODEL@1.0.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-3.12"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.CAPABILITY.MODEL@1.0.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-3.12"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.CAPABILITY.MODEL@1.0.0#R3",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-3.12"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.CAPABILITY.MODEL@1.0.0#R4",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-3.12"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.EFFECT.TAPE@1.0.0#R1",
@@ -1607,8 +1561,7 @@
     {
       "regla": "ENG.EFFECT.TAPE@1.0.0#R6",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-4.12"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.EFFECT.TAPE@1.0.0#R5",
@@ -1689,14 +1642,13 @@
     {
       "regla": "LANG.TASK.SUSPENSION@1.0.0#R7",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-4.07"
+      "estado": "exento",
+      "justificacion": "La regla se comprueba durante el análisis semántico, que el adaptador AOT no anuncia; sus casos para este sujeto no son de ejecución."
     },
     {
       "regla": "LANG.TASK.SUSPENSION@1.0.0#R8",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-4.07"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.TASK.SCOPE@1.0.0#R1",
@@ -1725,14 +1677,12 @@
     {
       "regla": "LANG.TASK.SCOPE@1.0.0#R5",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-4.07"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.TASK.SCOPE@1.0.0#R6",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-4.07"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.TASK.SCOPE@1.0.0#R7",
@@ -1743,14 +1693,13 @@
     {
       "regla": "LANG.TASK.SCOPE@1.0.0#R8",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-4.10"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.TASK.SCOPE@1.0.0#R9",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-N.13"
+      "estado": "exento",
+      "justificacion": "La regla no tiene casos ni propiedades de ejecución para el sujeto aot; se verifica con casos de análisis o de representación intermedia en el sujeto engine."
     },
     {
       "regla": "LANG.TASK.SCOPE@1.0.0#R10",
@@ -1780,44 +1729,37 @@
     {
       "regla": "LIB.IO@1.0.0#R5",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-N.08"
+      "estado": "cumple"
     },
     {
       "regla": "LIB.IO@1.0.0#R6",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-N.08"
+      "estado": "cumple"
     },
     {
       "regla": "LIB.IO@1.0.0#R7",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-N.08"
+      "estado": "cumple"
     },
     {
       "regla": "LIB.IO@1.0.0#R8",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-N.08"
+      "estado": "cumple"
     },
     {
       "regla": "LIB.IO@1.0.0#R9",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-N.08"
+      "estado": "cumple"
     },
     {
       "regla": "LIB.IO@1.0.0#R10",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-N.08"
+      "estado": "cumple"
     },
     {
       "regla": "LIB.IO@1.0.0#R11",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-N.08"
+      "estado": "cumple"
     },
     {
       "regla": "LIB.TIME@1.0.0#R1",
@@ -1832,80 +1774,67 @@
     {
       "regla": "LIB.IO@1.0.0#R12",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-N.08"
+      "estado": "cumple"
     },
     {
       "regla": "LIB.IO@1.0.0#R13",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-N.08"
+      "estado": "cumple"
     },
     {
       "regla": "LIB.IO@1.0.0#R14",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-N.08"
+      "estado": "cumple"
     },
     {
       "regla": "LIB.IO@1.0.0#R15",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-N.08"
+      "estado": "cumple"
     },
     {
       "regla": "LIB.IO@1.0.0#R16",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-N.08"
+      "estado": "cumple"
     },
     {
       "regla": "LIB.TIME@1.0.0#R3",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-N.08"
+      "estado": "cumple"
     },
     {
       "regla": "LIB.TIME@1.0.0#R4",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-N.08"
+      "estado": "cumple"
     },
     {
       "regla": "LIB.TIME@1.0.0#R5",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-N.08"
+      "estado": "cumple"
     },
     {
       "regla": "LIB.TIME@1.0.0#R6",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-N.08"
+      "estado": "cumple"
     },
     {
       "regla": "LIB.TIME@1.0.0#R7",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-N.08"
+      "estado": "cumple"
     },
     {
       "regla": "LIB.TIME@1.0.0#R8",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-N.08"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.LIMITS@1.0.0#R12",
       "verificacion": "crates/pseudolearn_library/src/json_parse_tests.rs",
-      "estado": "pendiente",
-      "resuelve_en": "PG-5.03.07"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.LIMITS@1.0.0#R13",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-5.03.07"
+      "estado": "cumple"
     },
     {
       "regla": "LIB.MODEL@1.0.0#M1",
@@ -1949,20 +1878,20 @@
     {
       "regla": "LIB.CORE.TEXT@1.0.0#T4",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-N.08"
+      "estado": "exento",
+      "justificacion": "La regla se comprueba durante el análisis semántico, que el adaptador AOT no anuncia; sus casos para este sujeto no son de ejecución."
     },
     {
       "regla": "LIB.CORE.TEXT@1.0.0#T5",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-N.08"
+      "estado": "exento",
+      "justificacion": "La regla se comprueba durante el análisis semántico, que el adaptador AOT no anuncia; sus casos para este sujeto no son de ejecución."
     },
     {
       "regla": "LIB.CORE.CONVERSION@1.0.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-N.08"
+      "estado": "exento",
+      "justificacion": "La regla se comprueba durante el análisis semántico, que el adaptador AOT no anuncia; sus casos para este sujeto no son de ejecución."
     },
     {
       "regla": "LIB.CORE.BYTES@1.0.0#B1",
@@ -2012,74 +1941,62 @@
     {
       "regla": "LIB.JSON@1.0.0#J8",
       "verificacion": "crates/pseudolearn_library/src/json_parse_tests.rs",
-      "estado": "pendiente",
-      "resuelve_en": "PG-5.01"
+      "estado": "cumple"
     },
     {
       "regla": "LIB.HTTP@1.0.0#R1",
       "verificacion": "crates/pseudolearn_api/tests/fake_host_http_tests.rs",
-      "estado": "pendiente",
-      "resuelve_en": "P6"
+      "estado": "cumple"
     },
     {
       "regla": "LIB.HTTP@1.0.0#R2",
       "verificacion": "crates/pseudolearn_api/tests/fake_host_http_tests.rs",
-      "estado": "pendiente",
-      "resuelve_en": "P6"
+      "estado": "cumple"
     },
     {
       "regla": "LIB.HTTP@1.0.0#R3",
       "verificacion": "crates/pseudolearn_api/tests/fake_host_http_tests.rs",
-      "estado": "pendiente",
-      "resuelve_en": "P6"
+      "estado": "cumple"
     },
     {
       "regla": "LIB.HTTP@1.0.0#R4",
       "verificacion": "crates/pseudolearn_api/tests/fake_host_http_tests.rs",
-      "estado": "pendiente",
-      "resuelve_en": "P6"
+      "estado": "cumple"
     },
     {
       "regla": "LIB.HTTP@1.0.0#R5",
       "verificacion": "crates/pseudolearn_api/tests/fake_host_http_tests.rs",
-      "estado": "pendiente",
-      "resuelve_en": "CF-PG5-02"
+      "estado": "cumple"
     },
     {
       "regla": "LIB.HTTP@1.0.0#R6",
       "verificacion": "crates/pseudolearn_api/tests/fake_host_http_tests.rs",
-      "estado": "pendiente",
-      "resuelve_en": "P6"
+      "estado": "cumple"
     },
     {
       "regla": "LIB.HTTP@1.0.0#R7",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-5.03.07"
+      "estado": "cumple"
     },
     {
       "regla": "LIB.HTTP.POLICY@1.0.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "P6"
+      "estado": "cumple"
     },
     {
       "regla": "LIB.HTTP.POLICY@1.0.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "P6"
+      "estado": "cumple"
     },
     {
       "regla": "LIB.HTTP.POLICY@1.0.0#R3",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "P6"
+      "estado": "cumple"
     },
     {
       "regla": "LIB.HTTP.POLICY@1.0.0#R4",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "P6"
+      "estado": "cumple"
     },
     {
       "regla": "RT.HOST.INTERFACE@1.0.0#R8",
@@ -2096,56 +2013,52 @@
     {
       "regla": "LIB.SCENARIO.FILE-JSON@1.0.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-5.09.07"
+      "estado": "cumple"
     },
     {
       "regla": "LIB.SCENARIO.HTTP-TASKS@1.0.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "CF-PG5-02"
+      "estado": "exento",
+      "justificacion": "Los casos de ejecución de la regla pasan en aot; el caso restante exige traza paso a paso, observación de la que el sujeto aot está exento."
     },
     {
       "regla": "LIB.SCENARIO.BILINGUAL@1.0.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-5.09.07"
+      "estado": "cumple"
     },
     {
       "regla": "LIB.CORE.MATH@1.0.0#R2",
       "verificacion": "crates/pseudolearn_api/tests/extended_math.rs",
-      "estado": "pendiente",
-      "resuelve_en": "PG-N.08"
+      "estado": "exento",
+      "justificacion": "La regla se comprueba durante el análisis semántico, que el adaptador AOT no anuncia; sus casos para este sujeto no son de ejecución."
     },
     {
       "regla": "LIB.CORE.MATH@1.0.0#R3",
       "verificacion": "crates/pseudolearn_api/tests/extended_math.rs",
-      "estado": "pendiente",
-      "resuelve_en": "PG-N.08"
+      "estado": "exento",
+      "justificacion": "La regla se comprueba durante el análisis semántico, que el adaptador AOT no anuncia; sus casos para este sujeto no son de ejecución."
     },
     {
       "regla": "LIB.CORE.ROUNDING@1.0.0#R2",
       "verificacion": "crates/pseudolearn_api/tests/extended_math.rs",
-      "estado": "pendiente",
-      "resuelve_en": "PG-N.08"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.TYPES.VECTOR@1.0.0#R4",
       "verificacion": "crates/pseudolearn_api/tests/collection_execution.rs",
-      "estado": "pendiente",
-      "resuelve_en": "PG-N.08"
+      "estado": "exento",
+      "justificacion": "La regla se comprueba durante el análisis semántico, que el adaptador AOT no anuncia; sus casos para este sujeto no son de ejecución."
     },
     {
       "regla": "LANG.TYPES.VECTOR@1.0.0#R5",
       "verificacion": "crates/pseudolearn_api/tests/collection_execution.rs",
-      "estado": "pendiente",
-      "resuelve_en": "PG-N.08"
+      "estado": "exento",
+      "justificacion": "La regla se comprueba durante el análisis semántico, que el adaptador AOT no anuncia; sus casos para este sujeto no son de ejecución."
     },
     {
       "regla": "LANG.TYPES.DICTIONARY@1.0.0#R4",
       "verificacion": "crates/pseudolearn_api/tests/collection_execution.rs",
-      "estado": "pendiente",
-      "resuelve_en": "PG-N.08"
+      "estado": "cumple"
     }
   ]
 }

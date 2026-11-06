@@ -35,7 +35,7 @@ pub extern "C" fn rt_aot_task_spawn(
             .and_then(|word| u32::try_from(word).ok())
             .ok_or_else(|| Trap::named("internalFault"))?;
         let arguments = packet_values(packet.wrapping_add(1))?;
-        let task = spawn_storage(entry, scope, &arguments)?;
+        let task = spawn_storage(entry, (scope, function), &arguments)?;
         let tasks = entry.engine.tasks_mut()?;
         tasks.pending_starts.insert(
             task,
@@ -50,11 +50,13 @@ pub extern "C" fn rt_aot_task_spawn(
 
 fn spawn_storage(
     entry: &mut Entry<'_>,
-    scope: u64,
+    (scope, function): (u64, u32),
     arguments: &[crate::task_values::TaskValue],
 ) -> Result<TaskId, Trap> {
     let mut roots = entry.roots()?;
     roots.extend(arguments.iter().filter_map(|value| value.root()));
+    let continuation = entry_continuation(entry, function, (arguments, &roots))?;
+    roots.push(continuation);
     let tasks = entry.engine.tasks_mut()?;
     let parent = tasks.current.0;
     let task = tasks.agenda.spawn(TaskScopeId(scope)).map_err(task_fault)?;
@@ -64,12 +66,41 @@ fn spawn_storage(
             identity: task.0,
             parent,
             scope,
-            continuation: pseudolearn_runtime::Handle(0),
+            continuation,
         },
         &roots,
     )?;
     entry.engine.tasks_mut()?.task_storage.insert(task, storage);
     Ok(task)
+}
+
+fn entry_continuation(
+    entry: &mut Entry<'_>,
+    function: u32,
+    (arguments, roots): (
+        &[crate::task_values::TaskValue],
+        &[pseudolearn_runtime::Handle],
+    ),
+) -> Result<pseudolearn_runtime::Handle, Trap> {
+    let scalars: Vec<u64> = arguments
+        .iter()
+        .filter(|value| value.root().is_none())
+        .map(|value| value.word())
+        .collect();
+    let references: Vec<pseudolearn_runtime::Handle> =
+        arguments.iter().filter_map(|value| value.root()).collect();
+    let values = pseudolearn_runtime::continuation::ContinuationValues {
+        function: u64::from(function),
+        state: 0,
+        parent: pseudolearn_runtime::Handle(0),
+        scalars: &scalars,
+        references: &references,
+    };
+    Ok(pseudolearn_runtime::continuation::new_continuation(
+        &mut entry.engine.heap,
+        values,
+        roots,
+    )?)
 }
 
 #[unsafe(no_mangle)]
