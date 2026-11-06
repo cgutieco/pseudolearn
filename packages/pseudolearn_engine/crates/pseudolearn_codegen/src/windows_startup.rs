@@ -36,6 +36,7 @@ const CALLBACKS_END: MarkerData = MarkerData {
 const TLS_INDEX_SYMBOL: &str = "_tls_index";
 const FLOAT_MARKER_SYMBOL: &str = "_fltused";
 const FLOAT_MARKER_VALUE: u32 = 0x9875;
+const TYPE_INFO_TABLE_SYMBOL: &str = "??_7type_info@@6B@";
 const TLS_DIRECTORY_SECTION: &str = ".rdata$T";
 const POINTER_BYTES: usize = 8;
 const TLS_DIRECTORY_BYTES: usize = 40;
@@ -50,7 +51,18 @@ pub(crate) fn define_for_windows(
     define_process_entry(object, main)?;
     define_tls_directory(object)?;
     define_word(object, FLOAT_MARKER_SYMBOL, FLOAT_MARKER_VALUE)?;
-    Ok(())
+    define_type_info_table(object)
+}
+
+fn define_type_info_table(object: &mut ObjectModule) -> Result<(), CodegenError> {
+    let data = object
+        .declare_data(TYPE_INFO_TABLE_SYMBOL, Linkage::Export, false, false)
+        .map_err(CodegenError::backend)?;
+    let mut description = DataDescription::new();
+    description.define(vec![0; POINTER_BYTES].into_boxed_slice());
+    object
+        .define_data(data, &description)
+        .map_err(CodegenError::backend)
 }
 
 fn define_process_entry(object: &mut ObjectModule, main: FuncId) -> Result<(), CodegenError> {

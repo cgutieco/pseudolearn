@@ -349,7 +349,9 @@ el objeto ejecutable de un destino COFF trae lo que el CRT aportaría: `mainCRTS
 termina con `pseudolearn_aot_exit` del runtime; el directorio TLS `_tls_used` en `.rdata$T` con reubicaciones a
 `_tls_start` (`.tls$AAA`), `_tls_end` (`.tls$ZZZ`), `_tls_index` y la lista de llamadas que delimitan `__xl_a`
 (`.CRT$XLA`) y `__xl_z` (`.CRT$XLZ`), que el enlazador fusiona por orden de sufijo con las secciones `.tls$` y `.CRT$XLB`
-de la biblioteca estándar de Rust; y `_fltused`, que el compilador de MSVC referencia al usar coma flotante. Mach-O y ELF
+de la biblioteca estándar de Rust; `_fltused`, que el compilador de MSVC referencia al usar coma flotante; y `??_7type_info@@6B@`, la tabla virtual de
+`type_info` de C++, que la biblioteca estándar de Rust para MSVC solo toma como dirección al describir el tipo de una
+excepción de pánico (nunca la llama), y que ninguna DLL del sistema exporta: se define como una palabra nula. Mach-O y ELF
 no cambian. Descartado: enlazar `libcmt.lib`/`msvcrt.lib` del SDK, que obligaría a instalar Visual Studio para compilar.
 
 ## Ampliación numérica y de colecciones

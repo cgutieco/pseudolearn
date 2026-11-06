@@ -14,6 +14,7 @@ const PROVIDED_AT_LINK: &[&str] = &[
     "_tls_used",
     "_tls_index",
     "_fltused",
+    "??_7type_info@@6B@",
     "__ImageBase",
 ];
 const SYSTEM_LIBRARIES: &[&str] = &[

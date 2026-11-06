@@ -62,6 +62,7 @@ fn a_windows_executable_object_defines_its_entry_and_tls_directory() -> Result<(
         TLS_DIRECTORY_SYMBOL,
         "_tls_index",
         "_fltused",
+        "??_7type_info@@6B@",
     ] {
         assert!(defined.iter().any(|name| name == expected), "{expected}");
     }
