@@ -253,7 +253,7 @@
   "id": "R4",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Todo recurso asignado en la frontera del anfitrión se libera de manera forzosa e inmediata ante terminación cancelled, limit_reached o failed, incluida la desconexión o cancelación del anfitrión mientras una operación espera en awaiting_effect. En tales cortes, ninguna capacidad del anfitrión permanece abierta tras finalizar la sesión, la cinta se sella como Incomplete y no se ejecutan nuevos efectos de usuario dentro de Diferir.",
+  "texto": "Todo recurso asignado en la frontera del anfitrión se libera de manera forzosa e inmediata ante terminación cancelled, limit_reached o failed, incluida la desconexión o cancelación del anfitrión mientras una operación espera en awaiting_effect. En todas ellas ninguna capacidad del anfitrión permanece abierta tras finalizar la sesión y no se ejecutan nuevos efectos de usuario dentro de Diferir. Solo los cortes del anfitrión (cancelled y limit_reached) sellan la cinta como Incomplete; una terminación failed por trampa del programa conserva el estado de reproducibilidad de la cinta, porque la trampa es determinista y su reproducción produce la misma salida y la misma trampa.",
   "verificacion": [
     "C5",
     "C6",
@@ -286,7 +286,7 @@ Los valores esperados de R3 se calculan con el oráculo independiente de see_ora
     "anfitrion_observado": {
       "llamadas": 2,
       "recursos_abiertos": 0,
-      "estado_cinta": "incomplete",
+      "estado_cinta": "reproducible",
       "efectos": [
         {
           "effect_seq": 1,

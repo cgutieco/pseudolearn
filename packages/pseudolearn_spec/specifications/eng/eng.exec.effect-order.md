@@ -241,7 +241,7 @@
     },
     "anfitrion_observado": {
       "llamadas": 0,
-      "estado_cinta": "incomplete",
+      "estado_cinta": "reproducible",
       "efectos": []
     }
   },

@@ -295,11 +295,12 @@ El campo cancelacion de un caso indica la entrada a sentencia, contada desde uno
   "id": "R4",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Se distingue estrictamente entre fallo controlado de efecto (que produce un valor Resultado::Error que recorre normalmente las cláusulas Diferir), trampa del programa (que finaliza con failed) y corte o terminación por el anfitrión (cancelled o limit_reached). Ante un corte del anfitrión, incluido el que ocurre mientras una operación espera en awaiting_effect, la ejecución se detiene de inmediato, la tabla de capacidades del anfitrión se libera forzosamente, la cinta de efectos se sella como Incomplete y no se ejecutan nuevos efectos de usuario dentro de Diferir.",
+  "texto": "Se distingue estrictamente entre fallo controlado de efecto (que produce un valor Resultado::Error que recorre normalmente las cláusulas Diferir), trampa del programa (que finaliza con failed) y corte o terminación por el anfitrión (cancelled o limit_reached). Ante un corte del anfitrión, incluido el que ocurre mientras una operación espera en awaiting_effect, la ejecución se detiene de inmediato, la tabla de capacidades del anfitrión se libera forzosamente, la cinta de efectos se sella como Incomplete y no se ejecutan nuevos efectos de usuario dentro de Diferir. Una trampa del programa no es un corte del anfitrión: también libera la tabla de capacidades, pero cierra la cinta como al completar, sellando como abandonados los efectos que otras tareas esperaban, y la cinta conserva su estado de reproducibilidad. Con la misma identidad y las mismas entradas, la reproducción de esa cinta produce la misma salida y la misma trampa sin consultar al anfitrión.",
   "verificacion": [
     "C10",
     "C12",
-    "C13"
+    "C13",
+    "C16"
   ]
 }
 ```
@@ -659,6 +660,60 @@ El campo cancelacion de un caso indica la entrada a sentencia, contada desde uno
     "fallo": {
       "codigo": "taskDeadlock"
     }
+  }
+}
+```
+
+```caso
+{
+  "id": "C16",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "hola\n",
+    "fallo": {
+      "codigo": "divisionByZero"
+    },
+    "anfitrion_observado": {
+      "llamadas": 3,
+      "recursos_abiertos": 0,
+      "estado_cinta": "reproducible",
+      "efectos": [
+        {
+          "effect_seq": 1,
+          "capability_kind": "filesystem",
+          "operation": "request_directory",
+          "outcome": "committed"
+        },
+        {
+          "effect_seq": 2,
+          "capability_kind": "filesystem",
+          "operation": "file_open",
+          "outcome": "committed"
+        },
+        {
+          "effect_seq": 3,
+          "capability_kind": "filesystem",
+          "operation": "file_read_text",
+          "outcome": "committed"
+        }
+      ]
+    }
+  },
+  "programas": {
+    "es": "SubProceso Probe(directory Como DirectorioCap) Como Resultado<Entero, ErrorES>\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\nDefinir content Como Cadena <- Propagar file.LeerTexto();\nEscribir content;\nDefinir zero Como Entero <- 0;\nRetornar Exito(10 div zero);\nFinSubProceso\nAlgoritmo Main\nDefinir opened Como Resultado<DirectorioCap, ErrorES> <- SolicitarDirectorio(\"root\");\nSegun opened Hacer\nExito(root): Segun Probe(root) Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe(directory as DirCap) as result<integer, IoError>\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\ndefine content as string <- propagate file.readText();\nwrite content;\ndefine zero as integer <- 0;\nreturn success(10 div zero);\nendSubroutine\nalgorithm Main\ndefine opened as result<DirCap, IoError> <- requestDirectory(\"root\");\nswitch opened do\nsuccess(root): switch Probe(root) do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "files": {
+      "a": "hola"
+    },
+    "grabar_y_reproducir": true
   }
 }
 ```
