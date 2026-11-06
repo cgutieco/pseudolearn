@@ -23,7 +23,11 @@ pub(crate) fn pattern(session: &mut AnalysisSession<'_>, kind: TypeId, node: usi
     local
 }
 
-fn create(session: &mut AnalysisSession<'_>, naming: (String, usize), kind: TypeId) -> LocalId {
+pub(crate) fn create(
+    session: &mut AnalysisSession<'_>,
+    naming: (String, usize),
+    kind: TypeId,
+) -> LocalId {
     let local = LocalId(u32::try_from(session.module.locals.len()).unwrap_or(u32::MAX));
     session.module.locals.push(HirLocal {
         name: naming.0,

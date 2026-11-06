@@ -115,7 +115,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Un programa formado solo por Algoritmo o Proceso, Definir con lista de nombres, Leer, Escribir, Si, Segun, Mientras, Repetir, Para sin paso, Dimension en dos pasos, Funcion con variable de retorno, SubProceso con parámetros por referencia de salida y las funciones clásicas de la biblioteca se analiza sin diagnósticos y se ejecuta con la salida que derivan las reglas de cada construcción, sin retoques: con punto y coma, índices desde cero y sin valores iniciales ficticios.",
+  "texto": "Un programa formado solo por Algoritmo o Proceso, Definir con lista de nombres, Leer, Escribir, Si, Segun, Mientras, Repetir, Para sin paso y con su control declarado antes con Definir, Dimension en dos pasos, Funcion con variable de retorno, SubProceso con parámetros por referencia de salida y las funciones clásicas de la biblioteca se analiza sin diagnósticos y se ejecuta con la salida que derivan las reglas de cada construcción, sin retoques: con punto y coma, índices desde cero y sin valores iniciales ficticios.",
   "verificacion": [
     "C1",
     "C2",
@@ -136,7 +136,9 @@
     "C17",
     "C18",
     "C19",
-    "C20"
+    "C20",
+    "C41",
+    "C42"
   ]
 }
 ```
@@ -1624,6 +1626,54 @@
         "text": "Funcion r <- Mayor(a Como Real, b Como Real)\nDefinir r Como Real;\nSi a > b Entonces\nr <- a;\nSiNo\nr <- b;\nFinSi\nFinFuncion\nAlgoritmo Integrador\nDefinir nombre, resp, dato Como Cadena;\nDefinir cantidad, i, opcion Como Entero;\nDefinir notas Como Real;\nDefinir suma, mejor Como Real;\nDimension notas[3];\nLeer nombre;\nEscribir Concatenar(\"Hola, \", Mayusculas(nombre));\nEscribir \"Letras: \", Longitud(nombre), \" Inicio: \", Subcadena(nombre, 0, 2);\ncantidad <- 3;\nsuma <- 0;\ni <- 0;\nMientras i < cantidad Hacer\nLeer dato;\nnotas[i] <- ConvertirANumero(dato);\nsuma <- suma + notas[i];\ni <- i + 1;\nFinMientras\nmejor <- notas[0];\nPara k <- 1 Hasta 2 Hacer\nmejor <- Mayor(mejor, notas[k]);\nFinPara\nEscribir \"Promedio: \", suma / cantidad, \" Mejor: \", mejor;\nLeer opcion;\nSegun opcion Hacer\n1: Escribir \"Aprobado\";\n2: Escribir \"Revisar\";\nDe Otro Modo: Escribir \"Sin opcion\";\nFinSegun\nLeer resp;\nSi resp = \"s\" Entonces\nEscribir \"Fin\";\nSiNo\nEscribir \"Continuar\";\nFinSi\nFinAlgoritmo\n"
       }
     ]
+  },
+  "exclusiones": {
+    "en": "El pseudocódigo clásico que se copia sin retoques está escrito en español; el perfil en de cada construcción se verifica en su propia regla."
+  }
+}
+```
+
+```caso
+{
+  "id": "C41",
+  "regla": "R1",
+  "perfiles": [
+    "es"
+  ],
+  "programas": {
+    "es": "Algoritmo Tabla\nDefinir i, n, total Como Entero;\nLeer n;\ntotal <- 0;\nPara i <- 1 Hasta n Hacer\ntotal <- total + i;\nEscribir i, \" x 2 = \", i * 2;\nFinPara\nEscribir \"Total: \", total;\nFinAlgoritmo\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "1 x 2 = 2\n2 x 2 = 4\n3 x 2 = 6\nTotal: 6\n",
+    "terminacion": "completed",
+    "diagnosticos": []
+  },
+  "entradas": [
+    "3"
+  ],
+  "exclusiones": {
+    "en": "El pseudocódigo clásico que se copia sin retoques está escrito en español; el perfil en de cada construcción se verifica en su propia regla."
+  }
+}
+```
+
+```caso
+{
+  "id": "C42",
+  "regla": "R1",
+  "perfiles": [
+    "es"
+  ],
+  "programas": {
+    "es": "Algoritmo Tabla\nDefinir i, n, total Como Entero;\nLeer n;\ntotal <- 0;\nPara i <- 1 Hasta n Hacer\ntotal <- total + i;\nEscribir i, \" x 2 = \", i * 2;\nFinPara\nEscribir \"Total: \", total;\nFinAlgoritmo\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": []
   },
   "exclusiones": {
     "en": "El pseudocódigo clásico que se copia sin retoques está escrito en español; el perfil en de cada construcción se verifica en su propia regla."

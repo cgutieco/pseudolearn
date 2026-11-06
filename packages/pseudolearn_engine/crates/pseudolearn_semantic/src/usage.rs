@@ -34,6 +34,8 @@ fn unused_locals(session: &mut AnalysisSession<'_>) {
         }
         if session.invalid.contains(&identifier)
             || session.reads.contains(&identifier)
+            || (session.assignment.reused_controls.contains(&identifier)
+                && !session.writes.contains(&identifier))
             || (local.parameter
                 && local.passing == Passing::Reference
                 && session.writes.contains(&identifier))

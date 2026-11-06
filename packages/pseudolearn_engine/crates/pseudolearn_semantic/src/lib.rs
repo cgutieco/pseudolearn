@@ -45,6 +45,7 @@ pub mod expression_model;
 mod flow;
 mod flow_bindings;
 mod for_checker;
+mod for_control_reuse;
 mod for_each_checker;
 mod generic_calls;
 mod generic_class_cycles;

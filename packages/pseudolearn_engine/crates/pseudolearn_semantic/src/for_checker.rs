@@ -19,9 +19,13 @@ pub(crate) fn check(session: &mut AnalysisSession<'_>, node: usize) -> Option<Hi
         .get(2)
         .map(|bound| crate::expression_checker::check(session, *bound));
     validate_bounds(session, &[Some(initial), Some(ending), step], node);
+    let reused = crate::for_control_reuse::candidate(session, control_node);
     session.bindings.enter();
     let integer = session.module.types.intern(Type::Integer);
-    let control = crate::variant_bindings::pattern(session, integer, control_node);
+    let control = match reused {
+        Some(declared) => crate::for_control_reuse::bind(session, integer, control_node, declared),
+        None => crate::variant_bindings::pattern(session, integer, control_node),
+    };
     let body_node = session.child(node, NodeKind::Body)?;
     session
         .module

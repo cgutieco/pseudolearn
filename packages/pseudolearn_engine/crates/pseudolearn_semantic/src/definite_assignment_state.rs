@@ -49,6 +49,7 @@ pub(crate) struct AssignmentState {
     pub captures: Vec<(LocalId, Span)>,
     pub pending_arguments: Vec<PendingArgument>,
     pub candidates: BTreeSet<LocalId>,
+    pub reused_controls: BTreeSet<LocalId>,
     pub not_output: BTreeSet<LocalId>,
     pub dependencies: BTreeMap<LocalId, BTreeSet<LocalId>>,
     pub obligations: Vec<OutputObligation>,

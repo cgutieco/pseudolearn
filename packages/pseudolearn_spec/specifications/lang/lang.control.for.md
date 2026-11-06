@@ -80,11 +80,17 @@
   "id": "R4",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La cabecera introduce un control entero local al bucle después de evaluar inicial, final y paso. Al salir termina su ámbito; no modifica un vínculo exterior homónimo. El sombreado produce bindingShadowsOuter. Usarlo fuera sin vínculo exterior produce bindingOutsideScope.",
+  "texto": "La cabecera introduce un control entero local al bucle después de evaluar inicial, final y paso. Al salir termina su ámbito; no modifica un vínculo exterior homónimo. El sombreado produce bindingShadowsOuter. Usarlo fuera sin vínculo exterior produce bindingOutsideScope. Excepción: si el bloque inmediato de la sentencia contiene una variable homónima de tipo Entero declarada con Definir, que no es parámetro, no tiene valor y no se ha leído ni escrito, salvo como control de otro Para de ese mismo bloque, la cabecera la reutiliza como control: no se produce bindingShadowsOuter y la declaración no produce variableDeclaredNeverUsed. El control sigue siendo local al bucle, de modo que esa variable continúa sin valor después de él. En cualquier otro caso se aplica el sombreado.",
   "verificacion": [
     "C5",
     "C6",
-    "C7"
+    "C7",
+    "C22",
+    "C23",
+    "C24",
+    "C25",
+    "C26",
+    "C27"
   ]
 }
 ```
@@ -663,6 +669,165 @@
   "espera": {
     "salida": "321\n",
     "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C22",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir i Como Entero;\nPara i <- 1 Hasta 3 Hacer\nEscribir i Sin Saltar;\nFinPara\nEscribir \"\";\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine i as integer;\nfor i <- 1 to 3 do\nwrite i without newline;\nendFor\nwrite \"\";\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "123\n",
+    "terminacion": "completed",
+    "diagnosticos": []
+  }
+}
+```
+
+```caso
+{
+  "id": "C23",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir i, n Como Entero;\nn <- 2;\nPara i <- 1 Hasta n Hacer\nEscribir i Sin Saltar;\nFinPara\nPara i <- n Hasta 1 Con Paso -1 Hacer\nEscribir i Sin Saltar;\nFinPara\nEscribir \"\";\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine i, n as integer;\nn <- 2;\nfor i <- 1 to n do\nwrite i without newline;\nendFor\nfor i <- n to 1 step -1 do\nwrite i without newline;\nendFor\nwrite \"\";\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": []
+  }
+}
+```
+
+```caso
+{
+  "id": "C24",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir i Como Real;\nPara i <- 1 Hasta 3 Hacer\nEscribir i Sin Saltar;\nFinPara\nEscribir \"\";\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine i as real;\nfor i <- 1 to 3 do\nwrite i without newline;\nendFor\nwrite \"\";\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "variableDeclaredNeverUsed",
+        "severidad": "advertencia"
+      },
+      {
+        "codigo": "bindingShadowsOuter",
+        "severidad": "advertencia"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C25",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir i Como Entero <- 0;\nPara i <- 1 Hasta 3 Hacer\nEscribir i Sin Saltar;\nFinPara\nEscribir \"\";\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine i as integer <- 0;\nfor i <- 1 to 3 do\nwrite i without newline;\nendFor\nwrite \"\";\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "variableDeclaredNeverUsed",
+        "severidad": "advertencia"
+      },
+      {
+        "codigo": "bindingShadowsOuter",
+        "severidad": "advertencia"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C26",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir i Como Entero;\nPara i <- 1 Hasta 3 Hacer\nEscribir i Sin Saltar;\nFinPara\nEscribir i;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine i as integer;\nfor i <- 1 to 3 do\nwrite i without newline;\nendFor\nwrite i;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "variableUsedUninitialized",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C27",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir i Como Entero;\nSi Verdadero Entonces\nPara i <- 1 Hasta 3 Hacer\nEscribir i Sin Saltar;\nFinPara\nFinSi\nEscribir \"\";\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine i as integer;\nif true then\nfor i <- 1 to 3 do\nwrite i without newline;\nendFor\nendIf\nwrite \"\";\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "variableDeclaredNeverUsed",
+        "severidad": "advertencia"
+      },
+      {
+        "codigo": "bindingShadowsOuter",
+        "severidad": "advertencia"
+      }
+    ]
   }
 }
 ```
