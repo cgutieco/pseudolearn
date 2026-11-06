@@ -23,6 +23,7 @@ pub struct AotEngine {
     pub(crate) streams: AotStreams,
     pub(crate) effects: crate::effect_channel::EffectChannel,
     pub(crate) tasks: Option<Box<crate::task_state::AotTasks>>,
+    pub(crate) console_line: Vec<u8>,
     fault: Option<FaultRecord>,
     notices: Vec<FaultRecord>,
 }
@@ -53,6 +54,7 @@ impl AotEngine {
             streams,
             effects: crate::effect_channel::EffectChannel::standalone(),
             tasks: None,
+            console_line: Vec::new(),
             fault: None,
             notices: Vec::new(),
         }

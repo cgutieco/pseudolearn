@@ -11,6 +11,7 @@ pub struct EffectChannel {
     pub(crate) cancelled: bool,
     pub(crate) delivery_order: Vec<u64>,
     pub(crate) pending_network: u64,
+    pub(crate) merged_errors: bool,
     failure: Option<ReplayError>,
 }
 
@@ -23,6 +24,7 @@ impl EffectChannel {
             cancelled: false,
             delivery_order: Vec::new(),
             pending_network: pseudolearn_runtime::NetworkLimits::default().pending,
+            merged_errors: false,
             failure: None,
         }
     }

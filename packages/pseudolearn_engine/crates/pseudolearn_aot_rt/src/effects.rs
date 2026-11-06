@@ -272,7 +272,10 @@ fn echo_console(
     reply: &HostReply,
     words: &[u64],
 ) -> Result<(), Trap> {
-    if operation.identity != "console_write" || !matches!(reply, HostReply::Committed(_)) {
+    let error_stream = operation.identity == "console_write_error";
+    if !(operation.identity == "console_write" || error_stream)
+        || !matches!(reply, HostReply::Committed(_))
+    {
         return Ok(());
     }
     let (Some(EffectValueKind::Text), Some(word)) = (operation.parameters.first(), words.first())
@@ -281,6 +284,11 @@ fn echo_console(
     };
     let handle = Handle(u32::try_from(*word).map_err(|_| internal())?);
     let text = pseudolearn_runtime::text_content(&entry.engine.heap, handle)?.to_owned();
+    if error_stream && !entry.engine.effects.merged_errors {
+        return std::io::stderr()
+            .write_all(text.as_bytes())
+            .map_err(|_| Trap::named("resourceLimit"));
+    }
     entry
         .engine
         .streams

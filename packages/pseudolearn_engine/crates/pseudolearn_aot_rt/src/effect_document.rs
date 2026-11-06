@@ -55,6 +55,7 @@ impl EffectInput {
         channel.cancel_on_effect = cancel_on_effect;
         channel.delivery_order = delivery_order;
         channel.pending_network = pending_network;
+        channel.merged_errors = true;
         Ok(channel)
     }
 }

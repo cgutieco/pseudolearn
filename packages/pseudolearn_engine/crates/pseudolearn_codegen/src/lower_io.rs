@@ -9,7 +9,7 @@ use crate::shadow_stack::{pop_roots, push_roots};
 use crate::type_mapping::kind_code;
 use crate::word_conversion::{from_word, to_word};
 use cranelift_codegen::ir::{InstBuilder, MemFlagsData, Value, types};
-use pseudolearn_aot_rt::{NEWLINE_FLAG, PROFILE_SHIFT};
+use pseudolearn_aot_rt::{NEWLINE_FLAG, PROFILE_SHIFT, STATEMENT_END_FLAG};
 use pseudolearn_ir::{Operand, Operation};
 
 pub(crate) const OPERATIONS: &[Operation] = &[
@@ -73,7 +73,11 @@ fn lower_write(
         let word = to_word(lowering, value, &value_type)?;
         let kind = kind_code(&value_type).ok_or(CodegenError::InvalidModule("write of unit"))?;
         let last = position.saturating_add(1) == count;
-        let flags = if newline && last { NEWLINE_FLAG } else { 0 };
+        let flags = match (newline, last) {
+            (true, true) => NEWLINE_FLAG | STATEMENT_END_FLAG,
+            (false, true) => STATEMENT_END_FLAG,
+            _ => 0,
+        };
         let profile = profile_bits(lowering, instruction);
         let descriptor = lowering
             .builder

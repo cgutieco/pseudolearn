@@ -7,6 +7,7 @@ pub const KIND_BOOLEAN: u32 = 2;
 pub const KIND_CHARACTER: u32 = 3;
 pub const KIND_REFERENCE: u32 = 4;
 pub const NEWLINE_FLAG: u32 = 0x100;
+pub const STATEMENT_END_FLAG: u32 = 0x200;
 pub const RANK_SHIFT: u32 = 8;
 pub const PROFILE_SHIFT: u32 = 16;
 pub const CHARACTER_OPERAND_FLAG: u64 = 1 << 32;
