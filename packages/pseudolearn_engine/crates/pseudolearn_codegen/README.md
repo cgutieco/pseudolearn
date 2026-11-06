@@ -331,10 +331,19 @@ x86_64 y AArch64. Un destino sin backend devuelve `CodegenError::Target`.
 
 | Destino | Formato | Emisión | Ejecución |
 |---|---|---|---|
-| `aarch64-apple-darwin` | Mach-O | probada | verificada |
-| `x86_64-apple-darwin` | Mach-O | probada | no verificada: el equipo de referencia no tiene Rosetta 2 |
-| `x86_64-unknown-linux-musl` | ELF | probada | no verificada: sin medio de ejecución Linux |
-| `x86_64-pc-windows-msvc` | COFF | probada | no verificada |
+| `aarch64-apple-darwin` | Mach-O | probada | verificada (local y workflow manual) |
+| `x86_64-apple-darwin` | Mach-O | probada | verificada con Rosetta 2 (local) y en el workflow manual |
+| `x86_64-unknown-linux-musl` | ELF | probada | según el último run del workflow manual (README de la CLI) |
+| `x86_64-pc-windows-msvc` | COFF | probada | según el último run del workflow manual (README de la CLI) |
+
+Arranque de Windows (`windows_startup.rs`). El ejecutable COFF se enlaza sin el CRT de MSVC (`/nodefaultlib`), así que
+el objeto ejecutable de un destino COFF trae lo que el CRT aportaría: `mainCRTStartup`, que llama al `main` generado con
+`argc = 0` y `argv = NULL` (el runtime lee los argumentos con `std::env::args`, que en Windows usa `GetCommandLineW`) y
+termina con `pseudolearn_aot_exit` del runtime; el directorio TLS `_tls_used` en `.rdata$T` con reubicaciones a
+`_tls_start` (`.tls$AAA`), `_tls_end` (`.tls$ZZZ`), `_tls_index` y la lista de llamadas que delimitan `__xl_a`
+(`.CRT$XLA`) y `__xl_z` (`.CRT$XLZ`), que el enlazador fusiona por orden de sufijo con las secciones `.tls$` y `.CRT$XLB`
+de la biblioteca estándar de Rust; y `_fltused`, que el compilador de MSVC referencia al usar coma flotante. Mach-O y ELF
+no cambian. Descartado: enlazar `libcmt.lib`/`msvcrt.lib` del SDK, que obligaría a instalar Visual Studio para compilar.
 
 ## Ampliación numérica y de colecciones
 

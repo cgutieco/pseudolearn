@@ -55,7 +55,8 @@ pub(crate) fn define_entry_point(
     let mut context = Context::for_function(clif);
     object
         .define_function(main, &mut context)
-        .map_err(CodegenError::backend)
+        .map_err(CodegenError::backend)?;
+    crate::windows_startup::define_for_windows(object, main)
 }
 
 struct References {

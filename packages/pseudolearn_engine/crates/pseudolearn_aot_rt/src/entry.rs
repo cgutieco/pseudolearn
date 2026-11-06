@@ -52,6 +52,11 @@ pub extern "C" fn pseudolearn_aot_main(
     code
 }
 
+#[unsafe(no_mangle)]
+pub extern "C" fn pseudolearn_aot_exit(code: i32) -> ! {
+    std::process::exit(code)
+}
+
 fn prepare(arguments: &[String]) -> Result<(ProcessOptions, i64, EffectChannel), i32> {
     let options = ProcessOptions::parse(arguments).map_err(|error| {
         eprintln!("{error:?}");

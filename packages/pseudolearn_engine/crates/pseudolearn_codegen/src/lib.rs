@@ -59,6 +59,7 @@ mod task_dispatch;
 mod task_unwinding;
 mod type_mapping;
 mod value_types;
+mod windows_startup;
 mod word_conversion;
 
 pub use abi_signatures::{
@@ -68,6 +69,7 @@ pub use entry_point::{MAIN_SYMBOL, METADATA_SYMBOL, RUNTIME_MAIN_SYMBOL};
 pub use error::CodegenError;
 pub use object_emitter::{CompiledObject, FunctionSymbol, function_symbol};
 pub use target::{ParameterRoots, TargetConfig};
+pub use windows_startup::{RUNTIME_EXIT_SYMBOL, TLS_DIRECTORY_SYMBOL, WINDOWS_ENTRY_SYMBOL};
 
 pub fn compile_module_to_object(
     module: &pseudolearn_ir::Module,

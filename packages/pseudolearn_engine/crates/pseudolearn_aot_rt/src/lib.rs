@@ -95,7 +95,7 @@ pub use effect_channel::{AotHostProvider, EffectChannel};
 pub use effect_document::{EffectInput, EffectOutput};
 pub use effects::{effect_operation_cells, effect_operation_index, rt_aot_effect_call};
 pub use engine::AotEngine;
-pub use entry::pseudolearn_aot_main;
+pub use entry::{pseudolearn_aot_exit, pseudolearn_aot_main};
 pub use fault::{FaultRecord, FaultSite, SourceRange, render_fault};
 pub use inline_allocation::{
     INLINE_MAXIMUM_PHYSICAL, INLINE_PHYSICAL_SHIFT, INLINE_RECORD_WORDS, InlineObjectImage,
