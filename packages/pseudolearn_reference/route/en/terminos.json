@@ -43,5 +43,14 @@
   "tabla-por-vuelta": {"etiqueta": "pass table", "formas": ["pass table"], "estricto": true, "receta": false},
   "invariante": {"etiqueta": "invariant", "formas": ["invariant", "invariants"], "estricto": true, "receta": false},
   "bucle-infinito": {"etiqueta": "infinite loop", "formas": ["infinite loop"], "estricto": true, "receta": false},
-  "centinela": {"etiqueta": "sentinel", "formas": ["sentinel", "sentinels"], "estricto": true, "receta": true}
+  "centinela": {"etiqueta": "sentinel", "formas": ["sentinel", "sentinels"], "estricto": true, "receta": true},
+  "bucle-contado": {"etiqueta": "counted loop", "formas": ["counted loop"], "estricto": true, "receta": true},
+  "bucle-posterior": {"etiqueta": "loop that checks at the end", "formas": ["loop that checks at the end"], "estricto": true, "receta": true},
+  "bandera": {"etiqueta": "flag", "formas": ["flag", "flags"], "estricto": true, "receta": true},
+  "mejor-hasta-ahora": {"etiqueta": "best so far", "formas": ["best so far"], "estricto": true, "receta": true},
+  "salida-anticipada": {"etiqueta": "early exit", "formas": ["early exit"], "estricto": true, "receta": true},
+  "arreglo": {"etiqueta": "array", "formas": ["array", "arrays"], "estricto": true, "receta": true},
+  "indice": {"etiqueta": "index", "formas": ["index", "indices"], "estricto": true, "receta": false},
+  "recorredor": {"etiqueta": "walker", "formas": ["walker"], "estricto": true, "receta": true},
+  "fuera-de-rango": {"etiqueta": "out of range", "formas": ["out of range"], "estricto": true, "receta": false}
 }

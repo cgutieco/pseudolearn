@@ -1151,6 +1151,38 @@
       "descripcion": "Una alcancía que recibe una moneda, con el rótulo acumulador.",
       "nombre": "acumulador",
       "frase": "va juntando"
+    },
+    "ruta-rol-bandera": {
+      "titulo": "Rol: bandera",
+      "descripcion": "Un banderín que se levanta una vez y no vuelve a bajar, con el rótulo bandera.",
+      "nombre": "bandera",
+      "frase": "cambia una vez y recuerda que algo pasó"
+    },
+    "ruta-rol-mejor-hasta-ahora": {
+      "titulo": "Rol: mejor hasta ahora",
+      "descripcion": "Un podio con un solo puesto y una flecha que reemplaza al que lo ocupa, con el rótulo mejor hasta ahora.",
+      "nombre": "mejor hasta ahora",
+      "frase": "se queda con el mejor visto"
+    },
+    "ruta-elegir-bucle": {
+      "titulo": "Elegir el bucle",
+      "descripcion": "Un árbol de dos preguntas. Si se sabe cuántas vueltas habrá, va Para. Si no, se pregunta si la primera vuelta va siempre: si va, Repetir; si no, Mientras.",
+      "cuantas": "¿Sabes cuántas vueltas habrá?",
+      "primera": "¿La primera vuelta va siempre?",
+      "si": "sí",
+      "no": "no"
+    },
+    "ruta-rol-recorredor": {
+      "titulo": "Rol: recorredor",
+      "descripcion": "Una fila de casillas con una flecha debajo de una de ellas, con el rótulo recorredor.",
+      "nombre": "recorredor",
+      "frase": "avanza casilla por casilla"
+    },
+    "ruta-dos-pasadas": {
+      "titulo": "Dos pasadas sobre el arreglo",
+      "descripcion": "El arreglo de temperaturas 20, 23, 19, 25, 22, 18 y 26. Primer paso: una flecha lo recorre entero y alimenta el promedio, 21,86. Segundo paso: se marcan las casillas que superan el promedio: 23, 25, 22 y 26.",
+      "promedio": "promedio: 21,86",
+      "superan": "superan el promedio"
     }
   }
 }

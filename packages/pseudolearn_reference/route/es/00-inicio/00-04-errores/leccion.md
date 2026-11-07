@@ -168,7 +168,7 @@ El caso normal descubre la versión C. El raro descubre la B, y también la C.
 
 En una frase: «Antes de dar por bueno un programa, lo pruebo con un caso normal, uno borde y uno raro, y comparo con mis ejemplos a mano».
 
-El caso raro todavía no tiene arreglo: para avisar «no hay quien pague» en lugar de detenerse, el programa tendría que decidir. Queda abierto.
+El caso raro todavía no tiene solución: para avisar «no hay quien pague» en lugar de detenerse, el programa tendría que decidir. Queda abierto.
 
 ## Lo que aprendiste {#aprendiste}
 
@@ -186,7 +186,7 @@ El caso raro todavía no tiene arreglo: para avisar «no hay quien pague» en lu
 - inicio.errores.promedio-dos
 - inicio.errores.buses-romper
 - inicio.errores.buses-pruebas
-- inicio.errores.donde-arreglo
+- inicio.errores.donde-se-corrige
 :::
 
 ::: docentes

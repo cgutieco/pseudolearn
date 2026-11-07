@@ -1,5 +1,5 @@
 ---
-id: inicio.errores.donde-arreglo
+id: inicio.errores.donde-se-corrige
 leccion: inicio.errores
 tipo: explicar
 nivel: semilla

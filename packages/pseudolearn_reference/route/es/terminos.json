@@ -43,5 +43,14 @@
   "tabla-por-vuelta": {"etiqueta": "tabla por vuelta", "formas": ["tabla por vuelta"], "estricto": true, "receta": false},
   "invariante": {"etiqueta": "invariante", "formas": ["invariante", "invariantes"], "estricto": true, "receta": false},
   "bucle-infinito": {"etiqueta": "bucle infinito", "formas": ["bucle infinito"], "estricto": true, "receta": false},
-  "centinela": {"etiqueta": "centinela", "formas": ["centinela", "centinelas"], "estricto": true, "receta": true}
+  "centinela": {"etiqueta": "centinela", "formas": ["centinela", "centinelas"], "estricto": true, "receta": true},
+  "bucle-contado": {"etiqueta": "bucle contado", "formas": ["bucle contado"], "estricto": true, "receta": true},
+  "bucle-posterior": {"etiqueta": "bucle que pregunta al final", "formas": ["bucle que pregunta al final"], "estricto": true, "receta": true},
+  "bandera": {"etiqueta": "bandera", "formas": ["bandera", "banderas"], "estricto": true, "receta": true},
+  "mejor-hasta-ahora": {"etiqueta": "mejor hasta ahora", "formas": ["mejor hasta ahora"], "estricto": true, "receta": true},
+  "salida-anticipada": {"etiqueta": "salida anticipada", "formas": ["salida anticipada"], "estricto": true, "receta": true},
+  "arreglo": {"etiqueta": "arreglo", "formas": ["arreglo", "arreglos"], "estricto": true, "receta": true},
+  "indice": {"etiqueta": "índice", "formas": ["índice", "índices"], "estricto": true, "receta": false},
+  "recorredor": {"etiqueta": "recorredor", "formas": ["recorredor"], "estricto": true, "receta": true},
+  "fuera-de-rango": {"etiqueta": "fuera de rango", "formas": ["fuera de rango"], "estricto": true, "receta": false}
 }

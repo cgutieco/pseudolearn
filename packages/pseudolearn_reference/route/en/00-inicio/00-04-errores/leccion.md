@@ -156,7 +156,7 @@ The odd case has no fix yet: to warn «nobody is paying» instead of stopping, t
 - inicio.errores.promedio-dos
 - inicio.errores.buses-romper
 - inicio.errores.buses-pruebas
-- inicio.errores.donde-arreglo
+- inicio.errores.donde-se-corrige
 :::
 
 ::: docentes

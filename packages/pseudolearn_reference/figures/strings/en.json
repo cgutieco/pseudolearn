@@ -1151,6 +1151,38 @@
       "descripcion": "A money box receiving a coin, labelled accumulator.",
       "nombre": "accumulator",
       "frase": "keeps gathering"
+    },
+    "ruta-rol-bandera": {
+      "titulo": "Role: flag",
+      "descripcion": "A pennant that goes up once and never comes down, labelled flag.",
+      "nombre": "flag",
+      "frase": "changes once and remembers that something happened"
+    },
+    "ruta-rol-mejor-hasta-ahora": {
+      "titulo": "Role: best so far",
+      "descripcion": "A podium with a single place and an arrow that replaces whoever holds it, labelled best so far.",
+      "nombre": "best so far",
+      "frase": "keeps the best one seen"
+    },
+    "ruta-elegir-bucle": {
+      "titulo": "Choosing the loop",
+      "descripcion": "A tree of two questions. If you know how many passes there will be, For goes. Otherwise, you ask whether the first pass always happens: if it does, Repeat; if not, While.",
+      "cuantas": "Do you know how many passes?",
+      "primera": "Does the first pass always happen?",
+      "si": "yes",
+      "no": "no"
+    },
+    "ruta-rol-recorredor": {
+      "titulo": "Role: walker",
+      "descripcion": "A row of cells with an arrow under one of them, labelled walker.",
+      "nombre": "walker",
+      "frase": "moves cell by cell"
+    },
+    "ruta-dos-pasadas": {
+      "titulo": "Two passes over the array",
+      "descripcion": "The array of temperatures 20, 23, 19, 25, 22, 18 and 26. First step: an arrow walks through all of it and feeds the average, 21.86. Second step: the cells above the average are marked: 23, 25, 22 and 26.",
+      "promedio": "average: 21.86",
+      "superan": "above the average"
     }
   }
 }
