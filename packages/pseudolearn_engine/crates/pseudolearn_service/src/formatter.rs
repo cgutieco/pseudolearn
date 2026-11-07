@@ -114,7 +114,7 @@ impl Emitter<'_> {
             self.layout.pop_leading_closer();
         }
         let level = self.layout.indent_for(role);
-        let simple = !self.layout.leaves_block_open(&line.code_tokens)
+        let simple = !self.layout.blocks.leaves_block_open(&line.code_tokens)
             && is_simple_statement(self.context.tree, line, role);
         let rendered = render_line(self.context, line, simple);
         let indent = self.indentation(level);

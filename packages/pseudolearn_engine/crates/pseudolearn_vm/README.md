@@ -326,5 +326,5 @@ Un final que no es normal no lo consulta: quien lo presenta decide el código (l
 
 `Bytes.En` se ejecuta como llamada de efecto local, y el contexto de fallo de esas llamadas solo completaba los
 argumentos de `stringPositionOutOfRange`; el mensaje quedaba «Índice  fuera de rango para un arreglo de tamaño ».
-`fault_context/bytes_effects` añade `index` (el índice pedido) y `size` (la longitud de la secuencia) cuando la
+`fault_context/effect_calls/bytes_effects` añade `index` (el índice pedido) y `size` (la longitud de la secuencia) cuando la
 operación es `bytes_at` (`LIB.CORE.BYTES#B1`). El sujeto nativo usa la misma fórmula en `effect_bytes_faults`.

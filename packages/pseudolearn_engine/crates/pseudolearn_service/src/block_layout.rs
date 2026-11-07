@@ -20,7 +20,7 @@ pub enum LineRole {
 pub struct BlockLayout {
     stack: Vec<OpenBlock>,
     case_starts: BTreeSet<u32>,
-    blocks: TreeBlocks,
+    pub(crate) blocks: TreeBlocks,
 }
 
 impl BlockLayout {
@@ -51,18 +51,6 @@ impl BlockLayout {
             Some(TokenKind::Keyword(KeywordKind::ElseKeyword)) => LineRole::Else,
             _ => LineRole::Plain,
         }
-    }
-
-    pub fn leaves_block_open(&self, tokens: &[usize]) -> bool {
-        let mut balance = 0_usize;
-        for slot in tokens.iter().filter_map(|token| u32::try_from(*token).ok()) {
-            if self.blocks.openers.contains_key(&slot) {
-                balance = balance.saturating_add(1);
-            } else if self.blocks.closers.contains(&slot) {
-                balance = balance.saturating_sub(1);
-            }
-        }
-        balance > 0
     }
 
     pub fn depth(&self) -> usize {

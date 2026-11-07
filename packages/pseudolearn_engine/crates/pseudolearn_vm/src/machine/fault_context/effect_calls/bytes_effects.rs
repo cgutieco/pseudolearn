@@ -1,4 +1,4 @@
-use super::{Arguments, number};
+use super::super::{Arguments, number};
 use crate::Fault;
 use crate::machine::Machine;
 use pseudolearn_runtime::{self as runtime, Handle};

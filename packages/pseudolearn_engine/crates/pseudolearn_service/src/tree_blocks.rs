@@ -49,6 +49,18 @@ impl TreeBlocks {
         }
         blocks
     }
+
+    pub fn leaves_block_open(&self, tokens: &[usize]) -> bool {
+        let mut balance = 0_usize;
+        for slot in tokens.iter().filter_map(|token| u32::try_from(*token).ok()) {
+            if self.openers.contains_key(&slot) {
+                balance = balance.saturating_add(1);
+            } else if self.closers.contains(&slot) {
+                balance = balance.saturating_sub(1);
+            }
+        }
+        balance > 0
+    }
 }
 
 fn closing_token(tree: &SyntaxTree, index: usize) -> Option<u32> {
