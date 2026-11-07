@@ -38,13 +38,14 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "D1 define las formas reconocibles y sus cierres; el reconocimiento solo actúa ante otra palabra de una cabecera o, cuando allow_line lo permite, una apertura sola en su línea. Una asignación o llamada que usa el nombre permanece ordinaria. Clases abstractas, miembros estáticos, visibilidad protegida y manejo de excepciones no son construcciones de la edición vigente; las clases genéricas sí lo son, con parámetros de tipo entre ángulos, y una palabra como Generico es un nombre ordinario también tras Clase. En posición estructural inequívoca sus formas reconocibles producen diagnóstico pedagógico específico. Estas palabras no se añaden al vocabulario reservado y pueden ser nombres en posiciones ordinarias.",
+  "texto": "D1 define las formas reconocibles y sus cierres; el reconocimiento solo actúa ante otra palabra de una cabecera o, cuando allow_line lo permite, una apertura sola en su línea. Una asignación o llamada que usa el nombre permanece ordinaria. Clases abstractas, miembros estáticos, visibilidad protegida y manejo de excepciones no son construcciones de la edición vigente; las clases genéricas sí lo son, con parámetros de tipo entre ángulos, y una palabra como Generico es un nombre ordinario también tras Clase. En posición estructural inequívoca sus formas reconocibles producen diagnóstico pedagógico específico; la recuperación salta hasta el cierre de la construcción rechazada, de modo que las unidades siguientes se analizan sin diagnósticos derivados. Estas palabras no se añaden al vocabulario reservado y pueden ser nombres en posiciones ordinarias.",
   "verificacion": [
     "C1",
     "C2",
     "C3",
     "C4",
-    "C5"
+    "C5",
+    "C6"
   ]
 }
 ```
@@ -222,6 +223,32 @@
   "espera": {
     "salida": "5\n",
     "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C6",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Clase Abstracta Figura\nFinClase\nAlgoritmo P\nEscribir 1;\nFinAlgoritmo\n",
+    "en": "class abstract Shape\nendClass\nalgorithm P\nwrite 1;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "unsupportedAbstractConstruct",
+        "severidad": "error"
+      }
+    ]
   }
 }
 ```

@@ -38,11 +38,12 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Un carácter no reconocido, escape inválido o literal sin cierre produce un diagnóstico léxico con tramo del fragmento culpable. El lexer continúa cuando puede delimitar el fragmento. Los errores léxicos impiden fases semánticas; no se inventan valores ni se lanza una excepción pública.",
+  "texto": "Un carácter no reconocido, escape inválido o literal sin cierre produce un diagnóstico léxico con tramo del fragmento culpable. El lexer continúa cuando puede delimitar el fragmento, y el análisis sintáctico no informa diagnósticos derivados del fragmento descartado. Los errores léxicos impiden fases semánticas; no se inventan valores ni se lanza una excepción pública.",
   "verificacion": [
     "C1",
     "C2",
-    "C3"
+    "C3",
+    "C4"
   ]
 }
 ```
@@ -116,6 +117,32 @@
   "espera": {
     "arbol": "presente",
     "diagnosticos": []
+  }
+}
+```
+
+```caso
+{
+  "id": "C4",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir 5 @ 2;\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite 5 @ 2;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "unrecognizedCharacter",
+        "severidad": "error"
+      }
+    ]
   }
 }
 ```

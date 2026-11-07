@@ -554,7 +554,7 @@
   ],
   "programas": {
     "es": "Funcion Close(stream Como Canal<Entero>)\nstream.Cerrar();\nFinFuncion\nAlgoritmo P\n\nFinAlgoritmo\n",
-    "en": "function Close(stream as channel<integer>)\nstream.close();\nendSubroutine\nalgorithm P\n\nendAlgorithm\n"
+    "en": "function Close(stream as channel<integer>)\nstream.close();\nendFunction\nalgorithm P\n\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",

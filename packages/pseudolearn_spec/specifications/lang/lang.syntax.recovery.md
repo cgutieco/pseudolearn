@@ -32,10 +32,14 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Una sentencia malformada produce como máximo un diagnóstico sintáctico principal; no se duplica al sincronizar.",
+  "texto": "Una sentencia malformada produce como máximo un diagnóstico sintáctico principal; no se duplica al sincronizar. Una palabra intermedia o de cierre que no corresponde a ningún bloque abierto, como Sino fuera de un Si, es una sentencia no reconocida (unexpectedStatement): se descarta y el bloque que la contiene continúa, sin darlo por cerrado.",
   "verificacion": [
     "C1",
-    "C2"
+    "C2",
+    "C10",
+    "C11",
+    "C12",
+    "C13"
   ]
 }
 ```
@@ -711,5 +715,125 @@
     ]
   },
   "origen": "derivado"
+}
+```
+
+```caso
+{
+  "id": "C10",
+  "regla": "R1",
+  "perfiles": [
+    "es"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir x Como Entero;\nx <- 1;\nSino\nEscribir x;\nFinAlgoritmo\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "unexpectedStatement",
+        "severidad": "error",
+        "argumentos": {
+          "lexeme": "Sino"
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "en": "El argumento diagnóstico contiene la grafía de la palabra del perfil; la comprobación del otro perfil vive en C12."
+  }
+}
+```
+
+```caso
+{
+  "id": "C11",
+  "regla": "R1",
+  "perfiles": [
+    "es"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir 1;\nFinSi\nEscribir 2;\nFinAlgoritmo\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "unexpectedStatement",
+        "severidad": "error",
+        "argumentos": {
+          "lexeme": "FinSi"
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "en": "El argumento diagnóstico contiene la grafía de la palabra del perfil; la comprobación del otro perfil vive en C13."
+  }
+}
+```
+
+```caso
+{
+  "id": "C12",
+  "regla": "R1",
+  "perfiles": [
+    "en"
+  ],
+  "programas": {
+    "en": "algorithm P\ndefine x as integer;\nx <- 1;\nelse\nwrite x;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "unexpectedStatement",
+        "severidad": "error",
+        "argumentos": {
+          "lexeme": "else"
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "es": "El argumento diagnóstico contiene la grafía de la palabra del perfil; la comprobación del otro perfil vive en C10."
+  }
+}
+```
+
+```caso
+{
+  "id": "C13",
+  "regla": "R1",
+  "perfiles": [
+    "en"
+  ],
+  "programas": {
+    "en": "algorithm P\nwrite 1;\nendIf\nwrite 2;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "unexpectedStatement",
+        "severidad": "error",
+        "argumentos": {
+          "lexeme": "endIf"
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "es": "El argumento diagnóstico contiene la grafía de la palabra del perfil; la comprobación del otro perfil vive en C11."
+  }
 }
 ```

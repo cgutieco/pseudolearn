@@ -1,11 +1,11 @@
 {
   "algorithm": {
     "en": "algorithm",
-    "es": "Proceso"
+    "es": "Algoritmo"
   },
   "algorithm.alias.es.0": {
     "en": "algorithm",
-    "es": "Algoritmo"
+    "es": "Proceso"
   },
   "and": {
     "en": "and",
@@ -441,23 +441,23 @@
   },
   "endAlgorithm": {
     "en": "endAlgorithm",
-    "es": "FinProceso"
+    "es": "FinAlgoritmo"
   },
   "endAlgorithm.alias.en.0": {
     "en": "end algorithm",
-    "es": "FinProceso"
+    "es": "FinAlgoritmo"
   },
   "endAlgorithm.alias.es.0": {
     "en": "endAlgorithm",
-    "es": "FinAlgoritmo"
+    "es": "FinProceso"
   },
   "endAlgorithm.alias.es.1": {
     "en": "endAlgorithm",
-    "es": "Fin Proceso"
+    "es": "Fin Algoritmo"
   },
   "endAlgorithm.alias.es.2": {
     "en": "endAlgorithm",
-    "es": "Fin Algoritmo"
+    "es": "Fin Proceso"
   },
   "endClass": {
     "en": "endClass",
@@ -494,6 +494,18 @@
   "endFor.alias.es.0": {
     "en": "endFor",
     "es": "Fin Para"
+  },
+  "endFunction": {
+    "en": "endFunction",
+    "es": "FinFuncion"
+  },
+  "endFunction.alias.en.0": {
+    "en": "end function",
+    "es": "FinFuncion"
+  },
+  "endFunction.alias.es.0": {
+    "en": "endFunction",
+    "es": "Fin Funcion"
   },
   "endIf": {
     "en": "endIf",
@@ -544,10 +556,6 @@
     "es": "FinSubProceso"
   },
   "endSubroutine.alias.en.1": {
-    "en": "end function",
-    "es": "FinSubProceso"
-  },
-  "endSubroutine.alias.en.2": {
     "en": "end procedure",
     "es": "FinSubProceso"
   },
@@ -557,25 +565,17 @@
   },
   "endSubroutine.alias.es.1": {
     "en": "endSubroutine",
-    "es": "FinFuncion"
+    "es": "FinProcedimiento"
   },
   "endSubroutine.alias.es.2": {
     "en": "endSubroutine",
-    "es": "FinProcedimiento"
+    "es": "Fin SubProceso"
   },
   "endSubroutine.alias.es.3": {
     "en": "endSubroutine",
-    "es": "Fin SubProceso"
-  },
-  "endSubroutine.alias.es.4": {
-    "en": "endSubroutine",
     "es": "Fin SubAlgoritmo"
   },
-  "endSubroutine.alias.es.5": {
-    "en": "endSubroutine",
-    "es": "Fin Funcion"
-  },
-  "endSubroutine.alias.es.6": {
+  "endSubroutine.alias.es.4": {
     "en": "endSubroutine",
     "es": "Fin Procedimiento"
   },
@@ -626,6 +626,10 @@
   "forKeyword": {
     "en": "for",
     "es": "Para"
+  },
+  "function": {
+    "en": "function",
+    "es": "Funcion"
   },
   "function:absoluteValue": {
     "en": "abs",
@@ -1084,10 +1088,6 @@
     "es": "SubProceso"
   },
   "subroutine.alias.en.0": {
-    "en": "function",
-    "es": "SubProceso"
-  },
-  "subroutine.alias.en.1": {
     "en": "procedure",
     "es": "SubProceso"
   },
@@ -1096,10 +1096,6 @@
     "es": "SubAlgoritmo"
   },
   "subroutine.alias.es.1": {
-    "en": "subroutine",
-    "es": "Funcion"
-  },
-  "subroutine.alias.es.2": {
     "en": "subroutine",
     "es": "Procedimiento"
   },

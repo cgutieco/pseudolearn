@@ -177,7 +177,7 @@
   "id": "T2",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Subcadena(c, desde, hasta) usa posiciones desde cero e incluye ambas: es válida si 0 ≤ desde ≤ hasta + 1 ≤ Longitud(c), desde igual a hasta + 1 da la cadena vacía y en otro caso produce stringPositionOutOfRange. Concatenar(a, b) devuelve los puntos de código de a seguidos de los de b, igual que a + b. Contiene de la cadena vacía devuelve Verdadero; PosicionDe devuelve la primera coincidencia y Algo(0) para la parte vacía. EmpiezaCon y TerminaCon aceptan una parte vacía. Reemplazar sustituye todas las coincidencias sin solaparse y deja la cadena intacta si se busca la cadena vacía. Dividir con separador vacío produce emptySeparator y dividir la cadena vacía devuelve un vector con una cadena vacía. Unir un vector vacío devuelve la cadena vacía. Recortar solo quita U+0020, U+0009, U+000A y U+000D de los extremos.",
+  "texto": "Subcadena(c, desde, hasta) usa posiciones desde cero e incluye ambas: es válida si 0 ≤ desde ≤ hasta + 1 ≤ Longitud(c), desde igual a hasta + 1 da la cadena vacía y en otro caso produce stringPositionOutOfRange, con length igual a Longitud(c) y position igual al argumento que rompe la condición: desde si es negativo o mayor que Longitud(c), y hasta en otro caso. Concatenar(a, b) devuelve los puntos de código de a seguidos de los de b, igual que a + b. Contiene de la cadena vacía devuelve Verdadero; PosicionDe devuelve la primera coincidencia y Algo(0) para la parte vacía. EmpiezaCon y TerminaCon aceptan una parte vacía. Reemplazar sustituye todas las coincidencias sin solaparse y deja la cadena intacta si se busca la cadena vacía. Dividir con separador vacío produce emptySeparator y dividir la cadena vacía devuelve un vector con una cadena vacía. Unir un vector vacío devuelve la cadena vacía. Recortar solo quita U+0020, U+0009, U+000A y U+000D de los extremos.",
   "verificacion": [
     "C6",
     "C7",
@@ -194,7 +194,10 @@
     "C45",
     "C46",
     "C47",
-    "C48"
+    "C48",
+    "C68",
+    "C69",
+    "C70"
   ]
 }
 ```
@@ -1628,5 +1631,104 @@
 {
   "id": "C50",
   "justificacion": "Comprobación estática de aridad y tipos; vive en LIB.MODEL#C7 porque esta regla se verifica también por ejecución."
+}
+```
+
+```caso
+{
+  "id": "C68",
+  "regla": "T2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir Subcadena(\"hola\", 2, 9);\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite substring(\"hola\", 2, 9);\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "",
+    "fallo": {
+      "codigo": "stringPositionOutOfRange"
+    },
+    "diagnosticos": [
+      {
+        "codigo": "stringPositionOutOfRange",
+        "severidad": "error",
+        "argumentos": {
+          "length": 4,
+          "position": 9
+        }
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C69",
+  "regla": "T2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir Subcadena(\"hola\", 6, 7);\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite substring(\"hola\", 6, 7);\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "",
+    "fallo": {
+      "codigo": "stringPositionOutOfRange"
+    },
+    "diagnosticos": [
+      {
+        "codigo": "stringPositionOutOfRange",
+        "severidad": "error",
+        "argumentos": {
+          "length": 4,
+          "position": 6
+        }
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C70",
+  "regla": "T2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir Subcadena(\"hola\", 3, 1);\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite substring(\"hola\", 3, 1);\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "",
+    "fallo": {
+      "codigo": "stringPositionOutOfRange"
+    },
+    "diagnosticos": [
+      {
+        "codigo": "stringPositionOutOfRange",
+        "severidad": "error",
+        "argumentos": {
+          "length": 4,
+          "position": 1
+        }
+      }
+    ]
+  }
 }
 ```

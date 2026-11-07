@@ -158,7 +158,7 @@
   ],
   "programas": {
     "es": "Funcion r <- Positivo(a Como Entero)\nDefinir r Como Entero;\nSi a > 0 Entonces\nr <- a;\nFinSi\nFinFuncion\nAlgoritmo P\nEscribir Positivo(2);\nFinAlgoritmo\n",
-    "en": "function r <- Positive(a as integer)\ndefine r as integer;\nif a > 0 then\nr <- a;\nendIf\nendSubroutine\nalgorithm P\nwrite Positive(2);\nendAlgorithm\n"
+    "en": "function r <- Positive(a as integer)\ndefine r as integer;\nif a > 0 then\nr <- a;\nendIf\nendFunction\nalgorithm P\nwrite Positive(2);\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -188,7 +188,7 @@
   ],
   "programas": {
     "es": "Funcion r <- Signo(a Como Entero)\nDefinir r Como Entero;\nr <- 1;\nSi a < 0 Entonces\nr <- -1;\nRetornar;\nFinSi\nFinFuncion\nAlgoritmo P\nEscribir Signo(-4), Signo(4);\nFinAlgoritmo\n",
-    "en": "function r <- Sign(a as integer)\ndefine r as integer;\nr <- 1;\nif a < 0 then\nr <- -1;\nreturn;\nendIf\nendSubroutine\nalgorithm P\nwrite Sign(-4), Sign(4);\nendAlgorithm\n"
+    "en": "function r <- Sign(a as integer)\ndefine r as integer;\nr <- 1;\nif a < 0 then\nr <- -1;\nreturn;\nendIf\nendFunction\nalgorithm P\nwrite Sign(-4), Sign(4);\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -209,7 +209,7 @@
   ],
   "programas": {
     "es": "Funcion r <- Uno()\nDefinir r Como Entero;\nr <- 1;\nRetornar r;\nFinFuncion\nAlgoritmo P\nEscribir Uno();\nFinAlgoritmo\n",
-    "en": "function r <- One()\ndefine r as integer;\nr <- 1;\nreturn r;\nendSubroutine\nalgorithm P\nwrite One();\nendAlgorithm\n"
+    "en": "function r <- One()\ndefine r as integer;\nr <- 1;\nreturn r;\nendFunction\nalgorithm P\nwrite One();\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -235,7 +235,7 @@
   ],
   "programas": {
     "es": "Funcion r <- Factorial(n Como Entero)\nDefinir r Como Entero;\nSi n <= 1 Entonces\nr <- 1;\nSino\nr <- n * Factorial(n - 1);\nFinSi\nFinFuncion\nAlgoritmo P\nEscribir Factorial(5);\nFinAlgoritmo\n",
-    "en": "function r <- Factorial(n as integer)\ndefine r as integer;\nif n <= 1 then\nr <- 1;\nelse\nr <- n * Factorial(n - 1);\nendIf\nendSubroutine\nalgorithm P\nwrite Factorial(5);\nendAlgorithm\n"
+    "en": "function r <- Factorial(n as integer)\ndefine r as integer;\nif n <= 1 then\nr <- 1;\nelse\nr <- n * Factorial(n - 1);\nendIf\nendFunction\nalgorithm P\nwrite Factorial(5);\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",

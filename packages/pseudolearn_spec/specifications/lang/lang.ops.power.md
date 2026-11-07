@@ -43,14 +43,16 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La potencia asocia a derecha. Dos enteros exigen exponente no negativo y producen entero comprobado; exponente negativo produce negativeIntegerExponent. Con operando real se produce real finito. La potencia cero devuelve uno, incluido cero elevado a cero; desbordamiento y resultados no finitos tienen diagnósticos. La potencia real se redondea al binario64 más cercano al valor matemático exacto, con empates al significando par, independientemente del anfitrión.",
+  "texto": "La potencia asocia a derecha. Dos enteros exigen exponente no negativo y producen entero comprobado; exponente negativo produce negativeIntegerExponent con ese exponente como argumento exponent. Con operando real se produce real finito. La potencia cero devuelve uno, incluido cero elevado a cero; desbordamiento y resultados no finitos tienen diagnósticos. La potencia real se redondea al binario64 más cercano al valor matemático exacto, con empates al significando par, independientemente del anfitrión.",
   "verificacion": [
     "C1",
     "C2",
     "C3",
     "C4",
     "C5",
-    "C6"
+    "C6",
+    "C7",
+    "C8"
   ]
 }
 ```
@@ -180,6 +182,70 @@
   "espera": {
     "salida": "16\n1024\n",
     "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C7",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir e Como Entero <- -3;\nEscribir 2 ^ e;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine e as integer <- -3;\nwrite 2 ^ e;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "",
+    "fallo": {
+      "codigo": "negativeIntegerExponent"
+    },
+    "diagnosticos": [
+      {
+        "codigo": "negativeIntegerExponent",
+        "severidad": "error",
+        "argumentos": {
+          "exponent": -3
+        }
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C8",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir 2 ^ (-1);\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite 2 ^ (-1);\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "",
+    "fallo": {
+      "codigo": "negativeIntegerExponent"
+    },
+    "diagnosticos": [
+      {
+        "codigo": "negativeIntegerExponent",
+        "severidad": "error",
+        "argumentos": {
+          "exponent": -1
+        }
+      }
+    ]
   }
 }
 ```

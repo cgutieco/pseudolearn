@@ -108,7 +108,7 @@
   ],
   "programas": {
     "es": "Funcion r <- Mayor(a Como Entero, b Como Entero)\nDefinir r Como Entero;\nSi a > b Entonces\nr <- a;\nSino\nr <- b;\nFinSi\nFinFuncion\nAlgoritmo P\nEscribir Mayor(3, 9), Mayor(4, 2);\nFinAlgoritmo\n",
-    "en": "function r <- Larger(a as integer, b as integer)\ndefine r as integer;\nif a > b then\nr <- a;\nelse\nr <- b;\nendIf\nendSubroutine\nalgorithm P\nwrite Larger(3, 9), Larger(4, 2);\nendAlgorithm\n"
+    "en": "function r <- Larger(a as integer, b as integer)\ndefine r as integer;\nif a > b then\nr <- a;\nelse\nr <- b;\nendIf\nendFunction\nalgorithm P\nwrite Larger(3, 9), Larger(4, 2);\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -129,7 +129,7 @@
   ],
   "programas": {
     "es": "Funcion r <- Doble(a Como Entero)\nr <- a * 2;\nFinFuncion\nAlgoritmo P\nEscribir Doble(2);\nFinAlgoritmo\n",
-    "en": "function r <- Twice(a as integer)\nr <- a * 2;\nendSubroutine\nalgorithm P\nwrite Twice(2);\nendAlgorithm\n"
+    "en": "function r <- Twice(a as integer)\nr <- a * 2;\nendFunction\nalgorithm P\nwrite Twice(2);\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -165,7 +165,7 @@
   ],
   "programas": {
     "es": "Funcion r <- Mayor(a Como Entero, b Como Entero)\nDefinir r Como Entero;\nSi a > b Entonces\nr <- a;\nSino\nr <- b;\nFinSi\nFinFuncion\nAlgoritmo P\nDefinir g Como SubProceso(Entero, Entero) Como Entero <- Mayor;\nEscribir g(5, 1);\nFinAlgoritmo\n",
-    "en": "function r <- Larger(a as integer, b as integer)\ndefine r as integer;\nif a > b then\nr <- a;\nelse\nr <- b;\nendIf\nendSubroutine\nalgorithm P\ndefine g as subroutine(integer, integer) as integer <- Larger;\nwrite g(5, 1);\nendAlgorithm\n"
+    "en": "function r <- Larger(a as integer, b as integer)\ndefine r as integer;\nif a > b then\nr <- a;\nelse\nr <- b;\nendIf\nendFunction\nalgorithm P\ndefine g as subroutine(integer, integer) as integer <- Larger;\nwrite g(5, 1);\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",

@@ -59,12 +59,16 @@
   "id": "R2",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Las palabras clave se escriben en la forma canónica del perfil activo: en español, el lexema del vocabulario tal como está declarado (por ejemplo div, mod y Sino), salvo la apertura y el cierre del algoritmo, que se escriben Algoritmo y FinAlgoritmo; en inglés, el lexema con mayúscula inicial en cada palabra (Define, EndAlgorithm, Div). Las palabras contextuales en posición de palabra clave o de tipo siguen la misma regla; tras un punto o ante el paréntesis de una llamada conservan su lexema. Los identificadores de usuario nunca se renombran y sus usos resueltos adoptan la grafía exacta de su declaración.",
+  "texto": "Las palabras clave se escriben en la forma canónica del perfil activo: en español, el lexema del vocabulario tal como está declarado (por ejemplo Algoritmo, FinAlgoritmo, div, mod y Sino); en inglés, el lexema con mayúscula inicial en cada palabra (Define, EndAlgorithm, Div). Las palabras contextuales en posición de palabra clave o de tipo siguen la misma regla; tras un punto o ante el paréntesis de una llamada conservan su lexema. Los identificadores de usuario nunca se renombran y sus usos resueltos adoptan la grafía exacta de su declaración.",
   "verificacion": [
     "C1",
     "C4",
     "C5",
-    "C6"
+    "C6",
+    "C8",
+    "C9",
+    "C10",
+    "C11"
   ]
 }
 ```
@@ -256,6 +260,90 @@
   "servicio": {
     "suboperacion": "format",
     "documento": "SubProceso Suspendible Tomar(c Como Canal<Entero>)\nElegir\nRecibir x Desde c:\nEscribir x;\nRecibir z Desde c:\nEscribir z;\nFinElegir\nFinSubProceso\nAlgoritmo P\nDefinir base Como Vector<Entero> <- Vector();\nDefinir datos Como Inmutable<Vector<Entero>> <- Instantanea(base);\nPara Cada d En datos Hacer\nEscribir d;\nFinPara\nFinAlgoritmo\n"
+  }
+}
+```
+
+```caso
+{
+  "id": "C8",
+  "regla": "R2",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "formateado": "Algoritmo P\n  Definir v Como Inmutable<Vector<Entero>> <- Instantanea(Vector());\nFinAlgoritmo\n"
+    }
+  },
+  "servicio": {
+    "suboperacion": "format",
+    "documento": "Algoritmo P\ndefinir v como inmutable<vector<entero>> <- instantanea(vector());\nFinAlgoritmo\n"
+  }
+}
+```
+
+```caso
+{
+  "id": "C9",
+  "regla": "R2",
+  "perfiles": [
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "formateado": "Algorithm P\n  Define v As Immutable<Vector<Integer>> <- snapshot(vector());\nEndAlgorithm\n"
+    }
+  },
+  "servicio": {
+    "suboperacion": "format",
+    "documento": "algorithm P\ndefine v as IMMUTABLE<VECTOR<integer>> <- SNAPSHOT(VECTOR());\nendAlgorithm\n"
+  }
+}
+```
+
+```caso
+{
+  "id": "C10",
+  "regla": "R2",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "formateado": "Algoritmo P\n  Escribir 1;\nFinAlgoritmo\n"
+    }
+  },
+  "servicio": {
+    "suboperacion": "format",
+    "documento": "proceso P\nescribir 1;\nfinproceso\n"
+  }
+}
+```
+
+```caso
+{
+  "id": "C11",
+  "regla": "R2",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "formateado": "Funcion r <- Doble(a Como Entero)\n  Definir r Como Entero;\n  r <- a * 2;\nFinFuncion\n\nAlgoritmo P\n  Escribir Doble(1);\nFinAlgoritmo\n"
+    }
+  },
+  "servicio": {
+    "suboperacion": "format",
+    "documento": "funcion r <- Doble(a como entero)\ndefinir r como entero;\nr <- a * 2;\nfin funcion\nalgoritmo P\nescribir Doble(1);\nfinalgoritmo\n"
   }
 }
 ```

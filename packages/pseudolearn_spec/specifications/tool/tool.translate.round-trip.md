@@ -50,10 +50,13 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "El traductor convierte todas las palabras clave, tipos primitivos, operadores verbales y llamadas a funciones estándar no sombreadas del perfil de origen al perfil de destino, conservando la modalidad. También convierte las palabras contextuales en su posición propia, como Suspendible tras SubProceso y Recibir y Desde en una rama de Elegir, y las escribe con la misma grafía que el formateador.",
+  "texto": "El traductor convierte todas las palabras clave, tipos primitivos, operadores verbales y llamadas a funciones estándar no sombreadas del perfil de origen al perfil de destino, conservando la modalidad. Cada palabra clave conserva su identidad: Funcion se traduce a Function y no a Subroutine. También convierte las palabras contextuales en su posición propia, incluidas las llamadas de construcción de colección, como Vector() o Diccionario(), también dentro de los argumentos de otra llamada y aunque el análisis semántico rechace el programa, como Suspendible tras SubProceso y Recibir y Desde en una rama de Elegir, y las escribe con la misma grafía que el formateador.",
   "verificacion": [
     "C1",
-    "C5"
+    "C5",
+    "C6",
+    "C7",
+    "C8"
   ]
 }
 ```
@@ -219,6 +222,73 @@
   "servicio": {
     "suboperacion": "translate",
     "documento": "SubProceso Suspendible Tomar(c Como Canal<Entero>)\n  Elegir\n    Recibir x Desde c:\n      Escribir x;\n    Recibir z Desde c:\n      Escribir z;\n  FinElegir\nFinSubProceso\n\nAlgoritmo P\n  Definir base Como Vector<Entero> <- Vector();\n  Definir datos Como Inmutable<Vector<Entero>> <- Instantanea(base);\n  Para Cada d En datos Hacer\n    Escribir d;\n  FinPara\nFinAlgoritmo\n",
+    "hacia": "en"
+  }
+}
+```
+
+```caso
+{
+  "id": "C6",
+  "regla": "R1",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "traducido": "Function r <- Doble(a As Integer)\n  Define r As Integer;\n  r <- a * 2;\nEndFunction\n\nAlgorithm P\n  Write Doble(4);\nEndAlgorithm\n",
+      "vuelta": "Funcion r <- Doble(a Como Entero)\n  Definir r Como Entero;\n  r <- a * 2;\nFinFuncion\n\nAlgoritmo P\n  Escribir Doble(4);\nFinAlgoritmo\n"
+    }
+  },
+  "servicio": {
+    "suboperacion": "translate_roundtrip",
+    "documento": "Funcion r <- Doble(a Como Entero)\n  Definir r Como Entero;\n  r <- a * 2;\nFinFuncion\n\nAlgoritmo P\n  Escribir Doble(4);\nFinAlgoritmo\n",
+    "hacia": "en"
+  }
+}
+```
+
+```caso
+{
+  "id": "C7",
+  "regla": "R1",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "traducido": "Algorithm P\n  Define d As Dictionary<Real, Integer> <- dictionary();\nEndAlgorithm\n"
+    }
+  },
+  "servicio": {
+    "suboperacion": "translate",
+    "documento": "Algoritmo P\n  Definir d Como Diccionario<Real, Entero> <- Diccionario();\nFinAlgoritmo\n",
+    "hacia": "en"
+  }
+}
+```
+
+```caso
+{
+  "id": "C8",
+  "regla": "R1",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "traducido": "Algorithm P\n  Define v As Immutable<Vector<Integer>> <- snapshot(vector());\nEndAlgorithm\n"
+    }
+  },
+  "servicio": {
+    "suboperacion": "translate",
+    "documento": "Algoritmo P\n  Definir v Como Inmutable<Vector<Entero>> <- Instantanea(Vector());\nFinAlgoritmo\n",
     "hacia": "en"
   }
 }

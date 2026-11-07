@@ -67,6 +67,7 @@
       "algorithm",
       "classKeyword",
       "subroutine",
+      "function",
       "constantKeyword",
       "enumKeyword",
       "recordKeyword",

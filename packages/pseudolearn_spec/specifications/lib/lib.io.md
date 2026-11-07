@@ -1692,7 +1692,7 @@
   "id": "R10",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "ArchivoCap.AgregarTexto(texto) y ArchivoCap.AgregarBytes(bytes) escriben al final del contenido actual del archivo, lo crean si el archivo ya no existe y devuelven el número de octetos escritos; AgregarTexto escribe el UTF-8 del texto sin transformarlo. Exigen el derecho de escritura de la capacidad de archivo y no modifican los modos de Abrir: Abrir en escritura o en lectura_escritura crea el archivo si no existe y lo vacía si existe, de modo que una lectura posterior solo ve lo escrito después de abrir; Abrir en lectura no crea ni vacía el archivo.",
+  "texto": "ArchivoCap.AgregarTexto(texto) y ArchivoCap.AgregarBytes(bytes) escriben al final del contenido actual del archivo, lo crean si el archivo ya no existe y devuelven el número de octetos escritos; AgregarTexto escribe el UTF-8 del texto sin transformarlo. Exigen el derecho de escritura de la capacidad de archivo. Abrir en escritura crea el archivo si no existe y lo vacía si existe, de modo que una lectura posterior solo ve lo escrito después de abrir. Abrir en lectura_escritura crea el archivo si no existe y conserva su contenido si existe: una lectura posterior ve ese contenido, AgregarTexto y AgregarBytes escriben detrás de él y EscribirTexto y EscribirBytes lo sustituyen completo. Abrir en lectura no crea ni vacía el archivo.",
   "verificacion": [
     "C54",
     "C55",
@@ -1703,7 +1703,9 @@
     "C92",
     "C93",
     "C100",
-    "C101"
+    "C101",
+    "C102",
+    "C103"
   ]
 }
 ```
@@ -3005,7 +3007,7 @@
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
-    "salida": "[]\n",
+    "salida": "[hola]\n",
     "terminacion": "completed"
   },
   "programas": {
@@ -3042,6 +3044,68 @@
   "programas": {
     "es": "SubProceso Probe() Como Resultado<Cadena, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\nRetornar file.LeerTexto();\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir \"[\", value, \"]\";\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
     "en": "subroutine Probe() as result<string, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\nreturn file.readText();\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write \"[\", value, \"]\";\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "files": {
+      "a": [
+        104,
+        111,
+        108,
+        97
+      ]
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C102",
+  "regla": "R10",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "[hola!]\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Cadena, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura_escritura\");\nDefinir step1 Como Entero <- Propagar file.AgregarTexto(\"!\");\nRetornar file.LeerTexto();\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir \"[\", value, \"]\";\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<string, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine file as FileCap <- propagate directory.open(\"a\", \"read_write\");\ndefine step1 as integer <- propagate file.appendText(\"!\");\nreturn file.readText();\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write \"[\", value, \"]\";\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "files": {
+      "a": [
+        104,
+        111,
+        108,
+        97
+      ]
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C103",
+  "regla": "R10",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "[x]\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Cadena, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura_escritura\");\nDefinir step1 Como Entero <- Propagar file.EscribirTexto(\"x\");\nRetornar file.LeerTexto();\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir \"[\", value, \"]\";\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<string, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine file as FileCap <- propagate directory.open(\"a\", \"read_write\");\ndefine step1 as integer <- propagate file.writeText(\"x\");\nreturn file.readText();\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write \"[\", value, \"]\";\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
     "files": {

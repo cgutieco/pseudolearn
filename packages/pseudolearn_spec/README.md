@@ -599,18 +599,58 @@ entero.
 - **Lagunas cerradas.** `ConTiempoMaximo` recibe nanosegundos (`LIB.HTTP#R2`, `#R7`), como `Reloj` y `Temporizador`.
   `LIB.JSON#J4` cuenta columnas en puntos de código y sitúa `FinInesperado` tras el último carácter (C41, C42); el motor
   informaba bytes y el último carácter. `Longitud` de un dato JSON que no es arreglo ni objeto vale 0 (`#J6`, C43).
-  `LIB.IO#R10` hace normativo que abrir en escritura o en lectura_escritura crea o vacía el archivo, como ya decía la
-  prosa de `LIB.MODEL` y hacen ambos anfitriones (C100, C101). `LIB.CORE.BYTES#B1` define `En` y los argumentos de su
+  `LIB.IO#R10` hacía normativo que abrir en escritura o en lectura_escritura crea o vacía el archivo; la revisión
+  posterior de esta misma sección cambió `lectura_escritura` (C100–C103). `LIB.CORE.BYTES#B1` define `En` y los argumentos de su
   `arrayIndexOutOfRange` (C13, C14).
 - **Forma canónica.** `TOOL.FORMAT.STYLE` fija qué abre un nivel de sangría (toda construcción con cierre de la gramática),
   dónde no va `;`, que los ángulos de tipo no llevan espacios y la grafía: el lexema tal cual en español (`div`, `mod`,
-  `Sino`) con la excepción histórica de `Algoritmo`/`FinAlgoritmo`, y mayúscula inicial por palabra en inglés, como ya
+  `Sino`, `Algoritmo`), y mayúscula inicial por palabra en inglés, como ya
   fijaba C4, también para las palabras contextuales en posición de palabra clave. Los esperados de C5–C7 de esa
   especificación y de `TOOL.TRANSLATE.ROUND-TRIP` C5 se obtuvieron ejecutando el formateador y se contrastaron línea a
   línea con las reglas; no llevan `revisado_por` y requieren revisión independiente. Los 290 programas de ejemplo de la
   ayuda que cambiaban de forma se regeneraron con el formateador, y las plantillas `form` pegan los ángulos genéricos y el
   paréntesis tras `Algo`, `Exito`, `Error` y `SubProceso`. El tope de segmentos por línea de plantilla sube de 16 a 20
   para que `FechaHora(...)` quepa en una línea (fixture `crowded-form-line`).
-- **Conflicto abierto.** `LANG.PROFILE.VOCABULARY` declara `Proceso`/`FinProceso` como lexemas canónicos y
-  `Algoritmo`/`FinAlgoritmo` como alias, pero el formateador, la ayuda y casi todo el corpus escriben `Algoritmo`. Se
-  documentó la excepción en `TOOL.FORMAT.STYLE#R2` sin cambiar el vocabulario; queda pendiente de decisión.
+- **Conflicto resuelto: `Algoritmo` es canónico.** `LANG.PROFILE.VOCABULARY` declaraba `Proceso`/`FinProceso` como
+  lexemas canónicos, pero el formateador, la ayuda y casi todo el corpus escribían `Algoritmo`, y `TOOL.FORMAT.STYLE#R2`
+  lo resolvía con una excepción. Ver la sección siguiente.
+
+## Conflictos y defectos resueltos (revisión de 2026-11, segunda parte)
+
+Cada decisión se tomó con la opción recomendada; las ediciones conservan identidad, estado y versión y se reanclaron.
+
+- **`Funcion` es palabra propia (`LANG.PROFILE.VOCABULARY#R3`).** El vocabulario declaraba `Funcion`/`FinFuncion` como
+  alias de `SubProceso`, mientras `LANG.CAPABILITY.PURITY#R1` hace depender la pureza de escribir `Funcion`; el
+  traductor canonizaba el alias a `Subroutine` y la función traducida perdía la pureza. D1 declara ahora las identidades
+  `function` (`Funcion`/`function`) y `endFunction` (`FinFuncion`/`endFunction`, alias `Fin Funcion`/`end function`),
+  la gramática acepta `function` donde aceptaba `subroutine` (subprograma, función anónima, tipo función y firma de
+  interfaz, que ya admitía `SubProceso` en el motor) y empareja cada apertura con su cierre, y `function` se suma a las
+  aperturas de `TOOL.CLI.CONVENTIONS#D1`. `EndFunction` se acepta como cualquier cierre, porque es la grafía canónica
+  inglesa. Los ocho programas ingleses que abrían con `function` y cerraban con `endSubroutine` (posibles con el alias)
+  pasan a `endFunction`. La ficha `help.subprogram` describe las dos aperturas. Se descartó conservar el alias y hacer
+  que el traductor recordara la grafía: dos grafías de una identidad con significados distintos contradicen R1.
+- **`Algoritmo` es canónico.** D1 intercambia lexema y alias: `Algoritmo`/`FinAlgoritmo` son canónicos y
+  `Proceso`/`FinProceso` (también `Fin Proceso`, `Fin Algoritmo`) siguen reconocidos. `TOOL.FORMAT.STYLE#R2` pierde la
+  excepción y el servicio la preferencia escrita a mano. Se descartó lo contrario porque obligaba a reescribir casi
+  todo el corpus, la ayuda y las plantillas.
+- **`lectura_escritura` conserva el contenido (`LIB.IO#R10`).** Abrir en `escritura` crea o vacía; en
+  `lectura_escritura` crea si falta y conserva lo existente, de modo que `AgregarTexto` añade detrás y `EscribirTexto`
+  sustituye. C100 espera ahora `[hola]`, y C102 y C103 cubren agregar y sustituir. Se descartó añadir un modo `agregar`.
+- **Defectos del motor reproducidos antes de corregirlos.** `LANG.CLASS.OUT-OF-SCOPE` C6 (cascada tras una clase
+  abstracta), `LANG.SUBPROGRAM.CALL` C6 (solo `callAsExpressionWithoutReturnType`), `LANG.CLASS.SELF-AND-SUPER` C5 (solo
+  `identifierMatchesFieldWithoutThis`), `LIB.CORE.TEXT` C68–C70 (posición del argumento que rompe la condición),
+  `LANG.OPS.POWER` C7–C8 (argumento `exponent`), `LANG.SYNTAX.RECOVERY` C10–C13 (`Sino` y `FinSi` sueltos),
+  `LANG.LEXICAL.ERRORS` C4 (`Escribir 5 @ 2` sin `missingStatementTerminator`), `LANG.TASK.ISOLATION` C32–C35 (tipo con
+  lexemas del perfil y ruta desde el argumento), `TOOL.TRANSLATE.ROUND-TRIP` C6–C8 y `TOOL.FORMAT.STYLE` C8–C11
+  (`Funcion` traducida, `Diccionario()` con clave inválida, `Instantanea(Vector())`, `Proceso` formateado). Los textos de
+  las reglas afectadas dicen ahora lo que antes solo hacía o no hacía el motor. Los argumentos que dependen del perfil se
+  fijan en un caso por perfil con `exclusiones`, porque los marcadores `{{lexema:…}}` solo se resuelven en la salida y
+  en los eventos.
+- **Revisión de esperados capturados.** Los esperados de `TOOL.FORMAT.STYLE` C5–C7 y de `TOOL.TRANSLATE.ROUND-TRIP` C5 se
+  derivaron otra vez a mano desde R1–R3 de cada especificación (sangría por bloque con cierre, ramas de `Segun` y
+  `Elegir`, lexema del vocabulario, mayúscula inicial en inglés, lexema ante paréntesis de llamada, ángulos sin espacios,
+  paréntesis pegado a `Algo`/`Exito`/`SubProceso`) y coinciden línea a línea con los guardados. La comparación la hizo el
+  agente de implementación, no una persona, así que los cuatro casos siguen sin `revisado_por` y quedan **pendientes de
+  revisión humana**; los casos nuevos de esta sección tampoco llevan revisor.
+- **`LIB.HTTP` R6 y C8.** Comprobado: ninguno expresa plazos (tratan la redacción de credenciales en la cinta); los únicos
+  plazos del archivo son los de `ConTiempoMaximo` en C1, C17, C18, C19 y C38, en nanosegundos como fijan R2 y R7. No hubo cambio.

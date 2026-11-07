@@ -38,12 +38,13 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Este.<miembro> es obligatorio dentro de métodos y constructor para miembros del objeto actual. Un nombre suelto solo refiere local o parámetro. Super solo se usa dentro de subclase y seguido de llamada a método o constructor; usa implementación de superclase sobre el mismo objeto. Este o Super fuera de método y Super sin superclase son sintácticos.",
+  "texto": "Este.<miembro> es obligatorio dentro de métodos y constructor para miembros del objeto actual. Un nombre suelto solo refiere local o parámetro; si no hay uno con ese nombre y coincide con un atributo del objeto actual, produce identifierMatchesFieldWithoutThis y no además undeclaredVariable. Super solo se usa dentro de subclase y seguido de llamada a método o constructor; usa implementación de superclase sobre el mismo objeto. Este o Super fuera de método y Super sin superclase son sintácticos.",
   "verificacion": [
     "C1",
     "C2",
     "C3",
-    "C4"
+    "C4",
+    "C5"
   ]
 }
 ```
@@ -138,6 +139,35 @@
   "espera": {
     "salida": "Michi\nMiau\n",
     "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C5",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Clase Contador\nDefinir total Como Entero;\nMetodo Incrementar()\ntotal <- total + 1;\nFinMetodo\nFinClase\nAlgoritmo P\nEscribir 1;\nFinAlgoritmo\n",
+    "en": "class Counter\ndefine total as integer;\nmethod Increment()\ntotal <- total + 1;\nendMethod\nendClass\nalgorithm P\nwrite 1;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "identifierMatchesFieldWithoutThis",
+        "severidad": "error",
+        "argumentos": {
+          "lexeme": "total"
+        }
+      }
+    ]
   }
 }
 ```

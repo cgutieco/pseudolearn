@@ -52,7 +52,7 @@
   "id": "R2",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "No son transferibles vectores, diccionarios, arreglos, objetos de clase, tipos función aunque solo capturen escalares, asas Tarea ni compuestos que los contengan. El diagnóstico informa el tipo y la ruta hasta el primer componente no transferible; los ciclos de tipos se recorren una sola vez.",
+  "texto": "No son transferibles vectores, diccionarios, arreglos, objetos de clase, tipos función aunque solo capturen escalares, asas Tarea ni compuestos que los contengan. El diagnóstico informa el tipo y la ruta hasta el primer componente no transferible: type es ese tipo escrito con los lexemas del perfil y path es el texto del argumento seguido, separados por punto, de los nombres de los campos que llevan hasta el componente; Opcional, Resultado, Canal y FalloTareas no añaden segmento; los ciclos de tipos se recorren una sola vez.",
   "verificacion": [
     "C4",
     "C5",
@@ -60,7 +60,11 @@
     "C7",
     "C14",
     "C15",
-    "C16"
+    "C16",
+    "C32",
+    "C33",
+    "C34",
+    "C35"
   ]
 }
 ```
@@ -801,6 +805,130 @@
   "espera": {
     "salida": "55\n",
     "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C32",
+  "regla": "R2",
+  "perfiles": [
+    "es"
+  ],
+  "programas": {
+    "es": "SubProceso Suspendible Work(value Como Vector<Entero>)\nFinSubProceso\nAlgoritmo Main\nDefinir values Como Vector<Entero> <- Vector();\nTareas\nLanzar Work(values);\nFinTareas\nFinAlgoritmo\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "taskArgumentNotTransferable",
+        "severidad": "error",
+        "argumentos": {
+          "type": "Vector<Entero>",
+          "path": "values"
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "en": "El argumento diagnóstico contiene los lexemas del tipo en el perfil; la comprobación del otro perfil vive en C34."
+  }
+}
+```
+
+```caso
+{
+  "id": "C33",
+  "regla": "R2",
+  "perfiles": [
+    "es"
+  ],
+  "programas": {
+    "es": "Registro Caja\nDefinir items Como Vector<Entero>;\nFinRegistro\nSubProceso Suspendible Work(value Como Caja)\nFinSubProceso\nAlgoritmo Main\nDefinir box Como Caja;\nbox.items <- Vector();\nTareas\nLanzar Work(box);\nFinTareas\nFinAlgoritmo\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "taskArgumentNotTransferable",
+        "severidad": "error",
+        "argumentos": {
+          "type": "Vector<Entero>",
+          "path": "box.items"
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "en": "El argumento diagnóstico contiene los lexemas del tipo en el perfil; la comprobación del otro perfil vive en C35."
+  }
+}
+```
+
+```caso
+{
+  "id": "C34",
+  "regla": "R2",
+  "perfiles": [
+    "en"
+  ],
+  "programas": {
+    "en": "subroutine suspendable Work(value as vector<integer>)\nendSubroutine\nalgorithm Main\ndefine values as vector<integer> <- vector();\ntasks\nspawn Work(values);\nendTasks\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "taskArgumentNotTransferable",
+        "severidad": "error",
+        "argumentos": {
+          "type": "vector<integer>",
+          "path": "values"
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "es": "El argumento diagnóstico contiene los lexemas del tipo en el perfil; la comprobación del otro perfil vive en C32."
+  }
+}
+```
+
+```caso
+{
+  "id": "C35",
+  "regla": "R2",
+  "perfiles": [
+    "en"
+  ],
+  "programas": {
+    "en": "record Box\ndefine items as vector<integer>;\nendRecord\nsubroutine suspendable Work(value as Box)\nendSubroutine\nalgorithm Main\ndefine box as Box;\nbox.items <- vector();\ntasks\nspawn Work(box);\nendTasks\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "taskArgumentNotTransferable",
+        "severidad": "error",
+        "argumentos": {
+          "type": "vector<integer>",
+          "path": "box.items"
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "es": "El argumento diagnóstico contiene los lexemas del tipo en el perfil; la comprobación del otro perfil vive en C33."
   }
 }
 ```

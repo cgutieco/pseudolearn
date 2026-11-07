@@ -3406,6 +3406,22 @@
             }
           },
           {
+            "identity": "function",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          },
+          {
+            "identity": "endFunction",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          },
+          {
             "identity": "typeConnector",
             "source": {
               "specification": "LANG.PROFILE.VOCABULARY",
@@ -3515,6 +3531,14 @@
                 "text": "Cierra el subproceso."
               },
               {
+                "identity": "function",
+                "text": "Empieza una función pura en lugar de un subproceso: calcula un resultado sin leer, escribir ni cambiar nada fuera de ella."
+              },
+              {
+                "identity": "endFunction",
+                "text": "Cierra la función. Una Funcion se cierra con FinFuncion, no con FinSubProceso."
+              },
+              {
                 "identity": "typeConnector",
                 "text": "Opcional. Si el subproceso devuelve un resultado, después de Como va la clase de ese resultado."
               },
@@ -3589,6 +3613,14 @@
               {
                 "identity": "endSubroutine",
                 "text": "Closes the subroutine."
+              },
+              {
+                "identity": "function",
+                "text": "Starts a pure function instead of a subroutine: it computes a result without reading, writing or changing anything outside it."
+              },
+              {
+                "identity": "endFunction",
+                "text": "Closes the function. A Function closes with EndFunction, not with EndSubroutine."
               },
               {
                 "identity": "typeConnector",
@@ -37668,6 +37700,8 @@
           "tokens": [
             "subroutine",
             "endSubroutine",
+            "function",
+            "endFunction",
             "typeConnector",
             "suspendibleModifier"
           ]

@@ -1187,6 +1187,7 @@
       "algorithm",
       "classKeyword",
       "subroutine",
+      "function",
       "constantKeyword",
       "enumKeyword",
       "recordKeyword",
@@ -6473,13 +6474,13 @@
       "fieldDeclaration": "[ visibility ], ( fieldBinding | dimensionDeclaration ), terminator",
       "forEachLoop": "@forKeyword, identifier, iterationBindings, identifier, expression, @doKeyword, line, body, @endFor, line",
       "forLoop": "@forKeyword, identifier, @assignment, expression, @to, expression, [ @step, expression ], @doKeyword, line, body, @endFor, line",
-      "functionLiteral": "@subroutine, [ @suspendibleModifier ], parameters, [ @typeConnector, type ], line, body, @endSubroutine",
+      "functionLiteral": "( @subroutine | @function ), [ @suspendibleModifier ], parameters, [ @typeConnector, type ], line, body, ( @endSubroutine | @endFunction )",
       "functionParameterType": "type, [ @byValue | @byReference ]",
-      "functionType": "@subroutine, @leftParenthesis, [ functionParameterType, { @comma, functionParameterType } ], @rightParenthesis, [ @typeConnector, type ]",
+      "functionType": "( @subroutine | @function ), @leftParenthesis, [ functionParameterType, { @comma, functionParameterType } ], @rightParenthesis, [ @typeConnector, type ]",
       "importDeclaration": "@importKeyword, modulePath, [ @typeConnector, identifier ], terminator",
       "input": "@read, designator, { @comma, designator }",
       "instantiation": "@newInstance, identifier, [ typeArguments ], arguments",
-      "interfaceSignature": "@method, identifier, parameters, [ @typeConnector, type ], terminator",
+      "interfaceSignature": "( @method | @subroutine | @function ), identifier, parameters, [ @typeConnector, type ], terminator",
       "interfaceUnit": "identifier, identifier, [ typeParameters ], line, { interfaceSignature }, identifier, line",
       "iterationBindings": "identifier, [ @comma, identifier ]",
       "labels": "pattern, { @comma, pattern }",
@@ -6513,7 +6514,7 @@
       "spawnExpression": "@spawnKeyword, identifier, arguments",
       "spawnStatement": "spawnExpression",
       "statement": "selectStatement | ( declaration | constantDeclaration | dimensionDeclaration | assignmentStatement | output | input | callStatement | returnStatement | discardStatement | breakStatement | spawnStatement ), terminator",
-      "subprogram": "@subroutine, [ @suspendibleModifier ], ( returnVariable, identifier, [ typeParameters ], parameters | identifier, [ typeParameters ], parameters, [ @typeConnector, type ] ), line, body, @endSubroutine, line",
+      "subprogram": "( @subroutine | @function ), [ @suspendibleModifier ], ( returnVariable, identifier, [ typeParameters ], parameters | identifier, [ typeParameters ], parameters, [ @typeConnector, type ] ), line, body, ( @endSubroutine | @endFunction ), line",
       "switch": "@switchKeyword, expression, @doKeyword, line, { labels, @branchSeparator, body }, [ @defaultCase, @branchSeparator, body ], @endSwitch, line",
       "taskScope": "@tasksKeyword, [ identifier ], line, body, @endTasks, line",
       "terminator": "@semicolon | endOfLine",
@@ -6564,6 +6565,7 @@
       "endOfLine",
       "endRecord",
       "endSubroutine",
+      "endFunction",
       "endSwitch",
       "endWhile",
       "enumKeyword",
@@ -6609,6 +6611,7 @@
       "stringLiteral",
       "stringType",
       "subroutine",
+      "function",
       "superClass",
       "switchKeyword",
       "then",
@@ -9538,6 +9541,14 @@
                 "text": "Closes the subroutine."
               },
               {
+                "identity": "function",
+                "text": "Starts a pure function instead of a subroutine: it computes a result without reading, writing or changing anything outside it."
+              },
+              {
+                "identity": "endFunction",
+                "text": "Closes the function. A Function closes with EndFunction, not with EndSubroutine."
+              },
+              {
                 "identity": "typeConnector",
                 "text": "Optional. If the subroutine gives back a result, the kind of that result goes after As."
               },
@@ -9612,6 +9623,14 @@
               {
                 "identity": "endSubroutine",
                 "text": "Cierra el subproceso."
+              },
+              {
+                "identity": "function",
+                "text": "Empieza una función pura en lugar de un subproceso: calcula un resultado sin leer, escribir ni cambiar nada fuera de ella."
+              },
+              {
+                "identity": "endFunction",
+                "text": "Cierra la función. Una Funcion se cierra con FinFuncion, no con FinSubProceso."
               },
               {
                 "identity": "typeConnector",
@@ -9718,6 +9737,22 @@
           },
           {
             "identity": "endSubroutine",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "function",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "endFunction",
             "source": {
               "element": "D1",
               "specification": "LANG.PROFILE.VOCABULARY",
@@ -43755,6 +43790,8 @@
           "tokens": [
             "subroutine",
             "endSubroutine",
+            "function",
+            "endFunction",
             "typeConnector",
             "suspendibleModifier"
           ]
@@ -46663,12 +46700,12 @@
       "alias": {
         "en": [],
         "es": [
-          "Algoritmo"
+          "Proceso"
         ]
       },
       "lexemas": {
         "en": "algorithm",
-        "es": "Proceso"
+        "es": "Algoritmo"
       }
     },
     "and": {
@@ -46921,14 +46958,14 @@
           "end algorithm"
         ],
         "es": [
-          "FinAlgoritmo",
-          "Fin Proceso",
-          "Fin Algoritmo"
+          "FinProceso",
+          "Fin Algoritmo",
+          "Fin Proceso"
         ]
       },
       "lexemas": {
         "en": "endAlgorithm",
-        "es": "FinProceso"
+        "es": "FinAlgoritmo"
       }
     },
     "endClass": {
@@ -46971,6 +47008,20 @@
       "lexemas": {
         "en": "endFor",
         "es": "FinPara"
+      }
+    },
+    "endFunction": {
+      "alias": {
+        "en": [
+          "end function"
+        ],
+        "es": [
+          "Fin Funcion"
+        ]
+      },
+      "lexemas": {
+        "en": "endFunction",
+        "es": "FinFuncion"
       }
     },
     "endIf": {
@@ -47025,16 +47076,13 @@
       "alias": {
         "en": [
           "end subroutine",
-          "end function",
           "end procedure"
         ],
         "es": [
           "FinSubAlgoritmo",
-          "FinFuncion",
           "FinProcedimiento",
           "Fin SubProceso",
           "Fin SubAlgoritmo",
-          "Fin Funcion",
           "Fin Procedimiento"
         ]
       },
@@ -47125,6 +47173,16 @@
       "lexemas": {
         "en": "for",
         "es": "Para"
+      }
+    },
+    "function": {
+      "alias": {
+        "en": [],
+        "es": []
+      },
+      "lexemas": {
+        "en": "function",
+        "es": "Funcion"
       }
     },
     "greaterThan": {
@@ -47601,12 +47659,10 @@
     "subroutine": {
       "alias": {
         "en": [
-          "function",
           "procedure"
         ],
         "es": [
           "SubAlgoritmo",
-          "Funcion",
           "Procedimiento"
         ]
       },

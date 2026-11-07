@@ -2053,7 +2053,8 @@ Las solicitudes de consola, argumentos, directorio identificado por nombre, relo
 devuelven Resultado del tipo de capacidad y ErrorES; no construyen capacidades sin solicitarlas al anfitrión.
 Los métodos de capacidad definidos en capabilityLibrary también devuelven Resultado. Abrir y
 Subdirectorio reciben un modo lectura, escritura o lectura_escritura (read, write o read_write en
-inglés); la apertura de escritura crea o trunca, y una derivación nunca amplía los derechos.
+inglés); la apertura en escritura crea o trunca, la apertura en lectura_escritura crea o conserva el
+contenido, y una derivación nunca amplía los derechos.
 LeerBytes y LeerTexto leen el contenido completo del archivo. EscribirBytes y EscribirTexto
 devuelven la cantidad de bytes escritos; Valores devuelve Vector<Cadena>. Ahora devuelve el
 instante grabado en nanosegundos y Esperar recibe una duración no negativa en nanosegundos y devuelve

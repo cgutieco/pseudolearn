@@ -38,13 +38,14 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Paréntesis son obligatorios y los argumentos se evalúan izquierda a derecha una vez. Cantidad y tipos coinciden con firma. Llamada a procedimiento como expresión es error; llamar como sentencia una función produce discardedReturnValue como advertencia. El retorno sirve de valor en la posición de llamada. Resolver una llamada no confunde variable y subprograma.",
+  "texto": "Paréntesis son obligatorios y los argumentos se evalúan izquierda a derecha una vez. Cantidad y tipos coinciden con firma. Llamada a procedimiento como expresión es error: produce solo callAsExpressionWithoutReturnType y el uso de la llamada no añade errores de tipo derivados; llamar como sentencia una función produce discardedReturnValue como advertencia. El retorno sirve de valor en la posición de llamada. Resolver una llamada no confunde variable y subprograma.",
   "verificacion": [
     "C1",
     "C2",
     "C3",
     "C4",
-    "C5"
+    "C5",
+    "C6"
   ]
 }
 ```
@@ -160,6 +161,32 @@
   "espera": {
     "salida": "----------\nAna\n----------\n",
     "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C6",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "SubProceso Saludar()\nEscribir \"hola\";\nFinSubProceso\nAlgoritmo P\nDefinir x Como Entero;\nx <- Saludar();\nEscribir x;\nFinAlgoritmo\n",
+    "en": "subroutine Greet()\nwrite \"hola\";\nendSubroutine\nalgorithm P\ndefine x as integer;\nx <- Greet();\nwrite x;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "callAsExpressionWithoutReturnType",
+        "severidad": "error"
+      }
+    ]
   }
 }
 ```

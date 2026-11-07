@@ -41,26 +41,26 @@
   "valor": {
     "algorithm": {
       "lexemas": {
-        "es": "Proceso",
+        "es": "Algoritmo",
         "en": "algorithm"
       },
       "alias": {
         "es": [
-          "Algoritmo"
+          "Proceso"
         ],
         "en": []
       }
     },
     "endAlgorithm": {
       "lexemas": {
-        "es": "FinProceso",
+        "es": "FinAlgoritmo",
         "en": "endAlgorithm"
       },
       "alias": {
         "es": [
-          "FinAlgoritmo",
-          "Fin Proceso",
-          "Fin Algoritmo"
+          "FinProceso",
+          "Fin Algoritmo",
+          "Fin Proceso"
         ],
         "en": [
           "end algorithm"
@@ -417,11 +417,9 @@
       "alias": {
         "es": [
           "SubAlgoritmo",
-          "Funcion",
           "Procedimiento"
         ],
         "en": [
-          "function",
           "procedure"
         ]
       }
@@ -480,17 +478,38 @@
       "alias": {
         "es": [
           "FinSubAlgoritmo",
-          "FinFuncion",
           "FinProcedimiento",
           "Fin SubProceso",
           "Fin SubAlgoritmo",
-          "Fin Funcion",
           "Fin Procedimiento"
         ],
         "en": [
           "end subroutine",
-          "end function",
           "end procedure"
+        ]
+      }
+    },
+    "function": {
+      "lexemas": {
+        "es": "Funcion",
+        "en": "function"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      }
+    },
+    "endFunction": {
+      "lexemas": {
+        "es": "FinFuncion",
+        "en": "endFunction"
+      },
+      "alias": {
+        "es": [
+          "Fin Funcion"
+        ],
+        "en": [
+          "end function"
         ]
       }
     },
@@ -1779,6 +1798,90 @@
         "severidad": "error"
       }
     ]
+  }
+}
+```
+
+```regla
+{
+  "id": "R3",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "function (Funcion) y endFunction (FinFuncion) son identidades propias de D1 y no alias de subroutine ni de endSubroutine, porque solo la apertura function declara un subprograma puro. La gramática empareja cada apertura con su cierre propio: un subprograma abierto con Funcion se cierra con FinFuncion y uno abierto con SubProceso, con FinSubProceso; el cierre ajeno deja el subprograma sin cerrar (unclosedSubroutine). Como cualquier identidad, la reimpresión y la traducción la conservan: Funcion se escribe Function en inglés y FinFuncion, EndFunction, que se reconoce igual que su alias end function.",
+  "verificacion": [
+    "C8",
+    "C9",
+    "C10"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C8",
+  "regla": "R3",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Funcion r <- Doble(a Como Entero)\nDefinir r Como Entero;\nr <- a * 2;\nFinFuncion\nAlgoritmo P\nEscribir Doble(4);\nFinAlgoritmo\n",
+    "en": "Function r <- Twice(a As Integer)\nDefine r As Integer;\nr <- a * 2;\nEndFunction\nAlgorithm P\nWrite Twice(4);\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "8\n",
+    "terminacion": "completed",
+    "diagnosticos": []
+  }
+}
+```
+
+```caso
+{
+  "id": "C9",
+  "regla": "R3",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Funcion r <- Doble(a Como Entero)\nDefinir r Como Entero;\nr <- a * 2;\nFinSubProceso\nAlgoritmo P\nEscribir Doble(4);\nFinAlgoritmo\n",
+    "en": "function r <- Twice(a as integer)\ndefine r as integer;\nr <- a * 2;\nendSubroutine\nalgorithm P\nwrite Twice(4);\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "unclosedSubroutine",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C10",
+  "regla": "R3",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Funcion r <- Doble(a Como Entero)\nDefinir r Como Entero;\nr <- a * 2;\nFin Funcion\nAlgoritmo P\nEscribir Doble(5);\nFinAlgoritmo\n",
+    "en": "function r <- Twice(a as integer)\ndefine r as integer;\nr <- a * 2;\nend function\nalgorithm P\nwrite Twice(5);\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "10\n",
+    "terminacion": "completed",
+    "diagnosticos": []
   }
 }
 ```

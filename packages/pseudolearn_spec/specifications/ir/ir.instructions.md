@@ -2061,6 +2061,14 @@
 
 ```cobertura
 {
+  "id": "V255",
+  "regla": "LANG.PROFILE.VOCABULARY#R3",
+  "sin_ri": "La distinción entre las aperturas function y subroutine y el emparejamiento de sus cierres ocurren en el análisis léxico y sintáctico; la pureza que declara function la comprueba el análisis semántico antes de la RI."
+}
+```
+
+```cobertura
+{
   "id": "V52",
   "regla": "LANG.PROGRAM.STRUCTURE#R1",
   "sin_ri": "La estructura determina las funciones del módulo de IR.MODEL."
