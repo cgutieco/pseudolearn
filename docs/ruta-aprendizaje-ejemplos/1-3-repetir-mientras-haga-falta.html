@@ -1,0 +1,561 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1.3 Repetir mientras haga falta · Ruta de aprendizaje de PseudoLearn</title>
+<link rel="stylesheet" href="../especificacion-ilustrada-ejemplos/recursos/especificacion.css">
+<link rel="stylesheet" href="recursos/ruta.css">
+</head>
+<body>
+
+<div class="barra">
+  <a class="logo" href="index.html"><span class="marca ruta">PL</span>Ruta</a>
+  <span class="migas">Parte I — Imperativo y estructurado › <b>1.3 Repetir mientras haga falta</b></span>
+  <span class="perfil">25 minutos · semilla a árbol</span>
+</div>
+
+<div class="pagina">
+  <nav class="indice" aria-label="En esta lección">
+    <h2>En esta lección</h2>
+    <ol>
+      <li><a href="#problema"><span class="num">·</span>El problema</a></li>
+      <li><a href="#intento"><span class="num">·</span>Inténtalo</a></li>
+      <li><a href="#entender"><span class="num">1</span>Entender</a></li>
+      <li><a href="#planear"><span class="num">2</span>Planear</a></li>
+      <li><a href="#herramienta"><span class="num">·</span>La herramienta nueva</a></li>
+      <li><a href="#escribir"><span class="num">3</span>Escribir</a></li>
+      <li><a href="#probar"><span class="num">4</span>Probar</a></li>
+      <li><a href="#mejorar"><span class="num">5</span>Mejorar</a></li>
+      <li><a href="#aprendiste"><span class="num">·</span>Lo que aprendiste</a></li>
+      <li><a href="#practica"><span class="num">·</span>Practica</a></li>
+    </ol>
+  </nav>
+
+<main>
+  <h1><span class="num">1.3</span>Repetir mientras haga falta</h1>
+
+  <p class="frase">Cuando no sabes cuántas veces hay que hacer algo, pero sí sabes cuándo parar, le pides a la
+  computadora que lo repita mientras no se cumpla esa condición.</p>
+
+  <div class="cabecera-leccion">
+    <div class="fila"><span class="rotulo">Necesitas</span>
+      <a class="previa-chip" href="#"><b>0.2</b>Darle nombre a los datos</a>
+      <a class="previa-chip" href="#"><b>0.3</b>Preguntar antes de calcular</a>
+      <a class="previa-chip" href="#"><b>0.4</b>Cuando algo sale mal</a>
+      <a class="previa-chip" href="#"><b>1.1</b>Decidir</a>
+    </div>
+    <div class="fila"><span class="rotulo">Vas a aprender</span>
+      <span class="termino-chip">bucle</span>
+      <span class="termino-chip">vuelta</span>
+      <span class="termino-chip">Mientras</span>
+      <span class="termino-chip">contador</span>
+      <span class="termino-chip">acumulador</span>
+      <span class="termino-chip">tabla por vuelta</span>
+      <span class="termino-chip">invariante</span>
+      <span class="termino-chip">bucle infinito</span>
+      <span class="termino-chip">centinela</span>
+    </div>
+  </div>
+
+  <h2 id="problema">El problema</h2>
+
+  <div class="problema">
+    <span class="tit">Problema</span>
+    <p>Lucía quiere comprar una pelota que cuesta <b>50 monedas</b>. El primer día guarda <b>2 monedas</b> en su alcancía, y
+    cada día guarda <b>una moneda más</b> que el día anterior.</p>
+    <p><b>¿Qué día puede comprar la pelota, y cuántas monedas tendrá ese día?</b></p>
+  </div>
+
+  <h2 id="intento">Inténtalo</h2>
+
+  <p>Resuélvelo a mano. Haz una tabla con una fila por día: cuánto guarda y cuánto lleva juntado.</p>
+
+  <details class="revelar">
+    <summary>Ya lo intenté: ver la respuesta</summary>
+    <div class="cuerpo">
+      <p>Guarda 2, 3, 4, 5… y lleva juntado 2, 5, 9, 14, 20, 27, 35, 44 y <b>54</b>. El <b>día 9</b> llega a 54 monedas y
+      puede comprar la pelota.</p>
+      <p>Fíjate en lo que hiciste: repetiste <b>las mismas dos cuentas</b> nueve veces, y paraste cuando lo juntado
+      alcanzó el precio. Antes de empezar no sabías que iban a ser nueve.</p>
+    </div>
+  </details>
+
+  <div class="ciclo" aria-hidden="true"><span class="activa">Entender</span><span>Planear</span><span>Escribir</span><span>Probar</span><span>Mejorar</span></div>
+  <h2 id="entender" class="fase f1"><span class="insignia">1</span>Entender</h2>
+
+  <div class="recuerdo"><span class="tit">Recuerda</span><span>La ficha del problema separa lo que entra, lo que sale y la relación entre ambos.</span><a href="#">Lección 0.3 →</a></div>
+
+  <div class="ficha-problema">
+    <div><span class="rotulo">Entra</span>El precio de la pelota (50). El primer día se guardan 2 monedas y cada día una más.</div>
+    <div><span class="rotulo">Sale</span>El día en que se puede comprar y las monedas juntadas ese día.</div>
+    <div class="ancha"><span class="rotulo">Relación</span>Se suma lo de cada día hasta que lo juntado <b>alcanza o supera</b> el precio.</div>
+    <div class="ancha"><span class="rotulo">Ejemplos a mano</span>
+      <ul>
+        <li>Precio 50 → día 9, con 54 monedas.</li>
+        <li>Precio 54 → también día 9, con 54. Es justo el precio: <b>alcanza</b>.</li>
+        <li>Precio 2 → día 1, con 2. Le alcanza el primer día, sin esperar.</li>
+      </ul>
+    </div>
+  </div>
+
+  <p>Los dos últimos ejemplos son <b>casos borde</b>: están justo en el límite donde un programa apurado se equivoca. Ya
+  sabes por qué conviene buscarlos.</p>
+
+  <div class="recuerdo"><span class="tit">Recuerda</span><span>Un caso borde está justo en el límite entre dos comportamientos.</span><a href="#">Lección 0.4 →</a></div>
+
+  <div class="ciclo" aria-hidden="true"><span>Entender</span><span class="activa">Planear</span><span>Escribir</span><span>Probar</span><span>Mejorar</span></div>
+  <h2 id="planear" class="fase f2"><span class="insignia">2</span>Planear</h2>
+
+  <p>Con lo que sabes hasta ahora, tendrías que escribir las dos cuentas una vez por día: nueve veces para 50 monedas,
+  cuarenta y cuatro para 1000 monedas. Y si el precio lo escribe Lucía al usar el programa, ni siquiera sabrías cuántas.
+  Hace falta otra forma de pensarlo.</p>
+
+  <p>Mira tu tabla a mano. En cada fila hiciste lo mismo:</p>
+
+  <ol>
+    <li>Pasa un día.</li>
+    <li>Ese día se guarda una moneda más que el anterior.</li>
+    <li>Lo de ese día se suma a lo juntado.</li>
+  </ol>
+
+  <p>Y antes de cada fila te preguntaste lo mismo: <b>¿todavía no alcanza?</b> Si la respuesta es sí, haces otra fila. Si
+  es no, terminaste.</p>
+
+  <p>Las tres cajas de memoria que necesitas no cambian todas de la misma manera, y reconocer <b>para qué sirve</b> cada
+  una es la mitad de la solución. Cada forma de cambiar tiene un nombre, un <b>rol</b>:</p>
+
+  <div class="roles">
+    <div class="rol">
+      <svg viewBox="0 0 44 44" aria-hidden="true">
+        <rect class="azul" x="4" y="30" width="10" height="10" rx="2"/>
+        <rect class="azul" x="17" y="20" width="10" height="20" rx="2"/>
+        <rect class="azul" x="30" y="10" width="10" height="30" rx="2"/>
+      </svg>
+      <b>Contador</b>
+      <span>Avanza siempre lo mismo en cada vuelta: <code class="pl">dia</code> sube de 1 en 1, y <code class="pl">guardaHoy</code> también.</span>
+    </div>
+    <div class="rol">
+      <svg viewBox="0 0 44 44" aria-hidden="true">
+        <path class="linea" d="M 10 8 V 38 H 34 V 8"/>
+        <rect class="ambar" x="12" y="22" width="20" height="14" rx="1"/>
+        <path class="s-ambar" d="M 22 2 V 16 M 17 11 L 22 16 L 27 11"/>
+      </svg>
+      <b>Acumulador</b>
+      <span>Va juntando: en cada vuelta se le suma algo nuevo a lo que ya tenía. Es <code class="pl">ahorro</code>, la alcancía.</span>
+    </div>
+  </div>
+
+  <p>Vas a encontrar contadores y acumuladores en casi todos los problemas que repiten algo. Aprende a verlos.</p>
+
+  <h2 id="herramienta">La herramienta nueva: <code class="pl">Mientras</code></h2>
+
+  <p>Un <dfn class="termino">bucle</dfn> es un grupo de instrucciones que se repite. Cada repetición se llama una
+  <dfn class="termino">vuelta</dfn>. En PseudoLearn, <code class="pl">Mientras</code> repite su grupo de instrucciones
+  <b>mientras</b> una condición sea <code class="pl">Verdadero</code>. La condición se pregunta <b>antes</b> de cada
+  vuelta. Cuando es <code class="pl">Falso</code>, el programa sigue con lo que está después de
+  <code class="pl">FinMientras</code>.</p>
+
+  <div class="recuerdo"><span class="tit">Recuerda</span><span>Una condición es una pregunta que solo puede responder Verdadero o Falso.</span><a href="#">Lección 1.1 →</a></div>
+
+  <div class="programa">
+    <header><span class="titulo">Cuenta regresiva</span><span class="sello">✓ Ejecutado con el motor</span><button data-copiar>Probar en el editor</button></header>
+    <pre class="pseudo numerado">
+Algoritmo CuentaRegresiva
+  Definir n Como Entero &lt;- 3;
+  Mientras n &gt; 0 Hacer
+    Escribir n;
+    n &lt;- n - 1;
+  FinMientras
+  Escribir "¡Ya!";
+FinAlgoritmo</pre>
+    <div class="salida"><div class="etiqueta">Salida<span class="term">terminación: completed</span></div><pre>3
+2
+1
+¡Ya!</pre></div>
+  </div>
+
+  <div class="recuadro analogia">
+    <span class="tit">Aquí va la figura de la Especificación</span>
+    <p>La ruta no redibuja cómo se ejecuta un <code class="pl">Mientras</code> paso a paso: incrusta la figura de la
+    Especificación, la misma que ve quien la consulta. Así hay una sola explicación que mantener.</p>
+    <p><a class="espec" href="#"><span class="num">§6.3</span>Mientras · figura 6.3-1</a></p>
+  </div>
+
+  <p>Lo que aporta la ruta es la forma de <b>razonar</b> sobre un bucle sin ejecutarlo. En un bucle, la misma instrucción
+  se ejecuta muchas veces, cada vez con valores distintos en las cajas. Por eso, para seguirlo a mano, se usa una
+  <dfn class="termino">tabla por vuelta</dfn>: una columna por caja y <b>una fila por vuelta</b>, con los valores al
+  terminar esa vuelta.</p>
+
+  <table class="tabla">
+    <thead><tr><th>Vuelta</th><th>¿<code class="pl">n &gt; 0</code>?</th><th><code class="pl">n</code> al terminar</th><th>Salida</th></tr></thead>
+    <tbody>
+      <tr><td>antes</td><td>—</td><td>3</td><td></td></tr>
+      <tr><td>1</td><td>Verdadero</td><td class="cambia">2</td><td>3</td></tr>
+      <tr><td>2</td><td>Verdadero</td><td class="cambia">1</td><td>2</td></tr>
+      <tr><td>3</td><td>Verdadero</td><td class="cambia">0</td><td>1</td></tr>
+      <tr><td>—</td><td>Falso: sale</td><td class="final">0</td><td>¡Ya!</td></tr>
+    </tbody>
+  </table>
+
+  <p>Cómo se escribe exactamente, qué pasa con un cuerpo vacío y qué errores puede dar, está en la Especificación:</p>
+  <p><a class="espec" href="#"><span class="num">§6.3</span>Mientras</a></p>
+
+  <div class="ciclo" aria-hidden="true"><span>Entender</span><span>Planear</span><span class="activa">Escribir</span><span>Probar</span><span>Mejorar</span></div>
+  <h2 id="escribir" class="fase f3"><span class="insignia">3</span>Escribir</h2>
+
+  <p>El día 1 ya está hecho antes de empezar a repetir: Lucía guardó 2 monedas. El bucle se encarga de los días
+  siguientes, y la condición es la pregunta del plan, «¿todavía no alcanza?»:</p>
+
+  <div class="programa">
+    <header><span class="titulo">La alcancía de Lucía</span><span class="sello">✓ Ejecutado con el motor</span><button data-copiar>Probar en el editor</button></header>
+    <pre class="pseudo numerado" data-marcar="5">
+Algoritmo Alcancia
+  Definir dia Como Entero &lt;- 1;
+  Definir guardaHoy Como Entero &lt;- 2;
+  Definir ahorro Como Entero &lt;- 2;
+  Mientras ahorro &lt; 50 Hacer
+    dia &lt;- dia + 1;
+    guardaHoy &lt;- guardaHoy + 1;
+    ahorro &lt;- ahorro + guardaHoy;
+  FinMientras
+  Escribir "Lucía compra la pelota el día ", dia, " con ", ahorro, " monedas";
+FinAlgoritmo</pre>
+    <div class="salida"><div class="etiqueta">Salida<span class="term">terminación: completed</span></div><pre>Lucía compra la pelota el día 9 con 54 monedas</pre></div>
+  </div>
+
+  <p>Las líneas 6, 7 y 8 son los tres pasos del plan, en el mismo orden. La línea 5 es la pregunta. Si el plan es
+  claro, el programa casi se escribe solo.</p>
+
+  <div class="ciclo" aria-hidden="true"><span>Entender</span><span>Planear</span><span>Escribir</span><span class="activa">Probar</span><span>Mejorar</span></div>
+  <h2 id="probar" class="fase f4"><span class="insignia">4</span>Probar</h2>
+
+  <p>El programa dice día 9 con 54 monedas, lo mismo que tu ejemplo a mano. ✓ Para estar seguro de que no fue
+  casualidad, sigue el bucle con la tabla por vuelta:</p>
+
+  <table class="tabla">
+    <thead><tr><th>Vuelta</th><th>¿Sigue?</th><th><code class="pl">dia</code></th><th><code class="pl">guardaHoy</code></th><th><code class="pl">ahorro</code></th></tr></thead>
+    <tbody>
+      <tr><td>antes</td><td>—</td><td>1</td><td>2</td><td>2</td></tr>
+      <tr><td>1</td><td>Sí</td><td class="cambia">2</td><td class="cambia">3</td><td class="cambia">5</td></tr>
+      <tr><td>2</td><td>Sí</td><td class="cambia">3</td><td class="cambia">4</td><td class="cambia">9</td></tr>
+      <tr><td>3</td><td>Sí</td><td class="cambia">4</td><td class="cambia">5</td><td class="cambia">14</td></tr>
+      <tr><td>…</td><td>…</td><td>…</td><td>…</td><td>…</td></tr>
+      <tr><td>8</td><td>Sí</td><td class="cambia">9</td><td class="cambia">10</td><td class="cambia">54</td></tr>
+      <tr><td>—</td><td>No: sale</td><td class="final">9</td><td class="final">10</td><td class="final">54</td></tr>
+    </tbody>
+  </table>
+
+  <p>Mira la tabla de arriba abajo y busca algo que sea cierto <b>al final de todas las vueltas</b>. Por ejemplo:
+  «<code class="pl">ahorro</code> es todo lo que Lucía guardó desde el día 1 hasta el día <code class="pl">dia</code>».
+  Algo que se cumple al terminar cada vuelta se llama <dfn class="termino">invariante</dfn>. Si lo encuentras, sabes que
+  el bucle es correcto sin seguirlo vuelta por vuelta: cuando sale, el invariante sigue siendo cierto, y además lo
+  juntado ya alcanza.</p>
+
+  <p>Ahora cambia el 50 por el precio de tus otros ejemplos a mano. Para no tener que tocar el programa cada vez, el
+  precio se lee al empezar:</p>
+
+  <div class="programa">
+    <header><span class="titulo">La alcancía para cualquier precio</span><span class="sello">✓ Ejecutado con el motor</span><button data-copiar>Probar en el editor</button></header>
+    <pre class="pseudo numerado">
+Algoritmo Alcancia
+  Definir precio Como Entero &lt;- 0;
+  Leer precio;
+  Definir dia Como Entero &lt;- 1;
+  Definir guardaHoy Como Entero &lt;- 2;
+  Definir ahorro Como Entero &lt;- 2;
+  Mientras ahorro &lt; precio Hacer
+    dia &lt;- dia + 1;
+    guardaHoy &lt;- guardaHoy + 1;
+    ahorro &lt;- ahorro + guardaHoy;
+  FinMientras
+  Escribir "Día ", dia, " con ", ahorro, " monedas";
+FinAlgoritmo</pre>
+  </div>
+
+  <table class="tabla">
+    <thead><tr><th>Precio</th><th>A mano</th><th>El programa</th><th></th></tr></thead>
+    <tbody>
+      <tr><td>50</td><td>día 9, 54</td><td>día 9, 54</td><td>✓</td></tr>
+      <tr><td>54 <small>(borde)</small></td><td>día 9, 54</td><td>día 9, 54</td><td>✓</td></tr>
+      <tr><td>2 <small>(borde)</small></td><td>día 1, 2</td><td>día 1, 2</td><td>✓</td></tr>
+      <tr><td>1000</td><td>día 44, 1034</td><td>día 44, 1034</td><td>✓</td></tr>
+    </tbody>
+  </table>
+
+  <p>Con precio 2 la condición es <code class="pl">Falso</code> desde el principio y el bucle da <b>cero vueltas</b>. No es
+  un error: es justo lo que pide el problema, porque Lucía no necesita esperar.</p>
+
+  <h3>El error más común con un bucle</h3>
+
+  <p>Si olvidas sumar en el acumulador, <code class="pl">ahorro</code> nunca cambia, la condición es
+  <code class="pl">Verdadero</code> para siempre y el bucle no termina nunca. Eso es un
+  <dfn class="termino">bucle infinito</dfn>. Así lo detiene el motor cuando se ejecuta con un límite de 10 000
+  instrucciones:</p>
+
+  <div class="programa">
+    <header><span class="titulo">La alcancía que nunca se llena</span><span class="sello falla">✕ Se detiene</span><button data-copiar>Probar en el editor</button></header>
+    <pre class="pseudo numerado" data-marcar="5">
+Algoritmo Infinito
+  Definir ahorro Como Entero &lt;- 2;
+  Definir guardaHoy Como Entero &lt;- 2;
+  Mientras ahorro &lt; 50 Hacer
+    guardaHoy &lt;- guardaHoy + 1;
+  FinMientras
+  Escribir ahorro;
+FinAlgoritmo</pre>
+    <div class="diag aviso">
+      <div class="cab"><span class="sev">información</span><span>Se agotó el presupuesto de sentencias: 10000</span></div>
+      <div class="cab"><span class="cod">statementBudgetExhausted</span><span class="lugar">línea 5, columna 5</span></div>
+      <div class="arreglo">Pregunta de control para cualquier bucle: <b>¿qué cambia en cada vuelta que acerca la condición a
+      <code class="pl">Falso</code>?</b> Aquí, nada.</div>
+    </div>
+  </div>
+
+  <p>Los límites de ejecución están en <a class="espec" href="#"><span class="num">§13.6</span>Límites de ejecución</a>.</p>
+
+  <div class="ciclo" aria-hidden="true"><span>Entender</span><span>Planear</span><span>Escribir</span><span>Probar</span><span class="activa">Mejorar</span></div>
+  <h2 id="mejorar" class="fase f5"><span class="insignia">5</span>Mejorar</h2>
+
+  <p><b>En una frase:</b> «Cuenta los días que tarda Lucía en juntar el precio si cada día guarda una moneda más».</p>
+
+  <p><b>El pedido cambia.</b> Lucía rompe la alcancía antes de tiempo y quiere saber cuánto juntó. No recuerda la regla
+  de las monedas: te las va dictando una por una, y cuando termina dice <b>-1</b>. ¿Cuánto juntó?</p>
+
+  <p>Ahora no sabes cuántos datos hay, y no hay una cuenta que diga cuándo parar: para el dato <b>-1</b>, que no es una
+  cantidad de monedas sino un aviso. Un valor especial que avisa «se terminaron los datos» se llama
+  <dfn class="termino">centinela</dfn>, como el guardia que avisa que alguien llega. El plan:</p>
+
+  <ol>
+    <li>Lee el primer dato.</li>
+    <li>Mientras el dato no sea el centinela: súmalo y lee el siguiente.</li>
+  </ol>
+
+  <div class="programa">
+    <header><span class="titulo">La alcancía dictada</span><span class="sello">✓ Ejecutado con el motor</span><button data-copiar>Probar en el editor</button></header>
+    <pre class="pseudo numerado" data-marcar="4,7">
+Algoritmo AlcanciaDictada
+  Definir monedas Como Entero &lt;- 0;
+  Definir ahorro Como Entero &lt;- 0;
+  Leer monedas;
+  Mientras monedas &lt;&gt; -1 Hacer
+    ahorro &lt;- ahorro + monedas;
+    Leer monedas;
+  FinMientras
+  Escribir "Juntó ", ahorro, " monedas";
+FinAlgoritmo</pre>
+    <div class="salida"><div class="etiqueta">Salida con las entradas 2, 3, 4 y -1<span class="term">terminación: completed</span></div><pre>Juntó 9 monedas</pre></div>
+  </div>
+
+  <p>Hay dos <code class="pl">Leer</code>, y los dos hacen falta. El de la línea 4 trae el primer dato para que la
+  condición tenga algo que preguntar. El de la línea 7 trae el siguiente dato al final de cada vuelta. Si el primer dato ya
+  es -1, el bucle da cero vueltas y el programa dice «Juntó 0 monedas», que es correcto.</p>
+
+  <h2 id="aprendiste">Lo que aprendiste</h2>
+  <ul class="resumen">
+    <li>Un bucle repite un grupo de instrucciones; cada repetición es una vuelta.</li>
+    <li><code class="pl">Mientras</code> pregunta su condición antes de cada vuelta, y puede dar cero vueltas.</li>
+    <li>Un contador avanza lo mismo en cada vuelta; un acumulador va juntando.</li>
+    <li>La tabla por vuelta sigue un bucle a mano; un invariante es lo que se cumple al terminar cada vuelta.</li>
+    <li>Si nada acerca la condición a Falso, el bucle es infinito.</li>
+    <li>Un centinela es un valor especial que avisa que se terminaron los datos.</li>
+  </ul>
+
+  <h2 id="practica">Practica</h2>
+
+  <div class="ejercicio">
+    <header><span class="titulo">El número misterioso</span><span class="tipo">Predecir</span><span class="nivel">semilla</span></header>
+    <div class="cuerpo">
+      <p>Sin ejecutarlo: ¿qué muestra este programa?</p>
+      <div class="programa">
+        <header><span class="titulo">Misterio</span><span class="sello">✓ Ejecutado con el motor</span></header>
+        <pre class="pseudo numerado">
+Algoritmo Misterio
+  Definir n Como Entero &lt;- 0;
+  Definir total Como Entero &lt;- 0;
+  Mientras total &lt; 10 Hacer
+    n &lt;- n + 1;
+    total &lt;- total + n;
+  FinMientras
+  Escribir n, " ", total;
+FinAlgoritmo</pre>
+      </div>
+    </div>
+    <details><summary>Ver la respuesta</summary><div class="cuerpo"><p><code class="pl">4 10</code>. <code class="pl">n</code>
+    es un contador y <code class="pl">total</code> un acumulador: 1, 3, 6, 10. Con 10 la condición
+    <code class="pl">total &lt; 10</code> ya es <code class="pl">Falso</code>.</p></div></details>
+  </div>
+
+  <div class="ejercicio">
+    <header><span class="titulo">Rastrea el misterio</span><span class="tipo">Rastrear</span><span class="nivel brote">brote</span></header>
+    <div class="cuerpo">
+      <p>Completa la tabla por vuelta del programa anterior. La app compara cada celda con la traza del motor.</p>
+      <table class="tabla">
+        <thead><tr><th>Vuelta</th><th>¿<code class="pl">total &lt; 10</code>?</th><th><code class="pl">n</code></th><th><code class="pl">total</code></th></tr></thead>
+        <tbody>
+          <tr><td>antes</td><td>—</td><td>0</td><td>0</td></tr>
+          <tr><td>1</td><td>Verdadero</td><td>1</td><td class="oculta">1</td></tr>
+          <tr><td>2</td><td class="oculta">Verdadero</td><td class="oculta">2</td><td class="oculta">3</td></tr>
+          <tr><td>3</td><td class="oculta">Verdadero</td><td class="oculta">3</td><td class="oculta">6</td></tr>
+          <tr><td>4</td><td class="oculta">Verdadero</td><td class="oculta">4</td><td class="oculta">10</td></tr>
+          <tr><td>—</td><td class="oculta">Falso</td><td class="oculta">4</td><td class="oculta">10</td></tr>
+        </tbody>
+      </table>
+      <p>Después responde: ¿qué invariante cumple <code class="pl">total</code> al terminar cada vuelta?</p>
+    </div>
+    <details><summary>Ver el invariante</summary><div class="cuerpo"><p><code class="pl">total</code> es la suma de 1 hasta
+    <code class="pl">n</code>.</p></div></details>
+  </div>
+
+  <div class="ejercicio">
+    <header><span class="titulo">La alcancía de Tomás</span><span class="tipo">Romperlo</span><span class="nivel brote">brote</span></header>
+    <div class="cuerpo">
+      <p>Tomás escribió su versión de la alcancía. Con precio 50 muestra «Día 9 con 54 monedas», igual que la tuya. Pero
+      está mal. Encuentra un precio con el que se equivoque.</p>
+      <div class="programa">
+        <header><span class="titulo">La versión de Tomás</span><span class="sello">✓ Ejecutado con el motor</span></header>
+        <pre class="pseudo numerado">
+Algoritmo Alcancia
+  Definir precio Como Entero &lt;- 0;
+  Leer precio;
+  Definir dia Como Entero &lt;- 1;
+  Definir guardaHoy Como Entero &lt;- 2;
+  Definir ahorro Como Entero &lt;- 2;
+  Mientras ahorro &lt;= precio Hacer
+    dia &lt;- dia + 1;
+    guardaHoy &lt;- guardaHoy + 1;
+    ahorro &lt;- ahorro + guardaHoy;
+  FinMientras
+  Escribir "Día ", dia, " con ", ahorro, " monedas";
+FinAlgoritmo</pre>
+      </div>
+    </div>
+    <details><summary>Pistas</summary><div class="cuerpo"><ol class="escalera">
+      <li>Vuelve a la ficha del problema. ¿Cuál de los ejemplos a mano es un caso borde?</li>
+      <li>Compara la línea 7 de Tomás con la línea 7 de tu versión. ¿Cuándo dan respuestas distintas esas dos preguntas?</li>
+      <li>Prueba con un precio que Lucía pueda juntar <b>exacto</b>.</li>
+      <li>Con precio 54 Tomás dice «Día 10 con 65 monedas»; con precio 2, «Día 2 con 5». Variante: corrige la línea 7.</li>
+    </ol></div></details>
+    <details class="docente"><summary>Para docentes: corrección</summary><div class="cuerpo">
+      <p>Precios que la rompen: 2, 5, 9, 14, 20, 27, 35, 44, 54… (los totales exactos). La app ejecuta el precio propuesto en la
+      versión de Tomás y en la de referencia y acepta si difieren.</p>
+    </div></details>
+  </div>
+
+  <div class="ejercicio">
+    <header><span class="titulo">El frijol mágico</span><span class="tipo">Resolver</span><span class="nivel brote">brote</span></header>
+    <div class="cuerpo">
+      <p>Plantas un frijol mágico que ya mide unos centímetros; el programa lee cuántos. El primer día crece 1 cm, y cada día
+      crece <b>el doble</b> de lo que creció el día anterior. ¿Cuántos días tarda en llegar a la ventana, que está a 100 cm del
+      suelo?</p>
+      <p>Casos visibles: si mide 3 cm, tarda 7 días. Si mide 100 cm, tarda 0 días.</p>
+    </div>
+    <details><summary>Pistas</summary><div class="cuerpo"><ol class="escalera">
+      <li>Haz la tabla a mano para 3 cm. ¿Qué caja cambia sumando y cuál cambia multiplicando?</li>
+      <li>Se parece a la alcancía: allá lo de cada día crecía de 1 en 1; aquí se duplica.</li>
+      <li>Necesitas una altura, un crecimiento y un contador de días. La pregunta del bucle: ¿todavía no llega a 100?</li>
+      <li>Ver la solución en «Para docentes». Variante: ¿y si la ventana está a 1000 cm?</li>
+    </ol></div></details>
+    <details class="docente"><summary>Para docentes: solución y casos ocultos</summary><div class="cuerpo">
+      <div class="programa">
+        <header><span class="titulo">Referencia</span><span class="sello">✓ Ejecutado con el motor</span></header>
+        <pre class="pseudo numerado">
+Algoritmo Frijol
+  Definir altura Como Entero &lt;- 0;
+  Leer altura;
+  Definir crecimiento Como Entero &lt;- 1;
+  Definir dias Como Entero &lt;- 0;
+  Mientras altura &lt; 100 Hacer
+    altura &lt;- altura + crecimiento;
+    crecimiento &lt;- crecimiento * 2;
+    dias &lt;- dias + 1;
+  FinMientras
+  Escribir dias;
+FinAlgoritmo</pre>
+      </div>
+      <p>Casos ocultos: 99 → 1 (borde: un día basta), 0 → 7. Error frecuente: duplicar el crecimiento antes de sumarlo, que da 6
+      con 3 cm.</p>
+    </div></details>
+  </div>
+
+  <div class="ejercicio">
+    <header><span class="titulo">El promedio de la profesora</span><span class="tipo">Resolver</span><span class="nivel arbol">árbol</span></header>
+    <div class="cuerpo">
+      <p>La profesora dicta las notas del examen una por una. Cuando termina, dice -1. El programa tiene que mostrar el
+      promedio. Si no dictó ninguna nota, tiene que mostrar «No hay notas».</p>
+      <p>Caso visible: con 14, 17, 11 y -1 muestra <code class="pl">14.0</code>.</p>
+    </div>
+    <details><summary>Pistas</summary><div class="cuerpo"><ol class="escalera">
+      <li>¿Cuál es el centinela? ¿Qué dos cosas necesitas saber para calcular un promedio?</li>
+      <li>Es la alcancía dictada con una caja más.</li>
+      <li>Un acumulador para la suma, un contador para la cantidad. Antes de dividir, ¿qué pasa si la cantidad es cero?</li>
+      <li>Ver la solución en «Para docentes». Variante: muestra también la nota más alta (lo vas a necesitar en la lección 1.4).</li>
+    </ol></div></details>
+    <details class="docente"><summary>Para docentes: el caso que casi todos olvidan</summary><div class="cuerpo">
+      <p>Sin la comprobación de cantidad cero, el caso oculto «-1 directo» termina así:</p>
+      <div class="programa">
+        <header><span class="titulo">Sin comprobar la cantidad</span><span class="sello falla">✕ Falla al ejecutar</span></header>
+        <pre class="pseudo numerado" data-marcar="11">
+Algoritmo PromedioHastaCentinela
+  Definir nota Como Entero &lt;- 0;
+  Definir suma Como Entero &lt;- 0;
+  Definir cantidad Como Entero &lt;- 0;
+  Leer nota;
+  Mientras nota &lt;&gt; -1 Hacer
+    suma &lt;- suma + nota;
+    cantidad &lt;- cantidad + 1;
+    Leer nota;
+  FinMientras
+  Escribir suma / cantidad;
+FinAlgoritmo</pre>
+        <div class="diag">
+          <div class="cab"><span class="sev">error</span><span>División por cero</span></div>
+          <div class="cab"><span class="cod">divisionByZero</span><span class="lugar">línea 11, columna 17</span></div>
+        </div>
+      </div>
+      <p>La referencia envuelve la línea 11 en un <code class="pl">Si cantidad = 0 Entonces … Sino … FinSi</code>.</p>
+    </div></details>
+  </div>
+
+  <div class="ejercicio">
+    <header><span class="titulo">Las pruebas de la alcancía</span><span class="tipo">Diseñar las pruebas</span><span class="nivel arbol">árbol</span></header>
+    <div class="cuerpo">
+      <p>No escribas código. Escribe <b>cuatro precios</b> con la respuesta correcta para cada uno, de modo que cualquier versión
+      equivocada de la alcancía falle al menos uno.</p>
+    </div>
+    <details class="docente"><summary>Para docentes: cómo se corrige</summary><div class="cuerpo">
+      <p>La app ejecuta los cuatro casos contra la referencia (deben pasar todos) y contra versiones con errores sembrados:
+      <code class="pl">&lt;=</code> en la condición, <code class="pl">ahorro</code> empezando en 0, sumar antes de aumentar
+      <code class="pl">guardaHoy</code>, y <code class="pl">dia</code> empezando en 0. Cada versión equivocada debe fallar al menos un
+      caso. Un conjunto sin un precio exacto (como 54) y sin uno menor o igual que 2 no detecta la primera.</p>
+    </div></details>
+  </div>
+
+  <div class="recuadro docente">
+    <span class="tit">Para docentes</span>
+    <ul>
+      <li><strong>«El bucle revisa la condición todo el tiempo».</strong> No: solo antes de cada vuelta. Pide que predigan
+      qué pasa si <code class="pl">ahorro</code> supera el precio a mitad de una vuelta.</li>
+      <li><strong>Inicializar dentro del bucle.</strong> Poner <code class="pl">ahorro &lt;- 0</code> dentro del cuerpo borra lo
+      juntado en cada vuelta. La tabla por vuelta lo muestra de inmediato.</li>
+      <li><strong>El invariante parece teoría.</strong> Preséntalo como «la frase que la tabla repite en cada fila». Con eso basta
+      en semilla y brote.</li>
+    </ul>
+  </div>
+
+  <a class="siguiente" href="index.html#p1">
+    <span class="tit">Siguiente</span>
+    <b>1.4 Repetir un número conocido de veces</b><br>
+    ¿Y si sabes desde el principio cuántas vueltas hacen falta? ¿Este número es primo?
+  </a>
+
+  <p class="pie">Lección de muestra de la ruta de aprendizaje. Todos los programas de esta página se ejecutaron con
+  <code class="ri-in">pseudo ejecutar</code> el 7 de noviembre de 2026 y su salida se copió sin editar; el bucle infinito se
+  ejecutó con <code class="ri-in">--sentencias 10000</code>. Los enlaces con borde punteado apuntan a secciones de la
+  Especificación ilustrada que todavía no están redactadas, y los de lecciones previas, a lecciones que no forman parte de esta
+  muestra.</p>
+</main>
+</div>
+<script src="../especificacion-ilustrada-ejemplos/recursos/especificacion.js"></script>
+</body>
+</html>

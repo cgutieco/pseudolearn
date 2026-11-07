@@ -1,0 +1,274 @@
+:root {
+  --fase-1: #397bdb;
+  --fase-2: #b07d12;
+  --fase-3: #247378;
+  --fase-4: #b4477c;
+  --fase-5: #2f8a45;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --fase-1: #a1c7ff;
+    --fase-2: #e8be70;
+    --fase-3: #6ebbbf;
+    --fase-4: #fba8cc;
+    --fase-5: #97d7a0;
+  }
+}
+
+.barra .logo span.marca.ruta { background: var(--fase-4); }
+
+.cabecera-leccion {
+  display: grid;
+  gap: 10px;
+  margin: 14px 0 26px;
+  padding: 16px 18px;
+  border: 1px solid var(--borde);
+  border-radius: 14px;
+  background: var(--superficie);
+  font-size: 15px;
+}
+.cabecera-leccion .fila { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: baseline; }
+.cabecera-leccion .rotulo {
+  min-width: 128px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--atenuado);
+}
+.cabecera-leccion .nada { color: var(--tinta-2); font-style: italic; }
+
+.termino-chip, .previa-chip {
+  display: inline-block;
+  padding: 1px 10px;
+  border-radius: 999px;
+  font-size: 14px;
+  white-space: nowrap;
+}
+.termino-chip { background: var(--marca-suave); color: var(--tinta); }
+.previa-chip { border: 1px solid var(--borde); color: var(--marca); text-decoration: none; }
+.previa-chip b { font-family: "IBM Plex Mono", monospace; font-weight: 600; margin-right: 4px; }
+
+.ciclo {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 4px;
+  margin: 20px 0 8px;
+  counter-reset: fase;
+}
+.ciclo span {
+  padding: 8px 4px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--color-fase) 14%, transparent);
+  border-top: 4px solid var(--color-fase);
+  color: var(--tinta);
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+}
+.ciclo span:nth-child(1), .fase.f1 { --color-fase: var(--fase-1); }
+.ciclo span:nth-child(2), .fase.f2 { --color-fase: var(--fase-2); }
+.ciclo span:nth-child(3), .fase.f3 { --color-fase: var(--fase-3); }
+.ciclo span:nth-child(4), .fase.f4 { --color-fase: var(--fase-4); }
+.ciclo span:nth-child(5), .fase.f5 { --color-fase: var(--fase-5); }
+.ciclo span.activa { background: var(--color-fase); color: var(--superficie); }
+
+h2.fase { display: flex; align-items: center; gap: 12px; }
+h2.fase .insignia {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--color-fase);
+  color: var(--superficie);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 17px;
+}
+
+.problema {
+  margin: 18px 0 22px;
+  padding: 18px 20px;
+  border-radius: 14px;
+  background: var(--superficie);
+  border: 2px solid var(--fase-4);
+  box-shadow: var(--sombra);
+  font-size: 18px;
+  line-height: 1.55;
+}
+.problema > .tit {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fase-4);
+}
+.problema p:last-child { margin-bottom: 0; }
+
+details.revelar {
+  margin: 14px 0 22px;
+  border: 1px dashed var(--borde);
+  border-radius: 12px;
+  background: var(--superficie-2);
+}
+details.revelar > summary {
+  padding: 12px 16px;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--marca);
+}
+details.revelar > .cuerpo { padding: 0 16px 14px; }
+
+.ficha-problema {
+  display: grid;
+  grid-template-columns: 1fr;
+  margin: 16px 0 22px;
+  border: 1px solid var(--borde);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--superficie);
+}
+.ficha-problema > div { padding: 12px 16px; border-bottom: 1px solid var(--borde); }
+.ficha-problema > div:last-child { border-bottom: 0; }
+.ficha-problema .rotulo {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fase-1);
+}
+.ficha-problema ul { margin: 0; padding-left: 20px; }
+
+a.espec {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 2px 0;
+  padding: 6px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--limite);
+  background: var(--limite-suave);
+  color: var(--tinta);
+  text-decoration: none;
+  font-size: 15px;
+}
+a.espec::before { content: "Especificación"; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--limite); }
+a.espec .num { font-family: "IBM Plex Mono", monospace; color: var(--limite); font-weight: 600; }
+a.espec.pendiente { border-style: dashed; }
+
+.recuerdo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  align-items: baseline;
+  margin: 14px 0 20px;
+  padding: 10px 14px;
+  border-left: 4px solid var(--marca);
+  border-radius: 0 10px 10px 0;
+  background: var(--superficie-2);
+  font-size: 15px;
+}
+.recuerdo .tit { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--marca); }
+.recuerdo a { margin-left: auto; font-weight: 600; white-space: nowrap; }
+
+dfn.termino {
+  font-style: normal;
+  font-weight: 700;
+  background: linear-gradient(transparent 62%, var(--marca-suave) 62%);
+}
+
+.roles { display: grid; grid-template-columns: 1fr; gap: 10px; margin: 16px 0 22px; }
+.rol {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 4px 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--borde);
+  border-radius: 12px;
+  background: var(--superficie);
+}
+.rol svg { grid-row: span 2; width: 44px; height: 44px; }
+.rol b { font-size: 16px; }
+.rol span { color: var(--tinta-2); font-size: 15px; }
+
+.paradigma { display: grid; grid-template-columns: 1fr; gap: 10px; margin: 18px 0 24px; }
+.paradigma > div {
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+}
+.paradigma .rotulo { display: block; font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--fase-5); margin-bottom: 4px; }
+.paradigma p { margin: 0; }
+
+.ejercicio {
+  margin: 18px 0 22px;
+  border: 1px solid var(--borde);
+  border-radius: 14px;
+  background: var(--superficie);
+  overflow: hidden;
+}
+.ejercicio > header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--borde);
+  background: var(--superficie-2);
+  font-size: 14px;
+}
+.ejercicio > header .titulo { font-weight: 600; margin-right: auto; }
+.ejercicio .tipo, .ejercicio .nivel {
+  padding: 1px 9px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.ejercicio .tipo { background: var(--limite-suave); color: var(--limite); }
+.ejercicio .nivel { background: var(--exito-suave); color: var(--exito); }
+.ejercicio .nivel.brote { background: var(--aviso-suave); color: var(--aviso); }
+.ejercicio .nivel.arbol { background: var(--docente-suave); color: var(--docente); }
+.ejercicio > .cuerpo { padding: 14px 16px 6px; }
+.ejercicio .programa { margin: 12px 0 16px; box-shadow: none; }
+.ejercicio details { border-top: 1px solid var(--borde); }
+.ejercicio details > summary { padding: 10px 16px; cursor: pointer; font-weight: 600; font-size: 15px; color: var(--marca); }
+.ejercicio details > .cuerpo { padding: 0 16px 12px; }
+.ejercicio details.docente > summary { color: var(--docente); }
+.ejercicio ol.escalera { margin: 0; padding-left: 22px; }
+.ejercicio ol.escalera li { margin-bottom: 8px; }
+
+table.tabla td.cambia { background: var(--fig-ambar-suave); font-weight: 600; }
+table.tabla td.final { background: var(--exito-suave); font-weight: 700; }
+table.tabla td.oculta { color: transparent; background: var(--superficie-2); border-bottom: 2px dashed var(--borde); }
+
+.siguiente {
+  display: block;
+  margin: 26px 0;
+  padding: 16px 18px;
+  border-radius: 14px;
+  background: var(--marca-suave);
+  color: var(--tinta);
+  text-decoration: none;
+}
+.siguiente .tit { display: block; font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--marca); }
+.siguiente b { font-size: 18px; }
+
+@media (min-width: 640px) {
+  .ficha-problema { grid-template-columns: 1fr 1fr; }
+  .ficha-problema > div:nth-child(odd) { border-right: 1px solid var(--borde); }
+  .ficha-problema > div.ancha { grid-column: span 2; border-right: 0; }
+  .roles { grid-template-columns: 1fr 1fr; }
+  .paradigma { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 639px) {
+  table.tabla th, table.tabla td { padding-left: 6px; padding-right: 6px; }
+}
