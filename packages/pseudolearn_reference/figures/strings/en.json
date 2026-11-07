@@ -1297,6 +1297,19 @@
       "paso-2": "and that one, a smaller one",
       "paso-3": "the smallest does not open: base case",
       "paso-4": "they close from the inside out"
+    },
+    "ruta-forma-de-datos": {
+      "titulo": "Three ways to keep the contacts",
+      "descripcion": "The same contact list of three classmates drawn three times. At the top, three separate rows of names, phones and months, which have to stay aligned. In the middle, one card per classmate with their three values together. At the bottom, a list that goes from each name to its phone.",
+      "paralelos": "Separate rows",
+      "paralelos-riesgo": "if one row shifts, the values no longer match",
+      "registros": "One card per classmate",
+      "registros-bien": "each one's values travel together",
+      "diccionario": "By name",
+      "diccionario-bien": "the phone is found without walking it all",
+      "ana": "Ana",
+      "beto": "Beto",
+      "caro": "Caro"
     }
   }
 }

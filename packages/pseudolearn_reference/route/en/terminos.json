@@ -79,5 +79,11 @@
   "funcion-pura": {"etiqueta": "pure function", "formas": ["pure function", "pure functions"], "estricto": true, "receta": true},
   "recursion": {"etiqueta": "recursion", "formas": ["recursion"], "estricto": true, "receta": true},
   "caso-base": {"etiqueta": "base case", "formas": ["base case"], "estricto": true, "receta": true},
-  "caso-recursivo": {"etiqueta": "recursive case", "formas": ["recursive case"], "estricto": true, "receta": true}
+  "caso-recursivo": {"etiqueta": "recursive case", "formas": ["recursive case"], "estricto": true, "receta": true},
+  "registro": {"etiqueta": "record", "formas": ["record", "records"], "estricto": true, "receta": true},
+  "campo": {"etiqueta": "field", "formas": ["field", "fields"], "estricto": false, "receta": false},
+  "enumerado": {"etiqueta": "enumeration", "formas": ["enumeration", "enumerations"], "estricto": true, "receta": true},
+  "vector": {"etiqueta": "vector", "formas": ["vector", "vectors"], "estricto": true, "receta": true},
+  "diccionario": {"etiqueta": "dictionary", "formas": ["dictionary", "dictionaries"], "estricto": true, "receta": true},
+  "clave": {"etiqueta": "key", "formas": ["key", "keys"], "estricto": false, "receta": false}
 }

@@ -1297,6 +1297,19 @@
       "paso-2": "y esa, otra más chica",
       "paso-3": "la más chica no se abre: caso base",
       "paso-4": "se cierran de adentro hacia afuera"
+    },
+    "ruta-forma-de-datos": {
+      "titulo": "Tres formas de guardar la agenda",
+      "descripcion": "La misma agenda de tres compañeros dibujada tres veces. Arriba, tres filas separadas de nombres, teléfonos y meses, que hay que mantener alineadas. En el medio, una ficha por compañero con sus tres datos juntos. Abajo, una lista que lleva de cada nombre a su teléfono.",
+      "paralelos": "Filas separadas",
+      "paralelos-riesgo": "si una fila se corre, los datos ya no coinciden",
+      "registros": "Una ficha por compañero",
+      "registros-bien": "los datos de cada uno viajan juntos",
+      "diccionario": "Por nombre",
+      "diccionario-bien": "el teléfono se encuentra sin recorrer todo",
+      "ana": "Ana",
+      "beto": "Beto",
+      "caro": "Caro"
     }
   }
 }

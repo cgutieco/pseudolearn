@@ -79,5 +79,11 @@
   "funcion-pura": {"etiqueta": "función pura", "formas": ["función pura", "funciones puras"], "estricto": true, "receta": true},
   "recursion": {"etiqueta": "recursión", "formas": ["recursión", "recursivo", "recursiva"], "estricto": true, "receta": true},
   "caso-base": {"etiqueta": "caso base", "formas": ["caso base"], "estricto": true, "receta": true},
-  "caso-recursivo": {"etiqueta": "caso recursivo", "formas": ["caso recursivo"], "estricto": true, "receta": true}
+  "caso-recursivo": {"etiqueta": "caso recursivo", "formas": ["caso recursivo"], "estricto": true, "receta": true},
+  "registro": {"etiqueta": "registro", "formas": ["registro", "registros"], "estricto": true, "receta": true},
+  "campo": {"etiqueta": "campo", "formas": ["campo", "campos"], "estricto": false, "receta": false},
+  "enumerado": {"etiqueta": "enumerado", "formas": ["enumerado", "enumerados"], "estricto": true, "receta": true},
+  "vector": {"etiqueta": "vector", "formas": ["vector", "vectores"], "estricto": true, "receta": true},
+  "diccionario": {"etiqueta": "diccionario", "formas": ["diccionario", "diccionarios"], "estricto": true, "receta": true},
+  "clave": {"etiqueta": "clave", "formas": ["clave", "claves"], "estricto": false, "receta": false}
 }
