@@ -2285,7 +2285,14 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
   y `RustTerminationKind` reconocen `awaitingEffect` junto con `PendingEffectRequest`, permitiendo que la interfaz o el
   entorno orquestador suministren el resultado del efecto mediante `provideEffectResult` y reanuden la máquina.
   `analyze` devuelve los tokens léxicos y sus tramos, y el adaptador proyecta categorías de resaltado desde ellos
-  incluso cuando hay errores sintácticos. El idioma de los mensajes de diagnóstico se negocia con un `locale`
+  incluso cuando hay errores sintácticos. La categoría de cada palabra reservada sale de
+  `keyword_highlight_categories.dart`, un mapa por identidad del vocabulario; antes `RustSyntaxHighlighter` repartía las
+  identidades en `switch` escritos a mano y 30 de las 103 de D1 (`Funcion`, `Tareas`, `Opcional`, `Algo`, `Importar`…)
+  quedaban sin color. El mapa repite las categorías de `packages/pseudolearn_reference/categories.json`, que el libro
+  usa para pintar sus programas; `test/engine/rust/keyword_highlight_categories_test.dart` exige que cubra exactamente
+  las identidades de D1 de la exportación del corpus con la misma categoría que el libro, así que una identidad nueva o
+  una categoría distinta rompe el test en lugar de quedar sin color. Se descartó leer el JSON en tiempo de ejecución:
+  el resaltador es síncrono y la categoría no existe todavía en el corpus. El idioma de los mensajes de diagnóstico se negocia con un `locale`
   independiente del perfil, y `AppDiagnostic` conserva los argumentos del motor. Los cuatro ritmos no tienen código
   propio: `StepSettlement` decide solo con `focusRevision`,
   `blockPosition` y `nodeId`, que el adaptador reproduce según las reglas de foco de los puertos de la aplicación

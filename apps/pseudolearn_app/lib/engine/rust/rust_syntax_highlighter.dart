@@ -1,4 +1,5 @@
 import '../../domain/model/analysis/highlight_span.dart';
+import 'keyword_highlight_categories.dart';
 import 'source_offset_index.dart';
 
 final class RustSyntaxHighlighter {
@@ -61,111 +62,5 @@ final class RustSyntaxHighlighter {
   }
 
   HighlightCategory? _keywordCategory(Object? keyword) =>
-      _structuredKeyword(keyword) ??
-      _proceduralKeyword(keyword) ??
-      _objectKeyword(keyword) ??
-      _typeKeyword(keyword) ??
-      _booleanKeyword(keyword) ??
-      _operatorKeyword(keyword) ??
-      _punctuationKeyword(keyword);
-
-  HighlightCategory? _structuredKeyword(Object? keyword) => switch (keyword) {
-    'algorithm' ||
-    'endAlgorithm' ||
-    'declare' ||
-    'dimension' ||
-    'read' ||
-    'write' ||
-    'withoutNewline' ||
-    'ifKeyword' ||
-    'then' ||
-    'elseKeyword' ||
-    'endIf' ||
-    'switchKeyword' ||
-    'defaultCase' ||
-    'endSwitch' ||
-    'whileKeyword' ||
-    'doKeyword' ||
-    'endWhile' ||
-    'repeat' ||
-    'until' ||
-    'forKeyword' ||
-    'to' ||
-    'step' ||
-    'endFor' => HighlightCategory.keywordStructured,
-    _ => null,
-  };
-
-  HighlightCategory? _proceduralKeyword(Object? keyword) => switch (keyword) {
-    'subroutine' ||
-    'endSubroutine' ||
-    'byReference' ||
-    'byValue' ||
-    'returnKeyword' => HighlightCategory.keywordProcedural,
-    _ => null,
-  };
-
-  HighlightCategory? _objectKeyword(Object? keyword) => switch (keyword) {
-    'classKeyword' ||
-    'endClass' ||
-    'inheritsFrom' ||
-    'method' ||
-    'endMethod' ||
-    'constructor' ||
-    'publicVisibility' ||
-    'privateVisibility' ||
-    'newInstance' ||
-    'thisObject' ||
-    'superClass' => HighlightCategory.keywordOop,
-    _ => null,
-  };
-
-  HighlightCategory? _typeKeyword(Object? keyword) => switch (keyword) {
-    'integerType' ||
-    'realType' ||
-    'booleanType' ||
-    'characterType' ||
-    'stringType' => HighlightCategory.type,
-    _ => null,
-  };
-
-  HighlightCategory? _booleanKeyword(Object? keyword) => switch (keyword) {
-    'booleanTrue' || 'booleanFalse' => HighlightCategory.literalBoolean,
-    _ => null,
-  };
-
-  HighlightCategory? _operatorKeyword(Object? keyword) => switch (keyword) {
-    'and' ||
-    'or' ||
-    'not' ||
-    'plus' ||
-    'minus' ||
-    'multiply' ||
-    'divide' ||
-    'integerDivide' ||
-    'modulo' ||
-    'power' ||
-    'lessThan' ||
-    'lessThanOrEqual' ||
-    'greaterThan' ||
-    'greaterThanOrEqual' ||
-    'equal' ||
-    'notEqual' ||
-    'assignment' => HighlightCategory.operator,
-    _ => null,
-  };
-
-  HighlightCategory? _punctuationKeyword(Object? keyword) => switch (keyword) {
-    'typeConnector' ||
-    'branchSeparator' ||
-    'comma' ||
-    'dot' ||
-    'leftBracket' ||
-    'leftParenthesis' ||
-    'rightBracket' ||
-    'rightParenthesis' ||
-    'semicolon' ||
-    'quote' => HighlightCategory.punctuation,
-    _ => null,
-  };
+      keywordHighlightCategories[keyword];
 }
