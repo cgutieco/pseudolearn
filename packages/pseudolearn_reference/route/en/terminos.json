@@ -122,5 +122,7 @@
   "orden-superior": {"etiqueta": "higher-order", "formas": ["higher-order"], "estricto": true, "receta": true},
   "mapear": {"etiqueta": "map", "formas": ["map", "maps", "mapping"], "estricto": true, "receta": true},
   "filtrar": {"etiqueta": "filter", "formas": ["filter", "filters", "filtering"], "estricto": false, "receta": false},
-  "reducir": {"etiqueta": "reduce", "formas": ["reduce", "reduces", "reducing"], "estricto": false, "receta": false}
+  "reducir": {"etiqueta": "reduce", "formas": ["reduce", "reduces", "reducing"], "estricto": false, "receta": false},
+  "clausura": {"etiqueta": "closure", "formas": ["closure", "closures"], "estricto": true, "receta": true},
+  "fabrica-de-funciones": {"etiqueta": "function factory", "formas": ["function factory", "function factories"], "estricto": true, "receta": true}
 }

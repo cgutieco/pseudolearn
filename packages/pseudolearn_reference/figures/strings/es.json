@@ -1421,6 +1421,13 @@
       "compuerta": "¿es barato?",
       "embudo": "suma",
       "pie": "la operación es un dato que se le pasa a cada máquina"
+    },
+    "ruta-mochila": {
+      "titulo": "La mochila de una función",
+      "descripcion": "Primer paso: la fábrica CrearDescuento recibe 20 y devuelve una función que lleva el 20 en su mochila. Segundo paso: la función recibe el precio 50, usa el 20 de la mochila y devuelve 40.",
+      "funcion": "descuento",
+      "paso-1": "la fábrica guarda el 20 en la mochila",
+      "paso-2": "la función usa el 20 con cada precio"
     }
   }
 }

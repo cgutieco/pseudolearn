@@ -1421,6 +1421,13 @@
       "compuerta": "is it cheap?",
       "embudo": "sum",
       "pie": "the operation is a value given to each machine"
+    },
+    "ruta-mochila": {
+      "titulo": "A function's backpack",
+      "descripcion": "First step: the factory CrearDescuento receives 20 and gives back a function that carries the 20 in its backpack. Second step: the function receives the price 50, uses the 20 from the backpack and gives back 40.",
+      "funcion": "discount",
+      "paso-1": "the factory keeps 20 in the backpack",
+      "paso-2": "the function uses 20 with each price"
     }
   }
 }

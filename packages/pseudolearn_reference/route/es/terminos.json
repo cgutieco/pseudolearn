@@ -122,5 +122,7 @@
   "orden-superior": {"etiqueta": "función de orden superior", "formas": ["orden superior"], "estricto": true, "receta": true},
   "mapear": {"etiqueta": "mapear", "formas": ["mapear", "mapeo"], "estricto": true, "receta": true},
   "filtrar": {"etiqueta": "filtrar", "formas": ["filtrar"], "estricto": false, "receta": false},
-  "reducir": {"etiqueta": "reducir", "formas": ["reducir"], "estricto": false, "receta": false}
+  "reducir": {"etiqueta": "reducir", "formas": ["reducir"], "estricto": false, "receta": false},
+  "clausura": {"etiqueta": "clausura", "formas": ["clausura", "clausuras"], "estricto": true, "receta": true},
+  "fabrica-de-funciones": {"etiqueta": "fábrica de funciones", "formas": ["fábrica de funciones"], "estricto": true, "receta": true}
 }
