@@ -476,3 +476,9 @@ ambos flujos en orden, así que un consumidor que no lo conoce muestra todo sin 
 ## Vista del programa sin mutabilidad
 
 Las declaraciones locales con valor inicial exponen `initialized` verdadero; el atributo `mutable` desapareció con la palabra `Mutable`, porque toda variable de `Definir` se puede reasignar.
+
+## Fallo interno tras un análisis limpio
+
+Si el análisis no informa errores pero la bajada a RI o su verificación fallan, la compilación devuelve el diagnóstico
+`internalFault` (`DIAG.ENGINE.INTERNAL-FAULT`) en lugar de una lista vacía. Antes el resultado era `analysisFailed` sin
+ningún diagnóstico, que fue lo que ocultó el defecto del paso de registros por valor y por referencia.

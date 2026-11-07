@@ -128,7 +128,7 @@ fn compile_parsed_source(
         &hir_module,
         mode.profile.as_str(),
     ) else {
-        return Err(convert_diagnostics(diagnostics, &source_text, mode.profile));
+        return Err(crate::diagnostic_conversion::internal_fault().diagnostics);
     };
     let warnings = convert_warnings(diagnostics, &source_text, mode.profile);
     Ok((canonical_ir, warnings))
