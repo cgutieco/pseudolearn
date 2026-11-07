@@ -48,7 +48,10 @@ void main() {
   ) async {
     await _pump(tester, cubit, states);
 
-    expect(find.text(l10n.executionEventPosition(_last, _last)), findsOneWidget);
+    expect(
+      find.text(l10n.executionEventPosition(_last, _last)),
+      findsOneWidget,
+    );
     expect(
       find.text(l10n.executionSentenceEnter('T1 · Produce', 9)),
       findsOneWidget,
@@ -80,6 +83,8 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
+  _compactPaneTest();
+
   testWidgets('shows variables of the chosen task in one scrollable list', (
     tester,
   ) async {
@@ -98,12 +103,37 @@ void main() {
 
 const int _last = 60;
 
+void _compactPaneTest() => testWidgets(
+  'fits the companion pane under the editor without overflowing',
+  (tester) async {
+    final states = StreamController<ExecutionState>.broadcast(sync: true);
+    final cubit = ExecutionHistoryCubit(
+      executionStates: states.stream,
+      observer: _Observer(),
+      flowProjector: const TaskFlowProjection(),
+      structureProjector: const TaskStructureProjection(),
+    );
+    final l10n = await AppLocalizations.delegate.load(const Locale('es'));
+    await _pump(tester, cubit, states, size: const Size(375, 230));
+
+    final sentence = l10n.executionSentenceEnter('T1 · Produce', 9);
+    expect(find.text('$_last/$_last · $sentence'), findsOneWidget);
+    expect(find.text(l10n.executionEventPosition(_last, _last)), findsNothing);
+    expect(find.text('$_last').hitTestable(), findsOneWidget);
+    expect(tester.takeException(), isNull);
+
+    await cubit.close();
+    await states.close();
+  },
+);
+
 Future<void> _pump(
   WidgetTester tester,
   ExecutionHistoryCubit cubit,
-  StreamController<ExecutionState> states,
-) async {
-  tester.view.physicalSize = const Size(375, 520);
+  StreamController<ExecutionState> states, {
+  Size size = const Size(375, 520),
+}) async {
+  tester.view.physicalSize = size;
   tester.view.devicePixelRatio = 1;
   addTearDown(tester.view.resetPhysicalSize);
   addTearDown(tester.view.resetDevicePixelRatio);

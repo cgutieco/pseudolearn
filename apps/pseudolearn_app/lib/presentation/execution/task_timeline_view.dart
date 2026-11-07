@@ -13,12 +13,14 @@ final class TaskTimelineView extends StatefulWidget {
   final ExecutionHistoryState state;
   final TaskFlowScene flow;
   final ValueChanged<SourceRange>? onSourceSelected;
+  final bool showsLegend;
 
   const TaskTimelineView({
     super.key,
     required this.state,
     required this.flow,
     required this.onSourceSelected,
+    this.showsLegend = true,
   });
 
   @override
@@ -88,6 +90,7 @@ final class _TaskTimelineViewState extends State<TaskTimelineView> {
             state: widget.state,
             flow: widget.flow,
             columnWidth: columnWidth,
+            showsLegend: widget.showsLegend,
           ),
           Expanded(
             child: _TimelineRows(

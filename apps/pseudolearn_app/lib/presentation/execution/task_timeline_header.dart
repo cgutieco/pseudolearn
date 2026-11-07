@@ -17,12 +17,14 @@ final class TaskTimelineHeader extends StatelessWidget {
   final ExecutionHistoryState state;
   final TaskFlowScene flow;
   final double columnWidth;
+  final bool showsLegend;
 
   const TaskTimelineHeader({
     super.key,
     required this.state,
     required this.flow,
     required this.columnWidth,
+    this.showsLegend = true,
   });
 
   @override
@@ -40,7 +42,7 @@ final class TaskTimelineHeader extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _TaskLegend(flow: flow),
+          if (showsLegend) _TaskLegend(flow: flow),
           _ColumnLabels(flow: flow, columnWidth: columnWidth),
           if (flow.rangeStart > state.horizonFirst)
             _EarlierEvents(state: state),

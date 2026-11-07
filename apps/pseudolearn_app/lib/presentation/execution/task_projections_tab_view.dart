@@ -7,6 +7,7 @@ import '../../domain/model/execution/task_flow_scene.dart';
 import 'task_event_narration_bar.dart';
 import 'task_projections_messages.dart';
 import 'task_state_cards_view.dart';
+import 'task_timeline_metrics.dart';
 import 'task_timeline_view.dart';
 import 'task_variables_view.dart';
 import 'task_view_header.dart';
@@ -51,26 +52,45 @@ final class _TaskProjectionBody extends StatelessWidget {
   });
 
   @override
+  Widget build(BuildContext context) => LayoutBuilder(
+    builder: (context, constraints) => _TaskProjectionPanes(
+      body: this,
+      isCompact: constraints.maxHeight < TaskTimelineMetrics.compactPaneHeight,
+    ),
+  );
+}
+
+final class _TaskProjectionPanes extends StatelessWidget {
+  final _TaskProjectionBody body;
+  final bool isCompact;
+
+  const _TaskProjectionPanes({required this.body, required this.isCompact});
+
+  @override
   Widget build(BuildContext context) => Column(
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
       TaskEventNarrationBar(
-        state: state,
-        flow: flow,
-        onSourceSelected: onSourceSelected,
+        state: body.state,
+        flow: body.flow,
+        onSourceSelected: body.onSourceSelected,
+        isCompact: isCompact,
       ),
-      if (state.error != null) TaskHistoryError(state: state),
+      if (body.state.error != null) TaskHistoryError(state: body.state),
       Expanded(
-        child: switch (state.surface) {
+        child: switch (body.state.surface) {
           ExecutionHistorySurface.flow => TaskTimelineView(
-            state: state,
-            flow: flow,
-            onSourceSelected: onSourceSelected,
+            state: body.state,
+            flow: body.flow,
+            onSourceSelected: body.onSourceSelected,
+            showsLegend: !isCompact,
           ),
-          ExecutionHistorySurface.structure => TaskStateCardsView(state: state),
+          ExecutionHistorySurface.structure => TaskStateCardsView(
+            state: body.state,
+          ),
           ExecutionHistorySurface.events => TaskVariablesView(
-            state: state,
-            flow: flow,
+            state: body.state,
+            flow: body.flow,
           ),
         },
       ),

@@ -6,6 +6,8 @@ final class TaskTimelineMetrics {
   static const double maximumColumnWidth = SpacingTokens.space8;
   static const double minimumColumnWidth = SpacingTokens.space4;
   static const double laneShare = 0.45;
+  static const double compactPaneHeight =
+      SpacingTokens.space20 * 4 + SpacingTokens.space10;
 
   const TaskTimelineMetrics._();
 

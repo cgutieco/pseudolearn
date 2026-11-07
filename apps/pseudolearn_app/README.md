@@ -3244,7 +3244,10 @@ visibles. Todas sus piezas comparten el evento seleccionado, el rango y la tarea
   natural del evento elegido («T1 · Produce espera lugar en el canal 1»). La frase sale de un único
   mapeo, tipo de evento → recurso localizado (`task_event_sentence.dart`), así que las tres vistas
   hablan igual. Moverse con ‹ y › o tocar una fila resalta la sentencia en el editor mediante
-  `revealSource`, como el ordinograma.
+  `revealSource`, como el ordinograma. Cuando el panel mide menos de 360 pt (el modo
+  «Acompañar» del teléfono le deja unos 190), la barra pasa a una sola fila («11/18 · frase») y la
+  cronología oculta la leyenda de nombres. Así la fila seleccionada sigue visible y no hay
+  desbordamiento; `task_projections_tab_view_test.dart` lo comprueba a 375×230.
 - **Cronología:** línea de tiempo vertical, con una fila de alto fijo por evento y una columna
   estrecha por tarea. El eje es vertical porque el desplazamiento natural del teléfono es vertical;
   el lienzo horizontal anterior obligaba a desplazarse de costado en cada paso. Cuando cambia el

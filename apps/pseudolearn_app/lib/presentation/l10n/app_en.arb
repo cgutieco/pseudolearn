@@ -304,6 +304,17 @@
       }
     }
   },
+  "executionEventShort": "{event}/{live}",
+  "@executionEventShort": {
+    "placeholders": {
+      "event": {
+        "type": "int"
+      },
+      "live": {
+        "type": "int"
+      }
+    }
+  },
   "executionPreviousEvent": "Previous event",
   "executionNextEvent": "Next event",
   "executionLive": "Live",

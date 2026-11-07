@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../application/execution/execution_history_command.dart';
-import '../../application/execution/execution_history_cubit.dart';
 import '../../application/execution/execution_history_state.dart';
 import '../../domain/model/analysis/source_range.dart';
 import '../../domain/model/execution/task_flow_scene.dart';
@@ -15,90 +12,114 @@ import 'task_event_selection.dart';
 import 'task_event_sentence.dart';
 import 'task_event_tone.dart';
 import 'task_labels.dart';
+import 'task_live_button.dart';
 
 final class TaskEventNarrationBar extends StatelessWidget {
   final ExecutionHistoryState state;
   final TaskFlowScene flow;
   final ValueChanged<SourceRange>? onSourceSelected;
+  final bool isCompact;
 
   const TaskEventNarrationBar({
     super.key,
     required this.state,
     required this.flow,
     required this.onSourceSelected,
+    required this.isCompact,
   });
 
   @override
   Widget build(BuildContext context) {
     final colors = AppThemeExtension.of(context).colors;
+    final stepper = _EventStepper(narration: this);
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: SpacingTokens.space3),
-      padding: const EdgeInsets.only(bottom: SpacingTokens.space2),
+      padding: EdgeInsets.only(
+        bottom: isCompact ? SpacingTokens.spaceHalf : SpacingTokens.space2,
+      ),
       decoration: BoxDecoration(
         color: colors.surfaces.subtle,
         borderRadius: BorderRadius.circular(RadiusTokens.radiusLg),
         border: Border.all(color: colors.borders.subtle),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          _EventStepper(
-            state: state,
-            flow: flow,
-            onSourceSelected: onSourceSelected,
-          ),
-          _EventSentence(row: flow.rowOf(state.selectedEvent), flow: flow),
-        ],
-      ),
+      child: isCompact
+          ? stepper
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                stepper,
+                _EventSentence(narration: this),
+              ],
+            ),
     );
   }
 }
 
 final class _EventStepper extends StatelessWidget {
-  final ExecutionHistoryState state;
-  final TaskFlowScene flow;
-  final ValueChanged<SourceRange>? onSourceSelected;
+  final TaskEventNarrationBar narration;
 
-  const _EventStepper({
-    required this.state,
-    required this.flow,
-    required this.onSourceSelected,
-  });
+  const _EventStepper({required this.narration});
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final state = narration.state;
     final selected = state.selectedEvent;
+    final compact = narration.isCompact;
     return Row(
       children: [
-        IconButton(
+        _StepButton(
+          narration: narration,
           tooltip: l10n.executionPreviousEvent,
-          icon: const Icon(Icons.chevron_left),
-          onPressed: selected <= state.horizonFirst
-              ? null
-              : () => _select(context, selected - 1),
+          icon: Icons.chevron_left,
+          target: selected <= state.horizonFirst ? null : selected - 1,
         ),
         Expanded(
-          child: _EventPosition(selected: selected, live: state.liveEvent),
+          child: compact
+              ? _EventSentence(narration: narration)
+              : _EventPosition(selected: selected, live: state.liveEvent),
         ),
-        _LiveButton(followsLive: state.followsLive),
-        IconButton(
+        TaskLiveButton(followsLive: state.followsLive, isCompact: compact),
+        _StepButton(
+          narration: narration,
           tooltip: l10n.executionNextEvent,
-          icon: const Icon(Icons.chevron_right),
-          onPressed: selected >= state.liveEvent
-              ? null
-              : () => _select(context, selected + 1),
+          icon: Icons.chevron_right,
+          target: selected >= state.liveEvent ? null : selected + 1,
         ),
       ],
     );
   }
+}
 
-  void _select(BuildContext context, int eventIndex) => selectTaskEvent(
-    context: context,
-    flow: flow,
-    eventIndex: eventIndex,
-    onSourceSelected: onSourceSelected,
-  );
+final class _StepButton extends StatelessWidget {
+  final TaskEventNarrationBar narration;
+  final String tooltip;
+  final IconData icon;
+  final int? target;
+
+  const _StepButton({
+    required this.narration,
+    required this.tooltip,
+    required this.icon,
+    required this.target,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final eventIndex = target;
+    return IconButton(
+      tooltip: tooltip,
+      icon: Icon(icon),
+      onPressed: eventIndex == null
+          ? null
+          : () => selectTaskEvent(
+              context: context,
+              flow: narration.flow,
+              eventIndex: eventIndex,
+              onSourceSelected: narration.onSourceSelected,
+            ),
+    );
+  }
 }
 
 final class _EventPosition extends StatelessWidget {
@@ -116,59 +137,36 @@ final class _EventPosition extends StatelessWidget {
   );
 }
 
-final class _LiveButton extends StatelessWidget {
-  final bool followsLive;
-
-  const _LiveButton({required this.followsLive});
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = AppThemeExtension.of(context).colors;
-    return TextButton.icon(
-      onPressed: followsLive
-          ? null
-          : () => context.read<ExecutionHistoryCubit>().dispatch(
-              const FollowCurrentHistoryEvent(),
-            ),
-      icon: Icon(
-        Icons.circle,
-        size: IconMetricsTokens.iconXs / 2,
-        color: followsLive
-            ? colors.severities.success.fg
-            : colors.text.tertiary,
-      ),
-      label: Text(AppLocalizations.of(context)!.executionLive),
-    );
-  }
-}
-
 final class _EventSentence extends StatelessWidget {
-  final TaskFlowRow? row;
-  final TaskFlowScene flow;
+  final TaskEventNarrationBar narration;
 
-  const _EventSentence({required this.row, required this.flow});
+  const _EventSentence({required this.narration});
 
   @override
   Widget build(BuildContext context) {
-    final current = row;
-    if (current == null) return const SizedBox.shrink();
+    final state = narration.state;
+    final flow = narration.flow;
+    final row = flow.rowOf(state.selectedEvent);
+    if (row == null) return const SizedBox.shrink();
     final l10n = AppLocalizations.of(context)!;
-    final tone = TaskEventTone.of(
-      current.kind,
-      AppThemeExtension.of(context).colors,
-    );
+    final colors = AppThemeExtension.of(context).colors;
+    final tone = TaskEventTone.of(row.kind, colors);
     final sentence = taskEventSentence(
       l10n,
-      current,
+      row,
       (taskId) => taskNamedLabel(l10n, taskId, flow.nameOf(taskId)),
     );
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: SpacingTokens.space4),
+      padding: EdgeInsets.symmetric(
+        horizontal: narration.isCompact ? 0 : SpacingTokens.space4,
+      ),
       child: Row(
         children: [
           Icon(tone.icon, size: IconMetricsTokens.iconSm, color: tone.color),
           const SizedBox(width: SpacingTokens.space2),
-          Expanded(child: _SentenceText(sentence: sentence)),
+          Expanded(
+            child: _SentenceText(narration: narration, text: sentence),
+          ),
         ],
       ),
     );
@@ -176,18 +174,27 @@ final class _EventSentence extends StatelessWidget {
 }
 
 final class _SentenceText extends StatelessWidget {
-  final String sentence;
+  final TaskEventNarrationBar narration;
+  final String text;
 
-  const _SentenceText({required this.sentence});
+  const _SentenceText({required this.narration, required this.text});
 
   @override
-  Widget build(BuildContext context) => Semantics(
-    liveRegion: true,
-    child: AppText(
-      sentence,
-      variant: AppTextVariant.bodyDefault,
-      maxLines: 2,
-      overflow: TextOverflow.ellipsis,
-    ),
-  );
+  Widget build(BuildContext context) {
+    final state = narration.state;
+    final position = AppLocalizations.of(
+      context,
+    )!.executionEventShort(state.selectedEvent, state.liveEvent);
+    return Semantics(
+      liveRegion: true,
+      child: AppText(
+        narration.isCompact ? '$position · $text' : text,
+        variant: narration.isCompact
+            ? AppTextVariant.bodySmall
+            : AppTextVariant.bodyDefault,
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
+      ),
+    );
+  }
 }
