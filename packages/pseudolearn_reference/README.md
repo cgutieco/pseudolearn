@@ -335,7 +335,10 @@ descartadas y números comparados con tolerancia relativa `1e-9`.
   entre `⟦` y `⟧` para no confundirlas con la salida del programa. Las columnas son expresiones, así que un
   designador como `v[0]` también sirve.
 - **Problema:** un programa defectuoso puede no terminar. **Elección:** cada ejecución de un ejercicio tiene un
-  presupuesto de 100 000 sentencias, salvo que el programa declare otro con `sentencias=`.
+  presupuesto de 100 000 sentencias, salvo que el programa declare otro con `sentencias=`, y una profundidad de
+  1000 marcos, la misma que usa la app. Sin ese tope, una recursión sin caso base abría marcos hasta agotar el
+  presupuesto de sentencias y tardaba minutos en el compilador; con él falla enseguida con
+  `recursionDepthExceeded`, como le pasa a quien la escribe en la app.
 - **Problema:** los enunciados de `predecir`, `comparar` y `explicar` muestran código porque el código es el
   objeto del ejercicio. **Elección:** `RUTA-STATEMENT-NO-RECIPE` solo rechaza palabras reservadas en código en
   línea de los problemas de lección y de los ejercicios que escriben código; los términos receta se rechazan

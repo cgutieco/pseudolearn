@@ -150,6 +150,7 @@ fn trace(
         host: None,
         trace: true,
         statement_limit: None,
+        depth_limit: None,
     });
     Some(Block::Trace {
         program: program.to_owned(),

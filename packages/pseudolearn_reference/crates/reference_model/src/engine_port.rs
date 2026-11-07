@@ -35,6 +35,7 @@ pub struct ExecutionRequest {
     pub host: Option<String>,
     pub trace: bool,
     pub statement_limit: Option<u64>,
+    pub depth_limit: Option<usize>,
 }
 
 #[derive(Clone, Debug, Default, Eq, PartialEq)]

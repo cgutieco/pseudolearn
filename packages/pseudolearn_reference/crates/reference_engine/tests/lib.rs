@@ -11,6 +11,7 @@ fn request(code: &str) -> ExecutionRequest {
         host: None,
         trace: false,
         statement_limit: None,
+        depth_limit: None,
     }
 }
 
@@ -83,4 +84,29 @@ fn translates_and_lowers() {
 #[test]
 fn tokenizes_an_empty_text() {
     assert!(ApiEngine.tokenize("", Profile::Spanish).is_empty());
+}
+
+const RECURSION: &str = "SubProceso Bajar(n Como Entero) Como Entero\n  Si n = 0 Entonces\n    Retornar 0;\n  FinSi\n  Retornar Bajar(n - 1);\nFinSubProceso\nAlgoritmo Pila\n  Escribir Bajar(50);\nFinAlgoritmo\n";
+
+#[test]
+fn a_depth_limit_stops_a_deep_recursion() {
+    let mut limited = request(RECURSION);
+    limited.depth_limit = Some(10);
+    let report = ApiEngine.execute(&limited);
+    assert_eq!(report.termination, "failed");
+    assert!(
+        report
+            .diagnostics
+            .iter()
+            .any(|diagnostic| diagnostic.code == "recursionDepthExceeded")
+    );
+}
+
+#[test]
+fn a_recursion_within_the_depth_limit_completes() {
+    let mut limited = request(RECURSION);
+    limited.depth_limit = Some(100);
+    let report = ApiEngine.execute(&limited);
+    assert_eq!(report.termination, "completed");
+    assert_eq!(report.output, "0\n");
 }

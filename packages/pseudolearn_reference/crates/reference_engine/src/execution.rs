@@ -21,6 +21,7 @@ pub fn execute(request: &ExecutionRequest) -> ExecutionReport {
         host,
         limits: ExecutionLimits {
             statements: request.statement_limit,
+            depth: request.depth_limit,
             ..ExecutionLimits::default()
         },
         ..ExecuteRequest::default()

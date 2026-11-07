@@ -13,6 +13,7 @@ fn runs_each_distinct_request_once() {
         host: None,
         trace: false,
         statement_limit: None,
+        depth_limit: None,
     };
     let first = engine.execute(&request);
     let second = engine.execute(&request);

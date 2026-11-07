@@ -8,7 +8,7 @@ type ExecutionKey = (
     Profile,
     Vec<String>,
     Option<String>,
-    (bool, Option<u64>),
+    (bool, Option<u64>, Option<usize>),
 );
 
 pub struct CachedEngine<Engine: CodeEngine> {
@@ -56,7 +56,7 @@ impl<Engine: CodeEngine> CodeEngine for CachedEngine<Engine> {
             request.profile,
             request.inputs.clone(),
             request.host.clone(),
-            (request.trace, request.statement_limit),
+            (request.trace, request.statement_limit, request.depth_limit),
         );
         if let Some(cached) = self.executions.borrow().get(&key) {
             return cached.clone();

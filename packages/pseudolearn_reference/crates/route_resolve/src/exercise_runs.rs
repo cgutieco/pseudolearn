@@ -7,6 +7,7 @@ use reference_model::{
 use reference_resolve::{target_code, with_final_newline};
 
 pub const EXERCISE_STATEMENT_LIMIT: u64 = 100_000;
+pub const EXERCISE_DEPTH_LIMIT: usize = 1_000;
 
 #[derive(Clone, Debug, Default)]
 pub struct CaseSets<'sets> {
@@ -42,6 +43,7 @@ fn run_code(
         host: program.host.clone(),
         trace: false,
         statement_limit: program.statement_limit.or(Some(EXERCISE_STATEMENT_LIMIT)),
+        depth_limit: Some(EXERCISE_DEPTH_LIMIT),
     })
 }
 
