@@ -63,6 +63,15 @@ describe('validateContactRequest', () => {
     expect(validateContactRequest({ ...validInput, platform: '' }).kind).toBe('valid');
   });
 
+  it('accepts each Windows distribution channel as its own platform', () => {
+    expect(validateContactRequest({ ...validInput, platform: 'windows-store' }).kind).toBe('valid');
+    expect(validateContactRequest({ ...validInput, platform: 'windows-installer' }).kind).toBe('valid');
+  });
+
+  it('rejects the bare Windows platform because it hides the distribution channel', () => {
+    expect(validateContactRequest({ ...validInput, platform: 'windows' }).kind).toBe('invalid');
+  });
+
   it('defaults an unknown locale to spanish', () => {
     const result = validateContactRequest({ ...validInput, locale: 'fr' });
     expect(result.kind === 'valid' && result.request.locale).toBe('es');

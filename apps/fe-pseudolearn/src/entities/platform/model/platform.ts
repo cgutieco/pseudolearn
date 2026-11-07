@@ -17,7 +17,20 @@ export const PLATFORMS: readonly Platform[] = [
   { id: 'other', translationKey: 'platform.other', availability: 'planned' },
 ];
 
-export const REPORTABLE_PLATFORMS: readonly Platform[] = PLATFORMS;
+export interface ReportablePlatform {
+  readonly id: string;
+  readonly translationKey: TranslationKey;
+}
+
+export const REPORTABLE_PLATFORMS: readonly ReportablePlatform[] = [
+  { id: 'macos', translationKey: 'platform.macos' },
+  { id: 'ios', translationKey: 'platform.ios' },
+  { id: 'windows-store', translationKey: 'platform.windowsStore' },
+  { id: 'windows-installer', translationKey: 'platform.windowsInstaller' },
+  { id: 'linux', translationKey: 'platform.linux' },
+  { id: 'android', translationKey: 'platform.android' },
+  { id: 'other', translationKey: 'platform.other' },
+];
 
 export function availablePlatforms(): readonly Platform[] {
   return PLATFORMS.filter((platform) => platform.availability === 'available');
@@ -27,6 +40,6 @@ export function plannedPlatforms(): readonly Platform[] {
   return PLATFORMS.filter((platform) => platform.availability === 'planned' && platform.id !== 'other');
 }
 
-export function isKnownPlatform(candidate: string): boolean {
-  return PLATFORMS.some((platform) => platform.id === candidate);
+export function isReportablePlatform(candidate: string): boolean {
+  return REPORTABLE_PLATFORMS.some((platform) => platform.id === candidate);
 }

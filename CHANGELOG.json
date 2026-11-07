@@ -5,14 +5,26 @@
       "date": "2026-10-02",
       "core": "0.1.0",
       "headline": {
-        "es": "Valora PseudoLearn cuando te sirva",
-        "en": "Rate PseudoLearn when it helps you"
+        "es": "PseudoLearn llega a Microsoft Store",
+        "en": "PseudoLearn comes to the Microsoft Store"
       },
       "summary": {
-        "es": "Una versión pequeña: no cambia el lenguaje ni la ruta de aprendizaje. En el Mac, el iPhone y el iPad, la App Store puede ofrecerte valorar la app justo después de un logro, y nunca antes.",
-        "en": "A small version: the language and the learning track do not change. On the Mac, the iPhone and the iPad, the App Store may offer you to rate the app right after an achievement, and never before."
+        "es": "Una versión pequeña: no cambia el lenguaje ni la ruta de aprendizaje. En Windows, la app ya se instala desde Microsoft Store. En el Mac, el iPhone y el iPad, la App Store puede ofrecerte valorar la app justo después de un logro, y nunca antes.",
+        "en": "A small version: the language and the learning track do not change. On Windows, the app now installs from the Microsoft Store. On the Mac, the iPhone and the iPad, the App Store may offer you to rate the app right after an achievement, and never before."
       },
       "changes": [
+        {
+          "id": "microsoft-store",
+          "kind": "platform",
+          "title": {
+            "es": "Windows en Microsoft Store",
+            "en": "Windows on the Microsoft Store"
+          },
+          "description": {
+            "es": "PseudoLearn se instala desde Microsoft Store en Windows 10 y 11 de 64 bits, sin la pantalla azul de SmartScreen. El instalador <code>.exe</code> sigue disponible en esta web como alternativa, y las dos vías instalan la misma app y abren los mismos programas <code>.pseudo</code>.",
+            "en": "PseudoLearn installs from the Microsoft Store on 64-bit Windows 10 and 11, without the SmartScreen blue screen. The <code>.exe</code> installer remains available on this website as an alternative, and both routes install the same app and open the same <code>.pseudo</code> programs."
+          }
+        },
         {
           "id": "store-review",
           "kind": "feature",

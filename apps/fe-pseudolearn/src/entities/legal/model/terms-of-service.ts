@@ -46,6 +46,10 @@ export const TERMS_SECTIONS: readonly LegalSection[] = [
         textKey: 'terms.section.license.appStoreText',
       },
       {
+        titleKey: 'terms.section.license.microsoftStoreTitle',
+        textKey: 'terms.section.license.microsoftStoreText',
+      },
+      {
         titleKey: 'terms.section.license.restrictionsTitle',
         textKey: 'terms.section.license.restrictionsText',
       },

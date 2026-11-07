@@ -50,16 +50,28 @@ describe('DOWNLOAD_CARDS', () => {
     }
   });
 
-  it('downloads the Windows installer directly in the same tab', () => {
+  it('promotes the Microsoft Store listing first and keeps the direct installer as the alternative', () => {
     const windowsCard = DOWNLOAD_CARDS[2];
     expect(windowsCard?.actions).toEqual([
       {
         labelKey: 'home.downloads.windowsPrimary',
         variant: 'pl-btn--primary',
+        href: 'https://apps.microsoft.com/store/detail/9MXZB1XDWP9J?cid=DevShareMCLPCS',
+        external: true,
+      },
+      {
+        labelKey: 'home.downloads.windowsSecondary',
+        variant: 'pl-btn--ghost',
         href: 'https://downloads.pseudolearn.app/windows/PseudoLearn-Setup.exe',
       },
     ]);
-    expect(SITE.windowsInstallerUrl).toBe(windowsCard?.actions[0]?.href);
+    expect(SITE.microsoftStoreUrl).toBe(windowsCard?.actions[0]?.href);
+    expect(SITE.windowsInstallerUrl).toBe(windowsCard?.actions[1]?.href);
+  });
+
+  it('downloads the Windows installer in the same tab because it is a file, not a store listing', () => {
+    const installerAction = DOWNLOAD_CARDS[2]?.actions[1];
+    expect(installerAction?.external).toBeUndefined();
   });
 
   it('guides through the SmartScreen warning only where the installer is unsigned', () => {

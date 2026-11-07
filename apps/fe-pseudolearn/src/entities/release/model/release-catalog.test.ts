@@ -21,4 +21,12 @@ describe('release catalog', () => {
     );
     expect(windowsRelease?.version).toBe('1.1.0');
   });
+
+  it('records the Microsoft Store listing under the same version that keeps the release date', () => {
+    const storeRelease = RELEASES.find((release) =>
+      release.changes.some((change) => change.id === 'microsoft-store' && change.kind === 'platform'),
+    );
+    expect(storeRelease?.version).toBe('1.1.1');
+    expect(storeRelease?.date).toBe('2026-10-02');
+  });
 });

@@ -85,11 +85,18 @@ export const DOWNLOAD_CARDS: readonly DownloadCardModel[] = [
       {
         labelKey: 'home.downloads.windowsPrimary',
         variant: 'pl-btn--primary',
+        href: SITE.microsoftStoreUrl,
+        external: true,
+      },
+      {
+        labelKey: 'home.downloads.windowsSecondary',
+        variant: 'pl-btn--ghost',
         href: SITE.windowsInstallerUrl,
       },
     ],
     specs: [
       { labelKey: 'home.downloads.specRequirements', valueKey: 'home.downloads.windowsRequirements' },
+      { labelKey: 'home.downloads.specDistribution', valueKey: 'home.downloads.windowsDistribution' },
       { labelKey: 'home.downloads.specInstallation', valueKey: 'home.downloads.windowsInstallation' },
       { labelKey: 'home.downloads.specVersion', valueKey: 'home.downloads.versionValue' },
       { labelKey: 'home.downloads.specPrice', valueKey: 'home.downloads.priceValue' },

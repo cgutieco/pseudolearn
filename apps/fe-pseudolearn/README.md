@@ -34,8 +34,9 @@ eso se sostiene con un estándar de verificación más alto que el del resto del
   desde `/contacto`, `/versiones`, `/privacidad`, `/terminos` y `/legal`.
 - Publicar qué versión de la app hay disponible, sus novedades y el registro de cambios detallado
   (changelog), leídos del `CHANGELOG.json` compartido de la raíz del monorepo (decisión 9).
-- Ofrecer la descarga directa del instalador de Windows y explicar cómo superar el aviso de
-  SmartScreen mientras no esté firmado (decisión 13).
+- Promocionar la ficha de Windows en Microsoft Store como vía principal, y mantener la descarga
+  directa del instalador explicando cómo superar el aviso de SmartScreen mientras no esté firmado
+  (decisión 13).
 - Recibir y entregar los mensajes del formulario de contacto, con verificación anti-bot.
 - Cumplir WCAG 2.1 AA, verificado automáticamente en las diez rutas y en los dos temas.
 - Sostener el presupuesto de rendimiento: cero JavaScript de cliente salvo cuatro excepciones
@@ -349,7 +350,7 @@ sin segunda implementación es coste sin beneficio.
 
 ---
 
-### Decisión 13: Windows se descarga directo y la guía del aviso de SmartScreen va junto al botón
+### Decisión 13: Windows se promociona en Microsoft Store y la descarga directa conserva su guía de SmartScreen
 
 - **Problema.** Desde 1.1.0 la app se distribuye para Windows con un instalador servido desde
   Cloudflare R2 (`https://downloads.pseudolearn.app/windows/PseudoLearn-Setup.exe`), fuera de
@@ -366,6 +367,20 @@ sin segunda implementación es coste sin beneficio.
   la guía es dato del modelo, no una rama por plataforma, y ensancha la tarjeta a toda la rejilla en
   escritorio (`download-card--guided`). Solo se ofrece el instalador: el `.zip` portable no registra
   `pseudolearn://` y en él el inicio de sesión no vuelve a la app.
+- **Microsoft Store como vía principal.** Con la versión 1.1.1 la app también se publica en
+  Microsoft Store (`SITE.microsoftStoreUrl`). La tarjeta de Windows ofrece la ficha de la tienda
+  como acción principal, en pestaña nueva como las de Apple, porque instala sin la pantalla de
+  SmartScreen; el instalador directo pasa a acción secundaria (`pl-btn--ghost`) y la guía se
+  presenta como condicional a esa vía. La especificación «Distribución» declara las dos. La entrada
+  `microsoft-store` del registro de cambios se añade a 1.1.1 sin cambiar su número ni su fecha,
+  porque la ficha publica esa misma versión.
+- **El canal de instalación es dato de soporte.** El formulario de contacto no ofrece «Windows» a
+  secas: `REPORTABLE_PLATFORMS` distingue `windows-store` y `windows-installer`, porque las
+  actualizaciones y los avisos difieren entre las dos vías. `PLATFORMS` sigue anunciando Windows
+  una sola vez en la franja de disponibilidad. Los términos añaden la tarjeta de licencia de las
+  copias de Microsoft Store junto a la del App Store.
+- **Descartado.** _Retirar el instalador directo_: hay equipos con Microsoft Store deshabilitada por
+  administración, y la ruta de descarga ya es estable.
 - **Descartado.** _Una ruta propia para la guía_: exige la pareja en los dos idiomas, un hueco en la
   navegación y en el sitemap, y aleja las instrucciones del botón justo cuando hacen falta.
 - **Descartado.** _Ocultar la guía en un `<details>` plegado_: quien no lo abre llega a la pantalla
@@ -396,7 +411,7 @@ condicionan el día a día:
 - **La preferencia de tema se respeta y se recuerda**, y se aplica antes del primer pintado para que
   no haya parpadeo ni salto de contenido.
 - **La web presenta la versión de la aplicación y su registro de cambios.** Al usuario final de la landing
-  le interesa la app: qué versión instala desde la tienda o desde la descarga directa de Windows, qué
+  le interesa la app: qué versión instala desde el App Store, desde Microsoft Store o desde la descarga directa de Windows, qué
   novedades trae y el changelog de cada actualización. El versionado interno del motor del lenguaje y sus contratos técnicos pertenecen al desarrollo del
   núcleo y la app, no a la superficie pública de la web comercial.
 - **Nada de métricas de terceros.** No hay analítica, ni píxeles, ni fuentes remotas: las fuentes se
