@@ -195,6 +195,21 @@
       "a-simple": "'A'",
       "a-doble": "\"A\""
     },
+    "cajas-variables": {
+      "titulo": "Cajas de variables",
+      "descripcion": "Tres cajas en memoria: libros y cuadernos, de tipo Entero, empiezan vacías; nombre, de tipo Cadena, empieza con \"Leo\". Después libros recibe 3 y cuadernos recibe 6, calculado leyendo libros.",
+      "memoria": "memoria",
+      "vacia": "vacía",
+      "lee": "se lee para calcular"
+    },
+    "caminos-valor": {
+      "titulo": "Caminos sin valor",
+      "descripcion": "Un diagrama con la condición puntos > 50. Por la rama verdadera premio recibe 10; por la falsa no recibe nada. Los dos caminos llegan a Escribir premio, que se marca como error.",
+      "vacia": "premio: vacía",
+      "nada": "sin asignación",
+      "sigueVacia": "sigue vacía",
+      "codigoError": "variableUsedUninitialized"
+    },
     "clases-diagnostico": {
       "titulo": "Clases de diagnóstico",
       "descripcion": "Cuatro etapas en columna, léxica, sintáctica, semántica y ejecución, cada una con un ejemplo a la derecha. Una barra roja junto a las tres primeras indica que se descubren antes de ejecutar.",
@@ -237,6 +252,12 @@
       "ana": "\"Ana\"",
       "resultado": "\"Hola, Ana!\""
     },
+    "constante-sustituye": {
+      "titulo": "La constante se sustituye",
+      "descripcion": "Una declaración de constante SEMANA igual a 7 * 24 que se calcula como 168. La línea Escribir base, SEMANA se convierte en Escribir base, 168. En memoria solo aparece base; la constante no tiene caja.",
+      "memoria": "memoria",
+      "sinCaja": "las constantes no ocupan caja"
+    },
     "convenciones": {
       "titulo": "Convenciones de la especificación",
       "descripcion": "Tres ejemplos apilados. Una píldora de código con la palabra Si; un hueco punteado con la palabra condición; y un bloque de programa con título, número de línea, una instrucción Escribir y debajo una franja con la salida.",
@@ -265,6 +286,13 @@
       "total": "total",
       "sin-valor": "sin valor todavía",
       "prohibido": "Asignar a un nombre sin Definir: error"
+    },
+    "designadores": {
+      "titulo": "Lugares y valores",
+      "descripcion": "A la izquierda, tres designadores: x, notas[i] y persona.nombre. A la derecha, tres expresiones que no lo son: 5, x + 1 y Longitud(t).",
+      "lugar": "nombran un lugar",
+      "valor": "solo tienen valor",
+      "nota": "Solo se puede guardar en un lugar"
     },
     "determinismo": {
       "titulo": "Misma semilla, misma secuencia",
@@ -362,6 +390,15 @@
       "cadena": "Caja<Cadena>",
       "nota": "Una sola definición; una versión por tipo usado"
     },
+    "higiene": {
+      "titulo": "Uso de tres variables",
+      "descripcion": "Una tabla con tres variables. usada se escribe y se lee. olvidada no se escribe ni se lee. escrita se escribe pero no se lee.",
+      "escribe": "se escribe",
+      "lee": "se lee",
+      "bien": "correcto",
+      "nuncaUsada": "nunca usada",
+      "nuncaLeida": "nunca leída"
+    },
     "identificadores": {
       "titulo": "Alfabeto de los identificadores",
       "descripcion": "Dos cajas unidas por una flecha: el primer carácter, que puede ser letra, ñ, vocal con tilde o guion bajo, y los siguientes, que además admiten dígitos y pueden repetirse. Debajo, cuatro nombres válidos en verde y tres no válidos en rojo.",
@@ -387,6 +424,11 @@
       "lectura": "leer: sí",
       "escritura": "modificar: no",
       "nota": "La foto se tomó antes de añadir el 9"
+    },
+    "intercambio": {
+      "titulo": "Intercambio con auxiliar",
+      "descripcion": "Tres cajas a, b y auxiliar. a vale 1 y b vale 2. Primero auxiliar recibe 1, después a recibe 2 y al final b recibe 1 desde auxiliar.",
+      "hecho": "intercambiados"
     },
     "leer-figura": {
       "titulo": "Ejemplo de figura por pasos",

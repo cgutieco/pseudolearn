@@ -1,0 +1,16 @@
+<svg viewBox="0 0 340 180">
+  <caja x="10" y="10" ancho="320" alto="30" rol="acento-estructurado" fondo="0.08" fuente="mono" tamano="12" texto="{{codigo:Constante SEMANA Como Entero &lt;- 7 * 24;}}"/>
+  <caja x="10" y="48" ancho="320" alto="30" rol="atenuado" fondo="0.04" fuente="mono" tamano="12" texto="{{codigo:Escribir base, SEMANA;}}"/>
+  <g data-paso="2">
+    <rect x="10" y="10" width="320" height="30" rx="6" fill="@superficie"/>
+    <caja x="10" y="10" ancho="320" alto="30" rol="numero" fondo="0.14" fuente="mono" tamano="12" texto="{{codigo:Constante SEMANA Como Entero &lt;- 168;}}"/>
+  </g>
+  <g data-paso="3">
+    <rect x="10" y="48" width="320" height="30" rx="6" fill="@superficie"/>
+    <caja x="10" y="48" ancho="320" alto="30" rol="exito" fondo="0.10" fuente="mono" tamano="12" texto="{{codigo:Escribir base, 168;}}"/>
+    <text x="10" y="110" font-size="12" fill="@atenuado">{{t:memoria}}</text>
+    <caja x="10" y="118" ancho="100" alto="40" rol="numero" fondo="0.16" fuente="mono" texto="100.0"/>
+    <text x="60" y="174" font-size="12" text-anchor="middle" font-family="mono" fill="@tinta">{{codigo:base}}</text>
+    <caja x="130" y="118" ancho="200" alto="40" rol="atenuado" discontinua="" fondo="0.0" colortexto="atenuado" texto="{{t:sinCaja}}"/>
+  </g>
+</svg>

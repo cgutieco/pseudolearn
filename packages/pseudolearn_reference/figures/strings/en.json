@@ -195,6 +195,21 @@
       "a-simple": "'A'",
       "a-doble": "\"A\""
     },
+    "cajas-variables": {
+      "titulo": "Variable boxes",
+      "descripcion": "Three boxes in memory: libros and cuadernos, of type Integer, start empty; nombre, of type String, starts with \"Leo\". Then libros receives 3 and cuadernos receives 6, computed by reading libros.",
+      "memoria": "memory",
+      "vacia": "empty",
+      "lee": "read to compute"
+    },
+    "caminos-valor": {
+      "titulo": "Paths without a value",
+      "descripcion": "A diagram with the condition puntos > 50. Along the true branch premio receives 10; along the false one it receives nothing. Both paths reach Write premio, which is marked as an error.",
+      "vacia": "premio: empty",
+      "nada": "no assignment",
+      "sigueVacia": "still empty",
+      "codigoError": "variableUsedUninitialized"
+    },
     "clases-diagnostico": {
       "titulo": "Diagnostic classes",
       "descripcion": "Four stages in a column, lexical, syntax, semantic and runtime, each with an example on the right. A red bar next to the first three marks that they are discovered before running.",
@@ -237,6 +252,12 @@
       "ana": "\"Ana\"",
       "resultado": "\"Hola, Ana!\""
     },
+    "constante-sustituye": {
+      "titulo": "The constant is replaced",
+      "descripcion": "A declaration of the constant SEMANA as 7 * 24 that is computed as 168. The line Write base, SEMANA becomes Write base, 168. Only base appears in memory; the constant has no box.",
+      "memoria": "memory",
+      "sinCaja": "constants take no box"
+    },
     "convenciones": {
       "titulo": "Conventions of the specification",
       "descripcion": "Three stacked examples. A code pill with the word If; a dashed slot with the word condition; and a program block with a title, a line number, a Write instruction and, below, a band with the output.",
@@ -265,6 +286,13 @@
       "total": "total",
       "sin-valor": "no value yet",
       "prohibido": "Assigning to a name without Define: error"
+    },
+    "designadores": {
+      "titulo": "Places and values",
+      "descripcion": "On the left, three designators: x, notas[i] and persona.nombre. On the right, three expressions that are not: 5, x + 1 and length(t).",
+      "lugar": "name a place",
+      "valor": "only have a value",
+      "nota": "Values can only be stored in a place"
     },
     "determinismo": {
       "titulo": "Same seed, same sequence",
@@ -362,6 +390,15 @@
       "cadena": "Caja<String>",
       "nota": "A single definition; one version per type used"
     },
+    "higiene": {
+      "titulo": "Use of three variables",
+      "descripcion": "A table with three variables. usada is written and read. olvidada is neither written nor read. escrita is written but not read.",
+      "escribe": "written",
+      "lee": "read",
+      "bien": "correct",
+      "nuncaUsada": "never used",
+      "nuncaLeida": "never read"
+    },
     "identificadores": {
       "titulo": "Identifier alphabet",
       "descripcion": "Two boxes joined by an arrow: the first character, which may be a letter, ñ, an accented vowel or an underscore, and the following ones, which also accept digits and may repeat. Below, four valid names in green and three invalid ones in red.",
@@ -387,6 +424,11 @@
       "lectura": "read: yes",
       "escritura": "modify: no",
       "nota": "The picture was taken before adding the 9"
+    },
+    "intercambio": {
+      "titulo": "Swapping with an auxiliary",
+      "descripcion": "Three boxes a, b and auxiliar. a is 1 and b is 2. First auxiliar receives 1, then a receives 2 and finally b receives 1 from auxiliar.",
+      "hecho": "swapped"
     },
     "leer-figura": {
       "titulo": "Example of a stepped figure",

@@ -1,0 +1,27 @@
+<svg viewBox="0 0 340 170">
+  <text x="10" y="20" font-size="12" fill="@atenuado">{{t:memoria}}</text>
+  <caja x="10" y="30" ancho="100" alto="56" rol="hueco" discontinua="" fondo="0.06" texto=""/>
+  <text x="60" y="104" font-size="13" text-anchor="middle" font-family="mono" fill="@tinta">{{codigo:libros}}</text>
+  <text x="60" y="122" font-size="12" text-anchor="middle" fill="@tipo">{{lex:integerType}}</text>
+  <caja x="120" y="30" ancho="100" alto="56" rol="hueco" discontinua="" fondo="0.06" texto=""/>
+  <text x="170" y="104" font-size="13" text-anchor="middle" font-family="mono" fill="@tinta">{{codigo:cuadernos}}</text>
+  <text x="170" y="122" font-size="12" text-anchor="middle" fill="@tipo">{{lex:integerType}}</text>
+  <text x="60" y="64" font-size="12" text-anchor="middle" fill="@hueco">{{t:vacia}}</text>
+  <text x="170" y="64" font-size="12" text-anchor="middle" fill="@hueco">{{t:vacia}}</text>
+  <g data-paso="2">
+    <rect x="230" y="30" width="100" height="56" rx="6" fill="@superficie"/>
+    <caja x="230" y="30" ancho="100" alto="56" rol="texto" fondo="0.16" fuente="mono" texto="{{codigo:&quot;Leo&quot;}}"/>
+    <text x="280" y="104" font-size="13" text-anchor="middle" font-family="mono" fill="@tinta">{{codigo:nombre}}</text>
+    <text x="280" y="122" font-size="12" text-anchor="middle" fill="@tipo">{{lex:stringType}}</text>
+  </g>
+  <g data-paso="3">
+    <rect x="10" y="30" width="100" height="56" rx="6" fill="@superficie"/>
+    <caja x="10" y="30" ancho="100" alto="56" rol="numero" fondo="0.16" fuente="mono" tamano="18" texto="3"/>
+  </g>
+  <g data-paso="4">
+    <rect x="120" y="30" width="100" height="56" rx="6" fill="@superficie"/>
+    <caja x="120" y="30" ancho="100" alto="56" rol="numero" fondo="0.16" fuente="mono" tamano="18" texto="6"/>
+    <flecha puntos="60,140 60,152 170,152 170,140" rol="atenuado" discontinua=""/>
+    <text x="115" y="166" font-size="12" text-anchor="middle" fill="@atenuado">{{t:lee}}</text>
+  </g>
+</svg>
