@@ -1263,6 +1263,18 @@
       "mejor-2": "el mejor",
       "rol": "mejor hasta ahora",
       "pie": "cada hoja ya se sabe resolver"
+    },
+    "ruta-maquina-pura": {
+      "titulo": "Una máquina pura y una con puertas",
+      "descripcion": "Dos máquinas. La pura tiene una sola entrada, los datos, y una sola salida, el resultado. La otra tiene además puertas laterales: por una lee, por otras escribe y cambia cosas de afuera, sin que se vea en la llamada.",
+      "pura": "pura",
+      "impura": "con efectos",
+      "datos": "datos",
+      "resultado": "resultado",
+      "lee": "lee",
+      "escribe": "por los costados escribe",
+      "cambia": "y cambia lo de afuera",
+      "pie": "lo que no pasa por la llamada es un efecto"
     }
   }
 }

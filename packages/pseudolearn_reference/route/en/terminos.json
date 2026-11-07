@@ -69,5 +69,12 @@
   "subprograma": {"etiqueta": "subprogram", "formas": ["subprogram", "subprograms"], "estricto": true, "receta": true},
   "llamada": {"etiqueta": "call", "formas": ["call", "calls", "calling"], "estricto": true, "receta": false},
   "parametro": {"etiqueta": "parameter", "formas": ["parameter", "parameters"], "estricto": true, "receta": true},
-  "valor-de-retorno": {"etiqueta": "return value", "formas": ["return value"], "estricto": true, "receta": false}
+  "valor-de-retorno": {"etiqueta": "return value", "formas": ["return value"], "estricto": true, "receta": false},
+  "ambito": {"etiqueta": "scope", "formas": ["scope", "scopes"], "estricto": true, "receta": false},
+  "paso-por-valor": {"etiqueta": "pass by value", "formas": ["by value"], "estricto": true, "receta": false},
+  "paso-por-referencia": {"etiqueta": "pass by reference", "formas": ["by reference"], "estricto": true, "receta": true},
+  "pila-de-llamadas": {"etiqueta": "call stack", "formas": ["call stack"], "estricto": true, "receta": false},
+  "marco": {"etiqueta": "frame", "formas": ["frame", "frames"], "estricto": true, "receta": false},
+  "efecto": {"etiqueta": "effect", "formas": ["effect", "effects"], "estricto": false, "receta": false},
+  "funcion-pura": {"etiqueta": "pure function", "formas": ["pure function", "pure functions"], "estricto": true, "receta": true}
 }

@@ -69,5 +69,12 @@
   "subprograma": {"etiqueta": "subprograma", "formas": ["subprograma", "subprogramas"], "estricto": true, "receta": true},
   "llamada": {"etiqueta": "llamada", "formas": ["llamada", "llamadas", "llamar"], "estricto": true, "receta": false},
   "parametro": {"etiqueta": "parámetro", "formas": ["parámetro", "parámetros"], "estricto": true, "receta": true},
-  "valor-de-retorno": {"etiqueta": "valor de retorno", "formas": ["valor de retorno"], "estricto": true, "receta": false}
+  "valor-de-retorno": {"etiqueta": "valor de retorno", "formas": ["valor de retorno"], "estricto": true, "receta": false},
+  "ambito": {"etiqueta": "ámbito", "formas": ["ámbito", "ámbitos"], "estricto": true, "receta": false},
+  "paso-por-valor": {"etiqueta": "paso por valor", "formas": ["por valor"], "estricto": true, "receta": false},
+  "paso-por-referencia": {"etiqueta": "paso por referencia", "formas": ["por referencia"], "estricto": true, "receta": true},
+  "pila-de-llamadas": {"etiqueta": "pila de llamadas", "formas": ["pila de llamadas"], "estricto": true, "receta": false},
+  "marco": {"etiqueta": "marco", "formas": ["marco", "marcos"], "estricto": true, "receta": false},
+  "efecto": {"etiqueta": "efecto", "formas": ["efecto", "efectos"], "estricto": false, "receta": false},
+  "funcion-pura": {"etiqueta": "función pura", "formas": ["función pura", "funciones puras"], "estricto": true, "receta": true}
 }

@@ -1263,6 +1263,18 @@
       "mejor-2": "the best",
       "rol": "best so far",
       "pie": "each leaf is already solvable"
+    },
+    "ruta-maquina-pura": {
+      "titulo": "A pure machine and one with doors",
+      "descripcion": "Two machines. The pure one has a single input, the data, and a single output, the result. The other also has side doors: through one it reads, through others it writes and changes things outside, without it showing in the call.",
+      "pura": "pure",
+      "impura": "with effects",
+      "datos": "data",
+      "resultado": "result",
+      "lee": "reads",
+      "escribe": "through the sides it writes",
+      "cambia": "and changes what is outside",
+      "pie": "what does not go through the call is an effect"
     }
   }
 }
