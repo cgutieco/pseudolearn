@@ -1,4 +1,0 @@
-Algorithm InitializerType
-  Define x As Real <- 10;
-  Write x + 5;
-EndAlgorithm

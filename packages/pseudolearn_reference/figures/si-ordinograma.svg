@@ -20,6 +20,6 @@
   <g data-paso="1" data-hasta="1"><rect x="70" y="61" width="200" height="50" rx="9" fill="none" stroke="@acento-procedimental" stroke-width="3"/></g>
   <g data-paso="2" data-hasta="2"><polygon points="170,123 282,180 170,237 58,180" fill="none" stroke="@acento-procedimental" stroke-width="3"/></g>
   <g data-paso="3" data-hasta="3"><path d="M 70 180 V 266" fill="none" stroke="@acento-procedimental" stroke-width="4"/><rect x="0" y="263" width="140" height="66" rx="9" fill="none" stroke="@acento-procedimental" stroke-width="3"/></g>
-  <g data-paso="4"><caja x="204" y="268" ancho="132" alto="56" rol="error" fondo="0.16" colortexto="error" negrita="" texto="{{t:no-se-ejecuta}}"/></g>
+  <g data-paso="4"><rect x="204" y="268" width="132" height="56" rx="6" fill="@superficie"/><caja x="204" y="268" ancho="132" alto="56" rol="error" fondo="0.16" colortexto="error" negrita="" texto="{{t:no-se-ejecuta}}"/></g>
   <g data-paso="5" data-hasta="5"><path d="M 70 324 V 352 H 164 M 170 358 V 382" fill="none" stroke="@acento-procedimental" stroke-width="4"/><rect x="105" y="379" width="130" height="44" rx="21" fill="none" stroke="@acento-procedimental" stroke-width="3"/></g>
 </svg>

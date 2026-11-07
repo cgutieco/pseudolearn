@@ -1,5 +1,0 @@
-Algorithm Concatenation
-  Define n As Integer <- 1 + 2;
-  Define t As String <- "A" + "B";
-  Write n, t;
-EndAlgorithm

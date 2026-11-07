@@ -1,5 +1,0 @@
-Algorithm Whitespace
-Define x As Integer <- 0;
-    x <- 10;
-  Write x;
-EndAlgorithm

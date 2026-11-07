@@ -1,7 +1,0 @@
-Algorithm RepeatLoop
-  Define n As Integer <- 1;
-  Repeat
-    Write n;
-    n <- n + 1;
-  Until n > 1
-EndAlgorithm

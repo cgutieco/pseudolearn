@@ -1,5 +1,0 @@
-Algorithm ImplicitConversion
-  Define whole As Integer <- 7;
-  Define decimal As Real <- whole;
-  Write decimal;
-EndAlgorithm

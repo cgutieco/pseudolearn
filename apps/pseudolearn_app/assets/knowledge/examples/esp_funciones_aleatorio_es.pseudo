@@ -1,6 +1,0 @@
-Algoritmo FuncionAleatorio
-  Definir dado Como Entero <- Aleatorio(1, 6);
-  Definir casilla Como Entero <- Azar(10);
-  Definir fraccion Como Real <- AzarReal();
-  Escribir dado, " ", casilla, " ", fraccion < 1.0;
-FinAlgoritmo

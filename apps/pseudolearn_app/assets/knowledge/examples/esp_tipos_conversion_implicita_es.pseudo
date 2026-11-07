@@ -1,5 +1,0 @@
-Algoritmo ConversionImplicita
-  Definir valorEntero Como Entero <- 7;
-  Definir decimal Como Real <- valorEntero;
-  Escribir decimal;
-FinAlgoritmo

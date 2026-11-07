@@ -1,6 +1,0 @@
-Algorithm ReadDesignators
-  Define a As Integer <- 0;
-  Define b As Integer <- 0;
-  Read a, b;
-  Write a + b;
-EndAlgorithm

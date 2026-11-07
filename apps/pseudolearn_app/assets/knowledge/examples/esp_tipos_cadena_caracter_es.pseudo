@@ -1,5 +1,0 @@
-Algoritmo CadenaYCaracter
-  Definir s Como Cadena <- "Hola";
-  Definir c Como Caracter <- CaracterEn(s, 0);
-  Escribir c;
-FinAlgoritmo

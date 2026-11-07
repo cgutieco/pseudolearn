@@ -1,5 +1,0 @@
-Algorithm MathFunctions
-  Define t As Integer <- trunc(3.7);
-  Define r As Integer <- round(3.7);
-  Write t, r;
-EndAlgorithm

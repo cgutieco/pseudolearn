@@ -1,6 +1,0 @@
-Algoritmo LecturaDesignadores
-  Definir a Como Entero <- 0;
-  Definir b Como Entero <- 0;
-  Leer a, b;
-  Escribir a + b;
-FinAlgoritmo

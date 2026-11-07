@@ -1,8 +1,0 @@
-Subroutine Calculate(n As Integer) As Integer
-  Return n * 2;
-EndSubroutine
-Algorithm SubroutineCall
-  Define res As Integer <- Calculate(5);
-  Define other As Integer <- Calculate(10);
-  Write res, other;
-EndAlgorithm

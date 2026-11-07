@@ -1,0 +1,16 @@
+<svg viewBox="0 0 340 300">
+  <caja x="10" y="8" ancho="150" alto="40" rol="acento-estructurado" fondo="0.10" texto="{{t:lexico}}"/>
+  <caja x="180" y="8" ancho="150" alto="40" rol="error" fondo="0.08" tamano="12" texto="{{t:lexico-ej}}"/>
+  <flecha puntos="85,48 85,70"/>
+  <caja x="10" y="70" ancho="150" alto="40" rol="acento-estructurado" fondo="0.10" texto="{{t:sintaxis}}"/>
+  <caja x="180" y="70" ancho="150" alto="40" rol="error" fondo="0.08" tamano="12" texto="{{t:sintaxis-ej}}"/>
+  <flecha puntos="85,110 85,132"/>
+  <caja x="10" y="132" ancho="150" alto="40" rol="acento-estructurado" fondo="0.10" texto="{{t:semantica}}"/>
+  <caja x="180" y="132" ancho="150" alto="40" rol="error" fondo="0.08" tamano="12" texto="{{t:semantica-ej}}"/>
+  <path d="M 4 8 V 172" fill="none" stroke="@error" stroke-width="3"/>
+  <text x="170" y="196" font-size="12" text-anchor="middle" fill="@error">{{t:antes}}</text>
+  <flecha puntos="85,172 85,214"/>
+  <caja x="10" y="214" ancho="150" alto="40" rol="tipo" fondo="0.14" texto="{{t:ejecucion}}"/>
+  <caja x="180" y="214" ancho="150" alto="40" rol="error" fondo="0.08" tamano="12" texto="{{t:ejecucion-ej}}"/>
+  <text x="170" y="284" font-size="12" text-anchor="middle" fill="@atenuado">{{t:nota}}</text>
+</svg>

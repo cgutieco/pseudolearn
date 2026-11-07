@@ -155,6 +155,111 @@
     "whitespace": "whitespace"
   },
   "figures": {
+    "clases-diagnostico": {
+      "titulo": "Diagnostic classes",
+      "descripcion": "Four stages in a column, lexical, syntax, semantic and runtime, each with an example on the right. A red bar next to the first three marks that they are discovered before running.",
+      "lexico": "Lexical",
+      "lexico-ej": "unknown character",
+      "sintaxis": "Syntax",
+      "sintaxis-ej": "missing ;",
+      "semantica": "Semantic",
+      "semantica-ej": "undefined variable",
+      "antes": "Discovered before running: they prevent running",
+      "ejecucion": "Runtime",
+      "ejecucion-ej": "index out of range",
+      "nota": "Warnings warn but still let the program run"
+    },
+    "convenciones": {
+      "titulo": "Conventions of the specification",
+      "descripcion": "Three stacked examples. A code pill with the word If; a dashed slot with the word condition; and a program block with a title, a line number, a Write instruction and, below, a band with the output.",
+      "pildora": "Language word",
+      "pildora-nota": "written exactly as shown",
+      "hueco": "Slot",
+      "condicion": "condition",
+      "hueco-nota": "you fill it in",
+      "programa": "Run program",
+      "titulo-programa": "Program title",
+      "salida": "Output",
+      "salida-texto": "what the engine wrote"
+    },
+    "determinismo": {
+      "titulo": "Same seed, same sequence",
+      "descripcion": "A box with seed 42 from which two runs leave. Both produce the sequence 1, 1, 6 and an equals sign joins them.",
+      "semilla": "seed 42",
+      "ejecucion-a": "Run A",
+      "ejecucion-b": "Run B",
+      "nota": "Same program, inputs and seed",
+      "nota2": "→ same output, trace and termination"
+    },
+    "ecosistema": {
+      "titulo": "One language, one engine, three doors",
+      "descripcion": "At the top, the PseudoLearn language in Spanish and English. Below, the engine that analyses and runs. Three arrows leave the engine towards the app, the command line and the web.",
+      "lenguaje": "PseudoLearn language (es · en)",
+      "motor": "Engine",
+      "motor-sub": "analyse · run · observe",
+      "app": "App",
+      "app-sub": "editor",
+      "cli": "pseudo",
+      "cli-sub": "command line",
+      "web": "Web",
+      "web-sub": "browser",
+      "nota": "Same result in all three"
+    },
+    "edicion": {
+      "titulo": "Contents of the 2026 edition",
+      "descripcion": "A frame titled 2026 edition with three boxes: a single grammar, a single type policy and a fixed prelude with examples of built-in functions.",
+      "edicion": "2026 edition",
+      "gramatica": "A single grammar",
+      "tipos": "A single type policy",
+      "preludio": "Fixed prelude",
+      "preludio-ejemplos": "length · sqrt · Optional · vector…"
+    },
+    "leer-figura": {
+      "titulo": "Example of a stepped figure",
+      "descripcion": "Three stacked instructions joined by arrows: total gets 0, total gets total plus 5, and Write total. Below, a box with the name total and its value. Each step highlights the instruction being run and the value changes from 0 to 5.",
+      "programa": "Instructions",
+      "total": "total ="
+    },
+    "leer-raíles": {
+      "titulo": "How to follow a syntax diagram",
+      "descripcion": "Three strips of track. The first runs straight through the word While and the slot expression. The second has a detour that goes down to Else and back up, so Else can be skipped. The third passes through the slot statement and has a loop underneath back to the start, so the statement can be repeated.",
+      "fijo": "Fixed stretch: follow all of it",
+      "expresion": "expression",
+      "opcional": "Detour: may be skipped",
+      "se-salta": "straight track: without the optional part",
+      "repetir": "Loop: may be repeated",
+      "sentencia": "statement",
+      "vuelve": "the loop allows another statement"
+    },
+    "mapa-partes": {
+      "titulo": "Map of the parts",
+      "descripcion": "A diagram of stacked boxes. At the top Part 0 on how to read and Part I with the overview. Below, in two columns, lexical structure and types; then expressions and declarations; then control flow; then subroutines and objects. At the bottom a band with programs, errors, concurrency, library and engine, and another with the appendices.",
+      "p0": "0 · How to read",
+      "p1": "I · Overview",
+      "p2": "II · Lexical",
+      "p3": "III · Types",
+      "p4": "IV · Expressions",
+      "p5": "V · Declarations",
+      "p6": "VI · Control flow",
+      "p7": "VII · Subroutines",
+      "p9": "IX · Objects",
+      "resto": "VIII · X · XI · XII · XIII",
+      "apendices": "Appendices A–F: reference"
+    },
+    "perfiles-espejo": {
+      "titulo": "The same program in two profiles",
+      "descripcion": "Two columns, Spanish on the left and English on the right. Each row pairs a word: Si with If, Entonces with Then, Cadena with String. The last two rows show that the name nombre and the text Hola do not change.",
+      "espanol": "Spanish profile",
+      "ingles": "English profile",
+      "si": "Si",
+      "if": "If",
+      "entonces": "Entonces",
+      "then": "Then",
+      "cadena": "Cadena",
+      "string": "String",
+      "nombre": "nombre",
+      "hola": "\"Hola\""
+    },
     "si-ordinograma": {
       "titulo": "Step-by-step run of Montana",
       "descripcion": "A flowchart with the start, the assignment of estatura, a diamond asking whether estatura is greater than or equal to 120, two boxes with the Write of each branch, the point where they join and the end. Each step highlights the part being run.",
@@ -164,6 +269,50 @@
       "texto-no": "\"Todavía no…\"",
       "juntan": "EndIf: they join",
       "no-se-ejecuta": "not run"
+    },
+    "terminaciones": {
+      "titulo": "The six terminations",
+      "descripcion": "At the top, the running state. An arrow goes down to a box with the four final terminations: completed, failed, cancelled and limit_reached. Two side arrows lead to the pauses awaiting_input and awaiting_effect, which resume.",
+      "ejecutando": "Running",
+      "finales": "Final",
+      "completed": "completed",
+      "failed": "failed",
+      "cancelled": "cancelled",
+      "limit": "limit_reached",
+      "input": "awaiting_input",
+      "effect": "awaiting_effect",
+      "pausas": "Pauses: once the data arrives, they run again"
+    },
+    "tres-trabajos": {
+      "titulo": "Analysing, running and observing",
+      "descripcion": "A program with three arrows leaving it towards Analyse, Run and Observe. Below each one, what it produces: diagnostics, colours and help; output, termination and failures; trace, memory and timeline. A green line joins Run and Observe because both go through the instructions.",
+      "programa": "Program",
+      "analizar": "Analyse",
+      "ejecutar": "Run",
+      "observar": "Observe",
+      "a1": "diagnostics",
+      "a2": "colours",
+      "a3": "help",
+      "e1": "output",
+      "e2": "termination",
+      "e3": "failures",
+      "o1": "trace",
+      "o2": "memory",
+      "o3": "timeline",
+      "sin-ejecutar": "runs nothing",
+      "recorren": "go through the instructions"
+    },
+    "viaje": {
+      "titulo": "The five stages of the engine",
+      "descripcion": "A column of boxes joined by arrows: the source text, lexical analysis, syntax analysis, semantic analysis, translation and execution. A dashed red line next to the first three marks that they form the analysis. Each step highlights one stage.",
+      "texto": "Program text",
+      "lexico": "1 · Lexical analysis → tokens",
+      "sintaxis": "2 · Syntax analysis → tree",
+      "semantica": "3 · Semantic analysis → types",
+      "traduccion": "4 · Translation → instructions",
+      "ejecucion": "5 · Virtual machine → output",
+      "analisis": "analysis",
+      "resultado": "Output: 42"
     }
   }
 }

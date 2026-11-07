@@ -1,4 +1,0 @@
-Algoritmo TipoDelInicializador
-  Definir x Como Real <- 10;
-  Escribir x + 5;
-FinAlgoritmo

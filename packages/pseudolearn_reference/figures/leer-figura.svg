@@ -1,0 +1,12 @@
+<svg viewBox="0 0 340 250">
+  <text x="12" y="20" font-size="12" fill="@atenuado">{{t:programa}}</text>
+  <caja x="12" y="30" ancho="316" alto="36" rol="tinta" fondo="0.04" fuente="mono" tamano="13" texto="{{codigo:total &lt;- 0}}"/>
+  <flecha puntos="170,66 170,92"/>
+  <caja x="12" y="92" ancho="316" alto="36" rol="tinta" fondo="0.04" fuente="mono" tamano="13" texto="{{codigo:total &lt;- total + 5}}"/>
+  <flecha puntos="170,128 170,154"/>
+  <caja x="12" y="154" ancho="316" alto="36" rol="tinta" fondo="0.04" fuente="mono" tamano="13" texto="{{codigo:Escribir total}}"/>
+  <caja x="90" y="206" ancho="160" alto="34" rol="numero" fondo="0.10"/><text x="112" y="228" font-size="14" font-family="mono" fill="@tinta">{{t:total}}</text>
+  <g data-paso="1" data-hasta="1"><rect x="7" y="25" width="326" height="46" rx="9" fill="none" stroke="@acento-procedimental" stroke-width="3"/><text x="214" y="228" font-size="14" font-family="mono" fill="@numero" font-weight="600">0</text></g>
+  <g data-paso="2" data-hasta="2"><rect x="7" y="87" width="326" height="46" rx="9" fill="none" stroke="@acento-procedimental" stroke-width="3"/><text x="214" y="228" font-size="14" font-family="mono" fill="@numero" font-weight="600">5</text></g>
+  <g data-paso="3"><rect x="7" y="149" width="326" height="46" rx="9" fill="none" stroke="@acento-procedimental" stroke-width="3"/><text x="214" y="228" font-size="14" font-family="mono" fill="@numero" font-weight="600">5</text></g>
+</svg>

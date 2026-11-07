@@ -1,5 +1,0 @@
-Algorithm ConstantSize
-  Dimension list[2 + 3] As Integer;
-  list[0] <- 42;
-  Write list[0];
-EndAlgorithm

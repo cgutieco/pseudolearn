@@ -155,6 +155,111 @@
     "whitespace": "espacio"
   },
   "figures": {
+    "clases-diagnostico": {
+      "titulo": "Clases de diagnóstico",
+      "descripcion": "Cuatro etapas en columna, léxica, sintáctica, semántica y ejecución, cada una con un ejemplo a la derecha. Una barra roja junto a las tres primeras indica que se descubren antes de ejecutar.",
+      "lexico": "Léxica",
+      "lexico-ej": "carácter desconocido",
+      "sintaxis": "Sintáctica",
+      "sintaxis-ej": "falta ;",
+      "semantica": "Semántica",
+      "semantica-ej": "variable sin definir",
+      "antes": "Descubiertas antes de ejecutar: impiden ejecutar",
+      "ejecucion": "Ejecución",
+      "ejecucion-ej": "índice fuera de rango",
+      "nota": "Las advertencias avisan pero dejan ejecutar"
+    },
+    "convenciones": {
+      "titulo": "Convenciones de la especificación",
+      "descripcion": "Tres ejemplos apilados. Una píldora de código con la palabra Si; un hueco punteado con la palabra condición; y un bloque de programa con título, número de línea, una instrucción Escribir y debajo una franja con la salida.",
+      "pildora": "Palabra del lenguaje",
+      "pildora-nota": "se escribe tal cual",
+      "hueco": "Hueco",
+      "condicion": "condición",
+      "hueco-nota": "lo rellenas tú",
+      "programa": "Programa ejecutado",
+      "titulo-programa": "Título del programa",
+      "salida": "Salida",
+      "salida-texto": "lo que escribió el motor"
+    },
+    "determinismo": {
+      "titulo": "Misma semilla, misma secuencia",
+      "descripcion": "Una caja con la semilla 42 de la que salen dos ejecuciones. Las dos producen la secuencia 1, 1, 6 y un signo igual las une.",
+      "semilla": "semilla 42",
+      "ejecucion-a": "Ejecución A",
+      "ejecucion-b": "Ejecución B",
+      "nota": "Mismo programa, entradas y semilla",
+      "nota2": "→ misma salida, traza y terminación"
+    },
+    "ecosistema": {
+      "titulo": "Un lenguaje, un motor, tres puertas",
+      "descripcion": "Arriba, el lenguaje PseudoLearn en español e inglés. Debajo, el motor que analiza y ejecuta. Del motor salen tres flechas hacia la app, la línea de órdenes y la web.",
+      "lenguaje": "Lenguaje PseudoLearn (es · en)",
+      "motor": "Motor",
+      "motor-sub": "analiza · ejecuta · observa",
+      "app": "App",
+      "app-sub": "editor",
+      "cli": "pseudo",
+      "cli-sub": "línea de órdenes",
+      "web": "Web",
+      "web-sub": "navegador",
+      "nota": "Mismo resultado en las tres"
+    },
+    "edicion": {
+      "titulo": "Contenido de la edición 2026",
+      "descripcion": "Un marco titulado Edición 2026 con tres cajas: una sola gramática, una sola política de tipos y un preludio fijo con ejemplos de funciones incorporadas.",
+      "edicion": "Edición 2026",
+      "gramatica": "Una sola gramática",
+      "tipos": "Una sola política de tipos",
+      "preludio": "Preludio fijo",
+      "preludio-ejemplos": "Longitud · rc · Opcional · Vector…"
+    },
+    "leer-figura": {
+      "titulo": "Ejemplo de figura por pasos",
+      "descripcion": "Tres instrucciones apiladas unidas por flechas: total recibe 0, total recibe total más 5 y Escribir total. Debajo, una caja con el nombre total y su valor. En cada paso se resalta la instrucción que se ejecuta y el valor cambia de 0 a 5.",
+      "programa": "Instrucciones",
+      "total": "total ="
+    },
+    "leer-raíles": {
+      "titulo": "Cómo se recorre un diagrama de sintaxis",
+      "descripcion": "Tres tiras de vía. La primera va recta pasando por la palabra Mientras y el hueco expresión. La segunda tiene un desvío que baja hasta Sino y vuelve a subir, de modo que Sino se puede saltar. La tercera pasa por el hueco sentencia y tiene una vuelta por debajo que regresa al principio, de modo que la sentencia se puede repetir.",
+      "fijo": "Tramo fijo: se recorre todo",
+      "expresion": "expresión",
+      "opcional": "Desvío: se puede saltar",
+      "se-salta": "vía recta: sin la parte opcional",
+      "repetir": "Vuelta: se puede repetir",
+      "sentencia": "sentencia",
+      "vuelve": "la vuelta permite otra sentencia"
+    },
+    "mapa-partes": {
+      "titulo": "Mapa de las partes",
+      "descripcion": "Un diagrama de cajas apiladas. Arriba la Parte 0 sobre cómo leer y la Parte I con la visión general. Debajo, en dos columnas, la estructura léxica y los tipos; luego expresiones y declaraciones; después el control del flujo; luego subprogramas y objetos. Al final una franja con programas, errores, concurrencia, biblioteca y motor, y otra con los apéndices.",
+      "p0": "0 · Cómo leer",
+      "p1": "I · Visión general",
+      "p2": "II · Léxico",
+      "p3": "III · Tipos",
+      "p4": "IV · Expresiones",
+      "p5": "V · Declaraciones",
+      "p6": "VI · Control del flujo",
+      "p7": "VII · Subprogramas",
+      "p9": "IX · Objetos",
+      "resto": "VIII · X · XI · XII · XIII",
+      "apendices": "Apéndices A–F: consulta"
+    },
+    "perfiles-espejo": {
+      "titulo": "El mismo programa en dos perfiles",
+      "descripcion": "Dos columnas, español a la izquierda e inglés a la derecha. Cada fila empareja una palabra: Si con If, Entonces con Then, Cadena con String. Las dos últimas filas muestran que el nombre nombre y el texto Hola no cambian.",
+      "espanol": "Perfil español",
+      "ingles": "Perfil inglés",
+      "si": "Si",
+      "if": "If",
+      "entonces": "Entonces",
+      "then": "Then",
+      "cadena": "Cadena",
+      "string": "String",
+      "nombre": "nombre",
+      "hola": "\"Hola\""
+    },
     "si-ordinograma": {
       "titulo": "Ejecución paso a paso de Montana",
       "descripcion": "Un ordinograma con el inicio, la asignación de estatura, un rombo con la pregunta estatura mayor o igual que 120, dos cajas con los Escribir de cada rama, el punto donde se juntan y el fin. Cada paso resalta la parte que se está ejecutando.",
@@ -164,6 +269,50 @@
       "texto-no": "\"Todavía no…\"",
       "juntan": "FinSi: se juntan",
       "no-se-ejecuta": "no se ejecuta"
+    },
+    "terminaciones": {
+      "titulo": "Las seis terminaciones",
+      "descripcion": "Arriba, el estado ejecutando. Una flecha baja hasta un recuadro con las cuatro terminaciones definitivas: completed, failed, cancelled y limit_reached. Dos flechas laterales llevan a las pausas awaiting_input y awaiting_effect, que se reanudan.",
+      "ejecutando": "Ejecutando",
+      "finales": "Definitivas",
+      "completed": "completed",
+      "failed": "failed",
+      "cancelled": "cancelled",
+      "limit": "limit_reached",
+      "input": "awaiting_input",
+      "effect": "awaiting_effect",
+      "pausas": "Pausas: al recibir el dato, vuelven a ejecutar"
+    },
+    "tres-trabajos": {
+      "titulo": "Analizar, ejecutar y observar",
+      "descripcion": "Un programa del que salen tres flechas hacia Analizar, Ejecutar y Observar. Debajo de cada uno, lo que produce: diagnósticos, colores y ayuda; salida, terminación y fallos; traza, memoria y línea de tiempo. Una línea verde une Ejecutar y Observar porque los dos recorren las instrucciones.",
+      "programa": "Programa",
+      "analizar": "Analizar",
+      "ejecutar": "Ejecutar",
+      "observar": "Observar",
+      "a1": "diagnósticos",
+      "a2": "colores",
+      "a3": "ayuda",
+      "e1": "salida",
+      "e2": "terminación",
+      "e3": "fallos",
+      "o1": "traza",
+      "o2": "memoria",
+      "o3": "línea de tiempo",
+      "sin-ejecutar": "no ejecuta nada",
+      "recorren": "recorren las instrucciones"
+    },
+    "viaje": {
+      "titulo": "Las cinco etapas del motor",
+      "descripcion": "Una columna de cajas unidas por flechas: el texto fuente, el análisis léxico, el sintáctico, el semántico, la traducción y la ejecución. Una línea roja discontinua junto a las tres primeras indica que forman el análisis. Cada paso resalta una etapa.",
+      "texto": "Texto del programa",
+      "lexico": "1 · Análisis léxico → tokens",
+      "sintaxis": "2 · Análisis sintáctico → árbol",
+      "semantica": "3 · Análisis semántico → tipos",
+      "traduccion": "4 · Traducción → instrucciones",
+      "ejecucion": "5 · Máquina virtual → salida",
+      "analisis": "análisis",
+      "resultado": "Salida: 42"
     }
   }
 }

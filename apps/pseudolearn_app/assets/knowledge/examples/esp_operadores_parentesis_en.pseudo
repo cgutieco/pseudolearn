@@ -1,5 +1,0 @@
-Algorithm Parentheses
-  Define a As Integer <- 2 + 3 * 4;
-  Define b As Integer <- (2 + 3) * 4;
-  Write a, b;
-EndAlgorithm
