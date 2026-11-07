@@ -1457,6 +1457,41 @@
       "fun-1": "ConDescuento(",
       "fun-2": "Linea(3, 3) + Linea(5, 2))",
       "funcional": "funciones que transforman"
+    },
+    "ruta-cocina-turnos": {
+      "titulo": "Cocina por turnos",
+      "descripcion": "Cuatro columnas: el algoritmo y los cocineros de jugos, sándwiches y frutas. En cada paso, una sola columna avanza; las demás esperan, están en la fila o ya terminaron. Al final, el algoritmo suma los tres resultados y el ámbito se cierra sin tareas vivas.",
+      "algoritmo": "Algoritmo",
+      "jugos": "Jugos",
+      "sandwiches": "Sándwiches",
+      "frutas": "Frutas",
+      "avanza": "avanza",
+      "espera": "espera",
+      "lista": "en la fila",
+      "termino": "terminó",
+      "pie": "Una sola tarea avanza en cada turno.",
+      "paso-1": "El algoritmo lanza las tres tareas.",
+      "paso-2": "Aguarda los jugos y cede su turno.",
+      "paso-3": "Los jugos terminan; siguen los sándwiches.",
+      "paso-4": "Siguen las frutas.",
+      "paso-5": "Las tres terminaron: el algoritmo suma 27.",
+      "paso-6": "Al cerrar el ámbito no queda ninguna tarea viva."
+    },
+    "ruta-mostrador": {
+      "titulo": "El canal entre la cocina y el mostrador",
+      "descripcion": "A la izquierda la cocina, a la derecha el mostrador y en el medio un canal donde caben dos pedidos. La cocina deja los pedidos 1 y 2; con el canal lleno, espera. El mostrador recibe el 1, se libera un lugar y la cocina deja el 3. Los pedidos salen en el orden en que entraron.",
+      "cocina": "Cocina",
+      "mostrador": "Mostrador",
+      "caben": "canal: caben 2",
+      "libre": "libre",
+      "p1": "pedido 1",
+      "p2": "pedido 2",
+      "p3": "pedido 3",
+      "pie": "Los pedidos salen en el orden en que entraron.",
+      "paso-1": "La cocina deja el pedido 1.",
+      "paso-2": "Deja el 2: el canal está lleno.",
+      "paso-3": "El mostrador recibe el 1; queda lugar.",
+      "paso-4": "La cocina deja el pedido 3."
     }
   }
 }

@@ -128,5 +128,9 @@
   "variante": {"etiqueta": "variant", "formas": ["variant", "variants"], "estricto": false, "receta": true},
   "coincidencia-de-patrones": {"etiqueta": "pattern matching", "formas": ["pattern matching"], "estricto": true, "receta": true},
   "generico": {"etiqueta": "generic", "formas": ["generic", "generics"], "estricto": true, "receta": true},
-  "estado-imposible": {"etiqueta": "impossible state", "formas": ["impossible state", "impossible states"], "estricto": true, "receta": false}
+  "estado-imposible": {"etiqueta": "impossible state", "formas": ["impossible state", "impossible states"], "estricto": true, "receta": false},
+  "programacion-concurrente": {"etiqueta": "concurrent programming", "formas": ["concurrent programming"], "estricto": true, "receta": false},
+  "concurrencia": {"etiqueta": "concurrency", "formas": ["concurrency"], "estricto": true, "receta": false},
+  "tarea": {"etiqueta": "task", "formas": ["task", "tasks"], "estricto": false, "receta": false},
+  "agenda": {"etiqueta": "schedule", "formas": ["schedule"], "estricto": false, "receta": false}
 }

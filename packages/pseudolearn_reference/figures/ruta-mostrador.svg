@@ -1,0 +1,29 @@
+<svg viewBox="0 0 340 150">
+  <caja x="8" y="40" ancho="84" alto="44" rol="acento-procedimental" fondo="0.16" tamano="12" negrita="" texto="{{t:cocina}}"/>
+  <rect x="112" y="42" width="116" height="40" rx="8" fill="@superficie" stroke="@acento-estructurado"/>
+  <caja x="248" y="40" ancho="84" alto="44" rol="exito" fondo="0.16" tamano="12" negrita="" texto="{{t:mostrador}}"/>
+  <flecha puntos="94,62 110,62" rol="tinta"/>
+  <flecha puntos="230,62 246,62" rol="tinta"/>
+  <text x="170" y="100" font-size="12" text-anchor="middle" fill="@acento-estructurado">{{t:caben}}</text>
+  <text x="170" y="144" font-size="12" text-anchor="middle" fill="@atenuado">{{t:pie}}</text>
+  <g data-paso="1" data-hasta="1">
+    <caja x="118" y="48" ancho="50" alto="28" rol="numero" fondo="0.18" tamano="12" texto="{{t:p1}}"/>
+    <caja x="172" y="48" ancho="50" alto="28" rol="hueco" discontinua="" fondo="0.06" tamano="12" texto="{{t:libre}}"/>
+    <text x="170" y="22" font-size="12" text-anchor="middle" fill="@tinta">{{t:paso-1}}</text>
+  </g>
+  <g data-paso="2" data-hasta="2">
+    <caja x="118" y="48" ancho="50" alto="28" rol="numero" fondo="0.18" tamano="12" texto="{{t:p1}}"/>
+    <caja x="172" y="48" ancho="50" alto="28" rol="numero" fondo="0.18" tamano="12" texto="{{t:p2}}"/>
+    <text x="170" y="22" font-size="12" text-anchor="middle" fill="@tinta">{{t:paso-2}}</text>
+  </g>
+  <g data-paso="3" data-hasta="3">
+    <caja x="118" y="48" ancho="50" alto="28" rol="numero" fondo="0.18" tamano="12" texto="{{t:p2}}"/>
+    <caja x="172" y="48" ancho="50" alto="28" rol="hueco" discontinua="" fondo="0.06" tamano="12" texto="{{t:libre}}"/>
+    <text x="170" y="22" font-size="12" text-anchor="middle" fill="@tinta">{{t:paso-3}}</text>
+  </g>
+  <g data-paso="4" data-hasta="4">
+    <caja x="118" y="48" ancho="50" alto="28" rol="numero" fondo="0.18" tamano="12" texto="{{t:p2}}"/>
+    <caja x="172" y="48" ancho="50" alto="28" rol="numero" fondo="0.18" tamano="12" texto="{{t:p3}}"/>
+    <text x="170" y="22" font-size="12" text-anchor="middle" fill="@tinta">{{t:paso-4}}</text>
+  </g>
+</svg>

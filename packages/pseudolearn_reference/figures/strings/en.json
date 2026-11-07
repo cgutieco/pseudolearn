@@ -1457,6 +1457,41 @@
       "fun-1": "ConDescuento(",
       "fun-2": "Linea(3, 3) + Linea(5, 2))",
       "funcional": "functions that transform"
+    },
+    "ruta-cocina-turnos": {
+      "titulo": "Kitchen by turns",
+      "descripcion": "Four columns: the algorithm and the cooks of juices, sandwiches and fruit. In each step, a single column runs; the others wait, are in the line or have finished. At the end, the algorithm adds up the three results and the scope closes with no task alive.",
+      "algoritmo": "Algorithm",
+      "jugos": "Juices",
+      "sandwiches": "Sandwiches",
+      "frutas": "Fruit",
+      "avanza": "runs",
+      "espera": "waits",
+      "lista": "in line",
+      "termino": "finished",
+      "pie": "Only one task moves forward in each turn.",
+      "paso-1": "The algorithm launches the three tasks.",
+      "paso-2": "It awaits the juices and gives up its turn.",
+      "paso-3": "The juices finish; the sandwiches go next.",
+      "paso-4": "The fruit goes next.",
+      "paso-5": "The three finished: the algorithm adds 27.",
+      "paso-6": "When the scope closes, no task is left alive."
+    },
+    "ruta-mostrador": {
+      "titulo": "The channel between the kitchen and the window",
+      "descripcion": "On the left the kitchen, on the right the service window and in the middle a channel that holds two orders. The kitchen leaves orders 1 and 2; with the channel full, it waits. The window receives 1, a place is freed and the kitchen leaves 3. The orders come out in the order they went in.",
+      "cocina": "Kitchen",
+      "mostrador": "Window",
+      "caben": "channel: holds 2",
+      "libre": "free",
+      "p1": "order 1",
+      "p2": "order 2",
+      "p3": "order 3",
+      "pie": "The orders come out in the order they went in.",
+      "paso-1": "The kitchen leaves order 1.",
+      "paso-2": "It leaves 2: the channel is full.",
+      "paso-3": "The window receives 1; a place is free.",
+      "paso-4": "The kitchen leaves order 3."
     }
   }
 }

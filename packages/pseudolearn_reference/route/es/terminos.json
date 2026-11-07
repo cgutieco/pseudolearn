@@ -128,5 +128,9 @@
   "variante": {"etiqueta": "variante", "formas": ["variante", "variantes"], "estricto": false, "receta": true},
   "coincidencia-de-patrones": {"etiqueta": "coincidencia de patrones", "formas": ["coincidencia de patrones"], "estricto": true, "receta": true},
   "generico": {"etiqueta": "genérico", "formas": ["genérico", "genéricos"], "estricto": true, "receta": true},
-  "estado-imposible": {"etiqueta": "estado imposible", "formas": ["estado imposible", "estados imposibles"], "estricto": true, "receta": false}
+  "estado-imposible": {"etiqueta": "estado imposible", "formas": ["estado imposible", "estados imposibles"], "estricto": true, "receta": false},
+  "programacion-concurrente": {"etiqueta": "programación concurrente", "formas": ["programación concurrente"], "estricto": true, "receta": false},
+  "concurrencia": {"etiqueta": "concurrencia", "formas": ["concurrencia"], "estricto": true, "receta": false},
+  "tarea": {"etiqueta": "tarea", "formas": ["tarea", "tareas"], "estricto": false, "receta": false},
+  "agenda": {"etiqueta": "agenda", "formas": ["agenda"], "estricto": false, "receta": false}
 }
