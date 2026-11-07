@@ -155,9 +155,23 @@
     "whitespace": "whitespace"
   },
   "figures": {
+    "aguardar-pausa": {
+      "titulo": "Pausing at Await",
+      "descripcion": "Two timelines. Task A works, pauses at Await while task B works, and continues when B hands it the result.",
+      "tareaA": "task A",
+      "tareaB": "task B",
+      "pausa": "paused",
+      "resultado": "result"
+    },
     "alias-copia": {
       "titulo": "Alias versus copy",
       "descripcion": "a and alias point to object 1 with owner Ana and 3 books. Copiar creates object 2 with the same data, pointed to by copia. Afterwards object 1 has 5 books and object 2 has 9."
+    },
+    "ambito-tareas": {
+      "titulo": "A task scope",
+      "descripcion": "The parent's line runs from top to bottom. At Tasks it spawns two children, Ana and Leo, that progress in parallel. Both join the parent again at EndTasks.",
+      "padre": "parent",
+      "unidas": "all joined"
     },
     "ambitos-anidados": {
       "titulo": "Nested scopes",
@@ -243,6 +257,24 @@
       "nada": "no assignment",
       "sigueVacia": "still empty",
       "codigoError": "variableUsedUninitialized"
+    },
+    "canal-cola": {
+      "titulo": "A channel of capacity 2",
+      "descripcion": "A producer on the left sends values into a channel with two slots holding 20 and 10; a consumer on the right receives them in order.",
+      "productor": "producer",
+      "consumidor": "consumer",
+      "capacidad": "capacity 2",
+      "orden": "first in, first out"
+    },
+    "capacidades-llaves": {
+      "titulo": "Capabilities as keys",
+      "descripcion": "On the left, the program with three capabilities: Console, FileCap and Clock. On the right, the host with the terminal, the disk and the time. Each capability is an arrow to its resource.",
+      "programa": "program",
+      "anfitrion": "host",
+      "terminal": "terminal",
+      "disco": "disk",
+      "hora": "time",
+      "llaves": "one key per resource"
     },
     "clase-objetos": {
       "titulo": "A class and its objects",

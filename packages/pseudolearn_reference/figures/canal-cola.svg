@@ -1,0 +1,15 @@
+<svg viewBox="0 0 340 130">
+  <caja x="6" y="40" ancho="80" alto="40" rol="acento-procedimental" fondo="0.14" tamano="12" texto="{{t:productor}}"/>
+  <rect x="110" y="34" width="120" height="52" rx="26" fill="@superficie" stroke="@acento-estructurado" stroke-width="2"/>
+  <circle cx="145" cy="60" r="16" fill="@numero" fill-opacity="0.25" stroke="@numero"/>
+  <circle cx="195" cy="60" r="16" fill="@numero" fill-opacity="0.25" stroke="@numero"/>
+  <text x="145" y="65" font-size="12" text-anchor="middle" font-family="mono" fill="@tinta">20</text>
+  <text x="195" y="65" font-size="12" text-anchor="middle" font-family="mono" fill="@tinta">10</text>
+  <caja x="254" y="40" ancho="80" alto="40" rol="acento-estructurado" fondo="0.14" tamano="12" texto="{{t:consumidor}}"/>
+  <flecha puntos="88,60 108,60" rol="acento-procedimental"/>
+  <flecha puntos="232,60 252,60" rol="acento-estructurado"/>
+  <text x="98" y="104" font-size="12" text-anchor="middle" fill="@atenuado">{{codigo:Enviar}}</text>
+  <text x="242" y="104" font-size="12" text-anchor="middle" fill="@atenuado">{{codigo:Recibir}}</text>
+  <text x="170" y="22" font-size="12" text-anchor="middle" fill="@atenuado">{{t:capacidad}}</text>
+  <text x="170" y="122" font-size="12" text-anchor="middle" fill="@atenuado">{{t:orden}}</text>
+</svg>

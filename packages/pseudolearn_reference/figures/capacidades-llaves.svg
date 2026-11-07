@@ -1,0 +1,16 @@
+<svg viewBox="0 0 340 206">
+  <rect x="6" y="10" width="140" height="180" rx="10" fill="@acento-estructurado" fill-opacity="0.06" stroke="@acento-estructurado"/>
+  <text x="76" y="30" font-size="12" text-anchor="middle" fill="@acento-estructurado">{{t:programa}}</text>
+  <rect x="194" y="10" width="140" height="180" rx="10" fill="@atenuado" fill-opacity="0.06" stroke="@atenuado"/>
+  <text x="264" y="30" font-size="12" text-anchor="middle" fill="@atenuado">{{t:anfitrion}}</text>
+  <caja x="20" y="44" ancho="112" alto="30" rol="acento-procedimental" fondo="0.14" fuente="mono" tamano="12" texto="{{codigo:Consola}}"/>
+  <caja x="20" y="90" ancho="112" alto="30" rol="acento-procedimental" fondo="0.14" fuente="mono" tamano="12" texto="{{codigo:ArchivoCap}}"/>
+  <caja x="20" y="136" ancho="112" alto="30" rol="acento-procedimental" fondo="0.14" fuente="mono" tamano="12" texto="{{codigo:Reloj}}"/>
+  <caja x="208" y="44" ancho="112" alto="30" rol="atenuado" fondo="0.08" tamano="12" texto="{{t:terminal}}"/>
+  <caja x="208" y="90" ancho="112" alto="30" rol="atenuado" fondo="0.08" tamano="12" texto="{{t:disco}}"/>
+  <caja x="208" y="136" ancho="112" alto="30" rol="atenuado" fondo="0.08" tamano="12" texto="{{t:hora}}"/>
+  <flecha puntos="134,59 206,59" rol="acento-procedimental"/>
+  <flecha puntos="134,105 206,105" rol="acento-procedimental"/>
+  <flecha puntos="134,151 206,151" rol="acento-procedimental"/>
+  <text x="170" y="198" font-size="12" text-anchor="middle" fill="@tinta">{{t:llaves}}</text>
+</svg>

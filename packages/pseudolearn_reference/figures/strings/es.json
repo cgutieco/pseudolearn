@@ -155,9 +155,23 @@
     "whitespace": "espacio"
   },
   "figures": {
+    "aguardar-pausa": {
+      "titulo": "Pausa en Aguardar",
+      "descripcion": "Dos líneas de tiempo. La tarea A trabaja, se pausa en Aguardar mientras la tarea B trabaja, y continúa cuando B le entrega el resultado.",
+      "tareaA": "tarea A",
+      "tareaB": "tarea B",
+      "pausa": "en pausa",
+      "resultado": "resultado"
+    },
     "alias-copia": {
       "titulo": "Alias frente a copia",
       "descripcion": "a y alias apuntan al objeto 1 con dueño Ana y 3 libros. Copiar crea el objeto 2 con los mismos datos, al que apunta copia. Después el objeto 1 tiene 5 libros y el 2 tiene 9."
+    },
+    "ambito-tareas": {
+      "titulo": "Un ámbito de tareas",
+      "descripcion": "La línea del padre baja de arriba abajo. En Tareas lanza dos hijas, Ana y Leo, que avanzan en paralelo. Las dos vuelven a unirse con el padre en FinTareas.",
+      "padre": "padre",
+      "unidas": "todas unidas"
     },
     "ambitos-anidados": {
       "titulo": "Ámbitos anidados",
@@ -243,6 +257,24 @@
       "nada": "sin asignación",
       "sigueVacia": "sigue vacía",
       "codigoError": "variableUsedUninitialized"
+    },
+    "canal-cola": {
+      "titulo": "Un canal de capacidad 2",
+      "descripcion": "Un productor a la izquierda envía valores a un canal con dos huecos ocupados por 20 y 10; un consumidor a la derecha los recibe en orden.",
+      "productor": "productor",
+      "consumidor": "consumidor",
+      "capacidad": "capacidad 2",
+      "orden": "sale primero lo que entró primero"
+    },
+    "capacidades-llaves": {
+      "titulo": "Capacidades como llaves",
+      "descripcion": "A la izquierda, el programa con tres capacidades: Consola, ArchivoCap y Reloj. A la derecha, el anfitrión con la terminal, el disco y la hora. Cada capacidad es una flecha hacia su recurso.",
+      "programa": "programa",
+      "anfitrion": "anfitrión",
+      "terminal": "terminal",
+      "disco": "disco",
+      "hora": "hora",
+      "llaves": "una llave por recurso"
     },
     "clase-objetos": {
       "titulo": "Una clase y sus objetos",
