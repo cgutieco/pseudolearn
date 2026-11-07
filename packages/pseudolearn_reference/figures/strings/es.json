@@ -1248,6 +1248,21 @@
       "paso-3": "el 3 ya está en su lugar",
       "paso-4": "el 5 pasa al tercer lugar",
       "paso-5": "el 8 pasa al cuarto lugar"
+    },
+    "ruta-arbol-boletin": {
+      "titulo": "El árbol del boletín",
+      "descripcion": "Un árbol de descomposición. Arriba, el boletín. Debajo, cuatro ramas: leer las notas, calcular el promedio, decidir el estado y buscar el mejor. En el último paso, cada rama muestra con qué se resuelve: leer, el subprograma Promedio, el subprograma Estado y el mejor hasta ahora.",
+      "boletin": "Boletín",
+      "leer-1": "Leer",
+      "leer-2": "las notas",
+      "promedio-1": "Calcular",
+      "promedio-2": "el promedio",
+      "estado-1": "Decidir",
+      "estado-2": "el estado",
+      "mejor-1": "Buscar",
+      "mejor-2": "el mejor",
+      "rol": "mejor hasta ahora",
+      "pie": "cada hoja ya se sabe resolver"
     }
   }
 }

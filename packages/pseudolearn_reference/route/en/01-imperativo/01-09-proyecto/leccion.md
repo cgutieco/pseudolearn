@@ -66,7 +66,7 @@ The third exercise is the complete program. Write it step by step, running after
 
 ## Test {#probar fase=4}
 
-Before calling the program finished, test it with:
+Before declaring the program finished, test it with:
 
 | Case | Why |
 |---|---|

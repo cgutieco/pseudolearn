@@ -1248,6 +1248,21 @@
       "paso-3": "3 is already in place",
       "paso-4": "5 moves to third place",
       "paso-5": "8 moves to fourth place"
+    },
+    "ruta-arbol-boletin": {
+      "titulo": "The report card tree",
+      "descripcion": "A decomposition tree. At the top, the report card. Below, four branches: read the marks, compute the average, decide the status and find the best. In the last step, each branch shows what solves it: reading, the Promedio subprogram, the Estado subprogram and the best so far.",
+      "boletin": "Report card",
+      "leer-1": "Read",
+      "leer-2": "the marks",
+      "promedio-1": "Compute",
+      "promedio-2": "the average",
+      "estado-1": "Decide",
+      "estado-2": "the status",
+      "mejor-1": "Find",
+      "mejor-2": "the best",
+      "rol": "best so far",
+      "pie": "each leaf is already solvable"
     }
   }
 }

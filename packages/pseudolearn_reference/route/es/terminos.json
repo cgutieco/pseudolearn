@@ -62,5 +62,12 @@
   "fuerza-bruta": {"etiqueta": "fuerza bruta", "formas": ["fuerza bruta"], "estricto": true, "receta": true},
   "busqueda-binaria": {"etiqueta": "búsqueda binaria", "formas": ["búsqueda binaria"], "estricto": true, "receta": true},
   "costo": {"etiqueta": "costo de un algoritmo", "formas": ["costo"], "estricto": false, "receta": false},
-  "ordenamiento-por-seleccion": {"etiqueta": "ordenamiento por selección", "formas": ["ordenamiento por selección"], "estricto": true, "receta": true}
+  "ordenamiento-por-seleccion": {"etiqueta": "ordenamiento por selección", "formas": ["ordenamiento por selección"], "estricto": true, "receta": true},
+  "programacion-procedimental": {"etiqueta": "programación procedimental", "formas": ["programación procedimental"], "estricto": true, "receta": false},
+  "descomposicion": {"etiqueta": "descomposición", "formas": ["descomposición"], "estricto": true, "receta": false},
+  "arbol-de-descomposicion": {"etiqueta": "árbol de descomposición", "formas": ["árbol de descomposición"], "estricto": true, "receta": false},
+  "subprograma": {"etiqueta": "subprograma", "formas": ["subprograma", "subprogramas"], "estricto": true, "receta": true},
+  "llamada": {"etiqueta": "llamada", "formas": ["llamada", "llamadas", "llamar"], "estricto": true, "receta": false},
+  "parametro": {"etiqueta": "parámetro", "formas": ["parámetro", "parámetros"], "estricto": true, "receta": true},
+  "valor-de-retorno": {"etiqueta": "valor de retorno", "formas": ["valor de retorno"], "estricto": true, "receta": false}
 }

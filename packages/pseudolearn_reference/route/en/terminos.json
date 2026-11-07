@@ -62,5 +62,12 @@
   "fuerza-bruta": {"etiqueta": "brute force", "formas": ["brute force"], "estricto": true, "receta": true},
   "busqueda-binaria": {"etiqueta": "binary search", "formas": ["binary search"], "estricto": true, "receta": true},
   "costo": {"etiqueta": "cost of an algorithm", "formas": ["cost"], "estricto": false, "receta": false},
-  "ordenamiento-por-seleccion": {"etiqueta": "selection sort", "formas": ["selection sort"], "estricto": true, "receta": true}
+  "ordenamiento-por-seleccion": {"etiqueta": "selection sort", "formas": ["selection sort"], "estricto": true, "receta": true},
+  "programacion-procedimental": {"etiqueta": "procedural programming", "formas": ["procedural programming"], "estricto": true, "receta": false},
+  "descomposicion": {"etiqueta": "decomposition", "formas": ["decomposition"], "estricto": true, "receta": false},
+  "arbol-de-descomposicion": {"etiqueta": "decomposition tree", "formas": ["decomposition tree"], "estricto": true, "receta": false},
+  "subprograma": {"etiqueta": "subprogram", "formas": ["subprogram", "subprograms"], "estricto": true, "receta": true},
+  "llamada": {"etiqueta": "call", "formas": ["call", "calls", "calling"], "estricto": true, "receta": false},
+  "parametro": {"etiqueta": "parameter", "formas": ["parameter", "parameters"], "estricto": true, "receta": true},
+  "valor-de-retorno": {"etiqueta": "return value", "formas": ["return value"], "estricto": true, "receta": false}
 }

@@ -1,0 +1,22 @@
+<svg viewBox="0 0 340 200">
+  <g data-paso="1">
+    <caja x="110" y="10" ancho="120" alto="34" rol="acento-procedimental" fondo="0.18" texto="{{t:boletin}}" tamano="13" negrita=""/>
+  </g>
+  <g data-paso="2">
+    <flecha puntos="140,44 44,84" rol="atenuado"/>
+    <flecha puntos="160,44 128,84" rol="atenuado"/>
+    <flecha puntos="180,44 212,84" rol="atenuado"/>
+    <flecha puntos="200,44 296,84" rol="atenuado"/>
+    <caja x="4" y="88" ancho="78" alto="44" rol="acento-procedimental" fondo="0.1" texto="{{t:leer-1}}¶{{t:leer-2}}" tamano="12"/>
+    <caja x="88" y="88" ancho="78" alto="44" rol="acento-procedimental" fondo="0.1" texto="{{t:promedio-1}}¶{{t:promedio-2}}" tamano="12"/>
+    <caja x="172" y="88" ancho="78" alto="44" rol="acento-procedimental" fondo="0.1" texto="{{t:estado-1}}¶{{t:estado-2}}" tamano="12"/>
+    <caja x="256" y="88" ancho="80" alto="44" rol="acento-procedimental" fondo="0.1" texto="{{t:mejor-1}}¶{{t:mejor-2}}" tamano="12"/>
+  </g>
+  <g data-paso="3">
+    <text x="43" y="152" font-size="12" text-anchor="middle" font-family="mono" fill="@atenuado">{{codigo:Leer}}</text>
+    <text x="127" y="152" font-size="12" text-anchor="middle" font-family="mono" fill="@exito">{{codigo:Promedio}}</text>
+    <text x="211" y="152" font-size="12" text-anchor="middle" font-family="mono" fill="@exito">{{codigo:Estado}}</text>
+    <text x="296" y="152" font-size="12" text-anchor="middle" fill="@atenuado">{{t:rol}}</text>
+    <text x="170" y="188" font-size="12" text-anchor="middle" fill="@atenuado">{{t:pie}}</text>
+  </g>
+</svg>
