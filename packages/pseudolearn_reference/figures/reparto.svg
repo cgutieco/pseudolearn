@@ -1,0 +1,18 @@
+<svg viewBox="0 0 340 200">
+  <circle cx="30" cy="40" r="14" fill="@texto" fill-opacity="0.5"/>
+  <circle cx="64" cy="40" r="14" fill="@texto" fill-opacity="0.5"/>
+  <circle cx="98" cy="40" r="14" fill="@texto" fill-opacity="0.5"/>
+  <rect x="10" y="62" width="110" height="2" fill="@atenuado"/>
+  <text x="65" y="84" font-size="12" text-anchor="middle" fill="@tinta">{{t:persona1}}</text>
+  <circle cx="160" cy="40" r="14" fill="@texto" fill-opacity="0.5"/>
+  <circle cx="194" cy="40" r="14" fill="@texto" fill-opacity="0.5"/>
+  <circle cx="228" cy="40" r="14" fill="@texto" fill-opacity="0.5"/>
+  <rect x="140" y="62" width="110" height="2" fill="@atenuado"/>
+  <text x="195" y="84" font-size="12" text-anchor="middle" fill="@tinta">{{t:persona2}}</text>
+  <circle cx="300" cy="40" r="14" fill="@acento-procedimental" fill-opacity="0.6"/>
+  <text x="300" y="84" font-size="12" text-anchor="middle" fill="@acento-procedimental">{{t:sobra}}</text>
+  <caja x="10" y="110" ancho="100" alto="34" rol="numero" fondo="0.10" fuente="mono" tamano="13" texto="7 / 2 = 3.5"/>
+  <caja x="120" y="110" ancho="100" alto="34" rol="tipo" fondo="0.12" fuente="mono" tamano="13" texto="{{codigo:7 div 2 = 3}}"/>
+  <caja x="230" y="110" ancho="100" alto="34" rol="acento-procedimental" fondo="0.12" fuente="mono" tamano="13" texto="{{codigo:7 mod 2 = 1}}"/>
+  <text x="170" y="180" font-size="12" text-anchor="middle" fill="@atenuado">{{t:regla}}</text>
+</svg>

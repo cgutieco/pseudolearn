@@ -1,0 +1,8 @@
+<svg viewBox="0 0 340 180">
+  <text x="170" y="34" font-size="22" text-anchor="middle" font-family="mono" fill="@tinta">2 ^ 3 ^ 2</text>
+  <path d="M 164 44 Q 195 70 228 44" fill="none" stroke="@acento-procedimental" stroke-width="2"/>
+  <text x="195" y="82" font-size="13" text-anchor="middle" fill="@acento-procedimental">{{t:primero}}</text>
+  <flecha puntos="170,96 170,120"/>
+  <text x="170" y="146" font-size="20" text-anchor="middle" font-family="mono" fill="@tinta">2 ^ 9 = 512</text>
+  <text x="170" y="172" font-size="12" text-anchor="middle" fill="@atenuado">{{t:nota}}</text>
+</svg>

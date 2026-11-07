@@ -1,0 +1,16 @@
+<svg viewBox="0 0 340 200">
+  <text x="10" y="22" font-size="13" fill="@tinta" font-weight="bold">{{t:conY}}</text>
+  <caja x="10" y="32" ancho="90" alto="34" rol="logico" fondo="0.18" fuente="mono" texto="{{codigo:Falso}}"/>
+  <caja x="110" y="32" ancho="40" alto="34" rol="acento-estructurado" fondo="0.12" fuente="mono" texto="{{codigo:Y}}"/>
+  <caja x="160" y="32" ancho="170" alto="34" rol="atenuado" fondo="0.0" discontinua="" fuente="mono" colortexto="atenuado" texto="{{codigo:1 div 0 = 0}}"/>
+  <text x="245" y="84" font-size="12" text-anchor="middle" fill="@atenuado">{{t:noSeCalcula}}</text>
+  <flecha puntos="55,68 55,92" rol="logico"/>
+  <text x="62" y="88" font-size="12" fill="@logico">{{t:resultadoFalso}}</text>
+  <text x="10" y="122" font-size="13" fill="@tinta" font-weight="bold">{{t:conO}}</text>
+  <caja x="10" y="132" ancho="90" alto="34" rol="logico" fondo="0.18" fuente="mono" texto="{{codigo:Verdadero}}"/>
+  <caja x="110" y="132" ancho="40" alto="34" rol="acento-estructurado" fondo="0.12" fuente="mono" texto="{{codigo:O}}"/>
+  <caja x="160" y="132" ancho="170" alto="34" rol="atenuado" fondo="0.0" discontinua="" fuente="mono" colortexto="atenuado" texto="{{codigo:1 div 0 = 0}}"/>
+  <text x="245" y="184" font-size="12" text-anchor="middle" fill="@atenuado">{{t:noSeCalcula}}</text>
+  <flecha puntos="55,168 55,192" rol="logico"/>
+  <text x="62" y="188" font-size="12" fill="@logico">{{t:resultadoVerdadero}}</text>
+</svg>

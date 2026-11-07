@@ -164,6 +164,10 @@
       "n1": "Real → Integer · String → Character",
       "n2": "Boolean → number · number → text"
     },
+    "arbol-precedencia": {
+      "titulo": "The tree of 2 + 3 * 4",
+      "descripcion": "The expression 2 + 3 * 4 is grouped as a tree with + at the root, 2 on the left and 3 * 4 on the right. The product reduces to 12 and the sum to 14."
+    },
     "arreglo-casillas": {
       "titulo": "The boxes of an array",
       "descripcion": "Four boxes in a row with the values 7, 9, 6 and 8 and the indices 0, 1, 2 and 3 below. On the right, a fifth dashed, crossed-out box with index 4, which does not exist.",
@@ -226,6 +230,13 @@
       "comentario": "comment: up to the end of the line",
       "texto": "inside quotes: it is text"
     },
+    "concatenar": {
+      "titulo": "Concatenating three pieces",
+      "descripcion": "Three boxes, \"Hola, \", \"Ana\" and '!', with arrows converging on a larger box with \"Hola, Ana!\".",
+      "hola": "\"Hola, \"",
+      "ana": "\"Ana\"",
+      "resultado": "\"Hola, Ana!\""
+    },
     "convenciones": {
       "titulo": "Conventions of the specification",
       "descripcion": "Three stacked examples. A code pill with the word If; a dashed slot with the word condition; and a program block with a title, a line number, a Write instruction and, below, a band with the output.",
@@ -238,6 +249,15 @@
       "titulo-programa": "Program title",
       "salida": "Output",
       "salida-texto": "what the engine wrote"
+    },
+    "cortocircuito": {
+      "titulo": "Short circuit",
+      "descripcion": "At the top, False And a crossed-out division by zero: the result is False without computing the right side. Below, True Or the same division: the result is True.",
+      "conY": "With And",
+      "conO": "With Or",
+      "noSeCalcula": "not computed",
+      "resultadoFalso": "result: False",
+      "resultadoVerdadero": "result: True"
     },
     "declarar-antes": {
       "titulo": "Declare before use",
@@ -306,6 +326,15 @@
       "no-semantica": "no semantic analysis",
       "nota": "No values are invented and nothing runs",
       "codigo": "unrecognizedCharacter"
+    },
+    "escalera-precedencia": {
+      "titulo": "The precedence ladder",
+      "descripcion": "Nine steps from top to bottom: postfix; sign and Not; power; product, division, div and mod; sum, subtraction and concatenation; order; equality; And; Or. Unary operators and power associate to the right.",
+      "postfijos": "call · index · field",
+      "postfijosNota": "binds tightest",
+      "derecha": "associates right",
+      "sumaNota": "also concatenates",
+      "debil": "binds loosest"
     },
     "espacios": {
       "titulo": "Same program, different indentation",
@@ -422,6 +451,17 @@
       "segun": "Switch … Do",
       "propagar": "or Propagate: the error leaves the subroutine"
     },
+    "orden-texto": {
+      "titulo": "Character order",
+      "descripcion": "A line with upper-case A and Z on the left, with codes 65 and 90, and lower-case a and z on the right, with codes 97 and 122.",
+      "ma": "A",
+      "mz": "Z",
+      "a": "a",
+      "z": "z",
+      "mayusculas": "upper case",
+      "minusculas": "lower case",
+      "nota": "\"Zeta\" < \"alfa\" because 90 < 97"
+    },
     "perfiles-espejo": {
       "titulo": "The same program in two profiles",
       "descripcion": "Two columns, Spanish on the left and English on the right. Each row pairs a word: Si with If, Entonces with Then, Cadena with String. The last two rows show that the name nombre and the text Hola do not change.",
@@ -442,6 +482,12 @@
       "columnas": "Columns",
       "lineas": "Lines",
       "tramo": "Span: line 2, columns 12 to 13"
+    },
+    "potencia-derecha": {
+      "titulo": "Power groups to the right",
+      "descripcion": "The expression 2 ^ 3 ^ 2 with an arc under 3 ^ 2 showing it is computed first. Below, the result 2 ^ 9 = 512.",
+      "primero": "computed first",
+      "nota": "The other operators group from left to right"
     },
     "punto-y-coma": {
       "titulo": "Where the semicolon goes",
@@ -465,6 +511,14 @@
       "nota": "There is no Real between two marks",
       "nota2": "The marks are very close, but they never touch"
     },
+    "reparto": {
+      "titulo": "Sharing seven sweets",
+      "descripcion": "Seven circles: three for the first person, three for the second and one left over, highlighted. Below, the three operations: 7 / 2 = 3.5, 7 div 2 = 3 and 7 mod 2 = 1.",
+      "persona1": "person 1",
+      "persona2": "person 2",
+      "sobra": "left over",
+      "regla": "7 = 3 × 2 + 1"
+    },
     "si-ordinograma": {
       "titulo": "Step-by-step run of Montana",
       "descripcion": "A flowchart with the start, the assignment of estatura, a diamond asking whether estatura is greater than or equal to 120, two boxes with the Write of each branch, the point where they join and the end. Each step highlights the part being run.",
@@ -487,6 +541,12 @@
       "input": "awaiting_input",
       "effect": "awaiting_effect",
       "pausas": "Pauses: once the data arrives, they run again"
+    },
+    "tipo-resultado": {
+      "titulo": "The type of the result",
+      "descripcion": "At the top, Integer plus Integer gives Integer. Below, Integer times Real gives Real.",
+      "nota": "Two integers: an exact integer result",
+      "nota2": "Any real: a real result"
     },
     "tipos-cajas": {
       "titulo": "The five primitive types",
