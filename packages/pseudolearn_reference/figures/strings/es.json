@@ -1428,6 +1428,18 @@
       "funcion": "descuento",
       "paso-1": "la fábrica guarda el 20 en la mochila",
       "paso-2": "la función usa el 20 con cada precio"
+    },
+    "ruta-estados-pedido": {
+      "titulo": "Los estados de un pedido",
+      "descripcion": "Cuatro estados. Pendiente, sin datos, pasa a en camino, con el repartidor, y en camino pasa a entregado, con el repartidor y la hora. Desde pendiente y desde en camino se puede cancelar, con un motivo. De entregado y de cancelado no sale ninguna flecha.",
+      "pendiente": "Pendiente",
+      "encamino": "EnCamino",
+      "repartidor": "repartidor",
+      "entregado": "Entregado",
+      "repartidor-hora": "repartidor, hora",
+      "cancelado": "Cancelado",
+      "motivo": "motivo",
+      "pie": "cada estado lleva solo sus datos"
     }
   }
 }

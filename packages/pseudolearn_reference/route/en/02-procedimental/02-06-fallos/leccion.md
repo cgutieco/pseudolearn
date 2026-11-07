@@ -121,7 +121,7 @@ What if the empty reply had its own reason, «empty»? A filter is added at the 
 
 ::: docentes
 - **Validating too late.** Converting before checking stops the program with «doce». The order of the filters matters.
-- **A generic reason.** «Error» tells nobody what to fix. Ask for one reason per filter.
+- **A reason that says nothing.** «Error» tells nobody what to fix. Ask for one reason per filter.
 - **Handling the error in the wrong place.** Whoever knows what to show is the main algorithm; the validation only reports.
 :::
 

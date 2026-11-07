@@ -1428,6 +1428,18 @@
       "funcion": "discount",
       "paso-1": "the factory keeps 20 in the backpack",
       "paso-2": "the function uses 20 with each price"
+    },
+    "ruta-estados-pedido": {
+      "titulo": "The states of an order",
+      "descripcion": "Four states. Pending, without data, moves to on its way, with the courier, and on its way moves to delivered, with the courier and the time. From pending and from on its way it can be cancelled, with a reason. No arrow leaves delivered or cancelled.",
+      "pendiente": "Pendiente",
+      "encamino": "EnCamino",
+      "repartidor": "courier",
+      "entregado": "Entregado",
+      "repartidor-hora": "courier, time",
+      "cancelado": "Cancelado",
+      "motivo": "reason",
+      "pie": "each state carries only its data"
     }
   }
 }

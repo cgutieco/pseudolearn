@@ -156,7 +156,7 @@ superficie en español; la edición inglesa define las suyas.
 | `reducir` | reducir | reducir | — | — | 4.2 |
 | `clausura` | clausura | clausura, clausuras | sí | sí | 4.3 |
 | `fabrica-de-funciones` | fábrica de funciones | fábrica de funciones | sí | sí | 4.3 |
-| `variante` | variante | variante, variantes | sí | sí | 4.4 |
+| `variante` | variante | variante, variantes | — | sí | 4.4 |
 | `coincidencia-de-patrones` | coincidencia de patrones | coincidencia de patrones | sí | sí | 4.4 |
 | `generico` | genérico | genérico, genéricos | sí | sí | 4.4 |
 | `estado-imposible` | estado imposible | estado imposible, estados imposibles | sí | — | 4.4 |

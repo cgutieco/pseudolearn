@@ -1,0 +1,11 @@
+<svg viewBox="0 0 340 210">
+  <caja x="10" y="20" ancho="100" alto="36" rol="hueco" fondo="0.18" texto="{{t:pendiente}}" tamano="12"/>
+  <caja x="190" y="14" ancho="140" alto="48" rol="acento-estructurado" fondo="0.14" texto="{{t:encamino}}¶{{t:repartidor}}" tamano="12"/>
+  <caja x="190" y="110" ancho="140" alto="48" rol="exito" fondo="0.16" texto="{{t:entregado}}¶{{t:repartidor-hora}}" tamano="12"/>
+  <caja x="10" y="110" ancho="120" alto="48" rol="error" fondo="0.14" texto="{{t:cancelado}}¶{{t:motivo}}" tamano="12"/>
+  <flecha puntos="110,38 186,38" rol="tinta"/>
+  <flecha puntos="260,62 260,106" rol="tinta"/>
+  <flecha puntos="60,56 60,106" rol="atenuado" discontinua=""/>
+  <flecha puntos="200,62 120,106" rol="atenuado" discontinua=""/>
+  <text x="170" y="196" font-size="12" text-anchor="middle" fill="@atenuado">{{t:pie}}</text>
+</svg>

@@ -51,7 +51,7 @@ pie: The till is a socket; each payment method, an appliance with the same plug.
 
 Using objects of different classes through the same contract is [[def:polimorfismo|polymorphism]]. When the till asks `medio.Cobrar(monto)`, the engine chooses, while running, the method of the real class of the object it received: that is [[def:despacho-dinamico|dynamic dispatch]].
 
-In PseudoLearn an interface is not used as the type of a variable: it is used as the condition of a generic subprogram. `CobrarCon<T: MedioDePago>` accepts any class that meets the contract. The details are in [the Specification](especificacion:objetos.interfaces).
+In PseudoLearn an interface is not used as the type of a variable: it is used as the condition on the type of a parameter. `CobrarCon<T: MedioDePago>` accepts any class that meets the contract. The details are in [the Specification](especificacion:objetos.interfaces).
 
 ::: especificacion
 - objetos.interfaces

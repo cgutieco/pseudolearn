@@ -12,7 +12,7 @@ Read the type of figure (`rectangulo`, `cuadrado` or `triangulo`) and its measur
 :::
 
 ::: restriccion
-A contract `Figura` with a method `Area()`, one class per figure that meets it and a single generic piece that computes the area of any of them.
+A contract `Figura` with a method `Area()`, one class per figure that meets it and a single piece that computes the area of any of them.
 :::
 
 ```programa rol=referencia
@@ -22,12 +22,12 @@ A contract `Figura` with a method `Area()`, one class per figure that meets it a
 ```
 
 ```aserciones
-- declara-subprograma | AreaDe | 1 | The generic piece AreaDe, which receives any figure, is missing.
+- declara-subprograma | AreaDe | 1 | The piece AreaDe, which receives any figure, is missing.
 ```
 
 ::: pistas
 1. What do the three figures have in common? What changes between them?
-2. It is the till of [the lesson](ruta:objetos.contratos): the contract is `Figura` and the generic piece is like `CobrarCon`.
+2. It is the till of [the lesson](ruta:objetos.contratos): the contract is `Figura` and the shared piece is like `CobrarCon`.
 3. An interface with `Area()`, three classes that implement it and `AreaDe<T: Figura>` that calls `Area()`.
 4. The main algorithm reads the type, creates the matching figure and shows its `AreaDe`. Close with the variant.
 :::

@@ -51,7 +51,7 @@ pie: La caja es un enchufe; cada medio de pago, un aparato con el mismo enchufe.
 
 Usar objetos de clases distintas a través del mismo contrato es [[def:polimorfismo|polimorfismo]]. Cuando la caja pide `medio.Cobrar(monto)`, el motor elige, al ejecutar, el método de la clase real del objeto que recibió: eso es el [[def:despacho-dinamico|despacho dinámico]].
 
-En PseudoLearn una interfaz no se usa como tipo de una variable: se usa como condición de un subprograma genérico. `CobrarCon<T: MedioDePago>` acepta cualquier clase que cumpla el contrato. Los detalles están en [la Especificación](especificacion:objetos.interfaces).
+En PseudoLearn una interfaz no se usa como tipo de una variable: se usa como condición del tipo de un parámetro. `CobrarCon<T: MedioDePago>` acepta cualquier clase que cumpla el contrato. Los detalles están en [la Especificación](especificacion:objetos.interfaces).
 
 ::: especificacion
 - objetos.interfaces

@@ -11,7 +11,7 @@ usa: [clase, objeto, atributo, metodo, constructor, invariante, visibilidad, val
 ---
 
 ::: frase
-Un objeto bien hecho no deja que nadie lo ponga en un estado imposible.
+Un objeto bien hecho no deja que nadie lo ponga en un estado sin sentido.
 :::
 
 ## El problema {#problema}

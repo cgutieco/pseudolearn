@@ -124,5 +124,9 @@
   "filtrar": {"etiqueta": "filter", "formas": ["filter", "filters", "filtering"], "estricto": false, "receta": false},
   "reducir": {"etiqueta": "reduce", "formas": ["reduce", "reduces", "reducing"], "estricto": false, "receta": false},
   "clausura": {"etiqueta": "closure", "formas": ["closure", "closures"], "estricto": true, "receta": true},
-  "fabrica-de-funciones": {"etiqueta": "function factory", "formas": ["function factory", "function factories"], "estricto": true, "receta": true}
+  "fabrica-de-funciones": {"etiqueta": "function factory", "formas": ["function factory", "function factories"], "estricto": true, "receta": true},
+  "variante": {"etiqueta": "variant", "formas": ["variant", "variants"], "estricto": false, "receta": true},
+  "coincidencia-de-patrones": {"etiqueta": "pattern matching", "formas": ["pattern matching"], "estricto": true, "receta": true},
+  "generico": {"etiqueta": "generic", "formas": ["generic", "generics"], "estricto": true, "receta": true},
+  "estado-imposible": {"etiqueta": "impossible state", "formas": ["impossible state", "impossible states"], "estricto": true, "receta": false}
 }

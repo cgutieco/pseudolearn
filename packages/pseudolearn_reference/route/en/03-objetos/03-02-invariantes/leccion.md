@@ -11,7 +11,7 @@ usa: [clase, objeto, atributo, metodo, constructor, invariante, visibilidad, val
 ---
 
 ::: frase
-A well-made object does not let anyone put it in an impossible state.
+A well-made object does not let anyone put it in a state that makes no sense.
 :::
 
 ## The problem {#problema}
