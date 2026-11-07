@@ -76,5 +76,8 @@
   "pila-de-llamadas": {"etiqueta": "call stack", "formas": ["call stack"], "estricto": true, "receta": false},
   "marco": {"etiqueta": "frame", "formas": ["frame", "frames"], "estricto": true, "receta": false},
   "efecto": {"etiqueta": "effect", "formas": ["effect", "effects"], "estricto": false, "receta": false},
-  "funcion-pura": {"etiqueta": "pure function", "formas": ["pure function", "pure functions"], "estricto": true, "receta": true}
+  "funcion-pura": {"etiqueta": "pure function", "formas": ["pure function", "pure functions"], "estricto": true, "receta": true},
+  "recursion": {"etiqueta": "recursion", "formas": ["recursion"], "estricto": true, "receta": true},
+  "caso-base": {"etiqueta": "base case", "formas": ["base case"], "estricto": true, "receta": true},
+  "caso-recursivo": {"etiqueta": "recursive case", "formas": ["recursive case"], "estricto": true, "receta": true}
 }

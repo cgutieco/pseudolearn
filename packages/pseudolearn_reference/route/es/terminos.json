@@ -76,5 +76,8 @@
   "pila-de-llamadas": {"etiqueta": "pila de llamadas", "formas": ["pila de llamadas"], "estricto": true, "receta": false},
   "marco": {"etiqueta": "marco", "formas": ["marco", "marcos"], "estricto": true, "receta": false},
   "efecto": {"etiqueta": "efecto", "formas": ["efecto", "efectos"], "estricto": false, "receta": false},
-  "funcion-pura": {"etiqueta": "función pura", "formas": ["función pura", "funciones puras"], "estricto": true, "receta": true}
+  "funcion-pura": {"etiqueta": "función pura", "formas": ["función pura", "funciones puras"], "estricto": true, "receta": true},
+  "recursion": {"etiqueta": "recursión", "formas": ["recursión", "recursivo", "recursiva"], "estricto": true, "receta": true},
+  "caso-base": {"etiqueta": "caso base", "formas": ["caso base"], "estricto": true, "receta": true},
+  "caso-recursivo": {"etiqueta": "caso recursivo", "formas": ["caso recursivo"], "estricto": true, "receta": true}
 }

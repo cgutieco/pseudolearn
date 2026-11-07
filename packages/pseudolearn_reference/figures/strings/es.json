@@ -1275,6 +1275,28 @@
       "escribe": "por los costados escribe",
       "cambia": "y cambia lo de afuera",
       "pie": "lo que no pasa por la llamada es un efecto"
+    },
+    "ruta-hanoi": {
+      "titulo": "La torre de Hanói con tres discos",
+      "descripcion": "Tres postes, A, B y C. En siete pasos los tres discos pasan de A a C, moviendo uno por vez y sin poner uno grande sobre uno chico. A mitad de camino, la torre de dos discos de arriba queda en B y el disco grande pasa a C.",
+      "paso-1": "1. el chico de A a C",
+      "paso-2": "2. el mediano de A a B",
+      "paso-3": "3. el chico de C a B",
+      "paso-4": "4. el grande de A a C",
+      "paso-5": "5. el chico de B a A",
+      "paso-6": "6. el mediano de B a C",
+      "paso-7": "7. el chico de A a C",
+      "poste-a": "A",
+      "poste-b": "B",
+      "poste-c": "C"
+    },
+    "ruta-munecas": {
+      "titulo": "Las muñecas que se abren",
+      "descripcion": "Una muñeca grande que se abre y contiene otra más chica, y esa otra, hasta la más chica, que no se abre y es el caso base. Al final se cierran de adentro hacia afuera.",
+      "paso-1": "la grande contiene una más chica",
+      "paso-2": "y esa, otra más chica",
+      "paso-3": "la más chica no se abre: caso base",
+      "paso-4": "se cierran de adentro hacia afuera"
     }
   }
 }

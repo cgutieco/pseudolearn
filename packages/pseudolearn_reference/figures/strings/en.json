@@ -1275,6 +1275,28 @@
       "escribe": "through the sides it writes",
       "cambia": "and changes what is outside",
       "pie": "what does not go through the call is an effect"
+    },
+    "ruta-hanoi": {
+      "titulo": "The tower of Hanoi with three discs",
+      "descripcion": "Three posts, A, B and C. In seven steps the three discs move from A to C, one at a time and never a big one on a small one. Halfway through, the top tower of two discs is on B and the big disc moves to C.",
+      "paso-1": "1. small from A to C",
+      "paso-2": "2. middle from A to B",
+      "paso-3": "3. small from C to B",
+      "paso-4": "4. big from A to C",
+      "paso-5": "5. small from B to A",
+      "paso-6": "6. middle from B to C",
+      "paso-7": "7. small from A to C",
+      "poste-a": "A",
+      "poste-b": "B",
+      "poste-c": "C"
+    },
+    "ruta-munecas": {
+      "titulo": "The nesting dolls",
+      "descripcion": "A big doll that opens and holds a smaller one, and that one another, down to the smallest, which does not open and is the base case. At the end they close from the inside out.",
+      "paso-1": "the big one holds a smaller one",
+      "paso-2": "and that one, a smaller one",
+      "paso-3": "the smallest does not open: base case",
+      "paso-4": "they close from the inside out"
     }
   }
 }
