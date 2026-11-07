@@ -360,3 +360,49 @@ fn lsp_exits_with_failure_when_the_client_never_shuts_it_down()
     assert_eq!(closed, Some(1));
     Ok(())
 }
+
+#[test]
+fn format_rewrites_a_program_with_only_type_errors() -> Result<(), Box<dyn std::error::Error>> {
+    let working_directory = std::env::temp_dir().join("pseudo_cli_format_type_error");
+    std::fs::create_dir_all(&working_directory)?;
+    let target_file = working_directory.join("type_error.pseudo");
+    std::fs::write(
+        &target_file,
+        "algoritmo P\ndefinir x como entero <- \"texto\";\nescribir total;\nfinalgoritmo\n",
+    )?;
+
+    let process_output = Command::new(env!("CARGO_BIN_EXE_pseudo"))
+        .args(["format", target_file.to_str().unwrap_or("")])
+        .output()?;
+
+    assert_eq!(process_output.status.code(), Some(0));
+    assert_eq!(
+        String::from_utf8_lossy(&process_output.stdout),
+        "Algoritmo P\n  Definir x Como Entero <- \"texto\";\n  Escribir total;\nFinAlgoritmo\n"
+    );
+    assert_eq!(process_output.stderr.as_slice(), &[]);
+    Ok(())
+}
+
+#[test]
+fn format_detects_an_english_program_that_starts_with_an_interface()
+-> Result<(), Box<dyn std::error::Error>> {
+    let working_directory = std::env::temp_dir().join("pseudo_cli_format_english_opener");
+    std::fs::create_dir_all(&working_directory)?;
+    let target_file = working_directory.join("shape.pseudo");
+    std::fs::write(
+        &target_file,
+        "interface Shape\nmethod area() as real;\nendInterface\nalgorithm P\nwrite 1;\nendAlgorithm\n",
+    )?;
+
+    let process_output = Command::new(env!("CARGO_BIN_EXE_pseudo"))
+        .args(["format", target_file.to_str().unwrap_or("")])
+        .output()?;
+
+    assert_eq!(process_output.status.code(), Some(0));
+    assert_eq!(
+        String::from_utf8_lossy(&process_output.stdout),
+        "Interface Shape\n  Method area() As Real;\nEndInterface\n\nAlgorithm P\n  Write 1;\nEndAlgorithm\n"
+    );
+    Ok(())
+}

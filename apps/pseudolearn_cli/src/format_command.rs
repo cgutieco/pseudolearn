@@ -6,6 +6,8 @@ use crate::options::{CliOptions, FormatAction};
 use pseudolearn_api::service::{FormatOptions, Profile, format_source};
 use pseudolearn_api::{AnalyzeRequest, detect_vocabulary_profile, execute_analyze};
 
+const SYNTAX_CLASSES: [&str; 2] = ["lexical", "syntax"];
+
 pub fn execute_format(options: &CliOptions) -> Result<i32, CliError> {
     if options.positional_arguments.is_empty() {
         return Err(CliError::Usage(
@@ -73,13 +75,14 @@ fn check_syntax(options: &CliOptions, target_path: &str, source_content: &str) -
         profile: vocabulary_name,
     };
     let analysis_outcome = execute_analyze(&analysis_request);
-    let has_fatal_errors = analysis_outcome
+    let syntax_errors: Vec<_> = analysis_outcome
         .diagnostics
         .iter()
-        .any(|entry| entry.severity == "error");
+        .filter(|entry| entry.severity == "error" && SYNTAX_CLASSES.contains(&entry.class.as_str()))
+        .collect();
 
-    if has_fatal_errors {
-        for diagnostic_entry in &analysis_outcome.diagnostics {
+    if !syntax_errors.is_empty() {
+        for diagnostic_entry in syntax_errors {
             let rendered_line = format_diagnostic_report(
                 &options.interface_language,
                 target_path,
