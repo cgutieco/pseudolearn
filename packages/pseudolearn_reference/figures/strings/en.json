@@ -1096,6 +1096,61 @@
       "borde": "edge",
       "normal": "normal",
       "pie": "number of friends: one case per zone"
+    },
+    "ruta-particion-edad": {
+      "titulo": "Partitioning the ages",
+      "descripcion": "A line of ages from 0 to 100 split into two regions: those who pay 5, up to 11, and those who pay 8, from 12. A red line marks the edge between 11 and 12, with a point on each side.",
+      "paga-5": "pay 5",
+      "paga-8": "pay 8",
+      "borde": "edge"
+    },
+    "ruta-dedo-decision": {
+      "titulo": "The finger skips a branch",
+      "descripcion": "The cinema program with a triangle pointing at the current instruction. The age is declared, 30 is read, the condition is false, the finger skips the Then branch, which is dimmed, and reaches the Write of Else, which shows Paga 8.",
+      "paga-8": "Paga 8"
+    },
+    "ruta-tabla-decision-bisiesto": {
+      "titulo": "Leap year decision table",
+      "descripcion": "A table with three rows of questions, whether the year divides by 4, by 100 and by 400, and four columns of examples: 2023, 2024, 1900 and 2000. The last row gives the result: no, yes, no and yes.",
+      "pregunta": "Divides…",
+      "entre-4": "by 4?",
+      "entre-100": "by 100?",
+      "entre-400": "by 400?",
+      "si": "yes",
+      "no": "no",
+      "bisiesto": "Leap?"
+    },
+    "ruta-orden-preguntas": {
+      "titulo": "The order of the questions",
+      "descripcion": "Two funnels for the year 1900. In the first one it only asks whether it divides by 4, the answer is yes and 1900 comes out as a leap year, which is wrong. In the second it asks by 400 first, then by 100, and 1900 comes out as not a leap year, which is right.",
+      "entre-4": "divides by 4?",
+      "entre-400": "divides by 400?",
+      "entre-100": "divides by 100?",
+      "si": "yes",
+      "no": "no",
+      "bisiesto": "leap",
+      "no-bisiesto": "not leap",
+      "mal": "Wrong order: 1900 comes out wrong",
+      "bien": "Right order"
+    },
+    "ruta-tabla-por-vuelta": {
+      "titulo": "The money box pass table",
+      "descripcion": "On the left, the three boxes of the money box: day, what is saved today and the total. On the right, a table that gains a row per step: before the loop 1, 2 and 2; the first pass 2, 3 and 5; the second 3, 4 and 9; and the eighth 9, 10 and 54, when the loop ends.",
+      "vuelta": "pass",
+      "antes": "before",
+      "sale": "54 is enough: the loop ends"
+    },
+    "ruta-rol-contador": {
+      "titulo": "Role: counter",
+      "descripcion": "Three steps growing by one, labelled counter.",
+      "nombre": "counter",
+      "frase": "moves the same amount every pass"
+    },
+    "ruta-rol-acumulador": {
+      "titulo": "Role: accumulator",
+      "descripcion": "A money box receiving a coin, labelled accumulator.",
+      "nombre": "accumulator",
+      "frase": "keeps gathering"
     }
   }
 }

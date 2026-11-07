@@ -1096,6 +1096,61 @@
       "borde": "borde",
       "normal": "normal",
       "pie": "cantidad de amigos: un caso por zona"
+    },
+    "ruta-particion-edad": {
+      "titulo": "La partición de las edades",
+      "descripcion": "Una recta de edades de 0 a 100 partida en dos regiones: los que pagan 5, hasta 11, y los que pagan 8, desde 12. Una línea roja marca el borde entre 11 y 12, y hay un punto a cada lado.",
+      "paga-5": "pagan 5",
+      "paga-8": "pagan 8",
+      "borde": "borde"
+    },
+    "ruta-dedo-decision": {
+      "titulo": "El dedo salta una rama",
+      "descripcion": "El programa del cine con un triángulo que señala la instrucción actual. Se declara la edad, se lee 30, la condición da falso, el dedo salta la rama de Entonces, que queda atenuada, y llega al Escribir de Sino, que muestra Paga 8.",
+      "paga-8": "Paga 8"
+    },
+    "ruta-tabla-decision-bisiesto": {
+      "titulo": "Tabla de decisión del bisiesto",
+      "descripcion": "Una tabla con tres filas de preguntas, si el año se divide entre 4, entre 100 y entre 400, y cuatro columnas de ejemplos: 2023, 2024, 1900 y 2000. La última fila da el resultado: no, sí, no y sí.",
+      "pregunta": "¿Se divide…",
+      "entre-4": "entre 4?",
+      "entre-100": "entre 100?",
+      "entre-400": "entre 400?",
+      "si": "sí",
+      "no": "no",
+      "bisiesto": "¿Bisiesto?"
+    },
+    "ruta-orden-preguntas": {
+      "titulo": "El orden de las preguntas",
+      "descripcion": "Dos embudos para el año 1900. En el primero se pregunta solo si se divide entre 4, la respuesta es sí y 1900 sale como bisiesto, que está mal. En el segundo se pregunta primero entre 400, después entre 100, y 1900 sale como no bisiesto, que está bien.",
+      "entre-4": "¿se divide entre 4?",
+      "entre-400": "¿se divide entre 400?",
+      "entre-100": "¿se divide entre 100?",
+      "si": "sí",
+      "no": "no",
+      "bisiesto": "bisiesto",
+      "no-bisiesto": "no bisiesto",
+      "mal": "Orden equivocado: 1900 sale mal",
+      "bien": "Orden correcto"
+    },
+    "ruta-tabla-por-vuelta": {
+      "titulo": "La tabla por vuelta de la alcancía",
+      "descripcion": "A la izquierda, las tres cajas de la alcancía: día, lo que se guarda hoy y lo juntado. A la derecha, una tabla que gana una fila por paso: antes del bucle 1, 2 y 2; la primera vuelta 2, 3 y 5; la segunda 3, 4 y 9; y la octava 9, 10 y 54, cuando el bucle sale.",
+      "vuelta": "vuelta",
+      "antes": "antes",
+      "sale": "54 alcanza: el bucle sale"
+    },
+    "ruta-rol-contador": {
+      "titulo": "Rol: contador",
+      "descripcion": "Tres escalones que crecen de a uno, con el rótulo contador.",
+      "nombre": "contador",
+      "frase": "avanza lo mismo en cada vuelta"
+    },
+    "ruta-rol-acumulador": {
+      "titulo": "Rol: acumulador",
+      "descripcion": "Una alcancía que recibe una moneda, con el rótulo acumulador.",
+      "nombre": "acumulador",
+      "frase": "va juntando"
     }
   }
 }

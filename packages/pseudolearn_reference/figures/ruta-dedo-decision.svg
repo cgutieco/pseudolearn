@@ -1,0 +1,34 @@
+<svg viewBox="0 0 340 200">
+  <text x="40" y="22" font-size="12" font-family="mono" fill="@tinta">{{codigo:Definir edad Como Entero;}}</text>
+  <text x="40" y="44" font-size="12" font-family="mono" fill="@tinta">{{codigo:Leer edad;}}</text>
+  <text x="40" y="66" font-size="12" font-family="mono" fill="@tinta">{{codigo:Si edad &lt; 12 Entonces}}</text>
+  <text x="40" y="132" font-size="12" font-family="mono" fill="@tinta">{{codigo:Sino}}</text>
+  <text x="40" y="176" font-size="12" font-family="mono" fill="@tinta">{{codigo:FinSi}}</text>
+  <g data-paso="1" data-hasta="3">
+    <text x="56" y="88" font-size="12" font-family="mono" fill="@tinta">{{codigo:Escribir "Paga 5";}}</text>
+  </g>
+  <g data-paso="4">
+    <rect x="50" y="76" width="200" height="18" rx="3" fill="@superficie"/>
+    <text x="56" y="88" font-size="12" font-family="mono" fill="@atenuado">{{codigo:Escribir "Paga 5";}}</text>
+  </g>
+  <text x="56" y="154" font-size="12" font-family="mono" fill="@tinta">{{codigo:Escribir "Paga 8";}}</text>
+  <g data-paso="1" data-hasta="1">
+    <polygon points="10,12 26,17 10,22" fill="@acento-estructurado"/>
+  </g>
+  <g data-paso="2" data-hasta="2">
+    <polygon points="10,34 26,39 10,44" fill="@acento-estructurado"/>
+    <text x="250" y="44" font-size="12" fill="@numero">{{codigo:edad}} = 30</text>
+  </g>
+  <g data-paso="3" data-hasta="3">
+    <polygon points="10,56 26,61 10,66" fill="@acento-estructurado"/>
+    <text x="236" y="66" font-size="12" fill="@logico">{{lex:booleanFalse}}</text>
+  </g>
+  <g data-paso="4" data-hasta="4">
+    <polygon points="10,122 26,127 10,132" fill="@acento-estructurado"/>
+    <flecha puntos="18,70 18,116" rol="acento-estructurado" discontinua=""/>
+  </g>
+  <g data-paso="5">
+    <polygon points="10,144 26,149 10,154" fill="@acento-estructurado"/>
+    <caja x="230" y="138" ancho="100" alto="24" rol="exito" fondo="0.14" texto="{{t:paga-8}}" tamano="12" fuente="mono"/>
+  </g>
+</svg>
