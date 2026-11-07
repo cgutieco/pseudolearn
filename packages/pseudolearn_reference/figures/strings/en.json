@@ -1310,6 +1310,21 @@
       "ana": "Ana",
       "beto": "Beto",
       "caro": "Caro"
+    },
+    "ruta-filtro-validacion": {
+      "titulo": "Two filters in a row",
+      "descripcion": "A pipe: the text goes into the first filter, which asks whether it is a number; what passes goes into the second, which asks whether it is in range, and comes out as a valid age. Each filter has an exit downwards with its reason: not a number, or out of range.",
+      "texto": "text",
+      "numero-1": "is it a",
+      "numero-2": "number?",
+      "rango-1": "is it in",
+      "rango-2": "range?",
+      "ok": "age",
+      "motivo-1a": "not",
+      "motivo-1b": "a number",
+      "motivo-2a": "out",
+      "motivo-2b": "of range",
+      "pie": "the first filter that fails gives the reason"
     }
   }
 }

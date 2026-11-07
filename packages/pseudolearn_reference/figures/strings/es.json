@@ -1310,6 +1310,21 @@
       "ana": "Ana",
       "beto": "Beto",
       "caro": "Caro"
+    },
+    "ruta-filtro-validacion": {
+      "titulo": "Dos filtros en fila",
+      "descripcion": "Una tubería: el texto entra al primer filtro, que pregunta si es un número; lo que pasa entra al segundo, que pregunta si está en el rango, y sale como edad válida. Cada filtro tiene una salida hacia abajo con su motivo: no es un número, o fuera de rango.",
+      "texto": "texto",
+      "numero-1": "¿es un",
+      "numero-2": "número?",
+      "rango-1": "¿está en",
+      "rango-2": "el rango?",
+      "ok": "edad",
+      "motivo-1a": "no es",
+      "motivo-1b": "un número",
+      "motivo-2a": "fuera",
+      "motivo-2b": "de rango",
+      "pie": "el primer filtro que falla da el motivo"
     }
   }
 }

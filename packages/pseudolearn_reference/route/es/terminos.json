@@ -85,5 +85,9 @@
   "enumerado": {"etiqueta": "enumerado", "formas": ["enumerado", "enumerados"], "estricto": true, "receta": true},
   "vector": {"etiqueta": "vector", "formas": ["vector", "vectores"], "estricto": true, "receta": true},
   "diccionario": {"etiqueta": "diccionario", "formas": ["diccionario", "diccionarios"], "estricto": true, "receta": true},
-  "clave": {"etiqueta": "clave", "formas": ["clave", "claves"], "estricto": false, "receta": false}
+  "clave": {"etiqueta": "clave", "formas": ["clave", "claves"], "estricto": false, "receta": false},
+  "valor-opcional": {"etiqueta": "valor que puede faltar", "formas": ["valor que puede faltar"], "estricto": true, "receta": false},
+  "resultado-con-error": {"etiqueta": "resultado con error", "formas": ["resultado con error"], "estricto": true, "receta": false},
+  "propagar": {"etiqueta": "propagar un error", "formas": ["propagar"], "estricto": true, "receta": true},
+  "validar": {"etiqueta": "validar", "formas": ["validar", "validación"], "estricto": false, "receta": false}
 }

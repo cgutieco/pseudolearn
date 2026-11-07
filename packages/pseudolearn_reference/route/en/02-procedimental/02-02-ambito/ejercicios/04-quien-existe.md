@@ -22,10 +22,10 @@ In this program, the line that returns `base * 2` is inside `Doble`. Place each 
 ```elementos
 - `base` | Exists on that line
 - `valor` | Does not exist on that line
-- `resultado` | Does not exist on that line
+- `calculado` | Does not exist on that line
 - `total` | Does not exist on that line
 ```
 
 ::: explicacion
-Inside `Doble` only its parameter `base` exists. `valor` and `resultado` belong to `Triple`, and `total` belongs to the main algorithm: they cannot be seen from `Doble`.
+Inside `Doble` only its parameter `base` exists. `valor` and `calculado` belong to `Triple`, and `total` belongs to the main algorithm: they cannot be seen from `Doble`.
 :::

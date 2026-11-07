@@ -16,8 +16,8 @@ SubProceso Doble(base Como Entero) Como Entero
 FinSubProceso
 
 SubProceso Triple(valor Como Entero) Como Entero
-  Definir resultado Como Entero <- valor * 3;
-  Retornar resultado;
+  Definir calculado Como Entero <- valor * 3;
+  Retornar calculado;
 FinSubProceso
 
 Algoritmo Principal
@@ -35,10 +35,10 @@ FinAlgoritmo
 ```elementos
 - `base` | Existe en esa línea
 - `valor` | No existe en esa línea
-- `resultado` | No existe en esa línea
+- `calculado` | No existe en esa línea
 - `total` | No existe en esa línea
 ```
 
 ::: explicacion
-Dentro de `Doble` solo existe su parámetro `base`. `valor` y `resultado` son de `Triple`, y `total` es del principal: desde `Doble` no se ven.
+Dentro de `Doble` solo existe su parámetro `base`. `valor` y `calculado` son de `Triple`, y `total` es del principal: desde `Doble` no se ven.
 :::

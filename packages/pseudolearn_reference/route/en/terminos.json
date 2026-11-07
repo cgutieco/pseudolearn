@@ -85,5 +85,9 @@
   "enumerado": {"etiqueta": "enumeration", "formas": ["enumeration", "enumerations"], "estricto": true, "receta": true},
   "vector": {"etiqueta": "vector", "formas": ["vector", "vectors"], "estricto": true, "receta": true},
   "diccionario": {"etiqueta": "dictionary", "formas": ["dictionary", "dictionaries"], "estricto": true, "receta": true},
-  "clave": {"etiqueta": "key", "formas": ["key", "keys"], "estricto": false, "receta": false}
+  "clave": {"etiqueta": "key", "formas": ["key", "keys"], "estricto": false, "receta": false},
+  "valor-opcional": {"etiqueta": "optional value", "formas": ["optional value", "optional values"], "estricto": true, "receta": false},
+  "resultado-con-error": {"etiqueta": "result with error", "formas": ["result with error"], "estricto": true, "receta": false},
+  "propagar": {"etiqueta": "propagate", "formas": ["propagate", "propagates"], "estricto": true, "receta": true},
+  "validar": {"etiqueta": "validate", "formas": ["validate", "validates", "validation"], "estricto": false, "receta": false}
 }
