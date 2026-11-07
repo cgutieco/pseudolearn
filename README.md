@@ -10,7 +10,7 @@ arquitectura, operación y decisiones; `AGENTS.md` establece las reglas transver
 `packages/` contiene componentes reutilizables que no se despliegan; `apps/` contiene productos que se
 entregan a una persona. La clasificación depende de su responsabilidad y no del lenguaje.
 
-El sujeto histórico `reference` está retirado. Su manifiesto y sus resultados pertenecen al sistema de
+El sujeto histórico `reference` está retirado; no tiene relación con `packages/pseudolearn_reference`, que es el libro de la especificación. Su manifiesto y sus resultados pertenecen al sistema de
 especificaciones; el repositorio no instala ni ejecuta una segunda implementación del núcleo en Dart.
 Las mediciones históricas conservan sus fuentes, hashes y condiciones; no certifican fuentes actuales.
 
@@ -19,6 +19,7 @@ Las mediciones históricas conservan sus fuentes, hashes y condiciones; no certi
 | `packages/pseudolearn_engine` | Núcleo Rust, VM, backend nativo y servicio de lenguaje | Cargo y rustup |
 | `packages/pseudolearn_spec` | Corpus y herramienta SEE | Cargo y rustup |
 | `packages/pseudolearn_rust_checks` | Reglas mecánicas Rust y casos negativos | Cargo y rustup |
+| `packages/pseudolearn_reference` | Compilador y verificadores de la especificación ilustrada; genera el paquete que lee la app | Cargo y rustup |
 | `packages/pseudolearn_benchmarks` | Recolectores, estadísticas y evidencia de rendimiento | Dart; experimento Rust anidado |
 | `packages/pseudolearn_brand` | Generación paramétrica de identidad visual | Python y fonttools |
 | `apps/pseudolearn_app` | Cliente Flutter con puente Rust generado | Flutter, Dart y Cargo |

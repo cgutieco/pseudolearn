@@ -202,7 +202,7 @@ En `.agents/skills/`:
   `supabase` para el backend (`apps/pseudolearn_backend`), y `node` con `pnpm` para el frontend web
   (`apps/fe-pseudolearn`) y para la extensión (`apps/pseudolearn_vscode`, Node 22.23.3 y pnpm 12.8.1).
   La quinta es `cargo` y `rustup` para los verificadores Rust, `pseudolearn_spec`,
-  `pseudolearn_engine`, `pseudolearn_cli` y los puentes. Cada miembro Rust fija la misma versión exacta en
+  `pseudolearn_engine`, `pseudolearn_cli`, `pseudolearn_reference` y los puentes. Cada miembro Rust fija la misma versión exacta en
   `rust-toolchain.toml`; no hay workspace Cargo raíz. Todas están en el `PATH`; los comandos se documentan sin rutas
   absolutas.
 - `packages/` aloja lo reutilizable que no se despliega, en el lenguaje que a cada miembro le

@@ -254,6 +254,14 @@ dónde dejan de valer; no se usan «simplemente», «obviamente» ni «es fácil
   del editor; los huecos se pintan como en la hoja de ayuda.
 - Figuras de 340 unidades de ancho para leerse a tamaño real en un teléfono de 375 puntos.
 - Cada sección se publica en cuatro ediciones: idioma de interfaz × perfil de sintaxis.
+- El índice final tiene trece partes y seis apéndices. Respecto del plan, se fundieron secciones que
+  repetían una regla ya explicada: la terminación de sentencias vive solo en 2.9, los perfiles y la estrictez
+  en 0.5 y 3.15, y la Parte IX agrupa atributos con clases, `Nuevo` con constructores y `Este`/`Super` y la
+  sobrescritura con métodos y herencia. Así cada regla tiene una sección dueña y no dos textos que diverjan.
+- Los ejemplos que dependen del azar muestran la salida de la semilla fija del anfitrión de memoria; la
+  terminal usa otra semilla por omisión y puede mostrar otros números.
+- El Apéndice E (glosario) se redacta a mano: el corpus no tiene definiciones de términos; los demás
+  apéndices se generan desde el corpus.
 
 ## 7. Verificación, testing y aseguramiento de calidad
 
@@ -265,6 +273,10 @@ Pendientes declarados:
 
 - La categoría de resaltado debería salir del corpus (ver §4).
 - Los textos de los programas no se traducen en la edición inglesa.
+- `aliases.json` existe porque el traductor del motor canoniza `Funcion` a `Subroutine` y el corpus declara
+  `Funcion` como alias de `SubProceso` aunque la pureza dependa de esa grafía (§4). Cuando el corpus y el
+  traductor resuelvan el conflicto, la tabla y la traducción léxica de programas con alias se retiran.
+- La comilla (`quote`) está excluida de la cobertura de vocabulario: nunca aparece como ficha suelta.
 
 ## 8. Fuentes consultadas y genealogía conceptual
 
