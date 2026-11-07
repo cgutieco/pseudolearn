@@ -206,3 +206,11 @@ Límites declarados: sin zonas con nombre (solo desplazamientos fijos), sin segu
 ## Biblioteca clásica: un nombre, una semántica
 
 Problema: el pseudocódigo clásico usa `Azar(n)`, `Aleatorio(a, b)`, `Subcadena(c, desde, hasta)`, `Concatenar`, `Mayusculas`, `Minusculas` y `ConvertirANumero`, y una forma conocida no puede existir con otro significado. Elección: cada nombre clásico designa una sola identidad con su semántica clásica. `Subcadena` usa posiciones desde cero incluidas en ambos extremos (válida si `0 ≤ desde ≤ hasta + 1 ≤ Longitud(c)`, vacía cuando `desde = hasta + 1`); `Concatenar` es la concatenación de dos cadenas; `ConvertirANumero` es alias de `AReal` y `Mayusculas`/`Minusculas` de `AMayusculas`/`AMinusculas`. Los enteros aleatorios salen de la fuente sembrada del runtime (`RandomState::next_below`, `next_between`): se descartan las palabras de 64 bits que caen en el resto final del rango y las demás se reducen por módulo, de modo que ningún entero tiene más probabilidad; `AzarReal()` conserva el real en `[0, 1)`. Alternativas descartadas: reducir `AzarReal() * n`, que introduce sesgo, y conservar `Subcadena` con cantidad junto a una forma clásica con otro nombre.
+
+## Posición de los errores de JSON
+
+`serde_json` informa columnas en bytes y, al llegar al final del texto, la del último carácter leído. `json_positions`
+traduce ambas a la regla `LIB.JSON#J4`: la columna cuenta puntos de código y `FinInesperado` se informa en el final del
+texto, justo después de su último carácter (1:1 para el texto vacío, 1:17 para un texto de 16 caracteres). Antes el
+texto vacío daba 1:1 y uno de 16 caracteres daba 1:16, y una `ñ` desplazaba la columna un lugar. Se descartó corregir
+solo el caso de fin de texto: la columna en bytes también contradecía `LANG.SOURCE.POSITION`.

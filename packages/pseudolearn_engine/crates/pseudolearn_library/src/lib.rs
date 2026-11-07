@@ -20,6 +20,7 @@ mod json_build;
 mod json_local_views;
 mod json_parse;
 mod json_parse_strings;
+mod json_positions;
 mod json_query;
 mod json_source;
 mod json_source_scan;
@@ -66,6 +67,8 @@ mod decimal_format_tests;
 mod json_local_views_tests;
 #[cfg(test)]
 mod json_parse_tests;
+#[cfg(test)]
+mod json_positions_tests;
 #[cfg(test)]
 mod json_query_tests;
 #[cfg(test)]

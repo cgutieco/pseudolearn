@@ -2,6 +2,8 @@
 
 use pseudolearn_runtime::{JsonFailure, JsonResultValue, MemoryError};
 
+const UNEXPECTED_END: &str = "unexpectedEnd";
+
 pub fn parse_json(text: &str, maximum_depth: usize) -> Result<JsonResultValue, MemoryError> {
     if text.starts_with('\u{feff}') {
         return Ok(JsonResultValue::Error(JsonFailure {
@@ -11,17 +13,23 @@ pub fn parse_json(text: &str, maximum_depth: usize) -> Result<JsonResultValue, M
         }));
     }
     if let Err(error) = crate::json_parse_strings::validate(text, maximum_depth) {
-        return Ok(JsonResultValue::Error(parse_error(&error)?));
+        return Ok(JsonResultValue::Error(parse_error(text, &error)?));
     }
     crate::json_text::compact_source(text).map(JsonResultValue::Value)
 }
 
-fn parse_error(error: &serde_json::Error) -> Result<JsonFailure, MemoryError> {
+fn parse_error(text: &str, error: &serde_json::Error) -> Result<JsonFailure, MemoryError> {
     let description = error.to_string().to_lowercase();
+    let code = error_code(error, &description);
+    let (line, column) = if code == UNEXPECTED_END {
+        crate::json_positions::end_of_text(text)
+    } else {
+        crate::json_positions::code_point_position(text, error.line(), error.column())
+    };
     Ok(JsonFailure {
-        code: error_code(error, &description).to_owned(),
-        line: i64::try_from(error.line()).map_err(|_| MemoryError::Resource)?,
-        column: i64::try_from(error.column().max(1)).map_err(|_| MemoryError::Resource)?,
+        code: code.to_owned(),
+        line: i64::try_from(line).map_err(|_| MemoryError::Resource)?,
+        column: i64::try_from(column).map_err(|_| MemoryError::Resource)?,
     })
 }
 
@@ -39,7 +47,7 @@ fn error_code(error: &serde_json::Error, description: &str) -> &'static str {
         return "invalidEscape";
     }
     if error.classify() == serde_json::error::Category::Eof {
-        return "unexpectedEnd";
+        return UNEXPECTED_END;
     }
     "invalidSyntax"
 }
