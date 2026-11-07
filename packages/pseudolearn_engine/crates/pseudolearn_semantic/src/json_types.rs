@@ -155,11 +155,11 @@ fn ensure_enum(session: &mut AnalysisSession<'_>, identity: &str) -> EnumId {
     if let Some(enumeration) = session.module.builtin_enums.get(identity) {
         return *enumeration;
     }
+    let profile = session.options.profile.as_str();
     let members = enum_members(identity)
-        .into_iter()
-        .map(|keyword| {
-            keyword
-                .lexeme(session.options.profile)
+        .iter()
+        .map(|member| {
+            pseudolearn_syntax::contextual_spelling(member, profile)
                 .unwrap_or_default()
                 .to_owned()
         })
@@ -177,24 +177,24 @@ fn ensure_enum(session: &mut AnalysisSession<'_>, identity: &str) -> EnumId {
     enumeration
 }
 
-fn enum_members(identity: &str) -> Vec<KeywordKind> {
+fn enum_members(identity: &str) -> &'static [&'static str] {
     if identity == KIND_ENUM {
-        vec![
-            KeywordKind::JsonKindNull,
-            KeywordKind::JsonKindBoolean,
-            KeywordKind::JsonKindNumber,
-            KeywordKind::JsonKindString,
-            KeywordKind::JsonKindArray,
-            KeywordKind::JsonKindObject,
+        &[
+            "jsonKindNull",
+            "jsonKindBoolean",
+            "jsonKindNumber",
+            "jsonKindString",
+            "jsonKindArray",
+            "jsonKindObject",
         ]
     } else {
-        vec![
-            KeywordKind::JsonErrorCodeInvalidSyntax,
-            KeywordKind::JsonErrorCodeUnexpectedEnd,
-            KeywordKind::JsonErrorCodeDuplicateKey,
-            KeywordKind::JsonErrorCodeDepthExceeded,
-            KeywordKind::JsonErrorCodeInvalidEscape,
-            KeywordKind::JsonErrorCodeTrailingContent,
+        &[
+            "jsonErrorCodeInvalidSyntax",
+            "jsonErrorCodeUnexpectedEnd",
+            "jsonErrorCodeDuplicateKey",
+            "jsonErrorCodeDepthExceeded",
+            "jsonErrorCodeInvalidEscape",
+            "jsonErrorCodeTrailingContent",
         ]
     }
 }
