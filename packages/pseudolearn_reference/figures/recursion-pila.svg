@@ -1,0 +1,23 @@
+<svg viewBox="0 0 340 220">
+  <caja x="60" y="170" ancho="180" alto="36" rol="acento-procedimental" fondo="0.10" fuente="mono" tamano="13" texto="{{codigo:Factorial(4)}}"/>
+  <g data-paso="2">
+    <caja x="60" y="128" ancho="180" alto="36" rol="acento-procedimental" fondo="0.14" fuente="mono" tamano="13" texto="{{codigo:Factorial(3)}}"/>
+    <caja x="60" y="86" ancho="180" alto="36" rol="acento-procedimental" fondo="0.18" fuente="mono" tamano="13" texto="{{codigo:Factorial(2)}}"/>
+  </g>
+  <g data-paso="2" data-hasta="2">
+    <caja x="60" y="44" ancho="180" alto="36" rol="exito" fondo="0.20" negrita="" fuente="mono" tamano="13" texto="{{codigo:Factorial(1)}}"/>
+    <text x="290" y="66" font-size="12" text-anchor="middle" fill="@exito">{{t:casoBase}}</text>
+  </g>
+  <g data-paso="3" data-hasta="3">
+    <caja x="60" y="44" ancho="180" alto="36" rol="atenuado" discontinua="" fondo="0.0" fuente="mono" tamano="13" colortexto="atenuado" texto="{{codigo:Factorial(1)}}"/>
+    <flecha puntos="250,62 270,62 270,104 244,104" rol="exito"/>
+    <text x="284" y="88" font-size="13" font-family="mono" fill="@exito">1</text>
+  </g>
+  <g data-paso="4">
+    <rect x="60" y="86" width="180" height="78" fill="@superficie"/>
+    <caja x="60" y="128" ancho="180" alto="36" rol="atenuado" discontinua="" fondo="0.0" tamano="12" colortexto="atenuado" texto="3 * 2 = 6"/>
+    <caja x="60" y="86" ancho="180" alto="36" rol="atenuado" discontinua="" fondo="0.0" tamano="12" colortexto="atenuado" texto="2 * 1 = 2"/>
+    <rect x="60" y="170" width="180" height="36" rx="6" fill="@superficie"/>
+    <caja x="60" y="170" ancho="180" alto="36" rol="exito" fondo="0.20" negrita="" fuente="mono" tamano="13" texto="4 * 6 = 24"/>
+  </g>
+</svg>

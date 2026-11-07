@@ -1,5 +1,6 @@
 #![forbid(unsafe_code)]
 
+mod aliases;
 mod blocks;
 mod cached_engine;
 mod callouts;
@@ -18,6 +19,7 @@ mod section_index;
 mod spelling;
 mod trace;
 
+pub use aliases::AliasTable;
 pub use cached_engine::CachedEngine;
 pub use categories::CategoryTable;
 pub use language_pack::LanguagePack;

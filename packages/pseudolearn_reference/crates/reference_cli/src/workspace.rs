@@ -2,7 +2,7 @@ use crate::workspace_files::{files_with_extension, read, relative};
 use reference_corpus::Corpus;
 use reference_export::{PartDefinition, parse_parts};
 use reference_model::{Profile, SourceDocument, Violation};
-use reference_resolve::{CategoryTable, LanguagePack};
+use reference_resolve::{AliasTable, CategoryTable, LanguagePack};
 use reference_verify::{AnchorLock, CoverageExclusions};
 use std::collections::BTreeMap;
 use std::path::{Path, PathBuf};
@@ -17,6 +17,7 @@ pub struct Workspace {
     pub root: PathBuf,
     pub corpus: Corpus,
     pub categories: CategoryTable,
+    pub aliases: AliasTable,
     pub figures: BTreeMap<String, String>,
     pub languages: BTreeMap<Profile, Language>,
     pub format_violations: Vec<Violation>,
@@ -31,6 +32,7 @@ pub fn load(root: &Path) -> Result<Workspace, String> {
         &root.join("../pseudolearn_spec/specifications/export.json"),
     )?)?;
     let categories = CategoryTable::from_json(&read(&root.join("categories.json"))?)?;
+    let aliases = AliasTable::from_json(&read(&root.join("aliases.json"))?)?;
     let mut figures = BTreeMap::new();
     for path in files_with_extension(&root.join("figures"), "svg")? {
         let identity = path
@@ -57,6 +59,7 @@ pub fn load(root: &Path) -> Result<Workspace, String> {
         root: root.to_path_buf(),
         corpus,
         categories,
+        aliases,
         figures,
         languages,
         format_violations,

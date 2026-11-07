@@ -155,6 +155,12 @@
     "whitespace": "espacio"
   },
   "figures": {
+    "ambitos-anidados": {
+      "titulo": "Ámbitos anidados",
+      "descripcion": "Una caja grande para el proceso con la variable n, y dentro otra para la rama del Si con la variable doble. Desde dentro se ve n; desde fuera no se ve doble.",
+      "veN": "aquí se ve n",
+      "noVeDoble": "aquí doble ya no existe"
+    },
     "ampliaciones": {
       "titulo": "Las tres ampliaciones",
       "descripcion": "Tres flechas verdes: de Entero a Real, de Caracter a Cadena y de una subclase a su superclase. Debajo, en rojo, las conversiones que nunca ocurren solas: de Real a Entero, de Logico a número y de número a texto.",
@@ -462,6 +468,13 @@
       "no": "No son números",
       "cientifica": "1e3"
     },
+    "llamada-marcos": {
+      "titulo": "La pila de marcos",
+      "descripcion": "Una pila con el marco de Principal abajo. Al llamar a Doble se apila un marco con n = 21; al retornar desaparece y el valor 42 baja a Principal.",
+      "pila": "pila de llamadas",
+      "activo": "en marcha",
+      "desaparece": "marco retirado"
+    },
     "mapa-partes": {
       "titulo": "Mapa de las partes",
       "descripcion": "Un diagrama de cajas apiladas. Arriba la Parte 0 sobre cómo leer y la Parte I con la visión general. Debajo, en dos columnas, la estructura léxica y los tipos; luego expresiones y declaraciones; después el control del flujo; luego subprogramas y objetos. Al final una franja con programas, errores, concurrencia, biblioteca y motor, y otra con los apéndices.",
@@ -529,6 +542,16 @@
       "incluido": "incluido",
       "termina": "termina"
     },
+    "paso-valor": {
+      "titulo": "Por valor y por referencia",
+      "descripcion": "A la izquierda, el marco principal con x valiendo 5. En el primer paso, Copia recibe una caja n con una copia que pasa a 6 sin cambiar x. En el segundo, Incrementar recibe una flecha hacia x, que pasa a 6.",
+      "principal": "principal",
+      "subprograma": "subprograma",
+      "copia": "copia",
+      "sinCambio": "no cambia",
+      "mismaCaja": "misma caja",
+      "cambia": "cambia"
+    },
     "perfiles-espejo": {
       "titulo": "El mismo programa en dos perfiles",
       "descripcion": "Dos columnas, español a la izquierda e inglés a la derecha. Cada fila empareja una palabra: Si con If, Entonces con Then, Cadena con String. Las dos últimas filas muestran que el nombre nombre y el texto Hola no cambian.",
@@ -562,6 +585,21 @@
       "simples": "✓ sentencias simples: terminan en ;",
       "bloques": "∅ aperturas y cierres de bloque: sin ;"
     },
+    "pureza-grafo": {
+      "titulo": "Un efecto que sube",
+      "descripcion": "Principal llama a la función Triple, que llama a Avisar, que usa Escribir. El efecto de Escribir sube hasta Triple, marcada como error.",
+      "sube": "el efecto sube"
+    },
+    "recursion-pila": {
+      "titulo": "La pila del factorial",
+      "descripcion": "Cuatro marcos apilados de Factorial(4) a Factorial(1). El caso base devuelve 1 y cada marco multiplica: 2, 6 y 24.",
+      "casoBase": "caso base"
+    },
+    "referencia-salida": {
+      "titulo": "Parámetros de salida",
+      "descripcion": "A la izquierda, las cajas c y r del principal con 3 y 2. A la derecha, Dividir con cociente y resto, que son flechas hacia c y r.",
+      "principal": "principal"
+    },
     "registro-copia": {
       "titulo": "Asignar un registro lo copia",
       "descripcion": "Dos fichas, a y b, con los campos fila y columna. Las dos tenían fila 1 y columna 2; después de cambiar b.fila a 10, solo b muestra el 10 y a sigue con 1.",
@@ -594,6 +632,12 @@
       "ceroOMas": "cero o más vueltas",
       "unaOMas": "una o más vueltas"
     },
+    "retornar-salidas": {
+      "titulo": "Varias salidas",
+      "descripcion": "Tres Retornar. El primer Si es falso; el segundo se cumple y se retorna b, que vale -2. El último Retornar queda sin alcanzar.",
+      "falso": "falso",
+      "nunca": "no se alcanza"
+    },
     "salir-corte": {
       "titulo": "Salir corta el bucle",
       "descripcion": "Cinco casillas con 7, 14, 21, 28 y 35. Se visitan 7, 14 y 21; en 21 una línea roja marca Salir y las casillas 28 y 35 quedan sin visitar.",
@@ -616,6 +660,13 @@
       "texto-no": "\"Todavía no…\"",
       "juntan": "FinSi: se juntan",
       "no-se-ejecuta": "no se ejecuta"
+    },
+    "subprograma-caja": {
+      "titulo": "Un subprograma como caja",
+      "descripcion": "Una caja llamada Doble. Por la izquierda entra el argumento 21 y por la derecha sale el resultado 42.",
+      "argumento": "argumento",
+      "resultado": "resultado",
+      "dentro": "lo de dentro no se ve desde fuera"
     },
     "terminaciones": {
       "titulo": "Las seis terminaciones",

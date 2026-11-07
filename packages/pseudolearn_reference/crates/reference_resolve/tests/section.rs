@@ -16,6 +16,7 @@ fn resolve_with(
 ) -> ResolvedSection {
     let corpus = support::corpus();
     let categories = support::categories();
+    let aliases = support::aliases();
     let pack = support::pack();
     let figures = support::figures();
     let index = support::index();
@@ -23,6 +24,7 @@ fn resolve_with(
         engine,
         corpus: &corpus,
         categories: &categories,
+        aliases: &aliases,
         pack: &pack,
         figures: &figures,
         index: &index,
@@ -272,7 +274,7 @@ fn generates_catalogs_and_rejects_unknown_ones() {
         &SpanishReuse::default(),
     );
     assert!(
-        matches!(resolved.section.blocks.first(), Some(Block::Table(table)) if table.rows.len() == 5)
+        matches!(resolved.section.blocks.first(), Some(Block::Table(table)) if table.rows.len() == 6)
     );
     assert!(
         matches!(resolved.section.blocks.get(1), Some(Block::Table(table)) if table.rows.len() == 1)
@@ -281,4 +283,21 @@ fn generates_catalogs_and_rejects_unknown_ones() {
         matches!(resolved.section.blocks.get(2), Some(Block::List { entries, .. }) if entries.len() == 2)
     );
     assert_eq!(resolved.violations.len(), 1);
+}
+
+#[test]
+fn keeps_alias_spellings_in_inline_code_and_programs() {
+    let resolved = resolve(
+        "Una `Funcion` no es un `SubProceso`.\n\n```programa id=pura\nFuncion f\nEscribir 1;\n```\n",
+        Profile::English,
+        &SpanishReuse::default(),
+    );
+    let Some(Block::Paragraph { runs }) = resolved.section.blocks.first() else {
+        return;
+    };
+    let texts: Vec<String> = code(runs).iter().map(|token| token.text.clone()).collect();
+    assert_eq!(texts, vec!["Function".to_owned(), "Subroutine".to_owned()]);
+    assert!(
+        matches!(resolved.section.blocks.get(1), Some(Block::Program(program)) if program.source == "Function f\nWrite 1;\n")
+    );
 }

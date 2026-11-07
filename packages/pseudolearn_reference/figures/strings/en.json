@@ -155,6 +155,12 @@
     "whitespace": "whitespace"
   },
   "figures": {
+    "ambitos-anidados": {
+      "titulo": "Nested scopes",
+      "descripcion": "A large box for the process with the variable n, and inside it another for the If branch with the variable doble. From inside n is visible; from outside doble is not.",
+      "veN": "n is visible here",
+      "noVeDoble": "doble no longer exists here"
+    },
     "ampliaciones": {
       "titulo": "The three widenings",
       "descripcion": "Three green arrows: from Integer to Real, from Character to String and from a subclass to its superclass. Below, in red, the conversions that never happen by themselves: Real to Integer, Boolean to number and number to text.",
@@ -462,6 +468,13 @@
       "no": "Not numbers",
       "cientifica": "1e3"
     },
+    "llamada-marcos": {
+      "titulo": "The frame stack",
+      "descripcion": "A stack with the Principal frame at the bottom. Calling Doble pushes a frame with n = 21; on return it disappears and the value 42 goes down to Principal.",
+      "pila": "call stack",
+      "activo": "running",
+      "desaparece": "frame removed"
+    },
     "mapa-partes": {
       "titulo": "Map of the parts",
       "descripcion": "A diagram of stacked boxes. At the top Part 0 on how to read and Part I with the overview. Below, in two columns, lexical structure and types; then expressions and declarations; then control flow; then subroutines and objects. At the bottom a band with programs, errors, concurrency, library and engine, and another with the appendices.",
@@ -529,6 +542,16 @@
       "incluido": "included",
       "termina": "ends"
     },
+    "paso-valor": {
+      "titulo": "By value and by reference",
+      "descripcion": "On the left, the main frame with x equal to 5. In the first step, Copia receives a box n with a copy that becomes 6 without changing x. In the second, Incrementar receives an arrow to x, which becomes 6.",
+      "principal": "main",
+      "subprograma": "subprogram",
+      "copia": "copy",
+      "sinCambio": "unchanged",
+      "mismaCaja": "same box",
+      "cambia": "changes"
+    },
     "perfiles-espejo": {
       "titulo": "The same program in two profiles",
       "descripcion": "Two columns, Spanish on the left and English on the right. Each row pairs a word: Si with If, Entonces with Then, Cadena with String. The last two rows show that the name nombre and the text Hola do not change.",
@@ -562,6 +585,21 @@
       "simples": "✓ simple statements: end in ;",
       "bloques": "∅ block openings and closings: no ;"
     },
+    "pureza-grafo": {
+      "titulo": "An effect that climbs",
+      "descripcion": "Principal calls the function Triple, which calls Avisar, which uses Write. The effect of Write climbs up to Triple, marked as an error.",
+      "sube": "the effect climbs"
+    },
+    "recursion-pila": {
+      "titulo": "The factorial stack",
+      "descripcion": "Four frames stacked from Factorial(4) to Factorial(1). The base case returns 1 and every frame multiplies: 2, 6 and 24.",
+      "casoBase": "base case"
+    },
+    "referencia-salida": {
+      "titulo": "Output parameters",
+      "descripcion": "On the left, the main boxes c and r with 3 and 2. On the right, Dividir with cociente and resto, which are arrows to c and r.",
+      "principal": "main"
+    },
     "registro-copia": {
       "titulo": "Assigning a record copies it",
       "descripcion": "Two cards, a and b, with the fields fila and columna. Both had fila 1 and columna 2; after changing b.fila to 10, only b shows 10 and a still has 1.",
@@ -594,6 +632,12 @@
       "ceroOMas": "zero or more rounds",
       "unaOMas": "one or more rounds"
     },
+    "retornar-salidas": {
+      "titulo": "Several exits",
+      "descripcion": "Three Returns. The first If is false; the second holds and b, which is -2, is returned. The last Return is never reached.",
+      "falso": "false",
+      "nunca": "not reached"
+    },
     "salir-corte": {
       "titulo": "Exit cuts the loop",
       "descripcion": "Five cells with 7, 14, 21, 28 and 35. 7, 14 and 21 are visited; at 21 a red line marks Exit and cells 28 and 35 are never visited.",
@@ -616,6 +660,13 @@
       "texto-no": "\"Todavía no…\"",
       "juntan": "EndIf: they join",
       "no-se-ejecuta": "not run"
+    },
+    "subprograma-caja": {
+      "titulo": "A subprogram as a box",
+      "descripcion": "A box called Doble. The argument 21 goes in on the left and the result 42 comes out on the right.",
+      "argumento": "argument",
+      "resultado": "result",
+      "dentro": "the inside is not visible from outside"
     },
     "terminaciones": {
       "titulo": "The six terminations",

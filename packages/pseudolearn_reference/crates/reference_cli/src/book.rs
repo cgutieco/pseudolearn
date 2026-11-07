@@ -41,6 +41,7 @@ pub fn compile(workspace: &Workspace, engine: &dyn CodeEngine) -> Result<Book, S
                 engine,
                 corpus: &workspace.corpus,
                 categories: &workspace.categories,
+                aliases: &workspace.aliases,
                 pack: &content.pack,
                 figures: &workspace.figures,
                 index: &index,

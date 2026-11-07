@@ -1,0 +1,11 @@
+<svg viewBox="0 0 340 200">
+  <caja x="10" y="10" ancho="200" alto="30" rol="atenuado" fondo="0.04" fuente="mono" tamano="12" texto="{{codigo:Si a &lt; 0 Entonces}}"/>
+  <caja x="30" y="48" ancho="180" alto="28" rol="atenuado" fondo="0.04" fuente="mono" tamano="12" texto="{{codigo:Retornar a;}}"/>
+  <caja x="10" y="86" ancho="200" alto="30" rol="acento-estructurado" fondo="0.10" fuente="mono" tamano="12" texto="{{codigo:Si b &lt; 0 Entonces}}"/>
+  <caja x="30" y="124" ancho="180" alto="28" rol="exito" fondo="0.18" negrita="" fuente="mono" tamano="12" texto="{{codigo:Retornar b;}}"/>
+  <caja x="10" y="162" ancho="200" alto="28" rol="atenuado" discontinua="" fondo="0.0" fuente="mono" tamano="12" colortexto="atenuado" texto="{{codigo:Retornar c;}}"/>
+  <flecha puntos="210,138 290,138" rol="exito"/>
+  <caja x="290" y="120" ancho="44" alto="36" rol="numero" fondo="0.24" negrita="" fuente="mono" texto="-2"/>
+  <text x="270" y="30" font-size="12" text-anchor="middle" fill="@atenuado">{{t:falso}}</text>
+  <text x="270" y="182" font-size="12" text-anchor="middle" fill="@atenuado">{{t:nunca}}</text>
+</svg>
