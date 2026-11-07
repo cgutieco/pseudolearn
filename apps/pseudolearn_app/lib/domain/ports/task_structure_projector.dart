@@ -6,6 +6,8 @@ abstract interface class TaskStructureProjector {
   TaskStructureScene project({
     required List<ExecutionHistoryEvent> events,
     required int horizonFirst,
+    int? selectedEvent,
+    int? liveEvent,
     List<ExecutionTaskContext> taskContexts = const [],
   });
 }

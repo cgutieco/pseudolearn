@@ -13,6 +13,7 @@ import 'execution_history_command.dart';
 import 'execution_history_patch.dart';
 import 'execution_history_inspection_controller.dart';
 import 'execution_history_state.dart';
+import 'execution_history_task_pin.dart';
 import 'execution_history_window_controller.dart';
 import 'execution_inspection_loader.dart';
 import 'execution_state.dart';
@@ -50,16 +51,17 @@ final class ExecutionHistoryCubit extends Cubit<ExecutionHistoryState> {
     return super.close();
   }
 
-  TaskFlowScene projectFlow({required double width}) => _flowProjector.project(
-    events: state.visibleEvents,
+  TaskFlowScene projectFlow() => _flowProjector.project(
+    events: state.events,
     rangeStart: state.rangeStart,
     rangeEnd: state.rangeEnd,
-    width: width,
   );
 
   TaskStructureScene projectStructure() => _structureProjector.project(
     events: state.events,
     horizonFirst: state.horizonFirst,
+    selectedEvent: state.selectedEvent,
+    liveEvent: state.liveEvent,
     taskContexts: state.taskContexts,
   );
 
@@ -93,8 +95,20 @@ final class ExecutionHistoryCubit extends Cubit<ExecutionHistoryState> {
     }
   }
 
-  void _selectTask(int taskId) {
-    if (state.selectedEvent >= 0) _loadInspection(state.selectedEvent, taskId);
+  void _selectTask(int? taskId) {
+    final selected = taskId ?? state.selectedRecord?.taskId ?? 0;
+    emit(
+      state.copyWith(
+        ExecutionHistoryPatch(
+          selectedTaskId: selected,
+          taskPinned: taskId != null,
+        ),
+      ),
+    );
+    if (state.selectedEvent >= 0 &&
+        state.surface == ExecutionHistorySurface.events) {
+      _loadInspection(state.selectedEvent, selected);
+    }
   }
 
   void _selectFrame(int frame) {
@@ -165,11 +179,12 @@ final class ExecutionHistoryCubit extends Cubit<ExecutionHistoryState> {
   }
 
   void _onSelectedEvent(ExecutionHistoryEvent event, bool followsLive) {
+    final taskId = inspectedTaskAt(state, event);
     emit(
       state.copyWith(
         ExecutionHistoryPatch(
           selectedEvent: event.index,
-          selectedTaskId: event.taskId,
+          selectedTaskId: taskId,
           rangeStart: _visibleStart(event.index),
           rangeEnd: _visibleEnd(event.index),
           followsLive: followsLive,
@@ -181,7 +196,7 @@ final class ExecutionHistoryCubit extends Cubit<ExecutionHistoryState> {
       ),
     );
     if (state.surface == ExecutionHistorySurface.events) {
-      _loadInspection(event.index, event.taskId);
+      _loadInspection(event.index, taskId);
     }
   }
 

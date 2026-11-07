@@ -17,7 +17,7 @@ final class SelectHistoryEvent extends ExecutionHistoryCommand {
 }
 
 final class SelectHistoryTask extends ExecutionHistoryCommand {
-  final int taskId;
+  final int? taskId;
 
   const SelectHistoryTask(this.taskId);
 }

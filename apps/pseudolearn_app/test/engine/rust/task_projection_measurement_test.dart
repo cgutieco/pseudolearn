@@ -57,7 +57,6 @@ void main() {
           events: prepared.events,
           rangeStart: prepared.events.first.index,
           rangeEnd: prepared.events.last.index,
-          width: 1200,
         );
         final structureScene = structure.project(
           events: prepared.events,
@@ -78,7 +77,6 @@ void main() {
           events: read.events,
           rangeStart: read.events.first.index,
           rangeEnd: read.events.last.index,
-          width: 1200,
         );
         integratedClock.stop();
 
@@ -94,10 +92,12 @@ void main() {
             'retained_events': prepared.totalEvents,
             'horizon_first': prepared.horizonFirst,
             'visible_events': prepared.events.length,
-            'visible_tasks': flowScene.lanes.length,
+            'visible_tasks': flowScene.columns.length,
             'structure_tasks': structureScene.tasks.length,
-            'flow_markers': flowScene.markers.length,
-            'flow_connectors': flowScene.connectors.length,
+            'flow_markers': flowScene.rows.length,
+            'flow_connectors': flowScene.rows
+                .where((row) => row.linkKind != null)
+                .length,
             'clock_ticks_per_second': ticksPerSecond,
             'clock_resolution_ticks': resolution,
             'pure_projection_ns': _nanoseconds(pureClock, ticksPerSecond),
@@ -172,17 +172,17 @@ void _expectEquivalent(
   TaskStructureScene structure,
   TaskFlowScene integrated,
 ) {
-  expect(pure.markers.length, prepared.events.length);
-  expect(integrated.markers.length, pure.markers.length);
+  expect(pure.rows.length, prepared.events.length);
+  expect(integrated.rows.length, pure.rows.length);
   expect(
-    integrated.lanes.map((lane) => lane.taskId),
-    pure.lanes.map((lane) => lane.taskId),
+    integrated.columns.map((column) => column.taskId),
+    pure.columns.map((column) => column.taskId),
   );
   expect(structure.tasks.length, inInclusiveRange(1, prepared.tasks + 1));
-  expect(pure.lanes.length, lessThanOrEqualTo(prepared.tasks + 1));
+  expect(pure.columns.length, lessThanOrEqualTo(prepared.tasks + 1));
   if (prepared.horizonFirst == 0 &&
       prepared.events.length == prepared.totalEvents) {
-    expect(pure.lanes.length, prepared.tasks + 1);
+    expect(pure.columns.length, prepared.tasks + 1);
   }
 }
 

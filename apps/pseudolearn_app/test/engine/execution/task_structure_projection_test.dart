@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/domain/model/execution/block_position.dart';
 import 'package:pseudolearn_app/domain/model/execution/execution_history_event.dart';
 import 'package:pseudolearn_app/domain/model/execution/execution_task_context.dart';
+import 'package:pseudolearn_app/domain/model/execution/task_event_kind.dart';
 import 'package:pseudolearn_app/engine/execution/task_structure_projection.dart';
 
 ExecutionHistoryEvent _event(
@@ -40,13 +41,14 @@ void main() {
       horizonFirst: 0,
     );
 
-    expect(scene.tasks.map((task) => task.taskId), [0, 2, 4]);
-    expect(scene.tasks[1].parentId, 4);
-    expect(scene.tasks[1].scopeId, 19);
-    expect(scene.tasks[2].children, [2]);
-    expect(scene.tasks[2].joins.single.eventIndex, 3);
-    expect(scene.tasks[1].status, 'completed');
-    expect(scene.tasks[2].status, 'suspended');
+    expect(scene.tasks.map((task) => task.taskId), [0, 4, 2]);
+    expect(scene.tasks.map((task) => task.depth), [0, 1, 2]);
+    expect(scene.tasks[2].parentId, 4);
+    expect(scene.tasks[2].scopeId, 19);
+    expect(scene.tasks[1].children, [2]);
+    expect(scene.tasks[1].joins.single.eventIndex, 3);
+    expect(scene.tasks[2].status, 'completed');
+    expect(scene.tasks[1].status, 'suspended');
     expect(scene.beginsAtRetentionHorizon, isFalse);
   });
 
@@ -65,6 +67,71 @@ void main() {
     expect(scene.tasks.last.parentId, isNull);
     expect(scene.tasks.every((task) => task.joins.isEmpty), isTrue);
     expect(scene.tasks.last.status, 'created');
+  });
+
+  test('projects the state at the selected event, not the live one', () {
+    final events = [
+      _event(0, 0, 'task_spawned', {'task': 1, 'parent': 0, 'scope': 0}),
+      _event(1, 0, 'task_ready', {'task': 1, 'cause': 'spawn'}),
+      _event(2, 0, 'task_suspended', {'task': 0, 'cause': 'join', 'target': 0}),
+      _event(3, 1, 'task_resumed', {'task': 1}),
+      _event(4, 1, 'statement_entered'),
+      _event(5, 1, 'task_completed', {'task': 1, 'outcome': 'success'}),
+    ];
+    final live = [
+      _context(0, ExecutionTaskStatus.completed, 'success'),
+      _context(1, ExecutionTaskStatus.completed, 'success'),
+    ];
+
+    final past = projection.project(
+      events: events,
+      horizonFirst: 0,
+      selectedEvent: 2,
+      liveEvent: 5,
+      taskContexts: live,
+    );
+    final running = projection.project(
+      events: events,
+      horizonFirst: 0,
+      selectedEvent: 4,
+      liveEvent: 5,
+      taskContexts: live,
+    );
+
+    expect(past.tasks.map((task) => task.status), ['suspended', 'ready']);
+    expect(past.tasks.first.wait?.cause, TaskWaitCause.join);
+    expect(past.tasks.first.wait?.pendingChildren, 1);
+    expect(past.tasks.first.wait?.totalChildren, 1);
+    expect(running.tasks.last.status, 'running');
+    expect(running.tasks.last.currentLine, 5);
+    expect(past.nameOf(7), isNull);
+  });
+
+  test('a task wait names its target and clears when the task resumes', () {
+    final scene = projection.project(
+      events: [
+        _event(0, 0, 'task_spawned', {'task': 1, 'parent': 0, 'scope': 0}),
+        _event(1, 1, 'call', {'nombre': 'Worker'}),
+        _event(2, 0, 'task_suspended', {'task': 0, 'cause': 'task', 'target': 1}),
+        _event(3, 0, 'task_resumed', {'task': 0}),
+      ],
+      horizonFirst: 0,
+      selectedEvent: 2,
+      liveEvent: 3,
+    );
+    final resumed = projection.project(
+      events: [
+        _event(2, 0, 'task_suspended', {'task': 0, 'cause': 'task', 'target': 1}),
+        _event(3, 0, 'task_resumed', {'task': 0}),
+      ],
+      horizonFirst: 0,
+    );
+
+    expect(scene.tasks.first.wait?.cause, TaskWaitCause.task);
+    expect(scene.tasks.first.wait?.target, 1);
+    expect(scene.nameOf(1), 'Worker');
+    expect(resumed.tasks.single.wait, isNull);
+    expect(resumed.tasks.single.status, 'running');
   });
 
   test('empty history retains only the root task', () {

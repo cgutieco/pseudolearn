@@ -6,6 +6,5 @@ abstract interface class TaskFlowProjector {
     required List<ExecutionHistoryEvent> events,
     required int rangeStart,
     required int rangeEnd,
-    required double width,
   });
 }

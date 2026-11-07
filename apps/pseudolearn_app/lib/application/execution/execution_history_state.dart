@@ -29,6 +29,7 @@ typedef _ExecutionHistoryValues = ({
   String? valueCursor,
   String? error,
   bool followsLive,
+  bool taskPinned,
 });
 
 final class ExecutionHistoryState extends Equatable {
@@ -52,6 +53,7 @@ final class ExecutionHistoryState extends Equatable {
   final String? valueCursor;
   final String? error;
   final bool followsLive;
+  final bool taskPinned;
 
   const ExecutionHistoryState({
     required this.runId,
@@ -74,6 +76,7 @@ final class ExecutionHistoryState extends Equatable {
     required this.valueCursor,
     required this.error,
     required this.followsLive,
+    this.taskPinned = false,
   });
 
   const ExecutionHistoryState.initial()
@@ -96,7 +99,8 @@ final class ExecutionHistoryState extends Equatable {
       valueTotal = 0,
       valueCursor = null,
       error = null,
-      followsLive = true;
+      followsLive = true,
+      taskPinned = false;
 
   ExecutionHistoryState._(_ExecutionHistoryValues values)
     : runId = values.runId,
@@ -118,12 +122,8 @@ final class ExecutionHistoryState extends Equatable {
       valueTotal = values.valueTotal,
       valueCursor = values.valueCursor,
       error = values.error,
-      followsLive = values.followsLive;
-
-  List<ExecutionHistoryEvent> get visibleEvents => [
-    for (final event in events)
-      if (event.index >= rangeStart && event.index <= rangeEnd) event,
-  ];
+      followsLive = values.followsLive,
+      taskPinned = values.taskPinned;
 
   ExecutionHistoryEvent? get selectedRecord {
     for (final event in events) {
@@ -166,6 +166,7 @@ final class ExecutionHistoryState extends Equatable {
             : patch.valueCursor ?? valueCursor,
         error: patch.clearError ? null : patch.error ?? error,
         followsLive: patch.followsLive ?? followsLive,
+        taskPinned: patch.taskPinned ?? taskPinned,
       ));
 
   @override
@@ -190,5 +191,6 @@ final class ExecutionHistoryState extends Equatable {
     valueCursor,
     error,
     followsLive,
+    taskPinned,
   ];
 }

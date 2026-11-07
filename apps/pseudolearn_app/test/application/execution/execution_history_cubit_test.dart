@@ -150,6 +150,40 @@ void main() {
     );
   });
 
+  test('a pinned task stays inspected while stepping once it exists', () async {
+    final executionStates = StreamController<ExecutionState>.broadcast(
+      sync: true,
+    );
+    final observer = _FakeObserver(
+      events: [
+        for (final event in _events(10))
+          event.index == 2 ? _spawn(2, child: 1) : event,
+      ],
+    );
+    final cubit = _cubit(executionStates.stream, observer);
+    executionStates.add(_executionState(1, -1));
+    executionStates.add(_executionState(1, 9));
+    cubit.dispatch(const SelectHistorySurface(ExecutionHistorySurface.events));
+    cubit.dispatch(const SelectHistoryTask(1));
+
+    cubit.dispatch(const SelectHistoryEvent(4));
+    expect(cubit.state.taskPinned, isTrue);
+    expect(observer.stateRequests.last.taskId, 1);
+
+    cubit.dispatch(const SelectHistoryEvent(0));
+    expect(observer.stateRequests.last.taskId, 0);
+
+    cubit.dispatch(const SelectHistoryTask(null));
+    cubit.dispatch(const SelectHistoryEvent(5));
+    expect(cubit.state.taskPinned, isFalse);
+    expect(observer.stateRequests.last.taskId, 1);
+    cubit.dispatch(const SelectHistoryEvent(6));
+    expect(observer.stateRequests.last.taskId, 0);
+
+    await cubit.close();
+    await executionStates.close();
+  });
+
   test('reports missing observation ports without throwing', () async {
     final executionStates = StreamController<ExecutionState>.broadcast(
       sync: true,
@@ -205,6 +239,19 @@ List<ExecutionHistoryEvent> _events(int count) => [
       sourceRange: null,
     ),
 ];
+
+ExecutionHistoryEvent _spawn(int index, {required int child}) =>
+    ExecutionHistoryEvent(
+      index: index,
+      taskId: 0,
+      eventClass: 'task_spawned',
+      line: index + 1,
+      depth: 0,
+      data: {'task': child, 'parent': 0, 'scope': 0},
+      revisionId: 'revision',
+      nodeId: 'node-$index',
+      sourceRange: null,
+    );
 
 final class _FakeObserver implements ProgramExecutionObserver {
   final List<ExecutionHistoryEvent> events;

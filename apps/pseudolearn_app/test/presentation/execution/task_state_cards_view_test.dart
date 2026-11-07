@@ -17,7 +17,7 @@ import 'package:pseudolearn_app/domain/model/execution/execution_value_page.dart
 import 'package:pseudolearn_app/domain/ports/program_execution_observer.dart';
 import 'package:pseudolearn_app/engine/execution/task_flow_projection.dart';
 import 'package:pseudolearn_app/engine/execution/task_structure_projection.dart';
-import 'package:pseudolearn_app/presentation/execution/task_structure_view.dart';
+import 'package:pseudolearn_app/presentation/execution/task_state_cards_view.dart';
 import 'package:pseudolearn_app/presentation/l10n/generated/app_localizations.dart';
 import 'package:pseudolearn_app/presentation/shell/design_canvas.dart';
 import 'package:pseudolearn_app/presentation/theme/app_theme.dart';
@@ -49,7 +49,7 @@ void main() {
           ],
           supportedLocales: AppLocalizations.supportedLocales,
         home: DesignCanvas(
-          child: Scaffold(body: TaskStructureView(state: cubit.state)),
+          child: Scaffold(body: TaskStateCardsView(state: cubit.state)),
         ),
         ),
       ),

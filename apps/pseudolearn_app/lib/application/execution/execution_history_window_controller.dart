@@ -163,7 +163,9 @@ final class ExecutionHistoryWindowController {
           hasExecution: true,
           liveEvent: selection.liveEvent,
           selectedEvent: selection.selectedEvent,
-          selectedTaskId: selectedRecord?.taskId ?? state.selectedTaskId,
+          selectedTaskId: state.taskPinned
+              ? state.selectedTaskId
+              : selectedRecord?.taskId ?? state.selectedTaskId,
           horizonFirst: window.horizonFirst,
           horizonLast: window.horizonLast,
           rangeStart: selection.rangeStart,

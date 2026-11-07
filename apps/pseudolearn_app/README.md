@@ -117,6 +117,7 @@ del núcleo; la aplicación traduce, orquesta y renderiza los resultados.
 | Pruebas de widgets con el puente real                           | Los widgets se prueban con fakes; solo `ExecutionCubit` se ejercita contra la biblioteca nativa en `tool/native_bridge_adapters_test.dart` | Abierto |
 | Ficha de ayuda de `Importar` y `Exportar` | Catálogo `TOOL.SERVICE.CATALOG` y resolución contextual del servicio; el pegado aislado conserva su diagnóstico, mientras la consulta sobre la directiva y su alias devuelve la ficha propia | Resuelto en PG-A.08; no enlaza paquetes ni habilita E/S |
 | Ampliar el subconjunto de código equivalente | Emisores Python y Rust: `Segun` en Python (exige 3.10 comprobable), arreglos con base 1, clases y valores de retorno en Rust, lógicos en la salida; cada ampliación necesita su caso diferencial (§4.11) | Abierto |
+| Valor de un parámetro `Canal` en la vista Variables | La página de valores de `debug_state` aplana el canal como registro con la hoja interna `identity` y la muestra como `stream.identity = Nulo`; la API debería publicar el canal como un valor propio (número de canal). La app no oculta la hoja por nombre, porque ocultaría también un campo de usuario llamado igual | Abierto; reportado desde el rediseño de la pestaña `Tareas` |
 
 ---
 
@@ -2642,7 +2643,7 @@ aviso de que ese contenido no está disponible; no representa una cola vacía, l
 los eventos. Las pruebas del API `task_failure_tests`, `task_event_tests`, `task_channel_tests` y
 `task_deadlock_tests` cubren errores recuperables, cancelación cooperativa, trampas, limpiezas, canales y ubicaciones
 relacionadas del bloqueo. `rust_task_termination_test.dart` atraviesa el puente nativo para comprobar esos resultados en
-los contextos de tarea; `task_structure_projection_test.dart` y `task_structure_view_test.dart` verifican la proyección y
+los contextos de tarea; `task_structure_projection_test.dart` y `task_state_cards_view_test.dart` verifican la proyección y
 sus rótulos accesibles.
 
 | Conducta | Cinta y eventos | Recursos y limpiezas | Presentación y ayuda |
@@ -3231,43 +3232,75 @@ desplazamiento de página con el identificador real del marco. Un cursor de valo
 cuando se pide la página siguiente; no se lee la colección completa para recortarla después. Las
 consultas nunca actualizan el estado de control.
 
-Las tres superficies comparten selección de evento, rango y tarea:
+La pestaña `Tareas` es una herramienta de aula: se diseña primero para el teléfono, donde el panel
+acompañante deja unos 230 px útiles bajo el editor, y escritorio usa el mismo diseño con más filas
+visibles. Todas sus piezas comparten el evento seleccionado, el rango y la tarea.
 
-- **Flujo local:** una línea por identidad de tarea y marcas en orden de índice lógico. La creación
-  enlaza emisor e hija; una suspensión muestra una relación discontinua rotulada con causa y destino.
-  Estas relaciones describen identidad y espera, no flujo de control entre cuerpos. El eje anuncia el
-  índice de evento y no representa tiempo físico; no se infieren duración ni velocidad.
-- **Creación y uniones:** árbol determinista con progenitor y ámbito observados en `task_spawned`,
-  estado derivado de eventos en orden y la unión adscrita a la tarea que la emitió. Una unión no es
-  una rama alternativa. Si el horizonte perdió la creación, la vista avisa que el árbol es parcial;
-  un ámbito sin eventos no inventa una tarea o unión.
-- **Eventos y estado:** selecciona tarea, marco y página de variables para el evento elegido. El
-  evento mostrado conserva su clase, índice, tarea y datos originales. Los eventos de canal
-  identifican operación y canal, pero la API no publica la cola ni los valores de mensajes; la
-  interfaz lo explica y no reconstruye ese estado.
+- **Cabecera fija de una línea:** segmentado «Cronología · Estado · Variables» y un botón de ayuda
+  que abre una hoja inferior con la explicación de cada vista. Las leyendas fijas se eliminaron
+  porque ocupaban la altura que el teléfono necesita para los datos.
+- **Barra de narración:** «Evento N de M» (N es el seleccionado y M el vivo), ‹ y › para moverse
+  entre eventos sin tocar la ejecución, «En vivo» para volver al último y una frase en lenguaje
+  natural del evento elegido («T1 · Produce espera lugar en el canal 1»). La frase sale de un único
+  mapeo, tipo de evento → recurso localizado (`task_event_sentence.dart`), así que las tres vistas
+  hablan igual. Moverse con ‹ y › o tocar una fila resalta la sentencia en el editor mediante
+  `revealSource`, como el ordinograma.
+- **Cronología:** línea de tiempo vertical, con una fila de alto fijo por evento y una columna
+  estrecha por tarea. El eje es vertical porque el desplazamiento natural del teléfono es vertical;
+  el lienzo horizontal anterior obligaba a desplazarse de costado en cada paso. Cuando cambia el
+  evento seleccionado, la lista se desplaza con animación hasta dejar su fila centrada (sin
+  animación si el sistema pide reducir el movimiento). La creación se dibuja como una línea continua
+  hacia la columna hija. La espera es punteada y llega solo a su objetivo real: la tarea esperada
+  (`task`) o las hijas de ese ámbito (`join`, resueltas con `scope` de `task_spawned`). Las esperas de
+  canal, `select` o efecto se rotulan sin cruzar columnas, porque su objetivo no es una tarea. Las
+  filas de sentencia se atenúan y las de tarea o canal se destacan. El orden es el índice lógico, no
+  tiempo físico. «Ver eventos anteriores» amplía el rango hacia atrás.
+- **Estado:** una tarjeta por tarea, con sangría según quién la lanzó. Proyecta el estado **en el
+  evento seleccionado**: los eventos posteriores no se aplican y los contextos vivos del motor solo
+  corrigen estados cuando el seleccionado es el vivo. Antes se mezclaba la caché completa con los
+  contextos vivos, y retroceder mostraba el presente. Cada tarjeta explica su estado en una línea
+  («Esperando su turno», «Esperando a sus tareas: faltan 1 de 2») y ofrece acciones explícitas: «Ver
+  variables» e «Ir a su creación». Si el horizonte perdió la creación, la vista avisa que el árbol es
+  parcial.
+- **Variables:** chips de tarea («Tarea del evento» o una concreta), migas de pan de la pila de
+  llamadas y una tabla nombre/valor, todo en un único desplazamiento. Elegir una tarea la **fija**:
+  al avanzar se sigue inspeccionando esa tarea y no la del evento, siempre que ya exista en el
+  evento elegido. Si todavía no existe, se usa la del evento. «Tarea del evento» quita la fijación.
+  Los eventos de canal advierten que la cola no está expuesta.
 
-Las etiquetas, leyendas y avisos tienen recursos en español e inglés. Los marcadores ofrecen nombre
-semántico con índice, tarea, clase y línea; los controles de evento, tarea y marco son navegables, y
-el rótulo de espera expone causa y destino. El significado no depende solo del color. Las formas
-estáticas del ordinograma y del estructograma de PG-A permanecen en sus vistas originales; estas
-proyecciones de concurrencia viven en la pestaña `Tareas`.
+**Identidad y color.** Una tarea se nombra `T<n>` más el subproceso que ejecuta, tomado del primer
+evento `call` atribuido a ella (`T1 · Produce`); la raíz se llama «principal». No se añadió una paleta
+categórica por tarea al sistema de diseño: el color expresa **estado**, con los semánticos
+existentes (información = ejecutando, advertencia = esperando, éxito = terminada, error = fallo), y
+siempre va acompañado de ícono y texto.
 
-| Dato de ejecución | Flujo | Estructura | Eventos y estado | Tabla de trazas | Ayuda | Evidencia y contrato |
+**Capas.** `TaskEventClassifier` (motor) es el único lugar que conoce las cadenas del cable
+(`task_suspended`, `channel_send`, `present`…) y las traduce a `TaskEventKind` y `TaskWaitCause`
+(modelo). `TaskFlowProjection` produce filas y columnas sin geometría, y la presentación calcula los
+píxeles a partir del ancho disponible. `TaskStructureProjection` recibe el evento seleccionado y el
+vivo. La regla de fijación de tarea vive en aplicación (`execution_history_task_pin.dart`).
+
+| Dato de ejecución | Cronología | Estado | Variables | Tabla de trazas | Ayuda | Evidencia y contrato |
 |---|---|---|---|---|---|---|
-| `task_spawned` | Marca de creación entre emisor e hija | Crea hija con progenitor y ámbito | Evento íntegro y tarea emisora | No aplica: las filas se abren por cambio de `focusRevision`, no por todo evento de agenda | No aplica: es estado de ejecución de sintaxis existente, no una forma gramatical nueva | Proyección de flujo/estructura; `history_events.rs`; `API.EXECUTE` R8/C13 |
-| `task_ready`, `task_resumed`, `task_suspended`, `task_completed`, `task_cancel_requested` | Marca en la línea de su emisor; suspensión enlaza causa y destino | Actualiza estado y resultado de la tarea | Evento íntegro, con tarea atribuida | No aplica: no cada transición cambia la fila de sentencia enfocada | No aplica por el mismo motivo curricular | Proyección de flujo/estructura; cubit; `API.EXECUTE` R7/R8 |
-| `scope_joined` | Marca del evento del emisor, sin conector de control | Unión en la tarea emisora con evento y resultado | Evento íntegro y resultado | No aplica: una unión no agrega una fila sintáctica | No aplica: no agrega una construcción al lenguaje | Proyección de estructura; prueba de uniones; `API.EXECUTE` R8 |
-| `channel_created`, `channel_sent`, `channel_received`, `channel_closed` | Marcas atribuibles sin inventar tránsito de datos | Sin nodo de tarea artificial | Operación e identidad del canal; aviso de cola no disponible | No aplica: los eventos de canal no son filas de sentencia | No aplica: el aviso documenta el límite del dato expuesto, no una forma del lenguaje | Vista de eventos; decodificador de eventos; `API.EXECUTE` R8 |
-| Evento ordinario (`statement_entered`, `output`, entre otros) | Marca asignada por `task_id` de la cinta completa | No crea una tarea por sí solo | Clase, fuente y valores del evento | Se conserva la fila por foco de sentencia, sin duplicarla por selección histórica | No aplica: la ayuda existente sigue resolviendo la fuente de sintaxis | `history_events.rs`, `debug_control.rs`; `API.EXECUTE` R7/R8 |
+| `task_spawned` | Fila del emisor con línea continua a la hija | Crea la tarjeta hija bajo su progenitor | Tarea emisora | No aplica: las filas se abren por cambio de `focusRevision`, no por todo evento de agenda | No aplica: es estado de ejecución de sintaxis existente, no una forma gramatical nueva | Proyecciones; `history_events.rs`; `API.EXECUTE` R8/C13 |
+| `task_ready`, `task_resumed`, `task_suspended`, `task_completed`, `task_cancel_requested` | Fila en la columna de la tarea afectada (`data.task`); la espera enlaza su objetivo real | Estado, explicación y resultado en el evento elegido | Tarea atribuida | No aplica: no cada transición cambia la fila de sentencia enfocada | No aplica por el mismo motivo curricular | Proyecciones; cubit; `API.EXECUTE` R7/R8 |
+| `scope_joined` | Fila «continúa: sus tareas terminaron» | Unión adscrita a la tarea emisora | Resultado | No aplica: una unión no agrega una fila sintáctica | No aplica: no agrega una construcción al lenguaje | Proyección de estructura; `API.EXECUTE` R8 |
+| `channel_created`, `channel_sent`, `channel_received`, `channel_closed` | Fila con número de canal; recibir sin valor se narra como canal cerrado | Sin tarjeta artificial | Aviso de cola no disponible | No aplica: los eventos de canal no son filas de sentencia | No aplica: el aviso documenta el límite del dato expuesto | Decodificador de eventos; `API.EXECUTE` R8 |
+| Evento ordinario (`statement_entered`, `call`, `output`, entre otros) | Fila atenuada asignada por `task_id`; `call` da nombre a la tarea | Línea actual de la tarea | Valores del marco | Se conserva la fila por foco de sentencia, sin duplicarla por selección histórica | No aplica: la ayuda existente sigue resolviendo la fuente de sintaxis | `history_events.rs`, `debug_control.rs`; `API.EXECUTE` R7/R8 |
 
-Pruebas de la app: `test/engine/execution/task_flow_projection_test.dart` y
-`task_structure_projection_test.dart` cubren orden, relaciones, árbol anidado, unión, horizonte,
-árbol vacío y registros sin dueño; `test/application/execution/execution_history_cubit_test.dart`
-cubre selección independiente del evento vivo, paginación, errores y límites 4096/4097;
-`test/presentation/execution/task_projections_tab_view_test.dart` recorre las tres vistas en ancho
-compacto y comprueba semántica accesible. Las pruebas API `history_events.rs` y `debug_control.rs`
-comprueban atribución histórica y que consultar un evento anterior no mueve la ejecución. Los casos
-de conformance C13/C14 verifican contrato de atribución e inspección en `API.EXECUTE`.
+Pruebas de la app: `test/engine/execution/task_flow_projection_test.dart` cubre columnas, enlaces de
+creación, espera por tarea, espera por unión limitada a su ámbito, esperas de canal sin enlace, nombres
+por `call`, recorte de rango y entrada vacía. `task_structure_projection_test.dart` cubre el estado en
+un evento pasado frente al vivo, el progreso de la unión, el objetivo de espera, el árbol anidado, el
+horizonte y las terminaciones. `test/application/execution/execution_history_cubit_test.dart` cubre la
+selección independiente del evento vivo, la tarea fijada, la paginación, los errores y los límites
+4096/4097. `test/presentation/execution/task_projections_tab_view_test.dart` comprueba, en 375×520,
+que la cronología sigue el último evento, que retroceder narra la espera en la unión y la refleja en
+Estado, y que Variables muestra chips y valores. `task_state_cards_view_test.dart` comprueba los
+resultados de error recuperable y de cancelación. Las pruebas API `history_events.rs` y
+`debug_control.rs` comprueban la atribución histórica y que consultar un evento anterior no mueve la
+ejecución. Los casos de conformance C13/C14 verifican el contrato de atribución e inspección en
+`API.EXECUTE`.
 
 Medición intermedia local del 2026-11-03, fuentes modificadas sobre 04b4153868cc3ab63f90c2b0e1445e4adb8832bf:
 ios-arm64 Release 5.989.360 bytes, SHA-256

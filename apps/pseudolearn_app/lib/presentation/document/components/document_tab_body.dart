@@ -93,7 +93,11 @@ final class _TaskProjectionsTabItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ExecutionHistoryCubit, ExecutionHistoryState>(
-      builder: (context, state) => TaskProjectionsTabView(state: state),
+      builder: (context, state) => TaskProjectionsTabView(
+        state: state,
+        onSourceSelected: (range) =>
+            context.read<EditorCubit>().revealSource(range),
+      ),
     );
   }
 }

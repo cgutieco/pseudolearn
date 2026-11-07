@@ -25,6 +25,7 @@ final class ExecutionHistoryPatch {
   final String? valueCursor;
   final String? error;
   final bool? followsLive;
+  final bool? taskPinned;
   final bool clearInspection;
   final bool clearValues;
   final bool clearCursor;
@@ -51,6 +52,7 @@ final class ExecutionHistoryPatch {
     this.valueCursor,
     this.error,
     this.followsLive,
+    this.taskPinned,
     this.clearInspection = false,
     this.clearValues = false,
     this.clearCursor = false,

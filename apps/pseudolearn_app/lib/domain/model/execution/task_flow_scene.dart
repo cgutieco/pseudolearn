@@ -1,69 +1,74 @@
 import 'execution_history_event.dart';
+import 'task_event_kind.dart';
 
-final class TaskFlowLane {
+final class TaskFlowColumn {
   final int taskId;
+  final String? name;
   final int order;
-  final double y;
 
-  const TaskFlowLane({
+  const TaskFlowColumn({
     required this.taskId,
+    required this.name,
     required this.order,
-    required this.y,
   });
 }
 
-final class TaskFlowMarker {
+enum TaskFlowLinkKind { creation, wait }
+
+final class TaskFlowRow {
   final ExecutionHistoryEvent event;
-  final double x;
-  final double y;
+  final TaskEventKind kind;
+  final int taskId;
+  final int column;
+  final TaskFlowLinkKind? linkKind;
+  final List<int> linkedColumns;
+  final int? relatedTaskId;
+  final TaskWaitCause? waitCause;
+  final int? channelId;
+  final String? detail;
 
-  const TaskFlowMarker({required this.event, required this.x, required this.y});
-}
-
-final class TaskFlowConnector {
-  final int sourceEvent;
-  final int sourceTaskId;
-  final int? targetTaskId;
-  final String targetKind;
-  final int targetId;
-  final String cause;
-  final double startX;
-  final double startY;
-  final double endX;
-  final double endY;
-
-  const TaskFlowConnector({
-    required this.sourceEvent,
-    required this.sourceTaskId,
-    required this.targetTaskId,
-    required this.targetKind,
-    required this.targetId,
-    required this.cause,
-    required this.startX,
-    required this.startY,
-    required this.endX,
-    required this.endY,
-  });
+  TaskFlowRow({
+    required this.event,
+    required this.kind,
+    required this.taskId,
+    required this.column,
+    this.linkKind,
+    List<int> linkedColumns = const [],
+    this.relatedTaskId,
+    this.waitCause,
+    this.channelId,
+    this.detail,
+  }) : linkedColumns = List.unmodifiable(linkedColumns);
 }
 
 final class TaskFlowScene {
-  final List<TaskFlowLane> lanes;
-  final List<TaskFlowMarker> markers;
-  final List<TaskFlowConnector> connectors;
-  final double width;
-  final double height;
+  final List<TaskFlowColumn> columns;
+  final List<TaskFlowRow> rows;
+  final Map<int, String> taskNames;
   final int rangeStart;
   final int rangeEnd;
 
   TaskFlowScene({
-    required List<TaskFlowLane> lanes,
-    required List<TaskFlowMarker> markers,
-    required List<TaskFlowConnector> connectors,
-    required this.width,
-    required this.height,
+    required List<TaskFlowColumn> columns,
+    required List<TaskFlowRow> rows,
+    required Map<int, String> taskNames,
     required this.rangeStart,
     required this.rangeEnd,
-  }) : lanes = List.unmodifiable(lanes),
-       markers = List.unmodifiable(markers),
-       connectors = List.unmodifiable(connectors);
+  }) : columns = List.unmodifiable(columns),
+       rows = List.unmodifiable(rows),
+       taskNames = Map.unmodifiable(taskNames);
+
+  int? rowIndexOf(int eventIndex) {
+    for (var index = 0; index < rows.length; index++) {
+      if (rows[index].event.index == eventIndex) return index;
+    }
+    return null;
+  }
+
+  TaskFlowRow? rowOf(int eventIndex) {
+    final index = rowIndexOf(eventIndex);
+    return index == null ? null : rows[index];
+  }
+
+  String? nameOf(int taskId) => taskNames[taskId];
 }

@@ -217,56 +217,9 @@
   },
   "tabTrace": "Prueba de escritorio",
   "tabTasks": "Tareas",
-  "executionProjectionFlow": "Flujo local",
-  "executionProjectionStructure": "Creación y unión",
-  "executionProjectionEvents": "Eventos y estado",
-  "executionHistoryRange": "Eventos {first}–{last} · actual {current}",
-  "@executionHistoryRange": {
-    "description": "Rango visible de eventos y último evento consumido",
-    "placeholders": {
-      "first": {
-        "type": "int"
-      },
-      "last": {
-        "type": "int"
-      },
-      "current": {
-        "type": "int"
-      }
-    }
-  },
-  "executionPreviousRange": "Rango de eventos anterior",
-  "executionNextRange": "Rango de eventos siguiente",
-  "executionFollowLive": "Seguir el evento actual",
-  "executionFlowAxis": "Índice lógico del evento; el espacio no representa tiempo transcurrido",
-  "executionFlowCreationLegend": "Relación de creación de tarea",
-  "executionFlowWaitLegend": "Espera enlazada con su causa y objetivo",
-  "executionFlowConnector": "Evento {eventIndex}, tarea {taskId}, causa de espera {cause}, objetivo {targetId}",
-  "@executionFlowConnector": {
-    "placeholders": {
-      "eventIndex": {
-        "type": "int"
-      },
-      "taskId": {
-        "type": "int"
-      },
-      "cause": {
-        "type": "String"
-      },
-      "targetId": {
-        "type": "int"
-      }
-    }
-  },
-  "executionTaskLane": "Tarea {taskId}",
-  "@executionTaskLane": {
-    "description": "Rótulo de una tarea en el flujo de eventos",
-    "placeholders": {
-      "taskId": {
-        "type": "int"
-      }
-    }
-  },
+  "executionProjectionFlow": "Cronología",
+  "executionProjectionStructure": "Estado",
+  "executionProjectionEvents": "Variables",
   "executionEventSemantics": "Evento {eventIndex}, tarea {taskId}, {eventClass}, línea {line}",
   "@executionEventSemantics": {
     "description": "Rótulo accesible de un marcador de evento",
@@ -285,43 +238,10 @@
       }
     }
   },
-  "executionStructureCreated": "Tarea {taskId} creada por tarea {parentId} en el ámbito {scopeId}",
-  "@executionStructureCreated": {
-    "description": "Relación de creación entre tareas",
-    "placeholders": {
-      "taskId": {
-        "type": "int"
-      },
-      "parentId": {
-        "type": "int"
-      },
-      "scopeId": {
-        "type": "int"
-      }
-    }
-  },
   "executionStructureRoot": "Tarea raíz",
-  "executionStructureParent": "Creada por la tarea {parentId}",
-  "@executionStructureParent": {
-    "placeholders": {
-      "parentId": {
-        "type": "int"
-      }
-    }
-  },
-  "executionStructureScope": "Ámbito {scopeId}",
-  "@executionStructureScope": {
-    "placeholders": {
-      "scopeId": {
-        "type": "int"
-      }
-    }
-  },
-  "executionStructureRelationUnavailable": "La tarea padre quedó fuera del historial retenido.",
   "executionStatusCreated": "Creada",
   "executionStatusReady": "Lista",
   "executionStatusRunning": "Ejecutando",
-  "executionStatusSuspended": "Suspendida",
   "executionStatusCompleted": "Completada",
   "executionStatusCancellationRequested": "Cancelación solicitada",
   "executionStatusFailed": "Detenida por un error del programa",
@@ -344,30 +264,6 @@
       }
     }
   },
-  "executionStructureStatus": "Estado: {status}",
-  "@executionStructureStatus": {
-    "description": "Estado observado de una tarea",
-    "placeholders": {
-      "status": {
-        "type": "String"
-      }
-    }
-  },
-  "executionJoinLabel": "La tarea {taskId} unió sus hijas en el evento {eventIndex}: {outcome}",
-  "@executionJoinLabel": {
-    "description": "Marca de unión sobre la tarea padre",
-    "placeholders": {
-      "taskId": {
-        "type": "int"
-      },
-      "eventIndex": {
-        "type": "int"
-      },
-      "outcome": {
-        "type": "String"
-      }
-    }
-  },
   "executionHistoryStartsAt": "El historial retenido comienza en el evento {eventIndex}",
   "@executionHistoryStartsAt": {
     "description": "Explica que los eventos de creación anteriores ya vencieron",
@@ -381,33 +277,6 @@
   "executionFrameSelector": "Marco seleccionado",
   "executionPreviousFrames": "Página de marcos anterior",
   "executionNextFrames": "Página de marcos siguiente",
-  "executionFrameLabel": "Marco {frameId}: {name}",
-  "@executionFrameLabel": {
-    "description": "Opción del selector de marcos",
-    "placeholders": {
-      "frameId": {
-        "type": "int"
-      },
-      "name": {
-        "type": "String"
-      }
-    }
-  },
-  "executionVariablesLabel": "Variables en evento {eventIndex}, tarea {taskId}, marco {frameId}",
-  "@executionVariablesLabel": {
-    "description": "Título del estado paginado del marco seleccionado",
-    "placeholders": {
-      "eventIndex": {
-        "type": "int"
-      },
-      "taskId": {
-        "type": "int"
-      },
-      "frameId": {
-        "type": "int"
-      }
-    }
-  },
   "executionNoVariables": "Este marco no tiene variables.",
   "executionValueUndefined": "Sin valor",
   "executionValueNull": "Nulo",
@@ -420,10 +289,403 @@
     }
   },
   "executionLoadMoreValues": "Cargar página siguiente",
-  "executionChannelStateUnavailable": "Los eventos de canal muestran operaciones e identidad. La API no expone el contenido de la cola ni los valores de los mensajes.",
-  "executionHistoryEmpty": "Ejecuta un programa para inspeccionar sus eventos de tareas.",
+  "executionChannelStateUnavailable": "Los canales se muestran por su número; el contenido de su cola no está disponible.",
+  "executionHistoryEmpty": "Ejecuta paso a paso un programa con Tareas para ver aquí cómo se reparten el trabajo.",
   "executionObservationUnavailable": "La observación de la ejecución no está disponible en esta sesión.",
   "executionHistoryError": "El evento o el rango seleccionado venció del historial o no se pudo leer.",
+  "executionEventPosition": "Evento {event} de {live}",
+  "@executionEventPosition": {
+    "placeholders": {
+      "event": {
+        "type": "int"
+      },
+      "live": {
+        "type": "int"
+      }
+    }
+  },
+  "executionPreviousEvent": "Evento anterior",
+  "executionNextEvent": "Evento siguiente",
+  "executionLive": "En vivo",
+  "executionHelpOpen": "Cómo leer esta vista",
+  "executionHelpTitle": "Cómo leer la vista de tareas",
+  "executionHelpTimeline": "Cada fila es un evento, de arriba hacia abajo en el orden en que ocurrió, y cada columna es una tarea. Una flecha continua indica que una tarea lanzó a otra; una punteada, que espera a otra.",
+  "executionHelpStatus": "Muestra cómo está cada tarea en el evento elegido y qué está esperando. Las tareas lanzadas aparecen debajo de quien las lanzó.",
+  "executionHelpVariables": "Muestra los valores de una tarea en el evento elegido. Si eliges una tarea, la vista la sigue mientras avanzás.",
+  "executionHelpNavigation": "Usa ‹ y › para moverte entre eventos sin cambiar la ejecución. «En vivo» vuelve al último evento.",
+  "executionTaskShort": "T{taskId}",
+  "@executionTaskShort": {
+    "placeholders": {
+      "taskId": {
+        "type": "int"
+      }
+    }
+  },
+  "executionTaskNamed": "T{taskId} · {name}",
+  "@executionTaskNamed": {
+    "placeholders": {
+      "taskId": {
+        "type": "int"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "executionRootTaskName": "principal",
+  "executionEarlierEvents": "Ver eventos anteriores",
+  "executionSentenceSpawn": "{task} lanza a {child}",
+  "@executionSentenceSpawn": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "child": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceReady": "{task} queda lista para ejecutarse",
+  "@executionSentenceReady": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceResume": "{task} toma el turno",
+  "@executionSentenceResume": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceWaitTask": "{task} espera a que termine {target}",
+  "@executionSentenceWaitTask": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceWaitJoin": "{task} espera a que terminen las tareas que lanzó",
+  "@executionSentenceWaitJoin": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceWaitSend": "{task} espera lugar en el canal {channel}",
+  "@executionSentenceWaitSend": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "channel": {
+        "type": "int"
+      }
+    }
+  },
+  "executionSentenceWaitReceive": "{task} espera un valor del canal {channel}",
+  "@executionSentenceWaitReceive": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "channel": {
+        "type": "int"
+      }
+    }
+  },
+  "executionSentenceWaitSelect": "{task} espera a que algún canal esté listo",
+  "@executionSentenceWaitSelect": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceWaitEffect": "{task} espera una operación externa",
+  "@executionSentenceWaitEffect": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceWaitOther": "{task} se pausa",
+  "@executionSentenceWaitOther": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceComplete": "{task} termina",
+  "@executionSentenceComplete": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceCompleteError": "{task} termina con un error recuperable",
+  "@executionSentenceCompleteError": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceCancelled": "{task} se cancela",
+  "@executionSentenceCancelled": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceCancelRequest": "Se pide cancelar {task}",
+  "@executionSentenceCancelRequest": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceJoin": "{task} continúa: sus tareas terminaron",
+  "@executionSentenceJoin": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceChannelCreate": "{task} crea el canal {channel}",
+  "@executionSentenceChannelCreate": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "channel": {
+        "type": "int"
+      }
+    }
+  },
+  "executionSentenceChannelSend": "{task} envía un valor por el canal {channel}",
+  "@executionSentenceChannelSend": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "channel": {
+        "type": "int"
+      }
+    }
+  },
+  "executionSentenceChannelReceive": "{task} recibe un valor del canal {channel}",
+  "@executionSentenceChannelReceive": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "channel": {
+        "type": "int"
+      }
+    }
+  },
+  "executionSentenceChannelEmpty": "{task} no recibe nada: el canal {channel} está cerrado",
+  "@executionSentenceChannelEmpty": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "channel": {
+        "type": "int"
+      }
+    }
+  },
+  "executionSentenceChannelClose": "{task} cierra el canal {channel}",
+  "@executionSentenceChannelClose": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "channel": {
+        "type": "int"
+      }
+    }
+  },
+  "executionSentenceEffect": "{task} recibe el resultado de una operación externa",
+  "@executionSentenceEffect": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceCall": "{task} llama a {name}",
+  "@executionSentenceCall": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceReturn": "{task} vuelve de {name}",
+  "@executionSentenceReturn": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceOutput": "{task} escribe «{text}»",
+  "@executionSentenceOutput": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "text": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceInput": "{task} lee una entrada",
+  "@executionSentenceInput": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceFailure": "{task} se detiene por un error",
+  "@executionSentenceFailure": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceEnter": "{task} ejecuta la línea {line}",
+  "@executionSentenceEnter": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "line": {
+        "type": "int"
+      }
+    }
+  },
+  "executionSentenceExit": "{task} completa la línea {line}",
+  "@executionSentenceExit": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "line": {
+        "type": "int"
+      }
+    }
+  },
+  "executionSentenceDecision": "{task} decide en la línea {line}",
+  "@executionSentenceDecision": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "line": {
+        "type": "int"
+      }
+    }
+  },
+  "executionSentenceOther": "{task} registra un evento en la línea {line}",
+  "@executionSentenceOther": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "line": {
+        "type": "int"
+      }
+    }
+  },
+  "executionHintCreated": "Recién lanzada",
+  "executionHintReady": "Esperando su turno",
+  "executionHintRunning": "Ejecutando la línea {line}",
+  "@executionHintRunning": {
+    "placeholders": {
+      "line": {
+        "type": "int"
+      }
+    }
+  },
+  "executionHintWaitTask": "Esperando a {target}",
+  "@executionHintWaitTask": {
+    "placeholders": {
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "executionHintWaitJoin": "Esperando a sus tareas: faltan {pending} de {total}",
+  "@executionHintWaitJoin": {
+    "placeholders": {
+      "pending": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "executionHintWaitSend": "Esperando lugar en el canal {channel}",
+  "@executionHintWaitSend": {
+    "placeholders": {
+      "channel": {
+        "type": "int"
+      }
+    }
+  },
+  "executionHintWaitReceive": "Esperando un valor del canal {channel}",
+  "@executionHintWaitReceive": {
+    "placeholders": {
+      "channel": {
+        "type": "int"
+      }
+    }
+  },
+  "executionHintWaitSelect": "Esperando a que algún canal esté listo",
+  "executionHintWaitEffect": "Esperando una operación externa",
+  "executionStatusWaiting": "Esperando",
+  "executionLaunchedBy": "Lanzada por {parent} en el evento {event}",
+  "@executionLaunchedBy": {
+    "placeholders": {
+      "parent": {
+        "type": "String"
+      },
+      "event": {
+        "type": "int"
+      }
+    }
+  },
+  "executionShowVariables": "Ver variables",
+  "executionGoToCreation": "Ir a su creación",
+  "executionFollowEventTask": "Tarea del evento",
+  "executionTaskPickerLabel": "Tarea",
+  "executionCallStackLabel": "Llamadas",
   "@tabTrace": {
     "description": "Pestaña de tabla de prueba de escritorio"
   },

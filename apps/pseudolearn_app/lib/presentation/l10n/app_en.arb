@@ -217,56 +217,9 @@
   },
   "tabTrace": "Trace table",
   "tabTasks": "Tasks",
-  "executionProjectionFlow": "Local flow",
-  "executionProjectionStructure": "Creation and joins",
-  "executionProjectionEvents": "Events and state",
-  "executionHistoryRange": "Events {first}–{last} · current {current}",
-  "@executionHistoryRange": {
-    "description": "Visible event range and the last consumed event",
-    "placeholders": {
-      "first": {
-        "type": "int"
-      },
-      "last": {
-        "type": "int"
-      },
-      "current": {
-        "type": "int"
-      }
-    }
-  },
-  "executionPreviousRange": "Previous event range",
-  "executionNextRange": "Next event range",
-  "executionFollowLive": "Follow current event",
-  "executionFlowAxis": "Logical event index; spacing does not represent elapsed time",
-  "executionFlowCreationLegend": "Task creation relation",
-  "executionFlowWaitLegend": "Wait linked to its cause and target",
-  "executionFlowConnector": "Event {eventIndex}, task {taskId}, wait cause {cause}, target {targetId}",
-  "@executionFlowConnector": {
-    "placeholders": {
-      "eventIndex": {
-        "type": "int"
-      },
-      "taskId": {
-        "type": "int"
-      },
-      "cause": {
-        "type": "String"
-      },
-      "targetId": {
-        "type": "int"
-      }
-    }
-  },
-  "executionTaskLane": "Task {taskId}",
-  "@executionTaskLane": {
-    "description": "Label for one task lane in the event flow",
-    "placeholders": {
-      "taskId": {
-        "type": "int"
-      }
-    }
-  },
+  "executionProjectionFlow": "Timeline",
+  "executionProjectionStructure": "Status",
+  "executionProjectionEvents": "Variables",
   "executionEventSemantics": "Event {eventIndex}, task {taskId}, {eventClass}, line {line}",
   "@executionEventSemantics": {
     "description": "Accessible label for an event marker",
@@ -285,43 +238,10 @@
       }
     }
   },
-  "executionStructureCreated": "Task {taskId} created by task {parentId} in scope {scopeId}",
-  "@executionStructureCreated": {
-    "description": "Creation relationship between tasks",
-    "placeholders": {
-      "taskId": {
-        "type": "int"
-      },
-      "parentId": {
-        "type": "int"
-      },
-      "scopeId": {
-        "type": "int"
-      }
-    }
-  },
   "executionStructureRoot": "Root task",
-  "executionStructureParent": "Created by task {parentId}",
-  "@executionStructureParent": {
-    "placeholders": {
-      "parentId": {
-        "type": "int"
-      }
-    }
-  },
-  "executionStructureScope": "Scope {scopeId}",
-  "@executionStructureScope": {
-    "placeholders": {
-      "scopeId": {
-        "type": "int"
-      }
-    }
-  },
-  "executionStructureRelationUnavailable": "The parent task is outside retained history.",
   "executionStatusCreated": "Created",
   "executionStatusReady": "Ready",
   "executionStatusRunning": "Running",
-  "executionStatusSuspended": "Suspended",
   "executionStatusCompleted": "Completed",
   "executionStatusCancellationRequested": "Cancellation requested",
   "executionStatusFailed": "Stopped by a program error",
@@ -344,30 +264,6 @@
       }
     }
   },
-  "executionStructureStatus": "Status: {status}",
-  "@executionStructureStatus": {
-    "description": "Current observed status for a task",
-    "placeholders": {
-      "status": {
-        "type": "String"
-      }
-    }
-  },
-  "executionJoinLabel": "Task {taskId} joined children at event {eventIndex}: {outcome}",
-  "@executionJoinLabel": {
-    "description": "Scope join marker on the parent task",
-    "placeholders": {
-      "taskId": {
-        "type": "int"
-      },
-      "eventIndex": {
-        "type": "int"
-      },
-      "outcome": {
-        "type": "String"
-      }
-    }
-  },
   "executionHistoryStartsAt": "Retained history begins at event {eventIndex}",
   "@executionHistoryStartsAt": {
     "description": "Explains that older task creation events have expired",
@@ -381,33 +277,6 @@
   "executionFrameSelector": "Selected frame",
   "executionPreviousFrames": "Previous frame page",
   "executionNextFrames": "Next frame page",
-  "executionFrameLabel": "Frame {frameId}: {name}",
-  "@executionFrameLabel": {
-    "description": "Frame selection option",
-    "placeholders": {
-      "frameId": {
-        "type": "int"
-      },
-      "name": {
-        "type": "String"
-      }
-    }
-  },
-  "executionVariablesLabel": "Variables at event {eventIndex}, task {taskId}, frame {frameId}",
-  "@executionVariablesLabel": {
-    "description": "Heading for the selected paginated frame state",
-    "placeholders": {
-      "eventIndex": {
-        "type": "int"
-      },
-      "taskId": {
-        "type": "int"
-      },
-      "frameId": {
-        "type": "int"
-      }
-    }
-  },
   "executionNoVariables": "This frame has no variables.",
   "executionValueUndefined": "Undefined",
   "executionValueNull": "Null",
@@ -420,10 +289,403 @@
     }
   },
   "executionLoadMoreValues": "Load next page",
-  "executionChannelStateUnavailable": "Channel events show operations and channel identity. The API does not expose queue contents or message values.",
-  "executionHistoryEmpty": "Run a program to inspect its task events.",
+  "executionChannelStateUnavailable": "Channels are shown by number; their queue contents are not available.",
+  "executionHistoryEmpty": "Step through a program with Tasks to see here how they share the work.",
   "executionObservationUnavailable": "Execution observation is unavailable for this session.",
   "executionHistoryError": "The selected event or range is outside retained history or could not be read.",
+  "executionEventPosition": "Event {event} of {live}",
+  "@executionEventPosition": {
+    "placeholders": {
+      "event": {
+        "type": "int"
+      },
+      "live": {
+        "type": "int"
+      }
+    }
+  },
+  "executionPreviousEvent": "Previous event",
+  "executionNextEvent": "Next event",
+  "executionLive": "Live",
+  "executionHelpOpen": "How to read this view",
+  "executionHelpTitle": "How to read the tasks view",
+  "executionHelpTimeline": "Each row is an event, top to bottom in the order it happened, and each column is a task. A solid arrow means a task launched another; a dashed one, that it waits for another.",
+  "executionHelpStatus": "Shows how each task is doing at the chosen event and what it is waiting for. Launched tasks appear under the task that launched them.",
+  "executionHelpVariables": "Shows a task's values at the chosen event. If you pick a task, the view keeps following it while you step.",
+  "executionHelpNavigation": "Use ‹ and › to move between events without changing the run. «Live» returns to the latest event.",
+  "executionTaskShort": "T{taskId}",
+  "@executionTaskShort": {
+    "placeholders": {
+      "taskId": {
+        "type": "int"
+      }
+    }
+  },
+  "executionTaskNamed": "T{taskId} · {name}",
+  "@executionTaskNamed": {
+    "placeholders": {
+      "taskId": {
+        "type": "int"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "executionRootTaskName": "main",
+  "executionEarlierEvents": "Show earlier events",
+  "executionSentenceSpawn": "{task} launches {child}",
+  "@executionSentenceSpawn": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "child": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceReady": "{task} is ready to run",
+  "@executionSentenceReady": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceResume": "{task} takes its turn",
+  "@executionSentenceResume": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceWaitTask": "{task} waits for {target} to finish",
+  "@executionSentenceWaitTask": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceWaitJoin": "{task} waits for the tasks it launched",
+  "@executionSentenceWaitJoin": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceWaitSend": "{task} waits for room in channel {channel}",
+  "@executionSentenceWaitSend": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "channel": {
+        "type": "int"
+      }
+    }
+  },
+  "executionSentenceWaitReceive": "{task} waits for a value from channel {channel}",
+  "@executionSentenceWaitReceive": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "channel": {
+        "type": "int"
+      }
+    }
+  },
+  "executionSentenceWaitSelect": "{task} waits for any channel to be ready",
+  "@executionSentenceWaitSelect": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceWaitEffect": "{task} waits for an external operation",
+  "@executionSentenceWaitEffect": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceWaitOther": "{task} pauses",
+  "@executionSentenceWaitOther": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceComplete": "{task} finishes",
+  "@executionSentenceComplete": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceCompleteError": "{task} finishes with a recoverable error",
+  "@executionSentenceCompleteError": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceCancelled": "{task} is cancelled",
+  "@executionSentenceCancelled": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceCancelRequest": "Cancellation requested for {task}",
+  "@executionSentenceCancelRequest": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceJoin": "{task} continues: its tasks finished",
+  "@executionSentenceJoin": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceChannelCreate": "{task} creates channel {channel}",
+  "@executionSentenceChannelCreate": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "channel": {
+        "type": "int"
+      }
+    }
+  },
+  "executionSentenceChannelSend": "{task} sends a value through channel {channel}",
+  "@executionSentenceChannelSend": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "channel": {
+        "type": "int"
+      }
+    }
+  },
+  "executionSentenceChannelReceive": "{task} receives a value from channel {channel}",
+  "@executionSentenceChannelReceive": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "channel": {
+        "type": "int"
+      }
+    }
+  },
+  "executionSentenceChannelEmpty": "{task} receives nothing: channel {channel} is closed",
+  "@executionSentenceChannelEmpty": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "channel": {
+        "type": "int"
+      }
+    }
+  },
+  "executionSentenceChannelClose": "{task} closes channel {channel}",
+  "@executionSentenceChannelClose": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "channel": {
+        "type": "int"
+      }
+    }
+  },
+  "executionSentenceEffect": "{task} gets the result of an external operation",
+  "@executionSentenceEffect": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceCall": "{task} calls {name}",
+  "@executionSentenceCall": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceReturn": "{task} returns from {name}",
+  "@executionSentenceReturn": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceOutput": "{task} writes «{text}»",
+  "@executionSentenceOutput": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "text": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceInput": "{task} reads input",
+  "@executionSentenceInput": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceFailure": "{task} stops because of an error",
+  "@executionSentenceFailure": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceEnter": "{task} runs line {line}",
+  "@executionSentenceEnter": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "line": {
+        "type": "int"
+      }
+    }
+  },
+  "executionSentenceExit": "{task} completes line {line}",
+  "@executionSentenceExit": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "line": {
+        "type": "int"
+      }
+    }
+  },
+  "executionSentenceDecision": "{task} decides on line {line}",
+  "@executionSentenceDecision": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "line": {
+        "type": "int"
+      }
+    }
+  },
+  "executionSentenceOther": "{task} records an event on line {line}",
+  "@executionSentenceOther": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "line": {
+        "type": "int"
+      }
+    }
+  },
+  "executionHintCreated": "Just launched",
+  "executionHintReady": "Waiting for its turn",
+  "executionHintRunning": "Running line {line}",
+  "@executionHintRunning": {
+    "placeholders": {
+      "line": {
+        "type": "int"
+      }
+    }
+  },
+  "executionHintWaitTask": "Waiting for {target}",
+  "@executionHintWaitTask": {
+    "placeholders": {
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "executionHintWaitJoin": "Waiting for its tasks: {pending} of {total} left",
+  "@executionHintWaitJoin": {
+    "placeholders": {
+      "pending": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "executionHintWaitSend": "Waiting for room in channel {channel}",
+  "@executionHintWaitSend": {
+    "placeholders": {
+      "channel": {
+        "type": "int"
+      }
+    }
+  },
+  "executionHintWaitReceive": "Waiting for a value from channel {channel}",
+  "@executionHintWaitReceive": {
+    "placeholders": {
+      "channel": {
+        "type": "int"
+      }
+    }
+  },
+  "executionHintWaitSelect": "Waiting for any channel to be ready",
+  "executionHintWaitEffect": "Waiting for an external operation",
+  "executionStatusWaiting": "Waiting",
+  "executionLaunchedBy": "Launched by {parent} at event {event}",
+  "@executionLaunchedBy": {
+    "placeholders": {
+      "parent": {
+        "type": "String"
+      },
+      "event": {
+        "type": "int"
+      }
+    }
+  },
+  "executionShowVariables": "Show variables",
+  "executionGoToCreation": "Go to its launch",
+  "executionFollowEventTask": "Event's task",
+  "executionTaskPickerLabel": "Task",
+  "executionCallStackLabel": "Calls",
   "@tabTrace": {
     "description": "Tab label for trace table"
   },
