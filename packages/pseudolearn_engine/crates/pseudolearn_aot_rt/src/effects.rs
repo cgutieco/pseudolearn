@@ -238,6 +238,12 @@ fn local_effect_reply(
         maximum_json_depth: configured_json_depth(&entry.engine.effects),
     })
     .map_err(|trap| crate::effect_text_faults::with_text_position(trap, arguments))
+    .map_err(|trap| {
+        let size = (operation.identity == crate::effect_bytes_faults::BYTES_AT)
+            .then(|| pseudolearn_runtime::bytes_length(&entry.engine.heap, receiver).ok())
+            .flatten();
+        crate::effect_bytes_faults::with_bytes_index(trap, (operation.identity, size), arguments)
+    })
 }
 
 fn local_reply(request: pseudolearn_library::LocalOperationRequest<'_>) -> Result<HostReply, Trap> {

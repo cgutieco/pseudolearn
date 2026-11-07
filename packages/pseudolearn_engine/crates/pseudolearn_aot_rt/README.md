@@ -396,3 +396,8 @@ Los tests de estas capacidades se ejecutaron en selecciones acotadas, incluida l
 `rt_aot_snapshot_copy` reutiliza `snapshot_copy_many`: la copia conjunta conserva alias y ciclos entre las fuentes, las raíces
 son las del marco y el presupuesto de celdas se aplica en cada bloque copiado, igual que en la VM. La entrada no añade `unsafe`
 más allá de leer el búfer de palabras con `borrow_slice`.
+
+## Argumentos de `arrayIndexOutOfRange` en `Bytes.En`
+
+`effect_bytes_faults::with_bytes_index` completa la trampa de `bytes_at` con `index` y `size`, igual que la VM, para que
+el diferencial engine/aot no difiera en los argumentos (`LIB.CORE.BYTES#B1`).

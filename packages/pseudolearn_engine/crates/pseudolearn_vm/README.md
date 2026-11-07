@@ -321,3 +321,10 @@ Un final que no es normal no lo consulta: quien lo presenta decide el código (l
 ## Azar entero
 
 `host.random`, `host.random_below` y `host.random_between` cargan como una única operación de memoria `Random` con cero, uno o dos límites tipados; el número de límites decide la forma, y los fallos `invalidRandomBound` e `invalidRandomRange` salen como trampas del programa.
+
+## Argumentos de `arrayIndexOutOfRange` en `Bytes.En`
+
+`Bytes.En` se ejecuta como llamada de efecto local, y el contexto de fallo de esas llamadas solo completaba los
+argumentos de `stringPositionOutOfRange`; el mensaje quedaba «Índice  fuera de rango para un arreglo de tamaño ».
+`fault_context/bytes_effects` añade `index` (el índice pedido) y `size` (la longitud de la secuencia) cuando la
+operación es `bytes_at` (`LIB.CORE.BYTES#B1`). El sujeto nativo usa la misma fórmula en `effect_bytes_faults`.

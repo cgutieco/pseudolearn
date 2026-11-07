@@ -8,6 +8,9 @@ pub use pseudolearn_abi::{CollectionCommand, DictionaryKeyKind};
 mod class_layout;
 mod config;
 mod context;
+mod effect_bytes_faults;
+#[cfg(test)]
+mod effect_bytes_faults_tests;
 mod effect_channel;
 mod effect_console;
 mod effect_document;
