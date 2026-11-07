@@ -44,7 +44,7 @@ void main() {
           .whereType<ListBlock>()
           .expand((l) => l.items)
           .toList();
-      expect(allListItems, contains('Proceso'));
+      expect(allListItems, contains('Algoritmo'));
       expect(allListItems, contains('Definir'));
       expect(allListItems, contains('Entero'));
     });
