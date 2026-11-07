@@ -28,7 +28,7 @@ layers:
     unsafe_allowed: false
   - name: reference_resolve
     path: crates/reference_resolve
-    may_import: [reference_model, reference_corpus, reference_figures]
+    may_import: [reference_model, reference_corpus, reference_figures, reference_format]
     external_dependencies: [serde, serde_json]
     unsafe_allowed: false
   - name: reference_verify

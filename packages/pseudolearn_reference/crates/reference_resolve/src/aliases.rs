@@ -4,15 +4,17 @@ use serde::Deserialize;
 #[derive(Clone, Debug, Default, Deserialize)]
 #[serde(deny_unknown_fields)]
 struct SpellingAlias {
-    es: String,
-    en: String,
+    #[serde(rename = "es")]
+    spanish: String,
+    #[serde(rename = "en")]
+    english: String,
 }
 
 impl SpellingAlias {
     fn spelled_in(&self, profile: Profile) -> &str {
         match profile {
-            Profile::Spanish => &self.es,
-            Profile::English => &self.en,
+            Profile::Spanish => &self.spanish,
+            Profile::English => &self.english,
         }
     }
 }
@@ -29,11 +31,11 @@ impl AliasTable {
         Ok(Self { aliases })
     }
 
-    pub fn translate(&self, text: &str, from: Profile, to: Profile) -> Option<&str> {
+    pub fn translate(&self, text: &str, source: Profile, target: Profile) -> Option<&str> {
         self.aliases
             .iter()
-            .find(|alias| alias.spelled_in(from) == text)
-            .map(|alias| alias.spelled_in(to))
+            .find(|alias| alias.spelled_in(source) == text)
+            .map(|alias| alias.spelled_in(target))
     }
 
     pub fn contains(&self, text: &str, profile: Profile) -> bool {
