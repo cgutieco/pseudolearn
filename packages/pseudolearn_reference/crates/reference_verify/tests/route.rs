@@ -206,6 +206,7 @@ fn a_breaker_that_does_not_break_is_reported() {
             ),
         ],
         laps: None,
+        structural: false,
     };
     assert_eq!(
         rules(&check_exercise_runs(&check)),
@@ -231,6 +232,7 @@ fn a_breaker_that_breaks_and_a_matching_trace_pass() {
             ),
         ],
         laps: None,
+        structural: false,
     };
     assert!(check_exercise_runs(&check).is_empty());
     let traced = ExerciseCheck {
@@ -245,11 +247,47 @@ fn a_breaker_that_breaks_and_a_matching_trace_pass() {
             observed: vec![vec!["0".to_owned(), "2".to_owned()]],
             termination: "completed".to_owned(),
         }),
+        structural: false,
     };
     assert_eq!(
         rules(&check_exercise_runs(&traced)),
         vec![RuleId::RouteExerciseVerified]
     );
+}
+
+fn modification(structural: bool) -> ExerciseCheck {
+    ExerciseCheck {
+        location: "modificar.md".to_owned(),
+        kind: ExerciseKind::Modify,
+        roles: vec![
+            runs("inicial", vec![hidden(record("5", Some("5")))], Vec::new()),
+            runs(
+                "referencia",
+                vec![hidden(record("5", Some("5")))],
+                Vec::new(),
+            ),
+        ],
+        laps: None,
+        structural,
+    }
+}
+
+fn hidden(mut record: RunRecord) -> RunRecord {
+    record.hidden = true;
+    record
+}
+
+#[test]
+fn a_modification_without_assertions_must_change_the_behaviour() {
+    assert_eq!(
+        rules(&check_exercise_runs(&modification(false))),
+        vec![RuleId::RouteExerciseVerified]
+    );
+}
+
+#[test]
+fn a_structural_modification_may_keep_the_behaviour() {
+    assert!(check_exercise_runs(&modification(true)).is_empty());
 }
 
 #[test]

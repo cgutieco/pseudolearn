@@ -186,7 +186,7 @@ titulo: La alcancía de Tomás
 | `encontrar-error` | `programa rol=inicial`, `programa rol=referencia`, `casos` | La referencia pasa todos los casos; la inicial falla al menos uno, o no compila, o falla al ejecutar |
 | `romperlo` | `programa rol=defectuoso`, `programa rol=referencia`, `casos` (visibles), cerca `rompe` | Los dos pasan los casos visibles; cada entrada de `rompe` hace que difieran |
 | `disenar-pruebas` | `programa rol=referencia`, al menos tres `programa rol=mutante id=…`, cerca `casos-solucion`, atributos `minimo` y `maximo` | `casos-solucion` pasa en la referencia y mata a todos los mutantes; ningún mutante es equivalente a la referencia en todos los casos visibles y ocultos de la lección |
-| `modificar` | `programa rol=inicial`, `programa rol=referencia`, `casos` | La referencia pasa; la inicial falla al menos un caso oculto (si no, no hay nada que modificar) |
+| `modificar` | `programa rol=inicial`, `programa rol=referencia`, `casos` | La referencia pasa; la inicial falla al menos un caso oculto (si no, no hay nada que modificar). Con `aserciones` el cambio es de estructura: la inicial puede pasar los casos y la compuerta de la app comprueba que no pase las aserciones |
 | `resolver` | `programa rol=referencia`, `casos` (≥ 2 visibles, ≥ 3 ocultos), `programa rol=inicial` opcional | La referencia pasa |
 | `clasificar` | cerca `categorias`, cerca `elementos` (`texto \| categoría`) | Toda categoría tiene al menos un elemento |
 | `explicar`, `comparar` | cerca `opciones` (`- [x] texto \| justificación`, una sola marcada) | Hay una sola correcta y todas tienen justificación |

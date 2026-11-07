@@ -303,7 +303,7 @@ ruta, con sus casos negativos de §3.5.
 | `ordenar` | Con programa, la referencia pasa los casos, hay al menos cuatro líneas móviles y el programa traducido tiene las mismas; con `pasos`, al menos tres pasos |
 | `resolver` | La referencia pasa los casos: dos visibles y tres ocultos, o un caso visible si ningún caso tiene entradas |
 | `encontrar-error` | La referencia pasa los casos y el programa inicial falla al menos uno |
-| `modificar` | La referencia pasa los casos y el programa inicial falla al menos uno oculto |
+| `modificar` | La referencia pasa los casos y el programa inicial falla al menos uno oculto. Si el ejercicio declara `aserciones`, el cambio pedido es de estructura y el inicial puede conservar la conducta: el compilador no evalúa aserciones, así que lo comprueba la compuerta de la app (`route_exercise_gate_test`), que exige que el inicial no pase su comprobador |
 | `romperlo` | El defectuoso pasa los visibles y cada entrada de `rompe`, con tantos valores como lee el programa, hace que difiera de la referencia o falle |
 | `disenar-pruebas` | Hay al menos tres mutantes; `casos-solucion` pasa en la referencia, atrapa a cada mutante y su cantidad está entre `minimo` y `maximo` |
 | `clasificar` | Hay al menos dos categorías, cada una con un elemento, y cada elemento tiene una categoría existente |

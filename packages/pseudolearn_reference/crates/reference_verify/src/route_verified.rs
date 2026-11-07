@@ -17,7 +17,7 @@ pub fn check_exercise_runs(check: &ExerciseCheck) -> Vec<Violation> {
     let problems = match check.kind {
         ExerciseKind::Solve | ExerciseKind::Order => reference_passes(check),
         ExerciseKind::FindError => with_reference(check, |check| initial_fails(check, false)),
-        ExerciseKind::Modify => with_reference(check, |check| initial_fails(check, true)),
+        ExerciseKind::Modify => with_reference(check, modification_needed),
         ExerciseKind::Break => with_reference(check, breaks),
         ExerciseKind::DesignTests => designed(check),
         ExerciseKind::Trace => check.laps.as_ref().map(laps).unwrap_or_else(|| {
@@ -62,6 +62,13 @@ fn reference_passes(check: &ExerciseCheck) -> Vec<String> {
             )
         })
         .collect()
+}
+
+fn modification_needed(check: &ExerciseCheck) -> Vec<String> {
+    match check.structural {
+        true => Vec::new(),
+        false => initial_fails(check, true),
+    }
 }
 
 fn initial_fails(check: &ExerciseCheck, hidden_only: bool) -> Vec<String> {

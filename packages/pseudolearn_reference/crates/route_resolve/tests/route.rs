@@ -279,6 +279,7 @@ fn unreachable_check() -> reference_model::ExerciseCheck {
         kind: reference_model::ExerciseKind::Break,
         roles: Vec::new(),
         laps: None,
+        structural: false,
     }
 }
 

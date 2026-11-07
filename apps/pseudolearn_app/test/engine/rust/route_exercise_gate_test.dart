@@ -7,6 +7,7 @@ import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/route/route_answer.dart';
 import 'package:pseudolearn_app/domain/model/route/route_evaluation.dart';
 import 'package:pseudolearn_app/domain/model/route/route_exercise.dart';
+import 'package:pseudolearn_app/domain/model/route/route_kinds.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
 import '../../fakes/native_test_engine.dart';
 
@@ -79,6 +80,24 @@ void main() {
         assertions: evaluation.assertions,
       );
       expect(result.isSolved, isTrue, reason: '${gate.path}: ${result.outcome}');
+    }
+  });
+
+  test('every structural modification starts from a program that fails the checker', () {
+    for (final gate in exercises) {
+      final evaluation = gate.exercise.evaluation;
+      final starter = gate.exercise.starterCode;
+      if (evaluation is! CasesEvaluation || evaluation.assertions.isEmpty) continue;
+      if (gate.exercise.kind != RouteExerciseKind.modify || starter == null) continue;
+      final result = nativeTestEngine.exerciseChecker.check(
+        sourceCode: starter,
+        profileId: gate.profile,
+        languageId: gate.language,
+        visibleCases: evaluation.visibleCases,
+        hiddenCases: evaluation.hiddenCases,
+        assertions: evaluation.assertions,
+      );
+      expect(result.isSolved, isFalse, reason: gate.path);
     }
   });
 

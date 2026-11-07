@@ -37,6 +37,7 @@ pub struct ExerciseCheck {
     pub kind: ExerciseKind,
     pub roles: Vec<RoleRuns>,
     pub laps: Option<LapCheck>,
+    pub structural: bool,
 }
 
 impl ExerciseCheck {

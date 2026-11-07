@@ -69,6 +69,7 @@ pub fn exercise_check(
             .map(|program| role_runs(context, program, &sets))
             .collect(),
         laps,
+        structural: matches!(parts.fence("aserciones"), Some(RouteFence::Assertions(found)) if !found.is_empty()),
     })
 }
 
