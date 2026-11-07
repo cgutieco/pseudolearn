@@ -1357,6 +1357,15 @@
       "alfajor": "+ Alfajor",
       "uno-solo": "there is only one order",
       "dos": "two orders, each with its list"
+    },
+    "ruta-enchufe": {
+      "titulo": "The till as a socket",
+      "descripcion": "The till has a socket. Below, three appliances with the same plug: cash, card and voucher. Any of them can be plugged into the till.",
+      "caja": "till",
+      "efectivo": "cash",
+      "tarjeta": "card",
+      "vale": "voucher",
+      "pie": "the same plug for every payment method"
     }
   }
 }

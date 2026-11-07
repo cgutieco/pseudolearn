@@ -1357,6 +1357,15 @@
       "alfajor": "+ Alfajor",
       "uno-solo": "hay un solo pedido",
       "dos": "dos pedidos, cada uno con su lista"
+    },
+    "ruta-enchufe": {
+      "titulo": "La caja como un enchufe",
+      "descripcion": "La caja tiene un enchufe. Debajo, tres aparatos con el mismo enchufe: efectivo, tarjeta y vale. Cualquiera se puede conectar a la caja.",
+      "caja": "caja",
+      "efectivo": "efectivo",
+      "tarjeta": "tarjeta",
+      "vale": "vale",
+      "pie": "el mismo enchufe para todos los medios"
     }
   }
 }

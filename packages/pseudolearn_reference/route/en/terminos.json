@@ -104,5 +104,8 @@
   "invariante-de-clase": {"etiqueta": "class invariant", "formas": ["class invariant", "class invariants"], "estricto": true, "receta": false},
   "identidad": {"etiqueta": "identity", "formas": ["identity"], "estricto": false, "receta": false},
   "alias": {"etiqueta": "alias", "formas": ["alias", "aliases"], "estricto": true, "receta": false},
-  "referencia-a-objeto": {"etiqueta": "object reference", "formas": ["object reference", "object references"], "estricto": true, "receta": false}
+  "referencia-a-objeto": {"etiqueta": "object reference", "formas": ["object reference", "object references"], "estricto": true, "receta": false},
+  "interfaz": {"etiqueta": "interface", "formas": ["interface", "interfaces"], "estricto": true, "receta": true},
+  "polimorfismo": {"etiqueta": "polymorphism", "formas": ["polymorphism"], "estricto": true, "receta": true},
+  "despacho-dinamico": {"etiqueta": "dynamic dispatch", "formas": ["dynamic dispatch"], "estricto": true, "receta": false}
 }

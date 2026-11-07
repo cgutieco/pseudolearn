@@ -104,5 +104,8 @@
   "invariante-de-clase": {"etiqueta": "invariante de clase", "formas": ["invariante de clase"], "estricto": true, "receta": false},
   "identidad": {"etiqueta": "identidad", "formas": ["identidad"], "estricto": false, "receta": false},
   "alias": {"etiqueta": "alias", "formas": ["alias"], "estricto": true, "receta": false},
-  "referencia-a-objeto": {"etiqueta": "referencia a un objeto", "formas": ["referencia a un objeto", "referencias a objetos"], "estricto": true, "receta": false}
+  "referencia-a-objeto": {"etiqueta": "referencia a un objeto", "formas": ["referencia a un objeto", "referencias a objetos"], "estricto": true, "receta": false},
+  "interfaz": {"etiqueta": "interfaz", "formas": ["interfaz", "interfaces"], "estricto": true, "receta": true},
+  "polimorfismo": {"etiqueta": "polimorfismo", "formas": ["polimorfismo"], "estricto": true, "receta": true},
+  "despacho-dinamico": {"etiqueta": "despacho dinámico", "formas": ["despacho dinámico"], "estricto": true, "receta": false}
 }
