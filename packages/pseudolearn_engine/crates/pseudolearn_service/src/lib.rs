@@ -28,6 +28,8 @@ pub mod expected_slot;
 pub mod formatter;
 pub mod help_catalog;
 pub mod help_content;
+pub mod help_form;
+mod help_labels;
 pub mod help_rendering;
 mod help_resolution;
 pub mod hover;
@@ -101,7 +103,10 @@ pub use document_session::{DocumentOptions, DocumentSession, LanguageService, Te
 pub use edit_probe::{IdentityCheck, IncrementalProbe};
 pub use edit_session::{Acceptance, Accepted, EditError, EditSession};
 pub use formatter::{FormatOptions, format_checked, format_source};
-pub use help_catalog::HelpLocale;
+pub use help_catalog::{
+    ExampleProgram, FormLine, FormPiece, FormSegment, HelpCategory, HelpCommonError, HelpExample,
+    HelpLocale, HelpPart, HelpSlot,
+};
 pub use help_content::{HelpContent, help_content};
 pub use help_rendering::{HelpFormat, HelpRenderError, render_help};
 pub use help_resolution::{

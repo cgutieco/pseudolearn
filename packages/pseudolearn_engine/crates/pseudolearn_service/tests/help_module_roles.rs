@@ -10,7 +10,8 @@ fn card_after(needle: &str, shift: usize) -> Option<String> {
     let (source, position) = split_cursor(&marked);
     let document = DocumentSession::new(source, Profile::Spanish);
     let outcome = resolve_help_at_position(&document, position)?;
-    help_content(&outcome, HelpLocale::English).map(|content| content.card_id.to_owned())
+    help_content(&outcome, HelpLocale::English, Profile::Spanish)
+        .map(|content| content.card_id.to_owned())
 }
 
 const SIGNATURE_CARD: &str = "help.pgl02.public_signature";

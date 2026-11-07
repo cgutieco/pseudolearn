@@ -58,7 +58,7 @@ fn hover_carries_the_card_and_the_full_token_range() -> Result<(), String> {
         .pointer("/result/contents/value")
         .and_then(Value::as_str)
         .ok_or("missing hover text")?;
-    assert!(text.contains("Bucle Mientras"));
+    assert!(text.contains("**Mientras**"));
     assert_eq!(
         answer.pointer("/result/range"),
         Some(&json!({"start":{"line":1,"character":2},"end":{"line":1,"character":10}}))

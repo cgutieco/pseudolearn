@@ -9,6 +9,7 @@ use crate::lsp_protocol::{
     text_document_uri,
 };
 use crate::lsp_session::LspServer;
+use pseudolearn_lexicon::Profile;
 use serde_json::{Value, json};
 
 pub const EXPLAIN_COMMAND: &str = "pseudolearn.explain";
@@ -53,7 +54,7 @@ impl LspServer {
         let locale = self.help_locale();
         let imported_types = self.imported_type_ranges(uri, session.text());
         let outcome = resolve_help_with_imports(session, position, locale, &imported_types)?;
-        let value = hover_text(&outcome, locale, format)?;
+        let value = hover_text(&outcome, locale, session.profile, format)?;
         let kind = match format {
             HelpFormat::Markdown => "markdown",
             HelpFormat::PlainText => "plaintext",
@@ -68,13 +69,15 @@ impl LspServer {
 fn hover_text(
     outcome: &HelpQueryOutcome,
     locale: HelpLocale,
+    profile: Profile,
     format: HelpFormat,
 ) -> Option<String> {
     let mut blocks = Vec::new();
     if let Some(hover) = &outcome.hover {
         blocks.push(headline(hover, format));
     }
-    match help_content(outcome, locale).map(|content| render_help(&content, locale, format)) {
+    let content = help_content(outcome, locale, profile);
+    match content.map(|content| render_help(&content, locale, format)) {
         Some(Ok(rendered)) => blocks.push(rendered),
         Some(Err(HelpRenderError::TooLarge { .. })) => {
             blocks.push(omitted_notice(locale).to_owned());

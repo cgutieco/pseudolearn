@@ -20,7 +20,8 @@ fn identity(resolution: &HelpResolution) -> Option<(&HelpIdentityKind, &str, &st
 
 fn card_id(marked: &str, profile: Profile) -> Option<String> {
     let result = resolve(marked, profile)?;
-    help_content(&result, HelpLocale::English).map(|content| content.card_id.to_owned())
+    help_content(&result, HelpLocale::English, Profile::Spanish)
+        .map(|content| content.card_id.to_owned())
 }
 
 #[test]

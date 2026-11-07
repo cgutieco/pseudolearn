@@ -8,7 +8,8 @@ fn assert_card(source: &str, profile: Profile, expected: &str) -> Result<(), Str
     let outcome = resolve_help_at_position(&document, position).ok_or("missing resolution")?;
     assert!(outcome.hover.is_some());
     for locale in [HelpLocale::Spanish, HelpLocale::English] {
-        let content = help_content(&outcome, locale).ok_or("missing content")?;
+        let content = help_content(&outcome, locale, profile).ok_or("missing content")?;
+        assert_eq!(content.profile, profile);
         assert_eq!(content.card_id, expected);
     }
     Ok(())

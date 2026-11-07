@@ -4,6 +4,7 @@ pub mod analyze;
 mod argument_conversion;
 mod diagnostic_conversion;
 pub mod errors;
+mod help_card_model;
 pub mod ir_execution;
 pub mod model;
 pub mod service;

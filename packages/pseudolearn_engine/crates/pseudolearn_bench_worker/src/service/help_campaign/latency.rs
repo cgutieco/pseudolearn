@@ -106,7 +106,8 @@ fn core_and_render(document: &Document, query: &Query) -> Result<(f64, f64), Str
     let started = Instant::now();
     let outcome = resolve_help_with_locale(&service, position, HelpLocale::Spanish)
         .ok_or("core query found nothing")?;
-    let content = help_content(&outcome, HelpLocale::Spanish).ok_or("no card for the query")?;
+    let content = help_content(&outcome, HelpLocale::Spanish, Profile::Spanish)
+        .ok_or("no card for the query")?;
     let core = milliseconds(started);
     let started = Instant::now();
     render_help(&content, HelpLocale::Spanish, HelpFormat::Markdown)

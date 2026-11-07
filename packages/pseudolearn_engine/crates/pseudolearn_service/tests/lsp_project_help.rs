@@ -8,8 +8,8 @@ const CONSTANT_IMPORT: &str =
     "Importar geo.formas.LIMITE;\nAlgoritmo Main\nEscribir LIMITE;\nFinAlgoritmo\n";
 const SUBPROGRAM_IMPORT: &str =
     "Importar geo.formas.Doble;\nAlgoritmo Main\nEscribir Doble(2);\nFinAlgoritmo\n";
-const TYPE_TITLE: &str = "Importación de tipos y constantes";
-const MODULE_TITLE: &str = "Importación de módulo o símbolo";
+const TYPE_TITLE: &str = "**Importar un tipo**";
+const MODULE_TITLE: &str = "**Importar**";
 
 fn server_with_project(main: &str) -> LspServer {
     let mut server = LspServer::new();

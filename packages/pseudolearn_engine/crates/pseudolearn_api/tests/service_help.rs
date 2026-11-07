@@ -165,10 +165,7 @@ fn card_follows_the_requested_language_and_detail() -> Result<(), String> {
         "Algoritmo P\nMientras 1 = 1 Hacer\nFinMientras\nFinAlgoritmo\n",
     )?;
     let full = query(&mut session, resource, 2, 3, "unicode_scalar");
-    assert_eq!(
-        full.pointer("/value/card/title"),
-        Some(&json!("While loop"))
-    );
+    assert_eq!(full.pointer("/value/card/title"), Some(&json!("While")));
     assert!(full.pointer("/value/card/examples/0/case").is_some());
     let summary = session.call(
         "help_query",
@@ -180,7 +177,7 @@ fn card_follows_the_requested_language_and_detail() -> Result<(), String> {
     );
     assert_eq!(
         summary.pointer("/value/card/title"),
-        Some(&json!("Bucle Mientras"))
+        Some(&json!("Mientras"))
     );
     assert!(summary.pointer("/value/card/purpose").is_none());
     assert!(summary.pointer("/value/card/examples").is_none());
@@ -322,11 +319,8 @@ fn help_language_is_independent_of_the_english_document_profile() -> Result<(), 
     let english = query_with_language(&mut session, resource, 2, 2, "en");
     assert_eq!(
         spanish.pointer("/value/card/title"),
-        Some(&json!("Bucle Mientras"))
+        Some(&json!("Mientras"))
     );
-    assert_eq!(
-        english.pointer("/value/card/title"),
-        Some(&json!("While loop"))
-    );
+    assert_eq!(english.pointer("/value/card/title"), Some(&json!("While")));
     Ok(())
 }

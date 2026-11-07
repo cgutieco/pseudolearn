@@ -143,11 +143,14 @@ La sustitución recorre la plantilla una sola vez y no reinterpreta llaves dentr
 `help_query` consulta el hover estructurado de la sesión de edición y no modifica el recurso. `summary`
 devuelve categoría e identificador y, cuando existe ficha, `card` con identidad, título y resumen; `full`
 añade tipo, carácter intrínseco, firma, la descripción del token y el resto de la ficha
-(propósito, partes, restricciones, errores comunes y referencias a ejemplos). `language` queda separado del
-perfil de sintaxis: selecciona la ficha editorial en `es` o `en`, mientras que lexemas, tipos y firmas
-describen el perfil de la sesión. La ficha se elige por la identidad léxica del token y, si varias la
-comparten, por el contexto resuelto (operador unario o binario, construcción que lo contiene); la respuesta
-no incluye programas ni esperados, solo la referencia a los casos, y la consulta nunca los ejecuta. Un
+(categoría, plantilla `form` en líneas con sangría y segmentos `word`, `symbol`, `slot` o `ellipsis` marcados con
+`joined`, partes en el orden de la plantilla con su clase `word` o `slot`, `result`, reglas, errores comunes
+con programa opcional y ejemplos con referencia, clase, nota, programa y salida esperada). `language` queda
+separado del perfil de sintaxis: selecciona la prosa en `es` o `en`, mientras que lexemas, tipos, firmas,
+plantilla y programas de ejemplo están en el perfil de la sesión. La ficha se elige por la identidad léxica
+del token y, si varias la comparten, por el contexto resuelto (operador unario o binario, construcción que
+lo contiene); los programas y salidas proceden de los casos del corpus y la consulta nunca los ejecuta. Los
+tipos de la ficha viven en `help_card_model.rs` para mantener `model.rs` dentro de su límite de tamaño. Un
 símbolo del usuario, una posición sin token o una identidad sin ficha devuelven `card: null`. Un recurso
 liberado, de otra clase o una revisión obsoleta no produce contenido de ayuda.
 

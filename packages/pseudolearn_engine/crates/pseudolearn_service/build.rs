@@ -1,5 +1,7 @@
 #[path = "codegen/help_cards.rs"]
 mod help_cards;
+#[path = "codegen/help_sources.rs"]
+mod help_sources;
 use std::path::Path;
 
 const EXPORT_PATH: &str = "../../../pseudolearn_spec/specifications/export.json";
@@ -20,7 +22,8 @@ fn generate() -> Result<(), Box<dyn std::error::Error>> {
         .get("resources")
         .and_then(|resources| resources.get("helpCatalog"))
         .ok_or("Missing helpCatalog in export.json")?;
+    let sources = help_sources::Sources::from_export(&parsed)?;
     let destination = Path::new(&std::env::var("OUT_DIR")?).join("generated_help_cards.rs");
-    std::fs::write(destination, help_cards::cards(catalog)?)?;
+    std::fs::write(destination, help_cards::cards(catalog, &sources)?)?;
     Ok(())
 }

@@ -117,7 +117,8 @@ fn incomplete_program_still_explains_the_keyword_in_the_interface_locale() {
     let mut english = open("Algoritmo P\nMientras\n", "en");
     let spanish_text = text_of(&hover(&mut spanish, 1, 2));
     let english_text = text_of(&hover(&mut english, 1, 2));
-    assert!(spanish_text.contains("Bucle Mientras"));
+    assert!(spanish_text.contains("**Mientras**"));
+    assert!(spanish_text.contains("**Cómo se escribe**"));
     assert!(english_text.contains("Mientras"));
     assert_ne!(spanish_text, english_text);
 }

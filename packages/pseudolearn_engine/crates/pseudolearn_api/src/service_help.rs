@@ -35,7 +35,7 @@ pub(crate) fn query(session: &ApiSession, arguments: &Value) -> Result<Value, Ap
         .map(|outcome| entry(outcome, request.detail));
     let card = query
         .as_ref()
-        .and_then(|outcome| help_content(outcome, locale))
+        .and_then(|outcome| help_content(outcome, locale, editing.document.profile))
         .map(|content| service_help_card::card(&content, request.detail));
     let response = ApiHelpQueryResponse {
         revision: editing.revision.to_string(),

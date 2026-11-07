@@ -1,5 +1,7 @@
-use crate::help_catalog::{HelpExample, HelpLocale};
+use crate::help_catalog::{ExampleProgram, HelpLocale};
 use crate::help_content::HelpContent;
+use crate::help_form::{entry_name, entry_text, form_text, part_entries};
+use crate::help_labels::{HelpLabels, labels_for};
 
 const MARKDOWN_SPECIALS: &str = "\\`*_{}[]()#+-.!|<>~&:/@";
 pub const MAXIMUM_RENDERED_BYTES: usize = 8192;
@@ -15,42 +17,8 @@ pub enum HelpFormat {
     PlainText,
 }
 
-struct Labels {
-    purpose: &'static str,
-    parts: &'static str,
-    constraints: &'static str,
-    common_errors: &'static str,
-    examples: &'static str,
-    omitted: &'static str,
-}
-
-const SPANISH: Labels = Labels {
-    purpose: "Propósito",
-    parts: "Partes",
-    constraints: "Restricciones",
-    common_errors: "Errores comunes",
-    examples: "Ejemplos",
-    omitted: "Contenido omitido por superar el límite de tamaño.",
-};
-
-const ENGLISH: Labels = Labels {
-    purpose: "Purpose",
-    parts: "Parts",
-    constraints: "Constraints",
-    common_errors: "Common errors",
-    examples: "Examples",
-    omitted: "Content omitted because it exceeds the size limit.",
-};
-
 pub fn omitted_notice(locale: HelpLocale) -> &'static str {
     labels_for(locale).omitted
-}
-
-fn labels_for(locale: HelpLocale) -> &'static Labels {
-    match locale {
-        HelpLocale::Spanish => &SPANISH,
-        HelpLocale::English => &ENGLISH,
-    }
 }
 
 pub fn render_help(
@@ -59,28 +27,9 @@ pub fn render_help(
     format: HelpFormat,
 ) -> Result<String, HelpRenderError> {
     let labels = labels_for(locale);
-    let mut blocks = vec![
-        heading(content.title, format),
-        inert_text(content.summary, format),
-    ];
-    if let Some(description) = content.description {
-        blocks.push(inert_text(description, format));
-    }
-    blocks.push(section(labels.purpose, &[content.purpose], format));
-    push_section(&mut blocks, labels.parts, &part_lines(content), format);
-    push_section(&mut blocks, labels.constraints, content.constraints, format);
-    push_section(
-        &mut blocks,
-        labels.common_errors,
-        content.common_errors,
-        format,
-    );
-    push_section(
-        &mut blocks,
-        labels.examples,
-        &example_lines(content),
-        format,
-    );
+    let mut blocks = introduction_blocks(content, labels, format);
+    blocks.extend(detail_blocks(content, labels, format));
+    blocks.extend(example_blocks(content, labels, format));
     let rendered = blocks.join("\n\n");
     if rendered.len() > MAXIMUM_RENDERED_BYTES {
         return Err(HelpRenderError::TooLarge {
@@ -90,35 +39,123 @@ pub fn render_help(
     Ok(rendered)
 }
 
-fn part_lines(content: &HelpContent) -> Vec<&'static str> {
-    content.parts.iter().map(|part| part.text).collect()
+fn introduction_blocks(
+    content: &HelpContent,
+    labels: &HelpLabels,
+    format: HelpFormat,
+) -> Vec<String> {
+    vec![
+        heading(content.title, format),
+        emphasis(labels.category(content.category), format),
+        inert_text(content.summary, format),
+        titled(
+            labels.how_to_write,
+            code_block(&form_text(content.form, content.slots), format),
+            format,
+        ),
+    ]
 }
 
-fn example_lines(content: &HelpContent) -> Vec<&'static str> {
-    content
-        .examples
+fn detail_blocks(content: &HelpContent, labels: &HelpLabels, format: HelpFormat) -> Vec<String> {
+    let mut blocks = Vec::new();
+    push_list(
+        &mut blocks,
+        labels.parts,
+        &part_lines(content, format),
+        format,
+    );
+    if let Some(result) = content.result {
+        blocks.push(titled(labels.result, inert_text(result, format), format));
+    }
+    let rules: Vec<String> = content
+        .rules
         .iter()
-        .map(|example| example.label)
+        .map(|rule| inert_text(rule, format))
+        .collect();
+    push_list(&mut blocks, labels.rules, &rules, format);
+    let errors = error_lines(content, labels, format);
+    push_list(&mut blocks, labels.common_errors, &errors, format);
+    blocks
+}
+
+fn part_lines(content: &HelpContent, format: HelpFormat) -> Vec<String> {
+    part_entries(content.form, content.parts, content.slots)
+        .into_iter()
+        .map(|entry| {
+            let name = entry_name(entry, content.profile);
+            let name = match format {
+                HelpFormat::Markdown => code_span(&name),
+                HelpFormat::PlainText => inert_text(&name, format),
+            };
+            format!("{name}: {}", inert_text(entry_text(entry), format))
+        })
         .collect()
 }
 
-fn push_section<Line: AsRef<str>>(
-    blocks: &mut Vec<String>,
-    label: &str,
-    lines: &[Line],
+fn error_lines(content: &HelpContent, labels: &HelpLabels, format: HelpFormat) -> Vec<String> {
+    content
+        .common_errors
+        .iter()
+        .map(|error| {
+            let text = inert_text(error.text, format);
+            match &error.program {
+                Some(program) => {
+                    format!("{text}\n{}", program_text(program, content, labels, format))
+                }
+                None => text,
+            }
+        })
+        .collect()
+}
+
+fn example_blocks(content: &HelpContent, labels: &HelpLabels, format: HelpFormat) -> Vec<String> {
+    let label = if content.examples.len() > 1 {
+        labels.examples
+    } else {
+        labels.example
+    };
+    let mut blocks = vec![heading(label, format)];
+    for example in content.examples {
+        blocks.push(program_text(&example.program, content, labels, format));
+        blocks.push(inert_text(example.note, format));
+    }
+    blocks
+}
+
+fn program_text(
+    program: &ExampleProgram,
+    content: &HelpContent,
+    labels: &HelpLabels,
     format: HelpFormat,
-) {
-    if !lines.is_empty() {
-        blocks.push(section(label, lines, format));
+) -> String {
+    let source = code_block(program.source(content.profile).trim_end(), format);
+    match program.output {
+        Some(output) => format!(
+            "{source}\n{}\n{}",
+            emphasis(labels.output, format),
+            code_block(output.trim_end(), format)
+        ),
+        None => source,
     }
 }
 
-fn section<Line: AsRef<str>>(label: &str, lines: &[Line], format: HelpFormat) -> String {
+fn push_list(blocks: &mut Vec<String>, label: &str, lines: &[String], format: HelpFormat) {
+    if lines.is_empty() {
+        return;
+    }
     let body: Vec<String> = lines
         .iter()
-        .map(|line| format!("- {}", inert_text(line.as_ref(), format)))
+        .map(|line| format!("- {}", indent_continuation(line)))
         .collect();
-    format!("{}\n{}", heading(label, format), body.join("\n"))
+    blocks.push(titled(label, body.join("\n"), format));
+}
+
+fn indent_continuation(line: &str) -> String {
+    line.replace('\n', "\n  ")
+}
+
+fn titled(label: &str, body: String, format: HelpFormat) -> String {
+    format!("{}\n{body}", heading(label, format))
 }
 
 fn heading(value: &str, format: HelpFormat) -> String {
@@ -126,6 +163,49 @@ fn heading(value: &str, format: HelpFormat) -> String {
         HelpFormat::Markdown => format!("**{}**", escape_markdown(value)),
         HelpFormat::PlainText => inert_text(value, format),
     }
+}
+
+fn emphasis(value: &str, format: HelpFormat) -> String {
+    match format {
+        HelpFormat::Markdown => format!("*{}*", escape_markdown(value)),
+        HelpFormat::PlainText => inert_text(value, format),
+    }
+}
+
+fn code_span(value: &str) -> String {
+    let code = inert_text(value, HelpFormat::PlainText);
+    let fence = "`".repeat(longest_backtick_run(&code).saturating_add(1));
+    format!("{fence}{code}{fence}")
+}
+
+pub fn code_block(value: &str, format: HelpFormat) -> String {
+    let code = inert_code(value);
+    match format {
+        HelpFormat::Markdown => {
+            let fence = "`".repeat(longest_backtick_run(&code).saturating_add(1).max(3));
+            format!("{fence}\n{code}\n{fence}")
+        }
+        HelpFormat::PlainText => code
+            .lines()
+            .map(|line| format!("    {line}"))
+            .collect::<Vec<_>>()
+            .join("\n"),
+    }
+}
+
+fn longest_backtick_run(value: &str) -> usize {
+    value
+        .split(|glyph| glyph != '`')
+        .map(str::len)
+        .max()
+        .unwrap_or(0)
+}
+
+fn inert_code(value: &str) -> String {
+    value
+        .chars()
+        .filter(|glyph| *glyph == '\n' || !is_inert_control(*glyph))
+        .collect()
 }
 
 pub fn inert_text(value: &str, format: HelpFormat) -> String {
@@ -152,11 +232,4 @@ pub fn escape_markdown(value: &str) -> String {
         escaped.push(glyph);
     }
     escaped
-}
-
-pub fn example_reference(example: &HelpExample) -> String {
-    format!(
-        "{}@{}#{}",
-        example.specification, example.version, example.case
-    )
 }

@@ -1,20 +1,32 @@
-use crate::help_catalog::{HelpCard, HelpExample, HelpLocale, HelpPart, cards, token_description};
+use crate::help_catalog::{
+    FormLine, HelpCard, HelpCategory, HelpCommonError, HelpExample, HelpLocale, HelpPart, HelpSlot,
+    cards, token_description,
+};
 use crate::help_resolution::{HelpIdentity, HelpIdentityKind, HelpQueryOutcome};
+use pseudolearn_lexicon::Profile;
 
 #[derive(Clone, Copy, Debug)]
 pub struct HelpContent {
     pub card_id: &'static str,
     pub title: &'static str,
     pub summary: &'static str,
-    pub purpose: &'static str,
     pub description: Option<&'static str>,
+    pub category: HelpCategory,
+    pub profile: Profile,
+    pub form: &'static [FormLine],
     pub parts: &'static [HelpPart],
-    pub constraints: &'static [&'static str],
-    pub common_errors: &'static [&'static str],
+    pub slots: &'static [HelpSlot],
+    pub result: Option<&'static str>,
+    pub rules: &'static [&'static str],
+    pub common_errors: &'static [HelpCommonError],
     pub examples: &'static [HelpExample],
 }
 
-pub fn help_content(outcome: &HelpQueryOutcome, locale: HelpLocale) -> Option<HelpContent> {
+pub fn help_content(
+    outcome: &HelpQueryOutcome,
+    locale: HelpLocale,
+    profile: Profile,
+) -> Option<HelpContent> {
     let identity = outcome.resolution.identity.as_ref()?;
     let token = outcome.token_identity.as_deref();
     let card = select_card(identity, token)?;
@@ -23,10 +35,14 @@ pub fn help_content(outcome: &HelpQueryOutcome, locale: HelpLocale) -> Option<He
         card_id: card.id,
         title: content.title,
         summary: content.summary,
-        purpose: content.purpose,
         description: token.and_then(|value| token_description(value, locale)),
+        category: card.category,
+        profile,
+        form: card.form(profile),
         parts: content.parts,
-        constraints: content.constraints,
+        slots: content.slots,
+        result: content.result,
+        rules: content.rules,
         common_errors: content.common_errors,
         examples: content.examples,
     })

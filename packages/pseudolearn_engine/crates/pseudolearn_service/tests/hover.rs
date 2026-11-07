@@ -77,7 +77,7 @@ fn describes_keywords_in_the_profile_language() -> Result<(), String> {
     assert!(
         outcome
             .description
-            .is_some_and(|text| text.contains("bucle"))
+            .is_some_and(|text| text.contains("repetición"))
     );
     Ok(())
 }

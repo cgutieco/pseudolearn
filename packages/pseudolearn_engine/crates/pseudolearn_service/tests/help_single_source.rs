@@ -19,10 +19,12 @@ fn prose_needles() -> Vec<&'static str> {
         for locale in [HelpLocale::Spanish, HelpLocale::English] {
             let content = card.content(locale);
             needles.push(content.summary);
-            needles.push(content.purpose);
-            needles.extend(content.constraints.iter().copied());
-            needles.extend(content.common_errors.iter().copied());
+            needles.extend(content.result);
+            needles.extend(content.rules.iter().copied());
+            needles.extend(content.common_errors.iter().map(|error| error.text));
             needles.extend(content.parts.iter().map(|part| part.text));
+            needles.extend(content.slots.iter().map(|slot| slot.text));
+            needles.extend(content.examples.iter().map(|example| example.note));
         }
     }
     needles.retain(|text| text.chars().count() >= MINIMUM_PROSE_LENGTH);
