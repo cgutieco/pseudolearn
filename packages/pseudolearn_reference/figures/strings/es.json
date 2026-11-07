@@ -1051,6 +1051,51 @@
       "programa": "programa",
       "salida": "salida",
       "hola": "Hola"
+    },
+    "ruta-caja-no-se-recalcula": {
+      "titulo": "Una caja no se recalcula sola",
+      "descripcion": "Dos cajas, invitados y porciones. Primero valen 23 y 69. Al cambiar invitados a 30, porciones sigue en 69, marcada en rojo. Solo al volver a ejecutar el cálculo, porciones pasa a 90.",
+      "no-recalculo": "no se recalculó",
+      "recalculada": "se volvió a calcular"
+    },
+    "ruta-ficha": {
+      "titulo": "La ficha del problema",
+      "descripcion": "Una tarjeta con cuatro zonas para el problema de la propina: entra la cuenta y la cantidad de amigos; sale lo que paga cada uno; la relación dice cómo se calcula el total y cómo se reparte; los ejemplos a mano son 120 y 4 con 33, 100 y 3 con 37, y 100 y 1 con 110.",
+      "entra": "Entra",
+      "entra-1": "la cuenta",
+      "entra-2": "la cantidad de amigos",
+      "sale": "Sale",
+      "sale-1": "lo que paga cada uno",
+      "relacion": "Relación",
+      "relacion-1": "cuenta más su décima parte, entre los amigos, hacia arriba",
+      "ejemplos": "Ejemplos a mano"
+    },
+    "ruta-tres-errores": {
+      "titulo": "Tres maneras de fallar",
+      "descripcion": "Un viaje en bus de la salida al destino. Paso 1: el bus no arranca, como un error al compilar, que el motor avisa antes de empezar. Paso 2: el bus se rompe en el camino, como un error al ejecutar, que el motor avisa cuando pasa. Paso 3: el bus llega a otra ciudad, como un error de lógica, que solo descubres con tus casos de prueba.",
+      "salida": "Salida",
+      "destino": "Destino",
+      "compilar-1": "No arranca",
+      "compilar-2": "(al compilar)",
+      "compilar-quien-1": "lo avisa el motor",
+      "compilar-quien-2": "antes de empezar",
+      "ejecutar-1": "Se rompe",
+      "ejecutar-2": "(al ejecutar)",
+      "ejecutar-quien-1": "lo avisa el motor",
+      "ejecutar-quien-2": "en el camino",
+      "logica-1": "Otra ciudad",
+      "logica-2": "(de lógica)",
+      "logica-quien-1": "solo tú, con",
+      "logica-quien-2": "tus casos",
+      "otra-ciudad": "¿llegamos?"
+    },
+    "ruta-recta-casos": {
+      "titulo": "Elegir casos en la recta",
+      "descripcion": "Una recta con la cantidad de amigos de -1 a 5, partida en tres zonas: raro para 0 y los negativos, borde en 1 y normal de 2 en adelante. Hay un punto marcado en cada zona: 0, 1 y 4.",
+      "raro": "raro",
+      "borde": "borde",
+      "normal": "normal",
+      "pie": "cantidad de amigos: un caso por zona"
     }
   }
 }

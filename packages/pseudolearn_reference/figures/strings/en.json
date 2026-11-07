@@ -1051,6 +1051,51 @@
       "programa": "program",
       "salida": "output",
       "hola": "Hola"
+    },
+    "ruta-caja-no-se-recalcula": {
+      "titulo": "A box does not recompute itself",
+      "descripcion": "Two boxes, guests and portions. At first they hold 23 and 69. When guests changes to 30, portions stays at 69, marked in red. Only when the calculation runs again does portions become 90.",
+      "no-recalculo": "not recomputed",
+      "recalculada": "computed again"
+    },
+    "ruta-ficha": {
+      "titulo": "The problem card",
+      "descripcion": "A card with four zones for the tip problem: the bill and the number of friends go in; what each one pays comes out; the relation says how the total is computed and shared; the worked examples are 120 and 4 giving 33, 100 and 3 giving 37, and 100 and 1 giving 110.",
+      "entra": "In",
+      "entra-1": "the bill",
+      "entra-2": "the number of friends",
+      "sale": "Out",
+      "sale-1": "what each one pays",
+      "relacion": "Relation",
+      "relacion-1": "bill plus a tenth, shared among friends, rounded up",
+      "ejemplos": "Worked examples"
+    },
+    "ruta-tres-errores": {
+      "titulo": "Three ways to fail",
+      "descripcion": "A bus trip from departure to destination. Step 1: the bus does not start, like a compile error, which the engine reports before starting. Step 2: the bus breaks down on the way, like a runtime error, which the engine reports when it happens. Step 3: the bus arrives in another town, like a logic error, which only your test cases reveal.",
+      "salida": "Start",
+      "destino": "Goal",
+      "compilar-1": "Won't start",
+      "compilar-2": "(compile)",
+      "compilar-quien-1": "the engine says",
+      "compilar-quien-2": "before starting",
+      "ejecutar-1": "Breaks down",
+      "ejecutar-2": "(runtime)",
+      "ejecutar-quien-1": "the engine says",
+      "ejecutar-quien-2": "on the way",
+      "logica-1": "Wrong town",
+      "logica-2": "(logic)",
+      "logica-quien-1": "only you, with",
+      "logica-quien-2": "your cases",
+      "otra-ciudad": "are we there?"
+    },
+    "ruta-recta-casos": {
+      "titulo": "Choosing cases on the line",
+      "descripcion": "A number line with the number of friends from -1 to 5, split into three zones: odd for 0 and negatives, edge at 1, and normal from 2 upwards. One point is marked in each zone: 0, 1 and 4.",
+      "raro": "odd",
+      "borde": "edge",
+      "normal": "normal",
+      "pie": "number of friends: one case per zone"
     }
   }
 }

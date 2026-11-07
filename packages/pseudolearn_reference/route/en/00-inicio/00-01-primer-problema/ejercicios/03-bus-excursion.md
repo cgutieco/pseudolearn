@@ -22,7 +22,7 @@ titulo: The school trip bus
 
 ::: pistas
 1. Do a worked example: how many pupils fit in 2 buses?
-2. `div` is another way of dividing. Find out what it does with the remainder in [the Specification](especificacion:expresiones.division).
+2. `div` is another way of dividing. Find out what it does with what is left over in [the Specification](especificacion:expresiones.division).
 3. Compare with the last line of the party: there were people left over there too.
 4. The fixed line is `Write "Buses: ", ceil(95 / 40);`, which shows 3. Close with the variant.
 :::

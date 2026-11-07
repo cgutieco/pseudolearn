@@ -6,5 +6,21 @@
   "ejecutar": {"etiqueta": "ejecutar", "formas": ["ejecutar", "ejecuta", "ejecución"], "estricto": false, "receta": false},
   "salida": {"etiqueta": "salida", "formas": ["salida"], "estricto": false, "receta": false},
   "funcion-ya-hecha": {"etiqueta": "función ya hecha", "formas": ["función ya hecha", "funciones ya hechas"], "estricto": true, "receta": false},
-  "ciclo-pseudolearn": {"etiqueta": "el ciclo PseudoLearn", "formas": ["ciclo PseudoLearn"], "estricto": true, "receta": false}
+  "ciclo-pseudolearn": {"etiqueta": "el ciclo PseudoLearn", "formas": ["ciclo PseudoLearn"], "estricto": true, "receta": false},
+  "variable": {"etiqueta": "variable", "formas": ["variable", "variables"], "estricto": true, "receta": false},
+  "valor": {"etiqueta": "valor", "formas": ["valor", "valores"], "estricto": false, "receta": false},
+  "memoria": {"etiqueta": "memoria", "formas": ["memoria"], "estricto": false, "receta": false},
+  "tipo-de-dato": {"etiqueta": "tipo de dato", "formas": ["tipo de dato", "tipos de dato"], "estricto": true, "receta": false},
+  "declarar": {"etiqueta": "declarar", "formas": ["declarar", "declara", "declaración"], "estricto": true, "receta": false},
+  "asignar": {"etiqueta": "asignar", "formas": ["asignar", "asigna", "asignación"], "estricto": true, "receta": false},
+  "division-entera": {"etiqueta": "división entera y resto", "formas": ["división entera", "resto"], "estricto": true, "receta": true},
+  "entrada": {"etiqueta": "entrada", "formas": ["entrada", "entradas"], "estricto": false, "receta": false},
+  "leer-dato": {"etiqueta": "leer un dato", "formas": ["leer un dato"], "estricto": false, "receta": false},
+  "ficha-del-problema": {"etiqueta": "ficha del problema", "formas": ["ficha del problema"], "estricto": true, "receta": false},
+  "error-de-compilacion": {"etiqueta": "error al compilar", "formas": ["error al compilar", "errores al compilar"], "estricto": true, "receta": false},
+  "error-de-ejecucion": {"etiqueta": "error al ejecutar", "formas": ["error al ejecutar", "errores al ejecutar"], "estricto": true, "receta": false},
+  "error-de-logica": {"etiqueta": "error de lógica", "formas": ["error de lógica", "errores de lógica"], "estricto": true, "receta": false},
+  "diagnostico": {"etiqueta": "diagnóstico", "formas": ["diagnóstico", "diagnósticos"], "estricto": true, "receta": false},
+  "caso-de-prueba": {"etiqueta": "caso de prueba", "formas": ["caso de prueba", "casos de prueba"], "estricto": true, "receta": false},
+  "caso-borde": {"etiqueta": "caso borde", "formas": ["caso borde", "casos borde"], "estricto": true, "receta": false}
 }

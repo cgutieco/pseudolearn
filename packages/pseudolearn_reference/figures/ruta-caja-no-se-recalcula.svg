@@ -1,0 +1,23 @@
+<svg viewBox="0 0 340 170">
+  <text x="85" y="20" font-size="12" text-anchor="middle" font-family="mono" fill="@tinta">{{codigo:invitados}}</text>
+  <text x="255" y="20" font-size="12" text-anchor="middle" font-family="mono" fill="@tinta">{{codigo:porciones}}</text>
+  <text x="85" y="100" font-size="12" text-anchor="middle" fill="@tipo">{{lex:integerType}}</text>
+  <text x="255" y="100" font-size="12" text-anchor="middle" fill="@tipo">{{lex:integerType}}</text>
+  <g data-paso="1" data-hasta="1">
+    <caja x="35" y="30" ancho="100" alto="52" rol="acento-estructurado" fondo="0.12" texto="23" tamano="18" fuente="mono" colortexto="numero"/>
+    <caja x="205" y="30" ancho="100" alto="52" rol="acento-estructurado" fondo="0.12" texto="69" tamano="18" fuente="mono" colortexto="numero"/>
+    <text x="170" y="130" font-size="12" text-anchor="middle" font-family="mono" fill="@tinta">{{codigo:porciones &lt;- invitados * 3}}</text>
+  </g>
+  <g data-paso="2" data-hasta="2">
+    <caja x="35" y="30" ancho="100" alto="52" rol="acento-estructurado" fondo="0.12" texto="30" tamano="18" fuente="mono" colortexto="numero"/>
+    <caja x="205" y="30" ancho="100" alto="52" rol="error" fondo="0.12" texto="69" tamano="18" fuente="mono" colortexto="error"/>
+    <text x="170" y="130" font-size="12" text-anchor="middle" font-family="mono" fill="@tinta">{{codigo:invitados &lt;- 30}}</text>
+    <text x="255" y="156" font-size="12" text-anchor="middle" fill="@error">{{t:no-recalculo}}</text>
+  </g>
+  <g data-paso="3">
+    <caja x="35" y="30" ancho="100" alto="52" rol="acento-estructurado" fondo="0.12" texto="30" tamano="18" fuente="mono" colortexto="numero"/>
+    <caja x="205" y="30" ancho="100" alto="52" rol="exito" fondo="0.12" texto="90" tamano="18" fuente="mono" colortexto="numero"/>
+    <text x="170" y="130" font-size="12" text-anchor="middle" font-family="mono" fill="@tinta">{{codigo:porciones &lt;- invitados * 3}}</text>
+    <text x="255" y="156" font-size="12" text-anchor="middle" fill="@exito">{{t:recalculada}}</text>
+  </g>
+</svg>

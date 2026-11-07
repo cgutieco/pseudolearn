@@ -6,5 +6,21 @@
   "ejecutar": {"etiqueta": "run", "formas": ["run", "runs", "running"], "estricto": false, "receta": false},
   "salida": {"etiqueta": "output", "formas": ["output"], "estricto": false, "receta": false},
   "funcion-ya-hecha": {"etiqueta": "built-in function", "formas": ["built-in function", "built-in functions"], "estricto": true, "receta": false},
-  "ciclo-pseudolearn": {"etiqueta": "the PseudoLearn cycle", "formas": ["PseudoLearn cycle"], "estricto": true, "receta": false}
+  "ciclo-pseudolearn": {"etiqueta": "the PseudoLearn cycle", "formas": ["PseudoLearn cycle"], "estricto": true, "receta": false},
+  "variable": {"etiqueta": "variable", "formas": ["variable", "variables"], "estricto": true, "receta": false},
+  "valor": {"etiqueta": "value", "formas": ["value", "values"], "estricto": false, "receta": false},
+  "memoria": {"etiqueta": "memory", "formas": ["memory"], "estricto": false, "receta": false},
+  "tipo-de-dato": {"etiqueta": "data type", "formas": ["data type", "data types"], "estricto": true, "receta": false},
+  "declarar": {"etiqueta": "declare", "formas": ["declare", "declares", "declaration"], "estricto": true, "receta": false},
+  "asignar": {"etiqueta": "assign", "formas": ["assign", "assigns", "assignment"], "estricto": true, "receta": false},
+  "division-entera": {"etiqueta": "integer division and remainder", "formas": ["integer division", "remainder"], "estricto": true, "receta": true},
+  "entrada": {"etiqueta": "input", "formas": ["input", "inputs"], "estricto": false, "receta": false},
+  "leer-dato": {"etiqueta": "read a value", "formas": ["read a value"], "estricto": false, "receta": false},
+  "ficha-del-problema": {"etiqueta": "problem card", "formas": ["problem card"], "estricto": true, "receta": false},
+  "error-de-compilacion": {"etiqueta": "compile error", "formas": ["compile error", "compile errors"], "estricto": true, "receta": false},
+  "error-de-ejecucion": {"etiqueta": "runtime error", "formas": ["runtime error", "runtime errors"], "estricto": true, "receta": false},
+  "error-de-logica": {"etiqueta": "logic error", "formas": ["logic error", "logic errors"], "estricto": true, "receta": false},
+  "diagnostico": {"etiqueta": "diagnostic", "formas": ["diagnostic", "diagnostics"], "estricto": true, "receta": false},
+  "caso-de-prueba": {"etiqueta": "test case", "formas": ["test case", "test cases"], "estricto": true, "receta": false},
+  "caso-borde": {"etiqueta": "edge case", "formas": ["edge case", "edge cases"], "estricto": true, "receta": false}
 }
