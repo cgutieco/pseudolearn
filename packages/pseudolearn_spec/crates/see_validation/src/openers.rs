@@ -26,7 +26,7 @@ pub fn check(corpus: &Corpus, conventions: &Value) -> Vec<String> {
 }
 
 fn lexicon_entries(corpus: &Corpus) -> Vec<(&str, &Value)> {
-    ["vocabulary", "functions"]
+    ["vocabulary", "contextualVocabulary", "functions"]
         .into_iter()
         .filter_map(|term| crate::cli::resource(corpus, term))
         .filter_map(Value::as_object)

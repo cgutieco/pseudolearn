@@ -46,3 +46,29 @@ fn rejects_openers_shared_with_the_other_profile_and_unknown_identities() -> Res
     assert!(errors.iter().any(|error| error.contains("unknown opener")));
     Ok(())
 }
+
+#[test]
+fn accepts_contextual_openers_and_rejects_their_collisions() -> Result<(), String> {
+    let corpus = |english: &str| {
+        contracts::corpus(
+            "TOOL.CLI.CONVENTIONS",
+            json!([
+                {"kind":"definicion","fields":{"id":"D1","termino":"vocabulary","texto":"Vocabulario.","valor":{
+                    "algorithm":{"lexemas":{"es":"Proceso","en":"algorithm"},"alias":{"es":[],"en":[]}}
+                }}},
+                {"kind":"definicion","fields":{"id":"D2","termino":"contextualVocabulary","texto":"Contextual.","valor":{
+                    "variantKeyword":{"lexemas":{"es":"Variante","en":english}}
+                }}}
+            ]),
+        )
+    };
+    let conventions = json!({"aperturas":["algorithm","variantKeyword"]});
+    assert!(see_validation::openers::check(&corpus("variant")?, &conventions).is_empty());
+    let errors = see_validation::openers::check(&corpus("variante")?, &conventions);
+    assert!(
+        errors
+            .iter()
+            .any(|error| error.starts_with("SEE-PROFILE-OPENERS: variantKeyword"))
+    );
+    Ok(())
+}
