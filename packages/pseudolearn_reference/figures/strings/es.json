@@ -1366,6 +1366,21 @@
       "tarjeta": "tarjeta",
       "vale": "vale",
       "pie": "el mismo enchufe para todos los medios"
+    },
+    "ruta-explosion-clases": {
+      "titulo": "Heredar explota, componer suma",
+      "descripcion": "Primer paso: un árbol con el producto arriba y un caso particular por cada combinación de tres rasgos: vence, oferta, envase, y sus combinaciones de a dos y de a tres; los combinados están en rojo. Segundo paso: un solo producto que tiene, o no, cada uno de los tres rasgos.",
+      "producto": "Producto",
+      "vence": "vence",
+      "oferta": "oferta",
+      "envase": "envase",
+      "vence-oferta": "vence + oferta",
+      "vence-envase": "vence + envase",
+      "oferta-envase": "oferta + envase",
+      "los-tres": "los tres",
+      "ocho": "ocho tipos para tres rasgos",
+      "tiene": "tiene rasgos",
+      "tres": "tres piezas para tres rasgos"
     }
   }
 }

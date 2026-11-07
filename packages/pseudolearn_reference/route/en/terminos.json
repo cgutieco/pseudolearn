@@ -107,5 +107,8 @@
   "referencia-a-objeto": {"etiqueta": "object reference", "formas": ["object reference", "object references"], "estricto": true, "receta": false},
   "interfaz": {"etiqueta": "interface", "formas": ["interface", "interfaces"], "estricto": true, "receta": true},
   "polimorfismo": {"etiqueta": "polymorphism", "formas": ["polymorphism"], "estricto": true, "receta": true},
-  "despacho-dinamico": {"etiqueta": "dynamic dispatch", "formas": ["dynamic dispatch"], "estricto": true, "receta": false}
+  "despacho-dinamico": {"etiqueta": "dynamic dispatch", "formas": ["dynamic dispatch"], "estricto": true, "receta": false},
+  "herencia": {"etiqueta": "inheritance", "formas": ["inheritance"], "estricto": true, "receta": true},
+  "composicion": {"etiqueta": "composition", "formas": ["composition"], "estricto": true, "receta": true},
+  "sobrescribir": {"etiqueta": "override", "formas": ["override", "overrides"], "estricto": true, "receta": false}
 }

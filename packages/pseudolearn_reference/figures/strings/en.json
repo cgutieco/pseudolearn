@@ -1366,6 +1366,21 @@
       "tarjeta": "card",
       "vale": "voucher",
       "pie": "the same plug for every payment method"
+    },
+    "ruta-explosion-clases": {
+      "titulo": "Inheriting explodes, composing adds up",
+      "descripcion": "First step: a tree with the product at the top and a particular case for each combination of three traits: expires, offer, deposit bottle, and their combinations of two and three; the combined ones are in red. Second step: a single product that has, or not, each of the three traits.",
+      "producto": "Product",
+      "vence": "expires",
+      "oferta": "offer",
+      "envase": "bottle",
+      "vence-oferta": "expires + offer",
+      "vence-envase": "expires + bottle",
+      "oferta-envase": "offer + bottle",
+      "los-tres": "all three",
+      "ocho": "eight types for three traits",
+      "tiene": "has traits",
+      "tres": "three pieces for three traits"
     }
   }
 }

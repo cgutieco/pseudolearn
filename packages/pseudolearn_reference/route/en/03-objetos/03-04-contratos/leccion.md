@@ -55,7 +55,6 @@ In PseudoLearn an interface is not used as the type of a variable: it is used as
 
 ::: especificacion
 - objetos.interfaces
-- objetos.herencia
 :::
 
 ## Write {#escribir fase=3}
@@ -106,7 +105,7 @@ Adding the transfer is writing a new class that implements `MedioDePago`. `Cobra
 ::: docentes
 - **An interface with methods nobody uses.** The contract has to be what the till needs, no more and no less.
 - **The choice by method that reappears somewhere else.** When choosing the method needs a decision, let it be a single one at the start of the program.
-- **Confusing interface with inheriting.** An interface promises methods; it does not share code. The next lesson tells them apart.
+- **Confusing an interface with sharing code.** An interface promises methods; it does not share code. The next lesson shows how code is shared.
 :::
 
 ::: siguiente

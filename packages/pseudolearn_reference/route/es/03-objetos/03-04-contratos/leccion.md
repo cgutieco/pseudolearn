@@ -55,7 +55,6 @@ En PseudoLearn una interfaz no se usa como tipo de una variable: se usa como con
 
 ::: especificacion
 - objetos.interfaces
-- objetos.herencia
 :::
 
 ## Escribir {#escribir fase=3}
@@ -146,7 +145,7 @@ Agregar la transferencia es escribir una clase nueva que realiza `MedioDePago`. 
 ::: docentes
 - **Una interfaz con métodos que nadie usa.** El contrato tiene que ser lo que la caja necesita, ni más ni menos.
 - **La selección por medio que vuelve a aparecer en otro lado.** Cuando para elegir el medio hace falta una decisión, que sea una sola y en el principio del programa.
-- **Confundir interfaz con heredar.** Una interfaz promete métodos; no comparte código. La próxima lección lo distingue.
+- **Confundir una interfaz con compartir código.** Una interfaz promete métodos; no comparte código. La próxima lección muestra cómo se comparte.
 :::
 
 ::: siguiente

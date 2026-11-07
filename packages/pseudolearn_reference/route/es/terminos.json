@@ -107,5 +107,8 @@
   "referencia-a-objeto": {"etiqueta": "referencia a un objeto", "formas": ["referencia a un objeto", "referencias a objetos"], "estricto": true, "receta": false},
   "interfaz": {"etiqueta": "interfaz", "formas": ["interfaz", "interfaces"], "estricto": true, "receta": true},
   "polimorfismo": {"etiqueta": "polimorfismo", "formas": ["polimorfismo"], "estricto": true, "receta": true},
-  "despacho-dinamico": {"etiqueta": "despacho dinámico", "formas": ["despacho dinámico"], "estricto": true, "receta": false}
+  "despacho-dinamico": {"etiqueta": "despacho dinámico", "formas": ["despacho dinámico"], "estricto": true, "receta": false},
+  "herencia": {"etiqueta": "herencia", "formas": ["herencia", "heredar", "hereda"], "estricto": true, "receta": true},
+  "composicion": {"etiqueta": "composición", "formas": ["composición", "componer"], "estricto": true, "receta": true},
+  "sobrescribir": {"etiqueta": "sobrescribir", "formas": ["sobrescribir", "sobrescritura"], "estricto": true, "receta": false}
 }
