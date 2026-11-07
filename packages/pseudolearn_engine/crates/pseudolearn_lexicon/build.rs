@@ -39,7 +39,15 @@ fn generate() -> Result<(), Box<dyn std::error::Error>> {
     code.push_str(&function_metadata::canonical_words(vocabulary)?);
     code.push_str(&function_metadata::canonical_builtin_words(functions)?);
     code.push_str(&function_metadata::compound_prefixes(vocabulary));
-    code.push_str(&generate_openers(vocabulary));
+    let openers = parsed
+        .pointer("/resources/cliConventions/aperturas")
+        .and_then(serde_json::Value::as_array)
+        .ok_or("Missing top-level openers in export.json")?;
+    let contextual = parsed
+        .pointer("/resources/contextualVocabulary")
+        .and_then(serde_json::Value::as_object)
+        .ok_or("Missing contextual vocabulary in export.json")?;
+    code.push_str(&generate_openers(openers, [vocabulary, contextual]));
 
     std::fs::write(destination, code)?;
     Ok(())
@@ -176,9 +184,12 @@ fn collect_pairs(dictionary: &serde_json::Map<String, serde_json::Value>) -> Pro
     (spanish_pairs, english_pairs)
 }
 
-fn generate_openers(vocabulary: &serde_json::Map<String, serde_json::Value>) -> String {
+fn generate_openers(
+    openers: &[serde_json::Value],
+    sources: [&serde_json::Map<String, serde_json::Value>; 2],
+) -> String {
     let mut code = String::new();
-    let (spanish_openers, english_openers) = collect_openers(vocabulary);
+    let (spanish_openers, english_openers) = collect_openers(openers, sources);
 
     code.push_str(&format_opener_array("OPENERS_ES", &spanish_openers));
     code.push_str(&format_opener_array("OPENERS_EN", &english_openers));
@@ -198,25 +209,15 @@ fn generate_openers(vocabulary: &serde_json::Map<String, serde_json::Value>) -> 
 }
 
 fn collect_openers(
-    vocabulary: &serde_json::Map<String, serde_json::Value>,
+    openers: &[serde_json::Value],
+    sources: [&serde_json::Map<String, serde_json::Value>; 2],
 ) -> (Vec<String>, Vec<String>) {
     let mut spanish = Vec::new();
     let mut english = Vec::new();
-    for opener in [
-        "algorithm",
-        "classKeyword",
-        "constantKeyword",
-        "enumKeyword",
-        "recordKeyword",
-        "subroutine",
-    ] {
-        if let Some(keyword_definition) = vocabulary.get(opener) {
-            for form in collect_forms(keyword_definition, "es") {
-                spanish.push(form);
-            }
-            for form in collect_forms(keyword_definition, "en") {
-                english.push(form);
-            }
+    for opener in openers.iter().filter_map(serde_json::Value::as_str) {
+        if let Some(keyword_definition) = sources.iter().find_map(|source| source.get(opener)) {
+            spanish.extend(collect_forms(keyword_definition, "es"));
+            english.extend(collect_forms(keyword_definition, "en"));
         }
     }
     spanish.sort();

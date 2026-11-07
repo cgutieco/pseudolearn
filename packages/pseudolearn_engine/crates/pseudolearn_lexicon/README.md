@@ -54,9 +54,13 @@ tabla generada, sin tablas cruzadas. Descartado: una lista aparte de palabras pr
 
 ### Aperturas de perfil
 
-La primera palabra de un archivo decide el perfil cuando es una apertura de unidad. Además de `Algoritmo`, `Clase` y
-`SubProceso`, lo son `Constante`, `Enumerado` y `Registro` (y sus equivalentes en inglés), de modo que un archivo que
-empieza por una declaración de tipo o de constante conserva la detección automática.
+La primera palabra de un archivo decide el perfil cuando es una apertura de unidad. La lista sale de
+`cliConventions.aperturas` (`TOOL.CLI.CONVENTIONS#D1`), y cada identidad se busca en el vocabulario reservado o en el
+contextual: algoritmo, clase, subprograma, constante, enumerado, registro, interfaz, variante y las visibilidades
+`Publico`/`Privado`. Antes `build.rs` fijaba su propia lista, sin interfaz, variante ni visibilidad, y un archivo que
+empezaba por `interface` o `public` se leía como español; la lista del corpus era además más corta que la del motor.
+Se descartó mantener la lista en el generador: la validación `SEE-PROFILE-OPENERS` solo protege las aperturas
+declaradas en el corpus.
 
 `detect_opening_profile` omite BOM y comentarios iniciales, y consulta las aperturas generadas para devolver el perfil. La API pública mantiene su proyección textual llamando a esta única función del léxico.
 
