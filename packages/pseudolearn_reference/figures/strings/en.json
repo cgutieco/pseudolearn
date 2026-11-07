@@ -384,6 +384,12 @@
       "desordenado": "With messy spaces",
       "igual": "= the same program for the engine"
     },
+    "estructura-archivo": {
+      "titulo": "A program file",
+      "descripcion": "A file with four sibling units one under the other: the constant SALUDO, the enumeration Color, the algorithm Tienda, highlighted as the only one, and the subroutine Precio.",
+      "archivo": "tienda.psl",
+      "unico": "exactly one"
+    },
     "familias-palabras": {
       "titulo": "Families of reserved words",
       "descripcion": "Six coloured bands: program structure, subroutines, objects, types, boolean values and operators written with letters, each with examples.",
@@ -528,6 +534,15 @@
       "mayusculas": "upper case",
       "minusculas": "lower case",
       "nota": "\"Zeta\" < \"alfa\" because 90 < 97"
+    },
+    "paquete-modulos": {
+      "titulo": "A package with two modules",
+      "descripcion": "A package called tienda with the module principal, which is the entry and holds the algorithm, and the module formas.geometria, with the public subroutine AreaCirculo and the private Ayudante. An import arrow goes from principal to geometria.",
+      "paquete": "package tienda",
+      "principal": "principal",
+      "entrada": "entry module",
+      "geometria": "formas.geometria",
+      "privado": "private: not importable"
     },
     "para-cada-recorrido": {
       "titulo": "Walking a vector",

@@ -384,6 +384,12 @@
       "desordenado": "Con espacios desordenados",
       "igual": "= el mismo programa para el motor"
     },
+    "estructura-archivo": {
+      "titulo": "Un archivo de programa",
+      "descripcion": "Un archivo con cuatro unidades hermanas una debajo de otra: la constante SALUDO, el enumerado Color, el algoritmo Tienda, destacado como único, y el subproceso Precio.",
+      "archivo": "tienda.psl",
+      "unico": "exactamente uno"
+    },
     "familias-palabras": {
       "titulo": "Familias de palabras reservadas",
       "descripcion": "Seis franjas de colores: estructura del programa, subprogramas, objetos, tipos, valores lógicos y operadores escritos con letras, cada una con ejemplos.",
@@ -528,6 +534,15 @@
       "mayusculas": "mayúsculas",
       "minusculas": "minúsculas",
       "nota": "\"Zeta\" < \"alfa\" porque 90 < 97"
+    },
+    "paquete-modulos": {
+      "titulo": "Un paquete con dos módulos",
+      "descripcion": "Un paquete llamado tienda con el módulo principal, que es la entrada y contiene el algoritmo, y el módulo formas.geometria, con el subproceso público AreaCirculo y el privado Ayudante. Una flecha de importación va de principal a geometria.",
+      "paquete": "paquete tienda",
+      "principal": "principal",
+      "entrada": "módulo de entrada",
+      "geometria": "formas.geometria",
+      "privado": "privado: no se importa"
     },
     "para-cada-recorrido": {
       "titulo": "Recorrido de un vector",
