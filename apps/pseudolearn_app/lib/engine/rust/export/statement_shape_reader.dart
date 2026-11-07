@@ -27,6 +27,7 @@ final class StatementShapeReader {
         id,
         _names(node, parts),
         _initializer(node, parts),
+        _view.childForRole(node, 'type')?.semantics.primitive,
       ),
       'dimension_declaration' => DimensionShape(id, _arrays(parts)),
       'output' => WriteShape(id, parts, node.semantics.withoutNewline),

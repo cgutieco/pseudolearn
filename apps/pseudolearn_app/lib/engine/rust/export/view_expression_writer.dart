@@ -17,11 +17,13 @@ const Set<String> _binaryKinds = {
   'power_expression',
 };
 
-final class ViewExpressionWriter {
+base class ViewExpressionWriter {
   final RustProgramView _view;
   final ViewExpressionRules _rules;
 
   const ViewExpressionWriter(this._view, this._rules);
+
+  RustProgramView get programView => _view;
 
   String write(RustViewNode node) {
     return switch (node.syntaxKind) {
@@ -32,7 +34,7 @@ final class ViewExpressionWriter {
       'unary' => _unary(node),
       'postfix' => writeChain(rustChildrenOf(_view, node), node),
       'instantiation' => _instantiation(node),
-      final kind when _binaryKinds.contains(kind) => _binary(node),
+      final kind when _binaryKinds.contains(kind) => writeBinary(node),
       _ => node.text,
     };
   }
@@ -49,6 +51,13 @@ final class ViewExpressionWriter {
     if (builtin != null && parts.length == 2) {
       return _rules.builtin(builtin, arguments(parts.last));
     }
+    if (parts.length == 2 &&
+        parts.first.syntaxKind == 'identifier' &&
+        parts.last.syntaxKind == 'arguments' &&
+        owner.semantics.receiver != 'super') {
+      final callee = parts.first.text;
+      return '$callee(${callArguments(callee, parts.last).join(', ')})';
+    }
     var text = owner.semantics.receiver == 'super'
         ? _rules.superText
         : write(parts.first);
@@ -60,6 +69,11 @@ final class ViewExpressionWriter {
     }
     return text;
   }
+
+  /// Arguments of a call to the subroutine [callee]; a typed target converts
+  /// them to the parameter types.
+  List<String> callArguments(String callee, RustViewNode container) =>
+      arguments(container);
 
   String _suffix(RustViewNode part) => switch (part.syntaxKind) {
     'arguments' => '(${arguments(part).join(', ')})',
@@ -91,13 +105,15 @@ final class ViewExpressionWriter {
     return _rules.instantiation(children.first.text, arguments(container));
   }
 
-  String _binary(RustViewNode node) {
+  String writeBinary(RustViewNode node) {
     final operands = rustChildrenOf(_view, node);
     final operators = node.semantics.operators;
     if (operators.length != operands.length - 1) return node.text;
     final buffer = StringBuffer(write(operands.first));
     for (var index = 0; index < operators.length; index++) {
-      buffer.write(' ${(_rules.binaryOperators[operators[index]] ?? operators[index])} ');
+      buffer.write(
+        ' ${(_rules.binaryOperators[operators[index]] ?? operators[index])} ',
+      );
       buffer.write(write(operands[index + 1]));
     }
     return buffer.toString();

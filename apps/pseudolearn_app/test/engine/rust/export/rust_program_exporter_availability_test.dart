@@ -193,11 +193,9 @@ void main() {
   });
 
   group('Rust withholds numeric and class behaviour it cannot yet prove', () {
-    test('division, power, real values and text concatenation', () {
+    test('power and text concatenation', () {
       for (final (source, construct) in [
-        ('Proceso P\n  Escribir 7 / 2;\nFinProceso\n', 'operator:divide'),
         ('Proceso P\n  Escribir 2 ^ 3;\nFinProceso\n', 'operator:power'),
-        ('Proceso P\n  Escribir 1.5;\nFinProceso\n', 'literal:real'),
         (
           'Proceso P\n  Escribir "a" + "b";\nFinProceso\n',
           'text_concatenation',
@@ -214,17 +212,48 @@ void main() {
       }
     });
 
-    test('functions that return a value', () {
-      const source =
-          'Funcion Doble(x Como Entero) Como Entero\n  Retornar x * 2;\n'
-          'FinFuncion\nProceso P\n  Escribir Doble(2);\nFinProceso\n';
+    test('an operation whose operand type is unknown', () {
+      const source = 'Proceso P\n  Escribir Trunc(2.7) + 1;\nFinProceso\n';
 
       final blockers = _blockersOf(source, TargetLanguageId.rust);
 
       expect(
-        _textOf(source, _blocker(blockers, 'value_return')),
-        contains('x * 2'),
+        _textOf(source, _blocker(blockers, 'untyped_operation')),
+        contains('Trunc(2.7) + 1'),
       );
+    });
+  });
+
+  group('Rust converts what the engine converts implicitly', () {
+    String rustOf(String source) {
+      final result = nativeTestEngine.programExporter.export(
+        sourceCode: source,
+        targetLanguage: TargetLanguageId.rust,
+        profileId: SyntaxProfileId.classicSpanish,
+      );
+      expect(result, isA<ExportSuccess>(), reason: source);
+      return (result as ExportSuccess).program.sourceCode;
+    }
+
+    test('a function returns its declared type', () {
+      final code = rustOf(
+        'Funcion Mitad(x Como Entero) Como Real\n  Retornar x / 2;\n'
+        'FinFuncion\nProceso P\n  Escribir Mitad(3);\nFinProceso\n',
+      );
+
+      expect(code, contains('fn Mitad(x: i64) -> f64 {'));
+      expect(code, contains('return x as f64 / 2.0;'));
+      expect(code, contains('println!("{}", real_text(Mitad(3)));'));
+    });
+
+    test('a division by a variable stops on zero like the engine', () {
+      final code = rustOf(
+        'Proceso P\n  Definir a Como Entero <- 1;\n  Definir b Como Entero <- 1;\n'
+        '  Escribir a / b;\nFinProceso\n',
+      );
+
+      expect(code, contains('divide(a as f64, b as f64)'));
+      expect(code, contains('panic!("division by zero")'));
     });
   });
 

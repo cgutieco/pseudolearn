@@ -1,6 +1,7 @@
 import '../../../domain/model/export/export_blocker.dart';
 import '../rust_program_view.dart';
 import 'export_support.dart';
+import 'expression_types.dart';
 import 'read_target_types.dart';
 
 const Set<String> _unitKinds = {'algorithm_unit', 'class_unit', 'subroutine'};
@@ -15,10 +16,20 @@ const Set<String> _booleanKinds = {
 final class ExportCoverage {
   final RustProgramView _view;
   final ExportSupport _support;
+  final ExpressionTypes _types;
   final ReadTargetTypes _reads;
 
-  ExportCoverage(this._view, this._support)
-    : _reads = ReadTargetTypes.of(_view);
+  factory ExportCoverage(RustProgramView view, ExportSupport support) {
+    final types = ExpressionTypes.of(view);
+    return ExportCoverage._(
+      view,
+      support,
+      types,
+      ReadTargetTypes.of(view, types),
+    );
+  }
+
+  ExportCoverage._(this._view, this._support, this._types, this._reads);
 
   List<ExportBlocker> blockers() {
     final blockers = <ExportBlocker>[];
@@ -47,6 +58,9 @@ final class ExportCoverage {
       yield 'boolean_output';
     }
     if (node.syntaxKind == 'input') yield* _unreadableTargets(node);
+    if (_support.requiresNumericTypes && _isUntypedOperation(node)) {
+      yield 'untyped_operation';
+    }
     if (_returnsValue(node)) yield 'value_return';
     if (_concatenatesText(node)) yield 'text_concatenation';
   }
@@ -88,6 +102,22 @@ final class ExportCoverage {
         yield 'input:$primitive';
       }
     }
+  }
+
+  /// Arithmetic and comparisons whose operand types are unknown cannot be
+  /// given the explicit conversions a typed target needs.
+  bool _isUntypedOperation(RustViewNode node) {
+    final kind = node.syntaxKind;
+    if (kind == 'addition' || kind == 'multiplication') {
+      return _types.of(node) == null;
+    }
+    if (kind == 'ordering' || kind == 'equality') {
+      return rustChildrenOf(
+        _view,
+        node,
+      ).any((child) => _types.of(child) == null);
+    }
+    return false;
   }
 
   bool _isBooleanTyped(RustViewNode node) =>

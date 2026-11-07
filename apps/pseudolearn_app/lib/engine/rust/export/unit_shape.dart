@@ -62,8 +62,14 @@ final class SubroutineShape {
   final String name;
   final List<ParameterShape> parameters;
   final List<StatementShape> body;
+  final TypeShape? returnType;
 
-  const SubroutineShape(this.name, this.parameters, this.body);
+  const SubroutineShape(
+    this.name,
+    this.parameters,
+    this.body, {
+    this.returnType,
+  });
 }
 
 final class ProgramShape {

@@ -1,4 +1,5 @@
 import '../rust_program_view.dart';
+import 'expression_types.dart';
 import 'read_target_types.dart';
 import 'statement_shape.dart';
 import 'statement_shape_reader.dart';
@@ -9,8 +10,10 @@ final class UnitShapeReader {
   final ReadTargetTypes _reads;
   final StatementShapeReader _statements;
 
-  UnitShapeReader(RustProgramView view)
-    : this._(view, ReadTargetTypes.of(view));
+  factory UnitShapeReader(RustProgramView view) => UnitShapeReader._(
+    view,
+    ReadTargetTypes.of(view, ExpressionTypes.of(view)),
+  );
 
   UnitShapeReader._(this._view, this._reads)
     : _statements = StatementShapeReader(_view, _reads);
@@ -90,7 +93,17 @@ final class UnitShapeReader {
 
   SubroutineShape _subroutine(RustViewNode node) {
     final parts = rustChildrenOf(_view, node);
-    return SubroutineShape(parts.first.text, _parameters(node), _body(node));
+    final returns = parts.where(
+      (part) =>
+          part.syntaxKind == 'type' &&
+          node.childRoles[part.id.value] == 'signature',
+    );
+    return SubroutineShape(
+      parts.first.text,
+      _parameters(node),
+      _body(node),
+      returnType: returns.isEmpty ? null : _type(returns.first),
+    );
   }
 
   List<StatementShape> _body(RustViewNode node) =>

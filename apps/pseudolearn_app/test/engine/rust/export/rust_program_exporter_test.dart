@@ -98,10 +98,9 @@ void main() {
   });
 
   test('emits Rust procedures and statement forms for the proven subset', () {
-    final code =
-        (export(_procedural, TargetLanguageId.rust) as ExportSuccess)
-            .program
-            .sourceCode;
+    final code = (export(_procedural, TargetLanguageId.rust) as ExportSuccess)
+        .program
+        .sourceCode;
 
     expect(code, contains('fn Informar(n: i64) {'));
     expect(code, contains('for i in (1..=3).rev() {'));
@@ -117,10 +116,7 @@ void main() {
     final constructs = (result as ExportUnavailable).blockers.map(
       (blocker) => blocker.construct,
     );
-    expect(
-      constructs,
-      containsAll(['class_unit', 'value_return', 'builtin:squareRoot']),
-    );
+    expect(constructs, containsAll(['class_unit', 'builtin:squareRoot']));
   });
 
   test('attributes statement lines to view nodes and headers to none', () {
@@ -138,7 +134,11 @@ void main() {
         'algorithm Sum\n  define a as integer <- 0;\n  a <- 1;\n  write a;\nendAlgorithm\n';
 
     final code =
-        (export(source, TargetLanguageId.python, profile: SyntaxProfileId.english)
+        (export(
+                  source,
+                  TargetLanguageId.python,
+                  profile: SyntaxProfileId.english,
+                )
                 as ExportSuccess)
             .program
             .sourceCode;

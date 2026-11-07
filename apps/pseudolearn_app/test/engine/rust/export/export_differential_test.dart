@@ -107,7 +107,7 @@ final Map<String, ({String source, Set<TargetLanguageId> targets})> _cases = {
     source: _procedure(
       'Definir r Como Real <- 1.5;\nr <- r * 2 + 1;\nEscribir r;',
     ),
-    targets: {TargetLanguageId.python},
+    targets: TargetLanguageId.values.toSet(),
   ),
   'text concatenation': (
     source: _procedure('Escribir "a" + "b";'),
@@ -119,7 +119,7 @@ final Map<String, ({String source, Set<TargetLanguageId> targets})> _cases = {
   ),
   'function with return value': (
     source: _procedure('Escribir Doble(4);', _doubleFunction),
-    targets: {TargetLanguageId.python},
+    targets: TargetLanguageId.values.toSet(),
   ),
   'recursion': (
     source: _procedure(
@@ -127,7 +127,17 @@ final Map<String, ({String source, Set<TargetLanguageId> targets})> _cases = {
       'Funcion Fact(n Como Entero) Como Entero\nSi n <= 1 Entonces\n'
           'Retornar 1;\nFinSi\nRetornar n * Fact(n - 1);\nFinFuncion\n',
     ),
-    targets: {TargetLanguageId.python},
+    targets: TargetLanguageId.values.toSet(),
+  ),
+  'integer and real mixed in one expression': (
+    source: _procedure(
+      'Definir a Como Real;\nDefinir n Como Entero <- 3;\n'
+          'a <- Mitad(n) + Doble(2) * 1.5 - 7 / 2;\nEscribir a;\n'
+          'Escribir n / 3, " ", -n * 0.5;\na <- n;\nEscribir a;',
+      '${_doubleFunction}Funcion Mitad(x Como Entero) Como Real\n'
+          '  Retornar x / 2;\nFinFuncion\n',
+    ),
+    targets: TargetLanguageId.values.toSet(),
   ),
   'class with methods': (
     source: _procedure(
@@ -183,10 +193,26 @@ _readingCases = {
     inputs: ['7'],
     targets: TargetLanguageId.values.toSet(),
   ),
+  'real reading and comparison': (
+    source: _procedure(
+      'Definir r Como Real;\nLeer r;\nEscribir r * 2;\n'
+      'Si r >= 2 Entonces\nEscribir "grande";\nSino\nEscribir "chico";\nFinSi',
+    ),
+    inputs: ['abc', '2.25'],
+    targets: TargetLanguageId.values.toSet(),
+  ),
+  'division by a read divisor': (
+    source: _procedure(
+      'Definir a, b Como Entero;\nDefinir q Como Real;\nLeer a, b;\n'
+      'q <- a / b;\nEscribir q;\nEscribir a * b / 4 + 1;',
+    ),
+    inputs: ['7', '2'],
+    targets: TargetLanguageId.values.toSet(),
+  ),
   'triangle area from read values': (
     source: _triangle,
     inputs: ['3', '5'],
-    targets: {TargetLanguageId.python},
+    targets: TargetLanguageId.values.toSet(),
   ),
 };
 

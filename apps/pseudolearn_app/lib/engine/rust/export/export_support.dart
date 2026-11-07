@@ -53,6 +53,10 @@ final class ExportSupport {
   /// invalid input, like the engine does.
   final Set<String> readablePrimitives;
   final bool allowsValueReturn;
+
+  /// The target has no implicit numeric conversions, so every arithmetic and
+  /// comparison operand needs a known type.
+  final bool requiresNumericTypes;
   final bool allowsTextConcatenation;
 
   const ExportSupport({
@@ -63,6 +67,7 @@ final class ExportSupport {
     this.blockedPrimitives = const {},
     this.readablePrimitives = const {},
     this.allowsValueReturn = true,
+    this.requiresNumericTypes = false,
     this.allowsTextConcatenation = true,
   });
 }
@@ -77,10 +82,8 @@ const ExportSupport pythonExportSupport = ExportSupport(
 const ExportSupport rustExportSupport = ExportSupport(
   syntaxKinds: {..._commonKinds, ..._selectionKinds},
   builtins: {'length', 'toText', 'truncate'},
-  blockedOperators: {'divide', 'integer_divide', 'power'},
-  blockedLiteralTypes: {'real'},
-  blockedPrimitives: {'real'},
-  readablePrimitives: {'integer'},
-  allowsValueReturn: false,
+  blockedOperators: {'integer_divide', 'power'},
+  readablePrimitives: {'integer', 'real'},
   allowsTextConcatenation: false,
+  requiresNumericTypes: true,
 );

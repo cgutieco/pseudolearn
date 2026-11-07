@@ -1,12 +1,15 @@
 import '../../export/target_code_builder.dart';
 import 'python_read_helpers.dart';
 import 'statement_shape.dart';
-import 'view_expression_writer.dart';
+import 'python_expression_writer.dart';
 
 final class PythonShapeStatements {
-  final ViewExpressionWriter _writer;
+  final PythonExpressionWriter _writer;
 
-  const PythonShapeStatements(this._writer);
+  /// Return type of the subroutine being emitted.
+  String? returnPrimitive;
+
+  PythonShapeStatements(this._writer);
 
   void emitBlock(
     List<StatementShape> body,
@@ -27,9 +30,10 @@ final class PythonShapeStatements {
     TargetCodeBuilder buffer,
     String indent,
   ) {
-    final value = shape.initializer == null
+    final initializer = shape.initializer;
+    final value = initializer == null
         ? 'None'
-        : _writer.write(shape.initializer!);
+        : _writer.writeAs(initializer, shape.primitive);
     for (final name in shape.names) {
       buffer.writeln('$indent$name = $value');
     }
@@ -39,7 +43,8 @@ final class PythonShapeStatements {
     switch (shape) {
       case final AssignmentShape s:
         final target = _writer.write(s.target);
-        buffer.writeln('$indent$target = ${_writer.write(s.value)}');
+        final value = _writer.writeAs(s.value, _writer.types.of(s.target));
+        buffer.writeln('$indent$target = $value');
       case final DeclarationShape s:
         _declaration(s, buffer, indent);
       case final DimensionShape s:
@@ -63,10 +68,22 @@ final class PythonShapeStatements {
       case final SwitchShape s:
         _switch(s, buffer, indent);
       case final ReturnShape s:
-        final value = s.value == null ? '' : ' ${_writer.write(s.value!)}';
+        final returned = s.value;
+        final value = returned == null
+            ? ''
+            : ' ${_writer.writeAs(returned, returnPrimitive)}';
         buffer.writeln('${indent}return$value');
       case final CallShape s:
-        final args = s.arguments.map(_writer.write).join(', ');
+        final parameters = _writer.types.signatureOf(s.name)?.parameters;
+        final args = [
+          for (var index = 0; index < s.arguments.length; index++)
+            _writer.writeAs(
+              s.arguments[index],
+              parameters != null && index < parameters.length
+                  ? parameters[index]
+                  : null,
+            ),
+        ].join(', ');
         buffer.writeln('$indent${s.name}($args)');
       case final MethodCallShape s:
         _methodCall(s, buffer, indent);

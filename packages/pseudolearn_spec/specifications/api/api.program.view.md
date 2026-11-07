@@ -1170,7 +1170,7 @@ La vista pública incluye interface_unit, interface_signature, realization, type
 ```
 
 ```caso
-{"id": "C55", "regla": "R17", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"program": "Funcion Doble(x Como Entero) Como Entero\n  Retornar x * 2;\nFinFuncion\nProceso P\n  Escribir Doble(2);\nFinProceso\n", "target": "rust", "profile": "es"}}, "espera": {"aplicacion": {"status": "unavailable", "constructs": ["value_return"], "first_line": 2, "code_visible": false, "focused_lines": 0, "ready": false}}}
+{"id": "C55", "regla": "R17", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"program": "Proceso P\n  Escribir 2 ^ 3;\nFinProceso\n", "target": "rust", "profile": "es"}}, "espera": {"aplicacion": {"status": "unavailable", "constructs": ["operator:power"], "first_line": 2, "code_visible": false, "focused_lines": 0, "ready": false}}}
 ```
 
 ```caso

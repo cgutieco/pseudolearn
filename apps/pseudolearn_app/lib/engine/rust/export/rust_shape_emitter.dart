@@ -2,21 +2,19 @@ import '../../../domain/model/export/exported_program.dart';
 import '../../../domain/model/export/target_language_id.dart';
 import '../../export/target_code_builder.dart';
 import '../../export/target_code_header.dart';
-import 'rust_read_helpers.dart';
+import 'rust_expression_writer.dart';
 import 'rust_shape_statements.dart';
 import 'statement_shape.dart';
 import 'unit_shape.dart';
-import 'view_expression_writer.dart';
 
 final class RustShapeEmitter {
   const RustShapeEmitter();
 
-  ExportedProgram emit(ProgramShape program, ViewExpressionWriter writer) {
+  ExportedProgram emit(ProgramShape program, RustExpressionWriter writer) {
     final statements = RustShapeStatements(writer);
     final buffer = TargetCodeBuilder();
     buffer.writeln(targetCodeHeader(TargetLanguageId.rust));
     buffer.writeln();
-    writeRustReadHelpers(program.readPrimitives, buffer);
     for (final shape in program.classes) {
       _struct(shape, buffer);
       buffer.writeln();
@@ -24,13 +22,31 @@ final class RustShapeEmitter {
       buffer.writeln();
     }
     for (final shape in program.subroutines) {
-      buffer.writeln('fn ${shape.name}(${_parameters(shape.parameters)}) {');
-      statements.emitBlock(shape.body, buffer, '    ');
-      buffer.writeln('}');
+      _subroutine(shape, buffer, statements);
       buffer.writeln();
     }
     _algorithm(program.algorithm, buffer, statements);
+    writer.helpers.writeTo(buffer);
     return buffer.build(TargetLanguageId.rust);
+  }
+
+  void _subroutine(
+    SubroutineShape shape,
+    TargetCodeBuilder buffer,
+    RustShapeStatements statements,
+  ) {
+    final returns = shape.returnType;
+    final suffix = returns == null ? '' : ' -> ${_type(returns)}';
+    buffer.writeln(
+      'fn ${shape.name}(${_parameters(shape.parameters)})$suffix {',
+    );
+    statements.returnPrimitive = returns?.primitive;
+    statements.emitBlock(shape.body, buffer, '    ');
+    statements.returnPrimitive = null;
+    if (returns != null && shape.body.lastOrNull is! ReturnShape) {
+      buffer.writeln('    unreachable!("the function ended without Retornar")');
+    }
+    buffer.writeln('}');
   }
 
   void _struct(ClassShape shape, TargetCodeBuilder buffer) {

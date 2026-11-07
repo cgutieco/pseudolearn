@@ -7,12 +7,12 @@ import 'python_read_helpers.dart';
 import 'python_shape_statements.dart';
 import 'statement_shape.dart';
 import 'unit_shape.dart';
-import 'view_expression_writer.dart';
+import 'python_expression_writer.dart';
 
 final class PythonShapeEmitter {
   const PythonShapeEmitter();
 
-  ExportedProgram emit(ProgramShape program, ViewExpressionWriter writer) {
+  ExportedProgram emit(ProgramShape program, PythonExpressionWriter writer) {
     final statements = PythonShapeStatements(writer);
     final buffer = TargetCodeBuilder();
     buffer.writeln(targetCodeHeader(TargetLanguageId.python));
@@ -26,7 +26,9 @@ final class PythonShapeEmitter {
     for (final shape in program.subroutines) {
       final params = shape.parameters.map((p) => p.name).join(', ');
       buffer.writeln('def ${shape.name}($params):');
+      statements.returnPrimitive = shape.returnType?.primitive;
       statements.emitBlock(shape.body, buffer, '    ');
+      statements.returnPrimitive = null;
       buffer.writeln();
     }
     final algorithm = program.algorithm;

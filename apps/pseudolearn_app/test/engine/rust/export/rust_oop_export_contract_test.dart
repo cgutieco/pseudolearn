@@ -136,7 +136,7 @@ FinProceso
       expect(code, contains('str(3)'));
     });
 
-    test('withholds real arithmetic and builtins from Rust', () {
+    test('withholds from Rust the builtins it cannot prove', () {
       final result = exporter.export(
         sourceCode: _builtinsProgram,
         targetLanguage: TargetLanguageId.rust,
@@ -147,10 +147,9 @@ FinProceso
       final constructs = (result as ExportUnavailable).blockers.map(
         (blocker) => blocker.construct,
       );
-      expect(
-        constructs,
-        containsAll(['type:real', 'literal:real', 'builtin:squareRoot']),
-      );
+      expect(constructs, contains('builtin:squareRoot'));
+      expect(constructs, isNot(contains('type:real')));
+      expect(constructs, isNot(contains('literal:real')));
     });
   });
 }
