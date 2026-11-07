@@ -54,5 +54,5 @@ This is the real intermediate representation of the program `Doble`. Each line i
 ::: vease
 - [Analysing, running and observing](#vision.analizar-ejecutar)
 - [Map of the engine layers](#motor.capas)
-- [Intermediate representation](#motor.ri)
+- [The engine's layers](#motor.capas)
 :::

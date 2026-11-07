@@ -132,5 +132,5 @@ resultNotHandled
 ::: vease
 - [Variantes](#tipos.variantes)
 - [Diferir](#control.diferir)
-- [Fallo de efecto, trampa y corte del anfitrión](#diagnosticos.fallos)
+- [Orden de los efectos y la cinta](#motor.efectos)
 :::

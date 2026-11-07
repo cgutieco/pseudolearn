@@ -46,5 +46,5 @@ When a dynamic check fails, the program does not go on with an invented value: i
 
 ::: vease
 - [Errors, warnings and failures](#vision.errores)
-- [Effect failure, trap and host cut](#diagnosticos.fallos)
+- [Effect order and the tape](#motor.efectos)
 :::

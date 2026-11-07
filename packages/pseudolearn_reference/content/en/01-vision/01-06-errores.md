@@ -63,7 +63,7 @@ If lexical or syntax analysis finds an error, the semantic checks do not run on 
 :::
 
 ::: vease
-- [Diagnostic model](#diagnosticos.modelo)
+- [Anatomy of a diagnostic](#diagnosticos.anatomia)
 - [Diagnostic catalogue](#apendice.diagnosticos)
 - [How a program ends](#vision.terminacion)
 :::

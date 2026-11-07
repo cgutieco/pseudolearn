@@ -20,8 +20,8 @@ Una **capacidad** es un valor opaco que representa un permiso concreto. Hay una 
 | Capacidad | Para qué |
 |---|---|
 | `Consola` | escribir en la salida y en la salida de errores, fijar el código de salida |
-| `Argumentos` | leer los argumentos del programa |
-| `Entorno` | leer variables de entorno |
+| `Argumentos` | leer los argumentos del programa, con `SolicitarArgumentos()` |
+| `Entorno` | leer variables de entorno, con `SolicitarEntorno()` |
 | `DirectorioCap`, `ArchivoCap` | carpetas y archivos |
 | `Reloj`, `Temporizador` | la hora y las esperas |
 | `RedCap` | peticiones HTTP |

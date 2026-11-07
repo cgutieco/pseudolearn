@@ -51,7 +51,7 @@ La edición 2026 aplica una sola gramática: toda sentencia simple termina en pu
 :::
 
 ::: vease
-- [Estrictez](#programas.estrictez)
-- [Permisos y capacidades](#biblioteca.permisos)
+- [Estrictez](#tipos.niveles)
+- [Efectos y capacidades](#tareas.efectos)
 - [Funciones incorporadas](#apendice.funciones)
 :::

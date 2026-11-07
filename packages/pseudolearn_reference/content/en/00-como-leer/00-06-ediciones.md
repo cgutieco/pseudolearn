@@ -42,7 +42,7 @@ The 2026 edition applies a single grammar: every simple statement ends with a se
 :::
 
 ::: vease
-- [Strictness](#programas.estrictez)
-- [Permissions and capabilities](#biblioteca.permisos)
+- [Strictness](#tipos.niveles)
+- [Effects and capabilities](#tareas.efectos)
 - [Built-in functions](#apendice.funciones)
 :::

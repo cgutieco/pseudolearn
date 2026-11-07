@@ -56,6 +56,6 @@ The terminations `completed`, `failed`, `cancelled` and `limit_reached` are fina
 
 ::: vease
 - [Errors, warnings and failures](#vision.errores)
-- [Effect failure, trap and host cut](#diagnosticos.fallos)
+- [Effect order and the tape](#motor.efectos)
 - [Execution limits](#motor.limites)
 :::

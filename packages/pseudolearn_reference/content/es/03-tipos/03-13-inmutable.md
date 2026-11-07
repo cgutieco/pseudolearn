@@ -68,6 +68,6 @@ Las tareas concurrentes no pueden compartir vectores ni diccionarios, porque dos
 :::
 
 ::: vease
-- [Aislamiento entre tareas](#tareas.aislamiento)
-- [Copia](#biblioteca.copia)
+- [Ámbitos de tareas](#tareas.ambitos)
+- [Copia, referencias e identidad](#objetos.copia)
 :::

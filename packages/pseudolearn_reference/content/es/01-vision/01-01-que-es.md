@@ -51,5 +51,5 @@ PseudoLearn es como una receta escrita por alguien muy cuidadoso: dice exactamen
 ::: vease
 - [El viaje de un programa](#vision.viaje)
 - [Estructura de un programa](#programas.estructura)
-- [Proceso y Algoritmo](#programas.proceso)
+- [Estructura de un programa](#programas.estructura)
 :::

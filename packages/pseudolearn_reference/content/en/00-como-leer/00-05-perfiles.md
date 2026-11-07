@@ -42,6 +42,6 @@ There is a single place where the profile changes what you see when running: wri
 :::
 
 ::: vease
-- [Vocabulary profiles and translation](#programas.perfiles)
+- [Modules and projects](#programas.modulos)
 - [Reserved words in Spanish and English](#apendice.palabras)
 :::

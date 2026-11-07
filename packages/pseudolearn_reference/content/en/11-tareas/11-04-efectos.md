@@ -20,8 +20,8 @@ A **capability** is an opaque value that stands for a specific permission. There
 | Capability | What for |
 |---|---|
 | `Console` | writing to the output and the error output, setting the exit code |
-| `Arguments` | reading the program's arguments |
-| `Environment` | reading environment variables |
+| `Arguments` | reading the program's arguments, with `requestArguments()` |
+| `Environment` | reading environment variables, with `requestEnvironment()` |
 | `DirCap`, `FileCap` | folders and files |
 | `Clock`, `Timer` | the time and waits |
 | `NetworkCap` | HTTP requests |

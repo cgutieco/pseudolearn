@@ -62,5 +62,5 @@ Esta es la representación intermedia real del programa `Doble`. Cada línea es 
 ::: vease
 - [Analizar, ejecutar y observar](#vision.analizar-ejecutar)
 - [Mapa de capas del motor](#motor.capas)
-- [Representación intermedia](#motor.ri)
+- [Las capas del motor](#motor.capas)
 :::

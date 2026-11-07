@@ -53,5 +53,5 @@ El análisis admite hasta 256 construcciones anidadas a la vez: paréntesis, ope
 
 ::: vease
 - [Literales de texto y de carácter](#lexico.textos)
-- [Clases de diagnóstico](#diagnosticos.clases)
+- [Severidad y clases](#diagnosticos.severidad)
 :::

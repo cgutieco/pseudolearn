@@ -59,8 +59,8 @@
     "id": "parte-8",
     "numero": "VIII",
     "prefijo": "8",
-    "titulo": "Programs, modules and profiles",
-    "resumen": "How a program is organised into files and two languages."
+    "titulo": "Programs and modules",
+    "resumen": "How a program is organised into units, files and packages."
   },
   {
     "id": "parte-9",

@@ -46,7 +46,7 @@ A handle gets a child's value back:
 
 ## Failures {#fallos}
 
-If the children return `Result<T, E>`, the first `Error` to finish **cancels** the others and jumps to `EndTasks`. The scope's failure name is `Nothing` if all went well, or `Something` with the first error, the associated errors and how many children were cancelled.
+If the children return `Result<T, E>`, the first `Error` to finish **cancels** the others and jumps to `EndTasks`. The scope's failure name is an `Optional<TaskFailure<E>>`: it is `Nothing` if all went well, or `Something` with a `TaskFailure` whose fields are `f.first` (the first error), `f.associated` (the errors that arrived later) and `f.cancelled` (how many children were cancelled).
 
 ```programa id=fallo-tareas titulo="The first error rules"
 ```

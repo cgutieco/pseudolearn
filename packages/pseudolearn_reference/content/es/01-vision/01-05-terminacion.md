@@ -87,6 +87,6 @@ Las terminaciones `completed`, `failed`, `cancelled` y `limit_reached` son defin
 
 ::: vease
 - [Errores, advertencias y fallos](#vision.errores)
-- [Fallo de efecto, trampa y corte del anfitrión](#diagnosticos.fallos)
+- [Orden de los efectos y la cinta](#motor.efectos)
 - [Límites de ejecución](#motor.limites)
 :::

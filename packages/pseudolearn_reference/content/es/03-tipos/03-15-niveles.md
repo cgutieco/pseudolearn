@@ -62,5 +62,5 @@ Cuando una comprobación dinámica falla, el programa no sigue con un valor inve
 
 ::: vease
 - [Errores, advertencias y fallos](#vision.errores)
-- [Fallo de efecto, trampa y corte del anfitrión](#diagnosticos.fallos)
+- [Orden de los efectos y la cinta](#motor.efectos)
 :::

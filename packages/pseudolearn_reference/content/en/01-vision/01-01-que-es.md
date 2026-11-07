@@ -42,5 +42,5 @@ PseudoLearn is like a recipe written by a very careful person: it says exactly w
 ::: vease
 - [The journey of a program](#vision.viaje)
 - [Structure of a program](#programas.estructura)
-- [Algorithm and its aliases](#programas.proceso)
+- [Structure of a program](#programas.estructura)
 :::

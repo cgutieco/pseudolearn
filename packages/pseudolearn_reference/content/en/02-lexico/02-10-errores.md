@@ -45,5 +45,5 @@ Analysis accepts up to 256 constructs nested at once: parentheses, unary operato
 
 ::: vease
 - [Text and character literals](#lexico.textos)
-- [Diagnostic classes](#diagnosticos.clases)
+- [Severity and classes](#diagnosticos.severidad)
 :::

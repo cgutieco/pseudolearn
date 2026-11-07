@@ -101,7 +101,7 @@ Si el análisis léxico o sintáctico encuentra un error, las comprobaciones sem
 :::
 
 ::: vease
-- [Modelo de diagnóstico](#diagnosticos.modelo)
+- [Anatomía de un diagnóstico](#diagnosticos.anatomia)
 - [Catálogo de diagnósticos](#apendice.diagnosticos)
 - [Cómo termina un programa](#vision.terminacion)
 :::

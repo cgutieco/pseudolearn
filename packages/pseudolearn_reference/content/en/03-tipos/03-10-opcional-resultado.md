@@ -78,5 +78,5 @@ Calling a function that returns `Result` and doing nothing with it is detected b
 ::: vease
 - [Variants](#tipos.variantes)
 - [Defer](#control.diferir)
-- [Effect failure, trap and host cut](#diagnosticos.fallos)
+- [Effect order and the tape](#motor.efectos)
 :::

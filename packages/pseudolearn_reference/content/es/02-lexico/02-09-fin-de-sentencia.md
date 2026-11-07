@@ -65,5 +65,5 @@ missingStatementTerminator
 
 ::: vease
 - [Espacios y saltos de línea](#lexico.espacios)
-- [Terminación de sentencias](#declaraciones.terminacion)
+- [Recuperación y orden](#diagnosticos.recuperacion)
 :::

@@ -52,6 +52,6 @@ Hay un único lugar donde el perfil cambia lo que se ve al ejecutar: al escribir
 :::
 
 ::: vease
-- [Perfiles de vocabulario y traducción](#programas.perfiles)
+- [Módulos y proyectos](#programas.modulos)
 - [Palabras reservadas en español e inglés](#apendice.palabras)
 :::

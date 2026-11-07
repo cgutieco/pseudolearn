@@ -96,5 +96,5 @@ A vector lives on the heap: the variable holds a reference. Its capacity starts 
 ::: vease
 - [Arrays](#tipos.arreglos)
 - [For Each](#control.para-cada)
-- [Copy](#biblioteca.copia)
+- [Copies, references and identity](#objetos.copia)
 :::

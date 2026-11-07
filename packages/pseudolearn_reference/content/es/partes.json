@@ -59,8 +59,8 @@
     "id": "parte-8",
     "numero": "VIII",
     "prefijo": "8",
-    "titulo": "Programas, módulos y perfiles",
-    "resumen": "Cómo se organiza un programa en archivos y en dos idiomas."
+    "titulo": "Programas y módulos",
+    "resumen": "Cómo se organiza un programa en unidades, archivos y paquetes."
   },
   {
     "id": "parte-9",

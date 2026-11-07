@@ -140,5 +140,5 @@ Un vector vive en el montón: la variable guarda una referencia. Su capacidad em
 ::: vease
 - [Arreglos](#tipos.arreglos)
 - [Para Cada](#control.para-cada)
-- [Copia](#biblioteca.copia)
+- [Copia, referencias e identidad](#objetos.copia)
 :::

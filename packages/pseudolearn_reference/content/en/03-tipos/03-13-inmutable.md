@@ -48,6 +48,6 @@ Concurrent tasks cannot share vectors or dictionaries, because two tasks could c
 :::
 
 ::: vease
-- [Isolation between tasks](#tareas.aislamiento)
-- [Copy](#biblioteca.copia)
+- [Task scopes](#tareas.ambitos)
+- [Copies, references and identity](#objetos.copia)
 :::

@@ -85,7 +85,7 @@ FinAlgoritmo
 
 ## Fallos {#fallos}
 
-Si las hijas devuelven `Resultado<T, E>`, el primer `Error` que termina **cancela** a las demás y salta a `FinTareas`. El nombre de fallo del ámbito vale `Nada` si todo fue bien, o `Algo` con el primer error, los errores asociados y cuántas hijas se cancelaron.
+Si las hijas devuelven `Resultado<T, E>`, el primer `Error` que termina **cancela** a las demás y salta a `FinTareas`. El nombre de fallo del ámbito es un `Opcional<FalloTareas<E>>`: vale `Nada` si todo fue bien, o `Algo` con un `FalloTareas` cuyos campos son `f.Primero` (el primer error), `f.Asociados` (los errores que llegaron después) y `f.Canceladas` (cuántas hijas se cancelaron).
 
 ```programa id=fallo-tareas titulo="El primer error manda" ejecutar
 SubProceso Suspendible Dividir(a Como Entero, b Como Entero) Como Resultado<Entero, Cadena>

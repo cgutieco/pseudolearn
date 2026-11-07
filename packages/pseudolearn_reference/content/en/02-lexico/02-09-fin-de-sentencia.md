@@ -42,5 +42,5 @@ A forgotten semicolon is detected before running and the message points to where
 
 ::: vease
 - [Spaces and line breaks](#lexico.espacios)
-- [Statement termination](#declaraciones.terminacion)
+- [Recovery and order](#diagnosticos.recuperacion)
 :::
