@@ -33,7 +33,11 @@ fn detects_every_declared_top_level_opener_in_both_profiles() {
         ("enum E", Profile::English),
         ("Constante N", Profile::Spanish),
     ] {
-        assert_eq!(crate::detect_opening_profile(source), Some(profile), "{source}");
+        assert_eq!(
+            crate::detect_opening_profile(source),
+            Some(profile),
+            "{source}"
+        );
     }
 }
 
