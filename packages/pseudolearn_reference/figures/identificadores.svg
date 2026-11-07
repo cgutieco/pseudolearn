@@ -1,0 +1,17 @@
+<svg viewBox="0 0 340 260">
+  <caja x="10" y="10" ancho="150" alto="70" rol="acento-estructurado" fondo="0.10" tamano="13" texto="{{t:inicio}}¶{{t:inicio-ej}}"/>
+  <flecha puntos="160,45 180,45"/>
+  <caja x="180" y="10" ancho="150" alto="70" rol="tipo" fondo="0.10" tamano="13" texto="{{t:siguiente}}¶{{t:siguiente-ej}}"/>
+  <path d="M 300 80 V 96 H 210 V 84" fill="none" stroke="@tinta" stroke-width="1.5"/>
+  <polygon points="210,80 206,88 214,88" fill="@tinta"/>
+  <text x="255" y="112" font-size="12" text-anchor="middle" fill="@atenuado">{{t:repite}}</text>
+  <text x="12" y="146" font-size="13" fill="@exito" font-weight="600">{{t:validos}}</text>
+  <caja x="12" y="156" ancho="72" alto="30" rol="exito" fondo="0.10" fuente="mono" tamano="13" texto="{{t:v1}}"/>
+  <caja x="92" y="156" ancho="72" alto="30" rol="exito" fondo="0.10" fuente="mono" tamano="13" texto="{{t:v2}}"/>
+  <caja x="172" y="156" ancho="72" alto="30" rol="exito" fondo="0.10" fuente="mono" tamano="13" texto="{{t:v3}}"/>
+  <caja x="252" y="156" ancho="76" alto="30" rol="exito" fondo="0.10" fuente="mono" tamano="13" texto="{{t:v4}}"/>
+  <text x="12" y="214" font-size="13" fill="@error" font-weight="600">{{t:invalidos}}</text>
+  <caja x="12" y="224" ancho="96" alto="30" rol="error" fondo="0.10" fuente="mono" tamano="13" texto="{{t:i1}}"/>
+  <caja x="118" y="224" ancho="96" alto="30" rol="error" fondo="0.10" fuente="mono" tamano="13" texto="{{t:i2}}"/>
+  <caja x="224" y="224" ancho="104" alto="30" rol="error" fondo="0.10" fuente="mono" tamano="13" texto="{{t:i3}}"/>
+</svg>

@@ -155,6 +155,16 @@
     "whitespace": "espacio"
   },
   "figures": {
+    "cadena-caracter": {
+      "titulo": "Carácter o cadena",
+      "descripcion": "Arriba, A entre comillas simples y entre comillas dobles llevan al tipo Caracter. Abajo, unas comillas vacías y un texto de dos letras llevan al tipo Cadena.",
+      "uno": "Exactamente un carácter",
+      "ab": "'ab'",
+      "otros": "Cero o varios caracteres",
+      "nota": "Lo decide el contenido, no las comillas",
+      "a-simple": "'A'",
+      "a-doble": "\"A\""
+    },
     "clases-diagnostico": {
       "titulo": "Clases de diagnóstico",
       "descripcion": "Cuatro etapas en columna, léxica, sintáctica, semántica y ejecución, cada una con un ejemplo a la derecha. Una barra roja junto a las tres primeras indica que se descubren antes de ejecutar.",
@@ -168,6 +178,21 @@
       "ejecucion": "Ejecución",
       "ejecucion-ej": "índice fuera de rango",
       "nota": "Las advertencias avisan pero dejan ejecutar"
+    },
+    "coincidencia-larga": {
+      "titulo": "La pieza más larga",
+      "descripcion": "Arriba, x pegado a la flecha y al 1 se parte en x, flecha de asignación y 1: es una asignación. Abajo, con espacios, se parte en x, menor que, menos y 1: es una comparación.",
+      "asigna": "asignación",
+      "compara": "comparación",
+      "regla": "El motor toma la pieza más larga posible.",
+      "regla2": "Un espacio puede cambiar las piezas.",
+      "ejemplos": "<- antes que < · <= antes que < · <> antes que <"
+    },
+    "comentario": {
+      "titulo": "Dónde empieza un comentario",
+      "descripcion": "Dos líneas de programa. En la primera, lo que sigue a las dos barras está sombreado y rotulado comentario. En la segunda, las dos barras están dentro de un texto entre comillas y se rotulan como texto normal.",
+      "comentario": "comentario: hasta el final de la línea",
+      "texto": "dentro de comillas: es texto"
     },
     "convenciones": {
       "titulo": "Convenciones de la especificación",
@@ -214,6 +239,50 @@
       "preludio": "Preludio fijo",
       "preludio-ejemplos": "Longitud · rc · Opcional · Vector…"
     },
+    "error-lexico": {
+      "titulo": "Un error léxico y la recuperación",
+      "descripcion": "Una sentencia Escribir con una arroba entre dos textos. La arroba está marcada en rojo y una flecha la une al diagnóstico unrecognizedCharacter. Otra flecha indica que el motor sigue leyendo; una caja punteada recuerda que no se hace análisis semántico.",
+      "sigue": "el motor sigue leyendo",
+      "no-semantica": "sin análisis semántico",
+      "nota": "No se inventan valores ni se ejecuta nada",
+      "codigo": "unrecognizedCharacter"
+    },
+    "espacios": {
+      "titulo": "Mismo programa, distinta sangría",
+      "descripcion": "Dos recuadros con el mismo Si. El de arriba tiene una sangría ordenada; el de abajo, espacios desordenados. Debajo, un signo de igualdad indica que significan lo mismo.",
+      "ordenado": "Con sangría ordenada",
+      "desordenado": "Con espacios desordenados",
+      "igual": "= el mismo programa para el motor"
+    },
+    "familias-palabras": {
+      "titulo": "Familias de palabras reservadas",
+      "descripcion": "Seis franjas de colores: estructura del programa, subprogramas, objetos, tipos, valores lógicos y operadores escritos con letras, cada una con ejemplos.",
+      "estructura": "Estructura del programa",
+      "subprogramas": "Subprogramas",
+      "objetos": "Objetos",
+      "tipos": "Tipos",
+      "valores": "Valores",
+      "operadores": "Operadores con letras",
+      "nota": "La lista completa está en el Apéndice B"
+    },
+    "identificadores": {
+      "titulo": "Alfabeto de los identificadores",
+      "descripcion": "Dos cajas unidas por una flecha: el primer carácter, que puede ser letra, ñ, vocal con tilde o guion bajo, y los siguientes, que además admiten dígitos y pueden repetirse. Debajo, cuatro nombres válidos en verde y tres no válidos en rojo.",
+      "inicio": "Primer carácter",
+      "inicio-ej": "a–z A–Z ñ á é í ó ú ü _",
+      "siguiente": "Siguientes",
+      "siguiente-ej": "lo anterior y 0–9",
+      "repite": "se repiten",
+      "validos": "Válidos",
+      "v1": "x",
+      "v2": "año",
+      "v3": "_tmp",
+      "v4": "nota2",
+      "invalidos": "No válidos",
+      "i1": "2notas",
+      "i2": "mi-nota",
+      "i3": "Escribir"
+    },
     "leer-figura": {
       "titulo": "Ejemplo de figura por pasos",
       "descripcion": "Tres instrucciones apiladas unidas por flechas: total recibe 0, total recibe total más 5 y Escribir total. Debajo, una caja con el nombre total y su valor. En cada paso se resalta la instrucción que se ejecuta y el valor cambia de 0 a 5.",
@@ -230,6 +299,14 @@
       "repetir": "Vuelta: se puede repetir",
       "sentencia": "sentencia",
       "vuelve": "la vuelta permite otra sentencia"
+    },
+    "literales-numericos": {
+      "titulo": "Literales numéricos válidos y no válidos",
+      "descripcion": "Tres filas. Enteros: 0, 42 y 2026. Reales: 3.14, 0.5 y 100.0. No son números: punto 5, 5 punto, 3 coma 5, notación científica y 1 guion bajo 000.",
+      "enteros": "Enteros",
+      "reales": "Reales",
+      "no": "No son números",
+      "cientifica": "1e3"
     },
     "mapa-partes": {
       "titulo": "Mapa de las partes",
@@ -259,6 +336,19 @@
       "string": "String",
       "nombre": "nombre",
       "hola": "\"Hola\""
+    },
+    "posiciones": {
+      "titulo": "Líneas, columnas y tramos",
+      "descripcion": "Un programa de tres líneas sobre una cuadrícula con números de línea a la izquierda y de columna arriba. En la segunda línea se resalta en rojo la x de Escribir x, y una flecha la une a una nota que explica que el tramo empieza en la línea 2, columna 12.",
+      "columnas": "Columnas",
+      "lineas": "Líneas",
+      "tramo": "Tramo: línea 2, columnas 12 a 13"
+    },
+    "punto-y-coma": {
+      "titulo": "Dónde va el punto y coma",
+      "descripcion": "Un bloque Mientras con dos sentencias dentro. Las dos sentencias simples llevan punto y coma marcado en verde; la línea de apertura y la de cierre no llevan, marcado con un símbolo de vacío en rojo.",
+      "simples": "✓ sentencias simples: terminan en ;",
+      "bloques": "∅ aperturas y cierres de bloque: sin ;"
     },
     "si-ordinograma": {
       "titulo": "Ejecución paso a paso de Montana",

@@ -155,6 +155,16 @@
     "whitespace": "whitespace"
   },
   "figures": {
+    "cadena-caracter": {
+      "titulo": "Character or string",
+      "descripcion": "At the top, A between single quotes and between double quotes both lead to the Character type. Below, empty quotes and a two-letter text lead to the String type.",
+      "uno": "Exactly one character",
+      "ab": "'ab'",
+      "otros": "Zero or several characters",
+      "nota": "The content decides, not the quotes",
+      "a-simple": "'A'",
+      "a-doble": "\"A\""
+    },
     "clases-diagnostico": {
       "titulo": "Diagnostic classes",
       "descripcion": "Four stages in a column, lexical, syntax, semantic and runtime, each with an example on the right. A red bar next to the first three marks that they are discovered before running.",
@@ -168,6 +178,21 @@
       "ejecucion": "Runtime",
       "ejecucion-ej": "index out of range",
       "nota": "Warnings warn but still let the program run"
+    },
+    "coincidencia-larga": {
+      "titulo": "The longest piece",
+      "descripcion": "At the top, x stuck to the arrow and the 1 splits into x, the assignment arrow and 1: an assignment. Below, with spaces, it splits into x, less than, minus and 1: a comparison.",
+      "asigna": "assignment",
+      "compara": "comparison",
+      "regla": "The engine takes the longest possible piece.",
+      "regla2": "A space can change the pieces.",
+      "ejemplos": "<- before < · <= before < · <> before <"
+    },
+    "comentario": {
+      "titulo": "Where a comment starts",
+      "descripcion": "Two program lines. In the first, what follows the two slashes is shaded and labelled comment. In the second, the two slashes are inside a quoted text and are labelled ordinary text.",
+      "comentario": "comment: up to the end of the line",
+      "texto": "inside quotes: it is text"
     },
     "convenciones": {
       "titulo": "Conventions of the specification",
@@ -214,6 +239,50 @@
       "preludio": "Fixed prelude",
       "preludio-ejemplos": "length · sqrt · Optional · vector…"
     },
+    "error-lexico": {
+      "titulo": "A lexical error and recovery",
+      "descripcion": "A Write statement with an at sign between two texts. The at sign is marked in red and an arrow joins it to the diagnostic unrecognizedCharacter. Another arrow shows that the engine keeps reading; a dashed box recalls that no semantic analysis is done.",
+      "sigue": "the engine keeps reading",
+      "no-semantica": "no semantic analysis",
+      "nota": "No values are invented and nothing runs",
+      "codigo": "unrecognizedCharacter"
+    },
+    "espacios": {
+      "titulo": "Same program, different indentation",
+      "descripcion": "Two boxes with the same If. The top one has tidy indentation; the bottom one, messy spaces. Below, an equals sign marks that they mean the same.",
+      "ordenado": "With tidy indentation",
+      "desordenado": "With messy spaces",
+      "igual": "= the same program for the engine"
+    },
+    "familias-palabras": {
+      "titulo": "Families of reserved words",
+      "descripcion": "Six coloured bands: program structure, subroutines, objects, types, boolean values and operators written with letters, each with examples.",
+      "estructura": "Program structure",
+      "subprogramas": "Subroutines",
+      "objetos": "Objects",
+      "tipos": "Types",
+      "valores": "Values",
+      "operadores": "Operators with letters",
+      "nota": "The full list is in Appendix B"
+    },
+    "identificadores": {
+      "titulo": "Identifier alphabet",
+      "descripcion": "Two boxes joined by an arrow: the first character, which may be a letter, ñ, an accented vowel or an underscore, and the following ones, which also accept digits and may repeat. Below, four valid names in green and three invalid ones in red.",
+      "inicio": "First character",
+      "inicio-ej": "a–z A–Z ñ á é í ó ú ü _",
+      "siguiente": "Following",
+      "siguiente-ej": "the above and 0–9",
+      "repite": "they repeat",
+      "validos": "Valid",
+      "v1": "x",
+      "v2": "año",
+      "v3": "_tmp",
+      "v4": "nota2",
+      "invalidos": "Invalid",
+      "i1": "2notas",
+      "i2": "mi-nota",
+      "i3": "Write"
+    },
     "leer-figura": {
       "titulo": "Example of a stepped figure",
       "descripcion": "Three stacked instructions joined by arrows: total gets 0, total gets total plus 5, and Write total. Below, a box with the name total and its value. Each step highlights the instruction being run and the value changes from 0 to 5.",
@@ -230,6 +299,14 @@
       "repetir": "Loop: may be repeated",
       "sentencia": "statement",
       "vuelve": "the loop allows another statement"
+    },
+    "literales-numericos": {
+      "titulo": "Valid and invalid numeric literals",
+      "descripcion": "Three rows. Integers: 0, 42 and 2026. Reals: 3.14, 0.5 and 100.0. Not numbers: point 5, 5 point, 3 comma 5, scientific notation and 1 underscore 000.",
+      "enteros": "Integers",
+      "reales": "Reals",
+      "no": "Not numbers",
+      "cientifica": "1e3"
     },
     "mapa-partes": {
       "titulo": "Map of the parts",
@@ -259,6 +336,19 @@
       "string": "String",
       "nombre": "nombre",
       "hola": "\"Hola\""
+    },
+    "posiciones": {
+      "titulo": "Lines, columns and spans",
+      "descripcion": "A three-line program on a grid with line numbers on the left and column numbers above. On the second line the x of Write x is highlighted in red, and an arrow joins it to a note explaining that the span starts at line 2, column 12.",
+      "columnas": "Columns",
+      "lineas": "Lines",
+      "tramo": "Span: line 2, columns 12 to 13"
+    },
+    "punto-y-coma": {
+      "titulo": "Where the semicolon goes",
+      "descripcion": "A While block with two statements inside. The two simple statements have a semicolon marked in green; the opening and closing lines have none, marked with an empty-set symbol in red.",
+      "simples": "✓ simple statements: end in ;",
+      "bloques": "∅ block openings and closings: no ;"
     },
     "si-ordinograma": {
       "titulo": "Step-by-step run of Montana",

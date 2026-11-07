@@ -1,0 +1,18 @@
+<svg viewBox="0 0 340 220">
+  <text x="12" y="22" font-size="14" font-family="mono" fill="@tinta">{{codigo:x&lt;-1}}</text>
+  <flecha puntos="70,17 96,17"/>
+  <caja x="100" y="4" ancho="40" alto="28" rol="tinta" fondo="0.06" fuente="mono" texto="{{codigo:x}}"/>
+  <caja x="146" y="4" ancho="50" alto="28" rol="acento-estructurado" fondo="0.12" fuente="mono" negrita="" texto="&lt;-"/>
+  <caja x="202" y="4" ancho="40" alto="28" rol="numero" fondo="0.12" fuente="mono" texto="1"/>
+  <text x="250" y="22" font-size="12" fill="@exito">{{t:asigna}}</text>
+  <text x="12" y="88" font-size="14" font-family="mono" fill="@tinta">{{codigo:x &lt; -1}}</text>
+  <flecha puntos="76,83 96,83"/>
+  <caja x="100" y="70" ancho="40" alto="28" rol="tinta" fondo="0.06" fuente="mono" texto="{{codigo:x}}"/>
+  <caja x="146" y="70" ancho="34" alto="28" rol="acento-estructurado" fondo="0.12" fuente="mono" negrita="" texto="&lt;"/>
+  <caja x="186" y="70" ancho="34" alto="28" rol="acento-estructurado" fondo="0.12" fuente="mono" negrita="" texto="-"/>
+  <caja x="226" y="70" ancho="34" alto="28" rol="numero" fondo="0.12" fuente="mono" texto="1"/>
+  <text x="266" y="88" font-size="12" fill="@exito">{{t:compara}}</text>
+  <text x="12" y="150" font-size="13" fill="@atenuado">{{t:regla}}</text>
+  <text x="12" y="172" font-size="13" fill="@atenuado">{{t:regla2}}</text>
+  <text x="12" y="200" font-size="12" fill="@atenuado">{{t:ejemplos}}</text>
+</svg>
