@@ -71,8 +71,6 @@
   "clase": "semantica",
   "texto": "Un parámetro de tipo opaco en un cuerpo genérico no es transferible. Los parámetros por referencia no cruzan una frontera de tarea. El resultado de una tarea terminada se mueve al padre y no requiere transferibilidad.",
   "verificacion": [
-    "C11",
-    "C13",
     "C17",
     "C18",
     "C19"
@@ -86,6 +84,8 @@
   "clase": "semantica",
   "texto": "Instantanea(x) devuelve Inmutable<S>. Acepta escalares, cadenas, enumerados, registros, variantes, vectores, diccionarios y arreglos. Copia profundamente conservando alias internos y ciclos; canales y capacidades se comparten. Las celdas copiadas se cobran como creación y pueden fallar con cellLimitExceeded.",
   "verificacion": [
+    "C11",
+    "C13",
     "C20",
     "C22",
     "C23",

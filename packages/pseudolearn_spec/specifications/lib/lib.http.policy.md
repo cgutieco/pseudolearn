@@ -402,6 +402,7 @@
   "texto": "El adaptador nativo resuelve un nombre una sola vez y conecta solo a una dirección de esa respuesta. No aplica política SSRF ni filtra rangos de direcciones. Un host con forma numérica IPv4 alternativa es UrlInvalida. Los errores del sistema se informan como ErrorES de plataforma.",
   "verificacion": [
     "C1",
+    "C7",
     "revision_humana"
   ],
   "justificacion": "Los casos derivados verifican el contrato; las pruebas de transporte comprueban las diferencias físicas de plataforma."

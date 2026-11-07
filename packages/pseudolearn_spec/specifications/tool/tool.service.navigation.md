@@ -98,7 +98,7 @@
   "fuerza": "DEBE",
   "clase": "semantica",
   "texto": "prepareRename identifica solo el lexema del símbolo y devuelve su rango exacto y placeholder. Antes de rename, el cliente materializa cada fuente cerrada que vaya a editar con su contenido y versión vigentes, y vuelve a calcular prepareRename y referencias sobre esas revisiones sincronizadas. rename acepta únicamente identificadores válidos y no reservados en los perfiles de los archivos afectados, comprueba colisiones semánticas en todos los alcances afectados y compara las revisiones antes de crear ediciones. Una propuesta aceptada contiene exclusivamente textDocument/documentChanges versionados para todos los documentos afectados; una colisión, versión antigua, modificación concurrente o garantía transaccional ausente rechaza la propuesta completa sin mutar fuentes. Renombrar una plantilla edita su declaración y todos sus usos en los documentos del proyecto; renombrar un parámetro de tipo edita solo las ocurrencias dentro de su plantilla, y un nombre igual al de otro parámetro de la misma plantilla es una colisión.",
-  "verificacion": ["C5", "C6", "C8", "C15", "C16", "C21", "C22", "C23"]
+  "verificacion": ["C5", "C6", "C7", "C8", "C15", "C16", "C21", "C22", "C23"]
 }
 ```
 

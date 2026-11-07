@@ -14,7 +14,7 @@ fn justified_exclusion_and_human_review_are_valid() -> Result<(), String> {
     let rule = specification.blocks.first_mut().ok_or("Missing rule")?;
     rule.fields.insert(
         "verificacion".to_owned(),
-        serde_json::json!(["revision_humana"]),
+        serde_json::json!(["C1", "revision_humana"]),
     );
     assert!(!see_validation::references::check(&specification).is_empty());
     specification
@@ -112,5 +112,41 @@ fn rejects_external_markdown_links_in_case_prose() -> Result<(), String> {
             .iter()
             .any(|error| error == "SEE-REFERENCE: external documentation link forbidden")
     );
+    Ok(())
+}
+
+#[test]
+fn rejects_a_case_missing_from_the_verification_of_its_declared_rule() -> Result<(), String> {
+    let mut specification = support::specification()?;
+    let case_id =
+        see_model::field(specification.blocks.last().ok_or("Missing case")?, "id").to_owned();
+    let rule = specification.blocks.first_mut().ok_or("Missing rule")?;
+    rule.fields.insert(
+        "verificacion".to_owned(),
+        serde_json::json!(["revision_humana"]),
+    );
+    rule.fields.insert(
+        "justificacion".to_owned(),
+        serde_json::json!("Revisión contractual"),
+    );
+    let errors = see_validation::references::check(&specification);
+    assert_eq!(
+        errors,
+        vec![format!(
+            "SEE-REFERENCE: {case_id} declares R1 but is missing from its verification"
+        )]
+    );
+    Ok(())
+}
+
+#[test]
+fn accepts_a_case_listed_by_its_declared_rule_and_by_another_rule() -> Result<(), String> {
+    let mut specification = support::specification()?;
+    let mut second = specification.blocks.first().ok_or("Missing rule")?.clone();
+    second
+        .fields
+        .insert("id".to_owned(), serde_json::json!("R2"));
+    specification.blocks.insert(1, second);
+    assert!(see_validation::references::check(&specification).is_empty());
     Ok(())
 }

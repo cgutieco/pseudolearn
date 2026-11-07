@@ -45,7 +45,7 @@
     "C8",
     "C9",
     "C10",
-    "C14",
+    "C16",
     "C18"
   ]
 }
@@ -58,8 +58,7 @@
   "clase": "semantica",
   "texto": "El digest de un archivo es SHA-256, en minúsculas y con prefijo sha256:, del dominio pseudolearn.lock.file.v1 seguido de un salto de línea y de los bytes del archivo tal como se leyeron. El digest de un paquete es SHA-256 del dominio pseudolearn.lock.package.v1 y un salto de línea, seguido por cada archivo en orden de su clave portable de ruta como ruta normalizada a NFC, byte cero, digest del archivo y salto de línea. El anfitrión normaliza la ruta antes de calcular el digest del paquete y calcula el digest de contenido sobre los bytes leídos, sin reabrir por nombre. Los digests verifican integridad, no autenticidad del origen. Entran en el hash solo los archivos que el anfitrión entrega; el propio lock y los directorios de control del repositorio no son archivos de paquete.",
   "verificacion": [
-    "C1",
-    "C16"
+    "C1"
   ]
 }
 ```
@@ -212,7 +211,8 @@
   "texto": "Un paquete local es editable y se registra sin digest ni archivos: sus cambios no invalidan el lock. Un paquete locked fija su contenido y cualquier cambio exige regenerar el lock de forma explícita. Un lock malformado o de versión no soportada es rechazado y una petición sin sus argumentos es un fallo de uso. El lock del lenguaje es independiente de los Cargo.lock del repositorio.",
   "verificacion": [
     "C12",
-    "C13"
+    "C13",
+    "C14"
   ]
 }
 ```

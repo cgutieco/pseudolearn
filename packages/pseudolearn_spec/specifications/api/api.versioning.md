@@ -66,6 +66,8 @@
   "clase": "semantica",
   "texto": "Un consumidor negocia las capacidades que usará; pedir una capacidad o una edición no declarada devuelve un error de versión y no cambia el estado de la sesión. seek permite consultar el estado en un evento pasado. program_view se anuncia solo cuando está disponible la proyección definida por API.PROGRAM.VIEW; state_pages se anuncia solo cuando se admite la consulta paginada de API.STATE.QUERY; service_help se anuncia solo cuando help_query opera sobre una sesión de edición vigente y devuelve el resultado estructurado definido por API.MODEL. generated_vocabulary se anuncia solo cuando el borde ofrece los lexemas, las funciones incorporadas con su firma, la tabla de precedencia y las plantillas de mensaje de diagnóstico del perfil activo, todos derivados de los datos del lenguaje y no de tablas del consumidor.",
   "verificacion": [
+    "C3",
+    "C4",
     "P2"
   ]
 }

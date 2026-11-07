@@ -75,12 +75,19 @@ fn check_primary(
     errors: &mut Vec<String>,
 ) {
     let primary = field(block, "regla");
-    if !specification
+    let rule = specification
         .blocks
         .iter()
-        .any(|candidate| field(candidate, "id") == primary && candidate.kind == "regla")
-    {
-        errors.push(format!("SEE-REFERENCE: missing primary rule {primary}"));
+        .find(|candidate| field(candidate, "id") == primary && candidate.kind == "regla");
+    match rule {
+        None => errors.push(format!("SEE-REFERENCE: missing primary rule {primary}")),
+        Some(rule) if !strings(rule.fields.get("verificacion")).contains(&field(block, "id")) => {
+            errors.push(format!(
+                "SEE-REFERENCE: {} declares {primary} but is missing from its verification",
+                field(block, "id")
+            ))
+        }
+        Some(_) => (),
     }
     if specification.metadata.id.starts_with("LANG.") && block.kind == "caso" {
         for profile in ["es", "en"] {

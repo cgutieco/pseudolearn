@@ -50,7 +50,7 @@
   "fuerza": "DEBE",
   "clase": "semantica",
   "texto": "Los documentos abiertos aportan overlays por ruta y versión, y prevalecen sobre el texto de disco recibido. El análisis mantiene visibles los módulos cerrados importados. Cerrar un documento restaura el texto del snapshot más reciente; si ese snapshot ya no contiene la ruta, quitar el overlay también quita el módulo. Las operaciones inválidas devuelven un error controlado y no alteran el estado.",
-  "verificacion": ["C1", "C2", "C5"]
+  "verificacion": ["C1", "C2", "C5", "C8"]
 }
 ```
 

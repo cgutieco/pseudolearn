@@ -4,7 +4,13 @@ mod support;
 fn requires_a_registry_when_the_corpus_declares_properties() -> Result<(), String> {
     let fixture = support::Fixture::create()?;
     let path = fixture.root.join("specifications/see/sample.md");
-    let mut source = std::fs::read_to_string(&path).map_err(|error| error.to_string())?;
+    let mut source = std::fs::read_to_string(&path)
+        .map_err(|error| error.to_string())?
+        .replacen(
+            "\"verificacion\": [\n    \"C1\"\n  ]",
+            "\"verificacion\": [\n    \"C1\",\n    \"P1\"\n  ]",
+            1,
+        );
     source.push_str("\n```propiedad\n{\"id\":\"P1\",\"regla\":\"R1\",\"generador\":{},\"propiedad\":\"same\",\"oraculo\":\"independent\"}\n```\n");
     std::fs::write(path, source).map_err(|error| error.to_string())?;
     let missing = fixture.execute(&["validate"])?;

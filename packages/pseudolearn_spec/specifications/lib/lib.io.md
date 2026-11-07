@@ -677,7 +677,7 @@
 ```caso
 {
   "id": "C19",
-  "regla": "R4",
+  "regla": "R3",
   "perfiles": [
     "es",
     "en"
@@ -706,7 +706,7 @@
 ```caso
 {
   "id": "C20",
-  "regla": "R4",
+  "regla": "R3",
   "perfiles": [
     "es",
     "en"
@@ -735,7 +735,7 @@
 ```caso
 {
   "id": "C21",
-  "regla": "R4",
+  "regla": "R3",
   "perfiles": [
     "es",
     "en"
