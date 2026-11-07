@@ -26,3 +26,36 @@ fn resolves_profile_markers_and_rejects_unknown_or_unclosed_markers() -> Result<
     );
     Ok(())
 }
+
+#[test]
+fn resolves_contextual_identities_when_no_reserved_identity_matches() -> Result<(), String> {
+    let profiles = |spanish: &str, english: &str| {
+        BTreeMap::from([
+            ("es".to_owned(), spanish.to_owned()),
+            ("en".to_owned(), english.to_owned()),
+        ])
+    };
+    let vocabulary: Vocabulary = BTreeMap::from([
+        (
+            "contextual:jsonKindArray".to_owned(),
+            profiles("Arreglo", "Array"),
+        ),
+        ("shared".to_owned(), profiles("Reservada", "reserved")),
+        (
+            "contextual:shared".to_owned(),
+            profiles("Contextual", "contextual"),
+        ),
+    ]);
+    assert_eq!(
+        see_translation::lexemes::resolve("{{lexema:jsonKindArray}}", "en", &vocabulary)?,
+        "Array"
+    );
+    assert_eq!(
+        see_translation::lexemes::resolve("{{lexema:shared}}", "es", &vocabulary)?,
+        "Reservada"
+    );
+    assert!(
+        see_translation::lexemes::resolve("{{lexema:jsonKindArray}}", "fr", &vocabulary).is_err()
+    );
+    Ok(())
+}

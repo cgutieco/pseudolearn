@@ -1,5 +1,5 @@
 use see_model::Block;
-use see_model::contract::Vocabulary;
+use see_model::contract::{CONTEXTUAL_VOCABULARY_PREFIX, Vocabulary};
 
 pub fn resolve(text: &str, profile: &str, vocabulary: &Vocabulary) -> Result<String, String> {
     let mut remaining = text;
@@ -13,6 +13,7 @@ pub fn resolve(text: &str, profile: &str, vocabulary: &Vocabulary) -> Result<Str
         let (key, tail) = tail.split_once("}}").ok_or("Unclosed lexeme marker")?;
         let lexeme = vocabulary
             .get(key)
+            .or_else(|| vocabulary.get(&format!("{CONTEXTUAL_VOCABULARY_PREFIX}{key}")))
             .and_then(|profiles| profiles.get(profile))
             .ok_or(format!("Unknown lexeme {key} in {profile}"))?;
         output.push_str(lexeme);

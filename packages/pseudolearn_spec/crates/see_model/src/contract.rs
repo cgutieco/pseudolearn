@@ -32,3 +32,5 @@ pub struct Manifest {
 }
 
 pub type Vocabulary = BTreeMap<String, BTreeMap<String, String>>;
+
+pub const CONTEXTUAL_VOCABULARY_PREFIX: &str = "contextual:";

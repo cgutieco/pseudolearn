@@ -15,7 +15,10 @@ pub fn translate(
     }
     let mut pairs = Vec::new();
     let declared = declarations(program, source, vocabulary);
-    for (identity, profiles) in vocabulary {
+    for (identity, profiles) in vocabulary
+        .iter()
+        .filter(|(identity, _)| !is_contextual(identity))
+    {
         let original = profiles.get(source).ok_or("Missing source vocabulary")?;
         let translated = profiles.get(target).ok_or("Missing target vocabulary")?;
         if identity.starts_with("function:")
@@ -33,6 +36,10 @@ pub fn translate(
     }
     pairs.sort_by_key(|(original, _, _)| std::cmp::Reverse(original.len()));
     reprint(program, &pairs)
+}
+
+pub fn is_contextual(identity: &str) -> bool {
+    identity.starts_with(see_model::contract::CONTEXTUAL_VOCABULARY_PREFIX)
 }
 
 fn reprint(program: &str, pairs: &[(&str, &str, bool)]) -> Result<String, String> {
@@ -136,13 +143,13 @@ pub fn collisions(
 ) -> Vec<String> {
     let source_words: Vec<_> = vocabulary
         .iter()
-        .filter(|(identity, _)| !identity.starts_with("function:"))
+        .filter(|(identity, _)| !identity.starts_with("function:") && !is_contextual(identity))
         .filter_map(|(_, profiles)| profiles.get(source))
         .map(|word| word.to_lowercase())
         .collect();
     let target_words: Vec<_> = vocabulary
         .iter()
-        .filter(|(identity, _)| !identity.starts_with("function:"))
+        .filter(|(identity, _)| !identity.starts_with("function:") && !is_contextual(identity))
         .filter_map(|(_, profiles)| profiles.get(target))
         .map(|word| word.to_lowercase())
         .collect();

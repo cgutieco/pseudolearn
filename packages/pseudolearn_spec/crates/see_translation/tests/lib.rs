@@ -99,3 +99,20 @@ fn canonicalizes_aliases_and_preserves_shadowing_subroutine_names() -> Result<()
     assert_eq!(translated, "algorithm P\nsubroutine sen()\nwrite sen()\n");
     Ok(())
 }
+
+#[test]
+fn leaves_contextual_words_and_identifiers_untranslated() -> Result<(), String> {
+    let mut vocabulary = vocabulary();
+    vocabulary.insert(
+        "contextual:jsonKindObject".to_owned(),
+        std::collections::BTreeMap::from([
+            ("es".to_owned(), "Objeto".to_owned()),
+            ("en".to_owned(), "Object".to_owned()),
+        ]),
+    );
+    let program = "Escribir objeto;";
+    let translated = see_translation::translate(program, "es", "en", &vocabulary)?;
+    assert!(translated.ends_with(" objeto;"), "{translated}");
+    assert!(see_translation::collisions("Escribir Object;", "es", "en", &vocabulary).is_empty());
+    Ok(())
+}

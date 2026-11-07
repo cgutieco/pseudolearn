@@ -23,7 +23,7 @@ pub fn generate(corpus: &Corpus) -> Result<Value, String> {
 
 pub fn vocabulary(resources: &Value) -> Result<Value, String> {
     let mut vocabulary = serde_json::Map::new();
-    for name in ["vocabulary", "functions"] {
+    for name in ["vocabulary", "contextualVocabulary", "functions"] {
         let Some(entries) = resources.get(name).and_then(Value::as_object) else {
             continue;
         };
@@ -31,10 +31,13 @@ pub fn vocabulary(resources: &Value) -> Result<Value, String> {
             let profiles = entry
                 .get("lexemas")
                 .ok_or("SEE-RESOURCE: missing lexemes")?;
-            let key = if name == "functions" {
-                format!("function:{identity}")
-            } else {
-                identity.clone()
+            let key = match name {
+                "functions" => format!("function:{identity}"),
+                "contextualVocabulary" => format!(
+                    "{}{identity}",
+                    see_model::contract::CONTEXTUAL_VOCABULARY_PREFIX
+                ),
+                _ => identity.clone(),
             };
             if vocabulary.insert(key.clone(), profiles.clone()).is_some() {
                 return Err(format!("SEE-RESOURCE: duplicate identity {identity}"));
