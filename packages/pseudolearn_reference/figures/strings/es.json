@@ -1398,6 +1398,29 @@
       "caja-1": "registra la venta",
       "caja-2": "junta el total",
       "pide": "la caja les pide ayuda"
+    },
+    "ruta-nucleo-borde": {
+      "titulo": "Núcleo puro y borde con efectos",
+      "descripcion": "Un círculo grande rotulado borde con efectos contiene a Leer y Escribir. Adentro hay un círculo más chico rotulado núcleo puro con las funciones Linea y ConDescuento, que no cambian nada. Una flecha entra desde afuera con los datos y otra sale con el resultado hacia el borde, que lo muestra.",
+      "borde": "borde con efectos",
+      "nucleo": "núcleo puro",
+      "no-cambia": "no cambia nada",
+      "pie": "los datos entran por el borde y el resultado sale por el borde"
+    },
+    "ruta-sustitucion": {
+      "titulo": "Calcular por sustitución",
+      "descripcion": "Seis renglones. Cada uno reemplaza una parte del anterior por su valor: las dos llamadas a Linea por 9 y 10, la suma por 19, la llamada a ConDescuento por su cálculo, 19 div 10 por 1, y al final 18."
+    },
+    "ruta-cinta": {
+      "titulo": "Una cinta de precios",
+      "descripcion": "Los precios 3, 5 y 2 pasan por tres máquinas, una por paso. La primera cambia cada uno y da 4, 6 y 3. La segunda es una compuerta que deja pasar solo los baratos: el 2. La tercera es un embudo que los junta en un solo valor: 10.",
+      "mapear": "mapear",
+      "filtrar": "filtrar",
+      "reducir": "reducir",
+      "maquina": "suma 1",
+      "compuerta": "¿es barato?",
+      "embudo": "suma",
+      "pie": "la operación es un dato que se le pasa a cada máquina"
     }
   }
 }

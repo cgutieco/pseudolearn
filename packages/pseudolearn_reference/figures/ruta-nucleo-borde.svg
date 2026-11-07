@@ -1,0 +1,14 @@
+<svg viewBox="0 0 340 230">
+  <ellipse cx="170" cy="112" rx="160" ry="100" fill="@acento-procedimental" fill-opacity="0.1" stroke="@acento-procedimental"/>
+  <ellipse cx="170" cy="120" rx="86" ry="54" fill="@exito" fill-opacity="0.16" stroke="@exito"/>
+  <text x="170" y="34" font-size="12" text-anchor="middle" fill="@acento-procedimental">{{t:borde}}</text>
+  <text x="66" y="104" font-size="12" text-anchor="middle" font-family="mono" fill="@tinta">{{codigo:Leer}}</text>
+  <text x="276" y="104" font-size="12" text-anchor="middle" font-family="mono" fill="@tinta">{{codigo:Escribir}}</text>
+  <text x="170" y="98" font-size="12" text-anchor="middle" fill="@exito">{{t:nucleo}}</text>
+  <text x="170" y="120" font-size="12" text-anchor="middle" font-family="mono" fill="@tinta">{{codigo:Linea}}</text>
+  <text x="170" y="138" font-size="12" text-anchor="middle" font-family="mono" fill="@tinta">{{codigo:ConDescuento}}</text>
+  <text x="170" y="156" font-size="12" text-anchor="middle" fill="@atenuado">{{t:no-cambia}}</text>
+  <flecha puntos="40,140 90,128" rol="tinta"/>
+  <flecha puntos="250,128 300,140" rol="tinta"/>
+  <text x="170" y="226" font-size="12" text-anchor="middle" fill="@atenuado">{{t:pie}}</text>
+</svg>

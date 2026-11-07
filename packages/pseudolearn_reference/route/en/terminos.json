@@ -113,5 +113,14 @@
   "sobrescribir": {"etiqueta": "override", "formas": ["override", "overrides"], "estricto": true, "receta": false},
   "responsabilidad": {"etiqueta": "responsibility", "formas": ["responsibility", "responsibilities"], "estricto": false, "receta": false},
   "tarjeta-de-responsabilidad": {"etiqueta": "responsibility card", "formas": ["responsibility card", "responsibility cards"], "estricto": true, "receta": false},
-  "colaborador": {"etiqueta": "collaborator", "formas": ["collaborator", "collaborators"], "estricto": false, "receta": false}
+  "colaborador": {"etiqueta": "collaborator", "formas": ["collaborator", "collaborators"], "estricto": false, "receta": false},
+  "programacion-funcional": {"etiqueta": "functional programming", "formas": ["functional programming"], "estricto": true, "receta": false},
+  "inmutabilidad": {"etiqueta": "immutability", "formas": ["immutability"], "estricto": true, "receta": true},
+  "transparencia-referencial": {"etiqueta": "referential transparency", "formas": ["referential transparency"], "estricto": true, "receta": false},
+  "nucleo-puro": {"etiqueta": "pure core", "formas": ["pure core"], "estricto": true, "receta": true},
+  "funcion-como-valor": {"etiqueta": "function as a value", "formas": ["function as a value", "functions as values"], "estricto": true, "receta": true},
+  "orden-superior": {"etiqueta": "higher-order", "formas": ["higher-order"], "estricto": true, "receta": true},
+  "mapear": {"etiqueta": "map", "formas": ["map", "maps", "mapping"], "estricto": true, "receta": true},
+  "filtrar": {"etiqueta": "filter", "formas": ["filter", "filters", "filtering"], "estricto": false, "receta": false},
+  "reducir": {"etiqueta": "reduce", "formas": ["reduce", "reduces", "reducing"], "estricto": false, "receta": false}
 }

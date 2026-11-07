@@ -1398,6 +1398,29 @@
       "caja-1": "registers the sale",
       "caja-2": "gathers the total",
       "pide": "the till asks them for help"
+    },
+    "ruta-nucleo-borde": {
+      "titulo": "Pure core and effectful edge",
+      "descripcion": "A large circle labelled effectful edge holds Read and Write. Inside there is a smaller circle labelled pure core with the functions Linea and ConDescuento, which change nothing. An arrow comes in from outside with the data and another goes out with the result towards the edge, which shows it.",
+      "borde": "effectful edge",
+      "nucleo": "pure core",
+      "no-cambia": "changes nothing",
+      "pie": "data comes in through the edge and the result goes out through it"
+    },
+    "ruta-sustitucion": {
+      "titulo": "Computing by substitution",
+      "descripcion": "Six lines. Each one replaces part of the previous one by its value: the two calls to Linea by 9 and 10, the sum by 19, the call to ConDescuento by its calculation, 19 div 10 by 1, and finally 18."
+    },
+    "ruta-cinta": {
+      "titulo": "A conveyor of prices",
+      "descripcion": "The prices 3, 5 and 2 go through three machines, one per step. The first changes each one and gives 4, 6 and 3. The second is a gate that only lets the cheap ones through: 2. The third is a funnel that gathers them into a single value: 10.",
+      "mapear": "map",
+      "filtrar": "filter",
+      "reducir": "reduce",
+      "maquina": "adds 1",
+      "compuerta": "is it cheap?",
+      "embudo": "sum",
+      "pie": "the operation is a value given to each machine"
     }
   }
 }

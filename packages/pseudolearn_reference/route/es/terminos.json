@@ -113,5 +113,14 @@
   "sobrescribir": {"etiqueta": "sobrescribir", "formas": ["sobrescribir", "sobrescritura"], "estricto": true, "receta": false},
   "responsabilidad": {"etiqueta": "responsabilidad", "formas": ["responsabilidad", "responsabilidades"], "estricto": false, "receta": false},
   "tarjeta-de-responsabilidad": {"etiqueta": "tarjeta de responsabilidad", "formas": ["tarjeta de responsabilidad", "tarjetas de responsabilidad"], "estricto": true, "receta": false},
-  "colaborador": {"etiqueta": "colaborador", "formas": ["colaborador", "colaboradores"], "estricto": false, "receta": false}
+  "colaborador": {"etiqueta": "colaborador", "formas": ["colaborador", "colaboradores"], "estricto": false, "receta": false},
+  "programacion-funcional": {"etiqueta": "programación funcional", "formas": ["programación funcional"], "estricto": true, "receta": false},
+  "inmutabilidad": {"etiqueta": "inmutabilidad", "formas": ["inmutabilidad", "inmutable"], "estricto": true, "receta": true},
+  "transparencia-referencial": {"etiqueta": "transparencia referencial", "formas": ["transparencia referencial"], "estricto": true, "receta": false},
+  "nucleo-puro": {"etiqueta": "núcleo puro y borde con efectos", "formas": ["núcleo puro"], "estricto": true, "receta": true},
+  "funcion-como-valor": {"etiqueta": "función como valor", "formas": ["función como valor", "funciones como valores"], "estricto": true, "receta": true},
+  "orden-superior": {"etiqueta": "función de orden superior", "formas": ["orden superior"], "estricto": true, "receta": true},
+  "mapear": {"etiqueta": "mapear", "formas": ["mapear", "mapeo"], "estricto": true, "receta": true},
+  "filtrar": {"etiqueta": "filtrar", "formas": ["filtrar"], "estricto": false, "receta": false},
+  "reducir": {"etiqueta": "reducir", "formas": ["reducir"], "estricto": false, "receta": false}
 }
