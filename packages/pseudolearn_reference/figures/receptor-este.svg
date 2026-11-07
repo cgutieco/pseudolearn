@@ -1,0 +1,11 @@
+<svg viewBox="0 0 340 170">
+  <text x="60" y="26" font-size="13" text-anchor="middle" font-family="mono" fill="@tinta">{{codigo:pasos}}</text>
+  <caja x="20" y="36" ancho="80" alto="34" rol="atenuado" fondo="0.04" fuente="mono" tamano="12" texto="{{t:ref}}"/>
+  <caja x="130" y="90" ancho="110" alto="60" rol="acento-objetos" fondo="0.16" fuente="mono" tamano="13" texto="{{codigo:valor = 12}}"/>
+  <flecha puntos="60,72 60,120 126,120" rol="acento-objetos"/>
+  <text x="280" y="26" font-size="13" text-anchor="middle" font-family="mono" fill="@acento-objetos">{{codigo:Este}}</text>
+  <caja x="240" y="36" ancho="80" alto="34" rol="atenuado" fondo="0.04" fuente="mono" tamano="12" texto="{{t:ref}}"/>
+  <flecha puntos="280,72 280,120 244,120" rol="acento-objetos"/>
+  <text x="185" y="80" font-size="12" text-anchor="middle" fill="@atenuado">{{t:mismo}}</text>
+  <text x="280" y="164" font-size="12" text-anchor="middle" fill="@atenuado">{{t:dentro}}</text>
+</svg>

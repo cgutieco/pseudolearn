@@ -155,6 +155,10 @@
     "whitespace": "whitespace"
   },
   "figures": {
+    "alias-copia": {
+      "titulo": "Alias versus copy",
+      "descripcion": "a and alias point to object 1 with owner Ana and 3 books. Copiar creates object 2 with the same data, pointed to by copia. Afterwards object 1 has 5 books and object 2 has 9."
+    },
     "ambitos-anidados": {
       "titulo": "Nested scopes",
       "descripcion": "A large box for the process with the variable n, and inside it another for the If branch with the variable doble. From inside n is visible; from outside doble is not.",
@@ -180,6 +184,18 @@
       "notas": "notas",
       "tamano": "Size 4: indices 0 to 3",
       "fuera": "notas[4] → arrayIndexOutOfRange"
+    },
+    "ausentes": {
+      "titulo": "Absent constructs",
+      "descripcion": "Four constructs that do not exist, each with its alternative: abstract classes versus interfaces, static members versus parameters, protected versus Public and Private, and exceptions versus Result.",
+      "abstracta": "abstract class",
+      "estatico": "static member",
+      "protegido": "protected",
+      "excepciones": "exceptions",
+      "interfaces": "interfaces",
+      "parametros": "pass parameters",
+      "publicoPrivado": "Public or Private",
+      "resultado": "Optional and Result"
     },
     "bytes-utf8": {
       "titulo": "Characters and octets",
@@ -215,6 +231,10 @@
       "nada": "no assignment",
       "sigueVacia": "still empty",
       "codigoError": "variableUsedUninitialized"
+    },
+    "clase-objetos": {
+      "titulo": "A class and its objects",
+      "descripcion": "At the top, the class Punto with the attributes x and yy. Two arrows marked New lead to two objects: one with x = 3 and yy = 4, the other with x = 0 and yy = 7."
     },
     "clases-diagnostico": {
       "titulo": "Diagnostic classes",
@@ -409,6 +429,12 @@
       "cadena": "Caja<String>",
       "nota": "A single definition; one version per type used"
     },
+    "herencia-despacho": {
+      "titulo": "Dispatch by real class",
+      "descripcion": "The class Animal with Sonido and Presentarse, and below it Perro, which inherits from Animal and redefines Sonido. The object Toby is a Perro: the search for Sonido starts in Perro.",
+      "clasereal": "real class: Perro",
+      "busca": "Sonido is looked up in Perro"
+    },
     "higiene": {
       "titulo": "Use of three variables",
       "descripcion": "A table with three variables. usada is written and read. olvidada is neither written nor read. escrita is written but not read.",
@@ -448,6 +474,10 @@
       "titulo": "Swapping with an auxiliary",
       "descripcion": "Three boxes a, b and auxiliar. a is 1 and b is 2. First auxiliar receives 1, then a receives 2 and finally b receives 1 from auxiliar.",
       "hecho": "swapped"
+    },
+    "interfaz-promesa": {
+      "titulo": "An interface and two classes",
+      "descripcion": "The interface Figura with the method Area. The classes Cuadrado and Circulo realize it. Below, Describir with the parameter T: Figura, which accepts both."
     },
     "leer-figura": {
       "titulo": "Example of a stepped figure",
@@ -515,6 +545,13 @@
       "d3": "variables with a value",
       "d4": "overflow",
       "nota": "What can be known without running is checked beforehand"
+    },
+    "nuevo-pasos": {
+      "titulo": "Creating an object",
+      "descripcion": "The variable pasos starts empty. An object with the attribute valor is reserved, the constructor gives it 10 and finally pasos receives the reference to the object.",
+      "vacia": "empty",
+      "objeto": "new object",
+      "ref": "reference"
     },
     "opcional-resultado": {
       "titulo": "Optional and Result",
@@ -604,6 +641,13 @@
       "titulo": "An effect that climbs",
       "descripcion": "Principal calls the function Triple, which calls Avisar, which uses Write. The effect of Write climbs up to Triple, marked as an error.",
       "sube": "the effect climbs"
+    },
+    "receptor-este": {
+      "titulo": "The receiver and This",
+      "descripcion": "The variable pasos and, inside the method, This: both are references pointing to the same object, with valor = 12.",
+      "ref": "reference",
+      "mismo": "the same object",
+      "dentro": "inside Sumar"
     },
     "recursion-pila": {
       "titulo": "The factorial stack",

@@ -155,6 +155,10 @@
     "whitespace": "espacio"
   },
   "figures": {
+    "alias-copia": {
+      "titulo": "Alias frente a copia",
+      "descripcion": "a y alias apuntan al objeto 1 con dueño Ana y 3 libros. Copiar crea el objeto 2 con los mismos datos, al que apunta copia. Después el objeto 1 tiene 5 libros y el 2 tiene 9."
+    },
     "ambitos-anidados": {
       "titulo": "Ámbitos anidados",
       "descripcion": "Una caja grande para el proceso con la variable n, y dentro otra para la rama del Si con la variable doble. Desde dentro se ve n; desde fuera no se ve doble.",
@@ -180,6 +184,18 @@
       "notas": "notas",
       "tamano": "Tamaño 4: índices de 0 a 3",
       "fuera": "notas[4] → arrayIndexOutOfRange"
+    },
+    "ausentes": {
+      "titulo": "Construcciones ausentes",
+      "descripcion": "Cuatro construcciones que no existen, cada una con su alternativa: clases abstractas frente a interfaces, miembros estáticos frente a parámetros, protegido frente a Publico y Privado, y excepciones frente a Resultado.",
+      "abstracta": "clase abstracta",
+      "estatico": "miembro estático",
+      "protegido": "protegido",
+      "excepciones": "excepciones",
+      "interfaces": "interfaces",
+      "parametros": "pasar parámetros",
+      "publicoPrivado": "Publico o Privado",
+      "resultado": "Opcional y Resultado"
     },
     "bytes-utf8": {
       "titulo": "Caracteres y octetos",
@@ -215,6 +231,10 @@
       "nada": "sin asignación",
       "sigueVacia": "sigue vacía",
       "codigoError": "variableUsedUninitialized"
+    },
+    "clase-objetos": {
+      "titulo": "Una clase y sus objetos",
+      "descripcion": "Arriba, la clase Punto con los atributos x e yy. Dos flechas marcadas con Nuevo llevan a dos objetos: uno con x = 3 e yy = 4, otro con x = 0 e yy = 7."
     },
     "clases-diagnostico": {
       "titulo": "Clases de diagnóstico",
@@ -409,6 +429,12 @@
       "cadena": "Caja<Cadena>",
       "nota": "Una sola definición; una versión por tipo usado"
     },
+    "herencia-despacho": {
+      "titulo": "Despacho por clase real",
+      "descripcion": "La clase Animal con Sonido y Presentarse, y debajo Perro, que hereda de Animal y redefine Sonido. El objeto Toby es un Perro: la búsqueda de Sonido empieza en Perro.",
+      "clasereal": "clase real: Perro",
+      "busca": "Sonido se busca en Perro"
+    },
     "higiene": {
       "titulo": "Uso de tres variables",
       "descripcion": "Una tabla con tres variables. usada se escribe y se lee. olvidada no se escribe ni se lee. escrita se escribe pero no se lee.",
@@ -448,6 +474,10 @@
       "titulo": "Intercambio con auxiliar",
       "descripcion": "Tres cajas a, b y auxiliar. a vale 1 y b vale 2. Primero auxiliar recibe 1, después a recibe 2 y al final b recibe 1 desde auxiliar.",
       "hecho": "intercambiados"
+    },
+    "interfaz-promesa": {
+      "titulo": "Una interfaz y dos clases",
+      "descripcion": "La interfaz Figura con el método Area. Las clases Cuadrado y Circulo la realizan. Debajo, Describir con el parámetro T: Figura, que acepta las dos."
     },
     "leer-figura": {
       "titulo": "Ejemplo de figura por pasos",
@@ -515,6 +545,13 @@
       "d3": "variables con valor",
       "d4": "desbordamiento",
       "nota": "Lo que se puede saber sin ejecutar, se comprueba antes"
+    },
+    "nuevo-pasos": {
+      "titulo": "Crear un objeto",
+      "descripcion": "La variable pasos empieza vacía. Se reserva un objeto con el atributo valor, el constructor le da 10 y por último pasos recibe la referencia al objeto.",
+      "vacia": "vacía",
+      "objeto": "objeto nuevo",
+      "ref": "referencia"
     },
     "opcional-resultado": {
       "titulo": "Opcional y Resultado",
@@ -604,6 +641,13 @@
       "titulo": "Un efecto que sube",
       "descripcion": "Principal llama a la función Triple, que llama a Avisar, que usa Escribir. El efecto de Escribir sube hasta Triple, marcada como error.",
       "sube": "el efecto sube"
+    },
+    "receptor-este": {
+      "titulo": "El receptor y Este",
+      "descripcion": "La variable pasos y, dentro del método, Este: las dos son referencias que apuntan al mismo objeto, con valor = 12.",
+      "ref": "referencia",
+      "mismo": "el mismo objeto",
+      "dentro": "dentro de Sumar"
     },
     "recursion-pila": {
       "titulo": "La pila del factorial",

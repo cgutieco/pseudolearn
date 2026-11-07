@@ -1,0 +1,11 @@
+<svg viewBox="0 0 340 190">
+  <rect x="100" y="8" width="140" height="70" rx="8" fill="@acento-objetos" fill-opacity="0.08" stroke="@acento-objetos" stroke-dasharray="5 3"/>
+  <text x="170" y="28" font-size="13" text-anchor="middle" font-family="mono" fill="@acento-objetos" font-weight="bold">{{codigo:Clase Punto}}</text>
+  <text x="170" y="50" font-size="12" text-anchor="middle" font-family="mono" fill="@tinta">{{codigo:x Como Entero}}</text>
+  <text x="170" y="68" font-size="12" text-anchor="middle" font-family="mono" fill="@tinta">{{codigo:yy Como Entero}}</text>
+  <flecha puntos="140,80 80,110" rol="acento-objetos"/>
+  <flecha puntos="200,80 260,110" rol="acento-objetos"/>
+  <text x="170" y="104" font-size="12" text-anchor="middle" fill="@acento-objetos">{{codigo:Nuevo}}</text>
+  <caja x="20" y="112" ancho="120" alto="64" rol="acento-objetos" fondo="0.14" fuente="mono" tamano="13" texto="{{codigo:x = 3}}¶{{codigo:yy = 4}}"/>
+  <caja x="200" y="112" ancho="120" alto="64" rol="acento-objetos" fondo="0.14" fuente="mono" tamano="13" texto="{{codigo:x = 0}}¶{{codigo:yy = 7}}"/>
+</svg>
