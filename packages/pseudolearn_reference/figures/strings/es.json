@@ -93,7 +93,7 @@
     "forEachLoop": "para cada",
     "forLoop": "para",
     "functionLiteral": "función sin nombre",
-    "functionParameterType": "tipo de parámetro",
+    "functionParameterType": "parámetro",
     "functionType": "tipo función",
     "identifier": "nombre",
     "importDeclaration": "importación",
@@ -171,6 +171,16 @@
       "tamano": "Tamaño 4: índices de 0 a 3",
       "fuera": "notas[4] → arrayIndexOutOfRange"
     },
+    "bytes-utf8": {
+      "titulo": "Caracteres y octetos",
+      "descripcion": "Arriba, los tres caracteres de año: a, ñ y o. Debajo, sus cuatro octetos: 97 para la a, 195 y 177 para la ñ y 111 para la o.",
+      "caracteres": "Caracteres",
+      "a": "a",
+      "enie": "ñ",
+      "o": "o",
+      "octetos": "Octetos UTF-8",
+      "nota": "3 caracteres → 4 octetos"
+    },
     "cadena-caracter": {
       "titulo": "Carácter o cadena",
       "descripcion": "Arriba, A entre comillas simples y entre comillas dobles llevan al tipo Caracter. Abajo, unas comillas vacías y un texto de dos letras llevan al tipo Cadena.",
@@ -194,6 +204,12 @@
       "ejecucion": "Ejecución",
       "ejecucion-ej": "índice fuera de rango",
       "nota": "Las advertencias avisan pero dejan ejecutar"
+    },
+    "clausura": {
+      "titulo": "Cada clausura con su copia",
+      "descripcion": "La llamada multiplicador produce dos clausuras, doble y triple. Cada una lleva dentro su propia copia de factor, 2 y 3 respectivamente.",
+      "factor": "factor",
+      "nota": "Las copias capturadas viajan con cada función"
     },
     "coincidencia-larga": {
       "titulo": "La pieza más larga",
@@ -309,6 +325,14 @@
       "operadores": "Operadores con letras",
       "nota": "La lista completa está en el Apéndice B"
     },
+    "generico": {
+      "titulo": "Una plantilla y sus usos",
+      "descripcion": "Arriba, la plantilla Caja con un hueco de tipo T. Dos flechas llevan a dos versiones concretas, Caja de Entero y Caja de Cadena.",
+      "plantilla": "Caja<T>",
+      "entero": "Caja<Entero>",
+      "cadena": "Caja<Cadena>",
+      "nota": "Una sola definición; una versión por tipo usado"
+    },
     "identificadores": {
       "titulo": "Alfabeto de los identificadores",
       "descripcion": "Dos cajas unidas por una flecha: el primer carácter, que puede ser letra, ñ, vocal con tilde o guion bajo, y los siguientes, que además admiten dígitos y pueden repetirse. Debajo, cuatro nombres válidos en verde y tres no válidos en rojo.",
@@ -326,6 +350,14 @@
       "i1": "2notas",
       "i2": "mi-nota",
       "i3": "Escribir"
+    },
+    "instantanea": {
+      "titulo": "La instantánea no cambia",
+      "descripcion": "El vector notas tenía un 7 cuando se tomó la instantánea; después se le añadió un 9. La foto, con un candado, conserva solo el 7: se puede leer pero no escribir.",
+      "despues": "añadido después",
+      "lectura": "leer: sí",
+      "escritura": "modificar: no",
+      "nota": "La foto se tomó antes de añadir el 9"
     },
     "leer-figura": {
       "titulo": "Ejemplo de figura por pasos",
@@ -366,6 +398,29 @@
       "p9": "IX · Objetos",
       "resto": "VIII · X · XI · XII · XIII",
       "apendices": "Apéndices A–F: consulta"
+    },
+    "niveles": {
+      "titulo": "Antes y durante la ejecución",
+      "descripcion": "Dos columnas. Antes de ejecutar se comprueban la forma, los nombres, los tipos y los subprogramas llamados. Al ejecutar se comprueban la división entre cero, los índices, las variables sin valor y el desbordamiento.",
+      "antes": "Antes de ejecutar",
+      "a1": "forma del programa",
+      "a2": "nombres declarados",
+      "a3": "tipos compatibles",
+      "a4": "llamadas correctas",
+      "durante": "Al ejecutar",
+      "d1": "división entre cero",
+      "d2": "índices en rango",
+      "d3": "variables con valor",
+      "d4": "desbordamiento",
+      "nota": "Lo que se puede saber sin ejecutar, se comprueba antes"
+    },
+    "opcional-resultado": {
+      "titulo": "Opcional y Resultado",
+      "descripcion": "Dos columnas. Opcional puede ser Algo con un valor o Nada. Resultado puede ser Exito con un valor o Error con un motivo. Debajo, una nota dice que hay que contemplar los dos casos con Segun, y que Propagar pasa el error hacia arriba.",
+      "motivo": "motivo",
+      "regla": "Antes de usar el valor, contempla los dos casos",
+      "segun": "Segun … Hacer",
+      "propagar": "o Propagar: el error sale del subprograma"
     },
     "perfiles-espejo": {
       "titulo": "El mismo programa en dos perfiles",
@@ -466,6 +521,17 @@
       "o3": "línea de tiempo",
       "sin-ejecutar": "no ejecuta nada",
       "recorren": "recorren las instrucciones"
+    },
+    "variante-formas": {
+      "titulo": "Las formas de una variante",
+      "descripcion": "Un recuadro con el tipo Forma y sus tres alternativas dibujadas: un círculo, un rectángulo y un punto. Debajo, Segun f Hacer reparte el valor en tres ramas, una por alternativa.",
+      "forma": "Forma",
+      "circulo": "Circulo(radio)",
+      "rectangulo": "Rectangulo(ancho, alto)",
+      "punto": "Punto",
+      "r1": "r → 3·r·r",
+      "r2": "a, h → a·h",
+      "r3": "→ 0"
     },
     "vector-crece": {
       "titulo": "Un vector que cambia de tamaño",

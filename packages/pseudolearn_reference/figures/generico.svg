@@ -1,0 +1,8 @@
+<svg viewBox="0 0 340 220">
+  <caja x="70" y="8" ancho="200" alto="56" rol="tipo" fondo="0.08" discontinua="" fuente="mono" tamano="14" texto="{{t:plantilla}}"/>
+  <flecha puntos="130,64 70,110"/>
+  <flecha puntos="210,64 270,110"/>
+  <caja x="10" y="110" ancho="150" alto="56" rol="tipo" fondo="0.16" fuente="mono" tamano="14" texto="{{t:entero}}"/>
+  <caja x="180" y="110" ancho="150" alto="56" rol="tipo" fondo="0.16" fuente="mono" tamano="14" texto="{{t:cadena}}"/>
+  <text x="170" y="200" font-size="12" text-anchor="middle" fill="@atenuado">{{t:nota}}</text>
+</svg>

@@ -93,7 +93,7 @@
     "forEachLoop": "for each",
     "forLoop": "for",
     "functionLiteral": "anonymous function",
-    "functionParameterType": "parameter type",
+    "functionParameterType": "parameter",
     "functionType": "function type",
     "identifier": "name",
     "importDeclaration": "import",
@@ -171,6 +171,16 @@
       "tamano": "Size 4: indices 0 to 3",
       "fuera": "notas[4] → arrayIndexOutOfRange"
     },
+    "bytes-utf8": {
+      "titulo": "Characters and octets",
+      "descripcion": "At the top, the three characters of año: a, ñ and o. Below, their four octets: 97 for a, 195 and 177 for ñ, and 111 for o.",
+      "caracteres": "Characters",
+      "a": "a",
+      "enie": "ñ",
+      "o": "o",
+      "octetos": "UTF-8 octets",
+      "nota": "3 characters → 4 octets"
+    },
     "cadena-caracter": {
       "titulo": "Character or string",
       "descripcion": "At the top, A between single quotes and between double quotes both lead to the Character type. Below, empty quotes and a two-letter text lead to the String type.",
@@ -194,6 +204,12 @@
       "ejecucion": "Runtime",
       "ejecucion-ej": "index out of range",
       "nota": "Warnings warn but still let the program run"
+    },
+    "clausura": {
+      "titulo": "Each closure with its own copy",
+      "descripcion": "The call multiplicador produces two closures, doble and triple. Each carries its own copy of factor inside, 2 and 3 respectively.",
+      "factor": "factor",
+      "nota": "Captured copies travel with each function"
     },
     "coincidencia-larga": {
       "titulo": "The longest piece",
@@ -309,6 +325,14 @@
       "operadores": "Operators with letters",
       "nota": "The full list is in Appendix B"
     },
+    "generico": {
+      "titulo": "A template and its uses",
+      "descripcion": "At the top, the template Caja with a type slot T. Two arrows lead to two concrete versions, Caja of Integer and Caja of String.",
+      "plantilla": "Caja<T>",
+      "entero": "Caja<Integer>",
+      "cadena": "Caja<String>",
+      "nota": "A single definition; one version per type used"
+    },
     "identificadores": {
       "titulo": "Identifier alphabet",
       "descripcion": "Two boxes joined by an arrow: the first character, which may be a letter, ñ, an accented vowel or an underscore, and the following ones, which also accept digits and may repeat. Below, four valid names in green and three invalid ones in red.",
@@ -326,6 +350,14 @@
       "i1": "2notas",
       "i2": "mi-nota",
       "i3": "Write"
+    },
+    "instantanea": {
+      "titulo": "The snapshot does not change",
+      "descripcion": "The vector notas held a 7 when the snapshot was taken; a 9 was added afterwards. The picture, with a padlock, keeps only the 7: it can be read but not written.",
+      "despues": "added afterwards",
+      "lectura": "read: yes",
+      "escritura": "modify: no",
+      "nota": "The picture was taken before adding the 9"
     },
     "leer-figura": {
       "titulo": "Example of a stepped figure",
@@ -366,6 +398,29 @@
       "p9": "IX · Objects",
       "resto": "VIII · X · XI · XII · XIII",
       "apendices": "Appendices A–F: reference"
+    },
+    "niveles": {
+      "titulo": "Before and during the run",
+      "descripcion": "Two columns. Before running, shape, names, types and called subroutines are checked. When running, division by zero, indices, variables without a value and overflow are checked.",
+      "antes": "Before running",
+      "a1": "program shape",
+      "a2": "declared names",
+      "a3": "compatible types",
+      "a4": "correct calls",
+      "durante": "When running",
+      "d1": "division by zero",
+      "d2": "indices in range",
+      "d3": "variables with a value",
+      "d4": "overflow",
+      "nota": "What can be known without running is checked beforehand"
+    },
+    "opcional-resultado": {
+      "titulo": "Optional and Result",
+      "descripcion": "Two columns. Optional can be Some with a value or None. Result can be Success with a value or Failure with a reason. Below, a note says both cases must be considered with Switch, and that Propagate passes the error upwards.",
+      "motivo": "reason",
+      "regla": "Before using the value, consider both cases",
+      "segun": "Switch … Do",
+      "propagar": "or Propagate: the error leaves the subroutine"
     },
     "perfiles-espejo": {
       "titulo": "The same program in two profiles",
@@ -466,6 +521,17 @@
       "o3": "timeline",
       "sin-ejecutar": "runs nothing",
       "recorren": "go through the instructions"
+    },
+    "variante-formas": {
+      "titulo": "The shapes of a variant",
+      "descripcion": "A box with the type Forma and its three alternatives drawn: a circle, a rectangle and a point. Below, Switch f Do distributes the value into three branches, one per alternative.",
+      "forma": "Forma",
+      "circulo": "Circulo(radio)",
+      "rectangulo": "Rectangulo(ancho, alto)",
+      "punto": "Punto",
+      "r1": "r → 3·r·r",
+      "r2": "a, h → a·h",
+      "r3": "→ 0"
     },
     "vector-crece": {
       "titulo": "A vector that changes size",

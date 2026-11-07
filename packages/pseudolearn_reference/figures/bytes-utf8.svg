@@ -1,0 +1,16 @@
+<svg viewBox="0 0 340 190">
+  <text x="12" y="22" font-size="12" fill="@atenuado">{{t:caracteres}}</text>
+  <caja x="20" y="32" ancho="80" alto="40" rol="texto" fondo="0.14" fuente="mono" tamano="18" texto="{{t:a}}"/>
+  <caja x="110" y="32" ancho="150" alto="40" rol="texto" fondo="0.14" fuente="mono" tamano="18" texto="{{t:enie}}"/>
+  <caja x="270" y="32" ancho="60" alto="40" rol="texto" fondo="0.14" fuente="mono" tamano="18" texto="{{t:o}}"/>
+  <flecha puntos="60,72 60,110"/>
+  <flecha puntos="150,72 140,110"/>
+  <flecha puntos="220,72 225,110"/>
+  <flecha puntos="300,72 300,110"/>
+  <text x="12" y="104" font-size="12" fill="@atenuado">{{t:octetos}}</text>
+  <caja x="20" y="112" ancho="80" alto="40" rol="numero" fondo="0.14" fuente="mono" texto="97"/>
+  <caja x="110" y="112" ancho="70" alto="40" rol="numero" fondo="0.14" fuente="mono" texto="195"/>
+  <caja x="190" y="112" ancho="70" alto="40" rol="numero" fondo="0.14" fuente="mono" texto="177"/>
+  <caja x="270" y="112" ancho="60" alto="40" rol="numero" fondo="0.14" fuente="mono" texto="111"/>
+  <text x="170" y="180" font-size="12" text-anchor="middle" fill="@atenuado">{{t:nota}}</text>
+</svg>

@@ -1,0 +1,11 @@
+<svg viewBox="0 0 340 240">
+  <text x="85" y="20" font-size="13" text-anchor="middle" fill="@tipo" font-weight="600">{{lex:optionalType}}</text>
+  <caja x="10" y="32" ancho="150" alto="40" rol="exito" fondo="0.12" fuente="mono" texto="{{lex:someVariant}}(7)"/>
+  <caja x="10" y="80" ancho="150" alto="40" rol="atenuado" fondo="0.08" discontinua="" fuente="mono" texto="{{lex:noneVariant}}"/>
+  <text x="255" y="20" font-size="13" text-anchor="middle" fill="@tipo" font-weight="600">{{lex:resultType}}</text>
+  <caja x="180" y="32" ancho="150" alto="40" rol="exito" fondo="0.12" fuente="mono" texto="{{lex:successVariant}}(5)"/>
+  <caja x="180" y="80" ancho="150" alto="40" rol="error" fondo="0.12" fuente="mono" tamano="13" texto="{{lex:errorVariant}}({{t:motivo}})"/>
+  <text x="170" y="154" font-size="13" text-anchor="middle" fill="@tinta">{{t:regla}}</text>
+  <caja x="60" y="170" ancho="220" alto="34" rol="acento-estructurado" fondo="0.10" fuente="mono" tamano="13" texto="{{t:segun}}"/>
+  <text x="170" y="226" font-size="12" text-anchor="middle" fill="@atenuado">{{t:propagar}}</text>
+</svg>
