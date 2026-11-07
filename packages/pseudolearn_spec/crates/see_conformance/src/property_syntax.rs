@@ -171,8 +171,9 @@ fn statement_mass(source: &Source<'_>, subject: &mut impl PropertySubject) -> Di
     }))
 }
 
-fn propagates_errors(program: &str) -> bool {
-    program.contains("Propagar") || program.contains("propagate")
+pub(crate) fn propagates_errors(program: &str) -> bool {
+    let lowered = program.to_lowercase();
+    lowered.contains("propagar") || lowered.contains("propagate")
 }
 
 fn analysis_schema(source: &Source<'_>, subject: &mut impl PropertySubject) -> Difference {
