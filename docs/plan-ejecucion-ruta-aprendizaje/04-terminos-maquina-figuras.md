@@ -130,7 +130,7 @@ superficie en español; la edición inglesa define las suyas.
 | `invariante-de-clase` | invariante de clase | invariante de clase | sí | — | 3.2 |
 | `identidad` | identidad | identidad | — | — | 3.3 |
 | `alias` | alias | alias | sí | — | 3.3 |
-| `referencia-a-objeto` | referencia a un objeto | referencia a un objeto, flecha | sí | — | 3.3 |
+| `referencia-a-objeto` | referencia a un objeto | referencia a un objeto, referencias a objetos | sí | — | 3.3 |
 | `interfaz` | interfaz | interfaz, interfaces | sí | sí | 3.4 |
 | `polimorfismo` | polimorfismo | polimorfismo | sí | sí | 3.4 |
 | `despacho-dinamico` | despacho dinámico | despacho dinámico | sí | — | 3.4 |

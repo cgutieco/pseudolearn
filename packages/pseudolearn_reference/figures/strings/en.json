@@ -1347,6 +1347,16 @@
       "descripcion": "A safe with the balance inside, private. Outside, three windows: Cobrar and Cargar, which decide whether the request gets in, and Saldo, which lets you see the value without touching it.",
       "privado": "private",
       "pie": "only the windows touch what is inside"
+    },
+    "ruta-flechas-pedido": {
+      "titulo": "Two arrows, one order",
+      "descripcion": "The variables pedido and copia. First, both arrows reach the same order with juice and sandwich. Then a biscuit is added through copia and it appears in the only order. Finally, with a real copy, there are two orders: the original with juice and sandwich, and the other one with the biscuit.",
+      "pedido": "order #1",
+      "otro-pedido": "order #2",
+      "jugo-sandwich": "Jugo, Sándwich",
+      "alfajor": "+ Alfajor",
+      "uno-solo": "there is only one order",
+      "dos": "two orders, each with its list"
     }
   }
 }

@@ -101,5 +101,8 @@
   "constructor": {"etiqueta": "constructor", "formas": ["constructor", "constructors"], "estricto": true, "receta": true},
   "instancia": {"etiqueta": "instance", "formas": ["instance", "instances"], "estricto": true, "receta": false},
   "encapsulamiento": {"etiqueta": "encapsulation", "formas": ["encapsulation"], "estricto": true, "receta": true},
-  "invariante-de-clase": {"etiqueta": "class invariant", "formas": ["class invariant", "class invariants"], "estricto": true, "receta": false}
+  "invariante-de-clase": {"etiqueta": "class invariant", "formas": ["class invariant", "class invariants"], "estricto": true, "receta": false},
+  "identidad": {"etiqueta": "identity", "formas": ["identity"], "estricto": false, "receta": false},
+  "alias": {"etiqueta": "alias", "formas": ["alias", "aliases"], "estricto": true, "receta": false},
+  "referencia-a-objeto": {"etiqueta": "object reference", "formas": ["object reference", "object references"], "estricto": true, "receta": false}
 }

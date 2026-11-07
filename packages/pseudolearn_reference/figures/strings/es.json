@@ -1347,6 +1347,16 @@
       "descripcion": "Una caja fuerte con el saldo adentro, privado. Por fuera, tres ventanillas: Cobrar y Cargar, que deciden si el pedido entra, y Saldo, que deja ver el valor sin tocarlo.",
       "privado": "privado",
       "pie": "solo las ventanillas tocan lo de adentro"
+    },
+    "ruta-flechas-pedido": {
+      "titulo": "Dos flechas, un pedido",
+      "descripcion": "Las variables pedido y copia. Primero, las dos flechas llegan al mismo pedido con jugo y sándwich. Después se agrega un alfajor por copia y aparece en el único pedido. Al final, con una copia real, hay dos pedidos: el original con jugo y sándwich, y el otro con el alfajor.",
+      "pedido": "pedido #1",
+      "otro-pedido": "pedido #2",
+      "jugo-sandwich": "Jugo, Sándwich",
+      "alfajor": "+ Alfajor",
+      "uno-solo": "hay un solo pedido",
+      "dos": "dos pedidos, cada uno con su lista"
     }
   }
 }
