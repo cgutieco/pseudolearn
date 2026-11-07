@@ -25,6 +25,7 @@ pub fn write(output: &Path, bundles: &BTreeMap<String, Bundle>) -> Result<(), St
 pub fn compare(
     output: &Path,
     bundles: &BTreeMap<String, Bundle>,
+    rule: RuleId,
 ) -> Result<Vec<Violation>, String> {
     let mut expected = BTreeMap::new();
     for (edition, bundle) in bundles {
@@ -44,7 +45,7 @@ pub fn compare(
         };
         if stale {
             violations.push(Violation::new(
-                RuleId::BundleStale,
+                rule,
                 key,
                 "differs from the compiler output: run `reference build`",
             ));
@@ -52,7 +53,7 @@ pub fn compare(
     }
     for missing in expected.keys() {
         violations.push(Violation::new(
-            RuleId::BundleStale,
+            rule,
             missing.clone(),
             "is missing: run `reference build`",
         ));

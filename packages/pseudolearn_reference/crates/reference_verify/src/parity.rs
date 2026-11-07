@@ -78,7 +78,8 @@ fn block_signature(block: &SourceBlock) -> Option<String> {
         SourceBlock::Intermediate { program } => format!("intermediate:{program}"),
         SourceBlock::Trace { program } => format!("trace:{program}"),
         SourceBlock::Generated { catalog } => format!("generated:{catalog}"),
-        SourceBlock::Callout { kind, blocks } => {
+        SourceBlock::Route(fence) => format!("data:{}", fence.name()),
+        SourceBlock::Callout { kind, blocks, .. } => {
             format!("{}[{}]", kind.directive(), signature(blocks).join(","))
         }
         _ => return None,

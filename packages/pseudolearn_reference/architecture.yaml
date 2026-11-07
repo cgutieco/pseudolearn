@@ -31,6 +31,11 @@ layers:
     may_import: [reference_model, reference_corpus, reference_figures, reference_format]
     external_dependencies: [serde, serde_json]
     unsafe_allowed: false
+  - name: route_resolve
+    path: crates/route_resolve
+    may_import: [reference_model, reference_corpus, reference_figures, reference_format, reference_resolve]
+    external_dependencies: []
+    unsafe_allowed: false
   - name: reference_verify
     path: crates/reference_verify
     may_import: [reference_model, reference_corpus, reference_format]
@@ -43,7 +48,7 @@ layers:
     unsafe_allowed: false
   - name: reference_cli
     path: crates/reference_cli
-    may_import: [reference_model, reference_corpus, reference_figures, reference_format, reference_engine, reference_resolve, reference_verify, reference_export]
+    may_import: [reference_model, reference_corpus, reference_figures, reference_format, reference_engine, reference_resolve, route_resolve, reference_verify, reference_export]
     external_dependencies: [serde_json]
     unsafe_allowed: false
   - name: xtask

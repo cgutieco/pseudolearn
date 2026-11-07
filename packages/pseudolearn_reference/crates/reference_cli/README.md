@@ -4,6 +4,8 @@
 
 Binario `reference` con las órdenes `build`, `check`, `coverage` y `lock`.
 
+Carga, compila, verifica y publica los dos libros; `--out-ruta` cambia el destino del paquete de la ruta.
+
 ## 2. Guía operativa y ciclo de vida
 
 `cargo test -p reference_cli` y `cargo clippy -p reference_cli --all-targets -- -D warnings` desde el miembro. No se despliega.

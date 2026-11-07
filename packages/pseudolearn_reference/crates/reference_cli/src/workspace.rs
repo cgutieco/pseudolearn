@@ -15,6 +15,7 @@ pub struct Language {
 
 pub struct Workspace {
     pub root: PathBuf,
+    pub route: BTreeMap<Profile, crate::route_workspace::RouteLanguage>,
     pub corpus: Corpus,
     pub categories: CategoryTable,
     pub figures: BTreeMap<String, String>,
@@ -44,6 +45,7 @@ pub fn load(root: &Path) -> Result<Workspace, String> {
     for profile in Profile::all() {
         languages.insert(profile, language(root, profile, &mut format_violations)?);
     }
+    let route = crate::route_workspace::load_routes(root, &mut format_violations)?;
     let lock_path = root.join(LOCK_FILE);
     let lock = if lock_path.exists() {
         serde_json::from_str(&read(&lock_path)?)
@@ -55,6 +57,7 @@ pub fn load(root: &Path) -> Result<Workspace, String> {
         .map_err(|error| format!("invalid coverage exclusions: {error}"))?;
     Ok(Workspace {
         root: root.to_path_buf(),
+        route,
         corpus,
         categories,
         figures,

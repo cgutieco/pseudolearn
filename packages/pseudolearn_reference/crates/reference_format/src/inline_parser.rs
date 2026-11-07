@@ -75,9 +75,16 @@ impl<'text> InlineParser<'text> {
             .ok_or_else(|| "unclosed glossary term".to_owned())?;
         let (term, text) = inner.split_once('|').unwrap_or((inner, inner));
         self.flush();
-        self.runs.push(Inline::Term {
-            term: term.trim().to_owned(),
-            text: text.trim().to_owned(),
+        let text = text.trim().to_owned();
+        self.runs.push(match term.trim().strip_prefix("def:") {
+            Some(defined) => Inline::Definition {
+                term: defined.trim().to_owned(),
+                text: text.replace("def:", ""),
+            },
+            None => Inline::Term {
+                term: term.trim().to_owned(),
+                text,
+            },
         });
         self.rest = rest;
         Ok(())
@@ -85,21 +92,18 @@ impl<'text> InlineParser<'text> {
 
     fn link(&mut self, after: &'text str) -> Result<(), String> {
         let Some((text, rest)) = after
-            .split_once("](#")
-            .filter(|(text, _)| !text.contains(['[', ']', '`']))
+            .split_once("](")
+            .filter(|(text, rest)| !text.contains(['[', ']', '`']) && is_target(rest))
         else {
             self.plain.push('[');
             self.rest = after;
             return Ok(());
         };
-        let (section, rest) = rest
+        let (target, rest) = rest
             .split_once(')')
             .ok_or_else(|| "unclosed section link".to_owned())?;
         self.flush();
-        self.runs.push(Inline::Link {
-            section: section.to_owned(),
-            text: text.to_owned(),
-        });
+        self.runs.push(link_inline(target, text));
         self.rest = rest;
         Ok(())
     }
@@ -109,5 +113,36 @@ impl<'text> InlineParser<'text> {
             self.runs
                 .push(Inline::Text(std::mem::take(&mut self.plain)));
         }
+    }
+}
+
+fn is_target(rest: &str) -> bool {
+    ["#", "especificacion:", "ruta:"]
+        .iter()
+        .any(|prefix| rest.starts_with(prefix))
+}
+
+fn link_inline(target: &str, text: &str) -> Inline {
+    let text = text.to_owned();
+    if let Some(lesson) = target.strip_prefix("ruta:") {
+        return Inline::LessonLink {
+            lesson: lesson.to_owned(),
+            text,
+        };
+    }
+    if let Some(section) = target.strip_prefix("especificacion:") {
+        let (section, anchor) = match section.split_once('#') {
+            Some((section, anchor)) => (section, Some(anchor.to_owned())),
+            None => (section, None),
+        };
+        return Inline::SpecLink {
+            section: section.to_owned(),
+            anchor,
+            text,
+        };
+    }
+    Inline::Link {
+        section: target.trim_start_matches('#').to_owned(),
+        text,
     }
 }

@@ -1031,6 +1031,26 @@
       "ejecucion": "5 · Máquina virtual → salida",
       "analisis": "análisis",
       "resultado": "Salida: 42"
+    },
+    "ruta-ciclo": {
+      "titulo": "El ciclo PseudoLearn",
+      "descripcion": "Cinco pasos en círculo: Entender, Planear, Escribir, Probar y Mejorar, unidos por flechas llenas. Una flecha punteada roja vuelve de Probar a Planear si algo falló, y otra punteada va de Mejorar a Entender hacia el siguiente problema.",
+      "entender": "1. Entender",
+      "planear": "2. Planear",
+      "escribir": "3. Escribir",
+      "probar": "4. Probar",
+      "mejorar": "5. Mejorar",
+      "fallo": "¿falló?",
+      "siguiente-1": "siguiente",
+      "siguiente-2": "problema",
+      "vuelta": "Al fallar no se empieza de cero"
+    },
+    "ruta-instrucciones-en-orden": {
+      "titulo": "Las instrucciones se ejecutan en orden",
+      "descripcion": "A la izquierda, un programa con tres instrucciones Escribir; a la derecha, la salida. En cada paso se resalta una instrucción y aparece su línea en la salida: primero Hola, después 5 y al final 2 + 3.",
+      "programa": "programa",
+      "salida": "salida",
+      "hola": "Hola"
     }
   }
 }

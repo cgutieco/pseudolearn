@@ -17,6 +17,8 @@ pub struct Edition {
 pub struct Book {
     pub editions: Vec<Edition>,
     pub bundles: BTreeMap<String, Bundle>,
+    pub route_editions: Vec<crate::route_book::RouteEdition>,
+    pub route_bundles: BTreeMap<String, Bundle>,
 }
 
 pub fn compile(workspace: &Workspace, engine: &dyn CodeEngine) -> Result<Book, String> {
@@ -33,6 +35,8 @@ pub fn compile(workspace: &Workspace, engine: &dyn CodeEngine) -> Result<Book, S
     let mut book = Book {
         editions: Vec::new(),
         bundles: BTreeMap::new(),
+        route_editions: Vec::new(),
+        route_bundles: BTreeMap::new(),
     };
     for (language, content) in &workspace.languages {
         let index = section_index(&content.documents);
@@ -50,6 +54,7 @@ pub fn compile(workspace: &Workspace, engine: &dyn CodeEngine) -> Result<Book, S
             add_edition(&mut book, (workspace, &resolution, content), &reuse, &links)?;
         }
     }
+    crate::route_book::compile_route(&mut book, workspace, engine)?;
     Ok(book)
 }
 
@@ -149,6 +154,17 @@ fn reuse_of(blocks: &[SourceBlock]) -> SpanishReuse {
     let mut reuse = SpanishReuse::default();
     collect_reuse(blocks, &mut reuse);
     reuse
+}
+
+pub fn flattened(blocks: &[SourceBlock]) -> Vec<&SourceBlock> {
+    let mut found = Vec::new();
+    for block in blocks {
+        found.push(block);
+        if let SourceBlock::Callout { blocks, .. } = block {
+            found.extend(flattened(blocks));
+        }
+    }
+    found
 }
 
 fn collect_reuse(blocks: &[SourceBlock], reuse: &mut SpanishReuse) {

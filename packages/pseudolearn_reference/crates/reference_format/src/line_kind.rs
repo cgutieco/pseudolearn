@@ -1,13 +1,27 @@
-use crate::fence::{FenceOpening, parse_fence_opening};
+use crate::fence::{FenceOpening, parse_attributes, parse_fence_opening};
 use reference_model::{CalloutKind, RuleId, Violation};
+use std::collections::BTreeMap;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum LineElement {
-    Fence { opening: FenceOpening, body: String },
-    CalloutOpen(CalloutKind),
+    Fence {
+        opening: FenceOpening,
+        body: String,
+    },
+    CalloutOpen {
+        kind: CalloutKind,
+        attributes: BTreeMap<String, String>,
+    },
     CalloutClose,
-    Heading { id: String, text: String },
-    ListEntry { ordered: bool, text: String },
+    Heading {
+        id: String,
+        phase: Option<String>,
+        text: String,
+    },
+    ListEntry {
+        ordered: bool,
+        text: String,
+    },
     TableRow(Vec<String>),
     Blank,
     Text(String),
@@ -74,10 +88,8 @@ fn classify_line(location: &str, line: &str) -> Result<LineElement, Violation> {
     if trimmed == ":::" {
         return Ok(LineElement::CalloutClose);
     }
-    if let Some(name) = trimmed.strip_prefix("::: ") {
-        return CalloutKind::from_directive(name.trim())
-            .map(LineElement::CalloutOpen)
-            .ok_or_else(|| Violation::new(RuleId::Format, location, "unknown box kind"));
+    if let Some(opening) = trimmed.strip_prefix("::: ") {
+        return parse_callout(location, opening);
     }
     if let Some(heading) = trimmed.strip_prefix("## ") {
         return parse_heading(location, heading);
@@ -110,12 +122,27 @@ fn ordered_entry(trimmed: &str) -> Option<&str> {
         .then_some(rest)
 }
 
+fn parse_callout(location: &str, opening: &str) -> Result<LineElement, Violation> {
+    let (name, rest) = opening
+        .trim()
+        .split_once(' ')
+        .unwrap_or((opening.trim(), ""));
+    let kind = CalloutKind::from_directive(name)
+        .ok_or_else(|| Violation::new(RuleId::Format, location, "unknown box kind"))?;
+    Ok(LineElement::CalloutOpen {
+        kind,
+        attributes: parse_attributes(rest),
+    })
+}
+
 fn parse_heading(location: &str, heading: &str) -> Result<LineElement, Violation> {
     let failure = || Violation::new(RuleId::Format, location, "a heading needs an {#id}");
     let (text, identity) = heading.rsplit_once("{#").ok_or_else(failure)?;
     let identity = identity.strip_suffix('}').ok_or_else(failure)?;
+    let (identity, rest) = identity.split_once(' ').unwrap_or((identity, ""));
     Ok(LineElement::Heading {
         id: identity.to_owned(),
+        phase: parse_attributes(rest).remove("fase"),
         text: text.trim().to_owned(),
     })
 }

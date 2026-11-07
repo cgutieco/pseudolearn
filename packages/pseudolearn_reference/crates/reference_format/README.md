@@ -4,6 +4,8 @@
 
 Lector del Markdown con directivas: cabecera YAML, encabezados con identificador, párrafos, listas, tablas, recuadros `:::` y bloques cercados (`forma`, `programa`, `salida`, `diagnosticos`, `entrada`, `anfitrion`, `figura`, `railes`, `ri`, `traza`, `generado`). Devuelve un `SourceDocument` o una violación `REF-FORMAT`.
 
+Lee también las lecciones y los ejercicios de la ruta: encabezados de fase, recuadros con atributos, definiciones de término, enlaces `especificacion:` y `ruta:` y las cercas de datos de ejercicio.
+
 ## 2. Guía operativa y ciclo de vida
 
 `cargo test -p reference_format` y `cargo clippy -p reference_format --all-targets -- -D warnings` desde el miembro. No se despliega.

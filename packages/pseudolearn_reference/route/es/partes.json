@@ -1,0 +1,9 @@
+[
+  {"id": "parte-inicio", "numero": "0", "prefijo": "inicio", "titulo": "Empezar de cero", "lema": "", "resumen": "Qué es un problema, el primer programa y cómo saber si está bien."},
+  {"id": "parte-imperativo", "numero": "I", "prefijo": "imperativo", "titulo": "Imperativo y estructurado", "lema": "Darle órdenes a una máquina con memoria", "resumen": "Decidir, repetir y guardar muchos datos, eligiendo la estructura adecuada."},
+  {"id": "parte-procedimental", "numero": "II", "prefijo": "procedimental", "titulo": "Procedimental y modular", "lema": "Divide y vencerás", "resumen": "Partir un problema grande en piezas con nombre que reciben datos y devuelven resultados."},
+  {"id": "parte-objetos", "numero": "III", "prefijo": "objetos", "titulo": "Orientación a objetos", "lema": "Cosas que saben y hacen", "resumen": "Juntar datos y acciones en objetos que protegen lo que debe ser cierto."},
+  {"id": "parte-funcional", "numero": "IV", "prefijo": "funcional", "titulo": "Funcional", "lema": "Calcular sin cambiar nada", "resumen": "Programas hechos de funciones que transforman valores sin tocar nada afuera."},
+  {"id": "parte-concurrente", "numero": "V", "prefijo": "concurrente", "titulo": "Concurrente", "lema": "Varias cosas a la vez", "resumen": "Tareas que avanzan por turnos y se coordinan pasándose mensajes."},
+  {"id": "parte-exterior", "numero": "VI", "prefijo": "exterior", "titulo": "El mundo exterior", "lema": "Hablar con lo que está afuera del programa", "resumen": "Archivos, datos en JSON e internet, separando lo que se calcula de lo que toca el mundo."}
+]

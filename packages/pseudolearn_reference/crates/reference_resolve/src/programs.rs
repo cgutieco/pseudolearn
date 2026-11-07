@@ -87,6 +87,7 @@ fn run(
         inputs: source.inputs.clone(),
         host: source.host.clone(),
         trace: false,
+        statement_limit: source.statement_limit,
     };
     let source_report = resolution
         .engine

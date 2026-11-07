@@ -12,6 +12,7 @@ fn runs_each_distinct_request_once() {
         inputs: Vec::new(),
         host: None,
         trace: false,
+        statement_limit: None,
     };
     let first = engine.execute(&request);
     let second = engine.execute(&request);

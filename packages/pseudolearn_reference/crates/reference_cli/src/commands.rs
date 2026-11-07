@@ -10,6 +10,7 @@ use std::path::PathBuf;
 struct Options {
     root: PathBuf,
     output: PathBuf,
+    route_output: PathBuf,
     draft: bool,
 }
 
@@ -30,16 +31,30 @@ fn compiled(command: &str, workspace: &Workspace, options: &Options) -> Result<b
     match command {
         "coverage" => {
             print_coverage(&report);
+            crate::route_coverage::print_route_coverage(&book);
             return Ok(true);
         }
         "build" if violations.is_empty() || options.draft => {
             crate::bundle_files::write(&options.output, &book.bundles)?;
-            println!("reference: bundle written to {}", options.output.display());
+            crate::bundle_files::write(&options.route_output, &book.route_bundles)?;
+            println!(
+                "reference: bundles written to {} and {}",
+                options.output.display(),
+                options.route_output.display()
+            );
         }
-        "check" => violations.extend(crate::bundle_files::compare(
-            &options.output,
-            &book.bundles,
-        )?),
+        "check" => {
+            violations.extend(crate::bundle_files::compare(
+                &options.output,
+                &book.bundles,
+                RuleId::BundleStale,
+            )?);
+            violations.extend(crate::bundle_files::compare(
+                &options.route_output,
+                &book.route_bundles,
+                RuleId::RouteBundleStale,
+            )?);
+        }
         _ => {}
     }
     report_violations(&violations);
@@ -63,7 +78,12 @@ fn report_violations(violations: &[Violation]) {
     if !violations.is_empty() {
         let stale = violations
             .iter()
-            .filter(|violation| violation.rule == RuleId::BundleStale)
+            .filter(|violation| {
+                matches!(
+                    violation.rule,
+                    RuleId::BundleStale | RuleId::RouteBundleStale
+                )
+            })
             .count();
         eprintln!(
             "reference: {} violations ({stale} stale bundle files)",
@@ -98,6 +118,7 @@ fn parse(arguments: &[String]) -> Result<(String, Options), String> {
     let command = words.next().cloned().ok_or_else(usage)?;
     let mut root = PathBuf::from(".");
     let mut output = None;
+    let mut route_output = None;
     let mut draft = false;
     while let Some(flag) = words.next() {
         if flag == "--borrador" {
@@ -108,20 +129,24 @@ fn parse(arguments: &[String]) -> Result<(String, Options), String> {
         match flag.as_str() {
             "--root" => root = PathBuf::from(value),
             "--out" => output = Some(PathBuf::from(value)),
+            "--out-ruta" => route_output = Some(PathBuf::from(value)),
             _ => return Err(usage()),
         }
     }
     let output = output.unwrap_or_else(|| root.join("../../apps/pseudolearn_app/assets/reference"));
+    let route_output =
+        route_output.unwrap_or_else(|| root.join("../../apps/pseudolearn_app/assets/route"));
     Ok((
         command,
         Options {
             root,
             output,
+            route_output,
             draft,
         },
     ))
 }
 
 fn usage() -> String {
-    "usage: reference <build|check|coverage|lock> [--root DIR] [--out DIR] [--borrador]".to_owned()
+    "usage: reference <build|check|coverage|lock> [--root DIR] [--out DIR] [--out-ruta DIR] [--borrador]".to_owned()
 }

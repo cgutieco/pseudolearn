@@ -2,14 +2,19 @@
 
 ## 1. Qué es y qué no es
 
-Compilador de la **Especificación ilustrada** de PseudoLearn. Lee las secciones escritas en Markdown con
-directivas, las figuras SVG y la exportación del corpus normativo; tokeniza, traduce y ejecuta cada
-fragmento de código con el motor real; verifica lo que promete el texto, y publica un **paquete de datos
-neutral** (JSON y SVG) que la app Flutter pinta y que la web Astro podrá pintar.
+Compilador de los **dos libros** de PseudoLearn: la **Especificación ilustrada** (`content/`) y la **ruta de
+aprendizaje** (`route/`). Lee las fuentes escritas en Markdown con directivas, las figuras SVG y la exportación
+del corpus normativo; tokeniza, traduce y ejecuta cada fragmento de código con el motor real; verifica lo que
+promete el texto y, en la ruta, cada ejercicio según su tipo; y publica dos **paquetes de datos neutrales**
+(JSON y SVG) que la app Flutter pinta y que la web Astro podrá pintar.
 
-No es el corpus normativo (`packages/pseudolearn_spec`), ni un tutorial, ni documentación de la
-arquitectura de otros miembros. No se despliega: es una biblioteca y una herramienta de construcción.
-En la interfaz se llama «Especificación»; el miembro se llama `reference` para no confundirse con el
+La Especificación explica cómo se escribe y qué hace exactamente el lenguaje. La ruta enseña a resolver
+problemas con el ciclo PseudoLearn y cinco paradigmas; enlaza a la Especificación en vez de reexplicarla y
+nunca usa un término antes de su lección dueña.
+
+No es el corpus normativo (`packages/pseudolearn_spec`) ni documentación de la arquitectura de otros
+miembros. No se despliega: es una biblioteca y una herramienta de construcción. En la interfaz los libros se
+llaman «Especificación» y «Ruta de aprendizaje»; el miembro se llama `reference` para no confundirse con el
 corpus.
 
 Relación con el corpus: **el corpus dice qué es verdad; la especificación ilustrada lo explica a personas y
@@ -29,20 +34,20 @@ Rust. Antes de compilar hace falta la exportación del corpus, que no se version
 
 | Orden | Qué hace |
 |---|---|
-| `cargo run -p reference_cli -- build` | Compila las cuatro ediciones y escribe el paquete en `../../apps/pseudolearn_app/assets/reference/`. Solo escribe si no hay violaciones |
-| `cargo run -p reference_cli -- check` | Compila en memoria, ejecuta todos los verificadores y compara el paquete versionado en la app (`REF-BUNDLE-STALE`) |
-| `cargo run -p reference_cli -- coverage` | Informe de cobertura por área: vocabulario, palabras contextuales, fichas, diagnósticos y especificaciones |
+| `cargo run -p reference_cli -- build` | Compila las cuatro ediciones de los dos libros y escribe `../../apps/pseudolearn_app/assets/reference/` y `../../apps/pseudolearn_app/assets/route/`. Solo escribe si no hay violaciones |
+| `cargo run -p reference_cli -- check` | Compila en memoria, ejecuta todos los verificadores y compara los dos paquetes versionados en la app (`REF-BUNDLE-STALE`, `RUTA-BUNDLE-STALE`) |
+| `cargo run -p reference_cli -- coverage` | Informe de cobertura de la Especificación por área y de la ruta: términos por lección, ejercicios por tipo y nivel, secciones enlazadas y secciones que ninguna lección enlaza |
 | `cargo run -p reference_cli -- lock` | Registra la huella actual de cada ancla después de revisar las secciones afectadas |
 
-`--out DIR` cambia el destino y `--root DIR` el miembro. `--borrador` escribe aunque haya violaciones; solo
+`--out DIR` cambia el destino de la Especificación, `--out-ruta DIR` el de la ruta y `--root DIR` el miembro. `--borrador` escribe aunque haya violaciones; solo
 sirve para redactar y nunca se usa en verificación.
 
 Verificación completa: `cargo xtask verify` (exportación del corpus, formato, Clippy estricto, tests,
 cargo-deny, verificadores Rust del monorepo y `reference check`).
 
-Flujo de una edición de contenido: editar `content/es/...` y su par `content/en/...` → `reference check`
+Flujo de una edición de contenido: editar `content/es/...` o `route/es/...` y su par en `en` → `reference check`
 → si un ancla cambió, revisar la sección y ejecutar `reference lock` → `reference build` → versionar las
-fuentes y el paquete generado juntos.
+fuentes y los paquetes generados juntos.
 
 ## 3. Arquitectura y modelo del sistema
 
@@ -63,8 +68,9 @@ Un crate por capa; la matriz de imports está en `architecture.yaml`.
 | `reference_engine` | Adaptador del puerto sobre `pseudolearn_api` (tokenizar, traducir, ejecutar, RI) |
 | `reference_figures` | Contrato SVG, kit de piezas, capas por paso y diagramas de raíles |
 | `reference_resolve` | Fuente → sección publicada para un idioma y un perfil |
-| `reference_verify` | Verificadores del libro y cobertura |
-| `reference_export` | Paquete por edición con manifiesto de huellas |
+| `route_resolve` | Lección y ejercicio fuente → lección y ejercicio publicados, con tarjetas de recuerdo, figuras de la Especificación incrustadas y las ejecuciones que verifican cada ejercicio |
+| `reference_verify` | Verificadores de los dos libros y cobertura |
+| `reference_export` | Paquetes por edición de cada libro con manifiesto de huellas |
 | `reference_cli` | Binario `reference`; única capa que toca el disco |
 | `xtask` | `cargo xtask verify` |
 
@@ -193,8 +199,146 @@ Anatomía por tipo:
 | Por dentro | — | sí | sí | — |
 | Límite exacto | — | — | sí | — |
 
+### 3.6 La ruta de aprendizaje: árbol de contenido
+
+```
+route/<es|en>/partes.json                                  unidad y partes: id, número, prefijo, título, lema, resumen
+route/<es|en>/terminos.json                                id de término → etiqueta, formas, estricto, receta
+route/<es|en>/<NN-parte>/<NN-MM-slug>/leccion.md           una lección
+route/<es|en>/<NN-parte>/<NN-MM-slug>/ejercicios/<NN-slug>.md   un ejercicio por archivo
+figures/ruta-*.svg                                         figuras propias de la ruta, con el contrato de §3.4
+fixtures/route/                                            violaciones deliberadas de cada verificador RUTA-*
+```
+
+- `NN-parte` es `00-inicio`, `01-imperativo`, `02-procedimental`, `03-objetos`, `04-funcional`,
+  `05-concurrente` o `06-exterior`; `NN-MM-slug` lleva el número de la lección y los proyectos usan `MM = 99`.
+  El orden del libro es el orden de las rutas de archivo.
+- La parte de una lección es el prefijo de su id (`imperativo.mientras` pertenece a la parte con prefijo
+  `imperativo`).
+- `terminos.json` solo trae etiquetas y formas. La lección dueña se calcula desde las cabeceras (`introduce`) y
+  la frase de recuerdo sale del ítem etiquetado del resumen de la dueña: nada de eso se escribe a mano.
+- La edición inglesa tiene los mismos archivos e ids. Sus bloques `programa` pueden ir vacíos para reutilizar el
+  programa español con el mismo id, y sus cercas `casos`, `rompe`, `casos-solucion` y `vueltas` pueden ir vacías
+  para reutilizar las del ejercicio español con el mismo id.
+
+### 3.7 La ruta de aprendizaje: formato fuente
+
+Extiende §3.2; todo lo que allí existe vale igual. Cabecera de lección: `id`, `numero`, `tipo` (`leccion`,
+`apertura`, `proyecto`), `titulo`, `duracion`, `problema_breve`, `necesita`, `introduce`, `usa`, `pieza` y
+`menciones_cotidianas`. Cabecera de ejercicio: `id`, `leccion`, `tipo`, `nivel` (`semilla`, `brote`, `arbol`),
+`obligatorio` y `titulo`.
+
+- Encabezados de fase: `## Entender {#entender fase=1}` o `{#entender fase=1-2}`; publican la tira del ciclo y
+  el encabezado con insignia.
+- Recuadros nuevos: `frase`, `problema`, `intento` seguido de `respuesta`, `ficha`, `roles`, `paradigma`,
+  `recuerda termino=<id>` (vacío), `especificacion` (lista de ids de sección), `profundizar titulo="…"`,
+  `practica` (lista de ids de ejercicio) y `siguiente`. En los ejercicios: `enunciado`, `restriccion`, `pistas`
+  (cuatro, en lista), `variante`, `explicacion` y `docentes`. Un recuadro admite atributos `clave=valor` después
+  de su nombre.
+- `ficha` y `paradigma` son listas de zonas: `- entra: …`, `- sale: …`, `- relacion: …`, `- ejemplo: …` y
+  `- pregunta: …`, `- metafora: …`, `- historia: …`, `- costo: …`. `roles` es una lista
+  `- nombre | figura | descripción`.
+- En línea: `[[def:termino|texto]]` define un término en su lección dueña; `[[termino|texto]]` lo menciona;
+  `[texto](especificacion:seccion#ancla)` enlaza la Especificación y `[texto](ruta:leccion)` otra lección.
+- Cada ítem del resumen lleva entre llaves los términos que resume: `- {contador,acumulador} …`.
+- Cercas nuevas: `figura-especificacion seccion=… figura=…` (copia la figura ya resuelta de esa sección, sin
+  cuerpo), `vueltas marca=<línea> inicio=<línea> columnas=a,b`, `casos`, `rompe`,
+  `casos-solucion minimo=… maximo=…`, `pasos`, `categorias`, `elementos` (`texto | categoría`), `opciones`
+  (`- [x] texto | justificación`) y `aserciones`.
+- `programa rol=<objeto|inicial|referencia|defectuoso|mutante>` marca el papel de un programa de ejercicio; el
+  id es opcional salvo para los mutantes. `sentencias=<n>` fija el presupuesto de sentencias de un programa.
+- Casos: `visible | 14 ; 17 ; -1 | 14.0`, con las entradas separadas por ` ; `, las líneas de salida por ` ⏎ `
+  y `—` cuando no hay entradas.
+
+### 3.8 La ruta de aprendizaje: paquete publicado
+
+`assets/route/<idioma>/<perfil>/` contiene `toc.json`, `lessons/<id>.json`, `exercises/<id>.json`,
+`terms.json`, `spec-links.json` y `manifest.json` (formato `pseudolearn-route/1`, huella del motor, SHA-256 del
+manifiesto de la Especificación de la misma edición y SHA-256 de cada archivo). El esquema está en
+`schemas/route-bundle.schema.json` y un test de `reference_export` valida contra él cada archivo de un paquete.
+
+- Una lección publicada reutiliza los bloques de la Especificación (`heading`, `paragraph`, `list`, `table`,
+  `program`, `figure`, `summary`) y agrega `phrase`, `problem`, `attempt`, `cycle`, `phase_heading`, `brief`,
+  `roles`, `paradigm`, `recall`, `spec_links`, `deepen`, `practice`, `next`, `spec_figure` y `callout`.
+- Las corridas nuevas son `definition`, `spec_link` y `lesson_link`.
+- Un ejercicio publicado trae sus bloques visibles y un objeto `evaluation` con los datos de su tipo:
+  `predict`, `trace`, `order_program`, `order_steps`, `cases`, `break`, `design_tests`, `classify` y `choice`.
+  La referencia, el programa defectuoso y los mutantes viajan solo ahí: la app los ejecuta y nunca los pinta.
+- `spec-links.json` lleva cada sección de la Especificación a las lecciones que la enlazan, directamente o desde
+  sus ejercicios. La Especificación no se vuelve a publicar por culpa de la ruta.
+
+### 3.9 La ruta de aprendizaje: verificadores
+
+| ID | Regla | Caso negativo |
+|---|---|---|
+| `RUTA-FORMAT` | Cabeceras completas, recuadros cerrados, `respuesta` justo después de `intento`, datos de ejercicio solo en ejercicios | `fixtures/route/format/` |
+| `RUTA-ANATOMY` | Presencia y orden de frase, problema, intento, paradigma (solo aperturas), fases, resumen, práctica y siguiente | `fixtures/route/anatomy/` |
+| `RUTA-TERM-OWNER` | Cada término tiene exactamente una lección dueña y exactamente una definición en ella | `fixtures/route/term-owner/` |
+| `RUTA-TERM-ORDER` | Ningún término se usa antes de su dueña: ni marcado, ni en `usa` o `recuerda`, ni por sus formas si es estricto | `fixtures/route/term-order/` |
+| `RUTA-RECALL-SOURCE` | Cada término introducido está en exactamente un ítem etiquetado del resumen; cada `recuerda` apunta a un término de `usa` | `fixtures/route/recall-source/` |
+| `RUTA-PREREQ` | `necesita` solo tiene lecciones anteriores y alcanza a las dueñas de todos los términos de `usa` | `fixtures/route/prereq/` |
+| `RUTA-SPEC-LINK` | Toda sección, ancla y figura de la Especificación citada existe | `tests/route.rs` de `reference_verify` y de `route_resolve` |
+| `RUTA-LINK-VALID` | Todo enlace `ruta:` apunta a una lección existente | `tests/route.rs` de `reference_verify` |
+| `RUTA-NO-SPEC-DUP` | Sin formas, raíles, RI, trazas, partes, límites ni catálogos de errores; «Bajo el capó» solo con párrafos y enlaces | `fixtures/route/no-spec-dup/` |
+| `RUTA-EXAMPLE-VERIFIED` | `REF-EXAMPLE-VERIFIED` aplicado a cada programa de lección y de ejercicio | `fixtures/route/example-verified/` |
+| `RUTA-EXERCISE-VERIFIED` | Las comprobaciones por tipo de §3.10 | `tests/route.rs` de `reference_verify` |
+| `RUTA-EXERCISE-MIX` | Toda lección que no es proyecto tiene al menos 5 ejercicios, 3 tipos, 2 niveles y 3 obligatorios; práctica y archivos coinciden | `fixtures/route/exercise-mix/` |
+| `RUTA-STATEMENT-NO-RECIPE` | Un problema o enunciado no nombra un término receta ni, si el ejercicio escribe código, una palabra reservada en código en línea | `fixtures/route/statement-no-recipe/` |
+| `RUTA-HINTS` | Los tipos que ejecutan o diseñan código tienen cuatro pistas y una variante | `fixtures/route/hints/` |
+| `RUTA-SCAFFOLD` | Fases separadas en la Unidad 0, la Parte I y los proyectos; `1-2`, `3`, `4`, `5` desde la Parte II | `fixtures/route/scaffold/` |
+| `RUTA-PARITY` | `es` y `en` tienen los mismos archivos, cabeceras y estructura | `fixtures/route/parity/` |
+| `RUTA-BUNDLE-STALE` | El paquete versionado en `assets/route/` es idéntico al producido | `bundle_files_tests.rs` |
+
+`REF-FIGURE-CONTRACT`, `REF-FIGURE-NARROW`, `REF-INLINE-CODE` y `REF-NO-INTERNAL-IDS` se aplican también a la
+ruta, con sus casos negativos de §3.5.
+
+### 3.10 Verificación de cada tipo de ejercicio
+
+| Tipo | Lo que comprueba el compilador |
+|---|---|
+| `predecir` | La salida prometida del programa `objeto` coincide con la ejecución |
+| `rastrear` | Cada fila de `vueltas` coincide con lo que escribe el programa instrumentado |
+| `ordenar` | Con programa, la referencia pasa los casos y hay al menos cuatro líneas móviles; con `pasos`, al menos tres pasos |
+| `resolver` | La referencia pasa los casos: dos visibles y tres ocultos, o un caso visible si ningún caso tiene entradas |
+| `encontrar-error` | La referencia pasa los casos y el programa inicial falla al menos uno |
+| `modificar` | La referencia pasa los casos y el programa inicial falla al menos uno oculto |
+| `romperlo` | El defectuoso pasa los visibles y cada entrada de `rompe` hace que difiera de la referencia o falle |
+| `disenar-pruebas` | Hay al menos tres mutantes; `casos-solucion` pasa en la referencia y atrapa a cada mutante |
+| `clasificar` | Cada categoría tiene un elemento y cada elemento una categoría existente |
+| `explicar`, `comparar` | Una sola opción correcta y una justificación por opción |
+
+Las salidas se comparan con la misma normalización que la app: espacios colapsados, líneas vacías finales
+descartadas y números comparados con tolerancia relativa `1e-9`.
+
 ## 4. Decisiones de diseño y fundamentos técnicos
 
+- **Problema:** la ruta necesita exactamente lo que este compilador resuelve para la Especificación: Markdown
+  con directivas, programas ejecutados, traducción al perfil inglés, figuras con contrato, paquete neutral,
+  verificación de obsolescencia y enlaces que sepan si una sección existe. **Elección:** un segundo libro en el
+  mismo miembro, que comparte lector, motor, figuras, resaltado y exportación, con su modelo de lección y
+  ejercicio, su grafo de términos, sus verificadores `RUTA-*` y el crate `route_resolve`. **Descartado:** un
+  miembro nuevo, que duplicaría el lector, el puerto del motor, la escritura del paquete y la comprobación de
+  obsolescencia y tendría que leer el índice de la Especificación desde fuera; y mantener Markdown y JSON
+  interpretados por la app, que no ejecuta los programas al construir ni impide usar un concepto antes de
+  explicarlo.
+- **Problema:** las zonas de `ficha` y `paradigma` escritas como líneas sueltas se funden en un solo párrafo con
+  el lector de §3.2. **Elección:** se escriben como ítems de lista con la zona como prefijo (`- entra: …`).
+- **Problema:** la fila «antes» de una tabla por vuelta necesita saber dónde empieza el bucle. **Elección:** la
+  cerca `vueltas` declara `inicio=<línea>` además de `marca=<línea>`, y la instrumentación escribe las columnas
+  entre `⟦` y `⟧` para no confundirlas con la salida del programa. Las columnas son expresiones, así que un
+  designador como `v[0]` también sirve.
+- **Problema:** un programa defectuoso puede no terminar. **Elección:** cada ejecución de un ejercicio tiene un
+  presupuesto de 100 000 sentencias, salvo que el programa declare otro con `sentencias=`.
+- **Problema:** los enunciados de `predecir`, `comparar` y `explicar` muestran código porque el código es el
+  objeto del ejercicio. **Elección:** `RUTA-STATEMENT-NO-RECIPE` solo rechaza palabras reservadas en código en
+  línea de los problemas de lección y de los ejercicios que escriben código; los términos receta se rechazan
+  siempre.
+- **Problema:** la app compara números con tolerancia y no sabe si un caso es texto. **Elección:** la ruta
+  compara siempre como la app compara valores numéricos: igual texto, o igual entero, o reales dentro de
+  `1e-9` relativo. Así el compilador nunca acepta algo que la app rechace.
+- **Problema:** las tarjetas de recuerdo y las etiquetas de término repetirían texto escrito en otra lección.
+  **Elección:** se generan desde el resumen etiquetado de la dueña y desde `terminos.json`
+  (`GEN-NO-HAND-COPY`).
 - **Problema:** contenido escrito dos veces y pintado por dos consumidores diverge. **Elección:** se escribe
   una vez, se compila una vez y se publica como datos neutrales; los consumidores no analizan Markdown, no
   resaltan ni ejecutan. **Descartado:** widgets de Flutter como fuente, que no viajan a Astro, y un lenguaje
@@ -276,6 +420,9 @@ Pendientes declarados:
 - La categoría de resaltado debería salir del corpus (ver §4).
 - Los textos de los programas no se traducen en la edición inglesa.
 - La comilla (`quote`) está excluida de la cobertura de vocabulario: nunca aparece como ficha suelta.
+- La ruta no verifica mecánicamente que «La herramienta nueva» aparezca cuando una lección introduce una
+  construcción: no hay forma de saber desde la cabecera qué término es una construcción. Se revisa con la lista de
+  cierre de cada lección.
 
 ## 8. Fuentes consultadas y genealogía conceptual
 

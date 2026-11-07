@@ -34,6 +34,7 @@ pub fn verify(workspace: &Workspace, book: &Book) -> (Vec<Violation>, CoverageRe
         exclusions: &workspace.exclusions,
     });
     violations.extend(missing);
+    violations.extend(crate::route_checks::verify_route(workspace, book));
     violations.sort();
     violations.dedup();
     (violations, report)

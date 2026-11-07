@@ -2,6 +2,7 @@ use crate::fence_blocks::{FenceOutcome, interpret};
 use crate::inline_parser::parse_inline;
 use crate::line_kind::LineElement;
 use reference_model::{CalloutKind, Inline, ProgramSource, RuleId, SourceBlock, Violation};
+use std::collections::BTreeMap;
 
 pub fn assemble(path: &str, elements: Vec<LineElement>) -> Result<Vec<SourceBlock>, Violation> {
     let mut assembler = Assembler {
@@ -20,7 +21,10 @@ pub fn assemble(path: &str, elements: Vec<LineElement>) -> Result<Vec<SourceBloc
         .map_err(|detail| Violation::new(RuleId::Format, path, detail))
 }
 
-type Container = (Option<CalloutKind>, Vec<SourceBlock>);
+type Container = (
+    Option<(CalloutKind, BTreeMap<String, String>)>,
+    Vec<SourceBlock>,
+);
 
 struct Assembler {
     containers: Vec<Container>,
@@ -65,14 +69,16 @@ impl Assembler {
     fn accept_structural(&mut self, element: LineElement) -> Result<(), String> {
         self.flush_all()?;
         match element {
-            LineElement::Heading { id, text } => {
+            LineElement::Heading { id, phase, text } => {
                 let text = parse_inline(&text)?;
-                self.push(SourceBlock::Heading { id, text });
+                self.push(SourceBlock::Heading { id, phase, text });
             }
             LineElement::Fence { opening, body } => {
                 self.accept_fence(interpret(&opening, body)?)?
             }
-            LineElement::CalloutOpen(kind) => self.containers.push((Some(kind), Vec::new())),
+            LineElement::CalloutOpen { kind, attributes } => {
+                self.containers.push((Some((kind, attributes)), Vec::new()))
+            }
             LineElement::CalloutClose => self.close_callout()?,
             _ => {}
         }
@@ -81,7 +87,7 @@ impl Assembler {
 
     fn accept_fence(&mut self, outcome: FenceOutcome) -> Result<(), String> {
         if let FenceOutcome::Block(block) = outcome {
-            self.push(block);
+            self.push(*block);
             return Ok(());
         }
         let program = self
@@ -108,10 +114,14 @@ impl Assembler {
         if self.containers.len() < 2 {
             return Err("`:::` closes a box that was never opened".to_owned());
         }
-        let Some((Some(kind), blocks)) = self.containers.pop() else {
+        let Some((Some((kind, attributes)), blocks)) = self.containers.pop() else {
             return Err("`:::` closes a box that was never opened".to_owned());
         };
-        self.push(SourceBlock::Callout { kind, blocks });
+        self.push(SourceBlock::Callout {
+            kind,
+            attributes,
+            blocks,
+        });
         Ok(())
     }
 

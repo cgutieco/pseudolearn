@@ -3,7 +3,13 @@ use std::cell::RefCell;
 use std::collections::BTreeMap;
 
 type Key = (String, Profile);
-type ExecutionKey = (String, Profile, Vec<String>, Option<String>, bool);
+type ExecutionKey = (
+    String,
+    Profile,
+    Vec<String>,
+    Option<String>,
+    (bool, Option<u64>),
+);
 
 pub struct CachedEngine<Engine: CodeEngine> {
     inner: Engine,
@@ -50,7 +56,7 @@ impl<Engine: CodeEngine> CodeEngine for CachedEngine<Engine> {
             request.profile,
             request.inputs.clone(),
             request.host.clone(),
-            request.trace,
+            (request.trace, request.statement_limit),
         );
         if let Some(cached) = self.executions.borrow().get(&key) {
             return cached.clone();

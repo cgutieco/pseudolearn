@@ -1,0 +1,10 @@
+{
+  "problema": {"etiqueta": "problem", "formas": ["problem", "problems"], "estricto": false, "receta": false},
+  "ejemplo-a-mano": {"etiqueta": "worked example", "formas": ["worked example", "worked examples"], "estricto": true, "receta": false},
+  "programa": {"etiqueta": "program", "formas": ["program", "programs"], "estricto": false, "receta": false},
+  "instruccion": {"etiqueta": "instruction", "formas": ["instruction", "instructions"], "estricto": false, "receta": false},
+  "ejecutar": {"etiqueta": "run", "formas": ["run", "runs", "running"], "estricto": false, "receta": false},
+  "salida": {"etiqueta": "output", "formas": ["output"], "estricto": false, "receta": false},
+  "funcion-ya-hecha": {"etiqueta": "built-in function", "formas": ["built-in function", "built-in functions"], "estricto": true, "receta": false},
+  "ciclo-pseudolearn": {"etiqueta": "the PseudoLearn cycle", "formas": ["PseudoLearn cycle"], "estricto": true, "receta": false}
+}

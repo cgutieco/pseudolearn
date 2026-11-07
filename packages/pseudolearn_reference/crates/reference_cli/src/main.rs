@@ -5,6 +5,10 @@ mod bundle_files;
 mod checks;
 mod commands;
 mod links;
+mod route_book;
+mod route_checks;
+mod route_coverage;
+mod route_workspace;
 mod workspace;
 mod workspace_files;
 

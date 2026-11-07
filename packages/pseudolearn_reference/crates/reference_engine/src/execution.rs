@@ -1,4 +1,6 @@
-use pseudolearn_api::{ApiDiagnostic, ExecuteRequest, execute_program, render_diagnostic};
+use pseudolearn_api::{
+    ApiDiagnostic, ExecuteRequest, ExecutionLimits, execute_program, render_diagnostic,
+};
 use reference_model::{EngineDiagnostic, ExecutionReport, ExecutionRequest, TraceRecord};
 use serde_json::Value;
 
@@ -17,6 +19,10 @@ pub fn execute(request: &ExecutionRequest) -> ExecutionReport {
         inputs: request.inputs.clone(),
         observe: if request.trace { "events" } else { "none" }.to_owned(),
         host,
+        limits: ExecutionLimits {
+            statements: request.statement_limit,
+            ..ExecutionLimits::default()
+        },
         ..ExecuteRequest::default()
     });
     ExecutionReport {

@@ -24,6 +24,13 @@ pub fn parse_fence_opening(line: &str) -> Option<FenceOpening> {
     Some(FenceOpening { name, attributes })
 }
 
+pub fn parse_attributes(text: &str) -> BTreeMap<String, String> {
+    split_words(text.trim())
+        .iter()
+        .map(|word| split_attribute(word))
+        .collect()
+}
+
 fn split_attribute(word: &str) -> (String, String) {
     match word.split_once('=') {
         Some((key, value)) => (key.to_owned(), value.trim_matches('"').to_owned()),

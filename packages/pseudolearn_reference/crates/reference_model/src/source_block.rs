@@ -1,9 +1,13 @@
-use crate::{CalloutKind, FigureSource, Inline, ProgramSource, RailRequest, SectionHeader};
+use crate::{
+    CalloutKind, FigureSource, Inline, ProgramSource, RailRequest, RouteFence, SectionHeader,
+};
+use std::collections::BTreeMap;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum SourceBlock {
     Heading {
         id: String,
+        phase: Option<String>,
         text: Vec<Inline>,
     },
     Paragraph(Vec<Inline>),
@@ -21,6 +25,7 @@ pub enum SourceBlock {
     Figure(FigureSource),
     Callout {
         kind: CalloutKind,
+        attributes: BTreeMap<String, String>,
         blocks: Vec<SourceBlock>,
     },
     Intermediate {
@@ -32,6 +37,7 @@ pub enum SourceBlock {
     Generated {
         catalog: String,
     },
+    Route(RouteFence),
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]

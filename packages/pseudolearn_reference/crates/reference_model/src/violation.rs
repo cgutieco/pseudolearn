@@ -28,6 +28,40 @@ pub enum RuleId {
     BundleStale,
     #[serde(rename = "REF-LINK-VALID")]
     LinkValid,
+    #[serde(rename = "RUTA-FORMAT")]
+    RouteFormat,
+    #[serde(rename = "RUTA-ANATOMY")]
+    RouteAnatomy,
+    #[serde(rename = "RUTA-TERM-OWNER")]
+    RouteTermOwner,
+    #[serde(rename = "RUTA-TERM-ORDER")]
+    RouteTermOrder,
+    #[serde(rename = "RUTA-RECALL-SOURCE")]
+    RouteRecallSource,
+    #[serde(rename = "RUTA-PREREQ")]
+    RoutePrerequisite,
+    #[serde(rename = "RUTA-SPEC-LINK")]
+    RouteSpecLink,
+    #[serde(rename = "RUTA-LINK-VALID")]
+    RouteLinkValid,
+    #[serde(rename = "RUTA-NO-SPEC-DUP")]
+    RouteNoSpecDuplicate,
+    #[serde(rename = "RUTA-EXAMPLE-VERIFIED")]
+    RouteExampleVerified,
+    #[serde(rename = "RUTA-EXERCISE-VERIFIED")]
+    RouteExerciseVerified,
+    #[serde(rename = "RUTA-EXERCISE-MIX")]
+    RouteExerciseMix,
+    #[serde(rename = "RUTA-STATEMENT-NO-RECIPE")]
+    RouteStatementNoRecipe,
+    #[serde(rename = "RUTA-HINTS")]
+    RouteHints,
+    #[serde(rename = "RUTA-SCAFFOLD")]
+    RouteScaffold,
+    #[serde(rename = "RUTA-PARITY")]
+    RouteParity,
+    #[serde(rename = "RUTA-BUNDLE-STALE")]
+    RouteBundleStale,
 }
 
 impl RuleId {
@@ -46,6 +80,23 @@ impl RuleId {
             Self::FigureNarrow => "REF-FIGURE-NARROW",
             Self::BundleStale => "REF-BUNDLE-STALE",
             Self::LinkValid => "REF-LINK-VALID",
+            Self::RouteFormat => "RUTA-FORMAT",
+            Self::RouteAnatomy => "RUTA-ANATOMY",
+            Self::RouteTermOwner => "RUTA-TERM-OWNER",
+            Self::RouteTermOrder => "RUTA-TERM-ORDER",
+            Self::RouteRecallSource => "RUTA-RECALL-SOURCE",
+            Self::RoutePrerequisite => "RUTA-PREREQ",
+            Self::RouteSpecLink => "RUTA-SPEC-LINK",
+            Self::RouteLinkValid => "RUTA-LINK-VALID",
+            Self::RouteNoSpecDuplicate => "RUTA-NO-SPEC-DUP",
+            Self::RouteExampleVerified => "RUTA-EXAMPLE-VERIFIED",
+            Self::RouteExerciseVerified => "RUTA-EXERCISE-VERIFIED",
+            Self::RouteExerciseMix => "RUTA-EXERCISE-MIX",
+            Self::RouteStatementNoRecipe => "RUTA-STATEMENT-NO-RECIPE",
+            Self::RouteHints => "RUTA-HINTS",
+            Self::RouteScaffold => "RUTA-SCAFFOLD",
+            Self::RouteParity => "RUTA-PARITY",
+            Self::RouteBundleStale => "RUTA-BUNDLE-STALE",
         }
     }
 }

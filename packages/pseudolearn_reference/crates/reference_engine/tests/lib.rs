@@ -10,6 +10,7 @@ fn request(code: &str) -> ExecutionRequest {
         inputs: Vec::new(),
         host: None,
         trace: false,
+        statement_limit: None,
     }
 }
 

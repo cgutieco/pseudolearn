@@ -4,6 +4,8 @@
 
 Tipos de datos del compilador: documento fuente, bloques, fragmentos en línea, sección publicada, violaciones con ID estable y el puerto `CodeEngine` hacia el motor. No lee archivos ni ejecuta nada.
 
+Incluye el modelo de la ruta de aprendizaje: cabeceras de lección y ejercicio, cercas de datos de ejercicio, lección y ejercicio publicados, evaluación por tipo y las ejecuciones que el verificador juzga.
+
 ## 2. Guía operativa y ciclo de vida
 
 `cargo test -p reference_model` y `cargo clippy -p reference_model --all-targets -- -D warnings` desde el miembro. No se despliega.

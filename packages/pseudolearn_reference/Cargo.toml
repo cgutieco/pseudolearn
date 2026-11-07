@@ -6,6 +6,7 @@ members = [
     "crates/reference_engine",
     "crates/reference_figures",
     "crates/reference_resolve",
+    "crates/route_resolve",
     "crates/reference_verify",
     "crates/reference_export",
     "crates/reference_cli",

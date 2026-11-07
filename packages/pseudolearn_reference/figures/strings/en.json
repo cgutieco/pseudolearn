@@ -1031,6 +1031,26 @@
       "ejecucion": "5 · Virtual machine → output",
       "analisis": "analysis",
       "resultado": "Output: 42"
+    },
+    "ruta-ciclo": {
+      "titulo": "The PseudoLearn cycle",
+      "descripcion": "Five steps in a circle: Understand, Plan, Write, Test and Improve, joined by solid arrows. A red dashed arrow goes back from Test to Plan when something failed, and another dashed arrow goes from Improve to Understand, towards the next problem.",
+      "entender": "1. Understand",
+      "planear": "2. Plan",
+      "escribir": "3. Write",
+      "probar": "4. Test",
+      "mejorar": "5. Improve",
+      "fallo": "failed?",
+      "siguiente-1": "next",
+      "siguiente-2": "problem",
+      "vuelta": "A failure does not start from scratch"
+    },
+    "ruta-instrucciones-en-orden": {
+      "titulo": "Instructions run in order",
+      "descripcion": "On the left, a program with three Write instructions; on the right, the output. Each step highlights one instruction and its line appears in the output: first Hola, then 5 and finally 2 + 3.",
+      "programa": "program",
+      "salida": "output",
+      "hola": "Hola"
     }
   }
 }

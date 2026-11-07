@@ -2,7 +2,7 @@ use crate::fence::FenceOpening;
 use reference_model::{ProgramSource, RailRequest, SourceBlock};
 
 pub enum FenceOutcome {
-    Block(SourceBlock),
+    Block(Box<SourceBlock>),
     Output(String),
     Diagnostics(Vec<String>),
     Inputs(Vec<String>),
@@ -11,22 +11,25 @@ pub enum FenceOutcome {
 
 pub fn interpret(opening: &FenceOpening, body: String) -> Result<FenceOutcome, String> {
     let outcome = match opening.name.as_str() {
-        "forma" => FenceOutcome::Block(SourceBlock::Form(body)),
-        "programa" => FenceOutcome::Block(SourceBlock::Program(program(opening, body)?)),
+        "forma" => FenceOutcome::Block(Box::new(SourceBlock::Form(body))),
+        "programa" => FenceOutcome::Block(Box::new(SourceBlock::Program(program(opening, body)?))),
         "salida" => FenceOutcome::Output(body),
         "diagnosticos" => FenceOutcome::Diagnostics(non_empty_lines(&body)),
         "entrada" => FenceOutcome::Inputs(body.lines().map(str::to_owned).collect()),
         "anfitrion" => FenceOutcome::Host(body),
-        "figura" => FenceOutcome::Block(SourceBlock::Figure(crate::figure_body::parse(
+        "figura" => FenceOutcome::Block(Box::new(SourceBlock::Figure(crate::figure_body::parse(
             required(opening, "id")?,
             &body,
-        )?)),
-        _ => FenceOutcome::Block(reference_block(opening)?),
+        )?))),
+        _ => FenceOutcome::Block(Box::new(reference_block(opening, body)?)),
     };
     Ok(outcome)
 }
 
-fn reference_block(opening: &FenceOpening) -> Result<SourceBlock, String> {
+fn reference_block(opening: &FenceOpening, body: String) -> Result<SourceBlock, String> {
+    if let Some(fence) = crate::route_fences::route_body(opening, &body)? {
+        return Ok(SourceBlock::Route(fence));
+    }
     let block = match opening.name.as_str() {
         "ri" => SourceBlock::Intermediate {
             program: required(opening, "programa")?.to_owned(),
@@ -38,17 +41,37 @@ fn reference_block(opening: &FenceOpening) -> Result<SourceBlock, String> {
         "generado" => SourceBlock::Generated {
             catalog: required(opening, "catalogo")?.to_owned(),
         },
-        other => return Err(format!("unknown fenced block `{other}`")),
+        other => {
+            return crate::route_fences::route_fence(opening, other)
+                .map(SourceBlock::Route)
+                .ok_or_else(|| format!("unknown fenced block `{other}`"));
+        }
     };
     Ok(block)
 }
 
 fn program(opening: &FenceOpening, code: String) -> Result<ProgramSource, String> {
+    let role = opening.attribute("rol").map(str::to_owned);
+    let identity = match (opening.attribute("id"), role.as_deref()) {
+        (Some(identity), _) if !identity.is_empty() => identity.to_owned(),
+        (_, Some(role)) => role.to_owned(),
+        _ => required(opening, "id")?.to_owned(),
+    };
+    let statement_limit = match opening.attribute("sentencias") {
+        Some(limit) => Some(
+            limit
+                .parse::<u64>()
+                .map_err(|_| format!("invalid statement limit `{limit}`"))?,
+        ),
+        None => None,
+    };
     let mut source = ProgramSource {
-        id: required(opening, "id")?.to_owned(),
+        id: identity,
         title: opening.attribute("titulo").unwrap_or_default().to_owned(),
-        execute: opening.flag("ejecutar"),
+        execute: opening.flag("ejecutar") || role.is_some(),
         code,
+        role,
+        statement_limit,
         ..ProgramSource::default()
     };
     source.promise.termination = opening.attribute("termina").map(str::to_owned);

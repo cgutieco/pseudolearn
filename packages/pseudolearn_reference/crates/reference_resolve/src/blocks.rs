@@ -23,7 +23,7 @@ fn resolve_block(
     top_level: bool,
 ) -> Vec<Block> {
     let resolved = match block {
-        SourceBlock::Heading { id, text } => Some(Block::Heading {
+        SourceBlock::Heading { id, text, .. } => Some(Block::Heading {
             id: id.clone(),
             number: if top_level {
                 collector.next_heading()
@@ -78,7 +78,7 @@ fn companion(
     match block {
         SourceBlock::Rails(request) => crate::rails::rails_block(resolution, collector, request),
         SourceBlock::Figure(source) => crate::figures::figure_block(resolution, collector, source),
-        SourceBlock::Callout { kind, blocks } => {
+        SourceBlock::Callout { kind, blocks, .. } => {
             crate::callouts::callout(resolution, collector, *kind, blocks)
         }
         SourceBlock::Intermediate { program } => intermediate(resolution, collector, program),
@@ -149,6 +149,7 @@ fn trace(
         inputs: Vec::new(),
         host: None,
         trace: true,
+        statement_limit: None,
     });
     Some(Block::Trace {
         program: program.to_owned(),

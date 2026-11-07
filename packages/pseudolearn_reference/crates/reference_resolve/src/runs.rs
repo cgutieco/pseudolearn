@@ -26,6 +26,23 @@ fn run(resolution: &Resolution<'_>, inline: &Inline) -> Run {
             term: term.clone(),
             text: text.clone(),
         },
+        Inline::Definition { term, text } => Run::Definition {
+            term: term.clone(),
+            text: text.clone(),
+        },
+        Inline::SpecLink {
+            section,
+            anchor,
+            text,
+        } => Run::SpecLink {
+            section: section.clone(),
+            anchor: anchor.clone(),
+            text: text.clone(),
+        },
+        Inline::LessonLink { lesson, text } => Run::LessonLink {
+            lesson: lesson.clone(),
+            text: text.clone(),
+        },
     }
 }
 

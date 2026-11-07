@@ -4,6 +4,8 @@
 
 Verificadores del libro: ejemplos prometidos frente a ejecutados, anclas válidas y candado, anatomía por tipo de sección, paridad entre idiomas, palabras reservadas fuera de código, identificadores internos publicados, enlaces y cobertura del corpus.
 
+Incluye los verificadores `RUTA-*` de la ruta de aprendizaje, en módulos `route_*`, y la normalización de salidas que comparte con la app.
+
 ## 2. Guía operativa y ciclo de vida
 
 `cargo test -p reference_verify` y `cargo clippy -p reference_verify --all-targets -- -D warnings` desde el miembro. No se despliega.

@@ -4,6 +4,8 @@
 
 Arma el paquete por edición: `toc.json`, `sections/<id>.json`, `search.json`, `links.json` y `manifest.json` con la huella de cada archivo. La serialización es determinista para que el paquete sea reproducible bit a bit.
 
+Escribe también el paquete de la ruta: índice, lecciones, ejercicios, términos, enlaces inversos hacia la Especificación y manifiesto `pseudolearn-route/1`.
+
 ## 2. Guía operativa y ciclo de vida
 
 `cargo test -p reference_export` y `cargo clippy -p reference_export --all-targets -- -D warnings` desde el miembro. No se despliega.

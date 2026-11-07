@@ -34,6 +34,7 @@ pub struct ExecutionRequest {
     pub inputs: Vec<String>,
     pub host: Option<String>,
     pub trace: bool,
+    pub statement_limit: Option<u64>,
 }
 
 #[derive(Clone, Debug, Default, Eq, PartialEq)]

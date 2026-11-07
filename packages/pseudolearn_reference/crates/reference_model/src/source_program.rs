@@ -16,6 +16,8 @@ pub struct ProgramSource {
     pub inputs: Vec<String>,
     pub host: Option<String>,
     pub promise: ProgramPromise,
+    pub role: Option<String>,
+    pub statement_limit: Option<u64>,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
