@@ -1492,6 +1492,20 @@
       "paso-2": "It leaves 2: the channel is full.",
       "paso-3": "The window receives 1; a place is free.",
       "paso-4": "The kitchen leaves order 3."
+    },
+    "ruta-carrera": {
+      "titulo": "The suppliers' race",
+      "descripcion": "Two lanes, North and South, with a finish line on the right. The two offers set off at once; the North one arrives first and is served; the South one, no longer needed, is cut before arriving.",
+      "norte": "North",
+      "sur": "South",
+      "meta": "finish",
+      "oferta": "offer",
+      "atendida": "served",
+      "cortada": "cut",
+      "pie": "The first one is served; the rest is cut.",
+      "paso-1": "The two offers set off at once.",
+      "paso-2": "The North one arrives first and is served.",
+      "paso-3": "The South one is no longer needed: it is cut."
     }
   }
 }

@@ -135,5 +135,6 @@
   "agenda": {"etiqueta": "schedule", "formas": ["schedule"], "estricto": false, "receta": false},
   "canal": {"etiqueta": "channel", "formas": ["channel", "channels"], "estricto": true, "receta": true},
   "aislamiento": {"etiqueta": "isolation", "formas": ["isolation"], "estricto": true, "receta": false},
-  "productor-consumidor": {"etiqueta": "producer and consumer", "formas": ["producer and consumer"], "estricto": true, "receta": true}
+  "productor-consumidor": {"etiqueta": "producer and consumer", "formas": ["producer and consumer"], "estricto": true, "receta": true},
+  "cancelacion": {"etiqueta": "cancellation", "formas": ["cancellation"], "estricto": true, "receta": false}
 }

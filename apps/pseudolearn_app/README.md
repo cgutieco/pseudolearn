@@ -121,6 +121,7 @@ del núcleo; la aplicación traduce, orquesta y renderiza los resultados.
 | Capturas de producto y material de tiendas con la ruta de aprendizaje | Regenerar §2.8 y §2.9 sobre la ruta publicada; las imágenes versionadas muestran todavía la base de conocimiento anterior | Abierto |
 | Ancla dentro de una sección al seguir un enlace de especificación desde la ruta | `ReferenceSectionPage` abre la sección por identidad y no desplaza a un ancla interior; el enlace conserva el ancla en el paquete | Abierto |
 | Límite de ejecución de los ejercicios | La app corta a 10 000 pasos (`ProgramRunner.defaultStepLimit`) y el compilador de la ruta a 100 000 sentencias; `route_exercise_gate_test` garantiza que cada solución de referencia cabe en el límite de la app | Vigilado por test |
+| Cancelación de tareas hermanas en ejecución paso a paso | El motor, en el modo paso a paso que usa la app, detiene el programa (`programHalted`) cuando una tarea de un ámbito `Tareas` termina con `Error` y quedan hermanas vivas que cancelar; la ejecución completa del compilador de la ruta lo resuelve bien. Los ejercicios comprobados de la lección 5.3 no lanzan tareas que fallen, y el programa `proveedores` de esa lección se detiene si se ejecuta en la app | Abierto en el motor |
 
 ---
 

@@ -1492,6 +1492,20 @@
       "paso-2": "Deja el 2: el canal está lleno.",
       "paso-3": "El mostrador recibe el 1; queda lugar.",
       "paso-4": "La cocina deja el pedido 3."
+    },
+    "ruta-carrera": {
+      "titulo": "La carrera de los proveedores",
+      "descripcion": "Dos carriles, Norte y Sur, con una meta a la derecha. Las dos ofertas salen a la vez; la del Norte llega primero y se atiende; la del Sur, que ya no hace falta, se corta antes de llegar.",
+      "norte": "Norte",
+      "sur": "Sur",
+      "meta": "meta",
+      "oferta": "oferta",
+      "atendida": "atendida",
+      "cortada": "cortada",
+      "pie": "Se atiende la primera; lo demás se corta.",
+      "paso-1": "Las dos ofertas salen a la vez.",
+      "paso-2": "La del Norte llega primero y se atiende.",
+      "paso-3": "La del Sur ya no hace falta: se corta."
     }
   }
 }
