@@ -132,5 +132,8 @@
   "programacion-concurrente": {"etiqueta": "concurrent programming", "formas": ["concurrent programming"], "estricto": true, "receta": false},
   "concurrencia": {"etiqueta": "concurrency", "formas": ["concurrency"], "estricto": true, "receta": false},
   "tarea": {"etiqueta": "task", "formas": ["task", "tasks"], "estricto": false, "receta": false},
-  "agenda": {"etiqueta": "schedule", "formas": ["schedule"], "estricto": false, "receta": false}
+  "agenda": {"etiqueta": "schedule", "formas": ["schedule"], "estricto": false, "receta": false},
+  "canal": {"etiqueta": "channel", "formas": ["channel", "channels"], "estricto": true, "receta": true},
+  "aislamiento": {"etiqueta": "isolation", "formas": ["isolation"], "estricto": true, "receta": false},
+  "productor-consumidor": {"etiqueta": "producer and consumer", "formas": ["producer and consumer"], "estricto": true, "receta": true}
 }

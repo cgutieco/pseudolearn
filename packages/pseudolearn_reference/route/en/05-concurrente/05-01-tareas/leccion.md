@@ -72,7 +72,7 @@ todas terminaron
 
 The only guaranteed thing is the last line: `todas terminaron` comes after the two greetings, because `EndTasks` waits for the two tasks. That Ana greets before Leo is what the engine gives today, but the program does not promise it.
 
-How do they move forward «at once» on a single computer? By turns. The [[def:agenda|agenda]] is the line of ready tasks: it gives the turn to one, and when that task waits for something, it gives the turn to the next.
+How do they move forward «at once» on a single computer? By turns. The [[def:agenda|schedule]] is the line of ready tasks: it gives the turn to one, and when that task waits for something, it gives the turn to the next.
 
 ```figura-especificacion seccion=motor.agenda figura=agenda-cola
 ```
@@ -116,7 +116,7 @@ What is guaranteed and what is not:
 |---|---|---|
 | `Bandeja: 27 pesos` after the three `Empieza` | yes | it waits for the three results |
 | `Bandeja entregada` at the end | yes | `EndTasks` waits for all of them |
-| The order among the three `Empieza` | no | the agenda decides it |
+| The order among the three `Empieza` | no | the schedule decides it |
 
 Edge case: a cook with 0 portions. The tray adds 0 for them and, even so, waits for the three.
 
@@ -139,7 +139,7 @@ An open problem remains: if the kitchen has to report dish by dish, waiting for 
 ::: resumen
 - {programacion-concurrente,concurrencia} Concurrent programming organises a program into parts that can move forward at once; concurrency is that possibility of moving forward by turns.
 - {tarea} A task is a job that is launched so that it moves forward on its own; its scope waits for it before going on.
-- {agenda} The agenda shares out the turns among the tasks; a task that waits gives up its turn to another.
+- {agenda} The schedule shares out the turns among the tasks; a task that waits gives up its turn to another.
 :::
 
 ## Practise {#practica}
@@ -160,7 +160,7 @@ An open problem remains: if the kitchen has to report dish by dish, waiting for 
 :::
 
 ::: por-dentro
-The agenda keeps the ready tasks in a line and gives the turn to the first one; a task that waits leaves the line until what it waits for is ready.
+The schedule keeps the ready tasks in a line and gives the turn to the first one; a task that waits leaves the line until what it waits for is ready.
 
 ::: especificacion
 - motor.agenda

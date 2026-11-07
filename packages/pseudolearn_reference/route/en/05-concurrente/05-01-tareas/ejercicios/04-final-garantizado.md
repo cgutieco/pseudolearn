@@ -13,8 +13,8 @@ A program launches two tasks that greet, one Ana and the other Leo, and writes �
 
 ```opciones
 - [x] That «listo» comes last. | The scope waits for its two tasks before going on, so «listo» goes after the two greetings.
-- [ ] That Ana greets before Leo. | It is what the engine gives today, but the order between the two tasks is decided by the agenda and the program does not promise it.
-- [ ] That the greetings come alternated. | Each greeting is a single line; there is nothing to alternate, and the agenda does not promise an order.
+- [ ] That Ana greets before Leo. | It is what the engine gives today, but the order between the two tasks is decided by the schedule and the program does not promise it.
+- [ ] That the greetings come alternated. | Each greeting is a single line; there is nothing to alternate, and the schedule does not promise an order.
 ```
 
 ::: explicacion
