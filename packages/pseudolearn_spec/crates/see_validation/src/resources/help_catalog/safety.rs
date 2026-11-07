@@ -21,7 +21,7 @@ const MAXIMUM_RULES: usize = 8;
 const MAXIMUM_COMMON_ERRORS: usize = 6;
 const MAXIMUM_EXAMPLES: usize = 4;
 const MAXIMUM_FORM_LINES: usize = 12;
-const MAXIMUM_FORM_SEGMENTS: usize = 16;
+const MAXIMUM_FORM_SEGMENTS: usize = 20;
 const MAXIMUM_LOCALIZED_BYTES: usize = 4096;
 
 pub(super) fn check(value: &Value) -> Result<(), String> {
