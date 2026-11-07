@@ -70,6 +70,7 @@ impl ApiSession {
             "analysis" => self.analysis(arguments),
             "start" | "start_execution" => self.start(arguments),
             "program_view" | "query_node" => self.program_view_operation(operation, arguments),
+            "equivalent_code" => self.equivalent_code_operation(arguments),
             "query_page" => self.query_page_operation(arguments),
             "release" => self.release(identifier(arguments)?),
             _ => match self.service_operation(operation, arguments) {

@@ -1,6 +1,9 @@
 #![forbid(unsafe_code)]
 
 pub mod analyze;
+mod equivalent_code;
+pub use equivalent_code::equivalent_code;
+pub use pseudolearn_transpiler::TargetLanguage;
 mod argument_conversion;
 mod diagnostic_conversion;
 pub mod errors;
