@@ -1,4 +1,5 @@
 import '../../export/target_code_builder.dart';
+import 'python_read_helpers.dart';
 import 'statement_shape.dart';
 import 'view_expression_writer.dart';
 
@@ -47,7 +48,8 @@ final class PythonShapeStatements {
         _write(s, buffer, indent);
       case final ReadShape s:
         for (final target in s.targets) {
-          buffer.writeln('$indent${_writer.write(target)} = input()');
+          final call = pythonReadCall(target.primitive);
+          buffer.writeln('$indent${_writer.write(target.node)} = $call');
         }
       case final IfShape s:
         _if(s, buffer, indent);
@@ -71,11 +73,7 @@ final class PythonShapeStatements {
     }
   }
 
-  void _methodCall(
-    MethodCallShape s,
-    TargetCodeBuilder buffer,
-    String indent,
-  ) {
+  void _methodCall(MethodCallShape s, TargetCodeBuilder buffer, String indent) {
     final args = s.arguments.map(_writer.write).join(', ');
     if (s.isSuperConstructor) {
       buffer.writeln('${indent}super().__init__($args)');
@@ -116,7 +114,10 @@ final class PythonShapeStatements {
   void _repeat(RepeatShape s, TargetCodeBuilder buffer, String indent) {
     buffer.writeln('${indent}while True:');
     for (final shape in s.body) {
-      buffer.attributedTo(shape.origin, () => _emit(shape, buffer, '$indent    '));
+      buffer.attributedTo(
+        shape.origin,
+        () => _emit(shape, buffer, '$indent    '),
+      );
     }
     buffer.writeln('$indent    if ${_writer.write(s.condition)}:');
     buffer.writeln('$indent        break');
@@ -130,7 +131,9 @@ final class PythonShapeStatements {
         ? '$to - 1'
         : '$to + 1';
     final stepText = step == null ? '' : ', ${_writer.write(step)}';
-    buffer.writeln('${indent}for ${s.variable} in range($from, $adjusted$stepText):');
+    buffer.writeln(
+      '${indent}for ${s.variable} in range($from, $adjusted$stepText):',
+    );
     emitBlock(s.body, buffer, '$indent    ');
   }
 

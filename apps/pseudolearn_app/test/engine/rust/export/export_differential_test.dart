@@ -146,6 +146,50 @@ final Map<String, ({String source, Set<TargetLanguageId> targets})> _cases = {
   ),
 };
 
+const String _triangle =
+    'SubProceso calcularArea(base Como Entero, altura Como Entero) Como Real\n'
+    '  Retornar (base * altura) / 2;\nFinSubProceso\n'
+    'Algoritmo Triangulo\n  Definir base, altura Como Entero;\n'
+    '  Definir area Como Real;\n  Leer base;\n  Leer altura;\n'
+    '  area <- calcularArea(base, altura);\n  Escribir area;\nFinAlgoritmo\n';
+
+final Map<
+  String,
+  ({String source, List<String> inputs, Set<TargetLanguageId> targets})
+>
+_readingCases = {
+  'integer reading that re-asks an invalid value': (
+    source: _procedure(
+      'Definir a, b Como Entero;\nLeer a, b;\nEscribir a + b;',
+    ),
+    inputs: ['oops', '2', '5'],
+    targets: TargetLanguageId.values.toSet(),
+  ),
+  'typed reading of every readable type': (
+    source: _procedure(
+      'Definir n Como Entero;\nDefinir r Como Real;\nDefinir s Como Cadena;\n'
+      'Leer n, r;\nLeer s;\n'
+      'Escribir n * 2;\nEscribir r + 1;\nEscribir s;',
+    ),
+    inputs: ['4', 'x', '2.5', 'hola mundo'],
+    targets: {TargetLanguageId.python},
+  ),
+  'reading inside a subroutine': (
+    source: _procedure(
+      'Pedir();',
+      'SubProceso Pedir()\nDefinir x Como Entero;\nLeer x;\n'
+          'Escribir x * 3;\nFinSubProceso\n',
+    ),
+    inputs: ['7'],
+    targets: TargetLanguageId.values.toSet(),
+  ),
+  'triangle area from read values': (
+    source: _triangle,
+    inputs: ['3', '5'],
+    targets: {TargetLanguageId.python},
+  ),
+};
+
 void main() {
   setUpAll(() {
     for (final tool in ['python3', 'rustc']) {
@@ -166,6 +210,18 @@ void main() {
 
         expect(code, isNotNull, reason: 'the claimed subset must export');
         expect(runTarget(code!, target), engineOutput(source));
+      });
+    }
+  }
+
+  for (final entry in _readingCases.entries) {
+    for (final target in entry.value.targets) {
+      test('${entry.key} behaves the same as the engine in ${target.id}', () {
+        final (:source, :inputs, targets: _) = entry.value;
+        final code = exportedCode(source, target);
+
+        expect(code, isNotNull, reason: 'the claimed subset must export');
+        expect(runTarget(code!, target, inputs), engineOutput(source, inputs));
       });
     }
   }

@@ -1,13 +1,19 @@
 import '../rust_program_view.dart';
+import 'read_target_types.dart';
 import 'statement_shape.dart';
 import 'statement_shape_reader.dart';
 import 'unit_shape.dart';
 
 final class UnitShapeReader {
   final RustProgramView _view;
+  final ReadTargetTypes _reads;
   final StatementShapeReader _statements;
 
-  UnitShapeReader(this._view) : _statements = StatementShapeReader(_view);
+  UnitShapeReader(RustProgramView view)
+    : this._(view, ReadTargetTypes.of(view));
+
+  UnitShapeReader._(this._view, this._reads)
+    : _statements = StatementShapeReader(_view, _reads);
 
   ProgramShape read() {
     final classes = <ClassShape>[];
@@ -33,6 +39,7 @@ final class UnitShapeReader {
         for (final node in _view.nodes)
           if (node.semantics.builtin case final String identity) identity,
       },
+      readPrimitives: _reads.primitives,
     );
   }
 

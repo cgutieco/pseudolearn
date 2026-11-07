@@ -71,11 +71,13 @@ final class ProgramShape {
   final List<SubroutineShape> subroutines;
   final List<StatementShape>? algorithm;
   final Set<String> builtins;
+  final Set<String> readPrimitives;
 
   const ProgramShape({
     required this.classes,
     required this.subroutines,
     required this.algorithm,
     required this.builtins,
+    this.readPrimitives = const {},
   });
 }

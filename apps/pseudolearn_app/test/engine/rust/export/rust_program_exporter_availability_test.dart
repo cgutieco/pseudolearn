@@ -81,13 +81,14 @@ void main() {
   group('a program with a construct no emitter proves is withheld whole', () {
     test('a known valid unit does not rescue a mixed program', () {
       const source =
-          'Proceso P\n  Definir x Como Entero <- 0;\n  Escribir "antes";\n'
+          'Proceso P\n  Definir x Como Logico <- Falso;\n  Escribir "antes";\n'
           '  Leer x;\n  Escribir "despues";\nFinProceso\n';
 
       final blockers = _blockersOf(source, TargetLanguageId.python);
+      final reading = _blocker(blockers, 'input:boolean');
 
-      expect(_blocker(blockers, 'input').range.startLine, 4);
-      expect(_textOf(source, _blocker(blockers, 'input')), contains('Leer'));
+      expect(reading.range.startLine, 4);
+      expect(_textOf(source, reading), contains('Leer'));
     });
 
     test('a new construct is named by its public syntax kind and range', () {
@@ -230,7 +231,7 @@ void main() {
   group('English documents are classified like Spanish ones', () {
     test('withholds the same constructs and exports the same subset', () {
       const withheld =
-          'algorithm Main\n  define x as integer <- 0;\n  read x;\n'
+          'algorithm Main\n  define x as boolean <- false;\n  read x;\n'
           'endAlgorithm\n';
       const proven =
           'algorithm Main\n  define a as integer <- 1;\n  write a, a;\n'
@@ -242,7 +243,7 @@ void main() {
           TargetLanguageId.python,
           profile: SyntaxProfileId.english,
         ).map((blocker) => blocker.construct),
-        contains('input'),
+        contains('input:boolean'),
       );
       final exported = nativeTestEngine.programExporter.export(
         sourceCode: proven,
@@ -289,6 +290,61 @@ void main() {
         }
       });
     }
+  });
+
+  group('Leer exports only when every target has a typed reading', () {
+    String exported(String source, TargetLanguageId target) {
+      final result = nativeTestEngine.programExporter.export(
+        sourceCode: source,
+        targetLanguage: target,
+        profileId: SyntaxProfileId.classicSpanish,
+      );
+      expect(result, isA<ExportSuccess>(), reason: '$target\n$source');
+      return (result as ExportSuccess).program.sourceCode;
+    }
+
+    test('an integer is read with a re-asking helper in every target', () {
+      const source =
+          'Proceso P\n  Definir x Como Entero;\n  Leer x;\n'
+          '  Escribir x;\nFinProceso\n';
+
+      for (final target in TargetLanguageId.values) {
+        final code = exported(source, target);
+        expect(code, contains('x = read_integer()'), reason: '$target');
+        expect(code, isNot(contains('read input into')), reason: '$target');
+      }
+    });
+
+    test('Python converts a real and keeps a text as typed', () {
+      const source =
+          'Proceso P\n  Definir r Como Real;\n  Definir s Como Cadena;\n'
+          '  Leer r, s;\n  Escribir s;\nFinProceso\n';
+
+      final code = exported(source, TargetLanguageId.python);
+
+      expect(code, contains('r = read_real()'));
+      expect(code, contains('s = input()'));
+      expect(code, isNot(contains('def read_integer')));
+    });
+
+    test('a target without a proven reading names its type', () {
+      const text =
+          'Proceso P\n  Definir s Como Cadena;\n  Leer s;\nFinProceso\n';
+      const character =
+          'Proceso P\n  Definir c Como Caracter;\n  Leer c;\nFinProceso\n';
+
+      expect(
+        _blockersOf(text, TargetLanguageId.rust).map((b) => b.construct),
+        contains('input:string'),
+      );
+      for (final target in TargetLanguageId.values) {
+        expect(
+          _blockersOf(character, target).map((b) => b.construct),
+          contains('input:character'),
+          reason: '$target',
+        );
+      }
+    });
   });
 
   test('analysis errors stay analysis errors, never unavailable', () {

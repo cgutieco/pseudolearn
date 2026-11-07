@@ -2,6 +2,7 @@ import '../../../domain/model/export/exported_program.dart';
 import '../../../domain/model/export/target_language_id.dart';
 import '../../export/target_code_builder.dart';
 import '../../export/target_code_header.dart';
+import 'rust_read_helpers.dart';
 import 'rust_shape_statements.dart';
 import 'statement_shape.dart';
 import 'unit_shape.dart';
@@ -15,6 +16,7 @@ final class RustShapeEmitter {
     final buffer = TargetCodeBuilder();
     buffer.writeln(targetCodeHeader(TargetLanguageId.rust));
     buffer.writeln();
+    writeRustReadHelpers(program.readPrimitives, buffer);
     for (final shape in program.classes) {
       _struct(shape, buffer);
       buffer.writeln();
@@ -75,7 +77,9 @@ final class RustShapeEmitter {
     TargetCodeBuilder buffer,
     RustShapeStatements statements,
   ) {
-    buffer.writeln('    pub fn new(${_parameters(shape.parameters)}) -> Self {');
+    buffer.writeln(
+      '    pub fn new(${_parameters(shape.parameters)}) -> Self {',
+    );
     buffer.writeln('        let mut this = Self::default();');
     statements.emitBlock(shape.body, buffer, '        ');
     buffer.writeln('        this');
@@ -87,7 +91,10 @@ final class RustShapeEmitter {
     TargetCodeBuilder buffer,
     RustShapeStatements statements,
   ) {
-    final params = ['&mut self', ...shape.parameters.map(_parameter)].join(', ');
+    final params = [
+      '&mut self',
+      ...shape.parameters.map(_parameter),
+    ].join(', ');
     final returns = shape.returnType;
     final suffix = returns == null ? '' : ' -> ${_type(returns)}';
     buffer.writeln('    pub fn ${shape.name}($params)$suffix {');

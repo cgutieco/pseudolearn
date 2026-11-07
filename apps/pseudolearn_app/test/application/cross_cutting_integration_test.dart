@@ -229,11 +229,11 @@ FinProceso
           sourceCode: interactiveProgram,
           profileId: SyntaxProfileId.classicSpanish,
         );
-        expect(exportCubit.state.status, ExportStatus.unavailable);
-        expect(exportCubit.state.exportedCode, isEmpty);
+        expect(exportCubit.state.status, ExportStatus.ready);
+        expect(exportCubit.state.blockers, isEmpty);
         expect(
-          exportCubit.state.blockers.map((blocker) => blocker.construct),
-          contains('input'),
+          exportCubit.state.exportedCode,
+          contains('entrada = read_integer()'),
         );
 
         exportCubit.selectLanguage(
@@ -241,8 +241,11 @@ FinProceso
           sourceCode: interactiveProgram,
           profileId: SyntaxProfileId.classicSpanish,
         );
-        expect(exportCubit.state.status, ExportStatus.unavailable);
-        expect(exportCubit.state.exportedCode, isEmpty);
+        expect(exportCubit.state.status, ExportStatus.ready);
+        expect(
+          exportCubit.state.exportedCode,
+          contains('entrada = read_integer();'),
+        );
 
         await libraryCubit.loadDocuments();
         expect(libraryCubit.state.allDocuments.length, 1);

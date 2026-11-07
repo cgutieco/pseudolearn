@@ -1136,7 +1136,7 @@ La vista pública incluye interface_unit, interface_signature, realization, type
   "id": "R17",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "El consumidor ofrece código equivalente para un destino solo si cada construcción del programa pertenece al subconjunto comprobado de ese destino, es decir, el que una prueba diferencial ejecuta en el motor y en la traducción con la misma salida. Si una construcción queda fuera, sea una unidad que ningún emisor representa, una sentencia sin traducción, una incorporada, un operador, un literal, un tipo o una salida booleana sin equivalente comprobado, el resultado para ese destino es no disponible: no entrega ningún programa parcial y nombra cada construcción por su identidad pública con el rango exacto de su origen. Un error de análisis sigue siendo un error de análisis. La superficie muestra un mensaje localizado con las construcciones y la línea de la primera. La disponibilidad se decide por destino y las traducciones no se compilan ni ejecutan en el producto.",
+  "texto": "El consumidor ofrece código equivalente para un destino solo si cada construcción del programa pertenece al subconjunto comprobado de ese destino, es decir, el que una prueba diferencial ejecuta en el motor y en la traducción con la misma salida. Si una construcción queda fuera, sea una unidad que ningún emisor representa, una sentencia sin traducción, una lectura cuyo destino no tiene conversión comprobada (input:<tipo>), una incorporada, un operador, un literal, un tipo o una salida booleana sin equivalente comprobado, el resultado para ese destino es no disponible: no entrega ningún programa parcial y nombra cada construcción por su identidad pública con el rango exacto de su origen. Un error de análisis sigue siendo un error de análisis. La superficie muestra un mensaje localizado con las construcciones y la línea de la primera. La disponibilidad se decide por destino y las traducciones no se compilan ni ejecutan en el producto.",
   "verificacion": [
     "C53",
     "C54",
@@ -1162,11 +1162,11 @@ La vista pública incluye interface_unit, interface_signature, realization, type
 ```
 
 ```caso
-{"id": "C53", "regla": "R17", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"program": "Proceso P\n  Definir x Como Entero <- 0;\n  Escribir \"antes\";\n  Leer x;\n  Escribir \"despues\";\nFinProceso\n", "target": "python", "profile": "es"}}, "espera": {"aplicacion": {"status": "unavailable", "constructs": ["input"], "first_line": 4, "code_visible": false, "focused_lines": 0, "ready": false}}}
+{"id": "C53", "regla": "R17", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"program": "Proceso P\n  Definir x Como Logico <- Falso;\n  Escribir \"antes\";\n  Leer x;\n  Escribir \"despues\";\nFinProceso\n", "target": "python", "profile": "es"}}, "espera": {"aplicacion": {"status": "unavailable", "constructs": ["input:boolean"], "first_line": 4, "code_visible": false, "focused_lines": 0, "ready": false}}}
 ```
 
 ```caso
-{"id": "C54", "regla": "R17", "perfiles": ["en"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"program": "algorithm Main\n  define x as integer <- 0;\n  read x;\nendAlgorithm\n", "target": "python", "profile": "en"}}, "espera": {"aplicacion": {"status": "unavailable", "constructs": ["input"], "first_line": 3, "code_visible": false, "focused_lines": 0, "ready": false}}}
+{"id": "C54", "regla": "R17", "perfiles": ["en"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"program": "algorithm Main\n  define x as boolean <- false;\n  read x;\nendAlgorithm\n", "target": "python", "profile": "en"}}, "espera": {"aplicacion": {"status": "unavailable", "constructs": ["input:boolean"], "first_line": 3, "code_visible": false, "focused_lines": 0, "ready": false}}}
 ```
 
 ```caso
@@ -1182,7 +1182,7 @@ La vista pública incluye interface_unit, interface_signature, realization, type
 ```
 
 ```caso
-{"id": "C58", "regla": "R18", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"previous": "Proceso P\n  Escribir 1;\nFinProceso\n", "program": "Proceso P\n  Definir x Como Entero <- 0;\n  Leer x;\nFinProceso\n", "target": "python", "profile": "es"}}, "espera": {"aplicacion": {"status": "unavailable", "constructs": ["input"], "first_line": 3, "code_visible": false, "focused_lines": 0, "ready": false}}}
+{"id": "C58", "regla": "R18", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"previous": "Proceso P\n  Escribir 1;\nFinProceso\n", "program": "Proceso P\n  Definir x Como Logico <- Falso;\n  Leer x;\nFinProceso\n", "target": "python", "profile": "es"}}, "espera": {"aplicacion": {"status": "unavailable", "constructs": ["input:boolean"], "first_line": 3, "code_visible": false, "focused_lines": 0, "ready": false}}}
 ```
 
 ```caso

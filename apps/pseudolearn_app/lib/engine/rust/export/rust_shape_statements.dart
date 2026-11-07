@@ -1,4 +1,5 @@
 import '../../export/target_code_builder.dart';
+import 'rust_read_helpers.dart';
 import 'statement_shape.dart';
 import 'view_expression_writer.dart';
 
@@ -67,7 +68,8 @@ final class RustShapeStatements {
 
   void _read(ReadShape s, TargetCodeBuilder buffer, String indent) {
     for (final target in s.targets) {
-      buffer.writeln('$indent// read input into ${_writer.write(target)}');
+      final call = rustReadCall(target.primitive);
+      buffer.writeln('$indent${_writer.write(target.node)} = $call;');
     }
   }
 
@@ -76,11 +78,7 @@ final class RustShapeStatements {
     buffer.writeln('$indent${s.name}($args);');
   }
 
-  void _methodCall(
-    MethodCallShape s,
-    TargetCodeBuilder buffer,
-    String indent,
-  ) {
+  void _methodCall(MethodCallShape s, TargetCodeBuilder buffer, String indent) {
     final args = s.arguments.map(_writer.write).join(', ');
     if (s.isSuperConstructor) {
       buffer.writeln('$indent// Super.Constructor($args);');

@@ -1,6 +1,7 @@
 import '../../../domain/model/export/export_blocker.dart';
 import '../rust_program_view.dart';
 import 'export_support.dart';
+import 'read_target_types.dart';
 
 const Set<String> _unitKinds = {'algorithm_unit', 'class_unit', 'subroutine'};
 
@@ -14,8 +15,10 @@ const Set<String> _booleanKinds = {
 final class ExportCoverage {
   final RustProgramView _view;
   final ExportSupport _support;
+  final ReadTargetTypes _reads;
 
-  const ExportCoverage(this._view, this._support);
+  ExportCoverage(this._view, this._support)
+    : _reads = ReadTargetTypes.of(_view);
 
   List<ExportBlocker> blockers() {
     final blockers = <ExportBlocker>[];
@@ -43,6 +46,7 @@ final class ExportCoverage {
     if (node.syntaxKind == 'output' && _outputsBoolean(node, hasBoolean)) {
       yield 'boolean_output';
     }
+    if (node.syntaxKind == 'input') yield* _unreadableTargets(node);
     if (_returnsValue(node)) yield 'value_return';
     if (_concatenatesText(node)) yield 'text_concatenation';
   }
@@ -72,6 +76,17 @@ final class ExportCoverage {
     if (semantics.suspendable) yield 'suspendable';
     if (semantics.capabilityType != null || semantics.effectOperation != null) {
       yield 'capability';
+    }
+  }
+
+  Iterable<String> _unreadableTargets(RustViewNode input) sync* {
+    for (final target in rustChildrenOf(_view, input)) {
+      final primitive = _reads.of(target);
+      if (primitive == null) {
+        yield 'input:designator';
+      } else if (!_support.readablePrimitives.contains(primitive)) {
+        yield 'input:$primitive';
+      }
     }
   }
 

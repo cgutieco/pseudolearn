@@ -3,6 +3,7 @@ import '../../../domain/model/export/target_language_id.dart';
 import '../../export/target_code_builder.dart';
 import '../../export/target_code_header.dart';
 import 'python_expression_rules.dart';
+import 'python_read_helpers.dart';
 import 'python_shape_statements.dart';
 import 'statement_shape.dart';
 import 'unit_shape.dart';
@@ -17,6 +18,7 @@ final class PythonShapeEmitter {
     buffer.writeln(targetCodeHeader(TargetLanguageId.python));
     _imports(program.builtins, buffer);
     buffer.writeln();
+    writePythonReadHelpers(program.readPrimitives, buffer);
     for (final shape in program.classes) {
       _class(shape, buffer, statements);
       buffer.writeln();

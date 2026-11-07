@@ -28,6 +28,7 @@ const Set<String> _commonKinds = {
   'for_loop',
   'return_statement',
   'call_statement',
+  'input',
 };
 
 const Set<String> _selectionKinds = {'switch', 'default_case', 'labels'};
@@ -47,6 +48,10 @@ final class ExportSupport {
   final Set<String> blockedOperators;
   final Set<String> blockedLiteralTypes;
   final Set<String> blockedPrimitives;
+
+  /// Types a `Leer` target may have: each one has a reading that re-asks on
+  /// invalid input, like the engine does.
+  final Set<String> readablePrimitives;
   final bool allowsValueReturn;
   final bool allowsTextConcatenation;
 
@@ -56,6 +61,7 @@ final class ExportSupport {
     this.blockedOperators = const {},
     this.blockedLiteralTypes = const {},
     this.blockedPrimitives = const {},
+    this.readablePrimitives = const {},
     this.allowsValueReturn = true,
     this.allowsTextConcatenation = true,
   });
@@ -65,6 +71,7 @@ const ExportSupport pythonExportSupport = ExportSupport(
   syntaxKinds: {..._commonKinds, ..._classKinds},
   builtins: {'squareRoot', 'length', 'toText', 'truncate'},
   blockedOperators: {'integer_divide'},
+  readablePrimitives: {'integer', 'real', 'string'},
 );
 
 const ExportSupport rustExportSupport = ExportSupport(
@@ -73,6 +80,7 @@ const ExportSupport rustExportSupport = ExportSupport(
   blockedOperators: {'divide', 'integer_divide', 'power'},
   blockedLiteralTypes: {'real'},
   blockedPrimitives: {'real'},
+  readablePrimitives: {'integer'},
   allowsValueReturn: false,
   allowsTextConcatenation: false,
 );

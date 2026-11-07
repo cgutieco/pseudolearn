@@ -41,8 +41,15 @@ final class WriteShape extends StatementShape {
   const WriteShape(super.origin, this.expressions, this.withoutNewline);
 }
 
+final class ReadTarget {
+  final RustViewNode node;
+  final String primitive;
+
+  const ReadTarget(this.node, this.primitive);
+}
+
 final class ReadShape extends StatementShape {
-  final List<RustViewNode> targets;
+  final List<ReadTarget> targets;
 
   const ReadShape(super.origin, this.targets);
 }

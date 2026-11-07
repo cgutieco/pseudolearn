@@ -1,11 +1,13 @@
 import '../../../domain/model/analysis/program_node_id.dart';
 import '../rust_program_view.dart';
+import 'read_target_types.dart';
 import 'statement_shape.dart';
 
 final class StatementShapeReader {
   final RustProgramView _view;
+  final ReadTargetTypes _reads;
 
-  const StatementShapeReader(this._view);
+  const StatementShapeReader(this._view, this._reads);
 
   List<StatementShape> block(RustViewNode? body) {
     if (body == null) return const [];
@@ -28,7 +30,9 @@ final class StatementShapeReader {
       ),
       'dimension_declaration' => DimensionShape(id, _arrays(parts)),
       'output' => WriteShape(id, parts, node.semantics.withoutNewline),
-      'input' => ReadShape(id, parts),
+      'input' => ReadShape(id, [
+        for (final part in parts) ReadTarget(part, _reads.of(part)!),
+      ]),
       'conditional' => _conditional(id, node),
       'while_loop' => WhileShape(
         id,
