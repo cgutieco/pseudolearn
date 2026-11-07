@@ -154,7 +154,7 @@ fn translates_channel_type_constructor_and_methods() -> Result<(), String> {
     let english =
         translate_source(source, Profile::English).map_err(|error| format!("{error:?}"))?;
     assert!(
-        english.contains("channel<Integer> <- channel(1)"),
+        english.contains("Channel<Integer> <- channel(1)"),
         "{english}"
     );
     assert!(
@@ -184,7 +184,7 @@ fn translates_declared_variants_and_keeps_homonymous_names() -> Result<(), Strin
     let english_text = english.map_err(|error| format!("{error:?}"))?;
     assert_eq!(
         english_text,
-        "variant Forma\ncase Circulo(radio As Integer)\ncase Vacia\nendVariant\nAlgorithm Principal\nDefine Variante As Integer <- 1;\nWrite Variante;\nEndAlgorithm\n"
+        "Variant Forma\nCase Circulo(radio As Integer)\nCase Vacia\nEndVariant\nAlgorithm Principal\nDefine Variante As Integer <- 1;\nWrite Variante;\nEndAlgorithm\n"
     );
     assert_eq!(
         translate_source(&english_text, Profile::Spanish)

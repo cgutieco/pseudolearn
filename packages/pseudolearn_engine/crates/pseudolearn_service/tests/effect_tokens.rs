@@ -113,7 +113,7 @@ fn json_operations_translate() -> Result<(), String> {
 #[test]
 fn immutable_types_translate_inside_generics() -> Result<(), String> {
     let english = translate_and_return(IMMUTABLE, Profile::Spanish)?;
-    assert!(english.contains("immutable<"));
+    assert!(english.contains("Immutable<"));
     assert!(!english.contains("Inmutable"));
     Ok(())
 }
