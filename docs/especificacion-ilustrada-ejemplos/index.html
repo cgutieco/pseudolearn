@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Especificación de PseudoLearn · Ejemplos de lectura</title>
+<link rel="stylesheet" href="recursos/especificacion.css">
+<style>
+  .portada { max-width: 860px; margin: 0 auto; padding: 48px 24px 96px; }
+  .portada h1 { font-size: 44px; line-height: 1.1; letter-spacing: -0.02em; margin: 0 0 12px; }
+  .portada .sub { font-size: 19px; color: var(--tinta-2); margin-bottom: 40px; }
+  .partes-lista { list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--borde); }
+  .partes-lista > li { padding: 14px 0; border-bottom: 1px solid var(--borde); }
+  .partes-lista .parte { display: flex; gap: 14px; align-items: baseline; font-weight: 600; }
+  .partes-lista .parte .num { font-family: "IBM Plex Mono", monospace; color: var(--atenuado); min-width: 64px; }
+  .partes-lista .secciones { margin: 8px 0 0 78px; padding: 0; list-style: none; font-size: 15px; color: var(--tinta-2); }
+  .partes-lista .secciones a { display: inline-flex; gap: 8px; padding: 6px 12px; margin: 4px 0; border-radius: 10px; background: var(--marca-suave); color: var(--tinta); text-decoration: none; font-weight: 600; }
+  .partes-lista .secciones a .num { font-family: "IBM Plex Mono", monospace; color: var(--marca); }
+  @media (max-width: 640px) { .portada h1 { font-size: 32px; } .partes-lista .secciones { margin-left: 0; } }
+</style>
+</head>
+<body>
+<div class="barra">
+  <a class="logo" href="index.html"><span class="marca">PL</span>Especificación</a>
+  <span class="migas">Índice general</span>
+  <span class="perfil">Perfil: español · Edición 2026</span>
+</div>
+<div class="portada">
+  <h1>Especificación de PseudoLearn</h1>
+  <p class="sub">Cómo es el lenguaje, cómo se escribe y qué hace el motor por dentro. Tres secciones de muestra,
+  marcadas abajo, para evaluar el tono, las figuras y la profundidad antes de redactar el resto.</p>
+
+  <ol class="partes-lista">
+    <li><div class="parte"><span class="num">0</span>Cómo leer esta especificación</div></li>
+    <li><div class="parte"><span class="num">I</span>Visión general</div></li>
+    <li><div class="parte"><span class="num">II</span>Estructura léxica</div></li>
+    <li>
+      <div class="parte"><span class="num">III</span>Tipos y valores</div>
+      <ul class="secciones"><li><a href="03-01-tipos-primitivos.html"><span class="num">3.1</span>Tipos primitivos</a> · lo básico: los cinco tipos, sus límites y cómo los guarda el motor</li></ul>
+    </li>
+    <li><div class="parte"><span class="num">IV</span>Expresiones y operadores</div></li>
+    <li><div class="parte"><span class="num">V</span>Declaraciones y sentencias</div></li>
+    <li>
+      <div class="parte"><span class="num">VI</span>Control del flujo</div>
+      <ul class="secciones"><li><a href="06-01-decision-si.html"><span class="num">6.1</span>La decisión Si</a> · una palabra reservada: forma, raíles, figura por pasos y bloques básicos</li></ul>
+    </li>
+    <li><div class="parte"><span class="num">VII</span>Subprogramas</div></li>
+    <li><div class="parte"><span class="num">VIII</span>Programas, módulos y perfiles</div></li>
+    <li><div class="parte"><span class="num">IX</span>Objetos</div></li>
+    <li><div class="parte"><span class="num">X</span>Errores y diagnósticos</div></li>
+    <li>
+      <div class="parte"><span class="num">XI</span>Concurrencia y asincronía</div>
+      <ul class="secciones"><li><a href="11-03-tareas.html"><span class="num">11.3</span>Tareas, Lanzar y Aguardar</a> · lo avanzado: la agenda del motor, aislamiento y fallos</li></ul>
+    </li>
+    <li><div class="parte"><span class="num">XII</span>Biblioteca</div></li>
+    <li><div class="parte"><span class="num">XIII</span>El motor por dentro</div></li>
+    <li><div class="parte"><span class="num">A–F</span>Apéndices</div></li>
+  </ol>
+</div>
+</body>
+</html>
