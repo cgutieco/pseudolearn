@@ -110,5 +110,8 @@
   "despacho-dinamico": {"etiqueta": "dynamic dispatch", "formas": ["dynamic dispatch"], "estricto": true, "receta": false},
   "herencia": {"etiqueta": "inheritance", "formas": ["inheritance"], "estricto": true, "receta": true},
   "composicion": {"etiqueta": "composition", "formas": ["composition"], "estricto": true, "receta": true},
-  "sobrescribir": {"etiqueta": "override", "formas": ["override", "overrides"], "estricto": true, "receta": false}
+  "sobrescribir": {"etiqueta": "override", "formas": ["override", "overrides"], "estricto": true, "receta": false},
+  "responsabilidad": {"etiqueta": "responsibility", "formas": ["responsibility", "responsibilities"], "estricto": false, "receta": false},
+  "tarjeta-de-responsabilidad": {"etiqueta": "responsibility card", "formas": ["responsibility card", "responsibility cards"], "estricto": true, "receta": false},
+  "colaborador": {"etiqueta": "collaborator", "formas": ["collaborator", "collaborators"], "estricto": false, "receta": false}
 }

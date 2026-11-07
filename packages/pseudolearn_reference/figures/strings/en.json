@@ -1381,6 +1381,23 @@
       "ocho": "eight types for three traits",
       "tiene": "has traits",
       "tres": "three pieces for three traits"
+    },
+    "ruta-tarjetas": {
+      "titulo": "The kiosk cards",
+      "descripcion": "Four cards. Product knows its price and computes the amount. Stock knows how much is left and takes away if there is enough. Receipt notes and prints the lines. Till registers the sale and gathers the total, and asks the other three for help.",
+      "producto": "Producto",
+      "producto-1": "knows its price",
+      "producto-2": "computes the amount",
+      "inventario": "Inventario",
+      "inventario-1": "knows the stock",
+      "inventario-2": "takes if enough",
+      "ticket": "Ticket",
+      "ticket-1": "notes lines",
+      "ticket-2": "prints them",
+      "caja": "Caja",
+      "caja-1": "registers the sale",
+      "caja-2": "gathers the total",
+      "pide": "the till asks them for help"
     }
   }
 }

@@ -110,5 +110,8 @@
   "despacho-dinamico": {"etiqueta": "despacho dinámico", "formas": ["despacho dinámico"], "estricto": true, "receta": false},
   "herencia": {"etiqueta": "herencia", "formas": ["herencia", "heredar", "hereda"], "estricto": true, "receta": true},
   "composicion": {"etiqueta": "composición", "formas": ["composición", "componer"], "estricto": true, "receta": true},
-  "sobrescribir": {"etiqueta": "sobrescribir", "formas": ["sobrescribir", "sobrescritura"], "estricto": true, "receta": false}
+  "sobrescribir": {"etiqueta": "sobrescribir", "formas": ["sobrescribir", "sobrescritura"], "estricto": true, "receta": false},
+  "responsabilidad": {"etiqueta": "responsabilidad", "formas": ["responsabilidad", "responsabilidades"], "estricto": false, "receta": false},
+  "tarjeta-de-responsabilidad": {"etiqueta": "tarjeta de responsabilidad", "formas": ["tarjeta de responsabilidad", "tarjetas de responsabilidad"], "estricto": true, "receta": false},
+  "colaborador": {"etiqueta": "colaborador", "formas": ["colaborador", "colaboradores"], "estricto": false, "receta": false}
 }

@@ -1381,6 +1381,23 @@
       "ocho": "ocho tipos para tres rasgos",
       "tiene": "tiene rasgos",
       "tres": "tres piezas para tres rasgos"
+    },
+    "ruta-tarjetas": {
+      "titulo": "Las tarjetas del kiosco",
+      "descripcion": "Cuatro tarjetas. Producto sabe su precio y calcula el importe. Inventario sabe el stock y quita si alcanza. Ticket anota e imprime las líneas. Caja registra la venta y junta el total, y le pide ayuda a las otras tres.",
+      "producto": "Producto",
+      "producto-1": "sabe su precio",
+      "producto-2": "calcula el importe",
+      "inventario": "Inventario",
+      "inventario-1": "sabe el stock",
+      "inventario-2": "quita si alcanza",
+      "ticket": "Ticket",
+      "ticket-1": "anota líneas",
+      "ticket-2": "las imprime",
+      "caja": "Caja",
+      "caja-1": "registra la venta",
+      "caja-2": "junta el total",
+      "pide": "la caja les pide ayuda"
     }
   }
 }
