@@ -15,6 +15,7 @@ mod route_links;
 mod route_mix;
 mod route_normalize;
 mod route_parity;
+mod route_shapes;
 mod route_terms;
 mod route_text;
 mod route_verified;

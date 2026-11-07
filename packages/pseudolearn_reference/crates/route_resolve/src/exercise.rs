@@ -121,6 +121,7 @@ fn publish(
     let explanation = section(CalloutKind::Explanation);
     let teachers = section(CalloutKind::Teachers);
     let hints = hints(context, parts);
+    check_translated_order(context, collector, header.kind, parts);
     PublishedExercise {
         id: header.id.clone(),
         lesson: header.lesson.clone(),
@@ -169,4 +170,28 @@ fn visible_program(
         .clone();
     shown.execute = false;
     program_block(context.resolution, collector, &shown)
+}
+
+fn check_translated_order(
+    context: &RouteContext<'_>,
+    collector: &mut Collector<'_>,
+    kind: reference_model::ExerciseKind,
+    parts: &ExerciseParts,
+) {
+    let Some(reference) = parts.program("referencia") else {
+        return;
+    };
+    if kind != reference_model::ExerciseKind::Order || parts.fence("pasos").is_some() {
+        return;
+    }
+    let spanish = crate::program_blocks(&reference.code).1.len();
+    let translated = crate::program_blocks(&crate::evaluation::edition_code(context, reference))
+        .1
+        .len();
+    if spanish != translated {
+        collector.report(
+            RuleId::RouteExerciseVerified,
+            format!("the translated program has {translated} movable lines instead of {spanish}"),
+        );
+    }
 }

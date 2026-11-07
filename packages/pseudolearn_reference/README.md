@@ -297,15 +297,20 @@ ruta, con sus casos negativos de §3.5.
 | Tipo | Lo que comprueba el compilador |
 |---|---|
 | `predecir` | La salida prometida del programa `objeto` coincide con la ejecución |
-| `rastrear` | Cada fila de `vueltas` coincide con lo que escribe el programa instrumentado |
-| `ordenar` | Con programa, la referencia pasa los casos y hay al menos cuatro líneas móviles; con `pasos`, al menos tres pasos |
+| `rastrear` | Cada fila de `vueltas` coincide con lo que escribe el programa instrumentado; hay al menos una celda por completar, una celda por columna y `inicio` si hay fila «antes» |
+| `ordenar` | Con programa, la referencia pasa los casos, hay al menos cuatro líneas móviles y el programa traducido tiene las mismas; con `pasos`, al menos tres pasos |
 | `resolver` | La referencia pasa los casos: dos visibles y tres ocultos, o un caso visible si ningún caso tiene entradas |
 | `encontrar-error` | La referencia pasa los casos y el programa inicial falla al menos uno |
 | `modificar` | La referencia pasa los casos y el programa inicial falla al menos uno oculto |
-| `romperlo` | El defectuoso pasa los visibles y cada entrada de `rompe` hace que difiera de la referencia o falle |
-| `disenar-pruebas` | Hay al menos tres mutantes; `casos-solucion` pasa en la referencia y atrapa a cada mutante |
-| `clasificar` | Cada categoría tiene un elemento y cada elemento una categoría existente |
+| `romperlo` | El defectuoso pasa los visibles y cada entrada de `rompe`, con tantos valores como lee el programa, hace que difiera de la referencia o falle |
+| `disenar-pruebas` | Hay al menos tres mutantes; `casos-solucion` pasa en la referencia, atrapa a cada mutante y su cantidad está entre `minimo` y `maximo` |
+| `clasificar` | Hay al menos dos categorías, cada una con un elemento, y cada elemento tiene una categoría existente |
 | `explicar`, `comparar` | Una sola opción correcta y una justificación por opción |
+
+Las `aserciones` deben pertenecer al catálogo cerrado de la app (`contiene`, `no-contiene`, `repite-como-mucho`,
+`declara-subprograma` y `declara-miembro`, con construcciones `condicional`, `seleccion-multiple`,
+`bucle-condicional`, `bucle-condicional-posterior`, `bucle-contado`, `arreglo`, `subprograma`, `clase` e `interfaz`)
+y llevar el requisito que ve la persona.
 
 Las salidas se comparan con la misma normalización que la app: espacios colapsados, líneas vacías finales
 descartadas y números comparados con tolerancia relativa `1e-9`.
@@ -420,6 +425,8 @@ Pendientes declarados:
 - La categoría de resaltado debería salir del corpus (ver §4).
 - Los textos de los programas no se traducen en la edición inglesa.
 - La comilla (`quote`) está excluida de la cobertura de vocabulario: nunca aparece como ficha suelta.
+- Las aserciones estructurales de los ejercicios se validan en su forma, no contra la referencia: el puerto del
+  motor del compilador no publica la vista del programa que la app usa para comprobarlas.
 - La ruta no verifica mecánicamente que «La herramienta nueva» aparezca cuando una lección introduce una
   construcción: no hay forma de saber desde la cabecera qué término es una construcción. Se revisa con la lista de
   cierre de cada lección.

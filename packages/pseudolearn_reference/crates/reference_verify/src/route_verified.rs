@@ -168,13 +168,17 @@ fn laps(check: &LapCheck) -> Vec<String> {
 
 pub fn check_exercise_shape(exercise: &ExerciseDocument) -> Vec<Violation> {
     let blocks = &exercise.blocks;
-    let problems = match exercise.header.kind {
+    let mut problems = match exercise.header.kind {
         ExerciseKind::Classify => classify_shape(blocks),
         ExerciseKind::Explain | ExerciseKind::Compare => choice_shape(blocks),
         ExerciseKind::Order => order_shape(blocks),
         ExerciseKind::Solve => solve_shape(blocks),
+        ExerciseKind::DesignTests => crate::route_shapes::solution_problems(blocks),
+        ExerciseKind::Break => crate::route_shapes::breaker_problems(blocks),
+        ExerciseKind::Trace => crate::route_shapes::lap_problems(blocks),
         _ => Vec::new(),
     };
+    problems.extend(crate::route_shapes::assertion_problems(blocks));
     problems
         .into_iter()
         .map(|detail| Violation::new(RuleId::RouteExerciseVerified, exercise.path.clone(), detail))
@@ -187,11 +191,15 @@ fn classify_shape(blocks: &[SourceBlock]) -> Vec<String> {
     else {
         return vec!["a classify exercise needs `categorias` and `elementos`".to_owned()];
     };
-    let mut problems: Vec<String> = elements
-        .iter()
-        .filter(|element| !categories.contains(&element.category))
-        .map(|element| format!("the element category `{}` does not exist", element.category))
+    let mut problems: Vec<String> = crate::route_shapes::category_count_problem(blocks)
+        .into_iter()
         .collect();
+    problems.extend(
+        elements
+            .iter()
+            .filter(|element| !categories.contains(&element.category))
+            .map(|element| format!("the element category `{}` does not exist", element.category)),
+    );
     for category in categories {
         if !elements.iter().any(|element| &element.category == category) {
             problems.push(format!("the category `{category}` has no element"));

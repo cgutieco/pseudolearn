@@ -346,3 +346,92 @@ fn links_to_unknown_sections_anchors_and_lessons_are_reported() {
         ]
     );
 }
+
+fn shaped(kind: &str, body: &str) -> Vec<RuleId> {
+    let text = format!(
+        "---\nid: inicio.base.x\nleccion: inicio.base\ntipo: {kind}\nnivel: semilla\ntitulo: X\n---\n\n{body}"
+    );
+    rules(&check_exercise_shape(&route_support::exercise_text(
+        "x.md", &text,
+    )))
+}
+
+#[test]
+fn assertions_outside_the_closed_catalog_are_reported() {
+    let valid = "```aserciones\n- declara-subprograma | Area | 2 | Usa Area\n- contiene | bucle-contado | Usa un bucle\n```\n";
+    assert!(shaped("modificar", valid).is_empty());
+    for broken in [
+        "```aserciones\n- contiene | funcion-pura | Usa funciones puras\n```\n",
+        "```aserciones\n- declara-miembro | Caja | saldo | secreto | Oculta el saldo\n```\n",
+        "```aserciones\n- repite-como-mucho | bucle-contado | muchos | Un bucle\n```\n",
+        "```aserciones\n- contiene | clase\n```\n",
+    ] {
+        assert_eq!(
+            shaped("modificar", broken),
+            vec![RuleId::RouteExerciseVerified]
+        );
+    }
+}
+
+#[test]
+fn solution_cases_must_fit_their_limits() {
+    assert!(
+        shaped(
+            "disenar-pruebas",
+            "```casos-solucion minimo=1 maximo=2\n1 | 1\n```\n"
+        )
+        .is_empty()
+    );
+    assert_eq!(
+        shaped(
+            "disenar-pruebas",
+            "```casos-solucion minimo=2 maximo=3\n1 | 1\n```\n"
+        ),
+        vec![RuleId::RouteExerciseVerified]
+    );
+    assert_eq!(
+        shaped(
+            "disenar-pruebas",
+            "```casos-solucion minimo=3 maximo=2\n1 | 1\n2 | 2\n```\n"
+        )
+        .len(),
+        2
+    );
+}
+
+#[test]
+fn breaking_inputs_give_as_many_values_as_the_program_reads() {
+    let body = "```casos\nvisible | 1 ; 2 | 3\n```\n\n```rompe\n4 ; 5\n6\n```\n";
+    assert_eq!(
+        shaped("romperlo", body),
+        vec![RuleId::RouteExerciseVerified]
+    );
+}
+
+#[test]
+fn trace_tables_need_a_cell_to_fill_and_a_start_for_the_first_row() {
+    assert!(
+        shaped(
+            "rastrear",
+            "```vueltas marca=3 inicio=2 columnas=n\nantes | 0\n1 | ?1\n```\n"
+        )
+        .is_empty()
+    );
+    assert_eq!(
+        shaped(
+            "rastrear",
+            "```vueltas marca=3 columnas=n\nantes | 0\n1 | 1\n```\n"
+        )
+        .len(),
+        2
+    );
+}
+
+#[test]
+fn a_classification_needs_two_categories() {
+    let body = "```categorias\n- Entero\n```\n\n```elementos\n- 1 | Entero\n```\n";
+    assert_eq!(
+        shaped("clasificar", body),
+        vec![RuleId::RouteExerciseVerified]
+    );
+}

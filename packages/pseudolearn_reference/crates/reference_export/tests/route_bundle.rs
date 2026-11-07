@@ -245,3 +245,53 @@ fn reverse_links_come_from_lessons_and_their_exercises() {
         Some(&vec!["inicio.base".to_owned()])
     );
 }
+
+fn published_files(directory: &std::path::Path, found: &mut Vec<std::path::PathBuf>) {
+    let Ok(entries) = std::fs::read_dir(directory) else {
+        return;
+    };
+    for entry in entries.flatten() {
+        let path = entry.path();
+        if path.is_dir() {
+            published_files(&path, found);
+        } else if path
+            .extension()
+            .is_some_and(|extension| extension == "json")
+        {
+            found.push(path);
+        }
+    }
+}
+
+#[test]
+fn the_versioned_route_bundle_follows_the_schema() {
+    let root = schema();
+    let base = std::path::PathBuf::from(format!(
+        "{}/../../../../apps/pseudolearn_app/assets/route",
+        env!("CARGO_MANIFEST_DIR")
+    ));
+    let mut files = Vec::new();
+    published_files(&base, &mut files);
+    for path in files {
+        let text = std::fs::read_to_string(&path).unwrap_or_default();
+        let value: Value = serde_json::from_str(&text).unwrap_or(Value::Null);
+        let name = path
+            .file_name()
+            .map(|name| name.to_string_lossy().into_owned())
+            .unwrap_or_default();
+        let parent = path
+            .parent()
+            .and_then(|parent| parent.file_name())
+            .map(|name| name.to_string_lossy().into_owned())
+            .unwrap_or_default();
+        let expected = match (parent.as_str(), name.as_str()) {
+            ("exercises", _) => definition(&root, "exercise"),
+            ("lessons", _) => &root,
+            (_, "toc.json") => definition(&root, "toc"),
+            (_, "terms.json") => definition(&root, "terms"),
+            (_, "spec-links.json") => definition(&root, "specLinks"),
+            _ => definition(&root, "manifest"),
+        };
+        assert_eq!(valid(&root, expected, &value), Ok(()), "{}", path.display());
+    }
+}
