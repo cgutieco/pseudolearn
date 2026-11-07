@@ -103,8 +103,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo Signos\n  Definir temperatura Como Entero <- 5;\n  Definir abierto Como Logico <- Falso;\n  Escribir -temperatura;\n  Escribir -2 ^ 2;\n  Si (NO abierto) Entonces\n    Escribir \"Cerrado\";\n  FinSi\nFinAlgoritmo\n",
-    "en": "Algorithm Signs\n  Define temperature As Integer <- 5;\n  Define open As Boolean <- False;\n  Write -temperature;\n  Write -2 ^ 2;\n  If (Not open) Then\n    Write \"Cerrado\";\n  EndIf\nEndAlgorithm\n"
+    "es": "Algoritmo Signos\n  Definir temperatura Como Entero <- 5;\n  Definir abierto Como Logico <- Falso;\n  Escribir -temperatura;\n  Escribir -2 ^ 2;\n  Si NO abierto Entonces\n    Escribir \"Cerrado\";\n  FinSi\nFinAlgoritmo\n",
+    "en": "Algorithm Signs\n  Define temperature As Integer <- 5;\n  Define open As Boolean <- False;\n  Write -temperature;\n  Write -2 ^ 2;\n  If Not open Then\n    Write \"Cerrado\";\n  EndIf\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",

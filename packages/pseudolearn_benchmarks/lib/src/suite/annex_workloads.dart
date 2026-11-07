@@ -25,7 +25,7 @@ FinProceso
 SubProceso Fib(numero Como Entero) Como Entero
   Si numero < 2 Entonces
     Retornar numero;
-  SiNo
+  Sino
     Retornar Fib(numero - 1) + Fib(numero - 2);
   FinSi
 FinSubProceso

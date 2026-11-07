@@ -36,10 +36,10 @@ Proceso Comparar
     Leer a, b;
     Si a = b Entonces
         Escribir "son iguales";
-    SiNo
+    Sino
         Si a > b Entonces
             Escribir "el mayor es ", a;
-        SiNo
+        Sino
             Escribir "el mayor es ", b;
         FinSi
     FinSi
@@ -98,13 +98,13 @@ Proceso Profundo
         Si j > 0 Entonces
             Si i > j Entonces
                 Escribir "a";
-            SiNo
+            Sino
                 Escribir "b";
             FinSi
-        SiNo
+        Sino
             Escribir "c";
         FinSi
-    SiNo
+    Sino
         Escribir "d";
     FinSi
 FinProceso

@@ -19,7 +19,7 @@ fn run(program: &str, state_at: Option<usize>) -> (String, Option<serde_json::Va
 
 #[test]
 fn a_local_without_value_assigned_in_both_branches_runs_on_both_paths() {
-    let program = "Algoritmo P\nDefinir x Como Entero;\nDefinir c Como Logico <- Verdadero;\nSi c Entonces\nx <- 1;\nSiNo\nx <- 2;\nFinSi\nEscribir x;\nc <- Falso;\nDefinir y2 Como Entero;\nSi c Entonces\ny2 <- 3;\nSiNo\ny2 <- 4;\nFinSi\nEscribir y2;\nFinAlgoritmo\n";
+    let program = "Algoritmo P\nDefinir x Como Entero;\nDefinir c Como Logico <- Verdadero;\nSi c Entonces\nx <- 1;\nSino\nx <- 2;\nFinSi\nEscribir x;\nc <- Falso;\nDefinir y2 Como Entero;\nSi c Entonces\ny2 <- 3;\nSino\ny2 <- 4;\nFinSi\nEscribir y2;\nFinAlgoritmo\n";
     for state_at in [None, Some(0)] {
         let (output, kind) = run(program, state_at);
         assert_eq!(output, "1\n4\n");

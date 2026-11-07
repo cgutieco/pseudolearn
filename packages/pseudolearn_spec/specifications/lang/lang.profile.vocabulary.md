@@ -245,14 +245,11 @@
     },
     "elseKeyword": {
       "lexemas": {
-        "es": "SiNo",
+        "es": "Sino",
         "en": "else"
       },
       "alias": {
-        "es": [
-          "Sino",
-          "Si No"
-        ],
+        "es": [],
         "en": []
       }
     },
@@ -1214,7 +1211,9 @@
   "texto": "La tabla D1 es la fuente normativa del vocabulario de tokens. Cada identidad tiene lexema canónico y alias por idioma. Todas las entradas se normalizan según el perfil y no colisionan entre identidades. La reimpresión usa formas canónicas; los alias amplían reconocimiento, no semántica.",
   "verificacion": [
     "C1",
-    "C2"
+    "C2",
+    "C6",
+    "C7"
   ]
 }
 ```
@@ -1259,6 +1258,58 @@
     "diagnosticos": [
       {
         "codigo": "reservedLexemeUsedAsName",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C6",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir abierto Como Logico <- Falso;\nSi NO abierto Entonces\nEscribir 1;\nSino\nEscribir 2;\nFinSi\nSi No abierto Entonces\nEscribir 3;\nFinSi\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine open as boolean <- false;\nif not open then\nwrite 1;\nelse\nwrite 2;\nendIf\nif Not open then\nwrite 3;\nendIf\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "1\n3\n",
+    "terminacion": "completed",
+    "diagnosticos": []
+  }
+}
+```
+
+```caso
+{
+  "id": "C7",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nSi Verdadero Entonces\nEscribir 1;\nSi No\nEscribir 2;\nFinSi\nFinAlgoritmo\n",
+    "en": "algorithm P\nif true then\nwrite 1;\nif not\nwrite 2;\nendIf\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "unclosedIfStatement",
         "severidad": "error"
       }
     ]

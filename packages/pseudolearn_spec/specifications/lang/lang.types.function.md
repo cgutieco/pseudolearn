@@ -565,7 +565,7 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir x Como Entero;\nDefinir c Como Logico <- Falso;\nSi c Entonces\nx <- 1;\nSiNo\nx <- 2;\nFinSi\nDefinir f Como SubProceso() Como Entero <- SubProceso() Como Entero\nRetornar x;\nFinSubProceso;\nEscribir f();\nFinAlgoritmo\n",
+    "es": "Algoritmo P\nDefinir x Como Entero;\nDefinir c Como Logico <- Falso;\nSi c Entonces\nx <- 1;\nSino\nx <- 2;\nFinSi\nDefinir f Como SubProceso() Como Entero <- SubProceso() Como Entero\nRetornar x;\nFinSubProceso;\nEscribir f();\nFinAlgoritmo\n",
     "en": "algorithm P\ndefine x as integer;\ndefine c as boolean <- false;\nif c then\nx <- 1;\nelse\nx <- 2;\nendIf\ndefine f as subroutine() as integer <- subroutine() as integer\nreturn x;\nendSubroutine;\nwrite f();\nendAlgorithm\n"
   },
   "origen": "derivado",

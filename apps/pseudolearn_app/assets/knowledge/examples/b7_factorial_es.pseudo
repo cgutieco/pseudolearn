@@ -1,7 +1,7 @@
 SubProceso Factorial(n Como Entero) Como Entero
     Si n <= 1 Entonces
         Retornar 1;
-    SiNo
+    Sino
         Retornar n * Factorial(n - 1);
     FinSi
 FinSubProceso

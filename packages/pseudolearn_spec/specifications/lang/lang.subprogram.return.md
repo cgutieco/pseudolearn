@@ -234,7 +234,7 @@
     "en"
   ],
   "programas": {
-    "es": "Funcion r <- Factorial(n Como Entero)\nDefinir r Como Entero;\nSi n <= 1 Entonces\nr <- 1;\nSiNo\nr <- n * Factorial(n - 1);\nFinSi\nFinFuncion\nAlgoritmo P\nEscribir Factorial(5);\nFinAlgoritmo\n",
+    "es": "Funcion r <- Factorial(n Como Entero)\nDefinir r Como Entero;\nSi n <= 1 Entonces\nr <- 1;\nSino\nr <- n * Factorial(n - 1);\nFinSi\nFinFuncion\nAlgoritmo P\nEscribir Factorial(5);\nFinAlgoritmo\n",
     "en": "function r <- Factorial(n as integer)\ndefine r as integer;\nif n <= 1 then\nr <- 1;\nelse\nr <- n * Factorial(n - 1);\nendIf\nendSubroutine\nalgorithm P\nwrite Factorial(5);\nendAlgorithm\n"
   },
   "origen": "derivado",

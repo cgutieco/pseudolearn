@@ -797,7 +797,7 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nRetornar directory.Existe(\"a\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; SiNo Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nRetornar directory.Existe(\"a\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; Sino Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
     "en": "subroutine Probe() as result<boolean, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\nreturn directory.exists(\"a\");\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): if value then write 1; else write 0; endIf\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
@@ -824,7 +824,7 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nRetornar directory.Existe(\"d\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; SiNo Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nRetornar directory.Existe(\"d\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; Sino Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
     "en": "subroutine Probe() as result<boolean, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\nreturn directory.exists(\"d\");\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): if value then write 1; else write 0; endIf\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
@@ -851,7 +851,7 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nRetornar directory.Existe(\"d\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; SiNo Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nRetornar directory.Existe(\"d\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; Sino Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
     "en": "subroutine Probe() as result<boolean, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\nreturn directory.exists(\"d\");\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): if value then write 1; else write 0; endIf\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
@@ -877,7 +877,7 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nRetornar directory.Existe(\"missing\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; SiNo Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nRetornar directory.Existe(\"missing\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; Sino Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
     "en": "subroutine Probe() as result<boolean, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\nreturn directory.exists(\"missing\");\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): if value then write 1; else write 0; endIf\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
@@ -904,7 +904,7 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nRetornar directory.EsDirectorio(\"d\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; SiNo Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nRetornar directory.EsDirectorio(\"d\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; Sino Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
     "en": "subroutine Probe() as result<boolean, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\nreturn directory.isDirectory(\"d\");\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): if value then write 1; else write 0; endIf\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
@@ -930,7 +930,7 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nRetornar directory.EsDirectorio(\"d/a\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; SiNo Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nRetornar directory.EsDirectorio(\"d/a\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; Sino Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
     "en": "subroutine Probe() as result<boolean, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\nreturn directory.isDirectory(\"d/a\");\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): if value then write 1; else write 0; endIf\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
@@ -956,7 +956,7 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nRetornar directory.EsDirectorio(\"missing\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; SiNo Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nRetornar directory.EsDirectorio(\"missing\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; Sino Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
     "en": "subroutine Probe() as result<boolean, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\nreturn directory.isDirectory(\"missing\");\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): if value then write 1; else write 0; endIf\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   }
 }
@@ -977,7 +977,7 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nRetornar directory.Existe(\".\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; SiNo Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nRetornar directory.Existe(\".\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; Sino Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
     "en": "subroutine Probe() as result<boolean, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\nreturn directory.exists(\".\");\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): if value then write 1; else write 0; endIf\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   }
 }
@@ -1226,7 +1226,7 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir step1 Como Logico <- Propagar directory.Borrar(\"a\");\nRetornar directory.Existe(\"a\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; SiNo Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir step1 Como Logico <- Propagar directory.Borrar(\"a\");\nRetornar directory.Existe(\"a\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; Sino Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
     "en": "subroutine Probe() as result<boolean, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine step1 as boolean <- propagate directory.delete(\"a\");\nreturn directory.exists(\"a\");\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): if value then write 1; else write 0; endIf\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
@@ -1253,7 +1253,7 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir step1 Como Logico <- Propagar directory.Borrar(\"e\");\nRetornar directory.Existe(\"e\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; SiNo Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir step1 Como Logico <- Propagar directory.Borrar(\"e\");\nRetornar directory.Existe(\"e\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; Sino Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
     "en": "subroutine Probe() as result<boolean, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine step1 as boolean <- propagate directory.delete(\"e\");\nreturn directory.exists(\"e\");\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): if value then write 1; else write 0; endIf\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
@@ -1307,7 +1307,7 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nRetornar directory.Borrar(\"missing\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; SiNo Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nRetornar directory.Borrar(\"missing\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; Sino Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
     "en": "subroutine Probe() as result<boolean, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\nreturn directory.delete(\"missing\");\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): if value then write 1; else write 0; endIf\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
@@ -1331,7 +1331,7 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nRetornar directory.Borrar(\".\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; SiNo Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nRetornar directory.Borrar(\".\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; Sino Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
     "en": "subroutine Probe() as result<boolean, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\nreturn directory.delete(\".\");\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): if value then write 1; else write 0; endIf\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
@@ -1403,7 +1403,7 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir step1 Como Logico <- Propagar directory.Renombrar(\"a\", \"b\");\nRetornar directory.Existe(\"a\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; SiNo Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir step1 Como Logico <- Propagar directory.Renombrar(\"a\", \"b\");\nRetornar directory.Existe(\"a\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; Sino Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
     "en": "subroutine Probe() as result<boolean, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine step1 as boolean <- propagate directory.rename(\"a\", \"b\");\nreturn directory.exists(\"a\");\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): if value then write 1; else write 0; endIf\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
@@ -1429,7 +1429,7 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir step1 Como Logico <- Propagar directory.Renombrar(\"d\", \"n\");\nRetornar directory.Existe(\"n/a\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; SiNo Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir step1 Como Logico <- Propagar directory.Renombrar(\"d\", \"n\");\nRetornar directory.Existe(\"n/a\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; Sino Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
     "en": "subroutine Probe() as result<boolean, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine step1 as boolean <- propagate directory.rename(\"d\", \"n\");\nreturn directory.exists(\"n/a\");\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): if value then write 1; else write 0; endIf\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
@@ -1484,7 +1484,7 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nRetornar directory.Renombrar(\"missing\", \"b\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; SiNo Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nRetornar directory.Renombrar(\"missing\", \"b\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; Sino Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
     "en": "subroutine Probe() as result<boolean, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\nreturn directory.rename(\"missing\", \"b\");\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): if value then write 1; else write 0; endIf\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
@@ -1511,7 +1511,7 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir inner Como DirectorioCap <- Propagar directory.Subdirectorio(\"d\", \"lectura_escritura\");\nDefinir step1 Como Logico <- Propagar inner.Renombrar(\"a\", \"b\");\nRetornar directory.Existe(\"d/b\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; SiNo Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir inner Como DirectorioCap <- Propagar directory.Subdirectorio(\"d\", \"lectura_escritura\");\nDefinir step1 Como Logico <- Propagar inner.Renombrar(\"a\", \"b\");\nRetornar directory.Existe(\"d/b\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; Sino Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
     "en": "subroutine Probe() as result<boolean, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine inner as DirCap <- propagate directory.subdirectory(\"d\", \"lectura_escritura\");\ndefine step1 as boolean <- propagate inner.rename(\"a\", \"b\");\nreturn directory.exists(\"d/b\");\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): if value then write 1; else write 0; endIf\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
@@ -1537,7 +1537,7 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nRetornar directory.Renombrar(\"d\", \"d/n\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; SiNo Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nRetornar directory.Renombrar(\"d\", \"d/n\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; Sino Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
     "en": "subroutine Probe() as result<boolean, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\nreturn directory.rename(\"d\", \"d/n\");\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): if value then write 1; else write 0; endIf\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
@@ -1580,7 +1580,7 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir step1 Como Logico <- Propagar directory.CrearDirectorio(\"n\");\nRetornar directory.EsDirectorio(\"n\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; SiNo Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir step1 Como Logico <- Propagar directory.CrearDirectorio(\"n\");\nRetornar directory.EsDirectorio(\"n\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; Sino Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
     "en": "subroutine Probe() as result<boolean, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine step1 as boolean <- propagate directory.createDirectory(\"n\");\nreturn directory.isDirectory(\"n\");\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): if value then write 1; else write 0; endIf\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
@@ -1604,7 +1604,7 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nRetornar directory.CrearDirectorio(\"d\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; SiNo Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nRetornar directory.CrearDirectorio(\"d\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; Sino Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
     "en": "subroutine Probe() as result<boolean, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\nreturn directory.createDirectory(\"d\");\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): if value then write 1; else write 0; endIf\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
@@ -1631,7 +1631,7 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nRetornar directory.CrearDirectorio(\"a\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; SiNo Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nRetornar directory.CrearDirectorio(\"a\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; Sino Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
     "en": "subroutine Probe() as result<boolean, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\nreturn directory.createDirectory(\"a\");\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): if value then write 1; else write 0; endIf\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
@@ -1908,7 +1908,7 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir inner Como DirectorioCap <- Propagar directory.Subdirectorio(\"d\", \"lectura\");\nRetornar inner.Borrar(\"a\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; SiNo Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir inner Como DirectorioCap <- Propagar directory.Subdirectorio(\"d\", \"lectura\");\nRetornar inner.Borrar(\"a\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; Sino Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
     "en": "subroutine Probe() as result<boolean, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine inner as DirCap <- propagate directory.subdirectory(\"d\", \"lectura\");\nreturn inner.delete(\"a\");\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): if value then write 1; else write 0; endIf\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
@@ -1934,7 +1934,7 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir inner Como DirectorioCap <- Propagar directory.Subdirectorio(\"d\", \"lectura\");\nRetornar inner.Renombrar(\"a\", \"b\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; SiNo Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir inner Como DirectorioCap <- Propagar directory.Subdirectorio(\"d\", \"lectura\");\nRetornar inner.Renombrar(\"a\", \"b\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; Sino Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
     "en": "subroutine Probe() as result<boolean, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine inner as DirCap <- propagate directory.subdirectory(\"d\", \"lectura\");\nreturn inner.rename(\"a\", \"b\");\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): if value then write 1; else write 0; endIf\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
@@ -2014,7 +2014,7 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir inner Como DirectorioCap <- Propagar directory.Subdirectorio(\"d\", \"lectura_escritura\");\nRetornar inner.Existe(\"/a\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; SiNo Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir inner Como DirectorioCap <- Propagar directory.Subdirectorio(\"d\", \"lectura_escritura\");\nRetornar inner.Existe(\"/a\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; Sino Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
     "en": "subroutine Probe() as result<boolean, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine inner as DirCap <- propagate directory.subdirectory(\"d\", \"lectura_escritura\");\nreturn inner.exists(\"/a\");\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): if value then write 1; else write 0; endIf\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {
@@ -2041,7 +2041,7 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir inner Como DirectorioCap <- Propagar directory.Subdirectorio(\"d\", \"lectura_escritura\");\nRetornar inner.Renombrar(\"b\", \"../c\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; SiNo Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir inner Como DirectorioCap <- Propagar directory.Subdirectorio(\"d\", \"lectura_escritura\");\nRetornar inner.Renombrar(\"b\", \"../c\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value Entonces Escribir 1; Sino Escribir 0; FinSi\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
     "en": "subroutine Probe() as result<boolean, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine inner as DirCap <- propagate directory.subdirectory(\"d\", \"lectura_escritura\");\nreturn inner.rename(\"b\", \"../c\");\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): if value then write 1; else write 0; endIf\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {

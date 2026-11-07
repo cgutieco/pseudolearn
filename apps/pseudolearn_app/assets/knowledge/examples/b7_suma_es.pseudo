@@ -1,7 +1,7 @@
 SubProceso SumaHasta(n Como Entero) Como Entero
     Si n <= 0 Entonces
         Retornar 0;
-    SiNo
+    Sino
         Retornar n + SumaHasta(n - 1);
     FinSi
 FinSubProceso

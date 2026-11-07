@@ -450,7 +450,7 @@
       }
     ]
   },
-  "programa": "Algoritmo P\nSi 1 < 2 Entonces\nEscribir 1;\nSiNo\nEscribir 2;\nFinSi\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nSi 1 < 2 Entonces\nEscribir 1;\nSino\nEscribir 2;\nFinSi\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```

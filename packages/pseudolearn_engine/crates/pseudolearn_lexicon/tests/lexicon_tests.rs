@@ -27,9 +27,14 @@ fn finds_bilingual_keywords_with_aliases() {
         Some(KeywordKind::Declare)
     );
     assert_eq!(
+        find_keyword("Sino", Profile::Spanish),
+        Some(KeywordKind::ElseKeyword)
+    );
+    assert_eq!(
         find_keyword("SiNo", Profile::Spanish),
         Some(KeywordKind::ElseKeyword)
     );
+    assert_eq!(find_keyword("Si No", Profile::Spanish), None);
 }
 
 #[test]

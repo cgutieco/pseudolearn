@@ -121,7 +121,7 @@ void main() {
     Definir a Como Entero <- 0;
     Si a > 0 Entonces
         Escribir "positivo";
-    SiNo
+    Sino
         Escribir "no positivo";
     FinSi'''),
     );
@@ -296,7 +296,7 @@ FinSubProceso
                     j <- j + 1;
             FinSegun
         FinMientras
-    SiNo
+    Sino
         Escribir "nada";
     FinSi'''),
     );

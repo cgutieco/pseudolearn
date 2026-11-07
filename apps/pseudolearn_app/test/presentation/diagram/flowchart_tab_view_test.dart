@@ -26,10 +26,10 @@ Proceso Ancho
     Leer a, b;
     Si a = b Entonces
         Escribir "los dos valores recibidos son exactamente iguales";
-    SiNo
+    Sino
         Si a > b Entonces
             Escribir "el primer valor recibido es el mayor de los dos", a;
-        SiNo
+        Sino
             Escribir "el segundo valor recibido es el mayor de los dos", b;
         FinSi
     FinSi

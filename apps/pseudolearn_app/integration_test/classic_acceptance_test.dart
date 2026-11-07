@@ -12,7 +12,7 @@ const String classicProgram =
     'Definir r Como Real;\n'
     'Si a > b Entonces\n'
     'r <- a;\n'
-    'SiNo\n'
+    'Sino\n'
     'r <- b;\n'
     'FinSi\n'
     'FinFuncion\n'
@@ -48,7 +48,7 @@ const String classicProgram =
     'Leer resp;\n'
     'Si resp = "s" Entonces\n'
     'Escribir "Fin";\n'
-    'SiNo\n'
+    'Sino\n'
     'Escribir "Continuar";\n'
     'FinSi\n'
     'FinAlgoritmo\n';

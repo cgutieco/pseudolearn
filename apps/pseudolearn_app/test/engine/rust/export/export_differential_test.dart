@@ -47,7 +47,7 @@ final Map<String, ({String source, Set<TargetLanguageId> targets})> _cases = {
   'selection': (
     source: _procedure(
       'Definir x Como Entero <- 5;\nSi x > 3 Entonces\n'
-      'Escribir "g";\nSiNo\nEscribir "p";\nFinSi',
+      'Escribir "g";\nSino\nEscribir "p";\nFinSi',
     ),
     targets: TargetLanguageId.values.toSet(),
   ),

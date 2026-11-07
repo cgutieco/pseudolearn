@@ -21,5 +21,5 @@
     {"kind": "no-contiene", "construct": "bucle-condicional-posterior", "requirement": "El enunciado pide resolverlo con recursión pura, sin ningún bucle."},
     {"kind": "no-contiene", "construct": "bucle-contado", "requirement": "El enunciado pide resolverlo con recursión pura, sin ningún bucle."}
   ],
-  "referenceSolution": "SubProceso SumaVector(datos[] Como Entero Por Referencia, indice Como Entero, tamano Como Entero) Como Entero\n    Si indice >= tamano Entonces\n        Retornar 0;\n    SiNo\n        Retornar datos[indice] + SumaVector(datos, indice + 1, tamano);\n    FinSi\nFinSubProceso\n\nProceso EjecutarSumaVector\n    Dimension vector[5] Como Entero;\n    Leer vector[0];\n    Leer vector[1];\n    Leer vector[2];\n    Leer vector[3];\n    Leer vector[4];\n    Escribir SumaVector(vector, 0, 5);\nFinProceso\n"
+  "referenceSolution": "SubProceso SumaVector(datos[] Como Entero Por Referencia, indice Como Entero, tamano Como Entero) Como Entero\n    Si indice >= tamano Entonces\n        Retornar 0;\n    Sino\n        Retornar datos[indice] + SumaVector(datos, indice + 1, tamano);\n    FinSi\nFinSubProceso\n\nProceso EjecutarSumaVector\n    Dimension vector[5] Como Entero;\n    Leer vector[0];\n    Leer vector[1];\n    Leer vector[2];\n    Leer vector[3];\n    Leer vector[4];\n    Escribir SumaVector(vector, 0, 5);\nFinProceso\n"
 }

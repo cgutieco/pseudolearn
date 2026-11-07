@@ -3804,7 +3804,7 @@
     ],
     "entorno": {},
     "archivos": {
-      "p.pseudo": "Algoritmo P\nDefinir x Como Entero;\nSi Verdadero Entonces\nx <- 1;\nSiNo\nEscribir 0;\nFinSi\nEscribir x;\nFinAlgoritmo\n"
+      "p.pseudo": "Algoritmo P\nDefinir x Como Entero;\nSi Verdadero Entonces\nx <- 1;\nSino\nEscribir 0;\nFinSi\nEscribir x;\nFinAlgoritmo\n"
     }
   }
 }

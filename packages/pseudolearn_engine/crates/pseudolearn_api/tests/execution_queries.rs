@@ -46,7 +46,7 @@ fn advance_until_suspension(
 
 #[test]
 fn task_id_reads_distinct_recursive_frames_for_sibling_tasks() -> Result<(), String> {
-    let program = "SubProceso Recurse(value Como Entero, depth Como Entero)\nSi depth = 0 Entonces\nEscribir value;\nSiNo\nRecurse(value, depth - 1);\nFinSi\nFinSubProceso\nSubProceso Suspendible Work(value Como Entero)\nRecurse(value, 1);\nFinSubProceso\nAlgoritmo Main\nTareas\nLanzar Work(7);\nLanzar Work(9);\nFinTareas\nFinAlgoritmo\n";
+    let program = "SubProceso Recurse(value Como Entero, depth Como Entero)\nSi depth = 0 Entonces\nEscribir value;\nSino\nRecurse(value, depth - 1);\nFinSi\nFinSubProceso\nSubProceso Suspendible Work(value Como Entero)\nRecurse(value, 1);\nFinSubProceso\nAlgoritmo Main\nTareas\nLanzar Work(7);\nLanzar Work(9);\nFinTareas\nFinAlgoritmo\n";
     let mut session = ApiSession::default();
     let execution = start(&mut session, program)?;
     let trace = advance(&mut session, &execution, 4096);

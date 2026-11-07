@@ -61,7 +61,7 @@ Tareas problem
 Para index <- 1 Hasta tasks Con Paso 1 Hacer
 Si index = failing Entonces
 Lanzar Fail(Concatenar(\"e\", ConvertirATexto(failing)));
-SiNo
+Sino
 Lanzar Idle(stream);
 FinSi
 FinPara

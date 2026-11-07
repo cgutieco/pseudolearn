@@ -1,7 +1,7 @@
 SubProceso Maximo(a Como Entero, b Como Entero) Como Entero
     Si a > b Entonces
         Retornar a;
-    SiNo
+    Sino
         Retornar b;
     FinSi
 FinSubProceso

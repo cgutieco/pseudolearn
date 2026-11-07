@@ -3,7 +3,7 @@ Proceso Aprobado
     Leer nota;
     Si nota >= 5 Entonces
         Escribir "Aprobado";
-    SiNo
+    Sino
         Escribir "Reprobado";
     FinSi
 FinProceso

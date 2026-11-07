@@ -2288,13 +2288,13 @@
               {
                 "id": "else_steps",
                 "label": "si no se cumple",
-                "text": "Las instrucciones que se hacen cuando la condición es falsa. Si no las necesitas, quita SiNo y esta parte."
+                "text": "Las instrucciones que se hacen cuando la condición es falsa. Si no las necesitas, quita Sino y esta parte."
               }
             ],
             "rules": [
               "La condición debe dar verdadero o falso; un número solo no sirve.",
               "Se hace solo una de las dos partes, nunca ambas.",
-              "Para elegir entre más de dos caminos, pon otro Si dentro de la parte SiNo.",
+              "Para elegir entre más de dos caminos, pon otro Si dentro de la parte Sino.",
               "Cierra siempre con FinSi."
             ],
             "common_errors": [
@@ -2321,7 +2321,7 @@
                 "version": "1.0.0",
                 "case": "C5",
                 "kind": "executable",
-                "note": "edad vale 15, así que la condición de ser mayor o igual que 18 es falsa. Se hace la parte de SiNo y se muestra Menor."
+                "note": "edad vale 15, así que la condición de ser mayor o igual que 18 es falsa. Se hace la parte de Sino y se muestra Menor."
               }
             ]
           },
@@ -7605,7 +7605,7 @@
                 "version": "1.0.0",
                 "case": "C3",
                 "kind": "executable",
-                "note": "encendida empieza en Verdadero, así que muestra Luz encendida. Después pasa a Falso, el segundo Si va por SiNo y muestra Luz apagada."
+                "note": "encendida empieza en Verdadero, así que muestra Luz encendida. Después pasa a Falso, el segundo Si va por Sino y muestra Luz apagada."
               }
             ]
           },
@@ -9276,12 +9276,11 @@
             "result": "Con el signo menos o más, un número; con NO, verdadero o falso.",
             "rules": [
               "El signo menos se aplica antes que la potencia: -2 elevado a 2 da 4. Para obtener -4, pon la potencia entre paréntesis.",
-              "Justo después de Si, escribe NO entre paréntesis, como Si (NO abierto) Entonces.",
               "NO se aplica antes que Y y O."
             ],
             "common_errors": [
               {
-                "text": "Escribir Si NO abierto Entonces sin paréntesis: el programa lee Si NO como si fuera SiNo y muestra errores. Escribe Si (NO abierto) Entonces."
+                "text": "Escribir NO edad = 15 para decir que edad no vale 15: NO se aplica solo a edad, que no es verdadero ni falso, y aparece un error. Escribe NO (edad = 15)."
               }
             ],
             "examples": [
@@ -9330,12 +9329,11 @@
             "result": "With the minus or plus sign, a number; with Not, true or false.",
             "rules": [
               "The minus sign is applied before the power: -2 to the power of 2 gives 4. To get -4, put the power in parentheses.",
-              "In the Spanish profile, right after Si write NO in parentheses, as in Si (NO abierto) Entonces.",
               "Not is applied before And and Or."
             ],
             "common_errors": [
               {
-                "text": "In the Spanish profile, writing Si NO abierto Entonces without parentheses: Si NO is read as SiNo and errors appear. Write Si (NO abierto) Entonces."
+                "text": "Writing Not age = 15 to say that age is not 15: Not applies only to age, which is neither true nor false, and an error appears. Write Not (age = 15)."
               }
             ],
             "examples": [
@@ -34590,7 +34588,7 @@
                 "version": "1.0.0",
                 "case": "C32",
                 "kind": "executable",
-                "note": "Luis está en la lista, así que se muestra Luis puede pasar. Eva no está, así que el segundo Si va por SiNo."
+                "note": "Luis está en la lista, así que se muestra Luis puede pasar. Eva no está, así que el segundo Si va por Sino."
               }
             ]
           },

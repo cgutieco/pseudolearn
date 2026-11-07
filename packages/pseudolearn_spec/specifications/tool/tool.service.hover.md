@@ -321,7 +321,7 @@
   },
   "servicio": {
     "suboperacion": "hover",
-    "documento": "Algoritmo P\nSi Verdadero Entonces\nEscribir 1;\nSiNo\nEscribir 2;\nFinSi\nFinAlgoritmo\n",
+    "documento": "Algoritmo P\nSi Verdadero Entonces\nEscribir 1;\nSino\nEscribir 2;\nFinSi\nFinAlgoritmo\n",
     "posicion": {"line": 4, "column": 2},
     "proyeccion": "resolucion"
   }

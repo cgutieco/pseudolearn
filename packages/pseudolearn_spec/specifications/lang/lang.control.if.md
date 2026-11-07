@@ -38,7 +38,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Si exige condición lógica y Entonces; SiNo es opcional y equivale a cuerpo vacío si se omite. Ejecuta solo la rama elegida. Los cuerpos pueden ser vacíos y anidados; una cadena se expresa anidando Si en SiNo. Rama contraria duplicada o cierre ausente es sintáctico.",
+  "texto": "Si exige condición lógica y Entonces; Sino es opcional y equivale a cuerpo vacío si se omite. Ejecuta solo la rama elegida. Los cuerpos pueden ser vacíos y anidados; una cadena se expresa anidando Si en Sino. Rama contraria duplicada o cierre ausente es sintáctico.",
   "verificacion": [
     "C1",
     "C2",
@@ -58,7 +58,7 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nSi Verdadero Entonces\nEscribir 1;\nSiNo\nEscribir 2;\nFinSi\nFinAlgoritmo\n",
+    "es": "Algoritmo P\nSi Verdadero Entonces\nEscribir 1;\nSino\nEscribir 2;\nFinSi\nFinAlgoritmo\n",
     "en": "algorithm P\nif true then\nwrite 1;\nelse\nwrite 2;\nendIf\nendAlgorithm\n"
   },
   "origen": "derivado",

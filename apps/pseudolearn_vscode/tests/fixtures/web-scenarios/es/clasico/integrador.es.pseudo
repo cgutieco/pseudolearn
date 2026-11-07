@@ -2,7 +2,7 @@ Funcion r <- Mayor(a Como Real, b Como Real)
 Definir r Como Real;
 Si a > b Entonces
 r <- a;
-SiNo
+Sino
 r <- b;
 FinSi
 FinFuncion
@@ -38,7 +38,7 @@ FinSegun
 Leer resp;
 Si resp = "s" Entonces
 Escribir "Fin";
-SiNo
+Sino
 Escribir "Continuar";
 FinSi
 FinAlgoritmo

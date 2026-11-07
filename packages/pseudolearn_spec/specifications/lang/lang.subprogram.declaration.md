@@ -107,7 +107,7 @@
     "en"
   ],
   "programas": {
-    "es": "Funcion r <- Mayor(a Como Entero, b Como Entero)\nDefinir r Como Entero;\nSi a > b Entonces\nr <- a;\nSiNo\nr <- b;\nFinSi\nFinFuncion\nAlgoritmo P\nEscribir Mayor(3, 9), Mayor(4, 2);\nFinAlgoritmo\n",
+    "es": "Funcion r <- Mayor(a Como Entero, b Como Entero)\nDefinir r Como Entero;\nSi a > b Entonces\nr <- a;\nSino\nr <- b;\nFinSi\nFinFuncion\nAlgoritmo P\nEscribir Mayor(3, 9), Mayor(4, 2);\nFinAlgoritmo\n",
     "en": "function r <- Larger(a as integer, b as integer)\ndefine r as integer;\nif a > b then\nr <- a;\nelse\nr <- b;\nendIf\nendSubroutine\nalgorithm P\nwrite Larger(3, 9), Larger(4, 2);\nendAlgorithm\n"
   },
   "origen": "derivado",
@@ -164,7 +164,7 @@
     "en"
   ],
   "programas": {
-    "es": "Funcion r <- Mayor(a Como Entero, b Como Entero)\nDefinir r Como Entero;\nSi a > b Entonces\nr <- a;\nSiNo\nr <- b;\nFinSi\nFinFuncion\nAlgoritmo P\nDefinir g Como SubProceso(Entero, Entero) Como Entero <- Mayor;\nEscribir g(5, 1);\nFinAlgoritmo\n",
+    "es": "Funcion r <- Mayor(a Como Entero, b Como Entero)\nDefinir r Como Entero;\nSi a > b Entonces\nr <- a;\nSino\nr <- b;\nFinSi\nFinFuncion\nAlgoritmo P\nDefinir g Como SubProceso(Entero, Entero) Como Entero <- Mayor;\nEscribir g(5, 1);\nFinAlgoritmo\n",
     "en": "function r <- Larger(a as integer, b as integer)\ndefine r as integer;\nif a > b then\nr <- a;\nelse\nr <- b;\nendIf\nendSubroutine\nalgorithm P\ndefine g as subroutine(integer, integer) as integer <- Larger;\nwrite g(5, 1);\nendAlgorithm\n"
   },
   "origen": "derivado",

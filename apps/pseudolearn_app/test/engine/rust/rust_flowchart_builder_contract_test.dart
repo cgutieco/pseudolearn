@@ -123,7 +123,7 @@ void main() {
   group('conditional', () {
     test('with an else branch draws two labelled exits and one junction', () {
       final scene = _sceneOf(
-        _program('Si 1 > 2 Entonces\na <- 1;\nSiNo\na <- 2;\nFinSi'),
+        _program('Si 1 > 2 Entonces\na <- 1;\nSino\na <- 2;\nFinSi'),
       );
       expect(_shaped(scene, DiagramShape.decision), hasLength(1));
       expect(_shaped(scene, DiagramShape.connector), hasLength(1));
@@ -133,7 +133,7 @@ void main() {
 
     test('puts the true branch to the left of the false branch', () {
       final scene = _sceneOf(
-        _program('Si 1 > 2 Entonces\na <- 1;\nSiNo\na <- 2;\nFinSi'),
+        _program('Si 1 > 2 Entonces\na <- 1;\nSino\na <- 2;\nFinSi'),
       );
       final trueEdge = _kinded(scene, DiagramEdgeKind.branchTrue).single;
       final falseEdge = _kinded(scene, DiagramEdgeKind.branchFalse).single;

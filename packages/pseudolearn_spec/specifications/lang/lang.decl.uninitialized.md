@@ -68,7 +68,7 @@
   "id": "R3",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Tras Si con SiNo una variable tiene valor si lo tiene al final de las dos ramas; si una rama no se lo da, la causa es branchWithoutAssignment y el origen es esa rama. Tras Si sin SiNo solo tiene valor si ya lo tenía antes (branchWithoutElse, origen en el Si). Segun, también sobre variantes, y Elegir exigen el valor al final de todas sus ramas (branchWithoutAssignment, origen en la rama); un Segun sin De Otro Modo que no cubre todos los valores del selector añade el camino que no entra en ninguna rama (switchWithoutDefault, origen en el Segun).",
+  "texto": "Tras Si con Sino una variable tiene valor si lo tiene al final de las dos ramas; si una rama no se lo da, la causa es branchWithoutAssignment y el origen es esa rama. Tras Si sin Sino solo tiene valor si ya lo tenía antes (branchWithoutElse, origen en el Si). Segun, también sobre variantes, y Elegir exigen el valor al final de todas sus ramas (branchWithoutAssignment, origen en la rama); un Segun sin De Otro Modo que no cubre todos los valores del selector añade el camino que no entra en ninguna rama (switchWithoutDefault, origen en el Segun).",
   "verificacion": [
     "C6",
     "C7",
@@ -319,7 +319,7 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir x Como Entero;\nDefinir c Como Logico <- Verdadero;\nSi c Entonces\nx <- 1;\nSiNo\nx <- 2;\nFinSi\nEscribir x;\nFinAlgoritmo\n",
+    "es": "Algoritmo P\nDefinir x Como Entero;\nDefinir c Como Logico <- Verdadero;\nSi c Entonces\nx <- 1;\nSino\nx <- 2;\nFinSi\nEscribir x;\nFinAlgoritmo\n",
     "en": "algorithm P\ndefine x as integer;\ndefine c as boolean <- true;\nif c then\nx <- 1;\nelse\nx <- 2;\nendIf\nwrite x;\nendAlgorithm\n"
   },
   "origen": "derivado",
@@ -370,7 +370,7 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir x Como Entero;\nDefinir c Como Logico <- Verdadero;\nSi c Entonces\nx <- 1;\nSiNo\nEscribir 0;\nFinSi\nEscribir x;\nFinAlgoritmo\n",
+    "es": "Algoritmo P\nDefinir x Como Entero;\nDefinir c Como Logico <- Verdadero;\nSi c Entonces\nx <- 1;\nSino\nEscribir 0;\nFinSi\nEscribir x;\nFinAlgoritmo\n",
     "en": "algorithm P\ndefine x as integer;\ndefine c as boolean <- true;\nif c then\nx <- 1;\nelse\nwrite 0;\nendIf\nwrite x;\nendAlgorithm\n"
   },
   "origen": "derivado",
@@ -400,7 +400,7 @@
     "en"
   ],
   "programas": {
-    "es": "SubProceso F(c Como Logico) Como Entero\nDefinir x Como Entero;\nSi c Entonces\nx <- 1;\nSiNo\nRetornar 0;\nFinSi\nRetornar x;\nFinSubProceso\nAlgoritmo P\nEscribir F(Verdadero), F(Falso);\nFinAlgoritmo\n",
+    "es": "SubProceso F(c Como Logico) Como Entero\nDefinir x Como Entero;\nSi c Entonces\nx <- 1;\nSino\nRetornar 0;\nFinSi\nRetornar x;\nFinSubProceso\nAlgoritmo P\nEscribir F(Verdadero), F(Falso);\nFinAlgoritmo\n",
     "en": "subroutine F(c as boolean) as integer\ndefine x as integer;\nif c then\nx <- 1;\nelse\nreturn 0;\nendIf\nreturn x;\nendSubroutine\nalgorithm P\nwrite F(true), F(false);\nendAlgorithm\n"
   },
   "origen": "derivado",

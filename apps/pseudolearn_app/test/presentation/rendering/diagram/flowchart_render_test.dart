@@ -36,10 +36,10 @@ Proceso Comparar
     Leer a, b;
     Si a = b Entonces
         Escribir "son iguales";
-    SiNo
+    Sino
         Si a > b Entonces
             Escribir "el mayor es ", a;
-        SiNo
+        Sino
             Escribir "el mayor es ", b;
         FinSi
     FinSi

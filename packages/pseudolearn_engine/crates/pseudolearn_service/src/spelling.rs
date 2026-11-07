@@ -38,7 +38,6 @@ fn preferred_spelling(kind: KeywordKind, profile: Profile) -> Option<&'static st
     match (profile, kind) {
         (Profile::Spanish, KeywordKind::Algorithm) => Some("Algoritmo"),
         (Profile::Spanish, KeywordKind::EndAlgorithm) => Some("FinAlgoritmo"),
-        (Profile::Spanish, KeywordKind::ElseKeyword) => Some("Sino"),
         _ => None,
     }
 }

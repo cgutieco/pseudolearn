@@ -290,7 +290,7 @@
     "es"
   ],
   "programas": {
-    "es": "Algoritmo MayorDeTres\nDefinir a, b, c, mayor Como Entero;\nLeer a, b, c;\nSi a > b Entonces\nSi a > c Entonces\nmayor <- a;\nSiNo\nmayor <- c;\nFinSi\nSiNo\nSi b > c Entonces\nmayor <- b;\nSiNo\nmayor <- c;\nFinSi\nFinSi\nEscribir \"Mayor: \", mayor;\nFinAlgoritmo\n"
+    "es": "Algoritmo MayorDeTres\nDefinir a, b, c, mayor Como Entero;\nLeer a, b, c;\nSi a > b Entonces\nSi a > c Entonces\nmayor <- a;\nSino\nmayor <- c;\nFinSi\nSino\nSi b > c Entonces\nmayor <- b;\nSino\nmayor <- c;\nFinSi\nFinSi\nEscribir \"Mayor: \", mayor;\nFinAlgoritmo\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -317,7 +317,7 @@
     "es"
   ],
   "programas": {
-    "es": "Algoritmo MayorDeTres\nDefinir a, b, c, mayor Como Entero;\nLeer a, b, c;\nSi a > b Entonces\nSi a > c Entonces\nmayor <- a;\nSiNo\nmayor <- c;\nFinSi\nSiNo\nSi b > c Entonces\nmayor <- b;\nSiNo\nmayor <- c;\nFinSi\nFinSi\nEscribir \"Mayor: \", mayor;\nFinAlgoritmo\n"
+    "es": "Algoritmo MayorDeTres\nDefinir a, b, c, mayor Como Entero;\nLeer a, b, c;\nSi a > b Entonces\nSi a > c Entonces\nmayor <- a;\nSino\nmayor <- c;\nFinSi\nSino\nSi b > c Entonces\nmayor <- b;\nSino\nmayor <- c;\nFinSi\nFinSi\nEscribir \"Mayor: \", mayor;\nFinAlgoritmo\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -339,7 +339,7 @@
     "es"
   ],
   "programas": {
-    "es": "Algoritmo Menu\nDefinir opcion Como Entero;\nDefinir resp, mensaje Como Cadena;\nLeer opcion;\nSegun opcion Hacer\n1: mensaje <- \"Sumar\";\n2: mensaje <- \"Restar\";\nDe Otro Modo: mensaje <- \"Salir\";\nFinSegun\nEscribir \"Eligio \", mensaje;\nLeer resp;\nSi resp = \"s\" Entonces\nEscribir \"Confirmado\";\nSiNo\nEscribir \"Cancelado\";\nFinSi\nFinAlgoritmo\n"
+    "es": "Algoritmo Menu\nDefinir opcion Como Entero;\nDefinir resp, mensaje Como Cadena;\nLeer opcion;\nSegun opcion Hacer\n1: mensaje <- \"Sumar\";\n2: mensaje <- \"Restar\";\nDe Otro Modo: mensaje <- \"Salir\";\nFinSegun\nEscribir \"Eligio \", mensaje;\nLeer resp;\nSi resp = \"s\" Entonces\nEscribir \"Confirmado\";\nSino\nEscribir \"Cancelado\";\nFinSi\nFinAlgoritmo\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -365,7 +365,7 @@
     "es"
   ],
   "programas": {
-    "es": "Algoritmo Menu\nDefinir opcion Como Entero;\nDefinir resp, mensaje Como Cadena;\nLeer opcion;\nSegun opcion Hacer\n1: mensaje <- \"Sumar\";\n2: mensaje <- \"Restar\";\nDe Otro Modo: mensaje <- \"Salir\";\nFinSegun\nEscribir \"Eligio \", mensaje;\nLeer resp;\nSi resp = \"s\" Entonces\nEscribir \"Confirmado\";\nSiNo\nEscribir \"Cancelado\";\nFinSi\nFinAlgoritmo\n"
+    "es": "Algoritmo Menu\nDefinir opcion Como Entero;\nDefinir resp, mensaje Como Cadena;\nLeer opcion;\nSegun opcion Hacer\n1: mensaje <- \"Sumar\";\n2: mensaje <- \"Restar\";\nDe Otro Modo: mensaje <- \"Salir\";\nFinSegun\nEscribir \"Eligio \", mensaje;\nLeer resp;\nSi resp = \"s\" Entonces\nEscribir \"Confirmado\";\nSino\nEscribir \"Cancelado\";\nFinSi\nFinAlgoritmo\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -532,7 +532,7 @@
     "es"
   ],
   "programas": {
-    "es": "Funcion r <- Mayor(a Como Entero, b Como Entero)\nDefinir r Como Entero;\nSi a > b Entonces\nr <- a;\nSiNo\nr <- b;\nFinSi\nFinFuncion\nAlgoritmo UsaMayor\nDefinir p, q Como Entero;\nLeer p, q;\nEscribir \"Mayor: \", Mayor(p, q);\nFinAlgoritmo\n"
+    "es": "Funcion r <- Mayor(a Como Entero, b Como Entero)\nDefinir r Como Entero;\nSi a > b Entonces\nr <- a;\nSino\nr <- b;\nFinSi\nFinFuncion\nAlgoritmo UsaMayor\nDefinir p, q Como Entero;\nLeer p, q;\nEscribir \"Mayor: \", Mayor(p, q);\nFinAlgoritmo\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -558,7 +558,7 @@
     "es"
   ],
   "programas": {
-    "es": "Funcion r <- Mayor(a Como Entero, b Como Entero)\nDefinir r Como Entero;\nSi a > b Entonces\nr <- a;\nSiNo\nr <- b;\nFinSi\nFinFuncion\nAlgoritmo UsaMayor\nDefinir p, q Como Entero;\nLeer p, q;\nEscribir \"Mayor: \", Mayor(p, q);\nFinAlgoritmo\n"
+    "es": "Funcion r <- Mayor(a Como Entero, b Como Entero)\nDefinir r Como Entero;\nSi a > b Entonces\nr <- a;\nSino\nr <- b;\nFinSi\nFinFuncion\nAlgoritmo UsaMayor\nDefinir p, q Como Entero;\nLeer p, q;\nEscribir \"Mayor: \", Mayor(p, q);\nFinAlgoritmo\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -629,7 +629,7 @@
     "es"
   ],
   "programas": {
-    "es": "Funcion r <- Mayor(a Como Real, b Como Real)\nDefinir r Como Real;\nSi a > b Entonces\nr <- a;\nSiNo\nr <- b;\nFinSi\nFinFuncion\nAlgoritmo Integrador\nDefinir nombre, resp, dato Como Cadena;\nDefinir cantidad, i, opcion Como Entero;\nDefinir notas Como Real;\nDefinir suma, mejor Como Real;\nDimension notas[3];\nLeer nombre;\nEscribir Concatenar(\"Hola, \", Mayusculas(nombre));\nEscribir \"Letras: \", Longitud(nombre), \" Inicio: \", Subcadena(nombre, 0, 2);\ncantidad <- 3;\nsuma <- 0;\ni <- 0;\nMientras i < cantidad Hacer\nLeer dato;\nnotas[i] <- ConvertirANumero(dato);\nsuma <- suma + notas[i];\ni <- i + 1;\nFinMientras\nmejor <- notas[0];\nPara k <- 1 Hasta 2 Hacer\nmejor <- Mayor(mejor, notas[k]);\nFinPara\nEscribir \"Promedio: \", suma / cantidad, \" Mejor: \", mejor;\nLeer opcion;\nSegun opcion Hacer\n1: Escribir \"Aprobado\";\n2: Escribir \"Revisar\";\nDe Otro Modo: Escribir \"Sin opcion\";\nFinSegun\nLeer resp;\nSi resp = \"s\" Entonces\nEscribir \"Fin\";\nSiNo\nEscribir \"Continuar\";\nFinSi\nFinAlgoritmo\n"
+    "es": "Funcion r <- Mayor(a Como Real, b Como Real)\nDefinir r Como Real;\nSi a > b Entonces\nr <- a;\nSino\nr <- b;\nFinSi\nFinFuncion\nAlgoritmo Integrador\nDefinir nombre, resp, dato Como Cadena;\nDefinir cantidad, i, opcion Como Entero;\nDefinir notas Como Real;\nDefinir suma, mejor Como Real;\nDimension notas[3];\nLeer nombre;\nEscribir Concatenar(\"Hola, \", Mayusculas(nombre));\nEscribir \"Letras: \", Longitud(nombre), \" Inicio: \", Subcadena(nombre, 0, 2);\ncantidad <- 3;\nsuma <- 0;\ni <- 0;\nMientras i < cantidad Hacer\nLeer dato;\nnotas[i] <- ConvertirANumero(dato);\nsuma <- suma + notas[i];\ni <- i + 1;\nFinMientras\nmejor <- notas[0];\nPara k <- 1 Hasta 2 Hacer\nmejor <- Mayor(mejor, notas[k]);\nFinPara\nEscribir \"Promedio: \", suma / cantidad, \" Mejor: \", mejor;\nLeer opcion;\nSegun opcion Hacer\n1: Escribir \"Aprobado\";\n2: Escribir \"Revisar\";\nDe Otro Modo: Escribir \"Sin opcion\";\nFinSegun\nLeer resp;\nSi resp = \"s\" Entonces\nEscribir \"Fin\";\nSino\nEscribir \"Continuar\";\nFinSi\nFinAlgoritmo\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -659,7 +659,7 @@
     "es"
   ],
   "programas": {
-    "es": "Funcion r <- Mayor(a Como Real, b Como Real)\nDefinir r Como Real;\nSi a > b Entonces\nr <- a;\nSiNo\nr <- b;\nFinSi\nFinFuncion\nAlgoritmo Integrador\nDefinir nombre, resp, dato Como Cadena;\nDefinir cantidad, i, opcion Como Entero;\nDefinir notas Como Real;\nDefinir suma, mejor Como Real;\nDimension notas[3];\nLeer nombre;\nEscribir Concatenar(\"Hola, \", Mayusculas(nombre));\nEscribir \"Letras: \", Longitud(nombre), \" Inicio: \", Subcadena(nombre, 0, 2);\ncantidad <- 3;\nsuma <- 0;\ni <- 0;\nMientras i < cantidad Hacer\nLeer dato;\nnotas[i] <- ConvertirANumero(dato);\nsuma <- suma + notas[i];\ni <- i + 1;\nFinMientras\nmejor <- notas[0];\nPara k <- 1 Hasta 2 Hacer\nmejor <- Mayor(mejor, notas[k]);\nFinPara\nEscribir \"Promedio: \", suma / cantidad, \" Mejor: \", mejor;\nLeer opcion;\nSegun opcion Hacer\n1: Escribir \"Aprobado\";\n2: Escribir \"Revisar\";\nDe Otro Modo: Escribir \"Sin opcion\";\nFinSegun\nLeer resp;\nSi resp = \"s\" Entonces\nEscribir \"Fin\";\nSiNo\nEscribir \"Continuar\";\nFinSi\nFinAlgoritmo\n"
+    "es": "Funcion r <- Mayor(a Como Real, b Como Real)\nDefinir r Como Real;\nSi a > b Entonces\nr <- a;\nSino\nr <- b;\nFinSi\nFinFuncion\nAlgoritmo Integrador\nDefinir nombre, resp, dato Como Cadena;\nDefinir cantidad, i, opcion Como Entero;\nDefinir notas Como Real;\nDefinir suma, mejor Como Real;\nDimension notas[3];\nLeer nombre;\nEscribir Concatenar(\"Hola, \", Mayusculas(nombre));\nEscribir \"Letras: \", Longitud(nombre), \" Inicio: \", Subcadena(nombre, 0, 2);\ncantidad <- 3;\nsuma <- 0;\ni <- 0;\nMientras i < cantidad Hacer\nLeer dato;\nnotas[i] <- ConvertirANumero(dato);\nsuma <- suma + notas[i];\ni <- i + 1;\nFinMientras\nmejor <- notas[0];\nPara k <- 1 Hasta 2 Hacer\nmejor <- Mayor(mejor, notas[k]);\nFinPara\nEscribir \"Promedio: \", suma / cantidad, \" Mejor: \", mejor;\nLeer opcion;\nSegun opcion Hacer\n1: Escribir \"Aprobado\";\n2: Escribir \"Revisar\";\nDe Otro Modo: Escribir \"Sin opcion\";\nFinSegun\nLeer resp;\nSi resp = \"s\" Entonces\nEscribir \"Fin\";\nSino\nEscribir \"Continuar\";\nFinSi\nFinAlgoritmo\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -756,7 +756,7 @@
     ],
     "entorno": {},
     "archivos": {
-      "p.pseudo": "Algoritmo MayorDeTres\nDefinir a, b, c, mayor Como Entero;\nLeer a, b, c;\nSi a > b Entonces\nSi a > c Entonces\nmayor <- a;\nSiNo\nmayor <- c;\nFinSi\nSiNo\nSi b > c Entonces\nmayor <- b;\nSiNo\nmayor <- c;\nFinSi\nFinSi\nEscribir \"Mayor: \", mayor;\nFinAlgoritmo\n"
+      "p.pseudo": "Algoritmo MayorDeTres\nDefinir a, b, c, mayor Como Entero;\nLeer a, b, c;\nSi a > b Entonces\nSi a > c Entonces\nmayor <- a;\nSino\nmayor <- c;\nFinSi\nSino\nSi b > c Entonces\nmayor <- b;\nSino\nmayor <- c;\nFinSi\nFinSi\nEscribir \"Mayor: \", mayor;\nFinAlgoritmo\n"
     },
     "entrada": "4\n9\n2\n"
   },
@@ -787,7 +787,7 @@
     ],
     "entorno": {},
     "archivos": {
-      "p.pseudo": "Algoritmo Menu\nDefinir opcion Como Entero;\nDefinir resp, mensaje Como Cadena;\nLeer opcion;\nSegun opcion Hacer\n1: mensaje <- \"Sumar\";\n2: mensaje <- \"Restar\";\nDe Otro Modo: mensaje <- \"Salir\";\nFinSegun\nEscribir \"Eligio \", mensaje;\nLeer resp;\nSi resp = \"s\" Entonces\nEscribir \"Confirmado\";\nSiNo\nEscribir \"Cancelado\";\nFinSi\nFinAlgoritmo\n"
+      "p.pseudo": "Algoritmo Menu\nDefinir opcion Como Entero;\nDefinir resp, mensaje Como Cadena;\nLeer opcion;\nSegun opcion Hacer\n1: mensaje <- \"Sumar\";\n2: mensaje <- \"Restar\";\nDe Otro Modo: mensaje <- \"Salir\";\nFinSegun\nEscribir \"Eligio \", mensaje;\nLeer resp;\nSi resp = \"s\" Entonces\nEscribir \"Confirmado\";\nSino\nEscribir \"Cancelado\";\nFinSi\nFinAlgoritmo\n"
     },
     "entrada": "2\ns\n"
   },
@@ -911,7 +911,7 @@
     ],
     "entorno": {},
     "archivos": {
-      "p.pseudo": "Funcion r <- Mayor(a Como Entero, b Como Entero)\nDefinir r Como Entero;\nSi a > b Entonces\nr <- a;\nSiNo\nr <- b;\nFinSi\nFinFuncion\nAlgoritmo UsaMayor\nDefinir p, q Como Entero;\nLeer p, q;\nEscribir \"Mayor: \", Mayor(p, q);\nFinAlgoritmo\n"
+      "p.pseudo": "Funcion r <- Mayor(a Como Entero, b Como Entero)\nDefinir r Como Entero;\nSi a > b Entonces\nr <- a;\nSino\nr <- b;\nFinSi\nFinFuncion\nAlgoritmo UsaMayor\nDefinir p, q Como Entero;\nLeer p, q;\nEscribir \"Mayor: \", Mayor(p, q);\nFinAlgoritmo\n"
     },
     "entrada": "7\n12\n"
   },
@@ -973,7 +973,7 @@
     ],
     "entorno": {},
     "archivos": {
-      "p.pseudo": "Funcion r <- Mayor(a Como Real, b Como Real)\nDefinir r Como Real;\nSi a > b Entonces\nr <- a;\nSiNo\nr <- b;\nFinSi\nFinFuncion\nAlgoritmo Integrador\nDefinir nombre, resp, dato Como Cadena;\nDefinir cantidad, i, opcion Como Entero;\nDefinir notas Como Real;\nDefinir suma, mejor Como Real;\nDimension notas[3];\nLeer nombre;\nEscribir Concatenar(\"Hola, \", Mayusculas(nombre));\nEscribir \"Letras: \", Longitud(nombre), \" Inicio: \", Subcadena(nombre, 0, 2);\ncantidad <- 3;\nsuma <- 0;\ni <- 0;\nMientras i < cantidad Hacer\nLeer dato;\nnotas[i] <- ConvertirANumero(dato);\nsuma <- suma + notas[i];\ni <- i + 1;\nFinMientras\nmejor <- notas[0];\nPara k <- 1 Hasta 2 Hacer\nmejor <- Mayor(mejor, notas[k]);\nFinPara\nEscribir \"Promedio: \", suma / cantidad, \" Mejor: \", mejor;\nLeer opcion;\nSegun opcion Hacer\n1: Escribir \"Aprobado\";\n2: Escribir \"Revisar\";\nDe Otro Modo: Escribir \"Sin opcion\";\nFinSegun\nLeer resp;\nSi resp = \"s\" Entonces\nEscribir \"Fin\";\nSiNo\nEscribir \"Continuar\";\nFinSi\nFinAlgoritmo\n"
+      "p.pseudo": "Funcion r <- Mayor(a Como Real, b Como Real)\nDefinir r Como Real;\nSi a > b Entonces\nr <- a;\nSino\nr <- b;\nFinSi\nFinFuncion\nAlgoritmo Integrador\nDefinir nombre, resp, dato Como Cadena;\nDefinir cantidad, i, opcion Como Entero;\nDefinir notas Como Real;\nDefinir suma, mejor Como Real;\nDimension notas[3];\nLeer nombre;\nEscribir Concatenar(\"Hola, \", Mayusculas(nombre));\nEscribir \"Letras: \", Longitud(nombre), \" Inicio: \", Subcadena(nombre, 0, 2);\ncantidad <- 3;\nsuma <- 0;\ni <- 0;\nMientras i < cantidad Hacer\nLeer dato;\nnotas[i] <- ConvertirANumero(dato);\nsuma <- suma + notas[i];\ni <- i + 1;\nFinMientras\nmejor <- notas[0];\nPara k <- 1 Hasta 2 Hacer\nmejor <- Mayor(mejor, notas[k]);\nFinPara\nEscribir \"Promedio: \", suma / cantidad, \" Mejor: \", mejor;\nLeer opcion;\nSegun opcion Hacer\n1: Escribir \"Aprobado\";\n2: Escribir \"Revisar\";\nDe Otro Modo: Escribir \"Sin opcion\";\nFinSegun\nLeer resp;\nSi resp = \"s\" Entonces\nEscribir \"Fin\";\nSino\nEscribir \"Continuar\";\nFinSi\nFinAlgoritmo\n"
     },
     "entrada": "Lucia\n7.5\n9\n6\n2\ns\n"
   },
@@ -1155,7 +1155,7 @@
           {
             "path": "app/main",
             "source_id": 1,
-            "text": "Algoritmo MayorDeTres\nDefinir a, b, c, mayor Como Entero;\nLeer a, b, c;\nSi a > b Entonces\nSi a > c Entonces\nmayor <- a;\nSiNo\nmayor <- c;\nFinSi\nSiNo\nSi b > c Entonces\nmayor <- b;\nSiNo\nmayor <- c;\nFinSi\nFinSi\nEscribir \"Mayor: \", mayor;\nFinAlgoritmo\n"
+            "text": "Algoritmo MayorDeTres\nDefinir a, b, c, mayor Como Entero;\nLeer a, b, c;\nSi a > b Entonces\nSi a > c Entonces\nmayor <- a;\nSino\nmayor <- c;\nFinSi\nSino\nSi b > c Entonces\nmayor <- b;\nSino\nmayor <- c;\nFinSi\nFinSi\nEscribir \"Mayor: \", mayor;\nFinAlgoritmo\n"
           }
         ]
       },
@@ -1168,7 +1168,7 @@
         "operation": "open",
         "path": "app/main",
         "version": 1,
-        "text": "Algoritmo MayorDeTres\nDefinir a, b, c, mayor Como Entero;\nLeer a, b, c;\nSi a > b Entonces\nSi a > c Entonces\nmayor <- a;\nSiNo\nmayor <- c;\nFinSi\nSiNo\nSi b > c Entonces\nmayor <- b;\nSiNo\nmayor <- c;\nFinSi\nFinSi\nEscribir \"Mayor: \", mayor;\nFinAlgoritmo\n"
+        "text": "Algoritmo MayorDeTres\nDefinir a, b, c, mayor Como Entero;\nLeer a, b, c;\nSi a > b Entonces\nSi a > c Entonces\nmayor <- a;\nSino\nmayor <- c;\nFinSi\nSino\nSi b > c Entonces\nmayor <- b;\nSino\nmayor <- c;\nFinSi\nFinSi\nEscribir \"Mayor: \", mayor;\nFinAlgoritmo\n"
       }
     ]
   },
@@ -1220,7 +1220,7 @@
           {
             "path": "app/main",
             "source_id": 1,
-            "text": "Algoritmo Menu\nDefinir opcion Como Entero;\nDefinir resp, mensaje Como Cadena;\nLeer opcion;\nSegun opcion Hacer\n1: mensaje <- \"Sumar\";\n2: mensaje <- \"Restar\";\nDe Otro Modo: mensaje <- \"Salir\";\nFinSegun\nEscribir \"Eligio \", mensaje;\nLeer resp;\nSi resp = \"s\" Entonces\nEscribir \"Confirmado\";\nSiNo\nEscribir \"Cancelado\";\nFinSi\nFinAlgoritmo\n"
+            "text": "Algoritmo Menu\nDefinir opcion Como Entero;\nDefinir resp, mensaje Como Cadena;\nLeer opcion;\nSegun opcion Hacer\n1: mensaje <- \"Sumar\";\n2: mensaje <- \"Restar\";\nDe Otro Modo: mensaje <- \"Salir\";\nFinSegun\nEscribir \"Eligio \", mensaje;\nLeer resp;\nSi resp = \"s\" Entonces\nEscribir \"Confirmado\";\nSino\nEscribir \"Cancelado\";\nFinSi\nFinAlgoritmo\n"
           }
         ]
       },
@@ -1233,7 +1233,7 @@
         "operation": "open",
         "path": "app/main",
         "version": 1,
-        "text": "Algoritmo Menu\nDefinir opcion Como Entero;\nDefinir resp, mensaje Como Cadena;\nLeer opcion;\nSegun opcion Hacer\n1: mensaje <- \"Sumar\";\n2: mensaje <- \"Restar\";\nDe Otro Modo: mensaje <- \"Salir\";\nFinSegun\nEscribir \"Eligio \", mensaje;\nLeer resp;\nSi resp = \"s\" Entonces\nEscribir \"Confirmado\";\nSiNo\nEscribir \"Cancelado\";\nFinSi\nFinAlgoritmo\n"
+        "text": "Algoritmo Menu\nDefinir opcion Como Entero;\nDefinir resp, mensaje Como Cadena;\nLeer opcion;\nSegun opcion Hacer\n1: mensaje <- \"Sumar\";\n2: mensaje <- \"Restar\";\nDe Otro Modo: mensaje <- \"Salir\";\nFinSegun\nEscribir \"Eligio \", mensaje;\nLeer resp;\nSi resp = \"s\" Entonces\nEscribir \"Confirmado\";\nSino\nEscribir \"Cancelado\";\nFinSi\nFinAlgoritmo\n"
       }
     ]
   },
@@ -1480,7 +1480,7 @@
           {
             "path": "app/main",
             "source_id": 1,
-            "text": "Funcion r <- Mayor(a Como Entero, b Como Entero)\nDefinir r Como Entero;\nSi a > b Entonces\nr <- a;\nSiNo\nr <- b;\nFinSi\nFinFuncion\nAlgoritmo UsaMayor\nDefinir p, q Como Entero;\nLeer p, q;\nEscribir \"Mayor: \", Mayor(p, q);\nFinAlgoritmo\n"
+            "text": "Funcion r <- Mayor(a Como Entero, b Como Entero)\nDefinir r Como Entero;\nSi a > b Entonces\nr <- a;\nSino\nr <- b;\nFinSi\nFinFuncion\nAlgoritmo UsaMayor\nDefinir p, q Como Entero;\nLeer p, q;\nEscribir \"Mayor: \", Mayor(p, q);\nFinAlgoritmo\n"
           }
         ]
       },
@@ -1493,7 +1493,7 @@
         "operation": "open",
         "path": "app/main",
         "version": 1,
-        "text": "Funcion r <- Mayor(a Como Entero, b Como Entero)\nDefinir r Como Entero;\nSi a > b Entonces\nr <- a;\nSiNo\nr <- b;\nFinSi\nFinFuncion\nAlgoritmo UsaMayor\nDefinir p, q Como Entero;\nLeer p, q;\nEscribir \"Mayor: \", Mayor(p, q);\nFinAlgoritmo\n"
+        "text": "Funcion r <- Mayor(a Como Entero, b Como Entero)\nDefinir r Como Entero;\nSi a > b Entonces\nr <- a;\nSino\nr <- b;\nFinSi\nFinFuncion\nAlgoritmo UsaMayor\nDefinir p, q Como Entero;\nLeer p, q;\nEscribir \"Mayor: \", Mayor(p, q);\nFinAlgoritmo\n"
       }
     ]
   },
@@ -1610,7 +1610,7 @@
           {
             "path": "app/main",
             "source_id": 1,
-            "text": "Funcion r <- Mayor(a Como Real, b Como Real)\nDefinir r Como Real;\nSi a > b Entonces\nr <- a;\nSiNo\nr <- b;\nFinSi\nFinFuncion\nAlgoritmo Integrador\nDefinir nombre, resp, dato Como Cadena;\nDefinir cantidad, i, opcion Como Entero;\nDefinir notas Como Real;\nDefinir suma, mejor Como Real;\nDimension notas[3];\nLeer nombre;\nEscribir Concatenar(\"Hola, \", Mayusculas(nombre));\nEscribir \"Letras: \", Longitud(nombre), \" Inicio: \", Subcadena(nombre, 0, 2);\ncantidad <- 3;\nsuma <- 0;\ni <- 0;\nMientras i < cantidad Hacer\nLeer dato;\nnotas[i] <- ConvertirANumero(dato);\nsuma <- suma + notas[i];\ni <- i + 1;\nFinMientras\nmejor <- notas[0];\nPara k <- 1 Hasta 2 Hacer\nmejor <- Mayor(mejor, notas[k]);\nFinPara\nEscribir \"Promedio: \", suma / cantidad, \" Mejor: \", mejor;\nLeer opcion;\nSegun opcion Hacer\n1: Escribir \"Aprobado\";\n2: Escribir \"Revisar\";\nDe Otro Modo: Escribir \"Sin opcion\";\nFinSegun\nLeer resp;\nSi resp = \"s\" Entonces\nEscribir \"Fin\";\nSiNo\nEscribir \"Continuar\";\nFinSi\nFinAlgoritmo\n"
+            "text": "Funcion r <- Mayor(a Como Real, b Como Real)\nDefinir r Como Real;\nSi a > b Entonces\nr <- a;\nSino\nr <- b;\nFinSi\nFinFuncion\nAlgoritmo Integrador\nDefinir nombre, resp, dato Como Cadena;\nDefinir cantidad, i, opcion Como Entero;\nDefinir notas Como Real;\nDefinir suma, mejor Como Real;\nDimension notas[3];\nLeer nombre;\nEscribir Concatenar(\"Hola, \", Mayusculas(nombre));\nEscribir \"Letras: \", Longitud(nombre), \" Inicio: \", Subcadena(nombre, 0, 2);\ncantidad <- 3;\nsuma <- 0;\ni <- 0;\nMientras i < cantidad Hacer\nLeer dato;\nnotas[i] <- ConvertirANumero(dato);\nsuma <- suma + notas[i];\ni <- i + 1;\nFinMientras\nmejor <- notas[0];\nPara k <- 1 Hasta 2 Hacer\nmejor <- Mayor(mejor, notas[k]);\nFinPara\nEscribir \"Promedio: \", suma / cantidad, \" Mejor: \", mejor;\nLeer opcion;\nSegun opcion Hacer\n1: Escribir \"Aprobado\";\n2: Escribir \"Revisar\";\nDe Otro Modo: Escribir \"Sin opcion\";\nFinSegun\nLeer resp;\nSi resp = \"s\" Entonces\nEscribir \"Fin\";\nSino\nEscribir \"Continuar\";\nFinSi\nFinAlgoritmo\n"
           }
         ]
       },
@@ -1623,7 +1623,7 @@
         "operation": "open",
         "path": "app/main",
         "version": 1,
-        "text": "Funcion r <- Mayor(a Como Real, b Como Real)\nDefinir r Como Real;\nSi a > b Entonces\nr <- a;\nSiNo\nr <- b;\nFinSi\nFinFuncion\nAlgoritmo Integrador\nDefinir nombre, resp, dato Como Cadena;\nDefinir cantidad, i, opcion Como Entero;\nDefinir notas Como Real;\nDefinir suma, mejor Como Real;\nDimension notas[3];\nLeer nombre;\nEscribir Concatenar(\"Hola, \", Mayusculas(nombre));\nEscribir \"Letras: \", Longitud(nombre), \" Inicio: \", Subcadena(nombre, 0, 2);\ncantidad <- 3;\nsuma <- 0;\ni <- 0;\nMientras i < cantidad Hacer\nLeer dato;\nnotas[i] <- ConvertirANumero(dato);\nsuma <- suma + notas[i];\ni <- i + 1;\nFinMientras\nmejor <- notas[0];\nPara k <- 1 Hasta 2 Hacer\nmejor <- Mayor(mejor, notas[k]);\nFinPara\nEscribir \"Promedio: \", suma / cantidad, \" Mejor: \", mejor;\nLeer opcion;\nSegun opcion Hacer\n1: Escribir \"Aprobado\";\n2: Escribir \"Revisar\";\nDe Otro Modo: Escribir \"Sin opcion\";\nFinSegun\nLeer resp;\nSi resp = \"s\" Entonces\nEscribir \"Fin\";\nSiNo\nEscribir \"Continuar\";\nFinSi\nFinAlgoritmo\n"
+        "text": "Funcion r <- Mayor(a Como Real, b Como Real)\nDefinir r Como Real;\nSi a > b Entonces\nr <- a;\nSino\nr <- b;\nFinSi\nFinFuncion\nAlgoritmo Integrador\nDefinir nombre, resp, dato Como Cadena;\nDefinir cantidad, i, opcion Como Entero;\nDefinir notas Como Real;\nDefinir suma, mejor Como Real;\nDimension notas[3];\nLeer nombre;\nEscribir Concatenar(\"Hola, \", Mayusculas(nombre));\nEscribir \"Letras: \", Longitud(nombre), \" Inicio: \", Subcadena(nombre, 0, 2);\ncantidad <- 3;\nsuma <- 0;\ni <- 0;\nMientras i < cantidad Hacer\nLeer dato;\nnotas[i] <- ConvertirANumero(dato);\nsuma <- suma + notas[i];\ni <- i + 1;\nFinMientras\nmejor <- notas[0];\nPara k <- 1 Hasta 2 Hacer\nmejor <- Mayor(mejor, notas[k]);\nFinPara\nEscribir \"Promedio: \", suma / cantidad, \" Mejor: \", mejor;\nLeer opcion;\nSegun opcion Hacer\n1: Escribir \"Aprobado\";\n2: Escribir \"Revisar\";\nDe Otro Modo: Escribir \"Sin opcion\";\nFinSegun\nLeer resp;\nSi resp = \"s\" Entonces\nEscribir \"Fin\";\nSino\nEscribir \"Continuar\";\nFinSi\nFinAlgoritmo\n"
       }
     ]
   },
