@@ -652,5 +652,10 @@ Cada decisión se tomó con la opción recomendada; las ediciones conservan iden
   paréntesis pegado a `Algo`/`Exito`/`SubProceso`) y coinciden línea a línea con los guardados. La comparación la hizo el
   agente de implementación, no una persona, así que los cuatro casos siguen sin `revisado_por` y quedan **pendientes de
   revisión humana**; los casos nuevos de esta sección tampoco llevan revisor.
+- **`TOOL.CLI.CONVENTIONS` C33 y C34.** Se añadieron con la lista de aperturas y nunca se habían ejecutado contra `cli`;
+  al ejecutarlos chocaban con otras reglas aunque el perfil inglés ya se detectaba bien. C33 omitía el `;` que exige
+  la firma de interfaz y ahora lo lleva. C34 abre con `public` en un archivo suelto, donde la visibilidad produce
+  `moduleSyntaxOutsideProject` (`LANG.MODULE.MODEL`); espera ahora ese diagnóstico, que solo aparece si el perfil
+  detectado es el inglés, de modo que sigue verificando la detección de R3.
 - **`LIB.HTTP` R6 y C8.** Comprobado: ninguno expresa plazos (tratan la redacción de credenciales en la cinta); los únicos
   plazos del archivo son los de `ConTiempoMaximo` en C1, C17, C18, C19 y C38, en nanosegundos como fijan R2 y R7. No hubo cambio.

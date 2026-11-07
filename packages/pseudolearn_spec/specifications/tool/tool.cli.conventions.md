@@ -1130,7 +1130,7 @@ Cada caso cli declara su entorno completo: el sujeto ejecuta pseudo con exactame
     ],
     "entorno": {},
     "archivos": {
-      "p.pseudo": "interface Shape\nsubroutine area() as real\nendInterface\nalgorithm P\nwrite 1;\nendAlgorithm\n"
+      "p.pseudo": "interface Shape\nsubroutine area() as real;\nendInterface\nalgorithm P\nwrite 1;\nendAlgorithm\n"
     }
   }
 }
@@ -1146,9 +1146,9 @@ Cada caso cli declara su entorno completo: el sujeto ejecuta pseudo con exactame
   "origen": "derivado",
   "operacion": "cli",
   "espera": {
-    "codigo_salida": 0,
-    "salida": "1\n",
-    "salida_error": ""
+    "codigo_salida": 1,
+    "salida": "",
+    "salida_error": "p.pseudo:1:1: error: Importar, Exportar y la visibilidad de unidades solo se admiten dentro de un proyecto [moduleSyntaxOutsideProject]\n    1 | public subroutine One() as integer\n      | ^\n"
   },
   "cli": {
     "argumentos": [
