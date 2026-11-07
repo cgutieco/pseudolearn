@@ -98,7 +98,8 @@ Los niveles siguientes solo importan los anteriores permitidos explícitamente.
 | 6 | pseudolearn_service | Proporciona análisis incremental por unidad, sesión persistente de workspace, consultas bilingües y sesión LSP | source, diagnostics, lexicon, syntax, semantic, project |
 | 6 | pseudolearn_vm | Ejecuta bytecode verificado y devuelve terminación, servicio o trampa tipada | bytecode, runtime, library, diagnostics, vm_dispatch (compilación) |
 | 7 | pseudolearn_timeline | Reconstruye el estado observable de cualquier instante mediante puntos de control | vm, runtime, bytecode, diagnostics |
-| 8 | pseudolearn_api | Ofrece operaciones públicas totales sobre recursos del núcleo | source, project, abi, diagnostics, lexicon, syntax, semantic, ir, lowering, bytecode, runtime, library, vm, timeline, service, codegen, aot_rt |
+| 7 | pseudolearn_transpiler | Traduce el HIR tipado a código equivalente en Rust y Python con solo la biblioteca estándar del destino | source, lexicon, semantic (syntax en pruebas) |
+| 8 | pseudolearn_api | Ofrece operaciones públicas totales sobre recursos del núcleo | transpiler, source, project, abi, diagnostics, lexicon, syntax, semantic, ir, lowering, bytecode, runtime, library, vm, timeline, service, codegen, aot_rt |
 | 9 | pseudolearn_conformance | Adapta la API al protocolo de conformidad por procesos | api |
 | 10 | pseudolearn_wasm | Expone la API pública como módulo para navegadores | api |
 | tooling | pseudolearn_vm_tracer | Mide directamente la VM y prepara bytecode antes del intervalo medido | api, bytecode, vm |
