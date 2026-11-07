@@ -79,6 +79,8 @@ pub mod template_reuse;
 pub mod template_session;
 pub mod template_validity;
 pub mod translator;
+mod tree_blocks;
+mod type_brackets;
 pub mod type_names;
 pub mod typing_lines;
 pub mod typing_plan;

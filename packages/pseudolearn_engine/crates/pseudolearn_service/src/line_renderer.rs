@@ -4,12 +4,14 @@ use crate::spelling::{boolean_spelling, builtin_spelling, positioned_keyword_spe
 use pseudolearn_lexicon::{KeywordKind, Profile, find_builtin};
 use pseudolearn_source::SourceText;
 use pseudolearn_syntax::{SyntaxTree, TokenKind};
+use std::collections::BTreeSet;
 
 pub struct RenderContext<'context> {
     pub tree: &'context SyntaxTree,
     pub source: &'context SourceText,
     pub profile: Profile,
     pub roles: &'context IdentifierRoles,
+    pub angle_brackets: &'context BTreeSet<usize>,
 }
 
 #[derive(Clone, Debug)]
@@ -17,6 +19,7 @@ struct Piece {
     text: String,
     kind: TokenKind,
     unary: bool,
+    angle: bool,
 }
 
 pub fn render_line(
@@ -61,14 +64,19 @@ fn piece_for(context: &RenderContext<'_>, index: usize) -> Piece {
         text,
         kind,
         unary: false,
+        angle: context.angle_brackets.contains(&index),
     }
 }
 
 fn identifier_text(context: &RenderContext<'_>, index: usize, original: &str) -> String {
     if let Some(identity) = context.roles.contextual_identity(index) {
-        return pseudolearn_syntax::contextual_spelling(identity, context.profile.as_str())
-            .unwrap_or(original)
-            .to_owned();
+        return crate::spelling::contextual_word_spelling(
+            context.tree,
+            index,
+            identity,
+            context.profile,
+        )
+        .unwrap_or_else(|| original.to_owned());
     }
     if context
         .roles
@@ -134,6 +142,7 @@ fn adjust_terminator(pieces: &mut Vec<Piece>) {
                 text: ";".to_owned(),
                 kind: TokenKind::Semicolon,
                 unary: false,
+                angle: false,
             },
         );
     }
@@ -185,16 +194,40 @@ fn gap(before: &Piece, after: &Piece, trailing_comment: bool) -> &'static str {
     if before.kind == TokenKind::Comment {
         return " ";
     }
-    if hugs_previous(after.kind) || hugs_next(before) {
+    if hugs_previous(after.kind) || hugs_next(before) || after.angle || opens_type_list(before) {
         return "";
     }
-    if after.kind == TokenKind::LeftParenthesis && opens_call(before.kind, true) {
+    if after.kind == TokenKind::LeftParenthesis
+        && (opens_call(before.kind, true)
+            || closes_type_list(before)
+            || precedes_own_parentheses(before.kind))
+    {
         return "";
     }
     if after.kind == TokenKind::LeftBracket && opens_call(before.kind, false) {
         return "";
     }
     " "
+}
+
+fn opens_type_list(before: &Piece) -> bool {
+    before.angle && before.kind == TokenKind::Less
+}
+
+fn closes_type_list(before: &Piece) -> bool {
+    before.angle && before.kind == TokenKind::Greater
+}
+
+fn precedes_own_parentheses(kind: TokenKind) -> bool {
+    matches!(
+        kind,
+        TokenKind::Keyword(
+            KeywordKind::SomeVariant
+                | KeywordKind::SuccessVariant
+                | KeywordKind::ErrorVariant
+                | KeywordKind::Subroutine
+        )
+    )
 }
 
 fn hugs_previous(kind: TokenKind) -> bool {

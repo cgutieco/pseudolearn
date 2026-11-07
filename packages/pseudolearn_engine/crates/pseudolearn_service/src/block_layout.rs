@@ -1,3 +1,4 @@
+use crate::tree_blocks::TreeBlocks;
 use pseudolearn_lexicon::KeywordKind;
 use pseudolearn_syntax::{NodeKind, SyntaxTree, TokenKind};
 use std::collections::BTreeSet;
@@ -16,65 +17,52 @@ pub enum LineRole {
     CaseLabel,
 }
 
-#[derive(Default)]
 pub struct BlockLayout {
     stack: Vec<OpenBlock>,
     case_starts: BTreeSet<u32>,
-    contextual_openers: BTreeSet<u32>,
-    contextual_closers: BTreeSet<u32>,
-    signatures: BTreeSet<u32>,
+    blocks: TreeBlocks,
 }
 
 impl BlockLayout {
     pub fn new(tree: &SyntaxTree) -> Self {
         Self {
             stack: Vec::new(),
-            case_starts: starts(tree, &[NodeKind::Labels, NodeKind::DefaultCase]),
-            contextual_openers: tree
-                .nodes
-                .iter()
-                .filter(|node| {
-                    matches!(
-                        node.kind,
-                        NodeKind::InterfaceUnit | NodeKind::DeferStatement
-                    )
-                })
-                .map(|node| node.first_token)
-                .collect(),
-            contextual_closers: tree
-                .nodes
-                .iter()
-                .enumerate()
-                .filter(|(_, node)| {
-                    matches!(
-                        node.kind,
-                        NodeKind::InterfaceUnit | NodeKind::DeferStatement
-                    )
-                })
-                .filter_map(|(index, _)| tree.ending_tokens.get(index).copied())
-                .collect(),
-            signatures: tree
-                .nodes
-                .iter()
-                .filter(|node| node.kind == NodeKind::InterfaceSignature)
-                .map(|node| node.first_token)
-                .collect(),
+            case_starts: starts(
+                tree,
+                &[
+                    NodeKind::Labels,
+                    NodeKind::DefaultCase,
+                    NodeKind::ReceiveBranch,
+                ],
+            ),
+            blocks: TreeBlocks::build(tree),
         }
     }
 
     pub fn role_of(&self, tree: &SyntaxTree, first_token: usize) -> LineRole {
         let start = u32::try_from(first_token).unwrap_or(u32::MAX);
-        if self.contextual_closers.contains(&start) {
+        if self.blocks.closers.contains(&start) {
             return LineRole::Closer;
         }
         if self.case_starts.contains(&start) {
             return LineRole::CaseLabel;
         }
         match tree.tokens.kind(first_token) {
-            Some(TokenKind::Keyword(kind)) if is_closer(kind) => LineRole::Closer,
             Some(TokenKind::Keyword(KeywordKind::ElseKeyword)) => LineRole::Else,
             _ => LineRole::Plain,
         }
+    }
+
+    pub fn leaves_block_open(&self, tokens: &[usize]) -> bool {
+        let mut balance = 0_usize;
+        for slot in tokens.iter().filter_map(|token| u32::try_from(*token).ok()) {
+            if self.blocks.openers.contains_key(&slot) {
+                balance = balance.saturating_add(1);
+            } else if self.blocks.closers.contains(&slot) {
+                balance = balance.saturating_sub(1);
+            }
+        }
+        balance > 0
     }
 
     pub fn depth(&self) -> usize {
@@ -112,30 +100,14 @@ impl BlockLayout {
         }
     }
 
-    pub fn apply_token(&mut self, tree: &SyntaxTree, token: usize) {
+    pub fn apply_token(&mut self, token: usize) {
         let slot = u32::try_from(token).unwrap_or(u32::MAX);
-        if self.signatures.contains(&slot) {
-            return;
-        }
-        if self.contextual_openers.contains(&slot) {
+        if let Some(is_switch) = self.blocks.openers.get(&slot) {
             self.stack.push(OpenBlock {
-                is_switch: false,
+                is_switch: *is_switch,
                 in_case: false,
             });
-        } else if self.contextual_closers.contains(&slot) {
-            self.stack.pop();
-        } else if let Some(TokenKind::Keyword(kind)) = tree.tokens.kind(token) {
-            self.apply_keyword(kind);
-        }
-    }
-
-    fn apply_keyword(&mut self, kind: KeywordKind) {
-        if is_opener(kind) {
-            self.stack.push(OpenBlock {
-                is_switch: kind == KeywordKind::SwitchKeyword,
-                in_case: false,
-            });
-        } else if is_closer(kind) {
+        } else if self.blocks.closers.contains(&slot) {
             self.stack.pop();
         }
     }

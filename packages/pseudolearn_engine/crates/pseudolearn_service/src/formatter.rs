@@ -42,11 +42,13 @@ pub fn format_checked(text: &str, options: FormatOptions) -> Option<String> {
             profile: options.profile,
         },
     );
+    let angle_brackets = crate::type_brackets::angle_brackets(&tree);
     let context = RenderContext {
         tree: &tree,
         source: &source,
         profile: options.profile,
         roles: &roles,
+        angle_brackets: &angle_brackets,
     };
     Some(layout_lines(&context, options.indent_size))
 }
@@ -112,11 +114,12 @@ impl Emitter<'_> {
             self.layout.pop_leading_closer();
         }
         let level = self.layout.indent_for(role);
-        let simple = is_simple_statement(self.context.tree, line, role);
+        let simple = !self.layout.leaves_block_open(&line.code_tokens)
+            && is_simple_statement(self.context.tree, line, role);
         let rendered = render_line(self.context, line, simple);
         let indent = self.indentation(level);
         self.push(format!("{indent}{rendered}"), EmittedKind::Code);
-        apply_line_keywords(self.context.tree, &mut self.layout, line, role);
+        apply_line_keywords(&mut self.layout, line, role);
         self.unit_just_closed =
             self.layout.open_depth() == 0 && (had_open_blocks || role != LineRole::Plain);
     }
@@ -156,15 +159,10 @@ fn layout_lines(context: &RenderContext<'_>, indent_size: usize) -> String {
     emitter.finish()
 }
 
-fn apply_line_keywords(
-    tree: &SyntaxTree,
-    layout: &mut BlockLayout,
-    line: &SourceLine,
-    role: LineRole,
-) {
+fn apply_line_keywords(layout: &mut BlockLayout, line: &SourceLine, role: LineRole) {
     let skip = usize::from(role == LineRole::Closer);
     for index in line.code_tokens.iter().skip(skip) {
-        layout.apply_token(tree, *index);
+        layout.apply_token(*index);
     }
 }
 
@@ -180,8 +178,9 @@ fn is_simple_statement(tree: &SyntaxTree, line: &SourceLine, role: LineRole) -> 
             node.first_token == u32::try_from(first).unwrap_or(u32::MAX)
                 && matches!(
                     node.kind,
-                    pseudolearn_syntax::NodeKind::InterfaceUnit
-                        | pseudolearn_syntax::NodeKind::DeferStatement
+                    pseudolearn_syntax::NodeKind::VariantAlternative
+                        | pseudolearn_syntax::NodeKind::EnumMembers
+                        | pseudolearn_syntax::NodeKind::ReceiveBranch
                 )
         }),
         Some(TokenKind::Keyword(kind)) => starts_simple_statement(tree, line, kind),
