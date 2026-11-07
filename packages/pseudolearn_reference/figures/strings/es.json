@@ -1341,6 +1341,12 @@
       "molde": "el molde: la clase",
       "galletas": "tres galletas: tres objetos",
       "pie": "la misma forma, distinto estado"
+    },
+    "ruta-caja-fuerte": {
+      "titulo": "Un objeto como caja fuerte",
+      "descripcion": "Una caja fuerte con el saldo adentro, privado. Por fuera, tres ventanillas: Cobrar y Cargar, que deciden si el pedido entra, y Saldo, que deja ver el valor sin tocarlo.",
+      "privado": "privado",
+      "pie": "solo las ventanillas tocan lo de adentro"
     }
   }
 }

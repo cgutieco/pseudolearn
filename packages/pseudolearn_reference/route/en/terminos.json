@@ -99,5 +99,7 @@
   "atributo": {"etiqueta": "attribute", "formas": ["attribute", "attributes"], "estricto": true, "receta": true},
   "metodo": {"etiqueta": "method", "formas": ["method", "methods"], "estricto": true, "receta": true},
   "constructor": {"etiqueta": "constructor", "formas": ["constructor", "constructors"], "estricto": true, "receta": true},
-  "instancia": {"etiqueta": "instance", "formas": ["instance", "instances"], "estricto": true, "receta": false}
+  "instancia": {"etiqueta": "instance", "formas": ["instance", "instances"], "estricto": true, "receta": false},
+  "encapsulamiento": {"etiqueta": "encapsulation", "formas": ["encapsulation"], "estricto": true, "receta": true},
+  "invariante-de-clase": {"etiqueta": "class invariant", "formas": ["class invariant", "class invariants"], "estricto": true, "receta": false}
 }

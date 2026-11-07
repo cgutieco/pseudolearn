@@ -99,5 +99,7 @@
   "atributo": {"etiqueta": "atributo", "formas": ["atributo", "atributos"], "estricto": true, "receta": true},
   "metodo": {"etiqueta": "método", "formas": ["método", "métodos"], "estricto": true, "receta": true},
   "constructor": {"etiqueta": "constructor", "formas": ["constructor", "constructores"], "estricto": true, "receta": true},
-  "instancia": {"etiqueta": "instancia", "formas": ["instancia", "instancias"], "estricto": true, "receta": false}
+  "instancia": {"etiqueta": "instancia", "formas": ["instancia", "instancias"], "estricto": true, "receta": false},
+  "encapsulamiento": {"etiqueta": "encapsulamiento", "formas": ["encapsulamiento", "encapsular"], "estricto": true, "receta": true},
+  "invariante-de-clase": {"etiqueta": "invariante de clase", "formas": ["invariante de clase"], "estricto": true, "receta": false}
 }

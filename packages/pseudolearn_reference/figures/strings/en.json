@@ -1341,6 +1341,12 @@
       "molde": "the cutter: the class",
       "galletas": "three biscuits: three objects",
       "pie": "same shape, different state"
+    },
+    "ruta-caja-fuerte": {
+      "titulo": "An object as a safe",
+      "descripcion": "A safe with the balance inside, private. Outside, three windows: Cobrar and Cargar, which decide whether the request gets in, and Saldo, which lets you see the value without touching it.",
+      "privado": "private",
+      "pie": "only the windows touch what is inside"
     }
   }
 }
