@@ -311,3 +311,12 @@ consola.
 ## Enteros aleatorios sin sesgo
 
 `RandomState::next_below(n)` devuelve un entero uniforme en `[0, n)`: calcula `r = 2⁶⁴ mod n`, descarta las palabras mayores o iguales que `2⁶⁴ − r` y reduce las demás por módulo; `n = 0` devuelve `None`. `next_between(a, b)` aplica lo mismo a la amplitud `b − a + 1` y usa la palabra completa cuando la amplitud es `2⁶⁴`; `a > b` devuelve `None`. La VM traduce `None` a `invalidRandomBound` o `invalidRandomRange`. Se descartó reducir un real, porque los enteros grandes no serían alcanzables por igual.
+
+## Apertura en lectura_escritura
+
+`LIB.IO#R10` distingue los dos modos con escritura: `escritura` crea o vacía el archivo y `lectura_escritura` lo crea o
+conserva su contenido. El anfitrión de memoria (`memory_host_files::open`) solo inserta un archivo vacío con derecho de
+escritura sin lectura; con ambos derechos crea la entrada si falta y conserva la existente. `EscribirTexto`/`EscribirBytes`
+siguen sustituyendo el contenido completo y `AgregarTexto`/`AgregarBytes` escriben detrás. Se descartó un modo `agregar`
+aparte: `lectura_escritura` ya expresaba la intención de leer y modificar, y vaciar el archivo sin aviso contradecía el
+nombre (C100, C102, C103).

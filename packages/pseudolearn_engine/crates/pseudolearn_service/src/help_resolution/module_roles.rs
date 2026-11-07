@@ -33,7 +33,9 @@ pub(super) fn public_signature(
 ) -> Option<(HelpIdentity, Span)> {
     let unit = next_significant(context, slot)?;
     let regions = match context.tree.tokens.kind(unit)? {
-        TokenKind::Keyword(KeywordKind::Subroutine) => vec![header(context, slot)?],
+        TokenKind::Keyword(KeywordKind::Subroutine | KeywordKind::Function) => {
+            vec![header(context, slot)?]
+        }
         TokenKind::Keyword(KeywordKind::ClassKeyword) => class_regions(context, [slot, unit])?,
         _ => return None,
     };

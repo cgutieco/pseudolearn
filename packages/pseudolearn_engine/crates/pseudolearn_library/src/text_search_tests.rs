@@ -1,4 +1,7 @@
-use crate::{text_contains, text_ends_with, text_position, text_starts_with, text_substring};
+use crate::{
+    substring_fault_position, text_contains, text_ends_with, text_position, text_starts_with,
+    text_substring,
+};
 use pseudolearn_runtime::MemoryError;
 
 #[test]
@@ -27,4 +30,20 @@ fn includes_both_positions_and_accepts_empty_ranges() {
     assert_eq!(text_substring("hola", 2, 1), Ok(String::new()));
     assert_eq!(text_substring("abc", 3, 2), Ok(String::new()));
     assert_eq!(text_substring("", 0, -1), Ok(String::new()));
+}
+
+#[test]
+fn a_fault_cites_the_last_position_when_the_first_is_inside_the_text() {
+    assert_eq!(substring_fault_position(4, 2, Some(9)), 9);
+    assert_eq!(substring_fault_position(4, 3, Some(1)), 1);
+    assert_eq!(substring_fault_position(4, 4, Some(4)), 4);
+    assert_eq!(substring_fault_position(0, 0, Some(-5)), -5);
+}
+
+#[test]
+fn a_fault_cites_the_first_position_when_it_is_outside_the_text() {
+    assert_eq!(substring_fault_position(4, -1, Some(0)), -1);
+    assert_eq!(substring_fault_position(4, 6, Some(7)), 6);
+    assert_eq!(substring_fault_position(0, i64::MAX, Some(0)), i64::MAX);
+    assert_eq!(substring_fault_position(4, 2, None), 2);
 }

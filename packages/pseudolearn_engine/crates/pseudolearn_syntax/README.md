@@ -153,3 +153,24 @@ se comprueba en semántica para producir el diagnóstico específico en lugar de
 ## Entrada de expresión para inspección
 
 `expression_entry::parse_expression_source` consume exclusivamente la expresión original mediante el parser existente y exige EOF, sin generar ni concatenar un algoritmo envolvente. Conserva tokens, spans y diagnósticos del texto recibido. La validación del subconjunto admisible corresponde a semántica y no cambia el parser del lenguaje.
+
+## Aperturas de subprograma y recuperación sin cascada
+
+- **`Funcion` es palabra propia.** `LANG.PROFILE.VOCABULARY#R3` declara `function`/`endFunction` como identidades de D1,
+  no como alias de `subroutine`. `subprogram_keywords` nombra las aperturas de subprograma (`SubProceso`, `Funcion`) y el
+  cierre que corresponde a cada una; el subprograma, la función anónima, el tipo función y la firma de interfaz aceptan
+  las dos aperturas, y cada una se cierra con el suyo. Un cierre ajeno (`Funcion … FinSubProceso`) produce
+  `unclosedSubroutine` y se consume, para que no se informe además como elemento fuera de unidad. Se descartó aceptar
+  cualquier cierre: la gramática empareja apertura y cierre en los demás bloques.
+- **Construcción rechazada.** Tras `unsupportedAbstractConstruct` la recuperación ya había saltado hasta `FinClase`;
+  `recover_unit` seguía buscando y se detenía en `Algoritmo`, pero la recuperación de sentencia posterior consumía esa
+  línea y producía `unexpectedTokenOutsideProgramUnit` y `expectedAlgorithmStart`. Ahora `recover_unit` informa si paró
+  en una apertura de unidad y, en ese caso, no se recupera la línea (`LANG.CLASS.OUT-OF-SCOPE` C6).
+- **Palabras intermedias o de cierre sueltas.** `ParserState::open_blocks` apila las aperturas de control abiertas
+  (`Si`, `Mientras`, `Repetir`, `Para`, `Segun`, `Tareas`, `Elegir`); una función anónima empieza con la pila vacía.
+  `stray_closings` trata como sentencia no reconocida (`unexpectedStatement`) un `Sino`, `FinSi`, `Hasta Que`, etc. sin
+  bloque abierto que lo acepte: se descarta y el bloque continúa. Antes cerraba el algoritmo y producía
+  `unclosedAlgorithm` más un error por cada línea restante (`LANG.SYNTAX.RECOVERY` C10–C13). Se descartó resolverlo en
+  cada parser de bloque porque el bloque que recibe la palabra no sabe si algún bloque exterior la espera.
+- **Huecos léxicos.** Si la sentencia contiene un carácter no reconocido, `terminator` no informa
+  `missingStatementTerminator`: el fragmento descartado ya tiene su diagnóstico léxico (`LANG.LEXICAL.ERRORS` C4).

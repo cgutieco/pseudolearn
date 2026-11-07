@@ -110,6 +110,7 @@ pub fn is_opener(kind: KeywordKind) -> bool {
         kind,
         KeywordKind::Algorithm
             | KeywordKind::Subroutine
+            | KeywordKind::Function
             | KeywordKind::ClassKeyword
             | KeywordKind::Method
             | KeywordKind::IfKeyword
@@ -125,6 +126,7 @@ pub fn is_closer(kind: KeywordKind) -> bool {
         kind,
         KeywordKind::EndAlgorithm
             | KeywordKind::EndSubroutine
+            | KeywordKind::EndFunction
             | KeywordKind::EndClass
             | KeywordKind::EndMethod
             | KeywordKind::EndIf

@@ -137,9 +137,7 @@ pub(crate) fn unwrap_function_value(
 }
 
 pub(crate) fn is_pure_function(session: &AnalysisSession<'_>, function: &HirFunction) -> bool {
-    let lexeme = session.lexeme(function.syntax);
-    let folded = session.options.profile.fold_word(lexeme);
-    folded == "funcion" || folded == "function"
+    crate::pure_opening::opens_with_function(session, function.syntax)
 }
 
 fn function_has_direct_effects(

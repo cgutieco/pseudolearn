@@ -28,6 +28,9 @@ pub(crate) fn body_until(
     loop {
         state.separators();
         if boundary(state) {
+            if crate::stray_closings::discard_stray(state) {
+                continue;
+            }
             break;
         }
         let before = state.cursor;
@@ -43,6 +46,18 @@ pub(crate) fn body_until(
 }
 
 fn parse_statement(state: &mut ParserState<'_>) -> Result<usize, ()> {
+    let opening = crate::stray_closings::block_opening(state.kind());
+    if let Some(opening) = opening {
+        state.open_blocks.push(opening);
+    }
+    let result = parse_any_statement(state);
+    if opening.is_some() {
+        state.open_blocks.pop();
+    }
+    result
+}
+
+fn parse_any_statement(state: &mut ParserState<'_>) -> Result<usize, ()> {
     if let Some(result) = crate::iteration_parser::statement(state) {
         return result;
     }
@@ -52,14 +67,7 @@ fn parse_statement(state: &mut ParserState<'_>) -> Result<usize, ()> {
     let start = state.token();
     let marker = state.nodes.len();
     let result = match state.kind() {
-        TokenKind::Keyword(
-            KeywordKind::IfKeyword
-            | KeywordKind::WhileKeyword
-            | KeywordKind::Repeat
-            | KeywordKind::ForKeyword
-            | KeywordKind::SwitchKeyword,
-        ) => return crate::control_statement_parser::compound(state),
-        TokenKind::Keyword(KeywordKind::TasksKeyword | KeywordKind::SelectKeyword) => {
+        kind if crate::stray_closings::block_opening(kind).is_some() => {
             return crate::control_statement_parser::compound(state);
         }
         TokenKind::Keyword(KeywordKind::Declare) => crate::declaration_parser::declaration(state),
@@ -73,7 +81,10 @@ fn parse_statement(state: &mut ParserState<'_>) -> Result<usize, ()> {
         }
         TokenKind::Keyword(KeywordKind::DiscardKeyword) => crate::variant_parser::discard(state),
         TokenKind::Keyword(
-            KeywordKind::ClassKeyword | KeywordKind::Subroutine | KeywordKind::Method,
+            KeywordKind::ClassKeyword
+            | KeywordKind::Subroutine
+            | KeywordKind::Function
+            | KeywordKind::Method,
         ) => return crate::unit_parser::reject_nested(state),
         _ => assignment_or_call(state),
     }?;
@@ -190,6 +201,9 @@ pub(crate) fn terminator(state: &mut ParserState<'_>) -> Result<(), ()> {
         state.report(DiagnosticCode::MissingStatementTerminator, span);
         return Err(());
     }
+    if state.lexical_gap {
+        return Err(());
+    }
     let span = state.span();
     state.report(DiagnosticCode::MissingStatementTerminator, span);
     Err(())
@@ -220,6 +234,7 @@ pub(crate) fn boundary(kind: TokenKind) -> bool {
                     | KeywordKind::DefaultCase
                     | KeywordKind::EndAlgorithm
                     | KeywordKind::EndSubroutine
+                    | KeywordKind::EndFunction
                     | KeywordKind::EndTasks
                     | KeywordKind::EndSelect
                     | KeywordKind::EndClass

@@ -124,12 +124,8 @@ pub(crate) fn call(
         return Some(crate::expression_checker::invalid(session, node));
     };
     arguments(session, node, &signature.parameters);
-    crate::call_checker::check_result(session, signature.result, (node, purpose));
-    Some(session.emit(
-        crate::HirExpression::Invalid,
-        signature.result,
-        session.span(node),
-    ))
+    let result = crate::call_checker::check_result(session, signature.result, (node, purpose));
+    Some(session.emit(crate::HirExpression::Invalid, result, session.span(node)))
 }
 
 fn arguments(

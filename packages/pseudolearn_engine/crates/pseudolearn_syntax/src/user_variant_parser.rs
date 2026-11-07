@@ -90,6 +90,7 @@ fn unit_boundary(kind: TokenKind) -> bool {
                 KeywordKind::Algorithm
                     | KeywordKind::ClassKeyword
                     | KeywordKind::Subroutine
+                    | KeywordKind::Function
                     | KeywordKind::RecordKeyword
                     | KeywordKind::EnumKeyword
                     | KeywordKind::ConstantKeyword

@@ -7,7 +7,10 @@ use pseudolearn_lexicon::KeywordKind;
 use pseudolearn_syntax::TokenKind;
 
 pub(crate) fn resolve(session: &mut AnalysisSession<'_>, node: usize) -> TypeId {
-    if session.token_kind(node) == Some(TokenKind::Keyword(KeywordKind::Subroutine)) {
+    if session
+        .token_kind(node)
+        .is_some_and(pseudolearn_syntax::subprogram_keywords::opens_subprogram)
+    {
         return crate::function_types::resolve(session, node);
     }
     if matches!(

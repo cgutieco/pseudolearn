@@ -2,8 +2,7 @@ use crate::hir::HirFunction;
 use crate::identities::FunctionId;
 use crate::session::AnalysisSession;
 use pseudolearn_diagnostics::DiagnosticCode;
-use pseudolearn_lexicon::KeywordKind;
-use pseudolearn_syntax::{NodeKind, TokenKind};
+use pseudolearn_syntax::NodeKind;
 
 pub(crate) fn declaration(session: &mut AnalysisSession<'_>, node: usize) {
     let kind = session.kind(node);
@@ -24,34 +23,7 @@ pub(crate) fn declared(session: &AnalysisSession<'_>, node: usize) -> bool {
 }
 
 fn function_keyword(session: &AnalysisSession<'_>, node: usize) -> bool {
-    let Some(name) = session.child(node, NodeKind::Identifier) else {
-        return false;
-    };
-    let Some(start) = session
-        .tree
-        .node(node)
-        .and_then(|node| usize::try_from(node.first_token).ok())
-    else {
-        return false;
-    };
-    let Some(end) = session
-        .tree
-        .node(name)
-        .and_then(|node| usize::try_from(node.first_token).ok())
-    else {
-        return false;
-    };
-    (start..end).find_map(|token| {
-        (session.tree.tokens.kind(token) == Some(TokenKind::Keyword(KeywordKind::Subroutine)))
-            .then(|| session.tree.tokens.text(session.source.as_str(), token))
-            .flatten()
-            .map(|lexeme| {
-                matches!(
-                    session.options.profile.fold_word(lexeme).as_str(),
-                    "funcion" | "function"
-                )
-            })
-    }) == Some(true)
+    crate::pure_opening::opens_with_function(session, node)
 }
 
 pub(crate) fn value(

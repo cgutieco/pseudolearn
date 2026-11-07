@@ -76,7 +76,7 @@ pub(crate) fn member(
     let parameters = parameters(session, &model, action);
     let arguments = arguments(session, node, &parameters);
     let result = result(session, node, &model, (action, receiver));
-    crate::call_checker::check_result(session, result, (node, purpose));
+    let result = crate::call_checker::check_result(session, result, (node, purpose));
     Some(emit(
         session,
         node,

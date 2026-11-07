@@ -27,7 +27,7 @@ pub(crate) fn name(state: &mut ParserState<'_>, missing: DiagnosticCode) -> Resu
 pub(crate) fn parse_type(state: &mut ParserState<'_>) -> Result<usize, ()> {
     let start = state.token();
     let marker = state.nodes.len();
-    if state.kind() == TokenKind::Keyword(KeywordKind::Subroutine) {
+    if crate::subprogram_keywords::opens_subprogram(state.kind()) {
         return crate::function_parser::function_type(state);
     }
     if let Some(kind) = generic_type_kind(state.kind()) {

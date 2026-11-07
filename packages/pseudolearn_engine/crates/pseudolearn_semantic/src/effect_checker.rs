@@ -25,7 +25,7 @@ pub(crate) fn check(
     let arguments = arguments(session, node, operation);
     let value = crate::effect_types::value_type(session, node, operation.result);
     let result = result_type(session, node, operation, value);
-    crate::call_checker::check_result(session, result, (node, purpose));
+    let result = crate::call_checker::check_result(session, result, (node, purpose));
     Some(session.emit(
         crate::HirExpression::Effect {
             awaited: session.awaited_calls.contains(&node),

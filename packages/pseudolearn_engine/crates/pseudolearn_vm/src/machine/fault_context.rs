@@ -1,10 +1,6 @@
 use super::{Machine, cells::Cell};
-use crate::{
-    Fault, VmTrap,
-    dispatch::CompactOp,
-    load::memory::{MemoryOp, TypedSource},
-};
-use pseudolearn_bytecode::{Opcode, Register, RegisterClass};
+use crate::{Fault, VmTrap, dispatch::CompactOp, load::memory::MemoryOp};
+use pseudolearn_bytecode::{Register, RegisterClass};
 use pseudolearn_diagnostics::DiagnosticArgument;
 use pseudolearn_runtime::{self as runtime, Handle};
 use std::collections::BTreeMap;
@@ -13,6 +9,8 @@ type Arguments = BTreeMap<&'static str, DiagnosticArgument>;
 
 mod arrays;
 mod effect_calls;
+mod powers;
+mod texts;
 
 impl Machine<'_> {
     pub(super) fn trap_context(&self, fault: Fault, position: usize) -> VmTrap {
@@ -123,7 +121,7 @@ impl Machine<'_> {
             CompactOp::RequireReference { source, .. } => {
                 self.variable_argument(source, RegisterClass::Reference, arguments)
             }
-            _ => {}
+            operation => self.power_arguments(fault, operation, arguments),
         }
     }
 
@@ -172,36 +170,6 @@ impl Machine<'_> {
             .map(|(name, _)| name.clone());
         if let Some(name) = field_name {
             arguments.insert("lexeme", DiagnosticArgument::Lexeme(name));
-        }
-    }
-
-    fn text_arguments(&self, opcode: Opcode, sources: &[TypedSource], arguments: &mut Arguments) {
-        let first = sources
-            .first()
-            .and_then(|source| self.read_value(source.source).ok())
-            .and_then(|word| u32::try_from(word).ok())
-            .map(Handle);
-        let Some(first) = first else {
-            return;
-        };
-        match opcode {
-            Opcode::TextToInteger | Opcode::TextToReal => {
-                if let Ok(text) = runtime::text_content(&self.heap, first) {
-                    arguments.insert("lexeme", DiagnosticArgument::Lexeme(text.to_owned()));
-                }
-            }
-            Opcode::TextCharAt => {
-                if let Ok(length) = runtime::text_length(&self.heap, first) {
-                    arguments.insert("length", DiagnosticArgument::Number(length.into()));
-                }
-                if let Some(position) = sources
-                    .get(1)
-                    .and_then(|source| self.read_value(source.source).ok())
-                {
-                    number(arguments, "position", crate::evaluate::integer_of(position));
-                }
-            }
-            _ => {}
         }
     }
 

@@ -33,6 +33,7 @@ pub fn construction_for(kind: KeywordKind) -> Option<&'static str> {
     match kind {
         KeywordKind::Algorithm => Some("algorithm"),
         KeywordKind::Subroutine => Some("subroutine"),
+        KeywordKind::Function => Some("function"),
         KeywordKind::ClassKeyword => Some("class"),
         KeywordKind::IfKeyword => Some("if"),
         KeywordKind::WhileKeyword => Some("while"),

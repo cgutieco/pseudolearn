@@ -30,7 +30,7 @@ impl Machine<'_> {
             return;
         };
         arguments.insert("length", DiagnosticArgument::Number(length.into()));
-        let end = scalar(2).and_then(|count| start.checked_add(count));
-        number(arguments, "position", end.unwrap_or(start));
+        let position = pseudolearn_library::substring_fault_position(length, start, scalar(2));
+        number(arguments, "position", position);
     }
 }

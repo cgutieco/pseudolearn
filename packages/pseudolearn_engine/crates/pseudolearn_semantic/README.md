@@ -401,3 +401,20 @@ reservadas: viven solo en el vocabulario contextual, y `json_types` toma de all�
 incorporado con `contextual_spelling`. Mientras estaban en D1, `JsonLogico(Verdadero)` se leía como palabra clave y
 fallaba con `expectedExpression`, y `objeto` o `arreglo` no se podían usar como nombres. El programa no escribe estos
 valores: los obtiene de `Tipo()` o del campo `Codigo` y los compara con `=` y `<>` (`LIB.JSON#J8`).
+
+## Pureza por identidad y diagnósticos sin cascada
+
+- **Pureza.** `pure_opening::opens_with_function` decide si una unidad, una firma de interfaz o un tipo función es puro
+  por la identidad `function` de su primera palabra (saltando la visibilidad), no por la grafía `funcion`/`function`.
+  Así la pureza no depende del perfil ni de la ortografía, y el traductor no puede perderla. `diagnostic_arguments`
+  presenta el tipo de una función pura con el lexema `Funcion` y el de una impura con `SubProceso`.
+- **Llamada sin retorno usada como valor.** `call_checker::check_result` devuelve el tipo con el que se emite la
+  llamada: `Error` después de informar `callAsExpressionWithoutReturnType`, de modo que la asignación no añade
+  `incompatibleTypesInAssignment` con el tipo interno `Unit` (`LANG.SUBPROGRAM.CALL` C6).
+- **Atributo sin `Este.`** Un nombre suelto que coincide con un atributo produce `identifierMatchesFieldWithoutThis` y ya
+  no además `undeclaredVariable` (`LANG.CLASS.SELF-AND-SUPER` C5).
+- **Argumentos de transferibilidad.** `taskArgumentNotTransferable` informa en `type` el tipo con los lexemas del perfil
+  (`Vector<Entero>`, `Diccionario<…>`, `Canal<…>`, `Tarea<…>`) y en `path` el texto del argumento seguido de los campos
+  hasta el componente rechazado (`box.items`); `Opcional`, `Resultado`, `Canal` y `FalloTareas` no añaden segmento. Antes
+  mostraba el nombre interno `$vector<integer>`, la raíz `$` y segmentos como `alternative0` o `element`
+  (`LANG.TASK.ISOLATION#R2`, C32–C35). La instantánea usa la misma unión de segmentos.

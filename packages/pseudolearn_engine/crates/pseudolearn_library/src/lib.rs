@@ -51,7 +51,8 @@ pub use text_case::{to_lower_text, to_upper_text};
 pub use text_padding::{MAXIMUM_PADDING_WIDTH, pad_left, pad_right};
 pub use text_replace::{replace_all, trim_text};
 pub use text_search::{
-    text_contains, text_ends_with, text_position, text_starts_with, text_substring,
+    substring_fault_position, text_contains, text_ends_with, text_position, text_starts_with,
+    text_substring,
 };
 pub use text_split::{join_text, split_text};
 

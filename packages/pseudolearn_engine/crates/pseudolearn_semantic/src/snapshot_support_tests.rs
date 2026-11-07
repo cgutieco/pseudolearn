@@ -25,7 +25,7 @@ fn accepts_collection_graphs_and_rejects_class_elements() {
     let failure = super::snapshot_support::violation(&module, collection);
     assert_eq!(
         failure.map(|failure| (failure.kind, failure.path)),
-        Some((object, "$.element".to_owned()))
+        Some((object, "element".to_owned()))
     );
 }
 

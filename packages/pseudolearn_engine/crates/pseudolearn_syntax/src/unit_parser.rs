@@ -2,6 +2,7 @@ use crate::declaration_parser::{name, parse_type};
 use crate::parameter_parser::parameters;
 use crate::parser_state::ParserState;
 use crate::statement_parser::{parse_statement_block, recover};
+use crate::subprogram_keywords;
 use crate::tokens::TokenKind;
 use crate::tree::NodeKind;
 use pseudolearn_diagnostics::DiagnosticCode;
@@ -43,11 +44,7 @@ pub(crate) fn subprogram(state: &mut ParserState<'_>) -> Result<usize, ()> {
         parse_type(state)?;
     }
     parse_statement_block(state);
-    state.close(
-        KeywordKind::EndSubroutine,
-        DiagnosticCode::UnclosedSubroutine,
-        start,
-    );
+    subprogram_keywords::close(state, start);
     Ok(state.finish(NodeKind::Subprogram, start, marker))
 }
 
@@ -132,7 +129,9 @@ fn class_member(state: &mut ParserState<'_>, class_name: u32) -> Result<(), ()> 
             }
             return Ok(());
         }
-        TokenKind::Keyword(KeywordKind::ClassKeyword | KeywordKind::Subroutine) => {
+        TokenKind::Keyword(
+            KeywordKind::ClassKeyword | KeywordKind::Subroutine | KeywordKind::Function,
+        ) => {
             reject_nested(state)?;
             return Ok(());
         }
@@ -142,12 +141,16 @@ fn class_member(state: &mut ParserState<'_>, class_name: u32) -> Result<(), ()> 
             return Err(());
         }
     }
+    finish_field(state, start, marker);
+    Ok(())
+}
+
+fn finish_field(state: &mut ParserState<'_>, start: u32, marker: usize) {
     if !state.eat(TokenKind::Semicolon) {
         let span = state.span();
         state.report(DiagnosticCode::MissingStatementTerminator, span);
     }
     state.finish(NodeKind::FieldDeclaration, start, marker);
-    Ok(())
 }
 
 fn method(state: &mut ParserState<'_>, class_name: u32, modifier: bool) -> Result<(), ()> {
@@ -255,13 +258,13 @@ pub(crate) fn reject_nested(state: &mut ParserState<'_>) -> Result<usize, ()> {
         (_, TokenKind::Keyword(KeywordKind::ClassKeyword)) => {
             DiagnosticCode::NestedClassNotSupported
         }
-        (NodeKind::AlgorithmUnit, TokenKind::Keyword(KeywordKind::Subroutine)) => {
+        (NodeKind::AlgorithmUnit, opening) if subprogram_keywords::opens_subprogram(opening) => {
             DiagnosticCode::SubroutineInsideAlgorithm
         }
-        (NodeKind::ClassUnit, TokenKind::Keyword(KeywordKind::Subroutine)) => {
+        (NodeKind::ClassUnit, opening) if subprogram_keywords::opens_subprogram(opening) => {
             DiagnosticCode::SubroutineInsideClass
         }
-        (_, TokenKind::Keyword(KeywordKind::Subroutine)) => {
+        (_, opening) if subprogram_keywords::opens_subprogram(opening) => {
             DiagnosticCode::SubroutineInsideSubroutine
         }
         _ => DiagnosticCode::MethodOutsideClass,
@@ -270,7 +273,9 @@ pub(crate) fn reject_nested(state: &mut ParserState<'_>) -> Result<usize, ()> {
     state.report(code, span);
     let closing = match opening {
         TokenKind::Keyword(KeywordKind::ClassKeyword) => KeywordKind::EndClass,
-        TokenKind::Keyword(KeywordKind::Subroutine) => KeywordKind::EndSubroutine,
+        opening if subprogram_keywords::opens_subprogram(opening) => {
+            subprogram_keywords::subprogram_closing(opening)
+        }
         _ => KeywordKind::EndMethod,
     };
     state.advance();

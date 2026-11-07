@@ -40,8 +40,7 @@ impl<'tokens> Parser<'tokens> {
             let opening = self.state.kind();
             let result = self.parse_unit(&mut algorithms, units);
             units = units.saturating_add(u32::from(!crate::module_parser::is_directive(opening)));
-            if result.is_err() {
-                recover_unit(&mut self.state, opening);
+            if result.is_err() && !recover_unit(&mut self.state, opening) {
                 crate::statement_parser::recover(&mut self.state);
             }
             if self.state.cursor == before {
@@ -87,7 +86,7 @@ impl<'tokens> Parser<'tokens> {
         }
         match kind {
             TokenKind::Keyword(KeywordKind::Algorithm) => self.parse_algorithm(algorithms),
-            TokenKind::Keyword(KeywordKind::Subroutine) => {
+            TokenKind::Keyword(KeywordKind::Subroutine | KeywordKind::Function) => {
                 crate::unit_parser::subprogram(&mut self.state)
             }
             TokenKind::Keyword(KeywordKind::ClassKeyword) => {
@@ -146,7 +145,7 @@ impl<'tokens> Parser<'tokens> {
                 crate::record_parser::record(&mut self.state)
             }
             TokenKind::Keyword(KeywordKind::ConstantKeyword) => self.parse_constant_unit(),
-            TokenKind::Keyword(KeywordKind::Subroutine) => {
+            TokenKind::Keyword(KeywordKind::Subroutine | KeywordKind::Function) => {
                 crate::unit_parser::subprogram(&mut self.state)
             }
             _ => {
@@ -167,37 +166,45 @@ impl<'tokens> Parser<'tokens> {
     }
 }
 
-pub(crate) fn recover_unit(state: &mut ParserState<'_>, opening: TokenKind) {
+pub(crate) fn recover_unit(state: &mut ParserState<'_>, opening: TokenKind) -> bool {
     let closing = match opening {
         TokenKind::Keyword(KeywordKind::Algorithm) => KeywordKind::EndAlgorithm,
         TokenKind::Keyword(KeywordKind::ClassKeyword) => KeywordKind::EndClass,
         TokenKind::Keyword(KeywordKind::EnumKeyword) => KeywordKind::EndEnum,
         TokenKind::Keyword(KeywordKind::RecordKeyword) => KeywordKind::EndRecord,
-        TokenKind::Keyword(KeywordKind::Subroutine) => KeywordKind::EndSubroutine,
+        TokenKind::Keyword(KeywordKind::Subroutine | KeywordKind::Function) => {
+            crate::subprogram_keywords::subprogram_closing(opening)
+        }
         TokenKind::Keyword(KeywordKind::IfKeyword) => KeywordKind::EndIf,
         TokenKind::Keyword(KeywordKind::WhileKeyword) => KeywordKind::EndWhile,
         TokenKind::Keyword(KeywordKind::Repeat) => KeywordKind::Until,
         TokenKind::Keyword(KeywordKind::ForKeyword) => KeywordKind::EndFor,
         TokenKind::Keyword(KeywordKind::SwitchKeyword) => KeywordKind::EndSwitch,
-        _ => return,
+        _ => return false,
     };
     while state.kind() != TokenKind::EndOfFile {
         if state.keyword(closing) {
-            break;
+            return false;
         }
-        if matches!(
-            state.kind(),
-            TokenKind::Keyword(
-                KeywordKind::Algorithm
-                    | KeywordKind::Subroutine
-                    | KeywordKind::ClassKeyword
-                    | KeywordKind::EnumKeyword
-                    | KeywordKind::RecordKeyword
-                    | KeywordKind::ConstantKeyword
-            )
-        ) {
-            break;
+        if unit_opening(state.kind()) {
+            return true;
         }
         state.advance();
     }
+    false
+}
+
+fn unit_opening(kind: TokenKind) -> bool {
+    matches!(
+        kind,
+        TokenKind::Keyword(
+            KeywordKind::Algorithm
+                | KeywordKind::Subroutine
+                | KeywordKind::Function
+                | KeywordKind::ClassKeyword
+                | KeywordKind::EnumKeyword
+                | KeywordKind::RecordKeyword
+                | KeywordKind::ConstantKeyword
+        )
+    )
 }

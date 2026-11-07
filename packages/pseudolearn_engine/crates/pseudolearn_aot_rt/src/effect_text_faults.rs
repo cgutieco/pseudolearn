@@ -11,10 +11,16 @@ pub(crate) fn with_text_position(trap: Trap, arguments: &[HostValue]) -> Trap {
     else {
         return trap;
     };
-    let ending = match arguments.get(2) {
-        Some(HostValue::Integer(count)) => start.checked_add(*count),
+    let last = match arguments.get(2) {
+        Some(HostValue::Integer(last)) => Some(*last),
         _ => None,
     };
-    trap.argument("length", text.chars().count())
-        .argument("position", ending.unwrap_or(*start))
+    let length = text.chars().count();
+    let position = pseudolearn_library::substring_fault_position(
+        u64::try_from(length).unwrap_or(u64::MAX),
+        *start,
+        last,
+    );
+    trap.argument("length", length)
+        .argument("position", position)
 }

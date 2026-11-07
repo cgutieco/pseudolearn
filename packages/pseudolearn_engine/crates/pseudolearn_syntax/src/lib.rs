@@ -23,6 +23,8 @@ pub(crate) mod record_parser;
 pub mod reprint;
 pub mod schema;
 pub(crate) mod statement_parser;
+mod stray_closings;
+pub mod subprogram_keywords;
 pub(crate) mod switch_parser;
 mod task_scope_parser;
 #[cfg(test)]

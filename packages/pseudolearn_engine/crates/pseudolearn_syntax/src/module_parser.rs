@@ -93,6 +93,7 @@ pub(crate) fn visibility_prefix(state: &mut ParserState<'_>) -> Result<Option<u3
         state.kind(),
         TokenKind::Keyword(
             KeywordKind::Subroutine
+                | KeywordKind::Function
                 | KeywordKind::ClassKeyword
                 | KeywordKind::EnumKeyword
                 | KeywordKind::RecordKeyword

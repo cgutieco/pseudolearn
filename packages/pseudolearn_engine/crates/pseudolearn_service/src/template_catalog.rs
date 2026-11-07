@@ -110,8 +110,8 @@ fn unit_header(word: Word<'_>, marker: &Markers, opener: KeywordKind) -> Vec<Seg
     ]
 }
 
-fn callable_header(word: Word<'_>, marker: &Markers) -> Vec<Segment> {
-    let mut segments = unit_header(word, marker, KeywordKind::Subroutine);
+fn callable_header(word: Word<'_>, marker: &Markers, opener: KeywordKind) -> Vec<Segment> {
+    let mut segments = unit_header(word, marker, opener);
     segments.push(text("("));
     segments.push(stop(2, StopRole::NewIdentifier, marker.parameter));
     segments.push(text(format!(
@@ -124,7 +124,7 @@ fn callable_header(word: Word<'_>, marker: &Markers) -> Vec<Segment> {
 }
 
 fn function_segments(word: Word<'_>, marker: &Markers) -> Vec<Segment> {
-    let mut segments = callable_header(word, marker);
+    let mut segments = callable_header(word, marker, KeywordKind::Function);
     segments.push(text(format!(
         " {} {}",
         word(KeywordKind::TypeConnector),
@@ -132,12 +132,12 @@ fn function_segments(word: Word<'_>, marker: &Markers) -> Vec<Segment> {
     )));
     segments.extend(body(1));
     segments.push(Segment::Final);
-    segments.extend(closing(word, KeywordKind::EndSubroutine));
+    segments.extend(closing(word, KeywordKind::EndFunction));
     segments
 }
 
 fn subroutine_segments(word: Word<'_>, marker: &Markers) -> Vec<Segment> {
-    let mut segments = callable_header(word, marker);
+    let mut segments = callable_header(word, marker, KeywordKind::Subroutine);
     segments.extend(body(1));
     segments.push(Segment::Final);
     segments.extend(closing(word, KeywordKind::EndSubroutine));

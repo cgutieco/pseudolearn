@@ -34,6 +34,7 @@ pub fn closing_keyword(opener: KeywordKind) -> KeywordKind {
     match opener {
         KeywordKind::Algorithm => KeywordKind::EndAlgorithm,
         KeywordKind::Subroutine => KeywordKind::EndSubroutine,
+        KeywordKind::Function => KeywordKind::EndFunction,
         KeywordKind::ClassKeyword => KeywordKind::EndClass,
         KeywordKind::Method => KeywordKind::EndMethod,
         KeywordKind::IfKeyword => KeywordKind::EndIf,
@@ -49,6 +50,7 @@ pub fn structure_keywords(innermost: Option<&KeywordKind>) -> &'static [KeywordK
         None => &[
             KeywordKind::Algorithm,
             KeywordKind::Subroutine,
+            KeywordKind::Function,
             KeywordKind::ClassKeyword,
         ],
         Some(KeywordKind::ClassKeyword) => &[

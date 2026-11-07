@@ -39,9 +39,12 @@ pub fn statement_candidates(scope: &SourceScope<'_>, pool: &mut CandidatePool) {
     for kind in structure_keywords(blocks.last()) {
         pool.add(2, keyword_entry(*kind, scope.profile));
     }
-    let returns_allowed = blocks
-        .iter()
-        .any(|block| matches!(block, KeywordKind::Subroutine | KeywordKind::Method));
+    let returns_allowed = blocks.iter().any(|block| {
+        matches!(
+            block,
+            KeywordKind::Subroutine | KeywordKind::Function | KeywordKind::Method
+        )
+    });
     if returns_allowed {
         pool.add(2, keyword_entry(KeywordKind::ReturnKeyword, scope.profile));
     }

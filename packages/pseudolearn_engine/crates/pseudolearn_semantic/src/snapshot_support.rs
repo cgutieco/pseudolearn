@@ -28,7 +28,7 @@ pub(crate) fn violation(module: &HirModule, kind: TypeId) -> Option<TransferFail
         let Ok(children) = children(module, kind) else {
             return Some(TransferFailure {
                 kind,
-                path: path.join("."),
+                path: crate::transferability::joined(&path),
             });
         };
         pending.push(Frame::Exit);

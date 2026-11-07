@@ -104,3 +104,9 @@ con varias pruebas en paralelo o la máquina cargada, el apretón TLS superaba l
 Con 16 procesos concurrentes fallaban todas; con los plazos nuevos pasan todas y tardan 12–14 s. Las pruebas comprueban
 la validación de certificados y que se ignore `HTTPS_PROXY`, no el plazo; el plazo se prueba en
 `physical_network_send_tests` con una resolución de nombres más lenta que el plazo declarado.
+
+## Apertura en lectura_escritura
+
+`physical_paths` abre con `truncate` solo cuando el modo concede escritura sin lectura (`escritura`); `lectura_escritura`
+crea el archivo si falta y conserva su contenido, igual que el anfitrión de memoria (`LIB.IO#R10`). La sustitución completa
+de `EscribirTexto` sigue a cargo de `replace_content`, que ajusta la longitud antes de escribir.

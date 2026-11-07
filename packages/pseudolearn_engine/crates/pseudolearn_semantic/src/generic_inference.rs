@@ -3,7 +3,6 @@ use crate::identities::TypeId;
 use crate::session::AnalysisSession;
 use crate::types::Type;
 use pseudolearn_diagnostics::DiagnosticCode;
-use pseudolearn_lexicon::KeywordKind;
 use pseudolearn_syntax::{NodeKind, TokenKind};
 
 struct Binder<'template> {
@@ -128,7 +127,10 @@ fn bind(
     actual: TypeId,
     binder: &mut Binder<'_>,
 ) -> Result<(), usize> {
-    if session.token_kind(node) == Some(TokenKind::Keyword(KeywordKind::Subroutine)) {
+    if session
+        .token_kind(node)
+        .is_some_and(pseudolearn_syntax::subprogram_keywords::opens_subprogram)
+    {
         return bind_function(session, node, actual, binder);
     }
     let name = session.name(node);

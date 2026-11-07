@@ -37,6 +37,7 @@ fn signature(state: &mut ParserState<'_>) -> Result<usize, ()> {
     let marker = state.nodes.len();
     if !state.eat(TokenKind::Keyword(KeywordKind::Method))
         && !state.eat(TokenKind::Keyword(KeywordKind::Subroutine))
+        && !state.eat(TokenKind::Keyword(KeywordKind::Function))
     {
         let span = state.span();
         if !state.lexical_gap {

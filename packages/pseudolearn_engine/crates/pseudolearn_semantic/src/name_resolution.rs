@@ -109,9 +109,10 @@ fn implicit(
     name: &str,
     purpose: ExpressionPurpose,
 ) -> LocalId {
-    if let Some(owner) = session.owner()
-        && crate::hierarchy::find_field(session, owner, name).is_some()
-    {
+    let field = session
+        .owner()
+        .is_some_and(|owner| crate::hierarchy::find_field(session, owner, name).is_some());
+    if field {
         session.named_report(
             DiagnosticCode::IdentifierMatchesFieldWithoutThis,
             node,
@@ -134,7 +135,7 @@ fn implicit(
         name.to_owned(),
         crate::block_scopes::BindingTarget::Local(identifier),
     );
-    if !crate::scope_bindings::outside(session, node, name) {
+    if !field && !crate::scope_bindings::outside(session, node, name) {
         session.named_report(DiagnosticCode::UndeclaredVariable, node, name);
     }
     classify_implicit(session, identifier, purpose);

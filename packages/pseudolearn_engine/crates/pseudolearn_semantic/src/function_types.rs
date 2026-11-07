@@ -14,11 +14,7 @@ pub(crate) fn get(session: &AnalysisSession<'_>, kind: &Type) -> Option<Function
 }
 
 pub(crate) fn is_pure_syntax(session: &AnalysisSession<'_>, node: usize) -> bool {
-    if session.token_kind(node) != Some(TokenKind::Keyword(KeywordKind::Subroutine)) {
-        return false;
-    }
-    let opener = session.options.profile.fold_word(session.lexeme(node));
-    opener == "funcion" || opener == "function"
+    session.token_kind(node) == Some(TokenKind::Keyword(KeywordKind::Function))
 }
 
 pub(crate) fn resolve(session: &mut AnalysisSession<'_>, node: usize) -> TypeId {

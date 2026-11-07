@@ -61,7 +61,7 @@ fn parses_a_function_with_a_return_variable() {
 #[test]
 fn a_return_variable_header_takes_no_return_type() {
     let source = pseudolearn_source::SourceText::new(
-        "function r <- Twice(a as integer) as integer\nendSubroutine\n".to_owned(),
+        "function r <- Twice(a as integer) as integer\nendFunction\n".to_owned(),
     );
     let (_, diagnostics) =
         pseudolearn_syntax::parse_source(&source, pseudolearn_lexicon::Profile::English);

@@ -328,3 +328,11 @@ Un final que no es normal no lo consulta: quien lo presenta decide el código (l
 argumentos de `stringPositionOutOfRange`; el mensaje quedaba «Índice  fuera de rango para un arreglo de tamaño ».
 `fault_context/effect_calls/bytes_effects` añade `index` (el índice pedido) y `size` (la longitud de la secuencia) cuando la
 operación es `bytes_at` (`LIB.CORE.BYTES#B1`). El sujeto nativo usa la misma fórmula en `effect_bytes_faults`.
+
+## Argumentos de fallos de potencia y texto
+
+`fault_context/powers.rs` añade a `negativeIntegerExponent` el argumento `exponent`, leído del registro o del inmediato de
+las cuatro formas compactas de `int.pow`; antes el mensaje terminaba en «exponente negativo: » sin valor
+(`LANG.OPS.POWER` C7, C8). Los argumentos de las operaciones de texto se movieron a `fault_context/texts.rs` para que el
+contexto de fallos siga por debajo del límite de líneas. El runtime nativo informa el mismo argumento desde
+`rt_aot_integer_power`.

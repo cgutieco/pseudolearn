@@ -71,7 +71,14 @@ pub extern "C" fn rt_aot_integer_power(
     exponent: i64,
 ) -> u32 {
     run_entry(context, site, |_| {
-        let value = int_power(base, exponent)?;
+        let value = int_power(base, exponent).map_err(|error| {
+            let trap = Trap::from(error);
+            if exponent < 0 {
+                trap.argument("exponent", exponent)
+            } else {
+                trap
+            }
+        })?;
         Ok(u64::from_ne_bytes(value.to_ne_bytes()))
     })
 }

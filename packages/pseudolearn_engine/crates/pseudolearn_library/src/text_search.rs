@@ -18,6 +18,14 @@ pub fn text_substring(text: &str, first: i64, last: i64) -> Result<String, Memor
         .collect())
 }
 
+pub fn substring_fault_position(length: u64, first: i64, last: Option<i64>) -> i64 {
+    let first_in_range = u64::try_from(first).is_ok_and(|first| first <= length);
+    match last {
+        Some(last) if first_in_range => last,
+        _ => first,
+    }
+}
+
 pub fn text_contains(text: &str, part: &str) -> bool {
     text.contains(part)
 }

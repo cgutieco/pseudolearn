@@ -17,7 +17,10 @@ impl DirectoryResource {
                 let mut options = std::fs::OpenOptions::new();
                 options.read(rights & READ != 0);
                 if rights & WRITE != 0 {
-                    options.write(true).create(true).truncate(true);
+                    options
+                        .write(true)
+                        .create(true)
+                        .truncate(rights & READ == 0);
                 }
                 options.open(directory.join(path)).map(File::from_std)
             }
@@ -44,7 +47,7 @@ fn options(rights: u8) -> OpenOptions {
     let mut chosen = OpenOptions::new();
     chosen.read(rights & READ != 0);
     if rights & WRITE != 0 {
-        chosen.write(true).create(true).truncate(true);
+        chosen.write(true).create(true).truncate(rights & READ == 0);
     }
     chosen
 }

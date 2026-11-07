@@ -135,7 +135,9 @@ fn open(
     path: String,
 ) -> Result<HostValue, IoError> {
     let rights = crate::effect_authority::mode_rights(request.arguments.last())?;
-    if rights.write {
+    if rights.write && rights.read {
+        provider.files.entry(path.clone()).or_default();
+    } else if rights.write {
         provider.files.insert(path.clone(), Vec::new());
     } else if !provider.files.contains_key(&path) {
         return Err(IoError::not_found());

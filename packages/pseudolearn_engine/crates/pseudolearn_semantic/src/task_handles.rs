@@ -155,9 +155,9 @@ fn check_arguments(
             .module
             .types
             .intern(session.expression_type(*argument));
-        crate::transferability::report(
+        crate::transferability::report_argument(
             session,
-            kind,
+            (kind, *argument),
             node,
             DiagnosticCode::TaskArgumentNotTransferable,
         );

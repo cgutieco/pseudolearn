@@ -29,6 +29,7 @@ pub(crate) fn collect(
         .collect();
     let mut output = structural(tree, &candidates);
     collection_calls(tree, analysis, &candidates, &mut output);
+    crate::contextual_constructors::register(tree, analysis, &candidates, &mut output);
     crate::contextual_members::register(tree, analysis, &candidates, &mut output);
     output
 }

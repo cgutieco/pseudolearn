@@ -14,7 +14,11 @@ enum Frame {
 }
 
 pub(crate) fn violation(module: &HirModule, kind: TypeId) -> Option<TransferFailure> {
-    let mut pending = vec![Frame::Enter(kind, root_name(module, kind))];
+    rooted_violation(module, kind, root_name(module, kind))
+}
+
+fn rooted_violation(module: &HirModule, kind: TypeId, root: String) -> Option<TransferFailure> {
+    let mut pending = vec![Frame::Enter(kind, root)];
     let mut active = BTreeSet::new();
     let mut checked = BTreeSet::new();
     let mut path = Vec::new();
@@ -34,13 +38,13 @@ pub(crate) fn violation(module: &HirModule, kind: TypeId) -> Option<TransferFail
         if !active.insert(kind) {
             return Some(TransferFailure {
                 kind,
-                path: path.join("."),
+                path: joined(&path),
             });
         }
         let Ok(children) = children(module, kind) else {
             return Some(TransferFailure {
                 kind,
-                path: path.join("."),
+                path: joined(&path),
             });
         };
         pending.push(Frame::Exit(kind));
@@ -78,15 +82,14 @@ fn record_children(module: &HirModule, record: RecordId) -> Result<Vec<(TypeId, 
         return Ok(variant
             .payloads
             .iter()
-            .enumerate()
-            .filter_map(|(index, kind)| Some(((*kind)?, format!("alternative{index}"))))
+            .filter_map(|kind| Some(((*kind)?, String::new())))
             .collect());
     }
     if let Some(error) = module.task_failures.get(&record) {
-        return Ok(vec![(*error, "error".to_owned())]);
+        return Ok(vec![(*error, String::new())]);
     }
     if let Some(element) = module.channels.get(&record) {
-        return Ok(vec![(*element, "element".to_owned())]);
+        return Ok(vec![(*element, String::new())]);
     }
     ordinary_children(module, record)
 }
@@ -134,7 +137,15 @@ pub(crate) fn root_name(module: &HirModule, kind: TypeId) -> String {
     {
         return model.name.clone();
     }
-    "$".to_owned()
+    String::new()
+}
+
+pub(crate) fn joined(path: &[String]) -> String {
+    path.iter()
+        .filter(|segment| !segment.is_empty())
+        .cloned()
+        .collect::<Vec<_>>()
+        .join(".")
 }
 
 pub(crate) fn report(
@@ -143,7 +154,44 @@ pub(crate) fn report(
     node: usize,
     code: pseudolearn_diagnostics::DiagnosticCode,
 ) {
-    if let Some(failure) = violation(&session.module, kind) {
+    let failure = violation(&session.module, kind);
+    report_failure(session, failure, node, code);
+}
+
+pub(crate) fn report_argument(
+    session: &mut crate::session::AnalysisSession<'_>,
+    (kind, argument): (TypeId, crate::identities::ExpressionId),
+    node: usize,
+    code: pseudolearn_diagnostics::DiagnosticCode,
+) {
+    let root = argument_text(session, argument);
+    let failure = rooted_violation(&session.module, kind, root);
+    report_failure(session, failure, node, code);
+}
+
+fn argument_text(
+    session: &crate::session::AnalysisSession<'_>,
+    argument: crate::identities::ExpressionId,
+) -> String {
+    usize::try_from(argument.0)
+        .ok()
+        .and_then(|index| session.module.expressions.spans.get(index))
+        .and_then(|span| {
+            let start = usize::try_from(span.start).ok()?;
+            let ending = usize::try_from(span.ending).ok()?;
+            session.source.as_str().get(start..ending)
+        })
+        .unwrap_or("")
+        .to_owned()
+}
+
+fn report_failure(
+    session: &mut crate::session::AnalysisSession<'_>,
+    failure: Option<TransferFailure>,
+    node: usize,
+    code: pseudolearn_diagnostics::DiagnosticCode,
+) {
+    if let Some(failure) = failure {
         session.report(code, node);
         crate::diagnostic_arguments::last_type(session, failure.kind);
         if let Some(diagnostic) = session.diagnostics.last_mut() {

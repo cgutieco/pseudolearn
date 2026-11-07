@@ -31,13 +31,13 @@ pub(crate) fn call(
     for (syntax, (kind, passing)) in arguments.into_iter().zip(signature.parameters) {
         values.push(argument(session, syntax, (kind, passing)));
     }
-    crate::call_checker::check_result(session, signature.result, (node, purpose));
+    let result = crate::call_checker::check_result(session, signature.result, (node, purpose));
     session.emit(
         HirExpression::IndirectCall {
             callee,
             arguments: values,
         },
-        signature.result,
+        result,
         session.span(node),
     )
 }

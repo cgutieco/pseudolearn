@@ -11,6 +11,7 @@ const BLOCK_OPENERS: &[&str] = &[
     "repeat",
     "forKeyword",
     "subroutine",
+    "function",
     "classKeyword",
     "method",
 ];

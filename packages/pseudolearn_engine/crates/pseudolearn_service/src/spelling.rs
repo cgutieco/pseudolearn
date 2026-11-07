@@ -2,9 +2,6 @@ use pseudolearn_lexicon::{BuiltinKind, KeywordKind, Profile};
 use pseudolearn_syntax::{SyntaxTree, TokenKind};
 
 pub fn keyword_spelling(kind: KeywordKind, profile: Profile) -> String {
-    if let Some(preferred) = preferred_spelling(kind, profile) {
-        return preferred.to_owned();
-    }
     canonical_word(kind.lexeme(profile).unwrap_or(""), profile)
 }
 
@@ -62,14 +59,6 @@ pub fn boolean_spelling(value: bool, profile: Profile) -> String {
 
 pub fn builtin_spelling(kind: BuiltinKind, profile: Profile) -> String {
     kind.lexeme(profile).unwrap_or("").to_owned()
-}
-
-fn preferred_spelling(kind: KeywordKind, profile: Profile) -> Option<&'static str> {
-    match (profile, kind) {
-        (Profile::Spanish, KeywordKind::Algorithm) => Some("Algoritmo"),
-        (Profile::Spanish, KeywordKind::EndAlgorithm) => Some("FinAlgoritmo"),
-        _ => None,
-    }
 }
 
 fn capitalize_words(lexeme: &str) -> String {

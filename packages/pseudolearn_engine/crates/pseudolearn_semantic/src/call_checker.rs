@@ -81,7 +81,7 @@ pub(crate) fn emit_call(
         .map(|function| function.result)
         .unwrap_or_else(|| session.module.types.intern(Type::Error));
     crate::suspension_checker::call(session, (function, node));
-    check_result(session, result, (node, purpose));
+    let result = check_result(session, result, (node, purpose));
     session.called.insert(function);
     session.emit(
         HirExpression::Call {
@@ -208,7 +208,7 @@ fn emit_method(
         return crate::expression_checker::invalid(session, invocation.node);
     };
     session.called.insert(function);
-    check_result(
+    let result = check_result(
         session,
         signature.result,
         (invocation.node, invocation.purpose),
@@ -226,17 +226,18 @@ fn emit_method(
             arguments,
         }
     };
-    session.emit(kind, signature.result, session.span(invocation.node))
+    session.emit(kind, result, session.span(invocation.node))
 }
 
 pub(crate) fn check_result(
     session: &mut AnalysisSession<'_>,
     result: crate::identities::TypeId,
     context: (usize, ExpressionPurpose),
-) {
+) -> crate::identities::TypeId {
     let (node, purpose) = context;
     if purpose != ExpressionPurpose::Statement && session.module.types.get(result) == Type::Unit {
         session.report(DiagnosticCode::CallAsExpressionWithoutReturnType, node);
+        return session.module.types.intern(Type::Error);
     }
     if purpose == ExpressionPurpose::Statement && session.module.types.get(result) != Type::Unit {
         let code =
@@ -250,6 +251,7 @@ pub(crate) fn check_result(
             crate::diagnostic_arguments::last_type(session, result);
         }
     }
+    result
 }
 
 fn typed_arguments(

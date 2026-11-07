@@ -226,6 +226,7 @@ fn precedes_own_parentheses(kind: TokenKind) -> bool {
                 | KeywordKind::SuccessVariant
                 | KeywordKind::ErrorVariant
                 | KeywordKind::Subroutine
+                | KeywordKind::Function
         )
     )
 }

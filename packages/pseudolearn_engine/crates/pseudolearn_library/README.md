@@ -214,3 +214,10 @@ traduce ambas a la regla `LIB.JSON#J4`: la columna cuenta puntos de código y `F
 texto, justo después de su último carácter (1:1 para el texto vacío, 1:17 para un texto de 16 caracteres). Antes el
 texto vacío daba 1:1 y uno de 16 caracteres daba 1:16, y una `ñ` desplazaba la columna un lugar. Se descartó corregir
 solo el caso de fin de texto: la columna en bytes también contradecía `LANG.SOURCE.POSITION`.
+
+## Posición de un fallo de `Subcadena`
+
+`substring_fault_position` elige el argumento `position` de `stringPositionOutOfRange` según `LIB.CORE.TEXT#T2`: `desde`
+si es negativo o mayor que la longitud, y `hasta` en otro caso. La VM y el runtime nativo comparten la función; antes
+ambos sumaban `desde + hasta`, como si el tercer argumento fuera una longitud, y citaban una posición que no era ninguno
+de los argumentos (`Subcadena("hola", 2, 9)` informaba 11).

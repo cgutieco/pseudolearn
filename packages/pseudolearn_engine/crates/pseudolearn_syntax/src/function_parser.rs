@@ -54,7 +54,9 @@ pub(crate) fn literal(state: &mut ParserState<'_>) -> Result<usize, ()> {
         state.finish(NodeKind::SuspendibleModifier, modifier, modifier_marker);
     }
     state.enter()?;
+    let open_blocks = std::mem::take(&mut state.open_blocks);
     let result = literal_body(state, (start, marker));
+    state.open_blocks = open_blocks;
     state.leave();
     state.unit_context = context;
     state.inside_method = inside_method;
@@ -67,10 +69,6 @@ fn literal_body(state: &mut ParserState<'_>, (start, marker): (u32, usize)) -> R
         parse_type(state)?;
     }
     crate::statement_parser::parse_statement_block(state);
-    state.close(
-        KeywordKind::EndSubroutine,
-        DiagnosticCode::UnclosedSubroutine,
-        start,
-    );
+    crate::subprogram_keywords::close(state, start);
     Ok(state.finish(NodeKind::FunctionLiteral, start, marker))
 }

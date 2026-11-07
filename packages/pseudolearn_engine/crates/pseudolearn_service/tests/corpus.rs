@@ -74,12 +74,12 @@ fn comment_texts(text: &str, profile: Profile) -> Vec<String> {
 #[test]
 fn corpus_has_the_reference_programs() -> Result<(), String> {
     let all = examples()?;
-    assert_eq!(all.len(), 174);
+    assert_eq!(all.len(), 62);
     assert_eq!(
         all.iter()
             .filter(|example| example.profile == Profile::English)
             .count(),
-        87
+        31
     );
     Ok(())
 }
@@ -145,7 +145,7 @@ fn every_program_survives_double_translation_in_canonical_form() -> Result<(), S
 fn formatting_is_stable_on_randomly_damaged_programs() -> Result<(), String> {
     let mut random = SeededRandom::new(7);
     let mut checked = 0usize;
-    for example in examples()?.into_iter().step_by(6) {
+    for example in examples()?.into_iter().step_by(2) {
         let mut session = DocumentSession::new(example.text.clone(), example.profile);
         for _ in 0..6 {
             let edit = random_edit(session.text(), &mut random);
