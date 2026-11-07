@@ -34,15 +34,58 @@ def propagate(value):
 const TASKS: &str = r#"class TaskScope:
     def __init__(self):
         self.children = []
+        self.failed = False
+        self.first = None
+        self.associated = []
+        self.cancelled = 0
+        self.owner = asyncio.current_task()
+        self.in_body = True
+
+    def absorb(self):
+        asyncio.current_task().uncancel()
+
+    def close_body(self):
+        self.in_body = False
 
     def spawn(self, work):
         task = asyncio.ensure_future(work)
         self.children.append(task)
         return task
 
+    def spawn_fallible(self, work):
+        async def guarded():
+            result = await work
+            if isinstance(result, Err):
+                self.fail(result.error)
+                return None
+            return result.value
+        return self.spawn(guarded())
+
+    def fail(self, error):
+        if self.failed:
+            self.associated.append(error)
+            return
+        self.failed = True
+        self.first = error
+        current = asyncio.current_task()
+        for child in self.children:
+            if child is not current and not child.done() and child.cancel():
+                self.cancelled += 1
+        if self.in_body and self.owner is not current:
+            self.in_body = False
+            self.owner.cancel()
+
     async def join(self):
         for child in self.children:
-            await child
+            try:
+                await child
+            except asyncio.CancelledError:
+                pass
+
+    def report(self, record):
+        if not self.failed:
+            return Nothing()
+        return Some(record(self.first, list(self.associated), self.cancelled))
 
 
 async def as_task(function, *arguments):
@@ -95,6 +138,20 @@ class Channel:
         while self.senders:
             wake_one(self.senders)"#;
 
+const SELECT: &str = r#"async def select_receive(channels):
+    while True:
+        for position, channel in enumerate(channels):
+            if channel.buffer:
+                value = channel.buffer.popleft()
+                wake_one(channel.senders)
+                return position, Some(value)
+            if channel.closed:
+                return position, Nothing()
+        waiter = asyncio.get_running_loop().create_future()
+        for channel in channels:
+            channel.receivers.append(waiter)
+        await waiter"#;
+
 const REAL_TEXT: &str = r#"def real_text(value):
     text = format(decimal.Decimal(repr(value)), "f")
     return text if "." in text else text + ".0""#;
@@ -138,8 +195,9 @@ pub(crate) fn dependencies(name: &str) -> &'static [&'static str] {
     match name {
         "variants" => &["dataclass"],
         "propagation" => &["variants"],
-        "tasks" => &["asyncio"],
+        "tasks" => &["asyncio", "variants"],
         "channel" => &["tasks", "collections", "variants"],
+        "select" => &["channel"],
         "real_text" => &["decimal"],
         "finite" | "real_power" => &["math", "finite"],
         "int_modulo" => &["int_divide"],
@@ -184,6 +242,7 @@ fn fixed(name: &str) -> Option<&'static str> {
         "propagation" => PROPAGATION,
         "tasks" => TASKS,
         "channel" => CHANNEL,
+        "select" => SELECT,
         "real_text" => REAL_TEXT,
         "finite" => FINITE,
         "int_divide" => INT_DIVIDE,

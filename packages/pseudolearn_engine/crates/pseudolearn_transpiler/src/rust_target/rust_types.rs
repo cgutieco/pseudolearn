@@ -102,7 +102,15 @@ impl RustEmitter<'_, '_> {
                 self.variant_type(variant, identifier, span)
             }
             RecordRole::Function(signature) => self.function_type(signature, span),
-            RecordRole::TaskFailure | RecordRole::Unknown => self.block("type:record", span),
+            RecordRole::TaskFailure => {
+                let name = self
+                    .view
+                    .record(record)
+                    .map(|entry| entry.name.clone())
+                    .unwrap_or_default();
+                self.unique_record_name(record, &name)
+            }
+            RecordRole::Unknown => self.block("type:record", span),
         }
     }
 

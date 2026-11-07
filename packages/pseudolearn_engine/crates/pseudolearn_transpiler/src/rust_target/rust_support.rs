@@ -5,6 +5,7 @@ use crate::code_lines::CodeLines;
 const ORDER: &[&str] = &[
     "tasks",
     "channel",
+    "select",
     "dictionary",
     "collection_text",
     "real_text",

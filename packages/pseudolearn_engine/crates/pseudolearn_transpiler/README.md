@@ -17,8 +17,11 @@ Pendientes declarados:
   directorio, reloj, temporizador, argumentos, entorno, red, bytes y JSON) se informan como
   construcción `capability`. Red HTTPS y JSON no tienen equivalente en la biblioteca estándar de
   Rust; el resto queda por traducir.
-- `Tareas` con captura de fallos (`TaskScope` con `failure`) y `Elegir` (`select_statement`) se
-  informan como no disponibles.
+- Capacidades: su comportamiento lo media el anfitrión (permisos, archivos simulados, cinta de efectos, reloj
+  real), por lo que el barrido diferencial no puede contrastarlas con la salida del motor; se traducirán con su
+  propio arnés de anfitrión.
+- En Rust, una tarea cancelada por el fallo de una hermana se descarta sin ejecutar sus limpiezas de `Diferir`;
+  en Python `asyncio` las ejecuta como el motor.
 - En Rust, `Instantanea` copia en profundidad primitivos, cadenas, vectores y diccionarios; sobre objetos y
   registros no compila todavía. `Copiar` de un objeto de una jerarquía de clases en Rust se informa como
   `builtin:shallowCopy`.
@@ -96,6 +99,16 @@ Correspondencias principales:
 - Clausuras: se emiten antes de la sentencia que las usa (`move` + `Rc<dyn Fn>` en Rust, `def`
   anidada en Python); las variables capturadas nunca se reasignan, así que adelantar la creación no
   cambia el valor capturado.
+- Captura de fallos de `Tareas`: el ámbito guarda el primer error, los posteriores y las hermanas canceladas,
+  cancela a las hermanas vivas y abandona el resto del cuerpo del dueño (`run_body` en Rust; cancelación del
+  dueño absorbida en Python). El informe es el registro `FalloTareas` del HIR dentro de un `Opcional`.
+- `Elegir`: `select_receive` recorre los canales en orden textual y devuelve la primera rama lista (dato o
+  cierre); si ninguna lo está, se inscribe en todas. Para que una inscripción obsoleta no se quede con el aviso
+  de otro receptor, un envío o un cierre despiertan a todos los receptores en espera, que reintentan en orden
+  FIFO.
+- Nombres: los nombres de los destinos, de los módulos importados y de las funciones de apoyo están reservados y
+  el nombre del usuario recibe el sufijo `_value`; una función cuyo nombre coincide con una variable local recibe
+  el sufijo `_routine`.
 - Tareas y canales: Rust usa `async fn` y un ejecutor cooperativo de un hilo con cola FIFO, escrito
   con la biblioteca estándar (`Wake`, `poll_fn`), un `TaskScope` que une a sus hijas al cerrar el
   ámbito y un `Channel` acotado con cierre. Python usa `asyncio`, cuya cola de listos también es FIFO.

@@ -88,3 +88,41 @@ Error(problem): Escribir problem.Codigo;
 FinSegun
 FinAlgoritmo
 ";
+
+pub const FAILING_SCOPE: &str = "SubProceso Suspendible Work() Como Resultado<Entero, Cadena>
+Retornar Error(\"failed\");
+FinSubProceso
+Algoritmo P
+Tareas failureReport
+Lanzar Work();
+FinTareas
+Segun failureReport Hacer
+Nada: Escribir \"ok\";
+Algo(problem): Escribir problem.Primero, problem.Canceladas;
+FinSegun
+FinAlgoritmo
+";
+
+pub const SELECTION: &str = "SubProceso Suspendible Close(stream Como Canal<Entero>)
+stream.Cerrar();
+FinSubProceso
+Algoritmo P
+Definir stream Como Canal<Entero> <- Canal(1);
+Definir other Como Canal<Entero> <- Canal(4);
+Tareas
+Lanzar Close(other);
+Elegir
+Recibir first Desde stream:
+Segun first Hacer
+Algo(value): Escribir value;
+Nada: Escribir 1;
+FinSegun
+Recibir second Desde other:
+Segun second Hacer
+Algo(value): Escribir value;
+Nada: Escribir 2;
+FinSegun
+FinElegir
+FinTareas
+FinAlgoritmo
+";

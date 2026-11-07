@@ -8,7 +8,7 @@ pub(crate) struct Mutation {
 }
 
 impl Mutation {
-    pub(crate) fn of(view: &ModuleView<'_>) -> Self {
+    pub(crate) fn scan(view: &ModuleView<'_>) -> Self {
         let mut mutation = Mutation {
             writes: BTreeMap::new(),
             changed: BTreeSet::new(),

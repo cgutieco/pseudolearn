@@ -7,6 +7,7 @@ const ORDER: &[&str] = &[
     "propagation",
     "tasks",
     "channel",
+    "select",
     "real_text",
     "boolean_text",
     "collection_text",

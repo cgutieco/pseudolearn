@@ -4,6 +4,35 @@ use pseudolearn_semantic::{ExpressionId, FunctionId};
 use pseudolearn_source::Span;
 
 impl PythonEmitter<'_, '_> {
+    pub(crate) fn select(
+        &mut self,
+        selection: &pseudolearn_semantic::channel_model::HirSelect,
+        lines: &mut crate::code_lines::CodeLines,
+    ) {
+        self.require("select");
+        let channels = selection
+            .channels
+            .iter()
+            .map(|channel| self.expression(*channel))
+            .collect::<Vec<_>>();
+        lines.line(&format!(
+            "selected, selected_value = await select_receive([{}])",
+            channels.join(", ")
+        ));
+        for (position, case) in selection.cases.iter().enumerate() {
+            let labels = case
+                .labels
+                .iter()
+                .map(|label| format!("selected == {}", self.expression(*label)))
+                .collect::<Vec<_>>()
+                .join(" or ");
+            let keyword = if position == 0 { "if" } else { "elif" };
+            lines.open(&format!("{keyword} {labels}:"));
+            self.body(&case.body, lines);
+            lines.dedent();
+        }
+    }
+
     pub(crate) fn spawn(
         &mut self,
         function: FunctionId,
@@ -22,7 +51,9 @@ impl PythonEmitter<'_, '_> {
             .view
             .function(function)
             .is_some_and(|entry| entry.suspendible);
-        if suspendible {
+        if suspendible && self.view.returns_result(function) {
+            format!("{scope}.spawn_fallible({name}({}))", texts.join(", "))
+        } else if suspendible {
             format!("{scope}.spawn({name}({}))", texts.join(", "))
         } else {
             self.require("tasks");
@@ -44,6 +75,7 @@ impl PythonEmitter<'_, '_> {
             }
             (ChannelAction::Receive, Some(receiver), _) => format!("await {receiver}.receive()"),
             (ChannelAction::Close, Some(receiver), _) => format!("{receiver}.close()"),
+            (ChannelAction::Selected, _, _) => "selected_value".to_owned(),
             _ => self.block("channel", span),
         }
     }

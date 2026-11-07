@@ -57,3 +57,19 @@ fn constructs_without_equivalent_are_named() -> Result<(), String> {
         TranspileOutcome::Code(_) => Err("network translated without an equivalent".to_owned()),
     }
 }
+
+#[test]
+fn failing_tasks_report_through_the_scope() -> Result<(), String> {
+    let text = code(support::FAILING_SCOPE, TargetLanguage::Python)?;
+    assert!(text.contains("task_scope.spawn_fallible(work())"));
+    assert!(text.contains("except asyncio.CancelledError:"));
+    assert!(text.contains("failure_report = task_scope.report("));
+    Ok(())
+}
+
+#[test]
+fn selection_waits_on_every_channel() -> Result<(), String> {
+    let text = code(support::SELECTION, TargetLanguage::Python)?;
+    assert!(text.contains("selected, selected_value = await select_receive([stream, other])"));
+    Ok(())
+}

@@ -1,4 +1,4 @@
-use super::rust_support_tasks::{CHANNEL, TASKS};
+use super::rust_support_tasks::{CHANNEL, SELECT, TASKS};
 use super::rust_support_text::{
     CHARACTER_AT, CHARACTER_FROM_CODE, COLLECTION_TEXT, DICTIONARY, FINITE, RANDOM, REPLACE_ALL,
     SNAPSHOT, SPLIT_TEXT, SUBSTRING, TEXT_POSITION, TEXT_TO_INTEGER, TEXT_TO_REAL,
@@ -110,6 +110,7 @@ pub(crate) fn dependencies(name: &str) -> &'static [&'static str] {
         "random" => &["random_seed"],
         "snapshot" => &["dictionary"],
         "channel" => &["tasks"],
+        "select" => &["channel"],
         "collection_text" => &["real_text", "boolean_text", "dictionary"],
         _ => &[],
     }
@@ -136,6 +137,7 @@ fn fixed_source(name: &str) -> &'static str {
     match name {
         "tasks" => TASKS,
         "channel" => CHANNEL,
+        "select" => SELECT,
         "real_text" => REAL_TEXT,
         "divide" => DIVIDE,
         "integer_power" => INTEGER_POWER,

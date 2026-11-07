@@ -63,10 +63,21 @@ impl<'module> PythonEmitter<'_, 'module> {
     }
 
     pub(crate) fn function_name(&self, identifier: FunctionId) -> String {
-        self.view.function(identifier).map_or_else(
+        let name = self.view.function(identifier).map_or_else(
             || format!("function{}", identifier.0),
             |entry| python_value_name(&entry.name),
-        )
+        );
+        let shadowed = self
+            .view
+            .module
+            .locals
+            .iter()
+            .any(|local| python_value_name(&local.name) == name);
+        if shadowed {
+            format!("{name}_routine")
+        } else {
+            name
+        }
     }
 
     pub(crate) fn local_name(&self, identifier: LocalId) -> String {

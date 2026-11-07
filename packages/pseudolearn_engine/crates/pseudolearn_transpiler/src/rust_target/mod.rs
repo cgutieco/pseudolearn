@@ -84,7 +84,7 @@ pub(crate) fn emit_program(view: &ModuleView<'_>, request: &TranspileRequest) ->
         uses: BTreeSet::new(),
         preamble: CodeLines::default(),
         closures: 0,
-        mutation: rust_mutation::Mutation::of(view),
+        mutation: rust_mutation::Mutation::scan(view),
     };
     let mut body = CodeLines::default();
     emitter.declarations(&mut body);

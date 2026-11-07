@@ -36,7 +36,8 @@ impl RustEmitter<'_, '_> {
     }
 
     pub(crate) fn is_plain_record(&self, identifier: RecordId) -> bool {
-        matches!(self.view.record_role(identifier), RecordRole::Plain(entry) if !entry.fields.is_empty())
+        (matches!(self.view.record_role(identifier), RecordRole::Plain(entry) if !entry.fields.is_empty())
+            || matches!(self.view.record_role(identifier), RecordRole::TaskFailure))
             && !self.view.module.user_variants.values().any(|variant| {
                 variant
                     .alternatives

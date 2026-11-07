@@ -82,6 +82,7 @@ impl PythonEmitter<'_, '_> {
             HirStatement::TaskScope { failure, body } => {
                 self.task_scope((*failure, body), span, lines)
             }
+            HirStatement::Select(selection) => self.select(selection, lines),
             _ => {
                 self.block("statement", span);
             }

@@ -139,6 +139,32 @@ impl<'module> ModuleView<'module> {
             .and_then(|index| self.module.expressions.types.get(index).copied())
     }
 
+    pub(crate) fn failure_record(&self, local: LocalId) -> Option<RecordId> {
+        let Type::Record(optional) = self.representation(self.local(local)?.type_id) else {
+            return None;
+        };
+        let payload = self
+            .module
+            .variants
+            .get(&optional)?
+            .payloads
+            .get(1)
+            .copied()
+            .flatten()?;
+        match self.representation(payload) {
+            Type::Record(record) if self.module.task_failures.contains_key(&record) => Some(record),
+            _ => None,
+        }
+    }
+
+    pub(crate) fn returns_result(&self, function: FunctionId) -> bool {
+        self.function(function)
+            .is_some_and(|entry| match self.representation(entry.result) {
+                Type::Record(record) => self.variant_family(record) == Some(VariantFamily::Result),
+                _ => false,
+            })
+    }
+
     pub(crate) fn is_opaque(&self, type_id: TypeId) -> bool {
         match self.representation(type_id) {
             Type::Record(record) => {

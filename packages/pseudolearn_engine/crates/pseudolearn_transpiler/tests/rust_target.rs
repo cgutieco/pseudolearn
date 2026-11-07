@@ -68,3 +68,20 @@ fn constructs_without_equivalent_are_named_with_their_span() -> Result<(), Strin
         TranspileOutcome::Code(_) => Err("network translated without an equivalent".to_owned()),
     }
 }
+
+#[test]
+fn failing_tasks_report_through_the_scope() -> Result<(), String> {
+    let text = code(support::FAILING_SCOPE, TargetLanguage::Rust)?;
+    assert!(text.contains("let task_scope = TaskScope::<String>::new();"));
+    assert!(text.contains("task_scope.spawn_fallible(work());"));
+    assert!(text.contains("task_scope.report().map("));
+    Ok(())
+}
+
+#[test]
+fn selection_waits_on_every_channel() -> Result<(), String> {
+    let text = code(support::SELECTION, TargetLanguage::Rust)?;
+    assert!(text.contains("select_receive(&[stream.clone(), other.clone()]).await;"));
+    assert!(text.contains("match selected {"));
+    Ok(())
+}
